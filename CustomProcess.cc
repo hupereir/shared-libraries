@@ -35,10 +35,20 @@
 using namespace std;
 
 //____________________________________________________
+CustomProcess::CustomProcess( QObject* parent ):
+  QProcess( parent ),
+  Counter( "CustomProcess" )
+{}
+
+//____________________________________________________
+CustomProcess::~CustomProcess( void )
+{ if( state() != QProcess::NotRunning ) kill(); }
+
+//____________________________________________________
 void CustomProcess::start( const string& arguments, OpenMode mode )
 {
   
-  Debug::Throw( "CustomProcess::addArguments.\n");
+  Debug::Throw() << "CustomProcess::start - " << arguments << endl;
   istringstream in( arguments );
   
   QString program;
@@ -48,11 +58,19 @@ void CustomProcess::start( const string& arguments, OpenMode mode )
     string arg;
     in >> arg;
     if( arg.empty() ) break;
-    if( !program.isNull() ) program = arg.c_str();
+    if( program.isNull() ) program = arg.c_str();
     else arg_list.push_back( arg.c_str() );  
   }
-  if( !program.isNull() ) return;
+      
+  if( program.isNull() ) return;
   if( arg_list.empty() ) return QProcess::start( program, mode );
   return QProcess::start( program, arg_list, mode );
   
+}
+
+//______________________________________________________________
+void CustomProcess::setAutoDelete( void )
+{ 
+  Debug::Throw( "CustomProcess::setAutoDelete.\n" );
+  connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), this, SLOT( _AutoDelete() ) ); 
 }

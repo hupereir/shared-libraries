@@ -57,11 +57,11 @@ class CustomProcess: public QProcess, public Counter
   public:
 
   //! creator
-  CustomProcess( QObject* parent ):
-    QProcess( parent ),
-    Counter( "CustomProcess" )
-  {}
-    
+  CustomProcess( QObject* parent );
+  
+  //! destructor
+  virtual ~CustomProcess( void );
+  
   /*! 
     \brief 
     add arguments. 
@@ -70,14 +70,16 @@ class CustomProcess: public QProcess, public Counter
   void start( const std::string& arguments, OpenMode mode = ReadWrite );
   
   //! \brief ensure object is deleted at job completion
-  void setAutoDelete( void )
-  { connect( this, SIGNAL( finished() ), this, SLOT( _AutoDelete( ) ) ); }
+  void setAutoDelete( void );
     
   private slots:
   
   //! delete this object at job completion
   void _autoDelete( void )
-  { delete this; }
+  { 
+    Debug::Throw( "CustomProcess::_autoDelete.\n" );
+    delete this; 
+  }
     
 };
 

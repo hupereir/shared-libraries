@@ -62,32 +62,6 @@ void CustomListView::setColumnName( const int& column, const string& name )
   item->setText( column, name.c_str() );
   
 }
-  
-// //_______________________________________________
-// int CustomListView::AddMenuItem( const string& name, QObject* reciever, const string& slot, const bool& need_selection )
-// {
-//   
-//   Debug::Throw( "CustomListView::AddMenuItem" );
-//   
-//   int item = Menu().insertItem( name.c_str(), reciever, slot.c_str() );
-//     
-//   if( need_selection ) selection_menu_items_.insert( item );
-//   return item;
-//   
-// }
-// 
-// //_______________________________________________
-// int CustomListView::AddMenuItem( const string& name, Q3PopupMenu* reciever, const bool& need_selection )
-// {
-//   
-//   Debug::Throw( "CustomListView::AddMenuItem" );
-//   
-//   int item = Menu().insertItem( name.c_str(), reciever );
-//     
-//   if( need_selection ) selection_menu_items_.insert( item );
-//   return item;
-//   
-// }
 
 //_______________________________________________
 unsigned int CustomListView::mask( void )
@@ -181,10 +155,16 @@ void CustomListView::mousePressEvent( QMouseEvent *event )
   
   if( !hasMenu() ) return;
     
+  // enable/disable
+  bool has_selection( !QTreeWidget::selectedItems().empty() );
+  for( set<QAction*>::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
+  { (*iter)->setEnabled( has_selection ); }
+  
   // move and show menu
   menu().adjustSize();
   QtUtil::moveWidget( &menu(), QCursor::pos() );
   menu().show();
+  
 }
 
 //___________________________________

@@ -124,8 +124,8 @@ class DockPanel: public QWidget, public Counter
   
   //! flags
   unsigned int flags_;
-      
-  //! vertical layout
+    
+  //! vertical layout for main_ widget
   QVBoxLayout* main_layout_;
   
   //! horizontal layout (for buttons)

@@ -68,15 +68,25 @@ class CustomListView: public QTreeWidget, public Counter
     return *menu_;
   }
   
-  // set column name
+  //! set column name
   void setColumnName( const int& column, const std::string& name );
   
-//   //! add a menu item
-//   int AddMenuItem( const std::string& name, QObject* reciever, const std::string& slot, const bool& need_selection = false );
-// 
-//   //! add a menu item
-//   int AddMenuItem( const std::string& name, QMenu* reciever, const bool& need_selection = false );  
-   
+  //! add context menu action
+  QAction& addMenuAction( const std::string& name, const bool& need_selection = false )
+  {
+    QAction* out = menu().addAction( name.c_str() );
+    if( need_selection ) selection_actions_.insert( out );
+    return *out;
+  }
+  
+  //! add context menu action
+  QAction& addMenuAction( const std::string& name, QObject* reciever, const std::string& slot,  const bool& need_selection = false )
+  {
+    QAction& out( addMenuAction( name, need_selection ) );
+    connect( &out, SIGNAL( triggered() ), reciever, slot.c_str() );
+    return out;
+  }
+     
   //! return column visibility bitset. Is 1 for shown columns, 0 for hidden
   unsigned int mask( void );
   
@@ -139,8 +149,8 @@ class CustomListView: public QTreeWidget, public Counter
   /*! gets reinitialized anytime GetMask is called */
   unsigned int mask_;    
    
-  //! menu items that must be enabled/disabled depending on selection
-  std::set<int> selection_menu_items_;
+  //! actions that are enabled/disabled depending on selection
+  std::set<QAction*> selection_actions_;
 
 };
 

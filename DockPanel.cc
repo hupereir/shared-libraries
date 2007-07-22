@@ -96,9 +96,11 @@ void DockPanel::_toggleDock( void )
   
     detached_size_ = main_->size();
     main_->setParent( this );
-    main_->show();
+    layout()->addWidget( main_ );
+    main_->show();    
     
     button_->setText("&detach");
+    
     emit attached();
   
   } else {
