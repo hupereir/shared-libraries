@@ -1,0 +1,60 @@
+// $Id$
+
+/******************************************************************************
+*                         
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
+*                         
+* This is free software; you can redistribute it and/or modify it under the    
+* terms of the GNU General Public License as published by the Free Software    
+* Foundation; either version 2 of the License, or (at your option) any later   
+* version.                             
+*                          
+* This software is distributed in the hope that it will be useful, but WITHOUT 
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
+* for more details.                     
+*                          
+* You should have received a copy of the GNU General Public License along with 
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
+* Place, Suite 330, Boston, MA  02111-1307 USA                           
+*                         
+*                         
+*******************************************************************************/
+
+#ifndef OptionLineEdit_h
+#define OptionLineEdit_h
+
+/*!
+   \file    OptionLineEdit.h
+   \brief   QLineEdit associated to an option for configuration dialogs
+   \author  Hugo Pereira
+   \version $Revision$
+   \date    $Date$
+*/
+
+#include "CustomLineEdit.h"
+#include "OptionWidget.h"
+#include "Options.h"
+
+//! QLineEdit associated to an option for configuration dialogs
+class OptionLineEdit: public CustomLineEdit, public OptionWidget
+{
+  
+  public:
+  
+  //! constructor
+  OptionLineEdit( QWidget* parent, const std::string& option_name ):
+      CustomLineEdit( parent ),
+      OptionWidget( option_name )
+  {}
+  
+  //! read value from option
+  void read( void )
+  { setText( XmlOptions::get().raw( optionName() ).c_str() ); }
+  
+  //! write value to option
+  void Write( void ) const
+  { XmlOptions::get().setRaw( optionName(), qPrintable( text() ) ); }
+        
+};
+#endif
