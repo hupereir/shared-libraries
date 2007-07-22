@@ -1,0 +1,173 @@
+#ifndef Options_h
+#define Options_h
+
+// $Id$
+
+/******************************************************************************
+ *                         
+ * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
+ *                         
+ * This is free software; you can redistribute it and/or modify it under the    
+ * terms of the GNU General Public License as published by the Free Software    
+ * Foundation; either version 2 of the License, or (at your option) any later   
+ * version.                             
+ *                          
+ * This software is distributed in the hope that it will be useful, but WITHOUT 
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
+ * for more details.                     
+ *                          
+ * You should have received a copy of the GNU General Public License along with 
+ * software; if not, write to the Free Software Foundation, Inc., 59 Temple     
+ * Place, Suite 330, Boston, MA  02111-1307 USA                           
+ *                         
+ *                         
+ *******************************************************************************/
+
+/*!
+  \file Options.h
+  \brief Option file parser based on xml
+  \author Hugo Pereira
+  \version $Revision$
+  \date $Date$
+*/
+
+#include <iostream>
+#include <list>
+#include <map>
+#include <sstream>
+#include <string>
+
+#include "Counter.h"
+#include "Debug.h"
+#include "Exception.h"
+#include "Option.h"
+
+//! Option file parser based on Xml
+class Options: public Counter 
+{
+
+  public: 
+   
+  //! shortCut for option map
+  typedef std::map< std::string, Option > OptionMap;
+
+  //! shortCut for option list
+  typedef std::list< Option > OptionList;
+        
+  //! shortCut for option map
+  typedef std::map< std::string, OptionList > SpecialOptionMap;
+    
+  //! constructor
+  Options( void );
+  
+  //! destructor
+  virtual ~Options( void ) 
+  {}
+  
+  //! equality operator
+  bool operator == (const Options& options ) const
+  {
+    Debug::Throw( "Options::operator ==.\n" );
+    bool out(
+        ( options_ == options.options_ ) &&
+        ( special_options_ == options.special_options_ ) );
+    return out;
+  }
+
+  //! adds a new option. Return true if option is added
+  virtual bool add( const Option& option, bool overwrite = false );
+  
+  //! retrieve list of special (i.e. kept) options matching a given name
+  virtual SpecialOptionMap& specialOptions()
+  { return special_options_; }
+  
+  //! retrieve list of special (i.e. kept) options matching a given name
+  virtual OptionList specialOptions( const std::string& name )
+  { return special_options_[name]; }
+  
+  //! retrieve list of special (i.e. kept) options matching a given name
+  template < typename T > 
+  std::list<T> specialOptions( const std::string& name )
+  {
+    
+    OptionList option_list( specialOptions( name ) );
+    std::list<T> out;
+    for( OptionList::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
+    out.push_back( iter->get<T>() );
+    return out; 
+    
+  }
+  
+  //! clear list of special (i.e. kept) options matching a given name
+  virtual void clearSpecialOptions( const std::string& name );
+  
+  //! returns true if option with matching name is found
+  virtual bool find( const std::string& name )
+  { return options_.find( name ) != options_.end(); }
+ 
+  //! option accessor
+  virtual Option& getOption( const std::string& name );
+ 
+  //! option value accessor
+  template < typename T >
+  T get( const std::string& name )
+  { return getOption( name ).get<T>(); }
+
+  //! option raw value accessor
+  virtual std::string raw( const std::string& name )
+  { return getOption( name ).raw(); }
+
+  //! option value modifier
+  template < typename T >
+  void set( const std::string& name, const T& value )
+  { 
+    if( !find( name ) ) add( Option( name, "" ) );
+    getOption( name ).set<T>( value ); 
+  }
+
+  //! option raw value modifier
+  virtual void setRaw( const std::string& name, const std::string& value )
+  { 
+    if( find( name ) ) getOption( name ).setRaw( value ); 
+    else add( Option( name, value ) );
+  }
+  
+  /*! \brief
+    tags a given option to be kept in separate list as a "special" option. 
+    These options are not stored unique. 
+    They are stored in a list, with no unicity check. Accessing these therefore
+    takes more time with respect to the "standard" options, which are stored
+    in a map.
+  */
+  virtual void keep( const std::string& name )
+  { 
+    if( special_options_.find( name ) == special_options_.end() )
+    special_options_.insert( make_pair( name, OptionList() ) );
+  }
+  
+  //! remove all options
+  virtual void reset( void )
+  { 
+    options_.clear(); 
+    special_options_.clear();
+  }
+  
+  //! dump options to stream
+  virtual void dump( std::ostream& out = std::cout ) const;
+  
+  //! retrieve Option map
+  virtual OptionMap& map( void )
+  { return options_; }
+    
+  private:
+   
+  //! option map
+  OptionMap options_;
+  
+  //! set of option names to be kept separately
+  SpecialOptionMap special_options_;
+        
+};
+
+#endif
