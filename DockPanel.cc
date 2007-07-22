@@ -51,27 +51,33 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   setLayout( layout );
   
   // main widget
+  Debug::Throw( "DocPanel::DockPanel - main_.\n" );
   main_ = new QFrame( this );
   main_->setFrameStyle( QFrame::NoFrame );
   layout->addWidget( main_ );
   
   // vertical layout for children
-  main_layout_ = new QVBoxLayout( main_ );
+  Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
+  main_layout_ = new QVBoxLayout();
   main_layout_->setMargin( 5 );
   main_layout_->setSpacing( 5 );
-  layout->addLayout( main_layout_ );
+  main_->setLayout( main_layout_ );
   
   // vertical box
+  Debug::Throw( "DocPanel::DockPanel - box.\n" );
   box_ = new QWidget( main_ );
   box_->setLayout( new QVBoxLayout() );
   
   main_layout_->addWidget( box_ );
   
   // insert hbox layout for buttons
+  Debug::Throw( "DocPanel::DockPanel - button_layout_.\n" );
   button_layout_ = new QHBoxLayout();  
   button_layout_->setSpacing( 5 );
   main_layout_->addLayout( button_layout_ );
   
+  // detach button
+  Debug::Throw( "DocPanel::DockPanel - button_.\n" );
   button_ = new QPushButton( "&detach", main_ );
   connect( button_, SIGNAL( clicked() ), this, SLOT( _toggleDock() ) );
   button_->setToolTip( "dock/undock panel" );
@@ -90,6 +96,7 @@ void DockPanel::_toggleDock( void )
   
     detached_size_ = main_->size();
     main_->setParent( this );
+    main_->show();
     
     button_->setText("&detach");
     emit attached();
@@ -100,9 +107,11 @@ void DockPanel::_toggleDock( void )
     if( flags_ & STAYS_ON_TOP ) main_->setWindowFlags( Qt::WindowStaysOnTopHint );
     main_->move( mapToGlobal( QPoint(0,0) ) );
     main_->setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-
+    
     button_->setText("&attach");
     if( detached_size_ != QSize() ) main_->resize( detached_size_ );    
+    
+    main_->show();
     emit detached();
   
   }  
