@@ -65,7 +65,8 @@ class CounterDialog: public CustomDialog
   CounterList* counter_list_;
  
   //! map to store Counter list items agains names
-  std::map< std::string, QTreeWidgetItem* > items_;  
+//  std::map< std::string, QTreeWidgetItem* > items_;  
+  std::map< std::string, CustomListView::Item* > items_;  
   
 };
 

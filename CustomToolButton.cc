@@ -33,6 +33,7 @@
 #include "Exception.h"
 #include "XmlOptions.h"
 
+#include <QApplication>
 #include <qpixmap.h>
 #include <qiconset.h>
 #include <qtooltip.h>
@@ -45,7 +46,7 @@ using namespace std;
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( 
   QWidget* parent,   
-  const QPixmap& pixmap,
+  QIcon icon,
   const string& tooltip,
   QLabel* label ):
   QToolButton( parent ),
@@ -54,24 +55,31 @@ CustomToolButton::CustomToolButton(
 {
 
   Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
-        
-  // try load pixmap  
-  if( pixmap.isNull() ) {
-    ostringstream what;
-    what << "invalid pixmap";
-    throw runtime_error( DESCRIPTION( what.str() ) );
-  }
-    
+            
   // add tooltip
-  setIcon( pixmap );
+  setIcon( icon );
   if( tooltip.size() ) setToolTip( tooltip.c_str() );
-  
-  // if( XmlOptions::get().find("USE_BIG_PIXMAP") ) top_->setIconSize( XmlOptions::get().get<bool>("USE_BIG_PIXMAP") );
-  if( XmlOptions::get().find("USE_TEXT_LABEL") ) 
-  {
-    if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
-    else setToolButtonStyle( Qt::ToolButtonIconOnly );
-  }
-  
+    
   setAutoRaise( true );
+  
+  _updateConfiguration();
+  connect( qApp, SIGNAL( configurationChanged() ), this, SLOT( _updateConfiguration() ) );
+  
+}
+
+//_________________________________________________________________
+void CustomToolButton::_updateConfiguration( void )
+{
+  Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
+  
+  // pixmap size
+  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( QSize( 32, 32 ) );
+  else setIconSize( QSize( 24, 24 ) );
+  
+  // text labels
+  if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
+  else setToolButtonStyle( Qt::ToolButtonIconOnly );
+  
+  adjustSize();
+  
 }

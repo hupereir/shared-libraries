@@ -38,7 +38,6 @@
 #include <QMouseEvent>
 #include <QTreeWidget>
 
-#include <set>
 #include <string>
 #include <vector>
 
@@ -56,42 +55,76 @@ class CustomListView: public QTreeWidget, public Counter
   
   //! constructor
   CustomListView( QWidget* parent );
-      
+     
+  //! destructor
+  ~CustomListView( void )
+  {}
+
   //! returns true if menu has been initialized
-  bool hasMenu( void ) const
+  virtual bool hasMenu( void ) const
   { return menu_; }
   
   //! retrieve popup menu
-  QMenu& menu( void )
+  virtual QMenu& menu( void )
   {  
     if( !hasMenu() ) menu_ = new QMenu( this );
     return *menu_;
   }
-  
+    
   //! set column name
-  void setColumnName( const int& column, const std::string& name );
+  virtual void setColumnName( const int& column, const std::string& name );
+  
+  //! enumeration for column type (for sorting)
+  enum ColumnType {
+  
+    //! used to tell if a column should be considered as a string for sorting
+    STRING,
+    
+    //! used to tell if a column should be considered as a number for sorting
+    NUMBER 
+    
+  };
+  
+  //! column type
+  virtual void setColumnType( const int& column, const ColumnType& type )
+  { 
+    if( column_types_.size() <= column ) column_types_.resize( column+1, STRING );
+    column_types_[column] = type; 
+  }
+  
+  //! column type
+  virtual ColumnType columnType( const int& column ) const
+  { return (column < column_types_.size() ) ? column_types_[column]:STRING; }
+  
+  //! column type
+  virtual void clearColumnTypes( void )
+  { column_types_.clear(); }
   
   //! add context menu action
-  QAction& addMenuAction( const std::string& name, const bool& need_selection = false )
+  virtual QAction& addMenuAction( const std::string& name, const bool& need_selection = false )
   {
     QAction* out = menu().addAction( name.c_str() );
-    if( need_selection ) selection_actions_.insert( out );
+    if( need_selection ) selection_actions_.push_back( out );
     return *out;
   }
   
   //! add context menu action
-  QAction& addMenuAction( const std::string& name, QObject* reciever, const std::string& slot,  const bool& need_selection = false )
+  virtual QAction& addMenuAction( const std::string& name, QObject* reciever, const std::string& slot,  const bool& need_selection = false )
   {
     QAction& out( addMenuAction( name, need_selection ) );
     connect( &out, SIGNAL( triggered() ), reciever, slot.c_str() );
     return out;
   }
+  
+  //! clear "selected" actions
+  void clearSelectedActions( void )
+  { selection_actions_.clear(); }
      
   //! return column visibility bitset. Is 1 for shown columns, 0 for hidden
-  unsigned int mask( void );
+  virtual unsigned int mask( void );
   
   //! show/hide columns according to mask bitset. 1 is for shown columns, 0 for hidden
-  void setMask( const unsigned int& mask );
+  virtual void setMask( const unsigned int& mask );
   
   //! delete items and all subitems recursively
   static void deleteItemRecursive( QTreeWidgetItem* item );
@@ -130,15 +163,45 @@ class CustomListView: public QTreeWidget, public Counter
     return out;
   }
 
+  //! list view items to implement sorting based on column type
+  class Item: public QTreeWidgetItem, public Counter
+  {
+    
+    public:
+    
+    //! constructor
+    Item( CustomListView* parent ):
+      QTreeWidgetItem( parent ),
+      Counter( "CustomListView::Item" )
+    {}
+    
+    //! constructor
+    Item( const Item& item ):
+      QTreeWidgetItem( item ),
+      Counter( "CustomListView::Item" )
+    {}
+    
+    //! destructor
+    virtual ~Item( void )
+    {}
+    
+    //! order operator
+    virtual bool operator<( const QTreeWidgetItem &other ) const;
+    
+  };
+  
   public slots:
   
+  //! sort items (based on current column )
+  virtual void sort( void );
+  
   //! update alternate item color
-  void updateItemColor( void );
+  virtual void updateItemColor( void );
   
   protected:
   
   //! mouse button press event handler. Pops up attached menu.
-  void mousePressEvent( QMouseEvent *e );
+  virtual void mousePressEvent( QMouseEvent *e );
           
   private:
 
@@ -148,9 +211,12 @@ class CustomListView: public QTreeWidget, public Counter
   //! column mask
   /*! gets reinitialized anytime GetMask is called */
   unsigned int mask_;    
+
+  //! column types
+  std::vector<ColumnType> column_types_;
    
   //! actions that are enabled/disabled depending on selection
-  std::set<QAction*> selection_actions_;
+  std::vector<QAction*> selection_actions_;
 
 };
 

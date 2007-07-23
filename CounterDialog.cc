@@ -72,10 +72,10 @@ void CounterDialog::Update( void )
   for( Counter::CounterMap::const_iterator it=counters.begin(); it != counters.end(); it++ )
   {
     
-    std::map<string, QTreeWidgetItem* >::iterator item_it( items_.find( it->first ) );
-    QTreeWidgetItem *item( 0 );
+    std::map<string, CustomListView::Item* >::iterator item_it( items_.find( it->first ) );
+    CustomListView::Item *item( 0 );
     if( item_it == items_.end() ) {
-      item = new QTreeWidgetItem( counter_list_ );
+      item = new CustomListView::Item( counter_list_ );
       items_.insert( make_pair( it->first, item ) );
     } else item = item_it->second;
     

@@ -90,7 +90,7 @@ void IconBrowsedButton::setIconFile( const std::string& file, const bool& check 
   }
   
   if( no_icon_pixmap_.isNull() ) {
-    no_icon_pixmap_ = CustomPixmap::empty( QSize( icon_size_, icon_size_ ) );
+    no_icon_pixmap_ = CustomPixmap().empty( QSize( icon_size_, icon_size_ ) );
     setIcon( no_icon_pixmap_ );
   }
       

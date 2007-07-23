@@ -53,4 +53,7 @@ CounterList::CounterList( QWidget* parent ):
   for( unsigned int i=0; i<n_columns; i++ ) 
   { setColumnName( i, column_titles_[i] ); }
 
+  // assign column type
+  setColumnType( COUNT, NUMBER );
+  
 };        

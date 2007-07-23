@@ -150,7 +150,7 @@ CustomPixmap CustomPixmap::scale( const unsigned int& width, const unsigned int&
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color, const bool& transparent )
+CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color, const bool& transparent ) const
 {
   
   Debug::Throw( "CustomPixmap::empty.\n" );
@@ -165,4 +165,35 @@ CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color, const 
   
   return out;
 
+}
+
+//_________________________________________________
+CustomPixmap CustomPixmap::disabled( void )
+{
+  
+  Debug::Throw( "CustomPixmap::disabled.\n" );
+  QImage image( toImage() );
+  
+  // retrieve dimensions
+  int width( image.width() );
+  int height( image.height() );
+  
+  QColor merged_color;
+  for( int x = 0; x < width; x++ )
+  {
+    for( int y = 0; y < height; y++ ) 
+    {
+
+      QColor color( image.pixel( x, y ) );
+      int alpha( qAlpha( color.rgb() ) );
+      int gray( 128 + qGray( color.rgb() )/2 );
+      merged_color.setRgb( gray, gray, gray );
+      merged_color.setRgb( qRgba( merged_color.red(), merged_color.green(), merged_color.blue(), alpha ) );
+      
+      image.setPixel( x, y, merged_color.rgb() );
+    }
+  }
+
+  return CustomPixmap( image );
+  
 }

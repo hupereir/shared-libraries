@@ -21,6 +21,7 @@ noinst_HEADERS = \
 	CustomLineEdit.h \
 	CustomListBox.h \
 	CustomListView.h \
+  CustomMainWindow.h \
 	CustomPixmap.h \
 	CustomProcess.h \
 	CustomSlider.h \
@@ -30,6 +31,7 @@ noinst_HEADERS = \
 	ErrorHandler.h \
 	FontEdit.h \
 	IconBrowsedButton.h \
+	IconEngine.h \
   ListViewConfig.h \
 	OptionBrowsedLineEdit.h \
 	OptionCheckBox.h \
@@ -73,6 +75,7 @@ libbase_qt_a_SOURCES = \
   ErrorHandler.cc \
   FontEdit.cc \
   IconBrowsedButton.cc \
+	IconEngine.cc \
   ListViewConfig.cc \
   OptionListBox.cc \
   QtUtil.cc \
@@ -91,8 +94,10 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomLineEdit.cc \
   moc_CustomListBox.cc \
   moc_CustomListView.cc \
+  moc_CustomMainWindow.cc \
 	moc_CustomProcess.cc \
   moc_CustomSlider.cc \
+  moc_CustomToolButton.cc \
   moc_DebugMenu.cc \
 	moc_DockPanel.cc \
   moc_FontEdit.cc \

@@ -1,7 +1,8 @@
+#ifndef CustomDialog_h
+#define CustomDialog_h
+
 // $Id$
-#ifndef _CustomDialog_h_
-#define _CustomDialog_h_
- 
+
 /******************************************************************************
 *                         
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
@@ -66,7 +67,7 @@ class CustomDialog: public QDialog, public Counter
     CANCEL_BUTTON = 4 
   };
   
-  //! creator
+  //! constructor
   CustomDialog( 
     QWidget *parent, 
     const unsigned int& flags = EXCLUSIVE | OK_BUTTON | CANCEL_BUTTON, 

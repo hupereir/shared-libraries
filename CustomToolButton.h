@@ -45,7 +45,10 @@
   \brief customized tool button to display tooltip in a dedicated label
 */
 class CustomToolButton: public QToolButton, public Counter
-{  
+{ 
+  
+  Q_OBJECT
+  
   public:
   
   //! default creator
@@ -58,7 +61,7 @@ class CustomToolButton: public QToolButton, public Counter
   //! creator with icon filename, tooltip and destination label
   CustomToolButton( 
     QWidget* parent,   
-    const QPixmap& pixmap,
+    QIcon icon,
     const std::string& tooltip = "",
     QLabel* label = 0 );
    
@@ -69,6 +72,11 @@ class CustomToolButton: public QToolButton, public Counter
   //! set destination label
   void SetToolTipLabel( QLabel* tooltip_label )
   { tooltip_label_ = tooltip_label; }
+  
+  protected slots:
+  
+  //! tool button configuration
+  void _updateConfiguration( void );
   
   protected:
       

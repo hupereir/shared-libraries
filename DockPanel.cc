@@ -47,32 +47,37 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
 {
   Debug::Throw( "DockPanel::DockPanel.\n" );
   
-  QVBoxLayout *layout = new QVBoxLayout();
-  setLayout( layout );
+  // this layout
+  setLayout( new QVBoxLayout() );
+  layout()->setMargin(0);
+  layout()->setSpacing(2);
   
   // main widget
   Debug::Throw( "DocPanel::DockPanel - main_.\n" );
   main_ = new QFrame( this );
   main_->setFrameStyle( QFrame::NoFrame );
-  layout->addWidget( main_ );
+  layout()->addWidget( main_ );
   
   // vertical layout for children
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
   main_layout_ = new QVBoxLayout();
-  main_layout_->setMargin( 5 );
-  main_layout_->setSpacing( 5 );
+  main_layout_->setMargin( 0 );
+  main_layout_->setSpacing( 2 );
   main_->setLayout( main_layout_ );
   
   // vertical box
   Debug::Throw( "DocPanel::DockPanel - box.\n" );
   box_ = new QWidget( main_ );
   box_->setLayout( new QVBoxLayout() );
+  box_->layout()->setMargin(0);
+  box_->layout()->setSpacing(2);
   
   main_layout_->addWidget( box_ );
   
   // insert hbox layout for buttons
   Debug::Throw( "DocPanel::DockPanel - button_layout_.\n" );
-  button_layout_ = new QHBoxLayout();  
+  button_layout_ = new QHBoxLayout();
+  button_layout_->setMargin(0);
   button_layout_->setSpacing( 5 );
   main_layout_->addLayout( button_layout_ );
   

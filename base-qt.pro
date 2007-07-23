@@ -2,7 +2,7 @@ TEMPLATE = lib
 CONFIG = staticlib
 
 INCLUDEPATH += ../base
-DEPENDPATH += . ../base ../base-qt
+DEPENDPATH += . ../base
 
 HEADERS = \
   BrowsedLineEdit.h \

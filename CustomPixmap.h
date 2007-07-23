@@ -50,8 +50,12 @@ class CustomPixmap: public QPixmap, public Counter
     QPixmap( pixmap ),
     Counter( "CustomPixmap" )
   {}
-      
-          
+  
+  //! constructor
+  CustomPixmap( const QImage& image ):
+    Counter( "CustomPixmap" )
+  { fromImage( image ); }
+                
   //! constructor
   CustomPixmap( const std::string& file = "" ):
     QPixmap( file.c_str() ),
@@ -90,11 +94,14 @@ class CustomPixmap: public QPixmap, public Counter
   virtual CustomPixmap merge( const QPixmap& ) const;
   
   //! returns an empty pixmap of given size, of given color and possibly transparent
-  static CustomPixmap empty( 
+  virtual CustomPixmap empty( 
     const QSize& size, 
     const QColor& color = Qt::black, 
-    const bool& transparent = true );
-    
+    const bool& transparent = true ) const;
+  
+  //! return greyed (inactive) pixmap, build from the current
+  virtual CustomPixmap disabled( void );
+  
 };
 
 #endif

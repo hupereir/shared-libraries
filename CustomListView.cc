@@ -157,7 +157,7 @@ void CustomListView::mousePressEvent( QMouseEvent *event )
     
   // enable/disable
   bool has_selection( !QTreeWidget::selectedItems().empty() );
-  for( set<QAction*>::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
+  for( vector<QAction*>::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
   { (*iter)->setEnabled( has_selection ); }
   
   // move and show menu
@@ -170,6 +170,8 @@ void CustomListView::mousePressEvent( QMouseEvent *event )
 //___________________________________
 QList< QTreeWidgetItem* > CustomListView::items( void )
 {
+  
+  Debug::Throw( "CustomListView::items.\n" );
   
   QList<QTreeWidgetItem* > out;
   for( int i = 0; i<topLevelItemCount(); i++ )
@@ -188,9 +190,59 @@ QList< QTreeWidgetItem* > CustomListView::items( void )
   return out;
 }
 
+//___________________________________
+bool CustomListView::Item::operator < (const QTreeWidgetItem& item ) const
+{
+
+  // cast parent to custom list view
+  const CustomListView* parent( dynamic_cast<const CustomListView*>( treeWidget() ) );
+  if( !parent ) return QTreeWidgetItem::operator < (item);
+  
+  // retrieve column type
+  int column( parent->sortColumn() );
+  CustomListView::ColumnType column_type( parent->columnType( column ) );
+  
+  switch( column_type )
+  {
+    
+    case STRING:
+    return text( column ) < item.text( column );
+    break;
+  
+    case NUMBER:
+    return Str( qPrintable( text( column ) ) ).get<double>() < Str( qPrintable( item.text( column ) ) ).get<double>();
+    break;
+  
+    default:
+    throw runtime_error( DESCRIPTION( "unsupported column type" ) );
+    break;
+    
+  }
+  
+  // useless
+  return QTreeWidgetItem::operator < (item);
+  
+}
+
+//_____________________________________________________________________
+void CustomListView::sort( void )
+{
+  Debug::Throw( "CustomListView::sort.\n" );
+  if( !isSortingEnabled() ) return;
+
+  setUpdatesEnabled( false );
+  sortByColumn( sortColumn() );
+  sortByColumn( sortColumn() );
+  setUpdatesEnabled( true );
+  repaint();
+  
+}
+
 //_____________________________________________________________________
 void CustomListView::updateItemColor( void )
 {
+  Debug::Throw( "CustomListView::updateItemColor.\n" );
+  
   if( !XmlOptions::get().find( "ITEM_COLOR" ) )
   {
     setAlternatingRowColors( false ); 
