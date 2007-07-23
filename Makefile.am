@@ -33,6 +33,7 @@ noinst_HEADERS = \
 	IconBrowsedButton.h \
 	IconEngine.h \
   ListViewConfig.h \
+  OpenPreviousMenu.h \
 	OptionBrowsedLineEdit.h \
 	OptionCheckBox.h \
 	OptionColorDisplay.h \
@@ -47,6 +48,7 @@ noinst_HEADERS = \
 	OptionWidget.h \
 	QtUtil.h \
 	StateFrame.h \
+  ValidFileThread.h \
 	XmlError.h \
 	XmlFileList.h \
 	XmlFileRecord.h \
@@ -79,9 +81,11 @@ libbase_qt_a_SOURCES = \
   IconBrowsedButton.cc \
 	IconEngine.cc \
   ListViewConfig.cc \
+  OpenPreviousMenu.cc \
   OptionListBox.cc \
   QtUtil.cc \
   StateFrame.cc \
+  ValidFileThread.cc \
 	XmlFileList.cc \
 	XmlFileRecord.cc \
   XmlOption.cc \
@@ -107,6 +111,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_FontEdit.cc \
   moc_IconBrowsedButton.cc \
   moc_ListViewConfig.cc \
+  moc_OpenPreviousMenu.cc \
   moc_OptionListBox.cc \
   moc_StateFrame.cc
 

@@ -44,6 +44,10 @@ class XmlFileList: public FileList
 
   public:
 
+  //! constuctor
+  XmlFileList( void )
+  {}
+  
   //! constructor
   XmlFileList( const FileList& file_list ):
     FileList( file_list )
