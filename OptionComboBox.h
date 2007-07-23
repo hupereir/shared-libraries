@@ -49,12 +49,22 @@ class OptionComboBox: public QComboBox, public OptionWidget
   {}
   
   //! read value from option
-  void Read( void )
-  { setCurrentText( Options::GetRaw( OptionName() ).c_str() ); }
+  void read( void )
+  { 
+    std::string value( XmlOptions::get().raw( optionName() ) );
+    int found( findText( value.c_str() ) );
+    if( found < 0 ) 
+    {
+      addItem( value.c_str() );
+      found = findText( value.c_str() );  
+    }
+    
+    setCurrentIndex( found );
+  }
   
   //! write value to option
-  void Write( void ) const
-  { Options::SetRaw( OptionName(), (const char*) currentText() ); }
+  void write( void ) const
+  { XmlOptions::get().setRaw( optionName(), qPrintable( currentText() ) ); }
         
 };
 #endif

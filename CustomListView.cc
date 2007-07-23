@@ -44,6 +44,11 @@ CustomListView::CustomListView( QWidget* parent ):
   menu_( 0 )
 {
   Debug::Throw( "CustomListView::CustomListView" );   
+
+  // default configuration
+  setRootIsDecorated( false );
+  setSortingEnabled( true );
+
   updateItemColor();
   
   connect( qApp, SIGNAL( configurationChanged() ), this, SLOT( updateItemColor() ) );
@@ -75,17 +80,14 @@ unsigned int CustomListView::mask( void )
 //______________________________________________________
 void CustomListView::setMask( const unsigned int& mask )
 {
-  bool modified( false );
   for( int index=0; index < columnCount(); index++ )
   {
     // see if there is a change between new and old mask
     if( mask_ & mask & (1<<index) ) continue;
-    bool visible( mask & (1<<index) );
     setColumnHidden( index, !(mask & (1<<index) ) );
-  }
-  
-}
- 
+  }  
+}  
+
 //_______________________________________________________
 void CustomListView::deleteItemRecursive( QTreeWidgetItem* item )
 {

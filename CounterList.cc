@@ -43,9 +43,6 @@ CounterList::CounterList( QWidget* parent ):
 { 
   Debug::Throw( "CounterList::CounterList.\n" ); 
 
-  setRootIsDecorated( false );
-  setSortingEnabled( true );
-  
   // number of columns
   setColumnCount( n_columns );
   

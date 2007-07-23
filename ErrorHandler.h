@@ -53,15 +53,15 @@ class ErrorHandler
   static void Throw( QtMsgType type, const char* message );
   
   //! adds a disabled message in the list
-  static void DisableMessage( const std::string& message ) 
+  static void disableMessage( const std::string& message ) 
   { disabled_messages_.push_back( message ); }
   
   //! adds a disabled message in the list
-  static void ClearDisabledMessages( void ) 
+  static void clearDisabledMessages( void ) 
   { disabled_messages_.clear(); }
   
   //! adds a disabled message in the list
-  static void Exit( void ) 
+  static void exit( void ) 
   { }
   
   private:

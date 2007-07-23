@@ -75,11 +75,12 @@ ListViewConfig::ListViewConfig( QWidget *parent, QTreeWidget *target, const stri
   // size
   QCheckBox *checkbox;
   QGroupBox *box = new QGroupBox( title.c_str(), this );
+  layout->addWidget( box );
+
   QVBoxLayout* box_layout( new QVBoxLayout() );
   box_layout->setMargin(5);
   box_layout->setSpacing(2);
   box->setLayout( box_layout );
-  layout->addWidget( box );
     
   // retrieve columns
   for( int index=0; index < target_->columnCount(); index++ )
@@ -98,10 +99,13 @@ ListViewConfig::ListViewConfig( QWidget *parent, QTreeWidget *target, const stri
       column_name = what.str();
       
     }
-        
+    
+    Debug::Throw() << "ListViewConfig::ListViewConfig - column: " << column_name << endl;
+    
     // add checkbox
     checkbox = new QCheckBox( column_name.c_str(), box );
-    box_layout->addWidget( box );
+    box_layout->addWidget( checkbox );
+    
     checkbox->setChecked( !target_->isColumnHidden( index ) );
     checkbox_.push_back( checkbox );
     
@@ -140,6 +144,10 @@ ListViewConfig::ListViewConfig( QWidget *parent, QTreeWidget *target, const stri
     button_layout->addWidget( button );
     
   }
+  
+  // add to parent layout if any
+  if( parent && parent->layout() ) parent->layout()->addWidget( this );
+  
 } 
 
 //____________________________________________________________________________

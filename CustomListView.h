@@ -88,13 +88,17 @@ class CustomListView: public QTreeWidget, public Counter
   //! column type
   virtual void setColumnType( const int& column, const ColumnType& type )
   { 
-    if( column_types_.size() <= column ) column_types_.resize( column+1, STRING );
+    Exception::assert( column >=0, DESCRIPTION( "invalid column" ) );
+    if( static_cast<int>(column_types_.size()) <= column ) column_types_.resize( column+1, STRING );
     column_types_[column] = type; 
   }
   
   //! column type
   virtual ColumnType columnType( const int& column ) const
-  { return (column < column_types_.size() ) ? column_types_[column]:STRING; }
+  { 
+    Exception::assert( column >=0, DESCRIPTION( "invalid column" ) );
+    return ( column < static_cast<int>(column_types_.size()) ) ? column_types_[column]:STRING; 
+  }
   
   //! column type
   virtual void clearColumnTypes( void )
@@ -176,7 +180,7 @@ class CustomListView: public QTreeWidget, public Counter
     {}
     
     //! constructor
-    Item( const Item& item ):
+    Item( Item* item ):
       QTreeWidgetItem( item ),
       Counter( "CustomListView::Item" )
     {}
