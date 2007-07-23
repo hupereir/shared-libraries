@@ -92,15 +92,7 @@ class TimeStamp:public Counter
   //! inferior to operator
   virtual bool operator == (const TimeStamp& stamp ) const
   { return( time_ == stamp.time_ ); }  
-  
-  //! full comparison. Returns -1 if lower, 0 if equal and +1 if bigger
-  virtual int compare( const TimeStamp& stamp ) const
-  { 
-    if( time_ == stamp.time_ ) return 0;
-    else if( time_ < stamp.time_ ) return -1;
-    return 1;
-  }
-  
+    
   //! used to have fast access to the IntOpt integer value
   virtual operator int (void) const 
   { return int( time_ ); }  
