@@ -48,6 +48,8 @@ noinst_HEADERS = \
 	QtUtil.h \
 	StateFrame.h \
 	XmlError.h \
+	XmlFileList.h \
+	XmlFileRecord.h \
 	XmlOption.h \
 	XmlOptions.h \
 	XmlTimeStamp.h
@@ -80,6 +82,8 @@ libbase_qt_a_SOURCES = \
   OptionListBox.cc \
   QtUtil.cc \
   StateFrame.cc \
+	XmlFileList.cc \
+	XmlFileRecord.cc \
   XmlOption.cc \
   XmlOptions.cc \
   XmlTimeStamp.cc     
