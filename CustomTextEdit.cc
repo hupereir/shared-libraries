@@ -36,6 +36,7 @@
 
 #include "CustomTextEdit.h"
 #include "SelectLineDialog.h"
+#include "TextSeparator.h"
 
 using namespace std;
 using namespace BASE;
@@ -68,6 +69,68 @@ void CustomTextEdit::enableShortCuts( const bool& value )
 }  
   
 //________________________________________________
+void CustomTextEdit::selectWord( void )
+{
+  Debug::Throw( "CustomTextEdit::selectWord.\n" );
+
+  // retrieve text cursor, block and text
+  QTextCursor cursor( textCursor() );
+  QTextBlock block( cursor.block() );
+  QString text( cursor.block().text() );
+  
+  // retrieve local cursor position in block
+  int local_position( cursor.position() - block.position() );
+  int begin = local_position;
+  int end = local_position;
+  
+  // need to remove RICH tags, if any
+  
+  // parse text
+  if( TextSeparator::get().base().find( text[begin] ) != TextSeparator::get().base().end() )
+  {
+    
+    // see if current character is in base separator list
+    while( begin > 0 &&  TextSeparator::get().base().find( text[begin-1] ) != TextSeparator::get().base().end() ) begin--;
+    while( end < text.size() && TextSeparator::get().base().find( text[end] ) != TextSeparator::get().base().end() ) end++;
+  
+  } else if( TextSeparator::get().extended().find( text[begin] ) != TextSeparator::get().extended().end() ) {
+    
+    // see if current character is in extended separator list
+    while( begin > 0 &&  TextSeparator::get().extended().find( text[begin-1] ) != TextSeparator::get().extended().end() ) begin--;
+    while( end < text.size() && TextSeparator::get().extended().find( text[end] ) != TextSeparator::get().extended().end() ) end++;
+
+  } else {
+    
+    // separator is in word
+    while( begin > 0 &&  TextSeparator::get().all().find( text[begin-1] ) == TextSeparator::get().all().end() ) begin--;
+    while( end < (int)text.size() && TextSeparator::get().all().find( text[end] ) == TextSeparator::get().all().end() ) end++;
+    
+  }
+  
+  // move cursor to begin of selection
+  for( ;begin < local_position; local_position-- ) { cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor ); }
+  for( ;local_position < end; local_position++ ) { cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor ); }
+  setTextCursor( cursor );
+
+  return;
+  
+}
+  
+
+//________________________________________________
+void CustomTextEdit::selectLine( void )
+{
+  Debug::Throw( "CustomTextEdit::selectLine.\n" );
+  
+  QTextCursor cursor( textCursor() );
+  cursor.select( QTextCursor::BlockUnderCursor );
+  setTextCursor( cursor );
+
+  return;
+
+}
+
+//________________________________________________
 void CustomTextEdit::upperCase( void )
 {
   Debug::Throw( "CustomTextEdit::upperCase.\n" );
@@ -80,6 +143,7 @@ void CustomTextEdit::upperCase( void )
   // convert to upperCase
   // insert in place of selection
   cursor.insertText( cursor.selectedText().toUpper() );
+  return;
   
 }
 
@@ -96,6 +160,8 @@ void CustomTextEdit::lowerCase( void )
   // convert to upperCase
   // insert in place of selection
   cursor.insertText( cursor.selectedText().toLower() ); 
+  return;
+  
 }
 
 //________________________________________________
@@ -136,10 +202,84 @@ void CustomTextEdit::selectLine( int index )
 }
 
 //________________________________________________
+void CustomTextEdit::mousePressEvent( QMouseEvent* event )
+{
+ 
+  Debug::Throw( "CustomTextEdit::mousePressEvent.\n" );
+  
+  // check button
+  if( event->button() == LeftButton )
+  {
+    
+    // increment multiple clicks
+    QTextCursor cursor( textCursor() );
+    switch( click_counter_.increment( cursorForPosition( event->pos() ).position() ) )
+    {
+      
+      case 1:
+      QTextEdit::mousePressEvent( event );
+      break;
+      
+      case 2:
+      selectWord();
+      break;
+      
+      case 3:
+      selectLine();
+      break;
+      
+      case 4:
+      selectAll();
+      break;
+      
+      default:
+      event->ignore();
+      break;
+    }
+    
+  } else QTextEdit::mousePressEvent( event );
+  return;
+  
+}
+
+//________________________________________________
+void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
+{
+ 
+  Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
+  
+  // check button
+  if( event->button() == LeftButton && click_counter_.counts() > 1 ) 
+  { 
+    // when multiple-click is in progress
+    // do nothing because it can reset the selection
+    event->ignore();
+    return; 
+  }
+  
+  QTextEdit::mouseReleaseEvent( event );
+  return;
+  
+}
+  
+//________________________________________________
+void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
+{
+  
+  Debug::Throw( "CustomTextEdit::mouseDoubleClickEvent.\n" );
+  
+  // check button
+  if( event->button() == LeftButton ) mousePressEvent( event );
+  else QTextEdit::mouseDoubleClickEvent( event );
+  return;
+  
+}
+
+//________________________________________________
 void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
 {
   
-  Debug::Throw( "CustomTextEdit::contextMenuEvent.\n" );
+   Debug::Throw( "CustomTextEdit::contextMenuEvent.\n" );
   
   // retrieve flags
   bool editable( !isReadOnly() );

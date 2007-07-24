@@ -389,8 +389,9 @@ void HelpManager::save( void )
   Debug::Throw( "HelpManager::Save.\n" );
   if( file_.empty() ) return;
  
-  ofstream out( file_.c_str() );
-  if( !out ) return;
+  // output file
+  QFile out( file_.c_str() );
+  if( !out.open( QIODevice::WriteOnly ) ) return;
 
   // retrieve list of items
   QList<HelpList::Item*> items( dialog_->list().items<HelpList::Item>() );
@@ -403,7 +404,7 @@ void HelpManager::save( void )
   for( QList<HelpList::Item*>::iterator iter = items.begin(); iter != items.end(); iter++ )
   { top.appendChild( (*iter)->item().DomElement( document ) ); }
  
-  out << qPrintable( document.toString() );
+  out.write( document.toByteArray() );
   out.close();
   return; 
 }

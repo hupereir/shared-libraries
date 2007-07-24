@@ -112,9 +112,10 @@ bool XmlOptions::write( File file )
   }
 
   if( !file.size() ) return false;
-
-  ofstream out( file.c_str() );
-  if( !out ) return false;
+  
+  // output file
+  QFile out( file.c_str() );
+  if( !out.open( QIODevice::WriteOnly ) ) return false;
 
   // create document
   QDomDocument document;
@@ -148,7 +149,8 @@ bool XmlOptions::write( File file )
   if( iter->second.isRecordable() && iter->second.set() && iter->second.raw().size() )
   top.appendChild( XmlOption( iter->second ).domElement( document ) );
 
-  out << qPrintable( document.toString() );
+  out.write( document.toByteArray() );
+  out.close();
 
   return true;
 

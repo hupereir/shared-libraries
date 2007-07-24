@@ -50,26 +50,51 @@ class MultipleClickCounter: public QTimer, public Counter
   MultipleClickCounter( QObject* parent ):
     QTimer( parent ),
     Counter( "MultipleClickCounter" ),
+    to_reset_( true ),
+    position_( 0 ),
     count_( 0 )
   { 
     Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" ); 
     connect( this, SIGNAL( timeout() ), this, SLOT( _reset() ) );
     setSingleShot( true );
+    setInterval( QApplication::doubleClickInterval() );
   }
   
   //! destructor
   virtual ~MultipleClickCounter( void )
   { Debug::Throw( "MultipleClickCounter::~MultipleClickCounter.\n" ); }
   
-  //! increment counter
-  void increment( void )
+  //! increment counter and return current value
+  const unsigned int& increment( const int& position  = 0 )
   { 
-    count_++; 
-    if( count_ > MAX_COUNT ) count_ == 1;
-    if( count_ == 0 ) start( QApplication::doubleClickInterval() );
+    Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << std::endl;
+    
+    // restart timer
+    start();
+
+    // increment counts
+    if( position_ != position || to_reset_ )
+    {
+
+      // reset
+      to_reset_ = false;
+      position_ = position;
+      count_ = 1;
+      
+    } else {
+      
+      // same position in text
+      // increment, check against maximum
+      count_++; 
+      if( count_ > MAX_COUNT ) count_ = 1;
+      
+    } 
+    
+    return count_;
+    
   }
   
-  //! counter
+  //! returns current counts
   const unsigned int& counts( void ) const
   { return count_; }
   
@@ -77,12 +102,21 @@ class MultipleClickCounter: public QTimer, public Counter
   
   //! reset
   void _reset( void )
-  { count_ = 0; }
+  { 
+    Debug::Throw( "MultipleClickCounter::reset.\n" );
+    to_reset_ = true;
+  }
   
   private:
   
   //! max number of clicks
   enum {MAX_COUNT = 4};
+  
+  //! true if need to reset at next increment
+  bool to_reset_;
+  
+  //! last click position in text
+  int position_;
   
   //! current number of clicks
   unsigned int count_; 

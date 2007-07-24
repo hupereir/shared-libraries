@@ -53,6 +53,7 @@ noinst_HEADERS = \
 	QtUtil.h \
 	SelectLineDialog.h \
 	StateFrame.h \
+  TextSeparator.h \
   ValidFileThread.h \
 	XmlError.h \
 	XmlFileList.h \
@@ -94,6 +95,7 @@ libbase_qt_a_SOURCES = \
   QtUtil.cc \
 	SelectLineDialog.cc \
   StateFrame.cc \
+  TextSeparator.cc \
   ValidFileThread.cc \
 	XmlFileList.cc \
 	XmlFileRecord.cc \

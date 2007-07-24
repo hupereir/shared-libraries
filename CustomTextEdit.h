@@ -60,6 +60,12 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! enable/disable shortcuts
   void enableShortCuts( const bool& value );
   
+  //! select word under cursor
+  void selectWord( void );
+  
+  //! select line under cursor
+  void selectLine( void );
+  
   public slots:
  
   //! changes selection to uppercase
@@ -76,8 +82,27 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   protected:
   
-  //! context menu event
+  //!@name event handlers
+  //@{
+  
+  //! mouse release event [overloaded]
+  virtual void mousePressEvent( QMouseEvent* );
+  
+  //! mouse press event [overloaded]
+  virtual void mouseReleaseEvent( QMouseEvent* );
+  
+  //! mouse double click event [overloaded]
+  /*! 
+    for left button, double click events are handled 
+    essentially like single click events, because the number of clicks
+    is handled independently by the MultipleClickCounter object
+  */
+  virtual void mouseDoubleClickEvent( QMouseEvent* );
+  
+  //! context menu event [overloaded]
   virtual void contextMenuEvent( QContextMenuEvent* );
+  
+  //@}
   
   //!@name shortcuts management
   //@{

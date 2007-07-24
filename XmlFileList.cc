@@ -30,8 +30,6 @@
 */
 
 #include <QFile>
-#include <fstream>
-#include <sstream>
 
 #include "Debug.h"
 #include "XmlFileList.h"
@@ -113,10 +111,10 @@ bool XmlFileList::write( void )
 {
   Debug::Throw( "XmlFileList::Write.\n" );
   if( db_file_.empty() ) return false;
-
-  // check stream
-  ofstream out( db_file_.c_str() );
-  if( !out ) return false;
+  
+  // output file
+  QFile out( db_file_.c_str() );
+  if( !out.open( QIODevice::WriteOnly ) ) return false;
 
   // truncate list
   if( _maxSize() > 0 && int( _records().size() ) > _maxSize() )
@@ -132,8 +130,9 @@ bool XmlFileList::write( void )
   for( FileRecord::List::const_iterator iter = _records().begin(); iter != _records().end(); iter++ )
   { top.appendChild( XmlFileRecord( *iter ).domElement( document ) ); }
 
-  out << qPrintable( document.toString() );
+  out.write( document.toByteArray() );
   out.close();
+  
   return true;
 }
 
@@ -146,12 +145,15 @@ bool XmlFileList::_deprecatedRead( void )
   if( db_file_.empty() || !db_file_.exist() ) return false; 
   
   // open stream
-  ifstream in( db_file_.c_str() );
-  if( !in ) return false;
-    
-  char line[ 256 ];
-  while( in.getline( line, 256, '\n' ) ) 
-  { add( File(line) ); }
+  QFile in( db_file_.c_str() );
+  if( !in.open( QIODevice::ReadOnly ) ) return false;
+      
+  while( in.canReadLine() ) 
+  { 
+    QString line( in.readLine( 1024 ) );
+    add( File(qPrintable( line ) ) ); 
+  }
+  
   in.close();
   return true;
 }
