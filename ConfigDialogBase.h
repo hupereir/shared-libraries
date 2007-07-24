@@ -32,6 +32,7 @@
 #define _ConfigDialogBase_h_
 
 #include <QPushButton>
+#include <QStackedWidget>
 #include <list>
 
 #include "CustomDialog.h"
@@ -53,11 +54,11 @@ class ConfigList: public CustomListBox
   {};
 
   //! display target widget
-  void setTarget( QWidget* target )
+  void setTarget( QStackedWidget* target )
   { target_ = target; }
 
   //! display target widget
-  QWidget& target( void )
+  QStackedWidget& target( void )
   { return *target_; }
 
   //! list box item
@@ -67,6 +68,10 @@ class ConfigList: public CustomListBox
 
     //! constructor
     Item( ConfigList* parent, const std::string& title, const bool& expand = false  );
+
+    //! retrieve group box
+    QWidget& main( void )
+    { return *main_; }
 
     //! retrieve group box
     QWidget& box( void )
@@ -79,20 +84,6 @@ class ConfigList: public CustomListBox
     //! visibility
     const bool& visible( void ) const
     { return visible_; }
-    
-    //! show
-    void show( void )
-    { 
-      visible_ = true;
-      main_->show();
-    }
-
-    //! hide
-    void hide( void )
-    { 
-      visible_ = false;
-      main_->hide(); 
-    }
 
     private:
 
@@ -110,7 +101,7 @@ class ConfigList: public CustomListBox
   private:
 
   //! target display
-  QWidget *target_;
+  QStackedWidget *target_;
   
 };
 

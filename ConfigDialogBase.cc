@@ -63,12 +63,11 @@ ConfigList::Item::Item( ConfigList* parent, const string& title, const bool& exp
   
   //! create vbox
   if( expand ) {
-    main_ = box_ = new QWidget( &parent->target()  );
+    main_ = box_ = new QWidget();
     QVBoxLayout *layout( new QVBoxLayout() );
     layout->setSpacing(2);
     layout->setMargin(0);
     main_->setLayout( layout );
-    parent->target().layout()->addWidget( main_ );
   } else 
   {    
     main_ = new QWidget( &parent->target() );
@@ -76,8 +75,6 @@ ConfigList::Item::Item( ConfigList* parent, const string& title, const bool& exp
     layout->setSpacing(2);
     layout->setMargin(0);
     main_->setLayout( layout );
-
-    parent->target().layout()->addWidget( main_ );
 
     // insert box into main
     box_ = new QWidget( main_ );
@@ -91,8 +88,7 @@ ConfigList::Item::Item( ConfigList* parent, const string& title, const bool& exp
 
   }
   
-  // hide except if first
-  if( parent->QListWidget::count() > 1 ) hide();
+  parent->target().addWidget( main_ );
 
 }
 
@@ -107,30 +103,20 @@ ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
   Debug::Throw( "ConfigDialogBase::ConfigDialog.\n" );
   setWindowTitle( "Configuration" );
 
-  // default layout
-  QSplitter* splitter = new QSplitter( &mainWidget() );
+  // splitter  
+  QSplitter* splitter( new QSplitter( &mainWidget() ) );
   splitter->setChildrenCollapsible( false );
-  splitter->setOrientation( Qt::Horizontal );
   mainWidget().layout()->addWidget( splitter );
   
   // create list
   list_ = new ConfigList( splitter );
   
   // create right display panel
-  QWidget* right_display( new QWidget( splitter ) );
-  QVBoxLayout* right_layout( new QVBoxLayout() );
-  right_display->setLayout( right_layout );
-  
-  // set display panel as target to the list
+  QStackedWidget* right_display( new QStackedWidget( splitter ) );
   list_->setTarget( right_display );
 
   connect( list_, SIGNAL( itemSelectionChanged() ), this, SLOT( _display() ) );
-  
-  // set sizes
-  QList<int> sizes;
-  sizes << 1 << 2;
-  splitter->setSizes( sizes );
-  
+    
   // apply button
   apply_button_ = new QPushButton( "&Apply", this );
   QtUtil::fixSize( apply_button_ );
@@ -160,6 +146,7 @@ QWidget& ConfigDialogBase::addBox( const string& name, const bool& expand )
   Debug::Throw( "ConfigDialogBase::addBox.\n" );
   ConfigList::Item *item(new ConfigList::Item( list_, name, expand ));
   if( list().QListWidget::count() == 1 ) list().setItemSelected( item, true );
+  
   return item->box(); 
 }
 
@@ -290,10 +277,7 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
     "Note: the application may have to be restarted so that "
     "all changes \nare taken into account." );
   parent->layout()->addWidget( new QLabel( warning.c_str(), parent ) );
-  
-  // display this configuration
-  // _display();
-  
+    
 }
 
 //__________________________________________________
@@ -408,14 +392,9 @@ void ConfigDialogBase::_display(void)
   QList<ConfigList::Item*> items( list().selectedItems<ConfigList::Item>() );
   if( items.empty() ) return;
   ConfigList::Item* item( items.front() );
-  
-  // hide visible items from ConfigList
-  items = list().items<ConfigList::Item>();
-  for( QList<ConfigList::Item*>::iterator iter = items.begin(); iter != items.end(); iter++ )
-  { if( (*iter)->visible() && (*iter) != item ) (*iter)->hide(); }
-  
+    
   // show current item
-  item->show();
+  list().target().setCurrentWidget( &item->main() );
   
 }
 

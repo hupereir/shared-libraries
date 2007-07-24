@@ -67,7 +67,7 @@ class CustomTabWidget: public QFrame, public Counter
   };
       
   //! constructor
-  CustomTabWidget( QTabWidget* parent, const unsigned int& flags = STAYS_ON_TOP  );
+  CustomTabWidget( QTabWidget* parent, const unsigned int& flags = NONE  );
   
   //! dock panel flags
   void setFlags( const unsigned int& flags )
