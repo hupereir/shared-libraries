@@ -136,8 +136,8 @@ ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
   
   // close window shortcut
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), this, SLOT( close() ) );
-  
   resize( 530, 350 );
+
 }
 
 //__________________________________________________

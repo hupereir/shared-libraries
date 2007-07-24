@@ -31,6 +31,7 @@ noinst_HEADERS = \
 	DockPanel.h \
 	ErrorHandler.h \
 	FontEdit.h \
+	Help.h \
 	IconBrowsedButton.h \
 	IconEngine.h \
   ListViewConfig.h \
@@ -80,6 +81,7 @@ libbase_qt_a_SOURCES = \
 	DockPanel.cc \
   ErrorHandler.cc \
   FontEdit.cc \
+	Help.cc \
   IconBrowsedButton.cc \
 	IconEngine.cc \
   ListViewConfig.cc \
@@ -112,6 +114,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_DebugMenu.cc \
 	moc_DockPanel.cc \
   moc_FontEdit.cc \
+	moc_Help.cc \
   moc_IconBrowsedButton.cc \
   moc_ListViewConfig.cc \
   moc_OpenPreviousMenu.cc \
