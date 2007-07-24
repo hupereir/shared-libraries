@@ -37,13 +37,14 @@
 #include <QDomDocument>
 #include <QMainWindow>
 #include <QPushButton>
-#include <QTextEdit>
 #include <string>
 
 #include "Counter.h"
 #include "CustomListBox.h"
 #include "Debug.h"
 #include "File.h"
+
+class CustomTextEdit;
 
 //! help object for eLogbook
 class HelpItem : public Counter
@@ -186,7 +187,7 @@ class HelpDialog:public QMainWindow, public Counter
   HelpList *list_;
   
   //! associated text editor
-  QTextEdit *text_edit_;
+  CustomTextEdit *text_edit_;
   
   //! edition button
   QPushButton *edit_button_;

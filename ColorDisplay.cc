@@ -69,7 +69,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
 //_________________________________________________________
 void ColorDisplay::LocalLineEdit::setColor( const QColor& color )
 {
-  Debug::Throw( "ColorDisplay::LocalLineEdit::SetColor.\n" );
+  Debug::Throw( "ColorDisplay::LocalLineEdit::setColor.\n" );
   
   if( !color.isValid() ) {
     QtUtil::infoDialogExclusive( this, "invalid color" );
@@ -84,6 +84,7 @@ void ColorDisplay::LocalLineEdit::setColor( const QColor& color )
   // update
   setPalette(local_palette);
   setText( color.name() );
+  update();
   
 }
 

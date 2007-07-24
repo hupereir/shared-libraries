@@ -26,6 +26,7 @@ noinst_HEADERS = \
 	CustomProcess.h \
 	CustomSlider.h \
 	CustomTabWidget.h \
+	CustomTextEdit.h \
 	CustomToolButton.h \
 	DebugMenu.h \
 	DockPanel.h \
@@ -35,6 +36,7 @@ noinst_HEADERS = \
 	IconBrowsedButton.h \
 	IconEngine.h \
   ListViewConfig.h \
+  MultipleClickCounter.h \
   OpenPreviousMenu.h \
 	OptionBrowsedLineEdit.h \
 	OptionCheckBox.h \
@@ -49,6 +51,7 @@ noinst_HEADERS = \
 	OptionSpinBox.h \
 	OptionWidget.h \
 	QtUtil.h \
+	SelectLineDialog.h \
 	StateFrame.h \
   ValidFileThread.h \
 	XmlError.h \
@@ -75,6 +78,7 @@ libbase_qt_a_SOURCES = \
   CustomPixmap.cc \
 	CustomProcess.cc \
   CustomSlider.cc \
+	CustomTextEdit.cc \
 	CustomTabWidget.cc \
 	CustomToolButton.cc \
   DebugMenu.cc \
@@ -88,6 +92,7 @@ libbase_qt_a_SOURCES = \
   OpenPreviousMenu.cc \
   OptionListBox.cc \
   QtUtil.cc \
+	SelectLineDialog.cc \
   StateFrame.cc \
   ValidFileThread.cc \
 	XmlFileList.cc \
@@ -110,6 +115,7 @@ nodist_libbase_qt_a_SOURCES = \
 	moc_CustomProcess.cc \
   moc_CustomSlider.cc \
 	moc_CustomTabWidget.cc \
+	moc_CustomTextEdit.cc \
   moc_CustomToolButton.cc \
   moc_DebugMenu.cc \
 	moc_DockPanel.cc \
@@ -117,8 +123,10 @@ nodist_libbase_qt_a_SOURCES = \
 	moc_Help.cc \
   moc_IconBrowsedButton.cc \
   moc_ListViewConfig.cc \
+  moc_MultipleClickCounter.cc \
   moc_OpenPreviousMenu.cc \
   moc_OptionListBox.cc \
+  moc_SelectLineDialog.cc \
   moc_StateFrame.cc
 
 clean-local:

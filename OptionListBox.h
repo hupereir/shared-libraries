@@ -33,6 +33,7 @@
 */
 
 #include <QPushButton> 
+#include <QFileDialog> 
 
 #include <cmath>
 
@@ -63,6 +64,10 @@ class OptionListBox: public QWidget, public OptionWidget
   void setBrowsable( const bool& value )
   { browsable_ = value; }
 
+  //! set file dialog mode
+  void setMode( const QFileDialog::FileMode& mode )
+  { mode_ = mode; }
+  
   private slots:
 
   //! update buttons
@@ -84,7 +89,10 @@ class OptionListBox: public QWidget, public OptionWidget
 
   //! if true, use browsable line editor for Add
   bool browsable_;
-
+  
+  //! browsable dialog mode
+  QFileDialog::FileMode mode_;
+    
   //! value list
   CustomListBox* list_;
   

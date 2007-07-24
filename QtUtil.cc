@@ -41,10 +41,12 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 
+#include "CustomPixmap.h"
 #include "Debug.h"
 #include "Exception.h"
 #include "QtUtil.h"
 #include "Util.h"
+#include "XmlOptions.h"
 
 #ifdef Q_WS_X11
 #include <QX11Info>
@@ -69,10 +71,32 @@ void QtUtil::infoDialogExclusive(
   QVBoxLayout* layout=new QVBoxLayout();
   layout->setMargin(10);
   layout->setSpacing(10);
-  
   dialog.setLayout( layout );
+
+  //! try load Question icon
+  static CustomPixmap question_pixmap;
+  static bool first( true );
+  if( first )
+  {
+    first = false;
+    list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+    question_pixmap.find( "messagebox_warning.png", path_list );    
+  }
   
-  layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter );
+  // insert main vertical box
+  if( question_pixmap.isNull() )
+  { layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter ); }
+  else
+  {
+    
+    QHBoxLayout *h_layout( new QHBoxLayout() );
+    layout->addLayout( h_layout );
+    QLabel* label = new QLabel( &dialog );
+    label->setPixmap( question_pixmap );
+    h_layout->addWidget( label, 0, Qt::AlignHCenter );
+    h_layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter );
+    
+  }
     
   // insert OK and Cancel button
   QPushButton *button( new QPushButton( "OK", &dialog ) );
@@ -121,7 +145,30 @@ bool QtUtil::questionDialogExclusive(
   layout->setSpacing(10);
   dialog.setLayout( layout );
   
-  layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter );
+  //! try load Question icon
+  static CustomPixmap question_pixmap;
+  static bool first( true );
+  if( first )
+  {
+    first = false;
+    list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+    question_pixmap.find( "messagebox_warning.png", path_list );    
+  }
+  
+  // insert main vertical box
+  if( question_pixmap.isNull() )
+  { layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter ); }
+  else
+  {
+    
+    QHBoxLayout *h_layout( new QHBoxLayout() );
+    layout->addLayout( h_layout );
+    QLabel* label = new QLabel( &dialog );
+    label->setPixmap( question_pixmap );
+    h_layout->addWidget( label, 0, Qt::AlignHCenter );
+    h_layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter );
+    
+  }  
     
   // insert hbox layout for buttons
   QHBoxLayout *hbox_layout( new QHBoxLayout() );

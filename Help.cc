@@ -35,6 +35,7 @@
 #include <QShortcut>
 #include <QLayout>
 
+#include "CustomTextEdit.h"
 #include "Debug.h"
 #include "Help.h"
 #include "QtUtil.h"
@@ -124,7 +125,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   widget->layout()->setMargin(0);
 
   // add text editor
-  widget->layout()->addWidget( text_edit_ = new QTextEdit( widget ) );
+  widget->layout()->addWidget( text_edit_ = new CustomTextEdit( widget ) );
   text_edit_->setReadOnly( true );
   QFont font;
   font.fromString( XmlOptions::get().raw( "FONT_NAME" ).c_str() );
@@ -373,7 +374,7 @@ void HelpManager::dumpHelpString( void )
   out << "  0\n";
   out << "};\n";
   
-  QTextEdit *text_edit = new QTextEdit( 0 );
+  CustomTextEdit *text_edit = new CustomTextEdit( 0 );
   text_edit->setReadOnly( true );
   text_edit->setWordWrapMode( QTextOption::NoWrap );
   text_edit->setPlainText( out.str().c_str() );

@@ -131,8 +131,8 @@ class DockPanel: public QWidget, public Counter
     //! constructor
     LocalWidget( DockPanel* parent ):
       QWidget( parent ),
-      panel_( parent ),
-      Counter( "DockPanel::LocalWidget" )
+      Counter( "DockPanel::LocalWidget" ),
+      panel_( parent )
     {}
     
     protected:
