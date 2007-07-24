@@ -25,6 +25,7 @@ noinst_HEADERS = \
 	CustomPixmap.h \
 	CustomProcess.h \
 	CustomSlider.h \
+	CustomTabWidget.h \
 	CustomToolButton.h \
 	DebugMenu.h \
 	DockPanel.h \
@@ -73,6 +74,7 @@ libbase_qt_a_SOURCES = \
   CustomPixmap.cc \
 	CustomProcess.cc \
   CustomSlider.cc \
+	CustomTabWidget.cc \
 	CustomToolButton.cc \
   DebugMenu.cc \
 	DockPanel.cc \
@@ -105,6 +107,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomMainWindow.cc \
 	moc_CustomProcess.cc \
   moc_CustomSlider.cc \
+	moc_CustomTabWidget.cc \
   moc_CustomToolButton.cc \
   moc_DebugMenu.cc \
 	moc_DockPanel.cc \

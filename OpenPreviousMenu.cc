@@ -45,7 +45,7 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   valid_file_thread_( this )
 { 
   Debug::Throw( "OpenPreviousMenu::OpenPreviousMenu.\n" ); 
-  connect( this, SIGNAL( activated( int ) ), this, SLOT( _Open( int ) ) );
+  connect( this, SIGNAL( triggered( QAction* ) ), this, SLOT( _open( QAction* ) ) );
   connect( this, SIGNAL( aboutToShow() ), this, SLOT( _loadFiles() ) );
 }
 

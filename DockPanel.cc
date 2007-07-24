@@ -29,8 +29,6 @@
   \date $Date$
 */
 
-#include <qtooltip.h>
-#include <qframe.h>
 #include "DockPanel.h"
 #include "Debug.h"
 #include "File.h"
@@ -54,8 +52,7 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   
   // main widget
   Debug::Throw( "DocPanel::DockPanel - main_.\n" );
-  main_ = new QFrame( this );
-  main_->setFrameStyle( QFrame::NoFrame );
+  main_ = new LocalWidget( this );
   layout()->addWidget( main_ );
   
   // vertical layout for children

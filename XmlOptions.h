@@ -55,7 +55,11 @@ class XmlOptions
 
   //! write options to file
   static bool write( File file = File("") );
-    
+  
+  //! file
+  static const File& file()
+  { return file_; }
+  
   private:
   
   //! file name

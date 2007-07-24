@@ -55,7 +55,7 @@ class OptionBrowsedLineEdit: public BrowsedLineEdit, public OptionWidget
   
   //! write value to option
   void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), qPrintable( lineEditor().text() ) ); }
+  { XmlOptions::get().setRaw( optionName(), qPrintable( editor().text() ) ); }
         
 };
 #endif

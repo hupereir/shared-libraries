@@ -159,13 +159,13 @@ void OptionListBox::_add( void )
   what << "add value for option " << optionName();
   dialog.mainWidget().layout()->addWidget( new QLabel( what.str().c_str(), &dialog.mainWidget() ) );
 
-  // create lineEditor, either directly or from BrowsedLineEdit
+  // create editor, either directly or from BrowsedLineEdit
   CustomLineEdit* line_edit( 0 );
   if( browsable_ ) 
   {
     BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog.mainWidget() );
     dialog.mainWidget().layout()->addWidget( browse_edit );
-    line_edit = &browse_edit->lineEditor();
+    line_edit = &browse_edit->editor();
   } else {
     line_edit = new CustomLineEdit( &dialog.mainWidget() );
     dialog.mainWidget().layout()->addWidget( line_edit );
@@ -198,13 +198,13 @@ void OptionListBox::_edit( QListWidgetItem* )
   what << "Edit value for option " << optionName();
   dialog.mainWidget().layout()->addWidget( new QLabel( what.str().c_str(), &dialog.mainWidget() ) );
 
-  // create lineEditor, either directly or from BrowsedLineEdit
+  // create editor, either directly or from BrowsedLineEdit
   CustomLineEdit* line_edit( 0 );
   if( browsable_ ) 
   {
     BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog.mainWidget() );
     dialog.mainWidget().layout()->addWidget( browse_edit );
-    line_edit = &browse_edit->lineEditor();
+    line_edit = &browse_edit->editor();
   } else {
     line_edit = new CustomLineEdit( &dialog.mainWidget() );
     dialog.mainWidget().layout()->addWidget( line_edit );

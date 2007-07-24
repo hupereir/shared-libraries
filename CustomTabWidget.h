@@ -1,5 +1,5 @@
-#ifndef _DockPanel_h_
-#define _DockPanel_h_
+#ifndef _CustomTabWidget_h_
+#define _CustomTabWidget_h_
 
 // $Id$
 
@@ -25,8 +25,8 @@
 *******************************************************************************/
  
 /*!
-  \file DockPanel.h
-  \brief detachable generic panel
+  \file CustomTabWidget.h
+  \brief Tab widget with detachable pages
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -37,68 +37,62 @@
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
-
+#include <QTabWidget>
 #include <string>
 
 #include "Counter.h"
+#include "Debug.h"
+#include "Exception.h"
+  
+// forward declaration
+class CustomTabWidget;
 
-//! detachable generic panel
-class DockPanel: public QWidget, public Counter
+//! Tab Child container
+class CustomTabWidget: public QFrame, public Counter
 {
 
   //! Qt meta object declaration
   Q_OBJECT
   
   public:
-  
-  //! dock panel flags  
+       
+  //! child tab flags  
   enum Flags
   {
-    
     //! no flag
     NONE = 0,
         
     //! dock panel stays on top of other windows
     STAYS_ON_TOP = 1
-    
   };
       
   //! constructor
-  DockPanel( QWidget* parent, const unsigned int& flags = STAYS_ON_TOP );
-
-  //! destructor
-  virtual ~DockPanel()
-  {}
+  CustomTabWidget( QTabWidget* parent, const unsigned int& flags = STAYS_ON_TOP  );
   
   //! dock panel flags
   void setFlags( const unsigned int& flags )
   { flags_ = flags; }
   
-  //! get dock main widget
-  virtual QWidget& mainWidget( void )
-  {
-    Exception::checkPointer( main_, DESCRIPTION( "main_ not initialized" ) );
-    return *main_;
+  //! set tab title
+  void setTitle( const std::string& title )
+  { title_ = title; }
+  
+  //! title
+  const std::string& title( void ) const
+  { return title_; }
+  
+  //! get parent TabWidget
+  QTabWidget& parentTabWidget( void )
+  { 
+    Exception::checkPointer( parent_, DESCRIPTION( "parent_ not initialized" ) );
+    return *parent_; 
   }
   
-  //! get box (to add contents)
-  virtual QWidget& box( void )
+  //! get box
+  QWidget& box( void )
   { 
     Exception::checkPointer( box_, DESCRIPTION( "box_ not initialized" ) );
     return *box_;
-  }
-    
-  //! set detachable group box title
-  void setTitle( const std::string& title )
-  { 
-    if( !label_ ) {
-      label_ = new QLabel( main_ );
-      QFont font( label_->font() );
-      font.setBold( true );
-      label_->setFont( font );
-      main_layout_->insertWidget( 0, label_ );
-    }
-    label_->setText( title.c_str() );
   }
   
   //! retrieve button layout
@@ -107,7 +101,7 @@ class DockPanel: public QWidget, public Counter
     Exception::checkPointer( button_layout_, DESCRIPTION( "button_layout_ not initialized" ) );
     return *button_layout_;
   }
-          
+            
   signals:
   
   //! emmited when box is detached
@@ -116,68 +110,45 @@ class DockPanel: public QWidget, public Counter
   //! emmited when box is attached
   void attached( void );
   
+  protected:
+      
+  //! close event
+  virtual void closeEvent( QCloseEvent* event )
+  { 
+    if( !parent() ) _toggleDock(); 
+    event->ignore();
+  }
+  
   protected slots:
       
   //! toggle dock
   virtual void _toggleDock( void );
   
-  private:
-  
-  //! local widget to implement close_event of the content
-  class LocalWidget: public QWidget, public Counter
-  {
-    public:
-    
-    //! constructor
-    LocalWidget( DockPanel* parent ):
-      QWidget( parent ),
-      panel_( parent ),
-      Counter( "DockPanel::LocalWidget" )
-    {}
-    
-    protected:
-    
-    //! closeEvent
-    virtual void closeEvent( QCloseEvent* event )
-    {
-      Debug::Throw( "DockPanel::LocalWidget::closeEvent.\n" );
-      if( !parent() ) panel_->_toggleDock();
-      event->ignore();
-    }
-    
-    private:
-    
-    //! parent panel
-    DockPanel *panel_;
-    
-  };
+  private: 
   
   //! flags
   unsigned int flags_;
-    
-  //! vertical layout for main_ widget
+  
+  //! title
+  std::string title_; 
+  
+  //! parent CustomTabWidget
+  QTabWidget* parent_;
+          
+  //! vertical layout
   QVBoxLayout* main_layout_;
   
   //! horizontal layout (for buttons)
   QHBoxLayout* button_layout_;
       
-  //! title label
-  QLabel* label_;
+  //! contents vbox
+  QWidget* box_;
       
   //! button
   QPushButton* button_;
   
-  //! detachable main widget
-  QWidget* main_;
-    
-  //! contents vbox
-  QWidget* box_;
-  
   //! default size for the detached panel
   QSize detached_size_;
   
-  friend class LocalWidget;
-  
 };
-
 #endif

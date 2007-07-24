@@ -184,8 +184,7 @@ QList< QTreeWidgetItem* > CustomListView::items( void )
     out.push_back( item );
     
     // add children
-    for( int j=0; j<item->childCount(); j++ )
-    { out.push_back( item->child( i ) ); }
+    for( int j=0; j<item->childCount(); j++ ) out.push_back( item->child( j ) );
   
   }
   

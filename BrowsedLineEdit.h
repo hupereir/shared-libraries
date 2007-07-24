@@ -64,7 +64,7 @@ class BrowsedLineEdit: public QWidget, public Counter
   BrowsedLineEdit( QWidget* parent );
     
   //! retrieve line editor
-  CustomLineEdit& lineEditor( void ) const
+  CustomLineEdit& editor( void ) const
   { 
     Exception::checkPointer( line_edit_, DESCRIPTION( "line_edit_ not initialized" ) );
     return *line_edit_; 

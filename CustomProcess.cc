@@ -43,7 +43,6 @@ CustomProcess::CustomProcess( QObject* parent ):
 //____________________________________________________
 CustomProcess::~CustomProcess( void )
 { if( state() != QProcess::NotRunning ) kill(); }
-
 //____________________________________________________
 void CustomProcess::start( const string& arguments, OpenMode mode )
 {
@@ -58,13 +57,25 @@ void CustomProcess::start( const string& arguments, OpenMode mode )
     string arg;
     in >> arg;
     if( arg.empty() ) break;
-    if( program.isNull() ) program = arg.c_str();
-    else arg_list.push_back( arg.c_str() );  
+    arg_list.push_back( arg.c_str() );  
   }
       
-  if( program.isNull() ) return;
-  if( arg_list.empty() ) return QProcess::start( program, mode );
-  return QProcess::start( program, arg_list, mode );
+  return start( arg_list, mode );
+  
+}
+
+//____________________________________________________
+void CustomProcess::start( const QStringList& arguments, OpenMode mode )
+{
+  
+  Debug::Throw() << "CustomProcess::start - (qstringlist)" << endl;
+  if( arguments.empty() ) return;
+  
+  QString program( arguments.front() );
+  QStringList local_args( arguments );
+  local_args.pop_front();
+  if( local_args.empty() ) return QProcess::start( program, mode );
+  else return QProcess::start( program, local_args, mode );
   
 }
 
