@@ -71,7 +71,7 @@ list<File> FileList::files( void ) const
   return out;
 }
 //_______________________________________________
-File FileList::lastValidFile( void )
+FileRecord FileList::lastValidFile( void )
 {
 
   Debug::Throw( "FileList::lastValidFile.\n" );
@@ -86,8 +86,8 @@ File FileList::lastValidFile( void )
   }
   
   for( FileRecord::List::reverse_iterator iter = records_->rbegin(); iter != records_->rend(); iter++ ) 
-  { if( (!check_) || iter->isValid() ) return iter->file(); }
-  return File("");
+  { if( (!check_) || iter->isValid() ) return *iter; }
+  return FileRecord( File("") );
 
 }
 

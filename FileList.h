@@ -61,8 +61,8 @@ class FileList: public Counter
   { Debug::Throw( "FileList::~FileList.\n" ); }
 
   //! add file.
-  virtual void add( const File& file )
-  { _add( FileRecord( file ) ); }
+  virtual FileRecord& add( const File& file )
+  { return _add( FileRecord( file ) ); }
 
   //! remove file from database
   virtual void remove( const File& file );
@@ -86,7 +86,7 @@ class FileList: public Counter
   std::list< File > files( void ) const;
   
   //! get last valid file
-  virtual File lastValidFile( void );
+  virtual FileRecord lastValidFile( void );
 
   //! check_ flag
   virtual void setCheck( const bool& value )
@@ -104,11 +104,12 @@ class FileList: public Counter
 
   //! list of files records
   virtual const FileRecord::List& _records( void ) const
-  {
-    Exception::checkPointer( records_, DESCRIPTION( "invalid list" ) );
-    return *records_;
-  }
-  
+  { return *records_; }
+ 
+  //! list of files records
+  virtual FileRecord::List& _records( void )
+  { return *records_; }
+ 
   //! add record to current list
   virtual FileRecord& _add( const FileRecord& record );
 

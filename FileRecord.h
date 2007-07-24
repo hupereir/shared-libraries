@@ -61,7 +61,7 @@ class FileRecord: public Counter
   { return time_ < record.time_; }
 
   //! file
-  const std::string& file( void ) const
+  const File& file( void ) const
   { return file_; }
 
   //! file
