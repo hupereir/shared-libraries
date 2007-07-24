@@ -116,7 +116,6 @@ HelpDialog::HelpDialog( QWidget *parent ):
 
   // add help list
   list_ = new HelpList( splitter );
-  list_->setMinimumSize( QSize( 150, 450 ) );
 
   // hbox for help editor and buttons
   QWidget *widget = new QWidget( splitter );
@@ -127,11 +126,15 @@ HelpDialog::HelpDialog( QWidget *parent ):
   // add text editor
   widget->layout()->addWidget( text_edit_ = new QTextEdit( widget ) );
   text_edit_->setReadOnly( true );
-  text_edit_->setMinimumSize( QSize( 450, 450 ) );
   QFont font;
   font.fromString( XmlOptions::get().raw( "FONT_NAME" ).c_str() );
   text_edit_->setFont( font );
-
+  
+  QList<int> sizes;
+  sizes.push_back( 150 );
+  sizes.push_back( 400 );
+  splitter->setSizes( sizes );
+  
   // button layout
   QHBoxLayout* layout = new QHBoxLayout();
   widget->layout()->addItem( layout );
@@ -151,7 +154,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   // add close accelerator
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), this, SLOT( close() ) );
   connect( new QShortcut( CTRL+Key_S, this ), SIGNAL( activated() ), this, SLOT( _save() ) );
-  
+  resize( 550, 400 );
 }
 
 //_________________________________________________________

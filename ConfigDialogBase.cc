@@ -118,8 +118,8 @@ ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
   connect( list_, SIGNAL( itemSelectionChanged() ), this, SLOT( _display() ) );
   
   QList<int> sizes;
-  sizes.push_back( 100 );
-  sizes.push_back( 430 );
+  sizes.push_back( 150 );
+  sizes.push_back( 400 );
   splitter->setSizes( sizes );
   
   // apply button
@@ -141,7 +141,7 @@ ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
   
   // close window shortcut
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), this, SLOT( close() ) );
-  resize( 530, 350 );
+  resize( 550, 350 );
 
 }
 
