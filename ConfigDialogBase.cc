@@ -66,14 +66,14 @@ ConfigList::Item::Item( ConfigList* parent, const string& title, const bool& exp
     main_ = box_ = new QWidget();
     QVBoxLayout *layout( new QVBoxLayout() );
     layout->setSpacing(2);
-    layout->setMargin(0);
+    layout->setMargin(5);
     main_->setLayout( layout );
   } else 
   {    
     main_ = new QWidget( &parent->target() );
     QVBoxLayout *layout( new QVBoxLayout() );
     layout->setSpacing(2);
-    layout->setMargin(0);
+    layout->setMargin(5);
     main_->setLayout( layout );
 
     // insert box into main
@@ -116,7 +116,12 @@ ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
   list_->setTarget( right_display );
 
   connect( list_, SIGNAL( itemSelectionChanged() ), this, SLOT( _display() ) );
-    
+  
+  QList<int> sizes;
+  sizes.push_back( 100 );
+  sizes.push_back( 430 );
+  splitter->setSizes( sizes );
+  
   // apply button
   apply_button_ = new QPushButton( "&Apply", this );
   QtUtil::fixSize( apply_button_ );
