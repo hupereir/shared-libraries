@@ -14,6 +14,7 @@ noinst_HEADERS = \
   Option.h \
   Options.h \
   Str.h \
+  TextPosition.h \
   TimeStamp.h \
   Util.h \
   XmlUtil.h
