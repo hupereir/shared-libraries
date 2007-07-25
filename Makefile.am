@@ -56,6 +56,7 @@ noinst_HEADERS = \
 	ReplaceDialog.h \
 	SelectLineDialog.h \
 	StateFrame.h \
+  TextBlockData.h \
   TextSelection.h \
   TextSeparator.h \
   ValidFileThread.h \
@@ -97,6 +98,7 @@ libbase_qt_a_SOURCES = \
 	IconEngine.cc \
   ListViewConfig.cc \
   OpenPreviousMenu.cc \
+	OptionFontInfo.cc \
   OptionListBox.cc \
   QtUtil.cc \
 	ReplaceDialog.cc \

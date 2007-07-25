@@ -33,8 +33,7 @@
    \date $Date$
 */
 
-#include <qgrid.h>
-#include <qcheckbox.h>
+#include <QCheckBox>
 
 #include "OptionWidget.h"
 #include "Options.h"
@@ -43,7 +42,7 @@ class CustomListBox;
 class QListBoxItem;
 
 //! font formating options
-class OptionFontInfo: public QGrid, public OptionWidget
+class OptionFontInfo: public QWidget, public OptionWidget
 {
 
   public:
@@ -52,10 +51,10 @@ class OptionFontInfo: public QGrid, public OptionWidget
   OptionFontInfo( QWidget* parent, const std::string& option_name );
 
   //! read value from option
-  void Read( void );
+  void read( void );
 
   //! write value to option
-  void Write( void ) const;
+  void write( void ) const;
 
   private:
 

@@ -38,6 +38,7 @@
 #include "FindDialog.h"
 #include "ReplaceDialog.h"
 #include "SelectLineDialog.h"
+#include "TextBlockData.h"
 #include "TextSeparator.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
@@ -57,6 +58,8 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
   synchronize_( false ),
+  highlight_enabled_( true ),
+  highlight_available_( false ),
   click_counter_( this )
 {
   
@@ -67,6 +70,9 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   // signal to make sure selection is synchronized between clones
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
+  connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _highlightCurrentBlock() ) );
+  
+  connect( qApp, SIGNAL( configurationChanged() ), this, SLOT( updateConfiguration() ) );
 
 }
 
@@ -84,6 +90,18 @@ void CustomTextEdit::enableShortCuts( const bool& value )
   { (*iter)->setEnabled( value ); }
 }  
 
+//________________________________________________
+void CustomTextEdit::enableBlockHighlight( const bool& value )
+{ 
+  Debug::Throw() << "CustomTextEdit::enableBlockHighlight - value: " << (value ? "true":"false" ) << endl;
+  
+  highlight_enabled_ = value;
+  
+  if( highlight_enabled_ && highlight_available_ ) _highlightCurrentBlock(); 
+  else _clearHighlightedBlock();
+  
+}
+  
 //________________________________________________
 TextPosition CustomTextEdit::textPosition( void ) const
 {
@@ -206,6 +224,37 @@ void CustomTextEdit::showReplacements( const unsigned int& counts )
   
 }
 
+//________________________________________________
+void CustomTextEdit::updateConfiguration( void )
+{
+  
+  Debug::Throw( "CustomTextEdit::updateConfiguration.\n" );
+  QColor highlight_color;
+  
+  if( XmlOptions::get().find( "HIGHLIGHT_COLOR" ) )
+  { highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() ); }
+  
+  if( highlight_color.isValid() )
+  {
+    highlight_available_ = true;
+    
+    highlight_format_ = QTextBlockFormat();
+    highlight_format_.setBackground( highlight_color );
+    
+    default_format_ = QTextBlockFormat();
+    default_format_.setBackground( palette().color( QPalette::Base ) );
+    
+    if( highlight_enabled_ ) _highlightCurrentBlock();
+  } else {
+    
+    highlight_available_ = false;
+    _clearHighlightedBlock();
+    
+  }
+  
+  return;
+  
+}
 
 //________________________________________________
 void CustomTextEdit::upperCase( void )
@@ -404,7 +453,37 @@ void CustomTextEdit::removeLine()
   
 }
 
+//________________________________________________
+void CustomTextEdit::_highlightCurrentBlock( void )
+{
+  Debug::Throw( "CustomTextEdit::_highlightCurrentBlock.\n" );
+  
+  // check if highlight is available and enabled
+  if( !( highlight_enabled_ && highlight_available_ ) ) return;
 
+  // retrieve current block
+  QTextCursor cursor( textCursor().block() );
+  QTextBlock block( textCursor().block() );
+  
+  // try retrieve data, create if not found
+  TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
+  if( !data ) block.setUserData( data = new TextBlockData() );
+  
+  // check if current block is not already active
+  if( data->isCurrentBlock() ) return;
+  
+  // clear last highlighted block
+  _clearHighlightedBlock();
+  
+  // set block as active
+  data->setCurrentBlock( true );
+  cursor.joinPreviousEditBlock();
+  cursor.setBlockFormat( highlight_format_ );
+  cursor.endEditBlock();
+  
+  return;
+}
+  
 //________________________________________________
 void CustomTextEdit::_synchronizeSelection( void )
 {
@@ -753,6 +832,35 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, co
   }
     
   return found;
+  
+}
+
+//_____________________________________________________________
+void CustomTextEdit::_clearHighlightedBlock( void )
+{
+  Debug::Throw(0, "CustomTextEdit::_clearHighlightedBlock.\n" );
+  
+  // loop over all blocks
+  for( QTextBlock block = document()->begin(); block.isValid(); block = block.next() )
+  {
+    
+    // try retrieve data
+    // check if block is current
+    TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
+    if( !( data && data->isCurrentBlock() )  ) continue;
+    
+    // reset data
+    data->setCurrentBlock( false );
+    
+    // reset textBlockFormat
+    QTextCursor cursor( block );
+    cursor.joinPreviousEditBlock();
+    cursor.setBlockFormat( default_format_ );
+    cursor.endEditBlock();
+    
+  }
+  
+  return;
   
 }
 

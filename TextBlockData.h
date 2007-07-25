@@ -1,3 +1,6 @@
+#ifndef TextBlockData_h
+#define TextBlockData_h
+
 // $Id$
 
 /******************************************************************************
@@ -11,50 +14,57 @@
 *                          
 * This software is distributed in the hope that it will be useful, but WITHOUT 
 * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License        
 * for more details.                     
 *                          
 * You should have received a copy of the GNU General Public License along with 
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
+* Place, Suite 330, Boston, MA 02111-1307 USA                           
 *                         
 *                         
 *******************************************************************************/
-
-#ifndef OptionColorDisplay_h
-#define OptionColorDisplay_h
-
+ 
 /*!
-   \file    OptionColorDisplay.h
-   \brief   QColorDisplay associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
+  \file TextBlockData.h
+  \brief TextBlock data
+  \author Hugo Pereira
+  \version $Revision$
+  \date $Date$
+*/  
 
-#include "ColorDisplay.h"
-#include "OptionWidget.h"
-#include "XmlOptions.h"
+#include <QTextBlockUserData>
+#include "Counter.h"
 
-//! QColorDisplay associated to an option for configuration dialogs
-class OptionColorDisplay: public ColorDisplay, public OptionWidget
+//! TextBlock data
+class TextBlockData: public QTextBlockUserData, public Counter
 {
   
-  public:
+  public: 
   
   //! constructor
-  OptionColorDisplay( QWidget* parent, const std::string& option_name ):
-      ColorDisplay( parent ),
-      OptionWidget( option_name )
-  {}
+  TextBlockData():
+    QTextBlockUserData(),
+    Counter( "TextBlockData" ),
+    current_block_( false )
+  { Debug::Throw( "TextBlockData::~TextBlockData.\n" ); }
   
-  //! read value from option
-  void read( void )
-  { setColor( XmlOptions::get().get<std::string>( optionName() ).c_str() ); }
+  //! destructor
+  virtual ~TextBlockData( void )
+  { Debug::Throw( "TextBlockData::~TextBlockData.\n" ); }
   
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().set<std::string>( optionName(), qPrintable( color().name() ) ); }
-        
+  //! active block
+  const bool& isCurrentBlock( void ) const
+  { return current_block_; }
+  
+  //! active block
+  void setCurrentBlock( const bool& value )
+  { current_block_ = value; }
+  
+  private:
+  
+  //! set to true for current block
+  bool current_block_;
+  
 };
+
 #endif

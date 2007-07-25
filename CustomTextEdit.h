@@ -66,16 +66,19 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual ~CustomTextEdit( void );
     
   //! enable/disable shortcuts
-  void enableShortCuts( const bool& value );
+  virtual void enableShortCuts( const bool& );
+  
+  //! enable/disable highlight
+  virtual void enableBlockHighlight( const bool& );
   
   //! retrieve current text position
-  TextPosition textPosition() const;
+  virtual TextPosition textPosition() const;
   
   //! select word under cursor
-  void selectWord( void );
+  virtual void selectWord( void );
   
   //! select line under cursor
-  void selectLine( void );
+  virtual void selectLine( void );
    
   //! clone (and synchronize) text editor
   virtual void synchronize( CustomTextEdit& editor );
@@ -85,11 +88,11 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   { return synchronize_; }
   
   //! synchronization flag
-  void setSynchronize( const bool& value )
+  virtual void setSynchronize( const bool& value )
   { synchronize_ = value; }
   
   //! popup dialog with the number of replacement performed
-  void showReplacements( const unsigned int& counts );
+  virtual void showReplacements( const unsigned int& counts );
   
   signals:
   
@@ -98,12 +101,12 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! emmitted when selection could be found
   void matchFound( void );
-  
-  //! emit cursor position changed
-  void cursorPositionChanged( TextPosition );
-  
+    
   public slots:
  
+  //! update configuration
+  virtual void updateConfiguration( void );
+  
   //! changes selection to uppercase
   virtual void upperCase( void );
   
@@ -191,8 +194,11 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   protected slots:
   
+  //! highlight current block
+  virtual void _highlightCurrentBlock( void );
+  
   //! synchronize selection
-  void _synchronizeSelection( void );
+  virtual void _synchronizeSelection( void );
   
   protected:
   
@@ -266,8 +272,11 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
+  //! clear highlighted block
+  virtual void _clearHighlightedBlock( void );
+  
   //! toggle insertion mode
-  void _toggleInsertMode( void );
+  virtual void _toggleInsertMode( void );
 
   //!@name shortcuts management
   //@{
@@ -305,12 +314,29 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! synchronization flag
   bool synchronize_;
   
+  //!@name paragraph highlighting
+  //@{
+  
+  //! current block highlighting is enabled
+  bool highlight_enabled_;
+  
+  //! current block highlighting is available
+  bool highlight_available_;
+  
+  //! current block highlighting format
+  QTextBlockFormat highlight_format_;
+
+  //! default block format
+  QTextBlockFormat default_format_;
+  
+  //@}
+  
   //! multiple click counter
   MultipleClickCounter click_counter_;
   
   //! shortcuts
   std::vector<QShortcut*> shortcuts_;
-  
+    
 };
 
 #endif
