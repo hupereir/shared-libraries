@@ -1,0 +1,89 @@
+// $Id$
+
+/******************************************************************************
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
+*******************************************************************************/
+
+
+/*!
+   \file AutoSpellConfig.cc
+   \brief automatic spelling configuration
+   \version $Revision$
+   \date $Date$
+*/
+
+#include <QGridLayout>
+#include <QLabel>
+
+#include "AutoSpellConfig.h"
+#include "Debug.h"
+#include "OptionColorDisplay.h"
+#include "OptionSpinBox.h"
+#include "OptionFontInfo.h"
+
+using namespace std;
+
+//___________________________________________
+AutoSpellConfig::AutoSpellConfig( QWidget* parent ):
+  QGroupBox( "automatic spell check", parent ),
+  OptionWidget( "" ),
+  Counter( "AutoSpellConfig" )
+{
+  Debug::Throw( "AutoSpellConfig::AutoSpellConfig.\n" );
+  
+  QGridLayout* grid_layout( new QGridLayout() );
+  grid_layout->setSpacing( 2 );
+  grid_layout->setMargin( 5 );
+  setLayout( grid_layout );
+  
+  // suggestions
+  grid_layout->addWidget( new QLabel( "max number of suggestions: ", this ), 0, 0 );
+  grid_layout->addWidget( suggestions_ = new OptionSpinBox( this, "MAX_SUGGESTIONS" ), 0, 1 );
+  suggestions_->setMinimum( 0 );
+  suggestions_->setMaximum( 50 );
+  suggestions_->setToolTip( "maximum number of suggestions in suggestion menu.\n 0 means no limit." );
+
+  // options
+  grid_layout->addWidget( new QLabel( "highlight color: ", this ), 1, 0 );
+  grid_layout->addWidget( highlight_ = new OptionColorDisplay( this, "AUTOSPELL_COLOR" ), 1, 1 );
+  highlight_->setToolTip( "Highlight color for misspelled words" );
+
+  grid_layout->addWidget( new QLabel( "highlight font format: ", this ), 2, 0 );
+  grid_layout->addWidget( font_info_ = new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" ), 2, 1 );
+  font_info_->setToolTip( "Font format for misspelled words" );
+}
+
+//____________________________________________________________
+void AutoSpellConfig::read( void )
+{
+  Debug::Throw( "AutoSpellConfig::read.\n" );
+  suggestions_->read();
+  highlight_->read();
+  font_info_->read();
+}
+
+//_____________________________________________________________
+void AutoSpellConfig::write( void ) const
+{
+  Debug::Throw( "AutoSpellConfig::Write.\n" );
+  suggestions_->write();
+  highlight_->write();
+  font_info_->write();
+}
