@@ -103,9 +103,23 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
   grid_layout->addWidget( new QLabel( "Dictionary: ", this ), 0, 0 );
   grid_layout->addWidget( dict_combo_box_ = new QComboBox( this ), 0, 1 );
 
+  const set<string>& dictionaries( interface().dictionaries() );
+  for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
+  dict_combo_box_->addItem(iter->c_str() );
+  dict_combo_box_->setEditText( interface().dictionary().c_str() );
+
+  connect( dict_combo_box_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectDictionary( const QString& ) ) );
+
   // filter combobox
   grid_layout->addWidget( filter_label_ = new QLabel( "Filter: ", this ), 1, 0 );
   grid_layout->addWidget( filter_combo_box_ = new QComboBox( this ), 1, 1 );
+  
+  set<string> filters( interface().filters() );
+  for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
+  filter_combo_box_->addItem( iter->c_str() );
+  filter_combo_box_->setEditText( interface().filter().c_str() );
+
+  connect( filter_combo_box_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectFilter( const QString& ) ) );
 
   // right vbox
   v_layout = new QVBoxLayout();
@@ -162,21 +176,6 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
   QPalette palette( state_label_->palette() );
   palette.setColor( QPalette::WindowText, Qt::red );
   state_label_->setPalette( palette );
-  
-  // retrieve available dictionaries
-  const set<string>& dictionaries( interface().dictionaries() );
-  for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
-  dict_combo_box_->addItem(iter->c_str() );
-
-  connect( dict_combo_box_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectDictionary( const QString& ) ) );
-  dict_combo_box_->setEditText( interface().dictionary().c_str() );
-
-  // retrieve available filters
-  set<string> filters( interface().filters() );
-  for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
-  filter_combo_box_->addItem( iter->c_str() );
-  connect( filter_combo_box_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectFilter( const QString& ) ) );
-  filter_combo_box_->setEditText( interface().filter().c_str() );
 
   // set text
   // check Editor seletion
@@ -190,7 +189,7 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
   }
 
   // asign text
-  if( !interface().setText( qPrintable( editor().toPlainText().mid( index_begin, index_end ) ) ) )
+  if( !interface().setText( qPrintable( editor().toPlainText() ), index_begin, index_end ) )
   { QtUtil::infoDialogExclusive( this, interface().error() ); } 
 
   // set TextEditor as ReadOnly
@@ -199,10 +198,7 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
 
   // size
   resize( 450, 330 );
-  
-  // start
-  _restart();
-  
+    
 }
 
 //__________________________________________
@@ -220,6 +216,51 @@ void SpellDialog::showFilter( const bool& value )
     filter_label_->hide();
     filter_combo_box_->hide();
   }
+}
+
+//____________________________________________________
+void SpellDialog::setDictionary( const std::string& dictionary )
+{
+  Debug::Throw( "SpellDialog::setDictionary.\n" );
+
+  // find matching index
+  int index( dict_combo_box_->findText( dictionary.c_str() ) );
+  if( index < 0 ) 
+  {
+    ostringstream what;
+    what << "invalid dictionary: " << dictionary;
+    QtUtil::infoDialogExclusive( this, what.str() );
+    return;
+  }
+  
+  // select index
+  dict_combo_box_->setCurrentIndex( index );
+  
+  // update interface
+  _selectDictionary( dictionary.c_str() );
+  
+}
+
+//____________________________________________________
+void SpellDialog::setFilter( const std::string& filter )
+{
+  Debug::Throw( "SpellDialog::setFilter.\n" );
+  
+  // find matching index
+  int index( filter_combo_box_->findText( filter.c_str() ) );
+  if( index < 0 ) 
+  {
+    ostringstream what;
+    what << "invalid dictionary: " << filter;
+    QtUtil::infoDialogExclusive( this, what.str() );
+    return;
+  }
+  
+  // select index
+  filter_combo_box_->setCurrentIndex( index );
+  
+  // update interface
+  _selectFilter( filter.c_str() );
 }
 
 //____________________________________________________
@@ -248,10 +289,6 @@ void SpellDialog::_selectDictionary( const QString& dict )
     return;
   }
 
-  // update Options
-  XmlOptions::get().set<string>( "DICTIONARY", qPrintable( dict ) );
-  if( XmlOptions::file().size() ) XmlOptions::write();
-
   // restart
   _restart();
 
@@ -268,10 +305,6 @@ void SpellDialog::_selectFilter( const QString& filter )
     QtUtil::infoDialogExclusive( this, interface().error() );
     return;
   }
-
-  // update Options
-  XmlOptions::get().set<string>( "DICTIONARY_FILTER", qPrintable( filter ) );
-  if( XmlOptions::file().size() ) XmlOptions::write();
 
   // restart
   _restart();
@@ -339,7 +372,7 @@ void SpellDialog::_ignoreAll( void )
 
   Debug::Throw( "SpellDialog::_ignoreAll.\n" );
   string old_word( qPrintable( line_edit_->text() ) );
-  ignored_words_.insert( old_word );
+  interface().ignoreWord( old_word );
   _ignore();
 
 }
@@ -399,7 +432,7 @@ void SpellDialog::nextWord( void )
     Debug::Throw() << "SpellDialog::NextWord - word: " << word << endl;
     
     // see if word is in ignore list
-    if( ignored_words_.find( word ) != ignored_words_.end() ) continue;
+    if( interface().isWordIgnored( word ) ) continue;
 
     // see if word is in replace all list
     if( replaced_words_.find( word.c_str() ) != replaced_words_.end() )

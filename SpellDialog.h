@@ -80,13 +80,11 @@ namespace SPELLCHECK
       return *editor_; 
     }
     
-    //! list of ignored words
-    virtual const std::set<std::string>& ignoredWords( void ) const
-    { return ignored_words_; }
+    //! set dictionary
+    void setDictionary( const std::string& dict );
     
-    //! list of ignored words
-    virtual void setIgnoredWords( const std::set<std::string>& words )
-    { ignored_words_ = words; }
+    //! set filter
+    void setFilter( const std::string& filter );
     
     //! go to next word to be checked
     void nextWord( void );
@@ -180,9 +178,6 @@ namespace SPELLCHECK
     
     //! state frame for message
     QLabel* state_label_;
-    
-    //! list of ignore_all words
-    std::set< std::string > ignored_words_;
     
     //! list of automatic replace words
     std::map< QString, QString > replaced_words_;

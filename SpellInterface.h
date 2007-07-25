@@ -97,6 +97,33 @@ namespace SPELLCHECK
     
     //@}
     
+    //!@name ignored words
+    //@{
+    
+    //! add word to static list
+    void ignoreWord( const std::string& word )
+    { ignored_words_.insert( word ); }
+    
+    //! returns true if word is ignored
+    bool isWordIgnored( const std::string& word )
+    { return ignored_words_.find( word ) != ignored_words_.end(); }
+    
+    //! set list of ignored words
+    void setIgnoredWords( const std::set<std::string> words )
+    { ignored_words_ = words; }
+    
+    //! merge list of ignored words
+    void mergeIgnoredWords( const std::set<std::string> words )
+    { ignored_words_.insert( words.begin(), words.end() ); }
+    
+    //! clear ignored words
+    void clearIgnoredWords( void )
+    { ignored_words_.clear(); }
+    
+    //! get list of ignored words
+    const std::set< std::string > ignoredWords( void )
+    { return ignored_words_; }
+    
     //!@name text
     //@{
        
@@ -193,7 +220,7 @@ namespace SPELLCHECK
   
     //! list of registered interfaces
     static std::set<SpellInterface*> interfaces_;
-    
+     
     //! set of available dictionaries
     /*! loaded in constructor */
     std::set<std::string> dictionaries_;    
@@ -202,6 +229,9 @@ namespace SPELLCHECK
     /*! loaded in constructor */
     std::set<std::string> filters_; 
     
+    //! ignored words
+    std::set<std::string> ignored_words_;
+       
     //! original text to be checked
     std::string text_;
     

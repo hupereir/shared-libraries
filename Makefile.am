@@ -16,6 +16,7 @@ noinst_HEADERS = \
   SpellConfig.h \
   SpellDialog.h \
   SpellInterface.h \
+  SpellParser.h \
   Word.h
 
 
@@ -25,7 +26,8 @@ libspellcheck_a_SOURCES =  \
   AutoSpellConfig.cc \
   SpellConfig.cc \
   SpellDialog.cc \
-  SpellInterface.cc
+  SpellInterface.cc \
+  SpellParser.cc
 	
 nodist_libspellcheck_a_SOURCES = \
   moc_SpellDialog.cc

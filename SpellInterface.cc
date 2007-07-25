@@ -101,7 +101,7 @@ bool SpellInterface::resetDictionary( void )
 bool SpellInterface::setDictionary( const std::string& dictionary )
 {
 
-  Debug::Throw( "SpellDialog::setDictionary.\n" );
+  Debug::Throw( "SpellInterface::setDictionary.\n" );
   if( !spell_config_ )
   {
     error_ = "invalid aspell configuration";
