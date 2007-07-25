@@ -32,19 +32,19 @@
    \date    $Date$
 */
 
-#include <qcombobox.h>
+#include "CustomComboBox.h"
 #include "OptionWidget.h"
 #include "Options.h"
 
 //! QComboBox associated to an option for configuration dialogs
-class OptionComboBox: public QComboBox, public OptionWidget
+class OptionComboBox: public CustomComboBox, public OptionWidget
 {
   
   public:
   
   //! constructor
   OptionComboBox( QWidget* parent, const std::string& option_name ):
-      QComboBox( parent ),
+      CustomComboBox( parent ),
       OptionWidget( option_name )
   {}
   

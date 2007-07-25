@@ -31,8 +31,8 @@
 
 #include <QMenu>
 #include <QClipboard>
+#include <QScrollBar>
 #include <QTextBlock>
-#include <QTextDocument>
 
 #include "CustomTextEdit.h"
 #include "FindDialog.h"
@@ -40,6 +40,7 @@
 #include "SelectLineDialog.h"
 #include "TextSeparator.h"
 #include "QtUtil.h"
+#include "XmlOptions.h"
 
 using namespace std;
 using namespace BASE;
@@ -55,18 +56,24 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   find_dialog_( 0 ),
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
+  synchronize_( false ),
   click_counter_( this )
 {
   
-  Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" );
-  _installShortcuts();
+  Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" ); 
   
+  _installShortcuts(); 
+  
+  // signal to make sure selection is synchronized between clones
+  connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
+  connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
+
 }
 
 //________________________________________________
 CustomTextEdit::~CustomTextEdit( void )
 {
-  Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );
+  Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );  
 }
 
 //________________________________________________
@@ -76,7 +83,28 @@ void CustomTextEdit::enableShortCuts( const bool& value )
   for( std::vector<QShortcut*>::iterator iter = shortcuts_.begin(); iter != shortcuts_.end(); iter++ )
   { (*iter)->setEnabled( value ); }
 }  
+
+//________________________________________________
+TextPosition CustomTextEdit::textPosition( void ) const
+{
   
+  Debug::Throw( "CustomTextEdit::textPosition" );
+  QTextCursor cursor( textCursor() );
+  QTextBlock block( cursor.block() );
+  
+  // calculate index
+  int index = cursor.position() - block.position(); 
+  
+  // calculate paragraph
+  // this is a kludge, because there is no way to access it directly 
+  // for this version of Qt
+  int paragraph( 0 );
+  while( (block = block.previous()).isValid() ) paragraph++;
+  
+  return TextPosition( paragraph, index );
+  
+}
+
 //________________________________________________
 void CustomTextEdit::selectWord( void )
 {
@@ -139,6 +167,47 @@ void CustomTextEdit::selectLine( void )
 }
 
 //________________________________________________
+void CustomTextEdit::synchronize( CustomTextEdit& editor )
+{
+  Debug::Throw( "CustomTextEdit::clone.\n" );
+    
+  setDocument( editor.document() );
+  
+  editor.setSynchronize( true );
+  setSynchronize( true );
+    
+  // associate with this editor and associates
+  BASE::KeySet<CustomTextEdit> editors( editor );
+  editors.insert( &editor );
+  
+  // Key association
+  for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+  { BASE::Key::associate( *iter, this ); }
+  
+  // selection synchronization
+  _synchronizeSelection();
+
+  return;
+  
+}
+
+//__________________________________________________________________
+void CustomTextEdit::showReplacements( const unsigned int& counts )
+{
+  
+  Debug::Throw( "CustomTextEdit::showReplacements.\n" );
+  
+  ostringstream what;
+  if( !counts ) what << "string not found.";
+  else if( counts == 1 ) what << "1 replacement performed";
+  else what << counts << " replacements performed";
+  QtUtil::infoDialogExclusive( this, what.str() );
+  return;
+  
+}
+
+
+//________________________________________________
 void CustomTextEdit::upperCase( void )
 {
   Debug::Throw( "CustomTextEdit::upperCase.\n" );
@@ -179,13 +248,16 @@ void CustomTextEdit::findFromDialog( void )
 
   // create
   if( !find_dialog_ ) _createFindDialog();
- 
+   
+  if( textCursor().hasSelection() ) 
+  {
+    Debug::Throw() << "CustomTextEdit::findFromDialog - selection: " << qPrintable( textCursor().selectedText() ) << endl;
+    _findDialog().setText( textCursor().selectedText() );
+  } else if( !_lastSelection().text().isEmpty() ) _findDialog().setText( _lastSelection().text() );
+
   // set default string to find
   _findDialog().synchronize();
   _findDialog().clearLabel();
-  
-  if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
-  else if( !_lastSelection().text().isEmpty() ) _findDialog().setText( _lastSelection().text() );
 
   // enable/disable regexp
   _findDialog().enableRegExp( false );
@@ -206,14 +278,14 @@ void CustomTextEdit::replaceFromDialog( void )
   // create
   if( !replace_dialog_ ) _createReplaceDialog();
  
-  // set default string to find
-  _replaceDialog().synchronize();
-  _replaceDialog().clearLabel();
-  
   // update find text
   if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
   else if( !_lastSelection().text().isEmpty() ) _replaceDialog().setText( _lastSelection().text() );
-
+ 
+  // set default string to find
+  _replaceDialog().synchronize();
+  _replaceDialog().clearLabel();
+ 
   // update replace text
   if( !_lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( _lastSelection().replaceText() );
   
@@ -254,23 +326,29 @@ void CustomTextEdit::replace( TextSelection selection )
 }
 
 //______________________________________________________________________
-void CustomTextEdit::replaceInSelection( TextSelection selection )
+unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const bool& show_dialog )
 {
   
   Debug::Throw( "CustomTextEdit::replaceInSelection.\n" );
-  _replaceInRange( selection, textCursor() );
+  unsigned int counts( _replaceInRange( selection, textCursor() ) );
+  
+  if( show_dialog ) showReplacements( counts );
+  return counts;
   
 }
 
 //______________________________________________________________________
-void CustomTextEdit::replaceInWindow( TextSelection selection )
+unsigned int CustomTextEdit::replaceInWindow( TextSelection selection, const bool& show_dialog )
 {
   
   Debug::Throw( "CustomTextEdit::replaceInWindow.\n" );
   QTextCursor cursor( textCursor() );
   cursor.movePosition( QTextCursor::Start );
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
-  _replaceInRange( selection, cursor );
+  unsigned int counts( _replaceInRange( selection, cursor ) );
+  
+  if( show_dialog ) showReplacements( counts );
+  return counts;
   
 }
 
@@ -314,9 +392,58 @@ void CustomTextEdit::selectLine( int index )
 }
 
 //________________________________________________
-void CustomTextEdit::mousePressEvent( QMouseEvent* event )
+void CustomTextEdit::removeLine()
+{
+  
+  Debug::Throw( "CustomTextEdit::removeLine.\n" );
+  QTextCursor cursor( textCursor() );
+  cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
+  cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
+  setTextCursor( cursor );
+  cut();
+  
+}
+
+
+//________________________________________________
+void CustomTextEdit::_synchronizeSelection( void )
 {
  
+  Debug::Throw( "CustomTextEdit::_synchronizeSelection.\n" );
+  if( !synchronize() ) return;
+    
+  BASE::KeySet<CustomTextEdit> editors( this );
+  for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+  {
+    CustomTextEdit &editor( **iter );
+    
+    // check if textCursor is different
+    if( 
+      editor.textCursor().position() == textCursor().position() &&
+      editor.textCursor().anchor() == textCursor().anchor() ) 
+    continue;
+    
+    // store scrollbar positions
+    int x( editor.horizontalScrollBar()->value() );
+    int y( editor.verticalScrollBar()->value() );
+    
+    editor.setSynchronize( false );
+    editor.setUpdatesEnabled( false );
+    editor.setTextCursor( textCursor() );
+    
+    // restore scrollbar positions
+    editor.horizontalScrollBar()->setValue( x );
+    editor.verticalScrollBar()->setValue( y );
+    
+    editor.setUpdatesEnabled( true );
+    editor.setSynchronize( true );
+  }
+}
+  
+//________________________________________________
+void CustomTextEdit::mousePressEvent( QMouseEvent* event )
+{
+
   Debug::Throw( "CustomTextEdit::mousePressEvent.\n" );
   
   // check button
@@ -342,6 +469,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       
       case 4:
       selectAll();
+      _synchronizeSelection();
       break;
       
       default:
@@ -360,7 +488,6 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
  
   Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
   
-  // check button
   if( event->button() == LeftButton && click_counter_.counts() > 1 ) 
   { 
     // when multiple-click is in progress
@@ -385,6 +512,22 @@ void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
   else QTextEdit::mouseDoubleClickEvent( event );
   return;
   
+}
+
+//________________________________________________
+void CustomTextEdit::keyPressEvent( QKeyEvent* event )
+{
+  Debug::Throw( "CustomTextEdit::KeyPressEvent.\n" );
+  
+  if( event->key() == Key_Insert ) 
+  {
+    _toggleInsertMode();
+    event->ignore();
+    return;
+  }
+  
+  QTextEdit::keyPressEvent( event );
+  return;
 }
 
 //________________________________________________
@@ -613,6 +756,19 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, co
   
 }
 
+//_____________________________________________________________
+void CustomTextEdit::_toggleInsertMode( void )
+{
+  Debug::Throw( "CustomTextEdit::_toggleInsertMode.\n" );
+
+  bool mode( overwriteMode() );
+  mode = !mode;
+  setOverwriteMode( mode );
+
+  return;
+
+}
+
 //______________________________________________________________________
 void CustomTextEdit::_installShortcuts( void )
 {
@@ -631,6 +787,7 @@ void CustomTextEdit::_installShortcuts( void )
   _addShortcut( SHIFT+CTRL+Key_G, this, SLOT( findAgainBackward() ) );
   _addShortcut( CTRL+Key_H, this, SLOT( findSelectionForward() ) );
   _addShortcut( SHIFT+CTRL+Key_H, this, SLOT( findSelectionBackward() ) );
+  _addShortcut( CTRL+Key_K, this, SLOT( removeLine() ) );
   _addShortcut( CTRL+Key_R, this, SLOT( replaceFromDialog() ) );
   _addShortcut( CTRL+Key_T, this, SLOT( replaceAgainForward() ) );
   _addShortcut( SHIFT+CTRL+Key_T, this, SLOT( replaceAgainBackward() ) );

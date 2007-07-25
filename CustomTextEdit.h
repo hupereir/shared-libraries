@@ -26,7 +26,7 @@
 
 /*!
   \file CustomTextEdit.h
-  \brief Customized QTextDocument object
+  \brief Customized QTextEdit object
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -34,6 +34,7 @@
 
 #include <QContextMenuEvent>
 #include <QShortcut>
+#include <QTextBlockFormat>
 #include <QTextCursor>
 #include <QTextEdit>
 
@@ -43,6 +44,7 @@
 #include "Debug.h"
 #include "Key.h"
 #include "MultipleClickCounter.h"
+#include "TextPosition.h"
 #include "TextSelection.h"
 
 class SelectLineDialog;
@@ -62,15 +64,32 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! destrutor
   virtual ~CustomTextEdit( void );
-  
+    
   //! enable/disable shortcuts
   void enableShortCuts( const bool& value );
+  
+  //! retrieve current text position
+  TextPosition textPosition() const;
   
   //! select word under cursor
   void selectWord( void );
   
   //! select line under cursor
   void selectLine( void );
+   
+  //! clone (and synchronize) text editor
+  virtual void synchronize( CustomTextEdit& editor );
+
+  //! synchronization flag
+  const bool& synchronize( void ) const
+  { return synchronize_; }
+  
+  //! synchronization flag
+  void setSynchronize( const bool& value )
+  { synchronize_ = value; }
+  
+  //! popup dialog with the number of replacement performed
+  void showReplacements( const unsigned int& counts );
   
   signals:
   
@@ -79,6 +98,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! emmitted when selection could be found
   void matchFound( void );
+  
+  //! emit cursor position changed
+  void cursorPositionChanged( TextPosition );
   
   public slots:
  
@@ -135,10 +157,10 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual void replace( TextSelection selection );
   
   //! replace selection in range
-  virtual void replaceInSelection( TextSelection selection );
+  virtual unsigned int replaceInSelection( TextSelection selection, const bool& show_dialog = true );
 
-  // replace selection in window
-  virtual void replaceInWindow( TextSelection selection );
+  //! replace selection in window, returns number of replacements
+  virtual unsigned int replaceInWindow( TextSelection selection, const bool& show_dialog = true );
   
   //! replace again forward
   virtual void replaceAgainForward( void )
@@ -163,6 +185,14 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! select line by number
   virtual void selectLine( int index ); 
+    
+  //! remove current line
+  virtual void removeLine( void );
+  
+  protected slots:
+  
+  //! synchronize selection
+  void _synchronizeSelection( void );
   
   protected:
   
@@ -182,6 +212,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
     is handled independently by the MultipleClickCounter object
   */
   virtual void mouseDoubleClickEvent( QMouseEvent* );
+  
+  //! keypress event
+  virtual void keyPressEvent( QKeyEvent* );
   
   //! context menu event [overloaded]
   virtual void contextMenuEvent( QContextMenuEvent* );
@@ -233,6 +266,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
+  //! toggle insertion mode
+  void _toggleInsertMode( void );
+
   //!@name shortcuts management
   //@{
   
@@ -246,7 +282,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual void _clearShortcuts( void );
   
   //@}
-  
+    
   private:
   
   //!@name replace/find selection
@@ -266,12 +302,15 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
+  //! synchronization flag
+  bool synchronize_;
+  
   //! multiple click counter
   MultipleClickCounter click_counter_;
   
   //! shortcuts
   std::vector<QShortcut*> shortcuts_;
-    
+  
 };
 
 #endif

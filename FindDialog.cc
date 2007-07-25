@@ -98,8 +98,9 @@ void FindDialog::_createEditor( void )
   QtUtil::fixSize( label );
   layout()->addWidget( label );
   
-  layout()->addWidget( editor_ = new QComboBox( this ) );
+  layout()->addWidget( editor_ = new CustomComboBox( this ) );
   editor_->setEditable( true );
+  editor_->setCaseSensitive( Qt::CaseSensitive );
   editor_->setAutoCompletion( true );
     
   connect( editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT( _find( void ) ) );

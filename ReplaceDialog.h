@@ -34,6 +34,7 @@
 #define ReplaceDialog_h
 
 #include "Counter.h"
+#include "CustomComboBox.h"
 #include "FindDialog.h"
 
 //! replace_text dialog for text editor widgets
@@ -134,7 +135,7 @@ class ReplaceDialog: public FindDialog
   }
 
   //! line editor for text to replace
-  QComboBox* replace_editor_;      
+  CustomComboBox* replace_editor_;      
   
   //! hbox for selection replacement buttons
   QBoxLayout* location_layout_;

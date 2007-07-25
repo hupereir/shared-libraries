@@ -34,7 +34,6 @@
 
 #include <QAbstractButton>
 #include <QCheckBox>
-#include <QComboBox>
 #include <QDialog>
 #include <QLabel>
 #include <QLayout>
@@ -44,6 +43,7 @@
 #include <string>
 
 #include "Counter.h"
+#include "CustomComboBox.h"
 #include "TextSelection.h"
 
 //! find_text dialog for text editor widgets
@@ -170,7 +170,7 @@ class FindDialog: public QDialog, public Counter
   }
   
   //! retrieve editor
-  virtual QComboBox& _editor( void )
+  virtual CustomComboBox& _editor( void )
   {
     Exception::checkPointer( editor_, DESCRIPTION( "editor_ is invalid" ) );
     return *editor_;
@@ -186,7 +186,7 @@ class FindDialog: public QDialog, public Counter
   QBoxLayout* button_layout_;
   
   //! line editor for text to find
-  QComboBox* editor_;
+  CustomComboBox* editor_;
 
   //! backward search if checked
   QCheckBox* backward_checkbox_;

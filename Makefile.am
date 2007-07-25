@@ -16,6 +16,7 @@ noinst_HEADERS = \
 	ConfigDialogBase.h \
 	CounterDialog.h \
 	CounterList.h \
+	CustomComboBox.h \
 	CustomDialog.h \
 	CustomFileDialog.h \
 	CustomLineEdit.h \
@@ -74,6 +75,7 @@ libbase_qt_a_SOURCES = \
   ConfigDialogBase.cc \
   CounterDialog.cc \
   CounterList.cc \
+	CustomComboBox.cc \
   CustomDialog.cc \
   CustomFileDialog.cc \
   CustomLineEdit.cc \
@@ -114,6 +116,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_ClockLabel.cc \
   moc_ConfigDialogBase.cc \
   moc_CounterDialog.cc \
+  moc_CustomComboBox.cc \
   moc_CustomFileDialog.cc \
   moc_CustomLineEdit.cc \
   moc_CustomListBox.cc \
