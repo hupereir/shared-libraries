@@ -60,7 +60,7 @@ class Debug{
 
   //! returns either cout or dummy stream depending of the level
   static std::ostream& Throw( int level = 1 )
-  { return ( level_ < level ) ? nullStream_ : std::cout; }
+  { return ( level_ < level ) ? null_stream_ : std::cout; }
   
   //! sets the debug level. Everything thrown of bigger level is not discarded
   static void setLevel( int level ) 
@@ -76,7 +76,7 @@ class Debug{
   static int level_;  
   
   //! dummy stream to discard the text of two high debug level
-  static std::ofstream nullStream_;
+  static std::ofstream null_stream_;
 };
 
 #endif

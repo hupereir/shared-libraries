@@ -36,4 +36,4 @@ using namespace std;
 
 //________________________________________________________
 int Debug::level_ = 0;
-ofstream Debug::nullStream_("/dev/null");
+ofstream Debug::null_stream_("/dev/null");
