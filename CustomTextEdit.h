@@ -34,6 +34,7 @@
 
 #include <QContextMenuEvent>
 #include <QShortcut>
+#include <QTextCursor>
 #include <QTextEdit>
 
 #include <vector>
@@ -93,6 +94,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! find next occurence of TextSelection
   virtual void find( TextSelection selection )
   { 
+    Debug::Throw( "CustomTextEdit::find.\n" );
     bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) ); 
     if( found ) emit matchFound();
     else emit noMatchFound();
@@ -100,23 +102,62 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! find current selection forward
   virtual void findSelectionForward( void )
-  { _findForward( _selection(), true ); }
+  { 
+    Debug::Throw( "CustomTextEdit::findSelectionForward.\n" );
+    _findForward( _selection(), true ); 
+  }
 
   //! find current selection backward
   virtual void findSelectionBackward( void )
-  { _findBackward( _selection(), true ); }
+  { 
+    Debug::Throw( "CustomTextEdit::findSelectionBackward.\n" );
+    _findBackward( _selection(), true ); 
+  }
   
   //! find last search forward
   virtual void findAgainForward( void )
-  { _findForward( _lastSelection(), true ); }
+  { 
+    Debug::Throw( "CustomTextEdit::findAgainForward.\n" );
+    _findForward( _lastSelection(), true ); 
+  }
 
   //! find last search forward
   virtual void findAgainBackward( void )
-  { _findBackward( _lastSelection(), true ); }
+  { 
+    Debug::Throw( "CustomTextEdit::findAgainBackward.\n" );
+    _findBackward( _lastSelection(), true ); 
+  }
   
   //! replace text from dialog
   virtual void replaceFromDialog( void );
+  
+  //! find next occurence of TextSelection
+  virtual void replace( TextSelection selection );
+  
+  //! replace selection in range
+  virtual void replaceInSelection( TextSelection selection );
 
+  // replace selection in window
+  virtual void replaceInWindow( TextSelection selection );
+  
+  //! replace again forward
+  virtual void replaceAgainForward( void )
+  {
+    Debug::Throw( "CustomTextEdit::replaceAgainForward.\n" );
+    TextSelection selection( _lastSelection() );
+    selection.setFlag( TextSelection::BACKWARD, false );
+    replace( selection );
+  }
+
+  //! replace again forward
+  virtual void replaceAgainBackward( void )
+  {
+    Debug::Throw( "CustomTextEdit::replaceAgainBackward.\n" );
+    TextSelection selection( _lastSelection() );
+    selection.setFlag( TextSelection::BACKWARD, true );
+    replace( selection );
+  }
+  
   //! select line from dialog
   virtual void selectLineFromDialog( void );
   
@@ -187,6 +228,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! find dialog
   virtual void _createReplaceDialog( void );
 
+  //! replace selection in range refered to by cursor
+  virtual unsigned int _replaceInRange( const TextSelection& selection, const QTextCursor& cursor );
+  
   //@}
   
   //!@name shortcuts management

@@ -51,7 +51,11 @@ class ClockTimer: public QTimer, public Counter
   public:
   
   //! constructor
-  ClockTimer( QWidget *parent = 0, int time_out = 10 );
+  ClockTimer( QWidget *parent );
+  
+  //! get interval (seconds) prior to next update
+  static int interval( void ) 
+  { return 60 - (TimeStamp::now() % 60); }
   
   signals:
   

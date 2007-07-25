@@ -40,13 +40,12 @@ using namespace std;
 static const TimeStamp::Format format( TimeStamp::JOB_TAG );
 
 //__________________________________________________________
-ClockTimer::ClockTimer( QWidget *parent, int time_out ):
+ClockTimer::ClockTimer( QWidget *parent ):
   QTimer( parent ),
   Counter( "ClockTimer" )
 {
   Debug::Throw( "ClockTimer::ClockTimer.\n" );
   connect( this, SIGNAL( timeout() ), this, SLOT( _checkCurrentTime() ) );
-  start( 1000*time_out );
 }
 
 //__________________________________________________________
@@ -67,9 +66,8 @@ void ClockTimer::_checkCurrentTime( void )
     return;
   }
   
-  // update stored time
-  Debug::Throw( "ClockTimer::_CheckCurrentTime - updating.\n" );
   time_ = new_time;
+  setInterval( 1000 * interval() );
   
   // emit time changed signal
   emit timeChanged( time_.string(format ).c_str() );
@@ -80,13 +78,19 @@ void ClockTimer::_checkCurrentTime( void )
 //________________________________________________________________
 ClockLabel::ClockLabel( QWidget* parent ):
   QLabel( parent ),
-  Counter( "ClockLabel" )
+  Counter( "ClockLabel" ),
+  timer_( this )
 {
     
   Debug::Throw( "ClockLabel::ClockLabel.\n" );
   
   // create static clock timer, updated every 10 seconds
   connect( &timer_, SIGNAL( timeChanged( const QString& ) ), this, SLOT( setText( const QString& ) ) );
+  
+  timer_.setSingleShot( false );
+  timer_.setInterval( 1000 * ClockTimer::interval() );
+  timer_.start();
+  
   setText( TimeStamp::now().string( format ).c_str() );
   
 }

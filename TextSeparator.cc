@@ -41,11 +41,11 @@ TextSeparator::TextSeparator( void )
 
   // initialize separator
   const QString base_separators( " \t\n" );
-  for( unsigned int i=0; i< base_separators.size(); i++ )
+  for( int i=0; i< base_separators.size(); i++ )
   base_separators_.insert( base_separators[i] );
   
   const QString extended_separators( ",;.:?!&+-*/|-()'{}[]<>\"%" );
-  for( unsigned int i=0; i< extended_separators.size(); i++ )
+  for( int i=0; i< extended_separators.size(); i++ )
   extended_separators_.insert( extended_separators[i] );
   
   separators_ = base_separators_;

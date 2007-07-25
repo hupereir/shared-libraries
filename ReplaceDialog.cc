@@ -112,7 +112,7 @@ void ReplaceDialog::_createEditor( void )
   layout()->addWidget( label );
   
   // replacement editor
-  replace_editor_ = new QComboBox( this );
+  layout()->addWidget( replace_editor_ = new QComboBox( this ) );
   replace_editor_->setEditable( true );
   replace_editor_->setAutoCompletion( true );
   connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT( _replace( void ) ) );
