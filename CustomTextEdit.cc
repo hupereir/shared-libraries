@@ -30,26 +30,36 @@
 */
 
 #include <QMenu>
+#include <QClipboard>
 #include <QTextBlock>
 #include <QTextCursor>
 #include <QTextDocument>
 
 #include "CustomTextEdit.h"
+#include "FindDialog.h"
+#include "ReplaceDialog.h"
 #include "SelectLineDialog.h"
 #include "TextSeparator.h"
+#include "QtUtil.h"
 
 using namespace std;
 using namespace BASE;
 using namespace Qt;
 
 //______________________________________________
+TextSelection CustomTextEdit::last_selection_;
+
+//______________________________________________
 CustomTextEdit::CustomTextEdit( QWidget *parent ):
   QTextEdit( parent ),
   Counter( "CustomTextEdit" ),
+  find_dialog_( 0 ),
+  replace_dialog_( 0 ),
+  select_line_dialog_( 0 ),
   click_counter_( this )
 {
-  Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" );
   
+  Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" );
   _installShortcuts();
   
 }
@@ -82,9 +92,7 @@ void CustomTextEdit::selectWord( void )
   int local_position( cursor.position() - block.position() );
   int begin = local_position;
   int end = local_position;
-  
-  // need to remove RICH tags, if any
-  
+    
   // parse text
   if( TextSeparator::get().base().find( text[begin] ) != TextSeparator::get().base().end() )
   {
@@ -125,7 +133,8 @@ void CustomTextEdit::selectLine( void )
   QTextCursor cursor( textCursor() );
   cursor.select( QTextCursor::BlockUnderCursor );
   setTextCursor( cursor );
-
+  ensureCursorVisible();
+  
   return;
 
 }
@@ -164,16 +173,65 @@ void CustomTextEdit::lowerCase( void )
   
 }
 
+//_____________________________________________________________________
+void CustomTextEdit::findFromDialog( void )
+{
+  Debug::Throw( "CustomTextEdit::findFromDialog.\n" );
+
+  // create
+  if( !find_dialog_ ) _createFindDialog();
+ 
+  // set default string to find
+  _findDialog().synchronize();
+  if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
+  else if( !_lastSelection().text().isEmpty() ) _findDialog().setText( _lastSelection().text() );
+
+  // enable/disable regexp
+  _findDialog().enableRegExp( false );
+  
+  // raise dialog
+  QtUtil::centerOnPointer( &_findDialog() );
+  _findDialog().show();
+  
+  return;
+}
+
+
+//_____________________________________________________________________
+void CustomTextEdit::replaceFromDialog( void )
+{
+  Debug::Throw( "CustomTextEdit::replaceFromDialog.\n" );
+
+  // create
+  if( !replace_dialog_ ) _createReplaceDialog();
+ 
+  // set default string to find
+  _replaceDialog().synchronize();
+  if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
+  else if( !_lastSelection().text().isEmpty() ) _replaceDialog().setText( _lastSelection().text() );
+
+  // enable/disable regexp
+  _replaceDialog().enableRegExp( false );
+  
+  // raise dialog
+  QtUtil::centerOnPointer( &_replaceDialog() );
+  _replaceDialog().show();
+  
+  return;
+}
+
 //________________________________________________
 void CustomTextEdit::selectLineFromDialog( void )
 {
   
   Debug::Throw( "CustomTextEdit::selectLineFromDialog.\n" );
+  if( !select_line_dialog_ ) 
+  {
+    select_line_dialog_ = new SelectLineDialog( this );
+    connect( select_line_dialog_, SIGNAL( lineSelected( int ) ), this, SLOT( selectLine( int ) ) );
+  }
   
-  SelectLineDialog dialog( this );
-  dialog.setModal( true );
-  connect( &dialog, SIGNAL( lineSelected( int ) ), this, SLOT( selectLine( int ) ) );
-  dialog.exec();
+  select_line_dialog_->show();
   
 }
 
@@ -303,8 +361,155 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
   menu.addAction( "Select all", this , SLOT( selectAll() ), CTRL+Key_A ); 
   menu.addAction( "&Upper case", this, SLOT( upperCase( void ) ), CTRL+Key_U )->setEnabled( editable && has_selection );
   menu.addAction( "&Lower case", this, SLOT( lowerCase( void ) ), SHIFT+CTRL+Key_U )->setEnabled( editable && has_selection );
+  menu.addSeparator();
 
+  menu.addAction( "&Find", this , SLOT( findFromDialog() ), CTRL+Key_F ); 
+  menu.addAction( "Find &again", this , SLOT( findAgainForward() ), CTRL+Key_G ); 
+  menu.addAction( "Find &selection", this , SLOT( findSelectionForward() ), CTRL+Key_H ); 
+  
   menu.exec( event->globalPos() );
+  
+}
+
+//______________________________________________________________________
+TextSelection CustomTextEdit::_selection( void ) const
+{
+  Debug::Throw( "CustomTextEdit::_selection.\n" );
+  
+  // copy last selection
+  TextSelection out( "" );
+  
+  // try set from current selection
+  if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );
+  else {
+    
+    // try retrieve from clipboard
+    out.setText( qApp->clipboard()->text( QClipboard::Selection ) );
+    
+  } 
+  
+  // copy attributes from last selection
+  out.setFlag( TextSelection::CASE_SENSITIVE, _lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
+  out.setFlag( TextSelection::ENTIRE_WORD, _lastSelection().flag( TextSelection::ENTIRE_WORD ) );
+  return out;
+  
+}
+
+//______________________________________________________________________
+void CustomTextEdit::_createFindDialog( void )
+{
+  
+  Debug::Throw( "CurstomTextEdit::_createFindDialog.\n" );
+  if( !find_dialog_ )
+  {
+    
+    find_dialog_ = new FindDialog( this );
+    find_dialog_->polish();
+    
+    connect( find_dialog_, SIGNAL( find( TextSelection ) ), this, SLOT( find( TextSelection ) ) );
+    connect( this, SIGNAL( noMatchFound() ), find_dialog_, SLOT( noMatchFound() ) );
+    connect( this, SIGNAL( matchFound() ), find_dialog_, SLOT( clearLabel() ) );
+    
+  }
+  
+  return;
+  
+}
+
+//______________________________________________________________________
+bool CustomTextEdit::_findForward( const TextSelection& selection, const bool& rewind )
+{
+  Debug::Throw( "CustomTextEdit::_findForward.\n" );
+  if( selection.text().isEmpty() ) return false;  
+  
+  // store selection
+  _setLastSelection( selection );
+  
+  // retrieve current cursor
+  QTextCursor cursor( textCursor() );
+  
+  // if no_increment, start from the beginning of the possible current selection
+  if( cursor.hasSelection() && selection.flag( TextSelection::NO_INCREMENT ) )
+  { cursor.setPosition( cursor.anchor() ); }
+  
+  // search flags
+  QTextDocument::FindFlags flags( 0 );
+  if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
+  if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
+  
+  QTextCursor found( document()->find( selection.text(), cursor, flags ) );
+  
+  // find failed.
+  if( found.isNull() && rewind ) 
+  {
+    cursor.movePosition( QTextCursor::Start );
+    found = document()->find( selection.text(), cursor, flags );
+  }
+    
+  if( found.isNull() ) return false;
+    
+  setTextCursor( found );
+  return true;
+  
+}
+
+//______________________________________________________________________
+bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& rewind )
+{
+  
+  Debug::Throw( "CustomTextEdit::_findBackward.\n" );
+  if( selection.text().isEmpty() ) return false;
+  _setLastSelection( selection );
+    
+  // retrieve current cursor
+  QTextCursor cursor( textCursor() );
+
+  // if no_increment, start from the beginning of the possible current selection
+  if( cursor.hasSelection() && selection.flag( TextSelection::NO_INCREMENT ) )
+  { cursor.setPosition( cursor.anchor()+selection.text().size()+1 ); }
+  
+  // search flags
+  QTextDocument::FindFlags flags( QTextDocument::FindBackward );
+  if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
+  if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
+  
+  QTextCursor found( document()->find( selection.text(), cursor, flags ) );
+  
+  // find failed.
+  if( found.isNull() && rewind ) 
+  {
+    cursor.movePosition( QTextCursor::End );
+    found = document()->find( selection.text(), cursor, flags );
+  }
+    
+  if( found.isNull() ) return false;  
+  
+  setTextCursor( found );
+  return true;
+  
+}
+
+//______________________________________________________________________
+void CustomTextEdit::_createReplaceDialog( void )
+{
+  
+  Debug::Throw( "CurstomTextEdit::_createFindDialog.\n" );
+  if( !replace_dialog_ )
+  {
+    
+    replace_dialog_ = new ReplaceDialog( this );
+    replace_dialog_->polish();
+    
+    connect( replace_dialog_, SIGNAL( find( TextSelection ) ), this, SLOT( find( TextSelection ) ) );
+    connect( replace_dialog_, SIGNAL( replace( TextSelection ) ), this, SLOT( replaceFromDialog( TextSelection ) ) );
+    connect( replace_dialog_, SIGNAL( replaceInWindow( TextSelection ) ), this, SLOT( replaceInWindow( TextSelection ) ) );
+    connect( replace_dialog_, SIGNAL( replaceInSelection( TextSelection ) ), this, SLOT( replaceInSelection( TextSelection ) ) );
+    connect( this, SIGNAL( noMatchFound() ), replace_dialog_, SLOT( noMatchFound() ) );
+    connect( this, SIGNAL( matchFound() ), replace_dialog_, SLOT( clearLabel() ) );
+    
+  }
+  
+  return;
   
 }
 
@@ -322,6 +527,11 @@ void CustomTextEdit::_installShortcuts( void )
   _addShortcut( CTRL+Key_U, this, SLOT( upperCase() ) );
   _addShortcut( SHIFT+CTRL+Key_U, this, SLOT( lowerCase() ) );
   _addShortcut( CTRL+Key_L, this, SLOT( selectLineFromDialog() ) );
+  _addShortcut( CTRL+Key_F, this, SLOT( findFromDialog() ) );
+  _addShortcut( CTRL+Key_G, this, SLOT( findAgainForward() ) );
+  _addShortcut( SHIFT+CTRL+Key_G, this, SLOT( findAgainBackward() ) );
+  _addShortcut( CTRL+Key_H, this, SLOT( findSelectionForward() ) );
+  _addShortcut( SHIFT+CTRL+Key_H, this, SLOT( findSelectionBackward() ) );
   
 }
 

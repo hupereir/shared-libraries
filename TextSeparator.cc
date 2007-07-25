@@ -1,8 +1,4 @@
-#ifndef SelectLineDialog_h
-#define SelectLineDialog_h
-
-// $Id$
-
+ 
 /******************************************************************************
 *                         
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
@@ -23,49 +19,36 @@
 *                         
 *                         
 *******************************************************************************/
- 
+
+
 /*!
-  \file SelectLineDialog.h
-  \brief goto_line_number_dialog dialog for text editor widgets
+  \file TextSeparator.cc
+  \brief separators between words
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <qdialog.h>
+#include <iostream>
 #include <string>
+#include "TextSeparator.h"
 
-#include "Counter.h"
-#include "CustomLineEdit.h"
-#include "Str.h"
+using namespace std;
 
-//! find_text dialog for text editor widgets
-class SelectLineDialog: public QDialog, public Counter
+//___________________________________
+TextSeparator::TextSeparator( void )
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
-
-  public:
+  // initialize separator
+  const QString base_separators( " \t\n" );
+  for( unsigned int i=0; i< base_separators.size(); i++ )
+  base_separators_.insert( base_separators[i] );
   
-  //! constructor
-  SelectLineDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
+  const QString extended_separators( ",;.:?!&+-*/|-()'{}[]<>\"%" );
+  for( unsigned int i=0; i< extended_separators.size(); i++ )
+  extended_separators_.insert( extended_separators[i] );
   
-  signals:
-  
-  //! emmited when pressing the Ok button
-  void lineSelected( int line );
-  
-  private slots:
-  
-  //! retrieve line number and emit signal
-  void _selectLine( const QString& text = QString() )
-  { emit lineSelected( Str( qPrintable( line_edit_->text() ) ).get<int>()-1 ); }
-    
-  private:
-  
-  //! line editor for text to find
-  CustomLineEdit* line_edit_;      
-    
-};
-#endif
+  separators_ = base_separators_;
+  separators_.insert( extended_separators_.begin(), extended_separators_.end() );
+        
+}

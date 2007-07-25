@@ -31,6 +31,7 @@ noinst_HEADERS = \
 	DebugMenu.h \
 	DockPanel.h \
 	ErrorHandler.h \
+	FindDialog.h \
 	FontEdit.h \
 	Help.h \
 	IconBrowsedButton.h \
@@ -51,8 +52,10 @@ noinst_HEADERS = \
 	OptionSpinBox.h \
 	OptionWidget.h \
 	QtUtil.h \
+	ReplaceDialog.h \
 	SelectLineDialog.h \
 	StateFrame.h \
+  TextSelection.h \
   TextSeparator.h \
   ValidFileThread.h \
 	XmlError.h \
@@ -85,6 +88,7 @@ libbase_qt_a_SOURCES = \
   DebugMenu.cc \
 	DockPanel.cc \
   ErrorHandler.cc \
+  FindDialog.cc \
   FontEdit.cc \
 	Help.cc \
   IconBrowsedButton.cc \
@@ -93,6 +97,7 @@ libbase_qt_a_SOURCES = \
   OpenPreviousMenu.cc \
   OptionListBox.cc \
   QtUtil.cc \
+	ReplaceDialog.cc \
 	SelectLineDialog.cc \
   StateFrame.cc \
   TextSeparator.cc \
@@ -121,6 +126,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomToolButton.cc \
   moc_DebugMenu.cc \
 	moc_DockPanel.cc \
+  moc_FindDialog.cc \
   moc_FontEdit.cc \
 	moc_Help.cc \
   moc_IconBrowsedButton.cc \
@@ -128,6 +134,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_MultipleClickCounter.cc \
   moc_OpenPreviousMenu.cc \
   moc_OptionListBox.cc \
+	moc_ReplaceDialog.cc \
   moc_SelectLineDialog.cc \
   moc_StateFrame.cc
 

@@ -1,7 +1,7 @@
-#ifndef SelectLineDialog_h
-#define SelectLineDialog_h
-
 // $Id$
+
+#ifndef TextSeparator_h
+#define TextSeparator_h
 
 /******************************************************************************
 *                         
@@ -25,47 +25,58 @@
 *******************************************************************************/
  
 /*!
-  \file SelectLineDialog.h
-  \brief goto_line_number_dialog dialog for text editor widgets
+  \file TextSeparator.h
+  \brief separators between words
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <qdialog.h>
-#include <string>
+#include <set>
+#include <QString>
 
-#include "Counter.h"
-#include "CustomLineEdit.h"
-#include "Str.h"
-
-//! find_text dialog for text editor widgets
-class SelectLineDialog: public QDialog, public Counter
+//! text separator between words
+class TextSeparator
 {
-
-  //! Qt meta object declaration
-  Q_OBJECT
-
+  
   public:
   
+  //! shortcut to set of separators      
+  typedef std::set< QChar > SeparatorSet;
+    
+  //! return singleton
+  static const TextSeparator& get( void )
+  {
+    static TextSeparator singleton;
+    return singleton;
+  }
+  
+  //! retrieve base separators
+  const SeparatorSet& base() const
+  { return base_separators_; }
+  
+  //! retrieve base separators
+  const SeparatorSet& extended() const
+  { return extended_separators_; }
+  
+  //! retrieve all separators
+  const SeparatorSet& all() const
+  { return separators_; }
+  
+  private: 
+  
   //! constructor
-  SelectLineDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
+  TextSeparator( void );
+                
+  //! base separators (space, tab, end of line)
+  SeparatorSet base_separators_;
   
-  signals:
+  //! extended separators (brackets, parenthesis, quotes, etc.)
+  SeparatorSet extended_separators_;
   
-  //! emmited when pressing the Ok button
-  void lineSelected( int line );
+  //! all separators
+  SeparatorSet separators_;
   
-  private slots:
-  
-  //! retrieve line number and emit signal
-  void _selectLine( const QString& text = QString() )
-  { emit lineSelected( Str( qPrintable( line_edit_->text() ) ).get<int>()-1 ); }
-    
-  private:
-  
-  //! line editor for text to find
-  CustomLineEdit* line_edit_;      
-    
 };
+
 #endif

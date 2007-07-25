@@ -39,16 +39,13 @@
 using namespace std;
 
 //_______________________________________________________
-SelectLineDialog::SelectLineDialog( QWidget* parent, bool modal, Qt::WFlags flags ):
+SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
     QDialog( parent, flags ),
     Counter( "SelectLineDialog" )
 {
   
   Debug::Throw( "SelectLineDialog::SelectLineDialog.\n" );
-  
-  // modality
-  setModal( parent );
-  
+    
   // set dialog title
   setWindowTitle( "goto line number" );
     

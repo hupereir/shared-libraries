@@ -42,6 +42,11 @@
 #include "Debug.h"
 #include "Key.h"
 #include "MultipleClickCounter.h"
+#include "TextSelection.h"
+
+class SelectLineDialog;
+class FindDialog;
+class ReplaceDialog;
 
 //! Customized QTextEdit object
 class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
@@ -66,6 +71,14 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! select line under cursor
   void selectLine( void );
   
+  signals:
+  
+  //! emmitted when selection could not be found
+  void noMatchFound( void );
+  
+  //! emmitted when selection could be found
+  void matchFound( void );
+  
   public slots:
  
   //! changes selection to uppercase
@@ -74,6 +87,36 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! changes selection to lower case
   virtual void lowerCase( void );
   
+  //! find text from dialog
+  virtual void findFromDialog( void );
+  
+  //! find next occurence of TextSelection
+  virtual void find( TextSelection selection )
+  { 
+    bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) ); 
+    if( found ) emit matchFound();
+    else emit noMatchFound();
+  }
+  
+  //! find current selection forward
+  virtual void findSelectionForward( void )
+  { _findForward( _selection(), true ); }
+
+  //! find current selection backward
+  virtual void findSelectionBackward( void )
+  { _findBackward( _selection(), true ); }
+  
+  //! find last search forward
+  virtual void findAgainForward( void )
+  { _findForward( _lastSelection(), true ); }
+
+  //! find last search forward
+  virtual void findAgainBackward( void )
+  { _findBackward( _lastSelection(), true ); }
+  
+  //! replace text from dialog
+  virtual void replaceFromDialog( void );
+
   //! select line from dialog
   virtual void selectLineFromDialog( void );
   
@@ -104,6 +147,48 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
+  //!@name find/replace selection
+  //@{
+  
+  //! create TextSelection object from this selection, or clipboard
+  TextSelection _selection( void ) const;
+  
+  //! last searched selection
+  static const TextSelection& _lastSelection( void )
+  { return last_selection_; }
+
+  //! last searched selection
+  static void _setLastSelection( const TextSelection& selection )
+  { last_selection_ = selection; }
+  
+  //! find dialog
+  virtual FindDialog& _findDialog( void )
+  {
+    Exception::checkPointer( find_dialog_, DESCRIPTION( "find_dialog_ not initialized.\n" ) );
+    return *find_dialog_;
+  }
+  
+  //! find dialog
+  virtual void _createFindDialog( void );
+  
+  //! find selection in forward direction
+  virtual bool _findForward( const TextSelection& selection, const bool& rewind );
+
+  //! find selection in backward direction
+  virtual bool _findBackward( const TextSelection& selection, const bool& rewind );
+  
+  //! replace dialog
+  virtual ReplaceDialog& _replaceDialog( void )
+  {
+    Exception::checkPointer( replace_dialog_, DESCRIPTION( "replace_dialog_ not initialized.\n" ) );
+    return *replace_dialog_;
+  }
+  
+  //! find dialog
+  virtual void _createReplaceDialog( void );
+
+  //@}
+  
   //!@name shortcuts management
   //@{
   
@@ -119,6 +204,23 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@}
   
   private:
+  
+  //!@name replace/find selection
+  ///@{
+  
+  //! find dialog
+  FindDialog* find_dialog_;
+
+  //! find dialog
+  ReplaceDialog* replace_dialog_;
+  
+  //! line number dialog
+  SelectLineDialog* select_line_dialog_;
+  
+  //! last used selection
+  static TextSelection last_selection_;
+  
+  //@}
   
   //! multiple click counter
   MultipleClickCounter click_counter_;
