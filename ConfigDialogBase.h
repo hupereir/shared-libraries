@@ -31,82 +31,44 @@
 #ifndef _ConfigDialogBase_h_
 #define _ConfigDialogBase_h_
 
+#include <QDialog>
 #include <QPushButton>
 #include <QStackedWidget>
 #include <list>
 
-#include "CustomDialog.h"
 #include "CustomListBox.h"
 #include "Exception.h"
 #include "XmlOptions.h"
 #include "OptionWidget.h"
 
 //! configuration list. Stores panel names and panels
-class ConfigList: public CustomListBox
+class ConfigListItem: public QListWidgetItem
 {
 
   public:
 
   //! constructor
-  ConfigList( QWidget *parent ):
-    CustomListBox( parent ),
-    target_( 0 )
-  {};
-
-  //! display target widget
-  void setTarget( QStackedWidget* target )
-  { target_ = target; }
-
-  //! display target widget
-  QStackedWidget& target( void )
-  { return *target_; }
-
-  //! list box item
-  class Item: public QListWidgetItem
-  {
-    public:
-
-    //! constructor
-    Item( ConfigList* parent, const std::string& title, const bool& expand = false  );
-
-    //! retrieve group box
-    QWidget& main( void )
-    { return *main_; }
-
-    //! retrieve group box
-    QWidget& box( void )
-    { return *box_; }
-
-    //! rename
-    void rename( const std::string& name )
-    { setText( name.c_str() ); }
-
-    //! visibility
-    const bool& visible( void ) const
-    { return visible_; }
-
-    private:
-
-    //! main vbox
-    QWidget *main_;
-
-    //! associated group box
-    QWidget *box_;
-
-    //! visibility status
-    bool visible_;
+  ConfigListItem( QListWidget* parent, const QString& title, QWidget* page = 0 ):
+    QListWidgetItem( parent ),
+    page_( page )
+  { 
+    Debug::Throw( "ConfigListItem::ConfigListItem.\n" );
+    setText( title );
+  }
     
-  };
+  //! retrieve page
+  QWidget& page( void )
+  { return *page_; }
 
   private:
 
-  //! target display
-  QStackedWidget *target_;
-  
+  //! associated group box
+  QWidget *page_;
+    
 };
 
 //! configuration dialog
-class ConfigDialogBase: public CustomDialog
+class ConfigDialogBase: public QDialog
 {
 
   //! Qt meta object macro
@@ -123,8 +85,12 @@ class ConfigDialogBase: public CustomDialog
   //! destructor
   virtual ~ConfigDialogBase()
   {
+    Debug::Throw( "ConfigDialogBase::~ConfigDialogBase" );
     return;
   }
+
+  //! adds a new Item, returns associated Box
+  virtual QWidget& addPage( const QString& title, const bool& expand = false );
 
   //! add option widget
   virtual void addOptionWidget( OptionWidget* widget )
@@ -133,28 +99,6 @@ class ConfigDialogBase: public CustomDialog
   //! clear option widgets
   virtual void clearOptionWidgets( void )
   { option_widgets_.clear(); }
-
-  //! apply button
-  QPushButton& applyButton( void )
-  {
-    Exception::checkPointer( apply_button_, DESCRIPTION( "apply_button_ uninitialized" ) );
-    return *apply_button_;
-  }
-
-  //! adds a new Item, returns associated Box
-  QWidget& addBox( const std::string& name, const bool& expand = false );
-
-  //! retrieve box of item matching a given name
-  /*! create a new one if no match found */
-  QWidget& getBox( const std::string& name );
-
-  //! retrieve list item of a given name
-  /*! create a new one if not found */
-  virtual ConfigList::Item& listItem( const std::string& name );
-
-  //! retrieve list
-  ConfigList& list( void )
-  { return *list_; }
 
   //! flag bitset for the Base configuration
   enum ConfigFlags
@@ -184,9 +128,18 @@ class ConfigDialogBase: public CustomDialog
 
   //! Tab emulation configuration box
   void tabConfiguration( QWidget* parent = 0 );
-  
+
   signals:
 
+  //! apply button pressed
+  void apply( void );
+  
+  //! ok button pressed
+  void ok( void );
+  
+  //! canceled button pressed
+  void cancel( void );
+  
   //! emmited when configuration is changed
   void configurationChanged();
 
@@ -205,23 +158,34 @@ class ConfigDialogBase: public CustomDialog
    virtual void _saveConfiguration();
 
   //! see if options have been modified. Emit signal if yes
-  virtual void _checkModified()
+  virtual void _checkModified( void )
   {
     if( modified_options_ == XmlOptions::get() ) return;
     emit configurationChanged();
     modified_options_ = XmlOptions::get();
   }
 
-  private slots:
+  //! display item page
+  virtual void _display( QListWidgetItem* current, QListWidgetItem* previous );
 
-  //! display box selected from list
-  void _display();
+  protected:
+  
+  //! retrieve list
+  virtual CustomListBox& _list( void )
+  { return *list_; }
 
+  //! retrieve stack
+  virtual QStackedWidget& _stack( void )
+  { return *stack_; }
+    
   private:
 
   //! Configuration list
-  ConfigList* list_;
+  CustomListBox* list_;
 
+  //! Widget stack
+  QStackedWidget* stack_;
+  
   //! Apply button
   QPushButton *apply_button_;
 

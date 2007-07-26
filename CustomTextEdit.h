@@ -74,6 +74,17 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! retrieve current text position
   virtual TextPosition textPosition() const;
+      
+  //!@name conversions between absolute index and TextPosition
+  //@{
+  
+  //! text position from index
+  virtual TextPosition positionFromIndex( const int& index ) const;
+  
+  //! index from text position
+  virtual int indexFromPosition( const TextPosition& index ) const;
+  
+  //@}
   
   //! select word under cursor
   virtual void selectWord( void );

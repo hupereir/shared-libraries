@@ -29,9 +29,9 @@
   \date $Date$
 */
 #include <QApplication>
-#include <QSplitter>
 #include <QToolTip>
 #include <QGroupBox>
+#include <QLayout>
 #include <QLabel>
 
 #include "ConfigDialogBase.h"
@@ -52,49 +52,8 @@ using namespace std;
 using namespace Qt;
 
 //_________________________________________________________
-ConfigList::Item::Item( ConfigList* parent, const string& title, const bool& expand ):
-  QListWidgetItem( parent, 0 ),
-  visible_( false )
-{  
-  Debug::Throw( "ConfigList::Item::Item.\n" );
-  
-  // set text
-  setText( title.c_str() );
-  
-  //! create vbox
-  if( expand ) {
-    main_ = box_ = new QWidget();
-    QVBoxLayout *layout( new QVBoxLayout() );
-    layout->setSpacing(2);
-    layout->setMargin(5);
-    main_->setLayout( layout );
-  } else 
-  {    
-    main_ = new QWidget( &parent->target() );
-    QVBoxLayout *layout( new QVBoxLayout() );
-    layout->setSpacing(2);
-    layout->setMargin(5);
-    main_->setLayout( layout );
-
-    // insert box into main
-    box_ = new QWidget( main_ );
-    QVBoxLayout* box_layout = new QVBoxLayout();
-    box_layout->setSpacing(2);
-    box_layout->setMargin(0);
-    box_->setLayout( box_layout );
-
-    layout->addWidget( box_ );
-    layout->addStretch(1);
-
-  }
-  
-  parent->target().addWidget( main_ );
-
-}
-
-//_________________________________________________________
 ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
-  CustomDialog( parent ),
+  QDialog( parent ),
   modified_options_( XmlOptions::get() ),
   backup_options_( XmlOptions::get() )
 {
@@ -103,89 +62,95 @@ ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
   Debug::Throw( "ConfigDialogBase::ConfigDialog.\n" );
   setWindowTitle( "Configuration" );
 
-  // splitter  
-  QSplitter* splitter( new QSplitter( &mainWidget() ) );
-  splitter->setChildrenCollapsible( false );
-  mainWidget().layout()->addWidget( splitter );
+  QVBoxLayout* layout( new QVBoxLayout() );
+  layout->setSpacing(5);
+  layout->setMargin(5);
+  setLayout( layout );
   
-  // create list
-  list_ = new ConfigList( splitter );
+  QHBoxLayout* h_layout = new QHBoxLayout();
+  h_layout->setMargin(0);
+  h_layout->setSpacing(5);
+  layout->addLayout( h_layout );
   
-  // create right display panel
-  QStackedWidget* right_display( new QStackedWidget( splitter ) );
-  list_->setTarget( right_display );
+  h_layout->addWidget( list_ = new CustomListBox( this ), 0 );
+  h_layout->addWidget( stack_ = new QStackedWidget( this ), 1 );
+  
+  _list().setMaximumWidth(128);
+  _list().setMovement(QListView::Static);
 
-  connect( list_, SIGNAL( itemSelectionChanged() ), this, SLOT( _display() ) );
+  connect( 
+    list_, SIGNAL( currentItemChanged( QListWidgetItem*, QListWidgetItem* ) ), 
+    SLOT( _display(QListWidgetItem*, QListWidgetItem*) ) );
   
-  QList<int> sizes;
-  sizes.push_back( 150 );
-  sizes.push_back( 400 );
-  splitter->setSizes( sizes );
+  // button layout
+  QHBoxLayout* button_layout( new QHBoxLayout() );
+  button_layout->setMargin(5);
+  button_layout->setSpacing(10);
+  layout->addLayout( button_layout, 0 );
   
   // apply button
-  apply_button_ = new QPushButton( "&Apply", this );
-  QtUtil::fixSize( apply_button_ );
-  buttonLayout().insertWidget( 0, apply_button_ );
-  connect( &applyButton(), SIGNAL( clicked() ), this, SLOT( _updateConfiguration() ) );  
-  apply_button_->setToolTip( "apply changes to options" );
+  QPushButton* button;
+  button_layout->addWidget( button = new QPushButton( "&Apply", this ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _updateConfiguration() ) );  
+  connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );  
+  button->setToolTip( "apply changes to options" );
   
   // ok button
-  connect( &okButton(), SIGNAL( clicked() ), this, SLOT( _saveConfiguration() ) );  
-  okButton().setAutoDefault( false );
-  okButton().setToolTip( "apply changes to options and close window" );
-
+  button_layout->addWidget( button = new QPushButton( "&Ok", this ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _saveConfiguration() ) );  
+  connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
+  connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
+  button->setToolTip( "apply changes to options and close window" );
+  button->setAutoDefault( false );
+  
   // cancel button
-  connect( &cancelButton(), SIGNAL( clicked() ), this, SLOT( _restoreConfiguration() ) );
-  cancelButton().setAutoDefault( false );
-  cancelButton().setToolTip( "discard changes to options and close window" );
+  button_layout->addWidget( button = new QPushButton( "&Cancel", this ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _restoreConfiguration() ) );
+  connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
+  connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
+  button->setToolTip( "discard changes to options and close window" );
+  button->setAutoDefault( false );
   
   // close window shortcut
-  connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), this, SLOT( close() ) );
-  resize( 550, 350 );
+  connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
+  //resize( 550, 350 );
 
 }
 
-//__________________________________________________
-QWidget& ConfigDialogBase::addBox( const string& name, const bool& expand )
-{ 
-  Debug::Throw( "ConfigDialogBase::addBox.\n" );
-  ConfigList::Item *item(new ConfigList::Item( list_, name, expand ));
-  if( list().QListWidget::count() == 1 ) list().setItemSelected( item, true );
+//_________________________________________________________
+QWidget& ConfigDialogBase::addPage( const QString& title, const bool& expand )
+{  
+  Debug::Throw( "ConfigList::Item::Item.\n" );
   
-  return item->box(); 
-}
+  QWidget* main( new QWidget() );
+  QVBoxLayout* layout( new QVBoxLayout() );
+  layout->setSpacing( 2 );
+  layout->setMargin( 5 );
+  main->setLayout( layout );
+  
+  // create new item and add to stack
+  new ConfigListItem( &_list(), title, main );
+  _stack().addWidget( main );
 
-//__________________________________________________
-QWidget& ConfigDialogBase::getBox( const string& name )
-{
-  Debug::Throw( "ConfigDialogBase::getBox.\n" );
+  // make sure first item is selected
+  _list().setCurrentRow(0);
+  _stack().setCurrentIndex(0);
   
-  // loop over items
-  for( int row = 0; row < list().QListWidget::count(); row ++ )
-  {
-    if( name == qPrintable( list().item(row)->text() ) )
-    { return static_cast<ConfigList::Item*>(list().item(row))->box(); }
-  }
+  // in expanded mode, the main widget is returned directly
+  if( expand ) return *main;
   
-  // if no match found, return new one
-  return addBox( name );
+  // in non-expanded mode (the default)
+  // a widget is created inside main, and a stretch is added at the bottom
+  // the created widget is return
+  QWidget* contents( new QWidget( main ) );
+  contents->setLayout( new QVBoxLayout() );
+  contents->layout()->setSpacing(2);
+  contents->layout()->setMargin(0);
   
-}
-
-//_______________________________________________
-ConfigList::Item& ConfigDialogBase::listItem( const std::string& name )
-{
-  Debug::Throw( "ConfigDialogBase::listItem.\n" );
+  layout->addWidget( contents );
+  layout->addStretch();
+  return *contents;
   
-  QList<QListWidgetItem*>items = list().findItems( name.c_str(), Qt::MatchExactly );
-  
-  if( !items.empty() ) 
-  {  
-    ConfigList::Item* local = static_cast<ConfigList::Item*>(items.front());
-    if( local ) return *local;
-  }
-  
-  return *(new ConfigList::Item( &list(), name ));
 }
 
 //__________________________________________________
@@ -194,60 +159,53 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
   
   Debug::Throw( "ConfigDialogBase::baseConfiguration.\n" );
   
-  if( !parent ) parent = &addBox( "base" );
+  if( !parent ) parent = &addPage( "base" );
   
   // base
   if( flag & BASE )
   { 
     
     QGroupBox *box = new QGroupBox( "base", parent );
+    parent->layout()->addWidget( box );
+
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(5);
     layout->setSpacing(2);
     box->setLayout( layout );
-    parent->layout()->addWidget( box );
-    
-    QWidget* hbox = new QWidget( box );
-    layout->addWidget( hbox );
-    
+        
     QHBoxLayout* h_layout = new QHBoxLayout();
     h_layout->setMargin(0);
     h_layout->setSpacing(5);
-    hbox->setLayout( h_layout );
-    
-    // base font
-    QWidget* grid = new QWidget( hbox );
-    h_layout->addWidget( grid );
+    layout->addLayout( h_layout );
     
     QGridLayout* grid_layout = new QGridLayout();
     grid_layout->setMargin(0);
     grid_layout->setSpacing(2);
-    grid->setLayout( grid_layout );
-    grid_layout->addWidget( new QLabel( "default font: ", grid ), 0, 0 );
-    OptionFontEdit *edit = new OptionFontEdit( grid, "FONT_NAME" );
+    h_layout->addLayout( grid_layout );
+
+    // base font    
+    grid_layout->addWidget( new QLabel( "default font: ", box ), 0, 0 );
+    OptionFontEdit *edit = new OptionFontEdit( box, "FONT_NAME" );
     edit->setToolTip( "default font name for all widgets" );
     grid_layout->addWidget( edit, 0, 1 );
     addOptionWidget( edit );
     
     // fixed font
-    grid_layout->addWidget( new QLabel( "fixed font: ", grid ), 1, 0 );
-    edit = new OptionFontEdit( grid, "FIXED_FONT_NAME" );
+    grid_layout->addWidget( new QLabel( "fixed font: ", box ), 1, 0 );
+    edit = new OptionFontEdit( box, "FIXED_FONT_NAME" );
     edit->setToolTip( "default font name (fixed) for text widgets" );
     grid_layout->addWidget( edit, 1, 1 );
-    QtUtil::fixSize( edit, QtUtil::HEIGHT );
     addOptionWidget( edit );
 
     // default icon path
-    if( !XmlOptions::get().find( "DEFAULT_ICON_PATH" ) ) XmlOptions::get().add( Option( "DEFAULT_ICON_PATH", "" ) );
-
-    grid_layout->addWidget( new QLabel( "default icon path: ", grid ), 2, 0 );
-    OptionBrowsedLineEdit* icon_path_edit = new OptionBrowsedLineEdit( grid, "DEFAULT_ICON_PATH" );
+    grid_layout->addWidget( new QLabel( "default icon path: ", box ), 2, 0 );
+    OptionBrowsedLineEdit* icon_path_edit = new OptionBrowsedLineEdit( box, "DEFAULT_ICON_PATH" );
     grid_layout->addWidget( icon_path_edit, 2, 1 );
     addOptionWidget( icon_path_edit );
     
     // debug level
-    grid_layout->addWidget( new QLabel( "debug level: ", grid ), 3, 0 );
-    OptionSpinBox* spinbox = new OptionSpinBox( grid, "DEBUG_LEVEL" );
+    grid_layout->addWidget( new QLabel( "debug level: ", box ), 3, 0 );
+    OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 5 );
     spinbox->setToolTip( "debug verbosity level" );
@@ -255,17 +213,17 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
     addOptionWidget( spinbox );
           
     // icon pixmap
-    QWidget* iconbox = new QWidget( hbox );
-    h_layout->addWidget( iconbox );
-    
-    QVBoxLayout* v_layout = new QVBoxLayout();
-    iconbox->setLayout( v_layout );
-    
-    OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( iconbox, "ICON_PIXMAP" );
-    addOptionWidget( editor );
+    QVBoxLayout* v_layout( new QVBoxLayout() );
+    v_layout->setMargin(0);
+    v_layout->setSpacing(5);
+    h_layout->addLayout( v_layout );
+        
+    OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( box, "ICON_PIXMAP" );
     editor->setToolTip( "application icon" );
+    addOptionWidget( editor );
     v_layout->addWidget( editor );
-    v_layout->addWidget( new QWidget( iconbox ) );
+    v_layout->addWidget( new QLabel( "icon", box ), 0, Qt::AlignHCenter );
+    v_layout->addStretch(1);
     
   }
     
@@ -278,10 +236,11 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
   // tabs
   if( flag & TABS ) { tabConfiguration( parent ); }
   
-  string warning( 
+  QLabel *label = new QLabel( 
     "Note: the application may have to be restarted so that "
-    "all changes \nare taken into account." );
-  parent->layout()->addWidget( new QLabel( warning.c_str(), parent ) );
+    "all changes \nare taken into account.", parent );
+  label->setMargin(10);
+  parent->layout()->addWidget( label );
     
 }
 
@@ -292,7 +251,7 @@ void ConfigDialogBase::toolbarConfiguration( QWidget* parent )
   Debug::Throw( "ConfigDialogBase::toolbarConfiguration.\n" );
     
   // make sure parent is valid
-  if( !parent ) parent = &addBox( "base" );
+  if( !parent ) parent = &addPage( "base" );
   QGroupBox* box = new QGroupBox( "toolbars", parent );
   QVBoxLayout* layout = new QVBoxLayout();
   layout->setMargin(5);
@@ -330,7 +289,7 @@ void ConfigDialogBase::listConfiguration( QWidget* parent )
   Debug::Throw( "ConfigDialogBase::listConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addBox( "lists" );
+  if( !parent ) parent = &addPage( "lists" );
   
   QGroupBox* box = new QGroupBox( "lists", parent );
   QVBoxLayout* layout = new QVBoxLayout();
@@ -357,7 +316,7 @@ void ConfigDialogBase::tabConfiguration( QWidget* parent )
   Debug::Throw( "ConfigDialogBase::tabConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addBox( "Tabs" );
+  if( !parent ) parent = &addPage( "Tabs" );
   
   // tab emulation
   QGroupBox* box = new QGroupBox( "tab emulation", parent );
@@ -390,18 +349,14 @@ void ConfigDialogBase::tabConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-void ConfigDialogBase::_display(void)
+void ConfigDialogBase::_display( QListWidgetItem* current, QListWidgetItem* previous )
 {
   Debug::Throw( "ConfigDialogBase::_display.\n" );
   
-  // retrieve first selected item if any
-  QList<ConfigList::Item*> items( list().selectedItems<ConfigList::Item>() );
-  if( items.empty() ) return;
-  ConfigList::Item* item( items.front() );
-    
-  // show current item
-  list().target().setCurrentWidget( &item->main() );
-  
+  if( !current ) current = previous;
+  ConfigListItem* item( dynamic_cast<ConfigListItem*>(current) );
+  Exception::checkPointer( item, DESCRIPTION( "invalid cast" ) );
+  _stack().setCurrentWidget(&item->page());  
 }
 
 //__________________________________________________

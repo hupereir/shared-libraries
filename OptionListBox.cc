@@ -53,49 +53,45 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
 
   Debug::Throw( "OptionListBox::OptionListBox.\n" );
 
-  QHBoxLayout *main_layout( new QHBoxLayout() );
-  setLayout( main_layout );
+  QHBoxLayout* layout( new QHBoxLayout() );
+  layout->setSpacing(5);
+  layout->setMargin(0);
+  setLayout( layout );
   
   // create list
   list_ = new CustomListBox( this );
   list_->setSelectionMode( QAbstractItemView::ExtendedSelection );  
   connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), this, SLOT( _edit( QListWidgetItem* ) ) );
   connect( list_, SIGNAL( itemSelectionChanged() ), this, SLOT( _updateButtons() ) ); 
-  main_layout->addWidget( list_ );
+  layout->addWidget( list_, 1 );
   
-  QVBoxLayout* box_layout = new QVBoxLayout();
-  main_layout->addLayout( box_layout );
-  box_layout->setMargin( 5 );
-  box_layout->setSpacing( 5 );
+  QVBoxLayout* button_layout = new QVBoxLayout();
+  button_layout->setMargin(0);
+  button_layout->setSpacing( 5 );
+  layout->addLayout( button_layout, 0 );
 
   // Add button
-  QPushButton *button = new QPushButton( "&Add", this );
+  QPushButton *button;
+  button_layout->addWidget( button = new QPushButton( "&Add", this ) );
   connect( button, SIGNAL( clicked() ), this, SLOT( _add() ) );
-  QtUtil::fixSize( button );
-  button->setToolTip( "add a new value" );
-  box_layout->addWidget( button );
   
   // Edit button
-  edit_ = new QPushButton( "&Edit", this );
+  button_layout->addWidget( edit_ = new QPushButton( "&Edit", this ) );
   connect( edit_, SIGNAL( clicked() ), this, SLOT( _edit() ) );
-  QtUtil::fixSize( edit_ );
   edit_->setToolTip( "edit selected value" );
-  box_layout->addWidget( edit_ );
 
   // remove button
-  remove_ = new QPushButton( "&Remove", this );
+  button_layout->addWidget( remove_ = new QPushButton( "&Remove", this ) );
   connect( remove_, SIGNAL( clicked() ), this, SLOT( _remove() ) );
-  QtUtil::fixSize( remove_ );
   remove_->setToolTip( "remove selected value" );
-  box_layout->addWidget( remove_ );
 
   // set default button
-  default_ = new QPushButton( "&Default", this );
+  button_layout->addWidget( default_ = new QPushButton( "&Default", this ) );
   connect( default_, SIGNAL( clicked() ), this, SLOT( _setDefault() ) );
-  QtUtil::fixSize( default_ );
   default_->setToolTip( "set selected value as default\n(move it to the top of the list)" );
-  box_layout->addWidget( default_ );
 
+  button_layout->addStretch(1);
+  
   // update buttons
   _updateButtons();
   

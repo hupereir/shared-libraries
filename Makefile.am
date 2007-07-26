@@ -66,6 +66,7 @@ noinst_HEADERS = \
 	XmlFileRecord.h \
 	XmlOption.h \
 	XmlOptions.h \
+	XmlTextFormatBlock.h \
 	XmlTimeStamp.h
 
 noinst_LIBRARIES = libbase-qt.a
@@ -112,6 +113,7 @@ libbase_qt_a_SOURCES = \
 	XmlFileRecord.cc \
   XmlOption.cc \
   XmlOptions.cc \
+	XmlTextFormatBlock.cc \
   XmlTimeStamp.cc     
 
 nodist_libbase_qt_a_SOURCES = \

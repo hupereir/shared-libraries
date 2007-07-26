@@ -62,16 +62,16 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   main_layout_->setSpacing( 2 );
   main_->setLayout( main_layout_ );
   
-  // vertical box
-  Debug::Throw( "DocPanel::DockPanel - box.\n" );
-  box_ = new QWidget( main_ );
-  box_->setLayout( new QVBoxLayout() );
-  box_->layout()->setMargin(0);
-  box_->layout()->setSpacing(2);
+  // vertical panel
+  Debug::Throw( "DocPanel::DockPanel - panel.\n" );
+  panel_ = new QWidget( main_ );
+  panel_->setLayout( new QVBoxLayout() );
+  panel_->layout()->setMargin(0);
+  panel_->layout()->setSpacing(2);
   
-  main_layout_->addWidget( box_ );
+  main_layout_->addWidget( panel_ );
   
-  // insert hbox layout for buttons
+  // insert hpanel layout for buttons
   Debug::Throw( "DocPanel::DockPanel - button_layout_.\n" );
   button_layout_ = new QHBoxLayout();
   button_layout_->setMargin(0);

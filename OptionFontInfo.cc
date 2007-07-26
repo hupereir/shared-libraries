@@ -34,7 +34,7 @@
 #include "Debug.h"
 #include "OptionFontInfo.h"
 #include "XmlOptions.h"
-#include "TextFormatInfo.h"
+#include "TextFormat.h"
 
 using namespace std;
 

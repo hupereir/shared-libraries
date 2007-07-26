@@ -112,18 +112,76 @@ TextPosition CustomTextEdit::textPosition( void ) const
   QTextBlock block( cursor.block() );
   
   // calculate index
-  int index = cursor.position() - block.position(); 
+  TextPosition out;
+  out.index() = cursor.position() - block.position(); 
   
-  // calculate paragraph
-  // this is a kludge, because there is no way to access it directly 
-  // for this version of Qt
-  int paragraph( 0 );
-  while( (block = block.previous()).isValid() ) paragraph++;
+  // rewind to begin of document to get paragraph index
+  while( (block = block.previous()).isValid() ) out.paragraph()++;
   
-  return TextPosition( paragraph, index );
+  return out;
   
 }
 
+//________________________________________________
+TextPosition CustomTextEdit::positionFromIndex( const int& index ) const
+{
+  Debug::Throw( "CustomTextEdit::positionFromIndex.\n" );
+    
+  TextPosition out;
+
+  // retrieve block matching position
+  QTextBlock block( document()->findBlock( index ) );
+  if( block.isValid() ) out.index() = index - block.position();
+  else {
+    
+    // if no valid block is found, return position of last character in text
+    block = document()->end();
+    out.index() = block.length();
+  
+  }
+  
+  // rewind to begin of document to get paragraph index
+  while( (block = block.previous()).isValid() ) out.paragraph()++;
+  
+  return out;
+  
+}
+
+//________________________________________________
+int CustomTextEdit::indexFromPosition( const TextPosition& position ) const
+{
+  
+  Debug::Throw( "CustomTextEdit::indexFromPosition.\n" );
+
+  // advance until paragraph is matched
+  QTextBlock block( document()->begin() );
+  int paragraph(0);
+  while( paragraph < position.paragraph() && block.isValid() )
+  { 
+    paragraph++;
+    block = block.next();
+  }
+  
+  // if block is valid advance until index is smaller than current block size
+  int index = position.index();
+  if( block.isValid() ) 
+  {
+    while( index > block.length() && block.isValid() )
+    {
+      block = block.next();
+      index -= block.length();
+    }
+  }
+  
+  // if block is valid return found index
+  if( block.isValid() ) return block.position() + index;
+  else {
+    block = document()->end();
+    return block.position() + block.length();
+  } 
+    
+}  
+   
 //________________________________________________
 void CustomTextEdit::selectWord( void )
 {

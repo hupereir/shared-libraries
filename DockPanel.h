@@ -74,21 +74,14 @@ class DockPanel: public QWidget, public Counter
   void setFlags( const unsigned int& flags )
   { flags_ = flags; }
   
-  //! get dock main widget
-  virtual QWidget& mainWidget( void )
-  {
-    Exception::checkPointer( main_, DESCRIPTION( "main_ not initialized" ) );
-    return *main_;
-  }
-  
-  //! get box (to add contents)
-  virtual QWidget& box( void )
+  //! get panel (to add contents)
+  virtual QWidget& panel( void )
   { 
-    Exception::checkPointer( box_, DESCRIPTION( "box_ not initialized" ) );
-    return *box_;
+    Exception::checkPointer( panel_, DESCRIPTION( "panel_ not initialized" ) );
+    return *panel_;
   }
     
-  //! set detachable group box title
+  //! set detachable group panel title
   void setTitle( const std::string& title )
   { 
     if( !label_ ) {
@@ -110,10 +103,10 @@ class DockPanel: public QWidget, public Counter
           
   signals:
   
-  //! emmited when box is detached
+  //! emmited when panel is detached
   void detached( void );
   
-  //! emmited when box is attached
+  //! emmited when panel is attached
   void attached( void );
   
   protected slots:
@@ -170,8 +163,8 @@ class DockPanel: public QWidget, public Counter
   //! detachable main widget
   QWidget* main_;
     
-  //! contents vbox
-  QWidget* box_;
+  //! contents panel
+  QWidget* panel_;
   
   //! default size for the detached panel
   QSize detached_size_;
