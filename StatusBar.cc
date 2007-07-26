@@ -39,12 +39,14 @@
 using namespace std;
 
 //___________________________________________
-StatusBar::StatusBar( QWidget* parent )
+StatusBar::StatusBar( QWidget* parent ):
+  QWidget( parent ),
+  Counter( "StatusBar" )
 {
   
   Debug::Throw( "StatusBar::StatusBar.\n" );
   QHBoxLayout* layout = new QHBoxLayout();
-  layout->setMargin( 2 );
+  layout->setMargin( 0 );
   layout->setSpacing( 10 );
   setLayout( layout );
   
@@ -72,6 +74,6 @@ void StatusBar::addLabel( const int& stretch )
   
   StatusBarLabel* label = new StatusBarLabel( this );
   label->setMargin(2);
-  layout_->addWidget( label, 0, Qt::AlignVCenter );
+  layout_->addWidget( label, stretch, Qt::AlignVCenter );
   labels_.push_back( label );  
 }

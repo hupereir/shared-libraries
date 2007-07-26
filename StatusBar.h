@@ -53,14 +53,21 @@ class StatusBarLabel: public QLabel, public Counter
   StatusBarLabel( QWidget* parent ):
     QLabel( parent ),
     Counter( "StatusBarLabel" )
-    {}
+  {}
   
+  //! set text
+  virtual void setText( const QString& message, const bool& value = true )
+  {
+    if( value ) setTextAndUpdate( message );
+    else QLabel::setText( message );
+  }
+    
   public slots:
   
   //! set label text and process events
   void setTextAndUpdate( const QString& message )
   { 
-    setText( message );
+    QLabel::setText( message );
     qApp->processEvents();
   }
 
@@ -118,14 +125,6 @@ class StatusBar: public QWidget, public Counter
   {
     Exception::assert( i < labels_.size(), DESCRIPTION( "invalid index" ) );
     return *labels_[i];  
-  }
-  
-  //! changes label text
-  void setText( const std::string& text, const bool& update = true, const unsigned int& i = 0 )
-  {
-    if( update ) label(i).setTextAndUpdate( text.c_str() );
-    else label(i).setText( text.c_str() );
-    return;
   }
   
   private:
