@@ -107,6 +107,10 @@ class File: public Str
   //! tells if a file exists and can be written into
   virtual bool isWritable( void ) const;
   
+  //! tells if a file exists and can be written into
+  virtual bool isReadOnly( void ) const
+  { return !isWritable(); }
+  
   //! tells if a file exists and is a directory
   virtual bool isDirectory( void ) const;
   
