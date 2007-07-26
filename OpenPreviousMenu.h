@@ -58,7 +58,10 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
 
   //! destructor
   virtual ~OpenPreviousMenu( void )
-  { Debug::Throw( "OpenPreviousMenu::~OpenPreviousMenu.\n" ); }
+  { 
+    Debug::Throw( "OpenPreviousMenu::~OpenPreviousMenu.\n" ); 
+    if( valid_file_thread_.isRunning() ) valid_file_thread_.terminate();
+  }
 
   //! read db file
   virtual bool read( void );

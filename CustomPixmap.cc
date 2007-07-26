@@ -185,10 +185,9 @@ CustomPixmap CustomPixmap::disabled( void )
     {
 
       QColor color( image.pixel( x, y ) );
-      int alpha( qAlpha( color.rgb() ) );
       int gray( 128 + qGray( color.rgb() )/2 );
       merged_color.setRgb( gray, gray, gray );
-      merged_color.setRgb( qRgba( merged_color.red(), merged_color.green(), merged_color.blue(), alpha ) );
+      merged_color.setAlpha( color.alpha() );
       
       image.setPixel( x, y, merged_color.rgb() );
     }
