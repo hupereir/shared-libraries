@@ -45,9 +45,8 @@ CustomFileDialog::CustomFileDialog( QWidget* parent ):
   Counter( "CustomFileDialog" )
 {
   
-  Debug::Throw() <<  "CustomFileDialog::CustomFileDialog - working directory: " << workingDirectory() << endl;
+  Debug::Throw() <<  "CustomFileDialog::CustomFileDialog - working directory: " << working_directory_ << endl;
   if( working_directory_.size() && File( working_directory_ ).isDirectory() )
-  // if( working_directory_.size() )
   { setDirectory( QDir( working_directory_.c_str() ) ); }
   
   // set default view mode to list rather than detail because detail sometime has problems

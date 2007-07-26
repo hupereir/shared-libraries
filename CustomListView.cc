@@ -243,13 +243,7 @@ void CustomListView::sort( void )
 void CustomListView::updateItemColor( void )
 {
   Debug::Throw( "CustomListView::updateItemColor.\n" );
-  
-  if( !XmlOptions::get().find( "ITEM_COLOR" ) )
-  {
-    setAlternatingRowColors( false ); 
-    return;
-  }
-  
+    
   QColor item_color( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
   if( !item_color.isValid() )
   {

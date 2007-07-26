@@ -57,9 +57,6 @@ class CustomDialog: public QDialog, public Counter
     //! no flags
     NONE = 0,
     
-    //! dialog is exclusive
-    EXCLUSIVE = 1,
-      
     //! dialog has OK button
     OK_BUTTON = 2,
     
@@ -70,7 +67,7 @@ class CustomDialog: public QDialog, public Counter
   //! constructor
   CustomDialog( 
     QWidget *parent, 
-    const unsigned int& flags = EXCLUSIVE | OK_BUTTON | CANCEL_BUTTON, 
+    const unsigned int& flags = OK_BUTTON | CANCEL_BUTTON, 
     Qt::WFlags wflags = 0);  
   
   //! destructor

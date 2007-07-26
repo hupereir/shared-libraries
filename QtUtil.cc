@@ -65,7 +65,6 @@ void QtUtil::infoDialogExclusive(
 {
   Debug::Throw( "QtUtil::infoDialogExclusive.\n" );
   QDialog dialog( parent );
-  dialog.setModal( true );
   
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
@@ -85,12 +84,12 @@ void QtUtil::infoDialogExclusive(
   
   // insert main vertical box
   if( question_pixmap.isNull() )
-  { layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter ); }
+  { layout->addWidget( new QLabel( text.c_str(), &dialog ), 1, Qt::AlignHCenter ); }
   else
   {
     
     QHBoxLayout *h_layout( new QHBoxLayout() );
-    layout->addLayout( h_layout );
+    layout->addLayout( h_layout, 1 );
     QLabel* label = new QLabel( &dialog );
     label->setPixmap( question_pixmap );
     h_layout->addWidget( label, 0, Qt::AlignHCenter );
@@ -100,7 +99,6 @@ void QtUtil::infoDialogExclusive(
     
   // insert OK and Cancel button
   QPushButton *button( new QPushButton( "OK", &dialog ) );
-  fixSize( button );
   layout->addWidget( button, 0, Qt::AlignHCenter );
   dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( accept() ) );
 
@@ -137,7 +135,6 @@ bool QtUtil::questionDialogExclusive(
   
   Debug::Throw( "QtUtil::questionDialogExclusive.\n" );
   QDialog dialog( parent );
-  dialog.setModal( true );
   
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
@@ -157,12 +154,12 @@ bool QtUtil::questionDialogExclusive(
   
   // insert main vertical box
   if( question_pixmap.isNull() )
-  { layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter ); }
+  { layout->addWidget( new QLabel( text.c_str(), &dialog ), 1, Qt::AlignHCenter ); }
   else
   {
     
     QHBoxLayout *h_layout( new QHBoxLayout() );
-    layout->addLayout( h_layout );
+    layout->addLayout( h_layout, 1 );
     QLabel* label = new QLabel( &dialog );
     label->setPixmap( question_pixmap );
     h_layout->addWidget( label, 0, Qt::AlignHCenter );
@@ -177,13 +174,11 @@ bool QtUtil::questionDialogExclusive(
   
   // insert OK button
   QPushButton *button = new QPushButton( "&Yes", &dialog );
-  fixSize( button );
   hbox_layout->addWidget( button );
   dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( accept() ) );
   
   // insert Cancel button
   button = new QPushButton( "&No", &dialog );
-  fixSize( button );
   hbox_layout->addWidget( button );
   dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( reject() ) );
   

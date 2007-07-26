@@ -47,9 +47,6 @@ CustomDialog::CustomDialog(
 
   Debug::Throw( "CustomDialog::CustomDialog.\n" );
   
-  // modality
-  setModal( flags & CustomDialog::EXCLUSIVE );
-  
   // create vbox layout
   QVBoxLayout* layout( new QVBoxLayout() );
   setLayout( layout );

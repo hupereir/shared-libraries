@@ -93,7 +93,6 @@ void BrowsedLineEdit::_browse( void )
     
   // create file dialog
   CustomFileDialog dialog( this );
-  dialog.setModal( true );
   dialog.setFileMode( mode_ );
   dialog.setViewMode( QFileDialog::Detail );
   

@@ -51,20 +51,16 @@ class CustomFileDialog: public QFileDialog, public Counter
   
   //! creator
   CustomFileDialog( QWidget* parent );  
-  
-  //! retrieve working directory
-  static std::string workingDirectory( void )
-  { return working_directory_; }
-    
-  private:
-  
-  //! static string to store working directory
-  static std::string working_directory_;
 
   private slots:
   
   //! stores working directory when changed
   void _saveWorkingDirectory( const QString& directory );
+    
+  private:
+  
+  //! static string to store working directory
+  static std::string working_directory_;
   
 };
 

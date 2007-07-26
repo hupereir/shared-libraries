@@ -67,7 +67,7 @@ void IconBrowsedButton::setIconFile( const std::string& file, const bool& check 
   Debug::Throw() << "IconBrowsedButton::setIconFile - " << file << endl;
   
   if( File( file ).exist() ) work_directory_ = File(file).path();
-  else if( XmlOptions::get().find( "DEFAULT_ICON_PATH" ) ) work_directory_ = XmlOptions::get().get<string>("DEFAULT_ICON_PATH");
+  else work_directory_ = XmlOptions::get().get<string>("DEFAULT_ICON_PATH");
   
   CustomPixmap pixmap( file );
   if( !pixmap.isNull() ) 
@@ -105,7 +105,6 @@ void IconBrowsedButton::_browse( void )
      
   // create file dialog
   CustomFileDialog dialog( this );
-  dialog.setModal( true );
   dialog.setFileMode( QFileDialog::AnyFile );
   
   // retrieve text, check if path is valid, assign to FileDialog

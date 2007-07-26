@@ -112,7 +112,7 @@ void OpenPreviousMenu::_loadFiles( void )
   
   FileRecord::List records( _records() );
   
-  if( XmlOptions::get().find("SORT_FILES_BY_DATE" ) && XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") )
+  if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") )
   { records.sort( FileRecord::FirstOpenFTor() ); }
   else { records.sort( FileRecord::SameFileFTor() ); }
   

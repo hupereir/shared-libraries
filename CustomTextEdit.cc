@@ -58,7 +58,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
   synchronize_( false ),
-  highlight_enabled_( true ),
+  highlight_enabled_( false ),
   highlight_available_( false ),
   click_counter_( this )
 {
@@ -231,8 +231,7 @@ void CustomTextEdit::updateConfiguration( void )
   Debug::Throw( "CustomTextEdit::updateConfiguration.\n" );
   QColor highlight_color;
   
-  if( XmlOptions::get().find( "HIGHLIGHT_COLOR" ) )
-  { highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() ); }
+  highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
   
   if( highlight_color.isValid() )
   {
@@ -838,7 +837,7 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, co
 //_____________________________________________________________
 void CustomTextEdit::_clearHighlightedBlock( void )
 {
-  Debug::Throw(0, "CustomTextEdit::_clearHighlightedBlock.\n" );
+  Debug::Throw( "CustomTextEdit::_clearHighlightedBlock.\n" );
   
   // loop over all blocks
   for( QTextBlock block = document()->begin(); block.isValid(); block = block.next() )

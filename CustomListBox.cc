@@ -58,11 +58,6 @@ QListWidgetItem& CustomListBox::findItem( const std::string& name )
 //_____________________________________________________________________
 void CustomListBox::updateItemColor( void )
 {
-  if( !XmlOptions::get().find( "ITEM_COLOR" ) )
-  {
-    setAlternatingRowColors( false ); 
-    return;
-  }
   
   QColor item_color( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
   if( !item_color.isValid() )
