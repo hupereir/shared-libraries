@@ -472,6 +472,8 @@ void CustomTextEdit::_highlightCurrentBlock( void )
   if( data->isCurrentBlock() ) return;
   
   // clear last highlighted block
+  bool modified( document()->isModified() );
+  
   _clearHighlightedBlock();
   
   // set block as active
@@ -479,6 +481,9 @@ void CustomTextEdit::_highlightCurrentBlock( void )
   cursor.joinPreviousEditBlock();
   cursor.setBlockFormat( highlight_format_ );
   cursor.endEditBlock();
+  
+  // reset modification state
+  if( !modified ) document()->setModified( false );
   
   return;
 }

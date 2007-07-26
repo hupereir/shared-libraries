@@ -21,17 +21,18 @@
 *                         
 *******************************************************************************/
 
-#ifndef StateFrame_h
-#define StateFrame_h
+#ifndef StatusBar_h
+#define StatusBar_h
 
 /*!
-   \file StateFrame.h
+   \file StatusBar.h
    \brief  customized line edit for application state
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
 */
 
+#include <QSizeGrip>
 #include <QLabel>
 #include <QLayout>
 #include <QApplication>
@@ -42,16 +43,16 @@
 #include "Exception.h"
 
 //! local label for additional slots
-class StateFrameLabel: public QLabel, public Counter
+class StatusBarLabel: public QLabel, public Counter
 {
   
   //! Qt meta object macro
   Q_OBJECT
 
   public:
-  StateFrameLabel( QWidget* parent ):
+  StatusBarLabel( QWidget* parent ):
     QLabel( parent ),
-    Counter( "StateFrameLabel" )
+    Counter( "StatusBarLabel" )
     {}
   
   public slots:
@@ -66,20 +67,34 @@ class StateFrameLabel: public QLabel, public Counter
 };
     
 /*!
-   \class StateFrame
+   \class StatusBar
    \brief  customized line edit for application state
 */
-class StateFrame: public QWidget, public Counter 
+class StatusBar: public QWidget, public Counter 
 {
 
   public:
   
   //! constructor
-  StateFrame( QWidget* parent, unsigned int n_labels = 1 );
+  StatusBar( QWidget* parent );
   
   //! destructor
-  ~StateFrame( void )
+  ~StatusBar( void )
   {}
+  
+  //! size/hide grip
+  void setSizeGripEnabled( const bool& value )
+  { 
+    if( value ) grip().show();
+    else grip().hide();
+  }
+  
+  //! size grip
+  QSizeGrip& grip( void )
+  { 
+    Exception::checkPointer( grip_, DESCRIPTION( "grip_ not initialized" ) );
+    return *grip_;
+  }
   
   //! retrieve layout
   QBoxLayout& getLayout( void )
@@ -88,19 +103,28 @@ class StateFrame: public QWidget, public Counter
     return *layout_;
   }
   
+  //! add clock
+  void addClock( void );
+  
+  //! add label
+  void addLabel( const int& stretch = 0 );
+  
+  //! add labels
+  void addLabels( const unsigned int& n, const int& stretch = 0 )
+  { for( unsigned int i=0; i<n; i++ ) addLabel( stretch ); }
+  
   //! retrieves label with given index
-  StateFrameLabel& label( unsigned int i_label = 0  ) const
+  StatusBarLabel& label( const unsigned int& i = 0  )
   {
-    if( i_label >= labels_.size() ) throw std::runtime_error( DESCRIPTION( "invalid label index" ) );
-    return *labels_[i_label];  
+    Exception::assert( i < labels_.size(), DESCRIPTION( "invalid index" ) );
+    return *labels_[i];  
   }
   
   //! changes label text
-  void setText( const std::string& text, bool update = true, unsigned int i_label = 0 )
+  void setText( const std::string& text, const bool& update = true, const unsigned int& i = 0 )
   {
-    Exception::assert( i_label < labels_.size(), DESCRIPTION( "invalid label index" ) );
-    if( update ) labels_[i_label]->setTextAndUpdate( text.c_str() );
-    else labels_[i_label]->setText( text.c_str() );
+    if( update ) label(i).setTextAndUpdate( text.c_str() );
+    else label(i).setText( text.c_str() );
     return;
   }
   
@@ -109,8 +133,11 @@ class StateFrame: public QWidget, public Counter
   //! layout
   QBoxLayout* layout_;
   
+  //! size grip
+  QSizeGrip* grip_;
+  
   //! vector of output labels.
-  std::vector< StateFrameLabel* > labels_;
+  std::vector< StatusBarLabel* > labels_;
   
 };
 

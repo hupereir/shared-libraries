@@ -55,7 +55,7 @@ noinst_HEADERS = \
 	QtUtil.h \
 	ReplaceDialog.h \
 	SelectLineDialog.h \
-	StateFrame.h \
+	StatusBar.h \
   TextBlockData.h \
   TextSelection.h \
   TextSeparator.h \
@@ -103,7 +103,7 @@ libbase_qt_a_SOURCES = \
   QtUtil.cc \
 	ReplaceDialog.cc \
 	SelectLineDialog.cc \
-  StateFrame.cc \
+  StatusBar.cc \
   TextSeparator.cc \
   ValidFileThread.cc \
 	XmlFileList.cc \
@@ -141,7 +141,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_OptionListBox.cc \
 	moc_ReplaceDialog.cc \
   moc_SelectLineDialog.cc \
-  moc_StateFrame.cc
+  moc_StatusBar.cc
 
 clean-local:
 	 rm -f moc_*.cc

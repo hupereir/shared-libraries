@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file StateFrame.cc
+   \file StatusBar.cc
    \brief  customized line edit for application state
    \author Hugo Pereira
    \version $Revision$
@@ -31,30 +31,47 @@
 
 #include <qlayout.h>
 
-#include "StateFrame.h"
-#include "CustomLineEdit.h"
+#include "StatusBar.h"
+#include "ClockLabel.h"
 #include "QtUtil.h"
 #include "Debug.h"
 
 using namespace std;
 
-//____________________________________________
-StateFrame::StateFrame( QWidget* parent, unsigned int n_labels ):
-  QWidget( parent ),
-  Counter( "StateFrame" )
+//___________________________________________
+StatusBar::StatusBar( QWidget* parent )
 {
-  Debug::Throw( "StateFrame::StateFrame.\n" );
-  if( !n_labels ) throw runtime_error( DESCRIPTION( "invalid number of labels" ) );
-  layout_ = new QHBoxLayout( this );
-  layout_->setMargin( 2 );
+  
+  Debug::Throw( "StatusBar::StatusBar.\n" );
+  QHBoxLayout* layout = new QHBoxLayout();
+  layout->setMargin( 2 );
+  layout->setSpacing( 10 );
+  setLayout( layout );
+  
+  layout_ = new QHBoxLayout();
+  layout_->setMargin( 0 );
   layout_->setSpacing( 10 );
+  layout->addLayout( layout_, 1 );
   
-  for( unsigned int i=0; i<n_labels; i++ ) {
-    StateFrameLabel* label = new StateFrameLabel( this );
-    label->setMargin(2);
-    layout_->addWidget( label, 0, Qt::AlignVCenter );
-    labels_.push_back( label );
-    setText( "", false, i );
-  }
+  layout->addWidget( grip_ = new QSizeGrip(this), 0 );
   
+}
+
+
+//___________________________________________
+void StatusBar::addClock( void )
+{ 
+  Debug::Throw( "StatusBar::addClock.\n" );
+  getLayout().addWidget( new ClockLabel( this ) ); 
+}
+
+//____________________________________________
+void StatusBar::addLabel( const int& stretch )
+{
+  Debug::Throw( "StatusBar::addLabel.\n" );
+  
+  StatusBarLabel* label = new StatusBarLabel( this );
+  label->setMargin(2);
+  layout_->addWidget( label, 0, Qt::AlignVCenter );
+  labels_.push_back( label );  
 }
