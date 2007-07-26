@@ -90,7 +90,7 @@ namespace SPELLCHECK
     }
     
     //! enabled
-    virtual const bool& autoSpellEnabled( void ) const
+    virtual const bool& enabled( void ) const
     { return enabled_; }
           
     //! spell interface
