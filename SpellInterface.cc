@@ -296,13 +296,13 @@ bool SpellInterface::nextWord( void )
 }
 
 //____________________________________________________
-list< string > SpellInterface::suggestions( const std::string& word ) const
+vector< string > SpellInterface::suggestions( const std::string& word ) const
 {
 
   Debug::Throw( "SpellInterface::suggestions.\n" );
 
   // check spell checker
-  list<string> out;
+  vector<string> out;
   if( !spell_checker_ ) {
     Debug::Throw(0, "SpellInterface::suggestions - no spell checker" );
     return out;

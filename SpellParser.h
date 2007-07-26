@@ -82,20 +82,17 @@ namespace SPELLCHECK
     }
 
     //! enabled. Returns true if changed.
-    virtual bool setAutoSpellEnabled( const bool& value )
+    virtual bool setEnabled( const bool& value )
     { 
-      if( autospell_enabled_ == value ) return false;
-      autospell_enabled_ = value; 
+      if( enabled_ == value ) return false;
+      enabled_ = value; 
       return true;
     }
     
     //! enabled
     virtual const bool& autoSpellEnabled( void ) const
-    { return autospell_enabled_; }
-      
-    //! return true if TextPosition match a misspelled word
-    virtual Word misspelled( const int& position ) const;
-    
+    { return enabled_; }
+          
     //! spell interface
     virtual SpellInterface& interface( void )
     { return interface_; }
@@ -103,7 +100,7 @@ namespace SPELLCHECK
     private:
     
     //! enabled
-    bool autospell_enabled_;
+    bool enabled_;
     
     //! spell interface
     SpellInterface interface_;
@@ -114,9 +111,6 @@ namespace SPELLCHECK
     //! font format (is a bitwise or of TextFormatInfo bits)
     unsigned int format_;
         
-    //! store misspelled words
-    Word::Set misspelled_words_;
-
   };
 
 };

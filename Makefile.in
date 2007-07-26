@@ -51,9 +51,11 @@ ARFLAGS = cru
 libspellcheck_a_AR = $(AR) $(ARFLAGS)
 libspellcheck_a_LIBADD =
 am_libspellcheck_a_OBJECTS = AutoSpellConfig.$(OBJEXT) \
-	SpellConfig.$(OBJEXT) SpellDialog.$(OBJEXT) \
-	SpellInterface.$(OBJEXT) SpellParser.$(OBJEXT)
-nodist_libspellcheck_a_OBJECTS = moc_SpellDialog.$(OBJEXT)
+	SpellCheckBlockData.$(OBJEXT) SpellConfig.$(OBJEXT) \
+	SpellDialog.$(OBJEXT) SpellInterface.$(OBJEXT) \
+	SpellParser.$(OBJEXT) SuggestionMenu.$(OBJEXT)
+nodist_libspellcheck_a_OBJECTS = moc_SpellDialog.$(OBJEXT) \
+	moc_SuggestionMenu.$(OBJEXT)
 libspellcheck_a_OBJECTS = $(am_libspellcheck_a_OBJECTS) \
 	$(nodist_libspellcheck_a_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir)
@@ -193,22 +195,27 @@ INCLUDES = \
 
 noinst_HEADERS = \
   AutoSpellConfig.h \
+  SpellCheckBlockData.h \
   SpellConfig.h \
   SpellDialog.h \
   SpellInterface.h \
   SpellParser.h \
+  SuggestionMenu.h \
   Word.h
 
 noinst_LIBRARIES = libspellcheck.a
 libspellcheck_a_SOURCES = \
   AutoSpellConfig.cc \
+  SpellCheckBlockData.cc \
   SpellConfig.cc \
   SpellDialog.cc \
   SpellInterface.cc \
-  SpellParser.cc
+  SpellParser.cc \
+  SuggestionMenu.cc
 
 nodist_libspellcheck_a_SOURCES = \
-  moc_SpellDialog.cc
+  moc_SpellDialog.cc \
+  moc_SuggestionMenu.cc
 
 all: all-am
 
@@ -258,11 +265,14 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AutoSpellConfig.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpellCheckBlockData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpellConfig.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpellDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpellInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SpellParser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SuggestionMenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/moc_SpellDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/moc_SuggestionMenu.Po@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

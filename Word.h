@@ -40,6 +40,9 @@ namespace SPELLCHECK
   class Word: public std::string
   {
     public:
+
+    //! shortcut for set
+    typedef std::set<Word> Set;
         
     //! constructor
     Word( const std::string& word = "", const int& position = 0 ):
@@ -55,8 +58,12 @@ namespace SPELLCHECK
     bool operator < ( const Word& word ) const 
     { return position_ < word.position_; }
       
+    //! position
+    const int& position( void ) const
+    { return position_; }
+    
     //! true if given position is in the selected word
-    bool Has( const int& position ) const
+    bool has( const int& position ) const
     { 
       return 
         position >= position_ && 
@@ -76,7 +83,7 @@ namespace SPELLCHECK
       
       //! predicate
       bool operator() (const Word& word )
-      { return word.Has( position_ ); }
+      { return word.has( position_ ); }
       
       private:
       
@@ -85,11 +92,10 @@ namespace SPELLCHECK
       
     };
     
-    //! position in text
-    const int position_;
+    private:
     
-    //! shortcut for set
-    typedef std::set<Word> Set;
+    //! position in text
+    const int position_;    
     
   };
 }

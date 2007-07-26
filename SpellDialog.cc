@@ -515,8 +515,8 @@ void SpellDialog::_displayWord( const QString& word )
   // clear list of suggestions
   suggestion_list_box_->clear();
   bool first = true;
-  list<string> suggestions( interface().suggestions( qPrintable( word ) ) );
-  for( list<string>::iterator iter = suggestions.begin(); iter != suggestions.end(); iter++ )
+  vector<string> suggestions( interface().suggestions( qPrintable( word ) ) );
+  for( vector<string>::iterator iter = suggestions.begin(); iter != suggestions.end(); iter++ )
   {
     QListWidgetItem *item = new QListWidgetItem( suggestion_list_box_ );
     item->setText( iter->c_str() );

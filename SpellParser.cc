@@ -41,7 +41,7 @@ using namespace SPELLCHECK;
 //____________________________________________________________________________
 SpellParser::SpellParser( void ):
     Counter( "SpellParser" ),
-    autospell_enabled_( false ),
+    enabled_( false ),
     color_( Qt::red ),
     format_( FORMAT::DEFAULT )
 { Debug::Throw( "SpellParser::SpellParser" ); }
@@ -53,7 +53,7 @@ Word::Set SpellParser::parse( const QString& text )
   Debug::Throw( "SpellParser::Parse.\n" );
 
   // check if enabled
-  if( !autospell_enabled_ ) return ( Word::Set() );
+  if( !enabled_ ) return ( Word::Set() );
   
   // retrieve misspelled words
   interface().setText( qPrintable( text ) );
@@ -63,21 +63,13 @@ Word::Set SpellParser::parse( const QString& text )
     interface().nextWord();
     string word( interface().word() );
     int position( interface().position() );
-    Debug::Throw() << "SpellParser::highlightParagraph - new word" << word << endl;
     if( word.empty() ) break;
     if( interface().isWordIgnored( word ) ) continue;
     
+    Debug::Throw() << "SpellParser::highlightParagraph - new word: " << word << " position: " << position << endl;
     words.insert( Word( word, position ) );
     
   }
   
-  misspelled_words_.insert( words.begin(), words.end() );
-  return misspelled_words_;
-}
-
-//____________________________________________________________________________
-Word SpellParser::misspelled( const int& position ) const
-{
-  Word::Set::const_iterator word_iter = find_if( misspelled_words_.begin(), misspelled_words_.end(), Word::AtPositionFTor( position ) );
-  return( word_iter == misspelled_words_.end() ) ? Word() : *word_iter;
+  return words;
 }

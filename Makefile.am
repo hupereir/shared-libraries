@@ -13,10 +13,12 @@ CXXFLAGS = @CXXFLAGS@
 
 noinst_HEADERS = \
   AutoSpellConfig.h \
+  SpellCheckBlockData.h \
   SpellConfig.h \
   SpellDialog.h \
   SpellInterface.h \
   SpellParser.h \
+  SuggestionMenu.h \
   Word.h
 
 
@@ -24,13 +26,16 @@ noinst_LIBRARIES = libspellcheck.a
   
 libspellcheck_a_SOURCES =  \
   AutoSpellConfig.cc \
+  SpellCheckBlockData.cc \
   SpellConfig.cc \
   SpellDialog.cc \
   SpellInterface.cc \
-  SpellParser.cc
+  SpellParser.cc \
+  SuggestionMenu.cc
 	
 nodist_libspellcheck_a_SOURCES = \
-  moc_SpellDialog.cc
+  moc_SpellDialog.cc \
+  moc_SuggestionMenu.cc
 	
 clean-local:
 	 rm -f moc_*.cc

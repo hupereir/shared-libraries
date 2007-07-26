@@ -33,7 +33,7 @@
 */
 
 #include <aspell.h>
-#include <list>
+#include <vector>
 #include <set>
 #include <string>
 
@@ -184,7 +184,7 @@ namespace SPELLCHECK
     bool nextWord( void );
     
     //! retrieve list of suggestions for current word
-    std::list< std::string > suggestions( const std::string& word ) const;
+    std::vector< std::string > suggestions( const std::string& word ) const;
     
     //! save word list in personal dictionary
     void saveWordList( void );
