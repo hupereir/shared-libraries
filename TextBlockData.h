@@ -46,7 +46,7 @@ class TextBlockData: public QTextBlockUserData, public Counter
     QTextBlockUserData(),
     Counter( "TextBlockData" ),
     current_block_( false )
-  { Debug::Throw( "TextBlockData::~TextBlockData.\n" ); }
+  { Debug::Throw( "TextBlockData::TextBlockData.\n" ); }
   
   //! destructor
   virtual ~TextBlockData( void )

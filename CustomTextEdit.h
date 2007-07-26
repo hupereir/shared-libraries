@@ -66,10 +66,10 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual ~CustomTextEdit( void );
     
   //! enable/disable shortcuts
-  virtual void enableShortCuts( const bool& );
+  virtual void setShortcutsEnabled( const bool& );
   
   //! enable/disable highlight
-  virtual void enableBlockHighlight( const bool& );
+  virtual void setHighlightEnabled( const bool& );
   
   //! retrieve current text position
   virtual TextPosition textPosition() const;

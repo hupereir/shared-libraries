@@ -83,17 +83,17 @@ CustomTextEdit::~CustomTextEdit( void )
 }
 
 //________________________________________________
-void CustomTextEdit::enableShortCuts( const bool& value )
+void CustomTextEdit::setShortcutsEnabled( const bool& value )
 { 
-  Debug::Throw() << "CustomTextEdit::enableShortCuts - value: " << (value ? "true":"false" ) << endl;
+  Debug::Throw() << "CustomTextEdit::setShortcutsEnabled - value: " << (value ? "true":"false" ) << endl;
   for( std::vector<QShortcut*>::iterator iter = shortcuts_.begin(); iter != shortcuts_.end(); iter++ )
   { (*iter)->setEnabled( value ); }
 }  
 
 //________________________________________________
-void CustomTextEdit::enableBlockHighlight( const bool& value )
+void CustomTextEdit::setHighlightEnabled( const bool& value )
 { 
-  Debug::Throw() << "CustomTextEdit::enableBlockHighlight - value: " << (value ? "true":"false" ) << endl;
+  Debug::Throw() << "CustomTextEdit::setHighlightEnabled - value: " << (value ? "true":"false" ) << endl;
   
   highlight_enabled_ = value;
   
@@ -465,7 +465,7 @@ void CustomTextEdit::_highlightCurrentBlock( void )
   QTextBlock block( textCursor().block() );
   
   // try retrieve data, create if not found
-  TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
+  TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
   if( !data ) block.setUserData( data = new TextBlockData() );
   
   // check if current block is not already active
@@ -845,7 +845,7 @@ void CustomTextEdit::_clearHighlightedBlock( void )
     
     // try retrieve data
     // check if block is current
-    TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
+    TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
     if( !( data && data->isCurrentBlock() )  ) continue;
     
     // reset data
