@@ -53,6 +53,7 @@ noinst_HEADERS = \
 	OptionSpinBox.h \
 	OptionWidget.h \
 	QtUtil.h \
+	RemoveLineBuffer.h \
 	ReplaceDialog.h \
 	SelectLineDialog.h \
 	StatusBar.h \
@@ -101,6 +102,7 @@ libbase_qt_a_SOURCES = \
 	OptionFontInfo.cc \
   OptionListBox.cc \
   QtUtil.cc \
+	RemoveLineBuffer.cc \
 	ReplaceDialog.cc \
 	SelectLineDialog.cc \
   StatusBar.cc \
@@ -139,6 +141,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_MultipleClickCounter.cc \
   moc_OpenPreviousMenu.cc \
   moc_OptionListBox.cc \
+	moc_RemoveLineBuffer.cc \
 	moc_ReplaceDialog.cc \
   moc_SelectLineDialog.cc \
   moc_StatusBar.cc

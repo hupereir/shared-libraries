@@ -60,6 +60,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   synchronize_( false ),
   highlight_enabled_( false ),
   highlight_available_( false ),
+  remove_line_buffer_( this ),
   click_counter_( this )
 {
   
@@ -447,6 +448,7 @@ void CustomTextEdit::removeLine()
   QTextCursor cursor( textCursor() );
   cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
   cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
+  remove_line_buffer_.append( cursor.selectedText() );
   setTextCursor( cursor );
   cut();
   
@@ -469,7 +471,7 @@ void CustomTextEdit::_highlightCurrentBlock( void )
   if( !data ) block.setUserData( data = new TextBlockData() );
   
   // check if current block is not already active
-  if( data->isCurrentBlock() ) return;
+  // if( data->isCurrentBlock() ) return;
   
   // clear last highlighted block
   bool modified( document()->isModified() );
@@ -600,7 +602,8 @@ void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
 //________________________________________________
 void CustomTextEdit::keyPressEvent( QKeyEvent* event )
 {
-  Debug::Throw( "CustomTextEdit::KeyPressEvent.\n" );
+  
+  remove_line_buffer_.clear();
   
   if( event->key() == Key_Insert ) 
   {
@@ -845,23 +848,39 @@ void CustomTextEdit::_clearHighlightedBlock( void )
   Debug::Throw( "CustomTextEdit::_clearHighlightedBlock.\n" );
   
   // loop over all blocks
+  vector<QTextBlock> blocks;
   for( QTextBlock block = document()->begin(); block.isValid(); block = block.next() )
   {
     
+    if( textCursor().block() == block ) continue;
+    
+    TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
+    if( data && data->isCurrentBlock() ) 
+    {
+      // reset data
+      blocks.push_back( block ); 
+      data->setCurrentBlock( false );
+      continue;
+    }
+    
     // try retrieve data
     // check if block is current
-    TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
-    if( !( data && data->isCurrentBlock() )  ) continue;
+    if( block.blockFormat() == highlight_format_ )
+    { 
+      blocks.push_back( block ); 
+      continue;
+    }
     
-    // reset data
-    data->setCurrentBlock( false );
+  }
     
-    // reset textBlockFormat
-    QTextCursor cursor( block );
-    cursor.joinPreviousEditBlock();
+    
+  // reset textBlockFormat
+  for( vector<QTextBlock>::iterator iter = blocks.begin(); iter != blocks.end(); iter++ )
+  {
+    QTextCursor cursor( *iter );
+    cursor.beginEditBlock();
     cursor.setBlockFormat( default_format_ );
-    cursor.endEditBlock();
-    
+    cursor.endEditBlock();    
   }
   
   return;
@@ -903,7 +922,6 @@ void CustomTextEdit::_installShortcuts( void )
   _addShortcut( CTRL+Key_R, this, SLOT( replaceFromDialog() ) );
   _addShortcut( CTRL+Key_T, this, SLOT( replaceAgainForward() ) );
   _addShortcut( SHIFT+CTRL+Key_T, this, SLOT( replaceAgainBackward() ) );
-
   _addShortcut( CTRL+Key_L, this, SLOT( selectLineFromDialog() ) );
   
 }

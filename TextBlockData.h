@@ -64,7 +64,7 @@ class TextBlockData: public QTextBlockUserData, public Counter
   
   //! set to true for current block
   bool current_block_;
-  
+    
 };
 
 #endif

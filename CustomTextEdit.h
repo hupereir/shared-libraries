@@ -44,6 +44,7 @@
 #include "Debug.h"
 #include "Key.h"
 #include "MultipleClickCounter.h"
+#include "RemoveLineBuffer.h"
 #include "TextPosition.h"
 #include "TextSelection.h"
 
@@ -330,6 +331,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   QTextBlockFormat default_format_;
   
   //@}
+  
+  //! remove_line buffer
+  RemoveLineBuffer remove_line_buffer_;
   
   //! multiple click counter
   MultipleClickCounter click_counter_;
