@@ -43,7 +43,24 @@ Options::Options( void ):
   Counter( "Options" ),
   options_(),
   special_options_()
-{}
+{
+
+  /* 
+    generic options (default values)
+    common to all applications
+  */
+  add( Option( "DEFAULT_ICON_PATH", "/usr/share/icons" , "default path to look for icons"));  
+  add( Option( "DEBUG_LEVEL", "0" , "debug verbosity level"  )); 
+  add( Option( "FIXED_FONT_NAME", "Sans" , "fixed font"  )); 
+  add( Option( "FONT_NAME", "Sans" , "main font"  )); 
+  add( Option( "FONT_SIZE", "10" , "font size"));  
+  add( Option( "HIGHLIGHT_COLOR", "#fffdd4", "current paragraph highlight color" ) ); 
+  add( Option( "ITEM_COLOR", "#EEF6FF", "background color for even items in ListBox and ListView" ) ); 
+  add( Option( "USE_BIG_PIXMAP", "1" , "big pixmaps in tool buttons"  )); 
+  add( Option( "USE_TEXT_LABEL", "1" , "text label in tool buttons"  )); 
+  add( Option( "SORT_FILES_BY_DATE", "0" , "sort files by access date in open previous menu"  )); 
+
+}
 
 //____________________________________________________
 Option& Options::getOption( const string& name )

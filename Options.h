@@ -76,7 +76,7 @@ class Options: public Counter
   }
 
   //! adds a new option. Return true if option is added
-  virtual bool add( const Option& option, bool overwrite = false );
+  virtual bool add( const Option& option, bool overwrite = true );
   
   //! retrieve list of special (i.e. kept) options matching a given name
   virtual SpecialOptionMap& specialOptions()
