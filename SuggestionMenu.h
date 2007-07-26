@@ -56,7 +56,7 @@ namespace SPELLCHECK {
     public:
     
     //! constructor
-    SuggestionMenu( QWidget *parent, const std::string& word );
+    SuggestionMenu( QWidget *parent, const std::string& word, const bool& read_only = false );
   
     //! spell interface
     SpellInterface& interface( void )
@@ -92,7 +92,7 @@ namespace SPELLCHECK {
     
     //! spell interface
     SpellInterface interface_;
-    
+        
     //! misspelled word
     std::string word_;
 

@@ -44,13 +44,16 @@ using namespace std;
 using namespace SPELLCHECK;
 
 //_______________________________________________
-SpellDialog::SpellDialog( QTextEdit* parent ):
+SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   QDialog( parent ),
   Counter( "SpellDialog" ),
   editor_( parent )
 {
   Debug::Throw( "SpellDialog::SpellDialog.\n" );
 
+  // window title
+  setWindowTitle( read_only ? "Spell check (read-only)" : "Spell check" );
+  
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
   layout->setMargin(5);
@@ -83,6 +86,7 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
   // replacement line editor
   grid_layout->addWidget( new QLabel( "Replace with: ", this ), 1, 0 );
   grid_layout->addWidget( replace_line_edit_ = new CustomLineEdit( this ), 1, 1 );
+  if( read_only ) replace_line_edit_->setEnabled( false );
   
   QLabel* label = new QLabel( "Suggestions: ", this );
   QtUtil::fixSize( label );
@@ -91,7 +95,7 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
   // suggestions
   v_layout->addWidget(  suggestion_list_box_ = new CustomListBox( this ), 1 );
   connect( suggestion_list_box_, SIGNAL( itemSelectionChanged() ), this, SLOT( _selectSuggestion() ) );
-  connect( suggestion_list_box_, SIGNAL( itemActivated( QListWidgetItem* ) ), this, SLOT( _replace( QListWidgetItem* ) ) );
+  if( !read_only ) { connect( suggestion_list_box_, SIGNAL( itemActivated( QListWidgetItem* ) ), this, SLOT( _replace( QListWidgetItem* ) ) ); }
 
   // grid layout for dictionary and filter
   grid_layout = new QGridLayout();
@@ -101,25 +105,25 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
   
   // dictionaries combobox
   grid_layout->addWidget( new QLabel( "Dictionary: ", this ), 0, 0 );
-  grid_layout->addWidget( dict_combo_box_ = new QComboBox( this ), 0, 1 );
+  grid_layout->addWidget( dictionary_ = new QComboBox( this ), 0, 1 );
 
   const set<string>& dictionaries( interface().dictionaries() );
   for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
-  dict_combo_box_->addItem(iter->c_str() );
-  dict_combo_box_->setEditText( interface().dictionary().c_str() );
+  dictionary_->addItem(iter->c_str() );
+  dictionary_->setEditText( interface().dictionary().c_str() );
 
-  connect( dict_combo_box_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectDictionary( const QString& ) ) );
+  connect( dictionary_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectDictionary( const QString& ) ) );
 
   // filter combobox
   grid_layout->addWidget( filter_label_ = new QLabel( "Filter: ", this ), 1, 0 );
-  grid_layout->addWidget( filter_combo_box_ = new QComboBox( this ), 1, 1 );
+  grid_layout->addWidget( filter_ = new QComboBox( this ), 1, 1 );
   
   set<string> filters( interface().filters() );
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
-  filter_combo_box_->addItem( iter->c_str() );
-  filter_combo_box_->setEditText( interface().filter().c_str() );
+  filter_->addItem( iter->c_str() );
+  filter_->setEditText( interface().filter().c_str() );
 
-  connect( filter_combo_box_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectFilter( const QString& ) ) );
+  connect( filter_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectFilter( const QString& ) ) );
 
   // right vbox
   v_layout = new QVBoxLayout();
@@ -132,7 +136,7 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
   v_layout->addWidget( button = new QPushButton( "&Add word", this ) );
   connect( button, SIGNAL(clicked()), this, SLOT( _addWord() ) );
 
-  // check word word button
+  // check word button
   v_layout->addWidget( button = new QPushButton( "&Check word", this ) );
   connect( button, SIGNAL(clicked()), this, SLOT( _checkWord() ) );
 
@@ -147,10 +151,12 @@ SpellDialog::SpellDialog( QTextEdit* parent ):
   // replace button
   v_layout->addWidget( button = new QPushButton( "&Replace", this ) );
   connect( button, SIGNAL(clicked()), this, SLOT( _replace() ) );
-
+  if( read_only ) button->setEnabled( false );
+  
   // replace button
   v_layout->addWidget( button = new QPushButton( "R&eplace all", this ) );
   connect( button, SIGNAL(clicked()), this, SLOT( _replaceAll() ) );
+  if( read_only ) button->setEnabled( false );
 
   v_layout->addWidget( frame = new QFrame(this) );
   frame->setFrameShape( QFrame::HLine );
@@ -211,10 +217,10 @@ void SpellDialog::showFilter( const bool& value )
   Debug::Throw( "SpellDialog::showFilter.\n" );
   if( value ){
     filter_label_->show();
-    filter_combo_box_->show();
+    filter_->show();
   } else {
     filter_label_->hide();
-    filter_combo_box_->hide();
+    filter_->hide();
   }
 }
 
@@ -224,7 +230,7 @@ void SpellDialog::setDictionary( const std::string& dictionary )
   Debug::Throw( "SpellDialog::setDictionary.\n" );
 
   // find matching index
-  int index( dict_combo_box_->findText( dictionary.c_str() ) );
+  int index( dictionary_->findText( dictionary.c_str() ) );
   if( index < 0 ) 
   {
     ostringstream what;
@@ -234,7 +240,7 @@ void SpellDialog::setDictionary( const std::string& dictionary )
   }
   
   // select index
-  dict_combo_box_->setCurrentIndex( index );
+  dictionary_->setCurrentIndex( index );
   
   // update interface
   _selectDictionary( dictionary.c_str() );
@@ -247,7 +253,7 @@ void SpellDialog::setFilter( const std::string& filter )
   Debug::Throw( "SpellDialog::setFilter.\n" );
   
   // find matching index
-  int index( filter_combo_box_->findText( filter.c_str() ) );
+  int index( filter_->findText( filter.c_str() ) );
   if( index < 0 ) 
   {
     ostringstream what;
@@ -257,7 +263,7 @@ void SpellDialog::setFilter( const std::string& filter )
   }
   
   // select index
-  filter_combo_box_->setCurrentIndex( index );
+  filter_->setCurrentIndex( index );
   
   // update interface
   _selectFilter( filter.c_str() );

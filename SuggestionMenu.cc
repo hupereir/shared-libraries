@@ -37,7 +37,7 @@ using namespace std;
 using namespace SPELLCHECK;
 
 //________________________________________________
-SuggestionMenu::SuggestionMenu( QWidget* parent, const string& word ):
+SuggestionMenu::SuggestionMenu( QWidget* parent, const string& word, const bool& read_only ):
   QMenu( parent ),
   Counter( "SuggestionMenu" ),
   word_( word )
@@ -49,7 +49,7 @@ SuggestionMenu::SuggestionMenu( QWidget* parent, const string& word ):
   interface_.reset();
 
   // connections
-  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _select( QAction* ) ) );
+  if( !read_only ) connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _select( QAction* ) ) );
   connect( this, SIGNAL( aboutToShow() ), SLOT( _aboutToShow() ) );
   
 }

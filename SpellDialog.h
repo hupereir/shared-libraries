@@ -61,10 +61,12 @@ namespace SPELLCHECK
     public:
         
     //! constructor
-    SpellDialog( QTextEdit* parent );
+    SpellDialog( QTextEdit* parent, const bool& read_only = false );
   
     //! destructor
     virtual ~SpellDialog();
+    
+    //! set read-only (enable/disable modification buttons)
     
     //! toggle filter combo box visibility
     virtual void showFilter( const bool& value );
@@ -168,17 +170,17 @@ namespace SPELLCHECK
     CustomListBox *suggestion_list_box_;
   
     //! combo box for dictionary
-    QComboBox *dict_combo_box_;
+    QComboBox *dictionary_;
   
     //! filter label
     QLabel *filter_label_;
   
     //! combo box for filter
-    QComboBox *filter_combo_box_;
+    QComboBox *filter_;
     
     //! state frame for message
     QLabel* state_label_;
-    
+        
     //! list of automatic replace words
     std::map< QString, QString > replaced_words_;
                 
