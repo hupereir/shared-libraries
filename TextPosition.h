@@ -97,7 +97,7 @@ class TextPosition: public Counter
   { return !( *this == position ); }
 
   //! validity
-  bool IsValid( void ) const
+  bool isValid( void ) const
   { return (paragraph() >= 0 && index() >= 0 ); }
       
   private:
