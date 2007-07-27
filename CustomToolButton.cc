@@ -63,7 +63,7 @@ CustomToolButton::CustomToolButton(
   setAutoRaise( true );
   
   _updateConfiguration();
-  connect( qApp, SIGNAL( configurationChanged() ), this, SLOT( _updateConfiguration() ) );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
 }
 

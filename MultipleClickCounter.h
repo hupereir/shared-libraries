@@ -55,7 +55,7 @@ class MultipleClickCounter: public QTimer, public Counter
     count_( 0 )
   { 
     Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" ); 
-    connect( this, SIGNAL( timeout() ), this, SLOT( _reset() ) );
+    connect( this, SIGNAL( timeout() ), SLOT( _reset() ) );
     setSingleShot( true );
     setInterval( QApplication::doubleClickInterval() );
   }

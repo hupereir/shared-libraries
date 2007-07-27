@@ -61,8 +61,8 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   // create list
   list_ = new CustomListBox( this );
   list_->setSelectionMode( QAbstractItemView::ExtendedSelection );  
-  connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), this, SLOT( _edit( QListWidgetItem* ) ) );
-  connect( list_, SIGNAL( itemSelectionChanged() ), this, SLOT( _updateButtons() ) ); 
+  connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), SLOT( _edit( QListWidgetItem* ) ) );
+  connect( list_, SIGNAL( itemSelectionChanged() ), SLOT( _updateButtons() ) ); 
   layout->addWidget( list_, 1 );
   
   QVBoxLayout* button_layout = new QVBoxLayout();
@@ -73,21 +73,21 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   // Add button
   QPushButton *button;
   button_layout->addWidget( button = new QPushButton( "&Add", this ) );
-  connect( button, SIGNAL( clicked() ), this, SLOT( _add() ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _add() ) );
   
   // Edit button
   button_layout->addWidget( edit_ = new QPushButton( "&Edit", this ) );
-  connect( edit_, SIGNAL( clicked() ), this, SLOT( _edit() ) );
+  connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
   edit_->setToolTip( "edit selected value" );
 
   // remove button
   button_layout->addWidget( remove_ = new QPushButton( "&Remove", this ) );
-  connect( remove_, SIGNAL( clicked() ), this, SLOT( _remove() ) );
+  connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
   remove_->setToolTip( "remove selected value" );
 
   // set default button
   button_layout->addWidget( default_ = new QPushButton( "&Default", this ) );
-  connect( default_, SIGNAL( clicked() ), this, SLOT( _setDefault() ) );
+  connect( default_, SIGNAL( clicked() ), SLOT( _setDefault() ) );
   default_->setToolTip( "set selected value as default\n(move it to the top of the list)" );
 
   button_layout->addStretch(1);

@@ -81,7 +81,7 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   // detach button
   Debug::Throw( "DocPanel::DockPanel - button_.\n" );
   button_ = new QPushButton( "&detach", main_ );
-  connect( button_, SIGNAL( clicked() ), this, SLOT( _toggleDock() ) );
+  connect( button_, SIGNAL( clicked() ), SLOT( _toggleDock() ) );
   button_->setToolTip( "dock/undock panel" );
   button_layout_->addWidget( button_ );
   

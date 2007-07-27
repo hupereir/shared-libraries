@@ -130,16 +130,16 @@ ListViewConfig::ListViewConfig( QWidget *parent, QTreeWidget *target, const stri
     // ok button
     QPushButton *button = new QPushButton( "&Ok", this );
     QtUtil::fixSize( button );
-    connect( button, SIGNAL( clicked() ), this, SLOT( update() ) );
-    connect( button, SIGNAL( clicked() ), this, SLOT( close() ) );
+    connect( button, SIGNAL( clicked() ), SLOT( update() ) );
+    connect( button, SIGNAL( clicked() ), SLOT( close() ) );
     button->setAutoDefault( false );
     button_layout->addWidget( button );
     
     // cancel button
     button = new QPushButton( "&Cancel", this );
     QtUtil::fixSize( button );
-    connect( button, SIGNAL( clicked() ), this, SLOT( restore() ) );
-    connect( button, SIGNAL( clicked() ), this, SLOT( close() ) );
+    connect( button, SIGNAL( clicked() ), SLOT( restore() ) );
+    connect( button, SIGNAL( clicked() ), SLOT( close() ) );
     button->setAutoDefault( false );  
     button_layout->addWidget( button );
     

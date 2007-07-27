@@ -83,15 +83,15 @@ HelpDialog::HelpDialog( QWidget *parent ):
   h_layout->addWidget( edit_button_ = new QPushButton( "&Edit", this ) );
   h_layout->addStretch( 1 );
   
-  connect( edit_button_, SIGNAL( clicked() ), this, SLOT( _toggleEdition() ) );
+  connect( edit_button_, SIGNAL( clicked() ), SLOT( _toggleEdition() ) );
   edit_button_->setToolTip( "edit current help" );
 
   // connect list to text edit
-  connect( &list(), SIGNAL( itemSelectionChanged() ), this, SLOT( _display() ) );
+  connect( &list(), SIGNAL( itemSelectionChanged() ), SLOT( _display() ) );
 
   // add close accelerator
-  connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), this, SLOT( close() ) );
-  connect( new QShortcut( CTRL+Key_S, this ), SIGNAL( activated() ), this, SLOT( _save() ) );
+  connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
+  connect( new QShortcut( CTRL+Key_S, this ), SIGNAL( activated() ), SLOT( _save() ) );
   resize( 550, 400 );
 }
 

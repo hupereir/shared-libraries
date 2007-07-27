@@ -56,7 +56,7 @@ IconBrowsedButton::IconBrowsedButton( QWidget* parent, const string& file):
   setIconSize( QSize(icon_size_,icon_size_) );
   setIconFile( file, false ); 
   setFixedSize( QSize( icon_size_+8, icon_size_+8 ) );
-  connect( this, SIGNAL( clicked() ), this, SLOT( _browse() ) );
+  connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
 }
   
 

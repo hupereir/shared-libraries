@@ -59,7 +59,7 @@ CounterDialog::CounterDialog( QWidget* parent ):
   
   // update button
   QPushButton *update_button = new QPushButton( "&Update", this );
-  connect( update_button, SIGNAL( clicked() ), this, SLOT( Update() ) );
+  connect( update_button, SIGNAL( clicked() ), SLOT( Update() ) );
   update_button->setAutoDefault( false );
   layout()->addWidget( update_button );
    

@@ -48,13 +48,13 @@ CustomLineEdit::CustomLineEdit( QWidget* parent ):
   Debug::Throw( "CustomLineEdit::CustomLineEdit.\n" );
   
   QShortcut* shortcut;
-  connect( shortcut  = new QShortcut( CTRL+Key_A, this ), SIGNAL( activated() ), this, SLOT( selectAll() ) );
+  connect( shortcut  = new QShortcut( CTRL+Key_A, this ), SIGNAL( activated() ), SLOT( selectAll() ) );
   shortcuts_.push_back( shortcut );
   
-  connect( shortcut = new QShortcut( CTRL+Key_U, this ), SIGNAL( activated() ), this, SLOT( upperCase() ) );
+  connect( shortcut = new QShortcut( CTRL+Key_U, this ), SIGNAL( activated() ), SLOT( upperCase() ) );
   shortcuts_.push_back( shortcut );
 
-  connect( shortcut = new QShortcut( SHIFT+CTRL+Key_U, this ), SIGNAL( activated() ), this, SLOT( lowerCase() ) );
+  connect( shortcut = new QShortcut( SHIFT+CTRL+Key_U, this ), SIGNAL( activated() ), SLOT( lowerCase() ) );
   shortcuts_.push_back( shortcut );
     
 }

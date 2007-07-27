@@ -51,7 +51,7 @@ CustomListView::CustomListView( QWidget* parent ):
 
   updateItemColor();
   
-  connect( qApp, SIGNAL( configurationChanged() ), this, SLOT( updateItemColor() ) );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );
 }
 
 //__________________________________________________________________________

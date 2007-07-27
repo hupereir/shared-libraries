@@ -51,8 +51,8 @@ CustomSlider::CustomSlider( QWidget* parent ):
   layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
   layout()->addWidget( line_edit_ = new CustomLineEdit( this ) );
   
-  connect( line_edit_, SIGNAL( returnPressed() ),   this, SLOT( _updateSlider() ) );
-  connect( slider_, SIGNAL( valueChanged( int ) ),  this, SLOT( _updateLineEdit( int ) ) );
+  connect( line_edit_, SIGNAL( returnPressed() ),   SLOT( _updateSlider() ) );
+  connect( slider_, SIGNAL( valueChanged( int ) ),  SLOT( _updateLineEdit( int ) ) );
 
   line_edit_->setMaximumSize( QSize( 
     line_edit_->fontMetrics().width("  -100  "), 

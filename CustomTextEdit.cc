@@ -73,7 +73,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _highlightCurrentBlock() ) );
   
-  connect( qApp, SIGNAL( configurationChanged() ), this, SLOT( updateConfiguration() ) );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
   
 }
 
@@ -474,7 +474,7 @@ void CustomTextEdit::selectLineFromDialog( void )
   if( !select_line_dialog_ ) 
   {
     select_line_dialog_ = new SelectLineDialog( this );
-    connect( select_line_dialog_, SIGNAL( lineSelected( int ) ), this, SLOT( selectLine( int ) ) );
+    connect( select_line_dialog_, SIGNAL( lineSelected( int ) ), SLOT( selectLine( int ) ) );
   }
   
   select_line_dialog_->show();
@@ -767,7 +767,7 @@ void CustomTextEdit::_createFindDialog( void )
     find_dialog_ = new FindDialog( this );
     find_dialog_->polish();
     
-    connect( find_dialog_, SIGNAL( find( TextSelection ) ), this, SLOT( find( TextSelection ) ) );
+    connect( find_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
     connect( this, SIGNAL( noMatchFound() ), find_dialog_, SLOT( noMatchFound() ) );
     connect( this, SIGNAL( matchFound() ), find_dialog_, SLOT( clearLabel() ) );
     
@@ -861,10 +861,10 @@ void CustomTextEdit::_createReplaceDialog( void )
     replace_dialog_ = new ReplaceDialog( this );
     replace_dialog_->polish();
     
-    connect( replace_dialog_, SIGNAL( find( TextSelection ) ), this, SLOT( find( TextSelection ) ) );
-    connect( replace_dialog_, SIGNAL( replace( TextSelection ) ), this, SLOT( replace( TextSelection ) ) );
-    connect( replace_dialog_, SIGNAL( replaceInWindow( TextSelection ) ), this, SLOT( replaceInWindow( TextSelection ) ) );
-    connect( replace_dialog_, SIGNAL( replaceInSelection( TextSelection ) ), this, SLOT( replaceInSelection( TextSelection ) ) );
+    connect( replace_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
+    connect( replace_dialog_, SIGNAL( replace( TextSelection ) ), SLOT( replace( TextSelection ) ) );
+    connect( replace_dialog_, SIGNAL( replaceInWindow( TextSelection ) ), SLOT( replaceInWindow( TextSelection ) ) );
+    connect( replace_dialog_, SIGNAL( replaceInSelection( TextSelection ) ), SLOT( replaceInSelection( TextSelection ) ) );
     connect( this, SIGNAL( noMatchFound() ), replace_dialog_, SLOT( noMatchFound() ) );
     connect( this, SIGNAL( matchFound() ), replace_dialog_, SLOT( clearLabel() ) );
     

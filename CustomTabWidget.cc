@@ -66,7 +66,7 @@ CustomTabWidget::CustomTabWidget( QTabWidget* parent, const unsigned int& flags 
   
   button_ = new QPushButton( "&detach", this );
   button_layout_->addWidget( button_ );
-  connect( button_, SIGNAL( clicked() ), this, SLOT( _toggleDock() ) );
+  connect( button_, SIGNAL( clicked() ), SLOT( _toggleDock() ) );
   button_->setToolTip( "dock/undock tab" );
   
 }

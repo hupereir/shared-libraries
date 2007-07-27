@@ -56,13 +56,13 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   line_edit_.setAlignment( Qt::AlignCenter );
   QtUtil::expand( &line_edit_, " #ffffff " ); 
   layout->addWidget( &line_edit_ );
-  connect( &line_edit_, SIGNAL( returnPressed() ), this, SLOT( _changeColorFromText() ) );  
+  connect( &line_edit_, SIGNAL( returnPressed() ), SLOT( _changeColorFromText() ) );  
   
   QPushButton *button( new QPushButton( "...", this ) );
   QtUtil::fixSize( button );
   layout->addWidget( button );
   
-  connect( button, SIGNAL( clicked() ), this, SLOT( _changeColor() ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _changeColor() ) );
   
 } 
 

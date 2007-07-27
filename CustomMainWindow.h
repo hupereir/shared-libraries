@@ -57,20 +57,20 @@ class CustomMainWindow: public QMainWindow, public Counter
     Counter( "CustomMainWindow" )
   { 
     Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
-    connect( qApp, SIGNAL( configurationChanged() ), this, SLOT( _updateConfiguration() ) );
+    connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
   }
   
   //! destructor
   virtual ~CustomMainWindow( void )
   {}
   
-  protected slots:
+  public slots:
   
   //! update configuration
-  void _updateConfiguration( void )
+  void updateConfiguration( void )
   { 
   
-    Debug::Throw( "CustomMainWindow::_updateConfiguration.\n" );
+    Debug::Throw( "CustomMainWindow::updateConfiguration.\n" );
     
     // pixmap size
     if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( QSize( 32, 32 ) );

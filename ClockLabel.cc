@@ -45,7 +45,7 @@ ClockTimer::ClockTimer( QWidget *parent ):
   Counter( "ClockTimer" )
 {
   Debug::Throw( "ClockTimer::ClockTimer.\n" );
-  connect( this, SIGNAL( timeout() ), this, SLOT( _checkCurrentTime() ) );
+  connect( this, SIGNAL( timeout() ), SLOT( _checkCurrentTime() ) );
 }
 
 //__________________________________________________________
@@ -85,7 +85,7 @@ ClockLabel::ClockLabel( QWidget* parent ):
   Debug::Throw( "ClockLabel::ClockLabel.\n" );
   
   // create static clock timer, updated every 10 seconds
-  connect( &timer_, SIGNAL( timeChanged( const QString& ) ), this, SLOT( setText( const QString& ) ) );
+  connect( &timer_, SIGNAL( timeChanged( const QString& ) ), SLOT( setText( const QString& ) ) );
   
   timer_.setSingleShot( false );
   timer_.setInterval( 1000 * ClockTimer::interval() );

@@ -115,10 +115,10 @@ void ReplaceDialog::_createEditor( void )
   replace_editor_->setEditable( true );
   replace_editor_->setCaseSensitive( Qt::CaseSensitive );
   replace_editor_->setAutoCompletion( true );
-  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT( _replace( void ) ) );
-  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT( _updateFindComboBox( void ) ) );
-  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT( _updateReplaceComboBox( void ) ) );
-  connect( replace_editor_->lineEdit(), SIGNAL(textChanged( const QString& )), this, SLOT( _replaceTextChanged( const QString& ) ) );
+  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), SLOT( _replace( void ) ) );
+  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
+  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), SLOT( _updateReplaceComboBox( void ) ) );
+  connect( replace_editor_->lineEdit(), SIGNAL(textChanged( const QString& )), SLOT( _replaceTextChanged( const QString& ) ) );
 
 }
  
@@ -139,18 +139,18 @@ void ReplaceDialog::_createLocationButtons( void )
   // insert selection button
   location_layout_->addWidget( button = new QPushButton( "&Selection", this ) );
   button->setAutoDefault( false );
-  connect( button, SIGNAL( clicked( void ) ), this, SLOT( _replaceInSelection( void ) ) );
-  connect( button, SIGNAL( clicked( void )), this, SLOT( _updateFindComboBox( void ) ) );
-  connect( button, SIGNAL( clicked( void )), this, SLOT( _updateReplaceComboBox( void ) ) );
+  connect( button, SIGNAL( clicked( void ) ), SLOT( _replaceInSelection( void ) ) );
+  connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
+  connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
   button->setToolTip( "replace all occurence of the search string in selected text" );
   addDisabledButton( button );
 
   // insert window button
   location_layout_->addWidget( button = new QPushButton( "&Window", this ) );
   button->setAutoDefault( false );  
-  connect( button, SIGNAL( clicked( void ) ), this, SLOT( _replaceInWindow( void ) ) );
-  connect( button, SIGNAL( clicked( void )), this, SLOT( _updateFindComboBox( void ) ) );
-  connect( button, SIGNAL( clicked( void )), this, SLOT( _updateReplaceComboBox( void ) ) );
+  connect( button, SIGNAL( clicked( void ) ), SLOT( _replaceInWindow( void ) ) );
+  connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
+  connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
   button->setToolTip( "replace all occurence of the search string in the entire window" );
   addDisabledButton( button );
   
@@ -167,9 +167,9 @@ void ReplaceDialog::_createButtons( void )
   // insert Replace button
   QPushButton* button = new QPushButton( "&Replace", this );
   button->setAutoDefault( false );
-  connect( button, SIGNAL( clicked( void ) ), this, SLOT( _replace( void ) ) );
-  connect( button, SIGNAL( clicked( void )), this, SLOT( _updateFindComboBox( void ) ) );
-  connect( button, SIGNAL( clicked( void )), this, SLOT( _updateReplaceComboBox( void ) ) );
+  connect( button, SIGNAL( clicked( void ) ), SLOT( _replace( void ) ) );
+  connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
+  connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
   addDisabledButton( button );
   _buttonLayout().insertWidget( 1, button );
 

@@ -69,7 +69,7 @@ BrowsedLineEdit::BrowsedLineEdit( QWidget *parent ):
   layout->addWidget( button );
   
   // connect push_button
-  connect( button, SIGNAL( clicked() ), this, SLOT( _browse() ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _browse() ) );
 }
 
 //____________________________________________________________

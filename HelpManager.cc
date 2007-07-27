@@ -53,7 +53,7 @@ HelpManager::HelpManager():
   dialog_->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
  
   // connections
-  connect( dialog_, SIGNAL( itemModified() ), this, SLOT( save() ) );
+  connect( dialog_, SIGNAL( itemModified() ), SLOT( save() ) );
   
 }
 

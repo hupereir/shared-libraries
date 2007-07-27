@@ -63,13 +63,13 @@ CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFla
   // insert OK and Cancel button
   if( flags & OK_BUTTON ) {
     button_layout_->addWidget( ok_button_ = new QPushButton( "&OK", this ) );
-    connect( ok_button_, SIGNAL( clicked() ), this, SLOT( accept() ) );
+    connect( ok_button_, SIGNAL( clicked() ), SLOT( accept() ) );
   }
   
   // insert OK and Cancel button
   if( flags & CANCEL_BUTTON ) {
     button_layout_->addWidget( cancel_button_ = new QPushButton( "&Cancel", this ) );
-    connect( cancel_button_, SIGNAL( clicked() ), this, SLOT( reject() ) );
+    connect( cancel_button_, SIGNAL( clicked() ), SLOT( reject() ) );
   }
   
 }

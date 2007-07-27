@@ -60,8 +60,8 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   QtUtil::fixSize( label );
   
   layout()->addWidget( line_edit_ = new CustomLineEdit( this ) );
-  connect( line_edit_, SIGNAL(returnPressed()), this, SLOT( _selectLine( void ) ) );
-  connect( line_edit_, SIGNAL(textChanged( const QString& ) ), this, SLOT( _selectLine( const QString& ) ) );
+  connect( line_edit_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
+  connect( line_edit_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
   
   QHBoxLayout* h_layout( new QHBoxLayout() );
   h_layout->setMargin(0);
@@ -73,15 +73,15 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   button->setAutoDefault( false );
   QtUtil::fixSize( button );
   h_layout->addWidget( button );
-  connect( button, SIGNAL( clicked( void ) ), this, SLOT( _selectLine( void ) ) );
-  connect( button, SIGNAL( clicked() ), this, SLOT( close() ) );
+  connect( button, SIGNAL( clicked( void ) ), SLOT( _selectLine( void ) ) );
+  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
       
   // insert Cancel button
   button = new QPushButton( "&Cancel", this );
   button->setAutoDefault( false );
   QtUtil::fixSize( button );
   h_layout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), this, SLOT( close() ) );
+  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
    
 }
  
