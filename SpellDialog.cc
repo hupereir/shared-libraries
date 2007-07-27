@@ -94,8 +94,8 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
 
   // suggestions
   v_layout->addWidget(  suggestion_list_box_ = new CustomListBox( this ), 1 );
-  connect( suggestion_list_box_, SIGNAL( itemSelectionChanged() ), this, SLOT( _selectSuggestion() ) );
-  if( !read_only ) { connect( suggestion_list_box_, SIGNAL( itemActivated( QListWidgetItem* ) ), this, SLOT( _replace( QListWidgetItem* ) ) ); }
+  connect( suggestion_list_box_, SIGNAL( itemSelectionChanged() ), SLOT( _selectSuggestion() ) );
+  if( !read_only ) { connect( suggestion_list_box_, SIGNAL( itemActivated( QListWidgetItem* ) ), SLOT( _replace( QListWidgetItem* ) ) ); }
 
   // grid layout for dictionary and filter
   grid_layout = new QGridLayout();
@@ -112,7 +112,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   dictionary_->addItem(iter->c_str() );
   dictionary_->setEditText( interface().dictionary().c_str() );
 
-  connect( dictionary_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectDictionary( const QString& ) ) );
+  connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
   // filter combobox
   grid_layout->addWidget( filter_label_ = new QLabel( "Filter: ", this ), 1, 0 );
@@ -123,7 +123,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   filter_->addItem( iter->c_str() );
   filter_->setEditText( interface().filter().c_str() );
 
-  connect( filter_, SIGNAL( activated( const QString& ) ), this, SLOT( _selectFilter( const QString& ) ) );
+  connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
 
   // right vbox
   v_layout = new QVBoxLayout();
@@ -134,15 +134,15 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   // add word button
   QPushButton* button;
   v_layout->addWidget( button = new QPushButton( "&Add word", this ) );
-  connect( button, SIGNAL(clicked()), this, SLOT( _addWord() ) );
+  connect( button, SIGNAL(clicked()), SLOT( _addWord() ) );
 
   // check word button
   v_layout->addWidget( button = new QPushButton( "&Check word", this ) );
-  connect( button, SIGNAL(clicked()), this, SLOT( _checkWord() ) );
+  connect( button, SIGNAL(clicked()), SLOT( _checkWord() ) );
 
   // recheck button
   v_layout->addWidget( button = new QPushButton( "Recheck &Page", this ) );
-  connect( button, SIGNAL(clicked()), this, SLOT( _restart() ) );
+  connect( button, SIGNAL(clicked()), SLOT( _restart() ) );
 
   QFrame* frame;
   v_layout->addWidget( frame = new QFrame(this) );
@@ -150,12 +150,12 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   
   // replace button
   v_layout->addWidget( button = new QPushButton( "&Replace", this ) );
-  connect( button, SIGNAL(clicked()), this, SLOT( _replace() ) );
+  connect( button, SIGNAL(clicked()), SLOT( _replace() ) );
   if( read_only ) button->setEnabled( false );
   
   // replace button
   v_layout->addWidget( button = new QPushButton( "R&eplace all", this ) );
-  connect( button, SIGNAL(clicked()), this, SLOT( _replaceAll() ) );
+  connect( button, SIGNAL(clicked()), SLOT( _replaceAll() ) );
   if( read_only ) button->setEnabled( false );
 
   v_layout->addWidget( frame = new QFrame(this) );
@@ -163,11 +163,11 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   
   // ignore button
   v_layout->addWidget( button = new QPushButton( "&Ignore", this ) );
-  connect( button, SIGNAL(clicked()), this, SLOT( _ignore() ) );
+  connect( button, SIGNAL(clicked()), SLOT( _ignore() ) );
 
   // ignore button
   v_layout->addWidget( button = new QPushButton( "I&gnore all", this ) );
-  connect( button, SIGNAL(clicked()), this, SLOT( _ignoreAll() ) );
+  connect( button, SIGNAL(clicked()), SLOT( _ignoreAll() ) );
 
   // state label_
   v_layout->addWidget( state_label_ = new QLabel( " ", this ), 1 );

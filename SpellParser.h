@@ -41,7 +41,7 @@
 
 #include "Counter.h"
 #include "SpellInterface.h"
-#include "TextFormatInfo.h" 
+#include "TextFormat.h" 
 #include "Word.h"
 
 //! highlight text based on misspelled words
