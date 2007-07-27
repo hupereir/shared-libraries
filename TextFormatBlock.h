@@ -68,7 +68,7 @@ namespace FORMAT
     { return begin() < format.begin(); }
     
     //! true if format info is empty
-    bool empty( void ) const
+    bool isEmpty( void ) const
     { return begin() == end(); }
     
     //! begin position
