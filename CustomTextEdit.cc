@@ -74,7 +74,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _highlightCurrentBlock() ) );
   
   connect( qApp, SIGNAL( configurationChanged() ), this, SLOT( updateConfiguration() ) );
-
+  
 }
 
 //________________________________________________
@@ -315,6 +315,13 @@ void CustomTextEdit::updateConfiguration( void )
 }
 
 //________________________________________________
+void CustomTextEdit::toggleWrapMode( bool state )
+{
+  Debug::Throw( "CustomTextEdit::toggleWrapMode.\n" );
+  setLineWrapMode( state ? QTextEdit::WidgetWidth : QTextEdit::NoWrap );
+}
+
+//________________________________________________
 void CustomTextEdit::upperCase( void )
 {
   Debug::Throw( "CustomTextEdit::upperCase.\n" );
@@ -341,7 +348,7 @@ void CustomTextEdit::lowerCase( void )
   if( !cursor.hasSelection() ) return;
   
   // retrieve selected text
-  // convert to upperCase
+  // convert to lowercase
   // insert in place of selection
   cursor.insertText( cursor.selectedText().toLower() ); 
   return;
@@ -689,6 +696,14 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
   
   // menu
   QMenu menu( this );
+  
+  // wrapping
+  QAction* action = menu.addAction( "&Wrap" );
+  action->setCheckable( true );
+  action->setChecked( lineWrapMode() != QTextEdit::NoWrap );
+  connect( action, SIGNAL( toggled( bool ) ), SLOT( toggleWrapMode( bool ) ) );
+  menu.addSeparator();
+  
   menu.addAction( "&Undo", &document, SLOT( undo() ), CTRL+Key_Z )->setEnabled( editable && document.isUndoAvailable() );
   menu.addAction( "&Redo", &document, SLOT( redo() ), SHIFT+CTRL+Key_Z )->setEnabled( editable && document.isRedoAvailable() );
   menu.addSeparator();
@@ -705,12 +720,12 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
   menu.addSeparator();
 
   menu.addAction( "&Find", this , SLOT( findFromDialog() ), CTRL+Key_F ); 
-  menu.addAction( "Find &again", this , SLOT( findAgainForward() ), CTRL+Key_G ); 
-  menu.addAction( "Find &selection", this , SLOT( findSelectionForward() ), CTRL+Key_H ); 
+  menu.addAction( "Find again", this , SLOT( findAgainForward() ), CTRL+Key_G ); 
+  menu.addAction( "Find selection", this , SLOT( findSelectionForward() ), CTRL+Key_H ); 
   menu.addSeparator();
  
   menu.addAction( "&Replace", this , SLOT( replaceFromDialog() ), CTRL+Key_R ); 
-  menu.addAction( "Replace a&gain", this , SLOT( replaceAgainForward() ), CTRL+Key_T ); 
+  menu.addAction( "Replace again", this , SLOT( replaceAgainForward() ), CTRL+Key_T ); 
   menu.addAction( "Goto line number", this, SLOT( selectLineFromDialog() ), CTRL+Key_L );
  
   menu.exec( event->globalPos() );
@@ -964,7 +979,6 @@ void CustomTextEdit::_installShortcuts( void )
  Debug::Throw( "CustomTextEdit::_installShortCuts.\n" );
   
   // default shortcuts
-  _addShortcut( CTRL+Key_Z, document(), SLOT( undo() ) );
   _addShortcut( SHIFT+CTRL+Key_Z, document(), SLOT( redo() ) );
   _addShortcut( CTRL+Key_X, this, SLOT( cut() ) );
   _addShortcut( CTRL+Key_C, this, SLOT( copy() ) );

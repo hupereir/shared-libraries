@@ -108,11 +108,10 @@ void ReplaceDialog::_createEditor( void )
   
   // insert text editor
   QLabel* label = new QLabel( "replace with:", this );
-  QtUtil::fixSize( label );
-  layout()->addWidget( label );
+  _mainLayout().addWidget( label );
   
   // replacement editor
-  layout()->addWidget( replace_editor_ = new CustomComboBox( this ) );
+  _mainLayout().addWidget( replace_editor_ = new CustomComboBox( this ) );
   replace_editor_->setEditable( true );
   replace_editor_->setCaseSensitive( Qt::CaseSensitive );
   replace_editor_->setAutoCompletion( true );
@@ -131,15 +130,14 @@ void ReplaceDialog::_createLocationButtons( void )
   FindDialog::_createLocationButtons();
    
   location_layout_ = new QHBoxLayout();
-  location_layout_->setSpacing(5);
+  location_layout_->setSpacing(10);
   location_layout_->setMargin(0);
-  layout()->addItem( location_layout_ );
+  _mainLayout().addLayout( location_layout_, 1 );
   
   QPushButton *button( 0 );
   
   // insert selection button
   location_layout_->addWidget( button = new QPushButton( "&Selection", this ) );
-  QtUtil::fixSize( button );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), this, SLOT( _replaceInSelection( void ) ) );
   connect( button, SIGNAL( clicked( void )), this, SLOT( _updateFindComboBox( void ) ) );
@@ -149,7 +147,6 @@ void ReplaceDialog::_createLocationButtons( void )
 
   // insert window button
   location_layout_->addWidget( button = new QPushButton( "&Window", this ) );
-  QtUtil::fixSize( button );
   button->setAutoDefault( false );  
   connect( button, SIGNAL( clicked( void ) ), this, SLOT( _replaceInWindow( void ) ) );
   connect( button, SIGNAL( clicked( void )), this, SLOT( _updateFindComboBox( void ) ) );
@@ -169,7 +166,6 @@ void ReplaceDialog::_createButtons( void )
      
   // insert Replace button
   QPushButton* button = new QPushButton( "&Replace", this );
-  QtUtil::fixSize( button );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), this, SLOT( _replace( void ) ) );
   connect( button, SIGNAL( clicked( void )), this, SLOT( _updateFindComboBox( void ) ) );

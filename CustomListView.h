@@ -189,6 +189,13 @@ class CustomListView: public QTreeWidget, public Counter
     virtual ~Item( void )
     {}
     
+    //! flag selection
+    void setFlag( const Qt::ItemFlag& flag, const bool &value )
+    { 
+      if( value ) setFlags( flags() | flag );
+      else setFlags( flags() ^ ~Qt::ItemFlags(flag) );
+    }
+    
     //! order operator
     virtual bool operator<( const QTreeWidgetItem &other ) const;
     

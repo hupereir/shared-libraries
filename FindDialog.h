@@ -152,6 +152,13 @@ class FindDialog: public QDialog, public Counter
   virtual void _createButtons( void );
   
   //! button layout
+  QBoxLayout& _mainLayout()
+  { 
+    Exception::checkPointer( main_layout_, DESCRIPTION( "main_layout_ is invalid" ) );
+    return *main_layout_;
+  }
+  
+  //! button layout
   QBoxLayout& _buttonLayout()
   { 
     Exception::checkPointer( button_layout_, DESCRIPTION( "button_layout_ is invalid" ) );
@@ -182,6 +189,9 @@ class FindDialog: public QDialog, public Counter
   
   private:
  
+  //! main layout
+  QBoxLayout* main_layout_;
+  
   //! button layout
   QBoxLayout* button_layout_;
   

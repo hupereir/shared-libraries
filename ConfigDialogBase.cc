@@ -54,6 +54,7 @@ using namespace Qt;
 //_________________________________________________________
 ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
   QDialog( parent ),
+  Counter( "ConfigDialogBase" ),
   modified_options_( XmlOptions::get() ),
   backup_options_( XmlOptions::get() )
 {

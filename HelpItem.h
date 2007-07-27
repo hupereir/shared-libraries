@@ -1,6 +1,7 @@
+#ifndef HelpItem_h
+#define HelpItem_h
+
 // $Id$
-#ifndef XmlTextFormatBlock_h
-#define XmlTextFormatBlock_h
 
 /******************************************************************************
 *                         
@@ -24,59 +25,79 @@
 *******************************************************************************/
 
 /*!
-  \file XmlTextFormatBlock.h
-  \brief text format with Xml abilities
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+   \file    HelpItem.h
+   \brief   reference manual item. 
+            it contains a title and a text
+   \author  Hugo Pereira
+   \version $Revision$
+   \date    $Date$
 */
 
 #include <QDomElement>
 #include <QDomDocument>
-#include "TextFormatBlock.h"
+#include <string>
 
-//! text format with Xml abilities
-namespace FORMAT
+#include "Counter.h"
+#include "Debug.h"
+
+//! Help system namespace
+namespace HELP
 {
-  class XmlTextFormatBlock:public TextFormatBlock
+
+  
+  //!@name xml tags
+  //@{
+  const std::string XML_HELP = "help";
+  const std::string XML_ITEM = "item";
+  const std::string XML_LABEL = "label";
+  const std::string XML_TEXT = "text";
+  //@}
+  
+  //! reference manual single entry 
+  class HelpItem : public Counter
   {
     
     public:
     
     //! constructor
-    XmlTextFormatBlock( const QDomElement& element );
+    HelpItem( const std::string& label = "", const std::string& text = "" ):
+      Counter( "HelpItem" ),
+      label_( label ),
+      text_( text )
+    { Debug::Throw( "HelpItem::HelpItem.\n" ); }
     
-    //! constructor
-    XmlTextFormatBlock( const TextFormatBlock& format ):
-      TextFormatBlock( format )
-      {}  
-  
-    //! get dom element
+    //! constructor from Dom
+    HelpItem( const QDomElement& dom );
+    
+    //! write to dom elelement
     QDomElement domElement( QDomDocument& parent ) const;
-      
-    //!@name XML_tag names
-    //@{
     
-    static const std::string XML_TAG;
-    static const std::string XML_BEGIN;
-    static const std::string XML_END;
-    static const std::string XML_FORMAT;
-    static const std::string XML_COLOR;
+    //! item label
+    void setLabel( const std::string& label ) 
+    { label_ = label; }
     
-    //@}
+    //! label
+    const std::string& label( void ) const
+    { return label_; }
     
-    //!@name old tags, kept for backward compatibility
-    //@{
+    //! item text
+    void setText( const std::string& text ) 
+    { text_ = text; }
     
-    static const std::string XML_BEGIN_PAR;
-    static const std::string XML_BEGIN_INDEX;
-    static const std::string XML_END_PAR;
-    static const std::string XML_END_INDEX;
+    //! item text
+    const std::string& text( void ) const
+    { return text_; }
     
-    //@}
+    private:
+    
+    //! help label
+    std::string label_;
+    
+    //! help text
+    std::string text_;
     
   };
-  
+
 };
 
 #endif

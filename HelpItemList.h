@@ -1,5 +1,5 @@
-#ifndef XmlTimeStamp_h
-#define XmlTimeStamp_h
+#ifndef HelpItemList_h
+#define HelpItemList_h
 
 // $Id$
 
@@ -25,45 +25,57 @@
 *******************************************************************************/
 
 /*!
-   \file XmlTimeStamp.h
-   \brief Xml interface to time manipulation object
-   \author Hugo Pereira
+   \file    HelpItemList.h
+   \brief   list to display help item entries
+   \author  Hugo Pereira
    \version $Revision$
-   \date $Date$
+   \date    $Date$
 */
 
-#include <qdom.h>
+#include "CustomListBox.h"
+#include "HelpItem.h"
 
-#include "TimeStamp.h"
-
-/*!
-   \class XmlTimeStamp
-   \brief Xml interface to time manipulation object
-*/
-
-class XmlTimeStamp:public TimeStamp 
+namespace HELP
 {
-
-  public:
-  
-  //! empty creator
-  XmlTimeStamp( void )
-  {}
+  //! Help item list
+  class HelpItemList:public CustomListBox
+  {
     
-  //! creator from DOM
-  XmlTimeStamp( const QDomElement& element );
+    public:
+    //! constructor
+    HelpItemList( QWidget *parent ):
+      CustomListBox( parent )
+      {}
+      
+    //! local item (overloaded) for counter dialog
+    class Item: public QListWidgetItem
+    {
+        
+      public:
+      
+      //! constructor
+      Item( HelpItemList* parent, const HelpItem& item ):
+        QListWidgetItem( parent ),
+        item_( item )
+      { setText(item.label().c_str() ); }
+      
+      //! return associated item
+      const HelpItem& item( void ) const
+      { return item_; }
+      
+      //! return associated item
+      HelpItem& item( void )
+      { return item_; }
+      
+      private:
+      
+      //! associated help text
+      HelpItem item_;
+      
+    };  
+    
+  };
   
-  //! create from timestamp
-  XmlTimeStamp( const TimeStamp& stamp ):
-    TimeStamp( stamp )
-  {}
-  
-  //! get DOM element
-  QDomElement domElement( const std::string& name, QDomDocument& parent ) const;
-  
-  //! XML XmlTimeStamp keyword
-  static const std::string XML_TIME;
-
 };
 
 #endif

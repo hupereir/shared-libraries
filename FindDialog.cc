@@ -70,10 +70,21 @@ void FindDialog::polish( void )
   Debug::Throw("FindDialog::polish.\n" ); 
 
   // create vbox layout
-  setLayout( new QVBoxLayout() );
-  layout()->setMargin( 5 );
-  layout()->setSpacing( 2 );
+  QVBoxLayout* layout = new QVBoxLayout();
+  setLayout( layout );
+  layout->setMargin( 10 );
+  layout->setSpacing( 10 );
   
+  main_layout_ = new QVBoxLayout();
+  main_layout_->setMargin( 0 );
+  main_layout_->setSpacing( 5 );
+  layout->addLayout( main_layout_, 1 );
+  
+  button_layout_ = new QHBoxLayout();
+  button_layout_->setMargin( 0 );
+  button_layout_->setSpacing( 10 );
+  layout->addLayout( button_layout_, 0 );
+ 
   _createEditor();
   _createCheckBoxes();
   _createLocationButtons();
@@ -82,9 +93,6 @@ void FindDialog::polish( void )
   // disable buttons
   _updateButtons();
 
-  // activate layout
-  layout()->activate();
-  
 }
 
 //________________________________________________________________________ 
@@ -95,10 +103,9 @@ void FindDialog::_createEditor( void )
   
   // insert text editor
   QLabel *label = new QLabel( "string to find:", this );
-  QtUtil::fixSize( label );
-  layout()->addWidget( label );
+  _mainLayout().addWidget( label );
   
-  layout()->addWidget( editor_ = new CustomComboBox( this ) );
+  _mainLayout().addWidget( editor_ = new CustomComboBox( this ) );
   editor_->setEditable( true );
   editor_->setCaseSensitive( Qt::CaseSensitive );
   editor_->setAutoCompletion( true );
@@ -117,9 +124,9 @@ void FindDialog::_createCheckBoxes( void )
   Debug::Throw("FindDialog::_CreateCheckBoxes.\n" );
   
   QGridLayout* grid_layout( new QGridLayout() );
-  grid_layout->setSpacing( 2 );
+  grid_layout->setSpacing( 5 );
   grid_layout->setMargin( 0 );
-  layout()->addItem( grid_layout );
+  _mainLayout().addLayout( grid_layout );
   
   // insert checkboxes
   grid_layout->addWidget( backward_checkbox_ = new QCheckBox( "&search backward", this ), 0, 0 );
@@ -134,7 +141,7 @@ void FindDialog::_createCheckBoxes( void )
   regexp_checkbox_->setToolTip( "search text using regular expression" ); 
 
   // notification label
-  layout()->addWidget( label_ = new QLabel( this ) );
+  _mainLayout().addWidget( label_ = new QLabel( this ) );
   label_->setMargin( 2 );
 }
 
@@ -151,27 +158,18 @@ void FindDialog::_createButtons( void )
 {
   Debug::Throw("FindDialog::_CreateButtons.\n" );  
 
-  // insert hbox layout for buttons
-  button_layout_ = new QHBoxLayout();
-  button_layout_->setMargin(0);
-  button_layout_->setSpacing(5);
-  layout()->addItem( button_layout_ );
-  
   // insert Find button
-  QPushButton *button = new QPushButton( "&Find", this );
-  QtUtil::fixSize( button );
+  QPushButton *button;
+  _buttonLayout().addWidget( button = new QPushButton( "&Find", this ) );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), this, SLOT( _find( void ) ) );
   connect( button, SIGNAL( clicked( void ) ), this, SLOT( _updateFindComboBox( void ) ) );
   addDisabledButton( button );
-  button_layout_->addWidget( button );
 
   // insert Cancel button
-  button = new QPushButton( "&Cancel", this );
-  QtUtil::fixSize( button );
+  _buttonLayout().addWidget( button = new QPushButton( "&Cancel", this ) );
   connect( button, SIGNAL( clicked() ), this, SLOT( close() ) );
   button->setAutoDefault( false );
-  button_layout_->addWidget( button );
   
 }
 

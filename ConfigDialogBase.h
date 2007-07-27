@@ -42,7 +42,7 @@
 #include "OptionWidget.h"
 
 //! configuration list. Stores panel names and panels
-class ConfigListItem: public QListWidgetItem
+class ConfigListItem: public QListWidgetItem, public Counter
 {
 
   public:
@@ -50,6 +50,7 @@ class ConfigListItem: public QListWidgetItem
   //! constructor
   ConfigListItem( QListWidget* parent, const QString& title, QWidget* page = 0 ):
     QListWidgetItem( parent ),
+    Counter( "ConfigListItem" ),
     page_( page )
   { 
     Debug::Throw( "ConfigListItem::ConfigListItem.\n" );
@@ -68,7 +69,7 @@ class ConfigListItem: public QListWidgetItem
 };
 
 //! configuration dialog
-class ConfigDialogBase: public QDialog
+class ConfigDialogBase: public QDialog, public Counter
 {
 
   //! Qt meta object macro

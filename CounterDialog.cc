@@ -29,6 +29,7 @@
 */
 
 #include <QPushButton>
+#include <QLayout>
 
 #include "CounterDialog.h"
 #include "CounterList.h"
@@ -38,24 +39,29 @@ using namespace std;
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):
-  CustomDialog( parent, NONE, Qt::Window )
+  QDialog( parent, Qt::Window ),
+  Counter( "CounterDialog" )
 {
   
   Debug::Throw( "CounterDialog::CounterDialog.\n" );
   setWindowTitle( "object counters" );
     
+  setLayout( new QVBoxLayout() );
+  layout()->setMargin(10);
+  layout()->setSpacing(10);
+  
   // insert main vertical box
-  counter_list_ = new CounterList( &mainWidget() );
+  counter_list_ = new CounterList( this );
   counter_list_->setLineWidth( 1 );
   counter_list_->setMidLineWidth( 0 );
   
-  mainWidget().layout()->addWidget( counter_list_ );
+  layout()->addWidget( counter_list_ );
   
   // update button
   QPushButton *update_button = new QPushButton( "&Update", this );
   connect( update_button, SIGNAL( clicked() ), this, SLOT( Update() ) );
   update_button->setAutoDefault( false );
-  buttonLayout().addWidget( update_button );
+  layout()->addWidget( update_button );
    
   resize( QSize( 200,300 ) );
 }

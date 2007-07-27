@@ -30,15 +30,11 @@
 */
 
 #include "CustomDialog.h"
-#include "QtUtil.h"
 
 using namespace std;
 
 //____________________________________________________________
-CustomDialog::CustomDialog( 
-  QWidget *parent, 
-  const unsigned int& flags, 
-  Qt::WFlags wflags):
+CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFlags wflags):
   QDialog( parent, wflags ),
   Counter( "CustomDialog" ),
   ok_button_( 0 ),
@@ -50,38 +46,30 @@ CustomDialog::CustomDialog(
   // create vbox layout
   QVBoxLayout* layout( new QVBoxLayout() );
   setLayout( layout );
-  layout->setSpacing(2);
-  layout->setMargin(2);
+  layout->setSpacing(10);
+  layout->setMargin(10);
   
-  // insert main vertical box
-  main_widget_ = new QWidget( this );
-  main_widget_->setLayout( new QVBoxLayout() );
-  main_widget_->layout()->setMargin( 5 );
-  main_widget_->layout()->setSpacing( 5 );
-  layout->addWidget( main_widget_ );
-  
+  main_layout_ = new QVBoxLayout();
+  main_layout_->setSpacing(10);
+  main_layout_->setMargin(0);
+  layout->addLayout( main_layout_, 1 );
+    
   // insert hbox layout for buttons
   button_layout_ = new QBoxLayout( QBoxLayout::LeftToRight );
   button_layout_->setSpacing(5);
   button_layout_->setMargin(5);
-  layout->addLayout( button_layout_ );
+  layout->addLayout( button_layout_, 0 );
   
   // insert OK and Cancel button
   if( flags & OK_BUTTON ) {
-    ok_button_ = new QPushButton( "&OK", this );
-    QtUtil::fixSize( ok_button_ );
+    button_layout_->addWidget( ok_button_ = new QPushButton( "&OK", this ) );
     connect( ok_button_, SIGNAL( clicked() ), this, SLOT( accept() ) );
-    button_layout_->addWidget( ok_button_ );
   }
   
   // insert OK and Cancel button
   if( flags & CANCEL_BUTTON ) {
-    cancel_button_ = new QPushButton( "&Cancel", this );
-    QtUtil::fixSize( cancel_button_ );
+    button_layout_->addWidget( cancel_button_ = new QPushButton( "&Cancel", this ) );
     connect( cancel_button_, SIGNAL( clicked() ), this, SLOT( reject() ) );
-    button_layout_->addWidget( cancel_button_ );
   }
-  
-  layout->activate();
   
 }

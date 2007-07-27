@@ -119,6 +119,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! update configuration
   virtual void updateConfiguration( void );
   
+  //! wrap mode
+  virtual void toggleWrapMode( bool );
+  
   //! changes selection to uppercase
   virtual void upperCase( void );
   

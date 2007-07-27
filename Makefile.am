@@ -34,7 +34,10 @@ noinst_HEADERS = \
 	ErrorHandler.h \
 	FindDialog.h \
 	FontEdit.h \
-	Help.h \
+	HelpDialog.h \
+	HelpItem.h \
+	HelpItemList.h \
+  HelpManager.h \
 	IconBrowsedButton.h \
 	IconEngine.h \
   ListViewConfig.h \
@@ -95,7 +98,9 @@ libbase_qt_a_SOURCES = \
   ErrorHandler.cc \
   FindDialog.cc \
   FontEdit.cc \
-	Help.cc \
+	HelpDialog.cc \
+	HelpItem.cc \
+  HelpManager.cc \
   IconBrowsedButton.cc \
 	IconEngine.cc \
   ListViewConfig.cc \
@@ -137,7 +142,8 @@ nodist_libbase_qt_a_SOURCES = \
 	moc_DockPanel.cc \
   moc_FindDialog.cc \
   moc_FontEdit.cc \
-	moc_Help.cc \
+  moc_HelpDialog.cc \
+  moc_HelpManager.cc \
   moc_IconBrowsedButton.cc \
   moc_ListViewConfig.cc \
   moc_MultipleClickCounter.cc \

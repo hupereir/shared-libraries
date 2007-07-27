@@ -35,11 +35,11 @@
 #include <map>
 #include <string>
 
+#include <QDialog>
 #include "CounterList.h"
-#include "CustomDialog.h"
 
 //! displays Counter names and counts
-class CounterDialog: public CustomDialog
+class CounterDialog: public QDialog, public Counter
 {
 
   //! Qt meta object declaration

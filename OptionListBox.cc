@@ -154,19 +154,19 @@ void OptionListBox::_add( void )
 
   ostringstream what;
   what << "add value for option " << optionName();
-  dialog.mainWidget().layout()->addWidget( new QLabel( what.str().c_str(), &dialog.mainWidget() ) );
+  dialog.mainLayout().addWidget( new QLabel( what.str().c_str(), &dialog ) );
 
   // create editor, either directly or from BrowsedLineEdit
   CustomLineEdit* line_edit( 0 );
   if( browsable_ ) 
   {
-    BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog.mainWidget() );
-    dialog.mainWidget().layout()->addWidget( browse_edit );
+    BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog );
+    dialog.mainLayout().addWidget( browse_edit );
     browse_edit->setMode( mode_ );
     line_edit = &browse_edit->editor();
   } else {
-    line_edit = new CustomLineEdit( &dialog.mainWidget() );
-    dialog.mainWidget().layout()->addWidget( line_edit );
+    line_edit = new CustomLineEdit( &dialog );
+    dialog.mainLayout().addWidget( line_edit );
   }
   
   // map dialog
@@ -194,19 +194,19 @@ void OptionListBox::_edit( QListWidgetItem* )
   // add explanation label
   ostringstream what;
   what << "Edit value for option " << optionName();
-  dialog.mainWidget().layout()->addWidget( new QLabel( what.str().c_str(), &dialog.mainWidget() ) );
+  dialog.mainLayout().addWidget( new QLabel( what.str().c_str(), &dialog ) );
 
   // create editor, either directly or from BrowsedLineEdit
   CustomLineEdit* line_edit( 0 );
   if( browsable_ ) 
   {
-    BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog.mainWidget() );
-    dialog.mainWidget().layout()->addWidget( browse_edit );
+    BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog );
+    dialog.mainLayout().addWidget( browse_edit );
     browse_edit->setMode( mode_ );
     line_edit = &browse_edit->editor();
   } else {
-    line_edit = new CustomLineEdit( &dialog.mainWidget() );
-    dialog.mainWidget().layout()->addWidget( line_edit );
+    line_edit = new CustomLineEdit( &dialog );
+    dialog.mainLayout().addWidget( line_edit );
   }
 
   line_edit->setText( items.front()->text() );

@@ -58,10 +58,10 @@ class CustomDialog: public QDialog, public Counter
     NONE = 0,
     
     //! dialog has OK button
-    OK_BUTTON = 2,
+    OK_BUTTON = 1<<0,
     
     //! dialog has CANCEL button
-    CANCEL_BUTTON = 4 
+    CANCEL_BUTTON = 1<<1 
   };
   
   //! constructor
@@ -75,10 +75,10 @@ class CustomDialog: public QDialog, public Counter
   {}
     
   //! retrieve main vbox  
-  QWidget& mainWidget( void ) const
+  QBoxLayout& mainLayout( void ) const
   {
-    Exception::checkPointer( main_widget_, DESCRIPTION( "box_ not initialized" ) );
-    return *main_widget_;
+    Exception::checkPointer( main_layout_, DESCRIPTION( "main_layout_ not initialized" ) );
+    return *main_layout_;
   }
 
   //! retrieve button layout
@@ -110,17 +110,11 @@ class CustomDialog: public QDialog, public Counter
     return *cancel_button_;
   }
   
-  //! set main vbox style as raised panel
-  void raiseMainWidget( int spacing = 2, int margin = 2 ) 
-  {
-    mainWidget().layout()->setMargin( margin );
-    mainWidget().layout()->setSpacing( spacing );
-  }
     
   private:
   
-  //! main QVBox for further display
-  QWidget *main_widget_;
+  //! main layout
+  QBoxLayout *main_layout_;
   
   //! button hbox
   QBoxLayout *button_layout_;
@@ -130,6 +124,7 @@ class CustomDialog: public QDialog, public Counter
   
   //! cancel QPushButton, if any
   QPushButton *cancel_button_;
+  
 };
 
 #endif 
