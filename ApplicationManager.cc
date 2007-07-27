@@ -96,7 +96,7 @@ void ApplicationManager::init( ArgList args, bool forced )
   
   if( !server_ ) {
     server_ = new Server( this, 4242 );
-    connect( server_, SIGNAL( newConnection() ), this, SLOT( _newConnection() ) );
+    connect( server_, SIGNAL( newConnection() ), SLOT( _newConnection() ) );
   }
   
   //! initialize client 
@@ -113,9 +113,9 @@ void ApplicationManager::init( ArgList args, bool forced )
     socket->connectToHost( "localhost", SERVER_PORT );    
     
     client_ = new Client( socket );
-    connect( socket, SIGNAL( error( QAbstractSocket::SocketError )), this, SLOT( _error( QAbstractSocket::SocketError ) ) );
-    connect( socket, SIGNAL( disconnected() ), this, SLOT( _recreateServer() ) );
-    connect( client_, SIGNAL( messageAvailable( SERVER::Client*, const std::string& ) ), this, SLOT( _processMessage( SERVER::Client*, const std::string& ) ) );
+    connect( socket, SIGNAL( error( QAbstractSocket::SocketError )), SLOT( _error( QAbstractSocket::SocketError ) ) );
+    connect( socket, SIGNAL( disconnected() ), SLOT( _recreateServer() ) );
+    connect( client_, SIGNAL( messageAvailable( SERVER::Client*, const std::string& ) ), SLOT( _processMessage( SERVER::Client*, const std::string& ) ) );
   }
   
   // emit initialization signal
@@ -133,7 +133,7 @@ void ApplicationManager::init( ArgList args, bool forced )
   client_ ->sendMessage( command );
   
   // run timeout timer to force state ALIVE if no reply comes
-  connect( &timer_, SIGNAL( timeout() ), this, SLOT( _replyTimeOut() ) );
+  connect( &timer_, SIGNAL( timeout() ), SLOT( _replyTimeOut() ) );
   
   // time out delay (for existing server to reply)
   int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 ); 
@@ -161,8 +161,8 @@ void ApplicationManager::_newConnection()
   
   // create client from pending connection 
   Client *client( new Client( server_->nextPendingConnection() ) );
-  connect( client, SIGNAL( messageAvailable( SERVER::Client*, const std::string& ) ), this, SLOT( _redirectMessage( SERVER::Client*, const std::string& ) ) );
-  connect( client, SIGNAL( disconnected( SERVER::Client* ) ), this, SLOT( _connectionClosed( SERVER::Client* ) ) );
+  connect( client, SIGNAL( messageAvailable( SERVER::Client*, const std::string& ) ), SLOT( _redirectMessage( SERVER::Client*, const std::string& ) ) );
+  connect( client, SIGNAL( disconnected( SERVER::Client* ) ), SLOT( _connectionClosed( SERVER::Client* ) ) );
   connected_clients_.push_back( client );
   
 }

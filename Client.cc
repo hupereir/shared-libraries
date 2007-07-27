@@ -47,8 +47,8 @@ Client::Client( QTcpSocket* parent ):
 {
   Debug::Throw( "Client::Client.\n" );
   Exception::checkPointer( parent, DESCRIPTION( "invalid Tcp socket" ) );
-  connect( socket_, SIGNAL( readyRead() ), this, SLOT( _readMessage() ) );
-  connect( socket_, SIGNAL( disconnected() ), this, SLOT( _connectionClosed() ) );
+  connect( socket_, SIGNAL( readyRead() ), SLOT( _readMessage() ) );
+  connect( socket_, SIGNAL( disconnected() ), SLOT( _connectionClosed() ) );
 }
 
 //_______________________________________________________
