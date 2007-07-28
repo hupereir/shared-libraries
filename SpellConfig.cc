@@ -43,7 +43,7 @@ using namespace SPELLCHECK;
 
 //___________________________________________
 SpellConfig::SpellConfig( QWidget* parent ):
-  QGroupBox( "spell check", parent ),
+  QGroupBox( "Spell check", parent ),
   OptionWidget( "" ),
   Counter( "SpellConfig" )
 {
@@ -57,28 +57,28 @@ SpellConfig::SpellConfig( QWidget* parent ):
   setLayout( grid_layout );
 
   // aspell command
-  grid_layout->addWidget( new QLabel( "aspell command: ", this ), 0, 0 );
+  grid_layout->addWidget( new QLabel( "Aspell command: ", this ), 0, 0 );
   grid_layout->addWidget( aspell_ = new OptionBrowsedLineEdit( this, "ASPELL" ), 0, 1 );
-  aspell_->setToolTip( "aspell command. It is used to retrieve spell-checking modes." );
+  aspell_->setToolTip( "Aspell command. It is used to retrieve spell-checking modes." );
 
   // dictionaries
-  grid_layout->addWidget( new QLabel( "dictionary: ", this ), 1, 0 );
+  grid_layout->addWidget( new QLabel( "Dictionary: ", this ), 1, 0 );
   grid_layout->addWidget( dictionary_ = new OptionComboBox( this, "DICTIONARY" ), 1, 1 );
   
   const set<string>& dictionaries( interface.dictionaries() );
   for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
   { dictionary_->addItem( iter->c_str() ); }
   
-  dictionary_->setToolTip( "dictionary language" );
+  dictionary_->setToolTip( "Dictionary language" );
 
   // filters
-  grid_layout->addWidget( new QLabel( "filter: ", this ), 2, 0 );
+  grid_layout->addWidget( new QLabel( "Filter: ", this ), 2, 0 );
   grid_layout->addWidget( filter_ = new OptionComboBox( this, "DICTIONARY_FILTER" ), 2, 1 );
 
   const set<string>& filters( interface.filters() );
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   { filter_->addItem(iter->c_str() ); }
-  filter_->setToolTip( "filtering mode" );
+  filter_->setToolTip( "Filtering mode" );
 
 }
 

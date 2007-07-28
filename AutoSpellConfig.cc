@@ -42,7 +42,7 @@ using namespace std;
 
 //___________________________________________
 AutoSpellConfig::AutoSpellConfig( QWidget* parent ):
-  QGroupBox( "automatic spell check", parent ),
+  QGroupBox( "Automatic spell check", parent ),
   OptionWidget( "" ),
   Counter( "AutoSpellConfig" )
 {
@@ -54,18 +54,18 @@ AutoSpellConfig::AutoSpellConfig( QWidget* parent ):
   setLayout( grid_layout );
   
   // suggestions
-  grid_layout->addWidget( new QLabel( "max number of suggestions: ", this ), 0, 0 );
+  grid_layout->addWidget( new QLabel( "Max number of suggestions: ", this ), 0, 0 );
   grid_layout->addWidget( suggestions_ = new OptionSpinBox( this, "MAX_SUGGESTIONS" ), 0, 1 );
   suggestions_->setMinimum( 0 );
   suggestions_->setMaximum( 50 );
-  suggestions_->setToolTip( "maximum number of suggestions in suggestion menu.\n 0 means no limit." );
+  suggestions_->setToolTip( "Maximum number of suggestions in suggestion menu.\n 0 means no limit." );
 
   // options
-  grid_layout->addWidget( new QLabel( "highlight color: ", this ), 1, 0 );
+  grid_layout->addWidget( new QLabel( "Highlight color: ", this ), 1, 0 );
   grid_layout->addWidget( highlight_ = new OptionColorDisplay( this, "AUTOSPELL_COLOR" ), 1, 1 );
   highlight_->setToolTip( "Highlight color for misspelled words" );
 
-  grid_layout->addWidget( new QLabel( "highlight font format: ", this ), 2, 0 );
+  grid_layout->addWidget( new QLabel( "Highlight font format: ", this ), 2, 0 );
   grid_layout->addWidget( font_info_ = new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" ), 2, 1 );
   font_info_->setToolTip( "Font format for misspelled words" );
 }
