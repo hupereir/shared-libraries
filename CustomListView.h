@@ -111,6 +111,14 @@ class CustomListView: public QTreeWidget, public Counter
     if( need_selection ) selection_actions_.push_back( out );
     return *out;
   }
+
+  //! add context menu action
+  virtual QAction& addMenuAction( QAction* action, const bool& need_selection = false )
+  {
+    menu().addAction( action );
+    if( need_selection ) selection_actions_.push_back( action );
+    return *action;
+  }
   
   //! add context menu action
   virtual QAction& addMenuAction( const std::string& name, QObject* reciever, const std::string& slot,  const bool& need_selection = false )

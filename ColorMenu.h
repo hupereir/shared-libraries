@@ -55,6 +55,9 @@ class ColorMenu: public QMenu, public Counter
   //! default icon name for color menu
   static const std::string COLOR_ICON;
 
+  //! default name for no-color
+  static const std::string NONE;
+
   //! used to sort colors in set
   class ColorLessFTor
   {

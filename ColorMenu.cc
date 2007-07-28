@@ -40,7 +40,8 @@ using namespace std;
 //________________________________________________
 const QSize ColorMenu::PixmapSize = QSize( 24, 24 );
 const std::string ColorMenu::COLOR_ICON = "color.png";
- 
+const std::string ColorMenu::NONE = "None";
+
 //_______________________________________________
 ColorMenu::ColorMenu( QWidget* parent ):
   QMenu( parent ),
@@ -55,6 +56,9 @@ ColorMenu::ColorMenu( QWidget* parent ):
 void ColorMenu::add( const string& colorname )
 { 
   Debug::Throw( "ColorMenu::add.\n" );
+  
+  if( colorname == NONE ) return;
+  
   QColor color( colorname.c_str() );
   if( color.isValid() ) colors_.insert( color );
 }
