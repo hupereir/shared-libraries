@@ -39,7 +39,8 @@ using namespace std;
 
 //________________________________________________
 const QSize ColorMenu::PixmapSize = QSize( 24, 24 );
-  
+const std::string ColorMenu::COLOR_ICON = "color.png";
+ 
 //_______________________________________________
 ColorMenu::ColorMenu( QWidget* parent ):
   QMenu( parent ),

@@ -13,6 +13,7 @@ noinst_HEADERS = \
 	BrowsedLineEdit.h \
 	ClockLabel.h \
 	ColorDisplay.h \
+  ColorMenu.h \
 	ConfigDialogBase.h \
 	CounterDialog.h \
 	CounterList.h \
@@ -79,6 +80,7 @@ libbase_qt_a_SOURCES = \
   BrowsedLineEdit.cc \
   ClockLabel.cc \
   ColorDisplay.cc \
+  ColorMenu.cc \
   ConfigDialogBase.cc \
   CounterDialog.cc \
   CounterList.cc \
@@ -127,6 +129,7 @@ libbase_qt_a_SOURCES = \
 nodist_libbase_qt_a_SOURCES = \
   moc_BrowsedLineEdit.cc \
   moc_ColorDisplay.cc \
+  moc_ColorMenu.cc \
   moc_ClockLabel.cc \
   moc_ConfigDialogBase.cc \
   moc_CounterDialog.cc \

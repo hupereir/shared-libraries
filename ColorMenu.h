@@ -46,9 +46,29 @@ class ColorMenu: public QMenu, public Counter
 
   //! Qt meta object declaration
   Q_OBJECT
-
+    
   public: 
-        
+
+  //! colored pixmap size
+  static const QSize PixmapSize;
+
+  //! default icon name for color menu
+  static const std::string COLOR_ICON;
+
+  //! used to sort colors in set
+  class ColorLessFTor
+  {
+    public:
+    
+    //! predicate
+    bool operator() (const QColor& first, const QColor& second ) const
+    { return first.name() < second.name(); }
+    
+  };
+
+  // sorted set of colors
+  typedef std::set<QColor, ColorLessFTor> ColorSet;
+
   //! constructor
   ColorMenu( QWidget* parent );
   
@@ -58,6 +78,10 @@ class ColorMenu: public QMenu, public Counter
   
   //! add a color
   void add( const std::string& );
+
+  //! retrieve colors
+  const ColorSet& colors()
+  { return colors_; }
   
   signals:
   
@@ -80,23 +104,9 @@ class ColorMenu: public QMenu, public Counter
   void _selected( QAction* );
   
   private: 
-
-  //! colored pixmap size
-  static const QSize PixmapSize;
-  
-  //! used to sort colors in set
-  class ColorLessFTor
-  {
-    public:
     
-    //! predicate
-    bool operator() (const QColor& first, const QColor& second ) const
-    { return first.name() < second.name(); }
-    
-  };
-  
   //! list of loaded colors
-  std::set< QColor, ColorLessFTor > colors_;
+  ColorSet colors_;
 
   //! map actions to file recors
   std::map<QAction*, QColor> actions_;
