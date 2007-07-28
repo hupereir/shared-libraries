@@ -35,7 +35,6 @@
 #include <QApplication>
 #include <QMainWindow>
 
-#include "Counter.h"  
 #include "Debug.h"  
 #include "Exception.h"  
 #include "XmlOptions.h"  
@@ -44,7 +43,7 @@
   \class CustomMainWindow
   \brief customized QDialog
 */
-class CustomMainWindow: public QMainWindow, public Counter
+class CustomMainWindow: public QMainWindow
 {
   
   Q_OBJECT
@@ -53,8 +52,7 @@ class CustomMainWindow: public QMainWindow, public Counter
   
   //! constructor
   CustomMainWindow( QWidget *parent, Qt::WFlags wflags = 0):
-    QMainWindow( parent, wflags ),
-    Counter( "CustomMainWindow" )
+    QMainWindow( parent, wflags )
   { 
     Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
     connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
