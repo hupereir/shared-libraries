@@ -149,6 +149,12 @@ class CustomListView: public QTreeWidget, public Counter
     }
     return out;
   }
+
+  //! current items
+  template <typename T> 
+  T* currentItem( void )
+  { return static_cast<T*>( QTreeWidget::currentItem() ); }
+
   
   //! retrieve all items
   QList<QTreeWidgetItem*> items( void );

@@ -94,7 +94,7 @@ class ConfigDialogBase: public QDialog, public Counter
   virtual QWidget& addPage( const QString& title, const bool& expand = false );
 
   //! add option widget
-  virtual void addOptionWidget( OptionWidget* widget )
+  void addOptionWidget( OptionWidget* widget )
   { option_widgets_.push_back( widget ); }
 
   //! clear option widgets
