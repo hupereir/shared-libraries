@@ -127,7 +127,7 @@ QDomElement CustomListView::htmlElement( QDomDocument& document )
   }
   
   // retrieve items
-  QList< QTreeWidgetItem* > children( items() );
+  QList< QTreeWidgetItem* > children( CustomListView::children() );
   for( QList< QTreeWidgetItem* >::iterator iter = children.begin(); iter != children.end(); iter++ )
   {
     QDomElement row = out.appendChild( document.createElement( "tr" ) ).toElement();
@@ -170,25 +170,34 @@ void CustomListView::mousePressEvent( QMouseEvent *event )
 }
 
 //___________________________________
-QList< QTreeWidgetItem* > CustomListView::items( void )
+QList< QTreeWidgetItem* > CustomListView::children( QTreeWidgetItem* parent )
 {
   
   Debug::Throw( "CustomListView::items.\n" );
   
   QList<QTreeWidgetItem* > out;
-  for( int i = 0; i<topLevelItemCount(); i++ )
-  {
-    QTreeWidgetItem* item( topLevelItem( i ) );
-    
-    // add top level item
-    out.push_back( item );
-    
-    // add children
-    for( int j=0; j<item->childCount(); j++ ) out.push_back( item->child( j ) );
   
+  if( parent == 0 )
+  {
+    
+    for( int i = 0; i<topLevelItemCount(); i++ )
+    {
+      out.push_back( topLevelItem( i ) );
+      out += children( topLevelItem( i ) );
+    }
+      
+  } else {
+    
+    for( int i=0; i<parent->childCount(); i++ ) 
+    {
+      out.push_back( parent->child(i) );
+      out += children( parent->child(i) );
+    }
+    
   }
   
   return out;
+  
 }
 
 //___________________________________

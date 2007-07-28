@@ -323,19 +323,17 @@ void ConfigDialogBase::tabConfiguration( QWidget* parent )
   QGroupBox* box = new QGroupBox( "tab emulation", parent );
   QVBoxLayout* layout = new QVBoxLayout();
   layout->setMargin(5);
-  layout->setSpacing(2);
+  layout->setSpacing(5);
   box->setLayout( layout );
   parent->layout()->addWidget( box );
      
-  QWidget* grid = new QWidget( box );
   QGridLayout* grid_layout( new QGridLayout() );
   grid_layout->setMargin(0);
-  grid_layout->setSpacing(2);
-  grid->setLayout( grid_layout );
-  layout->addWidget( grid );
+  grid_layout->setSpacing(5);
+  layout->addLayout( grid_layout );
   
-  grid_layout->addWidget(new QLabel( "tab size: ", grid ), 0, 0 );
-  OptionSpinBox* spinbox = new OptionSpinBox( grid, "TAB_SIZE" );
+  grid_layout->addWidget(new QLabel( "tab size: ", box ), 0, 0 );
+  OptionSpinBox* spinbox = new OptionSpinBox( box, "TAB_SIZE" );
   spinbox->setMinimum( 2 );
   spinbox->setMaximum( 20 );
   spinbox->setToolTip( "tab size (in unit of space characters)." );
@@ -344,7 +342,7 @@ void ConfigDialogBase::tabConfiguration( QWidget* parent )
 
   OptionCheckBox* checkbox = new OptionCheckBox( "emulate tabs", box, "TAB_EMULATION" );
   checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
-  grid_layout->addWidget( checkbox, 0, 1, 2, 1 );
+  layout->addWidget( checkbox );
   addOptionWidget( checkbox );
 
 }

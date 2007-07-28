@@ -402,14 +402,11 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
 }
 
 //____________________________________________________________
-void QtUtil::centerOnPointer( QWidget* widget, bool calculate_size )
+void QtUtil::centerOnPointer( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnPointer.\n" );
-  if( !widget ) return;
-     
-  // calculate/retrieve widget size
-  if( calculate_size ) widget->adjustSize();
-  
+  Exception::assert( widget, DESCRIPTION( "invalid widget" ) );
+       
   // move widget
   widget->move( centerOnPointer( widget->frameSize() ) );
   qApp->processEvents();
@@ -417,29 +414,23 @@ void QtUtil::centerOnPointer( QWidget* widget, bool calculate_size )
 }
 
 //____________________________________________________________
-void QtUtil::centerOnParent( QWidget* widget, bool calculate_size )
+void QtUtil::centerOnParent( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnParent.\n" );
-  if( !widget ) return;
+  Exception::assert( widget, DESCRIPTION( "invalid widget" ) );
   
   // get parent widget
-  QWidget *parent( (QWidget*) widget->parent() );
-  if( !parent ) {
-    centerOnDesktop( widget, calculate_size );
-    return;
-  } else parent = parent->topLevelWidget();
-  widget->move( centerOnWidget( widget->frameSize(), parent ) );
+  QWidget* parent = widget->window();
+  if( !parent ) centerOnDesktop( widget );
+  else widget->move( centerOnWidget( widget->frameSize(), parent ) );
   return;
 }
 
 //____________________________________________________________
-void QtUtil::centerOnDesktop( QWidget* widget, bool calculate_size )
+void QtUtil::centerOnDesktop( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnDesktop.\n" );
-  if( !widget ) return;
-   
-  // calculate/retrieve widget size
-  if( calculate_size ) widget->adjustSize();
+  Exception::assert( widget, DESCRIPTION( "invalid widget" ) );
   widget->move( centerOnDesktop( widget->frameSize() ) );
   return;
 }

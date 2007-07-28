@@ -95,11 +95,17 @@ class ConfigDialogBase: public QDialog, public Counter
 
   //! add option widget
   void addOptionWidget( OptionWidget* widget )
-  { option_widgets_.push_back( widget ); }
+  { 
+    Debug::Throw( "ConfigDialogBase::addOptionWidget.\n" );
+    option_widgets_.push_back( widget ); 
+  }
 
   //! clear option widgets
   virtual void clearOptionWidgets( void )
-  { option_widgets_.clear(); }
+  { 
+    Debug::Throw( "ConfigDialogBase::clearOptionWidgets.\n" );
+    option_widgets_.clear(); 
+  }
 
   //! flag bitset for the Base configuration
   enum ConfigFlags
@@ -161,6 +167,7 @@ class ConfigDialogBase: public QDialog, public Counter
   //! see if options have been modified. Emit signal if yes
   virtual void _checkModified( void )
   {
+    Debug::Throw( "ConfigDialogBase::_checkModified.\n" );
     if( modified_options_ == XmlOptions::get() ) return;
     emit configurationChanged();
     modified_options_ = XmlOptions::get();

@@ -55,13 +55,18 @@ void DebugMenu::_showCounterDialog( void )
   
   // check counter dialog has been build
   if( !counter_dialog_ ) {
+    
     counter_dialog_ = new CounterDialog( this );
-    QtUtil::centerOnParent( counter_dialog_, false );
+    QtUtil::centerOnParent( counter_dialog_ );
     counter_dialog_->Update();
     counter_dialog_->show();
+    
   } else {
+    
     counter_dialog_->Update();
+    counter_dialog_->show();
     QtUtil::uniconify( counter_dialog_ );
+  
   }
   
 }

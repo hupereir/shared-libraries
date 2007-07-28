@@ -155,15 +155,14 @@ class CustomListView: public QTreeWidget, public Counter
   T* currentItem( void )
   { return static_cast<T*>( QTreeWidget::currentItem() ); }
 
-  
-  //! retrieve all items
-  QList<QTreeWidgetItem*> items( void );
+  //! retrieve all children, starting from parent, recursively
+  QList<QTreeWidgetItem*> children( QTreeWidgetItem* parent = 0 );
  
-  //! retrieve all items
+  //! retrieve all children, starting from parent, recursively
   template <typename T> 
-  QList< T* > items( void )
+  QList< T* > children( QTreeWidgetItem* parent = 0 )
   {
-    QList<QTreeWidgetItem*> children( items() );
+    QList<QTreeWidgetItem*> children( children );
     QList<T*> out;
     for( QList<QTreeWidgetItem*>::const_iterator iter = children.begin(); iter != children.end(); iter++ )
     {
@@ -199,9 +198,9 @@ class CustomListView: public QTreeWidget, public Counter
     void setFlag( const Qt::ItemFlag& flag, const bool &value )
     { 
       if( value ) setFlags( flags() | flag );
-      else setFlags( flags() ^ ~Qt::ItemFlags(flag) );
+      else setFlags( flags() & ~Qt::ItemFlags(flag) );
     }
-    
+        
     //! order operator
     virtual bool operator<( const QTreeWidgetItem &other ) const;
     

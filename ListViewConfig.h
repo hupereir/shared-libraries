@@ -51,7 +51,7 @@ class ListViewConfig: public QWidget, public Counter
   public:
   
   //! constructor
-  ListViewConfig( QWidget* parent, QTreeWidget* target, const std::string& title = "display"  );
+  ListViewConfig( QWidget* parent, QTreeWidget* target, const std::string& title = ""  );
   
   public slots:
   

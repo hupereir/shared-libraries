@@ -40,7 +40,7 @@ CustomListBox::CustomListBox( QWidget* parent ):
   Counter( "CustomListBox" )
 {
   
-  Debug::Throw( "CustomListBox::CustomListBox" ); 
+  Debug::Throw( "CustomListBox::CustomListBox.\n" ); 
   updateItemColor();
   
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );

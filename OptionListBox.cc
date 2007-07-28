@@ -142,6 +142,7 @@ void OptionListBox::_updateButtons( void )
   edit_->setEnabled( items.size() == 1 );
   remove_->setEnabled( items.size() != 0 );
   default_->setEnabled( items.size() == 1 );
+  
 }   
 
 //_______________________________________________________
