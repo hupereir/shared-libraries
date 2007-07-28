@@ -29,7 +29,9 @@
 
 #include <QApplication>
 #include <QCursor>
+#include <QHeaderView>
 #include <QMouseEvent>
+#include <QPainter>
 
 #include "CustomListView.h"
 #include "QtUtil.h"
@@ -50,8 +52,8 @@ CustomListView::CustomListView( QWidget* parent ):
   setSortingEnabled( true );
 
   updateItemColor();
-  
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );
+  
 }
 
 //__________________________________________________________________________
@@ -147,33 +149,10 @@ QDomElement CustomListView::htmlElement( QDomDocument& document )
 }
 
 //___________________________________
-void CustomListView::mousePressEvent( QMouseEvent *event )
-{
-  Debug::Throw( "CustomListView::mousePressEvent.\n" );
-  if( event->button() != Qt::RightButton ) {
-    QTreeWidget::mousePressEvent( event );
-    return;
-  }
-  
-  if( !hasMenu() ) return;
-    
-  // enable/disable
-  bool has_selection( !QTreeWidget::selectedItems().empty() );
-  for( vector<QAction*>::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
-  { (*iter)->setEnabled( has_selection ); }
-  
-  // move and show menu
-  menu().adjustSize();
-  QtUtil::moveWidget( &menu(), QCursor::pos() );
-  menu().show();
-  
-}
-
-//___________________________________
 QList< QTreeWidgetItem* > CustomListView::children( QTreeWidgetItem* parent )
 {
   
-  Debug::Throw( "CustomListView::items.\n" );
+  Debug::Throw( "CustomListView::children.\n" );
   
   QList<QTreeWidgetItem* > out;
   
@@ -239,11 +218,13 @@ void CustomListView::sort( void )
 {
   Debug::Throw( "CustomListView::sort.\n" );
   if( !isSortingEnabled() ) return;
-
-  setUpdatesEnabled( false );
-  sortByColumn( sortColumn() );
-  sortByColumn( sortColumn() );
-  setUpdatesEnabled( true );
+  
+  sortItems( sortColumn(), header()->sortIndicatorOrder() );
+  
+    //setUpdatesEnabled( false );
+  //sortByColumn( sortColumn() );
+  //sortByColumn( sortColumn() );
+  //setUpdatesEnabled( true );
   repaint();
   
 }
@@ -264,4 +245,66 @@ void CustomListView::updateItemColor( void )
   palette.setColor( QPalette::AlternateBase, item_color );
   setPalette( palette );
   setAlternatingRowColors( true ); 
+  
+}
+
+//___________________________________
+void CustomListView::mousePressEvent( QMouseEvent *event )
+{
+  Debug::Throw( "CustomListView::mousePressEvent.\n" );
+  if( event->button() != Qt::RightButton ) {
+    QTreeWidget::mousePressEvent( event );
+    return;
+  }
+  
+  if( !hasMenu() ) return;
+    
+  // enable/disable
+  bool has_selection( !QTreeWidget::selectedItems().empty() );
+  for( vector<QAction*>::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
+  { (*iter)->setEnabled( has_selection ); }
+  
+  // move and show menu
+  menu().adjustSize();
+  QtUtil::moveWidget( &menu(), QCursor::pos() );
+  menu().show();
+  
+}
+
+
+//__________________________________________________________
+void CustomListView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+  
+  Item* item = dynamic_cast<Item*>(itemFromIndex( index ) );
+  // modify options and pass to the default method
+  QStyleOptionViewItem new_option( option );
+  
+  //  QGradient 
+  QLinearGradient linearGrad(QPointF(0, 0), QPointF(width(), 0));
+  
+  if( item && item->color().isValid() )
+  {
+    
+    if( isItemSelected( item ) ) 
+    {
+      
+      linearGrad.setColorAt(0, item->color().light(130));
+      linearGrad.setColorAt(0.3, item->color());
+      linearGrad.setColorAt(1, item->color().light(130));
+      new_option.palette.setBrush( QPalette::Highlight, QBrush( linearGrad ) );
+      
+    } else new_option.palette.setColor( QPalette::Text, item->color() );
+      
+  } else if( isItemSelected( item ) ) {
+    
+    linearGrad.setColorAt(0, option.palette.color( QPalette::Highlight ).light(130) );
+    linearGrad.setColorAt(0.3, option.palette.color( QPalette::Highlight ) );
+    linearGrad.setColorAt(1, option.palette.color( QPalette::Highlight ).light(130) );
+    new_option.palette.setBrush( QPalette::Highlight, QBrush( linearGrad ) );
+  
+  }
+  
+  return QTreeWidget::drawRow( painter, new_option, index );
+
 }

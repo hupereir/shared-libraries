@@ -47,10 +47,10 @@ OptionFontInfo::OptionFontInfo( QWidget* parent, const string& option_name ):
   setLayout( new QHBoxLayout() );
   layout()->setMargin(2);
   layout()->setSpacing(2);
-  layout()->addWidget( bold_ = new QCheckBox( "bold", this ) );
-  layout()->addWidget( italic_ = new QCheckBox( "italic", this ) );
-  layout()->addWidget( underline_ = new QCheckBox( "underline", this ) );
-  layout()->addWidget( strike_ = new QCheckBox( "strike", this ) );
+  layout()->addWidget( bold_ = new QCheckBox( "&Bold", this ) );
+  layout()->addWidget( italic_ = new QCheckBox( "&Italic", this ) );
+  layout()->addWidget( underline_ = new QCheckBox( "&Underline", this ) );
+  layout()->addWidget( strike_ = new QCheckBox( "&Strike", this ) );
 }
 
 //__________________________________________________

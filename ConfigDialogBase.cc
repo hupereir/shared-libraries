@@ -160,13 +160,13 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
   
   Debug::Throw( "ConfigDialogBase::baseConfiguration.\n" );
   
-  if( !parent ) parent = &addPage( "base" );
+  if( !parent ) parent = &addPage( "Base" );
   
   // base
   if( flag & BASE )
   { 
     
-    QGroupBox *box = new QGroupBox( "base", parent );
+    QGroupBox *box = new QGroupBox( "Base", parent );
     parent->layout()->addWidget( box );
 
     QVBoxLayout* layout = new QVBoxLayout();
@@ -185,31 +185,31 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
     h_layout->addLayout( grid_layout );
 
     // base font    
-    grid_layout->addWidget( new QLabel( "default font: ", box ), 0, 0 );
+    grid_layout->addWidget( new QLabel( "Default font: ", box ), 0, 0 );
     OptionFontEdit *edit = new OptionFontEdit( box, "FONT_NAME" );
-    edit->setToolTip( "default font name for all widgets" );
+    edit->setToolTip( "Default font name for all widgets" );
     grid_layout->addWidget( edit, 0, 1 );
     addOptionWidget( edit );
     
     // fixed font
-    grid_layout->addWidget( new QLabel( "fixed font: ", box ), 1, 0 );
+    grid_layout->addWidget( new QLabel( "Fixed font: ", box ), 1, 0 );
     edit = new OptionFontEdit( box, "FIXED_FONT_NAME" );
-    edit->setToolTip( "default font name (fixed) for text widgets" );
+    edit->setToolTip( "Default font name (fixed) for text widgets" );
     grid_layout->addWidget( edit, 1, 1 );
     addOptionWidget( edit );
 
     // default icon path
-    grid_layout->addWidget( new QLabel( "default icon path: ", box ), 2, 0 );
+    grid_layout->addWidget( new QLabel( "Default icon path: ", box ), 2, 0 );
     OptionBrowsedLineEdit* icon_path_edit = new OptionBrowsedLineEdit( box, "DEFAULT_ICON_PATH" );
     grid_layout->addWidget( icon_path_edit, 2, 1 );
     addOptionWidget( icon_path_edit );
     
     // debug level
-    grid_layout->addWidget( new QLabel( "debug level: ", box ), 3, 0 );
+    grid_layout->addWidget( new QLabel( "Debug level: ", box ), 3, 0 );
     OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 5 );
-    spinbox->setToolTip( "debug verbosity level" );
+    spinbox->setToolTip( "Debug verbosity level" );
     grid_layout->addWidget( spinbox, 3, 1 );
     addOptionWidget( spinbox );
           
@@ -220,10 +220,10 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
     h_layout->addLayout( v_layout );
         
     OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( box, "ICON_PIXMAP" );
-    editor->setToolTip( "application icon" );
+    editor->setToolTip( "Application icon" );
     addOptionWidget( editor );
     v_layout->addWidget( editor );
-    v_layout->addWidget( new QLabel( "icon", box ), 0, Qt::AlignHCenter );
+    v_layout->addWidget( new QLabel( "Icon", box ), 0, Qt::AlignHCenter );
     v_layout->addStretch(1);
     
   }
@@ -252,33 +252,33 @@ void ConfigDialogBase::toolbarConfiguration( QWidget* parent )
   Debug::Throw( "ConfigDialogBase::toolbarConfiguration.\n" );
     
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "base" );
-  QGroupBox* box = new QGroupBox( "toolbars", parent );
+  if( !parent ) parent = &addPage( "Base" );
+  QGroupBox* box = new QGroupBox( "Toolbars", parent );
   QVBoxLayout* layout = new QVBoxLayout();
   layout->setMargin(5);
   layout->setSpacing(2);
   box->setLayout( layout );
   parent->layout()->addWidget( box );
       
-  layout->addWidget( new QLabel("pixmap pathname: ", box ) );
+  layout->addWidget( new QLabel("Pixmap pathname: ", box ) );
   OptionListBox *listbox = new OptionListBox( box, "PIXMAP_PATH" );
   listbox->setBrowsable( true );
   listbox->setMode( QFileDialog::Directory );
   addOptionWidget( listbox );
-  listbox->setToolTip( "pathname to load toolbar pixmaps" );
+  listbox->setToolTip( "Pathname to load toolbar pixmaps" );
   layout->addWidget( listbox );
   
   // menu big pixmaps
   layout->addWidget( new QLabel("",box) );
-  OptionCheckBox* checkbox = new OptionCheckBox( "big pixmaps in tool bars", box, "USE_BIG_PIXMAP" );
+  OptionCheckBox* checkbox = new OptionCheckBox( "Big pixmaps in tool bars", box, "USE_BIG_PIXMAP" );
   addOptionWidget( checkbox );
-  checkbox->setToolTip( "use big pixmaps in toolbars" );
+  checkbox->setToolTip( "Use big pixmaps in toolbars" );
   layout->addWidget( checkbox );
   
   // menu text label
-  checkbox = new OptionCheckBox( "button text in tool bars", box, "USE_TEXT_LABEL" );
+  checkbox = new OptionCheckBox( "Button text in tool bars", box, "USE_TEXT_LABEL" );
   addOptionWidget( checkbox );
-  checkbox->setToolTip( "use text under tool buttons icon" );
+  checkbox->setToolTip( "Use text under tool buttons icon" );
   layout->addWidget( checkbox );
   
 }
@@ -290,22 +290,22 @@ void ConfigDialogBase::listConfiguration( QWidget* parent )
   Debug::Throw( "ConfigDialogBase::listConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "lists" );
+  if( !parent ) parent = &addPage( "Lists" );
   
-  QGroupBox* box = new QGroupBox( "lists", parent );
+  QGroupBox* box = new QGroupBox( "Lists", parent );
   QVBoxLayout* layout = new QVBoxLayout();
   layout->setMargin(5);
   layout->setSpacing(2);
   box->setLayout( layout );
   parent->layout()->addWidget( box );
     
-  QLabel* label = new QLabel( "list item background color: ", box );
+  QLabel* label = new QLabel( "List item background color: ", box );
   QtUtil::fixSize( label );
   layout->addWidget( label );
   
   OptionColorDisplay* color = new OptionColorDisplay( box, "ITEM_COLOR" );
   addOptionWidget( color );
-  color->setToolTip( "item background color in lists" );
+  color->setToolTip( "Item background color in lists" );
   layout->addWidget( color );
   
 }
@@ -320,7 +320,7 @@ void ConfigDialogBase::tabConfiguration( QWidget* parent )
   if( !parent ) parent = &addPage( "Tabs" );
   
   // tab emulation
-  QGroupBox* box = new QGroupBox( "tab emulation", parent );
+  QGroupBox* box = new QGroupBox( "Tab emulation", parent );
   QVBoxLayout* layout = new QVBoxLayout();
   layout->setMargin(5);
   layout->setSpacing(5);
@@ -332,15 +332,15 @@ void ConfigDialogBase::tabConfiguration( QWidget* parent )
   grid_layout->setSpacing(5);
   layout->addLayout( grid_layout );
   
-  grid_layout->addWidget(new QLabel( "tab size: ", box ), 0, 0 );
+  grid_layout->addWidget(new QLabel( "Tab size: ", box ), 0, 0 );
   OptionSpinBox* spinbox = new OptionSpinBox( box, "TAB_SIZE" );
   spinbox->setMinimum( 2 );
   spinbox->setMaximum( 20 );
-  spinbox->setToolTip( "tab size (in unit of space characters)." );
+  spinbox->setToolTip( "Tab size (in unit of space characters)." );
   grid_layout->addWidget( spinbox, 0, 1 );
   addOptionWidget( spinbox );
 
-  OptionCheckBox* checkbox = new OptionCheckBox( "emulate tabs", box, "TAB_EMULATION" );
+  OptionCheckBox* checkbox = new OptionCheckBox( "Emulate tabs", box, "TAB_EMULATION" );
   checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
   layout->addWidget( checkbox );
   addOptionWidget( checkbox );

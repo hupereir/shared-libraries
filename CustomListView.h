@@ -170,7 +170,8 @@ class CustomListView: public QTreeWidget, public Counter
   template <typename T> 
   QList< T* > children( QTreeWidgetItem* parent = 0 )
   {
-    QList<QTreeWidgetItem*> children( children );
+    Debug::Throw( "CustomListView::children (templates).\n" );
+    QList<QTreeWidgetItem*> children( CustomListView::children( parent ) );
     QList<T*> out;
     for( QList<QTreeWidgetItem*>::const_iterator iter = children.begin(); iter != children.end(); iter++ )
     {
@@ -202,6 +203,14 @@ class CustomListView: public QTreeWidget, public Counter
     virtual ~Item( void )
     {}
     
+    //! color
+    void setColor( const QColor& color )
+    { color_ = color; }
+    
+    //! retrieve color
+    const QColor& color( void )
+    { return color_; }
+    
     //! flag selection
     void setFlag( const Qt::ItemFlag& flag, const bool &value )
     { 
@@ -212,16 +221,17 @@ class CustomListView: public QTreeWidget, public Counter
     //! order operator
     virtual bool operator<( const QTreeWidgetItem &other ) const;
     
+    protected:
+    
+    // alternate color for item painting
+    QColor color_;
+    
   };
   
   public slots:
   
   //! sort items (based on current column )
   virtual void sort( void );
-  
-  //! sort items by column (no order is provided)
-  virtual void sortItems( int column )
-  { if( column != sortColumn() ) sortByColumn( column ); }
   
   //! update alternate item color
   virtual void updateItemColor( void );
@@ -230,7 +240,10 @@ class CustomListView: public QTreeWidget, public Counter
   
   //! mouse button press event handler. Pops up attached menu.
   virtual void mousePressEvent( QMouseEvent *e );
-          
+
+  //! customized drawing to handle colored entries
+  virtual void drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+           
   private:
 
   //! popup menu for right click
