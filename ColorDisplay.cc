@@ -41,10 +41,13 @@
 using namespace std;
 
 //______________________________________________
+const QString ColorDisplay::NONE = "None";
+
+//______________________________________________
 ColorDisplay::ColorDisplay( QWidget* parent ):
   QWidget( parent ),
   Counter( "ColorDisplay" ),
-  line_edit_( this )
+  editor_( this )
 {
   Debug::Throw( "ColorDisplay::ColorDisplay.\n" );
 
@@ -53,10 +56,10 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   layout->setSpacing(2);
   setLayout( layout );
   
-  line_edit_.setAlignment( Qt::AlignCenter );
-  QtUtil::expand( &line_edit_, " #ffffff " ); 
-  layout->addWidget( &line_edit_ );
-  connect( &line_edit_, SIGNAL( returnPressed() ), SLOT( _changeColorFromText() ) );  
+  editor_.setAlignment( Qt::AlignCenter );
+  QtUtil::expand( &editor_, " #ffffff " ); 
+  layout->addWidget( &editor_ );
+  connect( &editor_, SIGNAL( returnPressed() ), SLOT( _changeColorFromText() ) );  
   
   QPushButton *button( new QPushButton( "...", this ) );
   QtUtil::fixSize( button );
@@ -66,12 +69,68 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   
 } 
 
+//________________________________________________________
+void ColorDisplay::setColor( QColor color )
+{ 
+  Debug::Throw( "ColorDisplay::setColor.\n" );
+  if( color.isValid() )
+  {
+    editor_.setColor( color );
+    editor_.setText( color.name() );
+  } else {
+    editor_.setColor( palette().color( QPalette::Window ) );
+    editor_.setText( NONE );
+  }
+}
+
+//________________________________________________________
+void ColorDisplay::_changeColor( void )
+{ 
+  Debug::Throw( "ColorDisplay::_changeColor.\n" );
+  QColor color( QColorDialog::getColor( editor_.color(), this ) );
+  if( color.isValid() ) setColor( color ); 
+}
+
+//________________________________________________________
+void ColorDisplay::_changeColorFromText( void )
+{ 
+  Debug::Throw( "ColorDisplay::_changeColorFromText.\n" );
+  
+  QColor color;
+  QString text = editor_.text();
+  
+  if( text != NONE )
+  {
+    color = QColor( text );
+    if( !color.isValid() ) QtUtil::infoDialog( this, "Invalid color" );
+  }
+  
+  if( color.isValid() ) 
+  {
+    
+    editor_.setColor( color );
+    editor_.setText( color.name() );
+  
+  } else editor_.setColor( palette().color( QPalette::Window ) );
+  
+}
+
+//_______________________________________________
+QColor ColorDisplay::LocalLineEdit::color( void ) const
+{ 
+  Debug::Throw( "ColorDisplay::LocalLineEdit::color.\n" );
+  QString text( CustomLineEdit::text() );
+  if( text == ColorDisplay::NONE ) return QColor();
+  else return QColor( text ); 
+}
+
 //_________________________________________________________
-void ColorDisplay::LocalLineEdit::setColor( const QColor& color )
+void ColorDisplay::LocalLineEdit::setColor( QColor color )
 {
   Debug::Throw( "ColorDisplay::LocalLineEdit::setColor.\n" );
   
   if( !color.isValid() ) {
+    setText( color.name() );
     QtUtil::infoDialog( this, "invalid color" );
     return;
   }
@@ -83,7 +142,6 @@ void ColorDisplay::LocalLineEdit::setColor( const QColor& color )
   
   // update
   setPalette(local_palette);
-  setText( color.name() );
   update();
   
 }

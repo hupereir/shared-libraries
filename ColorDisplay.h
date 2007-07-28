@@ -46,32 +46,26 @@ class ColorDisplay: public QWidget, public Counter
     
   public:
     
+  //! default name for no color
+  static const QString NONE;
+    
   //! constructor
   ColorDisplay( QWidget* parent );
   
-  //! retrieve color
-  QColor color( void ) const
-  { return line_edit_.color(); }
-  
+  //! retrieve color name
+  QString colorName( void ) const
+  { return editor_.text(); }
+    
   //! set color
-  void setColor( const QColor& color )
-  { line_edit_.setColor( color ); }
+  void setColor( QColor color );
   
   private slots:
   
   //! change color (from button)
-  void _changeColor( void )
-  { 
-    QColor color( QColorDialog::getColor( line_edit_.color(), this ) );
-    if( color.isValid() ) setColor( color ); 
-  }
+  void _changeColor( void );
   
   //! change color (from line editor)
-  void _changeColorFromText( const QString& text = "" )
-  { 
-    QColor color( text.length() ? text:line_edit_.text() );
-    if( color.isValid() ) setColor( color ); 
-  }
+  void _changeColorFromText( void );
     
   private:
   
@@ -87,16 +81,15 @@ class ColorDisplay: public QWidget, public Counter
     {}
       
     //! retrieve color
-    QColor color( void ) const
-    { return QColor( text() ); }
-      
+    QColor color( void ) const;
+    
     //! set color
-    void setColor( const QColor& color );
+    void setColor( QColor color );
         
   };
   
   //! label used to display the color
-  LocalLineEdit line_edit_;
+  LocalLineEdit editor_;
   
 };
 #endif
