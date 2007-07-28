@@ -57,7 +57,7 @@ class ColorDisplay: public QWidget, public Counter
   { return editor_.text(); }
     
   //! set color
-  void setColor( QColor color );
+  void setColor( const QString& );
   
   private slots:
   

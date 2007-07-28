@@ -54,7 +54,7 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
   
   //! write value to option
   void write( void ) const
-  { XmlOptions::get().set<std::string>( optionName(), qPrintable( color().name() ) ); }
+  { XmlOptions::get().set<std::string>( optionName(), qPrintable( colorName() ) ); }
         
 };
 #endif

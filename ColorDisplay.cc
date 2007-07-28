@@ -70,17 +70,11 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
 } 
 
 //________________________________________________________
-void ColorDisplay::setColor( QColor color )
+void ColorDisplay::setColor( const QString& color )
 { 
   Debug::Throw( "ColorDisplay::setColor.\n" );
-  if( color.isValid() )
-  {
-    editor_.setColor( color );
-    editor_.setText( color.name() );
-  } else {
-    editor_.setColor( palette().color( QPalette::Window ) );
-    editor_.setText( NONE );
-  }
+  editor_.setColor( color == NONE ? palette().color( QPalette::Window ):QColor(color) );
+  editor_.setText( color );
 }
 
 //________________________________________________________
@@ -88,7 +82,7 @@ void ColorDisplay::_changeColor( void )
 { 
   Debug::Throw( "ColorDisplay::_changeColor.\n" );
   QColor color( QColorDialog::getColor( editor_.color(), this ) );
-  if( color.isValid() ) setColor( color ); 
+  if( color.isValid() ) setColor( color.name() ); 
 }
 
 //________________________________________________________
