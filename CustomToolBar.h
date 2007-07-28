@@ -1,7 +1,8 @@
+#ifndef CustomToolBar_h
+#define CustomToolBar_h
+
 // $Id$
-#ifndef _CustomFileDialog_h_
-#define _CustomFileDialog_h_
- 
+
 /******************************************************************************
 *                         
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
@@ -24,48 +25,40 @@
 *******************************************************************************/
  
 /*!
-  \file CustomFileDialog.h
-  \brief customized file selection dialog, to store last selected directory
+  \file CustomToolBar.h
+  \brief customized tool bar to handle position and visibility from Options
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <qfiledialog.h>
-#include <string>
+#include <QToolBar>
 
-#include "Counter.h"  
-#include "Exception.h"  
-#include "File.h"  
+#include "Counter.h"
+#include "Debug.h"
 
-/*!
-  \class CustomFileDialog
-  \brief customized file selection dialog, to store last selected directory
-*/
-class CustomFileDialog: public QFileDialog, public Counter
+//! customized tool bar to handle position and visibility from Options
+class CustomToolBar: public QToolBar, public Counter
 {
-
-  //! Qt meta object declaration
+  
   Q_OBJECT
-
-  public:
-  
-  //! creator
-  CustomFileDialog( QWidget* parent );  
-
-  //! working directory
-  static const File& workingDirectory( void )
-  { return working_directory_; }  
-
-  private slots:
-  
-  //! stores working directory when changed
-  void _saveWorkingDirectory( const QString& directory );
     
-  private:
+  public:
+    
+  //! constructor
+  CustomToolBar( const QString& title, QWidget* parent );
   
-  //! static string to store working directory
-  static File working_directory_;
+  //! destructor
+  virtual ~CustomToolBar( void )
+  { Debug::Throw( "CustomToolBar::~CustomToolBar.\n" ); }
+    
+  //! constructor
+  CustomToolBar( QWidget* parent );
+  
+  public slots:
+  
+  // update configuration
+  void updateConfiguration( void );
   
 };
 

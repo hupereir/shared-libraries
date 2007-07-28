@@ -1,5 +1,5 @@
 // $Id$
-
+ 
 /******************************************************************************
 *                         
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
@@ -22,68 +22,40 @@
 *******************************************************************************/
  
 /*!
-  \file CustomToolButton.cc
-  \brief customized tool button to display tooltip in a dedicated label
+  \file CustomMainWindow.cc
+  \brief customized QMainWindow
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include "CustomToolButton.h"
-#include "Exception.h"
-#include "XmlOptions.h"
 
-#include <QApplication>
-#include <qpixmap.h>
-#include <qiconset.h>
-#include <qtooltip.h>
-#include <qpainter.h>
-#include <qstyle.h>
-#include <sstream>
+#include "CustomMainWindow.h"
+#include "CustomToolButton.h"
 
 using namespace std;
 
-//___________________________________________________________________
-const QSize CustomToolButton::BigIconSize = QSize( 32, 32 );
-const QSize CustomToolButton::SmallIconSize = QSize( 24, 24 );
-
-//___________________________________________________________________
-CustomToolButton::CustomToolButton( 
-  QWidget* parent,   
-  QIcon icon,
-  const string& tooltip,
-  QLabel* label ):
-  QToolButton( parent ),
-  Counter( "CustomToolButton" ),
-  tooltip_label_( label )
-{
-
-  Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
-            
-  // add tooltip
-  setIcon( icon );
-  if( tooltip.size() ) setToolTip( tooltip.c_str() );
-    
-  setAutoRaise( true );
-  
-  updateConfiguration();
+//____________________________________________________________
+CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
+  QMainWindow( parent, wflags )
+{ 
+  Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
-  
 }
 
-//_________________________________________________________________
-void CustomToolButton::updateConfiguration( void )
-{
-  Debug::Throw( "CustomToolButton::updateConfiguration.\n");
+
+//____________________________________________________________
+void CustomMainWindow::updateConfiguration( void )
+{ 
+  
+  Debug::Throw( "CustomMainWindow::updateConfiguration.\n" );
   
   // pixmap size
-  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( BigIconSize );
-  else setIconSize( SmallIconSize );
+  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( CustomToolButton::BigIconSize );
+  else setIconSize( CustomToolButton::SmallIconSize );
   
-  // text labels
+  // text label for toolbars
   if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
   else setToolButtonStyle( Qt::ToolButtonIconOnly );
-  
-  adjustSize();
   
 }

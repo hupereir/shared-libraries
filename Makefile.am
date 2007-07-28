@@ -28,6 +28,7 @@ noinst_HEADERS = \
 	CustomSlider.h \
 	CustomTabWidget.h \
 	CustomTextEdit.h \
+	CustomToolBar.h \
 	CustomToolButton.h \
 	DebugMenu.h \
 	DockPanel.h \
@@ -87,11 +88,13 @@ libbase_qt_a_SOURCES = \
   CustomLineEdit.cc \
   CustomListBox.cc \
   CustomListView.cc \
+  CustomMainWindow.cc \
   CustomPixmap.cc \
 	CustomProcess.cc \
   CustomSlider.cc \
 	CustomTextEdit.cc \
 	CustomTabWidget.cc \
+	CustomToolBar.cc \
 	CustomToolButton.cc \
   DebugMenu.cc \
 	DockPanel.cc \
@@ -137,6 +140,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomSlider.cc \
 	moc_CustomTabWidget.cc \
 	moc_CustomTextEdit.cc \
+	moc_CustomToolBar.cc \
   moc_CustomToolButton.cc \
   moc_DebugMenu.cc \
 	moc_DockPanel.cc \

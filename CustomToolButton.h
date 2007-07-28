@@ -1,3 +1,6 @@
+#ifndef CustomToolButton_h
+#define CustomToolButton_h
+
 // $Id$
 
 /******************************************************************************
@@ -28,8 +31,6 @@
   \version $Revision$
   \date $Date$
 */
-#ifndef CustomToolButton_h
-#define CustomToolButton_h
 
 #include <QIconSet>
 #include <QLabel>
@@ -51,6 +52,12 @@ class CustomToolButton: public QToolButton, public Counter
   
   public:
   
+  //! large icon size
+  static const QSize BigIconSize;
+
+  // small icon size
+  static const QSize SmallIconSize;
+    
   //! default creator
   CustomToolButton( QWidget* parent ):
     QToolButton( parent ),
@@ -67,16 +74,16 @@ class CustomToolButton: public QToolButton, public Counter
    
   //! destructor
   virtual ~CustomToolButton( void ) 
-  {}
+  { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }
   
   //! set destination label
   void SetToolTipLabel( QLabel* tooltip_label )
   { tooltip_label_ = tooltip_label; }
   
-  protected slots:
+  public slots:
   
   //! tool button configuration
-  void _updateConfiguration( void );
+  void updateConfiguration( void );
   
   protected:
       

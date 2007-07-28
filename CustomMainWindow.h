@@ -51,34 +51,16 @@ class CustomMainWindow: public QMainWindow
   public:
   
   //! constructor
-  CustomMainWindow( QWidget *parent, Qt::WFlags wflags = 0):
-    QMainWindow( parent, wflags )
-  { 
-    Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
-    connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
-  }
+  CustomMainWindow( QWidget *parent, Qt::WFlags wflags = 0);
   
   //! destructor
   virtual ~CustomMainWindow( void )
-  {}
+  { Debug::Throw( "CustomMainWindow::~CustomMainWindow.\n" ); }
   
   public slots:
   
   //! update configuration
-  void updateConfiguration( void )
-  { 
-  
-    Debug::Throw( "CustomMainWindow::updateConfiguration.\n" );
-    
-    // pixmap size
-    if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( QSize( 32, 32 ) );
-    else setIconSize( QSize( 24, 24 ) );
-    
-    // text label for toolbars
-    if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
-    else setToolButtonStyle( Qt::ToolButtonIconOnly );
-  
-  }
+  virtual void updateConfiguration( void );
   
 };
 

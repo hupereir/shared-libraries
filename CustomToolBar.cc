@@ -1,3 +1,4 @@
+
 // $Id$
 
 /******************************************************************************
@@ -22,68 +23,50 @@
 *******************************************************************************/
  
 /*!
-  \file CustomToolButton.cc
-  \brief customized tool button to display tooltip in a dedicated label
+  \file CustomToolBar.cc
+  \brief customized tool bar to handle position and visibility from Options
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include "CustomToolButton.h"
-#include "Exception.h"
-#include "XmlOptions.h"
-
 #include <QApplication>
-#include <qpixmap.h>
-#include <qiconset.h>
-#include <qtooltip.h>
-#include <qpainter.h>
-#include <qstyle.h>
-#include <sstream>
+
+#include "CustomToolBar.h"
+#include "CustomToolButton.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
-//___________________________________________________________________
-const QSize CustomToolButton::BigIconSize = QSize( 32, 32 );
-const QSize CustomToolButton::SmallIconSize = QSize( 24, 24 );
-
-//___________________________________________________________________
-CustomToolButton::CustomToolButton( 
-  QWidget* parent,   
-  QIcon icon,
-  const string& tooltip,
-  QLabel* label ):
-  QToolButton( parent ),
-  Counter( "CustomToolButton" ),
-  tooltip_label_( label )
+//_______________________________________________________________
+CustomToolBar::CustomToolBar( const QString& title, QWidget* parent ):
+  QToolBar( title, parent ),
+  Counter( "CustomToolBar" )
 {
-
-  Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
-            
-  // add tooltip
-  setIcon( icon );
-  if( tooltip.size() ) setToolTip( tooltip.c_str() );
-    
-  setAutoRaise( true );
-  
-  updateConfiguration();
+  Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
-  
 }
 
-//_________________________________________________________________
-void CustomToolButton::updateConfiguration( void )
+//_______________________________________________________________
+CustomToolBar::CustomToolBar( QWidget* parent ):
+  QToolBar( parent ),
+  Counter( "CustomToolBar" )
 {
-  Debug::Throw( "CustomToolButton::updateConfiguration.\n");
-  
+  Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+}
+
+//_______________________________________________________________
+void CustomToolBar::updateConfiguration( void )
+{
+  Debug::Throw( "CustomToolBar::updateConfiguration.\n" );
+    
   // pixmap size
-  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( BigIconSize );
-  else setIconSize( SmallIconSize );
+  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( CustomToolButton::BigIconSize );
+  else setIconSize( CustomToolButton::SmallIconSize );
   
-  // text labels
+  // text label for toolbars
   if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
   else setToolButtonStyle( Qt::ToolButtonIconOnly );
-  
-  adjustSize();
   
 }
