@@ -64,7 +64,7 @@ CustomSlider::CustomSlider( QWidget* parent ):
 void CustomSlider::setValue( int value )
 {
   if( value < slider_->minimum() || value > slider_->maximum() ) {
-    QtUtil::infoDialogExclusive( this, "invalid value" );
+    QtUtil::infoDialog( this, "invalid value" );
     return;
   }
   
@@ -82,7 +82,7 @@ void CustomSlider::_updateSlider( void )
   int value( Str( qPrintable( line_edit_->text() ) ).get<int>(&error) );
   if( error || value < slider_->minimum() || value > slider_->maximum() ) 
   {
-    QtUtil::infoDialogExclusive( this, "invalid value" );
+    QtUtil::infoDialog( this, "invalid value" );
     return;
   }
   

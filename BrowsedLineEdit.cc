@@ -113,13 +113,13 @@ void BrowsedLineEdit::_browse( void )
   // check file size
   if( files.size() > 1 ) 
   {
-    QtUtil::infoDialogExclusive( this, "Too many files selected." );
+    QtUtil::infoDialog( this, "Too many files selected." );
     return;
   }
   
   if( files.size() < 1 )
   {
-    QtUtil::infoDialogExclusive( this, "No file selected." );
+    QtUtil::infoDialog( this, "No file selected." );
     return;
   }
     

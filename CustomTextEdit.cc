@@ -278,7 +278,7 @@ void CustomTextEdit::showReplacements( const unsigned int& counts )
   if( !counts ) what << "string not found.";
   else if( counts == 1 ) what << "1 replacement performed";
   else what << counts << " replacements performed";
-  QtUtil::infoDialogExclusive( this, what.str() );
+  QtUtil::infoDialog( this, what.str() );
   return;
   
 }

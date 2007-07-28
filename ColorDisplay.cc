@@ -72,7 +72,7 @@ void ColorDisplay::LocalLineEdit::setColor( const QColor& color )
   Debug::Throw( "ColorDisplay::LocalLineEdit::setColor.\n" );
   
   if( !color.isValid() ) {
-    QtUtil::infoDialogExclusive( this, "invalid color" );
+    QtUtil::infoDialog( this, "invalid color" );
     return;
   }
 

@@ -58,12 +58,12 @@
 using namespace std;
 
 //____________________________________________________________
-void QtUtil::infoDialogExclusive(  
+void QtUtil::infoDialog(  
   QWidget* parent, 
   const string& text,
   QtUtil::DialogCenter dialog_center )
 {
-  Debug::Throw( "QtUtil::infoDialogExclusive.\n" );
+  Debug::Throw( "QtUtil::infoDialog.\n" );
   QDialog dialog( parent );
   
   // create vbox layout
@@ -127,13 +127,13 @@ void QtUtil::infoDialogExclusive(
 }
 
 //____________________________________________________________
-bool QtUtil::questionDialogExclusive(  
+bool QtUtil::questionDialog(  
   QWidget* parent, 
   const string& text,
   QtUtil::DialogCenter dialog_center )
 {
   
-  Debug::Throw( "QtUtil::questionDialogExclusive.\n" );
+  Debug::Throw( "QtUtil::questionDialog.\n" );
   QDialog dialog( parent );
   
   // create vbox layout

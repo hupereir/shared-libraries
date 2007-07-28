@@ -72,13 +72,13 @@ class QtUtil {
   };
 
   //! create an modal MessageBox
-  static void infoDialogExclusive( 
+  static void infoDialog( 
     QWidget* parent, 
     const std::string& text,
     DialogCenter dialog_center = CENTER_ON_POINTER ); 
 
   //! create an modal MessageBox
-  static bool questionDialogExclusive( 
+  static bool questionDialog( 
     QWidget* parent, 
     const std::string& text,
     DialogCenter dialog_center = CENTER_ON_POINTER ); 

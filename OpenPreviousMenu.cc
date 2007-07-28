@@ -29,6 +29,7 @@
    \date $Date$
 */
 
+#include <QApplication>
 #include <sstream>
 #include <set>
 
@@ -47,6 +48,7 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   Debug::Throw( "OpenPreviousMenu::OpenPreviousMenu.\n" ); 
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
   connect( this, SIGNAL( aboutToShow() ), SLOT( _loadFiles() ) );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
 }
 
 //______________________________________
@@ -75,10 +77,22 @@ bool OpenPreviousMenu::openLastValidFile( void )
 }
 
 //______________________________________
+void OpenPreviousMenu::updateConfiguration( void )
+{
+  Debug::Throw( "OpenPreviousMenu::updateConfiguration.\n" );
+  
+  // DB file
+  setDBFile( XmlOptions::get().get<string>("DB_FILE") );
+  setMaxSize( XmlOptions::get().get<int>( "DB_SIZE" ) );
+  return;
+  
+}
+
+//______________________________________
 void OpenPreviousMenu::_clean( void )
 {    
-  if( !_check() && !QtUtil::questionDialogExclusive( this,"clear list ?" ) ) return;
-  else if( _check() && !QtUtil::questionDialogExclusive( this,"Remove invalid files from list ?" ) ) return;
+  if( !_check() && !QtUtil::questionDialog( this,"clear list ?" ) ) return;
+  else if( _check() && !QtUtil::questionDialog( this,"Remove invalid files from list ?" ) ) return;
   XmlFileList::_clean();
 }
 

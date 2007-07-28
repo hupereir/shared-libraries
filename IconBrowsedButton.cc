@@ -86,7 +86,7 @@ void IconBrowsedButton::setIconFile( const std::string& file, const bool& check 
   {
     ostringstream what;
     what << "invalid icon file " << file;  
-    QtUtil::infoDialogExclusive( this, what.str() );
+    QtUtil::infoDialog( this, what.str() );
   }
   
   if( no_icon_pixmap_.isNull() ) {
