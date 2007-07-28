@@ -206,6 +206,10 @@ class CustomListView: public QTreeWidget, public Counter
   //! sort items (based on current column )
   virtual void sort( void );
   
+  //! sort items by column (no order is provided)
+  virtual void sortItems( int column )
+  { if( column != sortColumn() ) sortByColumn( column ); }
+  
   //! update alternate item color
   virtual void updateItemColor( void );
   
