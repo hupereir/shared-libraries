@@ -196,7 +196,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
 
   // asign text
   if( !interface().setText( qPrintable( editor().toPlainText() ), index_begin, index_end ) )
-  { QtUtil::infoDialogExclusive( this, interface().error() ); } 
+  { QtUtil::infoDialog( this, interface().error() ); } 
 
   // set TextEditor as ReadOnly
   read_only_editor_ = editor().isReadOnly();
@@ -235,7 +235,7 @@ void SpellDialog::setDictionary( const std::string& dictionary )
   {
     ostringstream what;
     what << "invalid dictionary: " << dictionary;
-    QtUtil::infoDialogExclusive( this, what.str() );
+    QtUtil::infoDialog( this, what.str() );
     return;
   }
   
@@ -258,7 +258,7 @@ void SpellDialog::setFilter( const std::string& filter )
   {
     ostringstream what;
     what << "invalid dictionary: " << filter;
-    QtUtil::infoDialogExclusive( this, what.str() );
+    QtUtil::infoDialog( this, what.str() );
     return;
   }
   
@@ -291,7 +291,7 @@ void SpellDialog::_selectDictionary( const QString& dict )
 
   if( !interface().setDictionary( qPrintable( dict ) ) )
   {
-    QtUtil::infoDialogExclusive( this, interface().error() );
+    QtUtil::infoDialog( this, interface().error() );
     return;
   }
 
@@ -308,7 +308,7 @@ void SpellDialog::_selectFilter( const QString& filter )
 
   if( !interface().setFilter( qPrintable( filter ) ) )
   {
-    QtUtil::infoDialogExclusive( this, interface().error() );
+    QtUtil::infoDialog( this, interface().error() );
     return;
   }
 
@@ -324,7 +324,7 @@ void SpellDialog::_restart( void )
 
   if( !interface().reset() )
   {
-    QtUtil::infoDialogExclusive( this, interface().error() );
+    QtUtil::infoDialog( this, interface().error() );
     return;
   }
 
@@ -341,7 +341,7 @@ void SpellDialog::_addWord( void )
 
   if( !interface().addWord( interface().word() ) )
   {
-    QtUtil::infoDialogExclusive( this, interface().error() );
+    QtUtil::infoDialog( this, interface().error() );
     return;
   }
 
@@ -423,7 +423,7 @@ void SpellDialog::nextWord( void )
     // get next word from interface
     if( !interface().nextWord() )
     {
-      QtUtil::infoDialogExclusive( this, interface().error() );
+      QtUtil::infoDialog( this, interface().error() );
       return;
     }
 
