@@ -32,6 +32,7 @@
 #ifndef _CustomListBox_h_
 #define _CustomListBox_h_
 
+#include <QItemDelegate>
 #include <QListWidget>
 #include <string>
 
@@ -100,6 +101,25 @@ class CustomListBox: public QListWidget, public Counter
 
   //! update alternate item background color
   void updateItemColor( void );
+  
+  private:
+  
+  //! custom delegate to repaint selection nicely
+  class Delegate: public QItemDelegate, public Counter
+  {
+    
+    public: 
+    
+    //! constructor
+    Delegate( QObject* parent ):
+      QItemDelegate( parent ),
+      Counter( "CustomListBox::Delegate" )
+    { Debug::Throw( "CustomListBox::Delegate::Delegate.\n" ); }
+        
+    //! paint method
+    virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+  
+  };
   
 };
 

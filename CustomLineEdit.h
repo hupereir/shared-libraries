@@ -67,10 +67,20 @@ class CustomLineEdit: public QLineEdit, public Counter
     { (*iter)->setEnabled( value ); }
   }
   
+  //! set editor as modified
+  void setModified( const bool& value );
+  
+  //! modification state
+  const bool& isModified( void ) const
+  { return modified_; }
+  
   signals:
   
   //! signal emmited when the cursor changes position
   void cursorPositionChanged( int position );  
+  
+  //! modification state changed
+  void modificationChanged( bool );
   
   public slots:
   
@@ -83,6 +93,11 @@ class CustomLineEdit: public QLineEdit, public Counter
     
   //! changes selection to uppercase
   void upperCase( void );
+  
+  protected slots:
+  
+  //! update modification state
+  void _modified( const QString& text );
   
   protected:
   
@@ -100,6 +115,12 @@ class CustomLineEdit: public QLineEdit, public Counter
   //! retrieve searched string
   std::string _getSelection( void );
 
+  //! modification state
+  bool modified_;
+  
+  //! backup string to track modifications
+  QString backup_; 
+  
   //! accelerator
   std::vector<QShortcut*> shortcuts_;
     

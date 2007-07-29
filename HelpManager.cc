@@ -132,7 +132,7 @@ void HelpManager::display( void )
 {
   
   Debug::Throw( "HelpManager::display.\n" );
-  dialog_->list().setItemSelected( dialog_->list().item(0), true );
+  dialog_->list().setCurrentItem( dialog_->list().item(0) );
   dialog_->setEditEnabled( file_.size() );
   dialog_->show();
   QtUtil::uniconify( dialog_ );

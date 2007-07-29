@@ -298,9 +298,10 @@ void CustomListView::drawRow( QPainter * painter, const QStyleOptionViewItem & o
       
   } else if( isItemSelected( item ) ) {
     
-    linearGrad.setColorAt(0, option.palette.color( QPalette::Highlight ).light(130) );
-    linearGrad.setColorAt(0.3, option.palette.color( QPalette::Highlight ) );
-    linearGrad.setColorAt(1, option.palette.color( QPalette::Highlight ).light(130) );
+    QColor color( option.palette.color( QPalette::Highlight ) );
+    linearGrad.setColorAt(0, color.light(130) );
+    linearGrad.setColorAt(0.3, color );
+    linearGrad.setColorAt(1, color.light(130) );
     new_option.palette.setBrush( QPalette::Highlight, QBrush( linearGrad ) );
   
   }

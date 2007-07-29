@@ -42,8 +42,8 @@ using namespace Qt;
 //____________________________________________________________
 CustomLineEdit::CustomLineEdit( QWidget* parent ):
   QLineEdit( parent ),
-  Counter( "CustomLineEdit" )
-
+  Counter( "CustomLineEdit" ),
+  modified_( false )
 {    
   Debug::Throw( "CustomLineEdit::CustomLineEdit.\n" );
   
@@ -56,8 +56,24 @@ CustomLineEdit::CustomLineEdit( QWidget* parent ):
 
   connect( shortcut = new QShortcut( SHIFT+CTRL+Key_U, this ), SIGNAL( activated() ), SLOT( lowerCase() ) );
   shortcuts_.push_back( shortcut );
-    
+  
+  // modification state call-back
+  connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _modified( const QString& ) ) );
+  
 }
+
+
+//_____________________________________________________________________
+void CustomLineEdit::setModified( const bool& value )
+{ 
+  Debug::Throw( "CustomTextEdit::setModified.\n" );
+  if( value != modified_ )
+  {
+    modified_ = value;
+    if( !value ) backup_ = text();
+  }  
+}
+
 
 //_____________________________________________________________________
 void CustomLineEdit::lowerCase( void )
@@ -150,6 +166,19 @@ void CustomLineEdit::mouseReleaseEvent( QMouseEvent* event )
 
 }
 
+//____________________________________________________________
+void CustomLineEdit::_modified( const QString& text )
+{
+  Debug::Throw( "CustomLineEdit::_modified.\n" );
+  bool modified( text != backup_ );
+  if( modified != modified_ )
+  { 
+    modified_ = modified;
+    emit modificationChanged( modified_ );
+  }
+  
+}
+  
 //____________________________________________________________
 string CustomLineEdit::_getSelection( void )
 {

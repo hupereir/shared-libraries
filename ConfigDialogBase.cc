@@ -76,7 +76,7 @@ ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
   h_layout->addWidget( list_ = new CustomListBox( this ), 0 );
   h_layout->addWidget( stack_ = new QStackedWidget( this ), 1 );
   
-  _list().setMaximumWidth(128);
+  _list().setMaximumWidth(150);
   _list().setMovement(QListView::Static);
 
   connect( 

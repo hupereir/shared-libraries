@@ -143,7 +143,21 @@ class QtUtil {
       (mode & WIDTH )  ? QSizePolicy::Fixed:QSizePolicy::Expanding, 
       (mode & HEIGHT ) ? QSizePolicy::Fixed:QSizePolicy::Expanding )); 
   }
-        
+       
+  //! retrieve widget (composite) opacity
+  static unsigned int opacity( const QWidget* );
+  
+  //! set widget (composite) opacity
+  static void setOpacity( QWidget*, const double& value );
+
+  protected:
+      
+  // max opacity
+  static const unsigned int max_opacity_;
+  
+  //! opacity property name
+  static const char* opacity_prop_name_;
+
 };
 
 #endif

@@ -38,7 +38,7 @@
 using namespace std;
 
 //________________________________________________
-const QSize ColorMenu::PixmapSize = QSize( 24, 24 );
+const QSize ColorMenu::PixmapSize = QSize( 20, 20 );
 const std::string ColorMenu::COLOR_ICON = "color.png";
 const std::string ColorMenu::NONE = "None";
 
@@ -67,7 +67,7 @@ void ColorMenu::add( const string& colorname )
 void ColorMenu::_display( void )
 {
   
-  Debug::Throw( "ColorMenu::DisplayColors.\n" );
+  Debug::Throw( "ColorMenu::_display.\n" );
   
   // clear menu
   clear();

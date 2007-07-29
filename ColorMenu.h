@@ -90,11 +90,12 @@ class ColorMenu: public QMenu, public Counter
   
   //! emmited when a color is selected    
   void selected( QColor );
-   
+
   private slots:
-   
+     
   //! display colors when about to show
   void _display( void );
+
 
   //! adds a new color
   void _new( void );

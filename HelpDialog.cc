@@ -56,7 +56,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   
   // add help list
   list_ = new HelpItemList( this );
-  list_->setMaximumWidth(128);
+  list_->setMaximumWidth(150);
   list_->setMovement(QListView::Static);
   layout->addWidget( list_ );
   

@@ -63,7 +63,7 @@ CounterDialog::CounterDialog( QWidget* parent ):
   update_button->setAutoDefault( false );
   layout()->addWidget( update_button );
    
-  resize( QSize( 200,300 ) );
+  resize( QSize( 250,300 ) );
 }
 
 //__________________________________________________________________________
@@ -89,5 +89,9 @@ void CounterDialog::Update( void )
     item->setText( CounterList::COUNT, Str().assign<int>(it->second).c_str() );
   
   }
+  
+  counter_list_->sort();
+  counter_list_->resizeColumnToContents( CounterList::NAME );
+  
   
 }

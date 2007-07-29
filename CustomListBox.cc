@@ -28,6 +28,7 @@
 */
 
 #include <QApplication>
+#include <QPainter>
 
 #include "CustomListBox.h"
 #include "XmlOptions.h"
@@ -42,6 +43,8 @@ CustomListBox::CustomListBox( QWidget* parent ):
   
   Debug::Throw( "CustomListBox::CustomListBox.\n" ); 
   updateItemColor();
+  
+  setItemDelegate ( new Delegate( this ) );
   
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );
   
@@ -70,4 +73,22 @@ void CustomListBox::updateItemColor( void )
   palette.setColor( QPalette::AlternateBase, item_color );
   setPalette( palette );
   setAlternatingRowColors( true ); 
+}
+
+//_____________________________________________________________________
+void CustomListBox::Delegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+  
+  Debug::Throw( "CustomListBox::Delegate::Paint.\n" );   
+  QStyleOptionViewItem new_option( option );
+  
+  //  QGradient 
+  QLinearGradient linearGrad(QPointF(0, 0), QPointF(painter->device()->width(), 0));
+  QColor color( option.palette.color( QPalette::Highlight ) );
+  linearGrad.setColorAt(0, color.light(130) );
+  linearGrad.setColorAt(0.3, color );
+  linearGrad.setColorAt(1, color.light(130) );
+  new_option.palette.setBrush( QPalette::Highlight, QBrush( linearGrad ) );
+  
+  return QItemDelegate::paint( painter, new_option, index );
 }

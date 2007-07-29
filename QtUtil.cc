@@ -58,6 +58,10 @@
 using namespace std;
 
 //____________________________________________________________
+const unsigned int QtUtil::max_opacity_ = 0xffffffff;
+const char* QtUtil::opacity_prop_name_ = "_NET_WM_WINDOW_OPACITY";
+
+//____________________________________________________________
 void QtUtil::infoDialog(  
   QWidget* parent, 
   const string& text,
@@ -494,4 +498,65 @@ void QtUtil::expand( QLabel* label, const string& ref_text )
   label->resize( QSize( width, 0 ) );
   label->setMinimumSize( QSize( width + extra_width, 0 ) );
   return;
+}
+
+//___________________________________________________________
+unsigned int QtUtil::opacity( const QWidget* widget )
+{
+  
+  Debug::Throw( "QtUtil::opacity.\n" );
+      
+  #ifdef Q_WS_X11
+  
+  Atom actual;
+  int format;
+  unsigned long n, left;
+  unsigned char *data;
+  XGetWindowProperty( QX11Info::display(), widget->winId(), XInternAtom( QX11Info::display(), opacity_prop_name_, false), 
+      0L, 1L, false, XA_CARDINAL, &actual, &format, &n, &left, 
+      (unsigned char **) &data);
+  if (data != None)
+  {
+    unsigned int current_opacity;
+    memcpy (&current_opacity, data, sizeof (unsigned int));
+    XFree(( void *) data );
+    return current_opacity;
+  } else {
+    
+    std::cout << "TransparentWidget::PrintOpacity - atom not found" << std::endl;    
+    return 1;
+  }
+  
+  #else 
+  
+  return (unsigned int) max_opacity_*widget->opacity();
+  
+  #endif
+}
+
+//__________________________________________________________
+void QtUtil::setOpacity( QWidget* widget, const double& value )
+{
+  
+  Debug::Throw( "QtUtil::setOpacity.\n" );
+  
+  #ifdef Q_WS_X11
+  
+  unsigned int opacity = std::min( max_opacity_, static_cast<unsigned int>( max_opacity_*value ) );
+  Debug::Throw() << "QtUtil::setOpacity - value: " << opacity << endl;
+  
+  if (opacity == max_opacity_ )  XDeleteProperty( QX11Info::display(), widget->winId(), XInternAtom(QX11Info::display(), opacity_prop_name_, false));
+  else
+  XChangeProperty( QX11Info::display(), widget->winId(), 
+    XInternAtom(QX11Info::display(), opacity_prop_name_, false), 
+    XA_CARDINAL, 32, PropModeReplace, 
+    (unsigned char *) &opacity, 1L);
+  XSync( QX11Info::display(), false );
+  
+  #else
+  
+  widget->setOpacity( value );
+  
+  #endif
+ 
 }

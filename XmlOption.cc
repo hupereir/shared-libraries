@@ -77,7 +77,8 @@ XmlOption::XmlOption( const QDomElement& element )
 QDomElement XmlOption::domElement( QDomDocument& parent ) const
 {
 
-  Debug::Throw( "XmlOption::DomElement.\n" );
+  Debug::Throw() << "XmlOption::DomElement - " << name() << endl;
+  
   QDomElement out = parent.createElement( name().c_str() );
   out.setAttribute( OPTIONS::VALUE.c_str(), XmlUtil::textToXml( raw() ).c_str() );
 
