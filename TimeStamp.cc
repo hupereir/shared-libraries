@@ -71,7 +71,7 @@ const string TimeStamp::STAMP_UNKNOWN( "unknown" );
 //_____________________________________
 TimeStamp TimeStamp::now( void )
 {
-  Debug::Throw( "TimeStamp::Now.\n" );
+  Debug::Throw( "TimeStamp::now.\n" );
   TimeStamp out;
   out.time_ = time(0);
   out.tm_   = *localtime(&out.time_);
