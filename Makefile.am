@@ -20,6 +20,7 @@ noinst_HEADERS = \
 	CustomComboBox.h \
 	CustomDialog.h \
 	CustomFileDialog.h \
+	CustomGridLayout.h \
 	CustomLineEdit.h \
 	CustomListBox.h \
 	CustomListView.h \

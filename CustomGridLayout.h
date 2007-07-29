@@ -45,46 +45,73 @@ class CustomGridLayout: public QGridLayout, public Counter
     QGridLayout(),
     Counter( "CustomGridLayout" ),
     orientation_( Qt::Vertical ),
-    column_count_(0),
+    max_count_(0),
     column_(0),
-    line_(0)
+    row_(0)
   {}
   
   //! set columns
-  setColumnCount( const int& columns )
-  { columns_ = columns; }
+  void setMaxCount( const int& max_count )
+  { max_count_ = max_count; }
   
   //! set orientation
-  setOrientation( const Qt::Orientation& orientation )
+  void setOrientation( const Qt::Orientation& orientation )
   { orientation_ = orientation; }
   
   //! add widget
+  void addWidget( QWidget* widget, int row, int column )
+  { 
+    QGridLayout::addWidget( widget, row, column ); 
+    setLocation( row, column );
+    _increment();
+  }
+
+    //! add widget
   void addWidget( QWidget* widget )
   {
-    Exception::assert( column_count_ > 0, DESCRIPTION( "invalid number of columns" ) );
-    if( orientation_ == Qt::Vertical )  QGridLayout::addWidget( widget, column_, line_ );
-    else QGridLayout::addWidget( widget, line_, column_ );
-    column_ ++;
-    if( column_ >= column_count_ ) 
-    {
-      column_ = 0;
-      line_ ++;
-    }
+    Exception::assert( max_count_ > 0, DESCRIPTION( "invalid number of columns" ) );
+    QGridLayout::addWidget( widget, row_, column_ );
+    _increment();
   }
     
+  void setLocation( const int& row, const int& column )
+  { row_ = row; column_ = column; }
+  
   private:
+  
+  //! increment from last position
+  void _increment()
+  {
+    
+    if( orientation_ == Qt::Vertical )
+    {
+      column_ ++;
+      if( column_ >= max_count_ ) 
+      {
+        column_ = 0;
+        row_ ++;
+      }
+    } else {
+      row_++;
+      if( row_ >= max_count_ )
+      {
+        row_ = 0;
+        column_++;
+      }
+    }
+  }
   
   //! orientation
   Qt::Orientation orientation_;
   
   //! number of columns
-  int column_count_;
+  int max_count_;
   
   //! current column
   int column_;
   
-  //! current line
-  int line_;
+  //! current row
+  int row_;
   
 };
 
