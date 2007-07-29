@@ -36,6 +36,7 @@
 
 #include "Counter.h"
 #include "Debug.h"
+#include "OptionComboBox.h"
 
 //! customized tool bar to handle position and visibility from Options
 class CustomToolBar: public QToolBar, public Counter
@@ -55,10 +56,57 @@ class CustomToolBar: public QToolBar, public Counter
   //! constructor
   CustomToolBar( QWidget* parent );
   
+  //! get area from name
+  static Qt::ToolBarArea nameToArea( const std::string& name )
+  { 
+    std::map< std::string, Qt::ToolBarArea>::iterator iter = toolbar_areas_.find( name );
+    return iter == toolbar_areas_.end() ? (Qt::ToolBarArea) 0 :iter->second;
+  }
+  
+  // get name from toobar area
+  static std::string areaToName( const Qt::ToolBarArea& value )
+  { 
+    
+    for( std::map< std::string, Qt::ToolBarArea>::iterator iter = toolbar_areas_.begin(); iter != toolbar_areas_.end(); iter++ )
+    { if( iter->second == value ) return iter->first; }
+   
+    return "";
+    
+  }
+  
+  //! location option combo box
+  class LocationComboBox: public OptionComboBox
+  {
+    
+    public:
+    
+    //! constructor
+    LocationComboBox( QWidget* parent, const std::string& option ):
+        OptionComboBox( parent, option )
+    {
+      addItem( "top" );
+      addItem( "bottom" );
+      addItem( "left" );
+      addItem( "right" );
+    }
+    
+  };
+  
   public slots:
   
   // update configuration
   void updateConfiguration( void );
+  
+  private:
+  
+  //! initialize area map
+  static bool _initializeAreas( void );
+  
+  //! map name and toolbar are
+  static std::map< std::string, Qt::ToolBarArea> toolbar_areas_;
+
+  //! keep track of map initialization
+  static bool initialized_;
   
 };
 

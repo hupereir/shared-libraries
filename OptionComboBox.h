@@ -35,6 +35,7 @@
 #include "CustomComboBox.h"
 #include "OptionWidget.h"
 #include "Options.h"
+#include "XmlOptions.h"
 
 //! QComboBox associated to an option for configuration dialogs
 class OptionComboBox: public CustomComboBox, public OptionWidget

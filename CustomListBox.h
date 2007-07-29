@@ -1,3 +1,6 @@
+#ifndef CustomListBox_h
+#define CustomListBox_h
+
 // $Id$
 
 /******************************************************************************
@@ -28,9 +31,6 @@
   \version $Revision$
   \date $Date$
 */
-
-#ifndef _CustomListBox_h_
-#define _CustomListBox_h_
 
 #include <QItemDelegate>
 #include <QListWidget>

@@ -39,6 +39,10 @@
 using namespace std;
 
 //_______________________________________________________________
+std::map< std::string, Qt::ToolBarArea > CustomToolBar::toolbar_areas_;
+bool CustomToolBar::initialized_ = CustomToolBar::_initializeAreas();
+
+//_______________________________________________________________
 CustomToolBar::CustomToolBar( const QString& title, QWidget* parent ):
   QToolBar( title, parent ),
   Counter( "CustomToolBar" )
@@ -69,4 +73,14 @@ void CustomToolBar::updateConfiguration( void )
   if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
   else setToolButtonStyle( Qt::ToolButtonIconOnly );
   
+}
+
+//_______________________________________________________________
+bool CustomToolBar::_initializeAreas( void )
+{
+  toolbar_areas_.insert( make_pair( "left", Qt::LeftToolBarArea ) );
+  toolbar_areas_.insert( make_pair( "right", Qt::RightToolBarArea ) );
+  toolbar_areas_.insert( make_pair( "top", Qt::TopToolBarArea ) );
+  toolbar_areas_.insert( make_pair( "bottom", Qt::BottomToolBarArea ) );
+  return true;
 }
