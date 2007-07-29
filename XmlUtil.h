@@ -65,20 +65,20 @@ class XmlUtil {
   private:
   
   //! initialize Xml to text conversion pair list
-  static void _initConversions( void );
+  static bool _initConversions( void );
   
-  //! Xml to text conversion pair type
+  //! text to Xml conversion pair type
   typedef std::pair<std::string, std::string> Conversion;
   
-  //! Xml to text conversion pair type
+  //! text to Xml conversion pair type
   typedef std::list< Conversion > ConversionList;
   
-  //! Xml to text conversion pair list
+  //! text to Xml conversion pair list
   static ConversionList conversions_;
+ 
+  //! make sure initialization is done once at startup
+  static bool initialized_;
   
-  //! Xml to text conversion pair list
-  static ConversionList old_conversions_;
-
 };
 
 #endif

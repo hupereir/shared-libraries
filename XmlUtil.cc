@@ -37,11 +37,11 @@
 using namespace std;
 
 //__________________________________
-XmlUtil::ConversionList XmlUtil::old_conversions_;
 XmlUtil::ConversionList XmlUtil::conversions_;
-
+bool XmlUtil::initialized_ = _initConversions();
+  
 //__________________________________
-void XmlUtil::_initConversions()
+bool XmlUtil::_initConversions()
 {
   
   conversions_.clear();
@@ -60,6 +60,7 @@ void XmlUtil::_initConversions()
   conversions_.push_back( Conversion( "ç", "XML_CCED" ) );
   conversions_.push_back( Conversion( "\t", "XML_TAB" ) );
   conversions_.push_back( Conversion( "\n", "XML_ENDL" ) );
+  return true;
   
 }
 
@@ -82,10 +83,7 @@ string XmlUtil::xmlToText( const string& in )
 
   // HTML style conversions (escape characters)
   for( ConversionList::reverse_iterator iter = conversions_.rbegin(); iter != conversions_.rend(); iter++ )
-  out = out.replace( iter->second, iter->first );
+  { out = out.replace( iter->second, iter->first ); }
 
-  // old style conversions (escape characters)
-  for( ConversionList::reverse_iterator iter = old_conversions_.rbegin(); iter != old_conversions_.rend(); iter++ )
-  out = out.replace( iter->second, iter->first );
   return out;
 }

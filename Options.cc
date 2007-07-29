@@ -60,6 +60,9 @@ Options::Options( void ):
   add( Option( "USE_TEXT_LABEL", "1" , "text label in tool buttons"  )); 
   add( Option( "SORT_FILES_BY_DATE", "0" , "sort files by access date in open previous menu"  )); 
 
+  add( Option( "TAB_EMULATION", "0" , "enable tab emulation" ));
+  add( Option( "TAB_SIZE", "2" , "emulated tab size" ));
+
 }
 
 //____________________________________________________
