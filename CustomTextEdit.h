@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <QClipboard>
 #include <QContextMenuEvent>
 #include <QShortcut>
 #include <QTextBlockFormat>
@@ -308,7 +309,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@}
     
   private:
-  
+   
   //!@name replace/find selection
   ///@{
   

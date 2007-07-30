@@ -221,6 +221,11 @@ void CustomTextEdit::selectWord( void )
   // move cursor to begin of selection
   for( ;begin < local_position; local_position-- ) { cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor ); }
   for( ;local_position < end; local_position++ ) { cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor ); }
+  
+  // copy selected text to clipboard
+  qApp->clipboard()->setText( cursor.selectedText(), QClipboard::Selection );
+
+  // assign cursor to Text editor
   setTextCursor( cursor );
 
   return;
@@ -234,7 +239,14 @@ void CustomTextEdit::selectLine( void )
   Debug::Throw( "CustomTextEdit::selectLine.\n" );
   
   QTextCursor cursor( textCursor() );
+  
+  // perform selection
   cursor.select( QTextCursor::BlockUnderCursor );
+  
+  // copy selected text to clipboard
+  qApp->clipboard()->setText( cursor.selectedText(), QClipboard::Selection );
+
+  // assign cursor to text editor and make sure it is visible
   setTextCursor( cursor );
   ensureCursorVisible();
   
