@@ -74,6 +74,7 @@ class CustomGridLayout: public QGridLayout, public Counter
     _increment();
   }
     
+  //! set current position in grid
   void setLocation( const int& row, const int& column )
   { row_ = row; column_ = column; }
   

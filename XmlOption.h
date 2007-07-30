@@ -66,6 +66,7 @@ class XmlOption:public Option
   
   public:
 
+  //! constructor
   XmlOption( const Option& option ):
     Option( option )
     {}

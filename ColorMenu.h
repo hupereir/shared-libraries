@@ -70,7 +70,7 @@ class ColorMenu: public QMenu, public Counter
     
   };
 
-  // sorted set of colors
+  //! sorted set of colors
   typedef std::set<QColor, ColorLessFTor> ColorSet;
 
   //! constructor
@@ -96,7 +96,6 @@ class ColorMenu: public QMenu, public Counter
   //! display colors when about to show
   void _display( void );
 
-
   //! adds a new color
   void _new( void );
 
@@ -112,7 +111,7 @@ class ColorMenu: public QMenu, public Counter
   //! add a color
   void _add( const QColor& );
 
-  // sorted set of colors
+  //! map colors to display pixmap
   typedef std::map<QColor, QPixmap, ColorLessFTor> ColorMap;
     
   //! list of loaded colors

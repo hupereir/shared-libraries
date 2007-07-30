@@ -223,7 +223,7 @@ class CustomListView: public QTreeWidget, public Counter
     
     protected:
     
-    // alternate color for item painting
+    //! alternate color for item painting
     QColor color_;
     
   };

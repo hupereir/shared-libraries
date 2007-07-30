@@ -63,7 +63,7 @@ class CustomToolBar: public QToolBar, public Counter
     return iter == toolbar_areas_.end() ? (Qt::ToolBarArea) 0 :iter->second;
   }
   
-  // get name from toobar area
+  //! get name from toobar area
   static std::string areaToName( const Qt::ToolBarArea& value )
   { 
     
@@ -94,7 +94,7 @@ class CustomToolBar: public QToolBar, public Counter
   
   public slots:
   
-  // update configuration
+  //! update configuration
   void updateConfiguration( void );
   
   private:

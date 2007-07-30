@@ -55,7 +55,7 @@ class CustomToolButton: public QToolButton, public Counter
   //! large icon size
   static const QSize BigIconSize;
 
-  // small icon size
+  //! small icon size
   static const QSize SmallIconSize;
     
   //! default creator
