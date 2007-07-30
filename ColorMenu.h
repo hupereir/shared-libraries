@@ -33,6 +33,7 @@
 */
 
 #include <QMenu>
+#include <QPixmap>
 
 #include <string>
 #include <set>
@@ -83,8 +84,7 @@ class ColorMenu: public QMenu, public Counter
   void add( const std::string& );
 
   //! retrieve colors
-  const ColorSet& colors()
-  { return colors_; }
+  ColorSet colors() const;
   
   signals:
   
@@ -108,9 +108,15 @@ class ColorMenu: public QMenu, public Counter
   void _selected( QAction* );
   
   private: 
+ 
+  //! add a color
+  void _add( const QColor& );
+
+  // sorted set of colors
+  typedef std::map<QColor, QPixmap, ColorLessFTor> ColorMap;
     
   //! list of loaded colors
-  ColorSet colors_;
+  ColorMap colors_;
 
   //! map actions to file recors
   std::map<QAction*, QColor> actions_;

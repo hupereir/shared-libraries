@@ -30,6 +30,7 @@
 */
 
 #include <QColorDialog>
+#include <QPainter>
 
 #include "ColorMenu.h"
 #include "CustomPixmap.h"
@@ -38,7 +39,7 @@
 using namespace std;
 
 //________________________________________________
-const QSize ColorMenu::PixmapSize = QSize( 20, 20 );
+const QSize ColorMenu::PixmapSize = QSize( 21, 21 );
 const std::string ColorMenu::COLOR_ICON = "color.png";
 const std::string ColorMenu::NONE = "None";
 
@@ -57,10 +58,18 @@ void ColorMenu::add( const string& colorname )
 { 
   Debug::Throw( "ColorMenu::add.\n" );
   
-  if( colorname == NONE ) return;
+  if( colorname != NONE ) _add( QColor( colorname.c_str() ) );
   
-  QColor color( colorname.c_str() );
-  if( color.isValid() ) colors_.insert( color );
+}
+
+//_______________________________________________
+ColorMenu::ColorSet ColorMenu::colors( void ) const
+{ 
+  ColorSet out;
+  for( ColorMap::const_iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
+  { out.insert( iter->first ); }
+
+  return out;
 }
 
 //_______________________________________________
@@ -81,13 +90,13 @@ void ColorMenu::_display( void )
   // clear actions
   actions_.clear();
   
-  for( set<QColor>::iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
+  for( ColorMap::iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
   {
     
     // create action
-    QAction* action = addAction( iter->name() );
-    action->setIcon( CustomPixmap().empty( PixmapSize , *iter, false ) );
-    actions_.insert( make_pair( action, *iter ) );
+    QAction* action = addAction( iter->first.name() );
+    action->setIcon( iter->second );
+    actions_.insert( make_pair( action, iter->first ) );
     
   };
     
@@ -101,8 +110,11 @@ void ColorMenu::_new( void )
   
   Debug::Throw( "ColorMenu::_new.\n" );
   QColor color( QColorDialog::getColor( Qt::white, this ) );
-  if( color.isValid() ) colors_.insert( color );
-  emit selected( color );
+  if( color.isValid() )
+  {
+    _add( color );
+    emit selected( color );
+  }
   
 }
 
@@ -121,4 +133,26 @@ void ColorMenu::_selected( QAction* action )
   Debug::Throw( "ColorMenu::_selected.\n" );
   std::map<QAction*,QColor>::iterator iter = actions_.find( action );
   if( iter != actions_.end() ) emit selected( iter->second );
+}
+
+//_______________________________________________
+void ColorMenu::_add( const QColor& color )
+{
+  if( color.isValid() && colors_.find( color ) == colors_.end() )
+  {
+    QPixmap pixmap( CustomPixmap().empty( PixmapSize ) );
+
+    QLinearGradient linearGrad(QPointF(0, 0), pixmap.rect().bottomRight());
+    linearGrad.setColorAt(0, color);
+    linearGrad.setColorAt(1, color.light(135));
+    
+    QPainter painter( &pixmap );
+    painter.fillRect( pixmap.rect(), linearGrad );
+    painter.end();
+
+    colors_.insert( make_pair( color, pixmap ) );
+    
+  }
+
+  return;
 }
