@@ -24,6 +24,7 @@ noinst_LIBRARIES = libspellcheck.a
   
 libspellcheck_a_SOURCES =  \
   AutoSpellConfig.cc \
+  SpellCheckBlockData.cc \
   SpellConfig.cc \
   SpellDialog.cc \
   SpellInterface.cc \
