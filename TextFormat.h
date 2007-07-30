@@ -24,7 +24,7 @@
 *******************************************************************************/
 
 /*!
-  \file TextFormatInfo.h
+  \file TextFormat.h
   \brief tracks text format in given text range
   \author Hugo Pereira
   \version $Revision$

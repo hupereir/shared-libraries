@@ -186,7 +186,7 @@ class File: public Str
   
   private:
   
-  /*! \fn static size_t _NextSlash( const std::string& str, size_t pos)
+  /*! \fn static size_t _nextSlash( const std::string& str, size_t pos)
     \brief returns position of next slash in a string starting from given one
     \param str the string
     \param pos the starting position
