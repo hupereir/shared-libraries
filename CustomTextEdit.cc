@@ -72,7 +72,6 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _highlightCurrentBlock() ) );
-  
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
   
 }
