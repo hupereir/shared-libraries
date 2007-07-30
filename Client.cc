@@ -34,7 +34,6 @@
 
 #include "Client.h"
 #include "Debug.h"
-#include "SERVER.h"
 
 using namespace std;
 using namespace SERVER;
@@ -54,7 +53,7 @@ Client::Client( QTcpSocket* parent ):
 //_______________________________________________________
 void Client::sendMessage( const string& message )
 {
-  Debug::Throw( DEBUG_LEVEL ) << "Client::sendMessage - " << message << endl;
+  Debug::Throw() << "Client::sendMessage - " << message << endl;
   QTextStream os( &socket() );
   os << message.c_str() << endl;
 }
@@ -62,7 +61,7 @@ void Client::sendMessage( const string& message )
 //_______________________________________________________
 void Client::_readMessage( void )
 {
-  Debug::Throw( DEBUG_LEVEL, "Client::_readMessage.\n" );
+  Debug::Throw( "Client::_readMessage.\n" );
   ostringstream out;
   
   // read from the server
@@ -79,7 +78,7 @@ void Client::_readMessage( void )
 //_______________________________________________________
 void Client::_connectionClosed( void )
 {
-  Debug::Throw( DEBUG_LEVEL, "Client::_connectionClosed.\n" );
+  Debug::Throw( "Client::_connectionClosed.\n" );
   emit disconnected( this );
   return;
 }

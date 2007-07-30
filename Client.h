@@ -36,7 +36,6 @@
 #include <string>
 
 #include "Counter.h"
-#include "SERVER.h"
 
 namespace SERVER
 {
@@ -55,7 +54,7 @@ namespace SERVER
   
     //! destructor
     virtual ~Client( void )
-    { Debug::Throw( SERVER::DEBUG_LEVEL, "Client::~Client.\n" ); }
+    { Debug::Throw( "Client::~Client.\n" ); }
 
     //! associated socket
     QTcpSocket& socket()

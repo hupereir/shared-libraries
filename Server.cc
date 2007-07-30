@@ -30,7 +30,6 @@
 */
 
 #include "Debug.h"
-#include "SERVER.h"
 #include "Server.h"
 
 using namespace std;
@@ -41,13 +40,6 @@ Server::Server( QObject *parent, quint16 port ):
   QTcpServer( parent ),
   Counter( "Server" )
 { 
-  Debug::Throw( DEBUG_LEVEL, "Server::Server.\n" );
+  Debug::Throw( "Server::Server.\n" );
   listen( QHostAddress::Any, port );
 }
-
-// //__________________________________________________
-// void Server::newConnection( int socket )
-// { 
-//   Debug::Throw(DEBUG_LEVEL) << "Server::newConnection - socket=" << socket << endl;
-//   emit NewConnectionGranted( socket );
-// }

@@ -32,7 +32,6 @@
 #include "Debug.h"
 #include "ServerCommand.h"
 #include "Str.h"
-#include "SERVER.h"
 
 using namespace std;
 using namespace SERVER;
@@ -67,7 +66,7 @@ ServerCommand::ServerCommand( const string& command_line ):
   command_( "" )
 {
   
-  Debug::Throw( DEBUG_LEVEL, "ServerCommand::ServerCommand.\n" );
+  Debug::Throw( "ServerCommand::ServerCommand.\n" );
   
   int index( 0 );
   size_t pos;

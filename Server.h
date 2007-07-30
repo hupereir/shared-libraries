@@ -35,7 +35,6 @@
 #include <QTcpServer>
 #include <string>
 
-#include "SERVER.h"
 #include "Counter.h"
 
 //! Server classes
@@ -47,6 +46,9 @@
 namespace SERVER
 {
 
+  //! default server port
+  enum { SERVER_PORT = 4242 };
+  
   //!  interprocess communication server
   class Server: public QTcpServer, public Counter
   {

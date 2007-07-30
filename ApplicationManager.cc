@@ -35,7 +35,6 @@
 #include "Client.h"
 #include "Debug.h"
 #include "Util.h"
-#include "SERVER.h"
 #include "Server.h"
 #include "XmlOptions.h"
 
@@ -52,7 +51,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   timer_( this )
 { 
 
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::ApplicationManager.\n" );
+  Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
   setApplicationName( "GENERIC_APPLICATION" ); 
 
 }
@@ -60,7 +59,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
 //_________________________________________
 ApplicationManager::~ApplicationManager( void )
 {
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::~ApplicationManager.\n" );
+  Debug::Throw( "ApplicationManager::~ApplicationManager.\n" );
   
   // close all connected clients
   for( list<Client*>::iterator iter = connected_clients_.begin(); iter != connected_clients_.end(); iter++ )
@@ -86,7 +85,7 @@ void ApplicationManager::usage( void )
 void ApplicationManager::init( ArgList args, bool forced )
 {
 
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::init.\n" );
+  Debug::Throw( "ApplicationManager::init.\n" );
 
   //! initialize server
   if( server_ && forced ) {
@@ -127,7 +126,7 @@ void ApplicationManager::init( ArgList args, bool forced )
   
   // add command line arguments if any
   command.setArguments( args );
-  Debug::Throw( DEBUG_LEVEL ) << "ApplicationManager::init - " << command << endl;
+  Debug::Throw() << "ApplicationManager::init - " << command << endl;
   
   // send request command
   client_ ->sendMessage( command );
@@ -140,21 +139,21 @@ void ApplicationManager::init( ArgList args, bool forced )
   timer_.setSingleShot( true );
   timer_.start( timeout_delay );
   
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::init. done.\n" );
+  Debug::Throw( "ApplicationManager::init. done.\n" );
   
 }  
 
 //_____________________________________________________
 void ApplicationManager::setApplicationName( const string& name )
 { 
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::setApplicationName.\n" );
+  Debug::Throw( "ApplicationManager::setApplicationName.\n" );
   id_ = ApplicationId( name, Util::user(), Util::env( "DISPLAY", "0.0" ) );
 }
 
 //_____________________________________________________
 void ApplicationManager::_newConnection()
 {
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::_newConnection.\n" );
+  Debug::Throw( "ApplicationManager::_newConnection.\n" );
   
   // check pending connection
   if( !server_->hasPendingConnections() ) return;
@@ -170,7 +169,7 @@ void ApplicationManager::_newConnection()
 //_____________________________________________________
 void ApplicationManager::_connectionClosed( Client* client )
 {
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::_connectionClosed.\n" );
+  Debug::Throw( "ApplicationManager::_connectionClosed.\n" );
   
   // look for client in accepted clients map
   ClientMap tmp_map;
@@ -191,7 +190,7 @@ void ApplicationManager::_connectionClosed( Client* client )
 //_____________________________________________________
 void ApplicationManager::_error( QAbstractSocket::SocketError error )
 {
-  Debug::Throw( DEBUG_LEVEL ) << "ApplicationManager::_error - error=" << error << endl;
+  Debug::Throw( ) << "ApplicationManager::_error - error=" << error << endl;
 
   // when an error occur and state is not dead, state is forced alive
   if( state_ != DEAD ) setState( ALIVE );
@@ -202,14 +201,14 @@ void ApplicationManager::_error( QAbstractSocket::SocketError error )
 //_____________________________________________________
 void ApplicationManager::_recreateServer( void )
 {
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::_recreateServer.\n" );
+  Debug::Throw( "ApplicationManager::_recreateServer.\n" );
   init( ArgList(), true );
 }
 
 //_____________________________________________________
 void ApplicationManager::_replyTimeOut( void )
 {
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::_replyTimeOut.\n" );
+  Debug::Throw( "ApplicationManager::_replyTimeOut.\n" );
   if( state_ == AWAITING_REPLY ) setState( ALIVE );
 }
 
@@ -217,7 +216,7 @@ void ApplicationManager::_replyTimeOut( void )
 void ApplicationManager::_redirectMessage( Client* client, const string& message )
 {
   
-  Debug::Throw( DEBUG_LEVEL ) << "Application::_redirectMessage - message = " << message << endl;
+  Debug::Throw( ) << "Application::_redirectMessage - message = " << message << endl;
 
   // parse message
   istringstream in( message );
@@ -312,7 +311,7 @@ void ApplicationManager::_redirectMessage( Client* client, const string& message
 void ApplicationManager::_processMessage( Client* client, const string& message )
 {
   
-  Debug::Throw( DEBUG_LEVEL ) << "Application::_processMessage - message = " << message << " state=" << state_ << endl;
+  Debug::Throw( ) << "Application::_processMessage - message = " << message << " state=" << state_ << endl;
   
   istringstream in( message );
   while( (in.rdstate() & ios::failbit ) == 0 ) 
@@ -369,7 +368,7 @@ void ApplicationManager::_processMessage( Client* client, const string& message 
 //_____________________________________________________
 Client* ApplicationManager::_register( const ApplicationId& id, Client* client, bool forced )
 {
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::_register.\n" );
+  Debug::Throw( "ApplicationManager::_register.\n" );
   
   if( forced ) {
     
@@ -391,7 +390,7 @@ Client* ApplicationManager::_register( const ApplicationId& id, Client* client, 
 //_____________________________________________________
 void ApplicationManager::_broadcast( const string& message, Client* sender )
 {
-  Debug::Throw( DEBUG_LEVEL, "ApplicationManager::_Broadcast.\n" );
+  Debug::Throw( "ApplicationManager::_Broadcast.\n" );
   
   for( list< Client* >::iterator iter = connected_clients_.begin(); iter != connected_clients_.end(); iter++ )
   { if( (*iter) != sender ) (*iter)->sendMessage( message ); }
