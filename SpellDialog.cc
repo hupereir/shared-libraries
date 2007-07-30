@@ -33,6 +33,7 @@
 #include <QPushButton>
 #include <QTextCursor>
 
+#include "CustomGridLayout.h"
 #include "Debug.h"
 #include "QtUtil.h"
 #include "SpellDialog.h"
@@ -56,37 +57,40 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
-  layout->setMargin(5);
-  layout->setSpacing(2);
+  layout->setMargin(10);
+  layout->setSpacing(5);
   setLayout( layout );
   
   // horizontal layout for suggestions and buttons
   QHBoxLayout* h_layout = new QHBoxLayout();
   h_layout->setMargin(0);
-  h_layout->setSpacing(2);
+  h_layout->setSpacing(5);
   layout->addLayout( h_layout, 1 );
   
   // insert left vertical box
   QVBoxLayout *v_layout = new QVBoxLayout();
   v_layout->setMargin( 0 );
-  v_layout->setSpacing( 2 );
+  v_layout->setSpacing(5);
   h_layout->addLayout( v_layout );
   
   // grid for text editors
-  QGridLayout *grid_layout = new QGridLayout();
+  CustomGridLayout *grid_layout = new CustomGridLayout();
   grid_layout->setMargin( 0 );
-  grid_layout->setSpacing( 2 );
+  grid_layout->setSpacing(5);
+  grid_layout->setMaxCount( 2 );
   v_layout->addLayout( grid_layout );
   
   // misspelled word line editor
-  grid_layout->addWidget( new QLabel( "Misspelled word: ", this ), 0, 0 );
-  grid_layout->addWidget( line_edit_ = new CustomLineEdit( this ), 0, 1 );
+  grid_layout->addWidget( new QLabel( "Misspelled word: ", this ) ); 
+  grid_layout->addWidget( line_edit_ = new CustomLineEdit( this ) ); 
   line_edit_->setReadOnly( true );
 
   // replacement line editor
-  grid_layout->addWidget( new QLabel( "Replace with: ", this ), 1, 0 );
-  grid_layout->addWidget( replace_line_edit_ = new CustomLineEdit( this ), 1, 1 );
+  grid_layout->addWidget( new QLabel( "Replace with: ", this ) );
+  grid_layout->addWidget( replace_line_edit_ = new CustomLineEdit( this ) );
   if( read_only ) replace_line_edit_->setEnabled( false );
+  
+  grid_layout->setColumnStretch( 1, 1 );
   
   QLabel* label = new QLabel( "Suggestions: ", this );
   QtUtil::fixSize( label );
@@ -98,14 +102,15 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   if( !read_only ) { connect( suggestion_list_box_, SIGNAL( itemActivated( QListWidgetItem* ) ), SLOT( _replace( QListWidgetItem* ) ) ); }
 
   // grid layout for dictionary and filter
-  grid_layout = new QGridLayout();
+  grid_layout = new CustomGridLayout();
   grid_layout->setMargin( 0 );
-  grid_layout->setSpacing( 2 );
+  grid_layout->setSpacing(5);
+  grid_layout->setMaxCount( 2 );
   v_layout->addLayout( grid_layout );
   
   // dictionaries combobox
-  grid_layout->addWidget( new QLabel( "Dictionary: ", this ), 0, 0 );
-  grid_layout->addWidget( dictionary_ = new QComboBox( this ), 0, 1 );
+  grid_layout->addWidget( new QLabel( "Dictionary: ", this ) );
+  grid_layout->addWidget( dictionary_ = new QComboBox( this ) );
 
   const set<string>& dictionaries( interface().dictionaries() );
   for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
@@ -115,8 +120,10 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
   // filter combobox
-  grid_layout->addWidget( filter_label_ = new QLabel( "Filter: ", this ), 1, 0 );
-  grid_layout->addWidget( filter_ = new QComboBox( this ), 1, 1 );
+  grid_layout->addWidget( filter_label_ = new QLabel( "Filter: ", this ) );
+  grid_layout->addWidget( filter_ = new QComboBox( this ) );
+
+  grid_layout->setColumnStretch( 1, 1 ); 
   
   set<string> filters( interface().filters() );
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
@@ -128,7 +135,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   // right vbox
   v_layout = new QVBoxLayout();
   v_layout->setMargin( 0 );
-  v_layout->setSpacing( 2 );
+  v_layout->setSpacing(5);
   h_layout->addLayout( v_layout );
 
   // add word button
