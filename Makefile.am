@@ -1,19 +1,17 @@
 AUTOMAKE_OPTIONS = foreign
-INCLUDES = \
+INCLUDES =  \
   -I$(qt_includes) \
   -I$(qt_includes)/Qt \
   -I$(qt_includes)/QtCore  \
   -I$(qt_includes)/QtXml \
   -I$(qt_includes)/QtGui \
-  -I$(aspell_includes) \
-	-I$(top_srcdir)/base \
-	-I$(top_srcdir)/base-qt
- 
+	-I$(top_srcdir)/base-qt \
+	-I$(top_srcdir)/base
+
 CXXFLAGS = @CXXFLAGS@
 
 noinst_HEADERS = \
   AutoSpellConfig.h \
-  SpellCheckBlockData.h \
   SpellConfig.h \
   SpellDialog.h \
   SpellInterface.h \
@@ -26,14 +24,13 @@ noinst_LIBRARIES = libspellcheck.a
   
 libspellcheck_a_SOURCES =  \
   AutoSpellConfig.cc \
-  SpellCheckBlockData.cc \
   SpellConfig.cc \
   SpellDialog.cc \
   SpellInterface.cc \
   SpellParser.cc \
   SuggestionMenu.cc
 	
-nodist_libspellcheck_a_SOURCES = \
+nodist_libspellcheck_a_SOURCES =  \
   moc_SpellDialog.cc \
   moc_SuggestionMenu.cc
 	
