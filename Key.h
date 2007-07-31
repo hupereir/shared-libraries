@@ -134,7 +134,7 @@ namespace BASE
     //! associated two Keys 
     static void associate( Key* first, Key* second ) 
     {  
-      Exception::assert( first->key() != second->key(), DESCRIPTION( "cannot associate key to itself" ) );
+      Exception::check( first->key() != second->key(), DESCRIPTION( "cannot associate key to itself" ) );
       first->_associate( second ); 
       second->_associate( first ); 
     } 
@@ -142,7 +142,7 @@ namespace BASE
     //! associated two Keys 
     static void associate( Key& first, Key& second ) 
     {  
-      Exception::assert( first.key() != second.key(), DESCRIPTION( "cannot associate key to itself" ) );
+      Exception::check( first.key() != second.key(), DESCRIPTION( "cannot associate key to itself" ) );
       first._associate( &second ); 
       second._associate( &first ); 
     } 

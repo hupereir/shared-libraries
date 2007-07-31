@@ -73,7 +73,7 @@ class Exception {
   }
   
   //! check pointer, throw exception if null
-  static void assert( const bool& value, const std::string& message )
+  static void check( const bool& value, const std::string& message )
   { 
     if( !value ) 
     {
