@@ -87,7 +87,7 @@ class DockPanel: public QWidget, public Counter
     if( !label_ ) {
       label_ = new QLabel( main_ );
       QFont font( label_->font() );
-      font.setBold( true );
+      font.setWeight( QFont::Bold );
       label_->setFont( font );
       main_layout_->insertWidget( 0, label_ );
     }

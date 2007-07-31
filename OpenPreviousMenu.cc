@@ -52,6 +52,13 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
 }
 
 //______________________________________
+OpenPreviousMenu::~OpenPreviousMenu( void )
+{ 
+  Debug::Throw( "OpenPreviousMenu::~OpenPreviousMenu.\n" ); 
+  //if( valid_file_thread_.isRunning() ) valid_file_thread_.terminate();
+}
+
+//______________________________________
 bool OpenPreviousMenu::read( void )
 {
   Debug::Throw( "OpenPreviousMenu::read.\n" );
@@ -105,7 +112,7 @@ void OpenPreviousMenu::_open( QAction* action )
   // find Action in map
   ActionMap::iterator iter( actions_.find( action ) );
   if( iter == actions_.end() ) return;
-  emit fileSelected( iter->second );
+  emit fileSelected( _store( iter->second ) );
   
 }
 
@@ -130,9 +137,22 @@ void OpenPreviousMenu::_loadFiles( void )
   { records.sort( FileRecord::FirstOpenFTor() ); }
   else { records.sort( FileRecord::SameFileFTor() ); }
   
+  // retrieve stored file record
+  const FileRecord& stored( _stored() );
+  
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   {
-    QAction* action = addAction( iter->file().c_str() );
+    
+    QString label( iter->file().c_str() );
+    
+    QAction* action = addAction( label );
+    if( iter->file() == stored.file() )
+    {
+      QFont font( QMenu::font() );
+      font.setWeight( QFont::Bold );
+      action->setFont( font );
+    }
+    
     if( _check() ) action->setEnabled( iter->file().size() && iter->isValid() );
     actions_.insert( make_pair( action, *iter ) );
   }

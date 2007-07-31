@@ -57,22 +57,18 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   OpenPreviousMenu( QWidget *parent );
 
   //! destructor
-  virtual ~OpenPreviousMenu( void )
-  { 
-    Debug::Throw( "OpenPreviousMenu::~OpenPreviousMenu.\n" ); 
-    if( valid_file_thread_.isRunning() ) valid_file_thread_.terminate();
-  }
+  virtual ~OpenPreviousMenu( void );
 
   //! read db file
   virtual bool read( void );
 
   //! check if a file is in database, adds it if not
   virtual FileRecord& add( const std::string& file )
-  { return FileList::add( File( file ).expand() ); }
+  { return XmlFileList::add( File( file ).expand() ); }
 
   //! check if a file is in database, removes it if yes
   virtual void remove( const std::string& file )
-  { FileList::remove( File( file ).expand() ); }
+  { XmlFileList::remove( File( file ).expand() ); }
 
   //! check if a file is in database, adds it if not, select the file
   virtual void select( const std::string& file )
