@@ -182,7 +182,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
 
   // change font
   QFont font( state_label_->font() );
-  font.setBold( true );
+  font.setWeight( QFont::Bold );
   state_label_->setFont( font );
   
   // change color
