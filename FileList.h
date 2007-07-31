@@ -113,6 +113,14 @@ class FileList: public Counter
   //! add record to current list
   virtual FileRecord& _add( const FileRecord& record );
 
+  //! return stored (current) file record
+  virtual const FileRecord& _stored( void ) const
+  { return current_; }
+  
+  //! store record as the current one
+  virtual FileRecord _store( const FileRecord& record )
+  { return current_ = record; }
+  
   //! check flag
   virtual const bool& _check( void ) const
   { return check_; }
@@ -133,6 +141,9 @@ class FileList: public Counter
 
   //! if true, check file validity
   bool check_;
+  
+  //! keep track of the last added/opened file
+  FileRecord current_;
 
   //! current list of files
   FileRecord::List* records_;
