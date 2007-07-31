@@ -87,7 +87,7 @@ void CustomLineEdit::lowerCase( void )
   if( !hasSelectedText() ) return;
   
   // do nothing if selection is not valid
-  string selection( Str( qPrintable( selectedText() ) ).lowerCase() );
+  Str selection = Str( qPrintable( selectedText() ) ).lowerCase();
   
   // remove current selection
   cut();
@@ -106,7 +106,7 @@ void CustomLineEdit::upperCase( void )
   if( !hasSelectedText() ) return;
   
   // get uppercased selection
-  string selection( Str( qPrintable( selectedText() ) ).upperCase() );
+  Str selection = Str( qPrintable( selectedText() ) ).upperCase();
   
   // remove current selection
   cut();
