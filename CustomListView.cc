@@ -60,7 +60,7 @@ CustomListView::CustomListView( QWidget* parent ):
 void CustomListView::setColumnName( const int& column, const string& name )
 {
   Debug::Throw( "CustomListView::setColumnName.\n" );
-  Exception::assert( column>=0 && column <columnCount(), DESCRIPTION( "invalid index" ) );
+  Exception::check( column>=0 && column <columnCount(), DESCRIPTION( "invalid index" ) );
     
   // retrieve HeaderItem
   QTreeWidgetItem* item( headerItem() );

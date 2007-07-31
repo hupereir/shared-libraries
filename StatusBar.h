@@ -106,7 +106,7 @@ class StatusBar: public QWidget, public Counter
   //! retrieve layout
   QBoxLayout& getLayout( void )
   { 
-    Exception::assert( layout_, DESCRIPTION( "layout_ not initialized" ) ); 
+    Exception::checkPointer( layout_, DESCRIPTION( "layout_ not initialized" ) ); 
     return *layout_;
   }
   
@@ -123,7 +123,7 @@ class StatusBar: public QWidget, public Counter
   //! retrieves label with given index
   StatusBarLabel& label( const unsigned int& i = 0  )
   {
-    Exception::assert( i < labels_.size(), DESCRIPTION( "invalid index" ) );
+    Exception::check( i < labels_.size(), DESCRIPTION( "invalid index" ) );
     return *labels_[i];  
   }
   

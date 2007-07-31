@@ -187,7 +187,7 @@ void OptionListBox::_edit( QListWidgetItem* )
 
   // retrieve selection
   QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
-  Exception::assert( items.size() == 1, DESCRIPTION( "invalid selection" ) );
+  Exception::check( items.size() == 1, DESCRIPTION( "invalid selection" ) );
 
   // create dialog
   CustomDialog dialog( this );
@@ -231,7 +231,7 @@ void OptionListBox::_remove( void )
 
   // retrieve selection
   QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
-  Exception::assert( !items.empty(), DESCRIPTION( "invalid selection" ) );
+  Exception::check( !items.empty(), DESCRIPTION( "invalid selection" ) );
   for( QList<QListWidgetItem*>::iterator iter  = items.begin(); iter != items.end(); iter++ )
   { delete *iter; }
   
@@ -246,7 +246,7 @@ void OptionListBox::_setDefault( void )
 
   // retrieve selection
   QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
-  Exception::assert( items.size() == 1, DESCRIPTION( "invalid selection" ) );
+  Exception::check( items.size() == 1, DESCRIPTION( "invalid selection" ) );
 
   // move Item to the top of the list
   list_->takeItem( list_->row( items.front() ) );

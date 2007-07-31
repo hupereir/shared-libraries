@@ -409,7 +409,7 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
 void QtUtil::centerOnPointer( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnPointer.\n" );
-  Exception::assert( widget, DESCRIPTION( "invalid widget" ) );
+  Exception::check( widget, DESCRIPTION( "invalid widget" ) );
        
   // move widget
   widget->move( centerOnPointer( widget->frameSize() ) );
@@ -421,7 +421,7 @@ void QtUtil::centerOnPointer( QWidget* widget )
 void QtUtil::centerOnParent( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnParent.\n" );
-  Exception::assert( widget, DESCRIPTION( "invalid widget" ) );
+  Exception::check( widget, DESCRIPTION( "invalid widget" ) );
   
   // get parent widget
   QWidget* parent = widget->window();
@@ -434,7 +434,7 @@ void QtUtil::centerOnParent( QWidget* widget )
 void QtUtil::centerOnDesktop( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnDesktop.\n" );
-  Exception::assert( widget, DESCRIPTION( "invalid widget" ) );
+  Exception::check( widget, DESCRIPTION( "invalid widget" ) );
   widget->move( centerOnDesktop( widget->frameSize() ) );
   return;
 }

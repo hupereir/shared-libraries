@@ -88,7 +88,7 @@ class CustomListView: public QTreeWidget, public Counter
   //! column type
   virtual void setColumnType( const int& column, const ColumnType& type )
   { 
-    Exception::assert( column >=0, DESCRIPTION( "invalid column" ) );
+    Exception::check( column >=0, DESCRIPTION( "invalid column" ) );
     if( static_cast<int>(column_types_.size()) <= column ) column_types_.resize( column+1, STRING );
     column_types_[column] = type; 
   }
@@ -96,7 +96,7 @@ class CustomListView: public QTreeWidget, public Counter
   //! column type
   virtual ColumnType columnType( const int& column ) const
   { 
-    Exception::assert( column >=0, DESCRIPTION( "invalid column" ) );
+    Exception::check( column >=0, DESCRIPTION( "invalid column" ) );
     return ( column < static_cast<int>(column_types_.size()) ) ? column_types_[column]:STRING; 
   }
   

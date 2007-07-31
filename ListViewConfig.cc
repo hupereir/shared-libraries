@@ -204,7 +204,7 @@ unsigned int ListViewConfig::_computeMask( void ) const
 bool ListViewConfig::_modified( const unsigned int & index ) const
 {
   Debug::Throw( "ListViewConfig::_modified.\n" ); 
-  Exception::assert( index < checkbox_.size(), DESCRIPTION( "invalid index" ) );
+  Exception::check( index < checkbox_.size(), DESCRIPTION( "invalid index" ) );
   
   // get initial state from mask
   bool initial_state( modified_mask_ & (1 << index ) );

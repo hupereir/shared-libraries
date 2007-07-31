@@ -69,7 +69,7 @@ class CustomGridLayout: public QGridLayout, public Counter
     //! add widget
   void addWidget( QWidget* widget )
   {
-    Exception::assert( max_count_ > 0, DESCRIPTION( "invalid number of columns" ) );
+    Exception::check( max_count_ > 0, DESCRIPTION( "invalid number of columns" ) );
     QGridLayout::addWidget( widget, row_, column_ );
     _increment();
   }
