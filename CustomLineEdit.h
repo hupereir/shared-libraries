@@ -106,7 +106,7 @@ class CustomLineEdit: public QLineEdit, public Counter
   virtual void _modified( const QString& text );
 
   //! update action status
-  virtual void _updateSelectionActions( bool );
+  virtual void _updateSelectionActions( void );
   
   //! update paste action 
   /*! depends on clipboard status and editability */

@@ -219,10 +219,10 @@ void CustomLineEdit::_installActions( void )
   connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
   // update actions that depend on the presence of a selection
-  connect( this, SIGNAL( textChanged() ), SLOT( _updateUndoRedoActions() ) );
-  connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
+  connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _updateUndoRedoActions() ) );
+  connect( this, SIGNAL( selectionChanged() ), SLOT( _updateSelectionActions() ) );
   _updateUndoRedoActions();
-  _updateSelectionActions( hasSelectedText() );
+  _updateSelectionActions();
 
 }
 
@@ -235,11 +235,12 @@ void CustomLineEdit::_updateUndoRedoActions( void )
 }
 
 //________________________________________________
-void CustomLineEdit::_updateSelectionActions( bool has_selection )
+void CustomLineEdit::_updateSelectionActions()
 {
   
   Debug::Throw( "CustomTextEdit::_updateSelectionActions.\n" );
 
+  bool has_selection( hasSelectedText() );
   bool editable( !isReadOnly() );
   
   cut_action_->setEnabled( has_selection && editable );
