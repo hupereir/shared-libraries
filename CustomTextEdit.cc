@@ -796,7 +796,7 @@ void CustomTextEdit::_installActions( void )
   connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
   _updatePasteAction();
   
-  addAction( clear_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::PASTE, path_list ) ), "&Clear", this ) );
+  addAction( clear_action_ = new QAction( "&Clear", this ) );
   connect( clear_action_, SIGNAL( triggered() ), SLOT( clear() ) );
 
   addAction( select_all_action_ = new QAction( "Select all", this ) );
