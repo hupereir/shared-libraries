@@ -608,20 +608,36 @@ void CustomTextEdit::_synchronizeSelection( void )
 }
  
 //________________________________________________
+void CustomTextEdit::_updateReadOnlyActions( bool readonly )
+{
+  
+  Debug::Throw( "CustomTextEdit::_updateReadOnlyActions.\n" );
+  bool has_selection( textCursor().hasSelection() );
+  
+  cut_action_->setEnabled( has_selection && !readonly );
+  upper_case_action_->setEnabled( has_selection && !readonly );
+  lower_case_action_->setEnabled( has_selection && !readonly );
+  
+  replace_action_->setEnabled( !readonly );
+  replace_again_action_->setEnabled( !readonly );
+  replace_again_backward_action_->setEnabled( !readonly );
+
+}
+
+//________________________________________________
 void CustomTextEdit::_updateSelectionActions( bool has_selection )
 {
   
   Debug::Throw( "CustomTextEdit::_updateSelectionActions.\n" );
 
   bool editable( !isReadOnly() );
-
   cut_action_->setEnabled( has_selection && editable );
   copy_action_->setEnabled( has_selection );
   upper_case_action_->setEnabled( has_selection && editable );
   lower_case_action_->setEnabled( has_selection && editable );
   find_selection_action_->setEnabled( has_selection );
   find_selection_backward_action_->setEnabled( has_selection );
-  
+
 }
 
 //________________________________________________

@@ -108,7 +108,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   {
     Debug::Throw( "CustomTextEdit::setReadOnly.\n" );
     QTextEdit::setReadOnly( readonly );
-    _updateSelectionActions( textCursor().hasSelection() ); 
+    _updateReadOnlyActions( readonly ); 
   }
   
   signals:
@@ -220,6 +220,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! synchronize selection
   virtual void _synchronizeSelection( void );
  
+  //! update action status
+  virtual void _updateReadOnlyActions( bool );
+
   //! update action status
   virtual void _updateSelectionActions( bool );
   
