@@ -53,9 +53,6 @@ class ColorMenu: public QMenu, public Counter
   //! colored pixmap size
   static const QSize PixmapSize;
 
-  //! default icon name for color menu
-  static const std::string ICON;
-
   //! default name for no-color
   static const std::string NONE;
 

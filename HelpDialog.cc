@@ -31,6 +31,7 @@
 
 #include <QLayout>
 #include <QPushButton>
+#include <QShortcut>
 
 #include "HelpDialog.h"
 #include "CustomTextEdit.h"

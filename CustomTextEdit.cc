@@ -34,8 +34,11 @@
 #include <QScrollBar>
 #include <QTextBlock>
 
+#include "BaseIcons.h"
+#include "CustomPixmap.h"
 #include "CustomTextEdit.h"
 #include "FindDialog.h"
+#include "IconEngine.h"
 #include "ReplaceDialog.h"
 #include "SelectLineDialog.h"
 #include "TextBlockData.h"
@@ -66,14 +69,15 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   
   Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" ); 
   
-  _installShortcuts(); 
-  
   // signal to make sure selection is synchronized between clones
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _highlightCurrentBlock() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
-  
+
+  // actions
+  _installActions();
+    
 }
 
 //________________________________________________
@@ -81,14 +85,6 @@ CustomTextEdit::~CustomTextEdit( void )
 {
   Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );  
 }
-
-//________________________________________________
-void CustomTextEdit::setShortcutsEnabled( const bool& value )
-{ 
-  Debug::Throw() << "CustomTextEdit::setShortcutsEnabled - value: " << (value ? "true":"false" ) << endl;
-  for( std::vector<QShortcut*>::iterator iter = shortcuts_.begin(); iter != shortcuts_.end(); iter++ )
-  { (*iter)->setEnabled( value ); }
-}  
 
 //________________________________________________
 void CustomTextEdit::setHighlightEnabled( const bool& value )
@@ -602,6 +598,34 @@ void CustomTextEdit::_synchronizeSelection( void )
 }
   
 //________________________________________________
+void CustomTextEdit::_updateSelectionActions( bool has_selection )
+{
+  
+  Debug::Throw( "CustomTextEdit::_updateSelectionActions.\n" );
+
+  bool editable( !isReadOnly() );
+
+  cut_action_->setEnabled( has_selection && editable );
+  copy_action_->setEnabled( has_selection );
+  upper_case_action_->setEnabled( has_selection && editable );
+  lower_case_action_->setEnabled( has_selection && editable );
+  find_selection_action_->setEnabled( has_selection );
+  find_selection_backward_action_->setEnabled( has_selection );
+  
+}
+
+//________________________________________________
+void CustomTextEdit::_updatePasteAction( void )
+{
+  
+  Debug::Throw( "CustomTextEdit::_updatePasteAction.\n" );
+  bool editable( !isReadOnly() );
+  bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
+  paste_action_->setEnabled( editable && has_clipboard );
+  
+}
+  
+//________________________________________________
 void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 {
 
@@ -697,14 +721,7 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
 {
   
    Debug::Throw( "CustomTextEdit::contextMenuEvent.\n" );
-  
-  // retrieve flags
-  bool editable( !isReadOnly() );
-  bool has_selection( textCursor().hasSelection() );
-  
-  // retrieve document
-  QTextDocument& document( *CustomTextEdit::document() );
-  
+    
   // menu
   QMenu menu( this );
   
@@ -715,31 +732,124 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
   connect( action, SIGNAL( toggled( bool ) ), SLOT( toggleWrapMode( bool ) ) );
   menu.addSeparator();
   
-  menu.addAction( "&Undo", &document, SLOT( undo() ), CTRL+Key_Z )->setEnabled( editable && document.isUndoAvailable() );
-  menu.addAction( "&Redo", &document, SLOT( redo() ), SHIFT+CTRL+Key_Z )->setEnabled( editable && document.isRedoAvailable() );
+  menu.addAction( undo_action_ );
+  menu.addAction( redo_action_ );
   menu.addSeparator();
 
-  menu.addAction( "Cu&t", this , SLOT( cut() ), CTRL+Key_X )->setEnabled( editable && has_selection );
-  menu.addAction( "&Copy", this , SLOT( copy() ), CTRL+Key_C )->setEnabled( has_selection );
-  menu.addAction( "&Paste", this , SLOT( paste() ), CTRL+Key_V )->setEnabled( editable );
-  menu.addAction( "Clear", this , SLOT( clear() ) )->setEnabled( editable );
+  menu.addAction( cut_action_ );
+  menu.addAction( copy_action_ );
+  menu.addAction( paste_action_ );
+  menu.addAction( clear_action_ );
   menu.addSeparator();
  
-  menu.addAction( "Select all", this , SLOT( selectAll() ), CTRL+Key_A ); 
-  menu.addAction( "&Upper case", this, SLOT( upperCase( void ) ), CTRL+Key_U )->setEnabled( editable && has_selection );
-  menu.addAction( "&Lower case", this, SLOT( lowerCase( void ) ), SHIFT+CTRL+Key_U )->setEnabled( editable && has_selection );
+  menu.addAction( select_all_action_ ); 
+  menu.addAction( upper_case_action_ );
+  menu.addAction( lower_case_action_ );
   menu.addSeparator();
 
-  menu.addAction( "&Find", this , SLOT( findFromDialog() ), CTRL+Key_F ); 
-  menu.addAction( "Find again", this , SLOT( findAgainForward() ), CTRL+Key_G ); 
-  menu.addAction( "Find selection", this , SLOT( findSelectionForward() ), CTRL+Key_H ); 
+  menu.addAction( find_action_ ); 
+  menu.addAction( find_again_action_ ); 
+  menu.addAction( find_selection_action_); 
   menu.addSeparator();
  
-  menu.addAction( "&Replace", this , SLOT( replaceFromDialog() ), CTRL+Key_R ); 
-  menu.addAction( "Replace again", this , SLOT( replaceAgainForward() ), CTRL+Key_T ); 
-  menu.addAction( "Goto line number", this, SLOT( selectLineFromDialog() ), CTRL+Key_L );
+  menu.addAction( replace_action_ ); 
+  menu.addAction( replace_again_action_ ); 
+  menu.addAction( goto_line_action_);
  
   menu.exec( event->globalPos() );
+  
+}
+
+//______________________________________________________________
+void CustomTextEdit::_installActions( void )
+{
+
+  Debug::Throw( "CustomTextEdit::_installActions.\n" );
+  
+  // retrieve pixmaps path
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+
+  // create actions
+  addAction( undo_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::UNDO, path_list ) ), "&Undo", this ) );
+  undo_action_->setShortcut( CTRL+Key_Z );
+  undo_action_->setEnabled( document()->isUndoAvailable() );
+  connect( undo_action_, SIGNAL( triggered() ), document(), SLOT( undo() ) );
+  connect( this, SIGNAL( undoAvailable( bool ) ), undo_action_, SLOT( setEnabled( bool ) ) );
+
+  addAction( redo_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::REDO, path_list ) ), "&Redo", this ) );
+  redo_action_->setShortcut( SHIFT+CTRL+Key_Z );
+  redo_action_->setEnabled( document()->isRedoAvailable() );
+  connect( redo_action_, SIGNAL( triggered() ), document(), SLOT( redo() ) );
+  connect( this, SIGNAL( redoAvailable( bool ) ), redo_action_, SLOT( setEnabled( bool ) ) );
+
+  addAction( cut_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::CUT, path_list ) ), "Cu&t", this ) );
+  cut_action_->setShortcut( CTRL+Key_X );
+  connect( cut_action_, SIGNAL( triggered() ), SLOT( cut() ) );
+
+  addAction( copy_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::COPY, path_list ) ), "&Copy", this ) );
+  copy_action_->setShortcut( CTRL+Key_C );
+  connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
+
+  addAction( paste_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::PASTE, path_list ) ), "&Paste", this ) );
+  paste_action_->setShortcut( CTRL+Key_V );
+  connect( paste_action_, SIGNAL( triggered() ), SLOT( paste() ) );
+  connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
+  _updatePasteAction();
+  
+  addAction( clear_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::PASTE, path_list ) ), "&Clear", this ) );
+  connect( clear_action_, SIGNAL( triggered() ), SLOT( clear() ) );
+
+  addAction( select_all_action_ = new QAction( "Select all", this ) );
+  select_all_action_->setShortcut( CTRL+Key_V );
+  connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
+  
+  addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
+  upper_case_action_->setShortcut( CTRL+Key_U );
+  connect( upper_case_action_, SIGNAL( triggered() ), SLOT( upperCase() ) );
+
+  addAction( lower_case_action_ = new QAction( "&Lower case", this ) );
+  lower_case_action_->setShortcut( SHIFT+CTRL+Key_U );
+  connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
+  
+  addAction( find_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::FIND, path_list ) ), "&Find", this ) );
+  find_action_->setShortcut( CTRL+Key_F );
+  connect( find_action_, SIGNAL( triggered() ), SLOT( findFromDialog() ) );
+
+  addAction( find_again_action_ = new QAction( "F&ind again", this ) );
+  find_again_action_->setShortcut( CTRL+Key_H );
+  connect( find_again_action_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
+ 
+  addAction( find_again_backward_action_ = new QAction( this ) );
+  find_again_backward_action_->setShortcut( SHIFT+CTRL+Key_H );
+  connect( find_again_backward_action_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
+
+  addAction( find_selection_action_ = new QAction( "Find &selection", this ) );
+  find_selection_action_->setShortcut( CTRL+Key_G );
+  connect( find_selection_action_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
+ 
+  addAction( find_selection_backward_action_ = new QAction( this ) );
+  find_selection_backward_action_->setShortcut( SHIFT+CTRL+Key_G );
+  connect( find_selection_backward_action_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
+
+  addAction( replace_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::FIND, path_list ) ), "Replace", this ) );
+  replace_action_->setShortcut( CTRL+Key_R );
+  connect( replace_action_, SIGNAL( triggered() ), SLOT( replaceFromDialog() ) );
+
+  addAction( replace_again_action_ = new QAction( "Replace again", this ) );
+  replace_again_action_->setShortcut( CTRL+Key_T );
+  connect( replace_again_action_, SIGNAL( triggered() ), SLOT( replaceAgainForward() ) );
+ 
+  addAction( replace_again_backward_action_ = new QAction( this ) );
+  replace_again_backward_action_->setShortcut( SHIFT+CTRL+Key_T );
+  connect( replace_again_backward_action_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
+
+  addAction( goto_line_action_ = new QAction( this ) );
+  goto_line_action_->setShortcut( CTRL+Key_L );
+  connect( goto_line_action_, SIGNAL( triggered() ), SLOT( selectLineFromDialog() ) );
+  
+  // update actions that depend on the presence of a selection
+  connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
+  _updateSelectionActions( textCursor().hasSelection() );
   
 }
 
@@ -753,13 +863,8 @@ TextSelection CustomTextEdit::_selection( void ) const
   
   // try set from current selection
   if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );
-  else {
+  else out.setText( qApp->clipboard()->text( QClipboard::Selection ) );
     
-    // try retrieve from clipboard
-    out.setText( qApp->clipboard()->text( QClipboard::Selection ) );
-    
-  } 
-  
   // copy attributes from last selection
   out.setFlag( TextSelection::CASE_SENSITIVE, _lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
   out.setFlag( TextSelection::ENTIRE_WORD, _lastSelection().flag( TextSelection::ENTIRE_WORD ) );
@@ -982,52 +1087,4 @@ void CustomTextEdit::_toggleInsertMode( void )
 
   return;
 
-}
-
-//______________________________________________________________________
-void CustomTextEdit::_installShortcuts( void )
-{
- Debug::Throw( "CustomTextEdit::_installShortCuts.\n" );
-  
-  // default shortcuts
-  _addShortcut( SHIFT+CTRL+Key_Z, document(), SLOT( redo() ) );
-  _addShortcut( CTRL+Key_X, this, SLOT( cut() ) );
-  _addShortcut( CTRL+Key_C, this, SLOT( copy() ) );
-  _addShortcut( CTRL+Key_V, this, SLOT( paste() ) );
-  _addShortcut( CTRL+Key_U, this, SLOT( upperCase() ) );
-  _addShortcut( SHIFT+CTRL+Key_U, this, SLOT( lowerCase() ) );
-  _addShortcut( CTRL+Key_F, this, SLOT( findFromDialog() ) );
-  _addShortcut( CTRL+Key_G, this, SLOT( findAgainForward() ) );
-  _addShortcut( SHIFT+CTRL+Key_G, this, SLOT( findAgainBackward() ) );
-  _addShortcut( CTRL+Key_H, this, SLOT( findSelectionForward() ) );
-  _addShortcut( SHIFT+CTRL+Key_H, this, SLOT( findSelectionBackward() ) );
-  _addShortcut( CTRL+Key_K, this, SLOT( removeLine() ) );
-  _addShortcut( CTRL+Key_R, this, SLOT( replaceFromDialog() ) );
-  _addShortcut( CTRL+Key_T, this, SLOT( replaceAgainForward() ) );
-  _addShortcut( SHIFT+CTRL+Key_T, this, SLOT( replaceAgainBackward() ) );
-  _addShortcut( CTRL+Key_L, this, SLOT( selectLineFromDialog() ) );
-  
-}
-
-//______________________________________________________________________
-QShortcut* CustomTextEdit::_addShortcut( const QKeySequence& sequence, QObject* reciever, const std::string& slot )
-{
-  Debug::Throw( "CustomTextEdit::_addShortcut.\n" );
-  QShortcut* out = new QShortcut( sequence, this );
-  if( reciever && !slot.empty() )
-  { connect( out, SIGNAL( activated() ), reciever, slot.c_str() ); }
-  
-  shortcuts_.push_back( out );
-  return out;
-}
-
-//_______________________________________________________________________________
-void CustomTextEdit::_clearShortcuts( void )
-{ 
-  
-  Debug::Throw( "CustomTextEdit::_clearShortcuts.\n" );
-  for( std::vector<QShortcut*>::iterator iter = shortcuts_.begin(); iter != shortcuts_.end(); iter++ )
-  { delete *iter; }
-  shortcuts_.clear(); 
-  
 }

@@ -40,6 +40,8 @@ QIcon IconEngine::get( const QPixmap& pixmap )
 {
   
   Debug::Throw( "IconEngine::get (QPixmap).\n" );
+  if( pixmap.isNull() ) return QIcon( pixmap );
+  
   QIcon out( pixmap );
   out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );
   out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::Off );
@@ -53,6 +55,7 @@ QIcon IconEngine::get( const QIcon& icon )
 {
   
   Debug::Throw( "IconEngine::get (QIcon).\n" );
+  
   QIcon out( icon );
   QPixmap pixmap;
   if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::On )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );

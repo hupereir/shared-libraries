@@ -38,7 +38,6 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QMouseEvent>
-#include <QShortcut> 
 
 #include <string>
 #include <vector>
@@ -60,13 +59,6 @@ class CustomLineEdit: public QLineEdit, public Counter
   //! constructor;
   CustomLineEdit( QWidget* parent );
       
-  //! enable accelerator
-  void enableShortCuts( const bool& value )
-  { 
-    for( std::vector<QShortcut*>::iterator iter = shortcuts_.begin(); iter != shortcuts_.end(); iter++ )
-    { (*iter)->setEnabled( value ); }
-  }
-  
   //! set editor as modified
   void setModified( const bool& value );
   
@@ -93,12 +85,7 @@ class CustomLineEdit: public QLineEdit, public Counter
     
   //! changes selection to uppercase
   void upperCase( void );
-  
-  protected slots:
-  
-  //! update modification state
-  void _modified( const QString& text );
-  
+    
   protected:
   
   //! context menu (overloaded)
@@ -110,20 +97,64 @@ class CustomLineEdit: public QLineEdit, public Counter
   //! overloaded mouse event handler
   virtual void mouseReleaseEvent( QMouseEvent* );
   
+  //! install actions
+  virtual void _installActions( void );
+
+  protected slots:
+  
+  //! update modification state
+  virtual void _modified( const QString& text );
+
+  //! update action status
+  virtual void _updateSelectionActions( bool );
+  
+  //! update paste action 
+  /*! depends on clipboard status and editability */
+  virtual void _updatePasteAction( void );
+
+  //! update undo/redo actions
+  virtual void _updateUndoRedoActions( void );
+
   private:
   
-  //! retrieve searched string
-  std::string _getSelection( void );
-
   //! modification state
   bool modified_;
   
   //! backup string to track modifications
   QString backup_; 
   
-  //! accelerator
-  std::vector<QShortcut*> shortcuts_;
+  //!@name default actions
+  //@{
+  
+  //! undo
+  QAction* undo_action_;
+  
+  //! redo
+  QAction* redo_action_;
+  
+  //! cut selection
+  QAction* cut_action_;
+  
+  //! copy selection
+  QAction* copy_action_;
+  
+  //! paste clipboard
+  QAction* paste_action_;
+
+  //! clear document
+  QAction* clear_action_;
+  
+  //! select all document
+  QAction* select_all_action_;
+
+  //! convert selection to upper case
+  QAction* upper_case_action_;
+  
+  //! convert selection to lower case
+  QAction* lower_case_action_;
     
+  //@}
+
 };
 
 #endif

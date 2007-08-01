@@ -34,6 +34,7 @@ noinst_HEADERS = \
 	CustomToolButton.h \
 	DebugMenu.h \
 	DockPanel.h \
+	BaseIcons.h \
 	ErrorHandler.h \
 	FindDialog.h \
 	FontEdit.h \

@@ -29,6 +29,7 @@
   \date $Date$
 */
 #include <QApplication>
+#include <QShortcut>
 #include <QToolTip>
 #include <QGroupBox>
 #include <QLayout>

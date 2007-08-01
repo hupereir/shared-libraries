@@ -29,12 +29,16 @@
   \date $Date$
 */
 
-#include "CustomLineEdit.h"
-#include "Debug.h"
-#include "Str.h"
-
 #include <QApplication>
 #include <QClipboard>
+
+#include "BaseIcons.h"
+#include "CustomLineEdit.h"
+#include "CustomPixmap.h"
+#include "Debug.h"
+#include "IconEngine.h"
+#include "Str.h"
+#include "XmlOptions.h"
 
 using namespace std;
 using namespace Qt;
@@ -46,16 +50,9 @@ CustomLineEdit::CustomLineEdit( QWidget* parent ):
   modified_( false )
 {    
   Debug::Throw( "CustomLineEdit::CustomLineEdit.\n" );
-  
-  QShortcut* shortcut;
-  connect( shortcut  = new QShortcut( CTRL+Key_A, this ), SIGNAL( activated() ), SLOT( selectAll() ) );
-  shortcuts_.push_back( shortcut );
-  
-  connect( shortcut = new QShortcut( CTRL+Key_U, this ), SIGNAL( activated() ), SLOT( upperCase() ) );
-  shortcuts_.push_back( shortcut );
-
-  connect( shortcut = new QShortcut( SHIFT+CTRL+Key_U, this ), SIGNAL( activated() ), SLOT( lowerCase() ) );
-  shortcuts_.push_back( shortcut );
+    
+  // actions
+  _installActions();
   
   // modification state call-back
   connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _modified( const QString& ) ) );
@@ -118,28 +115,21 @@ void CustomLineEdit::upperCase( void )
 void CustomLineEdit::contextMenuEvent(QContextMenuEvent *event)
 {
   
-  // undo/redo//cut/copy/paste/clear//select_all/uppercase/lowercase
-  
-  // retrieve flags
-  bool editable( !isReadOnly() );
-  bool has_selection( hasSelectedText() );
-
   // menu
   QMenu menu( this );
-  
-  menu.addAction( "&Undo", this, SLOT( undo() ), CTRL+Key_Z )->setEnabled( editable && isUndoAvailable() );
-  menu.addAction( "&Redo", this, SLOT( redo() ), SHIFT+CTRL+Key_Z )->setEnabled( editable && isRedoAvailable() );
+  menu.addAction( undo_action_ );
+  menu.addAction( redo_action_ );
   menu.addSeparator();
 
-  menu.addAction( "Cu&t", this , SLOT( cut() ), CTRL+Key_X )->setEnabled( editable && has_selection );
-  menu.addAction( "&Copy", this , SLOT( copy() ), CTRL+Key_C )->setEnabled( has_selection );
-  menu.addAction( "&Paste", this , SLOT( paste() ), CTRL+Key_V )->setEnabled( editable );
-  menu.addAction( "Clear", this , SLOT( clear() ) )->setEnabled( editable );
+  menu.addAction( cut_action_ );
+  menu.addAction( copy_action_ );
+  menu.addAction( paste_action_ );
+  menu.addAction( clear_action_ );
   menu.addSeparator();
-  
-  menu.addAction( "Select all", this , SLOT( selectAll() ), CTRL+Key_A ); 
-  menu.addAction( "&Upper case", this, SLOT( upperCase( void ) ), CTRL+Key_U )->setEnabled( editable && has_selection );
-  menu.addAction( "&Lower case", this, SLOT( lowerCase( void ) ), SHIFT+CTRL+Key_U )->setEnabled( editable && has_selection );
+ 
+  menu.addAction( select_all_action_ ); 
+  menu.addAction( upper_case_action_ );
+  menu.addAction( lower_case_action_ );
   
   menu.exec( event->globalPos() );
   
@@ -179,19 +169,93 @@ void CustomLineEdit::_modified( const QString& text )
   }
   
 }
+
+//__________________________________________________________
+void CustomLineEdit::_installActions( void )
+{
+  Debug::Throw( "CustomLineEdit::_installActions.\n" );
+
+  // retrieve pixmaps path
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+
+  // create actions
+  addAction( undo_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::UNDO, path_list ) ), "&Undo", this ) );
+  undo_action_->setShortcut( CTRL+Key_Z );
+  undo_action_->setEnabled( isUndoAvailable() );
+  connect( undo_action_, SIGNAL( triggered() ), SLOT( undo() ) );
+
+  addAction( redo_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::REDO, path_list ) ), "&Redo", this ) );
+  redo_action_->setShortcut( SHIFT+CTRL+Key_Z );
+  redo_action_->setEnabled( isRedoAvailable() );
+  connect( redo_action_, SIGNAL( triggered() ), SLOT( redo() ) );
+
+  addAction( cut_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::CUT, path_list ) ), "Cu&t", this ) );
+  cut_action_->setShortcut( CTRL+Key_X );
+  connect( cut_action_, SIGNAL( triggered() ), SLOT( cut() ) );
+
+  addAction( copy_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::COPY, path_list ) ), "&Copy", this ) );
+  copy_action_->setShortcut( CTRL+Key_C );
+  connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
+
+  addAction( paste_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::PASTE, path_list ) ), "&Paste", this ) );
+  paste_action_->setShortcut( CTRL+Key_V );
+  connect( paste_action_, SIGNAL( triggered() ), SLOT( paste() ) );
+  connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
+  _updatePasteAction();
+
+  addAction( clear_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::PASTE, path_list ) ), "&Clear", this ) );
+  connect( clear_action_, SIGNAL( triggered() ), SLOT( clear() ) );
+
+  addAction( select_all_action_ = new QAction( "Select all", this ) );
+  select_all_action_->setShortcut( CTRL+Key_V );
+  connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
   
-//____________________________________________________________
-string CustomLineEdit::_getSelection( void )
+  addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
+  upper_case_action_->setShortcut( CTRL+Key_U );
+  connect( upper_case_action_, SIGNAL( triggered() ), SLOT( upperCase() ) );
+
+  addAction( lower_case_action_ = new QAction( "&Lower case", this ) );
+  lower_case_action_->setShortcut( SHIFT+CTRL+Key_U );
+  connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
+
+  // update actions that depend on the presence of a selection
+  connect( this, SIGNAL( textChanged() ), SLOT( _updateUndoRedoActions() ) );
+  connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
+  _updateUndoRedoActions();
+  _updateSelectionActions( hasSelectedText() );
+
+}
+
+//________________________________________________
+void CustomLineEdit::_updateUndoRedoActions( void )
+{
+  Debug::Throw( "CustomTextEdit::_updateUndoRedoActions.\n" );
+  undo_action_->setEnabled( isUndoAvailable() );
+  redo_action_->setEnabled( isRedoAvailable() );
+}
+
+//________________________________________________
+void CustomLineEdit::_updateSelectionActions( bool has_selection )
 {
   
-  Debug::Throw( "CustomLineEdit::_getSelection.\n" );
+  Debug::Throw( "CustomTextEdit::_updateSelectionActions.\n" );
+
+  bool editable( !isReadOnly() );
   
-  // check if current object have selected text; return it if yes.
-  string out( "" );
+  cut_action_->setEnabled( has_selection && editable );
+  copy_action_->setEnabled( has_selection );
+  upper_case_action_->setEnabled( has_selection && editable );
+  lower_case_action_->setEnabled( has_selection && editable );
   
-  if( hasSelectedText() ) out = qPrintable( selectedText() );
-  else if (QApplication::clipboard()->supportsSelection()) 
-  { out = string( qPrintable( QApplication::clipboard()->text( QClipboard::Selection ) ) ); }
- 
-  return out;
+}
+
+//________________________________________________
+void CustomLineEdit::_updatePasteAction( void )
+{
+  
+  Debug::Throw( "CustomTextEdit::_updatePasteAction.\n" );
+  bool editable( !isReadOnly() );
+  bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
+  paste_action_->setEnabled( editable && has_clipboard );
+  
 }

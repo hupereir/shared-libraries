@@ -34,7 +34,6 @@
 
 #include <QClipboard>
 #include <QContextMenuEvent>
-#include <QShortcut>
 #include <QTextBlockFormat>
 #include <QTextCursor>
 #include <QTextEdit>
@@ -67,9 +66,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! destrutor
   virtual ~CustomTextEdit( void );
     
-  //! enable/disable shortcuts
-  virtual void setShortcutsEnabled( const bool& );
-  
   //! enable/disable highlight
   virtual void setHighlightEnabled( const bool& );
   
@@ -216,6 +212,13 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! synchronize selection
   virtual void _synchronizeSelection( void );
   
+  //! update action status
+  virtual void _updateSelectionActions( bool );
+  
+  //! update paste action 
+  /*! depends on clipboard status and editability */
+  virtual void _updatePasteAction( void );
+  
   protected:
   
   //!@name event handlers
@@ -242,6 +245,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual void contextMenuEvent( QContextMenuEvent* );
   
   //@}
+  
+  //! install default actions
+  virtual void _installActions( void );
   
   //!@name find/replace selection
   //@{
@@ -294,20 +300,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! toggle insertion mode
   virtual void _toggleInsertMode( void );
 
-  //!@name shortcuts management
-  //@{
-  
-  //! install default shortcuts
-  virtual void _installShortcuts( void );
-
-  //! add shortcut
-  virtual QShortcut* _addShortcut( const QKeySequence& sequence, QObject* reciever = 0, const std::string& slot = std::string() );
-    
-  //! clear shortcuts
-  virtual void _clearShortcuts( void );
-  
-  //@}
-    
   private:
    
   //!@name replace/find selection
@@ -346,16 +338,72 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   QTextBlockFormat default_format_;
   
   //@}
+
+  //!@name default actions
+  //@{
+  
+  //! undo
+  QAction* undo_action_;
+  
+  //! redo
+  QAction* redo_action_;
+  
+  //! cut selection
+  QAction* cut_action_;
+  
+  //! copy selection
+  QAction* copy_action_;
+  
+  //! paste clipboard
+  QAction* paste_action_;
+
+  //! clear document
+  QAction* clear_action_;
+  
+  //! select all document
+  QAction* select_all_action_;
+
+  //! convert selection to upper case
+  QAction* upper_case_action_;
+  
+  //! convert selection to lower case
+  QAction* lower_case_action_;
+  
+  //! find from dialog
+  QAction* find_action_;
+
+  //! find selection again
+  QAction* find_selection_action_;
+
+  //! find selection backward
+  QAction* find_selection_backward_action_;
+
+  //! find again
+  QAction* find_again_action_;
+  
+  //! find again backward
+  QAction* find_again_backward_action_;
+
+  //! replace
+  QAction* replace_action_;
+
+  //! replace again
+  QAction* replace_again_action_;
+
+  //! replace again backward
+  QAction* replace_again_backward_action_;
+    
+  //! goto line number
+  QAction* goto_line_action_;
+  
+  //@}
   
   //! remove_line buffer
   RemoveLineBuffer remove_line_buffer_;
   
   //! multiple click counter
   MultipleClickCounter click_counter_;
-  
-  //! shortcuts
-  std::vector<QShortcut*> shortcuts_;
-    
+      
 };
 
 #endif

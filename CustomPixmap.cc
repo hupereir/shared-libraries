@@ -57,14 +57,7 @@ CustomPixmap CustomPixmap::find(
       break;
     }
   }
-  
-  if( !found )
-  {
-    Debug::Throw(0) << "CustomPixmap::find - cannot find " << file << endl;
-    for( list<string>::const_iterator iter = path.begin(); iter != path.end(); iter++ )
-    Debug::Throw(0) << "CustomPixmap::find - searching " << *iter << endl;
-  }
-    
+      
   return *this;
     
 } 

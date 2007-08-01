@@ -40,7 +40,6 @@ using namespace std;
 
 //________________________________________________
 const QSize ColorMenu::PixmapSize = QSize( 21, 21 );
-const std::string ColorMenu::ICON = "color.png";
 const std::string ColorMenu::NONE = "None";
 
 //_______________________________________________
