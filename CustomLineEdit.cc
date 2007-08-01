@@ -71,6 +71,7 @@ void CustomLineEdit::setModified( const bool& value )
   {
     modified_ = value;
     if( !value ) backup_ = text();
+    emit modificationChanged( value );
   }  
 }
 

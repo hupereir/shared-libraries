@@ -60,17 +60,46 @@ class CustomListView: public QTreeWidget, public Counter
   ~CustomListView( void )
   {}
 
+  //!@name contextual menu
+  //@{
+  
   //! returns true if menu has been initialized
   virtual bool hasMenu( void ) const
   { return menu_; }
   
   //! retrieve popup menu
-  virtual QMenu& menu( void )
-  {  
-    if( !hasMenu() ) menu_ = new QMenu( this );
-    return *menu_;
+  virtual QMenu& menu( void );
+ 
+  //! add context menu action
+  virtual QAction& addMenuAction( const std::string& name, const bool& need_selection = false )
+  {
+    QAction* out = menu().addAction( name.c_str() );
+    if( need_selection ) selection_actions_.push_back( out );
+    return *out;
   }
-    
+
+  //! add context menu action
+  virtual QAction& addMenuAction( QAction* action, const bool& need_selection = false )
+  {
+    menu().addAction( action );
+    if( need_selection ) selection_actions_.push_back( action );
+    return *action;
+  }
+  
+  //! add context menu action
+  virtual QAction& addMenuAction( const std::string& name, QObject* reciever, const std::string& slot,  const bool& need_selection = false )
+  {
+    QAction& out( addMenuAction( name, need_selection ) );
+    connect( &out, SIGNAL( triggered() ), reciever, slot.c_str() );
+    return out;
+  }
+
+  //! clear "selected" actions
+  void clearSelectedActions( void )
+  { selection_actions_.clear(); }
+  
+  //@} 
+  
   //! set column name
   virtual void setColumnName( const int& column, const std::string& name );
   
@@ -103,35 +132,7 @@ class CustomListView: public QTreeWidget, public Counter
   //! column type
   virtual void clearColumnTypes( void )
   { column_types_.clear(); }
-  
-  //! add context menu action
-  virtual QAction& addMenuAction( const std::string& name, const bool& need_selection = false )
-  {
-    QAction* out = menu().addAction( name.c_str() );
-    if( need_selection ) selection_actions_.push_back( out );
-    return *out;
-  }
-
-  //! add context menu action
-  virtual QAction& addMenuAction( QAction* action, const bool& need_selection = false )
-  {
-    menu().addAction( action );
-    if( need_selection ) selection_actions_.push_back( action );
-    return *action;
-  }
-  
-  //! add context menu action
-  virtual QAction& addMenuAction( const std::string& name, QObject* reciever, const std::string& slot,  const bool& need_selection = false )
-  {
-    QAction& out( addMenuAction( name, need_selection ) );
-    connect( &out, SIGNAL( triggered() ), reciever, slot.c_str() );
-    return out;
-  }
-  
-  //! clear "selected" actions
-  void clearSelectedActions( void )
-  { selection_actions_.clear(); }
-     
+         
   //! return column visibility bitset. Is 1 for shown columns, 0 for hidden
   virtual unsigned int mask( void );
   
@@ -238,12 +239,17 @@ class CustomListView: public QTreeWidget, public Counter
   
   protected:
   
-  //! mouse button press event handler. Pops up attached menu.
-  virtual void mousePressEvent( QMouseEvent *e );
-
   //! customized drawing to handle colored entries
   virtual void drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-           
+  
+  protected slots:
+
+  //! popup contextual menu
+  virtual void _raiseMenu( const QPoint& );
+
+  //! disable actions is the "selection_action" list, if no item is selected
+  virtual void _disableActions( void );
+  
   private:
 
   //! popup menu for right click
@@ -255,7 +261,7 @@ class CustomListView: public QTreeWidget, public Counter
 
   //! column types
   std::vector<ColumnType> column_types_;
-   
+  
   //! actions that are enabled/disabled depending on selection
   std::vector<QAction*> selection_actions_;
 

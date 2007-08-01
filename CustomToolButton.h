@@ -71,7 +71,13 @@ class CustomToolButton: public QToolButton, public Counter
     QIcon icon,
     const std::string& tooltip = "",
     QLabel* label = 0 );
-   
+    
+  //! creator with icon filename, tooltip and destination label
+  CustomToolButton( 
+    QWidget* parent,   
+    QAction* action = 0,
+    QLabel* label = 0 );
+  
   //! destructor
   virtual ~CustomToolButton( void ) 
   { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }

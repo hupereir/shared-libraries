@@ -53,12 +53,28 @@ CustomListView::CustomListView( QWidget* parent ):
 
   updateItemColor();
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );
+  connect( this, SIGNAL( itemSelectionChanged() ), SLOT( _disableActions() ) );
   
+}
+
+//_______________________________________________
+QMenu& CustomListView::menu( void )
+{  
+  if( !hasMenu() ) 
+  {
+    setContextMenuPolicy( Qt::CustomContextMenu );
+    connect( this, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseMenu( const QPoint& ) ) );
+    menu_ = new QMenu( this );
+  }
+  
+  return *menu_;
+
 }
 
 //__________________________________________________________________________
 void CustomListView::setColumnName( const int& column, const string& name )
 {
+  
   Debug::Throw( "CustomListView::setColumnName.\n" );
   Exception::check( column>=0 && column <columnCount(), DESCRIPTION( "invalid index" ) );
     
@@ -248,30 +264,6 @@ void CustomListView::updateItemColor( void )
   
 }
 
-//___________________________________
-void CustomListView::mousePressEvent( QMouseEvent *event )
-{
-  Debug::Throw( "CustomListView::mousePressEvent.\n" );
-  if( event->button() != Qt::RightButton ) {
-    QTreeWidget::mousePressEvent( event );
-    return;
-  }
-  
-  if( !hasMenu() ) return;
-    
-  // enable/disable
-  bool has_selection( !QTreeWidget::selectedItems().empty() );
-  for( vector<QAction*>::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
-  { (*iter)->setEnabled( has_selection ); }
-  
-  // move and show menu
-  menu().adjustSize();
-  QtUtil::moveWidget( &menu(), QCursor::pos() );
-  menu().show();
-  
-}
-
-
 //__________________________________________________________
 void CustomListView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
@@ -307,5 +299,35 @@ void CustomListView::drawRow( QPainter * painter, const QStyleOptionViewItem & o
   }
   
   return QTreeWidget::drawRow( painter, new_option, index );
+
+}
+
+//___________________________________
+void CustomListView::_raiseMenu( const QPoint & pos )
+{ 
+  
+  Debug::Throw( "CustomListView::_raiseMenu.\n" );
+  
+  // check if menu was created
+  if( !hasMenu() ) return;
+      
+  // move and show menu
+  menu().adjustSize();
+  QtUtil::moveWidget( &menu(), QCursor::pos() );
+  menu().show();
+  
+}
+
+
+//___________________________________
+void CustomListView::_disableActions( void )
+{ 
+  
+  Debug::Throw( "CustomListView::_disableActions.\n" );
+  
+  // enable/disable
+  bool has_selection( !QTreeWidget::selectedItems().empty() );
+  for( vector<QAction*>::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
+  { (*iter)->setEnabled( has_selection ); }
 
 }

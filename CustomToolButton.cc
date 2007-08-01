@@ -71,11 +71,35 @@ CustomToolButton::CustomToolButton(
   
 }
 
+//___________________________________________________________________
+CustomToolButton::CustomToolButton( 
+  QWidget* parent,   
+  QAction* action,
+  QLabel* label ):
+  QToolButton( parent ),
+  Counter( "CustomToolButton" ),
+  tooltip_label_( label )
+{
+
+  Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
+            
+  // add action
+  if( action ) setDefaultAction( action );
+  
+  // set configuration
+  updateConfiguration();
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  
+}
+
 //_________________________________________________________________
 void CustomToolButton::updateConfiguration( void )
 {
   Debug::Throw( "CustomToolButton::updateConfiguration.\n");
-  
+
+  // auto-raise
+  setAutoRaise( true );
+
   // pixmap size
   if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( BigIconSize );
   else setIconSize( SmallIconSize );
