@@ -48,7 +48,7 @@ CustomPixmap CustomPixmap::find(
   bool found( false );
   for( list<string>::const_iterator iter = path.begin(); iter != path.end(); iter++ )
   {
-    Debug::Throw() << "CustomPixmap::find - searching " << *iter << endl;
+    Debug::Throw() << "CustomPixmap::find - searching " << file << " in " << *iter << endl;
     File icon_file( File( *iter ).find( file, case_sensitive ) );
     if( icon_file != File::EMPTY_STRING )
     {

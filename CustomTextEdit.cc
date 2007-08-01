@@ -218,8 +218,13 @@ void CustomTextEdit::selectWord( void )
   for( ;begin < local_position; local_position-- ) { cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor ); }
   for( ;local_position < end; local_position++ ) { cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor ); }
   
-  // copy selected text to clipboard
-  qApp->clipboard()->setText( cursor.selectedText(), QClipboard::Selection );
+  // copy selected text to clipboard, in both text and HTML
+  QMimeData *data( new QMimeData() );
+  data->setText( cursor.selectedText() );
+  data->setHtml( cursor.selectedText() );
+  qApp->clipboard()->setMimeData( data, QClipboard::Selection );
+  
+  // qApp->clipboard()->setText( cursor.selectedText(), QClipboard::Selection );
 
   // assign cursor to Text editor
   setTextCursor( cursor );
@@ -239,8 +244,13 @@ void CustomTextEdit::selectLine( void )
   // perform selection
   cursor.select( QTextCursor::BlockUnderCursor );
   
-  // copy selected text to clipboard
-  qApp->clipboard()->setText( cursor.selectedText(), QClipboard::Selection );
+  // copy selected text to clipboard, in both text and HTML
+  QMimeData *data( new QMimeData() );
+  data->setText( cursor.selectedText() );
+  data->setHtml( cursor.selectedText() );
+  qApp->clipboard()->setMimeData( data, QClipboard::Selection );
+  
+  // qApp->clipboard()->setText( cursor.selectedText(), QClipboard::Selection );
 
   // assign cursor to text editor and make sure it is visible
   setTextCursor( cursor );
@@ -596,7 +606,7 @@ void CustomTextEdit::_synchronizeSelection( void )
     editor.setSynchronize( true );
   }
 }
-  
+ 
 //________________________________________________
 void CustomTextEdit::_updateSelectionActions( bool has_selection )
 {

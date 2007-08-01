@@ -103,6 +103,14 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! popup dialog with the number of replacement performed
   virtual void showReplacements( const unsigned int& counts );
   
+  //! read-only
+  void setReadOnly( bool readonly )
+  {
+    Debug::Throw( "CustomTextEdit::setReadOnly.\n" );
+    QTextEdit::setReadOnly( readonly );
+    _updateSelectionActions( textCursor().hasSelection() ); 
+  }
+  
   signals:
   
   //! emmitted when selection could not be found
@@ -211,7 +219,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! synchronize selection
   virtual void _synchronizeSelection( void );
-  
+ 
   //! update action status
   virtual void _updateSelectionActions( bool );
   
