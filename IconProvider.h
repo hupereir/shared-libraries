@@ -1,5 +1,5 @@
-#ifndef IconEngine_h
-#define IconEngine_h
+#ifndef IconProvider_h
+#define IconProvider_h
 
 // $Id$
 
@@ -25,28 +25,41 @@
 *******************************************************************************/
  
 /*!
-  \file IconEngine.h
-  \brief customized Icon factory to provide better looking disabled icons
+  \file IconProvider.h
+  \brief Icon provider based on configuration pixmap path
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <QIcon>
+#include <QFileIconProvider>
+#include <map>
 #include "Counter.h"
-#include "Debug.h"
 
-//! customized Icon factory to provide better looking disabled icons
-class IconEngine: public Counter
+//! Icon provider based on configuration pixmap path
+class IconProvider:public QFileIconProvider, public Counter
 {
   
   public:
-   
-  //! create icon
-  static QIcon get( const QPixmap& pixmap );
   
-  //! create icon
-  static QIcon get( const QIcon& icon );
+  // !constructor
+  IconProvider( void ):
+    Counter( "IconProvider" )
+  { 
+    Debug::Throw( "IconProvider::IconProvider.\n" ); 
+    icons_.clear();
+  }
+  
+  //! provider
+  virtual QIcon icon( IconType type ) const;
+
+  //! provider
+  virtual QIcon icon( const QFileInfo& info ) const;
+  
+  private:
+  
+  //! maps file types to icons
+  static std::map<IconType, QIcon> icons_;
   
 };
 

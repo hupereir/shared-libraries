@@ -34,6 +34,7 @@ using namespace std;
 #include "CustomFileDialog.h"
 #include "File.h"  
 #include "Debug.h"  
+#include "IconProvider.h"  
 #include "Util.h"  
 
 //______________________________________________________________________
@@ -44,6 +45,8 @@ CustomFileDialog::CustomFileDialog( QWidget* parent ):
   QFileDialog( parent ),
   Counter( "CustomFileDialog" )
 {
+  
+  setIconProvider( new IconProvider() );
   
   Debug::Throw() <<  "CustomFileDialog::CustomFileDialog - working directory: " << working_directory_ << endl;
   if( !working_directory_.empty() && File( working_directory_ ).isDirectory() )

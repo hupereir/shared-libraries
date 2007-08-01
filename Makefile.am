@@ -44,6 +44,7 @@ noinst_HEADERS = \
   HelpManager.h \
 	IconBrowsedButton.h \
 	IconEngine.h \
+  IconProvider.h \
   ListViewConfig.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
@@ -110,6 +111,7 @@ libbase_qt_a_SOURCES = \
   HelpManager.cc \
   IconBrowsedButton.cc \
 	IconEngine.cc \
+  IconProvider.cc \
   ListViewConfig.cc \
   OpenPreviousMenu.cc \
 	OptionFontInfo.cc \

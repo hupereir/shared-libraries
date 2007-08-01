@@ -843,7 +843,7 @@ void CustomTextEdit::_installActions( void )
   replace_again_backward_action_->setShortcut( SHIFT+CTRL+Key_T );
   connect( replace_again_backward_action_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
 
-  addAction( goto_line_action_ = new QAction( this ) );
+  addAction( goto_line_action_ = new QAction( "&Goto line number", this ) );
   goto_line_action_->setShortcut( CTRL+Key_L );
   connect( goto_line_action_, SIGNAL( triggered() ), SLOT( selectLineFromDialog() ) );
   
