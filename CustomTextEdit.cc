@@ -551,13 +551,8 @@ void CustomTextEdit::_highlightCurrentBlock( void )
   // try retrieve data, create if not found
   TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
   if( !data ) block.setUserData( data = new TextBlockData() );
-  
-  // check if current block is not already active
-  // if( data->isCurrentBlock() ) return;
-  
-  // clear last highlighted block
-  bool modified( document()->isModified() );
-  
+
+  // clear previously highlighted paragraphs
   _clearHighlightedBlock();
   
   // set block as active
@@ -565,9 +560,6 @@ void CustomTextEdit::_highlightCurrentBlock( void )
   cursor.joinPreviousEditBlock();
   cursor.setBlockFormat( highlight_format_ );
   cursor.endEditBlock();
-  
-  // reset modification state
-  if( !modified ) document()->setModified( false );
   
   return;
 }
@@ -1093,7 +1085,7 @@ void CustomTextEdit::_clearHighlightedBlock( void )
   for( vector<QTextBlock>::iterator iter = blocks.begin(); iter != blocks.end(); iter++ )
   {
     QTextCursor cursor( *iter );
-    cursor.beginEditBlock();
+    cursor.joinPreviousEditBlock();
     cursor.setBlockFormat( default_format_ );
     cursor.endEditBlock();    
   }
