@@ -31,6 +31,7 @@
 
 #include <QMenu>
 #include <QClipboard>
+#include <QRegExp>
 #include <QScrollBar>
 #include <QTextBlock>
 
@@ -379,24 +380,29 @@ void CustomTextEdit::findFromDialog( void )
 
   // create
   if( !find_dialog_ ) _createFindDialog();
-   
-  if( textCursor().hasSelection() ) 
-  {
-    Debug::Throw() << "CustomTextEdit::findFromDialog - selection: " << qPrintable( textCursor().selectedText() ) << endl;
-    _findDialog().setText( textCursor().selectedText() );
-  } else if( !_lastSelection().text().isEmpty() ) _findDialog().setText( _lastSelection().text() );
-
-  // set default string to find
-  _findDialog().synchronize();
-  _findDialog().clearLabel();
 
   // enable/disable regexp
-  _findDialog().enableRegExp( false );
+  _findDialog().enableRegExp( true );
   
   // raise dialog
   QtUtil::centerOnPointer( &_findDialog() );
   _findDialog().show();
+   
+  /* 
+    setting the default text values 
+    must be done after the dialog is shown
+    otherwise it may be automatically resized 
+    to very large sizes due to the input text
+  */
   
+  // set default string to find
+  _findDialog().synchronize();
+  _findDialog().clearLabel();
+
+  // set default text
+  if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
+  else if( !_lastSelection().text().isEmpty() ) _findDialog().setText( _lastSelection().text() );
+
   return;
 }
 
@@ -408,25 +414,32 @@ void CustomTextEdit::replaceFromDialog( void )
 
   // create
   if( !replace_dialog_ ) _createReplaceDialog();
- 
-  // update find text
-  if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
-  else if( !_lastSelection().text().isEmpty() ) _replaceDialog().setText( _lastSelection().text() );
- 
-  // set default string to find
-  _replaceDialog().synchronize();
-  _replaceDialog().clearLabel();
- 
-  // update replace text
-  if( !_lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( _lastSelection().replaceText() );
-  
+     
   // enable/disable regexp
   _replaceDialog().enableRegExp( false );
   
   // raise dialog
   QtUtil::centerOnPointer( &_replaceDialog() );
   _replaceDialog().show();
-  
+
+  /* 
+    setting the default text values 
+    must be done after the dialog is shown
+    otherwise it may be automatically resized 
+    to very large sizes due to the input text
+  */
+
+  // synchronize combo-boxes
+  _replaceDialog().synchronize();
+  _replaceDialog().clearLabel();
+
+  // update find text
+  if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
+  else if( !_lastSelection().text().isEmpty() ) _replaceDialog().setText( _lastSelection().text() );
+
+  // update replace text
+  if( !_lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( _lastSelection().replaceText() );
+
   return;
 }
 
@@ -927,24 +940,85 @@ bool CustomTextEdit::_findForward( const TextSelection& selection, const bool& r
   if( cursor.hasSelection() && selection.flag( TextSelection::NO_INCREMENT ) )
   { cursor.setPosition( cursor.anchor() ); }
   
-  // search flags
-  QTextDocument::FindFlags flags( 0 );
-  if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
-  if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
-  
-  QTextCursor found( document()->find( selection.text(), cursor, flags ) );
-  
-  // find failed.
-  if( found.isNull() && rewind ) 
+  if( selection.flag( TextSelection::REGEXP ) )
   {
-    cursor.movePosition( QTextCursor::Start );
-    found = document()->find( selection.text(), cursor, flags );
+    
+    // construct regexp and check
+    QRegExp regexp( selection.text() );
+    if( !regexp.isValid() )
+    {
+      QtUtil::infoDialog( this, "invalid regular expression. Find canceled" );
+      return false;
+    }
+    
+    // case sensitivity
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive:Qt::CaseInsensitive );
+
+    // make a copy of current cursor
+    QTextCursor found( cursor );
+    
+    // if current text has selection that match, make sure pointer is located at the end of it
+    if( found.hasSelection() && regexp.exactMatch( found.selectedText() ) ) 
+    { found.setPosition( max( found.position(), found.anchor() ) ); }
+    
+    // move the found to the end of the document
+    // and retrieve selected text
+    found.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
+    QString text( found.selectedText() );
+    
+    // parse text
+    int match = regexp.indexIn( text );
+    int length = regexp.matchedLength();
+    if( match < 0 )
+    {
+      // no match found
+      // if not rewind, stop here
+      if( !rewind ) return false;
+      
+      // update selection to the beginning of the document
+      found.movePosition( QTextCursor::Start, QTextCursor::KeepAnchor );
+      text = found.selectedText();
+      match = regexp.indexIn( text );
+      length = regexp.matchedLength();
+      
+    } 
+    
+    // no match found. Return
+    if( match < 0 ) return false;
+
+    // match found. Update selection and return
+    int position( match + min( found.anchor(), found.position() ) );
+    found.setPosition( position, QTextCursor::MoveAnchor );
+    found.setPosition( position+length, QTextCursor::KeepAnchor );
+    setTextCursor( found );
+    return true;
+    
+  } else {
+  
+    // search flags
+    QTextDocument::FindFlags flags( 0 );
+    if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
+    if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
+    
+    QTextCursor found( document()->find( selection.text(), cursor, flags ) );
+    
+    // find failed.
+    if( found.isNull() && rewind ) 
+    {
+      cursor.movePosition( QTextCursor::Start );
+      found = document()->find( selection.text(), cursor, flags );
+    }
+    
+    if( found.isNull() ) return false;
+    else {
+      setTextCursor( found );
+      return true;
+    }
+    
   }
-    
-  if( found.isNull() ) return false;
-    
-  setTextCursor( found );
-  return true;
+  
+  // useless
+  return false;
   
 }
 
@@ -962,25 +1036,83 @@ bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& 
   // if no_increment, start from the beginning of the possible current selection
   if( cursor.hasSelection() && selection.flag( TextSelection::NO_INCREMENT ) )
   { cursor.setPosition( cursor.anchor()+selection.text().size()+1 ); }
-  
-  // search flags
-  QTextDocument::FindFlags flags( QTextDocument::FindBackward );
-  if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
-  if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
-  
-  QTextCursor found( document()->find( selection.text(), cursor, flags ) );
-  
-  // find failed.
-  if( found.isNull() && rewind ) 
+    if( selection.flag( TextSelection::REGEXP ) )
   {
-    cursor.movePosition( QTextCursor::End );
-    found = document()->find( selection.text(), cursor, flags );
-  }
     
-  if( found.isNull() ) return false;  
+    // construct regexp and check
+    QRegExp regexp( selection.text() );
+    if( !regexp.isValid() )
+    {
+      QtUtil::infoDialog( this, "invalid regular expression. Find canceled" );
+      return false;
+    }
+    
+    // case sensitivity
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive:Qt::CaseInsensitive );
+
+    // make a copy of current cursor
+    QTextCursor found( cursor );
+    
+    // if current text has selection that match, make sure pointer is located at the end of it
+    if( found.hasSelection() && regexp.exactMatch( found.selectedText() ) ) 
+    { found.setPosition( min( found.position(), found.anchor() ) ); }
+    
+    // move cursor to beginning of the text
+    found.movePosition( QTextCursor::Start, QTextCursor::KeepAnchor );
+    QString text( found.selectedText() );
+
+    // parse text
+    int match = regexp.lastIndexIn( text );
+    int length = regexp.matchedLength();
+    if( match < 0 )
+    {
+      // no match found
+      // if not rewind, stop here
+      if( !rewind ) return false;
+      
+      // update selection to the beginning of the document
+      found.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
+      text = found.selectedText();
+      match = regexp.lastIndexIn( text );
+      length = regexp.matchedLength();
+      
+    }
+
+    // no match found. Return
+    if( match < 0 ) return false;
+
+    // match found. Update selection and return
+    int position( match + min( found.anchor(), found.position() )+length );
+    found.setPosition( position, QTextCursor::MoveAnchor );
+    found.setPosition( position-length, QTextCursor::KeepAnchor );
+    setTextCursor( found );
+    return true;
+
+  } else {
+    
+    // search flags
+    QTextDocument::FindFlags flags( QTextDocument::FindBackward );
+    if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
+    if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
   
-  setTextCursor( found );
-  return true;
+    QTextCursor found( document()->find( selection.text(), cursor, flags ) );
+    
+    // find failed.
+    if( found.isNull() && rewind ) 
+    {
+      cursor.movePosition( QTextCursor::End );
+      found = document()->find( selection.text(), cursor, flags );
+    }
+    
+    if( found.isNull() ) return false;  
+    else {
+      setTextCursor( found );
+      return true;
+    }
+  }
+  
+  // useless
+  return false;
   
 }
 

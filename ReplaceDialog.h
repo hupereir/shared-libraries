@@ -121,6 +121,20 @@ class ReplaceDialog: public FindDialog
   //! action buttons
   virtual void _createButtons( void );
   
+  //! replace editor
+  virtual CustomComboBox& _replaceEditor( void )
+  {
+    Exception::checkPointer( replace_editor_, DESCRIPTION( "replace_editor_ is invalid" ) );
+    return *replace_editor_;
+  }
+  
+  //! replace editor
+  const virtual CustomComboBox& _replaceEditor( void ) const
+  {
+    Exception::checkPointer( replace_editor_, DESCRIPTION( "replace_editor_ is invalid" ) );
+    return *replace_editor_;
+  }
+
   private:
             
   //! add string to both combo box and static set

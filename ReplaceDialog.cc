@@ -57,7 +57,7 @@ TextSelection ReplaceDialog::selection( const bool& no_increment ) const
 {
   
   TextSelection out( FindDialog::selection( no_increment ) );
-  out.setReplaceText( replace_editor_->currentText() );
+  out.setReplaceText( _replaceEditor().currentText() );
   return out;
   
 }
@@ -71,12 +71,12 @@ void ReplaceDialog::synchronize( void )
   FindDialog::synchronize();
   
   // replace editor
-  replace_editor_->clear();
+  _replaceEditor().clear();
   for( set<QString>::iterator iter = replaced_strings_.begin(); iter != replaced_strings_.end(); iter++ )
-  { replace_editor_->addItem( *iter ); }
+  { _replaceEditor().addItem( *iter ); }
   
   // clear replace combobox text
-  replace_editor_->setEditText("");
+  _replaceEditor().setEditText("");
   
   // set focus to find editor
   _editor().setFocus();
@@ -105,20 +105,23 @@ void ReplaceDialog::_createEditor( void )
   Debug::Throw( "ReplaceDialog::_CreateEditor.\n" );
   
   FindDialog::_createEditor();
-  
+
   // insert text editor
   QLabel* label = new QLabel( "replace with:", this );
   _mainLayout().addWidget( label );
   
   // replacement editor
   _mainLayout().addWidget( replace_editor_ = new CustomComboBox( this ) );
-  replace_editor_->setEditable( true );
-  replace_editor_->setCaseSensitive( Qt::CaseSensitive );
-  replace_editor_->setAutoCompletion( true );
-  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), SLOT( _replace( void ) ) );
-  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
-  connect( replace_editor_->lineEdit(), SIGNAL(returnPressed()), SLOT( _updateReplaceComboBox( void ) ) );
-  connect( replace_editor_->lineEdit(), SIGNAL(textChanged( const QString& )), SLOT( _replaceTextChanged( const QString& ) ) );
+  _replaceEditor().setEditable( true );
+  _replaceEditor().setCaseSensitive( Qt::CaseSensitive );
+  _replaceEditor().setAutoCompletion( true );
+  connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _replace( void ) ) );
+  connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
+  connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateReplaceComboBox( void ) ) );
+  connect( _replaceEditor().lineEdit(), SIGNAL(textChanged( const QString& )), SLOT( _replaceTextChanged( const QString& ) ) );
+
+  // initial (arbitrary) size
+  resize( 300, 200 );
 
 }
  

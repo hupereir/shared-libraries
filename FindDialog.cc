@@ -57,10 +57,10 @@ void FindDialog::synchronize( void )
 {
 
   Debug::Throw( "FindDialog::synchronize.\n" );
-  editor_->clear();
+  _editor().clear();
   
   for( set<QString>::iterator iter = searched_strings_.begin(); iter != searched_strings_.end(); iter++ )
-  { editor_->addItem( *iter ); }
+  { _editor().addItem( *iter ); }
 
 }
 
@@ -92,6 +92,9 @@ void FindDialog::polish( void )
   
   // disable buttons
   _updateButtons();
+  
+  // initial (arbitrary) size
+  resize( 300, 200 );
 
 }
 
@@ -106,15 +109,22 @@ void FindDialog::_createEditor( void )
   _mainLayout().addWidget( label );
   
   _mainLayout().addWidget( editor_ = new CustomComboBox( this ) );
-  editor_->setEditable( true );
-  editor_->setCaseSensitive( Qt::CaseSensitive );
-  editor_->setAutoCompletion( true );
+  _editor().setEditable( true );
+  _editor().setCaseSensitive( Qt::CaseSensitive );
+  _editor().setAutoCompletion( true );
     
-  connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
-  connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
-  connect( editor_->lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
-  connect( editor_->lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( const QString& ) ) );
+  connect( _editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
+  connect( _editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
+  connect( _editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
+  connect( _editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( const QString& ) ) );
 
+  /* 
+    replace_editor_ maximum size is arbitrary but is here
+    to avoid that the widget size gets too big when input
+    text selection are wery large (i.e. multilines 
+  */
+  //_editor().setMaximumSize( QSize( 250, 50 ) );
+  //setMaximumSize( 250, 200 );
 }
 
 //________________________________________________________________________ 
