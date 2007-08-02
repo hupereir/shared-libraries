@@ -62,7 +62,9 @@ class CustomToolButton: public QToolButton, public Counter
   CustomToolButton( QWidget* parent ):
     QToolButton( parent ),
     Counter( "CustomToolButton" ),
-    tooltip_label_(0)
+    tooltip_label_(0),
+    big_icon_size_( BigIconSize ),
+    small_icon_size_( SmallIconSize )
   {}
    
   //! creator with icon filename, tooltip and destination label
@@ -83,9 +85,25 @@ class CustomToolButton: public QToolButton, public Counter
   { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }
   
   //! set destination label
-  void SetToolTipLabel( QLabel* tooltip_label )
+  void setToolTipLabel( QLabel* tooltip_label )
   { tooltip_label_ = tooltip_label; }
   
+  //! big icon size
+  const QSize& bigIconSize( void ) const
+  { return big_icon_size_; }
+  
+  //! big icon size
+  void setBigIconSize( const QSize& size )
+  { big_icon_size_ = size; }
+   
+  //! small icon size
+  const QSize& smallIconSize( void ) const
+  { return small_icon_size_; }
+  
+  //! small icon size
+  void setSmallIconSize( const QSize& size )
+  { small_icon_size_ = size; }
+
   public slots:
   
   //! tool button configuration
@@ -113,6 +131,14 @@ class CustomToolButton: public QToolButton, public Counter
   
   //! destination label for tooltip
   QLabel* tooltip_label_;
+  
+  //! big icon-size
+  /*! by default this is the global BigIconSize but can be manually tweaked */
+  QSize big_icon_size_;
+  
+  //! small icon-size
+  /*! by default this is the global SmallIconSize but can be manually tweaked */
+  QSize small_icon_size_;
   
 };
 

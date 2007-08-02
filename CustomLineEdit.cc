@@ -179,25 +179,25 @@ void CustomLineEdit::_installActions( void )
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
 
   // create actions
-  addAction( undo_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::UNDO, path_list ) ), "&Undo", this ) );
+  addAction( undo_action_ = new QAction( IconEngine::get( ICONS::UNDO, path_list ), "&Undo", this ) );
   undo_action_->setShortcut( CTRL+Key_Z );
   undo_action_->setEnabled( isUndoAvailable() );
   connect( undo_action_, SIGNAL( triggered() ), SLOT( undo() ) );
 
-  addAction( redo_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::REDO, path_list ) ), "&Redo", this ) );
+  addAction( redo_action_ = new QAction( IconEngine::get( ICONS::REDO, path_list ), "&Redo", this ) );
   redo_action_->setShortcut( SHIFT+CTRL+Key_Z );
   redo_action_->setEnabled( isRedoAvailable() );
   connect( redo_action_, SIGNAL( triggered() ), SLOT( redo() ) );
 
-  addAction( cut_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::CUT, path_list ) ), "Cu&t", this ) );
+  addAction( cut_action_ = new QAction( IconEngine::get( ICONS::CUT, path_list ), "Cu&t", this ) );
   cut_action_->setShortcut( CTRL+Key_X );
   connect( cut_action_, SIGNAL( triggered() ), SLOT( cut() ) );
 
-  addAction( copy_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::COPY, path_list ) ), "&Copy", this ) );
+  addAction( copy_action_ = new QAction( IconEngine::get( ICONS::COPY, path_list ), "&Copy", this ) );
   copy_action_->setShortcut( CTRL+Key_C );
   connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
 
-  addAction( paste_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::PASTE, path_list ) ), "&Paste", this ) );
+  addAction( paste_action_ = new QAction( IconEngine::get( ICONS::PASTE, path_list ), "&Paste", this ) );
   paste_action_->setShortcut( CTRL+Key_V );
   connect( paste_action_, SIGNAL( triggered() ), SLOT( paste() ) );
   connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );

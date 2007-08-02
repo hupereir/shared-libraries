@@ -83,12 +83,12 @@ void CustomListBox::Delegate::paint ( QPainter * painter, const QStyleOptionView
   QStyleOptionViewItem new_option( option );
   
   //  QGradient 
-  QLinearGradient linearGrad(QPointF(0, 0), QPointF(painter->device()->width(), 0));
+  QLinearGradient gradient(QPointF(0, 0), QPointF(painter->device()->width(), 0));
   QColor color( option.palette.color( QPalette::Highlight ) );
-  linearGrad.setColorAt(0, color.light(130) );
-  linearGrad.setColorAt(0.3, color );
-  linearGrad.setColorAt(1, color.light(130) );
-  new_option.palette.setBrush( QPalette::Highlight, QBrush( linearGrad ) );
+  gradient.setColorAt(0, color.light(130) );
+  gradient.setColorAt(0.3, color );
+  gradient.setColorAt(1, color.light(130) );
+  new_option.palette.setBrush( QPalette::Highlight, QBrush( gradient ) );
   
   return QItemDelegate::paint( painter, new_option, index );
 }

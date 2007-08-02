@@ -47,7 +47,7 @@ class IconProvider:public QFileIconProvider, public Counter
     Counter( "IconProvider" )
   { 
     Debug::Throw( "IconProvider::IconProvider.\n" ); 
-    icons_.clear();
+    cache_.clear();
   }
   
   //! provider
@@ -59,7 +59,12 @@ class IconProvider:public QFileIconProvider, public Counter
   private:
   
   //! maps file types to icons
-  static std::map<IconType, QIcon> icons_;
+  /*! 
+    cache must be a static member because it 
+    gets modified in the icon() method whereas 
+    the later need to remain const
+  */
+  static std::map<IconType, QIcon> cache_;
   
 };
 

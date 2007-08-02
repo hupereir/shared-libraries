@@ -33,6 +33,9 @@
 */
 
 #include <QIcon>
+#include <map>
+#include <list>
+
 #include "Counter.h"
 #include "Debug.h"
 
@@ -43,10 +46,30 @@ class IconEngine: public Counter
   public:
    
   //! create icon
+  /*! the file is stored into a cache to avoid all pixmaps manipulations */
+  static QIcon get( const std::string& file, const std::list<std::string> path_list );
+
+  //! create icon
   static QIcon get( const QPixmap& pixmap );
   
   //! create icon
   static QIcon get( const QIcon& icon );
+  
+  //! clear cache
+  static void clear( void )
+  { cache_.clear(); }
+  
+  //! set the use_cache flag
+  void setUseCache( const bool& value )
+  { use_cache_ = value; }
+  
+  private:
+    
+  //! use cache to store icons generated from filenames
+  static bool use_cache_;
+  
+  //! map files and QIcon
+  static std::map< std::string, QIcon > cache_;
   
 };
 

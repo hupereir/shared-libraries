@@ -38,7 +38,7 @@
 using namespace std;
 
 //_____________________________________________
-map< QFileIconProvider::IconType, QIcon > IconProvider::icons_;
+map< QFileIconProvider::IconType, QIcon > IconProvider::cache_;
 
 //_____________________________________________
 QIcon IconProvider::icon( QFileIconProvider::IconType type ) const
@@ -46,8 +46,8 @@ QIcon IconProvider::icon( QFileIconProvider::IconType type ) const
   
   Debug::Throw() << "IconProvider::icon - type: " << type << endl;
   
-  std::map<IconType, QIcon>::iterator iter( icons_.find( type ) );
-  if( iter != icons_.end() ) return iter->second;
+  std::map<IconType, QIcon>::iterator iter( cache_.find( type ) );
+  if( iter != cache_.end() ) return iter->second;
   
   string filename;
   
@@ -87,7 +87,7 @@ QIcon IconProvider::icon( QFileIconProvider::IconType type ) const
   if( out.isNull() ) out = QFileIconProvider::icon( type );
   
   out = IconEngine::get( out );
-  icons_.insert( make_pair( type, out ) );
+  cache_.insert( make_pair( type, out ) );
   return out;
 }
 

@@ -801,27 +801,27 @@ void CustomTextEdit::_installActions( void )
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
 
   // create actions
-  addAction( undo_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::UNDO, path_list ) ), "&Undo", this ) );
+  addAction( undo_action_ = new QAction( IconEngine::get( ICONS::UNDO, path_list ), "&Undo", this ) );
   undo_action_->setShortcut( CTRL+Key_Z );
   undo_action_->setEnabled( document()->isUndoAvailable() );
   connect( undo_action_, SIGNAL( triggered() ), document(), SLOT( undo() ) );
   connect( this, SIGNAL( undoAvailable( bool ) ), undo_action_, SLOT( setEnabled( bool ) ) );
 
-  addAction( redo_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::REDO, path_list ) ), "&Redo", this ) );
+  addAction( redo_action_ = new QAction( IconEngine::get( ICONS::REDO, path_list ), "&Redo", this ) );
   redo_action_->setShortcut( SHIFT+CTRL+Key_Z );
   redo_action_->setEnabled( document()->isRedoAvailable() );
   connect( redo_action_, SIGNAL( triggered() ), document(), SLOT( redo() ) );
   connect( this, SIGNAL( redoAvailable( bool ) ), redo_action_, SLOT( setEnabled( bool ) ) );
 
-  addAction( cut_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::CUT, path_list ) ), "Cu&t", this ) );
+  addAction( cut_action_ = new QAction( IconEngine::get( ICONS::CUT, path_list ), "Cu&t", this ) );
   cut_action_->setShortcut( CTRL+Key_X );
   connect( cut_action_, SIGNAL( triggered() ), SLOT( cut() ) );
 
-  addAction( copy_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::COPY, path_list ) ), "&Copy", this ) );
+  addAction( copy_action_ = new QAction( IconEngine::get( ICONS::COPY, path_list ), "&Copy", this ) );
   copy_action_->setShortcut( CTRL+Key_C );
   connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
 
-  addAction( paste_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::PASTE, path_list ) ), "&Paste", this ) );
+  addAction( paste_action_ = new QAction( IconEngine::get( ICONS::PASTE, path_list ), "&Paste", this ) );
   paste_action_->setShortcut( CTRL+Key_V );
   connect( paste_action_, SIGNAL( triggered() ), SLOT( paste() ) );
   connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
@@ -842,7 +842,7 @@ void CustomTextEdit::_installActions( void )
   lower_case_action_->setShortcut( SHIFT+CTRL+Key_U );
   connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
   
-  addAction( find_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::FIND, path_list ) ), "&Find", this ) );
+  addAction( find_action_ = new QAction( IconEngine::get( ICONS::FIND, path_list ), "&Find", this ) );
   find_action_->setShortcut( CTRL+Key_F );
   connect( find_action_, SIGNAL( triggered() ), SLOT( findFromDialog() ) );
 
@@ -862,7 +862,7 @@ void CustomTextEdit::_installActions( void )
   find_selection_backward_action_->setShortcut( SHIFT+CTRL+Key_G );
   connect( find_selection_backward_action_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
-  addAction( replace_action_ = new QAction( IconEngine::get( CustomPixmap().find( ICONS::FIND, path_list ) ), "Replace", this ) );
+  addAction( replace_action_ = new QAction( IconEngine::get( ICONS::FIND, path_list ), "Replace", this ) );
   replace_action_->setShortcut( CTRL+Key_R );
   connect( replace_action_, SIGNAL( triggered() ), SLOT( replaceFromDialog() ) );
 

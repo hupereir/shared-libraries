@@ -147,12 +147,12 @@ void ColorMenu::_add( const QColor& color )
   {
     QPixmap pixmap( CustomPixmap().empty( PixmapSize ) );
 
-    QLinearGradient linearGrad(QPointF(0, 0), pixmap.rect().bottomRight());
-    linearGrad.setColorAt(0, color);
-    linearGrad.setColorAt(1, color.light(135));
+    QLinearGradient gradient(QPointF(0, 0), pixmap.rect().bottomRight());
+    gradient.setColorAt(0, color);
+    gradient.setColorAt(1, color.light(135));
     
     QPainter painter( &pixmap );
-    painter.fillRect( pixmap.rect(), linearGrad );
+    painter.fillRect( pixmap.rect(), gradient );
     painter.end();
 
     colors_.insert( make_pair( color, pixmap ) );
