@@ -112,6 +112,7 @@ void ColorMenu::_new( void )
   if( color.isValid() )
   {
     _add( color );
+    last_color_ = color; 
     emit selected( color );
   }
   
@@ -122,6 +123,7 @@ void ColorMenu::_default( void )
 {
   
   Debug::Throw( "ColorMenu::_default.\n" );
+  last_color_ = QColor(); 
   emit selected( QColor() );
   
 }
@@ -131,7 +133,11 @@ void ColorMenu::_selected( QAction* action )
 {
   Debug::Throw( "ColorMenu::_selected.\n" );
   std::map<QAction*,QColor>::iterator iter = actions_.find( action );
-  if( iter != actions_.end() ) emit selected( iter->second );
+  if( iter != actions_.end() ) 
+  {
+    last_color_ = iter->second;
+    emit selected( iter->second );
+  }
 }
 
 //_______________________________________________

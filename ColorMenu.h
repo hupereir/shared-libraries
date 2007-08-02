@@ -83,6 +83,10 @@ class ColorMenu: public QMenu, public Counter
   //! retrieve colors
   ColorSet colors() const;
   
+  //! retrieves last selected color
+  const QColor& lastColor( void ) const
+  { return last_color_; }
+  
   signals:
   
   //! emmited when a color is selected    
@@ -116,6 +120,9 @@ class ColorMenu: public QMenu, public Counter
 
   //! map actions to file recors
   std::map<QAction*, QColor> actions_;
+  
+  //! keep track of the last selected color
+  QColor last_color_;
          
 };
 #endif

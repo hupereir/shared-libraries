@@ -41,7 +41,8 @@ CustomTabWidget::CustomTabWidget( QTabWidget* parent, const unsigned int& flags 
     QFrame(), 
     Counter( "TabWidget" ),
     flags_( flags ),
-    parent_( parent )
+    parent_( parent ),
+    index_( 0 )
 {
 
   Debug::Throw( "CustomTabWidget::CustomTabWidget.\n" );
@@ -79,21 +80,34 @@ void CustomTabWidget::_toggleDock( void )
 
   if( !parent() ) {
     
+    // store size for later detach
     detached_size_ = size();
-    parent_->QTabWidget::addTab( this, title_.c_str() );
+    
+    // reinsert into parent and select
+    parent_->QTabWidget::insertTab( index_, this, title_.c_str() );
     parent_->QTabWidget::setCurrentWidget( this );
+    
+    // modify button text
     button_->setText("&detach");
         
     emit attached();
     
   } else {
     
-    parent_->removeTab( parent_->indexOf( this ) );
+    // keep track of index, for later re-insertion
+    // and remove from parent TabWidget
+    index_ = parent_->indexOf( this );
+    parent_->removeTab( index_ );
+    
+    // keep track of parent
     QWidget *parent( parentWidget() );
+    
+    // reparent to top level
     setParent( 0 );
     if( flags_ & STAYS_ON_TOP ) setWindowFlags( Qt::WindowStaysOnTopHint );
    
-    setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str()  ) );
+    // change title
+    // setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str()  ) );
     if( !title_.empty() ) 
     {
       ostringstream what;
@@ -101,6 +115,7 @@ void CustomTabWidget::_toggleDock( void )
       setWindowTitle( what.str().c_str() );
     }
     
+    // modify button, move, and resize
     button_->setText("&attach");
     move( parent->mapToGlobal( QPoint(0,0) ) );    
     if( detached_size_ != QSize() ) resize( detached_size_ );

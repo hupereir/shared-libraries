@@ -147,6 +147,9 @@ class CustomTabWidget: public QFrame, public Counter
   //! button
   QPushButton* button_;
   
+  //! index in parent tab
+  int index_;
+  
   //! default size for the detached panel
   QSize detached_size_;
   
