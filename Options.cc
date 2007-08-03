@@ -54,6 +54,7 @@ Options::Options( void ):
   add( Option( "FIXED_FONT_NAME", "Sans" , "fixed font"  )); 
   add( Option( "FONT_NAME", "Sans" , "main font"  )); 
   add( Option( "FONT_SIZE", "10" , "font size"));  
+  add( Option( "HIGHLIGHT_PARAGRAPH", "0", "enable paragraph highlighting" ) ); 
   add( Option( "HIGHLIGHT_COLOR", "#fffdd4", "current paragraph highlight color" ) ); 
   add( Option( "ITEM_COLOR", "#EEF6FF", "background color for even items in ListBox and ListView" ) ); 
   add( Option( "USE_BIG_PIXMAP", "1" , "big pixmaps in tool buttons"  )); 
@@ -62,6 +63,8 @@ Options::Options( void ):
 
   add( Option( "TAB_EMULATION", "0" , "enable tab emulation" ));
   add( Option( "TAB_SIZE", "2" , "emulated tab size" ));
+  
+  add( Option( "WRAP_TEXT", "1" , "text wrapping" ));
 
 }
 
