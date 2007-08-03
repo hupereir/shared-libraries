@@ -40,9 +40,6 @@ using namespace SPELLCHECK;
 //_______________________________________________
 const string SpellInterface::NO_FILTER = "none";
 
-//_______________________________________________ 
-std::set<SpellInterface*> SpellInterface::interfaces_;
-
 //_______________________________________________
 SpellInterface::SpellInterface( void ):
   Counter( "SpellInterface" ),
@@ -58,14 +55,14 @@ SpellInterface::SpellInterface( void ):
 {
   Debug::Throw( "SpellInterface::SpellInterface.\n" );
 
-  interfaces_.insert( this );
-
   // load dictionaries and filters
   _loadDictionaries();
   _loadFilters();
   _resetSpellChecker();
-  _resetDictionary();
-  _resetFilter();
+  
+  // set default filter
+  setFilter( NO_FILTER );
+  
   Debug::Throw( "SpellInterface::SpellInterface - done.\n" );
     
 }
@@ -78,22 +75,6 @@ SpellInterface::~SpellInterface( void )
   if( spell_config_ ) delete_aspell_config( spell_config_ );
   if( document_checker_ ) delete_aspell_document_checker( document_checker_ );
   if( spell_checker_ ) delete_aspell_speller( spell_checker_ );
-  
-  interfaces_.erase( this ); 
-  
-}
-
-//___________________________________________
-bool SpellInterface::resetDictionary( void )
-{
-
-  Debug::Throw( "SpellInterface::resetDictionary.\n" ); 
-  bool out( true ); 
-  
-  for( set<SpellInterface*>::iterator iter = interfaces_.begin(); iter != interfaces_.end(); iter++ )
-  { out &= (*iter)->_resetDictionary(); }
-  
-  return out;
   
 }
 
@@ -109,7 +90,7 @@ bool SpellInterface::setDictionary( const std::string& dictionary )
   }
 
   // check dictionary
-  if( dictionaries_.find( dictionary ) == dictionaries_.end() )
+  if( !hasDictionary( dictionary ) )
   {
     error_ = "invalid dictionary";
     return false;
@@ -131,18 +112,6 @@ bool SpellInterface::setDictionary( const std::string& dictionary )
 
 }
 
-//___________________________________________
-bool SpellInterface::resetFilter( void )
-{
-
-  Debug::Throw( "SpellInterface::resetFilter.\n" ); 
-  bool out( true );
-  for( set<SpellInterface*>::iterator iter = interfaces_.begin(); iter != interfaces_.end(); iter++ )
-  { out &= (*iter)->_resetFilter(); }
-  return out;
-  
-}
-
 //____________________________________________________
 bool SpellInterface::setFilter( const std::string& filter )
 {
@@ -150,6 +119,13 @@ bool SpellInterface::setFilter( const std::string& filter )
   Debug::Throw( "SpellInterface::setFilter.\n" );
   if( !spell_config_ ) {
     error_ = "invalid aspell configuration";
+    return false;
+  }
+
+  // check dictionary
+  if( !hasFilter( filter ) )
+  {
+    error_ = "invalid filter";
     return false;
   }
 
@@ -192,13 +168,9 @@ bool SpellInterface::setText(
   end_ += offset_;
   position_ = 0;
   offset_ = 0;
-  Debug::Throw( "SpellInterface::setText - before document_checker_reset.\n" ); 
   aspell_document_checker_reset( document_checker_ );
-  
-  Debug::Throw( "SpellInterface::setText - before aspell_document_checker_process.\n" );  
   aspell_document_checker_process(document_checker_, text_.substr( begin_, end_-begin_).c_str(), -1);
   
-  Debug::Throw( "SpellInterface::setText - Done.\n" ); 
   return true;
 
 }
@@ -261,6 +233,20 @@ bool SpellInterface::replace( const std::string& word )
 bool SpellInterface::nextWord( void )
 {
 
+  // check filter 
+  if( filter_.empty() )
+  {
+    error_ = "no filter set";
+    return false;
+  }
+    
+  // check filter 
+  if( dictionary_.empty() )
+  {
+    error_ = "no dictionary set";
+    return false;
+  }
+    
   // check text size
   if( !text_.size() )
   {
@@ -342,39 +328,6 @@ bool SpellInterface::reset( void )
 
 }
 
-//___________________________________________
-bool SpellInterface::_resetDictionary( void )
-{
-  Debug::Throw( "SpellInterface::_resetDictionary.\n" );
-
-  // check dictionaries_
-  if( dictionaries_.empty() ) 
-  {
-    error_ = "no dictionary loaded";
-    Debug::Throw() << "SpellInterface::_resetDictionary - " << error_ << endl; 
-    return false;
-  }
-  
-  // set dictionary from options
-  if( !XmlOptions::get().find( "DICTIONARY" ) )
-  {
-    Debug::Throw() << "SpellInterface::resetDictionary - no dictionary found in options. Using " << *dictionaries_.begin();
-    return setDictionary( *dictionaries_.begin() ); 
-  }
-   
-  // check if dictionary is in list
-  string dictionary( XmlOptions::get().get<string>( "DICTIONARY" ) );
-  if( dictionaries_.find( dictionary ) == dictionaries_.end() )
-  { 
-    ostringstream what;
-    what << "unable to load dictionary named " << dictionary << ", using " << *dictionaries_.begin();
-    Debug::Throw() << "SpellInterface::_resetDictionary - " << what.str() << endl;
-    dictionary = *dictionaries_.begin(); 
-  }
-  
-  return setDictionary( dictionary ); 
-}
-
 
 //____________________________________________________
 void SpellInterface::_loadDictionaries( void )
@@ -394,41 +347,6 @@ void SpellInterface::_loadDictionaries( void )
   delete_aspell_dict_info_enumeration( elements );
   return;
 
-}
-
-
-//___________________________________________
-bool SpellInterface::_resetFilter( void )
-{
-
-  Debug::Throw( "SpellInterface::_resetFilter.\n" );
-  
-  // check filters_
-  if( filters_.empty() )
-  {
-    error_ = "no filter loaded";
-    Debug::Throw() << "SpellInterface::_resetFilter - " << error_ << endl; 
-    return false;
-  }
-  
-  // set filter from options
-  if( !XmlOptions::get().find( "DICTIONARY_FILTER" ) ) 
-  {
-    Debug::Throw() <<  "SpellInterface::_resetFilter - no filter found in options. Using " << NO_FILTER;
-    return setFilter( NO_FILTER ); 
-  }
-  
-  string filter( XmlOptions::get().get<string>( "DICTIONARY_FILTER" ) );
-  if( filters_.find( filter ) == filters_.end() )
-  {
-    ostringstream what;
-    what << "unable to load filter named " << filter << ", using " << NO_FILTER;
-    Debug::Throw() << "SpellInterface::_resetFilter - " << what.str() << endl;
-    filter = NO_FILTER; 
-  }
-    
-  setFilter( filter );
-  return true;
 }
 
 //____________________________________________________

@@ -60,9 +60,6 @@ namespace SPELLCHECK
     //!@name dictionary
     //@{
     
-    //! reset dictionary from options
-    static bool resetDictionary( void );
-    
     //! get list of available dictionaries
     const std::set< std::string >& dictionaries( void ) const
     { return dictionaries_; }
@@ -70,6 +67,10 @@ namespace SPELLCHECK
     //! current dictionary
     const std::string dictionary( void ) const
     { return dictionary_; }
+
+    //! true if dictionary is available
+    bool hasDictionary( const std::string& dictionary ) const
+    { return dictionaries_.find( dictionary ) != dictionaries_.end(); }
 
     //! select dictionary
     /*! returns false in case of error */
@@ -80,9 +81,6 @@ namespace SPELLCHECK
     //!@name filter
     //@{
     
-    //! reset filter from options
-    static bool resetFilter( void );
-
     //! get list of available filters
     const std::set< std::string >& filters( void ) const
     { return filters_; }
@@ -91,6 +89,10 @@ namespace SPELLCHECK
     const std::string filter( void ) const
     { return filter_; }
 
+    //! true if filter is available
+    bool hasFilter( const std::string& filter ) const
+    { return filters_.find( filter ) != filters_.end(); }
+    
     //! select filter
     /*! returns false in case of error */
     bool setFilter( const std::string& filter );
@@ -180,7 +182,7 @@ namespace SPELLCHECK
     bool replace( const std::string& new_word );
     
     //! retrieve next word to be checked
-    /*! return empty string when completed */
+    /*! return false when there is an error */
     bool nextWord( void );
     
     //! retrieve list of suggestions for current word
@@ -198,15 +200,9 @@ namespace SPELLCHECK
                 
     private:
     
-    //! reset dictionary from options
-    bool _resetDictionary( void );
-  
     //! load available dictionaries
     void _loadDictionaries( void );
-    
-    //! reset filter from options
-    bool _resetFilter( void );
-      
+          
     //! load available filters
     void _loadFilters( void );
       
@@ -218,9 +214,6 @@ namespace SPELLCHECK
     /*! returns false on error */
     virtual bool _resetSpellChecker( void );
   
-    //! list of registered interfaces
-    static std::set<SpellInterface*> interfaces_;
-     
     //! set of available dictionaries
     /*! loaded in constructor */
     std::set<std::string> dictionaries_;    

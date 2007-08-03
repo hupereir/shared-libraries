@@ -83,10 +83,10 @@ namespace SPELLCHECK
     }
     
     //! set dictionary
-    void setDictionary( const std::string& dict );
+    bool setDictionary( const std::string& dict );
     
     //! set filter
-    void setFilter( const std::string& filter );
+    bool setFilter( const std::string& filter );
     
     //! go to next word to be checked
     void nextWord( void );
@@ -98,6 +98,12 @@ namespace SPELLCHECK
     
     //! need update
     void needUpdate( void );
+    
+    //! filter has changed
+    void filterChanged( const std::string& );
+    
+    //! dictionary has changed
+    void dictionaryChanged( const std::string& );
     
     protected slots:
   

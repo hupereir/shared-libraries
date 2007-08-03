@@ -33,6 +33,7 @@
 #include <QLabel>
 
 #include "AutoSpellConfig.h"
+#include "CustomGridLayout.h"
 #include "Debug.h"
 #include "OptionColorDisplay.h"
 #include "OptionSpinBox.h"
@@ -48,25 +49,26 @@ AutoSpellConfig::AutoSpellConfig( QWidget* parent ):
 {
   Debug::Throw( "AutoSpellConfig::AutoSpellConfig.\n" );
   
-  QGridLayout* grid_layout( new QGridLayout() );
+  CustomGridLayout* grid_layout( new CustomGridLayout() );
   grid_layout->setSpacing( 2 );
   grid_layout->setMargin( 5 );
+  grid_layout->setMaxCount( 2 );
   setLayout( grid_layout );
   
   // suggestions
-  grid_layout->addWidget( new QLabel( "Max number of suggestions: ", this ), 0, 0 );
-  grid_layout->addWidget( suggestions_ = new OptionSpinBox( this, "MAX_SUGGESTIONS" ), 0, 1 );
+  grid_layout->addWidget( new QLabel( "Max number of suggestions: ", this ) );
+  grid_layout->addWidget( suggestions_ = new OptionSpinBox( this, "MAX_SUGGESTIONS" ) );
   suggestions_->setMinimum( 0 );
   suggestions_->setMaximum( 50 );
   suggestions_->setToolTip( "Maximum number of suggestions in suggestion menu.\n 0 means no limit." );
 
   // options
   grid_layout->addWidget( new QLabel( "Highlight color: ", this ), 1, 0 );
-  grid_layout->addWidget( highlight_ = new OptionColorDisplay( this, "AUTOSPELL_COLOR" ), 1, 1 );
+  grid_layout->addWidget( highlight_ = new OptionColorDisplay( this, "AUTOSPELL_COLOR" ) );
   highlight_->setToolTip( "Highlight color for misspelled words" );
 
   grid_layout->addWidget( new QLabel( "Highlight font format: ", this ), 2, 0 );
-  grid_layout->addWidget( font_info_ = new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" ), 2, 1 );
+  grid_layout->addWidget( font_info_ = new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" ) );
   font_info_->setToolTip( "Font format for misspelled words" );
 }
 

@@ -29,9 +29,9 @@
    \date    $Date$
 */
 
-#include <QGridLayout>
 #include <QLabel>
 
+#include "CustomGridLayout.h"
 #include "Debug.h"
 #include "OptionBrowsedLineEdit.h"
 #include "OptionComboBox.h"
@@ -51,34 +51,38 @@ SpellConfig::SpellConfig( QWidget* parent ):
 
   SpellInterface interface;
 
-  QGridLayout* grid_layout( new QGridLayout() );
+  CustomGridLayout* grid_layout( new CustomGridLayout() );
   grid_layout->setSpacing( 2 );
   grid_layout->setMargin( 5 );
+  grid_layout->setMaxCount( 2 );
   setLayout( grid_layout );
 
   // aspell command
-  grid_layout->addWidget( new QLabel( "Aspell command: ", this ), 0, 0 );
-  grid_layout->addWidget( aspell_ = new OptionBrowsedLineEdit( this, "ASPELL" ), 0, 1 );
-  aspell_->setToolTip( "Aspell command. It is used to retrieve spell-checking modes." );
+  grid_layout->addWidget( new QLabel( "Aspell Command: ", this ) );
+  grid_layout->addWidget( aspell_ = new OptionBrowsedLineEdit( this, "ASPELL" ) );
+  aspell_->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
 
   // dictionaries
-  grid_layout->addWidget( new QLabel( "Dictionary: ", this ), 1, 0 );
-  grid_layout->addWidget( dictionary_ = new OptionComboBox( this, "DICTIONARY" ), 1, 1 );
+  grid_layout->addWidget( new QLabel( "Default Dictionary: ", this ) );
+  grid_layout->addWidget( dictionary_ = new OptionComboBox( this, "DICTIONARY" ) );
+  dictionary_->setToolTip( 
+    "Default dictionary used with files for which\n"
+    "a dictionary has not been manually selected" );
   
   const set<string>& dictionaries( interface.dictionaries() );
   for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
   { dictionary_->addItem( iter->c_str() ); }
   
-  dictionary_->setToolTip( "Dictionary language" );
-
   // filters
-  grid_layout->addWidget( new QLabel( "Filter: ", this ), 2, 0 );
-  grid_layout->addWidget( filter_ = new OptionComboBox( this, "DICTIONARY_FILTER" ), 2, 1 );
+  grid_layout->addWidget( new QLabel( "Default Filter: ", this ) );
+  grid_layout->addWidget( filter_ = new OptionComboBox( this, "DICTIONARY_FILTER" ) );
+ dictionary_->setToolTip( 
+    "Default filtering mode used with files for which\n"
+    "a filtering mode has not been manually selected" );
 
   const set<string>& filters( interface.filters() );
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   { filter_->addItem(iter->c_str() ); }
-  filter_->setToolTip( "Filtering mode" );
 
 }
 

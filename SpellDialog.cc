@@ -39,7 +39,6 @@
 #include "SpellDialog.h"
 #include "SpellInterface.h"
 #include "Util.h"
-#include "XmlOptions.h"
 
 using namespace std;
 using namespace SPELLCHECK;
@@ -115,8 +114,6 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   const set<string>& dictionaries( interface().dictionaries() );
   for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
   dictionary_->addItem(iter->c_str() );
-  dictionary_->setEditText( interface().dictionary().c_str() );
-
   connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
   // filter combobox
@@ -128,8 +125,6 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   set<string> filters( interface().filters() );
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   filter_->addItem( iter->c_str() );
-  filter_->setEditText( interface().filter().c_str() );
-
   connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
 
   // right vbox
@@ -211,7 +206,8 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
 
   // size
   resize( 450, 330 );
-    
+   Debug::Throw( "SpellDialog::SpellDialog - done.\n" );
+   
 }
 
 //__________________________________________
@@ -232,7 +228,7 @@ void SpellDialog::showFilter( const bool& value )
 }
 
 //____________________________________________________
-void SpellDialog::setDictionary( const std::string& dictionary )
+bool SpellDialog::setDictionary( const std::string& dictionary )
 {
   Debug::Throw( "SpellDialog::setDictionary.\n" );
 
@@ -243,19 +239,25 @@ void SpellDialog::setDictionary( const std::string& dictionary )
     ostringstream what;
     what << "invalid dictionary: " << dictionary;
     QtUtil::infoDialog( this, what.str() );
-    return;
+    return false;
+  }
+  
+  // update interface
+  if( !interface().setDictionary( dictionary ) )
+  {
+    QtUtil::infoDialog( this, interface().error() );
+    return false;
   }
   
   // select index
   dictionary_->setCurrentIndex( index );
   
-  // update interface
-  _selectDictionary( dictionary.c_str() );
+  return true;
   
 }
 
 //____________________________________________________
-void SpellDialog::setFilter( const std::string& filter )
+bool SpellDialog::setFilter( const std::string& filter )
 {
   Debug::Throw( "SpellDialog::setFilter.\n" );
   
@@ -266,14 +268,21 @@ void SpellDialog::setFilter( const std::string& filter )
     ostringstream what;
     what << "invalid dictionary: " << filter;
     QtUtil::infoDialog( this, what.str() );
-    return;
+    return false;
+  }
+  
+  // update interface
+  if( !interface().setFilter( filter ) )
+  {
+    QtUtil::infoDialog( this, interface().error() );
+    return false;
   }
   
   // select index
   filter_->setCurrentIndex( index );
   
-  // update interface
-  _selectFilter( filter.c_str() );
+  return true;
+  
 }
 
 //____________________________________________________
@@ -291,16 +300,23 @@ void SpellDialog::_selectSuggestion()
 }
 
 //____________________________________________________
-void SpellDialog::_selectDictionary( const QString& dict )
+void SpellDialog::_selectDictionary( const QString& dictionary )
 {
 
   Debug::Throw( "SpellDialog::_SelectDictionary.\n" );
 
-  if( !interface().setDictionary( qPrintable( dict ) ) )
+ // see if changed
+  if( interface().dictionary() == qPrintable( dictionary ) ) return;
+  
+  // try update interface
+  if( !interface().setDictionary( qPrintable( dictionary ) ) )
   {
     QtUtil::infoDialog( this, interface().error() );
     return;
   }
+
+  // emit signal
+  emit dictionaryChanged( interface().dictionary() );
 
   // restart
   _restart();
@@ -312,12 +328,19 @@ void SpellDialog::_selectFilter( const QString& filter )
 {
 
   Debug::Throw( "SpellDialog::_SelectFilter.\n" );
-
+  
+  // see if changed
+  if( interface().filter() == qPrintable( filter ) ) return;
+  
+  // try update interface
   if( !interface().setFilter( qPrintable( filter ) ) )
   {
     QtUtil::infoDialog( this, interface().error() );
     return;
   }
+
+  // emit signal
+  emit filterChanged( interface().filter() );
 
   // restart
   _restart();

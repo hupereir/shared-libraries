@@ -1,4 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
+EXTRA_DIST = base-server.pro
+
 INCLUDES =  \
   -I$(qt_includes) \
   -I$(qt_includes)/Qt \
@@ -8,10 +10,10 @@ INCLUDES =  \
 	-I$(top_srcdir)/base-qt \
 	-I$(top_srcdir)/base
 
-CXXFLAGS = @CXXFLAGS@
-
 noinst_HEADERS = \
   AutoSpellConfig.h \
+  DictionaryMenu.h \
+  FilterMenu.h \
   SpellConfig.h \
   SpellDialog.h \
   SpellInterface.h \
@@ -19,11 +21,12 @@ noinst_HEADERS = \
   SuggestionMenu.h \
   Word.h
 
-
-noinst_LIBRARIES = libspellcheck.a
+noinst_LIBRARIES = libbase-spellcheck.a
   
-libspellcheck_a_SOURCES =  \
+libbase_spellcheck_a_SOURCES =  \
   AutoSpellConfig.cc \
+  DictionaryMenu.cc \
+  FilterMenu.cc \
   SpellCheckBlockData.cc \
   SpellConfig.cc \
   SpellDialog.cc \
@@ -31,7 +34,9 @@ libspellcheck_a_SOURCES =  \
   SpellParser.cc \
   SuggestionMenu.cc
 	
-nodist_libspellcheck_a_SOURCES =  \
+nodist_libbase_spellcheck_a_SOURCES =  \
+  moc_DictionaryMenu.cc \
+  moc_FilterMenu.cc \
   moc_SpellDialog.cc \
   moc_SuggestionMenu.cc
 	

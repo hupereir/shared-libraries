@@ -59,12 +59,30 @@ namespace SPELLCHECK
     virtual Word::Set parse( const QString& text );
 
     //! highlight color
-    virtual void setColor( const QColor& color )
-    { if( color.isValid() ) color_ = color; }
+    /* returns true if changed */
+    virtual bool setColor( const QColor& color )
+    { 
+      Debug::Throw( "SpellParser::setColor.\n" );
+      if( color == color_ || !color.isValid() ) return false;
+      else { 
+        color_ = color; 
+        return true;
+      }
+    }
 
     //! font format
-    virtual void setFontFormat( const unsigned int& format )
-    { format_ = format; }
+    /* returns true if changed */
+    virtual bool setFontFormat( const unsigned int& format )
+    { 
+      
+      Debug::Throw( "SpellParser::setFontFormat.\n" );
+      if( format_ == format ) return false;
+      else {
+        format_ = format;
+        return true;
+      }
+      
+    }
           
     //! formated font
     virtual QTextCharFormat format() const
@@ -90,7 +108,7 @@ namespace SPELLCHECK
     }
     
     //! enabled
-    virtual const bool& enabled( void ) const
+    virtual const bool& isEnabled( void ) const
     { return enabled_; }
           
     //! spell interface

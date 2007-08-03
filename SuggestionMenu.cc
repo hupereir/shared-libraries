@@ -67,7 +67,7 @@ void SuggestionMenu::_aboutToShow( void )
   // add words
   unsigned int max( XmlOptions::get().get< unsigned int>( "MAX_SUGGESTIONS" ) );
   if( max == 0 || max > suggestions.size() ) max = suggestions.size();
-  for( int i=0; i<max; i++ ) 
+  for( int unsigned i=0; i < max; i++ ) 
   { 
     
     Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestions[i] << endl;
