@@ -61,9 +61,9 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   find_dialog_( 0 ),
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
-  synchronize_( false ),
   highlight_enabled_( false ),
   highlight_available_( false ),
+  synchronize_( false ),
   remove_line_buffer_( this ),
   click_counter_( this )
 {
@@ -76,9 +76,11 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _highlightCurrentBlock() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
 
+  updateConfiguration();
+  
   // actions
   _installActions();
-    
+  
 }
 
 //________________________________________________
@@ -179,6 +181,40 @@ int CustomTextEdit::indexFromPosition( const TextPosition& position ) const
 }  
    
 //________________________________________________
+bool CustomTextEdit::setTabEmulation( const bool& active, const int& tab_size )
+{
+  
+  Debug::Throw() << "CustomTextEdit::setTabEmulation - active: " << (active ? "true":"false") << " tab_size: " << tab_size << endl;
+  Exception::check( tab_size > 0, DESCRIPTION( "invalid tab size" ) );
+  
+  if( has_tab_emulation_ == active && tab_size == emulated_tab_.size() && tab_size == tabStopWidth() )
+  {
+    Debug::Throw() << "CustomTextEdit::SetTabEmulation - unchanged." << endl;
+    return false;
+  }
+
+  // create strings and regular expressions
+  // define normal tabs
+  normal_tab_ = "\t";
+  normal_tab_regexp_.setPattern( "^(\\t)+" );
+  setTabStopWidth( tab_size );
+  
+  // define emulated tabs
+  emulated_tab_ = QString( tab_size, ' ' );
+ 
+  ostringstream what;
+  what << "^(" << qPrintable( emulated_tab_ ) << ")" << "+";
+  emulated_tab_regexp_.setPattern( what.str().c_str() );
+ 
+  // set flag
+  has_tab_emulation_ = active;
+  tab_ = has_tab_emulation_ ? emulated_tab_ : normal_tab_;
+  tab_regexp_ = has_tab_emulation_ ? emulated_tab_regexp_ : normal_tab_regexp_;
+  
+  return true;
+}
+  
+//________________________________________________
 void CustomTextEdit::selectWord( void )
 {
   Debug::Throw( "CustomTextEdit::selectWord.\n" );
@@ -266,8 +302,10 @@ void CustomTextEdit::synchronize( CustomTextEdit& editor )
 {
   Debug::Throw( "CustomTextEdit::clone.\n" );
     
+  // assign document
   setDocument( editor.document() );
   
+  // set synchronization flag
   editor.setSynchronize( true );
   setSynchronize( true );
     
@@ -307,9 +345,12 @@ void CustomTextEdit::updateConfiguration( void )
   
   Debug::Throw( "CustomTextEdit::updateConfiguration.\n" );
   QColor highlight_color;
+
+  // tab emulation
+  setTabEmulation( XmlOptions::get().get<bool>( "TAB_EMULATION" ), XmlOptions::get().get<int>("TAB_SIZE") );
   
+  // highlighting
   highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
-  
   if( highlight_color.isValid() )
   {
     highlight_available_ = true;
@@ -327,6 +368,9 @@ void CustomTextEdit::updateConfiguration( void )
     _clearHighlightedBlock();
     
   }
+  
+  // wrap mode
+  toggleWrapMode( XmlOptions::get().get<bool>( "WRAP_TEXT" ) );
   
   return;
   
@@ -550,113 +594,6 @@ void CustomTextEdit::removeLine()
 }
 
 //________________________________________________
-void CustomTextEdit::_highlightCurrentBlock( void )
-{
-  Debug::Throw( "CustomTextEdit::_highlightCurrentBlock.\n" );
-  
-  // check if highlight is available and enabled
-  if( !( highlight_enabled_ && highlight_available_ ) ) return;
-
-  // retrieve current block
-  QTextCursor cursor( textCursor().block() );
-  QTextBlock block( textCursor().block() );
-  
-  // try retrieve data, create if not found
-  TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
-  if( !data ) block.setUserData( data = new TextBlockData() );
-
-  // clear previously highlighted paragraphs
-  _clearHighlightedBlock();
-  
-  // set block as active
-  data->setCurrentBlock( true );
-  cursor.joinPreviousEditBlock();
-  cursor.setBlockFormat( highlight_format_ );
-  cursor.endEditBlock();
-  
-  return;
-}
-  
-//________________________________________________
-void CustomTextEdit::_synchronizeSelection( void )
-{
- 
-  Debug::Throw( "CustomTextEdit::_synchronizeSelection.\n" );
-  if( !synchronize() ) return;
-    
-  BASE::KeySet<CustomTextEdit> editors( this );
-  for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
-  {
-    CustomTextEdit &editor( **iter );
-    
-    // check if textCursor is different
-    if( 
-      editor.textCursor().position() == textCursor().position() &&
-      editor.textCursor().anchor() == textCursor().anchor() ) 
-    continue;
-    
-    // store scrollbar positions
-    int x( editor.horizontalScrollBar()->value() );
-    int y( editor.verticalScrollBar()->value() );
-    
-    editor.setSynchronize( false );
-    editor.setUpdatesEnabled( false );
-    editor.setTextCursor( textCursor() );
-    
-    // restore scrollbar positions
-    editor.horizontalScrollBar()->setValue( x );
-    editor.verticalScrollBar()->setValue( y );
-    
-    editor.setUpdatesEnabled( true );
-    editor.setSynchronize( true );
-  }
-}
- 
-//________________________________________________
-void CustomTextEdit::_updateReadOnlyActions( bool readonly )
-{
-  
-  Debug::Throw( "CustomTextEdit::_updateReadOnlyActions.\n" );
-  bool has_selection( textCursor().hasSelection() );
-  
-  cut_action_->setEnabled( has_selection && !readonly );
-  upper_case_action_->setEnabled( has_selection && !readonly );
-  lower_case_action_->setEnabled( has_selection && !readonly );
-  
-  replace_action_->setEnabled( !readonly );
-  replace_again_action_->setEnabled( !readonly );
-  replace_again_backward_action_->setEnabled( !readonly );
-
-}
-
-//________________________________________________
-void CustomTextEdit::_updateSelectionActions( bool has_selection )
-{
-  
-  Debug::Throw( "CustomTextEdit::_updateSelectionActions.\n" );
-
-  bool editable( !isReadOnly() );
-  cut_action_->setEnabled( has_selection && editable );
-  copy_action_->setEnabled( has_selection );
-  upper_case_action_->setEnabled( has_selection && editable );
-  lower_case_action_->setEnabled( has_selection && editable );
-  find_selection_action_->setEnabled( has_selection );
-  find_selection_backward_action_->setEnabled( has_selection );
-
-}
-
-//________________________________________________
-void CustomTextEdit::_updatePasteAction( void )
-{
-  
-  Debug::Throw( "CustomTextEdit::_updatePasteAction.\n" );
-  bool editable( !isReadOnly() );
-  bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
-  paste_action_->setEnabled( editable && has_clipboard );
-  
-}
-  
-//________________________________________________
 void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 {
 
@@ -734,16 +671,28 @@ void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
 void CustomTextEdit::keyPressEvent( QKeyEvent* event )
 {
   
+  // clear line buffer.
   remove_line_buffer_.clear();
   
+  // tab emulation
+  if( event->key() == Key_Tab ) 
+  {
+    _insertTab();
+    event->ignore();
+    return;
+  } 
+  
+  // insertion mode
   if( event->key() == Key_Insert ) 
   {
     _toggleInsertMode();
     event->ignore();
     return;
-  }
+  } 
   
+  // default event handling
   QTextEdit::keyPressEvent( event );
+  
   return;
 }
 
@@ -1237,3 +1186,132 @@ void CustomTextEdit::_toggleInsertMode( void )
   return;
 
 }
+
+//_____________________________________________________________
+void CustomTextEdit::_insertTab( void )
+{
+  Debug::Throw( "CustomTextEdit::_insertTab.\n" );
+  
+  // retrieve current cursor
+  QTextCursor cursor( textCursor() );
+  if( !hasTabEmulation() ) cursor.insertText( normal_tab_ );
+  else {
+    
+    // retrieve position from begin of block
+    int position( min( cursor.position(), cursor.anchor() ) );
+    int n( position % emulated_tab_.size() );
+    cursor.insertText( emulated_tab_.left( n ) ); 
+    
+  }
+  
+  return;
+  
+}
+
+//________________________________________________
+void CustomTextEdit::_highlightCurrentBlock( void )
+{
+  Debug::Throw( "CustomTextEdit::_highlightCurrentBlock.\n" );
+  
+  // check if highlight is available and enabled
+  if( !( highlight_enabled_ && highlight_available_ ) ) return;
+
+  // retrieve current block
+  QTextCursor cursor( textCursor().block() );
+  QTextBlock block( textCursor().block() );
+  
+  // try retrieve data, create if not found
+  TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
+  if( !data ) block.setUserData( data = new TextBlockData() );
+
+  // clear previously highlighted paragraphs
+  _clearHighlightedBlock();
+  
+  // set block as active
+  data->setCurrentBlock( true );
+  cursor.joinPreviousEditBlock();
+  cursor.setBlockFormat( highlight_format_ );
+  cursor.endEditBlock();
+  
+  return;
+}
+  
+//________________________________________________
+void CustomTextEdit::_synchronizeSelection( void )
+{
+ 
+  Debug::Throw( "CustomTextEdit::_synchronizeSelection.\n" );
+  if( !isSynchronized() ) return;
+    
+  BASE::KeySet<CustomTextEdit> editors( this );
+  for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+  {
+    CustomTextEdit &editor( **iter );
+    
+    // check if textCursor is different
+    if( 
+      editor.textCursor().position() == textCursor().position() &&
+      editor.textCursor().anchor() == textCursor().anchor() ) 
+    continue;
+    
+    // store scrollbar positions
+    int x( editor.horizontalScrollBar()->value() );
+    int y( editor.verticalScrollBar()->value() );
+    
+    editor.setSynchronize( false );
+    editor.setUpdatesEnabled( false );
+    editor.setTextCursor( textCursor() );
+    
+    // restore scrollbar positions
+    editor.horizontalScrollBar()->setValue( x );
+    editor.verticalScrollBar()->setValue( y );
+    
+    editor.setUpdatesEnabled( true );
+    editor.setSynchronize( true );
+  }
+}
+ 
+//________________________________________________
+void CustomTextEdit::_updateReadOnlyActions( bool readonly )
+{
+  
+  Debug::Throw( "CustomTextEdit::_updateReadOnlyActions.\n" );
+  bool has_selection( textCursor().hasSelection() );
+  
+  cut_action_->setEnabled( has_selection && !readonly );
+  upper_case_action_->setEnabled( has_selection && !readonly );
+  lower_case_action_->setEnabled( has_selection && !readonly );
+  
+  replace_action_->setEnabled( !readonly );
+  replace_again_action_->setEnabled( !readonly );
+  replace_again_backward_action_->setEnabled( !readonly );
+
+}
+
+//________________________________________________
+void CustomTextEdit::_updateSelectionActions( bool has_selection )
+{
+  
+  Debug::Throw( "CustomTextEdit::_updateSelectionActions.\n" );
+
+  bool editable( !isReadOnly() );
+  cut_action_->setEnabled( has_selection && editable );
+  copy_action_->setEnabled( has_selection );
+  upper_case_action_->setEnabled( has_selection && editable );
+  lower_case_action_->setEnabled( has_selection && editable );
+  find_selection_action_->setEnabled( has_selection );
+  find_selection_backward_action_->setEnabled( has_selection );
+
+}
+
+//________________________________________________
+void CustomTextEdit::_updatePasteAction( void )
+{
+  
+  Debug::Throw( "CustomTextEdit::_updatePasteAction.\n" );
+  bool editable( !isReadOnly() );
+  bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
+  paste_action_->setEnabled( editable && has_clipboard );
+  
+}
+  

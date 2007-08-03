@@ -119,8 +119,8 @@ class ConfigDialogBase: public QDialog, public Counter
     //! lists
     LIST = 1<<2,
     
-    //! tab emulations
-    TABS = 1<<3
+    //! textEdit emulations
+    TEXTEDIT = 1<<3
     
   };
 
@@ -133,8 +133,8 @@ class ConfigDialogBase: public QDialog, public Counter
   //! list configuration box
   void listConfiguration( QWidget* parent = 0 );
 
-  //! Tab emulation configuration box
-  void tabConfiguration( QWidget* parent = 0 );
+  //! TextEdit configuration box
+  void textEditConfiguration( QWidget* parent = 0 );
 
   signals:
 

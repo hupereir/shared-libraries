@@ -36,6 +36,7 @@
 #include <QLabel>
 
 #include "ConfigDialogBase.h"
+#include "CustomGridLayout.h"
 #include "Debug.h"
 #include "OptionBrowsedLineEdit.h"
 #include "OptionCheckBox.h"
@@ -180,38 +181,39 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
     h_layout->setSpacing(5);
     layout->addLayout( h_layout );
     
-    QGridLayout* grid_layout = new QGridLayout();
+    CustomGridLayout* grid_layout = new CustomGridLayout();
     grid_layout->setMargin(0);
     grid_layout->setSpacing(2);
+    grid_layout->setMaxCount(2);
     h_layout->addLayout( grid_layout );
 
     // base font    
-    grid_layout->addWidget( new QLabel( "Default font: ", box ), 0, 0 );
+    grid_layout->addWidget( new QLabel( "Default font: ", box ) );
     OptionFontEdit *edit = new OptionFontEdit( box, "FONT_NAME" );
     edit->setToolTip( "Default font name for all widgets" );
-    grid_layout->addWidget( edit, 0, 1 );
+    grid_layout->addWidget( edit );
     addOptionWidget( edit );
     
     // fixed font
-    grid_layout->addWidget( new QLabel( "Fixed font: ", box ), 1, 0 );
+    grid_layout->addWidget( new QLabel( "Fixed font: ", box ) );
     edit = new OptionFontEdit( box, "FIXED_FONT_NAME" );
     edit->setToolTip( "Default font name (fixed) for text widgets" );
-    grid_layout->addWidget( edit, 1, 1 );
+    grid_layout->addWidget( edit );
     addOptionWidget( edit );
 
     // default icon path
-    grid_layout->addWidget( new QLabel( "Default icon path: ", box ), 2, 0 );
+    grid_layout->addWidget( new QLabel( "Default icon path: ", box ) );
     OptionBrowsedLineEdit* icon_path_edit = new OptionBrowsedLineEdit( box, "DEFAULT_ICON_PATH" );
-    grid_layout->addWidget( icon_path_edit, 2, 1 );
+    grid_layout->addWidget( icon_path_edit );
     addOptionWidget( icon_path_edit );
     
     // debug level
-    grid_layout->addWidget( new QLabel( "Debug level: ", box ), 3, 0 );
+    grid_layout->addWidget( new QLabel( "Debug level: ", box ) );
     OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 5 );
     spinbox->setToolTip( "Debug verbosity level" );
-    grid_layout->addWidget( spinbox, 3, 1 );
+    grid_layout->addWidget( spinbox );
     addOptionWidget( spinbox );
           
     // icon pixmap
@@ -236,7 +238,7 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
   if( flag & LIST ) { listConfiguration( parent ); }
   
   // tabs
-  if( flag & TABS ) { tabConfiguration( parent ); }
+  if( flag & TEXTEDIT ) { textEditConfiguration( parent ); }
   
   QLabel *label = new QLabel( 
     "Note: the application may have to be restarted so that "
@@ -312,13 +314,13 @@ void ConfigDialogBase::listConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-void ConfigDialogBase::tabConfiguration( QWidget* parent )
+void ConfigDialogBase::textEditConfiguration( QWidget* parent )
 {
   
-  Debug::Throw( "ConfigDialogBase::tabConfiguration.\n" );
+  Debug::Throw( "ConfigDialogBase::textEditConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "Tabs" );
+  if( !parent ) parent = &addPage( "Text edition" );
   
   // tab emulation
   QGroupBox* box = new QGroupBox( "Tab emulation", parent );
@@ -328,24 +330,54 @@ void ConfigDialogBase::tabConfiguration( QWidget* parent )
   box->setLayout( layout );
   parent->layout()->addWidget( box );
      
-  QGridLayout* grid_layout( new QGridLayout() );
+  CustomGridLayout* grid_layout( new CustomGridLayout() );
   grid_layout->setMargin(0);
   grid_layout->setSpacing(5);
+  grid_layout->setMaxCount(2);
   layout->addLayout( grid_layout );
   
-  grid_layout->addWidget(new QLabel( "Tab size: ", box ), 0, 0 );
+  grid_layout->addWidget(new QLabel( "Tab size: ", box ) );
   OptionSpinBox* spinbox = new OptionSpinBox( box, "TAB_SIZE" );
   spinbox->setMinimum( 2 );
   spinbox->setMaximum( 20 );
   spinbox->setToolTip( "Tab size (in unit of space characters)." );
-  grid_layout->addWidget( spinbox, 0, 1 );
+  grid_layout->addWidget( spinbox );
   addOptionWidget( spinbox );
 
   OptionCheckBox* checkbox = new OptionCheckBox( "Emulate tabs", box, "TAB_EMULATION" );
   checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
   layout->addWidget( checkbox );
   addOptionWidget( checkbox );
-
+  
+  box = new QGroupBox( "Paragrap highlighting", parent );
+  layout = new QVBoxLayout();
+  layout->setMargin(5);
+  layout->setSpacing(5);
+  box->setLayout( layout );
+  parent->layout()->addWidget( box );
+  
+  checkbox = new OptionCheckBox( "Highlight current paragraph", box, "HIGHLIGHT_PARAGRAPH" );
+  checkbox->setToolTip( "Turn on/off current paragraph highlighting" );
+  layout->addWidget( checkbox );
+  addOptionWidget( checkbox );
+ 
+  layout->addWidget( new QLabel( "Paragraph highlight color: " ) );
+  OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
+  layout->addWidget( color );
+  addOptionWidget( color );
+  
+  box = new QGroupBox( "Misc", parent );
+  layout = new QVBoxLayout();
+  layout->setMargin(5);
+  layout->setSpacing(5);
+  box->setLayout( layout );
+  parent->layout()->addWidget( box );
+  
+  checkbox = new OptionCheckBox( "Wrap text", box, "WRAP_TEXT" );
+  checkbox->setToolTip( "Turn on/off line wrapping at editor border" );
+  layout->addWidget( checkbox );
+  addOptionWidget( checkbox );
+  
 }
 
 //__________________________________________________

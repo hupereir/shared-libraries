@@ -82,6 +82,54 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual int indexFromPosition( const TextPosition& index ) const;
   
   //@}
+
+  //!@name tab emulation
+  //@{
+
+  //! set tab emulation
+  /*! returns true if changed */
+  virtual bool setTabEmulation( const bool& active, const int& size );  
+  
+  //! tab emulation
+  const bool& hasTabEmulation( void ) const
+  { return has_tab_emulation_; }
+  
+  //! tab character
+  virtual const QString& tabCharacter( void ) const
+  { return tab_; }
+  
+  //! tab character
+  virtual const QString& normalTabCharacter( void ) const
+  { return normal_tab_; }
+  
+  //! tab character
+  virtual const QString& emulatedTabCharacter( void ) const
+  { return emulated_tab_; }
+
+  //! multi tab regular expression
+  virtual const QRegExp& tabRegExp( void ) const
+  { return tab_regexp_; }  
+
+  //! 'normal' tab regular expression
+  virtual const QRegExp& _NormalTabRegExp( void ) const 
+  { return normal_tab_regexp_; }
+  
+  //! 'emulated' tab regular expression
+  virtual const QRegExp& _EmulatedTabRegExp( void ) const
+  { return emulated_tab_regexp_; }
+  
+  //@]
+    
+  //!@name synchronization
+  //@{
+  
+  //! synchronization
+  void setSynchronize( const bool& value )
+  { synchronize_ = value; }
+ 
+  //! synchronization
+  const bool& isSynchronized( void ) const
+  { return synchronize_; }
   
   //! select word under cursor
   virtual void selectWord( void );
@@ -92,14 +140,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! clone (and synchronize) text editor
   virtual void synchronize( CustomTextEdit& editor );
 
-  //! synchronization flag
-  const bool& synchronize( void ) const
-  { return synchronize_; }
-  
-  //! synchronization flag
-  virtual void setSynchronize( const bool& value )
-  { synchronize_ = value; }
-  
   //! popup dialog with the number of replacement performed
   virtual void showReplacements( const unsigned int& counts );
   
@@ -212,24 +252,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! remove current line
   virtual void removeLine( void );
   
-  protected slots:
-  
-  //! highlight current block
-  virtual void _highlightCurrentBlock( void );
-  
-  //! synchronize selection
-  virtual void _synchronizeSelection( void );
- 
-  //! update action status
-  virtual void _updateReadOnlyActions( bool );
-
-  //! update action status
-  virtual void _updateSelectionActions( bool );
-  
-  //! update paste action 
-  /*! depends on clipboard status and editability */
-  virtual void _updatePasteAction( void );
-  
   protected:
   
   //!@name event handlers
@@ -310,6 +332,27 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! toggle insertion mode
   virtual void _toggleInsertMode( void );
+  
+  //! insert (normal or emulated) tab
+  virtual void _insertTab( void );
+  
+  protected slots:
+  
+  //! highlight current block
+  virtual void _highlightCurrentBlock( void );
+  
+  //! synchronize selection
+  virtual void _synchronizeSelection( void );
+ 
+  //! update action status
+  virtual void _updateReadOnlyActions( bool );
+
+  //! update action status
+  virtual void _updateSelectionActions( bool );
+  
+  //! update paste action 
+  /*! depends on clipboard status and editability */
+  virtual void _updatePasteAction( void );
 
   private:
    
@@ -330,8 +373,33 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
-  //! synchronization flag
-  bool synchronize_;
+  
+  //!@name tab emulation and empty lines
+  //@{
+  
+  //! tab emulation flag
+  bool has_tab_emulation_;
+  
+  //! tab string
+  QString emulated_tab_;
+
+  //! tab string
+  QString normal_tab_;
+  
+  //! current tab string
+  QString tab_;
+  
+  //! emulated tab regular expression
+  QRegExp emulated_tab_regexp_;
+  
+  //! normale tab regular expression
+  QRegExp normal_tab_regexp_;
+  
+  //! multi tab regExp
+  QRegExp tab_regexp_;
+
+  //@}
+  
   
   //!@name paragraph highlighting
   //@{
@@ -408,6 +476,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   QAction* goto_line_action_;
   
   //@}
+  
+  //! synchronization flag
+  bool synchronize_;
   
   //! remove_line buffer
   RemoveLineBuffer remove_line_buffer_;
