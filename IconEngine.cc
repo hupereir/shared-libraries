@@ -36,28 +36,24 @@
 using namespace std;
 
 //__________________________________________________________
-bool IconEngine::use_cache_( true );
-std::map<string, QIcon > IconEngine::cache_;
-
-//__________________________________________________________
-QIcon IconEngine::get( const string& file, const list<string> path_list )
+QIcon IconEngine::_get( const string& file, const list<string> path_list )
 {
-  Debug::Throw( "IconEngine::get (file).\n" );
+  Debug::Throw( "IconEngine::_get (file).\n" );
 
   // check if cache is to be used
-  if( !use_cache_ ) return get( CustomPixmap().find( file, path_list ) );
+  if( !use_cache_ ) return _get( CustomPixmap().find( file, path_list ) );
   
   // try find file in cache
   std::map< string, QIcon >::iterator iter( cache_.find( file ) );
   if( iter != cache_.end() ) return iter->second;
   
-  QIcon out( get( CustomPixmap().find( file, path_list ) ) );
+  QIcon out( _get( CustomPixmap().find( file, path_list ) ) );
   cache_.insert( make_pair( file, out ) );
   return out;
 }
 
 //__________________________________________________________
-QIcon IconEngine::get( const QPixmap& pixmap )
+QIcon IconEngine::_get( const QPixmap& pixmap )
 {
   
   Debug::Throw( "IconEngine::get (QPixmap).\n" );
@@ -70,9 +66,8 @@ QIcon IconEngine::get( const QPixmap& pixmap )
   
 }
 
-
 //__________________________________________________________
-QIcon IconEngine::get( const QIcon& icon )
+QIcon IconEngine::_get( const QIcon& icon )
 {
   
   Debug::Throw( "IconEngine::get (QIcon).\n" );

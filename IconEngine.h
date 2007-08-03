@@ -44,19 +44,29 @@ class IconEngine: public Counter
 {
   
   public:
-   
+  
+  //! retrieve singleton
+  static IconEngine& get( void )
+  { 
+    static IconEngine singleton;
+    return singleton;
+  }
+  
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  static QIcon get( const std::string& file, const std::list<std::string> path_list );
+  static QIcon get( const std::string& file, const std::list<std::string> path_list )
+  { return get()._get( file, path_list ); }
 
   //! create icon
-  static QIcon get( const QPixmap& pixmap );
+  static QIcon get( const QPixmap& pixmap )
+  { return get()._get( pixmap ); }
   
   //! create icon
-  static QIcon get( const QIcon& icon );
+  static QIcon get( const QIcon& icon )
+  { return get()._get( icon ); }
   
   //! clear cache
-  static void clear( void )
+  void clear( void )
   { cache_.clear(); }
   
   //! set the use_cache flag
@@ -65,12 +75,33 @@ class IconEngine: public Counter
   
   private:
     
+  //! constructor is private to force use of singleton
+  IconEngine( void ):
+    Counter( "IconEngine" ),
+    use_cache_( true )
+  { Debug::Throw( "IconEngine::IconEngine.\n" ); } 
+  
+  //!@name non static methods are hidden
+  //@{
+  
+  //! create icon
+  /*! the file is stored into a cache to avoid all pixmaps manipulations */
+  QIcon _get( const std::string& file, const std::list<std::string> path_list );
+
+  //! create icon
+  QIcon _get( const QPixmap& pixmap );
+  
+  //! create icon
+  QIcon _get( const QIcon& icon );
+
+  //@}
+  
   //! use cache to store icons generated from filenames
-  static bool use_cache_;
+  bool use_cache_;
   
   //! map files and QIcon
-  static std::map< std::string, QIcon > cache_;
-  
+  std::map< std::string, QIcon > cache_;
+    
 };
 
 #endif
