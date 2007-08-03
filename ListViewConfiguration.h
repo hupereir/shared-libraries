@@ -1,5 +1,5 @@
-#ifndef _ListViewConfig_h_
-#define _ListViewConfig_h_
+#ifndef _ListViewConfiguration_h_
+#define _ListViewConfiguration_h_
 
 // $Id$
 
@@ -25,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file ListViewConfig.h
+  \file ListViewConfiguration.h
   \brief Configuration vbox for ListView columns
   \author Hugo Pereira
   \version $Revision$
@@ -41,7 +41,7 @@
 #include "Counter.h"
 
 //! Configuration vbox for ListView columns
-class ListViewConfig: public QWidget, public Counter
+class ListViewConfiguration: public QWidget, public Counter
 {
   
 
@@ -51,7 +51,7 @@ class ListViewConfig: public QWidget, public Counter
   public:
   
   //! constructor
-  ListViewConfig( QWidget* parent, QTreeWidget* target, const std::string& title = ""  );
+  ListViewConfiguration( QWidget* parent, QTreeWidget* target, const std::string& title = ""  );
   
   public slots:
   

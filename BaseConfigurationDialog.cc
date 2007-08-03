@@ -22,7 +22,7 @@
 *******************************************************************************/
   
 /*!
-  \file ConfigDialogBase.cc
+  \file BaseConfigurationDialog.cc
   \brief base configuration dialog
   \author Hugo Pereira
   \version $Revision$
@@ -35,7 +35,7 @@
 #include <QLayout>
 #include <QLabel>
 
-#include "ConfigDialogBase.h"
+#include "BaseConfigurationDialog.h"
 #include "CustomGridLayout.h"
 #include "Debug.h"
 #include "OptionBrowsedLineEdit.h"
@@ -54,15 +54,15 @@ using namespace std;
 using namespace Qt;
 
 //_________________________________________________________
-ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
+BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   QDialog( parent ),
-  Counter( "ConfigDialogBase" ),
+  Counter( "BaseConfigurationDialog" ),
   modified_options_( XmlOptions::get() ),
   backup_options_( XmlOptions::get() )
 {
   
   
-  Debug::Throw( "ConfigDialogBase::ConfigDialog.\n" );
+  Debug::Throw( "BaseConfigurationDialog::ConfigDialog.\n" );
   setWindowTitle( "Configuration" );
 
   QVBoxLayout* layout( new QVBoxLayout() );
@@ -121,7 +121,7 @@ ConfigDialogBase::ConfigDialogBase( QWidget* parent ):
 }
 
 //_________________________________________________________
-QWidget& ConfigDialogBase::addPage( const QString& title, const bool& expand )
+QWidget& BaseConfigurationDialog::addPage( const QString& title, const bool& expand )
 {  
   Debug::Throw( "ConfigList::Item::Item.\n" );
   
@@ -157,10 +157,10 @@ QWidget& ConfigDialogBase::addPage( const QString& title, const bool& expand )
 }
 
 //__________________________________________________
-void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& flag )
+void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned int& flag )
 {
   
-  Debug::Throw( "ConfigDialogBase::baseConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
   
   if( !parent ) parent = &addPage( "Base" );
   
@@ -249,10 +249,10 @@ void ConfigDialogBase::baseConfiguration( QWidget* parent, const unsigned int& f
 }
 
 //__________________________________________________
-void ConfigDialogBase::toolbarConfiguration( QWidget* parent )
+void BaseConfigurationDialog::toolbarConfiguration( QWidget* parent )
 {
   
-  Debug::Throw( "ConfigDialogBase::toolbarConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::toolbarConfiguration.\n" );
     
   // make sure parent is valid
   if( !parent ) parent = &addPage( "Base" );
@@ -287,10 +287,10 @@ void ConfigDialogBase::toolbarConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-void ConfigDialogBase::listConfiguration( QWidget* parent )
+void BaseConfigurationDialog::listConfiguration( QWidget* parent )
 {
   
-  Debug::Throw( "ConfigDialogBase::listConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::listConfiguration.\n" );
 
   // make sure parent is valid
   if( !parent ) parent = &addPage( "Lists" );
@@ -314,10 +314,10 @@ void ConfigDialogBase::listConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-void ConfigDialogBase::textEditConfiguration( QWidget* parent )
+void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
 {
   
-  Debug::Throw( "ConfigDialogBase::textEditConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
 
   // make sure parent is valid
   if( !parent ) parent = &addPage( "Text edition" );
@@ -381,9 +381,9 @@ void ConfigDialogBase::textEditConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-void ConfigDialogBase::_display( QListWidgetItem* current, QListWidgetItem* previous )
+void BaseConfigurationDialog::_display( QListWidgetItem* current, QListWidgetItem* previous )
 {
-  Debug::Throw( "ConfigDialogBase::_display.\n" );
+  Debug::Throw( "BaseConfigurationDialog::_display.\n" );
   
   if( !current ) current = previous;
   ConfigListItem* item( dynamic_cast<ConfigListItem*>(current) );
@@ -392,17 +392,17 @@ void ConfigDialogBase::_display( QListWidgetItem* current, QListWidgetItem* prev
 }
 
 //__________________________________________________
-void ConfigDialogBase::_readConfiguration( void )
+void BaseConfigurationDialog::_readConfiguration( void )
 {
-  Debug::Throw( "ConfigDialogBase::_readConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::_readConfiguration.\n" );
   for( OptionWidgetList::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
   (*iter)->read(); 
 }
 
 //__________________________________________________
-void ConfigDialogBase::_updateConfiguration( void )
+void BaseConfigurationDialog::_updateConfiguration( void )
 {
-   Debug::Throw( "ConfigDialogBase::_updateConfiguration.\n" );
+   Debug::Throw( "BaseConfigurationDialog::_updateConfiguration.\n" );
   
   for( OptionWidgetList::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
   (*iter)->write(); 
@@ -413,9 +413,9 @@ void ConfigDialogBase::_updateConfiguration( void )
 }
 
 //__________________________________________________
-void ConfigDialogBase::_restoreConfiguration( void )
+void BaseConfigurationDialog::_restoreConfiguration( void )
 { 
-  Debug::Throw( "ConfigDialogBase::_restoreConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::_restoreConfiguration.\n" );
   if( XmlOptions::get() == backup_options_ ) return;
   XmlOptions::get() = backup_options_;
   modified_options_ = backup_options_;
@@ -424,10 +424,10 @@ void ConfigDialogBase::_restoreConfiguration( void )
 }
 
 //__________________________________________________
-void ConfigDialogBase::_saveConfiguration( void )
+void BaseConfigurationDialog::_saveConfiguration( void )
 {
   
-  Debug::Throw( "ConfigDialogBase::_saveConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::_saveConfiguration.\n" );
   _updateConfiguration();
   XmlOptions::write();
 

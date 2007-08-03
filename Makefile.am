@@ -10,11 +10,11 @@ INCLUDES =  \
 	-I$(top_srcdir)/base
 	
 noinst_HEADERS = \
+	BaseConfigurationDialog.h \
 	BrowsedLineEdit.h \
 	ClockLabel.h \
 	ColorDisplay.h \
   ColorMenu.h \
-	ConfigDialogBase.h \
 	CounterDialog.h \
 	CounterList.h \
 	CustomComboBox.h \
@@ -45,7 +45,7 @@ noinst_HEADERS = \
 	IconBrowsedButton.h \
 	IconEngine.h \
   IconProvider.h \
-  ListViewConfig.h \
+  ListViewConfiguration.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
 	OptionBrowsedLineEdit.h \
@@ -80,11 +80,11 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-qt.a
 
 libbase_qt_a_SOURCES = \
+  BaseConfigurationDialog.cc \
   BrowsedLineEdit.cc \
   ClockLabel.cc \
   ColorDisplay.cc \
   ColorMenu.cc \
-  ConfigDialogBase.cc \
   CounterDialog.cc \
   CounterList.cc \
 	CustomComboBox.cc \
@@ -112,7 +112,7 @@ libbase_qt_a_SOURCES = \
   IconBrowsedButton.cc \
 	IconEngine.cc \
   IconProvider.cc \
-  ListViewConfig.cc \
+  ListViewConfiguration.cc \
   OpenPreviousMenu.cc \
 	OptionFontInfo.cc \
   OptionListBox.cc \
@@ -131,11 +131,11 @@ libbase_qt_a_SOURCES = \
   XmlTimeStamp.cc     
 
 nodist_libbase_qt_a_SOURCES = \
+  moc_BaseConfigurationDialog.cc \
   moc_BrowsedLineEdit.cc \
   moc_ColorDisplay.cc \
   moc_ColorMenu.cc \
   moc_ClockLabel.cc \
-  moc_ConfigDialogBase.cc \
   moc_CounterDialog.cc \
   moc_CustomComboBox.cc \
   moc_CustomFileDialog.cc \
@@ -156,7 +156,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_HelpDialog.cc \
   moc_HelpManager.cc \
   moc_IconBrowsedButton.cc \
-  moc_ListViewConfig.cc \
+  moc_ListViewConfiguration.cc \
   moc_MultipleClickCounter.cc \
   moc_OpenPreviousMenu.cc \
   moc_OptionListBox.cc \

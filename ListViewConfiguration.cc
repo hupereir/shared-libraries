@@ -23,7 +23,7 @@
 *******************************************************************************/
  
 /*!
-  \file ListViewConfig.cc
+  \file ListViewConfiguration.cc
   \brief Configuration vbox for ListView columns
   \author Hugo Pereira
   \version $Revision$
@@ -36,7 +36,7 @@
 #include <QToolTip>
 
 #include "Exception.h"
-#include "ListViewConfig.h"
+#include "ListViewConfiguration.h"
 #include "QtUtil.h"
 #include "Debug.h"
 
@@ -44,15 +44,15 @@ using namespace std;
 using namespace Qt;
 
 //____________________________________________________________________________
-ListViewConfig::ListViewConfig( QWidget *parent, QTreeWidget *target, const string& title ):
+ListViewConfiguration::ListViewConfiguration( QWidget *parent, QTreeWidget *target, const string& title ):
     QWidget( parent ),
-    Counter( "ListViewConfig" ),
+    Counter( "ListViewConfiguration" ),
     target_( target ),
     modified_mask_( 0 ),
     backup_mask_( 0 )
 {
 
-  Debug::Throw( "ListViewConfig::ListViewConfig.\n" ); 
+  Debug::Throw( "ListViewConfiguration::ListViewConfiguration.\n" ); 
   
   // adjust flags
   if( !parent ) {
@@ -100,7 +100,7 @@ ListViewConfig::ListViewConfig( QWidget *parent, QTreeWidget *target, const stri
       
     }
     
-    Debug::Throw() << "ListViewConfig::ListViewConfig - column: " << column_name << endl;
+    Debug::Throw() << "ListViewConfiguration::ListViewConfiguration - column: " << column_name << endl;
     
     // add checkbox
     checkbox = new QCheckBox( column_name.c_str(), box );
@@ -151,9 +151,9 @@ ListViewConfig::ListViewConfig( QWidget *parent, QTreeWidget *target, const stri
 } 
 
 //____________________________________________________________________________
-void ListViewConfig::restore( void )
+void ListViewConfiguration::restore( void )
 {
-  Debug::Throw( "ListViewConfig::restore.\n" ); 
+  Debug::Throw( "ListViewConfiguration::restore.\n" ); 
   
   // set check button state according to the backup mask
   for( unsigned int index = 0; index < checkbox_.size(); index++ )
@@ -167,9 +167,9 @@ void ListViewConfig::restore( void )
 }
 
 //____________________________________________________________________________
-void ListViewConfig::update( void )
+void ListViewConfiguration::update( void )
 {
-  Debug::Throw( "ListViewConfig::update.\n" ); 
+  Debug::Throw( "ListViewConfiguration::update.\n" ); 
   bool modified( false );
   
   for( unsigned int index = 0; index < checkbox_.size(); index++ )
@@ -189,10 +189,10 @@ void ListViewConfig::update( void )
 }
 
 //____________________________________________________________________________
-unsigned int ListViewConfig::_computeMask( void ) const
+unsigned int ListViewConfiguration::_computeMask( void ) const
 {
 
-  Debug::Throw( "ListViewConfig::_computeMask.\n" );
+  Debug::Throw( "ListViewConfiguration::_computeMask.\n" );
   unsigned int out = 0;
   for( unsigned int index = 0; index < checkbox_.size(); index ++ )
   if( checkbox_[index]->isChecked() ) out |= (1 << index );
@@ -201,9 +201,9 @@ unsigned int ListViewConfig::_computeMask( void ) const
 }
 
 //____________________________________________________________________________
-bool ListViewConfig::_modified( const unsigned int & index ) const
+bool ListViewConfiguration::_modified( const unsigned int & index ) const
 {
-  Debug::Throw( "ListViewConfig::_modified.\n" ); 
+  Debug::Throw( "ListViewConfiguration::_modified.\n" ); 
   Exception::check( index < checkbox_.size(), DESCRIPTION( "invalid index" ) );
   
   // get initial state from mask

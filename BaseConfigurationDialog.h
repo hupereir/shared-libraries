@@ -21,15 +21,15 @@
 *******************************************************************************/
 
 /*!
-  \file ConfigDialogBase.h
+  \file BaseConfigurationDialog.h
   \brief base configuration dialog
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#ifndef _ConfigDialogBase_h_
-#define _ConfigDialogBase_h_
+#ifndef _BaseConfigurationDialog_h_
+#define _BaseConfigurationDialog_h_
 
 #include <QDialog>
 #include <QPushButton>
@@ -69,7 +69,7 @@ class ConfigListItem: public QListWidgetItem, public Counter
 };
 
 //! configuration dialog
-class ConfigDialogBase: public QDialog, public Counter
+class BaseConfigurationDialog: public QDialog, public Counter
 {
 
   //! Qt meta object macro
@@ -81,12 +81,12 @@ class ConfigDialogBase: public QDialog, public Counter
   typedef std::list<OptionWidget*> OptionWidgetList;
 
   //! creator
-  ConfigDialogBase( QWidget *parent );
+  BaseConfigurationDialog( QWidget *parent );
 
   //! destructor
-  virtual ~ConfigDialogBase()
+  virtual ~BaseConfigurationDialog()
   {
-    Debug::Throw( "ConfigDialogBase::~ConfigDialogBase" );
+    Debug::Throw( "BaseConfigurationDialog::~BaseConfigurationDialog" );
     return;
   }
 
@@ -96,14 +96,14 @@ class ConfigDialogBase: public QDialog, public Counter
   //! add option widget
   void addOptionWidget( OptionWidget* widget )
   { 
-    Debug::Throw( "ConfigDialogBase::addOptionWidget.\n" );
+    Debug::Throw( "BaseConfigurationDialog::addOptionWidget.\n" );
     option_widgets_.push_back( widget ); 
   }
 
   //! clear option widgets
   virtual void clearOptionWidgets( void )
   { 
-    Debug::Throw( "ConfigDialogBase::clearOptionWidgets.\n" );
+    Debug::Throw( "BaseConfigurationDialog::clearOptionWidgets.\n" );
     option_widgets_.clear(); 
   }
 
@@ -167,7 +167,7 @@ class ConfigDialogBase: public QDialog, public Counter
   //! see if options have been modified. Emit signal if yes
   virtual void _checkModified( void )
   {
-    Debug::Throw( "ConfigDialogBase::_checkModified.\n" );
+    Debug::Throw( "BaseConfigurationDialog::_checkModified.\n" );
     if( modified_options_ == XmlOptions::get() ) return;
     emit configurationChanged();
     modified_options_ = XmlOptions::get();
