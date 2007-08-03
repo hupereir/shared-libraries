@@ -197,7 +197,7 @@ bool CustomTextEdit::setTabEmulation( const bool& active, const int& tab_size )
   // define normal tabs
   normal_tab_ = "\t";
   normal_tab_regexp_.setPattern( "^(\\t)+" );
-  setTabStopWidth( tab_size );
+  setTabStopWidth( tab_size*fontMetrics().width(" ") );
   
   // define emulated tabs
   emulated_tab_ = QString( tab_size, ' ' );
@@ -678,7 +678,6 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
   if( event->key() == Key_Tab ) 
   {
     _insertTab();
-    event->ignore();
     return;
   } 
   
@@ -825,6 +824,14 @@ void CustomTextEdit::_installActions( void )
   addAction( goto_line_action_ = new QAction( "&Goto line number", this ) );
   goto_line_action_->setShortcut( CTRL+Key_L );
   connect( goto_line_action_, SIGNAL( triggered() ), SLOT( selectLineFromDialog() ) );
+  
+  // remove line action
+  QAction* remove_line_action( new QAction( this ) ); 
+  addAction( remove_line_action );
+  remove_line_action->setShortcut( CTRL+Key_K );
+  connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
+  
+  
   
   // update actions that depend on the presence of a selection
   connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
@@ -1199,8 +1206,9 @@ void CustomTextEdit::_insertTab( void )
     
     // retrieve position from begin of block
     int position( min( cursor.position(), cursor.anchor() ) );
+    position -= document()->findBlock( position ).position();
     int n( position % emulated_tab_.size() );
-    cursor.insertText( emulated_tab_.left( n ) ); 
+    cursor.insertText( emulated_tab_.right( emulated_tab_.size()-n ) ); 
     
   }
   
