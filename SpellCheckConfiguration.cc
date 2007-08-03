@@ -52,7 +52,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   SpellInterface interface;
 
   CustomGridLayout* grid_layout( new CustomGridLayout() );
-  grid_layout->setSpacing( 2 );
+  grid_layout->setSpacing( 5 );
   grid_layout->setMargin( 5 );
   grid_layout->setMaxCount( 2 );
   setLayout( grid_layout );
