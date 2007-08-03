@@ -88,6 +88,10 @@ class FileRecord: public Counter
   void addInformation( const std::string& tag, const std::string& value )
   { informations_[tag] = value; }
   
+  //! true if information is available
+  bool hasInformation( const std::string& tag ) const
+  { return informations_.find( tag ) != informations_.end(); }
+  
   //! retrieve information
   std::string information( const std::string& tag ) const
   {
@@ -178,6 +182,15 @@ class FileRecord: public Counter
   //! file validity (true if file exists)
   bool valid_;
   
+  //! streamers
+  friend std::ostream& operator << ( std::ostream& out, const FileRecord& record )
+  {
+    out << record.file() << std::endl;
+    for( InfoMap::const_iterator iter = record._informations().begin(); iter != record._informations().end(); iter++ )
+    { out << "  " << iter->first << ": " << iter->second << std::endl; }
+    return out;
+  }
+
 };
 
 #endif

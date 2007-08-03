@@ -41,42 +41,55 @@
    \brief   option driven debugging class 
 */
 
-class Debug{
+class Debug
+{
   public:
   
-  //! writes string to cout if level is lower than level_
+  //! writes string to clog if level is lower than level_
   static void Throw( int level, const std::string& str )
-  {
-  
-    if( level_ < level ) return;  
-    std::cout << str;  
+  {   
+    if( _get().level_ < level ) return;  
+    std::clog << str;  
     return;
-  
   }
   
-  //! writes string to cout if level_ is bigger than 0
+  //! writes string to clog if level_ is bigger than 0
   static void Throw( const std::string& str ) 
   { Throw( 1, str ); }
 
-  //! returns either cout or dummy stream depending of the level
+  //! returns either clog or dummy stream depending of the level
   static std::ostream& Throw( int level = 1 )
-  { return ( level_ < level ) ? null_stream_ : std::cout; }
-  
+  { return ( _get().level_ < level ) ? _get().null_stream_ : std::clog; }
+   
   //! sets the debug level. Everything thrown of bigger level is not discarded
-  static void setLevel( int level ) 
-  { level_ = level; }
+  static void setLevel( const int& level ) 
+  { _get().level_ = level; }
   
   //! retrieves the debug level
-  static int level( void ) 
-  { return level_; }
-  
+  static const int& level( void ) 
+  { return _get().level_; }
+
   private:
+
+  //! private constructor
+  Debug( void ):
+    level_( 0 ),
+    null_stream_( "/dev/null" )
+  {}
+  
+  //! return singleton
+  static Debug& _get( void )
+  { 
+    static Debug debug;
+    return debug;
+  }
   
   //! debug level
-  static int level_;  
+  int level_;  
   
   //! dummy stream to discard the text of two high debug level
-  static std::ofstream null_stream_;
+  std::ofstream null_stream_;
+  
 };
 
 #endif

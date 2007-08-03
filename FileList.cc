@@ -86,7 +86,13 @@ FileRecord FileList::lastValidFile( void )
   }
   
   for( FileRecord::List::reverse_iterator iter = records_->rbegin(); iter != records_->rend(); iter++ ) 
-  { if( (!check_) || iter->isValid() ) return current_ = *iter; }
+  { 
+    if( (!check_) || iter->isValid() ) 
+    {
+      current_ = *iter; 
+      return *iter;
+    }
+  }
   return current_ = FileRecord( File("") );
 
 }
@@ -121,13 +127,15 @@ FileRecord& FileList::_add( const FileRecord& record )
   {
     
     iter->setTime( max( iter->time(), record.time() ) );
-    return current_ = *iter;
+    current_ = *iter;
+    return *iter;
     
   } else {
 
     records_->push_back( record );    
     _truncateList();    
-    return current_ = records_->back();
+    current_ = records_->back();
+    return records_->back();
     
   }
     
