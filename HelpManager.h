@@ -62,7 +62,7 @@ namespace HELP
     virtual ~HelpManager( void )
     {
       Debug::Throw( "HelpManager::~HelpManager.\n" );
-      if( modified() ) save();
+      if( modified() ) _save();
     }
     
     //! input file
@@ -83,21 +83,40 @@ namespace HELP
     void setWindowTitle( const std::string& value )
     { dialog_->setWindowTitle( value.c_str() ); }
     
-    public slots:
+    //! display action
+    QAction* displayAction( void )
+    { return display_action_; }
+    
+    //! dump action
+    QAction* dumpAction( void )
+    { return dump_action_; }
+   
+    protected slots:
     
     //! opens help dialog
-    void display( void );
+    void _display( void );
     
     //! dump help string in a TextEditor
-    void dumpHelpString( void );
+    void _dumpHelpString( void );
     
     //! save help to file
-    void save( void );
+    void _save( void );
     
     private:
     
     //! constructor
     HelpManager( void );
+    
+    //!@name actions
+    //@{
+    
+    //! dialog display action
+    QAction* display_action_;
+    
+    //! dump help string
+    QAction* dump_action_;
+    
+    //@}
     
     //! associated dialog
     HelpDialog* dialog_;

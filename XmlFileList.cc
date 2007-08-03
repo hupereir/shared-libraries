@@ -128,7 +128,10 @@ bool XmlFileList::write( void )
 
   // loop over records
   for( FileRecord::List::const_iterator iter = _records().begin(); iter != _records().end(); iter++ )
-  { top.appendChild( XmlFileRecord( *iter ).domElement( document ) ); }
+  { 
+    Debug::Throw() << "XmlFileList::Write - " << *iter;
+    top.appendChild( XmlFileRecord( *iter ).domElement( document ) ); 
+  }
 
   out.write( document.toByteArray() );
   out.close();

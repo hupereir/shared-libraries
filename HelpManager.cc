@@ -29,10 +29,14 @@
    \date $Date$
 */
 
+#include <QAction>
 #include <QFile>
+#include <QVBoxLayout>
 
+#include "BaseIcons.h"
 #include "Debug.h"
 #include "HelpManager.h"
+#include "IconEngine.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
 #include "XmlUtil.h"
@@ -51,9 +55,17 @@ HelpManager::HelpManager():
   dialog_ = new HelpDialog( 0 );
   dialog_->setWindowTitle( "Reference manual" );
   dialog_->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
- 
+
+  // default icon path
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  
+  // actions
+  connect( display_action_ = new QAction( IconEngine::get( ICONS::HELP, path_list ), "&Reference Manual", this ) , SIGNAL( triggered() ), SLOT( _display() ) );
+  connect( dump_action_ = new QAction( "D&ump Help", this ) , SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
+  
   // connections
-  connect( dialog_, SIGNAL( itemModified() ), SLOT( save() ) );
+  connect( dialog_, SIGNAL( itemModified() ), SLOT( _save() ) );
+  
   
 }
 
@@ -128,10 +140,10 @@ bool HelpManager::install( const File& file )
 }
   
 //_____________________________________________________
-void HelpManager::display( void )
+void HelpManager::_display( void )
 {
   
-  Debug::Throw( "HelpManager::display.\n" );
+  Debug::Throw( "HelpManager::_display.\n" );
   dialog_->list().setCurrentItem( dialog_->list().item(0) );
   dialog_->setEditEnabled( file_.size() );
   dialog_->show();
@@ -140,8 +152,10 @@ void HelpManager::display( void )
 }
 
 //_________________________________________________________
-void HelpManager::dumpHelpString( void )
+void HelpManager::_dumpHelpString( void )
 {
+  
+  Debug::Throw( "HelpManager::_dumpHelpString.\n" );
   
   // write output to stream
   ostringstream out;
@@ -169,19 +183,23 @@ void HelpManager::dumpHelpString( void )
   out << "  0\n";
   out << "};\n";
   
-  CustomTextEdit *text_edit = new CustomTextEdit( 0 );
+  QWidget* main( new QWidget(0) );
+  main->setLayout( new QVBoxLayout() );
+  main->layout()->setMargin(10);
+  CustomTextEdit *text_edit = new CustomTextEdit( main );
   text_edit->setReadOnly( true );
   text_edit->setWordWrapMode( QTextOption::NoWrap );
   text_edit->setPlainText( out.str().c_str() );
-  text_edit->resize( 600, 500 );
-  text_edit->show();
+  main->layout()->addWidget( text_edit );
+  main->resize( 600, 500 );
+  main->show();
 }
 
 //_____________________________________________________
-void HelpManager::save( void )
+void HelpManager::_save( void )
 {
   
-  Debug::Throw( "HelpManager::Save.\n" );
+  Debug::Throw( "HelpManager::_save.\n" );
   if( file_.empty() ) return;
  
   // output file

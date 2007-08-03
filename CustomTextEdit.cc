@@ -96,7 +96,7 @@ void CustomTextEdit::setHighlightEnabled( const bool& value )
   
   if( highlight_enabled_ && highlight_available_ ) _highlightCurrentBlock(); 
   else _clearHighlightedBlock();
-  
+
 }
   
 //________________________________________________
@@ -790,11 +790,10 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
   menu.exec( event->globalPos() );
   
 }
-
+ 
 //______________________________________________________________
 void CustomTextEdit::_installActions( void )
 {
-
   Debug::Throw( "CustomTextEdit::_installActions.\n" );
   
   // retrieve pixmaps path

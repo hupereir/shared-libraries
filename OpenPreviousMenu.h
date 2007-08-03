@@ -103,9 +103,6 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
 
   protected:
 
-  //! add the clean button
-  void _addCleanButton( void );
-
   //! run thread to check file validity
   void _checkValidFiles( void );
   

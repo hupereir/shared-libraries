@@ -33,7 +33,9 @@
 #include <sstream>
 #include <set>
 
+#include "BaseIcons.h"
 #include "File.h"
+#include "IconEngine.h"
 #include "OpenPreviousMenu.h"
 #include "XmlOptions.h"
 #include "QtUtil.h"
@@ -49,6 +51,11 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
   connect( this, SIGNAL( aboutToShow() ), SLOT( _loadFiles() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  
+  // clean action
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  connect( clean_action_ = new QAction( IconEngine::get( ICONS::DELETE, path_list ), "&Clean", 0 ) , SIGNAL( triggered() ), SLOT( _clean() ) );
+
 }
 
 //______________________________________
@@ -128,8 +135,9 @@ void OpenPreviousMenu::_loadFiles( void )
   QMenu::clear();
   actions_.clear();
   
-  // add Clean button
-  _addCleanButton();
+  addAction( clean_action_ );
+  if( _check() ) clean_action_->setEnabled( _invalidFiles() );
+  addSeparator();
   
   FileRecord::List records( _records() );
   
@@ -157,20 +165,6 @@ void OpenPreviousMenu::_loadFiles( void )
     actions_.insert( make_pair( action, *iter ) );
   }
     
-}
-
-//_______________________________________________
-void OpenPreviousMenu::_addCleanButton( void )
-{
-  Debug::Throw( "OpenPreviousMenu::_AddCleanButton.\n" );
-  
-  // insert clean button
-  clean_action_ = addAction( "&Clean", this, SLOT( _clean() ) );
-  if( _check() ) clean_action_->setEnabled( _invalidFiles() );
-  
-  // insert separator
-  addSeparator();
-  
 }
 
 //_______________________________________________
