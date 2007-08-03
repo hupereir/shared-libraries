@@ -173,7 +173,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
 
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(5);
-    layout->setSpacing(2);
+    layout->setSpacing(5);
     box->setLayout( layout );
         
     QHBoxLayout* h_layout = new QHBoxLayout();
@@ -183,7 +183,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     
     CustomGridLayout* grid_layout = new CustomGridLayout();
     grid_layout->setMargin(0);
-    grid_layout->setSpacing(2);
+    grid_layout->setSpacing(5);
     grid_layout->setMaxCount(2);
     h_layout->addLayout( grid_layout );
 
@@ -259,7 +259,7 @@ void BaseConfigurationDialog::toolbarConfiguration( QWidget* parent )
   QGroupBox* box = new QGroupBox( "Toolbars", parent );
   QVBoxLayout* layout = new QVBoxLayout();
   layout->setMargin(5);
-  layout->setSpacing(2);
+  layout->setSpacing(5);
   box->setLayout( layout );
   parent->layout()->addWidget( box );
       
@@ -298,7 +298,7 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   QGroupBox* box = new QGroupBox( "Lists", parent );
   QVBoxLayout* layout = new QVBoxLayout();
   layout->setMargin(5);
-  layout->setSpacing(2);
+  layout->setSpacing(5);
   box->setLayout( layout );
   parent->layout()->addWidget( box );
     

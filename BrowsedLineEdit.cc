@@ -56,7 +56,7 @@ BrowsedLineEdit::BrowsedLineEdit( QWidget *parent ):
   // insert horizontal layout
   QHBoxLayout *layout = new QHBoxLayout();
   layout->setMargin(0);
-  layout->setSpacing(2);
+  layout->setSpacing(5);
   setLayout( layout );
   
   // create line editor

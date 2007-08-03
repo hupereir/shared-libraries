@@ -59,18 +59,24 @@ class CustomGridLayout: public QGridLayout, public Counter
   { orientation_ = orientation; }
   
   //! add widget
-  void addWidget( QWidget* widget, int row, int column )
-  { 
-    QGridLayout::addWidget( widget, row, column ); 
-    setLocation( row, column );
+  void addWidget( QWidget* widget, int row, int column, Qt::Alignment alignment = 0 )
+  { addWidget( widget, row, column, 1, 1, alignment ); } 
+  
+  //! add wodget
+  void addWidget ( QWidget * widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
+  {
+    Exception::check( rowSpan > 0, DESCRIPTION( "invalid rowSpan" ) );
+    Exception::check( columnSpan > 0, DESCRIPTION( "invalid columnSpan" ) );
+    QGridLayout::addWidget( widget, row, column, rowSpan, columnSpan, alignment ); 
+    setLocation( row+rowSpan-1, column+columnSpan-1 );
     _increment();
-  }
+  }    
 
-    //! add widget
-  void addWidget( QWidget* widget )
+  //! add widget
+  void addWidget( QWidget* widget, Qt::Alignment alignment = 0 )
   {
     Exception::check( max_count_ > 0, DESCRIPTION( "invalid number of columns" ) );
-    QGridLayout::addWidget( widget, row_, column_ );
+    QGridLayout::addWidget( widget, row_, column_, alignment );
     _increment();
   }
     
