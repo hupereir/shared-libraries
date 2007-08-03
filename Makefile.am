@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
-EXTRA_DIST = server.pro
+EXTRA_DIST = base-server.pro
 
 INCLUDES =  \
   -I$(qt_includes) \
@@ -18,15 +18,15 @@ noinst_HEADERS = \
   Server.h \
   ServerCommand.h
 
-noinst_LIBRARIES = libserver.a
+noinst_LIBRARIES = libbase-server.a
 
-libserver_a_SOURCES = \
+libbase_server_a_SOURCES = \
   ApplicationManager.cc \
   Client.cc \
   Server.cc \
   ServerCommand.cc
 
-nodist_libserver_a_SOURCES = \
+nodist_libbase_server_a_SOURCES = \
   moc_ApplicationManager.cc \
   moc_Client.cc \
   moc_Server.cc
