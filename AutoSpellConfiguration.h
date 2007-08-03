@@ -21,11 +21,11 @@
 *                         
 *******************************************************************************/
 
-#ifndef _AutoSpellConfig_h_
-#define _AutoSpellConfig_h_
+#ifndef _AutoSpellConfiguration_h_
+#define _AutoSpellConfiguration_h_
 
 /*!
-   \file    AutoSpellConfig.h
+   \file    AutoSpellConfiguration.h
    \brief   automatic spell check configuration configuration
    \version $Revision$
    \date    $Date$
@@ -41,12 +41,12 @@ class OptionFontInfo;
 class OptionSpinBox;
 
 //! Spell common configuration
-class AutoSpellConfig: public QGroupBox, public OptionWidget, public Counter
+class AutoSpellConfiguration: public QGroupBox, public OptionWidget, public Counter
 {
   public:
       
   //! constructor
-  AutoSpellConfig( QWidget* parent );
+  AutoSpellConfiguration( QWidget* parent );
   
   //! set widget value from option value
   virtual void read( void );

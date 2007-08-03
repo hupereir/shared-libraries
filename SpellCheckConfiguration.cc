@@ -23,7 +23,7 @@
 
 
 /*!
-   \file SpellConfig.cc
+   \file SpellCheckConfiguration.cc
    \brief   Spell checker common configuration
    \version $Revision$
    \date    $Date$
@@ -35,19 +35,19 @@
 #include "Debug.h"
 #include "OptionBrowsedLineEdit.h"
 #include "OptionComboBox.h"
-#include "SpellConfig.h"
+#include "SpellCheckConfiguration.h"
 #include "SpellInterface.h"
 
 using namespace std;
 using namespace SPELLCHECK;
 
 //___________________________________________
-SpellConfig::SpellConfig( QWidget* parent ):
+SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   QGroupBox( "Spell check", parent ),
   OptionWidget( "" ),
-  Counter( "SpellConfig" )
+  Counter( "SpellCheckConfiguration" )
 {
-  Debug::Throw( "SpellConfig::SpellConfig.\n" );
+  Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
 
   SpellInterface interface;
 
@@ -87,18 +87,18 @@ SpellConfig::SpellConfig( QWidget* parent ):
 }
 
 //_________________________________________________________
-void SpellConfig::read( void )
+void SpellCheckConfiguration::read( void )
 {
-  Debug::Throw( "SpellConfig::read.\n" );
+  Debug::Throw( "SpellCheckConfiguration::read.\n" );
   aspell_->read();
   dictionary_->read();
   filter_->read();
 }
 
 //________________________________________________________
-void SpellConfig::write( void ) const
+void SpellCheckConfiguration::write( void ) const
 {
-  Debug::Throw( "SpellConfig::Write.\n" );
+  Debug::Throw( "SpellCheckConfiguration::Write.\n" );
   aspell_->write();
   dictionary_->write();
   filter_->write();

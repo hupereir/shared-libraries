@@ -21,11 +21,11 @@
 *                         
 *******************************************************************************/
 
-#ifndef _SpellConfig_h_
-#define _SpellConfig_h_
+#ifndef _SpellCheckConfiguration_h_
+#define _SpellCheckConfiguration_h_
 
 /*!
-   \file    SpellConfig.h
+   \file    SpellCheckConfiguration.h
    \brief   Speller common configuration
    \version $Revision$
    \date    $Date$
@@ -40,12 +40,12 @@ class OptionBrowsedLineEdit;
 class OptionComboBox;
 
 //! Spell common configuration
-class SpellConfig: public QGroupBox, public OptionWidget, public Counter
+class SpellCheckConfiguration: public QGroupBox, public OptionWidget, public Counter
 {
   public:
       
   //! constructor
-  SpellConfig( QWidget* parent );
+  SpellCheckConfiguration( QWidget* parent );
   
   //! set widget value from option value
   virtual void read( void );

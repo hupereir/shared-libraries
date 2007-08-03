@@ -11,10 +11,10 @@ INCLUDES =  \
 	-I$(top_srcdir)/base
 
 noinst_HEADERS = \
-  AutoSpellConfig.h \
+  AutoSpellConfiguration.h \
   DictionaryMenu.h \
   FilterMenu.h \
-  SpellConfig.h \
+  SpellCheckConfiguration.h \
   SpellDialog.h \
   SpellInterface.h \
   SpellParser.h \
@@ -24,11 +24,11 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-spellcheck.a
   
 libbase_spellcheck_a_SOURCES =  \
-  AutoSpellConfig.cc \
+  AutoSpellConfiguration.cc \
   DictionaryMenu.cc \
   FilterMenu.cc \
   SpellCheckBlockData.cc \
-  SpellConfig.cc \
+  SpellCheckConfiguration.cc \
   SpellDialog.cc \
   SpellInterface.cc \
   SpellParser.cc \

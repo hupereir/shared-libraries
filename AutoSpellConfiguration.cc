@@ -23,7 +23,7 @@
 
 
 /*!
-   \file AutoSpellConfig.cc
+   \file AutoSpellConfiguration.cc
    \brief automatic spelling configuration
    \version $Revision$
    \date $Date$
@@ -32,7 +32,7 @@
 #include <QGridLayout>
 #include <QLabel>
 
-#include "AutoSpellConfig.h"
+#include "AutoSpellConfiguration.h"
 #include "CustomGridLayout.h"
 #include "Debug.h"
 #include "OptionColorDisplay.h"
@@ -42,12 +42,12 @@
 using namespace std;
 
 //___________________________________________
-AutoSpellConfig::AutoSpellConfig( QWidget* parent ):
+AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
   QGroupBox( "Automatic spell check", parent ),
   OptionWidget( "" ),
-  Counter( "AutoSpellConfig" )
+  Counter( "AutoSpellConfiguration" )
 {
-  Debug::Throw( "AutoSpellConfig::AutoSpellConfig.\n" );
+  Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
   
   CustomGridLayout* grid_layout( new CustomGridLayout() );
   grid_layout->setSpacing( 2 );
@@ -73,18 +73,18 @@ AutoSpellConfig::AutoSpellConfig( QWidget* parent ):
 }
 
 //____________________________________________________________
-void AutoSpellConfig::read( void )
+void AutoSpellConfiguration::read( void )
 {
-  Debug::Throw( "AutoSpellConfig::read.\n" );
+  Debug::Throw( "AutoSpellConfiguration::read.\n" );
   suggestions_->read();
   highlight_->read();
   font_info_->read();
 }
 
 //_____________________________________________________________
-void AutoSpellConfig::write( void ) const
+void AutoSpellConfiguration::write( void ) const
 {
-  Debug::Throw( "AutoSpellConfig::Write.\n" );
+  Debug::Throw( "AutoSpellConfiguration::Write.\n" );
   suggestions_->write();
   highlight_->write();
   font_info_->write();
