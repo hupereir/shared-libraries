@@ -25,8 +25,13 @@
   \file CustomTextEdit.cc
   \brief Customized QTextEdit object
   \author Hugo Pereira
+<<<<<<< CustomTextEdit.cc
   \version $Revision$
   \date $Date$
+=======
+  \version $Revision$
+  \date $Date$
+>>>>>>> 1.25
 */
 
 #include <QMenu>
