@@ -110,7 +110,7 @@ namespace BASE
     typedef unsigned long int key_type; 
     
     //! retrieve key 
-    virtual key_type key( void ) const 
+    virtual const key_type& key( void ) const 
     { return key_; } 
     
     //! shortcut for set of Key 
