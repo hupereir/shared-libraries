@@ -87,6 +87,7 @@ namespace SPELLCHECK
     //! formated font
     virtual QTextCharFormat format() const
     {
+      
       QTextCharFormat out;
       
       out.setFontWeight( (format_&FORMAT::BOLD) ? QFont::Bold : QFont::Normal );
