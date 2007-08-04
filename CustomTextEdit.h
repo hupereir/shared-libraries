@@ -69,6 +69,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! enable/disable highlight
   virtual void setHighlightEnabled( const bool& );
   
+  //! retrieve number of blocks in document
+  int blockCount( void ) const;
+  
   //! retrieve current text position
   virtual TextPosition textPosition() const;
       
@@ -82,45 +85,14 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual int indexFromPosition( const TextPosition& index ) const;
   
   //@}
-
-  //!@name tab emulation
-  //@{
-
-  //! set tab emulation
-  /*! returns true if changed */
-  virtual bool setTabEmulation( const bool& active, const int& size );  
+      
+  //! select word under cursor
+  virtual void selectWord( void );
   
-  //! tab emulation
-  const bool& hasTabEmulation( void ) const
-  { return has_tab_emulation_; }
-  
-  //! tab character
-  virtual const QString& tabCharacter( void ) const
-  { return tab_; }
-  
-  //! tab character
-  virtual const QString& normalTabCharacter( void ) const
-  { return normal_tab_; }
-  
-  //! tab character
-  virtual const QString& emulatedTabCharacter( void ) const
-  { return emulated_tab_; }
-
-  //! multi tab regular expression
-  virtual const QRegExp& tabRegExp( void ) const
-  { return tab_regexp_; }  
-
-  //! 'normal' tab regular expression
-  virtual const QRegExp& _NormalTabRegExp( void ) const 
-  { return normal_tab_regexp_; }
-  
-  //! 'emulated' tab regular expression
-  virtual const QRegExp& _EmulatedTabRegExp( void ) const
-  { return emulated_tab_regexp_; }
-  
-  //@]
-    
-  //!@name synchronization
+  //! select line under cursor
+  virtual void selectLine( void );
+   
+ //!@name synchronization
   //@{
   
   //! synchronization
@@ -130,15 +102,11 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! synchronization
   virtual const bool& isSynchronized( void ) const
   { return synchronize_; }
-  
-  //! select word under cursor
-  virtual void selectWord( void );
-  
-  //! select line under cursor
-  virtual void selectLine( void );
-   
+
   //! clone (and synchronize) text editor
   virtual void synchronize( CustomTextEdit* editor );
+  
+  //@}
 
   //! popup dialog with the number of replacement performed
   virtual void showReplacements( const unsigned int& counts );
@@ -150,6 +118,68 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
     QTextEdit::setReadOnly( readonly );
     _updateReadOnlyActions( readonly ); 
   }
+  
+  //!@name actions
+  //@{
+  
+  QAction* undoAction( void )
+  { return undo_action_; }
+  
+  //! redo
+  QAction* redoAction( void )
+  { return redo_action_; }
+  
+  //! cut selection
+  QAction* cutAction( void )
+  { return cut_action_; }
+  
+  //! copy selection
+  QAction* copyAction( void )
+  { return copy_action_; }
+  
+  //! paste clipboard
+  QAction* pasteAction( void )
+  { return paste_action_;  }
+
+  //! convert selection to upper case
+  QAction* lowerCaseAction( void )
+  { return upper_case_action_; }
+  
+  //! convert selection to lower case
+  QAction* upperCaseAction( void )
+  { return lower_case_action_; }
+  
+  //! find from dialog
+  QAction* findAction( void )
+  { return find_action_; }
+
+  //! find selection again
+  QAction* findSelectionAction( void )
+  { return find_selection_action_; }
+
+  //! find again
+  QAction* findAgainAction( void )
+  { return find_again_action_; }
+  
+  //! replace
+  QAction* replaceAction( void )
+  { return replace_action_; }
+
+  //! replace again
+  QAction* replaceAgainAction( void )
+  { return replace_again_action_; }
+
+  //! goto line number
+  QAction* gotoLineAction( void )
+  { return goto_line_action_; } 
+ 
+  //! toggle wrap mode
+  QAction* wrapModeAction( void )
+  { return wrap_mode_action_; }
+  
+  //! toggle tab emulation
+  QAction* tabEmulationAction( void )
+  { return tab_emulation_action_; }
   
   signals:
   
@@ -163,10 +193,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
  
   //! update configuration
   virtual void updateConfiguration( void );
-  
-  //! wrap mode
-  virtual void toggleWrapMode( bool );
-  
+   
   //! changes selection to uppercase
   virtual void upperCase( void );
   
@@ -333,10 +360,53 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! toggle insertion mode
   virtual void _toggleInsertMode( void );
   
+  //!@name tab emulation
+  //@{
+
+  //! set tab emulation
+  /*! returns true if changed */
+  virtual bool _setTabEmulation( const bool& active, const int& size );  
+  
+  //! tab emulation
+  virtual const bool& _hasTabEmulation( void ) const
+  { return has_tab_emulation_; }
+  
   //! insert (normal or emulated) tab
   virtual void _insertTab( void );
   
+  //! tab character
+  virtual const QString& _tabCharacter( void ) const
+  { return tab_; }
+   
+  //! tab character
+  virtual const QString& _normalTabCharacter( void ) const
+  { return normal_tab_; }
+  
+  //! tab character
+  virtual const QString& _emulatedTabCharacter( void ) const
+  { return emulated_tab_; }
+
+  //! multi tab regular expression
+  virtual const QRegExp& _tabRegExp( void ) const
+  { return tab_regexp_; }  
+
+  //! 'normal' tab regular expression
+  virtual const QRegExp& _normalTabRegExp( void ) const 
+  { return normal_tab_regexp_; }
+  
+  //! 'emulated' tab regular expression
+  virtual const QRegExp& _emulatedTabRegExp( void ) const
+  { return emulated_tab_regexp_; }
+  
+  //@}
+  
   protected slots:
+ 
+  //! wrap mode
+  virtual void _toggleWrapMode( bool );
+
+  //! tab emulation
+  virtual void _toggleTabEmulation( bool );
   
   //! highlight current block
   virtual void _highlightCurrentBlock( void );
@@ -474,6 +544,12 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
     
   //! goto line number
   QAction* goto_line_action_;
+  
+  //! toggle wrap mode
+  QAction* wrap_mode_action_;
+  
+  //! toggle tab emulation
+  QAction* tab_emulation_action_;
   
   //@}
   
