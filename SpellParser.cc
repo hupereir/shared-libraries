@@ -44,7 +44,7 @@ SpellParser::SpellParser( void ):
     enabled_( false ),
     color_( Qt::red ),
     format_( FORMAT::DEFAULT )
-{ Debug::Throw( "SpellParser::SpellParser" ); }
+{ Debug::Throw( "SpellParser::SpellParser.\n" ); }
 
 //____________________________________________________________________________
 Word::Set SpellParser::parse( const QString& text )

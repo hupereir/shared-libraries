@@ -55,6 +55,10 @@ namespace SPELLCHECK
     //! constructor
     SpellParser();
 
+    //! destructor
+    virtual ~SpellParser( void )
+    { Debug::Throw( "SpellParser::~SpellParser.\n" ); }
+    
     //! highlight paragraph
     virtual Word::Set parse( const QString& text );
 

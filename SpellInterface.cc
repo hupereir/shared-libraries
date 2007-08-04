@@ -75,6 +75,7 @@ SpellInterface::~SpellInterface( void )
   if( spell_config_ ) delete_aspell_config( spell_config_ );
   if( document_checker_ ) delete_aspell_document_checker( document_checker_ );
   if( spell_checker_ ) delete_aspell_speller( spell_checker_ );
+  Debug::Throw( "SpellInterface::~SpellInterface - done.\n" );
   
 }
 

@@ -62,11 +62,11 @@ namespace SPELLCHECK
     virtual ~SpellCheckBlockData( void )
     { Debug::Throw( "SpellCheckBlockData::~SpellCheckBlockData.\n" ); }
     
-    //! active block
+    //! set of misspelled words
     const Word::Set& misspelledWords( void ) const
     { return words_; }
     
-    //! active block
+    //! set of misspelled words
     void setMisspelledWords( const Word::Set& words )
     { words_ = words; }
     
