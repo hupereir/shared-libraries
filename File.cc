@@ -200,6 +200,10 @@ bool File::exist( void ) const
 //_____________________________________________________________________
 bool File::isWritable( void ) const
 { 
+  
+  // empty files are always writable
+  if( empty() ) return true;
+  
   File expanded( expand() );
   return( expanded.size() && !access(expanded.c_str(), W_OK ) ); 
 }
