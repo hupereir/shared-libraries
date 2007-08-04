@@ -298,27 +298,37 @@ void CustomTextEdit::selectLine( void )
 }
 
 //________________________________________________
-void CustomTextEdit::synchronize( CustomTextEdit& editor )
+void CustomTextEdit::synchronize( CustomTextEdit* editor )
 {
-  Debug::Throw( "CustomTextEdit::clone.\n" );
+  Debug::Throw( "CustomTextEdit::synchronize.\n" );
     
   // assign document
-  setDocument( editor.document() );
-  
+  Debug::Throw( "CustomTextEdit::synchronize - setting document.\n" );
+  setDocument( editor->document() );
+  Debug::Throw( "CustomTextEdit::synchronize - document set.\n" );
+ 
   // set synchronization flag
-  editor.setSynchronize( true );
+  editor->setSynchronize( true );
   setSynchronize( true );
-    
-  // associate with this editor and associates
-  BASE::KeySet<CustomTextEdit> editors( editor );
-  editors.insert( &editor );
+
+  // synchronize cursor position
+  setTextCursor( editor->textCursor() );
+   
+  // store scrollbar positions
+  horizontalScrollBar()->setValue( editor->horizontalScrollBar()->value() );
+  verticalScrollBar()->setValue( editor->verticalScrollBar()->value() );
   
-  // Key association
-  for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
-  { BASE::Key::associate( *iter, this ); }
-  
-  // selection synchronization
-  _synchronizeSelection();
+//   // associate with this editor and associates
+//   BASE::KeySet<CustomTextEdit> editors( editor );
+//   editors.insert( &editor );
+//   
+//   // Key association
+//   for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+//   { BASE::Key::associate( *iter, this ); }
+//   
+//   // selection synchronization
+//   _synchronizeSelection();
+  Debug::Throw( "CustomTextEdit::synchronize - done.\n" );
 
   return;
   

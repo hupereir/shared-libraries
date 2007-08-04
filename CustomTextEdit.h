@@ -124,11 +124,11 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@{
   
   //! synchronization
-  void setSynchronize( const bool& value )
+  virtual void setSynchronize( const bool& value )
   { synchronize_ = value; }
  
   //! synchronization
-  const bool& isSynchronized( void ) const
+  virtual const bool& isSynchronized( void ) const
   { return synchronize_; }
   
   //! select word under cursor
@@ -138,7 +138,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual void selectLine( void );
    
   //! clone (and synchronize) text editor
-  virtual void synchronize( CustomTextEdit& editor );
+  virtual void synchronize( CustomTextEdit* editor );
 
   //! popup dialog with the number of replacement performed
   virtual void showReplacements( const unsigned int& counts );
