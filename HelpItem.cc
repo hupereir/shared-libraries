@@ -36,7 +36,7 @@
 #include "XmlUtil.h"
 
 using namespace std;
-using namespace HELP;
+using namespace BASE;
 
 //_________________________________________________________
 HelpItem::HelpItem( const QDomElement& element ):

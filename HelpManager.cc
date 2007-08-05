@@ -43,7 +43,7 @@
 
 using namespace std;
 using namespace Qt;
-using namespace HELP;
+using namespace BASE;
 
 
 //_________________________________________________________

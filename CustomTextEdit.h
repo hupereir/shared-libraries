@@ -195,6 +195,23 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   { return tab_emulation_action_; }
   
   //@}
+
+  //!@name tab emulation
+  //@{
+  
+  //! tab character
+  virtual const QString& tabCharacter( void ) const
+  { return tab_; }
+   
+  //! tab character
+  virtual const QString& normalTabCharacter( void ) const
+  { return normal_tab_; }
+  
+  //! tab character
+  virtual const QString& emulatedTabCharacter( void ) const
+  { return emulated_tab_; }
+
+  //@}
   
   signals:
   
@@ -389,18 +406,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! insert (normal or emulated) tab
   virtual void _insertTab( void );
   
-  //! tab character
-  virtual const QString& _tabCharacter( void ) const
-  { return tab_; }
-   
-  //! tab character
-  virtual const QString& _normalTabCharacter( void ) const
-  { return normal_tab_; }
-  
-  //! tab character
-  virtual const QString& _emulatedTabCharacter( void ) const
-  { return emulated_tab_; }
-
   //! multi tab regular expression
   virtual const QRegExp& _tabRegExp( void ) const
   { return tab_regexp_; }  

@@ -1227,14 +1227,14 @@ void CustomTextEdit::_insertTab( void )
   
   // retrieve current cursor
   QTextCursor cursor( textCursor() );
-  if( !_hasTabEmulation() ) cursor.insertText( _normalTabCharacter() );
+  if( !_hasTabEmulation() ) cursor.insertText( normalTabCharacter() );
   else {
     
     // retrieve position from begin of block
     int position( min( cursor.position(), cursor.anchor() ) );
     position -= document()->findBlock( position ).position();
-    int n( position % _emulatedTabCharacter().size() );
-    cursor.insertText( _emulatedTabCharacter().right( _emulatedTabCharacter().size()-n ) ); 
+    int n( position % emulatedTabCharacter().size() );
+    cursor.insertText( emulatedTabCharacter().right( emulatedTabCharacter().size()-n ) ); 
     
   }
   

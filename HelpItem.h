@@ -41,7 +41,7 @@
 #include "Debug.h"
 
 //! Help system namespace
-namespace HELP
+namespace BASE
 {
 
   

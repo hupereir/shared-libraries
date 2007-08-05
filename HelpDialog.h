@@ -40,7 +40,7 @@
 
 class CustomTextEdit;
 
-namespace HELP
+namespace BASE
 {
   
   //! reference manual display dialog

@@ -35,7 +35,7 @@
 #include "CustomListBox.h"
 #include "HelpItem.h"
 
-namespace HELP
+namespace BASE
 {
   //! Help item list
   class HelpItemList:public CustomListBox

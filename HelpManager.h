@@ -41,7 +41,7 @@
 #include "HelpDialog.h"
 
 //! help manager class
-namespace HELP
+namespace BASE
 {
     
   class HelpManager:public QObject, public Counter
