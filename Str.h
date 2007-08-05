@@ -135,6 +135,13 @@ class Str: public std::string, public Counter
   virtual unsigned int contains( const char* c2, bool caseSensitive = true ) const
   { return (c2)? contains( Str(c2), caseSensitive ):0; }
   
+  //! append a string to another
+  Str& append( const Str& str )
+  { 
+    *this += str;
+    return *this;
+  }
+  
   //! convert anything to string and fill
   template <typename T> 
   Str& assign( T value )
@@ -150,6 +157,11 @@ class Str: public std::string, public Counter
     return *this;
   }
   
+  //! convert anything to string and fill
+  template <typename T> 
+  Str& append( T value )
+  { return append( Str().assign<T>( value ) ); }
+      
   //! convert string to any type using string streamer
   template <typename T>
   T get( bool* error = 0 ) const
