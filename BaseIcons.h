@@ -49,6 +49,7 @@ namespace ICONS
   static const std::string SAVE = "filesave.png";
   static const std::string RELOAD = "reload.png";
   static const std::string DELETE = "trashcan_empty.png";
+  static const std::string WARNING = "messagebox_warning.png";
 
 };
 

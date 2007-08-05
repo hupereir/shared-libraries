@@ -30,17 +30,17 @@
 */
 
 
-#include <qapplication.h>
-#include <qcursor.h>
-#include <qdesktopwidget.h>
-#include <qdialog.h>
-#include <qfontmetrics.h>
-#include <qframe.h>
-#include <qlayout.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qpainter.h>
+#include <QApplication>
+#include <QCursor>
+#include <QDesktopWidget>
+#include <QDialog>
+#include <QFontMetrics>
+#include <QLayout>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QPainter>
 
+#include "BaseIcons.h"
 #include "CustomPixmap.h"
 #include "Debug.h"
 #include "Exception.h"
@@ -83,7 +83,7 @@ void QtUtil::infoDialog(
   {
     first = false;
     list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-    question_pixmap.find( "messagebox_warning.png", path_list );    
+    question_pixmap.find( ICONS::WARNING, path_list );    
   }
   
   // insert main vertical box
@@ -153,7 +153,7 @@ bool QtUtil::questionDialog(
   {
     first = false;
     list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-    question_pixmap.find( "messagebox_warning.png", path_list );    
+    question_pixmap.find( ICONS::WARNING, path_list );    
   }
   
   // insert main vertical box
