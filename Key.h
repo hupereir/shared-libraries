@@ -68,7 +68,7 @@ namespace BASE
   association scheme. 
   <p><img src="associations.gif" border="0" > 
 
-  */  
+  */
   class Key 
   { 
     
