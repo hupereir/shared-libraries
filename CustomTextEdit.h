@@ -107,9 +107,22 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual void synchronize( CustomTextEdit* editor );
   
   //@}
-
+ 
   //! popup dialog with the number of replacement performed
   virtual void showReplacements( const unsigned int& counts );
+
+  //!@name text wrap
+  //@{
+  
+  //! enable/disable reading of text wrapping mode from options
+  const bool& wrapFromOptions( void ) const
+  { return wrap_from_options_; }
+  
+  //! enable/disable reading of text wrapping mode from options
+  void setWrapFromOptions( const bool& value )
+  { wrap_from_options_ = value; }
+  
+  //@}
   
   //! read-only
   void setReadOnly( bool readonly )
@@ -180,6 +193,8 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! toggle tab emulation
   QAction* tabEmulationAction( void )
   { return tab_emulation_action_; }
+  
+  //@}
   
   signals:
   
@@ -278,7 +293,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
     
   //! remove current line
   virtual void removeLine( void );
-  
+
   protected:
   
   //!@name event handlers
@@ -363,9 +378,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //!@name tab emulation
   //@{
 
-  //! set tab emulation
+  //! set tab character size
   /*! returns true if changed */
-  virtual bool _setTabEmulation( const bool& active, const int& size );  
+  virtual bool _setTabSize( const int& size );  
   
   //! tab emulation
   virtual const bool& _hasTabEmulation( void ) const
@@ -401,12 +416,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@}
   
   protected slots:
- 
-  //! wrap mode
-  virtual void _toggleWrapMode( bool );
-
-  //! tab emulation
-  virtual void _toggleTabEmulation( bool );
   
   //! highlight current block
   virtual void _highlightCurrentBlock( void );
@@ -423,6 +432,14 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! update paste action 
   /*! depends on clipboard status and editability */
   virtual void _updatePasteAction( void );
+
+  //! wrap mode
+  /*! returns true if changed */
+  virtual bool _toggleWrapMode( bool );
+
+  //! tab emulation
+  /*! returns true if changed */
+  virtual bool _toggleTabEmulation( bool );
 
   private:
    
@@ -443,6 +460,17 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
+  //!@name text wrap
+  //@{
+  
+  /*! 
+  set to false when the wrapping has been modified once.
+  This done, it does not get loaded via the options 
+  any more
+  */
+  bool wrap_from_options_;
+  
+  //@}
   
   //!@name tab emulation and empty lines
   //@{

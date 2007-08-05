@@ -61,6 +61,8 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   find_dialog_( 0 ),
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
+  wrap_from_options_( true ),
+  has_tab_emulation_( false ),
   highlight_enabled_( false ),
   highlight_available_( false ),
   synchronize_( false ),
@@ -70,6 +72,9 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   
   Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" ); 
   
+  // actions
+  _installActions();
+ 
   // signal to make sure selection is synchronized between clones
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
@@ -77,10 +82,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
 
   updateConfiguration();
-  
-  // actions
-  _installActions();
-  
+   
 }
 
 //________________________________________________
@@ -330,18 +332,17 @@ void CustomTextEdit::updateConfiguration( void )
 {
   
   Debug::Throw( "CustomTextEdit::updateConfiguration.\n" );
-  QColor highlight_color;
  
   // wrap mode
-  _toggleWrapMode( XmlOptions::get().get<bool>( "WRAP_TEXT" ) );
-  wrapModeAction()->setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) );
-
+  if( wrapFromOptions() )
+  { wrapModeAction()->setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
+  
   // tab emulation
-  _setTabEmulation( XmlOptions::get().get<bool>( "TAB_EMULATION" ), XmlOptions::get().get<int>("TAB_SIZE") );
+  _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
   tabEmulationAction()->setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
   
   // paragraph highlighting
-  highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
+  QColor highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
   if( highlight_color.isValid() )
   {
     highlight_available_ = true;
@@ -813,11 +814,13 @@ void CustomTextEdit::_installActions( void )
   // wrap mode
   addAction( wrap_mode_action_ = new QAction( "&Wrap text", this ) );
   wrap_mode_action_->setCheckable( true );
+  wrap_mode_action_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
   connect( wrap_mode_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
   
   // tab emulation action
   addAction( tab_emulation_action_ = new QAction( "&Emulate tabs", this ) );
   tab_emulation_action_->setCheckable( true );
+  tab_emulation_action_->setChecked( has_tab_emulation_ );
   connect( tab_emulation_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );
   
   // update actions that depend on the presence of a selection
@@ -1182,15 +1185,15 @@ void CustomTextEdit::_toggleInsertMode( void )
 }
  
 //________________________________________________
-bool CustomTextEdit::_setTabEmulation( const bool& active, const int& tab_size )
+bool CustomTextEdit::_setTabSize( const int& tab_size )
 {
   
-  Debug::Throw() << "CustomTextEdit::_setTabEmulation - active: " << (active ? "true":"false") << " tab_size: " << tab_size << endl;
+  Debug::Throw() << "CustomTextEdit::_setTabSize - " << tab_size << endl;
   Exception::check( tab_size > 0, DESCRIPTION( "invalid tab size" ) );
   
-  if( has_tab_emulation_ == active && tab_size == emulated_tab_.size() && tab_size == tabStopWidth() )
+  if( tab_size == emulated_tab_.size() )
   {
-    Debug::Throw() << "CustomTextEdit::_setTabEmulation - unchanged." << endl;
+    Debug::Throw() << "CustomTextEdit::_setTabSize - unchanged." << endl;
     return false;
   }
 
@@ -1206,15 +1209,10 @@ bool CustomTextEdit::_setTabEmulation( const bool& active, const int& tab_size )
   ostringstream what;
   what << "^(" << qPrintable( emulated_tab_ ) << ")" << "+";
   emulated_tab_regexp_.setPattern( what.str().c_str() );
- 
-  // set flag
-  has_tab_emulation_ = active;
-  tab_ = has_tab_emulation_ ? emulated_tab_ : normal_tab_;
-  tab_regexp_ = has_tab_emulation_ ? emulated_tab_regexp_ : normal_tab_regexp_;
   
   return true;
 }
-
+ 
 //_____________________________________________________________
 void CustomTextEdit::_insertTab( void )
 {
@@ -1235,20 +1233,6 @@ void CustomTextEdit::_insertTab( void )
   
   return;
   
-}
-
-//________________________________________________
-void CustomTextEdit::_toggleWrapMode( bool state )
-{
-  Debug::Throw( "CustomTextEdit::toggleWrapMode.\n" );
-  setLineWrapMode( state ? QTextEdit::WidgetWidth : QTextEdit::NoWrap );
-}
-
-//________________________________________________
-void CustomTextEdit::_toggleTabEmulation( bool state )
-{
-  Debug::Throw( "CustomTextEdit::_toggleTabEmulation.\n" );
-  _setTabEmulation( state, _normalTabCharacter().size() ); 
 }
 
 //________________________________________________
@@ -1358,3 +1342,30 @@ void CustomTextEdit::_updatePasteAction( void )
   
 }
   
+
+//________________________________________________
+bool CustomTextEdit::_toggleWrapMode( bool state )
+{
+  Debug::Throw() << "CustomTextEdit::_toggleWrapMode - " << (state ? "true":"false") << endl;
+  LineWrapMode mode( state ? QTextEdit::WidgetWidth : QTextEdit::NoWrap );
+  if( mode == lineWrapMode() ) return false;
+  
+  setLineWrapMode( mode );
+  return true;
+}
+
+//________________________________________________
+bool CustomTextEdit::_toggleTabEmulation( bool state )
+{
+  
+  Debug::Throw() << "CustomTextEdit::_toggleTabEmulation - " << (state ? "true":"false") << endl;
+ 
+  // check if changed
+  if( has_tab_emulation_ == state ) return false;
+  
+  // set flag
+  has_tab_emulation_ = state;
+  tab_ = has_tab_emulation_ ? emulated_tab_ : normal_tab_;
+  tab_regexp_ = has_tab_emulation_ ? emulated_tab_regexp_ : normal_tab_regexp_;
+  
+}

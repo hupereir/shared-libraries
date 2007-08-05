@@ -29,6 +29,7 @@
    \date    $Date$
 */
 
+#include <QAction>
 #include <QLayout>
 #include <QPushButton>
 #include <QShortcut>
@@ -70,6 +71,9 @@ HelpDialog::HelpDialog( QWidget *parent ):
   // add text editor
   v_layout->addWidget( text_edit_ = new CustomTextEdit( this ) );
   text_edit_->setReadOnly( true );
+  text_edit_->setWrapFromOptions( false );
+  text_edit_->wrapModeAction()->setChecked( true );
+  
   QFont font;
   font.fromString( XmlOptions::get().raw( "FONT_NAME" ).c_str() );
   text_edit_->setFont( font );
