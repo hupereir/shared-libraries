@@ -88,7 +88,14 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 //________________________________________________
 CustomTextEdit::~CustomTextEdit( void )
 {
-  Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );  
+  
+  Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );
+  
+  // update associates synchronization flags
+  BASE::KeySet<CustomTextEdit> editors( this );
+  if( editors.size() == 1 ) 
+  { (*editors.begin())->setSynchronize( false ); }
+  
 }
 
 //________________________________________________

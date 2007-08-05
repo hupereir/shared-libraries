@@ -392,17 +392,17 @@ void BaseConfigurationDialog::_display( QListWidgetItem* current, QListWidgetIte
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_readConfiguration( void )
+void BaseConfigurationDialog::_read( void )
 {
-  Debug::Throw( "BaseConfigurationDialog::_readConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::_read.\n" );
   for( OptionWidgetList::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
   (*iter)->read(); 
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_updateConfiguration( void )
+void BaseConfigurationDialog::_update( void )
 {
-   Debug::Throw( "BaseConfigurationDialog::_updateConfiguration.\n" );
+   Debug::Throw( "BaseConfigurationDialog::_update.\n" );
   
   for( OptionWidgetList::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
   (*iter)->write(); 
@@ -413,22 +413,22 @@ void BaseConfigurationDialog::_updateConfiguration( void )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_restoreConfiguration( void )
+void BaseConfigurationDialog::_restore( void )
 { 
-  Debug::Throw( "BaseConfigurationDialog::_restoreConfiguration.\n" );
+  Debug::Throw( "BaseConfigurationDialog::_restore.\n" );
   if( XmlOptions::get() == backup_options_ ) return;
   XmlOptions::get() = backup_options_;
   modified_options_ = backup_options_;
-  _readConfiguration();
+  _read();
   emit configurationChanged();
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_saveConfiguration( void )
+void BaseConfigurationDialog::_save( void )
 {
   
-  Debug::Throw( "BaseConfigurationDialog::_saveConfiguration.\n" );
-  _updateConfiguration();
+  Debug::Throw( "BaseConfigurationDialog::_save.\n" );
+  _update();
   XmlOptions::write();
 
 }

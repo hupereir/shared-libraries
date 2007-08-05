@@ -153,16 +153,16 @@ class BaseConfigurationDialog: public QDialog, public Counter
   protected slots:
 
   //! read configuration from options
-  virtual void _readConfiguration();
+  virtual void _read();
 
   //! read configuration from options
-  virtual void _updateConfiguration();
+  virtual void _update();
 
   //! restore configuration
-  virtual void _restoreConfiguration();
+  virtual void _restore();
 
   //! save configuration from options
-   virtual void _saveConfiguration();
+   virtual void _save();
 
   //! see if options have been modified. Emit signal if yes
   virtual void _checkModified( void )
