@@ -93,14 +93,29 @@ CustomTextEdit::~CustomTextEdit( void )
   // update associates synchronization flags
   BASE::KeySet<CustomTextEdit> editors( this );
 
-  // if there are associated displays, one first need to reset the TextDocument 
-  // to avoid the fact that the current one might get deleted in the process of deletion
-  // this is a kludge.
-  if( !editors.empty() ) setDocument( new QTextDocument() );
+  // nothing to be done if no associates
+  if( editors.empty() ) return;
   
-  if( editors.size() == 1 ) 
-  { (*editors.begin())->setSynchronize( false ); }
+  // keep position of current cursor
+  int position( textCursor().position() );
+  int anchor( textCursor().anchor() );
   
+  // need to reset Text document
+  // to avoid deletion while deleting this editor
+  setDocument( new QTextDocument() );
+  
+  // keep reference to first associate
+  CustomTextEdit &editor( **editors.begin() );
+  
+  // recreate an appropriate cursor
+  QTextCursor cursor( editor.document() );
+  cursor.setPosition( anchor );
+  cursor.setPosition( position, QTextCursor::KeepAnchor );
+  editor.setTextCursor( cursor );
+  
+  // turn off synchronization
+  if( editors.size() == 1 ) editor.setSynchronize( false ); 
+
 }
 
 //________________________________________________
