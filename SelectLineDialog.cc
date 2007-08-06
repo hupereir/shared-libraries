@@ -52,7 +52,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   // create vbox layout
   setLayout( new QVBoxLayout() );
   layout()->setSpacing(5);
-  layout()->setMargin(5);
+  layout()->setMargin(10);
     
   // insert text editor
   QLabel *label( new QLabel( "goto line number: ", this ) );
@@ -69,19 +69,18 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   layout()->addItem( h_layout );
   
   // insert Find button
-  QPushButton *button = new QPushButton( "&Ok", this );
+  QPushButton *button;
+  h_layout->addWidget( button = new QPushButton( "&Ok", this ) );
   button->setAutoDefault( false );
-  QtUtil::fixSize( button );
-  h_layout->addWidget( button );
   connect( button, SIGNAL( clicked( void ) ), SLOT( _selectLine( void ) ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
       
   // insert Cancel button
-  button = new QPushButton( "&Cancel", this );
+  h_layout->addWidget( button = new QPushButton( "&Cancel", this ) );
   button->setAutoDefault( false );
-  QtUtil::fixSize( button );
-  h_layout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-   
+ 
+  adjustSize();
+  
 }
  

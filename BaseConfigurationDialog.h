@@ -86,7 +86,7 @@ class BaseConfigurationDialog: public QDialog, public Counter
   //! destructor
   virtual ~BaseConfigurationDialog()
   {
-    Debug::Throw( "BaseConfigurationDialog::~BaseConfigurationDialog" );
+    Debug::Throw( "BaseConfigurationDialog::~BaseConfigurationDialog.\n" );
     return;
   }
 

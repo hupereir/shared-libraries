@@ -98,7 +98,7 @@ CustomTextEdit::~CustomTextEdit( void )
   Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );
   
   // cast document
-  CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( QTextEdit::document() ) );
+  CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( CustomTextEdit::document() ) );
   if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
   
 }
@@ -301,6 +301,10 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
  
   // delete old document, if needed
   if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
+  
+  // restore connections with document
+  connect( undo_action_, SIGNAL( triggered() ), CustomTextEdit::document(), SLOT( undo() ) );
+  connect( redo_action_, SIGNAL( triggered() ), CustomTextEdit::document(), SLOT( redo() ) );
   
   // set synchronization flag
   editor->setSynchronized( true );
@@ -548,6 +552,7 @@ void CustomTextEdit::selectLineFromDialog( void )
     connect( select_line_dialog_, SIGNAL( lineSelected( int ) ), SLOT( selectLine( int ) ) );
   }
   
+  QtUtil::centerOnPointer( select_line_dialog_ );
   select_line_dialog_->show();
   
 }
@@ -555,10 +560,11 @@ void CustomTextEdit::selectLineFromDialog( void )
 //________________________________________________
 void CustomTextEdit::selectLine( int index )
 {
-   Debug::Throw() << "CustomTextEdit::selectLine - index: " << index << endl;
+  
+  Debug::Throw() << "CustomTextEdit::selectLine - index: " << index << endl;
   int local_index( 0 );
   QTextBlock block = document()->begin();
-  for( ;local_index <= index && block.isValid(); block = block.next(), local_index++ )
+  for( ;local_index < index && block.isValid(); block = block.next(), local_index++ )
   {}
   
   if( block.isValid() )
@@ -772,57 +778,69 @@ void CustomTextEdit::_installActions( void )
   connect( clear_action_, SIGNAL( triggered() ), SLOT( clear() ) );
 
   addAction( select_all_action_ = new QAction( "Select all", this ) );
-  select_all_action_->setShortcut( CTRL+Key_V );
+  select_all_action_->setShortcut( CTRL+Key_A );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
   
   addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
   upper_case_action_->setShortcut( CTRL+Key_U );
+  upper_case_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( upper_case_action_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
   addAction( lower_case_action_ = new QAction( "&Lower case", this ) );
   lower_case_action_->setShortcut( SHIFT+CTRL+Key_U );
+  lower_case_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
   
   addAction( find_action_ = new QAction( IconEngine::get( ICONS::FIND, path_list ), "&Find", this ) );
   find_action_->setShortcut( CTRL+Key_F );
+  find_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_action_, SIGNAL( triggered() ), SLOT( findFromDialog() ) );
 
   addAction( find_again_action_ = new QAction( "F&ind again", this ) );
-  find_again_action_->setShortcut( CTRL+Key_H );
+  find_again_action_->setShortcut( CTRL+Key_G );
+  find_again_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_again_action_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
  
   addAction( find_again_backward_action_ = new QAction( this ) );
-  find_again_backward_action_->setShortcut( SHIFT+CTRL+Key_H );
+  find_again_backward_action_->setShortcut( SHIFT+CTRL+Key_G );
+  find_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_again_backward_action_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
   addAction( find_selection_action_ = new QAction( "Find &selection", this ) );
-  find_selection_action_->setShortcut( CTRL+Key_G );
+  find_selection_action_->setShortcut( CTRL+Key_H );
+  find_selection_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_selection_action_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
  
   addAction( find_selection_backward_action_ = new QAction( this ) );
-  find_selection_backward_action_->setShortcut( SHIFT+CTRL+Key_G );
+  find_selection_backward_action_->setShortcut( SHIFT+CTRL+Key_H );
+  find_selection_backward_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_selection_backward_action_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
   addAction( replace_action_ = new QAction( IconEngine::get( ICONS::FIND, path_list ), "Replace", this ) );
   replace_action_->setShortcut( CTRL+Key_R );
+  replace_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_action_, SIGNAL( triggered() ), SLOT( replaceFromDialog() ) );
 
   addAction( replace_again_action_ = new QAction( "Replace again", this ) );
   replace_again_action_->setShortcut( CTRL+Key_T );
+  replace_again_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_again_action_, SIGNAL( triggered() ), SLOT( replaceAgainForward() ) );
  
   addAction( replace_again_backward_action_ = new QAction( this ) );
   replace_again_backward_action_->setShortcut( SHIFT+CTRL+Key_T );
+  replace_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_again_backward_action_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
 
   addAction( goto_line_action_ = new QAction( "&Goto line number", this ) );
   goto_line_action_->setShortcut( CTRL+Key_L );
+  goto_line_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( goto_line_action_, SIGNAL( triggered() ), SLOT( selectLineFromDialog() ) );
   
   // remove line action
   QAction* remove_line_action( new QAction( this ) ); 
   addAction( remove_line_action );
   remove_line_action->setShortcut( CTRL+Key_K );
+  remove_line_action->setShortcutContext( Qt::WidgetShortcut );
   connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
   
   // wrap mode
