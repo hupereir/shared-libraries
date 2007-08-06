@@ -313,9 +313,7 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
   Debug::Throw( "CustomTextEdit::synchronize.\n" );
     
   // assign document
-  Debug::Throw( "CustomTextEdit::synchronize - setting document.\n" );
   setDocument( editor->document() );
-  Debug::Throw( "CustomTextEdit::synchronize - document set.\n" );
  
   // set synchronization flag
   editor->setSynchronized( true );
@@ -324,12 +322,15 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
   // synchronize cursor position
   setTextCursor( editor->textCursor() );
    
-  // store scrollbar positions
+  // restore scrollbar positions
   horizontalScrollBar()->setValue( editor->horizontalScrollBar()->value() );
   verticalScrollBar()->setValue( editor->verticalScrollBar()->value() );
   
-  // synchronize action toggles
+  // synchronize tab emulation
+  _setTabSize( editor->emulatedTabCharacter().size() );
   tabEmulationAction()->setChecked( editor->tabEmulationAction()->isChecked() );
+  
+  // synchronize wrap mode
   wrapModeAction()->setChecked( editor->wrapModeAction()->isChecked() );
   
   Debug::Throw( "CustomTextEdit::synchronize - done.\n" );
