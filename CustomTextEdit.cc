@@ -119,7 +119,7 @@ CustomTextEdit::~CustomTextEdit( void )
   editor.setTextCursor( cursor );
   
   // turn off synchronization
-  if( editors.size() == 1 ) editor.setSynchronize( false ); 
+  if( editors.size() == 1 ) editor.setSynchronized( false ); 
 
 }
 
@@ -318,8 +318,8 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
   Debug::Throw( "CustomTextEdit::synchronize - document set.\n" );
  
   // set synchronization flag
-  editor->setSynchronize( true );
-  setSynchronize( true );
+  editor->setSynchronized( true );
+  setSynchronized( true );
 
   // synchronize cursor position
   setTextCursor( editor->textCursor() );
@@ -328,16 +328,10 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
   horizontalScrollBar()->setValue( editor->horizontalScrollBar()->value() );
   verticalScrollBar()->setValue( editor->verticalScrollBar()->value() );
   
-//   // associate with this editor and associates
-//   BASE::KeySet<CustomTextEdit> editors( editor );
-//   editors.insert( &editor );
-//   
-//   // Key association
-//   for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
-//   { BASE::Key::associate( *iter, this ); }
-//   
-//   // selection synchronization
-//   _synchronizeSelection();
+  // synchronize action toggles
+  tabEmulationAction()->setChecked( editor->tabEmulationAction()->isChecked() );
+  wrapModeAction()->setChecked( editor->wrapModeAction()->isChecked() );
+  
   Debug::Throw( "CustomTextEdit::synchronize - done.\n" );
 
   return;
@@ -1317,7 +1311,7 @@ void CustomTextEdit::_synchronizeSelection( void )
     int x( editor.horizontalScrollBar()->value() );
     int y( editor.verticalScrollBar()->value() );
     
-    editor.setSynchronize( false );
+    editor.setSynchronized( false );
     editor.setUpdatesEnabled( false );
     editor.setTextCursor( textCursor() );
     
@@ -1326,7 +1320,7 @@ void CustomTextEdit::_synchronizeSelection( void )
     editor.verticalScrollBar()->setValue( y );
     
     editor.setUpdatesEnabled( true );
-    editor.setSynchronize( true );
+    editor.setSynchronized( true );
   }
 }
  
@@ -1383,6 +1377,21 @@ bool CustomTextEdit::_toggleWrapMode( bool state )
   if( mode == lineWrapMode() ) return false;
   
   setLineWrapMode( mode );
+  
+  // propagate to associated display
+  if( isSynchronized() )
+  {
+    
+    // temporarely disable synchronization 
+    // to avoid infinite loop
+    setSynchronized( false );
+    BASE::KeySet<CustomTextEdit> editors( this );
+    for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+    { if( (*iter)->isSynchronized() ) (*iter)->wrapModeAction()->setChecked( state ); }
+    setSynchronized( true );
+    
+  }
+  
   return true;
 }
 
@@ -1399,6 +1408,21 @@ bool CustomTextEdit::_toggleTabEmulation( bool state )
   has_tab_emulation_ = state;
   tab_ = has_tab_emulation_ ? emulated_tab_ : normal_tab_;
   tab_regexp_ = has_tab_emulation_ ? emulated_tab_regexp_ : normal_tab_regexp_;
+  
+  // propagate to associated display
+  if( isSynchronized() )
+  {
+    
+    // temporarely disable synchronization 
+    // to avoid infinite loop
+    setSynchronized( false );
+    BASE::KeySet<CustomTextEdit> editors( this );
+    for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+    { if( (*iter)->isSynchronized() ) (*iter)->tabEmulationAction()->setChecked( state ); }
+    setSynchronized( true );
+    
+  }
+  
   return true;
   
 }

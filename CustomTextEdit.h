@@ -96,7 +96,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@{
   
   //! synchronization
-  virtual void setSynchronize( const bool& value )
+  virtual void setSynchronized( const bool& value )
   { synchronize_ = value; }
  
   //! synchronization
