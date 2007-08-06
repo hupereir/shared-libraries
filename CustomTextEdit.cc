@@ -74,7 +74,8 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" ); 
 
   // set customized document
-  CustomTextDocument* document( new CustomTextDocument( this ) );
+  CustomTextDocument* document( new CustomTextDocument(0) );
+  BASE::Key::associate( this, document );
   setDocument( document );
   
   // actions
@@ -95,32 +96,11 @@ CustomTextEdit::~CustomTextEdit( void )
 {
   
   Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );
-  // update associates synchronization flags
-  BASE::KeySet<CustomTextEdit> editors( this );
-
-  // nothing to be done if no associates
-  if( editors.empty() ) return;
   
-  // keep position of current cursor
-  int position( textCursor().position() );
-  int anchor( textCursor().anchor() );
+  // cast document
+  CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( QTextEdit::document() ) );
+  if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
   
-  // need to reset Text document
-  // to avoid deletion while deleting this editor
-  setDocument( new QTextDocument() );
-  
-  // keep reference to first associate
-  CustomTextEdit &editor( **editors.begin() );
-  
-  // recreate an appropriate cursor
-  QTextCursor cursor( editor.document() );
-  cursor.setPosition( anchor );
-  cursor.setPosition( position, QTextCursor::KeepAnchor );
-  editor.setTextCursor( cursor );
-  
-  // turn off synchronization
-  if( editors.size() == 1 ) editor.setSynchronized( false ); 
-
 }
 
 //________________________________________________
@@ -312,9 +292,16 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
 {
   Debug::Throw( "CustomTextEdit::synchronize.\n" );
     
-  // assign document
+  // retrieve and cast old document
+  CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( QTextEdit::document() ) );  
+  
+  // assign new document and associate
   setDocument( editor->document() );
+  BASE::Key::associate( this, dynamic_cast<CustomTextDocument*>( editor->document() ) );
  
+  // delete old document, if needed
+  if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
+  
   // set synchronization flag
   editor->setSynchronized( true );
   setSynchronized( true );

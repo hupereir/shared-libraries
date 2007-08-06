@@ -46,11 +46,11 @@ class CustomTextDocument: public QTextDocument, public BASE::Key, public Counter
   CustomTextDocument( QObject* parent = 0 ):
     QTextDocument( parent ),
     Counter( "CustomTextDocument" )
-  { Debug::Throw( 0, "CustomTextDocument::CustomTextDocument.\n" ); }
+  { Debug::Throw( "CustomTextDocument::CustomTextDocument.\n" ); }
   
   //! destructor
   virtual ~CustomTextDocument( void )
-  { Debug::Throw( 0, "CustomTextDocument::~CustomTextDocument.\n" ); }
+  { Debug::Throw( "CustomTextDocument::~CustomTextDocument.\n" ); }
   
 };
 
