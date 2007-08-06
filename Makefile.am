@@ -29,6 +29,7 @@ noinst_HEADERS = \
 	CustomProcess.h \
 	CustomSlider.h \
 	CustomTabWidget.h \
+	CustomTextDocument.h \
 	CustomTextEdit.h \
 	CustomToolBar.h \
 	CustomToolButton.h \

@@ -38,6 +38,7 @@
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
 #include "CustomTextEdit.h"
+#include "CustomTextDocument.h"
 #include "FindDialog.h"
 #include "IconEngine.h"
 #include "ReplaceDialog.h"
@@ -71,6 +72,10 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 {
   
   Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" ); 
+
+  // set customized document
+  CustomTextDocument* document( new CustomTextDocument( this ) );
+  setDocument( document );
   
   // actions
   _installActions();
@@ -1394,5 +1399,6 @@ bool CustomTextEdit::_toggleTabEmulation( bool state )
   has_tab_emulation_ = state;
   tab_ = has_tab_emulation_ ? emulated_tab_ : normal_tab_;
   tab_regexp_ = has_tab_emulation_ ? emulated_tab_regexp_ : normal_tab_regexp_;
+  return true;
   
 }

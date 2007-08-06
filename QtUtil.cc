@@ -73,7 +73,7 @@ void QtUtil::infoDialog(
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
   layout->setMargin(10);
-  layout->setSpacing(10);
+  layout->setSpacing(5);
   dialog.setLayout( layout );
 
   //! try load Question icon
@@ -144,7 +144,7 @@ bool QtUtil::questionDialog(
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
   layout->setMargin(10);
-  layout->setSpacing(10);
+  layout->setSpacing(5);
   dialog.setLayout( layout );
   
   //! try load Question icon
@@ -174,7 +174,7 @@ bool QtUtil::questionDialog(
     
   // insert hbox layout for buttons
   QHBoxLayout *hbox_layout( new QHBoxLayout() );
-  hbox_layout->setSpacing( 10 );
+  hbox_layout->setSpacing( 5 );
   layout->addLayout( hbox_layout );
   
   // insert OK button

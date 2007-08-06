@@ -125,7 +125,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@}
   
   //! read-only
-  void setReadOnly( bool readonly )
+  virtual void setReadOnly( bool readonly )
   {
     Debug::Throw( "CustomTextEdit::setReadOnly.\n" );
     QTextEdit::setReadOnly( readonly );

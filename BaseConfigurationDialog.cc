@@ -66,8 +66,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   setWindowTitle( "Configuration" );
 
   QVBoxLayout* layout( new QVBoxLayout() );
-  layout->setSpacing(5);
-  layout->setMargin(5);
+  layout->setSpacing(10);
+  layout->setMargin(10);
   setLayout( layout );
   
   QHBoxLayout* h_layout = new QHBoxLayout();
@@ -87,8 +87,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   // button layout
   QHBoxLayout* button_layout( new QHBoxLayout() );
-  button_layout->setMargin(5);
-  button_layout->setSpacing(10);
+  button_layout->setMargin(0);
+  button_layout->setSpacing(5);
   layout->addLayout( button_layout, 0 );
   
   // apply button

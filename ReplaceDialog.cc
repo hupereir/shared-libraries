@@ -133,7 +133,7 @@ void ReplaceDialog::_createLocationButtons( void )
   FindDialog::_createLocationButtons();
    
   location_layout_ = new QHBoxLayout();
-  location_layout_->setSpacing(10);
+  location_layout_->setSpacing(5);
   location_layout_->setMargin(0);
   _mainLayout().addLayout( location_layout_, 1 );
   

@@ -73,7 +73,7 @@ void FindDialog::polish( void )
   QVBoxLayout* layout = new QVBoxLayout();
   setLayout( layout );
   layout->setMargin( 10 );
-  layout->setSpacing( 10 );
+  layout->setSpacing( 5 );
   
   main_layout_ = new QVBoxLayout();
   main_layout_->setMargin( 0 );
@@ -82,7 +82,7 @@ void FindDialog::polish( void )
   
   button_layout_ = new QHBoxLayout();
   button_layout_->setMargin( 0 );
-  button_layout_->setSpacing( 10 );
+  button_layout_->setSpacing( 5 );
   layout->addLayout( button_layout_, 0 );
  
   _createEditor();
