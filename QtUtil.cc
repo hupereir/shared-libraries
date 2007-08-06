@@ -384,7 +384,7 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
   // check point against (0,0)
   if( point.x() < 0 ) point.setX( 0 );
   if( point.y() < 0 ) point.setY( 0 );  
-  return point;
+  return widget->mapToGlobal( point );
 }
   
 //____________________________________________________________
