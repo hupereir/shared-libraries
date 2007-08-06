@@ -94,8 +94,8 @@ void FindDialog::polish( void )
   _updateButtons();
   
   // initial (arbitrary) size
-  resize( 300, 200 );
-
+  //resize( 300, 200 );
+  adjustSize();
 }
 
 //________________________________________________________________________ 

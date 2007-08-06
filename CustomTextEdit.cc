@@ -101,6 +101,32 @@ CustomTextEdit::~CustomTextEdit( void )
   CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( CustomTextEdit::document() ) );
   if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
   
+  // update associates synchronization flags
+  BASE::KeySet<CustomTextEdit> editors( this );
+
+  // nothing to be done if no associates
+  if( editors.empty() ) return;
+  
+  // keep position of current cursor
+  int position( textCursor().position() );
+  int anchor( textCursor().anchor() );
+  
+  // need to reset Text document
+  // to avoid deletion while deleting this editor
+  setDocument( new QTextDocument() );
+  
+  // keep reference to first associate
+  CustomTextEdit &editor( **editors.begin() );
+  
+  // recreate an appropriate cursor
+  QTextCursor cursor( editor.document() );
+  cursor.setPosition( anchor );
+  cursor.setPosition( position, QTextCursor::KeepAnchor );
+  editor.setTextCursor( cursor );
+  
+  // turn off synchronization
+  if( editors.size() == 1 ) editor.setSynchronized( false ); 
+
 }
 
 //________________________________________________
@@ -129,7 +155,7 @@ int CustomTextEdit::blockCount( void ) const
 TextPosition CustomTextEdit::textPosition( void ) const
 {
   
-  Debug::Throw( "CustomTextEdit::textPosition" );
+  Debug::Throw( "CustomTextEdit::textPosition.\n" );
   QTextCursor cursor( textCursor() );
   QTextBlock block( cursor.block() );
   
@@ -303,8 +329,8 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
   if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
   
   // restore connections with document
-  connect( undo_action_, SIGNAL( triggered() ), CustomTextEdit::document(), SLOT( undo() ) );
-  connect( redo_action_, SIGNAL( triggered() ), CustomTextEdit::document(), SLOT( redo() ) );
+  //connect( undo_action_, SIGNAL( triggered() ), CustomTextEdit::document(), SLOT( undo() ) );
+  //connect( redo_action_, SIGNAL( triggered() ), CustomTextEdit::document(), SLOT( redo() ) );
   
   // set synchronization flag
   editor->setSynchronized( true );
