@@ -90,9 +90,14 @@ CustomTextEdit::~CustomTextEdit( void )
 {
   
   Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );
-  
   // update associates synchronization flags
   BASE::KeySet<CustomTextEdit> editors( this );
+
+  // if there are associated displays, one first need to reset the TextDocument 
+  // to avoid the fact that the current one might get deleted in the process of deletion
+  // this is a kludge.
+  if( !editors.empty() ) setDocument( new QTextDocument() );
+  
   if( editors.size() == 1 ) 
   { (*editors.begin())->setSynchronize( false ); }
   

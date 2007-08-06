@@ -62,7 +62,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 {
   
   
-  Debug::Throw( "BaseConfigurationDialog::ConfigDialog.\n" );
+  Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
   setWindowTitle( "Configuration" );
 
   QVBoxLayout* layout( new QVBoxLayout() );
@@ -94,13 +94,13 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   // apply button
   QPushButton* button;
   button_layout->addWidget( button = new QPushButton( "&Apply", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( _updateConfiguration() ) );  
+  connect( button, SIGNAL( clicked() ), SLOT( _update() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );  
   button->setToolTip( "apply changes to options" );
   
   // ok button
   button_layout->addWidget( button = new QPushButton( "&Ok", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( _saveConfiguration() ) );  
+  connect( button, SIGNAL( clicked() ), SLOT( _save() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
   button->setToolTip( "apply changes to options and close window" );
@@ -108,7 +108,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   // cancel button
   button_layout->addWidget( button = new QPushButton( "&Cancel", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( _restoreConfiguration() ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
   button->setToolTip( "discard changes to options and close window" );

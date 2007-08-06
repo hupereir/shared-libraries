@@ -107,6 +107,7 @@ void QtUtil::infoDialog(
   dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( accept() ) );
 
   layout->activate();
+  dialog.adjustSize();
   
   // manage widget
   switch( dialog_center ) {
@@ -188,6 +189,7 @@ bool QtUtil::questionDialog(
   
   // manage widget
   layout->activate();
+  dialog.adjustSize();
 
   // manage widget
   switch( dialog_center ) {
@@ -357,12 +359,17 @@ QPoint QtUtil::centerOnPointer( const QSize& size )
 //____________________________________________________________
 QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
 {
-  Debug::Throw( "QtUtil::centerOnParent.\n" );
+  Debug::Throw( "QtUtil::centerOnWidget.\n" );
   if( !widget ) return centerOnDesktop( size );
+
+  Debug::Throw() << "QtUtil::centerOnWidget - size: (" << size.width() << "," << size.height() << ")" << endl;
   
   // get parent position and size
   QPoint point( widget->pos() );
   QSize parent_size( widget->frameSize() );
+
+  Debug::Throw() << "QtUtil::centerOnWidget - parent size: (" << parent_size.width() << "," << parent_size.height() << ")" << endl;
+  Debug::Throw() << "QtUtil::centerOnWidget - parent position: (" << point.x() << "," << point.y() << ")" << endl;
      
   point.setX( point.x() + ( parent_size.width() - size.width() )/2 );
   point.setY( point.y() + ( parent_size.height() - size.height() )/2 );
@@ -424,7 +431,7 @@ void QtUtil::centerOnParent( QWidget* widget )
   Exception::check( widget, DESCRIPTION( "invalid widget" ) );
   
   // get parent widget
-  QWidget* parent = widget->window();
+  QWidget* parent = widget->parentWidget();
   if( !parent ) centerOnDesktop( widget );
   else widget->move( centerOnWidget( widget->frameSize(), parent ) );
   return;
