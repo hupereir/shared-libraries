@@ -303,20 +303,21 @@ void CustomTextEdit::selectLine( void )
   
   QTextCursor cursor( textCursor() );
   QTextBlock block( cursor.block() );
-  cursor.setPosition( block.position() );
-  cursor.setPosition( block.position() + block.length(), QTextCursor::KeepAnchor );
+  int begin( block.position() );
+  int end( block.position() + (block == document()->end() ? block.length()-1:block.length()) );
+  cursor.setPosition( begin );
+  cursor.setPosition( end, QTextCursor::KeepAnchor );
   
-  // perform selection
-  //cursor.select( QTextCursor::BlockUnderCursor );
+  // retrieve selected text
+  // append end of line
+  QString selection( cursor.selectedText() );
   
   // copy selected text to clipboard, in both text and HTML
   QMimeData *data( new QMimeData() );
-  data->setText( cursor.selectedText() );
-  data->setHtml( cursor.selectedText() );
+  data->setText( selection );
+  data->setHtml( selection );
   qApp->clipboard()->setMimeData( data, QClipboard::Selection );
-  
-  // qApp->clipboard()->setText( cursor.selectedText(), QClipboard::Selection );
-
+    
   // assign cursor to text editor and make sure it is visible
   setTextCursor( cursor );
   ensureCursorVisible();
