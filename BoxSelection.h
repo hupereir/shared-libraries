@@ -33,6 +33,7 @@
 */
 
 #include <QPoint>
+#include <QRect>
 #include "Counter.h"
 
 class CustomTextEdit;
@@ -53,15 +54,35 @@ class BoxSelection: public Counter
   
   //! constructor
   BoxSelection( CustomTextEdit* parent );
+ 
+  //!@ accessors
+  //@{
+  
+  //! start point
+  const QPoint &begin() const
+  { return begin_; }
+  
+  //! end point
+  const QPoint &end() const
+  { return end_; }
+
+  //! end point
+  const QPoint &newEnd() const
+  { return new_end_; }
+  
+  //@}
+  
+  //!@name modifiers
+  //@{
   
   //! start
-  bool start( const QPoint& point );
+  bool start( QPoint point );
   
   //! draw
-  bool update( const QPoint& point );
+  QRect update( QPoint point );
   
   //! finish
-  bool finish( const QPoint& point );
+  QRect finish( QPoint point );
   
   //! clear
   bool clear( void );
@@ -70,7 +91,12 @@ class BoxSelection: public Counter
   const State& state( void ) const
   { return state_; }
   
+  //@}
+  
   private:
+  
+  //! update repaiint rect
+  void _updateRect( void );
   
   //! parent editor
   CustomTextEdit* parent_;
@@ -79,10 +105,16 @@ class BoxSelection: public Counter
   State state_;
   
   //! start point
-  QPoint start_;
+  QPoint begin_;
   
   //! end point
   QPoint end_;
+  
+  //! new end point (while updating)
+  QPoint new_end_;
+  
+  //! max rectangle
+  QRect rect_;
   
 };
 

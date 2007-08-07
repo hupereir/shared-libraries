@@ -32,9 +32,11 @@
 #include <QMenu>
 #include <QClipboard>
 #include <QRegExp>
+#include <QPainter>
 #include <QScrollBar>
 #include <QTextBlock>
 #include <QTextLayout>
+#include <QAbstractTextDocumentLayout>
 
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
@@ -72,7 +74,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   remove_line_buffer_( this ),
   click_counter_( this )
 {
-  
+
   Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" ); 
 
   // set customized document
@@ -483,6 +485,9 @@ void CustomTextEdit::findFromDialog( void )
   if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
   else if( !_lastSelection().text().isEmpty() ) _findDialog().setText( _lastSelection().text() );
 
+  // changes focus
+  _findDialog().editor().setFocus();
+  
   return;
 }
 
@@ -537,7 +542,7 @@ void CustomTextEdit::replace( TextSelection selection )
     cursor.selectedText().size() == selection.text().size() && 
     cursor.selectedText().contains( 
       selection.text(), 
-      selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) )
+      selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive : CaseInsensitive ) )
   {
     cursor.insertText( selection.replaceText() );
     setTextCursor( cursor );
@@ -650,7 +655,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       
       case 1:
       {
-        if( event->modifiers() == Qt::ControlModifier ) 
+        if( event->modifiers() == ControlModifier ) 
         { 
           if( box_selection_.state() == BoxSelection::STARTED ) box_selection_.finish( event->pos() );
           if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
@@ -710,11 +715,16 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
 {
 
   Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
-  if( event->button() == LeftButton && event->modifiers() == Qt::ControlModifier )
+  if( event->buttons() == LeftButton && event->modifiers() == ControlModifier )
   {
-    if( box_selection_.state() != BoxSelection::STARTED ) box_selection_.start(  event->pos() );
-    else  box_selection_.update( event->pos() );
-  } else return CustomTextEdit::mouseMoveEvent( event );
+    if( box_selection_.state() != BoxSelection::STARTED ) box_selection_.start( event->pos() );
+    else  {
+      box_selection_.update( event->pos() );
+
+      QRect rect( box_selection_.update( event->pos() ) );
+      repaint( rect );
+    }
+  } else return QTextEdit::mouseMoveEvent( event );
   
 }
 
@@ -811,6 +821,33 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
 }
  
 //______________________________________________________________
+void CustomTextEdit::paintEvent( QPaintEvent* event )
+{
+  
+  QTextEdit::paintEvent( event );
+  
+  //if( box_selection_.state() != BoxSelection::STARTED ) return;
+  QPainter painter( viewport() );
+    
+  const int xOffset = horizontalScrollBar()->value();
+  const int yOffset = verticalScrollBar()->value();
+
+  QRect rect = event->rect();
+  painter.translate(-xOffset, -yOffset);
+  rect.translate(xOffset, yOffset);
+  
+  QColor color( palette().color( QPalette::Highlight ) );
+  color.setAlpha( 50 );
+  
+  painter.setBrush( color );
+  painter.setPen( color );
+  painter.drawRect( QRect( box_selection_.begin(), box_selection_.newEnd() ) );
+  //QAbstractTextDocumentLayout::PaintContext ctx;
+  //document()->documentLayout()->draw( &painter, ctx );
+  return;
+}
+
+//______________________________________________________________
 void CustomTextEdit::_installActions( void )
 {
   Debug::Throw( "CustomTextEdit::_installActions.\n" );
@@ -854,64 +891,64 @@ void CustomTextEdit::_installActions( void )
   
   addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
   upper_case_action_->setShortcut( CTRL+Key_U );
-  upper_case_action_->setShortcutContext( Qt::WidgetShortcut );
+  upper_case_action_->setShortcutContext( WidgetShortcut );
   connect( upper_case_action_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
   addAction( lower_case_action_ = new QAction( "&Lower case", this ) );
   lower_case_action_->setShortcut( SHIFT+CTRL+Key_U );
-  lower_case_action_->setShortcutContext( Qt::WidgetShortcut );
+  lower_case_action_->setShortcutContext( WidgetShortcut );
   connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
   
   addAction( find_action_ = new QAction( IconEngine::get( ICONS::FIND, path_list ), "&Find", this ) );
   find_action_->setShortcut( CTRL+Key_F );
-  find_action_->setShortcutContext( Qt::WidgetShortcut );
+  find_action_->setShortcutContext( WidgetShortcut );
   connect( find_action_, SIGNAL( triggered() ), SLOT( findFromDialog() ) );
 
   addAction( find_again_action_ = new QAction( "F&ind again", this ) );
   find_again_action_->setShortcut( CTRL+Key_G );
-  find_again_action_->setShortcutContext( Qt::WidgetShortcut );
+  find_again_action_->setShortcutContext( WidgetShortcut );
   connect( find_again_action_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
  
   addAction( find_again_backward_action_ = new QAction( this ) );
   find_again_backward_action_->setShortcut( SHIFT+CTRL+Key_G );
-  find_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
+  find_again_backward_action_->setShortcutContext( WidgetShortcut );
   connect( find_again_backward_action_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
   addAction( find_selection_action_ = new QAction( "Find &selection", this ) );
   find_selection_action_->setShortcut( CTRL+Key_H );
-  find_selection_action_->setShortcutContext( Qt::WidgetShortcut );
+  find_selection_action_->setShortcutContext( WidgetShortcut );
   connect( find_selection_action_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
  
   addAction( find_selection_backward_action_ = new QAction( this ) );
   find_selection_backward_action_->setShortcut( SHIFT+CTRL+Key_H );
-  find_selection_backward_action_->setShortcutContext( Qt::WidgetShortcut );
+  find_selection_backward_action_->setShortcutContext( WidgetShortcut );
   connect( find_selection_backward_action_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
   addAction( replace_action_ = new QAction( IconEngine::get( ICONS::FIND, path_list ), "Replace", this ) );
   replace_action_->setShortcut( CTRL+Key_R );
-  replace_action_->setShortcutContext( Qt::WidgetShortcut );
+  replace_action_->setShortcutContext( WidgetShortcut );
   connect( replace_action_, SIGNAL( triggered() ), SLOT( replaceFromDialog() ) );
 
   addAction( replace_again_action_ = new QAction( "Replace again", this ) );
   replace_again_action_->setShortcut( CTRL+Key_T );
-  replace_again_action_->setShortcutContext( Qt::WidgetShortcut );
+  replace_again_action_->setShortcutContext( WidgetShortcut );
   connect( replace_again_action_, SIGNAL( triggered() ), SLOT( replaceAgainForward() ) );
  
   addAction( replace_again_backward_action_ = new QAction( this ) );
   replace_again_backward_action_->setShortcut( SHIFT+CTRL+Key_T );
-  replace_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
+  replace_again_backward_action_->setShortcutContext( WidgetShortcut );
   connect( replace_again_backward_action_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
 
   addAction( goto_line_action_ = new QAction( "&Goto line number", this ) );
   goto_line_action_->setShortcut( CTRL+Key_L );
-  goto_line_action_->setShortcutContext( Qt::WidgetShortcut );
+  goto_line_action_->setShortcutContext( WidgetShortcut );
   connect( goto_line_action_, SIGNAL( triggered() ), SLOT( selectLineFromDialog() ) );
   
   // remove line action
   QAction* remove_line_action( new QAction( this ) ); 
   addAction( remove_line_action );
   remove_line_action->setShortcut( CTRL+Key_K );
-  remove_line_action->setShortcutContext( Qt::WidgetShortcut );
+  remove_line_action->setShortcutContext( WidgetShortcut );
   connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
   
   // wrap mode
@@ -1000,7 +1037,7 @@ bool CustomTextEdit::_findForward( const TextSelection& selection, const bool& r
     }
     
     // case sensitivity
-    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive:Qt::CaseInsensitive );
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive:CaseInsensitive );
 
     // make a copy of current cursor
     QTextCursor found( cursor );
@@ -1096,7 +1133,7 @@ bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& 
     }
     
     // case sensitivity
-    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive:Qt::CaseInsensitive );
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive:CaseInsensitive );
 
     // make a copy of current cursor
     QTextCursor found( cursor );

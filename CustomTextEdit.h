@@ -364,6 +364,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! context menu event [overloaded]
   virtual void contextMenuEvent( QContextMenuEvent* );
     
+  //! repaint event
+  virtual void paintEvent( QPaintEvent* e );
+  
   //@}
   
   //! install default actions

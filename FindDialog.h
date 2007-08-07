@@ -57,13 +57,20 @@ class FindDialog: public QDialog, public Counter
 
   //! constructor
   FindDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
+  
+  //! retrieve editor
+  virtual CustomComboBox& editor( void ) const
+  {
+    Exception::checkPointer( editor_, DESCRIPTION( "editor_ is invalid" ) );
+    return *editor_;
+  }
 
   //! string to find
   virtual void setText( const QString& text )
   { 
     _addSearchedString( text );
-    _editor().setEditText( text );
-    _editor().lineEdit()->selectAll();
+    editor().setEditText( text );
+    editor().lineEdit()->selectAll();
   }
 
   //! synchronize searched strings and ComboBox
@@ -74,7 +81,7 @@ class FindDialog: public QDialog, public Counter
 
   //! string to find
   virtual QString text( void ) const
-  { return _editor().currentText(); }
+  { return editor().currentText(); }
 
   //! enable/disable RegExp
   virtual void enableRegExp( const bool& value )
@@ -91,7 +98,7 @@ class FindDialog: public QDialog, public Counter
   virtual TextSelection selection( const bool& no_increment ) const
   {
     
-    TextSelection out( _editor().currentText() );
+    TextSelection out( editor().currentText() );
     out.setFlag( TextSelection::BACKWARD, backward_checkbox_->isChecked() );
     out.setFlag( TextSelection::CASE_SENSITIVE, case_sensitive_checkbox_->isChecked() );
     out.setFlag( TextSelection::ENTIRE_WORD, entire_word_checkbox_->isChecked() );
@@ -119,7 +126,7 @@ class FindDialog: public QDialog, public Counter
   
   //! update combo box with current text
   virtual void _updateFindComboBox( void )
-  { _addSearchedString( _editor().currentText() ); }
+  { _addSearchedString( editor().currentText() ); }
   
   //! create Selection object when find button is pressed
   virtual void _find( const QString& text = QString() )
@@ -173,17 +180,10 @@ class FindDialog: public QDialog, public Counter
     if( searched_strings_.find( text ) == searched_strings_.end() )
     {
       searched_strings_.insert( text );
-      _editor().addItem( text );
+      editor().addItem( text );
     }
   }
-  
-  //! retrieve editor
-  virtual CustomComboBox& _editor( void ) const
-  {
-    Exception::checkPointer( editor_, DESCRIPTION( "editor_ is invalid" ) );
-    return *editor_;
-  }
-  
+    
   //! list of disabled buttons
   virtual std::vector<QAbstractButton*>& _disabledButtons( void )
   { return buttons_; }

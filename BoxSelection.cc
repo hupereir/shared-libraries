@@ -32,6 +32,9 @@
 #include "BoxSelection.h"
 #include "CustomTextEdit.h"
 
+#include <QPainter>
+#include <QScrollBar>
+
 using namespace std;
 
 //________________________________________________________________________
@@ -39,45 +42,79 @@ BoxSelection::BoxSelection( CustomTextEdit* parent ):
   Counter( "BoxSelection" ),
   parent_( parent ),
   state_( EMPTY )
-{ Debug::Throw( 0, "BoxSelection::BoxSelection.\n" ); }
-
+{ Debug::Throw( "BoxSelection::BoxSelection.\n" ); }  
+  
 //________________________________________________________________________
-bool BoxSelection::start( const QPoint& point )
+bool BoxSelection::start( QPoint point )
 {
-  Debug::Throw( 0, "BoxSelection::start.\n" );
+  Debug::Throw( "BoxSelection::start.\n" );
   if( state_ != EMPTY ) return false;
   
-  start_ = point;
+  point.setX( point.x() + parent_->horizontalScrollBar()->value() );
+  point.setY( point.y() + parent_->verticalScrollBar()->value() );
+  
+  begin_ = point;
+  end_ = point;
+  new_end_ = point;
   state_ = STARTED;
   return true;
 }
  
 //________________________________________________________________________
-bool BoxSelection::update( const QPoint& point )
+QRect BoxSelection::update( QPoint point )
 { 
-  Debug::Throw( 0, "BoxSelection::update.\n" );
-  if( state_ != STARTED ) return false;
+  Debug::Throw( "BoxSelection::update.\n" );
+  if( state_ != STARTED ) return QRect();
   
-  end_ = point;
-  return true;
+  point.setX( point.x() + parent_->horizontalScrollBar()->value() );
+  point.setY( point.y() + parent_->verticalScrollBar()->value() );
+  
+  end_ = new_end_; 
+  new_end_ = point;  
+  _updateRect();
+  
+  return rect_;
 }
 
 //________________________________________________________________________
-bool BoxSelection::finish( const QPoint& point )
+QRect BoxSelection::finish( QPoint point )
 { 
-  Debug::Throw( 0, "BoxSelection::finish.\n" );
-  if( state_ != STARTED ) return false;
+  Debug::Throw( "BoxSelection::finish.\n" );
+  if( state_ != STARTED ) return QRect();
   
+  point.setX( point.x() + parent_->horizontalScrollBar()->value() );
+  point.setY( point.y() + parent_->verticalScrollBar()->value() );
+  
+  end_ = new_end_; 
+  new_end_ = point;
+  _updateRect();
+
   state_ = FINISHED;
-  end_ = point;
-  return true;
+  return rect_;
 }
 
 //________________________________________________________________________
 bool BoxSelection::clear( void )
 { 
-  Debug::Throw( 0, "BoxSelection::clear.\n" );
+  Debug::Throw( "BoxSelection::clear.\n" );
   if( state_ != FINISHED ) return false;
   state_ = EMPTY;
   return true;
+}
+
+//________________________________________________________________________
+void BoxSelection::_updateRect( void )
+{
+  
+  // this can probably be made smarter when considering update
+  // from previous call
+  int x_min( min( begin_.x(), min( end_.x(), new_end_.x() ) ) );
+  int x_max( max( begin_.x(), max( end_.x(), new_end_.x() ) ) );
+  
+  int y_min( min( begin_.y(), min( end_.y(), new_end_.y() ) ) );
+  int y_max( max( begin_.y(), max( end_.y(), new_end_.y() ) ) );
+  
+  rect_ = QRect( QPoint( x_min, y_min ), QPoint( x_max, y_max ) );
+  return;
+  
 }

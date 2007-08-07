@@ -57,10 +57,10 @@ void FindDialog::synchronize( void )
 {
 
   Debug::Throw( "FindDialog::synchronize.\n" );
-  _editor().clear();
+  editor().clear();
   
   for( set<QString>::iterator iter = searched_strings_.begin(); iter != searched_strings_.end(); iter++ )
-  { _editor().addItem( *iter ); }
+  { editor().addItem( *iter ); }
 
 }
 
@@ -109,21 +109,21 @@ void FindDialog::_createEditor( void )
   _mainLayout().addWidget( label );
   
   _mainLayout().addWidget( editor_ = new CustomComboBox( this ) );
-  _editor().setEditable( true );
-  _editor().setCaseSensitive( Qt::CaseSensitive );
-  _editor().setAutoCompletion( true );
+  editor().setEditable( true );
+  editor().setCaseSensitive( Qt::CaseSensitive );
+  editor().setAutoCompletion( true );
     
-  connect( _editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
-  connect( _editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
-  connect( _editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
-  connect( _editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( const QString& ) ) );
+  connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
+  connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
+  connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
+  connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( const QString& ) ) );
 
   /* 
     replace_editor_ maximum size is arbitrary but is here
     to avoid that the widget size gets too big when input
     text selection are wery large (i.e. multilines 
   */
-  //_editor().setMaximumSize( QSize( 250, 50 ) );
+  //editor().setMaximumSize( QSize( 250, 50 ) );
   //setMaximumSize( 250, 200 );
 }
 

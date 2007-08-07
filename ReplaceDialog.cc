@@ -79,7 +79,7 @@ void ReplaceDialog::synchronize( void )
   _replaceEditor().setEditText("");
   
   // set focus to find editor
-  _editor().setFocus();
+  editor().setFocus();
   
 }
 
@@ -93,7 +93,7 @@ void ReplaceDialog::polish( void )
   FindDialog::polish();
   
   // disable callbacks on find editor
-  disconnect( _editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), this, SLOT( _findNoIncrement( const QString& ) ) ); 
+  disconnect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), this, SLOT( _findNoIncrement( const QString& ) ) ); 
   
   return;
 
