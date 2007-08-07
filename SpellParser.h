@@ -64,45 +64,23 @@ namespace SPELLCHECK
 
     //! highlight color
     /* returns true if changed */
-    virtual bool setColor( const QColor& color )
-    { 
-      Debug::Throw( "SpellParser::setColor.\n" );
-      if( color == color_ || !color.isValid() ) return false;
-      else { 
-        color_ = color; 
-        return true;
-      }
-    }
+    virtual bool setColor( const QColor& color );
 
+    //! color
+    virtual const QColor& color( void ) const
+    { return color_; }
+    
     //! font format
     /* returns true if changed */
-    virtual bool setFontFormat( const unsigned int& format )
-    { 
-      
-      Debug::Throw( "SpellParser::setFontFormat.\n" );
-      if( format_ == format ) return false;
-      else {
-        format_ = format;
-        return true;
-      }
-      
-    }
-          
-    //! formated font
-    virtual QTextCharFormat format() const
-    {
-      
-      QTextCharFormat out;
-      
-      out.setFontWeight( (format_&FORMAT::BOLD) ? QFont::Bold : QFont::Normal );
-      out.setFontItalic( format_&FORMAT::ITALIC );
-      out.setFontUnderline( format_&FORMAT::UNDERLINE );
-      out.setFontOverline( format_&FORMAT::OVERLINE );
-      out.setFontStrikeOut( format_&FORMAT::STRIKE );
-      if( color_.isValid() ) out.setForeground( color_ );
-      
-      return out;
-    }
+    virtual bool setFontFormat( const unsigned int& format );
+    
+    //! font format
+    virtual const unsigned int& fontFormat( void ) const
+    { return font_format_; }
+    
+    //! format (combine format flags and color)
+    virtual const QTextCharFormat& format() const
+    { return format_;  }
 
     //! enabled. Returns true if changed.
     bool setEnabled( const bool& value )
@@ -121,6 +99,9 @@ namespace SPELLCHECK
     { return interface_; }
     
     private:
+
+    //! update format
+    void _updateFormat( void );
     
     //! enabled
     bool enabled_;
@@ -132,8 +113,11 @@ namespace SPELLCHECK
     QColor color_;
     
     //! font format (is a bitwise or of TextFormatInfo bits)
-    unsigned int format_;
-        
+    unsigned int font_format_;
+    
+    //! font format (Qt style)
+    QTextCharFormat format_;
+    
   };
 
 };

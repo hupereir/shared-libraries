@@ -42,9 +42,11 @@ using namespace SPELLCHECK;
 SpellParser::SpellParser( void ):
     Counter( "SpellParser" ),
     enabled_( false ),
-    color_( Qt::red ),
-    format_( FORMAT::DEFAULT )
-{ Debug::Throw( "SpellParser::SpellParser.\n" ); }
+    font_format_( FORMAT::DEFAULT )
+{ 
+  Debug::Throw( "SpellParser::SpellParser.\n" ); 
+  _updateFormat();
+}
 
 //____________________________________________________________________________
 Word::Set SpellParser::parse( const QString& text )
@@ -72,4 +74,44 @@ Word::Set SpellParser::parse( const QString& text )
   }
   
   return words;
+}
+
+//___________________________________________________________
+bool SpellParser::setColor( const QColor& color )
+{ 
+  Debug::Throw( "SpellParser::setColor.\n" );
+  if( color == color_ || !color.isValid() ) return false;
+  else { 
+    color_ = color; 
+    _updateFormat();
+    return true;
+  }
+}
+
+//___________________________________________________________
+bool SpellParser::setFontFormat( const unsigned int& format )
+{ 
+      
+  Debug::Throw( "SpellParser::setFontFormat.\n" );
+  if( font_format_ == format ) return false;
+  else {
+    font_format_ = format;
+    _updateFormat();
+    return true;
+  }
+  
+}
+
+//_____________________________________________________
+void SpellParser::_updateFormat( void )
+{
+      
+  Debug::Throw( "SpellParser::_updateFormat.\n" );
+  format_.setFontWeight( (font_format_&FORMAT::BOLD) ? QFont::Bold : QFont::Normal );
+  format_.setFontItalic( font_format_&FORMAT::ITALIC );
+  format_.setFontUnderline( font_format_&FORMAT::UNDERLINE );
+  format_.setFontOverline( font_format_&FORMAT::OVERLINE );
+  format_.setFontStrikeOut( font_format_&FORMAT::STRIKE );
+  if( color_.isValid() )  format_.setForeground( color_ );
+      
 }
