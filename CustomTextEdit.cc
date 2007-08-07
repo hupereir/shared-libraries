@@ -289,8 +289,7 @@ void CustomTextEdit::selectWord( void )
 
   return;
   
-}
-  
+} 
 
 //________________________________________________
 void CustomTextEdit::selectLine( void )
@@ -300,7 +299,9 @@ void CustomTextEdit::selectLine( void )
   QTextCursor cursor( textCursor() );
   QTextBlock block( cursor.block() );
   int begin( block.position() );
-  int end( block.position() + (block == document()->end() ? block.length()-1:block.length()) );
+  int end( block.position() + block.length() );
+  if( !block.next().isValid() ) end--;
+  
   cursor.setPosition( begin );
   cursor.setPosition( end, QTextCursor::KeepAnchor );
      
