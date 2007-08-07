@@ -49,7 +49,9 @@ void BaseTextHighlight::highlightBlock( const QString& text )
   if( !isEnabled() ) return;
   
   TextBlockData* data = dynamic_cast<TextBlockData*>( currentBlockUserData() );  
-  if( !( data && data->isCurrentBlock() ) ) return;
+  if( !( data && data->isCurrentBlock() ) ) 
+  { return; }
+  
   QTextCharFormat format;
   format.setBackground( color_ );
   setFormat( 0, text.size(), format );

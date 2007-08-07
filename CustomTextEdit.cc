@@ -654,20 +654,21 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
     {
       
       case 1:
-      {
-        if( event->modifiers() == ControlModifier ) 
-        { 
-          if( box_selection_.state() == BoxSelection::STARTED ) box_selection_.finish( event->pos() );
-          if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
-          box_selection_.start( event->pos() ); 
-        } else {
-          
-          if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
-          QTextEdit::mousePressEvent( event );
-        
-        }
-        
-      }
+//       {
+//         if( event->modifiers() == ControlModifier ) 
+//         { 
+//           if( box_selection_.state() == BoxSelection::STARTED ) box_selection_.finish( event->pos() );
+//           if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
+//           box_selection_.start( event->pos() ); 
+//         } else {
+//           
+//           if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
+//           QTextEdit::mousePressEvent( event );
+//         
+//         }
+//         
+//       }
+      QTextEdit::mousePressEvent( event );
       break;
       
       case 2:
@@ -690,7 +691,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
     
   } else {
     
-    if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
+    // if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
     QTextEdit::mousePressEvent( event );
   
   } return;
@@ -710,23 +711,23 @@ void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
   
 }
 
-//________________________________________________
-void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
-{
-
-  Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
-  if( event->buttons() == LeftButton && event->modifiers() == ControlModifier )
-  {
-    if( box_selection_.state() != BoxSelection::STARTED ) box_selection_.start( event->pos() );
-    else  {
-      box_selection_.update( event->pos() );
-
-      QRect rect( box_selection_.update( event->pos() ) );
-      repaint( rect );
-    }
-  } else return QTextEdit::mouseMoveEvent( event );
-  
-}
+// //________________________________________________
+// void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
+// {
+// 
+//   Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
+//   if( event->buttons() == LeftButton && event->modifiers() == ControlModifier )
+//   {
+//     if( box_selection_.state() != BoxSelection::STARTED ) box_selection_.start( event->pos() );
+//     else  {
+//       box_selection_.update( event->pos() );
+// 
+//       QRect rect( box_selection_.update( event->pos() ) );
+//       repaint( rect );
+//     }
+//   } else return QTextEdit::mouseMoveEvent( event );
+//   
+// }
 
 //________________________________________________
 void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
@@ -734,8 +735,8 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
  
   Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
 
-  if( event->button() == LeftButton && box_selection_.state() == BoxSelection::STARTED )
-  { box_selection_.finish( event->pos() ); }
+//   if( event->button() == LeftButton && box_selection_.state() == BoxSelection::STARTED )
+//   { box_selection_.finish( event->pos() ); }
   
   if( event->button() == LeftButton && click_counter_.counts() > 1 ) 
   { 
@@ -1281,7 +1282,7 @@ void CustomTextEdit::_clearHighlightedBlock( void )
     if( data && data->isCurrentBlock() ) 
     {
       data->setIsCurrentBlock( false );
-      document()->markContentsDirty(block.position(), block.length());
+      document()->markContentsDirty(block.position(), block.length()-1);
     }
     
   }
@@ -1374,7 +1375,8 @@ void CustomTextEdit::_highlightCurrentBlock( void )
   
   _clearHighlightedBlock();
   data->setIsCurrentBlock( true );
-  document()->markContentsDirty(block.position(), block.length());
+  
+  document()->markContentsDirty(block.position(), block.length()-1);
   
   return; 
 }
