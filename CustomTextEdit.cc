@@ -280,16 +280,12 @@ void CustomTextEdit::selectWord( void )
   for( ;begin < local_position; local_position-- ) { cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor ); }
   for( ;local_position < end; local_position++ ) { cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor ); }
   
-  // copy selected text to clipboard, in both text and HTML
-  QMimeData *data( new QMimeData() );
-  data->setText( cursor.selectedText() );
-  data->setHtml( cursor.selectedText() );
-  qApp->clipboard()->setMimeData( data, QClipboard::Selection );
-  
-  // qApp->clipboard()->setText( cursor.selectedText(), QClipboard::Selection );
-
   // assign cursor to Text editor
   setTextCursor( cursor );
+
+  // copy selected text to clipboard
+  if( qApp->clipboard()->supportsSelection() )
+  { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
 
   return;
   
@@ -307,21 +303,15 @@ void CustomTextEdit::selectLine( void )
   int end( block.position() + (block == document()->end() ? block.length()-1:block.length()) );
   cursor.setPosition( begin );
   cursor.setPosition( end, QTextCursor::KeepAnchor );
-  
-  // retrieve selected text
-  // append end of line
-  QString selection( cursor.selectedText() );
-  
-  // copy selected text to clipboard, in both text and HTML
-  QMimeData *data( new QMimeData() );
-  data->setText( selection );
-  data->setHtml( selection );
-  qApp->clipboard()->setMimeData( data, QClipboard::Selection );
-    
+     
   // assign cursor to text editor and make sure it is visible
   setTextCursor( cursor );
   ensureCursorVisible();
   
+  // copy selected text to clipboard
+  if( qApp->clipboard()->supportsSelection() )
+  { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
+ 
   return;
 
 }
@@ -981,7 +971,8 @@ TextSelection CustomTextEdit::_selection( void ) const
   
   // try set from current selection
   if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );
-  else out.setText( qApp->clipboard()->text( QClipboard::Selection ) );
+  else if( qApp->clipboard()->supportsSelection() )
+  { out.setText( qApp->clipboard()->text( QClipboard::Selection ) ); }
     
   // copy attributes from last selection
   out.setFlag( TextSelection::CASE_SENSITIVE, _lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
@@ -1322,7 +1313,8 @@ bool CustomTextEdit::_setTabSize( const int& tab_size )
   // define normal tabs
   normal_tab_ = "\t";
   normal_tab_regexp_.setPattern( "^(\\t)+" );
-  setTabStopWidth( tab_size*fontMetrics().width(" ") );
+
+  setTabStopWidth( tab_size*QFontMetrics(currentFont()).width(" ") );
   
   // define emulated tabs
   emulated_tab_ = QString( tab_size, ' ' );
