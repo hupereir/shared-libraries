@@ -32,7 +32,6 @@
   \date $Date$
 */
 
-#include <QTextCharFormat>
 #include <QColor>
 #include <QFont>
 #include <QString>
@@ -77,11 +76,7 @@ namespace SPELLCHECK
     //! font format
     virtual const unsigned int& fontFormat( void ) const
     { return font_format_; }
-    
-    //! format (combine format flags and color)
-    virtual const QTextCharFormat& format() const
-    { return format_;  }
-
+   
     //! enabled. Returns true if changed.
     bool setEnabled( const bool& value )
     { 
@@ -99,9 +94,6 @@ namespace SPELLCHECK
     { return interface_; }
     
     private:
-
-    //! update format
-    void _updateFormat( void );
     
     //! enabled
     bool enabled_;
@@ -114,10 +106,7 @@ namespace SPELLCHECK
     
     //! font format (is a bitwise or of TextFormatInfo bits)
     unsigned int font_format_;
-    
-    //! font format (Qt style)
-    QTextCharFormat format_;
-    
+        
   };
 
 };
