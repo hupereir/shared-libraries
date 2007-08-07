@@ -590,6 +590,7 @@ void CustomTextEdit::selectLineFromDialog( void )
   select_line_dialog_->editor().clear();
   QtUtil::centerOnPointer( select_line_dialog_ );
   select_line_dialog_->show();
+  select_line_dialog_->editor().setFocus();
   
 }
 
@@ -651,7 +652,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       {
         if( event->modifiers() == Qt::ControlModifier ) 
         { 
-          if( box_selection_.state() == BoxSelection::STARTED ) box_selection_.finish( event->pos() ).position() );
+          if( box_selection_.state() == BoxSelection::STARTED ) box_selection_.finish( event->pos() );
           if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
           box_selection_.start( event->pos() ); 
         } else {
@@ -711,8 +712,8 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
   Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
   if( event->button() == LeftButton && event->modifiers() == Qt::ControlModifier )
   {
-    if( box_selection_.state() != BoxSelection::STARTED ) box_selection_.start(  event->pos() ).position() );
-    else  box_selection_.start(  event->pos() ).update() );
+    if( box_selection_.state() != BoxSelection::STARTED ) box_selection_.start(  event->pos() );
+    else  box_selection_.update( event->pos() );
   } else return CustomTextEdit::mouseMoveEvent( event );
   
 }
