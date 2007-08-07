@@ -68,6 +68,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   highlight_enabled_( false ),
   highlight_available_( false ),
   synchronize_( false ),
+  box_selection_( this ),
   remove_line_buffer_( this ),
   click_counter_( this )
 {

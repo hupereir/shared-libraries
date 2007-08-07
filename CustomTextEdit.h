@@ -41,6 +41,7 @@
 #include <vector>
 
 #include "BaseTextHighlight.h"
+#include "BoxSelection.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Key.h"
@@ -619,6 +620,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! synchronization flag
   bool synchronize_;
+  
+  //! box selection
+  BoxSelection box_selection_;
   
   //! remove_line buffer
   RemoveLineBuffer remove_line_buffer_;
