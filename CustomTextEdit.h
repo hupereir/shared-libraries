@@ -344,9 +344,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! mouse release event [overloaded]
   virtual void mousePressEvent( QMouseEvent* );
   
-  //! mouse press event [overloaded]
-  virtual void mouseReleaseEvent( QMouseEvent* );
-  
   //! mouse double click event [overloaded]
   /*! 
     for left button, double click events are handled 
@@ -355,6 +352,12 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   */
   virtual void mouseDoubleClickEvent( QMouseEvent* );
   
+  //! mouse press event [overloaded]
+  virtual void mouseMoveEvent( QMouseEvent* );
+ 
+  //! mouse press event [overloaded]
+  virtual void mouseReleaseEvent( QMouseEvent* );
+
   //! keypress event
   virtual void keyPressEvent( QKeyEvent* );
   

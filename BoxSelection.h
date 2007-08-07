@@ -64,7 +64,7 @@ class BoxSelection: public Counter
   bool finish( const QPoint& point );
   
   //! clear
-  bool clear( const QPoint& point );
+  bool clear( void );
   
   //! state
   const State& state( void ) const

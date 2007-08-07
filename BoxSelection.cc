@@ -74,7 +74,7 @@ bool BoxSelection::finish( const QPoint& point )
 }
 
 //________________________________________________________________________
-bool BoxSelection::clear( const QPoint& point )
+bool BoxSelection::clear( void )
 { 
   Debug::Throw( 0, "BoxSelection::clear.\n" );
   if( state_ != FINISHED ) return false;

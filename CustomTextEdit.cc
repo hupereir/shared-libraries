@@ -648,7 +648,20 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
     {
       
       case 1:
-      QTextEdit::mousePressEvent( event );
+      {
+        if( event->modifiers() == Qt::ControlModifier ) 
+        { 
+          if( box_selection_.state() == BoxSelection::STARTED ) box_selection_.finish( event->pos() ).position() );
+          if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
+          box_selection_.start( event->pos() ); 
+        } else {
+          
+          if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
+          QTextEdit::mousePressEvent( event );
+        
+        }
+        
+      }
       break;
       
       case 2:
@@ -669,8 +682,38 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       break;
     }
     
-  } else QTextEdit::mousePressEvent( event );
+  } else {
+    
+    if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
+    QTextEdit::mousePressEvent( event );
+  
+  } return;
+  
+}
+
+//________________________________________________
+void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
+{
+  
+  Debug::Throw( "CustomTextEdit::mouseDoubleClickEvent.\n" );
+  
+  // check button
+  if( event->button() == LeftButton ) mousePressEvent( event );
+  else QTextEdit::mouseDoubleClickEvent( event );
   return;
+  
+}
+
+//________________________________________________
+void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
+{
+
+  Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
+  if( event->button() == LeftButton && event->modifiers() == Qt::ControlModifier )
+  {
+    if( box_selection_.state() != BoxSelection::STARTED ) box_selection_.start(  event->pos() ).position() );
+    else  box_selection_.start(  event->pos() ).update() );
+  } else return CustomTextEdit::mouseMoveEvent( event );
   
 }
 
@@ -679,6 +722,9 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 {
  
   Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
+
+  if( event->button() == LeftButton && box_selection_.state() == BoxSelection::STARTED )
+  { box_selection_.finish( event->pos() ); }
   
   if( event->button() == LeftButton && click_counter_.counts() > 1 ) 
   { 
@@ -693,18 +739,6 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
   
 }
   
-//________________________________________________
-void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
-{
-  
-  Debug::Throw( "CustomTextEdit::mouseDoubleClickEvent.\n" );
-  
-  // check button
-  if( event->button() == LeftButton ) mousePressEvent( event );
-  else QTextEdit::mouseDoubleClickEvent( event );
-  return;
-  
-}
 
 //________________________________________________
 void CustomTextEdit::keyPressEvent( QKeyEvent* event )
