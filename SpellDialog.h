@@ -82,12 +82,20 @@ namespace SPELLCHECK
       return *editor_; 
     }
     
-    //! set dictionary
+    //! dictionary
     bool setDictionary( const std::string& dict );
     
-    //! set filter
-    bool setFilter( const std::string& filter );
+    //! dictionary
+    std::string dictionary( void ) const
+    { return qPrintable( dictionary_->itemText( dictionary_->currentIndex() ) ); }
     
+    //! filter
+    bool setFilter( const std::string& filter );
+        
+    //! dictionary
+    std::string filter( void ) const
+    { return qPrintable( filter_->itemText( filter_->currentIndex() ) ); }
+
     //! go to next word to be checked
     void nextWord( void );
 
