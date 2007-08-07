@@ -105,7 +105,7 @@ namespace SPELLCHECK
     }
 
     //! enabled. Returns true if changed.
-    virtual bool setEnabled( const bool& value )
+    bool setEnabled( const bool& value )
     { 
       if( enabled_ == value ) return false;
       enabled_ = value; 
@@ -113,7 +113,7 @@ namespace SPELLCHECK
     }
     
     //! enabled
-    virtual const bool& isEnabled( void ) const
+    const bool& isEnabled( void ) const
     { return enabled_; }
           
     //! spell interface
