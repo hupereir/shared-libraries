@@ -362,14 +362,14 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
   Debug::Throw( "QtUtil::centerOnWidget.\n" );
   if( !widget ) return centerOnDesktop( size );
 
-  Debug::Throw() << "QtUtil::centerOnWidget - size: (" << size.width() << "," << size.height() << ")" << endl;
+  Debug::Throw(0) << "QtUtil::centerOnWidget - size: (" << size.width() << "," << size.height() << ")" << endl;
   
   // get parent position and size
   QPoint point( widget->pos() );
   QSize parent_size( widget->frameSize() );
 
-  Debug::Throw() << "QtUtil::centerOnWidget - parent size: (" << parent_size.width() << "," << parent_size.height() << ")" << endl;
-  Debug::Throw() << "QtUtil::centerOnWidget - parent position: (" << point.x() << "," << point.y() << ")" << endl;
+  Debug::Throw(0) << "QtUtil::centerOnWidget - parent size: (" << parent_size.width() << "," << parent_size.height() << ")" << endl;
+  Debug::Throw(0) << "QtUtil::centerOnWidget - parent position: (" << point.x() << "," << point.y() << ")" << endl;
      
   point.setX( point.x() + ( parent_size.width() - size.width() )/2 );
   point.setY( point.y() + ( parent_size.height() - size.height() )/2 );

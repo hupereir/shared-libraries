@@ -51,6 +51,7 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
   connect( this, SIGNAL( aboutToShow() ), SLOT( _loadFiles() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  updateConfiguration();
   
   // clean action
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );

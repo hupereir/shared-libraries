@@ -40,6 +40,7 @@
 
 #include <vector>
 
+#include "BaseTextHighlight.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Key.h"
@@ -68,7 +69,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
     
   //! enable/disable highlight
   virtual void setHighlightEnabled( const bool& );
-  
+ 
   //! retrieve number of blocks in document
   int blockCount( void ) const;
   
@@ -212,6 +213,14 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   { return emulated_tab_; }
 
   //@}
+
+  //! text highlight
+  BaseTextHighlight& textHighlight( void )
+  {
+    BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
+    Exception::check( highlights.size() == 1, "invalid association to TextHighlight.\n" );
+    return **highlights.begin();
+  }
   
   signals:
   
@@ -385,9 +394,22 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual unsigned int _replaceInRange( const TextSelection& selection, const QTextCursor& cursor );
   
   //@}
+
+  //!@name paragraph highlight
+  //@{
   
+  //! enable/disable current paragraph highlight
+  virtual const bool& _highlightAvailable( void ) const
+  { return highlight_available_; }
+
+  //! enable/disable current paragraph highlight
+  virtual const bool& _highlightEnabled( void ) const
+  { return highlight_enabled_; }
+    
   //! clear highlighted block
   virtual void _clearHighlightedBlock( void );
+  
+  //@}
   
   //! toggle insertion mode
   virtual void _toggleInsertMode( void );
@@ -512,12 +534,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! current block highlighting is available
   bool highlight_available_;
-  
-  //! current block highlighting format
-  QTextBlockFormat highlight_format_;
-
-  //! default block format
-  QTextBlockFormat default_format_;
   
   //@}
 

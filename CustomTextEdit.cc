@@ -34,6 +34,7 @@
 #include <QRegExp>
 #include <QScrollBar>
 #include <QTextBlock>
+#include <QTextLayout>
 
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
@@ -77,6 +78,11 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   CustomTextDocument* document( new CustomTextDocument(0) );
   BASE::Key::associate( this, document );
   setDocument( document );
+ 
+  // text highlight
+  BaseTextHighlight* highlight = new BaseTextHighlight( document );
+  BASE::Key::associate( document, highlight );
+  highlight->setEnabled( false );
   
   // actions
   _installActions();
@@ -293,9 +299,12 @@ void CustomTextEdit::selectLine( void )
   Debug::Throw( "CustomTextEdit::selectLine.\n" );
   
   QTextCursor cursor( textCursor() );
+  QTextBlock block( cursor.block() );
+  cursor.setPosition( block.position() );
+  cursor.setPosition( block.position() + block.length(), QTextCursor::KeepAnchor );
   
   // perform selection
-  cursor.select( QTextCursor::BlockUnderCursor );
+  //cursor.select( QTextCursor::BlockUnderCursor );
   
   // copy selected text to clipboard, in both text and HTML
   QMimeData *data( new QMimeData() );
@@ -386,18 +395,16 @@ void CustomTextEdit::updateConfiguration( void )
   tabEmulationAction()->setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
   
   // paragraph highlighting
+  setHighlightEnabled( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
   QColor highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
   if( highlight_color.isValid() )
   {
+    
     highlight_available_ = true;
+    textHighlight().setEnabled( _highlightAvailable() && _highlightEnabled() );
+    textHighlight().setHighlightColor( highlight_color );
+    _highlightCurrentBlock();
     
-    highlight_format_ = QTextBlockFormat();
-    highlight_format_.setBackground( highlight_color );
-    
-    default_format_ = QTextBlockFormat();
-    default_format_.setBackground( palette().color( QPalette::Base ) );
-    
-    if( highlight_enabled_ ) _highlightCurrentBlock();
   } else {
     
     highlight_available_ = false;
@@ -1190,41 +1197,20 @@ void CustomTextEdit::_clearHighlightedBlock( void )
   Debug::Throw( "CustomTextEdit::_clearHighlightedBlock.\n" );
   
   // loop over all blocks
-  vector<QTextBlock> blocks;
   for( QTextBlock block = document()->begin(); block.isValid(); block = block.next() )
   {
     
-    if( textCursor().block() == block ) continue;
+    if( textCursor().block() == block && !( _highlightEnabled() && _highlightAvailable() ) ) continue;
     
     TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
     if( data && data->isCurrentBlock() ) 
     {
-      // reset data
-      blocks.push_back( block ); 
-      data->setCurrentBlock( false );
-      continue;
-    }
-    
-    // try retrieve data
-    // check if block is current
-    if( block.blockFormat() == highlight_format_ )
-    { 
-      blocks.push_back( block ); 
-      continue;
+      data->setIsCurrentBlock( false );
+      document()->markContentsDirty(block.position(), block.length());
     }
     
   }
     
-    
-  // reset textBlockFormat
-  for( vector<QTextBlock>::iterator iter = blocks.begin(); iter != blocks.end(); iter++ )
-  {
-    QTextCursor cursor( *iter );
-    cursor.joinPreviousEditBlock();
-    cursor.setBlockFormat( default_format_ );
-    cursor.endEditBlock();    
-  }
-  
   return;
   
 }
@@ -1295,30 +1281,27 @@ void CustomTextEdit::_insertTab( void )
 
 //________________________________________________
 void CustomTextEdit::_highlightCurrentBlock( void )
-{
+{ 
   Debug::Throw( "CustomTextEdit::_highlightCurrentBlock.\n" );
   
   // check if highlight is available and enabled
-  if( !( highlight_enabled_ && highlight_available_ ) ) return;
+  if( !( _highlightEnabled() && _highlightAvailable() ) ) return;
 
   // retrieve current block
-  QTextCursor cursor( textCursor().block() );
-  QTextBlock block( textCursor().block() );
+  QTextBlock block( textCursor().block() );  
   
-  // try retrieve data, create if not found
-  TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
-  if( !data ) block.setUserData( data = new TextBlockData() );
-
-  // clear previously highlighted paragraphs
+  TextBlockData* data = dynamic_cast<TextBlockData*>( block.userData() );
+  if( !data )
+  {
+    data = new TextBlockData();
+    block.setUserData( data );
+  } else if( data->isCurrentBlock() ) return;
+  
   _clearHighlightedBlock();
+  data->setIsCurrentBlock( true );
+  document()->markContentsDirty(block.position(), block.length());
   
-  // set block as active
-  data->setCurrentBlock( true );
-  cursor.joinPreviousEditBlock();
-  cursor.setBlockFormat( highlight_format_ );
-  cursor.endEditBlock();
-  
-  return;
+  return; 
 }
   
 //________________________________________________

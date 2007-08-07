@@ -110,7 +110,11 @@ bool XmlFileList::read( void )
 bool XmlFileList::write( void )
 {
   Debug::Throw( "XmlFileList::Write.\n" );
-  if( db_file_.empty() ) return false;
+  if( db_file_.empty() ) 
+  {
+    Debug::Throw( "XmlFileList::Write - no file.\n" );    
+    return false;
+  }
   
   // output file
   QFile out( db_file_.c_str() );

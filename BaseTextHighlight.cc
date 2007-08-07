@@ -1,6 +1,3 @@
-#ifndef TextBlockData_h
-#define TextBlockData_h
-
 // $Id$
 
 /******************************************************************************
@@ -19,52 +16,43 @@
 *                          
 * You should have received a copy of the GNU General Public License along with 
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA 02111-1307 USA                           
+* Place, Suite 330, Boston, MA  02111-1307 USA                           
 *                         
 *                         
 *******************************************************************************/
- 
+
 /*!
-  \file TextBlockData.h
-  \brief TextBlock data
+  \file BaseTextHighlight.cc
+  \brief syntax highlighting based on text patterns
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
-*/  
+*/
 
-#include <QTextBlockUserData>
-#include "Counter.h"
+#include "BaseTextHighlight.h"
+#include "TextBlockData.h"
 
-//! TextBlock data
-class TextBlockData: public QTextBlockUserData, public Counter
+using namespace std;
+
+//_________________________________________________________
+BaseTextHighlight::BaseTextHighlight( QTextDocument* document ):
+  QSyntaxHighlighter( document ),
+  Counter( "BaseTextHighlight" ),
+  enabled_( false )
+{ Debug::Throw( "BaseTextHighlight::BaseTextHighlight.\n" ); }
+
+//_________________________________________________________
+void BaseTextHighlight::highlightBlock( const QString& text )
 {
+  Debug::Throw( "BaseTextHighlight::highlightBlock.\n" );
   
-  public: 
+  // try retrieve data
+  if( !isEnabled() ) return;
   
-  //! constructor
-  TextBlockData():
-    QTextBlockUserData(),
-    Counter( "TextBlockData" ),
-    current_block_( false )
-  { Debug::Throw( "TextBlockData::TextBlockData.\n" ); }
-  
-  //! destructor
-  virtual ~TextBlockData( void )
-  { Debug::Throw( "TextBlockData::~TextBlockData.\n" ); }
-  
-  //! active block
-  const bool& isCurrentBlock( void ) const
-  { return current_block_; }
-  
-  //! active block
-  void setIsCurrentBlock( const bool& value )
-  { current_block_ = value; }
-  
-  private:
-  
-  //! set to true for current block
-  bool current_block_;
-    
-};
-
-#endif
+  TextBlockData* data = dynamic_cast<TextBlockData*>( currentBlockUserData() );  
+  if( !( data && data->isCurrentBlock() ) ) return;
+  QTextCharFormat format;
+  format.setBackground( color_ );
+  setFormat( 0, text.size(), format );
+  return;
+}

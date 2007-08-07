@@ -1,5 +1,5 @@
-#ifndef TextBlockData_h
-#define TextBlockData_h
+#ifndef _BaseTextHighlight_h_
+#define _BaseTextHighlight_h_
 
 // $Id$
 
@@ -19,52 +19,65 @@
 *                          
 * You should have received a copy of the GNU General Public License along with 
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA 02111-1307 USA                           
+* Place, Suite 330, Boston, MA  02111-1307 USA                           
 *                         
 *                         
 *******************************************************************************/
- 
+
 /*!
-  \file TextBlockData.h
-  \brief TextBlock data
+  \file BaseTextHighlight.h
+  \brief current paragraph syntax highlighter
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
-*/  
+*/
 
-#include <QTextBlockUserData>
+#include <QSyntaxHighlighter>
+
 #include "Counter.h"
+#include "Debug.h"
+#include "Key.h"
 
-//! TextBlock data
-class TextBlockData: public QTextBlockUserData, public Counter
+//! syntax highlighting based on text patterns
+class BaseTextHighlight: public QSyntaxHighlighter, public BASE::Key, public Counter
 {
   
-  public: 
+  public:
   
   //! constructor
-  TextBlockData():
-    QTextBlockUserData(),
-    Counter( "TextBlockData" ),
-    current_block_( false )
-  { Debug::Throw( "TextBlockData::TextBlockData.\n" ); }
+  BaseTextHighlight( QTextDocument* );
   
-  //! destructor
-  virtual ~TextBlockData( void )
-  { Debug::Throw( "TextBlockData::~TextBlockData.\n" ); }
+  //! highlight paragraph
+  virtual void highlightBlock( const QString& text );
+    
+  //! enable highlight. Returns true if changed
+  bool setEnabled( const bool& state )
+  { 
+    if( enabled_ == state ) return false;
+    enabled_ = state; 
+    return true;
+  }
   
-  //! active block
-  const bool& isCurrentBlock( void ) const
-  { return current_block_; }
+  //! true if enabled
+  const bool& isEnabled( void ) const
+  { return enabled_; }
   
-  //! active block
-  void setIsCurrentBlock( const bool& value )
-  { current_block_ = value; }
+  //! highlight color
+  void setHighlightColor( const QColor& color )
+  { color_ = color; }
+  
+  //! retrieve highlight color
+  const QColor& highlightColor( void ) const
+  { return color_; }
   
   private:
   
-  //! set to true for current block
-  bool current_block_;
-    
+  //! true if highlight is enabled
+  bool enabled_;
+
+  //! highlight color
+  QColor color_;
+  
 };
 
 #endif
