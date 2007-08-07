@@ -46,6 +46,7 @@
 #include "Key.h"
 #include "MultipleClickCounter.h"
 #include "RemoveLineBuffer.h"
+#include "Str.h"
 #include "TextPosition.h"
 #include "TextSelection.h"
 
@@ -215,10 +216,24 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@}
 
   //! text highlight
+  /*! it is needed to ensure only one text highlight works at a time */
+  void setTextHighlight( BaseTextHighlight* highlight )
+  {
+    
+    Debug::Throw( "CustomTextEdit::setTextHighlight.\n" );
+    BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
+    for( BASE::KeySet<BaseTextHighlight>::iterator iter = highlights.begin(); iter != highlights.end(); iter++ )
+    { delete *iter; }
+    
+    BASE::Key::associate( dynamic_cast<BASE::Key*>( document() ), highlight );
+    
+  }
+  
+  //! text highlight
   BaseTextHighlight& textHighlight( void )
   {
     BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
-    Exception::check( highlights.size() == 1, "invalid association to TextHighlight.\n" );
+    Exception::check( highlights.size() == 1, DESCRIPTION( Str("invalid association to text-highlight - count: " ).append<unsigned int>( highlights.size() ) ) );
     return **highlights.begin();
   }
   

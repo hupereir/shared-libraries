@@ -59,9 +59,9 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   layout()->addWidget( label );
   QtUtil::fixSize( label );
   
-  layout()->addWidget( line_edit_ = new CustomLineEdit( this ) );
-  connect( line_edit_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
-  connect( line_edit_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
+  layout()->addWidget( editor_ = new CustomLineEdit( this ) );
+  connect( editor_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
+  connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
   
   QHBoxLayout* h_layout( new QHBoxLayout() );
   h_layout->setMargin(0);

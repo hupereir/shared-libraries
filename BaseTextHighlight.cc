@@ -44,7 +44,6 @@ BaseTextHighlight::BaseTextHighlight( QTextDocument* document ):
 //_________________________________________________________
 void BaseTextHighlight::highlightBlock( const QString& text )
 {
-  Debug::Throw( "BaseTextHighlight::highlightBlock.\n" );
   
   // try retrieve data
   if( !isEnabled() ) return;

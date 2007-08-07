@@ -431,7 +431,7 @@ void QtUtil::centerOnParent( QWidget* widget )
   Exception::check( widget, DESCRIPTION( "invalid widget" ) );
   
   // get parent widget
-  QWidget* parent = widget->parentWidget();
+  QWidget* parent = widget->parentWidget()->window();
   if( !parent ) centerOnDesktop( widget );
   else widget->move( centerOnWidget( widget->frameSize(), parent ) );
   return;

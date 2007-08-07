@@ -395,13 +395,12 @@ void CustomTextEdit::updateConfiguration( void )
   tabEmulationAction()->setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
   
   // paragraph highlighting
-  setHighlightEnabled( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
   QColor highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
+  setHighlightEnabled( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
   if( highlight_color.isValid() )
   {
     
     highlight_available_ = true;
-    textHighlight().setEnabled( _highlightAvailable() && _highlightEnabled() );
     textHighlight().setHighlightColor( highlight_color );
     _highlightCurrentBlock();
     
@@ -411,7 +410,9 @@ void CustomTextEdit::updateConfiguration( void )
     _clearHighlightedBlock();
     
   }
-   
+  
+  textHighlight().setEnabled( _highlightAvailable() && _highlightEnabled() );
+
   return;
   
 }
@@ -585,6 +586,7 @@ void CustomTextEdit::selectLineFromDialog( void )
     connect( select_line_dialog_, SIGNAL( lineSelected( int ) ), SLOT( selectLine( int ) ) );
   }
   
+  select_line_dialog_->editor().clear();
   QtUtil::centerOnPointer( select_line_dialog_ );
   select_line_dialog_->show();
   

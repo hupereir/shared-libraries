@@ -62,7 +62,8 @@ class FindDialog: public QDialog, public Counter
   virtual void setText( const QString& text )
   { 
     _addSearchedString( text );
-    editor_->setEditText( text );
+    _editor().setEditText( text );
+    _editor().lineEdit()->selectAll();
   }
 
   //! synchronize searched strings and ComboBox
@@ -73,7 +74,7 @@ class FindDialog: public QDialog, public Counter
 
   //! string to find
   virtual QString text( void ) const
-  { return editor_->currentText(); }
+  { return _editor().currentText(); }
 
   //! enable/disable RegExp
   virtual void enableRegExp( const bool& value )
@@ -90,7 +91,7 @@ class FindDialog: public QDialog, public Counter
   virtual TextSelection selection( const bool& no_increment ) const
   {
     
-    TextSelection out( editor_->currentText() );
+    TextSelection out( _editor().currentText() );
     out.setFlag( TextSelection::BACKWARD, backward_checkbox_->isChecked() );
     out.setFlag( TextSelection::CASE_SENSITIVE, case_sensitive_checkbox_->isChecked() );
     out.setFlag( TextSelection::ENTIRE_WORD, entire_word_checkbox_->isChecked() );
@@ -118,7 +119,7 @@ class FindDialog: public QDialog, public Counter
   
   //! update combo box with current text
   virtual void _updateFindComboBox( void )
-  { _addSearchedString( editor_->currentText() ); }
+  { _addSearchedString( _editor().currentText() ); }
   
   //! create Selection object when find button is pressed
   virtual void _find( const QString& text = QString() )
@@ -172,12 +173,12 @@ class FindDialog: public QDialog, public Counter
     if( searched_strings_.find( text ) == searched_strings_.end() )
     {
       searched_strings_.insert( text );
-      editor_->addItem( text );
+      _editor().addItem( text );
     }
   }
   
   //! retrieve editor
-  virtual CustomComboBox& _editor( void )
+  virtual CustomComboBox& _editor( void ) const
   {
     Exception::checkPointer( editor_, DESCRIPTION( "editor_ is invalid" ) );
     return *editor_;

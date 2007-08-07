@@ -51,6 +51,10 @@ class SelectLineDialog: public QDialog, public Counter
   //! constructor
   SelectLineDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
   
+  //! retrieve editor
+  CustomLineEdit& editor( void ) const
+  { return *editor_; }
+
   signals:
   
   //! emmited when pressing the Ok button
@@ -60,12 +64,12 @@ class SelectLineDialog: public QDialog, public Counter
   
   //! retrieve line number and emit signal
   void _selectLine( const QString& text = QString() )
-  { emit lineSelected( Str( qPrintable( line_edit_->text() ) ).get<int>()-1 ); }
+  { emit lineSelected( Str( qPrintable( editor_->text() ) ).get<int>()-1 ); }
     
   private:
   
   //! line editor for text to find
-  CustomLineEdit* line_edit_;      
+  CustomLineEdit* editor_;      
     
 };
 #endif
