@@ -1303,11 +1303,7 @@ bool CustomTextEdit::_setTabSize( const int& tab_size )
   Debug::Throw() << "CustomTextEdit::_setTabSize - " << tab_size << endl;
   Exception::check( tab_size > 0, DESCRIPTION( "invalid tab size" ) );
   
-  if( tab_size == emulated_tab_.size() )
-  {
-    Debug::Throw() << "CustomTextEdit::_setTabSize - unchanged." << endl;
-    return false;
-  }
+  bool changed( tab_size == emulated_tab_.size() );
 
   // create strings and regular expressions
   // define normal tabs
@@ -1323,7 +1319,7 @@ bool CustomTextEdit::_setTabSize( const int& tab_size )
   what << "^(" << qPrintable( emulated_tab_ ) << ")" << "+";
   emulated_tab_regexp_.setPattern( what.str().c_str() );
   
-  return true;
+  return changed;
 }
  
 //_____________________________________________________________
