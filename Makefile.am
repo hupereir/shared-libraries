@@ -27,7 +27,6 @@ libbase_spellcheck_a_SOURCES =  \
   AutoSpellConfiguration.cc \
   DictionaryMenu.cc \
   FilterMenu.cc \
-  SpellCheckBlockData.cc \
   SpellCheckConfiguration.cc \
   SpellDialog.cc \
   SpellInterface.cc \
