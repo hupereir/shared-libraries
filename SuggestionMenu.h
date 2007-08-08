@@ -65,10 +65,10 @@ namespace SPELLCHECK {
     signals:
   
     //! signal emited when a file is selected  
-    void suggestionSelected( const std::string& );
+    void suggestionSelected( std::string );
    
     //! ignore word
-    void ignoreWord( const std::string& );
+    void ignoreWord( std::string );
         
     private slots:
     
