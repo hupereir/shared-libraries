@@ -74,20 +74,20 @@ void FilterMenu::_reset( void )
   // clear actions
   QMenu::clear();
   action_map_.clear();
+
+  // add reset button
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  addAction( "&Reload", this, SLOT( _reset() ) )->setIcon( IconEngine::get( ICONS::RELOAD, path_list ) );
   
   // load filters from spell interface
   set< string > filters( SPELLCHECK::SpellInterface().filters() );
+  if( !filters.empty() ) addSeparator();
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   { 
     QAction* action( new QAction( iter->c_str(), this ) ); 
     action_map_.insert( make_pair( action, *iter ) );
     addAction( action );
   }
-
-  // add reset button
-  if( !filters.empty() ) addSeparator();
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  addAction( "&Reset", this, SLOT( _reset() ) )->setIcon( IconEngine::get( ICONS::RELOAD, path_list ) );
   
 }
 

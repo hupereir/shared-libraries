@@ -74,20 +74,21 @@ void DictionaryMenu::_reset( void )
   // clear actions
   QMenu::clear();
   action_map_.clear();
+
+  // add reset button
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  addAction( "&Reload", this, SLOT( _reset() ) )->setIcon( IconEngine::get( ICONS::RELOAD, path_list ) );
   
   // load dictionaries from spell interface
   set< string > dictionaries( SPELLCHECK::SpellInterface().dictionaries() );
+  if( !dictionaries.empty() ) addSeparator();
+  
   for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
   { 
     QAction* action( new QAction( iter->c_str(), this ) ); 
     action_map_.insert( make_pair( action, *iter ) );
     addAction( action );
   }
-
-  // add reset button
-  if( !dictionaries.empty() ) addSeparator();
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  addAction( "&Reset", this, SLOT( _reset() ) )->setIcon( IconEngine::get( ICONS::RELOAD, path_list ) );
   
 }
 
