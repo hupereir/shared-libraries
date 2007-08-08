@@ -47,6 +47,9 @@ class BaseTextHighlight: public QSyntaxHighlighter, public BASE::Key, public Cou
   //! constructor
   BaseTextHighlight( QTextDocument* );
   
+  //! synchronize configuration with parent
+  void synchronize( BaseTextHighlight* parent );
+  
   //! highlight paragraph
   virtual void highlightBlock( const QString& text );
     

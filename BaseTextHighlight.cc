@@ -42,6 +42,14 @@ BaseTextHighlight::BaseTextHighlight( QTextDocument* document ):
 { Debug::Throw( "BaseTextHighlight::BaseTextHighlight.\n" ); }
 
 //_________________________________________________________
+void BaseTextHighlight::synchronize( BaseTextHighlight* parent )
+{ 
+  Debug::Throw( "BaseTextHighlight::synchronize.\n" );
+  setEnabled( parent->isEnabled() );
+  setHighlightColor( parent->highlightColor() );
+}
+
+//_________________________________________________________
 bool BaseTextHighlight::setEnabled( const bool& state )
 { 
   Debug::Throw() << "BaseTextHighlight::setEnabled - state: " << state << endl;

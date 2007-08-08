@@ -363,6 +363,23 @@ void CustomTextEdit::showReplacements( const unsigned int& counts )
   
 }
 
+//____________________________________________________________________
+void CustomTextEdit::setTextHighlight( BaseTextHighlight* highlight )
+{
+  
+  Debug::Throw( "CustomTextEdit::setTextHighlight.\n" );
+  BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
+  for( BASE::KeySet<BaseTextHighlight>::iterator iter = highlights.begin(); iter != highlights.end(); iter++ )
+  { 
+    // copy configuration
+    highlight->synchronize( *iter );
+    delete *iter; 
+  }
+  
+  BASE::Key::associate( dynamic_cast<BASE::Key*>( document() ), highlight );
+    
+}
+
 //________________________________________________
 void CustomTextEdit::updateConfiguration( void )
 {
@@ -380,11 +397,8 @@ void CustomTextEdit::updateConfiguration( void )
   // paragraph highlighting
   textHighlight().setHighlightColor( QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() ) );
   highlight_available_ = textHighlight().highlightColor().isValid();
-  
-  // note: it is important to update the highlighter manually and not rely
-  // on the toggleAction only because the later might have been triggered in the constructor
-  // and the highlighter reseted afterwards, when the class is derived.
   textHighlight().setEnabled( _highlightAvailable() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+  blockHighlightAction()->setEnabled( _highlightAvailable() );
   blockHighlightAction()->setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
 
   return;
@@ -755,7 +769,7 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
 void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
 {
   
-   Debug::Throw( "CustomTextEdit::contextMenuEvent.\n" );
+  Debug::Throw( "CustomTextEdit::contextMenuEvent.\n" );
     
   // menu
   QMenu menu( this );

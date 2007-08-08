@@ -219,19 +219,8 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
 
   //! text highlight
   /*! it is needed to ensure only one text highlight works at a time */
-  void setTextHighlight( BaseTextHighlight* highlight )
-  {
+  void setTextHighlight( BaseTextHighlight* highlight );
     
-    Debug::Throw( "CustomTextEdit::setTextHighlight.\n" );
-    BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
-    for( BASE::KeySet<BaseTextHighlight>::iterator iter = highlights.begin(); iter != highlights.end(); iter++ )
-    { delete *iter; }
-    
-    BASE::Key::associate( dynamic_cast<BASE::Key*>( document() ), highlight );
-    highlight->setEnabled( _highlightAvailable() && _highlightEnabled() );
-    
-  }
-  
   //! text highlight
   BaseTextHighlight& textHighlight( void )
   {
