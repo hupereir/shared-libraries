@@ -65,24 +65,11 @@ void BaseTextHighlight::highlightBlock( const QString& text )
   Debug::Throw( "BaseTextHighlight::highlightBlock.\n" );
   
   // try retrieve data
-  if( !isEnabled() ) 
-  {
-    Debug::Throw( "BaseTextHighlight::highlightBlock - disabled \n" );
-    return;
-  }
+  if( !isEnabled() ) return;
     
   TextBlockData* data = dynamic_cast<TextBlockData*>( currentBlockUserData() );  
-  if( !data )
-  {
-    Debug::Throw( "BaseTextHighlight::highlightBlock - no data.\n" );
-    return; 
-  }
-  
-  if( !data->isCurrentBlock() )
-  { 
-    Debug::Throw( "BaseTextHighlight::highlightBlock - is not current block.\n" );
-    return; 
-  }
+  if( !( data && data->isCurrentBlock() ) )
+  { return; }
   
   QTextCharFormat format;
   format.setBackground( color_ );

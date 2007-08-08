@@ -67,8 +67,6 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   select_line_dialog_( 0 ),
   wrap_from_options_( true ),
   has_tab_emulation_( false ),
-  highlight_enabled_( false ),
-  highlight_available_( false ),
   synchronize_( false ),
   box_selection_( this ),
   remove_line_buffer_( this ),
@@ -86,6 +84,10 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   BaseTextHighlight* highlight = new BaseTextHighlight( document );
   BASE::Key::associate( document, highlight );
   highlight->setEnabled( false );
+
+  // paragraph highlight  
+  block_highlight_ = new BlockHighlight( this );
+  connect( this, SIGNAL( cursorPositionChanged() ), block_highlight_, SLOT( highlight() ) );
   
   // actions
   _installActions();
@@ -93,9 +95,9 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   // signal to make sure selection is synchronized between clones
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
-  connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _highlightCurrentBlock() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
 
+  // update configuration
   updateConfiguration();
    
 }
@@ -396,9 +398,8 @@ void CustomTextEdit::updateConfiguration( void )
   
   // paragraph highlighting
   textHighlight().setHighlightColor( QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() ) );
-  highlight_available_ = textHighlight().highlightColor().isValid();
-  textHighlight().setEnabled( _highlightAvailable() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-  blockHighlightAction()->setEnabled( _highlightAvailable() );
+  textHighlight().setEnabled( textHighlight().highlightColor().isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+  blockHighlightAction()->setEnabled( textHighlight().highlightColor().isValid() );
   blockHighlightAction()->setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
 
   return;
@@ -940,7 +941,7 @@ void CustomTextEdit::_installActions( void )
   // current block highlight
   addAction( block_highlight_action_ = new QAction( "&Highlight current paragraph", this ) );
   block_highlight_action_->setCheckable( true );
-  block_highlight_action_->setChecked( highlight_enabled_ );
+  block_highlight_action_->setChecked( block_highlight_->isEnabled() );
   connect( block_highlight_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleBlockHighlight( bool ) ) );
   
   // wrap mode
@@ -1260,30 +1261,6 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, co
 }
 
 //_____________________________________________________________
-void CustomTextEdit::_clearHighlightedBlock( void )
-{
-  Debug::Throw( "CustomTextEdit::_clearHighlightedBlock.\n" );
-  
-  // loop over all blocks
-  for( QTextBlock block = document()->begin(); block.isValid(); block = block.next() )
-  {
-    
-    if( textCursor().block() == block && !( _highlightEnabled() && _highlightAvailable() ) ) continue;
-    
-    TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
-    if( data && data->isCurrentBlock() ) 
-    {
-      data->setIsCurrentBlock( false );
-      document()->markContentsDirty(block.position(), block.length()-1);
-    }
-    
-  }
-    
-  return;
-  
-}
-
-//_____________________________________________________________
 void CustomTextEdit::_toggleInsertMode( void )
 {
   Debug::Throw( "CustomTextEdit::_toggleInsertMode.\n" );
@@ -1344,32 +1321,6 @@ void CustomTextEdit::_insertTab( void )
   
 }
 
-//________________________________________________
-void CustomTextEdit::_highlightCurrentBlock( void )
-{ 
-  Debug::Throw( "CustomTextEdit::_highlightCurrentBlock.\n" );
-  
-  // check if highlight is available and enabled
-  if( !( _highlightEnabled() && _highlightAvailable() ) ) return;
-
-  // retrieve current block
-  QTextBlock block( textCursor().block() );  
-  
-  TextBlockData* data = dynamic_cast<TextBlockData*>( block.userData() );
-  if( !data )
-  {
-    data = new TextBlockData();
-    block.setUserData( data );
-  } else if( data->isCurrentBlock() ) return;
-  
-  _clearHighlightedBlock();
-  data->setIsCurrentBlock( true );
-  
-  document()->markContentsDirty(block.position(), block.length()-1);
-  
-  return; 
-}
-  
 //________________________________________________
 void CustomTextEdit::_synchronizeSelection( void )
 {
@@ -1453,21 +1404,11 @@ void CustomTextEdit::_updatePasteAction( void )
 void CustomTextEdit::_toggleBlockHighlight( bool state )
 {
   
-  // update highlight enability
-  highlight_enabled_ = state;  
-
-  Debug::Throw() << "CustomTextEdit::_toggleBlockHighlight -"
-    << " state: " << state 
-    << " enabled: " << _highlightEnabled()
-    << " available: " << _highlightAvailable()
-    << endl;
-  
-  // enable/disable highlight
-  textHighlight().setEnabled( _highlightAvailable() && _highlightEnabled() );
+  block_highlight_->setEnabled( textHighlight().highlightColor().isValid() && state );
   
   // repaint current paragraph
-  if( textHighlight().isEnabled() ) _highlightCurrentBlock(); 
-  else _clearHighlightedBlock();
+  if( block_highlight_->isEnabled() ) block_highlight_->highlight(); 
+  else block_highlight_->clear();
   
 }
 

@@ -41,6 +41,7 @@
 #include <vector>
 
 #include "BaseTextHighlight.h"
+#include "BlockHighlight.h"
 #include "BoxSelection.h"
 #include "Counter.h"
 #include "Debug.h"
@@ -48,6 +49,7 @@
 #include "MultipleClickCounter.h"
 #include "RemoveLineBuffer.h"
 #include "Str.h"
+#include "TextBlockData.h"
 #include "TextPosition.h"
 #include "TextSelection.h"
 
@@ -407,22 +409,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual unsigned int _replaceInRange( const TextSelection& selection, const QTextCursor& cursor );
   
   //@}
-
-  //!@name paragraph highlight
-  //@{
-  
-  //! enable/disable current paragraph highlight
-  virtual const bool& _highlightAvailable( void ) const
-  { return highlight_available_; }
-
-  //! enable/disable current paragraph highlight
-  virtual const bool& _highlightEnabled( void ) const
-  { return highlight_enabled_; }
-    
-  //! clear highlighted block
-  virtual void _clearHighlightedBlock( void );
-  
-  //@}
   
   //! toggle insertion mode
   virtual void _toggleInsertMode( void );
@@ -456,10 +442,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@}
   
   protected slots:
-  
-  //! highlight current block
-  virtual void _highlightCurrentBlock( void );
-  
+    
   //! synchronize selection
   virtual void _synchronizeSelection( void );
  
@@ -539,18 +522,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! multi tab regExp
   QRegExp tab_regexp_;
 
-  //@}
-  
-  
-  //!@name paragraph highlighting
-  //@{
-  
-  //! current block highlighting is enabled
-  bool highlight_enabled_;
-  
-  //! current block highlighting is available
-  bool highlight_available_;
-  
   //@}
 
   //!@name default actions
@@ -632,7 +603,10 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! multiple click counter
   MultipleClickCounter click_counter_;
-      
+
+  //! current block highlight
+  BlockHighlight* block_highlight_;
+  
 };
 
 #endif
