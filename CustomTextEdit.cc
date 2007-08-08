@@ -139,18 +139,6 @@ CustomTextEdit::~CustomTextEdit( void )
 }
 
 //________________________________________________
-void CustomTextEdit::setHighlightEnabled( const bool& value )
-{ 
-  Debug::Throw() << "CustomTextEdit::setHighlightEnabled - value: " << (value ? "true":"false" ) << endl;
-  
-  highlight_enabled_ = value;
-  
-  if( highlight_enabled_ && highlight_available_ ) _highlightCurrentBlock(); 
-  else _clearHighlightedBlock();
-
-}
- 
-//________________________________________________
 int CustomTextEdit::blockCount( void ) const
 { 
   Debug::Throw( "CustomTextEdit::blockCount.\n" );
@@ -390,23 +378,14 @@ void CustomTextEdit::updateConfiguration( void )
   tabEmulationAction()->setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
   
   // paragraph highlighting
-  QColor highlight_color = QColor( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
-  setHighlightEnabled( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
-  if( highlight_color.isValid() )
-  {
-    
-    highlight_available_ = true;
-    textHighlight().setHighlightColor( highlight_color );
-    _highlightCurrentBlock();
-    
-  } else {
-    
-    highlight_available_ = false;
-    _clearHighlightedBlock();
-    
-  }
+  textHighlight().setHighlightColor( QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() ) );
+  highlight_available_ = textHighlight().highlightColor().isValid();
   
-  textHighlight().setEnabled( _highlightAvailable() && _highlightEnabled() );
+  // note: it is important to update the highlighter manually and not rely
+  // on the toggleAction only because the later might have been triggered in the constructor
+  // and the highlighter reseted afterwards, when the class is derived.
+  textHighlight().setEnabled( _highlightAvailable() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+  blockHighlightAction()->setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
 
   return;
   
@@ -938,11 +917,17 @@ void CustomTextEdit::_installActions( void )
   connect( goto_line_action_, SIGNAL( triggered() ), SLOT( selectLineFromDialog() ) );
   
   // remove line action
-  QAction* remove_line_action( new QAction( this ) ); 
+  QAction* remove_line_action( new QAction( "&Remove current line", this ) ); 
   addAction( remove_line_action );
   remove_line_action->setShortcut( CTRL+Key_K );
   remove_line_action->setShortcutContext( WidgetShortcut );
   connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
+  
+  // current block highlight
+  addAction( block_highlight_action_ = new QAction( "&Highlight current paragraph", this ) );
+  block_highlight_action_->setCheckable( true );
+  block_highlight_action_->setChecked( highlight_enabled_ );
+  connect( block_highlight_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleBlockHighlight( bool ) ) );
   
   // wrap mode
   addAction( wrap_mode_action_ = new QAction( "&Wrap text", this ) );
@@ -1454,6 +1439,27 @@ void CustomTextEdit::_updatePasteAction( void )
   
 }
   
+//_________________________________________________
+void CustomTextEdit::_toggleBlockHighlight( bool state )
+{
+  
+  // update highlight enability
+  highlight_enabled_ = state;  
+
+  Debug::Throw() << "CustomTextEdit::_toggleBlockHighlight -"
+    << " state: " << state 
+    << " enabled: " << _highlightEnabled()
+    << " available: " << _highlightAvailable()
+    << endl;
+  
+  // enable/disable highlight
+  textHighlight().setEnabled( _highlightAvailable() && _highlightEnabled() );
+  
+  // repaint current paragraph
+  if( textHighlight().isEnabled() ) _highlightCurrentBlock(); 
+  else _clearHighlightedBlock();
+  
+}
 
 //________________________________________________
 bool CustomTextEdit::_toggleWrapMode( bool state )

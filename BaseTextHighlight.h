@@ -51,12 +51,7 @@ class BaseTextHighlight: public QSyntaxHighlighter, public BASE::Key, public Cou
   virtual void highlightBlock( const QString& text );
     
   //! enable highlight. Returns true if changed
-  bool setEnabled( const bool& state )
-  { 
-    if( enabled_ == state ) return false;
-    enabled_ = state; 
-    return true;
-  }
+  bool setEnabled( const bool& state );
   
   //! true if enabled
   const bool& isEnabled( void ) const

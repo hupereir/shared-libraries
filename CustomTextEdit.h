@@ -69,9 +69,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! destrutor
   virtual ~CustomTextEdit( void );
     
-  //! enable/disable highlight
-  virtual void setHighlightEnabled( const bool& );
- 
   //! retrieve number of blocks in document
   int blockCount( void ) const;
   
@@ -189,6 +186,10 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   QAction* gotoLineAction( void )
   { return goto_line_action_; } 
  
+  //! block highlight action
+  QAction* blockHighlightAction( void )
+  { return block_highlight_action_; }
+  
   //! toggle wrap mode
   QAction* wrapModeAction( void )
   { return wrap_mode_action_; }
@@ -227,6 +228,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
     { delete *iter; }
     
     BASE::Key::associate( dynamic_cast<BASE::Key*>( document() ), highlight );
+    highlight->setEnabled( _highlightAvailable() && _highlightEnabled() );
     
   }
   
@@ -482,6 +484,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   /*! depends on clipboard status and editability */
   virtual void _updatePasteAction( void );
 
+  //! toggle paragraph highlight
+  virtual void _toggleBlockHighlight( bool );
+  
   //! wrap mode
   /*! returns true if changed */
   virtual bool _toggleWrapMode( bool );
@@ -615,6 +620,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
     
   //! goto line number
   QAction* goto_line_action_;
+
+  //! toggle highlight paragraph
+  QAction* block_highlight_action_;
   
   //! toggle wrap mode
   QAction* wrap_mode_action_;

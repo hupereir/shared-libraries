@@ -42,15 +42,39 @@ BaseTextHighlight::BaseTextHighlight( QTextDocument* document ):
 { Debug::Throw( "BaseTextHighlight::BaseTextHighlight.\n" ); }
 
 //_________________________________________________________
+bool BaseTextHighlight::setEnabled( const bool& state )
+{ 
+  Debug::Throw() << "BaseTextHighlight::setEnabled - state: " << state << endl;
+  if( enabled_ == state ) return false;
+  enabled_ = state; 
+  return true;
+}
+
+//_________________________________________________________
 void BaseTextHighlight::highlightBlock( const QString& text )
 {
   
-  // try retrieve data
-  if( !isEnabled() ) return;
+  Debug::Throw( "BaseTextHighlight::highlightBlock.\n" );
   
+  // try retrieve data
+  if( !isEnabled() ) 
+  {
+    Debug::Throw( "BaseTextHighlight::highlightBlock - disabled \n" );
+    return;
+  }
+    
   TextBlockData* data = dynamic_cast<TextBlockData*>( currentBlockUserData() );  
-  if( !( data && data->isCurrentBlock() ) ) 
-  { return; }
+  if( !data )
+  {
+    Debug::Throw( "BaseTextHighlight::highlightBlock - no data.\n" );
+    return; 
+  }
+  
+  if( !data->isCurrentBlock() )
+  { 
+    Debug::Throw( "BaseTextHighlight::highlightBlock - is not current block.\n" );
+    return; 
+  }
   
   QTextCharFormat format;
   format.setBackground( color_ );
