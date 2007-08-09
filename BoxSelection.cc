@@ -171,7 +171,7 @@ bool BoxSelection::clear( void )
 //________________________________________________________________________
 bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
 {
-  Debug::Throw( "BoxSelection::toClipboard.\n" );
+  Debug::Throw(0) << "BoxSelection::toClipboard - mode: " << ( mode == QClipboard::Selection ? "Selection":"Clipboard" ) << endl;
   
   // check if selection mode is available
   if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;
@@ -287,7 +287,8 @@ void BoxSelection::_store( void )
   // retrieve box selection size
   int columns = rect().width() / font_width_;
   int rows = rect().height() / font_height_;
-
+  Debug::Throw( 0 ) << "BoxSelection::_store - size: (" << columns << "," << rows << ")" << endl;
+  
   // translate rect
   QRect local( rect() );
   local.translate( -parent_->horizontalScrollBar()->value(), -parent_->verticalScrollBar()->value() );
@@ -321,6 +322,8 @@ void BoxSelection::_store( void )
     stored_ += ( cursor_begin.selectedText() ).leftJustified( columns ) + "\n";
 
   }
+  
+  Debug::Throw(0) << qPrintable( stored_ );
   
   return;
 

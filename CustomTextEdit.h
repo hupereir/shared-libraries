@@ -244,9 +244,12 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   void matchFound( void );
     
   public slots:
- 
+  
   //! update configuration
   virtual void updateConfiguration( void );
+ 
+  //! copy
+  // virtual void copy( void );
    
   //! changes selection to uppercase
   virtual void upperCase( void );
