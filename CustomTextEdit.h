@@ -350,7 +350,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual void mouseDoubleClickEvent( QMouseEvent* );
   
   //! mouse press event [overloaded]
-  // virtual void mouseMoveEvent( QMouseEvent* );
+  virtual void mouseMoveEvent( QMouseEvent* );
  
   //! mouse press event [overloaded]
   virtual void mouseReleaseEvent( QMouseEvent* );

@@ -33,7 +33,8 @@
 */
 
 #include <QApplication>
-#include <QTimer>
+#include <QBasicTimer>
+#include <QTimerEvent>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -43,7 +44,7 @@ class CustomTextEdit;
 //! handles current block highlighting
 class BlockHighlight: public QObject, public Counter
 {
-  
+    
   Q_OBJECT
   
   public:
@@ -72,10 +73,10 @@ class BlockHighlight: public QObject, public Counter
   //! highlight
   void highlight( void );
   
-  private slots:
+  protected:
   
   //! delayed highlighting
-  void _highlight( void );
+  virtual void timerEvent( QTimerEvent* event );
   
   private:
   
@@ -83,7 +84,7 @@ class BlockHighlight: public QObject, public Counter
   CustomTextEdit* parent_;
 
   //! associated timer
-  QTimer timer_;
+  QBasicTimer timer_;
   
   //! true if enabled
   bool enabled_;

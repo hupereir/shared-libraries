@@ -32,8 +32,10 @@
   \date $Date$
 */
 
+#include <QColor>
 #include <QPoint>
 #include <QRect>
+
 #include "Counter.h"
 
 class CustomTextEdit;
@@ -58,6 +60,17 @@ class BoxSelection: public Counter
   //!@ accessors
   //@{
   
+  //§ configuration update
+  void updateConfiguration( void );
+  
+  //! color
+  const QColor& color( void ) const
+  { return color_; }
+  
+  //! state
+  const State& state( void ) const
+  { return state_; }
+  
   //! start point
   const QPoint &begin() const
   { return begin_; }
@@ -70,6 +83,10 @@ class BoxSelection: public Counter
   const QPoint &newEnd() const
   { return new_end_; }
   
+  //! rect
+  const QRect& rect( void ) const
+  { return rect_; }
+    
   //@}
   
   //!@name modifiers
@@ -79,20 +96,17 @@ class BoxSelection: public Counter
   bool start( QPoint point );
   
   //! draw
-  QRect update( QPoint point );
+  bool update( QPoint point );
   
   //! finish
-  QRect finish( QPoint point );
+  bool finish( QPoint point );
   
   //! clear
   bool clear( void );
-  
-  //! state
-  const State& state( void ) const
-  { return state_; }
+
   
   //@}
-  
+    
   private:
   
   //! update repaiint rect
@@ -101,6 +115,15 @@ class BoxSelection: public Counter
   //! parent editor
   CustomTextEdit* parent_;
   
+  //! selection color
+  QColor color_;
+  
+  //! font width
+  int font_width_;
+   
+  //! font height
+  int font_height_;
+ 
   //! state
   State state_;
   
@@ -113,9 +136,12 @@ class BoxSelection: public Counter
   //! new end point (while updating)
   QPoint new_end_;
   
+  //! last event position
+  QPoint position_; 
+  
   //! max rectangle
   QRect rect_;
-  
+
 };
 
 #endif

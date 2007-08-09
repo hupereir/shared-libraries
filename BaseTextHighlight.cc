@@ -61,9 +61,7 @@ bool BaseTextHighlight::setEnabled( const bool& state )
 //_________________________________________________________
 void BaseTextHighlight::highlightBlock( const QString& text )
 {
-  
-  Debug::Throw( "BaseTextHighlight::highlightBlock.\n" );
-  
+    
   // try retrieve data
   if( !isEnabled() ) return;
     

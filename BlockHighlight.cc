@@ -43,15 +43,9 @@ BlockHighlight::BlockHighlight( CustomTextEdit* parent ):
   QObject( parent ),
   Counter( "BlockHighlight" ),
   parent_( parent ),
-  timer_( parent ),
   enabled_( false ),
   cleared_( true )
-{ 
-  Debug::Throw( "BlockHighlight::BlockHighlight.\n" );
-  timer_.setSingleShot( true );
-  timer_.setInterval( 50 );
-  connect( &timer_, SIGNAL( timeout() ), SLOT( _highlight() ) );
-}
+{ Debug::Throw( "BlockHighlight::BlockHighlight.\n" ); }
 
 //______________________________________________________________________
 void BlockHighlight::clear( void )
@@ -83,12 +77,14 @@ void BlockHighlight::highlight( void )
 {
   if( !isEnabled() ) return;
   clear();
-  timer_.start();
+  timer_.start(50, this );
 }
 
 //______________________________________________________________________
-void BlockHighlight::_highlight( void )
+void BlockHighlight::timerEvent( QTimerEvent* event )
 {
+  
+  if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event ); 
   
   // retrieve current block
   QTextBlock block( parent_->textCursor().block() );  
@@ -101,7 +97,11 @@ void BlockHighlight::_highlight( void )
   } else if( data->isCurrentBlock() ) return;
   
   data->setIsCurrentBlock( true );
- 
+
+  // need to redo the clear a second time, forced,
+  // in case the previous draw action occured after the previous clear.
+  cleared_ = false;
+  clear();
   parent_->document()->markContentsDirty(block.position(), block.length()-1);
   cleared_ = false;
   
