@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <QClipboard>
 #include <QColor>
 #include <QPoint>
 #include <QRect>
@@ -45,6 +46,9 @@ class BoxSelection: public Counter
 {
  
   public:
+  
+  //! mime type
+  static const QString mimeType;
   
   //! state 
   enum State
@@ -65,6 +69,10 @@ class BoxSelection: public Counter
   
   //§ configuration update
   void updateConfiguration( void );
+  
+  //! enability
+  const bool& isEnabled( void ) const
+  { return enabled_; }
   
   //! color
   const QColor& color( void ) const
@@ -114,6 +122,9 @@ class BoxSelection: public Counter
   //! copy clipboard content to boxSelection
   bool fromClipboard( const QClipboard::Mode& );
   
+  //! format string into box selection
+  bool fromString( const QString& );
+  
   //@}
   
   private:
@@ -126,6 +137,13 @@ class BoxSelection: public Counter
   
   //! parent editor
   CustomTextEdit* parent_;
+  
+  //! @name attributes
+  //@{
+  
+  //! true if box selection is enabled
+  /*! box selection is enabled for fixed pitch fonts only */
+  bool enabled_;
   
   //! selection color
   QColor color_;
@@ -141,6 +159,10 @@ class BoxSelection: public Counter
   
   //! margin
   int top_margin_;
+  
+  //@}
+  
+  //!@name current selection properties
   
   //! state
   State state_;
@@ -159,7 +181,7 @@ class BoxSelection: public Counter
   
   //! max rectangle
   QRect rect_;
-
+  
   //! stored string
   QString stored_;
   

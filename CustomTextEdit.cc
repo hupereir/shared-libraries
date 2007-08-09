@@ -415,7 +415,14 @@ void CustomTextEdit::updateConfiguration( void )
   blockHighlightAction().setEnabled( textHighlight().highlightColor().isValid() );
   blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
 
+  // update box configuration
+  // clear
   _boxSelection().updateConfiguration();  
+  if( !_boxSelection().isEnabled() && _boxSelection().state() != BoxSelection::EMPTY )
+  {
+    _boxSelection().clear();
+    _synchronizeBoxSelection();
+  }
   
   return;
   
@@ -656,17 +663,28 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       
       case 1:
       {
-        if( event->modifiers() == ControlModifier ) 
+          
+        if( event->modifiers() == ControlModifier  ) 
         { 
-          if( _boxSelection().state() == BoxSelection::STARTED ) _boxSelection().finish( event->pos() );
-          if( _boxSelection().state() == BoxSelection::FINISHED ) { _boxSelection().clear(); }
-          _boxSelection().start( event->pos() ); 
           
-          // synchronize with other editors
-          _synchronizeBoxSelection();
+          // try re-enable box selection in case font has changed
+          if( !_boxSelection().isEnabled() ) _boxSelection().updateConfiguration();
+          if( _boxSelection().isEnabled() ) 
+          {
+            
+            // CTRL pressed. finish/clear current box; start a new one
+            if( _boxSelection().state() == BoxSelection::STARTED ) _boxSelection().finish( event->pos() );
+            if( _boxSelection().state() == BoxSelection::FINISHED ) { _boxSelection().clear(); }
+            _boxSelection().start( event->pos() ); 
+            
+            // synchronize with other editors
+            _synchronizeBoxSelection();
+            
+          } else QTextEdit::mousePressEvent( event );  
+        
+        } else if( _boxSelection().isEnabled() ) {
           
-        } else {
-          
+          // no modifier. Clear current box
           if( _boxSelection().state() == BoxSelection::FINISHED ) 
           { 
             _boxSelection().clear(); 
@@ -674,11 +692,14 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
           }
           
           QTextEdit::mousePressEvent( event );
+          
+        } else {
+          
+          // inactive box selection. Do nothing  
+          QTextEdit::mousePressEvent( event );
         
         }
-        
       }
-      // QTextEdit::mousePressEvent( event );
       break;
       
       case 2:
@@ -726,7 +747,8 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
 {
 
   Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
-  if( event->buttons() == LeftButton && event->modifiers() == ControlModifier )
+  
+  if( event->buttons() == LeftButton && event->modifiers() == ControlModifier && _boxSelection().isEnabled() )
   {
     if( _boxSelection().state() != BoxSelection::STARTED && viewport()->rect().contains( event->pos() ) )
     { _boxSelection().start( event->pos() ); }
@@ -734,7 +756,7 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
     { _boxSelection().update( event->pos() ); }
 
     // synchronize with other editors
-    if( isSynchronized() ) _synchronizeBoxSelection();
+    _synchronizeBoxSelection();
     
   } else return QTextEdit::mouseMoveEvent( event );
   
@@ -745,13 +767,15 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 {
  
   Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
-
+  
+  
+  // no need to check for enability because there is no way for the box to start if disabled
   if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::STARTED )
   { 
     _boxSelection().finish( event->pos() ); 
     
     // synchronize with other editors
-    if( isSynchronized() ) _synchronizeBoxSelection();
+    _synchronizeBoxSelection();
   
   }
   
@@ -1298,6 +1322,8 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, co
 void CustomTextEdit::_synchronizeBoxSelection( void ) const
 {
 
+  if( !isSynchronized() ) return;
+  
   // Debug::Throw( "CustomTextEdit::_synchronizeBoxSelection.\n" );
   BASE::KeySet<CustomTextEdit> displays( this );
   for( BASE::KeySet<CustomTextEdit>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
@@ -1325,14 +1351,14 @@ bool CustomTextEdit::_setTabSize( const int& tab_size )
   Debug::Throw() << "CustomTextEdit::_setTabSize - " << tab_size << endl;
   Exception::check( tab_size > 0, DESCRIPTION( "invalid tab size" ) );
   
-  bool changed( tab_size == emulated_tab_.size() );
-
+  int stop_width( tab_size * QFontMetrics( font() ).width( " " ) );
+  if( tab_size == emulated_tab_.size() && tabStopWidth() == stop_width ) return false;
+    
   // create strings and regular expressions
   // define normal tabs
   normal_tab_ = "\t";
-  normal_tab_regexp_.setPattern( "^(\\t)+" );
-
-  setTabStopWidth( tab_size*QFontMetrics(currentFont()).width(" ") );
+  normal_tab_regexp_.setPattern( "^(\\t)+" );  
+  setTabStopWidth( stop_width );
   
   // define emulated tabs
   emulated_tab_ = QString( tab_size, ' ' );
@@ -1341,7 +1367,7 @@ bool CustomTextEdit::_setTabSize( const int& tab_size )
   what << "^(" << qPrintable( emulated_tab_ ) << ")" << "+";
   emulated_tab_regexp_.setPattern( what.str().c_str() );
   
-  return changed;
+  return true;
 }
  
 //_____________________________________________________________

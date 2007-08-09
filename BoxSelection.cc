@@ -39,10 +39,13 @@
 using namespace std;
 
 //________________________________________________________________________
+const QString BoxSelection::mimeType( "text/boxSelection" );
+
+//________________________________________________________________________
 BoxSelection::BoxSelection( CustomTextEdit* parent ):
   Counter( "BoxSelection" ),
   parent_( parent ),
-  color_( parent->palette().color( QPalette::Highlight ) ),
+  enabled_( false ),
   font_width_( 0 ),
   font_height_( 0 ),
   left_margin_( 0 ),
@@ -74,16 +77,22 @@ void BoxSelection::updateConfiguration( void )
 
   Debug::Throw( "BoxSelection::updateConfiguration.\n" );
   color_ = parent_->palette().color( QPalette::Highlight );
-  color_.setAlpha( 50 );
+  if( color_.isValid() ) color_.setAlpha( 50 );
 
-  // read font from option
-  QFont font;
-  font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ).c_str() );
-  font_width_ = QFontMetrics( font ).width( " " );
-  font_height_ = QFontMetrics( font ).lineSpacing();
+  // check if color is valid and font is fixed pitched
+  // to not modify the previous attributes if disabled
+  // because they are needed to clear any existing selection
+  bool fixed( QFontInfo( parent_->font() ).fixedPitch() );
+  enabled_ = fixed && color_.isValid();
+  if( !isEnabled() ) return;
 
+  // read font attributes
+  font_width_ = QFontMetrics( parent_->font() ).width( " " );
+  font_height_ = QFontMetrics( parent_->font() ).lineSpacing();
+    
+  // retrieve margins
   int right, bottom;
-  parent_->getContentsMargins ( &left_margin_, &top_margin_, &right, &bottom );
+  parent_->getContentsMargins( &left_margin_, &top_margin_, &right, &bottom );
 
 }
 
@@ -142,8 +151,10 @@ bool BoxSelection::finish( QPoint point )
 
   state_ = FINISHED;
 
+  // store and copy to clipboard
   _store();
-
+  toClipboard( QClipboard::Selection );
+    
   return true;
 }
 
@@ -158,12 +169,12 @@ bool BoxSelection::clear( void )
 }
 
 //________________________________________________________________________
-bool BoxSelection::toClipboard( const QClipboard::Mode& mode )
+bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
 {
   Debug::Throw( "BoxSelection::toClipboard.\n" );
   
   // check if selection mode is available
-  if( mode == QCipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;
+  if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;
 
   // check if state is ok
   if( state() != FINISHED ) return false;
@@ -173,11 +184,71 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode )
   
   // store text into MimeData
   QMimeData *data( new QMimeData() );
-  data.setText( stored_ );
-  data.setData( "text/boxSelection", stored_ );
+  data->setText( stored_ );
+  data->setData( mimeType, stored_.toAscii() );
   
   // copy selected text to clipboard
-  qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
+  qApp->clipboard()->setMimeData( data, mode ); 
+  
+  return true;
+  
+}
+
+//________________________________________________________________________
+bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
+{
+  
+  Debug::Throw( "BoxSelection::fromClipboard.\n" );
+ 
+  // check mode
+  if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;  
+  
+  // check mime data availability
+  const QMimeData* data( qApp->clipboard()->mimeData() );
+  if( !data ) 
+  {
+    Debug::Throw() << "BoxSelection::fromClipboard - no mimeData" << endl;
+    return false;
+  }
+  
+  // try retrieve directly from formated input
+  if( data->hasFormat( mimeType ) )
+  { 
+    Debug::Throw() << "BoxSelection::fromClipboard - got formated string" << endl;
+    stored_ = QString( data->data( mimeType ) );
+    return true;
+  } else if( data->hasText() ) {
+    
+    // retrieve from text and format
+    return fromString( data->text() );
+  
+  }
+  
+  Debug::Throw() << "BoxSelection::fromClipboard - unable to decode clipboard.\n" << endl;
+  return true; 
+  
+}
+  
+//________________________________________________________________________
+bool BoxSelection::fromString( const QString& input )
+{
+  
+  Debug::Throw( "BoxSelection::fromString.\n" );
+  
+  // try split
+  QStringList input_list( input.split( "\n" ) );
+
+  // retrieve maximum length
+  int length(0);
+  for( QStringList::const_iterator iter( input_list.begin() ); iter != input_list.end(); iter++ )
+  { length = max( length, iter->length() ); }
+  
+  // fill strings and store
+  stored_ = "";
+  for( QStringList::const_iterator iter( input_list.begin() ); iter != input_list.end(); iter++ )
+  { stored_ += iter->leftJustified( length ) + "\n"; }
+  
+  return !stored_.isEmpty();
   
 }
 
@@ -193,7 +264,9 @@ void BoxSelection::_updateRect( void )
   int y_max( max( begin_.y(), end_.y() ) );
 
   QPoint translation( parent_->horizontalScrollBar()->value(), parent_->verticalScrollBar()->value() );
-
+  //QPoint test( parent_->viewport()->mapToParent( QPoint( 0, 0 ) ) );
+  //Debug::Throw(0) << "(" << translation.x() << "," << translation.y() << ") (" << test.x() << "," << test.y() << ")" << endl;
+  
   QPoint begin( x_min, y_min );
   QPoint end( x_max, y_max );
 
