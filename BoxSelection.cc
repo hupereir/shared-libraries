@@ -255,15 +255,13 @@ bool BoxSelection::fromString( const QString& input )
 //________________________________________________________________________
 void BoxSelection::_updateRect( void )
 {
-  // this can probably be made smarter when considering update
-  // from previous call
   int x_min( min( begin_.x(), end_.x() ) );
   int x_max( max( begin_.x(), end_.x() ) );
 
   int y_min( min( begin_.y(), end_.y() ) );
   int y_max( max( begin_.y(), end_.y() ) );
 
-  QPoint begin( x_min - (x_min%font_width_) + left_margin_ + 2, y_min - (y_min%font_height_) + top_margin_ + 2 );
+  QPoint begin( x_min - (x_min%font_width_) + left_margin_ + 2, y_min - (y_min%font_height_) + top_margin_ );
   QPoint end( x_max + font_width_ - (x_max%font_width_) + left_margin_, y_max + font_height_ - (y_max%font_height_) + top_margin_ );
 
   // decide location of cursor point
@@ -285,14 +283,14 @@ void BoxSelection::_store( void )
   Debug::Throw( "BoxSelection::_store.\n" );
 
   // retrieve box selection size
+  // the +1 are added because the box is made too small, by design.
   int columns = rect().width() / font_width_;
   int rows = rect().height() / font_height_;
-  Debug::Throw( 0 ) << "BoxSelection::_store - size: (" << columns << "," << rows << ")" << endl;
   
   // translate rect
   QRect local( rect() );
   local.translate( -parent_->horizontalScrollBar()->value(), -parent_->verticalScrollBar()->value() );
-
+  
   stored_ = QString();
 
   // loop over rows
@@ -301,7 +299,7 @@ void BoxSelection::_store( void )
     QPoint voffset( 0, font_height_*( row + 1 ) );
     QPoint begin( local.topLeft() + voffset );
     QPoint end( local.topRight() + voffset );
-
+    
     // retrieve cursor at begin popsition
     QTextCursor cursor_begin( parent_->cursorForPosition( begin ) );
 
