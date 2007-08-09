@@ -45,6 +45,8 @@ BoxSelection::BoxSelection( CustomTextEdit* parent ):
   color_( parent->palette().color( QPalette::Highlight ) ),
   font_width_( 0 ),
   font_height_( 0 ),
+  left_margin_( 0 ),
+  top_margin_( 0 ),
   state_( EMPTY )
 { Debug::Throw( "BoxSelection::BoxSelection.\n" ); }  
   
@@ -61,7 +63,10 @@ void BoxSelection::updateConfiguration( void )
   font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ).c_str() );
   font_width_ = QFontMetrics( font ).width( " " );
   font_height_ = QFontMetrics( font ).lineSpacing();
-
+  
+  int right, bottom;
+  parent_->getContentsMargins ( &left_margin_, &top_margin_, &right, &bottom );
+  
 }
 
 //________________________________________________________________________
@@ -75,8 +80,9 @@ bool BoxSelection::start( QPoint point )
   
   begin_ = point;
   end_ = point;
-  new_end_ = point;
+  end_ = point;
   state_ = STARTED;
+  parent_->setTextCursor( parent_->cursorForPosition( end_ ) );
   return true;
 }
  
@@ -89,14 +95,12 @@ bool BoxSelection::update( QPoint point )
   point.setX( point.x() + parent_->horizontalScrollBar()->value() );
   point.setY( point.y() + parent_->verticalScrollBar()->value() );
   
-  end_ = new_end_; 
-  new_end_ = point;
-  position_ = point;
+  end_ = point;
   
   QRect old( rect() );
   _updateRect();
   parent_->viewport()->repaint( old.unite( rect() ) );
-  parent_->setTextCursor( parent_->cursorForPosition( position_ ) );
+  parent_->setTextCursor( parent_->cursorForPosition( end_ ) );
  
   return true;
 }
@@ -110,14 +114,16 @@ bool BoxSelection::finish( QPoint point )
   point.setX( point.x() + parent_->horizontalScrollBar()->value() );
   point.setY( point.y() + parent_->verticalScrollBar()->value() );
   
-  end_ = new_end_; 
-  new_end_ = point;
+  end_ = point;
   
   QRect old( rect() );
   _updateRect();
   parent_->viewport()->repaint( old.unite( rect() ) );
 
   state_ = FINISHED;
+  
+  _store();
+  
   return true;
 }
 
@@ -137,11 +143,11 @@ void BoxSelection::_updateRect( void )
   
   // this can probably be made smarter when considering update
   // from previous call
-  int x_min( min( begin_.x(), new_end_.x() ) );
-  int x_max( max( begin_.x(), new_end_.x() ) );
+  int x_min( min( begin_.x(), end_.x() ) );
+  int x_max( max( begin_.x(), end_.x() ) );
   
-  int y_min( min( begin_.y(), new_end_.y() ) );
-  int y_max( max( begin_.y(), new_end_.y() ) );
+  int y_min( min( begin_.y(), end_.y() ) );
+  int y_max( max( begin_.y(), end_.y() ) );
   
   QPoint translation( parent_->horizontalScrollBar()->value(), parent_->verticalScrollBar()->value() );
   
@@ -152,15 +158,32 @@ void BoxSelection::_updateRect( void )
   QRect cursor_rect = parent_->cursorRect( parent_->cursorForPosition( begin - translation ) );
   int x_offset = (x_min - cursor_rect.topLeft().x())%font_width_;
   int y_offset = (y_min - cursor_rect.topLeft().y())%font_height_;
-  begin -= QPoint( x_offset+2, y_offset+2 );
+  begin -= QPoint( x_offset+left_margin_, y_offset+top_margin_ );
   
   cursor_rect = parent_->cursorRect( parent_->cursorForPosition( end - translation ) );
   x_offset = (x_max - cursor_rect.topLeft().x())%font_width_;
   y_offset = (y_max - cursor_rect.topLeft().y())%font_height_;
-  //end -= QPoint( x_offset, y_offset );
-  end += QPoint( font_width_ - x_offset - 2, font_height_ - y_offset - 2 );
+  end += QPoint( font_width_ - x_offset - left_margin_, font_height_ - y_offset - top_margin_ );
+  
+  // propagate again to begin and end points
+  begin_.setX( begin_.x() < end_.x() ? begin.x():end.x() );
+  begin_.setY( begin_.y() < end_.y() ? begin.y():end.y() );
+
+  end_.setX( begin_.x() < end_.x() ? end.x():begin.x());  
+  end_.setY( begin_.y() < end_.y() ? end.y():begin.y());  
+  
+  // compute rect
   rect_ = QRect( begin, end );
   
   return;
   
 }
+
+//________________________________________________________________________
+void BoxSelection::_store( void )
+{
+  Debug::Throw( "BoxSelection::_store.\n" );
+
+
+}
+  

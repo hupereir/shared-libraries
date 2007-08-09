@@ -79,10 +79,6 @@ class BoxSelection: public Counter
   const QPoint &end() const
   { return end_; }
 
-  //! end point
-  const QPoint &newEnd() const
-  { return new_end_; }
-  
   //! rect
   const QRect& rect( void ) const
   { return rect_; }
@@ -112,6 +108,9 @@ class BoxSelection: public Counter
   //! update repaiint rect
   void _updateRect( void );
   
+  //! store selected text
+  void _store( void );
+  
   //! parent editor
   CustomTextEdit* parent_;
   
@@ -124,6 +123,12 @@ class BoxSelection: public Counter
   //! font height
   int font_height_;
  
+  //! margin
+  int left_margin_;
+  
+  //! margin
+  int top_margin_;
+  
   //! state
   State state_;
   
@@ -132,12 +137,6 @@ class BoxSelection: public Counter
   
   //! end point
   QPoint end_;
-  
-  //! new end point (while updating)
-  QPoint new_end_;
-  
-  //! last event position
-  QPoint position_; 
   
   //! max rectangle
   QRect rect_;
