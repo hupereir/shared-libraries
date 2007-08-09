@@ -263,7 +263,7 @@ void BoxSelection::_updateRect( void )
   int y_min( min( begin_.y(), end_.y() ) );
   int y_max( max( begin_.y(), end_.y() ) );
 
-  QPoint begin( x_min - (x_min%font_width_) + left_margin_ + 2, y_min - (y_min%font_height_) + top_margin_ );
+  QPoint begin( x_min - (x_min%font_width_) + left_margin_ + 2, y_min - (y_min%font_height_) + top_margin_ + 2 );
   QPoint end( x_max + font_width_ - (x_max%font_width_) + left_margin_, y_max + font_height_ - (y_max%font_height_) + top_margin_ );
 
   // decide location of cursor point
