@@ -88,7 +88,7 @@ void BoxSelection::updateConfiguration( void )
 
   // read font attributes
   font_width_ = QFontMetrics( parent_->font() ).width( " " );
-  font_height_ = QFontMetrics( parent_->font() ).lineSpacing();
+  font_height_ = QFontMetrics( parent_->font() ).height();
     
   // retrieve margins
   int right, bottom;
@@ -263,25 +263,11 @@ void BoxSelection::_updateRect( void )
   int y_min( min( begin_.y(), end_.y() ) );
   int y_max( max( begin_.y(), end_.y() ) );
 
-  QPoint translation( parent_->horizontalScrollBar()->value(), parent_->verticalScrollBar()->value() );
-  //QPoint test( parent_->viewport()->mapToParent( QPoint( 0, 0 ) ) );
-  //Debug::Throw(0) << "(" << translation.x() << "," << translation.y() << ") (" << test.x() << "," << test.y() << ")" << endl;
-  
-  QPoint begin( x_min, y_min );
-  QPoint end( x_max, y_max );
-
-  // map begin and end point to font width
-  QRect cursor_rect = parent_->cursorRect( parent_->cursorForPosition( begin - translation ) );
-  int x_offset = (x_min - cursor_rect.topLeft().x())%font_width_;
-  int y_offset = (y_min - cursor_rect.topLeft().y())%font_height_;
-  begin -= QPoint( x_offset + left_margin_, y_offset );
-
-  cursor_rect = parent_->cursorRect( parent_->cursorForPosition( end - translation ) );
-  x_offset = (x_max - cursor_rect.topLeft().x())%font_width_;
-  y_offset = (y_max - cursor_rect.topLeft().y())%font_height_;
-  end += QPoint( font_width_ - x_offset - left_margin_, font_height_ - y_offset );
+  QPoint begin( x_min - (x_min%font_width_) + left_margin_ + 2, y_min - (y_min%font_height_) + top_margin_ );
+  QPoint end( x_max + font_width_ - (x_max%font_width_) + left_margin_, y_max + font_height_ - (y_max%font_height_) + top_margin_ );
 
   // decide location of cursor point
+  QPoint translation( parent_->horizontalScrollBar()->value(), parent_->verticalScrollBar()->value() );
   cursor_.setX( begin_.x() < end_.x() ? end.x():begin.x());
   cursor_.setY( begin_.y() < end_.y() ? end.y():begin.y()+font_height_);
   cursor_ -= translation;
