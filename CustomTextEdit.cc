@@ -415,7 +415,7 @@ void CustomTextEdit::updateConfiguration( void )
   blockHighlightAction().setEnabled( textHighlight().highlightColor().isValid() );
   blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
 
-  box_selection_.updateConfiguration();  
+  _boxSelection().updateConfiguration();  
   
   return;
   
@@ -658,14 +658,20 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       {
         if( event->modifiers() == ControlModifier ) 
         { 
-          if( box_selection_.state() == BoxSelection::STARTED ) box_selection_.finish( event->pos() );
-          if( box_selection_.state() == BoxSelection::FINISHED ) { box_selection_.clear(); }
-          box_selection_.start( event->pos() ); 
+          if( _boxSelection().state() == BoxSelection::STARTED ) _boxSelection().finish( event->pos() );
+          if( _boxSelection().state() == BoxSelection::FINISHED ) { _boxSelection().clear(); }
+          _boxSelection().start( event->pos() ); 
+          
+          // synchronize with other editors
+          _synchronizeBoxSelection();
           
         } else {
           
-          if( box_selection_.state() == BoxSelection::FINISHED ) 
-          { box_selection_.clear(); }
+          if( _boxSelection().state() == BoxSelection::FINISHED ) 
+          { 
+            _boxSelection().clear(); 
+            _synchronizeBoxSelection();
+          }
           
           QTextEdit::mousePressEvent( event );
         
@@ -695,7 +701,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
     
   } else {
     
-    if( box_selection_.state() == BoxSelection::FINISHED ) box_selection_.clear();
+    if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().clear();
     QTextEdit::mousePressEvent( event );
   
   } return;
@@ -722,10 +728,13 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
   Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
   if( event->buttons() == LeftButton && event->modifiers() == ControlModifier )
   {
-    if( box_selection_.state() != BoxSelection::STARTED && viewport()->rect().contains( event->pos() ) )
-    { box_selection_.start( event->pos() ); }
-    else if( box_selection_.state() == BoxSelection::STARTED )
-    { box_selection_.update( event->pos() ); }
+    if( _boxSelection().state() != BoxSelection::STARTED && viewport()->rect().contains( event->pos() ) )
+    { _boxSelection().start( event->pos() ); }
+    else if( _boxSelection().state() == BoxSelection::STARTED )
+    { _boxSelection().update( event->pos() ); }
+
+    // synchronize with other editors
+    if( isSynchronized() ) _synchronizeBoxSelection();
     
   } else return QTextEdit::mouseMoveEvent( event );
   
@@ -737,8 +746,14 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
  
   Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
 
-  if( event->button() == LeftButton && box_selection_.state() == BoxSelection::STARTED )
-  { box_selection_.finish( event->pos() ); }
+  if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::STARTED )
+  { 
+    _boxSelection().finish( event->pos() ); 
+    
+    // synchronize with other editors
+    if( isSynchronized() ) _synchronizeBoxSelection();
+  
+  }
   
   if( event->button() == LeftButton && click_counter_.counts() > 1 ) 
   { 
@@ -830,8 +845,8 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   QTextEdit::paintEvent( event );
   
   if( 
-    box_selection_.state() != BoxSelection::STARTED &&
-    box_selection_.state() != BoxSelection::FINISHED     
+    _boxSelection().state() != BoxSelection::STARTED &&
+    _boxSelection().state() != BoxSelection::FINISHED     
   ) return;
 
   QPainter painter( viewport() );
@@ -846,9 +861,9 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   rect.translate(xOffset, yOffset);
   
   
-  painter.setPen( box_selection_.color() );
-  painter.setBrush( box_selection_.color() );
-  painter.drawRect( box_selection_.rect() );
+  painter.setPen( _boxSelection().color() );
+  painter.setBrush( _boxSelection().color() );
+  painter.drawRect( _boxSelection().rect() );
   
   return;
 }
@@ -1277,6 +1292,17 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, co
     
   return found;
   
+}
+
+//_____________________________________________________________
+void CustomTextEdit::_synchronizeBoxSelection( void ) const
+{
+
+  // Debug::Throw( "CustomTextEdit::_synchronizeBoxSelection.\n" );
+  BASE::KeySet<CustomTextEdit> displays( this );
+  for( BASE::KeySet<CustomTextEdit>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
+  { (*iter)->_boxSelection().synchronize( _boxSelection() ); }
+    
 }
 
 //_____________________________________________________________

@@ -413,6 +413,22 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual unsigned int _replaceInRange( const TextSelection& selection, const QTextCursor& cursor );
   
   //@}
+
+  //!@name box selection
+  //@{
+  
+  //! box selection
+  BoxSelection& _boxSelection( void )
+  { return box_selection_; }
+
+  //! box selection
+  const BoxSelection& _boxSelection( void ) const
+  { return box_selection_; }
+  
+  //! synchronize box selection with associated displays
+  void _synchronizeBoxSelection() const;
+  
+  //@}
   
   //! toggle insertion mode
   virtual void _toggleInsertMode( void );

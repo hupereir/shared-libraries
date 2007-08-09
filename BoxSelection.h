@@ -57,6 +57,9 @@ class BoxSelection: public Counter
   //! constructor
   BoxSelection( CustomTextEdit* parent );
  
+  //! synchronize two box selection
+  void synchronize( const BoxSelection& selection );
+  
   //!@ accessors
   //@{
   
@@ -100,9 +103,19 @@ class BoxSelection: public Counter
   //! clear
   bool clear( void );
 
+  //@}
+
+  //!@name interface with clipboard
+  //@{
+  
+  //! copy selection content to clipboard
+  bool toClipboard( const QClipboard::Mode& ) const;
+  
+  //! copy clipboard content to boxSelection
+  bool fromClipboard( const QClipboard::Mode& );
   
   //@}
-    
+  
   private:
   
   //! update repaiint rect
@@ -137,10 +150,19 @@ class BoxSelection: public Counter
   
   //! end point
   QPoint end_;
+ 
+  //! cursor point
+  /*! 
+  it is used to tell the editor where to place the cursor 
+  when highlighting */
+  QPoint cursor_;
   
   //! max rectangle
   QRect rect_;
 
+  //! stored string
+  QString stored_;
+  
 };
 
 #endif
