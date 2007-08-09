@@ -75,7 +75,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   int blockCount( void ) const;
   
   //! retrieve current text position
-  virtual TextPosition textPosition() const;
+  virtual TextPosition textPosition();
       
   //!@name conversions between absolute index and TextPosition
   //@{
@@ -137,68 +137,68 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //!@name actions
   //@{
   
-  QAction* undoAction( void )
-  { return undo_action_; }
+  QAction& undoAction( void )
+  { return *undo_action_; }
   
   //! redo
-  QAction* redoAction( void )
-  { return redo_action_; }
+  QAction& redoAction( void )
+  { return *redo_action_; }
   
   //! cut selection
-  QAction* cutAction( void )
-  { return cut_action_; }
+  QAction& cutAction( void )
+  { return *cut_action_; }
   
   //! copy selection
-  QAction* copyAction( void )
-  { return copy_action_; }
+  QAction& copyAction( void )
+  { return *copy_action_; }
   
   //! paste clipboard
-  QAction* pasteAction( void )
-  { return paste_action_;  }
+  QAction& pasteAction( void )
+  { return *paste_action_;  }
 
   //! convert selection to upper case
-  QAction* lowerCaseAction( void )
-  { return upper_case_action_; }
+  QAction& lowerCaseAction( void )
+  { return *upper_case_action_; }
   
   //! convert selection to lower case
-  QAction* upperCaseAction( void )
-  { return lower_case_action_; }
+  QAction& upperCaseAction( void )
+  { return *lower_case_action_; }
   
   //! find from dialog
-  QAction* findAction( void )
-  { return find_action_; }
+  QAction& findAction( void )
+  { return *find_action_; }
 
   //! find selection again
-  QAction* findSelectionAction( void )
-  { return find_selection_action_; }
+  QAction& findSelectionAction( void )
+  { return *find_selection_action_; }
 
   //! find again
-  QAction* findAgainAction( void )
-  { return find_again_action_; }
+  QAction& findAgainAction( void )
+  { return *find_again_action_; }
   
   //! replace
-  QAction* replaceAction( void )
-  { return replace_action_; }
+  QAction& replaceAction( void )
+  { return *replace_action_; }
 
   //! replace again
-  QAction* replaceAgainAction( void )
-  { return replace_again_action_; }
+  QAction& replaceAgainAction( void )
+  { return *replace_again_action_; }
 
   //! goto line number
-  QAction* gotoLineAction( void )
-  { return goto_line_action_; } 
+  QAction& gotoLineAction( void )
+  { return *goto_line_action_; } 
  
   //! block highlight action
-  QAction* blockHighlightAction( void )
-  { return block_highlight_action_; }
+  QAction& blockHighlightAction( void )
+  { return *block_highlight_action_; }
   
   //! toggle wrap mode
-  QAction* wrapModeAction( void )
-  { return wrap_mode_action_; }
+  QAction& wrapModeAction( void )
+  { return *wrap_mode_action_; }
   
   //! toggle tab emulation
-  QAction* tabEmulationAction( void )
-  { return tab_emulation_action_; }
+  QAction& tabEmulationAction( void )
+  { return *tab_emulation_action_; }
   
   //@}
 
@@ -224,12 +224,16 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   void setTextHighlight( BaseTextHighlight* highlight );
     
   //! text highlight
-  BaseTextHighlight& textHighlight( void )
+  BaseTextHighlight& textHighlight( void ) const
   {
     BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
     Exception::check( highlights.size() == 1, DESCRIPTION( Str("invalid association to text-highlight - count: " ).append<unsigned int>( highlights.size() ) ) );
     return **highlights.begin();
   }
+  
+  //! block highlight object
+  BlockHighlight& blockHighlight() const
+  { return *block_highlight_; }
   
   signals:
   
@@ -606,6 +610,40 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
 
   //! current block highlight
   BlockHighlight* block_highlight_;
+  
+  //! store previous position marked by the cursor and the corresponding Block index
+  /*! it is used to have faster access to index of a given block */
+  class BlockIndex
+  {
+    public:
+    
+    BlockIndex( void ):
+      position_( 0 ),
+      index_( 0 )
+    {}
+    
+    //! absolute position
+    int& position()
+    { return position_; }
+    
+    //! block index
+    /*! equivalent to line number */
+    int& index()
+    { return index_; }
+    
+    private:
+    
+    //! absolute position
+    int position_;
+    
+    //! block index
+    /*! equivalent to line number */
+    int index_;
+    
+  };
+  
+  //! ...
+  BlockIndex previous_block_;
   
 };
 

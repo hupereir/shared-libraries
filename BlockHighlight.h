@@ -33,14 +33,12 @@
 */
 
 #include <QApplication>
-#include <QTextBlock>
 #include <QTimer>
 
 #include "Counter.h"
 #include "Debug.h"
 
 class CustomTextEdit;
-class TextBlockData;
 
 //! handles current block highlighting
 class BlockHighlight: public QObject, public Counter
@@ -64,9 +62,6 @@ class BlockHighlight: public QObject, public Counter
   //! enable/disable
   const bool& isEnabled( void ) const
   { return enabled_; }
-  
-  //! reset stored data
-  void reset( void );
   
   //! clear highlighted block
   void clear( void );
@@ -92,6 +87,9 @@ class BlockHighlight: public QObject, public Counter
   
   //! true if enabled
   bool enabled_;
+  
+  //! true when cleared
+  bool cleared_;
   
 };
 

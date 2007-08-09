@@ -71,8 +71,7 @@ void BaseTextHighlight::highlightBlock( const QString& text )
   if( !( data && data->isCurrentBlock() ) )
   { return; }
   
-  QTextCharFormat format;
-  format.setBackground( color_ );
-  setFormat( 0, text.size(), format );
+  setFormat( 0, text.size(), format_ );
+  
   return;
 }

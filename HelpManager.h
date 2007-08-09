@@ -84,12 +84,12 @@ namespace BASE
     { dialog_->setWindowTitle( value.c_str() ); }
     
     //! display action
-    QAction* displayAction( void )
-    { return display_action_; }
+    QAction& displayAction( void )
+    { return *display_action_; }
     
     //! dump action
-    QAction* dumpAction( void )
-    { return dump_action_; }
+    QAction& dumpAction( void )
+    { return *dump_action_; }
    
     protected slots:
     

@@ -33,6 +33,7 @@
 */
 
 #include <QSyntaxHighlighter>
+#include <QTextCharFormat>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -62,11 +63,11 @@ class BaseTextHighlight: public QSyntaxHighlighter, public BASE::Key, public Cou
   
   //! highlight color
   void setHighlightColor( const QColor& color )
-  { color_ = color; }
+  { format_.setBackground( color ); }
   
   //! retrieve highlight color
-  const QColor& highlightColor( void ) const
-  { return color_; }
+  QColor highlightColor( void ) const
+  { return format_.background().color(); }
   
   private:
   
@@ -74,7 +75,7 @@ class BaseTextHighlight: public QSyntaxHighlighter, public BASE::Key, public Cou
   bool enabled_;
 
   //! highlight color
-  QColor color_;
+  QTextCharFormat format_;
   
 };
 

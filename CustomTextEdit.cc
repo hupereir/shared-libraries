@@ -87,7 +87,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 
   // paragraph highlight  
   block_highlight_ = new BlockHighlight( this );
-  connect( this, SIGNAL( cursorPositionChanged() ), block_highlight_, SLOT( highlight() ) );
+  connect( this, SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
   
   // actions
   _installActions();
@@ -151,7 +151,7 @@ int CustomTextEdit::blockCount( void ) const
 }
   
 //________________________________________________
-TextPosition CustomTextEdit::textPosition( void ) const
+TextPosition CustomTextEdit::textPosition( void )
 {
   
   Debug::Throw( "CustomTextEdit::textPosition.\n" );
@@ -162,9 +162,22 @@ TextPosition CustomTextEdit::textPosition( void ) const
   TextPosition out;
   out.index() = cursor.position() - block.position(); 
   
-  // rewind to begin of document to get paragraph index
-  while( (block = block.previous()).isValid() ) out.paragraph()++;
+  // move to last stored position
+  // and increment index consequently
+  for( QTextBlock local( block ); local.isValid() && !local.contains( previous_block_.position() ); )
+  {
+    if( block.position() > previous_block_.position() )
+    {
+      local = local.previous();
+      previous_block_.index() ++;
+    } else {
+      local = local.next();
+      previous_block_.index() --;
+    }
+  }
   
+  previous_block_.position() = block.position();
+  out.paragraph() = previous_block_.index() -1;
   return out;
   
 }
@@ -339,10 +352,10 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
   
   // synchronize tab emulation
   _setTabSize( editor->emulatedTabCharacter().size() );
-  tabEmulationAction()->setChecked( editor->tabEmulationAction()->isChecked() );
+  tabEmulationAction().setChecked( editor->tabEmulationAction().isChecked() );
   
   // synchronize wrap mode
-  wrapModeAction()->setChecked( editor->wrapModeAction()->isChecked() );
+  wrapModeAction().setChecked( editor->wrapModeAction().isChecked() );
   
   Debug::Throw( "CustomTextEdit::synchronize - done.\n" );
 
@@ -390,17 +403,17 @@ void CustomTextEdit::updateConfiguration( void )
  
   // wrap mode
   if( wrapFromOptions() )
-  { wrapModeAction()->setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
+  { wrapModeAction().setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
   
   // tab emulation
   _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
-  tabEmulationAction()->setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
+  tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
   
   // paragraph highlighting
   textHighlight().setHighlightColor( QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() ) );
   textHighlight().setEnabled( textHighlight().highlightColor().isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-  blockHighlightAction()->setEnabled( textHighlight().highlightColor().isValid() );
-  blockHighlightAction()->setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
+  blockHighlightAction().setEnabled( textHighlight().highlightColor().isValid() );
+  blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );  
 
   return;
   
@@ -941,7 +954,7 @@ void CustomTextEdit::_installActions( void )
   // current block highlight
   addAction( block_highlight_action_ = new QAction( "&Highlight current paragraph", this ) );
   block_highlight_action_->setCheckable( true );
-  block_highlight_action_->setChecked( block_highlight_->isEnabled() );
+  block_highlight_action_->setChecked( blockHighlight().isEnabled() );
   connect( block_highlight_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleBlockHighlight( bool ) ) );
   
   // wrap mode
@@ -1404,11 +1417,11 @@ void CustomTextEdit::_updatePasteAction( void )
 void CustomTextEdit::_toggleBlockHighlight( bool state )
 {
   
-  block_highlight_->setEnabled( textHighlight().highlightColor().isValid() && state );
+  blockHighlight().setEnabled( textHighlight().highlightColor().isValid() && state );
   
   // repaint current paragraph
-  if( block_highlight_->isEnabled() ) block_highlight_->highlight(); 
-  else block_highlight_->clear();
+  if( blockHighlight().isEnabled() ) blockHighlight().highlight(); 
+  else blockHighlight().clear();
   
 }
 
@@ -1430,7 +1443,7 @@ bool CustomTextEdit::_toggleWrapMode( bool state )
     setSynchronized( false );
     BASE::KeySet<CustomTextEdit> editors( this );
     for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
-    { if( (*iter)->isSynchronized() ) (*iter)->wrapModeAction()->setChecked( state ); }
+    { if( (*iter)->isSynchronized() ) (*iter)->wrapModeAction().setChecked( state ); }
     setSynchronized( true );
     
   }
@@ -1461,7 +1474,7 @@ bool CustomTextEdit::_toggleTabEmulation( bool state )
     setSynchronized( false );
     BASE::KeySet<CustomTextEdit> editors( this );
     for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
-    { if( (*iter)->isSynchronized() ) (*iter)->tabEmulationAction()->setChecked( state ); }
+    { if( (*iter)->isSynchronized() ) (*iter)->tabEmulationAction().setChecked( state ); }
     setSynchronized( true );
     
   }

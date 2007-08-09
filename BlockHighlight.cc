@@ -30,6 +30,7 @@
 */
 
 #include <QTextDocument>
+#include <QTextBlock>
 
 #include "BlockHighlight.h"
 #include "CustomTextEdit.h"
@@ -43,7 +44,8 @@ BlockHighlight::BlockHighlight( CustomTextEdit* parent ):
   Counter( "BlockHighlight" ),
   parent_( parent ),
   timer_( parent ),
-  enabled_( false )
+  enabled_( false ),
+  cleared_( true )
 { 
   Debug::Throw( "BlockHighlight::BlockHighlight.\n" );
   timer_.setSingleShot( true );
@@ -52,15 +54,10 @@ BlockHighlight::BlockHighlight( CustomTextEdit* parent ):
 }
 
 //______________________________________________________________________
-void BlockHighlight::reset( void )
-{
-  Debug::Throw( "BlockHighlight::reset.\n" );
-  timer_.stop();
-}
-
-//______________________________________________________________________
 void BlockHighlight::clear( void )
 {
+
+  if( cleared_ ) return;
   
   // loop over all blocks
   for( QTextBlock block = parent_->document()->begin(); block.isValid(); block = block.next() )
@@ -75,7 +72,9 @@ void BlockHighlight::clear( void )
       parent_->document()->markContentsDirty(block.position(), block.length()-1);
     }
     
-  } 
+  }
+  
+  cleared_ = true;
 
 }
 
@@ -104,5 +103,6 @@ void BlockHighlight::_highlight( void )
   data->setIsCurrentBlock( true );
  
   parent_->document()->markContentsDirty(block.position(), block.length()-1);
+  cleared_ = false;
   
 }
