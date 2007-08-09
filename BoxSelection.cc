@@ -320,9 +320,7 @@ void BoxSelection::_store( void )
     stored_ += ( cursor_begin.selectedText() ).leftJustified( columns ) + "\n";
 
   }
-  
-  Debug::Throw(0) << qPrintable( stored_ );
-  
+    
   return;
 
 }
