@@ -164,6 +164,11 @@ TextPosition CustomTextEdit::textPosition( void )
 
   // move to last stored position
   // and increment index consequently
+  Debug::Throw(0) << "CustomTextEdit::textPosition -"
+    << " previous_position: " << previous_block_.position()
+    << " previous index: " << previous_block_.index()
+    << endl;
+  
   for( QTextBlock local( block ); local.isValid() && !local.contains( previous_block_.position() ); )
   {
     if( block.position() > previous_block_.position() )
@@ -423,6 +428,14 @@ void CustomTextEdit::clearBackground( QTextBlock block )
   { document()->markContentsDirty( block.position(), block.length()-1 ); }
   
   return;
+}
+
+//___________________________________________________________________________
+void CustomTextEdit::clearAllBackgrounds( void )
+{
+  Debug::Throw( "CustomTextEdit::clearAllBackgrounds.\n" );
+  for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next() )
+  { clearBackground( block ); }
 }
 
 //________________________________________________

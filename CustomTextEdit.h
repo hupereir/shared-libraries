@@ -240,6 +240,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! clear block background
   void clearBackground( QTextBlock );
+
+  //! clear all blocks background
+  void clearAllBackgrounds( void );
   
   signals:
   
