@@ -433,14 +433,16 @@ void CustomTextEdit::updateConfiguration( void )
 void CustomTextEdit::cut( void )
 {
   Debug::Throw( "CustomTextEdit::cut.\n" );
-  QTextEdit::cut();
-//   if( _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::FINISHED )
-//   {
-//     _boxSelection().toClipboard( QClipboard::Clipboard ); 
-//     _boxSelection().removeSelectedText();
-//     _boxSelection().clear();
-//     emit copyAvailable( false );
-//   } else QTextEdit::cut();
+  if( _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::FINISHED )
+  {
+    _boxSelection().toClipboard( QClipboard::Clipboard ); 
+    _boxSelection().removeSelectedText();
+    _boxSelection().clear();
+    emit copyAvailable( false );
+  } else QTextEdit::cut();
+  
+  return;
+  
 }
   
 //________________________________________________
@@ -669,23 +671,6 @@ void CustomTextEdit::removeLine()
   setTextCursor( cursor );
   cut();
 
-}
-
-//________________________________________________
-bool CustomTextEdit::event( QEvent* event )
-{
-//   if( event->type() == QEvent::ShortcutOverride )
-//   {
-//     QKeyEvent* key_event( dynamic_cast<QKeyEvent*>( event ) );
-//     if( key_event->modifiers() == ControlModifier && key_event->key() == Key_C )
-//     {
-//       copy();
-//       event->ignore();
-//       return false;
-//     }
-//   }
-  return QTextEdit::event( event );
-  
 }
 
 //________________________________________________
@@ -981,6 +966,7 @@ void CustomTextEdit::_installActions( void )
 
   addAction( copy_action_ = new QAction( IconEngine::get( ICONS::COPY, path_list ), "&Copy", this ) );
   copy_action_->setShortcut( CTRL+Key_C );
+  // copy_action_->setShortcut( QKeySequence::Copy );
   connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
   
   addAction( paste_action_ = new QAction( IconEngine::get( ICONS::PASTE, path_list ), "&Paste", this ) );

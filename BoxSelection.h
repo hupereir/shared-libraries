@@ -113,7 +113,7 @@ class BoxSelection: public Counter
 
   //@}
 
-  //!@name interface with clipboard
+  //!@name selection manipulation
   //@{
   
   //! copy selection content to clipboard
@@ -123,7 +123,10 @@ class BoxSelection: public Counter
   bool fromClipboard( const QClipboard::Mode& );
   
   //! format string into box selection
-  bool fromString( const QString& );
+  // bool fromString( const QString& );
+  
+  //! remove selected text
+  bool removeSelectedText( void ) const;
   
   //@}
   
