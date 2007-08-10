@@ -234,6 +234,12 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! block highlight object
   BlockHighlight& blockHighlight() const
   { return *block_highlight_; }
+    
+  //! changes block background
+  void setBackground( QTextBlock, const QColor& );
+  
+  //! clear block background
+  void clearBackground( QTextBlock );
   
   signals:
   

@@ -45,12 +45,31 @@ class TextBlockData: public QTextBlockUserData, public Counter
   TextBlockData():
     QTextBlockUserData(),
     Counter( "TextBlockData" ),
-    current_block_( false )
+    current_block_( false ),
+    has_background_( false )
   { Debug::Throw( "TextBlockData::TextBlockData.\n" ); }
   
   //! destructor
   virtual ~TextBlockData( void )
   { Debug::Throw( "TextBlockData::~TextBlockData.\n" ); }
+
+  //! true if background is available/valid
+  const bool& hasBackground( void ) const
+  { return has_background_; }
+  
+  //! block background
+  const QColor& background( void ) const
+  { return background_; }
+  
+  //! block background
+  /*! returns true if changed */
+  bool setBackground( const QColor& color ) 
+  { 
+    if( !(background_.isValid() || color.isValid() ) || color == background_ ) return false;
+    background_ = color; 
+    has_background_ = color.isValid(); 
+    return true;
+  }
   
   //! active block
   const bool& isCurrentBlock( void ) const
@@ -65,6 +84,12 @@ class TextBlockData: public QTextBlockUserData, public Counter
   //! set to true for current block
   bool current_block_;
     
+  //! block background color available
+  bool has_background_;
+  
+  //! block background color (overridden by active)
+  QColor background_;
+  
 };
 
 #endif

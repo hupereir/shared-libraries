@@ -62,14 +62,21 @@ bool BaseTextHighlight::setEnabled( const bool& state )
 void BaseTextHighlight::highlightBlock( const QString& text )
 {
     
-  // try retrieve data
   if( !isEnabled() ) return;
     
+  // try retrieve data  
   TextBlockData* data = dynamic_cast<TextBlockData*>( currentBlockUserData() );  
-  if( !( data && data->isCurrentBlock() ) )
-  { return; }
+  if( !data ) return;
   
-  setFormat( 0, text.size(), format_ );
+  // highlight current block if enabled and needed
+  if( isEnabled() && data->isCurrentBlock() ) setFormat( 0, text.size(), format_ );
+  else if( data->hasBackground() )
+  {
+    // set paragraph background color if any
+    QTextCharFormat format;
+    format.setBackground( data->background() );
+    setFormat( 0, text.size(), format );
+  }
   
   return;
 }

@@ -395,6 +395,36 @@ void CustomTextEdit::setTextHighlight( BaseTextHighlight* highlight )
 
 }
 
+//___________________________________________________________________________
+void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
+{
+ 
+  Debug::Throw( "CustomTextEdit::setBackground.\n" );
+  
+  // try retrieve data or create
+  TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
+  if( !data ) block.setUserData( data = new TextBlockData() );
+  
+  // assign color and mark as dirty
+  if( data->setBackground( color ) )
+  { document()->markContentsDirty( block.position(), block.length()-1 ); }
+  
+  return;
+  
+}
+
+//___________________________________________________________________________
+void CustomTextEdit::clearBackground( QTextBlock block )
+{
+ 
+  Debug::Throw( "CustomTextEdit::clearBackground.\n" );
+  TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
+  if( data && data->hasBackground() && data->setBackground( QColor() ) )
+  { document()->markContentsDirty( block.position(), block.length()-1 ); }
+  
+  return;
+}
+
 //________________________________________________
 void CustomTextEdit::updateConfiguration( void )
 {
@@ -476,6 +506,7 @@ void CustomTextEdit::upperCase( void )
 //________________________________________________
 void CustomTextEdit::lowerCase( void )
 {
+  
   Debug::Throw( "CustomTextEdit::lowerCase.\n" );
   QTextCursor cursor( textCursor() );
 
