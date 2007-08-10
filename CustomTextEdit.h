@@ -248,8 +248,11 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! update configuration
   virtual void updateConfiguration( void );
  
+  //! cut
+  virtual void cut( void );
+  
   //! copy
-  // virtual void copy( void );
+  virtual void copy( void );
    
   //! changes selection to uppercase
   virtual void upperCase( void );
@@ -340,6 +343,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //!@name event handlers
   //@{
+  
+  //! default event handler
+  virtual bool event( QEvent* event );
   
   //! mouse release event [overloaded]
   virtual void mousePressEvent( QMouseEvent* );

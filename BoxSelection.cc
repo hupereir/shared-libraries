@@ -171,7 +171,7 @@ bool BoxSelection::clear( void )
 //________________________________________________________________________
 bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
 {
-  Debug::Throw(0) << "BoxSelection::toClipboard - mode: " << ( mode == QClipboard::Selection ? "Selection":"Clipboard" ) << endl;
+  Debug::Throw() << "BoxSelection::toClipboard - mode: " << ( mode == QClipboard::Selection ? "Selection":"Clipboard" ) << endl;
   
   // check if selection mode is available
   if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;
@@ -214,18 +214,12 @@ bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
   // try retrieve directly from formated input
   if( data->hasFormat( mimeType ) )
   { 
+    
     Debug::Throw() << "BoxSelection::fromClipboard - got formated string" << endl;
     stored_ = QString( data->data( mimeType ) );
     return true;
-  } else if( data->hasText() ) {
     
-    // retrieve from text and format
-    return fromString( data->text() );
-  
-  }
-  
-  Debug::Throw() << "BoxSelection::fromClipboard - unable to decode clipboard.\n" << endl;
-  return true; 
+  } else return false; 
   
 }
   

@@ -29,14 +29,14 @@
   \date $Date$
 */
 
-#include <QMenu>
+#include <QAbstractTextDocumentLayout>
 #include <QClipboard>
-#include <QRegExp>
+#include <QMenu>
 #include <QPainter>
+#include <QRegExp>
 #include <QScrollBar>
 #include <QTextBlock>
 #include <QTextLayout>
-#include <QAbstractTextDocumentLayout>
 
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
@@ -99,7 +99,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 
   // update configuration
   updateConfiguration();
-
+  
 }
 
 //________________________________________________
@@ -422,23 +422,38 @@ void CustomTextEdit::updateConfiguration( void )
   {
     _boxSelection().clear();
     _synchronizeBoxSelection();
+    emit copyAvailable( false );
   }
 
   return;
 
 }
 
-// //________________________________________________
-// void CustomTextEdit::copy( void )
-// {
-//   Debug::Throw(0, "CustomTextEdit::copy.\n" );
-// 
+//________________________________________________
+void CustomTextEdit::cut( void )
+{
+  Debug::Throw( "CustomTextEdit::cut.\n" );
+  QTextEdit::cut();
 //   if( _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::FINISHED )
-//   { _boxSelection().toClipboard( QClipboard::Clipboard ); }
-//   else
-//   { QTextEdit::copy(); }
-// }
-// 
+//   {
+//     _boxSelection().toClipboard( QClipboard::Clipboard ); 
+//     _boxSelection().removeSelectedText();
+//     _boxSelection().clear();
+//     emit copyAvailable( false );
+//   } else QTextEdit::cut();
+}
+  
+//________________________________________________
+void CustomTextEdit::copy( void )
+{
+  Debug::Throw( 0, "CustomTextEdit::copy.\n" );
+
+  if( _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::FINISHED )
+  { 
+    _boxSelection().toClipboard( QClipboard::Clipboard ); 
+  } else QTextEdit::copy();
+}
+
 //________________________________________________
 void CustomTextEdit::upperCase( void )
 {
@@ -657,6 +672,23 @@ void CustomTextEdit::removeLine()
 }
 
 //________________________________________________
+bool CustomTextEdit::event( QEvent* event )
+{
+//   if( event->type() == QEvent::ShortcutOverride )
+//   {
+//     QKeyEvent* key_event( dynamic_cast<QKeyEvent*>( event ) );
+//     if( key_event->modifiers() == ControlModifier && key_event->key() == Key_C )
+//     {
+//       copy();
+//       event->ignore();
+//       return false;
+//     }
+//   }
+  return QTextEdit::event( event );
+  
+}
+
+//________________________________________________
 void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 {
 
@@ -684,12 +716,14 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 
             // CTRL pressed. finish/clear current box; start a new one
             if( _boxSelection().state() == BoxSelection::STARTED ) 
-            {
-              _boxSelection().finish( event->pos() );
-              // emit copyAvailable( true );
-            }
+            { _boxSelection().finish( event->pos() ); }
             
-            if( _boxSelection().state() == BoxSelection::FINISHED ) { _boxSelection().clear(); }
+            if( _boxSelection().state() == BoxSelection::FINISHED ) 
+            { 
+              _boxSelection().clear(); 
+              _synchronizeBoxSelection();
+              emit copyAvailable( false );
+            }
             _boxSelection().start( event->pos() );
 
             // synchronize with other editors
@@ -704,6 +738,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
           {
             _boxSelection().clear();
             _synchronizeBoxSelection();
+            emit copyAvailable( false );
           }
 
           QTextEdit::mousePressEvent( event );
@@ -734,13 +769,17 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       event->ignore();
       break;
     }
-
+    
+    return;
+    
   } else {
 
-    if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().clear();
+    //if( event->button() != RightButton && _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().clear();
     QTextEdit::mousePressEvent( event );
 
-  } return;
+  } 
+  
+  return;
 
 }
 
@@ -763,15 +802,24 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
 
   Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
 
-  if( event->buttons() == LeftButton && event->modifiers() == ControlModifier && _boxSelection().isEnabled() )
+  if( 
+    event->buttons() == LeftButton && 
+    _boxSelection().isEnabled() &&
+    ( event->modifiers() == ControlModifier || _boxSelection().state() == BoxSelection::STARTED ) )
   {
     if( _boxSelection().state() != BoxSelection::STARTED && viewport()->rect().contains( event->pos() ) )
-    { _boxSelection().start( event->pos() ); }
-    else if( _boxSelection().state() == BoxSelection::STARTED )
-    { _boxSelection().update( event->pos() ); }
+    { 
 
-    // synchronize with other editors
-    _synchronizeBoxSelection();
+      _boxSelection().start( event->pos() ); 
+      _synchronizeBoxSelection();
+
+    } else if( _boxSelection().state() == BoxSelection::STARTED ) { 
+
+      _boxSelection().update( event->pos() ); 
+      _synchronizeBoxSelection();
+      emit copyAvailable( true );
+
+    }
 
   } else return QTextEdit::mouseMoveEvent( event );
 
@@ -787,11 +835,9 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
   // no need to check for enability because there is no way for the box to start if disabled
   if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::STARTED )
   {
-    _boxSelection().finish( event->pos() );
 
-    // synchronize with other editors
+    _boxSelection().finish( event->pos() );
     _synchronizeBoxSelection();
-    // emit copyAvailable( true );
 
   }
 
@@ -936,7 +982,7 @@ void CustomTextEdit::_installActions( void )
   addAction( copy_action_ = new QAction( IconEngine::get( ICONS::COPY, path_list ), "&Copy", this ) );
   copy_action_->setShortcut( CTRL+Key_C );
   connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
-
+  
   addAction( paste_action_ = new QAction( IconEngine::get( ICONS::PASTE, path_list ), "&Paste", this ) );
   paste_action_->setShortcut( CTRL+Key_V );
   connect( paste_action_, SIGNAL( triggered() ), SLOT( paste() ) );
