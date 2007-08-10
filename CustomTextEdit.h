@@ -491,7 +491,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   /*! depends on clipboard status and editability */
   virtual void _updatePasteAction( void );
 
-  //! toggle paragraph highlight
+  //! toggle block highlight
   virtual void _toggleBlockHighlight( bool );
   
   //! wrap mode
@@ -616,7 +616,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! goto line number
   QAction* goto_line_action_;
 
-  //! toggle highlight paragraph
+  //! toggle highlight block
   QAction* block_highlight_action_;
   
   //! toggle wrap mode
@@ -641,40 +641,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
 
   //! current block highlight
   BlockHighlight* block_highlight_;
-  
-  //! store previous position marked by the cursor and the corresponding Block index
-  /*! it is used to have faster access to index of a given block */
-  class BlockIndex
-  {
-    public:
-    
-    BlockIndex( void ):
-      position_( 0 ),
-      index_( 0 )
-    {}
-    
-    //! absolute position
-    int& position()
-    { return position_; }
-    
-    //! block index
-    /*! equivalent to line number */
-    int& index()
-    { return index_; }
-    
-    private:
-    
-    //! absolute position
-    int position_;
-    
-    //! block index
-    /*! equivalent to line number */
-    int index_;
-    
-  };
-  
-  //! ...
-  BlockIndex previous_block_;
   
 };
 

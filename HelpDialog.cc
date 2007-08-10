@@ -85,12 +85,17 @@ HelpDialog::HelpDialog( QWidget *parent ):
   h_layout->setDirection( QBoxLayout::RightToLeft );  
   v_layout->addLayout( h_layout );
 
-  h_layout->addWidget( edit_button_ = new QPushButton( "&Edit", this ) );
-  h_layout->addStretch( 1 );
+  QPushButton* button;
+  h_layout->addWidget( button = new QPushButton( "&Close", this ) );  
+  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
+  button->setToolTip( "Close the reference manual window" );
   
+  
+  h_layout->addWidget( edit_button_ = new QPushButton( "&Edit", this ) );  
   connect( edit_button_, SIGNAL( clicked() ), SLOT( _toggleEdition() ) );
   edit_button_->setToolTip( "edit current help" );
-
+  h_layout->addStretch( 1 );
+  
   // connect list to text edit
   connect( &list(), SIGNAL( itemSelectionChanged() ), SLOT( _display() ) );
 
@@ -168,7 +173,7 @@ void HelpDialog::_toggleEdition( void )
   {
     
     edited_ = true;
-    edit_button_->setText( "&Display" );
+    edit_button_->setText( "&Save" );
     text_edit_->setPlainText( current_item_->item().text().c_str() );
     text_edit_->setReadOnly( false );
   

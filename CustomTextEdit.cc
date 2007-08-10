@@ -154,35 +154,22 @@ int CustomTextEdit::blockCount( void ) const
 TextPosition CustomTextEdit::textPosition( void )
 {
 
-  // Debug::Throw( "CustomTextEdit::textPosition.\n" );
   QTextCursor cursor( textCursor() );
   QTextBlock block( cursor.block() );
 
   // calculate index
   TextPosition out;
   out.index() = cursor.position() - block.position();
-
-  // move to last stored position
-  // and increment index consequently
-  Debug::Throw(0) << "CustomTextEdit::textPosition -"
-    << " previous_position: " << previous_block_.position()
-    << " previous index: " << previous_block_.index()
-    << endl;
   
-  for( QTextBlock local( block ); local.isValid() && !local.contains( previous_block_.position() ); )
-  {
-    if( block.position() > previous_block_.position() )
-    {
-      local = local.previous();
-      previous_block_.index() ++;
-    } else {
-      local = local.next();
-      previous_block_.index() --;
-    }
+  while( block.isValid() )
+  { 
+    block = block.previous(); 
+    out.paragraph()++;
   }
-
-  previous_block_.position() = block.position();
-  out.paragraph() = previous_block_.index() -1;
+  
+  // need to decrement once
+  out.paragraph()--;
+    
   return out;
 
 }
@@ -339,10 +326,6 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
 
   // delete old document, if needed
   if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
-
-  // restore connections with document
-  //connect( undo_action_, SIGNAL( triggered() ), CustomTextEdit::document(), SLOT( undo() ) );
-  //connect( redo_action_, SIGNAL( triggered() ), CustomTextEdit::document(), SLOT( redo() ) );
 
   // set synchronization flag
   editor->setSynchronized( true );
