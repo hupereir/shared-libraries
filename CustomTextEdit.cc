@@ -919,8 +919,19 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
     // any other key should replace the selection
     if( event->key() == Key_Tab ) 
     {
-      _boxSelection().fromString( tabCharacter() );
+      if( !_hasTabEmulation() ) _boxSelection().fromString( tabCharacter() );
+      else 
+      {
+        // retrieve position from begin of block
+        int position( _boxSelection().cursorList().front().anchor() );
+        position -= document()->findBlock( position ).position();
+        int n( position % emulatedTabCharacter().size() );
+        _boxSelection().fromString( emulatedTabCharacter().right( emulatedTabCharacter().size()-n ) );
+      
+      }
+      
       _boxSelection().clear();
+      
     } else if( !(event->text().isNull() || event->text().isEmpty() ) ) {
       _boxSelection().fromString( event->text() );
       _boxSelection().clear();

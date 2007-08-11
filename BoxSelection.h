@@ -160,7 +160,7 @@ class BoxSelection: public Counter
   QString toString( void ) const;
 
   //! update from string
-  bool fromString( const QString& );  
+  bool fromString( QString );  
   
   //! copy selection content to clipboard
   bool toClipboard( const QClipboard::Mode& ) const;

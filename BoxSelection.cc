@@ -39,15 +39,15 @@
 using namespace std;
 
 //________________________________________________________________________
-BoxSelectioaSelection( CustomTextEdit* parent ):
-  Counter(  lection" ),
-  parent_(   ),
-  enabled_(  ),
-  font_widt ),
-  font_heig  ),
-  left_marg  ),
-  top_margi ),
-  state_( E 
+BoxSelection::BoxSelection( CustomTextEdit* parent ):
+  Counter( "BoxSelection" ),
+  parent_( parent ),
+  enabled_( false ),
+  font_width_( 0 ),
+  font_height_( 0 ),
+  left_margin_( 0 ),
+  top_margin_( 0 ),
+  state_( EMPTY )
 { Debug::Throw( "BoxSelection::BoxSelection.\n" ); }
 
 //________________________________________________________________________
@@ -192,17 +192,20 @@ QString BoxSelection::toString( void ) const
 
 
 //________________________________________________________________________
-bool BoxSelection::fromString( const QString& input )
+bool BoxSelection::fromString( QString input )
 {
   
   Debug::Throw( "BoxSelection::fromString.\n" );
   
   // check state
   if( state() != FINISHED ) return false;
+
+  // replace all tab characters by emulated tabs
+  input.replace( "\t", parent_->emulatedTabCharacter() );
   
   // try split
   QStringList input_list( input.split( "\n" ) );
-
+  
   // retrieve maximum length
   int columns(0);
   for( int i=0; i < input_list.size(); i++ )
