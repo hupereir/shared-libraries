@@ -34,8 +34,10 @@
 
 #include <QClipboard>
 #include <QColor>
+#include <QList>
 #include <QPoint>
 #include <QRect>
+#include <QTextCursor>
 
 #include "Counter.h"
 
@@ -113,8 +115,52 @@ class BoxSelection: public Counter
 
   //@}
 
+  //! store selection cursors and  selection columns
+  class CursorList: public  QList<QTextCursor>, public Counter
+  {
+ 
+    public:
+    
+    //! constructor
+    CursorList( const int& first_column = 0, const int& columns = 0 ):
+      Counter( "CursorList" ),
+      first_column_( first_column ),
+      columns_( columns )
+    {}
+    
+    //! first column
+    /*! it is used for lines that are entirely outside of the existing blocks */
+    const int& firstColumn( void ) const
+    { return first_column_; }
+    
+    //! number of columns in the selection
+    const int& columnCount( void ) const
+    { return columns_; }
+    
+    private: 
+    
+    //! first column
+    /*! it is used for lines that are entirely outside of the existing blocks */
+    int first_column_;
+    
+    //! selection columns
+    int columns_;
+    
+  };
+  
   //!@name selection manipulation
   //@{
+  
+  //! retrieve list of cursors matching the selection
+  /*! they are used for cut, copy, paste and searching */
+  const CursorList& cursorList( void ) const
+  { return cursors_; }
+  
+  //! copy selection into a string
+  QString toString( void ) const;
+
+  //! update from string
+  bool fromString( const QString& );  
   
   //! copy selection content to clipboard
   bool toClipboard( const QClipboard::Mode& ) const;
@@ -184,9 +230,9 @@ class BoxSelection: public Counter
   
   //! max rectangle
   QRect rect_;
-  
-  //! stored string
-  QString stored_;
+
+  //! list of selection cursors
+  CursorList cursors_; 
   
 };
 

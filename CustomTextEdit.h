@@ -262,6 +262,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //! copy
   virtual void copy( void );
+  
+  //! paste
+  virtual void paste( void );
    
   //! changes selection to uppercase
   virtual void upperCase( void );
@@ -424,8 +427,20 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! find dialog
   virtual void _createReplaceDialog( void );
 
+  //! define how cursor should be updated while replacing
+  enum CursorMode
+  { 
+    
+    //! cursor selection range is expanded
+    EXPAND,
+    
+    //! cursor position is moved
+    MOVE
+    
+  };
+  
   //! replace selection in range refered to by cursor
-  virtual unsigned int _replaceInRange( const TextSelection& selection, const QTextCursor& cursor );
+  virtual unsigned int _replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode );
   
   //@}
 

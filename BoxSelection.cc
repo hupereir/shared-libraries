@@ -39,9 +39,6 @@
 using namespace std;
 
 //________________________________________________________________________
-const QString BoxSelection::mimeType( "text/boxSelection" );
-
-//________________________________________________________________________
 BoxSelection::BoxSelection( CustomTextEdit* parent ):
   Counter( "BoxSelection" ),
   parent_( parent ),
@@ -164,10 +161,93 @@ bool BoxSelection::clear( void )
   Debug::Throw( "BoxSelection::clear.\n" );
   if( state_ != FINISHED ) return false;
   state_ = EMPTY;
-  stored_ = QString();
+  cursors_.clear();
   begin_ = end_ = QPoint();
   parent_->viewport()->repaint();
   return true;
+}
+
+
+//________________________________________________________________________
+QString BoxSelection::toString( void ) const
+{
+  Debug::Throw( "BoxSelection::_store.\n" );
+  
+  QString out;
+  
+  // retrieve cursor, copy selected text in output string
+  CursorList cursors( cursorList() );
+  if( cursorList().empty() ) return out;
+  
+  // append a new line for all items but the last
+  for( int i=0;  i < cursorList().size()-1; i++ )
+  { out += cursorList()[i].selectedText().leftJustified( cursors.columnCount() ) + "\n"; }
+  
+  // append last item
+  out += cursorList().back().selectedText().leftJustified( cursors.columnCount() );
+    
+  return out;
+  
+}
+
+
+//________________________________________________________________________
+bool BoxSelection::fromString( const QString& input )
+{
+  
+  Debug::Throw( "BoxSelection::fromString.\n" );
+  
+  // check state
+  if( state() != FINISHED ) return false;
+  
+  // try split
+  QStringList input_list( input.split( "\n" ) );
+
+  // retrieve maximum length
+  int columns(0);
+  for( int i=0; i < input_list.size(); i++ )
+  { columns = max( columns, input_list[i].length() ); }
+
+  // if there are more lines in current box than in the selection, fill with blank lines
+  for( int i = input_list.size(); i < cursors_.size(); i++ )
+  { input_list.push_back( QString( columns, ' ' ) ); }
+  
+  // loop over items and cursors, replace strings
+  QTextCursor cursor( parent_->textCursor() );
+  cursor.beginEditBlock();
+  for( int i=0; i < min( input_list.size(), cursors_.size() ); i++ )
+  {
+    
+    cursor.setPosition( cursors_[i].anchor() );
+    
+    // if cursor has no selection, one need to make sur that there is enough white spaces in the line before copying the new string
+    cursor.movePosition( QTextCursor::StartOfLine, QTextCursor::KeepAnchor );
+    int extra_length( cursors_.firstColumn() - cursor.anchor() + cursor.position() );
+    
+    // move to current cursor end of the selection
+    cursor.setPosition( cursors_[i].position(), QTextCursor::KeepAnchor );
+    
+    // insert new text
+    cursor.insertText( input_list[i].rightJustified( extra_length + input_list[i].size() ).leftJustified( extra_length + columns ) );
+
+  }
+  
+  // if there are more lines in input_list than in current selection, insert new lines
+  for( int i = cursors_.size(); i < input_list.size(); i++ )
+  {
+    cursor.movePosition( QTextCursor::Down );
+    cursor.movePosition( QTextCursor::StartOfLine );
+    cursor.insertText( 
+      input_list[i]
+      .rightJustified( cursors_.firstColumn() + input_list[i].size() )
+      .leftJustified( cursors_.firstColumn() + columns ) + "\n" );
+  }
+  
+  cursor.endEditBlock();
+  parent_->setTextCursor( cursor );
+  
+  return true;
+  
 }
 
 //________________________________________________________________________
@@ -182,12 +262,12 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
   if( state() != FINISHED ) return false;
   
   // check if stored text makes sense
-  if( stored_.isEmpty() ) return false;
+  QString selection( toString() );
+  if( selection.isEmpty() ) return false;
   
   // store text into MimeData
   QMimeData *data( new QMimeData() );
-  data->setText( stored_ );
-  data->setData( mimeType, stored_.toAscii() );
+  data->setText( selection );
   
   // copy selected text to clipboard
   qApp->clipboard()->setMimeData( data, mode ); 
@@ -214,39 +294,9 @@ bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
   }
   
   // try retrieve directly from formated input
-  if( data->hasFormat( mimeType ) )
-  { 
-    
-    Debug::Throw() << "BoxSelection::fromClipboard - got formated string" << endl;
-    stored_ = QString( data->data( mimeType ) );
-    return true;
-    
-  } else return false; 
+  return data->hasText() ? fromString( data->text() ) : false;
   
 }
-  
-// //________________________________________________________________________
-// bool BoxSelection::fromString( const QString& input )
-// {
-//   
-//   Debug::Throw( "BoxSelection::fromString.\n" );
-//   
-//   // try split
-//   QStringList input_list( input.split( "\n" ) );
-// 
-//   // retrieve maximum length
-//   int length(0);
-//   for( QStringList::const_iterator iter( input_list.begin() ); iter != input_list.end(); iter++ )
-//   { length = max( length, iter->length() ); }
-//   
-//   // fill strings and store
-//   stored_ = "";
-//   for( QStringList::const_iterator iter( input_list.begin() ); iter != input_list.end(); iter++ )
-//   { stored_ += iter->leftJustified( length ) + "\n"; }
-//   
-//   return !stored_.isEmpty();
-//   
-// }
 
 //________________________________________________________________________
 bool BoxSelection::removeSelectedText( void ) const
@@ -254,45 +304,30 @@ bool BoxSelection::removeSelectedText( void ) const
   Debug::Throw( "BoxSelection::removeSelectedText.\n" );
   
   // check if state is ok
-  if( state() != FINISHED ) return false;
+  if( state() != FINISHED || cursorList().empty() ) return false;
   
-  // check if stored text makes sense
-  if( stored_.isEmpty() ) return false;
-
-  // retrieve box selection number of rows
-  int rows = rect().height() / font_height_;
-  
-  // translate rect
-  QRect local( rect() );
-  local.translate( -parent_->horizontalScrollBar()->value(), -parent_->verticalScrollBar()->value() );
-  
-  // loop over rows
+  QTextCursor stored( parent_->textCursor() );
   QTextCursor cursor( parent_->textCursor() );
   cursor.beginEditBlock();
-  for( int row = 0; row < rows; row ++ )
+  for( CursorList::const_iterator iter = cursorList().begin(); iter != cursorList().end(); iter++ )
   {
-
-    // vertical offset for this row
-    QPoint voffset( 0, font_height_*( row + 1 ) );
-    QPoint begin( local.topLeft() + voffset );
-    QPoint end( local.topRight() + voffset );
     
-    // retrieve cursor at begin popsition
-    cursor.setPosition( parent_->cursorForPosition( begin ).position() );
-
-    // check if cursor is at end of block, in which case the line is empty
-    if( cursor.atBlockEnd() ) continue;
-
-    // retrieve cursor at end
-    cursor.setPosition( parent_->cursorForPosition( end ).position(), QTextCursor::KeepAnchor );
-
-    // remove text
+    // select line and remove
+    cursor.setPosition( iter->anchor() );
+    cursor.setPosition( iter->position(), QTextCursor::KeepAnchor );
     cursor.removeSelectedText();
   
   }
   
   cursor.endEditBlock();
-  parent_->setTextCursor( cursor );
+  
+  // restore cursor
+  if( stored.position() == cursorList().front().position() || stored.position() == cursorList().front().anchor() )
+  { 
+    stored.setPosition( cursorList().front().anchor() ); 
+  } else stored.setPosition( cursor.position() );
+
+  parent_->setTextCursor( stored );
   
   return true;
   
@@ -329,17 +364,17 @@ void BoxSelection::_store( void )
   Debug::Throw( "BoxSelection::_store.\n" );
 
   // retrieve box selection size
-  int columns = rect().width() / font_width_;
+  int first_column = rect().left() / font_width_;
+  int columns = rect().width() / font_width_ + 1;
   int rows = rect().height() / font_height_;
+  
+  Debug::Throw() << "BoxSelection::_store - [" << first_column << "," << columns << "," << rows << "]" << endl;
   
   // translate rect
   QRect local( rect() );
   local.translate( -parent_->horizontalScrollBar()->value(), -parent_->verticalScrollBar()->value() );
   
-  stored_ = QString();
-
-  // loop over rows
-  QTextCursor cursor( parent_->textCursor() );
+  cursors_ = CursorList( first_column, columns );
   for( int row = 0; row < rows; row ++ )
   {
 
@@ -348,22 +383,15 @@ void BoxSelection::_store( void )
     QPoint begin( local.topLeft() + voffset );
     QPoint end( local.topRight() + voffset );
     
-    // retrieve cursor at begin popsition
-    cursor.setPosition( parent_->cursorForPosition( begin ).position() );
-
-    // check if cursor is at end of block, in which case the line is empty
-    if( cursor.atBlockEnd() )
-    {
-      stored_ += QString( columns, ' ') + "\n";
-      continue;
-    }
-
-    // mover begin cursor to the end
-    cursor.setPosition( parent_->cursorForPosition( end ).position(), QTextCursor::KeepAnchor );
-
-    // retrieve selection and complete so that it has the correct width
-    stored_ += ( cursor.selectedText() ).leftJustified( columns ) + "\n";
-
+    QTextCursor cursor( parent_->cursorForPosition( begin ) );
+  
+    // check if cursor is at end of block, and move at end
+    if( !cursor.atBlockEnd() )
+    { cursor.setPosition( parent_->cursorForPosition( end ).position(), QTextCursor::KeepAnchor ); }
+    
+    // store in list
+    cursors_.push_back( cursor );
+    
   }
     
   return;

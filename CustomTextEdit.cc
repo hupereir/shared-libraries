@@ -459,7 +459,7 @@ void CustomTextEdit::updateConfiguration( void )
 void CustomTextEdit::cut( void )
 {
   Debug::Throw( "CustomTextEdit::cut.\n" );
-  if( _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::FINISHED )
+  if( _boxSelection().state() == BoxSelection::FINISHED )
   {
     _boxSelection().toClipboard( QClipboard::Clipboard ); 
     _boxSelection().removeSelectedText();
@@ -474,14 +474,26 @@ void CustomTextEdit::cut( void )
 //________________________________________________
 void CustomTextEdit::copy( void )
 {
-  Debug::Throw( 0, "CustomTextEdit::copy.\n" );
+  Debug::Throw( "CustomTextEdit::copy.\n" );
 
-  if( _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::FINISHED )
+  if( _boxSelection().state() == BoxSelection::FINISHED )
   { 
+    
     _boxSelection().toClipboard( QClipboard::Clipboard ); 
+    _boxSelection().clear();
+    
   } else QTextEdit::copy();
 }
-
+  
+//________________________________________________
+void CustomTextEdit::paste( void )
+{
+  Debug::Throw( "CustomTextEdit::paste.\n" );
+  if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().fromClipboard( QClipboard::Clipboard );
+  else QTextEdit::paste();
+  
+}
+  
 //________________________________________________
 void CustomTextEdit::upperCase( void )
 {
@@ -562,9 +574,6 @@ void CustomTextEdit::replaceFromDialog( void )
   // create
   if( !replace_dialog_ ) _createReplaceDialog();
 
-  // enable/disable regexp
-  _replaceDialog().enableRegExp( false );
-
   // raise dialog
   QtUtil::centerOnPointer( &_replaceDialog() );
   _replaceDialog().show();
@@ -621,7 +630,25 @@ unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const 
 {
 
   Debug::Throw( "CustomTextEdit::replaceInSelection.\n" );
-  unsigned int counts( _replaceInRange( selection, textCursor() ) );
+  unsigned int counts(0);
+  
+  if( _boxSelection().state() == BoxSelection::FINISHED )
+  { 
+    
+    BoxSelection::CursorList cursors( _boxSelection().cursorList() );
+    for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
+    { 
+      counts += _replaceInRange( selection, *iter, MOVE ); 
+      setTextCursor( *iter );
+    }
+        
+    _boxSelection().clear();
+    
+  } else { 
+    QTextCursor cursor( textCursor() );
+    counts = _replaceInRange( selection, cursor, EXPAND ); 
+    setTextCursor( cursor );
+  }
 
   if( show_dialog ) showReplacements( counts );
   return counts;
@@ -636,8 +663,9 @@ unsigned int CustomTextEdit::replaceInWindow( TextSelection selection, const boo
   QTextCursor cursor( textCursor() );
   cursor.movePosition( QTextCursor::Start );
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
-  unsigned int counts( _replaceInRange( selection, cursor ) );
-
+  unsigned int counts( _replaceInRange( selection, cursor, EXPAND ) );
+  setTextCursor( cursor );
+  
   if( show_dialog ) showReplacements( counts );
   return counts;
 
@@ -716,52 +744,44 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
     {
 
       case 1:
+
+      if( event->modifiers() == ControlModifier  )
       {
 
-        if( event->modifiers() == ControlModifier  )
+        // try re-enable box selection in case font has changed
+        if( !_boxSelection().isEnabled() ) _boxSelection().updateConfiguration();
+        if( _boxSelection().isEnabled() )
         {
-
-          // try re-enable box selection in case font has changed
-          if( !_boxSelection().isEnabled() ) _boxSelection().updateConfiguration();
-          if( _boxSelection().isEnabled() )
-          {
-
-            // CTRL pressed. finish/clear current box; start a new one
-            if( _boxSelection().state() == BoxSelection::STARTED ) 
-            { _boxSelection().finish( event->pos() ); }
-            
-            if( _boxSelection().state() == BoxSelection::FINISHED ) 
-            { 
-              _boxSelection().clear(); 
-              _synchronizeBoxSelection();
-              emit copyAvailable( false );
-            }
-            _boxSelection().start( event->pos() );
-
-            // synchronize with other editors
-            _synchronizeBoxSelection();
-
-          } else QTextEdit::mousePressEvent( event );
-
-        } else if( _boxSelection().isEnabled() ) {
-
-          // no modifier. Clear current box
-          if( _boxSelection().state() == BoxSelection::FINISHED )
-          {
-            _boxSelection().clear();
+          
+          // CTRL pressed. finish/clear current box; start a new one
+          if( _boxSelection().state() == BoxSelection::STARTED ) 
+          { _boxSelection().finish( event->pos() ); }
+          
+          if( _boxSelection().state() == BoxSelection::FINISHED ) 
+          { 
+            _boxSelection().clear(); 
             _synchronizeBoxSelection();
             emit copyAvailable( false );
           }
-
-          QTextEdit::mousePressEvent( event );
-
-        } else {
-
-          // inactive box selection. Do nothing
-          QTextEdit::mousePressEvent( event );
-
-        }
+          _boxSelection().start( event->pos() );
+          
+          // synchronize with other editors
+          _synchronizeBoxSelection();
+          return;
+        } 
+          
+        return QTextEdit::mousePressEvent( event );
+        
+      } 
+      
+      if( _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::FINISHED )
+      {
+        _boxSelection().clear();
+        _synchronizeBoxSelection();
+        emit copyAvailable( false );
       }
+        
+      return QTextEdit::mousePressEvent( event );
       break;
 
       case 2:
@@ -784,15 +804,10 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
     
     return;
     
-  } else {
-
-    //if( event->button() != RightButton && _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().clear();
-    QTextEdit::mousePressEvent( event );
-
   } 
   
-  return;
-
+  return QTextEdit::mousePressEvent( event );
+  
 }
 
 //________________________________________________
@@ -861,8 +876,11 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
     return;
   }
 
-  QTextEdit::mouseReleaseEvent( event );
-  return;
+  // do nothing with MidButton when box selection is active
+  if( event->button() == MidButton && _boxSelection().state() == BoxSelection::FINISHED ) return;
+  
+  // normal case
+  return QTextEdit::mouseReleaseEvent( event );
 
 }
 
@@ -1353,7 +1371,7 @@ void CustomTextEdit::_createReplaceDialog( void )
 }
 
 //______________________________________________________________________
-unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, const QTextCursor& cursor )
+unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode )
 {
 
   Debug::Throw()
@@ -1368,27 +1386,91 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, co
   if( selection.text().isEmpty() ) return 0;
   _setLastSelection( selection );
 
-  // create cursor set at the beginning of the range
-  QTextCursor local( cursor );
-  local.setPosition( local.anchor() );
-  int max_position( cursor.position() );
-
-  // define search flags
-  QTextDocument::FindFlags flags(0);
-  if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
-  if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
-
+  // check cursor
+  if( !cursor.hasSelection() ) return 0;
+  
+  // store number of matches
+  // and make local copy of cursor
   unsigned int found = 0;
-  while( !( local = document()->find( selection.text(), local, flags ) ).isNull() && local.position() <= max_position )
+  
+  int saved_anchor( min( cursor.position(), cursor.anchor() ) );
+  int saved_position( max( cursor.position(), cursor.anchor() ) );  
+  int current_position( saved_anchor );
+  
+  // check if regexp should be used or not
+  if( selection.flag( TextSelection::REGEXP ) )
   {
+        
+    // construct regexp and check
+    QRegExp regexp( selection.text() );
+    if( !regexp.isValid() )
+    {
+      QtUtil::infoDialog( this, "invalid regular expression. Find canceled" );
+      return false;
+    }
 
-    // perform replacement
-    local.insertText( selection.replaceText() );
-    max_position += selection.replaceText().size() - selection.text().size();
-    found ++;
+    // case sensitivity
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive:CaseInsensitive );
+    
+    // replace everything in selected text
+    QString selected_text( cursor.selectedText() );
+    for( int position = 0; (position = regexp.indexIn( selected_text, position )) != -1; )
+    {
+      // replace in selected text
+      selected_text.replace( position, regexp.matchedLength(), selection.replaceText() );
+      
+      // replace in cursor
+      /* this is to allow for undoing the changes one by one */
+      cursor.setPosition( saved_anchor + position );
+      cursor.setPosition( saved_anchor + position + regexp.matchedLength(), QTextCursor::KeepAnchor );
+      cursor.insertText( selection.replaceText() );
+      current_position = cursor.position();
+      
+      // increment position
+      position += selection.replaceText().size();
+      current_position = saved_anchor + position;
+
+      found++;
+      
+    }
+    
+    // update cursor
+    if( mode == EXPAND ) 
+    { 
+      cursor.setPosition( saved_anchor );
+      cursor.setPosition( saved_anchor + selected_text.length(), QTextCursor::KeepAnchor );
+
+    } else if( mode == MOVE ) cursor.setPosition( current_position );
+    
+  } else {
+    
+    // changes local cursor to beginning of the selection
+    cursor.setPosition( saved_anchor );
+   
+    // define search flags
+    QTextDocument::FindFlags flags(0);
+    if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
+    if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
+
+    while( !( cursor = document()->find( selection.text(), cursor, flags ) ).isNull() && cursor.position() <= saved_position )
+    {
+      
+      // perform replacement
+      cursor.insertText( selection.replaceText() );
+      current_position = cursor.position();
+      saved_position += selection.replaceText().size() - selection.text().size();
+      found ++;
+
+    }
+    
+    if( mode == EXPAND ) 
+    { 
+      cursor.setPosition( saved_anchor );
+      cursor.setPosition( saved_position, QTextCursor::KeepAnchor );
+    } else if( mode == MOVE ) cursor.setPosition( current_position );
 
   }
-
+  
   return found;
 
 }
