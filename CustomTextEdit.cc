@@ -70,7 +70,8 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   synchronize_( false ),
   box_selection_( this ),
   remove_line_buffer_( this ),
-  click_counter_( this )
+  click_counter_( this ),
+  offset_( 0 )
 {
 
   Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" );
@@ -87,7 +88,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 
   // paragraph highlight
   block_highlight_ = new BlockHighlight( this );
-  connect( this, SIGNALcursorPositionChanged( () ), &blockHighlight(), SLOT( highlight() ) );
+  connect( this, SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
 
   // actions
   _installActions();
@@ -889,6 +890,44 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
 
   // clear line buffer.
   remove_line_buffer_.clear();
+  
+  // special key processing for box selection
+  if( _boxSelection().state() == BoxSelection::FINISHED )
+  {
+    if( 
+      (event->key() >= Key_Shift &&  event->key() <= Key_ScrollLock) ||
+      (event->key() >= Key_F1 &&  event->key() <= Key_F25) ||
+      (event->key() >= Key_Super_L && event->key() <= Key_Direction_R ) ||
+      (event->modifiers() != NoModifier && event->modifiers() != ShiftModifier ) )
+    { return QTextEdit::keyPressEvent( event ); }
+
+    // if cursor move clear selection
+    if( event->key() >= Key_Home && event->key() <= Key_Down )
+    {
+      _boxSelection().clear();
+      return QTextEdit::keyPressEvent( event );
+    }
+
+    // if delete or backspace remove selection
+    if( event->key() == Key_Backspace || event->key() == Key_Delete )
+    {
+      _boxSelection().removeSelectedText();
+      _boxSelection().clear();
+      return;
+    }
+    
+    // any other key should replace the selection
+    if( event->key() == Key_Tab ) 
+    {
+      _boxSelection().fromString( tabCharacter() );
+      _boxSelection().clear();
+    } else if( !(event->text().isNull() || event->text().isEmpty() ) ) {
+      _boxSelection().fromString( event->text() );
+      _boxSelection().clear();
+    }
+    
+    return;
+  }
 
   // tab emulation
   if( event->key() == Key_Tab )
@@ -981,6 +1020,68 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
 
   return;
 }
+
+// //______________________________________________________________
+// void CustomTextEdit::dragMoveEvent( QDragMoveEvent* event )
+// {
+//   // get current cursor
+//   QTextCursor cursor( textCursor() );
+//   int position( cursor.position() );
+//   int anchor( cursor.anchor() );
+//   int begin( min( anchor, position ) );
+//   int end( max( anchor, position ) );
+// 
+//   if( !cursor.hasSelection() ) return QTextEdit::dragMoveEvent( event );
+// 
+//   // calculate offset between drag position and begin of selection
+//   if( offset_ == 0 ) 
+//   { 
+//     offset_ = begin - cursorForPosition( event->pos() ).position();
+//     return;
+//   }
+//     
+//   // compute desired position for the beginning of the selection
+//   QTextCursor current_cursor( cursorForPosition( event->pos() ) );
+//   int current_pos( current_cursor.position() );
+//   if( !current_cursor.atBlockEnd() ) current_pos += offset_;
+//   //current_cursor.movePosition( QTextCursor::StartOfLine );
+//   //current_pos = max( current_pos, current_cursor.position() );
+//   
+//   // move selection so that the beginning match the new position
+//   if( current_pos == begin ) return;
+//   setUpdatesEnabled( false );
+//   if( current_pos > begin )
+//   {
+//     
+//     cursor.setPosition( end );
+//     cursor.setPosition( end + current_pos - begin, QTextCursor::KeepAnchor );
+//     QString text( cursor.selectedText() );
+//     if( text.isEmpty() ) return;
+//     
+//     cursor.removeSelectedText();
+//     cursor.setPosition( begin );
+//     cursor.insertText( text );
+//   
+//   } else if( current_pos < begin ) {
+//     
+//     cursor.setPosition( current_pos );
+//     cursor.setPosition( begin, QTextCursor::KeepAnchor );
+//     QString text( cursor.selectedText() );
+//     if( text.isEmpty() ) return;
+//     
+//     cursor.removeSelectedText();
+//     cursor.setPosition( end + current_pos - begin );
+//     cursor.insertText( text );
+//   }   
+//   
+//   cursor.setPosition( anchor + current_pos - begin );
+//   cursor.setPosition( position + current_pos - begin, QTextCursor::KeepAnchor );
+//   setTextCursor( cursor );
+//   setUpdatesEnabled( true );
+//   
+//   return;
+// 
+// }
 
 //______________________________________________________________
 void CustomTextEdit::_installActions( void )

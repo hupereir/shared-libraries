@@ -39,15 +39,15 @@
 using namespace std;
 
 //________________________________________________________________________
-BoxSelection::BoxSelection( CustomTextEdit* parent ):
-  Counter( "BoxSelection" ),
-  parent_( parent ),
-  enabled_( false ),
-  font_width_( 0 ),
-  font_height_( 0 ),
-  left_margin_( 0 ),
-  top_margin_( 0 ),
-  state_( EMPTY )
+BoxSelectioaSelection( CustomTextEdit* parent ):
+  Counter(  lection" ),
+  parent_(   ),
+  enabled_(  ),
+  font_widt ),
+  font_heig  ),
+  left_marg  ),
+  top_margi ),
+  state_( E 
 { Debug::Throw( "BoxSelection::BoxSelection.\n" ); }
 
 //________________________________________________________________________
