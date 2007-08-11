@@ -87,12 +87,12 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 
   // paragraph highlight
   block_highlight_ = new BlockHighlight( this );
-  connect( this, SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
+  connect( this, SIGNALcursorPositionChanged( () ), &blockHighlight(), SLOT( highlight() ) );
 
   // actions
   _installActions();
 
-  // signal to make sure selection is synchronized between clones
+  // signal to make sure selectionsynchronized is  between clones
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
@@ -476,21 +476,19 @@ void CustomTextEdit::copy( void )
 {
   Debug::Throw( "CustomTextEdit::copy.\n" );
 
-  if( _boxSelection().state() == BoxSelection::FINISHED )
-  { 
-    
-    _boxSelection().toClipboard( QClipboard::Clipboard ); 
-    _boxSelection().clear();
-    
-  } else QTextEdit::copy();
+  if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().toClipboard( QClipboard::Clipboard );
+  else QTextEdit::copy();
 }
   
 //________________________________________________
 void CustomTextEdit::paste( void )
 {
   Debug::Throw( "CustomTextEdit::paste.\n" );
-  if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().fromClipboard( QClipboard::Clipboard );
-  else QTextEdit::paste();
+  if( _boxSelection().state() == BoxSelection::FINISHED ) 
+  {
+    _boxSelection().fromClipboard( QClipboard::Clipboard );
+    _boxSelection().clear();
+  } else QTextEdit::paste();
   
 }
   
@@ -664,7 +662,6 @@ unsigned int CustomTextEdit::replaceInWindow( TextSelection selection, const boo
   cursor.movePosition( QTextCursor::Start );
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
   unsigned int counts( _replaceInRange( selection, cursor, EXPAND ) );
-  setTextCursor( cursor );
   
   if( show_dialog ) showReplacements( counts );
   return counts;
@@ -865,7 +862,8 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 
     _boxSelection().finish( event->pos() );
     _synchronizeBoxSelection();
-
+    return QTextEdit::mouseReleaseEvent( event );
+    
   }
 
   if( event->button() == LeftButton && click_counter_.counts() > 1 )
@@ -877,7 +875,7 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
   }
 
   // do nothing with MidButton when box selection is active
-  if( event->button() == MidButton && _boxSelection().state() == BoxSelection::FINISHED ) return;
+  if( event->button() == MidButton  && _boxSelection().state() == BoxSelection::FINISHED ) return;
   
   // normal case
   return QTextEdit::mouseReleaseEvent( event );
