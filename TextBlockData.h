@@ -33,6 +33,7 @@
 */  
 
 #include <QTextBlockUserData>
+#include "TextBlockFlags.h"
 #include "Counter.h"
 
 //! TextBlock data
@@ -45,41 +46,53 @@ class TextBlockData: public QTextBlockUserData, public Counter
   TextBlockData():
     QTextBlockUserData(),
     Counter( "TextBlockData" ),
-    current_block_( false ),
-    has_background_( false )
+    flags_( TextBlock::NONE )
   { Debug::Throw( "TextBlockData::TextBlockData.\n" ); }
   
   //! destructor
   virtual ~TextBlockData( void )
   { Debug::Throw( "TextBlockData::~TextBlockData.\n" ); }
-
-  //! true if background is available/valid
-  const bool& hasBackground( void ) const
-  { return has_background_; }
   
-  //! block background
-  const QColor& background( void ) const
-  { return background_; }
+   //! flags
+  const unsigned int& flags( void ) const
+  { return flags_; }
+  
+  //! flags
+  void setFlags( const unsigned int& flags )
+  { flags_ = flags; }
+
+  //! flags
+  bool hasFlag( const unsigned int& flag ) const
+  { return flags_ & flag; }
+  
+  //! flags
+  void setFlag( const unsigned int& flag, const bool& value )
+  { 
+    if( value ) flags_ |= flag; 
+    else flags_ &= (~flag);
+  } 
   
   //! block background
   /*! returns true if changed */
   bool setBackground( const QColor& color ) 
   { 
-    if( !(background_.isValid() || color.isValid() ) || color == background_ ) return false;
-    background_ = color; 
-    has_background_ = color.isValid(); 
-    return true;
+    if( (background_.isValid() || color.isValid() ) && color != background_ ) 
+    {
+      background_ = color; 
+      setFlag( TextBlock::HAS_BACKGROUND, color.isValid() );
+      return true;
+    } else return false;
   }
-  
-  //! active block
-  const bool& isCurrentBlock( void ) const
-  { return current_block_; }
-  
-  //! active block
-  void setIsCurrentBlock( const bool& value )
-  { current_block_ = value; }
+
+  //! block background
+  const QColor& background( void ) const
+  { return background_; }
   
   private:
+  
+  //! flags
+  /* is a bit pattern */
+  unsigned int flags_;
   
   //! set to true for current block
   bool current_block_;

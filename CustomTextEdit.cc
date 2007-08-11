@@ -408,7 +408,7 @@ void CustomTextEdit::clearBackground( QTextBlock block )
  
   Debug::Throw( "CustomTextEdit::clearBackground.\n" );
   TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
-  if( data && data->hasBackground() && data->setBackground( QColor() ) )
+  if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) )
   { document()->markContentsDirty( block.position(), block.length()-1 ); }
   
   return;

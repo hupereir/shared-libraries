@@ -60,9 +60,9 @@ void BlockHighlight::clear( void )
     if( parent_->textCursor().block() == block && isEnabled() ) continue;
     
     TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
-    if( data && data->isCurrentBlock() ) 
+    if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) ) 
     {
-      data->setIsCurrentBlock( false );
+      data->setFlag( TextBlock::CURRENT_BLOCK, false );
       parent_->document()->markContentsDirty(block.position(), block.length()-1);
     }
     
@@ -94,9 +94,9 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   {
     data = new TextBlockData();
     block.setUserData( data );
-  } else if( data->isCurrentBlock() ) return;
+  } else if( data->hasFlag( TextBlock::CURRENT_BLOCK ) ) return;
   
-  data->setIsCurrentBlock( true );
+  data->setFlag( TextBlock::CURRENT_BLOCK, true );
 
   // need to redo the clear a second time, forced,
   // in case the previous draw action occured after the previous clear.

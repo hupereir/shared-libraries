@@ -31,6 +31,7 @@
 
 #include "BaseTextHighlight.h"
 #include "TextBlockData.h"
+#include "TextBlockFlags.h"
 
 using namespace std;
 
@@ -69,8 +70,8 @@ void BaseTextHighlight::highlightBlock( const QString& text )
   if( !data ) return;
   
   // highlight current block if enabled and needed
-  if( isEnabled() && data->isCurrentBlock() ) setFormat( 0, text.size(), format_ );
-  else if( data->hasBackground() )
+  if( isEnabled() && data->hasFlag( TextBlock::CURRENT_BLOCK ) ) setFormat( 0, text.size(), format_ );
+  else if( data->hasFlag( TextBlock::HAS_BACKGROUND ) )
   {
     // set paragraph background color if any
     QTextCharFormat format;

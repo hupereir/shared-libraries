@@ -70,6 +70,7 @@ noinst_HEADERS = \
   SelectLineDialog.h \
   StatusBar.h \
   TextBlockData.h \
+  TextBlockFlags.h \
   TextSelection.h \
   TextSeparator.h \
   ValidFileThread.h \
