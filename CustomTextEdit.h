@@ -356,7 +356,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //!@name event handlers
   //@{
-  
+
   //! mouse release event [overloaded]
   virtual void mousePressEvent( QMouseEvent* );
   

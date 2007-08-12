@@ -100,7 +100,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 
   // update configuration
   updateConfiguration();
-  
+    
 }
 
 //________________________________________________
@@ -459,7 +459,6 @@ void CustomTextEdit::updateConfiguration( void )
 //________________________________________________
 void CustomTextEdit::cut( void )
 {
-  Debug::Throw( "CustomTextEdit::cut.\n" );
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
     _boxSelection().toClipboard( QClipboard::Clipboard ); 
@@ -469,14 +468,11 @@ void CustomTextEdit::cut( void )
   } else QTextEdit::cut();
   
   return;
-  
 }
   
 //________________________________________________
 void CustomTextEdit::copy( void )
 {
-  Debug::Throw( "CustomTextEdit::copy.\n" );
-
   if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().toClipboard( QClipboard::Clipboard );
   else QTextEdit::copy();
 }
@@ -484,13 +480,11 @@ void CustomTextEdit::copy( void )
 //________________________________________________
 void CustomTextEdit::paste( void )
 {
-  Debug::Throw( "CustomTextEdit::paste.\n" );
   if( _boxSelection().state() == BoxSelection::FINISHED ) 
   {
     _boxSelection().fromClipboard( QClipboard::Clipboard );
     _boxSelection().clear();
   } else QTextEdit::paste();
-  
 }
   
 //________________________________________________
@@ -891,6 +885,36 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
   // clear line buffer.
   remove_line_buffer_.clear();
   
+  /* 
+  need to grap CTRL+X, C and V event to forward them to the 
+  daughter implementation of cut, copy and paste, otherwise 
+  they are passed to the base class, with no way to overrid
+  */
+  if( event->modifiers() == ControlModifier )
+  { 
+    if( event->key() == Key_X ) 
+    {
+      cut();
+      event->ignore();
+      return;
+    }
+    
+    if( event->key() == Key_C ) 
+    {
+      copy();
+      event->ignore();
+      return;
+    }
+    
+    if( event->key() == Key_V ) 
+    {
+      paste();
+      event->ignore();
+      return;
+    }
+    
+  }
+  
   // special key processing for box selection
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
@@ -1002,7 +1026,7 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   return;
 }
 
-// //______________________________________________________________
+//______________________________________________________________
 // void CustomTextEdit::dragMoveEvent( QDragMoveEvent* event )
 // {
 //   // get current cursor

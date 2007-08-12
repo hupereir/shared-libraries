@@ -469,25 +469,28 @@ void QtUtil::uniconify( QWidget *widget )
   Debug::Throw( "QtUtil::uniconify.\n" );
   if( !widget->isTopLevel() ) return;
 
-  #ifdef Q_WS_X11
-  
-  // this strongly uses X11 and is not portable
-  XWMHints* h( XGetWMHints( QX11Info::display(), widget->winId() ) );
-  h->initial_state = NormalState;
-  XSetWMHints( QX11Info::display(), widget->winId(), h );
-  XMapWindow( QX11Info::display(), widget->winId() );
-  XRaiseWindow( QX11Info::display(), widget->winId() );
-  // widget->show();
-  // widget->raise();
-  
-  #else
+//   #ifdef Q_WS_X11
+//   
+//   // this strongly uses X11 and is not portable
+//   XWMHints* h( XGetWMHints( QX11Info::display(), widget->winId() ) );
+//   h->initial_state = NormalState;
+//   XSetWMHints( QX11Info::display(), widget->winId(), h );
+//   XMapWindow( QX11Info::display(), widget->winId() );
+//   XRaiseWindow( QX11Info::display(), widget->winId() );
+//   // widget->show();
+//   // widget->raise();
+//   
+//   #else
   
   // this is portable but may not work on old enough X11 Qt versions
-  if( widget->isMinimized() ) widget->hide();
-  widget->show();
-  widget->raise();
+  if( widget->window()->isMinimized() ) 
+  { widget->window()->hide(); }
   
-  #endif
+  widget->activateWindow();
+  widget->window()->show();
+  widget->window()->raise();
+  
+//  #endif
   
   return;
   

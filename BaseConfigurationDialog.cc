@@ -337,17 +337,18 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   layout->addLayout( grid_layout );
   
   grid_layout->addWidget(new QLabel( "Tab size: ", box ) );
+
+  OptionCheckBox* checkbox = new OptionCheckBox( "Emulate tabs", box, "TAB_EMULATION" );
+  checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
+  layout->addWidget( checkbox );
+  addOptionWidget( checkbox );
+  
   OptionSpinBox* spinbox = new OptionSpinBox( box, "TAB_SIZE" );
   spinbox->setMinimum( 2 );
   spinbox->setMaximum( 20 );
   spinbox->setToolTip( "Tab size (in unit of space characters)." );
   grid_layout->addWidget( spinbox );
   addOptionWidget( spinbox );
-
-  OptionCheckBox* checkbox = new OptionCheckBox( "Emulate tabs", box, "TAB_EMULATION" );
-  checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
-  layout->addWidget( checkbox );
-  addOptionWidget( checkbox );
   
   box = new QGroupBox( "Paragrap highlighting", parent );
   layout = new QVBoxLayout();
