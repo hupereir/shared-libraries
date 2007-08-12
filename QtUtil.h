@@ -150,6 +150,9 @@ class QtUtil {
   //! set widget (composite) opacity
   static void setOpacity( QWidget*, const double& value );
 
+  //! merge colors
+  static QColor mergeColors( const QColor& first, const QColor& second, const double& intensity = 0.5 );
+  
   protected:
       
   // max opacity

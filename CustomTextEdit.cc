@@ -81,11 +81,6 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   BASE::Key::associate( this, document );
   setDocument( document );
 
-//   // text highlight
-//   BaseTextHighlight* highlight = new BaseTextHighlight( document );
-//   BASE::Key::associate( document, highlight );
-//   highlight->setEnabled( false );
-
   // paragraph highlight
   block_highlight_ = new BlockHighlight( this );
   connect( this, SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
@@ -367,23 +362,6 @@ void CustomTextEdit::showReplacements( const unsigned int& counts )
 
 }
 
-// //____________________________________________________________________
-// void CustomTextEdit::setTextHighlight( BaseTextHighlight* highlight )
-// {
-// 
-//   Debug::Throw( "CustomTextEdit::setTextHighlight.\n" );
-//   BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
-//   for( BASE::KeySet<BaseTextHighlight>::iterator iter = highlights.begin(); iter != highlights.end(); iter++ )
-//   {
-//     // copy configuration
-//     highlight->synchronize( *iter );
-//     delete *iter;
-//   }
-// 
-//   BASE::Key::associate( dynamic_cast<BASE::Key*>( document() ), highlight );
-// 
-// }
-
 //___________________________________________________________________________
 void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
 {
@@ -394,9 +372,19 @@ void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
   TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
   if( !data ) block.setUserData( data = new TextBlockData() );
   
-  // assign color and mark as dirty
+  // try assign color
   if( data->setBackground( color ) )
-  { document()->markContentsDirty( block.position(), block.length()-1 ); }
+  { 
+    
+    // retrieve block rect, translate and redraw
+    const int xOffset = horizontalScrollBar()->value();
+    const int yOffset = verticalScrollBar()->value();      
+    QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
+    block_rect.setWidth( viewport()->width() );
+    block_rect.translate( -xOffset, -yOffset); 
+    viewport()->repaint( block_rect.toRect() );    
+    
+  }
   
   return;
   
@@ -409,7 +397,17 @@ void CustomTextEdit::clearBackground( QTextBlock block )
   Debug::Throw( "CustomTextEdit::clearBackground.\n" );
   TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
   if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) )
-  { document()->markContentsDirty( block.position(), block.length()-1 ); }
+  { 
+    // retrieve block rect and redraw
+    const int xOffset = horizontalScrollBar()->value();
+    const int yOffset = verticalScrollBar()->value();      
+
+    QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
+    block_rect.setWidth( viewport()->width() );
+    block_rect.translate( -xOffset, -yOffset); 
+    viewport()->repaint( block_rect.toRect() );    
+
+  }
   
   return;
 }
@@ -715,8 +713,11 @@ void CustomTextEdit::removeLine()
   cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
   cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
   remove_line_buffer_.append( cursor.selectedText() );
+  
+  setUpdatesEnabled( false );
   setTextCursor( cursor );
   cut();
+  setUpdatesEnabled( true );
 
 }
 
@@ -1005,7 +1006,7 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   QTextBlock first( cursorForPosition( rect.topLeft() ).block() );
   QTextBlock last( cursorForPosition( rect.bottomRight() ).block() );
 
-  // retrieve sc
+  // retrieve scrollbar offsets
   const int xOffset = horizontalScrollBar()->value();
   const int yOffset = verticalScrollBar()->value();
 
@@ -1029,17 +1030,17 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
     painter.translate(-xOffset, -yOffset);
     painter.setPen( NoPen );
     
+    QColor color;
     if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
-    { 
-      
-      painter.setBrush( highlight_color_ ); 
-      painter.drawRect( block_rect&rect ); 
-      
-    } else if( data->hasFlag( TextBlock::HAS_BACKGROUND ) ) { 
-      
-      painter.setBrush( highlight_color_ ); 
-      painter.drawRect( block_rect&rect ); 
+    { color = highlight_color_; }
+            
+    if( data->hasFlag( TextBlock::HAS_BACKGROUND ) ) 
+    { color = QtUtil::mergeColors( color, data->background() ); }
     
+    if( color.isValid() )
+    {
+      painter.setBrush( color ); 
+      painter.drawRect( block_rect&rect ); 
     }
     
   }

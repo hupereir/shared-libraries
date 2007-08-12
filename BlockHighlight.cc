@@ -29,6 +29,8 @@
   \date $Date$
 */
 
+#include <QAbstractTextDocumentLayout>
+#include <QScrollBar>
 #include <QTextDocument>
 #include <QTextBlock>
 
@@ -53,6 +55,9 @@ void BlockHighlight::clear( void )
 
   if( cleared_ ) return;
   
+  const int xOffset = parent_->horizontalScrollBar()->value();
+  const int yOffset = parent_->verticalScrollBar()->value();      
+
   // loop over all blocks
   for( QTextBlock block = parent_->document()->begin(); block.isValid(); block = block.next() )
   {
@@ -63,7 +68,14 @@ void BlockHighlight::clear( void )
     if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) ) 
     {
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
-      parent_->document()->markContentsDirty(block.position(), block.length()-1);
+      
+      //parent_->document()->markContentsDirty(block.position(), block.length()-1);
+      // retrieve paragraph rect
+      QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
+      block_rect.setWidth( parent_->viewport()->width() );
+      block_rect.translate( -xOffset, -yOffset); 
+      parent_->viewport()->repaint( block_rect.toRect() );    
+      
     }
     
   }
@@ -96,13 +108,22 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
     block.setUserData( data );
   } else if( data->hasFlag( TextBlock::CURRENT_BLOCK ) ) return;
   
-  data->setFlag( TextBlock::CURRENT_BLOCK, true );
-
   // need to redo the clear a second time, forced,
   // in case the previous draw action occured after the previous clear.
   cleared_ = false;
   clear();
-  parent_->document()->markContentsDirty(block.position(), block.length()-1);
+
+  // mark block as current
+  data->setFlag( TextBlock::CURRENT_BLOCK, true );
+
+  // retrieve block rect, translate to viewport and ask for repaint
+  const int xOffset = parent_->horizontalScrollBar()->value();
+  const int yOffset = parent_->verticalScrollBar()->value();      
+  QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
+  block_rect.setWidth( parent_->viewport()->width() );
+  block_rect.translate( -xOffset, -yOffset); 
+  parent_->viewport()->repaint( block_rect.toRect() );    
+
   cleared_ = false;
   
 }

@@ -571,3 +571,18 @@ void QtUtil::setOpacity( QWidget* widget, const double& value )
   #endif
  
 }
+
+//__________________________________________________________
+QColor QtUtil::mergeColors( const QColor& first, const QColor& second, const double& intensity )
+{
+  if( !first.isValid() ) return second;
+  if( !second.isValid() ) return first;
+  if( first == second ) return first;
+
+  double red = intensity*first.red() + (1.0-intensity )*second.red();
+  double green = intensity*first.green() + (1.0-intensity )*second.green();
+  double blue = intensity*first.blue() + (1.0-intensity )*second.blue();
+  double alpha = intensity*first.alpha() + (1.0-intensity )*second.alpha();
+  
+  return QColor( int( red ), int( green ), int( blue ), int( alpha ) );
+}
