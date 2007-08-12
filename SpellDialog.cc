@@ -63,7 +63,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   // horizontal layout for suggestions and buttons
   QHBoxLayout* h_layout = new QHBoxLayout();
   h_layout->setMargin(0);
-  h_layout->setSpacing(5);
+  h_layout->setSpacing(10);
   layout->addLayout( h_layout, 1 );
   
   // insert left vertical box
@@ -175,6 +175,10 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   v_layout->addWidget( state_label_ = new QLabel( " ", this ), 1 );
   state_label_->setAlignment( Qt::AlignCenter );
 
+  // close button
+  v_layout->addWidget( button = new QPushButton( "&Cose", this ) );
+  connect( button, SIGNAL(clicked()), SLOT( close() ) );
+  
   // change font
   QFont font( state_label_->font() );
   font.setWeight( QFont::Bold );
