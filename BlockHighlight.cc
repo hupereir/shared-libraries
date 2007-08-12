@@ -74,7 +74,7 @@ void BlockHighlight::clear( void )
       QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
       block_rect.setWidth( parent_->viewport()->width() );
       block_rect.translate( -xOffset, -yOffset); 
-      parent_->viewport()->repaint( block_rect.toRect() );    
+      parent_->viewport()->update( block_rect.toRect() );    
       
     }
     
@@ -122,7 +122,7 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
   block_rect.setWidth( parent_->viewport()->width() );
   block_rect.translate( -xOffset, -yOffset); 
-  parent_->viewport()->repaint( block_rect.toRect() );    
+  parent_->viewport()->update( block_rect.toRect() );    
 
   cleared_ = false;
   

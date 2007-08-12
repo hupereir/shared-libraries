@@ -61,7 +61,7 @@ void BoxSelection::synchronize( const BoxSelection& box )
   
   QRect old( rect() );
   _updateRect();
-  if( state() == STARTED || state() == FINISHED ) { parent_->viewport()->repaint( old.unite( rect() ) ); } 
+  if( state() == STARTED || state() == FINISHED ) { parent_->viewport()->update( old.unite( rect() ) ); } 
   else if( state() == EMPTY ) clear();
   
   return; 
@@ -124,7 +124,7 @@ bool BoxSelection::update( QPoint point )
 
   QRect old( rect() );
   _updateRect();
-  parent_->viewport()->repaint( old.unite( rect() ) );
+  parent_->viewport()->update( old.unite( rect() ) );
   parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
   return true;
@@ -143,7 +143,7 @@ bool BoxSelection::finish( QPoint point )
 
   QRect old( rect() );
   _updateRect();
-  parent_->viewport()->repaint( old.unite( rect() ) );
+  parent_->viewport()->update( old.unite( rect() ) );
   parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
   state_ = FINISHED;
@@ -160,10 +160,16 @@ bool BoxSelection::clear( void )
 {
   Debug::Throw( "BoxSelection::clear.\n" );
   if( state_ != FINISHED ) return false;
+
+  // change state and redraw
   state_ = EMPTY;
+  parent_->viewport()->update( rect() );
+
+  // clear cursors points and rect
   cursors_.clear();
-  begin_ = end_ = QPoint();
-  parent_->viewport()->repaint();
+  cursor_ = begin_ = end_ = QPoint();
+  rect_ = QRect();
+  
   return true;
 }
 

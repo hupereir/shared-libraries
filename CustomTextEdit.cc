@@ -382,7 +382,7 @@ void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() );
     block_rect.translate( -xOffset, -yOffset); 
-    viewport()->repaint( block_rect.toRect() );    
+    viewport()->update( block_rect.toRect() );    
     
   }
   
@@ -405,7 +405,7 @@ void CustomTextEdit::clearBackground( QTextBlock block )
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() );
     block_rect.translate( -xOffset, -yOffset); 
-    viewport()->repaint( block_rect.toRect() );    
+    viewport()->update( block_rect.toRect() );    
 
   }
   
@@ -1808,7 +1808,7 @@ void CustomTextEdit::_toggleBlockHighlight( bool state )
 
   blockHighlight().setEnabled( highlight_color_.isValid() && state );
 
-  // repaint current paragraph
+  // update current paragraph
   if( blockHighlight().isEnabled() ) blockHighlight().highlight();
   else blockHighlight().clear();
 
