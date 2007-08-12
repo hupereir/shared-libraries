@@ -11,7 +11,6 @@ INCLUDES =  \
   
 noinst_HEADERS = \
   BaseConfigurationDialog.h \
-  BaseTextHighlight.h \
   BlockHighlight.h \
   BoxSelection.h \
   BrowsedLineEdit.h \
@@ -86,7 +85,6 @@ noinst_LIBRARIES = libbase-qt.a
 
 libbase_qt_a_SOURCES = \
   BaseConfigurationDialog.cc \
-  BaseTextHighlight.cc \
   BlockHighlight.cc \
   BoxSelection.cc \
   BrowsedLineEdit.cc \

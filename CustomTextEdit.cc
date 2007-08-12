@@ -81,10 +81,10 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   BASE::Key::associate( this, document );
   setDocument( document );
 
-  // text highlight
-  BaseTextHighlight* highlight = new BaseTextHighlight( document );
-  BASE::Key::associate( document, highlight );
-  highlight->setEnabled( false );
+//   // text highlight
+//   BaseTextHighlight* highlight = new BaseTextHighlight( document );
+//   BASE::Key::associate( document, highlight );
+//   highlight->setEnabled( false );
 
   // paragraph highlight
   block_highlight_ = new BlockHighlight( this );
@@ -367,22 +367,22 @@ void CustomTextEdit::showReplacements( const unsigned int& counts )
 
 }
 
-//____________________________________________________________________
-void CustomTextEdit::setTextHighlight( BaseTextHighlight* highlight )
-{
-
-  Debug::Throw( "CustomTextEdit::setTextHighlight.\n" );
-  BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
-  for( BASE::KeySet<BaseTextHighlight>::iterator iter = highlights.begin(); iter != highlights.end(); iter++ )
-  {
-    // copy configuration
-    highlight->synchronize( *iter );
-    delete *iter;
-  }
-
-  BASE::Key::associate( dynamic_cast<BASE::Key*>( document() ), highlight );
-
-}
+// //____________________________________________________________________
+// void CustomTextEdit::setTextHighlight( BaseTextHighlight* highlight )
+// {
+// 
+//   Debug::Throw( "CustomTextEdit::setTextHighlight.\n" );
+//   BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
+//   for( BASE::KeySet<BaseTextHighlight>::iterator iter = highlights.begin(); iter != highlights.end(); iter++ )
+//   {
+//     // copy configuration
+//     highlight->synchronize( *iter );
+//     delete *iter;
+//   }
+// 
+//   BASE::Key::associate( dynamic_cast<BASE::Key*>( document() ), highlight );
+// 
+// }
 
 //___________________________________________________________________________
 void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
@@ -437,9 +437,9 @@ void CustomTextEdit::updateConfiguration( void )
   tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
 
   // paragraph highlighting
-  textHighlight().setHighlightColor( QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() ) );
-  textHighlight().setEnabled( textHighlight().highlightColor().isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-  blockHighlightAction().setEnabled( textHighlight().highlightColor().isValid() );
+  highlight_color_ = QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() );
+  blockHighlight().setEnabled( highlight_color_.isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+  blockHighlightAction().setEnabled( highlight_color_.isValid() );
   blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
 
   // update box configuration
@@ -1000,28 +1000,64 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
 void CustomTextEdit::paintEvent( QPaintEvent* event )
 {
 
-  QTextEdit::paintEvent( event );
-
-  if(
-    _boxSelection().state() != BoxSelection::STARTED &&
-    _boxSelection().state() != BoxSelection::FINISHED
-  ) return;
-
-  QPainter painter( viewport() );
+  // handle block background
+  QRect rect = event->rect();
+  QTextBlock first( cursorForPosition( rect.topLeft() ).block() );
+  QTextBlock last( cursorForPosition( rect.bottomRight() ).block() );
 
   // retrieve sc
   const int xOffset = horizontalScrollBar()->value();
   const int yOffset = verticalScrollBar()->value();
 
-  // translate from widget to viewport coordinates
-  QRect rect = event->rect();
-  painter.translate(-xOffset, -yOffset);
+  // translate rect from widget to viewport coordinates
   rect.translate(xOffset, yOffset);
 
+  // loop over found blocks
+  for( QTextBlock block( first ); block != last.next() && block.isValid(); block = block.next() )
+  {
+    
+    // retrieve block data and check background
+    TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
+    if( !(data && data->hasFlag( TextBlock::HAS_BACKGROUND|TextBlock::CURRENT_BLOCK ) ) ) continue;
+        
+    // retrieve block rect
+    QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
+    block_rect.setWidth( viewport()->width() );
+    
+    // create painter and translate from widget to viewport coordinates
+    QPainter painter( viewport() );
+    painter.translate(-xOffset, -yOffset);
+    painter.setPen( NoPen );
+    
+    if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
+    { 
+      
+      painter.setBrush( highlight_color_ ); 
+      painter.drawRect( block_rect&rect ); 
+      
+    } else if( data->hasFlag( TextBlock::HAS_BACKGROUND ) ) { 
+      
+      painter.setBrush( highlight_color_ ); 
+      painter.drawRect( block_rect&rect ); 
+    
+    }
+    
+  }
 
-  painter.setPen( _boxSelection().color() );
+  QTextEdit::paintEvent( event );
+  
+  if(
+    _boxSelection().state() != BoxSelection::STARTED &&
+    _boxSelection().state() != BoxSelection::FINISHED
+  ) return;
+
+  // create painter and translate from widget to viewport coordinates
+  QPainter painter( viewport() );
+  painter.translate(-xOffset, -yOffset);
+
+  painter.setPen( NoPen );
   painter.setBrush( _boxSelection().color() );
-  painter.drawRect( _boxSelection().rect() );
+  painter.drawRect( _boxSelection().rect()&rect );
 
   return;
 }
@@ -1769,7 +1805,7 @@ void CustomTextEdit::_updatePasteAction( void )
 void CustomTextEdit::_toggleBlockHighlight( bool state )
 {
 
-  blockHighlight().setEnabled( textHighlight().highlightColor().isValid() && state );
+  blockHighlight().setEnabled( highlight_color_.isValid() && state );
 
   // repaint current paragraph
   if( blockHighlight().isEnabled() ) blockHighlight().highlight();

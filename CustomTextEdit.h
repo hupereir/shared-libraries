@@ -41,7 +41,6 @@
 
 #include <vector>
 
-#include "BaseTextHighlight.h"
 #include "BlockHighlight.h"
 #include "BoxSelection.h"
 #include "Counter.h"
@@ -220,17 +219,17 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
 
   //@}
 
-  //! text highlight
-  /*! it is needed to ensure only one text highlight works at a time */
-  void setTextHighlight( BaseTextHighlight* highlight );
-    
-  //! text highlight
-  BaseTextHighlight& textHighlight( void ) const
-  {
-    BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
-    Exception::check( highlights.size() == 1, DESCRIPTION( Str("invalid association to text-highlight - count: " ).append<unsigned int>( highlights.size() ) ) );
-    return **highlights.begin();
-  }
+//   //! text highlight
+//   /*! it is needed to ensure only one text highlight works at a time */
+//   void setTextHighlight( BaseTextHighlight* highlight );
+//     
+//   //! text highlight
+//   BaseTextHighlight& textHighlight( void ) const
+//   {
+//     BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
+//     Exception::check( highlights.size() == 1, DESCRIPTION( Str("invalid association to text-highlight - count: " ).append<unsigned int>( highlights.size() ) ) );
+//     return **highlights.begin();
+//   }
   
   //! block highlight object
   BlockHighlight& blockHighlight() const
@@ -664,6 +663,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! current block highlight
   BlockHighlight* block_highlight_;
   
+  //! current block highlight color
+  QColor highlight_color_;
+
   int offset_;
   
 };

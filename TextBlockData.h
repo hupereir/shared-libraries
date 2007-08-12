@@ -97,9 +97,6 @@ class TextBlockData: public QTextBlockUserData, public Counter
   //! set to true for current block
   bool current_block_;
     
-  //! block background color available
-  bool has_background_;
-  
   //! block background color (overridden by active)
   QColor background_;
   

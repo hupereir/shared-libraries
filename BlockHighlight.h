@@ -67,7 +67,6 @@ class BlockHighlight: public QObject, public Counter
   //! clear highlighted block
   void clear( void );
   
-  
   public slots:
   
   //! highlight
@@ -82,7 +81,7 @@ class BlockHighlight: public QObject, public Counter
   
   //! parent editor
   CustomTextEdit* parent_;
-
+  
   //! associated timer
   QBasicTimer timer_;
   
