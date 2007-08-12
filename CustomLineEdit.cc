@@ -181,24 +181,29 @@ void CustomLineEdit::_installActions( void )
   // create actions
   addAction( undo_action_ = new QAction( IconEngine::get( ICONS::UNDO, path_list ), "&Undo", this ) );
   undo_action_->setShortcut( CTRL+Key_Z );
+  undo_action_->setShortcutContext( WidgetShortcut );
   undo_action_->setEnabled( isUndoAvailable() );
   connect( undo_action_, SIGNAL( triggered() ), SLOT( undo() ) );
 
   addAction( redo_action_ = new QAction( IconEngine::get( ICONS::REDO, path_list ), "&Redo", this ) );
   redo_action_->setShortcut( SHIFT+CTRL+Key_Z );
   redo_action_->setEnabled( isRedoAvailable() );
+  redo_action_->setShortcutContext( WidgetShortcut );
   connect( redo_action_, SIGNAL( triggered() ), SLOT( redo() ) );
 
   addAction( cut_action_ = new QAction( IconEngine::get( ICONS::CUT, path_list ), "Cu&t", this ) );
   cut_action_->setShortcut( CTRL+Key_X );
+  cut_action_->setShortcutContext( WidgetShortcut );
   connect( cut_action_, SIGNAL( triggered() ), SLOT( cut() ) );
 
   addAction( copy_action_ = new QAction( IconEngine::get( ICONS::COPY, path_list ), "&Copy", this ) );
   copy_action_->setShortcut( CTRL+Key_C );
+  copy_action_->setShortcutContext( WidgetShortcut );
   connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
 
   addAction( paste_action_ = new QAction( IconEngine::get( ICONS::PASTE, path_list ), "&Paste", this ) );
   paste_action_->setShortcut( CTRL+Key_V );
+  paste_action_->setShortcutContext( WidgetShortcut );
   connect( paste_action_, SIGNAL( triggered() ), SLOT( paste() ) );
   connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
   _updatePasteAction();
@@ -207,15 +212,18 @@ void CustomLineEdit::_installActions( void )
   connect( clear_action_, SIGNAL( triggered() ), SLOT( clear() ) );
 
   addAction( select_all_action_ = new QAction( "Select all", this ) );
-  select_all_action_->setShortcut( CTRL+Key_V );
+  select_all_action_->setShortcut( CTRL+Key_A );
+  select_all_action_->setShortcutContext( WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
   
   addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
   upper_case_action_->setShortcut( CTRL+Key_U );
+  upper_case_action_->setShortcutContext( WidgetShortcut );
   connect( upper_case_action_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
   addAction( lower_case_action_ = new QAction( "&Lower case", this ) );
   lower_case_action_->setShortcut( SHIFT+CTRL+Key_U );
+  lower_case_action_->setShortcutContext( WidgetShortcut );
   connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
   // update actions that depend on the presence of a selection

@@ -52,19 +52,19 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   connect( this, SIGNAL( aboutToShow() ), SLOT( _loadFiles() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
   updateConfiguration();
-  
+
   // clean action
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  connect( clean_action_ = new QAction( IconEngine::get( ICONS::DELETE, path_list ), "&Clean", 0 ) , SIGNAL( triggered() ), SLOT( _clean() ) );
-
+  clean_action_ = new QAction( IconEngine::get( ICONS::DELETE, path_list ), "&Clean", 0 );
+  connect( clean_action_, SIGNAL( triggered() ), SLOT( _clean() ) );
+  addAction( clean_action_ );
+  addSeparator();
+  
 }
 
 //______________________________________
 OpenPreviousMenu::~OpenPreviousMenu( void )
-{ 
-  Debug::Throw( "OpenPreviousMenu::~OpenPreviousMenu.\n" ); 
-  //if( valid_file_thread_.isRunning() ) valid_file_thread_.terminate();
-}
+{ Debug::Throw( "OpenPreviousMenu::~OpenPreviousMenu.\n" ); }
 
 //______________________________________
 bool OpenPreviousMenu::read( void )
@@ -131,15 +131,14 @@ void OpenPreviousMenu::_loadFiles( void )
   
   // run thread to check file validity
   if( _check() ) _checkValidFiles(); 
+  if( _check() ) clean_action_->setEnabled( _invalidFiles() );
   
   // clear menu an actions map
-  QMenu::clear();
+  for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+  { delete iter->first; }
   actions_.clear();
-  
-  addAction( clean_action_ );
-  if( _check() ) clean_action_->setEnabled( _invalidFiles() );
-  addSeparator();
-  
+
+  // redo all actions
   FileRecord::List records( _records() );
   
   if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") )

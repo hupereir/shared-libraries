@@ -391,6 +391,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! install default actions
   virtual void _installActions( void );
   
+  //! retrieve context menu. Create it on first call
+  void _installContextMenuActions( QMenu& menu );
+  
   //!@name find/replace selection
   //@{
   
@@ -522,7 +525,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual bool _toggleTabEmulation( bool );
 
   private:
-   
+    
   //!@name replace/find selection
   ///@{
   

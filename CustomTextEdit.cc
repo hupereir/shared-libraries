@@ -966,38 +966,8 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
 {
 
   Debug::Throw( "CustomTextEdit::contextMenuEvent.\n" );
-
-  // menu
   QMenu menu( this );
-
-  // wrapping
-  menu.addAction( wrap_mode_action_ );
-  menu.addSeparator();
-
-  menu.addAction( undo_action_ );
-  menu.addAction( redo_action_ );
-  menu.addSeparator();
-
-  menu.addAction( cut_action_ );
-  menu.addAction( copy_action_ );
-  menu.addAction( paste_action_ );
-  menu.addAction( clear_action_ );
-  menu.addSeparator();
-
-  menu.addAction( select_all_action_ );
-  menu.addAction( upper_case_action_ );
-  menu.addAction( lower_case_action_ );
-  menu.addSeparator();
-
-  menu.addAction( find_action_ );
-  menu.addAction( find_again_action_ );
-  menu.addAction( find_selection_action_);
-  menu.addSeparator();
-
-  menu.addAction( replace_action_ );
-  menu.addAction( replace_again_action_ );
-  menu.addAction( goto_line_action_);
-
+  _installContextMenuActions( menu );
   menu.exec( event->globalPos() );
 
 }
@@ -1121,7 +1091,6 @@ void CustomTextEdit::_installActions( void )
 
   addAction( copy_action_ = new QAction( IconEngine::get( ICONS::COPY, path_list ), "&Copy", this ) );
   copy_action_->setShortcut( CTRL+Key_C );
-  // copy_action_->setShortcut( QKeySequence::Copy );
   connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
   
   addAction( paste_action_ = new QAction( IconEngine::get( ICONS::PASTE, path_list ), "&Paste", this ) );
@@ -1221,6 +1190,40 @@ void CustomTextEdit::_installActions( void )
   connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
   _updateSelectionActions( textCursor().hasSelection() );
 
+}
+
+//______________________________________________________________________________
+void CustomTextEdit::_installContextMenuActions( QMenu& menu )
+{
+  
+  // wrapping
+  menu.addAction( wrap_mode_action_ );
+  menu.addSeparator();
+  
+  menu.addAction( undo_action_ );
+  menu.addAction( redo_action_ );
+  menu.addSeparator();
+  
+  menu.addAction( cut_action_ );
+  menu.addAction( copy_action_ );
+  menu.addAction( paste_action_ );
+  menu.addAction( clear_action_ );
+  menu.addSeparator();
+  
+  menu.addAction( select_all_action_ );
+  menu.addAction( upper_case_action_ );
+  menu.addAction( lower_case_action_ );
+  menu.addSeparator();
+  
+  menu.addAction( find_action_ );
+  menu.addAction( find_again_action_ );
+  menu.addAction( find_selection_action_);
+  menu.addSeparator();
+  
+  menu.addAction( replace_action_ );
+  menu.addAction( replace_again_action_ );
+  menu.addAction( goto_line_action_);
+  return; 
 }
 
 //______________________________________________________________________
