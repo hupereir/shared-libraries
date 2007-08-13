@@ -1,5 +1,6 @@
 TEMPLATE = lib
-CONFIG = staticlib
+CONFIG = staticlib qt
+QT += xml
 
 INCLUDEPATH += ../base
 DEPENDPATH += . ../base
@@ -128,6 +129,3 @@ XmlOption.cc \
 XmlOptions.cc \
 XmlTextFormatBlock.cc \
 XmlTimeStamp.cc
-
-CONFIG += qt
-QT += xml
