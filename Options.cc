@@ -33,7 +33,6 @@
 #include <list>
 
 #include "Debug.h"
-#include "File.h"
 #include "Options.h"
 
 using namespace std;
