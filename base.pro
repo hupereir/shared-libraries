@@ -23,7 +23,6 @@ XmlUtil.h
 SOURCES = \
 ArgList.cc \
 Counter.cc \
-Debug.cc \
 Exception.cc \
 File.cc \
 FileList.cc \

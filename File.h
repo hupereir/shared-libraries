@@ -32,6 +32,7 @@
    \date $Date$
 */
 
+#include <QFileInfo>
 #include <time.h>
 #include <string>
 #include <list>
@@ -74,22 +75,20 @@ class File: public Str
   virtual gid_t groupId( void ) const;
   
   //! user name
-  virtual std::string userName( void ) const
-  { return _userName( userId() ); }
+  virtual std::string userName( void ) const;
 
   //! group name
-  virtual std::string groupName( void ) const
-  { return _groupName( groupId() ); }
+  virtual std::string groupName( void ) const;
   
   //! permission string
-  virtual mode_t permissions( void ) const;
+  virtual QFile::Permissions permissions( void ) const;
 
   //! permission string
   virtual std::string permissionsString( void ) const
   { return permissionsString( permissions() ); }
   
   //! permission string
-  static std::string permissionsString( const mode_t& );
+  std::string permissionsString( const QFile::Permissions& ) const;
   
   //! file size
   virtual unsigned int fileSize( void ) const;
@@ -102,7 +101,7 @@ class File: public Str
   static std::string sizeString( const unsigned int& size );
     
   //! tells if a file exists
-  virtual bool exist( void ) const;
+  virtual bool exists( void ) const;
   
   //! tells if a file exists and can be written into
   virtual bool isWritable( void ) const;
@@ -183,33 +182,6 @@ class File: public Str
     std::string file_;
     
   };
-  
-  private:
-  
-  /*! \fn static size_t _nextSlash( const std::string& str, size_t pos)
-    \brief returns position of next slash in a string starting from given one
-    \param str the string
-    \param pos the starting position
-  */
-  static size_t _nextSlash( const std::string& str, size_t pos); 
-  
-  //! cut a full file name into local name and path
-  static bool _parseFilename( const std::string& fullname, std::string& filename, std::string& pathname);
-  
-  //! replace ~ by full path in a pathname
-  static std::string _expandTilde( const std::string& pathname);
-  
-  //! make pathname std: starting from absolute path, with no '..' of '.' of '//' in there
-  static std::string _normalizePathname( const std::string& pathname);
-  
-  //! remove useless peaces of string from pathname
-  static std::string _compressPathname( const std::string& pathname);
-  
-  //! retrieve username from user id
-  static std::string _userName( const uid_t& uid );
-  
-  //! retrieve group name from group id
-  static std::string _groupName( const gid_t& gid );
   
 };
 

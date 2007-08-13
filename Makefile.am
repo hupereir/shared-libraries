@@ -1,5 +1,12 @@
 AUTOMAKE_OPTIONS = foreign
-INCLUDES = -I$(qt_includes) -I$(x11_includes)
+
+INCLUDES =  \
+  -I$(qt_includes) \
+  -I$(qt_includes)/Qt \
+  -I$(qt_includes)/QtCore  \
+  -I$(qt_includes)/QtXml \
+  -I$(qt_includes)/QtGui
+
 EXTRA_DIST = base.pro
 
 noinst_HEADERS = \
