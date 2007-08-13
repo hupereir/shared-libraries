@@ -9,7 +9,7 @@
 *
 * This is free software; you can redistribute it and/or modify it under the
 * terms of the GNU General Public License as published by the Free Software
-* Foundation; eitherFoundation version 2 of the License, or (at your option) any later
+* Foundation; either version 2 of the License, or (at your option) any later
 * version.
 *
 * This software is distributed in the hope that it will be useful, but WITHOUT
@@ -34,10 +34,10 @@
 
 #include <QClipboard>
 #include <QContextMenuEvent>
+#include <QScrollBar>
 #include <QTextBlockFormat>
 #include <QTextCursor>
 #include <QTextEdit>
-#include <QDragMoveEvent>
 
 #include <vector>
 
@@ -218,18 +218,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   { return emulated_tab_; }
 
   //@}
-
-//   //! text highlight
-//   /*! it is needed to ensure only one text highlight works at a time */
-//   void setTextHighlight( BaseTextHighlight* highlight );
-//     
-//   //! text highlight
-//   BaseTextHighlight& textHighlight( void ) const
-//   {
-//     BASE::KeySet<BaseTextHighlight> highlights( dynamic_cast<Key*>( document() ) );
-//     Exception::check( highlights.size() == 1, DESCRIPTION( Str("invalid association to text-highlight - count: " ).append<unsigned int>( highlights.size() ) ) );
-//     return **highlights.begin();
-//   }
   
   //! block highlight object
   BlockHighlight& blockHighlight() const
@@ -351,6 +339,29 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! remove current line
   virtual void removeLine( void );
 
+  //!@name widget to viewport translations
+  //@{ 
+ 
+  //! scrollbar position
+  QPoint scrollbarPosition( void ) const
+  { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
+
+  //! widget to viewport translation
+  QRect toViewport( const QRect& rect ) const
+  { return rect.translated( -scrollbarPosition() ); }
+  
+  //! widget to viewport translation
+  QPoint toViewport( const QPoint& point ) const
+  { return point - scrollbarPosition(); }
+  
+  //! widget from viewport translation
+  QRect fromViewport( const QRect& rect ) const
+  { return rect.translated( scrollbarPosition() ); }
+  
+  //! widget from viewport translation
+  QPoint fromViewport( const QPoint& point ) const
+  { return point + scrollbarPosition(); }
+  
   protected:
   
   //!@name event handlers
@@ -372,19 +383,19 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
  
   //! mouse press event [overloaded]
   virtual void mouseReleaseEvent( QMouseEvent* );
+  
+  //! drop event
+  virtual void dropEvent( QDropEvent* event );
 
   //! keypress event
   virtual void keyPressEvent( QKeyEvent* );
-  
+    
   //! context menu event [overloaded]
   virtual void contextMenuEvent( QContextMenuEvent* );
     
   //! repaint event
   virtual void paintEvent( QPaintEvent* e );
 
-  //! drag move event [overloaded]
-  // void dragMoveEvent( QDragMoveEvent* event );  
-  
   //@}
   
   //! install default actions
@@ -496,7 +507,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   { return emulated_tab_regexp_; }
   
   //@}
-  
+    
   protected slots:
     
   //! synchronize selection
@@ -666,7 +677,8 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! current block highlight color
   QColor highlight_color_;
 
-  int offset_;
+  //! store possible mouse drag start position
+  QPoint drag_start_;
   
 };
 

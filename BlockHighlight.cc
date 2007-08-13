@@ -30,7 +30,6 @@
 */
 
 #include <QAbstractTextDocumentLayout>
-#include <QScrollBar>
 #include <QTextDocument>
 #include <QTextBlock>
 
@@ -55,9 +54,6 @@ void BlockHighlight::clear( void )
 
   if( cleared_ ) return;
   
-  const int xOffset = parent_->horizontalScrollBar()->value();
-  const int yOffset = parent_->verticalScrollBar()->value();      
-
   // loop over all blocks
   for( QTextBlock block = parent_->document()->begin(); block.isValid(); block = block.next() )
   {
@@ -73,8 +69,7 @@ void BlockHighlight::clear( void )
       // retrieve paragraph rect
       QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
       block_rect.setWidth( parent_->viewport()->width() );
-      block_rect.translate( -xOffset, -yOffset); 
-      parent_->viewport()->update( block_rect.toRect() );    
+      parent_->viewport()->update( parent_->toViewport( block_rect.toRect() ) );    
       
     }
     
@@ -117,12 +112,9 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   data->setFlag( TextBlock::CURRENT_BLOCK, true );
 
   // retrieve block rect, translate to viewport and ask for repaint
-  const int xOffset = parent_->horizontalScrollBar()->value();
-  const int yOffset = parent_->verticalScrollBar()->value();      
   QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
   block_rect.setWidth( parent_->viewport()->width() );
-  block_rect.translate( -xOffset, -yOffset); 
-  parent_->viewport()->update( block_rect.toRect() );    
+  parent_->viewport()->update( parent_->toViewport( block_rect.toRect() ) );    
 
   cleared_ = false;
   

@@ -10,7 +10,7 @@
 * version.
 *
 * This software is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* ANY WARRANTY; witout even the implied warranty of MERCHANTABILITY or
 * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 * for more details.
 *
@@ -34,7 +34,6 @@
 #include <QMenu>
 #include <QPainter>
 #include <QRegExp>
-#include <QScrollBar>
 #include <QTextBlock>
 #include <QTextLayout>
 
@@ -70,8 +69,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   synchronize_( false ),
   box_selection_( this ),
   remove_line_buffer_( this ),
-  click_counter_( this ),
-  offset_( 0 )
+  click_counter_( this )
 {
 
   Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" );
@@ -738,6 +736,29 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 
       case 1:
 
+      // if single click in existing box selection, store drag position
+      if( 
+        event->modifiers() == NoModifier &&  
+        _boxSelection().state() == BoxSelection::FINISHED &&
+        _boxSelection().rect().contains( fromViewport( event->pos() ) )
+        )
+      {
+        // store position for drag
+        drag_start_ = event->pos();
+        return QTextEdit::mousePressEvent( event );
+      }
+
+      // if single click outside of existing box selection, clear the selection
+      if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED ) 
+      {
+        
+        _boxSelection().clear();
+        _synchronizeBoxSelection();
+        emit copyAvailable( false );
+    
+      }         
+        
+      // if single click and Control key pressed, start a new box selection
       if( event->modifiers() == ControlModifier  )
       {
 
@@ -746,34 +767,15 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
         if( _boxSelection().isEnabled() )
         {
           
-          // CTRL pressed. finish/clear current box; start a new one
-          if( _boxSelection().state() == BoxSelection::STARTED ) 
-          { _boxSelection().finish( event->pos() ); }
-          
-          if( _boxSelection().state() == BoxSelection::FINISHED ) 
-          { 
-            _boxSelection().clear(); 
-            _synchronizeBoxSelection();
-            emit copyAvailable( false );
-          }
           _boxSelection().start( event->pos() );
           
           // synchronize with other editors
           _synchronizeBoxSelection();
           return;
         } 
-          
-        return QTextEdit::mousePressEvent( event );
-        
+                  
       } 
       
-      if( _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::FINISHED )
-      {
-        _boxSelection().clear();
-        _synchronizeBoxSelection();
-        emit copyAvailable( false );
-      }
-        
       return QTextEdit::mousePressEvent( event );
       break;
 
@@ -822,26 +824,46 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
 
   Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
 
-  if( 
-    event->buttons() == LeftButton && 
-    _boxSelection().isEnabled() &&
-    ( event->modifiers() == ControlModifier || _boxSelection().state() == BoxSelection::STARTED ) )
+  // see if there is a box selection in progress
+  if( event->buttons() == LeftButton && _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::STARTED )
   {
-    if( _boxSelection().state() != BoxSelection::STARTED && viewport()->rect().contains( event->pos() ) )
-    { 
 
-      _boxSelection().start( event->pos() ); 
-      _synchronizeBoxSelection();
-
-    } else if( _boxSelection().state() == BoxSelection::STARTED ) { 
-
-      _boxSelection().update( event->pos() ); 
-      _synchronizeBoxSelection();
-      emit copyAvailable( true );
-
-    }
-
-  } else return QTextEdit::mouseMoveEvent( event );
+    _boxSelection().update( event->pos() ); 
+    _synchronizeBoxSelection();
+    emit copyAvailable( true );
+    return;
+    
+  }
+  
+  // start a new box selection if requested
+  if( event->buttons() == LeftButton && _boxSelection().isEnabled() && event->modifiers() == ControlModifier && viewport()->rect().contains( event->pos() ) )
+  { 
+    
+    _boxSelection().start( event->pos() ); 
+    _synchronizeBoxSelection();
+    emit copyAvailable( true );
+    return;
+  }
+  
+  // see if dragging existing box selection
+  if( event->buttons() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED && (event->pos() - drag_start_ ).manhattanLength() > QApplication::startDragDistance() )
+  {
+    // start drag
+    QDrag *drag = new QDrag(this);
+    
+    // store data
+    QString text( _boxSelection().toString() );
+    
+    QMimeData *data = new QMimeData();
+    data->setText( text );
+    data->setData( BoxSelection::mimeType, text.toAscii() );
+    drag->setMimeData( data );
+    drag->start(Qt::CopyAction);  
+    
+    return;
+  }
+  
+  return QTextEdit::mouseMoveEvent( event );
 
 }
 
@@ -850,7 +872,6 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 {
 
   Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
-
 
   // no need to check for enability because there is no way for the box to start if disabled
   if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::STARTED )
@@ -861,6 +882,16 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
     return QTextEdit::mouseReleaseEvent( event );
     
   }
+    
+  if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED ) 
+  {
+    
+    _boxSelection().clear();
+    _synchronizeBoxSelection();
+    emit copyAvailable( false );
+    return QTextEdit::mouseReleaseEvent( event ); 
+    
+  } 
 
   if( event->button() == LeftButton && click_counter_.counts() > 1 )
   {
@@ -878,6 +909,168 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 
 }
 
+//________________________________________________
+void CustomTextEdit::dropEvent( QDropEvent* event )
+{
+
+  Debug::Throw( "CustomTextEdit::dropEvent.\n" );
+  
+  // static empty mimeData used to pass to base class
+  // so that drop events are finished properly even when actually doing nothing
+  static QMimeData* empty_data( new QMimeData() );
+  QDropEvent empty_event( event->pos(), event->possibleActions(), empty_data, NoButton, NoModifier );
+ 
+  // if mimeData is block selection, block selection is enabled here
+  // and there is no active selection (standard or box), insert new box selection
+  // at cursor position
+  if( 
+    event->mimeData()->hasFormat( BoxSelection::mimeType ) &&
+    _boxSelection().isEnabled() &&
+    _boxSelection().state() == BoxSelection::EMPTY &&
+    !textCursor().hasSelection() )
+  {
+    
+    Debug::Throw( "CustomTextEdit::dropEvent - dropping box selection.\n" );
+    
+    // retrieve text from mimeType
+    QString text( event->mimeData()->text() );
+    QStringList input_list( text.split( "\n" ) );
+    
+    // create an empty boxSelection from current position with proper size
+    _boxSelection().start( event->pos() );
+    _boxSelection().finish( event->pos() );
+    _boxSelection().fromString( text );
+    _boxSelection().clear();
+
+    event->acceptProposedAction();
+    QTextEdit::dropEvent( &empty_event );
+    return; 
+   
+  }
+ 
+  if( 
+    event->mimeData()->hasFormat( BoxSelection::mimeType ) &&
+    _boxSelection().isEnabled() &&
+    _boxSelection().state() == BoxSelection::FINISHED &&
+    !toViewport( _boxSelection().rect() ).contains( event->pos() ) &&
+    event->source() == this
+    )
+  {
+    // drag is box selection and from this window. Move current block selection around.
+    Debug::Throw( "CustomTextEdit::dropEvent - [box] moving current box selection.\n" );
+
+    // count rows in current selection
+    int rowCount( _boxSelection().cursorList().size() - 1 );
+    
+    // store cursor at new insertion position
+    QTextCursor new_cursor( cursorForPosition( event->pos() ) );
+
+    // remove current selection
+    _boxSelection().removeSelectedText();
+    _boxSelection().clear();
+
+    // prepare new selection
+    QRect rect( cursorRect( new_cursor ) );
+    QPoint start( rect.center().x(), rect.top() );
+    QPoint end( rect.center().x(), rect.top() + rowCount*QFontMetrics( font() ).height() );
+
+    _boxSelection().start( start );
+    _boxSelection().finish( end );
+    
+    // join modifications with previous so that they appear as one entry in undo/redo list
+    new_cursor.joinPreviousEditBlock();
+    
+    // insert text in new box
+    _boxSelection().fromString( event->mimeData()->text() );
+    _boxSelection().clear();
+    new_cursor.endEditBlock();
+
+    event->acceptProposedAction();
+    QTextEdit::dropEvent( &empty_event );
+    return; 
+    
+
+  }
+
+  // check if there is one valid box selection that contains the drop point
+  if( 
+    event->mimeData()->hasText() &&
+    _boxSelection().isEnabled() && 
+    _boxSelection().state() == BoxSelection::FINISHED && 
+    toViewport( _boxSelection().rect() ).contains( event->pos() ) )
+  {
+    
+    if( event->source() == this )
+    {
+      
+      // current selection is inserted in itself. Doing nothing
+      Debug::Throw( "CustomTextEdit::dropEvent - [box] doing nothing.\n" );
+      event->acceptProposedAction();
+      QTextEdit::dropEvent( &empty_event );
+      return; 
+      
+    } else {
+      
+      // insert mine data in current box selection
+      Debug::Throw( "CustomTextEdit::dropEvent - [box] inserting selection.\n" );
+      _boxSelection().fromString( event->mimeData()->text() );
+      setTextCursor( _boxSelection().cursorList().back() );
+      _boxSelection().clear();    
+      event->acceptProposedAction();
+      QTextEdit::dropEvent( &empty_event );
+      return;
+      
+    }
+  }
+  
+  // retrieve selection bounding rect
+  if( event->mimeData()->hasText() && textCursor().hasSelection() )
+  {
+    QTextCursor cursor( textCursor() );
+    QTextCursor new_cursor( cursorForPosition( event->pos() ) );
+    
+    bool contained( 
+      new_cursor.position() >= min( cursor.position(), cursor.anchor() ) &&
+      new_cursor.position() <= max( cursor.position(), cursor.anchor() ) );
+    
+    if( contained && event->source() != this )
+    {
+      
+      // drag action is from another widget and ends in selection. Replace this selection
+      Debug::Throw( "CustomTextEdit::dropEvent - inserting selection.\n" );
+      cursor.insertText( event->mimeData()->text() );
+      event->acceptProposedAction();
+      QTextEdit::dropEvent( &empty_event );
+      return;
+      
+    }
+      
+    if( event->source() == this ) 
+    {
+      
+      // drag action is from this widget
+      // insert selection at current location and remove old selection
+      
+      Debug::Throw( "CustomTextEdit::dropEvent - moving selection.\n" );
+      cursor.beginEditBlock();
+      cursor.removeSelectedText();
+      cursor.setPosition( new_cursor.position() );
+      cursor.insertText( event->mimeData()->text() );
+      cursor.endEditBlock();
+      setTextCursor( cursor );
+      
+      event->acceptProposedAction();
+      QTextEdit::dropEvent( &empty_event );
+      return;
+      
+    }
+    
+  }
+  
+  // for all other cases, use default
+  return QTextEdit::dropEvent( event );
+  
+}
 
 //________________________________________________
 void CustomTextEdit::keyPressEvent( QKeyEvent* event )
@@ -1006,12 +1199,8 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   QTextBlock first( cursorForPosition( rect.topLeft() ).block() );
   QTextBlock last( cursorForPosition( rect.bottomRight() ).block() );
 
-  // retrieve scrollbar offsets
-  const int xOffset = horizontalScrollBar()->value();
-  const int yOffset = verticalScrollBar()->value();
-
   // translate rect from widget to viewport coordinates
-  rect.translate(xOffset, yOffset);
+  rect.translate( scrollbarPosition() );
 
   // loop over found blocks
   for( QTextBlock block( first ); block != last.next() && block.isValid(); block = block.next() )
@@ -1027,7 +1216,7 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
     
     // create painter and translate from widget to viewport coordinates
     QPainter painter( viewport() );
-    painter.translate(-xOffset, -yOffset);
+    painter.translate( -scrollbarPosition() );
     painter.setPen( NoPen );
     
     QColor color;
@@ -1054,7 +1243,7 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
 
   // create painter and translate from widget to viewport coordinates
   QPainter painter( viewport() );
-  painter.translate(-xOffset, -yOffset);
+  painter.translate( -scrollbarPosition() );
 
   painter.setPen( NoPen );
   painter.setBrush( _boxSelection().color() );
@@ -1063,67 +1252,6 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   return;
 }
 
-//______________________________________________________________
-// void CustomTextEdit::dragMoveEvent( QDragMoveEvent* event )
-// {
-//   // get current cursor
-//   QTextCursor cursor( textCursor() );
-//   int position( cursor.position() );
-//   int anchor( cursor.anchor() );
-//   int begin( min( anchor, position ) );
-//   int end( max( anchor, position ) );
-// 
-//   if( !cursor.hasSelection() ) return QTextEdit::dragMoveEvent( event );
-// 
-//   // calculate offset between drag position and begin of selection
-//   if( offset_ == 0 ) 
-//   { 
-//     offset_ = begin - cursorForPosition( event->pos() ).position();
-//     return;
-//   }
-//     
-//   // compute desired position for the beginning of the selection
-//   QTextCursor current_cursor( cursorForPosition( event->pos() ) );
-//   int current_pos( current_cursor.position() );
-//   if( !current_cursor.atBlockEnd() ) current_pos += offset_;
-//   //current_cursor.movePosition( QTextCursor::StartOfLine );
-//   //current_pos = max( current_pos, current_cursor.position() );
-//   
-//   // move selection so that the beginning match the new position
-//   if( current_pos == begin ) return;
-//   setUpdatesEnabled( false );
-//   if( current_pos > begin )
-//   {
-//     
-//     cursor.setPosition( end );
-//     cursor.setPosition( end + current_pos - begin, QTextCursor::KeepAnchor );
-//     QString text( cursor.selectedText() );
-//     if( text.isEmpty() ) return;
-//     
-//     cursor.removeSelectedText();
-//     cursor.setPosition( begin );
-//     cursor.insertText( text );
-//   
-//   } else if( current_pos < begin ) {
-//     
-//     cursor.setPosition( current_pos );
-//     cursor.setPosition( begin, QTextCursor::KeepAnchor );
-//     QString text( cursor.selectedText() );
-//     if( text.isEmpty() ) return;
-//     
-//     cursor.removeSelectedText();
-//     cursor.setPosition( end + current_pos - begin );
-//     cursor.insertText( text );
-//   }   
-//   
-//   cursor.setPosition( anchor + current_pos - begin );
-//   cursor.setPosition( position + current_pos - begin, QTextCursor::KeepAnchor );
-//   setTextCursor( cursor );
-//   setUpdatesEnabled( true );
-//   
-//   return;
-// 
-// }
 
 //______________________________________________________________
 void CustomTextEdit::_installActions( void )
@@ -1742,16 +1870,15 @@ void CustomTextEdit::_synchronizeSelection( void )
     continue;
 
     // store scrollbar positions
-    int x( editor.horizontalScrollBar()->value() );
-    int y( editor.verticalScrollBar()->value() );
+    QPoint scrollbars( editor.scrollbarPosition() );
 
     editor.setSynchronized( false );
     editor.setUpdatesEnabled( false );
     editor.setTextCursor( textCursor() );
 
     // restore scrollbar positions
-    editor.horizontalScrollBar()->setValue( x );
-    editor.verticalScrollBar()->setValue( y );
+    editor.horizontalScrollBar()->setValue( scrollbars.x() );
+    editor.verticalScrollBar()->setValue( scrollbars.y() );
 
     editor.setUpdatesEnabled( true );
     editor.setSynchronized( true );

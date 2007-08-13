@@ -30,13 +30,15 @@
 */
 
 #include <QApplication>
-#include <QScrollBar>
 
 #include "BoxSelection.h"
 #include "CustomTextEdit.h"
 #include "XmlOptions.h"
 
 using namespace std;
+
+//________________________________________________________________________
+const QString BoxSelection::mimeType = "text/boxSelection";
 
 //________________________________________________________________________
 BoxSelection::BoxSelection( CustomTextEdit* parent ):
@@ -61,7 +63,8 @@ void BoxSelection::synchronize( const BoxSelection& box )
   
   QRect old( rect() );
   _updateRect();
-  if( state() == STARTED || state() == FINISHED ) { parent_->viewport()->update( old.unite( rect() ) ); } 
+  if( state() == STARTED || state() == FINISHED ) 
+  { parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) ); } 
   else if( state() == EMPTY ) clear();
   
   return; 
@@ -99,12 +102,13 @@ bool BoxSelection::start( QPoint point )
   Debug::Throw( "BoxSelection::start.\n" );
   if( state_ != EMPTY ) return false;
 
-  point.setX( point.x() + parent_->horizontalScrollBar()->value() );
-  point.setY( point.y() + parent_->verticalScrollBar()->value() );
-
-  begin_ = point;
-  end_ = point;
+  // store point
+  begin_ = end_ = parent_->fromViewport( point );
+  
+  // adjust rectangle size
   _updateRect();
+  
+  // set parent cursor
   parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
   state_ = STARTED;
@@ -117,14 +121,17 @@ bool BoxSelection::update( QPoint point )
   Debug::Throw( "BoxSelection::update.\n" );
   if( state_ != STARTED ) return false;
 
-  point.setX( point.x() + parent_->horizontalScrollBar()->value() );
-  point.setY( point.y() + parent_->verticalScrollBar()->value() );
+  // store end point
+  end_ = parent_->fromViewport( point );
 
-  end_ = point;
-
+  // retrieve old rect
   QRect old( rect() );
+  
+  // update with new value
   _updateRect();
-  parent_->viewport()->update( old.unite( rect() ) );
+  
+  // update parent 
+  parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) );
   parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
   return true;
@@ -136,16 +143,7 @@ bool BoxSelection::finish( QPoint point )
   Debug::Throw( "BoxSelection::finish.\n" );
   if( state_ != STARTED ) return false;
 
-  point.setX( point.x() + parent_->horizontalScrollBar()->value() );
-  point.setY( point.y() + parent_->verticalScrollBar()->value() );
-
-  end_ = point;
-
-  QRect old( rect() );
-  _updateRect();
-  parent_->viewport()->update( old.unite( rect() ) );
-  parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
-
+  update( point );
   state_ = FINISHED;
 
   // store and copy to clipboard
@@ -163,8 +161,10 @@ bool BoxSelection::clear( void )
 
   // change state and redraw
   state_ = EMPTY;
-  parent_->viewport()->update( rect() );
-
+  
+  // update parent
+  parent_->viewport()->update( parent_->toViewport( rect() ) );
+  
   // clear cursors points and rect
   cursors_.clear();
   cursor_ = begin_ = end_ = QPoint();
@@ -177,7 +177,7 @@ bool BoxSelection::clear( void )
 //________________________________________________________________________
 QString BoxSelection::toString( void ) const
 {
-  Debug::Throw( "BoxSelection::_store.\n" );
+  Debug::Throw( "BoxSelection::toString.\n" );
   
   QString out;
   
@@ -244,12 +244,10 @@ bool BoxSelection::fromString( QString input )
   // if there are more lines in input_list than in current selection, insert new lines
   for( int i = cursors_.size(); i < input_list.size(); i++ )
   {
-    cursor.movePosition( QTextCursor::Down );
-    cursor.movePosition( QTextCursor::StartOfLine );
-    cursor.insertText( 
+    cursor.insertText( QString( '\n' ) + 
       input_list[i]
       .rightJustified( cursors_.firstColumn() + input_list[i].size() )
-      .leftJustified( cursors_.firstColumn() + columns ) + "\n" );
+      .leftJustified( cursors_.firstColumn() + columns ) );
   }
   
   cursor.endEditBlock();
@@ -277,6 +275,7 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
   // store text into MimeData
   QMimeData *data( new QMimeData() );
   data->setText( selection );
+  data->setData( mimeType, selection.toAscii() );
   
   // copy selected text to clipboard
   qApp->clipboard()->setMimeData( data, mode ); 
@@ -351,14 +350,13 @@ void BoxSelection::_updateRect( void )
   int y_min( min( begin_.y(), end_.y() ) );
   int y_max( max( begin_.y(), end_.y() ) );
 
-  QPoint begin( x_min - (x_min%font_width_) + left_margin_ + 2, y_min - (y_min%font_height_) + top_margin_ );
-  QPoint end( x_max + font_width_ - (x_max%font_width_) + left_margin_, y_max + font_height_ - (y_max%font_height_) + top_margin_ );
+  QPoint begin( x_min - (x_min%font_width_) + left_margin_, y_min - (y_min%font_height_) + top_margin_ );
+  QPoint end( x_max - (x_max%font_width_) + left_margin_, y_max + font_height_ - (y_max%font_height_) + top_margin_ );
 
   // decide location of cursor point
-  QPoint translation( parent_->horizontalScrollBar()->value(), parent_->verticalScrollBar()->value() );
   cursor_.setX( begin_.x() < end_.x() ? end.x():begin.x());
   cursor_.setY( begin_.y() < end_.y() ? end.y():begin.y()+font_height_);
-  cursor_ -= translation;
+  cursor_ = parent_->toViewport( cursor_ );
 
   // compute rect
   rect_ = QRect( begin, end );
@@ -374,15 +372,13 @@ void BoxSelection::_store( void )
 
   // retrieve box selection size
   int first_column = rect().left() / font_width_;
-  int columns = rect().width() / font_width_ + 1;
+  int columns = rect().width() / font_width_;
   int rows = rect().height() / font_height_;
   
   Debug::Throw() << "BoxSelection::_store - [" << first_column << "," << columns << "," << rows << "]" << endl;
   
   // translate rect
-  QRect local( rect() );
-  local.translate( -parent_->horizontalScrollBar()->value(), -parent_->verticalScrollBar()->value() );
-  
+  QRect local( parent_->toViewport( rect() ) );  
   cursors_ = CursorList( first_column, columns );
   for( int row = 0; row < rows; row ++ )
   {

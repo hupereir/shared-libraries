@@ -174,6 +174,10 @@ void HelpDialog::_toggleEdition( void )
     
     edited_ = true;
     edit_button_->setText( "&Save" );
+    QFont font;
+    font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ).c_str() );
+    text_edit_->setFont( font );
+    text_edit_->setCurrentFont( font );
     text_edit_->setPlainText( current_item_->item().text().c_str() );
     text_edit_->setReadOnly( false );
   
@@ -188,6 +192,10 @@ void HelpDialog::_toggleEdition( void )
     
     // update editor
     text_edit_->clear();
+    QFont font;
+    font.fromString( XmlOptions::get().raw( "FONT_NAME" ).c_str() );
+    text_edit_->setFont( font );
+    text_edit_->setCurrentFont( font );
     text_edit_->setHtml( current_item_->item().text().c_str() );
     
   }

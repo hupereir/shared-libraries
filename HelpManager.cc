@@ -60,8 +60,11 @@ HelpManager::HelpManager():
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
   
   // actions
-  connect( display_action_ = new QAction( IconEngine::get( ICONS::HELP, path_list ), "&Reference Manual", this ) , SIGNAL( triggered() ), SLOT( _display() ) );
-  connect( dump_action_ = new QAction( "D&ump Help", this ) , SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
+  display_action_ = new QAction( IconEngine::get( ICONS::HELP, path_list ), "&Reference Manual", 0 );
+  connect( display_action_, SIGNAL( triggered() ), SLOT( _display() ) );
+  
+  dump_action_ = new QAction( "D&ump Help", 0 );
+  connect( dump_action_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
   
   // connections
   connect( dialog_, SIGNAL( itemModified() ), SLOT( _save() ) );
@@ -187,7 +190,7 @@ void HelpManager::_dumpHelpString( void )
   main->setLayout( new QVBoxLayout() );
   main->layout()->setMargin(10);
   CustomTextEdit *text_edit = new CustomTextEdit( main );
-  text_edit->setReadOnly( true );
+  //text_edit->setReadOnly( true );
   text_edit->setWordWrapMode( QTextOption::NoWrap );
   text_edit->setPlainText( out.str().c_str() );
   main->layout()->addWidget( text_edit );
