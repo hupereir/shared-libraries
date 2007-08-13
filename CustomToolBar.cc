@@ -45,19 +45,23 @@ bool CustomToolBar::initialized_ = CustomToolBar::_initializeAreas();
 //_______________________________________________________________
 CustomToolBar::CustomToolBar( const QString& title, QWidget* parent ):
   QToolBar( title, parent ),
-  Counter( "CustomToolBar" )
+  Counter( "CustomToolBar" ),
+  lock_from_options_( true )
 {
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  updateConfiguration();
 }
 
 //_______________________________________________________________
 CustomToolBar::CustomToolBar( QWidget* parent ):
   QToolBar( parent ),
-  Counter( "CustomToolBar" )
+  Counter( "CustomToolBar" ),
+  lock_from_options_( true )
 {
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  updateConfiguration();
 }
 
 //_______________________________________________________________
@@ -72,7 +76,8 @@ void CustomToolBar::updateConfiguration( void )
   // text label for toolbars
   if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
   else setToolButtonStyle( Qt::ToolButtonIconOnly );
-  
+
+  if( lock_from_options_ ) setMovable( !XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) );
 }
 
 //_______________________________________________________________

@@ -419,17 +419,17 @@ void QtUtil::centerOnPointer( QWidget* widget )
 }
 
 //____________________________________________________________
-void QtUtil::centerOnParent( QWidget* widget )
+void QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 {
   Debug::Throw( "QtUtil::centerOnParent.\n" );
   Exception::check( widget, DESCRIPTION( "invalid widget" ) );
   
   // get parent widget
-  QWidget* parent = widget->parentWidget()->window();
   if( !parent ) centerOnDesktop( widget );
   else widget->move( centerOnWidget( widget->frameSize(), parent ) );
   return;
 }
+
 
 //____________________________________________________________
 void QtUtil::centerOnDesktop( QWidget* widget )
@@ -508,7 +508,7 @@ void QtUtil::expand( QLabel* label, const string& ref_text )
 unsigned int QtUtil::opacity( const QWidget* widget )
 {
   Debug::Throw( "QtUtil::opacity.\n" );
-  return (unsigned int) max_opacity_*widget->windowOpacity();
+  return (unsigned int)( max_opacity_*widget->windowOpacity() );
 }
 
 //__________________________________________________________

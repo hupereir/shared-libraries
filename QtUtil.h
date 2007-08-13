@@ -119,7 +119,14 @@ class QtUtil {
   static void centerOnPointer( QWidget* widget );
  
   //! center widget on parent top level widget
-  static void centerOnParent( QWidget* widget );
+  static void centerOnParent( QWidget* widget )
+  { 
+    Exception::check( widget, DESCRIPTION( "invalid widget" ) );
+    return centerOnWidget( widget, widget->parentWidget() ); 
+  }
+  
+  //! center widget on parent top level widget
+  static void centerOnWidget( QWidget* widget, QWidget* parent );
   
   //! center widget on desktop widget
   static void centerOnDesktop( QWidget* widget );

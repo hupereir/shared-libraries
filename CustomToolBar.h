@@ -74,6 +74,14 @@ class CustomToolBar: public QToolBar, public Counter
     
   }
   
+  //! set movable
+  /* when called directly from the application, the lock_from_options_ flag is set to false */
+  void setMovable( bool value )
+  {
+    lock_from_options_ = false;
+    return QToolBar::setMovable( value );
+  }
+  
   //! location option combo box
   class LocationComboBox: public OptionComboBox
   {
@@ -101,6 +109,9 @@ class CustomToolBar: public QToolBar, public Counter
   
   //! initialize area map
   static bool _initializeAreas( void );
+  
+  //! use lock from options
+  bool lock_from_options_;
   
   //! map name and toolbar are
   static std::map< std::string, Qt::ToolBarArea> toolbar_areas_;

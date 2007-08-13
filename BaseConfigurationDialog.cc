@@ -116,7 +116,6 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   // close window shortcut
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
-  //resize( 550, 350 );
 
 }
 
@@ -273,15 +272,21 @@ void BaseConfigurationDialog::toolbarConfiguration( QWidget* parent )
   
   // menu big pixmaps
   layout->addWidget( new QLabel("",box) );
-  OptionCheckBox* checkbox = new OptionCheckBox( "Big pixmaps in tool bars", box, "USE_BIG_PIXMAP" );
+  OptionCheckBox* checkbox = new OptionCheckBox( "Big pixmaps in toolbars", box, "USE_BIG_PIXMAP" );
   addOptionWidget( checkbox );
   checkbox->setToolTip( "Use big pixmaps in toolbars" );
   layout->addWidget( checkbox );
   
   // menu text label
-  checkbox = new OptionCheckBox( "Button text in tool bars", box, "USE_TEXT_LABEL" );
+  checkbox = new OptionCheckBox( "Button text in toolbars", box, "USE_TEXT_LABEL" );
   addOptionWidget( checkbox );
   checkbox->setToolTip( "Use text under tool buttons icon" );
+  layout->addWidget( checkbox );
+
+  // menu text label
+  checkbox = new OptionCheckBox( "lock toolbars position", box, "LOCK_TOOLBARS" );
+  addOptionWidget( checkbox );
+  checkbox->setToolTip( "Lock toolbars position" );
   layout->addWidget( checkbox );
   
 }

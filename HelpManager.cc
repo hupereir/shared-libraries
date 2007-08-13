@@ -149,6 +149,7 @@ void HelpManager::_display( void )
   Debug::Throw( "HelpManager::_display.\n" );
   dialog_->list().setCurrentItem( dialog_->list().item(0) );
   dialog_->setEditEnabled( file_.size() );
+  QtUtil::centerOnWidget( dialog_, qApp->activeWindow() );
   dialog_->show();
   QtUtil::uniconify( dialog_ );
 
