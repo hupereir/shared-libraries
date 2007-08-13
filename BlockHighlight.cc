@@ -65,7 +65,6 @@ void BlockHighlight::clear( void )
     {
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
       
-      //parent_->document()->markContentsDirty(block.position(), block.length()-1);
       // retrieve paragraph rect
       QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
       block_rect.setWidth( parent_->viewport()->width() );

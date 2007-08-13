@@ -247,19 +247,19 @@ void CustomTextEdit::selectWord( void )
   if( TextSeparator::get().base().find( text[begin] ) != TextSeparator::get().base().end() )
   {
 
-    // see if current character is in base separator list
+    // see if cursor is in base separator list
     while( begin > 0 &&  TextSeparator::get().base().find( text[begin-1] ) != TextSeparator::get().base().end() ) begin--;
     while( end < text.size() && TextSeparator::get().base().find( text[end] ) != TextSeparator::get().base().end() ) end++;
 
   } else if( TextSeparator::get().extended().find( text[begin] ) != TextSeparator::get().extended().end() ) {
 
-    // see if current character is in extended separator list
+    // see if cursor is in extended separator list
     while( begin > 0 &&  TextSeparator::get().extended().find( text[begin-1] ) != TextSeparator::get().extended().end() ) begin--;
     while( end < text.size() && TextSeparator::get().extended().find( text[end] ) != TextSeparator::get().extended().end() ) end++;
 
   } else {
 
-    // separator is in word
+    // cursor is in word
     while( begin > 0 &&  TextSeparator::get().all().find( text[begin-1] ) == TextSeparator::get().all().end() ) begin--;
     while( end < (int)text.size() && TextSeparator::get().all().find( text[end] ) == TextSeparator::get().all().end() ) end++;
 
@@ -375,12 +375,9 @@ void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
   { 
     
     // retrieve block rect, translate and redraw
-    const int xOffset = horizontalScrollBar()->value();
-    const int yOffset = verticalScrollBar()->value();      
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() );
-    block_rect.translate( -xOffset, -yOffset); 
-    viewport()->update( block_rect.toRect() );    
+    viewport()->update( toViewport( block_rect.toRect() ) );    
     
   }
   
@@ -402,8 +399,7 @@ void CustomTextEdit::clearBackground( QTextBlock block )
 
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() );
-    block_rect.translate( -xOffset, -yOffset); 
-    viewport()->update( block_rect.toRect() );    
+    viewport()->update( toViewport( block_rect.toRect() ) );    
 
   }
   
@@ -1212,7 +1208,7 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
         
     // retrieve block rect
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
-    block_rect.setWidth( viewport()->width() );
+    block_rect.setWidth( viewport()->width() + scrollbarPosition().x() );
     
     // create painter and translate from widget to viewport coordinates
     QPainter painter( viewport() );
@@ -1237,18 +1233,25 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   QTextEdit::paintEvent( event );
   
   if(
-    _boxSelection().state() != BoxSelection::STARTED &&
-    _boxSelection().state() != BoxSelection::FINISHED
-  ) return;
+    _boxSelection().state() == BoxSelection::STARTED ||
+    _boxSelection().state() == BoxSelection::FINISHED
+    )
+  {
 
-  // create painter and translate from widget to viewport coordinates
-  QPainter painter( viewport() );
-  painter.translate( -scrollbarPosition() );
+    // translate rect from widget to viewport coordinates
+    QRect rect = event->rect();
+    rect.translate( scrollbarPosition() );
 
-  painter.setPen( NoPen );
-  painter.setBrush( _boxSelection().color() );
-  painter.drawRect( _boxSelection().rect()&rect );
-
+    // create painter and translate from widget to viewport coordinates
+    QPainter painter( viewport() );
+    painter.translate( -scrollbarPosition() );
+    
+    painter.setPen( NoPen );
+    painter.setBrush( _boxSelection().color() );
+    painter.drawRect( _boxSelection().rect()&rect );
+ 
+  }
+  
   return;
 }
 
