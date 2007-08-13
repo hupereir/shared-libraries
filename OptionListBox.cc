@@ -48,7 +48,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
     QWidget( parent ),
     OptionWidget( name ),
     browsable_( false ),
-    mode_( QFileDialog::AnyFile )
+    file_mode_( QFileDialog::AnyFile )
 {
 
   Debug::Throw( "OptionListBox::OptionListBox.\n" );
@@ -163,7 +163,7 @@ void OptionListBox::_add( void )
   {
     BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog );
     dialog.mainLayout().addWidget( browse_edit );
-    browse_edit->setMode( mode_ );
+    browse_edit->setFileMode( file_mode_ );
     line_edit = &browse_edit->editor();
   } else {
     line_edit = new CustomLineEdit( &dialog );
@@ -203,7 +203,7 @@ void OptionListBox::_edit( QListWidgetItem* )
   {
     BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog );
     dialog.mainLayout().addWidget( browse_edit );
-    browse_edit->setMode( mode_ );
+    browse_edit->setFileMode( file_mode_ );
     line_edit = &browse_edit->editor();
   } else {
     line_edit = new CustomLineEdit( &dialog );

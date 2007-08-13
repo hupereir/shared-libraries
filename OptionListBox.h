@@ -65,8 +65,8 @@ class OptionListBox: public QWidget, public OptionWidget
   { browsable_ = value; }
 
   //! set file dialog mode
-  void setMode( const QFileDialog::FileMode& mode )
-  { mode_ = mode; }
+  void setFileMode( const QFileDialog::FileMode& mode )
+  { file_mode_ = mode; }
   
   private slots:
 
@@ -91,7 +91,7 @@ class OptionListBox: public QWidget, public OptionWidget
   bool browsable_;
   
   //! browsable dialog mode
-  QFileDialog::FileMode mode_;
+  QFileDialog::FileMode file_mode_;
     
   //! value list
   CustomListBox* list_;

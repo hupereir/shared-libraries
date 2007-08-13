@@ -266,7 +266,7 @@ void BaseConfigurationDialog::toolbarConfiguration( QWidget* parent )
   layout->addWidget( new QLabel("Pixmap pathname: ", box ) );
   OptionListBox *listbox = new OptionListBox( box, "PIXMAP_PATH" );
   listbox->setBrowsable( true );
-  listbox->setMode( QFileDialog::Directory );
+  listbox->setFileMode( QFileDialog::Directory );
   addOptionWidget( listbox );
   listbox->setToolTip( "Pathname to load toolbar pixmaps" );
   layout->addWidget( listbox );

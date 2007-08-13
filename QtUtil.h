@@ -123,7 +123,7 @@ class QtUtil {
   
   //! center widget on desktop widget
   static void centerOnDesktop( QWidget* widget );
-      
+
   //! uniconify a top level widget
   static void uniconify( QWidget* widget );
 

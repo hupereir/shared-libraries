@@ -70,13 +70,21 @@ class BrowsedLineEdit: public QWidget, public Counter
     return *line_edit_; 
   }
     
-  //! set view mode
-  void setMode( const QFileDialog::FileMode& mode ) 
-  { mode_ = mode; }
+  //! file mode
+  void setFileMode( const QFileDialog::FileMode& mode ) 
+  { file_mode_ = mode; }
   
-  //! retrieve view mode
-  QFileDialog::FileMode mode( void ) const
-  { return mode_; }
+  //! file mode
+  QFileDialog::FileMode fileMode( void ) const
+  { return file_mode_; }
+
+  //! view mode
+  void setViewMode( const QFileDialog::ViewMode& mode ) 
+  { view_mode_ = mode; }
+  
+  //! view mode
+  QFileDialog::ViewMode viewMode( void ) const
+  { return view_mode_; }
   
   //! retrieve working directory
   std::string workDirectory( void ) const
@@ -104,7 +112,10 @@ class BrowsedLineEdit: public QWidget, public Counter
   std::string work_directory_;
   
   //! File dialog mode
-  QFileDialog::FileMode mode_;
+  QFileDialog::FileMode file_mode_;
+  
+  //! File dialog view mode
+  QFileDialog::ViewMode view_mode_;
   
 };
 

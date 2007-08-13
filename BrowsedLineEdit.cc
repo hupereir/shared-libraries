@@ -49,7 +49,8 @@ BrowsedLineEdit::BrowsedLineEdit( QWidget *parent ):
   QWidget( parent ),
   Counter( "BrowsedLineEdit" ),
   work_directory_( Util::workingDirectory() ),
-  mode_( QFileDialog::AnyFile )
+  file_mode_( QFileDialog::AnyFile ),
+  view_mode_( QFileDialog::List )
 {
   Debug::Throw( "BrowsedLineEdit::BrowsedLineEdit.\n" );
   
@@ -93,8 +94,8 @@ void BrowsedLineEdit::_browse( void )
     
   // create file dialog
   CustomFileDialog dialog( this );
-  dialog.setFileMode( mode_ );
-  dialog.setViewMode( QFileDialog::Detail );
+  dialog.setFileMode( file_mode_ );
+  dialog.setViewMode( view_mode_ );
   
   // retrieve text, check if path is valid, assign to FileDialog
   File current_directory( qPrintable( line_edit_->text() ) );

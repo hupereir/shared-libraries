@@ -394,9 +394,6 @@ void CustomTextEdit::clearBackground( QTextBlock block )
   if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) )
   { 
     // retrieve block rect and redraw
-    const int xOffset = horizontalScrollBar()->value();
-    const int yOffset = verticalScrollBar()->value();      
-
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() );
     viewport()->update( toViewport( block_rect.toRect() ) );    
@@ -526,7 +523,8 @@ void CustomTextEdit::findFromDialog( void )
   _findDialog().enableRegExp( true );
 
   // raise dialog
-  QtUtil::centerOnPointer( &_findDialog() );
+//  QtUtil::centerOnPointer( &_findDialog() );
+  QtUtil::centerOnParent( &_findDialog() );
   _findDialog().show();
 
   /*
@@ -560,7 +558,8 @@ void CustomTextEdit::replaceFromDialog( void )
   if( !replace_dialog_ ) _createReplaceDialog();
 
   // raise dialog
-  QtUtil::centerOnPointer( &_replaceDialog() );
+  //QtUtil::centerOnPointer( &_replaceDialog() );
+  QtUtil::centerOnParent( &_replaceDialog() );
   _replaceDialog().show();
 
   /*
@@ -667,7 +666,7 @@ void CustomTextEdit::selectLineFromDialog( void )
   }
 
   select_line_dialog_->editor().clear();
-  QtUtil::centerOnPointer( select_line_dialog_ );
+  QtUtil::centerOnParent( select_line_dialog_ );
   select_line_dialog_->show();
   select_line_dialog_->editor().setFocus();
 
