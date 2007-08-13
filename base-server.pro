@@ -19,4 +19,4 @@ SOURCES = \
   ServerCommand.cc
 
 CONFIG += qt
-QT += xml
+QT += xml network
