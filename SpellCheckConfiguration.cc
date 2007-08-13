@@ -76,7 +76,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   // filters
   grid_layout->addWidget( new QLabel( "Default Filter: ", this ) );
   grid_layout->addWidget( filter_ = new OptionComboBox( this, "DICTIONARY_FILTER" ) );
- dictionary_->setToolTip( 
+  dictionary_->setToolTip( 
     "Default filtering mode used with files for which\n"
     "a filtering mode has not been manually selected" );
 
@@ -84,6 +84,8 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   { filter_->addItem(iter->c_str() ); }
 
+  
+  
 }
 
 //_________________________________________________________
