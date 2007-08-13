@@ -35,6 +35,9 @@ CustomToolButton.h \
 DebugMenu.h \
 DockPanel.h \
 ErrorHandler.h \
+File.h \
+FileList.h \
+FileRecord.h \
 FindDialog.h \
 FontEdit.h \
 HelpDialog.h \
@@ -104,6 +107,8 @@ CustomToolButton.cc \
 DebugMenu.cc \
 DockPanel.cc \
 ErrorHandler.cc \
+  File.cc \
+  FileList.cc \
 FindDialog.cc \
 FontEdit.cc \
 HelpDialog.cc \

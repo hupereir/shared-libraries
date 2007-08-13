@@ -39,6 +39,9 @@ noinst_HEADERS = \
   DockPanel.h \
   BaseIcons.h \
   ErrorHandler.h \
+  File.h \
+  FileList.h \
+  FileRecord.h \
   FindDialog.h \
   FontEdit.h \
   HelpDialog.h \
@@ -110,6 +113,8 @@ libbase_qt_a_SOURCES = \
   DebugMenu.cc \
   DockPanel.cc \
   ErrorHandler.cc \
+  File.cc \
+  FileList.cc \
   FindDialog.cc \
   FontEdit.cc \
   HelpDialog.cc \
