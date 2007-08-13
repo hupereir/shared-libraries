@@ -66,7 +66,7 @@ void IconBrowsedButton::setIconFile( const std::string& file, const bool& check 
   
   Debug::Throw() << "IconBrowsedButton::setIconFile - " << file << endl;
   
-  if( File( file ).exist() ) work_directory_ = File(file).path();
+  if( File( file ).exists() ) work_directory_ = File(file).path();
   else work_directory_ = XmlOptions::get().get<string>("DEFAULT_ICON_PATH");
   
   CustomPixmap pixmap( file );

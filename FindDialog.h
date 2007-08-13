@@ -129,15 +129,12 @@ class FindDialog: public QDialog, public Counter
   { _addSearchedString( editor().currentText() ); }
   
   //! create Selection object when find button is pressed
-  virtual void _find( const QString& text = QString() )
+  virtual void _find( void )
   { emit find( selection( false ) ); }
 
   //! create Selection object when find button is pressed
-  virtual void _findNoIncrement( const QString& text = QString() )
-  {
-    // disable when regexp is selected
-    if( !regexp_checkbox_->isChecked() ) emit find( selection( true ) );
-  }
+  virtual void _findNoIncrement( void )
+  { if( !regexp_checkbox_->isChecked() ) emit find( selection( true ) ); }
 
   //! update button state when regexp checkbox is checked
   virtual void _regExpChecked( bool );

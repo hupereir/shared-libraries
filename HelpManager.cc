@@ -103,7 +103,7 @@ bool HelpManager::install( const File& file )
   
   // set file and check
   file_ = file;
-  if( !file_.exist() ) return false;
+  if( !file_.exists() ) return false;
 
   // parse the file
   QFile qtfile( file.c_str() );

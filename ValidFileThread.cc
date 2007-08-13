@@ -39,9 +39,9 @@ using namespace std;
 void ValidFileThread::run( void )
 {
 
-  // loop over files, check if exist, set validity accordingly, and post event
+  // loop over files, check if exists, set validity accordingly, and post event
   for( FileRecord::List::iterator iter = files_.begin(); iter != files_.end(); iter++ )
-  { iter->setValid( File( iter->file() ).exist() ); }
+  { iter->setValid( File( iter->file() ).exists() ); }
   
   qApp->postEvent( reciever_, new ValidFileEvent( files_ ) );  
   return;

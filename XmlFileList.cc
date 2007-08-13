@@ -70,7 +70,7 @@ void XmlFileList::setDBFile( const File& file )
 bool XmlFileList::read( void )
 {
   Debug::Throw( "XmlFileList::read.\n" );
-  if( db_file_.empty() || !db_file_.exist() ) return false;
+  if( db_file_.empty() || !db_file_.exists() ) return false;
 
   // parse the file
   QFile qtfile( db_file_.c_str() );
@@ -149,7 +149,7 @@ bool XmlFileList::_deprecatedRead( void )
   Debug::Throw( "FileList::_deprecatedRead.\n" );
   
   // check file
-  if( db_file_.empty() || !db_file_.exist() ) return false; 
+  if( db_file_.empty() || !db_file_.exists() ) return false; 
   
   // open stream
   QFile in( db_file_.c_str() );

@@ -5,11 +5,14 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
+BaseConfigurationDialog.h \
+BaseIcons.h \
+BlockHighlight.h \
+BoxSelection.h \
 BrowsedLineEdit.h \
 ClockLabel.h \
 ColorDisplay.h \
 ColorMenu.h \
-ConfigDialogBase.h \
 CounterDialog.h \
 CounterList.h \
 CustomComboBox.h \
@@ -24,6 +27,7 @@ CustomPixmap.h \
 CustomProcess.h \
 CustomSlider.h \
 CustomTabWidget.h \
+CustomTextDocument.h \
 CustomTextEdit.h \
 CustomToolBar.h \
 CustomToolButton.h \
@@ -38,7 +42,8 @@ HelpItemList.h \
 HelpManager.h \
 IconBrowsedButton.h \
 IconEngine.h \
-ListViewConfig.h \
+IconProvider.h \
+ListViewConfiguration.h \
 MultipleClickCounter.h \
 OpenPreviousMenu.h \
 OptionBrowsedLineEdit.h \
@@ -59,6 +64,7 @@ ReplaceDialog.h \
 SelectLineDialog.h \
 StatusBar.h \
 TextBlockData.h \
+TextBlockFlags.h \
 TextSelection.h \
 TextSeparator.h \
 ValidFileThread.h \
@@ -71,11 +77,13 @@ XmlTextFormatBlock.h \
 XmlTimeStamp.h
 
 SOURCES = \
+BaseConfigurationDialog.cc \
+BlockHighlight.cc \
+BoxSelection.cc \
 BrowsedLineEdit.cc \
 ClockLabel.cc \
 ColorDisplay.cc \
 ColorMenu.cc \
-ConfigDialogBase.cc \
 CounterDialog.cc \
 CounterList.cc \
 CustomComboBox.cc \
@@ -102,7 +110,8 @@ HelpItem.cc \
 HelpManager.cc \
 IconBrowsedButton.cc \
 IconEngine.cc \
-ListViewConfig.cc \
+IconProvider.cc \
+ListViewConfiguration.cc \
 OpenPreviousMenu.cc \
 OptionFontInfo.cc \
 OptionListBox.cc \

@@ -116,7 +116,7 @@ void FindDialog::_createEditor( void )
   connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
   connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
   connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
-  connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( const QString& ) ) );
+  connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( void ) ) );
 
   /* 
     replace_editor_ maximum size is arbitrary but is here

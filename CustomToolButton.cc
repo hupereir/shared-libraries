@@ -29,17 +29,14 @@
   \date $Date$
 */
 
+#include <QApplication>
+#include <QPixmap>
+#include <QPainter>
+#include <sstream>
+
 #include "CustomToolButton.h"
 #include "Exception.h"
 #include "XmlOptions.h"
-
-#include <QApplication>
-#include <qpixmap.h>
-#include <qiconset.h>
-#include <qtooltip.h>
-#include <qpainter.h>
-#include <qstyle.h>
-#include <sstream>
 
 using namespace std;
 
