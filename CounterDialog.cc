@@ -58,19 +58,29 @@ CounterDialog::CounterDialog( QWidget* parent ):
   layout()->addWidget( counter_list_ );
   
   // update button
-  QPushButton *update_button = new QPushButton( "&Update", this );
-  connect( update_button, SIGNAL( clicked() ), SLOT( Update() ) );
-  update_button->setAutoDefault( false );
-  layout()->addWidget( update_button );
+  QHBoxLayout *h_layout = new QHBoxLayout();
+  h_layout->setSpacing(10);
+  h_layout->setMargin(0);
+  layout()->addItem( h_layout );
+  
+  QPushButton *button;
+  h_layout->addWidget( button = new QPushButton( "&Update", this ) );
+  connect( button, SIGNAL( clicked() ), SLOT( update() ) );
+  button->setAutoDefault( false );
    
+  h_layout->addWidget( button = new QPushButton( "&Close", this ) );
+  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
+  button->setAutoDefault( false );
+  
   resize( QSize( 250,300 ) );
+  
 }
 
 //__________________________________________________________________________
-void CounterDialog::Update( void )
+void CounterDialog::update( void )
 {
   
-  Debug::Throw( "CounterDialog::Update.\n" );
+  Debug::Throw( "CounterDialog::update.\n" );
     
   // retrieve counters 
   Counter::CounterMap& counters( Counter::map() );

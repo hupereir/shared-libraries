@@ -419,14 +419,22 @@ void QtUtil::centerOnPointer( QWidget* widget )
 }
 
 //____________________________________________________________
+void QtUtil::centerOnParent( QWidget* widget )
+{ 
+  Exception::check( widget, DESCRIPTION( "invalid widget" ) );
+  return centerOnWidget( widget, widget->parentWidget() ); 
+}
+
+
+//____________________________________________________________
 void QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 {
   Debug::Throw( "QtUtil::centerOnParent.\n" );
   Exception::check( widget, DESCRIPTION( "invalid widget" ) );
   
   // get parent widget
-  if( !parent ) centerOnDesktop( widget );
-  else widget->move( centerOnWidget( widget->frameSize(), parent ) );
+  if( !( parent && parent->window() ) ) centerOnDesktop( widget );
+  else widget->move( centerOnWidget( widget->frameSize(), parent->window() ) );
   return;
 }
 

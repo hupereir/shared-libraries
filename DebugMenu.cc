@@ -57,12 +57,12 @@ void DebugMenu::_showCounterDialog( void )
   if( !counter_dialog_ ) {
     
     counter_dialog_ = new CounterDialog( parentWidget() );
-    counter_dialog_->Update();
+    counter_dialog_->update();
     counter_dialog_->show();
     
   } else {
     
-    counter_dialog_->Update();
+    counter_dialog_->update();
     counter_dialog_->show();
     QtUtil::uniconify( counter_dialog_ );
   

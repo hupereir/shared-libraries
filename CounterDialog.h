@@ -57,7 +57,7 @@ class CounterDialog: public QDialog, public Counter
   public slots:
   
   //! update Counter list
-  void Update();
+  void update();
   
   private:
   

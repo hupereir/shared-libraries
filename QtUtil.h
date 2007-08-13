@@ -75,13 +75,13 @@ class QtUtil {
   static void infoDialog( 
     QWidget* parent, 
     const std::string& text,
-    DialogCenter dialog_center = CENTER_ON_POINTER ); 
+    DialogCenter dialog_center = CENTER_ON_PARENT ); 
 
   //! create an modal MessageBox
   static bool questionDialog( 
     QWidget* parent, 
     const std::string& text,
-    DialogCenter dialog_center = CENTER_ON_POINTER ); 
+    DialogCenter dialog_center = CENTER_ON_PARENT ); 
 
   //! corners
   enum Corner
@@ -119,11 +119,7 @@ class QtUtil {
   static void centerOnPointer( QWidget* widget );
  
   //! center widget on parent top level widget
-  static void centerOnParent( QWidget* widget )
-  { 
-    Exception::check( widget, DESCRIPTION( "invalid widget" ) );
-    return centerOnWidget( widget, widget->parentWidget() ); 
-  }
+  static void centerOnParent( QWidget* widget );
   
   //! center widget on parent top level widget
   static void centerOnWidget( QWidget* widget, QWidget* parent );
