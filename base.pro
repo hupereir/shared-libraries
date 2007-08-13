@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG = staticlib qt
 
 HEADERS = \
 ArgList.h \
