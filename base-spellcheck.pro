@@ -5,11 +5,10 @@ INCLUDEPATH += ../base ../base-qt
 DEPENDPATH += . ../base ../base-qt
 
 HEADERS = \
-AutoSpellConfig.h \
+AutoSpellConfiguration.h \
 DictionaryMenu.h \
 FilterMenu.h \
-SpellCheckBlockData.h \
-SpellConfig.h \
+SpellCheckConfiguration.h \
 SpellDialog.h \
 SpellInterface.h \
 SpellParser.h \
@@ -17,11 +16,10 @@ SuggestionMenu.h \
 Word.h
 
 SOURCES = \
-AutoSpellConfig.cc \
+AutoSpellConfiguration.cc \
 DictionaryMenu.cc \
 FilterMenu.cc \
-SpellCheckBlockData.cc \
-SpellConfig.cc \
+SpellCheckConfiguration.cc \
 SpellDialog.cc \
 SpellInterface.cc \
 SpellParser.cc \

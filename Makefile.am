@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
-EXTRA_DIST = base-server.pro
+EXTRA_DIST = base-spellcheck.pro
 
 INCLUDES =  \
   -I$(qt_includes) \
