@@ -67,6 +67,8 @@ noinst_HEADERS = \
   OptionSlider.h \
   OptionSpinBox.h \
   OptionWidget.h \
+  ProcessDialog.h \
+  ProcessFrame.h \
   QtUtil.h \
   RemoveLineBuffer.h \
   ReplaceDialog.h \
@@ -129,6 +131,8 @@ libbase_qt_a_SOURCES = \
   OpenPreviousMenu.cc \
   OptionFontInfo.cc \
   OptionListBox.cc \
+  ProcessDialog.cc \
+  ProcessFrame.cc \
   QtUtil.cc \
   RemoveLineBuffer.cc \
   ReplaceDialog.cc \
@@ -174,6 +178,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_MultipleClickCounter.cc \
   moc_OpenPreviousMenu.cc \
   moc_OptionListBox.cc \
+  moc_ProcessFrame.cc \
   moc_RemoveLineBuffer.cc \
   moc_ReplaceDialog.cc \
   moc_SelectLineDialog.cc \
