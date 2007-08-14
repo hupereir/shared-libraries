@@ -62,11 +62,6 @@ class ProcessDialog: public QDialog, public Counter
     Exception::checkPointer( process_frame_, DESCRIPTION( "process_frame_ not initialized" ) );
     return *process_frame_;
   }
-      
-  //! retrieve associated process object
-  CustomProcess& process( void )
-  { return processFrame().process(); }
-
 
   private:
   
