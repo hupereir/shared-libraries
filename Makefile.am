@@ -14,6 +14,9 @@ noinst_HEADERS = \
   Counter.h \
   Debug.h \
   Exception.h \
+  File.h \
+  FileList.h \
+  FileRecord.h \
   Key.h \
   Option.h \
   Options.h \
@@ -31,6 +34,8 @@ libbase_a_SOURCES = \
   ArgList.cc \
   Counter.cc \
   Exception.cc \
+  File.cc \
+  FileList.cc \
   Key.cc \
   Options.cc \
   Str.cc \
