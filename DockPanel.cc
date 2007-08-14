@@ -55,11 +55,13 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   main_ = new LocalWidget( this );
   layout()->addWidget( main_ );
   
+  main_->setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
+  
   // vertical layout for children
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
   main_layout_ = new QVBoxLayout();
-  main_layout_->setMargin( 0 );
-  main_layout_->setSpacing( 2 );
+  main_layout_->setMargin( 5 );
+  main_layout_->setSpacing( 5 );
   main_->setLayout( main_layout_ );
   
   // vertical panel
@@ -99,6 +101,7 @@ void DockPanel::_toggleDock( void )
     detached_size_ = main_->size();
     main_->setParent( this );
     layout()->addWidget( main_ );
+    main_->setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
     main_->show();    
     
     button_->setText("&detach");
@@ -115,6 +118,7 @@ void DockPanel::_toggleDock( void )
     button_->setText("&attach");
     if( detached_size_ != QSize() ) main_->resize( detached_size_ );    
     
+    main_->setFrameStyle( QFrame::NoFrame );
     main_->show();
     emit detached();
   

@@ -117,13 +117,13 @@ class DockPanel: public QWidget, public Counter
   private:
   
   //! local widget to implement close_event of the content
-  class LocalWidget: public QWidget, public Counter
+  class LocalWidget: public QFrame, public Counter
   {
     public:
     
     //! constructor
     LocalWidget( DockPanel* parent ):
-      QWidget( parent ),
+      QFrame( parent ),
       Counter( "DockPanel::LocalWidget" ),
       panel_( parent )
     {}
@@ -161,7 +161,7 @@ class DockPanel: public QWidget, public Counter
   QPushButton* button_;
   
   //! detachable main widget
-  QWidget* main_;
+  LocalWidget* main_;
     
   //! contents panel
   QWidget* panel_;
