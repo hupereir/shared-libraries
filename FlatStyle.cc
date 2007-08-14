@@ -62,9 +62,9 @@ void FlatStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* opt
       painter->drawLine(option->rect.left(), option->rect.bottom(), option->rect.right(), option->rect.bottom());
       painter->drawLine(option->rect.left(), option->rect.top(), option->rect.right(), option->rect.top());
     }
-    return;
+   return;
     
-    case PE_IndicatorToolBarHandle: return;
+   case PE_IndicatorToolBarHandle: return;
     
     default: return QPlastiqueStyle::drawPrimitive( element, option, painter, widget ); 
   }
