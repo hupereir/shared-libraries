@@ -43,9 +43,10 @@
 #include "TextFormat.h" 
 #include "Word.h"
 
-//! highlight text based on misspelled words
 namespace SPELLCHECK
 {
+
+  //! highlight text based on misspelled words
   class SpellParser: public Counter
   {
 

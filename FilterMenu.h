@@ -38,9 +38,10 @@
 
 #include "Counter.h"
 
-//! dictionary filter selection menu
 namespace SPELLCHECK
 {
+
+  //! dictionary filter selection menu
   class FilterMenu: public QMenu, public Counter
   {
     
