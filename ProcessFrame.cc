@@ -35,6 +35,7 @@
 #include "Debug.h"
 #include "ProcessFrame.h"
 #include "TextFormat.h"
+#include "QtUtil.h"
 
 using namespace std;
 
@@ -84,9 +85,22 @@ ProcessFrame::ProcessFrame( QWidget* parent ):
 }
 
 //_____________________________________________________________
-void ProcessFrame::append( const QString& text, const unsigned int& format )
+bool ProcessFrame::start( const std::string& arguments, QProcess::OpenMode mode )
 {
-  if( suspended_ ) buffer_.push_back( make_pair( text, format ) );
+  Debug::Throw( "ProcessFrame::start.\n" );
+  
+  // check if last time process is not still running
+  if( process_.state() != QProcess::NotRunning ) return false; 
+  
+  append( (arguments + "\n" ).c_str(), FORMAT::BOLD );
+  process().start( arguments, mode );
+  return true;
+  
+}
+
+//_____________________________________________________________
+void ProcessFrame::append( const QString& text, const unsigned int& format )
+{  if( suspended_ ) buffer_.push_back( make_pair( text, format ) );
   else _append( text, format );
   
 }
