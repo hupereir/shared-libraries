@@ -59,12 +59,9 @@ Options::Options( void ):
   add( Option( "USE_BIG_PIXMAP", "1" , "big pixmaps in tool buttons"  )); 
   add( Option( "USE_TEXT_LABEL", "1" , "text label in tool buttons"  )); 
   add( Option( "LOCK_TOOLBARS", "0" , "lock toolbars position" ));
-
   add( Option( "SORT_FILES_BY_DATE", "0" , "sort files by access date in open previous menu"  )); 
-
   add( Option( "TAB_EMULATION", "0" , "enable tab emulation" ));
   add( Option( "TAB_SIZE", "2" , "emulated tab size" ));
-  
   add( Option( "WRAP_TEXT", "1" , "text wrapping" ));
 
 }
