@@ -43,6 +43,7 @@ noinst_HEADERS = \
   FileList.h \
   FileRecord.h \
   FindDialog.h \
+  FlatStyle.h \
   FontEdit.h \
   HelpDialog.h \
   HelpItem.h \
@@ -113,6 +114,7 @@ libbase_qt_a_SOURCES = \
   DebugMenu.cc \
   DockPanel.cc \
   ErrorHandler.cc \
+  FlatStyle.cc \
   File.cc \
   FileList.cc \
   FindDialog.cc \
