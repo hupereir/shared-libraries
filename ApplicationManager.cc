@@ -41,6 +41,8 @@
 using namespace std;
 using namespace SERVER;
 
+static const int debug_level(1);
+
 //_________________________________________
 ApplicationManager::ApplicationManager( QObject* parent ):
   QObject( parent ),
@@ -51,24 +53,26 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   timer_( this )
 { 
 
-  Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
+  Debug::Throw( debug_level, "ApplicationManager::ApplicationManager.\n" );
   setApplicationName( "GENERIC_APPLICATION" ); 
 
+  server_ = new Server( this, SERVER_PORT );
+  server_->listen( QHostAddress::Any, SERVER_PORT );
+  connect( server_, SIGNAL( newConnection() ), SLOT( _newConnection() ) );
+
+  // create new socket
+  QTcpSocket* socket = new QTcpSocket( this );
+  client_ = new Client( this, socket );
+  client().socket().connectToHost( "localhost", SERVER_PORT );    
+  connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
+  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( _recreateServer() ) );
+  connect( client_, SIGNAL( messageAvailable() ), SLOT( _process() ) );
+  
 }
 
 //_________________________________________
 ApplicationManager::~ApplicationManager( void )
-{
-  Debug::Throw( "ApplicationManager::~ApplicationManager.\n" );
-  
-  // close all connected clients, if any
-  while( !connected_clients_.empty() )
-  { connected_clients_.front()->socket().abort(); }
-  
-  // delete server
-  if( server_ ) delete server_;
-  
-}
+{ Debug::Throw( debug_level, "ApplicationManager::~ApplicationManager.\n" ); }
 
 //_________________________________________
 void ApplicationManager::usage( void )
@@ -82,36 +86,14 @@ void ApplicationManager::usage( void )
 void ApplicationManager::init( ArgList args, bool forced )
 {
 
-  Debug::Throw( "ApplicationManager::init.\n" );
+  Debug::Throw( debug_level, "ApplicationManager::init.\n" );
 
-  //! initialize server
-  if( server_ && forced ) {
-    delete server_;
-    server_ = 0;
-  }
   
-  if( !server_ ) {
-    server_ = new Server( this, 4242 );
-    connect( server_, SIGNAL( newConnection() ), SLOT( _newConnection() ) );
-  }
-  
-  //! initialize client 
-  if( client_ && forced ) {
-    delete client_;
-    client_ = 0;
-  }
-  
-  // create the client
-  if( !client_ ) {
-    
-    // create new socket
-    QTcpSocket* socket = new QTcpSocket( this );
-    socket->connectToHost( "localhost", SERVER_PORT );    
-    
-    client_ = new Client( socket );
-    connect( socket, SIGNAL( error( QAbstractSocket::SocketError )), SLOT( _error( QAbstractSocket::SocketError ) ) );
-    connect( socket, SIGNAL( disconnected() ), SLOT( _recreateServer() ) );
-    connect( client_, SIGNAL( messageAvailable( SERVER::Client*, const std::string& ) ), SLOT( _processMessage( SERVER::Client*, const std::string& ) ) );
+  if( forced ) 
+  {
+    server_->listen( QHostAddress::Any, SERVER_PORT );
+    client().socket().abort();
+    client().socket().connectToHost( "localhost", SERVER_PORT );    
   }
   
   // emit initialization signal
@@ -123,7 +105,7 @@ void ApplicationManager::init( ArgList args, bool forced )
   
   // add command line arguments if any
   command.setArguments( args );
-  Debug::Throw() << "ApplicationManager::init - " << command << endl;
+  Debug::Throw( debug_level ) << "ApplicationManager::init - " << command << endl;
   
   // send request command
   client_ ->sendMessage( command );
@@ -136,83 +118,45 @@ void ApplicationManager::init( ArgList args, bool forced )
   timer_.setSingleShot( true );
   timer_.start( timeout_delay );
   
-  Debug::Throw( "ApplicationManager::init. done.\n" );
+  Debug::Throw( debug_level, "ApplicationManager::init. done.\n" );
   
 }  
 
 //_____________________________________________________
 void ApplicationManager::setApplicationName( const string& name )
 { 
-  Debug::Throw( "ApplicationManager::setApplicationName.\n" );
+  Debug::Throw( debug_level, "ApplicationManager::setApplicationName.\n" );
   id_ = ApplicationId( name, Util::user(), Util::env( "DISPLAY", "0.0" ) );
 }
 
+
 //_____________________________________________________
-void ApplicationManager::_newConnection()
+Client* ApplicationManager::_register( const ApplicationId& id, Client* client, bool forced )
 {
-  Debug::Throw( "ApplicationManager::_newConnection.\n" );
+  Debug::Throw( debug_level, "ApplicationManager::_register.\n" );
   
-  // check pending connection
-  if( !server_->hasPendingConnections() ) return;
-  
-  // create client from pending connection 
-  Client *client( new Client( server_->nextPendingConnection() ) );
-  connect( client, SIGNAL( messageAvailable( SERVER::Client*, const std::string& ) ), SLOT( _redirectMessage( SERVER::Client*, const std::string& ) ) );
-  connect( client, SIGNAL( disconnected( SERVER::Client* ) ), SLOT( _connectionClosed( SERVER::Client* ) ) );
-  connected_clients_.push_back( client );
-  
+  if( forced ) {
+    
+    accepted_clients_[id] = client;
+    return client;  
+      
+  } else if( accepted_clients_.find( id ) == accepted_clients_.end() ) {
+    
+    accepted_clients_[id] = client;
+    return client;
+    
+  } else {
+    
+    return accepted_clients_[id];
+    
+  }
 }
 
 //_____________________________________________________
-void ApplicationManager::_connectionClosed( Client* client )
-{
-  Debug::Throw( "ApplicationManager::_connectionClosed.\n" );
-  
-  // look for client in accepted clients map
-  ClientMap tmp_map;
-  for( ClientMap::iterator it = accepted_clients_.begin(); it != accepted_clients_.end(); it++ )
-  if( it->second != client ) tmp_map.insert( *it );
-  else _broadcast( ServerCommand( it->first, ServerCommand::KILLED ), client );
-  accepted_clients_ = tmp_map;
-
-  // look for client in list; remove if found
-  connected_clients_.remove( client );
-  delete client;
-  
-  return;
-
-}
-
-//_____________________________________________________
-void ApplicationManager::_error( QAbstractSocket::SocketError error )
-{
-  Debug::Throw( ) << "ApplicationManager::_error - error=" << error << endl;
-
-  // when an error occur and state is not dead, state is forced alive
-  if( state_ != DEAD ) setState( ALIVE );
-  
-  return;
-}
-
-//_____________________________________________________
-void ApplicationManager::_recreateServer( void )
-{
-  Debug::Throw( "ApplicationManager::_recreateServer.\n" );
-  init( ArgList(), true );
-}
-
-//_____________________________________________________
-void ApplicationManager::_replyTimeOut( void )
-{
-  Debug::Throw( "ApplicationManager::_replyTimeOut.\n" );
-  if( state_ == AWAITING_REPLY ) setState( ALIVE );
-}
-
-//_____________________________________________________
-void ApplicationManager::_redirectMessage( Client* client, const string& message )
+void ApplicationManager::_redirect( const std::string& message, Client* sender )
 {
   
-  Debug::Throw( ) << "Application::_redirectMessage - message = " << message << endl;
+  Debug::Throw( debug_level ) << "Application::_redirect - message: " << message << endl;
 
   // parse message
   istringstream in( message );
@@ -229,16 +173,16 @@ void ApplicationManager::_redirectMessage( Client* client, const string& message
       accepted_clients_.clear();
       continue;
       
-    } else if( client && command.command() == ServerCommand::REQUEST ) {
+    } else if( command.command() == ServerCommand::REQUEST ) {
       
       // server request 
-      Client *existing_client = _register( command.id(), client );
+      Client *existing_client = _register( command.id(), sender );
       
-      if( client == existing_client ) { 
+      if( sender == existing_client ) { 
 
         // tell client it is accepted
-        client->sendMessage( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
-        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), client );
+        sender->sendMessage( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
+        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
                 
       } else if( command.args().find( "--replace" ) ) {
          
@@ -248,9 +192,9 @@ void ApplicationManager::_redirectMessage( Client* client, const string& message
         _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
         
         // tell new client it is accepted   
-        client->sendMessage( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
-        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), client );
-        _register( command.id(), client, true );
+        sender->sendMessage( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
+        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
+        _register( command.id(), sender, true );
         
       } else if( command.args().find( "--abort" ) ) {
 
@@ -260,9 +204,9 @@ void ApplicationManager::_redirectMessage( Client* client, const string& message
         _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
         
         // tell new client it is denied too   
-        client->sendMessage( ServerCommand( command.id(), ServerCommand::DENIED ) );
-        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), client );
-        _register( command.id(), client, true );
+        sender->sendMessage( ServerCommand( command.id(), ServerCommand::DENIED ) );
+        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
+        _register( command.id(), sender, true );
       
       } else {
         
@@ -275,39 +219,147 @@ void ApplicationManager::_redirectMessage( Client* client, const string& message
       
       continue;
             
-    } else if( client && command.command() == ServerCommand::ALIVE ) 
+    } else if( command.command() == ServerCommand::ALIVE ) 
     {
  
       // client exist and is alive. Deny current
       _broadcast( ServerCommand( command.id(), ServerCommand::DENIED ) );
     
     } else if( command.command() == ServerCommand::IDENTIFY ) {
+      
       /* 
       identification request. Loop over registered clients
       send the associated Identity to the sender
       */
       
       for( ClientMap::iterator it=accepted_clients_.begin(); it!=accepted_clients_.end(); it++ )
-      { client->sendMessage( ServerCommand( it->first, ServerCommand::IDENTIFY ) ); }
+      { sender->sendMessage( ServerCommand( it->first, ServerCommand::IDENTIFY ) ); }
       
       // identify the server
-      client->sendMessage( ServerCommand( id_, ServerCommand::IDENTIFY_SERVER ) );
+      sender->sendMessage( ServerCommand( id_, ServerCommand::IDENTIFY_SERVER ) );
       
       continue;
     }
     
     // redirect unrecognized message to all clients but the sender
-    _broadcast( command, client );
+    _broadcast( command, sender );
     
   }
 
 }
 
 //_____________________________________________________
-void ApplicationManager::_processMessage( Client* client, const string& message )
+void ApplicationManager::_broadcast( const string& message, Client* sender )
+{
+  Debug::Throw( debug_level ) << "ApplicationManager::_Broadcast - message: " << message << endl;
+  
+  for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
+  { if( (*iter) != sender ) (*iter)->sendMessage( message ); }
+  
+}
+
+//_____________________________________________________
+void ApplicationManager::_newConnection()
+{
+  Debug::Throw( debug_level, "ApplicationManager::_newConnection.\n" );
+  
+  // check pending connection
+  if( !server_->hasPendingConnections() ) return;
+  
+  // create client from pending connection 
+  Client *client( new Client( this, server_->nextPendingConnection() ) );
+  connect( client, SIGNAL( messageAvailable() ), SLOT( _redirect() ) );
+  connect( &client->socket(), SIGNAL( disconnected() ), SLOT( _connectionClosed() ) );
+  _connectedClients().push_back( client );
+  
+}
+
+//_____________________________________________________
+void ApplicationManager::_connectionClosed( void )
+{
+  Debug::Throw( debug_level, "ApplicationManager::_connectionClosed.\n" );
+  
+  // look for disconnected clients in client map
+  {
+    ClientMap::iterator iter;
+    while( ( iter = find_if(  _acceptedClients().begin(), _acceptedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) )  ) != _acceptedClients().end() )
+    { 
+      
+      // broadcast client as dead
+      _broadcast( ServerCommand( iter->first, ServerCommand::KILLED ), iter->second ); 
+      
+      // erase from map of accepted clients
+      _acceptedClients().erase( iter );
+      
+    }
+  }
+    
+  // look for disconnected clients in connected clients list
+  {
+    ClientList::iterator iter;
+    while( ( iter = find_if( _connectedClients().begin(), _connectedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != _connectedClients().end() )
+    { _connectedClients().erase( iter ); }
+    
+    return;
+  } 
+  
+}
+  
+//_____________________________________________________
+void ApplicationManager::_error( QAbstractSocket::SocketError error )
+{
+  Debug::Throw( debug_level ) << "ApplicationManager::_error - error=" << error << endl;
+
+  // when an error occur and state is not dead, state is forced alive
+  if( state_ != DEAD ) setState( ALIVE );
+  
+  return;
+}
+
+//_____________________________________________________
+void ApplicationManager::_recreateServer( void )
+{
+  Debug::Throw( debug_level, "ApplicationManager::_recreateServer.\n" );
+  init( ArgList(), true );
+}
+
+//_____________________________________________________
+void ApplicationManager::_replyTimeOut( void )
+{
+  Debug::Throw( debug_level, "ApplicationManager::_replyTimeOut.\n" );
+  if( state_ == AWAITING_REPLY ) setState( ALIVE );
+}
+
+//_____________________________________________________
+void ApplicationManager::_redirect( void )
 {
   
-  Debug::Throw( ) << "Application::_processMessage - message = " << message << " state=" << state_ << endl;
+  Debug::Throw( debug_level, "Application::_redirect.\n" );
+
+  ClientList::iterator iter;
+  while( ( iter = find_if(  _connectedClients().begin(), _connectedClients().end(), HasMessageFTor() ) ) != _connectedClients().end() )
+  { 
+    if( !(*iter)->hasMessage() ) continue;
+    string message( (*iter)->message() );
+    (*iter)->reset();
+    _redirect( message, *iter );
+  }
+
+  return;
+}
+
+
+//_____________________________________________________
+void ApplicationManager::_process( void )
+{
+  
+  Debug::Throw( debug_level, "Application::_process.\n" );
+  
+  Exception::check( client().hasMessage(), DESCRIPTION( "no message available" ) );
+  
+  // retrieve message and reset
+  string message( client().message() );
+  client().reset();
   
   istringstream in( message );
   while( (in.rdstate() & ios::failbit ) == 0 ) 
@@ -326,7 +378,7 @@ void ApplicationManager::_processMessage( Client* client, const string& message 
     if( state_ == ALIVE && ( command.command() == ServerCommand::RAISE ) ) 
     {
       
-      client_->sendMessage( ServerCommand( id_, ServerCommand::ALIVE ) );
+      client().sendMessage( ServerCommand( id_, ServerCommand::ALIVE ) );
       emit serverRequest( command.args() );
       continue;
     
@@ -357,38 +409,7 @@ void ApplicationManager::_processMessage( Client* client, const string& message 
     }
  
   }
+  
   return;
-  
-}
-
-//_____________________________________________________
-Client* ApplicationManager::_register( const ApplicationId& id, Client* client, bool forced )
-{
-  Debug::Throw( "ApplicationManager::_register.\n" );
-  
-  if( forced ) {
-    
-    accepted_clients_[id] = client;
-    return client;  
-      
-  } else if( accepted_clients_.find( id ) == accepted_clients_.end() ) {
-    
-    accepted_clients_[id] = client;
-    return client;
-    
-  } else {
-    
-    return accepted_clients_[id];
-    
-  }
-}
-
-//_____________________________________________________
-void ApplicationManager::_broadcast( const string& message, Client* sender )
-{
-  Debug::Throw( "ApplicationManager::_Broadcast.\n" );
-  
-  for( list< Client* >::iterator iter = connected_clients_.begin(); iter != connected_clients_.end(); iter++ )
-  { if( (*iter) != sender ) (*iter)->sendMessage( message ); }
   
 }

@@ -35,11 +35,17 @@
 using namespace std;
 using namespace SERVER;
 
+static const int debug_level(1);
+
 //__________________________________________________
 Server::Server( QObject *parent, quint16 port ):
   QTcpServer( parent ),
   Counter( "Server" )
 { 
-  Debug::Throw( "Server::Server.\n" );
-  listen( QHostAddress::Any, port );
+  Debug::Throw( debug_level ) << "Server::Server - port: " << port << endl;
 }
+
+//__________________________________________________
+Server::~Server( void )
+{ Debug::Throw( debug_level, "Server::~Server.\n" ); }
+

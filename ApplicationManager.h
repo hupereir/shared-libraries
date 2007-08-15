@@ -42,16 +42,15 @@
 #include <string>
 
 #include "ArgList.h"
+#include "Client.h"
 #include "Counter.h"
 #include "Exception.h"
+#include "Server.h"
 #include "ServerCommand.h"
 
 namespace SERVER
 {
 
-  class Server;
-  class Client;
-  
   //! ensures only one instance of an application is running
   class ApplicationManager: public QObject, public Counter
   {
@@ -109,7 +108,7 @@ namespace SERVER
     //! retrieve Application ID
     virtual const ApplicationId& id( void ) const
     { return id_; }
-   
+    
     signals:
     
     //! emitted when manager state is changed
@@ -121,13 +120,80 @@ namespace SERVER
     //! emitted when the server is (re)initialized
     void initialized( void );
       
-    private slots:
+    protected:
+         
+    //! pair of application id and client
+    typedef std::pair< ApplicationId, Client* > ClientPair;
+    
+    //! map of clients
+    typedef std::map< ApplicationId, Client* > ClientMap;
+    
+    //! list of clients
+    typedef std::list< Client* > ClientList;
+
+    //! used to retrieve clients for a given state
+    class SameStateFTor
+    {
+      public:
+      
+      //! constructor
+      SameStateFTor( QAbstractSocket::SocketState state ):
+        state_( state )
+        {}
+        
+      //! predicate
+      bool operator() ( const Client* client ) const
+      { return client->socket().state() == state_; }
+      
+      //! predicate
+      bool operator() ( const ClientPair& pair ) const
+      { return pair.second->socket().state() == state_; }
+      
+      private:
+      
+      //! prediction
+      QAbstractSocket::SocketState state_;
+        
+    };
+     
+    //! used to retrieve clients with available messages
+    class HasMessageFTor
+    {
+      
+      public:
+      
+      //! predicate
+      bool operator() ( const Client* client ) const
+      { return client->hasMessage(); }
+      
+    };
+    
+    //! map of accepted clients
+    ClientMap& _acceptedClients( void ) 
+    { return accepted_clients_; }
+    
+    //! list of connected clients
+    ClientList& _connectedClients( void )
+    { return connected_clients_; }
+    
+    /*! \brief register a client, returns true if application is new.
+      if forced is set to true, the old cliend, if any, is replaced
+    */
+    virtual Client* _register( const ApplicationId& id, Client* client, bool forced = false );
+
+    //! redirect message 
+    virtual void _redirect( const std::string& message, Client* sender );
+    
+    //! broadcast a message to all registered clients but the sender (if valid)
+    virtual void _broadcast( const std::string& message, Client* sender = 0 );
+
+    protected slots:
     
     //! a new connection is granted
     virtual void _newConnection( void );
-    
-    //! a connection is dead
-    virtual void _connectionClosed( SERVER::Client* );
+        
+    //! a connection was closed
+    virtual void _connectionClosed( void );
     
     //! client recieves errors
     virtual void _error( QAbstractSocket::SocketError );
@@ -139,32 +205,18 @@ namespace SERVER
     void _replyTimeOut( void );
     
     //! redistribute message when a connected client sends one
-    virtual void _redirectMessage( SERVER::Client*, const std::string& message );
+    virtual void _redirect( void );
         
     //! reads signal from server
-    void _processMessage( SERVER::Client*, const std::string& message );
+    void _process( void );
   
     private:
     
-    /*! \brief register a client, returns true if application is new.
-      if forced is set to true, the old cliend, if any, is replaced
-    */
-    virtual Client* _register( const ApplicationId& id, Client* client, bool forced = false );
-    
-    //! broadcast a message to all registered clients but the sender (if valid)
-    virtual void _broadcast( const std::string& message, Client* sender = 0 );
-        
     //! Server 
     Server* server_;
     
     //! Client
     Client* client_;
-  
-    //! list of clients
-    typedef std::list< Client* > ClientList;
-  
-    //! map of clients
-    typedef std::map< ApplicationId, Client* > ClientMap;
     
     //! list of connected clients
     ClientList connected_clients_;

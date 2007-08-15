@@ -34,6 +34,7 @@
 
 #include <QTcpSocket>
 #include <string>
+#include <list>
 
 #include "Counter.h"
 
@@ -49,41 +50,59 @@ namespace SERVER
     
     public:
     
+    //! client list
+    typedef std::list< Client* > List;
+      
     //! constructor
-    Client( QTcpSocket* parent );
+    Client( QObject* parent, QTcpSocket* socket );
   
     //! destructor
-    virtual ~Client( void )
-    { Debug::Throw( "Client::~Client.\n" ); }
+    virtual ~Client( void );
 
     //! associated socket
     QTcpSocket& socket()
     { return *socket_; }
+
+    //! associated socket
+    const QTcpSocket& socket() const
+    { return *socket_; }
     
     //! send message
-    void sendMessage( const std::string& message );
+    /*! returns true if message could be sent */
+    bool sendMessage( const std::string& message );
+    
+    //! true if message is available
+    const bool& hasMessage( void ) const
+    { return has_message_; }
+    
+    //! current message
+    const std::string& message( void ) const
+    { return message_; }
+    
+    //! reset
+    void reset( void );
     
     signals:
     
     //! emitted when a message is available
-    void messageAvailable( SERVER::Client*, const std::string& message );
-    
-    //! emitted when a client is closed
-    void disconnected( SERVER::Client* );
+    void messageAvailable();
      
     private slots:
     
     //! reads messages
     void _readMessage( void );
     
-    //! close connection
-    void _connectionClosed( void );
-    
-    private:
+    private:    
     
     //! parent socket
     QTcpSocket* socket_;
-     
+    
+    //! true if has message available
+    bool has_message_;
+    
+    //! current message
+    std::string message_;
+    
   };
 };
 

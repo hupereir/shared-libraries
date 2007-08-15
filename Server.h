@@ -62,17 +62,8 @@ namespace SERVER
     Server( QObject* parent, quint16 port = SERVER::SERVER_PORT  );
     
     //! destructor
-    virtual ~Server( void )
-    { Debug::Throw( "Server::~Server.\n" ); }
+    virtual ~Server( void );
     
-    //! new connection granted [overloaded]
-    // void newConnection( int socket );
-  
-    // signals:
-    
-    //! emited when a new connection is granted
-    // void NewConnectionGranted( int socket );
-  
   };
 };
 #endif

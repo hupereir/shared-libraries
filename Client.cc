@@ -38,30 +38,49 @@
 using namespace std;
 using namespace SERVER;
 
+static const int debug_level(1);
+
 //_______________________________________________________
-Client::Client( QTcpSocket* parent ):
+Client::Client( QObject* parent, QTcpSocket* socket ):
   QObject( parent ),
   Counter( "Client" ),
-  socket_( parent )
+  socket_( socket ),
+  has_message_( false )
 {
-  Debug::Throw( "Client::Client.\n" );
-  Exception::checkPointer( parent, DESCRIPTION( "invalid Tcp socket" ) );
+  Debug::Throw( debug_level, "Client::Client.\n" );
+  Exception::checkPointer( socket, DESCRIPTION( "invalid Tcp socket" ) );
   connect( socket_, SIGNAL( readyRead() ), SLOT( _readMessage() ) );
-  connect( socket_, SIGNAL( disconnected() ), SLOT( _connectionClosed() ) );
 }
 
 //_______________________________________________________
-void Client::sendMessage( const string& message )
+Client::~Client( void )
+{ Debug::Throw( debug_level, "Client::~Client.\n" ); }
+
+//_______________________________________________________
+bool Client::sendMessage( const string& message )
 {
-  Debug::Throw() << "Client::sendMessage - " << message << endl;
+  Debug::Throw( debug_level ) << "Client::sendMessage - " << message << endl;
+  
+  if( !socket().state() ==  QAbstractSocket::ConnectedState ) return false;
   QTextStream os( &socket() );
   os << message.c_str() << endl;
+  return true;
+  
 }
+
+
+//_______________________________________________________
+void Client::reset( void )
+{
+  Debug::Throw( debug_level, "Client::reset.\n" );
+  has_message_ = false;
+}
+
 
 //_______________________________________________________
 void Client::_readMessage( void )
 {
-  Debug::Throw( "Client::_readMessage.\n" );
+  Debug::Throw(  debug_level, "Client::_readMessage.\n" );
   ostringstream out;
   
   // read from the server
@@ -71,14 +90,9 @@ void Client::_readMessage( void )
     out << line;
   }
 
-  emit messageAvailable( this, out.str() );  
+  // store message and emit signal
+  has_message_ = true;
+  message_ = out.str();
+  emit messageAvailable();  
 
-}
-
-//_______________________________________________________
-void Client::_connectionClosed( void )
-{
-  Debug::Throw( "Client::_connectionClosed.\n" );
-  emit disconnected( this );
-  return;
 }
