@@ -353,15 +353,11 @@ list<File> File::listFiles( const bool& recursive, const bool& follow_links ) co
     file_info.setFile( QDir( c_str() ), *iter );
     File found( qPrintable( file_info.absoluteFilePath() ) );
     out.push_back( found );
-    
-    Debug::Throw() << "File::listFiles - found: " << found << endl;
-    
+        
     // list subdirectory if recursive
     if( recursive && found.isDirectory() )
     {
       
-      Debug::Throw() << "File::listFiles - directory: " << found << endl;
-
       // in case directory is a link
       // make sure it is not already in the list
       // to avoid recursivity
