@@ -60,7 +60,7 @@ class Util
   static std::string timeString( void );
    
   //! runs a Unix command 
-  static void run( const std::string& val );
+  static bool run( const std::string& val );
    
   //! runs a Unix command in specified directory
   static void runAt( const std::string& path, const std::string& val );

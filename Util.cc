@@ -34,6 +34,9 @@
 #include "Str.h"
 #include "Debug.h"
 
+#include <QProcess>
+#include <QStringList>
+
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
@@ -86,11 +89,27 @@ string Util::timeString( void )
 }
 
 //____________________________________________  
-void Util::run( const string& value )
+bool Util::run( const string& value )
 {
-  if( !value.size() ) return;
-  system( value.c_str() );
-  return;
+  
+  if( !value.size() ) return false;
+
+  istringstream in( value );
+  
+  QStringList arg_list;
+  while( ( in.rdstate() & std::ios::failbit) == 0 ) 
+  {
+    string arg;
+    in >> arg;
+    if( arg.empty() ) break;
+    arg_list.push_back( arg.c_str() );  
+  }  
+  
+  QString program( arg_list.front() );
+  arg_list.pop_front();
+  if( arg_list.empty() ) return QProcess::startDetached( program );
+  else return QProcess::startDetached( program, arg_list );
+ 
 }     
 
 //____________________________________________  
@@ -138,17 +157,28 @@ list< unsigned int > Util::allChildren( const unsigned int pid_ )
 //______________________________________________________________________
 string Util::env( const string& val, const string& default_value )
 {
-   Debug::Throw() << "Util::env.\n";
-   if( !getenv( val.c_str() ) ) return default_value;
-   return string( getenv( val.c_str() ) );
+  
+  QStringList environment( QProcess::systemEnvironment() );
+  for( QStringList::iterator iter = environment.begin(); iter != environment.end(); iter++ )
+  {
+    int position( iter->indexOf( "=" ) );
+    if( position <= 0 ) continue;
+    
+    QString var( iter->left( position ) );
+    if( var == QString( val.c_str() ) ) return qPrintable( iter->mid( position+1 ) );
+  }
+  
+  return default_value;
+  
+  //    Debug::Throw() << "Util::env.\n";
+  //    if( !getenv( val.c_str() ) ) return default_value;
+  //    return string( getenv( val.c_str() ) );
+  
 }  
     
 //______________________________________________________________________
 string Util::user( void )
-{
-   struct passwd *pass = getpwuid( getuid() );
-   return string(pass->pw_name);
-}  
+{ return env( "USER", "unknown user" ); }  
    
 //______________________________________________________________________
 string Util::domain( void )
@@ -167,10 +197,8 @@ string Util::domain( void )
 //______________________________________________________________________
 string Util::host( bool short_name )
 {
-  struct utsname name;
-  uname( &name );
-  Debug::Throw() << "Util::GetHost. Got " << name.nodename << endl;
-  string out(name.nodename);
+ 
+  string out( env( "HOSTNAME", "unknown" ) );
   if( ! short_name ) return out;
   
   size_t pos( out.find( "." ) ); 
@@ -185,18 +213,7 @@ int Util::pid( void )
      
 //______________________________________________________________________
 string Util::workingDirectory( void )
-{
-  // Get PWD
-  char* buf = new char[LONGSTR];
-  if (!getcwd(buf, LONGSTR)) {
-    cerr << "Util::GetWorkingDirectory - ERROR: getcwd failed\n";
-    return ".";
-  }
-  
-  string out( buf );
-  delete[] buf;
-  return out;
-}
+{ return env( "PWD", "." ); }
 
 //______________________________________________________________________
 string Util::convertTime( float value )
