@@ -384,9 +384,7 @@ File File::find( const File& file, bool case_sensitive ) const
   list<File> directories;
   for( list<File>::iterator iter = files.begin(); iter != files.end(); iter++ )
   {
-    
-    Debug::Throw() << "File::find - parsing: " << *iter << endl;
-    
+        
     // check if file match
     if( File( *iter ).localName().isEqual( file, case_sensitive ) )
     return *iter;
