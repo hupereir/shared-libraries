@@ -45,16 +45,14 @@
 class ProcessDialog: public QDialog, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
-
   public:
   
   //! creator
   ProcessDialog( QWidget* parent );
   
   //! destructor
-  ~ProcessDialog( void );
+  virtual ~ProcessDialog( void )
+  { Debug::Throw( "ProcessDialog::~ProcessDialog.\n" ); }
   
   //! process frame
   ProcessFrame& processFrame( void )

@@ -48,9 +48,7 @@ void CustomProcess::start( const string& arguments, OpenMode mode )
 {
   
   Debug::Throw() << "CustomProcess::start - " << arguments << endl;
-  istringstream in( arguments );
-  
-  QString program;
+  istringstream in( arguments );  
   QStringList arg_list;
   while( ( in.rdstate() & std::ios::failbit) == 0 ) 
   {
@@ -84,4 +82,19 @@ void CustomProcess::setAutoDelete( void )
 { 
   Debug::Throw( "CustomProcess::setAutoDelete.\n" );
   connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( _AutoDelete() ) ); 
+}
+
+//______________________________________________________________
+string CustomProcess::errorMessage( ProcessError error )
+{ 
+  switch( error )
+  {
+    
+    case FailedToStart: return "Process failed to start";
+    case Crashed: return "Process crashed";
+    case Timedout: return "Process timed out";
+    case WriteError: return "Process ended due to write error";
+    case ReadError: return "Process ended du to read error";  
+    default: return "Process ended with unknown error";
+  }
 }

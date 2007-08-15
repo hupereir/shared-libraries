@@ -80,6 +80,7 @@ ProcessFrame::ProcessFrame( QWidget* parent ):
   
   // connections
   connect( &process_, SIGNAL( readyRead() ), SLOT( _read() ) );
+  connect( &process_, SIGNAL( error( QProcess::ProcessError ) ), SLOT( _error( QProcess::ProcessError ) ) );
   connect( &process_, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( _completed( int, QProcess::ExitStatus ) ) );
   
 }
@@ -126,12 +127,20 @@ void ProcessFrame::_read( void )
 {
   
   if( process_.bytesAvailable() < 0 ) return;
-
   char* data = new char[process_.bytesAvailable()];
   qint64 size = process_.read( data, process_.bytesAvailable() );
   if( size <= 0 ) return;
   append( QString( data ).left( size ) ); 
 
+}
+
+//_______________________________________________
+void ProcessFrame::_error( QProcess::ProcessError error )
+{
+  Debug::Throw( "ProcessFrame::_error.\n" );
+  ostringstream what;
+  what << endl << CustomProcess::errorMessage( error ) << endl;
+  append( what.str().c_str(), FORMAT::BOLD );
 }
 
 //_______________________________________________

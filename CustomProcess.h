@@ -79,6 +79,9 @@ class CustomProcess: public QProcess, public Counter
   //! \brief ensure object is deleted at job completion
   void setAutoDelete( void );
     
+  //! error message
+  static std::string errorMessage( QProcess::ProcessError error );
+  
   private slots:
   
   //! delete this object at job completion

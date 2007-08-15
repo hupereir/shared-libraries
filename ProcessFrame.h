@@ -101,6 +101,9 @@ class ProcessFrame:public QWidget, public Counter
   void _read( void );
   
   //! process exited
+  void _error( QProcess::ProcessError );
+  
+  //! process exited
   void _completed( int, QProcess::ExitStatus );
   
   private:
