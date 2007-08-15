@@ -70,6 +70,8 @@ ApplicationManager::~ApplicationManager( void )
   
   // delete server
   if( server_ ) delete server_;
+  
+  Debug::Throw( "ApplicationManager::~ApplicationManager - done.\n" );
 
 }
 
