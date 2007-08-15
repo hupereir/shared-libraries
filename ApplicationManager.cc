@@ -61,18 +61,13 @@ ApplicationManager::~ApplicationManager( void )
 {
   Debug::Throw( "ApplicationManager::~ApplicationManager.\n" );
   
-  // close all connected clients
-  for( list<Client*>::iterator iter = connected_clients_.begin(); iter != connected_clients_.end(); iter++ )
-  {
-    (*iter)->socket().abort();
-    (*iter)->socket().close();
-  }
+  // close all connected clients, if any
+  while( !connected_clients_.empty() )
+  { connected_clients_.front()->socket().abort(); }
   
   // delete server
   if( server_ ) delete server_;
   
-  Debug::Throw( "ApplicationManager::~ApplicationManager - done.\n" );
-
 }
 
 //_________________________________________
@@ -178,7 +173,6 @@ void ApplicationManager::_connectionClosed( Client* client )
   for( ClientMap::iterator it = accepted_clients_.begin(); it != accepted_clients_.end(); it++ )
   if( it->second != client ) tmp_map.insert( *it );
   else _broadcast( ServerCommand( it->first, ServerCommand::KILLED ), client );
-  
   accepted_clients_ = tmp_map;
 
   // look for client in list; remove if found
