@@ -43,9 +43,6 @@
 using namespace std;
 
 //______________________________________________________________________
-const std::string Str::EMPTY_STRING = "";
-
-//______________________________________________________________________
 Str Str::fill( size_t end_size, Str::Alignment alignment ) const
 { 
   if( size() >= end_size ) return *this;
@@ -62,7 +59,7 @@ Str Str::fill( size_t end_size, Str::Alignment alignment ) const
 //______________________________________________________________________
 Str Str::replace( const string& c1, const string& c2 ) const 
 {
-  if( !c1.size() ) return EMPTY_STRING;
+  if( !c1.size() ) return Str();
   Str out("");
   size_t len = size();
   size_t current = 0;

@@ -43,9 +43,6 @@
 class Str: public std::string, public Counter 
 {
   public:
-
-  //! empty string.
-  static const std::string EMPTY_STRING;
     
   //! alignment enumeration for Str::Fill
   enum Alignment { LEFT = 0, RIGHT = 1, CENTER = 2 };
