@@ -72,7 +72,6 @@ class ConfigListItem: public QListWidgetItem, public Counter
 class BaseConfigurationDialog: public QDialog, public Counter
 {
 
-  //! Qt meta object macro
   Q_OBJECT
 
   public:

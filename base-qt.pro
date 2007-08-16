@@ -6,6 +6,7 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
+BaseConfigurationDialog.h \
 BaseIcons.h \
 BlockHighlight.h \
 BoxSelection.h \
