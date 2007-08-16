@@ -176,7 +176,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   state_label_->setAlignment( Qt::AlignCenter );
 
   // close button
-  v_layout->addWidget( button = new QPushButton( "&Cose", this ) );
+  v_layout->addWidget( button = new QPushButton( "&Close", this ) );
   connect( button, SIGNAL(clicked()), SLOT( close() ) );
   
   // change font
