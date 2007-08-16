@@ -91,24 +91,27 @@ string Util::timeString( void )
 //____________________________________________  
 bool Util::run( const string& value )
 {
+  Debug::Throw( "Util::run" );
+  return run( QString( value.c_str() ).split( QRegExp("\\s"), QString::SkipEmptyParts ) );
+}
   
-  if( !value.size() ) return false;
-
-  istringstream in( value );
+//____________________________________________  
+bool Util::run( QStringList arguments )
+{
+  Debug::Throw( "Util::run" );
+  if( arguments.empty() ) return false;
   
-  QStringList arg_list;
-  while( ( in.rdstate() & std::ios::failbit) == 0 ) 
+  // dump arguments for debugging
+  if( Debug::level() > 0 )
   {
-    string arg;
-    in >> arg;
-    if( arg.empty() ) break;
-    arg_list.push_back( arg.c_str() );  
-  }  
+    for( QStringList::iterator iter = arguments.begin(); iter != arguments.end(); iter++ )
+    { Debug::Throw() << "Util::run - argument: \"" << qPrintable( *iter ) << "\"" << endl; }  
+  }
   
-  QString program( arg_list.front() );
-  arg_list.pop_front();
-  if( arg_list.empty() ) return QProcess::startDetached( program );
-  else return QProcess::startDetached( program, arg_list );
+  QString program( arguments.front() );
+  arguments.pop_front();
+  if( arguments.empty() ) return QProcess::startDetached( program );
+  else return QProcess::startDetached( program, arguments );
  
 }     
 

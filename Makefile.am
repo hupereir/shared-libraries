@@ -12,6 +12,7 @@ EXTRA_DIST = base.pro
 noinst_HEADERS = \
   ArgList.h \
   Counter.h \
+  CustomProcess.h \
   Debug.h \
   Exception.h \
   File.h \
@@ -33,6 +34,7 @@ noinst_LIBRARIES = libbase.a
 libbase_a_SOURCES = \
   ArgList.cc \
   Counter.cc \
+  CustomProcess.cc \
   Exception.cc \
   File.cc \
   FileList.cc \
@@ -43,3 +45,14 @@ libbase_a_SOURCES = \
   Util.cc \
   XmlUtil.cc
 	
+nodist_libbase_a_SOURCES = \
+  moc_CustomProcess.cc
+
+clean-local:
+	rm -f moc_*.cc
+
+### rule to generate qt meta objects
+moc_%.cc: %.h
+	$(qt_moc) $^ -o $@
+
+
