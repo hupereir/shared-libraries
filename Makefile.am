@@ -28,7 +28,6 @@ noinst_HEADERS = \
   CustomListView.h \
   CustomMainWindow.h \
   CustomPixmap.h \
-  CustomProcess.h \
   CustomSlider.h \
   CustomTabWidget.h \
   CustomTextDocument.h \
@@ -104,7 +103,6 @@ libbase_qt_a_SOURCES = \
   CustomListView.cc \
   CustomMainWindow.cc \
   CustomPixmap.cc \
-  CustomProcess.cc \
   CustomSlider.cc \
   CustomTextEdit.cc \
   CustomTabWidget.cc \
@@ -156,7 +154,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomListBox.cc \
   moc_CustomListView.cc \
   moc_CustomMainWindow.cc \
-  moc_CustomProcess.cc \
   moc_CustomSlider.cc \
   moc_CustomTabWidget.cc \
   moc_CustomTextEdit.cc \
