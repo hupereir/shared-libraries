@@ -8,7 +8,6 @@ HEADERS = \
   ApplicationId.h \
   ApplicationManager.h \
   Client.h \
-  SERVER.h \
   Server.h \
   ServerCommand.h
 
