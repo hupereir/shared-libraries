@@ -108,7 +108,7 @@ void ApplicationManager::init( ArgList args, bool forced )
   Debug::Throw( debug_level ) << "ApplicationManager::init - " << command << endl;
   
   // send request command
-  client_ ->sendMessage( command );
+  client_->sendMessage( command );
   
   // run timeout timer to force state ALIVE if no reply comes
   connect( &timer_, SIGNAL( timeout() ), SLOT( _replyTimeOut() ) );
