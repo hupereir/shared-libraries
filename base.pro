@@ -4,6 +4,7 @@ CONFIG = staticlib qt
 HEADERS = \
 ArgList.h \
 Counter.h \
+CustomProcess.h \
 Debug.h \
 Exception.h \
 File.h \
@@ -23,6 +24,7 @@ XmlUtil.h
 SOURCES = \
 ArgList.cc \
 Counter.cc \
+CustomProcess.cc \
 Exception.cc \
 File.cc \
 FileList.cc \
