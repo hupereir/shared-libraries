@@ -62,7 +62,7 @@ void ArgList::add( std::string arg )
   {
     
     // check if arg contains "=" sign
-    int position( arg.find( "=" ) );
+    unsigned int position( arg.find( "=" ) );
     string arg_option;
     if( position != string::npos )
     {
