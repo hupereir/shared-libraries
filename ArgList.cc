@@ -52,17 +52,28 @@ ArgList::ArgList( int argc, char* argv[] ):
 };
   
 //______________________________________________________
-void ArgList::add( const std::string& arg )
+void ArgList::add( std::string arg )
 {
   Debug::Throw( "ArgList::add.\n" );
-  if( !arg.size() ) return;
+  if( arg.empty() ) return;
       
   // check if argument is a tag name
   if( isTag( arg ) ) 
   {
     
+    // check if arg contains "=" sign
+    int position( arg.find( "=" ) );
+    string arg_option;
+    if( position != string::npos )
+    {
+      arg_option = arg.substr( position+1, arg.size()-position-1 );
+      arg = arg.substr( 0, position );
+    }
+    
     last_tag_ = arg;
     if( !find( arg ) ) tag_list_.push_back( Arg( arg ) );
+    
+    add( arg_option );
     
   } else get( last_tag_ ).addOption( arg );
   

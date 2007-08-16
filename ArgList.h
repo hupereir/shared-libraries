@@ -115,10 +115,10 @@ class ArgList: public Counter
   ArgList( int argc = 0, char* argv[] = 0 );  
 
   //! add command line option
-  void add( const std::string& argv );
+  void add( std::string argv );
   
   //! returns true if argument is a tag
-  static bool isTag( const std::string& arg )
+  static bool isTag( std::string arg )
   { return arg.substr(0,1) == "-"; }
   
   //! returns true if tag is found in the map
