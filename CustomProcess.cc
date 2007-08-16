@@ -72,6 +72,11 @@ void CustomProcess::start( const QStringList& arguments, OpenMode mode )
   QString program( arguments.front() );
   QStringList local_args( arguments );
   local_args.pop_front();
+  
+  Debug::Throw() << "CustomProcess::start -program: " << qPrintable(program) << endl;
+  for( QStringList::iterator iter = local_args.begin(); iter != local_args.end(); iter++ )
+  { Debug::Throw() << "CustomProcess::start -argument: " << qPrintable(*iter) << endl; }
+  
   if( local_args.empty() ) return QProcess::start( program, mode );
   else return QProcess::start( program, local_args, mode );
   
