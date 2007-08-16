@@ -30,10 +30,6 @@
    \date    $Date$
 */
 
-#include "Util.h"
-#include "Str.h"
-#include "Debug.h"
-
 #include <QProcess>
 #include <QStringList>
 
@@ -47,6 +43,11 @@
 #include <sys/param.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+
+#include "CustomProcess.h"
+#include "Util.h"
+#include "Str.h"
+#include "Debug.h"
 
 /*! \brief
   static 'long' string size 
@@ -117,12 +118,16 @@ bool Util::run( QStringList arguments )
 
 //____________________________________________  
 void Util::runAt( const string& path, const string& value )
-{
-  if( !value.size() ) return;
-  
-  ostringstream command;
-  command << "cd " << path << "; " << value;
-  system( command.str().c_str() );
+{ return runAt( path, QString( value.c_str() ).split( QRegExp("\\s"), QString::SkipEmptyParts ) ); }
+
+
+//____________________________________________  
+void Util::runAt( const string& path, QStringList arguments )
+{ 
+  CustomProcess *p = new CustomProcess();
+  p->setAutoDelete();
+  p->setWorkingDirectory( path.c_str() );
+  p->start( arguments );
   return;
 }     
 

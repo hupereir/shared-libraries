@@ -55,7 +55,7 @@ class CustomProcess: public QProcess, public Counter
   public:
 
   //! creator
-  CustomProcess( QObject* parent );
+  CustomProcess( QObject* parent = 0 );
   
   //! destructor
   virtual ~CustomProcess( void );
@@ -75,7 +75,7 @@ class CustomProcess: public QProcess, public Counter
   void start( const QStringList& arguments, OpenMode mode = ReadWrite );
  
   //! \brief ensure object is deleted at job completion
-  void setAutoDelete( void );
+  void setAutoDelete();
     
   //! error message
   static std::string errorMessage( QProcess::ProcessError error );

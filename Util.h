@@ -64,10 +64,13 @@ class Util
   static bool run( const std::string& val );
    
   //! runs a Unix command 
-  static bool run( QStringList val );
+  static bool run( QStringList arguments );
    
   //! runs a Unix command in specified directory
   static void runAt( const std::string& path, const std::string& val );
+   
+  //! runs a Unix command in specified directory
+  static void runAt( const std::string& path, QStringList arguments );
    
   //! returns all children processes starting from pid. [recursive]
   static std::list< unsigned int > allChildren( const unsigned int pid_ );

@@ -70,7 +70,7 @@ void CustomProcess::start( const QStringList& arguments, OpenMode mode )
 void CustomProcess::setAutoDelete( void )
 { 
   Debug::Throw( "CustomProcess::setAutoDelete.\n" );
-  connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( _AutoDelete() ) ); 
+  connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( _autoDelete() ) ); 
 }
 
 //______________________________________________________________
