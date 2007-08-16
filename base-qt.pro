@@ -24,7 +24,6 @@ CustomListBox.h \
 CustomListView.h \
 CustomMainWindow.h \
 CustomPixmap.h \
-CustomProcess.h \
 CustomSlider.h \
 CustomTabWidget.h \
 CustomTextDocument.h \
@@ -97,7 +96,6 @@ CustomListBox.cc \
 CustomListView.cc \
 CustomMainWindow.cc \
 CustomPixmap.cc \
-CustomProcess.cc \
 CustomSlider.cc \
 CustomTabWidget.cc \
 CustomTextEdit.cc \
