@@ -613,27 +613,26 @@ void CustomTextEdit::replace( TextSelection selection )
 unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const bool& show_dialog )
 {
 
-  Debug::Throw( "CustomTextEdit::replaceInSelection.\n" );
+  Debug::Throw( 0, "CustomTextEdit::replaceInSelection.\n" );
   unsigned int counts(0);
   
   if( _boxSelection().state() == BoxSelection::FINISHED )
   { 
     
+    Debug::Throw( "CustomTextEdit::replaceInSelection - box selection.\n" );
     BoxSelection::CursorList cursors( _boxSelection().cursorList() );
     for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
-    { 
-      counts += _replaceInRange( selection, *iter, MOVE ); 
-      setTextCursor( *iter );
-    }
+    { counts += _replaceInRange( selection, *iter, MOVE ); }
         
     _boxSelection().clear();
     
   } else { 
+    Debug::Throw( "CustomTextEdit::replaceInSelection - normal selection.\n" );
     QTextCursor cursor( textCursor() );
     counts = _replaceInRange( selection, cursor, EXPAND ); 
-    setTextCursor( cursor );
   }
 
+  Debug::Throw( "CustomTextEdit::replaceInSelection - done.\n" );
   if( show_dialog ) showReplacements( counts );
   return counts;
 
@@ -1704,6 +1703,8 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
   // check if regexp should be used or not
   if( selection.flag( TextSelection::REGEXP ) )
   {
+    
+    Debug::Throw( "CustomTextEdit::_replaceInRange - regexp.\n" );
         
     // construct regexp and check
     QRegExp regexp( selection.text() );
@@ -1747,6 +1748,8 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
     } else if( mode == MOVE ) cursor.setPosition( current_position );
     
   } else {
+
+    Debug::Throw( "CustomTextEdit::_replaceInRange - normal replacement.\n" );
     
     // changes local cursor to beginning of the selection
     cursor.setPosition( saved_anchor );
@@ -1765,6 +1768,12 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
       saved_position += selection.replaceText().size() - selection.text().size();
       found ++;
 
+      Debug::Throw() 
+        << "CustomTextEdit::_replaceInRange -"
+        << " current: " << current_position
+        << " saved: " << saved_position
+        << " found: " << found
+        << endl;
     }
     
     if( mode == EXPAND ) 
@@ -1775,6 +1784,7 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
 
   }
   
+  Debug::Throw( "CustomTextEdit::_replaceInRange - done.\n" );
   return found;
 
 }

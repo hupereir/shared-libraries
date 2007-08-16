@@ -102,7 +102,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   // add close accelerator
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
   connect( new QShortcut( CTRL+Key_S, this ), SIGNAL( activated() ), SLOT( _save() ) );
-  resize( 550, 400 );
+  resize( 700, 650 );
 }
 
 //_________________________________________________________

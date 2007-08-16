@@ -6,7 +6,6 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
-BaseConfigurationDialog.h \
 BaseIcons.h \
 BlockHighlight.h \
 BoxSelection.h \
@@ -35,10 +34,8 @@ CustomToolButton.h \
 DebugMenu.h \
 DockPanel.h \
 ErrorHandler.h \
-File.h \
-FileList.h \
-FileRecord.h \
 FindDialog.h \
+FlatStyle.h \
 FontEdit.h \
 HelpDialog.h \
 HelpItem.h \
@@ -62,6 +59,8 @@ OptionListBox.h \
 OptionSlider.h \
 OptionSpinBox.h \
 OptionWidget.h \
+ProcessDialog.h \
+ProcessFrame.h \
 QtUtil.h \
 RemoveLineBuffer.h \
 ReplaceDialog.h \
@@ -107,9 +106,8 @@ CustomToolButton.cc \
 DebugMenu.cc \
 DockPanel.cc \
 ErrorHandler.cc \
-  File.cc \
-  FileList.cc \
 FindDialog.cc \
+FlatStyle.cc \
 FontEdit.cc \
 HelpDialog.cc \
 HelpItem.cc \
@@ -121,6 +119,8 @@ ListViewConfiguration.cc \
 OpenPreviousMenu.cc \
 OptionFontInfo.cc \
 OptionListBox.cc \
+ProcessDialog.cc \
+ProcessFrame.cc \
 QtUtil.cc \
 RemoveLineBuffer.cc \
 ReplaceDialog.cc \

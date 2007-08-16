@@ -51,6 +51,7 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
   connect( this, SIGNAL( aboutToShow() ), SLOT( _loadFiles() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  connect( qApp, SIGNAL( aboutToQuit() ), SLOT( saveConfiguration() ) );
   updateConfiguration();
 
   // clean action
@@ -103,6 +104,13 @@ void OpenPreviousMenu::updateConfiguration( void )
   
 }
 
+//______________________________________
+void OpenPreviousMenu::saveConfiguration( void )
+{
+  Debug::Throw( "OpenPreviousMenu::saveConfiguration.\n" );
+  write();
+}
+  
 //______________________________________
 void OpenPreviousMenu::_clean( void )
 {    

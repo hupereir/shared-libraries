@@ -85,6 +85,9 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   //! configuration
   void updateConfiguration( void );
   
+  //! configuration
+  void saveConfiguration( void );
+  
   private slots:
 
   //! open file at position i
