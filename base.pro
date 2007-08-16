@@ -6,6 +6,9 @@ ArgList.h \
 Counter.h \
 Debug.h \
 Exception.h \
+File.h \
+FileList.h \
+FileRecord.h \
 Key.h \
 Option.h \
 Options.h \
@@ -21,10 +24,13 @@ SOURCES = \
 ArgList.cc \
 Counter.cc \
 Exception.cc \
+File.cc \
+FileList.cc \
 Key.cc \
 Options.cc \
 Str.cc \
 TimeStamp.cc \
 Util.cc \
 XmlUtil.cc
+
 
