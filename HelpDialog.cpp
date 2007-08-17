@@ -35,6 +35,7 @@
 #include <QShortcut>
 
 #include "HelpDialog.h"
+#include "HelpManager.h"
 #include "CustomTextEdit.h"
 #include "XmlOptions.h"
 
@@ -47,10 +48,12 @@ HelpDialog::HelpDialog( QWidget *parent ):
   QDialog( parent, Qt::Window ),
   Counter( "HelpDialog" ),
   edited_( false ),
-  modified_( false ),
   current_item_( 0 )
 {
 
+  // tell dialog to delete when close
+  setAttribute( Qt::WA_DeleteOnClose );
+  
   QHBoxLayout *layout = new QHBoxLayout();
   layout->setSpacing(5);
   layout->setMargin(10);
@@ -154,9 +157,16 @@ void HelpDialog::_save( void )
     if( modified ) 
     {
       current_item_->item().setText( qPrintable( text_edit_->toPlainText() ) );
-      modified_ = true;
-      Debug::Throw( "HelpDialog::_Save - emit ItemModified.\n" );
-      emit itemModified();
+      
+      // retrieve all texts, pass to help manager
+      HelpManager::List items;
+      QList<HelpItemList::Item*> list_items( list().items<HelpItemList::Item>() );
+      for( QList<HelpItemList::Item*>::iterator iter = list_items.begin(); iter != list_items.end(); iter++ )
+      { items.push_back( (*iter)->item() ); }
+      
+      HelpManager::install( items );
+      HelpManager::setModified( true );
+      
     }
   }
   

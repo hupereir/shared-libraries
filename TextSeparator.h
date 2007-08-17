@@ -46,10 +46,7 @@ class TextSeparator
     
   //! return singleton
   static const TextSeparator& get( void )
-  {
-    static TextSeparator singleton;
-    return singleton;
-  }
+  { return singleton_; }
   
   //! retrieve base separators
   const SeparatorSet& base() const
@@ -67,7 +64,10 @@ class TextSeparator
   
   //! constructor
   TextSeparator( void );
-                
+           
+  //! singleton
+  static TextSeparator singleton_;
+  
   //! base separators (space, tab, end of line)
   SeparatorSet base_separators_;
   

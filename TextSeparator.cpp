@@ -36,6 +36,9 @@
 using namespace std;
 
 //___________________________________
+TextSeparator TextSeparator::singleton_;
+
+//___________________________________
 TextSeparator::TextSeparator( void )
 {
 

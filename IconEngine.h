@@ -47,10 +47,7 @@ class IconEngine: public Counter
   
   //! retrieve singleton
   static IconEngine& get( void )
-  { 
-    static IconEngine singleton;
-    return singleton;
-  }
+  { return singleton_; }
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
@@ -80,6 +77,9 @@ class IconEngine: public Counter
     Counter( "IconEngine" ),
     use_cache_( true )
   { Debug::Throw( "IconEngine::IconEngine.\n" ); } 
+  
+  //! singleton
+  static IconEngine singleton_;
   
   //!@name non static methods are hidden
   //@{

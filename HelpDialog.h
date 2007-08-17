@@ -69,15 +69,6 @@ namespace BASE
     void setEditEnabled( const bool& value )
     { edit_button_->setEnabled( value ); }
     
-    //! true when items have been edited/modified
-    const bool& modified( void ) const
-    { return modified_; }
-    
-    signals:
-    
-    //! emmited when an item has been modified and should be saved
-    void itemModified();
-    
     protected:
     
     //! close event (overloaded)
@@ -107,9 +98,6 @@ namespace BASE
     
     //! true when help is being edited
     bool edited_;
-    
-    //! true when text was edited and modified
-    bool modified_;
     
     //! pointer to current item
     HelpItemList::Item *current_item_;

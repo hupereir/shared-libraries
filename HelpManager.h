@@ -38,7 +38,7 @@
 #include "CustomTextEdit.h"
 #include "Debug.h"
 #include "File.h"
-#include "HelpDialog.h"
+#include "HelpItem.h"
 
 //! help manager class
 namespace BASE
@@ -50,35 +50,54 @@ namespace BASE
     Q_OBJECT
       
     public:
+
+    //! constructor
+    HelpManager( QObject* parent );
       
-    //! manager singleton
-    static HelpManager& get( void )
-    { return singleton_; }
-    
     //! destructor
     virtual ~HelpManager( void )
     {
       Debug::Throw( "HelpManager::~HelpManager.\n" );
-      if( modified() ) _save();
+      if( modified() ) { _save(); }
     }
     
+    //!@name static accessors
+    //@{
+    
     //! input file
-    void setFile( const File& file )
+    static void setFile( const File& file )
     { file_ = file; }
+       
+    //! list of help items
+    typedef std::vector< HelpItem > List;
+
+    //! install help. Put items in the menu, create associated objects 
+    static void install( const List& items )
+    { items_ = items; }
     
     //! install help. Put items in the menu, create associated objects 
-    bool install( const char *text[] );
+    static void install( const char *text[] );
     
     //! install help, from file
-    bool install( const File& file );
+    static void install( const File& file );
     
-    //! true when items have been edited/modified
-    const bool& modified( void ) const
-    { return dialog_->modified(); }
+    //! clear help
+    static void clear( void )
+    { items_.clear(); }
+    
+    //! modifiaction 
+    static void setModified( const bool& value )
+    { modified_ = value; }
+    
+    //! modification
+    static bool& modified( void ) 
+    { return modified_; }
     
     //! set dialog caption
-    void setWindowTitle( const std::string& value )
-    { dialog_->setWindowTitle( value.c_str() ); }
+    static void setWindowTitle( const std::string& value )
+    { window_title_ = value; }
+    
+    //@}
     
     //! display action
     QAction& displayAction( void )
@@ -88,6 +107,11 @@ namespace BASE
     QAction& dumpAction( void )
     { return *dump_action_; }
    
+    protected:
+    
+    //! save help to file
+    static void _save( void );
+    
     protected slots:
     
     //! opens help dialog
@@ -96,16 +120,7 @@ namespace BASE
     //! dump help string in a TextEditor
     void _dumpHelpString( void );
     
-    //! save help to file
-    void _save( void );
-    
     private:
-    
-    //! constructor
-    HelpManager( void );
-    
-    //! singleton
-    static HelpManager singleton_;
     
     //!@name actions
     //@{
@@ -117,12 +132,18 @@ namespace BASE
     QAction* dump_action_;
     
     //@}
-    
-    //! associated dialog
-    HelpDialog* dialog_;
+        
+    //! window title
+    static std::string window_title_;
     
     //! help filename
-    File file_;
+    static File file_;
+
+    //! modification state
+    static bool modified_;
+    
+    //! complete set of help items
+    static List items_;
     
   };
   

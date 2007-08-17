@@ -36,6 +36,9 @@
 using namespace std;
 
 //__________________________________________________________
+IconEngine IconEngine::singleton_;
+
+//__________________________________________________________
 QIcon IconEngine::_get( const string& file, const list<string> path_list )
 {
   Debug::Throw( "IconEngine::_get (file).\n" );

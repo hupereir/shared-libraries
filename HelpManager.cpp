@@ -35,6 +35,7 @@
 
 #include "BaseIcons.h"
 #include "Debug.h"
+#include "HelpDialog.h"
 #include "HelpManager.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
@@ -47,18 +48,20 @@ using namespace BASE;
 
 
 //_________________________________________________________
-HelpManager HelpManager::singleton_;
+// static members initialization
+string HelpManager::window_title_( "Reference Manual" );
+bool HelpManager::modified_( false );
+HelpManager::List HelpManager::items_;
+File HelpManager::file_;
 
 //_________________________________________________________
-HelpManager::HelpManager():
+HelpManager::HelpManager( QObject* parent ):
+  QObject( parent ),
   Counter( "HelpManager" )
 { 
-
-  // create dialog
-  dialog_ = new HelpDialog( 0 );
-  dialog_->setWindowTitle( "Reference manual" );
-  dialog_->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-
+  
+  Debug::Throw( "HelpManager::HelpManager.\n" );
+  
   // default icon path
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
   
@@ -69,51 +72,46 @@ HelpManager::HelpManager():
   dump_action_ = new QAction( "D&ump Help", 0 );
   connect( dump_action_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
   
-  // connections
-  connect( dialog_, SIGNAL( itemModified() ), SLOT( _save() ) );
-  
-  
 }
 
 //_________________________________________________________
-bool HelpManager::install( const char *text[] )
+void HelpManager::install( const char *text[] )
 {
 
   Debug::Throw( "HelpManager::install.\n" );
 
-  // clear list of items
-  dialog_->clear();
-
+  // clear existing text
+  clear();
+  
   //! loop over help text
   for( unsigned int i=0; text[i]; i++ ) {
 
     string label( text[i] );
-
     i++;
     if( !text[i] ) break;
-    dialog_->addItem( HelpItem( label, text[i] ) );
+    items_.push_back( HelpItem( label, text[i] ) );
   }
 
-  return true;
+  return;
 
 }
 
 //_________________________________________________________
-bool HelpManager::install( const File& file )
+void HelpManager::install( const File& file )
 {
 
   Debug::Throw( "HelpManager::Install.\n" );
   
   // set file and check
   file_ = file;
-  if( !file_.exists() ) return false;
+  if( !file_.exists() ) return;
 
   // parse the file
   QFile qtfile( file.c_str() );
   if ( !qtfile.open( QIODevice::ReadOnly ) )
   {
     Debug::Throw( "HelpManager::install - cannot open file.\n" );
-    return false;
+    return;
   }
 
   // dom document
@@ -121,12 +119,12 @@ bool HelpManager::install( const File& file )
   XmlError error( file );
   if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) ) {
     qtfile.close();
-    return false;
+    return;
   }
     
-  // clear list of items
-  dialog_->clear();
-
+  // clear existing help
+  clear();
+  
   // loop over dom elements
   QDomElement doc_element = document.documentElement();
   QDomNode node = doc_element.firstChild();
@@ -138,10 +136,11 @@ bool HelpManager::install( const File& file )
     string tag_name( qPrintable( element.tagName() ) );
 
     // special options
-    if( tag_name == XML_ITEM ) dialog_->addItem( HelpItem( element ) );
+    if( tag_name == XML_ITEM ) items_.push_back( HelpItem( element ) );
+    
   }
   
-  return true;
+  return;
 
 }
   
@@ -150,12 +149,22 @@ void HelpManager::_display( void )
 {
   
   Debug::Throw( "HelpManager::_display.\n" );
-  dialog_->list().setCurrentItem( dialog_->list().item(0) );
-  dialog_->setEditEnabled( file_.size() );
-  QtUtil::centerOnWidget( dialog_, qApp->activeWindow() );
-  dialog_->show();
-  QtUtil::uniconify( dialog_ );
+  
+  // create dialog
+  HelpDialog* dialog( new HelpDialog( 0 ) );
+  dialog->setWindowTitle( window_title_.c_str() );
+  dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
 
+  // install text
+  for( List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
+  { dialog->addItem( *iter ); }
+  
+  dialog->list().setCurrentItem( dialog->list().item(0) );
+  dialog->setEditEnabled( file_.size() );
+  QtUtil::centerOnWidget( dialog, qApp->activeWindow() );
+  dialog->show();
+  return;
+  
 }
 
 //_________________________________________________________
@@ -168,19 +177,16 @@ void HelpManager::_dumpHelpString( void )
   ostringstream out;
   
   // retrieve all items from dialog
-  QList<HelpItemList::Item*> items( dialog_->list().items<HelpItemList::Item>() );
-
   out << "static const char* HelpText[] = {\n";
-  for( QList<HelpItemList::Item*>::const_iterator iter = items.begin(); iter != items.end(); iter++ )
+  for( List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
   {
-    const HelpItemList::Item& item( **iter );
     
     // dump label
     out << "  //_________________________________________________________\n"; 
-    out << "  \"" << item.item().label() << "\",\n";
+    out << "  \"" << iter->label() << "\",\n";
     
     // dump text
-    Str text( item.item().text() );
+    Str text( iter->text() );
     text = text.replace( "\"", "\\\"" );
     text = text.replace( "\n", "\\n\"\n  \"" );
     out << "  \"" << text << "\"";
@@ -194,12 +200,13 @@ void HelpManager::_dumpHelpString( void )
   main->setLayout( new QVBoxLayout() );
   main->layout()->setMargin(10);
   CustomTextEdit *text_edit = new CustomTextEdit( main );
-  //text_edit->setReadOnly( true );
+
   text_edit->setWordWrapMode( QTextOption::NoWrap );
   text_edit->setPlainText( out.str().c_str() );
   main->layout()->addWidget( text_edit );
   main->resize( 600, 500 );
   main->show();
+  
 }
 
 //_____________________________________________________
@@ -208,23 +215,21 @@ void HelpManager::_save( void )
   
   Debug::Throw( "HelpManager::_save.\n" );
   if( file_.empty() ) return;
- 
+  if( !modified() ) return;
   // output file
   QFile out( file_.c_str() );
   if( !out.open( QIODevice::WriteOnly ) ) return;
-
-  // retrieve list of items
-  QList<HelpItemList::Item*> items( dialog_->list().items<HelpItemList::Item>() );
   
   // create document
   QDomDocument document;
   
   // top element
   QDomElement top = document.appendChild( document.createElement( XML_HELP.c_str() ) ).toElement();
-  for( QList<HelpItemList::Item*>::iterator iter = items.begin(); iter != items.end(); iter++ )
-  { top.appendChild( (*iter)->item().domElement( document ) ); }
+  for( List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
+  { top.appendChild( iter->domElement( document ) ); }
  
   out.write( document.toByteArray() );
   out.close();
+  setModified( false );
   return; 
 }
