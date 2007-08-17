@@ -21,19 +21,19 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-server.a
 
 libbase_server_a_SOURCES = \
-  ApplicationManager.cc \
-  Client.cc \
-  Server.cc \
-  ServerCommand.cc
+  ApplicationManager.cpp \
+  Client.cpp \
+  Server.cpp \
+  ServerCommand.cpp
 
 nodist_libbase_server_a_SOURCES = \
-  moc_ApplicationManager.cc \
-  moc_Client.cc \
-  moc_Server.cc
+  moc_ApplicationManager.cpp \
+  moc_Client.cpp \
+  moc_Server.cpp
 
 clean-local:
-	 rm -f moc_*.cc
+	 rm -f moc_*.cpp
 
 ### rule to generate qt meta objects
-moc_%.cc: %.h
+moc_%.cpp: %.h
 	$(qt_moc) $^ -o $@

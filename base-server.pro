@@ -12,10 +12,10 @@ HEADERS = \
   ServerCommand.h
 
 SOURCES = \
-  ApplicationManager.cc \
-  Client.cc \
-  Server.cc \
-  ServerCommand.cc
+  ApplicationManager.cpp \
+  Client.cpp \
+  Server.cpp \
+  ServerCommand.cpp
 
 CONFIG += qt
 QT += xml network
