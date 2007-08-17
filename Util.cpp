@@ -35,14 +35,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <sys/utsname.h>
-#include <sys/param.h>
-#include <sys/wait.h>
-#include <sys/types.h>
 
 #include "CustomProcess.h"
 #include "Util.h"
@@ -53,6 +45,7 @@
   static 'long' string size 
   for c_like system string access
 */
+
 static const int LONGSTR = 256;
 
 using namespace std;

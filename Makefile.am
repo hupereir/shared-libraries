@@ -31,27 +31,27 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase.a
 
 libbase_a_SOURCES = \
-  ArgList.cc \
-  Counter.cc \
-  CustomProcess.cc \
-  Exception.cc \
-  File.cc \
-  FileList.cc \
-  Key.cc \
-  Options.cc \
-  Str.cc \
-  TimeStamp.cc \
-  Util.cc \
-  XmlUtil.cc
+  ArgList.cpp \
+  Counter.cpp \
+  CustomProcess.cpp \
+  Exception.cpp \
+  File.cpp \
+  FileList.cpp \
+  Key.cpp \
+  Options.cpp \
+  Str.cpp \
+  TimeStamp.cpp \
+  Util.cpp \
+  XmlUtil.cpp
 	
 nodist_libbase_a_SOURCES = \
-  moc_CustomProcess.cc
+  moc_CustomProcess.cpp
 
 clean-local:
-	rm -f moc_*.cc
+	rm -f moc_*.cpp
 
 ### rule to generate qt meta objects
-moc_%.cc: %.h
+moc_%.cpp: %.h
 	$(qt_moc) $^ -o $@
 
 

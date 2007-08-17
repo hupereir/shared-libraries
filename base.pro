@@ -22,17 +22,17 @@ Util.h \
 XmlUtil.h
 
 SOURCES = \
-ArgList.cc \
-Counter.cc \
-CustomProcess.cc \
-Exception.cc \
-File.cc \
-FileList.cc \
-Key.cc \
-Options.cc \
-Str.cc \
-TimeStamp.cc \
-Util.cc \
-XmlUtil.cc
+ArgList.cpp \
+Counter.cpp \
+CustomProcess.cpp \
+Exception.cpp \
+File.cpp \
+FileList.cpp \
+Key.cpp \
+Options.cpp \
+Str.cpp \
+TimeStamp.cpp \
+Util.cpp \
+XmlUtil.cpp
 
 
