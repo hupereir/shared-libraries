@@ -78,18 +78,24 @@ class Util
   //! returns environment variable or empty string
   static std::string env( const std::string&, const std::string& default_value = "" );
   
-  //! returns the user login
+  //!  user name
   static std::string user( void );
   
-  //! returns the user login
+  //! returns the domain name
   static std::string domain( void );
+  
+  //! user home directory
+  static std::string home( void );
+    
+  //! temporary directory ("/tmp")
+  static std::string tmp( void );
   
   /*! returns the host name. 
     \par short_name if true returns only the string located before the first '.'
   */
   static std::string host( bool short_name = false );  
   
-  //! returns the host name
+  //! application pid
   static int pid( void );  
   
   //! returns the work directory

@@ -172,41 +172,89 @@ string Util::env( const string& val, const string& default_value )
   
   return default_value;
   
-  //    Debug::Throw() << "Util::env.\n";
-  //    if( !getenv( val.c_str() ) ) return default_value;
-  //    return string( getenv( val.c_str() ) );
-  
 }  
     
 //______________________________________________________________________
 string Util::user( void )
-{ return env( "USER", "unknown user" ); }  
+{ 
+  Debug::Throw( "Util::user.\n" ); 
+  #ifdef Q_WS_WIN32
+  return env( "USERNAME", "unknown user" ); 
+  #else 
+  return env( "USER", "unknown user" ); 
+  #endif
+}  
    
 //______________________________________________________________________
 string Util::domain( void )
 {
+  Debug::Throw( "Util::domain.\n" ); 
   
   #ifdef Q_WS_X11
-
+  
+  // use build-in unix function
   char *buf = new char[ LONGSTR ];
   if( !buf ) return "";
   getdomainname( buf, LONGSTR );
   string out( buf );
   delete[] buf;
   return out;
-
+  
   #else
-
-  return "localdomain";
-
+  
+  // use system environment.
+  // should work for windows
+  return env( "USERDOMAIN","localdomain");
+  
   #endif
   
 }  
 
 //______________________________________________________________________
+string Util::home( void )
+{
+  Debug::Throw( "Util::home.\n" );
+  
+  #ifdef Q_WS_WIN32
+  
+  // use drive+path for windows
+  string drive( env( "HOMEDRIVE","C:" ) );
+  string home( env( "HOMEPATH","/"));
+  return drive+home;
+  #else 
+  
+  // use system environment
+  return env( "HOME","." ); 
+  
+  #endif
+  
+}
+
+//______________________________________________________________________
+string Util::tmp( void )
+{
+  Debug::Throw( "Util::tmp.\n" );
+  
+  #ifdef Q_WS_WIN32
+  
+  // use system environment
+  return env( "TEMP", env( "TMP", "C:/tmp" ) );
+  
+  #else 
+  
+  // use hard-coded linux /tmp path
+  return "/tmp"; 
+  
+  #endif
+  
+}
+//______________________________________________________________________
 string Util::host( bool short_name )
 {
- 
+
+  // use system environment
+  // it does not work for windows
+  Debug::Throw( "Util::host.\n" ); 
   string out( env( "HOSTNAME", "unknown" ) );
   if( ! short_name ) return out;
   
