@@ -34,6 +34,7 @@
 #include "Debug.h"
 #include "DebugMenu.h"
 #include "QtUtil.h"
+#include "SystemEnvironmentDialog.h"
 
 
 using namespace std;
@@ -46,6 +47,7 @@ DebugMenu::DebugMenu( QWidget* parent ):
 {
   Debug::Throw( "DebugMenu::DebugMenu.\n" );
   addAction( "Print &Counters ", this, SLOT( _showCounterDialog() ) );
+  addAction( "Show &System environment ", this, SLOT( _showSystemEnvironment() ) );
 }  
   
 //_______________________________________________
@@ -67,5 +69,17 @@ void DebugMenu::_showCounterDialog( void )
     QtUtil::uniconify( counter_dialog_ );
   
   }
+  
+}
+
+//_______________________________________________
+void DebugMenu::_showSystemEnvironment( void )
+{
+  Debug::Throw( "DebugMenu::_showSystemEnvironment.\n" );
+  
+  SystemEnvironmentDialog* dialog = new SystemEnvironmentDialog( parentWidget() );
+  QtUtil::centerOnParent( dialog );
+  dialog->show();
+  return;
   
 }

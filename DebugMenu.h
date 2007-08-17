@@ -64,6 +64,9 @@ class DebugMenu: public QMenu, public Counter
   //! print object counters
   void _showCounterDialog( void ); 
  
+  //! show system environment
+  void _showSystemEnvironment( void );
+  
   private: 
 
   //! non modal Counter dialog

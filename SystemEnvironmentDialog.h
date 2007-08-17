@@ -1,5 +1,5 @@
-#ifndef CounterDialog_h
-#define CounterDialog_h
+#ifndef SystemEnvironmentDialog_h
+#define SystemEnvironmentDialog_h
 
 // $Id$
 
@@ -25,8 +25,8 @@
  *******************************************************************************/
 
 /*!
-   \file CounterDialog.h
-   \brief displays Counter names and counts
+   \file SystemEnvironmentDialog.h
+   \brief displays environment variables
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
@@ -39,33 +39,17 @@
 #include "CounterList.h"
 
 //! displays Counter names and counts
-class CounterDialog: public QDialog, public Counter
+class SystemEnvironmentDialog: public QDialog, public Counter
 {
-
-  //! Qt meta object declaration
-  Q_OBJECT
   
   public:
           
   // constructor
-  CounterDialog( QWidget* parent );
+  SystemEnvironmentDialog( QWidget* parent );
   
   //! destructor
-  virtual ~CounterDialog( void )
+  virtual ~SystemEnvironmentDialog( void )
   {}
-
-  public slots:
-  
-  //! update Counter list
-  void update();
-  
-  private:
-  
-  //! Counter list
-  CounterList* counter_list_;
- 
-  //! map to store Counter list items agains names
-  std::map< std::string, CustomListView::Item* > items_;  
   
 };
 

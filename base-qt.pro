@@ -66,6 +66,7 @@ RemoveLineBuffer.h \
 ReplaceDialog.h \
 SelectLineDialog.h \
 StatusBar.h \
+SystemEnvironmentDialog.h \
 TextBlockData.h \
 TextBlockFlags.h \
 TextSelection.h \
@@ -125,6 +126,7 @@ RemoveLineBuffer.cpp \
 ReplaceDialog.cpp \
 SelectLineDialog.cpp \
 StatusBar.cpp \
+SystemEnvironmentDialog.cpp \
 TextSeparator.cpp \
 ValidFileThread.cpp \
 XmlFileList.cpp \
