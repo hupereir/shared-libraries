@@ -78,8 +78,12 @@ class Options: public Counter
   //! adds a new option. Return true if option is added
   virtual bool add( const Option& option, bool overwrite = true );
   
-  //! retrieve list of special (i.e. kept) options matching a given name
-  virtual SpecialOptionMap& specialOptions()
+  //! retrieve list of special (i.e. kept) options
+  // virtual SpecialOptionMap& specialOptions()
+  // { return special_options_; }
+
+  //! retrieve list of special (i.e. kept) options
+  virtual const SpecialOptionMap& specialOptions() const
   { return special_options_; }
   
   //! retrieve list of special (i.e. kept) options matching a given name
@@ -102,12 +106,16 @@ class Options: public Counter
   //! clear list of special (i.e. kept) options matching a given name
   virtual void clearSpecialOptions( const std::string& name );
   
+  //! returns all options
+  const OptionMap& options( void ) const
+  { return options_; }
+  
   //! returns true if option with matching name is found
   virtual bool find( const std::string& name )
   { return options_.find( name ) != options_.end(); }
  
   //! option accessor
-  virtual Option& getOption( const std::string& name );
+  virtual Option& option( const std::string& name );
  
   //! option value accessor
   template < typename T >

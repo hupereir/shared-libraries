@@ -50,24 +50,35 @@ Options::Options( void ):
   */
   add( Option( "DEFAULT_ICON_PATH", "/usr/share/icons" , "default path to look for icons"));  
   add( Option( "DEBUG_LEVEL", "0" , "debug verbosity level"  )); 
+  add( Option( "SORT_FILES_BY_DATE", "0" , "sort files by access date in open previous menu"  )); 
+  
+  // fonts
   add( Option( "FIXED_FONT_NAME", "Sans" , "fixed font"  )); 
   add( Option( "FONT_NAME", "Sans" , "main font"  )); 
   add( Option( "FONT_SIZE", "10" , "font size"));  
-  add( Option( "HIGHLIGHT_PARAGRAPH", "0", "enable paragraph highlighting" ) ); 
-  add( Option( "HIGHLIGHT_COLOR", "#fffdd4", "current paragraph highlight color" ) ); 
-  add( Option( "ITEM_COLOR", "#f5f5f5", "background color for even items in ListBox and ListView" ) ); 
+  
+  // toolbars default configuration
   add( Option( "USE_BIG_PIXMAP", "1" , "big pixmaps in tool buttons"  )); 
   add( Option( "USE_TEXT_LABEL", "0" , "text label in tool buttons"  )); 
   add( Option( "LOCK_TOOLBARS", "0" , "lock toolbars position" ));
-  add( Option( "SORT_FILES_BY_DATE", "0" , "sort files by access date in open previous menu"  )); 
+  
+  
+  // text editors default configuration
   add( Option( "TAB_EMULATION", "1" , "enable tab emulation" ));
   add( Option( "TAB_SIZE", "2" , "emulated tab size" ));
   add( Option( "WRAP_TEXT", "0" , "text wrapping" ));
 
+  add( Option( "HIGHLIGHT_PARAGRAPH", "0", "enable paragraph highlighting" ) ); 
+  add( Option( "HIGHLIGHT_COLOR", "#fffdd4", "current paragraph highlight color" ) ); 
+  add( Option( "ITEM_COLOR", "#f5f5f5", "background color for even items in ListBox and ListView" ) ); 
+  
+  // box selection
+  add( Option( "BOX_SELECTION_ALPHA", "20", "alpha threshold for box selection - between 0 and 100" ) );
+  
 }
 
 //____________________________________________________
-Option& Options::getOption( const string& name )
+Option& Options::option( const string& name )
 {
   OptionMap::iterator iter( options_.find( name ) );
   if( iter == options_.end() ) {
