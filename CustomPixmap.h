@@ -38,7 +38,6 @@
 
 #include "Counter.h"
 
-
 //! customized QPixmap to look for icon of given name in list of directory
 class CustomPixmap: public QPixmap, public Counter
 {
@@ -57,7 +56,7 @@ class CustomPixmap: public QPixmap, public Counter
   { fromImage( image ); }
                 
   //! constructor
-  CustomPixmap( const std::string& file = "" ):
+  CustomPixmap( const std::string& file = std::string() ):
     QPixmap( file.c_str() ),
     Counter( "CustomPixmap" )
   {}

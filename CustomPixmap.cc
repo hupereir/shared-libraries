@@ -40,21 +40,29 @@ using namespace std;
 
 //_________________________________________________
 CustomPixmap CustomPixmap::find( 
-  const std::string& file, 
+  const string& file, 
   const std::list<string>& path, 
   bool case_sensitive )
 {
   Debug::Throw( "CustomPixmap::find.\n" );
-  bool found( false );
   for( list<string>::const_iterator iter = path.begin(); iter != path.end(); iter++ )
   {
-    Debug::Throw() << "CustomPixmap::find - searching " << file << " in " << *iter << endl;
-    File icon_file( File( *iter ).find( file, case_sensitive ) );
-    if( icon_file != File::EMPTY_STRING )
+    
+    // prepare filename
+    File icon_file;
+    
+    // skip empty path
+    if( iter->empty() ) continue;
+    
+    // see if path is internal resource path
+    if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
+    else icon_file = File( *iter ).find( file, case_sensitive );
+    
+    // load pixmap
+    if( !icon_file.empty() )
     {
       load( icon_file.c_str() );
-      found = true;
-      break;
+      if( !isNull() ) break;
     }
   }
       
