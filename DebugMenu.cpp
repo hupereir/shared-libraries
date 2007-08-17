@@ -34,6 +34,7 @@
 #include "Debug.h"
 #include "DebugMenu.h"
 #include "QtUtil.h"
+#include "OptionDialog.h"
 #include "SystemEnvironmentDialog.h"
 
 
@@ -46,8 +47,10 @@ DebugMenu::DebugMenu( QWidget* parent ):
   counter_dialog_( 0 )
 {
   Debug::Throw( "DebugMenu::DebugMenu.\n" );
-  addAction( "Print &Counters ", this, SLOT( _showCounterDialog() ) );
-  addAction( "Show &System environment ", this, SLOT( _showSystemEnvironment() ) );
+  addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
+  addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
+  addAction( "&Run-time options", this, SLOT( _showOptions() ) );
+
 }  
   
 //_______________________________________________
@@ -78,6 +81,18 @@ void DebugMenu::_showSystemEnvironment( void )
   Debug::Throw( "DebugMenu::_showSystemEnvironment.\n" );
   
   SystemEnvironmentDialog* dialog = new SystemEnvironmentDialog( parentWidget() );
+  QtUtil::centerOnParent( dialog );
+  dialog->show();
+  return;
+  
+}
+
+//_______________________________________________
+void DebugMenu::_showOptions( void )
+{
+  Debug::Throw( "DebugMenu::_showOptions.\n" );
+  
+  OptionDialog* dialog = new OptionDialog( parentWidget() );
   QtUtil::centerOnParent( dialog );
   dialog->show();
   return;

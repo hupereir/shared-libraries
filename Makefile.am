@@ -55,6 +55,7 @@ noinst_HEADERS = \
   OptionCheckBox.h \
   OptionColorDisplay.h \
   OptionComboBox.h \
+  OptionDialog.cpp \
   OptionFontEdit.h \
   OptionFontInfo.h \
   OptionIconBrowsedButton.h \
@@ -122,6 +123,7 @@ libbase_qt_a_SOURCES = \
   IconEngine.cpp \
   IconProvider.cpp \
   ListViewConfiguration.cpp \
+  OptionDialog.cpp \
   OpenPreviousMenu.cpp \
   OptionFontInfo.cpp \
   OptionListBox.cpp \

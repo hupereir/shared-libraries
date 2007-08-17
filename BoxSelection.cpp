@@ -76,8 +76,17 @@ void BoxSelection::updateConfiguration( void )
 {
 
   Debug::Throw( "BoxSelection::updateConfiguration.\n" );
-  color_ = parent_->palette().color( QPalette::Highlight );
-  if( color_.isValid() ) color_.setAlpha( 50 );
+  
+  // retrieve box selection color from options
+  if( XmlOptions::get().find( "BOX_SELECTION_COLOR" ) )
+  { color_ = QColor( XmlOptions::get().raw( "BOX_SELECTION_COLOR" ).c_str() ); }
+  
+  // if invalid, use the normal selection color
+  if( !color_.isValid() ) color_ = parent_->palette().color( QPalette::Highlight );
+  
+  // retrieve shading from options
+  double alpha = XmlOptions::get().get<double>("BOX_SELECTION_ALPHA")*255/100;
+  if( color_.isValid() ) color_.setAlpha( int( alpha ) );
 
   // check if color is valid and font is fixed pitched
   // to not modify the previous attributes if disabled

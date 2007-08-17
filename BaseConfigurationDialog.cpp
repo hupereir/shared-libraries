@@ -335,7 +335,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   box->setLayout( layout );
   parent->layout()->addWidget( box );
      
-  CustomGridLayout* grid_layout( new CustomGridLayout() );
+  CustomGridLayout* grid_layout = new CustomGridLayout();
   grid_layout->setMargin(0);
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount(2);
@@ -355,6 +355,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   grid_layout->addWidget( spinbox );
   addOptionWidget( spinbox );
   
+  // paragraph highlighting
   box = new QGroupBox( "Paragrap highlighting", parent );
   layout = new QVBoxLayout();
   layout->setMargin(5);
@@ -371,7 +372,37 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
   layout->addWidget( color );
   addOptionWidget( color );
+
+  // box selection
+  box = new QGroupBox( "Box selection", parent );
+  grid_layout = new CustomGridLayout();
+  grid_layout->setMargin(0);
+  grid_layout->setSpacing(5);
+  grid_layout->setMaxCount(2);
+  box->setLayout( grid_layout );
+  parent->layout()->addWidget( box );
   
+  grid_layout->addWidget( new QLabel( "Alpha channel" ) );
+  OptionSlider *slider = new OptionSlider( box, "BOX_SELECTION_ALPHA" );
+  slider->slider().setMinimum( 0 );
+  slider->slider().setMaximum( 100 );
+  slider->setToolTip( "Alpha channel (i.e. opacity) of the box selection highlight color" );
+  grid_layout->addWidget( slider );
+  addOptionWidget( slider );
+  
+  if( XmlOptions::get().find( "BOX_SELECTION_COLOR" ) )
+  {
+    grid_layout->addWidget( new QLabel( "Box selection color" ) );
+    OptionColorDisplay* color = new OptionColorDisplay( box, "BOX_SELECTION_COLOR" );
+    grid_layout->addWidget( color );
+    addOptionWidget( color );
+  }
+  
+  grid_layout->addWidget( new QLabel(
+    "Note: box selection is enabled in text editors\n"
+    "only if the corresponding font has fixed pitch."), 2, 0, 2, 1 );
+  
+  // misc
   box = new QGroupBox( "Misc", parent );
   layout = new QVBoxLayout();
   layout->setMargin(5);
