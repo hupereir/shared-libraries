@@ -34,6 +34,7 @@ libbase_a_SOURCES = \
   ArgList.cpp \
   Counter.cpp \
   CustomProcess.cpp \
+	 Debug.cpp \
   Exception.cpp \
   File.cpp \
   FileList.cpp \

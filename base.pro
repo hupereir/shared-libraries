@@ -25,6 +25,7 @@ SOURCES = \
 ArgList.cpp \
 Counter.cpp \
 CustomProcess.cpp \
+Debug.cpp \
 Exception.cpp \
 File.cpp \
 FileList.cpp \
@@ -34,5 +35,3 @@ Str.cpp \
 TimeStamp.cpp \
 Util.cpp \
 XmlUtil.cpp
-
-
