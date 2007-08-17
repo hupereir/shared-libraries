@@ -24,24 +24,24 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-spellcheck.a
   
 libbase_spellcheck_a_SOURCES =  \
-  AutoSpellConfiguration.cc \
-  DictionaryMenu.cc \
-  FilterMenu.cc \
-  SpellCheckConfiguration.cc \
-  SpellDialog.cc \
-  SpellInterface.cc \
-  SpellParser.cc \
-  SuggestionMenu.cc
+  AutoSpellConfiguration.cpp \
+  DictionaryMenu.cpp \
+  FilterMenu.cpp \
+  SpellCheckConfiguration.cpp \
+  SpellDialog.cpp \
+  SpellInterface.cpp \
+  SpellParser.cpp \
+  SuggestionMenu.cpp
 	
 nodist_libbase_spellcheck_a_SOURCES =  \
-  moc_DictionaryMenu.cc \
-  moc_FilterMenu.cc \
-  moc_SpellDialog.cc \
-  moc_SuggestionMenu.cc
+  moc_DictionaryMenu.cpp \
+  moc_FilterMenu.cpp \
+  moc_SpellDialog.cpp \
+  moc_SuggestionMenu.cpp
 	
 clean-local:
-	 rm -f moc_*.cc
+	 rm -f moc_*.cpp
 
 ### rule to generate qt meta objects
-moc_%.cc: %.h
+moc_%.cpp: %.h
 	$(qt_moc) $^ -o $@

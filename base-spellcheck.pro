@@ -16,14 +16,14 @@ SuggestionMenu.h \
 Word.h
 
 SOURCES = \
-AutoSpellConfiguration.cc \
-DictionaryMenu.cc \
-FilterMenu.cc \
-SpellCheckConfiguration.cc \
-SpellDialog.cc \
-SpellInterface.cc \
-SpellParser.cc \
-SuggestionMenu.cc
+AutoSpellConfiguration.cpp \
+DictionaryMenu.cpp \
+FilterMenu.cpp \
+SpellCheckConfiguration.cpp \
+SpellDialog.cpp \
+SpellInterface.cpp \
+SpellParser.cpp \
+SuggestionMenu.cpp
 
 CONFIG += qt
 QT += xml
