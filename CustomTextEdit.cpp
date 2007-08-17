@@ -613,7 +613,7 @@ void CustomTextEdit::replace( TextSelection selection )
 unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const bool& show_dialog )
 {
 
-  Debug::Throw( 0, "CustomTextEdit::replaceInSelection.\n" );
+  Debug::Throw( "CustomTextEdit::replaceInSelection.\n" );
   unsigned int counts(0);
   
   if( _boxSelection().state() == BoxSelection::FINISHED )
