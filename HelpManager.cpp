@@ -47,6 +47,9 @@ using namespace BASE;
 
 
 //_________________________________________________________
+HelpManager HelpManager::singleton_;
+
+//_________________________________________________________
 HelpManager::HelpManager():
   Counter( "HelpManager" )
 { 

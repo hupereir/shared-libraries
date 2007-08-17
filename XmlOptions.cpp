@@ -41,6 +41,7 @@ using namespace std;
 
 //____________________________________________________________________
 File XmlOptions::file_;
+Options XmlOptions::singleton_;
 XmlError XmlOptions::error_;
 
 //____________________________________________________________________

@@ -53,10 +53,7 @@ namespace BASE
       
     //! manager singleton
     static HelpManager& get( void )
-    {
-      static HelpManager singleton;
-      return singleton;
-    }
+    { return singleton_; }
     
     //! destructor
     virtual ~HelpManager( void )
@@ -106,6 +103,9 @@ namespace BASE
     
     //! constructor
     HelpManager( void );
+    
+    //! singleton
+    static HelpManager singleton_;
     
     //!@name actions
     //@{

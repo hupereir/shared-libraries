@@ -45,10 +45,7 @@ class XmlOptions
   
   //! retrieve singleton
   static Options& get( void )
-  { 
-    static Options singleton;
-    return singleton;
-  }
+  { return singleton_; }
   
   //! read from file
   static bool read( File file = File( "" ) );
@@ -61,6 +58,9 @@ class XmlOptions
   { return file_; }
   
   private:
+   
+  //! singleton
+  static Options singleton_;
   
   //! file name
   static File file_;
