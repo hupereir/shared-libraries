@@ -376,7 +376,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   // box selection
   box = new QGroupBox( "Box selection", parent );
   grid_layout = new CustomGridLayout();
-  grid_layout->setMargin(0);
+  grid_layout->setMargin(5);
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount(2);
   box->setLayout( grid_layout );
