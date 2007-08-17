@@ -47,8 +47,7 @@ class File: public Str
   public:
   
   //! constructor
-  File( void ):
-    Str( EMPTY_STRING )
+  File( void )
   {}
   
   //! constructor

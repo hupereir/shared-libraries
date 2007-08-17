@@ -78,7 +78,7 @@ unsigned int File::userId( void ) const
 //_____________________________________________________________________
 string File::userName( void ) const
 { 
-  if( !exists() ) return EMPTY_STRING;
+  if( !exists() ) return string();
   return qPrintable( QFileInfo( c_str() ).owner() );
 }
 
@@ -92,7 +92,7 @@ unsigned int File::groupId( void ) const
 //_____________________________________________________________________
 string File::groupName( void ) const
 { 
-  if( !exists() ) return EMPTY_STRING;
+  if( !exists() ) return string();
   return qPrintable( QFileInfo( c_str() ).group() );
 }
 
@@ -206,18 +206,18 @@ File File::backup( void ) const
 { 
   
   // check filename is valid and file exists
-  if( !exists() ) return EMPTY_STRING;
+  if( !exists() ) return File();
   
   string expand( File::expand() );
   string backup( expand+"~" );
   
   // open this file
   QFile in( expand.c_str() );
-  if( !in.open( QIODevice::ReadOnly ) ) return EMPTY_STRING;
+  if( !in.open( QIODevice::ReadOnly ) ) return File();
   
   // open backup
   QFile out( backup.c_str() );
-  if( !out.open( QIODevice::WriteOnly ) ) return EMPTY_STRING;
+  if( !out.open( QIODevice::WriteOnly ) ) return File();
   
   out.write( in.readAll() );
   out.close();
@@ -271,7 +271,7 @@ File File::addPath( const string& path ) const
 {  
     
   // returns 0 if either path nor file are given
-  if( empty() && path.empty() ) return EMPTY_STRING;
+  if( empty() && path.empty() ) return File();
   
   // return path if path is given but not the file
   if( empty() ) return path;
@@ -290,26 +290,26 @@ File File::addPath( const string& path ) const
  
 //_____________________________________________________________________
 File File::expand( void ) const
-{ return empty() ? EMPTY_STRING : qPrintable( QFileInfo(c_str()).absoluteFilePath() ); }
+{ return empty() ? File() : File(qPrintable( QFileInfo(c_str()).absoluteFilePath() )); }
 
 //_____________________________________________________________________
 File File::path( void ) const
-{ return empty() ? EMPTY_STRING: qPrintable( QFileInfo(c_str()).absolutePath() ); }
+{ return empty() ? File(): File(qPrintable( QFileInfo(c_str()).absolutePath() )); }
 
 //_____________________________________________________________________
 File File::localName( void ) const
-{ return empty() ? EMPTY_STRING: qPrintable( QFileInfo(c_str()).fileName() ); }
+{ return empty() ? File(): File(qPrintable( QFileInfo(c_str()).fileName() )); }
 
 //_____________________________________________________________________
 File File::extension( void ) const
 {  
   // check file name
-  if( empty() ) return EMPTY_STRING;
+  if( empty() ) return File();
   
   // loop over characters
   string local( localName() ); 
   size_t dotpos = local.rfind(".");
-  return ( dotpos == string::npos ) ? EMPTY_STRING : local.substr( dotpos+1, local.size()-dotpos-1 );
+  return ( dotpos == string::npos ) ? File() : local.substr( dotpos+1, local.size()-dotpos-1 );
   
 }
 
@@ -318,14 +318,14 @@ File File::truncatedName( void ) const
 {
 
   // check file name
-  if( empty() ) return EMPTY_STRING;
+  if( empty() ) return File();
   
   // loop over characters
   size_t dotpos = rfind(".");
   size_t slashpos = rfind( "/" );
 
   if( dotpos == string::npos ) return *this;
-  if( slashpos == string::npos ) return (dotpos)? substr(0,dotpos):EMPTY_STRING;
+  if( slashpos == string::npos ) return (dotpos)? substr(0,dotpos):File();
   if( slashpos < dotpos ) return substr(0,dotpos);
   
   return *this;
@@ -379,7 +379,7 @@ File File::find( const File& file, bool case_sensitive ) const
 {
   
   Debug::Throw() << "File::find - this: " << c_str() << endl;
-  if( !( exists() && isDirectory() ) ) return EMPTY_STRING;
+  if( !( exists() && isDirectory() ) ) return File();
   list<File> files( listFiles() );
   list<File> directories;
   for( list<File>::iterator iter = files.begin(); iter != files.end(); iter++ )
@@ -398,9 +398,9 @@ File File::find( const File& file, bool case_sensitive ) const
   for( list<File>::iterator iter = directories.begin(); iter!=directories.end(); iter++ )
   {
     File found( iter->find( file, case_sensitive ) );
-    if( found != EMPTY_STRING ) return found;
+    if( found != File() ) return found;
   }
   
-  return EMPTY_STRING;
+  return File();
   
 }

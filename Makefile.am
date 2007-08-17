@@ -1,4 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
+EXTRA_DIST = base.pro
 
 INCLUDES =  \
   -I$(qt_includes) \
@@ -6,8 +7,6 @@ INCLUDES =  \
   -I$(qt_includes)/QtCore  \
   -I$(qt_includes)/QtXml \
   -I$(qt_includes)/QtGui
-
-EXTRA_DIST = base.pro
 
 noinst_HEADERS = \
   ArgList.h \

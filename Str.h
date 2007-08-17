@@ -49,7 +49,6 @@ class Str: public std::string, public Counter
   
   //! constructor
   Str( void ):
-    std::string( EMPTY_STRING ),
     Counter( "Str" )
   {}
   
@@ -146,7 +145,7 @@ class Str: public std::string, public Counter
     std::ostringstream o;
     o << value;
     if( o.rdstate() & std::ios::failbit ) {
-      *this = EMPTY_STRING; 
+      *this = Str(); 
       return *this;
     }
     
