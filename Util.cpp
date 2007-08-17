@@ -32,6 +32,7 @@
 
 #include <QProcess>
 #include <QStringList>
+#include <unistd.h>
 
 #include <iostream>
 #include <sstream>
@@ -184,15 +185,22 @@ string Util::user( void )
 //______________________________________________________________________
 string Util::domain( void )
 {
-   char *buf = new char[ LONGSTR ];
+  
+  #ifdef Q_WS_X11
 
-   if( !buf ) return "";
+  char *buf = new char[ LONGSTR ];
+  if( !buf ) return "";
+  getdomainname( buf, LONGSTR );
+  string out( buf );
+  delete[] buf;
+  return out;
 
-   getdomainname( buf, LONGSTR );
-   string out( buf );
-   delete[] buf;
-   return out;
-   
+  #else
+
+  return "localdomain";
+
+  #endif
+  
 }  
 
 //______________________________________________________________________
