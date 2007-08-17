@@ -21,8 +21,8 @@
  *                            
  *******************************************************************************/
 /*!
-   \file SystemEnvironmentDialog.cc
-   \brief displays Counter names and counts
+   \file SystemEnvironmentDialog.cpp
+   \brief displays system environment
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
