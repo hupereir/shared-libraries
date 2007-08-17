@@ -120,24 +120,24 @@ class Options: public Counter
   //! option value accessor
   template < typename T >
   T get( const std::string& name )
-  { return getOption( name ).get<T>(); }
+  { return option( name ).get<T>(); }
 
   //! option raw value accessor
   virtual std::string raw( const std::string& name )
-  { return getOption( name ).raw(); }
+  { return option( name ).raw(); }
 
   //! option value modifier
   template < typename T >
   void set( const std::string& name, const T& value )
   { 
     if( !find( name ) ) add( Option( name, "" ) );
-    getOption( name ).set<T>( value ); 
+    option( name ).set<T>( value ); 
   }
 
   //! option raw value modifier
   virtual void setRaw( const std::string& name, const std::string& value )
   { 
-    if( find( name ) ) getOption( name ).setRaw( value ); 
+    if( find( name ) ) option( name ).setRaw( value ); 
     else add( Option( name, value ) );
   }
   
