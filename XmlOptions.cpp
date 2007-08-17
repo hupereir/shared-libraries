@@ -107,12 +107,8 @@ bool XmlOptions::write( File file )
   Debug::Throw( "XmlOptions::write.\n" );
 
   // check filename is valid
-  if( !file.size() ) {
-    if( file_.size() ) File( file_ ).backup();
-    file = file_;
-  }
-
-  if( !file.size() ) return false;
+  if( file.empty() ) file = file_;
+  if( file.empty() ) return false;
   
   // output file
   QFile out( file.c_str() );
