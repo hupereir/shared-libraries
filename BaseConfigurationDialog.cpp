@@ -400,7 +400,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   
   grid_layout->addWidget( new QLabel(
     "Note: box selection is enabled in text editors\n"
-    "only if the corresponding font has fixed pitch."), 2, 0, 2, 1 );
+    "only if the corresponding font has fixed pitch."), 2, 0, 1, 2 );
   
   // misc
   box = new QGroupBox( "Misc", parent );
