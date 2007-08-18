@@ -53,7 +53,6 @@ CustomListView::CustomListView( QWidget* parent ):
 
   updateItemColor();
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );
-  connect( this, SIGNAL( itemSelectionChanged() ), SLOT( _disableActions() ) );
   
 }
 
@@ -316,18 +315,4 @@ void CustomListView::_raiseMenu( const QPoint & pos )
   QtUtil::moveWidget( &menu(), QCursor::pos() );
   menu().show();
   
-}
-
-
-//___________________________________
-void CustomListView::_disableActions( void )
-{ 
-  
-  Debug::Throw( "CustomListView::_disableActions.\n" );
-  
-  // enable/disable
-  bool has_selection( !QTreeWidget::selectedItems().empty() );
-  for( vector<QAction*>::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
-  { (*iter)->setEnabled( has_selection ); }
-
 }
