@@ -55,7 +55,7 @@ noinst_HEADERS = \
   OptionCheckBox.h \
   OptionColorDisplay.h \
   OptionComboBox.h \
-  OptionDialog.cpp \
+  OptionDialog.h \
   OptionFontEdit.h \
   OptionFontInfo.h \
   OptionIconBrowsedButton.h \
