@@ -247,7 +247,7 @@ bool File::diff(const File& file ) const
   // one of the file does not exists and the other does
   if( !( first_open && second_open ) ) return true;
   
-  return( first.readAll() == second.readAll() ); 
+  return( first.readAll() != second.readAll() ); 
   
 }
 
