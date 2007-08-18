@@ -95,6 +95,6 @@ OptionDialog::OptionDialog( QWidget* parent ):
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setAutoDefault( false );
   
-  resize( QSize( 400,300 ) );
+  resize( QSize( 600,300 ) );
   
 }
