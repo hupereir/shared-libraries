@@ -98,7 +98,7 @@ void OpenPreviousMenu::updateConfiguration( void )
   Debug::Throw( "OpenPreviousMenu::updateConfiguration.\n" );
   
   // DB file
-  setDBFile( XmlOptions::get().get<string>("DB_FILE") );
+  setDBFile( XmlOptions::get().raw("DB_FILE") );
   setMaxSize( XmlOptions::get().get<int>( "DB_SIZE" ) );
   return;
   
