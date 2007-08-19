@@ -255,9 +255,14 @@ string Util::host( bool short_name )
   // use system environment
   // it does not work for windows
   Debug::Throw( "Util::host.\n" ); 
+  #ifdef Q_WS_WIN32
+  string out( env( "COMPUTERNAME", "unknown" ) );
+  #else
   string out( env( "HOSTNAME", "unknown" ) );
-  if( ! short_name ) return out;
+  #endif
   
+  if( ! short_name ) return out;
+
   size_t pos( out.find( "." ) ); 
   if( pos == string::npos ) return out;
   return out.substr( 0, pos );
