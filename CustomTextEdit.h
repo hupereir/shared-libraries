@@ -241,9 +241,6 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   void matchFound( void );
     
   public slots:
-  
-  //! update configuration
-  virtual void updateConfiguration( void );
  
   //! cut
   virtual void cut( void );
@@ -509,6 +506,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //@}
     
   protected slots:
+  
+  //! update configuration
+  virtual void _updateConfiguration( void );
     
   //! synchronize selection
   virtual void _synchronizeSelection( void );

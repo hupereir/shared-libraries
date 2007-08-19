@@ -88,10 +88,10 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   // signal to make sure selectionsynchronized is  between clones
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
   // update configuration
-  updateConfiguration();
+  _updateConfiguration();
     
 }
 
@@ -408,40 +408,6 @@ void CustomTextEdit::clearAllBackgrounds( void )
   Debug::Throw( "CustomTextEdit::clearAllBackgrounds.\n" );
   for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next() )
   { clearBackground( block ); }
-}
-
-//________________________________________________
-void CustomTextEdit::updateConfiguration( void )
-{
-
-  Debug::Throw( "CustomTextEdit::updateConfiguration.\n" );
-
-  // wrap mode
-  if( wrapFromOptions() )
-  { wrapModeAction().setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
-
-  // tab emulation
-  _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
-  tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
-
-  // paragraph highlighting
-  highlight_color_ = QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() );
-  blockHighlight().setEnabled( highlight_color_.isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-  blockHighlightAction().setEnabled( highlight_color_.isValid() );
-  blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-
-  // update box configuration
-  // clear
-  _boxSelection().updateConfiguration();
-  if( !_boxSelection().isEnabled() && _boxSelection().state() != BoxSelection::EMPTY )
-  {
-    _boxSelection().clear();
-    _synchronizeBoxSelection();
-    emit copyAvailable( false );
-  }
-
-  return;
-
 }
 
 //________________________________________________
@@ -1863,6 +1829,40 @@ void CustomTextEdit::_insertTab( void )
 }
 
 //________________________________________________
+void CustomTextEdit::_updateConfiguration( void )
+{
+
+  Debug::Throw( "CustomTextEdit::_updateConfiguration.\n" );
+
+  // wrap mode
+  if( wrapFromOptions() )
+  { wrapModeAction().setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
+
+  // tab emulation
+  _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
+  tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
+
+  // paragraph highlighting
+  highlight_color_ = QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() );
+  blockHighlight().setEnabled( highlight_color_.isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+  blockHighlightAction().setEnabled( highlight_color_.isValid() );
+  blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+
+  // update box configuration
+  // clear
+  _boxSelection().updateConfiguration();
+  if( !_boxSelection().isEnabled() && _boxSelection().state() != BoxSelection::EMPTY )
+  {
+    _boxSelection().clear();
+    _synchronizeBoxSelection();
+    emit copyAvailable( false );
+  }
+
+  return;
+
+}
+
+//________________________________________________
 void CustomTextEdit::_synchronizeSelection( void )
 {
 
@@ -1948,8 +1948,12 @@ void CustomTextEdit::_toggleBlockHighlight( bool state )
 
   // update current paragraph
   if( blockHighlight().isEnabled() ) blockHighlight().highlight();
-  else blockHighlight().clear();
-
+  else 
+  {
+    blockHighlight().clear();
+    update();
+  }
+  
 }
 
 //________________________________________________

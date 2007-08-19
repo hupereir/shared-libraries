@@ -40,15 +40,15 @@ CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
   QMainWindow( parent, wflags )
 { 
   Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 }
 
 
 //____________________________________________________________
-void CustomMainWindow::updateConfiguration( void )
+void CustomMainWindow::_updateConfiguration( void )
 { 
   
-  Debug::Throw( "CustomMainWindow::updateConfiguration.\n" );
+  Debug::Throw( "CustomMainWindow::_updateConfiguration.\n" );
   
   // pixmap size
   if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( CustomToolButton::BigIconSize );

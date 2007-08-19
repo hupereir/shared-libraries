@@ -49,8 +49,8 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent ):
   lock_from_options_( true )
 {
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
-  updateConfiguration();
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  _updateConfiguration();
 }
 
 //_______________________________________________________________
@@ -60,14 +60,14 @@ CustomToolBar::CustomToolBar( QWidget* parent ):
   lock_from_options_( true )
 {
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
-  updateConfiguration();
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  _updateConfiguration();
 }
 
 //_______________________________________________________________
-void CustomToolBar::updateConfiguration( void )
+void CustomToolBar::_updateConfiguration( void )
 {
-  Debug::Throw( "CustomToolBar::updateConfiguration.\n" );
+  Debug::Throw( "CustomToolBar::_updateConfiguration.\n" );
     
   // pixmap size
   if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( CustomToolButton::BigIconSize );

@@ -80,30 +80,12 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   //! open last valid file, returns true if any
   bool openLastValidFile( void );
 
-  public slots:
-  
-  //! configuration
-  void updateConfiguration( void );
-  
-  //! configuration
-  void saveConfiguration( void );
-  
-  private slots:
-
-  //! open file at position i
-  void _open( QAction* );
-
-  //! display files from internal list
-  void _loadFiles( void );
-
-  //! remove unfound files from file list
-  void _clean( void );
 
   signals:
 
   //! signal emited when a file is selected
   void fileSelected( FileRecord );
-
+  
   protected:
 
   //! run thread to check file validity
@@ -112,6 +94,23 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   //! custom event, used to retrieve file validity check event
   void customEvent( QEvent* );
   
+  protected slots:
+  
+  //! configuration
+  void _updateConfiguration( void );
+  
+  //! configuration
+  void _saveConfiguration( void );
+  
+
+  //! remove unfound files from file list
+  void _clean( void );
+  //! open file at position i
+  void _open( QAction* );
+
+  //! display files from internal list
+  void _loadFiles( void );
+
   private:
   
   //! thread to check file validity

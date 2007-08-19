@@ -103,11 +103,6 @@ class CustomToolButton: public QToolButton, public Counter
   //! small icon size
   void setSmallIconSize( const QSize& size )
   { small_icon_size_ = size; }
-
-  public slots:
-  
-  //! tool button configuration
-  void updateConfiguration( void );
   
   protected:
       
@@ -126,6 +121,11 @@ class CustomToolButton: public QToolButton, public Counter
     { tooltip_label_->clear(); }
     QToolButton::leaveEvent( event );
   }
+
+  protected slots:
+  
+  //! tool button configuration
+  void _updateConfiguration( void );
   
   private:
   

@@ -57,10 +57,10 @@ class CustomMainWindow: public QMainWindow
   virtual ~CustomMainWindow( void )
   { Debug::Throw( "CustomMainWindow::~CustomMainWindow.\n" ); }
   
-  public slots:
+  protected slots:
   
   //! update configuration
-  virtual void updateConfiguration( void );
+  virtual void _updateConfiguration( void );
   
 };
 

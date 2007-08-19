@@ -65,8 +65,8 @@ CustomToolButton::CustomToolButton(
     
   setAutoRaise( true );
   
-  updateConfiguration();
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  _updateConfiguration();
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
 }
 
@@ -88,15 +88,15 @@ CustomToolButton::CustomToolButton(
   if( action ) setDefaultAction( action );
   
   // set configuration
-  updateConfiguration();
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateConfiguration() ) );
+  _updateConfiguration();
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
 }
 
 //_________________________________________________________________
-void CustomToolButton::updateConfiguration( void )
+void CustomToolButton::_updateConfiguration( void )
 {
-  Debug::Throw( "CustomToolButton::updateConfiguration.\n");
+  Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
 
   // auto-raise
   setAutoRaise( true );
