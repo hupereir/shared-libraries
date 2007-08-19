@@ -30,6 +30,7 @@
 #include <QApplication>
 #include <QPainter>
 
+#include "ColorDisplay.h"
 #include "CustomListBox.h"
 #include "XmlOptions.h"
 
@@ -62,7 +63,12 @@ QListWidgetItem& CustomListBox::findItem( const std::string& name )
 void CustomListBox::updateItemColor( void )
 {
   
-  QColor item_color( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
+  QColor item_color;
+  
+  // try load from option
+  Str colorname( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
+  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) item_color = QColor( colorname.c_str() );
+
   if( !item_color.isValid() )
   {
     setAlternatingRowColors( false ); 

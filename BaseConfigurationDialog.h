@@ -32,7 +32,7 @@
 #define _BaseConfigurationDialog_h_
 
 #include <QDialog>
-#include <QPushButton>
+#include <QLayout>
 #include <QStackedWidget>
 #include <list>
 
@@ -89,6 +89,10 @@ class BaseConfigurationDialog: public QDialog, public Counter
     return;
   }
 
+  //! button layout
+  QHBoxLayout& buttonLayout( void ) const
+  { return *button_layout_; }
+  
   //! adds a new Item, returns associated Box
   virtual QWidget& addPage( const QString& title, const bool& expand = false );
 
@@ -193,8 +197,8 @@ class BaseConfigurationDialog: public QDialog, public Counter
   //! Widget stack
   QStackedWidget* stack_;
   
-  //! Apply button
-  QPushButton *apply_button_;
+  //! button layout (needed to add extra buttons)
+  QHBoxLayout *button_layout_;
 
   //! list of option widgets
   OptionWidgetList option_widgets_;

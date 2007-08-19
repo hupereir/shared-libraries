@@ -33,6 +33,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include "ColorDisplay.h"
 #include "CustomListView.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
@@ -235,11 +236,6 @@ void CustomListView::sort( void )
   if( !isSortingEnabled() ) return;
   
   sortItems( sortColumn(), header()->sortIndicatorOrder() );
-  
-    //setUpdatesEnabled( false );
-  //sortByColumn( sortColumn() );
-  //sortByColumn( sortColumn() );
-  //setUpdatesEnabled( true );
   repaint();
   
 }
@@ -248,8 +244,13 @@ void CustomListView::sort( void )
 void CustomListView::updateItemColor( void )
 {
   Debug::Throw( "CustomListView::updateItemColor.\n" );
-    
-  QColor item_color( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
+  
+  QColor item_color;
+  
+  // try load from option
+  Str colorname( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
+  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) item_color = QColor( colorname.c_str() );
+  
   if( !item_color.isValid() )
   {
     setAlternatingRowColors( false ); 

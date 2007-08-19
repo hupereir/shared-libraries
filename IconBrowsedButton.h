@@ -36,6 +36,7 @@
 
 #include "Counter.h"  
 #include "Debug.h"  
+#include "File.h"  
 #include "Util.h"  
 
 /*!
@@ -56,7 +57,7 @@ class IconBrowsedButton: public QPushButton, public Counter
   //! creator
   IconBrowsedButton( 
     QWidget* parent,   
-    const std::string& file = NO_ICON
+    const File& file = NO_ICON
   );
   
   //! destructor
@@ -64,11 +65,11 @@ class IconBrowsedButton: public QPushButton, public Counter
   {}
   
   //! iconFile
-  virtual const std::string& iconFile( void ) const
+  virtual const File& iconFile( void ) const
   { return icon_file_; }
   
   //! iconFile
-  virtual void setIconFile( const std::string& file, const bool& check );
+  virtual void setIconFile( const File& file, const bool& check );
 
   protected slots:
       
@@ -82,12 +83,9 @@ class IconBrowsedButton: public QPushButton, public Counter
       
   //! empty pixmap
   QPixmap no_icon_pixmap_;
-  
-  //! default working directory
-  std::string work_directory_;
-  
+    
   //! icon file
-  std::string icon_file_;
+  File icon_file_;
   
 };
 

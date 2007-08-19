@@ -47,10 +47,9 @@ const std::string IconBrowsedButton::NO_ICON = "none";
 const unsigned int IconBrowsedButton::icon_size_ = 48;
     
 //_____________________________________________
-IconBrowsedButton::IconBrowsedButton( QWidget* parent, const string& file):
+IconBrowsedButton::IconBrowsedButton( QWidget* parent, const File& file):
   QPushButton( parent ),
   Counter( "IconBrowsedButton" ),
-  work_directory_( Util::workingDirectory() ),
   icon_file_( NO_ICON )
 { 
   setIconSize( QSize(icon_size_,icon_size_) );
@@ -61,13 +60,10 @@ IconBrowsedButton::IconBrowsedButton( QWidget* parent, const string& file):
   
 
 //_____________________________________________
-void IconBrowsedButton::setIconFile( const std::string& file, const bool& check )
+void IconBrowsedButton::setIconFile( const File& file, const bool& check )
 {
   
   Debug::Throw() << "IconBrowsedButton::setIconFile - " << file << endl;
-  
-  if( File( file ).exists() ) work_directory_ = File(file).path();
-  else work_directory_ = XmlOptions::get().get<string>("DEFAULT_ICON_PATH");
   
   CustomPixmap pixmap( file );
   if( !pixmap.isNull() ) 
@@ -107,15 +103,17 @@ void IconBrowsedButton::_browse( void )
   CustomFileDialog dialog( this );
   dialog.setFileMode( QFileDialog::AnyFile );
   
-  // retrieve text, check if path is valid, assign to FileDialog
-  dialog.setDirectory( work_directory_.c_str() );
+  // set dialog working directory from file, if valid
+  if( icon_file_.path().exists() ) 
+  { dialog.setDirectory( icon_file_.path().c_str() ); }
 
+  // run dialog
   if( dialog.exec() != QDialog::Accepted ) return; 
     
   QStringList files( dialog.selectedFiles() );
   if( files.size() < 1 ) return;
   
-  setIconFile( qPrintable( files.front() ), true );
+  setIconFile( File( qPrintable( files.front() ) ), true );
  
   return; 
 }

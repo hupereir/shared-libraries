@@ -43,10 +43,10 @@ namespace ICONS
   static const std::string REDO= "redo.png";
   static const std::string CUT = "editcut.png";
   static const std::string COPY = "editcopy.png";
-  static const std::string CONFIGURE = "configure.png";
   static const std::string PASTE = "editpaste.png";
   static const std::string FIND = "viewmag.png";
   static const std::string COLOR = "color.png";
+  static const std::string CONFIGURE = "configure.png";
   static const std::string HELP = "toggle_log.png";
   static const std::string SAVE = "filesave.png";
   static const std::string RELOAD = "reload.png";

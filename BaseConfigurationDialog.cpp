@@ -86,20 +86,20 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     SLOT( _display(QListWidgetItem*, QListWidgetItem*) ) );
   
   // button layout
-  QHBoxLayout* button_layout( new QHBoxLayout() );
-  button_layout->setMargin(0);
-  button_layout->setSpacing(5);
-  layout->addLayout( button_layout, 0 );
+  button_layout_ = new QHBoxLayout();
+  button_layout_->setMargin(0);
+  button_layout_->setSpacing(5);
+  layout->addLayout( button_layout_, 0 );
   
   // apply button
   QPushButton* button;
-  button_layout->addWidget( button = new QPushButton( "&Apply", this ) );
+  button_layout_->addWidget( button = new QPushButton( "&Apply", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _update() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );  
   button->setToolTip( "apply changes to options" );
   
   // ok button
-  button_layout->addWidget( button = new QPushButton( "&Ok", this ) );
+  button_layout_->addWidget( button = new QPushButton( "&Ok", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _save() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
@@ -107,7 +107,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button->setAutoDefault( false );
   
   // cancel button
-  button_layout->addWidget( button = new QPushButton( "&Cancel", this ) );
+  button_layout_->addWidget( button = new QPushButton( "&Cancel", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
@@ -185,7 +185,13 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     grid_layout->setSpacing(5);
     grid_layout->setMaxCount(2);
     h_layout->addLayout( grid_layout );
-
+     
+    // flat theme
+    OptionCheckBox* checkbox( new OptionCheckBox( "Use flat plastique theme", box, "USE_FLAT_THEME" ) );
+    grid_layout->addWidget( checkbox, 0, 0, 1, 2 );
+    checkbox->setToolTip( "Use customized flat plastique theme for widget appearance and layout.\nThe application must be restarted to take changes to this option into account." );
+    addOptionWidget( checkbox );
+    
     // base font    
     grid_layout->addWidget( new QLabel( "Default font: ", box ) );
     OptionFontEdit *edit = new OptionFontEdit( box, "FONT_NAME" );
@@ -199,12 +205,6 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     edit->setToolTip( "Default font name (fixed) for text widgets" );
     grid_layout->addWidget( edit );
     addOptionWidget( edit );
-
-    // default icon path
-    grid_layout->addWidget( new QLabel( "Default icon path: ", box ) );
-    OptionBrowsedLineEdit* icon_path_edit = new OptionBrowsedLineEdit( box, "DEFAULT_ICON_PATH" );
-    grid_layout->addWidget( icon_path_edit );
-    addOptionWidget( icon_path_edit );
     
     // debug level
     grid_layout->addWidget( new QLabel( "Debug level: ", box ) );
@@ -214,7 +214,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     spinbox->setToolTip( "Debug verbosity level" );
     grid_layout->addWidget( spinbox );
     addOptionWidget( spinbox );
-          
+      
     // icon pixmap
     QVBoxLayout* v_layout( new QVBoxLayout() );
     v_layout->setMargin(0);
@@ -313,7 +313,7 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   
   OptionColorDisplay* color = new OptionColorDisplay( box, "ITEM_COLOR" );
   addOptionWidget( color );
-  color->setToolTip( "Item background color in lists" );
+  color->setToolTip( "Alternate item background color in lists.\n Set it to \"None\" do disable alternate item color." );
   layout->addWidget( color );
   
 }
