@@ -175,7 +175,7 @@ bool File::exists( void ) const
 
 //_____________________________________________________________________
 bool File::isWritable( void ) const
-{ return empty() || QFileInfo( c_str() ).isWritable(); }
+{ return empty() || QFile( c_str() ).open( QIODevice::ReadWrite ); }
 
 //_____________________________________________________________________
 bool File::isDirectory( void ) const
