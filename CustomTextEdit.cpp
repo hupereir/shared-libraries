@@ -359,6 +359,16 @@ void CustomTextEdit::showReplacements( const unsigned int& counts )
 
 }
 
+
+//__________________________________________________________________
+void CustomTextEdit::setReadOnly( bool readonly )
+{
+  Debug::Throw( "CustomTextEdit::setReadOnly.\n" );
+  QTextEdit::setReadOnly( readonly );
+  _updateReadOnlyActions( readonly ); 
+  if( readonly ) document()->setModified( false );
+}
+  
 //___________________________________________________________________________
 void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
 {
