@@ -100,7 +100,7 @@ class CustomToolBar: public QToolBar, public Counter
     
   };
   
-  protected slots:
+  private slots:
   
   //! update configuration
   void _updateConfiguration( void );

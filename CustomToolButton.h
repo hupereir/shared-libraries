@@ -122,7 +122,7 @@ class CustomToolButton: public QToolButton, public Counter
     QToolButton::leaveEvent( event );
   }
 
-  protected slots:
+  private slots:
   
   //! tool button configuration
   void _updateConfiguration( void );

@@ -94,7 +94,7 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   //! custom event, used to retrieve file validity check event
   void customEvent( QEvent* );
   
-  protected slots:
+  private slots:
   
   //! configuration
   void _updateConfiguration( void );
@@ -102,10 +102,10 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   //! configuration
   void _saveConfiguration( void );
   
-
   //! remove unfound files from file list
   void _clean( void );
-  //! open file at position i
+
+  //! open file
   void _open( QAction* );
 
   //! display files from internal list

@@ -43,7 +43,6 @@ CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 }
 
-
 //____________________________________________________________
 void CustomMainWindow::_updateConfiguration( void )
 { 

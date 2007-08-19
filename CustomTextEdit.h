@@ -505,10 +505,12 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //@}
     
-  protected slots:
+  private slots:
   
   //! update configuration
-  virtual void _updateConfiguration( void );
+  void _updateConfiguration( void );
+  
+  protected slots:
     
   //! synchronize selection
   virtual void _synchronizeSelection( void );
