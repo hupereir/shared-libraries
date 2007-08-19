@@ -38,6 +38,7 @@
 namespace ICONS
 {
   
+  static const std::string ABOUT_QT = "qt-logo.png";
   static const std::string UNDO= "undo.png";
   static const std::string REDO= "redo.png";
   static const std::string CUT = "editcut.png";

@@ -51,7 +51,6 @@
 #include "XmlOptions.h"
 
 using namespace std;
-using namespace BASE;
 using namespace Qt;
 
 //______________________________________________
