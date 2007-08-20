@@ -86,15 +86,6 @@ void FlatStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* opt
 //________________________________________________________________
 void FlatStyle::drawControl( ControlElement element, const QStyleOption *option, QPainter* painter, const QWidget* widget ) const
 {
-
-  
-  QColor borderColor = option->palette.background().color().dark(178);
-  QColor gradientStartColor = option->palette.button().color().light(104);
-  QColor gradientStopColor = option->palette.button().color().dark(105);
-  QColor highlightedGradientStartColor = option->palette.button().color().light(101);
-  QColor highlightedGradientStopColor = mergedColors(option->palette.button().color(), option->palette.highlight().color(), 85);
-  QColor highlightedDarkInnerBorderColor = mergedColors(option->palette.button().color(), option->palette.highlight().color(), 35);
-  QColor highlightedLightInnerBorderColor = mergedColors(option->palette.button().color(), option->palette.highlight().color(), 58);
   
   switch( element )
   {
@@ -112,7 +103,11 @@ void FlatStyle::drawControl( ControlElement element, const QStyleOption *option,
     
     case CE_ScrollBarSlider:
     if (const QStyleOptionSlider *scrollBar = qstyleoption_cast<const QStyleOptionSlider *>(option)) 
-    {
+    {  
+      QColor borderColor = option->palette.background().color().dark(178);
+      QColor gradientStartColor = option->palette.button().color().light(104);
+      QColor gradientStopColor = option->palette.button().color().dark(105);
+
       int sliderMinLength = pixelMetric(PM_ScrollBarSliderMin, scrollBar, widget);
       bool horizontal = scrollBar->orientation == Qt::Horizontal;
       bool isEnabled = scrollBar->state & State_Enabled;
@@ -120,8 +115,6 @@ void FlatStyle::drawControl( ControlElement element, const QStyleOption *option,
       // The slider
       if (option->rect.isValid()) 
       {
-        //QString sliderPixmapName = uniqueName(QLatin1String("scrollbar_slider"), option, option->rect.size());
-        //if (horizontal) sliderPixmapName += QLatin1String("-horizontal");
         
         QPixmap cache;
         cache = QPixmap(option->rect.size());
