@@ -88,10 +88,6 @@ class BaseConfigurationDialog: public QDialog, public Counter
     Debug::Throw( "BaseConfigurationDialog::~BaseConfigurationDialog.\n" );
     return;
   }
-
-  //! button layout
-  QHBoxLayout& buttonLayout( void ) const
-  { return *button_layout_; }
   
   //! adds a new Item, returns associated Box
   virtual QWidget& addPage( const QString& title, const bool& expand = false );
@@ -188,6 +184,10 @@ class BaseConfigurationDialog: public QDialog, public Counter
   //! retrieve stack
   virtual QStackedWidget& _stack( void )
   { return *stack_; }
+
+  //! button layout
+  QHBoxLayout& _buttonLayout( void ) const
+  { return *button_layout_; }
     
   private:
 

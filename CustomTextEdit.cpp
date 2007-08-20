@@ -1269,6 +1269,7 @@ void CustomTextEdit::_installActions( void )
 
   addAction( select_all_action_ = new QAction( "Select all", this ) );
   select_all_action_->setShortcut( CTRL+Key_A );
+  select_all_action_->setShortcutContext( WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
   addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
