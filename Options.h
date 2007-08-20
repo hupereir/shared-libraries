@@ -153,14 +153,7 @@ class Options: public Counter
     if( special_options_.find( name ) == special_options_.end() )
     special_options_.insert( make_pair( name, OptionList() ) );
   }
-  
-  //! remove all options
-  virtual void reset( void )
-  { 
-    options_.clear(); 
-    special_options_.clear();
-  }
-  
+    
   //! dump options to stream
   virtual void dump( std::ostream& out = std::cout ) const;
   
