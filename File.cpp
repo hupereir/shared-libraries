@@ -309,7 +309,7 @@ File File::extension( void ) const
   // loop over characters
   string local( localName() ); 
   size_t dotpos = local.rfind(".");
-  return ( dotpos == string::npos ) ? File() : local.substr( dotpos+1, local.size()-dotpos-1 );
+  return File( dotpos == string::npos ? "" : local.substr( dotpos+1, local.size()-dotpos-1 ) );
   
 }
 
@@ -325,7 +325,7 @@ File File::truncatedName( void ) const
   size_t slashpos = rfind( "/" );
 
   if( dotpos == string::npos ) return *this;
-  if( slashpos == string::npos ) return (dotpos)? substr(0,dotpos):File();
+  if( slashpos == string::npos ) return File(dotpos? substr(0,dotpos):"");
   if( slashpos < dotpos ) return substr(0,dotpos);
   
   return *this;
