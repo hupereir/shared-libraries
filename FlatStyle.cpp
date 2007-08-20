@@ -43,6 +43,7 @@ int FlatStyle::pixelMetric( PixelMetric metric, const QStyleOption * option, con
   // no extra margin for menu bars
   switch (metric)
   {
+    //case PM_ScrollBarSliderMin: return 1024;
     case PM_MenuBarPanelWidth: return 2;
     case PM_ToolBarHandleExtent: return 7;
     default: return QPlastiqueStyle::pixelMetric( metric, option, widget );
@@ -51,9 +52,20 @@ int FlatStyle::pixelMetric( PixelMetric metric, const QStyleOption * option, con
   
 }
 
+static QColor mergedColors(const QColor &colorA, const QColor &colorB, int factor = 50)
+{
+    const int maxFactor = 100;
+    QColor tmp = colorA;
+    tmp.setRed((tmp.red() * factor) / maxFactor + (colorB.red() * (maxFactor - factor)) / maxFactor);
+    tmp.setGreen((tmp.green() * factor) / maxFactor + (colorB.green() * (maxFactor - factor)) / maxFactor);
+    tmp.setBlue((tmp.blue() * factor) / maxFactor + (colorB.blue() * (maxFactor - factor)) / maxFactor);
+    return tmp;
+}
+
 //________________________________________________________________
 void FlatStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget ) const
 { 
+  
   switch( element )
   {
     case PE_PanelMenuBar:
@@ -74,6 +86,16 @@ void FlatStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* opt
 //________________________________________________________________
 void FlatStyle::drawControl( ControlElement element, const QStyleOption *option, QPainter* painter, const QWidget* widget ) const
 {
+
+  
+  QColor borderColor = option->palette.background().color().dark(178);
+  QColor gradientStartColor = option->palette.button().color().light(104);
+  QColor gradientStopColor = option->palette.button().color().dark(105);
+  QColor highlightedGradientStartColor = option->palette.button().color().light(101);
+  QColor highlightedGradientStopColor = mergedColors(option->palette.button().color(), option->palette.highlight().color(), 85);
+  QColor highlightedDarkInnerBorderColor = mergedColors(option->palette.button().color(), option->palette.highlight().color(), 35);
+  QColor highlightedLightInnerBorderColor = mergedColors(option->palette.button().color(), option->palette.highlight().color(), 58);
+  
   switch( element )
   {
     
@@ -87,7 +109,73 @@ void FlatStyle::drawControl( ControlElement element, const QStyleOption *option,
         painter->setPen(oldPen);
       }
       return;
-   
+    
+    case CE_ScrollBarSlider:
+    if (const QStyleOptionSlider *scrollBar = qstyleoption_cast<const QStyleOptionSlider *>(option)) 
+    {
+      int sliderMinLength = pixelMetric(PM_ScrollBarSliderMin, scrollBar, widget);
+      bool horizontal = scrollBar->orientation == Qt::Horizontal;
+      bool isEnabled = scrollBar->state & State_Enabled;
+      
+      // The slider
+      if (option->rect.isValid()) 
+      {
+        //QString sliderPixmapName = uniqueName(QLatin1String("scrollbar_slider"), option, option->rect.size());
+        //if (horizontal) sliderPixmapName += QLatin1String("-horizontal");
+        
+        QPixmap cache;
+        cache = QPixmap(option->rect.size());
+        cache.fill(Qt::white);
+        QRect pixmapRect(0, 0, cache.width(), cache.height());
+        QPainter sliderPainter(&cache);
+        bool sunken = (scrollBar->state & State_Sunken);
+        
+        if (isEnabled) 
+        {
+          QLinearGradient gradient(pixmapRect.center().x(), pixmapRect.top(), pixmapRect.center().x(), pixmapRect.bottom());
+          if (sunken) 
+          {
+            gradient.setColorAt(0, gradientStartColor.light(110));
+            gradient.setColorAt(1, gradientStopColor.light(105));
+          } else {
+            gradient.setColorAt(0, gradientStartColor.light(105));
+            gradient.setColorAt(1, gradientStopColor);
+          }
+          sliderPainter.fillRect(pixmapRect.adjusted(2, 2, -2, -2), gradient);
+        } else {
+          sliderPainter.fillRect(pixmapRect.adjusted(2, 2, -2, -2), option->palette.background());
+        }
+        
+        sliderPainter.setPen(borderColor);
+        sliderPainter.drawRect(pixmapRect.adjusted(0, 0, -1, -1));
+        //sliderPainter.setPen(alphaCornerColor);
+        QPoint points[4] = {
+          QPoint(pixmapRect.left(), pixmapRect.top()),
+          QPoint(pixmapRect.left(), pixmapRect.bottom()),
+          QPoint(pixmapRect.right(), pixmapRect.top()),
+          QPoint(pixmapRect.right(), pixmapRect.bottom()) 
+        };
+        sliderPainter.drawPoints(points, 4);
+        
+        QLine lines[2];
+        sliderPainter.setPen(sunken ? gradientStartColor.light(110) : gradientStartColor.light(105));
+        lines[0] = QLine(pixmapRect.left() + 1, pixmapRect.top() + 1, pixmapRect.right() - 1, pixmapRect.top() + 1);
+        lines[1] = QLine(pixmapRect.left() + 1, pixmapRect.top() + 2, pixmapRect.left() + 1, pixmapRect.bottom() - 2);
+        sliderPainter.drawLines(lines, 2);
+        
+        sliderPainter.setPen(sunken ? gradientStopColor.light(105) : gradientStopColor);
+        lines[0] = QLine(pixmapRect.left() + 1, pixmapRect.bottom() - 1, pixmapRect.right() - 1, pixmapRect.bottom() - 1);
+        lines[1] = QLine(pixmapRect.right() - 1, pixmapRect.top() + 2, pixmapRect.right() - 1, pixmapRect.bottom() - 1);
+        sliderPainter.drawLines(lines, 2);
+        
+        int sliderMinLength = pixelMetric(PM_ScrollBarSliderMin, scrollBar, widget);
+        sliderPainter.end();
+        
+        painter->drawPixmap(option->rect.topLeft(), cache);
+      }
+    }
+    break;
+
     case CE_ToolBar: return;
     case CE_Splitter: return;
       
