@@ -2,14 +2,15 @@ AUTOMAKE_OPTIONS = foreign
 EXTRA_DIST = base.pro
 
 INCLUDES =  \
-  -I$(qt_includes) \
-  -I$(qt_includes)/Qt \
-  -I$(qt_includes)/QtCore  \
-  -I$(qt_includes)/QtXml \
-  -I$(qt_includes)/QtGui
+ -I$(qt_includes) \
+ -I$(qt_includes)/Qt \
+ -I$(qt_includes)/QtCore  \
+ -I$(qt_includes)/QtXml \
+ -I$(qt_includes)/QtGui
 
 noinst_HEADERS = \
   ArgList.h \
+  Command.h \
   Counter.h \
   CustomProcess.h \
   Debug.h \
@@ -32,6 +33,7 @@ noinst_LIBRARIES = libbase.a
 
 libbase_a_SOURCES = \
   ArgList.cpp \
+  Command.cpp \
   Counter.cpp \
   CustomProcess.cpp \
 	 Debug.cpp \
