@@ -102,7 +102,7 @@ void BoxSelection::updateConfiguration( void )
   // retrieve margins
   int right, bottom;
   parent_->getContentsMargins( &left_margin_, &top_margin_, &right, &bottom );
-
+  left_margin_ += 2;
 }
 
 //________________________________________________________________________
@@ -204,7 +204,6 @@ QString BoxSelection::toString( void ) const
   return out;
   
 }
-
 
 //________________________________________________________________________
 bool BoxSelection::fromString( QString input )

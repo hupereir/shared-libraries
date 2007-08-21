@@ -197,3 +197,30 @@ CustomPixmap CustomPixmap::disabled( void )
   return CustomPixmap( image );
   
 }
+
+//_________________________________________________
+CustomPixmap CustomPixmap::active( void )
+{
+  
+  Debug::Throw( "CustomPixmap::active.\n" );
+  QImage image( toImage() );
+  
+  // retrieve dimensions
+  int width( image.width() );
+  int height( image.height() );
+  
+  QColor merged_color;
+  for( int x = 0; x < width; x++ )
+  {
+    for( int y = 0; y < height; y++ ) 
+    {
+
+      QColor color( image.pixel( x, y ) );
+      color = color.light( 120 );
+      image.setPixel( x, y, color.rgb() );
+    }
+  }
+
+  return CustomPixmap( image );
+  
+}

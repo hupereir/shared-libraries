@@ -100,7 +100,10 @@ class CustomPixmap: public QPixmap, public Counter
   
   //! return greyed (inactive) pixmap, build from the current
   virtual CustomPixmap disabled( void );
-  
+
+  //! return highlighted (active) pixmap, build from the current
+  virtual CustomPixmap active( void );
+
 };
 
 #endif
