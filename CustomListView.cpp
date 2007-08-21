@@ -30,7 +30,6 @@
 #include <QApplication>
 #include <QCursor>
 #include <QHeaderView>
-#include <QMouseEvent>
 #include <QPainter>
 
 #include "ColorDisplay.h"
@@ -46,7 +45,7 @@ CustomListView::CustomListView( QWidget* parent ):
   Counter( "CustomListView" ),
   menu_( 0 )
 {
-  Debug::Throw( "CustomListView::CustomListView" );   
+  Debug::Throw( "CustomListView::CustomListView.\n" );   
 
   // default configuration
   setRootIsDecorated( false );

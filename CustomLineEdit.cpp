@@ -63,7 +63,7 @@ CustomLineEdit::CustomLineEdit( QWidget* parent ):
 //_____________________________________________________________________
 void CustomLineEdit::setModified( const bool& value )
 { 
-  Debug::Throw( "CustomTextEdit::setModified.\n" );
+  Debug::Throw( "CustomLineEdit::setModified.\n" );
   if( value != modified_ )
   {
     modified_ = value;
@@ -237,7 +237,7 @@ void CustomLineEdit::_installActions( void )
 //________________________________________________
 void CustomLineEdit::_updateUndoRedoActions( void )
 {
-  Debug::Throw( "CustomTextEdit::_updateUndoRedoActions.\n" );
+  Debug::Throw( "CustomLineEdit::_updateUndoRedoActions.\n" );
   undo_action_->setEnabled( isUndoAvailable() );
   redo_action_->setEnabled( isRedoAvailable() );
 }
@@ -246,7 +246,7 @@ void CustomLineEdit::_updateUndoRedoActions( void )
 void CustomLineEdit::_updateSelectionActions()
 {
   
-  Debug::Throw( "CustomTextEdit::_updateSelectionActions.\n" );
+  Debug::Throw( "CustomLineEdit::_updateSelectionActions.\n" );
 
   bool has_selection( hasSelectedText() );
   bool editable( !isReadOnly() );
@@ -262,7 +262,7 @@ void CustomLineEdit::_updateSelectionActions()
 void CustomLineEdit::_updatePasteAction( void )
 {
   
-  Debug::Throw( "CustomTextEdit::_updatePasteAction.\n" );
+  Debug::Throw( "CustomLineEdit::_updatePasteAction.\n" );
   bool editable( !isReadOnly() );
   bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
   paste_action_->setEnabled( editable && has_clipboard );

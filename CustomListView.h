@@ -35,7 +35,6 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QMenu>
-#include <QMouseEvent>
 #include <QTreeWidget>
 
 #include <string>
