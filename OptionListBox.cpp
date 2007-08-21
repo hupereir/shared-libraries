@@ -171,7 +171,8 @@ void OptionListBox::_add( void )
   }
   
   // map dialog
-  QtUtil::centerOnPointer( &dialog );
+  dialog.adjustSize();
+  QtUtil::centerOnParent( &dialog );
   if( dialog.exec() == QDialog::Rejected ) return;
   if( line_edit->text().isEmpty() ) return;
   
@@ -214,7 +215,8 @@ void OptionListBox::_edit( QListWidgetItem* )
   QtUtil::expand( line_edit, qPrintable( items.front()->text() ) );
 
   // map dialog
-  QtUtil::centerOnPointer( &dialog );
+  dialog.adjustSize();
+  QtUtil::centerOnParent( &dialog );
   if( dialog.exec() == QDialog::Rejected ) return;
   
   if( line_edit->text().isEmpty() ) return;

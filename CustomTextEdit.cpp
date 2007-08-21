@@ -498,7 +498,6 @@ void CustomTextEdit::findFromDialog( void )
   _findDialog().enableRegExp( true );
 
   // raise dialog
-//  QtUtil::centerOnPointer( &_findDialog() );
   QtUtil::centerOnParent( &_findDialog() );
   _findDialog().show();
 
