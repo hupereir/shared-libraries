@@ -97,11 +97,11 @@ class Counter {
   { if( count_ ) (*count_)--; }
   
   //! retrieves counter name
-  virtual const std::string& name( void ) const 
+  const std::string& name( void ) const 
   { return name_; }
   
   //! retrieves counter count
-  virtual int count( void ) const
+  int count( void ) const
   { return (count_) ? *count_:0; }
   
   //! prints all counters to stream
