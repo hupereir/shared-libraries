@@ -31,6 +31,7 @@
 
 #include <QBitmap>
 #include <QImage>
+#include <QPainter>
 
 #include "CustomPixmap.h"
 #include "Debug.h"
@@ -110,37 +111,9 @@ CustomPixmap CustomPixmap::merge( const QPixmap& pixmap ) const
   if( isNull() ) return *this;
   
   QImage source_image( toImage() );
-  int source_width( source_image.width() );
-  int source_height( source_image.height() );
-
-  QImage merge_image( pixmap.toImage() );
-  int merge_width( merge_image.width() );
-  int merge_height( merge_image.height() );
-  
-  for( int x = 0; x < min( source_width, merge_width ); x++ )
-  {
-    for( int y = 0; y < min( source_height, merge_height ); y++ ) 
-    {
-  
-      QColor source_color( source_image.pixel( x, y ) );    
-      QColor merge_color( merge_image.pixel( x, y ) );
-      
-//       int source_alpha( qAlpha( source_color.rgb() ) );
-//       int merge_alpha( qAlpha( merge_color.rgb() ) );
-//       double intensity = double( source_alpha )/double( source_alpha + merge_alpha );
-//       double no_intensity = 1-intensity;
-//       
-//       QColor new_color;
-//       new_color.setRgb( qRgba( 
-//         (unsigned int)( intensity*source_color.red() + no_intensity*merge_color.red() ), 
-//         (unsigned int)( intensity*source_color.green() + no_intensity*merge_color.green() ), 
-//         (unsigned int)( intensity*source_color.blue() + no_intensity*merge_color.blue() ), 
-//         max( source_alpha, merge_alpha ) ) );
-      
-//      source_image.setPixel( x, y, new_color.rgb() );
-      source_image.setPixel( x, y, merge_color.rgb() );
-    }
-  }
+  QPainter painter( &source_image );
+  painter.drawPixmap( QPoint( 0, 0 ), pixmap );
+  painter.end();
   return CustomPixmap().fromImage( source_image ); 
 }
 

@@ -102,8 +102,8 @@ void CustomToolButton::_updateConfiguration( void )
   setAutoRaise( true );
 
   // pixmap size
-  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( bigIconSize() );
-  else setIconSize( smallIconSize() );
+  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) QToolButton::setIconSize( bigIconSize() );
+  else QToolButton::setIconSize( smallIconSize() );
   
   // text labels
   if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );

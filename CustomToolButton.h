@@ -112,10 +112,11 @@ class CustomToolButton: public QToolButton, public Counter
   { setIconSize( size, BIG ); }
    
   //! icon size
-  void setIconSize( const QSize& size, const IconSize& type = ALL )
+  void setIconSize( const QSize& size, const IconSize& type )
   { 
     if( type & BIG ) big_icon_size_ = size; 
     if( type & SMALL ) small_icon_size_ = size; 
+    _updateConfiguration();
   }
   
   protected:
