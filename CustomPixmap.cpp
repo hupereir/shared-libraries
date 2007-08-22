@@ -125,19 +125,20 @@ CustomPixmap CustomPixmap::merge( const QPixmap& pixmap ) const
       QColor source_color( source_image.pixel( x, y ) );    
       QColor merge_color( merge_image.pixel( x, y ) );
       
-      int source_alpha( qAlpha( source_color.rgb() ) );
-      int merge_alpha( qAlpha( merge_color.rgb() ) );
-      double intensity = double( source_alpha )/double( source_alpha + merge_alpha );
-      double no_intensity = 1-intensity;
+//       int source_alpha( qAlpha( source_color.rgb() ) );
+//       int merge_alpha( qAlpha( merge_color.rgb() ) );
+//       double intensity = double( source_alpha )/double( source_alpha + merge_alpha );
+//       double no_intensity = 1-intensity;
+//       
+//       QColor new_color;
+//       new_color.setRgb( qRgba( 
+//         (unsigned int)( intensity*source_color.red() + no_intensity*merge_color.red() ), 
+//         (unsigned int)( intensity*source_color.green() + no_intensity*merge_color.green() ), 
+//         (unsigned int)( intensity*source_color.blue() + no_intensity*merge_color.blue() ), 
+//         max( source_alpha, merge_alpha ) ) );
       
-      QColor new_color;
-      new_color.setRgb( qRgba( 
-        (unsigned int)( intensity*source_color.red() + no_intensity*merge_color.red() ), 
-        (unsigned int)( intensity*source_color.green() + no_intensity*merge_color.green() ), 
-        (unsigned int)( intensity*source_color.blue() + no_intensity*merge_color.blue() ), 
-        max( source_alpha, merge_alpha ) ) );
-      
-      source_image.setPixel( x, y, new_color.rgb() );
+//      source_image.setPixel( x, y, new_color.rgb() );
+      source_image.setPixel( x, y, merge_color.rgb() );
     }
   }
   return CustomPixmap().fromImage( source_image ); 
