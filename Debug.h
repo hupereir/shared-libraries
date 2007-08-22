@@ -1,3 +1,7 @@
+
+#ifndef Debug_h
+#define Debug_h
+
 // $Id$
 
 /******************************************************************************
@@ -20,9 +24,6 @@
 *                         
 *                         
 *******************************************************************************/
-
-#ifndef Debug_h
-#define Debug_h
 
 /*!
    \file    Debug.h
@@ -73,8 +74,7 @@ class Debug
 
   //! private constructor
   Debug( void ):
-    level_( 0 ),
-    null_stream_( "/dev/null" )
+    level_( 0 )
   {}
   
   //! return singleton
@@ -87,8 +87,38 @@ class Debug
   //! debug level
   int level_;  
   
+  //! null stream. 
+  /*! Used to throw everything if the level is not high enough */  
+  class NullStreamBuff : public std::streambuf
+  {
+    public:
+    
+    //! constructor
+    NullStreamBuff()
+    {}
+  
+  };
+
+  //! null stream. 
+  /*! Used to throw everything if the level is not high enough */  
+  class NullStream : public std::ostream
+  {
+    
+    public:
+
+    //! constructor
+    NullStream() : std::ostream(&_streamBuff){}
+
+    private:
+    
+    //! buffer
+    NullStreamBuff _streamBuff;
+    
+   };
+
+  
   //! dummy stream to discard the text of two high debug level
-  std::ofstream null_stream_;
+  NullStream null_stream_;
   
 };
 
