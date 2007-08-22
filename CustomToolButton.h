@@ -87,22 +87,36 @@ class CustomToolButton: public QToolButton, public Counter
   //! set destination label
   void setToolTipLabel( QLabel* tooltip_label )
   { tooltip_label_ = tooltip_label; }
-  
-  //! big icon size
-  const QSize& bigIconSize( void ) const
-  { return big_icon_size_; }
-  
-  //! big icon size
-  void setBigIconSize( const QSize& size )
-  { big_icon_size_ = size; }
    
   //! small icon size
   const QSize& smallIconSize( void ) const
   { return small_icon_size_; }
+
+  //! big icon size
+  const QSize& bigIconSize( void ) const
+  { return big_icon_size_; }
   
+  enum IconSize
+  {
+    BIG = 1<<0,
+    SMALL = 1<<1,
+    ALL = BIG|SMALL
+  };
+    
   //! small icon size
   void setSmallIconSize( const QSize& size )
-  { small_icon_size_ = size; }
+  { setIconSize( size, SMALL ); }
+  
+  //! big icon size
+  void setBigIconSize( const QSize& size )
+  { setIconSize( size, BIG ); }
+   
+  //! icon size
+  void setIconSize( const QSize& size, const IconSize& type = ALL )
+  { 
+    if( type & BIG ) big_icon_size_ = size; 
+    if( type & SMALL ) small_icon_size_ = size; 
+  }
   
   protected:
       

@@ -107,9 +107,6 @@ void FlatStyle::drawControl( ControlElement element, const QStyleOption *option,
       QColor borderColor = option->palette.background().color().dark(178);
       QColor gradientStartColor = option->palette.button().color().light(104);
       QColor gradientStopColor = option->palette.button().color().dark(105);
-
-      int sliderMinLength = pixelMetric(PM_ScrollBarSliderMin, scrollBar, widget);
-      bool horizontal = scrollBar->orientation == Qt::Horizontal;
       bool isEnabled = scrollBar->state & State_Enabled;
       
       // The slider
@@ -160,8 +157,6 @@ void FlatStyle::drawControl( ControlElement element, const QStyleOption *option,
         lines[0] = QLine(pixmapRect.left() + 1, pixmapRect.bottom() - 1, pixmapRect.right() - 1, pixmapRect.bottom() - 1);
         lines[1] = QLine(pixmapRect.right() - 1, pixmapRect.top() + 2, pixmapRect.right() - 1, pixmapRect.bottom() - 1);
         sliderPainter.drawLines(lines, 2);
-        
-        int sliderMinLength = pixelMetric(PM_ScrollBarSliderMin, scrollBar, widget);
         sliderPainter.end();
         
         painter->drawPixmap(option->rect.topLeft(), cache);
