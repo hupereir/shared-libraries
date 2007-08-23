@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <QAction>
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QScrollBar>

@@ -73,8 +73,8 @@ bool XmlFileList::read( void )
   if( db_file_.empty() || !db_file_.exists() ) return false;
 
   // parse the file
-  QFile qtfile( db_file_.c_str() );
-  if ( !qtfile.open( QIODevice::ReadOnly ) )
+  QFile in( db_file_.c_str() );
+  if ( !in.open( QIODevice::ReadOnly ) )
   {
     Debug::Throw( "Options::Read - cannot open file.\n" );
     return false;
@@ -83,8 +83,8 @@ bool XmlFileList::read( void )
   // dom document
   QDomDocument document;
   XmlError error( db_file_ );
-  if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) ) {
-    qtfile.close();
+  if ( !document.setContent( &in, &error.error(), &error.line(), &error.column() ) ) {
+    in.close();
     Debug::Throw() << error << endl;
     return _deprecatedRead();
   }
