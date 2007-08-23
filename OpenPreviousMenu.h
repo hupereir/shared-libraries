@@ -62,10 +62,6 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   //! read db file
   virtual bool read( void );
 
-  //! check if a file is in database, adds it if not
-  virtual FileRecord& add( const std::string& file )
-  { return XmlFileList::add( File( file ).expand() ); }
-
   //! check if a file is in database, removes it if yes
   virtual void remove( const std::string& file )
   { XmlFileList::remove( File( file ).expand() ); }
@@ -85,6 +81,16 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
 
   //! signal emited when a file is selected
   void fileSelected( FileRecord );
+  
+  public slots:
+  
+  //! check if a file is in database, adds it if not
+  virtual FileRecord& add( const std::string& file )
+  { return add( File( file ) ); }
+  
+  //! check if a file is in database, adds it if not
+  virtual FileRecord& add( File file )
+  { return XmlFileList::add( file.expand() ); }  
   
   protected:
 
