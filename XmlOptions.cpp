@@ -61,7 +61,7 @@ bool XmlOptions::read( File file )
   QFile qtfile( file.c_str() );
   if ( !qtfile.open( QIODevice::ReadOnly ) )
   {
-    Debug::Throw( "Options::Read - cannot open file.\n" );
+    Debug::Throw( "XmlOptions::read - cannot open file.\n" );
     return false;
   }
 
@@ -86,7 +86,7 @@ bool XmlOptions::read( File file )
     // special options
     if( tag_name == OPTIONS::SPECIAL_OPTION )
     {
-      Debug::Throw( "Options::Read - special options" );
+      Debug::Throw( "XmlOptions::read - special options" );
 
       // retrieve Value attribute
       string value( qPrintable( element.attribute( OPTIONS::VALUE.c_str() ) ) );
