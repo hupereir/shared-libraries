@@ -261,7 +261,7 @@ bool File::remove( void ) const
   
   // check if file exists and remove
   // if it does not exists, do nothing and returns true (file was removed already)
-  if( exists() ) return (::remove( c_str() ) == 0 );
+  if( exists() ) return QFile( c_str() ).remove();
   else return true;
   
 }
