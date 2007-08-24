@@ -266,6 +266,17 @@ bool File::remove( void ) const
   
 }
 
+//_____________________________________________________________________
+bool File::rename( File new_file ) const
+{
+  
+  // check if file exists and rename
+  // return false  otherwise
+  if( exists() ) return QFile( c_str() ).rename( new_file.c_str() );
+  else return false;
+  
+}
+
 //____________________________________________  
 File File::addPath( const string& path ) const
 {  
