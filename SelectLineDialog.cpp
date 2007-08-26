@@ -79,7 +79,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   h_layout->addWidget( button = new QPushButton( "&Cancel", this ) );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
- 
+  setMinimumSize( QSize( 250, 100 ) );
   adjustSize();
   
 }
