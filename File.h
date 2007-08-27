@@ -135,6 +135,9 @@ class File: public Str
   */
   virtual bool remove( void ) const;
   
+  //! removes directory from disk, recursively
+  virtual bool removeRecursive( void ) const;
+  
   //! rename file
   /*! returns true if the file exists and was renamed */
   virtual bool rename( File new_name ) const;

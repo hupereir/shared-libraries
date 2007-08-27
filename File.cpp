@@ -259,13 +259,41 @@ File File::readLink( void ) const
 bool File::remove( void ) const
 {
   
+  Debug::Throw() << "File::remove - " << *this << endl;
+  
   // check if file exists and remove
   // if it does not exists, do nothing and returns true (file was removed already)
   if( exists() ) return QFile( c_str() ).remove();
   else return true;
   
 }
-
+ 
+//_____________________________________________________________________
+bool File::removeRecursive( void ) const
+{
+  
+  Debug::Throw() << "File::removeRecursive - " << *this << endl;
+  
+  if( !isDirectory() ) return remove();
+  
+  // list content of directory
+  QDir dir( c_str() );
+  QStringList files( dir.entryList() );
+  for( QStringList::iterator iter = files.begin(); iter != files.end(); iter++ )
+  { 
+    // skip "." and ".."
+    if( (*iter) == "." || (*iter) == ".." ) continue;
+    File file = File( qPrintable( *iter ) ).addPath( *this );
+    if( file.isLink() || !file.isDirectory() )
+    {
+      if( !file.remove() ) return false;
+    } else if( !file.removeRecursive() ) return false; 
+  }
+  dir.cdUp();
+  dir.rmdir( c_str() );
+  
+}
+ 
 //_____________________________________________________________________
 bool File::rename( File new_file ) const
 {
