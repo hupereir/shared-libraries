@@ -77,8 +77,8 @@ class CustomToolButton: public QToolButton, public Counter
   //! creator with icon filename, tooltip and destination label
   CustomToolButton( 
     QWidget* parent,   
-    QAction* action = 0,
-    QLabel* label = 0 );
+    QAction* action,
+    QLabel* label );
   
   //! destructor
   virtual ~CustomToolButton( void ) 
