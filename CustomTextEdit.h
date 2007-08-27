@@ -67,7 +67,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   public:
   
   //! constructor
-  CustomTextEdit( QWidget* parent );
+  CustomTextEdit( QWidget* parent = 0 );
   
   //! destrutor
   virtual ~CustomTextEdit( void );
