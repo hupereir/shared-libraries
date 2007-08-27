@@ -89,8 +89,18 @@ class CustomPixmap: public QPixmap, public Counter
   //! returns a tinted pixmap
   virtual CustomPixmap tint( const QColor& color, const double& intensity ) const;
   
-  //! returns a tinted pixmap
-  virtual CustomPixmap merge( const QPixmap& ) const;
+  //! corner enumeration for merging pixmap
+  enum Corner
+  {
+    TOP_LEFT,
+    TOP_RIGHT,
+    BOTTOM_LEFT,
+    BOTTOM_RIGHT,
+    CENTER
+  };
+  
+  //! merge pixmap, using the specified corner as an anchor
+  virtual CustomPixmap merge( const QPixmap&, Corner corner = TOP_LEFT ) const;
   
   //! returns an empty pixmap of given size, of given color and possibly transparent
   virtual CustomPixmap empty( 

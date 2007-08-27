@@ -106,13 +106,38 @@ CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensi
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::merge( const QPixmap& pixmap ) const
+CustomPixmap CustomPixmap::merge( const QPixmap& pixmap, Corner corner ) const
 { 
   if( isNull() ) return *this;
   
   QImage source_image( toImage() );
   QPainter painter( &source_image );
-  painter.drawPixmap( QPoint( 0, 0 ), pixmap );
+  switch( corner )
+  {
+    
+    case TOP_RIGHT:
+    painter.drawPixmap( QPoint( width()-pixmap.width(), 0 ), pixmap );
+    break;
+    
+    case BOTTOM_LEFT:
+    painter.drawPixmap( QPoint( 0, height()-pixmap.height() ), pixmap );
+    break;
+    
+    case BOTTOM_RIGHT:
+    painter.drawPixmap( QPoint( width()-pixmap.width(), height()-pixmap.height() ), pixmap );
+    break;
+    
+    case CENTER:
+    painter.drawPixmap(  QPoint( (width()-pixmap.width())/2, (height()-pixmap.height())/2 ), pixmap );
+    break;
+    
+    default:
+    case TOP_LEFT:
+    painter.drawPixmap( QPoint( 0, 0 ), pixmap );
+    break;
+    
+  }
+    
   painter.end();
   return CustomPixmap().fromImage( source_image ); 
 }
