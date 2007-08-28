@@ -106,6 +106,7 @@ void DockPanel::_toggleDock( void )
     
     button_->setText("&detach");
     
+    emit attached( true );
     emit attached();
   
   } else {
@@ -120,6 +121,8 @@ void DockPanel::_toggleDock( void )
     
     main_->setFrameStyle( QFrame::NoFrame );
     main_->show();
+    
+    emit attached( false );
     emit detached();
   
   }  

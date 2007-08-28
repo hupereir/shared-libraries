@@ -103,6 +103,9 @@ class DockPanel: public QWidget, public Counter
           
   signals:
   
+  //! emmited when state is changed
+  void attached( bool state );
+  
   //! emmited when panel is detached
   void detached( void );
   
