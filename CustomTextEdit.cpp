@@ -517,6 +517,7 @@ void CustomTextEdit::findFromDialog( void )
   else if( !_lastSelection().text().isEmpty() ) _findDialog().setText( _lastSelection().text() );
 
   // changes focus
+  _findDialog().activateWindow();
   _findDialog().editor().setFocus();
 
   return;
@@ -553,6 +554,10 @@ void CustomTextEdit::replaceFromDialog( void )
 
   // update replace text
   if( !_lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( _lastSelection().replaceText() );
+
+  // changes focus
+  _replaceDialog().activateWindow();
+  _replaceDialog().editor().setFocus();
 
   return;
 }
@@ -641,6 +646,7 @@ void CustomTextEdit::selectLineFromDialog( void )
   select_line_dialog_->editor().clear();
   QtUtil::centerOnParent( select_line_dialog_ );
   select_line_dialog_->show();
+  select_line_dialog_->activateWindow();
   select_line_dialog_->editor().setFocus();
 
 }
