@@ -32,7 +32,10 @@
   \date $Date$
 */
 
+#include <QMainWindow>
 #include <QToolBar>
+#include <list>
+#include <map>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -99,6 +102,15 @@ class CustomToolBar: public QToolBar, public Counter
     }
     
   };
+  
+  //! map toolbars and option name
+  typedef std::list< std::pair<QToolBar*, std::string> > List;
+  
+  //! static toolbar configuration based on options
+  static void updateConfiguration( QMainWindow* parent, const List& toolbars );
+  
+  //! static toolbar configuration based on options
+  static void saveConfiguration( QMainWindow* parent, const List& toolbars );
   
   private slots:
   
