@@ -1,0 +1,34 @@
+AUTOMAKE_OPTIONS = foreign
+EXTRA_DIST = base-help.pro
+
+INCLUDES =  \
+  -I$(qt_includes) \
+  -I$(qt_includes)/Qt \
+  -I$(qt_includes)/QtCore  \
+  -I$(qt_includes)/QtXml \
+  -I$(qt_includes)/QtGui \
+  -I$(top_srcdir)/base \
+  -I$(top_srcdir)/base-qt 
+
+noinst_HEADERS = \
+  HelpDialog.h \
+  HelpItem.h \
+  HelpItemList.h \
+  HelpManager.h \
+
+noinst_LIBRARIES = libbase-help.a
+
+libbase_help_a_SOURCES = \
+  HelpDialog.cpp \
+  HelpItem.cpp \
+  HelpManager.cpp
+
+nodist_libbase_qt_a_SOURCES = \
+  moc_HelpDialog.cpp 
+
+clean-local:
+	rm -f moc_*.cpp
+
+### rule to generate qt meta objects
+moc_%.cpp: %.h
+	$(qt_moc) $^ -o $@
