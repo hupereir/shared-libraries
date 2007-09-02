@@ -14,7 +14,7 @@ noinst_HEADERS = \
   HelpDialog.h \
   HelpItem.h \
   HelpItemList.h \
-  HelpManager.h \
+  HelpManager.h
 
 noinst_LIBRARIES = libbase-help.a
 
@@ -23,8 +23,9 @@ libbase_help_a_SOURCES = \
   HelpItem.cpp \
   HelpManager.cpp
 
-nodist_libbase_qt_a_SOURCES = \
-  moc_HelpDialog.cpp 
+nodist_libbase_help_a_SOURCES = \
+  moc_HelpDialog.cpp \
+  moc_HelpManager.cpp
 
 clean-local:
 	rm -f moc_*.cpp
