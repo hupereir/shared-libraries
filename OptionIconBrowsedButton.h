@@ -50,11 +50,11 @@ class OptionIconBrowsedButton: public IconBrowsedButton, public OptionWidget
   
   //! read value from option
   void read( void )
-  { setIconFile( XmlOptions::get().raw( optionName() ), false ); }
+  { setFile( XmlOptions::get().raw( optionName() ), false ); }
   
   //! write value to option
   void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), iconFile() ); }
+  { XmlOptions::get().setRaw( optionName(), file() ); }
         
 };
 #endif
