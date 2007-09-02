@@ -37,10 +37,6 @@ HEADERS = \
  FindDialog.h \
  FlatStyle.h \
  FontEdit.h \
- HelpDialog.h \
- HelpItem.h \
- HelpItemList.h \
- HelpManager.h \
  IconBrowsedButton.h \
  IconEngine.h \
  IconProvider.h \
@@ -110,9 +106,6 @@ SOURCES = \
  FindDialog.cpp \
  FlatStyle.cpp \
  FontEdit.cpp \
- HelpDialog.cpp \
- HelpItem.cpp \
- HelpManager.cpp \
  IconBrowsedButton.cpp \
  IconEngine.cpp \
  IconProvider.cpp \

@@ -41,10 +41,6 @@ noinst_HEADERS = \
   FindDialog.h \
   FlatStyle.h \
   FontEdit.h \
-  HelpDialog.h \
-  HelpItem.h \
-  HelpItemList.h \
-  HelpManager.h \
   IconBrowsedButton.h \
   IconEngine.h \
   IconProvider.h \
@@ -116,9 +112,6 @@ libbase_qt_a_SOURCES = \
   FlatStyle.cpp \
   FindDialog.cpp \
   FontEdit.cpp \
-  HelpDialog.cpp \
-  HelpItem.cpp \
-  HelpManager.cpp \
   IconBrowsedButton.cpp \
   IconEngine.cpp \
   IconProvider.cpp \
@@ -167,8 +160,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_DockPanel.cpp \
   moc_FindDialog.cpp \
   moc_FontEdit.cpp \
-  moc_HelpDialog.cpp \
-  moc_HelpManager.cpp \
   moc_IconBrowsedButton.cpp \
   moc_ListViewConfiguration.cpp \
   moc_MultipleClickCounter.cpp \
