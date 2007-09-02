@@ -33,10 +33,12 @@
 #include <qbitmap.h>
 #include <qimage.h>
 
+#include "BrowsedLineEdit.h"
+#include "CustomLineEdit.h"
 #include "CustomPixmap.h"
 #include "File.h"
 #include "IconBrowsedButton.h"
-#include "CustomFileDialog.h"
+#include "CustomDialog.h"
 #include "XmlOptions.h"
 #include "QtUtil.h"
 
@@ -50,25 +52,30 @@ const unsigned int IconBrowsedButton::icon_size_ = 48;
 IconBrowsedButton::IconBrowsedButton( QWidget* parent, const File& file):
   QPushButton( parent ),
   Counter( "IconBrowsedButton" ),
-  icon_file_( NO_ICON )
+  file_( NO_ICON )
 { 
   setIconSize( QSize(icon_size_,icon_size_) );
-  setIconFile( file, false ); 
+  setFile( file, false ); 
   setFixedSize( QSize( icon_size_+8, icon_size_+8 ) );
   connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
 }
   
 
 //_____________________________________________
-void IconBrowsedButton::setIconFile( const File& file, const bool& check )
+void IconBrowsedButton::setFile( const File& file, const bool& check )
 {
   
-  Debug::Throw() << "IconBrowsedButton::setIconFile - " << file << endl;
+  Debug::Throw() << "IconBrowsedButton::setFile - " << file << endl;
   
   CustomPixmap pixmap( file );
+  
+  // update file if pixmap is valid or current file is undefined
+  if( !pixmap.isNull() || file_ == NO_ICON )
+  { file_ = file; }
+  
+  // update pixmap if valid
   if( !pixmap.isNull() ) 
   {
-    icon_file_ = file;
     
     // resize pixmap
     if( pixmap.size() != QSize( icon_size_, icon_size_ ) )
@@ -78,6 +85,7 @@ void IconBrowsedButton::setIconFile( const File& file, const bool& check )
     return;
   }
   
+  // popup dialog if invalid
   if( check )
   {
     ostringstream what;
@@ -85,6 +93,7 @@ void IconBrowsedButton::setIconFile( const File& file, const bool& check )
     QtUtil::infoDialog( this, what.str() );
   }
   
+  // if file, set pixmap to empty
   if( no_icon_pixmap_.isNull() ) {
     no_icon_pixmap_ = CustomPixmap().empty( QSize( icon_size_, icon_size_ ) );
     setIcon( no_icon_pixmap_ );
@@ -99,21 +108,25 @@ void IconBrowsedButton::_browse( void )
 {
   Debug::Throw( "IconBrowsedButton::_Browse.\n" );
      
-  // create file dialog
-  CustomFileDialog dialog( this );
-  dialog.setFileMode( QFileDialog::AnyFile );
-  
-  // set dialog working directory from file, if valid
-  if( icon_file_.path().exists() ) 
-  { dialog.setDirectory( icon_file_.path().c_str() ); }
+  // create dialog
+  CustomDialog dialog( this );
 
-  // run dialog
-  if( dialog.exec() != QDialog::Accepted ) return; 
-    
-  QStringList files( dialog.selectedFiles() );
-  if( files.size() < 1 ) return;
+  ostringstream what;
+  dialog.mainLayout().addWidget( new QLabel(  "icon file name", &dialog ) );
+
+  // create editor, either directly or from BrowsedLineEdit
+  CustomLineEdit* line_edit( 0 );
+  BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog );
+  dialog.mainLayout().addWidget( browse_edit );
+  line_edit = &browse_edit->editor();
+  line_edit->setText( file_.c_str() );
   
-  setIconFile( File( qPrintable( files.front() ) ), true );
+  // map dialog
+  dialog.adjustSize();
+  QtUtil::centerOnParent( &dialog );
+  if( dialog.exec() == QDialog::Rejected ) return;
+  if( line_edit->text().isEmpty() ) return;
+  setFile( File( qPrintable( line_edit->text() ) ), true );
  
   return; 
 }

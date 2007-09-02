@@ -65,11 +65,11 @@ class IconBrowsedButton: public QPushButton, public Counter
   {}
   
   //! iconFile
-  virtual const File& iconFile( void ) const
-  { return icon_file_; }
+  virtual const File& file( void ) const
+  { return file_; }
   
   //! iconFile
-  virtual void setIconFile( const File& file, const bool& check );
+  virtual void setFile( const File& file, const bool& check );
 
   protected slots:
       
@@ -85,7 +85,7 @@ class IconBrowsedButton: public QPushButton, public Counter
   QPixmap no_icon_pixmap_;
     
   //! icon file
-  File icon_file_;
+  File file_;
   
 };
 
