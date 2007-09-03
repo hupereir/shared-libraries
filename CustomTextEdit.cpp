@@ -423,6 +423,13 @@ void CustomTextEdit::clearAllBackgrounds( void )
 //________________________________________________
 void CustomTextEdit::cut( void )
 {
+
+  Debug::Throw( "CustomTextEdit::cut.\n" );
+
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
     _boxSelection().toClipboard( QClipboard::Clipboard ); 
@@ -437,6 +444,7 @@ void CustomTextEdit::cut( void )
 //________________________________________________
 void CustomTextEdit::copy( void )
 {
+  Debug::Throw( "CustomTextEdit::copy.\n" );
   if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().toClipboard( QClipboard::Clipboard );
   else QTextEdit::copy();
 }
@@ -444,6 +452,13 @@ void CustomTextEdit::copy( void )
 //________________________________________________
 void CustomTextEdit::paste( void )
 {
+
+  Debug::Throw( "CustomTextEdit::paste.\n" );
+  
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+
   if( _boxSelection().state() == BoxSelection::FINISHED ) 
   {
     _boxSelection().fromClipboard( QClipboard::Clipboard );
@@ -455,6 +470,11 @@ void CustomTextEdit::paste( void )
 void CustomTextEdit::upperCase( void )
 {
   Debug::Throw( "CustomTextEdit::upperCase.\n" );
+  
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+
   QTextCursor cursor( textCursor() );
 
   // check selection
@@ -473,6 +493,11 @@ void CustomTextEdit::lowerCase( void )
 {
   
   Debug::Throw( "CustomTextEdit::lowerCase.\n" );
+  
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+
   QTextCursor cursor( textCursor() );
 
   // check selection
@@ -528,8 +553,12 @@ void CustomTextEdit::findFromDialog( void )
 void CustomTextEdit::replaceFromDialog( void )
 {
   Debug::Throw( "CustomTextEdit::replaceFromDialog.\n" );
-
-  // create
+  
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+ 
+    // create
   if( !replace_dialog_ ) _createReplaceDialog();
 
   // raise dialog
@@ -568,6 +597,10 @@ void CustomTextEdit::replace( TextSelection selection )
 
   Debug::Throw( "CustomTextEdit::replace.\n" );
 
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+  
   // see if current selection match
   // perform replacement if yes
   QTextCursor cursor( textCursor() );
@@ -593,6 +626,11 @@ unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const 
 {
 
   Debug::Throw( "CustomTextEdit::replaceInSelection.\n" );
+  
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return 0;
+
   unsigned int counts(0);
   
   if( _boxSelection().state() == BoxSelection::FINISHED )
@@ -622,6 +660,11 @@ unsigned int CustomTextEdit::replaceInWindow( TextSelection selection, const boo
 {
 
   Debug::Throw( "CustomTextEdit::replaceInWindow.\n" );
+
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return 0;
+
   QTextCursor cursor( textCursor() );
   cursor.movePosition( QTextCursor::Start );
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
@@ -681,6 +724,11 @@ void CustomTextEdit::removeLine()
 {
 
   Debug::Throw( "CustomTextEdit::removeLine.\n" );
+
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+  
   QTextCursor cursor( textCursor() );
   cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
   cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
@@ -1665,6 +1713,10 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
     << " selection: " << qPrintable( selection.text() )
     << " replacement: " << qPrintable( selection.replaceText() )
     << endl;
+  
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return 0;
 
   // check selection
   if( selection.text().isEmpty() ) return 0;
