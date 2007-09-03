@@ -29,7 +29,7 @@
    \date $Date$
 */
 
-#include <qlayout.h>
+#include <QMainWindow>
 
 #include "StatusBar.h"
 #include "ClockLabel.h"
@@ -40,23 +40,11 @@ using namespace std;
 
 //___________________________________________
 StatusBar::StatusBar( QWidget* parent ):
-  QWidget( parent ),
+  QStatusBar( parent ),
   Counter( "StatusBar" )
-{
-  
-  Debug::Throw( "StatusBar::StatusBar.\n" );
-  QHBoxLayout* layout = new QHBoxLayout();
-  layout->setMargin( 0 );
-  layout->setSpacing( 10 );
-  setLayout( layout );
-  
-  layout_ = new QHBoxLayout();
-  layout_->setMargin( 0 );
-  layout_->setSpacing( 10 );
-  layout->addLayout( layout_, 1 );
-  
-  layout->addWidget( grip_ = new QSizeGrip(this), 0 );
-  
+{ 
+  Debug::Throw( "StatusBar::StatusBar.\n" ); 
+  Exception::checkPointer( dynamic_cast<QMainWindow*>( parent ), DESCRIPTION( "wrong parent" ) );
 }
 
 
@@ -64,7 +52,7 @@ StatusBar::StatusBar( QWidget* parent ):
 void StatusBar::addClock( void )
 { 
   Debug::Throw( "StatusBar::addClock.\n" );
-  getLayout().addWidget( new ClockLabel( this ) ); 
+  addPermanentWidget( new ClockLabel( this ) ); 
 }
 
 //____________________________________________
@@ -74,6 +62,6 @@ void StatusBar::addLabel( const int& stretch )
   
   StatusBarLabel* label = new StatusBarLabel( this );
   label->setMargin(2);
-  layout_->addWidget( label, stretch, Qt::AlignVCenter );
+  addPermanentWidget( label, stretch );
   labels_.push_back( label );  
 }

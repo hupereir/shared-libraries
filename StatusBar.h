@@ -34,8 +34,8 @@
 
 #include <QSizeGrip>
 #include <QLabel>
-#include <QLayout>
 #include <QApplication>
+#include <QStatusBar>
 #include <string>
 #include <vector>
 
@@ -77,7 +77,7 @@ class StatusBarLabel: public QLabel, public Counter
    \class StatusBar
    \brief  customized line edit for application state
 */
-class StatusBar: public QWidget, public Counter 
+class StatusBar: public QStatusBar, public Counter 
 {
 
   public:
@@ -88,28 +88,7 @@ class StatusBar: public QWidget, public Counter
   //! destructor
   ~StatusBar( void )
   {}
-  
-  //! size/hide grip
-  void setSizeGripEnabled( const bool& value )
-  { 
-    if( value ) grip().show();
-    else grip().hide();
-  }
-  
-  //! size grip
-  QSizeGrip& grip( void )
-  { 
-    Exception::checkPointer( grip_, DESCRIPTION( "grip_ not initialized" ) );
-    return *grip_;
-  }
-  
-  //! retrieve layout
-  QBoxLayout& getLayout( void )
-  { 
-    Exception::checkPointer( layout_, DESCRIPTION( "layout_ not initialized" ) ); 
-    return *layout_;
-  }
-  
+     
   //! add clock
   void addClock( void );
   
@@ -129,12 +108,6 @@ class StatusBar: public QWidget, public Counter
   
   private:
 
-  //! layout
-  QBoxLayout* layout_;
-  
-  //! size grip
-  QSizeGrip* grip_;
-  
   //! vector of output labels.
   std::vector< StatusBarLabel* > labels_;
   

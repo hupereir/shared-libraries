@@ -52,6 +52,7 @@ int FlatStyle::pixelMetric( PixelMetric metric, const QStyleOption * option, con
   
 }
 
+//________________________________________________________________
 static QColor mergedColors(const QColor &colorA, const QColor &colorB, int factor = 50)
 {
     const int maxFactor = 100;
@@ -75,6 +76,8 @@ void FlatStyle::drawPrimitive( PrimitiveElement element, const QStyleOption* opt
       painter->drawLine(option->rect.left(), option->rect.top(), option->rect.right(), option->rect.top());
     }
     return;
+    
+    case PE_FrameStatusBar: return;
     
     case PE_IndicatorToolBarHandle: return;
     
