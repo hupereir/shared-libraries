@@ -46,7 +46,6 @@ using namespace std;
 using namespace Qt;
 using namespace BASE;
 
-
 //_________________________________________________________
 // static members initialization
 string HelpManager::window_title_( "Reference Manual" );
