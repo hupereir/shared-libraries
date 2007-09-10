@@ -186,6 +186,10 @@ bool File::isLink( void ) const
 { return !empty() && QFileInfo( c_str() ).isSymLink(); }
 
 //_____________________________________________________________________
+bool File::isHidden( void ) const
+{ return !empty() && QFileInfo( c_str() ).isHidden(); }
+
+//_____________________________________________________________________
 File File::version( void ) const
 { 
   

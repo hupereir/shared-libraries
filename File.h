@@ -115,6 +115,9 @@ class File: public Str
   //! tells if a file is a symbolic link
   virtual bool isLink( void ) const;
   
+  //! tells if a file is hidden
+  virtual bool isHidden( void ) const;
+  
   //! returns a versioned filename
   /*! (add _i at the end with i the first integer for which file is not found) */
   virtual File version( void ) const;
