@@ -145,9 +145,6 @@ ListViewConfiguration::ListViewConfiguration( QWidget *parent, QTreeWidget *targ
     
   }
   
-  // add to parent layout if any
-  if( parent && parent->layout() ) parent->layout()->addWidget( this );
-  
 } 
 
 //____________________________________________________________________________
