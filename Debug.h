@@ -47,7 +47,7 @@ class Debug
   public:
   
   //! writes string to clog if level is lower than level_
-  static void Throw( int level, const std::string& str )
+  static void Throw( int level, std::string str )
   {   
     if( _get().level_ < level ) return;  
     std::clog << str;  
@@ -55,7 +55,7 @@ class Debug
   }
   
   //! writes string to clog if level_ is bigger than 0
-  static void Throw( const std::string& str ) 
+  static void Throw( std::string str ) 
   { Throw( 1, str ); }
 
   //! returns either clog or dummy stream depending of the level
