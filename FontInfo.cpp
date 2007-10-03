@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file OptionFontInfo.cc
+   \file FontInfo.cc
    \brief font formatting options
    \author Hugo Pereira
    \version $Revision$
@@ -32,18 +32,16 @@
 #include <QHBoxLayout>
 
 #include "Debug.h"
-#include "OptionFontInfo.h"
-#include "XmlOptions.h"
+#include "FontInfo.h"
 #include "TextFormat.h"
 
 using namespace std;
 
 //_____________________________________________
-OptionFontInfo::OptionFontInfo( QWidget* parent, const string& option_name ):
-  QWidget( parent ),
-  OptionWidget( option_name )
+FontInfo::FontInfo( QWidget* parent ):
+  QWidget( parent )
 {
-  Debug::Throw( "OptionFontInfo::OptionFontInfo.\n" );
+  Debug::Throw( "FontInfo::FontInfo.\n" );
   setLayout( new QHBoxLayout() );
   layout()->setMargin(2);
   layout()->setSpacing(2);
@@ -54,9 +52,9 @@ OptionFontInfo::OptionFontInfo( QWidget* parent, const string& option_name ):
 }
 
 //__________________________________________________
-void OptionFontInfo::read( void )
+void FontInfo::setFormat( const unsigned int& format )
 {
-  unsigned int format = XmlOptions::get().get<unsigned int>( optionName() );
+  Debug::Throw( "FontInfo::setFormat.\n" );
   bold_->setChecked( format & FORMAT::BOLD );
   italic_->setChecked( format & FORMAT::ITALIC );
   underline_->setChecked( format & FORMAT::UNDERLINE );
@@ -64,12 +62,13 @@ void OptionFontInfo::read( void )
 }
 
 //__________________________________________________
-void OptionFontInfo::write( void ) const
+unsigned int FontInfo::format( void ) const
 {
-  unsigned int format = FORMAT::DEFAULT;
-  if( bold_->isChecked() ) format |= FORMAT::BOLD;
-  if( italic_->isChecked() ) format |= FORMAT::ITALIC;
-  if( underline_->isChecked() ) format |= FORMAT::UNDERLINE;
-  if( strike_->isChecked() ) format |= FORMAT::STRIKE;
-  XmlOptions::get().set<unsigned int>( optionName(), format );
+  Debug::Throw( "FontInfo::format.\n" );
+  unsigned int out = FORMAT::DEFAULT;
+  if( bold_->isChecked() ) out |= FORMAT::BOLD;
+  if( italic_->isChecked() ) out |= FORMAT::ITALIC;
+  if( underline_->isChecked() ) out |= FORMAT::UNDERLINE;
+  if( strike_->isChecked() ) out |= FORMAT::STRIKE;
+  return out;
 }

@@ -1,5 +1,5 @@
-#ifndef OptionFontInfo_h
-#define OptionFontInfo_h
+#ifndef FontInfo_h
+#define FontInfo_h
 
 // $Id$
 
@@ -26,8 +26,8 @@
 
 
 /*!
-   \file OptionFontInfo.h
-   \brief font formatting options
+   \file FontInfo.h
+   \brief font formatting
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
@@ -35,29 +35,34 @@
 
 #include <QCheckBox>
 
-#include "OptionWidget.h"
-#include "Options.h"
-#include "FontInfo.h"
-
-//! font formating options
-class OptionFontInfo: public FontInfo, public OptionWidget
+//! font formating
+class FontInfo: public QWidget
 {
 
   public:
 
   //! constructor
-  OptionFontInfo( QWidget* parent, const std::string& option_name ):
-    FontInfo( parent ),
-    OptionWidget( option_name )
-  {}
+  FontInfo( QWidget* parent );
 
-  //! read value from option
-  void read( void )
-  { setFormat( XmlOptions::get().get<unsigned int>( optionName() ) ); }
+  //! set checkboxes from from
+  void setFormat( const unsigned int& format );
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().set<unsigned int>( optionName(), format() ); }
+  //! get format
+  unsigned int format( void ) const;
+
+  private:
+
+  //! bold 
+  QCheckBox* bold_;
+  
+  //! italic
+  QCheckBox* italic_;
+  
+  //! underline
+  QCheckBox* underline_;
+  
+  //! strike
+  QCheckBox* strike_;
   
 };
 #endif

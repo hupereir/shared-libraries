@@ -41,6 +41,7 @@ noinst_HEADERS = \
   FindDialog.h \
   FlatStyle.h \
   FontEdit.h \
+  FontInfo.h \
   IconBrowsedButton.h \
   IconEngine.h \
   IconProvider.h \
@@ -112,13 +113,13 @@ libbase_qt_a_SOURCES = \
   FlatStyle.cpp \
   FindDialog.cpp \
   FontEdit.cpp \
+  FontInfo.cpp \
   IconBrowsedButton.cpp \
   IconEngine.cpp \
   IconProvider.cpp \
   ListViewConfiguration.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
-  OptionFontInfo.cpp \
   OptionListBox.cpp \
   ProcessDialog.cpp \
   ProcessFrame.cpp \
