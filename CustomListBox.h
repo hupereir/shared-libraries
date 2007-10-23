@@ -64,6 +64,11 @@ class CustomListBox: public QListWidget, public Counter
     return out;
   }
 
+  //! current item
+  template <typename T>
+  T* currentItem( void )
+  { return dynamic_cast<T*>( QListWidget::currentItem() ); }
+
   //! retrieve all items
   template <typename T>
   QList< T* > items( void )
@@ -87,7 +92,7 @@ class CustomListBox: public QListWidget, public Counter
     QList<T*> out;
     for( QList<QListWidgetItem*>::const_iterator iter = found.begin(); iter!=found.end(); iter++ )
     {
-      T* local_item( static_cast<T*>( *iter ) );
+      T* local_item( dynamic_cast<T*>( *iter ) );
       if( local_item ) out.push_back( local_item );
     }
     return out;
