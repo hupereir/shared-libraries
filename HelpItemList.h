@@ -32,20 +32,32 @@
    \date    $Date$
 */
 
+#include <QDrag>
+#include <QString>
+
 #include "CustomListBox.h"
 #include "HelpItem.h"
 
 namespace BASE
 {
+  
   //! Help item list
   class HelpItemList:public CustomListBox
   {
     
     public:
     //! constructor
-    HelpItemList( QWidget *parent ):
-      CustomListBox( parent )
-      {}
+    HelpItemList( QWidget *parent );
+      
+    //! used to tag Keyword drags
+    static const QString DRAG;
+  
+    //! enable drag
+    void setDragEnabled( bool value )
+    { 
+      Debug::Throw(0) << "HelpItemList::setDragEnabled - value: " << value << std::endl;
+      drag_enabled_ = value; 
+    }
       
     //! local item (overloaded) for counter dialog
     class Item: public QListWidgetItem
@@ -72,8 +84,64 @@ namespace BASE
       //! associated help text
       HelpItem item_;
       
-    };  
+    };
     
+    protected:
+
+    //! mouse press events [needed to start drag]
+    virtual void mousePressEvent( QMouseEvent *event );
+    
+    //! mouse move events [needed to start drag]
+    virtual void mouseMoveEvent( QMouseEvent *event );
+    
+    //! drag enter event [overloaded]
+    virtual void dragEnterEvent( QDragEnterEvent* event );
+    
+    //! drag move event [overloaded]
+    virtual void dragMoveEvent( QDragMoveEvent* event );
+    
+    //! drag leave event [overloaded]
+    virtual void dragLeaveEvent( QDragLeaveEvent* )
+    {  _resetDrag(); }
+    
+    //! drop event [overload]
+    virtual void dropEvent( QDropEvent* event );
+    
+    private:
+    
+    //!@name drag and drop methods
+    //@{
+    
+    //! start drag sequence
+    bool _startDrag( QMouseEvent *event );
+    
+    //! reset drag sequence
+    void _resetDrag( void );
+    
+    //! return true if QMimeSource is an accepted TextDrag
+    bool _acceptDrag( QDropEvent *event ) const;
+    
+    //! process drop action (for accepted drags)
+    bool _processDrop( QDropEvent *event );
+    
+    //@}
+    
+    //!@name drag and drop
+    //@{
+    
+    //! drag enabled
+    bool drag_enabled_;
+    
+    //! drop target item
+    Item *drop_item_;
+    
+    //! drop item 'initial' selection state
+    bool drop_item_selected_;
+    
+    //! store possible mouse drag start position
+    QPoint drag_start_;
+    
+    //@}
   };
   
 };

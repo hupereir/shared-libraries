@@ -56,10 +56,7 @@ namespace BASE
       
     //! destructor
     virtual ~HelpManager( void )
-    {
-      Debug::Throw( "HelpManager::~HelpManager.\n" );
-      if( modified() ) { _save(); }
-    }
+    { Debug::Throw( "HelpManager::~HelpManager.\n" ); }
     
     //!@name static accessors
     //@{
@@ -109,9 +106,6 @@ namespace BASE
    
     protected:
     
-    //! save help to file
-    static void _save( void );
-    
     protected slots:
     
     //! opens help dialog
@@ -119,6 +113,9 @@ namespace BASE
     
     //! dump help string in a TextEditor
     void _dumpHelpString( void );
+    
+    //! save help to file
+    void _save( void );
     
     private:
     

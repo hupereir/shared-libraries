@@ -29,6 +29,7 @@
    \date $Date$
 */
 
+#include <QApplication>
 #include <QAction>
 #include <QFile>
 #include <QVBoxLayout>
@@ -70,6 +71,8 @@ HelpManager::HelpManager( QObject* parent ):
   
   dump_action_ = new QAction( "D&ump Help", 0 );
   connect( dump_action_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
+  
+  connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _save() ) );
   
 }
 
@@ -212,7 +215,8 @@ void HelpManager::_dumpHelpString( void )
 void HelpManager::_save( void )
 {
   
-  Debug::Throw( "HelpManager::_save.\n" );
+  Debug::Throw() << "HelpManager::_save - file: " << file_ << endl;
+  
   if( file_.empty() ) return;
   if( !modified() ) return;
   // output file

@@ -34,6 +34,7 @@
 
 #include <QDialog>
 #include <QPushButton>
+#include <QStackedLayout>
 
 #include "Counter.h"
 #include "HelpItemList.h"
@@ -80,18 +81,36 @@ namespace BASE
     void _display(void);
     
     //! save modifications to current item
-    void _save( void );
+    void _save( bool forced = false );
     
     //! toggle help edition
     void _toggleEdition( void );
+
+    //! new item
+    void _newItem( void );
+    
+    //! delete current item
+    void _deleteItem( void );
     
     private:
     
     //! list of help items
     HelpItemList *list_;
     
-    //! associated text editor
-    CustomTextEdit *text_edit_;
+    //! stack layout to switch between editors
+    QStackedLayout* stack_layout_;
+    
+    //! html edition frame
+    QWidget* html_frame_;
+    
+    //! plain edition frame
+    QWidget* plain_frame_;
+    
+    //! read-only text editor
+    CustomTextEdit *html_editor_;
+    
+    //! plain text editor
+    CustomTextEdit *plain_editor_; 
     
     //! edition button
     QPushButton *edit_button_;
