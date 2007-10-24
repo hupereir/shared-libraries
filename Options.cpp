@@ -55,7 +55,6 @@ Options::Options( void ):
   // fonts
   add( Option( "FIXED_FONT_NAME", "Sans" , "fixed font"  )); 
   add( Option( "FONT_NAME", "Sans" , "main font"  )); 
-  add( Option( "FONT_SIZE", "10" , "font size"));  
   
   // toolbars default configuration
   add( Option( "USE_BIG_PIXMAP", "1" , "big pixmaps in tool buttons"  )); 

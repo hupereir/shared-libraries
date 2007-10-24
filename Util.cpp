@@ -114,10 +114,17 @@ bool Util::run( QStringList arguments )
 void Util::runAt( const string& path, const string& value )
 { return runAt( path, QString( value.c_str() ).split( QRegExp("\\s"), QString::SkipEmptyParts ) ); }
 
-
 //____________________________________________  
 void Util::runAt( const string& path, QStringList arguments )
 { 
+
+  // dump arguments for debugging
+  if( Debug::level() > 0 )
+  {
+    for( QStringList::iterator iter = arguments.begin(); iter != arguments.end(); iter++ )
+    { Debug::Throw(0) << "Util::runAt - argument: \"" << qPrintable( *iter ) << "\"" << endl; }  
+  }
+  
   CustomProcess *p = new CustomProcess();
   p->setAutoDelete();
   p->setWorkingDirectory( path.c_str() );
