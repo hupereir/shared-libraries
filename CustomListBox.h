@@ -83,6 +83,11 @@ class CustomListBox: public QListWidget, public Counter
     return out;
 
   }
+  
+  //! retrieve all items
+  template <typename T>
+  T* currentItem( void )
+  { return dynamic_cast<T*>( QListWidget::currentItem() ); }
 
   //! selected items
   template <typename T>
