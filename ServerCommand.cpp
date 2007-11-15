@@ -132,30 +132,34 @@ ServerCommand::operator std::string (void) const
 
 //__________________________________________________
 //! create command from stream
-istream & SERVER::operator >> ( istream& in, ServerCommand & command )
-{
+namespace SERVER {
 
-  Str buffer;
-  in >> buffer;
-  
-  // apply conversion
-  for( 
+  istream & operator >> ( istream& in, ServerCommand & command )
+  {
+    
+    Str buffer;
+    in >> buffer;
+    
+    // apply conversion
+    for( 
       ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
       iter != ServerCommand::conversions_.end();
       iter++
-  ) buffer = buffer.replace( iter->second, iter->first );
-        
-  command = ServerCommand( buffer );
-  return in;
-
-}
-
-//__________________________________________________
-//! dump command to stream
-ostream & SERVER::operator << ( ostream& out, const ServerCommand &command )
-{
-
-  out << string( command );
-  return out;
-
-}
+        ) 
+    { buffer = buffer.replace( iter->second, iter->first ); }
+    
+    command = ServerCommand( buffer );
+    return in;
+    
+  }
+  
+  //__________________________________________________
+  //! dump command to stream
+  ostream & operator << ( ostream& out, const ServerCommand &command )
+  {
+    
+    out << string( command );
+    return out;
+    
+  }
+};
