@@ -102,7 +102,6 @@ void BoxSelection::updateConfiguration( void )
   // retrieve margins
   int right, bottom;
   parent_->getContentsMargins( &left_margin_, &top_margin_, &right, &bottom );
-  left_margin_ += 2;
 }
 
 //________________________________________________________________________
@@ -118,7 +117,7 @@ bool BoxSelection::start( QPoint point )
   _updateRect();
   
   // set parent cursor
-  parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
+  parent_->setTextCursor( parent_->cursorForPosition( cursor_ + QPoint(0,-1) ) );
 
   state_ = STARTED;
   return true;
@@ -141,7 +140,7 @@ bool BoxSelection::update( QPoint point )
   
   // update parent 
   parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) );
-  parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
+  parent_->setTextCursor( parent_->cursorForPosition( cursor_ + QPoint(0,-1) ) );
 
   return true;
 }
@@ -275,7 +274,7 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
 
   // check if state is ok
   if( state() != FINISHED ) return false;
-  
+    
   // check if stored text makes sense
   QString selection( toString() );
   if( selection.isEmpty() ) return false;
@@ -376,7 +375,7 @@ void BoxSelection::_updateRect( void )
 //________________________________________________________________________
 void BoxSelection::_store( void )
 {
-  Debug::Throw( "BoxSelection::_store.\n" );
+  Debug::Throw("BoxSelection::_store.\n" );
 
   // retrieve box selection size
   int first_column = rect().left() / font_width_;
@@ -388,16 +387,30 @@ void BoxSelection::_store( void )
   // translate rect
   QRect local( parent_->toViewport( rect() ) );  
   cursors_ = CursorList( first_column, columns );
+  Debug::Throw() << "BoxSelection::_store - rect left: " << rect().left() << " right: " << rect().right() << endl;
+  Debug::Throw() << "BoxSelection::_store - local left: " << local.left() << " right: " << local.right() << endl;
   for( int row = 0; row < rows; row ++ )
   {
 
     // vertical offset for this row
-    QPoint voffset( 0, font_height_*( row + 1 ) );
+    //QPoint voffset( 0, 0 );
+    //QPoint voffset( 0, font_height_*( row + 1 ) );
+    QPoint voffset( 0, font_height_*(row) + 1 );
     QPoint begin( local.topLeft() + voffset );
     QPoint end( local.topRight() + voffset );
     
+    Debug::Throw() << "BoxSelection::_store -"
+      << " begin: (" << begin.x() << "," << begin.y() << ")"
+      << " end: (" << end.x() << "," << end.y() << ")"
+      << endl;
+    
     QTextCursor cursor( parent_->cursorForPosition( begin ) );
-  
+    Debug::Throw() 
+      << "BoxSelection::_store -"
+      << " begin: " << parent_->cursorForPosition( begin ).position() 
+      << " end: " << parent_->cursorForPosition( end ).position() 
+      << endl;
+    
     // check if cursor is at end of block, and move at end
     if( !cursor.atBlockEnd() )
     { cursor.setPosition( parent_->cursorForPosition( end ).position(), QTextCursor::KeepAnchor ); }
