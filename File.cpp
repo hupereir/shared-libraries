@@ -142,7 +142,7 @@ string File::sizeString( const unsigned int& size_int )
   double size = (double) size_int;
   if( size < 0 ) return "-";
   
-  static char* unit[] = { 
+  static const char* unit[] = { 
     "",
     "k",
     "M",
@@ -295,7 +295,7 @@ bool File::removeRecursive( void ) const
   }
   dir.cdUp();
   dir.rmdir( c_str() );
-  
+  return true;
 }
  
 //_____________________________________________________________________

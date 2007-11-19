@@ -188,7 +188,10 @@ string Util::user( void )
   #ifdef Q_WS_WIN32
   return env( "USERNAME", "unknown user" ); 
   #else 
-  return env( "USER", "unknown user" ); 
+  // first try look for USERNAME environment variable
+  // if failed, try USER
+  // if failed, return unknown.
+  return env( "USERNAME", env( "USER", "unknown user" ) ); 
   #endif
 }  
    
