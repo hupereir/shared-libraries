@@ -1578,6 +1578,11 @@ bool CustomTextEdit::_findForward( const TextSelection& selection, const bool& r
     found.setPosition( position, QTextCursor::MoveAnchor );
     found.setPosition( position+length, QTextCursor::KeepAnchor );
     setTextCursor( found );
+    
+    // copy selected text to clipboard
+    if( qApp->clipboard()->supportsSelection() )
+    { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
+    
     return true;
 
   } else {
@@ -1598,7 +1603,13 @@ bool CustomTextEdit::_findForward( const TextSelection& selection, const bool& r
 
     if( found.isNull() ) return false;
     else {
+      
       setTextCursor( found );
+
+      // copy selected text to clipboard
+      if( qApp->clipboard()->supportsSelection() )
+      { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
+      
       return true;
     }
 
@@ -1673,6 +1684,11 @@ bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& 
     found.setPosition( position, QTextCursor::MoveAnchor );
     found.setPosition( position-length, QTextCursor::KeepAnchor );
     setTextCursor( found );
+
+    // copy selected text to clipboard
+    if( qApp->clipboard()->supportsSelection() )
+    { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
+    
     return true;
 
   } else {
@@ -1694,6 +1710,11 @@ bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& 
     if( found.isNull() ) return false;
     else {
       setTextCursor( found );
+
+      // copy selected text to clipboard
+      if( qApp->clipboard()->supportsSelection() )
+      { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
+      
       return true;
     }
   }
@@ -2030,14 +2051,14 @@ void CustomTextEdit::_updateSelectionActions( bool has_selection )
 //________________________________________________
 void CustomTextEdit::_updateClipboardActions( QClipboard::Mode mode )
 {
-  Debug::Throw( 0, "CustomTextEdit::_updateClipboardActions.\n" );
+  Debug::Throw( "CustomTextEdit::_updateClipboardActions.\n" );
 
   if( mode == QClipboard::Clipboard )
   { paste_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Clipboard ).isEmpty() ); }
 
   if( mode == QClipboard::Selection )
   {
-    Debug::Throw(0) << "CustomTextEdit::_updateClipboardActions - clipboard: " << qPrintable( qApp->clipboard()->text( QClipboard::Selection ) ) << endl;
+    Debug::Throw() << "CustomTextEdit::_updateClipboardActions - clipboard: " << qPrintable( qApp->clipboard()->text( QClipboard::Selection ) ) << endl;
     find_selection_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
     find_selection_backward_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
   }
