@@ -359,6 +359,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   
   //!@name event handlers
   //@{
+  
+  //! enter event handler
+  void enterEvent( QEvent *event );
 
   //! mouse release event [overloaded]
   virtual void mousePressEvent( QMouseEvent* );
@@ -385,7 +388,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
     
   //! context menu event [overloaded]
   virtual void contextMenuEvent( QContextMenuEvent* );
-    
+  
   //! repaint event
   virtual void paintEvent( QPaintEvent* e );
 

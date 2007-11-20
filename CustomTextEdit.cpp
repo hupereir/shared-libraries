@@ -747,6 +747,20 @@ void CustomTextEdit::removeLine()
 }
 
 //________________________________________________
+void CustomTextEdit::enterEvent( QEvent* event )
+{
+
+  #if QT_VERSION < 0x040200
+  Debug::Throw( "CustomTextEdit::enterEvent.\n" );
+  _updateClipboardActions( QClipboard::Clipboard );
+  _updateClipboardActions( QClipboard::Selection );
+  #endif
+  
+  QTextEdit::enterEvent( event );
+  
+}
+  
+//________________________________________________
 void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 {
 
@@ -2016,13 +2030,14 @@ void CustomTextEdit::_updateSelectionActions( bool has_selection )
 //________________________________________________
 void CustomTextEdit::_updateClipboardActions( QClipboard::Mode mode )
 {
-  Debug::Throw( "CustomTextEdit::_updateClipboardActions.\n" );
+  Debug::Throw( 0, "CustomTextEdit::_updateClipboardActions.\n" );
 
   if( mode == QClipboard::Clipboard )
   { paste_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Clipboard ).isEmpty() ); }
 
   if( mode == QClipboard::Selection )
   {
+    Debug::Throw(0) << "CustomTextEdit::_updateClipboardActions - clipboard: " << qPrintable( qApp->clipboard()->text( QClipboard::Selection ) ) << endl;
     find_selection_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
     find_selection_backward_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
   }
