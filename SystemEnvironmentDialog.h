@@ -44,7 +44,7 @@ class SystemEnvironmentDialog: public QDialog, public Counter
   
   public:
           
-  // constructor
+  //! constructor
   SystemEnvironmentDialog( QWidget* parent );
   
   //! destructor

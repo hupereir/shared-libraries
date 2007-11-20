@@ -158,7 +158,7 @@ class QtUtil {
   
   protected:
       
-  // max opacity
+  //! maximum value for opacity setting (corresponds to solid)
   static const unsigned int max_opacity_;
   
   //! opacity property name

@@ -44,7 +44,7 @@ class OptionDialog: public QDialog, public Counter
   
   public:
           
-  // constructor
+  //! constructor
   OptionDialog( QWidget* parent );
   
   //! destructor

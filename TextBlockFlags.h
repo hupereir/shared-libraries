@@ -25,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file TextBlockFlags
+  \file TextBlockFlags.h
   \brief handles block tags
   \author Hugo Pereira
   \version $Revision$

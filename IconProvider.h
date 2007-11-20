@@ -42,7 +42,7 @@ class IconProvider:public QFileIconProvider, public Counter
   
   public:
   
-  // !constructor
+  //! constructor
   IconProvider( void ):
     Counter( "IconProvider" )
   { 

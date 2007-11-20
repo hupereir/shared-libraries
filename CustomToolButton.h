@@ -96,10 +96,17 @@ class CustomToolButton: public QToolButton, public Counter
   const QSize& bigIconSize( void ) const
   { return big_icon_size_; }
   
+  //! icon size enumeration
+  /*! used notably to assign values to a given icon size */
   enum IconSize
   {
+    //! select big icons
     BIG = 1<<0,
+
+    //! select small icons
     SMALL = 1<<1,
+    
+    //! select both sets of icons
     ALL = BIG|SMALL
   };
     
