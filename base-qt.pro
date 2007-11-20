@@ -112,7 +112,6 @@ SOURCES = \
  ListViewConfiguration.cpp \
  OptionDialog.cpp \
  OpenPreviousMenu.cpp \
- OptionFontInfo.cpp \
  OptionListBox.cpp \
  ProcessDialog.cpp \
  ProcessFrame.cpp \

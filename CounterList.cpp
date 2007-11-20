@@ -31,7 +31,7 @@
 using namespace std;
 
 //_______________________________________________
-char* CounterList::column_titles_[ CounterList::n_columns ] = 
+const char* CounterList::column_titles_[ CounterList::n_columns ] = 
 {
   "name",
   "count"

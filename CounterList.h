@@ -61,7 +61,7 @@ class CounterList: public CustomListView
   };
 
   //! column titles
-  static char* column_titles_[ n_columns ];
+  static const char* column_titles_[ n_columns ];
   
   //! constructor
   CounterList( QWidget* parent );
