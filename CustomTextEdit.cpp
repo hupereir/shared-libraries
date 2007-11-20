@@ -538,8 +538,11 @@ void CustomTextEdit::findFromDialog( void )
   _findDialog().clearLabel();
 
   // set default text
-  if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
-  else if( !_lastSelection().text().isEmpty() ) _findDialog().setText( _lastSelection().text() );
+  // update find text
+  QString text;
+  if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _findDialog().setText( text );
+  else if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
+  else if( !( text = _lastSelection().text() ).isEmpty() ) _findDialog().setText( text );
 
   // changes focus
   _findDialog().activateWindow();
@@ -578,8 +581,10 @@ void CustomTextEdit::replaceFromDialog( void )
   _replaceDialog().clearLabel();
 
   // update find text
-  if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
-  else if( !_lastSelection().text().isEmpty() ) _replaceDialog().setText( _lastSelection().text() );
+  QString text;
+  if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _replaceDialog().setText( text );
+  else if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
+  else if( !( text = _lastSelection().text() ).isEmpty() ) _replaceDialog().setText( text );
 
   // update replace text
   if( !_lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( _lastSelection().replaceText() );
@@ -1454,13 +1459,16 @@ TextSelection CustomTextEdit::_selection( void ) const
   TextSelection out( "" );
 
   // try set from current selection
-  if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );
-  else if( qApp->clipboard()->supportsSelection() )
-  { out.setText( qApp->clipboard()->text( QClipboard::Selection ) ); }
+  QString text;
+  if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
+  else if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );
 
   // copy attributes from last selection
   out.setFlag( TextSelection::CASE_SENSITIVE, _lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
   out.setFlag( TextSelection::ENTIRE_WORD, _lastSelection().flag( TextSelection::ENTIRE_WORD ) );
+  
+  Debug::Throw(0) << "CustomTextEdit::_selection - " << qPrintable(out.text()) << endl;
+  
   return out;
 
 }
