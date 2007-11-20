@@ -194,7 +194,7 @@ File File::version( void ) const
 { 
   
   int version=0;
-  string expand( this->expand() );
+  string expand( File::expand() );
   File out( expand );
   while( out.exists() ) {
     ostringstream o; o << expand << "_" << version;
@@ -253,6 +253,12 @@ bool File::diff(const File& file ) const
   
   return( first.readAll() != second.readAll() ); 
   
+}
+
+//_____________________________________________________________________
+bool File::isEqual( const File& file ) const
+{
+  return expand() == file.expand();
 }
 
 //_____________________________________________________________________
@@ -333,7 +339,15 @@ File File::addPath( const string& path ) const
  
 //_____________________________________________________________________
 File File::expand( void ) const
-{ return empty() ? File() : File(qPrintable( QFileInfo(c_str()).absoluteFilePath() )); }
+{ 
+  if( empty() ) return File();
+  File out( qPrintable( QFileInfo(c_str()).absoluteFilePath() ) );
+
+  // remove trailing slash, except for root
+  if( out.size() > 1 && out[out.size()-1] == '/' ) out.resize( out.size()-1 );
+  return out;
+  
+}
 
 //_____________________________________________________________________
 File File::path( void ) const
@@ -429,7 +443,7 @@ File File::find( const File& file, bool case_sensitive ) const
   {
         
     // check if file match
-    if( File( *iter ).localName().isEqual( file, case_sensitive ) )
+    if( File( *iter ).localName().Str::isEqual( file, case_sensitive ) )
     return *iter;
     
     // check if file is directory        

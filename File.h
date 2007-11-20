@@ -128,6 +128,13 @@ class File: public Str
   //! returns true if two file differs
   virtual bool diff( const File& file ) const;
   
+  //! returns true if file is the same as argument
+  /* 
+  this is a literal string comparison for files.
+  for pathnames, the trailing backslash is ignored
+  */
+  virtual bool isEqual( const File& file ) const;
+  
   //! return link destination file
   virtual File readLink( void ) const;
   
