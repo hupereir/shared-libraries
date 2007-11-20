@@ -63,11 +63,13 @@ void DebugMenu::_showCounterDialog( void )
     
     counter_dialog_ = new CounterDialog( parentWidget() );
     counter_dialog_->update();
+    QtUtil::centerOnParent( counter_dialog_ );
     counter_dialog_->show();
     
   } else {
     
     counter_dialog_->update();
+    QtUtil::centerOnParent( counter_dialog_ );
     counter_dialog_->show();
     QtUtil::uniconify( counter_dialog_ );
   
