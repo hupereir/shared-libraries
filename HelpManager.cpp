@@ -203,7 +203,8 @@ void HelpManager::_dumpHelpString( void )
   main->layout()->setMargin(10);
   CustomTextEdit *text_edit = new CustomTextEdit( main );
 
-  text_edit->setWordWrapMode( QTextOption::NoWrap );
+  text_edit->setWrapFromOptions( false );
+  text_edit->wrapModeAction().setChecked( false );
   text_edit->setPlainText( out.str().c_str() );
   main->layout()->addWidget( text_edit );
   main->resize( 600, 500 );
