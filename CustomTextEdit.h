@@ -515,7 +515,11 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   virtual void _updateReadOnlyActions( bool );
 
   //! update action status
+  /*! this works only if you have qt > 4.2 */
   virtual void _updateSelectionActions( bool );
+  
+  //! update action status
+  virtual void _updateClipboardActions( QClipboard::Mode );
   
   //! update paste action 
   /*! depends on clipboard status and editability */

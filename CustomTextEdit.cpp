@@ -92,7 +92,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 
   // update configuration
   _updateConfiguration();
-    
+
 }
 
 //________________________________________________
@@ -153,16 +153,16 @@ TextPosition CustomTextEdit::textPosition( void )
   // calculate index
   TextPosition out;
   out.index() = cursor.position() - block.position();
-  
+
   while( block.isValid() )
-  { 
-    block = block.previous(); 
+  {
+    block = block.previous();
     out.paragraph()++;
   }
-  
+
   // need to decrement once
   out.paragraph()--;
-    
+
   return out;
 
 }
@@ -365,50 +365,50 @@ void CustomTextEdit::setReadOnly( bool readonly )
 {
   Debug::Throw( "CustomTextEdit::setReadOnly.\n" );
   QTextEdit::setReadOnly( readonly );
-  _updateReadOnlyActions( readonly ); 
+  _updateReadOnlyActions( readonly );
   if( readonly ) document()->setModified( false );
 }
-  
+
 //___________________________________________________________________________
 void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
 {
- 
+
   Debug::Throw( "CustomTextEdit::setBackground.\n" );
-  
+
   // try retrieve data or create
   TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
   if( !data ) block.setUserData( data = new TextBlockData() );
-  
+
   // try assign color
   if( data->setBackground( color ) )
-  { 
-    
+  {
+
     // retrieve block rect, translate and redraw
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() );
-    viewport()->update( toViewport( block_rect.toRect() ) );    
-    
+    viewport()->update( toViewport( block_rect.toRect() ) );
+
   }
-  
+
   return;
-  
+
 }
 
 //___________________________________________________________________________
 void CustomTextEdit::clearBackground( QTextBlock block )
 {
- 
+
   Debug::Throw( "CustomTextEdit::clearBackground.\n" );
   TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
   if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) )
-  { 
+  {
     // retrieve block rect and redraw
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() );
-    viewport()->update( toViewport( block_rect.toRect() ) );    
+    viewport()->update( toViewport( block_rect.toRect() ) );
 
   }
-  
+
   return;
 }
 
@@ -432,15 +432,15 @@ void CustomTextEdit::cut( void )
 
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
-    _boxSelection().toClipboard( QClipboard::Clipboard ); 
+    _boxSelection().toClipboard( QClipboard::Clipboard );
     _boxSelection().removeSelectedText();
     _boxSelection().clear();
     emit copyAvailable( false );
   } else QTextEdit::cut();
-  
+
   return;
 }
-  
+
 //________________________________________________
 void CustomTextEdit::copy( void )
 {
@@ -448,29 +448,29 @@ void CustomTextEdit::copy( void )
   if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().toClipboard( QClipboard::Clipboard );
   else QTextEdit::copy();
 }
-  
+
 //________________________________________________
 void CustomTextEdit::paste( void )
 {
 
   Debug::Throw( "CustomTextEdit::paste.\n" );
-  
+
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return;
 
-  if( _boxSelection().state() == BoxSelection::FINISHED ) 
+  if( _boxSelection().state() == BoxSelection::FINISHED )
   {
     _boxSelection().fromClipboard( QClipboard::Clipboard );
     _boxSelection().clear();
   } else QTextEdit::paste();
 }
-  
+
 //________________________________________________
 void CustomTextEdit::upperCase( void )
 {
   Debug::Throw( "CustomTextEdit::upperCase.\n" );
-  
+
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return;
@@ -491,9 +491,9 @@ void CustomTextEdit::upperCase( void )
 //________________________________________________
 void CustomTextEdit::lowerCase( void )
 {
-  
+
   Debug::Throw( "CustomTextEdit::lowerCase.\n" );
-  
+
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return;
@@ -556,11 +556,11 @@ void CustomTextEdit::findFromDialog( void )
 void CustomTextEdit::replaceFromDialog( void )
 {
   Debug::Throw( "CustomTextEdit::replaceFromDialog.\n" );
-  
+
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return;
- 
+
     // create
   if( !replace_dialog_ ) _createReplaceDialog();
 
@@ -605,7 +605,7 @@ void CustomTextEdit::replace( TextSelection selection )
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return;
-  
+
   // see if current selection match
   // perform replacement if yes
   QTextCursor cursor( textCursor() );
@@ -631,27 +631,27 @@ unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const 
 {
 
   Debug::Throw( "CustomTextEdit::replaceInSelection.\n" );
-  
+
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return 0;
 
   unsigned int counts(0);
-  
+
   if( _boxSelection().state() == BoxSelection::FINISHED )
-  { 
-    
+  {
+
     Debug::Throw( "CustomTextEdit::replaceInSelection - box selection.\n" );
     BoxSelection::CursorList cursors( _boxSelection().cursorList() );
     for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
     { counts += _replaceInRange( selection, *iter, MOVE ); }
-        
+
     _boxSelection().clear();
-    
-  } else { 
+
+  } else {
     Debug::Throw( "CustomTextEdit::replaceInSelection - normal selection.\n" );
     QTextCursor cursor( textCursor() );
-    counts = _replaceInRange( selection, cursor, EXPAND ); 
+    counts = _replaceInRange( selection, cursor, EXPAND );
   }
 
   Debug::Throw( "CustomTextEdit::replaceInSelection - done.\n" );
@@ -674,7 +674,7 @@ unsigned int CustomTextEdit::replaceInWindow( TextSelection selection, const boo
   cursor.movePosition( QTextCursor::Start );
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
   unsigned int counts( _replaceInRange( selection, cursor, EXPAND ) );
-  
+
   if( show_dialog ) showReplacements( counts );
   return counts;
 
@@ -733,12 +733,12 @@ void CustomTextEdit::removeLine()
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return;
-  
+
   QTextCursor cursor( textCursor() );
   cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
   cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
   remove_line_buffer_.append( cursor.selectedText() );
-  
+
   setUpdatesEnabled( false );
   setTextCursor( cursor );
   cut();
@@ -764,8 +764,8 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       case 1:
 
       // if single click in existing box selection, store drag position
-      if( 
-        event->modifiers() == NoModifier &&  
+      if(
+        event->modifiers() == NoModifier &&
         _boxSelection().state() == BoxSelection::FINISHED &&
         _boxSelection().rect().contains( fromViewport( event->pos() ) )
         )
@@ -776,15 +776,15 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       }
 
       // if single click outside of existing box selection, clear the selection
-      if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED ) 
+      if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
       {
-        
+
         _boxSelection().clear();
         _synchronizeBoxSelection();
         emit copyAvailable( false );
-    
-      }         
-        
+
+      }
+
       // if single click and Control key pressed, start a new box selection
       if( event->modifiers() == ControlModifier  )
       {
@@ -793,16 +793,16 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
         if( !_boxSelection().isEnabled() ) _boxSelection().updateConfiguration();
         if( _boxSelection().isEnabled() )
         {
-          
+
           _boxSelection().start( event->pos() );
-          
+
           // synchronize with other editors
           _synchronizeBoxSelection();
           return;
-        } 
-                  
-      } 
-      
+        }
+
+      }
+
       return QTextEdit::mousePressEvent( event );
       break;
 
@@ -823,13 +823,13 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       event->ignore();
       break;
     }
-    
+
     return;
-    
-  } 
-  
+
+  }
+
   return QTextEdit::mousePressEvent( event );
-  
+
 }
 
 //________________________________________________
@@ -855,41 +855,41 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
   if( event->buttons() == LeftButton && _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::STARTED )
   {
 
-    _boxSelection().update( event->pos() ); 
+    _boxSelection().update( event->pos() );
     _synchronizeBoxSelection();
     emit copyAvailable( true );
     return;
-    
+
   }
-  
+
   // start a new box selection if requested
   if( event->buttons() == LeftButton && _boxSelection().isEnabled() && event->modifiers() == ControlModifier && viewport()->rect().contains( event->pos() ) )
-  { 
-    
-    _boxSelection().start( event->pos() ); 
+  {
+
+    _boxSelection().start( event->pos() );
     _synchronizeBoxSelection();
     emit copyAvailable( true );
     return;
   }
-  
+
   // see if dragging existing box selection
   if( event->buttons() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED && (event->pos() - drag_start_ ).manhattanLength() > QApplication::startDragDistance() )
   {
     // start drag
     QDrag *drag = new QDrag(this);
-    
+
     // store data
     QString text( _boxSelection().toString() );
-    
+
     QMimeData *data = new QMimeData();
     data->setText( text );
     data->setData( BoxSelection::mimeType, text.toAscii() );
     drag->setMimeData( data );
-    drag->start(Qt::CopyAction);  
-    
+    drag->start(Qt::CopyAction);
+
     return;
   }
-  
+
   return QTextEdit::mouseMoveEvent( event );
 
 }
@@ -907,18 +907,18 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
     _boxSelection().finish( event->pos() );
     _synchronizeBoxSelection();
     return QTextEdit::mouseReleaseEvent( event );
-    
+
   }
-    
-  if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED ) 
+
+  if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
   {
-    
+
     _boxSelection().clear();
     _synchronizeBoxSelection();
     emit copyAvailable( false );
-    return QTextEdit::mouseReleaseEvent( event ); 
-    
-  } 
+    return QTextEdit::mouseReleaseEvent( event );
+
+  }
 
   if( event->button() == LeftButton && click_counter_.counts() > 1 )
   {
@@ -930,7 +930,7 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 
   // do nothing with MidButton when box selection is active
   if( event->button() == MidButton  && _boxSelection().state() == BoxSelection::FINISHED ) return;
-  
+
   // normal case
   return QTextEdit::mouseReleaseEvent( event );
 
@@ -941,28 +941,28 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
 {
 
   Debug::Throw( "CustomTextEdit::dropEvent.\n" );
-  
+
   // static empty mimeData used to pass to base class
   // so that drop events are finished properly even when actually doing nothing
   static QMimeData* empty_data( new QMimeData() );
   QDropEvent empty_event( event->pos(), event->possibleActions(), empty_data, NoButton, NoModifier );
- 
+
   // if mimeData is block selection, block selection is enabled here
   // and there is no active selection (standard or box), insert new box selection
   // at cursor position
-  if( 
+  if(
     event->mimeData()->hasFormat( BoxSelection::mimeType ) &&
     _boxSelection().isEnabled() &&
     _boxSelection().state() == BoxSelection::EMPTY &&
     !textCursor().hasSelection() )
   {
-    
+
     Debug::Throw( "CustomTextEdit::dropEvent - dropping box selection.\n" );
-    
+
     // retrieve text from mimeType
     QString text( event->mimeData()->text() );
     QStringList input_list( text.split( "\n" ) );
-    
+
     // create an empty boxSelection from current position with proper size
     _boxSelection().start( event->pos() );
     _boxSelection().finish( event->pos() );
@@ -971,11 +971,11 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
 
     event->acceptProposedAction();
     QTextEdit::dropEvent( &empty_event );
-    return; 
-   
+    return;
+
   }
- 
-  if( 
+
+  if(
     event->mimeData()->hasFormat( BoxSelection::mimeType ) &&
     _boxSelection().isEnabled() &&
     _boxSelection().state() == BoxSelection::FINISHED &&
@@ -988,7 +988,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
 
     // count rows in current selection
     int rowCount( _boxSelection().cursorList().size() - 1 );
-    
+
     // store cursor at new insertion position
     QTextCursor new_cursor( cursorForPosition( event->pos() ) );
 
@@ -1003,10 +1003,10 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
 
     _boxSelection().start( start );
     _boxSelection().finish( end );
-    
+
     // join modifications with previous so that they appear as one entry in undo/redo list
     new_cursor.joinPreviousEditBlock();
-    
+
     // insert text in new box
     _boxSelection().fromString( event->mimeData()->text() );
     _boxSelection().clear();
@@ -1014,70 +1014,70 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
 
     event->acceptProposedAction();
     QTextEdit::dropEvent( &empty_event );
-    return; 
-    
+    return;
+
 
   }
 
   // check if there is one valid box selection that contains the drop point
-  if( 
+  if(
     event->mimeData()->hasText() &&
-    _boxSelection().isEnabled() && 
-    _boxSelection().state() == BoxSelection::FINISHED && 
+    _boxSelection().isEnabled() &&
+    _boxSelection().state() == BoxSelection::FINISHED &&
     toViewport( _boxSelection().rect() ).contains( event->pos() ) )
   {
-    
+
     if( event->source() == this )
     {
-      
+
       // current selection is inserted in itself. Doing nothing
       Debug::Throw( "CustomTextEdit::dropEvent - [box] doing nothing.\n" );
       event->acceptProposedAction();
       QTextEdit::dropEvent( &empty_event );
-      return; 
-      
+      return;
+
     } else {
-      
+
       // insert mine data in current box selection
       Debug::Throw( "CustomTextEdit::dropEvent - [box] inserting selection.\n" );
       _boxSelection().fromString( event->mimeData()->text() );
       setTextCursor( _boxSelection().cursorList().back() );
-      _boxSelection().clear();    
+      _boxSelection().clear();
       event->acceptProposedAction();
       QTextEdit::dropEvent( &empty_event );
       return;
-      
+
     }
   }
-  
+
   // retrieve selection bounding rect
   if( event->mimeData()->hasText() && textCursor().hasSelection() )
   {
     QTextCursor cursor( textCursor() );
     QTextCursor new_cursor( cursorForPosition( event->pos() ) );
-    
-    bool contained( 
+
+    bool contained(
       new_cursor.position() >= min( cursor.position(), cursor.anchor() ) &&
       new_cursor.position() <= max( cursor.position(), cursor.anchor() ) );
-    
+
     if( contained && event->source() != this )
     {
-      
+
       // drag action is from another widget and ends in selection. Replace this selection
       Debug::Throw( "CustomTextEdit::dropEvent - inserting selection.\n" );
       cursor.insertText( event->mimeData()->text() );
       event->acceptProposedAction();
       QTextEdit::dropEvent( &empty_event );
       return;
-      
+
     }
-      
-    if( event->source() == this ) 
+
+    if( event->source() == this )
     {
-      
+
       // drag action is from this widget
       // insert selection at current location and remove old selection
-      
+
       Debug::Throw( "CustomTextEdit::dropEvent - moving selection.\n" );
       cursor.beginEditBlock();
       cursor.removeSelectedText();
@@ -1085,18 +1085,18 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
       cursor.insertText( event->mimeData()->text() );
       cursor.endEditBlock();
       setTextCursor( cursor );
-      
+
       event->acceptProposedAction();
       QTextEdit::dropEvent( &empty_event );
       return;
-      
+
     }
-    
+
   }
-  
+
   // for all other cases, use default
   return QTextEdit::dropEvent( event );
-  
+
 }
 
 //________________________________________________
@@ -1105,41 +1105,41 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
 
   // clear line buffer.
   remove_line_buffer_.clear();
-  
-  /* 
-  need to grap CTRL+X, C and V event to forward them to the 
-  daughter implementation of cut, copy and paste, otherwise 
+
+  /*
+  need to grap CTRL+X, C and V event to forward them to the
+  daughter implementation of cut, copy and paste, otherwise
   they are passed to the base class, with no way to overrid
   */
   if( event->modifiers() == ControlModifier )
-  { 
-    if( event->key() == Key_X ) 
+  {
+    if( event->key() == Key_X )
     {
       cut();
       event->ignore();
       return;
     }
-    
-    if( event->key() == Key_C ) 
+
+    if( event->key() == Key_C )
     {
       copy();
       event->ignore();
       return;
     }
-    
-    if( event->key() == Key_V ) 
+
+    if( event->key() == Key_V )
     {
       paste();
       event->ignore();
       return;
     }
-    
+
   }
-  
+
   // special key processing for box selection
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
-    if( 
+    if(
       (event->key() >= Key_Shift &&  event->key() <= Key_ScrollLock) ||
       (event->key() >= Key_F1 &&  event->key() <= Key_F25) ||
       (event->key() >= Key_Super_L && event->key() <= Key_Direction_R ) ||
@@ -1160,28 +1160,28 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
       _boxSelection().clear();
       return;
     }
-    
+
     // any other key should replace the selection
-    if( event->key() == Key_Tab ) 
+    if( event->key() == Key_Tab )
     {
       if( !_hasTabEmulation() ) _boxSelection().fromString( tabCharacter() );
-      else 
+      else
       {
         // retrieve position from begin of block
         int position( _boxSelection().cursorList().front().anchor() );
         position -= document()->findBlock( position ).position();
         int n( position % emulatedTabCharacter().size() );
         _boxSelection().fromString( emulatedTabCharacter().right( emulatedTabCharacter().size()-n ) );
-      
+
       }
-      
+
       _boxSelection().clear();
-      
+
     } else if( !(event->text().isNull() || event->text().isEmpty() ) ) {
       _boxSelection().fromString( event->text() );
       _boxSelection().clear();
     }
-    
+
     return;
   }
 
@@ -1232,37 +1232,37 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   // loop over found blocks
   for( QTextBlock block( first ); block != last.next() && block.isValid(); block = block.next() )
   {
-    
+
     // retrieve block data and check background
     TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
     if( !(data && data->hasFlag( TextBlock::HAS_BACKGROUND|TextBlock::CURRENT_BLOCK ) ) ) continue;
-        
+
     // retrieve block rect
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() + scrollbarPosition().x() );
-    
+
     // create painter and translate from widget to viewport coordinates
     QPainter painter( viewport() );
     painter.translate( -scrollbarPosition() );
     painter.setPen( NoPen );
-    
+
     QColor color;
     if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
     { color = highlight_color_; }
-            
-    if( data->hasFlag( TextBlock::HAS_BACKGROUND ) ) 
+
+    if( data->hasFlag( TextBlock::HAS_BACKGROUND ) )
     { color = QtUtil::mergeColors( color, data->background() ); }
-    
+
     if( color.isValid() )
     {
-      painter.setBrush( color ); 
-      painter.drawRect( block_rect&rect ); 
+      painter.setBrush( color );
+      painter.drawRect( block_rect&rect );
     }
-    
+
   }
 
   QTextEdit::paintEvent( event );
-  
+
   if(
     _boxSelection().state() == BoxSelection::STARTED ||
     _boxSelection().state() == BoxSelection::FINISHED
@@ -1276,13 +1276,13 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
     // create painter and translate from widget to viewport coordinates
     QPainter painter( viewport() );
     painter.translate( -scrollbarPosition() );
-    
+
     painter.setPen( NoPen );
     painter.setBrush( _boxSelection().color() );
     painter.drawRect( _boxSelection().rect()&rect );
- 
+
   }
-  
+
   return;
 }
 
@@ -1315,7 +1315,7 @@ void CustomTextEdit::_installActions( void )
   addAction( copy_action_ = new QAction( IconEngine::get( ICONS::COPY, path_list ), "&Copy", this ) );
   copy_action_->setShortcut( CTRL+Key_C );
   connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
-  
+
   addAction( paste_action_ = new QAction( IconEngine::get( ICONS::PASTE, path_list ), "&Paste", this ) );
   paste_action_->setShortcut( CTRL+Key_V );
   connect( paste_action_, SIGNAL( triggered() ), SLOT( paste() ) );
@@ -1414,40 +1414,46 @@ void CustomTextEdit::_installActions( void )
   connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
   _updateSelectionActions( textCursor().hasSelection() );
 
+  #if QT_VERSION >= 0x040200
+  // update actions that depend on the content of the clipboard
+  // this is available only starting from Qt 4.2
+  connect( qApp->clipboard(), SIGNAL( changed( QClipboard::Mode ) ), SLOT( _updateClipboardActions( QClipboard::Mode ) ) );
+  #endif
+
 }
 
 //______________________________________________________________________________
 void CustomTextEdit::_installContextMenuActions( QMenu& menu )
 {
-  
+
   // wrapping
   menu.addAction( wrap_mode_action_ );
   menu.addSeparator();
-  
+
   menu.addAction( undo_action_ );
   menu.addAction( redo_action_ );
   menu.addSeparator();
-  
+
   menu.addAction( cut_action_ );
   menu.addAction( copy_action_ );
   menu.addAction( paste_action_ );
   menu.addAction( clear_action_ );
   menu.addSeparator();
-  
+
   menu.addAction( select_all_action_ );
   menu.addAction( upper_case_action_ );
   menu.addAction( lower_case_action_ );
   menu.addSeparator();
-  
+
   menu.addAction( find_action_ );
   menu.addAction( find_again_action_ );
   menu.addAction( find_selection_action_);
   menu.addSeparator();
-  
+
   menu.addAction( replace_action_ );
   menu.addAction( replace_again_action_ );
   menu.addAction( goto_line_action_);
-  return; 
+  return;
 }
 
 //______________________________________________________________________
@@ -1466,9 +1472,6 @@ TextSelection CustomTextEdit::_selection( void ) const
   // copy attributes from last selection
   out.setFlag( TextSelection::CASE_SENSITIVE, _lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
   out.setFlag( TextSelection::ENTIRE_WORD, _lastSelection().flag( TextSelection::ENTIRE_WORD ) );
-  
-  Debug::Throw(0) << "CustomTextEdit::_selection - " << qPrintable(out.text()) << endl;
-  
   return out;
 
 }
@@ -1721,7 +1724,7 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
     << " selection: " << qPrintable( selection.text() )
     << " replacement: " << qPrintable( selection.replaceText() )
     << endl;
-  
+
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return 0;
@@ -1732,21 +1735,21 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
 
   // check cursor
   if( !cursor.hasSelection() ) return 0;
-  
+
   // store number of matches
   // and make local copy of cursor
   unsigned int found = 0;
-  
+
   int saved_anchor( min( cursor.position(), cursor.anchor() ) );
-  int saved_position( max( cursor.position(), cursor.anchor() ) );  
+  int saved_position( max( cursor.position(), cursor.anchor() ) );
   int current_position( saved_anchor );
-  
+
   // check if regexp should be used or not
   if( selection.flag( TextSelection::REGEXP ) )
   {
-    
+
     Debug::Throw( "CustomTextEdit::_replaceInRange - regexp.\n" );
-        
+
     // construct regexp and check
     QRegExp regexp( selection.text() );
     if( !regexp.isValid() )
@@ -1757,44 +1760,44 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
 
     // case sensitivity
     regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive:CaseInsensitive );
-    
+
     // replace everything in selected text
     QString selected_text( cursor.selectedText() );
     for( int position = 0; (position = regexp.indexIn( selected_text, position )) != -1; )
     {
       // replace in selected text
       selected_text.replace( position, regexp.matchedLength(), selection.replaceText() );
-      
+
       // replace in cursor
       /* this is to allow for undoing the changes one by one */
       cursor.setPosition( saved_anchor + position );
       cursor.setPosition( saved_anchor + position + regexp.matchedLength(), QTextCursor::KeepAnchor );
       cursor.insertText( selection.replaceText() );
       current_position = cursor.position();
-      
+
       // increment position
       position += selection.replaceText().size();
       current_position = saved_anchor + position;
 
       found++;
-      
+
     }
-    
+
     // update cursor
-    if( mode == EXPAND ) 
-    { 
+    if( mode == EXPAND )
+    {
       cursor.setPosition( saved_anchor );
       cursor.setPosition( saved_anchor + selected_text.length(), QTextCursor::KeepAnchor );
 
     } else if( mode == MOVE ) cursor.setPosition( current_position );
-    
+
   } else {
 
     Debug::Throw( "CustomTextEdit::_replaceInRange - normal replacement.\n" );
-    
+
     // changes local cursor to beginning of the selection
     cursor.setPosition( saved_anchor );
-   
+
     // define search flags
     QTextDocument::FindFlags flags(0);
     if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
@@ -1802,29 +1805,29 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
 
     while( !( cursor = document()->find( selection.text(), cursor, flags ) ).isNull() && cursor.position() <= saved_position )
     {
-      
+
       // perform replacement
       cursor.insertText( selection.replaceText() );
       current_position = cursor.position();
       saved_position += selection.replaceText().size() - selection.text().size();
       found ++;
 
-      Debug::Throw() 
+      Debug::Throw()
         << "CustomTextEdit::_replaceInRange -"
         << " current: " << current_position
         << " saved: " << saved_position
         << " found: " << found
         << endl;
     }
-    
-    if( mode == EXPAND ) 
-    { 
+
+    if( mode == EXPAND )
+    {
       cursor.setPosition( saved_anchor );
       cursor.setPosition( saved_position, QTextCursor::KeepAnchor );
     } else if( mode == MOVE ) cursor.setPosition( current_position );
 
   }
-  
+
   Debug::Throw( "CustomTextEdit::_replaceInRange - done.\n" );
   return found;
 
@@ -2000,8 +2003,29 @@ void CustomTextEdit::_updateSelectionActions( bool has_selection )
   copy_action_->setEnabled( has_selection );
   upper_case_action_->setEnabled( has_selection && editable );
   lower_case_action_->setEnabled( has_selection && editable );
-  find_selection_action_->setEnabled( has_selection );
-  find_selection_backward_action_->setEnabled( has_selection );
+
+  #if QT_VERSION < 0x040200
+  // update clipboard actions, based on the clipboard content
+  // this is done only for QT versions < 4.2. For higher versions
+  // this is called directly from a QClipboard signal
+  _updateClipboardActions( QClipboard::Clipboard );
+  _updateClipboardActions( QClipboard::Selection );
+  #endif
+}
+
+//________________________________________________
+void CustomTextEdit::_updateClipboardActions( QClipboard::Mode mode )
+{
+  Debug::Throw( "CustomTextEdit::_updateClipboardActions.\n" );
+
+  if( mode == QClipboard::Clipboard )
+  { paste_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Clipboard ).isEmpty() ); }
+
+  if( mode == QClipboard::Selection )
+  {
+    find_selection_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
+    find_selection_backward_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
+  }
 
 }
 
@@ -2024,12 +2048,12 @@ void CustomTextEdit::_toggleBlockHighlight( bool state )
 
   // update current paragraph
   if( blockHighlight().isEnabled() ) blockHighlight().highlight();
-  else 
+  else
   {
     blockHighlight().clear();
     update();
   }
-  
+
 }
 
 //________________________________________________
