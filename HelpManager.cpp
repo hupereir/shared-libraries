@@ -207,6 +207,10 @@ void HelpManager::_dumpHelpString( void )
   text_edit->setPlainText( out.str().c_str() );
   main->layout()->addWidget( text_edit );
   main->resize( 600, 500 );
+  
+  // center 
+  QtUtil::centerOnWidget( main, qApp->activeWindow() );
+  
   main->show();
   
 }
