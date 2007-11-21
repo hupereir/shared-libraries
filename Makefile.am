@@ -22,7 +22,8 @@ libbase_transparency_a_SOURCES = \
   TransparentWidget.cpp
 
 nodist_libbase_transparency_a_SOURCES = \
-  moc_BackgroundPixmap.cpp
+  moc_BackgroundPixmap.cpp \
+  moc_TransparentWidget.cpp
   
 clean-local:
 	 rm -f moc_*.cpp

@@ -32,10 +32,32 @@
 #include <QPainter>
 
 #include "BackgroundPixmap.h"
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "TransparentWidget.h"
+#include "XmlOptions.h"
 
 using namespace std;
 using namespace TRANSPARENCY;
+
+
+//____________________________________________________________________
+TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
+  QWidget( parent, flags ),
+  Counter( "TransparentWidget" ),
+  background_changed_( true ),
+  highlighted_( false )
+{ 
+  Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
+
+  // pixmap path
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  if( !path_list.size() ) throw runtime_error( DESCRIPTION( "no path to pixmaps" ) );
+
+  reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD, path_list ), "&Reload background", this );
+  reload_background_action_->setToolTip( "Reinitialize transparent background" );
+  connect( reload_background_action_, SIGNAL( triggered() ), SLOT( _reloadBackground() ) );
+}
 
 //____________________________________________________________________
 void TransparentWidget::setTint( const QColor& color )

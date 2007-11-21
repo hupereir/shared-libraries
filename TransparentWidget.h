@@ -31,11 +31,12 @@
   \date    $Date$
 */
 
-#include <QWidget>
+#include <QAction>
 #include <QMoveEvent>
 #include <QPaintEvent>
 #include <QResizeEvent>
 #include <QShowEvent>
+#include <QWidget>
 
 #include "Counter.h"
 
@@ -45,16 +46,14 @@ namespace TRANSPARENCY {
   //! transparent widget
   class TransparentWidget: public QWidget, public Counter
   {
+
+    //! Qt meta object declaration
+    Q_OBJECT
     
     public:
     
     //! constructor
-    TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 ):
-      QWidget( parent, flags ),
-      Counter( "TransparentWidget" ),
-      background_changed_( true ),
-      highlighted_( false )
-    { Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); }
+    TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
     
     //! tint
     virtual void setTint( const QColor& color = QColor() );
@@ -63,7 +62,11 @@ namespace TRANSPARENCY {
     virtual void setHighlight( const QColor& color = QColor() );
         
     protected:
-       
+    
+    //! reload background action
+    QAction& _reloadBackgroundAction( void ) const
+    { return *reload_background_action_; }
+    
     //! background pixmap
     virtual QPixmap& _backgroundPixmap( void )
     { return background_pixmap_; }
@@ -116,12 +119,24 @@ namespace TRANSPARENCY {
 
     //! paint
     virtual void paintEvent( QPaintEvent* event );
-        
-    //! update background pixmap
-    virtual void _updateBackgroundPixmap( void );
+            
+    protected slots:
+    
+    //! force reloading of the background 
+    virtual void _reloadBackground( void )
+    { 
+      background_changed_ = true;
+      update();
+    }
     
     private:
 
+    //! update background pixmap
+    virtual void _updateBackgroundPixmap( void );
+
+    //! reload background
+    QAction* reload_background_action_;
+    
     //! true when background needs to be reloaded
     bool background_changed_;
     
