@@ -1,3 +1,7 @@
+
+#ifndef OptionWidget_h
+#define OptionWidget_h
+
 // $Id$
 
 /******************************************************************************
@@ -20,9 +24,6 @@
 *                         
 *                         
 *******************************************************************************/
-
-#ifndef OptionWidget_h
-#define OptionWidget_h
 
 /*!
    \file    OptionWidget.h
