@@ -85,6 +85,18 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   color_display->setToolTip( "text/display shadow color" );
   addOptionWidget( color_display );
  
+  // tint color
+  grid_layout->addWidget( new QLabel( "tint color:", this ) );
+  grid_layout->addWidget( color_display = new OptionColorDisplay( this, "TINT_COLOR" ) );
+  color_display->setToolTip( "transparent background tint color" );
+  addOptionWidget( color_display );
+
+  // highlight color
+  grid_layout->addWidget( new QLabel( "highlight color:", this ) );
+  grid_layout->addWidget( color_display = new OptionColorDisplay( this, "HIGHLIGHT_COLOR" ) );
+  color_display->setToolTip( "highlight color when entering widget" );
+  addOptionWidget( color_display );
+
   // shadow offset
   grid_layout->addWidget( new QLabel( "shadow offset: ", this ) );
   grid_layout->addWidget( spinbox = new OptionSpinBox( this, "SHADOW_OFFSET" ) );
@@ -94,12 +106,15 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
     "offset between text shadow and text.\n"
     "0 means no shadow." );
   addOptionWidget( spinbox );
- 
-  // tint color
-  grid_layout->addWidget( new QLabel( "tint color:", this ) );
-  grid_layout->addWidget( color_display = new OptionColorDisplay( this, "TINT_COLOR" ) );
-  color_display->setToolTip( "transparent background tint color" );
-  addOptionWidget( color_display );
+  
+  // foreground intensity
+  grid_layout->addWidget( new QLabel( "foreground intensity:", this ) );
+  grid_layout->addWidget( slider = new OptionSlider( this, "FOREGROUND_INTENSITY" ) );
+  slider->setScale( 1.0/2.55 );
+  slider->slider().setMinimum( 0 );
+  slider->slider().setMaximum( 100 );
+  slider->setToolTip( "foreground color intensity" );
+  addOptionWidget( slider );
   
   // tint intensity
   grid_layout->addWidget( new QLabel( "tint intensity:", this ) );
@@ -109,12 +124,6 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   slider->slider().setMaximum( 100 );
   slider->setToolTip( "transparent background tint intensity" );
   addOptionWidget( slider );
-
-  // highlight color
-  grid_layout->addWidget( new QLabel( "highlight color:", this ) );
-  grid_layout->addWidget( color_display = new OptionColorDisplay( this, "HIGHLIGHT_COLOR" ) );
-  color_display->setToolTip( "highlight color when entering widget" );
-  addOptionWidget( color_display );
   
   // tint intensity
   grid_layout->addWidget( new QLabel( "highlight intensity:", this ) );
