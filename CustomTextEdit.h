@@ -524,6 +524,9 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! update action status
   virtual void _updateClipboardActions( QClipboard::Mode );
   
+  //! update selection clipboard
+  virtual void _updateClipboard( void );
+  
   //! update paste action 
   /*! depends on clipboard status and editability */
   virtual void _updatePasteAction( void );

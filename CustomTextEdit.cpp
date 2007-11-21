@@ -87,6 +87,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 
   // signal to make sure selectionsynchronized is  between clones
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
+  connect( this, SIGNAL( selectionChanged() ), SLOT( _updateClipboard() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
@@ -271,10 +272,6 @@ void CustomTextEdit::selectWord( void )
   // assign cursor to Text editor
   setTextCursor( cursor );
 
-  // copy selected text to clipboard
-  if( qApp->clipboard()->supportsSelection() )
-  { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
-
   return;
 
 }
@@ -296,11 +293,11 @@ void CustomTextEdit::selectLine( void )
   // assign cursor to text editor and make sure it is visible
   setTextCursor( cursor );
   ensureCursorVisible();
-
-  // copy selected text to clipboard
-  if( qApp->clipboard()->supportsSelection() )
-  { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
-
+  
+  // updateClipboard need to be called manually
+  // because somehow the selectionChanged signal is not caught.
+  _updateClipboard();
+  
   return;
 
 }
@@ -1710,11 +1707,6 @@ bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& 
     if( found.isNull() ) return false;
     else {
       setTextCursor( found );
-
-      // copy selected text to clipboard
-      if( qApp->clipboard()->supportsSelection() )
-      { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
-      
       return true;
     }
   }
@@ -2063,6 +2055,17 @@ void CustomTextEdit::_updateClipboardActions( QClipboard::Mode mode )
     find_selection_backward_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
   }
 
+}
+
+//________________________________________________
+void CustomTextEdit::_updateClipboard( void )
+{
+  Debug::Throw( "CustomTextEdit::_updateClipboard.\n" );
+  
+  // copy selected text to clipboard
+  if( qApp->clipboard()->supportsSelection() && textCursor().hasSelection() )
+  { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
+  
 }
 
 //________________________________________________
