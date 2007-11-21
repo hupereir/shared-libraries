@@ -47,6 +47,8 @@ CustomSlider::CustomSlider( QWidget* parent ):
   Debug::Throw( "CustomSlider::CustomSlider.\n" );
   
   setLayout( new QHBoxLayout() );
+  layout()->setMargin(0);
+  layout()->setSpacing(5);
   
   layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
   layout()->addWidget( line_edit_ = new CustomLineEdit( this ) );

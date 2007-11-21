@@ -126,7 +126,7 @@ QWidget& BaseConfigurationDialog::addPage( const QString& title, const bool& exp
   
   QWidget* main( new QWidget() );
   QVBoxLayout* layout( new QVBoxLayout() );
-  layout->setSpacing( 2 );
+  layout->setSpacing( 5 );
   layout->setMargin( 5 );
   main->setLayout( layout );
   
@@ -146,7 +146,7 @@ QWidget& BaseConfigurationDialog::addPage( const QString& title, const bool& exp
   // the created widget is return
   QWidget* contents( new QWidget( main ) );
   contents->setLayout( new QVBoxLayout() );
-  contents->layout()->setSpacing(2);
+  contents->layout()->setSpacing(5);
   contents->layout()->setMargin(0);
   
   layout->addWidget( contents );
