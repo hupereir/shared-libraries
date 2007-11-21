@@ -34,36 +34,15 @@
 #include <QGroupBox>
 
 #include "Counter.h"
-#include "OptionWidget.h"
-
-class OptionColorDisplay;
-class OptionFontInfo;
-class OptionSpinBox;
+#include "OptionWidgetList.h"
 
 //! Spell common configuration
-class AutoSpellConfiguration: public QGroupBox, public OptionWidget, public Counter
+class AutoSpellConfiguration: public QGroupBox, public OptionWidgetList, public Counter
 {
   public:
       
   //! constructor
   AutoSpellConfiguration( QWidget* parent );
-  
-  //! set widget value from option value
-  virtual void read( void );
-  
-  //! set option value from widget value
-  virtual void write( void ) const;
-  
-  private:
-  
-  //! number of suggestions
-  OptionSpinBox* suggestions_;
-  
-  //! highlight color
-  OptionColorDisplay* highlight_;
-  
-  //! font format
-  OptionFontInfo* font_info_;
   
 };
 

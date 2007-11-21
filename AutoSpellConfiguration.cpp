@@ -44,7 +44,6 @@ using namespace std;
 //___________________________________________
 AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
   QGroupBox( "Automatic spell check", parent ),
-  OptionWidget( "" ),
   Counter( "AutoSpellConfiguration" )
 {
   Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
@@ -57,35 +56,24 @@ AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
   
   // suggestions
   grid_layout->addWidget( new QLabel( "Max number of suggestions: ", this ) );
-  grid_layout->addWidget( suggestions_ = new OptionSpinBox( this, "MAX_SUGGESTIONS" ) );
-  suggestions_->setMinimum( 0 );
-  suggestions_->setMaximum( 50 );
-  suggestions_->setToolTip( "Maximum number of suggestions in suggestion menu.\n 0 means no limit." );
-
+  OptionSpinBox* spinbox = new OptionSpinBox( this, "MAX_SUGGESTIONS" ) ;
+  grid_layout->addWidget( spinbox);
+  spinbox->setMinimum( 0 );
+  spinbox->setMaximum( 50 );
+  spinbox->setToolTip( "Maximum number of suggestions in suggestion menu.\n 0 means no limit." );
+  addOptionWidget( spinbox );
+  
   // options
   grid_layout->addWidget( new QLabel( "Highlight color: ", this ), 1, 0 );
-  grid_layout->addWidget( highlight_ = new OptionColorDisplay( this, "AUTOSPELL_COLOR" ) );
-  highlight_->setToolTip( "Highlight color for misspelled words" );
+  OptionColorDisplay *colordisplay = new OptionColorDisplay( this, "AUTOSPELL_COLOR" );
+  grid_layout->addWidget( colordisplay  );
+  colordisplay->setToolTip( "Highlight color for misspelled words" );
+  addOptionWidget( colordisplay );
 
   grid_layout->addWidget( new QLabel( "Highlight font format: ", this ), 2, 0 );
-  grid_layout->addWidget( font_info_ = new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" ) );
-  font_info_->setToolTip( "Font format for misspelled words" );
-}
-
-//____________________________________________________________
-void AutoSpellConfiguration::read( void )
-{
-  Debug::Throw( "AutoSpellConfiguration::read.\n" );
-  suggestions_->read();
-  highlight_->read();
-  font_info_->read();
-}
-
-//_____________________________________________________________
-void AutoSpellConfiguration::write( void ) const
-{
-  Debug::Throw( "AutoSpellConfiguration::Write.\n" );
-  suggestions_->write();
-  highlight_->write();
-  font_info_->write();
+  OptionFontInfo* fontinfo =  new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" );
+  grid_layout->addWidget( fontinfo );
+  fontinfo->setToolTip( "Font format for misspelled words" );
+  addOptionWidget( fontinfo );
+  
 }

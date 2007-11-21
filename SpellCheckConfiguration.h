@@ -34,36 +34,16 @@
 #include <QGroupBox>
 
 #include "Counter.h"
-#include "OptionWidget.h"
-
-class OptionBrowsedLineEdit;
-class OptionComboBox;
+#include "OptionWidgetList.h"
 
 //! Spell common configuration
-class SpellCheckConfiguration: public QGroupBox, public OptionWidget, public Counter
+class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public Counter
 {
   public:
       
   //! constructor
   SpellCheckConfiguration( QWidget* parent );
-  
-  //! set widget value from option value
-  virtual void read( void );
-  
-  //! set option value from widget value
-  virtual void write( void ) const;
-  
-  private:
-  
-  //! aspell browsed line editor
-  OptionBrowsedLineEdit* aspell_;
-  
-  //! dictionary combo box
-  OptionComboBox* dictionary_;
-  
-  //! filter combo box
-  OptionComboBox* filter_;
-  
+ 
 };
 
 #endif
