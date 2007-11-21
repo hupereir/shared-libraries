@@ -55,6 +55,14 @@ namespace TRANSPARENCY {
     //! constructor
     TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
     
+    //! enable/disable transparency
+    virtual void setTransparent( const bool& value )
+    {
+      if( value == transparent_ ) return;
+      transparent_ = value;
+      background_changed_ = true;
+    }
+  
     //! tint
     virtual void setTint( const QColor& color = QColor() );
     
@@ -78,8 +86,12 @@ namespace TRANSPARENCY {
     //! move
     virtual void moveEvent( QMoveEvent* event )
     { 
-      background_changed_ = true;
-      update(); 
+      // schedule pixmap update if transparent
+      if( transparent_ ) 
+      {
+        background_changed_ = true;
+        update();
+      }
       return QWidget::moveEvent( event );
     }
     
@@ -87,6 +99,7 @@ namespace TRANSPARENCY {
     virtual void resizeEvent( QResizeEvent* event )
     { 
       background_changed_ = true;
+      update(); 
       return QWidget::resizeEvent( event );
     }
     
@@ -94,6 +107,7 @@ namespace TRANSPARENCY {
     virtual void showEvent( QShowEvent* event )
     { 
       background_changed_ = true;
+      update(); 
       return QWidget::showEvent( event );
     }
     
@@ -122,6 +136,9 @@ namespace TRANSPARENCY {
             
     protected slots:
     
+    //! update configuration
+    virtual void _updateConfiguration( void );
+    
     //! force reloading of the background 
     virtual void _reloadBackground( void )
     { 
@@ -136,6 +153,9 @@ namespace TRANSPARENCY {
 
     //! reload background
     QAction* reload_background_action_;
+    
+    //! transparency enabled
+    bool transparent_;
     
     //! true when background needs to be reloaded
     bool background_changed_;

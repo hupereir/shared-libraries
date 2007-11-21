@@ -45,6 +45,7 @@ using namespace TRANSPARENCY;
 TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   QWidget( parent, flags ),
   Counter( "TransparentWidget" ),
+  transparent_( false ),
   background_changed_( true ),
   highlighted_( false )
 { 
@@ -57,6 +58,7 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD, path_list ), "&Reload background", this );
   reload_background_action_->setToolTip( "Reinitialize transparent background" );
   connect( reload_background_action_, SIGNAL( triggered() ), SLOT( _reloadBackground() ) );
+  
 }
 
 //____________________________________________________________________
@@ -66,7 +68,6 @@ void TransparentWidget::setTint( const QColor& color )
   if( tint_color_ == color ) return;
   tint_color_ = color; 
   background_changed_ = true;
-  update();
 }
 
 //____________________________________________________________________
@@ -99,13 +100,61 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   
 }
 
-
+//____________________________________________________________________
+void TransparentWidget::_updateConfiguration( void )
+{
+  
+  Debug::Throw( "TransparentWidget::_updateConfiguration.\n" );
+  
+  // use transparency
+  setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
+  
+  // tint
+  QColor tint_color( XmlOptions::get().get<string>( "TINT_COLOR" ).c_str() );
+  unsigned int tint_intensity(  XmlOptions::get().get<unsigned int>( "TINT_INTENSITY" ) );
+  if( tint_color.isValid() && tint_intensity )
+  {
+    tint_color.setAlpha( tint_intensity );
+    setTint( tint_color );
+  } else setTint();
+   
+  // highlight
+  QColor highlight_color( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
+  unsigned int highlight_intensity(  XmlOptions::get().get<unsigned int>( "HIGHLIGHT_INTENSITY" ) );
+  if( highlight_color.isValid() && highlight_intensity )
+  {
+    highlight_color.setAlpha( highlight_intensity );
+    setHighlight( highlight_color );
+  } else setHighlight();
+ 
+  
+}
+  
 //____________________________________________________________________
 void TransparentWidget::_updateBackgroundPixmap( void )
 {
+  
   Debug::Throw( "TransparentWidget::_updateBackgroundPixmap.\n" );
-  _backgroundPixmap() = BackgroundPixmap::get().pixmap( QRect( mapToGlobal( QPoint(0,0) ), size() ) );
-  if( !_backgroundPixmap().isNull() && tint_color_.isValid() )
+  
+  if( !transparent_ )
+  {
+    // solid background
+    _backgroundPixmap() = QPixmap( size() );
+    _backgroundPixmap().fill( palette().color( backgroundRole() ) );
+  } else {
+    
+    // transparent background
+    _backgroundPixmap() = BackgroundPixmap::get().pixmap( QRect( mapToGlobal( QPoint(0,0) ), size() ) );
+    if( _backgroundPixmap().isNull() )
+    {
+      _backgroundPixmap() = QPixmap( size() );
+      _backgroundPixmap().fill( palette().color( backgroundRole() ) );
+    }
+    
+  }
+  
+  // tint
+  if( tint_color_.isValid() )
   {
     QPainter painter( &_backgroundPixmap() );
     painter.setPen( Qt::NoPen );
