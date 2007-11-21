@@ -429,27 +429,6 @@ void BaseConfigurationDialog::_display( QListWidgetItem* current, QListWidgetIte
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_read( void )
-{
-  Debug::Throw( "BaseConfigurationDialog::_read.\n" );
-  for( OptionWidgetList::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
-  (*iter)->read(); 
-}
-
-//__________________________________________________
-void BaseConfigurationDialog::_update( void )
-{
-   Debug::Throw( "BaseConfigurationDialog::_update.\n" );
-  
-  for( OptionWidgetList::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
-  (*iter)->write(); 
-  
-  // check if options have changed since last call
-  _checkModified();
-  
-}
-
-//__________________________________________________
 void BaseConfigurationDialog::_restore( void )
 { 
   Debug::Throw( "BaseConfigurationDialog::_restore.\n" );

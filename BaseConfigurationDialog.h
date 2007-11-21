@@ -40,6 +40,7 @@
 #include "Exception.h"
 #include "XmlOptions.h"
 #include "OptionWidget.h"
+#include "OptionWidgetList.h"
 
 //! configuration list. Stores panel names and panels
 class ConfigListItem: public QListWidgetItem, public Counter
@@ -69,15 +70,12 @@ class ConfigListItem: public QListWidgetItem, public Counter
 };
 
 //! configuration dialog
-class BaseConfigurationDialog: public QDialog, public Counter
+class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public Counter
 {
 
   Q_OBJECT
 
   public:
-
-  //! list of option widgets
-  typedef std::list<OptionWidget*> OptionWidgetList;
 
   //! creator
   BaseConfigurationDialog( QWidget *parent );
@@ -91,20 +89,6 @@ class BaseConfigurationDialog: public QDialog, public Counter
   
   //! adds a new Item, returns associated Box
   virtual QWidget& addPage( const QString& title, const bool& expand = false );
-
-  //! add option widget
-  void addOptionWidget( OptionWidget* widget )
-  { 
-    Debug::Throw( "BaseConfigurationDialog::addOptionWidget.\n" );
-    option_widgets_.push_back( widget ); 
-  }
-
-  //! clear option widgets
-  virtual void clearOptionWidgets( void )
-  { 
-    Debug::Throw( "BaseConfigurationDialog::clearOptionWidgets.\n" );
-    option_widgets_.clear(); 
-  }
 
   //! flag bitset for the Base configuration
   enum ConfigFlags
@@ -152,10 +136,19 @@ class BaseConfigurationDialog: public QDialog, public Counter
   protected slots:
 
   //! read configuration from options
-  virtual void _read();
+  virtual void _read()
+  { 
+    Debug::Throw( "BaseConfigurationDialog::_read.\n" );
+    OptionWidgetList::read(); 
+  }
 
   //! read configuration from options
-  virtual void _update();
+  virtual void _update()
+  {
+    Debug::Throw( "BaseConfigurationDialog::_update.\n" );
+    OptionWidgetList::write(); 
+    _checkModified();
+  }
 
   //! restore configuration
   virtual void _restore();
@@ -199,9 +192,6 @@ class BaseConfigurationDialog: public QDialog, public Counter
   
   //! button layout (needed to add extra buttons)
   QHBoxLayout *button_layout_;
-
-  //! list of option widgets
-  OptionWidgetList option_widgets_;
 
   //! pointer to modified options
   /*!
