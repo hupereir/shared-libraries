@@ -82,7 +82,10 @@ namespace TRANSPARENCY {
     //! background pixmap
     virtual const QPixmap& _backgroundPixmap( void ) const
     { return background_pixmap_; }
-    
+  
+    //!@name event handlers
+    //@{
+   
     //! move
     virtual void moveEvent( QMoveEvent* event )
     { 
@@ -133,7 +136,9 @@ namespace TRANSPARENCY {
 
     //! paint
     virtual void paintEvent( QPaintEvent* event );
-            
+        
+    //@}
+    
     protected slots:
     
     //! update configuration
