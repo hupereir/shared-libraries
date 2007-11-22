@@ -57,7 +57,8 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
 
   reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD, path_list ), "&Reload background", this );
   reload_background_action_->setToolTip( "Reinitialize transparent background" );
-  connect( reload_background_action_, SIGNAL( triggered() ), SLOT( _reloadBackground() ) );
+  connect( reload_background_action_, SIGNAL( triggered() ), &BackgroundPixmap::get(), SLOT( reload() ) );
+  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( _reloadBackground() ) );
   
 }
 
