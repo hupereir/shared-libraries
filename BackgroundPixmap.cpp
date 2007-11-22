@@ -31,6 +31,7 @@
 
 #include <QApplication>
 #include <QDesktopWidget> 
+#include <QPainter> 
 
 #ifdef Q_WS_X11
 #include <QX11Info>
@@ -48,8 +49,38 @@ using namespace std;
 //_____________________________________________________
 using namespace TRANSPARENCY;
 BackgroundPixmap* BackgroundPixmap::singleton_;
-  
 
+namespace TRANSPARENCY
+{
+  
+  //! get lowest bit (shift) from integer value (little/big endianness)
+  int _lowestBit( const unsigned int& val );
+  
+  // pointer to pixel converter
+  typedef QRgb (*PixelConverter) (XImage* image, const unsigned int& x, const unsigned int& y);
+  
+  //! get image format
+  PixelConverter _converter( XImage* image );
+  
+  //! X11 format rotation
+  static QRgb _convertPixel_BIT32( XImage* image, const unsigned int& x, const unsigned int& y );
+  
+  //! X11 format rotation
+  static QRgb _convertPixel_BIT16_RGB_565( XImage* image, const unsigned int& x, const unsigned int& y );
+  
+  //! X11 format rotation
+  static QRgb _convertPixel_BIT16_RGB_555( XImage* image, const unsigned int& x, const unsigned int& y );
+  
+  //! X11 format rotation
+  static QRgb _convertPixel_BIT8( XImage* image, const unsigned int& x, const unsigned int& y );
+  
+  //! X11 format rotation
+  static QRgb _convertPixel_UNKNOWN( XImage* image, const unsigned int& x, const unsigned int& y );
+  
+  //! root pixmap atom
+  static Atom atom_ = 0;
+  
+};   
 
 //_____________________________________________________
 BackgroundPixmap::BackgroundPixmap( void ):
@@ -59,12 +90,51 @@ BackgroundPixmap::BackgroundPixmap( void ):
   
   #ifdef Q_WS_X11
   desktop_ = 0;
-  root_pixmap_atom_ = 0;
   #endif
   
   reload(); 
 }
   
+//_____________________________________________________
+QPixmap BackgroundPixmap::pixmap( const QRect& rect ) const
+{ 
+  
+  // rect is contained entirely in background
+  if( background_pixmap_.rect().contains( rect ) ) 
+  { return background_pixmap_.copy( rect ); }
+  
+  // for 1pixel pixmaps, just fill the output
+  if( background_pixmap_.size() == QSize(1,1) )
+  {
+    QPixmap pixmap( rect.size() );
+    pixmap.fill( background_pixmap_.toImage().pixel(0,0) );
+    return pixmap;
+  }
+  
+  // for too small pixmaps, perform tile    
+  // compute tile origin
+  QRect background_rect( background_pixmap_.rect() );
+  int x_origin( background_rect.left() );
+  int y_origin( background_rect.top() );
+  while( x_origin > rect.left() ) x_origin -= background_rect.width();
+  while( y_origin > rect.top() ) y_origin -= background_rect.height();
+  
+  // perform tyle
+  QPixmap pixmap( rect.size() );
+  QPainter p( &pixmap );
+  p.translate( -rect.topLeft() );
+  for( int x = x_origin; x <= rect.right(); x +=  background_rect.width() )
+  {
+    for( int y = y_origin; y <= rect.bottom(); y += background_rect.height() )
+    { 
+      if( !background_rect.translated( QPoint( x, y ) ).intersects( rect ) ) continue;
+      p.drawPixmap( QPoint( x, y ), background_pixmap_ ); 
+    }
+  }
+
+  return pixmap;
+  
+}
 
 //_____________________________________________________
 #ifdef Q_WS_X11
@@ -76,7 +146,7 @@ bool BackgroundPixmap::x11Event( XEvent* event )
   if( 
     property_event && 
     property_event->window == desktop_ &&
-    property_event->atom == root_pixmap_atom_ )
+    property_event->atom == atom_ )
   {
     Debug::Throw( "BackgroundPixmap::x11Event - property event.\n" );
     reload();
@@ -97,7 +167,7 @@ void BackgroundPixmap::reload( void )
   #ifdef Q_WS_X11
   // try load desktop windows ID
   if( !_loadDesktopWindow() ) return;
-  if( !root_pixmap_atom_ ) return;
+  if( !atom_ ) return;
   
   // load display 
   Display* display( QX11Info::display() );
@@ -107,7 +177,7 @@ void BackgroundPixmap::reload( void )
   unsigned char *data( 0 );
   Atom type( None );
   XGetWindowProperty( 
-      display, desktop_, root_pixmap_atom_, 0L, 1L, false, AnyPropertyType,
+      display, desktop_, atom_, 0L, 1L, false, AnyPropertyType,
       &type, &format, &length, &after, &data);
   
   Debug::Throw() << "BackgroundPixmap::reload - XGetWindowProperty" << endl; 
@@ -149,13 +219,10 @@ void BackgroundPixmap::reload( void )
     
     // convert to a QImage
     QImage image(width, height, QImage::Format_RGB32 );
-    //image.fill( 0 );
     for( register unsigned int y = 0; y<height; y++ )
     {
       for( register unsigned int x = 0; x<width; x++ )
-      { 
-        image.setPixel( x, y, (*converter)( x_image, x, y ) ); 
-      }
+      { image.setPixel( x, y, (*converter)( x_image, x, y ) ); }
     } 
     
     background_pixmap_ = QPixmap::fromImage( image );
@@ -189,8 +256,7 @@ bool BackgroundPixmap::_loadDesktopWindow( void )
   
   // if desktop was already loaded and isn't root remove XEvent forwarding
   if( desktop_ ) XSelectInput( display, desktop_, 0 );
-  root_pixmap_atom_ = XInternAtom( display, "_XROOTPMAP_ID", true );
-  if( !root_pixmap_atom_ ) return false;
+  if(!( atom_ = XInternAtom( display, "_XROOTPMAP_ID", true ) ) ) return false;
   
   // retrieve desktop widget
   Window top( qApp->desktop()->winId() );
@@ -213,7 +279,7 @@ bool BackgroundPixmap::_loadDesktopWindow( void )
     Atom type;
     
     XGetWindowProperty( 
-      display, current_window, root_pixmap_atom_, 0L, 1L, false, AnyPropertyType,
+      display, current_window, atom_, 0L, 1L, false, AnyPropertyType,
       &type, &format, &length, &after, &data);
   
     // check data
@@ -232,7 +298,7 @@ bool BackgroundPixmap::_loadDesktopWindow( void )
 }
 
 //_____________________________________________________
-int BackgroundPixmap::_lowestBit( const unsigned int& val) 
+int TRANSPARENCY::_lowestBit( const unsigned int& val) 
 { 
     int i;
     int max_bits = sizeof(unsigned) * 8;
@@ -245,7 +311,7 @@ int BackgroundPixmap::_lowestBit( const unsigned int& val)
 #ifdef Q_WS_X11
 
 //_____________________________________________________
-BackgroundPixmap::PixelConverter BackgroundPixmap::_converter( XImage* image )
+TRANSPARENCY::PixelConverter TRANSPARENCY::_converter( XImage* image )
 {
   
   // get RGB masks
@@ -277,58 +343,58 @@ BackgroundPixmap::PixelConverter BackgroundPixmap::_converter( XImage* image )
   // select converter
   if( bits_per_pixel == 32 ) 
   {
-    Debug::Throw() << "BackgroundPixmap::_converter - _convertPixel_BIT32" << endl;
+    Debug::Throw() << "TRANSPARENCY::_converter - _convertPixel_BIT32" << endl;
     return &_convertPixel_BIT32;
   }
   
   if( (bits_per_pixel == 16) && (red_shift == 11) && (green_shift == 5) && (blue_shift == 0)) 
   {
-    Debug::Throw() << "BackgroundPixmap::_converter - _convertPixel_BIT16_RGB_565" << endl;
+    Debug::Throw() << "TRANSPARENCY::_converter - _convertPixel_BIT16_RGB_565" << endl;
     return &_convertPixel_BIT16_RGB_565;
   }
   
   if( (bits_per_pixel == 16) && (red_shift == 10) && (green_shift == 5) && (blue_shift == 0)) 
   {
-    Debug::Throw() << "BackgroundPixmap::_converter - _convertPixel_BIT16_RGB_555" << endl;
+    Debug::Throw() << "TRANSPARENCY::_converter - _convertPixel_BIT16_RGB_555" << endl;
     return &_convertPixel_BIT16_RGB_555;
   }
   
   if( bits_per_pixel == 8 ) 
   {
-    Debug::Throw() << "BackgroundPixmap::_converter - _convertPixel_BIT8" << endl;
+    Debug::Throw() << "TRANSPARENCY::_converter - _convertPixel_BIT8" << endl;
     return &_convertPixel_BIT8;
   }
   
  
-  Debug::Throw() << "BackgroundPixmap::_converter - _convertPixel_UNKNOWN" << endl;
+  Debug::Throw() << "TRANSPARENCY::_converter - _convertPixel_UNKNOWN" << endl;
   return &_convertPixel_UNKNOWN;
   
 }
 
 //_____________________________________________________
-QRgb BackgroundPixmap::_convertPixel_BIT32( XImage* image, const unsigned int& x, const unsigned int& y )
+QRgb TRANSPARENCY::_convertPixel_BIT32( XImage* image, const unsigned int& x, const unsigned int& y )
 { return XGetPixel( image, x, y ); }
 
 //_____________________________________________________
-QRgb BackgroundPixmap::_convertPixel_BIT16_RGB_565( XImage* image, const unsigned int& x, const unsigned int& y )
+QRgb TRANSPARENCY::_convertPixel_BIT16_RGB_565( XImage* image, const unsigned int& x, const unsigned int& y )
 { 
   unsigned long pixel( XGetPixel( image, x, y ) );
   return ((pixel & 0xf800) << 8) | ((pixel & 0x7e0) << 5) | ((pixel & 0x1f) << 3); 
 }
 
 //_____________________________________________________
-QRgb BackgroundPixmap::_convertPixel_BIT16_RGB_555( XImage* image, const unsigned int& x, const unsigned int& y )
+QRgb TRANSPARENCY::_convertPixel_BIT16_RGB_555( XImage* image, const unsigned int& x, const unsigned int& y )
 { 
   unsigned long pixel( XGetPixel( image, x, y ) );
   return ((pixel & 0x7c00) << 9) | ((pixel & 0x3e0) << 6) | ((pixel & 0x1f) << 3); 
 }
 
 //_____________________________________________________
-QRgb BackgroundPixmap::_convertPixel_BIT8( XImage* image, const unsigned int& x, const unsigned int& y )
+QRgb TRANSPARENCY::_convertPixel_BIT8( XImage* image, const unsigned int& x, const unsigned int& y )
 { return XGetPixel( image, x, y ); }
 
 //_____________________________________________________
-QRgb BackgroundPixmap::_convertPixel_UNKNOWN( XImage* image, const unsigned int& x, const unsigned int& y )
+QRgb TRANSPARENCY::_convertPixel_UNKNOWN( XImage* image, const unsigned int& x, const unsigned int& y )
 { return 0; }
 
 #endif
