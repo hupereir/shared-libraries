@@ -168,11 +168,14 @@ class BoxSelection: public Counter
   //! copy clipboard content to boxSelection
   bool fromClipboard( const QClipboard::Mode& );
   
-  //! format string into box selection
-  // bool fromString( const QString& );
-  
   //! remove selected text
   bool removeSelectedText( void ) const;
+ 
+  //! convert selected text to upperCase
+  bool toUpper( void );
+
+  //! convert selected text to upperCase
+  bool toLower( void );
   
   //@}
   

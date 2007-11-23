@@ -349,6 +349,81 @@ bool BoxSelection::removeSelectedText( void ) const
 }
 
 //________________________________________________________________________
+bool BoxSelection::toUpper( void )
+{
+  Debug::Throw( "BoxSelection::toUpper.\n" );
+  
+  // check if state is ok
+  if( state() != FINISHED || cursorList().empty() ) return false;
+  
+  QTextCursor stored( parent_->textCursor() );
+  QTextCursor cursor( parent_->textCursor() );
+  cursor.beginEditBlock();
+  for( CursorList::const_iterator iter = cursorList().begin(); iter != cursorList().end(); iter++ )
+  {
+    
+    // select line and remove
+    cursor.setPosition( iter->anchor() );
+    cursor.setPosition( iter->position(), QTextCursor::KeepAnchor );
+    cursor.insertText( cursor.selectedText().toUpper() );
+  
+  }
+  
+  cursor.endEditBlock();
+  
+  // restore cursor
+  if( stored.position() == cursorList().front().position() || stored.position() == cursorList().front().anchor() )
+  { 
+    stored.setPosition( cursorList().front().anchor() ); 
+  } else stored.setPosition( cursor.position() );
+
+  parent_->setTextCursor( stored );
+  
+  _store();
+  toClipboard( QClipboard::Selection );
+  
+  return true;
+  
+}
+
+//________________________________________________________________________
+bool BoxSelection::toLower( void )
+{
+  Debug::Throw( "BoxSelection::toLower.\n" );
+  
+  // check if state is ok
+  if( state() != FINISHED || cursorList().empty() ) return false;
+  
+  QTextCursor stored( parent_->textCursor() );
+  QTextCursor cursor( parent_->textCursor() );
+  cursor.beginEditBlock();
+  for( CursorList::const_iterator iter = cursorList().begin(); iter != cursorList().end(); iter++ )
+  {
+    
+    // select line and remove
+    cursor.setPosition( iter->anchor() );
+    cursor.setPosition( iter->position(), QTextCursor::KeepAnchor );
+    cursor.insertText( cursor.selectedText().toLower() );
+  
+  }
+  
+  cursor.endEditBlock();
+  
+  // restore cursor
+  if( stored.position() == cursorList().front().position() || stored.position() == cursorList().front().anchor() )
+  { 
+    stored.setPosition( cursorList().front().anchor() ); 
+  } else stored.setPosition( cursor.position() );
+
+  parent_->setTextCursor( stored );
+  
+  _store();
+  toClipboard( QClipboard::Selection );
+  return true;
+  
+}
+
+//________________________________________________________________________
 void BoxSelection::_updateRect( void )
 {
   int x_min( min( begin_.x(), end_.x() ) );

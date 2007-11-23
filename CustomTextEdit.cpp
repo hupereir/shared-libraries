@@ -474,13 +474,19 @@ void CustomTextEdit::upperCase( void )
 
   QTextCursor cursor( textCursor() );
 
-  // check selection
-  if( !cursor.hasSelection() ) return;
-
-  // retrieve selected text
-  // convert to upperCase
-  // insert in place of selection
-  cursor.insertText( cursor.selectedText().toUpper() );
+  if( cursor.hasSelection() ) 
+  { 
+    
+    // process standard selection    
+    cursor.insertText( cursor.selectedText().toUpper() ); 
+    
+  } else if( _boxSelection().state() == BoxSelection::FINISHED ) { 
+    
+    // process box selection
+    _boxSelection().toUpper(); 
+  
+  }  
+    
   return;
 
 }
@@ -497,13 +503,19 @@ void CustomTextEdit::lowerCase( void )
 
   QTextCursor cursor( textCursor() );
 
-  // check selection
-  if( !cursor.hasSelection() ) return;
-
-  // retrieve selected text
-  // convert to lowercase
-  // insert in place of selection
-  cursor.insertText( cursor.selectedText().toLower() );
+  if( cursor.hasSelection() ) 
+  { 
+    
+    // process standard selection    
+    cursor.insertText( cursor.selectedText().toLower() ); 
+    
+  } else if( _boxSelection().state() == BoxSelection::FINISHED ) { 
+    
+    // process box selection
+    _boxSelection().toLower(); 
+  
+  }  
+  
   return;
 
 }
