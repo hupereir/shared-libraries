@@ -61,6 +61,7 @@ noinst_HEADERS = \
   OptionSlider.h \
   OptionSpinBox.h \
   OptionWidget.h \
+  OptionWidgetList.h \
   ProcessDialog.h \
   ProcessFrame.h \
   QtUtil.h \
