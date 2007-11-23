@@ -165,6 +165,7 @@ void TransparentWidget::_updateBackgroundPixmap( void )
   
   background_changed_ = false;
   
+  Debug::Throw( "TransparentWidget::_updateBackgroundPixmap - done.\n" );
   return;
   
 }
