@@ -828,6 +828,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       case 4:
       selectAll();
       _synchronizeSelection();
+      _updateClipboard();
       break;
 
       default:
