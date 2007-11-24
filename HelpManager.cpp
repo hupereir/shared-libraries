@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file HelpManager.cc
+   \file HelpManager.cpp
    \brief reference manual help system
    \author Hugo Pereira
    \version $Revision$

@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    HelpItem.cc
+   \file    HelpItem.cpp
    \brief   reference manual item. 
             it contains a title and a text
    \author  Hugo Pereira

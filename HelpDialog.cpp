@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    HelpDialog.cc
+   \file    HelpDialog.cpp
    \brief   reference manual display dialog 
    \author  Hugo Pereira
    \version $Revision$
