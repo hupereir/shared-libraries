@@ -133,10 +133,11 @@ bool Options::add( const Option& option, bool overwrite )
 //________________________________________________
 void Options::dump( ostream& out ) const
 {
-
+  Debug::Throw( "Options::dump.\n" );
+  
   // dump normal options
   for( OptionMap::const_iterator iter = options_.begin(); iter != options_.end(); iter++ )
-  out << iter->second << endl;
+  out << "  " << iter->second << endl;
 
   // write special options
   for( SpecialOptionMap::const_iterator iter = special_options_.begin(); iter != special_options_.end(); iter++ )
@@ -144,7 +145,9 @@ void Options::dump( ostream& out ) const
     OptionList option_list( iter->second );
     for( OptionList::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
     if( list_iter->isRecordable() && list_iter->set() && list_iter->raw().size() )
-    out << *list_iter << endl;
+    out << "  " << *list_iter << endl;
   }
-
+  
+  out << endl;
+  
 }
