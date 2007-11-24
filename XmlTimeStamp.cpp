@@ -23,7 +23,7 @@
 
 
 /*!
-   \file    XmlTimeStamp.cc
+   \file    XmlTimeStamp.cpp
    \brief   Xml interface to time manipulation object
    \author  Hugo Pereira
    \version $Revision$

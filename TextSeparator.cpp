@@ -22,7 +22,7 @@
 
 
 /*!
-  \file TextSeparator.cc
+  \file TextSeparator.cpp
   \brief separators between words
   \author Hugo Pereira
   \version $Revision$

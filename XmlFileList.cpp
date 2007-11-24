@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file XmlFileList.cc
+   \file XmlFileList.cpp
    \brief Xml interface to FileList
    \author Hugo Pereira
    \version $Revision$

@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file FontEdit.cc
+  \file FontEdit.cpp
   \brief three line editors and a browser to select fonts
   \author Hugo Pereira
   \version $Revision$

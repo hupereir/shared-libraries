@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomMainWindow.cc
+  \file CustomMainWindow.cpp
   \brief customized QMainWindow
   \author Hugo Pereira
   \version $Revision$

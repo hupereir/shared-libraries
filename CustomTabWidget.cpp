@@ -23,7 +23,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomTabWidget.cc
+  \file CustomTabWidget.cpp
   \brief Tab widget with detachable pages
   \author Hugo Pereira
   \version $Revision$

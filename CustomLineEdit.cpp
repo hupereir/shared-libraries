@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomLineEdit.cc
+  \file CustomLineEdit.cpp
   \brief customized QLineEdit object
   \author Hugo Pereira
   \version $Revision$

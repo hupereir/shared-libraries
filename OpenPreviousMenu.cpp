@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file OpenPreviousMenu.cc
+   \file OpenPreviousMenu.cpp
    \brief customized popup menu to open a previous logbook
    \author Hugo Pereira
    \version $Revision$

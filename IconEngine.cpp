@@ -23,7 +23,7 @@
 *******************************************************************************/
 
 /*!
-  \file IconEngine.cc
+  \file IconEngine.cpp
   \brief customized Icon factory to provide better looking disabled icons
   \author Hugo Pereira
   \version $Revision$

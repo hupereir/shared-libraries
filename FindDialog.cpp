@@ -21,7 +21,7 @@
 *******************************************************************************/
 
 /*!
-  \file FindDialog.cc
+  \file FindDialog.cpp
   \brief find_text dialog for text editor widgets
   \author Hugo Pereira
   \version $Revision$

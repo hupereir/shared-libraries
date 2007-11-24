@@ -22,7 +22,7 @@
 *******************************************************************************/
   
 /*!
-  \file BaseConfigurationDialog.cc
+  \file BaseConfigurationDialog.cpp
   \brief base configuration dialog
   \author Hugo Pereira
   \version $Revision$

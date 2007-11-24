@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomDialog.cc
+  \file CustomDialog.cpp
   \brief customized QDialog
   \author Hugo Pereira
   \version $Revision$

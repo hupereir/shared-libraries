@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file DebugMenu.cc
+  \file DebugMenu.cpp
   \brief some basic runtime debuging
   \author Hugo Pereira
   \version $Revision$

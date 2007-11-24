@@ -20,7 +20,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomListBox.cc
+  \file CustomListBox.cpp
   \brief qlistbox with even objects highlighted with different color
   \author Hugo Pereira
   \version $Revision$

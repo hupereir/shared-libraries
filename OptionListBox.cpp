@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file OptionListBox.cc
+   \file OptionListBox.cpp
    \brief ListBox for Special options, and buttons to add/remove values
    \author Hugo Pereira
    \version $Revision$

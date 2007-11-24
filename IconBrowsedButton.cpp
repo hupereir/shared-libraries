@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file IconBrowsedButton.cc
+  \file IconBrowsedButton.cpp
   \brief icon browser. The icon is displayed as the button label
   \author Hugo Pereira
   \version $Revision$

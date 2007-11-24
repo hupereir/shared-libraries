@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file ProcessFrame.cc  
+  \file ProcessFrame.cpp  
   \brief parse input file and display includes recursively 
   \author Hugo Pereira
   \version $Revision$

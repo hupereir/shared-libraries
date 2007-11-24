@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file StatusBar.cc
+   \file StatusBar.cpp
    \brief  customized line edit for application state
    \author Hugo Pereira
    \version $Revision$

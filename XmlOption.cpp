@@ -23,7 +23,7 @@
 *******************************************************************************/
 
 /*!
-   \file XmlOption.cc
+   \file XmlOption.cpp
    \brief Xml implementation of the Option object
    \author Hugo Pereira
    \version $Revision$

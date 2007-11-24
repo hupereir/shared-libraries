@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file BrowsedLineEdit.cc
+  \file BrowsedLineEdit.cpp
   \brief combined QLineEdit + associated browse button
   line edit is also customized to have faster popup menu
   result of the file dialog associated to the button is stored into the 

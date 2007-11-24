@@ -23,7 +23,7 @@
 *******************************************************************************/
 
 /*!
-  \file RemoveLineBuffer.cc
+  \file RemoveLineBuffer.cpp
   \brief handles consecutive calls to remove line in a single Clipboard block
   \author Hugo Pereira
   \version $Revision$

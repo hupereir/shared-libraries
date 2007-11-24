@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file SelectLineDialog.cc
+  \file SelectLineDialog.cpp
   \brief goto_line_number_dialog dialog for text editor widgets
   \author Hugo Pereira
   \version $Revision$

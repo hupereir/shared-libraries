@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file BoxSelection.cc
+  \file BoxSelection.cpp
   \brief Box selection
   \author Hugo Pereira
   \version $Revision$

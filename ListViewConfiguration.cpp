@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file ListViewConfiguration.cc
+  \file ListViewConfiguration.cpp
   \brief Configuration vbox for ListView columns
   \author Hugo Pereira
   \version $Revision$

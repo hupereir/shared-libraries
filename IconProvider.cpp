@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file IconProvider.cc
+  \file IconProvider.cpp
   \brief Icon provider based on configuration pixmap path
   \author Hugo Pereira
   \version $Revision$

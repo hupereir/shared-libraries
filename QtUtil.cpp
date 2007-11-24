@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file QtUtil.cc
+  \file QtUtil.cpp
   \brief Qt utility static methods
   \author Hugo Pereira
   \version $Revision$

@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file XmlTextFormatBlock.cc
+  \file XmlTextFormatBlock.cpp
   \brief tracks text format in given text range
   \author Hugo Pereira
   \version $Revision$

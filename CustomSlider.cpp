@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomSlider.cc
+  \file CustomSlider.cpp
   \brief customized QSlider associated to a CustomLineEdit
   \author Hugo Pereira
   \version $Revision$

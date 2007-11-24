@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file BlockHighlight.cc
+  \file BlockHighlight.cpp
   \brief handles multiple clicks and timeout
   \author Hugo Pereira
   \version $Revision$

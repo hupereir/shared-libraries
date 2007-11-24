@@ -22,7 +22,7 @@
  *******************************************************************************/
 
 /*!
-   \file FlatStyle.cc
+   \file FlatStyle.cpp
    \brief Customized style based on plastique with less frames 
    \author Hugo Pereira
    \version $Revision$

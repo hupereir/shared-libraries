@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file CustomTextEdit.cc
+  \file CustomTextEdit.cpp
   \brief Customized QTextEdit object
   \author Hugo Pereira
   \version $Revision$

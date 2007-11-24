@@ -23,7 +23,7 @@
 
 
 /*!
-  \file XmlOptions.cc
+  \file XmlOptions.cpp
   \brief Option file parser based on xml
   \author Hugo Pereira
   \version $Revision$

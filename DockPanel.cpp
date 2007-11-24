@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file DockPanel.cc
+  \file DockPanel.cpp
   \brief detachable generic panel
   \author Hugo Pereira
   \version $Revision$

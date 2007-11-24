@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file ValidFileThread.cc
+  \file ValidFileThread.cpp
   \brief check validity of a set of files
   \author  Hugo Pereira
   \version $Revision$

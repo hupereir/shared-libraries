@@ -23,7 +23,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomToolBar.cc
+  \file CustomToolBar.cpp
   \brief customized tool bar to handle position and visibility from Options
   \author Hugo Pereira
   \version $Revision$

@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file CustomComboBox.cc
+  \file CustomComboBox.cpp
   \brief Customized QCombobox to handle case sensitive auto completion
   \author Hugo Pereira
   \version $Revision$

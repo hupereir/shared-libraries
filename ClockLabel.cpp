@@ -23,7 +23,7 @@
 *******************************************************************************/
 
 /*!
-  \file ClockLabel.cc
+  \file ClockLabel.cpp
   \brief a self-updated label displaying current date and time 
   \author Hugo Pereira
   \version $Revision$

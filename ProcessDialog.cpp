@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file ProcessDialog.cc
+  \file ProcessDialog.cpp
   \brief customized dialog to handle QProcess objects and throw output in the text
   \author Hugo Pereira
   \version $Revision$

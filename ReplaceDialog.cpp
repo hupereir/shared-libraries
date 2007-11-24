@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file ReplaceDialog.cc
+  \file ReplaceDialog.cpp
   \brief replace_text dialog for text editor widgets
   \author Hugo Pereira
   \version $Revision$

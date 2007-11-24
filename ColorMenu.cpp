@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file ColorMenu.cc
+  \file ColorMenu.cpp
   \brief color picker
   \author Hugo Pereira
   \version $Revision$

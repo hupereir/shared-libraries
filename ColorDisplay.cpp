@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-\file ColorDisplay.cc
+\file ColorDisplay.cpp
 \brief used to display colors and a choose button
 \author Hugo Pereira
 \version $Revision$

@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file FontInfo.cc
+   \file FontInfo.cpp
    \brief font formatting options
    \author Hugo Pereira
    \version $Revision$

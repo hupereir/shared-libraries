@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomPixmap.cc
+  \file CustomPixmap.cpp
   \brief customized QPixmap to look for icon of given name in list of directory
   \author Hugo Pereira
   \version $Revision$

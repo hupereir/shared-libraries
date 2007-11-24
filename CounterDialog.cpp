@@ -21,7 +21,7 @@
  *                            
  *******************************************************************************/
 /*!
-   \file CounterDialog.cc
+   \file CounterDialog.cpp
    \brief displays Counter names and counts
    \author Hugo Pereira
    \version $Revision$

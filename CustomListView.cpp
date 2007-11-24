@@ -20,7 +20,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomListView.cc
+  \file CustomListView.cpp
   \brief qlistview for object counters
   \author Hugo Pereira
   \version $Revision$

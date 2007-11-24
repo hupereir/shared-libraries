@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomToolButton.cc
+  \file CustomToolButton.cpp
   \brief customized tool button to display tooltip in a dedicated label
   \author Hugo Pereira
   \version $Revision$

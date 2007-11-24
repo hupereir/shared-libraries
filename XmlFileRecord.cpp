@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file XmlFileRecord.cc
+   \file XmlFileRecord.cpp
    \brief xml interface to FileRecord
    \author Hugo Pereira
    \version $Revision$

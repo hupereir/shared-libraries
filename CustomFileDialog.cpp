@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomFileDialog.cc
+  \file CustomFileDialog.cpp
   \brief customized file selection dialog, to store last selected directory
   \author Hugo Pereira
   \version $Revision$
