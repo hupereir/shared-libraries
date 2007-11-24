@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file SuggestionMenu.cc
+   \file SuggestionMenu.cpp
    \brief customized popup menu to display spell checker suggestions
    \author Hugo Pereira
    \version $Revision$

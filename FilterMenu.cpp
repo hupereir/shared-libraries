@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file FilterMenu.cc
+   \file FilterMenu.cpp
    \brief dictionary filter selection menu
    \author Hugo Pereira
    \version $Revision$

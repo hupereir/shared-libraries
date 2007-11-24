@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file SpellDialog.cc
+  \file SpellDialog.cpp
   \brief spell checker popup dialog
   \author  Hugo Pereira
   \version $Revision$

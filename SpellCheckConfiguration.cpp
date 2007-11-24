@@ -23,7 +23,7 @@
 
 
 /*!
-   \file SpellCheckConfiguration.cc
+   \file SpellCheckConfiguration.cpp
    \brief   Spell checker common configuration
    \version $Revision$
    \date    $Date$

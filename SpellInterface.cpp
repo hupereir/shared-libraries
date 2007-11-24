@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file SpellInterface.cc
+  \file SpellInterface.cpp
   \brief spell checker interface
   \author  Hugo Pereira
   \version $Revision$

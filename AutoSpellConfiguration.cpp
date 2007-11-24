@@ -23,7 +23,7 @@
 
 
 /*!
-   \file AutoSpellConfiguration.cc
+   \file AutoSpellConfiguration.cpp
    \brief automatic spelling configuration
    \version $Revision$
    \date $Date$

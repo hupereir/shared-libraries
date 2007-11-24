@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file SpellParser.cc
+  \file SpellParser.cpp
   \brief highlight text based on misspelled words
   \author Hugo Pereira
   \version $Revision$

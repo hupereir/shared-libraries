@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file DictionaryMenu.cc
+   \file DictionaryMenu.cpp
    \brief dictionary dictionary selection menu
    \author Hugo Pereira
    \version $Revision$
