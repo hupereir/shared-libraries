@@ -22,7 +22,7 @@
  *******************************************************************************/
 
 /*!
-  \file ArgList.cc
+  \file ArgList.cpp
   \brief parse command line arguments
   \author  Hugo Pereira
   \version $Revision$

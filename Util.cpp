@@ -23,7 +23,7 @@
 
 
 /*!
-   \file    Util.cc
+   \file    Util.cpp
    \brief   some facilities used everywhere
    \author  Hugo Pereira
    \version $Revision$

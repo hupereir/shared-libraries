@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file Key.cc
+  \file Key.cpp
   \brief generic key object to handle object association
   \author Hugo Pereira
   \version $Revision$

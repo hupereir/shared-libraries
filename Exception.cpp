@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    Exception.cc
+   \file    Exception.cpp
    \brief   utility to tag exception description with the function, file and line
    \author  Hugo Pereira
    \version $Revision$

@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file XmlUtil.cc
+   \file XmlUtil.cpp
    \brief   Some Xml utilities
    \author Hugo Pereira
    \version $Revision$

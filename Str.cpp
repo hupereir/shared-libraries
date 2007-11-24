@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    Str.cc
+   \file    Str.cpp
    \brief   some utilities to handle strings safely
    \author  Hugo Pereira
    \version $Revision$

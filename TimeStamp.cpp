@@ -23,7 +23,7 @@
 
 
 /*!
-   \file    TimeStamp.cc
+   \file    TimeStamp.cpp
    \brief   time manipulation object
    \author  Hugo Pereira
    \version $Revision$

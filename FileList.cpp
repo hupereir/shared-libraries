@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file FileList.cc
+   \file FileList.cpp
    \brief   handles list of files saved into resource file for later reopening
    \author Hugo Pereira
    \version $Revision$

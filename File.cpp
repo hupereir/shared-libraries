@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    File.cc
+   \file    File.cpp
    \brief   file manipulation utility
    \author  Hugo Pereira
    \version $Revision$

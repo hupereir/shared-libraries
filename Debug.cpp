@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    Debug.cc
+   \file    Debug.cpp
    \brief   option driven debugging facility 
    \author  Hugo Pereira
    \version $Revision$

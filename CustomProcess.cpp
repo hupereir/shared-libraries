@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomProcess.cc
+  \file CustomProcess.cpp
   \brief customized process to store stdout/stderr in full/flushed streams
   \author Hugo Pereira
   \version $Revision$

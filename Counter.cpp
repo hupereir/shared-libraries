@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    Counter.cc
+   \file    Counter.cpp
    \brief   Object counter
    \author  Hugo Pereira
    \version $Revision$
