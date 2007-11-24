@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    Client.cc
+   \file    Client.cpp
    \brief   Interprocess communication client
    \author  Hugo Pereira
    \version $Revision$

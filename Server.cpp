@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    Server.cc
+   \file    Server.cpp
    \brief   interprocess communication server
    \author  Hugo Pereira
    \version $Revision$

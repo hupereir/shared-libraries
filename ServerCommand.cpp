@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    ServerCommand.cc
+   \file    ServerCommand.cpp
    \brief   formated command for interprocess communication
    \author  Hugo Pereira
    \version $Revision$

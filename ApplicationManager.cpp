@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    ApplicationManager.cc
+   \file    ApplicationManager.cpp
    \brief   ensures only one instance of an application is running
    \author  Hugo Pereira
    \version $Revision$
