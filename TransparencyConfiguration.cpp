@@ -66,6 +66,10 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   layout->addWidget( checkbox = new OptionCheckBox( "use transparency", this, "TRANSPARENT" ) );
   checkbox->setToolTip( "enable/disable transparent background" );
   addOptionWidget( checkbox );
+  
+  // enable/disable transparency
+  layout->addWidget( checkbox = new OptionCheckBox( "use gradient", this, "USE_TINT_GRADIENT" ) );
+  addOptionWidget( checkbox );
     
   CustomGridLayout* grid_layout = new CustomGridLayout();
   grid_layout->setSpacing(5);

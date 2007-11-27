@@ -32,6 +32,7 @@
 */
 
 #include <QAction>
+#include <QLinearGradient>
 #include <QMoveEvent>
 #include <QPaintEvent>
 #include <QResizeEvent>
@@ -62,6 +63,15 @@ namespace TRANSPARENCY {
       transparent_ = value;
       background_changed_ = true;
     }
+  
+    //! tint
+    virtual void setUseGradient( const bool& value )
+    { 
+      if( value == use_gradient_ ) return;
+      use_gradient_ = value;
+      background_changed_ = true;
+      update();
+    }      
   
     //! tint
     virtual void setTint( const QColor& color = QColor() );
@@ -102,7 +112,8 @@ namespace TRANSPARENCY {
     virtual void resizeEvent( QResizeEvent* event )
     { 
       background_changed_ = true;
-      update(); 
+      tint_gradient_.setFinalStop( event->size().width(), 0 );      
+      update();
       return QWidget::resizeEvent( event );
     }
     
@@ -167,6 +178,12 @@ namespace TRANSPARENCY {
     
     //! tint color
     QColor tint_color_;
+    
+    //! tint gradient
+    QLinearGradient tint_gradient_;
+    
+    //! true if gradient (horizontal) is used for the tint
+    bool use_gradient_;
     
     //! true when pointer is in window
     bool highlighted_;

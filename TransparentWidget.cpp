@@ -40,13 +40,13 @@
 using namespace std;
 using namespace TRANSPARENCY;
 
-
 //____________________________________________________________________
 TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   QWidget( parent, flags ),
   Counter( "TransparentWidget" ),
   transparent_( false ),
   background_changed_( true ),
+  use_gradient_( false ),
   highlighted_( false )
 { 
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
@@ -67,7 +67,19 @@ void TransparentWidget::setTint( const QColor& color )
 {
   Debug::Throw( "TransparentWidget::tint.\n" ); 
   if( tint_color_ == color ) return;
-  tint_color_ = color; 
+  tint_color_ = color;
+  if( tint_color_.isValid() )
+  {
+ 
+    QColor color( tint_color_ );
+    color.setAlpha( tint_color_.alpha()/2 );
+
+    tint_gradient_ = QLinearGradient( tint_gradient_.start(), tint_gradient_.finalStop() );
+    tint_gradient_.setColorAt(0, color );
+    tint_gradient_.setColorAt(1, tint_color_ );
+    
+  }
+  
   background_changed_ = true;
 }
 
@@ -109,6 +121,9 @@ void TransparentWidget::_updateConfiguration( void )
   
   // use transparency
   setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
+  
+  // gradient
+  setUseGradient( XmlOptions::get().get<bool>( "USE_TINT_GRADIENT" ) );    
   
   // tint
   QColor tint_color( XmlOptions::get().get<string>( "TINT_COLOR" ).c_str() );
@@ -159,8 +174,9 @@ void TransparentWidget::_updateBackgroundPixmap( void )
   {
     QPainter painter( &_backgroundPixmap() );
     painter.setPen( Qt::NoPen );
-    painter.setBrush( tint_color_ );
+    painter.setBrush( use_gradient_ ? QBrush( tint_gradient_ ):QBrush( tint_color_ ) );
     painter.drawRect( _backgroundPixmap().rect() );
+    
   }
   
   background_changed_ = false;
