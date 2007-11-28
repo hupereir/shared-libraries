@@ -68,8 +68,8 @@ namespace TRANSPARENCY
     QPixmap fullPixmap() const
     { return background_pixmap_; }
     
-    //! check X11 event
     #ifdef Q_WS_X11
+    //! check X11 event
     bool x11Event( XEvent* event );
     #endif
    
