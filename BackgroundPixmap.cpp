@@ -56,6 +56,7 @@ namespace TRANSPARENCY
   //! get lowest bit (shift) from integer value (little/big endianness)
   int _lowestBit( const unsigned int& val );
   
+  #ifdef Q_WS_X11
   // pointer to pixel converter
   typedef QRgb (*PixelConverter) (XImage* image, const unsigned int& x, const unsigned int& y);
   
@@ -79,6 +80,8 @@ namespace TRANSPARENCY
   
   //! root pixmap atom
   static Atom atom_ = 0;
+  
+  #endif
   
 };   
 
