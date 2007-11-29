@@ -136,7 +136,7 @@ class TimeStamp:public Counter
   { return time_; }
 
   //! returns TimeStamp corresponding to _now_
-  static TimeStamp now( void );
+  static TimeStamp now( void );  
   
   //! retrieve seconds (between 0 and 59)
   virtual int seconds( void ) const
