@@ -61,7 +61,8 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   // create list
   list_ = new CustomListBox( this );
   list_->setSelectionMode( QAbstractItemView::ExtendedSelection );  
-  connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), SLOT( _edit( QListWidgetItem* ) ) );
+  connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), SLOT( _edit() ) );
+  connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), SLOT( _remove() ) );
   connect( list_, SIGNAL( itemSelectionChanged() ), SLOT( _updateButtons() ) ); 
   layout->addWidget( list_, 1 );
   
@@ -81,6 +82,11 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   edit_->setToolTip( "edit selected value" );
 
   // remove button
+  addAction( remove_action_ = new QAction( "Remo&ve", this ) );
+  connect( remove_action_, SIGNAL( triggered() ), SLOT( _remove() ) );
+  remove_action_->setShortcut( Qt::Key_Delete );
+  remove_action_->setToolTip( "Remove selected value" );
+  
   button_layout->addWidget( remove_ = new QPushButton( "&Remove", this ) );
   connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
   remove_->setToolTip( "remove selected value" );
@@ -140,6 +146,7 @@ void OptionListBox::_updateButtons( void )
   
   // enable buttons depending on the size of the list
   edit_->setEnabled( items.size() == 1 );
+  remove_action_->setEnabled( items.size() != 0 );
   remove_->setEnabled( items.size() != 0 );
   default_->setEnabled( items.size() == 1 );
   
@@ -182,7 +189,7 @@ void OptionListBox::_add( void )
 }
 
 //_______________________________________________________
-void OptionListBox::_edit( QListWidgetItem* )
+void OptionListBox::_edit( void )
 {
   Debug::Throw( "OptionListBox::_edit.\n" );
 
@@ -234,6 +241,9 @@ void OptionListBox::_remove( void )
   // retrieve selection
   QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
   Exception::check( !items.empty(), DESCRIPTION( "invalid selection" ) );
+  ostringstream what;
+  what << "remove selected value" << (items.size() > 1 ? "s":"") << " ?";
+  if( !QtUtil::questionDialog( this, what.str().c_str() ) ) return;
   for( QList<QListWidgetItem*>::iterator iter  = items.begin(); iter != items.end(); iter++ )
   { delete *iter; }
   

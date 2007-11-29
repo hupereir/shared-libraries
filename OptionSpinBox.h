@@ -32,8 +32,8 @@
    \date    $Date$
 */
 
+#include <QSpinBox>
 #include <cmath>
-#include <qspinbox.h>
 #include "OptionWidget.h"
 #include "Options.h"
 

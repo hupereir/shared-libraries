@@ -1,3 +1,6 @@
+#ifndef OptionListBox_h
+#define OptionListBox_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,9 +24,6 @@
 *
 *******************************************************************************/
 
-#ifndef OptionListBox_h
-#define OptionListBox_h
-
 /*!
    \file OptionListBox.h
    \brief ListBox for Special options, and buttons to add/remove values
@@ -32,8 +32,9 @@
    \date $Date$
 */
 
-#include <QPushButton> 
+#include <QAction>
 #include <QFileDialog> 
+#include <QPushButton> 
 
 #include <cmath>
 
@@ -77,7 +78,7 @@ class OptionListBox: public QWidget, public OptionWidget
   void _add( void );
 
   //! add a value
-  void _edit( QListWidgetItem* item = 0 );
+  void _edit( void );
 
   //! remove a value
   void _remove();
@@ -101,8 +102,11 @@ class OptionListBox: public QWidget, public OptionWidget
   
   //! remove button
   QPushButton* remove_;
-  
-  //! default button
+      
+  //! remove action
+  QAction* remove_action_;
+
+    //! default button
   QPushButton* default_;
 
 };
