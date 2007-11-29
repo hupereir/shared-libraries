@@ -50,7 +50,7 @@ Options::Options( void ):
   */
   add( Option( "DEBUG_LEVEL", "0" , "debug verbosity level"  )); 
   add( Option( "SORT_FILES_BY_DATE", "0" , "sort files by access date in open previous menu"  )); 
-  add( Option( "USE_FLAT_THEME", "0", "use flat theme in replacement of plastique theme" ) );
+  add( Option( "USE_FLAT_THEME", "1", "use flat theme in replacement of plastique theme" ) );
   
   // fonts
   add( Option( "FIXED_FONT_NAME", "Sans" , "fixed font"  )); 
