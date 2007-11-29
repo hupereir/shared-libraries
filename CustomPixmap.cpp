@@ -66,7 +66,7 @@ CustomPixmap CustomPixmap::find(
       if( !isNull() ) break;
     }
   }
-      
+    
   return *this;
     
 } 
