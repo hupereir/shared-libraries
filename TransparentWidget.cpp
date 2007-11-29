@@ -110,8 +110,8 @@ void TransparentWidget::_updateConfiguration( void )
   setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
   
   // tint
-  QColor tint_color( XmlOptions::get().get<string>( "TINT_COLOR" ).c_str() );
-  unsigned int tint_intensity(  XmlOptions::get().get<unsigned int>( "TINT_INTENSITY" ) );
+  QColor tint_color( XmlOptions::get().get<string>( "TRANSPARENCY_TINT_COLOR" ).c_str() );
+  unsigned int tint_intensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_TINT_INTENSITY" ) );
   if( tint_color.isValid() && tint_intensity )
   {
     tint_color.setAlpha( tint_intensity );
@@ -119,8 +119,8 @@ void TransparentWidget::_updateConfiguration( void )
   } else setTint();
    
   // highlight
-  QColor highlight_color( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
-  unsigned int highlight_intensity(  XmlOptions::get().get<unsigned int>( "HIGHLIGHT_INTENSITY" ) );
+  QColor highlight_color( XmlOptions::get().get<string>( "TRANSPARENCY_HIGHLIGHT_COLOR" ).c_str() );
+  unsigned int highlight_intensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
   if( highlight_color.isValid() && highlight_intensity )
   {
     highlight_color.setAlpha( highlight_intensity );
