@@ -167,7 +167,7 @@ QDomElement CustomListView::htmlElement( QDomDocument& document )
 QList< QTreeWidgetItem* > CustomListView::children( QTreeWidgetItem* parent )
 {
   
-  Debug::Throw( "CustomListView::children.\n" );
+  Debug::Throw( 2, "CustomListView::children.\n" );
   
   QList<QTreeWidgetItem* > out;
   
