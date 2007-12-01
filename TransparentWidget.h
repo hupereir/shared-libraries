@@ -122,6 +122,7 @@ namespace TRANSPARENCY {
         highlighted_ = true;
         update();
       }
+      return QWidget::enterEvent( event );
     }
     
     //! leave event
@@ -132,6 +133,7 @@ namespace TRANSPARENCY {
         highlighted_ = false;
         update();
       }
+      return QWidget::leaveEvent( event );
     }
 
     //! paint
