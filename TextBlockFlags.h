@@ -32,6 +32,7 @@
   \date $Date$
 */  
 
+//! text block properties
 namespace TextBlock
 {
   
