@@ -78,7 +78,7 @@ namespace BASE
     private slots:
     
     //! display selected help text
-    void _display(void);
+    void _display( QTreeWidgetItem*, QTreeWidgetItem* );
     
     //! save modifications to current item
     void _save( bool forced = false );

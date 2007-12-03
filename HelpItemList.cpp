@@ -31,6 +31,7 @@
 
 #include <QApplication>
 #include <QMouseEvent>
+#include <QHeaderView>
 
 #include "HelpItemList.h"
 
@@ -42,12 +43,20 @@ const QString HelpItemList::DRAG = "HelpItemList::Drag";
 
 //__________________________________________________________
 HelpItemList::HelpItemList( QWidget* parent ):
-  CustomListBox( parent ),
+  CustomListView( parent ),
   drag_enabled_( false )
 {
   Debug::Throw( "HelpItemList::HelpItemList.\n" );
   setAcceptDrops(true);  
   setAutoScroll(true);
+  setSortingEnabled( false );
+  
+  setColumnCount( 1 );
+  setHeaderItem(0);
+  setColumnName( 0, "" );
+  
+  header()->hide();
+  
 }
     
 //__________________________________________________________
@@ -65,7 +74,7 @@ void HelpItemList::mousePressEvent( QMouseEvent* event )
         
   }
   
-  return CustomListBox::mousePressEvent( event );
+  return CustomListView::mousePressEvent( event );
 
 }
   
@@ -73,15 +82,18 @@ void HelpItemList::mousePressEvent( QMouseEvent* event )
 void HelpItemList::mouseMoveEvent( QMouseEvent* event )
 {
   
-  Debug::Throw(0, "HelpItemList::mouseMoveEvent.\n" );
+  Debug::Throw( "HelpItemList::mouseMoveEvent.\n" );
   
   // check button
-  if( !(event->buttons()&Qt::LeftButton) )  return CustomListBox::mouseMoveEvent( event );
+  if( !(event->buttons()&Qt::LeftButton) ) return CustomListView::mouseMoveEvent( event );
+  
+  // check if drag enabled
+  if( !drag_enabled_ ) return CustomListView::mouseMoveEvent( event );
   
   // check distance to last click
   if( (event->pos() - drag_start_ ).manhattanLength() < QApplication::startDragDistance() )
-  { return CustomListBox::mouseMoveEvent( event ); }
-  
+  { return CustomListView::mouseMoveEvent( event ); }
+ 
   _startDrag( event );
   
 }
@@ -89,12 +101,12 @@ void HelpItemList::mouseMoveEvent( QMouseEvent* event )
 //__________________________________________________________
 void HelpItemList::dragEnterEvent( QDragEnterEvent* event )
 {
-  Debug::Throw(0, "HelpItemList::dragEnterEvent.\n" );
+  Debug::Throw( "HelpItemList::dragEnterEvent.\n" );
 
   // check if object can be decoded
   if( !_acceptDrag( event ) ) 
   {
-    Debug::Throw(0, "HelpItemList::dragEnterEvent - rejected.\n" ); 
+    Debug::Throw( "HelpItemList::dragEnterEvent - rejected.\n" ); 
     event->ignore();
     return;
   }
@@ -118,12 +130,12 @@ void HelpItemList::dragEnterEvent( QDragEnterEvent* event )
 //__________________________________________________________
 void HelpItemList::dragMoveEvent( QDragMoveEvent* event )
 {
-  Debug::Throw(0, "HelpItemList::dragMoveEvent.\n" ); 
+  Debug::Throw( "HelpItemList::dragMoveEvent.\n" ); 
 
   // check if object can be decoded
   if( !_acceptDrag( event ) ) 
   {
-    Debug::Throw(0, "HelpItemList::dragMoveEvent - rejected.\n" ); 
+    Debug::Throw( "HelpItemList::dragMoveEvent - rejected.\n" ); 
     event->ignore();
     return;
   }
@@ -186,15 +198,15 @@ bool HelpItemList::_acceptDrag( QDropEvent *event ) const
 bool HelpItemList::_startDrag( QMouseEvent *event )
 {
   
-  Debug::Throw( 0, "HelpItemList::_startDrag.\n" );
+  Debug::Throw( "HelpItemList::_startDrag.\n" );
 
   // start drag
   QDrag *drag = new QDrag(this);
   
   // store data
   QMimeData *mime = new QMimeData();
-  mime->setData( HelpItemList::DRAG, QListWidget::currentItem()->text().toAscii() );
-  mime->setText( QListWidget::currentItem()->text() );
+  mime->setData( HelpItemList::DRAG, QTreeWidget::currentItem()->text(0).toAscii() );
+  mime->setText( QTreeWidget::currentItem()->text(0) );
   drag->setMimeData(mime);
   drag->start(Qt::CopyAction);  
   return true;

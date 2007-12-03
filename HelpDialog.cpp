@@ -66,7 +66,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   // add help list
   list_ = new HelpItemList( this );
   list_->setMaximumWidth(150);
-  list_->setMovement(QListView::Static);
+  // list_->setMovement(QListView::Static);
   layout->addWidget( list_ );
     
   // stack widget to switch between html and plain text editor
@@ -153,7 +153,8 @@ HelpDialog::HelpDialog( QWidget *parent ):
   stack_layout_->setCurrentWidget( html_frame_ );
     
   // connect list to text edit
-  connect( &list(), SIGNAL( itemSelectionChanged() ), SLOT( _display() ) );
+  connect( &list(), SIGNAL( currentItemChanged( QTreeWidgetItem*, QTreeWidgetItem* ) ), SLOT( _display( QTreeWidgetItem*, QTreeWidgetItem* ) ) );
+  //connect( &list(), SIGNAL( itemSelectionChanged() ), SLOT( _display() ) );
 
   // add close accelerator
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
@@ -179,18 +180,19 @@ void HelpDialog::closeEvent( QCloseEvent *e )
 }
 
 //_________________________________________________________
-void HelpDialog::_display()
+void HelpDialog::_display( QTreeWidgetItem* current, QTreeWidgetItem* previous )
 {
 
   Debug::Throw( "HelpDialog::_Display.\n" );
   
   // save modifications to current item, if needed
-  _save();
+  if( previous && current != previous ) _save();
+
+  HelpItemList::Item* item( dynamic_cast<HelpItemList::Item*>( current ) );
+  if( !item ) return;
+
+  current_item_ = item;
   
-  QList<HelpItemList::Item*> items( list().selectedItems<HelpItemList::Item>() );
-  if( items.empty() ) return;
-  
-  current_item_ = items.front();
   html_editor_->setHtml( current_item_->item().text().c_str() );
   plain_editor_->setPlainText( current_item_->item().text().c_str() );
   
@@ -213,7 +215,7 @@ void HelpDialog::_save( bool forced )
       
       // retrieve all texts, pass to help manager
       HelpManager::List items;
-      QList<HelpItemList::Item*> list_items( list().items<HelpItemList::Item>() );
+      QList<HelpItemList::Item*> list_items( list().children<HelpItemList::Item>() );
       for( QList<HelpItemList::Item*>::iterator iter = list_items.begin(); iter != list_items.end(); iter++ )
       { items.push_back( (*iter)->item() ); }
       

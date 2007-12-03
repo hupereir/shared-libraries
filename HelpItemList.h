@@ -35,14 +35,14 @@
 #include <QDrag>
 #include <QString>
 
-#include "CustomListBox.h"
+#include "CustomListView.h"
 #include "HelpItem.h"
 
 namespace BASE
 {
   
   //! Help item list
-  class HelpItemList:public CustomListBox
+  class HelpItemList:public CustomListView
   {
     
     public:
@@ -54,22 +54,19 @@ namespace BASE
   
     //! enable drag
     void setDragEnabled( bool value )
-    { 
-      Debug::Throw(0) << "HelpItemList::setDragEnabled - value: " << value << std::endl;
-      drag_enabled_ = value; 
-    }
+    { drag_enabled_ = value; }
       
     //! local item (overloaded) for counter dialog
-    class Item: public QListWidgetItem
+    class Item: public QTreeWidgetItem
     {
         
       public:
       
       //! constructor
       Item( HelpItemList* parent, const HelpItem& item ):
-        QListWidgetItem( parent ),
+        QTreeWidgetItem( parent ),
         item_( item )
-      { setText(item.label().c_str() ); }
+      { setText( 0, item.label().c_str() ); }
       
       //! return associated item
       const HelpItem& item( void ) const

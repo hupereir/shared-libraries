@@ -161,7 +161,7 @@ void HelpManager::_display( void )
   for( List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
   { dialog->addItem( *iter ); }
   
-  dialog->list().setCurrentItem( dialog->list().item(0) );
+  dialog->list().setCurrentItem( dialog->list().topLevelItem(0) );
   dialog->setEditEnabled( file_.size() );
   QtUtil::centerOnWidget( dialog, qApp->activeWindow() );
   dialog->show();
