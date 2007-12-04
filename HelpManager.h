@@ -64,12 +64,9 @@ namespace BASE
     //! input file
     static void setFile( const File& file )
     { file_ = file; }
-       
-    //! list of help items
-    typedef std::vector< HelpItem > List;
-
+ 
     //! install help. Put items in the menu, create associated objects 
-    static void install( const List& items )
+    static void install( const HelpItem::List& items )
     { items_ = items; }
     
     //! install help. Put items in the menu, create associated objects 
@@ -77,6 +74,18 @@ namespace BASE
     
     //! install help, from file
     static void install( const File& file );
+    
+    //! copy current items to backup
+    static void backup( void )
+    { backup_items_ = items_; }
+    
+    //! restore backup
+    static void restoreBackup( void )
+    { items_ = backup_items_; }
+    
+    //! list of items
+    static const HelpItem::List& items( void )
+    { return items_; }
     
     //! clear help
     static void clear( void )
@@ -103,9 +112,7 @@ namespace BASE
     //! dump action
     QAction& dumpAction( void )
     { return *dump_action_; }
-   
-    protected:
-    
+       
     protected slots:
     
     //! opens help dialog
@@ -140,7 +147,10 @@ namespace BASE
     static bool modified_;
     
     //! complete set of help items
-    static List items_;
+    static HelpItem::List items_;
+    
+    //! complete set of help items
+    static HelpItem::List backup_items_;
     
   };
   

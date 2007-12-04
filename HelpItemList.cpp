@@ -116,12 +116,10 @@ void HelpItemList::dragEnterEvent( QDragEnterEvent* event )
 
   // retrieve item below pointer
   Item *item( static_cast<Item*>( itemAt( event->pos()) ) );
-
   if( item ) {
-        
-    drop_item_ = item;    
-    drop_item_selected_ = isItemSelected( drop_item_ );
-    setItemSelected( drop_item_, true );
+    
+    drag_item_ = item;
+    setCurrentItem( item );
     
   }
       
@@ -142,28 +140,20 @@ void HelpItemList::dragMoveEvent( QDragMoveEvent* event )
   
   // accept event
   event->acceptProposedAction() ;
-  
+   
   // retrieve item below pointer
   Item *item( static_cast<Item*>( itemAt( event->pos() ) ) );
   
   // update drop item  
-  if( item ) 
-  {            
-        
-    if( drop_item_ != item )
-    {
-
-      if( drop_item_ ) setItemSelected( drop_item_, drop_item_selected_ );
-      
-      // change drop item
-      drop_item_ = item;
-      
-      drop_item_selected_ = isItemSelected( drop_item_ );
-      if( drop_item_ ) setItemSelected( drop_item_, true );
-      
-    }
-    
-  }
+  if( !(item && drag_item_ ) ) return;
+   
+  int first_index = indexOfTopLevelItem( drag_item_ );
+  int last_index = indexOfTopLevelItem( item );
+  item = static_cast<Item*>( takeTopLevelItem( first_index ) );
+  insertTopLevelItem( last_index, item );
+  drag_item_ = item;
+  
+  setCurrentItem( item );
   
 }
 
@@ -172,14 +162,8 @@ void HelpItemList::dropEvent( QDropEvent* event )
 {
   Debug::Throw( "HelpItemList::dropEvent.\n" );
 
-  // check if object can be decoded
   if( !_acceptDrag( event ) ) event->ignore();
-  else
-  {
-    event->acceptProposedAction();
-    _processDrop( event );
-    _resetDrag();
-  }
+  else emit itemMoved();
   
   return;
   
@@ -205,10 +189,11 @@ bool HelpItemList::_startDrag( QMouseEvent *event )
   
   // store data
   QMimeData *mime = new QMimeData();
-  mime->setData( HelpItemList::DRAG, QTreeWidget::currentItem()->text(0).toAscii() );
+  mime->setData( HelpItemList::DRAG, "" );
   mime->setText( QTreeWidget::currentItem()->text(0) );
   drag->setMimeData(mime);
-  drag->start(Qt::CopyAction);  
+  drag->start(Qt::CopyAction);
+    
   return true;
   
 }
@@ -218,59 +203,6 @@ void HelpItemList::_resetDrag( void )
 {
   
   Debug::Throw( "HelpItemList::_resetDrag.\n" );
-
-  // cleans drop_item
-  if( drop_item_ ) setItemSelected( drop_item_, drop_item_selected_ );
-  drop_item_ = 0;
+  drag_item_ = 0;
   
-}
-
-//__________________________________________________________
-bool HelpItemList::_processDrop( QDropEvent *event )
-{
-  
-  Debug::Throw( "HelpItemList::_processDrop.\n" );
-  
-//   // retrieve item below pointer
-//   Item *item( static_cast<Item*>(itemAt( event->pos() ) ) );
-//   if( !item ) return false;
-//   
-//   // retrieve event keyword
-//   const QMimeData& mime( *event->mimeData() );
-//   if( mime.hasFormat( HelpItemList::DRAG ) )
-//   {
-//    
-//     // dragging from one keyword to another
-//     // retrieve old keyword
-//     QString value( mime.data( HelpItemList::DRAG ) );
-//     if( value.isNull() || value.isEmpty() ) return false;
-//     
-//     _resetDrag();
-//     
-//     // retrieve full keyword of selected items
-//     QList<Item*> items( selectedItems<Item>() );
-//     for( QList<Item*>::iterator iter = items.begin(); iter != items.end(); iter++ )
-//     {
-//       string old_keyword( keyword( *iter ) );
-//       
-//       // make sure that one does not move an item to itself
-//       if( old_keyword == current_keyword ) continue;
-// 
-//       emit keywordChanged( old_keyword, current_keyword + "/" + qPrintable( value ) );
-//     }
-//     
-//     return true;
-//   }
-//   
-//   if( mime.hasFormat( LogEntryList::DRAG ) )
-//   {
-//     
-//     // dragging from logEntry list
-//     _resetDrag();
-//     emit entryKeywordChanged( current_keyword );
-//     
-//   }
-//   
-//   return false;
-  return true;
 }

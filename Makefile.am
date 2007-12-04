@@ -28,6 +28,7 @@ libbase_help_a_SOURCES = \
 
 nodist_libbase_help_a_SOURCES = \
   moc_HelpDialog.cpp \
+  moc_HelpItemList.cpp \
   moc_HelpManager.cpp
 
 clean-local:

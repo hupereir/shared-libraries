@@ -36,6 +36,7 @@
 #include <QDomElement>
 #include <QDomDocument>
 #include <string>
+#include <vector>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -87,6 +88,8 @@ namespace BASE
     //! item text
     const std::string& text( void ) const
     { return text_; }
+    
+    typedef std::vector< HelpItem > List;
     
     private:
     

@@ -45,6 +45,8 @@ namespace BASE
   class HelpItemList:public CustomListView
   {
     
+    Q_OBJECT
+    
     public:
     //! constructor
     HelpItemList( QWidget *parent );
@@ -82,6 +84,11 @@ namespace BASE
       HelpItem item_;
       
     };
+
+    signals:
+    
+    //! items have been moved (via drag and drop)
+    void itemMoved();
     
     protected:
 
@@ -117,10 +124,7 @@ namespace BASE
     
     //! return true if QMimeSource is an accepted TextDrag
     bool _acceptDrag( QDropEvent *event ) const;
-    
-    //! process drop action (for accepted drags)
-    bool _processDrop( QDropEvent *event );
-    
+     
     //@}
     
     //!@name drag and drop
@@ -130,10 +134,13 @@ namespace BASE
     bool drag_enabled_;
     
     //! drop target item
-    Item *drop_item_;
+    Item *drag_item_;
+    
+    //! index
+    
     
     //! drop item 'initial' selection state
-    bool drop_item_selected_;
+    bool drag_item_selected_;
     
     //! store possible mouse drag start position
     QPoint drag_start_;

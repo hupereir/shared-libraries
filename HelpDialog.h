@@ -59,6 +59,9 @@ namespace BASE
     void clear( void )
     { list().clear(); }
 
+    //! set items
+    void setItems( const HelpItem::List& items );
+    
     //! adds Help item to the dialog
     void addItem( const HelpItem& item );
     
@@ -70,6 +73,17 @@ namespace BASE
     void setEditEnabled( const bool& value )
     { edit_button_->setEnabled( value ); }
     
+    public slots:
+    
+    //! close
+    virtual void close( void )
+    {
+      
+      Debug::Throw( "HelpDialog::close.\n" );
+      if( edited_ ) _askForSave();
+      QDialog::close();
+    }
+    
     protected:
     
     //! close event (overloaded)
@@ -79,9 +93,12 @@ namespace BASE
     
     //! display selected help text
     void _display( QTreeWidgetItem*, QTreeWidgetItem* );
-    
+        
     //! save modifications to current item
-    void _save( bool forced = false );
+    void _updateItemFromEditor( bool forced = false );
+
+    //! reload items from list and update Help manager
+    void _updateHelpManager( void );
     
     //! toggle help edition
     void _toggleEdition( void );
@@ -93,6 +110,9 @@ namespace BASE
     void _deleteItem( void );
     
     private:
+    
+    //! if help manager is modified, ask for save
+    void _askForSave( void );
     
     //! list of help items
     HelpItemList *list_;

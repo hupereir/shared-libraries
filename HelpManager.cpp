@@ -51,7 +51,8 @@ using namespace BASE;
 // static members initialization
 string HelpManager::window_title_( "Reference Manual" );
 bool HelpManager::modified_( false );
-HelpManager::List HelpManager::items_;
+HelpItem::List HelpManager::items_;
+HelpItem::List HelpManager::backup_items_;
 File HelpManager::file_;
 
 //_________________________________________________________
@@ -156,12 +157,7 @@ void HelpManager::_display( void )
   HelpDialog* dialog( new HelpDialog( 0 ) );
   dialog->setWindowTitle( window_title_.c_str() );
   dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-
-  // install text
-  for( List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
-  { dialog->addItem( *iter ); }
-  
-  dialog->list().setCurrentItem( dialog->list().topLevelItem(0) );
+  dialog->setItems( items_ );
   dialog->setEditEnabled( file_.size() );
   QtUtil::centerOnWidget( dialog, qApp->activeWindow() );
   dialog->show();
@@ -180,7 +176,7 @@ void HelpManager::_dumpHelpString( void )
   
   // retrieve all items from dialog
   out << "static const char* HelpText[] = {\n";
-  for( List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
+  for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
   {
     
     // dump label
@@ -233,7 +229,7 @@ void HelpManager::_save( void )
   
   // top element
   QDomElement top = document.appendChild( document.createElement( XML_HELP.c_str() ) ).toElement();
-  for( List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
+  for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
   { top.appendChild( iter->domElement( document ) ); }
  
   out.write( document.toByteArray() );
