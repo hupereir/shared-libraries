@@ -91,7 +91,7 @@ void CounterDialog::update( void )
     std::map<string, CustomListView::Item* >::iterator item_it( items_.find( it->first ) );
     CustomListView::Item *item( 0 );
     if( item_it == items_.end() ) {
-      item = new CustomListView::Item( counter_list_ );
+      counter_list_->addTopLevelItem( item = new CustomListView::Item() ); 
       items_.insert( make_pair( it->first, item ) );
     } else item = item_it->second;
     

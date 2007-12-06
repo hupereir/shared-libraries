@@ -160,14 +160,7 @@ class CustomListView: public QTreeWidget, public Counter
     public:
     
     //! constructor
-    Item( CustomListView* parent ):
-      QTreeWidgetItem( parent ),
-      Counter( "CustomListView::Item" )
-    {}
-    
-    //! constructor
-    Item( Item* item ):
-      QTreeWidgetItem( item ),
+    Item():
       Counter( "CustomListView::Item" )
     {}
     

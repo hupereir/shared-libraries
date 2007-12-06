@@ -67,13 +67,10 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   {
     QStringList parsed( (iter)->split( "=" ) );
     if( parsed.empty() ) continue;
-    CustomListView::Item* item = new CustomListView::Item( list );
-
+    CustomListView::Item* item = new CustomListView::Item();
     item->setText( 0, parsed[0] );
-    
-    if( parsed.size() > 1 ) 
-    { item->setText( 1, parsed[1] ); }
-    
+    if( parsed.size() > 1 ) item->setText( 1, parsed[1] );
+    list->addTopLevelItem( item );
   }
   
   list->resizeColumnToContents( 1 );

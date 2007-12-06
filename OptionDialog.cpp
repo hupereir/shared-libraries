@@ -69,10 +69,11 @@ OptionDialog::OptionDialog( QWidget* parent ):
     for(  Options::OptionList::const_iterator option_iter = iter->second.begin(); option_iter != iter->second.end(); option_iter++ )
     {
       // create new item
-      CustomListView::Item* item = new CustomListView::Item( list );
+      CustomListView::Item* item = new CustomListView::Item();
       item->setText( 0, iter->first.c_str() );
       item->setText( 1, option_iter->raw().c_str() );
       item->setColor( "#0000ff" );
+      list->addTopLevelItem( item );
     }
   }
   
@@ -81,9 +82,10 @@ OptionDialog::OptionDialog( QWidget* parent ):
   for( Options::OptionMap::const_iterator iter = options.begin(); iter != options.end(); iter++ )
   {
     // create new item
-    CustomListView::Item* item = new CustomListView::Item( list );
+    CustomListView::Item* item = new CustomListView::Item();
     item->setText( 0, iter->first.c_str() );
     item->setText( 1, iter->second.raw().c_str() );
+    list->addTopLevelItem( item );
   }
   
   list->resizeColumnToContents( 1 );
