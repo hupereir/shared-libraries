@@ -47,11 +47,11 @@ class TextBlockData: public QTextBlockUserData, public Counter
     QTextBlockUserData(),
     Counter( "TextBlockData" ),
     flags_( TextBlock::NONE )
-  { Debug::Throw( "TextBlockData::TextBlockData.\n" ); }
+  { Debug::Throw( 2, "TextBlockData::TextBlockData.\n" ); }
   
   //! destructor
   virtual ~TextBlockData( void )
-  { Debug::Throw( "TextBlockData::~TextBlockData.\n" ); }
+  { Debug::Throw( 2, "TextBlockData::~TextBlockData.\n" ); }
   
    //! flags
   const unsigned int& flags( void ) const

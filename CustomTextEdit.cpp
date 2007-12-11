@@ -775,6 +775,9 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 
   Debug::Throw( "CustomTextEdit::mousePressEvent.\n" );
 
+  if( event->button() == MidButton ) 
+  { Debug::Throw( "CustomTextEdit::mousePressEvent - middle mouse button.\n" ); }
+  
   // check button
   if( event->button() == LeftButton )
   {
@@ -852,7 +855,11 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 
   }
 
-  return QTextEdit::mousePressEvent( event );
+  QTextEdit::mousePressEvent( event );
+
+  // for mid button, locate cursor at new position
+  if(  event->button() == MidButton )
+  { setTextCursor( cursorForPosition( event->pos() ) ); }
 
 }
 
@@ -924,6 +931,9 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 
   Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
 
+  if( event->button() == MidButton ) 
+  { Debug::Throw( "CustomTextEdit::mouseReleaseEvent - middle mouse button.\n" ); }
+
   // no need to check for enability because there is no way for the box to start if disabled
   if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::STARTED )
   {
@@ -955,8 +965,8 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
   // do nothing with MidButton when box selection is active
   if( event->button() == MidButton  && _boxSelection().state() == BoxSelection::FINISHED ) return;
 
-  // normal case
-  return QTextEdit::mouseReleaseEvent( event );
+  // process event
+  QTextEdit::mouseReleaseEvent( event );
 
 }
 

@@ -32,7 +32,6 @@
    \date $Date$
 */
 
-#include <QSizeGrip>
 #include <QLabel>
 #include <QApplication>
 #include <QStatusBar>
