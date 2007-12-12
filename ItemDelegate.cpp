@@ -39,7 +39,7 @@ using namespace std;
 void ItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
   
-  Debug::Throw( "CustomListBox::Delegate::Paint.\n" );   
+  Debug::Throw() << "ItemDelegate::paint - width: " << painter->device()->width() << endl;
   QStyleOptionViewItem new_option( option );
   
   //  QGradient 
