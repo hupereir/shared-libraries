@@ -45,6 +45,7 @@ noinst_HEADERS = \
   IconBrowsedButton.h \
   IconEngine.h \
   IconProvider.h \
+  ItemDelegate.h \
   ListViewConfiguration.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
@@ -118,6 +119,7 @@ libbase_qt_a_SOURCES = \
   IconBrowsedButton.cpp \
   IconEngine.cpp \
   IconProvider.cpp \
+  ItemDelegate.cpp \
   ListViewConfiguration.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
