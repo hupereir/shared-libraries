@@ -47,6 +47,7 @@ noinst_HEADERS = \
   IconProvider.h \
   ItemDelegate.h \
   ListViewConfiguration.h \
+  ModelItem.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
   OptionBrowsedLineEdit.h \
