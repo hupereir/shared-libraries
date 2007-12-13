@@ -268,6 +268,7 @@ void TreeWidget::drawRow( QPainter * painter, const QStyleOptionViewItem & optio
 {
   
   Item* item = dynamic_cast<Item*>(itemFromIndex( index ) );
+  
   // modify options and pass to the default method
   QStyleOptionViewItem new_option( option );
   

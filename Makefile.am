@@ -25,7 +25,6 @@ noinst_HEADERS = \
   CustomGridLayout.h \
   CustomLineEdit.h \
   ListWidget.h \
-  TreeWidget.h \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
@@ -76,6 +75,8 @@ noinst_HEADERS = \
   TextBlockFlags.h \
   TextSelection.h \
   TextSeparator.h \
+  TreeView.h \
+  TreeWidget.h \
   ValidFileThread.h \
   XmlError.h \
   XmlFileList.h \
@@ -102,7 +103,6 @@ libbase_qt_a_SOURCES = \
   CustomFileDialog.cpp \
   CustomLineEdit.cpp \
   ListWidget.cpp \
-  TreeWidget.cpp \
   CustomMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
@@ -134,6 +134,8 @@ libbase_qt_a_SOURCES = \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
   TextSeparator.cpp \
+  TreeView.cpp \
+  TreeWidget.cpp \
   ValidFileThread.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \
@@ -154,7 +156,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomFileDialog.cpp \
   moc_CustomLineEdit.cpp \
   moc_ListWidget.cpp \
-  moc_TreeWidget.cpp \
   moc_CustomMainWindow.cpp \
   moc_CustomSlider.cpp \
   moc_CustomTabWidget.cpp \
@@ -174,7 +175,9 @@ nodist_libbase_qt_a_SOURCES = \
   moc_RemoveLineBuffer.cpp \
   moc_ReplaceDialog.cpp \
   moc_SelectLineDialog.cpp \
-  moc_StatusBar.cpp
+  moc_StatusBar.cpp \
+  moc_TreeView.cpp \
+  moc_TreeWidget.cpp
 
 clean-local:
 	rm -f moc_*.cpp
