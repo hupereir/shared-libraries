@@ -45,7 +45,6 @@ noinst_HEADERS = \
   IconEngine.h \
   IconProvider.h \
   ItemDelegate.h \
-  ListViewConfiguration.h \
   ModelItem.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
@@ -76,6 +75,7 @@ noinst_HEADERS = \
   TextSelection.h \
   TextSeparator.h \
   TreeView.h \
+  TreeViewConfiguration.h \
   TreeWidget.h \
   ValidFileThread.h \
   XmlError.h \
@@ -121,7 +121,6 @@ libbase_qt_a_SOURCES = \
   IconEngine.cpp \
   IconProvider.cpp \
   ItemDelegate.cpp \
-  ListViewConfiguration.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
   OptionListBox.cpp \
@@ -136,6 +135,7 @@ libbase_qt_a_SOURCES = \
   TextSeparator.cpp \
   TreeView.cpp \
   TreeWidget.cpp \
+  TreeViewConfiguration.cpp \
   ValidFileThread.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \
@@ -167,7 +167,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_FindDialog.cpp \
   moc_FontEdit.cpp \
   moc_IconBrowsedButton.cpp \
-  moc_ListViewConfiguration.cpp \
   moc_MultipleClickCounter.cpp \
   moc_OpenPreviousMenu.cpp \
   moc_OptionListBox.cpp \
@@ -177,6 +176,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_SelectLineDialog.cpp \
   moc_StatusBar.cpp \
   moc_TreeView.cpp \
+  moc_TreeViewConfiguration.cpp \
   moc_TreeWidget.cpp
 
 clean-local:
