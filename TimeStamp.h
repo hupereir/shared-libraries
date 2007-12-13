@@ -93,7 +93,7 @@ class TimeStamp:public Counter
   virtual bool operator == (const TimeStamp& stamp ) const
   { return( time_ == stamp.time_ ); }  
     
-  //! used to have fast access to the IntOpt integer value
+  //! used to have fast access to the integer value
   virtual operator int (void) const 
   { return int( time_ ); }  
 
