@@ -35,11 +35,11 @@
 #include <string.h>
 #include <sstream>
 
-#include "CustomListView.h"
+#include "TreeWidget.h"
 #include "Debug.h"
 
 //! qlistview for object counters
-class CounterList: public CustomListView
+class CounterList: public TreeWidget
 {
 
   public:

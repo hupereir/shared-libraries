@@ -41,7 +41,7 @@
 #include "OptionWidget.h"
 #include "Options.h"
 
-#include "CustomListBox.h"
+#include "ListWidget.h"
 
 //! ListBox for Special options, and buttons to add/remove values
 class OptionListBox: public QWidget, public OptionWidget
@@ -95,7 +95,7 @@ class OptionListBox: public QWidget, public OptionWidget
   QFileDialog::FileMode file_mode_;
     
   //! value list
-  CustomListBox* list_;
+  ListWidget* list_;
   
   //! edit button
   QPushButton* edit_;

@@ -33,7 +33,7 @@
 #include <QLayout>
 
 #include "OptionDialog.h"
-#include "CustomListView.h"
+#include "TreeWidget.h"
 #include "Str.h"
 #include "XmlOptions.h"
 
@@ -56,7 +56,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
   layout()->setSpacing(10);
   
   // insert list
-  CustomListView* list = new CustomListView( this );
+  TreeWidget* list = new TreeWidget( this );
   layout()->addWidget( list );
   list->setColumnCount(2);
   list->setColumnName(0, "Name" );
@@ -69,7 +69,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     for(  Options::OptionList::const_iterator option_iter = iter->second.begin(); option_iter != iter->second.end(); option_iter++ )
     {
       // create new item
-      CustomListView::Item* item = new CustomListView::Item();
+      TreeWidget::Item* item = new TreeWidget::Item();
       item->setText( 0, iter->first.c_str() );
       item->setText( 1, option_iter->raw().c_str() );
       item->setColor( "#0000ff" );
@@ -82,7 +82,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
   for( Options::OptionMap::const_iterator iter = options.begin(); iter != options.end(); iter++ )
   {
     // create new item
-    CustomListView::Item* item = new CustomListView::Item();
+    TreeWidget::Item* item = new TreeWidget::Item();
     item->setText( 0, iter->first.c_str() );
     item->setText( 1, iter->second.raw().c_str() );
     list->addTopLevelItem( item );

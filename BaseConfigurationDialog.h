@@ -36,7 +36,7 @@
 #include <QStackedWidget>
 #include <list>
 
-#include "CustomListBox.h"
+#include "ListWidget.h"
 #include "Exception.h"
 #include "XmlOptions.h"
 #include "OptionWidget.h"
@@ -171,7 +171,7 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
   protected:
   
   //! retrieve list
-  virtual CustomListBox& _list( void )
+  virtual ListWidget& _list( void )
   { return *list_; }
 
   //! retrieve stack
@@ -185,7 +185,7 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
   private:
 
   //! Configuration list
-  CustomListBox* list_;
+  ListWidget* list_;
 
   //! Widget stack
   QStackedWidget* stack_;

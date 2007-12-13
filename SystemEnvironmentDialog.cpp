@@ -33,7 +33,7 @@
 #include <QLayout>
 
 #include "SystemEnvironmentDialog.h"
-#include "CustomListView.h"
+#include "TreeWidget.h"
 #include "Str.h"
 
 using namespace std;
@@ -55,7 +55,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   layout()->setSpacing(10);
   
   // insert list
-  CustomListView* list = new CustomListView( this );
+  TreeWidget* list = new TreeWidget( this );
   layout()->addWidget( list );
   list->setColumnCount(2);
   list->setColumnName(0, "Name" );
@@ -67,7 +67,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   {
     QStringList parsed( (iter)->split( "=" ) );
     if( parsed.empty() ) continue;
-    CustomListView::Item* item = new CustomListView::Item();
+    TreeWidget::Item* item = new TreeWidget::Item();
     item->setText( 0, parsed[0] );
     if( parsed.size() > 1 ) item->setText( 1, parsed[1] );
     list->addTopLevelItem( item );

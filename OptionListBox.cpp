@@ -59,7 +59,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   setLayout( layout );
   
   // create list
-  list_ = new CustomListBox( this );
+  list_ = new ListWidget( this );
   list_->setSelectionMode( QAbstractItemView::ExtendedSelection );  
   connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), SLOT( _edit() ) );
   connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), SLOT( _remove() ) );

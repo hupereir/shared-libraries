@@ -20,7 +20,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomListView.cpp
+  \file TreeWidget.cpp
   \brief qlistview for object counters
   \author Hugo Pereira
   \version $Revision$
@@ -33,19 +33,19 @@
 #include <QPainter>
 
 #include "ColorDisplay.h"
-#include "CustomListView.h"
+#include "TreeWidget.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
 using namespace std;
 
 //_______________________________________________
-CustomListView::CustomListView( QWidget* parent ):
+TreeWidget::TreeWidget( QWidget* parent ):
   QTreeWidget( parent ),
-  Counter( "CustomListView" ),
+  Counter( "TreeWidget" ),
   menu_( 0 )
 {
-  Debug::Throw( "CustomListView::CustomListView.\n" );   
+  Debug::Throw( "TreeWidget::TreeWidget.\n" );   
 
   // default configuration
   setRootIsDecorated( false );
@@ -57,7 +57,7 @@ CustomListView::CustomListView( QWidget* parent ):
 }
 
 //_______________________________________________
-QMenu& CustomListView::menu( void )
+QMenu& TreeWidget::menu( void )
 {  
   if( !hasMenu() ) 
   {
@@ -71,10 +71,10 @@ QMenu& CustomListView::menu( void )
 }
 
 //__________________________________________________________________________
-void CustomListView::setColumnName( const int& column, const string& name )
+void TreeWidget::setColumnName( const int& column, const string& name )
 {
   
-  Debug::Throw( "CustomListView::setColumnName.\n" );
+  Debug::Throw( "TreeWidget::setColumnName.\n" );
   Exception::check( column>=0 && column <columnCount(), DESCRIPTION( "invalid index" ) );
     
   // retrieve HeaderItem
@@ -86,7 +86,7 @@ void CustomListView::setColumnName( const int& column, const string& name )
 }
 
 //_______________________________________________
-unsigned int CustomListView::mask( void )
+unsigned int TreeWidget::mask( void )
 {
   mask_ = 0;
   for( int index=0; index < columnCount(); index++ )
@@ -95,7 +95,7 @@ unsigned int CustomListView::mask( void )
 }
 
 //______________________________________________________
-void CustomListView::setMask( const unsigned int& mask )
+void TreeWidget::setMask( const unsigned int& mask )
 {
   for( int index=0; index < columnCount(); index++ )
   {
@@ -106,10 +106,10 @@ void CustomListView::setMask( const unsigned int& mask )
 }  
 
 //_______________________________________________________
-void CustomListView::deleteItemRecursive( QTreeWidgetItem* item )
+void TreeWidget::deleteItemRecursive( QTreeWidgetItem* item )
 {
   
-  Debug::Throw( "CustomListView::deleteItemRecursive.\n" );
+  Debug::Throw( "TreeWidget::deleteItemRecursive.\n" );
   
   // retrieve all children
   QList< QTreeWidgetItem* > children( item->takeChildren() );
@@ -120,10 +120,10 @@ void CustomListView::deleteItemRecursive( QTreeWidgetItem* item )
 }
 
 //___________________________________
-QDomElement CustomListView::htmlElement( QDomDocument& document )
+QDomElement TreeWidget::htmlElement( QDomDocument& document )
 {
  
-  Debug::Throw( "CustomListView::htmlElement.\n" );
+  Debug::Throw( "TreeWidget::htmlElement.\n" );
   
   QDomElement out = document.createElement( "table" );
   out.setAttribute( "border", "1" );
@@ -144,7 +144,7 @@ QDomElement CustomListView::htmlElement( QDomDocument& document )
   }
   
   // retrieve items
-  QList< QTreeWidgetItem* > children( CustomListView::children() );
+  QList< QTreeWidgetItem* > children( TreeWidget::children() );
   for( QList< QTreeWidgetItem* >::iterator iter = children.begin(); iter != children.end(); iter++ )
   {
     QDomElement row = out.appendChild( document.createElement( "tr" ) ).toElement();
@@ -164,10 +164,10 @@ QDomElement CustomListView::htmlElement( QDomDocument& document )
 }
 
 //___________________________________
-QList< QTreeWidgetItem* > CustomListView::children( QTreeWidgetItem* parent )
+QList< QTreeWidgetItem* > TreeWidget::children( QTreeWidgetItem* parent )
 {
   
-  Debug::Throw( 2, "CustomListView::children.\n" );
+  Debug::Throw( 2, "TreeWidget::children.\n" );
   
   QList<QTreeWidgetItem* > out;
   
@@ -195,16 +195,16 @@ QList< QTreeWidgetItem* > CustomListView::children( QTreeWidgetItem* parent )
 }
 
 //___________________________________
-bool CustomListView::Item::operator < (const QTreeWidgetItem& item ) const
+bool TreeWidget::Item::operator < (const QTreeWidgetItem& item ) const
 {
 
   // cast parent to custom list view
-  const CustomListView* parent( dynamic_cast<const CustomListView*>( treeWidget() ) );
+  const TreeWidget* parent( dynamic_cast<const TreeWidget*>( treeWidget() ) );
   if( !parent ) return QTreeWidgetItem::operator < (item);
   
   // retrieve column type
   int column( parent->sortColumn() );
-  CustomListView::ColumnType column_type( parent->columnType( column ) );
+  TreeWidget::ColumnType column_type( parent->columnType( column ) );
   
   switch( column_type )
   {
@@ -229,9 +229,9 @@ bool CustomListView::Item::operator < (const QTreeWidgetItem& item ) const
 }
 
 //_____________________________________________________________________
-void CustomListView::sort( void )
+void TreeWidget::sort( void )
 {
-  Debug::Throw( "CustomListView::sort.\n" );
+  Debug::Throw( "TreeWidget::sort.\n" );
   if( !isSortingEnabled() ) return;
   
   sortItems( sortColumn(), header()->sortIndicatorOrder() );
@@ -240,9 +240,9 @@ void CustomListView::sort( void )
 }
 
 //_____________________________________________________________________
-void CustomListView::updateItemColor( void )
+void TreeWidget::updateItemColor( void )
 {
-  Debug::Throw( "CustomListView::updateItemColor.\n" );
+  Debug::Throw( "TreeWidget::updateItemColor.\n" );
   
   QColor item_color;
   
@@ -264,7 +264,7 @@ void CustomListView::updateItemColor( void )
 }
 
 //__________________________________________________________
-void CustomListView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void TreeWidget::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
   
   Item* item = dynamic_cast<Item*>(itemFromIndex( index ) );
@@ -302,10 +302,10 @@ void CustomListView::drawRow( QPainter * painter, const QStyleOptionViewItem & o
 }
 
 //___________________________________
-void CustomListView::_raiseMenu( const QPoint & pos )
+void TreeWidget::_raiseMenu( const QPoint & pos )
 { 
   
-  Debug::Throw( "CustomListView::_raiseMenu.\n" );
+  Debug::Throw( "TreeWidget::_raiseMenu.\n" );
   
   // check if menu was created
   if( !hasMenu() ) return;

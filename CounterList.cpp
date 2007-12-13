@@ -39,7 +39,7 @@ const char* CounterList::column_titles_[ CounterList::n_columns ] =
 
 //_______________________________________________
 CounterList::CounterList( QWidget* parent ):
-  CustomListView( parent )
+  TreeWidget( parent )
 { 
   Debug::Throw( "CounterList::CounterList.\n" ); 
 

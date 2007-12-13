@@ -1,5 +1,5 @@
-#ifndef CustomListBox_h
-#define CustomListBox_h
+#ifndef ListWidget_h
+#define ListWidget_h
 
 // $Id$
 
@@ -25,7 +25,7 @@
 *******************************************************************************/
 
 /*!
-  \file CustomListBox.h
+  \file ListWidget.h
   \brief qlistbox with even objects highlighted with different color
   \author Hugo Pereira
   \version $Revision$
@@ -39,7 +39,7 @@
 #include "Debug.h"
 
 //! qlistbox with even objects highlighted with different color
-class CustomListBox: public QListWidget, public Counter
+class ListWidget: public QListWidget, public Counter
 {
 
   //! Qt meta object declaration
@@ -48,7 +48,7 @@ class CustomListBox: public QListWidget, public Counter
   public:
 
   //! empty constructor
-  CustomListBox( QWidget* parent );
+  ListWidget( QWidget* parent );
 
   //! retrieve all items
   QList<QListWidgetItem*> items( void )

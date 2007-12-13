@@ -1,5 +1,5 @@
-#ifndef _CustomListView_h_
-#define _CustomListView_h_
+#ifndef _TreeWidget_h_
+#define _TreeWidget_h_
 
 // $Id$
 
@@ -25,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomListView.h
+  \file TreeWidget.h
   \brief qlistview with even objects highlighted with different color
   \author Hugo Pereira
   \version $Revision$
@@ -44,7 +44,7 @@
 #include "Debug.h"
 
 //! qlistview with even objects highlighted with different color
-class CustomListView: public QTreeWidget, public Counter
+class TreeWidget: public QTreeWidget, public Counter
 {
 
   //! Qt meta object declaration
@@ -53,10 +53,10 @@ class CustomListView: public QTreeWidget, public Counter
   public:
   
   //! constructor
-  CustomListView( QWidget* parent );
+  TreeWidget( QWidget* parent );
      
   //! destructor
-  ~CustomListView( void )
+  ~TreeWidget( void )
   {}
 
   //!@name contextual menu
@@ -142,8 +142,8 @@ class CustomListView: public QTreeWidget, public Counter
   template <typename T> 
   QList< T* > children( QTreeWidgetItem* parent = 0 )
   {
-    Debug::Throw( "CustomListView::children (templates).\n" );
-    QList<QTreeWidgetItem*> children( CustomListView::children( parent ) );
+    Debug::Throw( "TreeWidget::children (templates).\n" );
+    QList<QTreeWidgetItem*> children( TreeWidget::children( parent ) );
     QList<T*> out;
     for( QList<QTreeWidgetItem*>::const_iterator iter = children.begin(); iter != children.end(); iter++ )
     {
@@ -161,7 +161,7 @@ class CustomListView: public QTreeWidget, public Counter
     
     //! constructor
     Item():
-      Counter( "CustomListView::Item" )
+      Counter( "TreeWidget::Item" )
     {}
     
     //! destructor

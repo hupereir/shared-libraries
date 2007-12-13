@@ -24,8 +24,8 @@ noinst_HEADERS = \
   CustomFileDialog.h \
   CustomGridLayout.h \
   CustomLineEdit.h \
-  CustomListBox.h \
-  CustomListView.h \
+  ListWidget.h \
+  TreeWidget.h \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
@@ -101,8 +101,8 @@ libbase_qt_a_SOURCES = \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
   CustomLineEdit.cpp \
-  CustomListBox.cpp \
-  CustomListView.cpp \
+  ListWidget.cpp \
+  TreeWidget.cpp \
   CustomMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
@@ -153,8 +153,8 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomComboBox.cpp \
   moc_CustomFileDialog.cpp \
   moc_CustomLineEdit.cpp \
-  moc_CustomListBox.cpp \
-  moc_CustomListView.cpp \
+  moc_ListWidget.cpp \
+  moc_TreeWidget.cpp \
   moc_CustomMainWindow.cpp \
   moc_CustomSlider.cpp \
   moc_CustomTabWidget.cpp \

@@ -21,7 +21,7 @@ HEADERS = \
  CustomFileDialog.h \
  CustomGridLayout.h \
  CustomLineEdit.h \
- CustomListBox.h \
+ ListWidget.h \
  CustomListView.h \
  CustomMainWindow.h \
  CustomPixmap.h \
@@ -91,7 +91,7 @@ SOURCES = \
  CustomDialog.cpp \
  CustomFileDialog.cpp \
  CustomLineEdit.cpp \
- CustomListBox.cpp \
+ ListWidget.cpp \
  CustomListView.cpp \
  CustomMainWindow.cpp \
  CustomPixmap.cpp \

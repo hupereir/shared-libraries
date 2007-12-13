@@ -75,7 +75,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   h_layout->setSpacing(5);
   layout->addLayout( h_layout );
   
-  h_layout->addWidget( list_ = new CustomListBox( this ), 0 );
+  h_layout->addWidget( list_ = new ListWidget( this ), 0 );
   h_layout->addWidget( stack_ = new QStackedWidget( this ), 1 );
   
   _list().setMaximumWidth(150);

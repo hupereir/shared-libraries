@@ -20,7 +20,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomListBox.cpp
+  \file ListWidget.cpp
   \brief qlistbox with even objects highlighted with different color
   \author Hugo Pereira
   \version $Revision$
@@ -31,19 +31,19 @@
 #include <QPainter>
 
 #include "ColorDisplay.h"
-#include "CustomListBox.h"
+#include "ListWidget.h"
 #include "ItemDelegate.h"
 #include "XmlOptions.h"
 
 using namespace std;
 
 //_______________________________________________
-CustomListBox::CustomListBox( QWidget* parent ):
+ListWidget::ListWidget( QWidget* parent ):
   QListWidget( parent ),
-  Counter( "CustomListBox" )
+  Counter( "ListWidget" )
 {
   
-  Debug::Throw( "CustomListBox::CustomListBox.\n" ); 
+  Debug::Throw( "ListWidget::ListWidget.\n" ); 
   updateItemColor();
   
   setItemDelegate ( new ItemDelegate( this ) );
@@ -53,7 +53,7 @@ CustomListBox::CustomListBox( QWidget* parent ):
 }  
 
 //_______________________________________________
-QListWidgetItem& CustomListBox::findItem( const std::string& name )
+QListWidgetItem& ListWidget::findItem( const std::string& name )
 {
   QList<QListWidgetItem*> items( findItems( name.c_str(), Qt::MatchExactly ) );
   return ( !items.empty() ) ? *items.front() : *(new QListWidgetItem( name.c_str(), this, 0 ) );  
@@ -61,7 +61,7 @@ QListWidgetItem& CustomListBox::findItem( const std::string& name )
 
 
 //_____________________________________________________________________
-void CustomListBox::updateItemColor( void )
+void ListWidget::updateItemColor( void )
 {
   
   QColor item_color;

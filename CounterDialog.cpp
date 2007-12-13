@@ -88,10 +88,10 @@ void CounterDialog::update( void )
   for( Counter::CounterMap::const_iterator it=counters.begin(); it != counters.end(); it++ )
   {
     
-    std::map<string, CustomListView::Item* >::iterator item_it( items_.find( it->first ) );
-    CustomListView::Item *item( 0 );
+    std::map<string, TreeWidget::Item* >::iterator item_it( items_.find( it->first ) );
+    TreeWidget::Item *item( 0 );
     if( item_it == items_.end() ) {
-      counter_list_->addTopLevelItem( item = new CustomListView::Item() ); 
+      counter_list_->addTopLevelItem( item = new TreeWidget::Item() ); 
       items_.insert( make_pair( it->first, item ) );
     } else item = item_it->second;
     

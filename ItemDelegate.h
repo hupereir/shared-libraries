@@ -44,7 +44,7 @@ class ItemDelegate: public QItemDelegate, public Counter
   //! constructor
   ItemDelegate( QObject* parent ):
     QItemDelegate( parent ),
-    Counter( "CustomListBox::Delegate" )
+    Counter( "ItemDelegate" )
   { Debug::Throw( "ItemDelegate::ItemDelegate.\n" ); }
         
   //! paint method
