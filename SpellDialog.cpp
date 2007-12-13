@@ -96,7 +96,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   v_layout->addWidget( label );
 
   // suggestions
-  v_layout->addWidget(  suggestion_list_box_ = new CustomListBox( this ), 1 );
+  v_layout->addWidget(  suggestion_list_box_ = new ListWidget( this ), 1 );
   connect( suggestion_list_box_, SIGNAL( itemSelectionChanged() ), SLOT( _selectSuggestion() ) );
   if( !read_only ) { connect( suggestion_list_box_, SIGNAL( itemActivated( QListWidgetItem* ) ), SLOT( _replace( QListWidgetItem* ) ) ); }
 

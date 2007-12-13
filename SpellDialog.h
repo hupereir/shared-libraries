@@ -42,7 +42,7 @@
 #include <set>
 
 #include "Counter.h"
-#include "CustomListBox.h"
+#include "ListWidget.h"
 #include "CustomLineEdit.h"
 #include "Exception.h"
 #include "SpellInterface.h"
@@ -181,7 +181,7 @@ namespace SPELLCHECK
     CustomLineEdit *replace_line_edit_;
     
     //! listbox for suggestions
-    CustomListBox *suggestion_list_box_;
+    ListWidget *suggestion_list_box_;
   
     //! combo box for dictionary
     QComboBox *dictionary_;
