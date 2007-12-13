@@ -43,7 +43,7 @@ const QString HelpItemList::DRAG = "HelpItemList::Drag";
 
 //__________________________________________________________
 HelpItemList::HelpItemList( QWidget* parent ):
-  CustomListView( parent ),
+  TreeWidget( parent ),
   drag_enabled_( false )
 {
   Debug::Throw( "HelpItemList::HelpItemList.\n" );
@@ -74,7 +74,7 @@ void HelpItemList::mousePressEvent( QMouseEvent* event )
         
   }
   
-  return CustomListView::mousePressEvent( event );
+  return TreeWidget::mousePressEvent( event );
 
 }
   
@@ -85,14 +85,14 @@ void HelpItemList::mouseMoveEvent( QMouseEvent* event )
   Debug::Throw( "HelpItemList::mouseMoveEvent.\n" );
   
   // check button
-  if( !(event->buttons()&Qt::LeftButton) ) return CustomListView::mouseMoveEvent( event );
+  if( !(event->buttons()&Qt::LeftButton) ) return TreeWidget::mouseMoveEvent( event );
   
   // check if drag enabled
-  if( !drag_enabled_ ) return CustomListView::mouseMoveEvent( event );
+  if( !drag_enabled_ ) return TreeWidget::mouseMoveEvent( event );
   
   // check distance to last click
   if( (event->pos() - drag_start_ ).manhattanLength() < QApplication::startDragDistance() )
-  { return CustomListView::mouseMoveEvent( event ); }
+  { return TreeWidget::mouseMoveEvent( event ); }
  
   _startDrag( event );
   

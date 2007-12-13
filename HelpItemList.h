@@ -35,14 +35,14 @@
 #include <QDrag>
 #include <QString>
 
-#include "CustomListView.h"
+#include "TreeWidget.h"
 #include "HelpItem.h"
 
 namespace BASE
 {
   
   //! Help item list
-  class HelpItemList:public CustomListView
+  class HelpItemList:public TreeWidget
   {
     
     Q_OBJECT
