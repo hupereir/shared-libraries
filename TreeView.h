@@ -68,7 +68,10 @@ class TreeView: public QTreeView, public Counter
   virtual QMenu& menu( void );
    
   //@} 
-           
+  
+  //! true if given index is visible
+  bool isVisible( const QModelIndex& index ) const;
+  
   //! return column visibility bitset. Is 1 for shown columns, 0 for hidden
   virtual unsigned int mask( void );
   

@@ -73,6 +73,14 @@ QMenu& TreeView::menu( void )
 }
 
 //_______________________________________________
+bool TreeView::isVisible( const QModelIndex& index ) const
+{
+  if( !index.isValid() ) return false;
+  QModelIndex parent( model()->parent( index ) );
+  return (!parent.isValid() ) || ( isExpanded( parent ) && isVisible( parent ) );
+}
+  
+//_______________________________________________
 unsigned int TreeView::mask( void )
 {
   mask_ = 0;
