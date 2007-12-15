@@ -39,7 +39,6 @@
 #include <vector>
 
 #include "Counter.h"
-#include "Debug.h"
 
 //! customized tree view
 class TreeView: public QTreeView, public Counter
@@ -77,19 +76,14 @@ class TreeView: public QTreeView, public Counter
   
   //! show/hide columns according to mask bitset. 1 is for shown columns, 0 for hidden
   virtual void setMask( const unsigned int& mask );
-  
-  public slots:
-    
-  //! update alternate item color
-  virtual void updateItemColor( void );
-  
+   
   protected:
   
   //! customized drawing to handle colored entries
   virtual void drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
   
   protected slots:
-
+ 
   //! columns changed
   void columnCountChanged ( int, int newCount )
   {
@@ -99,6 +93,11 @@ class TreeView: public QTreeView, public Counter
   
   //! popup contextual menu
   virtual void _raiseMenu( const QPoint& );
+  
+  private slots:
+    
+  //! update alternate item color
+  void _updateConfiguration( void );
 
   private:
 

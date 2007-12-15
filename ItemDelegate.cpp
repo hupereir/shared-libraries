@@ -33,7 +33,6 @@
 #include <QModelIndex>
 
 #include "ItemDelegate.h"
-#include "ModelItem.h"
 
 using namespace std;
 
@@ -44,22 +43,13 @@ void ItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & opti
   Debug::Throw() << "ItemDelegate::paint - width: " << painter->device()->width() << endl;
   QStyleOptionViewItem new_option( option );
   
-  // try cast index data to a ModelItem object
-  QColor item_color;
-  // const ModelItem* item( (ModelItem*)( index.internalPointer() ) );
-  // if( item && item->color().isValid() ) item_color = item->color();
-    
   //  highlight color
   QLinearGradient gradient(QPointF(0, 0), QPointF(painter->device()->width(), 0));
-  QColor color( item_color.isValid() ? item_color : option.palette.color( QPalette::Highlight ) );
+  QColor color( option.palette.color( QPalette::Highlight ) );
   gradient.setColorAt(0, color.light(130) );
   gradient.setColorAt(0.3, color );
   gradient.setColorAt(1, color.light(130) );
   new_option.palette.setBrush( QPalette::Highlight, QBrush( gradient ) );
-  
-  // text color
-  if( !(option.state & QStyle::State_Selected) && item_color.isValid() ) 
-  { new_option.palette.setColor( QPalette::Text, item_color ); }
   
   return QItemDelegate::paint( painter, new_option, index );
 }

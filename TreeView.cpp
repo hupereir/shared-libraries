@@ -53,8 +53,8 @@ TreeView::TreeView( QWidget* parent ):
   setRootIsDecorated( false );
   setSortingEnabled( true );
 
-  updateItemColor();
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  _updateConfiguration();
   
 }
 
@@ -100,29 +100,6 @@ void TreeView::setMask( const unsigned int& mask )
   }  
 }  
 
-//_____________________________________________________________________
-void TreeView::updateItemColor( void )
-{
-  Debug::Throw( "TreeView::updateItemColor.\n" );
-    
-  // try load from option
-  QColor item_color;
-  Str colorname( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
-  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) item_color = QColor( colorname.c_str() );
-  
-  if( !item_color.isValid() )
-  {
-    setAlternatingRowColors( false ); 
-    return;
-  }
-  
-  QPalette palette( this->palette() );
-  palette.setColor( QPalette::AlternateBase, item_color );
-  setPalette( palette );
-  setAlternatingRowColors( true ); 
-  
-}
-
 //__________________________________________________________
 void TreeView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
@@ -155,5 +132,28 @@ void TreeView::_raiseMenu( const QPoint & pos )
   menu().adjustSize();
   QtUtil::moveWidget( &menu(), QCursor::pos() );
   menu().show();
+  
+}
+
+//_____________________________________________________________________
+void TreeView::_updateConfiguration( void )
+{
+  Debug::Throw( "TreeView::_updateConfiguration.\n" );
+    
+  // try load from option
+  QColor item_color;
+  Str colorname( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
+  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) item_color = QColor( colorname.c_str() );
+  
+  if( !item_color.isValid() )
+  {
+    setAlternatingRowColors( false ); 
+    return;
+  }
+  
+  QPalette palette( this->palette() );
+  palette.setColor( QPalette::AlternateBase, item_color );
+  setPalette( palette );
+  setAlternatingRowColors( true ); 
   
 }
