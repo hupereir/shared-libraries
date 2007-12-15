@@ -93,9 +93,10 @@ void ColorMenu::_display( void )
   {
     
     // create action
-    QAction* action = addAction( iter->first.name() );
+    QAction* action = new QAction( this );
     action->setIcon( iter->second );
     actions_.insert( make_pair( action, iter->first ) );
+    addAction( action );
     
   };
     
