@@ -83,14 +83,7 @@ class TreeView: public QTreeView, public Counter
   virtual void drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
   
   protected slots:
- 
-  //! columns changed
-  void columnCountChanged ( int, int newCount )
-  {
-    Debug::Throw(0) << "TreeView::columnCountChanged - columns: " << newCount << std::endl;
-    columns_ = newCount; 
-  }
-  
+   
   //! popup contextual menu
   virtual void _raiseMenu( const QPoint& );
   
@@ -103,9 +96,6 @@ class TreeView: public QTreeView, public Counter
 
   //! popup menu for right click
   QMenu *menu_;
-  
-  //! columns
-  int columns_;
   
   //! column mask
   /*! gets reinitialized anytime GetMask is called */

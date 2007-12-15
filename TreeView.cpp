@@ -44,7 +44,6 @@ TreeView::TreeView( QWidget* parent ):
   QTreeView( parent ),
   Counter( "TreeView" ),
   menu_( 0 ),
-  columns_(0),
   mask_(0)
 {
   Debug::Throw( "TreeView::TreeView.\n" );   
@@ -84,7 +83,7 @@ bool TreeView::isVisible( const QModelIndex& index ) const
 unsigned int TreeView::mask( void )
 {
   mask_ = 0;
-  for( int index=0; index < columns_; index++ )
+  for( int index=0; index < model()->columnCount(); index++ )
   if( !isColumnHidden( index ) ) mask_ |= (1<<index);
   return mask_;
 }
@@ -92,7 +91,7 @@ unsigned int TreeView::mask( void )
 //______________________________________________________
 void TreeView::setMask( const unsigned int& mask )
 {
-  for( int index=0; index < columns_; index++ )
+  for( int index=0; index < model()->columnCount(); index++ )
   {
     // see if there is a change between new and old mask
     if( mask_ & mask & (1<<index) ) continue;
