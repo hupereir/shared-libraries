@@ -121,19 +121,10 @@ class CustomToolBar: public QToolBar, public Counter
   protected:
   
   //! show event
-  void showEvent( QShowEvent* e )
-  {
-    if( !e->spontaneous() ) visibilityAction().setChecked( true ); 
-    return QToolBar::showEvent(e);
-  }
+  void showEvent( QShowEvent* );
   
   //! hide event
-  void hideEvent( QHideEvent* e )
-  {
-    if( !e->spontaneous() ) visibilityAction().setChecked( false ); 
-    return QToolBar::hideEvent(e);
-  }
-
+  void hideEvent( QHideEvent* );
   
   private slots:
   

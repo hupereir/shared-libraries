@@ -125,7 +125,23 @@ void CustomToolBar::saveConfiguration( QMainWindow* parent, const CustomToolBar:
   }
   
 }
-  
+
+//_______________________________________________________________
+void CustomToolBar::showEvent( QShowEvent* event )
+{
+  Debug::Throw() << "CustomToolBar::showEvent - spontaneous: " << event->spontaneous() << " visible: " << isVisible() << " hidden: " << isHidden() << " action:" << visibilityAction().isChecked() << endl;
+  if( isVisible() ) visibilityAction().setChecked( true ); 
+  QToolBar::showEvent(event);
+}
+
+//_______________________________________________________________
+void CustomToolBar::hideEvent( QHideEvent* event )
+{
+  Debug::Throw() << "CustomToolBar::hideEvent - spontaneous: " << event->spontaneous() << " visible: " << isVisible() << " hidden: " << isHidden() << " action:" << visibilityAction().isChecked() << endl;
+  if( isHidden() ) visibilityAction().setChecked( false ); 
+  QToolBar::hideEvent(event);
+}
+
 //_______________________________________________________________
 void CustomToolBar::_updateConfiguration( void )
 {
