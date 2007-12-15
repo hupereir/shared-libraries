@@ -33,6 +33,8 @@
 */
 
 #include <QMainWindow>
+#include <QHideEvent>
+#include <QShowEvent>
 #include <QToolBar>
 #include <list>
 #include <map>
@@ -85,6 +87,10 @@ class CustomToolBar: public QToolBar, public Counter
     return QToolBar::setMovable( value );
   }
   
+  //! visibility action
+  QAction& visibilityAction( void ) const
+  { return *visibility_action_; }
+  
   //! location option combo box
   class LocationComboBox: public OptionComboBox
   {
@@ -112,15 +118,41 @@ class CustomToolBar: public QToolBar, public Counter
   //! static toolbar configuration based on options
   static void saveConfiguration( QMainWindow* parent, const List& toolbars );
   
+  protected:
+  
+  //! show event
+  void showEvent( QShowEvent* e )
+  {
+    if( !e->spontaneous() ) visibilityAction().setChecked( true ); 
+    return QToolBar::showEvent(e);
+  }
+  
+  //! hide event
+  void hideEvent( QHideEvent* e )
+  {
+    if( !e->spontaneous() ) visibilityAction().setChecked( false ); 
+    return QToolBar::hideEvent(e);
+  }
+
+  
   private slots:
   
   //! update configuration
   void _updateConfiguration( void );
   
+  //! toggle visibility
+  void _toggleVisibility( bool );
+  
   private:
+  
+  //! install actions
+  void _installActions( void );
   
   //! initialize area map
   static bool _initializeAreas( void );
+  
+  //! visibility action
+  QAction* visibility_action_;
   
   //! use lock from options
   bool lock_from_options_;

@@ -49,6 +49,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent ):
   lock_from_options_( true )
 {
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
+  _installActions();
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
 }
@@ -60,6 +61,7 @@ CustomToolBar::CustomToolBar( QWidget* parent ):
   lock_from_options_( true )
 {
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
+  _installActions();
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
 }
@@ -94,9 +96,15 @@ void CustomToolBar::updateConfiguration( QMainWindow* parent, const CustomToolBa
         toolbar->show();
       }
     } else toolbar->hide();
-     
+    
+    // update visibility action according to state for CustomToolbars
+    CustomToolBar* custom_toolbar( dynamic_cast<CustomToolBar*>( toolbar ) );
+    if( custom_toolbar ) custom_toolbar->visibilityAction().setChecked( visibility );
+    
+    // set options according to values
     XmlOptions::get().set<bool>( option_name, !toolbar->isHidden() );
     XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( toolbar ) ) );
+    
   }  
 }
 
@@ -132,6 +140,24 @@ void CustomToolBar::_updateConfiguration( void )
   else setToolButtonStyle( Qt::ToolButtonIconOnly );
 
   if( lock_from_options_ ) setMovable( !XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) );
+}
+
+//_______________________________________________________________
+void CustomToolBar::_toggleVisibility( bool state )
+{
+  Debug::Throw( "CustomToolBar::_toggleVisibility.\n" );
+  if( !state ) hide();
+  else show();  
+}
+
+//_______________________________________________________________
+void CustomToolBar::_installActions( void )
+{
+  Debug::Throw( "CustomToolBar::_installActions.\n" );
+  visibility_action_ = new QAction( "Show &toolbar", this );
+  visibility_action_->setCheckable( true );
+  visibility_action_->setChecked( true );
+  connect( visibility_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleVisibility( bool ) ) );
 }
 
 //_______________________________________________________________
