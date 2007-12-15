@@ -39,6 +39,7 @@ FontInfo.h \
 IconBrowsedButton.h \
 IconEngine.h \
 IconProvider.h \
+ItemDelegate.h \
 ListWidget.h \
 MultipleClickCounter.h \
 OpenPreviousMenu.h \
@@ -112,6 +113,7 @@ FontInfo.cpp \
 IconBrowsedButton.cpp \
 IconEngine.cpp \
 IconProvider.cpp \
+ItemDelegate.cpp \
 ListWidget.cpp \
 OpenPreviousMenu.cpp \
 OptionDialog.cpp \

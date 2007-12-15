@@ -66,7 +66,7 @@ class TreeView: public QTreeView, public Counter
   //! retrieve popup menu
   virtual QMenu& menu( void );
    
-  //@} 
+  //@}   
   
   //! true if given index is visible
   bool isVisible( const QModelIndex& index ) const;

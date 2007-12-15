@@ -45,6 +45,7 @@ noinst_HEADERS = \
   IconEngine.h \
   IconProvider.h \
   ItemDelegate.h \
+  ItemModel.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
   OptionBrowsedLineEdit.h \
@@ -101,6 +102,7 @@ libbase_qt_a_SOURCES = \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
   CustomLineEdit.cpp \
+  ItemModel.cpp \
   ListWidget.cpp \
   CustomMainWindow.cpp \
   CustomPixmap.cpp \
