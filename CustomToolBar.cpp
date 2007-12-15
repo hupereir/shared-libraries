@@ -115,13 +115,13 @@ void CustomToolBar::saveConfiguration( QMainWindow* parent, const CustomToolBar:
   
   // save toolbars location and visibility
   for( List::const_iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
-  {
-    
+  {  
     QToolBar* toolbar( iter->first );
     string option_name( iter->second );
     string location_name( option_name + "_LOCATION" );
     XmlOptions::get().set<bool>( option_name, !toolbar->isHidden() );
     XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( toolbar ) ) );
+    Debug::Throw() << "CustomToolBar::saveConfiguration - visible: " << !toolbar->isHidden() << endl;
   }
   
 }

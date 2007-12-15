@@ -40,6 +40,7 @@ IconBrowsedButton.h \
 IconEngine.h \
 IconProvider.h \
 ItemDelegate.h \
+ItemModel.h \
 ListWidget.h \
 MultipleClickCounter.h \
 OpenPreviousMenu.h \
@@ -114,6 +115,7 @@ IconBrowsedButton.cpp \
 IconEngine.cpp \
 IconProvider.cpp \
 ItemDelegate.cpp \
+ItemModel.cpp \
 ListWidget.cpp \
 OpenPreviousMenu.cpp \
 OptionDialog.cpp \

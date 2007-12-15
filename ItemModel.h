@@ -49,8 +49,8 @@ class ItemModel : public QAbstractItemModel, public Counter
   virtual ~ItemModel()
   {}
 
-  //! return all indexes in model starting from parent
-  QModelIndexList indexes( const QModelIndex& parent = QModelIndex() ) const;
+  //! return all indexes in model starting from parent [recursive]
+  QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;
   
   //!@name sorting
   //@{

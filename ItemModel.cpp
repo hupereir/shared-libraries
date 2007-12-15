@@ -52,3 +52,20 @@ void ItemModel::sort( int column, Qt::SortOrder order )
   sort_order_ = order;
     
 }
+
+//____________________________________________________________
+QModelIndexList ItemModel::indexes( int column, const QModelIndex& parent ) const
+{ 
+  QModelIndexList out;
+  int rows( rowCount( parent ) );
+  for( int row = 0; row < rows; row++ )
+  { 
+    QModelIndex index( this->index( row, column, parent ) );
+    if( !index.isValid() ) continue;
+    out.push_back( index );
+    out += indexes( column, index );
+  }
+  
+  return out;
+  
+}
