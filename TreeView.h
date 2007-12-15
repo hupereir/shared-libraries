@@ -91,7 +91,7 @@ class TreeView: public QTreeView, public Counter
   protected slots:
 
   //! columns changed
-  void columnCountChanged ( int oldCount, int newCount )
+  void columnCountChanged ( int, int newCount )
   {
     Debug::Throw(0) << "TreeView::columnCountChanged - columns: " << newCount << std::endl;
     columns_ = newCount; 
