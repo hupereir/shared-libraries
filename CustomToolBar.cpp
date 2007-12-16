@@ -56,7 +56,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent ):
 
 //_______________________________________________________________
 CustomToolBar::CustomToolBar( QWidget* parent ):
-  QToolBar( parent ),
+  QToolBar( "toolbar", parent ),
   Counter( "CustomToolBar" ),
   lock_from_options_( true )
 {
@@ -170,7 +170,9 @@ void CustomToolBar::_toggleVisibility( bool state )
 void CustomToolBar::_installActions( void )
 {
   Debug::Throw( "CustomToolBar::_installActions.\n" );
-  visibility_action_ = new QAction( "Show &toolbar", this );
+  ostringstream what;
+  what << "Show &" << qPrintable( windowTitle() );
+  visibility_action_ = new QAction( what.str().c_str(), this );
   visibility_action_->setCheckable( true );
   visibility_action_->setChecked( true );
   connect( visibility_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleVisibility( bool ) ) );
