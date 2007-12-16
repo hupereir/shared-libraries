@@ -38,7 +38,6 @@ FontEdit.h \
 FontInfo.h \
 IconBrowsedButton.h \
 IconEngine.h \
-IconProvider.h \
 ItemDelegate.h \
 ItemModel.h \
 ListWidget.h \
@@ -113,7 +112,6 @@ FontEdit.cpp \
 FontInfo.cpp \
 IconBrowsedButton.cpp \
 IconEngine.cpp \
-IconProvider.cpp \
 ItemDelegate.cpp \
 ItemModel.cpp \
 ListWidget.cpp \

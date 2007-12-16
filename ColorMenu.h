@@ -33,6 +33,7 @@
 */
 
 #include <QMenu>
+#include <QPaintEvent>
 #include <QPixmap>
 
 #include <string>
@@ -92,6 +93,11 @@ class ColorMenu: public QMenu, public Counter
   //! emmited when a color is selected    
   void selected( QColor );
 
+  protected:
+
+  //! paint event (overloaded)
+  void paintEvent( QPaintEvent* event );
+  
   private slots:
      
   //! display colors when about to show
@@ -113,13 +119,16 @@ class ColorMenu: public QMenu, public Counter
   void _add( const QColor& );
 
   //! map colors to display pixmap
-  typedef std::map<QColor, QPixmap, ColorLessFTor> ColorMap;
-    
+  typedef std::map<QColor, QBrush, ColorLessFTor> ColorMap;
+
   //! list of loaded colors
   ColorMap colors_;
 
-  //! map actions to file recors
-  std::map<QAction*, QColor> actions_;
+  //! map actions to colors
+  typedef std::map<QAction*, QColor> ActionMap;
+  
+  //! map actions to colors
+  ActionMap actions_;
   
   //! keep track of the last selected color
   QColor last_color_;

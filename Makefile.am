@@ -43,7 +43,6 @@ noinst_HEADERS = \
   FontInfo.h \
   IconBrowsedButton.h \
   IconEngine.h \
-  IconProvider.h \
   ItemDelegate.h \
   ItemModel.h \
   MultipleClickCounter.h \
@@ -120,7 +119,6 @@ libbase_qt_a_SOURCES = \
   FontInfo.cpp \
   IconBrowsedButton.cpp \
   IconEngine.cpp \
-  IconProvider.cpp \
   ItemDelegate.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \

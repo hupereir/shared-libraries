@@ -75,6 +75,29 @@ ColorMenu::ColorSet ColorMenu::colors( void ) const
 }
 
 //_______________________________________________
+void ColorMenu::paintEvent( QPaintEvent* event )
+{ 
+  
+  static const int margin = 4;
+  
+  // default paint
+  QMenu::paintEvent( event );
+  
+  // loop over actions associated to existing colors
+  QPainter painter( this );
+  painter.setPen( Qt::NoPen );
+  for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+  {
+    QRect action_rect( actionGeometry( iter->first ) );
+    if( !event->rect().intersects( action_rect ) ) continue;
+    action_rect.adjust( margin, margin, -margin-1, -margin );
+    painter.setBrush( colors_[iter->second] );
+    painter.drawRect( action_rect.intersected( event->rect() ) );
+  }
+  
+}
+
+//_______________________________________________
 void ColorMenu::_display( void )
 {
   
@@ -96,46 +119,19 @@ void ColorMenu::_display( void )
   {
     
     // create pixmap if not done already
-    if( iter->second.isNull() )
+    if( iter->second == Qt::NoBrush )
     {
       
-      #ifdef _USE_CUSTOM_ACTION_
-      QPixmap pixmap( sizeHint().width()-6, PixmapSize.height() );
-      #else
-      QPixmap pixmap(PixmapSize );
-      #endif
-      
-      QLinearGradient gradient(QPointF(0, 0), pixmap.rect().bottomRight());
+      QRectF rect( QPointF(0,0), QSize( sizeHint().width()-6, PixmapSize.height() ) );
+      QLinearGradient gradient(rect.topLeft(), rect.bottomRight());
       gradient.setColorAt(0, iter->first );
       gradient.setColorAt(1, iter->first.light(135));
-      
-      QPainter painter( &pixmap );
-      painter.fillRect( pixmap.rect(), gradient );
-      painter.end();
-      iter->second = pixmap; 
+      iter->second = QBrush( gradient ); 
       
     }
     
-    #ifdef _USE_CUSTOM_ACTION_
-    
-    // create label
-    QLabel* label = new QLabel( this );
-    label->setPixmap( iter->second );
-    label->setMargin( 2 );
-    
-    // create action
-    QWidgetAction* action = new QWidgetAction( this );
-    action->setDefaultWidget( label );
-    
-    #else
- 
     // create action
     QAction* action = new QAction( this );
-    action->setIcon( iter->second );
-    action->setText( iter->first.name() );
-    
-    #endif
- 
     actions_.insert( make_pair( action, iter->first ) );
     addAction( action );
    

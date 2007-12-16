@@ -131,7 +131,7 @@ void TreeView::paintEvent( QPaintEvent* event )
   rect.setHeight( height() );
   painter.setBrush( _selectedColumnColor() );
   painter.setPen( Qt::NoPen );
-  painter.drawRect( rect );
+  painter.drawRect( rect.intersected( event->rect() ) );
   
   return QTreeView::paintEvent( event );
   
