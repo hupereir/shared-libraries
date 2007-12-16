@@ -69,7 +69,8 @@ Options::Options( void ):
 
   add( Option( "HIGHLIGHT_PARAGRAPH", "1", "enable paragraph highlighting" ) ); 
   add( Option( "HIGHLIGHT_COLOR", "#fffdd4", "current paragraph highlight color" ) ); 
-  add( Option( "ITEM_COLOR", "None", "background color for even items in ListBox and ListView" ) ); 
+  add( Option( "ALTERNATE_COLOR", "None", "background color for even items in ListBox and ListView" ) ); 
+  add( Option( "SELECTED_COLUMN_COLOR", "#fffdd4", "background color for selected column" ) ); 
   
   // box selection
   add( Option( "BOX_SELECTION_ALPHA", "20", "alpha threshold for box selection - between 0 and 100" ) );
