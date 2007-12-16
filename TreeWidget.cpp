@@ -86,6 +86,15 @@ void TreeWidget::setColumnName( const int& column, const string& name )
 }
 
 //_______________________________________________
+int TreeWidget::visibleColumnCount( void ) const
+{
+  int out(0);
+  for( int index=0; index < columnCount(); index++ )
+  if( !isColumnHidden( index ) ) out++;
+  return out;
+}
+
+//_______________________________________________
 unsigned int TreeWidget::mask( void )
 {
   mask_ = 0;
@@ -247,7 +256,7 @@ void TreeWidget::paintEvent( QPaintEvent* event )
   if( !_selectedColumnColor().isValid() ) return QTreeWidget::paintEvent( event );
   
   // check number of columns
-  if( model()->columnCount( QModelIndex() ) < 2 ) return QTreeWidget::paintEvent( event );
+  if( visibleColumnCount() < 2 ) return QTreeWidget::paintEvent( event );
  
   // get selected column
   int selected_column( sortColumn() );

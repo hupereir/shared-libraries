@@ -80,6 +80,15 @@ bool TreeView::isVisible( const QModelIndex& index ) const
 }
   
 //_______________________________________________
+int TreeView::visibleColumnCount( void ) const
+{
+  int out(0);
+  for( int index=0; index < model()->columnCount(); index++ )
+  if( !isColumnHidden( index ) ) out++;
+  return out;
+}
+
+//_______________________________________________
 unsigned int TreeView::mask( void )
 {
   mask_ = 0;
@@ -107,7 +116,7 @@ void TreeView::paintEvent( QPaintEvent* event )
   if( !_selectedColumnColor().isValid() ) return QTreeView::paintEvent( event );
   
   // check number of columns
-  if( model()->columnCount( QModelIndex() ) < 2 ) return QTreeView::paintEvent( event );
+  if( visibleColumnCount() < 2 ) return QTreeView::paintEvent( event );
   
   // try cast model
   ItemModel* model( dynamic_cast<ItemModel*>( TreeView::model() ) ); 
