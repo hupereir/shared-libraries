@@ -52,14 +52,11 @@ class CustomToolBar: public QToolBar, public Counter
   public:
     
   //! constructor
-  CustomToolBar( const QString& title, QWidget* parent );
+  CustomToolBar( const QString& title, QWidget* parent, const std::string& option_name = "" );
   
   //! destructor
   virtual ~CustomToolBar( void )
   { Debug::Throw( "CustomToolBar::~CustomToolBar.\n" ); }
-    
-  //! constructor
-  CustomToolBar( QWidget* parent );
   
   //! get area from name
   static Qt::ToolBarArea nameToArea( const std::string& name )
@@ -109,15 +106,6 @@ class CustomToolBar: public QToolBar, public Counter
     
   };
   
-  //! map toolbars and option name
-  typedef std::list< std::pair<QToolBar*, std::string> > List;
-  
-  //! static toolbar configuration based on options
-  static void updateConfiguration( QMainWindow* parent, const List& toolbars );
-  
-  //! static toolbar configuration based on options
-  static void saveConfiguration( QMainWindow* parent, const List& toolbars );
-  
   protected:
   
   //! show event
@@ -131,6 +119,9 @@ class CustomToolBar: public QToolBar, public Counter
   //! update configuration
   void _updateConfiguration( void );
   
+  //! save configuration
+  void _saveConfiguration( void );
+  
   //! toggle visibility
   void _toggleVisibility( bool );
   
@@ -141,6 +132,9 @@ class CustomToolBar: public QToolBar, public Counter
   
   //! initialize area map
   static bool _initializeAreas( void );
+  
+  //! assocated option name
+  std::string option_name_;
   
   //! visibility action
   QAction* visibility_action_;
