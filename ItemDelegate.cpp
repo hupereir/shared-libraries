@@ -32,6 +32,7 @@
 #include <QPainter>
 #include <QModelIndex>
 
+#include "ItemModel.h"
 #include "ItemDelegate.h"
 
 using namespace std;

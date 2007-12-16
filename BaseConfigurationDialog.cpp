@@ -307,13 +307,22 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   box->setLayout( layout );
   parent->layout()->addWidget( box );
     
-  QLabel* label = new QLabel( "List item background color: ", box );
+  QLabel* label = new QLabel( "Item alternate background color: ", box );
   QtUtil::fixSize( label );
   layout->addWidget( label );
   
-  OptionColorDisplay* color = new OptionColorDisplay( box, "ITEM_COLOR" );
+  OptionColorDisplay* color = new OptionColorDisplay( box, "ALTERNATE_COLOR" );
   addOptionWidget( color );
   color->setToolTip( "Alternate item background color in lists.\n Set it to \"None\" do disable alternate item color." );
+  layout->addWidget( color );
+   
+  label = new QLabel( "Selected column background color: ", box );
+  QtUtil::fixSize( label );
+  layout->addWidget( label );
+ 
+  color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" );
+  addOptionWidget( color );
+  color->setToolTip( "Selected column background color in lists.\n Set it to \"None\" do disable alternate item color." );
   layout->addWidget( color );
   
 }

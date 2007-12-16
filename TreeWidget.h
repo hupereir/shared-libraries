@@ -197,19 +197,32 @@ class TreeWidget: public QTreeWidget, public Counter
   
   //! sort items (based on current column )
   virtual void sort( void );
-  
-  //! update alternate item color
-  virtual void updateItemColor( void );
-  
+   
   protected:
+   
+  //! paint event
+  virtual void paintEvent( QPaintEvent* );
   
   //! customized drawing to handle colored entries
   virtual void drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+   
+  //! selected column color
+  const QColor& _selectedColumnColor( void ) const
+  { return selected_column_color_; }
+
+  //! selected column color
+  void _setSelectedColumnColor( const QColor& color )
+  { selected_column_color_ = color; }
   
   protected slots:
 
   //! popup contextual menu
   virtual void _raiseMenu( const QPoint& );
+ 
+  private slots:
+  
+  //! update alternate item color
+  void _updateConfiguration( void );
 
   private:
 
@@ -223,6 +236,9 @@ class TreeWidget: public QTreeWidget, public Counter
   //! column types
   std::vector<ColumnType> column_types_;
   
+  //! selected column background color
+  QColor selected_column_color_;
+
 };
 
 #endif

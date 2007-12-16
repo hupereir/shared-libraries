@@ -35,6 +35,7 @@
 #include "ColorDisplay.h"
 #include "QtUtil.h"
 #include "TreeView.h"
+#include "ItemModel.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -51,7 +52,6 @@ TreeView::TreeView( QWidget* parent ):
   // default configuration
   setRootIsDecorated( false );
   setSortingEnabled( true );
-
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
   
@@ -100,9 +100,37 @@ void TreeView::setMask( const unsigned int& mask )
 }  
 
 //__________________________________________________________
-void TreeView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void TreeView::paintEvent( QPaintEvent* event )
 {
-    
+ 
+  // check selected column background color
+  if( !_selectedColumnColor().isValid() ) return QTreeView::paintEvent( event );
+  
+  // check number of columns
+  if( model()->columnCount( QModelIndex() ) < 2 ) return QTreeView::paintEvent( event );
+  
+  // try cast model
+  ItemModel* model( dynamic_cast<ItemModel*>( TreeView::model() ) ); 
+  if( !model ) return QTreeView::paintEvent( event );
+  
+  // get selected column
+  int selected_column( model->sortColumn() );
+  QRect rect( visualRect( model->index( 0, selected_column ) ) );
+  
+  QPainter painter( viewport() );
+  rect.setTop(0);
+  rect.setHeight( height() );
+  painter.setBrush( _selectedColumnColor() );
+  painter.setPen( Qt::NoPen );
+  painter.drawRect( rect );
+  
+  return QTreeView::paintEvent( event );
+  
+}
+
+//__________________________________________________________
+void TreeView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{    
   // modify options and pass to the default method
   QStyleOptionViewItem new_option( option );
   
@@ -139,20 +167,23 @@ void TreeView::_updateConfiguration( void )
 {
   Debug::Throw( "TreeView::_updateConfiguration.\n" );
     
-  // try load from option
-  QColor item_color;
-  Str colorname( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
-  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) item_color = QColor( colorname.c_str() );
+  // try load alternate colors from option
+  QColor color;
+  Str colorname( XmlOptions::get().get<string>("ALTERNATE_COLOR").c_str() );
+  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) color = QColor( colorname.c_str() );
   
-  if( !item_color.isValid() )
-  {
-    setAlternatingRowColors( false ); 
-    return;
+  if( !color.isValid() ) { setAlternatingRowColors( false ); }
+  else {
+    QPalette palette( this->palette() );
+    palette.setColor( QPalette::AlternateBase, color );
+    setPalette( palette );
+    setAlternatingRowColors( true ); 
   }
   
-  QPalette palette( this->palette() );
-  palette.setColor( QPalette::AlternateBase, item_color );
-  setPalette( palette );
-  setAlternatingRowColors( true ); 
+  // try load selected column color from option
+  color = QColor();
+  colorname = Str( XmlOptions::get().get<string>("SELECTED_COLUMN_COLOR").c_str() );
+  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) color = QColor( colorname.c_str() );
+  _setSelectedColumnColor( color );
   
 }

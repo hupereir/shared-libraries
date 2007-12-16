@@ -49,7 +49,7 @@ class ItemDelegate: public QItemDelegate, public Counter
         
   //! paint method
   virtual void paint( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-    
+      
 };
 
 #endif

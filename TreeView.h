@@ -79,8 +79,19 @@ class TreeView: public QTreeView, public Counter
    
   protected:
   
+  //! paint event
+  virtual void paintEvent( QPaintEvent* );
+
   //! customized drawing to handle colored entries
   virtual void drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+    
+  //! selected column color
+  const QColor& _selectedColumnColor( void ) const
+  { return selected_column_color_; }
+
+  //! selected column color
+  void _setSelectedColumnColor( const QColor& color )
+  { selected_column_color_ = color; }
   
   protected slots:
    
@@ -100,6 +111,9 @@ class TreeView: public QTreeView, public Counter
   //! column mask
   /*! gets reinitialized anytime GetMask is called */
   unsigned int mask_;    
+  
+  //! selected column background color
+  QColor selected_column_color_;
   
 };
 

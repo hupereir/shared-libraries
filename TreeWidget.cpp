@@ -51,8 +51,8 @@ TreeWidget::TreeWidget( QWidget* parent ):
   setRootIsDecorated( false );
   setSortingEnabled( true );
 
-  updateItemColor();
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  _updateConfiguration();
   
 }
 
@@ -239,28 +239,29 @@ void TreeWidget::sort( void )
   
 }
 
-//_____________________________________________________________________
-void TreeWidget::updateItemColor( void )
+//__________________________________________________________
+void TreeWidget::paintEvent( QPaintEvent* event )
 {
-  Debug::Throw( "TreeWidget::updateItemColor.\n" );
+
+  // check selected column background color
+  if( !_selectedColumnColor().isValid() ) return QTreeWidget::paintEvent( event );
   
-  QColor item_color;
+  // check number of columns
+  if( model()->columnCount( QModelIndex() ) < 2 ) return QTreeWidget::paintEvent( event );
+ 
+  // get selected column
+  int selected_column( sortColumn() );
+  QRect rect( visualRect( model()->index( 0, selected_column ) ) );
   
-  // try load from option
-  Str colorname( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
-  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) item_color = QColor( colorname.c_str() );
+  QPainter painter( viewport() );
+  rect.setTop(0);
+  rect.setHeight( height() );
+  painter.setBrush( _selectedColumnColor() );
+  painter.setPen( Qt::NoPen );
+  painter.drawRect( rect );
   
-  if( !item_color.isValid() )
-  {
-    setAlternatingRowColors( false ); 
-    return;
-  }
-  
-  QPalette palette( this->palette() );
-  palette.setColor( QPalette::AlternateBase, item_color );
-  setPalette( palette );
-  setAlternatingRowColors( true ); 
-  
+  return QTreeWidget::paintEvent( event );
+
 }
 
 //__________________________________________________________
@@ -315,5 +316,32 @@ void TreeWidget::_raiseMenu( const QPoint & pos )
   menu().adjustSize();
   QtUtil::moveWidget( &menu(), QCursor::pos() );
   menu().show();
+  
+}
+
+//_____________________________________________________________________
+void TreeWidget::_updateConfiguration( void )
+{
+   
+  Debug::Throw( "TreeWidget::_updateConfiguration.\n" );
+  
+  // try load alternate colors from option
+  QColor color;
+  Str colorname( XmlOptions::get().get<string>("ALTERNATE_COLOR").c_str() );
+  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) color = QColor( colorname.c_str() );
+  
+  if( !color.isValid() ) { setAlternatingRowColors( false ); }
+  else {
+    QPalette palette( this->palette() );
+    palette.setColor( QPalette::AlternateBase, color );
+    setPalette( palette );
+    setAlternatingRowColors( true ); 
+  }
+  
+  // try load selected column color from option
+  color = QColor();
+  colorname = Str( XmlOptions::get().get<string>("SELECTED_COLUMN_COLOR").c_str() );
+  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) color = QColor( colorname.c_str() );
+  _setSelectedColumnColor( color );
   
 }
