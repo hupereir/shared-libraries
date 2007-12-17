@@ -44,11 +44,9 @@ ListWidget::ListWidget( QWidget* parent ):
 {
   
   Debug::Throw( "ListWidget::ListWidget.\n" ); 
-  updateItemColor();
-  
-  setItemDelegate ( new ItemDelegate( this ) );
-  
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( updateItemColor() ) );
+  setItemDelegate ( new ItemDelegate( this ) );  
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  _updateConfiguration();
   
 }  
 
@@ -61,13 +59,13 @@ QListWidgetItem& ListWidget::findItem( const std::string& name )
 
 
 //_____________________________________________________________________
-void ListWidget::updateItemColor( void )
+void ListWidget::_updateConfiguration( void )
 {
   
   QColor item_color;
   
   // try load from option
-  Str colorname( XmlOptions::get().get<string>("ITEM_COLOR").c_str() );
+  Str colorname( XmlOptions::get().get<string>("ALTERNATE_COLOR").c_str() );
   if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) item_color = QColor( colorname.c_str() );
 
   if( !item_color.isValid() )

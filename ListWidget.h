@@ -101,10 +101,10 @@ class ListWidget: public QListWidget, public Counter
   /*! Creates a new one if none found */
   virtual QListWidgetItem& findItem( const std::string& name );
 
-  public slots:
+  private slots:
 
   //! update alternate item background color
-  void updateItemColor( void );
+  void _updateConfiguration( void );
     
 };
 
