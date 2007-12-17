@@ -32,6 +32,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
+#include <QValidator>
 
 #include "SelectLineDialog.h"
 #include "QtUtil.h"
@@ -63,6 +64,10 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   connect( editor_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
   connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
   
+  QIntValidator *validator = new QIntValidator( this );
+  validator->setBottom(0);
+  editor_->setValidator( validator );
+ 
   QHBoxLayout* h_layout( new QHBoxLayout() );
   h_layout->setMargin(0);
   h_layout->setSpacing( 5 );

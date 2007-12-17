@@ -195,4 +195,8 @@ void TreeView::_updateConfiguration( void )
   if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) color = QColor( colorname.c_str() );
   _setSelectedColumnColor( color );
   
+  // icon size
+  int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
+  setIconSize( QSize( icon_size, icon_size )  );
+  
 }

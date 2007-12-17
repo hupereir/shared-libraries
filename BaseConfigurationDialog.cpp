@@ -301,29 +301,30 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   if( !parent ) parent = &addPage( "Lists" );
   
   QGroupBox* box = new QGroupBox( "Lists", parent );
-  QVBoxLayout* layout = new QVBoxLayout();
-  layout->setMargin(5);
-  layout->setSpacing(5);
-  box->setLayout( layout );
+  CustomGridLayout* grid_layout = new CustomGridLayout();
+  grid_layout->setMargin(5);
+  grid_layout->setSpacing(5);
+  grid_layout->setMaxCount(2);
+  box->setLayout( grid_layout );
   parent->layout()->addWidget( box );
     
-  QLabel* label = new QLabel( "Item alternate background color: ", box );
-  QtUtil::fixSize( label );
-  layout->addWidget( label );
-  
-  OptionColorDisplay* color = new OptionColorDisplay( box, "ALTERNATE_COLOR" );
-  addOptionWidget( color );
+  OptionColorDisplay* color;
+  grid_layout->addWidget( new QLabel( "Item alternate background color ", box ) );  
+  grid_layout->addWidget( color = new OptionColorDisplay( box, "ALTERNATE_COLOR" ) );
   color->setToolTip( "Alternate item background color in lists.\n Set it to \"None\" do disable alternate item color." );
-  layout->addWidget( color );
-   
-  label = new QLabel( "Selected column background color: ", box );
-  QtUtil::fixSize( label );
-  layout->addWidget( label );
- 
-  color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" );
   addOptionWidget( color );
+   
+  grid_layout->addWidget( new QLabel( "Selected column background color ", box ) ); 
+  grid_layout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
   color->setToolTip( "Selected column background color in lists.\n Set it to \"None\" do disable alternate item color." );
-  layout->addWidget( color );
+  addOptionWidget( color );
+  
+  OptionSpinBox* spinbox;
+  grid_layout->addWidget( new QLabel( "List items icon size ", box ) ); 
+  grid_layout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
+  spinbox->setMinimum(8);
+  spinbox->setMaximum(96);
+  addOptionWidget( spinbox );
   
 }
 
