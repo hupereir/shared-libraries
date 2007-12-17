@@ -30,6 +30,8 @@
   \date $Date$
 */
 
+#include <QGridLayout>
+
 #include "CustomTabWidget.h"
 #include "File.h"
 #include "XmlOptions.h"
@@ -47,7 +49,14 @@ CustomTabWidget::CustomTabWidget( QTabWidget* parent, const unsigned int& flags 
 
   Debug::Throw( "CustomTabWidget::CustomTabWidget.\n" );
   setFrameStyle( QFrame::NoFrame );
-  setLayout( main_layout_ = new QVBoxLayout() );
+
+  // grid layout to overlay main layout and invisible grip
+  QGridLayout *grid_layout( new QGridLayout() );
+  grid_layout->setMargin(0);
+  grid_layout->setSpacing(0);
+  setLayout( grid_layout );
+
+  grid_layout->addLayout( main_layout_ = new QVBoxLayout(), 0, 0, 1, 1 );
   main_layout_->setMargin(2);
   main_layout_->setSpacing(2);
   
@@ -69,6 +78,10 @@ CustomTabWidget::CustomTabWidget( QTabWidget* parent, const unsigned int& flags 
   button_layout_->addWidget( button_ );
   connect( button_, SIGNAL( clicked() ), SLOT( _toggleDock() ) );
   button_->setToolTip( "dock/undock tab" );
+ 
+  // size grip
+  grid_layout->addWidget( size_grip_ = new LocalGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+  size_grip_->hide(); 
   
 }
 
@@ -88,6 +101,7 @@ void CustomTabWidget::_toggleDock( void )
     parent_->QTabWidget::setCurrentWidget( this );
     
     // modify button text
+    size_grip_->hide();
     button_->setText("&detach");
         
     emit attached();
@@ -119,6 +133,7 @@ void CustomTabWidget::_toggleDock( void )
     button_->setText("&attach");
     move( parent->mapToGlobal( QPoint(0,0) ) );    
     if( detached_size_ != QSize() ) resize( detached_size_ );
+    size_grip_->show();
     show();
     
     emit detached();

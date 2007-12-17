@@ -29,6 +29,8 @@
   \date $Date$
 */
 
+#include <QGridLayout>
+
 #include "DockPanel.h"
 #include "Debug.h"
 #include "File.h"
@@ -57,12 +59,19 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   
   main_->setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
   
-  // vertical layout for children
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
+
+  // grid layout to overlay main layout and invisible grip
+  QGridLayout *grid_layout( new QGridLayout() );
+  grid_layout->setMargin(0);
+  grid_layout->setSpacing(0);
+  main_->setLayout( grid_layout );
+
+  // vertical layout for children
   main_layout_ = new QVBoxLayout();
   main_layout_->setMargin( 5 );
   main_layout_->setSpacing( 5 );
-  main_->setLayout( main_layout_ );
+  grid_layout->addLayout( main_layout_, 0, 0, 1, 1 );
   
   // vertical panel
   Debug::Throw( "DocPanel::DockPanel - panel.\n" );
@@ -71,21 +80,22 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   panel_->layout()->setMargin(0);
   panel_->layout()->setSpacing(2);
   
-  main_layout_->addWidget( panel_ );
-  
-  // insert hpanel layout for buttons
-  Debug::Throw( "DocPanel::DockPanel - button_layout_.\n" );
+  main_layout_->addWidget( panel_, 1 );
+ 
+  // invisible size grip
+  grid_layout->addWidget( size_grip_ = new LocalGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+  size_grip_->hide(); 
+
+  // button layout
   button_layout_ = new QHBoxLayout();
   button_layout_->setMargin(0);
   button_layout_->setSpacing( 5 );
   main_layout_->addLayout( button_layout_ );
   
-  // detach button
-  Debug::Throw( "DocPanel::DockPanel - button_.\n" );
-  button_ = new QPushButton( "&detach", main_ );
+  // button
+  button_layout_->addWidget( button_ = new QPushButton( "&detach", main_ ) );
   connect( button_, SIGNAL( clicked() ), SLOT( _toggleDock() ) );
   button_->setToolTip( "dock/undock panel" );
-  button_layout_->addWidget( button_ );
   
 }
 
@@ -102,6 +112,7 @@ void DockPanel::_toggleDock( void )
     main_->setParent( this );
     layout()->addWidget( main_ );
     main_->setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
+    size_grip_->hide();
     main_->show();    
     
     button_->setText("&detach");
@@ -120,6 +131,7 @@ void DockPanel::_toggleDock( void )
     if( detached_size_ != QSize() ) main_->resize( detached_size_ );    
     
     main_->setFrameStyle( QFrame::NoFrame );
+    size_grip_->show();
     main_->show();
     
     emit attached( false );

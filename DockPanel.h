@@ -37,6 +37,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
+#include <QSizeGrip>
 
 #include <string>
 
@@ -106,11 +107,11 @@ class DockPanel: public QWidget, public Counter
   //! emmited when state is changed
   void attached( bool state );
   
-  //! emmited when panel is detached
-  void detached( void );
-  
   //! emmited when panel is attached
   void attached( void );
+  
+  //! emmited when panel is detached
+  void detached( void );
   
   protected slots:
       
@@ -144,10 +145,30 @@ class DockPanel: public QWidget, public Counter
     private:
     
     //! parent panel
-    DockPanel *panel_;
+    DockPanel* panel_;
     
   };
   
+  //! local QSizeGrip
+  /*! the paint event method is overridden so that the size grip is invisible */
+  class LocalGrip: public QSizeGrip, public Counter
+  {
+    
+    public:
+    //! constructor
+    LocalGrip( QWidget* parent ):
+      QSizeGrip( parent ),
+      Counter( "QSizeGrip" )
+    {};
+    
+    protected:
+    
+    //! paint
+    void paintEvent( QPaintEvent* event )
+    { QWidget::paintEvent( event ); }
+    
+  };
+    
   //! flags
   unsigned int flags_;
     
@@ -168,7 +189,10 @@ class DockPanel: public QWidget, public Counter
     
   //! contents panel
   QWidget* panel_;
-  
+    
+  //! size grip
+  LocalGrip* size_grip_;
+
   //! default size for the detached panel
   QSize detached_size_;
   

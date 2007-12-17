@@ -37,6 +37,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
+#include <QSizeGrip>
 #include <QTabWidget>
 #include <string>
 
@@ -126,6 +127,26 @@ class CustomTabWidget: public QFrame, public Counter
   
   private: 
   
+  //! local QSizeGrip
+  /*! the paint event method is overridden so that the size grip is invisible */
+  class LocalGrip: public QSizeGrip, public Counter
+  {
+    
+    public:
+    //! constructor
+    LocalGrip( QWidget* parent ):
+      QSizeGrip( parent ),
+      Counter( "QSizeGrip" )
+    {};
+    
+    protected:
+    
+    //! paint
+    void paintEvent( QPaintEvent* event )
+    { QWidget::paintEvent( event ); }
+    
+  };
+  
   //! flags
   unsigned int flags_;
   
@@ -144,6 +165,9 @@ class CustomTabWidget: public QFrame, public Counter
   //! contents vbox
   QWidget* box_;
       
+  //! size grip
+  LocalGrip* size_grip_;
+  
   //! button
   QPushButton* button_;
   
