@@ -34,6 +34,7 @@
 
 #include <QMenu>
 #include <QTreeView>
+#include <QAction>
 
 #include <string>
 #include <vector>
@@ -96,6 +97,9 @@ class TreeView: public QTreeView, public Counter
   void _setSelectedColumnColor( const QColor& color )
   { selected_column_color_ = color; }
   
+  //! install actions
+  virtual void _installActions( void );
+
   protected slots:
    
   //! popup contextual menu
@@ -108,6 +112,14 @@ class TreeView: public QTreeView, public Counter
 
   private:
 
+  //!@name actions
+  //@{
+   
+  //! select all document
+  QAction* select_all_action_;
+  
+  //@}
+  
   //! popup menu for right click
   QMenu *menu_;
   

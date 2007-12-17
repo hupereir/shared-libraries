@@ -40,6 +40,7 @@ IconBrowsedButton.h \
 IconEngine.h \
 ItemDelegate.h \
 ItemModel.h \
+ListModel.h \
 ListWidget.h \
 MultipleClickCounter.h \
 OpenPreviousMenu.h \

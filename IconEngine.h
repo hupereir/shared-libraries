@@ -35,6 +35,7 @@
 #include <QIcon>
 #include <map>
 #include <list>
+#include <assert.h>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -54,6 +55,13 @@ class IconEngine: public Counter
   static QIcon get( const std::string& file, const std::list<std::string> path_list )
   { return get()._get( file, path_list ); }
 
+  /*! get icon matching file, from chache */
+  static QIcon get( const std::string& file )
+  { 
+    assert( get().use_cache_ );
+    return get().cache_[file];
+  }
+
   //! create icon
   static QIcon get( const QPixmap& pixmap )
   { return get()._get( pixmap ); }
@@ -62,10 +70,18 @@ class IconEngine: public Counter
   static QIcon get( const QIcon& icon )
   { return get()._get( icon ); }
   
-  //! clear cache
+  //! reload all icons set in cache from new path list
+  void reload(const std::list<std::string> path_list  )
+  { 
+    assert( get().use_cache_ );
+    for( Cache::iterator iter = get().cache_.begin(); iter != get().cache_.end(); iter++ )
+    { get().cache_[iter->first] = get()._get( iter->first, path_list ); }
+  }
+  
+  //! reload cache
   void clear( void )
   { cache_.clear(); }
-  
+
   //! set the use_cache flag
   void setUseCache( const bool& value )
   { use_cache_ = value; }
@@ -100,7 +116,10 @@ class IconEngine: public Counter
   bool use_cache_;
   
   //! map files and QIcon
-  std::map< std::string, QIcon > cache_;
+  typedef std::map< std::string, QIcon > Cache;
+  
+  //! map files and QIcon
+  Cache cache_;
     
 };
 

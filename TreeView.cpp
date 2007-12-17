@@ -39,6 +39,7 @@
 #include "XmlOptions.h"
 
 using namespace std;
+using namespace Qt;
 
 //_______________________________________________
 TreeView::TreeView( QWidget* parent ):
@@ -48,6 +49,9 @@ TreeView::TreeView( QWidget* parent ):
   mask_(0)
 {
   Debug::Throw( "TreeView::TreeView.\n" );   
+    
+  // actions
+  _installActions();
 
   // default configuration
   setRootIsDecorated( false );
@@ -152,6 +156,18 @@ void TreeView::drawRow( QPainter * painter, const QStyleOptionViewItem & option,
   new_option.palette.setBrush( QPalette::Highlight, QBrush( gradient ) );
   
   return QTreeView::drawRow( painter, new_option, index );
+
+}
+
+//__________________________________________________________
+void TreeView::_installActions( void )
+{
+  Debug::Throw( "TreeView::_installActions.\n" );
+
+  addAction( select_all_action_ = new QAction( "Select all", this ) );
+  select_all_action_->setShortcut( CTRL+Key_A );
+  select_all_action_->setShortcutContext( WidgetShortcut );
+  connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
 }
 

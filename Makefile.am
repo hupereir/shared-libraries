@@ -24,7 +24,6 @@ noinst_HEADERS = \
   CustomFileDialog.h \
   CustomGridLayout.h \
   CustomLineEdit.h \
-  ListWidget.h \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
@@ -45,6 +44,8 @@ noinst_HEADERS = \
   IconEngine.h \
   ItemDelegate.h \
   ItemModel.h \
+  ListModel.h \
+  ListWidget.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
   OptionBrowsedLineEdit.h \
