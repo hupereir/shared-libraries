@@ -40,10 +40,10 @@ using namespace std;
 
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
-    QWidget( parent ),
-    Counter( "DockPanel" ),
-    flags_( flags ),
-    label_(0)
+  QWidget( parent ),
+  Counter( "DockPanel" ),
+  flags_( flags ),
+  label_(0)
 {
   Debug::Throw( "DockPanel::DockPanel.\n" );
   
@@ -121,11 +121,15 @@ void DockPanel::_toggleDock( void )
     emit attached();
   
   } else {
+        
+    QString title( main_->window()->windowTitle() );
+    Debug::Throw() << "DockPanel::_toggleDock - title: " << qPrintable( title ) << endl;
     
     main_->setParent( 0 );
     if( flags_ & STAYS_ON_TOP ) main_->setWindowFlags( Qt::WindowStaysOnTopHint );
     main_->move( mapToGlobal( QPoint(0,0) ) );
     main_->setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+    main_->setWindowTitle( title );
     
     button_->setText("&attach");
     if( detached_size_ != QSize() ) main_->resize( detached_size_ );    

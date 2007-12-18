@@ -43,6 +43,18 @@ template<class T> class ListModel : public ItemModel
    
   public:
       
+  //! value type
+  typedef T ValueType;
+  
+  //! reference
+  typedef T& Reference;
+
+  //! pointer
+  typedef T* Pointer;
+
+  //! list of vector
+  typedef std::vector<ValueType> List;
+  
   //! constructor
   ListModel(QObject *parent = 0):
     ItemModel( parent )
@@ -106,7 +118,7 @@ template<class T> class ListModel : public ItemModel
   {
     
     QModelIndexList out;  
-    for( typename T::List::const_iterator iter = selection_.begin(); iter != selection_.end(); iter++ )
+    for( typename List::const_iterator iter = selection_.begin(); iter != selection_.end(); iter++ )
     { out.push_back( index( *iter ) ); }
     return out;
 
@@ -118,7 +130,7 @@ template<class T> class ListModel : public ItemModel
   //@{
   
   //! add value
-  virtual void add( T value )
+  virtual void add( ValueType value )
   { 
   
     Debug::Throw() << "ListModel::add" << std::endl;
@@ -133,13 +145,13 @@ template<class T> class ListModel : public ItemModel
   }
   
   //! add values
-  virtual void add( const typename T::List& values )
+  virtual void add( const List& values )
   { 
   
     Debug::Throw() << "ListModel::add" << std::endl;
     
     emit layoutAboutToBeChanged();  
-    for( typename T::List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
+    for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
     { _add( *iter ); }
     emit layoutChanged();
     
@@ -149,7 +161,7 @@ template<class T> class ListModel : public ItemModel
   }  
   
   //! remove
-  virtual void remove( T value )
+  virtual void remove( ValueType value )
   { 
     
     emit layoutAboutToBeChanged();
@@ -162,10 +174,10 @@ template<class T> class ListModel : public ItemModel
   
   //! clear
   virtual void clear( void )
-  { set( typename T::List() ); }
+  { set( List() ); }
   
   //! update
-  virtual void set( const typename T::List& values )
+  virtual void set( const List& values )
   { 
     
     emit layoutAboutToBeChanged();
@@ -179,24 +191,24 @@ template<class T> class ListModel : public ItemModel
   }
   
   //! return all values
-  const typename T::List& get( void ) const
+  const List& get( void ) const
   { return values_; }
   
   //! return value for given index
-  virtual T get( const QModelIndex& index ) const
-  { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:T(); }
+  virtual ValueType get( const QModelIndex& index ) const
+  { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:ValueType(); }
   
   //! return all values
-  typename T::List get( const QModelIndexList& list ) const
+  List get( const QModelIndexList& indexes ) const
   { 
-    typename T::List out;
-    for( QModelIndexList::const_iterator iter = list.begin(); iter != list.end(); iter++ )
+    List out;
+    for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
     { if( iter->isValid() && iter->row() < values_.size() ) out.push_back( get( *iter ) ); }
     return out;
   }
   
   //! return index associated to a given value
-  virtual QModelIndex index( const T& value ) const
+  virtual QModelIndex index( const ValueType& value ) const
   { 
     for( unsigned int row=0; row<values_.size(); row++ )
     { if( value == values_[row] ) return index( row, 0 ); }
@@ -208,24 +220,24 @@ template<class T> class ListModel : public ItemModel
   protected:
   
   //! return all values
-  typename T::List& _get( void )
+  List& _get( void )
   { return values_; }
   
   private:
  
   //! add, without update
-  void _add( const T& value )
+  void _add( const ValueType& value )
   {
-    typename T::List::iterator iter = std::find( values_.begin(), values_.end(), value );
+    typename List::iterator iter = std::find( values_.begin(), values_.end(), value );
     if( iter == values_.end() ) values_.push_back( value ); 
     else *iter = value;
   }
   
   //! values
-  typename T::List values_;
+  List values_;
   
   //! selection
-  typename T::List selection_;
+  List selection_;
  
 };
 

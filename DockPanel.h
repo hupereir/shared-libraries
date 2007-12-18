@@ -74,14 +74,14 @@ class DockPanel: public QWidget, public Counter
   //! dock panel flags
   void setFlags( const unsigned int& flags )
   { flags_ = flags; }
-  
+   
   //! get panel (to add contents)
   virtual QWidget& panel( void )
   { 
     Exception::checkPointer( panel_, DESCRIPTION( "panel_ not initialized" ) );
     return *panel_;
   }
-    
+  
   //! set detachable group panel title
   void setTitle( const std::string& title )
   { 
