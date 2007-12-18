@@ -56,6 +56,10 @@ class ItemModel : public QAbstractItemModel, public Counter
   //@{
   
   //! sort
+  virtual void sort( void )
+  { sort( sortColumn(), sortOrder() ); }
+  
+  //! sort
   virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );  
   
   //! current sorting column

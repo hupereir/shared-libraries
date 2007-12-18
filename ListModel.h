@@ -118,16 +118,13 @@ template<class T> class ListModel : public ItemModel
   //@{
   
   //! add value
-  virtual void add( const T& value )
+  virtual void add( T value )
   { 
   
     Debug::Throw() << "ListModel::add" << std::endl;
     
-    emit layoutAboutToBeChanged();
-    
-    typename T::List::iterator iter = std::find( values_.begin(), values_.end(), value );
-    if( iter == values_.end() ) values_.push_back( value ); 
-    else *iter = value;
+    emit layoutAboutToBeChanged();    
+    _add( value );
     emit layoutChanged();
     
     // redo the sorting
@@ -135,8 +132,24 @@ template<class T> class ListModel : public ItemModel
     
   }
   
+  //! add values
+  virtual void add( const typename T::List& values )
+  { 
+  
+    Debug::Throw() << "ListModel::add" << std::endl;
+    
+    emit layoutAboutToBeChanged();  
+    for( typename T::List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
+    { _add( *iter ); }
+    emit layoutChanged();
+    
+    // redo the sorting
+    sort( sortColumn(), sortOrder() );
+    
+  }  
+  
   //! remove
-  virtual void remove( const T& value )
+  virtual void remove( T value )
   { 
     
     emit layoutAboutToBeChanged();
@@ -199,6 +212,14 @@ template<class T> class ListModel : public ItemModel
   { return values_; }
   
   private:
+ 
+  //! add, without update
+  void _add( const T& value )
+  {
+    typename T::List::iterator iter = std::find( values_.begin(), values_.end(), value );
+    if( iter == values_.end() ) values_.push_back( value ); 
+    else *iter = value;
+  }
   
   //! values
   typename T::List values_;
