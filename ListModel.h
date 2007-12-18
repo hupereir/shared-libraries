@@ -147,8 +147,8 @@ template<class T> class ListModel : public ItemModel
     
   }
   
-  //! reset
-  virtual void reset( void )
+  //! clear
+  virtual void clear( void )
   { set( typename T::List() ); }
   
   //! update
