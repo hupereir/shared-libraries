@@ -86,6 +86,33 @@ template<class T> class ListModel : public ItemModel
   { return parent.isValid() ? 0:values_.size(); } 
   
   //@}
+
+  //!@name selection
+  //@{
+  
+  //! clear internal list selected items
+  virtual void clearSelectedIndexes( void )
+  { selection_.clear(); }
+  
+  //! store index internal selection state
+  virtual void setIndexSelected( const QModelIndex& index, bool value )
+  { 
+    if( value ) selection_.push_back( get(index) ); 
+    else selection_.erase( std::remove( selection_.begin(), selection_.end(), get(index) ), selection_.end() );
+  } 
+      
+  //! get list of internal selected items
+  virtual QModelIndexList selectedIndexes( void ) const
+  {
+    
+    QModelIndexList out;  
+    for( typename T::List::const_iterator iter = selection_.begin(); iter != selection_.end(); iter++ )
+    { out.push_back( index( *iter ) ); }
+    return out;
+
+  }
+  
+  //@}
   
   //!@name interface
   //@{
@@ -112,22 +139,29 @@ template<class T> class ListModel : public ItemModel
   virtual void remove( const T& value )
   { 
     
-    typename T::List::iterator iter = std::find( values_.begin(), values_.end(), value );
-    if( iter == values_.end() ) return;
     emit layoutAboutToBeChanged();
-    values_.erase( iter );
+    values_.erase( std::remove( values_.begin(), values_.end(), value ), values_.end() );
+    selection_.erase( std::remove( selection_.begin(), selection_.end(), value ), selection_.end() );
     emit layoutChanged();
     return;
     
   }
   
+  //! reset
+  virtual void reset( void )
+  { set( typename T::List() ); }
+  
   //! update
   virtual void set( const typename T::List& values )
   { 
+    
     emit layoutAboutToBeChanged();
     values_ = values;
+    selection_.clear();
     emit layoutChanged();
+    
     sort( sortColumn(), sortOrder() );
+    
     return;
   }
   
@@ -137,13 +171,23 @@ template<class T> class ListModel : public ItemModel
   
   //! return value for given index
   virtual T get( const QModelIndex& index ) const
-  { return index.row() < values_.size() ? values_[index.row()]:T(); }
+  { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:T(); }
+  
+  //! return all values
+  typename T::List get( const QModelIndexList& list ) const
+  { 
+    typename T::List out;
+    for( QModelIndexList::const_iterator iter = list.begin(); iter != list.end(); iter++ )
+    { if( iter->isValid() && iter->row() < values_.size() ) out.push_back( get( *iter ) ); }
+    return out;
+  }
   
   //! return index associated to a given value
   virtual QModelIndex index( const T& value ) const
   { 
-    typename T::List::const_iterator iter = std::find( values_.begin(), values_.end(), value );
-    return (iter == values_.end()) ? QModelIndex():*iter;
+    for( unsigned int row=0; row<values_.size(); row++ )
+    { if( value == values_[row] ) return index( row, 0 ); }
+    return QModelIndex();
   }
 
   //@}
@@ -158,6 +202,9 @@ template<class T> class ListModel : public ItemModel
   
   //! values
   typename T::List values_;
+  
+  //! selection
+  typename T::List selection_;
  
 };
 
