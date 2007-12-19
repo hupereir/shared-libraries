@@ -39,6 +39,7 @@
 #include <map>
 
 #include "Counter.h"
+#include "Debug.h"
 #include "SpellInterface.h"
 #include "TextFormat.h" 
 #include "Word.h"

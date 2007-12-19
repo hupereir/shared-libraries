@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QComboBox>
 #include <QDialog>
 #include <QLabel>
