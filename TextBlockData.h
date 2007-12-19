@@ -35,6 +35,7 @@
 #include <QTextBlockUserData>
 #include "TextBlockFlags.h"
 #include "Counter.h"
+#include "Debug.h"
 
 //! TextBlock data
 class TextBlockData: public QTextBlockUserData, public Counter
