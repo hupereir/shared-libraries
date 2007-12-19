@@ -32,12 +32,12 @@
    \date $Date$
 */
 
+#include <assert.h>
 #include <list>     
 #include <string>   
 
 #include "Counter.h"
 #include "Debug.h"
-#include "Exception.h"
 #include "File.h"
 #include "FileRecord.h"
 #include "TimeStamp.h"
@@ -78,7 +78,7 @@ class FileList: public Counter
   //! gets file list size
   virtual int size( void ) const
   {
-    Exception::checkPointer( records_, DESCRIPTION( "invalid list" ) );
+    assert( records_ );
     return records_->size();
   }
   

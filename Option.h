@@ -36,7 +36,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "Exception.h"
 #include "Counter.h"
 #include "Debug.h"
 

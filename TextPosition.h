@@ -35,7 +35,6 @@
 #include <iostream>
 #include <string>
 #include "Counter.h"
-#include "Exception.h"
 
 //! stores paragraph and index (in paragraph) into unique structure
 class TextPosition: public Counter

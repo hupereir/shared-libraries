@@ -40,7 +40,6 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "Exception.h"
 #include "Option.h"
 
 //! Option file parser based on Xml

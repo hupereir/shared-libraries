@@ -38,7 +38,6 @@
 #include <string>
 
 #include "Counter.h"
-#include "Exception.h"
 #include "Debug.h"
 
 /*!

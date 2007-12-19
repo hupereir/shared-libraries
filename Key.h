@@ -32,9 +32,9 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <set>
 #include <iostream>
-#include "Exception.h"
 
 //! base namespace
 namespace BASE 
@@ -134,7 +134,7 @@ namespace BASE
     //! associated two Keys 
     static void associate( Key* first, Key* second ) 
     {  
-      Exception::check( first->key() != second->key(), DESCRIPTION( "cannot associate key to itself" ) );
+      assert( first->key() != second->key() );
       first->_associate( second ); 
       second->_associate( first ); 
     } 
@@ -142,7 +142,7 @@ namespace BASE
     //! associated two Keys 
     static void associate( Key& first, Key& second ) 
     {  
-      Exception::check( first.key() != second.key(), DESCRIPTION( "cannot associate key to itself" ) );
+      assert( first.key() != second.key() );
       first._associate( &second ); 
       second._associate( &first ); 
     } 

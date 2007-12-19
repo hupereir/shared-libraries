@@ -34,7 +34,6 @@
 #include <sstream>
 
 #include "Debug.h"
-#include "Exception.h"
 #include "Str.h"
 #include "TimeStamp.h"
 #include "Util.h"

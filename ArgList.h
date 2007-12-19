@@ -24,6 +24,9 @@
 #ifndef ArgList_h
 #define ArgList_h
 
+
+
+
 /*!
   \file ArgList.h
   \brief parse command line arguments
@@ -40,7 +43,6 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "Exception.h"
 
 /*! \brief 
   parse command line argument.
