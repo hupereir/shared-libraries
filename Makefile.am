@@ -14,7 +14,6 @@ noinst_HEADERS = \
   Counter.h \
   CustomProcess.h \
   Debug.h \
-  Exception.h \
   File.h \
   FileList.h \
   FileRecord.h \
@@ -37,7 +36,6 @@ libbase_a_SOURCES = \
   Counter.cpp \
   CustomProcess.cpp \
 	 Debug.cpp \
-  Exception.cpp \
   File.cpp \
   FileList.cpp \
   Key.cpp \
