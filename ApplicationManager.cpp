@@ -355,7 +355,7 @@ void ApplicationManager::_process( void )
   
   Debug::Throw( debug_level, "Application::_process.\n" );
   
-  Exception::check( client().hasMessage(), DESCRIPTION( "no message available" ) );
+  assert( client().hasMessage() );
   
   // retrieve message and reset
   string message( client().message() );

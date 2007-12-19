@@ -44,7 +44,6 @@
 #include "ArgList.h"
 #include "Client.h"
 #include "Counter.h"
-#include "Exception.h"
 #include "Server.h"
 #include "ServerCommand.h"
 
@@ -101,7 +100,7 @@ namespace SERVER
     //! retrieves reference to "this" client
     virtual Client& client( void )
     { 
-      Exception::checkPointer( client_, DESCRIPTION( "client_ not initialized" ) );
+      assert( client_ );
       return *client_;
     }
     
