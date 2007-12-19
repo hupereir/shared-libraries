@@ -32,6 +32,7 @@
    \date    $Date$
 */
 
+#include <assert.h>
 #include <QObject>
 #include <QTimer>
 #include <QTcpSocket>
