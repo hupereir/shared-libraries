@@ -32,13 +32,12 @@
 \date $Date$
 */
 
+#include <assert.h>
 #include <QSlider>
 
 #include "CustomLineEdit.h"
 #include "Counter.h"  
 #include "Debug.h"  
-#include "Exception.h"
-
 /*!
 \class CustomSlider
 \brief customized QSlider associated to a CustomLineEdit
@@ -61,21 +60,21 @@ class CustomSlider: public QWidget, public Counter
   //! retrieve QSlider
   QSlider& slider( void )
   {
-    Exception::checkPointer( slider_, DESCRIPTION( "slider_ not initialized" ) );
+    assert( slider_ );
     return *slider_;
   }
   
   //! retrieve QSlider
   const QSlider& slider( void ) const
   {
-    Exception::checkPointer( slider_, DESCRIPTION( "slider_ not initialized" ) );
+    assert( slider_ );
     return *slider_;
   }
   
   //! retrieve CustomLineEdit
   CustomLineEdit& lineEditor( void )
   {
-    Exception::checkPointer( line_edit_, DESCRIPTION( "line_edit_ not initialized" ) );
+    assert( line_edit_ );
     return *line_edit_;
   }
   

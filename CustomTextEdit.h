@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QAction>
 #include <QClipboard>
 #include <QContextMenuEvent>
@@ -417,7 +418,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! find dialog
   virtual FindDialog& _findDialog( void )
   {
-    Exception::checkPointer( find_dialog_, DESCRIPTION( "find_dialog_ not initialized.\n" ) );
+    assert( find_dialog_ );
     return *find_dialog_;
   }
   
@@ -433,7 +434,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! replace dialog
   virtual ReplaceDialog& _replaceDialog( void )
   {
-    Exception::checkPointer( replace_dialog_, DESCRIPTION( "replace_dialog_ not initialized.\n" ) );
+    assert( replace_dialog_ );
     return *replace_dialog_;
   }
   

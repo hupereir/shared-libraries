@@ -43,7 +43,7 @@
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
 #include "Debug.h"
-#include "Exception.h"
+#include <assert.h>
 #include "QtUtil.h"
 #include "Util.h"
 #include "XmlOptions.h"
@@ -414,7 +414,7 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
 void QtUtil::centerOnPointer( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnPointer.\n" );
-  Exception::check( widget, DESCRIPTION( "invalid widget" ) );
+  assert( widget );
 
   // move widget
   widget->move( centerOnPointer( widget->frameSize() ) );
@@ -425,7 +425,7 @@ void QtUtil::centerOnPointer( QWidget* widget )
 //____________________________________________________________
 void QtUtil::centerOnParent( QWidget* widget )
 {
-  Exception::check( widget, DESCRIPTION( "invalid widget" ) );
+  assert( widget );
   return centerOnWidget( widget, widget->parentWidget() );
 }
 
@@ -434,7 +434,7 @@ void QtUtil::centerOnParent( QWidget* widget )
 void QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 {
   Debug::Throw( "QtUtil::centerOnParent.\n" );
-  Exception::check( widget, DESCRIPTION( "invalid widget" ) );
+  assert( widget );
 
   // get parent widget
   if( !( parent && parent->window() ) ) centerOnDesktop( widget );
@@ -447,7 +447,7 @@ void QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 void QtUtil::centerOnDesktop( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnDesktop.\n" );
-  Exception::check( widget, DESCRIPTION( "invalid widget" ) );
+  assert( widget );
   widget->move( centerOnDesktop( widget->frameSize() ) );
   return;
 }

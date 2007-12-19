@@ -35,7 +35,7 @@
 #include <QPushButton>
 #include <QToolTip>
 
-#include "Exception.h"
+#include <assert.h>
 #include "TreeViewConfiguration.h"
 #include "QtUtil.h"
 #include "Debug.h"
@@ -70,7 +70,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
   setLayout( layout );
   
   // check target
-  Exception::checkPointer( target_, DESCRIPTION("invalid target_") );
+  assert( target_ );
   
   // size
   QCheckBox *checkbox;
@@ -84,7 +84,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     
   // retrieve columns
   QHeaderView* header( target_->header() );
-  Exception::checkPointer( header, DESCRIPTION( "invalid header" ) );
+  assert( header );
   for( int index=0; index < header->count(); index++ )
   {
     
@@ -196,7 +196,7 @@ unsigned int TreeViewConfiguration::_computeMask( void ) const
 bool TreeViewConfiguration::_modified( const unsigned int & index ) const
 {
   Debug::Throw( "TreeViewConfiguration::_modified.\n" ); 
-  Exception::check( index < checkbox_.size(), DESCRIPTION( "invalid index" ) );
+  assert( index < checkbox_.size() );
   
   // get initial state from mask
   bool initial_state( modified_mask_ & (1 << index ) );

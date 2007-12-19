@@ -195,7 +195,7 @@ void OptionListBox::_edit( void )
 
   // retrieve selection
   QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
-  Exception::check( items.size() == 1, DESCRIPTION( "invalid selection" ) );
+  assert( items.size() == 1 );
 
   // create dialog
   CustomDialog dialog( this );
@@ -240,7 +240,7 @@ void OptionListBox::_remove( void )
 
   // retrieve selection
   QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
-  Exception::check( !items.empty(), DESCRIPTION( "invalid selection" ) );
+  assert( !items.empty() );
   ostringstream what;
   what << "remove selected value" << (items.size() > 1 ? "s":"") << " ?";
   if( !QtUtil::questionDialog( this, what.str().c_str() ) ) return;
@@ -258,7 +258,7 @@ void OptionListBox::_setDefault( void )
 
   // retrieve selection
   QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
-  Exception::check( items.size() == 1, DESCRIPTION( "invalid selection" ) );
+  assert( items.size() == 1 );
 
   // move Item to the top of the list
   list_->takeItem( list_->row( items.front() ) );

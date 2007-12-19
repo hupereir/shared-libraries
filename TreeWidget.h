@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QMenu>
@@ -88,7 +89,7 @@ class TreeWidget: public QTreeWidget, public Counter
   //! column type
   virtual void setColumnType( const int& column, const ColumnType& type )
   { 
-    Exception::check( column >=0, DESCRIPTION( "invalid column" ) );
+    assert( column >=0 );
     if( static_cast<int>(column_types_.size()) <= column ) column_types_.resize( column+1, STRING );
     column_types_[column] = type; 
   }
@@ -96,7 +97,7 @@ class TreeWidget: public QTreeWidget, public Counter
   //! column type
   virtual ColumnType columnType( const int& column ) const
   { 
-    Exception::check( column >=0, DESCRIPTION( "invalid column" ) );
+    assert( column >=0 );
     return ( column < static_cast<int>(column_types_.size()) ) ? column_types_[column]:STRING; 
   }
   

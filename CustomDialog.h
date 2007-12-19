@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QDialog>
 #include <QPushButton>
 #include <QBoxLayout>
@@ -40,7 +41,6 @@
 
 #include "Counter.h"  
 #include "Debug.h"  
-#include "Exception.h"  
  
 /*!
   \class CustomDialog
@@ -77,14 +77,14 @@ class CustomDialog: public QDialog, public Counter
   //! retrieve main vbox  
   QBoxLayout& mainLayout( void ) const
   {
-    Exception::checkPointer( main_layout_, DESCRIPTION( "main_layout_ not initialized" ) );
+    assert( main_layout_ );
     return *main_layout_;
   }
 
   //! retrieve button layout
   QBoxLayout& buttonLayout( void ) const
   {
-    Exception::checkPointer( button_layout_, DESCRIPTION( "button_layout_ not initialized" ) );
+    assert( button_layout_ );
     return *button_layout_;
   }
  
@@ -95,7 +95,7 @@ class CustomDialog: public QDialog, public Counter
   //! retrieve OK button
   QPushButton& okButton( void ) const
   {
-    Exception::checkPointer( ok_button_, DESCRIPTION( "ok_button_ not initialized" ) );
+    assert( ok_button_ );
     return *ok_button_;
   }
   
@@ -106,7 +106,7 @@ class CustomDialog: public QDialog, public Counter
   //! retrieve CANCEL button
   QPushButton& cancelButton( void ) const
   {
-    Exception::checkPointer( cancel_button_, DESCRIPTION( "cancel_button_ not initialized" ) );
+    assert( cancel_button_ );
     return *cancel_button_;
   }
   

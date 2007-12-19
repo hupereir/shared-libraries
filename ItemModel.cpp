@@ -29,6 +29,7 @@
   \date    $Date$
 */
 
+#include "Debug.h"
 #include "ItemModel.h"
 
 using namespace std;

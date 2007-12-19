@@ -33,6 +33,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QDialog>
 
 #include "ProcessFrame.h"
@@ -57,7 +58,7 @@ class ProcessDialog: public QDialog, public Counter
   //! process frame
   ProcessFrame& processFrame( void )
   {
-    Exception::checkPointer( process_frame_, DESCRIPTION( "process_frame_ not initialized" ) );
+    assert( process_frame_ );
     return *process_frame_;
   }
 

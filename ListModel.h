@@ -165,8 +165,19 @@ template<class T> class ListModel : public ItemModel
   { 
     
     emit layoutAboutToBeChanged();
-    values_.erase( std::remove( values_.begin(), values_.end(), value ), values_.end() );
-    selection_.erase( std::remove( selection_.begin(), selection_.end(), value ), selection_.end() );
+    _remove( value );
+    emit layoutChanged();
+    return;
+    
+  }
+  
+  //! remove
+  virtual void remove( const List& values )
+  { 
+    
+    emit layoutAboutToBeChanged();
+    for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
+    { _remove( *iter ); }
     emit layoutChanged();
     return;
     
@@ -231,6 +242,13 @@ template<class T> class ListModel : public ItemModel
     typename List::iterator iter = std::find( values_.begin(), values_.end(), value );
     if( iter == values_.end() ) values_.push_back( value ); 
     else *iter = value;
+  }
+  
+  //! remove, without update
+  void _remove( const ValueType& value )
+  {
+    values_.erase( std::remove( values_.begin(), values_.end(), value ), values_.end() );
+    selection_.erase( std::remove( selection_.begin(), selection_.end(), value ), selection_.end() );
   }
   
   //! values

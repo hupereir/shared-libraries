@@ -41,7 +41,6 @@
 #include "Counter.h"
 #include "CustomProcess.h"
 #include "CustomTextEdit.h"
-#include "Exception.h"
 #include "File.h"
 #include "Options.h"
 
@@ -76,14 +75,14 @@ class ProcessFrame:public QWidget, public Counter
   //! button layout
   QVBoxLayout &mainLayout( void ) const
   { 
-    Exception::checkPointer( main_layout_, DESCRIPTION( "main_layout_ not initialized" ) );
+    assert( main_layout_ );
     return *main_layout_;
   }
 
   //! button layout
   QHBoxLayout &buttonLayout( void ) const
   { 
-    Exception::checkPointer( button_layout_, DESCRIPTION( "button_layout_ not initialized" ) );
+    assert( button_layout_ );
     return *button_layout_;
   }
   

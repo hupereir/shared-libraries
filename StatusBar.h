@@ -32,6 +32,7 @@
    \date $Date$
 */
 
+#include <assert.h>
 #include <QLabel>
 #include <QApplication>
 #include <QStatusBar>
@@ -39,8 +40,6 @@
 #include <vector>
 
 #include "Counter.h"
-#include "Exception.h"
-
 //! local label for additional slots
 class StatusBarLabel: public QLabel, public Counter
 {
@@ -101,7 +100,7 @@ class StatusBar: public QStatusBar, public Counter
   //! retrieves label with given index
   StatusBarLabel& label( const unsigned int& i = 0  )
   {
-    Exception::check( i < labels_.size(), DESCRIPTION( "invalid index" ) );
+    assert( i < labels_.size() );
     return *labels_[i];  
   }
   

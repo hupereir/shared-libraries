@@ -37,7 +37,6 @@
 #include <list>
 
 #include "ListWidget.h"
-#include "Exception.h"
 #include "XmlOptions.h"
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"

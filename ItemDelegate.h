@@ -34,6 +34,7 @@
 
 #include <QItemDelegate>
 #include "Counter.h"
+#include "Debug.h"
 
 //! custom delegate to repaint selection nicely
 class ItemDelegate: public QItemDelegate, public Counter

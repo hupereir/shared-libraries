@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QCloseEvent>
 #include <QFrame>
 #include <QLabel>
@@ -42,6 +43,7 @@
 #include <string>
 
 #include "Counter.h"
+#include "Debug.h"
 
 //! detachable generic panel
 class DockPanel: public QWidget, public Counter
@@ -78,7 +80,7 @@ class DockPanel: public QWidget, public Counter
   //! get panel (to add contents)
   virtual QWidget& panel( void )
   { 
-    Exception::checkPointer( panel_, DESCRIPTION( "panel_ not initialized" ) );
+    assert( panel_ );
     return *panel_;
   }
   
@@ -98,7 +100,7 @@ class DockPanel: public QWidget, public Counter
   //! retrieve button layout
   QBoxLayout& buttonLayout( void ) const
   {
-    Exception::checkPointer( button_layout_, DESCRIPTION( "button_layout_ not initialized" ) );
+    assert( button_layout_ );
     return *button_layout_;
   }
           

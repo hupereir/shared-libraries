@@ -36,7 +36,6 @@
 #include <QMainWindow>
 
 #include "Debug.h"  
-#include "Exception.h"  
 #include "XmlOptions.h"  
 
 /*!

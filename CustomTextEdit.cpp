@@ -1914,7 +1914,7 @@ bool CustomTextEdit::_setTabSize( const int& tab_size )
 {
 
   Debug::Throw() << "CustomTextEdit::_setTabSize - " << tab_size << endl;
-  Exception::check( tab_size > 0, DESCRIPTION( "invalid tab size" ) );
+  assert( tab_size > 0 );
 
   int stop_width( tab_size * QFontMetrics( font() ).width( " " ) );
   if( tab_size == emulated_tab_.size() && tabStopWidth() == stop_width ) return false;

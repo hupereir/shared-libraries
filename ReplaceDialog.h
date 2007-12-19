@@ -33,6 +33,8 @@
 #ifndef ReplaceDialog_h
 #define ReplaceDialog_h
 
+#include <assert.h>
+
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "FindDialog.h"
@@ -60,7 +62,7 @@ class ReplaceDialog: public FindDialog
   //! get location button hbox
   QBoxLayout& locationLayout( void )
   { 
-    Exception::checkPointer( location_layout_, DESCRIPTION( "location_layout_ not initialized.\n" ) );
+    assert( location_layout_ );
     return *location_layout_; 
   }
   
@@ -124,14 +126,14 @@ class ReplaceDialog: public FindDialog
   //! replace editor
   virtual CustomComboBox& _replaceEditor( void )
   {
-    Exception::checkPointer( replace_editor_, DESCRIPTION( "replace_editor_ is invalid" ) );
+    assert( replace_editor_ );
     return *replace_editor_;
   }
   
   //! replace editor
   const virtual CustomComboBox& _replaceEditor( void ) const
   {
-    Exception::checkPointer( replace_editor_, DESCRIPTION( "replace_editor_ is invalid" ) );
+    assert( replace_editor_ );
     return *replace_editor_;
   }
 

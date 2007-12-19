@@ -31,10 +31,9 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QGridLayout>
 #include "Counter.h"
-#include "Exception.h"
-
 class CustomGridLayout: public QGridLayout, public Counter
 {
   
@@ -65,8 +64,8 @@ class CustomGridLayout: public QGridLayout, public Counter
   //! add wodget
   void addWidget ( QWidget * widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
   {
-    Exception::check( rowSpan > 0, DESCRIPTION( "invalid rowSpan" ) );
-    Exception::check( columnSpan > 0, DESCRIPTION( "invalid columnSpan" ) );
+    assert( rowSpan > 0 );
+    assert( columnSpan > 0 );
     QGridLayout::addWidget( widget, row, column, rowSpan, columnSpan, alignment ); 
     setLocation( row+rowSpan-1, column+columnSpan-1 );
     _increment();
@@ -75,7 +74,7 @@ class CustomGridLayout: public QGridLayout, public Counter
   //! add widget
   void addWidget( QWidget* widget, Qt::Alignment alignment = 0 )
   {
-    Exception::check( max_count_ > 0, DESCRIPTION( "invalid number of columns" ) );
+    assert( max_count_ > 0 );
     QGridLayout::addWidget( widget, row_, column_, alignment );
     _increment();
   }

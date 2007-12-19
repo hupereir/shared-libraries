@@ -40,7 +40,6 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "Exception.h"
 
 //! readonly font name display and font dialog
 class FontEdit: public QWidget, public Counter

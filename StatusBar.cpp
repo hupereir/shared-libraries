@@ -44,7 +44,7 @@ StatusBar::StatusBar( QWidget* parent ):
   Counter( "StatusBar" )
 { 
   Debug::Throw( "StatusBar::StatusBar.\n" ); 
-  Exception::checkPointer( dynamic_cast<QMainWindow*>( parent ), DESCRIPTION( "wrong parent" ) );
+  assert( dynamic_cast<QMainWindow*>( parent ) );
 }
 
 

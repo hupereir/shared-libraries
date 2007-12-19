@@ -75,7 +75,7 @@ void TreeWidget::setColumnName( const int& column, const string& name )
 {
   
   Debug::Throw( "TreeWidget::setColumnName.\n" );
-  Exception::check( column>=0 && column <columnCount(), DESCRIPTION( "invalid index" ) );
+  assert( column>=0 && column <columnCount() );
     
   // retrieve HeaderItem
   QTreeWidgetItem* item( headerItem() );

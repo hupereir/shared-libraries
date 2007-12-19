@@ -1,3 +1,6 @@
+#ifndef _BrowsedLineEdit_h_
+#define _BrowsedLineEdit_h_
+
 // $Id$
 
 /******************************************************************************
@@ -32,8 +35,15 @@
   \date $Date$
 */
 
-#ifndef _BrowsedLineEdit_h_
-#define _BrowsedLineEdit_h_
+
+#include <assert.h>
+#include <QWidget>
+#include <string>
+
+#include "Counter.h"
+#include "CustomFileDialog.h"
+
+class CustomLineEdit;
 
 /*! 
   \class BrowsedLineEdit
@@ -42,16 +52,6 @@
   result of the file dialog associated to the button is stored into the 
   CustomLineEdit object
 */
-
-#include <QWidget>
-#include <string>
-
-#include "Counter.h"
-#include "Exception.h"
-#include "CustomFileDialog.h"
-
-class CustomLineEdit;
-
 class BrowsedLineEdit: public QWidget, public Counter
 {
 
@@ -66,7 +66,7 @@ class BrowsedLineEdit: public QWidget, public Counter
   //! retrieve line editor
   CustomLineEdit& editor( void ) const
   { 
-    Exception::checkPointer( line_edit_, DESCRIPTION( "line_edit_ not initialized" ) );
+    assert( line_edit_ );
     return *line_edit_; 
   }
     

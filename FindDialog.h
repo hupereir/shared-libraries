@@ -61,7 +61,7 @@ class FindDialog: public QDialog, public Counter
   //! retrieve editor
   virtual CustomComboBox& editor( void ) const
   {
-    Exception::checkPointer( editor_, DESCRIPTION( "editor_ is invalid" ) );
+    assert( editor_ );
     return *editor_;
   }
 
@@ -159,14 +159,14 @@ class FindDialog: public QDialog, public Counter
   //! button layout
   QBoxLayout& _mainLayout()
   { 
-    Exception::checkPointer( main_layout_, DESCRIPTION( "main_layout_ is invalid" ) );
+    assert( main_layout_ );
     return *main_layout_;
   }
   
   //! button layout
   QBoxLayout& _buttonLayout()
   { 
-    Exception::checkPointer( button_layout_, DESCRIPTION( "button_layout_ is invalid" ) );
+    assert( button_layout_ );
     return *button_layout_;
   }
   

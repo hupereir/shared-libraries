@@ -35,7 +35,6 @@
 #include <sstream>
 
 #include "CustomToolButton.h"
-#include "Exception.h"
 #include "XmlOptions.h"
 
 using namespace std;

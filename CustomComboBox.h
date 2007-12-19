@@ -32,12 +32,13 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QComboBox>
 #include <QKeyEvent>
-//#include <QLineEdit>
 
 #include "Counter.h"
 #include "CustomLineEdit.h"
+#include "Debug.h"
 
 //! local line editor to handle autocompletion
 class ComboLineEdit: public CustomLineEdit

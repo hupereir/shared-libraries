@@ -434,7 +434,7 @@ void BaseConfigurationDialog::_display( QListWidgetItem* current, QListWidgetIte
   
   if( !current ) current = previous;
   ConfigListItem* item( dynamic_cast<ConfigListItem*>(current) );
-  Exception::checkPointer( item, DESCRIPTION( "invalid cast" ) );
+  assert( item );
   _stack().setCurrentWidget(&item->page());  
 }
 

@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QCloseEvent>
 #include <QFrame>
 #include <QLabel>
@@ -43,8 +44,6 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "Exception.h"
-  
 // forward declaration
 class CustomTabWidget;
 
@@ -85,21 +84,21 @@ class CustomTabWidget: public QFrame, public Counter
   //! get parent TabWidget
   QTabWidget& parentTabWidget( void )
   { 
-    Exception::checkPointer( parent_, DESCRIPTION( "parent_ not initialized" ) );
+    assert( parent_ );
     return *parent_; 
   }
   
   //! get box
   QWidget& box( void )
   { 
-    Exception::checkPointer( box_, DESCRIPTION( "box_ not initialized" ) );
+    assert( box_ );
     return *box_;
   }
   
   //! retrieve button layout
   QBoxLayout& buttonLayout( void ) const
   {
-    Exception::checkPointer( button_layout_, DESCRIPTION( "button_layout_ not initialized" ) );
+    assert( button_layout_ );
     return *button_layout_;
   }
             
