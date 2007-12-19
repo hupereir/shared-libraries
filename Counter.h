@@ -32,7 +32,6 @@
    \date    $Date$
 */
 
-#include <assert.h>
 #include <map>
 #include <string>
 #include <stdexcept>
