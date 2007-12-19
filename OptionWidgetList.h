@@ -34,6 +34,7 @@
 
 #include <vector>
 
+#include "Debug.h"
 #include "OptionWidget.h"
 
 //! abstract container for OptionWidgets

@@ -35,6 +35,7 @@
 #include <vector>
 
 #include "Counter.h"
+#include "Debug.h"
 #include "ItemModel.h"
 
 //! Job model. Stores job information for display in lists
@@ -119,7 +120,15 @@ template<class T> class ListModel : public ItemModel
     
     QModelIndexList out;  
     for( typename List::const_iterator iter = selection_.begin(); iter != selection_.end(); iter++ )
-    { out.push_back( index( *iter ) ); }
+    { 
+      QModelIndex index( ListModel::index( *iter ) );
+      if( index.isValid() )
+      {
+        for( int column = 0; column<columnCount(); column++ )
+        { out.push_back( ListModel::index( index.row(), column ) ); }
+      }
+      
+    }
     return out;
 
   }
