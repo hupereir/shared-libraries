@@ -44,7 +44,6 @@
 #include "Counter.h"
 #include "ListWidget.h"
 #include "CustomLineEdit.h"
-#include "Exception.h"
 #include "SpellInterface.h"
 #include "TextPosition.h" 
 
@@ -78,7 +77,7 @@ namespace SPELLCHECK
     //! editor
     QTextEdit &editor( void )
     { 
-      Exception::checkPointer( editor_, DESCRIPTION( "editor_ not set" ) );
+      assert( editor_ );
       return *editor_; 
     }
     

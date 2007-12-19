@@ -38,8 +38,6 @@
 #include <string>
 
 #include "Counter.h"
-#include "Exception.h"
-
 namespace SPELLCHECK
 {
   //! spell checker interface
