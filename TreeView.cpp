@@ -54,6 +54,7 @@ TreeView::TreeView( QWidget* parent ):
   _installActions();
 
   // default configuration
+  setAllColumnsShowFocus( true );
   setRootIsDecorated( false );
   setSortingEnabled( true );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
