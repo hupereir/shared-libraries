@@ -216,7 +216,7 @@ template<class T> class ListModel : public ItemModel
   
   //! return value for given index
   virtual ValueType get( const QModelIndex& index ) const
-  { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:ValueType(); }
+  { return (index.isValid() && index.row() < int(values_.size()) ) ? values_[index.row()]:ValueType(); }
   
   //! return all values
   List get( const QModelIndexList& indexes ) const
