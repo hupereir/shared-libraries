@@ -14,6 +14,7 @@ noinst_HEADERS = \
   Counter.h \
   CustomProcess.h \
   Debug.h \
+  Exception.h \
   File.h \
   FileList.h \
   FileRecord.h \
