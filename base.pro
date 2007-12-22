@@ -28,7 +28,6 @@ SOURCES = \
   Counter.cpp \
   CustomProcess.cpp \
   Debug.cpp \
-  Exception.cpp \
   File.cpp \
   FileList.cpp \
   Key.cpp \
