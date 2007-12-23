@@ -91,7 +91,7 @@ template<class T> class ListModel : public ItemModel
   }
   
   //! index of parent
-  virtual QModelIndex parent(const QModelIndex &index) const
+  virtual QModelIndex parent(const QModelIndex &) const
   { return QModelIndex(); }
   
   //! number of rows below given index
@@ -223,7 +223,7 @@ template<class T> class ListModel : public ItemModel
   { 
     List out;
     for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
-    { if( iter->isValid() && iter->row() < values_.size() ) out.push_back( get( *iter ) ); }
+    { if( iter->isValid() && iter->row() < int(values_.size()) ) out.push_back( get( *iter ) ); }
     return out;
   }
   

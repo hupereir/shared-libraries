@@ -79,7 +79,7 @@ QMenu& TreeView::menu( void )
 //_______________________________________________
 bool TreeView::isVisible( const QModelIndex& index ) const
 {
-  if( !index.isValid() ) return false;
+  if( !( model() && index.isValid() ) ) return false;
   QModelIndex parent( model()->parent( index ) );
   return (!parent.isValid() ) || ( isExpanded( parent ) && isVisible( parent ) );
 }
@@ -88,7 +88,7 @@ bool TreeView::isVisible( const QModelIndex& index ) const
 int TreeView::visibleColumnCount( void ) const
 {
   int out(0);
-  for( int index=0; index < model()->columnCount(); index++ )
+  for( int index=0; model() && index < model()->columnCount(); index++ )
   if( !isColumnHidden( index ) ) out++;
   return out;
 }
@@ -97,7 +97,7 @@ int TreeView::visibleColumnCount( void ) const
 unsigned int TreeView::mask( void )
 {
   mask_ = 0;
-  for( int index=0; index < model()->columnCount(); index++ )
+  for( int index=0; model() && index < model()->columnCount(); index++ )
   if( !isColumnHidden( index ) ) mask_ |= (1<<index);
   return mask_;
 }
@@ -105,6 +105,7 @@ unsigned int TreeView::mask( void )
 //______________________________________________________
 void TreeView::setMask( const unsigned int& mask )
 {
+  if( !model() ) return;
   for( int index=0; index < model()->columnCount(); index++ )
   {
     // see if there is a change between new and old mask
@@ -112,6 +113,18 @@ void TreeView::setMask( const unsigned int& mask )
     setColumnHidden( index, !(mask & (1<<index) ) );
   }  
 }  
+
+//______________________________________________________
+void TreeView::resizeColumns( const unsigned int& mask )
+{
+
+  // if no items present, do nothing
+  if( !( model() && model()->rowCount() ) ) return;
+  
+  for( int i = 0; i < model()->columnCount(); i++ )
+  { if( mask & (1<<i) ) resizeColumnToContents(i); }
+  
+}
 
 //__________________________________________________________
 void TreeView::paintEvent( QPaintEvent* event )

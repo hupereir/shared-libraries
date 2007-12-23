@@ -81,6 +81,15 @@ class TreeView: public QTreeView, public Counter
   //! show/hide columns according to mask bitset. 1 is for shown columns, 0 for hidden
   virtual void setMask( const unsigned int& mask );
    
+  public slots:
+  
+  //! resize all visible columns to match contents
+  virtual void resizeColumns()
+  { resizeColumns( mask() ); }
+   
+  //! resize all visible columns to match contents
+  virtual void resizeColumns( const unsigned int& mask );
+ 
   protected:
   
   //! paint event
