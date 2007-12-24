@@ -74,6 +74,9 @@ noinst_HEADERS = \
   TextBlockFlags.h \
   TextSelection.h \
   TextSeparator.h \
+  TreeItem.h \
+  TreeItemBase.h \
+  TreeModel.h \
   TreeView.h \
   TreeViewConfiguration.h \
   TreeWidget.h \
@@ -133,6 +136,7 @@ libbase_qt_a_SOURCES = \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
   TextSeparator.cpp \
+  TreeItemBase.cpp \
   TreeView.cpp \
   TreeWidget.cpp \
   TreeViewConfiguration.cpp \

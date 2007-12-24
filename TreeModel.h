@@ -39,7 +39,7 @@
 #include "TreeItem.h"
 
 //! Job model. Stores job information for display in lists
-class TreeModel : public ItemModel
+template<class T> class TreeModel : public ItemModel
 {
     
   public:
@@ -62,8 +62,9 @@ class TreeModel : public ItemModel
   //! constructor
   TreeModel(QObject *parent = 0):
     ItemModel( parent ),
-    map_( Item::Map() ),
+    map_( typename Item::Map() ),
     root_( map_ )
+  {}
   
   //! destructor
   virtual ~TreeModel()
@@ -116,7 +117,7 @@ class TreeModel : public ItemModel
   
     // find parent position in list of grand parent
     int row(0);
-    for( ; row < grand_parent_item.childCount(); row++ )
+    for( ; row < int( grand_parent_item.childCount() ); row++ )
     { if( &parent_item == &grand_parent_item.child(row) ) return createIndex( row, 0, parent_item.id() ); }
   
     // not found
@@ -142,12 +143,12 @@ class TreeModel : public ItemModel
   //!@name job to index matching
   //@{
   
-  //! return index associated to a given job is, starting from parent [recursive]
+  //! return index associated to a given value, starting from parent [recursive]
   virtual QModelIndex index( const Reference value, const QModelIndex& parent = QModelIndex() ) const
   {
 
     // return parent index if job match
-    if( parent.isValid() && parent.get() == value ) return parent;
+    if( parent.isValid() && _find( parent.internalId() ).get() == value ) return parent;
       
     // get rows associated to parent and loop over rows  
     for( int row=0; row<rowCount( parent ); row++ )
@@ -171,6 +172,13 @@ class TreeModel : public ItemModel
   
   //@}
       
+  //! clear
+  void clear( void )
+  {
+    map_.clear();
+    root_ = Item( map_ );
+  }
+  
   //! update jobs
   void set( const List& values )
   {  
@@ -193,6 +201,10 @@ class TreeModel : public ItemModel
     return;
     
   }
+    
+  //! root item
+  const Item& root( void ) const
+  { return root_; }
 
   protected:
 
@@ -203,7 +215,7 @@ class TreeModel : public ItemModel
     // first update children that are found in set
     for( unsigned int row = 0; row < parent.childCount(); )
     { 
-      List::iterator found = std::find( values.begin(), values.end(), parent.child(row).get() ) );
+      typename List::iterator found( std::find( values.begin(), values.end(), parent.child(row).get() ) );
       if( found == values.end() ) parent.remove( row );
       else {
         parent.child(row).set( *found );
@@ -222,15 +234,15 @@ class TreeModel : public ItemModel
   void _add( List& values )
   {
   
-    for( List::iterator iter = values.begin(); iter != values.end(); iter++ )
+    for( typename List::iterator iter = values.begin(); iter != values.end(); iter++ )
     { root_.add( *iter ); }
   
   }
   
   //! find item matching id
-  const Item& _find( Item::Id id ) const
+  const Item& _find( typename Item::Id id ) const
   {
-    Item::Map::const_iterator iter( map_.find( id ) );
+    typename Item::Map::const_iterator iter( map_.find( id ) );
     return iter == map_.end() ? root_:*iter->second;
   }
   
@@ -238,7 +250,7 @@ class TreeModel : public ItemModel
   
   //! item map
   /*! used to allow fast mapping between index and value */
-  Item::Map map_;
+  typename Item::Map map_;
   
   //! root item
   Item root_;

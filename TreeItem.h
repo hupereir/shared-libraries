@@ -32,12 +32,14 @@
   \date    $Date$
 */
 
-#include <vector>
+#include <assert.h>
 #include <map>
+#include <vector>
 
+#include "TreeItemBase.h"
 
 //! used to wrap object T into tree structure
-template<class T> class TreeItem
+template<class T> class TreeItem: public TreeItemBase
 {
   
   public:
@@ -52,7 +54,7 @@ template<class T> class TreeItem
   typedef T* Pointer;
 
   //! list of vector
-  typedef std::vector<ValueType> List;  
+  typedef std::vector<TreeItem> List;  
 
   //! list of vector
   typedef std::map<int, TreeItem*> Map;  
@@ -62,27 +64,25 @@ template<class T> class TreeItem
   
   //! root constructor
   TreeItem( Map& item_map ):
+    TreeItemBase(0),
     map_( item_map ),
     parent_(0)
-  { 
-    running_id_ = id_ = 0;
-    map_[id()] = this; 
-  }
+  { map_[id()] = this; }
   
   //! copy constructor
   TreeItem( const TreeItem& item ):
+    TreeItemBase( item.id() ),
     map_( item.map_ ),
     parent_( item.parent_ ),
     value_( item.value_ ),
-    children_( item.children_ ),
-    id_( item.id() )
+    children_( item.children_ )
   {
     // store id in map
     map_[id()] = this;
     
     // reassign parents
-    for( List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
-    { iter->_setParent( this ); } 
+    for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+    { iter->parent_ = this; } 
     
   }
   
@@ -93,16 +93,15 @@ template<class T> class TreeItem
     value_ = item.value_;
     children_ = item.children_;
 
-    // erase current id from map
+    // erase current id from map    
+    // update and store in map
     if( map_[id()] == this ) map_.erase( id() );
-    
-    // update id and store in map
-    id_ = item.id();
+    _setId( item.id() );
     map_[id()] = this;
 
     // reassign parents
-    for( ChildList::iterator iter = children_.begin(); iter != children_.end(); iter++ )
-    { iter->_setParent( this ); } 
+    for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+    { iter->parent_ = this; } 
   
     return *this;  
   }
@@ -114,13 +113,9 @@ template<class T> class TreeItem
   //! clear children
   void clear( void )
   { children_.clear(); }
-
-  //! id
-  const unsigned int& id( void ) const
-  { return id_; }
-  
+ 
   //! value
-  const Reference get( void ) const
+  const ValueType& get( void ) const
   { return value_; }
 
   //! value
@@ -143,7 +138,7 @@ template<class T> class TreeItem
   { return children_.size(); }
   
   //! get child at given row
-  TreeItem child( unsigned int row ) 
+  TreeItem& child( unsigned int row ) 
   { 
     assert( row < childCount() );
     return children_[row]; 
@@ -160,9 +155,8 @@ template<class T> class TreeItem
   bool remove( unsigned int row )
   {
     if( row >= childCount() ) return false;
-    bool found( false );
     unsigned int local(0);
-    ChildList::iterator iter = children_.begin();
+    typename List::iterator iter = children_.begin();
     for( ; iter != children_.end() && local < row; iter++, local++ ) {}
     children_.erase( iter );
     return true;
@@ -181,8 +175,8 @@ template<class T> class TreeItem
     
     // try add to children
     bool added(false);
-    for( ChildList::iterator iter = children_.begin(); iter != children_.end() && !added; iter++ )
-    { added = iter->add( job ); }
+    for( typename List::iterator iter = children_.begin(); iter != children_.end() && !added; iter++ )
+    { added = iter->add( value ); }
     
     // add to this if top level
     if( !( added || hasParent() ) )
@@ -197,12 +191,13 @@ template<class T> class TreeItem
   protected:
 
   //! constructor
+  /*! used to insert T in the tree structure */
   TreeItem( Map& item_map, const TreeItem* parent, const Reference value ):
+    TreeItemBase( ++_runningId() ),
     map_( item_map ),
     parent_( parent ),
-    value_( value ),
-    id_( running_id_++ )
-  { map_[id()] = this }
+    value_( value )
+  { map_[id()] = this; }
     
   //! value
   Reference _get( void )
@@ -218,19 +213,36 @@ template<class T> class TreeItem
   Map& map_;
 
   //! parent
-  TreeItem* parent;
+  const TreeItem* parent_;
   
   //! associated value
   ValueType value_;
   
   //! list of children
   List children_;
+
+  //! streamer
+  friend std::ostream& operator << (std::ostream& out , const TreeItem& item )
+  {
+
+    // indent 2 space characters per parent
+    const TreeItem* parent( item.parent_ );
+    while( parent )
+    {
+      out << "  ";
+      parent = parent->parent_;
+    }
   
-  //! item unique id
-  Id id_;
+    // print job pid
+    out << item.id() << " " << item.get() << std::endl;
   
-  //! running id
-  static Id running_id_;
+    // print job children
+    for( unsigned int i=0; i<item.childCount(); i++ )
+    { out << item.child(i); }    
+    
+    return out;
+    
+  }
   
 };
 
