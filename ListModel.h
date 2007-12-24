@@ -122,13 +122,7 @@ template<class T> class ListModel : public ItemModel
     for( typename List::const_iterator iter = selection_.begin(); iter != selection_.end(); iter++ )
     { 
       QModelIndex index( ListModel::index( *iter ) );
-      if( index.isValid() ) out.push_back( index );
-//       if( index.isValid() )
-//       {
-//         for( int column = 0; column<columnCount(); column++ )
-//         { out.push_back( ListModel::index( index.row(), column ) ); }
-//       }
-      
+      if( index.isValid() ) out.push_back( index );      
     }
     return out;
 
