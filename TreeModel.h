@@ -170,11 +170,7 @@ class TreeModel : public ItemModel
   }
   
   //@}
-    
-  // //! root item
-  // const Item& root( void ) const
-  // { return root_; }
-  
+      
   //! update jobs
   void set( const List& values )
   {  
@@ -198,36 +194,45 @@ class TreeModel : public ItemModel
     
   }
 
-    
-  //! clear tree
-  /*! stored values are not changed but they are all as top level */
-  void clearTree( void )
-  {
-
-    // copy all jobs to local set, set parent id to 0
-    for( List::iterator iter = values_.begin(); iter != values_.end(); iter++ )
-    {
-      Job job( *iter );
-      job.setParentId( 0 );
-      local.insert( job );
-    }
-  
-    // reassign
-    setJobs( local );
-    
-    return; 
-  }    
-      
   protected:
 
   //! update (recusive)
-  static void _update( Item& parent, List& values );
+  static void _update( Item& parent, List& values )
+  {
+              
+    // first update children that are found in set
+    for( unsigned int row = 0; row < parent.childCount(); )
+    { 
+      List::iterator found = std::find( values.begin(), values.end(), parent.child(row).get() ) );
+      if( found == values.end() ) parent.remove( row );
+      else {
+        parent.child(row).set( *found );
+        values.erase( found );
+        row++;
+      }
+    }
+    
+    // update (recursive) children with remaining values
+    for( unsigned int row = 0; row < parent.childCount(); row++ )
+    { _update( parent.child(row), values ); }  
   
+  }
+
   //! add
-  void _add( List& values );
+  void _add( List& values )
+  {
+  
+    for( List::iterator iter = values.begin(); iter != values.end(); iter++ )
+    { root_.add( *iter ); }
+  
+  }
   
   //! find item matching id
-  const Item& _find( Item::Id value ) const;
+  const Item& _find( Item::Id id ) const
+  {
+    Item::Map::const_iterator iter( map_.find( id ) );
+    return iter == map_.end() ? root_:*iter->second;
+  }
   
   private:
   
