@@ -77,6 +77,10 @@ template<class T> class TreeItem: public TreeItemBase
     value_( item.value_ ),
     children_( item.children_ )
   {
+    
+    // flags
+    setFlags( item.flags() );
+    
     // store id in map
     map_[id()] = this;
     
@@ -89,13 +93,17 @@ template<class T> class TreeItem: public TreeItemBase
   //! assignment
   TreeItem& operator = ( const TreeItem& item )
   {
+
+    // flags
+    setFlags( item.flags() );
+    
     parent_ = item.parent_;
     value_ = item.value_;
     children_ = item.children_;
 
     // erase current id from map    
     // update and store in map
-    if( map_[id()] == this ) map_.erase( id() );
+    _eraseFromMap();
     _setId( item.id() );
     map_[id()] = this;
 
@@ -108,7 +116,7 @@ template<class T> class TreeItem: public TreeItemBase
 
   //! destructor
   virtual ~TreeItem( void )
-  { if( map_[id()] == this ) map_.erase( id() ); }
+  { _eraseFromMap(); }
  
   //! clear children
   void clear( void )
@@ -207,6 +215,14 @@ template<class T> class TreeItem: public TreeItemBase
   void _set( const Reference value )
   { value_ = value; }
 
+  //! erase from map
+  void _eraseFromMap( void )
+  {
+    typename Map::iterator iter( map_.find( id() ) );
+    if( iter != map_.end() && iter->second == this ) map_.erase( id() );
+    
+  }
+  
   private:
   
   //! item map

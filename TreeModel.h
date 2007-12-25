@@ -197,12 +197,92 @@ template<class T> class TreeModel : public ItemModel
   }
   
   //@}
+
+  //!@name selection
+  //@{
+  
+  //! clear internal list selected items
+  void clearSelectedIndexes( void )
+  {
+    for( typename Item::Map::iterator iter = map_.begin(); iter != map_.end(); iter++ )
+    { iter->second->setFlag( Item::SELECTED, false ); }
+  }  
+  
+  //! store index internal selection state
+  void setIndexSelected( const QModelIndex& index, bool value )
+  {
+    if( !index.isValid() ) return;
+    typename Item::Map::iterator iter( map_.find( index.internalId() ) );
+    if( iter != map_.end() ) iter->second->setFlag( Item::SELECTED, value );
+  }  
+  
+  //! get list of internal selected items
+  QModelIndexList selectedIndexes( void ) const
+  {
+    QModelIndexList out;
+    for( typename Item::Map::const_iterator iter = map_.begin(); iter != map_.end(); iter++ )
+    {
       
+      if( !iter->second->flag( Item::SELECTED ) ) continue;
+      
+      // retrieve and check index associated to job
+      QModelIndex index( TreeModel::index( iter->second->get() ) );
+      if( index.isValid() ) out.push_back( index );
+      
+    }
+    
+    return out;
+  }    
+  
+  //@}
+
+  //!@name expansion
+  //@{
+  
+  //! clear internal list of expanded items
+  void clearExpandedIndexes( void )
+  {
+    for( typename Item::Map::iterator iter = map_.begin(); iter != map_.end(); iter++ )
+    { iter->second->setFlag( Item::EXPANDED, false ); }
+  }    
+  
+  //! store index internal selection state
+  void setIndexExpanded( const QModelIndex& index, bool value ) 
+  {
+    if( !index.isValid() ) return;
+    typename Item::Map::iterator iter( map_.find( index.internalId() ) );
+    if( iter != map_.end() ) iter->second->setFlag( Item::EXPANDED, value );
+  }  
+  
+  //! get list of internal selected items
+  QModelIndexList expandedIndexes( void ) const
+  {
+    QModelIndexList out;
+    for( typename Item::Map::const_iterator iter = map_.begin(); iter != map_.end(); iter++ )
+    {
+      
+      if( !iter->second->flag( Item::EXPANDED ) ) continue;
+      
+      // retrieve and check index associated to job
+      QModelIndex index( TreeModel::index( iter->second->get() ) );
+      if( index.isValid() ) out.push_back( index );
+      
+    }
+    
+    return out;
+  }  
+ 
+  //@}
+  
   //! clear
   void clear( void )
   {
+    
+    emit layoutAboutToBeChanged();
     map_.clear();
     root_ = Item( map_ );
+    emit layoutChanged();
+   
   }
   
   //! update values
