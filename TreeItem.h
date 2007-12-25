@@ -118,6 +118,14 @@ template<class T> class TreeItem: public TreeItemBase
   virtual ~TreeItem( void )
   { _eraseFromMap(); }
  
+  //! less than operator
+  bool operator < (const TreeItem& item ) const
+  { return get() < item.get(); }
+
+  //! equal to operator
+  bool operator == (const TreeItem& item ) const
+  { return get() == item.get(); }
+
   //! clear children
   void clear( void )
   { children_.clear(); }
@@ -178,6 +186,7 @@ template<class T> class TreeItem: public TreeItemBase
     if( get() == value.parent() )
     {
       children_.push_back( TreeItem( map_, this, value ) );
+      _sort();
       return true;
     }
     
@@ -190,6 +199,7 @@ template<class T> class TreeItem: public TreeItemBase
     if( !( added || hasParent() ) )
     { 
       children_.push_back( TreeItem( map_, this, value ) );
+      _sort();
       return true;
     }
     
@@ -221,6 +231,13 @@ template<class T> class TreeItem: public TreeItemBase
     typename Map::iterator iter( map_.find( id() ) );
     if( iter != map_.end() && iter->second == this ) map_.erase( id() );
     
+  }
+
+  //! sorting
+  void _sort()
+  { 
+    if( children_.empty() ) return;
+    std::sort( children_.begin(), children_.end() ); 
   }
   
   private:
