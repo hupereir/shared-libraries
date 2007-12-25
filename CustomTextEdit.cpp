@@ -1295,8 +1295,6 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
 
   }
 
-  QTextEdit::paintEvent( event );
-
   if(
     _boxSelection().state() == BoxSelection::STARTED ||
     _boxSelection().state() == BoxSelection::FINISHED
@@ -1316,6 +1314,8 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
     painter.drawRect( _boxSelection().rect()&rect );
 
   }
+
+  QTextEdit::paintEvent( event );
 
   return;
 }

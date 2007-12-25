@@ -47,9 +47,6 @@ template<class T> class TreeModel : public ItemModel
   //! value type
   typedef T ValueType;
   
-  //! reference
-  typedef T& Reference;
-
   //! pointer
   typedef T* Pointer;
   
@@ -144,7 +141,7 @@ template<class T> class TreeModel : public ItemModel
   //@{
   
   //! return index associated to a given value, starting from parent [recursive]
-  virtual QModelIndex index( const Reference value, const QModelIndex& parent = QModelIndex() ) const
+  virtual QModelIndex index( const ValueType& value, const QModelIndex& parent = QModelIndex() ) const
   {
 
     // return parent index if job match
@@ -158,12 +155,41 @@ template<class T> class TreeModel : public ItemModel
       if( found.isValid() ) return found;
     }
  
-    // job not found. return invalid index
+    // value not found. return invalid index
     return QModelIndex();
   
   }
    
-  //! return Job associated to given model
+  //! return all values [recursive]
+  virtual List values( const QModelIndex& parent = QModelIndex() ) const
+  {
+
+    List out;    
+    
+    // retrieve matching item
+    // loop over parent children
+    for( int row = 0; row < rowCount( parent ); row++ )
+    {
+      
+      // create child index
+      QModelIndex index( TreeModel::index( row, 0, parent ) );
+      if( !index.isValid() ) continue;
+      
+      // retrieve matching item
+      const Item& item( _find( index.internalId() ) );
+      out.push_back( item.get() );
+      
+      // retrieve child children, and insert
+      List children( values( index ) );
+      out.insert( out.end(), children.begin(), children.end() );
+      
+    }
+    
+    return out;
+      
+  }
+  
+  //! return value associated to given model index
   virtual ValueType get( const QModelIndex& index ) const
   {
     if( !index.isValid() ) return ValueType();
@@ -179,19 +205,36 @@ template<class T> class TreeModel : public ItemModel
     root_ = Item( map_ );
   }
   
-  //! update jobs
+  //! update values
+  void add( const ValueType& value )
+  { add( List(1,value) ); }
+    
+  //! update values
+  void add( const List& values )
+  {  
+  
+    // prepare modifications
+    emit layoutAboutToBeChanged();
+    List local( values );
+   _add( local );  
+  
+    // modifications done
+    emit layoutChanged();
+    
+    return;
+    
+  }
+     
+  //! update values
   void set( const List& values )
   {  
   
     // prepare modifications
     emit layoutAboutToBeChanged();
 
-    // store jobs
-    values_ = values;
-  
     // first update the TreeItem structure
     // then redraw tree
-    List local( values_ );
+    List local( values );
     _update( root_, local );
     _add( local );  
   
@@ -255,9 +298,6 @@ template<class T> class TreeModel : public ItemModel
   //! root item
   Item root_;
   
-  //! current set of values
-  List values_;
- 
 };
 
 #endif
