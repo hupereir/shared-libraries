@@ -70,6 +70,9 @@ TextBlockData.h \
 TextBlockFlags.h \
 TextSelection.h \
 TextSeparator.h \
+TreeItem.h \
+TreeItemBase.h \
+TreeModel.h \
 TreeViewConfiguration.h \
 TreeView.h \
 TreeWidget.h \
@@ -129,6 +132,7 @@ StatusBar.cpp \
 SystemEnvironmentDialog.cpp \
 TextSeparator.cpp \
 TreeViewConfiguration.cpp \
+TreeItemBase.cpp \
 TreeView.cpp \
 TreeWidget.cpp \
 ValidFileThread.cpp \
