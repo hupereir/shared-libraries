@@ -51,7 +51,7 @@ QVariant CounterModel::data( const QModelIndex& index, int role ) const
   if( !index.isValid() ) return QVariant();
   
   // retrieve associated file info
-  const Counter::Pair& counter( get()[index.row()] );
+  const Counter::Pair& counter( get(index) );
   
   // return text associated to file and column
   if( role == Qt::DisplayRole ) {

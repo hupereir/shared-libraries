@@ -134,11 +134,9 @@ template<class T> class ListModel : public ItemModel
   //@{
   
   //! add value
-  virtual void add( ValueType value )
+  virtual void add( const ValueType& value )
   { 
-  
-    Debug::Throw() << "ListModel::add" << std::endl;
-    
+      
     emit layoutAboutToBeChanged();    
     _add( value );
     emit layoutChanged();
@@ -151,9 +149,7 @@ template<class T> class ListModel : public ItemModel
   //! add values
   virtual void add( const List& values )
   { 
-  
-    Debug::Throw() << "ListModel::add" << std::endl;
-    
+      
     emit layoutAboutToBeChanged();  
     for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
     { _add( *iter ); }
@@ -164,8 +160,40 @@ template<class T> class ListModel : public ItemModel
     
   }  
   
+  //! insert values
+  virtual void insert( const QModelIndex& index, const ValueType& value )
+  {
+    emit layoutAboutToBeChanged();    
+    _insert( index, value );
+    emit layoutChanged();
+  }
+  
+  //! insert values
+  virtual void insert( const QModelIndex& index, const List& values )
+  {
+    emit layoutAboutToBeChanged();    
+    
+    // need to loop in reverse order so that the "values" ordering is preserved
+    for( typename List::const_reverse_iterator iter = values.rbegin(); iter != values.rend(); iter++ ) 
+    _insert( index, *iter );
+    emit layoutChanged();
+  }
+  
+  //! insert values
+  virtual void replace( const QModelIndex& index, const ValueType& value )
+  {
+    if( !index.isValid() ) add( value );
+    else {
+      emit layoutAboutToBeChanged();  
+      setIndexSelected( index, false );
+      values_[index.row()] = value;
+      setIndexSelected( index, true );
+      emit layoutChanged();
+    }
+  }
+  
   //! remove
-  virtual void remove( ValueType value )
+  virtual void remove( const ValueType& value )
   { 
     
     emit layoutAboutToBeChanged();
@@ -245,6 +273,16 @@ template<class T> class ListModel : public ItemModel
     typename List::iterator iter = std::find( values_.begin(), values_.end(), value );
     if( iter == values_.end() ) values_.push_back( value ); 
     else *iter = value;
+  }
+ 
+  //! add, without update
+  void _insert( const QModelIndex& index, const ValueType& value )
+  {
+    if( !index.isValid() ) add( value );
+    int row = 0;
+    typename List::iterator iter( values_.begin() );
+    for( ;iter != values_.end() && row != index.row(); iter++, row++ ){}
+    values_.insert( iter, value );
   }
   
   //! remove, without update
