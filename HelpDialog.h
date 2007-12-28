@@ -66,10 +66,6 @@ namespace BASE
     //! adds Help item to the dialog
     void addItem( const HelpItem& item );
     
-//     //! retrieves list
-//     HelpItemList& list( void )
-//     { return *list_; }
-    
     //! enable/disable edition
     void setEditEnabled( const bool& value )
     { edit_button_->setEnabled( value ); }
@@ -105,6 +101,9 @@ namespace BASE
     //! toggle help edition
     void _toggleEdition( void );
 
+    //! mode item
+    void _moveItem( int row );
+    
     //! new item
     void _newItem( void );
     

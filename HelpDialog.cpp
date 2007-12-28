@@ -37,6 +37,7 @@
 
 #include "CustomTextEdit.h"
 #include "HelpDialog.h"
+#include "HelpDelegate.h"
 #include "HelpManager.h"
 #include "HelpModel.h"
 #include "NewItemDialog.h"
@@ -69,6 +70,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   list_->setMaximumWidth(150);
   layout->addWidget( list_ );
   list_->setModel( &model_ );
+  list_->setItemDelegate( new HelpDelegate( this ) );
   list_->setSortingEnabled( false );
   list_->header()->hide();
    
@@ -157,7 +159,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
     
   // connect list to text edit
   connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex&, const QModelIndex& ) ) );
-  //connect( &list(), SIGNAL( itemMoved( void ) ), SLOT( _updateHelpManager( void ) ) );
+  connect( &model_, SIGNAL( itemMoved( int ) ), SLOT( _moveItem( int ) ) );
 
   // add close accelerator
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
@@ -202,11 +204,15 @@ void HelpDialog::closeEvent( QCloseEvent *e )
 void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previous )
 {
 
-  Debug::Throw( "HelpDialog::_Display.\n" );
+  Debug::Throw( 0, "HelpDialog::_Display.\n" );
   
   // save modifications to current item, if needed
-  if( previous.isValid() && current != previous ) _updateItemFromEditor( previous );
-
+  if( model_.editionEnabled() && previous.isValid() && current != previous ) 
+  {
+    Debug::Throw(0) << "HelpDialog::_Display - previous row: " << previous.row() << " label: " << model_.get( previous ).label() << endl;
+    _updateItemFromEditor( previous );
+  }
+  
   // check validity
   if( !current.isValid() ) 
   {
@@ -221,9 +227,12 @@ void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previo
     const HelpItem& item( model_.get( current ) );
 
     // update editors
-    html_editor_->setHtml( item.text().c_str() );
-    plain_editor_->setPlainText( item.text().c_str() );
-  
+    if( plain_editor_->toPlainText() != item.text().c_str() )
+    {
+      html_editor_->setHtml( item.text().c_str() );
+      plain_editor_->setPlainText( item.text().c_str() );
+    }
+    
   }
   
   return;
@@ -233,7 +242,7 @@ void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previo
 //_________________________________________________________
 void HelpDialog::_updateItemFromEditor( QModelIndex index, bool forced )
 {
-  Debug::Throw( "HelpDialog::_updateItemFromEditor.\n" );
+  Debug::Throw( 0, "HelpDialog::_updateItemFromEditor.\n" );
 
  
   // current index
@@ -247,7 +256,7 @@ void HelpDialog::_updateItemFromEditor( QModelIndex index, bool forced )
     if( forced || modified ) 
     {
       item.setText( qPrintable( plain_editor_->toPlainText() ) );
-      model_.add( item );
+      model_.replace( index, item );
       _updateHelpManager();
     }
   }
@@ -304,6 +313,40 @@ void HelpDialog::_toggleEdition( void )
 
   return;
 
+}
+
+//_________________________________________________________
+void HelpDialog::_moveItem( int row )
+{
+  Debug::Throw( 0, "HelpDialog::_moveItem.\n" );
+  QModelIndex current( list_->selectionModel()->currentIndex() );
+  if( !current.isValid() ) return;
+  HelpItem item( model_.get( current ) );
+  
+  // add at last position if row is not valid
+  if( row < 0 || row >= model_.rowCount() ) {
+    model_.remove( item );
+    model_.add( item );
+  } else if( row == current.row() ) return;
+  else {
+
+    // remove old
+    model_.remove( item );
+    if( current.row() < row ) row--;
+    QModelIndex index( model_.index( row, 0 ) );
+    model_.insert( index, item );
+   Debug::Throw( 0, "HelpDialog::_moveItem - item inserted.\n" );
+   
+    // set new index as selected
+    list_->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    list_->selectionModel()->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    
+  } 
+  
+  // set manager as modified
+  HelpManager::setModified( true );
+  return;
+  
 }
 
 //_________________________________________________________

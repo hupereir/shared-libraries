@@ -75,11 +75,11 @@ namespace BASE
     
     //! equal-to operator
     bool operator == (const HelpItem& item ) const
-    { return label() == item.label(); }
+    { return label() == item.label() && text() == item.text(); }
 
     //! equal-to operator
     bool operator < (const HelpItem& item ) const
-    { return label() < item.label(); }
+    { return label() < item.label() || (label() == item.label() && text() < item.text() ); }
 
     //! item label
     void setLabel( const std::string& label ) 

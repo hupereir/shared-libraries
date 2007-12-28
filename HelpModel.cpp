@@ -65,7 +65,15 @@ QVariant HelpModel::data( const QModelIndex& index, int role ) const
 
 //__________________________________________________________________
 bool HelpModel::setData(const QModelIndex &index, const QVariant& value, int role )
-{ return false; }
+{ 
+  if( !(index.isValid() && index.column() == LABEL && role == Qt::EditRole ) ) return false;
+  if( value.toString().isNull() || value.toString().isEmpty() ) return false;
+  const HelpItem& item = get( index );
+  if( item.label() == qPrintable( value.toString() ) ) return false;
+  emit itemRenamed( index, value.toString() );
+  emit dataChanged( index, index );
+  return true;
+}
 
 
 //______________________________________________________________________
@@ -96,4 +104,19 @@ QMimeData* HelpModel::mimeData(const QModelIndexList &indexes) const
 
 //__________________________________________________________________
 bool HelpModel::dropMimeData(const QMimeData* data , Qt::DropAction action, int row, int column, const QModelIndex& parent)
-{ return false; }
+{ 
+    
+  // check action
+  if( action == Qt::IgnoreAction) return true;
+  
+  // Drag from Keyword model
+  if( data->hasFormat( DRAG ) ) 
+  {
+    assert( !parent.isValid() );
+    emit itemMoved( row );
+    return true;
+  }
+ 
+  return false; 
+  
+}

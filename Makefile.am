@@ -11,6 +11,7 @@ INCLUDES =  \
   -I$(top_srcdir)/base-qt 
 
 noinst_HEADERS = \
+  HelpDelegate.h \
   HelpDialog.h \
   HelpItem.h \
   HelpManager.h \
@@ -20,6 +21,7 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-help.a
 
 libbase_help_a_SOURCES = \
+  HelpDelegate.cpp \
   HelpDialog.cpp \
   HelpItem.cpp \
   HelpManager.cpp \
@@ -28,7 +30,8 @@ libbase_help_a_SOURCES = \
 
 nodist_libbase_help_a_SOURCES = \
   moc_HelpDialog.cpp \
-  moc_HelpManager.cpp
+  moc_HelpManager.cpp \
+  moc_HelpModel.cpp 
 
 clean-local:
 	rm -f moc_*.cpp

@@ -46,6 +46,9 @@ namespace BASE
   class HelpModel: public ListModel<HelpItem>
   {
 
+    //! Qt meta object declaration
+    Q_OBJECT
+
     public:
 
     //! used to tag Keyword drags
@@ -101,6 +104,14 @@ namespace BASE
     //! edition
     const bool& editionEnabled( void ) const
     { return edition_enabled_; }
+
+    signals:
+    
+    //! emitted when an item is dragged to a different position
+    void itemMoved( int row );
+
+    //! emmited when an item label is renamed
+    void itemRenamed( QModelIndex index, QString label );
     
     private:
     
