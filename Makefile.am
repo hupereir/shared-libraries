@@ -13,8 +13,8 @@ INCLUDES =  \
 noinst_HEADERS = \
   HelpDialog.h \
   HelpItem.h \
-  HelpItemList.h \
   HelpManager.h \
+  HelpModel.h \
   NewItemDialog.h 
 
 noinst_LIBRARIES = libbase-help.a
@@ -22,13 +22,12 @@ noinst_LIBRARIES = libbase-help.a
 libbase_help_a_SOURCES = \
   HelpDialog.cpp \
   HelpItem.cpp \
-  HelpItemList.cpp \
   HelpManager.cpp \
+  HelpModel.cpp \
   NewItemDialog.cpp 
 
 nodist_libbase_help_a_SOURCES = \
   moc_HelpDialog.cpp \
-  moc_HelpItemList.cpp \
   moc_HelpManager.cpp
 
 clean-local:

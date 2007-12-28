@@ -73,6 +73,14 @@ namespace BASE
     //! write to dom elelement
     QDomElement domElement( QDomDocument& parent ) const;
     
+    //! equal-to operator
+    bool operator == (const HelpItem& item ) const
+    { return label() == item.label(); }
+
+    //! equal-to operator
+    bool operator < (const HelpItem& item ) const
+    { return label() < item.label(); }
+
     //! item label
     void setLabel( const std::string& label ) 
     { label_ = label; }

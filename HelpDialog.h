@@ -37,9 +37,10 @@
 #include <QStackedLayout>
 
 #include "Counter.h"
-#include "HelpItemList.h"
+#include "HelpModel.h"
 
 class CustomTextEdit;
+class TreeView;
 
 namespace BASE
 {
@@ -57,7 +58,7 @@ namespace BASE
 
     //! clear items
     void clear( void )
-    { list().clear(); }
+    { model_.clear(); }
 
     //! set items
     void setItems( const HelpItem::List& items );
@@ -65,9 +66,9 @@ namespace BASE
     //! adds Help item to the dialog
     void addItem( const HelpItem& item );
     
-    //! retrieves list
-    HelpItemList& list( void )
-    { return *list_; }
+//     //! retrieves list
+//     HelpItemList& list( void )
+//     { return *list_; }
     
     //! enable/disable edition
     void setEditEnabled( const bool& value )
@@ -80,8 +81,9 @@ namespace BASE
     {
       
       Debug::Throw( "HelpDialog::close.\n" );
-      if( edited_ ) _askForSave();
+      if( model_.editionEnabled() ) _askForSave();
       QDialog::close();
+      
     }
     
     protected:
@@ -92,10 +94,10 @@ namespace BASE
     private slots:
     
     //! display selected help text
-    void _display( QTreeWidgetItem*, QTreeWidgetItem* );
+    void _display( const QModelIndex&, const QModelIndex& );
         
     //! save modifications to current item
-    void _updateItemFromEditor( bool forced = false );
+    void _updateItemFromEditor( QModelIndex index = QModelIndex(), bool forced = false );
 
     //! reload items from list and update Help manager
     void _updateHelpManager( void );
@@ -114,8 +116,11 @@ namespace BASE
     //! if help manager is modified, ask for save
     void _askForSave( void );
     
+    //! model
+    HelpModel model_;
+    
     //! list of help items
-    HelpItemList *list_;
+    TreeView *list_;
     
     //! stack layout to switch between editors
     QStackedLayout* stack_layout_;
@@ -134,13 +139,7 @@ namespace BASE
     
     //! edition button
     QPushButton *edit_button_;
-    
-    //! true when help is being edited
-    bool edited_;
-    
-    //! pointer to current item
-    HelpItemList::Item *current_item_;
-    
+        
   };
   
 };

@@ -8,13 +8,13 @@ DEPENDPATH += . ../base ../base-qt
 HEADERS = \
 HelpDialog.h \
 HelpItem.h \
-HelpItemList.h \
 HelpManager.h \
+HelpModel.h \
 NewItemDialog.h
 
 SOURCES = \
 HelpDialog.cpp \
 HelpItem.cpp \
-HelpItemList.cpp \
 HelpManager.cpp \
+HelpModel.cpp \
 NewItemDialog.cpp

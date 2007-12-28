@@ -33,12 +33,15 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QShortcut>
+#include <QHeaderView>
 
 #include "CustomTextEdit.h"
 #include "HelpDialog.h"
 #include "HelpManager.h"
+#include "HelpModel.h"
 #include "NewItemDialog.h"
 #include "QtUtil.h"
+#include "TreeView.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -48,9 +51,7 @@ using namespace BASE;
 //_________________________________________________________
 HelpDialog::HelpDialog( QWidget *parent ):
   QDialog( parent, Qt::Window ),
-  Counter( "HelpDialog" ),
-  edited_( false ),
-  current_item_( 0 )
+  Counter( "HelpDialog" )
 {
 
   Debug::Throw( "HelpDialog::HelpDialog.\n" );
@@ -64,10 +65,13 @@ HelpDialog::HelpDialog( QWidget *parent ):
   setLayout( layout );
   
   // add help list
-  list_ = new HelpItemList( this );
+  list_ = new TreeView( this );
   list_->setMaximumWidth(150);
   layout->addWidget( list_ );
-    
+  list_->setModel( &model_ );
+  list_->setSortingEnabled( false );
+  list_->header()->hide();
+   
   // stack widget to switch between html and plain text editor
   layout->addLayout( stack_layout_ = new QStackedLayout() );
   
@@ -152,8 +156,8 @@ HelpDialog::HelpDialog( QWidget *parent ):
   stack_layout_->setCurrentWidget( html_frame_ );
     
   // connect list to text edit
-  connect( &list(), SIGNAL( currentItemChanged( QTreeWidgetItem*, QTreeWidgetItem* ) ), SLOT( _display( QTreeWidgetItem*, QTreeWidgetItem* ) ) );
-  connect( &list(), SIGNAL( itemMoved( void ) ), SLOT( _updateHelpManager( void ) ) );
+  connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex&, const QModelIndex& ) ) );
+  //connect( &list(), SIGNAL( itemMoved( void ) ), SLOT( _updateHelpManager( void ) ) );
 
   // add close accelerator
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
@@ -168,17 +172,11 @@ void HelpDialog::setItems( const HelpItem::List& items )
   Debug::Throw( "HelpDialog::setItems.\n" );
   
   // clear list and editors
-  list().clear();
   html_editor_->clear();
   plain_editor_->clear();
   
-  // install text
-  for( HelpItem::List::const_iterator iter = items.begin(); iter != items.end(); iter++ )
-  { addItem( *iter ); }
+  model_.set( HelpModel::List( items.begin(), items.end() ) );
   
-  // select first item
-  if( !items.empty() ) list().setCurrentItem( list().topLevelItem(0) );
-
   return;
 
 }
@@ -188,7 +186,7 @@ void HelpDialog::addItem( const HelpItem& item )
 {
 
   Debug::Throw( "HelpDialog::AddItem.\n" );
-  new HelpItemList::Item( &list(), item );
+  model_.add( item );
   return;
 
 }
@@ -201,24 +199,31 @@ void HelpDialog::closeEvent( QCloseEvent *e )
 }
 
 //_________________________________________________________
-void HelpDialog::_display( QTreeWidgetItem* current, QTreeWidgetItem* previous )
+void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previous )
 {
 
   Debug::Throw( "HelpDialog::_Display.\n" );
   
   // save modifications to current item, if needed
-  if( previous && current != previous ) _updateItemFromEditor();
+  if( previous.isValid() && current != previous ) _updateItemFromEditor( previous );
 
-  HelpItemList::Item* current_item( dynamic_cast<HelpItemList::Item*>( current ) );
-  if( !current_item ) return;
-  current_item_ = current_item;
-
-  // check against previous item text
-  HelpItemList::Item* previous_item(  dynamic_cast<HelpItemList::Item*>( previous ) );
-  if( !( previous_item && previous_item->item().text() == current_item_->item().text() ) )
+  // check validity
+  if( !current.isValid() ) 
   {
-    html_editor_->setHtml( current_item_->item().text().c_str() );
-    plain_editor_->setPlainText( current_item_->item().text().c_str() );
+    
+    // clear editors
+    html_editor_->clear();
+    plain_editor_->clear();
+
+  } else {
+  
+    // retrieve item
+    const HelpItem& item( model_.get( current ) );
+
+    // update editors
+    html_editor_->setHtml( item.text().c_str() );
+    plain_editor_->setPlainText( item.text().c_str() );
+  
   }
   
   return;
@@ -226,21 +231,26 @@ void HelpDialog::_display( QTreeWidgetItem* current, QTreeWidgetItem* previous )
 }
 
 //_________________________________________________________
-void HelpDialog::_updateItemFromEditor( bool forced )
+void HelpDialog::_updateItemFromEditor( QModelIndex index, bool forced )
 {
   Debug::Throw( "HelpDialog::_updateItemFromEditor.\n" );
 
+ 
+  // current index
+  if( !index.isValid() ) index = list_->selectionModel()->currentIndex();
+  
   // update current item text if being edited
-  if( edited_ && current_item_ )
+  if( model_.editionEnabled() && index.isValid() )
   { 
-    bool modified = !(current_item_->item().text() == qPrintable( plain_editor_->toPlainText() ) );
+    HelpItem item( model_.get( index ) );
+    bool modified = !(item.text() == qPrintable( plain_editor_->toPlainText() ) );
     if( forced || modified ) 
     {
-      current_item_->item().setText( qPrintable( plain_editor_->toPlainText() ) );
+      item.setText( qPrintable( plain_editor_->toPlainText() ) );
+      model_.add( item );
       _updateHelpManager();
     }
   }
-  
 }
 
 //_________________________________________________________
@@ -250,12 +260,8 @@ void HelpDialog::_updateHelpManager( void )
   Debug::Throw( "HelpDialog::_updateHelpManager.\n" );
   
   // retrieve all texts, pass to help manager
-  HelpItem::List items;
-  QList<HelpItemList::Item*> list_items( list().children<HelpItemList::Item>() );
-  for( QList<HelpItemList::Item*>::iterator iter = list_items.begin(); iter != list_items.end(); iter++ )
-  { items.push_back( (*iter)->item() ); }
-  
-  HelpManager::install( items );
+  const HelpModel::List& model_list( model_.get() );
+  HelpManager::install(   HelpItem::List( model_list.begin(), model_list.end() ) );
   HelpManager::setModified( true );
   
 }
@@ -264,36 +270,37 @@ void HelpDialog::_updateHelpManager( void )
 void HelpDialog::_toggleEdition( void )
 {
 
-  Debug::Throw( "HelpDialog::_ToggleEdition.\n" );
-  // if( !current_item_ ) return;
+  Debug::Throw( "HelpDialog::_ToggleEdition.\n" );  
   
-  if( !edited_ )
+  // current index
+  QModelIndex current( list_->selectionModel()->currentIndex() );
+  
+  if( !model_.editionEnabled() )
   {
     
     // backup help manager
     HelpManager::backup();
-    
-    // update edition flag
-    edited_ = true;
-    
+    model_.setEditionEnabled( true );
+    list_->setDragEnabled(true);
+    list_->setAcceptDrops(true);
+   
     // modify current item display
-    if( current_item_ ) plain_editor_->setPlainText( current_item_->item().text().c_str() );
+    if( current.isValid() ) plain_editor_->setPlainText( model_.get(current).text().c_str() );
     stack_layout_->setCurrentWidget( plain_frame_ );
     
   } else {
 
     // save modifications to current item, if needed
-    _updateItemFromEditor();
-    edited_ = false;
+    if( current.isValid() ) _updateItemFromEditor( current );
+    model_.setEditionEnabled( false );
+    list_->setDragEnabled(false);
+    list_->setAcceptDrops(false);
     _askForSave();
 
-    if( current_item_ ) html_editor_->setHtml( current_item_->item().text().c_str() );
+    if( current.isValid() ) html_editor_->setHtml( model_.get(current).text().c_str() );
     stack_layout_->setCurrentWidget( html_frame_ );
     
   }
-
-  // enable/disable drag in keyword list
-  list().setDragEnabled( edited_ );
 
   return;
 
@@ -309,11 +316,7 @@ void HelpDialog::_newItem( void )
   // retrieve item name
   string item_name( dialog.itemName() );
   if( item_name.empty() ) return;
-
-  HelpItemList::Item* item  = new HelpItemList::Item( &list(), HelpItem( item_name, "" ) );
-  list().setCurrentItem( item );
-  list().setItemSelected( item, true );
-  
+  model_.add( HelpItem( item_name, "" ) );
   HelpManager::setModified( true );
   
 }
@@ -323,10 +326,15 @@ void HelpDialog::_deleteItem( void )
 {
   
   Debug::Throw( "HelpDialog::_deleteItem.\n" );
-  if( !current_item_ ) return;
+
+  // current index
+  QModelIndex current( list_->selectionModel()->currentIndex() );
+  if( !current.isValid() ) return;
+
   if( !QtUtil::questionDialog( this, "Delete current help item ?" ) ) return;
-  delete current_item_;
-  _updateItemFromEditor( true );
+  model_.remove( model_.get( current ) );
+  html_editor_->clear();
+  plain_editor_->clear();
   HelpManager::setModified( true );
   
 }
