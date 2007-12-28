@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *                            
- * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>                
+ * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>         G       
  *                            
  * This is free software; you can redistribute it and/or modify it under the      
  * terms of the GNU General Public License as published by the Free Software      
@@ -34,9 +34,9 @@
 
 #include <map>
 #include <string>
-
 #include <QDialog>
-#include "CounterList.h"
+
+#include "Counter.h"
 
 //! displays Counter names and counts
 class SystemEnvironmentDialog: public QDialog, public Counter

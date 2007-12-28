@@ -32,8 +32,7 @@
 #include <QLayout>
 
 #include "CounterDialog.h"
-#include "CounterList.h"
-#include "Str.h"
+#include "TreeView.h"
 
 using namespace std;
 
@@ -51,11 +50,9 @@ CounterDialog::CounterDialog( QWidget* parent ):
   layout()->setSpacing(10);
   
   // insert main vertical box
-  counter_list_ = new CounterList( this );
-  counter_list_->setLineWidth( 1 );
-  counter_list_->setMidLineWidth( 0 );
-  
-  layout()->addWidget( counter_list_ );
+  list_ = new TreeView( this );  
+  layout()->addWidget( list_ );
+  list_->setModel( &model_ );  
   
   // update button
   QHBoxLayout *h_layout = new QHBoxLayout();
@@ -85,23 +82,9 @@ void CounterDialog::update( void )
   // retrieve counters 
   Counter::CounterMap& counters( Counter::map() );
 
-  for( Counter::CounterMap::const_iterator it=counters.begin(); it != counters.end(); it++ )
-  {
+  for( Counter::CounterMap::const_iterator iter = counters.begin(); iter != counters.end(); iter++ )
+  { model_.add( *iter ); }
+  
+  list_->resizeColumnToContents( CounterModel::NAME );
     
-    std::map<string, TreeWidget::Item* >::iterator item_it( items_.find( it->first ) );
-    TreeWidget::Item *item( 0 );
-    if( item_it == items_.end() ) {
-      counter_list_->addTopLevelItem( item = new TreeWidget::Item() ); 
-      items_.insert( make_pair( it->first, item ) );
-    } else item = item_it->second;
-    
-    item->setText( CounterList::NAME, it->first.c_str() );
-    item->setText( CounterList::COUNT, Str().assign<int>(it->second).c_str() );
-  
-  }
-  
-  counter_list_->sort();
-  counter_list_->resizeColumnToContents( CounterList::NAME );
-  
-  
 }

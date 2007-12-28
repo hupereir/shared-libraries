@@ -1,3 +1,6 @@
+#ifndef _CounterModel_h_
+#define _CounterModel_h_
+
 // $Id$
 
 /******************************************************************************
@@ -22,49 +25,88 @@
 *******************************************************************************/
  
 /*!
-  \file CounterList.h
-  \brief qlistview for object counters
+  \file CounterModel.h
+  \brief model for object counters
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#ifndef _CounterList_h_
-#define _CounterList_h_
-
 #include <string.h>
 #include <sstream>
 
-#include "TreeWidget.h"
+#include "ListModel.h"
+#include "Counter.h"
 #include "Debug.h"
 
 //! qlistview for object counters
-class CounterList: public TreeWidget
+class CounterModel: public ListModel<Counter::Pair>
 {
 
   public:
 
   //! number of columns
-  enum { 
-    //! number of columns
-    n_columns = 2 
-  };
+  enum { n_columns = 2 };
 
   //! column type enumeration
-  enum ColumnTypes {
-    
-    //! Counter name
+  enum ColumnType {
     NAME, 
-    
-    //! number of instances
     COUNT
+  };
+
+    
+  //!@name methods reimplemented from base class
+  //@{
+  
+  // return data for a given index
+  virtual QVariant data(const QModelIndex &index, int role) const;
+   
+  //! header data
+  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+   
+  //! number of columns for a given index
+  virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+  { return n_columns; }
+
+  //@}
+  
+  //!@name interface
+  //@{
+
+  //! sort
+  virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
+
+  //@}
+            
+  private:
+  
+  //! used to sort Counters
+  class SortFTor
+  {
+    
+    public:
+    
+    //! constructor
+    SortFTor( const ColumnType& type, Qt::SortOrder order = Qt::AscendingOrder ):
+      type_( type ),
+      order_( order )
+      {}
+      
+    //! prediction
+    bool operator() ( Counter::Pair first, Counter::Pair second ) const;
+    
+    private:
+    
+    //! column
+    ColumnType type_;
+    
+    //! order
+    Qt::SortOrder order_;
+    
   };
 
   //! column titles
   static const char* column_titles_[ n_columns ];
-  
-  //! constructor
-  CounterList( QWidget* parent );
    
 };
 

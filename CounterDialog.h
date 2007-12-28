@@ -36,7 +36,10 @@
 #include <string>
 
 #include <QDialog>
-#include "CounterList.h"
+
+#include "CounterModel.h"
+
+class TreeView;
 
 //! displays Counter names and counts
 class CounterDialog: public QDialog, public Counter
@@ -61,11 +64,11 @@ class CounterDialog: public QDialog, public Counter
   
   private:
   
-  //! Counter list
-  CounterList* counter_list_;
- 
-  //! map to store Counter list items agains names
-  std::map< std::string, TreeWidget::Item* > items_;  
+  //! model
+  CounterModel model_;
+
+  //! list
+  TreeView* list_;
   
 };
 

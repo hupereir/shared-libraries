@@ -18,7 +18,7 @@ noinst_HEADERS = \
   ColorDisplay.h \
   ColorMenu.h \
   CounterDialog.h \
-  CounterList.h \
+  CounterModel.h \
   CustomComboBox.h \
   CustomDialog.h \
   CustomFileDialog.h \
@@ -100,7 +100,7 @@ libbase_qt_a_SOURCES = \
   ColorDisplay.cpp \
   ColorMenu.cpp \
   CounterDialog.cpp \
-  CounterList.cpp \
+  CounterModel.cpp \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \

@@ -34,9 +34,9 @@
 
 #include <map>
 #include <string>
-
 #include <QDialog>
-#include "CounterList.h"
+
+#include "Counter.h"
 
 //! displays Counter names and counts
 class OptionDialog: public QDialog, public Counter
