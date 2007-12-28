@@ -48,8 +48,14 @@ class Counter {
 
   public:
   
+  //! counter name and counts pair
+  typedef std::pair<std::string, int> Pair;
+  
+  //! map counter name and counts
+  typedef std::map<std::string, int> Map;
+  
   //! counter map between name and existing objects
-  class CounterMap: public std::map< std::string, int >        
+  class CounterMap: public Map  
   {
     public:
                       
