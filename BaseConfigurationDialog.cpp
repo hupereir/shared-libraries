@@ -96,14 +96,20 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button_layout_->addWidget( button = new QPushButton( "&Apply", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _update() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );  
-  button->setToolTip( "apply changes to options" );
+  button->setToolTip( 
+    "apply changes to options.\n"
+    "Note: the application may have to be restarted so that\n"
+    "all changes are taken into account." );
   
   // ok button
   button_layout_->addWidget( button = new QPushButton( "&Ok", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _save() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
-  button->setToolTip( "apply changes to options and close window" );
+  button->setToolTip( 
+    "apply changes to options and close window.\n"
+    "Note: the application may have to be restarted so that\n"
+    "all changes are taken into account." );
   button->setAutoDefault( false );
   
   // cancel button
@@ -238,13 +244,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
   
   // tabs
   if( flag & TEXTEDIT ) { textEditConfiguration( parent ); }
-  
-  QLabel *label = new QLabel( 
-    "Note: the application may have to be restarted so that "
-    "all changes \nare taken into account.", parent );
-  label->setMargin(10);
-  parent->layout()->addWidget( label );
-    
+      
 }
 
 //__________________________________________________
@@ -378,9 +378,15 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   layout->addWidget( checkbox );
   addOptionWidget( checkbox );
  
-  layout->addWidget( new QLabel( "Paragraph highlight color: " ) );
+  grid_layout = new CustomGridLayout();
+  grid_layout->setMargin(0);
+  grid_layout->setSpacing(5);
+  grid_layout->setMaxCount(2);
+  layout->addLayout( grid_layout );
+  
+  grid_layout->addWidget( new QLabel( "Paragraph highlight color: " ) );
   OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
-  layout->addWidget( color );
+  grid_layout->addWidget( color );
   addOptionWidget( color );
 
   // box selection
