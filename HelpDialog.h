@@ -104,6 +104,9 @@ namespace BASE
     //! mode item
     void _moveItem( int row );
     
+    //! rename item
+    void _renameItem( QModelIndex index, QString value );
+    
     //! new item
     void _newItem( void );
     

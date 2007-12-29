@@ -160,11 +160,13 @@ HelpDialog::HelpDialog( QWidget *parent ):
   // connect list to text edit
   connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex&, const QModelIndex& ) ) );
   connect( &model_, SIGNAL( itemMoved( int ) ), SLOT( _moveItem( int ) ) );
+  connect( &model_, SIGNAL( itemRenamed( QModelIndex, QString ) ), SLOT( _renameItem( QModelIndex, QString ) ) );
 
   // add close accelerator
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
   connect( new QShortcut( CTRL+Key_S, this ), SIGNAL( activated() ), SLOT( _updateItemFromEditor() ) );
   resize( 700, 650 );
+  
 }
 
 //_________________________________________________________
@@ -204,14 +206,11 @@ void HelpDialog::closeEvent( QCloseEvent *e )
 void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previous )
 {
 
-  Debug::Throw( 0, "HelpDialog::_Display.\n" );
+  Debug::Throw( "HelpDialog::_Display.\n" );
   
   // save modifications to current item, if needed
   if( model_.editionEnabled() && previous.isValid() && current != previous ) 
-  {
-    Debug::Throw(0) << "HelpDialog::_Display - previous row: " << previous.row() << " label: " << model_.get( previous ).label() << endl;
-    _updateItemFromEditor( previous );
-  }
+  { _updateItemFromEditor( previous ); }
   
   // check validity
   if( !current.isValid() ) 
@@ -242,8 +241,7 @@ void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previo
 //_________________________________________________________
 void HelpDialog::_updateItemFromEditor( QModelIndex index, bool forced )
 {
-  Debug::Throw( 0, "HelpDialog::_updateItemFromEditor.\n" );
-
+  Debug::Throw( "HelpDialog::_updateItemFromEditor.\n" );
  
   // current index
   if( !index.isValid() ) index = list_->selectionModel()->currentIndex();
@@ -270,7 +268,7 @@ void HelpDialog::_updateHelpManager( void )
   
   // retrieve all texts, pass to help manager
   const HelpModel::List& model_list( model_.get() );
-  HelpManager::install(   HelpItem::List( model_list.begin(), model_list.end() ) );
+  HelpManager::install( HelpItem::List( model_list.begin(), model_list.end() ) );
   HelpManager::setModified( true );
   
 }
@@ -318,24 +316,43 @@ void HelpDialog::_toggleEdition( void )
 //_________________________________________________________
 void HelpDialog::_moveItem( int row )
 {
-  Debug::Throw( 0, "HelpDialog::_moveItem.\n" );
+  Debug::Throw( "HelpDialog::_moveItem.\n" );
   QModelIndex current( list_->selectionModel()->currentIndex() );
   if( !current.isValid() ) return;
   HelpItem item( model_.get( current ) );
   
   // add at last position if row is not valid
   if( row < 0 || row >= model_.rowCount() ) {
+
+    // clear selection and current index
+    list_->clearSelection();
+    list_->selectionModel()->setCurrentIndex( QModelIndex(), QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+
+    // remove old position item
     model_.remove( item );
     model_.add( item );
+    
+    // select last row
+    QModelIndex index( model_.index( model_.rowCount()-1, 0 ) );
+    list_->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    list_->selectionModel()->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+
   } else if( row == current.row() ) return;
   else {
 
-    // remove old
+    // clear selection and current index
+    list_->clearSelection();
+    list_->selectionModel()->setCurrentIndex( QModelIndex(), QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+
+    // remove old position item
     model_.remove( item );
+    
+    // update row if needed
     if( current.row() < row ) row--;
+    
+    // re-add item at new position
     QModelIndex index( model_.index( row, 0 ) );
     model_.insert( index, item );
-   Debug::Throw( 0, "HelpDialog::_moveItem - item inserted.\n" );
    
     // set new index as selected
     list_->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
@@ -345,8 +362,26 @@ void HelpDialog::_moveItem( int row )
   
   // set manager as modified
   HelpManager::setModified( true );
+  _updateHelpManager();
   return;
   
+}
+
+//_________________________________________________________
+void HelpDialog::_renameItem( QModelIndex index, QString value )
+{
+  Debug::Throw( "HelpDialog::_renameItem.\n" );
+  if( !index.isValid() || value.isNull() || value.isEmpty() ) return;
+  HelpItem item( model_.get( index ) );
+  string new_label( qPrintable( value ) );
+  if( new_label != item.label() )
+  {
+    item.setLabel( qPrintable( value ) );
+    model_.replace( index, item );
+    HelpManager::setModified( true );
+    _updateHelpManager();
+  }
+  return;  
 }
 
 //_________________________________________________________
