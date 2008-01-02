@@ -23,7 +23,7 @@
 
 /*!
   \file BlockHighlight.cpp
-  \brief handles multiple clicks and timeout
+  \brief handles block highlighting.
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -67,7 +67,7 @@ void BlockHighlight::clear( void )
       
       // retrieve paragraph rect
       QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
-      block_rect.setWidth( parent_->viewport()->width() );
+      block_rect.setWidth( parent_->viewport()->width() + parent_->scrollbarPosition().x() );
       parent_->viewport()->update( parent_->toViewport( block_rect.toRect() ) );    
       
     }
@@ -112,7 +112,7 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
 
   // retrieve block rect, translate to viewport and ask for repaint
   QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
-  block_rect.setWidth( parent_->viewport()->width() );
+  block_rect.setWidth( parent_->viewport()->width() + parent_->scrollbarPosition().x() );
   parent_->viewport()->update( parent_->toViewport( block_rect.toRect() ) );    
 
   cleared_ = false;

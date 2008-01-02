@@ -1291,6 +1291,7 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
     {
       painter.setBrush( color );
       painter.drawRect( block_rect&rect );
+      //painter.drawRect( block_rect );
     }
 
   }
