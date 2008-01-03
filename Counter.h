@@ -73,11 +73,7 @@ class Counter {
     }    
     
   };
-  
-  //! constructor
-  Counter( void )
-  { throw std::runtime_error( DESCRIPTION( "invalid constructor" ) ); }
-    
+      
   //! constructor
   Counter( const std::string& name ):
     name_( name ),
