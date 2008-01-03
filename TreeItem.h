@@ -185,9 +185,24 @@ template<class T> class TreeItem: public TreeItemBase
     // try add to this
     if( get() == value.parent() )
     {
-      children_.push_back( TreeItem( map_, this, value ) );
+      // loop over children, see if one match
+      bool found( false );
+      for( typename List::iterator iter = children_.begin(); iter != children_.end() && !found; iter++ )
+      {
+        if( iter->get() == value ) 
+        {
+          iter->set( value );
+          found = true;
+        }
+      }
+      
+      // add if not found
+      if( !found ) children_.push_back( TreeItem( map_, this, value ) );
+      
+      // sort
       _sort();
       return true;
+      
     }
     
     // try add to children
