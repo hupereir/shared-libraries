@@ -1263,6 +1263,11 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   // translate rect from widget to viewport coordinates
   rect.translate( scrollbarPosition() );
 
+  // create painter and translate from widget to viewport coordinates
+  QPainter painter( viewport() );
+  painter.translate( -scrollbarPosition() );
+  painter.setPen( NoPen );
+  
   // loop over found blocks
   for( QTextBlock block( first ); block != last.next() && block.isValid(); block = block.next() )
   {
@@ -1275,11 +1280,6 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
     block_rect.setWidth( viewport()->width() + scrollbarPosition().x() );
 
-    // create painter and translate from widget to viewport coordinates
-    QPainter painter( viewport() );
-    painter.translate( -scrollbarPosition() );
-    painter.setPen( NoPen );
-
     QColor color;
     if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
     { color = highlight_color_; }
@@ -1291,7 +1291,6 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
     {
       painter.setBrush( color );
       painter.drawRect( block_rect&rect );
-      //painter.drawRect( block_rect );
     }
 
   }
@@ -1302,15 +1301,6 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
     )
   {
 
-    // translate rect from widget to viewport coordinates
-    QRect rect = event->rect();
-    rect.translate( scrollbarPosition() );
-
-    // create painter and translate from widget to viewport coordinates
-    QPainter painter( viewport() );
-    painter.translate( -scrollbarPosition() );
-
-    painter.setPen( NoPen );
     painter.setBrush( _boxSelection().color() );
     painter.drawRect( _boxSelection().rect()&rect );
 
