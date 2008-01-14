@@ -91,8 +91,11 @@ void ColorMenu::paintEvent( QPaintEvent* event )
     QRect action_rect( actionGeometry( iter->first ) );
     if( !event->rect().intersects( action_rect ) ) continue;
     action_rect.adjust( 2*margin + 20, margin, -2*margin-1, -margin );
+    action_rect.setWidth( action_rect.height() );
     painter.setBrush( colors_[iter->second] );
-    painter.drawRect( action_rect.intersected( event->rect() ) );
+    //painter.drawRect( action_rect.intersected( event->rect() ) );
+    painter.setRenderHints(QPainter::Antialiasing );
+    painter.drawEllipse( action_rect );
   }
   
 }
@@ -122,7 +125,8 @@ void ColorMenu::_display( void )
     if( iter->second == Qt::NoBrush )
     {
       
-      QRectF rect( QPointF(0,0), QSize( sizeHint().width()-6, PixmapSize.height() ) );
+      //QRectF rect( QPointF(0,0), QSize( sizeHint().width()-6, PixmapSize.height() ) );
+      QRectF rect( QPointF(0,0), PixmapSize );
       QLinearGradient gradient(rect.topLeft(), rect.bottomRight());
       gradient.setColorAt(0, iter->first );
       gradient.setColorAt(1, iter->first.light(135));
