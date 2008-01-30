@@ -6,139 +6,138 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
-BaseConfigurationDialog.h \
-BaseIcons.h \
-BlockHighlight.h \
-BoxSelection.h \
-BrowsedLineEdit.h \
-ClockLabel.h \
-ColorDisplay.h \
-ColorMenu.h \
-CounterDialog.h \
-CounterList.h \
-CustomComboBox.h \
-CustomDialog.h \
-CustomFileDialog.h \
-CustomGridLayout.h \
-CustomLineEdit.h \
-CustomMainWindow.h \
-CustomPixmap.h \
-CustomSlider.h \
-CustomTabWidget.h \
-CustomTextDocument.h \
-CustomTextEdit.h \
-CustomToolBar.h \
-CustomToolButton.h \
-DebugMenu.h \
-DockPanel.h \
-ErrorHandler.h \
-FindDialog.h \
-FlatStyle.h \
-FontEdit.h \
-FontInfo.h \
-IconBrowsedButton.h \
-IconEngine.h \
-ItemDelegate.h \
-ItemModel.h \
-ListModel.h \
-ListWidget.h \
-MultipleClickCounter.h \
-OpenPreviousMenu.h \
-OptionBrowsedLineEdit.h \
-OptionCheckBox.h \
-OptionColorDisplay.h \
-OptionComboBox.h \
-OptionDialog.h \
-OptionFontEdit.h \
-OptionFontInfo.h \
-OptionIconBrowsedButton.h \
-OptionLineEdit.h \
-OptionListBox.h \
-OptionSlider.h \
-OptionSpinBox.h \
-OptionWidget.h \
-OptionWidgetList.h \
-ProcessDialog.h \
-ProcessFrame.h \
-QtUtil.h \
-RemoveLineBuffer.h \
-ReplaceDialog.h \
-SelectLineDialog.h \
-StatusBar.h \
-SystemEnvironmentDialog.h \
-TextBlockData.h \
-TextBlockFlags.h \
-TextSelection.h \
-TextSeparator.h \
-TreeItem.h \
-TreeItemBase.h \
-TreeModel.h \
-TreeViewConfiguration.h \
-TreeView.h \
-TreeWidget.h \
-ValidFileThread.h \
-XmlError.h \
-XmlFileList.h \
-XmlFileRecord.h \
-XmlOption.h \
-XmlOptions.h \
-XmlTextFormatBlock.h \
-XmlTimeStamp.h
-
+  BaseConfigurationDialog.h \
+  BlockHighlight.h \
+  BoxSelection.h \
+  BrowsedLineEdit.h \
+  ClockLabel.h \
+  ColorDisplay.h \
+  ColorMenu.h \
+  CounterDialog.h \
+  CounterModel.h \
+  CustomComboBox.h \
+  CustomDialog.h \
+  CustomFileDialog.h \
+  CustomGridLayout.h \
+  CustomLineEdit.h \
+  CustomMainWindow.h \
+  CustomPixmap.h \
+  CustomSlider.h \
+  CustomTabWidget.h \
+  CustomTextDocument.h \
+  CustomTextEdit.h \
+  CustomToolBar.h \
+  CustomToolButton.h \
+  DebugMenu.h \
+  DockPanel.h \
+  BaseIcons.h \
+  ErrorHandler.h \
+  FindDialog.h \
+  FlatStyle.h \
+  FontEdit.h \
+  FontInfo.h \
+  IconBrowsedButton.h \
+  IconEngine.h \
+  ItemDelegate.h \
+  ItemModel.h \
+  ListModel.h \
+  ListWidget.h \
+  MultipleClickCounter.h \
+  OpenPreviousMenu.h \
+  OptionBrowsedLineEdit.h \
+  OptionCheckBox.h \
+  OptionColorDisplay.h \
+  OptionComboBox.h \
+  OptionDialog.h \
+  OptionFontEdit.h \
+  OptionFontInfo.h \
+  OptionIconBrowsedButton.h \
+  OptionLineEdit.h \
+  OptionListBox.h \
+  OptionSlider.h \
+  OptionSpinBox.h \
+  OptionWidget.h \
+  OptionWidgetList.h \
+  ProcessDialog.h \
+  ProcessFrame.h \
+  QtUtil.h \
+  RemoveLineBuffer.h \
+  ReplaceDialog.h \
+  SelectLineDialog.h \
+  StatusBar.h \
+  SystemEnvironmentDialog.h \
+  TextBlockData.h \
+  TextBlockFlags.h \
+  TextSelection.h \
+  TextSeparator.h \
+  TreeItem.h \
+  TreeItemBase.h \
+  TreeModel.h \
+  TreeView.h \
+  TreeViewConfiguration.h \
+  TreeWidget.h \
+  ValidFileThread.h \
+  XmlError.h \
+  XmlFileList.h \
+  XmlFileRecord.h \
+  XmlOption.h \
+  XmlOptions.h \
+  XmlTextFormatBlock.h \
+  XmlTimeStamp.h
 
 SOURCES = \
-BaseConfigurationDialog.cpp \
-BlockHighlight.cpp \
-BoxSelection.cpp \
-BrowsedLineEdit.cpp \
-ClockLabel.cpp \
-ColorDisplay.cpp \
-ColorMenu.cpp \
-CounterDialog.cpp \
-CounterList.cpp \
-CustomComboBox.cpp \
-CustomDialog.cpp \
-CustomFileDialog.cpp \
-CustomLineEdit.cpp \
-CustomMainWindow.cpp \
-CustomPixmap.cpp \
-CustomSlider.cpp \
-CustomTabWidget.cpp \
-CustomTextEdit.cpp \
-CustomToolBar.cpp \
-CustomToolButton.cpp \
-DebugMenu.cpp \
-DockPanel.cpp \
-ErrorHandler.cpp \
-FindDialog.cpp \
-FlatStyle.cpp \
-FontEdit.cpp \
-FontInfo.cpp \
-IconBrowsedButton.cpp \
-IconEngine.cpp \
-ItemDelegate.cpp \
-ItemModel.cpp \
-ListWidget.cpp \
-OpenPreviousMenu.cpp \
-OptionDialog.cpp \
-OptionListBox.cpp \
-ProcessDialog.cpp \
-ProcessFrame.cpp \
-QtUtil.cpp \
-RemoveLineBuffer.cpp \
-ReplaceDialog.cpp \
-SelectLineDialog.cpp \
-StatusBar.cpp \
-SystemEnvironmentDialog.cpp \
-TextSeparator.cpp \
-TreeViewConfiguration.cpp \
-TreeItemBase.cpp \
-TreeView.cpp \
-TreeWidget.cpp \
-ValidFileThread.cpp \
-XmlFileList.cpp \
-XmlFileRecord.cpp \
-XmlOption.cpp \
-XmlOptions.cpp \
-XmlTextFormatBlock.cpp \
-XmlTimeStamp.cpp
+  BaseConfigurationDialog.cpp \
+  BlockHighlight.cpp \
+  BoxSelection.cpp \
+  BrowsedLineEdit.cpp \
+  ClockLabel.cpp \
+  ColorDisplay.cpp \
+  ColorMenu.cpp \
+  CounterDialog.cpp \
+  CounterModel.cpp \
+  CustomComboBox.cpp \
+  CustomDialog.cpp \
+  CustomFileDialog.cpp \
+  CustomLineEdit.cpp \
+  ItemModel.cpp \
+  ListWidget.cpp \
+  CustomMainWindow.cpp \
+  CustomPixmap.cpp \
+  CustomSlider.cpp \
+  CustomTextEdit.cpp \
+  CustomTabWidget.cpp \
+  CustomToolBar.cpp \
+  CustomToolButton.cpp \
+  DebugMenu.cpp \
+  DockPanel.cpp \
+  ErrorHandler.cpp \
+  FlatStyle.cpp \
+  FindDialog.cpp \
+  FontEdit.cpp \
+  FontInfo.cpp \
+  IconBrowsedButton.cpp \
+  IconEngine.cpp \
+  ItemDelegate.cpp \
+  OptionDialog.cpp \
+  OpenPreviousMenu.cpp \
+  OptionListBox.cpp \
+  ProcessDialog.cpp \
+  ProcessFrame.cpp \
+  QtUtil.cpp \
+  RemoveLineBuffer.cpp \
+  ReplaceDialog.cpp \
+  SelectLineDialog.cpp \
+  StatusBar.cpp \
+  SystemEnvironmentDialog.cpp \
+  TextSeparator.cpp \
+  TreeItemBase.cpp \
+  TreeView.cpp \
+  TreeWidget.cpp \
+  TreeViewConfiguration.cpp \
+  ValidFileThread.cpp \
+  XmlFileList.cpp \
+  XmlFileRecord.cpp \
+  XmlOption.cpp \
+  XmlOptions.cpp \
+  XmlTextFormatBlock.cpp \
+  XmlTimeStamp.cpp     
