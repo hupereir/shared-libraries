@@ -48,7 +48,7 @@ XmlError XmlOptions::error_;
 bool XmlOptions::read( File file )
 {
   
-   Debug::Throw() << "XmlOptions::read - file=\"" << file << "\"\n";
+  Debug::Throw() << "XmlOptions::read - file=\"" << file << "\"\n";
 
   // check filename is valid
   if( !file.size() ) file = file_;
@@ -132,7 +132,7 @@ bool XmlOptions::write( File file )
     top.appendChild( element );
   }
 
-  // write special options
+  // write options
   for( Options::SpecialOptionMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
   {
     Options::OptionList option_list( iter->second );
