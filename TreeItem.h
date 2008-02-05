@@ -249,7 +249,7 @@ template<class T> class TreeItem: public TreeItemBase
     }
     
     // update (recursive) children with remaining values
-    for( unsigned int row = 0; row < parent.childCount(); row++ )
+    for( unsigned int row = 0; row < childCount(); row++ )
     { child(row).set( values ); }  
     
     return;

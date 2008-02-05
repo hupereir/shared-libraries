@@ -288,12 +288,12 @@ template<class T> class TreeModel : public ItemModel
     
   //! add values
   void add( const ValueType& value )
-  { add( List(1,value) ); }
-    
-  //! add values
-  void add( List values )
-  { add( Set( values.begin(), values.end() ) ); }
-    
+  {
+    Set values;
+    values.insert( value );
+    add( values );
+  }
+  
   //! add values
   void add( Set values )
   {  
@@ -310,15 +310,7 @@ template<class T> class TreeModel : public ItemModel
     return;
   
   }
-    
-  //! update values
-  /*! 
-  items that are not found in list are removed 
-  items that are found are updated
-  */
-  void set( List values )
-  { set( Set( values.begin(), values.end() ) ); }
-  
+      
   //! update values
   /*! 
   items that are not found in list are removed 
@@ -346,18 +338,13 @@ template<class T> class TreeModel : public ItemModel
   //! remove
   virtual void remove( const ValueType& value )
   { 
-    
-    emit layoutAboutToBeChanged();
-    remove( List( 1, value ) );
-    emit layoutChanged();
+    Set values;
+    values.insert( value );
+    remove( values );
     return;
     
   }
   
-  //! remove
-  virtual void remove( const List& values )
-  { remove( Set( values.begin(), values.end() ) ); }
-
   //! remove
   virtual void remove( Set values )
   { 
