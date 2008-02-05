@@ -50,6 +50,12 @@ template<class T> class TreeItem: public TreeItemBase
   //! reference
   typedef T& Reference;
 
+  //! reference
+  typedef const T& ConstReference;
+
+  //! set of references
+  typedef std::set<T> ValueSet;
+  
   //! pointer
   typedef T* Pointer;
 
@@ -135,7 +141,7 @@ template<class T> class TreeItem: public TreeItemBase
   { return value_; }
 
   //! value
-  void set( const Reference value )
+  void set( ConstReference value )
   { value_ = value; }
     
   //! parent
@@ -179,10 +185,16 @@ template<class T> class TreeItem: public TreeItemBase
   }
   
   //! add child [recursive]
-  bool add( const Reference value )
+  bool add( ConstReference value )
   {
 
-    // try add to this
+    // check if item is this
+    if( get() == value ) {
+      set( value );
+      return true;
+    }
+    
+    // try add to this list of children
     if( value.isChild( get() ) )
     {
       
@@ -199,9 +211,6 @@ template<class T> class TreeItem: public TreeItemBase
       
       // add if not found
       if( !found ) children_.push_back( TreeItem( map_, this, value ) );
-      
-      // sort
-      // _sort();
       return true;
       
     }
@@ -215,18 +224,69 @@ template<class T> class TreeItem: public TreeItemBase
     if( !( added || hasParent() ) )
     { 
       children_.push_back( TreeItem( map_, this, value ) );
-      // _sort();
       return true;
     }
     
     return added;
   }
-
+  
+  //! update children from existing values [recursive]
+  /*! updated items are removed from the set */ 
+  void set( ValueSet& values )
+  {
+    
+    // first update children that are found in set
+    for( unsigned int row = 0; row < childCount(); )
+    { 
+      typename ValueSet::iterator found( values.find( child(row).get() ) );
+      if( found == values.end() ) remove( row );
+      else {
+        child(row).set( *found );
+        values.erase( found );
+        row++;
+      }
+    
+    }
+    
+    // update (recursive) children with remaining values
+    for( unsigned int row = 0; row < parent.childCount(); row++ )
+    { child(row).set( values ); }  
+    
+    return;
+    
+  }
+  
+  //! update children from existing values [recursive]
+  /*! updated items are removed from the set */ 
+  void update( ValueSet& values )
+  {
+    
+    // check if there are remainig values
+    if( values.empty() ) return;
+    
+    // see if current item is in list 
+    // if yes update and erase
+    typename ValueSet::iterator found( values.find( get() ) );
+    if( found != values.end() )
+    {
+      set( *found );
+      values.erase( found );
+    }
+    
+    // do the same with children
+    for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+    { iter->update( values ); }
+    
+    return;
+    
+  }
+  
+  
   protected:
 
   //! constructor
   /*! used to insert T in the tree structure */
-  TreeItem( Map& item_map, const TreeItem* parent, const Reference value ):
+  TreeItem( Map& item_map, const TreeItem* parent, ConstReference value ):
     TreeItemBase( ++_runningId() ),
     map_( item_map ),
     parent_( parent ),
@@ -238,7 +298,7 @@ template<class T> class TreeItem: public TreeItemBase
   { return value_; }
 
   //! value
-  void _set( const Reference value )
+  void _set( ConstReference value )
   { value_ = value; }
 
   //! erase from map

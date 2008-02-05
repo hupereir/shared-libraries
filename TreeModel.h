@@ -53,6 +53,9 @@ template<class T> class TreeModel : public ItemModel
   //! list of vector
   typedef std::vector<ValueType> List;  
 
+  //! list of vector
+  typedef std::set<ValueType> Set;  
+
   //! item
   typedef TreeItem<T> Item;
   
@@ -283,46 +286,55 @@ template<class T> class TreeModel : public ItemModel
  
   //@}
     
-  //! update values
+  //! add values
   void add( const ValueType& value )
   { add( List(1,value) ); }
     
-  //! update values
-  void add( const List& values )
-  {  
+  //! add values
+  void add( List values )
+  { add( Set( values.begin(), values.end() ) ); }
     
+  //! add values
+  void add( Set values )
+  {  
+
     // check if not empty
     // this avoids sending useless signals
     if( values.empty() ) return;
 
-    // prepare modifications
     emit layoutAboutToBeChanged();
-    List local( values );
-    _add( local );  
-  
-    // modifications done
+    root_.update( values );
+    _add( values );
     emit layoutChanged();
-    
-    return;
-    
-  }
-     
-  //! update values
-  void set( const List& values )
-  {  
-  
-    // prepare modifications
-    emit layoutAboutToBeChanged();
 
-    // first update the TreeItem structure
-    // then redraw tree
-    List local( values );
-    _update( root_, local );
-    _add( local );  
+    return;
   
-    // modifications done
-    emit layoutChanged();
+  }
     
+  //! update values
+  /*! 
+  items that are not found in list are removed 
+  items that are found are updated
+  */
+  void set( List values )
+  { set( Set( values.begin(), values.end() ) ); }
+  
+  //! update values
+  /*! 
+  items that are not found in list are removed 
+  items that are found are updated
+  */
+  void set( Set values )
+  {  
+
+    // check if not empty
+    // this avoids sending useless signals
+    if( values.empty() ) return;
+        
+    emit layoutAboutToBeChanged();
+    root_.set( values );
+    _add( values );  
+    emit layoutChanged();
     return;
     
   }
@@ -344,6 +356,10 @@ template<class T> class TreeModel : public ItemModel
   
   //! remove
   virtual void remove( const List& values )
+  { remove( Set( values.begin(), values.end() ) ); }
+
+  //! remove
+  virtual void remove( Set values )
   { 
     
     // check if not empty
@@ -351,13 +367,12 @@ template<class T> class TreeModel : public ItemModel
     if( values.empty() ) return;
     
     emit layoutAboutToBeChanged();
-    List local( values );
-    _remove( root_, local );
+    _remove( root_, values );
     emit layoutChanged();
     return;
     
   }
-
+    
   //! clear
   void clear( void )
   {
@@ -371,34 +386,12 @@ template<class T> class TreeModel : public ItemModel
 
   protected:
 
-  //! update (recusive)
-  static void _update( Item& parent, List& values )
-  {
-              
-    // first update children that are found in set
-    for( unsigned int row = 0; row < parent.childCount(); )
-    { 
-      typename List::iterator found( std::find( values.begin(), values.end(), parent.child(row).get() ) );
-      if( found == values.end() ) parent.remove( row );
-      else {
-        parent.child(row).set( *found );
-        values.erase( found );
-        row++;
-      }
-    }
-    
-    // update (recursive) children with remaining values
-    for( unsigned int row = 0; row < parent.childCount(); row++ )
-    { _update( parent.child(row), values ); }  
-  
-  }
-
   //! add
-  void _add( List& values )
+  void _add( Set values )
   {
   
     Debug::Throw( "TreeModel::add.\n" );
-    for( typename List::iterator iter = values.begin(); iter != values.end(); iter++ )
+    for( typename Set::iterator iter = values.begin(); iter != values.end(); iter++ )
     { root_.add( *iter ); }
     Debug::Throw( "TreeModel::add - done.\n" );
   
@@ -412,13 +405,13 @@ template<class T> class TreeModel : public ItemModel
   }
   
   //! remove, without update
-  void _remove( Item& parent, List& values )
+  void _remove( Item& parent, Set& values )
   {
 
     // remove children that are found in list, and remove from list
     for( unsigned int row = 0; row < parent.childCount(); )
     { 
-      typename List::iterator found( std::find( values.begin(), values.end(), parent.child(row).get() ) );
+      typename Set::iterator found( values.find( parent.child(row).get() ) );
       if( found != values.end() ) 
       {
         parent.remove( row );
@@ -431,8 +424,7 @@ template<class T> class TreeModel : public ItemModel
     if( !values.empty() )
     {
       for( unsigned int row = 0; row < parent.childCount(); row++ )
-      { _remove( parent.child(row), values ); }  
-      
+      { _remove( parent.child(row), values ); }      
     }
     
   }
