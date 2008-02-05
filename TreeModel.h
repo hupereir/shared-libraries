@@ -397,8 +397,10 @@ template<class T> class TreeModel : public ItemModel
   void _add( List& values )
   {
   
+    Debug::Throw( "TreeModel::add.\n" );
     for( typename List::iterator iter = values.begin(); iter != values.end(); iter++ )
     { root_.add( *iter ); }
+    Debug::Throw( "TreeModel::add - done.\n" );
   
   }
   
@@ -421,8 +423,8 @@ template<class T> class TreeModel : public ItemModel
       {
         parent.remove( row );
         values.erase( found );
-        row++;
-      }
+      } else row++;
+    
     }
     
     // do the same starting from children, if there are remaining items to remove

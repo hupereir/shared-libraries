@@ -185,6 +185,7 @@ template<class T> class TreeItem: public TreeItemBase
     // try add to this
     if( value.isChild( get() ) )
     {
+      
       // loop over children, see if one match
       bool found( false );
       for( typename List::iterator iter = children_.begin(); iter != children_.end() && !found; iter++ )
@@ -200,7 +201,7 @@ template<class T> class TreeItem: public TreeItemBase
       if( !found ) children_.push_back( TreeItem( map_, this, value ) );
       
       // sort
-      _sort();
+      // _sort();
       return true;
       
     }
@@ -214,7 +215,7 @@ template<class T> class TreeItem: public TreeItemBase
     if( !( added || hasParent() ) )
     { 
       children_.push_back( TreeItem( map_, this, value ) );
-      _sort();
+      // _sort();
       return true;
     }
     
