@@ -282,18 +282,7 @@ template<class T> class TreeModel : public ItemModel
   }  
  
   //@}
-  
-  //! clear
-  void clear( void )
-  {
     
-    emit layoutAboutToBeChanged();
-    map_.clear();
-    root_ = Item( map_ );
-    emit layoutChanged();
-   
-  }
-  
   //! update values
   void add( const ValueType& value )
   { add( List(1,value) ); }
@@ -301,11 +290,15 @@ template<class T> class TreeModel : public ItemModel
   //! update values
   void add( const List& values )
   {  
-  
+    
+    // check if not empty
+    // this avoids sending useless signals
+    if( values.empty() ) return;
+
     // prepare modifications
     emit layoutAboutToBeChanged();
     List local( values );
-   _add( local );  
+    _add( local );  
   
     // modifications done
     emit layoutChanged();
@@ -337,6 +330,44 @@ template<class T> class TreeModel : public ItemModel
   //! root item
   const Item& root( void ) const
   { return root_; }
+
+  //! remove
+  virtual void remove( const ValueType& value )
+  { 
+    
+    emit layoutAboutToBeChanged();
+    remove( List( 1, value ) );
+    emit layoutChanged();
+    return;
+    
+  }
+  
+  //! remove
+  virtual void remove( const List& values )
+  { 
+    
+    // check if not empty
+    // this avoids sending useless signals
+    if( values.empty() ) return;
+    
+    emit layoutAboutToBeChanged();
+    List local( values );
+    _remove( root_, local );
+    emit layoutChanged();
+    return;
+    
+  }
+
+  //! clear
+  void clear( void )
+  {
+    
+    emit layoutAboutToBeChanged();
+    map_.clear();
+    root_ = Item( map_ );
+    emit layoutChanged();
+   
+  }
 
   protected:
 
@@ -376,6 +407,32 @@ template<class T> class TreeModel : public ItemModel
   {
     typename Item::Map::const_iterator iter( map_.find( id ) );
     return iter == map_.end() ? root_:*iter->second;
+  }
+  
+  //! remove, without update
+  void _remove( Item& parent, List& values )
+  {
+
+    // remove children that are found in list, and remove from list
+    for( unsigned int row = 0; row < parent.childCount(); )
+    { 
+      typename List::iterator found( std::find( values.begin(), values.end(), parent.child(row).get() ) );
+      if( found != values.end() ) 
+      {
+        parent.remove( row );
+        values.erase( found );
+        row++;
+      }
+    }
+    
+    // do the same starting from children, if there are remaining items to remove
+    if( !values.empty() )
+    {
+      for( unsigned int row = 0; row < parent.childCount(); row++ )
+      { _remove( parent.child(row), values ); }  
+      
+    }
+    
   }
   
   private:

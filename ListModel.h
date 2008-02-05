@@ -154,6 +154,10 @@ template<class T> class ListModel : public ItemModel
   virtual void add( const List& values )
   { 
       
+    // check if not empty
+    // this avoids sending useless signals
+    if( values.empty() ) return;
+
     emit layoutAboutToBeChanged();  
     
     for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
@@ -243,6 +247,10 @@ template<class T> class ListModel : public ItemModel
   virtual void remove( const List& values )
   { 
     
+    // check if not empty
+    // this avoids sending useless signals
+    if( values.empty() ) return;
+
     emit layoutAboutToBeChanged();
     for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
     { _remove( *iter ); }
