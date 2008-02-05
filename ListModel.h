@@ -33,6 +33,7 @@
 */
 
 #include <vector>
+#include <set>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -56,6 +57,9 @@ template<class T> class ListModel : public ItemModel
   //! list of vector
   typedef std::vector<ValueType> List;
   
+  //! list of vector
+  typedef std::set<ValueType> Set;
+
   //! constructor
   ListModel(QObject *parent = 0):
     ItemModel( parent )
@@ -151,14 +155,46 @@ template<class T> class ListModel : public ItemModel
   { 
       
     emit layoutAboutToBeChanged();  
+    
     for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
     { _add( *iter ); }
+        
     emit layoutChanged();
     
     // redo the sorting
     sort( sortColumn(), sortOrder() );
     
-  }  
+  }
+
+
+  //! add values
+  /*! this method uses a Set to add the values. It speeds up the updating of existing values */
+  virtual void add( Set values )
+  { 
+      
+    emit layoutAboutToBeChanged();  
+    
+    for( typename List::iterator iter = values_.begin(); iter != values_.end(); iter++ ) 
+    { 
+      // see if current iterator is found in values set
+      typename Set::iterator found_iter( values.find( *iter ) );
+      if( found_iter != values.end() ) 
+      {
+        *iter = *found_iter;
+        values.erase( found_iter );
+      }
+    }
+    
+    // insert remaining values at the end
+    values_.insert( values_.end(), values.begin(), values.end() );
+    
+    emit layoutChanged();
+    
+    // redo the sorting
+    sort( sortColumn(), sortOrder() );
+    
+  }
+  
   
   //! insert values
   virtual void insert( const QModelIndex& index, const ValueType& value )
@@ -214,7 +250,7 @@ template<class T> class ListModel : public ItemModel
     return;
     
   }
-  
+
   //! clear
   virtual void clear( void )
   { set( List() ); }
