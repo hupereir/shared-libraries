@@ -161,7 +161,7 @@ template<class T> class TreeModel : public ItemModel
   }
    
   //! return all values [recursive]
-  virtual List values( const QModelIndex& parent = QModelIndex() ) const
+  virtual List children( const QModelIndex& parent = QModelIndex() ) const
   {
 
     List out;    
@@ -180,7 +180,7 @@ template<class T> class TreeModel : public ItemModel
       out.push_back( item.get() );
       
       // retrieve child children, and insert
-      List children( values( index ) );
+      List children( TreeModel::children( index ) );
       out.insert( out.end(), children.begin(), children.end() );
       
     }
@@ -196,6 +196,15 @@ template<class T> class TreeModel : public ItemModel
     else return _find( index.internalId() ).get();
   }
   
+  //! return all values matching index list
+  List get( const QModelIndexList& indexes ) const
+  { 
+    List out;
+    for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
+    { if( iter->isValid() ) out.push_back( get( *iter ) ); }
+    return out;
+  }
+
   //@}
 
   //!@name selection
