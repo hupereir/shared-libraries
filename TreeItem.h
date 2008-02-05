@@ -281,6 +281,31 @@ template<class T> class TreeItem: public TreeItemBase
     
   }
   
+  //! sorting (recursive)
+  void sort( void )
+  { 
+    if( children_.empty() ) return;
+    std::sort( children_.begin(), children_.end() ); 
+
+    // do the same with children
+    for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+    { iter->sort(); }
+    
+  }
+
+  //! templatized sorting
+  template<class SortMethod>
+  void sort( SortMethod method )
+  {
+    
+    if( children_.empty() ) return;
+    std::sort( children_.begin(), children_.end(), method ); 
+
+    // do the same with children
+    for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+    { iter->sort( method ); }
+  
+  }
   
   protected:
 
@@ -307,13 +332,6 @@ template<class T> class TreeItem: public TreeItemBase
     typename Map::iterator iter( map_.find( id() ) );
     if( iter != map_.end() && iter->second == this ) map_.erase( id() );
     
-  }
-
-  //! sorting
-  void _sort()
-  { 
-    if( children_.empty() ) return;
-    std::sort( children_.begin(), children_.end() ); 
   }
   
   private:

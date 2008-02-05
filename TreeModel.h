@@ -373,6 +373,10 @@ template<class T> class TreeModel : public ItemModel
 
   protected:
 
+  //! root item
+  Item& _root( void )
+  { return root_; }
+
   //! add
   void _add( Set values )
   {
