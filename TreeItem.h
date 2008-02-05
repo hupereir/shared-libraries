@@ -183,7 +183,7 @@ template<class T> class TreeItem: public TreeItemBase
   {
 
     // try add to this
-    if( get() == value.parent() )
+    if( value.isChild( get() ) )
     {
       // loop over children, see if one match
       bool found( false );
