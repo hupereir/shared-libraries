@@ -116,7 +116,7 @@ class ProcessFrame:public QWidget, public Counter
   void _append( const QString& text, const unsigned int& format );
   
   //! text editor
-  CustomTextEdit* text_;
+  CustomTextEdit* editor_;
   
   //! suspend state
   bool suspended_;

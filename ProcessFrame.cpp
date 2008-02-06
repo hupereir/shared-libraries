@@ -54,9 +54,9 @@ ProcessFrame::ProcessFrame( QWidget* parent ):
   main_layout_->setMargin( 10 );
   setLayout( main_layout_ );
 
-  main_layout_->addWidget( text_ = new CustomTextEdit( this ) );
-  text_->setReadOnly( true );
-  text_->setLineWrapMode( QTextEdit::NoWrap );
+  main_layout_->addWidget( editor_ = new CustomTextEdit( this ) );
+  editor_->setReadOnly( true );
+  editor_->setLineWrapMode( QTextEdit::NoWrap );
 
   // button layout
   button_layout_ = new QHBoxLayout();
@@ -74,6 +74,7 @@ ProcessFrame::ProcessFrame( QWidget* parent ):
   
   // clear button
   QPushButton *button = new QPushButton( "&Clear", this );
+  button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), SLOT( clear( void ) ) );
   checkbox->setToolTip( "clear" );
   button_layout_->addWidget( button );
@@ -122,7 +123,7 @@ void ProcessFrame::append( const QString& text, const unsigned int& format )
 void ProcessFrame::clear( void )
 { 
   Debug::Throw( "ProcessFrame::clear.\n" );
-  text_->clear(); 
+  editor_->clear(); 
   buffer_.clear();
 }
 
@@ -178,19 +179,19 @@ void ProcessFrame::_flush( void )
 void ProcessFrame::_append( const QString& text, const unsigned int& format )
 {
   
-  if( !format ) text_->append( text );
+  if( !format ) editor_->append( text );
   else {
   
-    QFont orig( text_->font() );
-    QFont current_font( text_->font() );
+    QFont orig( editor_->font() );
+    QFont current_font( editor_->font() );
     current_font.setWeight( (format&FORMAT::BOLD) ? QFont::Bold : QFont::Normal );
     current_font.setItalic( format&FORMAT::ITALIC );
     current_font.setUnderline( format&FORMAT::UNDERLINE );
     current_font.setStrikeOut( format&FORMAT::STRIKE );    
-    text_->setCurrentFont( current_font );
-    text_->append( text );
-    text_->setCurrentFont( orig );
-    text_->ensureCursorVisible();
+    editor_->setCurrentFont( current_font );
+    editor_->append( text );
+    editor_->setCurrentFont( orig );
+    editor_->ensureCursorVisible();
   }
   
   return;

@@ -56,6 +56,7 @@ ProcessDialog::ProcessDialog( QWidget* parent ):
   
   // close button
   QPushButton *button( new QPushButton( "&Close", &processFrame() ) );
+  button->setAutoDefault( false );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   processFrame().buttonLayout().addWidget( button );
   
