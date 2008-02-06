@@ -146,7 +146,7 @@ template<class T> class ListModel : public ItemModel
     emit layoutChanged();
     
     // redo the sorting
-    sort( sortColumn(), sortOrder() );
+    sort();
     
   }
   
@@ -166,7 +166,7 @@ template<class T> class ListModel : public ItemModel
     emit layoutChanged();
     
     // redo the sorting
-    sort( sortColumn(), sortOrder() );
+    sort();
     
   }
 
@@ -193,9 +193,7 @@ template<class T> class ListModel : public ItemModel
     values_.insert( values_.end(), values.begin(), values.end() );
     
     emit layoutChanged();
-    
-    // redo the sorting
-    sort( sortColumn(), sortOrder() );
+    sort();
     
   }
   
@@ -272,7 +270,7 @@ template<class T> class ListModel : public ItemModel
     selection_.clear();
     emit layoutChanged();
     
-    sort( sortColumn(), sortOrder() );
+    sort();
     return;
   }
   

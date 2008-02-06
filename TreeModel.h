@@ -306,7 +306,10 @@ template<class T> class TreeModel : public ItemModel
     root_.update( values );
     _add( values );
     emit layoutChanged();
-
+    
+    // redo sorting
+    sort();
+    
     return;
   
   }
@@ -327,6 +330,10 @@ template<class T> class TreeModel : public ItemModel
     root_.set( values );
     _add( values );  
     emit layoutChanged();
+
+    // redo sorting
+    sort();
+
     return;
     
   }
