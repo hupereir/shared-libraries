@@ -359,6 +359,7 @@ template<class T> class TreeModel : public ItemModel
     
     emit layoutAboutToBeChanged();
     _remove( root_, values );
+    _resetTree();
     emit layoutChanged();
     return;
     
@@ -367,16 +368,9 @@ template<class T> class TreeModel : public ItemModel
   //! reset tree 
   void resetTree( void )
   {
-    
-    // retrieve all items
-    List children( TreeModel::children() );
     emit layoutAboutToBeChanged();
-    map_.clear();
-    root_ = Item( map_ );
-    root_.add( Set( children.begin(), children.end() ) );
-    _sort();
+    _resetTree();
     emit layoutChanged();
-  
   }
     
     
@@ -438,6 +432,17 @@ template<class T> class TreeModel : public ItemModel
       { _remove( parent.child(row), values ); }      
     }
     
+  }
+
+  //! reset tree
+  /*! private version, with no signal emitted */
+  void _resetTree( void )
+  {
+    List children( TreeModel::children() );
+    map_.clear();
+    root_ = Item( map_ );
+    _add( Set( children.begin(), children.end() ) );
+    _sort();
   }
   
   private:
