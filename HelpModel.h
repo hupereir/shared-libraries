@@ -113,6 +113,12 @@ namespace BASE
     //! emmited when an item label is renamed
     void itemRenamed( QModelIndex index, QString label );
     
+    protected:
+    
+    //! sorting
+    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
+    {}
+    
     private:
     
     //! edition enabled
