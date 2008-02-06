@@ -166,30 +166,11 @@ template<class T> class TreeModel : public ItemModel
   //! return all values [recursive]
   virtual List children( const QModelIndex& parent = QModelIndex() ) const
   {
-
-    List out;    
     
-    // retrieve matching item
-    // loop over parent children
-    for( int row = 0; row < rowCount( parent ); row++ )
-    {
-      
-      // create child index
-      QModelIndex index( TreeModel::index( row, 0, parent ) );
-      if( !index.isValid() ) continue;
-      
-      // retrieve matching item
-      const Item& item( _find( index.internalId() ) );
-      out.push_back( item.get() );
-      
-      // retrieve child children, and insert
-      List children( TreeModel::children( index ) );
-      out.insert( out.end(), children.begin(), children.end() );
-      
-    }
+    // retrieve parent item
+    const Item& parent_item = parent.isValid() ? _find( parent.internalId() ) : root_;
+    return parent_item.childValues();
     
-    return out;
-      
   }
   
   //! return value associated to given model index

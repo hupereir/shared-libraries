@@ -56,6 +56,9 @@ template<class T> class TreeItem: public TreeItemBase
   //! set of references
   typedef std::set<T> ValueSet;
   
+  //! list of references
+  typedef std::vector<T> ValueList;
+  
   //! pointer
   typedef T* Pointer;
 
@@ -166,11 +169,27 @@ template<class T> class TreeItem: public TreeItemBase
     return children_[row]; 
   }
   
-  //! children
+  //! get child at given row
   const TreeItem& child( unsigned int row ) const
   { 
     assert( row < childCount() );
     return children_[row]; 
+  }
+
+  //! retrieve all children in list [recursive]
+  ValueList childValues( void ) const
+  {
+    
+    ValueList out;
+    for( typename List::const_iterator iter = children_.begin(); iter != children_.end(); iter++ )
+    {
+      out.push_back( iter->get() );
+      ValueList children( iter->childValues() );
+      out.insert( out.end(), children.begin(), children.end() );
+    }
+    
+    return out;
+  
   }
   
   //! remove child at given row
