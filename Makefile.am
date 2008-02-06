@@ -136,7 +136,6 @@ libbase_qt_a_SOURCES = \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
   TextSeparator.cpp \
-  TreeItemBase.cpp \
   TreeView.cpp \
   TreeWidget.cpp \
   TreeViewConfiguration.cpp \

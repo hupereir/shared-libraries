@@ -42,7 +42,13 @@ class TreeItemBase
 
   //! unique id
   typedef unsigned int Id;
-  
+
+  //! constructor
+  TreeItemBase():
+    id_(0),
+    flags_( NONE )
+    {}
+
   //! unique id
   const Id& id( void ) const
   { return id_; }
@@ -79,24 +85,13 @@ class TreeItemBase
   } 
   
   //@}
-
-
+  
   protected:
-
-  //! constructor
-  /*! used to insert T in the tree structure */
-  TreeItemBase( const Id& id ):
-    id_( id ),
-    flags_( NONE )
-    {}
-    
+  
   //! id
   void _setId( const Id& id )
   { id_ = id; }
-  
-  //! running id
-  static Id& _runningId( void )
-  { return running_id_; }
+
   
   private:
   
@@ -105,9 +100,6 @@ class TreeItemBase
   
   //! flags
   unsigned int flags_;
-  
-  //! running id
-  static Id running_id_;
   
 };
 

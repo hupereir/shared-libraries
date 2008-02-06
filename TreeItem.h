@@ -37,6 +37,7 @@
 #include <vector>
 
 #include "TreeItemBase.h"
+#include "TreeItemMap.h"
 
 //! used to wrap object T into tree structure
 template<class T> class TreeItem: public TreeItemBase
@@ -61,23 +62,18 @@ template<class T> class TreeItem: public TreeItemBase
 
   //! list of vector
   typedef std::vector<TreeItem> List;  
-
-  //! list of vector
-  typedef std::map<int, TreeItem*> Map;  
-
-  //! id type
-  typedef unsigned int Id;
   
+  //! item map
+  typedef TreeItemMap<TreeItem> Map;
+    
   //! root constructor
   TreeItem( Map& item_map ):
-    TreeItemBase(0),
     map_( item_map ),
     parent_(0)
-  { map_[id()] = this; }
+  { _setId( map_.insert(*this) ); }
   
   //! copy constructor
   TreeItem( const TreeItem& item ):
-    TreeItemBase( item.id() ),
     map_( item.map_ ),
     parent_( item.parent_ ),
     value_( item.value_ ),
@@ -87,9 +83,9 @@ template<class T> class TreeItem: public TreeItemBase
     // flags
     setFlags( item.flags() );
     
-    // store id in map
-    map_[id()] = this;
-    
+    //! set id
+    _setId( map_.insert(*this) );    
+
     // reassign parents
     for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
     { iter->parent_ = this; } 
@@ -107,11 +103,8 @@ template<class T> class TreeItem: public TreeItemBase
     value_ = item.value_;
     children_ = item.children_;
 
-    // erase current id from map    
-    // update and store in map
-    _eraseFromMap();
-    _setId( item.id() );
-    map_[id()] = this;
+    //! set id
+    _setId( map_.insert(*this) );    
 
     // reassign parents
     for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
@@ -122,7 +115,7 @@ template<class T> class TreeItem: public TreeItemBase
 
   //! destructor
   virtual ~TreeItem( void )
-  { _eraseFromMap(); }
+  { map_.erase( id() ); }
  
   //! less than operator
   bool operator < (const TreeItem& item ) const
@@ -304,11 +297,11 @@ template<class T> class TreeItem: public TreeItemBase
   //! constructor
   /*! used to insert T in the tree structure */
   TreeItem( Map& item_map, const TreeItem* parent, ConstReference value ):
-    TreeItemBase( ++_runningId() ),
+    TreeItemBase(),
     map_( item_map ),
     parent_( parent ),
     value_( value )
-  { map_[id()] = this; }
+  { _setId( map_.insert( *this ) ); }
     
   //! value
   Reference _get( void )
@@ -317,14 +310,6 @@ template<class T> class TreeItem: public TreeItemBase
   //! value
   void _set( ConstReference value )
   { value_ = value; }
-
-  //! erase from map
-  void _eraseFromMap( void )
-  {
-    typename Map::iterator iter( map_.find( id() ) );
-    if( iter != map_.end() && iter->second == this ) map_.erase( id() );
-    
-  }
   
   private:
   
