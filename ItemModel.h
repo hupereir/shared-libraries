@@ -60,7 +60,7 @@ class ItemModel : public QAbstractItemModel, public Counter
   { sort( sortColumn(), sortOrder() ); }
   
   //! sort
-  virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );  
+  virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
   
   //! current sorting column
   const int& sortColumn( void ) const
@@ -72,7 +72,17 @@ class ItemModel : public QAbstractItemModel, public Counter
   
   //@}
   
-  private:
+  protected:
+  
+  //! private sort, with no signals emmitted
+  virtual void _sort( void )
+  { _sort( sortColumn(), sortOrder() ); }
+  
+  //! private sort, with no signals emmitted
+  virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder ) = 0;
+  
+  
+  private:  
   
   //! sorting column
   int sort_column_;

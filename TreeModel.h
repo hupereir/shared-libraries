@@ -305,10 +305,9 @@ template<class T> class TreeModel : public ItemModel
     emit layoutAboutToBeChanged();
     root_.update( values );
     _add( values );
+    _sort();
     emit layoutChanged();
     
-    // redo sorting
-    sort();
     
     return;
   
@@ -329,10 +328,8 @@ template<class T> class TreeModel : public ItemModel
     emit layoutAboutToBeChanged();
     root_.set( values );
     _add( values );  
+    _sort();
     emit layoutChanged();
-
-    // redo sorting
-    sort();
 
     return;
     
@@ -366,6 +363,22 @@ template<class T> class TreeModel : public ItemModel
     return;
     
   }
+    
+  //! reset tree 
+  void resetTree( void )
+  {
+    
+    // retrieve all items
+    List children( TreeModel::children() );
+    emit layoutAboutToBeChanged();
+    map_.clear();
+    root_ = Item( map_ );
+    root_.add( Set( children.begin(), children.end() ) );
+    _sort();
+    emit layoutChanged();
+  
+  }
+    
     
   //! clear
   void clear( void )

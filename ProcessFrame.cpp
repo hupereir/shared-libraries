@@ -86,6 +86,14 @@ ProcessFrame::ProcessFrame( QWidget* parent ):
 }
 
 //_____________________________________________________________
+ProcessFrame::~ProcessFrame( void )
+{
+  Debug::Throw( "ProcessFrame::~ProcessFrame.\n" );
+  if( process_.state() != QProcess::NotRunning ) process_.kill();
+  
+}
+
+//_____________________________________________________________
 bool ProcessFrame::start( const std::string& arguments, QProcess::OpenMode mode )
 {
   Debug::Throw( "ProcessFrame::start.\n" );

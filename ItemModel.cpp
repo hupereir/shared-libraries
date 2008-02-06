@@ -48,10 +48,15 @@ void ItemModel::sort( int column, Qt::SortOrder order )
 { 
   Debug::Throw() << "ItemModel::sort - column: " << column << " order: " << order << endl;
   
-  // store
+  // store column and order
   sort_column_ = column;
   sort_order_ = order;
-    
+  
+  // emit signals and call private methods
+  emit layoutAboutToBeChanged();
+  _sort( column, order );
+  emit layoutChanged();
+  
 }
 
 //____________________________________________________________

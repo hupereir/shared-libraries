@@ -70,13 +70,10 @@ class CounterModel: public ListModel<Counter::Pair>
 
   //@}
   
-  //!@name interface
-  //@{
-
+  protected:
+  
   //! sort
-  virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
-
-  //@}
+  virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
             
   private:
   

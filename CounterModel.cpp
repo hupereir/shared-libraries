@@ -90,17 +90,11 @@ QVariant CounterModel::headerData(int section, Qt::Orientation orientation, int 
 }
 
 //____________________________________________________________
-void CounterModel::sort( int column, Qt::SortOrder order )
+void CounterModel::_sort( int column, Qt::SortOrder order )
 { 
+
   Debug::Throw() << "CounterModel::sort - column: " << column << " order: " << order << endl;
-
-  // base class implementation
-  ItemModel::sort( column, order );
-
-  // prepare modifications
-  emit layoutAboutToBeChanged();
   std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
-  emit layoutChanged();
       
 }
 

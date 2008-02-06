@@ -57,13 +57,15 @@ class ProcessFrame:public QWidget, public Counter
   //! constructor
   ProcessFrame( QWidget* parent );
 
+  //! destructor
+  virtual ~ProcessFrame( void );
+
   /*! 
     \brief 
     add arguments. 
     every space separated argument is added separately
   */
   bool start( const std::string& arguments, QProcess::OpenMode mode = QProcess::ReadWrite );
-
 
   //! append line (with format)
   void append( const QString& text, const unsigned int& format = 0 );
