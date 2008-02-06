@@ -88,8 +88,12 @@ ProcessFrame::ProcessFrame( QWidget* parent ):
 //_____________________________________________________________
 ProcessFrame::~ProcessFrame( void )
 {
-  Debug::Throw( "ProcessFrame::~ProcessFrame.\n" );
-  if( process_.state() != QProcess::NotRunning ) process_.kill();
+  
+  if( process_.state() != QProcess::NotRunning ) 
+  {
+    process_.terminate();
+    process_.waitForFinished();
+  }
   
 }
 
