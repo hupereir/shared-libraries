@@ -185,51 +185,12 @@ template<class T> class TreeItem: public TreeItemBase
   }
   
   //! add child [recursive]
-  bool add( ConstReference value )
+  void add( ValueSet& values )
   {
-
-    // check if item is this
-    if( get() == value ) {
-      set( value );
-      return true;
-    }
-    
-    // try add to this list of children
-    if( value.isChild( get() ) )
-    {
+    for( typename ValueSet::iterator iter = values.begin(); iter != values.end(); iter++ )
+    { _add( *iter ); }
+  }      
       
-      // loop over children, see if one match
-      bool found( false );
-      for( typename List::iterator iter = children_.begin(); iter != children_.end() && !found; iter++ )
-      {
-        if( iter->get() == value ) 
-        {
-          iter->set( value );
-          found = true;
-        }
-      }
-      
-      // add if not found
-      if( !found ) children_.push_back( TreeItem( map_, this, value ) );
-      return true;
-      
-    }
-    
-    // try add to children
-    bool added(false);
-    for( typename List::iterator iter = children_.begin(); iter != children_.end() && !added; iter++ )
-    { added = iter->add( value ); }
-    
-    // add to this if top level
-    if( !( added || hasParent() ) )
-    { 
-      children_.push_back( TreeItem( map_, this, value ) );
-      return true;
-    }
-    
-    return added;
-  }
-  
   //! update children from existing values [recursive]
   /*! updated items are removed from the set */ 
   void set( ValueSet& values )
@@ -308,6 +269,37 @@ template<class T> class TreeItem: public TreeItemBase
   }
   
   protected:
+
+  //! add child [recursive]
+  /*! 
+  there is no check done on whether the job is already in list or not.
+  this is done by calling "update" first
+  */
+  bool _add( ConstReference value )
+  {
+    
+    // try add to this list of children
+    if( value.isChild( get() ) )
+    { 
+      children_.push_back( TreeItem( map_, this, value ) );
+      return true;
+    }
+    
+    // try add to children
+    bool added(false);
+    for( typename List::iterator iter = children_.begin(); iter != children_.end() && !added; iter++ )
+    { added = iter->_add( value ); }
+    
+    // add to this if top level
+    if( !( added || hasParent() ) )
+    { 
+      children_.push_back( TreeItem( map_, this, value ) );
+      return true;
+    }
+    
+    return added;
+  }
+  
 
   //! constructor
   /*! used to insert T in the tree structure */

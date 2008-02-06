@@ -304,7 +304,7 @@ template<class T> class TreeModel : public ItemModel
 
     emit layoutAboutToBeChanged();
     root_.update( values );
-    _add( values );
+    root_.add( values );
     emit layoutChanged();
     
     // redo sorting
@@ -328,7 +328,7 @@ template<class T> class TreeModel : public ItemModel
         
     emit layoutAboutToBeChanged();
     root_.set( values );
-    _add( values );  
+    root_.add( values );
     emit layoutChanged();
 
     // redo sorting
@@ -383,17 +383,6 @@ template<class T> class TreeModel : public ItemModel
   //! root item
   Item& _root( void )
   { return root_; }
-
-  //! add
-  void _add( Set values )
-  {
-  
-    Debug::Throw( "TreeModel::add.\n" );
-    for( typename Set::iterator iter = values.begin(); iter != values.end(); iter++ )
-    { root_.add( *iter ); }
-    Debug::Throw( "TreeModel::add - done.\n" );
-  
-  }
   
   //! find item matching id
   const Item& _find( typename Item::Id id ) const
