@@ -74,7 +74,8 @@ template<class T> class TreeItemMap
   //! remove item at given slot
   void erase( const unsigned int& index )
   {
-    assert( index < items_.size() && items_[index] );
+    assert( index < items_.size() );
+    assert( items_[index] );
     items_[index] = 0;
     slots_.push_back( index );
   }
@@ -90,7 +91,8 @@ template<class T> class TreeItemMap
   //! get item at given index
   Reference get( const unsigned int& index ) const
   { 
-    assert( index < items_.size() && items_[index] );
+    assert( index < items_.size() );
+    assert( items_[index] );
     return *items_[index];
   }
   

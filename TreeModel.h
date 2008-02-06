@@ -216,28 +216,29 @@ template<class T> class TreeModel : public ItemModel
   //! clear internal list selected items
   void clearSelectedIndexes( void )
   {
-    for( unsigned int i=0; i<map_.size(); i++ )
-    { if( map_.isValid(i) ) map_.get(i).setFlag( Item::SELECTED, false ); }
-  }
+    for( typename Item::Map::iterator iter = map_.begin(); iter != map_.end(); iter++ )
+    { iter->second->setFlag( Item::SELECTED, false ); }
+  }  
   
   //! store index internal selection state
   void setIndexSelected( const QModelIndex& index, bool value )
   {
-    if( !( index.isValid() && map_.isValid( index.internalId() ) ) ) return;
-    map_.get(index.internalId()).setFlag( Item::SELECTED, value );
+    if( !index.isValid() ) return;
+    typename Item::Map::iterator iter( map_.find( index.internalId() ) );
+    if( iter != map_.end() ) iter->second->setFlag( Item::SELECTED, value );
   }  
   
   //! get list of internal selected items
   QModelIndexList selectedIndexes( void ) const
   {
     QModelIndexList out;
-    for( unsigned int i=0; i<map_.size(); i++ )
-    { 
-      if( !map_.isValid(i) ) continue;
-      if( !map_.get(i).flag( Item::SELECTED ) ) continue;
+    for( typename Item::Map::const_iterator iter = map_.begin(); iter != map_.end(); iter++ )
+    {
+      
+      if( !iter->second->flag( Item::SELECTED ) ) continue;
       
       // retrieve and check index associated to job
-      QModelIndex index( TreeModel::index( map_.get(i).get() ) );
+      QModelIndex index( TreeModel::index( iter->second->get() ) );
       if( index.isValid() ) out.push_back( index );
       
     }
@@ -253,34 +254,34 @@ template<class T> class TreeModel : public ItemModel
   //! clear internal list of expanded items
   void clearExpandedIndexes( void )
   {
-    for( unsigned int i=0; i<map_.size(); i++ )
-    { if( map_.isValid(i) ) map_.get(i).setFlag( Item::EXPANDED, false ); }
+    for( typename Item::Map::iterator iter = map_.begin(); iter != map_.end(); iter++ )
+    { iter->second->setFlag( Item::EXPANDED, false ); }
   }    
   
   //! store index internal selection state
   void setIndexExpanded( const QModelIndex& index, bool value ) 
   {
-    if( !( index.isValid() && map_.isValid( index.internalId() ) ) ) return;
-    map_.get(index.internalId()).setFlag( Item::EXPANDED, value );
+    if( !index.isValid() ) return;
+    typename Item::Map::iterator iter( map_.find( index.internalId() ) );
+    if( iter != map_.end() ) iter->second->setFlag( Item::EXPANDED, value );
   }  
   
   //! get list of internal selected items
   QModelIndexList expandedIndexes( void ) const
   {
     QModelIndexList out;
-    for( unsigned int i=0; i<map_.size(); i++ )
-    { 
-      if( !map_.isValid(i) ) continue;
-      if( !map_.get(i).flag( Item::EXPANDED ) ) continue;
+    for( typename Item::Map::const_iterator iter = map_.begin(); iter != map_.end(); iter++ )
+    {
+      
+      if( !iter->second->flag( Item::EXPANDED ) ) continue;
       
       // retrieve and check index associated to job
-      QModelIndex index( TreeModel::index( map_.get(i).get() ) );
+      QModelIndex index( TreeModel::index( iter->second->get() ) );
       if( index.isValid() ) out.push_back( index );
       
     }
     
     return out;
-    
   }  
  
   //@}
@@ -303,7 +304,7 @@ template<class T> class TreeModel : public ItemModel
 
     emit layoutAboutToBeChanged();
     root_.update( values );
-    root_.add( values );
+    _add( values );
     emit layoutChanged();
     
     // redo sorting
@@ -327,7 +328,7 @@ template<class T> class TreeModel : public ItemModel
         
     emit layoutAboutToBeChanged();
     root_.set( values );
-    root_.add( values );
+    _add( values );  
     emit layoutChanged();
 
     // redo sorting
@@ -382,10 +383,24 @@ template<class T> class TreeModel : public ItemModel
   //! root item
   Item& _root( void )
   { return root_; }
+
+  //! add
+  void _add( Set values )
+  {
+  
+    Debug::Throw( "TreeModel::add.\n" );
+    for( typename Set::iterator iter = values.begin(); iter != values.end(); iter++ )
+    { root_.add( *iter ); }
+    Debug::Throw( "TreeModel::add - done.\n" );
+  
+  }
   
   //! find item matching id
   const Item& _find( typename Item::Id id ) const
-  { return map_.get( id ); }
+  {
+    typename Item::Map::const_iterator iter( map_.find( id ) );
+    return iter == map_.end() ? root_:*iter->second;
+  }
   
   //! remove, without update
   void _remove( Item& parent, Set& values )

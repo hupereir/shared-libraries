@@ -37,7 +37,6 @@
 #include <vector>
 
 #include "TreeItemBase.h"
-#include "TreeItemMap.h"
 
 //! used to wrap object T into tree structure
 template<class T> class TreeItem: public TreeItemBase
@@ -62,18 +61,23 @@ template<class T> class TreeItem: public TreeItemBase
 
   //! list of vector
   typedef std::vector<TreeItem> List;  
+
+  //! list of vector
+  typedef std::map<int, TreeItem*> Map;  
+
+  //! id type
+  typedef unsigned int Id;
   
-  //! item map
-  typedef TreeItemMap<TreeItem> Map;
-    
   //! root constructor
   TreeItem( Map& item_map ):
+    TreeItemBase(0),
     map_( item_map ),
     parent_(0)
-  { _setId( map_.insert(*this) ); }
+  { map_[id()] = this; }
   
   //! copy constructor
   TreeItem( const TreeItem& item ):
+    TreeItemBase( item.id() ),
     map_( item.map_ ),
     parent_( item.parent_ ),
     value_( item.value_ ),
@@ -83,9 +87,9 @@ template<class T> class TreeItem: public TreeItemBase
     // flags
     setFlags( item.flags() );
     
-    //! set id
-    _setId( map_.insert(*this) );    
-
+    // store id in map
+    map_[id()] = this;
+    
     // reassign parents
     for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
     { iter->parent_ = this; } 
@@ -103,8 +107,11 @@ template<class T> class TreeItem: public TreeItemBase
     value_ = item.value_;
     children_ = item.children_;
 
-    //! set id
-    _setId( map_.insert(*this) );    
+    // erase current id from map    
+    // update and store in map
+    _eraseFromMap();
+    _setId( item.id() );
+    map_[id()] = this;
 
     // reassign parents
     for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
@@ -115,7 +122,7 @@ template<class T> class TreeItem: public TreeItemBase
 
   //! destructor
   virtual ~TreeItem( void )
-  { map_.erase( id() ); }
+  { _eraseFromMap(); }
  
   //! less than operator
   bool operator < (const TreeItem& item ) const
@@ -178,12 +185,51 @@ template<class T> class TreeItem: public TreeItemBase
   }
   
   //! add child [recursive]
-  void add( ValueSet& values )
+  bool add( ConstReference value )
   {
-    for( typename ValueSet::iterator iter = values.begin(); iter != values.end(); iter++ )
-    { _add( *iter ); }
-  }      
+
+    // check if item is this
+    if( get() == value ) {
+      set( value );
+      return true;
+    }
+    
+    // try add to this list of children
+    if( value.isChild( get() ) )
+    {
       
+      // loop over children, see if one match
+      bool found( false );
+      for( typename List::iterator iter = children_.begin(); iter != children_.end() && !found; iter++ )
+      {
+        if( iter->get() == value ) 
+        {
+          iter->set( value );
+          found = true;
+        }
+      }
+      
+      // add if not found
+      if( !found ) children_.push_back( TreeItem( map_, this, value ) );
+      return true;
+      
+    }
+    
+    // try add to children
+    bool added(false);
+    for( typename List::iterator iter = children_.begin(); iter != children_.end() && !added; iter++ )
+    { added = iter->add( value ); }
+    
+    // add to this if top level
+    if( !( added || hasParent() ) )
+    { 
+      children_.push_back( TreeItem( map_, this, value ) );
+      return true;
+    }
+    
+    return added;
+  }
+  
   //! update children from existing values [recursive]
   /*! updated items are removed from the set */ 
   void set( ValueSet& values )
@@ -263,45 +309,14 @@ template<class T> class TreeItem: public TreeItemBase
   
   protected:
 
-  //! add child [recursive]
-  /*! 
-  there is no check done on whether the job is already in list or not.
-  this is done by calling "update" first
-  */
-  bool _add( ConstReference value )
-  {
-    
-    // try add to this list of children
-    if( value.isChild( get() ) )
-    { 
-      children_.push_back( TreeItem( map_, this, value ) );
-      return true;
-    }
-    
-    // try add to children
-    bool added(false);
-    for( typename List::iterator iter = children_.begin(); iter != children_.end() && !added; iter++ )
-    { added = iter->_add( value ); }
-    
-    // add to this if top level
-    if( !( added || hasParent() ) )
-    { 
-      children_.push_back( TreeItem( map_, this, value ) );
-      return true;
-    }
-    
-    return added;
-  }
-  
-
   //! constructor
   /*! used to insert T in the tree structure */
   TreeItem( Map& item_map, const TreeItem* parent, ConstReference value ):
-    TreeItemBase(),
+    TreeItemBase( ++_runningId() ),
     map_( item_map ),
     parent_( parent ),
     value_( value )
-  { _setId( map_.insert( *this ) ); }
+  { map_[id()] = this; }
     
   //! value
   Reference _get( void )
@@ -310,6 +325,14 @@ template<class T> class TreeItem: public TreeItemBase
   //! value
   void _set( ConstReference value )
   { value_ = value; }
+
+  //! erase from map
+  void _eraseFromMap( void )
+  {
+    typename Map::iterator iter( map_.find( id() ) );
+    if( iter != map_.end() && iter->second == this ) map_.erase( id() );
+    
+  }
   
   private:
   
