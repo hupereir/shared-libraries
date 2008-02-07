@@ -303,15 +303,15 @@ template<class T> class TreeModel : public ItemModel
   {  
 
     // check if not empty
-    // this avoids sending useless signals
-    if( values.empty() ) return;
-        
-    emit layoutAboutToBeChanged();
-    root_.set( values );
-    _add( values );  
-    _sort();
-    emit layoutChanged();
-
+    if( values.empty() ) clear();
+    else {
+      emit layoutAboutToBeChanged();
+      root_.set( values );
+      _add( values );  
+      _sort();
+      emit layoutChanged();
+    }
+    
     return;
     
   }
