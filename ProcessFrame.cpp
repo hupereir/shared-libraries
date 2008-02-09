@@ -178,22 +178,23 @@ void ProcessFrame::_flush( void )
 //_____________________________________________________________
 void ProcessFrame::_append( const QString& text, const unsigned int& format )
 {
+ 
+  // retrieve current cursor
+  QTextCursor cursor( editor_->textCursor() );
   
-  if( !format ) editor_->append( text );
-  else {
-  
-    QFont orig( editor_->font() );
-    QFont current_font( editor_->font() );
-    current_font.setWeight( (format&FORMAT::BOLD) ? QFont::Bold : QFont::Normal );
-    current_font.setItalic( format&FORMAT::ITALIC );
-    current_font.setUnderline( format&FORMAT::UNDERLINE );
-    current_font.setStrikeOut( format&FORMAT::STRIKE );    
-    editor_->setCurrentFont( current_font );
-    editor_->append( text );
-    editor_->setCurrentFont( orig );
-    editor_->ensureCursorVisible();
+  // move to the end of the text
+  cursor.movePosition( QTextCursor::End );
+
+  QTextCharFormat char_format;
+  if( format ) 
+  {
+    char_format.setFontWeight( (format&FORMAT::BOLD) ? QFont::Bold : QFont::Normal );
+    char_format.setFontItalic( format&FORMAT::ITALIC );
+    char_format.setFontUnderline( format&FORMAT::UNDERLINE );
+    char_format.setFontStrikeOut( format&FORMAT::STRIKE );        
   }
-  
+  cursor.setCharFormat( char_format );
+  cursor.insertText( text );  
   return;
   
 }
