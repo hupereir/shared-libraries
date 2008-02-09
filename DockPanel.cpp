@@ -66,7 +66,7 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   grid_layout->setMargin(0);
   grid_layout->setSpacing(0);
   main_->setLayout( grid_layout );
-
+  
   // vertical layout for children
   main_layout_ = new QVBoxLayout();
   main_layout_->setMargin( 5 );
@@ -126,7 +126,9 @@ void DockPanel::_toggleDock( void )
     Debug::Throw() << "DockPanel::_toggleDock - title: " << qPrintable( title ) << endl;
     
     main_->setParent( 0 );
-    if( flags_ & STAYS_ON_TOP ) main_->setWindowFlags( Qt::WindowStaysOnTopHint );
+    if( flags_ & STAYS_ON_TOP ) main_->setWindowFlags( Qt::WindowStaysOnTopHint|Qt::Dialog );
+    else main_->setWindowFlags( Qt::Dialog );
+
     main_->move( mapToGlobal( QPoint(0,0) ) );
     main_->setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
     main_->setWindowTitle( title );
