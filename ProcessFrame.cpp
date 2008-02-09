@@ -114,9 +114,9 @@ bool ProcessFrame::start( const std::string& arguments, QProcess::OpenMode mode 
 
 //_____________________________________________________________
 void ProcessFrame::append( const QString& text, const unsigned int& format )
-{  if( suspended_ ) buffer_.push_back( make_pair( text, format ) );
+{  
+  if( suspended_ ) buffer_.push_back( make_pair( text, format ) );
   else _append( text, format );
-  
 }
   
 //_____________________________________________________________
@@ -194,7 +194,10 @@ void ProcessFrame::_append( const QString& text, const unsigned int& format )
     char_format.setFontStrikeOut( format&FORMAT::STRIKE );        
   }
   cursor.setCharFormat( char_format );
-  cursor.insertText( text );  
+  cursor.insertText( text );
+  editor_->setTextCursor( cursor );
+  editor_->ensureCursorVisible();
+  
   return;
   
 }
