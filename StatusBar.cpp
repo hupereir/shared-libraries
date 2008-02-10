@@ -65,3 +65,11 @@ void StatusBar::addLabel( const int& stretch )
   addPermanentWidget( label, stretch );
   labels_.push_back( label );  
 }
+
+//__________________________________________________________________
+void StatusBarLabel::setTextAndUpdate( const QString& message )
+{ 
+  Debug::Throw() << "StatusBar::StatusBarLabel::setTextAndUpdate - message: " << qPrintable( message ) << endl;
+  QLabel::setText( message );
+  qApp->processEvents();
+}

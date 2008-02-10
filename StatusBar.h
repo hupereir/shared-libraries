@@ -63,11 +63,7 @@ class StatusBarLabel: public QLabel, public Counter
   }
   
   //! set label text and process events
-  void setTextAndUpdate( const QString& message )
-  { 
-    QLabel::setText( message );
-    qApp->processEvents();
-  }
+  void setTextAndUpdate( const QString& );
 
 };
     
