@@ -52,6 +52,8 @@ class StatusBarLabel: public QLabel, public Counter
     QLabel( parent ),
     Counter( "StatusBarLabel" )
   {}
+    
+  public slots:
   
   //! set text
   virtual void setText( const QString& message, const bool& value = true )
@@ -59,8 +61,6 @@ class StatusBarLabel: public QLabel, public Counter
     if( value ) setTextAndUpdate( message );
     else QLabel::setText( message );
   }
-    
-  public slots:
   
   //! set label text and process events
   void setTextAndUpdate( const QString& message )
