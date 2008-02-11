@@ -80,6 +80,7 @@ noinst_HEADERS = \
   TreeView.h \
   TreeViewConfiguration.h \
   TreeWidget.h \
+  UserSelectionFrame.h \
   ValidFileThread.h \
   XmlError.h \
   XmlFileList.h \
@@ -140,6 +141,7 @@ libbase_qt_a_SOURCES = \
   TreeView.cpp \
   TreeWidget.cpp \
   TreeViewConfiguration.cpp \
+  UserSelectionFrame.cpp \
   ValidFileThread.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \
@@ -181,7 +183,8 @@ nodist_libbase_qt_a_SOURCES = \
   moc_StatusBar.cpp \
   moc_TreeView.cpp \
   moc_TreeViewConfiguration.cpp \
-  moc_TreeWidget.cpp
+  moc_TreeWidget.cpp \
+  moc_UserSelectionFrame.cpp
 
 clean-local:
 	rm -f moc_*.cpp
