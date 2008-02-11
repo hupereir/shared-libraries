@@ -48,6 +48,7 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
   Counter( "UserSelectionFrame" ),
   timer_( this )
 {
+  
   Debug::Throw( "UserSelectionFrame::UserSelectionFrame\n" );
   setLayout( new QHBoxLayout() );
   layout()->setMargin(0);
@@ -74,6 +75,7 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
 void UserSelectionFrame::setUser( const QString& user )
 { 
   Debug::Throw() << "UserSelectionFrame::set - user: " << qPrintable(user) << endl;
+  if( user.isNull() || user.isEmpty() ) return;
   
   for( int i=0; i< _editor().QComboBox::count(); i++ )
   {
@@ -120,7 +122,7 @@ void UserSelectionFrame::updateUsers( set<string> users )
   }
 
   for( set<string>::const_iterator iter =  users.begin(); iter != users.end(); iter++ )
-  { _editor().addItem( iter->c_str() ); }
+  { if( !iter->empty() ) _editor().addItem( iter->c_str() ); }
   
 }
 
