@@ -109,7 +109,16 @@ string TimeStamp::string( TimeStamp::Format format ) const
     if( tm_.tm_min < 10 ) o << "0";
     o << tm_.tm_min;
     break;
-    
+
+    case TIME_LONG:
+    if( tm_.tm_hour < 10 ) o << "0";
+    o << tm_.tm_hour << ":";
+    if( tm_.tm_min < 10 ) o << "0";
+    o << tm_.tm_min << ":";
+    if( tm_.tm_sec < 10 ) o << "0"; 
+    o << tm_.tm_sec;
+    break;
+
     case SHORT:
     o << this->string( DATE ) << " " << this->string( TIME );
     break;

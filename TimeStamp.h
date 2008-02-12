@@ -111,7 +111,10 @@ class TimeStamp:public Counter
     
     //! HH:MM
     TIME,
-    
+
+    //! HH:MM:SS
+    TIME_LONG,
+
     //! DD MONTH_string YYYY HH:MM:SS (week_day)
     LONG,     
         
