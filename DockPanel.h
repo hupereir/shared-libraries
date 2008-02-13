@@ -86,16 +86,7 @@ class DockPanel: public QWidget, public Counter
   
   //! set detachable group panel title
   void setTitle( const std::string& title )
-  { 
-    if( !label_ ) {
-      label_ = new QLabel( main_ );
-      QFont font( label_->font() );
-      font.setWeight( QFont::Bold );
-      label_->setFont( font );
-      main_layout_->insertWidget( 0, label_ );
-    }
-    label_->setText( title.c_str() );
-  }
+  { title_ = title; }
   
   //! retrieve button layout
   QBoxLayout& buttonLayout( void ) const
@@ -171,6 +162,9 @@ class DockPanel: public QWidget, public Counter
     
   };
     
+  //! dock title
+  std::string title_;
+  
   //! flags
   unsigned int flags_;
     
@@ -179,10 +173,7 @@ class DockPanel: public QWidget, public Counter
   
   //! horizontal layout (for buttons)
   QHBoxLayout* button_layout_;
-      
-  //! title label
-  QLabel* label_;
-      
+            
   //! button
   QPushButton* button_;
   

@@ -42,8 +42,7 @@ using namespace std;
 DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   QWidget( parent ),
   Counter( "DockPanel" ),
-  flags_( flags ),
-  label_(0)
+  flags_( flags )
 {
   Debug::Throw( "DockPanel::DockPanel.\n" );
   
@@ -122,16 +121,13 @@ void DockPanel::_toggleDock( void )
   
   } else {
         
-    QString title( main_->window()->windowTitle() );
-    Debug::Throw() << "DockPanel::_toggleDock - title: " << qPrintable( title ) << endl;
-    
     main_->setParent( 0 );
     if( flags_ & STAYS_ON_TOP ) main_->setWindowFlags( Qt::WindowStaysOnTopHint|Qt::Dialog );
     else main_->setWindowFlags( Qt::Dialog );
 
     main_->move( mapToGlobal( QPoint(0,0) ) );
     main_->setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-    main_->setWindowTitle( title );
+    if( !title_.empty() ) main_->setWindowTitle( title_.c_str() );
     
     button_->setText("&attach");
     if( detached_size_ != QSize() ) main_->resize( detached_size_ );    
