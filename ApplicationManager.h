@@ -35,7 +35,6 @@
 #include <assert.h>
 #include <QObject>
 #include <QTimer>
-#include <QTcpSocket>
 
 #include <iostream>
 #include <list>

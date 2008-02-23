@@ -47,7 +47,10 @@ namespace SERVER
 {
 
   //! default server port
-  enum { SERVER_PORT = 4242 };
+  enum { 
+    SERVER_PORT = 4242, 
+    TEST_PORT = 4243
+  };
   
   //!  interprocess communication server
   class Server: public QTcpServer, public Counter
