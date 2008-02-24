@@ -50,6 +50,13 @@
 namespace SERVER
 {
 
+  
+  //! default server port
+  enum { 
+    SERVER_PORT = 4242, 
+    TEST_PORT = 4243
+  };
+
   //! ensures only one instance of an application is running
   class ApplicationManager: public QObject, public Counter
   {
@@ -64,9 +71,6 @@ namespace SERVER
     
     //! destructor
     virtual ~ApplicationManager( void );
-      
-    //! initialize client/server
-    virtual void init( ArgList args, bool forced = false );
      
     //! application name
     virtual void setApplicationName( const std::string& name );
@@ -97,8 +101,8 @@ namespace SERVER
       emit stateChanged( (state_ = state ) ); 
     }
     
-    //! retrieves reference to "this" client
-    virtual Client& client( void )
+    //! reference to "this" client
+    virtual Client& client( void ) const
     { 
       assert( client_ );
       return *client_;
@@ -107,6 +111,11 @@ namespace SERVER
     //! retrieve Application ID
     virtual const ApplicationId& id( void ) const
     { return id_; }
+    
+    public slots:
+    
+    //! (re)initialize server/client connections
+    virtual void init( ArgList args = ArgList() );
     
     signals:
     
@@ -121,6 +130,13 @@ namespace SERVER
       
     protected:
          
+    //! reference to server
+    virtual Server& _server() const
+    { 
+      assert( server_ );
+      return *server_;
+    }
+    
     //! pair of application id and client
     typedef std::pair< ApplicationId, Client* > ClientPair;
     
@@ -196,9 +212,6 @@ namespace SERVER
     
     //! client recieves errors
     virtual void _error( QAbstractSocket::SocketError );
-    
-    //! a connection is dead
-    virtual void _recreateServer( void );
     
     //! no reply came within delay
     void _replyTimeOut( void );

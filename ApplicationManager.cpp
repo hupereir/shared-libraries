@@ -47,8 +47,8 @@ static const int debug_level(1);
 ApplicationManager::ApplicationManager( QObject* parent ):
   QObject( parent ),
   Counter( "ApplicationManager" ),
-  server_( 0 ),
-  client_( 0 ),
+  server_( new Server( this ) ),
+  client_( new Client( this, new QTcpSocket( this ) ) ),
   state_( AWAITING_REPLY ),
   timer_( this )
 { 
@@ -56,23 +56,22 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   Debug::Throw( debug_level, "ApplicationManager::ApplicationManager.\n" );
   setApplicationName( "GENERIC_APPLICATION" ); 
 
-  server_ = new Server( this, SERVER_PORT );
-  server_->listen( QHostAddress::Any, SERVER_PORT );
-  connect( server_, SIGNAL( newConnection() ), SLOT( _newConnection() ) );
+  connect( &_server(), SIGNAL( newConnection() ), SLOT( _newConnection() ) );
 
   // create new socket
-  QTcpSocket* socket = new QTcpSocket( this );
-  client_ = new Client( this, socket );
-  client().socket().connectToHost( "localhost", SERVER_PORT );    
   connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
-  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( _recreateServer() ) );
-  connect( client_, SIGNAL( messageAvailable() ), SLOT( _process() ) );
+  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( init() ) );
+  connect( &client(), SIGNAL( messageAvailable() ), SLOT( _process() ) );
   
 }
 
 //_________________________________________
 ApplicationManager::~ApplicationManager( void )
-{ Debug::Throw( debug_level, "ApplicationManager::~ApplicationManager.\n" ); }
+{ 
+  Debug::Throw( debug_level, "ApplicationManager::~ApplicationManager.\n" ); 
+  delete client_;
+  delete server_;
+}
 
 //_________________________________________
 void ApplicationManager::usage( void )
@@ -83,19 +82,19 @@ void ApplicationManager::usage( void )
 }
 
 //_____________________________________________________
-void ApplicationManager::init( ArgList args, bool forced )
+void ApplicationManager::init( ArgList args )
 {
 
   Debug::Throw( debug_level, "ApplicationManager::init.\n" );
 
+  // connect server to port
+  if( !_server().listen( QHostAddress::Any, SERVER_PORT ) )
+  {  Debug::Throw( debug_level ) << "ApplicationManager::init - unable to listen to port " << SERVER_PORT << endl; }
   
-  if( forced ) 
-  {
-    server_->listen( QHostAddress::Any, SERVER_PORT );
-    client().socket().abort();
-    client().socket().connectToHost( "localhost", SERVER_PORT );    
-  }
-  
+  // connect client to port
+  client().socket().abort();
+  client().socket().connectToHost( "localhost", SERVER_PORT );    
+    
   // emit initialization signal
   emit initialized();
   setState( AWAITING_REPLY );
@@ -108,7 +107,7 @@ void ApplicationManager::init( ArgList args, bool forced )
   Debug::Throw( debug_level ) << "ApplicationManager::init - " << command << endl;
   
   // send request command
-  client_->sendMessage( command );
+  client().sendMessage( command );
   
   // run timeout timer to force state ALIVE if no reply comes
   connect( &timer_, SIGNAL( timeout() ), SLOT( _replyTimeOut() ) );
@@ -264,10 +263,10 @@ void ApplicationManager::_newConnection()
   Debug::Throw( debug_level, "ApplicationManager::_newConnection.\n" );
   
   // check pending connection
-  if( !server_->hasPendingConnections() ) return;
+  if( !_server().hasPendingConnections() ) return;
   
   // create client from pending connection 
-  Client *client( new Client( this, server_->nextPendingConnection() ) );
+  Client *client( new Client( this, _server().nextPendingConnection() ) );
   connect( client, SIGNAL( messageAvailable() ), SLOT( _redirect() ) );
   connect( &client->socket(), SIGNAL( disconnected() ), SLOT( _connectionClosed() ) );
   _connectedClients().push_back( client );
@@ -298,7 +297,10 @@ void ApplicationManager::_connectionClosed( void )
   {
     ClientList::iterator iter;
     while( ( iter = find_if( _connectedClients().begin(), _connectedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != _connectedClients().end() )
-    { _connectedClients().erase( iter ); }
+    { 
+      delete *iter;
+      _connectedClients().erase( iter );
+    }
     
     return;
   } 
@@ -314,13 +316,6 @@ void ApplicationManager::_error( QAbstractSocket::SocketError error )
   if( state_ != DEAD ) setState( ALIVE );
   
   return;
-}
-
-//_____________________________________________________
-void ApplicationManager::_recreateServer( void )
-{
-  Debug::Throw( debug_level, "ApplicationManager::_recreateServer.\n" );
-  init( ArgList(), true );
 }
 
 //_____________________________________________________

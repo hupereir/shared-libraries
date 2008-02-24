@@ -45,12 +45,6 @@
 */
 namespace SERVER
 {
-
-  //! default server port
-  enum { 
-    SERVER_PORT = 4242, 
-    TEST_PORT = 4243
-  };
   
   //!  interprocess communication server
   class Server: public QTcpServer, public Counter
@@ -62,7 +56,7 @@ namespace SERVER
     public:
     
     //! constructor
-    Server( QObject* parent, quint16 port = SERVER::SERVER_PORT  );
+    Server( QObject* parent );
     
     //! destructor
     virtual ~Server( void );
