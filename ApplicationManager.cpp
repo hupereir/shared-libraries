@@ -119,7 +119,7 @@ void ApplicationManager::init( ArgList args )
   
   Debug::Throw( debug_level, "ApplicationManager::init. done.\n" );
   
-}  
+}
 
 //_____________________________________________________
 void ApplicationManager::setApplicationName( const string& name )
@@ -297,13 +297,17 @@ void ApplicationManager::_connectionClosed( void )
   {
     ClientList::iterator iter;
     while( ( iter = find_if( _connectedClients().begin(), _connectedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != _connectedClients().end() )
+<<<<<<< ApplicationManager.cpp
+    { _connectedClients().erase( iter ); }
+  } 
+=======
     { 
       delete *iter;
       _connectedClients().erase( iter );
     }
+>>>>>>> 1.4
     
-    return;
-  } 
+  return;
   
 }
   
