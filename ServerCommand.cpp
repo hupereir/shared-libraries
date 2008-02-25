@@ -63,6 +63,7 @@ ServerCommand::ConversionMap ServerCommand::_initConversions( void )
 //___________________________________________
 ServerCommand::ServerCommand( const string& command_line ):
   Counter( "ServerCommand" ),
+  timestamp_( TimeStamp::now() ),
   command_( "" )
 {
   

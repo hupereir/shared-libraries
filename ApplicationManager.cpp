@@ -301,6 +301,7 @@ void ApplicationManager::_connectionClosed( void )
       delete *iter;
       _connectedClients().erase( iter );
     }
+  }
     
   return;
   

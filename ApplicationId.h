@@ -97,7 +97,11 @@ namespace SERVER
         name() == app.name() &&
         user() == app.user() );
     }
-  
+    
+    //! equal to operator
+    bool operator != (const ApplicationId& app ) const
+    { return !( app == *this ); }
+ 
     //! lower than to operator
     bool operator < (const ApplicationId& app ) const
     { 

@@ -41,6 +41,7 @@
 #include "ArgList.h"  
 #include "Counter.h"  
 #include "Debug.h"  
+#include "TimeStamp.h"  
 
 namespace SERVER
 {
@@ -94,13 +95,34 @@ namespace SERVER
       const ApplicationId& id,
       const std::string& command = "" ):
       Counter( "ServerCommand" ),
+      timestamp_( TimeStamp::now() ),
       id_( id ),
       command_( command )
     { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
   
-  
+    //! equal-to operator 
+    bool operator == ( const ServerCommand& command )
+    { 
+      return timeStamp() == command.timeStamp() &&
+        id() == command.id() &&
+        ServerCommand::command() == command.command();
+    }
+    
+    //! less-than operator
+    bool operator < ( const ServerCommand& command )
+    {
+      if( timeStamp() != command.timeStamp() ) return timeStamp() < command.timeStamp();
+      if( id() != command.id() ) return id() < command.id();
+      if( ServerCommand::command() != command.command() ) return ServerCommand::command() < command.command();
+      return false;
+    }
+    
     //! convert to a string
-    operator std::string( void ) const;
+    operator std::string( void ) const;    
+    
+    //! time stamp
+    const TimeStamp& timeStamp( void ) const
+    { return timestamp_; }
     
     //! application id
     const ApplicationId& id( void ) const
@@ -127,6 +149,9 @@ namespace SERVER
     { return args_; }
     
     private:
+    
+    //! time stamp
+    TimeStamp timestamp_;
     
     //! application id
     ApplicationId id_;
