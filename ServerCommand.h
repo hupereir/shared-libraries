@@ -101,7 +101,7 @@ namespace SERVER
     { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
   
     //! equal-to operator 
-    bool operator == ( const ServerCommand& command )
+    bool operator == ( const ServerCommand& command ) const
     { 
       return timeStamp() == command.timeStamp() &&
         id() == command.id() &&
@@ -109,13 +109,17 @@ namespace SERVER
     }
     
     //! less-than operator
-    bool operator < ( const ServerCommand& command )
+    bool operator < ( const ServerCommand& command ) const
     {
       if( timeStamp() != command.timeStamp() ) return timeStamp() < command.timeStamp();
       if( id() != command.id() ) return id() < command.id();
       if( ServerCommand::command() != command.command() ) return ServerCommand::command() < command.command();
       return false;
     }
+    
+    //! true if this command is a child of argument
+    bool isChild( const ServerCommand& command ) const
+    { return timeStamp() >= command.timeStamp() && id() == command.id(); }
     
     //! convert to a string
     operator std::string( void ) const;    
