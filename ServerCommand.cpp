@@ -61,6 +61,7 @@ void ServerCommand::_initializeCommandNames( void )
   command_names_.insert( make_pair( ACCEPTED, "ACCEPTED" ) );
   command_names_.insert( make_pair( DENIED, "DENIED" ) );
   command_names_.insert( make_pair( ABORT, "ABORT" ) );
+  command_names_.insert( make_pair( IDENTIFY, "IDENTIFY" ) );
   command_names_.insert( make_pair( IDENTIFY_SERVER, "SERVER" ) );
   command_names_.insert( make_pair( KILLED, "KILLED" ) );
   command_names_.insert( make_pair( RAISE, "RAISE" ) );
