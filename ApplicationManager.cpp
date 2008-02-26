@@ -302,7 +302,7 @@ void ApplicationManager::_connectionClosed( void )
       _connectedClients().erase( iter );
     }
   }
-    
+      
   return;
   
 }
