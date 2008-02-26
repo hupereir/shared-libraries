@@ -56,36 +56,20 @@ namespace SERVER
   
     public:
   
-    
-    //! request accepted command
-    static const std::string ACCEPTED;
-    
-    //! alive command. Is send by a client when it recieved a Raise command 
-    static const std::string ALIVE;
-  
-    //! request denied command
-    static const std::string DENIED;
-  
-    //! force existing client to die
-    static const std::string ABORT;
-    
-    //! request denied command
-    static const std::string IDENTIFY;
-     
-    //! request command
-    static const std::string IDENTIFY_SERVER;
-    
-    //! client killed command
-    static const std::string KILLED;
-     
-    //! raise command
-    static const std::string RAISE;
-    
-    //! request command
-    static const std::string REQUEST;
-    
-    //! unlock command, clear list of registered applications
-    static const std::string UNLOCK;
+    enum CommandType
+    {
+      NONE,
+      ACCEPTED,
+      ALIVE,
+      DENIED,
+      ABORT,
+      IDENTIFY,
+      IDENTIFY_SERVER,
+      KILLED,
+      RAISE,
+      REQUEST,
+      UNLOCK
+    };
       
     //! constructor
     ServerCommand( const std::string& buffer = "" );
@@ -93,7 +77,7 @@ namespace SERVER
     //! constructor
     ServerCommand( 
       const ApplicationId& id,
-      const std::string& command = "" ):
+      const CommandType& command = NONE ):
       Counter( "ServerCommand" ),
       timestamp_( TimeStamp::now() ),
       id_( id ),
@@ -137,12 +121,19 @@ namespace SERVER
     { id_ = id; }
     
     //! command
-    std::string command( void ) const
+    CommandType command( void ) const
     { return command_; }
     
     //! command
-    void setCommand( const std::string& command )
+    void setCommand( const CommandType& command )
     { command_ = command; }
+    
+    //! command name
+    std::string commandName( void ) const
+    {
+      _initializeCommandNames();
+      return command_names_[ command() ];
+    }
     
     //! argument
     void setArguments( const ArgList& args )
@@ -154,6 +145,8 @@ namespace SERVER
     
     private:
     
+    static void _initializeCommandNames( void );
+        
     //! time stamp
     TimeStamp timestamp_;
     
@@ -164,7 +157,7 @@ namespace SERVER
     std::string user_;
     
     //! command
-    std::string command_;
+    CommandType command_;
     
     //! arguments
     ArgList args_;
@@ -178,11 +171,17 @@ namespace SERVER
     //! dump command to stream
     friend std::ostream &operator << (std::ostream &out,const ServerCommand &);   
   
+    //! command names
+    typedef std::map<CommandType, std::string > CommandMap;
+    
+    //! command names
+    static CommandMap command_names_;
+    
     //! text conversion pair type
     typedef std::map<std::string, std::string> ConversionMap;
     
     //! text conversions pair list
-    static ConversionMap _initConversions( void );
+    static ConversionMap _initializeConversions( void );
   
     //! text conversion pair list
     static ConversionMap conversions_;

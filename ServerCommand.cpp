@@ -39,47 +39,56 @@ using namespace SERVER;
 //___________________________________________
 const string ServerCommand::separator_( "::" ); 
 
-//_________________________________________
-const string ServerCommand::ACCEPTED( "ACCEPTED" );
-const string ServerCommand::DENIED( "DENIED" );
-const string ServerCommand::ABORT( "ABORT" );
-const string ServerCommand::IDENTIFY( "IDENTIFY" );
-const string ServerCommand::IDENTIFY_SERVER( "SERVER" );
-const string ServerCommand::KILLED( "KILLED" );
-const string ServerCommand::RAISE( "RAISE" );
-const string ServerCommand::ALIVE( "ALIVE" );
-const string ServerCommand::REQUEST( "REQUEST" );
-const string ServerCommand::UNLOCK( "UNLOCK" );
-ServerCommand::ConversionMap ServerCommand::conversions_  = ServerCommand::_initConversions();
+//__________________________________________________________________
+ServerCommand::ConversionMap ServerCommand::conversions_  = ServerCommand::_initializeConversions();
+
+//__________________________________________________________________
+ServerCommand::CommandMap ServerCommand::command_names_;
 
 //___________________________________________
-ServerCommand::ConversionMap ServerCommand::_initConversions( void )
+ServerCommand::ConversionMap ServerCommand::_initializeConversions( void )
 {
   ConversionMap out;
   out.insert( std::make_pair( " ", "SERVER_SPACE" ) );
   return out;
 }
 
+//_________________________________________
+void ServerCommand::_initializeCommandNames( void )
+{
+  if( !command_names_.empty() ) return;
+  command_names_.insert( make_pair( NONE, "" ) );
+  command_names_.insert( make_pair( ACCEPTED, "ACCEPTED" ) );
+  command_names_.insert( make_pair( DENIED, "DENIED" ) );
+  command_names_.insert( make_pair( ABORT, "ABORT" ) );
+  command_names_.insert( make_pair( IDENTIFY_SERVER, "SERVER" ) );
+  command_names_.insert( make_pair( KILLED, "KILLED" ) );
+  command_names_.insert( make_pair( RAISE, "RAISE" ) );
+  command_names_.insert( make_pair( ALIVE, "ALIVE" ) );
+  command_names_.insert( make_pair( REQUEST, "REQUEST" ) );
+  command_names_.insert( make_pair( UNLOCK, "UNLOCK" ) );
+}
+
 //___________________________________________
 ServerCommand::ServerCommand( const string& command_line ):
   Counter( "ServerCommand" ),
   timestamp_( TimeStamp::now() ),
-  command_( "" )
+  command_( NONE )
 {
   
   Debug::Throw( "ServerCommand::ServerCommand.\n" );
   
   int index( 0 );
   size_t pos;
-  string buffer( command_line );
+  Str buffer( command_line );
   while( ( pos = buffer.find( separator_ ) ) != string::npos )
   {
     
-    string word( buffer.substr( 0, pos ) );
+    Str word( buffer.substr( 0, pos ) );
     switch ( index ){
       case 0: id_.setName( word ); break;
       case 1: id_.setUser( word ); break;
-      case 2: command_ = word; break;
+      case 2: command_ = (CommandType) word.get<unsigned int>(); break;
       default: args_.add( word ); break;
     }
     
@@ -93,12 +102,12 @@ ServerCommand::ServerCommand( const string& command_line ):
   switch( index ) {
     case 0: id_.setName( buffer ); break;
     case 1: id_.setUser( buffer ); break;
-    case 2: command_ = buffer; break;
+    case 2: command_ = (CommandType) buffer.get<unsigned int>(); break;
     default: args_.add( buffer ); break;
   }
   
   Debug::Throw() << "ServerCommand::ServerCommand - id=" << id() << endl;
-  Debug::Throw() << "ServerCommand::ServerCommand - command=" << command() << endl;
+  Debug::Throw() << "ServerCommand::ServerCommand - command=" << commandName() << endl;
     
   return;
   
@@ -109,9 +118,7 @@ ServerCommand::operator std::string (void) const
 {
   Debug::Throw( "ServerCommand::operator (string).\n" );
   if( !id().isValid() ) return "";
-  Str buffer = id().name() + ServerCommand::separator_ + id().user();
-  
-  if( command_.size() ) buffer +=  ServerCommand::separator_ + command_;
+  Str buffer = id().name() + ServerCommand::separator_ + id().user() + ServerCommand::separator_ + Str().assign<CommandType>(command());
   
   // add arguments  
   for( ArgList::TagList::const_iterator tag_iter = args_.get().begin(); tag_iter != args_.get().end(); tag_iter++ )
