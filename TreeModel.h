@@ -35,6 +35,7 @@
 #include <list>
 
 #include "Counter.h"
+#include "Debug.h"
 #include "ItemModel.h"
 #include "TreeItem.h"
 
