@@ -69,7 +69,6 @@ bool Client::sendMessage( const string& message )
   
 }
 
-
 //_______________________________________________________
 void Client::reset( void )
 {

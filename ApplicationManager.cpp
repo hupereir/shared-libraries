@@ -125,7 +125,7 @@ void ApplicationManager::init( ArgList args )
 void ApplicationManager::setApplicationName( const string& name )
 { 
   Debug::Throw( debug_level, "ApplicationManager::setApplicationName.\n" );
-  id_ = ApplicationId( name, Util::user(), Util::env( "DISPLAY", "0.0" ) );
+  id_ = ApplicationId( name, Util::user(), Str( Util::env( "DISPLAY", "0.0" ) ).replace( ":", "" ) );
 }
 
 
@@ -155,7 +155,7 @@ Client* ApplicationManager::_register( const ApplicationId& id, Client* client, 
 void ApplicationManager::_redirect( const std::string& message, Client* sender )
 {
   
-  Debug::Throw( debug_level ) << "Application::_redirect - message: " << message << endl;
+  Debug::Throw() << "ApplicationManager::_redirect - message: " << message << endl;
 
   // parse message
   istringstream in( message );
@@ -218,8 +218,7 @@ void ApplicationManager::_redirect( const std::string& message, Client* sender )
       
       continue;
             
-    } else if( command.command() == ServerCommand::ALIVE ) 
-    {
+    } else if( command.command() == ServerCommand::ALIVE ) {
  
       // client exist and is alive. Deny current
       _broadcast( ServerCommand( command.id(), ServerCommand::DENIED ) );
@@ -238,6 +237,7 @@ void ApplicationManager::_redirect( const std::string& message, Client* sender )
       sender->sendMessage( ServerCommand( id_, ServerCommand::IDENTIFY_SERVER ) );
       
       continue;
+      
     }
     
     // redirect unrecognized message to all clients but the sender
@@ -250,6 +250,7 @@ void ApplicationManager::_redirect( const std::string& message, Client* sender )
 //_____________________________________________________
 void ApplicationManager::_broadcast( const string& message, Client* sender )
 {
+  
   Debug::Throw( debug_level ) << "ApplicationManager::_Broadcast - message: " << message << endl;
   
   for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
@@ -362,7 +363,7 @@ void ApplicationManager::_process( void )
     
     ServerCommand command;
     in >> command;
-    
+        
     // check command id is valid
     if( !command.id().isValid() ) continue;
     

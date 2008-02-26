@@ -97,7 +97,10 @@ namespace SERVER
     {
       if( timeStamp() != command.timeStamp() ) return timeStamp() < command.timeStamp();
       if( id() != command.id() ) return id() < command.id();
-      if( ServerCommand::command() != command.command() ) return ServerCommand::command() < command.command();
+      
+      // to order command, place IDENTIFY_SERVER first
+      if( ServerCommand::command() != command.command() ) return 
+        ( ServerCommand::command() == IDENTIFY_SERVER || ServerCommand::command() < command.command() );
       return false;
     }
     
