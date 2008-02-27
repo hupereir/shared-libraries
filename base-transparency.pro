@@ -7,8 +7,10 @@ DEPENDPATH += . ../base ../base-qt
 
 HEADERS = \
 BackgroundPixmap.h \
+TransparencyConfiguration.h \
 TransparentWidget.h
 
 SOURCES = \
 BackgroundPixmap.cpp \
+TransparencyConfiguration.cpp \
 TransparentWidget.cpp
