@@ -76,6 +76,7 @@ HEADERS = \
   TreeView.h \
   TreeViewConfiguration.h \
   TreeWidget.h \
+  UserSelectionFrame.h \
   ValidFileThread.h \
   XmlError.h \
   XmlFileList.h \
@@ -134,6 +135,7 @@ SOURCES = \
   TreeView.cpp \
   TreeWidget.cpp \
   TreeViewConfiguration.cpp \
+  UserSelectionFrame.cpp \
   ValidFileThread.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \
