@@ -68,10 +68,6 @@ namespace SERVER
     const QTcpSocket& socket() const
     { return *socket_; }
     
-    //! send message
-    /*! returns true if message could be sent */
-    // bool sendMessage( const std::string& message );
-
     /*! returns true if message could be sent */
     bool sendMessage( const ServerCommand& );
     
