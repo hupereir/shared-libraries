@@ -335,7 +335,7 @@ void ApplicationManager::_redirect( void )
   ClientList::iterator iter;
   while( ( iter = find_if(  _connectedClients().begin(), _connectedClients().end(), HasMessageFTor() ) ) != _connectedClients().end() )
   { 
-    if( !(*iter)->hasMessage() ) continue;
+    assert( (*iter)->hasMessage() );
     string message( (*iter)->message() );
     (*iter)->reset();
     _redirect( message, *iter );

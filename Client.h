@@ -37,6 +37,7 @@
 #include <list>
 
 #include "Counter.h"
+#include "ServerCommand.h"
 
 namespace SERVER
 {
@@ -69,7 +70,10 @@ namespace SERVER
     
     //! send message
     /*! returns true if message could be sent */
-    bool sendMessage( const std::string& message );
+    // bool sendMessage( const std::string& message );
+
+    /*! returns true if message could be sent */
+    bool sendMessage( const ServerCommand& );
     
     //! true if message is available
     const bool& hasMessage( void ) const

@@ -32,6 +32,7 @@
 #ifndef ServerCommand_h
 #define ServerCommand_h
 
+#include <QTextStream>
 #include <iostream>
 #include <list>
 #include <map>
@@ -166,13 +167,19 @@ namespace SERVER
     ArgList args_;
     
     //! separator
-    static const std::string separator_;
-  
+    static const std::string separator_;    
+    
     //! create command from stream
     friend std::istream &operator >> (std::istream &in, ServerCommand &);   
     
     //! dump command to stream
     friend std::ostream &operator << (std::ostream &out,const ServerCommand &);   
+    
+    //! create command from stream
+    friend QTextStream &operator >> ( QTextStream &, ServerCommand& );   
+
+    //! dump command to stream
+    friend QTextStream & operator<< ( QTextStream &, const ServerCommand& );
   
     //! command names
     typedef std::map<CommandType, std::string > CommandMap;

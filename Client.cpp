@@ -30,7 +30,6 @@
 */
 
 #include <assert.h>
-#include <QTextStream>
 #include <sstream>
 
 #include "Client.h"
@@ -58,13 +57,13 @@ Client::~Client( void )
 { Debug::Throw( debug_level, "Client::~Client.\n" ); }
 
 //_______________________________________________________
-bool Client::sendMessage( const string& message )
+bool Client::sendMessage( const ServerCommand& command )
 {
-  Debug::Throw( debug_level ) << "Client::sendMessage - " << message << endl;
+  Debug::Throw( debug_level ) << "Client::sendMessage - " << command << endl;
   
   if( !socket().state() ==  QAbstractSocket::ConnectedState ) return false;
   QTextStream os( &socket() );
-  os << message.c_str() << endl;
+  os << command << QString("\n");
   return true;
   
 }

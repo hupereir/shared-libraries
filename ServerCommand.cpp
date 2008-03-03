@@ -154,14 +154,32 @@ namespace SERVER {
       ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
       iter != ServerCommand::conversions_.end();
       iter++
-        ) 
-    { buffer = buffer.replace( iter->second, iter->first ); }
+    ) { buffer = buffer.replace( iter->second, iter->first ); }
     
     command = ServerCommand( buffer );
     return in;
     
   }
   
+  //__________________________________________________
+  QTextStream & operator >> ( QTextStream& in, ServerCommand & command )
+  {
+    
+    QString buffer;
+    in >> buffer;
+    
+    // apply conversion
+    for( 
+      ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
+      iter != ServerCommand::conversions_.end();
+      iter++
+    ) { buffer = buffer.replace( iter->second.c_str(), iter->first.c_str() ); }
+    
+    command = ServerCommand( qPrintable( buffer ) );
+    return in;
+    
+  }
+
   //__________________________________________________
   //! dump command to stream
   ostream & operator << ( ostream& out, const ServerCommand &command )
@@ -171,4 +189,16 @@ namespace SERVER {
     return out;
     
   }
+  
+    
+  //__________________________________________________
+  //! dump command to stream
+  QTextStream & operator << ( QTextStream& out, const ServerCommand &command )
+  {
+    
+    out << string( command ).c_str();
+    return out;
+    
+  }
+
 };
