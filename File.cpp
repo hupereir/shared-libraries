@@ -393,14 +393,14 @@ File File::truncatedName( void ) const
 list<File> File::listFiles( const unsigned int& flags ) const
 {
   
-  Debug::Throw() << "File::listFiles - this: " << c_str() << " - recursive: " << (flags&RECURSIVE) << endl;
+  // Debug::Throw(0) << "File::listFiles - this: " << c_str() << " - hidden: " << (flags&SHOW_HIDDEN) << endl;
   
   File full_name( expand() );
   list<File> out;
   if( !full_name.isDirectory() || (full_name.isLink() && !flags&FOLLOW_LINKS ) ) return out;
   
   // open directory
-  QDir::Filters filter = QDir::NoFilter;
+  QDir::Filters filter = QDir::AllEntries;
   if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
   
   QDir dir( full_name.c_str() );
@@ -414,7 +414,9 @@ list<File> File::listFiles( const unsigned int& flags ) const
     file_info.setFile( QDir( c_str() ), *iter );
     File found( qPrintable( file_info.absoluteFilePath() ) );
     out.push_back( found );
-        
+    
+    // Debug::Throw( 0 ) << "File::listFiles - " << found << endl;
+    
     // list subdirectory if recursive
     if( flags & RECURSIVE && found.isDirectory() )
     {
