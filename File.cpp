@@ -390,17 +390,21 @@ File File::truncatedName( void ) const
 }  
 
 //_____________________________________________________________________
-list<File> File::listFiles( const bool& recursive, const bool& follow_links ) const
+list<File> File::listFiles( const unsigned int& flags ) const
 {
-  Debug::Throw() << "File::listFiles - this: " << c_str() << " - recursive: " << recursive << endl;
+  
+  Debug::Throw() << "File::listFiles - this: " << c_str() << " - recursive: " << (flags&RECURSIVE) << endl;
   
   File full_name( expand() );
   list<File> out;
-  if( !full_name.isDirectory() || (full_name.isLink() && !follow_links ) ) return out;
+  if( !full_name.isDirectory() || (full_name.isLink() && !flags&FOLLOW_LINKS ) ) return out;
   
-  // open directory;
+  // open directory
+  QDir::Filters filter = QDir::NoFilter;
+  if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
+  
   QDir dir( full_name.c_str() );
-  QStringList files( dir.entryList() );
+  QStringList files( dir.entryList( filter ) );
   for( QStringList::iterator iter = files.begin(); iter != files.end(); iter++ )
   {
     
@@ -412,7 +416,7 @@ list<File> File::listFiles( const bool& recursive, const bool& follow_links ) co
     out.push_back( found );
         
     // list subdirectory if recursive
-    if( recursive && found.isDirectory() )
+    if( flags & RECURSIVE && found.isDirectory() )
     {
       
       // in case directory is a link
@@ -421,7 +425,7 @@ list<File> File::listFiles( const bool& recursive, const bool& follow_links ) co
       if( found.isLink() && find_if( out.begin(), out.end(), SameLinkFTor( found ) ) != out.end() ) continue;
         
       // list subdirectory
-      list<File> tmp = found.listFiles( true, follow_links ); 
+      list<File> tmp = found.listFiles( flags ); 
       out.insert( out.end(), tmp.begin(), tmp.end() );
     }
     
@@ -437,7 +441,7 @@ File File::find( const File& file, bool case_sensitive ) const
   
   Debug::Throw() << "File::find - this: " << c_str() << endl;
   if( !( exists() && isDirectory() ) ) return File();
-  list<File> files( listFiles() );
+  list<File> files( listFiles( RECURSIVE ) );
   list<File> directories;
   for( list<File>::iterator iter = files.begin(); iter != files.end(); iter++ )
   {

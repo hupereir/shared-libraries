@@ -175,7 +175,16 @@ class File: public Str
   virtual File find( const File& file, bool case_sensitive = true ) const;
   
   //! return list of files in a directory
-  virtual std::list< File > listFiles( const bool& recursive = false, const bool& follow_links = true ) const;
+  enum ListFlags
+  {
+    NONE = 0,
+    RECURSIVE = 1<<0,
+    FOLLOW_LINKS = 1<<1,
+    SHOW_HIDDEN = 1<<2
+  };
+  
+  //! return list of files in a directory
+  virtual std::list< File > listFiles( const unsigned int& flags ) const;
   
   //! used to find files pointing to the same link
   class SameLinkFTor
