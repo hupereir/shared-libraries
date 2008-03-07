@@ -32,9 +32,11 @@
   \date $Date$
 */
 
+#include <QVBoxLayout>
 #include <QCheckBox>
 #include <QTreeView>
 
+#include <assert.h>
 #include <string>
 #include <vector>
 
@@ -53,6 +55,13 @@ class TreeViewConfiguration: public QWidget, public Counter
   //! constructor
   TreeViewConfiguration( QWidget* parent, QTreeView* target, const std::string& title = ""  );
   
+  //! layout
+  QVBoxLayout& buttonLayout() const
+  { 
+    assert( box_layout_ );
+    return *box_layout_;
+  }
+
   public slots:
   
   //! restore configuration from initial point
@@ -72,6 +81,9 @@ class TreeViewConfiguration: public QWidget, public Counter
   //! target TreeView
   QTreeView *target_;
         
+  //! checkbox layout
+  QVBoxLayout* box_layout_;
+  
   //! checkboxes  
   std::vector< QCheckBox* > checkbox_;
   

@@ -77,10 +77,10 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
   QGroupBox *box = new QGroupBox( title.c_str(), this );
   layout->addWidget( box );
 
-  QVBoxLayout* box_layout( new QVBoxLayout() );
-  box_layout->setMargin(5);
-  box_layout->setSpacing(2);
-  box->setLayout( box_layout );
+  box_layout_  = new QVBoxLayout();
+  box_layout_->setMargin(5);
+  box_layout_->setSpacing(2);
+  box->setLayout( box_layout_ );
     
   // retrieve columns
   QHeaderView* header( target_->header() );
@@ -99,7 +99,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     
     // add checkbox
     checkbox = new QCheckBox( column_name, box );
-    box_layout->addWidget( checkbox );
+    box_layout_->addWidget( checkbox );
     
     checkbox->setChecked( !target_->isColumnHidden( index ) );
     checkbox_.push_back( checkbox );
