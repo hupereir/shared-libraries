@@ -45,6 +45,8 @@ HeaderMenu::HeaderMenu( QTreeView* parent ):
 {
   
   Debug::Throw( "HeaderMenu::HeaderMenu.\n" );
+ 
+  // retrieve parent header.
   QHeaderView* header( parent->header() );
   assert( header );
     
