@@ -47,8 +47,9 @@ HeaderMenu::HeaderMenu( QTreeView* parent ):
   Debug::Throw( "HeaderMenu::HeaderMenu.\n" );
   QHeaderView* header( parent->header() );
   assert( header );
-  
+    
   // loop over columns in header
+  unsigned int visible_columns(0);
   for( int index=0; index < header->count(); index++ )
   {
     
@@ -64,6 +65,8 @@ HeaderMenu::HeaderMenu( QTreeView* parent ):
     QAction* action = new QAction( column_name, this );
     action->setCheckable( true );
     action->setChecked( !parent->isColumnHidden( index ) );
+    if( !parent->isColumnHidden( index ) ) visible_columns++;
+    
     addAction( action );
     actions_.insert( make_pair( action, index ) );
 
@@ -71,6 +74,13 @@ HeaderMenu::HeaderMenu( QTreeView* parent ):
   
   // connections
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _updateList( QAction* ) ) );
+  
+  // if only one column is visible, disable corresponding action
+  if( visible_columns == 1 )
+  {
+    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    { if( iter->first->isChecked() ) iter->first->setEnabled( false ); }
+  }
   
 }
 
@@ -85,7 +95,7 @@ void HeaderMenu::_updateList( QAction* action )
   
   // retrieve parent tree_view
   QTreeView* tree_view = dynamic_cast<QTreeView*>( parentWidget() );
-  assert( tree_view );
+  assert( tree_view );  
 
   // set column visibility
   tree_view->setColumnHidden( iter->second, !iter->first->isChecked() );

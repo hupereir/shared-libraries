@@ -57,6 +57,9 @@ class HeaderMenu:public QMenu, public Counter
   
   private:
   
+  //! number of visible columns
+  unsigned int visible_columns_;
+  
   //! map action to column index
   typedef std::map< QAction*, int > ActionMap;
   
