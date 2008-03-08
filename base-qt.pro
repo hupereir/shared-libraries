@@ -36,6 +36,7 @@ HEADERS = \
   FlatStyle.h \
   FontEdit.h \
   FontInfo.h \
+  HeaderMenu.h \
   IconBrowsedButton.h \
   IconEngine.h \
   ItemDelegate.h \
@@ -100,6 +101,7 @@ SOURCES = \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
   CustomLineEdit.cpp \
+  HeaderMenu.cpp \
   ItemModel.cpp \
   ListWidget.cpp \
   CustomMainWindow.cpp \

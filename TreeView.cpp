@@ -33,6 +33,7 @@
 #include <QPainter>
 
 #include "ColorDisplay.h"
+#include "HeaderMenu.h"
 #include "QtUtil.h"
 #include "TreeView.h"
 #include "ItemModel.h"
@@ -59,6 +60,10 @@ TreeView::TreeView( QWidget* parent ):
   setSortingEnabled( true );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
+ 
+  // configure header menu
+  header()->setContextMenuPolicy( Qt::CustomContextMenu );
+  connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
   
 }
 
@@ -103,7 +108,7 @@ unsigned int TreeView::mask( void )
 }
 
 //______________________________________________________
-void TreeView::setMask( const unsigned int& mask )
+void TreeView::setMask( unsigned int mask )
 {
   if( !model() ) return;
   for( int index=0; index < model()->columnCount(); index++ )
@@ -199,6 +204,17 @@ void TreeView::_raiseMenu( const QPoint & pos )
   QtUtil::moveWidget( &menu(), QCursor::pos() );
   menu().show();
   
+}
+
+
+//___________________________________
+void TreeView::_raiseHeaderMenu( const QPoint & pos )
+{ 
+  Debug::Throw( "TreeView::_raiseHeaderMenu.\n" ); 
+  HeaderMenu* menu = new HeaderMenu( this );
+  menu->adjustSize();
+  QtUtil::moveWidget( menu, QCursor::pos() );
+  menu->show();
 }
 
 //_____________________________________________________________________

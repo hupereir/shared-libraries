@@ -40,6 +40,7 @@ noinst_HEADERS = \
   FlatStyle.h \
   FontEdit.h \
   FontInfo.h \
+  HeaderMenu.h \
   IconBrowsedButton.h \
   IconEngine.h \
   ItemDelegate.h \
@@ -122,6 +123,7 @@ libbase_qt_a_SOURCES = \
   FindDialog.cpp \
   FontEdit.cpp \
   FontInfo.cpp \
+  HeaderMenu.cpp \
   IconBrowsedButton.cpp \
   IconEngine.cpp \
   ItemDelegate.cpp \
@@ -172,6 +174,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_DockPanel.cpp \
   moc_FindDialog.cpp \
   moc_FontEdit.cpp \
+  moc_HeaderMenu.cpp \
   moc_IconBrowsedButton.cpp \
   moc_MultipleClickCounter.cpp \
   moc_OpenPreviousMenu.cpp \

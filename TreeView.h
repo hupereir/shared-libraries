@@ -79,7 +79,7 @@ class TreeView: public QTreeView, public Counter
   virtual unsigned int mask( void );
   
   //! show/hide columns according to mask bitset. 1 is for shown columns, 0 for hidden
-  virtual void setMask( const unsigned int& mask );
+  virtual void setMask( unsigned int mask );
    
   public slots:
   
@@ -113,6 +113,9 @@ class TreeView: public QTreeView, public Counter
    
   //! popup contextual menu
   virtual void _raiseMenu( const QPoint& );
+  
+  //! header menu
+  virtual void _raiseHeaderMenu( const QPoint& );
   
   private slots:
     
