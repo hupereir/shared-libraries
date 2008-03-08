@@ -211,10 +211,16 @@ void TreeView::_raiseMenu( const QPoint & pos )
 void TreeView::_raiseHeaderMenu( const QPoint & pos )
 { 
   Debug::Throw( "TreeView::_raiseHeaderMenu.\n" ); 
-  HeaderMenu* menu = new HeaderMenu( this );
-  menu->adjustSize();
-  QtUtil::moveWidget( menu, QCursor::pos() );
-  menu->show();
+  
+  // check number of columns
+  if( header()->count() <= 1 ) return;
+  
+  // create menu and raise.
+  HeaderMenu menu( this );
+  menu.adjustSize();
+  //QtUtil::moveWidget( &menu, QCursor::pos() );
+  menu.exec( QCursor::pos() );
+  
 }
 
 //_____________________________________________________________________
