@@ -223,6 +223,9 @@ class TreeWidget: public QTreeWidget, public Counter
   //! popup contextual menu
   virtual void _raiseMenu( const QPoint& );
  
+  //! header menu
+  virtual void _raiseHeaderMenu( const QPoint& ); 
+  
   private slots:
   
   //! update alternate item color

@@ -33,6 +33,7 @@
 #include <QPainter>
 
 #include "ColorDisplay.h"
+#include "HeaderMenu.h"
 #include "TreeWidget.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
@@ -50,7 +51,12 @@ TreeWidget::TreeWidget( QWidget* parent ):
   // default configuration
   setRootIsDecorated( false );
   setSortingEnabled( true );
-
+  
+  // header menu
+  header()->setContextMenuPolicy( Qt::CustomContextMenu );
+  connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
+  
+  // configuration
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
   
@@ -325,6 +331,21 @@ void TreeWidget::_raiseMenu( const QPoint & pos )
   menu().adjustSize();
   QtUtil::moveWidget( &menu(), QCursor::pos() );
   menu().show();
+  
+}
+
+//___________________________________
+void TreeWidget::_raiseHeaderMenu( const QPoint & pos )
+{ 
+  Debug::Throw( "TreeWidget::_raiseHeaderMenu.\n" ); 
+  
+  // check number of columns
+  if( header()->count() <= 1 ) return;
+  
+  // create menu and raise.
+  HeaderMenu menu( this );
+  menu.adjustSize();
+  menu.exec( QCursor::pos() );
   
 }
 

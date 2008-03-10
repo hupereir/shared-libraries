@@ -58,13 +58,15 @@ TreeView::TreeView( QWidget* parent ):
   setAllColumnsShowFocus( true );
   setRootIsDecorated( false );
   setSortingEnabled( true );
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-  _updateConfiguration();
  
-  // configure header menu
+  // header menu
   header()->setContextMenuPolicy( Qt::CustomContextMenu );
   connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
-  
+
+  // configuration
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  _updateConfiguration();
+   
 }
 
 //_______________________________________________
@@ -206,7 +208,6 @@ void TreeView::_raiseMenu( const QPoint & pos )
   
 }
 
-
 //___________________________________
 void TreeView::_raiseHeaderMenu( const QPoint & pos )
 { 
@@ -218,7 +219,6 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
   // create menu and raise.
   HeaderMenu menu( this );
   menu.adjustSize();
-  //QtUtil::moveWidget( &menu, QCursor::pos() );
   menu.exec( QCursor::pos() );
   
 }
