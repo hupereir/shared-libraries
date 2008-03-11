@@ -154,7 +154,7 @@ void CustomToolBar::_installActions( void )
 {
   Debug::Throw( "CustomToolBar::_installActions.\n" );
   ostringstream what;
-  what << "Show &" << qPrintable( windowTitle() );
+  what << "&" << qPrintable( windowTitle() );
   visibility_action_ = new QAction( what.str().c_str(), this );
   visibility_action_->setCheckable( true );
   visibility_action_->setChecked( true );
