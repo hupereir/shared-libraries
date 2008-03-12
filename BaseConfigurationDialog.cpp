@@ -91,8 +91,15 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button_layout_->setSpacing(5);
   layout->addLayout( button_layout_, 0 );
   
-  // apply button
+  // add restore default button to layout
   QPushButton* button;
+  button = new QPushButton( "Restore &Defaults", this );
+  button->setToolTip( "Restore default value for all options.");
+  connect( button, SIGNAL( clicked() ), SLOT( _restoreDefaults() ) );
+  button_layout_->addWidget( button );
+  button_layout_->addStretch( 1 );
+  
+  // apply button
   button_layout_->addWidget( button = new QPushButton( "&Apply", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _update() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );  

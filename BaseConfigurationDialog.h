@@ -151,6 +151,9 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
 
   //! restore configuration
   virtual void _restore();
+  
+  //! restore default options
+  virtual void _restoreDefaults( void ) = 0;
 
   //! save configuration from options
    virtual void _save();

@@ -290,7 +290,6 @@ template<class T> class TreeModel : public ItemModel
     _sort();
     emit layoutChanged();
     
-    
     return;
   
   }
