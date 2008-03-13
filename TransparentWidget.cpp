@@ -127,7 +127,6 @@ void TransparentWidget::_updateConfiguration( void )
     setHighlight( highlight_color );
   } else setHighlight();
  
-  
 }
   
 //____________________________________________________________________

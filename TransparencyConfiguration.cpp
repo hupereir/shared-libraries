@@ -55,7 +55,6 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   layout->setMargin(5);
   setLayout( layout );
    
-
   // generic objects
   OptionColorDisplay* color_display;
   OptionSlider* slider;
