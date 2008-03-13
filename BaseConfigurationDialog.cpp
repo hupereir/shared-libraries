@@ -1,3 +1,4 @@
+
 // $Id$
 
 /******************************************************************************
@@ -95,6 +96,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   QPushButton* button;
   button = new QPushButton( "Restore &Defaults", this );
   button->setToolTip( "Restore default value for all options.");
+  button->setAutoDefault( false );
+  
   connect( button, SIGNAL( clicked() ), SLOT( _restoreDefaults() ) );
   button_layout_->addWidget( button );
   button_layout_->addStretch( 1 );

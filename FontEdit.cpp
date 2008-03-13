@@ -1,4 +1,4 @@
-	// $Id$
+  // $Id$
 
 /******************************************************************************
 *									       
@@ -42,22 +42,22 @@ FontEdit::FontEdit( QWidget *parent ):
   QWidget( parent ),
   Counter( "FontEdit" )
 { 
-	
+  
   QHBoxLayout *layout( new QHBoxLayout() );
   layout->setMargin(0);
   layout->setSpacing(2);
   setLayout( layout );
 
   label_ =  new QLabel( "", this );
-	label_->setAlignment( Qt::AlignCenter );
-	QtUtil::fixSize( label_, QtUtil::NONE );
-	layout->addWidget( label_ );
+  label_->setAlignment( Qt::AlignCenter );
+  QtUtil::fixSize( label_, QtUtil::NONE );
+  layout->addWidget( label_ );
   
-	QPushButton *button( new QPushButton( "...", this ) );
+  QPushButton *button( new QPushButton( "...", this ) );
   QtUtil::fixSize( button );
-	layout->addWidget( button );
+  layout->addWidget( button );
   
   // connect push_button
   connect( button, SIGNAL( clicked() ), SLOT( _selectFont() ) );
-	setFont( font() ); 
+  setFont( font() ); 
 }
