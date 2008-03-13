@@ -56,7 +56,7 @@ class FontEdit: public QWidget, public Counter
   //! display font
   virtual void setFont( const QFont& font )
   { 
-    font_ = font;
+    font_ = font; 
     _updateLabel();
   }
   
@@ -89,7 +89,6 @@ class FontEdit: public QWidget, public Counter
   { 
     std::ostringstream what;
     what << qPrintable( font().family() ) << ", " << font().pointSize() << "pt";
-    label_->setFont( font() );
     label_->setText( what.str().c_str() ); 
   }
   
