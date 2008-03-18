@@ -78,10 +78,6 @@ class Options: public Counter
   virtual bool add( const Option& option, bool overwrite = true );
   
   //! retrieve list of special (i.e. kept) options
-  // virtual SpecialOptionMap& specialOptions()
-  // { return special_options_; }
-
-  //! retrieve list of special (i.e. kept) options
   virtual const SpecialOptionMap& specialOptions() const
   { return special_options_; }
   
