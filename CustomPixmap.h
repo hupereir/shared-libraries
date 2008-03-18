@@ -53,7 +53,7 @@ class CustomPixmap: public QPixmap, public Counter
   //! constructor
   CustomPixmap( const QImage& image ):
     Counter( "CustomPixmap" )
-  { fromImage( image ); }
+  { *this = fromImage( image ); }
                 
   //! constructor
   CustomPixmap( const std::string& file = std::string() ):
