@@ -132,10 +132,6 @@ template<class T> class ListModel : public ItemModel
 
   }
   
-  //! true if index matching value is selected
-  bool isSelected( const ValueType& value )
-  { return std::find( selection_.begin(), selection_.end(), value ) != selection_.end(); }
-  
   //@}
   
   //!@name interface

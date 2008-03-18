@@ -91,17 +91,18 @@ CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensi
     {
       
       QColor color( image.pixel( x, y ) );    
-      merged_color.setRgb( qRgba( 
+      merged_color.setRgb( qRgb( 
         (unsigned int)( no_intensity*color.red() + merged_red ), 
         (unsigned int)( no_intensity*color.green() + merged_green ), 
-        (unsigned int)( no_intensity*color.blue() + merged_blue ), 
-        qAlpha( color.rgb() ) ) );
+        (unsigned int)( no_intensity*color.blue() + merged_blue ) ) );
       
       image.setPixel( x, y, merged_color.rgb() );
     }
   }
   
-  return CustomPixmap().fromImage( image ); 
+  CustomPixmap out( image );
+  out.setAlphaChannel( alphaChannel() );
+  return out;
 
 }
 
@@ -183,17 +184,17 @@ CustomPixmap CustomPixmap::disabled( void )
   {
     for( int y = 0; y < height; y++ ) 
     {
-
       QColor color( image.pixel( x, y ) );
       int gray( 128 + qGray( color.rgb() )/2 );
       merged_color.setRgb( gray, gray, gray );
-      merged_color.setAlpha( color.alpha() );
       
       image.setPixel( x, y, merged_color.rgb() );
     }
   }
 
-  return CustomPixmap( image );
+  CustomPixmap out( image );
+  out.setAlphaChannel( alphaChannel() );
+  return out;
   
 }
 
@@ -217,9 +218,12 @@ CustomPixmap CustomPixmap::active( void )
       QColor color( image.pixel( x, y ) );
       color = color.light( 120 );
       image.setPixel( x, y, color.rgb() );
+      
     }
   }
 
-  return CustomPixmap( image );
+  CustomPixmap out( image );
+  out.setAlphaChannel( alphaChannel() );
+  return out;
   
 }
