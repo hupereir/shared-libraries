@@ -60,7 +60,7 @@ namespace TRANSPARENCY {
     {
       if( value == transparent_ ) return;
       transparent_ = value;
-      background_changed_ = true;
+      _setBackgroundChanged( true );
     }
   
     //! tint
@@ -87,59 +87,32 @@ namespace TRANSPARENCY {
     //@{
    
     //! move
-    virtual void moveEvent( QMoveEvent* event )
-    { 
-      // schedule pixmap update if transparent
-      if( transparent_ ) 
-      {
-        background_changed_ = true;
-        update();
-      }
-      return QWidget::moveEvent( event );
-    }
+    virtual void moveEvent( QMoveEvent* event );
     
     //! resize
-    virtual void resizeEvent( QResizeEvent* event )
-    { 
-      background_changed_ = true;
-      update();
-      return QWidget::resizeEvent( event );
-    }
+    virtual void resizeEvent( QResizeEvent* event );
     
     //! show
-    virtual void showEvent( QShowEvent* event )
-    { 
-      background_changed_ = true;
-      update(); 
-      return QWidget::showEvent( event );
-    }
+    virtual void showEvent( QShowEvent* event );
     
     //! enter event
-    virtual void enterEvent( QEvent *event )
-    {
-      if( !highlighted_ && highlight_color_.isValid() ) 
-      {
-        highlighted_ = true;
-        update();
-      }
-      return QWidget::enterEvent( event );
-    }
+    virtual void enterEvent( QEvent *event );
     
     //! leave event
-    virtual void leaveEvent( QEvent *event )
-    {
-      if( highlighted_ && highlight_color_.isValid() ) 
-      {
-        highlighted_ = false;
-        update();
-      }
-      return QWidget::leaveEvent( event );
-    }
-
+    virtual void leaveEvent( QEvent *event );
+ 
     //! paint
     virtual void paintEvent( QPaintEvent* event );
         
     //@}
+    
+    //! background changed
+    void _setBackgroundChanged( const bool& value )
+    { background_changed_ = value; }
+    
+    //! background changed
+    const bool& _backgroundChanged( void ) const
+    { return background_changed_; }
     
     protected slots:
     
@@ -149,7 +122,7 @@ namespace TRANSPARENCY {
     //! force reloading of the background 
     virtual void _reloadBackground( void )
     { 
-      background_changed_ = true;
+      _setBackgroundChanged( true );
       update();
     }
     

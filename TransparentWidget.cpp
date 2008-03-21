@@ -78,6 +78,56 @@ void TransparentWidget::setHighlight( const QColor& color )
   highlight_color_ = color;   
 }
 
+
+//____________________________________________________________________
+void TransparentWidget::moveEvent( QMoveEvent* event )
+{
+  if( transparent_ ) 
+  {
+    _setBackgroundChanged( true );
+    update();
+  }
+  return QWidget::moveEvent( event );
+}
+
+
+//____________________________________________________________________
+void TransparentWidget::resizeEvent( QResizeEvent* event )
+{
+  _setBackgroundChanged( true );
+  return QWidget::resizeEvent( event );
+}
+
+//____________________________________________________________________
+void TransparentWidget::showEvent( QShowEvent* event )
+{
+  _setBackgroundChanged( true );
+  update(); 
+  return QWidget::showEvent( event );
+}
+    
+//____________________________________________________________________
+void TransparentWidget::enterEvent( QEvent* event )
+{
+  if( !highlighted_ && highlight_color_.isValid() ) 
+  {
+    highlighted_ = true;
+    update();
+  }
+  return QWidget::enterEvent( event );
+}
+
+//____________________________________________________________________
+void TransparentWidget::leaveEvent( QEvent* event )
+{
+  if( highlighted_ && highlight_color_.isValid() ) 
+  {
+    highlighted_ = false;
+    update();
+  }
+  return QWidget::leaveEvent( event );
+}
+
 //____________________________________________________________________
 void TransparentWidget::paintEvent( QPaintEvent* event )
 {
