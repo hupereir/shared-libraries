@@ -87,7 +87,7 @@ void TransparentWidget::moveEvent( QMoveEvent* event )
     _setBackgroundChanged( true );
     update();
   }
-  return QWidget::moveEvent( event );
+  QWidget::moveEvent( event );
 }
 
 
@@ -95,7 +95,7 @@ void TransparentWidget::moveEvent( QMoveEvent* event )
 void TransparentWidget::resizeEvent( QResizeEvent* event )
 {
   _setBackgroundChanged( true );
-  return QWidget::resizeEvent( event );
+  QWidget::resizeEvent( event );
 }
 
 //____________________________________________________________________
@@ -103,7 +103,7 @@ void TransparentWidget::showEvent( QShowEvent* event )
 {
   _setBackgroundChanged( true );
   update(); 
-  return QWidget::showEvent( event );
+  QWidget::showEvent( event );
 }
     
 //____________________________________________________________________
@@ -114,7 +114,7 @@ void TransparentWidget::enterEvent( QEvent* event )
     highlighted_ = true;
     update();
   }
-  return QWidget::enterEvent( event );
+  QWidget::enterEvent( event );
 }
 
 //____________________________________________________________________
@@ -125,7 +125,7 @@ void TransparentWidget::leaveEvent( QEvent* event )
     highlighted_ = false;
     update();
   }
-  return QWidget::leaveEvent( event );
+  QWidget::leaveEvent( event );
 }
 
 //____________________________________________________________________
@@ -146,7 +146,8 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
       painter.drawRect( rect );
     }
   }
-  return QWidget::paintEvent( event );  
+  
+  QWidget::paintEvent( event );  
   
 }
 
