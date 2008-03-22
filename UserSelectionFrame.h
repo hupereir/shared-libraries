@@ -25,7 +25,7 @@
  *******************************************************************************/
 
 /*!
-  \file UserSelectionFrame.cc
+  \file UserSelectionFrame.h
   \brief current user
   \author Hugo Pereira
   \version $Revision$
