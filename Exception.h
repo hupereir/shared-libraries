@@ -42,11 +42,14 @@ std::string(message) + ExceptionSuffix::get(__func__,__FILE__,__LINE__)
    to description string */
 class ExceptionSuffix {
  public:
+  
+  //! create string from function suffix (retrieved via preprocessing information)
   static std::string get(std::string func, std::string file, int i){
     std::ostringstream tmp;
     tmp << " function: " << func << " file:" << file << " line:" << i;
     return tmp.str();
   }
+  
 };
 
 #endif
