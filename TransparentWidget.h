@@ -63,18 +63,35 @@ namespace TRANSPARENCY {
       _setBackgroundChanged( true );
     }
   
+    //! transparency
+    virtual const bool& transparent( void ) const
+    { return transparent_; }
+    
     //! tint
     virtual void setTint( const QColor& color = QColor() );
+    
+    //! tint color
+    virtual const QColor& tintColor( void ) const
+    { return tint_color_; }
     
     //! highlight
     virtual void setHighlight( const QColor& color = QColor() );
         
-    protected:
+    //!@name actions
+    //@{
+      
+    //! update background
+    QAction& updateBackgroundAction( void ) const
+    { return *update_background_action_; }
     
     //! reload background action
-    QAction& _reloadBackgroundAction( void ) const
+    QAction& reloadBackgroundAction( void ) const
     { return *reload_background_action_; }
+
+    //@}
     
+    protected:
+        
     //! background pixmap
     virtual QPixmap& _backgroundPixmap( void )
     { return background_pixmap_; }
@@ -118,6 +135,9 @@ namespace TRANSPARENCY {
     
     //! update configuration
     virtual void _updateConfiguration( void );
+
+    //! update background pixmap
+    virtual void _updateBackgroundPixmap( void );
     
     //! force reloading of the background 
     virtual void _reloadBackground( void )
@@ -128,11 +148,19 @@ namespace TRANSPARENCY {
     
     private:
 
-    //! update background pixmap
-    virtual void _updateBackgroundPixmap( void );
-
+    //! actions
+    void _installActions( void );
+    
+    //!@name actions
+    //@{
+    
+    //! update background
+    QAction *update_background_action_;
+  
     //! reload background
     QAction* reload_background_action_;
+    
+    //@}
     
     //! transparency enabled
     bool transparent_;
@@ -153,9 +181,7 @@ namespace TRANSPARENCY {
     QPixmap background_pixmap_;
     
   };
-  
-  
-  
+    
 };
 
 #endif

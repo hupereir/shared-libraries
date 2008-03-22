@@ -29,6 +29,7 @@
   \date    $Date$
 */
 
+#include <assert.h>
 #include <QPainter>
 
 #include "BackgroundPixmap.h"
@@ -50,14 +51,8 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
 { 
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
 
-  // pixmap path
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  if( !path_list.size() ) throw runtime_error( DESCRIPTION( "no path to pixmaps" ) );
-
-  reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD, path_list ), "&Reload background", this );
-  reload_background_action_->setToolTip( "Reinitialize transparent background" );
-  connect( reload_background_action_, SIGNAL( triggered() ), &BackgroundPixmap::get(), SLOT( reload() ) );
-  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( _reloadBackground() ) );
+  // actions
+  _installActions();
   
 }
 
@@ -82,7 +77,7 @@ void TransparentWidget::setHighlight( const QColor& color )
 //____________________________________________________________________
 void TransparentWidget::moveEvent( QMoveEvent* event )
 {
-  if( transparent_ ) 
+  if( transparent() && !( tintColor().isValid() && tintColor().alpha() == 255 )  ) 
   {
     _setBackgroundChanged( true );
     update();
@@ -186,11 +181,12 @@ void TransparentWidget::_updateBackgroundPixmap( void )
   
   Debug::Throw( "TransparentWidget::_updateBackgroundPixmap.\n" );
   
-  if( !transparent_ )
+  if( ( !transparent_ ) ||  ( tintColor().isValid() && tintColor().alpha() == 255 ) )
   {
     // solid background
     _backgroundPixmap() = QPixmap( size() );
     _backgroundPixmap().fill( palette().color( backgroundRole() ) );
+    
   } else {
     
     // transparent background
@@ -204,11 +200,12 @@ void TransparentWidget::_updateBackgroundPixmap( void )
   }
   
   // tint
-  if( tint_color_.isValid() )
+  if( tintColor().isValid() )
   {
+    
     QPainter painter( &_backgroundPixmap() );
     painter.setPen( Qt::NoPen );
-    painter.setBrush( tint_color_ );
+    painter.setBrush( tintColor() );
     painter.drawRect( _backgroundPixmap().rect() );
     
   }
@@ -219,3 +216,21 @@ void TransparentWidget::_updateBackgroundPixmap( void )
   return;
   
 }
+
+
+//____________________________________________________________________
+void TransparentWidget::_installActions( void )
+{
+  Debug::Throw( "TransparentWidget::_installAction.\n" );
+  // pixmap path
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  assert( !path_list.empty() );
+  
+  addAction( update_background_action_ = new QAction( "&Update background", this ) );
+  connect( update_background_action_, SIGNAL( triggered() ), SLOT( _updateBackgroundPixmap() ) );
+
+  reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD, path_list ), "&Reload background", this );
+  reload_background_action_->setToolTip( "Reinitialize transparent background" );
+  connect( reload_background_action_, SIGNAL( triggered() ), &BackgroundPixmap::get(), SLOT( reload() ) );
+  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( _reloadBackground() ) );
+};
