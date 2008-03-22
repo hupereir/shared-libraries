@@ -97,6 +97,7 @@ namespace BASE
     const std::string& text( void ) const
     { return text_; }
     
+    //! shortcut to help item list
     typedef std::vector< HelpItem > List;
     
     private:
