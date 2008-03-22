@@ -54,28 +54,6 @@ namespace TRANSPARENCY {
     
     //! constructor
     TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
-    
-    //! enable/disable transparency
-    virtual void setTransparent( const bool& value )
-    {
-      if( value == transparent_ ) return;
-      transparent_ = value;
-      _setBackgroundChanged( true );
-    }
-  
-    //! transparency
-    virtual const bool& transparent( void ) const
-    { return transparent_; }
-    
-    //! tint
-    virtual void setTint( const QColor& color = QColor() );
-    
-    //! tint color
-    virtual const QColor& tintColor( void ) const
-    { return tint_color_; }
-    
-    //! highlight
-    virtual void setHighlight( const QColor& color = QColor() );
         
     //!@name actions
     //@{
@@ -92,6 +70,40 @@ namespace TRANSPARENCY {
     
     protected:
         
+    //! enable/disable transparency
+    virtual void _setTransparent( const bool& value )
+    {
+      if( value == transparent_ ) return;
+      transparent_ = value;
+      _setBackgroundChanged( true );
+    }
+  
+    //! transparency
+    virtual const bool& _transparent( void ) const
+    { return transparent_; }
+    
+    //! tint
+    virtual void _setTintColor( const QColor& );
+    
+    //! tint color
+    virtual const QColor& _tintColor( void ) const
+    { return tint_color_; }
+    
+    //! highlight
+    virtual void _setHighlightColor( const QColor& );
+        
+    //! highlight color
+    virtual const QColor& _highlightColor( void ) const
+    { return highlight_color_; }
+    
+    //! highlighted
+    virtual void _setHighlighted( bool value )
+    { highlighted_ = value; }
+    
+    //! highlighted
+    virtual const bool& _highlighted( void ) const
+    { return highlighted_; }
+
     //! background pixmap
     virtual QPixmap& _backgroundPixmap( void )
     { return background_pixmap_; }

@@ -53,20 +53,23 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
 
   // actions
   _installActions();
+
+  // connections
+  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( _reloadBackground() ) );
   
 }
 
 //____________________________________________________________________
-void TransparentWidget::setTint( const QColor& color )
+void TransparentWidget::_setTintColor( const QColor& color )
 {
   Debug::Throw( "TransparentWidget::tint.\n" ); 
   if( tint_color_ == color ) return;
   tint_color_ = color;
-  background_changed_ = true;
+  _setBackgroundChanged( true );
 }
 
 //____________________________________________________________________
-void TransparentWidget::setHighlight( const QColor& color )
+void TransparentWidget::_setHighlightColor( const QColor& color )
 {
   Debug::Throw( "TransparentWidget::highlight.\n" ); 
   if( highlight_color_ == color ) return;
@@ -77,7 +80,7 @@ void TransparentWidget::setHighlight( const QColor& color )
 //____________________________________________________________________
 void TransparentWidget::moveEvent( QMoveEvent* event )
 {
-  if( transparent() && !( tintColor().isValid() && tintColor().alpha() == 255 )  ) 
+  if( _transparent() && !( _tintColor().isValid() && _tintColor().alpha() == 255 )  ) 
   {
     _setBackgroundChanged( true );
     update();
@@ -104,9 +107,9 @@ void TransparentWidget::showEvent( QShowEvent* event )
 //____________________________________________________________________
 void TransparentWidget::enterEvent( QEvent* event )
 {
-  if( !highlighted_ && highlight_color_.isValid() ) 
+  if( !_highlighted() && _highlightColor().isValid() ) 
   {
-    highlighted_ = true;
+    _setHighlighted( true );
     update();
   }
   QWidget::enterEvent( event );
@@ -115,9 +118,9 @@ void TransparentWidget::enterEvent( QEvent* event )
 //____________________________________________________________________
 void TransparentWidget::leaveEvent( QEvent* event )
 {
-  if( highlighted_ && highlight_color_.isValid() ) 
+  if( _highlighted() && _highlightColor().isValid() ) 
   {
-    highlighted_ = false;
+    _setHighlighted( false );
     update();
   }
   QWidget::leaveEvent( event );
@@ -127,17 +130,17 @@ void TransparentWidget::leaveEvent( QEvent* event )
 void TransparentWidget::paintEvent( QPaintEvent* event )
 {
   
-  if( background_changed_ ) _updateBackgroundPixmap();
+  if( _backgroundChanged() ) _updateBackgroundPixmap();
   if( !_backgroundPixmap().isNull() )
   {
     QPainter painter( this );
     QRect rect( TransparentWidget::rect()&event->rect() );
     painter.drawPixmap( rect, _backgroundPixmap(), rect );
     
-    if( highlighted_ && highlight_color_.isValid() )
+    if( _highlighted() && _highlightColor().isValid() )
     {
       painter.setPen( Qt::NoPen );
-      painter.setBrush( highlight_color_ );
+      painter.setBrush( _highlightColor() );
       painter.drawRect( rect );
     }
   }
@@ -153,7 +156,7 @@ void TransparentWidget::_updateConfiguration( void )
   Debug::Throw( "TransparentWidget::_updateConfiguration.\n" );
   
   // use transparency
-  setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
+  _setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
   
   // tint
   QColor tint_color( XmlOptions::get().get<string>( "TRANSPARENCY_TINT_COLOR" ).c_str() );
@@ -161,8 +164,8 @@ void TransparentWidget::_updateConfiguration( void )
   if( tint_color.isValid() && tint_intensity )
   {
     tint_color.setAlpha( tint_intensity );
-    setTint( tint_color );
-  } else setTint();
+    _setTintColor( tint_color );
+  } else _setTintColor( QColor() );
    
   // highlight
   QColor highlight_color( XmlOptions::get().get<string>( "TRANSPARENCY_HIGHLIGHT_COLOR" ).c_str() );
@@ -170,8 +173,8 @@ void TransparentWidget::_updateConfiguration( void )
   if( highlight_color.isValid() && highlight_intensity )
   {
     highlight_color.setAlpha( highlight_intensity );
-    setHighlight( highlight_color );
-  } else setHighlight();
+    _setHighlightColor( highlight_color );
+  } else _setHighlightColor( QColor() );
  
 }
   
@@ -181,8 +184,9 @@ void TransparentWidget::_updateBackgroundPixmap( void )
   
   Debug::Throw( "TransparentWidget::_updateBackgroundPixmap.\n" );
   
-  if( ( !transparent_ ) ||  ( tintColor().isValid() && tintColor().alpha() == 255 ) )
+  if( ( !_transparent() ) ||  ( _tintColor().isValid() && _tintColor().alpha() == 255 ) )
   {
+    
     // solid background
     _backgroundPixmap() = QPixmap( size() );
     _backgroundPixmap().fill( palette().color( backgroundRole() ) );
@@ -200,19 +204,18 @@ void TransparentWidget::_updateBackgroundPixmap( void )
   }
   
   // tint
-  if( tintColor().isValid() )
+  if( _tintColor().isValid() )
   {
     
     QPainter painter( &_backgroundPixmap() );
     painter.setPen( Qt::NoPen );
-    painter.setBrush( tintColor() );
+    painter.setBrush( _tintColor() );
     painter.drawRect( _backgroundPixmap().rect() );
     
   }
   
-  background_changed_ = false;
+  _setBackgroundChanged( false );
   
-  Debug::Throw( "TransparentWidget::_updateBackgroundPixmap - done.\n" );
   return;
   
 }
@@ -232,5 +235,5 @@ void TransparentWidget::_installActions( void )
   reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD, path_list ), "&Reload background", this );
   reload_background_action_->setToolTip( "Reinitialize transparent background" );
   connect( reload_background_action_, SIGNAL( triggered() ), &BackgroundPixmap::get(), SLOT( reload() ) );
-  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( _reloadBackground() ) );
+  
 };
