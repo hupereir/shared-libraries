@@ -83,6 +83,7 @@ noinst_HEADERS = \
   TreeWidget.h \
   UserSelectionFrame.h \
   ValidFileThread.h \
+  X11Util.h \
   XmlError.h \
   XmlFileList.h \
   XmlFileRecord.h \
