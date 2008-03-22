@@ -57,6 +57,7 @@ namespace SERVER
   
     public:
   
+    //! command type
     enum CommandType
     {
       NONE,
@@ -149,6 +150,7 @@ namespace SERVER
     
     private:
     
+    //! map command types to names
     static void _initializeCommandNames( void );
         
     //! time stamp
