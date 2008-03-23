@@ -183,7 +183,7 @@ void TransparentWidget::_updateBackgroundPixmap( void )
 {
   
   Debug::Throw( "TransparentWidget::_updateBackgroundPixmap.\n" );
-  
+
   if( ( !_transparent() ) ||  ( _tintColor().isValid() && _tintColor().alpha() == 255 ) )
   {
     
