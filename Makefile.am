@@ -146,12 +146,13 @@ libbase_qt_a_SOURCES = \
   TreeViewConfiguration.cpp \
   UserSelectionFrame.cpp \
   ValidFileThread.cpp \
+  X11Util.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \
   XmlOption.cpp \
   XmlOptions.cpp \
   XmlTextFormatBlock.cpp \
-  XmlTimeStamp.cpp     
+  XmlTimeStamp.cpp
 
 nodist_libbase_qt_a_SOURCES = \
   moc_BaseConfigurationDialog.cpp \

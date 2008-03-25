@@ -32,7 +32,10 @@
   \date    $Date$
 */
 
+#include <qglobal.h>
+
 #ifdef Q_WS_X11
+#include <QWidget>
 #include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -40,93 +43,13 @@
 
 namespace MAIN
 {
-  
+    
   //! return true if property is found in NET_WM_STATE
-  bool hasProperty( QWidget* widget, const Atom& atom )
-  {
-    Debug::Throw( "MAIN::hasProperty.\n" );
-
-    Display* display( QX11Info::display() );
-    Atom net_wm_state( XInternAtom (display, "_NET_WM_STATE", False) );
-
-    Atom actual;
-    int format;
-    unsigned char *data;
-    
-    // try retrieve property
-    unsigned long offset = 0;
-    while( 1 )
-    {
-      unsigned long n, left;
-      XGetWindowProperty( 
-        display, widget->winId(), net_wm_state, 
-        offset, 1L, false, 
-        XA_ATOM, &actual,  
-        &format, &n, &left, 
-        (unsigned char **) &data);
-      
-      // finish if no data is found
-      if( data == None ) break;
-
-      // try cast data to atom and compare
-      Atom found( *(Atom*)data );
-      if( found == atom ) return true;
-      
-      // move forward if more data remains
-      if( !left ) break;
-      else offset ++;
-      
-    }
-        
-    // no match found
-    return false;
-    
-  }
+  bool hasProperty( QWidget* widget, const Atom& atom );
   
   //! remove property from NET_WM_STATE
-  void removeProperty( QWidget* widget, const Atom& atom )
-  {
-    Debug::Throw( "MAIN::removeProperty.\n" );
-
-    Display* display( QX11Info::display() );
-    Atom net_wm_state( XInternAtom (display, "_NET_WM_STATE", False) );
-
-    Atom actual;
-    int format;
-    unsigned char *data;
-    
-    // try retrieve property
-    unsigned long offset = 0;
-    std::list<Atom> atoms;
-    while( 1 )
-    {
-      unsigned long n, left;
-      XGetWindowProperty( 
-        display, widget->winId(), net_wm_state, 
-        offset, 1L, false, 
-        XA_ATOM, &actual,  
-        &format, &n, &left, 
-        (unsigned char **) &data);
-      
-      if( data == None ) break;      
-
-      // try cast data to atom
-      Atom found( *(Atom*)data );
-      if( found != atom ) atoms.push_back( found );
-      if( !left ) break;
-      else offset ++;
-    }
-    
-    // delete property
-    XDeleteProperty( display, widget->winId(), net_wm_state );
-    
-    // re-add atoms that are not the one to be deleted
-    for( std::list<Atom>::iterator iter = atoms.begin(); iter != atoms.end(); iter++ )
-    {XChangeProperty( display, widget->winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&*iter, 1); }
-    
-    return;
-  }
-
+  void removeProperty( QWidget* widget, const Atom& atom );
+  
 };
 
 #endif

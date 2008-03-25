@@ -139,6 +139,7 @@ SOURCES = \
   TreeViewConfiguration.cpp \
   UserSelectionFrame.cpp \
   ValidFileThread.cpp \
+  X11Util.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \
   XmlOption.cpp \
