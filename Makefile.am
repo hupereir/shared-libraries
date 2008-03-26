@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
-EXTRA_DIST = base-qt.pro
+EXTRA_DIST = base-qt.pro basePixmaps.qrc
 
 INCLUDES =  \
   -I$(qt_includes) \
