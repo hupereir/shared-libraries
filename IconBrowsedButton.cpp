@@ -131,27 +131,5 @@ void IconBrowsedButton::_browse( void )
   }
     
   setFile( File( qPrintable( files.front() ) ), true );
-
-  
-//   // create dialog
-//   CustomDialog dialog( this );
-// 
-//   ostringstream what;
-//   dialog.mainLayout().addWidget( new QLabel(  "icon file name", &dialog ) );
-// 
-//   // create editor, either directly or from BrowsedLineEdit
-//   CustomLineEdit* line_edit( 0 );
-//   BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog );
-//   dialog.mainLayout().addWidget( browse_edit );
-//   line_edit = &browse_edit->editor();
-//   line_edit->setText( file_.c_str() );
-//   
-//   // map dialog
-//   dialog.adjustSize();
-//   QtUtil::centerOnParent( &dialog );
-//   if( dialog.exec() == QDialog::Rejected ) return;
-//   if( line_edit->text().isEmpty() ) return;
-//   setFile( File( qPrintable( line_edit->text() ) ), true );
- 
   return; 
 }
