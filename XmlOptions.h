@@ -58,7 +58,7 @@ class XmlOptions
   { return file_; }
   
   private:
-   
+  
   //! singleton
   static Options singleton_;
   

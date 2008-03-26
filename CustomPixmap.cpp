@@ -46,6 +46,15 @@ CustomPixmap CustomPixmap::find(
   bool case_sensitive )
 {
   Debug::Throw( "CustomPixmap::find.\n" );
+  
+  // initialize Resource pixmaps at first call.
+  static bool first( true );
+  if( first )
+  {
+    first = false;
+    Q_INIT_RESOURCE( basePixmaps );
+  }
+  
   for( list<string>::const_iterator iter = path.begin(); iter != path.end(); iter++ )
   {
     
