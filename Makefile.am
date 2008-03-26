@@ -6,7 +6,6 @@ configure.png \
 editcopy.png \
 editpaste.png \
 exit.png \
-filesave.png \
 messagebox_warning.png \
 qt-logo.png \
 redo.png \
