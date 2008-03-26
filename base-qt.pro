@@ -148,3 +148,5 @@ SOURCES = \
   XmlOptions.cpp \
   XmlTextFormatBlock.cpp \
   XmlTimeStamp.cpp     
+
+RESOURCES = basePixmaps.qrc

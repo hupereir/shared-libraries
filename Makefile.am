@@ -157,6 +157,7 @@ libbase_qt_a_SOURCES = \
   XmlTimeStamp.cpp
 
 nodist_libbase_qt_a_SOURCES = \
+  qrc_basePixmaps.cpp \
   moc_BaseConfigurationDialog.cpp \
   moc_BlockHighlight.cpp \
   moc_BrowsedLineEdit.cpp \
@@ -196,7 +197,11 @@ nodist_libbase_qt_a_SOURCES = \
 
 clean-local:
 	rm -f moc_*.cpp
+	rm -f qrc_*.cpp
 
 ### rule to generate qt meta objects
 moc_%.cpp: %.h
 	$(qt_moc) $^ -o $@
+
+qrc_%.cpp: %.qrc
+	$(qt_rcc) -name $* $^ -o $@
