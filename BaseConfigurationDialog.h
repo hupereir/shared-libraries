@@ -134,6 +134,9 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
 
   protected slots:
 
+  //! show pixmap path dialog
+  virtual void _editPixmapPathList( void );
+  
   //! read configuration from options
   virtual void _read()
   { 
@@ -141,7 +144,7 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
     OptionWidgetList::read(); 
   }
 
-  //! read configuration from options
+  //! update configuration
   virtual void _update()
   {
     Debug::Throw( "BaseConfigurationDialog::_update.\n" );

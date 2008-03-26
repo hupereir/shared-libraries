@@ -31,6 +31,10 @@
 
 using namespace std;
 
+#include <QLayout>
+#include <QLabel>
+#include <QSplitter>
+
 #include "CustomFileDialog.h"
 #include "File.h"  
 #include "Debug.h"  
@@ -54,6 +58,7 @@ CustomFileDialog::CustomFileDialog( QWidget* parent ):
   setViewMode( List );
   connect( this, SIGNAL( currentChanged( const QString& ) ), SLOT( _saveWorkingDirectory( const QString& ) ) );
 
+    
 }  
 
 //______________________________________________________________________

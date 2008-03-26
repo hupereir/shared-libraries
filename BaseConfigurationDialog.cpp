@@ -30,6 +30,7 @@
   \date $Date$
 */
 #include <QApplication>
+#include <QScrollArea>
 #include <QShortcut>
 #include <QToolTip>
 #include <QGroupBox>
@@ -38,6 +39,7 @@
 
 #include "BaseConfigurationDialog.h"
 #include "CustomGridLayout.h"
+#include "CustomDialog.h"
 #include "Debug.h"
 #include "OptionBrowsedLineEdit.h"
 #include "OptionCheckBox.h"
@@ -65,7 +67,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
   setWindowTitle( "Configuration" );
-
+  setSizeGripEnabled( true );
+  
   QVBoxLayout* layout( new QVBoxLayout() );
   layout->setSpacing(10);
   layout->setMargin(10);
@@ -77,7 +80,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   layout->addLayout( h_layout );
   
   h_layout->addWidget( list_ = new ListWidget( this ), 0 );
-  h_layout->addWidget( stack_ = new QStackedWidget( this ), 1 );
+  h_layout->addWidget( stack_ = new QStackedWidget(0), 1 );
   
   _list().setMaximumWidth(150);
   _list().setMovement(QListView::Static);
@@ -132,7 +135,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   // close window shortcut
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
-
+  
 }
 
 //_________________________________________________________
@@ -140,15 +143,22 @@ QWidget& BaseConfigurationDialog::addPage( const QString& title, const bool& exp
 {  
   Debug::Throw( "ConfigList::Item::Item.\n" );
   
+  
+  QScrollArea* scroll = new QScrollArea();
+  scroll->setWidgetResizable ( true );
+  scroll->setFrameStyle( QFrame::NoFrame );
+  
   QWidget* main( new QWidget() );
+  scroll->setWidget( main );
+  _stack().addWidget( scroll );
+
   QVBoxLayout* layout( new QVBoxLayout() );
   layout->setSpacing( 5 );
   layout->setMargin( 5 );
   main->setLayout( layout );
   
   // create new item and add to stack
-  new ConfigListItem( &_list(), title, main );
-  _stack().addWidget( main );
+  new ConfigListItem( &_list(), title, scroll );
 
   // make sure first item is selected
   _list().setCurrentRow(0);
@@ -246,14 +256,14 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     
   }
     
-  // toolbars
-  if( flag & TOOLBAR ) { toolbarConfiguration( parent ); }
-  
   // list
   if( flag & LIST ) { listConfiguration( parent ); }
   
   // tabs
   if( flag & TEXTEDIT ) { textEditConfiguration( parent ); }
+
+  // toolbars
+  if( flag & TOOLBAR ) { toolbarConfiguration( parent ); }  
       
 }
 
@@ -271,33 +281,34 @@ void BaseConfigurationDialog::toolbarConfiguration( QWidget* parent )
   layout->setSpacing(5);
   box->setLayout( layout );
   parent->layout()->addWidget( box );
-      
-  layout->addWidget( new QLabel("Pixmap pathname: ", box ) );
-  OptionListBox *listbox = new OptionListBox( box, "PIXMAP_PATH" );
-  listbox->setBrowsable( true );
-  listbox->setFileMode( QFileDialog::Directory );
-  addOptionWidget( listbox );
-  listbox->setToolTip( "Pathname to load toolbar pixmaps" );
-  layout->addWidget( listbox );
-  
+        
+  QHBoxLayout* h_layout = new QHBoxLayout();
+  h_layout->setMargin(0);
+  h_layout->setSpacing(5);
+  layout->addLayout( h_layout );
+
   // menu big pixmaps
-  layout->addWidget( new QLabel("",box) );
   OptionCheckBox* checkbox = new OptionCheckBox( "Big pixmaps in toolbars", box, "USE_BIG_PIXMAP" );
   addOptionWidget( checkbox );
   checkbox->setToolTip( "Use big pixmaps in toolbars" );
-  layout->addWidget( checkbox );
-  
+  h_layout->addWidget( checkbox );
+
+  QPushButton *button = new QPushButton( "Edit pixmap path list", box );
+  connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
+  h_layout->addWidget( button );
+
   // menu text label
   checkbox = new OptionCheckBox( "Button text in toolbars", box, "USE_TEXT_LABEL" );
   addOptionWidget( checkbox );
   checkbox->setToolTip( "Use text under tool buttons icon" );
   layout->addWidget( checkbox );
 
-  // menu text label
+  // lock toolbars
   checkbox = new OptionCheckBox( "lock toolbars position", box, "LOCK_TOOLBARS" );
   addOptionWidget( checkbox );
   checkbox->setToolTip( "Lock toolbars position" );
   layout->addWidget( checkbox );
+  
   
 }
 
@@ -452,6 +463,35 @@ void BaseConfigurationDialog::_display( QListWidgetItem* current, QListWidgetIte
   ConfigListItem* item( dynamic_cast<ConfigListItem*>(current) );
   assert( item );
   _stack().setCurrentWidget(&item->page());  
+}
+
+//__________________________________________________
+void BaseConfigurationDialog::_editPixmapPathList( void )
+{
+  
+  CustomDialog dialog( this );
+
+  // store backup
+  Options::OptionList backup_options = XmlOptions::get().specialOptions( "PIXMAP_PATH" );
+  
+  dialog.mainLayout().addWidget( new QLabel("Pixmap pathname: ", &dialog ) );
+  OptionListBox *listbox = new OptionListBox( &dialog, "PIXMAP_PATH" );
+  listbox->setBrowsable( true );
+  listbox->setFileMode( QFileDialog::Directory );
+  listbox->setToolTip( "Pathname to load toolbar pixmaps" );
+  listbox->read();
+  dialog.mainLayout().addWidget( listbox );
+  
+  // 
+  if( dialog.exec() ) listbox->write();
+  else { 
+    // restore old values
+    XmlOptions::get().clearSpecialOptions( "PIXMAP_PATH" );
+    for( Options::OptionList::iterator iter = backup_options.begin(); iter != backup_options.end(); iter++ )
+    { XmlOptions::get().add( *iter ); }
+  }
+  return;
+  
 }
 
 //__________________________________________________
