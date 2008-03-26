@@ -43,6 +43,7 @@ noinst_HEADERS = \
   HeaderMenu.h \
   IconBrowsedButton.h \
   IconEngine.h \
+  IconFileDialog.h \
   ItemDelegate.h \
   ItemModel.h \
   ListModel.h \
@@ -127,6 +128,7 @@ libbase_qt_a_SOURCES = \
   HeaderMenu.cpp \
   IconBrowsedButton.cpp \
   IconEngine.cpp \
+  IconFileDialog.cpp \
   ItemDelegate.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
@@ -178,6 +180,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_FontEdit.cpp \
   moc_HeaderMenu.cpp \
   moc_IconBrowsedButton.cpp \
+  moc_IconFileDialog.cpp \
   moc_MultipleClickCounter.cpp \
   moc_OpenPreviousMenu.cpp \
   moc_OptionListBox.cpp \

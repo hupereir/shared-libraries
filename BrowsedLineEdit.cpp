@@ -82,10 +82,7 @@ void BrowsedLineEdit::setWorkDirectory( const string& directory )
 
 //____________________________________________________________
 void BrowsedLineEdit::setFile( const string& file )
-{
-  line_edit_->setText( file.c_str() );
-  // work_directory_ = File(file).path();
-} 
+{ line_edit_->setText( file.c_str() ); } 
 
 //____________________________________________________________
 void BrowsedLineEdit::_browse( void )

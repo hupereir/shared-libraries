@@ -1,4 +1,6 @@
 // $Id$
+#ifndef _IconFileDialog_h_
+#define _IconFileDialog_h_
  
 /******************************************************************************
 *                         
@@ -22,44 +24,69 @@
 *******************************************************************************/
  
 /*!
-  \file CustomFileDialog.cpp
+  \file IconFileDialog.h
   \brief customized file selection dialog, to store last selected directory
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-using namespace std;
+#include <string>
+#include <QCheckBox>
+#include <QLabel>
 
 #include "CustomFileDialog.h"
 #include "File.h"  
-#include "Debug.h"  
-#include "Util.h"  
 
-//______________________________________________________________________
-File CustomFileDialog::working_directory_( Util::workingDirectory() );
-
-//______________________________________________________________________
-CustomFileDialog::CustomFileDialog( QWidget* parent ):
-  QFileDialog( parent ),
-  Counter( "CustomFileDialog" )
+/*!
+  \class IconFileDialog
+  \brief customized file selection dialog, to store last selected directory
+*/
+class IconFileDialog: public CustomFileDialog
 {
-  
-  Debug::Throw() <<  "CustomFileDialog::CustomFileDialog - working directory: " << working_directory_ << endl;
-  if( !working_directory_.empty() && File( working_directory_ ).isDirectory() )
-  { setDirectory( QDir( working_directory_.c_str() ) ); }
-  
-  // set default view mode to list rather than detail because detail sometime has problems
-  // with column sizes.
-  setViewMode( List );
-  connect( this, SIGNAL( currentChanged( const QString& ) ), SLOT( _saveWorkingDirectory( const QString& ) ) );
 
-    
-}  
+  //! Qt meta object declaration
+  Q_OBJECT
 
-//______________________________________________________________________
-void CustomFileDialog::_saveWorkingDirectory( const QString& directory )
-{ 
-  Debug::Throw( "CustomFileDialog::_saveWorkingDirectory.\n" );
-  working_directory_ = File( qPrintable( directory ) ).path();
-}
+  public:
+  
+  //! creator
+  IconFileDialog( QWidget* parent );  
+
+  //! select file
+  void selectFile( const QString& filename )
+  {
+    emit _currentChanged( filename );
+    CustomFileDialog::selectFile( filename );
+  }
+
+  private slots:
+  
+  //! update current
+  void _currentChanged( const QString& path );
+
+  //! display current image
+  void _preview( void );
+
+  protected:
+  
+  virtual void showEvent( QShowEvent* e )
+  {
+    CustomFileDialog::showEvent( e );
+    _preview(); 
+  }
+  
+  private:
+  
+  //! automatic preview checkbox
+  QCheckBox* automatic_preview_;
+  
+  //! current file
+  QString current_path_;
+  
+  //! preview label
+  QLabel* preview_;
+  
+};
+
+#endif

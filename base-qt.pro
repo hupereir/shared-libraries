@@ -39,6 +39,7 @@ HEADERS = \
   HeaderMenu.h \
   IconBrowsedButton.h \
   IconEngine.h \
+  IconFileDialog.h \
   ItemDelegate.h \
   ItemModel.h \
   ListModel.h \
@@ -102,6 +103,7 @@ SOURCES = \
   CustomFileDialog.cpp \
   CustomLineEdit.cpp \
   HeaderMenu.cpp \
+  IconFileDialog.cpp \
   ItemModel.cpp \
   ListWidget.cpp \
   CustomMainWindow.cpp \

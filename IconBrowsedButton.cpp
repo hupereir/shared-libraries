@@ -38,6 +38,7 @@
 #include "CustomPixmap.h"
 #include "File.h"
 #include "IconBrowsedButton.h"
+#include "IconFileDialog.h"
 #include "CustomDialog.h"
 #include "XmlOptions.h"
 #include "QtUtil.h"
@@ -108,25 +109,49 @@ void IconBrowsedButton::_browse( void )
 {
   Debug::Throw( "IconBrowsedButton::_Browse.\n" );
      
-  // create dialog
-  CustomDialog dialog( this );
-
-  ostringstream what;
-  dialog.mainLayout().addWidget( new QLabel(  "icon file name", &dialog ) );
-
-  // create editor, either directly or from BrowsedLineEdit
-  CustomLineEdit* line_edit( 0 );
-  BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog );
-  dialog.mainLayout().addWidget( browse_edit );
-  line_edit = &browse_edit->editor();
-  line_edit->setText( file_.c_str() );
-  
-  // map dialog
-  dialog.adjustSize();
+  IconFileDialog dialog( this );
   QtUtil::centerOnParent( &dialog );
+  if( file_ != NO_ICON ) { dialog.selectFile( file_.c_str() ); }
   if( dialog.exec() == QDialog::Rejected ) return;
-  if( line_edit->text().isEmpty() ) return;
-  setFile( File( qPrintable( line_edit->text() ) ), true );
+
+  // retrieve selected files
+  QStringList files( dialog.selectedFiles() );
+    
+  // check file size
+  if( files.size() > 1 ) 
+  {
+    QtUtil::infoDialog( this, "Too many files selected." );
+    return;
+  }
+  
+  if( files.size() < 1 )
+  {
+    QtUtil::infoDialog( this, "No file selected." );
+    return;
+  }
+    
+  setFile( File( qPrintable( files.front() ) ), true );
+
+  
+//   // create dialog
+//   CustomDialog dialog( this );
+// 
+//   ostringstream what;
+//   dialog.mainLayout().addWidget( new QLabel(  "icon file name", &dialog ) );
+// 
+//   // create editor, either directly or from BrowsedLineEdit
+//   CustomLineEdit* line_edit( 0 );
+//   BrowsedLineEdit* browse_edit = new BrowsedLineEdit( &dialog );
+//   dialog.mainLayout().addWidget( browse_edit );
+//   line_edit = &browse_edit->editor();
+//   line_edit->setText( file_.c_str() );
+//   
+//   // map dialog
+//   dialog.adjustSize();
+//   QtUtil::centerOnParent( &dialog );
+//   if( dialog.exec() == QDialog::Rejected ) return;
+//   if( line_edit->text().isEmpty() ) return;
+//   setFile( File( qPrintable( line_edit->text() ) ), true );
  
   return; 
 }
