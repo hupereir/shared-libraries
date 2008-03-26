@@ -5,6 +5,7 @@ color.png \
 colorpicker.png \
 configure.png \
 editcopy.png \
+editcut.png \
 editpaste.png \
 exit.png \
 fileopen.png \
