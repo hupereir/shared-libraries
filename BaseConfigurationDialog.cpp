@@ -192,25 +192,43 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
   // base
   if( flag & BASE )
   { 
+
+    QHBoxLayout* h_layout = new QHBoxLayout();
+    h_layout->setMargin(0);
+    h_layout->setSpacing(5);
+    parent->layout()->addItem( h_layout );
     
-    QGroupBox *box = new QGroupBox( "Base", parent );
-    parent->layout()->addWidget( box );
+    // icon pixmap
+    // QGroupBox *box = new QGroupBox( parent );
+    QWidget *box = new QWidget();
+    h_layout->addWidget( box );
+    QVBoxLayout* v_layout( new QVBoxLayout() );
+    v_layout->setMargin(5);
+    v_layout->setSpacing(5);
+    box->setLayout( v_layout );
+        
+    v_layout->addWidget( new QLabel( "Icon", box ), 0, Qt::AlignHCenter );
+    OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( box, "ICON_PIXMAP" );
+    editor->setToolTip( "Application icon" );
+    addOptionWidget( editor );
+    v_layout->addWidget( editor );
+    v_layout->addStretch(1);
+    
+    // base
+    box = *box = new QWidget();
+    //new QGroupBox(  parent );
+    h_layout->addWidget( box );
 
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(5);
     layout->setSpacing(5);
     box->setLayout( layout );
-        
-    QHBoxLayout* h_layout = new QHBoxLayout();
-    h_layout->setMargin(0);
-    h_layout->setSpacing(5);
-    layout->addLayout( h_layout );
-    
+            
     CustomGridLayout* grid_layout = new CustomGridLayout();
     grid_layout->setMargin(0);
     grid_layout->setSpacing(5);
     grid_layout->setMaxCount(2);
-    h_layout->addLayout( grid_layout );
+    layout->addLayout( grid_layout );
      
     // flat theme
     OptionCheckBox* checkbox( new OptionCheckBox( "Use flat plastique theme", box, "USE_FLAT_THEME" ) );
@@ -241,19 +259,6 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     grid_layout->addWidget( spinbox );
     addOptionWidget( spinbox );
       
-    // icon pixmap
-    QVBoxLayout* v_layout( new QVBoxLayout() );
-    v_layout->setMargin(0);
-    v_layout->setSpacing(5);
-    h_layout->addLayout( v_layout );
-        
-    OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( box, "ICON_PIXMAP" );
-    editor->setToolTip( "Application icon" );
-    addOptionWidget( editor );
-    v_layout->addWidget( editor );
-    v_layout->addWidget( new QLabel( "Icon", box ), 0, Qt::AlignHCenter );
-    v_layout->addStretch(1);
-    
   }
     
   // list
