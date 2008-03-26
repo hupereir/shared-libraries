@@ -1,11 +1,13 @@
 <!DOCTYPE RCC><RCC version="1.0">
   <qresource>
     <file alias="base-pixmaps/color.png">../base-pixmaps/color.png</file>
+    <file alias="base-pixmaps/colorpicker.png">../base-pixmaps/colorpicker.png</file>
     <file alias="base-pixmaps/configure.png">../base-pixmaps/configure.png</file>
     <file alias="base-pixmaps/editcopy.png">../base-pixmaps/editcopy.png</file>
     <file alias="base-pixmaps/editcut.png">../base-pixmaps/editcut.png</file>
     <file alias="base-pixmaps/editpaste.png">../base-pixmaps/editpaste.png</file>
     <file alias="base-pixmaps/exit.png">../base-pixmaps/exit.png</file>
+    <file alias="base-pixmaps/fileopen.png">../base-pixmaps/fileopen.png</file>
     <file alias="base-pixmaps/messagebox_warning.png">../base-pixmaps/messagebox_warning.png</file>
     <file alias="base-pixmaps/qt-logo.png">../base-pixmaps/qt-logo.png</file>
     <file alias="base-pixmaps/redo.png">../base-pixmaps/redo.png</file>

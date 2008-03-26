@@ -47,8 +47,10 @@ namespace ICONS
   static const std::string PASTE = "editpaste.png";
   static const std::string FIND = "viewmag.png";
   static const std::string COLOR = "color.png";
+  static const std::string COLOR_PICKER = "colorpicker.png";
   static const std::string CONFIGURE = "configure.png";
   static const std::string HELP = "toggle_log.png";
+  static const std::string OPEN = "fileopen.png";
   static const std::string RELOAD = "reload.png";
   static const std::string DELETE = "trashcan_empty.png";
   static const std::string WARNING = "messagebox_warning.png";

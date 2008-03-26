@@ -36,12 +36,15 @@
 #include <QFileIconProvider>
 #include <QPushButton>
 
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "BrowsedLineEdit.h"
 #include "CustomLineEdit.h"
 #include "File.h"
 #include "QtUtil.h"
 #include "Util.h"
 #include "Debug.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
@@ -66,8 +69,11 @@ BrowsedLineEdit::BrowsedLineEdit( QWidget *parent ):
   layout->addWidget( line_edit_ );
   
   // create push_button
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  assert( !path_list.empty() );
+
   QPushButton *button = new QPushButton( this );
-  button->setIcon( QFileIconProvider().icon( QFileIconProvider::Folder ) );
+  button->setIcon( IconEngine::get( ICONS::OPEN, path_list ) );
   QtUtil::fixSize( button );
   layout->addWidget( button );
   
