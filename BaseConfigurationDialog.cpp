@@ -199,8 +199,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     parent->layout()->addItem( h_layout );
     
     // icon pixmap
-    // QGroupBox *box = new QGroupBox( parent );
-    QWidget *box = new QWidget();
+    QGroupBox *box = new QGroupBox( parent );
     h_layout->addWidget( box );
     QVBoxLayout* v_layout( new QVBoxLayout() );
     v_layout->setMargin(5);
@@ -215,8 +214,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     v_layout->addStretch(1);
     
     // base
-    box = *box = new QWidget();
-    //new QGroupBox(  parent );
+    box = new QGroupBox(  parent );
     h_layout->addWidget( box );
 
     QVBoxLayout* layout = new QVBoxLayout();
