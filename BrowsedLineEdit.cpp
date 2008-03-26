@@ -33,14 +33,13 @@
 */
 
 #include <QHBoxLayout>
-#include <QFileIconProvider>
 #include <QPushButton>
 
 #include "BaseIcons.h"
-#include "IconEngine.h"
 #include "BrowsedLineEdit.h"
 #include "CustomLineEdit.h"
 #include "File.h"
+#include "IconEngine.h"
 #include "QtUtil.h"
 #include "Util.h"
 #include "Debug.h"

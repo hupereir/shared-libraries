@@ -33,9 +33,12 @@
 #include <QPainter>
 #include <QPushButton>
 
+#include "BaseIcons.h"
 #include "ColorDisplay.h"
 #include "Debug.h"
+#include "IconEngine.h"
 #include "QtUtil.h"
+#include "XmlOptions.h"
 
 
 using namespace std;
@@ -60,8 +63,13 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   QtUtil::expand( &editor_, " #ffffff " ); 
   layout->addWidget( &editor_ );
   connect( &editor_, SIGNAL( returnPressed() ), SLOT( _changeColorFromText() ) );  
-  
-  QPushButton *button( new QPushButton( "...", this ) );
+
+  // browse button
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  assert( !path_list.empty() );
+
+  QPushButton *button( new QPushButton( this ) );
+  button->setIcon( IconEngine::get( ICONS::COLOR_PICKER, path_list ) );
   QtUtil::fixSize( button );
   layout->addWidget( button );
   
