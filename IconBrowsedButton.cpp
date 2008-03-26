@@ -111,7 +111,13 @@ void IconBrowsedButton::_browse( void )
      
   IconFileDialog dialog( this );
   QtUtil::centerOnParent( &dialog );
-  if( file_ != NO_ICON ) { dialog.selectFile( file_.c_str() ); }
+  
+  if( file_ != NO_ICON ) { 
+    File path( file_.path() );
+    if( path.exists() && path.isDirectory() ) dialog.setDirectory( file_.path().c_str() );
+    dialog.selectFile( file_.c_str() ); 
+  }
+  
   if( dialog.exec() == QDialog::Rejected ) return;
 
   // retrieve selected files
