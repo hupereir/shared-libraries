@@ -44,6 +44,10 @@ Options::Options( void ):
   special_options_()
 {
 
+
+  keep( "PIXMAP_PATH" );
+  add( Option( "PIXMAP_PATH", ":/base-pixmaps"));
+  
   /* 
     generic options (default values)
     common to all applications
