@@ -192,35 +192,36 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
   // base
   if( flag & BASE )
   { 
+        
+    // base
+    QGroupBox* box;
+    box = new QGroupBox(  parent );
+    parent->layout()->addWidget( box );
 
     QHBoxLayout* h_layout = new QHBoxLayout();
-    h_layout->setMargin(0);
+    h_layout->setMargin(5);
     h_layout->setSpacing(5);
-    parent->layout()->addItem( h_layout );
+    box->setLayout( h_layout );
     
     // icon pixmap
-    QGroupBox *box = new QGroupBox( parent );
-    h_layout->addWidget( box );
     QVBoxLayout* v_layout( new QVBoxLayout() );
-    v_layout->setMargin(5);
+    v_layout->setMargin(0);
     v_layout->setSpacing(5);
-    box->setLayout( v_layout );
+    h_layout->addLayout( v_layout );
         
-    v_layout->addWidget( new QLabel( "Icon", box ), 0, Qt::AlignHCenter );
-    OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( box, "ICON_PIXMAP" );
+    //v_layout->addWidget( new QLabel( "Icon", parent ), 0, Qt::AlignHCenter );
+    OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( parent, "ICON_PIXMAP" );
     editor->setToolTip( "Application icon" );
     addOptionWidget( editor );
     v_layout->addWidget( editor );
     v_layout->addStretch(1);
+    h_layout->addSpacing( 10 );
     
-    // base
-    box = new QGroupBox(  parent );
-    h_layout->addWidget( box );
-
+    // base options
     QVBoxLayout* layout = new QVBoxLayout();
-    layout->setMargin(5);
+    layout->setMargin(0);
     layout->setSpacing(5);
-    box->setLayout( layout );
+    h_layout->addLayout( layout );
             
     CustomGridLayout* grid_layout = new CustomGridLayout();
     grid_layout->setMargin(0);

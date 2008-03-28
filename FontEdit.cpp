@@ -32,8 +32,11 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 
+#include "BaseIcons.h"
 #include "FontEdit.h"
+#include "IconEngine.h"
 #include "QtUtil.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
@@ -50,10 +53,16 @@ FontEdit::FontEdit( QWidget *parent ):
 
   label_ =  new QLabel( "", this );
   label_->setAlignment( Qt::AlignCenter );
+  label_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
   QtUtil::fixSize( label_, QtUtil::NONE );
   layout->addWidget( label_ );
   
-  QPushButton *button( new QPushButton( "...", this ) );
+  // create push_button
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  assert( !path_list.empty() );
+
+  QPushButton *button = new QPushButton( this );
+  button->setIcon( IconEngine::get( ICONS::OPEN, path_list ) );
   QtUtil::fixSize( button );
   layout->addWidget( button );
   
