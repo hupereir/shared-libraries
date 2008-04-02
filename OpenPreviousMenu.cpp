@@ -54,8 +54,11 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
   _updateConfiguration();
 
-  // clean action
+  // icons
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  setIcon( IconEngine::get( ICONS::OPEN, path_list ) );
+
+  // clean action
   clean_action_ = new QAction( IconEngine::get( ICONS::DELETE, path_list ), "&Clean", 0 );
   connect( clean_action_, SIGNAL( triggered() ), SLOT( _clean() ) );
   addAction( clean_action_ );
