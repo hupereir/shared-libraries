@@ -213,16 +213,22 @@ void OpenPreviousMenu::_loadFiles( void )
   if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") )
   { records.sort( FileRecord::FirstOpenFTor() ); }
   else { records.sort( FileRecord::SameFileFTor() ); }
-  
+
+  // path_list
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+
   // retrieve stored file record
   const FileRecord& stored( _stored() );
-  
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   {
     
-    QString label( iter->file().c_str() );
-    
+    QString label( iter->file().c_str() );    
     QAction* action = addAction( label );
+    
+    // add icon
+    if( iter->hasInformation( "icon" ) )
+    { action->setIcon( IconEngine::get( iter->information( "icon" ), path_list ) ); }
+    
     if( iter->file() == stored.file() )
     {
       QFont font( QMenu::font() );
