@@ -61,6 +61,7 @@ IconFileDialog::IconFileDialog( QWidget* parent ):
     v_layout->setMargin(0);
     v_layout->addWidget( preview_ = new QLabel( main ), 1 );
     preview_->setAlignment( Qt::AlignCenter );
+    preview_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
     
     QHBoxLayout *h_layout = new QHBoxLayout();
     h_layout->setSpacing(5);
@@ -69,7 +70,6 @@ IconFileDialog::IconFileDialog( QWidget* parent ):
     
     h_layout->addWidget( automatic_preview_ = new QCheckBox( "&Automatic preview", main ) );
     automatic_preview_->setChecked( true );
-    
     
     QPushButton* button = new QPushButton( "&Preview", main );
     h_layout->addWidget( button );
