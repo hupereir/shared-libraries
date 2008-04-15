@@ -70,6 +70,40 @@ class IconEngine: public Counter
   static QIcon get( const QIcon& icon )
   { return get()._get( icon ); }
   
+  //! map files and QIcon
+  typedef std::map< std::string, QIcon > Cache;
+
+  //! map files and QIcon
+  class Pair: public std::pair<std::string, QIcon >, public Counter
+  {
+    
+    public:
+    
+    //! constructor
+    Pair( void ):
+      Counter( "IconEngine::Pair" )
+    {}
+    
+    //! constructor
+    Pair( const std::pair<std::string, QIcon >& pair ):
+      std::pair<std::string, QIcon >( pair ),
+      Counter( "IconEngine::Pair" )
+    {}
+    
+    //! equal to operator
+    bool operator == ( const Pair& pair ) const
+    { return first == pair.first; }
+    
+    //! less than operator
+    bool operator < ( const Pair& pair ) const
+    { return first < pair.first; }
+    
+  };
+  
+  //! return cache
+  static const Cache& cache( void )
+  { return get().cache_; }
+  
   //! reload all icons set in cache from new path list
   void reload(const std::list<std::string> path_list  )
   { 
@@ -114,10 +148,7 @@ class IconEngine: public Counter
   
   //! use cache to store icons generated from filenames
   bool use_cache_;
-  
-  //! map files and QIcon
-  typedef std::map< std::string, QIcon > Cache;
-  
+    
   //! map files and QIcon
   Cache cache_;
     

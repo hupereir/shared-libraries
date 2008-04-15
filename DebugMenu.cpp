@@ -50,7 +50,7 @@ DebugMenu::DebugMenu( QWidget* parent ):
   
   Debug::Throw( "DebugMenu::DebugMenu.\n" );
   addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
-  addAction( "aIcon Cache ", this, SLOT( _showIconCacheDialog() ) );
+  addAction( "&Icon Cache ", this, SLOT( _showIconCacheDialog() ) );
   addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
   addAction( "&Run-time options", this, SLOT( _showOptions() ) );
 

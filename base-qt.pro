@@ -38,6 +38,8 @@ HEADERS = \
   FontInfo.h \
   HeaderMenu.h \
   IconBrowsedButton.h \
+  IconCacheDialog.h \
+  IconCacheModel.h \
   IconEngine.h \
   IconFileDialog.h \
   ItemDelegate.h \
@@ -104,6 +106,8 @@ SOURCES = \
   CustomLineEdit.cpp \
   HeaderMenu.cpp \
   IconFileDialog.cpp \
+  IconCacheDialog.cpp \
+  IconCacheModel.cpp \
   ItemModel.cpp \
   ListWidget.cpp \
   CustomMainWindow.cpp \

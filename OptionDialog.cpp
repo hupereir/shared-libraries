@@ -47,6 +47,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
   
   Debug::Throw( "OptionDialog::OptionDialog.\n" );
   setWindowTitle( "object counters" );
+  setSizeGripEnabled( true );
     
   // tell dialog to delete when close
   setAttribute( Qt::WA_DeleteOnClose );

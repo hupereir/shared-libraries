@@ -42,6 +42,8 @@ noinst_HEADERS = \
   FontInfo.h \
   HeaderMenu.h \
   IconBrowsedButton.h \
+  IconCacheDialog.h \
+  IconCacheModel.h \
   IconEngine.h \
   IconFileDialog.h \
   ItemDelegate.h \
@@ -109,8 +111,6 @@ libbase_qt_a_SOURCES = \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
   CustomLineEdit.cpp \
-  ItemModel.cpp \
-  ListWidget.cpp \
   CustomMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
@@ -127,9 +127,13 @@ libbase_qt_a_SOURCES = \
   FontInfo.cpp \
   HeaderMenu.cpp \
   IconBrowsedButton.cpp \
+  IconCacheDialog.cpp \
+  IconCacheModel.cpp \
   IconEngine.cpp \
   IconFileDialog.cpp \
   ItemDelegate.cpp \
+  ItemModel.cpp \
+  ListWidget.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
   OptionListBox.cpp \
@@ -168,7 +172,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomComboBox.cpp \
   moc_CustomFileDialog.cpp \
   moc_CustomLineEdit.cpp \
-  moc_ListWidget.cpp \
   moc_CustomMainWindow.cpp \
   moc_CustomSlider.cpp \
   moc_CustomTabWidget.cpp \
@@ -181,7 +184,9 @@ nodist_libbase_qt_a_SOURCES = \
   moc_FontEdit.cpp \
   moc_HeaderMenu.cpp \
   moc_IconBrowsedButton.cpp \
+  moc_IconCacheDialog.cpp \
   moc_IconFileDialog.cpp \
+  moc_ListWidget.cpp \
   moc_MultipleClickCounter.cpp \
   moc_OpenPreviousMenu.cpp \
   moc_OptionListBox.cpp \
