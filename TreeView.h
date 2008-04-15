@@ -81,6 +81,10 @@ class TreeView: public QTreeView, public Counter
   //! show/hide columns according to mask bitset. 1 is for shown columns, 0 for hidden
   virtual void setMask( unsigned int mask );
    
+  //! icon size from options
+  void setIconSizeFromOptions( const bool& value )
+  { icon_size_from_options_ = value; }
+  
   public slots:
   
   //! resize all visible columns to match contents
@@ -138,6 +142,9 @@ class TreeView: public QTreeView, public Counter
   //! column mask
   /*! gets reinitialized anytime GetMask is called */
   unsigned int mask_;    
+  
+  //! true if icon size is to be set from options
+  bool icon_size_from_options_;
   
   //! selected column background color
   QColor selected_column_color_;

@@ -47,7 +47,8 @@ TreeView::TreeView( QWidget* parent ):
   QTreeView( parent ),
   Counter( "TreeView" ),
   menu_( 0 ),
-  mask_(0)
+  mask_(0),
+  icon_size_from_options_( true )
 {
   Debug::Throw( "TreeView::TreeView.\n" );   
     
@@ -248,7 +249,10 @@ void TreeView::_updateConfiguration( void )
   _setSelectedColumnColor( color );
   
   // icon size
-  int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
-  setIconSize( QSize( icon_size, icon_size )  );
+  if( icon_size_from_options_ )
+  {
+    int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
+    setIconSize( QSize( icon_size, icon_size )  );
+  } 
   
 }
