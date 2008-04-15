@@ -33,10 +33,10 @@
 #include "CounterDialog.h"
 #include "Debug.h"
 #include "DebugMenu.h"
+#include "IconCacheDialog.h"
 #include "QtUtil.h"
 #include "OptionDialog.h"
 #include "SystemEnvironmentDialog.h"
-
 
 using namespace std;
 
@@ -44,10 +44,13 @@ using namespace std;
 DebugMenu::DebugMenu( QWidget* parent ):
   QMenu( parent ),
   Counter( "DebugMenu" ),
-  counter_dialog_( 0 )
+  counter_dialog_( 0 ),
+  icon_cache_dialog_( 0 )
 {
+  
   Debug::Throw( "DebugMenu::DebugMenu.\n" );
   addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
+  addAction( "aIcon Cache ", this, SLOT( _showIconCacheDialog() ) );
   addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
   addAction( "&Run-time options", this, SLOT( _showOptions() ) );
 
@@ -72,6 +75,30 @@ void DebugMenu::_showCounterDialog( void )
     QtUtil::centerOnParent( counter_dialog_ );
     counter_dialog_->show();
     QtUtil::uniconify( counter_dialog_ );
+  
+  }
+  
+}
+
+//_______________________________________________
+void DebugMenu::_showIconCacheDialog( void )
+{
+  Debug::Throw( "DebugMenu::_ShowIconCacheDialog.\n" );
+  
+  // check IconCache dialog has been build
+  if( !icon_cache_dialog_ ) {
+    
+    icon_cache_dialog_ = new IconCacheDialog( parentWidget() );
+    icon_cache_dialog_->update();
+    QtUtil::centerOnParent( icon_cache_dialog_ );
+    icon_cache_dialog_->show();
+    
+  } else {
+    
+    icon_cache_dialog_->update();
+    QtUtil::centerOnParent( icon_cache_dialog_ );
+    icon_cache_dialog_->show();
+    QtUtil::uniconify( icon_cache_dialog_ );
   
   }
   

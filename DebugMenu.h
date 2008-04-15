@@ -38,6 +38,7 @@
 #include "Counter.h"
 
 class CounterDialog;
+class IconCacheDialog;
 
 /*!
   \class DebugMenu
@@ -64,6 +65,9 @@ class DebugMenu: public QMenu, public Counter
   //! print object counters
   void _showCounterDialog( void ); 
  
+  //! icon cache dialog
+  void _showIconCacheDialog( void );
+  
   //! show system environment
   void _showSystemEnvironment( void );
   
@@ -75,6 +79,9 @@ class DebugMenu: public QMenu, public Counter
   //! non modal Counter dialog
   CounterDialog* counter_dialog_;
 
+  //! non modal icon cache dialog
+  IconCacheDialog* icon_cache_dialog_;
+  
    
 };
 #endif

@@ -21,8 +21,8 @@
  *                            
  *******************************************************************************/
 /*!
-   \file CounterDialog.cpp
-   \brief displays Counter names and counts
+   \file IconCacheDialog.cpp
+   \brief displays IconCache names and counts
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
@@ -31,19 +31,20 @@
 #include <QPushButton>
 #include <QLayout>
 
-#include "CounterDialog.h"
+#include "IconCacheDialog.h"
+#include "IconEngine.h"
 #include "TreeView.h"
 
 using namespace std;
 
 //__________________________________________________________________________
-CounterDialog::CounterDialog( QWidget* parent ):
+IconCacheDialog::IconCacheDialog( QWidget* parent ):
   QDialog( parent, Qt::Window ),
-  Counter( "CounterDialog" )
+  Counter( "IconCacheDialog" )
 {
   
-  Debug::Throw( "CounterDialog::CounterDialog.\n" );
-  setWindowTitle( "object counters" );
+  Debug::Throw( "IconCacheDialog::IconCacheDialog.\n" );
+  setWindowTitle( "icon cache" );
     
   setLayout( new QVBoxLayout() );
   layout()->setMargin(10);
@@ -74,15 +75,15 @@ CounterDialog::CounterDialog( QWidget* parent ):
 }
 
 //__________________________________________________________________________
-void CounterDialog::update( void )
+void IconCacheDialog::update( void )
 {
   
-  Debug::Throw( "CounterDialog::update.\n" );
+  Debug::Throw( "IconCacheDialog::update.\n" );
     
-  // retrieve counters 
-  Counter::CounterMap& counters( Counter::map() );
-  model_.add( CounterModel::List( counters.begin(), counters.end() ) );
-  
-  list_->resizeColumnToContents( CounterModel::NAME );
+  // retrieve cache 
+  const IconEngine::Cache& cache( IconEngine::cache() );
+  model_.set( IconCacheModel::List( cache.begin(), cache.end() ) );
+
+  list_->resizeColumnToContents( IconCacheModel::ICON );
     
 }
