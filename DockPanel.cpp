@@ -37,6 +37,7 @@
 #include "XmlOptions.h"
 
 using namespace std;
+using namespace Qt;
 
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
@@ -57,6 +58,7 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   layout()->addWidget( main_ );
   
   main_->setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
+  connect( &main_->detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
   
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
 
@@ -84,18 +86,7 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   // invisible size grip
   grid_layout->addWidget( size_grip_ = new LocalGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
   size_grip_->hide(); 
-
-  // button layout
-  button_layout_ = new QHBoxLayout();
-  button_layout_->setMargin(0);
-  button_layout_->setSpacing( 5 );
-  main_layout_->addLayout( button_layout_ );
-  
-  // button
-  button_layout_->addWidget( button_ = new QPushButton( "&detach", main_ ) );
-  connect( button_, SIGNAL( clicked() ), SLOT( _toggleDock() ) );
-  button_->setToolTip( "dock/undock panel" );
-  
+    
 }
 
 //___________________________________________________________
@@ -112,9 +103,9 @@ void DockPanel::_toggleDock( void )
     layout()->addWidget( main_ );
     main_->setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
     size_grip_->hide();
-    main_->show();    
+    main_->show();
     
-    button_->setText("&detach");
+    main_->detachAction().setText("&detach");
     
     emit attached( true );
     emit attached();
@@ -122,14 +113,14 @@ void DockPanel::_toggleDock( void )
   } else {
         
     main_->setParent( 0 );
-    if( flags_ & STAYS_ON_TOP ) main_->setWindowFlags( Qt::WindowStaysOnTopHint|Qt::Dialog );
+    if( flags_ & STAYS_ON_TOP ) main_->setWindowFlags( Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint );
     else main_->setWindowFlags( Qt::Dialog );
 
     main_->move( mapToGlobal( QPoint(0,0) ) );
     main_->setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
     if( !title_.empty() ) main_->setWindowTitle( title_.c_str() );
     
-    button_->setText("&attach");
+    main_->detachAction().setText("&attach");
     if( detached_size_ != QSize() ) main_->resize( detached_size_ );    
     
     main_->setFrameStyle( QFrame::NoFrame );
@@ -141,4 +132,63 @@ void DockPanel::_toggleDock( void )
   
   }  
   
+}
+
+
+//___________________________________________________________
+DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
+  QFrame( parent ),
+  Counter( "DockPanel::LocalWidget" ),
+  panel_( parent )
+{
+  detach_action_ = new QAction( "&detach", this );
+  detach_action_->setToolTip( "dock/undock panel" );
+  addAction( detach_action_ );
+  setContextMenuPolicy( ActionsContextMenu );
+}
+
+//___________________________________________________________
+void DockPanel::LocalWidget::closeEvent( QCloseEvent* event )
+{
+  Debug::Throw( "DockPanel::LocalWidget::closeEvent.\n" );
+  if( !parent() ) panel_->_toggleDock();
+  event->ignore();
+}
+
+//___________________________________________________________
+void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
+{
+  Debug::Throw( "DockPanel::LocalWidget::mousePressEvent.\n" );
+  button_ = event->button();
+  if( button_ == LeftButton && !parent() ) 
+  { click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); }
+
+  return QFrame::mousePressEvent( event );
+}
+
+//___________________________________________________________
+void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
+{
+  Debug::Throw( "DockPanel::LocalWidget::mouseReleaseEvent.\n" );
+  button_ = NoButton;
+  return QFrame::mouseReleaseEvent( event );
+}
+
+//___________________________________________________________
+void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
+{
+ 
+  if( button_ == LeftButton && !parent() )
+  {
+    QPoint point(event->globalPos() - click_pos_ );
+    move( point );
+  }
+ 
+}
+
+//___________________________________________________________
+void DockPanel::LocalWidget::mouseDoubleClickEvent( QMouseEvent* event )
+{
+  Debug::Throw( "DockPanel::LocalWidget::mouseDoubleClickEvent.\n" );
+  detachAction().trigger();
 }

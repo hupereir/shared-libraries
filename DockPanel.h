@@ -33,11 +33,11 @@
 */
 
 #include <assert.h>
+#include <QAction>
 #include <QCloseEvent>
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
-#include <QPushButton>
 #include <QSizeGrip>
 
 #include <string>
@@ -87,13 +87,6 @@ class DockPanel: public QWidget, public Counter
   //! set detachable group panel title
   void setTitle( const std::string& title )
   { title_ = title; }
-  
-  //! retrieve button layout
-  QBoxLayout& buttonLayout( void ) const
-  {
-    assert( button_layout_ );
-    return *button_layout_;
-  }
           
   signals:
   
@@ -119,26 +112,42 @@ class DockPanel: public QWidget, public Counter
     public:
     
     //! constructor
-    LocalWidget( DockPanel* parent ):
-      QFrame( parent ),
-      Counter( "DockPanel::LocalWidget" ),
-      panel_( parent )
-    {}
+    LocalWidget( DockPanel* parent );
+    
+    //! detach action
+    QAction& detachAction( void ) const
+    { return *detach_action_; }
     
     protected:
     
     //! closeEvent
-    virtual void closeEvent( QCloseEvent* event )
-    {
-      Debug::Throw( "DockPanel::LocalWidget::closeEvent.\n" );
-      if( !parent() ) panel_->_toggleDock();
-      event->ignore();
-    }
+    virtual void closeEvent( QCloseEvent* event );
     
+    //! mouse press event [overloaded]
+    virtual void mousePressEvent( QMouseEvent *);
+    
+    //! mouse move event [overloaded]
+    virtual void mouseMoveEvent( QMouseEvent *);     
+    
+    //! mouse move event [overloaded]
+    virtual void mouseReleaseEvent( QMouseEvent *);     
+   
+    //! mouse move event [overloaded]
+    virtual void mouseDoubleClickEvent( QMouseEvent *);     
+   
     private:
     
     //! parent panel
     DockPanel* panel_;
+    
+    //! attach/detach action
+    QAction* detach_action_;
+
+    //! button state
+    Qt::MouseButton button_;
+  
+    //! click position
+    QPoint click_pos_;
     
   };
   
@@ -170,12 +179,6 @@ class DockPanel: public QWidget, public Counter
     
   //! vertical layout for main_ widget
   QVBoxLayout* main_layout_;
-  
-  //! horizontal layout (for buttons)
-  QHBoxLayout* button_layout_;
-            
-  //! button
-  QPushButton* button_;
   
   //! detachable main widget
   LocalWidget* main_;
