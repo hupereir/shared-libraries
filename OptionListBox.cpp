@@ -160,9 +160,9 @@ void OptionListBox::_add( void )
   // create dialog
   CustomDialog dialog( this );
 
-  ostringstream what;
-  what << "add value for option " << optionName();
-  dialog.mainLayout().addWidget( new QLabel( what.str().c_str(), &dialog ) );
+//   ostringstream what;
+//   what << "add value for option " << optionName();
+//   dialog.mainLayout().addWidget( new QLabel( what.str().c_str(), &dialog ) );
 
   // create editor, either directly or from BrowsedLineEdit
   CustomLineEdit* line_edit( 0 );
@@ -200,10 +200,10 @@ void OptionListBox::_edit( void )
   // create dialog
   CustomDialog dialog( this );
 
-  // add explanation label
-  ostringstream what;
-  what << "Edit value for option " << optionName();
-  dialog.mainLayout().addWidget( new QLabel( what.str().c_str(), &dialog ) );
+//   // add explanation label
+//   ostringstream what;
+//   what << "Edit value for option " << optionName();
+//   dialog.mainLayout().addWidget( new QLabel( what.str().c_str(), &dialog ) );
 
   // create editor, either directly or from BrowsedLineEdit
   CustomLineEdit* line_edit( 0 );

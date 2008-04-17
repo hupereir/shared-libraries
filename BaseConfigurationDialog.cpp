@@ -76,7 +76,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   QHBoxLayout* h_layout = new QHBoxLayout();
   h_layout->setMargin(0);
-  h_layout->setSpacing(5);
+  h_layout->setSpacing(10);
   layout->addLayout( h_layout );
   
   h_layout->addWidget( list_ = new ListWidget( this ), 0 );
@@ -154,7 +154,7 @@ QWidget& BaseConfigurationDialog::addPage( const QString& title, const bool& exp
 
   QVBoxLayout* layout( new QVBoxLayout() );
   layout->setSpacing( 5 );
-  layout->setMargin( 5 );
+  layout->setMargin( 0 );
   main->setLayout( layout );
   
   // create new item and add to stack
