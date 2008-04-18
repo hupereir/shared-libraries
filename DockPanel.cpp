@@ -162,7 +162,7 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
   if( button_ == Qt::LeftButton ) 
   { 
     click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); 
-    timer_.start( QApplication::doubleClickInterval(), this );
+    timer_.start( 200, this );
   }
   
   return QFrame::mousePressEvent( event );
@@ -175,6 +175,7 @@ void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
   button_ = Qt::NoButton;
   _setMoveEnabled( false );
   unsetCursor();
+  timer_.stop();
   return QFrame::mouseReleaseEvent( event );
 }
 
