@@ -130,6 +130,7 @@ void FlatStyle::drawControl( ControlElement element, const QStyleOption *option,
         
         sliderPainter.setPen(borderColor);
         sliderPainter.drawRect(pixmapRect.adjusted(0, 0, -1, -1));
+        
         //sliderPainter.setPen(alphaCornerColor);
         QPoint points[4] = {
           QPoint(pixmapRect.left(), pixmapRect.top()),

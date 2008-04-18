@@ -32,25 +32,65 @@
   \date    $Date$
 */
 
-#include <qglobal.h>
+#include <QWidget>
+#include <map>
 
 #ifdef Q_WS_X11
-#include <QWidget>
 #include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
+#endif
 
-namespace MAIN
+class X11Util
 {
-    
+  
+  public:
+  
+  //! Atoms enumeration
+  enum Atoms
+  {
+    _NET_WM_STATE,
+    _NET_WM_STATE_STICKY,
+    _NET_WM_STATE_SKIP_TASKBAR
+  };
+  
   //! return true if property is found in NET_WM_STATE
-  bool hasProperty( QWidget* widget, const Atom& atom );
+  static bool hasProperty( QWidget* widget, const Atoms& atom );
+  
+  //! change property
+  static void changeProperty( QWidget* widget, const Atoms& atom, const unsigned int& value );
   
   //! remove property from NET_WM_STATE
-  void removeProperty( QWidget* widget, const Atom& atom );
+  static void removeProperty( QWidget* widget, const Atoms& atom );
+  
+  #ifdef Q_WS_X11
+  
+  //! find atom
+  static Atom findAtom( const Atoms& atom );
+  
+  #endif
+  private:
+  
+  //! atom names
+  typedef std::map<Atoms, std::string> AtomNameMap; 
+  
+  //! atom names
+  static AtomNameMap _initializeAtomNames( void );
+  
+  //! atom names
+  static AtomNameMap  atom_names_;
+  
+  #ifdef Q_WS_X11
+  
+  //! atom map
+  typedef std::map<Atoms, Atom> AtomMap;
+  
+  //! atoms
+  static AtomMap atoms_;
+  
+  #endif
   
 };
 
-#endif
 #endif

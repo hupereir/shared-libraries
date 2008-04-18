@@ -32,58 +32,83 @@
 
 #include "Debug.h"
 #include "X11Util.h"
-
-#ifdef Q_WS_X11
+ 
+using namespace std;
 
 //________________________________________________________________________
-bool MAIN::hasProperty( QWidget* widget, const Atom& atom )
+X11Util::AtomNameMap X11Util::atom_names_ = _initializeAtomNames();
+
+//________________________________________________________________________
+bool X11Util::hasProperty( QWidget* widget, const Atoms& atom )
 {
-    Debug::Throw( "MAIN::hasProperty.\n" );
-
-    Display* display( QX11Info::display() );
-    Atom net_wm_state( XInternAtom (display, "_NET_WM_STATE", False) );
-
-    Atom actual;
-    int format;
-    unsigned char *data;
+  #ifdef Q_WS_X11
+  Debug::Throw( "X11Util::hasProperty.\n" );
+  
+  Display* display( QX11Info::display() );
+  Atom net_wm_state( findAtom(_NET_WM_STATE) );
+  Atom searched( findAtom( atom ) );
+  
+  Atom actual;
+  int format;
+  unsigned char *data;
+  
+  // try retrieve property
+  unsigned long offset = 0;
+  while( 1 )
+  {
+    unsigned long n, left;
+    XGetWindowProperty( 
+      display, widget->winId(), net_wm_state, 
+      offset, 1L, false, 
+      XA_ATOM, &actual,  
+      &format, &n, &left, 
+      (unsigned char **) &data);
     
-    // try retrieve property
-    unsigned long offset = 0;
-    while( 1 )
-    {
-      unsigned long n, left;
-      XGetWindowProperty( 
-        display, widget->winId(), net_wm_state, 
-        offset, 1L, false, 
-        XA_ATOM, &actual,  
-        &format, &n, &left, 
-        (unsigned char **) &data);
-      
-      // finish if no data is found
-      if( data == None ) break;
-
-      // try cast data to atom and compare
-      Atom found( *(Atom*)data );
-      if( found == atom ) return true;
-      
-      // move forward if more data remains
-      if( !left ) break;
-      else offset ++;
-      
-    }
-        
-    // no match found
-    return false;
+    // finish if no data is found
+    if( data == None ) break;
     
+    // try cast data to atom and compare
+    Atom found( *(Atom*)data );
+    if( found == searched ) return true;
+    
+    // move forward if more data remains
+    if( !left ) break;
+    else offset ++;
+    
+  }
+  
+  // no match found
+  return false;
+  
+  #else
+  return false;
+  #endif
+  
 }
 
 //________________________________________________________________________
-void MAIN::removeProperty( QWidget* widget, const Atom& atom )
+void X11Util::changeProperty( QWidget* widget, const Atoms& atom, const unsigned int& value )
 {
-  Debug::Throw( "MAIN::removeProperty.\n" );
-  
+  #ifdef Q_WS_X11
   Display* display( QX11Info::display() );
-  Atom net_wm_state( XInternAtom (display, "_NET_WM_STATE", False) );
+  Atom net_wm_state( findAtom(_NET_WM_STATE) );
+  Atom searched( findAtom( atom ) );
+  
+  XChangeProperty (display, widget->winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&searched, value );
+  #endif
+  
+  return;
+}
+
+//________________________________________________________________________
+void X11Util::removeProperty( QWidget* widget, const Atoms& atom )
+{
+  Debug::Throw( "X11Util::removeProperty.\n" );
+  
+  #ifdef Q_WS_X11
+  Display* display( QX11Info::display() );
+  Atom net_wm_state( findAtom(_NET_WM_STATE) );
+  Atom searched( findAtom( atom ) );
   
   Atom actual;
   int format;
@@ -106,7 +131,7 @@ void MAIN::removeProperty( QWidget* widget, const Atom& atom )
     
     // try cast data to atom
     Atom found( *(Atom*)data );
-    if( found != atom ) atoms.push_back( found );
+    if( found != searched ) atoms.push_back( found );
     if( !left ) break;
     else offset ++;
   }
@@ -117,8 +142,40 @@ void MAIN::removeProperty( QWidget* widget, const Atom& atom )
   // re-add atoms that are not the one to be deleted
   for( std::list<Atom>::iterator iter = atoms.begin(); iter != atoms.end(); iter++ )
   {XChangeProperty( display, widget->winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&*iter, 1); }
+  #endif
   
   return;
+}
+
+//________________________________________________________________________
+X11Util::AtomNameMap X11Util::_initializeAtomNames( void )
+{
+  AtomNameMap out;
+  out[_NET_WM_STATE] = "_NET_WM_STATE";
+  out[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
+  out[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
+  return out;
+}
+
+#ifdef Q_WS_X11
+
+//________________________________________________________________________
+X11Util::AtomMap X11Util::atoms_;
+
+//________________________________________________________________________
+Atom X11Util::findAtom( const Atoms& atom )
+{
+  
+  // find atom in map
+  AtomMap::iterator iter( atoms_.find( atom ) );
+  if( iter != atoms_.end() ) return iter->second;
+  
+  // create atom if not found
+  Display* display( QX11Info::display() );
+  Atom out( XInternAtom(display, atom_names_[atom].c_str(), False ) );
+  atoms_[atom] = out;
+  return out;
+  
 }
 
 #endif
