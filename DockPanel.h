@@ -34,7 +34,9 @@
 
 #include <assert.h>
 #include <QAction>
+#include <QBasicTimer>
 #include <QCloseEvent>
+#include <QTimerEvent>
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
@@ -104,7 +106,7 @@ class DockPanel: public QWidget, public Counter
   //! toggle dock
   virtual void _toggleDock( void );
   
-  private:
+  protected:
   
   //! local widget to implement close_event of the content
   class LocalWidget: public QFrame, public Counter
@@ -134,8 +136,19 @@ class DockPanel: public QWidget, public Counter
    
     //! mouse move event [overloaded]
     virtual void mouseDoubleClickEvent( QMouseEvent *);     
+
+    //! timer event [overloaded]
+    virtual void timerEvent( QTimerEvent *);     
    
     private:
+    
+    //! move enabled
+    const bool& _moveEnabled( void ) const
+    { return move_enabled_; }
+    
+    //! move enabled
+    void _setMoveEnabled( const bool& value ) 
+    { move_enabled_ = value; }
     
     //! parent panel
     DockPanel* panel_;
@@ -146,6 +159,12 @@ class DockPanel: public QWidget, public Counter
     //! button state
     Qt::MouseButton button_;
   
+    //! move timer
+    QBasicTimer timer_;
+    
+    //! true when move is enabled
+    bool move_enabled_;
+    
     //! click position
     QPoint click_pos_;
     
@@ -171,6 +190,12 @@ class DockPanel: public QWidget, public Counter
     
   };
     
+  //! main widget
+  LocalWidget& _main( void ) const
+  { return *main_; }
+  
+  private:
+  
   //! dock title
   std::string title_;
   

@@ -30,6 +30,7 @@
 */
 
 #include <QGridLayout>
+#include <QApplication>
 
 #include "DockPanel.h"
 #include "Debug.h"
@@ -37,7 +38,6 @@
 #include "XmlOptions.h"
 
 using namespace std;
-using namespace Qt;
 
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
@@ -139,12 +139,14 @@ void DockPanel::_toggleDock( void )
 DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
   QFrame( parent ),
   Counter( "DockPanel::LocalWidget" ),
-  panel_( parent )
+  panel_( parent ),
+  button_( Qt::NoButton ),
+  move_enabled_( false )
 {
   detach_action_ = new QAction( "&detach", this );
   detach_action_->setToolTip( "dock/undock panel" );
   addAction( detach_action_ );
-  setContextMenuPolicy( ActionsContextMenu );
+  setContextMenuPolicy( Qt::ActionsContextMenu );
 }
 
 //___________________________________________________________
@@ -160,8 +162,11 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::mousePressEvent.\n" );
   button_ = event->button();
-  if( button_ == LeftButton && !parent() ) 
-  { click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); }
+  if( button_ == Qt::LeftButton && !parent() ) 
+  { 
+    click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); 
+    timer_.start( QApplication::doubleClickInterval(), this );
+  }
 
   return QFrame::mousePressEvent( event );
 }
@@ -170,7 +175,9 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
 void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::mouseReleaseEvent.\n" );
-  button_ = NoButton;
+  button_ = Qt::NoButton;
+  _setMoveEnabled( false );
+  unsetCursor();
   return QFrame::mouseReleaseEvent( event );
 }
 
@@ -178,7 +185,7 @@ void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
 void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
 {
  
-  if( button_ == LeftButton && !parent() )
+  if( button_ == Qt::LeftButton && !parent() && _moveEnabled() )
   {
     QPoint point(event->globalPos() - click_pos_ );
     move( point );
@@ -191,4 +198,22 @@ void DockPanel::LocalWidget::mouseDoubleClickEvent( QMouseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::mouseDoubleClickEvent.\n" );
   detachAction().trigger();
+  timer_.stop();
+}
+
+//___________________________________________________________
+void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
+{
+  
+  Debug::Throw( "DockPanel::LocalWidget::timerEvent.\n" );
+  if( event->timerId() == timer_.timerId() ) 
+  {
+    if( button_ == Qt::LeftButton && !parent() )
+    {
+      _setMoveEnabled( true );
+      setCursor( Qt::SizeAllCursor );
+    }
+    timer_.stop();
+  }
+  
 }
