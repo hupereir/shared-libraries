@@ -36,14 +36,7 @@
 #include "Debug.h"
 #include "File.h"
 #include "XmlOptions.h"
-
-#ifdef Q_WS_X11
-#include <QWidget>
-#include <QX11Info>
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#include <X11/Xutil.h>
-#endif
+#include "X11Util.h"
 
 using namespace std;
 
@@ -139,7 +132,6 @@ void DockPanel::_toggleDock( void )
   
 }
 
-
 //___________________________________________________________
 DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
   QFrame( parent ),
@@ -166,38 +158,7 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::mousePressEvent.\n" );
   button_ = event->button();
-  
-  #ifdef Q_WS_X11
-
-  Display* display( QX11Info::display() );
-  Atom net_wm_moveresize( XInternAtom (display, "_NET_WM_MOVERESIZE", False) );
-  
-  // Use a native X11 sizegrip for "real" top-level windows if supported.
-  if( button_ == Qt::LeftButton && !parent() ) 
-  {
-   
-    
-    XEvent xev;
-    xev.xclient.type = ClientMessage;
-    xev.xclient.message_type = net_wm_moveresize;
-    xev.xclient.display =display;
-    xev.xclient.window = winId();
-    xev.xclient.format = 32;
-    xev.xclient.data.l[0] = event->globalPos().x();
-    xev.xclient.data.l[1] = event->globalPos().y();
-
-    xev.xclient.data.l[2] = 8; // bottomleft/bottomright
-    
-    xev.xclient.data.l[3] = Button1;
-    xev.xclient.data.l[4] = 0;
-    XUngrabPointer( display, QX11Info::appTime() );
-    XSendEvent(display, QX11Info::appRootWindow(x11Info().screen()), False,
-      SubstructureRedirectMask | SubstructureNotifyMask, &xev);
-    return;
-  }
-  
-#endif // Q_WS_X11
-    
+      
   if( button_ == Qt::LeftButton ) 
   { 
     click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); 
@@ -223,9 +184,6 @@ void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
  
   if( button_ == Qt::LeftButton && _moveEnabled() )
   {
-    
-    if( parent() ) detachAction().trigger();
-
     QPoint point(event->globalPos() - click_pos_ );
     move( point );
   }
@@ -245,14 +203,19 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
 {
   
   Debug::Throw( "DockPanel::LocalWidget::timerEvent.\n" );
-  if( event->timerId() == timer_.timerId() ) 
-  {
-    if( button_ == Qt::LeftButton )
-    {
-      _setMoveEnabled( true );
-      setCursor( Qt::SizeAllCursor );
-    }
-    timer_.stop();
+  if( event->timerId() != timer_.timerId() ) return QFrame::timerEvent( event );
+  
+  timer_.stop();
+  if( button_ != Qt::LeftButton ) return;
+
+  // detach
+  if( parent() ) detachAction().trigger();
+      
+  // Use a native X11 Window Manager move, if supported
+  if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
+  else {
+    _setMoveEnabled( true );
+    setCursor( Qt::SizeAllCursor );
   }
   
 }

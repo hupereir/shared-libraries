@@ -39,7 +39,7 @@ using namespace std;
 X11Util::AtomNameMap X11Util::atom_names_ = _initializeAtomNames();
 
 //________________________________________________________________________
-bool X11Util::hasProperty( QWidget* widget, const Atoms& atom )
+bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 {
   #ifdef Q_WS_X11
   Debug::Throw( "X11Util::hasProperty.\n" );
@@ -58,7 +58,7 @@ bool X11Util::hasProperty( QWidget* widget, const Atoms& atom )
   {
     unsigned long n, left;
     XGetWindowProperty( 
-      display, widget->winId(), net_wm_state, 
+      display, widget.winId(), net_wm_state, 
       offset, 1L, false, 
       XA_ATOM, &actual,  
       &format, &n, &left, 
@@ -87,21 +87,21 @@ bool X11Util::hasProperty( QWidget* widget, const Atoms& atom )
 }
 
 //________________________________________________________________________
-void X11Util::changeProperty( QWidget* widget, const Atoms& atom, const unsigned int& value )
+void X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const unsigned int& value )
 {
   #ifdef Q_WS_X11
   Display* display( QX11Info::display() );
   Atom net_wm_state( findAtom(_NET_WM_STATE) );
   Atom searched( findAtom( atom ) );
   
-  XChangeProperty (display, widget->winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&searched, value );
+  XChangeProperty (display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&searched, value );
   #endif
   
   return;
 }
 
 //________________________________________________________________________
-void X11Util::removeProperty( QWidget* widget, const Atoms& atom )
+void X11Util::removeProperty( const QWidget& widget, const Atoms& atom )
 {
   Debug::Throw( "X11Util::removeProperty.\n" );
   
@@ -121,7 +121,7 @@ void X11Util::removeProperty( QWidget* widget, const Atoms& atom )
   {
     unsigned long n, left;
     XGetWindowProperty( 
-      display, widget->winId(), net_wm_state, 
+      display, widget.winId(), net_wm_state, 
       offset, 1L, false, 
       XA_ATOM, &actual,  
       &format, &n, &left, 
@@ -137,23 +137,64 @@ void X11Util::removeProperty( QWidget* widget, const Atoms& atom )
   }
   
   // delete property
-  XDeleteProperty( display, widget->winId(), net_wm_state );
+  XDeleteProperty( display, widget.winId(), net_wm_state );
   
   // re-add atoms that are not the one to be deleted
   for( std::list<Atom>::iterator iter = atoms.begin(); iter != atoms.end(); iter++ )
-  {XChangeProperty( display, widget->winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&*iter, 1); }
+  {XChangeProperty( display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&*iter, 1); }
   #endif
   
   return;
 }
 
 //________________________________________________________________________
+bool X11Util::moveResizeWidget( const QWidget& widget, const QPoint& position, const X11Util::Direction& direction )
+{
+  
+  if( !widget.isWindow() ) return false;
+  
+  #ifdef Q_WS_X11
+  
+  // check
+  if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
+  
+  Display* display( QX11Info::display() );
+  Atom net_wm_moveresize( findAtom( _NET_WM_MOVERESIZE ) );   
+  
+  XEvent event;
+  event.xclient.type = ClientMessage;
+  event.xclient.message_type = net_wm_moveresize;
+  event.xclient.display = display;
+  event.xclient.window = widget.winId();
+  event.xclient.format = 32;
+  event.xclient.data.l[0] = position.x();
+  event.xclient.data.l[1] = position.y();
+  event.xclient.data.l[2] = direction; 
+  event.xclient.data.l[3] = Button1;
+  event.xclient.data.l[4] = 0;
+  XUngrabPointer( display, QX11Info::appTime() );
+  XSendEvent(display, 
+    QX11Info::appRootWindow( widget.x11Info().screen()), False,
+    SubstructureRedirectMask | SubstructureNotifyMask, &event);
+  return true;
+  
+  #else
+  return false;
+  #endif
+}
+
+
+
+//________________________________________________________________________
 X11Util::AtomNameMap X11Util::_initializeAtomNames( void )
 {
+  
   AtomNameMap out;
   out[_NET_WM_STATE] = "_NET_WM_STATE";
   out[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
   out[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
+  out[_NET_WM_MOVERESIZE] = "_NET_WM_MOVERESIZE";
+  
   return out;
 }
 

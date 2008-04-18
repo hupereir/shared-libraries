@@ -52,17 +52,46 @@ class X11Util
   {
     _NET_WM_STATE,
     _NET_WM_STATE_STICKY,
-    _NET_WM_STATE_SKIP_TASKBAR
+    _NET_WM_STATE_SKIP_TASKBAR,
+    _NET_WM_MOVERESIZE
+  };
+  
+  enum Direction
+  {
+    _NET_WM_MOVERESIZE_SIZE_TOPLEFT=0,
+    _NET_WM_MOVERESIZE_SIZE_TOP=1,
+    _NET_WM_MOVERESIZE_SIZE_TOPRIGHT=2,
+    _NET_WM_MOVERESIZE_SIZE_RIGHT=3,
+    _NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT=4,
+    _NET_WM_MOVERESIZE_SIZE_BOTTOM=5,
+    _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT=6,
+    _NET_WM_MOVERESIZE_SIZE_LEFT=7,
+    _NET_WM_MOVERESIZE_MOVE=8,
+    _NET_WM_MOVERESIZE_SIZE_KEYBOARD=9,
+    _NET_WM_MOVERESIZE_MOVE_KEYBOARD=10,    
   };
   
   //! return true if property is found in NET_WM_STATE
-  static bool hasProperty( QWidget* widget, const Atoms& atom );
+  static bool hasProperty( const QWidget& widget, const Atoms& atom );
   
   //! change property
-  static void changeProperty( QWidget* widget, const Atoms& atom, const unsigned int& value );
+  static void changeProperty( const QWidget& widget, const Atoms& atom, const unsigned int& value );
   
   //! remove property from NET_WM_STATE
-  static void removeProperty( QWidget* widget, const Atoms& atom );
+  static void removeProperty( const QWidget& widget, const Atoms& atom );
+  
+  //! move widget using X11 window manager
+  /*! returns true on success */
+  static bool moveWidget( const QWidget& widget, const QPoint& position )
+  { return moveResizeWidget( widget, position, X11Util::_NET_WM_MOVERESIZE_MOVE ); }
+
+  //! move/resize widget using X11 window manager
+  /*! returns true on success */
+  static bool moveResizeWidget( const QWidget& widget, const QPoint& position, const Direction& direction );
+  
+  //! supported atoms
+  static bool isSupported( const Atoms& atom )
+  { return true; }
   
   #ifdef Q_WS_X11
   

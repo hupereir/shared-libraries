@@ -36,6 +36,7 @@
 #include "TabWidget.h"
 #include "File.h"
 #include "XmlOptions.h"
+#include "X11Util.h"
 
 using namespace std;
 
@@ -176,8 +177,6 @@ void TabWidget::mouseMoveEvent( QMouseEvent* event )
   if( button_ == Qt::LeftButton && _moveEnabled() )
   {
     
-    if( parent() ) detachAction().trigger();
-
     QPoint point(event->globalPos() - click_pos_ );
     move( point );
   }
@@ -197,14 +196,19 @@ void TabWidget::timerEvent( QTimerEvent *event )
 {
   
   Debug::Throw( "TabWidget::timerEvent.\n" );
-  if( event->timerId() == timer_.timerId() ) 
-  {
-    if( button_ == Qt::LeftButton )
-    {
-      _setMoveEnabled( true );
-      setCursor( Qt::SizeAllCursor );
-    }
-    timer_.stop();
+  if( event->timerId() != timer_.timerId() ) return QFrame::timerEvent( event );
+  
+  timer_.stop();
+  if( button_ != Qt::LeftButton ) return;
+
+  // detach
+  if( parent() ) detachAction().trigger();
+    
+  // Use a native X11 Window Manager move, if supported
+  if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
+  else {
+    _setMoveEnabled( true );
+    setCursor( Qt::SizeAllCursor );
   }
   
 }
