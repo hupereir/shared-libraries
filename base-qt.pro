@@ -23,7 +23,7 @@ HEADERS = \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
-  CustomTabWidget.h \
+  TabWidget.h \
   CustomTextDocument.h \
   CustomTextEdit.h \
   CustomToolBar.h \
@@ -114,7 +114,7 @@ SOURCES = \
   CustomPixmap.cpp \
   CustomSlider.cpp \
   CustomTextEdit.cpp \
-  CustomTabWidget.cpp \
+  TabWidget.cpp \
   CustomToolBar.cpp \
   CustomToolButton.cpp \
   DebugMenu.cpp \

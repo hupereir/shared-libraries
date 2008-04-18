@@ -23,7 +23,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomTabWidget.cpp
+  \file TabWidget.cpp
   \brief Tab widget with detachable pages
   \author Hugo Pereira
   \version $Revision$
@@ -32,14 +32,14 @@
 
 #include <QGridLayout>
 
-#include "CustomTabWidget.h"
+#include "TabWidget.h"
 #include "File.h"
 #include "XmlOptions.h"
 
 using namespace std;
 
 //________________________________________________________
-CustomTabWidget::CustomTabWidget( QTabWidget* parent, const unsigned int& flags ):
+TabWidget::TabWidget( QTabWidget* parent, const unsigned int& flags ):
     QFrame(), 
     Counter( "TabWidget" ),
     flags_( flags ),
@@ -47,7 +47,7 @@ CustomTabWidget::CustomTabWidget( QTabWidget* parent, const unsigned int& flags 
     index_( 0 )
 {
 
-  Debug::Throw( "CustomTabWidget::CustomTabWidget.\n" );
+  Debug::Throw( "TabWidget::TabWidget.\n" );
   setFrameStyle( QFrame::NoFrame );
 
   // grid layout to overlay main layout and invisible grip
@@ -86,10 +86,10 @@ CustomTabWidget::CustomTabWidget( QTabWidget* parent, const unsigned int& flags 
 }
 
 //___________________________________________________________
-void CustomTabWidget::_toggleDock( void )
+void TabWidget::_toggleDock( void )
 {
   
-  Debug::Throw( "CustomTabWidget::_toggleDock.\n" );
+  Debug::Throw( "TabWidget::_toggleDock.\n" );
 
   if( !parent() ) {
     

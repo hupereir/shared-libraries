@@ -53,12 +53,9 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   layout()->setSpacing(2);
   
   // main widget
-  Debug::Throw( "DocPanel::DockPanel - main_.\n" );
-  main_ = new LocalWidget( this );
-  layout()->addWidget( main_ );
-  
-  main_->setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
-  connect( &main_->detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
+  layout()->addWidget( main_ = new LocalWidget( this ) );
+  _main().setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
+  connect( &_main().detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
   
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
 
@@ -66,7 +63,7 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   QGridLayout *grid_layout( new QGridLayout() );
   grid_layout->setMargin(0);
   grid_layout->setSpacing(0);
-  main_->setLayout( grid_layout );
+  _main().setLayout( grid_layout );
   
   // vertical layout for children
   main_layout_ = new QVBoxLayout();
@@ -95,37 +92,37 @@ void DockPanel::_toggleDock( void )
   
   Debug::Throw( "DockPanel::_toggleDock.\n" );
 
-  if( !main_->parent() ) 
+  if( !_main().parent() ) 
   {
   
-    detached_size_ = main_->size();
-    main_->setParent( this );
+    detached_size_ = _main().size();
+    _main().setParent( this );
     layout()->addWidget( main_ );
-    main_->setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
+    _main().setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
     size_grip_->hide();
-    main_->show();
+    _main().show();
     
-    main_->detachAction().setText("&detach");
+    _main().detachAction().setText("&detach");
     
     emit attached( true );
     emit attached();
   
   } else {
         
-    main_->setParent( 0 );
-    if( flags_ & STAYS_ON_TOP ) main_->setWindowFlags( Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint );
-    else main_->setWindowFlags( Qt::Dialog );
+    _main().setParent( 0 );
+    if( flags_ & STAYS_ON_TOP ) _main().setWindowFlags( Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint );
+    else _main().setWindowFlags( Qt::FramelessWindowHint );
 
-    main_->move( mapToGlobal( QPoint(0,0) ) );
-    main_->setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-    if( !title_.empty() ) main_->setWindowTitle( title_.c_str() );
+    _main().move( mapToGlobal( QPoint(0,0) ) );
+    _main().setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+    if( !title_.empty() ) _main().setWindowTitle( title_.c_str() );
     
-    main_->detachAction().setText("&attach");
-    if( detached_size_ != QSize() ) main_->resize( detached_size_ );    
+    _main().detachAction().setText("&attach");
+    if( detached_size_ != QSize() ) _main().resize( detached_size_ );    
     
-    main_->setFrameStyle( QFrame::NoFrame );
+    _main().setFrameStyle( QFrame::NoFrame );
     size_grip_->show();
-    main_->show();
+    _main().show();
     
     emit attached( false );
     emit detached();
@@ -162,12 +159,13 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::mousePressEvent.\n" );
   button_ = event->button();
-  if( button_ == Qt::LeftButton && !parent() ) 
+  
+  if( button_ == Qt::LeftButton ) 
   { 
     click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); 
     timer_.start( QApplication::doubleClickInterval(), this );
   }
-
+  
   return QFrame::mousePressEvent( event );
 }
 
@@ -185,8 +183,11 @@ void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
 void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
 {
  
-  if( button_ == Qt::LeftButton && !parent() && _moveEnabled() )
+  if( button_ == Qt::LeftButton && _moveEnabled() )
   {
+    
+    if( parent() ) detachAction().trigger();
+
     QPoint point(event->globalPos() - click_pos_ );
     move( point );
   }
@@ -208,7 +209,7 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
   Debug::Throw( "DockPanel::LocalWidget::timerEvent.\n" );
   if( event->timerId() == timer_.timerId() ) 
   {
-    if( button_ == Qt::LeftButton && !parent() )
+    if( button_ == Qt::LeftButton )
     {
       _setMoveEnabled( true );
       setCursor( Qt::SizeAllCursor );

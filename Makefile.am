@@ -27,7 +27,7 @@ noinst_HEADERS = \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
-  CustomTabWidget.h \
+  TabWidget.h \
   CustomTextDocument.h \
   CustomTextEdit.h \
   CustomToolBar.h \
@@ -115,7 +115,7 @@ libbase_qt_a_SOURCES = \
   CustomPixmap.cpp \
   CustomSlider.cpp \
   CustomTextEdit.cpp \
-  CustomTabWidget.cpp \
+  TabWidget.cpp \
   CustomToolBar.cpp \
   CustomToolButton.cpp \
   DebugMenu.cpp \
@@ -174,7 +174,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomLineEdit.cpp \
   moc_CustomMainWindow.cpp \
   moc_CustomSlider.cpp \
-  moc_CustomTabWidget.cpp \
+  moc_TabWidget.cpp \
   moc_CustomTextEdit.cpp \
   moc_CustomToolBar.cpp \
   moc_CustomToolButton.cpp \

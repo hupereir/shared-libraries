@@ -1,5 +1,5 @@
-#ifndef _CustomTabWidget_h_
-#define _CustomTabWidget_h_
+#ifndef _TabWidget_h_
+#define _TabWidget_h_
 
 // $Id$
 
@@ -25,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomTabWidget.h
+  \file TabWidget.h
   \brief Tab widget with detachable pages
   \author Hugo Pereira
   \version $Revision$
@@ -45,10 +45,10 @@
 #include "Counter.h"
 #include "Debug.h"
 // forward declaration
-class CustomTabWidget;
+class TabWidget;
 
 //! Tab Child container
-class CustomTabWidget: public QFrame, public Counter
+class TabWidget: public QFrame, public Counter
 {
 
   //! Qt meta object declaration
@@ -67,7 +67,7 @@ class CustomTabWidget: public QFrame, public Counter
   };
       
   //! constructor
-  CustomTabWidget( QTabWidget* parent, const unsigned int& flags = NONE  );
+  TabWidget( QTabWidget* parent, const unsigned int& flags = NONE  );
   
   //! dock panel flags
   void setFlags( const unsigned int& flags )
@@ -152,7 +152,7 @@ class CustomTabWidget: public QFrame, public Counter
   //! title
   std::string title_; 
   
-  //! parent CustomTabWidget
+  //! parent TabWidget
   QTabWidget* parent_;
           
   //! vertical layout
