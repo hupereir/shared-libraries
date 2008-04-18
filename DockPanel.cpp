@@ -136,7 +136,6 @@ void DockPanel::_toggleDock( void )
 DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
   QFrame( parent ),
   Counter( "DockPanel::LocalWidget" ),
-  panel_( parent ),
   button_( Qt::NoButton ),
   move_enabled_( false )
 {
@@ -150,7 +149,7 @@ DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
 void DockPanel::LocalWidget::closeEvent( QCloseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::closeEvent.\n" );
-  if( !parent() ) panel_->_toggleDock();
+  if( !parent() ) detachAction().trigger();
   event->ignore();
 }
 

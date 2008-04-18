@@ -30,6 +30,7 @@
   \date $Date$
 */
 
+#include <QApplication>
 #include <QGridLayout>
 
 #include "TabWidget.h"
@@ -44,7 +45,9 @@ TabWidget::TabWidget( QTabWidget* parent, const unsigned int& flags ):
     Counter( "TabWidget" ),
     flags_( flags ),
     parent_( parent ),
-    index_( 0 )
+    index_( 0 ),
+    button_( Qt::NoButton ),
+    move_enabled_( false )
 {
 
   Debug::Throw( "TabWidget::TabWidget.\n" );
@@ -57,7 +60,7 @@ TabWidget::TabWidget( QTabWidget* parent, const unsigned int& flags ):
   setLayout( grid_layout );
 
   grid_layout->addLayout( main_layout_ = new QVBoxLayout(), 0, 0, 1, 1 );
-  main_layout_->setMargin(2);
+  main_layout_->setMargin(5);
   main_layout_->setSpacing(2);
   
   // vertical box
@@ -67,21 +70,17 @@ TabWidget::TabWidget( QTabWidget* parent, const unsigned int& flags ):
   box().layout()->setMargin( 0 );
   
   main_layout_->addWidget( box_ );
-  
-  // insert hbox layout for buttons
-  button_layout_ = new QHBoxLayout();  
-  button_layout_->setMargin( 0 );  
-  button_layout_->setSpacing( 5 );  
-  main_layout_->addLayout( button_layout_ );
-  
-  button_ = new QPushButton( "&detach", this );
-  button_layout_->addWidget( button_ );
-  connect( button_, SIGNAL( clicked() ), SLOT( _toggleDock() ) );
-  button_->setToolTip( "dock/undock tab" );
- 
+   
   // size grip
   grid_layout->addWidget( size_grip_ = new LocalGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
   size_grip_->hide(); 
+ 
+  // detach action
+  detach_action_ = new QAction( "&detach", this );
+  detachAction().setToolTip( "dock/undock panel" );
+  connect( &detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
+  addAction( &detachAction() );
+  setContextMenuPolicy( Qt::ActionsContextMenu );
   
 }
 
@@ -95,6 +94,7 @@ void TabWidget::_toggleDock( void )
     
     // store size for later detach
     detached_size_ = size();
+    detachAction().setText("&detach");
     
     // reinsert into parent and select
     parent_->QTabWidget::insertTab( index_, this, title_.c_str() );
@@ -102,7 +102,6 @@ void TabWidget::_toggleDock( void )
     
     // modify button text
     size_grip_->hide();
-    button_->setText("&detach");
         
     emit attached();
     
@@ -113,24 +112,20 @@ void TabWidget::_toggleDock( void )
     index_ = parent_->indexOf( this );
     parent_->removeTab( index_ );
     
+    detachAction().setText("&attach");
+   
     // keep track of parent
     QWidget *parent( parentWidget() );
     
     // reparent to top level
     setParent( 0 );
-    if( flags_ & STAYS_ON_TOP ) setWindowFlags( Qt::WindowStaysOnTopHint );
+    if( flags_ & STAYS_ON_TOP ) setWindowFlags( Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint );
+    else setWindowFlags( Qt::FramelessWindowHint );
    
     // change title
-    // setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str()  ) );
-    if( !title_.empty() ) 
-    {
-      ostringstream what;
-      what << "TexTool - " << title_;
-      setWindowTitle( what.str().c_str() );
-    }
+    if( !title_.empty() ) { setWindowTitle( title_.c_str() ); }
     
     // modify button, move, and resize
-    button_->setText("&attach");
     move( parent->mapToGlobal( QPoint(0,0) ) );    
     if( detached_size_ != QSize() ) resize( detached_size_ );
     size_grip_->show();
@@ -138,5 +133,78 @@ void TabWidget::_toggleDock( void )
     
     emit detached();
   }  
+  
+}
+
+//___________________________________________________________
+void TabWidget::closeEvent( QCloseEvent* event )
+{
+  Debug::Throw( "TabWidget::closeEvent.\n" );
+  if( !parent() ) detachAction().trigger();
+  event->ignore();
+}
+
+//___________________________________________________________
+void TabWidget::mousePressEvent( QMouseEvent* event )
+{
+  Debug::Throw( "TabWidget::mousePressEvent.\n" );
+  button_ = event->button();
+  
+  if( button_ == Qt::LeftButton ) 
+  { 
+    click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); 
+    timer_.start( QApplication::doubleClickInterval(), this );
+  }
+  
+  return QFrame::mousePressEvent( event );
+}
+
+//___________________________________________________________
+void TabWidget::mouseReleaseEvent( QMouseEvent* event )
+{
+  Debug::Throw( "TabWidget::mouseReleaseEvent.\n" );
+  button_ = Qt::NoButton;
+  _setMoveEnabled( false );
+  unsetCursor();
+  return QFrame::mouseReleaseEvent( event );
+}
+
+//___________________________________________________________
+void TabWidget::mouseMoveEvent( QMouseEvent* event )
+{
+ 
+  if( button_ == Qt::LeftButton && _moveEnabled() )
+  {
+    
+    if( parent() ) detachAction().trigger();
+
+    QPoint point(event->globalPos() - click_pos_ );
+    move( point );
+  }
+ 
+}
+
+//___________________________________________________________
+void TabWidget::mouseDoubleClickEvent( QMouseEvent* event )
+{
+  Debug::Throw( "TabWidget::mouseDoubleClickEvent.\n" );
+  detachAction().trigger();
+  timer_.stop();
+}
+
+//___________________________________________________________
+void TabWidget::timerEvent( QTimerEvent *event )
+{
+  
+  Debug::Throw( "TabWidget::timerEvent.\n" );
+  if( event->timerId() == timer_.timerId() ) 
+  {
+    if( button_ == Qt::LeftButton )
+    {
+      _setMoveEnabled( true );
+      setCursor( Qt::SizeAllCursor );
+    }
+    timer_.stop();
+  }
   
 }

@@ -150,9 +150,6 @@ class DockPanel: public QWidget, public Counter
     void _setMoveEnabled( const bool& value ) 
     { move_enabled_ = value; }
     
-    //! parent panel
-    DockPanel* panel_;
-    
     //! attach/detach action
     QAction* detach_action_;
 

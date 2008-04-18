@@ -33,11 +33,12 @@
 */
 
 #include <assert.h>
+#include <QAction>
+#include <QBasicTimer>
 #include <QCloseEvent>
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
-#include <QPushButton>
 #include <QSizeGrip>
 #include <QTabWidget>
 #include <string>
@@ -95,12 +96,9 @@ class TabWidget: public QFrame, public Counter
     return *box_;
   }
   
-  //! retrieve button layout
-  QBoxLayout& buttonLayout( void ) const
-  {
-    assert( button_layout_ );
-    return *button_layout_;
-  }
+  //! detach action
+  QAction& detachAction( void ) const
+  { return *detach_action_; }
             
   signals:
   
@@ -113,11 +111,22 @@ class TabWidget: public QFrame, public Counter
   protected:
       
   //! close event
-  virtual void closeEvent( QCloseEvent* event )
-  { 
-    if( !parent() ) _toggleDock(); 
-    event->ignore();
-  }
+  virtual void closeEvent( QCloseEvent* event );
+  
+  //! mouse press event [overloaded]
+  virtual void mousePressEvent( QMouseEvent *);
+  
+  //! mouse move event [overloaded]
+  virtual void mouseMoveEvent( QMouseEvent *);     
+  
+  //! mouse move event [overloaded]
+  virtual void mouseReleaseEvent( QMouseEvent *);     
+  
+  //! mouse move event [overloaded]
+  virtual void mouseDoubleClickEvent( QMouseEvent *);     
+  
+  //! timer event [overloaded]
+  virtual void timerEvent( QTimerEvent *);     
   
   protected slots:
       
@@ -125,6 +134,14 @@ class TabWidget: public QFrame, public Counter
   virtual void _toggleDock( void );
   
   private: 
+  
+  //! move enabled
+  const bool& _moveEnabled( void ) const
+  { return move_enabled_; }
+  
+  //! move enabled
+  void _setMoveEnabled( const bool& value ) 
+  { move_enabled_ = value; }
   
   //! local QSizeGrip
   /*! the paint event method is overridden so that the size grip is invisible */
@@ -157,24 +174,33 @@ class TabWidget: public QFrame, public Counter
           
   //! vertical layout
   QVBoxLayout* main_layout_;
-  
-  //! horizontal layout (for buttons)
-  QHBoxLayout* button_layout_;
-      
+        
   //! contents vbox
   QWidget* box_;
       
   //! size grip
   LocalGrip* size_grip_;
-  
-  //! button
-  QPushButton* button_;
-  
+    
   //! index in parent tab
   int index_;
   
+  //! attach/detach action
+  QAction* detach_action_;
+
   //! default size for the detached panel
   QSize detached_size_;
+  
+  //! button state
+  Qt::MouseButton button_;
+  
+  //! move timer
+  QBasicTimer timer_;
+  
+  //! true when move is enabled
+  bool move_enabled_;
+  
+  //! click position
+  QPoint click_pos_;
   
 };
 #endif
