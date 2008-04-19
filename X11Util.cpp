@@ -221,7 +221,7 @@ bool X11Util::moveResizeWidget( const QWidget& widget, const QPoint& position, c
 {
   
   Debug::Throw( "X11Util::moveResizeWidget.\n" );
-  
+    
   if( !widget.isWindow() ) return false;
   
   #ifdef Q_WS_X11

@@ -103,28 +103,39 @@ void DockPanel::_toggleDock( void )
     size_grip_->hide();
     _main().show();
     
+    // change action text
     _main().detachAction().setText("&detach");
     
+    // signals
     emit attached( true );
     emit attached();
   
   } else {
         
     _main().setParent( 0 );
-    if( flags_ & STAYS_ON_TOP ) _main().setWindowFlags( Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint );
-    else _main().setWindowFlags( Qt::FramelessWindowHint );
+    
+    // window flags
+    Qt::WindowFlags flags = Qt::FramelessWindowHint;
+    if( flags_ & STAYS_ON_TOP ) flags |= Qt::WindowStaysOnTopHint;
+    _main().setWindowFlags( flags );
 
+    // frame style
+    _main().setFrameStyle( QFrame::Panel | QFrame::Raised );
+
+    // move and resize
     _main().move( mapToGlobal( QPoint(0,0) ) );
     _main().setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
     if( !title_.empty() ) _main().setWindowTitle( title_.c_str() );
-    
-    _main().detachAction().setText("&attach");
     if( detached_size_ != QSize() ) _main().resize( detached_size_ );    
     
-    _main().setFrameStyle( QFrame::NoFrame );
+    // change action text
+    _main().detachAction().setText("&attach");
+    
+    // show widgets
     size_grip_->show();
     _main().show();
     
+    // signals
     emit attached( false );
     emit detached();
   
@@ -182,13 +193,32 @@ void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
 //___________________________________________________________
 void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
 {
- 
-  if( button_ == Qt::LeftButton && _moveEnabled() )
-  {
-    QPoint point(event->globalPos() - click_pos_ );
-    move( point );
+  
+  // check button
+  if( button_ != Qt::LeftButton ) return QFrame::mouseMoveEvent( event );
+
+  // if not yet enabled, enable immediately and stop timer
+  if( !_moveEnabled() ) {
+    
+    timer_.stop();
+    
+    if( parent() ) detachAction().trigger();    
+    
+    if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
+    else { 
+      
+      // enable
+      _setMoveEnabled( true );
+      setCursor( Qt::SizeAllCursor );
+      
+    }
+          
   }
- 
+
+  // move widget, the standard way
+  QPoint point(event->globalPos() - click_pos_ );
+  move( point );
+
 }
 
 //___________________________________________________________
@@ -208,11 +238,8 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
   
   timer_.stop();
   if( button_ != Qt::LeftButton ) return;
-
-  // detach
+  
   if( parent() ) detachAction().trigger();
-      
-  // Use a native X11 Window Manager move, if supported
   if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
   else {
     _setMoveEnabled( true );

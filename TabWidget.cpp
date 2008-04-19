@@ -98,6 +98,7 @@ void TabWidget::_toggleDock( void )
     detachAction().setText("&detach");
     
     // reinsert into parent and select
+    setFrameStyle( QFrame::NoFrame );
     parent_->QTabWidget::insertTab( index_, this, title_.c_str() );
     parent_->QTabWidget::setCurrentWidget( this );
     
@@ -112,26 +113,35 @@ void TabWidget::_toggleDock( void )
     // and remove from parent TabWidget
     index_ = parent_->indexOf( this );
     parent_->removeTab( index_ );
-    
-    detachAction().setText("&attach");
-   
+       
     // keep track of parent
     QWidget *parent( parentWidget() );
     
     // reparent to top level
     setParent( 0 );
-    if( flags_ & STAYS_ON_TOP ) setWindowFlags( Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint );
-    else setWindowFlags( Qt::FramelessWindowHint );
+ 
+    // window flags
+    Qt::WindowFlags flags = Qt::FramelessWindowHint;
+    if( flags_ & STAYS_ON_TOP ) flags |= Qt::WindowStaysOnTopHint;
+    setWindowFlags( flags );
+
+    // frame style
+    setFrameStyle( QFrame::Panel | QFrame::Raised );
    
-    // change title
-    if( !title_.empty() ) { setWindowTitle( title_.c_str() ); }
-    
-    // modify button, move, and resize
+    // move and resize
     move( parent->mapToGlobal( QPoint(0,0) ) );    
+    setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+    if( !title_.empty() ) { setWindowTitle( title_.c_str() ); }
     if( detached_size_ != QSize() ) resize( detached_size_ );
+
+    // change action text
+    detachAction().setText("&attach");
+
+    // show widgets
     size_grip_->show();
     show();
     
+    // signal
     emit detached();
   }  
   
@@ -150,7 +160,6 @@ void TabWidget::mousePressEvent( QMouseEvent* event )
 {
   Debug::Throw( "TabWidget::mousePressEvent.\n" );
   button_ = event->button();
-  
   if( button_ == Qt::LeftButton ) 
   { 
     click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); 
@@ -175,13 +184,29 @@ void TabWidget::mouseReleaseEvent( QMouseEvent* event )
 void TabWidget::mouseMoveEvent( QMouseEvent* event )
 {
  
-  if( button_ == Qt::LeftButton && _moveEnabled() )
-  {
+  // check button
+  if( button_ != Qt::LeftButton ) return QFrame::mouseMoveEvent( event );
+
+  // if not yet enabled, enable immediately and stop timer
+  if( !_moveEnabled() ) {
     
-    QPoint point(event->globalPos() - click_pos_ );
-    move( point );
+    timer_.stop();
+    if( parent() ) detachAction().trigger();    
+    if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
+    else { 
+      
+      // enable
+      _setMoveEnabled( true );
+      setCursor( Qt::SizeAllCursor );
+      
+    }
+          
   }
- 
+
+  // move widget, the standard way
+  QPoint point(event->globalPos() - click_pos_ );
+  move( point );
+
 }
 
 //___________________________________________________________
@@ -201,11 +226,8 @@ void TabWidget::timerEvent( QTimerEvent *event )
   
   timer_.stop();
   if( button_ != Qt::LeftButton ) return;
-
-  // detach
+  
   if( parent() ) detachAction().trigger();
-    
-  // Use a native X11 Window Manager move, if supported
   if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
   else {
     _setMoveEnabled( true );
