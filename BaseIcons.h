@@ -51,6 +51,7 @@ namespace ICONS
   static const std::string CONFIGURE = "configure.png";
   static const std::string HELP = "toggle_log.png";
   static const std::string OPEN = "fileopen.png";
+  static const std::string PIN = "stock_pin.png";
   static const std::string RELOAD = "reload.png";
   static const std::string DELETE = "trashcan_empty.png";
   static const std::string WARNING = "messagebox_warning.png";

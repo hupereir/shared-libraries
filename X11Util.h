@@ -50,6 +50,7 @@ class X11Util
   //! Atoms enumeration
   enum Atoms
   {
+    _NET_SUPPORTED,
     _NET_WM_STATE,
     _NET_WM_STATE_STICKY,
     _NET_WM_STATE_SKIP_TASKBAR,
@@ -71,14 +72,17 @@ class X11Util
     _NET_WM_MOVERESIZE_MOVE_KEYBOARD=10,    
   };
   
+  //! supported atoms
+  static bool isSupported( const Atoms& atom );
+
   //! return true if property is found in NET_WM_STATE
   static bool hasProperty( const QWidget& widget, const Atoms& atom );
   
   //! change property
-  static void changeProperty( const QWidget& widget, const Atoms& atom, const unsigned int& value );
+  static bool changeProperty( const QWidget& widget, const Atoms& atom, const unsigned int& value );
   
   //! remove property from NET_WM_STATE
-  static void removeProperty( const QWidget& widget, const Atoms& atom );
+  static bool removeProperty( const QWidget& widget, const Atoms& atom );
   
   //! move widget using X11 window manager
   /*! returns true on success */
@@ -89,9 +93,6 @@ class X11Util
   /*! returns true on success */
   static bool moveResizeWidget( const QWidget& widget, const QPoint& position, const Direction& direction );
   
-  //! supported atoms
-  static bool isSupported( const Atoms& atom )
-  { return true; }
   
   #ifdef Q_WS_X11
   
@@ -109,6 +110,12 @@ class X11Util
   
   //! atom names
   static AtomNameMap  atom_names_;
+  
+  //! supported atoms
+  typedef std::map<Atoms, bool > SupportedAtomMap;
+  
+  //! supported atoms
+  static SupportedAtomMap supported_atoms_;
   
   #ifdef Q_WS_X11
   

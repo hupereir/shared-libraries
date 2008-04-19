@@ -37,13 +37,69 @@ using namespace std;
 
 //________________________________________________________________________
 X11Util::AtomNameMap X11Util::atom_names_ = _initializeAtomNames();
+X11Util::SupportedAtomMap X11Util::supported_atoms_;
+
+//________________________________________________________________________
+bool X11Util::isSupported( const Atoms& atom )
+{
+  
+  #ifdef Q_WS_X11
+  
+  SupportedAtomMap::const_iterator iter( supported_atoms_.find( atom ) );
+  if( iter != supported_atoms_.end() ) return iter->second;
+  
+  Display* display( QX11Info::display() );
+  Atom net_supported( findAtom( _NET_SUPPORTED ) );
+  Atom searched( findAtom( atom ) );
+
+  Atom actual;
+  int format;
+  unsigned char *data;
+  unsigned long offset = 0;
+
+  while( 1 )
+  {
+    unsigned long n, left;
+    XGetWindowProperty( display, QX11Info::appRootWindow(),
+      net_supported, offset, 1L,
+      false, XA_ATOM, &actual,  
+      &format, &n, &left, 
+      (unsigned char **) &data);
+    
+    if( data == None ) break;      
+    
+    // try cast data to atom
+    Atom found( *(Atom*)data );
+    
+    if( found == searched ) {
+      supported_atoms_[atom] = true;
+      return true;
+    }
+    
+    if( !left ) break;
+    else offset ++;
+    
+  }
+  
+  supported_atoms_[atom] = false;
+
+  #endif
+  
+  return false;
+  
+}
 
 //________________________________________________________________________
 bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 {
-  #ifdef Q_WS_X11
+
   Debug::Throw( "X11Util::hasProperty.\n" );
+
+  #ifdef Q_WS_X11
   
+  // make sure atom is supported
+  if( !isSupported( atom ) ) return false;
+
   Display* display( QX11Info::display() );
   Atom net_wm_state( findAtom(_NET_WM_STATE) );
   Atom searched( findAtom( atom ) );
@@ -87,25 +143,37 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 }
 
 //________________________________________________________________________
-void X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const unsigned int& value )
+bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const unsigned int& value )
 {
+
+  Debug::Throw( "X11Util::changeProperty.\n" );
+
   #ifdef Q_WS_X11
+
+  // make sure atom is supported
+  if( !isSupported( atom ) ) return false;
+
   Display* display( QX11Info::display() );
   Atom net_wm_state( findAtom(_NET_WM_STATE) );
   Atom searched( findAtom( atom ) );
   
   XChangeProperty (display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&searched, value );
+  return true;
   #endif
   
-  return;
+  return false;
 }
 
 //________________________________________________________________________
-void X11Util::removeProperty( const QWidget& widget, const Atoms& atom )
+bool X11Util::removeProperty( const QWidget& widget, const Atoms& atom )
 {
   Debug::Throw( "X11Util::removeProperty.\n" );
   
   #ifdef Q_WS_X11
+
+  // make sure atom is supported
+  if( !isSupported( atom ) ) return false;
+  
   Display* display( QX11Info::display() );
   Atom net_wm_state( findAtom(_NET_WM_STATE) );
   Atom searched( findAtom( atom ) );
@@ -142,14 +210,17 @@ void X11Util::removeProperty( const QWidget& widget, const Atoms& atom )
   // re-add atoms that are not the one to be deleted
   for( std::list<Atom>::iterator iter = atoms.begin(); iter != atoms.end(); iter++ )
   {XChangeProperty( display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&*iter, 1); }
+  return true;
   #endif
   
-  return;
+  return false;
 }
 
 //________________________________________________________________________
 bool X11Util::moveResizeWidget( const QWidget& widget, const QPoint& position, const X11Util::Direction& direction )
 {
+  
+  Debug::Throw( "X11Util::moveResizeWidget.\n" );
   
   if( !widget.isWindow() ) return false;
   
@@ -174,7 +245,7 @@ bool X11Util::moveResizeWidget( const QWidget& widget, const QPoint& position, c
   event.xclient.data.l[4] = 0;
   XUngrabPointer( display, QX11Info::appTime() );
   XSendEvent(display, 
-    QX11Info::appRootWindow( widget.x11Info().screen()), False,
+    QX11Info::appRootWindow( widget.x11Info().screen()), false,
     SubstructureRedirectMask | SubstructureNotifyMask, &event);
   return true;
   
@@ -188,8 +259,11 @@ bool X11Util::moveResizeWidget( const QWidget& widget, const QPoint& position, c
 //________________________________________________________________________
 X11Util::AtomNameMap X11Util::_initializeAtomNames( void )
 {
+
+  Debug::Throw( "X11Util::_initializeAtomNames.\n" );
   
   AtomNameMap out;
+  out[_NET_SUPPORTED] = "_NET_SUPPORTED";
   out[_NET_WM_STATE] = "_NET_WM_STATE";
   out[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
   out[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
@@ -206,6 +280,8 @@ X11Util::AtomMap X11Util::atoms_;
 //________________________________________________________________________
 Atom X11Util::findAtom( const Atoms& atom )
 {
+
+  Debug::Throw( "X11Util::findAtom.\n" );
   
   // find atom in map
   AtomMap::iterator iter( atoms_.find( atom ) );
@@ -213,7 +289,7 @@ Atom X11Util::findAtom( const Atoms& atom )
   
   // create atom if not found
   Display* display( QX11Info::display() );
-  Atom out( XInternAtom(display, atom_names_[atom].c_str(), False ) );
+  Atom out( XInternAtom(display, atom_names_[atom].c_str(), false ) );
   atoms_[atom] = out;
   return out;
   
