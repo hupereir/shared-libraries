@@ -55,8 +55,8 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   
   // main widget
   layout()->addWidget( main_ = new LocalWidget( this ) );
-  _main().setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
-  connect( &_main().detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
+  main().setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
+  connect( &main().detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
   
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
 
@@ -64,7 +64,7 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   QGridLayout *grid_layout( new QGridLayout() );
   grid_layout->setMargin(0);
   grid_layout->setSpacing(0);
-  _main().setLayout( grid_layout );
+  main().setLayout( grid_layout );
   
   // vertical layout for children
   main_layout_ = new QVBoxLayout();
@@ -93,18 +93,22 @@ void DockPanel::_toggleDock( void )
   
   Debug::Throw( "DockPanel::_toggleDock.\n" );
 
-  if( !_main().parent() ) 
+  if( !main().parent() ) 
   {
   
-    detached_size_ = _main().size();
-    _main().setParent( this );
+    // store current size
+    detached_size_ = main().size();
+    Debug::Throw() << "DockPanel::_toggleDock - detached_size: (" << detachedSize().width() << "," << detachedSize().height() << ")" << endl;
+    
+    // change parent
+    main().setParent( this );
     layout()->addWidget( main_ );
-    _main().setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
+    main().setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
     size_grip_->hide();
-    _main().show();
+    main().show();
     
     // change action text
-    _main().detachAction().setText("&detach");
+    main().detachAction().setText("&detach");
     
     // signals
     emit attached( true );
@@ -112,28 +116,33 @@ void DockPanel::_toggleDock( void )
   
   } else {
         
-    _main().setParent( 0 );
+    // store current size
+    attached_size_ = main().size();
+    Debug::Throw() << "DockPanel::_toggleDock - attached_size: (" << attachedSize().width() << "," << attachedSize().height() << ")" << endl;
+    
+    // change parent
+    main().setParent( 0 );
     
     // window flags
     Qt::WindowFlags flags = Qt::FramelessWindowHint;
     if( flags_ & STAYS_ON_TOP ) flags |= Qt::WindowStaysOnTopHint;
-    _main().setWindowFlags( flags );
+    main().setWindowFlags( flags );
 
     // frame style
-    _main().setFrameStyle( QFrame::Panel | QFrame::Raised );
+    main().setFrameStyle( QFrame::Panel | QFrame::Raised );
 
     // move and resize
-    _main().move( mapToGlobal( QPoint(0,0) ) );
-    _main().setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-    if( !title_.empty() ) _main().setWindowTitle( title_.c_str() );
-    if( detached_size_ != QSize() ) _main().resize( detached_size_ );    
+    main().move( mapToGlobal( QPoint(0,0) ) );
+    main().setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+    if( !title_.empty() ) main().setWindowTitle( title_.c_str() );
+    if( detached_size_ != QSize() ) main().resize( detached_size_ );    
     
     // change action text
-    _main().detachAction().setText("&attach");
+    main().detachAction().setText("&attach");
     
     // show widgets
     size_grip_->show();
-    _main().show();
+    main().show();
     
     // signals
     emit attached( false );

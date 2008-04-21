@@ -89,25 +89,15 @@ class DockPanel: public QWidget, public Counter
   //! set detachable group panel title
   void setTitle( const std::string& title )
   { title_ = title; }
-          
-  signals:
+    
+  //! attached size
+  const QSize& attachedSize( void ) const
+  { return attached_size_; }
   
-  //! emmited when state is changed
-  void attached( bool state );
-  
-  //! emmited when panel is attached
-  void attached( void );
-  
-  //! emmited when panel is detached
-  void detached( void );
-  
-  protected slots:
-      
-  //! toggle dock
-  virtual void _toggleDock( void );
-  
-  protected:
-  
+  //! detached size
+  const QSize& detachedSize( void ) const
+  { return detached_size_; }
+
   //! local widget to implement close_event of the content
   class LocalWidget: public QFrame, public Counter
   {
@@ -166,7 +156,29 @@ class DockPanel: public QWidget, public Counter
     QPoint click_pos_;
     
   };
+
+  //! main widget
+  LocalWidget& main( void ) const
+  { return *main_; }
+
+  signals:
   
+  //! emmited when state is changed
+  void attached( bool state );
+  
+  //! emmited when panel is attached
+  void attached( void );
+  
+  //! emmited when panel is detached
+  void detached( void );
+  
+  protected slots:
+      
+  //! toggle dock
+  virtual void _toggleDock( void );
+  
+  protected:
+    
   //! local QSizeGrip
   /*! the paint event method is overridden so that the size grip is invisible */
   class LocalGrip: public QSizeGrip, public Counter
@@ -186,11 +198,7 @@ class DockPanel: public QWidget, public Counter
     { QWidget::paintEvent( event ); }
     
   };
-    
-  //! main widget
-  LocalWidget& _main( void ) const
-  { return *main_; }
-  
+      
   private:
   
   //! dock title
@@ -211,6 +219,9 @@ class DockPanel: public QWidget, public Counter
   //! size grip
   LocalGrip* size_grip_;
 
+  //! default size for attached panel
+  QSize attached_size_;
+  
   //! default size for the detached panel
   QSize detached_size_;
   
