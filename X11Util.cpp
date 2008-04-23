@@ -220,7 +220,7 @@ bool X11Util::removeProperty( const QWidget& widget, const Atoms& atom )
 bool X11Util::moveResizeWidget( const QWidget& widget, const QPoint& position, const X11Util::Direction& direction )
 {
   
-  Debug::Throw( "X11Util::moveResizeWidget.\n" );
+  Debug::Throw() << "X11Util::moveResizeWidget - (" << position.x() << "," << position.y() << ")" << endl;
     
   if( !widget.isWindow() ) return false;
   

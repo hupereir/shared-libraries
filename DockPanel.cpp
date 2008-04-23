@@ -96,10 +96,6 @@ void DockPanel::_toggleDock( void )
   if( !main().parent() ) 
   {
   
-    // store current size
-    detached_size_ = main().size();
-    Debug::Throw() << "DockPanel::_toggleDock - detached_size: (" << detachedSize().width() << "," << detachedSize().height() << ")" << endl;
-    
     // change parent
     main().setParent( this );
     layout()->addWidget( main_ );
@@ -115,11 +111,7 @@ void DockPanel::_toggleDock( void )
     emit attached();
   
   } else {
-        
-    // store current size
-    attached_size_ = main().size();
-    Debug::Throw() << "DockPanel::_toggleDock - attached_size: (" << attachedSize().width() << "," << attachedSize().height() << ")" << endl;
-    
+            
     // change parent
     main().setParent( 0 );
     
@@ -135,7 +127,6 @@ void DockPanel::_toggleDock( void )
     main().move( mapToGlobal( QPoint(0,0) ) );
     main().setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
     if( !title_.empty() ) main().setWindowTitle( title_.c_str() );
-    if( detached_size_ != QSize() ) main().resize( detached_size_ );    
     
     // change action text
     main().detachAction().setText("&attach");
@@ -207,22 +198,7 @@ void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
   if( button_ != Qt::LeftButton ) return QFrame::mouseMoveEvent( event );
 
   // if not yet enabled, enable immediately and stop timer
-  if( !_moveEnabled() ) {
-    
-    timer_.stop();
-    
-    if( parent() ) detachAction().trigger();    
-    
-    if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
-    else { 
-      
-      // enable
-      _setMoveEnabled( true );
-      setCursor( Qt::SizeAllCursor );
-      
-    }
-          
-  }
+  if( !_moveEnabled() ) return;
 
   // move widget, the standard way
   QPoint point(event->globalPos() - click_pos_ );

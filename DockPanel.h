@@ -90,14 +90,6 @@ class DockPanel: public QWidget, public Counter
   void setTitle( const std::string& title )
   { title_ = title; }
     
-  //! attached size
-  const QSize& attachedSize( void ) const
-  { return attached_size_; }
-  
-  //! detached size
-  const QSize& detachedSize( void ) const
-  { return detached_size_; }
-
   //! local widget to implement close_event of the content
   class LocalWidget: public QFrame, public Counter
   {
@@ -219,12 +211,6 @@ class DockPanel: public QWidget, public Counter
   //! size grip
   LocalGrip* size_grip_;
 
-  //! default size for attached panel
-  QSize attached_size_;
-  
-  //! default size for the detached panel
-  QSize detached_size_;
-  
   friend class LocalWidget;
   
 };
