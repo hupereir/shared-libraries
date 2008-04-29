@@ -44,7 +44,7 @@ LineNumberWidget::LineNumberWidget(QTextEdit* editor, QWidget* parent):
   Counter( "LineNumberWidget" ),
   editor_( editor )
 {
-  Debug::Throw( "LineNumberWidget::LineNumberWidget.\n" );
+  Debug::Throw(0, "LineNumberWidget::LineNumberWidget.\n" );
   setAutoFillBackground( true );
   setBackgroundRole( QPalette::Base );
   
@@ -55,14 +55,14 @@ LineNumberWidget::LineNumberWidget(QTextEdit* editor, QWidget* parent):
 //__________________________________________
 LineNumberWidget::~LineNumberWidget()
 {
-  Debug::Throw( "LineNumberWidget::~LineNumberWidget.\n" );
+  Debug::Throw(0, "LineNumberWidget::~LineNumberWidget.\n" );
 }
 
 //__________________________________________
 void LineNumberWidget::paintEvent( QPaintEvent* /*e*/ )
 {  
   
-  Debug::Throw( "LineNumberWidget::paintEvent.\n" );
+  Debug::Throw( 0, "LineNumberWidget::paintEvent.\n" );
   
   const QFontMetrics metric( fontMetrics() );
   int y_offset = _editor().verticalScrollBar()->value();
@@ -107,7 +107,7 @@ void LineNumberWidget::paintEvent( QPaintEvent* /*e*/ )
     i++;
     
   }
-  setFixedWidth( max_length );
+  //setFixedWidth( max_length );
   
   painter.end();
   
