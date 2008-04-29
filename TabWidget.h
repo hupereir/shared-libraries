@@ -187,9 +187,6 @@ class TabWidget: public QFrame, public Counter
   //! attach/detach action
   QAction* detach_action_;
 
-  //! default size for the detached panel
-  QSize detached_size_;
-  
   //! button state
   Qt::MouseButton button_;
   

@@ -94,7 +94,6 @@ void TabWidget::_toggleDock( void )
   if( !parent() ) {
     
     // store size for later detach
-    detached_size_ = size();
     detachAction().setText("&detach");
     
     // reinsert into parent and select
@@ -132,7 +131,6 @@ void TabWidget::_toggleDock( void )
     move( parent->mapToGlobal( QPoint(0,0) ) );    
     setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
     if( !title_.empty() ) { setWindowTitle( title_.c_str() ); }
-    if( detached_size_ != QSize() ) resize( detached_size_ );
 
     // change action text
     detachAction().setText("&attach");
