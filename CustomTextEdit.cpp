@@ -93,7 +93,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 
   // update configuration
   _updateConfiguration();
-
+  
 }
 
 //________________________________________________
