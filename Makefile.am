@@ -188,6 +188,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
   moc_IconFileDialog.cpp \
+  moc_LineNumberWidget.cpp \
   moc_ListWidget.cpp \
   moc_MultipleClickCounter.cpp \
   moc_OpenPreviousMenu.cpp \

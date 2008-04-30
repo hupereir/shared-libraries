@@ -39,8 +39,34 @@
 #include "Counter.h"
 #include "Debug.h"
 
+//! counter pair
+class CounterPair: public std::pair<std::string, int>
+{
+  public:
+  
+  //! constructor
+  CounterPair( void )
+  {}
+  
+  //! constructor
+  CounterPair( const std::pair<std::string, int>& pair ):
+    std::pair<std::string, int>( pair )
+    {}
+
+  //! less than operator
+  bool operator < ( const CounterPair& pair ) const
+  {
+    return first < pair.first;
+  }
+
+  //! equal to operator
+  bool operator == (const CounterPair& pair ) const
+  { return first == pair.first; }
+  
+};
+  
 //! qlistview for object counters
-class CounterModel: public ListModel<Counter::Pair>
+class CounterModel: public ListModel<CounterPair>
 {
 
   public:
@@ -90,7 +116,7 @@ class CounterModel: public ListModel<Counter::Pair>
       {}
       
     //! prediction
-    bool operator() ( Counter::Pair first, Counter::Pair second ) const;
+    bool operator() ( CounterPair first, CounterPair second ) const;
     
     private:
     

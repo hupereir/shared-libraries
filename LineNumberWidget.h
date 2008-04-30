@@ -32,16 +32,19 @@
   \date $Date$
 */
 
-#include <QWidget>
+#include <QColor>
 #include <QFont>
 #include <QPaintEvent>
 #include <QTextEdit>
+#include <QWidget>
 
 #include "Counter.h"
 
 //___________________________________________________________
 class LineNumberWidget: public QWidget, public Counter
 {
+
+  Q_OBJECT  
 
   public:
     
@@ -50,10 +53,15 @@ class LineNumberWidget: public QWidget, public Counter
 
   //! destructor
   virtual ~LineNumberWidget();
-
+  
   protected:
   
+  //! paint
   virtual void paintEvent( QPaintEvent* );
+  
+  private slots:
+  
+  void _updateConfiguration( void );
   
   private:
   
@@ -63,6 +71,9 @@ class LineNumberWidget: public QWidget, public Counter
   
   //! associated editor
   QTextEdit* editor_;
+  
+  //! current block highlight color
+  QColor highlight_color_;
 
 };
 

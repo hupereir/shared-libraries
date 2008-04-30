@@ -29,14 +29,17 @@
   \date $Date$
 */
 
-#include "Debug.h"
-#include "LineNumberWidget.h"
-
+#include <QApplication>
 #include <QPainter>
 #include <QScrollBar>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextLayout>
+
+#include "Debug.h"
+#include "LineNumberWidget.h"
+#include "TextBlockData.h"
+#include "XmlOptions.h"
 
 //____________________________________________________________________________
 LineNumberWidget::LineNumberWidget(QTextEdit* editor, QWidget* parent): 
@@ -44,33 +47,40 @@ LineNumberWidget::LineNumberWidget(QTextEdit* editor, QWidget* parent):
   Counter( "LineNumberWidget" ),
   editor_( editor )
 {
-  Debug::Throw(0, "LineNumberWidget::LineNumberWidget.\n" );
+  Debug::Throw( "LineNumberWidget::LineNumberWidget.\n" );
   setAutoFillBackground( true );
   setBackgroundRole( QPalette::Base );
   
   connect( _editor().verticalScrollBar(), SIGNAL( valueChanged( int ) ), this, SLOT( update() ) );
-  connect( &_editor(), SIGNAL( textChanged() ), this, SLOT( update() ) );
+  connect( &_editor(), SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
+  connect( &_editor(), SIGNAL( textChanged() ), this, SLOT( update() ) );  
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+
+  // update configuration
+  _updateConfiguration();
+
 }
 
 //__________________________________________
 LineNumberWidget::~LineNumberWidget()
 {
-  Debug::Throw(0, "LineNumberWidget::~LineNumberWidget.\n" );
+  Debug::Throw( "LineNumberWidget::~LineNumberWidget.\n" );
 }
 
 //__________________________________________
 void LineNumberWidget::paintEvent( QPaintEvent* /*e*/ )
 {  
   
-  Debug::Throw( 0, "LineNumberWidget::paintEvent.\n" );
+  Debug::Throw( "LineNumberWidget::paintEvent.\n" );
   
   const QFontMetrics metric( fontMetrics() );
   int y_offset = _editor().verticalScrollBar()->value();
   QTextDocument &document( *_editor().document() );
     
-  // get first text block
+  // maximum text length
   int max_length=0;
-  int length=0;
+
+  // get first text block
   QTextBlock block = document.begin();
   
   // brush/pen  
@@ -80,7 +90,7 @@ void LineNumberWidget::paintEvent( QPaintEvent* /*e*/ )
   int height( QWidget::height() - metric.lineSpacing() );
   if( _editor().horizontalScrollBar()->isVisible() ) { height -= _editor().horizontalScrollBar()->height(); }
   
-  int i(0);
+  int i(1);
   while ( block.isValid() ) 
   {
     
@@ -93,6 +103,16 @@ void LineNumberWidget::paintEvent( QPaintEvent* /*e*/ )
     }
     
     if ( (int)(point.y()) - y_offset > height ) break;
+    
+    // block highlight
+    TextBlockData* data = dynamic_cast<TextBlockData*>( block.userData() );
+    if( data &&  data->hasFlag( TextBlock::CURRENT_BLOCK ) )
+    {
+      painter.setBrush( highlight_color_ );
+      painter.drawRect( QRect( 
+        0, (int)(point.y()) - y_offset, width()-8,
+        metric.lineSpacing() ) );
+    } 
     
     QString numtext( QString::number(i) );
     
@@ -107,8 +127,25 @@ void LineNumberWidget::paintEvent( QPaintEvent* /*e*/ )
     i++;
     
   }
-  //setFixedWidth( max_length );
+
+  setFixedWidth( max_length );
   
   painter.end();
+  
+}
+
+//________________________________________________________
+void LineNumberWidget::_updateConfiguration( void )
+{
+  
+  Debug::Throw( "LineNumberWidget::_updateConfiguration.\n" );
+
+  // font
+  QFont font;
+  font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ).c_str() );
+  setFont( font );
+
+  // paragraph highlighting
+  highlight_color_ = QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() );
   
 }
