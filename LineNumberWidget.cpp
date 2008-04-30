@@ -106,9 +106,13 @@ void LineNumberWidget::paintEvent( QPaintEvent* )
     if ( (int)(point.y()) - y_offset > height ) break;
     
     // block highlight
-    TextBlockData* data = dynamic_cast<TextBlockData*>( block.userData() );
-    if( data &&  data->hasFlag( TextBlock::CURRENT_BLOCK ) )
+    TextBlockData* data = 0;
+    if( 
+      _editor().blockHighlightAction().isChecked() && 
+      ( data = dynamic_cast<TextBlockData*>( block.userData() ) ) &&  
+      data->hasFlag( TextBlock::CURRENT_BLOCK ) )
     {
+      
       painter.setBrush( highlight_color_ );
       
       painter.setPen( Qt::NoPen );
@@ -158,6 +162,8 @@ void LineNumberWidget::_updateConfiguration( void )
 //________________________________________________________
 void LineNumberWidget::_highlightParagraph( void )
 {
+  
+  if( !_editor().blockHighlightAction().isChecked() ) return;
   
   int block( _editor().textPosition().paragraph() );
   if( block == current_block_ || !highlight_color_.isValid() ) return;
