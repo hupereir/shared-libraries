@@ -115,6 +115,8 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   block_rect.setWidth( parent_->viewport()->width() + parent_->scrollbarPosition().x() );
   parent_->viewport()->update( parent_->toViewport( block_rect.toRect() ) );    
 
+  emit highlightChanged();
+      
   cleared_ = false;
   
 }

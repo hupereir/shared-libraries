@@ -67,6 +67,11 @@ class BlockHighlight: public QObject, public Counter
   //! clear highlighted block
   void clear( void );
   
+  signals:
+  
+  //! emmited when block highlight was changed
+  void highlightChanged( void );
+  
   public slots:
   
   //! highlight

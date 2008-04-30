@@ -35,12 +35,13 @@
 #include <QColor>
 #include <QFont>
 #include <QPaintEvent>
-#include <QTextEdit>
 #include <QWidget>
 
 #include "Counter.h"
 
-//___________________________________________________________
+class CustomTextEdit;
+
+//! display line number of a text editor
 class LineNumberWidget: public QWidget, public Counter
 {
 
@@ -49,7 +50,7 @@ class LineNumberWidget: public QWidget, public Counter
   public:
     
   //! constructor
-  LineNumberWidget(QTextEdit*, QWidget* parent);
+  LineNumberWidget(CustomTextEdit*, QWidget* parent);
 
   //! destructor
   virtual ~LineNumberWidget();
@@ -61,20 +62,27 @@ class LineNumberWidget: public QWidget, public Counter
   
   private slots:
   
+  //! configuration
   void _updateConfiguration( void );
+  
+  //! paragraph highlight
+  void _highlightParagraph( void );
   
   private:
   
   //! editor
-  QTextEdit& _editor( void ) const
+  CustomTextEdit& _editor( void ) const
   { return *editor_; }
   
   //! associated editor
-  QTextEdit* editor_;
+  CustomTextEdit* editor_;
   
   //! current block highlight color
   QColor highlight_color_;
 
+  //! keep track of current block
+  int current_block_;
+  
 };
 
 #endif
