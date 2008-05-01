@@ -52,7 +52,7 @@ XmlOption::XmlOption( const QDomElement& element )
     else if( attribute.name() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
     else if( attribute.name() == OPTIONS::OPTIONS )
     {
-      if( OPTIONS::FRONT.indexOf( attribute.value(), 0, Qt::CaseInsensitive ) ) setFront( true );
+      if( OPTIONS::FRONT.indexOf( attribute.value(), 0, Qt::CaseInsensitive ) >= 0 ) setFront( true );
     } else cout << "XmlOption::XmlOption - unrecognized attribute " << qPrintable( attribute.name() ) << ".\n";
 
   }
