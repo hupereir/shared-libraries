@@ -48,10 +48,10 @@ namespace BASE
   
   //!@name xml tags
   //@{
-  const std::string XML_HELP = "help";
-  const std::string XML_ITEM = "item";
-  const std::string XML_LABEL = "label";
-  const std::string XML_TEXT = "text";
+  const QString XML_HELP = "help";
+  const QString XML_ITEM = "item";
+  const QString XML_LABEL = "label";
+  const QString XML_TEXT = "text";
   //@}
   
   //! reference manual single entry 
@@ -61,7 +61,7 @@ namespace BASE
     public:
     
     //! constructor
-    HelpItem( const std::string& label = "", const std::string& text = "" ):
+    HelpItem( const QString& label = "", const QString& text = "" ):
       Counter( "HelpItem" ),
       label_( label ),
       text_( text )
@@ -82,19 +82,19 @@ namespace BASE
     { return label() < item.label() || (label() == item.label() && text() < item.text() ); }
 
     //! item label
-    void setLabel( const std::string& label ) 
+    void setLabel( const QString& label ) 
     { label_ = label; }
     
     //! label
-    const std::string& label( void ) const
+    const QString& label( void ) const
     { return label_; }
     
     //! item text
-    void setText( const std::string& text ) 
+    void setText( const QString& text ) 
     { text_ = text; }
     
     //! item text
-    const std::string& text( void ) const
+    const QString& text( void ) const
     { return text_; }
     
     //! shortcut to help item list
@@ -103,10 +103,10 @@ namespace BASE
     private:
     
     //! help label
-    std::string label_;
+    QString label_;
     
     //! help text
-    std::string text_;
+    QString text_;
     
   };
 

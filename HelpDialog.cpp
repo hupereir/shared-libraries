@@ -227,10 +227,10 @@ void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previo
     const HelpItem& item( model_.get( current ) );
 
     // update editors
-    if( plain_editor_->toPlainText() != item.text().c_str() )
+    if( plain_editor_->toPlainText() != item.text() )
     {
-      html_editor_->setHtml( item.text().c_str() );
-      plain_editor_->setPlainText( item.text().c_str() );
+      html_editor_->setHtml( item.text() );
+      plain_editor_->setPlainText( item.text() );
     }
     
   }
@@ -293,7 +293,7 @@ void HelpDialog::_toggleEdition( void )
     list_->setAcceptDrops(true);
    
     // modify current item display
-    if( current.isValid() ) plain_editor_->setPlainText( model_.get(current).text().c_str() );
+    if( current.isValid() ) plain_editor_->setPlainText( model_.get(current).text() );
     stack_layout_->setCurrentWidget( plain_frame_ );
     
   } else {
@@ -305,7 +305,7 @@ void HelpDialog::_toggleEdition( void )
     list_->setAcceptDrops(false);
     _askForSave();
 
-    if( current.isValid() ) html_editor_->setHtml( model_.get(current).text().c_str() );
+    if( current.isValid() ) html_editor_->setHtml( model_.get(current).text() );
     stack_layout_->setCurrentWidget( html_frame_ );
     
   }
@@ -374,10 +374,9 @@ void HelpDialog::_renameItem( QModelIndex index, QString value )
   Debug::Throw( "HelpDialog::_renameItem.\n" );
   if( !index.isValid() || value.isNull() || value.isEmpty() ) return;
   HelpItem item( model_.get( index ) );
-  string new_label( qPrintable( value ) );
-  if( new_label != item.label() )
+  if( value != item.label() )
   {
-    item.setLabel( qPrintable( value ) );
+    item.setLabel( value );
     model_.replace( index, item );
     HelpManager::setModified( true );
     _updateHelpManager();
@@ -393,8 +392,8 @@ void HelpDialog::_newItem( void )
   if( dialog.exec() == QDialog::Rejected ) return;
   
   // retrieve item name
-  string item_name( dialog.itemName() );
-  if( item_name.empty() ) return;
+  QString item_name( dialog.itemName() );
+  if( item_name.isEmpty() ) return;
   model_.add( HelpItem( item_name, "" ) );
   HelpManager::setModified( true );
   

@@ -51,11 +51,10 @@ HelpItem::HelpItem( const QDomElement& element ):
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    string name( qPrintable( attribute.name() ) );
-    string value( qPrintable( attribute.value() ) );
 
-    if( name == XML_LABEL ) label_ = XmlUtil::xmlToText(value);
-    else Debug::Throw() << "HelpItem::HelpItem - unrecognized attribute: " << name << endl;
+    if( attribute.name() == XML_LABEL ) label_ = XmlUtil::xmlToText( attribute.value() );
+    else Debug::Throw() << "HelpItem::HelpItem - unrecognized attribute: " << qPrintable( attribute.name() ) << endl;
+    
   }
 
   // parse children
@@ -63,8 +62,7 @@ HelpItem::HelpItem( const QDomElement& element ):
   for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
   {
     QDomElement child_element = child_node.toElement();
-    string tag_name( qPrintable( child_element.tagName() ) );
-    if( tag_name == XML_TEXT ) text_ = XmlUtil::xmlToText( qPrintable( child_element.text() ) );
+    if( child_element.tagName() == XML_TEXT ) text_ = XmlUtil::xmlToText( child_element.text() );
     else cout << "HelpItem::HelpItem - unrecognized child " << qPrintable( child_element.tagName() ) << endl;
   }
 
@@ -74,14 +72,14 @@ HelpItem::HelpItem( const QDomElement& element ):
 QDomElement HelpItem::domElement( QDomDocument& parent ) const
 {
   Debug::Throw( "HelpItem::DomElement.\n" );
-  QDomElement out = parent.createElement( XML_ITEM.c_str() );
-  out.setAttribute( XML_LABEL.c_str(), XmlUtil::textToXml( label_ ).c_str() );
+  QDomElement out = parent.createElement( XML_ITEM );
+  out.setAttribute( XML_LABEL, XmlUtil::textToXml( label_ ) );
 
   // text child
   if( text_.size() )
   out.
-    appendChild( parent.createElement( XML_TEXT.c_str() ) ).
-    appendChild( parent.createTextNode( XmlUtil::textToXml( text_ ).c_str() ) );
+    appendChild( parent.createElement( XML_TEXT ) ).
+    appendChild( parent.createTextNode( XmlUtil::textToXml( text_ ) ) );
 
   return out;
 

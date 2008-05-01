@@ -32,7 +32,7 @@
    \date $Date$
 */
 
-#include <string>
+#include <QString>
 
 #include "CustomDialog.h"
 #include "CustomLineEdit.h"
@@ -51,11 +51,11 @@ class NewItemDialog: public CustomDialog
   {}
  
   //! keyword
-  void setItemName( const std::string& name )
-  { editor_->setText( name.c_str() ); }
+  void setItemName( const QString& name )
+  { editor_->setText( name ); }
   
   //! keyword
-  std::string itemName( void ) const
+  QString itemName( void ) const
   { return qPrintable( editor_->text() ); }
         
   private:

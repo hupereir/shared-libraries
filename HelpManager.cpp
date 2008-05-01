@@ -41,7 +41,6 @@
 #include "IconEngine.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
-#include "XmlUtil.h"
 
 using namespace std;
 using namespace Qt;
@@ -89,7 +88,7 @@ void HelpManager::install( const char *text[] )
   //! loop over help text
   for( unsigned int i=0; text[i]; i++ ) {
 
-    string label( text[i] );
+    QString label( text[i] );
     i++;
     if( !text[i] ) break;
     items_.push_back( HelpItem( label, text[i] ) );
@@ -136,10 +135,8 @@ void HelpManager::install( const File& file )
     QDomElement element = node.toElement();
     if( element.isNull() ) continue;
 
-    string tag_name( qPrintable( element.tagName() ) );
-
     // special options
-    if( tag_name == XML_ITEM ) items_.push_back( HelpItem( element ) );
+    if( element.tagName() == XML_ITEM ) items_.push_back( HelpItem( element ) );
     
   }
   
@@ -181,13 +178,13 @@ void HelpManager::_dumpHelpString( void )
     
     // dump label
     out << "  //_________________________________________________________\n"; 
-    out << "  \"" << iter->label() << "\",\n";
+    out << "  \"" << qPrintable( iter->label() ) << "\",\n";
     
     // dump text
-    Str text( iter->text() );
+    QString text( iter->text() );
     text = text.replace( "\"", "\\\"" );
     text = text.replace( "\n", "\\n\"\n  \"" );
-    out << "  \"" << text << "\"";
+    out << "  \"" << qPrintable( text ) << "\"";
     out << ",\n";
     out << "\n";
   }
@@ -228,7 +225,7 @@ void HelpManager::_save( void )
   QDomDocument document;
   
   // top element
-  QDomElement top = document.appendChild( document.createElement( XML_HELP.c_str() ) ).toElement();
+  QDomElement top = document.appendChild( document.createElement( XML_HELP ) ).toElement();
   for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
   { top.appendChild( iter->domElement( document ) ); }
  

@@ -59,7 +59,7 @@ QVariant HelpModel::data( const QModelIndex& index, int role ) const
   if( !index.isValid() ) return QVariant();
   if( role != Qt::DisplayRole ) return QVariant();
   if( index.column() != LABEL ) return QVariant();
-  return QString( get(index).label().c_str() ); 
+  return QString( get(index).label() ); 
   
 }
 
@@ -95,7 +95,7 @@ QMimeData* HelpModel::mimeData(const QModelIndexList &indexes) const
   
   // set DRAG type
   for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
-  { if( iter->isValid() ) mime->setData( DRAG, get( *iter ).label().c_str() ); }
+  { if( iter->isValid() ) mime->setData( DRAG, get( *iter ).label().toAscii() ); }
   
   return mime;
 
