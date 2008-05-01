@@ -52,12 +52,12 @@ namespace SPELLCHECK
     DictionaryMenu( QWidget* parent );
   
     //! select dictionary manualy
-    void select( const std::string& dictionary );
+    void select( const QString& dictionary );
   
     signals:
   
     //! dictionary changed
-    void selectionChanged( const std::string& );
+    void selectionChanged( const QString& );
     
     protected slots:
     
@@ -70,7 +70,7 @@ namespace SPELLCHECK
     private:
     
     //! map dictionaries and action
-    std::map<QAction*, std::string> action_map_;
+    std::map<QAction*, QString> action_map_;
   
   };
   

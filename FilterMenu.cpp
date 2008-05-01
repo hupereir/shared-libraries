@@ -50,11 +50,11 @@ FilterMenu::FilterMenu( QWidget* parent ):
 }
 
 //____________________________________________________________________
-void FilterMenu::select( const std::string& filter )
+void FilterMenu::select( const QString& filter )
 {
   Debug::Throw( "FilterMenu::select.\n" );
   
-  for( std::map<QAction*,string>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
+  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
   {
     QFont font( iter->first->font() );
     font.setWeight( (iter->second == filter ) ? QFont::Bold : QFont::Normal );
@@ -85,7 +85,7 @@ void FilterMenu::_reset( void )
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   { 
     QAction* action( new QAction( iter->c_str(), this ) ); 
-    action_map_.insert( make_pair( action, *iter ) );
+    action_map_.insert( make_pair( action, iter->c_str() ) );
     addAction( action );
   }
   
@@ -96,7 +96,7 @@ void FilterMenu::_selectFilter( QAction*  action )
 {
   
   Debug::Throw( "FilterMenu::_filter.\n" );
-  std::map<QAction*,string>::iterator iter( action_map_.find( action ) );
+  std::map<QAction*,QString>::iterator iter( action_map_.find( action ) );
   if( iter == action_map_.end() ) return;
   
   select( iter->second );

@@ -50,11 +50,11 @@ DictionaryMenu::DictionaryMenu( QWidget* parent ):
 }
 
 //____________________________________________________________________
-void DictionaryMenu::select( const std::string& dictionary )
+void DictionaryMenu::select( const QString& dictionary )
 {
   Debug::Throw( "DictionaryMenu::select.\n" );
   
-  for( std::map<QAction*,string>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
+  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
   {
     QFont font( iter->first->font() );
     font.setWeight( (iter->second == dictionary ) ? QFont::Bold : QFont::Normal );
@@ -86,7 +86,7 @@ void DictionaryMenu::_reset( void )
   for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
   { 
     QAction* action( new QAction( iter->c_str(), this ) ); 
-    action_map_.insert( make_pair( action, *iter ) );
+    action_map_.insert( make_pair( action, iter->c_str() ) );
     addAction( action );
   }
   
@@ -97,7 +97,7 @@ void DictionaryMenu::_selectDictionary( QAction*  action )
 {
   
   Debug::Throw( "DictionaryMenu::_dictionary.\n" );
-  std::map<QAction*,string>::iterator iter( action_map_.find( action ) );
+  std::map<QAction*,QString>::iterator iter( action_map_.find( action ) );
   if( iter == action_map_.end() ) return;
   
   select( iter->second );

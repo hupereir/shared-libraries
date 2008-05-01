@@ -53,12 +53,12 @@ namespace SPELLCHECK
     FilterMenu( QWidget* parent );
   
     //! select filter manualy
-    void select( const std::string& filter );
+    void select( const QString& filter );
   
     signals:
     
     //! filter changed
-    void selectionChanged( const std::string& );
+    void selectionChanged( const QString& );
     
     protected slots:
     
@@ -71,7 +71,7 @@ namespace SPELLCHECK
     private:
     
     //! map filters and action
-    std::map<QAction*, std::string> action_map_;
+    std::map<QAction*, QString> action_map_;
     
   };
 

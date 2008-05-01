@@ -56,7 +56,7 @@ namespace SPELLCHECK {
     public:
     
     //! constructor
-    SuggestionMenu( QWidget *parent, const std::string& word, const bool& read_only = false );
+    SuggestionMenu( QWidget *parent, const QString& word, const bool& read_only = false );
   
     //! spell interface
     SpellInterface& interface( void )
@@ -65,10 +65,10 @@ namespace SPELLCHECK {
     signals:
   
     //! signal emited when a file is selected  
-    void suggestionSelected( std::string );
+    void suggestionSelected( QString );
    
     //! ignore word
-    void ignoreWord( std::string );
+    void ignoreWord( QString );
         
     private slots:
     
@@ -84,7 +84,7 @@ namespace SPELLCHECK {
     //! ignore word
     void _ignoreWord( void )
     { 
-      if( word_.empty() ) return;
+      if( word_.isEmpty() ) return;
       emit ignoreWord( word_ ); 
     }
   
@@ -94,10 +94,10 @@ namespace SPELLCHECK {
     SpellInterface interface_;
         
     //! misspelled word
-    std::string word_;
+    QString word_;
 
     //! map actions to suggested words
-    std::map<QAction*, std::string> suggestions_;
+    std::map<QAction*, QString> suggestions_;
     
   };
 }

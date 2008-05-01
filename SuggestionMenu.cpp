@@ -37,7 +37,7 @@ using namespace std;
 using namespace SPELLCHECK;
 
 //________________________________________________
-SuggestionMenu::SuggestionMenu( QWidget* parent, const string& word, const bool& read_only ):
+SuggestionMenu::SuggestionMenu( QWidget* parent, const QString& word, const bool& read_only ):
   QMenu( parent ),
   Counter( "SuggestionMenu" ),
   word_( word )
@@ -61,7 +61,7 @@ void SuggestionMenu::_aboutToShow( void )
   Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
   
   // retrieve list of suggestions
-  vector<string> suggestions( interface_.suggestions( word_ ) );
+  vector<string> suggestions( interface_.suggestions( qPrintable( word_ ) ) );
   Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
   
   // add words
@@ -71,7 +71,7 @@ void SuggestionMenu::_aboutToShow( void )
   { 
     
     Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestions[i] << endl;
-    suggestions_.insert( make_pair( addAction( suggestions[i].c_str() ), suggestions[i] ) ); 
+    suggestions_.insert( make_pair( addAction( suggestions[i].c_str() ), suggestions[i].c_str() ) ); 
   }  
   addSeparator();
   
@@ -88,7 +88,7 @@ void SuggestionMenu::_select( QAction* action )
 {
   
   Debug::Throw( "SuggestionMenu::_select.\n" );
-  std::map<QAction*,string>::const_iterator iter( suggestions_.find( action ) );
+  std::map<QAction*,QString>::const_iterator iter( suggestions_.find( action ) );
   if( iter != suggestions_.end() ) emit suggestionSelected( iter->second );
   return;
   
@@ -99,8 +99,8 @@ void SuggestionMenu::_addWord( void )
 {
   
   Debug::Throw( "SuggestionMenu::_addWord.\n" );
-  if( word_.empty() ) return;
-  interface_.addWord( word_ );
+  if( word_.isEmpty() ) return;
+  interface_.addWord( qPrintable( word_ ) );
   interface_.saveWordList();
   emit ignoreWord( word_ ); 
   
