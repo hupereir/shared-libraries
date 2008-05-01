@@ -88,7 +88,8 @@ HEADERS = \
   XmlOption.h \
   XmlOptions.h \
   XmlTextFormatBlock.h \
-  XmlTimeStamp.h
+  XmlTimeStamp.h \
+  XmlUtil.h
 
 SOURCES = \
   BaseConfigurationDialog.cpp \
@@ -151,4 +152,5 @@ SOURCES = \
   XmlOption.cpp \
   XmlOptions.cpp \
   XmlTextFormatBlock.cpp \
-  XmlTimeStamp.cpp     
+  XmlTimeStamp.cpp \
+  XmlUtil.cpp 

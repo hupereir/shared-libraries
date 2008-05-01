@@ -81,15 +81,13 @@ bool XmlOptions::read( File file )
     QDomElement element = node.toElement();
     if( element.isNull() ) continue;
 
-    string tag_name( qPrintable( element.tagName() ) );
-
     // special options
-    if( tag_name == OPTIONS::SPECIAL_OPTION )
+    if( element.tagName() == OPTIONS::SPECIAL_OPTION )
     {
       Debug::Throw( "XmlOptions::read - special options" );
 
       // retrieve Value attribute
-      string value( qPrintable( element.attribute( OPTIONS::VALUE.c_str() ) ) );
+      string value( qPrintable( element.attribute( OPTIONS::VALUE ) ) );
       if( value.size() ) get().keep( value );
     } else get().add( XmlOption( element ), true );
 
@@ -118,7 +116,7 @@ bool XmlOptions::write( File file )
   QDomDocument document;
 
   // create main element
-  QDomElement top = document.appendChild( document.createElement( OPTIONS::OPTIONS.c_str() ) ).toElement();
+  QDomElement top = document.appendChild( document.createElement( OPTIONS::OPTIONS ) ).toElement();
 
   // write list of special option names
   for( Options::SpecialOptionMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
@@ -127,8 +125,8 @@ bool XmlOptions::write( File file )
     if( iter->second.empty() ) continue;
     
     // dump option name
-    QDomElement element = document.createElement( OPTIONS::SPECIAL_OPTION.c_str() );
-    element.setAttribute( OPTIONS::VALUE.c_str(), iter->first.c_str() );
+    QDomElement element = document.createElement( OPTIONS::SPECIAL_OPTION );
+    element.setAttribute( OPTIONS::VALUE, iter->first.c_str() );
     top.appendChild( element );
   }
 

@@ -47,15 +47,13 @@ XmlOption::XmlOption( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    string name( qPrintable( attribute.name() ) );
-    string value( qPrintable( attribute.value() ) );
 
-    if( name == OPTIONS::VALUE ) setRaw( XmlUtil::xmlToText(value) );
-    else if( name == OPTIONS::COMMENTS ) setComments( XmlUtil::xmlToText(value) );
-    else if( name == OPTIONS::OPTIONS )
+    if( attribute.name() == OPTIONS::VALUE ) setRaw( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
+    else if( attribute.name() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
+    else if( attribute.name() == OPTIONS::OPTIONS )
     {
-      if( Str( OPTIONS::FRONT ).isIn( value, false ) ) setFront( true );
-    } else cout << "XmlOption::XmlOption - unrecognized attribute " << name << ".\n";
+      if( OPTIONS::FRONT.indexOf( attribute.value(), 0, Qt::CaseInsensitive ) ) setFront( true );
+    } else cout << "XmlOption::XmlOption - unrecognized attribute " << qPrintable( attribute.name() ) << ".\n";
 
   }
 
@@ -63,9 +61,8 @@ XmlOption::XmlOption( const QDomElement& element )
   for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
   {
     QDomElement child_element = child_node.toElement();
-    string tag_name( qPrintable( child_element.tagName() ) );
-    if( tag_name == OPTIONS::COMMENTS )
-    setComments( XmlUtil::xmlToText( qPrintable( child_element.text() ) ) );
+    if( child_element.tagName() == OPTIONS::COMMENTS )
+    setComments( qPrintable( XmlUtil::xmlToText( child_element.text() ) ) );
     else cout << "XmlOption::XmlOption - unrecognized child " << qPrintable( child_element.tagName() ) << ".\n";
   }
 
@@ -80,13 +77,13 @@ QDomElement XmlOption::domElement( QDomDocument& parent ) const
   Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
   
   QDomElement out = parent.createElement( name().c_str() );
-  out.setAttribute( OPTIONS::VALUE.c_str(), XmlUtil::textToXml( raw() ).c_str() );
+  out.setAttribute( OPTIONS::VALUE, XmlUtil::textToXml( raw().c_str() ) );
 
-  if( front() ) out.setAttribute( OPTIONS::OPTIONS.c_str(), OPTIONS::FRONT.c_str() );
+  if( front() ) out.setAttribute( OPTIONS::OPTIONS, OPTIONS::FRONT );
   if( comments().size() )
   out.
-    appendChild( parent.createElement( OPTIONS::COMMENTS.c_str() ) ).
-    appendChild( parent.createTextNode( XmlUtil::textToXml( comments() ).c_str() ) );
+    appendChild( parent.createElement( OPTIONS::COMMENTS ) ).
+    appendChild( parent.createTextNode( XmlUtil::textToXml( comments().c_str() ) ) );
 
   return out;
 

@@ -96,11 +96,9 @@ bool XmlFileList::read( void )
     QDomElement element = node.toElement();
     if( element.isNull() ) continue;
 
-    string tag_name( qPrintable( element.tagName() ) );
-
     // special options
-    if( tag_name == XmlFileRecord::XML_RECORD ) _add( XmlFileRecord( element ) );
-    else Debug::Throw() << "XmlFileList::read - unrecognized tag " << tag_name << endl;
+    if( element.tagName() == XmlFileRecord::XML_RECORD ) _add( XmlFileRecord( element ) );
+    else Debug::Throw() << "XmlFileList::read - unrecognized tag " << qPrintable( element.tagName() ) << endl;
   }
 
   return true;

@@ -34,7 +34,7 @@
 
 #include <QDomElement>
 #include <QDomDocument>
-#include <string> 
+#include <QString> 
 #include <list>  
 
 #include "FileRecord.h"
@@ -47,10 +47,10 @@ class XmlFileRecord: public FileRecord
   
   //!@name XML names
   //@{
-  static const std::string XML_RECORD;
-  static const std::string XML_FILE;
-  static const std::string XML_TIME;
-  static const std::string XML_VALID;
+  static const QString XML_RECORD;
+  static const QString XML_FILE;
+  static const QString XML_TIME;
+  static const QString XML_VALID;
   //@} 
 
   //! constructor

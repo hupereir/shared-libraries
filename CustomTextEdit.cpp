@@ -51,7 +51,6 @@
 #include "XmlOptions.h"
 
 using namespace std;
-using namespace Qt;
 
 //______________________________________________
 TextSelection CustomTextEdit::last_selection_;
@@ -634,7 +633,7 @@ void CustomTextEdit::replace( TextSelection selection )
     cursor.selectedText().size() == selection.text().size() &&
     cursor.selectedText().contains(
       selection.text(),
-      selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive : CaseInsensitive ) )
+      selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) )
   {
     cursor.insertText( selection.replaceText() );
     setTextCursor( cursor );
@@ -786,11 +785,11 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 
   Debug::Throw( "CustomTextEdit::mousePressEvent.\n" );
 
-  if( event->button() == MidButton ) 
+  if( event->button() == Qt::MidButton ) 
   { Debug::Throw( "CustomTextEdit::mousePressEvent - middle mouse button.\n" ); }
   
   // check button
-  if( event->button() == LeftButton )
+  if( event->button() == Qt::LeftButton )
   {
 
     // increment multiple clicks
@@ -802,7 +801,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 
       // if single click in existing box selection, store drag position
       if(
-        event->modifiers() == NoModifier &&
+        event->modifiers() == Qt::NoModifier &&
         _boxSelection().state() == BoxSelection::FINISHED &&
         _boxSelection().rect().contains( fromViewport( event->pos() ) )
         )
@@ -813,7 +812,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       }
 
       // if single click outside of existing box selection, clear the selection
-      if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
+      if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
       {
 
         _boxSelection().clear();
@@ -823,7 +822,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
       }
 
       // if single click and Control key pressed, start a new box selection
-      if( event->modifiers() == ControlModifier  )
+      if( event->modifiers() == Qt::ControlModifier  )
       {
 
         // try re-enable box selection in case font has changed
@@ -869,7 +868,7 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
   QTextEdit::mousePressEvent( event );
 
   // for mid button, locate cursor at new position
-  if(  event->button() == MidButton )
+  if(  event->button() == Qt::MidButton )
   { setTextCursor( cursorForPosition( event->pos() ) ); }
 
 }
@@ -881,7 +880,7 @@ void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
   Debug::Throw( "CustomTextEdit::mouseDoubleClickEvent.\n" );
 
   // check button
-  if( event->button() == LeftButton ) mousePressEvent( event );
+  if( event->button() == Qt::LeftButton ) mousePressEvent( event );
   else QTextEdit::mouseDoubleClickEvent( event );
   return;
 
@@ -894,7 +893,7 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
   Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
 
   // see if there is a box selection in progress
-  if( event->buttons() == LeftButton && _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::STARTED )
+  if( event->buttons() == Qt::LeftButton && _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::STARTED )
   {
 
     _boxSelection().update( event->pos() );
@@ -905,7 +904,7 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
   }
 
   // start a new box selection if requested
-  if( event->buttons() == LeftButton && _boxSelection().isEnabled() && event->modifiers() == ControlModifier && viewport()->rect().contains( event->pos() ) )
+  if( event->buttons() == Qt::LeftButton && _boxSelection().isEnabled() && event->modifiers() == Qt::ControlModifier && viewport()->rect().contains( event->pos() ) )
   {
 
     _boxSelection().start( event->pos() );
@@ -915,7 +914,7 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
   }
 
   // see if dragging existing box selection
-  if( event->buttons() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED && (event->pos() - drag_start_ ).manhattanLength() > QApplication::startDragDistance() )
+  if( event->buttons() == Qt::LeftButton && _boxSelection().state() == BoxSelection::FINISHED && (event->pos() - drag_start_ ).manhattanLength() > QApplication::startDragDistance() )
   {
     // start drag
     QDrag *drag = new QDrag(this);
@@ -942,11 +941,11 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 
   Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
 
-  if( event->button() == MidButton ) 
+  if( event->button() == Qt::MidButton ) 
   { Debug::Throw( "CustomTextEdit::mouseReleaseEvent - middle mouse button.\n" ); }
 
   // no need to check for enability because there is no way for the box to start if disabled
-  if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::STARTED )
+  if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::STARTED )
   {
 
     _boxSelection().finish( event->pos() );
@@ -955,7 +954,7 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 
   }
 
-  if( event->button() == LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
+  if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
   {
 
     _boxSelection().clear();
@@ -965,7 +964,7 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 
   }
 
-  if( event->button() == LeftButton && click_counter_.counts() > 1 )
+  if( event->button() == Qt::LeftButton && click_counter_.counts() > 1 )
   {
     // when multiple-click is in progress
     // do nothing because it can reset the selection
@@ -973,8 +972,8 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
     return;
   }
 
-  // do nothing with MidButton when box selection is active
-  if( event->button() == MidButton  && _boxSelection().state() == BoxSelection::FINISHED ) return;
+  // do nothing with Qt::MidButton when box selection is active
+  if( event->button() == Qt::MidButton  && _boxSelection().state() == BoxSelection::FINISHED ) return;
 
   // process event
   QTextEdit::mouseReleaseEvent( event );
@@ -990,7 +989,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
   // static empty mimeData used to pass to base class
   // so that drop events are finished properly even when actually doing nothing
   static QMimeData* empty_data( new QMimeData() );
-  QDropEvent empty_event( event->pos(), event->possibleActions(), empty_data, NoButton, NoModifier );
+  QDropEvent empty_event( event->pos(), event->possibleActions(), empty_data, Qt::NoButton, Qt::NoModifier );
 
   // if mimeData is block selection, block selection is enabled here
   // and there is no active selection (standard or box), insert new box selection
@@ -1152,27 +1151,27 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
   remove_line_buffer_.clear();
 
   /*
-  need to grap CTRL+X, C and V event to forward them to the
+  need to grap Qt::CTRL+X, C and V event to forward them to the
   daughter implementation of cut, copy and paste, otherwise
   they are passed to the base class, with no way to overrid
   */
-  if( event->modifiers() == ControlModifier )
+  if( event->modifiers() == Qt::ControlModifier )
   {
-    if( event->key() == Key_X )
+    if( event->key() == Qt::Key_X )
     {
       cut();
       event->ignore();
       return;
     }
 
-    if( event->key() == Key_C )
+    if( event->key() == Qt::Key_C )
     {
       copy();
       event->ignore();
       return;
     }
 
-    if( event->key() == Key_V )
+    if( event->key() == Qt::Key_V )
     {
       paste();
       event->ignore();
@@ -1185,21 +1184,21 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
     if(
-      (event->key() >= Key_Shift &&  event->key() <= Key_ScrollLock) ||
-      (event->key() >= Key_F1 &&  event->key() <= Key_F25) ||
-      (event->key() >= Key_Super_L && event->key() <= Key_Direction_R ) ||
-      (event->modifiers() != NoModifier && event->modifiers() != ShiftModifier ) )
+      (event->key() >= Qt::Key_Shift &&  event->key() <= Qt::Key_ScrollLock) ||
+      (event->key() >= Qt::Key_F1 &&  event->key() <= Qt::Key_F25) ||
+      (event->key() >= Qt::Key_Super_L && event->key() <= Qt::Key_Direction_R ) ||
+      (event->modifiers() != Qt::NoModifier && event->modifiers() != Qt::ShiftModifier ) )
     { return QTextEdit::keyPressEvent( event ); }
 
     // if cursor move clear selection
-    if( event->key() >= Key_Home && event->key() <= Key_Down )
+    if( event->key() >= Qt::Key_Home && event->key() <= Qt::Key_Down )
     {
       _boxSelection().clear();
       return QTextEdit::keyPressEvent( event );
     }
 
     // if delete or backspace remove selection
-    if( event->key() == Key_Backspace || event->key() == Key_Delete )
+    if( event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete )
     {
       _boxSelection().removeSelectedText();
       _boxSelection().clear();
@@ -1207,7 +1206,7 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
     }
 
     // any other key should replace the selection
-    if( event->key() == Key_Tab )
+    if( event->key() == Qt::Key_Tab )
     {
       if( !_hasTabEmulation() ) _boxSelection().fromString( tabCharacter() );
       else
@@ -1231,14 +1230,14 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
   }
 
   // tab emulation
-  if( event->key() == Key_Tab )
+  if( event->key() == Qt::Key_Tab )
   {
     _insertTab();
     return;
   }
 
   // insertion mode
-  if( event->key() == Key_Insert )
+  if( event->key() == Qt::Key_Insert )
   {
     _toggleInsertMode();
     event->ignore();
@@ -1277,7 +1276,7 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
   // create painter and translate from widget to viewport coordinates
   QPainter painter( viewport() );
   painter.translate( -scrollbarPosition() );
-  painter.setPen( NoPen );
+  painter.setPen( Qt::NoPen );
   
   // loop over found blocks
   for( QTextBlock block( first ); block != last.next() && block.isValid(); block = block.next() )
@@ -1333,27 +1332,27 @@ void CustomTextEdit::_installActions( void )
 
   // create actions
   addAction( undo_action_ = new QAction( IconEngine::get( ICONS::UNDO, path_list ), "&Undo", this ) );
-  undo_action_->setShortcut( CTRL+Key_Z );
+  undo_action_->setShortcut( Qt::CTRL + Qt::Key_Z );
   undo_action_->setEnabled( document()->isUndoAvailable() );
   connect( undo_action_, SIGNAL( triggered() ), document(), SLOT( undo() ) );
   connect( this, SIGNAL( undoAvailable( bool ) ), undo_action_, SLOT( setEnabled( bool ) ) );
 
   addAction( redo_action_ = new QAction( IconEngine::get( ICONS::REDO, path_list ), "&Redo", this ) );
-  redo_action_->setShortcut( SHIFT+CTRL+Key_Z );
+  redo_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_Z );
   redo_action_->setEnabled( document()->isRedoAvailable() );
   connect( redo_action_, SIGNAL( triggered() ), document(), SLOT( redo() ) );
   connect( this, SIGNAL( redoAvailable( bool ) ), redo_action_, SLOT( setEnabled( bool ) ) );
 
   addAction( cut_action_ = new QAction( IconEngine::get( ICONS::CUT, path_list ), "Cu&t", this ) );
-  cut_action_->setShortcut( CTRL+Key_X );
+  cut_action_->setShortcut( Qt::CTRL + Qt::Key_X );
   connect( cut_action_, SIGNAL( triggered() ), SLOT( cut() ) );
 
   addAction( copy_action_ = new QAction( IconEngine::get( ICONS::COPY, path_list ), "&Copy", this ) );
-  copy_action_->setShortcut( CTRL+Key_C );
+  copy_action_->setShortcut( Qt::CTRL + Qt::Key_C );
   connect( copy_action_, SIGNAL( triggered() ), SLOT( copy() ) );
 
   addAction( paste_action_ = new QAction( IconEngine::get( ICONS::PASTE, path_list ), "&Paste", this ) );
-  paste_action_->setShortcut( CTRL+Key_V );
+  paste_action_->setShortcut( Qt::CTRL + Qt::Key_V );
   connect( paste_action_, SIGNAL( triggered() ), SLOT( paste() ) );
   connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
   _updatePasteAction();
@@ -1362,82 +1361,86 @@ void CustomTextEdit::_installActions( void )
   connect( clear_action_, SIGNAL( triggered() ), SLOT( clear() ) );
 
   addAction( select_all_action_ = new QAction( "Select all", this ) );
-  select_all_action_->setShortcut( CTRL+Key_A );
-  select_all_action_->setShortcutContext( WidgetShortcut );
+  select_all_action_->setShortcut( Qt::CTRL + Qt::Key_A );
+  select_all_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
   addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
-  upper_case_action_->setShortcut( CTRL+Key_U );
-  upper_case_action_->setShortcutContext( WidgetShortcut );
+  upper_case_action_->setShortcut( Qt::CTRL + Qt::Key_U );
+  upper_case_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( upper_case_action_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
   addAction( lower_case_action_ = new QAction( "&Lower case", this ) );
-  lower_case_action_->setShortcut( SHIFT+CTRL+Key_U );
-  lower_case_action_->setShortcutContext( WidgetShortcut );
+  lower_case_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_U );
+  lower_case_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
   addAction( find_action_ = new QAction( IconEngine::get( ICONS::FIND, path_list ), "&Find", this ) );
-  find_action_->setShortcut( CTRL+Key_F );
-  find_action_->setShortcutContext( WidgetShortcut );
+  find_action_->setShortcut( Qt::CTRL + Qt::Key_F );
+  find_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_action_, SIGNAL( triggered() ), SLOT( findFromDialog() ) );
 
   addAction( find_again_action_ = new QAction( "F&ind again", this ) );
-  find_again_action_->setShortcut( CTRL+Key_G );
-  find_again_action_->setShortcutContext( WidgetShortcut );
+  find_again_action_->setShortcut( Qt::CTRL + Qt::Key_G );
+  find_again_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_again_action_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
 
   addAction( find_again_backward_action_ = new QAction( this ) );
-  find_again_backward_action_->setShortcut( SHIFT+CTRL+Key_G );
-  find_again_backward_action_->setShortcutContext( WidgetShortcut );
+  find_again_backward_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
+  find_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_again_backward_action_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
   addAction( find_selection_action_ = new QAction( "Find &selection", this ) );
-  find_selection_action_->setShortcut( CTRL+Key_H );
-  find_selection_action_->setShortcutContext( WidgetShortcut );
+  find_selection_action_->setShortcut( Qt::CTRL + Qt::Key_H );
+  find_selection_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_selection_action_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
 
   addAction( find_selection_backward_action_ = new QAction( this ) );
-  find_selection_backward_action_->setShortcut( SHIFT+CTRL+Key_H );
-  find_selection_backward_action_->setShortcutContext( WidgetShortcut );
+  find_selection_backward_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
+  find_selection_backward_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_selection_backward_action_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
   addAction( replace_action_ = new QAction( IconEngine::get( ICONS::FIND, path_list ), "Replace", this ) );
-  replace_action_->setShortcut( CTRL+Key_R );
-  replace_action_->setShortcutContext( WidgetShortcut );
+  replace_action_->setShortcut( Qt::CTRL + Qt::Key_R );
+  replace_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_action_, SIGNAL( triggered() ), SLOT( replaceFromDialog() ) );
 
   addAction( replace_again_action_ = new QAction( "Replace again", this ) );
-  replace_again_action_->setShortcut( CTRL+Key_T );
-  replace_again_action_->setShortcutContext( WidgetShortcut );
+  replace_again_action_->setShortcut( Qt::CTRL + Qt::Key_T );
+  replace_again_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_again_action_, SIGNAL( triggered() ), SLOT( replaceAgainForward() ) );
 
   addAction( replace_again_backward_action_ = new QAction( this ) );
-  replace_again_backward_action_->setShortcut( SHIFT+CTRL+Key_T );
-  replace_again_backward_action_->setShortcutContext( WidgetShortcut );
+  replace_again_backward_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_T );
+  replace_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_again_backward_action_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
 
   addAction( goto_line_action_ = new QAction( "&Goto line number", this ) );
-  goto_line_action_->setShortcut( CTRL+Key_L );
-  goto_line_action_->setShortcutContext( WidgetShortcut );
+  goto_line_action_->setShortcut( Qt::CTRL + Qt::Key_L );
+  goto_line_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( goto_line_action_, SIGNAL( triggered() ), SLOT( selectLineFromDialog() ) );
 
   // remove line action
   QAction* remove_line_action( new QAction( "&Remove current line", this ) );
   addAction( remove_line_action );
-  remove_line_action->setShortcut( CTRL+Key_K );
-  remove_line_action->setShortcutContext( WidgetShortcut );
+  remove_line_action->setShortcut( Qt::CTRL + Qt::Key_K );
+  remove_line_action->setShortcutContext( Qt::WidgetShortcut );
   connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
 
   // current block highlight
   addAction( block_highlight_action_ = new QAction( "&Highlight current paragraph", this ) );
   block_highlight_action_->setCheckable( true );
   block_highlight_action_->setChecked( blockHighlight().isEnabled() );
+  block_highlight_action_->setShortcut( Qt::Key_F12 );
+  block_highlight_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( block_highlight_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleBlockHighlight( bool ) ) );
 
   // wrap mode
   addAction( wrap_mode_action_ = new QAction( "&Wrap text", this ) );
   wrap_mode_action_->setCheckable( true );
   wrap_mode_action_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
+  wrap_mode_action_->setShortcut( Qt::Key_F10 );
+  wrap_mode_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( wrap_mode_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
 
   // tab emulation action
@@ -1561,7 +1564,7 @@ bool CustomTextEdit::_findForward( const TextSelection& selection, const bool& r
     }
 
     // case sensitivity
-    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive:CaseInsensitive );
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
     // make a copy of current cursor
     QTextCursor found( cursor );
@@ -1668,7 +1671,7 @@ bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& 
     }
 
     // case sensitivity
-    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive:CaseInsensitive );
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
     // make a copy of current cursor
     QTextCursor found( cursor );
@@ -1811,7 +1814,7 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
     }
 
     // case sensitivity
-    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? CaseSensitive:CaseInsensitive );
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
     // replace everything in selected text
     QString selected_text( cursor.selectedText() );

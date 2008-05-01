@@ -37,10 +37,10 @@ using namespace std;
 
 //!@name XML names
 //@{
-const string XmlFileRecord::XML_RECORD = "record";
-const string XmlFileRecord::XML_FILE = "file";
-const string XmlFileRecord::XML_TIME = "time";
-const string XmlFileRecord::XML_VALID= "valid"; 
+const QString XmlFileRecord::XML_RECORD = "record";
+const QString XmlFileRecord::XML_FILE = "file";
+const QString XmlFileRecord::XML_TIME = "time";
+const QString XmlFileRecord::XML_VALID= "valid"; 
 //@}
 
 //_______________________________________________
@@ -54,12 +54,10 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    Str name( qPrintable( attribute.name() ) );
-    Str value( qPrintable( attribute.value() ) );
-    if( name == XML_FILE ) setFile( XmlUtil::xmlToText( value ) );
-    else if( name == XML_TIME ) setTime( value.get<int>() );
-    else if( name == XML_VALID ) setValid( value.get<bool>() );
-    else addInformation( name, value );
+    if( attribute.name() == XML_FILE ) setFile( qPrintable( XmlUtil::xmlToText( attribute.value() ) ) );
+    else if( attribute.name() == XML_TIME ) setTime( attribute.value().toInt() );
+    else if( attribute.name() == XML_VALID ) setValid( attribute.value().toInt() );
+    else addInformation( qPrintable( attribute.name() ), qPrintable( attribute.value() ) );
   }
 }
 
@@ -67,10 +65,10 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
 QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 {
   Debug::Throw( "XmlFileRecord::domElement.\n" );
-  QDomElement out( parent.createElement( XML_RECORD.c_str() ) );
-  out.setAttribute( XML_FILE.c_str(), XmlUtil::textToXml( file() ).c_str() );
-  out.setAttribute( XML_TIME.c_str(), Str().assign<int>( time() ).c_str() );
-  out.setAttribute( XML_VALID.c_str(), Str().assign<bool>( isValid() ).c_str() );
+  QDomElement out( parent.createElement( XML_RECORD ) );
+  out.setAttribute( XML_FILE, XmlUtil::textToXml( file().c_str() ) );
+  out.setAttribute( XML_TIME, Str().assign<int>( time() ).c_str() );
+  out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ).c_str() );
   
   for( InfoMap::const_iterator iter = _informations().begin(); iter != _informations().end(); iter++ )
   { out.setAttribute( iter->first.c_str(), iter->second.c_str() ); }

@@ -1,5 +1,5 @@
-#ifndef XmlOption_h
-#define XmlOption_h
+#ifndef XmlUtil_h
+#define XmlUtil_h
 
 // $Id$
 
@@ -14,7 +14,7 @@
 *                          
 * This software is distributed in the hope that it will be useful, but WITHOUT 
 * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License        
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
 * for more details.                     
 *                          
 * You should have received a copy of the GNU General Public License along with 
@@ -25,58 +25,60 @@
 *******************************************************************************/
 
 /*!
-   \file XmlOption.h
-   \brief Xml implementation of the Option object
+   \file XmlUtil.h
+   \brief Some Xml utilities
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
 */
 
-#include <QDomDocument>
-#include <QDomElement>
+#include <list>
 #include <QString>
 
-#include "Option.h"
+/*!
+   \class XmlUtil
+   \brief Some Xml utilities
+*/
 
-//! some XML definitions specific to Option management
-namespace OPTIONS {
+class XmlUtil {
 
-  /*! 
-    \brief Xml special options tag.
-    special meaning that option name do not have to be unique
-  */
-  static const QString SPECIAL_OPTION = "SPECIAL_OPTION";
-
-  //! Xml option tag
-  static const QString OPTIONS = "Options";
-
-  //! Xml string for value field
-  static const QString VALUE = "Value";
-
-  //! Xml string for comments field
-  static const QString COMMENTS = "Comments";
-
-  //! Xml string for FRONT added special options
-  static const QString FRONT = "FRONT";
-    
-};
-
-//! Xml implementation of the Option object
-class XmlOption:public Option
-{
-  
   public:
-
-  //! constructor
-  XmlOption( const Option& option ):
-    Option( option )
-    {}
   
-  //! creator from DOM node
-  XmlOption( const QDomElement& element );
-
-  //! retrieve DomElement from option
-  QDomElement domElement( QDomDocument& parent ) const;
+  //! convert input string from text to xml
+  static QString textToXml( const QString& in ); 
+  
+  //! convert input string from xml to text
+  static QString xmlToText( const QString& in ); 
+  
+  //! parser status
+  enum Status {
+    
+    //! parser is invalid
+    INVALID,  
+        
+    //! parser is being read
+    STARTED,  
+        
+    //! parsing is done
+    COMPLETED 
+  };
+    
+  private:
+  
+  //! initialize Xml to text conversion pair list
+  static bool _initConversions( void );
+  
+  //! text to Xml conversion pair type
+  typedef std::pair<QString, QString> Conversion;
+  
+  //! text to Xml conversion pair type
+  typedef std::list< Conversion > ConversionList;
+  
+  //! text to Xml conversion pair list
+  static ConversionList conversions_;
+ 
+  //! make sure initialization is done once at startup
+  static bool initialized_;
   
 };
 
