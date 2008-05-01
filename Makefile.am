@@ -26,8 +26,7 @@ noinst_HEADERS = \
   TextFormatBlock.h \
   TextPosition.h \
   TimeStamp.h \
-  Util.h \
-  XmlUtil.h
+  Util.h
 
 noinst_LIBRARIES = libbase.a
 
@@ -43,9 +42,8 @@ libbase_a_SOURCES = \
   Options.cpp \
   Str.cpp \
   TimeStamp.cpp \
-  Util.cpp \
-  XmlUtil.cpp
-	
+  Util.cpp
+
 nodist_libbase_a_SOURCES = \
   moc_CustomProcess.cpp
 

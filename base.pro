@@ -19,12 +19,11 @@ HEADERS = \
   TextFormat.h \
   TextPosition.h \
   TimeStamp.h \
-  Util.h \
-  XmlUtil.h
+  Util.h
 
 SOURCES = \
   ArgList.cpp \
-  Command.cpp \  
+  Command.cpp \
   Counter.cpp \
   CustomProcess.cpp \
   Debug.cpp \
@@ -34,5 +33,4 @@ SOURCES = \
   Options.cpp \
   Str.cpp \
   TimeStamp.cpp \
-  Util.cpp \
-  XmlUtil.cpp
+  Util.cpp
