@@ -68,7 +68,7 @@ bool XmlUtil::_initConversions()
 QString XmlUtil::textToXml( const QString& in )
 {
 
-  QString out;
+  QString out(in);
   if( !( conversions_.size() ) ) _initConversions();
   for( ConversionList::iterator iter = conversions_.begin(); iter != conversions_.end(); iter++ )
   out = out.replace( iter->first, iter->second );
@@ -80,7 +80,7 @@ QString XmlUtil::textToXml( const QString& in )
 QString XmlUtil::xmlToText( const QString& in )
 {
 
-  QString out;
+  QString out(in);
   if( !( conversions_.size() ) ) _initConversions();
 
   // HTML style conversions (escape characters)

@@ -40,14 +40,13 @@ XmlOption::XmlOption( const QDomElement& element )
 {
   Debug::Throw( "XmlOption::XmlOption.\n" );
   setName( qPrintable( element.nodeName() ) );
-
+  
   // parse attributes
   QDomNamedNodeMap attributes( element.attributes() );
   for( unsigned int i=0; i<attributes.length(); i++ )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-
     if( attribute.name() == OPTIONS::VALUE ) setRaw( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
     else if( attribute.name() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
     else if( attribute.name() == OPTIONS::OPTIONS )
