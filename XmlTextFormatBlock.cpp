@@ -36,18 +36,18 @@ using namespace std;
 using namespace FORMAT;
 
 //____________________________________
-const string XmlTextFormatBlock::XML_TAG = "TextFormat";
-const string XmlTextFormatBlock::XML_FORMAT = "format";
-const string XmlTextFormatBlock::XML_COLOR = "color";
+const QString XmlTextFormatBlock::XML_TAG = "TextFormat";
+const QString XmlTextFormatBlock::XML_FORMAT = "format";
+const QString XmlTextFormatBlock::XML_COLOR = "color";
 
-const string XmlTextFormatBlock::XML_BEGIN = "begin";
-const string XmlTextFormatBlock::XML_END = "end";
+const QString XmlTextFormatBlock::XML_BEGIN = "begin";
+const QString XmlTextFormatBlock::XML_END = "end";
 
 // obsolete tag names
-const string XmlTextFormatBlock::XML_BEGIN_PAR = "begin_par";
-const string XmlTextFormatBlock::XML_BEGIN_INDEX = "begin_index";
-const string XmlTextFormatBlock::XML_END_PAR = "end_par";
-const string XmlTextFormatBlock::XML_END_INDEX = "end_index";
+const QString XmlTextFormatBlock::XML_BEGIN_PAR = "begin_par";
+const QString XmlTextFormatBlock::XML_BEGIN_INDEX = "begin_index";
+const QString XmlTextFormatBlock::XML_END_PAR = "end_par";
+const QString XmlTextFormatBlock::XML_END_INDEX = "end_index";
   
 //____________________________________
 XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
@@ -59,26 +59,26 @@ XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    Str name( qPrintable( attribute.name() ) );
-    Str value( qPrintable( attribute.value() ) );
+    QString name( attribute.name() );
+    QString value( attribute.value() );
 
     // nominal tags
-    if( name == XML_BEGIN ) begin() = value.get<unsigned int>();
-    else if( name == XML_END ) end() = value.get<unsigned int>();
+    if( name == XML_BEGIN ) begin() = value.toInt();
+    else if( name == XML_END ) end() = value.toInt();
     
     // obsolete paragraph tags
-    else if( name == XML_BEGIN_PAR ) _parBegin() = Str( value ).get<int>();
-    else if( name == XML_END_PAR ) _parEnd() = value.get<int>();
+    else if( name == XML_BEGIN_PAR ) _parBegin() = value.toInt();
+    else if( name == XML_END_PAR ) _parEnd() = value.toInt();
     
     // obsolete index tags
-    else if( name == XML_BEGIN_INDEX ) begin() = value.get<unsigned int>();
-    else if( name == XML_END_INDEX ) end() = value.get<unsigned int>();
+    else if( name == XML_BEGIN_INDEX ) begin() = value.toInt();
+    else if( name == XML_END_INDEX ) end() = value.toInt();
     
     // format
-    else if( name == XML_FORMAT ) format() =value.get<unsigned int>();
-    else if( name == XML_COLOR ) color() = value;
+    else if( name == XML_FORMAT ) format() =value.toInt();
+    else if( name == XML_COLOR ) color() = qPrintable( value );
     
-    else cerr << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized timestamp attribute: \"" << name << "\"\n";
+    else cerr << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized timestamp attribute: \"" << qPrintable( name ) << "\"\n";
   }
 
 }
@@ -86,10 +86,10 @@ XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
 //__________________________________________________________
 QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
 {
-  QDomElement out( parent.createElement( XML_TAG.c_str() ) );
-  out.setAttribute( XML_BEGIN.c_str(), Str().assign<int>(begin()).c_str() );  
-  out.setAttribute( XML_END.c_str(), Str().assign<int>(end()).c_str() );  
-  out.setAttribute( XML_FORMAT.c_str(), Str().assign<unsigned int>(format()).c_str() );
-  out.setAttribute( XML_COLOR.c_str(), color().c_str() );
+  QDomElement out( parent.createElement( XML_TAG ) );
+  out.setAttribute( XML_BEGIN, Str().assign<int>(begin()).c_str() );  
+  out.setAttribute( XML_END, Str().assign<int>(end()).c_str() );  
+  out.setAttribute( XML_FORMAT, Str().assign<unsigned int>(format()).c_str() );
+  out.setAttribute( XML_COLOR, color().c_str() );
   return out;  
 }

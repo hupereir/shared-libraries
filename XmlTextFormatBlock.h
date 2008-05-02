@@ -57,21 +57,21 @@ namespace FORMAT
     //!@name XML_tag names
     //@{
     
-    static const std::string XML_TAG;
-    static const std::string XML_BEGIN;
-    static const std::string XML_END;
-    static const std::string XML_FORMAT;
-    static const std::string XML_COLOR;
+    static const QString XML_TAG;
+    static const QString XML_BEGIN;
+    static const QString XML_END;
+    static const QString XML_FORMAT;
+    static const QString XML_COLOR;
     
     //@}
     
     //!@name old tags, kept for backward compatibility
     //@{
     
-    static const std::string XML_BEGIN_PAR;
-    static const std::string XML_BEGIN_INDEX;
-    static const std::string XML_END_PAR;
-    static const std::string XML_END_INDEX;
+    static const QString XML_BEGIN_PAR;
+    static const QString XML_BEGIN_INDEX;
+    static const QString XML_END_PAR;
+    static const QString XML_END_INDEX;
     
     //@}
     
