@@ -58,19 +58,28 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const std::
 }
 
 //_______________________________________________________________
+CustomToolBar::~CustomToolBar( void )
+{
+  Debug::Throw( "~CustomToolBar::CustomToolBar.\n" );
+  _saveConfiguration();
+}
+
+//_______________________________________________________________
 void CustomToolBar::showEvent( QShowEvent* event )
 {
-  Debug::Throw() << "CustomToolBar::showEvent - spontaneous: " << event->spontaneous() << " visible: " << isVisible() << " hidden: " << isHidden() << " action:" << visibilityAction().isChecked() << endl;
-  if( isVisible() ) visibilityAction().setChecked( true ); 
+  Debug::Throw() << "CustomToolBar::showEvent - name: " << option_name_ << endl;
+  if( !isHidden() ) visibilityAction().setChecked( true ); 
   QToolBar::showEvent(event);
 }
 
 //_______________________________________________________________
 void CustomToolBar::hideEvent( QHideEvent* event )
 {
-  Debug::Throw() << "CustomToolBar::hideEvent - spontaneous: " << event->spontaneous() << " visible: " << isVisible() << " hidden: " << isHidden() << " action:" << visibilityAction().isChecked() << endl;
+  
+  Debug::Throw() << "CustomToolBar::hideEvent - name: " << option_name_ << endl;
   if( isHidden() ) visibilityAction().setChecked( false ); 
   QToolBar::hideEvent(event);
+
 }
 
 //_______________________________________________________________
@@ -117,39 +126,37 @@ void CustomToolBar::_updateConfiguration( void )
   }
     
   // update visibility action according to state for CustomToolbars
-  visibilityAction().setChecked( visibility );
-  
-  Debug::Throw( "CustomToolBar::_updateConfiguration - done.\n" );
+  Debug::Throw() << "CustomToolBar::_updateConfiguration - option_name: " << option_name_ << " visibility: " << visibility << endl;
+  visibilityAction().setChecked( visibility );  
 
 }
 
 //_______________________________________________________________
 void CustomToolBar::_saveConfiguration( void )
-{ 
-  Debug::Throw( "CustomToolBar::_saveConfiguration.\n" );
-  if( option_name_.empty() ) return;
-
-  // visibility
-  bool visibility( !isHidden() );
-  
-  XmlOptions::get().set<bool>( option_name_, visibility );
-  Debug::Throw() << "CustomToolBar::_saveConfiguration - name: " << option_name_ << " visibility: " << visibility << endl;
-
-  // position
-  // try cast parent to QMainWindow
-  QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );  
-  if( !parent || option_name_.empty() ) return;
-  
-  string location_name( option_name_ + "_LOCATION" );
-  Debug::Throw() << "CustomToolBar::_saveConfiguration - " << location_name << ": " << CustomToolBar::areaToName( parent->toolBarArea( this ) ) << endl;
-  XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
-  
-}
+{ Debug::Throw( "CustomToolBar::_saveConfiguration.\n" ); }
 
 //_______________________________________________________________
 void CustomToolBar::_toggleVisibility( bool state )
 {
-  Debug::Throw( "CustomToolBar::_toggleVisibility.\n" );
+  Debug::Throw() << "CustomToolBar::_toggleVisibility - name: " << option_name_ << " state: " << state << endl;
+  
+  if( !option_name_.empty() )
+  {
+    
+    // save state
+    XmlOptions::get().set<bool>( option_name_, state );
+    
+    // save position
+    // try cast parent to QMainWindow
+    QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );  
+    if( parent )
+    {
+      string location_name( option_name_ + "_LOCATION" );
+      XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+    }
+    
+  }
+  
   if( !state ) hide();
   else show();  
 }

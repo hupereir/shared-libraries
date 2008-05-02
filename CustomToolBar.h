@@ -55,8 +55,7 @@ class CustomToolBar: public QToolBar, public Counter
   CustomToolBar( const QString& title, QWidget* parent, const std::string& option_name = "" );
   
   //! destructor
-  virtual ~CustomToolBar( void )
-  { Debug::Throw( "CustomToolBar::~CustomToolBar.\n" ); }
+  virtual ~CustomToolBar( void );
   
   //! get area from name
   static Qt::ToolBarArea nameToArea( const std::string& name )
@@ -109,11 +108,11 @@ class CustomToolBar: public QToolBar, public Counter
   protected:
   
   //! show event
-  void showEvent( QShowEvent* );
+  virtual void showEvent( QShowEvent* );
   
   //! hide event
-  void hideEvent( QHideEvent* );
-  
+  virtual void hideEvent( QHideEvent* );
+    
   private slots:
   
   //! update configuration
