@@ -76,7 +76,6 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   //! open last valid file, returns true if any
   bool openLastValidFile( void );
 
-
   signals:
 
   //! signal emited when a file is selected

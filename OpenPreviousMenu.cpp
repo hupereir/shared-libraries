@@ -222,7 +222,7 @@ void OpenPreviousMenu::_loadFiles( void )
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   {
     
-    QString label( iter->file().c_str() );    
+    QString label( iter->file().c_str() );
     QAction* action = addAction( label );
     
     // add icon

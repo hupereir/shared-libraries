@@ -59,9 +59,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     else if( attribute.name() == XML_VALID ) setValid( attribute.value().toInt() );
     else addInformation( qPrintable( attribute.name() ), qPrintable( attribute.value() ) );
   }
-  
-  Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - " << file() << " time: " << time() << endl;
-  
+    
 }
 
 //_______________________________________________
