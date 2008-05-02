@@ -131,12 +131,19 @@ void CustomToolBar::_updateConfiguration( void )
     Debug::Throw() << "CustomToolBar::_updateConfiguration - " << option_name_ << " current_visibility: " << current_visibility << " current_location: " << areaToName( current_location ) << endl;
     Debug::Throw() << "CustomToolBar::_updateConfiguration - " << option_name_ << " visibility: " << visibility << " location: " << areaToName( location ) << endl;
     Debug::Throw() << endl;
-    
+
+    // set hidden if location is not specified
     if( location == Qt::NoToolBarArea ) visibility = false;
     
     // show toolbar
-    if( visibility && !( current_visibility && (location == current_location) ) ) 
-    { parent->addToolBar( location, this ); }
+    if( visibility )
+    { 
+      if( !( current_visibility && (location == current_location) ) ) 
+      { parent->addToolBar( location, this ); }
+    } else if( location != Qt::NoToolBarArea ) { 
+      parent->addToolBar( location, this ); 
+      hide();
+    }
     
     // set options according to values
     XmlOptions::get().set<bool>( option_name_, !isHidden() );
@@ -152,25 +159,13 @@ void CustomToolBar::_updateConfiguration( void )
 
 //_______________________________________________________________
 void CustomToolBar::_saveConfiguration( void )
-{ 
-  Debug::Throw( "CustomToolBar::_saveConfiguration.\n" ); 
-  
-//   // position
-//   // try cast parent to QMainWindow
-//   QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );  
-//   if( !parent || option_name_.empty() ) return;
-   
-//   string location_name( option_name_ + "_LOCATION" );
-//   Debug::Throw() << "CustomToolBar::_saveConfiguration - " << location_name << ": " << CustomToolBar::areaToName( parent->toolBarArea( this ) ) << endl;
-//   XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
-
-}
+{ Debug::Throw( "CustomToolBar::_saveConfiguration.\n" ); }
 
 //_______________________________________________________________
 void CustomToolBar::_toggleVisibility( bool state )
 {
+
   Debug::Throw() << "CustomToolBar::_toggleVisibility - name: " << option_name_ << " state: " << state << endl;
-  
   if( !option_name_.empty() )
   {
     
