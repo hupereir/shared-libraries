@@ -32,7 +32,9 @@
    \date $Date$
 */
 
-#include <qdom.h>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QString>
 
 #include "TimeStamp.h"
 
@@ -59,7 +61,7 @@ class XmlTimeStamp:public TimeStamp
   {}
   
   //! get DOM element
-  QDomElement domElement( const std::string& name, QDomDocument& parent ) const;
+  QDomElement domElement( const QString& name, QDomDocument& parent ) const;
   
   //! XML XmlTimeStamp keyword
   static const std::string XML_TIME;

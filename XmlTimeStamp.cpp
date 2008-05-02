@@ -55,10 +55,10 @@ XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
 };
 
 //_______________________________________________________
-QDomElement XmlTimeStamp::domElement( const std::string& name, QDomDocument& parent ) const
+QDomElement XmlTimeStamp::domElement( const QString& name, QDomDocument& parent ) const
 {
   
-  QDomElement out( parent.createElement( name.c_str() ) );
+  QDomElement out( parent.createElement( name ) );
   out.setAttribute( XML_TIME.c_str(), Str().assign<time_t>( unixTime() ).c_str() );
   return out;  
 }
