@@ -117,16 +117,15 @@ unsigned int FileList::_invalidFiles( void ) const
 }
 
 //_______________________________________________
-FileRecord& FileList::_add( const FileRecord& record )
+FileRecord& FileList::_add( const FileRecord& record, const bool& update_timestamp )
 {
-
-  Debug::Throw() << "FileList::_add - " << record.file() << endl;
 
   FileRecord::List::iterator iter = find_if( records_->begin(), records_->end(), FileRecord::SameFileFTor( record.file() ) );
   if( iter != records_->end() ) 
   {
     
-    iter->setTime( max( iter->time(), record.time() ) );
+    if( update_timestamp ) iter->setTime( max( iter->time(), record.time() ) );
+    
     current_ = *iter;
     return *iter;
     

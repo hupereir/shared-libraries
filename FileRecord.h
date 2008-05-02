@@ -36,6 +36,7 @@
 #include <list>  
 
 #include "Counter.h"
+#include "Debug.h"
 #include "File.h"
 #include "TimeStamp.h"
 

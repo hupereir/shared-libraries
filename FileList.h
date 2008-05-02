@@ -70,7 +70,7 @@ class FileList: public Counter
   //! get filerecord associated to a name
   /*! creates new fileRecord if not found */
   virtual FileRecord& get( const File& file )
-  { return _add( FileRecord( file ) ); }
+  { return _add( FileRecord( file ), false ); }
     
   //! maximum Size
   virtual void setMaxSize( const int& value );
@@ -111,7 +111,7 @@ class FileList: public Counter
   { return *records_; }
  
   //! add record to current list
-  virtual FileRecord& _add( const FileRecord& record );
+  virtual FileRecord& _add( const FileRecord& record, const bool& update_timestamp = true );
 
   //! return stored (current) file record
   virtual const FileRecord& _stored( void ) const
