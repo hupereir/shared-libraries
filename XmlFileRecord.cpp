@@ -59,6 +59,9 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     else if( attribute.name() == XML_VALID ) setValid( attribute.value().toInt() );
     else addInformation( qPrintable( attribute.name() ), qPrintable( attribute.value() ) );
   }
+  
+  Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - " << file() << " time: " << time() << endl;
+  
 }
 
 //_______________________________________________
@@ -67,7 +70,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
   Debug::Throw( "XmlFileRecord::domElement.\n" );
   QDomElement out( parent.createElement( XML_RECORD ) );
   out.setAttribute( XML_FILE, XmlUtil::textToXml( file().c_str() ) );
-  out.setAttribute( XML_TIME, Str().assign<int>( time() ).c_str() );
+  out.setAttribute( XML_TIME, Str().assign<int>( XmlFileRecord::time() ).c_str() );
   out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ).c_str() );
   
   for( InfoMap::const_iterator iter = _informations().begin(); iter != _informations().end(); iter++ )
