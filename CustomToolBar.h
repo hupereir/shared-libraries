@@ -97,10 +97,10 @@ class CustomToolBar: public QToolBar, public Counter
     LocationComboBox( QWidget* parent, const std::string& option ):
         OptionComboBox( parent, option )
     {
-      addItem( "top" );
-      addItem( "bottom" );
-      addItem( "left" );
-      addItem( "right" );
+      addItem( CustomToolBar::areaToName( Qt::TopToolBarArea ).c_str() );
+      addItem( CustomToolBar::areaToName( Qt::BottomToolBarArea ).c_str() );
+      addItem( CustomToolBar::areaToName( Qt::LeftToolBarArea ).c_str() );
+      addItem( CustomToolBar::areaToName( Qt::RightToolBarArea ).c_str() );
     }
     
   };
@@ -113,6 +113,9 @@ class CustomToolBar: public QToolBar, public Counter
   //! hide event
   virtual void hideEvent( QHideEvent* );
     
+  //! move event
+  virtual void moveEvent( QMoveEvent* );
+  
   private slots:
   
   //! update configuration
