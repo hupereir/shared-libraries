@@ -81,12 +81,12 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   
   // misspelled word line editor
   grid_layout->addWidget( new QLabel( "Misspelled word: ", this ) ); 
-  grid_layout->addWidget( line_edit_ = new CustomLineEdit( this ) ); 
+  grid_layout->addWidget( line_edit_ = new LineEditor( this ) ); 
   line_edit_->setReadOnly( true );
 
   // replacement line editor
   grid_layout->addWidget( new QLabel( "Replace with: ", this ) );
-  grid_layout->addWidget( replace_line_edit_ = new CustomLineEdit( this ) );
+  grid_layout->addWidget( replace_line_edit_ = new LineEditor( this ) );
   if( read_only ) replace_line_edit_->setEnabled( false );
   
   grid_layout->setColumnStretch( 1, 1 );

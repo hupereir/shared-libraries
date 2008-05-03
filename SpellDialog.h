@@ -44,7 +44,7 @@
 
 #include "Counter.h"
 #include "ListWidget.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "SpellInterface.h"
 #include "TextPosition.h" 
 
@@ -175,10 +175,10 @@ namespace SPELLCHECK
     bool read_only_editor_;
     
     //! line editor for original word
-    CustomLineEdit *line_edit_;
+    LineEditor *line_edit_;
             
     //! line editor for text replacement
-    CustomLineEdit *replace_line_edit_;
+    LineEditor *replace_line_edit_;
     
     //! listbox for suggestions
     ListWidget *suggestion_list_box_;
