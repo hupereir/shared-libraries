@@ -46,4 +46,3 @@ Server::Server( QObject *parent ):
 //__________________________________________________
 Server::~Server( void )
 { Debug::Throw( debug_level, "Server::~Server.\n" ); }
-
