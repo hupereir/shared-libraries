@@ -53,5 +53,3 @@ clean-local:
 ### rule to generate qt meta objects
 moc_%.cpp: %.h
 	$(qt_moc) $^ -o $@
-
-

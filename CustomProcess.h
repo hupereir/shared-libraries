@@ -92,4 +92,3 @@ class CustomProcess: public QProcess, public Counter
 
 
 #endif
-

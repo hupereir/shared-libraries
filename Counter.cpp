@@ -43,4 +43,3 @@ void Counter::print( ostream& out )
   out << iter->first << ": " << iter->second << endl;
   out << endl;
 }
-
