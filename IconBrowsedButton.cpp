@@ -34,7 +34,7 @@
 #include <qimage.h>
 
 #include "BrowsedLineEdit.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "CustomPixmap.h"
 #include "File.h"
 #include "IconBrowsedButton.h"

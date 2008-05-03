@@ -54,7 +54,7 @@ ProcessFrame::ProcessFrame( QWidget* parent ):
   main_layout_->setMargin( 10 );
   setLayout( main_layout_ );
 
-  main_layout_->addWidget( editor_ = new CustomTextEdit( this ) );
+  main_layout_->addWidget( editor_ = new TextEditor( this ) );
   editor_->setReadOnly( true );
   editor_->setLineWrapMode( QTextEdit::NoWrap );
 

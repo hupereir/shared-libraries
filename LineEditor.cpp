@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomLineEdit.cpp
+  \file LineEditor.cpp
   \brief customized QLineEdit object
   \author Hugo Pereira
   \version $Revision$
@@ -33,7 +33,7 @@
 #include <QClipboard>
 
 #include "BaseIcons.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "CustomPixmap.h"
 #include "Debug.h"
 #include "IconEngine.h"
@@ -44,12 +44,12 @@ using namespace std;
 using namespace Qt;
 
 //____________________________________________________________
-CustomLineEdit::CustomLineEdit( QWidget* parent ):
+LineEditor::LineEditor( QWidget* parent ):
   QLineEdit( parent ),
-  Counter( "CustomLineEdit" ),
+  Counter( "LineEditor" ),
   modified_( false )
 {    
-  Debug::Throw( "CustomLineEdit::CustomLineEdit.\n" );
+  Debug::Throw( "LineEditor::LineEditor.\n" );
     
   // actions
   _installActions();
@@ -61,9 +61,9 @@ CustomLineEdit::CustomLineEdit( QWidget* parent ):
 
 
 //_____________________________________________________________________
-void CustomLineEdit::setModified( const bool& value )
+void LineEditor::setModified( const bool& value )
 { 
-  Debug::Throw( "CustomLineEdit::setModified.\n" );
+  Debug::Throw( "LineEditor::setModified.\n" );
   if( value != modified_ )
   {
     modified_ = value;
@@ -74,9 +74,9 @@ void CustomLineEdit::setModified( const bool& value )
 
 
 //_____________________________________________________________________
-void CustomLineEdit::lowerCase( void )
+void LineEditor::lowerCase( void )
 {
-  Debug::Throw( "CustomLineEdit::lowerCase.\n" );
+  Debug::Throw( "LineEditor::lowerCase.\n" );
   
   // do nothing if object is read only
   if( isReadOnly() ) return;
@@ -93,9 +93,9 @@ void CustomLineEdit::lowerCase( void )
 }
 
 //_____________________________________________________________________
-void CustomLineEdit::upperCase( void )
+void LineEditor::upperCase( void )
 {
-  Debug::Throw( "CustomLineEdit::upperCase.\n" );
+  Debug::Throw( "LineEditor::upperCase.\n" );
    
   // do nothing if object is read only
   if( isReadOnly() ) return;
@@ -112,7 +112,7 @@ void CustomLineEdit::upperCase( void )
 }
 
 //_______________________________________________________________
-void CustomLineEdit::contextMenuEvent(QContextMenuEvent *event)
+void LineEditor::contextMenuEvent(QContextMenuEvent *event)
 {
   
   // menu
@@ -136,7 +136,7 @@ void CustomLineEdit::contextMenuEvent(QContextMenuEvent *event)
 }
 
 //_____________________________________________
-void CustomLineEdit::keyPressEvent( QKeyEvent* event )
+void LineEditor::keyPressEvent( QKeyEvent* event )
 {
   
   // process base class function
@@ -148,9 +148,9 @@ void CustomLineEdit::keyPressEvent( QKeyEvent* event )
 }
 
 //_____________________________________________
-void CustomLineEdit::mouseReleaseEvent( QMouseEvent* event )
+void LineEditor::mouseReleaseEvent( QMouseEvent* event )
 {
-  Debug::Throw( "CustomLineEdit::mouseReleaseEvent.\n" );
+  Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
   
   QLineEdit::mouseReleaseEvent( event );
   emit cursorPositionChanged( cursorPosition( ) );
@@ -158,9 +158,9 @@ void CustomLineEdit::mouseReleaseEvent( QMouseEvent* event )
 }
 
 //____________________________________________________________
-void CustomLineEdit::_modified( const QString& text )
+void LineEditor::_modified( const QString& text )
 {
-  Debug::Throw( "CustomLineEdit::_modified.\n" );
+  Debug::Throw( "LineEditor::_modified.\n" );
   bool modified( text != backup_ );
   if( modified != modified_ )
   { 
@@ -171,9 +171,9 @@ void CustomLineEdit::_modified( const QString& text )
 }
 
 //__________________________________________________________
-void CustomLineEdit::_installActions( void )
+void LineEditor::_installActions( void )
 {
-  Debug::Throw( "CustomLineEdit::_installActions.\n" );
+  Debug::Throw( "LineEditor::_installActions.\n" );
 
   // retrieve pixmaps path
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
@@ -235,18 +235,18 @@ void CustomLineEdit::_installActions( void )
 }
 
 //________________________________________________
-void CustomLineEdit::_updateUndoRedoActions( void )
+void LineEditor::_updateUndoRedoActions( void )
 {
-  Debug::Throw( "CustomLineEdit::_updateUndoRedoActions.\n" );
+  Debug::Throw( "LineEditor::_updateUndoRedoActions.\n" );
   undo_action_->setEnabled( isUndoAvailable() );
   redo_action_->setEnabled( isRedoAvailable() );
 }
 
 //________________________________________________
-void CustomLineEdit::_updateSelectionActions()
+void LineEditor::_updateSelectionActions()
 {
   
-  Debug::Throw( "CustomLineEdit::_updateSelectionActions.\n" );
+  Debug::Throw( "LineEditor::_updateSelectionActions.\n" );
 
   bool has_selection( hasSelectedText() );
   bool editable( !isReadOnly() );
@@ -259,10 +259,10 @@ void CustomLineEdit::_updateSelectionActions()
 }
 
 //________________________________________________
-void CustomLineEdit::_updatePasteAction( void )
+void LineEditor::_updatePasteAction( void )
 {
   
-  Debug::Throw( "CustomLineEdit::_updatePasteAction.\n" );
+  Debug::Throw( "LineEditor::_updatePasteAction.\n" );
   bool editable( !isReadOnly() );
   bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
   paste_action_->setEnabled( editable && has_clipboard );

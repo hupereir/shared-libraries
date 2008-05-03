@@ -37,11 +37,11 @@
 #include <QKeyEvent>
 
 #include "Counter.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "Debug.h"
 
 //! local line editor to handle autocompletion
-class ComboLineEdit: public CustomLineEdit
+class ComboLineEdit: public LineEditor
 {
   
   //! Qt meta object declaration
@@ -51,7 +51,7 @@ class ComboLineEdit: public CustomLineEdit
   
   //! constructor
   ComboLineEdit( QWidget* parent ):
-    CustomLineEdit( parent )
+    LineEditor( parent )
   { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
 
   signals:

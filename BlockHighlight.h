@@ -39,7 +39,7 @@
 #include "Counter.h"
 #include "Debug.h"
 
-class CustomTextEdit;
+class TextEditor;
 
 //! handles current block highlighting
 class BlockHighlight: public QObject, public Counter
@@ -50,7 +50,7 @@ class BlockHighlight: public QObject, public Counter
   public:
   
   //! constructor
-  BlockHighlight( CustomTextEdit* parent );
+  BlockHighlight( TextEditor* parent );
   
   //! destructor
   virtual ~BlockHighlight( void )
@@ -85,7 +85,7 @@ class BlockHighlight: public QObject, public Counter
   private:
   
   //! parent editor
-  CustomTextEdit* parent_;
+  TextEditor* parent_;
   
   //! associated timer
   QBasicTimer timer_;

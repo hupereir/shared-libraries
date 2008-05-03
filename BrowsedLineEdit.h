@@ -29,7 +29,7 @@
   \brief combined QLineEdit + associated browse button
   line edit is also customized to have faster popup menu
   result of the file dialog associated to the button is stored into the 
-  CustomLineEdit object
+  LineEditor object
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -43,14 +43,14 @@
 #include "Counter.h"
 #include "CustomFileDialog.h"
 
-class CustomLineEdit;
+class LineEditor;
 
 /*! 
   \class BrowsedLineEdit
   \brief combined QLineEdit + associated browse button
   line edit is also customized to have faster popup menu
   result of the file dialog associated to the button is stored into the 
-  CustomLineEdit object
+  LineEditor object
 */
 class BrowsedLineEdit: public QWidget, public Counter
 {
@@ -64,7 +64,7 @@ class BrowsedLineEdit: public QWidget, public Counter
   BrowsedLineEdit( QWidget* parent );
     
   //! retrieve line editor
-  CustomLineEdit& editor( void ) const
+  LineEditor& editor( void ) const
   { 
     assert( line_edit_ );
     return *line_edit_; 
@@ -106,7 +106,7 @@ class BrowsedLineEdit: public QWidget, public Counter
   private:
   
   //! line editor widget
-  CustomLineEdit *line_edit_;
+  LineEditor *line_edit_;
   
   //! default working directory
   std::string work_directory_;

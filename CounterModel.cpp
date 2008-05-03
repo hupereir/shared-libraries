@@ -115,4 +115,3 @@ bool CounterModel::SortFTor::operator () ( CounterPair first, CounterPair second
   }
  
 }
-

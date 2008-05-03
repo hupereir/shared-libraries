@@ -57,4 +57,3 @@ class OptionFontEdit: public FontEdit, public OptionWidget
 };
 
 #endif
-

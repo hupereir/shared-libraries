@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file CustomTextEdit.cpp
+  \file TextEditor.cpp
   \brief Customized QTextEdit object
   \author Hugo Pereira
   \version $Revision$
@@ -39,7 +39,7 @@
 
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
-#include "CustomTextEdit.h"
+#include "TextEditor.h"
 #include "CustomTextDocument.h"
 #include "FindDialog.h"
 #include "IconEngine.h"
@@ -53,12 +53,12 @@
 using namespace std;
 
 //______________________________________________
-TextSelection CustomTextEdit::last_selection_;
+TextSelection TextEditor::last_selection_;
 
 //______________________________________________
-CustomTextEdit::CustomTextEdit( QWidget *parent ):
+TextEditor::TextEditor( QWidget *parent ):
   QTextEdit( parent ),
-  Counter( "CustomTextEdit" ),
+  Counter( "TextEditor" ),
   find_dialog_( 0 ),
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
@@ -70,7 +70,7 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
   click_counter_( this )
 {
 
-  Debug::Throw( "CustomTextEdit::CustomTextEdit.\n" );
+  Debug::Throw( "TextEditor::TextEditor.\n" );
 
   // set customized document
   CustomTextDocument* document( new CustomTextDocument(0) );
@@ -96,17 +96,17 @@ CustomTextEdit::CustomTextEdit( QWidget *parent ):
 }
 
 //________________________________________________
-CustomTextEdit::~CustomTextEdit( void )
+TextEditor::~TextEditor( void )
 {
 
-  Debug::Throw( "CustomTextEdit::~CustomTextEdit.\n" );
+  Debug::Throw( "TextEditor::~TextEditor.\n" );
 
   // cast document
-  CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( CustomTextEdit::document() ) );
-  if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
+  CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( TextEditor::document() ) );
+  if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) delete document;
 
   // update associates synchronization flags
-  BASE::KeySet<CustomTextEdit> editors( this );
+  BASE::KeySet<TextEditor> editors( this );
 
   // nothing to be done if no associates
   if( editors.empty() ) return;
@@ -120,7 +120,7 @@ CustomTextEdit::~CustomTextEdit( void )
   setDocument( new QTextDocument() );
 
   // keep reference to first associate
-  CustomTextEdit &editor( **editors.begin() );
+  TextEditor &editor( **editors.begin() );
 
   // recreate an appropriate cursor
   QTextCursor cursor( editor.document() );
@@ -134,9 +134,9 @@ CustomTextEdit::~CustomTextEdit( void )
 }
 
 //________________________________________________
-int CustomTextEdit::blockCount( void ) const
+int TextEditor::blockCount( void ) const
 {
-  Debug::Throw( "CustomTextEdit::blockCount.\n" );
+  Debug::Throw( "TextEditor::blockCount.\n" );
 
   int count = 0;
   for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next(), count++ ) {}
@@ -144,7 +144,7 @@ int CustomTextEdit::blockCount( void ) const
 }
 
 //________________________________________________
-TextPosition CustomTextEdit::textPosition( void )
+TextPosition TextEditor::textPosition( void )
 {
 
   QTextCursor cursor( textCursor() );
@@ -179,9 +179,9 @@ TextPosition CustomTextEdit::textPosition( void )
 }
 
 //________________________________________________
-TextPosition CustomTextEdit::positionFromIndex( const int& index ) const
+TextPosition TextEditor::positionFromIndex( const int& index ) const
 {
-  Debug::Throw( "CustomTextEdit::positionFromIndex.\n" );
+  Debug::Throw( "TextEditor::positionFromIndex.\n" );
 
   TextPosition out;
 
@@ -204,10 +204,10 @@ TextPosition CustomTextEdit::positionFromIndex( const int& index ) const
 }
 
 //________________________________________________
-int CustomTextEdit::indexFromPosition( const TextPosition& position ) const
+int TextEditor::indexFromPosition( const TextPosition& position ) const
 {
 
-  Debug::Throw( "CustomTextEdit::indexFromPosition.\n" );
+  Debug::Throw( "TextEditor::indexFromPosition.\n" );
 
   // advance until paragraph is matched
   QTextBlock block( document()->begin() );
@@ -239,9 +239,9 @@ int CustomTextEdit::indexFromPosition( const TextPosition& position ) const
 }
 
 //________________________________________________
-void CustomTextEdit::selectWord( void )
+void TextEditor::selectWord( void )
 {
-  Debug::Throw( "CustomTextEdit::selectWord.\n" );
+  Debug::Throw( "TextEditor::selectWord.\n" );
 
   // retrieve text cursor, block and text
   QTextCursor cursor( textCursor() );
@@ -287,9 +287,9 @@ void CustomTextEdit::selectWord( void )
 }
 
 //________________________________________________
-void CustomTextEdit::selectLine( void )
+void TextEditor::selectLine( void )
 {
-  Debug::Throw( "CustomTextEdit::selectLine.\n" );
+  Debug::Throw( "TextEditor::selectLine.\n" );
 
   QTextCursor cursor( textCursor() );
   QTextBlock block( cursor.block() );
@@ -313,9 +313,9 @@ void CustomTextEdit::selectLine( void )
 }
 
 //________________________________________________
-void CustomTextEdit::synchronize( CustomTextEdit* editor )
+void TextEditor::synchronize( TextEditor* editor )
 {
-  Debug::Throw( "CustomTextEdit::synchronize.\n" );
+  Debug::Throw( "TextEditor::synchronize.\n" );
 
   // retrieve and cast old document
   CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( QTextEdit::document() ) );
@@ -325,7 +325,7 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
   BASE::Key::associate( this, dynamic_cast<CustomTextDocument*>( editor->document() ) );
 
   // delete old document, if needed
-  if( document && BASE::KeySet<CustomTextEdit>( document ).size() == 1 ) delete document;
+  if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) delete document;
 
   // set synchronization flag
   editor->setSynchronized( true );
@@ -345,17 +345,17 @@ void CustomTextEdit::synchronize( CustomTextEdit* editor )
   // synchronize wrap mode
   wrapModeAction().setChecked( editor->wrapModeAction().isChecked() );
 
-  Debug::Throw( "CustomTextEdit::synchronize - done.\n" );
+  Debug::Throw( "TextEditor::synchronize - done.\n" );
 
   return;
 
 }
 
 //__________________________________________________________________
-void CustomTextEdit::showReplacements( const unsigned int& counts )
+void TextEditor::showReplacements( const unsigned int& counts )
 {
 
-  Debug::Throw( "CustomTextEdit::showReplacements.\n" );
+  Debug::Throw( "TextEditor::showReplacements.\n" );
 
   ostringstream what;
   if( !counts ) what << "string not found.";
@@ -368,19 +368,19 @@ void CustomTextEdit::showReplacements( const unsigned int& counts )
 
 
 //__________________________________________________________________
-void CustomTextEdit::setReadOnly( bool readonly )
+void TextEditor::setReadOnly( bool readonly )
 {
-  Debug::Throw( "CustomTextEdit::setReadOnly.\n" );
+  Debug::Throw( "TextEditor::setReadOnly.\n" );
   QTextEdit::setReadOnly( readonly );
   _updateReadOnlyActions( readonly );
   if( readonly ) document()->setModified( false );
 }
 
 //___________________________________________________________________________
-void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
+void TextEditor::setBackground( QTextBlock block, const QColor& color )
 {
 
-  Debug::Throw( "CustomTextEdit::setBackground.\n" );
+  Debug::Throw( "TextEditor::setBackground.\n" );
 
   // try retrieve data or create
   TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
@@ -402,10 +402,10 @@ void CustomTextEdit::setBackground( QTextBlock block, const QColor& color )
 }
 
 //___________________________________________________________________________
-void CustomTextEdit::clearBackground( QTextBlock block )
+void TextEditor::clearBackground( QTextBlock block )
 {
 
-  Debug::Throw( "CustomTextEdit::clearBackground.\n" );
+  Debug::Throw( "TextEditor::clearBackground.\n" );
   TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
   if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) )
   {
@@ -420,18 +420,18 @@ void CustomTextEdit::clearBackground( QTextBlock block )
 }
 
 //___________________________________________________________________________
-void CustomTextEdit::clearAllBackgrounds( void )
+void TextEditor::clearAllBackgrounds( void )
 {
-  Debug::Throw( "CustomTextEdit::clearAllBackgrounds.\n" );
+  Debug::Throw( "TextEditor::clearAllBackgrounds.\n" );
   for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next() )
   { clearBackground( block ); }
 }
 
 //________________________________________________
-void CustomTextEdit::cut( void )
+void TextEditor::cut( void )
 {
 
-  Debug::Throw( "CustomTextEdit::cut.\n" );
+  Debug::Throw( "TextEditor::cut.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -449,18 +449,18 @@ void CustomTextEdit::cut( void )
 }
 
 //________________________________________________
-void CustomTextEdit::copy( void )
+void TextEditor::copy( void )
 {
-  Debug::Throw( "CustomTextEdit::copy.\n" );
+  Debug::Throw( "TextEditor::copy.\n" );
   if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().toClipboard( QClipboard::Clipboard );
   else QTextEdit::copy();
 }
 
 //________________________________________________
-void CustomTextEdit::paste( void )
+void TextEditor::paste( void )
 {
 
-  Debug::Throw( "CustomTextEdit::paste.\n" );
+  Debug::Throw( "TextEditor::paste.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -474,9 +474,9 @@ void CustomTextEdit::paste( void )
 }
 
 //________________________________________________
-void CustomTextEdit::upperCase( void )
+void TextEditor::upperCase( void )
 {
-  Debug::Throw( "CustomTextEdit::upperCase.\n" );
+  Debug::Throw( "TextEditor::upperCase.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -502,10 +502,10 @@ void CustomTextEdit::upperCase( void )
 }
 
 //________________________________________________
-void CustomTextEdit::lowerCase( void )
+void TextEditor::lowerCase( void )
 {
 
-  Debug::Throw( "CustomTextEdit::lowerCase.\n" );
+  Debug::Throw( "TextEditor::lowerCase.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -531,9 +531,9 @@ void CustomTextEdit::lowerCase( void )
 }
 
 //_____________________________________________________________________
-void CustomTextEdit::findFromDialog( void )
+void TextEditor::findFromDialog( void )
 {
-  Debug::Throw( "CustomTextEdit::findFromDialog.\n" );
+  Debug::Throw( "TextEditor::findFromDialog.\n" );
 
   // create
   if( !find_dialog_ ) _createFindDialog();
@@ -572,9 +572,9 @@ void CustomTextEdit::findFromDialog( void )
 
 
 //_____________________________________________________________________
-void CustomTextEdit::replaceFromDialog( void )
+void TextEditor::replaceFromDialog( void )
 {
-  Debug::Throw( "CustomTextEdit::replaceFromDialog.\n" );
+  Debug::Throw( "TextEditor::replaceFromDialog.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -616,10 +616,10 @@ void CustomTextEdit::replaceFromDialog( void )
 }
 
 //______________________________________________________________________
-void CustomTextEdit::replace( TextSelection selection )
+void TextEditor::replace( TextSelection selection )
 {
 
-  Debug::Throw( "CustomTextEdit::replace.\n" );
+  Debug::Throw( "TextEditor::replace.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -646,10 +646,10 @@ void CustomTextEdit::replace( TextSelection selection )
 }
 
 //______________________________________________________________________
-unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const bool& show_dialog )
+unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool& show_dialog )
 {
 
-  Debug::Throw( "CustomTextEdit::replaceInSelection.\n" );
+  Debug::Throw( "TextEditor::replaceInSelection.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -660,7 +660,7 @@ unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const 
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
 
-    Debug::Throw( "CustomTextEdit::replaceInSelection - box selection.\n" );
+    Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
     BoxSelection::CursorList cursors( _boxSelection().cursorList() );
     for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
     { counts += _replaceInRange( selection, *iter, MOVE ); }
@@ -668,22 +668,22 @@ unsigned int CustomTextEdit::replaceInSelection( TextSelection selection, const 
     _boxSelection().clear();
 
   } else {
-    Debug::Throw( "CustomTextEdit::replaceInSelection - normal selection.\n" );
+    Debug::Throw( "TextEditor::replaceInSelection - normal selection.\n" );
     QTextCursor cursor( textCursor() );
     counts = _replaceInRange( selection, cursor, EXPAND );
   }
 
-  Debug::Throw( "CustomTextEdit::replaceInSelection - done.\n" );
+  Debug::Throw( "TextEditor::replaceInSelection - done.\n" );
   if( show_dialog ) showReplacements( counts );
   return counts;
 
 }
 
 //______________________________________________________________________
-unsigned int CustomTextEdit::replaceInWindow( TextSelection selection, const bool& show_dialog )
+unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& show_dialog )
 {
 
-  Debug::Throw( "CustomTextEdit::replaceInWindow.\n" );
+  Debug::Throw( "TextEditor::replaceInWindow.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -700,10 +700,10 @@ unsigned int CustomTextEdit::replaceInWindow( TextSelection selection, const boo
 }
 
 //________________________________________________
-void CustomTextEdit::selectLineFromDialog( void )
+void TextEditor::selectLineFromDialog( void )
 {
 
-  Debug::Throw( "CustomTextEdit::selectLineFromDialog.\n" );
+  Debug::Throw( "TextEditor::selectLineFromDialog.\n" );
   if( !select_line_dialog_ )
   {
     select_line_dialog_ = new SelectLineDialog( this );
@@ -719,10 +719,10 @@ void CustomTextEdit::selectLineFromDialog( void )
 }
 
 //________________________________________________
-void CustomTextEdit::selectLine( int index )
+void TextEditor::selectLine( int index )
 {
 
-  Debug::Throw() << "CustomTextEdit::selectLine - index: " << index << endl;
+  Debug::Throw() << "TextEditor::selectLine - index: " << index << endl;
   int local_index( 0 );
   QTextBlock block = document()->begin();
   for( ;local_index < index && block.isValid(); block = block.next(), local_index++ )
@@ -744,10 +744,10 @@ void CustomTextEdit::selectLine( int index )
 }
 
 //________________________________________________
-void CustomTextEdit::removeLine()
+void TextEditor::removeLine()
 {
 
-  Debug::Throw( "CustomTextEdit::removeLine.\n" );
+  Debug::Throw( "TextEditor::removeLine.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -766,11 +766,11 @@ void CustomTextEdit::removeLine()
 }
 
 //________________________________________________
-void CustomTextEdit::enterEvent( QEvent* event )
+void TextEditor::enterEvent( QEvent* event )
 {
 
   #if QT_VERSION < 0x040200
-  Debug::Throw( "CustomTextEdit::enterEvent.\n" );
+  Debug::Throw( "TextEditor::enterEvent.\n" );
   _updateClipboardActions( QClipboard::Clipboard );
   _updateClipboardActions( QClipboard::Selection );
   #endif
@@ -780,13 +780,13 @@ void CustomTextEdit::enterEvent( QEvent* event )
 }
   
 //________________________________________________
-void CustomTextEdit::mousePressEvent( QMouseEvent* event )
+void TextEditor::mousePressEvent( QMouseEvent* event )
 {
 
-  Debug::Throw( "CustomTextEdit::mousePressEvent.\n" );
+  Debug::Throw( "TextEditor::mousePressEvent.\n" );
 
   if( event->button() == Qt::MidButton ) 
-  { Debug::Throw( "CustomTextEdit::mousePressEvent - middle mouse button.\n" ); }
+  { Debug::Throw( "TextEditor::mousePressEvent - middle mouse button.\n" ); }
   
   // check button
   if( event->button() == Qt::LeftButton )
@@ -874,10 +874,10 @@ void CustomTextEdit::mousePressEvent( QMouseEvent* event )
 }
 
 //________________________________________________
-void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
+void TextEditor::mouseDoubleClickEvent( QMouseEvent* event )
 {
 
-  Debug::Throw( "CustomTextEdit::mouseDoubleClickEvent.\n" );
+  Debug::Throw( "TextEditor::mouseDoubleClickEvent.\n" );
 
   // check button
   if( event->button() == Qt::LeftButton ) mousePressEvent( event );
@@ -887,10 +887,10 @@ void CustomTextEdit::mouseDoubleClickEvent( QMouseEvent* event )
 }
 
 //________________________________________________
-void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
+void TextEditor::mouseMoveEvent( QMouseEvent* event )
 {
 
-  Debug::Throw( "CustomTextEdit::mouseMoveEvent.\n" );
+  Debug::Throw( "TextEditor::mouseMoveEvent.\n" );
 
   // see if there is a box selection in progress
   if( event->buttons() == Qt::LeftButton && _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::STARTED )
@@ -936,13 +936,13 @@ void CustomTextEdit::mouseMoveEvent( QMouseEvent* event )
 }
 
 //________________________________________________
-void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
+void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 {
 
-  Debug::Throw( "CustomTextEdit::mouseReleaseEvent.\n" );
+  Debug::Throw( "TextEditor::mouseReleaseEvent.\n" );
 
   if( event->button() == Qt::MidButton ) 
-  { Debug::Throw( "CustomTextEdit::mouseReleaseEvent - middle mouse button.\n" ); }
+  { Debug::Throw( "TextEditor::mouseReleaseEvent - middle mouse button.\n" ); }
 
   // no need to check for enability because there is no way for the box to start if disabled
   if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::STARTED )
@@ -981,10 +981,10 @@ void CustomTextEdit::mouseReleaseEvent( QMouseEvent* event )
 }
 
 //________________________________________________
-void CustomTextEdit::dropEvent( QDropEvent* event )
+void TextEditor::dropEvent( QDropEvent* event )
 {
 
-  Debug::Throw( "CustomTextEdit::dropEvent.\n" );
+  Debug::Throw( "TextEditor::dropEvent.\n" );
 
   // static empty mimeData used to pass to base class
   // so that drop events are finished properly even when actually doing nothing
@@ -1001,7 +1001,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
     !textCursor().hasSelection() )
   {
 
-    Debug::Throw( "CustomTextEdit::dropEvent - dropping box selection.\n" );
+    Debug::Throw( "TextEditor::dropEvent - dropping box selection.\n" );
 
     // retrieve text from mimeType
     QString text( event->mimeData()->text() );
@@ -1028,7 +1028,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
     )
   {
     // drag is box selection and from this window. Move current block selection around.
-    Debug::Throw( "CustomTextEdit::dropEvent - [box] moving current box selection.\n" );
+    Debug::Throw( "TextEditor::dropEvent - [box] moving current box selection.\n" );
 
     // count rows in current selection
     int rowCount( _boxSelection().cursorList().size() - 1 );
@@ -1075,7 +1075,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
     {
 
       // current selection is inserted in itself. Doing nothing
-      Debug::Throw( "CustomTextEdit::dropEvent - [box] doing nothing.\n" );
+      Debug::Throw( "TextEditor::dropEvent - [box] doing nothing.\n" );
       event->acceptProposedAction();
       QTextEdit::dropEvent( &empty_event );
       return;
@@ -1083,7 +1083,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
     } else {
 
       // insert mine data in current box selection
-      Debug::Throw( "CustomTextEdit::dropEvent - [box] inserting selection.\n" );
+      Debug::Throw( "TextEditor::dropEvent - [box] inserting selection.\n" );
       _boxSelection().fromString( event->mimeData()->text() );
       setTextCursor( _boxSelection().cursorList().back() );
       _boxSelection().clear();
@@ -1108,7 +1108,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
     {
 
       // drag action is from another widget and ends in selection. Replace this selection
-      Debug::Throw( "CustomTextEdit::dropEvent - inserting selection.\n" );
+      Debug::Throw( "TextEditor::dropEvent - inserting selection.\n" );
       cursor.insertText( event->mimeData()->text() );
       event->acceptProposedAction();
       QTextEdit::dropEvent( &empty_event );
@@ -1122,7 +1122,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
       // drag action is from this widget
       // insert selection at current location and remove old selection
 
-      Debug::Throw( "CustomTextEdit::dropEvent - moving selection.\n" );
+      Debug::Throw( "TextEditor::dropEvent - moving selection.\n" );
       cursor.beginEditBlock();
       cursor.removeSelectedText();
       cursor.setPosition( new_cursor.position() );
@@ -1144,7 +1144,7 @@ void CustomTextEdit::dropEvent( QDropEvent* event )
 }
 
 //________________________________________________
-void CustomTextEdit::keyPressEvent( QKeyEvent* event )
+void TextEditor::keyPressEvent( QKeyEvent* event )
 {
 
   // clear line buffer.
@@ -1251,10 +1251,10 @@ void CustomTextEdit::keyPressEvent( QKeyEvent* event )
 }
 
 //________________________________________________
-void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
+void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 {
 
-  Debug::Throw( "CustomTextEdit::contextMenuEvent.\n" );
+  Debug::Throw( "TextEditor::contextMenuEvent.\n" );
   QMenu menu( this );
   _installContextMenuActions( menu );
   menu.exec( event->globalPos() );
@@ -1262,7 +1262,7 @@ void CustomTextEdit::contextMenuEvent( QContextMenuEvent* event )
 }
 
 //______________________________________________________________
-void CustomTextEdit::paintEvent( QPaintEvent* event )
+void TextEditor::paintEvent( QPaintEvent* event )
 {
 
   // handle block background
@@ -1323,9 +1323,9 @@ void CustomTextEdit::paintEvent( QPaintEvent* event )
 
 
 //______________________________________________________________
-void CustomTextEdit::_installActions( void )
+void TextEditor::_installActions( void )
 {
-  Debug::Throw( "CustomTextEdit::_installActions.\n" );
+  Debug::Throw( "TextEditor::_installActions.\n" );
 
   // retrieve pixmaps path
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
@@ -1462,7 +1462,7 @@ void CustomTextEdit::_installActions( void )
 }
 
 //______________________________________________________________________________
-void CustomTextEdit::_installContextMenuActions( QMenu& menu )
+void TextEditor::_installContextMenuActions( QMenu& menu )
 {
 
   // wrapping
@@ -1496,9 +1496,9 @@ void CustomTextEdit::_installContextMenuActions( QMenu& menu )
 }
 
 //______________________________________________________________________
-TextSelection CustomTextEdit::_selection( void ) const
+TextSelection TextEditor::_selection( void ) const
 {
-  Debug::Throw( "CustomTextEdit::_selection.\n" );
+  Debug::Throw( "TextEditor::_selection.\n" );
 
   // copy last selection
   TextSelection out( "" );
@@ -1516,7 +1516,7 @@ TextSelection CustomTextEdit::_selection( void ) const
 }
 
 //______________________________________________________________________
-void CustomTextEdit::_createFindDialog( void )
+void TextEditor::_createFindDialog( void )
 {
 
   Debug::Throw( "CurstomTextEdit::_createFindDialog.\n" );
@@ -1537,9 +1537,9 @@ void CustomTextEdit::_createFindDialog( void )
 }
 
 //______________________________________________________________________
-bool CustomTextEdit::_findForward( const TextSelection& selection, const bool& rewind )
+bool TextEditor::_findForward( const TextSelection& selection, const bool& rewind )
 {
-  Debug::Throw( "CustomTextEdit::_findForward.\n" );
+  Debug::Throw( "TextEditor::_findForward.\n" );
   if( selection.text().isEmpty() ) return false;
 
   // store selection
@@ -1646,10 +1646,10 @@ bool CustomTextEdit::_findForward( const TextSelection& selection, const bool& r
 }
 
 //______________________________________________________________________
-bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& rewind )
+bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewind )
 {
 
-  Debug::Throw( "CustomTextEdit::_findBackward.\n" );
+  Debug::Throw( "TextEditor::_findBackward.\n" );
   if( selection.text().isEmpty() ) return false;
   _setLastSelection( selection );
 
@@ -1745,7 +1745,7 @@ bool CustomTextEdit::_findBackward( const TextSelection& selection, const bool& 
 }
 
 //______________________________________________________________________
-void CustomTextEdit::_createReplaceDialog( void )
+void TextEditor::_createReplaceDialog( void )
 {
 
   Debug::Throw( "CurstomTextEdit::_createFindDialog.\n" );
@@ -1769,11 +1769,11 @@ void CustomTextEdit::_createReplaceDialog( void )
 }
 
 //______________________________________________________________________
-unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode )
+unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode )
 {
 
   Debug::Throw()
-    << "CustomTextEdit::_replaceInRange -"
+    << "TextEditor::_replaceInRange -"
     << " anchor: " << cursor.anchor()
     << " position: " << cursor.position()
     << " selection: " << qPrintable( selection.text() )
@@ -1803,7 +1803,7 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
   if( selection.flag( TextSelection::REGEXP ) )
   {
 
-    Debug::Throw( "CustomTextEdit::_replaceInRange - regexp.\n" );
+    Debug::Throw( "TextEditor::_replaceInRange - regexp.\n" );
 
     // construct regexp and check
     QRegExp regexp( selection.text() );
@@ -1848,7 +1848,7 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
 
   } else {
 
-    Debug::Throw( "CustomTextEdit::_replaceInRange - normal replacement.\n" );
+    Debug::Throw( "TextEditor::_replaceInRange - normal replacement.\n" );
 
     // changes local cursor to beginning of the selection
     cursor.setPosition( saved_anchor );
@@ -1868,7 +1868,7 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
       found ++;
 
       Debug::Throw()
-        << "CustomTextEdit::_replaceInRange -"
+        << "TextEditor::_replaceInRange -"
         << " current: " << current_position
         << " saved: " << saved_position
         << " found: " << found
@@ -1883,28 +1883,28 @@ unsigned int CustomTextEdit::_replaceInRange( const TextSelection& selection, QT
 
   }
 
-  Debug::Throw( "CustomTextEdit::_replaceInRange - done.\n" );
+  Debug::Throw( "TextEditor::_replaceInRange - done.\n" );
   return found;
 
 }
 
 //_____________________________________________________________
-void CustomTextEdit::_synchronizeBoxSelection( void ) const
+void TextEditor::_synchronizeBoxSelection( void ) const
 {
 
   if( !isSynchronized() ) return;
 
-  // Debug::Throw( "CustomTextEdit::_synchronizeBoxSelection.\n" );
-  BASE::KeySet<CustomTextEdit> displays( this );
-  for( BASE::KeySet<CustomTextEdit>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
+  // Debug::Throw( "TextEditor::_synchronizeBoxSelection.\n" );
+  BASE::KeySet<TextEditor> displays( this );
+  for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
   { (*iter)->_boxSelection().synchronize( _boxSelection() ); }
 
 }
 
 //_____________________________________________________________
-void CustomTextEdit::_toggleInsertMode( void )
+void TextEditor::_toggleInsertMode( void )
 {
-  Debug::Throw( "CustomTextEdit::_toggleInsertMode.\n" );
+  Debug::Throw( "TextEditor::_toggleInsertMode.\n" );
 
   bool mode( overwriteMode() );
   mode = !mode;
@@ -1915,10 +1915,10 @@ void CustomTextEdit::_toggleInsertMode( void )
 }
 
 //________________________________________________
-bool CustomTextEdit::_setTabSize( const int& tab_size )
+bool TextEditor::_setTabSize( const int& tab_size )
 {
 
-  Debug::Throw() << "CustomTextEdit::_setTabSize - " << tab_size << endl;
+  Debug::Throw() << "TextEditor::_setTabSize - " << tab_size << endl;
   assert( tab_size > 0 );
 
   int stop_width( tab_size * QFontMetrics( font() ).width( " " ) );
@@ -1941,9 +1941,9 @@ bool CustomTextEdit::_setTabSize( const int& tab_size )
 }
 
 //_____________________________________________________________
-void CustomTextEdit::_insertTab( void )
+void TextEditor::_insertTab( void )
 {
-  Debug::Throw( "CustomTextEdit::_insertTab.\n" );
+  Debug::Throw( "TextEditor::_insertTab.\n" );
 
   // retrieve current cursor
   QTextCursor cursor( textCursor() );
@@ -1963,10 +1963,10 @@ void CustomTextEdit::_insertTab( void )
 }
 
 //________________________________________________
-void CustomTextEdit::_updateConfiguration( void )
+void TextEditor::_updateConfiguration( void )
 {
 
-  Debug::Throw( "CustomTextEdit::_updateConfiguration.\n" );
+  Debug::Throw( "TextEditor::_updateConfiguration.\n" );
 
   // wrap mode
   if( wrapFromOptions() )
@@ -1997,16 +1997,16 @@ void CustomTextEdit::_updateConfiguration( void )
 }
 
 //________________________________________________
-void CustomTextEdit::_synchronizeSelection( void )
+void TextEditor::_synchronizeSelection( void )
 {
 
-  //Debug::Throw( "CustomTextEdit::_synchronizeSelection.\n" );
+  //Debug::Throw( "TextEditor::_synchronizeSelection.\n" );
   if( !isSynchronized() ) return;
 
-  BASE::KeySet<CustomTextEdit> editors( this );
-  for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+  BASE::KeySet<TextEditor> editors( this );
+  for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
   {
-    CustomTextEdit &editor( **iter );
+    TextEditor &editor( **iter );
 
     // check if textCursor is different
     if(
@@ -2031,10 +2031,10 @@ void CustomTextEdit::_synchronizeSelection( void )
 }
 
 //________________________________________________
-void CustomTextEdit::_updateReadOnlyActions( bool readonly )
+void TextEditor::_updateReadOnlyActions( bool readonly )
 {
 
-  Debug::Throw( "CustomTextEdit::_updateReadOnlyActions.\n" );
+  Debug::Throw( "TextEditor::_updateReadOnlyActions.\n" );
   bool has_selection( textCursor().hasSelection() );
 
   cut_action_->setEnabled( has_selection && !readonly );
@@ -2048,10 +2048,10 @@ void CustomTextEdit::_updateReadOnlyActions( bool readonly )
 }
 
 //________________________________________________
-void CustomTextEdit::_updateSelectionActions( bool has_selection )
+void TextEditor::_updateSelectionActions( bool has_selection )
 {
 
-  Debug::Throw( "CustomTextEdit::_updateSelectionActions.\n" );
+  Debug::Throw( "TextEditor::_updateSelectionActions.\n" );
 
   bool editable( !isReadOnly() );
   cut_action_->setEnabled( has_selection && editable );
@@ -2069,16 +2069,16 @@ void CustomTextEdit::_updateSelectionActions( bool has_selection )
 }
 
 //________________________________________________
-void CustomTextEdit::_updateClipboardActions( QClipboard::Mode mode )
+void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
 {
-  Debug::Throw( "CustomTextEdit::_updateClipboardActions.\n" );
+  Debug::Throw( "TextEditor::_updateClipboardActions.\n" );
 
   if( mode == QClipboard::Clipboard )
   { paste_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Clipboard ).isEmpty() ); }
 
   if( mode == QClipboard::Selection )
   {
-    Debug::Throw() << "CustomTextEdit::_updateClipboardActions - clipboard: " << qPrintable( qApp->clipboard()->text( QClipboard::Selection ) ) << endl;
+    Debug::Throw() << "TextEditor::_updateClipboardActions - clipboard: " << qPrintable( qApp->clipboard()->text( QClipboard::Selection ) ) << endl;
     find_selection_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
     find_selection_backward_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
   }
@@ -2086,9 +2086,9 @@ void CustomTextEdit::_updateClipboardActions( QClipboard::Mode mode )
 }
 
 //________________________________________________
-void CustomTextEdit::_updateClipboard( void )
+void TextEditor::_updateClipboard( void )
 {
-  Debug::Throw( "CustomTextEdit::_updateClipboard.\n" );
+  Debug::Throw( "TextEditor::_updateClipboard.\n" );
   
   // copy selected text to clipboard
   if( qApp->clipboard()->supportsSelection() && textCursor().hasSelection() )
@@ -2097,10 +2097,10 @@ void CustomTextEdit::_updateClipboard( void )
 }
 
 //________________________________________________
-void CustomTextEdit::_updatePasteAction( void )
+void TextEditor::_updatePasteAction( void )
 {
 
-  Debug::Throw( "CustomTextEdit::_updatePasteAction.\n" );
+  Debug::Throw( "TextEditor::_updatePasteAction.\n" );
   bool editable( !isReadOnly() );
   bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
   paste_action_->setEnabled( editable && has_clipboard );
@@ -2108,7 +2108,7 @@ void CustomTextEdit::_updatePasteAction( void )
 }
 
 //_________________________________________________
-void CustomTextEdit::_toggleBlockHighlight( bool state )
+void TextEditor::_toggleBlockHighlight( bool state )
 {
 
   blockHighlight().setEnabled( highlight_color_.isValid() && state );
@@ -2124,9 +2124,9 @@ void CustomTextEdit::_toggleBlockHighlight( bool state )
 }
 
 //________________________________________________
-bool CustomTextEdit::_toggleWrapMode( bool state )
+bool TextEditor::_toggleWrapMode( bool state )
 {
-  Debug::Throw() << "CustomTextEdit::_toggleWrapMode - " << (state ? "true":"false") << endl;
+  Debug::Throw() << "TextEditor::_toggleWrapMode - " << (state ? "true":"false") << endl;
   LineWrapMode mode( state ? QTextEdit::WidgetWidth : QTextEdit::NoWrap );
   if( mode == lineWrapMode() ) return false;
 
@@ -2139,8 +2139,8 @@ bool CustomTextEdit::_toggleWrapMode( bool state )
     // temporarely disable synchronization
     // to avoid infinite loop
     setSynchronized( false );
-    BASE::KeySet<CustomTextEdit> editors( this );
-    for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+    BASE::KeySet<TextEditor> editors( this );
+    for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
     { if( (*iter)->isSynchronized() ) (*iter)->wrapModeAction().setChecked( state ); }
     setSynchronized( true );
 
@@ -2150,10 +2150,10 @@ bool CustomTextEdit::_toggleWrapMode( bool state )
 }
 
 //________________________________________________
-bool CustomTextEdit::_toggleTabEmulation( bool state )
+bool TextEditor::_toggleTabEmulation( bool state )
 {
 
-  Debug::Throw() << "CustomTextEdit::_toggleTabEmulation - " << (state ? "true":"false") << endl;
+  Debug::Throw() << "TextEditor::_toggleTabEmulation - " << (state ? "true":"false") << endl;
 
   // check if changed
   if( has_tab_emulation_ == state ) return false;
@@ -2170,8 +2170,8 @@ bool CustomTextEdit::_toggleTabEmulation( bool state )
     // temporarely disable synchronization
     // to avoid infinite loop
     setSynchronized( false );
-    BASE::KeySet<CustomTextEdit> editors( this );
-    for( BASE::KeySet<CustomTextEdit>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+    BASE::KeySet<TextEditor> editors( this );
+    for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
     { if( (*iter)->isSynchronized() ) (*iter)->tabEmulationAction().setChecked( state ); }
     setSynchronized( true );
 

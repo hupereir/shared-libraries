@@ -33,7 +33,7 @@
 */
 
 #include "BrowsedLineEdit.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
@@ -59,4 +59,3 @@ class OptionBrowsedLineEdit: public BrowsedLineEdit, public OptionWidget
         
 };
 #endif
-

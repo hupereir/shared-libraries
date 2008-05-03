@@ -30,7 +30,7 @@
 
 #include <QPushButton>
 
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "Debug.h"
 #include "FindDialog.h"
 #include "QtUtil.h"

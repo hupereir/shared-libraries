@@ -32,19 +32,19 @@
    \date    $Date$
 */
 
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "OptionWidget.h"
 #include "Options.h"
 
 //! QLineEdit associated to an option for configuration dialogs
-class OptionLineEdit: public CustomLineEdit, public OptionWidget
+class OptionLineEdit: public LineEditor, public OptionWidget
 {
   
   public:
   
   //! constructor
   OptionLineEdit( QWidget* parent, const std::string& option_name ):
-      CustomLineEdit( parent ),
+      LineEditor( parent ),
       OptionWidget( option_name )
   {}
   

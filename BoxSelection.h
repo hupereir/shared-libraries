@@ -41,7 +41,7 @@
 
 #include "Counter.h"
 
-class CustomTextEdit;
+class TextEditor;
 
 //! handles box selection
 class BoxSelection: public Counter
@@ -61,7 +61,7 @@ class BoxSelection: public Counter
   };
   
   //! constructor
-  BoxSelection( CustomTextEdit* parent );
+  BoxSelection( TextEditor* parent );
  
   //! synchronize two box selection
   void synchronize( const BoxSelection& selection );
@@ -188,7 +188,7 @@ class BoxSelection: public Counter
   void _store( void );
   
   //! parent editor
-  CustomTextEdit* parent_;
+  TextEditor* parent_;
   
   //! @name attributes
   //@{

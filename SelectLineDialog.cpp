@@ -60,7 +60,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   layout()->addWidget( label );
   QtUtil::fixSize( label );
   
-  layout()->addWidget( editor_ = new CustomLineEdit( this ) );
+  layout()->addWidget( editor_ = new LineEditor( this ) );
   connect( editor_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
   connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
   

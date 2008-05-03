@@ -19,13 +19,13 @@ HEADERS = \
   CustomDialog.h \
   CustomFileDialog.h \
   CustomGridLayout.h \
-  CustomLineEdit.h \
+  LineEditor.h \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
   TabWidget.h \
   CustomTextDocument.h \
-  CustomTextEdit.h \
+  TextEditor.h \
   CustomToolBar.h \
   CustomToolButton.h \
   DebugMenu.h \
@@ -104,7 +104,7 @@ SOURCES = \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
-  CustomLineEdit.cpp \
+  LineEditor.cpp \
   HeaderMenu.cpp \
   IconFileDialog.cpp \
   IconCacheDialog.cpp \
@@ -114,7 +114,7 @@ SOURCES = \
   CustomMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
-  CustomTextEdit.cpp \
+  TextEditor.cpp \
   TabWidget.cpp \
   CustomToolBar.cpp \
   CustomToolButton.cpp \

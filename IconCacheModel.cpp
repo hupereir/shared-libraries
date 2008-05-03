@@ -98,4 +98,3 @@ bool IconCacheModel::SortFTor::operator () ( IconEngine::Pair first, IconEngine:
   }
 
 }
-

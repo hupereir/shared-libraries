@@ -32,7 +32,7 @@
 #include <QApplication>
 
 #include "BoxSelection.h"
-#include "CustomTextEdit.h"
+#include "TextEditor.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -41,7 +41,7 @@ using namespace std;
 const QString BoxSelection::mimeType = "text/boxSelection";
 
 //________________________________________________________________________
-BoxSelection::BoxSelection( CustomTextEdit* parent ):
+BoxSelection::BoxSelection( TextEditor* parent ):
   Counter( "BoxSelection" ),
   parent_( parent ),
   enabled_( false ),

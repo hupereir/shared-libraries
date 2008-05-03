@@ -23,13 +23,13 @@ noinst_HEADERS = \
   CustomDialog.h \
   CustomFileDialog.h \
   CustomGridLayout.h \
-  CustomLineEdit.h \
+  LineEditor.h \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
   TabWidget.h \
   CustomTextDocument.h \
-  CustomTextEdit.h \
+  TextEditor.h \
   CustomToolBar.h \
   CustomToolButton.h \
   DebugMenu.h \
@@ -111,11 +111,11 @@ libbase_qt_a_SOURCES = \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
-  CustomLineEdit.cpp \
+  LineEditor.cpp \
   CustomMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
-  CustomTextEdit.cpp \
+  TextEditor.cpp \
   TabWidget.cpp \
   CustomToolBar.cpp \
   CustomToolButton.cpp \
@@ -173,11 +173,11 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CounterDialog.cpp \
   moc_CustomComboBox.cpp \
   moc_CustomFileDialog.cpp \
-  moc_CustomLineEdit.cpp \
+  moc_LineEditor.cpp \
   moc_CustomMainWindow.cpp \
   moc_CustomSlider.cpp \
   moc_TabWidget.cpp \
-  moc_CustomTextEdit.cpp \
+  moc_TextEditor.cpp \
   moc_CustomToolBar.cpp \
   moc_CustomToolButton.cpp \
   moc_DebugMenu.cpp \

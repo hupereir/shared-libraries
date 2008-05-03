@@ -35,7 +35,7 @@
 #include <string>
 
 #include "Counter.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 
 //! used to display colors and a choose button
 class ColorDisplay: public QWidget, public Counter
@@ -70,14 +70,14 @@ class ColorDisplay: public QWidget, public Counter
   private:
   
   //! internal customized label to have correct background color
-  class LocalLineEdit : public CustomLineEdit
+  class LocalLineEdit : public LineEditor
   {
     
     public:
     
     //! constructor
     LocalLineEdit( QWidget *parent ):
-      CustomLineEdit( parent )
+      LineEditor( parent )
     {}
       
     //! retrieve color

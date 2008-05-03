@@ -23,7 +23,7 @@
  
 /*!
   \file CustomSlider.cpp
-  \brief customized QSlider associated to a CustomLineEdit
+  \brief customized QSlider associated to a LineEditor
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -51,7 +51,7 @@ CustomSlider::CustomSlider( QWidget* parent ):
   layout()->setSpacing(5);
   
   layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
-  layout()->addWidget( line_edit_ = new CustomLineEdit( this ) );
+  layout()->addWidget( line_edit_ = new LineEditor( this ) );
   
   connect( line_edit_, SIGNAL( returnPressed() ),   SLOT( _updateSlider() ) );
   connect( slider_, SIGNAL( valueChanged( int ) ),  SLOT( _updateLineEdit( int ) ) );

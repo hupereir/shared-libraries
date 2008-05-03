@@ -1,6 +1,6 @@
 
-#ifndef _CustomLineEdit_h_
-#define _CustomLineEdit_h_
+#ifndef _LineEditor_h_
+#define _LineEditor_h_
 
 // $Id$
 
@@ -26,7 +26,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomLineEdit.h
+  \file LineEditor.h
   \brief customized QLineEdit object
   \author Hugo Pereira
   \version $Revision$
@@ -45,10 +45,10 @@
 #include "Counter.h"
 
 /*!
-   \class CustomLineEdit
+   \class LineEditor
    \brief customized line edit to have faster popup menu
 */
-class CustomLineEdit: public QLineEdit, public Counter
+class LineEditor: public QLineEdit, public Counter
 {
 
   //! Qt meta object declaration
@@ -57,7 +57,7 @@ class CustomLineEdit: public QLineEdit, public Counter
   public:
   
   //! constructor;
-  CustomLineEdit( QWidget* parent );
+  LineEditor( QWidget* parent );
       
   //! set editor as modified
   void setModified( const bool& value );

@@ -40,7 +40,7 @@
 
 #include "Counter.h"
 #include "CustomProcess.h"
-#include "CustomTextEdit.h"
+#include "TextEditor.h"
 #include "File.h"
 #include "Options.h"
 
@@ -116,7 +116,7 @@ class ProcessFrame:public QWidget, public Counter
   void _append( const QString& text, const unsigned int& format );
   
   //! text editor
-  CustomTextEdit* editor_;
+  TextEditor* editor_;
   
   //! suspend state
   bool suspended_;

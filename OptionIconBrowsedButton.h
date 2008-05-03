@@ -58,4 +58,3 @@ class OptionIconBrowsedButton: public IconBrowsedButton, public OptionWidget
         
 };
 #endif
-

@@ -26,7 +26,7 @@
   \brief combined QLineEdit + associated browse button
   line edit is also customized to have faster popup menu
   result of the file dialog associated to the button is stored into the 
-  CustomLineEdit object
+  LineEditor object
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -37,7 +37,7 @@
 
 #include "BaseIcons.h"
 #include "BrowsedLineEdit.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "File.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
@@ -64,7 +64,7 @@ BrowsedLineEdit::BrowsedLineEdit( QWidget *parent ):
   setLayout( layout );
   
   // create line editor
-  line_edit_ = new CustomLineEdit( this );
+  line_edit_ = new LineEditor( this );
   layout->addWidget( line_edit_ );
   
   // create push_button

@@ -121,7 +121,7 @@ void ColorDisplay::_changeColorFromText( void )
 QColor ColorDisplay::LocalLineEdit::color( void ) const
 { 
   Debug::Throw( "ColorDisplay::LocalLineEdit::color.\n" );
-  QString text( CustomLineEdit::text() );
+  QString text( LineEditor::text() );
   if( text == ColorDisplay::NONE ) return QColor();
   else return QColor( text ); 
 }
@@ -147,4 +147,3 @@ void ColorDisplay::LocalLineEdit::setColor( QColor color )
   update();
   
 }
-

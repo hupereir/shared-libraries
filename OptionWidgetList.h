@@ -90,4 +90,3 @@ class OptionWidgetList: public OptionWidget
 };
 
 #endif
-

@@ -26,7 +26,7 @@
 
 /*!
 \file CustomSlider.h
-\brief customized QSlider associated to a CustomLineEdit
+\brief customized QSlider associated to a LineEditor
 \author Hugo Pereira
 \version $Revision$
 \date $Date$
@@ -35,12 +35,12 @@
 #include <assert.h>
 #include <QSlider>
 
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "Counter.h"  
 #include "Debug.h"  
 /*!
 \class CustomSlider
-\brief customized QSlider associated to a CustomLineEdit
+\brief customized QSlider associated to a LineEditor
 */
 class CustomSlider: public QWidget, public Counter
 {
@@ -71,8 +71,8 @@ class CustomSlider: public QWidget, public Counter
     return *slider_;
   }
   
-  //! retrieve CustomLineEdit
-  CustomLineEdit& lineEditor( void )
+  //! retrieve LineEditor
+  LineEditor& lineEditor( void )
   {
     assert( line_edit_ );
     return *line_edit_;
@@ -91,14 +91,14 @@ class CustomSlider: public QWidget, public Counter
   QSlider *slider_;
   
   //! associated LineEdit
-  CustomLineEdit *line_edit_;
+  LineEditor *line_edit_;
   
   private slots:
   
-  //! changes QSlider value according to CustomLineEdit
+  //! changes QSlider value according to LineEditor
   void _updateSlider( void );
   
-  //! changes CustomLineEdit value according to QSlider
+  //! changes LineEditor value according to QSlider
   void _updateLineEdit( int );
   
 };

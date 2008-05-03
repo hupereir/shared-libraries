@@ -1,5 +1,5 @@
-#ifndef CustomTextEdit_h
-#define CustomTextEdit_h
+#ifndef TextEditor_h
+#define TextEditor_h
 
 // $Id$
 
@@ -25,7 +25,7 @@
 *******************************************************************************/
 
 /*!
-  \file CustomTextEdit.h
+  \file TextEditor.h
   \brief Customized QTextEdit object
   \author Hugo Pereira
   \version $Revision$
@@ -60,7 +60,7 @@ class FindDialog;
 class ReplaceDialog;
 
 //! Customized QTextEdit object
-class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
+class TextEditor: public QTextEdit, public BASE::Key, public Counter
 {
   
   Q_OBJECT
@@ -68,10 +68,10 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   public:
   
   //! constructor
-  CustomTextEdit( QWidget* parent = 0 );
+  TextEditor( QWidget* parent = 0 );
   
   //! destrutor
-  virtual ~CustomTextEdit( void );
+  virtual ~TextEditor( void );
     
   //! retrieve number of blocks in document
   int blockCount( void ) const;
@@ -108,7 +108,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   { return synchronize_; }
 
   //! clone (and synchronize) text editor
-  virtual void synchronize( CustomTextEdit* editor );
+  virtual void synchronize( TextEditor* editor );
   
   //@}
  
@@ -260,7 +260,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! find next occurence of TextSelection
   virtual void find( TextSelection selection )
   { 
-    Debug::Throw( "CustomTextEdit::find.\n" );
+    Debug::Throw( "TextEditor::find.\n" );
     bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) ); 
     if( found ) emit matchFound();
     else emit noMatchFound();
@@ -269,28 +269,28 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! find current selection forward
   virtual void findSelectionForward( void )
   { 
-    Debug::Throw( "CustomTextEdit::findSelectionForward.\n" );
+    Debug::Throw( "TextEditor::findSelectionForward.\n" );
     _findForward( _selection(), true ); 
   }
 
   //! find current selection backward
   virtual void findSelectionBackward( void )
   { 
-    Debug::Throw( "CustomTextEdit::findSelectionBackward.\n" );
+    Debug::Throw( "TextEditor::findSelectionBackward.\n" );
     _findBackward( _selection(), true ); 
   }
   
   //! find last search forward
   virtual void findAgainForward( void )
   { 
-    Debug::Throw( "CustomTextEdit::findAgainForward.\n" );
+    Debug::Throw( "TextEditor::findAgainForward.\n" );
     _findForward( _lastSelection(), true ); 
   }
 
   //! find last search forward
   virtual void findAgainBackward( void )
   { 
-    Debug::Throw( "CustomTextEdit::findAgainBackward.\n" );
+    Debug::Throw( "TextEditor::findAgainBackward.\n" );
     _findBackward( _lastSelection(), true ); 
   }
   
@@ -309,7 +309,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! replace again forward
   virtual void replaceAgainForward( void )
   {
-    Debug::Throw( "CustomTextEdit::replaceAgainForward.\n" );
+    Debug::Throw( "TextEditor::replaceAgainForward.\n" );
     TextSelection selection( _lastSelection() );
     selection.setFlag( TextSelection::BACKWARD, false );
     replace( selection );
@@ -318,7 +318,7 @@ class CustomTextEdit: public QTextEdit, public BASE::Key, public Counter
   //! replace again forward
   virtual void replaceAgainBackward( void )
   {
-    Debug::Throw( "CustomTextEdit::replaceAgainBackward.\n" );
+    Debug::Throw( "TextEditor::replaceAgainBackward.\n" );
     TextSelection selection( _lastSelection() );
     selection.setFlag( TextSelection::BACKWARD, true );
     replace( selection );

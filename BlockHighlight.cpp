@@ -34,13 +34,13 @@
 #include <QTextBlock>
 
 #include "BlockHighlight.h"
-#include "CustomTextEdit.h"
+#include "TextEditor.h"
 #include "TextBlockData.h"
 
 using namespace std;
 
 //_______________________________________________________________________
-BlockHighlight::BlockHighlight( CustomTextEdit* parent ):
+BlockHighlight::BlockHighlight( TextEditor* parent ):
   QObject( parent ),
   Counter( "BlockHighlight" ),
   parent_( parent ),
