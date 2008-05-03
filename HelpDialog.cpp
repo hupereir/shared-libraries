@@ -35,7 +35,7 @@
 #include <QShortcut>
 #include <QHeaderView>
 
-#include "CustomTextEdit.h"
+#include "TextEditor.h"
 #include "HelpDialog.h"
 #include "HelpDelegate.h"
 #include "HelpManager.h"
@@ -87,7 +87,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   v_layout->setSpacing( 5 );
   html_frame_->setLayout( v_layout );
   
-  v_layout->addWidget( html_editor_ = new CustomTextEdit( html_frame_ ) );
+  v_layout->addWidget( html_editor_ = new TextEditor( html_frame_ ) );
   html_editor_->setReadOnly( true );
   html_editor_->setWrapFromOptions( false );
   html_editor_->wrapModeAction().setChecked( true );
@@ -126,7 +126,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   plain_frame_->setLayout( v_layout );
 
   // plain editor
-  v_layout->addWidget( plain_editor_ = new CustomTextEdit( plain_frame_ ) );
+  v_layout->addWidget( plain_editor_ = new TextEditor( plain_frame_ ) );
   plain_editor_->setReadOnly( false );
   plain_editor_->setWrapFromOptions( false );
   plain_editor_->wrapModeAction().setChecked( true );

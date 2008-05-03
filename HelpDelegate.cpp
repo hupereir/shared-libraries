@@ -33,7 +33,7 @@
 #include <QAbstractItemModel>
 
 #include "HelpDelegate.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 #include "Debug.h"
 
 using namespace std;
@@ -49,7 +49,7 @@ HelpDelegate::HelpDelegate( QObject *parent ):
 QWidget* HelpDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 { 
   Debug::Throw( "HelpDelegate::createEditor.\n" );
-  return new CustomLineEdit( parent ); 
+  return new LineEditor( parent ); 
 }
 
 //______________________________________________________________
@@ -57,7 +57,7 @@ void HelpDelegate::setEditorData(QWidget *editor, const QModelIndex &index) cons
 {
   Debug::Throw( "HelpDelegate::setEditorData.\n" );
   QString text = index.model()->data(index, Qt::DisplayRole).toString();
-  CustomLineEdit *line_editor = static_cast<CustomLineEdit*>(editor);
+  LineEditor *line_editor = static_cast<LineEditor*>(editor);
   line_editor->setText( text );
 }
 
@@ -65,7 +65,7 @@ void HelpDelegate::setEditorData(QWidget *editor, const QModelIndex &index) cons
 void HelpDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
   Debug::Throw( "HelpDelegate::setModelData.\n" );
-  CustomLineEdit *line_editor = static_cast<CustomLineEdit*>(editor);
+  LineEditor *line_editor = static_cast<LineEditor*>(editor);
   QString value( line_editor->text() );
   model->setData( index, value, Qt::EditRole);
 }
@@ -76,4 +76,3 @@ void HelpDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewI
   Debug::Throw( "HelpDelegate::updateEditorGeometry.\n" );
   editor->setGeometry(option.rect);
 }
-

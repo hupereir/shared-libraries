@@ -35,7 +35,7 @@
 #include <QObject>
 
 #include "Counter.h"
-#include "CustomTextEdit.h"
+#include "TextEditor.h"
 #include "Debug.h"
 #include "File.h"
 #include "HelpItem.h"

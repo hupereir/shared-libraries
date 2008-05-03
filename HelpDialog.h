@@ -39,7 +39,7 @@
 #include "Counter.h"
 #include "HelpModel.h"
 
-class CustomTextEdit;
+class TextEditor;
 class TreeView;
 
 namespace BASE
@@ -134,10 +134,10 @@ namespace BASE
     QWidget* plain_frame_;
     
     //! read-only text editor
-    CustomTextEdit *html_editor_;
+    TextEditor *html_editor_;
     
     //! plain text editor
-    CustomTextEdit *plain_editor_; 
+    TextEditor *plain_editor_; 
     
     //! edition button
     QPushButton *edit_button_;

@@ -42,7 +42,7 @@ NewItemDialog::NewItemDialog( QWidget* parent ):
   Debug::Throw( "NewItemDialog::NewItemDialog.\n" );
   
   mainLayout().addWidget( new QLabel( "Item name: ", this ), 0 );
-  mainLayout().addWidget( editor_ = new CustomLineEdit( this ) );  
+  mainLayout().addWidget( editor_ = new LineEditor( this ) );  
   adjustSize();
   
 }

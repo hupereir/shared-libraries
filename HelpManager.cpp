@@ -194,7 +194,7 @@ void HelpManager::_dumpHelpString( void )
   QWidget* main( new QWidget(0) );
   main->setLayout( new QVBoxLayout() );
   main->layout()->setMargin(10);
-  CustomTextEdit *text_edit = new CustomTextEdit( main );
+  TextEditor *text_edit = new TextEditor( main );
 
   text_edit->setWrapFromOptions( false );
   text_edit->wrapModeAction().setChecked( false );

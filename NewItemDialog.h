@@ -35,7 +35,7 @@
 #include <QString>
 
 #include "CustomDialog.h"
-#include "CustomLineEdit.h"
+#include "LineEditor.h"
 
 //! Edit/create keyword popup dialog
 class NewItemDialog: public CustomDialog
@@ -61,7 +61,7 @@ class NewItemDialog: public CustomDialog
   private:
         
   //! editor
-  CustomLineEdit* editor_;
+  LineEditor* editor_;
   
 };
 
