@@ -60,7 +60,7 @@ void BlockHighlight::clear( void )
     
     if( parent_->textCursor().block() == block && isEnabled() ) continue;
     
-    TextBlockData* data( dynamic_cast<TextBlockData*>( block.userData() ) );
+    TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
     if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) ) 
     {
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
@@ -95,7 +95,7 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   // retrieve current block
   QTextBlock block( parent_->textCursor().block() );  
   
-  TextBlockData* data = dynamic_cast<TextBlockData*>( block.userData() );
+  TextBlockData* data = static_cast<TextBlockData*>( block.userData() );
   if( !data )
   {
     data = new TextBlockData();

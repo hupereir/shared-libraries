@@ -383,7 +383,7 @@ void TextEditor::setBackground( QTextBlock block, const QColor& color )
   Debug::Throw( "TextEditor::setBackground.\n" );
 
   // try retrieve data or create
-  TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
+  TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
   if( !data ) block.setUserData( data = new TextBlockData() );
 
   // try assign color
@@ -406,7 +406,7 @@ void TextEditor::clearBackground( QTextBlock block )
 {
 
   Debug::Throw( "TextEditor::clearBackground.\n" );
-  TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
+  TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
   if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) )
   {
     // retrieve block rect and redraw
@@ -1283,7 +1283,8 @@ void TextEditor::paintEvent( QPaintEvent* event )
   {
 
     // retrieve block data and check background
-    TextBlockData *data( dynamic_cast<TextBlockData*>( block.userData() ) );
+    // static cast is use because should be faster and safe enough here
+    TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
     if( !(data && data->hasFlag( TextBlock::HAS_BACKGROUND|TextBlock::CURRENT_BLOCK ) ) ) continue;
 
     // retrieve block rect
