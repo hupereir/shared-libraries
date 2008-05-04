@@ -46,7 +46,7 @@ Options::Options( void ):
 
 
   keep( "PIXMAP_PATH" );
-  add( Option( "PIXMAP_PATH", ":/base-pixmaps"));
+  add( Option( "PIXMAP_PATH", ":/pixmaps"));
   
   /* 
     generic options (default values)
