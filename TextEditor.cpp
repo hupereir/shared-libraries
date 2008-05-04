@@ -2181,3 +2181,4 @@ bool TextEditor::_toggleTabEmulation( bool state )
   return true;
 
 }
+
