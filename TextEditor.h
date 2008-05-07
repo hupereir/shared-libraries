@@ -131,6 +131,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! read-only
   virtual void setReadOnly( bool readonly );
   
+  //! put actions in context menu
+  virtual void installContextMenuActions( QMenu& menu, const bool& all_actions = true );
+
   //!@name actions
   //@{
   
@@ -221,13 +224,13 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   { return *block_highlight_; }
     
   //! changes block background
-  void setBackground( QTextBlock, const QColor& );
+  virtual void setBackground( QTextBlock, const QColor& );
   
   //! clear block background
-  void clearBackground( QTextBlock );
+  virtual void clearBackground( QTextBlock );
 
   //! clear all blocks background
-  void clearAllBackgrounds( void );
+  virtual void clearAllBackgrounds( void );
   
   signals:
   
@@ -356,6 +359,8 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   QPoint fromViewport( const QPoint& point ) const
   { return point + scrollbarPosition(); }
   
+  //@}
+  
   protected:
   
   //!@name event handlers
@@ -397,10 +402,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! install default actions
   virtual void _installActions( void );
-  
-  //! retrieve context menu. Create it on first call
-  void _installContextMenuActions( QMenu& menu );
-  
+    
   //!@name find/replace selection
   //@{
   

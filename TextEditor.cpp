@@ -376,6 +376,54 @@ void TextEditor::setReadOnly( bool readonly )
   if( readonly ) document()->setModified( false );
 }
 
+//______________________________________________________________________________
+void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions )
+{
+
+  Debug::Throw( "TextEditor::installContextMenuActions.\n" );
+  
+  // wrapping
+  menu.addAction( wrap_mode_action_ );
+  menu.addSeparator();
+
+  if( all_actions )
+  {
+    menu.addAction( undo_action_ );
+    menu.addAction( redo_action_ );
+    menu.addSeparator();
+  }
+  
+  menu.addAction( cut_action_ );
+  menu.addAction( copy_action_ );
+  menu.addAction( paste_action_ );
+  menu.addAction( clear_action_ );
+  menu.addSeparator();
+
+  menu.addAction( select_all_action_ );
+  menu.addAction( upper_case_action_ );
+  menu.addAction( lower_case_action_ );
+  menu.addSeparator();
+
+  menu.addAction( find_action_ );
+  if( all_actions )
+  {
+    menu.addAction( find_again_action_ );
+    menu.addAction( find_selection_action_);
+    menu.addSeparator();
+  }
+  
+  menu.addAction( replace_action_ );
+  
+  if( all_actions )
+  {
+    menu.addAction( replace_again_action_ );
+    menu.addAction( goto_line_action_);
+  }
+  
+  return;
+  
+}
+
 //___________________________________________________________________________
 void TextEditor::setBackground( QTextBlock block, const QColor& color )
 {
@@ -1256,7 +1304,7 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 
   Debug::Throw( "TextEditor::contextMenuEvent.\n" );
   QMenu menu( this );
-  _installContextMenuActions( menu );
+  installContextMenuActions( menu );
   menu.exec( event->globalPos() );
 
 }
@@ -1460,40 +1508,6 @@ void TextEditor::_installActions( void )
   connect( qApp->clipboard(), SIGNAL( changed( QClipboard::Mode ) ), SLOT( _updateClipboardActions( QClipboard::Mode ) ) );
   #endif
 
-}
-
-//______________________________________________________________________________
-void TextEditor::_installContextMenuActions( QMenu& menu )
-{
-
-  // wrapping
-  menu.addAction( wrap_mode_action_ );
-  menu.addSeparator();
-
-  menu.addAction( undo_action_ );
-  menu.addAction( redo_action_ );
-  menu.addSeparator();
-
-  menu.addAction( cut_action_ );
-  menu.addAction( copy_action_ );
-  menu.addAction( paste_action_ );
-  menu.addAction( clear_action_ );
-  menu.addSeparator();
-
-  menu.addAction( select_all_action_ );
-  menu.addAction( upper_case_action_ );
-  menu.addAction( lower_case_action_ );
-  menu.addSeparator();
-
-  menu.addAction( find_action_ );
-  menu.addAction( find_again_action_ );
-  menu.addAction( find_selection_action_);
-  menu.addSeparator();
-
-  menu.addAction( replace_action_ );
-  menu.addAction( replace_again_action_ );
-  menu.addAction( goto_line_action_);
-  return;
 }
 
 //______________________________________________________________________
@@ -2181,4 +2195,3 @@ bool TextEditor::_toggleTabEmulation( bool state )
   return true;
 
 }
-
