@@ -56,7 +56,6 @@ BoxSelection::BoxSelection( TextEditor* parent ):
 void BoxSelection::synchronize( const BoxSelection& box )
 {
   
-  // Debug::Throw( "BoxSelection::synchronize.\n" );
   begin_ = box.begin();
   end_ = box.end();
   state_ = box.state();
@@ -88,9 +87,11 @@ void BoxSelection::updateConfiguration( void )
   double alpha = XmlOptions::get().get<double>("BOX_SELECTION_ALPHA")*255/100;
   if( color_.isValid() ) color_.setAlpha( int( alpha ) );
 
-  // check if color is valid and font is fixed pitched
-  // to not modify the previous attributes if disabled
-  // because they are needed to clear any existing selection
+  /*
+  check if color is valid and font is fixed pitched
+  to not modify the previous attributes if disabled
+  because they are needed to clear any existing selection
+  */
   bool fixed( QFontInfo( parent_->font() ).fixedPitch() );
   enabled_ = fixed && color_.isValid();
   if( !isEnabled() ) return;
@@ -431,7 +432,7 @@ void BoxSelection::_updateRect( void )
 
   int y_min( min( begin_.y(), end_.y() ) );
   int y_max( max( begin_.y(), end_.y() ) );
-
+  
   QPoint begin( x_min - (x_min%font_width_) + left_margin_, y_min - (y_min%font_height_) + top_margin_ );
   QPoint end( x_max - (x_max%font_width_) + left_margin_, y_max + font_height_ - (y_max%font_height_) + top_margin_ );
 
@@ -468,9 +469,7 @@ void BoxSelection::_store( void )
   {
 
     // vertical offset for this row
-    //QPoint voffset( 0, 0 );
-    //QPoint voffset( 0, font_height_*( row + 1 ) );
-    QPoint voffset( 0, font_height_*(row) + 1 );
+    QPoint voffset( 0, font_height_*( 0.5+row ) );
     QPoint begin( local.topLeft() + voffset );
     QPoint end( local.topRight() + voffset );
     
