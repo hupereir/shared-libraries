@@ -115,12 +115,10 @@ class FindDialog: public QDialog, public Counter
   public slots:
   
   //! set notification label to "no match found"
-  virtual void noMatchFound( void )
-  { label_->setText( "No match found ..." ); }
+  virtual void noMatchFound( void );
 
   //! clear notification label 
-  virtual void clearLabel( void )
-  { label_->setText( "" ); }
+  virtual void clearLabel( void );
 
   protected slots:
   

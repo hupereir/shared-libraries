@@ -96,7 +96,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! select line under cursor
   virtual void selectLine( void );
    
- //!@name synchronization
+  //! clear box selection
+  virtual void clearBoxSelection( void )
+  {
+    if( _boxSelection().state() == BoxSelection::FINISHED )
+    { _boxSelection().clear(); }
+  }
+  
+  //!@name synchronization
   //@{
   
   //! synchronization

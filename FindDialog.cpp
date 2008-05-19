@@ -93,10 +93,17 @@ void FindDialog::polish( void )
   // disable buttons
   _updateButtons();
   
-  // initial (arbitrary) size
-  //resize( 300, 200 );
+  // size
   adjustSize();
 }
+
+//________________________________________________________________________ 
+void FindDialog::noMatchFound( void )
+{ label_->setText( "No match found ..." ); }
+
+//________________________________________________________________________ 
+void FindDialog::clearLabel( void )
+{ label_->setText( "" ); }
 
 //________________________________________________________________________ 
 void FindDialog::_createEditor( void )
@@ -118,13 +125,6 @@ void FindDialog::_createEditor( void )
   connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
   connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( void ) ) );
 
-  /* 
-    replace_editor_ maximum size is arbitrary but is here
-    to avoid that the widget size gets too big when input
-    text selection are wery large (i.e. multilines 
-  */
-  //editor().setMaximumSize( QSize( 250, 50 ) );
-  //setMaximumSize( 250, 200 );
 }
 
 //________________________________________________________________________ 
@@ -153,6 +153,7 @@ void FindDialog::_createCheckBoxes( void )
   // notification label
   _mainLayout().addWidget( label_ = new QLabel( this ) );
   label_->setMargin( 2 );
+  
 }
 
 //________________________________________________________________________ 
