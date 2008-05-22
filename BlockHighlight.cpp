@@ -64,12 +64,7 @@ void BlockHighlight::clear( void )
     if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) ) 
     {
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
-      
-      // retrieve paragraph rect
-      QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
-      block_rect.setWidth( parent_->viewport()->width() + parent_->scrollbarPosition().x() );
-      parent_->viewport()->update( parent_->toViewport( block_rect.toRect() ) );    
-      
+      parent_->document()->markContentsDirty(block.position(), block.length()-1);
     }
     
   }
@@ -110,10 +105,8 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   // mark block as current
   data->setFlag( TextBlock::CURRENT_BLOCK, true );
 
-  // retrieve block rect, translate to viewport and ask for repaint
-  QRectF block_rect( parent_->document()->documentLayout()->blockBoundingRect( block ) );
-  block_rect.setWidth( parent_->viewport()->width() + parent_->scrollbarPosition().x() );
-  parent_->viewport()->update( parent_->toViewport( block_rect.toRect() ) );    
+  // retrieve block rect, translate to viewport and ask for repaint  
+  parent_->document()->markContentsDirty(block.position(), block.length()-1);
 
   emit highlightChanged();
       

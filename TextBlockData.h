@@ -95,9 +95,6 @@ class TextBlockData: public QTextBlockUserData, public Counter
   /* is a bit pattern */
   unsigned int flags_;
   
-  //! set to true for current block
-  bool current_block_;
-    
   //! block background color (overridden by active)
   QColor background_;
   
