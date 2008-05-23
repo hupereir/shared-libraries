@@ -144,6 +144,16 @@ int TextEditor::blockCount( void ) const
 }
 
 //________________________________________________
+bool TextEditor::isCursorVisible( void ) const
+{
+  
+  QRect cursor_rect( cursorRect() );
+  QRect rect( viewport()->rect() );
+  return rect.intersects( cursor_rect );
+  
+}
+
+//________________________________________________
 TextPosition TextEditor::textPosition( void )
 {
 

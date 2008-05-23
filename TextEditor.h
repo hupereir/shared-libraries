@@ -77,8 +77,11 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   int blockCount( void ) const;
   
   //! retrieve current text position
-  virtual TextPosition textPosition();
+  virtual TextPosition textPosition( void );
       
+  //! return true if current textCursor is visible
+  virtual bool isCursorVisible( void ) const;
+  
   //!@name conversions between absolute index and TextPosition
   //@{
   
