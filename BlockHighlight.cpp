@@ -64,7 +64,7 @@ void BlockHighlight::clear( void )
     if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) ) 
     {
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
-      parent_->document()->markContentsDirty(block.position(), block.length()-1);
+      if( parent_->hasFocus() ) parent_->document()->markContentsDirty(block.position(), block.length()-1);
     }
     
   }
@@ -106,7 +106,7 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   data->setFlag( TextBlock::CURRENT_BLOCK, true );
 
   // retrieve block rect, translate to viewport and ask for repaint  
-  parent_->document()->markContentsDirty(block.position(), block.length()-1);
+  if( parent_->hasFocus() ) parent_->document()->markContentsDirty(block.position(), block.length()-1);
 
   emit highlightChanged();
       
