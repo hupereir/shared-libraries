@@ -469,7 +469,7 @@ void BoxSelection::_store( void )
   {
 
     // vertical offset for this row
-    QPoint voffset( 0, font_height_*( 0.5+row ) );
+    QPoint voffset( 0, (int)(font_height_*( 0.5+row )) );
     QPoint begin( local.topLeft() + voffset );
     QPoint end( local.topRight() + voffset );
     

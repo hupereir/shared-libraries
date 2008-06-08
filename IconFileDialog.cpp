@@ -104,4 +104,6 @@ void IconFileDialog::_preview( void )
     preview_->setPixmap( QPixmap::fromImage( image ) );
     
   } 
+
+  Debug::Throw( "IconFileDialog::_preview - done.\n" );
 }
