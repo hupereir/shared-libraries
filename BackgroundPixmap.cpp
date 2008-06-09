@@ -144,6 +144,8 @@ QPixmap BackgroundPixmap::pixmap( const QRect& rect ) const
 bool BackgroundPixmap::x11Event( XEvent* event )
 {
   
+  Debug::Throw( "BackgroundPixmap::x11Event.\n" );
+  
   // cast event to a property event
   XPropertyEvent *property_event = (XPropertyEvent*) event;
   if( 
@@ -154,7 +156,10 @@ bool BackgroundPixmap::x11Event( XEvent* event )
     Debug::Throw( "BackgroundPixmap::x11Event - property event.\n" );
     reload();
     return true;
-  } else return false;
+  } 
+  
+  Debug::Throw( "BackgroundPixmap::x11Event - done.\n" );
+  return false;
   
 }
 #endif
