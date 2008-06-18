@@ -47,7 +47,7 @@ TextSeparator::TextSeparator( void )
   for( int i=0; i< base_separators.size(); i++ )
   base_separators_.insert( base_separators[i] );
   
-  const QString extended_separators( ",;.:?!&+-=*/|-()'`{}[]<>\"%" );
+  const QString extended_separators( ",;.:?!&+-=*/|-()'`{}[]<>\"\\%" );
   for( int i=0; i< extended_separators.size(); i++ )
   extended_separators_.insert( extended_separators[i] );
   

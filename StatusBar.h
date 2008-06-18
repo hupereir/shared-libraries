@@ -1,3 +1,6 @@
+#ifndef StatusBar_h
+#define StatusBar_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,12 +24,9 @@
 *                         
 *******************************************************************************/
 
-#ifndef StatusBar_h
-#define StatusBar_h
-
 /*!
    \file StatusBar.h
-   \brief  customized line edit for application state
+   \brief status bar
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
@@ -48,7 +48,7 @@ class StatusBarLabel: public QLabel, public Counter
   Q_OBJECT
 
   public:
-  StatusBarLabel( QWidget* parent ):
+  StatusBarLabel( QWidget* parent = 0 ):
     QLabel( parent ),
     Counter( "StatusBarLabel" )
   {}
@@ -94,7 +94,7 @@ class StatusBar: public QStatusBar, public Counter
   { for( unsigned int i=0; i<n; i++ ) addLabel( stretch ); }
   
   //! retrieves label with given index
-  StatusBarLabel& label( const unsigned int& i = 0  )
+  virtual StatusBarLabel& label( const unsigned int& i = 0  ) const
   {
     assert( i < labels_.size() );
     return *labels_[i];  
