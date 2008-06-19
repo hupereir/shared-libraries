@@ -37,6 +37,8 @@
 
 using namespace std;
 
+static const unsigned int debug_level = 1;
+
 //________________________________________________________________________
 const QString BoxSelection::mimeType = "text/boxSelection";
 
@@ -50,21 +52,27 @@ BoxSelection::BoxSelection( TextEditor* parent ):
   left_margin_( 0 ),
   top_margin_( 0 ),
   state_( EMPTY )
-{ Debug::Throw( "BoxSelection::BoxSelection.\n" ); }
+{ Debug::Throw( debug_level, "BoxSelection::BoxSelection.\n" ); }
 
 //________________________________________________________________________
 void BoxSelection::synchronize( const BoxSelection& box )
 {
   
+  Debug::Throw( debug_level, "BoxSelection::synchronize.\n" ); 
+  
+  // check enable state.
+  if( !checkEnabled() ) return;
+
   begin_ = box.begin();
   end_ = box.end();
   state_ = box.state();
-  
+    
   QRect old( rect() );
   _updateRect();
-  if( state() == STARTED || state() == FINISHED ) 
-  { parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) ); } 
-  else if( state() == EMPTY ) clear();
+  
+  parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) );
+  //if( state() == STARTED || state() == FINISHED ) parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) ); 
+  //else if( state() == EMPTY ) clear();
   
   return; 
   
@@ -74,7 +82,7 @@ void BoxSelection::synchronize( const BoxSelection& box )
 void BoxSelection::updateConfiguration( void )
 {
 
-  Debug::Throw( "BoxSelection::updateConfiguration.\n" );
+  Debug::Throw( debug_level, "BoxSelection::updateConfiguration.\n" );
   
   // retrieve box selection color from options
   if( XmlOptions::get().find( "BOX_SELECTION_COLOR" ) )
@@ -87,6 +95,18 @@ void BoxSelection::updateConfiguration( void )
   double alpha = XmlOptions::get().get<double>("BOX_SELECTION_ALPHA")*255/100;
   if( color_.isValid() ) color_.setAlpha( int( alpha ) );
 
+  // additional initialization dependening on whether box selection is enabled or not
+  enabled_ = false;
+  checkEnabled();
+}
+
+//________________________________________________________________________
+bool BoxSelection::checkEnabled( void )
+{
+
+  Debug::Throw( debug_level, "BoxSelection::checkEnabled.\n" );
+  if( isEnabled() ) return true;
+  
   /*
   check if color is valid and font is fixed pitched
   to not modify the previous attributes if disabled
@@ -94,7 +114,8 @@ void BoxSelection::updateConfiguration( void )
   */
   bool fixed( QFontInfo( parent_->font() ).fixedPitch() );
   enabled_ = fixed && color_.isValid();
-  if( !isEnabled() ) return;
+  Debug::Throw( debug_level ) << "BoxSelection::updateConfiguration - isEnabled: " << isEnabled() << endl;
+  if( !isEnabled() ) return false;
 
   // read font attributes
   font_width_ = QFontMetrics( parent_->font() ).width( " " );
@@ -103,12 +124,13 @@ void BoxSelection::updateConfiguration( void )
   // retrieve margins
   int right, bottom;
   parent_->getContentsMargins( &left_margin_, &top_margin_, &right, &bottom );
+  return true;
 }
-
+  
 //________________________________________________________________________
 bool BoxSelection::start( QPoint point )
 {
-  Debug::Throw( "BoxSelection::start.\n" );
+  Debug::Throw( debug_level, "BoxSelection::start.\n" );
   if( state_ != EMPTY ) return false;
 
   // store point
@@ -127,7 +149,7 @@ bool BoxSelection::start( QPoint point )
 //________________________________________________________________________
 bool BoxSelection::update( QPoint point )
 {
-  Debug::Throw( "BoxSelection::update.\n" );
+  Debug::Throw( debug_level, "BoxSelection::update.\n" );
   if( state_ != STARTED ) return false;
 
   // store end point
@@ -149,7 +171,7 @@ bool BoxSelection::update( QPoint point )
 //________________________________________________________________________
 bool BoxSelection::finish( QPoint point )
 {
-  Debug::Throw( "BoxSelection::finish.\n" );
+  Debug::Throw( debug_level, "BoxSelection::finish.\n" );
   if( state_ != STARTED ) return false;
 
   update( point );
@@ -165,7 +187,7 @@ bool BoxSelection::finish( QPoint point )
 //________________________________________________________________________
 bool BoxSelection::clear( void )
 {
-  Debug::Throw( "BoxSelection::clear.\n" );
+  Debug::Throw( debug_level, "BoxSelection::clear.\n" );
   if( state_ != FINISHED ) return false;
 
   // change state and redraw
@@ -186,7 +208,7 @@ bool BoxSelection::clear( void )
 //________________________________________________________________________
 QString BoxSelection::toString( void ) const
 {
-  Debug::Throw( "BoxSelection::toString.\n" );
+  Debug::Throw( debug_level, "BoxSelection::toString.\n" );
   
   QString out;
   
@@ -209,7 +231,7 @@ QString BoxSelection::toString( void ) const
 bool BoxSelection::fromString( QString input )
 {
   
-  Debug::Throw( "BoxSelection::fromString.\n" );
+  Debug::Throw( debug_level, "BoxSelection::fromString.\n" );
   
   // check state
   if( state() != FINISHED ) return false;
@@ -268,7 +290,7 @@ bool BoxSelection::fromString( QString input )
 //________________________________________________________________________
 bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
 {
-  Debug::Throw() << "BoxSelection::toClipboard - mode: " << ( mode == QClipboard::Selection ? "Selection":"Clipboard" ) << endl;
+  Debug::Throw(debug_level) << "BoxSelection::toClipboard - mode: " << ( mode == QClipboard::Selection ? "Selection":"Clipboard" ) << endl;
   
   // check if selection mode is available
   if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;
@@ -296,7 +318,7 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
 bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
 {
   
-  Debug::Throw( "BoxSelection::fromClipboard.\n" );
+  Debug::Throw( debug_level, "BoxSelection::fromClipboard.\n" );
  
   // check mode
   if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;  
@@ -305,7 +327,7 @@ bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
   const QMimeData* data( qApp->clipboard()->mimeData() );
   if( !data ) 
   {
-    Debug::Throw() << "BoxSelection::fromClipboard - no mimeData" << endl;
+    Debug::Throw(debug_level) << "BoxSelection::fromClipboard - no mimeData" << endl;
     return false;
   }
   
@@ -317,7 +339,7 @@ bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
 //________________________________________________________________________
 bool BoxSelection::removeSelectedText( void ) const
 {
-  Debug::Throw( "BoxSelection::removeSelectedText.\n" );
+  Debug::Throw( debug_level, "BoxSelection::removeSelectedText.\n" );
   
   // check if state is ok
   if( state() != FINISHED || cursorList().empty() ) return false;
@@ -352,7 +374,7 @@ bool BoxSelection::removeSelectedText( void ) const
 //________________________________________________________________________
 bool BoxSelection::toUpper( void )
 {
-  Debug::Throw( "BoxSelection::toUpper.\n" );
+  Debug::Throw( debug_level, "BoxSelection::toUpper.\n" );
   
   // check if state is ok
   if( state() != FINISHED || cursorList().empty() ) return false;
@@ -390,7 +412,7 @@ bool BoxSelection::toUpper( void )
 //________________________________________________________________________
 bool BoxSelection::toLower( void )
 {
-  Debug::Throw( "BoxSelection::toLower.\n" );
+  Debug::Throw( debug_level, "BoxSelection::toLower.\n" );
   
   // check if state is ok
   if( state() != FINISHED || cursorList().empty() ) return false;
@@ -427,6 +449,7 @@ bool BoxSelection::toLower( void )
 //________________________________________________________________________
 void BoxSelection::_updateRect( void )
 {
+  Debug::Throw( debug_level, "BoxSelection::_updateRect.\n" );
   int x_min( min( begin_.x(), end_.x() ) );
   int x_max( max( begin_.x(), end_.x() ) );
 
@@ -451,7 +474,7 @@ void BoxSelection::_updateRect( void )
 //________________________________________________________________________
 void BoxSelection::_store( void )
 {
-  Debug::Throw("BoxSelection::_store.\n" );
+  Debug::Throw( debug_level, "BoxSelection::_store.\n" );
 
   // retrieve box selection size
   int first_column = rect().left() / font_width_;

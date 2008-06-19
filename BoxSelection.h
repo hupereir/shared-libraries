@@ -69,8 +69,11 @@ class BoxSelection: public Counter
   //!@ accessors
   //@{
   
-  //§ configuration update
+  //! configuration update
   void updateConfiguration( void );
+  
+  //! try enable box selection
+  bool checkEnabled( void );
   
   //! enability
   const bool& isEnabled( void ) const

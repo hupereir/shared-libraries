@@ -884,8 +884,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
       {
 
         // try re-enable box selection in case font has changed
-        if( !_boxSelection().isEnabled() ) _boxSelection().updateConfiguration();
-        if( _boxSelection().isEnabled() )
+        if( _boxSelection().checkEnabled() )
         {
 
           _boxSelection().start( event->pos() );
