@@ -50,11 +50,11 @@ CustomPixmap CustomPixmap::find(
   for( list<string>::const_iterator iter = path.begin(); iter != path.end(); iter++ )
   {
     
-    // prepare filename
-    File icon_file;
-    
     // skip empty path
     if( iter->empty() ) continue;
+
+    // prepare filename
+    File icon_file;
     
     // see if path is internal resource path
     if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
