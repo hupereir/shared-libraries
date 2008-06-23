@@ -63,8 +63,13 @@ void BlockHighlight::clear( void )
     TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
     if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) ) 
     {
+
+      // reset flag
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
-      if( parent_->hasFocus() ) parent_->document()->markContentsDirty(block.position(), block.length()-1);
+      
+      // mark contents dirty to trigger document update
+      parent_->document()->markContentsDirty(block.position(), block.length()-1);
+      
     }
     
   }
@@ -84,8 +89,13 @@ void BlockHighlight::highlight( void )
 //______________________________________________________________________
 void BlockHighlight::timerEvent( QTimerEvent* event )
 {
-  
+
+  Debug::Throw( "BlockHighlight::timerEvent.\n" );
   if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event ); 
+  
+  // stop timer
+  // (all BasicTimers restart automatically by default)
+  timer_.stop(); 
   
   // retrieve current block
   QTextBlock block( parent_->textCursor().block() );  
@@ -105,8 +115,8 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   // mark block as current
   data->setFlag( TextBlock::CURRENT_BLOCK, true );
 
-  // retrieve block rect, translate to viewport and ask for repaint  
-  if( parent_->hasFocus() ) parent_->document()->markContentsDirty(block.position(), block.length()-1);
+  // mark contents dirty to trigger document update
+  parent_->document()->markContentsDirty(block.position(), block.length()-1);
 
   emit highlightChanged();
       
