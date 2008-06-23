@@ -62,6 +62,7 @@ TextEditor::TextEditor( QWidget *parent ):
   find_dialog_( 0 ),
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
+  active_( false ),
   wrap_from_options_( true ),
   has_tab_emulation_( false ),
   synchronize_( false ),
@@ -359,6 +360,20 @@ void TextEditor::synchronize( TextEditor* editor )
 
   return;
 
+}
+
+
+//_____________________________________________________________________
+bool TextEditor::setActive( const bool& active )
+{
+  
+  Debug::Throw( "TextEditor::setActive.\n" );
+  
+  // check if value is changed
+  if( isActive() == active ) return false;
+  active_ = active;
+  return true;
+  
 }
 
 //__________________________________________________________________
@@ -1305,6 +1320,15 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
   QTextEdit::keyPressEvent( event );
 
   return;
+}
+
+
+//_______________________________________________________
+void TextEditor::focusInEvent( QFocusEvent* event )
+{
+  Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
+  emit hasFocus( this );
+  QTextEdit::focusInEvent( event );
 }
 
 //________________________________________________

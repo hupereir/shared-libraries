@@ -36,6 +36,7 @@
 #include <QAction>
 #include <QClipboard>
 #include <QContextMenuEvent>
+#include <QFocusEvent>
 #include <QScrollBar>
 #include <QTextBlockFormat>
 #include <QTextCursor>
@@ -119,7 +120,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
   //! clone (and synchronize) text editor
   virtual void synchronize( TextEditor* editor );
-  
+      
+  //! activity
+  virtual bool setActive( const bool& value );
+
+  //! activity
+  virtual const bool& isActive( void ) const
+  { return active_; }
+
   //@}
  
   //! popup dialog with the number of replacement performed
@@ -249,7 +257,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! emmitted when selection could be found
   void matchFound( void );
-    
+  
+  //! emmited when recieve focus
+  void hasFocus( TextEditor* );
+
   public slots:
  
   //! cut
@@ -402,6 +413,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! keypress event
   virtual void keyPressEvent( QKeyEvent* );
     
+  //! focus event [overloaded]
+  virtual void focusInEvent( QFocusEvent* );
+
   //! context menu event [overloaded]
   virtual void contextMenuEvent( QContextMenuEvent* );
   
@@ -574,8 +588,8 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
-  //!@name text wrap
-  //@{
+  //! true if this display is the active display
+  bool active_;
   
   /*! 
   set to false when the wrapping has been modified once.
@@ -583,8 +597,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   any more
   */
   bool wrap_from_options_;
-  
-  //@}
   
   //!@name tab emulation and empty lines
   //@{
