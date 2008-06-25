@@ -76,35 +76,19 @@ CustomPixmap CustomPixmap::find(
 CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensity ) const
 { 
   if( isNull() ) return *this;
-  
-  QImage image( toImage() );
-  int width( image.width() );
-  int height( image.height() );
 
-  double merged_red = intensity*base_color.red();
-  double merged_green = intensity*base_color.green();
-  double merged_blue = intensity*base_color.blue();
-  double no_intensity( 1.0-intensity );
-  QColor merged_color; 
-  for( int x = 0; x < width; x++ )
-  {
-    for( int y = 0; y < height; y++ ) 
-    {
-      
-      QColor color( image.pixel( x, y ) );    
-      merged_color.setRgb( qRgb( 
-        (unsigned int)( no_intensity*color.red() + merged_red ), 
-        (unsigned int)( no_intensity*color.green() + merged_green ), 
-        (unsigned int)( no_intensity*color.blue() + merged_blue ) ) );
-      
-      image.setPixel( x, y, merged_color.rgb() );
-    }
-  }
+  QPixmap out( *this );
+  QPainter painter( &out );
+  QColor color( base_color );
+  color.setAlphaF( intensity ); 
   
-  CustomPixmap out( image );
+  painter.setPen( Qt::NoPen );
+  painter.setBrush( color );
+  painter.drawRect( out.rect() );
+  painter.end();
+  
   out.setAlphaChannel( alphaChannel() );
   return out;
-
 }
 
 //_________________________________________________
