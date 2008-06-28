@@ -124,17 +124,19 @@ QPixmap BackgroundPixmap::pixmap( const QRect& rect ) const
   
   // perform tyle
   QPixmap pixmap( rect.size() );
-  QPainter p( &pixmap );
-  p.translate( -rect.topLeft() );
+  QPainter painter( &pixmap );
+  painter.translate( -rect.topLeft() );
   for( int x = x_origin; x <= rect.right(); x +=  background_rect.width() )
   {
     for( int y = y_origin; y <= rect.bottom(); y += background_rect.height() )
     { 
       if( !background_rect.translated( QPoint( x, y ) ).intersects( rect ) ) continue;
-      p.drawPixmap( QPoint( x, y ), background_pixmap_ ); 
+      painter.drawPixmap( QPoint( x, y ), background_pixmap_ ); 
     }
   }
-
+  
+  painter.end();
+  
   return pixmap;
   
 }

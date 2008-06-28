@@ -143,6 +143,8 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
       painter.setBrush( _highlightColor() );
       painter.drawRect( rect );
     }
+
+    painter.end();
   }
   
   QWidget::paintEvent( event );  
@@ -211,7 +213,7 @@ void TransparentWidget::_updateBackgroundPixmap( void )
     painter.setPen( Qt::NoPen );
     painter.setBrush( _tintColor() );
     painter.drawRect( _backgroundPixmap().rect() );
-    
+    painter.end();
   }
   
   _setBackgroundChanged( false );
