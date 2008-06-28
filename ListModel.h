@@ -32,8 +32,9 @@
   \date    $Date$
 */
 
-#include <vector>
+#include <algorithm>
 #include <set>
+#include <vector>
 
 #include "Counter.h"
 #include "Debug.h"

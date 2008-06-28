@@ -60,7 +60,7 @@ class ErrorHandler
   static void clearDisabledMessages( void ) 
   { disabled_messages_.clear(); }
   
-  //! adds a disabled message in the list
+  //! exit
   static void exit( void ) 
   { }
   

@@ -30,6 +30,8 @@
   \date $Date$
 */
 
+#include <cstdlib>
+
 #include "ErrorHandler.h"
 #include "Debug.h"
 

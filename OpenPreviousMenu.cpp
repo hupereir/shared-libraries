@@ -29,6 +29,7 @@
    \date $Date$
 */
 
+#include <algorithm>
 #include <QApplication>
 #include <sstream>
 #include <set>
