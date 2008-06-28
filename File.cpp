@@ -29,10 +29,11 @@
    \date    $Date$
 */
 
+#include <algorithm>
+#include <cmath>
 #include <set>
 #include <sstream> 
 #include <fstream>
-#include <cmath>
 
 #include <QDateTime>
 #include <QDir>
@@ -424,7 +425,7 @@ list<File> File::listFiles( const unsigned int& flags ) const
       // in case directory is a link
       // make sure it is not already in the list
       // to avoid recursivity
-      if( found.isLink() && find_if( out.begin(), out.end(), SameLinkFTor( found ) ) != out.end() ) continue;
+      if( found.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( found ) ) != out.end() ) continue;
         
       // list subdirectory
       list<File> tmp = found.listFiles( flags ); 

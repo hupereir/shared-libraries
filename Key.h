@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <algorithm>
 #include <assert.h>
 #include <set>
 #include <iostream>
