@@ -32,7 +32,7 @@
    \date    $Date$
 */
 
-#include <qcheckbox.h>
+#include <QCheckBox>
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 

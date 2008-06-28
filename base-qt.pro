@@ -58,6 +58,7 @@ HEADERS = \
   OptionIconBrowsedButton.h \
   OptionLineEdit.h \
   OptionListBox.h \
+  OptionRadioButton.h \
   OptionSlider.h \
   OptionSpinBox.h \
   OptionWidget.h \
