@@ -274,6 +274,7 @@ void TreeWidget::paintEvent( QPaintEvent* event )
   painter.setBrush( _selectedColumnColor() );
   painter.setPen( Qt::NoPen );
   painter.drawRect( rect.intersected( event->rect() ) );
+  painter.end();
   
   return QTreeWidget::paintEvent( event );
 

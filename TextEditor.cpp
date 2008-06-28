@@ -1397,10 +1397,10 @@ void TextEditor::paintEvent( QPaintEvent* event )
     painter.drawRect( _boxSelection().rect()&rect );
 
   }
+  painter.end();
 
-  QTextEdit::paintEvent( event );
+  return QTextEdit::paintEvent( event );
 
-  return;
 }
 
 

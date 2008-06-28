@@ -311,6 +311,8 @@ QPixmap QtUtil::round( const QPixmap& pixmap, const unsigned int& corners )
     painter.drawRect(point.x()-0, point.y()-4, 1, 2);
   }
 
+  painter.end();
+  
   return out;
 
 }

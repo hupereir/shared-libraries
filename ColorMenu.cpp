@@ -98,6 +98,8 @@ void ColorMenu::paintEvent( QPaintEvent* event )
     painter.drawEllipse( action_rect );
   }
   
+  painter.end();
+  
 }
 
 //_______________________________________________

@@ -88,6 +88,7 @@ CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensi
   painter.end();
   
   out.setAlphaChannel( alphaChannel() );
+  painter.end();
   return out;
 }
 
