@@ -84,10 +84,10 @@ string Util::timeString( void )
 }
 
 //____________________________________________  
-bool Util::run( const string& value )
+bool Util::run( const QString& value )
 {
   Debug::Throw( "Util::run" );
-  return run( QString( value.c_str() ).split( QRegExp("\\s"), QString::SkipEmptyParts ) );
+  return run( value.split( QRegExp("\\s"), QString::SkipEmptyParts ) );
 }
   
 //____________________________________________  

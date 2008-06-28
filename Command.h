@@ -49,8 +49,13 @@ class Command: public QString, public Counter
     {}
   
   //! constructor
-  Command( const std::string in ):
+  Command( const std::string& in ):
     QString( in.c_str() ),
+    Counter( "Command" )
+  {}  
+  //! constructor
+  Command( const QString& in ):
+    QString( in ),
     Counter( "Command" )
   {}
     
