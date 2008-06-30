@@ -48,6 +48,7 @@ TreeView::TreeView( QWidget* parent ):
   Counter( "TreeView" ),
   menu_( 0 ),
   mask_(0),
+  flat_style_( false ),
   icon_size_from_options_( true )
 {
   Debug::Throw( "TreeView::TreeView.\n" );   
@@ -167,12 +168,16 @@ void TreeView::paintEvent( QPaintEvent* event )
 //__________________________________________________________
 void TreeView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {    
+  
+  if( !flat_style_ ) return QTreeView::drawRow( painter, option, index );
+
   // modify options and pass to the default method
   QStyleOptionViewItem new_option( option );
   
   //  QGradient 
   QLinearGradient gradient(QPointF(0, 0), QPointF(width(), 0));    
-  QColor color( option.palette.color( QPalette::Highlight ) );
+  //QColor color( option.palette.color( QPalette::Highlight ) );
+  QColor color( palette().color( QPalette::Highlight ) );
   gradient.setColorAt(0, color.light(130) );
   gradient.setColorAt(0.3, color );
   gradient.setColorAt(1, color.light(130) );
@@ -255,5 +260,7 @@ void TreeView::_updateConfiguration( void )
     int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
     setIconSize( QSize( icon_size, icon_size )  );
   } 
+  
+  flat_style_ = XmlOptions::get().get<bool>( "USE_FLAT_THEME" );
   
 }

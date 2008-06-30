@@ -143,6 +143,9 @@ class TreeView: public QTreeView, public Counter
   /*! gets reinitialized anytime GetMask is called */
   unsigned int mask_;    
   
+  //! flat style
+  bool flat_style_;
+  
   //! true if icon size is to be set from options
   bool icon_size_from_options_;
   
