@@ -250,9 +250,31 @@ int TextEditor::indexFromPosition( const TextPosition& position ) const
 }
 
 //________________________________________________
-void TextEditor::selectWord( void )
+void TextEditor::setPlainText( const QString& text )
 {
-  Debug::Throw( "TextEditor::selectWord.\n" );
+  Debug::Throw( "TextEditor::setPlainText.\n" );
+
+  bool enabled( blockHighlight().isEnabled() );
+  blockHighlight().setEnabled( false );
+  QTextEdit::setPlainText( text );
+  _toggleBlockHighlight( enabled );
+  
+}
+
+//________________________________________________
+void TextEditor::setHtml( const QString& text )
+{
+  Debug::Throw( "TextEditor::setHtml.\n" );
+
+  bool enabled( blockHighlight().isEnabled() );
+  blockHighlight().setEnabled( false );
+  QTextEdit::setHtml( text );
+  _toggleBlockHighlight( enabled );
+  
+}
+//________________________________________________
+void TextEditor::selectWord( void )
+{  Debug::Throw( "TextEditor::selectWord.\n" );
 
   // retrieve text cursor, block and text
   QTextCursor cursor( textCursor() );
@@ -1345,7 +1367,7 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 //______________________________________________________________
 void TextEditor::paintEvent( QPaintEvent* event )
 {
-
+  
   // handle block background
   QRect rect = event->rect();
   QTextBlock first( cursorForPosition( rect.topLeft() ).block() );
@@ -1532,7 +1554,7 @@ void TextEditor::_installActions( void )
   connect( tab_emulation_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );
 
   // update actions that depend on the presence of a selection
-  connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
+  //connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
   _updateSelectionActions( textCursor().hasSelection() );
 
   #if QT_VERSION >= 0x040200
@@ -2158,7 +2180,10 @@ void TextEditor::_updatePasteAction( void )
 //_________________________________________________
 void TextEditor::_toggleBlockHighlight( bool state )
 {
-
+  
+  Debug::Throw( "TextEditor::_toggleBlockHighlight.\n" );
+  
+  // enable
   blockHighlight().setEnabled( highlight_color_.isValid() && state );
 
   // update current paragraph

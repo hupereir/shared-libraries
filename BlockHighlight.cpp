@@ -69,7 +69,7 @@ void BlockHighlight::clear( void )
       
       // mark contents dirty to trigger document update
       parent_->document()->markContentsDirty(block.position(), block.length()-1);
-      
+     
     }
     
   }
@@ -80,7 +80,7 @@ void BlockHighlight::clear( void )
 
 //______________________________________________________________________
 void BlockHighlight::highlight( void )
-{
+{  
   if( !isEnabled() ) return;
   clear();
   timer_.start(50, this );
@@ -119,7 +119,6 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   parent_->document()->markContentsDirty(block.position(), block.length()-1);
 
   emit highlightChanged();
-      
   cleared_ = false;
   
 }
