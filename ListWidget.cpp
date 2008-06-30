@@ -44,7 +44,7 @@ ListWidget::ListWidget( QWidget* parent ):
 {
   
   Debug::Throw( "ListWidget::ListWidget.\n" ); 
-  setItemDelegate ( new ItemDelegate( this ) );  
+  setItemDelegate ( new ItemDelegate( this ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
   
@@ -62,6 +62,7 @@ QListWidgetItem& ListWidget::findItem( const std::string& name )
 void ListWidget::_updateConfiguration( void )
 {
   
+  Debug::Throw( "ListWidget::_updateConfiguration.\n" );
   QColor item_color;
   
   // try load from option
@@ -77,5 +78,9 @@ void ListWidget::_updateConfiguration( void )
   QPalette palette( this->palette() );
   palette.setColor( QPalette::AlternateBase, item_color );
   setPalette( palette );
-  setAlternatingRowColors( true ); 
+  setAlternatingRowColors( true );
+  
+  ItemDelegate* delegate( dynamic_cast<ItemDelegate*>( itemDelegate() ) );
+  if( delegate ) delegate->setUseFlatStyle( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) );
+  
 }

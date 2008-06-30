@@ -40,8 +40,12 @@ using namespace std;
 //___________________________________________________
 void ItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
-  
+    
   Debug::Throw() << "ItemDelegate::paint - width: " << painter->device()->width() << endl;
+  
+  // check style
+  if( !flat_style_ ) return QItemDelegate::paint( painter, option, index );
+
   QStyleOptionViewItem new_option( option );
   
   //  highlight color

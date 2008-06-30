@@ -169,6 +169,7 @@ void TreeView::paintEvent( QPaintEvent* event )
 void TreeView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {    
   
+  // check flat style
   if( !flat_style_ ) return QTreeView::drawRow( painter, option, index );
 
   // modify options and pass to the default method

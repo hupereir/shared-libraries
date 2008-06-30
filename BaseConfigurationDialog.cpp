@@ -34,6 +34,7 @@
 #include <QShortcut>
 #include <QToolTip>
 #include <QGroupBox>
+#include <QHeaderView>
 #include <QLayout>
 #include <QLabel>
 
@@ -79,15 +80,17 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   h_layout->setSpacing(10);
   layout->addLayout( h_layout );
   
-  h_layout->addWidget( list_ = new ListWidget( this ), 0 );
+  h_layout->addWidget( list_ = new TreeWidget( this ), 0 );
   h_layout->addWidget( stack_ = new QStackedWidget(0), 1 );
   
+  _list().setColumnCount(1);
   _list().setMaximumWidth(150);
-  _list().setMovement(QListView::Static);
+  _list().header()->hide();
+  _list().setSortingEnabled( false );
 
   connect( 
-    list_, SIGNAL( currentItemChanged( QListWidgetItem*, QListWidgetItem* ) ), 
-    SLOT( _display(QListWidgetItem*, QListWidgetItem*) ) );
+    &_list(), SIGNAL( currentItemChanged( QTreeWidgetItem*, QTreeWidgetItem* ) ), 
+    SLOT( _display(QTreeWidgetItem*, QTreeWidgetItem*) ) );
   
   // button layout
   button_layout_ = new QHBoxLayout();
@@ -161,8 +164,8 @@ QWidget& BaseConfigurationDialog::addPage( const QString& title, const bool& exp
   new ConfigListItem( &_list(), title, scroll );
 
   // make sure first item is selected
-  _list().setCurrentRow(0);
-  _stack().setCurrentIndex(0);
+  // _list().setCurrentRow(0);
+  // _stack().setCurrentIndex(0);
   
   // in expanded mode, the main widget is returned directly
   if( expand ) return *main;
@@ -459,7 +462,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_display( QListWidgetItem* current, QListWidgetItem* previous )
+void BaseConfigurationDialog::_display( QTreeWidgetItem* current, QTreeWidgetItem* previous )
 {
   Debug::Throw( "BaseConfigurationDialog::_display.\n" );
   

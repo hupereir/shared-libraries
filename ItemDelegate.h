@@ -51,6 +51,15 @@ class ItemDelegate: public QItemDelegate, public Counter
   //! paint method
   virtual void paint( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
       
+  //! flat style 
+  virtual void setUseFlatStyle( const bool& value ) 
+  { flat_style_ = value; }
+  
+  private:
+  
+  //! flat style
+  bool flat_style_;
+  
 };
 
 #endif

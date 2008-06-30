@@ -30,6 +30,7 @@
 */
 
 #include <QHBoxLayout>
+#include <QHeaderView>
 #include <QLabel>
 #include <sstream>
 
@@ -59,10 +60,13 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   setLayout( layout );
   
   // create list
-  list_ = new ListWidget( this );
+  list_ = new TreeWidget( this );
+  list_->setSortingEnabled( false );
+  list_->header()->hide();
+  list_->setColumnCount(1);
+  
   list_->setSelectionMode( QAbstractItemView::ExtendedSelection );  
-  connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), SLOT( _edit() ) );
-  connect( list_, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), SLOT( _remove() ) );
+  connect( list_, SIGNAL( itemDoubleClicked( QTreeWidgetItem*, int ) ), SLOT( _edit() ) );
   connect( list_, SIGNAL( itemSelectionChanged() ), SLOT( _updateButtons() ) ); 
   layout->addWidget( list_, 1 );
   
@@ -114,7 +118,7 @@ void OptionListBox::read( void )
   // retrieve all values from Options, insert in list
   list<string> values( XmlOptions::get().specialOptions<string>( optionName() ) );
   for( list<string>::iterator iter = values.begin(); iter != values.end(); iter++ )
-  { ( new QListWidgetItem( list_) )->setText( iter->c_str() ); }
+  { ( new QTreeWidgetItem( list_) )->setText( 0, iter->c_str() ); }
   
 }
 
@@ -125,12 +129,11 @@ void OptionListBox::write( void ) const
   XmlOptions::get().clearSpecialOptions( optionName() );
   XmlOptions::get().keep( optionName() );
   bool first( true );
-  for( int row = 0; row < list_->QListWidget::count(); row++ )
+  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
+  for( QList<QTreeWidgetItem*>::iterator iter  = items.begin(); iter != items.end(); iter++ )
   {
-
-    if( !list_->item( row ) ) continue;
     
-    Option option( optionName(), qPrintable( list_->item(row)->text() ), "", first );
+    Option option( optionName(), qPrintable( (*iter)->text(0) ), "", first );
     XmlOptions::get().add( option );
     first = false;
   }
@@ -142,7 +145,7 @@ void OptionListBox::_updateButtons( void )
   Debug::Throw( "OptionListBox::_updateButtons.\n" );
   
   // retrieve list of items
-  QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
+  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
   
   // enable buttons depending on the size of the list
   edit_->setEnabled( items.size() == 1 );
@@ -184,7 +187,7 @@ void OptionListBox::_add( void )
   if( line_edit->text().isEmpty() ) return;
   
   // create new item
-  ( new QListWidgetItem( list_ ) )->setText( line_edit->text() );
+  ( new QTreeWidgetItem( list_ ) )->setText( 0, line_edit->text() );
 
 }
 
@@ -194,7 +197,7 @@ void OptionListBox::_edit( void )
   Debug::Throw( "OptionListBox::_edit.\n" );
 
   // retrieve selection
-  QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
+  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
   assert( items.size() == 1 );
 
   // create dialog
@@ -218,8 +221,8 @@ void OptionListBox::_edit( void )
     dialog.mainLayout().addWidget( line_edit );
   }
 
-  line_edit->setText( items.front()->text() );
-  QtUtil::expand( line_edit, qPrintable( items.front()->text() ) );
+  line_edit->setText( items.front()->text(0) );
+  QtUtil::expand( line_edit, qPrintable( items.front()->text(0) ) );
 
   // map dialog
   dialog.adjustSize();
@@ -228,7 +231,7 @@ void OptionListBox::_edit( void )
   
   if( line_edit->text().isEmpty() ) return;
 
-  items.front()->setText( qPrintable( line_edit->text() ) );
+  items.front()->setText( 0, qPrintable( line_edit->text() ) );
   return;
 
 }
@@ -239,12 +242,12 @@ void OptionListBox::_remove( void )
   Debug::Throw( "OptionListBox::_remove.\n" );
 
   // retrieve selection
-  QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
+  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
   assert( !items.empty() );
   ostringstream what;
   what << "remove selected value" << (items.size() > 1 ? "s":"") << " ?";
   if( !QtUtil::questionDialog( this, what.str().c_str() ) ) return;
-  for( QList<QListWidgetItem*>::iterator iter  = items.begin(); iter != items.end(); iter++ )
+  for( QList<QTreeWidgetItem*>::iterator iter  = items.begin(); iter != items.end(); iter++ )
   { delete *iter; }
   
   return;
@@ -257,10 +260,10 @@ void OptionListBox::_setDefault( void )
   Debug::Throw( "OptionListBox::_setDefault.\n" );
 
   // retrieve selection
-  QList<QListWidgetItem*> items( list_->QListWidget::selectedItems() );
+  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
   assert( items.size() == 1 );
 
   // move Item to the top of the list
-  list_->takeItem( list_->row( items.front() ) );
-  list_->insertItem( 0, items.front() );
+  list_->takeTopLevelItem( list_->indexOfTopLevelItem( items.front() ) );
+  list_->insertTopLevelItem( 0, items.front() );
 }

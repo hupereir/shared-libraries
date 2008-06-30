@@ -36,25 +36,25 @@
 #include <QStackedWidget>
 #include <list>
 
-#include "ListWidget.h"
+#include "TreeWidget.h"
 #include "XmlOptions.h"
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"
 
 //! configuration list. Stores panel names and panels
-class ConfigListItem: public QListWidgetItem, public Counter
+class ConfigListItem: public QTreeWidgetItem, public Counter
 {
 
   public:
 
   //! constructor
-  ConfigListItem( QListWidget* parent, const QString& title, QWidget* page = 0 ):
-    QListWidgetItem( parent ),
+  ConfigListItem( QTreeWidget* parent, const QString& title, QWidget* page = 0 ):
+    QTreeWidgetItem( parent ),
     Counter( "ConfigListItem" ),
     page_( page )
   { 
     Debug::Throw( "ConfigListItem::ConfigListItem.\n" );
-    setText( title );
+    setText( 0, title );
   }
     
   //! retrieve page
@@ -171,12 +171,12 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
   }
 
   //! display item page
-  virtual void _display( QListWidgetItem* current, QListWidgetItem* previous );
+  virtual void _display( QTreeWidgetItem* current, QTreeWidgetItem* previous );
 
   protected:
   
   //! retrieve list
-  virtual ListWidget& _list( void )
+  virtual TreeWidget& _list( void )
   { return *list_; }
 
   //! retrieve stack
@@ -190,7 +190,7 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
   private:
 
   //! Configuration list
-  ListWidget* list_;
+  TreeWidget* list_;
 
   //! Widget stack
   QStackedWidget* stack_;

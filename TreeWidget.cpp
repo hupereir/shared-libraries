@@ -44,7 +44,9 @@ using namespace std;
 TreeWidget::TreeWidget( QWidget* parent ):
   QTreeWidget( parent ),
   Counter( "TreeWidget" ),
-  menu_( 0 )
+  menu_( 0 ),
+  flat_style_( false ),
+  mask_( 0 )
 {
   Debug::Throw( "TreeWidget::TreeWidget.\n" );   
 
@@ -284,6 +286,8 @@ void TreeWidget::paintEvent( QPaintEvent* event )
 void TreeWidget::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
   
+  if( !flat_style_ ) return QTreeWidget::drawRow( painter, option, index );
+  
   Item* item = dynamic_cast<Item*>(itemFromIndex( index ) );
   
   // modify options and pass to the default method
@@ -378,5 +382,7 @@ void TreeWidget::_updateConfiguration( void )
   // icon size
   int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
   setIconSize( QSize( icon_size, icon_size )  );
+
+  flat_style_ = XmlOptions::get().get<bool>( "USE_FLAT_THEME" );
   
 }

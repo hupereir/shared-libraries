@@ -236,6 +236,9 @@ class TreeWidget: public QTreeWidget, public Counter
   //! popup menu for right click
   QMenu *menu_;
   
+  //! flat style
+  bool flat_style_;
+  
   //! column mask
   /*! gets reinitialized anytime GetMask is called */
   unsigned int mask_;    
