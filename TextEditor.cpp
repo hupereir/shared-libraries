@@ -257,8 +257,8 @@ void TextEditor::setPlainText( const QString& text )
   bool enabled( blockHighlight().isEnabled() );
   blockHighlight().setEnabled( false );
   QTextEdit::setPlainText( text );
-  _toggleBlockHighlight( enabled );
-  
+  blockHighlight().setEnabled( enabled );
+
 }
 
 //________________________________________________
@@ -269,9 +269,10 @@ void TextEditor::setHtml( const QString& text )
   bool enabled( blockHighlight().isEnabled() );
   blockHighlight().setEnabled( false );
   QTextEdit::setHtml( text );
-  _toggleBlockHighlight( enabled );
+  blockHighlight().setEnabled( enabled );
   
 }
+
 //________________________________________________
 void TextEditor::selectWord( void )
 {  Debug::Throw( "TextEditor::selectWord.\n" );

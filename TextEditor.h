@@ -94,6 +94,12 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //@}
       
+  //! set text
+  virtual void setPlainText( const QString& );
+  
+  //! set text
+  virtual void setHtml( const QString& );
+
   //! select word under cursor
   virtual void selectWord( void );
   
