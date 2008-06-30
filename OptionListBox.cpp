@@ -129,7 +129,7 @@ void OptionListBox::write( void ) const
   XmlOptions::get().clearSpecialOptions( optionName() );
   XmlOptions::get().keep( optionName() );
   bool first( true );
-  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
+  QList<QTreeWidgetItem*> items( list_->children() );
   for( QList<QTreeWidgetItem*>::iterator iter  = items.begin(); iter != items.end(); iter++ )
   {
     
