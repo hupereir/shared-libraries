@@ -55,7 +55,7 @@ DockPanel::DockPanel( QWidget* parent, const unsigned int& flags ):
   
   // main widget
   layout()->addWidget( main_ = new LocalWidget( this ) );
-  main().setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
+  main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
   connect( &main().detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
   
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
@@ -99,8 +99,8 @@ void DockPanel::_toggleDock( void )
     // change parent
     main().setParent( this );
     layout()->addWidget( main_ );
-    main().setFrameStyle( QFrame::StyledPanel|QFrame::Plain );
     size_grip_->hide();
+    main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
     main().show();
     
     // change action text
@@ -114,14 +114,12 @@ void DockPanel::_toggleDock( void )
             
     // change parent
     main().setParent( 0 );
+    main().setFrameStyle( QFrame::Panel|QFrame::Raised );
     
     // window flags
     Qt::WindowFlags flags = Qt::FramelessWindowHint;
     if( flags_ & STAYS_ON_TOP ) flags |= Qt::WindowStaysOnTopHint;
     main().setWindowFlags( flags );
-
-    // frame style
-    main().setFrameStyle( QFrame::Panel | QFrame::Raised );
 
     // move and resize
     main().move( mapToGlobal( QPoint(0,0) ) );
