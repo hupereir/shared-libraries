@@ -125,7 +125,7 @@ namespace BASE
     void clearAssociations( void ) 
     { 
       for( key_set::iterator iter = associated_keys_.begin(); iter != associated_keys_.end(); iter++ ) 
-        (*iter)->_disassociate( this ); 
+      { (*iter)->_disassociate( this ); }
       associated_keys_.clear(); 
     } 
     
