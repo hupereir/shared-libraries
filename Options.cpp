@@ -47,8 +47,10 @@ Options::Options( void ):
 
 
   keep( "PIXMAP_PATH" );
+  add( Option( "PIXMAP_PATH", ":/pixmaps/oxygen"));
+  add( Option( "PIXMAP_PATH", ":/pixmaps/crystal"));
   add( Option( "PIXMAP_PATH", ":/pixmaps"));
-  
+ 
   /* 
     generic options (default values)
     common to all applications
