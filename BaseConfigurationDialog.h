@@ -118,6 +118,13 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
   //! TextEdit configuration box
   void textEditConfiguration( QWidget* parent = 0 );
 
+  //! restore window size
+  virtual QSize minimumSizeHint( void ) const;
+
+  //! restore window size
+  virtual QSize sizeHint( void ) const
+  { return minimumSizeHint(); }
+
   signals:
 
   //! apply button pressed
@@ -159,7 +166,7 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
   virtual void _restoreDefaults( void ) = 0;
 
   //! save configuration from options
-   virtual void _save();
+  virtual void _save();
 
   //! see if options have been modified. Emit signal if yes
   virtual void _checkModified( void )
@@ -173,6 +180,9 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
   //! display item page
   virtual void _display( QTreeWidgetItem* current, QTreeWidgetItem* previous );
 
+  //! save window size
+  virtual void _saveWindowSize( void );
+  
   protected:
   
   //! retrieve list

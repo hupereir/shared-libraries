@@ -120,6 +120,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   // ok button
   button_layout_->addWidget( button = new QPushButton( "&Ok", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _save() ) );  
+  connect( button, SIGNAL( clicked() ), SLOT( _saveWindowSize() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
   button->setToolTip( 
@@ -131,6 +132,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   // cancel button
   button_layout_->addWidget( button = new QPushButton( "&Cancel", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _saveWindowSize() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
   button->setToolTip( "discard changes to options and close window" );
@@ -138,6 +140,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   // close window shortcut
   connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
+   
+  //_restoreWindowSize();
   
 }
 
@@ -162,10 +166,6 @@ QWidget& BaseConfigurationDialog::addPage( const QString& title, const bool& exp
   
   // create new item and add to stack
   new ConfigListItem( &_list(), title, scroll );
-
-  // make sure first item is selected
-  // _list().setCurrentRow(0);
-  // _stack().setCurrentIndex(0);
   
   // in expanded mode, the main widget is returned directly
   if( expand ) return *main;
@@ -520,4 +520,35 @@ void BaseConfigurationDialog::_save( void )
   _update();
   XmlOptions::write();
 
+}
+
+//__________________________________________________
+QSize BaseConfigurationDialog::minimumSizeHint( void ) const
+{
+  
+  Debug::Throw( "BaseConfigurationDialog::minimumSizeHint.\n" );
+  
+  // resize
+  if( XmlOptions::get().find( "CONFIGURATION_WINDOW_WIDTH" ) && XmlOptions::get().find( "CONFIGURATION_WINDOW_HEIGHT" ) )
+  {
+    int width( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_WIDTH" ) );
+    int height( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_HEIGHT" ) );
+    Debug::Throw() << "BaseConfigurationDialog::minimumSizeHint: " << width << "x" << height << endl;
+    return QSize( width, height );
+    //setSizeHint( QSize( width, height ) ); 
+  } else return QSize();
+ 
+}
+
+//__________________________________________________
+void BaseConfigurationDialog::_saveWindowSize( void )
+{
+  
+  Debug::Throw() << "BaseConfigurationDialog::_saveWindowSize: " << width() << "x" << height() << endl;
+  if( !isHidden() )
+  {
+    XmlOptions::get().set<int>( "CONFIGURATION_WINDOW_WIDTH", width() );
+    XmlOptions::get().set<int>( "CONFIGURATION_WINDOW_HEIGHT", height() );
+  }
+  
 }
