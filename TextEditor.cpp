@@ -257,6 +257,7 @@ void TextEditor::setPlainText( const QString& text )
   bool enabled( blockHighlight().isEnabled() );
   blockHighlight().setEnabled( false );
   QTextEdit::setPlainText( text );
+  qApp->processEvents();
   blockHighlight().setEnabled( enabled );
 
 }
