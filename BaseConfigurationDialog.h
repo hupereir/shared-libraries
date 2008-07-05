@@ -122,9 +122,8 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
   virtual QSize minimumSizeHint( void ) const;
 
   //! restore window size
-  virtual QSize sizeHint( void ) const
-  { return minimumSizeHint(); }
-
+  virtual QSize sizeHint( void ) const;
+  
   signals:
 
   //! apply button pressed

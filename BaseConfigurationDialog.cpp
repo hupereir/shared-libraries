@@ -531,12 +531,33 @@ QSize BaseConfigurationDialog::minimumSizeHint( void ) const
   // resize
   if( XmlOptions::get().find( "CONFIGURATION_WINDOW_WIDTH" ) && XmlOptions::get().find( "CONFIGURATION_WINDOW_HEIGHT" ) )
   {
+    
     int width( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_WIDTH" ) );
     int height( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_HEIGHT" ) );
     Debug::Throw() << "BaseConfigurationDialog::minimumSizeHint: " << width << "x" << height << endl;
     return QSize( width, height );
-    //setSizeHint( QSize( width, height ) ); 
-  } else return QSize();
+
+  } else return QDialog::minimumSizeHint();
+ 
+}
+
+
+//__________________________________________________
+QSize BaseConfigurationDialog::sizeHint( void ) const
+{
+  
+  Debug::Throw( "BaseConfigurationDialog::sizeHint.\n" );
+  
+  // resize
+  if( XmlOptions::get().find( "CONFIGURATION_WINDOW_WIDTH" ) && XmlOptions::get().find( "CONFIGURATION_WINDOW_HEIGHT" ) )
+  {
+    
+    int width( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_WIDTH" ) );
+    int height( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_HEIGHT" ) );
+    Debug::Throw() << "BaseConfigurationDialog::minimumSizeHint: " << width << "x" << height << endl;
+    return QSize( width, height );
+
+  } else return QDialog::sizeHint();
  
 }
 
