@@ -32,20 +32,20 @@
    \date    $Date$
 */
 
-#include "BrowsedLineEdit.h"
+#include "BrowsedLineEditor.h"
 #include "LineEditor.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
 //! QLineEdit associated to an option for configuration dialogs
-class OptionBrowsedLineEdit: public BrowsedLineEdit, public OptionWidget
+class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
 {
   
   public:
   
   //! constructor
-  OptionBrowsedLineEdit( QWidget* parent, const std::string& option_name ):
-      BrowsedLineEdit( parent ),
+  OptionBrowsedLineEditor( QWidget* parent, const std::string& option_name ):
+      BrowsedLineEditor( parent ),
       OptionWidget( option_name )
   {}
   
