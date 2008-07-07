@@ -33,7 +33,7 @@
 
 #include "CustomGridLayout.h"
 #include "Debug.h"
-#include "OptionBrowsedLineEdit.h"
+#include "OptionBrowsedLineEditor.h"
 #include "OptionComboBox.h"
 #include "SpellCheckConfiguration.h"
 #include "SpellInterface.h"
@@ -58,7 +58,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
 
   // aspell command
   grid_layout->addWidget( new QLabel( "Aspell Command: ", this ) );
-  OptionBrowsedLineEdit* editor( new OptionBrowsedLineEdit( this, "ASPELL" ) );
+  OptionBrowsedLineEditor* editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
   grid_layout->addWidget( editor );
   editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
   addOptionWidget( editor );
