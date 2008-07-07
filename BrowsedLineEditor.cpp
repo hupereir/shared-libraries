@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file BrowsedLineEdit.cpp
+  \file BrowsedLineEditor.cpp
   \brief combined QLineEdit + associated browse button
   line edit is also customized to have faster popup menu
   result of the file dialog associated to the button is stored into the 
@@ -36,7 +36,7 @@
 #include <QPushButton>
 
 #include "BaseIcons.h"
-#include "BrowsedLineEdit.h"
+#include "BrowsedLineEditor.h"
 #include "LineEditor.h"
 #include "File.h"
 #include "IconEngine.h"
@@ -48,14 +48,14 @@
 using namespace std;
 
 //____________________________________________________________
-BrowsedLineEdit::BrowsedLineEdit( QWidget *parent ):
+BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   QWidget( parent ),
-  Counter( "BrowsedLineEdit" ),
+  Counter( "BrowsedLineEditor" ),
   work_directory_( Util::workingDirectory() ),
   file_mode_( QFileDialog::AnyFile ),
   view_mode_( QFileDialog::List )
 {
-  Debug::Throw( "BrowsedLineEdit::BrowsedLineEdit.\n" );
+  Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
   
   // insert horizontal layout
   QHBoxLayout *layout = new QHBoxLayout();
@@ -81,20 +81,20 @@ BrowsedLineEdit::BrowsedLineEdit( QWidget *parent ):
 }
 
 //____________________________________________________________
-void BrowsedLineEdit::setWorkDirectory( const string& directory )
+void BrowsedLineEditor::setWorkDirectory( const string& directory )
 {
   line_edit_->setText( directory.c_str() );
   work_directory_ = directory;
 }
 
 //____________________________________________________________
-void BrowsedLineEdit::setFile( const string& file )
+void BrowsedLineEditor::setFile( const string& file )
 { line_edit_->setText( file.c_str() ); } 
 
 //____________________________________________________________
-void BrowsedLineEdit::_browse( void )
+void BrowsedLineEditor::_browse( void )
 { 
-  Debug::Throw( "BrowsedLineEdit::_browse.\n" );
+  Debug::Throw( "BrowsedLineEditor::_browse.\n" );
     
   // create file dialog
   CustomFileDialog dialog( this );

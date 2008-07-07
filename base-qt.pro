@@ -6,10 +6,10 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
-  BaseConfigurationDialog.h \
+   BaseConfigurationDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
-  BrowsedLineEdit.h \
+  BrowsedLineEditor.h \
   ClockLabel.h \
   ColorDisplay.h \
   ColorMenu.h \
@@ -19,13 +19,10 @@ HEADERS = \
   CustomDialog.h \
   CustomFileDialog.h \
   CustomGridLayout.h \
-  LineEditor.h \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
-  TabWidget.h \
   CustomTextDocument.h \
-  TextEditor.h \
   CustomToolBar.h \
   CustomToolButton.h \
   DebugMenu.h \
@@ -44,11 +41,12 @@ HEADERS = \
   IconFileDialog.h \
   ItemDelegate.h \
   ItemModel.h \
+  LineEditor.h \
   ListModel.h \
   ListWidget.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
-  OptionBrowsedLineEdit.h \
+  OptionBrowsedLineEditor.h \
   OptionCheckBox.h \
   OptionColorDisplay.h \
   OptionComboBox.h \
@@ -71,6 +69,9 @@ HEADERS = \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
+  TabbedDialog.h \
+  TabWidget.h \
+  TextEditor.h \
   TextBlockData.h \
   TextBlockFlags.h \
   TextSelection.h \
@@ -83,6 +84,7 @@ HEADERS = \
   TreeWidget.h \
   UserSelectionFrame.h \
   ValidFileThread.h \
+  X11Util.h \
   XmlError.h \
   XmlFileList.h \
   XmlFileRecord.h \
@@ -96,7 +98,7 @@ SOURCES = \
   BaseConfigurationDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
-  BrowsedLineEdit.cpp \
+  BrowsedLineEditor.cpp \
   ClockLabel.cpp \
   ColorDisplay.cpp \
   ColorMenu.cpp \
@@ -105,18 +107,9 @@ SOURCES = \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
-  LineEditor.cpp \
-  HeaderMenu.cpp \
-  IconFileDialog.cpp \
-  IconCacheDialog.cpp \
-  IconCacheModel.cpp \
-  ItemModel.cpp \
-  ListWidget.cpp \
   CustomMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
-  TextEditor.cpp \
-  TabWidget.cpp \
   CustomToolBar.cpp \
   CustomToolButton.cpp \
   DebugMenu.cpp \
@@ -126,9 +119,16 @@ SOURCES = \
   FindDialog.cpp \
   FontEdit.cpp \
   FontInfo.cpp \
+  HeaderMenu.cpp \
   IconBrowsedButton.cpp \
+  IconCacheDialog.cpp \
+  IconCacheModel.cpp \
   IconEngine.cpp \
+  IconFileDialog.cpp \
   ItemDelegate.cpp \
+  ItemModel.cpp \
+  LineEditor.cpp \
+  ListWidget.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
   OptionListBox.cpp \
@@ -140,6 +140,9 @@ SOURCES = \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
+  TabbedDialog.cpp \
+  TabWidget.cpp \
+  TextEditor.cpp \
   TextSeparator.cpp \
   TreeItemBase.cpp \
   TreeView.cpp \
@@ -154,4 +157,4 @@ SOURCES = \
   XmlOptions.cpp \
   XmlTextFormatBlock.cpp \
   XmlTimeStamp.cpp \
-  XmlUtil.cpp 
+  XmlUtil.cpp

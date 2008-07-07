@@ -31,45 +31,18 @@
 #ifndef _BaseConfigurationDialog_h_
 #define _BaseConfigurationDialog_h_
 
-#include <QDialog>
 #include <QLayout>
 #include <QStackedWidget>
 #include <list>
 
+#include "TabbedDialog.h"
 #include "TreeWidget.h"
 #include "XmlOptions.h"
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"
 
-//! configuration list. Stores panel names and panels
-class ConfigListItem: public QTreeWidgetItem, public Counter
-{
-
-  public:
-
-  //! constructor
-  ConfigListItem( QTreeWidget* parent, const QString& title, QWidget* page = 0 ):
-    QTreeWidgetItem( parent ),
-    Counter( "ConfigListItem" ),
-    page_( page )
-  { 
-    Debug::Throw( "ConfigListItem::ConfigListItem.\n" );
-    setText( 0, title );
-  }
-    
-  //! retrieve page
-  QWidget& page( void )
-  { return *page_; }
-
-  private:
-
-  //! associated group box
-  QWidget *page_;
-    
-};
-
 //! configuration dialog
-class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public Counter
+class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 {
 
   Q_OBJECT
@@ -86,9 +59,6 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
     return;
   }
   
-  //! adds a new Item, returns associated Box
-  virtual QWidget& addPage( const QString& title, const bool& expand = false );
-
   //! flag bitset for the Base configuration
   enum ConfigFlags
   {
@@ -117,12 +87,6 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
 
   //! TextEdit configuration box
   void textEditConfiguration( QWidget* parent = 0 );
-
-  //! restore window size
-  virtual QSize minimumSizeHint( void ) const;
-
-  //! restore window size
-  virtual QSize sizeHint( void ) const;
   
   signals:
 
@@ -175,37 +139,8 @@ class BaseConfigurationDialog: public QDialog, public OptionWidgetList, public C
     emit configurationChanged();
     modified_options_ = XmlOptions::get();
   }
-
-  //! display item page
-  virtual void _display( QTreeWidgetItem* current, QTreeWidgetItem* previous );
-
-  //! save window size
-  virtual void _saveWindowSize( void );
-  
-  protected:
-  
-  //! retrieve list
-  virtual TreeWidget& _list( void )
-  { return *list_; }
-
-  //! retrieve stack
-  virtual QStackedWidget& _stack( void )
-  { return *stack_; }
-
-  //! button layout
-  QHBoxLayout& _buttonLayout( void ) const
-  { return *button_layout_; }
     
   private:
-
-  //! Configuration list
-  TreeWidget* list_;
-
-  //! Widget stack
-  QStackedWidget* stack_;
-  
-  //! button layout (needed to add extra buttons)
-  QHBoxLayout *button_layout_;
 
   //! pointer to modified options
   /*!

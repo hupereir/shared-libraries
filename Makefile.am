@@ -13,7 +13,7 @@ noinst_HEADERS = \
   BaseConfigurationDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
-  BrowsedLineEdit.h \
+  BrowsedLineEditor.h \
   ClockLabel.h \
   ColorDisplay.h \
   ColorMenu.h \
@@ -23,13 +23,10 @@ noinst_HEADERS = \
   CustomDialog.h \
   CustomFileDialog.h \
   CustomGridLayout.h \
-  LineEditor.h \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
-  TabWidget.h \
   CustomTextDocument.h \
-  TextEditor.h \
   CustomToolBar.h \
   CustomToolButton.h \
   DebugMenu.h \
@@ -48,11 +45,12 @@ noinst_HEADERS = \
   IconFileDialog.h \
   ItemDelegate.h \
   ItemModel.h \
+  LineEditor.h \
   ListModel.h \
   ListWidget.h \
   MultipleClickCounter.h \
   OpenPreviousMenu.h \
-  OptionBrowsedLineEdit.h \
+  OptionBrowsedLineEditor.h \
   OptionCheckBox.h \
   OptionColorDisplay.h \
   OptionComboBox.h \
@@ -75,6 +73,9 @@ noinst_HEADERS = \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
+  TabbedDialog.h \
+  TabWidget.h \
+  TextEditor.h \
   TextBlockData.h \
   TextBlockFlags.h \
   TextSelection.h \
@@ -103,7 +104,7 @@ libbase_qt_a_SOURCES = \
   BaseConfigurationDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
-  BrowsedLineEdit.cpp \
+  BrowsedLineEditor.cpp \
   ClockLabel.cpp \
   ColorDisplay.cpp \
   ColorMenu.cpp \
@@ -112,12 +113,9 @@ libbase_qt_a_SOURCES = \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
-  LineEditor.cpp \
   CustomMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
-  TextEditor.cpp \
-  TabWidget.cpp \
   CustomToolBar.cpp \
   CustomToolButton.cpp \
   DebugMenu.cpp \
@@ -135,6 +133,7 @@ libbase_qt_a_SOURCES = \
   IconFileDialog.cpp \
   ItemDelegate.cpp \
   ItemModel.cpp \
+  LineEditor.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
@@ -147,6 +146,9 @@ libbase_qt_a_SOURCES = \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
+  TabbedDialog.cpp \
+  TabWidget.cpp \
+  TextEditor.cpp \
   TextSeparator.cpp \
   TreeItemBase.cpp \
   TreeView.cpp \
@@ -167,18 +169,15 @@ nodist_libbase_qt_a_SOURCES = \
   qrc_basePixmaps.cpp \
   moc_BaseConfigurationDialog.cpp \
   moc_BlockHighlight.cpp \
-  moc_BrowsedLineEdit.cpp \
+  moc_BrowsedLineEditor.cpp \
   moc_ColorDisplay.cpp \
   moc_ColorMenu.cpp \
   moc_ClockLabel.cpp \
   moc_CounterDialog.cpp \
   moc_CustomComboBox.cpp \
   moc_CustomFileDialog.cpp \
-  moc_LineEditor.cpp \
   moc_CustomMainWindow.cpp \
   moc_CustomSlider.cpp \
-  moc_TabWidget.cpp \
-  moc_TextEditor.cpp \
   moc_CustomToolBar.cpp \
   moc_CustomToolButton.cpp \
   moc_DebugMenu.cpp \
@@ -189,6 +188,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
   moc_IconFileDialog.cpp \
+  moc_LineEditor.cpp \
   moc_ListWidget.cpp \
   moc_MultipleClickCounter.cpp \
   moc_OpenPreviousMenu.cpp \
@@ -198,6 +198,9 @@ nodist_libbase_qt_a_SOURCES = \
   moc_ReplaceDialog.cpp \
   moc_SelectLineDialog.cpp \
   moc_StatusBar.cpp \
+  moc_TabbedDialog.cpp \
+  moc_TabWidget.cpp \
+  moc_TextEditor.cpp \
   moc_TreeView.cpp \
   moc_TreeViewConfiguration.cpp \
   moc_TreeWidget.cpp \

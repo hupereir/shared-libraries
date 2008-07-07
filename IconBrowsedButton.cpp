@@ -33,7 +33,6 @@
 #include <qbitmap.h>
 #include <qimage.h>
 
-#include "BrowsedLineEdit.h"
 #include "LineEditor.h"
 #include "CustomPixmap.h"
 #include "File.h"

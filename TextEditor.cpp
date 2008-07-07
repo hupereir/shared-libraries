@@ -100,11 +100,12 @@ TextEditor::TextEditor( QWidget *parent ):
 TextEditor::~TextEditor( void )
 {
 
-  Debug::Throw( "TextEditor::~TextEditor.\n" );
+  Debug::Throw() << "TextEditor::~TextEditor - key: " << key() << endl;
 
   // cast document
   CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( TextEditor::document() ) );
-  if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) delete document;
+  //if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) delete document;
+  if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) document->deleteLater();
 
   // update associates synchronization flags
   BASE::KeySet<TextEditor> editors( this );
@@ -124,6 +125,7 @@ TextEditor::~TextEditor( void )
   TextEditor &editor( **editors.begin() );
 
   // recreate an appropriate cursor
+  // this is dangerous
   QTextCursor cursor( editor.document() );
   cursor.setPosition( anchor );
   cursor.setPosition( position, QTextCursor::KeepAnchor );
@@ -131,6 +133,7 @@ TextEditor::~TextEditor( void )
 
   // turn off synchronization
   if( editors.size() == 1 ) editor.setSynchronized( false );
+  Debug::Throw() << "TextEditor::~TextEditor - done." << endl;
 
 }
 

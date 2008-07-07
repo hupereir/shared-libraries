@@ -1,5 +1,5 @@
-#ifndef _BrowsedLineEdit_h_
-#define _BrowsedLineEdit_h_
+#ifndef _BrowsedLineEditor_h_
+#define _BrowsedLineEditor_h_
 
 // $Id$
 
@@ -25,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file BrowsedLineEdit.h
+  \file BrowsedLineEditor.h
   \brief combined QLineEdit + associated browse button
   line edit is also customized to have faster popup menu
   result of the file dialog associated to the button is stored into the 
@@ -46,13 +46,13 @@
 class LineEditor;
 
 /*! 
-  \class BrowsedLineEdit
+  \class BrowsedLineEditor
   \brief combined QLineEdit + associated browse button
   line edit is also customized to have faster popup menu
   result of the file dialog associated to the button is stored into the 
   LineEditor object
 */
-class BrowsedLineEdit: public QWidget, public Counter
+class BrowsedLineEditor: public QWidget, public Counter
 {
 
   //! Qt meta object declaration
@@ -61,7 +61,7 @@ class BrowsedLineEdit: public QWidget, public Counter
   public:
   
   //! constructor;
-  BrowsedLineEdit( QWidget* parent );
+  BrowsedLineEditor( QWidget* parent );
     
   //! retrieve line editor
   LineEditor& editor( void ) const

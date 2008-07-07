@@ -42,7 +42,6 @@
 #include "CustomGridLayout.h"
 #include "CustomDialog.h"
 #include "Debug.h"
-#include "OptionBrowsedLineEdit.h"
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"
 #include "OptionIconBrowsedButton.h"
@@ -59,8 +58,7 @@ using namespace Qt;
 
 //_________________________________________________________
 BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
-  QDialog( parent ),
-  Counter( "BaseConfigurationDialog" ),
+  TabbedDialog( parent ),
   modified_options_( XmlOptions::get() ),
   backup_options_( XmlOptions::get() )
 {
@@ -68,36 +66,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
   setWindowTitle( "Configuration" );
-  setSizeGripEnabled( true );
-  
-  QVBoxLayout* layout( new QVBoxLayout() );
-  layout->setSpacing(10);
-  layout->setMargin(10);
-  setLayout( layout );
-  
-  QHBoxLayout* h_layout = new QHBoxLayout();
-  h_layout->setMargin(0);
-  h_layout->setSpacing(10);
-  layout->addLayout( h_layout );
-  
-  h_layout->addWidget( list_ = new TreeWidget( this ), 0 );
-  h_layout->addWidget( stack_ = new QStackedWidget(0), 1 );
-  
-  _list().setColumnCount(1);
-  _list().setMaximumWidth(150);
-  _list().header()->hide();
-  _list().setSortingEnabled( false );
+  _setSizeOptionName( "CONFIGURATION_WINDOW" );
 
-  connect( 
-    &_list(), SIGNAL( currentItemChanged( QTreeWidgetItem*, QTreeWidgetItem* ) ), 
-    SLOT( _display(QTreeWidgetItem*, QTreeWidgetItem*) ) );
-  
-  // button layout
-  button_layout_ = new QHBoxLayout();
-  button_layout_->setMargin(0);
-  button_layout_->setSpacing(5);
-  layout->addLayout( button_layout_, 0 );
-  
   // add restore default button to layout
   QPushButton* button;
   button = new QPushButton( "Restore &Defaults", this );
@@ -105,11 +75,11 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button->setAutoDefault( false );
   
   connect( button, SIGNAL( clicked() ), SLOT( _restoreDefaults() ) );
-  button_layout_->addWidget( button );
-  button_layout_->addStretch( 1 );
+  _buttonLayout().addWidget( button );
+  _buttonLayout().addStretch( 1 );
   
   // apply button
-  button_layout_->addWidget( button = new QPushButton( "&Apply", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton( "&Apply", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _update() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );  
   button->setToolTip( 
@@ -118,9 +88,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     "all changes are taken into account." );
   
   // ok button
-  button_layout_->addWidget( button = new QPushButton( "&Ok", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton( "&Ok", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _save() ) );  
-  connect( button, SIGNAL( clicked() ), SLOT( _saveWindowSize() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
   button->setToolTip( 
@@ -130,58 +99,13 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button->setAutoDefault( false );
   
   // cancel button
-  button_layout_->addWidget( button = new QPushButton( "&Cancel", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton( "&Cancel", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
-  connect( button, SIGNAL( clicked() ), SLOT( _saveWindowSize() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
   button->setToolTip( "discard changes to options and close window" );
   button->setAutoDefault( false );
-  
-  // close window shortcut
-  connect( new QShortcut( CTRL+Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
-   
-  //_restoreWindowSize();
-  
-}
-
-//_________________________________________________________
-QWidget& BaseConfigurationDialog::addPage( const QString& title, const bool& expand )
-{  
-  Debug::Throw( "ConfigList::Item::Item.\n" );
-  
-  
-  QScrollArea* scroll = new QScrollArea();
-  scroll->setWidgetResizable ( true );
-  scroll->setFrameStyle( QFrame::NoFrame );
-  
-  QWidget* main( new QWidget() );
-  scroll->setWidget( main );
-  _stack().addWidget( scroll );
-
-  QVBoxLayout* layout( new QVBoxLayout() );
-  layout->setSpacing( 5 );
-  layout->setMargin( 0 );
-  main->setLayout( layout );
-  
-  // create new item and add to stack
-  new ConfigListItem( &_list(), title, scroll );
-  
-  // in expanded mode, the main widget is returned directly
-  if( expand ) return *main;
-  
-  // in non-expanded mode (the default)
-  // a widget is created inside main, and a stretch is added at the bottom
-  // the created widget is return
-  QWidget* contents( new QWidget( main ) );
-  contents->setLayout( new QVBoxLayout() );
-  contents->layout()->setSpacing(5);
-  contents->layout()->setMargin(0);
-  
-  layout->addWidget( contents );
-  layout->addStretch();
-  return *contents;
-  
+    
 }
 
 //__________________________________________________
@@ -462,17 +386,6 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_display( QTreeWidgetItem* current, QTreeWidgetItem* previous )
-{
-  Debug::Throw( "BaseConfigurationDialog::_display.\n" );
-  
-  if( !current ) current = previous;
-  ConfigListItem* item( dynamic_cast<ConfigListItem*>(current) );
-  assert( item );
-  _stack().setCurrentWidget(&item->page());  
-}
-
-//__________________________________________________
 void BaseConfigurationDialog::_editPixmapPathList( void )
 {
   
@@ -520,56 +433,4 @@ void BaseConfigurationDialog::_save( void )
   _update();
   XmlOptions::write();
 
-}
-
-//__________________________________________________
-QSize BaseConfigurationDialog::minimumSizeHint( void ) const
-{
-  
-  Debug::Throw( "BaseConfigurationDialog::minimumSizeHint.\n" );
-  
-  // resize
-  if( XmlOptions::get().find( "CONFIGURATION_WINDOW_WIDTH" ) && XmlOptions::get().find( "CONFIGURATION_WINDOW_HEIGHT" ) )
-  {
-    
-    int width( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_WIDTH" ) );
-    int height( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_HEIGHT" ) );
-    Debug::Throw() << "BaseConfigurationDialog::minimumSizeHint: " << width << "x" << height << endl;
-    return QSize( width, height );
-
-  } else return QDialog::minimumSizeHint();
- 
-}
-
-
-//__________________________________________________
-QSize BaseConfigurationDialog::sizeHint( void ) const
-{
-  
-  Debug::Throw( "BaseConfigurationDialog::sizeHint.\n" );
-  
-  // resize
-  if( XmlOptions::get().find( "CONFIGURATION_WINDOW_WIDTH" ) && XmlOptions::get().find( "CONFIGURATION_WINDOW_HEIGHT" ) )
-  {
-    
-    int width( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_WIDTH" ) );
-    int height( XmlOptions::get().get<int>( "CONFIGURATION_WINDOW_HEIGHT" ) );
-    Debug::Throw() << "BaseConfigurationDialog::minimumSizeHint: " << width << "x" << height << endl;
-    return QSize( width, height );
-
-  } else return QDialog::sizeHint();
- 
-}
-
-//__________________________________________________
-void BaseConfigurationDialog::_saveWindowSize( void )
-{
-  
-  Debug::Throw() << "BaseConfigurationDialog::_saveWindowSize: " << width() << "x" << height() << endl;
-  if( !isHidden() )
-  {
-    XmlOptions::get().set<int>( "CONFIGURATION_WINDOW_WIDTH", width() );
-    XmlOptions::get().set<int>( "CONFIGURATION_WINDOW_HEIGHT", height() );
-  }
-  
 }
