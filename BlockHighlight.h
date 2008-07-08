@@ -82,6 +82,9 @@ class BlockHighlight: public QObject, public Counter
   //! delayed highlighting
   virtual void timerEvent( QTimerEvent* event );
   
+  //! highlight
+  void _highlight( void );
+  
   private:
   
   //! parent editor

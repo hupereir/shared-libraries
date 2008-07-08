@@ -51,7 +51,7 @@ BlockHighlight::BlockHighlight( TextEditor* parent ):
 //______________________________________________________________________
 void BlockHighlight::clear( void )
 {
-
+  
   if( cleared_ ) return;
   
   // loop over all blocks
@@ -81,7 +81,9 @@ void BlockHighlight::clear( void )
 //______________________________________________________________________
 void BlockHighlight::highlight( void )
 {  
+  
   if( !isEnabled() ) return;
+  
   clear();
   timer_.start(50, this );
 }
@@ -90,13 +92,23 @@ void BlockHighlight::highlight( void )
 void BlockHighlight::timerEvent( QTimerEvent* event )
 {
 
-  Debug::Throw( "BlockHighlight::timerEvent.\n" );
   if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event ); 
   
   // stop timer
   // (all BasicTimers restart automatically by default)
   timer_.stop(); 
   
+  _highlight();
+  
+}
+
+ 
+//______________________________________________________________________
+void BlockHighlight::_highlight( void )
+{  
+
+  if( !isEnabled() ) return;
+ 
   // retrieve current block
   QTextBlock block( parent_->textCursor().block() );  
   
@@ -120,5 +132,4 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
 
   emit highlightChanged();
   cleared_ = false;
-  
 }

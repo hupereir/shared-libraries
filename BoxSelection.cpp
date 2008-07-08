@@ -71,8 +71,6 @@ void BoxSelection::synchronize( const BoxSelection& box )
   _updateRect();
   
   parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) );
-  //if( state() == STARTED || state() == FINISHED ) parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) ); 
-  //else if( state() == EMPTY ) clear();
   
   return; 
   
@@ -258,11 +256,22 @@ bool BoxSelection::fromString( QString input )
   {
     
     cursor.setPosition( cursors_[i].anchor() );
-    
+
     // if cursor has no selection, one need to make sur that there is enough white spaces in the line before copying the new string
-    cursor.movePosition( QTextCursor::StartOfLine, QTextCursor::KeepAnchor );
-    int extra_length( cursors_.firstColumn() - cursor.anchor() + cursor.position() );
+    // this hack is necessary because for some reason cursor.movePosition( QTextCursor::StartOfLine ) fails.
+    int extra_length = cursors_.firstColumn() ;
+    int old_bottom( parent_->cursorRect( cursor ).bottom() );
+    int new_bottom( 0 );
+    while( cursor.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor ) && (new_bottom =  parent_->cursorRect( cursor ).bottom() ) == old_bottom ) 
+    {
+      extra_length--;
+      old_bottom = new_bottom;
+    }
     
+    // if( !cursor.movePosition( QTextCursor::StartOfLine, QTextCursor::KeepAnchor ) )
+    // { Debug::Throw() << "BoxSelection::fromString - unable to move cursor" << endl; }    
+    // int extra_length = cursors_.firstColumn() - cursor.anchor() + cursor.position();
+        
     // move to current cursor end of the selection
     cursor.setPosition( cursors_[i].position(), QTextCursor::KeepAnchor );
     
