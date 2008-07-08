@@ -1,26 +1,26 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
- 
+
 /*!
   \file DockPanel.cpp
   \brief detachable generic panel
@@ -30,7 +30,6 @@
 */
 
 #include <QGridLayout>
-#include <QApplication>
 
 #include "DockPanel.h"
 #include "Debug.h"
@@ -46,22 +45,22 @@ DockPanel::DockPanel( QWidget* parent ):
   Counter( "DockPanel" )
 {
   Debug::Throw( "DockPanel::DockPanel.\n" );
-  
+
   // this layout
   setLayout( new QVBoxLayout() );
   layout()->setMargin(0);
   layout()->setSpacing(2);
-  
+
   // main widget
   layout()->addWidget( main_ = new LocalWidget( this ) );
   main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
   connect( &main().detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
-  
+
   // connections
   main().updateActions( false );
   connect( &main().stickyAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleSticky( bool ) ) );
   connect( &main().staysOnTopAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStaysOnTop( bool ) ) );
-  
+
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
 
   // grid layout to overlay main layout and invisible grip
@@ -69,67 +68,67 @@ DockPanel::DockPanel( QWidget* parent ):
   grid_layout->setMargin(0);
   grid_layout->setSpacing(0);
   main().setLayout( grid_layout );
-  
+
   // vertical layout for children
   main_layout_ = new QVBoxLayout();
   main_layout_->setMargin( 5 );
   main_layout_->setSpacing( 5 );
   grid_layout->addLayout( main_layout_, 0, 0, 1, 1 );
-  
+
   // vertical panel
   Debug::Throw( "DocPanel::DockPanel - panel.\n" );
   panel_ = new QWidget( main_ );
   panel_->setLayout( new QVBoxLayout() );
   panel_->layout()->setMargin(0);
   panel_->layout()->setSpacing(2);
-  
+
   main_layout_->addWidget( panel_, 1 );
- 
+
   // invisible size grip
   grid_layout->addWidget( size_grip_ = new LocalGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
-  size_grip_->hide(); 
-    
+  size_grip_->hide();
+
 }
 
 //___________________________________________________________
 void DockPanel::_toggleDock( void )
 {
-  
+
   Debug::Throw( "DockPanel::_toggleDock.\n" );
 
-  if( !main().parent() ) 
+  if( !main().parent() )
   {
-  
+
     // change parent
     main().setParent( this );
     layout()->addWidget( main_ );
     size_grip_->hide();
     main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
     main().show();
-    
+
     // change action text
     main().detachAction().setText("&detach");
     main().updateActions( false );
-    
+
     // signals
     emit attached( true );
     emit attached();
-  
+
   } else {
-            
+
     // change parent
     main().setParent( 0 );
     main().setFrameStyle( QFrame::Panel|QFrame::Raised );
-    
+
     // window flags
-    Qt::WindowFlags flags = Qt::FramelessWindowHint;
+    Qt::WindowFlags flags = Qt::FramelessWindowHint|Qt::Tool;
     main().setWindowFlags( flags );
 
     // move and resize
     main().move( mapToGlobal( QPoint(0,0) ) );
     main().setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
     if( !title_.empty() ) main().setWindowTitle( title_.c_str() );
-    
+
     // change action text
     main().detachAction().setText("&attach");
     main().updateActions( true );
@@ -144,9 +143,9 @@ void DockPanel::_toggleDock( void )
     // signals
     emit attached( false );
     emit detached();
-  
-  }  
-  
+
+  }
+
 }
 
 //___________________________________________________________
@@ -163,11 +162,11 @@ DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
 //___________________________________________________________
 void DockPanel::LocalWidget::updateActions( bool detached )
 {
-  
+
   stickyAction().setEnabled( detached );
   staysOnTopAction().setEnabled( detached );
-  
-} 
+
+}
 
 //___________________________________________________________
 void DockPanel::LocalWidget::closeEvent( QCloseEvent* event )
@@ -182,13 +181,13 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::mousePressEvent.\n" );
   button_ = event->button();
-      
-  if( button_ == Qt::LeftButton ) 
-  { 
-    click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft()); 
+
+  if( button_ == Qt::LeftButton )
+  {
+    click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft());
     timer_.start( 200, this );
   }
-  
+
   return QFrame::mousePressEvent( event );
 }
 
@@ -206,7 +205,7 @@ void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
 //___________________________________________________________
 void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
 {
-  
+
   // check button
   if( button_ != Qt::LeftButton ) return QFrame::mouseMoveEvent( event );
 
@@ -230,26 +229,26 @@ void DockPanel::LocalWidget::mouseDoubleClickEvent( QMouseEvent* event )
 //___________________________________________________________
 void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
 {
-  
+
   Debug::Throw( "DockPanel::LocalWidget::timerEvent.\n" );
   if( event->timerId() != timer_.timerId() ) return QFrame::timerEvent( event );
-  
+
   timer_.stop();
   if( button_ != Qt::LeftButton ) return;
-  
+
   if( parent() ) detachAction().trigger();
-  if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
+  if( X11Util::moveWidget( *this, QCursor::pos() ) ) return;
   else {
     _setMoveEnabled( true );
     setCursor( Qt::SizeAllCursor );
   }
-  
+
 }
 
 //___________________________________________________________
 void DockPanel::LocalWidget::_installActions( void )
 {
-  
+
   Debug::Throw( "DockPanel::LocalWidget::_installActions.\n" );
 
   addAction( detach_action_ = new QAction( "&detach", this ) );
@@ -259,7 +258,7 @@ void DockPanel::LocalWidget::_installActions( void )
   addAction( stays_on_top_action_ = new QAction( "&Stays on top", this ) );
   stays_on_top_action_->setToolTip( "keep window on top of all others" );
   stays_on_top_action_->setCheckable( true );
-  
+
   // sticky
   addAction( sticky_action_ = new QAction( "&Sticky", this ) );
   sticky_action_->setToolTip( "make window appear on all desktops" );
@@ -272,36 +271,36 @@ void DockPanel::_toggleStaysOnTop( bool state )
 {
 
   // check that widget is top level
-  if( main().parentWidget() ) return;  
-  
+  if( main().parentWidget() ) return;
+
   bool visible( !main().isHidden() );
   if( visible ) main().hide();
-  
+
   #ifdef Q_WS_X11
 
   // on X11 one uses NET_WM directly
   // because the QT equivalent conflicts with the STICKY flag below
-  
+
   // change property depending on state
-  if( state ) 
+  if( state )
   {
-  
+
     X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
     X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_ABOVE, 1 );
-    
+
   } else {
-    
+
     X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP);
     X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_ABOVE);
- 
+
   }
-  
+
   #else
-  
+
   // Qt implementation
   if( state ) main().setWindowFlags( main().windowFlags() | Qt::WindowStaysOnTopHint );
   else main().setWindowFlags( main().windowFlags() & ~Qt::WindowStaysOnTopHint );
-  
+
   #endif
   if( visible ) main().show();
 
@@ -312,20 +311,20 @@ void DockPanel::_toggleSticky( bool state )
 {
 
   Debug::Throw( "DockPanel::_toggleSticky.\n" );
-  
+
   // check that widget is top level
-  if( main().parentWidget() ) return;  
-  
+  if( main().parentWidget() ) return;
+
   // the widget must first be hidden
   // prior to modifying the property
   bool visible( !main().isHidden() );
   if( visible ) main().hide();
- 
+
   // change property depending on state
   if( state ) X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1 );
   else X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
-     
+
   // show widget again, if needed
-  if( visible ) main().show();  
+  if( visible ) main().show();
 
 }
