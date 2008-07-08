@@ -55,30 +55,14 @@ class DockPanel: public QWidget, public Counter
   Q_OBJECT
   
   public:
-  
-  //! dock panel flags  
-  enum Flags
-  {
-    
-    //! no flag
-    NONE = 0,
         
-    //! dock panel stays on top of other windows
-    STAYS_ON_TOP = 1
-    
-  };
-      
   //! constructor
-  DockPanel( QWidget* parent, const unsigned int& flags = STAYS_ON_TOP );
+  DockPanel( QWidget* parent );
 
   //! destructor
   virtual ~DockPanel()
   {}
-  
-  //! dock panel flags
-  void setFlags( const unsigned int& flags )
-  { flags_ = flags; }
-   
+     
   //! get panel (to add contents)
   virtual QWidget& panel( void )
   { 
@@ -98,9 +82,20 @@ class DockPanel: public QWidget, public Counter
     //! constructor
     LocalWidget( DockPanel* parent );
     
+    //! update actions
+    void updateActions( bool );
+  
     //! detach action
     QAction& detachAction( void ) const
     { return *detach_action_; }
+    
+    //! stay on top
+    QAction& staysOnTopAction( void ) const
+    { return *stays_on_top_action_; }
+
+    //! widget is hidden from taskbar
+    QAction& stickyAction( void ) const
+    { return *sticky_action_; }
     
     protected:
     
@@ -122,6 +117,9 @@ class DockPanel: public QWidget, public Counter
     //! timer event [overloaded]
     virtual void timerEvent( QTimerEvent *);     
    
+    //! actions
+    void _installActions( void );
+    
     private:
     
     //! move enabled
@@ -135,6 +133,12 @@ class DockPanel: public QWidget, public Counter
     //! attach/detach action
     QAction* detach_action_;
 
+    //! stay on top
+    QAction* stays_on_top_action_;
+ 
+    //! make window sticky
+    QAction* sticky_action_;
+    
     //! button state
     Qt::MouseButton button_;
   
@@ -169,6 +173,12 @@ class DockPanel: public QWidget, public Counter
   //! toggle dock
   virtual void _toggleDock( void );
   
+  //! stays on top
+  virtual void _toggleStaysOnTop( bool );
+  
+  //! toggle window stickyness
+  virtual void _toggleSticky( bool );
+
   protected:
     
   //! local QSizeGrip
@@ -190,15 +200,12 @@ class DockPanel: public QWidget, public Counter
     { QWidget::paintEvent( event ); }
     
   };
-      
+  
   private:
   
   //! dock title
   std::string title_;
-  
-  //! flags
-  unsigned int flags_;
-    
+      
   //! vertical layout for main_ widget
   QVBoxLayout* main_layout_;
   
