@@ -56,23 +56,9 @@ class TabWidget: public QFrame, public Counter
   Q_OBJECT
   
   public:
-       
-  //! child tab flags  
-  enum Flags
-  {
-    //! no flag
-    NONE = 0,
-        
-    //! dock panel stays on top of other windows
-    STAYS_ON_TOP = 1
-  };
-      
+             
   //! constructor
-  TabWidget( QTabWidget* parent, const unsigned int& flags = NONE  );
-  
-  //! dock panel flags
-  void setFlags( const unsigned int& flags )
-  { flags_ = flags; }
+  TabWidget( QTabWidget* parent );
   
   //! set tab title
   void setTitle( const std::string& title )
@@ -96,10 +82,21 @@ class TabWidget: public QFrame, public Counter
     return *box_;
   }
   
+  //! update actions
+  void updateActions( bool );
+  
   //! detach action
   QAction& detachAction( void ) const
   { return *detach_action_; }
-            
+  
+  //! stay on top
+  QAction& staysOnTopAction( void ) const
+  { return *stays_on_top_action_; }
+  
+  //! widget is hidden from taskbar
+  QAction& stickyAction( void ) const
+  { return *sticky_action_; }
+  
   signals:
   
   //! emmited when box is detached
@@ -128,11 +125,20 @@ class TabWidget: public QFrame, public Counter
   //! timer event [overloaded]
   virtual void timerEvent( QTimerEvent *);     
   
+  //! actions
+  void _installActions( void );
+  
   protected slots:
       
   //! toggle dock
   virtual void _toggleDock( void );
   
+  //! stays on top
+  virtual void _toggleStaysOnTop( bool );
+  
+  //! toggle window stickyness
+  virtual void _toggleSticky( bool );
+
   private: 
   
   //! move enabled
@@ -187,6 +193,12 @@ class TabWidget: public QFrame, public Counter
   //! attach/detach action
   QAction* detach_action_;
 
+  //! stay on top
+  QAction* stays_on_top_action_;
+  
+  //! make window sticky
+  QAction* sticky_action_;
+  
   //! button state
   Qt::MouseButton button_;
   

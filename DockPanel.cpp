@@ -107,7 +107,6 @@ void DockPanel::_toggleDock( void )
     main().show();
 
     // change action text
-    main().detachAction().setText("&detach");
     main().updateActions( false );
 
     // signals
@@ -130,7 +129,6 @@ void DockPanel::_toggleDock( void )
     if( !title_.empty() ) main().setWindowTitle( title_.c_str() );
 
     // change action text
-    main().detachAction().setText("&attach");
     main().updateActions( true );
 
     _toggleStaysOnTop( main().staysOnTopAction().isChecked() );
@@ -145,6 +143,70 @@ void DockPanel::_toggleDock( void )
     emit detached();
 
   }
+
+}
+
+
+//__________________________________________________________
+void DockPanel::_toggleStaysOnTop( bool state )
+{
+
+  // check that widget is top level
+  if( main().parentWidget() ) return;
+
+  bool visible( !main().isHidden() );
+  if( visible ) main().hide();
+
+  #ifdef Q_WS_X11
+
+  // on X11 one uses NET_WM directly
+  // because the QT equivalent conflicts with the STICKY flag below
+
+  // change property depending on state
+  if( state )
+  {
+
+    X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
+    X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_ABOVE, 1 );
+
+  } else {
+
+    X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP);
+    X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_ABOVE);
+
+  }
+
+  #else
+
+  // Qt implementation
+  if( state ) main().setWindowFlags( main().windowFlags() | Qt::WindowStaysOnTopHint );
+  else main().setWindowFlags( main().windowFlags() & ~Qt::WindowStaysOnTopHint );
+
+  #endif
+  if( visible ) main().show();
+
+}
+
+//__________________________________________________________
+void DockPanel::_toggleSticky( bool state )
+{
+
+  Debug::Throw( "DockPanel::_toggleSticky.\n" );
+
+  // check that widget is top level
+  if( main().parentWidget() ) return;
+
+  // the widget must first be hidden
+  // prior to modifying the property
+  bool visible( !main().isHidden() );
+  if( visible ) main().hide();
+
+  // change property depending on state
+  if( state ) X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1 );
+  else X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
+
+  // show widget again, if needed
+  if( visible ) main().show();
 
 }
 
@@ -163,6 +225,7 @@ DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
 void DockPanel::LocalWidget::updateActions( bool detached )
 {
 
+  detachAction().setText( detached ? "&detach":"&attached" );
   stickyAction().setEnabled( detached );
   staysOnTopAction().setEnabled( detached );
 
@@ -251,6 +314,7 @@ void DockPanel::LocalWidget::_installActions( void )
 
   Debug::Throw( "DockPanel::LocalWidget::_installActions.\n" );
 
+  // detach
   addAction( detach_action_ = new QAction( "&detach", this ) );
   detach_action_->setToolTip( "dock/undock panel" );
 
@@ -263,68 +327,5 @@ void DockPanel::LocalWidget::_installActions( void )
   addAction( sticky_action_ = new QAction( "&Sticky", this ) );
   sticky_action_->setToolTip( "make window appear on all desktops" );
   sticky_action_->setCheckable( true );
-
-}
-
-//__________________________________________________________
-void DockPanel::_toggleStaysOnTop( bool state )
-{
-
-  // check that widget is top level
-  if( main().parentWidget() ) return;
-
-  bool visible( !main().isHidden() );
-  if( visible ) main().hide();
-
-  #ifdef Q_WS_X11
-
-  // on X11 one uses NET_WM directly
-  // because the QT equivalent conflicts with the STICKY flag below
-
-  // change property depending on state
-  if( state )
-  {
-
-    X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
-    X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_ABOVE, 1 );
-
-  } else {
-
-    X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP);
-    X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_ABOVE);
-
-  }
-
-  #else
-
-  // Qt implementation
-  if( state ) main().setWindowFlags( main().windowFlags() | Qt::WindowStaysOnTopHint );
-  else main().setWindowFlags( main().windowFlags() & ~Qt::WindowStaysOnTopHint );
-
-  #endif
-  if( visible ) main().show();
-
-}
-
-//__________________________________________________________
-void DockPanel::_toggleSticky( bool state )
-{
-
-  Debug::Throw( "DockPanel::_toggleSticky.\n" );
-
-  // check that widget is top level
-  if( main().parentWidget() ) return;
-
-  // the widget must first be hidden
-  // prior to modifying the property
-  bool visible( !main().isHidden() );
-  if( visible ) main().hide();
-
-  // change property depending on state
-  if( state ) X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1 );
-  else X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
-
-  // show widget again, if needed
-  if( visible ) main().show();
 
 }

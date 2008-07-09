@@ -41,10 +41,9 @@
 using namespace std;
 
 //________________________________________________________
-TabWidget::TabWidget( QTabWidget* parent, const unsigned int& flags ):
+TabWidget::TabWidget( QTabWidget* parent ):
     QFrame(), 
     Counter( "TabWidget" ),
-    flags_( flags ),
     parent_( parent ),
     index_( 0 ),
     button_( Qt::NoButton ),
@@ -75,14 +74,22 @@ TabWidget::TabWidget( QTabWidget* parent, const unsigned int& flags ):
   // size grip
   grid_layout->addWidget( size_grip_ = new LocalGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
   size_grip_->hide(); 
- 
-  // detach action
-  detach_action_ = new QAction( "&detach", this );
-  detachAction().setToolTip( "dock/undock panel" );
-  connect( &detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
-  addAction( &detachAction() );
+
+  _installActions();
+  updateActions( false );
   setContextMenuPolicy( Qt::ActionsContextMenu );
   
+}
+
+
+//___________________________________________________________
+void TabWidget::updateActions( bool detached )
+{
+
+  detachAction().setText( detached ? "&attached":"&detach" );
+  stickyAction().setEnabled( detached );
+  staysOnTopAction().setEnabled( detached );
+
 }
 
 //___________________________________________________________
@@ -94,7 +101,7 @@ void TabWidget::_toggleDock( void )
   if( !parent() ) {
     
     // store size for later detach
-    detachAction().setText("&detach");
+    updateActions( false );
     
     // reinsert into parent and select
     setFrameStyle( QFrame::NoFrame );
@@ -118,14 +125,11 @@ void TabWidget::_toggleDock( void )
     
     // reparent to top level
     setParent( 0 );
+    setFrameStyle( QFrame::Panel | QFrame::Raised );
  
     // window flags
-    Qt::WindowFlags flags = Qt::FramelessWindowHint;
-    if( flags_ & STAYS_ON_TOP ) flags |= Qt::WindowStaysOnTopHint;
+    Qt::WindowFlags flags = Qt::FramelessWindowHint|Qt::Tool;
     setWindowFlags( flags );
-
-    // frame style
-    setFrameStyle( QFrame::Panel | QFrame::Raised );
    
     // move and resize
     move( parent->mapToGlobal( QPoint(0,0) ) );    
@@ -133,7 +137,10 @@ void TabWidget::_toggleDock( void )
     if( !title_.empty() ) { setWindowTitle( title_.c_str() ); }
 
     // change action text
-    detachAction().setText("&attach");
+    updateActions( true );
+
+    _toggleStaysOnTop( staysOnTopAction().isChecked() );
+    _toggleSticky( stickyAction().isChecked() );
 
     // show widgets
     size_grip_->show();
@@ -143,6 +150,70 @@ void TabWidget::_toggleDock( void )
     emit detached();
   }  
   
+}
+
+
+//__________________________________________________________
+void TabWidget::_toggleStaysOnTop( bool state )
+{
+
+  // check that widget is top level
+  if( parentWidget() ) return;
+
+  bool visible( !isHidden() );
+  if( visible ) hide();
+
+  #ifdef Q_WS_X11
+
+  // on X11 one uses NET_WM directly
+  // because the QT equivalent conflicts with the STICKY flag below
+
+  // change property depending on state
+  if( state )
+  {
+
+    X11Util::changeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
+    X11Util::changeProperty( *this, X11Util::_NET_WM_STATE_ABOVE, 1 );
+
+  } else {
+
+    X11Util::removeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP);
+    X11Util::removeProperty( *this, X11Util::_NET_WM_STATE_ABOVE);
+
+  }
+
+  #else
+
+  // Qt implementation
+  if( state ) setWindowFlags( windowFlags() | Qt::WindowStaysOnTopHint );
+  else setWindowFlags( windowFlags() & ~Qt::WindowStaysOnTopHint );
+
+  #endif
+  if( visible ) show();
+
+}
+
+//__________________________________________________________
+void TabWidget::_toggleSticky( bool state )
+{
+
+  Debug::Throw( "TabWidget::_toggleSticky.\n" );
+
+  // check that widget is top level
+  if( parentWidget() ) return;
+
+  // the widget must first be hidden
+  // prior to modifying the property
+  bool visible( !isHidden() );
+  if( visible ) hide();
+
+  // change property depending on state
+  if( state ) X11Util::changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, 1 );
+  else X11Util::removeProperty( *this, X11Util::_NET_WM_STATE_STICKY );
+
+  // show widget again, if needed
+  if( visible ) show();
+
 }
 
 //___________________________________________________________
@@ -232,4 +303,31 @@ void TabWidget::timerEvent( QTimerEvent *event )
     setCursor( Qt::SizeAllCursor );
   }
   
+}
+
+//____________________________________________________
+void TabWidget::_installActions( void )
+{
+  
+  Debug::Throw( "TabWidget::_installActions.\n" );
+  
+  // detach action
+  addAction( detach_action_ = new QAction( "&detach", this ) );
+  detach_action_->setToolTip( "dock/undock panel" );
+  connect( detach_action_, SIGNAL( triggered() ), SLOT( _toggleDock() ) );
+
+  // stays on top
+  addAction( stays_on_top_action_ = new QAction( "&Stays on top", this ) );
+  stays_on_top_action_->setToolTip( "keep window on top of all others" );
+  stays_on_top_action_->setCheckable( true );
+  stays_on_top_action_->setChecked( false );
+  connect( stays_on_top_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleStaysOnTop( bool ) ) );
+  
+  // sticky
+  addAction( sticky_action_ = new QAction( "&Sticky", this ) );
+  sticky_action_->setToolTip( "make window appear on all desktops" );
+  sticky_action_->setCheckable( true );
+  sticky_action_->setChecked( false );
+  connect( sticky_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleSticky( bool ) ) );
+
 }
