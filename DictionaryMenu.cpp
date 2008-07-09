@@ -33,7 +33,6 @@
 #include "DictionaryMenu.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"
-#include "XmlOptions.h"
 
 using namespace std;
 using namespace SPELLCHECK;
@@ -76,8 +75,7 @@ void DictionaryMenu::_reset( void )
   action_map_.clear();
 
   // add reset button
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  addAction( "&Reload", this, SLOT( _reset() ) )->setIcon( IconEngine::get( ICONS::RELOAD, path_list ) );
+  addAction( "&Reload", this, SLOT( _reset() ) )->setIcon( IconEngine::get( ICONS::RELOAD ) );
   
   // load dictionaries from spell interface
   set< string > dictionaries( SPELLCHECK::SpellInterface().dictionaries() );

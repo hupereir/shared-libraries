@@ -33,8 +33,10 @@
 #include <QPushButton>
 #include <QTextCursor>
 
+#include "BaseIcons.h"
 #include "CustomGridLayout.h"
 #include "Debug.h"
+#include "IconEngine.h"
 #include "QtUtil.h"
 #include "SpellDialog.h"
 #include "SpellInterface.h"
@@ -151,12 +153,12 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   frame->setFrameShape( QFrame::HLine );
   
   // replace button
-  v_layout->addWidget( button = new QPushButton( "&Replace", this ) );
+  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Replace", this ) );
   connect( button, SIGNAL(clicked()), SLOT( _replace() ) );
   if( read_only ) button->setEnabled( false );
   
   // replace button
-  v_layout->addWidget( button = new QPushButton( "R&eplace all", this ) );
+  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "R&eplace all", this ) );
   connect( button, SIGNAL(clicked()), SLOT( _replaceAll() ) );
   if( read_only ) button->setEnabled( false );
 
@@ -164,11 +166,11 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   frame->setFrameShape( QFrame::HLine );
   
   // ignore button
-  v_layout->addWidget( button = new QPushButton( "&Ignore", this ) );
+  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Ignore", this ) );
   connect( button, SIGNAL(clicked()), SLOT( _ignore() ) );
 
   // ignore button
-  v_layout->addWidget( button = new QPushButton( "I&gnore all", this ) );
+  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "I&gnore all", this ) );
   connect( button, SIGNAL(clicked()), SLOT( _ignoreAll() ) );
 
   // state label_
@@ -176,7 +178,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   state_label_->setAlignment( Qt::AlignCenter );
 
   // close button
-  v_layout->addWidget( button = new QPushButton( "&Close", this ) );
+  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
   connect( button, SIGNAL(clicked()), SLOT( close() ) );
   
   // change font
