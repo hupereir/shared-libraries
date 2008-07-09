@@ -35,13 +35,15 @@
 #include <QShortcut>
 #include <QHeaderView>
 
-#include "TextEditor.h"
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "HelpDialog.h"
 #include "HelpDelegate.h"
 #include "HelpManager.h"
 #include "HelpModel.h"
 #include "NewItemDialog.h"
 #include "QtUtil.h"
+#include "TextEditor.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 
@@ -106,11 +108,11 @@ HelpDialog::HelpDialog( QWidget *parent ):
   v_layout->addLayout( h_layout );
 
   QPushButton* button;
-  h_layout->addWidget( button = new QPushButton( "&Close", html_frame_ ) );  
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", html_frame_ ) );  
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setToolTip( "Close the reference manual window" );
   
-  h_layout->addWidget( edit_button_ = new QPushButton( "&Edit", html_frame_ ) );  
+  h_layout->addWidget( edit_button_ = new QPushButton( IconEngine::get( ICONS::EDIT ), "&Edit", html_frame_ ) );  
   connect( edit_button_, SIGNAL( clicked() ), SLOT( _toggleEdition() ) );
   edit_button_->setToolTip( "edit current help" );
   h_layout->addStretch( 1 );
@@ -138,7 +140,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   h_layout->setDirection( QBoxLayout::RightToLeft );  
   v_layout->addLayout( h_layout );
 
-  h_layout->addWidget( button = new QPushButton( "&Close", plain_frame_ ) );  
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", plain_frame_ ) );  
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setToolTip( "Close the reference manual window" );
   
