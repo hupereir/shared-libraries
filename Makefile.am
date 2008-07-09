@@ -4,6 +4,7 @@ EXTRA_DIST = \
 crystal/color.png \
 crystal/colorpicker.png \
 crystal/configure.png \
+crystal/edit.png \
 crystal/editcopy.png \
 crystal/editcut.png \
 crystal/editpaste.png \
@@ -21,6 +22,8 @@ crystal/viewmag.png \
 oxygen/color.png \
 oxygen/colorpicker.png \
 oxygen/configure.png \
+oxygen/dialog-information.png \
+oxygen/edit.png \
 oxygen/editcopy.png \
 oxygen/editcut.png \
 oxygen/editpaste.png \
