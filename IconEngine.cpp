@@ -40,12 +40,15 @@ IconEngine IconEngine::singleton_;
 
 
 //__________________________________________________________
-void IconEngine::reload( void )
+bool IconEngine::reload( void )
 { 
   Debug::Throw( "IconEngine::reload.\n" );
-  CustomPixmap::reload();
+  
+  if( !CustomPixmap::reload() ) return false;
   for( Cache::iterator iter = get().cache_.begin(); iter != get().cache_.end(); iter++ )
   { get().cache_[iter->first] = get()._get( iter->first ); }
+  
+  return true;
 }
 
 //__________________________________________________________

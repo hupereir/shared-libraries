@@ -98,11 +98,7 @@ class IconEngine: public Counter
   { return get().cache_; }
   
   //! reload all icons set in cache from new path list
-  void reload( void );
-  
-  //! reload cache
-  void clear( void )
-  { cache_.clear(); }
+  bool reload( void );
   
   private:
     

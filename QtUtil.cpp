@@ -137,7 +137,7 @@ bool QtUtil::questionDialog(
   dialog.setLayout( layout );
 
   //! try load Question icon
-  CustomPixmap question_pixmap = CustomPixmap().find( ICONS::INFORMATION );
+  CustomPixmap question_pixmap = CustomPixmap().find( ICONS::WARNING );
 
   // insert main vertical box
   if( question_pixmap.isNull() )

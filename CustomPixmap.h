@@ -115,12 +115,8 @@ class CustomPixmap: public QPixmap, public Counter
   //@{ 
   
   //! reload all icons set in cache from new path list
-  static void reload( void );
+  static bool reload( void );
   
-  //! reload cache
-  static void clear( void )
-  { cache_.clear(); }
-
   //@}
   
   private:

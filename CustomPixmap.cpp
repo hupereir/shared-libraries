@@ -206,18 +206,20 @@ CustomPixmap CustomPixmap::active( void )
 }
 
 //_______________________________________________________________________
-void CustomPixmap::reload()
+bool CustomPixmap::reload()
 {
   
   Debug::Throw( "CustomPixmap::reload.\n" );
 
   // load path from options
   list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  if( path_list == _pixmapPath() ) return;
+  if( path_list == _pixmapPath() ) return false;
 
   _setPixmapPath( path_list );
   for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
   { cache_[iter->first] = _find( iter->first ); }
+
+  return true;
   
 }
 
