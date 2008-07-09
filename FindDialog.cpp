@@ -30,6 +30,8 @@
 
 #include <QPushButton>
 
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "LineEditor.h"
 #include "Debug.h"
 #include "FindDialog.h"
@@ -171,14 +173,14 @@ void FindDialog::_createButtons( void )
 
   // insert Find button
   QPushButton *button;
-  _buttonLayout().addWidget( button = new QPushButton( "&Find", this ) );
+  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), "&Find", this ) );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), SLOT( _find( void ) ) );
   connect( button, SIGNAL( clicked( void ) ), SLOT( _updateFindComboBox( void ) ) );
   addDisabledButton( button );
 
   // insert Cancel button
-  _buttonLayout().addWidget( button = new QPushButton( "&Cancel", this ) );
+  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Cancel", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setAutoDefault( false );
   

@@ -38,8 +38,8 @@
 #include "File.h"
 #include "IconEngine.h"
 #include "OpenPreviousMenu.h"
-#include "XmlOptions.h"
 #include "QtUtil.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
@@ -56,11 +56,10 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   _updateConfiguration();
 
   // icons
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  setIcon( IconEngine::get( ICONS::OPEN, path_list ) );
+  setIcon( IconEngine::get( ICONS::OPEN ) );
 
   // clean action
-  clean_action_ = new QAction( IconEngine::get( ICONS::DELETE, path_list ), "&Clean", 0 );
+  clean_action_ = new QAction( IconEngine::get( ICONS::DELETE ), "&Clean", 0 );
   connect( clean_action_, SIGNAL( triggered() ), SLOT( _clean() ) );
   addAction( clean_action_ );
   addSeparator();
@@ -215,9 +214,6 @@ void OpenPreviousMenu::_loadFiles( void )
   { records.sort( FileRecord::FirstOpenFTor() ); }
   else { records.sort( FileRecord::SameFileFTor() ); }
 
-  // path_list
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-
   // retrieve stored file record
   const FileRecord& stored( _stored() );
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
@@ -228,7 +224,7 @@ void OpenPreviousMenu::_loadFiles( void )
     
     // add icon
     if( iter->hasInformation( "icon" ) )
-    { action->setIcon( IconEngine::get( iter->information( "icon" ), path_list ) ); }
+    { action->setIcon( IconEngine::get( iter->information( "icon" ) ) ); }
     
     if( iter->file() == stored.file() )
     {

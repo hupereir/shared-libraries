@@ -34,6 +34,8 @@
 #include <QPushButton>
 #include <QValidator>
 
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "SelectLineDialog.h"
 #include "QtUtil.h"
 
@@ -75,13 +77,13 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   
   // insert Find button
   QPushButton *button;
-  h_layout->addWidget( button = new QPushButton( "&Ok", this ) );
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Ok", this ) );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), SLOT( _selectLine( void ) ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
       
   // insert Cancel button
-  h_layout->addWidget( button = new QPushButton( "&Cancel", this ) );
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Cancel", this ) );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   setMinimumSize( QSize( 250, 100 ) );

@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QBitmap>
 #include <QImage>
 #include <QPainter>
@@ -36,41 +37,31 @@
 #include "CustomPixmap.h"
 #include "Debug.h"
 #include "File.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
 //_________________________________________________
-CustomPixmap CustomPixmap::find( 
-  const string& file, 
-  const std::list<string>& path, 
-  bool case_sensitive )
-{
-  Debug::Throw( "CustomPixmap::find.\n" );
-    
-  for( list<string>::const_iterator iter = path.begin(); iter != path.end(); iter++ )
-  {
-    
-    // skip empty path
-    if( iter->empty() ) continue;
+list<string> CustomPixmap::pixmap_path_;
+CustomPixmap::Cache CustomPixmap::cache_;
 
-    // prepare filename
-    File icon_file;
-    
-    // see if path is internal resource path
-    if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
-    else icon_file = File( *iter ).find( file, case_sensitive );
-    
-    // load pixmap
-    if( !icon_file.empty() )
-    {
-      load( icon_file.c_str() );
-      if( !isNull() ) break;
-    }
+//_________________________________________________
+CustomPixmap CustomPixmap::find( const string& file )
+{
+  
+  Debug::Throw( "CustomPixmap::find.\n" );    
+  
+  // try find file in cache
+  Cache::iterator iter( cache_.find( file ) );
+  if( iter != cache_.end() ) *this = iter->second;
+  else {
+    *this = _find( file );
+    cache_.insert( make_pair( file, *this ) );
   }
-    
+  
   return *this;
-    
-} 
+  
+}
 
 //_________________________________________________
 CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensity ) const
@@ -213,3 +204,54 @@ CustomPixmap CustomPixmap::active( void )
   return out;
   
 }
+
+//_______________________________________________________________________
+void CustomPixmap::reload()
+{
+  
+  Debug::Throw( "CustomPixmap::reload.\n" );
+
+  // load path from options
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  if( path_list == _pixmapPath() ) return;
+
+  _setPixmapPath( path_list );
+  for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
+  { cache_[iter->first] = _find( iter->first ); }
+  
+}
+
+//_______________________________________________________________________
+CustomPixmap CustomPixmap::_find( const string& file )
+{
+  
+  Debug::Throw( "CustomPixmap::_find.\n" );
+  
+  // create output
+  CustomPixmap out;
+
+  for( list<string>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
+  {
+    
+    // skip empty path
+    if( iter->empty() ) continue;
+
+    
+    // prepare filename
+    File icon_file;
+    
+    // see if path is internal resource path
+    if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
+    else icon_file = File( *iter ).find( file );
+    
+    // load pixmap
+    if( !icon_file.empty() )
+    {
+      out.load( icon_file.c_str() );
+      if( !out.isNull() ) break;
+    }
+  }
+    
+  return out;
+    
+} 

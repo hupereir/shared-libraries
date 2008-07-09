@@ -32,6 +32,8 @@
 #include <QProcess>
 #include <QLayout>
 
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "SystemEnvironmentDialog.h"
 #include "TreeWidget.h"
 #include "Str.h"
@@ -79,7 +81,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   list->sortItems(0, Qt::AscendingOrder );
   
   QPushButton *button;
-  layout()->addWidget( button = new QPushButton( "&Close", this ) );
+  layout()->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ),"&Close", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setAutoDefault( false );
   

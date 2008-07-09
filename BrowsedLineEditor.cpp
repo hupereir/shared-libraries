@@ -43,7 +43,6 @@
 #include "QtUtil.h"
 #include "Util.h"
 #include "Debug.h"
-#include "XmlOptions.h"
 
 using namespace std;
 
@@ -68,11 +67,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   layout->addWidget( line_edit_ );
   
   // create push_button
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  assert( !path_list.empty() );
-
-  QPushButton *button = new QPushButton( this );
-  button->setIcon( IconEngine::get( ICONS::OPEN, path_list ) );
+  QPushButton *button = new QPushButton( IconEngine::get( ICONS::OPEN ), "", this );
   QtUtil::fixSize( button );
   layout->addWidget( button );
   

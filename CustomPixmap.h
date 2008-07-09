@@ -66,10 +66,7 @@ class CustomPixmap: public QPixmap, public Counter
   {}
   
   //! find first file matching name in list of path
-  virtual CustomPixmap find( 
-    const std::string& file, 
-    const std::list< std::string >& path, 
-    bool case_sensitive = true );
+  virtual CustomPixmap find( const std::string& file );
   
   //! resize
   virtual CustomPixmap scale( const unsigned int& width, const unsigned int& height ) const;
@@ -113,7 +110,42 @@ class CustomPixmap: public QPixmap, public Counter
 
   //! return highlighted (active) pixmap, build from the current
   virtual CustomPixmap active( void );
+  
+  //!@name cache
+  //@{ 
+  
+  //! reload all icons set in cache from new path list
+  static void reload( void );
+  
+  //! reload cache
+  static void clear( void )
+  { cache_.clear(); }
 
+  //@}
+  
+  private:
+  
+  //! pixmap path
+  static void _setPixmapPath( const std::list< std::string >& path_list )
+  { pixmap_path_ = path_list; }
+  
+  //! pixmap path
+  static const std::list< std::string >& _pixmapPath( void )
+  { return pixmap_path_; }
+  
+  //! find first file matching name in list of path
+  static CustomPixmap _find( const std::string& file );  
+  
+  //! pixmap path
+  static std::list< std::string > pixmap_path_;
+  
+  //! map files and QIcon
+  typedef std::map< std::string, CustomPixmap > Cache;
+      
+  //! map files and QIcon
+  static Cache cache_;
+
+  
 };
 
 #endif

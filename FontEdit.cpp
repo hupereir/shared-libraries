@@ -36,7 +36,6 @@
 #include "FontEdit.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
-#include "XmlOptions.h"
 
 using namespace std;
 
@@ -58,11 +57,8 @@ FontEdit::FontEdit( QWidget *parent ):
   layout->addWidget( label_ );
   
   // create push_button
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  assert( !path_list.empty() );
-
   QPushButton *button = new QPushButton( this );
-  button->setIcon( IconEngine::get( ICONS::OPEN, path_list ) );
+  button->setIcon( IconEngine::get( ICONS::OPEN ) );
   QtUtil::fixSize( button );
   layout->addWidget( button );
   

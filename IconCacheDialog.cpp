@@ -31,6 +31,7 @@
 #include <QPushButton>
 #include <QLayout>
 
+#include "BaseIcons.h"
 #include "IconCacheDialog.h"
 #include "IconEngine.h"
 #include "TreeView.h"
@@ -65,11 +66,11 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
   layout()->addItem( h_layout );
   
   QPushButton *button;
-  h_layout->addWidget( button = new QPushButton( "&Update", this ) );
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::RELOAD ),"&Update", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( update() ) );
   button->setAutoDefault( false );
    
-  h_layout->addWidget( button = new QPushButton( "&Close", this ) );
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ),"&Close", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setAutoDefault( false );
   

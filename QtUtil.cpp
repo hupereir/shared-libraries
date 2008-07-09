@@ -30,6 +30,7 @@
 */
 
 
+#include <assert.h>
 #include <QApplication>
 #include <QCursor>
 #include <QDesktopWidget>
@@ -43,10 +44,9 @@
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
 #include "Debug.h"
-#include <assert.h>
+#include "IconEngine.h"
 #include "QtUtil.h"
 #include "Util.h"
-#include "XmlOptions.h"
 
 using namespace std;
 
@@ -70,14 +70,7 @@ void QtUtil::infoDialog(
   dialog.setLayout( layout );
 
   //! try load Question icon
-  static CustomPixmap question_pixmap;
-  static bool first( true );
-  if( first )
-  {
-    first = false;
-    list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-    question_pixmap.find( ICONS::WARNING, path_list );
-  }
+  CustomPixmap question_pixmap = CustomPixmap().find( ICONS::INFORMATION );
 
   // insert main vertical box
   if( question_pixmap.isNull() )
@@ -97,15 +90,16 @@ void QtUtil::infoDialog(
   }
 
   // insert OK and Cancel button
-  QPushButton *button( new QPushButton( "OK", &dialog ) );
-  layout->addWidget( button, 0, Qt::AlignHCenter );
+  QPushButton *button( new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "OK", &dialog ) );
   dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( accept() ) );
-
+  layout->addWidget( button, 0, Qt::AlignHCenter );
+  
   layout->activate();
   dialog.adjustSize();
 
   // manage widget
-  switch( dialog_center ) {
+  switch( dialog_center ) 
+  {
     case CENTER_ON_POINTER:
       centerOnPointer( &dialog );
       break;
@@ -143,14 +137,7 @@ bool QtUtil::questionDialog(
   dialog.setLayout( layout );
 
   //! try load Question icon
-  static CustomPixmap question_pixmap;
-  static bool first( true );
-  if( first )
-  {
-    first = false;
-    list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-    question_pixmap.find( ICONS::WARNING, path_list );
-  }
+  CustomPixmap question_pixmap = CustomPixmap().find( ICONS::INFORMATION );
 
   // insert main vertical box
   if( question_pixmap.isNull() )
@@ -175,13 +162,12 @@ bool QtUtil::questionDialog(
   layout->addLayout( hbox_layout );
 
   // insert OK button
-  QPushButton *button = new QPushButton( "&Yes", &dialog );
-  hbox_layout->addWidget( button );
+  QPushButton *button;
+  hbox_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Yes", &dialog ) );
   dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( accept() ) );
 
   // insert Cancel button
-  button = new QPushButton( "&No", &dialog );
-  hbox_layout->addWidget( button );
+  hbox_layout->addWidget( button  = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&No", &dialog ) );
   dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( reject() ) );
 
   // manage widget

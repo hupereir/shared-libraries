@@ -38,21 +38,29 @@ using namespace std;
 //__________________________________________________________
 IconEngine IconEngine::singleton_;
 
+
 //__________________________________________________________
-QIcon IconEngine::_get( const string& file, const list<string> path_list )
+void IconEngine::reload( void )
+{ 
+  Debug::Throw( "IconEngine::reload.\n" );
+  CustomPixmap::reload();
+  for( Cache::iterator iter = get().cache_.begin(); iter != get().cache_.end(); iter++ )
+  { get().cache_[iter->first] = get()._get( iter->first ); }
+}
+
+//__________________________________________________________
+QIcon IconEngine::_get( const string& file )
 {
   Debug::Throw( "IconEngine::_get (file).\n" );
 
-  // check if cache is to be used
-  if( !use_cache_ ) return _get( CustomPixmap().find( file, path_list ) );
-  
   // try find file in cache
-  std::map< string, QIcon >::iterator iter( cache_.find( file ) );
+  Cache::iterator iter( cache_.find( file ) );
   if( iter != cache_.end() ) return iter->second;
   
-  QIcon out( _get( CustomPixmap().find( file, path_list ) ) );
+  QIcon out( _get( CustomPixmap().find( file ) ) );
   cache_.insert( make_pair( file, out ) );
   return out;
+  
 }
 
 //__________________________________________________________

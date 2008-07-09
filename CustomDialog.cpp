@@ -29,7 +29,9 @@
   \date $Date$
 */
 
+#include "BaseIcons.h"
 #include "CustomDialog.h"
+#include "IconEngine.h"
 
 using namespace std;
 
@@ -62,13 +64,13 @@ CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFla
   
   // insert OK and Cancel button
   if( flags & OK_BUTTON ) {
-    button_layout_->addWidget( ok_button_ = new QPushButton( "&OK", this ) );
+    button_layout_->addWidget( ok_button_ = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&OK", this ) );
     connect( ok_button_, SIGNAL( clicked() ), SLOT( accept() ) );
   }
   
   // insert OK and Cancel button
   if( flags & CANCEL_BUTTON ) {
-    button_layout_->addWidget( cancel_button_ = new QPushButton( "&Cancel", this ) );
+    button_layout_->addWidget( cancel_button_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Cancel", this ) );
     connect( cancel_button_, SIGNAL( clicked() ), SLOT( reject() ) );
   }
   

@@ -38,8 +38,6 @@
 #include "Debug.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
-#include "XmlOptions.h"
-
 
 using namespace std;
 
@@ -65,11 +63,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   connect( &editor_, SIGNAL( returnPressed() ), SLOT( _changeColorFromText() ) );  
 
   // browse button
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  assert( !path_list.empty() );
-
-  QPushButton *button( new QPushButton( this ) );
-  button->setIcon( IconEngine::get( ICONS::COLOR_PICKER, path_list ) );
+  QPushButton *button( new QPushButton( IconEngine::get( ICONS::COLOR_PICKER), "", this ) );
   QtUtil::fixSize( button );
   layout->addWidget( button );
   

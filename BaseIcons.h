@@ -39,6 +39,10 @@ namespace ICONS
 {
   
   static const std::string ABOUT_QT = "qt-logo.png";
+  static const std::string DIALOG_ACCEPT = "dialog-ok-apply.png";
+  static const std::string DIALOG_CANCEL = "dialog-cancel.png";
+  static const std::string DIALOG_CLOSE = "dialog-close.png";
+  static const std::string EDIT = "edit.png";
   static const std::string UNDO= "undo.png";
   static const std::string REDO= "redo.png";
   static const std::string CUT = "editcut.png";
@@ -55,6 +59,7 @@ namespace ICONS
   static const std::string RELOAD = "reload.png";
   static const std::string DELETE = "trashcan_empty.png";
   static const std::string WARNING = "messagebox_warning.png";
+  static const std::string INFORMATION = "dialog-information.png";
 
 };
 

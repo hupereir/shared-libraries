@@ -1,4 +1,3 @@
-
 // $Id$
 
 /******************************************************************************
@@ -38,10 +37,12 @@
 #include <QLayout>
 #include <QLabel>
 
+#include "BaseIcons.h"
 #include "BaseConfigurationDialog.h"
 #include "CustomGridLayout.h"
 #include "CustomDialog.h"
 #include "Debug.h"
+#include "IconEngine.h"
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"
 #include "OptionIconBrowsedButton.h"
@@ -88,7 +89,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     "all changes are taken into account." );
   
   // ok button
-  _buttonLayout().addWidget( button = new QPushButton( "&Ok", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Ok", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _save() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
@@ -99,7 +100,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button->setAutoDefault( false );
   
   // cancel button
-  _buttonLayout().addWidget( button = new QPushButton( "&Cancel", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Cancel", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
