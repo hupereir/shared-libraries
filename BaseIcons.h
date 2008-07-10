@@ -39,7 +39,9 @@ namespace ICONS
 {
   
   static const std::string ABOUT_QT = "qt-logo.png";
-  static const std::string DIALOG_ACCEPT = "dialog-ok-apply.png";
+  static const std::string DIALOG_OK = "dialog-ok.png";
+  static const std::string DIALOG_OK_APPLY = "dialog-ok-apply.png";
+  static const std::string DIALOG_ACCEPT = DIALOG_OK_APPLY;
   static const std::string DIALOG_CANCEL = "dialog-cancel.png";
   static const std::string DIALOG_CLOSE = "dialog-close.png";
   static const std::string EDIT = "edit.png";

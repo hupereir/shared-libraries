@@ -5,6 +5,7 @@
     <file alias="pixmaps/oxygen/configure.png">../base-pixmaps/oxygen/configure.png</file>
     <file alias="pixmaps/oxygen/dialog-information.png">../base-pixmaps/oxygen/dialog-information.png</file>
     <file alias="pixmaps/oxygen/dialog-ok-apply.png">../base-pixmaps/oxygen/dialog-ok-apply.png</file>
+    <file alias="pixmaps/oxygen/dialog-ok.png">../base-pixmaps/oxygen/dialog-ok.png</file>
     <file alias="pixmaps/oxygen/dialog-cancel.png">../base-pixmaps/oxygen/dialog-cancel.png</file>
     <file alias="pixmaps/oxygen/dialog-close.png">../base-pixmaps/oxygen/dialog-close.png</file>
     <file alias="pixmaps/oxygen/edit.png">../base-pixmaps/oxygen/edit.png</file>

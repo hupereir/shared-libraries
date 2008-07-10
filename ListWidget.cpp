@@ -44,7 +44,7 @@ ListWidget::ListWidget( QWidget* parent ):
 {
   
   Debug::Throw( "ListWidget::ListWidget.\n" ); 
-  setItemDelegate ( new ItemDelegate( this ) );
+  //setItemDelegate ( new ItemDelegate( this ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
   
