@@ -25,6 +25,10 @@
     <file alias="pixmaps/crystal/color.png">../base-pixmaps/crystal/color.png</file>
     <file alias="pixmaps/crystal/colorpicker.png">../base-pixmaps/crystal/colorpicker.png</file>
     <file alias="pixmaps/crystal/configure.png">../base-pixmaps/crystal/configure.png</file>
+    <file alias="pixmaps/crystal/dialog-information.png">../base-pixmaps/crystal/dialog-information.png</file>
+    <file alias="pixmaps/crystal/dialog-ok-apply.png">../base-pixmaps/crystal/dialog-ok-apply.png</file>
+    <file alias="pixmaps/crystal/dialog-cancel.png">../base-pixmaps/crystal/dialog-cancel.png</file>
+    <file alias="pixmaps/crystal/dialog-close.png">../base-pixmaps/crystal/dialog-close.png</file>
     <file alias="pixmaps/crystal/edit.png">../base-pixmaps/crystal/edit.png</file>
     <file alias="pixmaps/crystal/editcopy.png">../base-pixmaps/crystal/editcopy.png</file>
     <file alias="pixmaps/crystal/editcut.png">../base-pixmaps/crystal/editcut.png</file>
