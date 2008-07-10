@@ -225,7 +225,7 @@ DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
 void DockPanel::LocalWidget::updateActions( bool detached )
 {
 
-  detachAction().setText( detached ? "&detach":"&attached" );
+  detachAction().setText( detached ? "&attach":"&detach" );
   stickyAction().setEnabled( detached );
   staysOnTopAction().setEnabled( detached );
 
