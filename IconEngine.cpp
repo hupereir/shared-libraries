@@ -38,6 +38,10 @@ using namespace std;
 //__________________________________________________________
 IconEngine IconEngine::singleton_;
 
+//__________________________________________________________
+IconEngine::IconEngine( void ):
+  Counter( "IconEngine" )
+{ Debug::Throw( "IconEngine::IconEngine.\n" ); }
 
 //__________________________________________________________
 bool IconEngine::reload( void )
@@ -45,8 +49,8 @@ bool IconEngine::reload( void )
   Debug::Throw( "IconEngine::reload.\n" );
   
   if( !CustomPixmap::reload() ) return false;
-  for( Cache::iterator iter = get().cache_.begin(); iter != get().cache_.end(); iter++ )
-  { get().cache_[iter->first] = get()._get( iter->first ); }
+  for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
+  { cache_[iter->first] = _get( iter->first ); }
   
   return true;
 }

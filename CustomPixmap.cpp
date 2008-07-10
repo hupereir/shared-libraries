@@ -51,6 +51,8 @@ CustomPixmap CustomPixmap::find( const string& file )
   
   Debug::Throw( "CustomPixmap::find.\n" );    
   
+  if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  
   // try find file in cache
   Cache::iterator iter( cache_.find( file ) );
   if( iter != cache_.end() ) *this = iter->second;

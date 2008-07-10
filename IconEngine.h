@@ -101,18 +101,16 @@ class IconEngine: public Counter
   bool reload( void );
   
   private:
-    
-  //! constructor is private to force use of singleton
-  IconEngine( void ):
-    Counter( "IconEngine" )
-  { Debug::Throw( "IconEngine::IconEngine.\n" ); } 
-  
+      
   //! singleton
   static IconEngine singleton_;
     
   //!@name non static methods are hidden
   //@{
- 
+  
+  //! constructor
+  IconEngine( void );
+  
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
   QIcon _get( const std::string& file );
