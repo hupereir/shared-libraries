@@ -153,12 +153,12 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   frame->setFrameShape( QFrame::HLine );
   
   // replace button
-  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Replace", this ) );
+  v_layout->addWidget( button = new QPushButton( "&Replace", this ) );
   connect( button, SIGNAL(clicked()), SLOT( _replace() ) );
   if( read_only ) button->setEnabled( false );
   
   // replace button
-  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "R&eplace all", this ) );
+  v_layout->addWidget( button = new QPushButton( "R&eplace all", this ) );
   connect( button, SIGNAL(clicked()), SLOT( _replaceAll() ) );
   if( read_only ) button->setEnabled( false );
 
@@ -166,11 +166,11 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   frame->setFrameShape( QFrame::HLine );
   
   // ignore button
-  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Ignore", this ) );
+  v_layout->addWidget( button = new QPushButton( "&Ignore", this ) );
   connect( button, SIGNAL(clicked()), SLOT( _ignore() ) );
 
   // ignore button
-  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "I&gnore all", this ) );
+  v_layout->addWidget( button = new QPushButton( "I&gnore all", this ) );
   connect( button, SIGNAL(clicked()), SLOT( _ignoreAll() ) );
 
   // state label_
@@ -322,7 +322,7 @@ void SpellDialog::_selectDictionary( const QString& dictionary )
   }
 
   // emit signal
-  emit dictionaryChanged( interface().dictionary() );
+  emit dictionaryChanged( interface().dictionary().c_str() );
 
   // restart
   _restart();
@@ -346,7 +346,7 @@ void SpellDialog::_selectFilter( const QString& filter )
   }
 
   // emit signal
-  emit filterChanged( interface().filter() );
+  emit filterChanged( interface().filter().c_str() );
 
   // restart
   _restart();

@@ -108,10 +108,10 @@ namespace SPELLCHECK
     void needUpdate( void );
     
     //! filter has changed
-    void filterChanged( const std::string& );
+    void filterChanged( QString );
     
     //! dictionary has changed
-    void dictionaryChanged( const std::string& );
+    void dictionaryChanged( QString );
     
     protected slots:
   
