@@ -1,5 +1,6 @@
 // $Id$
 
+
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -85,7 +86,7 @@ void QtUtil::infoDialog(
     QLabel* label = new QLabel( &dialog );
     label->setPixmap( question_pixmap );
     h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter );
+    h_layout->addWidget( new QLabel( text.c_str(), &dialog ), 1, Qt::AlignHCenter );
 
   }
 
@@ -152,7 +153,7 @@ bool QtUtil::questionDialog(
     QLabel* label = new QLabel( &dialog );
     label->setPixmap( question_pixmap );
     h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( new QLabel( text.c_str(), &dialog ), 0, Qt::AlignHCenter );
+    h_layout->addWidget( new QLabel( text.c_str(), &dialog ), 1, Qt::AlignHCenter );
 
   }
 
