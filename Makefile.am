@@ -28,6 +28,7 @@ oxygen/colorpicker.png \
 oxygen/configure.png \
 oxygen/dialog-information.png \
 oxygen/dialog-ok-apply.png \
+oxygen/dialog-ok.png \
 oxygen/dialog-cancel.png \
 oxygen/dialog-close.png \
 oxygen/edit.png \
