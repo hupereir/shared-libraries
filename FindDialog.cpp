@@ -114,10 +114,11 @@ void FindDialog::_createEditor( void )
   Debug::Throw("FindDialog::_createEditor.\n" );
   
   // insert text editor
-  QLabel *label = new QLabel( "string to find:", this );
+  QLabel *label = new QLabel( "&Text to find:", this );
   _mainLayout().addWidget( label );
   
   _mainLayout().addWidget( editor_ = new CustomComboBox( this ) );
+  label->setBuddy( &editor() );
   editor().setEditable( true );
   editor().setCaseSensitive( Qt::CaseSensitive );
   editor().setAutoCompletion( true );
@@ -180,7 +181,7 @@ void FindDialog::_createButtons( void )
   addDisabledButton( button );
 
   // insert Cancel button
-  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Cancel", this ) );
+  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setAutoDefault( false );
   

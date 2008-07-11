@@ -107,11 +107,13 @@ void ReplaceDialog::_createEditor( void )
   FindDialog::_createEditor();
 
   // insert text editor
-  QLabel* label = new QLabel( "replace with:", this );
+  QLabel* label = new QLabel( "&Replace with:", this );
   _mainLayout().addWidget( label );
   
   // replacement editor
   _mainLayout().addWidget( replace_editor_ = new CustomComboBox( this ) );
+  label->setBuddy( &_replaceEditor() );
+  
   _replaceEditor().setEditable( true );
   _replaceEditor().setCaseSensitive( Qt::CaseSensitive );
   _replaceEditor().setAutoCompletion( true );

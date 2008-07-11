@@ -58,11 +58,12 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   layout()->setMargin(10);
     
   // insert text editor
-  QLabel *label( new QLabel( "goto line number: ", this ) );
+  QLabel *label( new QLabel( "&Goto line number: ", this ) );
   layout()->addWidget( label );
   QtUtil::fixSize( label );
   
   layout()->addWidget( editor_ = new LineEditor( this ) );
+  label->setBuddy( editor_ );
   connect( editor_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
   connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
   
