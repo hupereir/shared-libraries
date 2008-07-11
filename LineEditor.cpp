@@ -34,7 +34,6 @@
 
 #include "BaseIcons.h"
 #include "LineEditor.h"
-#include "CustomPixmap.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "Str.h"

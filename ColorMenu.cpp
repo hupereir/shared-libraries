@@ -35,7 +35,6 @@
 #include <QWidgetAction>
 
 #include "ColorMenu.h"
-#include "CustomPixmap.h"
 #include "Str.h"
 
 using namespace std;

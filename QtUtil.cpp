@@ -43,7 +43,7 @@
 #include <QPainter>
 
 #include "BaseIcons.h"
-#include "CustomPixmap.h"
+#include "PixmapEngine.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
@@ -71,7 +71,7 @@ void QtUtil::infoDialog(
   dialog.setLayout( layout );
 
   //! try load Question icon
-  CustomPixmap question_pixmap = CustomPixmap().find( ICONS::INFORMATION );
+  QPixmap question_pixmap = PixmapEngine::get( ICONS::INFORMATION );
 
   // insert main vertical box
   if( question_pixmap.isNull() )
@@ -138,7 +138,7 @@ bool QtUtil::questionDialog(
   dialog.setLayout( layout );
 
   //! try load Question icon
-  CustomPixmap question_pixmap = CustomPixmap().find( ICONS::WARNING );
+  QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );
 
   // insert main vertical box
   if( question_pixmap.isNull() )

@@ -38,6 +38,7 @@
 #include "File.h"
 #include "IconEngine.h"
 #include "OpenPreviousMenu.h"
+#include "PixmapEngine.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
@@ -230,11 +231,7 @@ void OpenPreviousMenu::_loadFiles( void )
     { action->setIcon( IconEngine::get( iter->information( "icon" ) ) ); }
     
     if( iter->file() == stored.file() )
-    {
-      QFont font( QMenu::font() );
-      font.setWeight( QFont::Bold );
-      action->setFont( font );
-    }
+    { action->setIcon( IconEngine::get( PixmapEngine::get().getCheckPixmap() ) ); }
     
     if( _check() ) action->setEnabled( iter->file().size() && iter->isValid() );
     actions_.insert( make_pair( action, *iter ) );

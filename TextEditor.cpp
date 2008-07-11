@@ -38,7 +38,6 @@
 #include <QTextLayout>
 
 #include "BaseIcons.h"
-#include "CustomPixmap.h"
 #include "TextEditor.h"
 #include "CustomTextDocument.h"
 #include "FindDialog.h"

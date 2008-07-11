@@ -29,6 +29,11 @@
   \date $Date$
 */
 
+#include <QCheckBox>
+#include <QPainter>
+#include <QStyle>
+#include <QStyleOptionButton>
+
 #include "CustomPixmap.h"
 #include "PixmapEngine.h"
 #include "XmlOptions.h"
@@ -36,7 +41,7 @@
 using namespace std;
 
 //__________________________________________________________
-PixmapEngine PixmapEngine::singleton_;
+PixmapEngine* PixmapEngine::singleton_(0);
 
 //__________________________________________________________
 PixmapEngine::PixmapEngine( void ):
@@ -63,6 +68,8 @@ bool PixmapEngine::reload( void )
 QPixmap PixmapEngine::_get( const string& file )
 {
   Debug::Throw( "PixmapEngine::_get (file).\n" );
+  
+  if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
 
   // try find file in cache
   Cache::iterator iter( cache_.find( file ) );
@@ -93,4 +100,24 @@ QPixmap PixmapEngine::_get( const string& file )
     
   return out;
   
+}
+
+//__________________________________________________________
+void PixmapEngine::_createCheckPixmap( void )
+{
+  //ebug::Throw( 0, "PixmapEngine::_createCheckPixmap.\n" );
+  cout << "PixmapEngine::_createCheckPixmap.\n";
+  QCheckBox local;
+  local.setChecked( true );
+  
+  QStyle *style( local.style() );
+  QStyleOptionButton opt;
+  opt.initFrom( &local );
+  int width( style->pixelMetric( QStyle::PM_IndicatorWidth ) );
+  check_pixmap_ = QPixmap( width, width );
+  check_pixmap_.fill( Qt::transparent );
+  
+  QPainter painter( &check_pixmap_ );
+  style->drawPrimitive( QStyle::PE_IndicatorCheckBox, &opt, &painter, &local);
+
 }
