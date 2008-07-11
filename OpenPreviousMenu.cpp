@@ -38,7 +38,6 @@
 #include "File.h"
 #include "IconEngine.h"
 #include "OpenPreviousMenu.h"
-#include "PixmapEngine.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
@@ -227,11 +226,8 @@ void OpenPreviousMenu::_loadFiles( void )
     QAction* action = addAction( label );
     
     // add icon
-    if( iter->hasInformation( "icon" ) )
-    { action->setIcon( IconEngine::get( iter->information( "icon" ) ) ); }
-    
-    if( iter->file() == stored.file() )
-    { action->setIcon( IconEngine::get( PixmapEngine::get().getCheckPixmap() ) ); }
+    if( iter->file() == stored.file() ) { action->setIcon( IconEngine::getCheckIcon() ); }
+    else if( iter->hasInformation( "icon" ) ) { action->setIcon( IconEngine::get( iter->information( "icon" ) ) ); }
     
     if( _check() ) action->setEnabled( iter->file().size() && iter->isValid() );
     actions_.insert( make_pair( action, *iter ) );

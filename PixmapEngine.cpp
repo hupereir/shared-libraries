@@ -41,7 +41,7 @@
 using namespace std;
 
 //__________________________________________________________
-PixmapEngine* PixmapEngine::singleton_(0);
+PixmapEngine PixmapEngine::singleton_;
 
 //__________________________________________________________
 PixmapEngine::PixmapEngine( void ):
@@ -103,21 +103,26 @@ QPixmap PixmapEngine::_get( const string& file )
 }
 
 //__________________________________________________________
-void PixmapEngine::_createCheckPixmap( void )
+QPixmap PixmapEngine::getCheckPixmap( void ) const
 {
-  //ebug::Throw( 0, "PixmapEngine::_createCheckPixmap.\n" );
-  cout << "PixmapEngine::_createCheckPixmap.\n";
+  Debug::Throw( "PixmapEngine::getCheckPixmap.\n" );
   QCheckBox local;
-  local.setChecked( true );
   
   QStyle *style( local.style() );
   QStyleOptionButton opt;
   opt.initFrom( &local );
+    
   int width( style->pixelMetric( QStyle::PM_IndicatorWidth ) );
-  check_pixmap_ = QPixmap( width, width );
-  check_pixmap_.fill( Qt::transparent );
+  local.setFixedSize( width, width );
+  opt.initFrom( &local );
   
-  QPainter painter( &check_pixmap_ );
-  style->drawPrimitive( QStyle::PE_IndicatorCheckBox, &opt, &painter, &local);
+  QPixmap out( width, width );
+  out.fill( Qt::transparent );
+  
+  QPainter painter( &out );
+  style->drawPrimitive( QStyle::PE_IndicatorRadioButton, &opt, &painter, &local);
+  painter.end();
 
+  return out;
+  
 }

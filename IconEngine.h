@@ -39,6 +39,7 @@
 
 #include "Counter.h"
 #include "Debug.h"
+#include "PixmapEngine.h"
 
 //! customized Icon factory to provide better looking disabled icons
 class IconEngine: public Counter
@@ -62,6 +63,11 @@ class IconEngine: public Counter
   //! create icon
   static QIcon get( const QIcon& icon )
   { return get()._get( icon ); }
+  
+  //! check icon
+  static QIcon getCheckIcon( void )
+  { return get()._getCheckIcon(); } 
+   
   
   //! map files and QIcon
   typedef std::map< std::string, QIcon > Cache;
@@ -121,11 +127,20 @@ class IconEngine: public Counter
   //! create icon
   QIcon _get( const QIcon& icon );
 
+  //! check icon
+  QIcon _getCheckIcon( void )
+  { 
+    if( check_icon_.isNull() ) { check_icon_ = _get( PixmapEngine::get().getCheckPixmap() ); }
+    return check_icon_; 
+  }
+  
   //@}
     
   //! map files and QIcon
   Cache cache_;
-    
+  
+  QIcon check_icon_;
+  
 };
 
 #endif

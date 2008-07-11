@@ -48,10 +48,7 @@ class PixmapEngine: public Counter
   
   //! retrieve singleton
   static PixmapEngine& get( void )
-  { 
-    if( !singleton_ ) singleton_ = new PixmapEngine();
-    return *singleton_; 
-  }
+  { return singleton_; }
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
@@ -59,11 +56,7 @@ class PixmapEngine: public Counter
   { return get()._get( file ); }
 
   //! check pixmap
-  QPixmap getCheckPixmap( void ) 
-  {
-    if( check_pixmap_.isNull() ) _createCheckPixmap();
-    return check_pixmap_;
-  }
+  QPixmap getCheckPixmap( void ) const;
   
   //! map files and QPixmap
   typedef std::map< std::string, QPixmap > Cache;
@@ -115,7 +108,7 @@ class PixmapEngine: public Counter
   private:
       
   //! singleton
-  static PixmapEngine* singleton_;
+  static PixmapEngine singleton_;
     
   //!@name non static methods are hidden
   //@{
@@ -126,9 +119,6 @@ class PixmapEngine: public Counter
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
   QPixmap _get( const std::string& file );
-
-  //! create check pixmap
-  void _createCheckPixmap( void );
   
   //@}
   
@@ -137,9 +127,6 @@ class PixmapEngine: public Counter
 
   //! map files and QPixmap
   Cache cache_;
-  
-  //! this is a "checked" pixmap, build using QStyle, similar to checked check-boxes
-  QPixmap check_pixmap_;
     
 };
 
