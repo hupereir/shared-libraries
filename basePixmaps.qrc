@@ -22,6 +22,7 @@
     <file alias="pixmaps/oxygen/trashcan_empty.png">../base-pixmaps/oxygen/trashcan_empty.png</file>
     <file alias="pixmaps/oxygen/undo.png">../base-pixmaps/oxygen/undo.png</file>
     <file alias="pixmaps/oxygen/viewmag.png">../base-pixmaps/oxygen/viewmag.png</file>
+    <file alias="pixmaps/oxygen/viewmag-large.png">../base-pixmaps/oxygen/viewmag-large.png</file>
 
     <file alias="pixmaps/crystal/color.png">../base-pixmaps/crystal/color.png</file>
     <file alias="pixmaps/crystal/colorpicker.png">../base-pixmaps/crystal/colorpicker.png</file>

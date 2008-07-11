@@ -21,6 +21,9 @@
 *
 *******************************************************************************/
 
+// PE_IndicatorCheckBox
+// PM_IndicatorWidth
+
 #ifndef OpenPreviousMenu_h
 #define OpenPreviousMenu_h
 

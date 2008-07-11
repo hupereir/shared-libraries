@@ -37,30 +37,16 @@
 #include "CustomPixmap.h"
 #include "Debug.h"
 #include "File.h"
-#include "XmlOptions.h"
+#include "PixmapEngine.h"
 
 using namespace std;
-
-//_________________________________________________
-list<string> CustomPixmap::pixmap_path_;
-CustomPixmap::Cache CustomPixmap::cache_;
 
 //_________________________________________________
 CustomPixmap CustomPixmap::find( const string& file )
 {
   
   Debug::Throw( "CustomPixmap::find.\n" );    
-  
-  if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  
-  // try find file in cache
-  Cache::iterator iter( cache_.find( file ) );
-  if( iter != cache_.end() ) *this = iter->second;
-  else {
-    *this = _find( file );
-    cache_.insert( make_pair( file, *this ) );
-  }
-  
+  *this = CustomPixmap( PixmapEngine::get( file ) );
   return *this;
   
 }
@@ -206,56 +192,3 @@ CustomPixmap CustomPixmap::active( void )
   return out;
   
 }
-
-//_______________________________________________________________________
-bool CustomPixmap::reload()
-{
-  
-  Debug::Throw( "CustomPixmap::reload.\n" );
-
-  // load path from options
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
-  if( path_list == _pixmapPath() ) return false;
-
-  _setPixmapPath( path_list );
-  for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
-  { cache_[iter->first] = _find( iter->first ); }
-
-  return true;
-  
-}
-
-//_______________________________________________________________________
-CustomPixmap CustomPixmap::_find( const string& file )
-{
-  
-  Debug::Throw( "CustomPixmap::_find.\n" );
-  
-  // create output
-  CustomPixmap out;
-
-  for( list<string>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
-  {
-    
-    // skip empty path
-    if( iter->empty() ) continue;
-
-    
-    // prepare filename
-    File icon_file;
-    
-    // see if path is internal resource path
-    if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
-    else icon_file = File( *iter ).find( file );
-    
-    // load pixmap
-    if( !icon_file.empty() )
-    {
-      out.load( icon_file.c_str() );
-      if( !out.isNull() ) break;
-    }
-  }
-    
-  return out;
-    
-} 

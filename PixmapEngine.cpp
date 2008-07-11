@@ -1,4 +1,3 @@
- 
 // $Id$
 
 /******************************************************************************
@@ -23,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-  \file IconEngine.cpp
+  \file PixmapEngine.cpp
   \brief customized Icon factory to provide better looking disabled icons
   \author Hugo Pereira
   \version $Revision$
@@ -32,69 +31,66 @@
 
 #include "CustomPixmap.h"
 #include "PixmapEngine.h"
-#include "IconEngine.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
 //__________________________________________________________
-IconEngine IconEngine::singleton_;
+PixmapEngine PixmapEngine::singleton_;
 
 //__________________________________________________________
-IconEngine::IconEngine( void ):
-  Counter( "IconEngine" )
-{ Debug::Throw( "IconEngine::IconEngine.\n" ); }
+PixmapEngine::PixmapEngine( void ):
+  Counter( "PixmapEngine" )
+{ Debug::Throw( "PixmapEngine::PixmapEngine.\n" ); }
 
 //__________________________________________________________
-bool IconEngine::reload( void )
+bool PixmapEngine::reload( void )
 { 
-  Debug::Throw( "IconEngine::reload.\n" );
-  
-  if( !PixmapEngine::get().reload() ) return false;
+  Debug::Throw( "PixmapEngine::reload.\n" );
+ 
+  // load path from options
+  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  if( path_list == _pixmapPath() ) return false;
+
+  _setPixmapPath( path_list );
   for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
   { cache_[iter->first] = _get( iter->first ); }
-  
+
   return true;
 }
 
 //__________________________________________________________
-QIcon IconEngine::_get( const string& file )
+QPixmap PixmapEngine::_get( const string& file )
 {
-  Debug::Throw( "IconEngine::_get (file).\n" );
+  Debug::Throw( "PixmapEngine::_get (file).\n" );
 
   // try find file in cache
   Cache::iterator iter( cache_.find( file ) );
   if( iter != cache_.end() ) return iter->second;
   
-  QIcon out( _get( PixmapEngine::get( file ) ) );
-  cache_.insert( make_pair( file, out ) );
-  return out;
-  
-}
+  // create output
+  QPixmap out;
+  for( list<string>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
+  {
+    
+    // skip empty path
+    if( iter->empty() ) continue;
 
-//__________________________________________________________
-QIcon IconEngine::_get( const QPixmap& pixmap )
-{
-  
-  Debug::Throw( "IconEngine::get (QPixmap).\n" );
-  if( pixmap.isNull() ) return QIcon( pixmap );
-  
-  QIcon out( pixmap );
-  out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );
-  out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::Off );
-  return out;
-  
-}
-
-//__________________________________________________________
-QIcon IconEngine::_get( const QIcon& icon )
-{
-  
-  Debug::Throw( "IconEngine::get (QIcon).\n" );
-  
-  QIcon out( icon );
-  QPixmap pixmap;
-  if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::On )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );
-  if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::Off )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::Off );
+    // prepare filename
+    File icon_file;
+    
+    // see if path is internal resource path
+    if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
+    else icon_file = File( *iter ).find( file );
+    
+    // load pixmap
+    if( !icon_file.empty() )
+    {
+      out.load( icon_file.c_str() );
+      if( !out.isNull() ) break;
+    }
+  }
+    
   return out;
   
 }

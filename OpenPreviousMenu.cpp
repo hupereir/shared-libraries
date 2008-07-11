@@ -48,7 +48,10 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   QMenu( parent ),
   valid_file_thread_( this )
 { 
-  Debug::Throw( "OpenPreviousMenu::OpenPreviousMenu.\n" ); 
+  Debug::Throw( "OpenPreviousMenu::OpenPreviousMenu.\n" );
+  
+  setTitle( "Open &Recent" );
+  
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
   connect( this, SIGNAL( aboutToShow() ), SLOT( _loadFiles() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );

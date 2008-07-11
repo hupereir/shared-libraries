@@ -52,6 +52,7 @@ namespace ICONS
   static const std::string EXIT = "exit.png";
   static const std::string PASTE = "editpaste.png";
   static const std::string FIND = "viewmag.png";
+  static const std::string FIND_LARGE = "viewmag-large.png";
   static const std::string COLOR = "color.png";
   static const std::string COLOR_PICKER = "colorpicker.png";
   static const std::string CONFIGURE = "configure.png";
