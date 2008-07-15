@@ -71,7 +71,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 
   // add restore default button to layout
   QPushButton* button;
-  button = new QPushButton( "Restore &Defaults", this );
+  button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "Restore &Defaults", this );
   button->setToolTip( "Restore default value for all options.");
   button->setAutoDefault( false );
   
