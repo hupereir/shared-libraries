@@ -487,14 +487,7 @@ void TextEditor::setBackground( QTextBlock block, const QColor& color )
 
   // try assign color
   if( data->setBackground( color ) )
-  {
-
-    // retrieve block rect, translate and redraw
-    QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
-    block_rect.setWidth( viewport()->width() );
-    viewport()->update( toViewport( block_rect.toRect() ) );
-
-  }
+  { document()->markContentsDirty(block.position(), block.length()-1); }
 
   return;
 
@@ -507,13 +500,7 @@ void TextEditor::clearBackground( QTextBlock block )
   Debug::Throw( "TextEditor::clearBackground.\n" );
   TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
   if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) )
-  {
-    // retrieve block rect and redraw
-    QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
-    block_rect.setWidth( viewport()->width() );
-    viewport()->update( toViewport( block_rect.toRect() ) );
-
-  }
+  { document()->markContentsDirty(block.position(), block.length()-1); }
 
   return;
 }
