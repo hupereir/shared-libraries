@@ -86,7 +86,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
 void TabWidget::updateActions( bool detached )
 {
 
-  detachAction().setText( detached ? "&attached":"&detach" );
+  detachAction().setText( detached ? "&attach":"&detach" );
   stickyAction().setEnabled( detached );
   staysOnTopAction().setEnabled( detached );
 
