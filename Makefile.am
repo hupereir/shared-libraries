@@ -45,4 +45,4 @@ oxygen/toggle_log.png \
 oxygen/trashcan_empty.png \
 oxygen/undo.png \
 oxygen/viewmag.png \
-oxygen/viewmag.png
+oxygen/viewmag-large.png
