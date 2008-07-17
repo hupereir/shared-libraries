@@ -85,6 +85,7 @@ TextEditor::TextEditor( QWidget *parent ):
   _installActions();
 
   // signal to make sure selectionsynchronized is  between clones
+  connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( selectionChanged() ), SLOT( _updateClipboard() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
@@ -103,7 +104,6 @@ TextEditor::~TextEditor( void )
 
   // cast document
   CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( TextEditor::document() ) );
-  //if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) delete document;
   if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) document->deleteLater();
 
   // update associates synchronization flags
@@ -432,7 +432,7 @@ void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions
 {
 
   Debug::Throw( "TextEditor::installContextMenuActions.\n" );
-  
+
   // wrapping
   menu.addAction( wrap_mode_action_ );
   menu.addSeparator();
@@ -1555,7 +1555,6 @@ void TextEditor::_installActions( void )
   connect( tab_emulation_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );
 
   // update actions that depend on the presence of a selection
-  //connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
   _updateSelectionActions( textCursor().hasSelection() );
 
   #if QT_VERSION >= 0x040200
@@ -2122,7 +2121,7 @@ void TextEditor::_updateReadOnlyActions( bool readonly )
 void TextEditor::_updateSelectionActions( bool has_selection )
 {
 
-  Debug::Throw( "TextEditor::_updateSelectionActions.\n" );
+  Debug::Throw() << "TextEditor::_updateSelectionActions - has_selection: " << has_selection << endl;
 
   bool editable( !isReadOnly() );
   cut_action_->setEnabled( has_selection && editable );
