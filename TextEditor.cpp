@@ -94,6 +94,8 @@ TextEditor::TextEditor( QWidget *parent ):
   // update configuration
   _updateConfiguration();
   
+  //setViewportMargins( 50, 0, 0, 0 );
+  
 }
 
 //________________________________________________

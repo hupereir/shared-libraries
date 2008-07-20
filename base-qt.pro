@@ -61,6 +61,7 @@ HEADERS = \
   OptionSpinBox.h \
   OptionWidget.h \
   OptionWidgetList.h \
+  PixmapEngine.h \
   ProcessDialog.h \
   ProcessFrame.h \
   QtUtil.h \
@@ -132,6 +133,7 @@ SOURCES = \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
   OptionListBox.cpp \
+  PixmapEngine.cpp \
   ProcessDialog.cpp \
   ProcessFrame.cpp \
   QtUtil.cpp \
