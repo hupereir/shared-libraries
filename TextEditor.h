@@ -267,6 +267,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! emmited when recieve focus
   void hasFocus( TextEditor* );
 
+  //! overwrite mode changed
+  void overwriteModeChanged();
+  
   public slots:
  
   //! cut

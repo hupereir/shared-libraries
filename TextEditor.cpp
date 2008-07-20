@@ -1964,13 +1964,9 @@ void TextEditor::_synchronizeBoxSelection( void ) const
 void TextEditor::_toggleInsertMode( void )
 {
   Debug::Throw( "TextEditor::_toggleInsertMode.\n" );
-
-  bool mode( overwriteMode() );
-  mode = !mode;
-  setOverwriteMode( mode );
-
+  setOverwriteMode( !overwriteMode() );
+  emit overwriteModeChanged();
   return;
-
 }
 
 //________________________________________________
