@@ -1240,7 +1240,7 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
   /*
   need to grap Qt::CTRL+X, C and V event to forward them to the
   daughter implementation of cut, copy and paste, otherwise
-  they are passed to the base class, with no way to overrid
+  they are passed to the base class, with no way to override
   */
   if( event->modifiers() == Qt::ControlModifier )
   {
@@ -1309,8 +1309,10 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
       _boxSelection().clear();
 
     } else if( !(event->text().isNull() || event->text().isEmpty() ) ) {
+      
       _boxSelection().fromString( event->text() );
       _boxSelection().clear();
+      
     }
 
     return;
