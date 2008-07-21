@@ -53,14 +53,11 @@ FontEdit::FontEdit( QWidget *parent ):
   label_ =  new QLabel( "", this );
   label_->setAlignment( Qt::AlignCenter );
   label_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
-  QtUtil::fixSize( label_, QtUtil::NONE );
-  layout->addWidget( label_ );
+  layout->addWidget( label_, 1 );
   
   // create push_button
-  QPushButton *button = new QPushButton( this );
-  button->setIcon( IconEngine::get( ICONS::OPEN ) );
-  QtUtil::fixSize( button );
-  layout->addWidget( button );
+  QPushButton *button( new QPushButton( IconEngine::get( ICONS::OPEN ), "", this ) );
+  layout->addWidget( button, 0 );
   
   // connect push_button
   connect( button, SIGNAL( clicked() ), SLOT( _selectFont() ) );

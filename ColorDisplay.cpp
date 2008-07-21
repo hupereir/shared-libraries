@@ -29,6 +29,10 @@
 \date $Date$
 */
 
+#include <QApplication>
+#include <QCursor>
+#include <QDesktopWidget>
+
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QPushButton>
@@ -48,26 +52,31 @@ const QString ColorDisplay::NONE = "None";
 ColorDisplay::ColorDisplay( QWidget* parent ):
   QWidget( parent ),
   Counter( "ColorDisplay" ),
-  editor_( this )
+  editor_( this ),
+  locked_( false ),
+  mouse_down_( false )
 {
   Debug::Throw( "ColorDisplay::ColorDisplay.\n" );
 
   QHBoxLayout *layout = new QHBoxLayout();
   layout->setMargin(0);
-  layout->setSpacing(5);
+  layout->setSpacing(2  );
   setLayout( layout );
   
   editor_.setAlignment( Qt::AlignCenter );
-  QtUtil::expand( &editor_, " #ffffff " ); 
-  layout->addWidget( &editor_ );
-  connect( &editor_, SIGNAL( returnPressed() ), SLOT( _changeColorFromText() ) );  
+  layout->addWidget( &editor_, 1 );
+  connect( &editor_, SIGNAL( returnPressed() ), SLOT( _selectColorFromText() ) );  
 
   // browse button
-  QPushButton *button( new QPushButton( IconEngine::get( ICONS::COLOR_PICKER), "", this ) );
-  QtUtil::fixSize( button );
-  layout->addWidget( button );
+  QPushButton *button;
+  layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::OPEN), "", this ), 0 );
+  button->setToolTip( "select color from dialog" );
+  connect( button, SIGNAL( clicked() ), SLOT( _selectColor() ) );
   
-  connect( button, SIGNAL( clicked() ), SLOT( _changeColor() ) );
+  // grab button
+  layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::COLOR_PICKER), "", this ), 0 );
+  button->setToolTip( "grab color from screen" );
+  connect( button, SIGNAL( clicked() ), SLOT( _grabColor() ) );
   
 } 
 
@@ -79,18 +88,101 @@ void ColorDisplay::setColor( const QString& color )
   editor_.setText( color );
 }
 
+//_____________________________________________________________
+void ColorDisplay::mousePressEvent( QMouseEvent *event )
+{
+  Debug::Throw( "ColorDisplay::mousePressEvent.\n" );
+  
+  // check button
+  if( event->button() != Qt::LeftButton ) return QWidget::mousePressEvent( event );
+    
+  // do nothing if mouse is not locked
+  if( !locked_ ) return QWidget::mousePressEvent( event );
+
+  // do nothing if mouse is already down
+  if( mouse_down_ ) return;
+  mouse_down_ = true;
+
+}
+  
+//_____________________________________________________________
+void ColorDisplay::mouseReleaseEvent( QMouseEvent *event )
+{
+  Debug::Throw( "ColorDisplay::mouseReleaseEvent.\n" );
+    
+  // do nothing if mouse is not locked
+  if( !locked_ ) return QWidget::mouseReleaseEvent( event );
+  
+  // check button
+  if( event->button() == Qt::LeftButton && mouse_down_ )
+  {  
+    // get color under mouse
+    _selectColor( event );
+  }
+  
+  mouse_down_ = false;
+  locked_ = false;
+  releaseMouse();
+  
+  // restore original cursor
+  qApp->restoreOverrideCursor( ); 
+  
+}
+
+//_____________________________________________________________
+void ColorDisplay::mouseMoveEvent( QMouseEvent *event )
+{
+  
+  Debug::Throw( "ColorDisplay::mouseMoveEvent.\n" );
+  
+  // do nothing if mouse is not locked
+  if( !( locked_ && mouse_down_ ) ) return QWidget::mouseMoveEvent( event );
+  _selectColor( event );
+
+}
+
 //________________________________________________________
-void ColorDisplay::_changeColor( void )
+void ColorDisplay::_selectColor( void )
 { 
-  Debug::Throw( "ColorDisplay::_changeColor.\n" );
+  Debug::Throw( "ColorDisplay::_selectColor.\n" );
   QColor color( QColorDialog::getColor( editor_.color(), this ) );
   if( color.isValid() ) setColor( color.name() ); 
 }
 
+
+//_____________________________________________________________
+void ColorDisplay::_selectColor( QMouseEvent *event )
+{
+  Debug::Throw() << "ColorDisplay::_SelectColor - (" << event->globalX() << "," << event->globalY() << ")" << endl;
+    
+  // grab desktop window under cursor
+  // convert to image.
+  QImage image( QPixmap::grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
+
+  // ensure image is deep enough
+  if (image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
+  
+  // assign color to the selection frame
+  setColor( QColor( image.pixel( 1, 1 ) ).name() );
+  
+  return;
+}
+
 //________________________________________________________
-void ColorDisplay::_changeColorFromText( void )
+void ColorDisplay::_grabColor( void )
 { 
-  Debug::Throw( "ColorDisplay::_changeColorFromText.\n" );
+  
+  Debug::Throw( "ColorDisplay::_grabColor.\n" );
+  qApp->setOverrideCursor( Qt::CrossCursor );
+  grabMouse();
+  locked_ = true;
+
+}
+
+//________________________________________________________
+void ColorDisplay::_selectColorFromText( void )
+{ 
+  Debug::Throw( "ColorDisplay::_selectColorFromText.\n" );
   
   QColor color;
   QString text = editor_.text();

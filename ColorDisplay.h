@@ -32,6 +32,7 @@
 */
 
 #include <QColorDialog>
+#include <QMouseEvent>
 #include <string>
 
 #include "Counter.h"
@@ -59,13 +60,30 @@ class ColorDisplay: public QWidget, public Counter
   //! set color
   void setColor( const QString& );
   
+  protected:
+  
+  //! mouse press event [overloaded]
+  void mousePressEvent( QMouseEvent* );
+  
+  //! mouse release event [overloaded]
+  void mouseReleaseEvent( QMouseEvent* );
+
+  //! mouse move event [overloaded]
+  void mouseMoveEvent( QMouseEvent* );
+
   private slots:
   
   //! change color (from button)
-  void _changeColor( void );
+  void _selectColor( void );
   
+  //! change color (from button)
+  void _selectColor( QMouseEvent* );
+  
+  //! change color (from button)
+  void _grabColor( void );
+
   //! change color (from line editor)
-  void _changeColorFromText( void );
+  void _selectColorFromText( void );
     
   private:
   
@@ -90,6 +108,12 @@ class ColorDisplay: public QWidget, public Counter
   
   //! label used to display the color
   LocalLineEdit editor_;
+  
+  //! is set to true when colorgrab is activated
+  bool locked_;
+  
+  //! is true when the mouse is down
+  bool mouse_down_;
   
 };
 #endif

@@ -59,17 +59,16 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   // insert horizontal layout
   QHBoxLayout *layout = new QHBoxLayout();
   layout->setMargin(0);
-  layout->setSpacing(5);
+  layout->setSpacing(2);
   setLayout( layout );
   
   // create line editor
   line_edit_ = new LineEditor( this );
-  layout->addWidget( line_edit_ );
+  layout->addWidget( line_edit_, 1 );
   
   // create push_button
   QPushButton *button = new QPushButton( IconEngine::get( ICONS::OPEN ), "", this );
-  QtUtil::fixSize( button );
-  layout->addWidget( button );
+  layout->addWidget( button, 0 );
   
   // connect push_button
   connect( button, SIGNAL( clicked() ), SLOT( _browse() ) );
