@@ -5,6 +5,7 @@ crystal/color.png \
 crystal/colorpicker.png \
 crystal/configure.png \
 crystal/dialog-ok-apply.png \
+crystal/dialog-ok.png \
 crystal/dialog-cancel.png \
 crystal/dialog-close.png \
 crystal/edit.png \
