@@ -115,6 +115,10 @@ class LineNumberDisplay: public QObject, public Counter
       valid_( false )
     {}
     
+    //! equal to operator
+    bool operator == (const LineNumberData& data )
+    { return id() == data.id(); }
+    
     //! id
     const unsigned int& id( void ) const
     { return id_; }

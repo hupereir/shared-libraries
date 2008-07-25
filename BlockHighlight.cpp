@@ -69,7 +69,7 @@ void BlockHighlight::clear( void )
       
       // mark contents dirty to trigger document update
       parent_->document()->markContentsDirty(block.position(), block.length()-1);
-     
+      
     }
     
   }
@@ -129,7 +129,7 @@ void BlockHighlight::_highlight( void )
 
   // mark contents dirty to trigger document update
   parent_->document()->markContentsDirty(block.position(), block.length()-1);
-
+  
   emit highlightChanged();
   cleared_ = false;
 }

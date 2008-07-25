@@ -105,9 +105,7 @@ TextEditor::TextEditor( QWidget *parent ):
 
   // update configuration
   _updateConfiguration();
-  
-  //setViewportMargins( 50, 0, 0, 0 );
-  
+  _blockCountChanged(0);
 }
 
 //________________________________________________
@@ -2359,6 +2357,9 @@ void TextEditor::_toggleShowLineNumbers( bool state )
 {
 
   _updateMargins();
+  
+  // update options
+  XmlOptions::get().set<bool>( "SHOW_LINE_NUMBERS", state );
   
   // propagate to other displays
   if( isSynchronized() )

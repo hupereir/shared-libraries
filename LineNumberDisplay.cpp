@@ -51,7 +51,7 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
   Counter( "LineNumberDisplay" ),
   editor_( editor ),
   need_update_( true ),
-  need_current_block_update_( false ),
+  need_current_block_update_( true ),
   width_( 0 )
 {
   
@@ -121,20 +121,9 @@ void LineNumberDisplay::paint( QPainter& painter )
   
   // current block highlight
   if( need_current_block_update_ && highlight_color_.isValid() )
-  {
+  {    
     has_current_block_ = _updateCurrentBlockData();
-    if( has_current_block_ ) 
-    {
-      
-      // draw background
-      painter.save();
-      painter.setPen( Qt::NoPen );
-      painter.setBrush( highlight_color_ );
-      painter.drawRect( 0, current_block_data_.position(), width_, metric.lineSpacing() );
-      painter.restore();
-      
-    } 
-        
+    need_current_block_update_ = false;    
   }
 
   // get begin and end cursor positions
@@ -159,6 +148,21 @@ void LineNumberDisplay::paint( QPainter& painter )
     
     // check position
     if( iter->isValid() && iter->position() > height ) continue;
+    
+    // highlight
+    if( has_current_block_  && *iter == current_block_data_ ) 
+    {
+      // check validity
+      if( !current_block_data_.isValid() ) _updateLineNumberData( block, id, current_block_data_ );
+      
+      // draw background
+      painter.save();
+      painter.setPen( Qt::NoPen );
+      painter.setBrush( highlight_color_ );
+      painter.drawRect( 0, current_block_data_.position(), width_, metric.lineSpacing() );
+      painter.restore();
+      
+    } 
     
     QString numtext( QString::number( iter->lineNumber() ) );
     painter.drawText(
@@ -266,11 +270,10 @@ bool LineNumberDisplay::_updateCurrentBlockData( void )
   int last_index = _editor().cursorForPosition( QPoint( 0, _editor().height() ) ).position();
 
   // get document
-  unsigned int block_count( 1 );
   QTextDocument &document( *_editor().document() );
   QTextBlock block = document.begin();
   LineNumberData::List::iterator iter( line_number_data_.begin() );
-  for( ; block.isValid() && iter != line_number_data_.end(); block = block.next(), block_count++, iter++ )
+  for( ; block.isValid() && iter != line_number_data_.end(); block = block.next(), iter++ )
   {
     
     // skip if block is not (yet) in window
@@ -281,8 +284,6 @@ bool LineNumberDisplay::_updateCurrentBlockData( void )
     
     // block data
     TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
-    
-    // update block count in case of collapsed block
     if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) )
     { 
       current_block_data_ = *iter;
