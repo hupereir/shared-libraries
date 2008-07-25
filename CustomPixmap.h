@@ -102,8 +102,7 @@ class CustomPixmap: public QPixmap, public Counter
   //! returns an empty pixmap of given size, of given color and possibly transparent
   virtual CustomPixmap empty( 
     const QSize& size, 
-    const QColor& color = Qt::black, 
-    const bool& transparent = true ) const;
+    const QColor& color = Qt::transparent ) const;
   
   //! return greyed (inactive) pixmap, build from the current
   virtual CustomPixmap disabled( void );

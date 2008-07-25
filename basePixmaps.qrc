@@ -1,5 +1,29 @@
 <!DOCTYPE RCC><RCC version="1.0">
   <qresource>
+
+    <file alias="pixmaps/crystal/color.png">../base-pixmaps/crystal/color.png</file>
+    <file alias="pixmaps/crystal/colorpicker.png">../base-pixmaps/crystal/colorpicker.png</file>
+    <file alias="pixmaps/crystal/configure.png">../base-pixmaps/crystal/configure.png</file>
+    <file alias="pixmaps/crystal/dialog-information.png">../base-pixmaps/crystal/dialog-information.png</file>
+    <file alias="pixmaps/crystal/dialog-ok-apply.png">../base-pixmaps/crystal/dialog-ok-apply.png</file>
+    <file alias="pixmaps/crystal/dialog-ok.png">../base-pixmaps/crystal/dialog-ok.png</file>
+    <file alias="pixmaps/crystal/dialog-cancel.png">../base-pixmaps/crystal/dialog-cancel.png</file>
+    <file alias="pixmaps/crystal/dialog-close.png">../base-pixmaps/crystal/dialog-close.png</file>
+    <file alias="pixmaps/crystal/edit.png">../base-pixmaps/crystal/edit.png</file>
+    <file alias="pixmaps/crystal/editcopy.png">../base-pixmaps/crystal/editcopy.png</file>
+    <file alias="pixmaps/crystal/editcut.png">../base-pixmaps/crystal/editcut.png</file>
+    <file alias="pixmaps/crystal/editpaste.png">../base-pixmaps/crystal/editpaste.png</file>
+    <file alias="pixmaps/crystal/exit.png">../base-pixmaps/crystal/exit.png</file>
+    <file alias="pixmaps/crystal/fileopen.png">../base-pixmaps/crystal/fileopen.png</file>
+    <file alias="pixmaps/crystal/messagebox_warning.png">../base-pixmaps/crystal/messagebox_warning.png</file>
+    <file alias="pixmaps/crystal/qt-logo.png">../base-pixmaps/crystal/qt-logo.png</file>
+    <file alias="pixmaps/crystal/redo.png">../base-pixmaps/crystal/redo.png</file>
+    <file alias="pixmaps/crystal/reload.png">../base-pixmaps/crystal/reload.png</file>
+    <file alias="pixmaps/crystal/toggle_log.png">../base-pixmaps/crystal/toggle_log.png</file>
+    <file alias="pixmaps/crystal/trashcan_empty.png">../base-pixmaps/crystal/trashcan_empty.png</file>
+    <file alias="pixmaps/crystal/undo.png">../base-pixmaps/crystal/undo.png</file>
+    <file alias="pixmaps/crystal/viewmag.png">../base-pixmaps/crystal/viewmag.png</file>
+
     <file alias="pixmaps/oxygen/color.png">../base-pixmaps/oxygen/color.png</file>
     <file alias="pixmaps/oxygen/colorpicker.png">../base-pixmaps/oxygen/colorpicker.png</file>
     <file alias="pixmaps/oxygen/configure.png">../base-pixmaps/oxygen/configure.png</file>
@@ -24,26 +48,5 @@
     <file alias="pixmaps/oxygen/viewmag.png">../base-pixmaps/oxygen/viewmag.png</file>
     <file alias="pixmaps/oxygen/viewmag-large.png">../base-pixmaps/oxygen/viewmag-large.png</file>
 
-    <file alias="pixmaps/crystal/color.png">../base-pixmaps/crystal/color.png</file>
-    <file alias="pixmaps/crystal/colorpicker.png">../base-pixmaps/crystal/colorpicker.png</file>
-    <file alias="pixmaps/crystal/configure.png">../base-pixmaps/crystal/configure.png</file>
-    <file alias="pixmaps/crystal/dialog-information.png">../base-pixmaps/crystal/dialog-information.png</file>
-    <file alias="pixmaps/crystal/dialog-ok-apply.png">../base-pixmaps/crystal/dialog-ok-apply.png</file>
-    <file alias="pixmaps/crystal/dialog-cancel.png">../base-pixmaps/crystal/dialog-cancel.png</file>
-    <file alias="pixmaps/crystal/dialog-close.png">../base-pixmaps/crystal/dialog-close.png</file>
-    <file alias="pixmaps/crystal/edit.png">../base-pixmaps/crystal/edit.png</file>
-    <file alias="pixmaps/crystal/editcopy.png">../base-pixmaps/crystal/editcopy.png</file>
-    <file alias="pixmaps/crystal/editcut.png">../base-pixmaps/crystal/editcut.png</file>
-    <file alias="pixmaps/crystal/editpaste.png">../base-pixmaps/crystal/editpaste.png</file>
-    <file alias="pixmaps/crystal/exit.png">../base-pixmaps/crystal/exit.png</file>
-    <file alias="pixmaps/crystal/fileopen.png">../base-pixmaps/crystal/fileopen.png</file>
-    <file alias="pixmaps/crystal/messagebox_warning.png">../base-pixmaps/crystal/messagebox_warning.png</file>
-    <file alias="pixmaps/crystal/qt-logo.png">../base-pixmaps/crystal/qt-logo.png</file>
-    <file alias="pixmaps/crystal/redo.png">../base-pixmaps/crystal/redo.png</file>
-    <file alias="pixmaps/crystal/reload.png">../base-pixmaps/crystal/reload.png</file>
-    <file alias="pixmaps/crystal/toggle_log.png">../base-pixmaps/crystal/toggle_log.png</file>
-    <file alias="pixmaps/crystal/trashcan_empty.png">../base-pixmaps/crystal/trashcan_empty.png</file>
-    <file alias="pixmaps/crystal/undo.png">../base-pixmaps/crystal/undo.png</file>
-    <file alias="pixmaps/crystal/viewmag.png">../base-pixmaps/crystal/viewmag.png</file>
 </qresource>
 </RCC>

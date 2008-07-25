@@ -116,19 +116,13 @@ CustomPixmap CustomPixmap::scale( const unsigned int& width, const unsigned int&
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color, const bool& transparent ) const
+CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color ) const
 {
   
   Debug::Throw( "CustomPixmap::empty.\n" );
   CustomPixmap out( size );
-  out.fill( color );
-  if( transparent ) 
-  {
-    QBitmap mask( size );
-    mask.clear();
-    out.setMask( mask );
-  }
-  
+  if( color.isValid() ) out.fill( color );
+  else out.fill( Qt::transparent );
   return out;
 
 }
