@@ -42,6 +42,7 @@ HEADERS = \
   ItemDelegate.h \
   ItemModel.h \
   LineEditor.h \
+  LineNumberDisplay.h \
   ListModel.h \
   ListWidget.h \
   MultipleClickCounter.h \
@@ -129,6 +130,7 @@ SOURCES = \
   ItemDelegate.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
+  LineNumberDisplay.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \

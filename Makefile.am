@@ -46,6 +46,7 @@ noinst_HEADERS = \
   ItemDelegate.h \
   ItemModel.h \
   LineEditor.h \
+  LineNumberDisplay.h \
   ListModel.h \
   ListWidget.h \
   MultipleClickCounter.h \
@@ -135,6 +136,7 @@ libbase_qt_a_SOURCES = \
   ItemDelegate.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
+  LineNumberDisplay.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
   OpenPreviousMenu.cpp \
@@ -191,6 +193,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_IconCacheDialog.cpp \
   moc_IconFileDialog.cpp \
   moc_LineEditor.cpp \
+  moc_LineNumberDisplay.cpp \
   moc_ListWidget.cpp \
   moc_MultipleClickCounter.cpp \
   moc_OpenPreviousMenu.cpp \

@@ -60,6 +60,8 @@ class SelectLineDialog;
 class FindDialog;
 class ReplaceDialog;
 
+class LineNumberDisplay;
+
 //! Customized QTextEdit object
 class TextEditor: public QTextEdit, public BASE::Key, public Counter
 {
@@ -150,6 +152,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   void setWrapFromOptions( const bool& value )
   { wrap_from_options_ = value; }
   
+  //! enable/disable reading of line number display from options
+  const bool& lineNumbersFromOptions( void ) const
+  { return line_number_from_options_; }
+
+  //! enable/disable reading of line number display from options
+  void setLineNumbersFromOptions( const bool& value )
+  { line_number_from_options_ = value; }
+
   //@}
   
   //! read-only
@@ -224,6 +234,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   QAction& tabEmulationAction( void )
   { return *tab_emulation_action_; }
   
+  //! show line numbers
+  bool hasLineNumberAction( void ) const
+  { return show_line_number_action_; }
+  
+  //! show line numbers
+  QAction& showLineNumberAction( void ) const
+  { return *show_line_number_action_; }
+
   //@}
 
   //!@name tab emulation
@@ -396,6 +414,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //!@name event handlers
   //@{
   
+  //! generic event
+  virtual bool event( QEvent* );
+
   //! enter event handler
   void enterEvent( QEvent *event );
 
@@ -509,6 +530,59 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
+  //!@name line numbers
+  //@{
+  
+  //! line number display
+  bool _hasLineNumberDisplay( void ) const
+  { return line_number_display_; }
+  
+  //! line number display
+  LineNumberDisplay& _lineNumberDisplay( void ) const
+  { return *line_number_display_; }
+  
+  //! left margin
+  const int& _leftMargin( void ) const
+  { return left_margin_; }
+  
+  //! left margin
+  bool _setLeftMargin( const int& margin )
+  { 
+    if( margin == _leftMargin() ) return false;
+    left_margin_ = margin;
+    return true;
+  }
+  
+  //! vertical line display
+  const bool& _drawVerticalLine( void ) const
+  { return draw_vertical_line_; }
+  
+  //! vertical line display
+  bool _setDrawVerticalLine( const bool& value )
+  { 
+    if( value == _drawVerticalLine() ) return false;
+    draw_vertical_line_ = value; 
+    return true;
+  }
+  
+  //! margin foreground
+  const QColor& _marginForegroundColor( void ) const
+  { return margin_foreground_color_; }
+
+  //! margin foreground
+  void _setMarginForegroundColor( const QColor& color )
+  { margin_foreground_color_ = color; }
+  
+  //! margin background
+  const QColor& _marginBackgroundColor( void ) const
+  { return margin_background_color_; }
+
+  //! margin background
+  void _setMarginBackgroundColor( const QColor& color )
+  { margin_background_color_ = color; }
+
+  //@}
+  
   //! toggle insertion mode
   virtual void _toggleInsertMode( void );
   
@@ -539,7 +613,13 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   { return emulated_tab_regexp_; }
   
   //@}
+
+  //! update margins
+  virtual bool _updateMargins( void );
     
+  //! draw margins
+  virtual void _drawMargins( QPainter& );
+  
   private slots:
   
   //! update configuration
@@ -578,6 +658,13 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   /*! returns true if changed */
   virtual bool _toggleTabEmulation( bool );
 
+  //! toggle line number display
+  virtual void _toggleShowLineNumbers( bool state );
+  
+  //! block count changed
+  /*! needed to adjust width of line number display */
+  void _blockCountChanged( int );
+  
   private:
     
   //!@name replace/find selection
@@ -597,16 +684,29 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //@}
   
+  //!@name line number display
+  //@{
+       
+  //! line numbers
+  LineNumberDisplay* line_number_display_;
+  
+  //! left margin width
+  int left_margin_;
+
+  //! vertical line
+  bool draw_vertical_line_;
+
+  //@}
+  
   //! true if this display is the active display
   bool active_;
   
-  /*! 
-  set to false when the wrapping has been modified once.
-  This done, it does not get loaded via the options 
-  any more
-  */
+  /*! set to false when the wrapping must not get loaded via the options */
   bool wrap_from_options_;
   
+  /*! set to false when the display of line numbers must not get loaded via the options. */
+  bool line_number_from_options_;
+
   //!@name tab emulation and empty lines
   //@{
   
@@ -699,6 +799,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! toggle tab emulation
   QAction* tab_emulation_action_;
   
+  //! line number
+  QAction* show_line_number_action_;
+  
   //@}
   
   //! synchronization flag
@@ -718,6 +821,13 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! current block highlight color
   QColor highlight_color_;
+
+  //! margin color
+  QColor margin_foreground_color_;
+  
+  //! margin color
+  QColor margin_background_color_;
+
 
   //! store possible mouse drag start position
   QPoint drag_start_;

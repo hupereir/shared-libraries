@@ -370,20 +370,55 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   grid_layout->addWidget( new QLabel(
     "Note: box selection is enabled in text editors\n"
     "only if the corresponding font has fixed pitch."), 2, 0, 1, 2 );
+
+  // margins
+  parent->layout()->addWidget( box = new QGroupBox( "Margin appearance", parent ) );
+ 
+  box->setLayout( new QVBoxLayout() );
+  box->layout()->setSpacing(5);
+  box->layout()->setMargin(5);
+
+  box->layout()->addWidget( checkbox = new OptionCheckBox( "Draw vertical line", box, "MARGIN_VERTICAL_LINE" ) );
+  checkbox->setToolTip( 
+    "Draw vertical line between margin and body text. "
+    "Margins are used to display additional informations such as tags and line numbers."
+    );
+  addOptionWidget( checkbox );
   
+  grid_layout = new CustomGridLayout();
+  grid_layout->setSpacing(5);
+  grid_layout->setMargin(0);
+  grid_layout->setMaxCount(2);
+  box->layout()->addItem( grid_layout );
+
+  OptionColorDisplay* color_display;
+  
+  grid_layout->addWidget( new QLabel( "Margin foreground", box ) );
+  grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
+  addOptionWidget( color_display );
+  color_display->setToolTip( "Margins foreground color" );
+
+  grid_layout->addWidget( new QLabel( "Margin background", box ) );
+  grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
+  addOptionWidget( color_display );
+  color_display->setToolTip( "Margins background color" );
+
   // misc
-  box = new QGroupBox( "Misc", parent );
+  parent->layout()->addWidget( box = new QGroupBox( "Flags", parent ) );
   layout = new QVBoxLayout();
   layout->setMargin(5);
   layout->setSpacing(5);
   box->setLayout( layout );
-  parent->layout()->addWidget( box );
   
   checkbox = new OptionCheckBox( "Wrap text", box, "WRAP_TEXT" );
   checkbox->setToolTip( "Turn on/off line wrapping at editor border" );
   layout->addWidget( checkbox );
   addOptionWidget( checkbox );
   
+  layout->addWidget( checkbox = new OptionCheckBox( "Show line numbers", box, "SHOW_LINE_NUMBERS" ) );
+  checkbox->setToolTip( "Turn on/off line numbers" );
+  addOptionWidget( checkbox );
+
 }
 
 //__________________________________________________

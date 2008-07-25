@@ -42,6 +42,7 @@
 #include "CustomTextDocument.h"
 #include "FindDialog.h"
 #include "IconEngine.h"
+#include "LineNumberDisplay.h"
 #include "ReplaceDialog.h"
 #include "SelectLineDialog.h"
 #include "TextBlockData.h"
@@ -61,9 +62,14 @@ TextEditor::TextEditor( QWidget *parent ):
   find_dialog_( 0 ),
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
+  line_number_display_( 0 ),
+  left_margin_( 0 ),
+  draw_vertical_line_( false ),
   active_( false ),
   wrap_from_options_( true ),
+  line_number_from_options_( true ),
   has_tab_emulation_( false ),
+  show_line_number_action_( 0 ),
   synchronize_( false ),
   box_selection_( this ),
   remove_line_buffer_( this ),
@@ -84,12 +90,18 @@ TextEditor::TextEditor( QWidget *parent ):
   // actions
   _installActions();
 
+  // line number
+  line_number_display_ = new LineNumberDisplay( this );
+
   // signal to make sure selectionsynchronized is  between clones
   connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( selectionChanged() ), SLOT( _updateClipboard() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+
+  // track changes of block counts
+  connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
 
   // update configuration
   _updateConfiguration();
@@ -383,6 +395,10 @@ void TextEditor::synchronize( TextEditor* editor )
 
   // synchronize wrap mode
   wrapModeAction().setChecked( editor->wrapModeAction().isChecked() );
+  
+  // track changes of block counts
+  _lineNumberDisplay().synchronize( &editor->_lineNumberDisplay() );
+  connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
 
   Debug::Throw( "TextEditor::synchronize - done.\n" );
 
@@ -436,7 +452,8 @@ void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions
   Debug::Throw( "TextEditor::installContextMenuActions.\n" );
 
   // wrapping
-  menu.addAction( wrap_mode_action_ );
+  menu.addAction( &showLineNumberAction() );
+  menu.addAction( &wrapModeAction() );
   menu.addSeparator();
 
   if( all_actions )
@@ -850,6 +867,31 @@ void TextEditor::removeLine()
   setTextCursor( cursor );
   cut();
   setUpdatesEnabled( true );
+
+}
+
+
+//_______________________________________________________
+bool TextEditor::event( QEvent* event )
+{
+  
+  // check that all needed widgets/actions are valid and checked.
+  switch (event->type()) 
+  {
+    
+    case QEvent::Paint:
+    if( _leftMargin() ) 
+    {
+      QPainter painter( this );
+      _drawMargins( painter );
+      painter.end();
+    }
+    break;
+    
+    default: break;
+  }
+    
+  return QTextEdit::event( event );
 
 }
 
@@ -1415,8 +1457,14 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
   }
   painter.end();
+  
+  // base class
+  QTextEdit::paintEvent( event );
 
-  return QTextEdit::paintEvent( event );
+  // this is needed to force update of editor's margin
+  if( _leftMargin() ) { QFrame::update(); }
+  
+  return;
 
 }
 
@@ -1544,6 +1592,14 @@ void TextEditor::_installActions( void )
   tab_emulation_action_->setCheckable( true );
   tab_emulation_action_->setChecked( has_tab_emulation_ );
   connect( tab_emulation_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );
+  
+  // line number action
+  addAction( show_line_number_action_ =new QAction( "Show line numbers", this ) );
+  show_line_number_action_->setToolTip( "Show/hide line numbers" );
+  show_line_number_action_->setCheckable( true );
+  show_line_number_action_->setShortcut( Qt::Key_F11 );
+  show_line_number_action_->setShortcutContext( Qt::WidgetShortcut );
+  connect( show_line_number_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleShowLineNumbers( bool ) ) );
 
   // update actions that depend on the presence of a selection
   _updateSelectionActions( textCursor().hasSelection() );
@@ -2019,6 +2075,54 @@ void TextEditor::_insertTab( void )
 
 }
 
+//___________________________________________________________________________
+bool TextEditor::_updateMargins( void )
+{
+
+  Debug::Throw( "TextEditor::_updateMargins.\n" );
+  int left_margin( 0 );
+  
+  if( showLineNumberAction().isChecked() && showLineNumberAction().isVisible() )
+  { left_margin += _lineNumberDisplay().width(); }
+  
+  if( left_margin_ == left_margin ) return false;
+  
+  left_margin_ = left_margin;
+  setViewportMargins( left_margin, 0, 0, 0 );
+  return true;
+  
+}
+
+//___________________________________________________________________________
+void TextEditor::_drawMargins( QPainter& painter )
+{
+       
+  int height( TextEditor::height() - 2*frameWidth() );
+  if( horizontalScrollBar()->isVisible() ) { height -= horizontalScrollBar()->height() + 2; }
+  
+  painter.translate( frameWidth(),  frameWidth() );
+  painter.setClipRect( 0, 0, _leftMargin(), height );
+  
+  painter.setBrush( _marginBackgroundColor() );
+  painter.setPen( Qt::NoPen );
+  painter.drawRect( 0, 0, _leftMargin(), height );
+  
+  painter.setPen( _marginForegroundColor() );
+  if( _drawVerticalLine() ) { painter.drawLine( _leftMargin()-1, 0, _leftMargin()-1, height ); } 
+  
+  int y_offset = verticalScrollBar()->value();      
+  painter.translate( 0, -y_offset );
+  
+  // draw lines
+  if( 
+    _hasLineNumberDisplay() && 
+    hasLineNumberAction() && 
+    showLineNumberAction().isVisible() && 
+    showLineNumberAction().isChecked() )
+  { _lineNumberDisplay().paint( painter ); }
+  
+}
+
 //________________________________________________
 void TextEditor::_updateConfiguration( void )
 {
@@ -2028,6 +2132,9 @@ void TextEditor::_updateConfiguration( void )
   // wrap mode
   if( wrapFromOptions() )
   { wrapModeAction().setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
+
+  if( lineNumbersFromOptions() )
+  { showLineNumberAction().setChecked( XmlOptions::get().get<bool>( "SHOW_LINE_NUMBERS" ) ); }
 
   // tab emulation
   _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
@@ -2039,6 +2146,11 @@ void TextEditor::_updateConfiguration( void )
   blockHighlightAction().setEnabled( highlight_color_.isValid() );
   blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
 
+  // line numbers
+  _setMarginForegroundColor( QColor( XmlOptions::get().get<string>("MARGIN_FOREGROUND").c_str() ) );
+  _setMarginBackgroundColor( QColor( XmlOptions::get().get<string>("MARGIN_BACKGROUND").c_str() ) );
+  _setDrawVerticalLine( XmlOptions::get().get<bool>( "MARGIN_VERTICAL_LINE" ) );
+
   // update box configuration
   // clear
   _boxSelection().updateConfiguration();
@@ -2048,6 +2160,7 @@ void TextEditor::_updateConfiguration( void )
     _synchronizeBoxSelection();
     emit copyAvailable( false );
   }
+
 
   return;
 
@@ -2239,4 +2352,39 @@ bool TextEditor::_toggleTabEmulation( bool state )
 
   return true;
 
+}
+
+//_______________________________________________________
+void TextEditor::_toggleShowLineNumbers( bool state )
+{
+
+  _updateMargins();
+  
+  // propagate to other displays
+  if( isSynchronized() )
+  {
+    // temporarely disable synchronization
+    // to avoid infinite loop
+    setSynchronized( false );
+
+    BASE::KeySet<TextEditor> displays( this );
+    for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
+    { if( (*iter)->isSynchronized() ) (*iter)->showLineNumberAction().setChecked( state ); }
+    setSynchronized( true );
+
+  }
+
+  return;
+}
+
+//________________________________________________________
+void TextEditor::_blockCountChanged( int count )
+{
+  
+  Debug::Throw( "TextEditor::_blockCountChanged.\n" );
+  if( !( _hasLineNumberDisplay() && _lineNumberDisplay().updateWidth( count ) ) ) return;
+  if( !( hasLineNumberAction() && showLineNumberAction().isChecked() && showLineNumberAction().isVisible() ) ) return;
+  _updateMargins();
+  update();
+  
 }

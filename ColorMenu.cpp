@@ -92,7 +92,6 @@ void ColorMenu::paintEvent( QPaintEvent* event )
     action_rect.adjust( 2*margin + 20, margin, -2*margin-1, -margin );
     action_rect.setWidth( action_rect.height() );
     painter.setBrush( colors_[iter->second] );
-    //painter.drawRect( action_rect.intersected( event->rect() ) );
     painter.setRenderHints(QPainter::Antialiasing );
     painter.drawEllipse( action_rect );
   }
