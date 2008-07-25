@@ -72,6 +72,7 @@ Options::Options( void ):
   add( Option( "TAB_EMULATION", "1" , "enable tab emulation" ));
   add( Option( "TAB_SIZE", "2" , "emulated tab size" ));
   add( Option( "WRAP_TEXT", "0" , "text wrapping" ));
+  add( Option( "SHOW_LINE_NUMBERS", "0" , "line numbers" ));
 
   add( Option( "HIGHLIGHT_PARAGRAPH", "1", "enable paragraph highlighting" ) ); 
   add( Option( "HIGHLIGHT_COLOR", "#fffdd4", "current paragraph highlight color" ) ); 
@@ -80,6 +81,12 @@ Options::Options( void ):
   add( Option( "ALTERNATE_COLOR", "None", "background color for even items in ListBox and ListView" ) ); 
   add( Option( "SELECTED_COLUMN_COLOR", "#fffdd4", "background color for selected column" ) ); 
   add( Option( "LIST_ICON_SIZE", "24", "default icon size in lists" ) );
+  
+  // textEditor margins
+  add( Option( "MARGIN_FOREGROUND", "#136872" ) );
+  add( Option( "MARGIN_BACKGROUND", "#ecffec" ) );
+  add( Option( "MARGIN_VERTICAL_LINE", "1" ) );
+
   
   // box selection
   add( Option( "BOX_SELECTION_ALPHA", "20", "alpha threshold for box selection - between 0 and 100" ) );
