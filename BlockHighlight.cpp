@@ -87,8 +87,8 @@ void BlockHighlight::highlight( void )
   if( !isEnabled() ) return;
   
   clear();
-  //timer_.start(50, this );
-  _highlight();
+  timer_.start(50, this );
+  //_highlight();
   
 }
 

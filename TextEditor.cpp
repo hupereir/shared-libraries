@@ -1488,10 +1488,22 @@ void TextEditor::paintEvent( QPaintEvent* event )
   // base class painting
   QTextEdit::paintEvent( event );
   
-  // this is needed to force update of editor's margin
-  if( _leftMargin() && _rectChanged( rect ) ) { 
-    QFrame::update( QRect( frameWidth(), frameWidth(), _leftMargin(), height() ) ); 
-  }
+//   Debug::Throw(0) 
+//     << "TextEditor::paintEvent -"
+//     << " key: " << key()
+//     << " rect: (" 
+//     << rect.x() << "," << rect.y() << "," << rect.width() << "," << rect.height() << ")"
+//     << endl;
+  
+  
+  // this is needed to force update of editor's margin  
+  /* 
+  update is performed every time the rect changes or when its width is larger than the cursor width 
+  in which case the paintEvent is likely to correspond to a cursor blicking event, and no update is needed
+  This is done to minimize the amount of CPU
+  */
+  if( _leftMargin() && ( _rectChanged( rect ) || rect.width() != cursorWidth() ) ) 
+  { QFrame::update( QRect( frameWidth(), frameWidth(), _leftMargin(), height() ) ); }
   
   return;
 
@@ -2148,9 +2160,13 @@ void TextEditor::_drawMargins( QPainter& painter )
   painter.setPen( Qt::NoPen );
   painter.drawRect( 0, 0, _leftMargin(), height );
   
-  painter.setPen( _marginForegroundColor() );
-  if( _drawVerticalLine() ) { painter.drawLine( _leftMargin()-1, 0, _leftMargin()-1, height ); } 
+  if( _drawVerticalLine() ) {
+    painter.setBrush( QBrush( _marginForegroundColor(), Qt::Dense4Pattern ) );
+    painter.drawRect( _leftMargin()-1, 0, 1, height ); 
+    painter.setBrush( _marginBackgroundColor() );
+  } 
   
+  painter.setPen( _marginForegroundColor() );
   int y_offset = verticalScrollBar()->value();      
   painter.translate( 0, -y_offset );
   
@@ -2326,7 +2342,10 @@ void TextEditor::_toggleBlockHighlight( bool state )
   
   // enable
   blockHighlight().setEnabled( highlight_color_.isValid() && state );
-
+  
+  // update options
+  XmlOptions::get().set<bool>( "HIGHLIGHT_PARAGRAPH", state );
+  
   // update current paragraph
   if( blockHighlight().isEnabled() ) blockHighlight().highlight();
   else blockHighlight().clear();

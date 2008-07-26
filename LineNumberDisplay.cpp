@@ -299,6 +299,6 @@ bool LineNumberDisplay::_updateCurrentBlockData( void )
     }
     
   }
-  
+
   return false;
 }
