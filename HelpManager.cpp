@@ -63,7 +63,7 @@ HelpManager::HelpManager( QObject* parent ):
   Debug::Throw( "HelpManager::HelpManager.\n" );
   
   // actions
-  display_action_ = new QAction( IconEngine::get( ICONS::HELP ), "&Reference Manual", 0 );
+  display_action_ = new QAction( IconEngine::get( ICONS::HELP ), "&Reference Manual", this );
   connect( display_action_, SIGNAL( triggered() ), SLOT( _display() ) );
   
   dump_action_ = new QAction( "D&ump Help", 0 );
