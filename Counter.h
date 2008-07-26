@@ -39,7 +39,6 @@
 
 #include "Exception.h"
 
-
 /*!
    \class   Counter
    \brief   Object counter
@@ -50,50 +49,12 @@ class Counter {
   
   //! counter name and counts pair
   typedef std::pair<std::string, int> Pair;
-  
-  //! map counter name and counts
-  typedef std::map<std::string, int> Map;
-  
-  //! counter map between name and existing objects
-  class CounterMap: public Map  
-  {
-    public:
-                      
-    //! get counter for a given name
-    /*! 
-      if the name is found, returns adress of the existing counter
-      creates new counter otherwise and returns adress
-    */
-    int* counter( const std::string& name )
-    {
-      iterator iter = find( name );
-      if( iter == end() )
-      return &(insert( std::pair<std::string, int>( name, 0 ) ).first->second);
-      else return &(iter->second);
-    }    
-    
-  };
       
   //! constructor
-  Counter( const std::string& name ):
-    name_( name ),
-    count_( 0 )
-  {
-    count_ = counts_.counter( name );
-    (*count_) ++;
-    return;
-  }
-
+  Counter( const std::string& name );
   
   //! constructor
-  Counter( const Counter& counter ):
-    name_( counter.name_ ),
-    count_( 0 )
-  {
-    count_ = counts_.counter( name_ );
-    (*count_) ++;
-    return;
-  }
+  Counter( const Counter& counter );
 
   //! destructor
   virtual ~Counter( void )
@@ -109,11 +70,7 @@ class Counter {
   
   //! prints all counters to stream
   static void print( std::ostream& o = std::cout );
-  
-  //! returns counter map
-  static CounterMap& map( void )
-  { return counts_; }
-  
+    
   private:
   
   //! the object name associated to the counter
@@ -122,9 +79,6 @@ class Counter {
   //! pointer to integer counter
   int* count_;
     
-  //! the number of counts in this counter
-  static CounterMap counts_;
-
 };
 
 #endif

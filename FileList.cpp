@@ -41,9 +41,6 @@
 using namespace std;
 
 //_______________________________________________
-FileList::FileRecordMap FileList::record_lists_;
-
-//_______________________________________________
 void FileList::remove( const File& file )
 {
   Debug::Throw() << "FileList::remove - " << file << endl;

@@ -40,6 +40,7 @@
 #include "Debug.h"
 #include "File.h"
 #include "FileRecord.h"
+#include "Singleton.h"
 #include "TimeStamp.h"
 
 //! handles list of files saved into resource file for later reopening
@@ -100,7 +101,7 @@ class FileList: public Counter
 
   //! retrieve list of files associated to given file
   virtual void _findList( const File file )
-  { records_ = &record_lists_[file]; }
+  { records_ = &Singleton::get().fileRecordMap()[file]; }
 
   //! list of files records
   virtual const FileRecord::List& _records( void ) const
@@ -147,12 +148,6 @@ class FileList: public Counter
 
   //! current list of files
   FileRecord::List* records_;
-
-  //! shortcut to list of files map
-  typedef std::map< File, FileRecord::List > FileRecordMap;
-
-  //! static map between file lists and associated files
-  static FileRecordMap record_lists_;
 
 };
 #endif

@@ -30,16 +30,34 @@
 */
 
 #include "Counter.h"
+#include "Singleton.h"
 
 using namespace std;
 
-//____________________________________________________
-Counter::CounterMap Counter::counts_;
-
+//____________________________________________________________
+Counter::Counter( const std::string& name ):
+  name_( name ),
+  count_( 0 )
+{
+  count_ = Singleton::get().counterMap().counter( name );
+  (*count_) ++;
+  return;
+}
+  
+//____________________________________________________________
+Counter::Counter( const Counter& counter ):
+  name_( counter.name_ ),
+  count_( 0 )
+{
+  count_ = Singleton::get().counterMap().counter( name_ );
+  (*count_) ++;
+  return;
+}
+  
 //____________________________________________________
 void Counter::print( ostream& out )
 {
-  for( CounterMap::iterator iter = counts_.begin(); iter != counts_.end(); iter++ )
+  for( CounterMap::iterator iter = Singleton::get().counterMap().begin(); iter != Singleton::get().counterMap().end(); iter++ )
   out << iter->first << ": " << iter->second << endl;
   out << endl;
 }

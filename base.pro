@@ -5,6 +5,7 @@ HEADERS = \
   ArgList.h \
   Command.h \
   Counter.h \
+  CounterMap.h \
   CustomProcess.h \
   Debug.h \
   Exception.h \
@@ -15,8 +16,9 @@ HEADERS = \
   Option.h \
   Options.h \
   Str.h \
-  TextFormatBlock.h \
+  Singleton.h \
   TextFormat.h \
+  TextFormatBlock.h \
   TextPosition.h \
   TimeStamp.h \
   Util.h
@@ -26,11 +28,12 @@ SOURCES = \
   Command.cpp \
   Counter.cpp \
   CustomProcess.cpp \
-  Debug.cpp \
+	 Debug.cpp \
   File.cpp \
   FileList.cpp \
   Key.cpp \
   Options.cpp \
+  Singleton.cpp \
   Str.cpp \
   TimeStamp.cpp \
   Util.cpp
