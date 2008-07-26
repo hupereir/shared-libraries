@@ -208,8 +208,8 @@ QColor ColorDisplay::LocalLineEdit::color( void ) const
 { 
   Debug::Throw( "ColorDisplay::LocalLineEdit::color.\n" );
   QString text( LineEditor::text() );
-  if( text == ColorDisplay::NONE ) return QColor();
-  else return QColor( text ); 
+  if( text == ColorDisplay::NONE || text.isEmpty() ) return QColor();
+  else return QColor( text );
 }
 
 //_________________________________________________________

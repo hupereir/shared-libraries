@@ -37,7 +37,6 @@
 #include <QTextBlock>
 #include <QTextLayout>
 
-#include "BlockHighlight.h"
 #include "TextEditor.h"
 #include "Debug.h"
 #include "LineNumberDisplay.h"
@@ -58,9 +57,10 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
   Debug::Throw( "LineNumberDisplay::LineNumberDisplay.\n" );
  
   connect( &_editor().wrapModeAction(), SIGNAL( toggled( bool ) ), SLOT( _needUpdate() ) );
+
   connect( _editor().document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged() ) );
   connect( _editor().document(), SIGNAL( contentsChanged() ), SLOT( _contentsChanged() ) );
-  connect( &_editor().blockHighlight(), SIGNAL( highlightChanged() ), SLOT( _currentBlockChanged() ) );
+  
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
   // update configuration
@@ -93,16 +93,27 @@ void LineNumberDisplay::synchronize( LineNumberDisplay* display )
 bool LineNumberDisplay::updateWidth( const int& count )
 {
   Debug::Throw( "LineNumberDisplay::updateWidth.\n" );
+  
   int new_width( _editor().fontMetrics().width( QString::number( count ) ) + 14 );
   if( width() == new_width ) return false;
   width_ = new_width;
+  
+  Debug::Throw() << "LineNumberDisplay::updateWidth - count: " << count << " new_width: " << new_width << endl;
   return true;  
+}
+
+//__________________________________________
+void LineNumberDisplay::clear( void )
+{  
+  Debug::Throw( "LineNumberDisplay::clear.\n" );
+  line_number_data_.clear();
+  current_block_data_ = LineNumberData();
+  need_update_ = true;
 }
 
 //__________________________________________
 void LineNumberDisplay::paint( QPainter& painter )
 {  
-
   // update line number data if needed
   if( need_update_ ) 
   { _updateLineNumberData(); }
@@ -209,10 +220,6 @@ void LineNumberDisplay::_blockCountChanged( void )
   { need_update_ = true; }
   
 }
-
-//________________________________________________________
-void LineNumberDisplay::_currentBlockChanged( void )
-{ need_current_block_update_ = true; }
 
 //________________________________________________________
 void LineNumberDisplay::_updateLineNumberData( void )

@@ -85,7 +85,6 @@ TextEditor::TextEditor( QWidget *parent ):
 
   // paragraph highlight
   block_highlight_ = new BlockHighlight( this );
-  connect( this, SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
 
   // actions
   _installActions();
@@ -94,6 +93,7 @@ TextEditor::TextEditor( QWidget *parent ):
   line_number_display_ = new LineNumberDisplay( this );
 
   // signal to make sure selectionsynchronized is  between clones
+  connect( this, SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
   connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( selectionChanged() ), SLOT( _updateClipboard() ) );
@@ -268,6 +268,8 @@ void TextEditor::setPlainText( const QString& text )
 {
   Debug::Throw( "TextEditor::setPlainText.\n" );
 
+  lineNumberDisplay().clear();
+  
   bool enabled( blockHighlight().isEnabled() );
   blockHighlight().setEnabled( false );
   QTextEdit::setPlainText( text );
@@ -395,9 +397,12 @@ void TextEditor::synchronize( TextEditor* editor )
   wrapModeAction().setChecked( editor->wrapModeAction().isChecked() );
   
   // track changes of block counts
-  _lineNumberDisplay().synchronize( &editor->_lineNumberDisplay() );
+  lineNumberDisplay().synchronize( &editor->lineNumberDisplay() );
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
 
+  // margin
+  _setLeftMargin( editor->_leftMargin() );
+  
   Debug::Throw( "TextEditor::synchronize - done.\n" );
 
   return;
@@ -441,6 +446,17 @@ void TextEditor::setReadOnly( bool readonly )
   QTextEdit::setReadOnly( readonly );
   _updateReadOnlyActions( readonly );
   if( readonly ) document()->setModified( false );
+}
+
+//____________________________________________________________________
+void TextEditor::resetUndoRedoStack( void )
+{
+  if( isReadOnly() || !document()->isUndoRedoEnabled() ) return;
+  
+  Debug::Throw(" TextEditor::resetUndoRedoStack.\n");
+  document()->setUndoRedoEnabled( false );
+  document()->setUndoRedoEnabled( true );
+
 }
 
 //______________________________________________________________________________
@@ -1400,9 +1416,18 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 }
 
 //______________________________________________________________
+void TextEditor::resizeEvent( QResizeEvent* event )
+{
+  QTextEdit::resizeEvent( event );
+  if( lineWrapMode() != QTextEdit::NoWrap ) return;
+  if( event->oldSize().width() == event->size().width() ) return;
+  if( !hasLineNumberDisplay() ) return;
+  lineNumberDisplay().setNeedUpdate( true );
+}
+
+//______________________________________________________________
 void TextEditor::paintEvent( QPaintEvent* event )
 {
-  
   // handle block background
   QRect rect = event->rect();
   QTextBlock first( cursorForPosition( rect.topLeft() ).block() );
@@ -1456,11 +1481,13 @@ void TextEditor::paintEvent( QPaintEvent* event )
   }
   painter.end();
   
-  // base class
+  // base class painting
   QTextEdit::paintEvent( event );
-
+  
   // this is needed to force update of editor's margin
-  if( _leftMargin() ) { QFrame::update(); }
+  if( _leftMargin() && _rectChanged( rect ) ) { 
+    QFrame::update( QRect( frameWidth(), frameWidth(), _leftMargin(), height() ) ); 
+  }
   
   return;
 
@@ -2017,6 +2044,20 @@ void TextEditor::_synchronizeBoxSelection( void ) const
 }
 
 //_____________________________________________________________
+bool TextEditor::_setLeftMargin( const int& margin )
+{
+
+  Debug::Throw() << "TextEditor::_setLeftMargin - margin: " << margin << endl;
+  if( margin == _leftMargin() ) return false;
+
+  left_margin_ = margin;
+  setViewportMargins( _leftMargin(), 0, 0, 0 );
+  
+  return true;
+
+}
+
+//_____________________________________________________________
 void TextEditor::_toggleInsertMode( void )
 {
   Debug::Throw( "TextEditor::_toggleInsertMode.\n" );
@@ -2081,12 +2122,10 @@ bool TextEditor::_updateMargins( void )
   int left_margin( 0 );
   
   if( showLineNumberAction().isChecked() && showLineNumberAction().isVisible() )
-  { left_margin += _lineNumberDisplay().width(); }
+  { left_margin += lineNumberDisplay().width(); }
   
+  return _setLeftMargin( left_margin );
   if( left_margin_ == left_margin ) return false;
-  
-  left_margin_ = left_margin;
-  setViewportMargins( left_margin, 0, 0, 0 );
   return true;
   
 }
@@ -2113,11 +2152,11 @@ void TextEditor::_drawMargins( QPainter& painter )
   
   // draw lines
   if( 
-    _hasLineNumberDisplay() && 
+    hasLineNumberDisplay() && 
     hasLineNumberAction() && 
     showLineNumberAction().isVisible() && 
     showLineNumberAction().isChecked() )
-  { _lineNumberDisplay().paint( painter ); }
+  { lineNumberDisplay().paint( painter ); }
   
 }
 
@@ -2286,10 +2325,25 @@ void TextEditor::_toggleBlockHighlight( bool state )
 
   // update current paragraph
   if( blockHighlight().isEnabled() ) blockHighlight().highlight();
-  else
+  else blockHighlight().clear();
+
+  // redraw
+  lineNumberDisplay().setNeedCurrentBlockUpdate( true );
+  update();
+  
+  // propagate to other displays
+  if( isSynchronized() )
   {
-    blockHighlight().clear();
-    update();
+    // temporarely disable synchronization
+    // to avoid infinite loop
+    setSynchronized( false );
+
+    BASE::KeySet<TextEditor> displays( this );
+    for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
+
+    { if( (*iter)->isSynchronized() ) (*iter)->blockHighlightAction().setChecked( state ); }
+    setSynchronized( true );
+
   }
 
 }
@@ -2383,7 +2437,7 @@ void TextEditor::_blockCountChanged( int count )
 {
   
   Debug::Throw( "TextEditor::_blockCountChanged.\n" );
-  if( !( _hasLineNumberDisplay() && _lineNumberDisplay().updateWidth( count ) ) ) return;
+  if( !( hasLineNumberDisplay() && lineNumberDisplay().updateWidth( count ) ) ) return;
   if( !( hasLineNumberAction() && showLineNumberAction().isChecked() && showLineNumberAction().isVisible() ) ) return;
   _updateMargins();
   update();

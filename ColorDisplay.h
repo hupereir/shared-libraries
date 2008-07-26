@@ -55,7 +55,10 @@ class ColorDisplay: public QWidget, public Counter
   
   //! retrieve color name
   QString colorName( void ) const
-  { return editor_.text(); }
+  { 
+    QString out( editor_.text() );
+    return out.isEmpty() ? NONE:out;
+  }
     
   //! set color
   void setColor( const QString& );

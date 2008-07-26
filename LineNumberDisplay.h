@@ -70,8 +70,19 @@ class LineNumberDisplay: public QObject, public Counter
   virtual const int& width( void ) const
   { return width_; }
   
+  //! clear everything
+  void clear();
+  
   //! paint
   virtual void paint( QPainter& );
+  
+  //! request full update
+  void setNeedUpdate( const bool& value )
+  { need_update_ = value; }
+
+  //! request block highlight update
+  void setNeedCurrentBlockUpdate( const bool& value )
+  { need_current_block_update_ = value; }
   
   private slots:
   
@@ -80,7 +91,7 @@ class LineNumberDisplay: public QObject, public Counter
   
   //! need update
   void _needUpdate( void )
-  { need_update_ = true; }
+  { setNeedUpdate( true ); }
   
   //! contents changed
   void _contentsChanged( void );
@@ -88,9 +99,6 @@ class LineNumberDisplay: public QObject, public Counter
   //! block count changed
   void _blockCountChanged( void );
     
-  //! current block has changed
-  void _currentBlockChanged( void );
-  
   private:
   
   //! editor

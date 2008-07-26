@@ -34,6 +34,7 @@
 #include <QTextBlock>
 
 #include "BlockHighlight.h"
+#include "LineNumberDisplay.h"
 #include "TextEditor.h"
 #include "TextBlockData.h"
 
@@ -68,7 +69,8 @@ void BlockHighlight::clear( void )
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
       
       // mark contents dirty to trigger document update
-      parent_->document()->markContentsDirty(block.position(), block.length()-1);
+      // parent_->document()->markContentsDirty(block.position(), block.length()-1);
+      _updateEditors();
       
     }
     
@@ -85,7 +87,9 @@ void BlockHighlight::highlight( void )
   if( !isEnabled() ) return;
   
   clear();
-  timer_.start(50, this );
+  //timer_.start(50, this );
+  _highlight();
+  
 }
 
 //______________________________________________________________________
@@ -101,7 +105,6 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
   _highlight();
   
 }
-
  
 //______________________________________________________________________
 void BlockHighlight::_highlight( void )
@@ -128,8 +131,23 @@ void BlockHighlight::_highlight( void )
   data->setFlag( TextBlock::CURRENT_BLOCK, true );
 
   // mark contents dirty to trigger document update
-  parent_->document()->markContentsDirty(block.position(), block.length()-1);
+  // parent_->document()->markContentsDirty(block.position(), block.length()-1);
+  _updateEditors();
   
-  emit highlightChanged();
   cleared_ = false;
+  
+}
+
+//______________________________________________________________________
+void BlockHighlight::_updateEditors( void )
+{
+  
+  BASE::KeySet<TextEditor> editors( parent_ );
+  editors.insert( parent_ );
+  for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+  { 
+    if( (*iter)->hasLineNumberDisplay() ) (*iter)->lineNumberDisplay().setNeedCurrentBlockUpdate( true );
+    (*iter)->viewport()->update(); 
+  }
+  
 }

@@ -37,6 +37,7 @@
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QFocusEvent>
+#include <QResizeEvent>
 #include <QScrollBar>
 #include <QTextBlockFormat>
 #include <QTextCursor>
@@ -165,6 +166,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! read-only
   virtual void setReadOnly( bool readonly );
   
+  //! reset undo/redo history
+  virtual void resetUndoRedoStack( void );
+  
   //! put actions in context menu
   virtual void installContextMenuActions( QMenu& menu, const bool& all_actions = true );
 
@@ -265,6 +269,19 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   BlockHighlight& blockHighlight() const
   { return *block_highlight_; }
     
+  //!@name line numbers
+  //@{
+  
+  //! line number display
+  bool hasLineNumberDisplay( void ) const
+  { return line_number_display_; }
+  
+  //! line number display
+  LineNumberDisplay& lineNumberDisplay( void ) const
+  { return *line_number_display_; }
+  
+  //@}
+  
   //! changes block background
   virtual void setBackground( QTextBlock, const QColor& );
   
@@ -449,8 +466,12 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! context menu event [overloaded]
   virtual void contextMenuEvent( QContextMenuEvent* );
   
+  //! resize event
+  /* need to update LineNumberWidget, when wrap is enabled */
+  virtual void resizeEvent( QResizeEvent* );
+  
   //! repaint event
-  virtual void paintEvent( QPaintEvent* e );
+  virtual void paintEvent( QPaintEvent* );
 
   //@}
   
@@ -532,26 +553,13 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //!@name line numbers
   //@{
-  
-  //! line number display
-  bool _hasLineNumberDisplay( void ) const
-  { return line_number_display_; }
-  
-  //! line number display
-  LineNumberDisplay& _lineNumberDisplay( void ) const
-  { return *line_number_display_; }
-  
+    
   //! left margin
   const int& _leftMargin( void ) const
   { return left_margin_; }
   
   //! left margin
-  bool _setLeftMargin( const int& margin )
-  { 
-    if( margin == _leftMargin() ) return false;
-    left_margin_ = margin;
-    return true;
-  }
+  bool _setLeftMargin( const int& margin );
   
   //! vertical line display
   const bool& _drawVerticalLine( void ) const
@@ -667,6 +675,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   private:
     
+  //! true if rect is different from argument, and update
+  bool _rectChanged( const QRect& rect )
+  { 
+    if( rect_ == rect ) return false;
+    rect_ = rect;
+    return true;
+  }
+  
   //!@name replace/find selection
   ///@{
   
@@ -828,7 +844,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! margin color
   QColor margin_background_color_;
 
-
+  //! store rect of last update
+  QRect rect_;
+  
   //! store possible mouse drag start position
   QPoint drag_start_;
   
