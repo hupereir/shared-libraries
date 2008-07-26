@@ -78,7 +78,12 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual ~TextEditor( void );
     
   //! retrieve number of blocks in document
-  int blockCount( void ) const;
+  virtual int blockCount( void ) const;
+  
+  //! retrieve number of blocks associated to argument
+  /*! the default implementation returns 1. In QEdit, it is reimplemented accounts for collapsed blocks */
+  virtual int blockCount( const QTextBlock& block ) const
+  { return 1; }
   
   //! retrieve current text position
   virtual TextPosition textPosition( void );

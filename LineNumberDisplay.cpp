@@ -56,11 +56,12 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
   
   Debug::Throw( "LineNumberDisplay::LineNumberDisplay.\n" );
  
-  connect( &_editor().wrapModeAction(), SIGNAL( toggled( bool ) ), SLOT( _needUpdate() ) );
+  connect( &_editor().wrapModeAction(), SIGNAL( toggled( bool ) ), SLOT( needUpdate() ) );
 
+  // document connections
   connect( _editor().document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged() ) );
   connect( _editor().document(), SIGNAL( contentsChanged() ), SLOT( _contentsChanged() ) );
-  
+
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
   // update configuration
@@ -207,7 +208,8 @@ void LineNumberDisplay::_contentsChanged( void )
   // if text is wrapped, line number data needs update at next update
   /* note: this could be further optimized if one retrieve the position at which the contents changed occured */
   if( _editor().lineWrapMode() != QTextEdit::NoWrap )
-  { need_update_ = true; }
+  { needUpdate(); }
+  
 }
 
 //________________________________________________________
@@ -217,7 +219,7 @@ void LineNumberDisplay::_blockCountChanged( void )
   // nothing to be done if wrap mode is not NoWrap, because
   // it is handled in the _contentsChanged slot.
   if( _editor().lineWrapMode() == QTextEdit::NoWrap )
-  { need_update_ = true; }
+  { needUpdate(); }
   
 }
 
@@ -231,15 +233,14 @@ void LineNumberDisplay::_updateLineNumberData( void )
   unsigned int id( 0 );
   unsigned int block_count( 1 );
   QTextDocument &document( *_editor().document() );
-  for( QTextBlock block = document.begin(); block.isValid(); block = block.next(), id++, block_count++ )
+  for( QTextBlock block = document.begin(); block.isValid(); block = block.next(), id++ )
   {
     
     // insert new data
     line_number_data_.push_back( LineNumberData( id, block_count, block.position() ) );
     
-//     QTextBlockFormat block_format( block.blockFormat() );
-//     if( block_format.boolProperty( TextBlock::Collapsed ) && block_format.hasProperty( TextBlock::CollapsedData ) )
-//     { block_count += block_format.property( TextBlock::CollapsedData ).value<CollapsedBlockData>().blockCount() - 1; }
+    // update block count
+    block_count += _editor().blockCount( block );
     
   }
   

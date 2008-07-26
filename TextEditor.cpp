@@ -154,7 +154,8 @@ int TextEditor::blockCount( void ) const
   Debug::Throw( "TextEditor::blockCount.\n" );
 
   int count = 0;
-  for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next(), count++ ) {}
+  for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next() ) 
+  { count += blockCount( block ); }
   return count;
 }
 
@@ -1419,10 +1420,13 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 void TextEditor::resizeEvent( QResizeEvent* event )
 {
   QTextEdit::resizeEvent( event );
-  if( lineWrapMode() != QTextEdit::NoWrap ) return;
+  if( lineWrapMode() == QTextEdit::NoWrap ) return;
   if( event->oldSize().width() == event->size().width() ) return;
   if( !hasLineNumberDisplay() ) return;
-  lineNumberDisplay().setNeedUpdate( true );
+  
+  // tell line number display to update at next draw
+  lineNumberDisplay().needUpdate();
+  
 }
 
 //______________________________________________________________

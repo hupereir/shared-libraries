@@ -75,23 +75,25 @@ class LineNumberDisplay: public QObject, public Counter
   
   //! paint
   virtual void paint( QPainter& );
-  
-  //! request full update
-  void setNeedUpdate( const bool& value )
-  { need_update_ = value; }
 
   //! request block highlight update
   void setNeedCurrentBlockUpdate( const bool& value )
   { need_current_block_update_ = value; }
+  
+  public slots:
+  
+  //! need update
+  void needUpdate( void )
+  { 
+    need_update_ = true;
+    need_current_block_update_ = true;
+  }
   
   private slots:
   
   //! configuration
   void _updateConfiguration( void );
   
-  //! need update
-  void _needUpdate( void )
-  { setNeedUpdate( true ); }
   
   //! contents changed
   void _contentsChanged( void );
