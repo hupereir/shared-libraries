@@ -62,7 +62,7 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   setIcon( IconEngine::get( ICONS::OPEN ) );
 
   // clean action
-  clean_action_ = new QAction( IconEngine::get( ICONS::DELETE ), "&Clean", 0 );
+  clean_action_ = new QAction( IconEngine::get( ICONS::DELETE ), "&Clean", this );
   connect( clean_action_, SIGNAL( triggered() ), SLOT( _clean() ) );
   addAction( clean_action_ );
   addSeparator();

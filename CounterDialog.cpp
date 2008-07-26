@@ -34,6 +34,7 @@
 #include "BaseIcons.h"
 #include "CounterDialog.h"
 #include "IconEngine.h"
+#include "Singleton.h"
 #include "TreeView.h"
 
 using namespace std;
@@ -83,7 +84,7 @@ void CounterDialog::update( void )
   Debug::Throw( "CounterDialog::update.\n" );
     
   // retrieve counters 
-  Counter::CounterMap& counters( Counter::map() );
+  CounterMap& counters( Singleton::get().counterMap() );
   model_.add( CounterModel::List( counters.begin(), counters.end() ) );
   
   list_->resizeColumnToContents( CounterModel::NAME );
