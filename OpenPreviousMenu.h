@@ -127,6 +127,9 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   //! clean action
   QAction* clean_action_;
   
+  //! files action group
+  QActionGroup* action_group_;
+  
   //! map actions to file recors
   typedef std::map<QAction*, FileRecord> ActionMap;
   

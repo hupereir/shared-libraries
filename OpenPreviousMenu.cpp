@@ -67,6 +67,10 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
   addAction( clean_action_ );
   addSeparator();
   
+  // action group
+  action_group_ = new QActionGroup( this );
+  action_group_->setExclusive( true );
+  
 }
 
 //______________________________________
@@ -192,7 +196,8 @@ void OpenPreviousMenu::_open( QAction* action )
   // find Action in map
   ActionMap::iterator iter( actions_.find( action ) );
   if( iter == actions_.end() ) return;
-  emit fileSelected( _store( iter->second ) );
+  //emit fileSelected( _store( iter->second ) );
+  emit fileSelected( iter->second );
   
 }
 
@@ -226,9 +231,13 @@ void OpenPreviousMenu::_loadFiles( void )
     QAction* action = addAction( label );
     
     // add icon
-    if( iter->file() == stored.file() ) { action->setIcon( IconEngine::getCheckIcon() ); }
-    else if( iter->hasInformation( "icon" ) ) { action->setIcon( IconEngine::get( iter->information( "icon" ) ) ); }
+    if( iter->hasInformation( "icon" ) ) { action->setIcon( IconEngine::get( iter->information( "icon" ) ) ); }
     
+    // check action if match file
+    action_group_->addAction( action );
+    action->setCheckable( true );
+    action->setChecked( iter->file() == stored.file() );
+
     if( _check() ) action->setEnabled( iter->file().size() && iter->isValid() );
     actions_.insert( make_pair( action, *iter ) );
   }
