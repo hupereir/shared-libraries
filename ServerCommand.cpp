@@ -40,21 +40,21 @@ using namespace SERVER;
 const string ServerCommand::separator_( "::" ); 
 
 //__________________________________________________________________
-ServerCommand::ConversionMap ServerCommand::conversions_  = ServerCommand::_initializeConversions();
+ServerCommand::ConversionMap ServerCommand::conversions_;
 
 //__________________________________________________________________
 ServerCommand::CommandMap ServerCommand::command_names_;
 
 //___________________________________________
-ServerCommand::ConversionMap ServerCommand::_initializeConversions( void )
+void ServerCommand::initializeConversions( void ) const
 {
-  ConversionMap out;
-  out.insert( std::make_pair( " ", "SERVER_SPACE" ) );
-  return out;
+  if( !conversions_.empty() ) return;
+  conversions_.insert( std::make_pair( " ", "SERVER_SPACE" ) );
+  return;
 }
 
 //_________________________________________
-void ServerCommand::_initializeCommandNames( void )
+void ServerCommand::_initializeCommandNames( void ) const
 {
   if( !command_names_.empty() ) return;
   command_names_.insert( make_pair( NONE, "" ) );
@@ -130,6 +130,7 @@ ServerCommand::operator std::string (void) const
   }
     
   // apply conversion
+  initializeConversions();
   for( 
       ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
       iter != ServerCommand::conversions_.end();
@@ -150,6 +151,7 @@ namespace SERVER {
     in >> buffer;
     
     // apply conversion
+    command.initializeConversions();
     for( 
       ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
       iter != ServerCommand::conversions_.end();
@@ -169,6 +171,7 @@ namespace SERVER {
     in >> buffer;
     
     // apply conversion
+    command.initializeConversions();
     for( 
       ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
       iter != ServerCommand::conversions_.end();

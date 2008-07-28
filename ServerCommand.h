@@ -147,11 +147,14 @@ namespace SERVER
     //! arguments
     const ArgList& args( void ) const
     { return args_; }
+
+    //! text conversions pair list
+    void initializeConversions( void ) const;
     
     private:
     
     //! map command types to names
-    void _initializeCommandNames( void );
+    void _initializeCommandNames( void ) const;
         
     //! time stamp
     TimeStamp timestamp_;
@@ -191,10 +194,7 @@ namespace SERVER
     
     //! text conversion pair type
     typedef std::map<std::string, std::string> ConversionMap;
-    
-    //! text conversions pair list
-    static ConversionMap _initializeConversions( void );
-  
+      
     //! text conversion pair list
     static ConversionMap conversions_;
       
