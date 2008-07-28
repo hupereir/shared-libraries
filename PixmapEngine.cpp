@@ -29,7 +29,6 @@
   \date $Date$
 */
 
-#include <QCheckBox>
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOptionButton>
@@ -98,31 +97,6 @@ QPixmap PixmapEngine::_get( const string& file )
     }
   }
     
-  return out;
-  
-}
-
-//__________________________________________________________
-QPixmap PixmapEngine::getCheckPixmap( void ) const
-{
-  Debug::Throw( "PixmapEngine::getCheckPixmap.\n" );
-  QCheckBox local;
-  
-  QStyle *style( local.style() );
-  QStyleOptionButton opt;
-  opt.initFrom( &local );
-    
-  int width( style->pixelMetric( QStyle::PM_IndicatorWidth ) );
-  local.setFixedSize( width, width );
-  opt.initFrom( &local );
-  
-  QPixmap out( width, width );
-  out.fill( Qt::transparent );
-  
-  QPainter painter( &out );
-  style->drawPrimitive( QStyle::PE_IndicatorRadioButton, &opt, &painter, &local);
-  painter.end();
-
   return out;
   
 }

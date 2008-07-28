@@ -55,9 +55,6 @@ class PixmapEngine: public Counter
   static QPixmap get( const std::string& file )
   { return get()._get( file ); }
 
-  //! check pixmap
-  QPixmap getCheckPixmap( void ) const;
-  
   //! map files and QPixmap
   typedef std::map< std::string, QPixmap > Cache;
 
