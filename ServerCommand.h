@@ -151,7 +151,7 @@ namespace SERVER
     private:
     
     //! map command types to names
-    static void _initializeCommandNames( void );
+    void _initializeCommandNames( void );
         
     //! time stamp
     TimeStamp timestamp_;
