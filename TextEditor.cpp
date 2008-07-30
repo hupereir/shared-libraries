@@ -2207,7 +2207,11 @@ void TextEditor::_updateConfiguration( void )
   _setMarginForegroundColor( QColor( XmlOptions::get().get<string>("MARGIN_FOREGROUND").c_str() ) );
   _setMarginBackgroundColor( QColor( XmlOptions::get().get<string>("MARGIN_BACKGROUND").c_str() ) );
   _setDrawVerticalLine( XmlOptions::get().get<bool>( "MARGIN_VERTICAL_LINE" ) );
-
+  
+  // update margins
+  lineNumberDisplay().updateWidth( document()->blockCount() );
+  _updateMargins();
+  
   // update box configuration
   // clear
   _boxSelection().updateConfiguration();

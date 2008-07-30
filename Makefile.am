@@ -50,7 +50,7 @@ noinst_HEADERS = \
   ListModel.h \
   ListWidget.h \
   MultipleClickCounter.h \
-  OpenPreviousMenu.h \
+  RecentFilesMenu.h \
   OptionBrowsedLineEditor.h \
   OptionCheckBox.h \
   OptionColorDisplay.h \
@@ -139,7 +139,7 @@ libbase_qt_a_SOURCES = \
   LineNumberDisplay.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
-  OpenPreviousMenu.cpp \
+  RecentFilesMenu.cpp \
   OptionListBox.cpp \
   PixmapEngine.cpp \
   ProcessDialog.cpp \
@@ -196,7 +196,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_LineNumberDisplay.cpp \
   moc_ListWidget.cpp \
   moc_MultipleClickCounter.cpp \
-  moc_OpenPreviousMenu.cpp \
+  moc_RecentFilesMenu.cpp \
   moc_OptionListBox.cpp \
   moc_ProcessFrame.cpp \
   moc_RemoveLineBuffer.cpp \

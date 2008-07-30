@@ -46,7 +46,7 @@ HEADERS = \
   ListModel.h \
   ListWidget.h \
   MultipleClickCounter.h \
-  OpenPreviousMenu.h \
+  RecentFilesMenu.h \
   OptionBrowsedLineEditor.h \
   OptionCheckBox.h \
   OptionColorDisplay.h \
@@ -133,7 +133,7 @@ SOURCES = \
   LineNumberDisplay.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
-  OpenPreviousMenu.cpp \
+  RecentFilesMenu.cpp \
   OptionListBox.cpp \
   PixmapEngine.cpp \
   ProcessDialog.cpp \

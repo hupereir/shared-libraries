@@ -24,11 +24,11 @@
 // PE_IndicatorCheckBox
 // PM_IndicatorWidth
 
-#ifndef OpenPreviousMenu_h
-#define OpenPreviousMenu_h
+#ifndef RecentFilesMenu_h
+#define RecentFilesMenu_h
 
 /*!
-   \file   OpenPreviousMenu.h
+   \file   RecentFilesMenu.h
    \brief   customized popup menu to open a previous logbook
    \author Hugo Pereira
    \version $Revision$
@@ -44,11 +44,11 @@
 #include "ValidFileThread.h"
 
 /*!
-   \class   OpenPreviousMenu
+   \class   RecentFilesMenu
    \brief   customized popup menu to open a previously opened file
 */
 
-class OpenPreviousMenu: public QMenu, public XmlFileList
+class RecentFilesMenu: public QMenu, public XmlFileList
 {
 
   //! Qt meta object declaration
@@ -57,10 +57,10 @@ class OpenPreviousMenu: public QMenu, public XmlFileList
   public:
 
   //! constructor
-  OpenPreviousMenu( QWidget *parent );
+  RecentFilesMenu( QWidget *parent );
 
   //! destructor
-  virtual ~OpenPreviousMenu( void );
+  virtual ~RecentFilesMenu( void );
 
   //! read db file
   virtual bool read( void );

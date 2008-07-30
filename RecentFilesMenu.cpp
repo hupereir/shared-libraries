@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file OpenPreviousMenu.cpp
+   \file RecentFilesMenu.cpp
    \brief customized popup menu to open a previous logbook
    \author Hugo Pereira
    \version $Revision$
@@ -37,18 +37,18 @@
 #include "BaseIcons.h"
 #include "File.h"
 #include "IconEngine.h"
-#include "OpenPreviousMenu.h"
+#include "RecentFilesMenu.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
 using namespace std;
 
 //_______________________________________________
-OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
+RecentFilesMenu::RecentFilesMenu( QWidget *parent ):
   QMenu( parent ),
   valid_file_thread_( this )
 { 
-  Debug::Throw( "OpenPreviousMenu::OpenPreviousMenu.\n" );
+  Debug::Throw( "RecentFilesMenu::RecentFilesMenu.\n" );
   
   setTitle( "Open &Recent" );
   
@@ -74,13 +74,13 @@ OpenPreviousMenu::OpenPreviousMenu( QWidget *parent ):
 }
 
 //______________________________________
-OpenPreviousMenu::~OpenPreviousMenu( void )
-{ Debug::Throw( "OpenPreviousMenu::~OpenPreviousMenu.\n" ); }
+RecentFilesMenu::~RecentFilesMenu( void )
+{ Debug::Throw( "RecentFilesMenu::~RecentFilesMenu.\n" ); }
 
 //______________________________________
-bool OpenPreviousMenu::read( void )
+bool RecentFilesMenu::read( void )
 {
-  Debug::Throw( "OpenPreviousMenu::read.\n" );
+  Debug::Throw( "RecentFilesMenu::read.\n" );
   if( !XmlFileList::read() ) return false;
   
   // run separate thread to check file validity
@@ -90,10 +90,10 @@ bool OpenPreviousMenu::read( void )
 }
   
 //______________________________________ 
-bool OpenPreviousMenu::openLastValidFile( void ) 
+bool RecentFilesMenu::openLastValidFile( void ) 
 {    
   
-  Debug::Throw( "OpenPreviousMenu::openLastValidFile.\n" );
+  Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );
   FileRecord record( lastValidFile() );
   if( record.file().empty() ) return false;
   
@@ -104,16 +104,16 @@ bool OpenPreviousMenu::openLastValidFile( void )
 
 
 //_______________________________________________
-void OpenPreviousMenu::_checkValidFiles( void )
+void RecentFilesMenu::_checkValidFiles( void )
 {
-  Debug::Throw( "OpenPreviousMenu::_CheckValidFiles.\n" );
+  Debug::Throw( "RecentFilesMenu::_CheckValidFiles.\n" );
   if( valid_file_thread_.isRunning() ) return;
   valid_file_thread_.setFiles( _records() );
   valid_file_thread_.start();
 }
 
 //_______________________________________________ 
-void OpenPreviousMenu::customEvent( QEvent* event )
+void RecentFilesMenu::customEvent( QEvent* event )
 {
   if( event->type() != QEvent::User ) 
   { 
@@ -124,7 +124,7 @@ void OpenPreviousMenu::customEvent( QEvent* event )
   ValidFileEvent* valid_file_event( dynamic_cast<ValidFileEvent*>(event) );
   if( !valid_file_event ) return;
   
-  Debug::Throw( "OpenPreviousMenu::customEvent.\n" );
+  Debug::Throw( "RecentFilesMenu::customEvent.\n" );
   
   // set file records validity
   FileRecord::List& current_file_list( _records() );
@@ -155,15 +155,15 @@ void OpenPreviousMenu::customEvent( QEvent* event )
     
   }
   
-  Debug::Throw( "OpenPreviousMenu::customEvent. Done.\n" ); 
+  Debug::Throw( "RecentFilesMenu::customEvent. Done.\n" ); 
   
   return;
 }
 
 //______________________________________
-void OpenPreviousMenu::_updateConfiguration( void )
+void RecentFilesMenu::_updateConfiguration( void )
 {
-  Debug::Throw( "OpenPreviousMenu::_updateConfiguration.\n" );
+  Debug::Throw( "RecentFilesMenu::_updateConfiguration.\n" );
   
   // DB file
   setDBFile( XmlOptions::get().raw("DB_FILE") );
@@ -173,14 +173,14 @@ void OpenPreviousMenu::_updateConfiguration( void )
 }
 
 //______________________________________
-void OpenPreviousMenu::_saveConfiguration( void )
+void RecentFilesMenu::_saveConfiguration( void )
 {
-  Debug::Throw( "OpenPreviousMenu::_saveConfiguration.\n" );
+  Debug::Throw( "RecentFilesMenu::_saveConfiguration.\n" );
   write();
 }
   
 //______________________________________
-void OpenPreviousMenu::_clean( void )
+void RecentFilesMenu::_clean( void )
 {    
   if( !_check() && !QtUtil::questionDialog( this,"clear list ?" ) ) return;
   else if( _check() && !QtUtil::questionDialog( this,"Remove invalid files from list ?" ) ) return;
@@ -188,10 +188,10 @@ void OpenPreviousMenu::_clean( void )
 }
 
 //_______________________________________________
-void OpenPreviousMenu::_open( QAction* action )
+void RecentFilesMenu::_open( QAction* action )
 {
   
-  Debug::Throw( "OpenPreviousMenu::_Open.\n" );
+  Debug::Throw( "RecentFilesMenu::_Open.\n" );
   
   // find Action in map
   ActionMap::iterator iter( actions_.find( action ) );
@@ -202,9 +202,9 @@ void OpenPreviousMenu::_open( QAction* action )
 }
 
 //_______________________________________________
-void OpenPreviousMenu::_loadFiles( void )
+void RecentFilesMenu::_loadFiles( void )
 {
-  Debug::Throw( "OpenPreviousMenu::_loadFiles.\n" );
+  Debug::Throw( "RecentFilesMenu::_loadFiles.\n" );
   
   // run thread to check file validity
   if( _check() ) _checkValidFiles(); 
