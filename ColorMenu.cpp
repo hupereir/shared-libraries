@@ -126,11 +126,11 @@ void ColorMenu::_display( void )
     {
       
       //QRectF rect( QPointF(0,0), QSize( sizeHint().width()-6, PixmapSize.height() ) );
-      QRectF rect( QPointF(0,0), PixmapSize );
-      QLinearGradient gradient(rect.topLeft(), rect.bottomRight());
-      gradient.setColorAt(0, iter->first );
-      gradient.setColorAt(1, iter->first.light(135));
-      iter->second = QBrush( gradient ); 
+      // QRectF rect( QPointF(0,0), PixmapSize );
+      // QLinearGradient gradient(rect.topLeft(), rect.bottomRight());
+      // gradient.setColorAt(0, iter->first );
+      // gradient.setColorAt(1, iter->first.light(135));
+      iter->second = QBrush( iter->first ); 
       
     }
     
