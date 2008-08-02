@@ -42,7 +42,7 @@
 using namespace std;
 
 //_______________________________________________________
-DebugMenu::DebugMenu( QWidget* parent ):
+DebugMenu::DebugMenu( QWidget* parent, unsigned int flags ):
   QMenu( parent ),
   Counter( "DebugMenu" ),
   counter_dialog_( 0 ),
@@ -51,11 +51,11 @@ DebugMenu::DebugMenu( QWidget* parent ):
 {
   
   Debug::Throw( "DebugMenu::DebugMenu.\n" );
-  addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
-  addAction( "&Icon Cache ", this, SLOT( _showIconCacheDialog() ) );
-  addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
-  addAction( "&Run-time options", this, SLOT( _showOptions() ) );
-  addAction( "&Recent files", this, SLOT( _showRecentFiles() ) );
+  if( flags&COUNTERS ) addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
+  if( flags&ICONS ) addAction( "&Icon Cache ", this, SLOT( _showIconCacheDialog() ) );
+  if( flags&SYSTEM ) addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
+  if( flags&OPTIONS ) addAction( "&Run-time options", this, SLOT( _showOptions() ) );
+  if( flags&RECENT_FILES ) addAction( "&Recent files", this, SLOT( _showRecentFiles() ) );
 
 }  
   

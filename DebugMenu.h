@@ -54,8 +54,19 @@ class DebugMenu: public QMenu, public Counter
 
   public: 
   
+  //! flags
+  enum Flag
+  {
+    COUNTERS = 1<<0,
+    RECENT_FILES = 1<<1,
+    ICONS = 1<<2,
+    SYSTEM = 1<<3,
+    OPTIONS = 1<<4,
+    DEFAULT = COUNTERS | ICONS | SYSTEM | OPTIONS
+  };
+    
   //! constructor
-  DebugMenu( QWidget* parent );
+  DebugMenu( QWidget* parent, unsigned int flags = DEFAULT );
   
   //! destructor
   ~DebugMenu( void ) 
