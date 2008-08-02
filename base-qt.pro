@@ -6,7 +6,7 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
-   BaseConfigurationDialog.h \
+  BaseConfigurationDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
   BrowsedLineEditor.h \
@@ -29,6 +29,8 @@ HEADERS = \
   DockPanel.h \
   BaseIcons.h \
   ErrorHandler.h \
+  FileRecordModel.h \
+  FileRecordDialog.h \
   FindDialog.h \
   FlatStyle.h \
   FontEdit.h \
@@ -118,6 +120,8 @@ SOURCES = \
   DockPanel.cpp \
   ErrorHandler.cpp \
   FlatStyle.cpp \
+  FileRecordDialog.cpp \
+  FileRecordModel.cpp \
   FindDialog.cpp \
   FontEdit.cpp \
   FontInfo.cpp \

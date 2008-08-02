@@ -190,7 +190,11 @@ void ColorDisplay::_selectColorFromText( void )
   if( text != NONE )
   {
     color = QColor( text );
-    if( !color.isValid() ) QtUtil::infoDialog( this, "Invalid color" );
+    if( !color.isValid() ) 
+    {
+      QtUtil::infoDialog( this, "Invalid color" );
+      editor_.setText( NONE );
+    }
   }
   
   if( color.isValid() ) 

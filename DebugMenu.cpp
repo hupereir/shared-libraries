@@ -33,6 +33,7 @@
 #include "CounterDialog.h"
 #include "Debug.h"
 #include "DebugMenu.h"
+#include "FileRecordDialog.h"
 #include "IconCacheDialog.h"
 #include "QtUtil.h"
 #include "OptionDialog.h"
@@ -45,7 +46,8 @@ DebugMenu::DebugMenu( QWidget* parent ):
   QMenu( parent ),
   Counter( "DebugMenu" ),
   counter_dialog_( 0 ),
-  icon_cache_dialog_( 0 )
+  icon_cache_dialog_( 0 ),
+  recent_files_dialog_( 0 )
 {
   
   Debug::Throw( "DebugMenu::DebugMenu.\n" );
@@ -53,6 +55,7 @@ DebugMenu::DebugMenu( QWidget* parent ):
   addAction( "&Icon Cache ", this, SLOT( _showIconCacheDialog() ) );
   addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
   addAction( "&Run-time options", this, SLOT( _showOptions() ) );
+  addAction( "&Recent files", this, SLOT( _showRecentFiles() ) );
 
 }  
   
@@ -75,6 +78,32 @@ void DebugMenu::_showCounterDialog( void )
     QtUtil::centerOnParent( counter_dialog_ );
     counter_dialog_->show();
     QtUtil::uniconify( counter_dialog_ );
+  
+  }
+  
+}
+
+
+  
+//_______________________________________________
+void DebugMenu::_showRecentFiles( void )
+{
+  Debug::Throw( "DebugMenu::_showRecentFiles.\n" );
+  
+  // check counter dialog has been build
+  if( !recent_files_dialog_ ) {
+    
+    recent_files_dialog_ = new FileRecordDialog( parentWidget() );
+    recent_files_dialog_->update();
+    QtUtil::centerOnParent( recent_files_dialog_ );
+    recent_files_dialog_->show();
+    
+  } else {
+    
+    recent_files_dialog_->update();
+    QtUtil::centerOnParent( recent_files_dialog_ );
+    recent_files_dialog_->show();
+    QtUtil::uniconify( recent_files_dialog_ );
   
   }
   
