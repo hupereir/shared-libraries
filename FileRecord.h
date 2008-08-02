@@ -59,7 +59,11 @@ class FileRecord: public Counter
 
   //! less than operator
   bool operator < (const FileRecord& record ) const
-  { return time_ < record.time_; }
+  { return file_ < record.file_; }
+
+  //! less than operator
+  bool operator == (const FileRecord& record ) const
+  { return file_ == record.file_; }
 
   //! file
   const File& file( void ) const
