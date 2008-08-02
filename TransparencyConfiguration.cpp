@@ -31,7 +31,7 @@
 #include <QLabel>
 #include <QLayout>
 
-#include "CustomGridLayout.h"
+#include "GridLayout.h"
 #include "Debug.h"
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"
@@ -66,7 +66,7 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   checkbox->setToolTip( "enable/disable transparent background" );
   addOptionWidget( checkbox );
   
-  CustomGridLayout* grid_layout = new CustomGridLayout();
+  GridLayout* grid_layout = new GridLayout();
   grid_layout->setSpacing(5);
   grid_layout->setMargin(0);
   grid_layout->setMaxCount( 2 );
