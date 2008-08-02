@@ -18,7 +18,7 @@ HEADERS = \
   CustomComboBox.h \
   CustomDialog.h \
   CustomFileDialog.h \
-  CustomGridLayout.h \
+  GridLayout.h \
   CustomMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
@@ -57,7 +57,7 @@ HEADERS = \
   OptionFontEdit.h \
   OptionFontInfo.h \
   OptionIconBrowsedButton.h \
-  OptionLineEdit.h \
+  OptionLineEditor.h \
   OptionListBox.h \
   OptionRadioButton.h \
   OptionSlider.h \

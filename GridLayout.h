@@ -1,5 +1,5 @@
-#ifndef CustomGridLayout_h
-#define CustomGridLayout_h
+#ifndef GridLayout_h
+#define GridLayout_h
 // $Id$
 
 /******************************************************************************
@@ -24,7 +24,7 @@
 *******************************************************************************/
 
 /*!
-  \file CustomGridLayout.h
+  \file GridLayout.h
   \brief Customized grid layout with fixed number of column + orientation
   \author Hugo Pereira
   \version $Revision$
@@ -34,15 +34,15 @@
 #include <assert.h>
 #include <QGridLayout>
 #include "Counter.h"
-class CustomGridLayout: public QGridLayout, public Counter
+class GridLayout: public QGridLayout, public Counter
 {
   
   public:
   
   //! constructor
-  CustomGridLayout( void ):
+  GridLayout( void ):
     QGridLayout(),
-    Counter( "CustomGridLayout" ),
+    Counter( "GridLayout" ),
     orientation_( Qt::Vertical ),
     max_count_(0),
     column_(0),

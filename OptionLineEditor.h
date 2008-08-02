@@ -21,11 +21,11 @@
 *                         
 *******************************************************************************/
 
-#ifndef OptionLineEdit_h
-#define OptionLineEdit_h
+#ifndef OptionLineEditor_h
+#define OptionLineEditor_h
 
 /*!
-   \file    OptionLineEdit.h
+   \file    OptionLineEditor.h
    \brief   QLineEdit associated to an option for configuration dialogs
    \author  Hugo Pereira
    \version $Revision$
@@ -34,16 +34,16 @@
 
 #include "LineEditor.h"
 #include "OptionWidget.h"
-#include "Options.h"
+#include "XmlOptions.h"
 
 //! QLineEdit associated to an option for configuration dialogs
-class OptionLineEdit: public LineEditor, public OptionWidget
+class OptionLineEditor: public LineEditor, public OptionWidget
 {
   
   public:
   
   //! constructor
-  OptionLineEdit( QWidget* parent, const std::string& option_name ):
+  OptionLineEditor( QWidget* parent, const std::string& option_name ):
       LineEditor( parent ),
       OptionWidget( option_name )
   {}

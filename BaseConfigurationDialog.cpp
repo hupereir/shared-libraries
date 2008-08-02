@@ -39,7 +39,7 @@
 
 #include "BaseIcons.h"
 #include "BaseConfigurationDialog.h"
-#include "CustomGridLayout.h"
+#include "GridLayout.h"
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "IconEngine.h"
@@ -47,7 +47,7 @@
 #include "OptionColorDisplay.h"
 #include "OptionIconBrowsedButton.h"
 #include "OptionFontEdit.h"
-#include "OptionLineEdit.h"
+#include "OptionLineEditor.h"
 #include "OptionListBox.h"
 #include "OptionSlider.h"
 #include "OptionSpinBox.h"
@@ -151,7 +151,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     layout->setSpacing(5);
     h_layout->addLayout( layout );
             
-    CustomGridLayout* grid_layout = new CustomGridLayout();
+    GridLayout* grid_layout = new GridLayout();
     grid_layout->setMargin(0);
     grid_layout->setSpacing(5);
     grid_layout->setMaxCount(2);
@@ -254,7 +254,7 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   if( !parent ) parent = &addPage( "Lists" );
   
   QGroupBox* box = new QGroupBox( "Lists", parent );
-  CustomGridLayout* grid_layout = new CustomGridLayout();
+  GridLayout* grid_layout = new GridLayout();
   grid_layout->setMargin(5);
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount(2);
@@ -298,7 +298,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   box->setLayout( layout );
   parent->layout()->addWidget( box );
      
-  CustomGridLayout* grid_layout = new CustomGridLayout();
+  GridLayout* grid_layout = new GridLayout();
   grid_layout->setMargin(0);
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount(2);
@@ -331,7 +331,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   layout->addWidget( checkbox );
   addOptionWidget( checkbox );
  
-  grid_layout = new CustomGridLayout();
+  grid_layout = new GridLayout();
   grid_layout->setMargin(0);
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount(2);
@@ -344,7 +344,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
 
   // box selection
   box = new QGroupBox( "Box selection", parent );
-  grid_layout = new CustomGridLayout();
+  grid_layout = new GridLayout();
   grid_layout->setMargin(5);
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount(2);
@@ -385,7 +385,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
     );
   addOptionWidget( checkbox );
   
-  grid_layout = new CustomGridLayout();
+  grid_layout = new GridLayout();
   grid_layout->setSpacing(5);
   grid_layout->setMargin(0);
   grid_layout->setMaxCount(2);
