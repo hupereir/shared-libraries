@@ -35,7 +35,7 @@
 #include <QTextCursor>
 
 #include "BaseIcons.h"
-#include "CustomGridLayout.h"
+#include "GridLayout.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
@@ -76,7 +76,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   h_layout->addLayout( v_layout );
   
   // grid for text editors
-  CustomGridLayout *grid_layout = new CustomGridLayout();
+  GridLayout *grid_layout = new GridLayout();
   grid_layout->setMargin( 0 );
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount( 2 );
@@ -104,7 +104,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   if( !read_only ) { connect( suggestion_list_box_, SIGNAL( itemActivated( QListWidgetItem* ) ), SLOT( _replace( QListWidgetItem* ) ) ); }
 
   // grid layout for dictionary and filter
-  grid_layout = new CustomGridLayout();
+  grid_layout = new GridLayout();
   grid_layout->setMargin( 0 );
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount( 2 );

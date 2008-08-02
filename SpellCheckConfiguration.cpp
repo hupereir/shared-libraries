@@ -31,7 +31,7 @@
 
 #include <QLabel>
 
-#include "CustomGridLayout.h"
+#include "GridLayout.h"
 #include "Debug.h"
 #include "OptionBrowsedLineEditor.h"
 #include "OptionComboBox.h"
@@ -50,7 +50,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
 
   SpellInterface interface;
 
-  CustomGridLayout* grid_layout( new CustomGridLayout() );
+  GridLayout* grid_layout( new GridLayout() );
   grid_layout->setSpacing( 5 );
   grid_layout->setMargin( 5 );
   grid_layout->setMaxCount( 2 );

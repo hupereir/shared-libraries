@@ -33,7 +33,7 @@
 #include <QLabel>
 
 #include "AutoSpellConfiguration.h"
-#include "CustomGridLayout.h"
+#include "GridLayout.h"
 #include "Debug.h"
 #include "OptionColorDisplay.h"
 #include "OptionSpinBox.h"
@@ -48,7 +48,7 @@ AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
 {
   Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
   
-  CustomGridLayout* grid_layout( new CustomGridLayout() );
+  GridLayout* grid_layout( new GridLayout() );
   grid_layout->setSpacing( 5 );
   grid_layout->setMargin( 5 );
   grid_layout->setMaxCount( 2 );
