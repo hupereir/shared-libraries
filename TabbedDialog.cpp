@@ -100,7 +100,7 @@ QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
   QWidget* main( new QWidget() );
   scroll->setWidget( main );
   _stack().addWidget( scroll );
-
+  
   QVBoxLayout* layout( new QVBoxLayout() );
   layout->setSpacing( 5 );
   layout->setMargin( 0 );
