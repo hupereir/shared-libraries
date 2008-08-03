@@ -84,8 +84,8 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
 void ColorDisplay::setColor( const QString& color )
 { 
   Debug::Throw( "ColorDisplay::setColor.\n" );
-  editor_.setColor( color == NONE ? palette().color( QPalette::Window ):QColor(color) );
   editor_.setText( color );
+  editor_.setColor( color == NONE ? palette().color( QPalette::Window ):QColor(color) );
 }
 
 //_____________________________________________________________
@@ -192,7 +192,12 @@ void ColorDisplay::_selectColorFromText( void )
     color = QColor( text );
     if( !color.isValid() ) 
     {
-      QtUtil::infoDialog( this, "Invalid color" );
+      
+      ostringstream what;
+      if( !( text.isNull() || text.isEmpty() ) ) what << "Invalid color: " << qPrintable( text );
+      else what << "Invalid color";
+      
+      QtUtil::infoDialog( this, what.str().c_str() );
       editor_.setText( NONE );
     }
   }
@@ -221,19 +226,31 @@ void ColorDisplay::LocalLineEdit::setColor( QColor color )
 {
   Debug::Throw( "ColorDisplay::LocalLineEdit::setColor.\n" );
   
-  if( !color.isValid() ) {
-    setText( color.name() );
-    QtUtil::infoDialog( this, "invalid color" );
-    return;
+  // check color validity
+  if( !color.isValid() ) 
+  {
+    
+    ostringstream what;
+    if( !( text().isNull() || text().isEmpty() ) ) what << "Invalid color: " << qPrintable( text() );
+    else what << "Invalid color";
+    
+    QtUtil::infoDialog( this, what.str().c_str() );
+    
+    // update text
+    setText( NONE );
+    
+    // reassign color
+    color = QLineEdit().palette().color( QPalette::Base );
+    
   }
 
   // retrieve palette, change background/foreground
-  QPalette local_palette( palette() );
-  local_palette.setColor( QPalette::Base, color );  
-  local_palette.setColor( QPalette::Text, (color.value() >= 175) ? Qt::black:Qt::white );
+  QPalette palette( ColorDisplay::LocalLineEdit::palette() );
+  palette.setColor( QPalette::Base, color );  
+  palette.setColor( QPalette::Text, (color.value() >= 175) ? Qt::black:Qt::white );
   
   // update
-  setPalette(local_palette);
+  setPalette(palette);
   update();
   
 }
