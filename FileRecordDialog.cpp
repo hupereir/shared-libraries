@@ -57,6 +57,7 @@ FileRecordDialog::FileRecordDialog( QWidget* parent ):
   list_ = new TreeView( this );  
   layout()->addWidget( list_ );
   list_->setModel( &model_ );  
+  list_->setMask( (1<<FileRecordModel::LOCAL_FILENAME) );
   
   // update button
   QHBoxLayout *h_layout = new QHBoxLayout();
@@ -87,6 +88,6 @@ void FileRecordDialog::update( void )
   for( Singleton::FileRecordMap::const_iterator iter = file_records_map.begin(); iter != file_records_map.end(); iter++ )
   { model_.add( std::vector<FileRecord>( iter->second.begin(), iter->second.end() ) ); }
     
-  list_->resizeColumnToContents( FileRecordModel::FILE );
+  list_->resizeColumnToContents( FileRecordModel::LOCAL_FILENAME );
     
 }

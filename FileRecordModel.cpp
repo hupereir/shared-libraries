@@ -38,7 +38,8 @@ using namespace std;
 //_______________________________________________
 const char* FileRecordModel::column_titles_[ FileRecordModel::n_columns ] =
 { 
-  "file",
+  "filename",
+  "full name",
   "last accessed"
 };
 
@@ -55,19 +56,43 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
   
   // return text associated to file and column
   if( role == Qt::DisplayRole ) {
-    
+          
     switch( index.column() )
     {
-      case FILE:
-      return QString( file_record.file().c_str() );
       
-      case TIME:
-      return QString( TimeStamp( file_record.time() ).string().c_str() );
+      case LOCAL_FILENAME:
+      {
+        // store local nmae
+        string local_name( file_record.file().localName() );
+        
+        // loop over previous rows to find a match and increment version number
+        unsigned int version( 0 );
+        for( int row = 0; row < index.row(); row++ )
+        { 
+          if( get( FileRecordModel::index( row, LOCAL_FILENAME ) ).file().localName() == local_name ) version++; 
+        }
+        
+        // form output string.
+        ostringstream what;
+        what << local_name;
+        if( version ) what << " (" << version+1 << ")";
+        return QString( what.str().c_str() );
+      }
+      
+      case FULL_FILENAME: return QString( file_record.file().c_str() );
+      case TIME: return QString( TimeStamp( file_record.time() ).string().c_str() );
       
       default:
+      {
+        // check if provided column already corresponds to an information field
+        // if yes, return relevant information.
+        // if no, loop over informations, find one that is not already covered by
+        // existing columns. If found, add a matching column and returns the information.
+        // if not, returns QVariant.
+      }
       return QVariant();
     }
-  }
+  } else if( role == Qt::ToolTipRole ) return QString( file_record.file().c_str() );
  
   return QVariant();
   
@@ -107,7 +132,7 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
   switch( type_ )
   {
 
-    case FILE: return first.file() < second.file();
+    case LOCAL_FILENAME: return first.file().localName() < second.file().localName();
     case TIME: return first.time() < second.time();
     default:
     throw runtime_error( DESCRIPTION( "invalid column" ) );

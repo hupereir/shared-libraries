@@ -46,11 +46,12 @@ class FileRecordModel: public ListModel<FileRecord>
   public:
 
   //! number of columns
-  enum { n_columns = 2 };
+  enum { n_columns = 3 };
 
   //! column type enumeration
   enum ColumnType {
-    FILE, 
+    LOCAL_FILENAME, 
+    FULL_FILENAME,
     TIME
   };
 
