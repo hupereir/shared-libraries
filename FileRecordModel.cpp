@@ -30,18 +30,28 @@
   \date $Date$
 */
 
+#include <algorithm>
+
 #include "FileRecordModel.h"
 #include "Str.h"
 
 using namespace std;
 
-//_______________________________________________
-const char* FileRecordModel::column_titles_[ FileRecordModel::n_columns ] =
-{ 
-  "filename",
-  "full name",
-  "last accessed"
-};
+//__________________________________________________________________
+FileRecordModel::FileRecordModel( QObject* parent ):
+  ListModel<FileRecord>( parent )
+{
+  Debug::Throw("FileRecordModel::FileRecordModel.\n" );
+
+  column_titles_.push_back( "filename" );
+  column_titles_.push_back( "full name" );
+  column_titles_.push_back( "last accessed" );
+
+}
+  
+//__________________________________________________________________
+int FileRecordModel::columnCount(const QModelIndex &parent) const
+{ return column_titles_.size(); }
 
 //__________________________________________________________________
 QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
@@ -76,21 +86,17 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         ostringstream what;
         what << local_name;
         if( version ) what << " (" << version+1 << ")";
-        return QString( what.str().c_str() );
+        return what.str().c_str();
       }
       
       case FULL_FILENAME: return QString( file_record.file().c_str() );
       case TIME: return QString( TimeStamp( file_record.time() ).string().c_str() );
       
       default:
-      {
-        // check if provided column already corresponds to an information field
-        // if yes, return relevant information.
-        // if no, loop over informations, find one that is not already covered by
-        // existing columns. If found, add a matching column and returns the information.
-        // if not, returns QVariant.
-      }
-      return QVariant();
+      if( index.column() < (int) column_titles_.size() && file_record.hasInformation( qPrintable( column_titles_[index.column()] ) ) )
+      { return file_record.information( qPrintable( column_titles_[index.column()] ) ).c_str(); }
+      else return QVariant();
+   
     }
   } else if( role == Qt::ToolTipRole ) return QString( file_record.file().c_str() );
  
@@ -106,8 +112,8 @@ QVariant FileRecordModel::headerData(int section, Qt::Orientation orientation, i
     orientation == Qt::Horizontal && 
     role == Qt::DisplayRole && 
     section >= 0 && 
-    section < n_columns )
-  { return QString( column_titles_[section] ); }
+    section < (int) column_titles_.size() )
+  { return column_titles_[section]; }
   
   // return empty
   return QVariant(); 
@@ -119,8 +125,26 @@ void FileRecordModel::_sort( int column, Qt::SortOrder order )
 { 
 
   Debug::Throw() << "FileRecordModel::sort - column: " << column << " order: " << order << endl;
-  std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
+  std::sort( _get().begin(), _get().end(), SortFTor( column, order, column_titles_ ) );
       
+}
+
+//____________________________________________________________
+void FileRecordModel::_add( const ValueType& value )
+{
+  Debug::Throw( "FileRecordModel::_add.\n" );
+  ListModel<FileRecord>::_add( value );
+  
+  // loop over available informations
+  const FileRecord::InformationMap& informations( value.informations() );
+  for( FileRecord::InformationMap::const_iterator iter = informations.begin(); iter != informations.end(); iter++ )
+  {
+    // look for information name in list of columns
+    if( find( column_titles_.begin(), column_titles_.end(), QString( iter->first.c_str() ) ) == column_titles_.end() )
+    { column_titles_.push_back( iter->first.c_str() ); }
+    
+  }
+  
 }
 
 //________________________________________________________
@@ -134,9 +158,11 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
 
     case LOCAL_FILENAME: return first.file().localName() < second.file().localName();
     case TIME: return first.time() < second.time();
-    default:
-    throw runtime_error( DESCRIPTION( "invalid column" ) );
-    return true;
+    default: 
+    {
+      string name( qPrintable( column_titles_[type_] ) );
+      return first.information( name ) < second.information( name );
+    }
   }
  
 }

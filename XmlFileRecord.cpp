@@ -71,7 +71,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
   out.setAttribute( XML_TIME, Str().assign<int>( XmlFileRecord::time() ).c_str() );
   out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ).c_str() );
   
-  for( InfoMap::const_iterator iter = _informations().begin(); iter != _informations().end(); iter++ )
+  for( InformationMap::const_iterator iter = informations().begin(); iter != informations().end(); iter++ )
   { out.setAttribute( iter->first.c_str(), iter->second.c_str() ); }
   
   return out;

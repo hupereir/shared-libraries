@@ -308,10 +308,8 @@ template<class T> class ListModel : public ItemModel
   List& _get( void )
   { return values_; }
   
-  private:
- 
   //! add, without update
-  void _add( const ValueType& value )
+  virtual void _add( const ValueType& value )
   {
     typename List::iterator iter = std::find( values_.begin(), values_.end(), value );
     if( iter == values_.end() ) values_.push_back( value ); 
@@ -319,7 +317,7 @@ template<class T> class ListModel : public ItemModel
   }
  
   //! add, without update
-  void _insert( const QModelIndex& index, const ValueType& value )
+  virtual void _insert( const QModelIndex& index, const ValueType& value )
   {
     if( !index.isValid() ) add( value );
     int row = 0;
@@ -329,11 +327,13 @@ template<class T> class ListModel : public ItemModel
   }
   
   //! remove, without update
-  void _remove( const ValueType& value )
+  virtual void _remove( const ValueType& value )
   {
     values_.erase( std::remove( values_.begin(), values_.end(), value ), values_.end() );
     selection_.erase( std::remove( selection_.begin(), selection_.end(), value ), selection_.end() );
   }
+  
+  private:
   
   //! values
   List values_;

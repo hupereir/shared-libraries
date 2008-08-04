@@ -55,6 +55,8 @@ class FileRecordModel: public ListModel<FileRecord>
     TIME
   };
 
+  //! constructor
+  FileRecordModel( QObject* parent = 0 );
     
   //!@name methods reimplemented from base class
   //@{
@@ -66,8 +68,7 @@ class FileRecordModel: public ListModel<FileRecord>
   virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
    
   //! number of columns for a given index
-  virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
-  { return n_columns; }
+  virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
   //@}
   
@@ -75,7 +76,10 @@ class FileRecordModel: public ListModel<FileRecord>
   
   //! sort
   virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
-            
+           
+  //! add, without update
+  virtual void _add( const ValueType& );
+
   private:
   
   //! used to sort Counters
@@ -85,7 +89,8 @@ class FileRecordModel: public ListModel<FileRecord>
     public:
     
     //! constructor
-    SortFTor( const ColumnType& type, Qt::SortOrder order = Qt::AscendingOrder ):
+    SortFTor( const int& type, Qt::SortOrder order, const std::vector<QString>& column_titles ):
+      column_titles_( column_titles ),
       type_( type ),
       order_( order )
       {}
@@ -94,9 +99,12 @@ class FileRecordModel: public ListModel<FileRecord>
     bool operator() ( FileRecord first, FileRecord second ) const;
     
     private:
+
+    // column titles
+    std::vector<QString> column_titles_;
     
     //! column
-    ColumnType type_;
+    int type_;
     
     //! order
     Qt::SortOrder order_;
@@ -104,7 +112,7 @@ class FileRecordModel: public ListModel<FileRecord>
   };
 
   //! column titles
-  static const char* column_titles_[ n_columns ];
+  std::vector<QString> column_titles_;
    
 };
 
