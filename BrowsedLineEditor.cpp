@@ -37,7 +37,7 @@
 
 #include "BaseIcons.h"
 #include "BrowsedLineEditor.h"
-#include "LineEditor.h"
+#include "ImprovedLineEditor.h"
 #include "File.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
@@ -63,7 +63,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   setLayout( layout );
   
   // create line editor
-  line_edit_ = new LineEditor( this );
+  line_edit_ = new Editor( this );
   layout->addWidget( line_edit_, 1 );
   
   // create push_button

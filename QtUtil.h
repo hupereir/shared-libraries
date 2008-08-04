@@ -131,8 +131,19 @@ class QtUtil {
   static void uniconify( QWidget* widget );
 
   //! recompute QLineEditSize according to enclosed text
-  static void expand( QLineEdit* line_edit, const std::string& text = "" );
- 
+  template< typename T >
+  static void expand( T* widget, const std::string& ref_text = "" )
+  {
+    if( !widget ) return;
+    std::string text( (ref_text.size() ) ? ref_text: qPrintable( widget->text() ) );
+    QFontMetrics font( widget->fontMetrics() );
+    int width( font.width( std::string( text+"   " ).c_str() ) );
+    int extra_width( widget->frameSize().width() - widget->width() );
+    widget->resize( QSize( width, 0 ) );
+    widget->setMinimumSize( QSize( width + extra_width, 0 ) );
+    return;
+  }
+  
   //! recompute QLabel according to enclosed text
   static void expand( QLabel* label, const std::string& text = "" );
   

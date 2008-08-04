@@ -442,21 +442,6 @@ void QtUtil::centerOnDesktop( QWidget* widget )
 }
 
 //____________________________________________________________
-void QtUtil::expand( QLineEdit* line_edit, const string& ref_text )
-{
-  Debug::Throw( "QtUtil::expand.\n" );
-
-  if( !line_edit ) return;
-  string text( (ref_text.size() ) ? ref_text: qPrintable( line_edit->text() ) );
-  QFontMetrics font( line_edit->fontMetrics() );
-  int width( font.width( string( text+"   " ).c_str() ) );
-  int extra_width( line_edit->frameSize().width() - line_edit->width() );
-  line_edit->resize( QSize( width, 0 ) );
-  line_edit->setMinimumSize( QSize( width + extra_width, 0 ) );
-  return;
-}
-
-//____________________________________________________________
 void QtUtil::uniconify( QWidget *widget )
 {
 
@@ -488,21 +473,6 @@ void QtUtil::uniconify( QWidget *widget )
 
   return;
 
-}
-
-//____________________________________________________________
-void QtUtil::expand( QLabel* label, const string& ref_text )
-{
-  Debug::Throw( "QtUtil::expand.\n" );
-
-  if( !label ) return;
-  string text( (ref_text.size() ) ? ref_text: qPrintable( label->text() ) );
-  QFontMetrics font( label->fontMetrics() );
-  int width( font.width( string( text+"   " ).c_str() ) );
-  int extra_width( label->frameSize().width() - label->width() );
-  label->resize( QSize( width, 0 ) );
-  label->setMinimumSize( QSize( width + extra_width, 0 ) );
-  return;
 }
 
 //___________________________________________________________

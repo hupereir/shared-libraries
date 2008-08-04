@@ -35,7 +35,7 @@
 #include <sstream>
 
 #include "BrowsedLineEditor.h"
-#include "LineEditor.h"
+#include "ImprovedLineEditor.h"
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "OptionListBox.h"
@@ -164,7 +164,7 @@ void OptionListBox::_add( void )
   CustomDialog dialog( this );
 
   // create editor, either directly or from BrowsedLineEditor
-  LineEditor* line_edit( 0 );
+  BrowsedLineEditor::Editor* line_edit( 0 );
   if( browsable_ ) 
   {
     BrowsedLineEditor* browse_edit = new BrowsedLineEditor( &dialog );
@@ -172,7 +172,7 @@ void OptionListBox::_add( void )
     browse_edit->setFileMode( file_mode_ );
     line_edit = &browse_edit->editor();
   } else {
-    line_edit = new LineEditor( &dialog );
+    line_edit = new BrowsedLineEditor::Editor( &dialog );
     dialog.mainLayout().addWidget( line_edit );
   }
   
@@ -199,13 +199,8 @@ void OptionListBox::_edit( void )
   // create dialog
   CustomDialog dialog( this );
 
-//   // add explanation label
-//   ostringstream what;
-//   what << "Edit value for option " << optionName();
-//   dialog.mainLayout().addWidget( new QLabel( what.str().c_str(), &dialog ) );
-
   // create editor, either directly or from BrowsedLineEditor
-  LineEditor* line_edit( 0 );
+  BrowsedLineEditor::Editor* line_edit( 0 );
   if( browsable_ ) 
   {
     BrowsedLineEditor* browse_edit = new BrowsedLineEditor( &dialog );
@@ -213,7 +208,7 @@ void OptionListBox::_edit( void )
     browse_edit->setFileMode( file_mode_ );
     line_edit = &browse_edit->editor();
   } else {
-    line_edit = new LineEditor( &dialog );
+    line_edit = new BrowsedLineEditor::Editor( &dialog );
     dialog.mainLayout().addWidget( line_edit );
   }
 

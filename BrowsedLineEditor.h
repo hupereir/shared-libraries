@@ -44,6 +44,7 @@
 #include "CustomFileDialog.h"
 
 class LineEditor;
+class ImprovedLineEditor;
 
 /*! 
   \class BrowsedLineEditor
@@ -60,11 +61,13 @@ class BrowsedLineEditor: public QWidget, public Counter
 
   public:
   
+  typedef ImprovedLineEditor Editor;
+    
   //! constructor;
   BrowsedLineEditor( QWidget* parent );
     
   //! retrieve line editor
-  LineEditor& editor( void ) const
+  Editor& editor( void ) const
   { 
     assert( line_edit_ );
     return *line_edit_; 
@@ -106,7 +109,7 @@ class BrowsedLineEditor: public QWidget, public Counter
   private:
   
   //! line editor widget
-  LineEditor *line_edit_;
+  Editor *line_edit_;
   
   //! default working directory
   std::string work_directory_;
