@@ -1,4 +1,3 @@
-
 #ifndef _LineEditor_h_
 #define _LineEditor_h_
 
