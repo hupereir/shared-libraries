@@ -70,6 +70,7 @@ ImprovedLineEditor::ImprovedLineEditor( QWidget* parent ):
   connect( &editor(), SIGNAL( returnPressed() ), SIGNAL( returnPressed() ) );
   connect( &editor(), SIGNAL( cursorPositionChanged( int ) ), SIGNAL( cursorPositionChanged( int ) ) );
   connect( &editor(), SIGNAL( modificationChanged( bool ) ), SIGNAL( modificationChanged( bool ) ) );
+  connect( &editor(), SIGNAL( cursorPositionChanged( int, int ) ), SIGNAL( cursorPositionChanged( int, int ) ) );
   connect( &editor(), SIGNAL( textChanged( const QString& ) ), SLOT( _textChanged( const QString& ) ) );
   connect( &editor(), SIGNAL( textChanged( const QString& ) ), SIGNAL( textChanged( const QString& ) ) );
   connect( qApp, SIGNAL( focusChanged( QWidget*, QWidget* ) ), SLOT( update() ) );

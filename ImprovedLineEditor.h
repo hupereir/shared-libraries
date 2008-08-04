@@ -98,8 +98,11 @@ class ImprovedLineEditor: public QFrame, public Counter
   void textChanged( const QString& );
   
   //! signal emmited when the cursor changes position
-  void cursorPositionChanged( int position );  
+  void cursorPositionChanged( int );  
   
+  //! signal emmited when the cursor changes position
+  void cursorPositionChanged( int, int );  
+
   //! modification state changed
   void modificationChanged( bool );
   
