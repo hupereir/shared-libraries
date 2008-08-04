@@ -97,10 +97,17 @@ class FileRecord: public Counter
   bool hasInformation( const std::string& tag ) const
   { return informations_.find( tag ) != informations_.end(); }
   
+  //! additional information map
+  typedef std::map< std::string, std::string > InformationMap;
+  
+  //! informations map
+  const InformationMap& informations( void ) const
+  { return informations_; }
+
   //! retrieve information
   std::string information( const std::string& tag ) const
   {
-    InfoMap::const_iterator iter(  informations_.find( tag ) );
+    InformationMap::const_iterator iter(  informations_.find( tag ) );
     return ( iter == informations_.end() ) ? "":iter->second;
   }
   
@@ -164,22 +171,13 @@ class FileRecord: public Counter
     
   };
   
-  protected:
-  
-  //! additional information map
-  typedef std::map< std::string, std::string > InfoMap;
-
-  //! informations map
-  const InfoMap& _informations( void ) const
-  { return informations_; }
-  
   private:
 
   //! file
   File file_;
   
   //! additional informations
-  InfoMap informations_;
+  InformationMap informations_;
   
   //! time
   int time_;
@@ -191,7 +189,7 @@ class FileRecord: public Counter
   friend std::ostream& operator << ( std::ostream& out, const FileRecord& record )
   {
     out << record.file() << std::endl;
-    for( InfoMap::const_iterator iter = record._informations().begin(); iter != record._informations().end(); iter++ )
+    for( InformationMap::const_iterator iter = record.informations().begin(); iter != record.informations().end(); iter++ )
     { out << "  " << iter->first << ": " << iter->second << std::endl; }
     return out;
   }
