@@ -177,7 +177,6 @@ void TreeView::drawRow( QPainter * painter, const QStyleOptionViewItem & option,
   
   //  QGradient 
   QLinearGradient gradient(QPointF(0, 0), QPointF(width(), 0));    
-  //QColor color( option.palette.color( QPalette::Highlight ) );
   QColor color( palette().color( QPalette::Highlight ) );
   gradient.setColorAt(0, color.light(130) );
   gradient.setColorAt(0.3, color );
