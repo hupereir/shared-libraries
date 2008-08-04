@@ -47,6 +47,7 @@ namespace ICONS
   static const std::string EDIT = "edit.png";
   static const std::string UNDO= "undo.png";
   static const std::string REDO= "redo.png";
+  static const std::string CLEAR = "clear_left.png"; 
   static const std::string CUT = "editcut.png";
   static const std::string COPY = "editcopy.png";
   static const std::string EXIT = "exit.png";

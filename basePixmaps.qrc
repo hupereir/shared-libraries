@@ -1,6 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
   <qresource>
 
+    <file alias="pixmaps/crystal/clear_left.png">../base-pixmaps/crystal/clear_left.png</file>
     <file alias="pixmaps/crystal/color.png">../base-pixmaps/crystal/color.png</file>
     <file alias="pixmaps/crystal/colorpicker.png">../base-pixmaps/crystal/colorpicker.png</file>
     <file alias="pixmaps/crystal/configure.png">../base-pixmaps/crystal/configure.png</file>
@@ -24,6 +25,7 @@
     <file alias="pixmaps/crystal/undo.png">../base-pixmaps/crystal/undo.png</file>
     <file alias="pixmaps/crystal/viewmag.png">../base-pixmaps/crystal/viewmag.png</file>
 
+    <file alias="pixmaps/oxygen/clear_left.png">../base-pixmaps/oxygen/clear_left.png</file>
     <file alias="pixmaps/oxygen/color.png">../base-pixmaps/oxygen/color.png</file>
     <file alias="pixmaps/oxygen/colorpicker.png">../base-pixmaps/oxygen/colorpicker.png</file>
     <file alias="pixmaps/oxygen/configure.png">../base-pixmaps/oxygen/configure.png</file>
