@@ -45,6 +45,7 @@ noinst_HEADERS = \
   IconCacheModel.h \
   IconEngine.h \
   IconFileDialog.h \
+  ImprovedLineEditor.h \
   ItemDelegate.h \
   ItemModel.h \
   LineEditor.h \
@@ -137,6 +138,7 @@ libbase_qt_a_SOURCES = \
   IconCacheModel.cpp \
   IconEngine.cpp \
   IconFileDialog.cpp \
+  ImprovedLineEditor.cpp \
   ItemDelegate.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
@@ -197,6 +199,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
   moc_IconFileDialog.cpp \
+  moc_ImprovedLineEditor.cpp \
   moc_LineEditor.cpp \
   moc_LineNumberDisplay.cpp \
   moc_ListWidget.cpp \
