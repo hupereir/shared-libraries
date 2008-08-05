@@ -33,7 +33,7 @@
 */
 
 #include "BrowsedLineEditor.h"
-#include "ImprovedLineEditor.h"
+#include "LineEditor.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 

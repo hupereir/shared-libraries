@@ -35,7 +35,7 @@
 #include <sstream>
 
 #include "BrowsedLineEditor.h"
-#include "ImprovedLineEditor.h"
+#include "LineEditor.h"
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "OptionListBox.h"

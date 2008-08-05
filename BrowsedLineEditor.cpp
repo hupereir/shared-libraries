@@ -37,7 +37,7 @@
 
 #include "BaseIcons.h"
 #include "BrowsedLineEditor.h"
-#include "ImprovedLineEditor.h"
+#include "LineEditor.h"
 #include "File.h"
 #include "IconEngine.h"
 #include "QtUtil.h"

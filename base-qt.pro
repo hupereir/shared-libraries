@@ -41,6 +41,7 @@ HEADERS = \
   IconCacheModel.h \
   IconEngine.h \
   IconFileDialog.h \
+  ImprovedLineEditor.h \
   ItemDelegate.h \
   ItemModel.h \
   LineEditor.h \
@@ -99,7 +100,7 @@ HEADERS = \
   XmlUtil.h
 
 SOURCES = \
-  BaseConfigurationDialog.cpp \
+   BaseConfigurationDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
   BrowsedLineEditor.cpp \
@@ -131,6 +132,7 @@ SOURCES = \
   IconCacheModel.cpp \
   IconEngine.cpp \
   IconFileDialog.cpp \
+  ImprovedLineEditor.cpp \
   ItemDelegate.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
