@@ -45,43 +45,17 @@ using namespace std;
 
 //______________________________________________________________
 ImprovedLineEditor::ImprovedLineEditor( QWidget* parent ):
-  QFrame( parent ),
-  Counter( "ImprovedLineEditor" )
+  LineEditor( parent ),
+  clear_icon_( IconEngine::get( ICONS::CLEAR ) )
 {
   Debug::Throw( "ImprovedLineEditor::ImprovedLineEditor.\n" );
   
-  setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
-  QHBoxLayout* layout = new QHBoxLayout();
-  layout->setMargin(0);
-  layout->setSpacing(0);
-  setLayout( layout );
+  int offset( QStyle::PM_DefaultFrameWidth/2 );
+  setContentsMargins( offset, offset, 50, offset );
   
-  // editor
-  layout->addWidget( editor_ = new LineEditor( this ), 1 );
-  editor_->setFrame( false );
+  //setContentsMargins( offset, offset, offset, offset );
+  setFrame( false );
   
-  // clear button
-  layout->addWidget( clear_button_ = new Button( this ), 0 );
-  clear_button_->setIcon( IconEngine::get( ICONS::CLEAR ) );
-  int width = editor().fontMetrics().lineSpacing();
-  clear_button_->setFixedSize( width + 1, width );
-  
-  // connections
-  connect( &editor(), SIGNAL( returnPressed() ), SIGNAL( returnPressed() ) );
-  connect( &editor(), SIGNAL( cursorPositionChanged( int ) ), SIGNAL( cursorPositionChanged( int ) ) );
-  connect( &editor(), SIGNAL( modificationChanged( bool ) ), SIGNAL( modificationChanged( bool ) ) );
-  connect( &editor(), SIGNAL( cursorPositionChanged( int, int ) ), SIGNAL( cursorPositionChanged( int, int ) ) );
-  connect( &editor(), SIGNAL( textChanged( const QString& ) ), SLOT( _textChanged( const QString& ) ) );
-  connect( &editor(), SIGNAL( textChanged( const QString& ) ), SIGNAL( textChanged( const QString& ) ) );
-  connect( qApp, SIGNAL( focusChanged( QWidget*, QWidget* ) ), SLOT( update() ) );
-
-  connect( clear_button_, SIGNAL( clicked() ), &editor(), SLOT( clear() ) );
-  
-  // size
-  QtUtil::fixSize( this, QtUtil::HEIGHT );
-  
-  // hide button by default since text is empty
-  _clearButton().hide();
 }
 
 //________________________________________________
@@ -90,47 +64,48 @@ void ImprovedLineEditor::paintEvent( QPaintEvent* event )
   
   Debug::Throw( "ImprovedLineEditor::paintEvent.\n" );
 
-  // this is a hack from QFrame::paintEvent
-  // to handle focus.  
-  QPainter painter(this);
-  painter.save();
-  painter.setPen( Qt::NoPen );
-  painter.setBrush( editor().palette().color( QPalette::Base ) );
-  QRect rect( frameRect() );
-  int offset( frameWidth() );
-  rect.adjust( offset, offset, -offset, -offset );
-  painter.drawRect( rect );
-  painter.restore();
-  
-  QStyleOptionFrameV2 panel;
-  panel.initFrom( this );
-  panel.rect = frameRect();
-  panel.state |= QStyle::State_Sunken;
-  if( editor().hasFocus() ) panel.state |= QStyle::State_HasFocus;
-  style()->drawPrimitive(QStyle::PE_Frame, &panel, &painter, this);
-  painter.end();
-  
-}
-
-//________________________________________________
-void ImprovedLineEditor::_textChanged( const QString& text )
-{
-  if( text.isEmpty() )
   {
-    if( _clearButton().isVisible() ) _clearButton().hide();
-    return;
-  } else if( !_clearButton().isVisible() ) _clearButton().show();
-  return;
+    // draw white background
+    QPainter painter( this );
+    painter.setPen( Qt::NoPen );
+    painter.setBrush( palette().color( QPalette::Base ) );
+    QRect rect( ImprovedLineEditor::rect() );
+    int offset( 2 );
+    rect.adjust( offset, offset, -offset, -offset );
+    painter.drawRect( rect );
+
+    // paint the button at the correct place
+    rect.adjust( 0, -1, 0, 1 );
+    clear_icon_.paint( &painter, rect, Qt::AlignRight|Qt::AlignVCenter );
+    
+    painter.end();
+    
+  }
+  
+  // normal painting (without frame)
+  LineEditor::paintEvent( event );
+ 
+  {
+    // draw frame
+    QPainter painter( this );
+    
+    QStyleOptionFrameV2 panel;
+    panel.initFrom( this );
+    
+    QRect rect( ImprovedLineEditor::rect() );  
+    panel.rect = rect;
+    panel.state |= QStyle::State_Sunken;
+    if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
+    style()->drawPrimitive(QStyle::PE_Frame, &panel, &painter, this);
+
+    painter.end();
+    
+  }
+    
 }
 
 //________________________________________________
-void ImprovedLineEditor::Button::paintEvent( QPaintEvent* event )
+void ImprovedLineEditor::_clear( void )
 {
-  
-  QPainter painter( this );
-  QRect rect( this->rect() );
-  rect.adjust( 0, -1, 0, 1 );
-  icon().paint( &painter, rect );
-  painter.end();
-  
+  Debug::Throw(0, "ImprovedLineEditor::_clear.\n");
 }

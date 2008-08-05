@@ -38,6 +38,7 @@
 #include <QPaintEvent>
 #include <QAbstractButton>
 
+#include "Debug.h"
 #include "Counter.h"
 #include "LineEditor.h"
 
@@ -45,7 +46,7 @@
    \class ImprovedLineEditor
    \brief customized line edit to have faster popup menu
 */
-class ImprovedLineEditor: public QFrame, public Counter
+class ImprovedLineEditor: public LineEditor
 {
 
   //! Qt meta object declaration
@@ -56,116 +57,20 @@ class ImprovedLineEditor: public QFrame, public Counter
   //! constructor;
   ImprovedLineEditor( QWidget* parent );
 
-  LineEditor& editor( void ) const
-  { 
-    assert( editor_ );
-    return *editor_;
-  }
-
-  QString text( void ) const
-  { return editor().text(); }
-
-  //! modification
-  bool isModified( void ) const
-  { return editor().isModified(); }
-
-  //! history
-  bool isUndoAvailable( void ) const
-  { return editor().isUndoAvailable(); }  
-
-  //! history
-  bool isRedoAvailable( void ) const
-  { return editor().isRedoAvailable(); }  
-  
-  //! read-only
-  void setReadOnly( const bool& value ) const
-  { editor().setReadOnly( value ); }
-  
-  //! set modified
-  void setModified( const bool& value ) const
-  { editor().setModified( value ); }
-  
-  //! cursor position
-  void setCursorPosition( int value ) const
-  { editor().setCursorPosition( value ); }
-  
-  signals:
-  
-  //! return pressed
-  void returnPressed();
-
-  //! text changed
-  void textChanged( const QString& );
-  
-  //! signal emmited when the cursor changes position
-  void cursorPositionChanged( int );  
-  
-  //! signal emmited when the cursor changes position
-  void cursorPositionChanged( int, int );  
-
-  //! modification state changed
-  void modificationChanged( bool );
-  
-  public slots:
-  
-  //! select all
-  void selectAll( void )
-  { editor().selectAll(); }
-  
-  //! set text
-  void setText( const QString& value )
-  { editor().setText( value ); }
-  
-  //! undo
-  void undo( void )
-  { editor().undo(); }
-  
-  //! undo
-  void redo( void )
-  { editor().redo(); }
-
   protected:
   
   //! paint
   void paintEvent( QPaintEvent* );
-  
-  //! button
-  class Button: public QAbstractButton
-  {
-    
-    public: 
-    
-    //! constructor
-    Button( QWidget* parent ):
-      QAbstractButton( parent )
-      {}
-    
-    protected:
-    
-    //! paint
-    void paintEvent( QPaintEvent* );
-    
-  };
-  
-  // clear button
-  Button& _clearButton() const
-  { 
-    assert( clear_button_ );
-    return *clear_button_;
-  }
-  
+   
   protected slots:
   
-  //! show hide clear button depending on text length
-  void _textChanged( const QString& );
+  //! clear
+  void _clear( void );
   
   private:
   
-  //! editor
-  LineEditor* editor_;
-  
-  //! clear button
-  Button* clear_button_;
+  //! clear pixmap
+  QIcon clear_icon_;
   
 };
 
