@@ -71,6 +71,9 @@ LineEditor::LineEditor( QWidget* parent ):
   } else {
     frame_width_ = QStyle::PM_DefaultFrameWidth;
   }
+
+  // set clear button visible
+  setHasClearButton( true );
   
 }
 
@@ -239,6 +242,8 @@ void LineEditor::mouseMoveEvent( QMouseEvent* event )
 void LineEditor::mousePressEvent( QMouseEvent* event )
 {
 
+  Debug::Throw( "LineEditor::mousePressEvent.\n" );
+
   // check clear button
   if( !_hasClearButton() ) return QLineEdit::mousePressEvent( event );
   
@@ -248,6 +253,22 @@ void LineEditor::mousePressEvent( QMouseEvent* event )
   
 }
 
+//_____________________________________________
+void LineEditor::mouseReleaseEvent( QMouseEvent* event )
+{
+  Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
+  if( isReadOnly() || (!_hasClearButton()) || contentsRect().contains( event->pos() ) || text().isEmpty() ) 
+  { 
+    
+    QLineEdit::mouseReleaseEvent( event );
+    emit cursorPositionChanged( cursorPosition( ) );
+    
+  } else {
+    clear();
+    emit cleared();
+  }
+}
+
 //________________________________________________
 void LineEditor::paintEvent( QPaintEvent* event )
 {
@@ -255,26 +276,35 @@ void LineEditor::paintEvent( QPaintEvent* event )
   // check clear button
   if( !_hasClearButton() ) return QLineEdit::paintEvent( event );
 
+  // initialize option
+  QStyleOptionFrameV2 panel;
+  panel.initFrom( this );
+  panel.rect = LineEditor::rect();
+  panel.state |= QStyle::State_Sunken;
+  if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
+  
   {
     // draw white background
     QPainter painter( this );
-    painter.setPen( Qt::NoPen );
-    painter.setBrush( palette().color( QPalette::Base ) );
-    QRect rect( LineEditor::rect() );
     
-    // adjust rect to account for the frame
-    int offset( hasFrame() ? frame_width_ : 1 );
-    rect.adjust( offset, offset, -offset, -offset );
-    
-    painter.drawRect( rect );
+    // PE_PanelLineEdit
+    style()->drawPrimitive(QStyle::PE_PanelLineEdit, &panel, &painter, this);
 
     // paint the button at the correct place
-    if( !(text().isNull() || text().isEmpty() ) )
+    if( !(isReadOnly() || text().isNull() || text().isEmpty() ) )
     {
-      //int offset( hasFrame() ? 0:1 );
-      int offset = (rect.height() - fontMetrics().lineSpacing()) / 2;
+      QRect rect( LineEditor::rect() );
+      
+      int offset( hasFrame() ? frame_width_ : 1 );
+      rect.adjust( offset, offset, -offset, -offset );
+      
+      offset = (rect.height() - fontMetrics().lineSpacing()) / 2;
       rect.adjust( 0, offset-1, -1, -offset-1 );
-      clear_icon_.paint( &painter, rect, Qt::AlignRight|Qt::AlignVCenter );
+      
+      clear_icon_.paint( 
+        &painter, rect, 
+        Qt::AlignRight|Qt::AlignVCenter, 
+        isEnabled() ? QIcon::Normal : QIcon::Disabled );
     }
     
     painter.end();
@@ -287,39 +317,17 @@ void LineEditor::paintEvent( QPaintEvent* event )
   {
     // draw frame
     QPainter painter( this );    
-    
-    QStyleOptionFrameV2 panel;
-    panel.initFrom( this );
-    panel.rect = LineEditor::rect();
-    panel.state |= QStyle::State_Sunken;
-    if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
-    
+        
+    // PE_PanelLineEdit
     // here one would prefer PE_FrameLineEdit over PE_Frame, but we are unable
     // to make it work for both oxygen and plastik themes.
     style()->drawPrimitive(QStyle::PE_Frame, &panel, &painter, this);
-    //style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
    
     painter.end();
     
   }
 
 }
-
-//_____________________________________________
-void LineEditor::mouseReleaseEvent( QMouseEvent* event )
-{
-  Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
-  if( (!_hasClearButton()) || contentsRect().contains( event->pos() ) || text().isEmpty() ) 
-  { 
-    QLineEdit::mouseReleaseEvent( event );
-    emit cursorPositionChanged( cursorPosition( ) );
-  } else {
-    clear();
-    emit cleared();
-  }
-}
-
-
 
 //____________________________________________________________
 void LineEditor::_modified( const QString& text )

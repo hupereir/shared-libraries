@@ -64,6 +64,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   
   // create line editor
   line_edit_ = new Editor( this );
+  line_edit_->setHasClearButton( false );
   layout->addWidget( line_edit_, 1 );
   
   // create push_button

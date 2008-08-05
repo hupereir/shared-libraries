@@ -52,6 +52,7 @@ CustomSlider::CustomSlider( QWidget* parent ):
   
   layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
   layout()->addWidget( line_edit_ = new LineEditor( this ) );
+  line_edit_->setHasClearButton( false );
   
   connect( line_edit_, SIGNAL( returnPressed() ),   SLOT( _updateSlider() ) );
   connect( slider_, SIGNAL( valueChanged( int ) ),  SLOT( _updateLineEdit( int ) ) );

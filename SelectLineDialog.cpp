@@ -66,6 +66,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   label->setBuddy( editor_ );
   connect( editor_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
   connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
+  editor_->setHasClearButton( true );
   
   QIntValidator *validator = new QIntValidator( this );
   validator->setBottom(0);

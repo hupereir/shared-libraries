@@ -63,6 +63,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   layout->setSpacing(2  );
   setLayout( layout );
   
+  editor_.setHasClearButton( false );
   editor_.setAlignment( Qt::AlignCenter );
   layout->addWidget( &editor_, 1 );
   connect( &editor_, SIGNAL( returnPressed() ), SLOT( _selectColorFromText() ) );  
