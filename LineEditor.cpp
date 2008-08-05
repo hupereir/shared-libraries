@@ -31,6 +31,9 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QPainter>
+#include <QStyle>
+#include <QStyleOptionFrameV2>
 
 #include "BaseIcons.h"
 #include "LineEditor.h"
@@ -45,7 +48,10 @@ using namespace Qt;
 LineEditor::LineEditor( QWidget* parent ):
   QLineEdit( parent ),
   Counter( "LineEditor" ),
-  modified_( false )
+  modified_( false ),
+  has_clear_button_( false ),
+  has_frame_( true ),
+  clear_icon_( IconEngine::get( ICONS::EDIT_CLEAR ) )
 {    
   Debug::Throw( "LineEditor::LineEditor.\n" );
     
@@ -55,8 +61,75 @@ LineEditor::LineEditor( QWidget* parent ):
   // modification state call-back
   connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _modified( const QString& ) ) );
   
+  // need to create a temporary useless frame
+  // to retrieve a valid frame-width
+  if( 1 )
+  {
+    QFrame frame(0);
+    frame.setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
+    frame_width_ = frame.frameWidth();
+  } else {
+    frame_width_ = QStyle::PM_DefaultFrameWidth;
+  }
+  
 }
 
+//______________________________________________________________
+void LineEditor::setHasClearButton( const bool& value )
+{
+
+  Debug::Throw() << "LineEditor::setHasClearButton - value: " << value << endl;
+  
+  if( value == has_clear_button_ ) return;
+  has_clear_button_ = value;
+  
+  if( has_clear_button_ )
+  {
+
+    // set frame flag from base class
+    setFrame( QLineEdit::hasFrame() );
+    
+    // disable QLineEdit frame
+    QLineEdit::setFrame( false );
+
+    // reset contents margins
+    int offset( hasFrame() ? frame_width_:0 );
+    setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
+
+  } else {
+    
+    // reset frame
+    QLineEdit::setFrame( has_frame_ );
+    
+    // reset contents margins
+    setContentsMargins( 0, 0, 0, 0 );
+  
+  }
+  
+  update();
+  
+}
+  
+//______________________________________________________________
+void LineEditor::setFrame( const bool& value )
+{
+  
+  Debug::Throw() << "LineEditor::setFrame - value: " << value << endl;
+  
+  // do nothing if value is unchanged
+  if( value == hasFrame() ) return;
+  
+  has_frame_ = value;
+  if( !_hasClearButton() ) QLineEdit::setFrame( value );
+  else {
+    
+    // reset contents margins
+    int offset( hasFrame() ? frame_width_:0 );
+    setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
+    
+  }
+  
+}
 
 //_____________________________________________________________________
 void LineEditor::setModified( const bool& value )
@@ -145,15 +218,108 @@ void LineEditor::keyPressEvent( QKeyEvent* event )
   
 }
 
+
+//________________________________________________
+void LineEditor::mouseMoveEvent( QMouseEvent* event )
+{
+  
+  // check clear button
+  if( !_hasClearButton() ) return QLineEdit::mouseMoveEvent( event );
+  
+  // check event position vs button location
+  if( contentsRect().contains( event->pos() ) || text().isEmpty() ) 
+  { 
+    if( cursor().shape() != Qt::IBeamCursor ) setCursor( Qt::IBeamCursor ); 
+    return QLineEdit::mouseMoveEvent( event ); 
+  } else if( cursor().shape() == Qt::IBeamCursor ) unsetCursor();
+  
+}
+
+//________________________________________________
+void LineEditor::mousePressEvent( QMouseEvent* event )
+{
+
+  // check clear button
+  if( !_hasClearButton() ) return QLineEdit::mousePressEvent( event );
+  
+  // check mouse position
+  if( contentsRect().contains( event->pos() ) || text().isEmpty() ) 
+  { QLineEdit::mousePressEvent( event ); }
+  
+}
+
+//________________________________________________
+void LineEditor::paintEvent( QPaintEvent* event )
+{
+  
+  // check clear button
+  if( !_hasClearButton() ) return QLineEdit::paintEvent( event );
+
+  {
+    // draw white background
+    QPainter painter( this );
+    painter.setPen( Qt::NoPen );
+    painter.setBrush( palette().color( QPalette::Base ) );
+    QRect rect( LineEditor::rect() );
+    
+    // adjust rect to account for the frame
+    int offset( hasFrame() ? frame_width_ : 1 );
+    rect.adjust( offset, offset, -offset, -offset );
+    
+    painter.drawRect( rect );
+
+    // paint the button at the correct place
+    if( !(text().isNull() || text().isEmpty() ) )
+    {
+      //int offset( hasFrame() ? 0:1 );
+      int offset = (rect.height() - fontMetrics().lineSpacing()) / 2;
+      rect.adjust( 0, offset-1, -1, -offset-1 );
+      clear_icon_.paint( &painter, rect, Qt::AlignRight|Qt::AlignVCenter );
+    }
+    
+    painter.end();
+  }
+
+  // normal painting (without frame)
+  QLineEdit::paintEvent( event );
+  
+  if( hasFrame() ) 
+  {
+    // draw frame
+    QPainter painter( this );    
+    
+    QStyleOptionFrameV2 panel;
+    panel.initFrom( this );
+    panel.rect = LineEditor::rect();
+    panel.state |= QStyle::State_Sunken;
+    if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
+    
+    // here one would prefer PE_FrameLineEdit over PE_Frame, but we are unable
+    // to make it work for both oxygen and plastik themes.
+    style()->drawPrimitive(QStyle::PE_Frame, &panel, &painter, this);
+    //style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
+   
+    painter.end();
+    
+  }
+
+}
+
 //_____________________________________________
 void LineEditor::mouseReleaseEvent( QMouseEvent* event )
 {
   Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
-  
-  QLineEdit::mouseReleaseEvent( event );
-  emit cursorPositionChanged( cursorPosition( ) );
-
+  if( (!_hasClearButton()) || contentsRect().contains( event->pos() ) || text().isEmpty() ) 
+  { 
+    QLineEdit::mouseReleaseEvent( event );
+    emit cursorPositionChanged( cursorPosition( ) );
+  } else {
+    clear();
+    emit cleared();
+  }
 }
+
+
 
 //____________________________________________________________
 void LineEditor::_modified( const QString& text )

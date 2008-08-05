@@ -37,6 +37,7 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QMouseEvent>
+#include <QPaintEvent>
 
 #include <string>
 #include <vector>
@@ -64,6 +65,16 @@ class LineEditor: public QLineEdit, public Counter
   //! modification state
   const bool& isModified( void ) const
   { return modified_; }
+
+  //! set clear button
+  void setHasClearButton( const bool& );
+
+  //! set frame
+  void setFrame( const bool& );
+  
+  //! has frame
+  bool hasFrame( void ) const
+  { return has_frame_; }
   
   signals:
   
@@ -73,6 +84,9 @@ class LineEditor: public QLineEdit, public Counter
   //! modification state changed
   void modificationChanged( bool );
   
+  //! emmited when clear button is pressed
+  void cleared( void );
+
   public slots:
   
   //! set text
@@ -87,6 +101,9 @@ class LineEditor: public QLineEdit, public Counter
     
   protected:
   
+  //! paint
+  void paintEvent( QPaintEvent* );
+  
   //! context menu (overloaded)
   virtual void contextMenuEvent( QContextMenuEvent* );
   
@@ -94,10 +111,20 @@ class LineEditor: public QLineEdit, public Counter
   virtual void keyPressEvent( QKeyEvent* );
     
   //! overloaded mouse event handler
-  virtual void mouseReleaseEvent( QMouseEvent* );
+  virtual void mouseMoveEvent( QMouseEvent* );
+
+  //! overloaded mouse event handler
+  virtual void mousePressEvent( QMouseEvent* );
+
+  //! mouse move
+  void mouseReleaseEvent( QMouseEvent* );
   
   //! install actions
   virtual void _installActions( void );
+  
+  //! has clear button
+  const bool& _hasClearButton( void )
+  { return has_clear_button_; }
 
   protected slots:
   
@@ -154,6 +181,23 @@ class LineEditor: public QLineEdit, public Counter
     
   //@}
 
+  //!@name properties
+  //@{
+
+  // frame width
+  int frame_width_;
+  
+  // true when clear button should be drawn
+  bool has_clear_button_;
+  
+  //! frame
+  bool has_frame_;
+  
+  //! clear pixmap
+  QIcon clear_icon_;
+  
+  //@}
+  
 };
 
 #endif

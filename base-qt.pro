@@ -41,7 +41,6 @@ HEADERS = \
   IconCacheModel.h \
   IconEngine.h \
   IconFileDialog.h \
-  ImprovedLineEditor.h \
   ItemDelegate.h \
   ItemModel.h \
   LineEditor.h \
@@ -132,7 +131,6 @@ SOURCES = \
   IconCacheModel.cpp \
   IconEngine.cpp \
   IconFileDialog.cpp \
-  ImprovedLineEditor.cpp \
   ItemDelegate.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
