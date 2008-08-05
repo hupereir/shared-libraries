@@ -50,12 +50,40 @@ ImprovedLineEditor::ImprovedLineEditor( QWidget* parent ):
 {
   Debug::Throw( "ImprovedLineEditor::ImprovedLineEditor.\n" );
   
-  int offset( QStyle::PM_DefaultFrameWidth/2 );
-  setContentsMargins( offset, offset, 50, offset );
+  // set proper margin
+  int offset( QStyle::PM_DefaultFrameWidth );
+  setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing(), offset );
+
+  // disable QLineEdit frame
+  QLineEdit::setFrame( false );
   
-  //setContentsMargins( offset, offset, offset, offset );
-  setFrame( false );
+}
+
+//________________________________________________
+void ImprovedLineEditor::mouseMoveEvent( QMouseEvent* event )
+{
+  // check event position vs button location
+  if( contentsRect().contains( event->pos() ) || text().isEmpty() ) 
+  { 
+    if( cursor().shape() != Qt::IBeamCursor ) setCursor( Qt::IBeamCursor ); 
+    return LineEditor::mouseMoveEvent( event ); 
+  } else if( cursor().shape() == Qt::IBeamCursor ) unsetCursor();
   
+}
+
+//________________________________________________
+void ImprovedLineEditor::mousePressEvent( QMouseEvent* event )
+{
+  if( contentsRect().contains( event->pos() ) || text().isEmpty() ) 
+  { LineEditor::mousePressEvent( event ); }
+  
+}
+
+//________________________________________________
+void ImprovedLineEditor::mouseReleaseEvent( QMouseEvent* event )
+{
+  if( contentsRect().contains( event->pos() ) || text().isEmpty() ) { LineEditor::mouseReleaseEvent( event ); } 
+  else clear();
 }
 
 //________________________________________________
@@ -70,42 +98,37 @@ void ImprovedLineEditor::paintEvent( QPaintEvent* event )
     painter.setPen( Qt::NoPen );
     painter.setBrush( palette().color( QPalette::Base ) );
     QRect rect( ImprovedLineEditor::rect() );
-    int offset( 2 );
+    int offset( QStyle::PM_DefaultFrameWidth );
     rect.adjust( offset, offset, -offset, -offset );
     painter.drawRect( rect );
 
     // paint the button at the correct place
-    rect.adjust( 0, -1, 0, 1 );
-    clear_icon_.paint( &painter, rect, Qt::AlignRight|Qt::AlignVCenter );
+    if( !(text().isNull() || text().isEmpty() ) )
+    {
+      rect.adjust( 0, 0, -offset/2, -offset/2 );
+      clear_icon_.paint( &painter, rect, Qt::AlignRight|Qt::AlignVCenter );
+    }
     
     painter.end();
-    
   }
-  
+
   // normal painting (without frame)
   LineEditor::paintEvent( event );
- 
+  
   {
     // draw frame
-    QPainter painter( this );
-    
-    QStyleOptionFrameV2 panel;
-    panel.initFrom( this );
+    QPainter painter( this );    
     
     QRect rect( ImprovedLineEditor::rect() );  
+    QStyleOptionFrameV2 panel;
+    panel.initFrom( this );
     panel.rect = rect;
     panel.state |= QStyle::State_Sunken;
     if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
-    style()->drawPrimitive(QStyle::PE_Frame, &panel, &painter, this);
-
+    style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
+    
     painter.end();
     
   }
-    
-}
 
-//________________________________________________
-void ImprovedLineEditor::_clear( void )
-{
-  Debug::Throw(0, "ImprovedLineEditor::_clear.\n");
 }

@@ -33,10 +33,9 @@
 */
 
 #include <assert.h>
-#include <QFrame>
 #include <QString>
+#include <QMouseEvent>
 #include <QPaintEvent>
-#include <QAbstractButton>
 
 #include "Debug.h"
 #include "Counter.h"
@@ -61,11 +60,15 @@ class ImprovedLineEditor: public LineEditor
   
   //! paint
   void paintEvent( QPaintEvent* );
-   
-  protected slots:
+
+  //! mouse move
+  void mouseMoveEvent( QMouseEvent* );
   
-  //! clear
-  void _clear( void );
+  //! mouse move
+  void mousePressEvent( QMouseEvent* );
+
+  //! mouse move
+  void mouseReleaseEvent( QMouseEvent* );
   
   private:
   
