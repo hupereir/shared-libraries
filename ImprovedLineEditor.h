@@ -56,6 +56,21 @@ class ImprovedLineEditor: public LineEditor
   //! constructor;
   ImprovedLineEditor( QWidget* parent );
 
+  //! set clear button
+  void setHasClearButton( const bool& );
+
+  //! set frame
+  void setFrame( const bool& );
+  
+  //! has frame
+  bool hasFrame( void ) const
+  { return has_frame_; }
+  
+  signals:
+  
+  //! emmited when clear button is pressed
+  void cleared( void );
+  
   protected:
   
   //! paint
@@ -70,7 +85,20 @@ class ImprovedLineEditor: public LineEditor
   //! mouse move
   void mouseReleaseEvent( QMouseEvent* );
   
+  //! has clear button
+  const bool& _hasClearButton( void )
+  { return has_clear_button_; }
+  
   private:
+  
+  // frame width
+  int frame_width_;
+  
+  // true when clear button should be drawn
+  bool has_clear_button_;
+  
+  //! frame
+  bool has_frame_;
   
   //! clear pixmap
   QIcon clear_icon_;

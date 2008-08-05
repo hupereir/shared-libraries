@@ -65,6 +65,8 @@ void CustomComboBox::setEditable( bool value )
   if( !editor_ ) 
   {
     editor_ = new ComboLineEdit( this );
+    editor_->setHasClearButton( true );
+    editor_->setFrame( false );
     setLineEdit( editor_ );
     connect( editor_, SIGNAL( autoComplete( QString ) ), SLOT( _autoComplete( QString ) ) );
   }
