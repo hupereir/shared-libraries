@@ -59,35 +59,12 @@ class CustomToolButton: public QToolButton, public Counter
   static const QSize SmallIconSize;
     
   //! default creator
-  CustomToolButton( QWidget* parent ):
-    QToolButton( parent ),
-    Counter( "CustomToolButton" ),
-    tooltip_label_(0),
-    big_icon_size_( BigIconSize ),
-    small_icon_size_( SmallIconSize )
-  {}
-   
-  //! creator with icon filename, tooltip and destination label
-  CustomToolButton( 
-    QWidget* parent,   
-    QIcon icon,
-    const std::string& tooltip = "",
-    QLabel* label = 0 );
-    
-  //! creator with icon filename, tooltip and destination label
-  CustomToolButton( 
-    QWidget* parent,   
-    QAction* action,
-    QLabel* label );
-  
+  CustomToolButton( QWidget* parent );
+     
   //! destructor
   virtual ~CustomToolButton( void ) 
   { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }
-  
-  //! set destination label
-  void setToolTipLabel( QLabel* tooltip_label )
-  { tooltip_label_ = tooltip_label; }
-   
+     
   //! small icon size
   const QSize& smallIconSize( void ) const
   { return small_icon_size_; }
@@ -108,6 +85,7 @@ class CustomToolButton: public QToolButton, public Counter
     
     //! select both sets of icons
     ALL = BIG|SMALL
+    
   };
     
   //! small icon size
@@ -126,24 +104,26 @@ class CustomToolButton: public QToolButton, public Counter
     _updateConfiguration();
   }
   
-  protected:
-      
-  //! overloaded enter event handler
-  void enterEvent( QEvent *event )
+  //! rotation
+  enum Rotation
   {
-    if( tooltip_label_ && toolTip().size() ) 
-    { tooltip_label_->setText( toolTip() ); }
-    QToolButton::enterEvent( event );
-  }
+    NONE,
+    CLOCKWISE,
+    COUNTERCLOCKWISE
+  };
   
-  //! overloaded leave event handler
-  void leaveEvent( QEvent *event )
-  {
-    if( tooltip_label_ && toolTip().size() ) 
-    { tooltip_label_->clear(); }
-    QToolButton::leaveEvent( event );
-  }
-
+  //! rotation
+  void setRotation( const Rotation& value )
+  { rotation_ = value; }
+  
+  //! size hint
+  virtual QSize sizeHint( void ) const;
+  
+  protected:
+  
+  //! painting
+  virtual void paintEvent( QPaintEvent* );
+  
   private slots:
   
   //! tool button configuration
@@ -151,8 +131,9 @@ class CustomToolButton: public QToolButton, public Counter
   
   private:
   
-  //! destination label for tooltip
-  QLabel* tooltip_label_;
+  //! rotation
+  const Rotation& _rotation( void ) const
+  { return rotation_; }
   
   //! big icon-size
   /*! by default this is the global BigIconSize but can be manually tweaked */
@@ -161,6 +142,9 @@ class CustomToolButton: public QToolButton, public Counter
   //! small icon-size
   /*! by default this is the global SmallIconSize but can be manually tweaked */
   QSize small_icon_size_;
+  
+  //! rotation
+  Rotation rotation_;
   
 };
 
