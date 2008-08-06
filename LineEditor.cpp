@@ -315,8 +315,11 @@ void LineEditor::paintEvent( QPaintEvent* event )
   {
     
     // get widget rect an adjust
-    QRect rect( LineEditor::rect() );      
-    if( hasFrame() ) rect.adjust( 0, _frameWidth(), -_frameWidth(), -_frameWidth() );    
+    QRect rect( LineEditor::rect() );
+    int offset( hasFrame() ? _frameWidth():0 );
+    if( hasFrame() ) { rect.adjust( 0, offset-1, -offset-1, -offset-1 ); }   
+    
+    // set the proper right margin
     rect.setLeft( rect.right() - fontMetrics().lineSpacing() -1 );
     
     clear_icon_.paint( 
