@@ -75,6 +75,9 @@ class FileRecordModel: public ListModel<FileRecord>
   
   //@}
   
+  //! set values (overloaded)
+  void set( const List& );
+  
   protected:
   
   //! sort
@@ -114,6 +117,9 @@ class FileRecordModel: public ListModel<FileRecord>
     
   };
 
+  //! update columns
+  void _updateColumns( const ValueType& value );
+  
   //! column titles
   std::vector<QString> column_titles_;
    

@@ -87,10 +87,14 @@ void FileRecordDialog::update( void )
   // save mask
   unsigned int mask( list_->mask() );
   
+  FileRecord::List records;
   Singleton::FileRecordMap& file_records_map( Singleton::get().fileRecordMap() );
   for( Singleton::FileRecordMap::const_iterator iter = file_records_map.begin(); iter != file_records_map.end(); iter++ )
-  { model_.add( std::vector<FileRecord>( iter->second.begin(), iter->second.end() ) ); }
-
+  { records.insert( records.end(), iter->second.begin(), iter->second.end() ); }
+  
+  // replace
+  model_.set( records );
+  
   list_->setMask( mask );
   list_->resizeColumns();
   

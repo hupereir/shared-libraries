@@ -130,6 +130,21 @@ QVariant FileRecordModel::headerData(int section, Qt::Orientation orientation, i
 }
 
 //____________________________________________________________
+void FileRecordModel::set( const FileRecordModel::List& values )
+{
+  
+  // update columns
+  for( FileRecordModel::List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
+  { _updateColumns( *iter ); }
+  
+  // base class
+  ListModel<FileRecord>::set( values );
+  
+}
+ 
+  
+  
+//____________________________________________________________
 void FileRecordModel::_sort( int column, Qt::SortOrder order )
 { 
 
@@ -142,7 +157,13 @@ void FileRecordModel::_sort( int column, Qt::SortOrder order )
 void FileRecordModel::_add( const ValueType& value )
 {
   Debug::Throw( "FileRecordModel::_add.\n" );
-  ListModel<FileRecord>::_add( value );
+  _updateColumns( value );
+  ListModel<FileRecord>::_add( value );  
+}
+
+//____________________________________________________________
+void FileRecordModel::_updateColumns( const ValueType& value )
+{
   
   // loop over available properties
   const FileRecord::PropertyMap& properties( value.properties() );
@@ -155,7 +176,7 @@ void FileRecordModel::_add( const ValueType& value )
   }
   
 }
-
+  
 //________________________________________________________
 bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord second ) const
 {

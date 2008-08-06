@@ -216,11 +216,9 @@ void RecentFilesMenu::_loadFiles( void )
   actions_.clear();
 
   // redo all actions
-  FileRecord::List records( _records() );
-  
-  if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") )
-  { records.sort( FileRecord::FirstOpenFTor() ); }
-  else { records.sort( FileRecord::SameFileFTor() ); }
+  FileRecord::List records( _records() ); 
+  if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") ) { sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
+  else { sort( records.begin(), records.end(), FileRecord::SameFileFTor() ); }
 
   // retrieve stored file record
   const FileRecord& stored( _stored() );
