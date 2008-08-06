@@ -90,25 +90,25 @@ class FileRecord: public Counter
   { valid_ = valid; }
 
   //! add information
-  void addInformation( const std::string& tag, const std::string& value )
-  { informations_[tag] = value; }
+  void addProperty( const std::string& tag, const std::string& value )
+  { properties_[tag] = value; }
   
   //! true if information is available
-  bool hasInformation( const std::string& tag ) const
-  { return informations_.find( tag ) != informations_.end(); }
+  bool hasProperty( const std::string& tag ) const
+  { return properties_.find( tag ) != properties_.end(); }
   
   //! additional information map
-  typedef std::map< std::string, std::string > InformationMap;
+  typedef std::map< std::string, std::string > PropertyMap;
   
-  //! informations map
-  const InformationMap& informations( void ) const
-  { return informations_; }
+  //! property map
+  const PropertyMap& properties( void ) const
+  { return properties_; }
 
   //! retrieve information
-  std::string information( const std::string& tag ) const
+  std::string property( const std::string& tag ) const
   {
-    InformationMap::const_iterator iter(  informations_.find( tag ) );
-    return ( iter == informations_.end() ) ? "":iter->second;
+    PropertyMap::const_iterator iter(  properties_.find( tag ) );
+    return ( iter == properties_.end() ) ? "":iter->second;
   }
   
   //! used to retrieve FileRecord with identical filenames
@@ -120,6 +120,11 @@ class FileRecord: public Counter
     //! constructor
     SameFileFTor( const File& file = File("") ):
       file_( file )
+    {}
+
+    //! constructor
+    SameFileFTor( const FileRecord& record ):
+      file_( record.file() )
     {}
     
     //! predicate
@@ -176,8 +181,8 @@ class FileRecord: public Counter
   //! file
   File file_;
   
-  //! additional informations
-  InformationMap informations_;
+  //! additional properties
+  PropertyMap properties_;
   
   //! time
   int time_;
@@ -189,7 +194,7 @@ class FileRecord: public Counter
   friend std::ostream& operator << ( std::ostream& out, const FileRecord& record )
   {
     out << record.file() << std::endl;
-    for( InformationMap::const_iterator iter = record.informations().begin(); iter != record.informations().end(); iter++ )
+    for( PropertyMap::const_iterator iter = record.properties().begin(); iter != record.properties().end(); iter++ )
     { out << "  " << iter->first << ": " << iter->second << std::endl; }
     return out;
   }
