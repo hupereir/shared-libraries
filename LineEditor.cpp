@@ -60,8 +60,12 @@ LineEditor::LineEditor( QWidget* parent ):
   
   // modification state call-back
   connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _modified( const QString& ) ) );
+  
+  // what should appear here is style().pixelMetric( QStyle::PM_DefaultFrameWidth() )
+  // but for some reason the later does not work with Oxygen style.
+  // for other styles, this results in having the LineEditors drawn too large.
   frame_width_ = QStyle::PM_DefaultFrameWidth;
-
+  
   // set clear button visible
   setHasClearButton( true );
   
@@ -290,7 +294,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
       {
         int offset( frame_width_ );
         rect.adjust( offset-1, offset-1, -offset-1, -offset-1 );
-      }
+      } else rect.adjust( -1, -1, -1, -1 );
       
       painter.save();
       painter.setRenderHint( QPainter::Antialiasing );
