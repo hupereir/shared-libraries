@@ -1,5 +1,5 @@
-#ifndef _FontEdit_h_
-#define _FontEdit_h_
+#ifndef _FontEditor_h_
+#define _FontEditor_h_
 
 // $Id$
 
@@ -24,7 +24,7 @@
 *******************************************************************************/
  
 /*!
-  \file FontEdit.h
+  \file FontEditor.h
   \brief readonly font name display and font dialog
   \author Hugo Pereira
   \version $Revision$
@@ -42,7 +42,7 @@
 #include "Debug.h"
 
 //! readonly font name display and font dialog
-class FontEdit: public QWidget, public Counter
+class FontEditor: public QWidget, public Counter
 {
 
   //! Qt meta object declaration
@@ -51,7 +51,7 @@ class FontEdit: public QWidget, public Counter
   public:
       
   //! constructor
-  FontEdit( QWidget *parent );
+  FontEditor( QWidget *parent );
   
   //! display font
   virtual void setFont( const QFont& font )

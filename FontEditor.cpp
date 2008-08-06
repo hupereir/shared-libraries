@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file FontEdit.cpp
+  \file FontEditor.cpp
   \brief three line editors and a browser to select fonts
   \author Hugo Pereira
   \version $Revision$
@@ -33,16 +33,16 @@
 #include <QPushButton>
 
 #include "BaseIcons.h"
-#include "FontEdit.h"
+#include "FontEditor.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
 
 using namespace std;
 
 //______________________________________________
-FontEdit::FontEdit( QWidget *parent ):
+FontEditor::FontEditor( QWidget *parent ):
   QWidget( parent ),
-  Counter( "FontEdit" )
+  Counter( "FontEditor" )
 { 
   
   QHBoxLayout *layout( new QHBoxLayout() );

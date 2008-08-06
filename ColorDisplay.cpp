@@ -35,7 +35,7 @@
 
 #include <QHBoxLayout>
 #include <QPainter>
-#include <QPushButton>
+#include <QToolButton>
 
 #include "BaseIcons.h"
 #include "ColorDisplay.h"
@@ -69,14 +69,18 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   connect( &editor_, SIGNAL( returnPressed() ), SLOT( _selectColorFromText() ) );  
 
   // browse button
-  QPushButton *button;
-  layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::OPEN), "", this ), 0 );
+  QToolButton *button;
+  layout->addWidget( button = new QToolButton( this ), 0 );
+  button->setIcon( IconEngine::get( ICONS::OPEN ) );
   button->setToolTip( "select color from dialog" );
+  //button->setAutoRaise( true );
   connect( button, SIGNAL( clicked() ), SLOT( _selectColor() ) );
   
   // grab button
-  layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::COLOR_PICKER), "", this ), 0 );
-  button->setToolTip( "grab color from screen" );
+  layout->addWidget( button = new QToolButton( this ), 0 );
+  button->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
+  button->setToolTip( "grap color from screen" );
+  //button->setAutoRaise( true );
   connect( button, SIGNAL( clicked() ), SLOT( _grabColor() ) );
   
 } 

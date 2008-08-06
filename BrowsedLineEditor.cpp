@@ -33,7 +33,7 @@
 */
 
 #include <QHBoxLayout>
-#include <QPushButton>
+#include <QToolButton>
 
 #include "BaseIcons.h"
 #include "BrowsedLineEditor.h"
@@ -68,7 +68,9 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   layout->addWidget( line_edit_, 1 );
   
   // create push_button
-  QPushButton *button = new QPushButton( IconEngine::get( ICONS::OPEN ), "", this );
+  QToolButton *button = new QToolButton( this );
+  button->setIcon( IconEngine::get( ICONS::OPEN ) );
+  button->setToolTip( "Browse file system" );
   layout->addWidget( button, 0 );
   
   // connect push_button
