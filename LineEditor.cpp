@@ -62,12 +62,7 @@ LineEditor::LineEditor( QWidget* parent ):
   
   // modification state call-back
   connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _modified( const QString& ) ) );
-  
-  // what should appear here is style().pixelMetric( QStyle::PM_DefaultFrameWidth() )
-  // but for some reason the later does not work with Oxygen style.
-  // for other styles, this results in having the LineEditors drawn too large.
-  frame_width_ = QStyle::PM_DefaultFrameWidth;
-  
+    
   // set clear button visible
   setHasClearButton( true );
   
@@ -92,7 +87,7 @@ void LineEditor::setHasClearButton( const bool& value )
     QLineEdit::setFrame( false );
 
     // reset contents margins
-    int offset( hasFrame() ? frame_width_:0 );
+    int offset( hasFrame() ? _frameWidth():0 );
     setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
 
   } else {
@@ -123,7 +118,7 @@ void LineEditor::setFrame( const bool& value )
   else {
     
     // reset contents margins
-    int offset( hasFrame() ? frame_width_:0 );
+    int offset( hasFrame() ? _frameWidth():0 );
     setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
     
   }
@@ -321,7 +316,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
     QRect rect( LineEditor::rect() );      
     if( hasFrame() )
     {
-      int offset( frame_width_ );
+      int offset( _frameWidth() );
       rect.adjust( offset-1, offset-1, -offset-1, -offset-1 );
     } else rect.adjust( -1, -1, -1, -1 );
     
@@ -455,4 +450,14 @@ void LineEditor::_updatePasteAction( void )
   bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
   paste_action_->setEnabled( editable && has_clipboard );
   
+}
+
+//______________________________________________________________
+int LineEditor::_frameWidth( void ) const
+{
+  // what should appear here is style().pixelMetric( QStyle::PM_DefaultFrameWidth )
+  // but for some reason the later does not work with Oxygen style.
+  // for other styles, this results in having the LineEditors drawn too large.
+  return QStyle::PM_DefaultFrameWidth;
+  //return style()->pixelMetric( QStyle::PM_DefaultFrameWidth );
 }

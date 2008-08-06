@@ -150,6 +150,9 @@ class LineEditor: public QLineEdit, public Counter
   virtual void _updateUndoRedoActions( void );
 
   private:
+
+  //! framewidth
+  int _frameWidth( void ) const;
   
   //! modification state
   bool modified_;
@@ -191,9 +194,6 @@ class LineEditor: public QLineEdit, public Counter
 
   //!@name properties
   //@{
-
-  // frame width
-  int frame_width_;
   
   // true when clear button should be drawn
   bool has_clear_button_;
