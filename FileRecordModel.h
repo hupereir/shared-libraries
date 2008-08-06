@@ -50,8 +50,8 @@ class FileRecordModel: public ListModel<FileRecord>
 
   //! column type enumeration
   enum ColumnType {
-    LOCAL_FILENAME, 
-    FULL_FILENAME,
+    FILE, 
+    PATH,
     TIME
   };
 
@@ -62,14 +62,17 @@ class FileRecordModel: public ListModel<FileRecord>
   //@{
   
   // return data for a given index
-  virtual QVariant data(const QModelIndex &index, int role) const;
+  virtual QVariant data(const QModelIndex &, int ) const;
    
   //! header data
-  virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+  virtual QVariant headerData(int, Qt::Orientation, int role = Qt::DisplayRole) const;
    
   //! number of columns for a given index
   virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
+  //! column matching given name, if any
+  virtual int findColumn( const QString& ) const;
+  
   //@}
   
   protected:

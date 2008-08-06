@@ -57,7 +57,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     if( attribute.name() == XML_FILE ) setFile( qPrintable( XmlUtil::xmlToText( attribute.value() ) ) );
     else if( attribute.name() == XML_TIME ) setTime( attribute.value().toInt() );
     else if( attribute.name() == XML_VALID ) setValid( attribute.value().toInt() );
-    else addInformation( qPrintable( attribute.name() ), qPrintable( attribute.value() ) );
+    else addProperty( qPrintable( attribute.name() ), qPrintable( attribute.value() ) );
   }
     
 }
@@ -71,7 +71,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
   out.setAttribute( XML_TIME, Str().assign<int>( XmlFileRecord::time() ).c_str() );
   out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ).c_str() );
   
-  for( InformationMap::const_iterator iter = informations().begin(); iter != informations().end(); iter++ )
+  for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); iter++ )
   { out.setAttribute( iter->first.c_str(), iter->second.c_str() ); }
   
   return out;

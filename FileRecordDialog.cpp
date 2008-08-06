@@ -57,7 +57,7 @@ FileRecordDialog::FileRecordDialog( QWidget* parent ):
   list_ = new TreeView( this );  
   layout()->addWidget( list_ );
   list_->setModel( &model_ );  
-  list_->setMask( (1<<FileRecordModel::LOCAL_FILENAME) );
+  list_->setMask( (1<<FileRecordModel::FILE) );
   
   // update button
   QHBoxLayout *h_layout = new QHBoxLayout();

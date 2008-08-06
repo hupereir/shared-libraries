@@ -31,6 +31,7 @@
 */
 
 #include <algorithm>
+#include <assert.h>
 
 #include "FileRecordModel.h"
 #include "Str.h"
@@ -43,8 +44,8 @@ FileRecordModel::FileRecordModel( QObject* parent ):
 {
   Debug::Throw("FileRecordModel::FileRecordModel.\n" );
 
-  column_titles_.push_back( "filename" );
-  column_titles_.push_back( "full name" );
+  column_titles_.push_back( "file name" );
+  column_titles_.push_back( "path" );
   column_titles_.push_back( "last accessed" );
 
 }
@@ -52,6 +53,14 @@ FileRecordModel::FileRecordModel( QObject* parent ):
 //__________________________________________________________________
 int FileRecordModel::columnCount(const QModelIndex &parent) const
 { return column_titles_.size(); }
+
+//__________________________________________________________________
+int FileRecordModel::findColumn( const QString& value ) const
+{
+  for( unsigned int index = 0; index < column_titles_.size(); index++ )
+  { if( column_titles_[index] == value ) return index;  }
+  assert(0);
+}
 
 //__________________________________________________________________
 QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
@@ -70,7 +79,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
     switch( index.column() )
     {
       
-      case LOCAL_FILENAME:
+      case FILE:
       {
         // store local nmae
         string local_name( file_record.file().localName() );
@@ -79,7 +88,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         unsigned int version( 0 );
         for( int row = 0; row < index.row(); row++ )
         { 
-          if( get( FileRecordModel::index( row, LOCAL_FILENAME ) ).file().localName() == local_name ) version++; 
+          if( get( FileRecordModel::index( row, FILE ) ).file().localName() == local_name ) version++; 
         }
         
         // form output string.
@@ -89,12 +98,12 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         return what.str().c_str();
       }
       
-      case FULL_FILENAME: return QString( file_record.file().c_str() );
+      case PATH: return QString( file_record.file().path().c_str() );
       case TIME: return QString( TimeStamp( file_record.time() ).string().c_str() );
       
       default:
-      if( index.column() < (int) column_titles_.size() && file_record.hasInformation( qPrintable( column_titles_[index.column()] ) ) )
-      { return file_record.information( qPrintable( column_titles_[index.column()] ) ).c_str(); }
+      if( index.column() < (int) column_titles_.size() && file_record.hasProperty( qPrintable( column_titles_[index.column()] ) ) )
+      { return file_record.property( qPrintable( column_titles_[index.column()] ) ).c_str(); }
       else return QVariant();
    
     }
@@ -135,11 +144,11 @@ void FileRecordModel::_add( const ValueType& value )
   Debug::Throw( "FileRecordModel::_add.\n" );
   ListModel<FileRecord>::_add( value );
   
-  // loop over available informations
-  const FileRecord::InformationMap& informations( value.informations() );
-  for( FileRecord::InformationMap::const_iterator iter = informations.begin(); iter != informations.end(); iter++ )
+  // loop over available properties
+  const FileRecord::PropertyMap& properties( value.properties() );
+  for( FileRecord::PropertyMap::const_iterator iter = properties.begin(); iter != properties.end(); iter++ )
   {
-    // look for information name in list of columns
+    // look for property name in list of columns
     if( find( column_titles_.begin(), column_titles_.end(), QString( iter->first.c_str() ) ) == column_titles_.end() )
     { column_titles_.push_back( iter->first.c_str() ); }
     
@@ -156,12 +165,12 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
   switch( type_ )
   {
 
-    case LOCAL_FILENAME: return first.file().localName() < second.file().localName();
+    case FILE: return first.file().localName() < second.file().localName();
     case TIME: return first.time() < second.time();
     default: 
     {
       string name( qPrintable( column_titles_[type_] ) );
-      return first.information( name ) < second.information( name );
+      return first.property( name ) < second.property( name );
     }
   }
  

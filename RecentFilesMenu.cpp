@@ -231,7 +231,7 @@ void RecentFilesMenu::_loadFiles( void )
     QAction* action = addAction( label );
     
     // add icon
-    if( iter->hasInformation( "icon" ) ) { action->setIcon( IconEngine::get( iter->information( "icon" ) ) ); }
+    if( iter->hasProperty( "icon" ) ) { action->setIcon( IconEngine::get( iter->property( "icon" ) ) ); }
     
     // check action if match file
     action_group_->addAction( action );
