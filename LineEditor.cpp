@@ -31,9 +31,11 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QEvent>
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOptionFrameV2>
+#include <QToolTip>
 
 #include "BaseIcons.h"
 #include "LineEditor.h"
@@ -177,6 +179,37 @@ void LineEditor::upperCase( void )
   // remove current selection
   cut();
   insert( selection.c_str() );
+}
+
+//_______________________________________________________
+bool LineEditor::event( QEvent* event )
+{
+    
+  // check that all needed widgets/actions are valid and checked.
+  switch (event->type()) 
+  {
+    
+    case QEvent::ToolTip:
+    {
+      if( ( !_hasClearButton() ) || text().isEmpty() ) break;
+      
+      // cast
+      QHelpEvent *help_event = static_cast<QHelpEvent*>(event);
+      if( contentsRect().contains( help_event->pos() ) ) break;
+      
+      // set appropriate tooltip
+      QToolTip::showText( help_event->globalPos(), "Clear text" );
+      return true;
+      
+    }
+    
+    break;
+    
+    default: break;
+  }
+    
+  return QLineEdit::event( event );
+
 }
 
 //_______________________________________________________________

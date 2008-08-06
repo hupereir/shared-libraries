@@ -100,6 +100,12 @@ class LineEditor: public QLineEdit, public Counter
   void upperCase( void );
     
   protected:
+
+  //!@name event handlers
+  //@{
+  
+  //! generic event
+  virtual bool event( QEvent* );
   
   //! paint
   void paintEvent( QPaintEvent* );
@@ -118,6 +124,8 @@ class LineEditor: public QLineEdit, public Counter
 
   //! mouse move
   void mouseReleaseEvent( QMouseEvent* );
+  
+  //@}
   
   //! install actions
   virtual void _installActions( void );

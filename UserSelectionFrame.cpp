@@ -58,7 +58,8 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
   _editor().setMinimumSize( QSize( 100, 0 ) ); 
   _editor().setAutoCompletion( true );
   _editor().setEditable( true );
-
+  _editor().setToolTip( "User selection" );
+  
   _timer().setSingleShot( true );
   connect( &_timer(), SIGNAL( timeout() ), SLOT( _userChanged() ) );
   
