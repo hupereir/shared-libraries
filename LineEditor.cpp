@@ -60,17 +60,7 @@ LineEditor::LineEditor( QWidget* parent ):
   
   // modification state call-back
   connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _modified( const QString& ) ) );
-  
-  // need to create a temporary useless frame
-  // to retrieve a valid frame-width
-  if( 1 )
-  {
-    QFrame frame(0);
-    frame.setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
-    frame_width_ = frame.frameWidth();
-  } else {
-    frame_width_ = QStyle::PM_DefaultFrameWidth;
-  }
+  frame_width_ = QStyle::PM_DefaultFrameWidth;
 
   // set clear button visible
   setHasClearButton( true );
@@ -280,6 +270,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
   QStyleOptionFrameV2 panel;
   panel.initFrom( this );
   panel.rect = LineEditor::rect();
+  panel.lineWidth = (hasFrame()) ? style()->pixelMetric(QStyle::PM_DefaultFrameWidth):0;
   panel.state |= QStyle::State_Sunken;
   if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
   
@@ -295,16 +286,19 @@ void LineEditor::paintEvent( QPaintEvent* event )
     {
       QRect rect( LineEditor::rect() );
       
-      int offset( hasFrame() ? frame_width_ : 1 );
-      rect.adjust( offset, offset, -offset, -offset );
+      if( hasFrame() )
+      {
+        int offset( frame_width_ );
+        rect.adjust( offset-1, offset-1, -offset-1, -offset-1 );
+      }
       
-      offset = (rect.height() - fontMetrics().lineSpacing()) / 2;
-      rect.adjust( 0, offset-1, -1, -offset-1 );
-      
+      painter.save();
+      painter.setRenderHint( QPainter::Antialiasing );
       clear_icon_.paint( 
         &painter, rect, 
         Qt::AlignRight|Qt::AlignVCenter, 
         isEnabled() ? QIcon::Normal : QIcon::Disabled );
+      painter.restore();
     }
     
     painter.end();
@@ -321,7 +315,8 @@ void LineEditor::paintEvent( QPaintEvent* event )
     // PE_PanelLineEdit
     // here one would prefer PE_FrameLineEdit over PE_Frame, but we are unable
     // to make it work for both oxygen and plastik themes.
-    style()->drawPrimitive(QStyle::PE_Frame, &panel, &painter, this);
+    //style()->drawPrimitive(QStyle::PE_Frame, &panel, &painter, this);
+    style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
    
     painter.end();
     
