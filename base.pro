@@ -31,6 +31,7 @@ SOURCES = \
 	 Debug.cpp \
   File.cpp \
   FileList.cpp \
+  FileRecord.cpp \
   Key.cpp \
   Options.cpp \
   Singleton.cpp \

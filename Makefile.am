@@ -37,9 +37,10 @@ libbase_a_SOURCES = \
   Command.cpp \
   Counter.cpp \
   CustomProcess.cpp \
-	 Debug.cpp \
+	Debug.cpp \
   File.cpp \
   FileList.cpp \
+  FileRecord.cpp \
   Key.cpp \
   Options.cpp \
   Singleton.cpp \

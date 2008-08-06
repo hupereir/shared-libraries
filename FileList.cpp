@@ -75,7 +75,7 @@ FileRecord FileList::lastValidFile( void )
   Debug::Throw( "FileList::lastValidFile.\n" );
   
   // sort list
-  sort( records_->begin(), records_->end() );  
+  sort( records_->begin(), records_->end(), FileRecord::FirstOpenFTor() );  
   for( FileRecord::List::reverse_iterator iter = records_->rbegin(); iter != records_->rend(); iter++ ) 
   { 
     if( (!check_) || iter->isValid() ) 
@@ -138,7 +138,7 @@ void FileList::_truncateList( void )
   if( max_size_ > 0 && int(records_->size()) > max_size_ )
   {
     
-    sort( records_->begin(), records_->end() );
+    sort( records_->begin(), records_->end(), FileRecord::FirstOpenFTor() );
     if( check_ )
     {
       while( int(records_->size()) > max_size_ )
