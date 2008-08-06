@@ -313,12 +313,11 @@ void LineEditor::paintEvent( QPaintEvent* event )
   // paint the button at the correct place
   if( !(isReadOnly() || text().isNull() || text().isEmpty() ) )
   {
+    
+    // get widget rect an adjust
     QRect rect( LineEditor::rect() );      
-    if( hasFrame() )
-    {
-      int offset( _frameWidth() );
-      rect.adjust( offset-1, offset-1, -offset-1, -offset-1 );
-    } else rect.adjust( -1, -1, -1, -1 );
+    if( hasFrame() ) rect.adjust( 0, _frameWidth(), -_frameWidth(), -_frameWidth() );    
+    rect.setLeft( rect.right() - fontMetrics().lineSpacing() -1 );
     
     clear_icon_.paint( 
       &painter, rect, 
