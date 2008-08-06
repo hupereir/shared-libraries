@@ -33,7 +33,7 @@
 */
 
 #include <string> 
-#include <list>  
+#include <vector>  
 
 #include "Counter.h"
 #include "Debug.h"
@@ -47,7 +47,8 @@ class FileRecord: public Counter
   public:
   
   //! shortcut to list of records
-  typedef std::list<FileRecord> List;
+  //typedef std::list<FileRecord> List;
+  typedef std::vector<FileRecord> List;
 
   //! constructor
   FileRecord( const File& file = File(""), const TimeStamp& time = TimeStamp::now() ):

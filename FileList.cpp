@@ -75,14 +75,7 @@ FileRecord FileList::lastValidFile( void )
   Debug::Throw( "FileList::lastValidFile.\n" );
   
   // sort list
-  records_->sort();
-  
-  if( Debug::level() >= 1 )
-  {
-    for( FileRecord::List::reverse_iterator iter = records_->rbegin(); iter != records_->rend(); iter++ )
-    { cout << "FileList::lastValidFile - file: " << iter->file() << " time: " << iter->file() << endl; }
-  }
-  
+  sort( records_->begin(), records_->end() );  
   for( FileRecord::List::reverse_iterator iter = records_->rbegin(); iter != records_->rend(); iter++ ) 
   { 
     if( (!check_) || iter->isValid() ) 
@@ -145,9 +138,7 @@ void FileList::_truncateList( void )
   if( max_size_ > 0 && int(records_->size()) > max_size_ )
   {
     
-    records_->sort();
-    
-    // first try remove invalid files
+    sort( records_->begin(), records_->end() );
     if( check_ )
     {
       while( int(records_->size()) > max_size_ )
@@ -160,7 +151,7 @@ void FileList::_truncateList( void )
     
     // remove oldest files
     while( int(records_->size()) > max_size_ )
-    { records_->pop_front(); }
+    { records_->erase( records_->begin() ); }
     
   }
   
