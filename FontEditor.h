@@ -33,13 +33,13 @@
 
 #include <QFont>
 #include <QFontDialog>
-#include <QLabel>
 
 #include <sstream>
 #include <string>
 
 #include "Counter.h"
 #include "Debug.h"
+#include "LineEditor.h"
 
 //! readonly font name display and font dialog
 class FontEditor: public QWidget, public Counter
@@ -93,9 +93,9 @@ class FontEditor: public QWidget, public Counter
   }
   
   private: 
-              
+                
   //! font name
-  QLabel* label_;
+  LineEditor* label_;
   
   //! selected font
   QFont font_;

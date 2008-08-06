@@ -50,10 +50,17 @@ FontEditor::FontEditor( QWidget *parent ):
   layout->setSpacing(2);
   setLayout( layout );
 
-  label_ =  new QLabel( "", this );
+  label_ =  new LineEditor( this );
+  label_->setReadOnly( true );
+  label_->setHasClearButton( false );
   label_->setAlignment( Qt::AlignCenter );
-  label_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
+  label_->setFont( font() );
   layout->addWidget( label_, 1 );
+
+  // update palette
+  QPalette palette( label_->palette() );
+  palette.setBrush( QPalette::Base, palette.brush( QPalette::Window ) );
+  label_->setPalette( palette );
   
   // create push_button
   QPushButton *button( new QPushButton( IconEngine::get( ICONS::OPEN ), "", this ) );
