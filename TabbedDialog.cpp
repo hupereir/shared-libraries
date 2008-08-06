@@ -198,6 +198,5 @@ void TabbedDialog::_saveWindowSize( void )
   {
     XmlOptions::get().set<int>( _sizeOptionName()+"_WIDTH", width() );
     XmlOptions::get().set<int>( _sizeOptionName()+"_HEIGHT", height() );
-    XmlOptions::write();
   }
 }
