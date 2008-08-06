@@ -33,7 +33,7 @@ HEADERS = \
   FileRecordDialog.h \
   FindDialog.h \
   FlatStyle.h \
-  FontEdit.h \
+  FontEditor.h \
   FontInfo.h \
   HeaderMenu.h \
   IconBrowsedButton.h \
@@ -54,7 +54,7 @@ HEADERS = \
   OptionColorDisplay.h \
   OptionComboBox.h \
   OptionDialog.h \
-  OptionFontEdit.h \
+  OptionFontEditor.h \
   OptionFontInfo.h \
   OptionIconBrowsedButton.h \
   OptionLineEditor.h \
@@ -123,7 +123,7 @@ SOURCES = \
   FileRecordDialog.cpp \
   FileRecordModel.cpp \
   FindDialog.cpp \
-  FontEdit.cpp \
+  FontEditor.cpp \
   FontInfo.cpp \
   HeaderMenu.cpp \
   IconBrowsedButton.cpp \

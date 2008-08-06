@@ -46,7 +46,7 @@
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"
 #include "OptionIconBrowsedButton.h"
-#include "OptionFontEdit.h"
+#include "OptionFontEditor.h"
 #include "OptionLineEditor.h"
 #include "OptionListBox.h"
 #include "OptionSlider.h"
@@ -165,14 +165,14 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     
     // base font    
     grid_layout->addWidget( new QLabel( "Default font: ", box ) );
-    OptionFontEdit *edit = new OptionFontEdit( box, "FONT_NAME" );
+    OptionFontEditor *edit = new OptionFontEditor( box, "FONT_NAME" );
     edit->setToolTip( "Default font name for all widgets" );
     grid_layout->addWidget( edit );
     addOptionWidget( edit );
     
     // fixed font
     grid_layout->addWidget( new QLabel( "Fixed font: ", box ) );
-    edit = new OptionFontEdit( box, "FIXED_FONT_NAME" );
+    edit = new OptionFontEditor( box, "FIXED_FONT_NAME" );
     edit->setToolTip( "Default font name (fixed) for text widgets" );
     grid_layout->addWidget( edit );
     addOptionWidget( edit );

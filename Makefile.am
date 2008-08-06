@@ -37,7 +37,7 @@ noinst_HEADERS = \
   FileRecordDialog.h \
   FindDialog.h \
   FlatStyle.h \
-  FontEdit.h \
+  FontEditor.h \
   FontInfo.h \
   HeaderMenu.h \
   IconBrowsedButton.h \
@@ -58,7 +58,7 @@ noinst_HEADERS = \
   OptionColorDisplay.h \
   OptionComboBox.h \
   OptionDialog.h \
-  OptionFontEdit.h \
+  OptionFontEditor.h \
   OptionFontInfo.h \
   OptionIconBrowsedButton.h \
   OptionLineEditor.h \
@@ -129,7 +129,7 @@ libbase_qt_a_SOURCES = \
   FileRecordDialog.cpp \
   FileRecordModel.cpp \
   FindDialog.cpp \
-  FontEdit.cpp \
+  FontEditor.cpp \
   FontInfo.cpp \
   HeaderMenu.cpp \
   IconBrowsedButton.cpp \
@@ -192,7 +192,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_DockPanel.cpp \
   moc_FileRecordDialog.cpp \
   moc_FindDialog.cpp \
-  moc_FontEdit.cpp \
+  moc_FontEditor.cpp \
   moc_HeaderMenu.cpp \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
