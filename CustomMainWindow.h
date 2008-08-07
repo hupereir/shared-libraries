@@ -33,7 +33,10 @@
 */
 
 #include <QApplication>
+#include <QBasicTimer>
 #include <QMainWindow>
+#include <QResizeEvent>
+#include <QTimerEvent>
 
 #include "Debug.h"  
 #include "XmlOptions.h"  
@@ -55,11 +58,57 @@ class CustomMainWindow: public QMainWindow
   //! destructor
   virtual ~CustomMainWindow( void )
   { Debug::Throw( "CustomMainWindow::~CustomMainWindow.\n" ); }
+
+  //! restore window size
+  virtual QSize minimumSizeHint( void ) const;
+
+  //! restore window size
+  virtual QSize sizeHint( void ) const;
   
+  protected:
+  
+  //! resize event
+  /* need to save updated window size */
+  virtual void resizeEvent( QResizeEvent* );
+  
+  //! timer event
+  /* need to save updated window size */
+  virtual void timerEvent( QTimerEvent* );     
+    
+  //! size option name
+  void _setSizeOptionName( const std::string& name )
+  { 
+    width_option_name_ = name + "_WIDTH"; 
+    height_option_name_ = name + "_HEIGHT"; 
+  }
+  
+  //! true when option name was set
+  bool _hasSizeOptionName( void ) const
+  { return !width_option_name_.empty(); }
+  
+  //! size option name
+  const std::string _heightOptionName( void ) const
+  { return height_option_name_; }
+  
+  //! size option name
+  const std::string _widthOptionName( void ) const
+  { return width_option_name_; }
+
   private slots:
   
   //! update configuration
   void _updateConfiguration( void );
+
+  private:
+    
+  //! resize timer
+  QBasicTimer resize_timer_;
+  
+  //! window size option name
+  std::string width_option_name_;
+
+  //! window size option name
+  std::string height_option_name_;
   
 };
 

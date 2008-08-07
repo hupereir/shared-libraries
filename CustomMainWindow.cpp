@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 
 #include "CustomMainWindow.h"
 #include "CustomToolButton.h"
@@ -41,6 +42,65 @@ CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
 { 
   Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+}
+
+
+//__________________________________________________
+QSize CustomMainWindow::minimumSizeHint( void ) const
+{
+  
+  // resize
+  if( _hasSizeOptionName() && XmlOptions::get().find( _widthOptionName() ) && XmlOptions::get().find( _heightOptionName() ) )
+  {
+    Debug::Throw() << " CustomMainWindow::minimumSizeHint - " << _widthOptionName() << ": " << XmlOptions::get().get<int>( _widthOptionName() ) << endl;
+    Debug::Throw() << " CustomMainWindow::minimumSizeHint - " << _heightOptionName() << ": " << XmlOptions::get().get<int>( _heightOptionName() ) << endl;
+    return QSize( 
+      XmlOptions::get().get<int>( _widthOptionName() ), 
+      XmlOptions::get().get<int>( _heightOptionName() ) );
+  } else return QMainWindow::minimumSizeHint();
+ 
+}
+
+//__________________________________________________
+QSize CustomMainWindow::sizeHint( void ) const
+{
+    
+  // resize
+  if( _hasSizeOptionName() && XmlOptions::get().find( _widthOptionName() ) && XmlOptions::get().find( _heightOptionName() ) )
+  {
+    Debug::Throw() << " CustomMainWindow::sizeHint - " << _widthOptionName() << ": " << XmlOptions::get().get<int>( _widthOptionName() ) << endl;
+    Debug::Throw() << " CustomMainWindow::sizeHint - " << _heightOptionName() << ": " << XmlOptions::get().get<int>( _heightOptionName() ) << endl;
+    return QSize( 
+      XmlOptions::get().get<int>( _widthOptionName() ), 
+      XmlOptions::get().get<int>( _heightOptionName() ) );
+  } else return QMainWindow::sizeHint();
+ 
+}
+
+//____________________________________________________________
+void CustomMainWindow::resizeEvent( QResizeEvent* event )
+{
+  if( _hasSizeOptionName() ) resize_timer_.start( 200, this );
+  return QMainWindow::resizeEvent( event );
+}
+
+//_______________________________________________________
+void CustomMainWindow::timerEvent( QTimerEvent* event )
+{
+
+  if( event->timerId() == resize_timer_.timerId() )
+  {
+    
+    // stop timer
+    assert( _hasSizeOptionName() );
+    resize_timer_.stop();
+    
+    // save size
+    XmlOptions::get().set<int>( _widthOptionName(), width() );
+    XmlOptions::get().set<int>( _heightOptionName(), height() );
+  
+  } else return QMainWindow::timerEvent( event );
+  
 }
 
 //____________________________________________________________

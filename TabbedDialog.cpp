@@ -141,7 +141,6 @@ void TabbedDialog::_display( QTreeWidgetItem* current, QTreeWidgetItem* previous
   _stack().setCurrentWidget(&item->page());  
 }
 
-
 //__________________________________________________
 QSize TabbedDialog::minimumSizeHint( void ) const
 {
@@ -160,7 +159,6 @@ QSize TabbedDialog::minimumSizeHint( void ) const
   } else return QDialog::minimumSizeHint();
  
 }
-
 
 //__________________________________________________
 QSize TabbedDialog::sizeHint( void ) const

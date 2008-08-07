@@ -103,19 +103,19 @@ class DockPanel: public QWidget, public Counter
     virtual void closeEvent( QCloseEvent* event );
     
     //! mouse press event [overloaded]
-    virtual void mousePressEvent( QMouseEvent *);
+    virtual void mousePressEvent( QMouseEvent* );
     
     //! mouse move event [overloaded]
-    virtual void mouseMoveEvent( QMouseEvent *);     
+    virtual void mouseMoveEvent( QMouseEvent* );     
     
     //! mouse move event [overloaded]
-    virtual void mouseReleaseEvent( QMouseEvent *);     
+    virtual void mouseReleaseEvent( QMouseEvent* );     
    
     //! mouse move event [overloaded]
-    virtual void mouseDoubleClickEvent( QMouseEvent *);     
+    virtual void mouseDoubleClickEvent( QMouseEvent* );     
 
     //! timer event [overloaded]
-    virtual void timerEvent( QTimerEvent *);     
+    virtual void timerEvent( QTimerEvent* );     
    
     //! actions
     void _installActions( void );
