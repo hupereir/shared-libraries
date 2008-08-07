@@ -41,6 +41,7 @@
 
 #include "XmlFileList.h"
 #include "Debug.h"
+#include "Key.h"
 #include "ValidFileThread.h"
 
 /*!
@@ -48,7 +49,7 @@
    \brief   customized popup menu to open a previously opened file
 */
 
-class RecentFilesMenu: public QMenu, public XmlFileList
+class RecentFilesMenu: public QMenu, public XmlFileList, public BASE::Key
 {
 
   //! Qt meta object declaration

@@ -97,6 +97,7 @@ QPixmap PixmapEngine::_get( const string& file )
     }
   }
     
+  cache_.insert( make_pair( file, out ) );
   return out;
   
 }

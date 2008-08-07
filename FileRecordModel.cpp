@@ -24,7 +24,7 @@
  
 /*!
   \file FileRecordModel.cpp
-  \brief model for object file_records
+  \brief model for object records
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -33,8 +33,9 @@
 #include <algorithm>
 #include <assert.h>
 
+#include "IconEngine.h"
+#include "FileRecordBaseProperties.h"
 #include "FileRecordModel.h"
-#include "Str.h"
 
 using namespace std;
 
@@ -63,15 +64,33 @@ int FileRecordModel::findColumn( const QString& value ) const
 }
 
 //__________________________________________________________________
+Qt::ItemFlags FileRecordModel::flags(const QModelIndex &index) const
+{
+  
+  // default flags
+  Qt::ItemFlags flags;
+  if( index.isValid() )
+  {
+  
+    // check associated record validity
+    const FileRecord& record( get(index) );
+    if( record.isValid() ) flags |=  Qt::ItemIsEnabled |  Qt::ItemIsSelectable;
+  
+  }
+  
+  return flags;
+  
+}
+
+//__________________________________________________________________
 QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 {
-  Debug::Throw( "FileRecordModel::data.\n" );
   
   // check index, role and column
   if( !index.isValid() ) return QVariant();
   
   // retrieve associated file info
-  const FileRecord& file_record( get(index) );
+  const FileRecord& record( get(index) );
   
   // return text associated to file and column
   if( role == Qt::DisplayRole ) {
@@ -82,7 +101,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
       case FILE:
       {
         // store local nmae
-        string local_name( file_record.file().localName() );
+        string local_name( record.file().localName() );
         
         // loop over previous rows to find a match and increment version number
         unsigned int version( 0 );
@@ -98,16 +117,20 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         return what.str().c_str();
       }
       
-      case PATH: return QString( file_record.file().path().c_str() );
-      case TIME: return QString( TimeStamp( file_record.time() ).string().c_str() );
+      case PATH: return QString( record.file().path().c_str() );
+      case TIME: return QString( TimeStamp( record.time() ).string().c_str() );
       
       default:
-      if( index.column() < (int) column_titles_.size() && file_record.hasProperty( qPrintable( column_titles_[index.column()] ) ) )
-      { return file_record.property( qPrintable( column_titles_[index.column()] ) ).c_str(); }
+      if( index.column() < (int) column_titles_.size() && record.hasProperty( qPrintable( column_titles_[index.column()] ) ) )
+      { return record.property( qPrintable( column_titles_[index.column()] ) ).c_str(); }
       else return QVariant();
    
     }
-  } else if( role == Qt::ToolTipRole ) return QString( file_record.file().c_str() );
+  } else if( role == Qt::DecorationRole && index.column() == FILE && record.hasProperty( FileRecordProperties::ICON ) ) { 
+    
+    return IconEngine::get( record.property( FileRecordProperties::ICON ) );
+    
+  } else if( role == Qt::ToolTipRole ) return QString( record.file().c_str() );
  
   return QVariant();
   
@@ -128,35 +151,14 @@ QVariant FileRecordModel::headerData(int section, Qt::Orientation orientation, i
   return QVariant(); 
 
 }
-
-//____________________________________________________________
-void FileRecordModel::set( const FileRecordModel::List& values )
-{
-  
-  // update columns
-  for( FileRecordModel::List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
-  { _updateColumns( *iter ); }
-  
-  // base class
-  ListModel<FileRecord>::set( values );
-  
-}
- 
-  
   
 //____________________________________________________________
 void FileRecordModel::_sort( int column, Qt::SortOrder order )
-{ 
-
-  Debug::Throw() << "FileRecordModel::sort - column: " << column << " order: " << order << endl;
-  std::sort( _get().begin(), _get().end(), SortFTor( column, order, column_titles_ ) );
-      
-}
+{ std::sort( _get().begin(), _get().end(), SortFTor( column, order, column_titles_ ) ); }
 
 //____________________________________________________________
 void FileRecordModel::_add( const ValueType& value )
 {
-  Debug::Throw( "FileRecordModel::_add.\n" );
   _updateColumns( value );
   ListModel<FileRecord>::_add( value );  
 }

@@ -33,6 +33,7 @@ noinst_HEADERS = \
   DockPanel.h \
   BaseIcons.h \
   ErrorHandler.h \
+  FileRecordBaseProperties.h \
   FileRecordModel.h \
   FileRecordDialog.h \
   FindDialog.h \

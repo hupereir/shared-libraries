@@ -262,7 +262,50 @@ template<class T> class ListModel : public ItemModel
   virtual void clear( void )
   { set( List() ); }
   
-  //! update
+  //! update values from list
+  /*! 
+  values that are not found in current are removed 
+  new values are set to the end.
+  This is slower than the "set" method, but the selection is not cleared in the process
+  */
+  virtual void update( List values )
+  {
+    
+    emit layoutAboutToBeChanged();
+    
+    // store values to be removed
+    List removed_values;
+    
+    // update values that are common to both lists
+    for( typename List::iterator iter = values_.begin(); iter != values_.end(); iter++ )
+    {
+    
+      // see if iterator is in list
+      typename List::iterator found_iter( std::find( values.begin(), values.end(), *iter ) );
+      if( found_iter == values.end() ) removed_values.push_back( *iter );
+      else {
+        *iter = *found_iter;
+        values.erase( found_iter );
+      }
+      
+    }
+    
+    // remove values that have not been found in new list
+    for( typename List::const_iterator iter = removed_values.begin(); iter != removed_values.end(); iter++ ) 
+    { _remove( *iter ); }
+    
+    // add remaining values
+    for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
+    { _add( *iter ); }
+
+    emit layoutChanged();
+
+    // redo the sorting
+    sort();
+      
+  }
+  
+  //! set all values
   virtual void set( const List& values )
   { 
     

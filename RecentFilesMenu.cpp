@@ -35,7 +35,7 @@
 #include <set>
 
 #include "BaseIcons.h"
-#include "File.h"
+#include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
 #include "RecentFilesMenu.h"
 #include "QtUtil.h"
@@ -229,7 +229,7 @@ void RecentFilesMenu::_loadFiles( void )
     QAction* action = addAction( label );
     
     // add icon
-    if( iter->hasProperty( "icon" ) ) { action->setIcon( IconEngine::get( iter->property( "icon" ) ) ); }
+    if( iter->hasProperty( FileRecordProperties::ICON ) ) { action->setIcon( IconEngine::get( iter->property( FileRecordProperties::ICON ) ) ); }
     
     // check action if match file
     action_group_->addAction( action );

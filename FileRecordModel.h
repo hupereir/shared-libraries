@@ -60,6 +60,9 @@ class FileRecordModel: public ListModel<FileRecord>
     
   //!@name methods reimplemented from base class
   //@{
+
+  //! flags
+  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   
   // return data for a given index
   virtual QVariant data(const QModelIndex &, int ) const;
@@ -76,7 +79,18 @@ class FileRecordModel: public ListModel<FileRecord>
   //@}
   
   //! set values (overloaded)
-  void set( const List& );
+  void set( const List& values )
+  {
+    _updateColumns( values );
+    ListModel<FileRecord>::set( values );
+  }
+
+  //! set values (overloaded)
+  void update( const List& values )
+  {
+    _updateColumns( values );
+    ListModel<FileRecord>::update( values );
+  }
   
   protected:
   
@@ -116,6 +130,16 @@ class FileRecordModel: public ListModel<FileRecord>
     Qt::SortOrder order_;
     
   };
+
+  //! update columns
+  void _updateColumns( const List& values )
+  {
+    
+    // update columns
+    for( List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
+    { _updateColumns( *iter ); }
+    
+  }
 
   //! update columns
   void _updateColumns( const ValueType& value );
