@@ -53,7 +53,6 @@ noinst_HEADERS = \
   ListModel.h \
   ListWidget.h \
   MultipleClickCounter.h \
-  RecentFilesMenu.h \
   OptionBrowsedLineEditor.h \
   OptionCheckBox.h \
   OptionColorDisplay.h \
@@ -73,6 +72,7 @@ noinst_HEADERS = \
   ProcessDialog.h \
   ProcessFrame.h \
   QtUtil.h \
+  RecentFilesMenu.h \
   RemoveLineBuffer.h \
   ReplaceDialog.h \
   SelectLineDialog.h \
@@ -144,12 +144,12 @@ libbase_qt_a_SOURCES = \
   LineNumberDisplay.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
-  RecentFilesMenu.cpp \
   OptionListBox.cpp \
   PixmapEngine.cpp \
   ProcessDialog.cpp \
   ProcessFrame.cpp \
   QtUtil.cpp \
+  RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
   ReplaceDialog.cpp \
   SelectLineDialog.cpp \
@@ -202,9 +202,9 @@ nodist_libbase_qt_a_SOURCES = \
   moc_LineNumberDisplay.cpp \
   moc_ListWidget.cpp \
   moc_MultipleClickCounter.cpp \
-  moc_RecentFilesMenu.cpp \
   moc_OptionListBox.cpp \
   moc_ProcessFrame.cpp \
+  moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
   moc_ReplaceDialog.cpp \
   moc_SelectLineDialog.cpp \
