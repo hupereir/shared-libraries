@@ -30,7 +30,7 @@
 */
 
 #include <QHBoxLayout>
-#include <QPushButton>
+#include <QToolButton>
 
 #include "BaseIcons.h"
 #include "FontEditor.h"
@@ -63,7 +63,9 @@ FontEditor::FontEditor( QWidget *parent ):
   label_->setPalette( palette );
   
   // create push_button
-  QPushButton *button( new QPushButton( IconEngine::get( ICONS::OPEN ), "", this ) );
+  QToolButton *button( new QToolButton( this ) );
+  button->setIcon( IconEngine::get( ICONS::OPEN ) );
+  button->setAutoRaise( false );
   layout->addWidget( button, 0 );
   
   // connect push_button
