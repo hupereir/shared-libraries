@@ -14,7 +14,7 @@
     <file alias="pixmaps/crystal/editcopy.png">../base-pixmaps/crystal/editcopy.png</file>
     <file alias="pixmaps/crystal/editcut.png">../base-pixmaps/crystal/editcut.png</file>
     <file alias="pixmaps/crystal/editpaste.png">../base-pixmaps/crystal/editpaste.png</file>
-    <file alias="pixmaps/crystal/encrypted.png">../pixmaps/crystal/encrypted.png</file>
+    <file alias="pixmaps/crystal/encrypted.png">../base-pixmaps/crystal/encrypted.png</file>
     <file alias="pixmaps/crystal/exit.png">../base-pixmaps/crystal/exit.png</file>
     <file alias="pixmaps/crystal/fileopen.png">../base-pixmaps/crystal/fileopen.png</file>
     <file alias="pixmaps/crystal/messagebox_warning.png">../base-pixmaps/crystal/messagebox_warning.png</file>
@@ -39,7 +39,7 @@
     <file alias="pixmaps/oxygen/editcopy.png">../base-pixmaps/oxygen/editcopy.png</file>
     <file alias="pixmaps/oxygen/editcut.png">../base-pixmaps/oxygen/editcut.png</file>
     <file alias="pixmaps/oxygen/editpaste.png">../base-pixmaps/oxygen/editpaste.png</file>
-    <file alias="pixmaps/oxygen/encrypted.png">../pixmaps/oxygen/encrypted.png</file>
+    <file alias="pixmaps/oxygen/encrypted.png">../base-pixmaps/oxygen/encrypted.png</file>
     <file alias="pixmaps/oxygen/exit.png">../base-pixmaps/oxygen/exit.png</file>
     <file alias="pixmaps/oxygen/fileopen.png">../base-pixmaps/oxygen/fileopen.png</file>
     <file alias="pixmaps/oxygen/messagebox_warning.png">../base-pixmaps/oxygen/messagebox_warning.png</file>

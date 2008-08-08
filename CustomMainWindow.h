@@ -32,6 +32,8 @@
   \date $Date$
 */
 
+#include <assert.h>
+
 #include <QAction>
 #include <QBasicTimer>
 #include <QMainWindow>

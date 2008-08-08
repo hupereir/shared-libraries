@@ -138,11 +138,14 @@ void CustomToolBar::_updateConfiguration( void )
     // show toolbar
     if( visibility )
     { 
-      if( !( current_visibility && (location == current_location) ) ) 
-      { parent->addToolBar( location, this ); }
+      
+      if( !( current_visibility && (location == current_location) ) ) { parent->addToolBar( location, this ); }
+      
     } else if( location != Qt::NoToolBarArea ) { 
+      
       parent->addToolBar( location, this ); 
       hide();
+      
     }
     
     // set options according to values

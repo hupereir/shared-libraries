@@ -31,10 +31,12 @@
 
 #include <assert.h>
 #include <QApplication>
+#include <QToolBar>
 
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "CustomMainWindow.h"
+#include "CustomToolBar.h"
 #include "CustomToolButton.h"
 
 using namespace std;
@@ -143,5 +145,22 @@ void CustomMainWindow::_saveConfiguration( void )
 void CustomMainWindow::_lockToolBars( bool value )
 {
   Debug::Throw( "CustomMainWindow::_lockToolBars.\n" );
+  QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
+  for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
+  {
+    
+    // skip if parent is not this
+    if( !((*iter)->window() == this) ) continue;
+    Debug::Throw(0) << "CustomMainWindow::_lockToolBars - found toolbar" << endl;
+    
+    // try cast to CustomToolBar and check for 'lock from options'
+    CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
+    if( toolbar && toolbar->lockFromOptions() ) continue;
+    
+    // update movability
+    (*iter)->setMovable( value );
+  
+  }
+  
   return;
 }

@@ -75,6 +75,10 @@ class CustomToolBar: public QToolBar, public Counter
     
   }
   
+  //! lock from options
+  const bool& lockFromOptions( void ) const
+  { return lock_from_options_; }
+  
   //! set movable
   /* when called directly from the application, the lock_from_options_ flag is set to false */
   void setMovable( bool value )
