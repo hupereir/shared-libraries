@@ -128,9 +128,6 @@ class RecentFilesMenu: public QMenu, public XmlFileList, public BASE::Key
   //! clean action
   QAction* clean_action_;
   
-  //! files action group
-  QActionGroup* action_group_;
-  
   //! map actions to file recors
   typedef std::map<QAction*, FileRecord> ActionMap;
   

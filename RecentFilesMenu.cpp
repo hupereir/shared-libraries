@@ -67,10 +67,6 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent ):
   addAction( clean_action_ );
   addSeparator();
   
-  // action group
-  action_group_ = new QActionGroup( this );
-  action_group_->setExclusive( true );
-  
 }
 
 //______________________________________
@@ -232,7 +228,6 @@ void RecentFilesMenu::_loadFiles( void )
     if( iter->hasProperty( FileRecordProperties::ICON ) ) { action->setIcon( IconEngine::get( iter->property( FileRecordProperties::ICON ) ) ); }
     
     // check action if match file
-    action_group_->addAction( action );
     action->setCheckable( true );
     action->setChecked( iter->file() == stored.file() );
 
