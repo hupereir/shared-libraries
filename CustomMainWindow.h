@@ -32,7 +32,7 @@
   \date $Date$
 */
 
-#include <QApplication>
+#include <QAction>
 #include <QBasicTimer>
 #include <QMainWindow>
 #include <QResizeEvent>
@@ -64,6 +64,13 @@ class CustomMainWindow: public QMainWindow
 
   //! restore window size
   virtual QSize sizeHint( void ) const;
+  
+  //! lock toolbars
+  QAction& lockToolBarsAction( void ) const
+  { 
+    assert( lock_toolbars_action_ );
+    return *lock_toolbars_action_; 
+  }
   
   protected:
   
@@ -98,9 +105,18 @@ class CustomMainWindow: public QMainWindow
   
   //! update configuration
   void _updateConfiguration( void );
+  
+  //! save configuration
+  void _saveConfiguration( void );
 
+  //! lock toolbars
+  void _lockToolBars( bool ); 
+  
   private:
     
+  //! lock toolbars
+  QAction* lock_toolbars_action_;
+  
   //! resize timer
   QBasicTimer resize_timer_;
   

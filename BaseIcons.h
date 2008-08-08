@@ -58,6 +58,7 @@ namespace ICONS
   static const std::string COLOR_PICKER = "colorpicker.png";
   static const std::string CONFIGURE = "configure.png";
   static const std::string HELP = "toggle_log.png";
+  static const std::string LOCK = "encrypted.png";
   static const std::string OPEN = "fileopen.png";
   static const std::string PIN = "stock_pin.png";
   static const std::string RELOAD = "reload.png";

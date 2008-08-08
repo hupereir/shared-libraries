@@ -30,7 +30,10 @@
 */
 
 #include <assert.h>
+#include <QApplication>
 
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "CustomMainWindow.h"
 #include "CustomToolButton.h"
 
@@ -42,6 +45,13 @@ CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
 { 
   Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  
+  // lock toolbars action
+  addAction( lock_toolbars_action_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock toolbars", this ) );
+  lockToolBarsAction().setCheckable( true );
+  lockToolBarsAction().setChecked( false );
+  connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
+  
 }
 
 
@@ -117,4 +127,21 @@ void CustomMainWindow::_updateConfiguration( void )
   if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
   else setToolButtonStyle( Qt::ToolButtonIconOnly );
   
+  // toolbars locked
+  lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) );
+  
+}
+
+//____________________________________________________________
+void CustomMainWindow::_saveConfiguration( void )
+{ 
+  Debug::Throw( "CustomMainWindow::_saveConfiguration.\n" );
+  XmlOptions::get().set<bool>( "LOCK_TOOLBARS", lockToolBarsAction().isChecked() );
+}
+
+//____________________________________________________________
+void CustomMainWindow::_lockToolBars( bool value )
+{
+  Debug::Throw( "CustomMainWindow::_lockToolBars.\n" );
+  return;
 }
