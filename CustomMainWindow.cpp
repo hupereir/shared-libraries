@@ -46,13 +46,17 @@ CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
   QMainWindow( parent, wflags )
 { 
   Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
   // lock toolbars action
   addAction( lock_toolbars_action_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock toolbars", this ) );
   lockToolBarsAction().setCheckable( true );
   lockToolBarsAction().setChecked( false );
   connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
+  
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( qApp, SIGNAL( saveConfiguration() ), SLOT( _saveConfiguration() ) );
+  connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
+  _updateConfiguration();
   
 }
 
@@ -87,6 +91,61 @@ QSize CustomMainWindow::sizeHint( void ) const
       XmlOptions::get().get<int>( _heightOptionName() ) );
   } else return QMainWindow::sizeHint();
  
+}
+
+//________________________________________________________________
+void CustomMainWindow::installToolBarsActions( QMenu& menu )
+{
+  
+  Debug::Throw( "CustomMainWindow::installToolBarsActions.\n" );
+  bool has_lockable_toolbars( false );
+  QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
+  for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
+  {
+ 
+    CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
+    if( toolbar ) { menu.addAction( &toolbar->visibilityAction() ); }
+    else {
+      
+      // add visibility action
+      QAction* action = new QAction( (*iter)->windowTitle(), &menu );
+      action->setCheckable( true );
+      action->setChecked( (*iter)->isVisible() );
+      connect( action, SIGNAL( toggled( bool ) ), (*iter), SLOT( setVisible( bool ) ) );
+      menu.addAction( action );
+    
+    }
+    
+    // skip if lockable toolbar was already found
+    if( has_lockable_toolbars ) continue;
+    
+    // skip if parent is not this
+    if( !((*iter)->parentWidget() == this) ) continue;
+    
+    // try cast to CustomToolBar and check for 'lock from options'
+    if( toolbar && toolbar->lockFromOptions() ) continue;
+    
+    has_lockable_toolbars = true;
+    
+  }
+  
+  if( has_lockable_toolbars )
+  {
+    menu.addSeparator();
+    menu.addAction( &lockToolBarsAction() );
+  }
+    
+}
+
+//________________________________________________
+void CustomMainWindow::contextMenuEvent( QContextMenuEvent* event )
+{
+  Debug::Throw( "CustomMainWindow::contextMenuEvent.\n" );
+  
+  QMenu menu( this );
+  installToolBarsActions( menu );
+  menu.exec( event->globalPos() );
+
 }
 
 //____________________________________________________________
@@ -151,14 +210,13 @@ void CustomMainWindow::_lockToolBars( bool value )
     
     // skip if parent is not this
     if( !((*iter)->window() == this) ) continue;
-    Debug::Throw(0) << "CustomMainWindow::_lockToolBars - found toolbar" << endl;
     
     // try cast to CustomToolBar and check for 'lock from options'
     CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
     if( toolbar && toolbar->lockFromOptions() ) continue;
     
     // update movability
-    (*iter)->setMovable( value );
+    (*iter)->setMovable( !value );
   
   }
   

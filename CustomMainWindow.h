@@ -36,7 +36,9 @@
 
 #include <QAction>
 #include <QBasicTimer>
+#include <QContextMenuEvent>
 #include <QMainWindow>
+#include <QMenu>
 #include <QResizeEvent>
 #include <QTimerEvent>
 
@@ -73,8 +75,14 @@ class CustomMainWindow: public QMainWindow
     assert( lock_toolbars_action_ );
     return *lock_toolbars_action_; 
   }
+   
+  //! install toolbar visibility and lock actions
+  virtual void installToolBarsActions( QMenu& );
   
   protected:
+  
+  //! context menu event [overloaded]
+  virtual void contextMenuEvent( QContextMenuEvent* );
   
   //! resize event
   /* need to save updated window size */
@@ -83,7 +91,7 @@ class CustomMainWindow: public QMainWindow
   //! timer event
   /* need to save updated window size */
   virtual void timerEvent( QTimerEvent* );     
-    
+   
   //! size option name
   void _setSizeOptionName( const std::string& name )
   { 
