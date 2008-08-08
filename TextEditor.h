@@ -295,6 +295,31 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
   //! clear all blocks background
   virtual void clearAllBackgrounds( void );
+
+  //!@name widget to viewport translations
+  //@{ 
+ 
+  //! scrollbar position
+  QPoint scrollbarPosition( void ) const
+  { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
+
+  //! widget to viewport translation
+  QRect toViewport( const QRect& rect ) const
+  { return rect.translated( -scrollbarPosition() ); }
+  
+  //! widget to viewport translation
+  QPoint toViewport( const QPoint& point ) const
+  { return point - scrollbarPosition(); }
+  
+  //! widget from viewport translation
+  QRect fromViewport( const QRect& rect ) const
+  { return rect.translated( scrollbarPosition() ); }
+  
+  //! widget from viewport translation
+  QPoint fromViewport( const QPoint& point ) const
+  { return point + scrollbarPosition(); }
+  
+  //@}
   
   signals:
   
@@ -309,7 +334,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
   //! overwrite mode changed
   void overwriteModeChanged();
-  
+
   public slots:
  
   //! cut
@@ -405,31 +430,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     
   //! remove current line
   virtual void removeLine( void );
-
-  //!@name widget to viewport translations
-  //@{ 
- 
-  //! scrollbar position
-  QPoint scrollbarPosition( void ) const
-  { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
-
-  //! widget to viewport translation
-  QRect toViewport( const QRect& rect ) const
-  { return rect.translated( -scrollbarPosition() ); }
   
-  //! widget to viewport translation
-  QPoint toViewport( const QPoint& point ) const
-  { return point - scrollbarPosition(); }
-  
-  //! widget from viewport translation
-  QRect fromViewport( const QRect& rect ) const
-  { return rect.translated( scrollbarPosition() ); }
-  
-  //! widget from viewport translation
-  QPoint fromViewport( const QPoint& point ) const
-  { return point + scrollbarPosition(); }
-  
-  //@}
+  //! clear
+  virtual void clear( void );
   
   protected:
   

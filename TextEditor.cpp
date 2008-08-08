@@ -885,6 +885,21 @@ void TextEditor::removeLine()
 
 }
 
+//________________________________________________
+void TextEditor::clear()
+{
+  Debug::Throw( "TextEditor::clear.\n" );
+
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+  
+  setUpdatesEnabled( false );
+  selectAll();
+  cut();  
+  setUpdatesEnabled( true );
+  
+}
 
 //_______________________________________________________
 bool TextEditor::event( QEvent* event )
