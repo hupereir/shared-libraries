@@ -29,54 +29,60 @@
    \date $Date$
 */
 
+#include <QApplication>
 #include <QFile>
 
 #include "Debug.h"
 #include "XmlFileList.h"
 #include "XmlFileRecord.h"
+#include "XmlOptions.h"
 #include "XmlUtil.h"
 #include "XmlError.h"
+
 using namespace std;
 
 //_______________________________________________ 
 static const string XML_FILE_LIST = "file_list";
 
-//_______________________________________________
-void XmlFileList::setDBFile( const File& file )
-{
-  Debug::Throw() << "XmlFileList::SetDBFile - file: " << file << endl;
+//_______________________________________________ 
+XmlFileList::XmlFileList( QObject* parent ):
+  FileList( parent )
+{ 
+  
+  Debug::Throw( "XmlFileList::XmlFileList.\n" );
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
+  _updateConfiguration();
 
-  // store file
+}
+  
+//_______________________________________________
+bool XmlFileList::_setDBFile( const File& file )
+{
+  Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
+
+  // check file
+  if( db_file_ == file && !records().empty() ) return false;
+    
+  // store file and read
   db_file_ = file;
+  _read();
   
-  // make a copy of the current list
-  FileRecord::List local_list( _records() );
-  
-  // retrieve list matching db file
-  _findList( file );
-  
-  // read if empty
-  if( _records().empty() ) read();
-  
-  // merge with current files
-  for( FileRecord::List::iterator iter = local_list.begin(); iter != local_list.end(); iter++ )
-  { _add( *iter ); }
-  
-  return;
+  return true;
   
 }
 
 //_______________________________________________
-bool XmlFileList::read( void )
+bool XmlFileList::_read( void )
 {
-  Debug::Throw( "XmlFileList::read.\n" );
+  Debug::Throw( "XmlFileList::_read.\n" );
   if( db_file_.empty() || !db_file_.exists() ) return false;
 
   // parse the file
   QFile in( db_file_.c_str() );
   if ( !in.open( QIODevice::ReadOnly ) )
   {
-    Debug::Throw( "Options::Read - cannot open file.\n" );
+    Debug::Throw( "XmlFileList::_read - cannot open file.\n" );
     return false;
   }
 
@@ -98,19 +104,19 @@ bool XmlFileList::read( void )
 
     // special options
     if( element.tagName() == XmlFileRecord::XML_RECORD ) _add( XmlFileRecord( element ) );
-    else Debug::Throw() << "XmlFileList::read - unrecognized tag " << qPrintable( element.tagName() ) << endl;
+    else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << qPrintable( element.tagName() ) << endl;
   }
 
   return true;
 }
 
 //_______________________________________________
-bool XmlFileList::write( void )
+bool XmlFileList::_write( void )
 {
-  Debug::Throw( "XmlFileList::Write.\n" );
+  Debug::Throw( "XmlFileList::_write.\n" );
   if( db_file_.empty() ) 
   {
-    Debug::Throw( "XmlFileList::Write - no file.\n" );    
+    Debug::Throw( "XmlFileList::_write - no file.\n" );    
     return false;
   }
   
@@ -119,7 +125,7 @@ bool XmlFileList::write( void )
   if( !out.open( QIODevice::WriteOnly ) ) return false;
 
   // truncate list
-  if( _maxSize() > 0 && int( _records().size() ) > _maxSize() )
+  if( _maxSize() > 0 && int( records().size() ) > _maxSize() )
   { _truncateList(); }
     
   // create document
@@ -129,9 +135,9 @@ bool XmlFileList::write( void )
   QDomElement top = document.appendChild( document.createElement( XML_FILE_LIST.c_str() ) ).toElement();
 
   // loop over records
-  for( FileRecord::List::const_iterator iter = _records().begin(); iter != _records().end(); iter++ )
+  for( FileRecord::List::const_iterator iter = records().begin(); iter != records().end(); iter++ )
   { 
-    Debug::Throw() << "XmlFileList::Write - " << *iter;
+    Debug::Throw() << "XmlFileList::_write - " << *iter;
     top.appendChild( XmlFileRecord( *iter ).domElement( document ) ); 
   }
 
@@ -141,6 +147,26 @@ bool XmlFileList::write( void )
   return true;
 }
 
+
+//______________________________________
+void XmlFileList::_updateConfiguration( void )
+{
+  Debug::Throw( "XmlFileList::_updateConfiguration.\n" );
+  
+  // DB file
+  _setDBFile( XmlOptions::get().raw("DB_FILE") );
+  _setMaxSize( XmlOptions::get().get<int>( "DB_SIZE" ) );
+  return;
+  
+}
+
+//______________________________________
+void XmlFileList::_saveConfiguration( void )
+{
+  Debug::Throw( "XmlFileList::_saveConfiguration.\n" );
+  _write();
+}
+  
 //_______________________________________________
 bool XmlFileList::_deprecatedRead( void )
 {

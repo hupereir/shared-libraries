@@ -58,7 +58,6 @@ class DebugMenu: public QMenu, public Counter
   enum Flag
   {
     COUNTERS = 1<<0,
-    RECENT_FILES = 1<<1,
     ICONS = 1<<2,
     SYSTEM = 1<<3,
     OPTIONS = 1<<4,
@@ -77,9 +76,6 @@ class DebugMenu: public QMenu, public Counter
   //! print object counters
   void _showCounterDialog( void ); 
  
-  //! show system environment
-  void _showRecentFiles( void );
- 
   //! icon cache dialog
   void _showIconCacheDialog( void );
   
@@ -96,9 +92,6 @@ class DebugMenu: public QMenu, public Counter
   
   //! non modal icon cache dialog
   IconCacheDialog* icon_cache_dialog_;
-
-  //! file records
-  FileRecordDialog* recent_files_dialog_;
      
 };
 #endif

@@ -42,33 +42,37 @@
 class XmlFileList: public FileList
 {
 
+  //! Qt meta object declaration
+  Q_OBJECT
+
   public:
 
   //! constuctor
-  XmlFileList( void )
-  {}
-  
-  //! constructor
-  XmlFileList( const FileList& file_list ):
-    FileList( file_list )
-    {}
+  XmlFileList( QObject* parent = 0 );
 
   //! destructor
   virtual ~XmlFileList( void )
-  {
-    Debug::Throw( "XmlFileList::~XmlFileList.\n" );
-    write();
-  }
-
-  //! set db file
-  virtual void setDBFile( const File& file );
+  {}
+ 
+  protected:
   
   //! Read fileList from file
-  virtual bool read( void );
+  virtual bool _read( void );
 
   //! write fileList to file
-  virtual bool write( void );
-
+  virtual bool _write( void );
+ 
+  //! set db file
+  virtual bool _setDBFile( const File& file );
+  
+  private slots:
+  
+  //! update configuration
+  void _updateConfiguration( void );
+  
+  //! save configuration
+  void _saveConfiguration( void );
+  
   private:
   
   //! read flat list (for backward compatibility)

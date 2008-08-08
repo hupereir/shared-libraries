@@ -33,6 +33,7 @@ noinst_HEADERS = \
   DockPanel.h \
   BaseIcons.h \
   ErrorHandler.h \
+  FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
   FileRecordDialog.h \
@@ -126,10 +127,11 @@ libbase_qt_a_SOURCES = \
   DebugMenu.cpp \
   DockPanel.cpp \
   ErrorHandler.cpp \
-  FlatStyle.cpp \
+  FileList.cpp \
   FileRecordDialog.cpp \
   FileRecordModel.cpp \
   FindDialog.cpp \
+  FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
   HeaderMenu.cpp \
@@ -191,6 +193,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CustomToolButton.cpp \
   moc_DebugMenu.cpp \
   moc_DockPanel.cpp \
+  moc_FileList.cpp \
   moc_FileRecordDialog.cpp \
   moc_FindDialog.cpp \
   moc_FontEditor.cpp \
@@ -215,7 +218,8 @@ nodist_libbase_qt_a_SOURCES = \
   moc_TreeView.cpp \
   moc_TreeViewConfiguration.cpp \
   moc_TreeWidget.cpp \
-  moc_UserSelectionFrame.cpp
+  moc_UserSelectionFrame.cpp \
+  moc_XmlFileList.cpp
 
 clean-local:
 	rm -f moc_*.cpp

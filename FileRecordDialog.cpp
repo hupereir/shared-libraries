@@ -32,6 +32,7 @@
 #include <QLayout>
 
 #include "BaseIcons.h"
+#include "FileList.h"
 #include "FileRecordDialog.h"
 #include "IconEngine.h"
 #include "Singleton.h"
@@ -40,9 +41,10 @@
 using namespace std;
 
 //__________________________________________________________________________
-FileRecordDialog::FileRecordDialog( QWidget* parent ):
+FileRecordDialog::FileRecordDialog( QWidget* parent, FileList& files ):
   QDialog( parent, Qt::Window ),
-  Counter( "FileRecordDialog" )
+  Counter( "FileRecordDialog" ),
+  file_list_( &files )
 {
   
   Debug::Throw( "FileRecordDialog::FileRecordDialog.\n" );
@@ -56,8 +58,8 @@ FileRecordDialog::FileRecordDialog( QWidget* parent ):
   // insert main vertical box
   list_ = new TreeView( this );  
   layout()->addWidget( list_ );
-  list_->setModel( &model_ );  
-  list_->setMask( (1<<FileRecordModel::FILE) );
+  _list().setModel( &model_ );  
+  _list().setMask( (1<<FileRecordModel::FILE) );
   
   // update button
   QHBoxLayout *h_layout = new QHBoxLayout();
@@ -85,17 +87,12 @@ void FileRecordDialog::update( void )
   Debug::Throw( "FileRecordDialog::update.\n" );
     
   // save mask
-  unsigned int mask( list_->mask() );
-  
-  FileRecord::List records;
-  Singleton::FileRecordMap& file_records_map( Singleton::get().fileRecordMap() );
-  for( Singleton::FileRecordMap::const_iterator iter = file_records_map.begin(); iter != file_records_map.end(); iter++ )
-  { records.insert( records.end(), iter->second.begin(), iter->second.end() ); }
+  unsigned int mask( _list().mask() );
   
   // replace
-  model_.set( records );
+  model_.update( _fileList().records() );
   
-  list_->setMask( mask );
-  list_->resizeColumns();
+  _list().setMask( mask );
+  _list().resizeColumns();
   
 }

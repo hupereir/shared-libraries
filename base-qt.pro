@@ -29,6 +29,8 @@ HEADERS = \
   DockPanel.h \
   BaseIcons.h \
   ErrorHandler.h \
+  FileList.h \
+  FileRecordBaseProperties.h \
   FileRecordModel.h \
   FileRecordDialog.h \
   FindDialog.h \
@@ -48,7 +50,6 @@ HEADERS = \
   ListModel.h \
   ListWidget.h \
   MultipleClickCounter.h \
-  RecentFilesMenu.h \
   OptionBrowsedLineEditor.h \
   OptionCheckBox.h \
   OptionColorDisplay.h \
@@ -68,6 +69,7 @@ HEADERS = \
   ProcessDialog.h \
   ProcessFrame.h \
   QtUtil.h \
+  RecentFilesMenu.h \
   RemoveLineBuffer.h \
   ReplaceDialog.h \
   SelectLineDialog.h \
@@ -99,7 +101,7 @@ HEADERS = \
   XmlUtil.h
 
 SOURCES = \
-   BaseConfigurationDialog.cpp \
+  BaseConfigurationDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
   BrowsedLineEditor.cpp \
@@ -119,10 +121,11 @@ SOURCES = \
   DebugMenu.cpp \
   DockPanel.cpp \
   ErrorHandler.cpp \
-  FlatStyle.cpp \
+  FileList.cpp \
   FileRecordDialog.cpp \
   FileRecordModel.cpp \
   FindDialog.cpp \
+  FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
   HeaderMenu.cpp \
@@ -137,12 +140,12 @@ SOURCES = \
   LineNumberDisplay.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
-  RecentFilesMenu.cpp \
   OptionListBox.cpp \
   PixmapEngine.cpp \
   ProcessDialog.cpp \
   ProcessFrame.cpp \
   QtUtil.cpp \
+  RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
   ReplaceDialog.cpp \
   SelectLineDialog.cpp \

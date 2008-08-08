@@ -21,9 +21,6 @@
 *
 *******************************************************************************/
 
-// PE_IndicatorCheckBox
-// PM_IndicatorWidth
-
 #ifndef RecentFilesMenu_h
 #define RecentFilesMenu_h
 
@@ -39,17 +36,15 @@
 #include <string>
 #include <list>
 
-#include "XmlFileList.h"
+#include "Counter.h"
 #include "Debug.h"
-#include "Key.h"
-#include "ValidFileThread.h"
+#include "FileList.h"
 
 /*!
    \class   RecentFilesMenu
    \brief   customized popup menu to open a previously opened file
 */
-
-class RecentFilesMenu: public QMenu, public XmlFileList, public BASE::Key
+class RecentFilesMenu: public QMenu, public Counter
 {
 
   //! Qt meta object declaration
@@ -58,28 +53,31 @@ class RecentFilesMenu: public QMenu, public XmlFileList, public BASE::Key
   public:
 
   //! constructor
-  RecentFilesMenu( QWidget *parent );
+  RecentFilesMenu( QWidget*, FileList& );
 
   //! destructor
   virtual ~RecentFilesMenu( void );
 
-  //! read db file
-  virtual bool read( void );
-
   //! check if a file is in database, removes it if yes
   virtual void remove( const std::string& file )
-  { XmlFileList::remove( File( file ).expand() ); }
+  { _fileList().remove( File( file ).expand() ); }
 
   //! check if a file is in database, adds it if not, select the file
   virtual void select( const std::string& file )
   {
     File new_file( File( file ).expand() );
-    emit fileSelected( add( new_file ) );
+    emit fileSelected( _fileList().add( new_file ) );
   }
 
   //! open last valid file, returns true if any
   bool openLastValidFile( void );
-
+  
+//   //! file list
+//   // does not work right now. One need to make sure that previous list signals are removed
+//   // and new signals are set
+//   void setFileList( FileList& files )
+//   { file_list_ = &files; }
+  
   signals:
 
   //! signal emited when a file is selected
@@ -89,27 +87,17 @@ class RecentFilesMenu: public QMenu, public XmlFileList, public BASE::Key
   
   //! check if a file is in database, adds it if not
   virtual FileRecord& add( const std::string& file )
-  { return add( File( file ) ); }
+  { return _fileList().add( File( file ) ); }
   
   //! check if a file is in database, adds it if not
   virtual FileRecord& add( File file )
-  { return XmlFileList::add( file.expand() ); }  
-  
-  protected:
-
-  //! run thread to check file validity
-  void _checkValidFiles( void );
-  
-  //! custom event, used to retrieve file validity check event
-  void customEvent( QEvent* );
-  
+  { return _fileList().add( file.expand() ); }  
+    
   private slots:
   
-  //! configuration
-  void _updateConfiguration( void );
-  
-  //! configuration
-  void _saveConfiguration( void );
+  //! update actions
+  /*! this is trigger by the fileList valid file check completion */
+  void _updateActions( void );
   
   //! remove unfound files from file list
   void _clean( void );
@@ -121,9 +109,19 @@ class RecentFilesMenu: public QMenu, public XmlFileList, public BASE::Key
   void _loadFiles( void );
 
   private:
+
+  //! file list
+  FileList& _fileList( void ) const
+  { 
+    assert( file_list_ );
+    return *file_list_;
+  }
   
-  //! thread to check file validity
-  ValidFileThread valid_file_thread_;
+  QAction& _cleanAction( void ) const
+  { return *clean_action_; }
+  
+  //! associated file list
+  FileList* file_list_;
   
   //! clean action
   QAction* clean_action_;

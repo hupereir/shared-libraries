@@ -32,6 +32,7 @@
    \date $Date$
 */
 
+#include <assert.h>
 #include <map>
 #include <string>
 
@@ -39,6 +40,7 @@
 
 #include "FileRecordModel.h"
 
+class FileList;
 class TreeView;
 
 //! displays Counter names and counts
@@ -51,7 +53,7 @@ class FileRecordDialog: public QDialog, public Counter
   public:
           
   // constructor
-  FileRecordDialog( QWidget* parent );
+  FileRecordDialog( QWidget* parent, FileList&  );
   
   //! destructor
   virtual ~FileRecordDialog( void )
@@ -63,6 +65,23 @@ class FileRecordDialog: public QDialog, public Counter
   void update();
   
   private:
+  
+  //! file list
+  FileList& _fileList( void ) const
+  {
+    assert( file_list_ );
+    return *file_list_;
+  }
+  
+  //! tree view
+  TreeView& _list( void ) const
+  { 
+    assert( list_ );
+    return *list_; 
+  }
+  
+  //! file list
+  FileList* file_list_;
   
   //! model
   FileRecordModel model_;
