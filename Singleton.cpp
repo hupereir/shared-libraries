@@ -36,7 +36,4 @@ Singleton Singleton::singleton_;
 
 //__________________________________________________
 Singleton::~Singleton( void )
-{ 
-  file_record_map_.clear();
-  counterMap().clear(); 
-}
+{ counterMap().clear(); }

@@ -34,8 +34,6 @@
 */
 
 #include "CounterMap.h"
-#include "File.h"
-#include "FileRecord.h"
 
 //! a class singleton used to centralize all objects that need static creation
 class Singleton
@@ -46,13 +44,6 @@ class Singleton
   //! return singleton
   static Singleton& get( void )
   { return singleton_; }
-
-  //! shortcut to list of files map
-  typedef std::map< File, FileRecord::List > FileRecordMap;
-  
-  //! file record map
-  FileRecordMap& fileRecordMap( void )
-  { return file_record_map_; }
   
   //! counter map
   CounterMap& counterMap( void ) 
@@ -69,9 +60,6 @@ class Singleton
   
   //! singleton
   static Singleton singleton_;
-  
-  //! static map between file lists and associated files
-  FileRecordMap file_record_map_;
 
   //! counter map
   CounterMap counter_map_; 
