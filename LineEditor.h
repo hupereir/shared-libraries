@@ -154,6 +154,14 @@ class LineEditor: public QLineEdit, public Counter
   //! framewidth
   int _frameWidth( void ) const;
   
+  //! clear button rect
+  const QRect& _clearButtonRect( void ) const
+  { return clear_button_rect_; }
+  
+  //! clear button rect
+  void _setClearButtonRect( const QRect& rect )
+  { clear_button_rect_ = rect; }
+  
   //! modification state
   bool modified_;
   
@@ -197,6 +205,9 @@ class LineEditor: public QLineEdit, public Counter
   
   // true when clear button should be drawn
   bool has_clear_button_;
+  
+  //! clear button rect
+  QRect clear_button_rect_;
   
   //! frame
   bool has_frame_;

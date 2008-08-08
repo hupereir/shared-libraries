@@ -252,10 +252,13 @@ void LineEditor::mouseMoveEvent( QMouseEvent* event )
   if( !_hasClearButton() ) return QLineEdit::mouseMoveEvent( event );
   
   // check event position vs button location
-  if( contentsRect().contains( event->pos() ) || text().isEmpty() ) 
+  if( !_clearButtonRect().contains( event->pos() ) || text().isEmpty() ) 
   { 
+    
+    // make sure cursor is properly set
     if( cursor().shape() != Qt::IBeamCursor ) setCursor( Qt::IBeamCursor ); 
     return QLineEdit::mouseMoveEvent( event ); 
+    
   } else if( cursor().shape() == Qt::IBeamCursor ) unsetCursor();
   
 }
@@ -267,11 +270,8 @@ void LineEditor::mousePressEvent( QMouseEvent* event )
   Debug::Throw( "LineEditor::mousePressEvent.\n" );
 
   // check clear button
-  if( !_hasClearButton() ) return QLineEdit::mousePressEvent( event );
-  
-  // check mouse position
-  if( contentsRect().contains( event->pos() ) || text().isEmpty() ) 
-  { QLineEdit::mousePressEvent( event ); }
+  if( !( _hasClearButton() && contentsRect().contains( event->pos() ) ) || text().isEmpty() ) 
+  { return QLineEdit::mousePressEvent( event ); }
   
 }
 
@@ -279,15 +279,17 @@ void LineEditor::mousePressEvent( QMouseEvent* event )
 void LineEditor::mouseReleaseEvent( QMouseEvent* event )
 {
   Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
-  if( isReadOnly() || (!_hasClearButton()) || contentsRect().contains( event->pos() ) || text().isEmpty() ) 
+  if( isReadOnly() || text().isEmpty() || !(_hasClearButton() && _clearButtonRect().contains( event->pos() ) ) ) 
   { 
     
     QLineEdit::mouseReleaseEvent( event );
     emit cursorPositionChanged( cursorPosition( ) );
     
   } else {
+    
     clear();
     emit cleared();
+    
   }
 }
 
@@ -326,6 +328,9 @@ void LineEditor::paintEvent( QPaintEvent* event )
       &painter, rect, 
       Qt::AlignRight|Qt::AlignVCenter, 
       isEnabled() ? QIcon::Normal : QIcon::Disabled );
+    
+    _setClearButtonRect( rect );
+    
   }
     
   painter.end();
@@ -461,5 +466,4 @@ int LineEditor::_frameWidth( void ) const
   // but for some reason the later does not work with Oxygen style.
   // for other styles, this results in having the LineEditors drawn too large.
   return QStyle::PM_DefaultFrameWidth;
-  //return style()->pixelMetric( QStyle::PM_DefaultFrameWidth );
 }
