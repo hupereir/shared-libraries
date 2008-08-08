@@ -94,15 +94,28 @@ QSize CustomMainWindow::sizeHint( void ) const
 }
 
 //________________________________________________________________
-void CustomMainWindow::installToolBarsActions( QMenu& menu )
+QMenu* CustomMainWindow::createPopupMenu( void )
 {
-  
+  Debug::Throw( "CustomMainWindow::createPopupMenu.\n" );
+  QMenu* menu = new QMenu();
+  if( !installToolBarsActions( *menu ) ) {
+    
+    menu->deleteLater();
+    return 0;
+    
+  } else return menu;
+}
+    
+//________________________________________________________________
+bool CustomMainWindow::installToolBarsActions( QMenu& menu )
+{
   Debug::Throw( "CustomMainWindow::installToolBarsActions.\n" );
+  bool has_actions( false );
   bool has_lockable_toolbars( false );
   QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
   for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
   {
- 
+    
     CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
     if( toolbar ) { menu.addAction( &toolbar->visibilityAction() ); }
     else {
@@ -115,6 +128,8 @@ void CustomMainWindow::installToolBarsActions( QMenu& menu )
       menu.addAction( action );
     
     }
+    
+    has_actions = true;
     
     // skip if lockable toolbar was already found
     if( has_lockable_toolbars ) continue;
@@ -134,18 +149,9 @@ void CustomMainWindow::installToolBarsActions( QMenu& menu )
     menu.addSeparator();
     menu.addAction( &lockToolBarsAction() );
   }
-    
-}
-
-//________________________________________________
-void CustomMainWindow::contextMenuEvent( QContextMenuEvent* event )
-{
-  Debug::Throw( "CustomMainWindow::contextMenuEvent.\n" );
   
-  QMenu menu( this );
-  installToolBarsActions( menu );
-  menu.exec( event->globalPos() );
-
+  return has_actions;
+  
 }
 
 //____________________________________________________________

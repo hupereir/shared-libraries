@@ -36,7 +36,6 @@
 
 #include <QAction>
 #include <QBasicTimer>
-#include <QContextMenuEvent>
 #include <QMainWindow>
 #include <QMenu>
 #include <QResizeEvent>
@@ -76,14 +75,15 @@ class CustomMainWindow: public QMainWindow
     return *lock_toolbars_action_; 
   }
    
+  //! create context menu (overloaded)
+  virtual QMenu* createPopupMenu( void );
+  
   //! install toolbar visibility and lock actions
-  virtual void installToolBarsActions( QMenu& );
+  /*! returns false if no actions are installed */
+  virtual bool installToolBarsActions( QMenu& );
   
   protected:
-  
-  //! context menu event [overloaded]
-  virtual void contextMenuEvent( QContextMenuEvent* );
-  
+    
   //! resize event
   /* need to save updated window size */
   virtual void resizeEvent( QResizeEvent* );
