@@ -68,6 +68,52 @@ LineEditor::LineEditor( QWidget* parent ):
   
 }
 
+//_____________________________________________________________________
+void LineEditor::setReadOnly( bool value )
+{ 
+  
+  if( value == isReadOnly() ) return;
+  QLineEdit::setReadOnly( value );
+  
+  if( isReadOnly() )
+  {
+    
+    // reset frame
+    QLineEdit::setFrame( has_frame_ );
+    
+    // reset contents margins
+    setContentsMargins( 0, 0, 0, 0 );
+        
+  } else if( _hasClearButton() ) {
+    
+    // set frame flag from base class
+    setFrame( QLineEdit::hasFrame() );
+    
+    // disable QLineEdit frame
+    QLineEdit::setFrame( false );
+
+    // reset contents margins
+    int offset( hasFrame() ? _frameWidth():0 );
+    setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
+    
+  }
+  
+  return;
+  
+}
+
+//_____________________________________________________________________
+void LineEditor::setModified( const bool& value )
+{ 
+  Debug::Throw( "LineEditor::setModified.\n" );
+  if( value != modified_ )
+  {
+    modified_ = value;
+    if( !value ) backup_ = text();
+    emit modificationChanged( value );
+  }  
+}
+
 //______________________________________________________________
 void LineEditor::setHasClearButton( const bool& value )
 {
@@ -77,7 +123,7 @@ void LineEditor::setHasClearButton( const bool& value )
   if( value == has_clear_button_ ) return;
   has_clear_button_ = value;
   
-  if( has_clear_button_ )
+  if( _hasClearButton() )
   {
 
     // set frame flag from base class
@@ -124,19 +170,6 @@ void LineEditor::setFrame( const bool& value )
   }
   
 }
-
-//_____________________________________________________________________
-void LineEditor::setModified( const bool& value )
-{ 
-  Debug::Throw( "LineEditor::setModified.\n" );
-  if( value != modified_ )
-  {
-    modified_ = value;
-    if( !value ) backup_ = text();
-    emit modificationChanged( value );
-  }  
-}
-
 
 //_____________________________________________________________________
 void LineEditor::lowerCase( void )
@@ -186,7 +219,9 @@ bool LineEditor::event( QEvent* event )
     
     case QEvent::ToolTip:
     {
-      if( ( !_hasClearButton() ) || text().isEmpty() ) break;
+      
+      // check if button is available
+      if( isReadOnly() || ( !_hasClearButton() ) || text().isEmpty() ) break;
       
       // cast
       QHelpEvent *help_event = static_cast<QHelpEvent*>(event);
@@ -270,14 +305,20 @@ void LineEditor::mousePressEvent( QMouseEvent* event )
   Debug::Throw( "LineEditor::mousePressEvent.\n" );
 
   // check clear button
-  if( !( _hasClearButton() && contentsRect().contains( event->pos() ) ) || text().isEmpty() ) 
+  if( !_hasClearButton() ) return QLineEdit::mousePressEvent( event );
+
+  // check if outside of clear button (if any)
+  if( isReadOnly() || text().isEmpty() || !_clearButtonRect().contains( event->pos() ) ) 
   { return QLineEdit::mousePressEvent( event ); }
+
+  return;
   
 }
 
 //_____________________________________________
 void LineEditor::mouseReleaseEvent( QMouseEvent* event )
 {
+  
   Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
   if( isReadOnly() || text().isEmpty() || !(_hasClearButton() && _clearButtonRect().contains( event->pos() ) ) ) 
   { 
@@ -291,6 +332,7 @@ void LineEditor::mouseReleaseEvent( QMouseEvent* event )
     emit cleared();
     
   }
+  
 }
 
 //________________________________________________
@@ -298,7 +340,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
 {
   
   // check clear button
-  if( !_hasClearButton() ) return QLineEdit::paintEvent( event );
+  if( isReadOnly() || !_hasClearButton() ) return QLineEdit::paintEvent( event );
 
   // initialize option
   QStyleOptionFrameV2 panel;

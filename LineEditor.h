@@ -23,13 +23,13 @@
 *                         
 *                         
 *******************************************************************************/
- 
+
 /*!
-  \file LineEditor.h
-  \brief customized QLineEdit object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file LineEditor.h
+\brief customized QLineEdit object
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QContextMenuEvent>
@@ -45,30 +45,33 @@
 #include "Counter.h"
 
 /*!
-   \class LineEditor
-   \brief customized line edit to have faster popup menu
+\class LineEditor
+\brief customized line edit to have faster popup menu
 */
 class LineEditor: public QLineEdit, public Counter
 {
-
+  
   //! Qt meta object declaration
   Q_OBJECT
-
+    
   public:
-  
+   
   //! constructor;
   LineEditor( QWidget* parent );
-      
+  
+  //! read-only state
+  void setReadOnly( bool );
+  
   //! set editor as modified
   void setModified( const bool& value );
   
   //! modification state
   const bool& isModified( void ) const
   { return modified_; }
-
+  
   //! set clear button
   void setHasClearButton( const bool& );
-
+  
   //! set frame
   void setFrame( const bool& );
   
@@ -86,21 +89,21 @@ class LineEditor: public QLineEdit, public Counter
   
   //! emmited when clear button is pressed
   void cleared( void );
-
+  
   public slots:
   
   //! set text
   void setTextString( const std::string& value )
   { setText( QString( value.c_str() ) ); }
-    
+  
   //! changes selection to uppercase
   void lowerCase( void );
-    
+  
   //! changes selection to uppercase
   void upperCase( void );
-    
+  
   protected:
-
+  
   //!@name event handlers
   //@{
   
@@ -115,13 +118,13 @@ class LineEditor: public QLineEdit, public Counter
   
   //! overloaded key press event
   virtual void keyPressEvent( QKeyEvent* );
-    
+  
   //! overloaded mouse event handler
   virtual void mouseMoveEvent( QMouseEvent* );
-
+  
   //! overloaded mouse event handler
   virtual void mousePressEvent( QMouseEvent* );
-
+  
   //! mouse move
   void mouseReleaseEvent( QMouseEvent* );
   
@@ -133,24 +136,24 @@ class LineEditor: public QLineEdit, public Counter
   //! has clear button
   const bool& _hasClearButton( void )
   { return has_clear_button_; }
-
+  
   protected slots:
   
   //! update modification state
   virtual void _modified( const QString& text );
-
+  
   //! update action status
   virtual void _updateSelectionActions( void );
   
   //! update paste action 
   /*! depends on clipboard status and editability */
   virtual void _updatePasteAction( void );
-
+  
   //! update undo/redo actions
   virtual void _updateUndoRedoActions( void );
-
+  
   private:
-
+  
   //! framewidth
   int _frameWidth( void ) const;
   
@@ -185,21 +188,21 @@ class LineEditor: public QLineEdit, public Counter
   
   //! paste clipboard
   QAction* paste_action_;
-
+  
   //! clear document
   QAction* clear_action_;
   
   //! select all document
   QAction* select_all_action_;
-
+  
   //! convert selection to upper case
   QAction* upper_case_action_;
   
   //! convert selection to lower case
   QAction* lower_case_action_;
-    
+  
   //@}
-
+  
   //!@name properties
   //@{
   
