@@ -173,11 +173,18 @@ void CustomMainWindow::timerEvent( QTimerEvent* event )
     resize_timer_.stop();
     
     // save size
-    XmlOptions::get().set<int>( _widthOptionName(), width() );
-    XmlOptions::get().set<int>( _heightOptionName(), height() );
+    _saveWindowSize();
   
   } else return QMainWindow::timerEvent( event );
   
+}
+
+//____________________________________________________________
+void CustomMainWindow::_saveWindowSize( void ) const
+{ 
+  Debug::Throw( "CustomMainWindow::_saveWindowSize.\n" );
+  XmlOptions::get().set<int>( _widthOptionName(), width() );
+  XmlOptions::get().set<int>( _heightOptionName(), height() );
 }
 
 //____________________________________________________________

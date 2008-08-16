@@ -103,10 +103,12 @@ bool XmlFileList::_read( void )
     if( element.isNull() ) continue;
 
     // special options
-    if( element.tagName() == XmlFileRecord::XML_RECORD ) _add( XmlFileRecord( element ) );
+    if( element.tagName() == XmlFileRecord::XML_RECORD ) _add( XmlFileRecord( element ), true, false );
     else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << qPrintable( element.tagName() ) << endl;
   }
 
+  emit contentsChanged();
+  
   return true;
 }
 
@@ -143,7 +145,7 @@ bool XmlFileList::_write( void )
 
   out.write( document.toByteArray() );
   out.close();
-  
+    
   return true;
 }
 
@@ -182,9 +184,12 @@ bool XmlFileList::_deprecatedRead( void )
   while( in.canReadLine() ) 
   { 
     QString line( in.readLine( 1024 ) );
-    add( File(qPrintable( line ) ) ); 
+    _add( FileRecord( File( qPrintable( line ) ) ), true, false ); 
   }
   
   in.close();
+  
+  emit contentsChanged();
+  
   return true;
 }

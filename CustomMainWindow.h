@@ -91,24 +91,27 @@ class CustomMainWindow: public QMainWindow
   //! timer event
   /* need to save updated window size */
   virtual void timerEvent( QTimerEvent* );     
-   
+  
+  //! save window size
+  virtual void _saveWindowSize( void ) const;
+  
   //! size option name
-  void _setSizeOptionName( const std::string& name )
+  virtual void _setSizeOptionName( const std::string& name )
   { 
     width_option_name_ = name + "_WIDTH"; 
     height_option_name_ = name + "_HEIGHT"; 
   }
   
   //! true when option name was set
-  bool _hasSizeOptionName( void ) const
+  virtual bool _hasSizeOptionName( void ) const
   { return !width_option_name_.empty(); }
   
   //! size option name
-  const std::string _heightOptionName( void ) const
+  virtual const std::string _heightOptionName( void ) const
   { return height_option_name_; }
   
   //! size option name
-  const std::string _widthOptionName( void ) const
+  virtual const std::string _widthOptionName( void ) const
   { return width_option_name_; }
 
   private slots:

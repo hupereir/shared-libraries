@@ -140,7 +140,10 @@ class FileList: public QObject, public Counter
   { return max_size_; }
  
   //! add record to current list
-  virtual FileRecord& _add( const FileRecord& record, const bool& update_timestamp = true );
+  virtual FileRecord& _add( 
+    const FileRecord& record, 
+    const bool& update_timestamp = true,
+    const bool& emit_signal = true );
   
   //! store record as the current one
   virtual FileRecord _store( const FileRecord& record )

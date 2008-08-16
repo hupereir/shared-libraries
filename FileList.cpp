@@ -153,14 +153,21 @@ void FileList::_setMaxSize( const int& value )
 }
 
 //_______________________________________________
-FileRecord& FileList::_add( const FileRecord& record, const bool& update_timestamp )
+FileRecord& FileList::_add( 
+  const FileRecord& record, 
+  const bool& update_timestamp,
+  const bool& emit_signal )
 {
 
   FileRecord::List::iterator iter = find_if( records().begin(), records().end(), FileRecord::SameFileFTor( record.file() ) );
   if( iter != records().end() ) 
   {
     
-    if( update_timestamp ) iter->setTime( max( iter->time(), record.time() ) );
+    if( update_timestamp && iter->time() != record.time() ) 
+    {
+      iter->setTime( max( iter->time(), record.time() ) );
+      if( emit_signal ) emit contentsChanged();
+    }
     
     current_ = *iter;
     return *iter;
@@ -170,6 +177,7 @@ FileRecord& FileList::_add( const FileRecord& record, const bool& update_timesta
     records().push_back( record );    
     _truncateList();    
     current_ = records().back();
+    if( emit_signal ) emit contentsChanged();
     return records().back();
     
   }
