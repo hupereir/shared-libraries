@@ -39,7 +39,6 @@
 
 class CounterDialog;
 class IconCacheDialog;
-class FileRecordDialog;
 
 /*!
   \class DebugMenu

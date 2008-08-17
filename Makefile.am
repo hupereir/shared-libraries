@@ -36,7 +36,6 @@ noinst_HEADERS = \
   FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
-  FileRecordDialog.h \
   FindDialog.h \
   FlatStyle.h \
   FontEditor.h \
@@ -128,7 +127,6 @@ libbase_qt_a_SOURCES = \
   DockPanel.cpp \
   ErrorHandler.cpp \
   FileList.cpp \
-  FileRecordDialog.cpp \
   FileRecordModel.cpp \
   FindDialog.cpp \
   FlatStyle.cpp \
@@ -194,7 +192,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_DebugMenu.cpp \
   moc_DockPanel.cpp \
   moc_FileList.cpp \
-  moc_FileRecordDialog.cpp \
   moc_FindDialog.cpp \
   moc_FontEditor.cpp \
   moc_HeaderMenu.cpp \

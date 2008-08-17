@@ -58,6 +58,10 @@ class FileRecordModel: public ListModel<FileRecord>
   //! constructor
   FileRecordModel( QObject* parent = 0 );
     
+  //! show icons
+  void setShowIcons( const bool& value )
+  { show_icons_ = value; }
+  
   //!@name methods reimplemented from base class
   //@{
 
@@ -93,6 +97,9 @@ class FileRecordModel: public ListModel<FileRecord>
   }
   
   protected:
+  
+  const bool& _showIcons( void ) const
+  { return show_icons_; }
   
   //! sort
   virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
@@ -143,6 +150,9 @@ class FileRecordModel: public ListModel<FileRecord>
 
   //! update columns
   void _updateColumns( const ValueType& value );
+
+  //! true if icons are to be shown
+  bool show_icons_;
   
   //! column titles
   std::vector<QString> column_titles_;

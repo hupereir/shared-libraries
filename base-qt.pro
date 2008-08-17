@@ -32,7 +32,6 @@ HEADERS = \
   FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
-  FileRecordDialog.h \
   FindDialog.h \
   FlatStyle.h \
   FontEditor.h \
@@ -122,7 +121,6 @@ SOURCES = \
   DockPanel.cpp \
   ErrorHandler.cpp \
   FileList.cpp \
-  FileRecordDialog.cpp \
   FileRecordModel.cpp \
   FindDialog.cpp \
   FlatStyle.cpp \
