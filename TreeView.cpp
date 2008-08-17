@@ -101,9 +101,20 @@ int TreeView::visibleColumnCount( void ) const
 }
 
 //_______________________________________________
+void TreeView::setMaskOptionName( const std::string& value )
+{ 
+
+  Debug::Throw( "TreeView::setMaskOptionName.\n" );
+  mask_option_name_ = value; 
+  if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
+
+}
+
+//_______________________________________________
 unsigned int TreeView::mask( void ) const
 {
   Debug::Throw( "TreeView::mask.\n" );
+  assert( model() );
   unsigned int mask = 0;
   for( int index=0; model() && index < model()->columnCount(); index++ )
   if( !isColumnHidden( index ) ) mask |= (1<<index);
