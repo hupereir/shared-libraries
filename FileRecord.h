@@ -32,12 +32,14 @@
    \date $Date$
 */
 
+#include <assert.h>
 #include <string> 
 #include <vector>  
 
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
+#include "Str.h"
 #include "TimeStamp.h"
 
 //! handles previously opened file and tags 
@@ -108,6 +110,15 @@ class FileRecord: public Counter
   {
     PropertyMap::const_iterator iter(  properties_.find( tag ) );
     return ( iter == properties_.end() ) ? "":iter->second;
+  }
+  
+  //! convert string to any type using string streamer
+  template <typename T>
+  T property( const std::string& tag ) const
+  {
+    PropertyMap::const_iterator iter(  properties_.find( tag ) );
+    assert( iter != properties_.end() );
+    return Str( iter->second ).get<T>();
   }
   
   //! used to retrieve FileRecord with identical filenames
