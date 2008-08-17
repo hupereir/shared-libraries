@@ -71,12 +71,18 @@ class RecentFilesMenu: public QMenu, public Counter
 
   //! open last valid file, returns true if any
   bool openLastValidFile( void );
+    
+  //! current file
+  const FileRecord& currentFile( void ) const
+  { return current_file_; }
+
+  //! set current file
+  void setCurrentFile( const File& file )
+  { setCurrentFile( _fileList().add( file.expand() ) ); }
   
-//   //! file list
-//   // does not work right now. One need to make sure that previous list signals are removed
-//   // and new signals are set
-//   void setFileList( FileList& files )
-//   { file_list_ = &files; }
+  //! set current file
+  void setCurrentFile( const FileRecord& file )
+  { current_file_ = file; }
   
   signals:
 
@@ -117,11 +123,18 @@ class RecentFilesMenu: public QMenu, public Counter
     return *file_list_;
   }
   
+  //! clean action
   QAction& _cleanAction( void ) const
   { return *clean_action_; }
   
   //! associated file list
   FileList* file_list_;
+  
+  //! store current file (to appear checked in list)
+  FileRecord current_file_;
+  
+  //! action group
+  QActionGroup* action_group_;
   
   //! clean action
   QAction* clean_action_;

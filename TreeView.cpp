@@ -140,6 +140,18 @@ void TreeView::setMask( const unsigned int& mask )
   
 }
 
+//______________________________________________________
+void TreeView::resizeColumns( const unsigned int& mask )
+{
+
+  // if no items present, do nothing
+  if( !( model() && model()->rowCount() ) ) return;
+  
+  for( int i = 0; i < model()->columnCount(); i++ )
+  { if( mask & (1<<i) ) resizeColumnToContents(i); }
+  
+}
+
 //_______________________________________________
 void TreeView::updateMask( void )
 {
@@ -165,18 +177,6 @@ void TreeView::saveMask( void )
   if( !hasMaskOptionName() ) return;
   XmlOptions::get().set<unsigned int>( maskOptionName(), mask() );
 
-}
-
-//______________________________________________________
-void TreeView::resizeColumns( const unsigned int& mask )
-{
-
-  // if no items present, do nothing
-  if( !( model() && model()->rowCount() ) ) return;
-  
-  for( int i = 0; i < model()->columnCount(); i++ )
-  { if( mask & (1<<i) ) resizeColumnToContents(i); }
-  
 }
 
 //__________________________________________________________
@@ -247,6 +247,8 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
   
   // create menu and raise.
   HeaderMenu menu( this );
+  menu.installSelectionActions( this );
+  if( isSortingEnabled() ) menu.installSortActions( this );
   menu.adjustSize();
   menu.exec( QCursor::pos() );
   

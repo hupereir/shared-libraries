@@ -110,10 +110,6 @@ class FileList: public QObject, public Counter
   virtual FileRecord::List& records( void )
   { return records_; }
 
-  //! return stored (current) file record
-  virtual const FileRecord& stored( void ) const
-  { return current_; }
-
   signals:
     
   //! emmited when thread has completed validity check
@@ -145,10 +141,6 @@ class FileList: public QObject, public Counter
     const bool& update_timestamp = true,
     const bool& emit_signal = true );
   
-  //! store record as the current one
-  virtual FileRecord _store( const FileRecord& record )
-  { return current_ = record; }
-
   //! truncate list if larger than max_size_
   virtual void _truncateList( void );
 
@@ -163,9 +155,6 @@ class FileList: public QObject, public Counter
   //! thread to check file validity
   ValidFileThread valid_file_thread_;
   
-  //! keep track of the last added/opened file
-  FileRecord current_;
-
   //! current list of files
   FileRecord::List records_;
 

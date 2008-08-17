@@ -38,14 +38,12 @@
 
 using namespace std;
 
-//_________________________________________________________________
-HeaderMenu::HeaderMenu( QTreeView* parent ):
-  QMenu( parent ),
-  Counter( "HeaderMenu" )
+//_____________________________________________________
+void HeaderMenu::installSelectionActions( QTreeView* parent )
 {
+
+  Debug::Throw( "HeaderMenu::installSelectionActions.\n" );
   
-  Debug::Throw( "HeaderMenu::HeaderMenu.\n" );
- 
   // retrieve parent header.
   QHeaderView* header( parent->header() );
   assert( header );
@@ -70,30 +68,77 @@ HeaderMenu::HeaderMenu( QTreeView* parent ):
     if( !parent->isColumnHidden( index ) ) visible_columns++;
     
     addAction( action );
-    actions_.insert( make_pair( action, index ) );
+    selection_actions_.insert( make_pair( action, index ) );
 
   }
   
   // connections
-  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _updateList( QAction* ) ) );
+  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _updateSelectedColumns( QAction* ) ) );
   
   // if only one column is visible, disable corresponding action
   if( visible_columns == 1 )
   {
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    for( ActionMap::iterator iter = selection_actions_.begin(); iter != selection_actions_.end(); iter++ )
     { if( iter->first->isChecked() ) iter->first->setEnabled( false ); }
   }
+
+}
+
+//_____________________________________________________
+void HeaderMenu::installSortActions( QTreeView* parent )
+{
+
+  Debug::Throw( "HeaderMenu::installSortActions.\n" );
+    
+  // retrieve parent header.
+  QHeaderView* header( parent->header() );
+  assert( header );
+  assert( header->isSortIndicatorShown() );
+  
+  // create action group
+  QActionGroup* group( new QActionGroup( this ) );
+  group->setExclusive( true );
+  
+  // at seperator and submenu
+  addSeparator();
+  QMenu* menu = addMenu( "Sort &By" );
+  
+  // loop over columns in header
+  for( int index=0; index < header->count(); index++ )
+  {
+    
+    // retrieve column name
+    QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );    
+    if( column_name.isNull() || column_name.isEmpty() )
+    {
+      ostringstream what;
+      what << "column " << index+1;
+      column_name = what.str().c_str();
+    }    
+  
+    QAction* action = new QAction( column_name, menu );
+    action->setCheckable( true );
+    action->setChecked( index == header->sortIndicatorSection() );
+    
+    menu->addAction( action );
+    group->addAction( action );
+    sort_actions_.insert( make_pair( action, index ) );
+
+  }
+
+  // connections
+  connect( menu, SIGNAL( triggered( QAction* ) ), SLOT( _sort( QAction* ) ) );
   
 }
 
 //______________________________________________________________________________
-void HeaderMenu::_updateList( QAction* action )
+void HeaderMenu::_updateSelectedColumns( QAction* action )
 {
-  Debug::Throw( "HeaderMenu::_updateList" );
+  Debug::Throw( "HeaderMenu::_updateSelectedColumns.\n" );
   
   // retrieve index
-  ActionMap::const_iterator iter = actions_.find( action );
-  assert( iter != actions_.end() );
+  ActionMap::const_iterator iter = selection_actions_.find( action );
+  if( iter == selection_actions_.end() ) return;
   
   // retrieve parent tree_view
   QTreeView* tree_view = dynamic_cast<QTreeView*>( parentWidget() );
@@ -103,3 +148,24 @@ void HeaderMenu::_updateList( QAction* action )
   tree_view->setColumnHidden( iter->second, !iter->first->isChecked() );
   
 }
+
+
+//______________________________________________________________________________
+void HeaderMenu::_sort( QAction* action )
+{
+  Debug::Throw( "HeaderMenu::_sort.\n" );
+  
+  // retrieve index
+  ActionMap::const_iterator iter = sort_actions_.find( action );
+  if( iter == sort_actions_.end() ) return;
+  
+  // retrieve parent tree_view
+  QTreeView* tree_view = dynamic_cast<QTreeView*>( parentWidget() );
+  assert( tree_view );  
+  QHeaderView* header = tree_view->header();
+  assert( header );
+
+  header->setSortIndicator( iter->second, header->sortIndicatorOrder() );
+  
+}
+

@@ -61,6 +61,9 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
   setIcon( IconEngine::get( ICONS::OPEN ) );
 
   // clean action
+  action_group_ = new QActionGroup( this );
+  action_group_->setExclusive( true );
+  
   addAction( clean_action_ = new QAction( IconEngine::get( ICONS::DELETE ), "&Clean", this ) );
   connect( &_cleanAction(), SIGNAL( triggered() ), SLOT( _clean() ) );
   _cleanAction().setEnabled( false );
@@ -154,7 +157,6 @@ void RecentFilesMenu::_loadFiles( void )
   else { sort( records.begin(), records.end(), FileRecord::SameFileFTor() ); }
 
   // retrieve stored file record
-  const FileRecord& stored( _fileList().stored() );
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   {
     
@@ -166,8 +168,9 @@ void RecentFilesMenu::_loadFiles( void )
     
     // check action if match file
     action->setCheckable( true );
-    action->setChecked( iter->file() == stored.file() );
-
+    action->setChecked( iter->file() == currentFile().file() );
+    action_group_->addAction( action );
+    
     if( _fileList().check() ) action->setEnabled( iter->file().size() && iter->isValid() );
     actions_.insert( make_pair( action, *iter ) );
   }

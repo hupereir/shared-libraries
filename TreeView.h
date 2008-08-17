@@ -94,12 +94,6 @@ class TreeView: public QTreeView, public Counter
 
   //! set mask manually
   virtual void setMask( const unsigned int& );
-  
-  //! update column mask from option, if any
-  virtual void updateMask( void );
-  
-  //! save column mask to option, if any
-  virtual void saveMask( void );
    
   //@}
   
@@ -116,6 +110,17 @@ class TreeView: public QTreeView, public Counter
   //! resize all visible columns to match contents
   virtual void resizeColumns( const unsigned int& mask );
  
+  //!@name column mask
+  //@{
+
+  //! update column mask from option, if any
+  virtual void updateMask( void );
+  
+  //! save column mask to option, if any
+  virtual void saveMask( void );
+
+  //@}
+
   protected:
   
   //! paint event

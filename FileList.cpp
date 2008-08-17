@@ -67,14 +67,8 @@ FileRecord FileList::lastValidFile( void )
   // sort list
   sort( records().begin(), records().end(), FileRecord::FirstOpenFTor() );  
   for( FileRecord::List::reverse_iterator iter = records().rbegin(); iter != records().rend(); iter++ ) 
-  { 
-    if( (!check_) || iter->isValid() ) 
-    {
-      current_ = *iter; 
-      return *iter;
-    }
-  }
-  return current_ = FileRecord( File("") );
+  { if( (!check_) || iter->isValid() ) return *iter; }
+  return FileRecord( File("") );
 
 }
 
@@ -169,14 +163,12 @@ FileRecord& FileList::_add(
       if( emit_signal ) emit contentsChanged();
     }
     
-    current_ = *iter;
     return *iter;
     
   } else {
 
     records().push_back( record );    
     _truncateList();    
-    current_ = records().back();
     if( emit_signal ) emit contentsChanged();
     return records().back();
     

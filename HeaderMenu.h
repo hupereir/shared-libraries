@@ -36,7 +36,9 @@
 #include <QMenu>
 #include <QTreeView>
 #include <map>
+
 #include "Counter.h"
+#include "Debug.h"
 
 //_______________________________________________________________
 class HeaderMenu:public QMenu, public Counter
@@ -48,15 +50,27 @@ class HeaderMenu:public QMenu, public Counter
   public:
   
   //! constructor
-  HeaderMenu( QTreeView* parent );
-    
+  HeaderMenu( QWidget* parent ):
+    QMenu( parent ),
+    Counter( "HeaderMenu" )
+  { Debug::Throw( "HeaderMenu::HeaderMenu.\n" ); }
+ 
+  //! install column selection actions
+  void installSelectionActions( QTreeView* );
+
+  //! install column selection actions
+  void installSortActions( QTreeView* );
+
   private slots:
 
   //! update mask when triggering actions
-  void _updateList( QAction* action );
+  void _updateSelectedColumns( QAction* action );
+
+  //! update sorting
+  void _sort( QAction* action );
   
   private:
-  
+   
   //! number of visible columns
   unsigned int visible_columns_;
   
@@ -64,8 +78,11 @@ class HeaderMenu:public QMenu, public Counter
   typedef std::map< QAction*, int > ActionMap;
   
   //! map action to column index
-  ActionMap actions_;
+  ActionMap selection_actions_;
       
+  //! sort actions
+  ActionMap sort_actions_;
+  
 };
 
 #endif

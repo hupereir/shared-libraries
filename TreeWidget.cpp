@@ -364,6 +364,8 @@ void TreeWidget::_raiseHeaderMenu( const QPoint & pos )
   
   // create menu and raise.
   HeaderMenu menu( this );
+  menu.installSelectionActions( this );
+  if( isSortingEnabled() ) menu.installSortActions( this );
   menu.adjustSize();
   menu.exec( QCursor::pos() );
   
