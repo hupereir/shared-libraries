@@ -79,8 +79,7 @@ class TreeView: public QTreeView, public Counter
   //@{
   
   //! option name
-  virtual void setMaskOptionName( const std::string& value )
-  { mask_option_name_ = value; }
+  virtual void setMaskOptionName( const std::string& );
   
   //! option name 
   virtual bool hasMaskOptionName( void ) const

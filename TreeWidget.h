@@ -113,8 +113,7 @@ class TreeWidget: public QTreeWidget, public Counter
   //@{
   
   //! option name
-  virtual void setMaskOptionName( const std::string& value )
-  { mask_option_name_ = value; }
+  virtual void setMaskOptionName( const std::string& value );
   
   //! option name 
   virtual bool hasMaskOptionName( void ) const

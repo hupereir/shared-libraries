@@ -27,6 +27,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QApplication>
 #include <QCursor>
 #include <QHeaderView>

@@ -102,10 +102,19 @@ int TreeWidget::visibleColumnCount( void ) const
 
 
 //_______________________________________________
+void TreeWidget::setMaskOptionName( const std::string& value )
+{ 
+  Debug::Throw( "TreeWidget::setMaskOptionName.\n" );
+  mask_option_name_ = value; 
+  if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
+}
+
+//_______________________________________________
 unsigned int TreeWidget::mask( void ) const
 {
   Debug::Throw( "TreeWidget::mask.\n" );
   unsigned int mask = 0;
+  assert( model() );
   for( int index=0; model() && index < model()->columnCount(); index++ )
   if( !isColumnHidden( index ) ) mask |= (1<<index);
   return mask;
@@ -357,6 +366,9 @@ void TreeWidget::_raiseHeaderMenu( const QPoint & pos )
   HeaderMenu menu( this );
   menu.adjustSize();
   menu.exec( QCursor::pos() );
+  
+  // save mask to keep sync with column visibility
+  saveMask();
   
 }
 
