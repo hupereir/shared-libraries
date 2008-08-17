@@ -32,7 +32,7 @@
   \date $Date$
 */
 
-#include <QVBoxLayout>
+#include <QGroupBox>
 #include <QCheckBox>
 #include <QTreeView>
 
@@ -40,58 +40,27 @@
 #include <string>
 #include <vector>
 
-#include "Counter.h"
+#include "OptionWidget.h"
 
 //! Configuration vbox for TreeView columns
-class TreeViewConfiguration: public QWidget, public Counter
+class TreeViewConfiguration: public QGroupBox, public OptionWidget
 {
-  
-
-  //! Qt meta object declaration
-  Q_OBJECT
-  
+   
   public:
   
   //! constructor
-  TreeViewConfiguration( QWidget* parent, QTreeView* target, const std::string& title = ""  );
-  
-  //! layout
-  QVBoxLayout& buttonLayout() const
-  { 
-    assert( box_layout_ );
-    return *box_layout_;
-  }
+  TreeViewConfiguration( QWidget* parent, QTreeView* target, const std::string& option_name  );
 
-  public slots:
+  //! read value from option
+  void read( void );
   
-  //! restore configuration from initial point
-  void restore( void );
-      
-  //! update target listbox according to the checkboxes status
-  void update( void );
+  //! write value to option
+  void write( void ) const;
   
   private:
-
-  //! compute check button state mask to keep track of modifications
-  unsigned int _computeMask( void ) const;
-           
-  //! returns true if button has been modified wrt its initial state
-  bool _modified( const unsigned int& index ) const;
-      
-  //! target TreeView
-  QTreeView *target_;
-        
-  //! checkbox layout
-  QVBoxLayout* box_layout_;
-  
+   
   //! checkboxes  
   std::vector< QCheckBox* > checkbox_;
-  
-  //! mask (set at constructor)
-  unsigned int modified_mask_;
-   
-  //! mask (set at constructor)
-  unsigned int backup_mask_;
      
 };
 #endif

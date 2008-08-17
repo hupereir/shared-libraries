@@ -75,12 +75,35 @@ class TreeView: public QTreeView, public Counter
   //! number of visible columns
   virtual int visibleColumnCount( void ) const;
   
-  //! return column visibility bitset. Is 1 for shown columns, 0 for hidden
-  virtual unsigned int mask( void );
+  //!@name column mask
+  //@{
   
-  //! show/hide columns according to mask bitset. 1 is for shown columns, 0 for hidden
-  virtual void setMask( unsigned int mask );
+  //! option name
+  virtual void setMaskOptionName( const std::string& value )
+  { mask_option_name_ = value; }
+  
+  //! option name 
+  virtual bool hasMaskOptionName( void ) const
+  { return !maskOptionName().empty(); }
+  
+  //! option name
+  virtual const std::string& maskOptionName( void ) const
+  { return mask_option_name_; }
+  
+  //! get mask
+  virtual unsigned int mask( void ) const;
+
+  //! set mask manually
+  virtual void setMask( const unsigned int& );
+  
+  //! update column mask from option, if any
+  virtual void updateMask( void );
+  
+  //! save column mask to option, if any
+  virtual void saveMask( void );
    
+  //@}
+  
   //! icon size from options
   void setIconSizeFromOptions( const bool& value )
   { icon_size_from_options_ = value; }
@@ -98,9 +121,6 @@ class TreeView: public QTreeView, public Counter
   
   //! paint event
   virtual void paintEvent( QPaintEvent* );
-
-  //! customized drawing to handle colored entries
-  virtual void drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
     
   //! selected column color
   const QColor& _selectedColumnColor( void ) const
@@ -112,7 +132,7 @@ class TreeView: public QTreeView, public Counter
   
   //! install actions
   virtual void _installActions( void );
-
+  
   protected slots:
    
   //! popup contextual menu
@@ -139,12 +159,8 @@ class TreeView: public QTreeView, public Counter
   //! popup menu for right click
   QMenu *menu_;
   
-  //! column mask
-  /*! gets reinitialized anytime GetMask is called */
-  unsigned int mask_;    
-  
-  //! flat style
-  bool flat_style_;
+  //! mask option name
+  std::string mask_option_name_;
   
   //! true if icon size is to be set from options
   bool icon_size_from_options_;

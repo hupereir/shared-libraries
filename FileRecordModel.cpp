@@ -126,10 +126,10 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
       else return QVariant();
    
     }
-  } else if( role == Qt::DecorationRole && index.column() == FILE && record.hasProperty( FileRecordProperties::ICON ) ) { 
-    
-    return IconEngine::get( record.property( FileRecordProperties::ICON ) );
-    
+//   } else if( role == Qt::DecorationRole && index.column() == FILE && record.hasProperty( FileRecordProperties::ICON ) ) { 
+//     
+//     return IconEngine::get( record.property( FileRecordProperties::ICON ) );
+//     
   } else if( role == Qt::ToolTipRole ) return QString( record.file().c_str() );
  
   return QVariant();

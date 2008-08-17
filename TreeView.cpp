@@ -47,8 +47,6 @@ TreeView::TreeView( QWidget* parent ):
   QTreeView( parent ),
   Counter( "TreeView" ),
   menu_( 0 ),
-  mask_(0),
-  flat_style_( false ),
   icon_size_from_options_( true )
 {
   Debug::Throw( "TreeView::TreeView.\n" );   
@@ -92,7 +90,7 @@ bool TreeView::isVisible( const QModelIndex& index ) const
   QModelIndex parent( model()->parent( index ) );
   return (!parent.isValid() ) || ( isExpanded( parent ) && isVisible( parent ) );
 }
-  
+
 //_______________________________________________
 int TreeView::visibleColumnCount( void ) const
 {
@@ -103,25 +101,59 @@ int TreeView::visibleColumnCount( void ) const
 }
 
 //_______________________________________________
-unsigned int TreeView::mask( void )
+unsigned int TreeView::mask( void ) const
 {
-  mask_ = 0;
+  Debug::Throw( "TreeView::mask.\n" );
+  unsigned int mask = 0;
   for( int index=0; model() && index < model()->columnCount(); index++ )
-  if( !isColumnHidden( index ) ) mask_ |= (1<<index);
-  return mask_;
+  if( !isColumnHidden( index ) ) mask |= (1<<index);
+  return mask;
 }
 
-//______________________________________________________
-void TreeView::setMask( unsigned int mask )
+//_______________________________________________
+void TreeView::setMask( const unsigned int& mask )
 {
-  if( !model() ) return;
+  
+  Debug::Throw( "TreeView::setMask.\n" );
   for( int index=0; index < model()->columnCount(); index++ )
   {
+    
     // see if there is a change between new and old mask
-    if( mask_ & mask & (1<<index) ) continue;
+    if( isColumnHidden( index ) == !(mask & (1<<index) ) ) continue;
     setColumnHidden( index, !(mask & (1<<index) ) );
+    
   }  
-}  
+  
+  return;
+  
+}
+
+//_______________________________________________
+void TreeView::updateMask( void )
+{
+
+  Debug::Throw( "TreeView::updateMask.\n" );
+
+  // check model and option availability
+  if( !model() ) return;
+  if( !hasMaskOptionName() ) return;
+  if( !XmlOptions::get().find( maskOptionName() ) ) return;
+  
+  // assign mask from options
+  setMask( XmlOptions::get().get<unsigned int>( maskOptionName() ) );
+  resizeColumns();
+    
+}
+
+//_______________________________________________
+void TreeView::saveMask( void )
+{
+  
+  Debug::Throw( "TreeView::saveMask.\n" );
+  if( !hasMaskOptionName() ) return;
+  XmlOptions::get().set<unsigned int>( maskOptionName(), mask() );
+
+}
 
 //______________________________________________________
 void TreeView::resizeColumns( const unsigned int& mask )
@@ -166,28 +198,6 @@ void TreeView::paintEvent( QPaintEvent* event )
 }
 
 //__________________________________________________________
-void TreeView::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
-{    
-  
-  // check flat style
-  if( !flat_style_ ) return QTreeView::drawRow( painter, option, index );
-
-  // modify options and pass to the default method
-  QStyleOptionViewItem new_option( option );
-  
-  //  QGradient 
-  QLinearGradient gradient(QPointF(0, 0), QPointF(width(), 0));    
-  QColor color( palette().color( QPalette::Highlight ) );
-  gradient.setColorAt(0, color.light(130) );
-  gradient.setColorAt(0.3, color );
-  gradient.setColorAt(1, color.light(130) );
-  new_option.palette.setBrush( QPalette::Highlight, QBrush( gradient ) );
-  
-  return QTreeView::drawRow( painter, new_option, index );
-
-}
-
-//__________________________________________________________
 void TreeView::_installActions( void )
 {
   Debug::Throw( "TreeView::_installActions.\n" );
@@ -228,6 +238,10 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
   menu.adjustSize();
   menu.exec( QCursor::pos() );
   
+  // save mask after menu execution, 
+  // to keep visible columns in sync with option
+  saveMask();
+  
 }
 
 //_____________________________________________________________________
@@ -235,6 +249,9 @@ void TreeView::_updateConfiguration( void )
 {
   Debug::Throw( "TreeView::_updateConfiguration.\n" );
     
+  // load mask from option, if any
+  updateMask();
+  
   // try load alternate colors from option
   QColor color;
   Str colorname( XmlOptions::get().get<string>("ALTERNATE_COLOR").c_str() );
@@ -260,7 +277,5 @@ void TreeView::_updateConfiguration( void )
     int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
     setIconSize( QSize( icon_size, icon_size )  );
   } 
-  
-  flat_style_ = XmlOptions::get().get<bool>( "USE_FLAT_THEME" );
-  
+    
 }

@@ -108,11 +108,35 @@ class TreeWidget: public QTreeWidget, public Counter
   //! number of visible columns
   virtual int visibleColumnCount( void ) const;
   
-  //! return column visibility bitset. Is 1 for shown columns, 0 for hidden
-  virtual unsigned int mask( void );
   
-  //! show/hide columns according to mask bitset. 1 is for shown columns, 0 for hidden
-  virtual void setMask( const unsigned int& mask );
+  //!@name column mask
+  //@{
+  
+  //! option name
+  virtual void setMaskOptionName( const std::string& value )
+  { mask_option_name_ = value; }
+  
+  //! option name 
+  virtual bool hasMaskOptionName( void ) const
+  { return !maskOptionName().empty(); }
+  
+  //! option name
+  virtual const std::string& maskOptionName( void ) const
+  { return mask_option_name_; }
+  
+  //! get mask
+  virtual unsigned int mask( void ) const;
+
+  //! set mask manually
+  virtual void setMask( const unsigned int& );
+  
+  //! update column mask from option, if any
+  virtual void updateMask( void );
+  
+  //! save column mask to option, if any
+  virtual void saveMask( void );
+   
+  //@}
   
   //! delete items and all subitems recursively
   static void deleteItemRecursive( QTreeWidgetItem* item );
@@ -202,14 +226,19 @@ class TreeWidget: public QTreeWidget, public Counter
   //! sort items (based on current column )
   virtual void sort( void );
    
+  
+  //! resize all visible columns to match contents
+  virtual void resizeColumns()
+  { resizeColumns( mask() ); }
+   
+  //! resize all visible columns to match contents
+  virtual void resizeColumns( const unsigned int& mask );
+
   protected:
    
   //! paint event
   virtual void paintEvent( QPaintEvent* );
   
-  //! customized drawing to handle colored entries
-  virtual void drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-   
   //! selected column color
   const QColor& _selectedColumnColor( void ) const
   { return selected_column_color_; }
@@ -236,13 +265,9 @@ class TreeWidget: public QTreeWidget, public Counter
   //! popup menu for right click
   QMenu *menu_;
   
-  //! flat style
-  bool flat_style_;
+  //! mask option name
+  std::string mask_option_name_;
   
-  //! column mask
-  /*! gets reinitialized anytime GetMask is called */
-  unsigned int mask_;    
-
   //! column types
   std::vector<ColumnType> column_types_;
   

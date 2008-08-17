@@ -44,9 +44,7 @@ using namespace std;
 TreeWidget::TreeWidget( QWidget* parent ):
   QTreeWidget( parent ),
   Counter( "TreeWidget" ),
-  menu_( 0 ),
-  flat_style_( false ),
-  mask_( 0 )
+  menu_( 0 )
 {
   Debug::Throw( "TreeWidget::TreeWidget.\n" );   
 
@@ -102,25 +100,61 @@ int TreeWidget::visibleColumnCount( void ) const
   return out;
 }
 
+
 //_______________________________________________
-unsigned int TreeWidget::mask( void )
+unsigned int TreeWidget::mask( void ) const
 {
-  mask_ = 0;
-  for( int index=0; index < columnCount(); index++ )
-  if( !isColumnHidden( index ) ) mask_ |= (1<<index);
-  return mask_;
+  Debug::Throw( "TreeWidget::mask.\n" );
+  unsigned int mask = 0;
+  for( int index=0; model() && index < model()->columnCount(); index++ )
+  if( !isColumnHidden( index ) ) mask |= (1<<index);
+  return mask;
 }
 
-//______________________________________________________
+//_______________________________________________
 void TreeWidget::setMask( const unsigned int& mask )
 {
-  for( int index=0; index < columnCount(); index++ )
+  
+  Debug::Throw( "TreeWidget::setMask.\n" );
+  for( int index=0; index < model()->columnCount(); index++ )
   {
+    
     // see if there is a change between new and old mask
-    if( mask_ & mask & (1<<index) ) continue;
+    if( isColumnHidden( index ) == !(mask & (1<<index) ) ) continue;
     setColumnHidden( index, !(mask & (1<<index) ) );
+    
   }  
-}  
+  
+  return;
+  
+}
+
+//_______________________________________________
+void TreeWidget::updateMask( void )
+{
+
+  Debug::Throw( "TreeWidget::updateMask.\n" );
+
+  // check model and option availability
+  if( !model() ) return;
+  if( !hasMaskOptionName() ) return;
+  if( !XmlOptions::get().find( maskOptionName() ) ) return;
+  
+  // assign mask from options
+  setMask( XmlOptions::get().get<unsigned int>( maskOptionName() ) );
+  resizeColumns();
+    
+}
+
+//_______________________________________________
+void TreeWidget::saveMask( void )
+{
+  
+  Debug::Throw( "TreeWidget::saveMask.\n" );
+  if( !hasMaskOptionName() ) return;
+  XmlOptions::get().set<unsigned int>( maskOptionName(), mask() );
+
+}
 
 //_______________________________________________________
 void TreeWidget::deleteItemRecursive( QTreeWidgetItem* item )
@@ -256,6 +290,19 @@ void TreeWidget::sort( void )
   
 }
 
+
+//______________________________________________________
+void TreeWidget::resizeColumns( const unsigned int& mask )
+{
+
+  // if no items present, do nothing
+  if( !( model() && model()->rowCount() ) ) return;
+  
+  for( int i = 0; i < model()->columnCount(); i++ )
+  { if( mask & (1<<i) ) resizeColumnToContents(i); }
+  
+}
+
 //__________________________________________________________
 void TreeWidget::paintEvent( QPaintEvent* event )
 {
@@ -279,47 +326,6 @@ void TreeWidget::paintEvent( QPaintEvent* event )
   painter.end();
   
   return QTreeWidget::paintEvent( event );
-
-}
-
-//__________________________________________________________
-void TreeWidget::drawRow( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
-{
-  
-  if( !flat_style_ ) return QTreeWidget::drawRow( painter, option, index );
-  
-  Item* item = dynamic_cast<Item*>(itemFromIndex( index ) );
-  
-  // modify options and pass to the default method
-  QStyleOptionViewItem new_option( option );
-  
-  //  QGradient 
-  QLinearGradient gradient(QPointF(0, 0), QPointF(width(), 0));
-  
-  if( item && item->color().isValid() )
-  {
-    
-    if( isItemSelected( item ) ) 
-    {
-      
-      gradient.setColorAt(0, item->color().light(130));
-      gradient.setColorAt(0.3, item->color());
-      gradient.setColorAt(1, item->color().light(130));
-      new_option.palette.setBrush( QPalette::Highlight, QBrush( gradient ) );
-      
-    } else new_option.palette.setColor( QPalette::Text, item->color() );
-      
-  } else if( isItemSelected( item ) ) {
-    
-    QColor color( option.palette.color( QPalette::Highlight ) );
-    gradient.setColorAt(0, color.light(130) );
-    gradient.setColorAt(0.3, color );
-    gradient.setColorAt(1, color.light(130) );
-    new_option.palette.setBrush( QPalette::Highlight, QBrush( gradient ) );
-  
-  }
-  
-  return QTreeWidget::drawRow( painter, new_option, index );
 
 }
 
@@ -359,6 +365,9 @@ void TreeWidget::_updateConfiguration( void )
 {
    
   Debug::Throw( "TreeWidget::_updateConfiguration.\n" );
+ 
+  // load mask from option, if any
+  updateMask();
   
   // try load alternate colors from option
   QColor color;
@@ -382,7 +391,5 @@ void TreeWidget::_updateConfiguration( void )
   // icon size
   int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
   setIconSize( QSize( icon_size, icon_size )  );
-
-  flat_style_ = XmlOptions::get().get<bool>( "USE_FLAT_THEME" );
   
 }

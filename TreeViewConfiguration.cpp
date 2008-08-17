@@ -29,61 +29,40 @@
   \date $Date$
 */
 
-#include <QGroupBox>
+#include <sstream>
+#include <assert.h>
 #include <QHeaderView>
 #include <QLayout>
 #include <QPushButton>
 #include <QToolTip>
 
-#include <assert.h>
-#include "TreeViewConfiguration.h"
-#include "QtUtil.h"
 #include "Debug.h"
+#include "TreeViewConfiguration.h"
+#include "XmlOptions.h"
 
 using namespace std;
-using namespace Qt;
 
 //____________________________________________________________________________
-TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const string& title ):
-    QWidget( parent ),
-    Counter( "TreeViewConfiguration" ),
-    target_( target ),
-    modified_mask_( 0 ),
-    backup_mask_( 0 )
+TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const string& option_name ):
+    QGroupBox( parent ),
+    OptionWidget( option_name )
 {
 
   Debug::Throw( "TreeViewConfiguration::TreeViewConfiguration.\n" ); 
   
-  // adjust flags
-  if( !parent ) {
-    setAttribute( WA_DeleteOnClose );
-    setWindowModality( ApplicationModal );
-  }
+  // check target
+  assert( target );
   
   // create vbox layout
-  QVBoxLayout* layout( new QVBoxLayout() );
-  layout->setMargin(0);
-  layout->setSpacing(2);
-  
-  if( !isTopLevel() ) 
-  layout->setSpacing( 5 );
-  setLayout( layout );
-  
-  // check target
-  assert( target_ );
+  setLayout( new QVBoxLayout() );
+  layout()->setMargin(5);
+  layout()->setSpacing( 2 );
   
   // size
   QCheckBox *checkbox;
-  QGroupBox *box = new QGroupBox( title.c_str(), this );
-  layout->addWidget( box );
-
-  box_layout_  = new QVBoxLayout();
-  box_layout_->setMargin(5);
-  box_layout_->setSpacing(2);
-  box->setLayout( box_layout_ );
     
   // retrieve columns
-  QHeaderView* header( target_->header() );
+  QHeaderView* header( target->header() );
   assert( header );
   for( int index=0; index < header->count(); index++ )
   {
@@ -98,10 +77,8 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     }
     
     // add checkbox
-    checkbox = new QCheckBox( column_name, box );
-    box_layout_->addWidget( checkbox );
-    
-    checkbox->setChecked( !target_->isColumnHidden( index ) );
+    checkbox = new QCheckBox( column_name, this );
+    layout()->addWidget( checkbox );
     checkbox_.push_back( checkbox );
     
     // add tooltip
@@ -110,96 +87,34 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     checkbox->setToolTip( what.str().c_str() );
     
   }
-
-  // compute mask according to button state
-  modified_mask_ = backup_mask_ = _computeMask();
-        
-  // add ok/cancel button if no parent
-  if( !parent )
-  {
-    QHBoxLayout *button_layout( new QHBoxLayout() );
-    button_layout->setMargin( 5 );
-    button_layout->setSpacing( 5 );
-    layout->addLayout( button_layout );
-    
-    // ok button
-    QPushButton *button = new QPushButton( "&Ok", this );
-    QtUtil::fixSize( button );
-    connect( button, SIGNAL( clicked() ), SLOT( update() ) );
-    connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-    button->setAutoDefault( false );
-    button_layout->addWidget( button );
-    
-    // cancel button
-    button = new QPushButton( "&Cancel", this );
-    QtUtil::fixSize( button );
-    connect( button, SIGNAL( clicked() ), SLOT( restore() ) );
-    connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-    button->setAutoDefault( false );  
-    button_layout->addWidget( button );
-    
-  }
   
 } 
 
 //____________________________________________________________________________
-void TreeViewConfiguration::restore( void )
+void TreeViewConfiguration::read( void )
 {
-  Debug::Throw( "TreeViewConfiguration::restore.\n" ); 
+  Debug::Throw( "TreeViewConfiguration::read.\n" ); 
   
   // set check button state according to the backup mask
+  unsigned int mask( XmlOptions::get().get<unsigned int>( optionName() ) );
   for( unsigned int index = 0; index < checkbox_.size(); index++ )
-  checkbox_[index]->setChecked( backup_mask_ & (1<<index) );
-  
-  // update
-  update();
-  
+  { checkbox_[index]->setChecked( mask & (1<<index) ); }
+   
   return;
   
 }
 
 //____________________________________________________________________________
-void TreeViewConfiguration::update( void )
+void TreeViewConfiguration::write( void ) const
 {
-  Debug::Throw( "TreeViewConfiguration::update.\n" ); 
-  bool modified( false );
-  
+  Debug::Throw( "TreeViewConfiguration::write.\n" ); 
+
+  unsigned int mask(0);
   for( unsigned int index = 0; index < checkbox_.size(); index++ )
-  {
-    if( !_modified( index ) ) continue;
-    modified = true;
-    target_->setColumnHidden( index, !checkbox_[index]->isChecked() );
-  }
+  { mask |= (checkbox_[index]->isChecked() << index); }  
   
-  if( modified ) target_->repaint();
-  
-  // update mask
-  modified_mask_ = _computeMask();
+  XmlOptions::get().set<unsigned int>( optionName(), mask );
   
   return;
   
-}
-
-//____________________________________________________________________________
-unsigned int TreeViewConfiguration::_computeMask( void ) const
-{
-
-  Debug::Throw( "TreeViewConfiguration::_computeMask.\n" );
-  unsigned int out = 0;
-  for( unsigned int index = 0; index < checkbox_.size(); index ++ )
-  if( checkbox_[index]->isChecked() ) out |= (1 << index );
-  return out;
-
-}
-
-//____________________________________________________________________________
-bool TreeViewConfiguration::_modified( const unsigned int & index ) const
-{
-  Debug::Throw( "TreeViewConfiguration::_modified.\n" ); 
-  assert( index < checkbox_.size() );
-  
-  // get initial state from mask
-  bool initial_state( modified_mask_ & (1 << index ) );
-  bool final_state( checkbox_[index]->isChecked() );
-  return initial_state != final_state;
 }

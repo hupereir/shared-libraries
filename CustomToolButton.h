@@ -113,7 +113,7 @@ class CustomToolButton: public QToolButton, public Counter
   };
   
   //! rotation
-  void setRotation( const Rotation& value )
+  void rotate( const Rotation& value )
   { rotation_ = value; }
   
   //! size hint

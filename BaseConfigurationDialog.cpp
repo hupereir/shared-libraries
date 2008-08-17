@@ -137,7 +137,6 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     v_layout->setSpacing(5);
     h_layout->addLayout( v_layout );
         
-    //v_layout->addWidget( new QLabel( "Icon", parent ), 0, Qt::AlignHCenter );
     OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( parent, "ICON_PIXMAP" );
     editor->setToolTip( "Application icon" );
     addOptionWidget( editor );
