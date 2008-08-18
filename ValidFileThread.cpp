@@ -29,7 +29,7 @@
   \date $Date$
 */
 
-#include <qapplication.h>
+#include <QApplication>
 #include "ValidFileThread.h"
 #include "File.h" 
 

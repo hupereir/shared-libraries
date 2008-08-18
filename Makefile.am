@@ -192,6 +192,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_DebugMenu.cpp \
   moc_DockPanel.cpp \
   moc_FileList.cpp \
+  moc_FileRecordModel.cpp \
   moc_FindDialog.cpp \
   moc_FontEditor.cpp \
   moc_HeaderMenu.cpp \

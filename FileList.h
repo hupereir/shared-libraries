@@ -59,7 +59,7 @@ class FileList: public QObject, public Counter
     Counter( "FileList" ),
     max_size_( -1 ),
     check_( true ),
-    valid_file_thread_( this )
+    thread_( this )
   {}
 
   //! destructor
@@ -153,7 +153,7 @@ class FileList: public QObject, public Counter
   bool check_;
   
   //! thread to check file validity
-  ValidFileThread valid_file_thread_;
+  ValidFileThread thread_;
   
   //! current list of files
   FileRecord::List records_;

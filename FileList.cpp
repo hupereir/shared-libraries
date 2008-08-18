@@ -77,9 +77,9 @@ void FileList::checkValidFiles( void )
 {
   Debug::Throw( "FileList::checkValidFiles.\n" );
   if( !check() ) return;
-  if( valid_file_thread_.isRunning() ) return;
-  valid_file_thread_.setFiles( records() );
-  valid_file_thread_.start();
+  if( thread_.isRunning() ) return;
+  thread_.setFiles( records() );
+  thread_.start();
 }
 
 
@@ -87,11 +87,7 @@ void FileList::checkValidFiles( void )
 void FileList::customEvent( QEvent* event )
 {
   
-  if( event->type() != QEvent::User ) 
-  { 
-    Debug::Throw() << "EditFrame::customEvent - unrecognized type " << event->type() << endl;
-    return;
-  }
+  if( event->type() != QEvent::User ) return;
   
   ValidFileEvent* valid_file_event( dynamic_cast<ValidFileEvent*>(event) );
   if( !valid_file_event ) return;

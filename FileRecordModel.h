@@ -43,6 +43,8 @@
 class FileRecordModel: public ListModel<FileRecord>
 {
 
+  Q_OBJECT
+  
   public:
 
   //! number of columns
@@ -107,6 +109,11 @@ class FileRecordModel: public ListModel<FileRecord>
   //! add, without update
   virtual void _add( const ValueType& );
 
+  private slots:
+  
+  //! configuration
+  void _updateConfiguration( void );
+  
   private:
   
   //! used to sort Counters
@@ -151,11 +158,20 @@ class FileRecordModel: public ListModel<FileRecord>
   //! update columns
   void _updateColumns( const ValueType& value );
 
+  //! icon
+  static QIcon _icon( const std::string& );
+  
   //! true if icons are to be shown
   bool show_icons_;
   
   //! column titles
   std::vector<QString> column_titles_;
+ 
+  //! icon cache
+  typedef std::map<std::string, QIcon> IconCache;
+   
+  //! type icon cache
+  static IconCache icons_; 
    
 };
 

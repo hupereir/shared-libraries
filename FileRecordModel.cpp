@@ -32,23 +32,31 @@
 
 #include <algorithm>
 #include <assert.h>
+#include <QIcon>
+#include <QApplication>
 
-#include "IconEngine.h"
+#include "CustomPixmap.h"
 #include "FileRecordBaseProperties.h"
 #include "FileRecordModel.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
 //__________________________________________________________________
+FileRecordModel::IconCache FileRecordModel::icons_;
+
+//__________________________________________________________________
 FileRecordModel::FileRecordModel( QObject* parent ):
   ListModel<FileRecord>( parent ),
-  show_icons_( false )
+  show_icons_( true )
 {
   Debug::Throw("FileRecordModel::FileRecordModel.\n" );
 
-  column_titles_.push_back( "file name" );
+  column_titles_.push_back( "file" );
   column_titles_.push_back( "path" );
   column_titles_.push_back( "last accessed" );
+
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
 }
   
@@ -130,7 +138,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
     
   } else if( _showIcons() && role == Qt::DecorationRole && index.column() == FILE && record.hasProperty( FileRecordProperties::ICON ) ) {
     
-    return IconEngine::get( record.property( FileRecordProperties::ICON ) );
+    return _icon( record.property( FileRecordProperties::ICON ) );
     
   } else if( role == Qt::ToolTipRole ) return QString( record.file().c_str() );
  
@@ -166,6 +174,13 @@ void FileRecordModel::_add( const ValueType& value )
 }
 
 //____________________________________________________________
+void FileRecordModel::_updateConfiguration( void )
+{
+  Debug::Throw( "FileRecordModel::_updateConfiguration.\n" );
+  icons_.clear();
+}
+
+//____________________________________________________________
 void FileRecordModel::_updateColumns( const ValueType& value )
 {
   
@@ -191,12 +206,39 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
   {
 
     case FILE: return first.file().localName() < second.file().localName();
-    case TIME: return first.time() < second.time();
+    case TIME: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
     default: 
     {
       string name( qPrintable( column_titles_[type_] ) );
-      return first.property( name ) < second.property( name );
+      string first_property( first.property( name ) );
+      string second_property( second.property( name ) );
+      return ( first_property != second_property ) ? first_property < second_property :  first.file().localName() < second.file().localName();
     }
+    
   }
  
+}
+
+//________________________________________________________
+QIcon FileRecordModel::_icon( const std::string& name )
+{
+  Debug::Throw( "FileRecordModel::_icon.\n" );
+  
+  IconCache::const_iterator iter( icons_.find( name ) );
+  if( iter != icons_.end() ) return iter->second;
+
+  // pixmap size
+  unsigned int pixmap_size = XmlOptions::get().get<unsigned int>( "LIST_ICON_SIZE" );
+  QSize size( pixmap_size, pixmap_size );
+  QSize scaled(size*0.9);
+  
+  QIcon icon = CustomPixmap()
+    .empty( size )
+    .merge( CustomPixmap().find( name )
+    .scale( scaled ), CustomPixmap::CENTER );
+  
+  icons_.insert( make_pair( name, icon ) );
+  
+  return icon;
+   
 }
