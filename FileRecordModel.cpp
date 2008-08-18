@@ -222,6 +222,7 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
 //________________________________________________________
 QIcon FileRecordModel::_icon( const std::string& name )
 {
+  
   Debug::Throw( "FileRecordModel::_icon.\n" );
   
   IconCache::const_iterator iter( icons_.find( name ) );
