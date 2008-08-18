@@ -95,7 +95,6 @@ void RecentFilesMenu::_updateActions( void )
   Debug::Throw( "RecentFilesMenu::_updateActions.\n" );
   
   // set actions enability
-  bool has_invalid_records( false );
   const FileRecord::List& records( _fileList().records() ); 
   for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
   {
@@ -108,12 +107,9 @@ void RecentFilesMenu::_updateActions( void )
     iter->second.setValid( found->isValid() );
     iter->first->setEnabled( found->isValid() );
     
-    // enable clean button
-    if( !found->isValid() ) has_invalid_records = true;
-    
   }
 
-  _cleanAction().setEnabled( has_invalid_records );
+  _cleanAction().setEnabled( _fileList().hasInvalidFiles() || _fileList().hasDuplicatedFiles() );
   
 }
   
@@ -121,8 +117,9 @@ void RecentFilesMenu::_updateActions( void )
 void RecentFilesMenu::_clean( void )
 {    
   if( !_fileList().check() && !QtUtil::questionDialog( this,"clear list ?" ) ) return;
-  else if( _fileList().check() && !QtUtil::questionDialog( this,"Remove invalid files from list ?" ) ) return;
+  else if( _fileList().check() && !QtUtil::questionDialog( this,"Remove invalid/duplicated files from list ?" ) ) return;
   _fileList().clean();
+  _fileList().clearDuplicates();
 }
 
 //_______________________________________________
