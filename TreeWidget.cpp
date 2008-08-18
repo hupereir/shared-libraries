@@ -33,7 +33,8 @@
 #include <QPainter>
 
 #include "ColorDisplay.h"
-#include "HeaderMenu.h"
+#include "ColumnSelectionMenu.h"
+#include "ColumnSortingMenu.h"
 #include "TreeWidget.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
@@ -363,10 +364,13 @@ void TreeWidget::_raiseHeaderMenu( const QPoint & pos )
   if( header()->count() <= 1 ) return;
   
   // create menu and raise.
-  HeaderMenu menu( this, this );
-  
-  // menu.installSelectionActions( this );
-  // if( isSortingEnabled() ) menu.installSortActions( this );
+  ColumnSelectionMenu menu( this, this );
+  if( isSortingEnabled() ) 
+  {
+    menu.addSeparator();
+    menu.addMenu( new ColumnSortingMenu( &menu, this ) );
+  }
+
   menu.adjustSize();
   menu.exec( QCursor::pos() );
   

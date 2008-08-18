@@ -13,6 +13,8 @@ HEADERS = \
   ClockLabel.h \
   ColorDisplay.h \
   ColorMenu.h \
+  ColumnSelectionMenu.h \
+  ColumnSortingMenu.h \
   CounterDialog.h \
   CounterModel.h \
   CustomComboBox.h \
@@ -36,7 +38,6 @@ HEADERS = \
   FlatStyle.h \
   FontEditor.h \
   FontInfo.h \
-  HeaderMenu.h \
   IconBrowsedButton.h \
   IconCacheDialog.h \
   IconCacheModel.h \
@@ -107,6 +108,8 @@ SOURCES = \
   ClockLabel.cpp \
   ColorDisplay.cpp \
   ColorMenu.cpp \
+  ColumnSelectionMenu.cpp \
+  ColumnSortingMenu.cpp \
   CounterDialog.cpp \
   CounterModel.cpp \
   CustomComboBox.cpp \
@@ -126,7 +129,6 @@ SOURCES = \
   FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
-  HeaderMenu.cpp \
   IconBrowsedButton.cpp \
   IconCacheDialog.cpp \
   IconCacheModel.cpp \

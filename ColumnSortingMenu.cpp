@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file ColumnSelectionMenu.h
+  \file ColumnSortingMenu.h
   \brief handels column visibility in TreeViews
   \author Hugo Pereira
   \version $Revision$
@@ -32,43 +32,45 @@
 #include <QHeaderView>
 
 #include "Debug.h"
-#include "ColumnSelectionMenu.h"
+#include "ColumnSortingMenu.h"
 
 using namespace std;
 
 //_____________________________________________________
-ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, const QString& title ):
+ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const QString& title ):
   QMenu( parent ),
-  Counter( "ColumnSelectionMenu" ),
-  target_( target )
+  Counter( "ColumnSortingMenu" ),
+  target_( target ),
+  group_( new QActionGroup( this ) )
 { 
-  Debug::Throw( "ColumnSelectionMenu::ColumnSelectionMenu.\n" ); 
+  Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
   setTitle( title );
   connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _updateActions( void ) ) );
-  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _updateSelectedColumns( QAction* ) ) );
+  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _sort( QAction* ) ) );
+  group_->setExclusive( true );
 }
 
 //_____________________________________________________
-void ColumnSelectionMenu::_updateActions( void )
+void ColumnSortingMenu::_updateActions( void )
 {
 
-  Debug::Throw( "ColumnSelectionMenu::_updateActions.\n" );
-  
+  Debug::Throw( "ColumnSortingMenu::_updateActions.\n" );
+    
   // clear existing actions
   for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
   { delete iter->first; }
   actions_.clear();
-
+  
   // check if the menu already has actions.
-  QList<QAction*> actions( ColumnSelectionMenu::actions() );
+  QList<QAction*> actions( ColumnSortingMenu::actions() );
   QAction *first_action( actions.isEmpty() ? 0:actions.front() );
   
   // retrieve parent header.
   QHeaderView* header( _target().header() );
   assert( header );
+  assert( header->isSortIndicatorShown() );
     
   // loop over columns in header
-  unsigned int visible_columns(0);
   for( int index=0; index < header->count(); index++ )
   {
     
@@ -83,33 +85,29 @@ void ColumnSelectionMenu::_updateActions( void )
   
     QAction* action = new QAction( column_name, this );
     action->setCheckable( true );
-    action->setChecked( !_target().isColumnHidden( index ) );
-    if( !_target().isColumnHidden( index ) ) visible_columns++;
+    action->setChecked( index == header->sortIndicatorSection() );
     
     insertAction( first_action, action );
+    group_->addAction( action );
     actions_.insert( make_pair( action, index ) );
 
   }
   
-  // if only one column is visible, disable corresponding action
-  if( visible_columns == 1 )
-  {
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
-    { if( iter->first->isChecked() ) iter->first->setEnabled( false ); }
-  }
-
 }
 
 //______________________________________________________________________________
-void ColumnSelectionMenu::_updateSelectedColumns( QAction* action )
+void ColumnSortingMenu::_sort( QAction* action )
 {
-  Debug::Throw( "ColumnSelectionMenu::_updateSelectedColumns.\n" );
-  
+  Debug::Throw( "ColumnSortingMenu::_sort.\n" );
+ 
   // retrieve index
   ActionMap::const_iterator iter = actions_.find( action );
   if( iter == actions_.end() ) return;
   
-  // set column visibility
-  _target().setColumnHidden( iter->second, !iter->first->isChecked() );
+  // retrieve parent tree_view
+  QHeaderView* header = _target().header();
+  assert( header );
+
+  header->setSortIndicator( iter->second, header->sortIndicatorOrder() );
   
 }

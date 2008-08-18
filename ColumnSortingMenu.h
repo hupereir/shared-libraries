@@ -1,5 +1,5 @@
-#ifndef _ColumnSelectionMenu_h_
-#define _ColumnSelectionMenu_h_
+#ifndef _ColumnSortingMenu_h_
+#define _ColumnSortingMenu_h_
 
 // $Id$
 
@@ -25,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file ColumnSelectionMenu.h
+  \file ColumnSortingMenu.h
   \brief handels column visibility in TreeViews
   \author Hugo Pereira
   \version $Revision$
@@ -34,6 +34,7 @@
 
 #include <assert.h>
 #include <QAction>
+#include <QActionGroup>
 #include <QMenu>
 #include <QTreeView>
 #include <map>
@@ -42,7 +43,7 @@
 #include "Debug.h"
 
 //_______________________________________________________________
-class ColumnSelectionMenu:public QMenu, public Counter
+class ColumnSortingMenu:public QMenu, public Counter
 {
   
   //! Qt meta object declaration
@@ -51,7 +52,7 @@ class ColumnSelectionMenu:public QMenu, public Counter
   public:
   
   //! constructor
-  ColumnSelectionMenu( QWidget*, QTreeView*, const QString& title = "&Select Columns" );
+  ColumnSortingMenu( QWidget*, QTreeView*, const QString& title = "Sort &By" );
 
   private slots:
 
@@ -59,7 +60,7 @@ class ColumnSelectionMenu:public QMenu, public Counter
   void _updateActions( void );
   
   //! update mask when triggering actions
-  void _updateSelectedColumns( QAction* action );
+  void _sort( QAction* action );
  
   private:
    
@@ -73,6 +74,9 @@ class ColumnSelectionMenu:public QMenu, public Counter
   //! target
   QTreeView* target_;
     
+  //! action group
+  QActionGroup* group_;
+  
   //! map action to column index
   typedef std::map< QAction*, int > ActionMap;
   

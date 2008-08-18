@@ -17,6 +17,8 @@ noinst_HEADERS = \
   ClockLabel.h \
   ColorDisplay.h \
   ColorMenu.h \
+  ColumnSelectionMenu.h \
+  ColumnSortingMenu.h \
   CounterDialog.h \
   CounterModel.h \
   CustomComboBox.h \
@@ -40,7 +42,6 @@ noinst_HEADERS = \
   FlatStyle.h \
   FontEditor.h \
   FontInfo.h \
-  HeaderMenu.h \
   IconBrowsedButton.h \
   IconCacheDialog.h \
   IconCacheModel.h \
@@ -113,6 +114,8 @@ libbase_qt_a_SOURCES = \
   ClockLabel.cpp \
   ColorDisplay.cpp \
   ColorMenu.cpp \
+  ColumnSelectionMenu.cpp \
+  ColumnSortingMenu.cpp \
   CounterDialog.cpp \
   CounterModel.cpp \
   CustomComboBox.cpp \
@@ -132,7 +135,6 @@ libbase_qt_a_SOURCES = \
   FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
-  HeaderMenu.cpp \
   IconBrowsedButton.cpp \
   IconCacheDialog.cpp \
   IconCacheModel.cpp \
@@ -181,6 +183,8 @@ nodist_libbase_qt_a_SOURCES = \
   moc_BrowsedLineEditor.cpp \
   moc_ColorDisplay.cpp \
   moc_ColorMenu.cpp \
+  moc_ColumnSelectionMenu.cpp \
+  moc_ColumnSortingMenu.cpp \
   moc_ClockLabel.cpp \
   moc_CounterDialog.cpp \
   moc_CustomComboBox.cpp \
@@ -195,7 +199,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_FileRecordModel.cpp \
   moc_FindDialog.cpp \
   moc_FontEditor.cpp \
-  moc_HeaderMenu.cpp \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
   moc_IconFileDialog.cpp \
