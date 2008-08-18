@@ -165,6 +165,9 @@ class File: public Str
   //! remove path from full name
   virtual File localName( void ) const;
   
+  //! return canonical name (follow links and remove ".." and ".")
+  virtual File canonicalName( void ) const;
+  
   //! get file extension
   virtual File extension( void ) const;
   

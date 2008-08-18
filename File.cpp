@@ -359,6 +359,14 @@ File File::localName( void ) const
 { return empty() ? File(): File(qPrintable( QFileInfo(c_str()).fileName() )); }
 
 //_____________________________________________________________________
+File File::canonicalName( void ) const
+{ 
+  if( empty() ) return File();
+  QString canonical_name( QFileInfo(c_str()).canonicalFilePath() );
+  return canonical_name.isEmpty() ? File():File( qPrintable( canonical_name ) );
+}
+
+//_____________________________________________________________________
 File File::extension( void ) const
 {  
   // check file name

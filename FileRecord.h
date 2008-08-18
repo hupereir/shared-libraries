@@ -177,6 +177,50 @@ class FileRecord: public Counter
     
   };
 
+  //! used to sort FileRecords using canonical filenames
+  class CanonicalFileFTor
+  {
+    
+    public:
+        
+    //! predicate
+    bool operator() (const FileRecord& first, const FileRecord& second) const
+    { return first.file().canonicalName() < second.file().canonicalName(); }
+      
+
+  };
+
+  //! used to remove FileRecord with identical canonical filenames
+  class SameCanonicalFileFTor
+  {
+    
+    public:
+          
+    //! constructor
+    SameCanonicalFileFTor( const File& file = File("") ):
+      file_( file.canonicalName() )
+    {}
+          
+    //! constructor
+    SameCanonicalFileFTor( const FileRecord& record ):
+      file_( record.file().canonicalName() )
+    {}
+    
+    //! predicate
+    bool operator() (const FileRecord& first, const FileRecord& second) const
+    { return first.file().canonicalName() == second.file().canonicalName(); }
+   
+    //! predicate
+    bool operator() (const FileRecord& record ) const
+    { return record.file().canonicalName() == file_; }
+    
+    private:
+    
+    //! filename
+    File file_;     
+    
+  };
+  
   //! used to remove non existing files
   class InvalidFTor
   {

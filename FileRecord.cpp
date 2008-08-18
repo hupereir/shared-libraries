@@ -33,10 +33,8 @@
 
 //_______________________________________________
 bool FileRecord::operator < (const FileRecord& record ) const
-//{ return time_ < record.time_; }
 { return file() < record.file(); }
 
 //_______________________________________________
 bool FileRecord::operator == (const FileRecord& record ) const
-//{ return time_ == record.time_; }
 { return file() == record.file(); }
