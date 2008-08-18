@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QAction>
 #include <QMenu>
 #include <QTreeView>
@@ -50,11 +51,8 @@ class HeaderMenu:public QMenu, public Counter
   public:
   
   //! constructor
-  HeaderMenu( QWidget* parent ):
-    QMenu( parent ),
-    Counter( "HeaderMenu" )
-  { Debug::Throw( "HeaderMenu::HeaderMenu.\n" ); }
- 
+  HeaderMenu( QWidget*, QTreeView* );
+
   //! install column selection actions
   void installSelectionActions( QTreeView* );
 
@@ -63,26 +61,30 @@ class HeaderMenu:public QMenu, public Counter
 
   private slots:
 
+  //! update actions
+  void _updateActions( void );
+  
   //! update mask when triggering actions
   void _updateSelectedColumns( QAction* action );
-
-  //! update sorting
-  void _sort( QAction* action );
-  
+ 
   private:
    
-  //! number of visible columns
-  unsigned int visible_columns_;
+  //! target
+  QTreeView& _target( void )
+  { 
+    assert( target_ );
+    return *target_;
+  }
   
+  //! target
+  QTreeView* target_;
+    
   //! map action to column index
   typedef std::map< QAction*, int > ActionMap;
   
   //! map action to column index
-  ActionMap selection_actions_;
-      
-  //! sort actions
-  ActionMap sort_actions_;
-  
+  ActionMap actions_;
+        
 };
 
 #endif

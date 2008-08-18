@@ -246,9 +246,9 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
   if( header()->count() <= 1 ) return;
   
   // create menu and raise.
-  HeaderMenu menu( this );
-  menu.installSelectionActions( this );
-  if( isSortingEnabled() ) menu.installSortActions( this );
+  HeaderMenu menu( this, this );
+  // menu.installSelectionActions( this );
+  // if( isSortingEnabled() ) menu.installSortActions( this );
   menu.adjustSize();
   menu.exec( QCursor::pos() );
   
