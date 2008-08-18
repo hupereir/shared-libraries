@@ -40,6 +40,7 @@ using namespace std;
 const QString XmlFileRecord::XML_RECORD = "record";
 const QString XmlFileRecord::XML_FILE = "file";
 const QString XmlFileRecord::XML_TIME = "time";
+const QString XmlFileRecord::XML_FLAGS = "flags";
 const QString XmlFileRecord::XML_VALID= "valid"; 
 //@}
 
@@ -56,6 +57,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     if( attribute.isNull() ) continue;
     if( attribute.name() == XML_FILE ) setFile( qPrintable( XmlUtil::xmlToText( attribute.value() ) ) );
     else if( attribute.name() == XML_TIME ) setTime( attribute.value().toInt() );
+    else if( attribute.name() == XML_FLAGS ) setFlags( attribute.value().toUInt() );
     else if( attribute.name() == XML_VALID ) setValid( attribute.value().toInt() );
     else addProperty( qPrintable( attribute.name() ), qPrintable( attribute.value() ) );
   }
@@ -70,6 +72,8 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
   out.setAttribute( XML_FILE, XmlUtil::textToXml( file().c_str() ) );
   out.setAttribute( XML_TIME, Str().assign<int>( XmlFileRecord::time() ).c_str() );
   out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ).c_str() );
+
+  if( flags() ) out.setAttribute( XML_FLAGS, Str().assign<unsigned int>( flags() ).c_str() );
   
   for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); iter++ )
   { out.setAttribute( iter->first.c_str(), iter->second.c_str() ); }

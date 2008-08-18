@@ -111,10 +111,17 @@ void FileList::customEvent( QEvent* event )
 }
 
 //___________________________________________________
+bool FileList::hasInvalidFiles( void ) const
+{
+  Debug::Throw( "FileList::hasInvalidFiles.\n" );
+  return check() ? find_if( records().begin(), records().end(), FileRecord::InvalidFTor() ) != records().end(): (!records().empty());
+}
+
+//___________________________________________________
 unsigned int FileList::invalidFiles( void ) const
 {
   Debug::Throw( "FileList::invalidFiles.\n" );
-  return check() ? count_if( records().begin(), records().end(), FileRecord::InvalidFTor() ):size();
+  return check() ? count_if( records().begin(), records().end(), FileRecord::InvalidFTor() ):records().size();
 }
 
 //___________________________________________________

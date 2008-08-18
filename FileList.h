@@ -90,6 +90,9 @@ class FileList: public QObject, public Counter
   
   //! returns number of invalid files
   virtual unsigned int invalidFiles( void ) const;
+  
+  //! returns number of invalid files
+  virtual bool hasInvalidFiles( void ) const;
 
   //! clean files. Remove either invalid or all files, depending on check_
   virtual void clean( void );
