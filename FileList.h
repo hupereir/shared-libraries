@@ -87,16 +87,21 @@ class FileList: public QObject, public Counter
   
   //! get last valid file
   virtual FileRecord lastValidFile( void );
-  
-  //! returns number of invalid files
-  virtual unsigned int invalidFiles( void ) const;
-  
-  //! returns number of invalid files
+    
+  //! returns true if some files are duplicated
+  /*! duplicated files correspond to files that have matching absolute path names*/
+  virtual bool hasDuplicatedFiles( void ) const;
+    
+  //! returns true if some files are invalid
   virtual bool hasInvalidFiles( void ) const;
 
   //! clean files. Remove either invalid or all files, depending on check_
   virtual void clean( void );
 
+  //! clear duplicated files
+  /*! duplicated files correspond to files that have matching absolute path names*/
+  virtual void clearDuplicates( void );
+  
   //! check flag
   virtual const bool& check( void ) const
   { return check_; }

@@ -58,6 +58,7 @@ list<File> FileList::files( void ) const
   
   return out;
 }
+
 //_______________________________________________
 FileRecord FileList::lastValidFile( void )
 {
@@ -118,10 +119,19 @@ bool FileList::hasInvalidFiles( void ) const
 }
 
 //___________________________________________________
-unsigned int FileList::invalidFiles( void ) const
+bool FileList::hasDuplicatedFiles( void ) const
 {
-  Debug::Throw( "FileList::invalidFiles.\n" );
-  return check() ? count_if( records().begin(), records().end(), FileRecord::InvalidFTor() ):records().size();
+  for( FileRecord::List::const_iterator iter = records().begin(); iter != records().end(); )
+  {
+    
+    FileRecord::SameCanonicalFileFTor ftor( iter->file() );
+    if( find_if( ++iter, records().end(), ftor ) != records().end() )
+    { return true; }
+    
+  }
+  
+  return false;
+  
 }
 
 //___________________________________________________
@@ -134,6 +144,20 @@ void FileList::clean( void )
       remove_if( records().begin(), records().end(), FileRecord::InvalidFTor() ),
       records().end() );
   } else records().clear();
+  return;
+}
+
+
+//___________________________________________________
+void FileList::clearDuplicates( void )
+{
+  
+  Debug::Throw() << "FileList::clearDuplicates." << endl;
+    
+  sort( records().begin(), records().end(), FileRecord::CanonicalFileFTor() );
+  records().erase( unique( records().begin(), records().end(), FileRecord::SameCanonicalFileFTor() ), records().end() );
+  sort( records().begin(), records().end(), FileRecord::FirstOpenFTor() );
+  
   return;
 }
 
