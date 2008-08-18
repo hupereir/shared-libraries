@@ -57,6 +57,7 @@ class FileRecord: public Counter
     Counter( "FileRecord" ),
     file_( file ),
     time_( time ),
+    flags_( 0 ),
     valid_( true )
   {}
 
@@ -81,6 +82,30 @@ class FileRecord: public Counter
   //! time stamp
   void setTime( const TimeStamp& time )
   { time_ = time; }
+  
+  //!@name flags
+  //@{
+  
+  //! flags
+  void setFlags( unsigned int value )
+  { flags_ = value; }
+  
+  //! flags
+  void setFlag( unsigned int flag, const bool& value = true )
+  {
+    if( value ) { flags_ |= flag; }
+    else { flags_ &= (~flag); } 
+  }
+  
+  //! flags
+  const unsigned int& flags( void ) const
+  { return flags_; }
+
+  //! flags
+  bool hasFlag( const unsigned int& flag ) const
+  { return flags_ & flag; }
+  
+  //@}
   
   //! validity
   const bool& isValid( void ) const
@@ -196,6 +221,9 @@ class FileRecord: public Counter
   
   //! time
   int time_;
+  
+  //! flags
+  unsigned int flags_;
   
   //! file validity (true if file exists)
   bool valid_;
