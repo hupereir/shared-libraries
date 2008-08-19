@@ -57,9 +57,9 @@
 #include "TextPosition.h"
 #include "TextSelection.h"
 
-class SelectLineDialog;
 class FindDialog;
 class ReplaceDialog;
+class SelectLineDialog;
 
 class LineNumberDisplay;
 
@@ -146,6 +146,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
  
   //! popup dialog with the number of replacement performed
   virtual void showReplacements( const unsigned int& counts );
+ 
+  //! last searched selection
+  static const TextSelection& lastSelection( void )
+  { return last_selection_; }
 
   //!@name text wrap
   //@{
@@ -379,14 +383,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual void findAgainForward( void )
   { 
     Debug::Throw( "TextEditor::findAgainForward.\n" );
-    _findForward( _lastSelection(), true ); 
+    _findForward( lastSelection(), true ); 
   }
 
   //! find last search forward
   virtual void findAgainBackward( void )
   { 
     Debug::Throw( "TextEditor::findAgainBackward.\n" );
-    _findBackward( _lastSelection(), true ); 
+    _findBackward( lastSelection(), true ); 
   }
   
   //! find next occurence of TextSelection
@@ -402,7 +406,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual void replaceAgainForward( void )
   {
     Debug::Throw( "TextEditor::replaceAgainForward.\n" );
-    TextSelection selection( _lastSelection() );
+    TextSelection selection( lastSelection() );
     selection.setFlag( TextSelection::BACKWARD, false );
     replace( selection );
   }
@@ -411,7 +415,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual void replaceAgainBackward( void )
   {
     Debug::Throw( "TextEditor::replaceAgainBackward.\n" );
-    TextSelection selection( _lastSelection() );
+    TextSelection selection( lastSelection() );
     selection.setFlag( TextSelection::BACKWARD, true );
     replace( selection );
   }
@@ -482,11 +486,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! create TextSelection object from this selection, or clipboard
   TextSelection _selection( void ) const;
-  
-  //! last searched selection
-  static const TextSelection& _lastSelection( void )
-  { return last_selection_; }
-
+ 
   //! last searched selection
   static void _setLastSelection( const TextSelection& selection )
   { last_selection_ = selection; }

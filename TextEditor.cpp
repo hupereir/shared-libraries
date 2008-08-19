@@ -1577,8 +1577,8 @@ TextSelection TextEditor::_selection( void ) const
   else if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );
 
   // copy attributes from last selection
-  out.setFlag( TextSelection::CASE_SENSITIVE, _lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
-  out.setFlag( TextSelection::ENTIRE_WORD, _lastSelection().flag( TextSelection::ENTIRE_WORD ) );
+  out.setFlag( TextSelection::CASE_SENSITIVE, lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
+  out.setFlag( TextSelection::ENTIRE_WORD, lastSelection().flag( TextSelection::ENTIRE_WORD ) );
   return out;
 
 }
@@ -1587,7 +1587,7 @@ TextSelection TextEditor::_selection( void ) const
 void TextEditor::_createFindDialog( void )
 {
 
-  Debug::Throw( "CurstomTextEdit::_createFindDialog.\n" );
+  Debug::Throw( "TextEditor::_createFindDialog.\n" );
   if( !find_dialog_ )
   {
 
@@ -1816,7 +1816,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
 void TextEditor::_createReplaceDialog( void )
 {
 
-  Debug::Throw( "CurstomTextEdit::_createFindDialog.\n" );
+  Debug::Throw( "TextEditor::_createFindDialog.\n" );
   if( !replace_dialog_ )
   {
 
@@ -2412,7 +2412,7 @@ void TextEditor::_findFromDialog( void )
   QString text;
   if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _findDialog().setText( text );
   else if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
-  else if( !( text = _lastSelection().text() ).isEmpty() ) _findDialog().setText( text );
+  else if( !( text = lastSelection().text() ).isEmpty() ) _findDialog().setText( text );
 
   // changes focus
   _findDialog().activateWindow();
@@ -2453,10 +2453,10 @@ void TextEditor::_replaceFromDialog( void )
   QString text;
   if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _replaceDialog().setText( text );
   else if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
-  else if( !( text = _lastSelection().text() ).isEmpty() ) _replaceDialog().setText( text );
+  else if( !( text = lastSelection().text() ).isEmpty() ) _replaceDialog().setText( text );
 
   // update replace text
-  if( !_lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( _lastSelection().replaceText() );
+  if( !lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( lastSelection().replaceText() );
 
   // changes focus
   _replaceDialog().activateWindow();
