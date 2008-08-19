@@ -410,7 +410,6 @@ void TextEditor::synchronize( TextEditor* editor )
 
 }
 
-
 //_____________________________________________________________________
 bool TextEditor::setActive( const bool& active )
 {
@@ -650,91 +649,6 @@ void TextEditor::lowerCase( void )
 
 }
 
-//_____________________________________________________________________
-void TextEditor::findFromDialog( void )
-{
-  Debug::Throw( "TextEditor::findFromDialog.\n" );
-
-  // create
-  if( !find_dialog_ ) _createFindDialog();
-
-  // enable/disable regexp
-  _findDialog().enableRegExp( true );
-
-  // raise dialog
-  QtUtil::centerOnParent( &_findDialog() );
-  _findDialog().show();
-
-  /*
-    setting the default text values
-    must be done after the dialog is shown
-    otherwise it may be automatically resized
-    to very large sizes due to the input text
-  */
-
-  // set default string to find
-  _findDialog().synchronize();
-  _findDialog().clearLabel();
-
-  // set default text
-  // update find text
-  QString text;
-  if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _findDialog().setText( text );
-  else if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
-  else if( !( text = _lastSelection().text() ).isEmpty() ) _findDialog().setText( text );
-
-  // changes focus
-  _findDialog().activateWindow();
-  _findDialog().editor().setFocus();
-
-  return;
-}
-
-
-//_____________________________________________________________________
-void TextEditor::replaceFromDialog( void )
-{
-  Debug::Throw( "TextEditor::replaceFromDialog.\n" );
-
-  // need to check for editability because apparently even if calling action is disabled,
-  // the shortcut still can be called
-  if( isReadOnly() ) return;
-
-    // create
-  if( !replace_dialog_ ) _createReplaceDialog();
-
-  // raise dialog
-  //QtUtil::centerOnPointer( &_replaceDialog() );
-  QtUtil::centerOnParent( &_replaceDialog() );
-  _replaceDialog().show();
-
-  /*
-    setting the default text values
-    must be done after the dialog is shown
-    otherwise it may be automatically resized
-    to very large sizes due to the input text
-  */
-
-  // synchronize combo-boxes
-  _replaceDialog().synchronize();
-  _replaceDialog().clearLabel();
-
-  // update find text
-  QString text;
-  if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _replaceDialog().setText( text );
-  else if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
-  else if( !( text = _lastSelection().text() ).isEmpty() ) _replaceDialog().setText( text );
-
-  // update replace text
-  if( !_lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( _lastSelection().replaceText() );
-
-  // changes focus
-  _replaceDialog().activateWindow();
-  _replaceDialog().editor().setFocus();
-
-  return;
-}
-
 //______________________________________________________________________
 void TextEditor::replace( TextSelection selection )
 {
@@ -816,25 +730,6 @@ unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& s
 
   if( show_dialog ) showReplacements( counts );
   return counts;
-
-}
-
-//________________________________________________
-void TextEditor::selectLineFromDialog( void )
-{
-
-  Debug::Throw( "TextEditor::selectLineFromDialog.\n" );
-  if( !select_line_dialog_ )
-  {
-    select_line_dialog_ = new SelectLineDialog( this );
-    connect( select_line_dialog_, SIGNAL( lineSelected( int ) ), SLOT( selectLine( int ) ) );
-  }
-
-  select_line_dialog_->editor().clear();
-  QtUtil::centerOnParent( select_line_dialog_ );
-  select_line_dialog_->show();
-  select_line_dialog_->activateWindow();
-  select_line_dialog_->editor().setFocus();
 
 }
 
@@ -1578,7 +1473,7 @@ void TextEditor::_installActions( void )
   addAction( find_action_ = new QAction( IconEngine::get( ICONS::FIND ), "&Find", this ) );
   find_action_->setShortcut( Qt::CTRL + Qt::Key_F );
   find_action_->setShortcutContext( Qt::WidgetShortcut );
-  connect( find_action_, SIGNAL( triggered() ), SLOT( findFromDialog() ) );
+  connect( find_action_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
   addAction( find_again_action_ = new QAction( "F&ind again", this ) );
   find_again_action_->setShortcut( Qt::CTRL + Qt::Key_G );
@@ -1603,7 +1498,7 @@ void TextEditor::_installActions( void )
   addAction( replace_action_ = new QAction( IconEngine::get( ICONS::FIND ), "Replace", this ) );
   replace_action_->setShortcut( Qt::CTRL + Qt::Key_R );
   replace_action_->setShortcutContext( Qt::WidgetShortcut );
-  connect( replace_action_, SIGNAL( triggered() ), SLOT( replaceFromDialog() ) );
+  connect( replace_action_, SIGNAL( triggered() ), SLOT( _replaceFromDialog() ) );
 
   addAction( replace_again_action_ = new QAction( "Replace again", this ) );
   replace_again_action_->setShortcut( Qt::CTRL + Qt::Key_T );
@@ -1618,7 +1513,7 @@ void TextEditor::_installActions( void )
   addAction( goto_line_action_ = new QAction( "&Goto line number", this ) );
   goto_line_action_->setShortcut( Qt::CTRL + Qt::Key_L );
   goto_line_action_->setShortcutContext( Qt::WidgetShortcut );
-  connect( goto_line_action_, SIGNAL( triggered() ), SLOT( selectLineFromDialog() ) );
+  connect( goto_line_action_, SIGNAL( triggered() ), SLOT( _selectLineFromDialog() ) );
 
   // remove line action
   QAction* remove_line_action( new QAction( "&Remove current line", this ) );
@@ -2484,4 +2379,107 @@ void TextEditor::_blockCountChanged( int count )
   _updateMargins();
   update();
   
+}
+
+//_____________________________________________________________________
+void TextEditor::_findFromDialog( void )
+{
+  Debug::Throw( "TextEditor::_findFromDialog.\n" );
+
+  // create
+  if( !find_dialog_ ) _createFindDialog();
+
+  // enable/disable regexp
+  _findDialog().enableRegExp( true );
+
+  // raise dialog
+  QtUtil::centerOnParent( &_findDialog() );
+  _findDialog().show();
+
+  /*
+    setting the default text values
+    must be done after the dialog is shown
+    otherwise it may be automatically resized
+    to very large sizes due to the input text
+  */
+
+  // set default string to find
+  _findDialog().synchronize();
+  _findDialog().clearLabel();
+
+  // set default text
+  // update find text
+  QString text;
+  if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _findDialog().setText( text );
+  else if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
+  else if( !( text = _lastSelection().text() ).isEmpty() ) _findDialog().setText( text );
+
+  // changes focus
+  _findDialog().activateWindow();
+  _findDialog().editor().setFocus();
+
+  return;
+}
+
+//_____________________________________________________________________
+void TextEditor::_replaceFromDialog( void )
+{
+  Debug::Throw( "TextEditor::_replaceFromDialog.\n" );
+
+  // need to check for editability because apparently even if calling action is disabled,
+  // the shortcut still can be called
+  if( isReadOnly() ) return;
+
+    // create
+  if( !replace_dialog_ ) _createReplaceDialog();
+
+  // raise dialog
+  //QtUtil::centerOnPointer( &_replaceDialog() );
+  QtUtil::centerOnParent( &_replaceDialog() );
+  _replaceDialog().show();
+
+  /*
+    setting the default text values
+    must be done after the dialog is shown
+    otherwise it may be automatically resized
+    to very large sizes due to the input text
+  */
+
+  // synchronize combo-boxes
+  _replaceDialog().synchronize();
+  _replaceDialog().clearLabel();
+
+  // update find text
+  QString text;
+  if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _replaceDialog().setText( text );
+  else if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
+  else if( !( text = _lastSelection().text() ).isEmpty() ) _replaceDialog().setText( text );
+
+  // update replace text
+  if( !_lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( _lastSelection().replaceText() );
+
+  // changes focus
+  _replaceDialog().activateWindow();
+  _replaceDialog().editor().setFocus();
+
+  return;
+}
+
+//________________________________________________
+void TextEditor::_selectLineFromDialog( void )
+{
+
+  Debug::Throw( "TextEditor::_selectLineFromDialog.\n" );
+  if( !select_line_dialog_ )
+  {
+    select_line_dialog_ = new SelectLineDialog( this );
+    connect( select_line_dialog_, SIGNAL( lineSelected( int ) ), SLOT( selectLine( int ) ) );
+  }
+
+  select_line_dialog_->editor().clear();
+  QtUtil::centerOnParent( select_line_dialog_ );
+  select_line_dialog_->show();
+  select_line_dialog_->activateWindow();
+  select_line_dialog_->editor().setFocus();
+
 }

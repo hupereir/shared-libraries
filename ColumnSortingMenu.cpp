@@ -48,6 +48,10 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const 
   connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _updateActions( void ) ) );
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _sort( QAction* ) ) );
   group_->setExclusive( true );
+  
+  addSeparator();
+  
+  addAction( "&Reverse order", this, SLOT( _revertOrder( void ) ) );
 }
 
 //_____________________________________________________
@@ -109,5 +113,19 @@ void ColumnSortingMenu::_sort( QAction* action )
   assert( header );
 
   header->setSortIndicator( iter->second, header->sortIndicatorOrder() );
+  
+}
+
+//______________________________________________________________________________
+void ColumnSortingMenu::_revertOrder( void )
+{
+  Debug::Throw( "ColumnSortingMenu::_sort.\n" );
+   
+  // retrieve parent tree_view
+  QHeaderView* header = _target().header();
+  assert( header );
+
+  Qt::SortOrder order( header->sortIndicatorOrder() == Qt::AscendingOrder ? Qt::DescendingOrder:Qt::AscendingOrder );  
+  header->setSortIndicator( header->sortIndicatorSection(), order );
   
 }

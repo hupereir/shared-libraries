@@ -351,10 +351,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! changes selection to lower case
   virtual void lowerCase( void );
-  
-  //! find text from dialog
-  virtual void findFromDialog( void );
-  
+    
   //! find next occurence of TextSelection
   virtual void find( TextSelection selection )
   { 
@@ -392,9 +389,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     _findBackward( _lastSelection(), true ); 
   }
   
-  //! replace text from dialog
-  virtual void replaceFromDialog( void );
-  
   //! find next occurence of TextSelection
   virtual void replace( TextSelection selection );
   
@@ -421,10 +415,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     selection.setFlag( TextSelection::BACKWARD, true );
     replace( selection );
   }
-  
-  //! select line from dialog
-  virtual void selectLineFromDialog( void );
-  
+    
   //! select line by number
   virtual void selectLine( int index ); 
     
@@ -680,7 +671,16 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! block count changed
   /*! needed to adjust width of line number display */
   void _blockCountChanged( int );
+
+  //! find text from dialog
+  virtual void _findFromDialog( void );
   
+  //! replace text from dialog
+  virtual void _replaceFromDialog( void );
+
+  //! select line from dialog
+  virtual void _selectLineFromDialog( void );
+
   private:
     
   //! true if rect is different from argument, and update

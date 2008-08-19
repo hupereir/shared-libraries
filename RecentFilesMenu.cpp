@@ -109,7 +109,7 @@ void RecentFilesMenu::_updateActions( void )
     
   }
 
-  _cleanAction().setEnabled( _fileList().hasInvalidFiles() || _fileList().hasDuplicatedFiles() );
+  _cleanAction().setEnabled( _fileList().cleanEnabled() );
   
 }
   
@@ -117,9 +117,8 @@ void RecentFilesMenu::_updateActions( void )
 void RecentFilesMenu::_clean( void )
 {    
   if( !_fileList().check() && !QtUtil::questionDialog( this,"clear list ?" ) ) return;
-  else if( _fileList().check() && !QtUtil::questionDialog( this,"Remove invalid/duplicated files from list ?" ) ) return;
+  else if( _fileList().check() && !QtUtil::questionDialog( this,"Remove invalid or duplicated files from list ?" ) ) return;
   _fileList().clean();
-  _fileList().clearDuplicates();
 }
 
 //_______________________________________________

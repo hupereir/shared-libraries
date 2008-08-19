@@ -59,6 +59,9 @@ class ColumnSortingMenu:public QMenu, public Counter
   //! update actions
   void _updateActions( void );
   
+  //! revert order
+  void _revertOrder( void );
+  
   //! update mask when triggering actions
   void _sort( QAction* action );
  
@@ -76,7 +79,7 @@ class ColumnSortingMenu:public QMenu, public Counter
     
   //! action group
   QActionGroup* group_;
-  
+    
   //! map action to column index
   typedef std::map< QAction*, int > ActionMap;
   

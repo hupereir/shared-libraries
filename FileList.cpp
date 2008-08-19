@@ -112,18 +112,18 @@ void FileList::customEvent( QEvent* event )
 }
 
 //___________________________________________________
-bool FileList::hasInvalidFiles( void ) const
+bool FileList::cleanEnabled( void ) const
 {
-  Debug::Throw( "FileList::hasInvalidFiles.\n" );
-  return check() ? find_if( records().begin(), records().end(), FileRecord::InvalidFTor() ) != records().end(): (!records().empty());
-}
+  Debug::Throw( "FileList::cleanEnabled.\n" );
+  if( !check() ) return !records().empty();
 
-//___________________________________________________
-bool FileList::hasDuplicatedFiles( void ) const
-{
   for( FileRecord::List::const_iterator iter = records().begin(); iter != records().end(); )
   {
     
+    // check item validity
+    if( !iter->isValid() ) return true;
+    
+    // check for duplicates
     FileRecord::SameCanonicalFileFTor ftor( iter->file() );
     if( find_if( ++iter, records().end(), ftor ) != records().end() )
     { return true; }
@@ -138,22 +138,19 @@ bool FileList::hasDuplicatedFiles( void ) const
 void FileList::clean( void )
 {
   Debug::Throw( "FileList::clean" );
-  if( check() ) 
-  {
-    records().erase(
-      remove_if( records().begin(), records().end(), FileRecord::InvalidFTor() ),
-      records().end() );
-  } else records().clear();
-  return;
-}
-
-
-//___________________________________________________
-void FileList::clearDuplicates( void )
-{
   
-  Debug::Throw() << "FileList::clearDuplicates." << endl;
-    
+  if( !check() ) 
+  {
+    records().clear();
+    return;
+  }
+
+  // remove invalid files
+  records().erase(
+    remove_if( records().begin(), records().end(), FileRecord::InvalidFTor() ),
+    records().end() );
+  
+  // remove duplicated files
   sort( records().begin(), records().end(), FileRecord::CanonicalFileFTor() );
   records().erase( unique( records().begin(), records().end(), FileRecord::SameCanonicalFileFTor() ), records().end() );
   sort( records().begin(), records().end(), FileRecord::FirstOpenFTor() );

@@ -141,7 +141,7 @@ template<class T> class TreeModel : public ItemModel
 
   //@}
   
-  //!@name job to index matching
+  //!@name value to index matching
   //@{
   
   //! return index associated to a given value, starting from parent [recursive]
