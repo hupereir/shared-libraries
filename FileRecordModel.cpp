@@ -121,7 +121,8 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         
         // form output string.
         ostringstream what;
-        what << local_name;
+        if( local_name.empty() ) what << "untitled";
+        else what << local_name;
         if( version ) what << " (" << version+1 << ")";
         return what.str().c_str();
       }

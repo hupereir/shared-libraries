@@ -1816,7 +1816,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
 void TextEditor::_createReplaceDialog( void )
 {
 
-  Debug::Throw( "TextEditor::_createFindDialog.\n" );
+  Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
   if( !replace_dialog_ )
   {
 
