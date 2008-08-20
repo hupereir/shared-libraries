@@ -32,7 +32,6 @@
 
 #include "ColorDisplay.h"
 #include "ListWidget.h"
-#include "ItemDelegate.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -44,7 +43,6 @@ ListWidget::ListWidget( QWidget* parent ):
 {
   
   Debug::Throw( "ListWidget::ListWidget.\n" ); 
-  //setItemDelegate ( new ItemDelegate( this ) );
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
   
@@ -79,8 +77,5 @@ void ListWidget::_updateConfiguration( void )
   palette.setColor( QPalette::AlternateBase, item_color );
   setPalette( palette );
   setAlternatingRowColors( true );
-  
-  ItemDelegate* delegate( dynamic_cast<ItemDelegate*>( itemDelegate() ) );
-  if( delegate ) delegate->setUseFlatStyle( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) );
   
 }

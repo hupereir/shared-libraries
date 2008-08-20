@@ -176,7 +176,7 @@ FileRecord& FileList::_add(
   const bool& update_timestamp,
   const bool& emit_signal )
 {
-
+  
   FileRecord::List::iterator iter = find_if( records().begin(), records().end(), FileRecord::SameFileFTor( record.file() ) );
   if( iter != records().end() ) 
   {
@@ -190,7 +190,9 @@ FileRecord& FileList::_add(
     return *iter;
     
   } else {
-
+    
+    Debug::Throw() << "FileList::_add - record: " << record.file() << endl;
+    
     records().push_back( record );    
     _truncateList();    
     if( emit_signal ) emit contentsChanged();

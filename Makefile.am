@@ -47,7 +47,6 @@ noinst_HEADERS = \
   IconCacheModel.h \
   IconEngine.h \
   IconFileDialog.h \
-  ItemDelegate.h \
   ItemModel.h \
   LineEditor.h \
   LineNumberDisplay.h \
@@ -140,7 +139,6 @@ libbase_qt_a_SOURCES = \
   IconCacheModel.cpp \
   IconEngine.cpp \
   IconFileDialog.cpp \
-  ItemDelegate.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
