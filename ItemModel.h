@@ -74,7 +74,7 @@ class ItemModel : public QAbstractItemModel, public Counter
   
   protected:
   
-  //! private sort, with no signals emmitted
+  //! this sort columns without calling the layout changed callbacks
   virtual void _sort( void )
   { _sort( sortColumn(), sortOrder() ); }
   

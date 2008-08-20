@@ -144,10 +144,8 @@ template<class T> class ListModel : public ItemModel
       
     emit layoutAboutToBeChanged();    
     _add( value );
+    _sort();
     emit layoutChanged();
-    
-    // redo the sorting
-    sort();
     
   }
   
@@ -164,10 +162,8 @@ template<class T> class ListModel : public ItemModel
     for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
     { _add( *iter ); }
         
+    _sort();
     emit layoutChanged();
-    
-    // redo the sorting
-    sort();
     
   }
 
@@ -193,8 +189,8 @@ template<class T> class ListModel : public ItemModel
     // insert remaining values at the end
     values_.insert( values_.end(), values.begin(), values.end() );
     
+    _sort();
     emit layoutChanged();
-    sort();
     
   }
   
@@ -298,11 +294,9 @@ template<class T> class ListModel : public ItemModel
     for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ ) 
     { _add( *iter ); }
 
+    _sort();
     emit layoutChanged();
 
-    // redo the sorting
-    sort();
-      
   }
   
   //! set all values
@@ -312,9 +306,9 @@ template<class T> class ListModel : public ItemModel
     emit layoutAboutToBeChanged();
     values_ = values;
     selection_.clear();
+    _sort();
     emit layoutChanged();
     
-    sort();
     return;
   }
   
