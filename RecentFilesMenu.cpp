@@ -150,7 +150,7 @@ void RecentFilesMenu::_loadFiles( void )
   // redo all actions
   FileRecord::List records( _fileList().records() ); 
   if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") ) { sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
-  else { sort( records.begin(), records.end(), FileRecord::SameFileFTor() ); }
+  else { sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
 
   // retrieve stored file record
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )

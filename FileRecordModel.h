@@ -47,11 +47,9 @@ class FileRecordModel: public ListModel<FileRecord>
   
   public:
 
-  //! number of columns
-  enum { n_columns = 3 };
-
   //! column type enumeration
   enum ColumnType {
+    ICON,
     FILE, 
     PATH,
     TIME

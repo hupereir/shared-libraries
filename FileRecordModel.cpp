@@ -21,7 +21,7 @@
 *                         
 *                         
 *******************************************************************************/
- 
+
 /*!
   \file FileRecordModel.cpp
   \brief model for object records
@@ -52,6 +52,7 @@ FileRecordModel::FileRecordModel( QObject* parent ):
 {
   Debug::Throw("FileRecordModel::FileRecordModel.\n" );
 
+  column_titles_.push_back( "" );
   column_titles_.push_back( "file" );
   column_titles_.push_back( "path" );
   column_titles_.push_back( "last accessed" );
@@ -137,7 +138,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
    
     }
     
-  } else if( _showIcons() && role == Qt::DecorationRole && index.column() == FILE && record.hasProperty( FileRecordProperties::ICON ) ) {
+  } else if( _showIcons() && role == Qt::DecorationRole && index.column() == ICON && record.hasProperty( FileRecordProperties::ICON ) ) {
     
     return _icon( record.property( FileRecordProperties::ICON ) );
     
