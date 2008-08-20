@@ -87,14 +87,18 @@ class FileRecord: public Counter
   //@{
   
   //! flags
-  void setFlags( unsigned int value )
-  { flags_ = value; }
+  FileRecord& setFlags( unsigned int value )
+  { 
+    flags_ = value; 
+    return *this;
+  }
   
   //! flags
-  void setFlag( unsigned int flag, const bool& value = true )
+  FileRecord& setFlag( unsigned int flag, const bool& value = true )
   {
     if( value ) { flags_ |= flag; }
     else { flags_ &= (~flag); } 
+    return *this;
   }
   
   //! flags
@@ -112,12 +116,18 @@ class FileRecord: public Counter
   { return valid_; }
   
   //! validity
-  void setValid( const bool& valid )
-  { valid_ = valid; }
+  FileRecord& setValid( const bool& valid )
+  { 
+    valid_ = valid; 
+    return *this;
+  }
 
   //! add information
-  void addProperty( const std::string& tag, const std::string& value )
-  { properties_[tag] = value; }
+  FileRecord& addProperty( const std::string& tag, const std::string& value )
+  { 
+    properties_[tag] = value; 
+    return *this;
+  }
   
   //! true if information is available
   bool hasProperty( const std::string& tag ) const
@@ -145,6 +155,18 @@ class FileRecord: public Counter
     assert( iter != properties_.end() );
     return Str( iter->second ).get<T>();
   }
+
+  //! used to sort records according to files
+  class FileFTor
+  {
+    
+    public:
+    
+    //! predicate
+    bool operator() (const FileRecord& first, const FileRecord& second) const
+    { return first.file() < second.file(); }
+  
+  };
   
   //! used to retrieve FileRecord with identical filenames
   class SameFileFTor
@@ -165,10 +187,10 @@ class FileRecord: public Counter
     //! predicate
     bool operator() (const FileRecord& record ) const
     { return record.file() == file_; }
-    
+
     //! predicate
     bool operator() (const FileRecord& first, const FileRecord& second) const
-    { return first.file() < second.file(); }
+    { return first.file() == second.file(); }
     
     private:
     
