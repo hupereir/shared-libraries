@@ -653,7 +653,7 @@ void TextEditor::lowerCase( void )
 void TextEditor::replace( TextSelection selection )
 {
 
-  Debug::Throw( "TextEditor::replace.\n" );
+  Debug::Throw( 0, "TextEditor::replace.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -662,12 +662,20 @@ void TextEditor::replace( TextSelection selection )
   // see if current selection match
   // perform replacement if yes
   QTextCursor cursor( textCursor() );
-  if(
-    cursor.hasSelection() &&
-    cursor.selectedText().size() == selection.text().size() &&
-    cursor.selectedText().contains(
+  bool accepted( true );
+  accepted &= cursor.hasSelection();
+  if( selection.flag( TextSelection::REGEXP ) )
+  { 
+    accepted &= QRegExp( selection.text() ).exactMatch( cursor.selectedText() );
+  } else {
+    
+    accepted &= ( !cursor.selectedText().compare(
       selection.text(),
-      selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) )
+      selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) );
+    
+  }
+
+  if( accepted ) 
   {
     cursor.insertText( selection.replaceText() );
     setTextCursor( cursor );
