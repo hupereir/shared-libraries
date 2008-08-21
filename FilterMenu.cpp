@@ -44,6 +44,11 @@ FilterMenu::FilterMenu( QWidget* parent ):
 { 
   Debug::Throw( "FilterMenu::FilterMenu.\n" );
   setTitle( "&Filter" );
+   
+  // action group
+  group_ = new QActionGroup( this );
+  group_->setExclusive( true );
+ 
   _reset();
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectFilter( QAction* ) ) );
 }
@@ -51,14 +56,11 @@ FilterMenu::FilterMenu( QWidget* parent ):
 //____________________________________________________________________
 void FilterMenu::select( const QString& filter )
 {
-  Debug::Throw( "FilterMenu::select.\n" );
+  
+  Debug::Throw() << "FilterMenu::select - filter: " << qPrintable( filter ) << endl;
   
   for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
-  {
-    QFont font( iter->first->font() );
-    font.setWeight( (iter->second == filter ) ? QFont::Bold : QFont::Normal );
-    iter->first->setFont( font );
-  }  
+  { if( iter->second == filter ) iter->first->setChecked( true ); }  
    
   return;
   
@@ -83,8 +85,10 @@ void FilterMenu::_reset( void )
   for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   { 
     QAction* action( new QAction( iter->c_str(), this ) ); 
+    action->setCheckable( true );
     action_map_.insert( make_pair( action, iter->c_str() ) );
     addAction( action );
+    group_->addAction( action );
   }
   
 }

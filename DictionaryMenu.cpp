@@ -42,10 +42,17 @@ DictionaryMenu::DictionaryMenu( QWidget* parent ):
   QMenu( parent ),
   Counter( "DictionaryMenu" )
 { 
+  
   Debug::Throw( "DictionaryMenu::DictionaryMenu.\n" );
   setTitle( "&Dictionary" );
+  
+  // action group
+  group_ = new QActionGroup( this );
+  group_->setExclusive( true );
+  
   _reset();
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectDictionary( QAction* ) ) );
+
 }
 
 //____________________________________________________________________
@@ -54,11 +61,7 @@ void DictionaryMenu::select( const QString& dictionary )
   Debug::Throw( "DictionaryMenu::select.\n" );
   
   for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
-  {
-    QFont font( iter->first->font() );
-    font.setWeight( (iter->second == dictionary ) ? QFont::Bold : QFont::Normal );
-    iter->first->setFont( font );
-  }  
+  { if( iter->second == dictionary ) iter->first->setChecked( true ); }  
    
   return;
   
@@ -69,6 +72,11 @@ void DictionaryMenu::_reset( void )
 {
 
   Debug::Throw( "DictionaryMenu::_reset.\n" );
+  
+  // store selected dictionary
+  QString dictionary;
+  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
+  { if( iter->first->isChecked() ) dictionary = iter->second; }
   
   // clear actions
   QMenu::clear();
@@ -84,8 +92,11 @@ void DictionaryMenu::_reset( void )
   for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
   { 
     QAction* action( new QAction( iter->c_str(), this ) ); 
+    action->setCheckable( true );
+    action->setChecked( iter->c_str() == dictionary );
     action_map_.insert( make_pair( action, iter->c_str() ) );
     addAction( action );
+    group_->addAction( action );
   }
   
 }

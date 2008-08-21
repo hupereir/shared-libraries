@@ -135,7 +135,7 @@ bool SpellInterface::setFilter( const std::string& filter )
   filter_ = filter;
 
   // reset SpellChecker
-  return _reset();
+  return _reset() || filter == NO_FILTER;
 
 }
 

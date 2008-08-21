@@ -32,6 +32,8 @@
    \date $Date$
 */
 
+#include <QAction>
+#include <QActionGroup>
 #include <QMenu>
 #include <map>
 #include <string>
@@ -69,7 +71,10 @@ namespace SPELLCHECK
     void _selectFilter( QAction* action );
     
     private:
-    
+     
+    //! action group
+    QActionGroup* group_;
+   
     //! map filters and action
     std::map<QAction*, QString> action_map_;
     
