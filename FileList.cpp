@@ -41,6 +41,10 @@
 using namespace std;
 
 //_______________________________________________
+bool FileList::has( const File& file ) const
+{ return find_if( records().begin(), records().end(), FileRecord::SameFileFTor( file ) ) != records().end(); }
+
+//_______________________________________________
 void FileList::remove( const File& file )
 {
   Debug::Throw() << "FileList::remove - " << file << endl;

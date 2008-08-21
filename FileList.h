@@ -66,6 +66,9 @@ class FileList: public QObject, public Counter
   virtual ~FileList( void )
   { Debug::Throw( "FileList::~FileList.\n" ); }
 
+  //! returns true if file is found in list
+  virtual bool has( const File& file ) const;
+  
   //! add file.
   virtual FileRecord& add( const File& file )
   { return _add( FileRecord( file ) ); }
