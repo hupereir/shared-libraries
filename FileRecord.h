@@ -109,6 +109,28 @@ class FileRecord: public Counter
   bool hasFlag( const unsigned int& flag ) const
   { return flags_ & flag; }
   
+  //! used to retrieve file records that match a given flag
+  class HasFlagFTor
+  {
+    
+    public:
+    
+    //! constructor
+    HasFlagFTor( const unsigned int& flag ):
+      flag_( flag )
+      {}
+      
+    //! predicate
+    bool operator() ( const FileRecord& record ) const
+    { return record.hasFlag( flag_ ); }
+      
+    private:
+    
+    // predicted flag
+    unsigned int flag_;
+    
+  };
+  
   //@}
   
   //! validity
