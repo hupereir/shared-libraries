@@ -83,15 +83,17 @@ void BoxSelection::updateConfiguration( void )
   Debug::Throw( debug_level, "BoxSelection::updateConfiguration.\n" );
   
   // retrieve box selection color from options
+  QColor color;
   if( XmlOptions::get().find( "BOX_SELECTION_COLOR" ) )
-  { color_ = QColor( XmlOptions::get().raw( "BOX_SELECTION_COLOR" ).c_str() ); }
+  { color = QColor( XmlOptions::get().raw( "BOX_SELECTION_COLOR" ).c_str() ); }
   
   // if invalid, use the normal selection color
-  if( !color_.isValid() ) color_ = parent_->palette().color( QPalette::Highlight );
-  
+  if( !color.isValid() ) color = parent_->palette().color( QPalette::Highlight );
+  color_ = color;
+    
   // retrieve shading from options
-  double alpha = XmlOptions::get().get<double>("BOX_SELECTION_ALPHA")*255/100;
-  if( color_.isValid() ) color_.setAlpha( int( alpha ) );
+  color.setAlpha( XmlOptions::get().get<double>("BOX_SELECTION_ALPHA")*255/100 );
+  brush_ = QBrush( color );
 
   // additional initialization dependening on whether box selection is enabled or not
   enabled_ = false;

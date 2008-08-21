@@ -78,10 +78,14 @@ class BoxSelection: public Counter
   //! enability
   const bool& isEnabled( void ) const
   { return enabled_; }
-  
-  //! color
+
+  //! forgeround color
   const QColor& color( void ) const
   { return color_; }
+
+  //! background brush
+  const QBrush& brush( void ) const
+  { return brush_; }
   
   //! state
   const State& state( void ) const
@@ -202,6 +206,9 @@ class BoxSelection: public Counter
   
   //! selection color
   QColor color_;
+  
+  //! selection brush
+  QBrush brush_;
   
   //! font width
   int font_width_;

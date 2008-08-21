@@ -653,7 +653,7 @@ void TextEditor::lowerCase( void )
 void TextEditor::replace( TextSelection selection )
 {
 
-  Debug::Throw( 0, "TextEditor::replace.\n" );
+  Debug::Throw( "TextEditor::replace.\n" );
 
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
@@ -1396,24 +1396,17 @@ void TextEditor::paintEvent( QPaintEvent* event )
     _boxSelection().state() == BoxSelection::FINISHED
     )
   {
-
-    painter.setBrush( _boxSelection().color() );
-    painter.drawRect( _boxSelection().rect()&rect );
+    
+    painter.setPen( _boxSelection().color() );
+    painter.setBrush( _boxSelection().brush() );
+    painter.drawRect( _boxSelection().rect().adjusted( 0, 0, -1, -1 )&rect );
 
   }
   painter.end();
   
   // base class painting
   QTextEdit::paintEvent( event );
-  
-//   Debug::Throw(0) 
-//     << "TextEditor::paintEvent -"
-//     << " key: " << key()
-//     << " rect: (" 
-//     << rect.x() << "," << rect.y() << "," << rect.width() << "," << rect.height() << ")"
-//     << endl;
-  
-  
+    
   // this is needed to force update of editor's margin  
   /* 
   update is performed every time the rect changes or when its width is larger than the cursor width 
