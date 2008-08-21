@@ -65,6 +65,10 @@ class CustomToolButton: public QToolButton, public Counter
   virtual ~CustomToolButton( void ) 
   { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }
      
+  //! update configuration from options
+  void setUpdateFromOptions( const bool& value )
+  { update_from_options_ = value; }
+  
   //! small icon size
   const QSize& smallIconSize( void ) const
   { return small_icon_size_; }
@@ -134,6 +138,13 @@ class CustomToolButton: public QToolButton, public Counter
   //! rotation
   const Rotation& _rotation( void ) const
   { return rotation_; }
+  
+  //! update configuration from options
+  const bool& _updateFromOptions( void ) const
+  { return update_from_options_; }
+  
+  //! update configuration from options
+  bool update_from_options_;
   
   //! big icon-size
   /*! by default this is the global BigIconSize but can be manually tweaked */

@@ -50,6 +50,7 @@ const QSize CustomToolButton::SmallIconSize = QSize( 24, 24 );
 CustomToolButton::CustomToolButton( QWidget* parent ):
     QToolButton( parent ),
     Counter( "CustomToolButton" ),
+    update_from_options_( true ),
     big_icon_size_( BigIconSize ),
     small_icon_size_( SmallIconSize ),
     rotation_( NONE )
@@ -57,8 +58,12 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
 
   Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
   
-  _updateConfiguration();
+  // auto-raise
+  setAutoRaise( true );
+
+  // configuration
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  _updateConfiguration();
   
 }
 
@@ -115,10 +120,9 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
 void CustomToolButton::_updateConfiguration( void )
 {
   Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
-
-  // auto-raise
-  setAutoRaise( true );
-
+  
+  if( !_updateFromOptions() ) return;
+  
   // pixmap size
   QToolButton::setIconSize(  XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ? bigIconSize():smallIconSize() );
   
