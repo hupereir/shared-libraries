@@ -62,7 +62,7 @@ bool XmlFileList::_setDBFile( const File& file )
   Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
 
   // check file
-  if( db_file_ == file && !records().empty() ) return false;
+  if( db_file_ == file && !_records().empty() ) return false;
     
   // store file and read
   db_file_ = file;
@@ -126,9 +126,8 @@ bool XmlFileList::_write( void )
   QFile out( db_file_.c_str() );
   if( !out.open( QIODevice::WriteOnly ) ) return false;
 
-  // truncate list
-  if( _maxSize() > 0 && int( records().size() ) > _maxSize() )
-  { _truncateList(); }
+  // get records truncated list
+  FileRecord::List records( _truncatedList( _records() ) );
     
   // create document
   QDomDocument document;
@@ -137,7 +136,7 @@ bool XmlFileList::_write( void )
   QDomElement top = document.appendChild( document.createElement( XML_FILE_LIST.c_str() ) ).toElement();
 
   // loop over records
-  for( FileRecord::List::const_iterator iter = records().begin(); iter != records().end(); iter++ )
+  for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   { 
     Debug::Throw() << "XmlFileList::_write - " << *iter;
     top.appendChild( XmlFileRecord( *iter ).domElement( document ) ); 

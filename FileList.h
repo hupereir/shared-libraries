@@ -83,9 +83,13 @@ class FileList: public QObject, public Counter
    
   //! gets file list size
   virtual int size( void ) const
-  { return records().size(); }
+  { return _records().size(); }
   
-  //! get all files
+  //! all records
+  FileRecord::List records( void ) const
+  { return _truncatedList( _records() ); }
+  
+  //! all files
   std::list< File > files( void ) const;
   
   //! get last valid file
@@ -105,14 +109,6 @@ class FileList: public QObject, public Counter
   virtual void setCheck( const bool& value )
   { check_ = value; }
   
-   //! list of files records
-  virtual const FileRecord::List& records( void ) const
-  { return records_; }
- 
-  //! list of files records
-  virtual FileRecord::List& records( void )
-  { return records_; }
-
   signals:
     
   //! emmited when thread has completed validity check
@@ -145,8 +141,17 @@ class FileList: public QObject, public Counter
     const bool& emit_signal = true );
   
   //! truncate list if larger than max_size_
-  virtual void _truncateList( void );
+  virtual FileRecord::List _truncatedList( FileRecord::List ) const;
 
+  //! list of files records
+  virtual const FileRecord::List& _records( void ) const
+  { return records_; }
+ 
+  //! list of files records
+  virtual FileRecord::List& _records( void )
+  { return records_; }
+
+  
   private:
   
   //! maximum size (negative means no limit)

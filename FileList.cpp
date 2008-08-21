@@ -42,13 +42,13 @@ using namespace std;
 
 //_______________________________________________
 bool FileList::has( const File& file ) const
-{ return find_if( records().begin(), records().end(), FileRecord::SameFileFTor( file ) ) != records().end(); }
+{ return find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ) != _records().end(); }
 
 //_______________________________________________
 void FileList::remove( const File& file )
 {
   Debug::Throw() << "FileList::remove - " << file << endl;
-  records().erase(remove_if( records().begin(), records().end(), FileRecord::SameFileFTor( file ) ), records().end() );
+  _records().erase(remove_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ), _records().end() );
   return;
 }
 
@@ -56,8 +56,11 @@ void FileList::remove( const File& file )
 list<File> FileList::files( void ) const
 {
   Debug::Throw( "FileList::files.\n" );
+  
+  FileRecord::List records( _truncatedList( _records() ) );
+  
   list<File> out;
-  for( FileRecord::List::const_iterator iter = records().begin(); iter != records().end(); iter++ )
+  for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   { out.push_back( iter->file() ); }
   
   return out;
@@ -70,8 +73,8 @@ FileRecord FileList::lastValidFile( void )
   Debug::Throw( "FileList::lastValidFile.\n" );
   
   // sort list
-  sort( records().begin(), records().end(), FileRecord::FirstOpenFTor() );  
-  for( FileRecord::List::reverse_iterator iter = records().rbegin(); iter != records().rend(); iter++ ) 
+  sort( _records().begin(), _records().end(), FileRecord::FirstOpenFTor() );  
+  for( FileRecord::List::reverse_iterator iter = _records().rbegin(); iter != _records().rend(); iter++ ) 
   { if( (!check_) || iter->isValid() ) return *iter; }
   return FileRecord( File("") );
 
@@ -83,7 +86,7 @@ void FileList::checkValidFiles( void )
   Debug::Throw( "FileList::checkValidFiles.\n" );
   if( !check() ) return;
   if( thread_.isRunning() ) return;
-  thread_.setFiles( records() );
+  thread_.setFiles( _records() );
   thread_.start();
 }
 
@@ -98,7 +101,7 @@ void FileList::customEvent( QEvent* event )
   if( !valid_file_event ) return;
   
   // set file records validity
-  FileRecord::List& current_records( records() );
+  FileRecord::List& current_records( _records() );
   const FileRecord::List& records( valid_file_event->files() ); 
   for( FileRecord::List::iterator iter = current_records.begin(); iter != current_records.end(); iter++ )
   {
@@ -119,9 +122,9 @@ void FileList::customEvent( QEvent* event )
 bool FileList::cleanEnabled( void ) const
 {
   Debug::Throw( "FileList::cleanEnabled.\n" );
-  if( !check() ) return !records().empty();
+  if( !check() ) return !_records().empty();
 
-  for( FileRecord::List::const_iterator iter = records().begin(); iter != records().end(); )
+  for( FileRecord::List::const_iterator iter = _records().begin(); iter != _records().end(); )
   {
     
     // check item validity
@@ -129,7 +132,7 @@ bool FileList::cleanEnabled( void ) const
     
     // check for duplicates
     FileRecord::SameCanonicalFileFTor ftor( iter->file() );
-    if( find_if( ++iter, records().end(), ftor ) != records().end() )
+    if( find_if( ++iter, _records().end(), ftor ) != _records().end() )
     { return true; }
     
   }
@@ -145,19 +148,19 @@ void FileList::clean( void )
   
   if( !check() ) 
   {
-    records().clear();
+    _records().clear();
     return;
   }
 
   // remove invalid files
-  records().erase(
-    remove_if( records().begin(), records().end(), FileRecord::InvalidFTor() ),
-    records().end() );
+  _records().erase(
+    remove_if( _records().begin(), _records().end(), FileRecord::InvalidFTor() ),
+    _records().end() );
   
   // remove duplicated files
-  sort( records().begin(), records().end(), FileRecord::CanonicalFileFTor() );
-  records().erase( unique( records().begin(), records().end(), FileRecord::SameCanonicalFileFTor() ), records().end() );
-  sort( records().begin(), records().end(), FileRecord::FirstOpenFTor() );
+  sort( _records().begin(), _records().end(), FileRecord::CanonicalFileFTor() );
+  _records().erase( unique( _records().begin(), _records().end(), FileRecord::SameCanonicalFileFTor() ), _records().end() );
+  sort( _records().begin(), _records().end(), FileRecord::FirstOpenFTor() );
   
   return;
 }
@@ -168,7 +171,6 @@ void FileList::_setMaxSize( const int& value )
 
   Debug::Throw( "FileList::_setMaxSize.\n" );
   max_size_ = value;
-  _truncateList();
 
   return;
 
@@ -181,8 +183,8 @@ FileRecord& FileList::_add(
   const bool& emit_signal )
 {
   
-  FileRecord::List::iterator iter = find_if( records().begin(), records().end(), FileRecord::SameFileFTor( record.file() ) );
-  if( iter != records().end() ) 
+  FileRecord::List::iterator iter = find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( record.file() ) );
+  if( iter != _records().end() ) 
   {
     
     if( update_timestamp && iter->time() != record.time() ) 
@@ -196,39 +198,41 @@ FileRecord& FileList::_add(
   } else {
     
     Debug::Throw() << "FileList::_add - record: " << record.file() << endl;
-    
-    records().push_back( record );    
-    _truncateList();    
+
+    _records().push_back( record );    
+
     if( emit_signal ) emit contentsChanged();
-    return records().back();
+    return _records().back();
     
   }
     
 }
 
 //___________________________________________________________________
-void FileList::_truncateList( void )
+FileRecord::List FileList::_truncatedList( FileRecord::List records ) const
 {
   // shrink list
-  if( max_size_ > 0 && int(records().size()) > max_size_ )
+  if( max_size_ > 0 && int(records.size()) > max_size_ )
   {
     
-    sort( records().begin(), records().end(), FileRecord::FirstOpenFTor() );
+    sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() );
     if( check_ )
     {
-      while( int(records().size()) > max_size_ )
+      
+      while( int(records.size()) > max_size_ )
       {
-        FileRecord::List::iterator iter( find_if( records().begin(), records().end(), FileRecord::InvalidFTor() ) );
-        if( iter != records().end() ) records().erase( iter );
+        FileRecord::List::iterator iter( find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
+        if( iter != records.end() ) records.erase( iter );
         else break;
       }
+      
     }
     
     // remove oldest files
-    while( int(records().size()) > max_size_ )
-    { records().erase( records().begin() ); }
+    while( int(records.size()) > max_size_ )
+    { records.erase( records.begin() ); }
     
   }
   
-  return;
+  return records;
 }

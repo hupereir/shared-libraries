@@ -51,7 +51,6 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
   Debug::Throw( "RecentFilesMenu::RecentFilesMenu.\n" );
   
   setTitle( "Open &Recent" );
-  
   connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
   connect( this, SIGNAL( aboutToShow( void ) ), &_fileList(), SLOT( checkValidFiles( void ) ) );
   connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _loadFiles( void ) ) );
@@ -95,7 +94,7 @@ void RecentFilesMenu::_updateActions( void )
   Debug::Throw( "RecentFilesMenu::_updateActions.\n" );
   
   // set actions enability
-  const FileRecord::List& records( _fileList().records() ); 
+  FileRecord::List records( _fileList().records() ); 
   for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
   {
     
@@ -140,7 +139,7 @@ void RecentFilesMenu::_loadFiles( void )
   Debug::Throw( "RecentFilesMenu::_loadFiles.\n" );
   
   // run thread to check file validity
-  if( !( _fileList().check() || _fileList().records().empty() ) ) _cleanAction().setEnabled( true ); 
+  _cleanAction().setEnabled( _fileList().cleanEnabled() ); 
   
   // clear menu an actions map
   for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
