@@ -72,16 +72,22 @@ class FileRecord: public Counter
   { return file_; }
 
   //! file
-  void setFile( const std::string& file )
-  { file_ = file; }
+  FileRecord& setFile( const std::string& file )
+  { 
+    file_ = file; 
+    return *this;
+  }
 
   //! time stamp
   const int& time( void ) const
   { return time_; }
 
   //! time stamp
-  void setTime( const TimeStamp& time )
-  { time_ = time; }
+  FileRecord& setTime( const TimeStamp& time )
+  { 
+    time_ = time;
+    return *this;
+  }
   
   //!@name flags
   //@{
