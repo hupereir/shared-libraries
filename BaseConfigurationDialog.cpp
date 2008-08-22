@@ -175,7 +175,13 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     edit->setToolTip( "Default font name (fixed) for text widgets" );
     grid_layout->addWidget( edit );
     addOptionWidget( edit );
-    
+      
+    // pixmap path
+    grid_layout->addWidget( new QLabel( "pixmaps: ", box ) );
+    QPushButton *button = new QPushButton( "Edit pixmap path list", box );
+    connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
+    grid_layout->addWidget( button );
+  
     // debug level
     grid_layout->addWidget( new QLabel( "Debug level: ", box ) );
     OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
@@ -184,7 +190,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     spinbox->setToolTip( "Debug verbosity level" );
     grid_layout->addWidget( spinbox );
     addOptionWidget( spinbox );
-      
+  
   }
     
   // list
@@ -193,54 +199,6 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
   // tabs
   if( flag & TEXTEDIT ) { textEditConfiguration( parent ); }
 
-  // toolbars
-  if( flag & TOOLBAR ) { toolbarConfiguration( parent ); }  
-      
-}
-
-//__________________________________________________
-void BaseConfigurationDialog::toolbarConfiguration( QWidget* parent )
-{
-  
-  Debug::Throw( "BaseConfigurationDialog::toolbarConfiguration.\n" );
-    
-  // make sure parent is valid
-  if( !parent ) parent = &addPage( "Base" );
-  QGroupBox* box = new QGroupBox( "Toolbars", parent );
-  QVBoxLayout* layout = new QVBoxLayout();
-  layout->setMargin(5);
-  layout->setSpacing(5);
-  box->setLayout( layout );
-  parent->layout()->addWidget( box );
-        
-  QHBoxLayout* h_layout = new QHBoxLayout();
-  h_layout->setMargin(0);
-  h_layout->setSpacing(5);
-  layout->addLayout( h_layout );
-
-  // menu big pixmaps
-  OptionCheckBox* checkbox = new OptionCheckBox( "Big pixmaps in toolbars", box, "USE_BIG_PIXMAP" );
-  addOptionWidget( checkbox );
-  checkbox->setToolTip( "Use big pixmaps in toolbars" );
-  h_layout->addWidget( checkbox );
-
-  QPushButton *button = new QPushButton( "Edit pixmap path list", box );
-  connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
-  h_layout->addWidget( button );
-
-  // menu text label
-  checkbox = new OptionCheckBox( "Button text in toolbars", box, "USE_TEXT_LABEL" );
-  addOptionWidget( checkbox );
-  checkbox->setToolTip( "Use text under tool buttons icon" );
-  layout->addWidget( checkbox );
-
-  // lock toolbars
-  checkbox = new OptionCheckBox( "lock toolbars position", box, "LOCK_TOOLBARS" );
-  addOptionWidget( checkbox );
-  checkbox->setToolTip( "Lock toolbars position" );
-  layout->addWidget( checkbox );
-  
-  
 }
 
 //__________________________________________________

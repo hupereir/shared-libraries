@@ -35,6 +35,7 @@
 #include <assert.h>
 
 #include <QAction>
+#include <QActionGroup>
 #include <QBasicTimer>
 #include <QMainWindow>
 #include <QMenu>
@@ -78,9 +79,14 @@ class CustomMainWindow: public QMainWindow
   //! create context menu (overloaded)
   virtual QMenu* createPopupMenu( void );
   
-  //! install toolbar visibility and lock actions
-  /*! returns false if no actions are installed */
+  //! install toolbar visibility actions
+  /*! returns true if lockable toolbars are found */
   virtual bool installToolBarsActions( QMenu& );
+  
+  signals:
+  
+  //! toolbar configuration changed
+  void toolbarConfigurationChanged( void );
   
   protected:
     
@@ -114,14 +120,26 @@ class CustomMainWindow: public QMainWindow
   virtual const std::string _widthOptionName( void ) const
   { return width_option_name_; }
 
+  //! true if main window has toolbars
+  virtual bool _hasToolBars( void ) const;
+  
+  //! install toolbars text position actions
+  virtual void _installToolButtonStyleActions( QMenu& );
+
+  //! install icon size actions
+  virtual void _installToolButtonIconSizeActions( QMenu& );
+  
   private slots:
   
   //! update configuration
   void _updateConfiguration( void );
-  
-  //! save configuration
-  void _saveConfiguration( void );
-
+ 
+  //! toolbar text position
+  void _updateToolButtonStyle( QAction* );
+ 
+  //! toolbar text position
+  void _updateToolButtonIconSize( QAction* );
+    
   //! lock toolbars
   void _lockToolBars( bool ); 
   
@@ -133,6 +151,21 @@ class CustomMainWindow: public QMainWindow
   //! resize timer
   QBasicTimer resize_timer_;
   
+  //! toolbar text actions group
+  QActionGroup* toolbutton_style_group_;
+  
+  //! toolbar text actions group
+  QActionGroup* icon_size_group_;
+ 
+  //! action map
+  typedef std::map<QAction*, int > ActionMap;
+    
+  //! toolbar text action map
+  ActionMap toolbutton_style_actions_;
+    
+  //! toolbar text action map
+  ActionMap icon_size_actions_;
+
   //! window size option name
   std::string width_option_name_;
 

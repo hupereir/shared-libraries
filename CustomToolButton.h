@@ -35,6 +35,7 @@
 #include <QIconSet>
 #include <QLabel>
 #include <QToolButton>
+#include <map>
 
 #include <string>
 
@@ -51,13 +52,7 @@ class CustomToolButton: public QToolButton, public Counter
   Q_OBJECT
   
   public:
-  
-  //! large icon size
-  static const QSize BigIconSize;
-
-  //! small icon size
-  static const QSize SmallIconSize;
-    
+      
   //! default creator
   CustomToolButton( QWidget* parent );
      
@@ -68,46 +63,7 @@ class CustomToolButton: public QToolButton, public Counter
   //! update configuration from options
   void setUpdateFromOptions( const bool& value )
   { update_from_options_ = value; }
-  
-  //! small icon size
-  const QSize& smallIconSize( void ) const
-  { return small_icon_size_; }
-
-  //! big icon size
-  const QSize& bigIconSize( void ) const
-  { return big_icon_size_; }
-  
-  //! icon size enumeration
-  /*! used notably to assign values to a given icon size */
-  enum IconSize
-  {
-    //! select big icons
-    BIG = 1<<0,
-
-    //! select small icons
-    SMALL = 1<<1,
-    
-    //! select both sets of icons
-    ALL = BIG|SMALL
-    
-  };
-    
-  //! small icon size
-  void setSmallIconSize( const QSize& size )
-  { setIconSize( size, SMALL ); }
-  
-  //! big icon size
-  void setBigIconSize( const QSize& size )
-  { setIconSize( size, BIG ); }
-   
-  //! icon size
-  void setIconSize( const QSize& size, const IconSize& type )
-  { 
-    if( type & BIG ) big_icon_size_ = size; 
-    if( type & SMALL ) small_icon_size_ = size; 
-    _updateConfiguration();
-  }
-  
+       
   //! rotation
   enum Rotation
   {
@@ -122,6 +78,25 @@ class CustomToolButton: public QToolButton, public Counter
   
   //! size hint
   virtual QSize sizeHint( void ) const;
+  
+  //! icon sizes
+  enum IconSize
+  {
+    DEFAULT = 0,
+    SMALL = 16,
+    MEDIUM = 22,
+    LARGE = 32,
+    HUGE = 48
+  };
+  
+  //! map text to icon size 
+  typedef std::map<IconSize, QString> IconSizeMap;
+  
+  //! text to icon size
+  static const IconSizeMap& iconSizes( void );
+  
+  //! set icon size
+  QSize iconSize( IconSize ) const;
   
   protected:
   
@@ -145,17 +120,12 @@ class CustomToolButton: public QToolButton, public Counter
   
   //! update configuration from options
   bool update_from_options_;
-  
-  //! big icon-size
-  /*! by default this is the global BigIconSize but can be manually tweaked */
-  QSize big_icon_size_;
-  
-  //! small icon-size
-  /*! by default this is the global SmallIconSize but can be manually tweaked */
-  QSize small_icon_size_;
-  
+    
   //! rotation
   Rotation rotation_;
+  
+  //! icon size map
+  static IconSizeMap icon_sizes_;
   
 };
 

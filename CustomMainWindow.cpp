@@ -54,9 +54,16 @@ CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
   connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
   
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-  connect( qApp, SIGNAL( saveConfiguration() ), SLOT( _saveConfiguration() ) );
-  connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
+  connect( this, SIGNAL( toolbarConfigurationChanged() ), qApp, SIGNAL( configurationChanged() ) );
   _updateConfiguration();
+  
+  toolbutton_style_group_ = new QActionGroup( this );
+  toolbutton_style_group_->setExclusive( true );
+  connect( toolbutton_style_group_, SIGNAL( triggered( QAction* ) ), SLOT( _updateToolButtonStyle( QAction* ) ) );
+
+  icon_size_group_ = new QActionGroup( this );
+  icon_size_group_->setExclusive( true );
+  connect( icon_size_group_, SIGNAL( triggered( QAction* ) ), SLOT( _updateToolButtonIconSize( QAction* ) ) );
   
 }
 
@@ -97,20 +104,28 @@ QSize CustomMainWindow::sizeHint( void ) const
 QMenu* CustomMainWindow::createPopupMenu( void )
 {
   Debug::Throw( "CustomMainWindow::createPopupMenu.\n" );
+  if( !_hasToolBars() ) return QMainWindow::createPopupMenu();
+  
   QMenu* menu = new QMenu();
-  if( !installToolBarsActions( *menu ) ) {
-    
-    menu->deleteLater();
-    return 0;
-    
-  } else return menu;
+  QMenu* submenu;
+  _installToolButtonStyleActions( *(submenu = menu->addMenu( "&Text position" )) );
+  _installToolButtonIconSizeActions( *(submenu = menu->addMenu( "&Icon size" )) );
+  bool has_lockable_toolbars( installToolBarsActions( *(submenu = menu->addMenu( "&ToolBars" )) ) );
+  if( has_lockable_toolbars ) 
+  {
+    menu->addSeparator();
+    menu->addAction( &lockToolBarsAction() );
+  }
+  
+  return menu;
+  
 }
-    
+ 
 //________________________________________________________________
 bool CustomMainWindow::installToolBarsActions( QMenu& menu )
 {
   Debug::Throw( "CustomMainWindow::installToolBarsActions.\n" );
-  bool has_actions( false );
+
   bool has_lockable_toolbars( false );
   QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
   for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
@@ -129,8 +144,6 @@ bool CustomMainWindow::installToolBarsActions( QMenu& menu )
     
     }
     
-    has_actions = true;
-    
     // skip if lockable toolbar was already found
     if( has_lockable_toolbars ) continue;
     
@@ -144,16 +157,10 @@ bool CustomMainWindow::installToolBarsActions( QMenu& menu )
     
   }
   
-  if( has_lockable_toolbars )
-  {
-    menu.addSeparator();
-    menu.addAction( &lockToolBarsAction() );
-  }
-  
-  return has_actions;
+  return has_lockable_toolbars;
   
 }
-
+  
 //____________________________________________________________
 void CustomMainWindow::resizeEvent( QResizeEvent* event )
 {
@@ -186,6 +193,72 @@ void CustomMainWindow::_saveWindowSize( void ) const
   XmlOptions::get().set<int>( _widthOptionName(), width() );
   XmlOptions::get().set<int>( _heightOptionName(), height() );
 }
+ 
+//________________________________________________________________
+bool CustomMainWindow::_hasToolBars( void ) const
+{
+  Debug::Throw( "CustomMainWindow::_hasToolBars.\n" );
+  return (bool) qFindChild<QToolBar*>( this );
+}
+
+//________________________________________________________________
+void CustomMainWindow::_installToolButtonStyleActions( QMenu& menu )
+{
+  Debug::Throw( "CustomMainWindow::_installToolButtonStyleActions.\n" );
+  
+  // clear map
+  toolbutton_style_actions_.clear();
+
+  // install values
+  typedef list< std::pair<QString, int > > List;
+  static List action_names;
+  if( action_names.empty() )
+  {
+    action_names.push_back( make_pair( "&Icons Only", Qt::ToolButtonIconOnly ) );
+    action_names.push_back( make_pair( "&Text Only", Qt::ToolButtonTextOnly ) );
+    action_names.push_back( make_pair( "Text &Alongside icons", Qt::ToolButtonTextBesideIcon ) );
+    action_names.push_back( make_pair( "Text &Under icons", Qt::ToolButtonTextUnderIcon ) );
+  }
+  
+  // generic action
+  int position = XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" );
+  for( List::const_iterator iter = action_names.begin(); iter != action_names.end(); iter++ )
+  {
+    QAction* action = new QAction( iter->first, &menu );
+    menu.addAction( action );
+    action->setCheckable( true );
+    if( position == iter->second ) action->setChecked( true );
+    toolbutton_style_actions_.insert( make_pair( action, iter->second ) );
+    toolbutton_style_group_->addAction( action );
+  }
+  
+  return; 
+}
+ 
+//________________________________________________________________
+void CustomMainWindow::_installToolButtonIconSizeActions( QMenu& menu )
+{
+  Debug::Throw( "CustomMainWindow::_installToolButtonIconSizeActions.\n" );
+
+  // clear map
+  icon_size_actions_.clear();
+  
+  const CustomToolButton::IconSizeMap& sizes( CustomToolButton::iconSizes() );
+
+  // generic action
+  int size = XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" );
+  for( CustomToolButton::IconSizeMap::const_iterator iter = sizes.begin(); iter != sizes.end(); iter++ )
+  {
+    QAction* action = new QAction( iter->second, &menu );
+    menu.addAction( action );
+    action->setCheckable( true );
+    if( size == iter->first ) action->setChecked( true );
+    icon_size_actions_.insert( make_pair( action, iter->first ) );
+    icon_size_group_->addAction( action );
+  }
+
+  return; 
+}
 
 //____________________________________________________________
 void CustomMainWindow::_updateConfiguration( void )
@@ -193,13 +266,13 @@ void CustomMainWindow::_updateConfiguration( void )
   
   Debug::Throw( "CustomMainWindow::_updateConfiguration.\n" );
   
-  // pixmap size
-  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( CustomToolButton::BigIconSize );
-  else setIconSize( CustomToolButton::SmallIconSize );
+  // icon size
+  int icon_size( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+  if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+  setIconSize( QSize( icon_size, icon_size ) );
   
   // text label for toolbars
-  if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
-  else setToolButtonStyle( Qt::ToolButtonIconOnly );
+  setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
   
   // toolbars locked
   lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) );
@@ -207,10 +280,35 @@ void CustomMainWindow::_updateConfiguration( void )
 }
 
 //____________________________________________________________
-void CustomMainWindow::_saveConfiguration( void )
-{ 
-  Debug::Throw( "CustomMainWindow::_saveConfiguration.\n" );
-  XmlOptions::get().set<bool>( "LOCK_TOOLBARS", lockToolBarsAction().isChecked() );
+void CustomMainWindow::_updateToolButtonStyle( QAction* action )
+{
+  
+  Debug::Throw( "CustomMainWindow::_updateToolButtonStyle.\n" );
+  
+  // find matching actions
+  ActionMap::const_iterator iter = toolbutton_style_actions_.find( action );
+  assert( iter != toolbutton_style_actions_.end() );
+  
+  // update options
+  XmlOptions::get().set<int>( "TOOLBUTTON_TEXT_POSITION", (int)iter->second );
+  emit toolbarConfigurationChanged();
+  
+}
+
+//____________________________________________________________
+void CustomMainWindow::_updateToolButtonIconSize( QAction* action )
+{
+  
+  Debug::Throw( "CustomMainWindow::_updateToolButtonIconSize.\n" );
+ 
+  // find matching actions
+  ActionMap::const_iterator iter = icon_size_actions_.find( action );
+  assert( iter != icon_size_actions_.end() );
+  
+  // update options
+  XmlOptions::get().set<int>( "TOOLBUTTON_ICON_SIZE", (int)iter->second );
+  emit toolbarConfigurationChanged();
+
 }
 
 //____________________________________________________________
@@ -233,5 +331,6 @@ void CustomMainWindow::_lockToolBars( bool value )
   
   }
   
+  XmlOptions::get().set<bool>( "LOCK_TOOLBARS", lockToolBarsAction().isChecked() );
   return;
 }

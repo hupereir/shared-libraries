@@ -42,17 +42,14 @@
 
 using namespace std;
 
-//___________________________________________________________________
-const QSize CustomToolButton::BigIconSize = QSize( 32, 32 );
-const QSize CustomToolButton::SmallIconSize = QSize( 24, 24 );
+//__________________________________________________________________
+CustomToolButton::IconSizeMap CustomToolButton::icon_sizes_;
 
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( QWidget* parent ):
     QToolButton( parent ),
     Counter( "CustomToolButton" ),
     update_from_options_( true ),
-    big_icon_size_( BigIconSize ),
-    small_icon_size_( SmallIconSize ),
     rotation_( NONE )
 {
 
@@ -68,9 +65,33 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
 }
 
 //______________________________________________________________________
-QSize CustomToolButton::sizeHint( void ) const
+const CustomToolButton::IconSizeMap& CustomToolButton::iconSizes( void )
 { 
-  QSize size( QToolButton::sizeHint() );
+  if( icon_sizes_.empty() )
+  {
+    icon_sizes_.insert( make_pair( DEFAULT, "&Default" ) );
+    icon_sizes_.insert( make_pair( SMALL, "&Small (16x16)" ) );
+    icon_sizes_.insert( make_pair( MEDIUM, "&Medium (22x22)" ) );
+    icon_sizes_.insert( make_pair( LARGE, "&Large (32x32)") );
+    icon_sizes_.insert( make_pair( HUGE, "&Huge (48x48)" ) );
+  }
+  
+  return icon_sizes_;
+}
+
+//______________________________________________________________________
+QSize CustomToolButton::iconSize( CustomToolButton::IconSize size ) const
+{ 
+
+  int icon_size( size );
+  if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+  return QSize( icon_size, icon_size );
+
+}
+  
+//______________________________________________________________________
+QSize CustomToolButton::sizeHint( void ) const
+{  QSize size( QToolButton::sizeHint() );
   if( _rotation() != NONE ) size.transpose();
   return size;
 }
@@ -107,7 +128,7 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
     painter.rotate( 90 );
   }
   
-  // paint text
+  // paint text and icon
   option.text = text();
   option.icon = icon();
   painter.drawControl(QStyle::CE_ToolButtonLabel, option);
@@ -123,12 +144,8 @@ void CustomToolButton::_updateConfiguration( void )
   
   if( !_updateFromOptions() ) return;
   
-  // pixmap size
-  QToolButton::setIconSize(  XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ? bigIconSize():smallIconSize() );
-  
-  // text labels
-  if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
-  else setToolButtonStyle( Qt::ToolButtonIconOnly );
+  setIconSize( iconSize( (IconSize) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
+  setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
   
   adjustSize();
   

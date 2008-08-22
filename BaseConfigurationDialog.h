@@ -65,9 +65,6 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //! base (font, icons and debug level
     BASE = 1<<0,
 
-    //! toolbars and pixmap path
-    TOOLBAR = 1<<1,
-
     //! lists
     LIST = 1<<2,
     
@@ -77,10 +74,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
   };
 
   //! adds configuration box for base options used in all appications
-  void baseConfiguration( QWidget* parent = 0, const unsigned int& flag = BASE|TOOLBAR|LIST );
-
-  //! toolbar configuration box
-  void toolbarConfiguration( QWidget* parent = 0 );
+  void baseConfiguration( QWidget* parent = 0, const unsigned int& flag = BASE|LIST );
 
   //! list configuration box
   void listConfiguration( QWidget* parent = 0 );

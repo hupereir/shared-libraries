@@ -125,9 +125,6 @@ class CustomToolBar: public QToolBar, public Counter
   //! update configuration
   void _updateConfiguration( void );
   
-  //! save configuration
-  void _saveConfiguration( void );
-  
   //! toggle visibility
   void _toggleVisibility( bool );
   

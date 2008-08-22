@@ -1,4 +1,3 @@
-
 // $Id$
 
 /******************************************************************************
@@ -52,17 +51,12 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const std::
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
   _installActions();
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-  connect( qApp, SIGNAL( saveConfiguration() ), SLOT( _saveConfiguration() ) );
-  connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
   _updateConfiguration();
 }
 
 //_______________________________________________________________
 CustomToolBar::~CustomToolBar( void )
-{
-  Debug::Throw( "~CustomToolBar::CustomToolBar.\n" );
-  _saveConfiguration();
-}
+{ Debug::Throw( "~CustomToolBar::CustomToolBar.\n" ); }
 
 //_______________________________________________________________
 void CustomToolBar::showEvent( QShowEvent* event )
@@ -102,12 +96,12 @@ void CustomToolBar::_updateConfiguration( void )
   Debug::Throw( "CustomToolBar::_updateConfiguration.\n" );
     
   // pixmap size
-  if( XmlOptions::get().get<bool>("USE_BIG_PIXMAP" ) ) setIconSize( CustomToolButton::BigIconSize );
-  else setIconSize( CustomToolButton::SmallIconSize );
+  int icon_size( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+  if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+  setIconSize( QSize( icon_size, icon_size ) );
   
   // text label for toolbars
-  if( XmlOptions::get().get<bool>("USE_TEXT_LABEL" ) ) setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
-  else setToolButtonStyle( Qt::ToolButtonIconOnly );
+  setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
 
   // lock
   if( lock_from_options_ ) setMovable( !XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) );
@@ -159,10 +153,6 @@ void CustomToolBar::_updateConfiguration( void )
   visibilityAction().setChecked( visibility );  
 
 }
-
-//_______________________________________________________________
-void CustomToolBar::_saveConfiguration( void )
-{ Debug::Throw( "CustomToolBar::_saveConfiguration.\n" ); }
 
 //_______________________________________________________________
 void CustomToolBar::_toggleVisibility( bool state )
