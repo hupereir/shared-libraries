@@ -43,8 +43,6 @@ class IconSizeMenu;
 //! provides toolbar manipulation menu
 class ToolBarMenu: public QMenu, public Counter
 {
-  
-  Q_OBJECT
     
   public:
     

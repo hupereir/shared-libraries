@@ -1,3 +1,6 @@
+#ifndef _BaseConfigurationDialog_h_
+#define _BaseConfigurationDialog_h_
+
 // $Id$
 /******************************************************************************
 *
@@ -27,9 +30,6 @@
   \version $Revision$
   \date $Date$
 */
-
-#ifndef _BaseConfigurationDialog_h_
-#define _BaseConfigurationDialog_h_
 
 #include <QLayout>
 #include <QStackedWidget>

@@ -85,6 +85,9 @@ QMenu* CustomMainWindow::createPopupMenu( void )
   
   ToolBarMenu& menu = toolBarMenu( this );
   
+  menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+  menu.iconSizeMenu().select( (CustomToolButton::IconSize) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+  
   connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
   connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( CustomToolButton::IconSize ) ), SLOT( _updateToolButtonIconSize( CustomToolButton::IconSize ) ) );  
   return &menu;
