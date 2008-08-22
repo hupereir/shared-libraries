@@ -73,9 +73,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
   h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ),"&Close", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setAutoDefault( false );
-  
-  resize( QSize( 250,300 ) );
-  
+    
 }
 
 //__________________________________________________________________________

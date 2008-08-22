@@ -84,7 +84,5 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   layout()->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ),"&Close", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setAutoDefault( false );
-  
-  resize( QSize( 600,300 ) );
-  
+    
 }

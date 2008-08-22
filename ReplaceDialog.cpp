@@ -123,9 +123,6 @@ void ReplaceDialog::_createEditor( void )
   connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateReplaceComboBox( void ) ) );
   connect( _replaceEditor().lineEdit(), SIGNAL(textChanged( const QString& )), SLOT( _replaceTextChanged( const QString& ) ) );
 
-  // initial (arbitrary) size
-  resize( 300, 200 );
-
 }
  
 //_____________________________________________________________  
