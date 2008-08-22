@@ -40,13 +40,13 @@ using namespace std;
 
 //__________________________________________________________________________
 IconCacheDialog::IconCacheDialog( QWidget* parent ):
-  QDialog( parent, Qt::Window ),
+  BaseDialog( parent, Qt::Window ),
   Counter( "IconCacheDialog" )
 {
   
   Debug::Throw( "IconCacheDialog::IconCacheDialog.\n" );
   setWindowTitle( "icon cache" );
-  setSizeGripEnabled( true );
+  _setSizeOptionName( "ICON_CACHE_DIALOG" );
   
   setLayout( new QVBoxLayout() );
   layout()->setMargin(10);

@@ -41,14 +41,14 @@ using namespace std;
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):
-  QDialog( parent, Qt::Window ),
+  BaseDialog( parent, Qt::Window ),
   Counter( "CounterDialog" )
 {
   
   Debug::Throw( "CounterDialog::CounterDialog.\n" );
   setWindowTitle( "object counters" );
-  setSizeGripEnabled( true );
-
+  _setSizeOptionName( "COUNTER_DIALOG" );
+    
   setLayout( new QVBoxLayout() );
   layout()->setMargin(10);
   layout()->setSpacing(10);

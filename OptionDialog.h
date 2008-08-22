@@ -34,14 +34,14 @@
 
 #include <map>
 #include <string>
-#include <QDialog>
 
 #include "Counter.h"
+#include "BaseDialog.h"
 
 //! displays Counter names and counts
-class OptionDialog: public QDialog, public Counter
+class OptionDialog: public BaseDialog, public Counter
 {
-  
+
   public:
           
   //! constructor

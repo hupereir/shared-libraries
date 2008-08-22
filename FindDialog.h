@@ -34,7 +34,6 @@
 
 #include <QAbstractButton>
 #include <QCheckBox>
-#include <QDialog>
 #include <QLabel>
 #include <QLayout>
 
@@ -42,12 +41,13 @@
 #include <set>
 #include <string>
 
+#include "BaseDialog.h"
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "TextSelection.h"
 
 //! find_text dialog for text editor widgets
-class FindDialog: public QDialog, public Counter
+class FindDialog: public BaseDialog, public Counter
 {
 
   //! Qt meta object declaration

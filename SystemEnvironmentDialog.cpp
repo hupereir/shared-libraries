@@ -42,13 +42,13 @@ using namespace std;
 
 //__________________________________________________________________________
 SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
-  QDialog( parent, Qt::Window ),
+  BaseDialog( parent, Qt::Window ),
   Counter( "SystemEnvironmentDialog" )
 {
   
   Debug::Throw( "SystemEnvironmentDialog::SystemEnvironmentDialog.\n" );
   setWindowTitle( "object counters" );
-  setSizeGripEnabled( true );
+  _setSizeOptionName( "SYSTEM_ENVIRONMENT_DIALOG" );
 
   // tell dialog to delete when close
   setAttribute( Qt::WA_DeleteOnClose );

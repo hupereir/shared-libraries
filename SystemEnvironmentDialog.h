@@ -34,12 +34,12 @@
 
 #include <map>
 #include <string>
-#include <QDialog>
 
+#include "BaseDialog.h"
 #include "Counter.h"
 
 //! displays Counter names and counts
-class SystemEnvironmentDialog: public QDialog, public Counter
+class SystemEnvironmentDialog: public BaseDialog, public Counter
 {
   
   public:

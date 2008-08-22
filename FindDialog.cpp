@@ -44,11 +44,12 @@ set<QString> FindDialog::searched_strings_;
 
 //________________________________________________________________________
 FindDialog::FindDialog( QWidget* parent, Qt::WFlags flags ):
-    QDialog( parent, flags ),
+    BaseDialog( parent, flags ),
     Counter( "FindDialog" )
 {
   Debug::Throw( "FindDialog::FindDialog.\n" );
-
+  _setSizeOptionName( "FIND_DIALOG" );
+  
   // set dialog title
   setWindowTitle( "find" );
 

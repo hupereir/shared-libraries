@@ -49,6 +49,7 @@ ReplaceDialog::ReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   
   // set dialog title
   setWindowTitle( "replace" );
+  _setSizeOptionName( "REPLACE_DIALOG" );
 
 }
 

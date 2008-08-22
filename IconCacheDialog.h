@@ -35,15 +35,14 @@
 #include <map>
 #include <string>
 
-#include <QDialog>
-
+#include "BaseDialog.h"
 #include "Counter.h"
 #include "IconCacheModel.h"
 
 class TreeView;
 
 //! displays IconCache names and counts
-class IconCacheDialog: public QDialog, public Counter
+class IconCacheDialog: public BaseDialog, public Counter
 {
 
   //! Qt meta object declaration

@@ -35,7 +35,6 @@
 #include <QApplication>
 #include <QCursor>
 #include <QDesktopWidget>
-#include <QDialog>
 #include <QFontMetrics>
 #include <QLayout>
 #include <QMessageBox>
@@ -43,6 +42,7 @@
 #include <QPainter>
 
 #include "BaseIcons.h"
+#include "BaseDialog.h"
 #include "PixmapEngine.h"
 #include "Debug.h"
 #include "IconEngine.h"
@@ -62,7 +62,7 @@ void QtUtil::infoDialog(
   QtUtil::DialogCenter dialog_center )
 {
   Debug::Throw( "QtUtil::infoDialog.\n" );
-  QDialog dialog( parent );
+  BaseDialog dialog( parent );
 
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
@@ -129,7 +129,7 @@ bool QtUtil::questionDialog(
 {
 
   Debug::Throw( "QtUtil::questionDialog.\n" );
-  QDialog dialog( parent );
+  BaseDialog dialog( parent );
 
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();

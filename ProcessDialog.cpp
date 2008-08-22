@@ -40,13 +40,14 @@ using namespace std;
 
 //________________________________________
 ProcessDialog::ProcessDialog( QWidget* parent ):
-  QDialog( parent ),
+  BaseDialog( parent ),
   Counter( "ProcessDialog" )
 {
   Debug::Throw( "ProcessDialog::ProcessDialog.\n" );
 
   // tell frame to delete on exit
   setAttribute( Qt::WA_DeleteOnClose );
+  _setSizeOptionName( "PROCESS_DIALOG" );
   
   // create layout
   setLayout( new QVBoxLayout() );

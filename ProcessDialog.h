@@ -34,8 +34,8 @@
 */
 
 #include <assert.h>
-#include <QDialog>
 
+#include "BaseDialog.h"
 #include "ProcessFrame.h"
 
 /*!
@@ -43,7 +43,7 @@
   \brief customized dialog to handle QProcess objects and throw output in the text
 */
 
-class ProcessDialog: public QDialog, public Counter
+class ProcessDialog: public BaseDialog, public Counter
 {
 
   public:
