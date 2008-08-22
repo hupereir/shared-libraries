@@ -71,14 +71,14 @@ namespace SERVER
     //! short name
     std::string userName( void ) const
     {
-      unsigned int position( user_.find( "@" ) );
+      size_t position( user_.find( "@" ) );
       return (position == std::string::npos ) ? user_ : user_.substr(0, position);
     }
 
     //! short name
     std::string display( void ) const
     {
-      unsigned int position( user_.find( "@" ) );
+      size_t position( user_.find( "@" ) );
       return (position == std::string::npos ) ? "" : user_.substr(position+1, user_.size()-position-1);
     }
     
