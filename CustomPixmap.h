@@ -82,6 +82,17 @@ class CustomPixmap: public QPixmap, public Counter
   //! resize
   virtual CustomPixmap scaleHeight( const int& height ) const
   { return scale( (height*this->width())/this->height(), height ); }
+   
+  //! rotation
+  enum Rotation
+  {
+    NONE,
+    CLOCKWISE,
+    COUNTERCLOCKWISE
+  };
+  
+  //! rotation
+  CustomPixmap rotate( const Rotation& value );
   
   //! returns a tinted pixmap
   virtual CustomPixmap tint( const QColor& color, const double& intensity ) const;

@@ -52,6 +52,29 @@ CustomPixmap CustomPixmap::find( const string& file )
 }
 
 //_________________________________________________
+CustomPixmap CustomPixmap::rotate( const CustomPixmap::Rotation& rotation )
+{
+  if( rotation == NONE ) return *this;
+  
+  CustomPixmap out = CustomPixmap().empty( QSize( height(), width() ) );
+  QPainter painter( &out );
+  
+  // rotate the painter
+  if( rotation == COUNTERCLOCKWISE )
+  {
+    painter.translate( 0, out.height() );
+    painter.rotate( -90 );
+  } else {
+    painter.translate( out.width(), 0 );
+    painter.rotate( 90 );
+  }
+  
+  painter.drawPixmap( QPoint(0,0), *this );
+  painter.end();
+  return out;
+}
+  
+//_________________________________________________
 CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensity ) const
 { 
   if( isNull() ) return *this;
