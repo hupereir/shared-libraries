@@ -235,11 +235,13 @@ QIcon FileRecordModel::_icon( const std::string& name )
   QSize size( pixmap_size, pixmap_size );
   QSize scaled(size*0.9);
   
-  QIcon icon = CustomPixmap()
-    .empty( size )
-    .merge( CustomPixmap().find( name )
-    .scale( scaled ), CustomPixmap::CENTER );
+  CustomPixmap base( CustomPixmap().find( name )  );
   
+  QIcon icon;
+  if( !base.isNull() )
+  { icon = CustomPixmap().empty( size ).merge( base.scale( scaled ), CustomPixmap::CENTER ); }
+  
+  // insert in map
   icons_.insert( make_pair( name, icon ) );
   
   return icon;
