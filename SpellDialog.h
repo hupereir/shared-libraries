@@ -34,7 +34,6 @@
 
 #include <assert.h>
 #include <QComboBox>
-#include <QDialog>
 #include <QLabel>
 #include <QTextEdit>
 
@@ -42,6 +41,7 @@
 #include <map>
 #include <set>
 
+#include "BaseDialog.h"
 #include "Counter.h"
 #include "ListWidget.h"
 #include "LineEditor.h"
@@ -52,7 +52,7 @@ namespace SPELLCHECK
 {
 
   //! spell checker popup dialog
-  class SpellDialog: public QDialog, public Counter
+  class SpellDialog: public BaseDialog, public Counter
   {
   
     //! Qt meta object declaration

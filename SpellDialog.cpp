@@ -48,7 +48,7 @@ using namespace SPELLCHECK;
 
 //_______________________________________________
 SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
-  QDialog( parent ),
+  BaseDialog( parent ),
   Counter( "SpellDialog" ),
   editor_( parent )
 {
@@ -56,6 +56,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
 
   // window title
   setWindowTitle( read_only ? "Spell check (read-only)" : "Spell check" );
+  _setSizeOptionName( "SPELL_DIALOG" );
   
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
@@ -211,9 +212,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   read_only_editor_ = editor().isReadOnly();
   editor().setReadOnly( true );
 
-  // size
-  resize( 450, 330 );
-   Debug::Throw( "SpellDialog::SpellDialog - done.\n" );
+  Debug::Throw( "SpellDialog::SpellDialog - done.\n" );
    
 }
 
