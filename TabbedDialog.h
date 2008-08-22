@@ -39,6 +39,7 @@
 
 #include "TreeWidget.h"
 #include "XmlOptions.h"
+#include "BaseDialog.h"
 #include "OptionWidget.h"
 
 //! configuration list. Stores panel names and panels
@@ -70,7 +71,7 @@ class ConfigListItem: public QTreeWidgetItem, public Counter
 
 //! tabbed dialog
 /*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
-class TabbedDialog: public QDialog, public Counter
+class TabbedDialog: public BaseDialog, public Counter
 {
 
   Q_OBJECT
@@ -89,12 +90,6 @@ class TabbedDialog: public QDialog, public Counter
   
   //! adds a new Item, returns associated Box
   virtual QWidget& addPage( const QString& title, const bool& expand = false );
-
-  //! restore window size
-  virtual QSize minimumSizeHint( void ) const;
-
-  //! restore window size
-  virtual QSize sizeHint( void ) const;
   
   protected slots: 
   
@@ -102,17 +97,6 @@ class TabbedDialog: public QDialog, public Counter
   virtual void _display( QTreeWidgetItem* current, QTreeWidgetItem* previous );
 
   protected:
-
-  //! close
-  virtual void closeEvent( QCloseEvent* );
-  
-  //! size option name
-  void _setSizeOptionName( const std::string& name )
-  { size_option_name_ = name; }
-  
-  //! size option name
-  const std::string _sizeOptionName( void ) const
-  { return size_option_name_; }
 
   //! retrieve list
   virtual TreeWidget& _list( void )
@@ -126,15 +110,7 @@ class TabbedDialog: public QDialog, public Counter
   QHBoxLayout& _buttonLayout( void ) const
   { return *button_layout_; }
   
-  private slots:
-  
-  //! save window size to options
-  void _saveWindowSize( void );
-  
   private:
-
-  //! window size option name
-  std::string size_option_name_;
   
   //! Configuration list
   TreeWidget* list_;

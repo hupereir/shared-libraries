@@ -33,12 +33,12 @@
 */
 
 #include <assert.h>
-#include <QDialog>
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QLayout>
 #include <string>
 
+#include "BaseDialog.h"
 #include "Counter.h"  
 #include "Debug.h"  
  
@@ -46,7 +46,7 @@
   \class CustomDialog
   \brief customized QDialog
 */
-class CustomDialog: public QDialog, public Counter
+class CustomDialog: public BaseDialog, public Counter
 {
 
   public:

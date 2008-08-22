@@ -44,13 +44,11 @@ using namespace std;
 
 //_________________________________________________________
 TabbedDialog::TabbedDialog( QWidget* parent ):
-  QDialog( parent ),
+  BaseDialog( parent ),
   Counter( "TabbedDialog" )
 {
-  
-  
+    
   Debug::Throw( "TabbedDialog::TabbedDialog.\n" );
-  setSizeGripEnabled( true );
   
   QVBoxLayout* layout( new QVBoxLayout() );
   layout->setSpacing(10);
@@ -82,8 +80,6 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
   
   // close window shortcut
   connect( new QShortcut( Qt::CTRL+Qt::Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
-  connect( this, SIGNAL( accepted() ), SLOT( _saveWindowSize() ) );
-  connect( this, SIGNAL( rejected() ), SLOT( _saveWindowSize() ) );
   
 }
 
@@ -139,62 +135,4 @@ void TabbedDialog::_display( QTreeWidgetItem* current, QTreeWidgetItem* previous
   ConfigListItem* item( dynamic_cast<ConfigListItem*>(current) );
   assert( item );
   _stack().setCurrentWidget(&item->page());  
-}
-
-//__________________________________________________
-QSize TabbedDialog::minimumSizeHint( void ) const
-{
-  
-  Debug::Throw() << "TabbedDialog::minimumSizeHint - _sizeOptionName: " << _sizeOptionName() << endl;
-  
-  // resize
-  if( !_sizeOptionName().empty() && XmlOptions::get().find( _sizeOptionName()+"_WIDTH" ) && XmlOptions::get().find( _sizeOptionName()+"_HEIGHT" ) )
-  {
-    
-    int width( XmlOptions::get().get<int>( _sizeOptionName()+"_WIDTH" ) );
-    int height( XmlOptions::get().get<int>( _sizeOptionName()+"_HEIGHT" ) );
-    Debug::Throw() << "TabbedDialog::minimumSizeHint: " << width << "x" << height << endl;
-    return QSize( width, height );
-
-  } else return QDialog::minimumSizeHint();
- 
-}
-
-//__________________________________________________
-QSize TabbedDialog::sizeHint( void ) const
-{
-  
-  Debug::Throw() << "TabbedDialog::sizeHint - _sizeOptionName: " << _sizeOptionName()+"_WIDTH" << " found: " << XmlOptions::get().find( _sizeOptionName()+"_WIDTH" ) << endl;
-  
-  // resize
-  if( XmlOptions::get().find( _sizeOptionName()+"_WIDTH" ) && XmlOptions::get().find( _sizeOptionName()+"_HEIGHT" ) )
-  {
-    
-    int width( XmlOptions::get().get<int>( _sizeOptionName()+"_WIDTH" ) );
-    int height( XmlOptions::get().get<int>( _sizeOptionName()+"_HEIGHT" ) );
-    Debug::Throw() << "TabbedDialog::sizeHint: " << width << "x" << height << endl;
-    return QSize( width, height );
-
-  } else return QDialog::sizeHint();
- 
-}
-
-//__________________________________________________
-void TabbedDialog::closeEvent( QCloseEvent* e )
-{
-  
-  _saveWindowSize();
-  return QDialog::closeEvent( e );
-  
-}
-
-//__________________________________________________
-void TabbedDialog::_saveWindowSize( void )
-{
-  Debug::Throw() << "TabbedDialog::_saveWindowSize: " << width() << "x" << height() << endl;
-  if( !_sizeOptionName().empty() )
-  {
-    XmlOptions::get().set<int>( _sizeOptionName()+"_WIDTH", width() );
-    XmlOptions::get().set<int>( _sizeOptionName()+"_HEIGHT", height() );
-  }
 }

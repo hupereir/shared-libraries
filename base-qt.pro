@@ -7,6 +7,7 @@ DEPENDPATH += . ../base
 
 HEADERS = \
   BaseConfigurationDialog.h \
+  BaseDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
   BrowsedLineEditor.h \
@@ -89,6 +90,7 @@ HEADERS = \
   TreeWidget.h \
   UserSelectionFrame.h \
   ValidFileThread.h \
+  WindowSizeWatcher.h \
   X11Util.h \
   XmlError.h \
   XmlFileList.h \
@@ -101,6 +103,7 @@ HEADERS = \
 
 SOURCES = \
   BaseConfigurationDialog.cpp \
+  BaseDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
   BrowsedLineEditor.cpp \
@@ -159,6 +162,7 @@ SOURCES = \
   TreeViewConfiguration.cpp \
   UserSelectionFrame.cpp \
   ValidFileThread.cpp \
+  WindowSizeWatcher.cpp \
   X11Util.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \

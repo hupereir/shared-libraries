@@ -36,13 +36,12 @@
 
 #include <QAction>
 #include <QActionGroup>
-#include <QBasicTimer>
 #include <QMainWindow>
 #include <QMenu>
 #include <QResizeEvent>
-#include <QTimerEvent>
 
 #include "Debug.h"  
+#include "WindowSizeWatcher.h"  
 #include "XmlOptions.h"  
 
 /*!
@@ -94,31 +93,9 @@ class CustomMainWindow: public QMainWindow
   /* need to save updated window size */
   virtual void resizeEvent( QResizeEvent* );
   
-  //! timer event
-  /* need to save updated window size */
-  virtual void timerEvent( QTimerEvent* );     
-  
-  //! save window size
-  virtual void _saveWindowSize( void ) const;
-  
   //! size option name
   virtual void _setSizeOptionName( const std::string& name )
-  { 
-    width_option_name_ = name + "_WIDTH"; 
-    height_option_name_ = name + "_HEIGHT"; 
-  }
-  
-  //! true when option name was set
-  virtual bool _hasSizeOptionName( void ) const
-  { return !width_option_name_.empty(); }
-  
-  //! size option name
-  virtual const std::string _heightOptionName( void ) const
-  { return height_option_name_; }
-  
-  //! size option name
-  virtual const std::string _widthOptionName( void ) const
-  { return width_option_name_; }
+  { size_watcher_.setSizeOptionName( name ); }
 
   //! true if main window has toolbars
   virtual bool _hasToolBars( void ) const;
@@ -145,12 +122,12 @@ class CustomMainWindow: public QMainWindow
   
   private:
     
+  //! size watcher
+  WindowSizeWatcher size_watcher_;
+  
   //! lock toolbars
   QAction* lock_toolbars_action_;
-  
-  //! resize timer
-  QBasicTimer resize_timer_;
-  
+   
   //! toolbar text actions group
   QActionGroup* toolbutton_style_group_;
   
@@ -165,12 +142,6 @@ class CustomMainWindow: public QMainWindow
     
   //! toolbar text action map
   ActionMap icon_size_actions_;
-
-  //! window size option name
-  std::string width_option_name_;
-
-  //! window size option name
-  std::string height_option_name_;
   
 };
 

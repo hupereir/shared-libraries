@@ -11,6 +11,7 @@ INCLUDES =  \
   
 noinst_HEADERS = \
   BaseConfigurationDialog.h \
+  BaseDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
   BrowsedLineEditor.h \
@@ -93,6 +94,7 @@ noinst_HEADERS = \
   TreeWidget.h \
   UserSelectionFrame.h \
   ValidFileThread.h \
+  WindowSizeWatcher.h \
   X11Util.h \
   XmlError.h \
   XmlFileList.h \
@@ -107,6 +109,7 @@ noinst_LIBRARIES = libbase-qt.a
 
 libbase_qt_a_SOURCES = \
   BaseConfigurationDialog.cpp \
+  BaseDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
   BrowsedLineEditor.cpp \
@@ -165,6 +168,7 @@ libbase_qt_a_SOURCES = \
   TreeViewConfiguration.cpp \
   UserSelectionFrame.cpp \
   ValidFileThread.cpp \
+  WindowSizeWatcher.cpp \
   X11Util.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \

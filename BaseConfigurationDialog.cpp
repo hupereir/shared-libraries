@@ -64,10 +64,9 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   backup_options_( XmlOptions::get() )
 {
   
-  
   Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
   setWindowTitle( "Configuration" );
-  _setSizeOptionName( "CONFIGURATION_WINDOW" );
+  _setSizeOptionName( "CONFIGURATION_DIALOG" );
 
   // add restore default button to layout
   QPushButton* button;

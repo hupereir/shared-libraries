@@ -37,7 +37,7 @@ using namespace std;
 
 //____________________________________________________________
 CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFlags wflags):
-  QDialog( parent, wflags ),
+  BaseDialog( parent, wflags ),
   Counter( "CustomDialog" ),
   ok_button_( 0 ),
   cancel_button_( 0 )
