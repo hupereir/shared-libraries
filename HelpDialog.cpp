@@ -53,7 +53,7 @@ using namespace BASE;
 
 //_________________________________________________________
 HelpDialog::HelpDialog( QWidget *parent ):
-  QDialog( parent, Qt::Window ),
+  BaseDialog( parent, Qt::Window ),
   Counter( "HelpDialog" )
 {
 
@@ -61,7 +61,8 @@ HelpDialog::HelpDialog( QWidget *parent ):
   
   // tell dialog to delete when close
   setAttribute( Qt::WA_DeleteOnClose );
-  setSizeGripEnabled( true );
+
+  _setSizeOptionName( "HELP_DIALOG" );
   
   QHBoxLayout *layout = new QHBoxLayout();
   layout->setSpacing(5);

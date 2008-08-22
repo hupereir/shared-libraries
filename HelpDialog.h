@@ -32,10 +32,10 @@
    \date    $Date$
 */
 
-#include <QDialog>
 #include <QPushButton>
 #include <QStackedLayout>
 
+#include "BaseDialog.h"
 #include "Counter.h"
 #include "HelpModel.h"
 
@@ -46,7 +46,7 @@ namespace BASE
 {
   
   //! reference manual display dialog
-  class HelpDialog:public QDialog, public Counter
+  class HelpDialog:public BaseDialog, public Counter
   {
     
     Q_OBJECT
