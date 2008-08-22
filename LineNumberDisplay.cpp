@@ -259,7 +259,7 @@ void LineNumberDisplay::_updateLineNumberData( QTextBlock& block, unsigned int& 
   assert( block.isValid() );
   
   QRectF rect( _editor().document()->documentLayout()->blockBoundingRect( block ) );
-  data.setPosition( block.layout()->position().y() );
+  data.setPosition( (int)block.layout()->position().y() );
 
 }
 

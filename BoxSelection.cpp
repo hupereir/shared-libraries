@@ -92,7 +92,7 @@ void BoxSelection::updateConfiguration( void )
   color_ = color;
     
   // retrieve shading from options
-  color.setAlpha( XmlOptions::get().get<double>("BOX_SELECTION_ALPHA")*255/100 );
+  color.setAlpha((int)( XmlOptions::get().get<double>("BOX_SELECTION_ALPHA")*255/100 ));
   brush_ = QBrush( color );
 
   // additional initialization dependening on whether box selection is enabled or not
