@@ -64,8 +64,8 @@ Options::Options( void ):
   add( Option( "FONT_NAME", "Sans" , "main font"  )); 
   
   // toolbars default configuration
-  add( Option( "USE_BIG_PIXMAP", "1" , "big pixmaps in tool buttons"  )); 
-  add( Option( "USE_TEXT_LABEL", "0" , "text label in tool buttons"  )); 
+  add( Option( "TOOLBUTTON_ICON_SIZE", "32" , "text label in tool buttons"  )); 
+  add( Option( "TOOLBUTTON_TEXT_POSITION", "0" , "text label in tool buttons"  )); 
   add( Option( "LOCK_TOOLBARS", "0" , "lock toolbars position" ));
   
   // text editors default configuration
