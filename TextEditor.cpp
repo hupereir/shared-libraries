@@ -1399,7 +1399,9 @@ void TextEditor::paintEvent( QPaintEvent* event )
     
     painter.setPen( _boxSelection().color() );
     painter.setBrush( _boxSelection().brush() );
-    painter.drawRect( _boxSelection().rect().adjusted( 0, 0, -1, -1 )&rect );
+
+    // the adjustment is suspicious.
+    painter.drawRect( _boxSelection().rect().adjusted( 0, 0, -1, -2 )&rect );
 
   }
   painter.end();

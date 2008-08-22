@@ -90,7 +90,6 @@ void FileList::checkValidFiles( void )
   thread_.start();
 }
 
-
 //_______________________________________________ 
 void FileList::customEvent( QEvent* event )
 {

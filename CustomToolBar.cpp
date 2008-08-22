@@ -46,10 +46,12 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const std::
   QToolBar( title, parent ),
   Counter( "CustomToolBar" ),
   option_name_( option_name ),
+  size_from_options_( true ),
   lock_from_options_( true )
 {
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
   _installActions();
+  
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
 }
@@ -96,18 +98,21 @@ void CustomToolBar::_updateConfiguration( void )
   Debug::Throw( "CustomToolBar::_updateConfiguration.\n" );
     
   // pixmap size
-  int icon_size( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-  if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
-  setIconSize( QSize( icon_size, icon_size ) );
+  if( sizeFromOptions() )
+  {
+    int icon_size( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+    if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+    QToolBar::setIconSize( QSize( icon_size, icon_size ) );
+  }
   
   // text label for toolbars
   setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
 
   // lock
-  if( lock_from_options_ ) setMovable( !XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) );
+  if( lockFromOptions() ) setMovable( !XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) );
 
   // visibility
-  bool visibility( XmlOptions::get().find( option_name_ ) ? XmlOptions::get().get<bool>( option_name_ ):true );
+  bool visibility( (!option_name_.empty() && XmlOptions::get().find( option_name_ ) ) ? XmlOptions::get().get<bool>( option_name_ ):true );
   bool current_visibility( isVisible() );
   
   // position

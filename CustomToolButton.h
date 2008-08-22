@@ -54,7 +54,7 @@ class CustomToolButton: public QToolButton, public Counter
   public:
       
   //! default creator
-  CustomToolButton( QWidget* parent );
+  CustomToolButton( QWidget* parent = 0 );
      
   //! destructor
   virtual ~CustomToolButton( void ) 
@@ -73,8 +73,7 @@ class CustomToolButton: public QToolButton, public Counter
   };
   
   //! rotation
-  void rotate( const Rotation& value )
-  { rotation_ = value; }
+  bool rotate( const Rotation& );
   
   //! size hint
   virtual QSize sizeHint( void ) const;

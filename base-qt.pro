@@ -43,6 +43,7 @@ HEADERS = \
   IconCacheDialog.h \
   IconCacheModel.h \
   IconEngine.h \
+  IconSizeMenu.h \
   IconFileDialog.h \
   ItemModel.h \
   LineEditor.h \
@@ -82,6 +83,8 @@ HEADERS = \
   TextBlockFlags.h \
   TextSelection.h \
   TextSeparator.h \
+  ToolBarMenu.h \
+  ToolButtonStyleMenu.h \
   TreeItem.h \
   TreeItemBase.h \
   TreeModel.h \
@@ -139,6 +142,7 @@ SOURCES = \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
+  IconSizeMenu.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
   OptionListBox.cpp \
@@ -156,6 +160,8 @@ SOURCES = \
   TabWidget.cpp \
   TextEditor.cpp \
   TextSeparator.cpp \
+  ToolBarMenu.cpp \
+  ToolButtonStyleMenu.cpp \
   TreeItemBase.cpp \
   TreeView.cpp \
   TreeWidget.cpp \

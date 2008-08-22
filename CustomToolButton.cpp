@@ -30,6 +30,7 @@
 */
 
 #include <QApplication>
+#include <QIcon>
 #include <QPixmap>
 #include <QPainter>
 #include <QStylePainter>
@@ -37,7 +38,9 @@
 
 #include <sstream>
 
+#include "CustomPixmap.h"
 #include "CustomToolButton.h"
+#include "IconEngine.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -89,6 +92,30 @@ QSize CustomToolButton::iconSize( CustomToolButton::IconSize size ) const
 
 }
   
+//______________________________________________________________________
+bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
+{
+  Debug::Throw( "CustomToolButton::rotate.\n" );
+  if( rotation_ == value ) return false;
+  
+  // rotate icon if any
+  CustomPixmap pixmap( icon().pixmap( LARGE, QIcon::Normal ) );
+  if( !pixmap.isNull() )
+  {
+    
+    // clockwise rotations
+    if( ( rotation_ == NONE && value == COUNTERCLOCKWISE ) || ( rotation_ == CLOCKWISE && value == NONE ) )
+    { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::CLOCKWISE ) ) ); }
+    
+    if( ( rotation_ == NONE && value == CLOCKWISE ) || ( rotation_ == COUNTERCLOCKWISE && value == NONE ) )
+    { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::COUNTERCLOCKWISE ) ) ); }
+  
+  } else { Debug::Throw(0) << "CustomToolButton::rotate - null pixmap." << endl; }
+  
+  rotation_ = value; 
+  return true;
+}
+
 //______________________________________________________________________
 QSize CustomToolButton::sizeHint( void ) const
 {  QSize size( QToolButton::sizeHint() );

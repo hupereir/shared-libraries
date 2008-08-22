@@ -163,7 +163,7 @@ bool BoxSelection::update( QPoint point )
   
   // update parent 
   parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) );
-  parent_->setTextCursor( parent_->cursorForPosition( cursor_ + QPoint(0,-1) ) );
+  parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
   return true;
 }
@@ -471,8 +471,8 @@ void BoxSelection::_updateRect( void )
   QPoint end( x_max - (x_max%font_width_) + left_margin_, y_max + font_height_ - (y_max%font_height_) + top_margin_ );
 
   // decide location of cursor point
-  cursor_.setX( begin_.x() < end_.x() ? end.x():begin.x());
-  cursor_.setY( begin_.y() < end_.y() ? end.y():begin.y()+font_height_);
+  cursor_.setX( begin_.x() < end_.x() ? end.x() : begin.x() );
+  cursor_.setY( begin_.y() < end_.y() ?  end.y()-font_height_ : begin.y() );
   cursor_ = parent_->toViewport( cursor_ );
 
   // compute rect

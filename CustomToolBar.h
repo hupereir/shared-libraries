@@ -36,7 +36,6 @@
 #include <QHideEvent>
 #include <QShowEvent>
 #include <QToolBar>
-#include <list>
 #include <map>
 
 #include "Counter.h"
@@ -52,7 +51,7 @@ class CustomToolBar: public QToolBar, public Counter
   public:
     
   //! constructor
-  CustomToolBar( const QString& title, QWidget* parent, const std::string& option_name = "" );
+  CustomToolBar( const QString& title = QString(), QWidget* parent = 0, const std::string& option_name = "" );
   
   //! destructor
   virtual ~CustomToolBar( void );
@@ -78,13 +77,25 @@ class CustomToolBar: public QToolBar, public Counter
   //! lock from options
   const bool& lockFromOptions( void ) const
   { return lock_from_options_; }
-  
+    
   //! set movable
   /* when called directly from the application, the lock_from_options_ flag is set to false */
   void setMovable( bool value )
   {
     lock_from_options_ = false;
     return QToolBar::setMovable( value );
+  }
+  
+  //! lock from options
+  const bool& sizeFromOptions( void ) const
+  { return size_from_options_; }
+    
+  //! set movable
+  /* when called directly from the application, the lock_from_options_ flag is set to false */
+  void setIconSize( const QSize& size )
+  {
+    size_from_options_ = false;
+    return QToolBar::setIconSize( size );
   }
   
   //! visibility action
@@ -142,9 +153,12 @@ class CustomToolBar: public QToolBar, public Counter
   //! visibility action
   QAction* visibility_action_;
   
+  //! use icon size from options
+  bool size_from_options_;
+  
   //! use lock from options
   bool lock_from_options_;
-  
+
   //! map name and toolbar are
   static std::map< std::string, Qt::ToolBarArea> toolbar_areas_;
 

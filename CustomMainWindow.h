@@ -40,9 +40,12 @@
 #include <QMenu>
 #include <QResizeEvent>
 
+#include "CustomToolButton.h"
 #include "Debug.h"  
 #include "WindowSizeWatcher.h"  
 #include "XmlOptions.h"  
+
+class ToolBarMenu;
 
 /*!
   \class CustomMainWindow
@@ -77,6 +80,9 @@ class CustomMainWindow: public QMainWindow
    
   //! create context menu (overloaded)
   virtual QMenu* createPopupMenu( void );
+
+  //! toolbar menu
+  virtual ToolBarMenu& toolBarMenu( QWidget* parent );
   
   //! install toolbar visibility actions
   /*! returns true if lockable toolbars are found */
@@ -99,23 +105,17 @@ class CustomMainWindow: public QMainWindow
 
   //! true if main window has toolbars
   virtual bool _hasToolBars( void ) const;
-  
-  //! install toolbars text position actions
-  virtual void _installToolButtonStyleActions( QMenu& );
-
-  //! install icon size actions
-  virtual void _installToolButtonIconSizeActions( QMenu& );
-  
+ 
   private slots:
   
   //! update configuration
   void _updateConfiguration( void );
  
   //! toolbar text position
-  void _updateToolButtonStyle( QAction* );
+  void _updateToolButtonStyle( Qt::ToolButtonStyle );
  
   //! toolbar text position
-  void _updateToolButtonIconSize( QAction* );
+  void _updateToolButtonIconSize( CustomToolButton::IconSize );
     
   //! lock toolbars
   void _lockToolBars( bool ); 
@@ -127,22 +127,7 @@ class CustomMainWindow: public QMainWindow
   
   //! lock toolbars
   QAction* lock_toolbars_action_;
-   
-  //! toolbar text actions group
-  QActionGroup* toolbutton_style_group_;
-  
-  //! toolbar text actions group
-  QActionGroup* icon_size_group_;
- 
-  //! action map
-  typedef std::map<QAction*, int > ActionMap;
     
-  //! toolbar text action map
-  ActionMap toolbutton_style_actions_;
-    
-  //! toolbar text action map
-  ActionMap icon_size_actions_;
-  
 };
 
 #endif 

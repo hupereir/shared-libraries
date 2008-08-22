@@ -48,6 +48,7 @@ noinst_HEADERS = \
   IconCacheModel.h \
   IconEngine.h \
   IconFileDialog.h \
+  IconSizeMenu.h \
   ItemModel.h \
   LineEditor.h \
   LineNumberDisplay.h \
@@ -86,6 +87,8 @@ noinst_HEADERS = \
   TextBlockFlags.h \
   TextSelection.h \
   TextSeparator.h \
+  ToolBarMenu.h \
+  ToolButtonStyleMenu.h \
   TreeItem.h \
   TreeItemBase.h \
   TreeModel.h \
@@ -142,6 +145,7 @@ libbase_qt_a_SOURCES = \
   IconCacheModel.cpp \
   IconEngine.cpp \
   IconFileDialog.cpp \
+  IconSizeMenu.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
@@ -162,6 +166,8 @@ libbase_qt_a_SOURCES = \
   TabWidget.cpp \
   TextEditor.cpp \
   TextSeparator.cpp \
+  ToolBarMenu.cpp \
+  ToolButtonStyleMenu.cpp \
   TreeItemBase.cpp \
   TreeView.cpp \
   TreeWidget.cpp \
@@ -204,6 +210,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
   moc_IconFileDialog.cpp \
+  moc_IconSizeMenu.cpp \
   moc_LineEditor.cpp \
   moc_LineNumberDisplay.cpp \
   moc_ListWidget.cpp \
@@ -218,6 +225,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_TabbedDialog.cpp \
   moc_TabWidget.cpp \
   moc_TextEditor.cpp \
+  moc_ToolButtonStyleMenu.cpp \
   moc_TreeView.cpp \
   moc_TreeViewConfiguration.cpp \
   moc_TreeWidget.cpp \
