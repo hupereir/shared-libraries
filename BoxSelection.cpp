@@ -49,8 +49,6 @@ BoxSelection::BoxSelection( TextEditor* parent ):
   enabled_( false ),
   font_width_( 0 ),
   font_height_( 0 ),
-  left_margin_( 0 ),
-  top_margin_( 0 ),
   state_( EMPTY )
 { Debug::Throw( debug_level, "BoxSelection::BoxSelection.\n" ); }
 
@@ -70,7 +68,7 @@ void BoxSelection::synchronize( const BoxSelection& box )
   QRect old( rect() );
   _updateRect();
   
-  parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) );
+  parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ).adjusted( 0, 0, 1, 1 ) );
   
   return; 
   
@@ -121,9 +119,6 @@ bool BoxSelection::checkEnabled( void )
   font_width_ = QFontMetrics( parent_->font() ).width( " " );
   font_height_ = QFontMetrics( parent_->font() ).height();
     
-  // retrieve margins
-  int right, bottom;
-  parent_->getContentsMargins( &left_margin_, &top_margin_, &right, &bottom );
   return true;
 }
   
@@ -140,7 +135,7 @@ bool BoxSelection::start( QPoint point )
   _updateRect();
   
   // set parent cursor
-  parent_->setTextCursor( parent_->cursorForPosition( cursor_ + QPoint(0,-1) ) );
+  parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
   state_ = STARTED;
   return true;
@@ -162,7 +157,8 @@ bool BoxSelection::update( QPoint point )
   _updateRect();
   
   // update parent 
-  parent_->viewport()->update( parent_->toViewport( old.unite( rect() ) ) );
+  // the adjustment is to account for the pen width
+  parent_->viewport()->update( parent_->toViewport( old.unite( rect() ).adjusted( 0, 0, 1, 1 ) ) );
   parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
   return true;
@@ -194,7 +190,7 @@ bool BoxSelection::clear( void )
   state_ = EMPTY;
   
   // update parent
-  parent_->viewport()->update( parent_->toViewport( rect() ) );
+  parent_->viewport()->update( parent_->toViewport( rect() ).adjusted( 0, 0, 1, 1 ) );
   
   // clear cursors points and rect
   cursors_.clear();
@@ -270,10 +266,6 @@ bool BoxSelection::fromString( QString input )
       old_bottom = new_bottom;
     }
     
-    // if( !cursor.movePosition( QTextCursor::StartOfLine, QTextCursor::KeepAnchor ) )
-    // { Debug::Throw() << "BoxSelection::fromString - unable to move cursor" << endl; }    
-    // int extra_length = cursors_.firstColumn() - cursor.anchor() + cursor.position();
-        
     // move to current cursor end of the selection
     cursor.setPosition( cursors_[i].position(), QTextCursor::KeepAnchor );
     
@@ -467,12 +459,12 @@ void BoxSelection::_updateRect( void )
   int y_min( min( begin_.y(), end_.y() ) );
   int y_max( max( begin_.y(), end_.y() ) );
   
-  QPoint begin( x_min - (x_min%font_width_) + left_margin_, y_min - (y_min%font_height_) + top_margin_ );
-  QPoint end( x_max - (x_max%font_width_) + left_margin_, y_max + font_height_ - (y_max%font_height_) + top_margin_ );
+  QPoint begin( x_min - (x_min%font_width_) + 2, y_min - (y_min%font_height_) + 2 );
+  QPoint end( x_max - (x_max%font_width_) + 1, y_max + font_height_ - (y_max%font_height_) );
 
   // decide location of cursor point
   cursor_.setX( begin_.x() < end_.x() ? end.x() : begin.x() );
-  cursor_.setY( begin_.y() < end_.y() ?  end.y()-font_height_ : begin.y() );
+  cursor_.setY( begin_.y() < end_.y() ?  end.y() : begin.y() + font_height_ - 1 );
   cursor_ = parent_->toViewport( cursor_ );
 
   // compute rect
@@ -490,15 +482,13 @@ void BoxSelection::_store( void )
   // retrieve box selection size
   int first_column = rect().left() / font_width_;
   int columns = rect().width() / font_width_;
-  int rows = rect().height() / font_height_;
+  int rows = rect().height() / font_height_ + 1;
   
   Debug::Throw() << "BoxSelection::_store - [" << first_column << "," << columns << "," << rows << "]" << endl;
   
   // translate rect
   QRect local( parent_->toViewport( rect() ) );  
   cursors_ = CursorList( first_column, columns );
-  Debug::Throw() << "BoxSelection::_store - rect left: " << rect().left() << " right: " << rect().right() << endl;
-  Debug::Throw() << "BoxSelection::_store - local left: " << local.left() << " right: " << local.right() << endl;
   for( int row = 0; row < rows; row ++ )
   {
 

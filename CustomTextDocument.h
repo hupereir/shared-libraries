@@ -37,6 +37,7 @@
 #include "Key.h"
 
 //! customized TextDocument to derive from BASE::Key
+/*! this is needed to easily handled multiple text editors that share the same document */
 class CustomTextDocument: public QTextDocument, public BASE::Key, public Counter
 {
   

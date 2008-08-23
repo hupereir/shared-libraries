@@ -961,6 +961,12 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
     _boxSelection().update( event->pos() );
     _synchronizeBoxSelection();
     emit copyAvailable( true );
+
+    if( box_selection_timer_.isActive()) 
+    {
+      if( viewport()->rect().contains( event->pos() ) ) box_selection_timer_.stop();
+    } else if (!viewport()->rect().contains( event->pos() )) box_selection_timer_.start(100, this);
+    
     return;
 
   }
@@ -1003,6 +1009,8 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 
   Debug::Throw( "TextEditor::mouseReleaseEvent.\n" );
 
+  box_selection_timer_.stop();
+  
   if( event->button() == Qt::MidButton ) 
   { Debug::Throw( "TextEditor::mouseReleaseEvent - middle mouse button.\n" ); }
 
@@ -1034,9 +1042,12 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
     return;
   }
 
-  // do nothing with Qt::MidButton when box selection is active
-  if( event->button() == Qt::MidButton  && _boxSelection().state() == BoxSelection::FINISHED ) return;
-
+  if( event->button() == Qt::MidButton  && _boxSelection().state() == BoxSelection::FINISHED ) 
+  {
+    _boxSelection().clear();
+    _boxSelection().clear();
+  } 
+  
   // process event
   QTextEdit::mouseReleaseEvent( event );
 
@@ -1400,8 +1411,8 @@ void TextEditor::paintEvent( QPaintEvent* event )
     painter.setPen( _boxSelection().color() );
     painter.setBrush( _boxSelection().brush() );
 
-    // the adjustment is suspicious.
-    painter.drawRect( _boxSelection().rect().adjusted( 0, 0, -1, -2 )&rect );
+    // the adjustment is due 
+    painter.drawRect( _boxSelection().rect() );
 
   }
   painter.end();
@@ -1422,6 +1433,19 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
 }
 
+//______________________________________________________________
+void TextEditor::timerEvent(QTimerEvent *event)
+{
+  
+  if (event->timerId() == box_selection_timer_.timerId() ) 
+  {
+    const QPoint global_position = QCursor::pos();
+    const QPoint position = viewport()->mapFromGlobal(global_position);
+    QMouseEvent mouse_event(QEvent::MouseMove, position, global_position, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    mouseMoveEvent(&mouse_event);
+  }
+
+}
 
 //______________________________________________________________
 void TextEditor::_installActions( void )

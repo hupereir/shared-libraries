@@ -34,6 +34,7 @@
 
 #include <assert.h>
 #include <QAction>
+#include <QBasicTimer>
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QFocusEvent>
@@ -42,6 +43,7 @@
 #include <QTextBlockFormat>
 #include <QTextCursor>
 #include <QTextEdit>
+#include <QTimerEvent>
 
 #include <vector>
 
@@ -476,6 +478,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! repaint event
   virtual void paintEvent( QPaintEvent* );
 
+  //! timer event
+  virtual void timerEvent( QTimerEvent* event );
+  
   //@}
   
   //! install default actions
@@ -857,6 +862,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! store possible mouse drag start position
   QPoint drag_start_;
+  
+  //! box selection timer
+  /*! it mimics QTextEdit autoscroll timer to update box selection */
+  QBasicTimer box_selection_timer_;
   
 };
 

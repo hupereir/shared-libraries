@@ -215,12 +215,6 @@ class BoxSelection: public Counter
    
   //! font height
   int font_height_;
- 
-  //! margin
-  int left_margin_;
-  
-  //! margin
-  int top_margin_;
   
   //@}
   
