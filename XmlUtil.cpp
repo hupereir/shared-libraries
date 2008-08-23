@@ -60,6 +60,11 @@ bool XmlUtil::_initConversions()
   conversions_.push_back( Conversion( "ç", "XML_CCED" ) );
   conversions_.push_back( Conversion( "\t", "XML_TAB" ) );
   conversions_.push_back( Conversion( "\n", "XML_ENDL" ) );
+  
+  // this conversion is needed for XML not to remove entries that consist of empty spaces only
+  // it is used in xmlToText but not in textToXml
+  conversions_.push_back( Conversion( "", "XML_NONE" ) );
+  
   return true;
   
 }
@@ -71,7 +76,7 @@ QString XmlUtil::textToXml( const QString& in )
   QString out(in);
   if( !( conversions_.size() ) ) _initConversions();
   for( ConversionList::iterator iter = conversions_.begin(); iter != conversions_.end(); iter++ )
-  out = out.replace( iter->first, iter->second );
+  { if( !iter->first.isEmpty() ) out = out.replace( iter->first, iter->second ); }
   
   return out;
 }
@@ -85,7 +90,7 @@ QString XmlUtil::xmlToText( const QString& in )
 
   // HTML style conversions (escape characters)
   for( ConversionList::reverse_iterator iter = conversions_.rbegin(); iter != conversions_.rend(); iter++ )
-  { out = out.replace( iter->second, iter->first ); }
+  { if( !iter->second.isEmpty() ) out = out.replace( iter->second, iter->first ); }
 
   return out;
 }
