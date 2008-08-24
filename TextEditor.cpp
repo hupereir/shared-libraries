@@ -1489,6 +1489,8 @@ void TextEditor::timerEvent(QTimerEvent *event)
     mouseMoveEvent(&mouse_event);
   }
 
+  return QTextEdit::timerEvent( event );
+  
 }
 
 //______________________________________________________________
