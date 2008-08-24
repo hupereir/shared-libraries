@@ -86,7 +86,7 @@ void FileList::checkValidFiles( void )
   Debug::Throw( "FileList::checkValidFiles.\n" );
   if( !check() ) return;
   if( thread_.isRunning() ) return;
-  thread_.setFiles( _records() );
+  thread_.setRecords( _records() );
   thread_.start();
 }
 
@@ -101,7 +101,7 @@ void FileList::customEvent( QEvent* event )
   
   // set file records validity
   FileRecord::List& current_records( _records() );
-  const FileRecord::List& records( valid_file_event->files() ); 
+  const FileRecord::List& records( valid_file_event->records() ); 
   for( FileRecord::List::iterator iter = current_records.begin(); iter != current_records.end(); iter++ )
   {
     FileRecord::List::const_iterator found = find_if( 
@@ -112,31 +112,10 @@ void FileList::customEvent( QEvent* event )
     iter->setValid( found->isValid() );
   }
   
+  _setCleanEnabled( valid_file_event->hasInvalidRecords() );
+  
   emit validFilesChecked();
   return;
-  
-}
-
-//___________________________________________________
-bool FileList::cleanEnabled( void ) const
-{
-  Debug::Throw( "FileList::cleanEnabled.\n" );
-  if( !check() ) return !_records().empty();
-
-  for( FileRecord::List::const_iterator iter = _records().begin(); iter != _records().end(); )
-  {
-    
-    // check item validity
-    if( !iter->isValid() ) return true;
-    
-    // check for duplicates
-    FileRecord::SameCanonicalFileFTor ftor( iter->file() );
-    if( find_if( ++iter, _records().end(), ftor ) != _records().end() )
-    { return true; }
-    
-  }
-  
-  return false;
   
 }
 
@@ -155,12 +134,7 @@ void FileList::clean( void )
   _records().erase(
     remove_if( _records().begin(), _records().end(), FileRecord::InvalidFTor() ),
     _records().end() );
-  
-  // remove duplicated files
-  sort( _records().begin(), _records().end(), FileRecord::CanonicalFileFTor() );
-  _records().erase( unique( _records().begin(), _records().end(), FileRecord::SameCanonicalFileFTor() ), _records().end() );
-  sort( _records().begin(), _records().end(), FileRecord::FirstOpenFTor() );
-  
+    
   return;
 }
 

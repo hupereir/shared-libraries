@@ -59,6 +59,7 @@ class FileList: public QObject, public Counter
     Counter( "FileList" ),
     max_size_( -1 ),
     check_( true ),
+    clean_enabled_( false ),
     thread_( this )
   {}
 
@@ -96,7 +97,8 @@ class FileList: public QObject, public Counter
   virtual FileRecord lastValidFile( void );
     
   //! returns true if file list can be cleaned
-  virtual bool cleanEnabled( void ) const;
+  virtual bool cleanEnabled( void ) const
+  { return (check()) ? clean_enabled_ : !_records().empty(); }
     
   //! clean files. Remove either invalid or all files, depending on check_
   virtual void clean( void );
@@ -154,11 +156,18 @@ class FileList: public QObject, public Counter
   
   private:
   
+  //! clean enabled
+  void _setCleanEnabled( const bool& value )
+  { clean_enabled_ = value; }
+  
   //! maximum size (negative means no limit)
   int max_size_;
 
   //! if true, check file validity
   bool check_;
+  
+  //! true if clean action is enabled
+  bool clean_enabled_; 
   
   //! thread to check file validity
   ValidFileThread thread_;

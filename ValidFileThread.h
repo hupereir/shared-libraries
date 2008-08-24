@@ -46,25 +46,33 @@ class ValidFileEvent: public QEvent, public Counter
   public:
         
   //! constructor
-  ValidFileEvent( const FileRecord::List& files ):
+  ValidFileEvent( const FileRecord::List& records, const bool& has_invalid_records ):
     QEvent( QEvent::User ),
     Counter( "ValidFileEvent" ),
-    files_( files )
+    records_( records ),
+    has_invalid_records_( has_invalid_records )
   {}
   
   //! destructor
   ~ValidFileEvent( void )
   {}
   
-  //! grid
-  const FileRecord::List& files()
-  { return files_; }
+  //! records
+  const FileRecord::List& records()
+  { return records_; }
+  
+  //! clean enabled
+  const bool& hasInvalidRecords( void )
+  { return has_invalid_records_; }
   
   private:
       
   //! ValidFile success flag
-  FileRecord::List files_;
+  FileRecord::List records_;
       
+  //! true if some invalid files are present
+  bool has_invalid_records_;
+  
 };
 
 //! independent thread used to automatically save file
@@ -81,8 +89,8 @@ class ValidFileThread: public QThread, public Counter
 
   
   //! set file
-  void setFiles( const FileRecord::List& files )
-  { files_ = files; }
+  void setRecords( const FileRecord::List& records )
+  { records_ = records; }
   
   //! Check files validity. Post a ValidFileEvent when finished
   void run( void );
@@ -93,7 +101,7 @@ class ValidFileThread: public QThread, public Counter
   QObject* reciever_;
   
   //! filename where data is to be saved
-  FileRecord::List files_;
+  FileRecord::List records_;
   
 };
 #endif

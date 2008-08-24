@@ -364,6 +364,50 @@ void TextEditor::selectLine( void )
 
 }
 
+
+//________________________________________________
+void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
+{
+  
+  static QRegExp regexp( "\\s+$" ); 
+  
+  QTextCursor cursor( textCursor() );
+  if( cursor.hasSelection() )
+  {
+
+    // get selection, look for trailing spaces
+    QString text( cursor.selectedText() );
+    if( regexp.indexIn( text ) >= 0 )
+    { 
+      
+      // create local cursor, copy current, in proper order
+      QTextCursor local( document() );
+      local.beginEditBlock();
+      local.setPosition( min( cursor.position(), cursor.anchor() ), QTextCursor::MoveAnchor );
+      local.setPosition( max( cursor.position(), cursor.anchor() ), QTextCursor::KeepAnchor );
+      local.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, regexp.matchedLength() );
+      
+      local.mergeCharFormat( format );
+      local.endEditBlock();
+      
+      return;
+      
+    }
+
+  } else if( _boxSelection().state() == BoxSelection::FINISHED ) { 
+    
+    // process box selection
+    // _boxSelection().setCharFormat( format ); 
+    _boxSelection().mergeCharFormat( format ); 
+    return;
+    
+  }  
+  
+  QTextEdit::mergeCurrentCharFormat( format );
+  return;
+
+}
+
 //________________________________________________
 void TextEditor::synchronize( TextEditor* editor )
 {
@@ -590,6 +634,7 @@ void TextEditor::paste( void )
     _boxSelection().fromClipboard( QClipboard::Clipboard );
     _boxSelection().clear();
   } else QTextEdit::paste();
+  
 }
 
 //________________________________________________
@@ -602,7 +647,6 @@ void TextEditor::upperCase( void )
   if( isReadOnly() ) return;
 
   QTextCursor cursor( textCursor() );
-
   if( cursor.hasSelection() ) 
   { 
     

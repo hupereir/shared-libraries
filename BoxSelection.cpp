@@ -450,6 +450,51 @@ bool BoxSelection::toLower( void )
 }
 
 //________________________________________________________________________
+bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
+{
+  
+  Debug::Throw( debug_level, "BoxSelection::mergeCharFormat.\n" );
+
+  // trailing space regexp
+  static QRegExp regexp( "\\s+$" ); 
+  
+  // check if state is ok
+  if( state() != FINISHED || cursorList().empty() ) return false;
+  
+  QTextCursor stored( parent_->textCursor() );
+  QTextCursor cursor( parent_->textCursor() );
+  cursor.beginEditBlock();
+  for( CursorList::const_iterator iter = cursorList().begin(); iter != cursorList().end(); iter++ )
+  {
+    
+    // select line and remove
+    cursor.setPosition( iter->anchor() );
+    cursor.setPosition( iter->position(), QTextCursor::KeepAnchor );
+    
+    // get selection, look for trailing spaces
+    QString text( cursor.selectedText() );
+    if( regexp.indexIn( text ) >= 0 )
+    { cursor.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, regexp.matchedLength() ); }
+    
+    cursor.mergeCharFormat( format );
+    
+  }
+  
+  cursor.endEditBlock();
+  
+  // restore cursor
+  if( stored.position() == cursorList().front().position() || stored.position() == cursorList().front().anchor() )
+  { 
+    stored.setPosition( cursorList().front().anchor() ); 
+  } else stored.setPosition( cursor.position() );
+
+  parent_->setTextCursor( stored );
+
+  return true;
+  
+}
+
+//________________________________________________________________________
 void BoxSelection::_updateRect( void )
 {
   Debug::Throw( debug_level, "BoxSelection::_updateRect.\n" );

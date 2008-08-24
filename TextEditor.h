@@ -115,7 +115,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! select line under cursor
   virtual void selectLine( void );
-   
+  
+  //! set textChar format
+  /*! 
+  this overloads the base class method (although the later is not virtual)
+  in order to properly handle box selection, if any 
+  */
+  void mergeCurrentCharFormat( const QTextCharFormat & modifier );
+  
   //! clear box selection
   virtual void clearBoxSelection( void )
   {

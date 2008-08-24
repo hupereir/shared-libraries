@@ -184,6 +184,9 @@ class BoxSelection: public Counter
   //! convert selected text to upperCase
   bool toLower( void );
   
+  //! apply char format to selection
+  bool mergeCharFormat( const QTextCharFormat& ) const;
+  
   //@}
   
   private:

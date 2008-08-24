@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+#include <algorithm>
 #include <QApplication>
 #include "ValidFileThread.h"
 #include "File.h" 
@@ -39,11 +40,37 @@ using namespace std;
 void ValidFileThread::run( void )
 {
 
-  // loop over files, check if exists, set validity accordingly, and post event
-  for( FileRecord::List::iterator iter = files_.begin(); iter != files_.end(); iter++ )
-  { iter->setValid( File( iter->file() ).exists() ); }
+  bool has_invalid_records( false );
   
-  qApp->postEvent( reciever_, new ValidFileEvent( files_ ) );  
+  // loop over files, check if exists, set validity accordingly, and post event
+  for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); iter++ )
+  { 
+    iter->setValid( File( iter->file() ).exists() ); 
+    has_invalid_records |= !iter->isValid();
+  }
+  
+  // look for duplicated records
+  for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); )
+  {
+    
+    // check item validity
+    if( iter->isValid() ) 
+    {
+    
+      // check for duplicates
+      FileRecord& current( *iter );
+      FileRecord::SameCanonicalFileFTor ftor( current.file() );
+      if( find_if( ++iter, records_.end(), ftor ) != records_.end() )
+      { 
+        current.setValid( false );
+        has_invalid_records = true;
+      }
+      
+    } else { ++iter; }
+    
+  }
+  
+  qApp->postEvent( reciever_, new ValidFileEvent( records_, has_invalid_records ) );  
   return;
   
 }
