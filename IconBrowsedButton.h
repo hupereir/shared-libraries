@@ -32,8 +32,8 @@
 #define IconBrowsedButton_h
 
 #include <QIconSet>
-#include <QPushButton>
 
+#include "CustomToolButton.h"
 #include "Counter.h"  
 #include "Debug.h"  
 #include "File.h"  
@@ -43,7 +43,7 @@
   \class IconBrowsedButton
   \brief customized tool button to display tooltip in a dedicated label
 */
-class IconBrowsedButton: public QPushButton, public Counter
+class IconBrowsedButton: public CustomToolButton
 {
 
   //! Qt meta object macros
@@ -77,9 +77,6 @@ class IconBrowsedButton: public QPushButton, public Counter
   virtual void _browse( void );
   
   private:
-  
-  //! default size for pixmap display
-  static const unsigned int icon_size_;
       
   //! empty pixmap
   QPixmap no_icon_pixmap_;

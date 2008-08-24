@@ -38,7 +38,6 @@
 #include "File.h"
 #include "IconBrowsedButton.h"
 #include "IconFileDialog.h"
-#include "CustomDialog.h"
 #include "XmlOptions.h"
 #include "QtUtil.h"
 
@@ -46,17 +45,15 @@ using namespace std;
 
 //_____________________________________________
 const std::string IconBrowsedButton::NO_ICON = "none";
-const unsigned int IconBrowsedButton::icon_size_ = 48;
     
 //_____________________________________________
 IconBrowsedButton::IconBrowsedButton( QWidget* parent, const File& file):
-  QPushButton( parent ),
-  Counter( "IconBrowsedButton" ),
+  CustomToolButton( parent ),
   file_( NO_ICON )
 { 
-  setIconSize( QSize(icon_size_,icon_size_) );
+  setIconSize( iconSize( HUGE ) );
+  setAutoRaise( false );
   setFile( file, false ); 
-  setFixedSize( QSize( icon_size_+8, icon_size_+8 ) );
   connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
 }
   
@@ -78,8 +75,8 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
   {
     
     // resize pixmap
-    if( pixmap.size() != QSize( icon_size_, icon_size_ ) )
-    pixmap = pixmap.scale( QSize( icon_size_, icon_size_ ) );
+    if( pixmap.size() != iconSize( HUGE ) )
+    pixmap = pixmap.scale( iconSize( HUGE ) );
     
     setIcon( pixmap );
     return;
@@ -95,7 +92,7 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
   
   // if file, set pixmap to empty
   if( no_icon_pixmap_.isNull() ) {
-    no_icon_pixmap_ = CustomPixmap().empty( QSize( icon_size_, icon_size_ ) );
+    no_icon_pixmap_ = CustomPixmap().empty( iconSize( HUGE ) );
     setIcon( no_icon_pixmap_ );
   }
       
