@@ -154,6 +154,29 @@ class LineEditor: public QLineEdit, public Counter
   
   private:
   
+  //!@name oxygen style
+  //@{
+  
+  //! oxygen style  
+  /*! 
+  this is a kludge so that the widget appears correctly for all styles
+  because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
+  style attribute
+  */
+  void _setIsOxygen( const bool& value )
+  { is_oxygen_ = value; }
+  
+  //! oxygen style
+  /*! 
+  this is a kludge so that the widget appears correctly for all styles
+  because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
+  style attribute
+  */
+  const bool& _isOxygen( void ) const
+  { return is_oxygen_; }
+  
+  //@}
+  
   //! framewidth
   int _frameWidth( void ) const;
   
@@ -206,7 +229,15 @@ class LineEditor: public QLineEdit, public Counter
   //!@name properties
   //@{
   
-  // true when clear button should be drawn
+  //! true when oxygen style is used
+  /*! 
+  this is a kludge so that the widget appears correctly for all styles
+  because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
+  style attribute
+  */
+  bool is_oxygen_;
+  
+  //! true when clear button should be drawn
   bool has_clear_button_;
   
   //! clear button rect

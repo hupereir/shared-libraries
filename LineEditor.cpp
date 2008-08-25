@@ -56,6 +56,11 @@ LineEditor::LineEditor( QWidget* parent ):
   clear_icon_( IconEngine::get( ICONS::EDIT_CLEAR ) )
 {    
   Debug::Throw( "LineEditor::LineEditor.\n" );
+
+  // this is a kludge so that the widget appears correctly for all styles
+  // because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
+  // style attribute
+  _setIsOxygen( style()->objectName().contains( "oxygen", Qt::CaseInsensitive ) );
     
   // actions
   _installActions();
@@ -65,6 +70,8 @@ LineEditor::LineEditor( QWidget* parent ):
     
   // set clear button visible
   setHasClearButton( true );
+  
+  Debug::Throw(0) << "LineEditor::LineEditor - style: " << qPrintable( style()->objectName() ) << " isOxygen: " << _isOxygen() << endl;
   
 }
 
@@ -504,8 +511,8 @@ void LineEditor::_updatePasteAction( void )
 //______________________________________________________________
 int LineEditor::_frameWidth( void ) const
 {
-  // what should appear here is style().pixelMetric( QStyle::PM_DefaultFrameWidth )
+  // what should appear here is style()->pixelMetric( QStyle::PM_DefaultFrameWidth )
   // but for some reason the later does not work with Oxygen style.
   // for other styles, this results in having the LineEditors drawn too large.
-  return QStyle::PM_DefaultFrameWidth;
+  return _isOxygen() ? QStyle::PM_DefaultFrameWidth : style()->pixelMetric( QStyle::PM_DefaultFrameWidth );
 }
