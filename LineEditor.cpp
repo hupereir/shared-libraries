@@ -71,8 +71,6 @@ LineEditor::LineEditor( QWidget* parent ):
   // set clear button visible
   setHasClearButton( true );
   
-  Debug::Throw(0) << "LineEditor::LineEditor - style: " << qPrintable( style()->objectName() ) << " isOxygen: " << _isOxygen() << endl;
-  
 }
 
 //_____________________________________________________________________
