@@ -365,7 +365,7 @@ void SpellInterface::_loadFilters( void )
   while( fgets( buf, linesize, tmp ) ) 
   {
 
-    if( !( buf && strlen( buf ) ) ) continue;
+    if( !strlen( buf ) ) continue;
     istringstream in( buf );
     string mode;
     in >> mode;
