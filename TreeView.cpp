@@ -38,7 +38,6 @@
 #include "ColumnSortingMenu.h"
 #include "QtUtil.h"
 #include "TreeView.h"
-#include "ItemModel.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -189,22 +188,22 @@ void TreeView::paintEvent( QPaintEvent* event )
   
   // check number of columns
   if( visibleColumnCount() < 2 ) return QTreeView::paintEvent( event );
-  
-  // try cast model
-  ItemModel* model( dynamic_cast<ItemModel*>( TreeView::model() ) ); 
-  if( !model ) return QTreeView::paintEvent( event );
-  
-  // get selected column
-  int selected_column( model->sortColumn() );
-  QRect rect( visualRect( model->index( 0, selected_column ) ) );
-  
-  QPainter painter( viewport() );
-  rect.setTop(0);
-  rect.setHeight( height() );
-  painter.setBrush( _selectedColumnColor() );
-  painter.setPen( Qt::NoPen );
-  painter.drawRect( rect.intersected( event->rect() ) );
-  painter.end();
+  if( header() && header()->isVisible() && header()->isSortIndicatorShown() )
+  {
+
+    // get selected column
+    int selected_column( header()->sortIndicatorSection() );
+    QRect rect( visualRect( model()->index( 0, selected_column ) ) );
+    
+    QPainter painter( viewport() );
+    rect.setTop(0);
+    rect.setHeight( height() );
+    painter.setBrush( _selectedColumnColor() );
+    painter.setPen( Qt::NoPen );
+    painter.drawRect( rect.intersected( event->rect() ) );
+    painter.end();
+    
+  }
   
   return QTreeView::paintEvent( event );
   

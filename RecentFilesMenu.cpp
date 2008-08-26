@@ -59,7 +59,6 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
   // icons
   setIcon( IconEngine::get( ICONS::OPEN ) );
 
-  // clean action
   action_group_ = new QActionGroup( this );
   action_group_->setExclusive( true );
   

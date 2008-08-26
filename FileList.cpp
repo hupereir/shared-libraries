@@ -94,10 +94,10 @@ void FileList::checkValidFiles( void )
 void FileList::customEvent( QEvent* event )
 {
   
-  if( event->type() != QEvent::User ) return;
+  if( event->type() != QEvent::User ) return QObject::customEvent( event );
   
   ValidFileEvent* valid_file_event( dynamic_cast<ValidFileEvent*>(event) );
-  if( !valid_file_event ) return;
+  if( !valid_file_event ) return QObject::customEvent( event );
   
   // set file records validity
   FileRecord::List& current_records( _records() );
@@ -115,7 +115,7 @@ void FileList::customEvent( QEvent* event )
   _setCleanEnabled( valid_file_event->hasInvalidRecords() );
   
   emit validFilesChecked();
-  return;
+  return QObject::customEvent( event );
   
 }
 
