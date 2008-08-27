@@ -79,6 +79,27 @@ class ItemModel : public QAbstractItemModel
   //! private sort, with no signals emmitted
   virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder ) = 0;
   
+  //! used to sort items in list
+  class SortFTor
+  {
+    
+    public:
+    
+    //! constructor
+    SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+      type_( type ),
+      order_( order )
+      {}
+    
+    protected:
+    
+    //! column
+    int type_;
+    
+    //! order
+    Qt::SortOrder order_;
+    
+  };
   
   private:  
   

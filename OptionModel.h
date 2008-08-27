@@ -83,28 +83,19 @@ class OptionModel: public ListModel<Option>, public Counter
             
   private:
   
-  //! used to sort options
-  class SortFTor
+  //! used to sort IconCaches
+  class SortFTor: public ItemModel::SortFTor
   {
     
     public:
     
     //! constructor
-    SortFTor( const ColumnType& type, Qt::SortOrder order = Qt::AscendingOrder ):
-      type_( type ),
-      order_( order )
+    SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+      ItemModel::SortFTor( type, order )
       {}
       
     //! prediction
-    bool operator() ( Option first, Option second ) const;
-    
-    private:
-    
-    //! column
-    ColumnType type_;
-    
-    //! order
-    Qt::SortOrder order_;
+    bool operator() ( Option, Option ) const;
     
   };
 

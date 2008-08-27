@@ -116,31 +116,24 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
   private:
   
   //! used to sort Counters
-  class SortFTor
+  class SortFTor: public ItemModel::SortFTor
   {
     
     public:
     
     //! constructor
     SortFTor( const int& type, Qt::SortOrder order, const std::vector<QString>& column_titles ):
-      column_titles_( column_titles ),
-      type_( type ),
-      order_( order )
+      ItemModel::SortFTor( type, order ),
+      column_titles_( column_titles )
       {}
       
     //! prediction
-    bool operator() ( FileRecord first, FileRecord second ) const;
+    bool operator() ( FileRecord, FileRecord ) const;
     
     private:
 
     // column titles
     std::vector<QString> column_titles_;
-    
-    //! column
-    int type_;
-    
-    //! order
-    Qt::SortOrder order_;
     
   };
 

@@ -83,27 +83,18 @@ class IconCacheModel: public ListModel<IconEngine::Pair>, public Counter
   private:
   
   //! used to sort IconCaches
-  class SortFTor
+  class SortFTor: public ItemModel::SortFTor
   {
     
     public:
     
     //! constructor
-    SortFTor( const ColumnType& type, Qt::SortOrder order = Qt::AscendingOrder ):
-      type_( type ),
-      order_( order )
+    SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+      ItemModel::SortFTor( type, order )
       {}
       
     //! prediction
-    bool operator() ( IconEngine::Pair first, IconEngine::Pair second ) const;
-    
-    private:
-    
-    //! column
-    ColumnType type_;
-    
-    //! order
-    Qt::SortOrder order_;
+    bool operator() ( IconEngine::Pair, IconEngine::Pair ) const;
     
   };
 

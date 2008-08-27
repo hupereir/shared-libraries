@@ -103,28 +103,20 @@ class CounterModel: public ListModel<CounterPair>
             
   private:
   
-  //! used to sort Counters
-  class SortFTor
+  
+  //! used to sort IconCaches
+  class SortFTor: public ItemModel::SortFTor
   {
     
     public:
     
     //! constructor
-    SortFTor( const ColumnType& type, Qt::SortOrder order = Qt::AscendingOrder ):
-      type_( type ),
-      order_( order )
+    SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+      ItemModel::SortFTor( type, order )
       {}
       
     //! prediction
-    bool operator() ( CounterPair first, CounterPair second ) const;
-    
-    private:
-    
-    //! column
-    ColumnType type_;
-    
-    //! order
-    Qt::SortOrder order_;
+    bool operator() ( CounterPair, CounterPair ) const;
     
   };
 

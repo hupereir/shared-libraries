@@ -50,13 +50,9 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   // tell dialog to delete when close
   setAttribute( Qt::WA_DeleteOnClose );
   
-  setLayout( new QVBoxLayout() );
-  layout()->setMargin(10);
-  layout()->setSpacing(10);
-  
   // insert list
   TreeView* list = new TreeView( this );
-  layout()->addWidget( list );
+  mainLayout().addWidget( list );
   list->setModel( &model_ );
   
   // retrieve environment variables from QProcess
