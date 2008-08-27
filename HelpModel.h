@@ -43,7 +43,7 @@ namespace BASE
 {
 
   //! model for help items
-  class HelpModel: public ListModel<HelpItem>
+  class HelpModel: public ListModel<HelpItem>, public Counter
   {
 
     //! Qt meta object declaration
@@ -62,6 +62,7 @@ namespace BASE
     
     //! constructor
     HelpModel( void ):
+      Counter( "HelpModel" ),
       edition_enabled_( false )
       {}
     
