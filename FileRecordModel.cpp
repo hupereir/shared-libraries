@@ -58,7 +58,7 @@ FileRecordModel::FileRecordModel( QObject* parent ):
   column_titles_.push_back( "last accessed" );
 
   connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-
+  
 }
   
 //__________________________________________________________________
@@ -140,10 +140,14 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
     
   } else if( _showIcons() && role == Qt::DecorationRole && index.column() == ICON && record.hasProperty( FileRecordProperties::ICON ) ) {
     
+    // icon
     return _icon( record.property( FileRecordProperties::ICON ) );
     
   } else if( role == Qt::ToolTipRole ) return QString( record.file().c_str() );
  
+  // alignment
+  else if( role == Qt::TextAlignmentRole && index.column() == ICON ) return Qt::AlignCenter;
+  
   return QVariant();
   
 }

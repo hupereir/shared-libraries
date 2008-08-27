@@ -50,23 +50,27 @@ void ValidFileThread::run( void )
   }
   
   // look for duplicated records
-  for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); )
+  if( _checkDuplicates() )
   {
-    
-    // check item validity
-    if( iter->isValid() ) 
+    for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); )
     {
-    
-      // check for duplicates
-      FileRecord& current( *iter );
-      FileRecord::SameCanonicalFileFTor ftor( current.file() );
-      if( find_if( ++iter, records_.end(), ftor ) != records_.end() )
-      { 
-        current.setValid( false );
-        has_invalid_records = true;
-      }
       
-    } else { ++iter; }
+      // check item validity
+      if( iter->isValid() ) 
+      {
+        
+        // check for duplicates
+        FileRecord& current( *iter );
+        FileRecord::SameCanonicalFileFTor ftor( current.file() );
+        if( find_if( ++iter, records_.end(), ftor ) != records_.end() )
+        { 
+          current.setValid( false );
+          has_invalid_records = true;
+        }
+        
+      } else { ++iter; }
+    
+    }
     
   }
   

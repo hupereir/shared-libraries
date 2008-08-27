@@ -293,7 +293,7 @@ void TreeView::_updateConfiguration( void )
   if( icon_size_from_options_ )
   {
     int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
-    setIconSize( QSize( icon_size, icon_size )  );
+    QTreeView::setIconSize( QSize( icon_size, icon_size )  );
   } 
     
 }

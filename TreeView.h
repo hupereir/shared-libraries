@@ -97,9 +97,12 @@ class TreeView: public QTreeView, public Counter
    
   //@}
   
-  //! icon size from options
-  void setIconSizeFromOptions( const bool& value )
-  { icon_size_from_options_ = value; }
+  //! set icon size manually and disable option
+  void setIconSize( const QSize& size )
+  {
+    QTreeView::setIconSize( size );
+    icon_size_from_options_ = false;
+  }
   
   public slots:
   

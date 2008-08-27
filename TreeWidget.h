@@ -69,7 +69,14 @@ class TreeWidget: public QTreeWidget, public Counter
   
   //! retrieve popup menu
   virtual QMenu& menu( void );
-   
+  
+  //! set icon size manually and disable option
+  void setIconSize( const QSize& size )
+  {
+    QTreeWidget::setIconSize( size );
+    icon_size_from_options_ = false;
+  }
+  
   //@} 
   
   //! set column name
@@ -263,6 +270,9 @@ class TreeWidget: public QTreeWidget, public Counter
 
   //! popup menu for right click
   QMenu *menu_;
+  
+  //! icon size is picked from options
+  bool icon_size_from_options_;
   
   //! mask option name
   std::string mask_option_name_;

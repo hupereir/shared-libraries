@@ -32,6 +32,7 @@
 #include <QLayout>
 
 #include "BaseIcons.h"
+#include "CustomPixmap.h"
 #include "IconCacheDialog.h"
 #include "IconEngine.h"
 #include "TreeView.h"
@@ -56,7 +57,6 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
   list_ = new TreeView( this );  
   layout()->addWidget( list_ );
   list_->setModel( &model_ );  
-  list_->setIconSizeFromOptions( false );
   list_->setIconSize( QSize( 32, 32 ) );
   
   // update button

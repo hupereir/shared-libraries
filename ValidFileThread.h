@@ -84,9 +84,13 @@ class ValidFileThread: public QThread, public Counter
   //! constructor
   ValidFileThread( QObject* reciever ):
     Counter( "ValidFileThread" ),
-    reciever_( reciever )
+    reciever_( reciever ),
+    check_duplicates_( true )
   {}
 
+  //! check duplicates
+  void setCheckDuplicates( bool value )
+  { check_duplicates_ = value; }
   
   //! set file
   void setRecords( const FileRecord::List& records )
@@ -97,8 +101,14 @@ class ValidFileThread: public QThread, public Counter
   
   private:
  
+  const bool& _checkDuplicates( void ) const
+  { return check_duplicates_; }
+  
   //! reciever object for posted events
   QObject* reciever_;
+  
+  //! check duplicates
+  bool check_duplicates_;
   
   //! filename where data is to be saved
   FileRecord::List records_;

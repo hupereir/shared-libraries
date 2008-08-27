@@ -45,7 +45,8 @@ using namespace std;
 TreeWidget::TreeWidget( QWidget* parent ):
   QTreeWidget( parent ),
   Counter( "TreeWidget" ),
-  menu_( 0 )
+  menu_( 0 ),
+  icon_size_from_options_( true )
 {
   Debug::Throw( "TreeWidget::TreeWidget.\n" );   
 
@@ -408,7 +409,11 @@ void TreeWidget::_updateConfiguration( void )
   _setSelectedColumnColor( color );
     
   // icon size
-  int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
-  setIconSize( QSize( icon_size, icon_size )  );
+  if( icon_size_from_options_ )
+  {
+    // icon size
+    int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
+    QTreeWidget::setIconSize( QSize( icon_size, icon_size )  );
+  }
   
 }
