@@ -32,18 +32,15 @@
 #include <QProcess>
 #include <QLayout>
 
-#include "BaseIcons.h"
-#include "IconEngine.h"
 #include "SystemEnvironmentDialog.h"
-#include "TreeWidget.h"
+#include "TreeView.h"
 #include "Str.h"
 
 using namespace std;
 
 //__________________________________________________________________________
 SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
-  BaseDialog( parent, Qt::Window ),
-  Counter( "SystemEnvironmentDialog" )
+  CustomDialog( parent, CustomDialog::OK_BUTTON )
 {
   
   Debug::Throw( "SystemEnvironmentDialog::SystemEnvironmentDialog.\n" );
@@ -58,31 +55,23 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   layout()->setSpacing(10);
   
   // insert list
-  TreeWidget* list = new TreeWidget( this );
+  TreeView* list = new TreeView( this );
   layout()->addWidget( list );
-  list->setColumnCount(2);
-  list->setColumnName(0, "Name" );
-  list->setColumnName(1, "Value" );
+  list->setModel( &model_ );
   
   // retrieve environment variables from QProcess
   QStringList env( QProcess::systemEnvironment() );
+  OptionModel::List options;
   for( QStringList::iterator iter = env.begin(); iter != env.end(); iter++ )
   {
     QStringList parsed( (iter)->split( "=" ) );
     if( parsed.empty() ) continue;
-    TreeWidget::Item* item = new TreeWidget::Item();
-    item->setText( 0, parsed[0] );
-    if( parsed.size() > 1 ) item->setText( 1, parsed[1] );
-    list->addTopLevelItem( item );
+    
+    options.push_back( Option( qPrintable( parsed[0] ), parsed.size() > 1 ? qPrintable( parsed[1] ): "" ) );
+  
   }
   
-  list->resizeColumnToContents( 1 );
-  list->resizeColumnToContents( 0 );
-  list->sortItems(0, Qt::AscendingOrder );
+  model_.add( options );
+  list->resizeColumns();
   
-  QPushButton *button;
-  layout()->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ),"&Close", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-  button->setAutoDefault( false );
-    
 }

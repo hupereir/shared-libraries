@@ -40,6 +40,7 @@
 #include "Debug.h"
 #include "OptionListBox.h"
 #include "QtUtil.h"
+#include "TreeView.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -60,15 +61,17 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   setLayout( layout );
   
   // create list
-  list_ = new TreeWidget( this );
-  list_->setSortingEnabled( false );
-  list_->header()->hide();
-  list_->setColumnCount(1);
-  
-  list_->setSelectionMode( QAbstractItemView::ExtendedSelection );  
-  connect( list_, SIGNAL( itemDoubleClicked( QTreeWidgetItem*, int ) ), SLOT( _edit() ) );
-  connect( list_, SIGNAL( itemSelectionChanged() ), SLOT( _updateButtons() ) ); 
-  layout->addWidget( list_, 1 );
+  list_ = new TreeView( this );
+  _list().setSortingEnabled( false );
+  _list().header()->hide();
+  _list().setSelectionMode( QAbstractItemView::ExtendedSelection );  
+  _list().setModel( &model_ );
+  _list().setMask( 1<<OptionModel::VALUE );
+  layout->addWidget( &_list(), 1 );
+
+  // set connections
+  connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _edit() ) );
+  connect( _list().selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
   
   QVBoxLayout* button_layout = new QVBoxLayout();
   button_layout->setMargin(0);
@@ -112,13 +115,9 @@ void OptionListBox::read( void )
 {
   Debug::Throw( "OptionListBox::read.\n" );
 
-  // clear list
-  list_->clear();
-
   // retrieve all values from Options, insert in list
-  list<string> values( XmlOptions::get().specialOptions<string>( optionName() ) );
-  for( list<string>::iterator iter = values.begin(); iter != values.end(); iter++ )
-  { ( new QTreeWidgetItem( list_) )->setText( 0, iter->c_str() ); }
+  Options::List values( XmlOptions::get().specialOptions( optionName() ) );
+  model_.update( OptionModel::List( values.begin(), values.end() ) );
   
 }
 
@@ -128,30 +127,24 @@ void OptionListBox::write( void ) const
   Debug::Throw( "OptionListBox::write.\n" );
   XmlOptions::get().clearSpecialOptions( optionName() );
   XmlOptions::get().keep( optionName() );
-  bool first( true );
-  QList<QTreeWidgetItem*> items( list_->children() );
-  for( QList<QTreeWidgetItem*>::iterator iter  = items.begin(); iter != items.end(); iter++ )
-  {
-    
-    Option option( optionName(), qPrintable( (*iter)->text(0) ), "", first );
-    XmlOptions::get().add( option );
-    first = false;
-  }
+  OptionModel::List values( model_.get() );
+  for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); iter++ )
+  { XmlOptions::get().add( *iter ); }
 }
 
 //______________________________________________________________________   
 void OptionListBox::_updateButtons( void )
 {
   Debug::Throw( "OptionListBox::_updateButtons.\n" );
-  
-  // retrieve list of items
-  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
+
+  int selection_size( _list().selectionModel()->selectedRows().size() );  
   
   // enable buttons depending on the size of the list
-  edit_->setEnabled( items.size() == 1 );
-  remove_action_->setEnabled( items.size() != 0 );
-  remove_->setEnabled( items.size() != 0 );
-  default_->setEnabled( items.size() == 1 );
+  edit_->setEnabled( selection_size == 1 );
+  default_->setEnabled( selection_size == 1 );
+
+  remove_action_->setEnabled( selection_size != 0 );
+  remove_->setEnabled( selection_size != 0 );
   
 }   
 
@@ -171,19 +164,22 @@ void OptionListBox::_add( void )
     dialog.mainLayout().addWidget( browse_edit );
     browse_edit->setFileMode( file_mode_ );
     line_edit = &browse_edit->editor();
+    
   } else {
+    
     line_edit = new BrowsedLineEditor::Editor( &dialog );
     dialog.mainLayout().addWidget( line_edit );
+  
   }
   
   // map dialog
-  dialog.adjustSize();
-  QtUtil::centerOnParent( &dialog );
+  dialog.centerOnParent();
+  
   if( dialog.exec() == QDialog::Rejected ) return;
   if( line_edit->text().isEmpty() ) return;
   
   // create new item
-  ( new QTreeWidgetItem( list_ ) )->setText( 0, line_edit->text() );
+  model_.add( Option( optionName(), qPrintable( line_edit->text() ) ) );
 
 }
 
@@ -193,8 +189,8 @@ void OptionListBox::_edit( void )
   Debug::Throw( "OptionListBox::_edit.\n" );
 
   // retrieve selection
-  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
-  assert( items.size() == 1 );
+  QModelIndex current( _list().selectionModel()->currentIndex() );
+  assert( current.isValid() );
 
   // create dialog
   CustomDialog dialog( this );
@@ -212,17 +208,16 @@ void OptionListBox::_edit( void )
     dialog.mainLayout().addWidget( line_edit );
   }
 
-  line_edit->setText( items.front()->text(0) );
-  QtUtil::expand( line_edit, qPrintable( items.front()->text(0) ) );
+  Option option( model_.get( current ) );
+  line_edit->setText( option.raw().c_str() );
 
   // map dialog
-  dialog.adjustSize();
-  QtUtil::centerOnParent( &dialog );
+  dialog.centerOnParent();
   if( dialog.exec() == QDialog::Rejected ) return;
   
   if( line_edit->text().isEmpty() ) return;
-
-  items.front()->setText( 0, qPrintable( line_edit->text() ) );
+  option.setRaw( qPrintable( line_edit->text() ) ); 
+  model_.add( option );
   return;
 
 }
@@ -232,14 +227,8 @@ void OptionListBox::_remove( void )
 {
   Debug::Throw( "OptionListBox::_remove.\n" );
 
-  // retrieve selection
-  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
-  assert( !items.empty() );
-  ostringstream what;
-  what << "remove selected value" << (items.size() > 1 ? "s":"") << " ?";
-  if( !QtUtil::questionDialog( this, what.str().c_str() ) ) return;
-  for( QList<QTreeWidgetItem*>::iterator iter  = items.begin(); iter != items.end(); iter++ )
-  { delete *iter; }
+  // retrieve selected items; make sure they do not include the navigator
+  model_.remove( model_.get( _list().selectionModel()->selectedRows() ) );
   
   return;
 
@@ -251,10 +240,17 @@ void OptionListBox::_setDefault( void )
   Debug::Throw( "OptionListBox::_setDefault.\n" );
 
   // retrieve selection
-  QList<QTreeWidgetItem*> items( list_->QTreeWidget::selectedItems() );
-  assert( items.size() == 1 );
+  QModelIndex current( _list().selectionModel()->currentIndex() );
+  assert( current.isValid() );
 
-  // move Item to the top of the list
-  list_->takeTopLevelItem( list_->indexOfTopLevelItem( items.front() ) );
-  list_->insertTopLevelItem( 0, items.front() );
+  OptionModel::List options( model_.get() );
+  for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); iter++ )
+  { iter->setFront( false ); }
+  
+  model_.update( options );
+  
+  Option current_option( model_.get( current ) );
+  current_option.setFront( true );
+  model_.add( current_option );
+
 }

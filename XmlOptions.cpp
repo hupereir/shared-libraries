@@ -119,7 +119,7 @@ bool XmlOptions::write( File file )
   QDomElement top = document.appendChild( document.createElement( OPTIONS::OPTIONS ) ).toElement();
 
   // write list of special option names
-  for( Options::SpecialOptionMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
+  for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
   {
     // check size of options
     if( iter->second.empty() ) continue;
@@ -131,16 +131,16 @@ bool XmlOptions::write( File file )
   }
 
   // write options
-  for( Options::SpecialOptionMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
+  for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
   {
-    Options::OptionList option_list( iter->second );
-    for( Options::OptionList::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
+    Options::List option_list( iter->second );
+    for( Options::List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
     if( list_iter->isRecordable() && list_iter->set() && list_iter->raw().size() )
     top.appendChild( XmlOption( *list_iter ).domElement( document ) );
   }
 
   // write standard options
-  for( Options::OptionMap::const_iterator iter = get().map().begin(); iter != get().map().end(); iter++ )
+  for( Options::Map::const_iterator iter = get().map().begin(); iter != get().map().end(); iter++ )
   if( iter->second.isRecordable() && iter->second.set() && iter->second.raw().size() )
   top.appendChild( XmlOption( iter->second ).domElement( document ) );
 

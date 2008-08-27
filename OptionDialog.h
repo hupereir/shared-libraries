@@ -35,11 +35,11 @@
 #include <map>
 #include <string>
 
-#include "Counter.h"
-#include "BaseDialog.h"
+#include "CustomDialog.h"
+#include "OptionModel.h"
 
 //! displays Counter names and counts
-class OptionDialog: public BaseDialog, public Counter
+class OptionDialog: public CustomDialog
 {
 
   public:
@@ -50,6 +50,11 @@ class OptionDialog: public BaseDialog, public Counter
   //! destructor
   virtual ~OptionDialog( void )
   {}
+  
+  private:
+  
+  //! option model
+  OptionModel model_;
   
 };
 

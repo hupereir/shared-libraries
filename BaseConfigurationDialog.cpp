@@ -384,7 +384,7 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
   CustomDialog dialog( this );
 
   // store backup
-  Options::OptionList backup_options = XmlOptions::get().specialOptions( "PIXMAP_PATH" );
+  Options::List backup_options = XmlOptions::get().specialOptions( "PIXMAP_PATH" );
   
   dialog.mainLayout().addWidget( new QLabel("Pixmap pathname: ", &dialog ) );
   OptionListBox *listbox = new OptionListBox( &dialog, "PIXMAP_PATH" );
@@ -399,7 +399,7 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
   else { 
     // restore old values
     XmlOptions::get().clearSpecialOptions( "PIXMAP_PATH" );
-    for( Options::OptionList::iterator iter = backup_options.begin(); iter != backup_options.end(); iter++ )
+    for( Options::List::iterator iter = backup_options.begin(); iter != backup_options.end(); iter++ )
     { XmlOptions::get().add( *iter ); }
   }
   return;

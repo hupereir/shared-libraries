@@ -65,6 +65,7 @@ noinst_HEADERS = \
   OptionIconBrowsedButton.h \
   OptionLineEditor.h \
   OptionListBox.h \
+  OptionModel.h \
   OptionRadioButton.h \
   OptionSlider.h \
   OptionSpinBox.h \
@@ -152,6 +153,7 @@ libbase_qt_a_SOURCES = \
   ListWidget.cpp \
   OptionDialog.cpp \
   OptionListBox.cpp \
+  OptionModel.cpp \
   PixmapEngine.cpp \
   ProcessDialog.cpp \
   ProcessFrame.cpp \

@@ -34,10 +34,8 @@
 
 #include <QAbstractItemModel>
 
-#include "Counter.h"
-
 //! Job model. Stores job information for display in lists
-class ItemModel : public QAbstractItemModel, public Counter
+class ItemModel : public QAbstractItemModel
 {
     
   public:

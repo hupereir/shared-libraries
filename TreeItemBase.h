@@ -34,8 +34,10 @@
 
 #include <assert.h>
 
+#include "Counter.h"
+
 //! used to wrap object T into tree structure
-class TreeItemBase
+class TreeItemBase: public Counter
 {
   
   public:
@@ -86,6 +88,7 @@ class TreeItemBase
   //! constructor
   /*! used to insert T in the tree structure */
   TreeItemBase( const Id& id ):
+    Counter( "TreeItemBase" ),
     id_( id ),
     flags_( NONE )
     {}

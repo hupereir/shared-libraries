@@ -69,6 +69,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
   _list().setMaximumWidth(150);
   _list().header()->hide();
   _list().setSortingEnabled( false );
+  _list().setModel( &model_ );
 
   // connections
   connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
@@ -87,21 +88,21 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 //_________________________________________________________
 QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
 {  
-  Debug::Throw( "ConfigList::Item::Item.\n" );
+  Debug::Throw( "TabbedDialog::addPage.\n" );
   
   // create scroll area
   QScrollArea* scroll = new QScrollArea();
   scroll->setWidgetResizable ( true );
   scroll->setFrameStyle( QFrame::NoFrame );
+  scroll->setObjectName( title );
   
   // create main widget
   QWidget* main( new QWidget() );
-  main->setObjectName( title );
   scroll->setWidget( main );
   
   // add to stack and model
   _stack().addWidget( scroll );
-  _model().add( main );
+  _model().add( scroll );
   
   QVBoxLayout* layout( new QVBoxLayout() );
   layout->setSpacing( 5 );
@@ -134,8 +135,7 @@ void TabbedDialog::_display( const QModelIndex& index )
 {
   Debug::Throw( "TabbedDialog::_display.\n" );
   if( !index.isValid() ) return;
-  QWidget& widget( *_model().get( index ) );
-  _stack().setCurrentWidget( widget.parentWidget() );  
+  _stack().setCurrentWidget( _model().get( index ) );  
 }
 
 

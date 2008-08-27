@@ -35,12 +35,13 @@
 #include <string.h>
 #include <sstream>
 
-#include "ListModel.h"
-#include "FileRecord.h"
+#include "Counter.h"
 #include "Debug.h"
+#include "FileRecord.h"
+#include "ListModel.h"
   
 //! qlistview for object counters
-class FileRecordModel: public ListModel<FileRecord>
+class FileRecordModel: public ListModel<FileRecord>, public Counter
 {
 
   Q_OBJECT

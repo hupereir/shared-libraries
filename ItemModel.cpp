@@ -37,7 +37,6 @@ using namespace std;
 //_______________________________________________________________
 ItemModel::ItemModel( QObject* parent ):
   QAbstractItemModel( parent ),
-  Counter( "ItemModel" ),
   sort_column_(0),
   sort_order_( Qt::AscendingOrder )
 { Debug::Throw( "ItemModel::ItemModel.\n" ); }

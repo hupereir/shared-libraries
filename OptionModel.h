@@ -1,5 +1,5 @@
-#ifndef _IconCacheModel_h_
-#define _IconCacheModel_h_
+#ifndef _OptionModel_h_
+#define _OptionModel_h_
 
 // $Id$
 
@@ -25,8 +25,8 @@
 *******************************************************************************/
  
 /*!
-  \file IconCacheModel.h
-  \brief model for object IconCaches
+  \file OptionModel.h
+  \brief model for options
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -37,27 +37,28 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "IconEngine.h"
+#include "Options.h"
 #include "ListModel.h"
 
 //! qlistview for object IconCaches
-class IconCacheModel: public ListModel<IconEngine::Pair>, public Counter
+class OptionModel: public ListModel<Option>, public Counter
 {
 
   public:
 
   //! number of columns
-  enum { n_columns = 1 };
+  enum { n_columns = 2 };
 
   //! column type enumeration
   enum ColumnType {
-    ICON
+    NAME,
+    VALUE
   };
 
   //! constructor
-  IconCacheModel( QObject* parent = 0 ):
-    ListModel<IconEngine::Pair>( parent ),
-    Counter( "IconCacheModel" )
+  OptionModel( QObject* parent = 0 ):
+    ListModel<Option>( parent ),
+    Counter( "OptionModel" )
   {}
   
   //!@name methods reimplemented from base class
@@ -82,7 +83,7 @@ class IconCacheModel: public ListModel<IconEngine::Pair>, public Counter
             
   private:
   
-  //! used to sort IconCaches
+  //! used to sort options
   class SortFTor
   {
     
@@ -95,7 +96,7 @@ class IconCacheModel: public ListModel<IconEngine::Pair>, public Counter
       {}
       
     //! prediction
-    bool operator() ( IconEngine::Pair first, IconEngine::Pair second ) const;
+    bool operator() ( Option first, Option second ) const;
     
     private:
     

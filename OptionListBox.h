@@ -39,9 +39,10 @@
 #include <cmath>
 
 #include "OptionWidget.h"
+#include "OptionModel.h"
 #include "Options.h"
 
-#include "TreeWidget.h"
+class TreeView;
 
 //! ListBox for Special options, and buttons to add/remove values
 class OptionListBox: public QWidget, public OptionWidget
@@ -88,14 +89,21 @@ class OptionListBox: public QWidget, public OptionWidget
 
   private:
 
+  //! list
+  TreeView& _list( void ) const
+  { return *list_; }    
+  
   //! if true, use browsable line editor for Add
   bool browsable_;
   
   //! browsable dialog mode
   QFileDialog::FileMode file_mode_;
-    
+          
+  //! model
+  OptionModel model_;
+  
   //! value list
-  TreeWidget* list_;
+  TreeView* list_;
   
   //! edit button
   QPushButton* edit_;
