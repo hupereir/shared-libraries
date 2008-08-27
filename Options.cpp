@@ -96,7 +96,7 @@ Options::Options( void ):
 //____________________________________________________
 Option& Options::option( const string& name )
 {
-  OptionMap::iterator iter( options_.find( name ) );
+  Map::iterator iter( options_.find( name ) );
   if( iter == options_.end() ) {
     std::ostringstream what;
     what << "option named " << name << " not found";
@@ -119,10 +119,10 @@ bool Options::add( const Option& option, bool overwrite )
 {
 
   // store option as special if requested
-  SpecialOptionMap::iterator iter( special_options_.find( option.name() ) );
+  SpecialMap::iterator iter( special_options_.find( option.name() ) );
   if( iter != special_options_.end() )
   {
-    OptionList::iterator same_option_iter = std::find( iter->second.begin(), iter->second.end(), option );
+    List::iterator same_option_iter = std::find( iter->second.begin(), iter->second.end(), option );
     if( same_option_iter != iter->second.end() )
     {
       if( option.front() && !same_option_iter->front() )
@@ -153,14 +153,14 @@ void Options::dump( ostream& out ) const
   Debug::Throw( "Options::dump.\n" );
   
   // dump normal options
-  for( OptionMap::const_iterator iter = options_.begin(); iter != options_.end(); iter++ )
+  for( Map::const_iterator iter = options_.begin(); iter != options_.end(); iter++ )
   out << "  " << iter->second << endl;
 
   // write special options
-  for( SpecialOptionMap::const_iterator iter = special_options_.begin(); iter != special_options_.end(); iter++ )
+  for( SpecialMap::const_iterator iter = special_options_.begin(); iter != special_options_.end(); iter++ )
   {
-    OptionList option_list( iter->second );
-    for( OptionList::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
+    List option_list( iter->second );
+    for( List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
     if( list_iter->isRecordable() && list_iter->set() && list_iter->raw().size() )
     out << "  " << *list_iter << endl;
   }

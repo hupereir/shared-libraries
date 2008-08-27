@@ -49,13 +49,13 @@ class Options: public Counter
   public: 
    
   //! shortCut for option map
-  typedef std::map< std::string, Option > OptionMap;
+  typedef std::map< std::string, Option > Map;
 
   //! shortCut for option list
-  typedef std::list< Option > OptionList;
+  typedef std::list< Option > List;
         
   //! shortCut for option map
-  typedef std::map< std::string, OptionList > SpecialOptionMap;
+  typedef std::map< std::string, List > SpecialMap;
     
   //! constructor
   Options( void );
@@ -78,21 +78,25 @@ class Options: public Counter
   virtual bool add( const Option& option, bool overwrite = true );
   
   //! retrieve list of special (i.e. kept) options
-  virtual const SpecialOptionMap& specialOptions() const
+  virtual const SpecialMap& specialOptions() const
   { return special_options_; }
   
   //! retrieve list of special (i.e. kept) options matching a given name
-  virtual OptionList specialOptions( const std::string& name )
+  virtual List& specialOptions( const std::string& name )
   { return special_options_[name]; }
+  
+  //! returns true if option name is special
+  virtual bool isSpecialOption( const std::string& name ) const
+  { return special_options_.find( name ) != special_options_.end(); }
   
   //! retrieve list of special (i.e. kept) options matching a given name
   template < typename T > 
   std::list<T> specialOptions( const std::string& name )
   {
     
-    OptionList option_list( specialOptions( name ) );
+    List option_list( specialOptions( name ) );
     std::list<T> out;
-    for( OptionList::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
+    for( List::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
     out.push_back( iter->get<T>() );
     return out; 
     
@@ -102,7 +106,7 @@ class Options: public Counter
   virtual void clearSpecialOptions( const std::string& name );
   
   //! returns all options
-  const OptionMap& options( void ) const
+  const Map& options( void ) const
   { return options_; }
   
   //! returns true if option with matching name is found
@@ -146,23 +150,23 @@ class Options: public Counter
   virtual void keep( const std::string& name )
   { 
     if( special_options_.find( name ) == special_options_.end() )
-    special_options_.insert( make_pair( name, OptionList() ) );
+    special_options_.insert( make_pair( name, List() ) );
   }
     
   //! dump options to stream
   virtual void dump( std::ostream& out = std::cout ) const;
   
   //! retrieve Option map
-  virtual OptionMap& map( void )
+  virtual Map& map( void )
   { return options_; }
     
   private:
    
   //! option map
-  OptionMap options_;
+  Map options_;
   
   //! set of option names to be kept separately
-  SpecialOptionMap special_options_;
+  SpecialMap special_options_;
         
 };
 

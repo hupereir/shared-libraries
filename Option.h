@@ -47,7 +47,7 @@ class Option:public Counter {
   public:
 
   //! default creator
-  Option( ): 
+  Option(): 
     Counter( "Option" ),
     name_( "" ),
     value_( "" ),
