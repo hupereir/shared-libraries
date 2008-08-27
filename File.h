@@ -94,7 +94,7 @@ class File: public Str
   
   //! file size (string version)
   virtual std::string sizeString( void ) const
-  { return sizeString( size() ); }
+  { return sizeString( fileSize() ); }
   
   //! file size (string version)
   static std::string sizeString( const unsigned int& size );
