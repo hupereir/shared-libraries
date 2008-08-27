@@ -37,37 +37,12 @@
 #include <QStackedWidget>
 #include <list>
 
-#include "TreeWidget.h"
 #include "XmlOptions.h"
 #include "BaseDialog.h"
 #include "OptionWidget.h"
+#include "ListModel.h"
 
-//! configuration list. Stores panel names and panels
-class ConfigListItem: public QTreeWidgetItem, public Counter
-{
-
-  public:
-
-  //! constructor
-  ConfigListItem( QTreeWidget* parent, const QString& title, QWidget* page = 0 ):
-    QTreeWidgetItem( parent ),
-    Counter( "ConfigListItem" ),
-    page_( page )
-  { 
-    Debug::Throw( "ConfigListItem::ConfigListItem.\n" );
-    setText( 0, title );
-  }
-    
-  //! retrieve page
-  QWidget& page( void )
-  { return *page_; }
-
-  private:
-
-  //! associated group box
-  QWidget *page_;
-    
-};
+class TreeView;
 
 //! tabbed dialog
 /*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
@@ -89,17 +64,17 @@ class TabbedDialog: public BaseDialog, public Counter
   }
   
   //! adds a new Item, returns associated Box
-  virtual QWidget& addPage( const QString& title, const bool& expand = false );
+  virtual QWidget& addPage( const QString&, const bool& expand = false );
   
   protected slots: 
   
   //! display item page
-  virtual void _display( QTreeWidgetItem* current, QTreeWidgetItem* previous );
+  virtual void _display( const QModelIndex& );
 
   protected:
 
   //! retrieve list
-  virtual TreeWidget& _list( void )
+  virtual TreeView& _list( void )
   { return *list_; }
 
   //! retrieve stack
@@ -112,8 +87,67 @@ class TabbedDialog: public BaseDialog, public Counter
   
   private:
   
+  //! model
+  class Model: public ListModel<QWidget*>
+  {
+    
+    public:
+    
+    //! number of columns
+    enum { n_columns = 1 };
+    
+    //! column type enumeration
+    enum ColumnType {
+      NAME
+    };
+    
+    //!@name methods reimplemented from base class
+    //@{
+    
+    //! flags
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const
+    { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
+    
+    //! return data
+    virtual QVariant data(const QModelIndex &index, int role) const;
+    
+    //! header data
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
+    {   
+      if( orientation == Qt::Horizontal && role == Qt::DisplayRole && section >= 0 && section < n_columns )
+      { return QString( column_titles_[section] ); }
+      
+      // return empty
+      return QVariant(); 
+    
+    }
+    
+    //! number of columns for a given index
+    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+    { return n_columns; }
+    
+    //@}
+  
+    protected: 
+    
+    //! sort
+    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
+    {}
+  
+    //! list column names
+    static const char* column_titles_[n_columns];    
+    
+  };
+
+  //! model
+  Model& _model( void )
+  { return model_; }
+  
+  //! model
+  Model model_;
+  
   //! Configuration list
-  TreeWidget* list_;
+  TreeView* list_;
 
   //! Widget stack
   QStackedWidget* stack_;

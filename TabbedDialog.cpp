@@ -39,6 +39,7 @@
 #include <QLabel>
 
 #include "TabbedDialog.h"
+#include "TreeView.h"
 
 using namespace std;
 
@@ -60,17 +61,17 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
   h_layout->setSpacing(10);
   layout->addLayout( h_layout );
   
-  h_layout->addWidget( list_ = new TreeWidget( this ), 0 );
+  // add widgets
+  h_layout->addWidget( list_ = new TreeView( this ), 0 );
   h_layout->addWidget( stack_ = new QStackedWidget(0), 1 );
   
-  _list().setColumnCount(1);
+  // configure list
   _list().setMaximumWidth(150);
   _list().header()->hide();
   _list().setSortingEnabled( false );
 
-  connect( 
-    &_list(), SIGNAL( currentItemChanged( QTreeWidgetItem*, QTreeWidgetItem* ) ), 
-    SLOT( _display(QTreeWidgetItem*, QTreeWidgetItem*) ) );
+  // connections
+  connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
   
   // button layout
   button_layout_ = new QHBoxLayout();
@@ -88,26 +89,28 @@ QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
 {  
   Debug::Throw( "ConfigList::Item::Item.\n" );
   
-  
+  // create scroll area
   QScrollArea* scroll = new QScrollArea();
   scroll->setWidgetResizable ( true );
   scroll->setFrameStyle( QFrame::NoFrame );
   
+  // create main widget
   QWidget* main( new QWidget() );
+  main->setObjectName( title );
   scroll->setWidget( main );
+  
+  // add to stack and model
   _stack().addWidget( scroll );
+  _model().add( main );
   
   QVBoxLayout* layout( new QVBoxLayout() );
   layout->setSpacing( 5 );
   layout->setMargin( 0 );
   main->setLayout( layout );
-  
-  // create new item and add to stack
-  new ConfigListItem( &_list(), title, scroll );
-  
+    
   // make sure item is selected if first in list
-  if( _list().topLevelItemCount() == 1 )
-  { _list().selectionModel()->select( _list().model()->index(0,0), QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
+  //if( _list().topLevelItemCount() == 1 )
+  //{ _list().selectionModel()->select( _list().model()->index(0,0), QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
   
   // in expanded mode, the main widget is returned directly
   if( expand ) return *main;
@@ -127,12 +130,41 @@ QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
 }
 
 //__________________________________________________
-void TabbedDialog::_display( QTreeWidgetItem* current, QTreeWidgetItem* previous )
+void TabbedDialog::_display( const QModelIndex& index )
 {
   Debug::Throw( "TabbedDialog::_display.\n" );
+  if( !index.isValid() ) return;
+  QWidget& widget( *_model().get( index ) );
+  _stack().setCurrentWidget( widget.parentWidget() );  
+}
+
+
+//_______________________________________________
+const char* TabbedDialog::Model::column_titles_[ TabbedDialog::Model::n_columns ] =
+{ "" };
+
+
+//_______________________________________________________________________________________
+QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
+{
   
-  if( !current ) current = previous;
-  ConfigListItem* item( dynamic_cast<ConfigListItem*>(current) );
-  assert( item );
-  _stack().setCurrentWidget(&item->page());  
+  // check index, role and column
+  if( !index.isValid() ) return QVariant();
+  
+  // retrieve associated file info
+  QWidget& widget( *get()[index.row()] );
+     // return text associated to file and column
+  if( role == Qt::DisplayRole ) 
+  {
+    
+    switch( index.column() )
+    {
+      
+      case NAME: return widget.objectName();
+      default: return QVariant();
+    }
+  }
+  
+  return QVariant();
+  
 }
