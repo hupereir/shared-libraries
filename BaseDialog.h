@@ -54,6 +54,16 @@ class BaseDialog: public QDialog
 
   //! restore window size
   virtual QSize sizeHint( void ) const;
+
+  //! center widget on argument widget
+  void centerOnDesktop( void );
+  
+  //! center on parent widget
+  void centerOnParent( void )
+  { centerOnWidget( parentWidget() ); }
+  
+  //! center widget on argument widget
+  void centerOnWidget( QWidget* );
  
   protected:
     

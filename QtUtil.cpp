@@ -381,13 +381,13 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
 
   // retrieve desktop
   QDesktopWidget *desktop( qApp->desktop() );
-  QSize desktop_size( desktop->frameSize() );
+  QSize deskmain_window_size( desktop->frameSize() );
 
   // get parent position and size
   QPoint point( desktop->pos() );
 
-  point.setX( point.x() + ( desktop_size.width() - size.width() )/2 );
-  point.setY( point.y() + ( desktop_size.height() - size.height() )/2 );
+  point.setX( point.x() + ( deskmain_window_size.width() - size.width() )/2 );
+  point.setY( point.y() + ( deskmain_window_size.height() - size.height() )/2 );
 
   // check point against desktop size
   if( point.x() + size.width()> desktop->width() ) point.setX( desktop->width() - size.width() );

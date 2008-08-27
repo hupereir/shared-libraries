@@ -41,6 +41,7 @@
 #include "CustomToolButton.h"
 #include "ToolBarMenu.h"
 #include "ToolButtonStyleMenu.h"
+#include "QtUtil.h"
 
 using namespace std;
 
@@ -75,6 +76,24 @@ QSize CustomMainWindow::sizeHint( void ) const
 {
   QSize out( size_watcher_.sizeHint() );
   return out.isValid() ? out:QMainWindow::sizeHint();
+}
+
+//________________________________________________________________
+void CustomMainWindow::centerOnDesktop( void )
+{
+  
+  Debug::Throw( "CustomMainWindow::centerOnDesktop" );
+  move( QtUtil::centerOnDesktop( sizeHint() ) );
+  
+}
+
+//________________________________________________________________
+void CustomMainWindow::centerOnWidget( QWidget* parent )
+{
+  
+  Debug::Throw( "CustomMainWindow::centerOnWidget" );
+  move( QtUtil::centerOnWidget( sizeHint(), parent ) );
+  
 }
 
 //________________________________________________________________

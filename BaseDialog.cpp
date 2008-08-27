@@ -31,6 +31,7 @@
 
 #include "BaseDialog.h"
 #include "Debug.h"
+#include "QtUtil.h"
 
 using namespace std;
 
@@ -54,6 +55,24 @@ QSize BaseDialog::sizeHint( void ) const
 {
   QSize out( size_watcher_.sizeHint() );
   return out.isValid() ? out:QDialog::sizeHint();
+}
+
+//________________________________________________________________
+void BaseDialog::centerOnDesktop( void )
+{
+  
+  Debug::Throw( "BaseDialog::centerOnDesktop" );
+  move( QtUtil::centerOnDesktop( sizeHint() ) );
+  
+}
+
+//________________________________________________________________
+void BaseDialog::centerOnWidget( QWidget* parent )
+{
+  
+  Debug::Throw( "BaseDialog::centerOnWidget" );
+  move( QtUtil::centerOnWidget( sizeHint(), parent ) );
+  
 }
 
 //____________________________________________________________

@@ -70,6 +70,16 @@ class CustomMainWindow: public QMainWindow
 
   //! restore window size
   virtual QSize sizeHint( void ) const;
+
+  //! center widget on argument widget
+  void centerOnDesktop( void );
+  
+  //! center on parent widget
+  void centerOnParent( void )
+  { centerOnWidget( parentWidget() ); }
+  
+  //! center widget on argument widget
+  void centerOnWidget( QWidget* );
   
   //! lock toolbars
   QAction& lockToolBarsAction( void ) const
@@ -87,7 +97,7 @@ class CustomMainWindow: public QMainWindow
   //! install toolbar visibility actions
   /*! returns true if lockable toolbars are found */
   virtual bool installToolBarsActions( QMenu& );
-  
+    
   signals:
   
   //! toolbar configuration changed
