@@ -65,6 +65,9 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
   if( role == Qt::ForegroundRole && index.column() == NAME )
   { return XmlOptions::get().isSpecialOption( option.name() ) ? QColor( "#aa0000" ):QPalette().color( QPalette::Text ); }
   
+  if( role == Qt::ToolTipRole && index.column() == NAME ) 
+  { return option.comments().empty() ? QVariant():option.comments().c_str(); }
+  
   return QVariant();
   
 }
@@ -87,12 +90,7 @@ QVariant OptionModel::headerData(int section, Qt::Orientation orientation, int r
 
 //____________________________________________________________
 void OptionModel::_sort( int column, Qt::SortOrder order )
-{ 
-
-  Debug::Throw() << "OptionModel::sort - column: " << column << " order: " << order << endl;
-  std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
-      
-}
+{ std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
 //________________________________________________________
 bool OptionModel::SortFTor::operator () ( Option first, Option second ) const

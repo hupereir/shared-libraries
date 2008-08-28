@@ -109,10 +109,6 @@ QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
   layout->setMargin( 0 );
   main->setLayout( layout );
     
-  // make sure item is selected if first in list
-  //if( _list().topLevelItemCount() == 1 )
-  //{ _list().selectionModel()->select( _list().model()->index(0,0), QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
-  
   // in expanded mode, the main widget is returned directly
   if( expand ) return *main;
   
