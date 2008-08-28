@@ -91,7 +91,6 @@ HEADERS = \
   TreeModel.h \
   TreeView.h \
   TreeViewConfiguration.h \
-  TreeWidget.h \
   UserSelectionFrame.h \
   ValidFileThread.h \
   WindowSizeWatcher.h \
@@ -166,7 +165,6 @@ SOURCES = \
   ToolButtonStyleMenu.cpp \
   TreeItemBase.cpp \
   TreeView.cpp \
-  TreeWidget.cpp \
   TreeViewConfiguration.cpp \
   UserSelectionFrame.cpp \
   ValidFileThread.cpp \

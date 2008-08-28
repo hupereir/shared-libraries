@@ -95,7 +95,6 @@ noinst_HEADERS = \
   TreeModel.h \
   TreeView.h \
   TreeViewConfiguration.h \
-  TreeWidget.h \
   UserSelectionFrame.h \
   ValidFileThread.h \
   WindowSizeWatcher.h \
@@ -172,7 +171,6 @@ libbase_qt_a_SOURCES = \
   ToolButtonStyleMenu.cpp \
   TreeItemBase.cpp \
   TreeView.cpp \
-  TreeWidget.cpp \
   TreeViewConfiguration.cpp \
   UserSelectionFrame.cpp \
   ValidFileThread.cpp \
@@ -230,7 +228,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_ToolButtonStyleMenu.cpp \
   moc_TreeView.cpp \
   moc_TreeViewConfiguration.cpp \
-  moc_TreeWidget.cpp \
   moc_UserSelectionFrame.cpp \
   moc_XmlFileList.cpp
 

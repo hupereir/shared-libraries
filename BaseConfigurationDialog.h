@@ -36,7 +36,6 @@
 #include <list>
 
 #include "TabbedDialog.h"
-#include "TreeWidget.h"
 #include "XmlOptions.h"
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"
