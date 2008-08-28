@@ -60,10 +60,6 @@ class Counter {
   virtual ~Counter( void )
   { if( count_ ) (*count_)--; }
   
-  //! retrieves counter name
-  const std::string& name( void ) const 
-  { return name_; }
-  
   //! retrieves counter count
   int count( void ) const
   { return (count_) ? *count_:0; }

@@ -1,3 +1,6 @@
+#ifndef Option_h
+#define Option_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,9 +24,6 @@
 *                         
 *******************************************************************************/
 
-#ifndef Option_h
-#define Option_h
-
 /*!
    \file Option.h
    \brief Option objects for string, int, bool and double options
@@ -32,6 +32,7 @@
    \date $Date$
 */
 
+#include <assert.h>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -49,57 +50,49 @@ class Option:public Counter {
   //! default creator
   Option(): 
     Counter( "Option" ),
-    name_( "" ),
     value_( "" ),
     comments_( "" ),
-    set_( false ),
-    recordable_( true ),
-    front_( false )
+    flags_( RECORDABLE ),
+    set_( false )
   {}
     
-  //! filled creator
-  Option( 
-    const std::string& name, 
-    const std::string& value, 
-    const std::string& comments = "",
-    bool front = false ): 
+  //! default creator
+  Option( const char* value, const unsigned int& flags = RECORDABLE ):
     Counter( "Option" ),
-    name_( name ),
+    comments_( "" ),
+    flags_( flags ),
+    set_( false )
+  {
+    assert( value );
+    value_ = value;
+    set_ = !value_.empty();
+  }
+  
+  //! filled creator
+  Option( const std::string& value, const unsigned int& flags = RECORDABLE ): 
+    Counter( "Option" ),
+    value_( value ),
+    comments_( "" ),
+    flags_( flags ),
+    set_( !value.empty() )
+  {}
+ 
+  //! filled creator
+  Option( const std::string& value, const std::string& comments, const unsigned int& flags = RECORDABLE ): 
+    Counter( "Option" ),
     value_( value ),
     comments_( comments ),
-    set_( value.size() ),
-    recordable_( true ),
-    front_( front )
+    flags_( flags ),
+    set_( !value.empty() )
   {}
-
+  
   //! less than operator
   bool operator < (const Option& option ) const
-  { 
-    if( name_ < option.name_ ) return true; 
-    else if( name_ == option.name_ ) return value_ < option.value_;
-    else return false;
-  }
+  { return value_ < option.value_; }
 
   //! equal operator
   bool operator == (const Option& option ) const
-  { 
-    bool out( 
-      name_ == option.name_ && 
-      value_ == option.value_ 
-      ); 
-    return out;
-  }
-
-  //! option name
-  const std::string& name( void ) const
-  { return name_; }
-
-  //! option name
-  Option& setName( const std::string& name )
-  { 
-    name_ = name; 
-    return *this;
-  }
+  { return value_ == option.value_; }
 
   //! option comments
   const std::string& comments( void ) const
@@ -111,25 +104,42 @@ class Option:public Counter {
     comments_ = comments; 
     return *this;
   }
-
-  //! returns true if option needs to be stored front in option list
-  const bool& front( void ) const
-  { return front_; }
-
-  //! returns true if option needs to be stored front in option list
-  void setFront( const bool& value )
-  { front_ = value; }
   
-  //! check if option is to be saved in resource file
-  const bool& isRecordable( void ) const
-  { return recordable_; }
-
-  //! set option recordability
-  Option& setRecordable( bool value ) 
+  //!@name flags
+  //@{
+  
+  //! flags
+  enum Flag
+  {
+    NONE = 0,
+    DEFAULT = 1<<0,
+    RECORDABLE = 1<<1
+  };
+  
+  //! flags
+  Option& setFlags( unsigned int value )
   { 
-    recordable_ = value;
+    flags_ = value; 
     return *this;
   }
+  
+  //! flags
+  Option& setFlag( Flag flag, const bool& value = true )
+  {
+    if( value ) { flags_ |= flag; }
+    else { flags_ &= (~flag); } 
+    return *this;
+  }
+  
+  //! flags
+  const unsigned int& flags( void ) const
+  { return flags_; }
+
+  //! flags
+  bool hasFlag( const Flag& flag ) const
+  { return flags_ & flag; }
+
+  //@}
 
   //! raw accessor
   const std::string& raw( void ) const
@@ -146,15 +156,22 @@ class Option:public Counter {
   template < typename T >
   T get( void ) const
   {
-    std::ostringstream o; 
-    o << "option " << name_ << " not set";
-    if( !set_ ) throw std::logic_error( DESCRIPTION(o.str()) );
-  
+    
+    // check if option is set
+    if( !set_ ) 
+    {
+      std::ostringstream o; 
+      o << "option not set";
+      throw std::logic_error( DESCRIPTION(o.str()) );
+    }
+    
+    // cast value
     std::istringstream s( value_ );
     T out; s >> out;
-    if( s.rdstate() & std::ios::failbit ) {
+    if( s.rdstate() & std::ios::failbit ) 
+    {
       std::ostringstream o; 
-      o << "Wrong type for registered option " << name_ << ", value=" << value_;
+      o << "Wrong type for registered value=" << value_;
       throw std::logic_error( DESCRIPTION(o.str()) );
     }
     return out;
@@ -176,7 +193,6 @@ class Option:public Counter {
   //! method used to dump the option to stream
   friend std::ostream &operator << (std::ostream &o,const Option &opt)
   {
-    o << opt.name() << " : ";
     if( !opt.set() ) o << "not set";
     else o << opt.raw();
     return o;
@@ -190,23 +206,17 @@ class Option:public Counter {
   
   private:
   
-  //! option name
-  std::string name_;
-  
   //! option value
   std::string value_;
   
   //! option comments
   std::string comments_; 
   
+  //! flags
+  unsigned int flags_;
+  
   //! true if option was initialized with value  
   bool set_;         
-  
-  //! true if option is to be saved into resource file
-  bool recordable_;
-  
-  //! if true, must be added front in special option list
-  bool front_;
   
 };
 

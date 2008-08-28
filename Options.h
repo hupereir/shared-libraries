@@ -33,7 +33,7 @@
 */
 
 #include <iostream>
-#include <list>
+#include <vector>
 #include <map>
 #include <sstream>
 #include <string>
@@ -48,11 +48,14 @@ class Options: public Counter
 
   public: 
    
+  //! pair
+  typedef std::pair< std::string, Option > Pair;
+  
   //! shortCut for option map
   typedef std::map< std::string, Option > Map;
 
   //! shortCut for option list
-  typedef std::list< Option > List;
+  typedef std::vector< Option > List;
         
   //! shortCut for option map
   typedef std::map< std::string, List > SpecialMap;
@@ -75,7 +78,7 @@ class Options: public Counter
   }
 
   //! adds a new option. Return true if option is added
-  virtual bool add( const Option& option, bool overwrite = true );
+  virtual bool add( const std::string& name, const Option& option, bool overwrite = true );
   
   //! retrieve list of special (i.e. kept) options
   virtual const SpecialMap& specialOptions() const
@@ -94,11 +97,19 @@ class Options: public Counter
   std::list<T> specialOptions( const std::string& name )
   {
     
-    List option_list( specialOptions( name ) );
-    std::list<T> out;
-    for( List::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
-    out.push_back( iter->get<T>() );
-    return out; 
+    try {
+     
+      List option_list( specialOptions( name ) );
+      std::list<T> out;
+      for( List::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
+      { out.push_back( iter->get<T>() ); }
+      return out; 
+    
+    } catch( std::exception &e ) { 
+      std::ostringstream o;
+      o << "XmlOptions::specialOptions - name: " << name << ", " << e.what();
+      throw std::logic_error( DESCRIPTION(o.str()) );
+    }
     
   }
   
@@ -119,7 +130,17 @@ class Options: public Counter
   //! option value accessor
   template < typename T >
   T get( const std::string& name )
-  { return option( name ).get<T>(); }
+  {
+    
+    try {
+      return option( name ).get<T>(); 
+    } catch( std::exception &e ) { 
+      std::ostringstream o;
+      o << "XmlOptions::get - name: " << name << ", " << e.what();
+      throw std::logic_error( DESCRIPTION(o.str()) );
+    }
+    
+  }
 
   //! option raw value accessor
   virtual std::string raw( const std::string& name )
@@ -129,7 +150,7 @@ class Options: public Counter
   template < typename T >
   void set( const std::string& name, const T& value )
   { 
-    if( !find( name ) ) add( Option( name, "" ) );
+    if( !find( name ) ) add( name, "" );
     option( name ).set<T>( value ); 
   }
 
@@ -137,7 +158,7 @@ class Options: public Counter
   virtual void setRaw( const std::string& name, const std::string& value )
   { 
     if( find( name ) ) option( name ).setRaw( value ); 
-    else add( Option( name, value ) );
+    else add( name, value );
   }
   
   /*! \brief
