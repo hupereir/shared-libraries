@@ -49,11 +49,18 @@ XmlOption::XmlOption( const QDomElement& element )
     if( attribute.isNull() ) continue;
     if( attribute.name() == OPTIONS::VALUE ) setRaw( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
     else if( attribute.name() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
-    else if( attribute.name() == OPTIONS::OPTIONS )
-    {
-      if( OPTIONS::FRONT.indexOf( attribute.value(), 0, Qt::CaseInsensitive ) >= 0 ) setFront( true );
+    
+    // old style options
+    else if( attribute.name() == OPTIONS::OPTIONS ) {
+      if( OPTIONS::FRONT.indexOf( attribute.value(), 0, Qt::CaseInsensitive ) >= 0 ) setFlag( DEFAULT, true );
+    
+    // new style options
+    } else if( attribute.name() == OPTIONS::FLAGS ) {
+      
+      setFlags( (unsigned int) attribute.value().toInt() );
+    
     } else cout << "XmlOption::XmlOption - unrecognized attribute " << qPrintable( attribute.name() ) << ".\n";
-
+    
   }
 
   // parse children elements
@@ -77,13 +84,14 @@ QDomElement XmlOption::domElement( QDomDocument& parent ) const
   
   QDomElement out = parent.createElement( name().c_str() );
   out.setAttribute( OPTIONS::VALUE, XmlUtil::textToXml( raw().c_str() ) );
-
-  if( front() ) out.setAttribute( OPTIONS::OPTIONS, OPTIONS::FRONT );
+  out.setAttribute( OPTIONS::FLAGS, QString().setNum( flags() ) );
   if( comments().size() )
-  out.
-    appendChild( parent.createElement( OPTIONS::COMMENTS ) ).
-    appendChild( parent.createTextNode( XmlUtil::textToXml( comments().c_str() ) ) );
-
+  {
+    out.
+      appendChild( parent.createElement( OPTIONS::COMMENTS ) ).
+      appendChild( parent.createTextNode( XmlUtil::textToXml( comments().c_str() ) ) );
+  }
+  
   return out;
 
 }

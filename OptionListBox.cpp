@@ -117,7 +117,11 @@ void OptionListBox::read( void )
 
   // retrieve all values from Options, insert in list
   Options::List values( XmlOptions::get().specialOptions( optionName() ) );
-  model_.update( OptionModel::List( values.begin(), values.end() ) );
+  OptionModel::List options;
+  for( Options::List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
+  { options.push_back( make_pair( optionName(), *iter ) ); }
+  
+  model_.update( options );
   
 }
 
@@ -125,11 +129,14 @@ void OptionListBox::read( void )
 void OptionListBox::write( void ) const
 {
   Debug::Throw( "OptionListBox::write.\n" );
+  
   XmlOptions::get().clearSpecialOptions( optionName() );
   XmlOptions::get().keep( optionName() );
+  
   OptionModel::List values( model_.get() );
   for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); iter++ )
-  { XmlOptions::get().add( *iter ); }
+  { XmlOptions::get().add( iter->first, iter->second ); }
+  
 }
 
 //______________________________________________________________________   
@@ -179,7 +186,7 @@ void OptionListBox::_add( void )
   if( line_edit->text().isEmpty() ) return;
   
   // create new item
-  model_.add( Option( optionName(), qPrintable( line_edit->text() ) ) );
+  model_.add( Options::Pair( optionName(), qPrintable( line_edit->text() ) ) );
 
 }
 
@@ -208,16 +215,19 @@ void OptionListBox::_edit( void )
     dialog.mainLayout().addWidget( line_edit );
   }
 
-  Option option( model_.get( current ) );
-  line_edit->setText( option.raw().c_str() );
+  Options::Pair option( model_.get( current ) );
+  line_edit->setText( option.second.raw().c_str() );
 
   // map dialog
   dialog.centerOnParent();
   if( dialog.exec() == QDialog::Rejected ) return;
   
   if( line_edit->text().isEmpty() ) return;
-  option.setRaw( qPrintable( line_edit->text() ) ); 
+  
+  option.second.setRaw( qPrintable( line_edit->text() ) );
+  model_.remove( option );
   model_.add( option );
+  
   return;
 
 }
@@ -245,12 +255,12 @@ void OptionListBox::_setDefault( void )
 
   OptionModel::List options( model_.get() );
   for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); iter++ )
-  { iter->setFront( false ); }
+  { iter->second.setFlag( Option::DEFAULT, false ); }
   
   model_.update( options );
   
-  Option current_option( model_.get( current ) );
-  current_option.setFront( true );
+  Options::Pair current_option( model_.get( current ) );
+  current_option.second.setFlag( Option::DEFAULT );
   model_.add( current_option );
 
 }

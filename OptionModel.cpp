@@ -49,24 +49,24 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
   // check index, role and column
   if( !index.isValid() ) return QVariant();
   
-  Option option( get( index ) );
+  const Options::Pair& option( get( index ) );
   
   // return text associated to file and column
   if( role == Qt::DisplayRole )
   {
     switch( index.column() )
     {
-      case NAME: return option.name().c_str();
-      case VALUE: return ( option.front() ? option.raw() + " (*)":option.raw() ).c_str();
+      case NAME: return option.first.c_str();
+      case VALUE: return ( option.second.hasFlag( Option::DEFAULT ) ? option.second.raw() + " (*)":option.second.raw() ).c_str();
       default: return QVariant();
     }
   }
   
   if( role == Qt::ForegroundRole && index.column() == NAME )
-  { return XmlOptions::get().isSpecialOption( option.name() ) ? QColor( "#aa0000" ):QPalette().color( QPalette::Text ); }
+  { return XmlOptions::get().isSpecialOption( option.first ) ? QColor( "#aa0000" ):QPalette().color( QPalette::Text ); }
   
   if( role == Qt::ToolTipRole && index.column() == NAME ) 
-  { return option.comments().empty() ? QVariant():option.comments().c_str(); }
+  { return option.second.comments().c_str(); }
   
   return QVariant();
   
@@ -93,7 +93,7 @@ void OptionModel::_sort( int column, Qt::SortOrder order )
 { std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
 //________________________________________________________
-bool OptionModel::SortFTor::operator () ( Option first, Option second ) const
+bool OptionModel::SortFTor::operator () ( Options::Pair first, Options::Pair second ) const
 {
   
   if( order_ == Qt::AscendingOrder ) swap( first, second );
@@ -101,8 +101,18 @@ bool OptionModel::SortFTor::operator () ( Option first, Option second ) const
   switch( type_ )
   {
     
-    case NAME: return first.name() < second.name();
-    case VALUE: return first.raw() < second.raw();
+    case NAME: 
+    {
+      if( first.first != second.first ) return first.first < second.first;
+      //else if( first.second.hasFlag( Option::DEFAULT ) ) return false;
+      else return first.second.raw() < second.second.raw();
+    }
+    case VALUE: 
+    {
+      if( first.first != second.first ) return first.second.raw() < second.second.raw();
+      //else if( first.second.hasFlag( Option::DEFAULT ) ) return false;
+      else return false;
+    }
     default:
     throw runtime_error( DESCRIPTION( "invalid column" ) );
     return true;

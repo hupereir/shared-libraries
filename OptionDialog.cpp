@@ -59,14 +59,17 @@ OptionDialog::OptionDialog( QWidget* parent ):
   // retrieve all special options
   const Options::SpecialMap special_options( XmlOptions::get().specialOptions() );
   for( Options::SpecialMap::const_iterator iter = special_options.begin(); iter != special_options.end(); iter++ )
-  { model_.add( OptionModel::List( iter->second.begin(), iter->second.end() ) ); }
+  { 
+    OptionModel::List options;
+    for( Options::List::const_iterator list_iter = iter->second.begin(); list_iter != iter->second.end(); list_iter++ )
+    { options.push_back( make_pair( iter->first, *list_iter ) ); }
+    
+    model_.add( options ); 
+  }
   
   // retrieve normal options
   const Options::Map options( XmlOptions::get().options() );
-  OptionModel::List option_list;
-  for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); iter++ )
-  { option_list.push_back( iter->second ); }  
-  model_.add( option_list );
+  model_.add( OptionModel::List( options.begin(), options.end() ) );
   
   list->resizeColumns();
 

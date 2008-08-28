@@ -84,12 +84,19 @@ bool XmlOptions::read( File file )
     // special options
     if( element.tagName() == OPTIONS::SPECIAL_OPTION )
     {
+      
       Debug::Throw( "XmlOptions::read - special options" );
 
       // retrieve Value attribute
       string value( qPrintable( element.attribute( OPTIONS::VALUE ) ) );
       if( value.size() ) get().keep( value );
-    } else get().add( XmlOption( element ), true );
+    
+    } else {
+      
+      XmlOption option( element );
+      get().add( option.name(), option, true );
+      
+    }
 
   }
 
@@ -133,16 +140,26 @@ bool XmlOptions::write( File file )
   // write options
   for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
   {
+    
     Options::List option_list( iter->second );
     for( Options::List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
-    if( list_iter->isRecordable() && list_iter->set() && list_iter->raw().size() )
-    top.appendChild( XmlOption( *list_iter ).domElement( document ) );
+    {
+     
+      if( list_iter->hasFlag( Option::RECORDABLE ) && list_iter->set() && list_iter->raw().size() )
+      { top.appendChild( XmlOption( iter->first, *list_iter ).domElement( document ) ); }
+    
+    }
+  
   }
 
   // write standard options
   for( Options::Map::const_iterator iter = get().map().begin(); iter != get().map().end(); iter++ )
-  if( iter->second.isRecordable() && iter->second.set() && iter->second.raw().size() )
-  top.appendChild( XmlOption( iter->second ).domElement( document ) );
+  { 
+   
+    if( iter->second.hasFlag( Option::RECORDABLE ) && iter->second.set() && iter->second.raw().size() )
+    { top.appendChild( XmlOption( iter->first, iter->second ).domElement( document ) ); }
+    
+  }
 
   out.write( document.toByteArray() );
   out.close();

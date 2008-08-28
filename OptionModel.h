@@ -41,7 +41,7 @@
 #include "ListModel.h"
 
 //! qlistview for object IconCaches
-class OptionModel: public ListModel<Option>, public Counter
+class OptionModel: public ListModel<Options::Pair>, public Counter
 {
 
   public:
@@ -57,12 +57,20 @@ class OptionModel: public ListModel<Option>, public Counter
 
   //! constructor
   OptionModel( QObject* parent = 0 ):
-    ListModel<Option>( parent ),
+    ListModel<Options::Pair>( parent ),
     Counter( "OptionModel" )
   {}
   
   //!@name methods reimplemented from base class
   //@{
+
+  //! flags
+  virtual Qt::ItemFlags flags(const QModelIndex &index) const
+  {
+    if (!index.isValid()) return 0;
+    if( get( index ).second.hasFlag( Option::RECORDABLE ) ) return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    else return 0;
+  }
   
   // return data for a given index
   virtual QVariant data(const QModelIndex &index, int role) const;
@@ -95,7 +103,7 @@ class OptionModel: public ListModel<Option>, public Counter
       {}
       
     //! prediction
-    bool operator() ( Option, Option ) const;
+    bool operator() ( Options::Pair, Options::Pair ) const;
     
   };
 

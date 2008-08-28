@@ -32,6 +32,8 @@
    \date $Date$
 */
 
+#include <string>
+
 #include <QDomDocument>
 #include <QDomElement>
 #include <QString>
@@ -50,6 +52,9 @@ namespace OPTIONS {
   //! Xml option tag
   static const QString OPTIONS = "Options";
 
+  //! Xml string for FRONT added special options
+  static const QString FLAGS = "flags";  
+
   //! Xml string for value field
   static const QString VALUE = "Value";
 
@@ -58,7 +63,7 @@ namespace OPTIONS {
 
   //! Xml string for FRONT added special options
   static const QString FRONT = "FRONT";
-    
+
 };
 
 //! Xml implementation of the Option object
@@ -68,8 +73,9 @@ class XmlOption:public Option
   public:
 
   //! constructor
-  XmlOption( const Option& option ):
-    Option( option )
+  XmlOption( const std::string& name, const Option& option ):
+    Option( option ),
+    name_( name )
     {}
   
   //! creator from DOM node
@@ -77,6 +83,19 @@ class XmlOption:public Option
 
   //! retrieve DomElement from option
   QDomElement domElement( QDomDocument& parent ) const;
+  
+  //! name
+  void setName( const std::string& value )
+  { name_ = value; }
+  
+  //! name
+  const std::string name( void ) const
+  { return name_; }
+  
+  private:
+  
+  //! option name
+  std::string name_;
   
 };
 
