@@ -59,7 +59,10 @@ TreeView::TreeView( QWidget* parent ):
   setAllColumnsShowFocus( true );
   setRootIsDecorated( false );
   setSortingEnabled( true );
+  
+  #if QT_VERSION >= 0x040400
   setExpandsOnDoubleClick( false );
+  #endif
   
   // header menu
   header()->setContextMenuPolicy( Qt::CustomContextMenu );
