@@ -37,6 +37,7 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <list>
 
 #include "Counter.h"
 #include "Debug.h"
