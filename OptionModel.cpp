@@ -41,6 +41,15 @@ using namespace std;
 const char* OptionModel::column_titles_[ OptionModel::n_columns ] =
 { "name", "value" };
 
+//_______________________________________________
+Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
+{
+  if (!index.isValid()) return 0;
+  else if( !get( index ).second.hasFlag( Option::RECORDABLE ) ) return 0;
+  else if( !( isReadOnly() || rowCount( index ) ) && index.column() == VALUE ) return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
+  else return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
 //__________________________________________________________________
 QVariant OptionModel::data( const QModelIndex& index, int role ) const
 {
@@ -49,7 +58,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
   // check index, role and column
   if( !index.isValid() ) return QVariant();
   
-  const Options::Pair& option( get( index ) );
+  const OptionPair& option( get( index ) );
   
   // return text associated to file and column
   if( role == Qt::DisplayRole )
@@ -61,9 +70,6 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
       default: return QVariant();
     }
   }
-  
-  if( role == Qt::ForegroundRole && index.column() == NAME )
-  { return XmlOptions::get().isSpecialOption( option.first ) ? QColor( "#aa0000" ):QPalette().color( QPalette::Text ); }
   
   if( role == Qt::ToolTipRole && index.column() == NAME ) 
   { return option.second.comments().c_str(); }
@@ -88,12 +94,8 @@ QVariant OptionModel::headerData(int section, Qt::Orientation orientation, int r
 
 }
 
-//____________________________________________________________
-void OptionModel::_sort( int column, Qt::SortOrder order )
-{ std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
-
 //________________________________________________________
-bool OptionModel::SortFTor::operator () ( Options::Pair first, Options::Pair second ) const
+bool OptionModel::SortFTor::operator () ( OptionPair first, OptionPair second ) const
 {
   
   if( order_ == Qt::AscendingOrder ) swap( first, second );

@@ -54,20 +54,21 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   TreeView* list = new TreeView( this );
   mainLayout().addWidget( list );
   list->setModel( &model_ );
+  list->setRootIsDecorated( false );
   
   // retrieve environment variables from QProcess
   QStringList env( QProcess::systemEnvironment() );
-  OptionModel::List options;
+  OptionModel::Set options;
   for( QStringList::iterator iter = env.begin(); iter != env.end(); iter++ )
   {
     QStringList parsed( (iter)->split( "=" ) );
     if( parsed.empty() ) continue;
     
-    options.push_back( make_pair( qPrintable( parsed[0] ), parsed.size() > 1 ? qPrintable( parsed[1] ): "" ) );
+    options.insert( OptionPair( qPrintable( parsed[0] ), parsed.size() > 1 ? qPrintable( parsed[1] ): "" ) );
   
   }
   
-  model_.add( options );
+  model_.set( options );
   list->resizeColumns();
   
 }

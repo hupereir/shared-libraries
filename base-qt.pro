@@ -59,6 +59,7 @@ HEADERS = \
   OptionFontEditor.h \
   OptionFontInfo.h \
   OptionIconBrowsedButton.h \
+  OptionItemDelegate.h \
   OptionLineEditor.h \
   OptionListBox.h \
   OptionModel.h \
@@ -145,6 +146,7 @@ SOURCES = \
   IconSizeMenu.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
+  OptionItemDelegate.cpp \
   OptionListBox.cpp \
   OptionModel.cpp \
   PixmapEngine.cpp \

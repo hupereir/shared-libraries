@@ -76,7 +76,6 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   layout->addWidget( &_list(), 1 );
 
   // set connections
-  connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _edit() ) );
   connect( _list().selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
   
   QVBoxLayout* button_layout = new QVBoxLayout();

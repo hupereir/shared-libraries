@@ -38,10 +38,35 @@
 #include "Counter.h"
 #include "Debug.h"
 #include "Options.h"
-#include "ListModel.h"
+#include "TreeModel.h"
+
+class OptionPair: public Options::Pair
+{
+  
+  public:
+  
+  //! constructor
+  OptionPair( void )
+  {}
+  
+  //! constructor
+  OptionPair( const Options::Pair& option ):
+    Options::Pair( option )
+  {}
+  
+  //! constructor
+  OptionPair( const std::string& name, const Option& option ):
+    Options::Pair( name, option )
+  {}
+
+  //! returns true if this record is a child of argument
+  bool isChild( const OptionPair& option ) const
+  { return option.first == first && option.second.raw().empty(); }
+
+};
 
 //! qlistview for object IconCaches
-class OptionModel: public ListModel<Options::Pair>, public Counter
+class OptionModel: public TreeModel<OptionPair>, public Counter
 {
 
   public:
@@ -57,20 +82,24 @@ class OptionModel: public ListModel<Options::Pair>, public Counter
 
   //! constructor
   OptionModel( QObject* parent = 0 ):
-    ListModel<Options::Pair>( parent ),
-    Counter( "OptionModel" )
+    TreeModel<OptionPair>( parent ),
+    Counter( "OptionModel" ),
+    read_only_( true )
   {}
+  
+  //! set model read only
+  void setReadOnly( const bool& value )
+  { read_only_ = value; }
+  
+  //! is read only
+  const bool& isReadOnly( void ) const
+  { return read_only_; }
   
   //!@name methods reimplemented from base class
   //@{
 
   //! flags
-  virtual Qt::ItemFlags flags(const QModelIndex &index) const
-  {
-    if (!index.isValid()) return 0;
-    if( get( index ).second.hasFlag( Option::RECORDABLE ) ) return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    else return 0;
-  }
+  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   
   // return data for a given index
   virtual QVariant data(const QModelIndex &index, int role) const;
@@ -86,8 +115,9 @@ class OptionModel: public ListModel<Options::Pair>, public Counter
   
   protected:
   
-  //! sort
-  virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
+  //! sorting
+  virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
+  { _root().sort( SortFTor( column, order ) ); } 
             
   private:
   
@@ -103,10 +133,17 @@ class OptionModel: public ListModel<Options::Pair>, public Counter
       {}
       
     //! prediction
-    bool operator() ( Options::Pair, Options::Pair ) const;
+    bool operator() ( const Item& first, const Item& second ) const
+    { return (*this)( first.get(), second.get() ); }
+
+    //! prediction
+    bool operator() ( OptionPair, OptionPair ) const;
     
   };
 
+  //! true if read only
+  bool read_only_;
+  
   //! column titles
   static const char* column_titles_[ n_columns ];
    
