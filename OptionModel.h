@@ -103,6 +103,9 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
   
   // return data for a given index
   virtual QVariant data(const QModelIndex &index, int role) const;
+
+  // modify data
+  virtual bool setData(const QModelIndex &index, const QVariant& value, int role = Qt::EditRole );
    
   //! header data
   virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

@@ -79,6 +79,31 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
 }
 
 //__________________________________________________________________
+bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int role )
+{
+  Debug::Throw( "OptionModel::setData.\n" );
+  if( !(index.isValid() && index.column() == VALUE && role == Qt::EditRole ) ) return false;
+  
+  // retrieve option
+  OptionPair option( get( index ) );
+  
+  if( !( value.toString().isNull() || value.toString() == option.second.raw().c_str() ) )
+  {
+    
+    // remove old value
+    remove( option );
+
+    // add new one
+    option.second.setRaw( qPrintable( value.toString() ) );
+    add( option );
+    
+  }
+  
+  return true;
+  
+}
+
+//__________________________________________________________________
 QVariant OptionModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 
