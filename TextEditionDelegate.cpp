@@ -23,8 +23,8 @@
  *******************************************************************************/
 
 /*!
-  \file    OptionItemDelegate.cpp
-  \brief   Keyword item delegate for edition
+  \file    TextEditionDelegate.cpp
+  \brief   treeView item delegate for edition
   \author  Hugo Pereira
   \version $Revision$
   \date    $Date$
@@ -32,48 +32,48 @@
 
 #include <QAbstractItemModel>
 
-#include "OptionItemDelegate.h"
+#include "TextEditionDelegate.h"
 #include "LineEditor.h"
 #include "Debug.h"
 
 using namespace std;
 
 //______________________________________________________________
-OptionItemDelegate::OptionItemDelegate( QObject *parent ):
+TextEditionDelegate::TextEditionDelegate( QObject *parent ):
   QItemDelegate( parent ),
-  Counter( "OptionItemDelegate" )
-{ Debug::Throw( "OptionItemDelegate::OptionItemDelegate.\n" ); }
+  Counter( "TextEditionDelegate" )
+{ Debug::Throw( "TextEditionDelegate::TextEditionDelegate.\n" ); }
 
 //______________________________________________________________
-QWidget* OptionItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget* TextEditionDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 { 
-  Debug::Throw( "OptionItemDelegate::createEditor.\n" );
+  Debug::Throw( "TextEditionDelegate::createEditor.\n" );
   LineEditor *editor = new LineEditor( parent ); 
   editor->setFrame( false );
   return editor;
 }
 
 //______________________________________________________________
-void OptionItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void TextEditionDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-  Debug::Throw( "OptionItemDelegate::setEditorData.\n" );
+  Debug::Throw( "TextEditionDelegate::setEditorData.\n" );
   QString text = index.model()->data(index, Qt::DisplayRole).toString();
   LineEditor *line_editor = static_cast<LineEditor*>(editor);
   line_editor->setText( text );
 }
 
 //______________________________________________________________
-void OptionItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void TextEditionDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-  Debug::Throw( "OptionItemDelegate::setModelData.\n" );
+  Debug::Throw( "TextEditionDelegate::setModelData.\n" );
   LineEditor *line_editor = static_cast<LineEditor*>(editor);
   QString value( line_editor->text() );
   model->setData( index, value, Qt::EditRole);
 }
 
 //______________________________________________________________
-void OptionItemDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &) const
+void TextEditionDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &) const
 { 
-  Debug::Throw( "OptionItemDelegate::updateEditorGeometry.\n" );
+  Debug::Throw( "TextEditionDelegate::updateEditorGeometry.\n" );
   editor->setGeometry(option.rect);
 }

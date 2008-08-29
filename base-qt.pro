@@ -59,7 +59,6 @@ HEADERS = \
   OptionFontEditor.h \
   OptionFontInfo.h \
   OptionIconBrowsedButton.h \
-  OptionItemDelegate.h \
   OptionLineEditor.h \
   OptionListBox.h \
   OptionModel.h \
@@ -81,6 +80,7 @@ HEADERS = \
   TabbedDialog.h \
   TabWidget.h \
   TextEditor.h \
+  TextEditionDelegate.h \
   TextBlockData.h \
   TextBlockFlags.h \
   TextSelection.h \
@@ -146,7 +146,6 @@ SOURCES = \
   IconSizeMenu.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
-  OptionItemDelegate.cpp \
   OptionListBox.cpp \
   OptionModel.cpp \
   PixmapEngine.cpp \
@@ -162,6 +161,7 @@ SOURCES = \
   TabbedDialog.cpp \
   TabWidget.cpp \
   TextEditor.cpp \
+  TextEditionDelegate.cpp \
   TextSeparator.cpp \
   ToolBarMenu.cpp \
   ToolButtonStyleMenu.cpp \

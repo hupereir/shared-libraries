@@ -1,5 +1,5 @@
-#ifndef OptionItemDelegate_h
-#define OptionItemDelegate_h
+#ifndef TextEditionDelegate_h
+#define TextEditionDelegate_h
 
 // $Id$
 
@@ -25,8 +25,8 @@
  *******************************************************************************/
 
 /*!
-  \file    OptionItemDelegate.h
-  \brief   Keyword item delegate for edition
+  \file    TextEditionDelegate.h
+  \brief   treeView item delegate for edition
   \author  Hugo Pereira
   \version $Revision$
   \date    $Date$
@@ -35,14 +35,14 @@
 #include <QItemDelegate>
 #include "Counter.h"
 
-//! Keyword item delegate for edition
-class OptionItemDelegate : public QItemDelegate, public Counter
+//! treeView item delegate for edition
+class TextEditionDelegate : public QItemDelegate, public Counter
 {
 
   public:
   
   //! constructor
-  OptionItemDelegate(QObject *parent = 0);
+  TextEditionDelegate(QObject *parent = 0);
   
   //! create editor
   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;

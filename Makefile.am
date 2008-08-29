@@ -63,7 +63,6 @@ noinst_HEADERS = \
   OptionFontEditor.h \
   OptionFontInfo.h \
   OptionIconBrowsedButton.h \
-  OptionItemDelegate.h \
   OptionLineEditor.h \
   OptionListBox.h \
   OptionModel.h \
@@ -85,6 +84,7 @@ noinst_HEADERS = \
   TabbedDialog.h \
   TabWidget.h \
   TextEditor.h \
+  TextEditionDelegate.h \
   TextBlockData.h \
   TextBlockFlags.h \
   TextSelection.h \
@@ -152,7 +152,6 @@ libbase_qt_a_SOURCES = \
   LineNumberDisplay.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
-  OptionItemDelegate.cpp \
   OptionListBox.cpp \
   OptionModel.cpp \
   PixmapEngine.cpp \
@@ -168,6 +167,7 @@ libbase_qt_a_SOURCES = \
   TabbedDialog.cpp \
   TabWidget.cpp \
   TextEditor.cpp \
+  TextEditionDelegate.cpp \
   TextSeparator.cpp \
   ToolBarMenu.cpp \
   ToolButtonStyleMenu.cpp \

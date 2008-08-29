@@ -32,7 +32,7 @@
 #include <QProcess>
 #include <QLayout>
 
-#include "OptionItemDelegate.h"
+#include "TextEditionDelegate.h"
 #include "OptionDialog.h"
 #include "TreeView.h"
 #include "Str.h"
@@ -60,7 +60,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
   mainLayout().addWidget( list );
   list->setModel( &model_ );
   list->setRootIsDecorated( true );
-  list->setItemDelegate( new OptionItemDelegate( this ) );
+  list->setItemDelegate( new TextEditionDelegate( this ) );
   
   // retrieve all special options
   const Options::SpecialMap special_options( XmlOptions::get().specialOptions() );
