@@ -126,7 +126,11 @@ class BaseApplication: public QApplication
   protected:
   
   //! application 'about' dialog
-  virtual void _about( std::string, std::string, std::string );
+  virtual void _about( std::string, std::string version = "", std::string stamp = "" );
+  
+  //! argument list
+  void _setArguments( ArgList args )
+  { args_ = args; }
   
   //! argument list
   ArgList& _arguments( void )
@@ -135,6 +139,21 @@ class BaseApplication: public QApplication
   //! argument list
   const ArgList& _arguments( void ) const
   { return args_; }
+  
+  //! realized
+  bool _realized( void ) const
+  { return realized_; }
+  
+  //! application manager
+  bool _hasApplicationManager( void ) const
+  { return (bool) application_manager_; }
+  
+  //! application manager
+  SERVER::ApplicationManager& _applicationManager( void ) const
+  { 
+    assert( application_manager_ );
+    return *application_manager_;
+  }
   
   private:
    

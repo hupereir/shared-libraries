@@ -65,7 +65,7 @@ BaseApplication::~BaseApplication( void )
   emit saveConfiguration();
   XmlOptions::write();
 
-  if( application_manager_ ) 
+  if( _hasApplicationManager() ) 
   {
     delete application_manager_; 
     application_manager_ = 0;
@@ -80,7 +80,7 @@ void BaseApplication::initApplicationManager( void )
 {
   Debug::Throw( "BaseApplication::initApplicationManager.\n" ); 
 
-  if( application_manager_ ) return;
+  if( _hasApplicationManager() ) return;
 
   if( args_.find( "--no-server" ) ) 
   {
@@ -123,6 +123,7 @@ bool BaseApplication::realizeWidget( void )
 
   close_action_ = new QAction( IconEngine::get( ICONS::EXIT ), "E&xit", this );
   close_action_->setShortcut( CTRL+Key_Q );
+  connect( close_action_, SIGNAL( triggered() ), SLOT( quit() ) ); 
   
   configuration_action_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default &Configuration", this );
   connect( configuration_action_, SIGNAL( triggered() ), SLOT( _configuration() ) ); 
