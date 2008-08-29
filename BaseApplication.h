@@ -128,6 +128,14 @@ class BaseApplication: public QApplication
   //! application 'about' dialog
   virtual void _about( std::string, std::string version = "", std::string stamp = "" );
   
+  //! application 'about' dialog
+  virtual void _about( std::string name, double version, std::string stamp = "" )
+  {
+    std::ostringstream what; 
+    what << version;
+    _about( name, what.str(), stamp );
+  }
+  
   //! argument list
   void _setArguments( ArgList args )
   { args_ = args; }
