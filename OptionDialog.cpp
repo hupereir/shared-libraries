@@ -29,11 +29,13 @@
 */
 
 #include <QPushButton>
-#include <QProcess>
+#include <QLabel>
 #include <QLayout>
 
-#include "TextEditionDelegate.h"
+#include "BaseIcons.h"
 #include "OptionDialog.h"
+#include "PixmapEngine.h"
+#include "TextEditionDelegate.h"
 #include "TreeView.h"
 #include "Str.h"
 #include "XmlOptions.h"
@@ -54,6 +56,26 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
   // set model editable
   model_.setReadOnly( false );
+  
+  QHBoxLayout* layout = new QHBoxLayout();
+  layout->setSpacing(20);
+  layout->setMargin(0);
+  mainLayout().addLayout( layout );
+
+  //! try load Question icon
+  QPixmap question_pixmap( PixmapEngine::get( ICONS::WARNING ) );
+  
+  // insert main vertical box
+  if( !question_pixmap.isNull() )
+  {
+    QLabel* label = new QLabel( this );
+    label->setPixmap( question_pixmap );
+    layout->addWidget( label );
+  }
+  layout->addWidget( new QLabel( 
+    "This dialog allows one to modify options directly by editting them in the list.\n"
+    "The modifications are directly applied to the application. The reload button allows\n"
+    "one to restore the state of the application at the time the dialog was oppened.\n", this ), 1 );
   
   // insert list
   TreeView* list = new TreeView( this );
