@@ -32,6 +32,7 @@
 #include <QProcess>
 #include <QLayout>
 
+#include "OptionItemDelegate.h"
 #include "OptionDialog.h"
 #include "TreeView.h"
 #include "Str.h"
@@ -50,26 +51,34 @@ OptionDialog::OptionDialog( QWidget* parent ):
     
   // tell dialog to delete when close
   setAttribute( Qt::WA_DeleteOnClose );
+
+  // set model editable
+  model_.setReadOnly( false );
   
   // insert list
   TreeView* list = new TreeView( this );
   mainLayout().addWidget( list );
   list->setModel( &model_ );
+  list->setRootIsDecorated( true );
+  list->setItemDelegate( new OptionItemDelegate( this ) );
   
   // retrieve all special options
   const Options::SpecialMap special_options( XmlOptions::get().specialOptions() );
   for( Options::SpecialMap::const_iterator iter = special_options.begin(); iter != special_options.end(); iter++ )
   { 
+    model_.add( OptionPair( iter->first, "" ) );
     OptionModel::List options;
     for( Options::List::const_iterator list_iter = iter->second.begin(); list_iter != iter->second.end(); list_iter++ )
-    { options.push_back( make_pair( iter->first, *list_iter ) ); }
+    { model_.add( OptionPair( iter->first, *list_iter ) ); }
     
-    model_.add( options ); 
   }
   
   // retrieve normal options
-  const Options::Map options( XmlOptions::get().options() );
-  model_.add( OptionModel::List( options.begin(), options.end() ) );
+  const Options::Map& options( XmlOptions::get().options() );
+  OptionModel::Set option_set;
+  for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); iter++ )
+  { option_set.insert( OptionPair( iter->first, iter->second ) ); }
+  model_.add( option_set );
   
   list->resizeColumns();
 

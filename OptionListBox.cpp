@@ -38,6 +38,7 @@
 #include "LineEditor.h"
 #include "CustomDialog.h"
 #include "Debug.h"
+#include "OptionItemDelegate.h"
 #include "OptionListBox.h"
 #include "QtUtil.h"
 #include "TreeView.h"
@@ -59,6 +60,9 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   layout->setSpacing(5);
   layout->setMargin(0);
   setLayout( layout );
+ 
+  // set model editable
+  model_.setReadOnly( false );
   
   // create list
   list_ = new TreeView( this );
@@ -66,7 +70,9 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   _list().header()->hide();
   _list().setSelectionMode( QAbstractItemView::ExtendedSelection );  
   _list().setModel( &model_ );
+  _list().setRootIsDecorated( false );
   _list().setMask( 1<<OptionModel::VALUE );
+  _list().setItemDelegate( new OptionItemDelegate( this ) );
   layout->addWidget( &_list(), 1 );
 
   // set connections
@@ -117,11 +123,11 @@ void OptionListBox::read( void )
 
   // retrieve all values from Options, insert in list
   Options::List values( XmlOptions::get().specialOptions( optionName() ) );
-  OptionModel::List options;
+  OptionModel::Set options;
   for( Options::List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
-  { options.push_back( make_pair( optionName(), *iter ) ); }
+  { options.insert( OptionPair( optionName(), *iter ) ); }
   
-  model_.update( options );
+  model_.set( options );
   
 }
 
@@ -133,7 +139,7 @@ void OptionListBox::write( void ) const
   XmlOptions::get().clearSpecialOptions( optionName() );
   XmlOptions::get().keep( optionName() );
   
-  OptionModel::List values( model_.get() );
+  OptionModel::List values( model_.children() );
   for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); iter++ )
   { XmlOptions::get().add( iter->first, iter->second ); }
   
@@ -238,7 +244,8 @@ void OptionListBox::_remove( void )
   Debug::Throw( "OptionListBox::_remove.\n" );
 
   // retrieve selected items; make sure they do not include the navigator
-  model_.remove( model_.get( _list().selectionModel()->selectedRows() ) );
+  OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
+  model_.remove( OptionModel::Set( selection.begin(), selection.end() ) );
   
   return;
 
@@ -253,11 +260,11 @@ void OptionListBox::_setDefault( void )
   QModelIndex current( _list().selectionModel()->currentIndex() );
   assert( current.isValid() );
 
-  OptionModel::List options( model_.get() );
+  OptionModel::List options( model_.children() );
   for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); iter++ )
   { iter->second.setFlag( Option::DEFAULT, false ); }
   
-  model_.update( options );
+  model_.set( OptionModel::Set( options.begin(), options.end() ) );
   
   Options::Pair current_option( model_.get( current ) );
   current_option.second.setFlag( Option::DEFAULT );
