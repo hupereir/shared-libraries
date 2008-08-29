@@ -143,7 +143,7 @@ void BaseApplication::_about( string name, string version, string stamp )
   Debug::Throw( "BaseApplication::about.\n" );
   ostringstream what;
   if( !name.empty() ) { what << "<b>" << name << "</b> "; }
-  if( !version.empty() ) { what << "version " << VERSION << " "; }
+  if( !version.empty() ) { what << "version " << version << " "; }
   if( !stamp.empty() ) { what << "(" << stamp << ")"; }
 
   what 
