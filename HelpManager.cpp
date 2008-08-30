@@ -34,6 +34,7 @@
 #include <QFile>
 #include <QVBoxLayout>
 
+#include "BaseDialog.h"
 #include "BaseIcons.h"
 #include "Debug.h"
 #include "HelpDialog.h"
@@ -153,7 +154,7 @@ void HelpManager::_display( void )
   dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
   dialog->setItems( items_ );
   dialog->setEditEnabled( file_.size() );
-  QtUtil::centerOnWidget( dialog, qApp->activeWindow() );
+  dialog->centerOnWidget( qApp->activeWindow() );
   dialog->show();
   return;
   
@@ -188,21 +189,18 @@ void HelpManager::_dumpHelpString( void )
   out << "  0\n";
   out << "};\n";
   
-  QWidget* main( new QWidget(0) );
-  main->setLayout( new QVBoxLayout() );
-  main->layout()->setMargin(10);
-  TextEditor *text_edit = new TextEditor( main );
+  BaseDialog* dialog = new BaseDialog();
+  dialog->setLayout( new QVBoxLayout() );
+  dialog->layout()->setMargin(10);
+  TextEditor *text_edit = new TextEditor( dialog );
 
   text_edit->setWrapFromOptions( false );
   text_edit->wrapModeAction().setChecked( false );
   text_edit->setPlainText( out.str().c_str() );
-  main->layout()->addWidget( text_edit );
-  main->resize( 600, 500 );
-  
-  // center 
-  QtUtil::centerOnWidget( main, qApp->activeWindow() );
-  
-  main->show();
+  dialog->layout()->addWidget( text_edit );
+  dialog->resize( 600, 500 );
+  dialog->centerOnWidget( qApp->activeWindow() );
+  dialog->show();
   
 }
 
