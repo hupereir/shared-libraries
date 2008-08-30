@@ -38,7 +38,7 @@
 #include "GridLayout.h"
 #include "Debug.h"
 #include "IconEngine.h"
-#include "QtUtil.h"
+#include "InformationDialog.h"
 #include "SpellDialog.h"
 #include "SpellInterface.h"
 #include "Util.h"
@@ -81,7 +81,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   grid_layout->setMargin( 0 );
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount( 2 );
-  v_layout->addLayout( grid_layout );
+  v_layout->addLayout( grid_layout, 0 );
   
   // misspelled word line editor
   grid_layout->addWidget( new QLabel( "Misspelled word: ", this ) ); 
@@ -96,8 +96,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   grid_layout->setColumnStretch( 1, 1 );
   
   QLabel* label = new QLabel( "Suggestions: ", this );
-  QtUtil::fixSize( label );
-  v_layout->addWidget( label );
+  v_layout->addWidget( label, 0 );
 
   // suggestions
   v_layout->addWidget(  suggestion_list_box_ = new ListWidget( this ), 1 );
@@ -109,7 +108,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   grid_layout->setMargin( 0 );
   grid_layout->setSpacing(5);
   grid_layout->setMaxCount( 2 );
-  v_layout->addLayout( grid_layout );
+  v_layout->addLayout( grid_layout, 0 );
   
   // dictionaries combobox
   grid_layout->addWidget( new QLabel( "Dictionary: ", this ) );
@@ -206,7 +205,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
 
   // asign text
   if( !interface().setText( qPrintable( editor().toPlainText() ), index_begin, index_end ) )
-  { QtUtil::infoDialog( this, interface().error() ); } 
+  { InformationDialog( this, interface().error().c_str() ).exec(); } 
 
   // set TextEditor as ReadOnly
   read_only_editor_ = editor().isReadOnly();
@@ -244,14 +243,14 @@ bool SpellDialog::setDictionary( const std::string& dictionary )
   {
     ostringstream what;
     what << "invalid dictionary: " << dictionary;
-    QtUtil::infoDialog( this, what.str() );
+    InformationDialog( this, what.str().c_str() ).exec();
     return false;
   }
   
   // update interface
   if( !interface().setDictionary( dictionary ) )
   {
-    QtUtil::infoDialog( this, interface().error() );
+    InformationDialog( this, interface().error().c_str() ).exec();
     return false;
   }
   
@@ -273,14 +272,14 @@ bool SpellDialog::setFilter( const std::string& filter )
   {
     ostringstream what;
     what << "invalid dictionary: " << filter;
-    QtUtil::infoDialog( this, what.str() );
+    InformationDialog( this, what.str().c_str() ).exec();
     return false;
   }
   
   // update interface
   if( !interface().setFilter( filter ) )
   {
-    QtUtil::infoDialog( this, interface().error() );
+    InformationDialog( this, interface().error().c_str() ).exec();
     return false;
   }
   
@@ -317,7 +316,7 @@ void SpellDialog::_selectDictionary( const QString& dictionary )
   // try update interface
   if( !interface().setDictionary( qPrintable( dictionary ) ) )
   {
-    QtUtil::infoDialog( this, interface().error() );
+    InformationDialog( this, interface().error().c_str() ).exec();
     return;
   }
 
@@ -341,7 +340,7 @@ void SpellDialog::_selectFilter( const QString& filter )
   // try update interface
   if( !interface().setFilter( qPrintable( filter ) ) )
   {
-    QtUtil::infoDialog( this, interface().error() );
+    InformationDialog( this, interface().error().c_str() ).exec();
     return;
   }
 
@@ -360,7 +359,7 @@ void SpellDialog::_restart( void )
 
   if( !interface().reset() )
   {
-    QtUtil::infoDialog( this, interface().error() );
+    InformationDialog( this, interface().error().c_str() ).exec();
     return;
   }
 
@@ -377,7 +376,7 @@ void SpellDialog::_addWord( void )
 
   if( !interface().addWord( interface().word() ) )
   {
-    QtUtil::infoDialog( this, interface().error() );
+    InformationDialog( this, interface().error().c_str() ).exec();
     return;
   }
 
@@ -459,7 +458,7 @@ void SpellDialog::nextWord( void )
     // get next word from interface
     if( !interface().nextWord() )
     {
-      QtUtil::infoDialog( this, interface().error() );
+      InformationDialog( this, interface().error().c_str() ).exec();
       return;
     }
 
