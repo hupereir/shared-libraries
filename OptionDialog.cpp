@@ -28,13 +28,14 @@
    \date $Date$
 */
 
+#include <QApplication>
 #include <QPushButton>
 #include <QLabel>
 #include <QLayout>
 
 #include "BaseIcons.h"
 #include "OptionDialog.h"
-#include "PixmapEngine.h"
+#include "IconEngine.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
 #include "Str.h"
@@ -44,7 +45,7 @@ using namespace std;
 
 //__________________________________________________________________________
 OptionDialog::OptionDialog( QWidget* parent ):
-  CustomDialog( parent, CustomDialog::OK_BUTTON )
+  BaseDialog( parent )
 {
   
   Debug::Throw( "OptionDialog::OptionDialog.\n" );
@@ -56,11 +57,16 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
   // set model editable
   model_.setReadOnly( false );
+
+  QVBoxLayout *main_layout = new QVBoxLayout();
+  main_layout->setMargin( 10 );
+  main_layout->setSpacing( 10 );
+  setLayout( main_layout );
   
   QHBoxLayout* layout = new QHBoxLayout();
   layout->setSpacing(20);
   layout->setMargin(0);
-  mainLayout().addLayout( layout );
+  main_layout->addLayout( layout );
 
   //! try load Question icon
   QPixmap question_pixmap( PixmapEngine::get( ICONS::WARNING ) );
@@ -78,14 +84,48 @@ OptionDialog::OptionDialog( QWidget* parent ):
     "one to restore the state of the application at the time the dialog was oppened.\n", this ), 1 );
   
   // insert list
-  TreeView* list = new TreeView( this );
-  mainLayout().addWidget( list );
-  list->setModel( &model_ );
-  list->setRootIsDecorated( true );
-  list->setItemDelegate( new TextEditionDelegate( this ) );
+  main_layout->addWidget( list_ = new TreeView( this ) );
+  _list().setModel( &model_ );
+  _list().setRootIsDecorated( true );
+  _list().setItemDelegate( new TextEditionDelegate( this ) );
+  _list().setIconSize( QSize( 16, 16 ) );
+  
+  // connect( &_list(), SIGNAL( collapsed( const QModelIndex& ) ), &_list(), SLOT( resizeColumns() ) );
+  // connect( &_list(), SIGNAL( expanded( const QModelIndex& ) ), &_list(), SLOT( resizeColumns() ) );
+
+  // store current option state as backup and update model
+  backup_options_ = XmlOptions::get();
+  _reload();
+  
+  // connections
+  connect( &model_, SIGNAL( optionModified( OptionPair ) ), SLOT( _optionModified( OptionPair ) ) );
+  connect( &model_, SIGNAL( specialOptionModified( OptionPair ) ), SLOT( _specialOptionModified( OptionPair ) ) );
+  connect( this, SIGNAL( configurationChanged() ), qApp, SIGNAL( configurationChanged() ) );
+  
+  // insert hbox layout for buttons
+  QBoxLayout* button_layout = new QBoxLayout( QBoxLayout::LeftToRight );
+  button_layout->setSpacing(10);
+  button_layout->setMargin(0);
+  main_layout->addLayout( button_layout, 0 );
+  
+  // insert OK and Cancel button
+  QPushButton *button;
+  button_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _reload() ) );
+  
+  button_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
+  connect( button, SIGNAL( clicked() ), SLOT( accept() ) );
+
+}
+
+//______________________________________________________________
+void OptionDialog::_reload( void )
+{
+   
+  Debug::Throw( "OptionDialog::_reload.\n" );
   
   // retrieve all special options
-  const Options::SpecialMap special_options( XmlOptions::get().specialOptions() );
+  const Options::SpecialMap special_options( backup_options_.specialOptions() );
   for( Options::SpecialMap::const_iterator iter = special_options.begin(); iter != special_options.end(); iter++ )
   { 
     model_.add( OptionPair( iter->first, "" ) );
@@ -96,12 +136,40 @@ OptionDialog::OptionDialog( QWidget* parent ):
   }
   
   // retrieve normal options
-  const Options::Map& options( XmlOptions::get().options() );
+  const Options::Map& options( backup_options_.options() );
   OptionModel::Set option_set;
   for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); iter++ )
   { option_set.insert( OptionPair( iter->first, iter->second ) ); }
   model_.add( option_set );
-  
-  list->resizeColumns();
 
+  _list().resizeColumns();
+  _list().setColumnWidth( OptionModel::DEFAULT, 20 );
+
+  // check signal
+  if( !( XmlOptions::get() == backup_options_ ) )
+  {
+    XmlOptions::get() = backup_options_;
+    emit configurationChanged();
+  }
+  
+}
+
+//______________________________________________________________
+void OptionDialog::_optionModified( OptionPair option )
+{ 
+  Debug::Throw(0) << "OptionDialog::_optionModified - " << option.first << " value: " << option.second.raw() << endl; 
+  if( XmlOptions::get().raw( option.first ) != option.second.raw() )
+  { 
+    XmlOptions::get().setRaw( option.first, option.second.raw() );
+    emit configurationChanged();
+  }
+  
+  return;
+  
+}
+
+//______________________________________________________________
+void OptionDialog::_specialOptionModified( OptionPair option )
+{ 
+  Debug::Throw(0) << "OptionDialog::_specialOptionModified - " << option.first << " value: " << option.second.raw() << endl; 
 }

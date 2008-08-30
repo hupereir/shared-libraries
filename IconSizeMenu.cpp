@@ -46,11 +46,11 @@ IconSizeMenu::IconSizeMenu( QWidget* parent ):
   QActionGroup *group = new QActionGroup( this );
   connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
 
-  const CustomToolButton::IconSizeMap& sizes( CustomToolButton::iconSizes() );
+  const CustomPixmap::IconSizeMap& sizes( CustomPixmap::iconSizes() );
 
   // generic action
   QAction* action; 
-  for( CustomToolButton::IconSizeMap::const_iterator iter = sizes.begin(); iter != sizes.end(); iter++ )
+  for( CustomPixmap::IconSizeMap::const_iterator iter = sizes.begin(); iter != sizes.end(); iter++ )
   {
     addAction( action = new QAction( iter->second, this ) );
     action->setCheckable( true );
@@ -61,7 +61,7 @@ IconSizeMenu::IconSizeMenu( QWidget* parent ):
 }
 
 //_____________________________________________________________________________
-void IconSizeMenu::select( CustomToolButton::IconSize size )
+void IconSizeMenu::select( CustomPixmap::IconSize size )
 {
   
   Debug::Throw( "IconSizeMenu::select.\n" );

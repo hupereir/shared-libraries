@@ -71,10 +71,11 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   _list().setSelectionMode( QAbstractItemView::ExtendedSelection );  
   _list().setModel( &model_ );
   _list().setRootIsDecorated( false );
-  _list().setMask( 1<<OptionModel::VALUE );
+  _list().setMask( 1<<OptionModel::DEFAULT|1<<OptionModel::VALUE );
   _list().setItemDelegate( new TextEditionDelegate( this ) );
+  _list().setIconSize( QSize( 16, 16 ) );
   layout->addWidget( &_list(), 1 );
-
+  
   // set connections
   connect( _list().selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
   
@@ -127,6 +128,7 @@ void OptionListBox::read( void )
   { options.insert( OptionPair( optionName(), *iter ) ); }
   
   model_.set( options );
+  _list().resizeColumns();
   
 }
 

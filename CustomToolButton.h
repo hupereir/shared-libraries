@@ -40,6 +40,7 @@
 #include <string>
 
 #include "Counter.h"  
+#include "CustomPixmap.h"
 #include "Debug.h"  
 
 /*!
@@ -78,25 +79,6 @@ class CustomToolButton: public QToolButton, public Counter
   //! size hint
   virtual QSize sizeHint( void ) const;
   
-  //! icon sizes
-  enum IconSize
-  {
-    DEFAULT = 0,
-    SMALL = 16,
-    MEDIUM = 22,
-    LARGE = 32,
-    HUGE = 48
-  };
-  
-  //! map text to icon size 
-  typedef std::map<IconSize, QString> IconSizeMap;
-  
-  //! text to icon size
-  static const IconSizeMap& iconSizes( void );
-  
-  //! set icon size
-  QSize iconSize( IconSize ) const;
-  
   protected:
   
   //! painting
@@ -122,9 +104,6 @@ class CustomToolButton: public QToolButton, public Counter
     
   //! rotation
   Rotation rotation_;
-  
-  //! icon size map
-  static IconSizeMap icon_sizes_;
   
 };
 

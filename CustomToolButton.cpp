@@ -38,15 +38,11 @@
 
 #include <sstream>
 
-#include "CustomPixmap.h"
 #include "CustomToolButton.h"
 #include "IconEngine.h"
 #include "XmlOptions.h"
 
 using namespace std;
-
-//__________________________________________________________________
-CustomToolButton::IconSizeMap CustomToolButton::icon_sizes_;
 
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( QWidget* parent ):
@@ -65,31 +61,6 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
   _updateConfiguration();
   
 }
-
-//______________________________________________________________________
-const CustomToolButton::IconSizeMap& CustomToolButton::iconSizes( void )
-{ 
-  if( icon_sizes_.empty() )
-  {
-    icon_sizes_.insert( make_pair( DEFAULT, "&Default" ) );
-    icon_sizes_.insert( make_pair( SMALL, "&Small (16x16)" ) );
-    icon_sizes_.insert( make_pair( MEDIUM, "&Medium (22x22)" ) );
-    icon_sizes_.insert( make_pair( LARGE, "&Large (32x32)") );
-    icon_sizes_.insert( make_pair( HUGE, "&Huge (48x48)" ) );
-  }
-  
-  return icon_sizes_;
-}
-
-//______________________________________________________________________
-QSize CustomToolButton::iconSize( CustomToolButton::IconSize size ) const
-{ 
-
-  int icon_size( size );
-  if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
-  return QSize( icon_size, icon_size );
-
-}
   
 //______________________________________________________________________
 bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
@@ -98,7 +69,7 @@ bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
   if( rotation_ == value ) return false;
   
   // rotate icon if any
-  CustomPixmap pixmap( icon().pixmap( LARGE, QIcon::Normal ) );
+  CustomPixmap pixmap( icon().pixmap( CustomPixmap::LARGE, QIcon::Normal ) );
   if( !pixmap.isNull() )
   {
     
@@ -170,7 +141,7 @@ void CustomToolButton::_updateConfiguration( void )
   
   if( !_updateFromOptions() ) return;
   
-  setIconSize( iconSize( (IconSize) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
+  setIconSize( iconSize( (CustomPixmap::IconSize) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
   setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
   
   adjustSize();

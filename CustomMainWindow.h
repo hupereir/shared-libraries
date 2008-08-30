@@ -125,7 +125,7 @@ class CustomMainWindow: public QMainWindow
   void _updateToolButtonStyle( Qt::ToolButtonStyle );
  
   //! toolbar text position
-  void _updateToolButtonIconSize( CustomToolButton::IconSize );
+  void _updateToolButtonIconSize( CustomPixmap::IconSize );
     
   //! lock toolbars
   void _lockToolBars( bool ); 

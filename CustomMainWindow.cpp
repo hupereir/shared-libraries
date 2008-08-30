@@ -105,10 +105,10 @@ QMenu* CustomMainWindow::createPopupMenu( void )
   ToolBarMenu& menu = toolBarMenu( this );
   
   menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-  menu.iconSizeMenu().select( (CustomToolButton::IconSize) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+  menu.iconSizeMenu().select( (CustomPixmap::IconSize) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
   
   connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
-  connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( CustomToolButton::IconSize ) ), SLOT( _updateToolButtonIconSize( CustomToolButton::IconSize ) ) );  
+  connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( CustomPixmap::IconSize ) ), SLOT( _updateToolButtonIconSize( CustomPixmap::IconSize ) ) );  
   return &menu;
   
 }
@@ -213,7 +213,7 @@ void CustomMainWindow::_updateToolButtonStyle( Qt::ToolButtonStyle style )
 }
 
 //____________________________________________________________
-void CustomMainWindow::_updateToolButtonIconSize( CustomToolButton::IconSize size )
+void CustomMainWindow::_updateToolButtonIconSize( CustomPixmap::IconSize size )
 {
   
   Debug::Throw( "CustomMainWindow::_updateToolButtonIconSize.\n" );

@@ -51,7 +51,7 @@ IconBrowsedButton::IconBrowsedButton( QWidget* parent, const File& file):
   CustomToolButton( parent ),
   file_( NO_ICON )
 { 
-  setIconSize( iconSize( HUGE ) );
+  setIconSize( iconSize( CustomPixmap::HUGE ) );
   setAutoRaise( false );
   setFile( file, false ); 
   connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
@@ -75,8 +75,8 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
   {
     
     // resize pixmap
-    if( pixmap.size() != iconSize( HUGE ) )
-    pixmap = pixmap.scale( iconSize( HUGE ) );
+    if( pixmap.size() != iconSize( CustomPixmap::HUGE ) )
+    pixmap = pixmap.scale( iconSize( CustomPixmap::HUGE ) );
     
     setIcon( pixmap );
     return;
@@ -92,7 +92,7 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
   
   // if file, set pixmap to empty
   if( no_icon_pixmap_.isNull() ) {
-    no_icon_pixmap_ = CustomPixmap().empty( iconSize( HUGE ) );
+    no_icon_pixmap_ = CustomPixmap().empty( iconSize( CustomPixmap::HUGE ) );
     setIcon( no_icon_pixmap_ );
   }
       

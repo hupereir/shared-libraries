@@ -1,5 +1,5 @@
-#ifndef IconSizeMenu_h
-#define IconSizeMenu_h
+#ifndef IconSize_h
+#define IconSize_h
 
 // $Id$
 
@@ -25,52 +25,47 @@
 *******************************************************************************/
  
 /*!
-  \file IconSizeMenu.h
-  \brief provides icon size selection menu
+  \file IconSize.h
+  \brief default icon sizes
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <QMenu>
+#include <QSize>
 #include <map>
 
-#include "Counter.h"
-#include "CustomToolButton.h"
-#include "Debug.h"
-
-//! provides icon size selection menu
-class IconSizeMenu: public QMenu, public Counter
+//! default icon sizes
+class IconSize: public QSize
 {
   
-  Q_OBJECT
-    
   public:
-    
-  //! constructor
-  IconSizeMenu( QWidget* parent = 0 );
-    
-  //! select size
-  void select( CustomPixmap::IconSize );
-
-  signals:
-    
-  //! emmitted when a new size is selected
-  void iconSizeSelected( CustomPixmap::IconSize );
   
-  private slots:
+   
+  //! icon sizes
+  enum Size
+  {
+    DEFAULT = 0,
+    SMALL = 16,
+    MEDIUM = 22,
+    LARGE = 32,
+    HUGE = 48
+  };
 
-  //! size selected from action
-  void _selected( QAction* );
-
+  //! constructor
+  IconSize( Size size );
+   
+  //! map text to icon size 
+  typedef std::map<Size, QString> Map;
+  
+  //! text to icon size
+  static const Map& map( void );  
+  
   private:
-    
-  //! action map
-  typedef std::map<QAction*, CustomPixmap::IconSize > ActionMap;
-    
-  //! toolbar text action map
-  ActionMap actions_;
- 
+  
+  //! icon size map
+  static Map map_; 
+  
 };
 
 #endif

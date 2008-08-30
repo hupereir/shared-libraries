@@ -35,13 +35,19 @@
 #include <map>
 #include <string>
 
-#include "CustomDialog.h"
+#include "BaseDialog.h"
 #include "OptionModel.h"
+#include "XmlOptions.h"
+
+// forward declaration
+class TreeView;
 
 //! displays Counter names and counts
-class OptionDialog: public CustomDialog
+class OptionDialog: public BaseDialog
 {
 
+  Q_OBJECT
+  
   public:
           
   //! constructor
@@ -51,11 +57,44 @@ class OptionDialog: public CustomDialog
   virtual ~OptionDialog( void )
   {}
   
+  signals:
+  
+  //! emmited when options are modified
+  void configurationChanged( void );
+
+  protected slots:
+  
+  //! reload options from backup
+  void _reload( void );
+  
+  //! option modified
+  void _optionModified( OptionPair );
+
+  //! option modified
+  void _specialOptionModified( OptionPair );
+  
   private:
+  
+  //! list
+  TreeView& _list( void ) const
+  { 
+    assert( list_ );
+    return *list_;
+  }
   
   //! option model
   OptionModel model_;
+
+  //! list
+  TreeView* list_;
   
+  //! pointer to original options set
+  /*!
+    it is needed to keep track of the changes
+    so that initial set is restored when pressing the cancel button
+  */
+  Options backup_options_;
+
 };
 
 #endif

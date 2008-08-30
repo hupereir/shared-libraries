@@ -69,14 +69,17 @@ class OptionPair: public Options::Pair
 class OptionModel: public TreeModel<OptionPair>, public Counter
 {
 
+  Q_OBJECT
+  
   public:
 
   //! number of columns
-  enum { n_columns = 2 };
+  enum { n_columns = 3 };
 
   //! column type enumeration
   enum ColumnType {
     NAME,
+    DEFAULT,
     VALUE
   };
 
@@ -115,6 +118,14 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
   { return n_columns; }
 
   //@}
+
+  signals:
+  
+  //! emmited when one special option is modified
+  void specialOptionModified( OptionPair );
+  
+  //! emmited when one option is modified
+  void optionModified( OptionPair );
   
   protected:
   

@@ -1,3 +1,6 @@
+#ifndef CustomPixmap_h
+#define CustomPixmap_h
+
 // $Id$
 
 /******************************************************************************
@@ -29,9 +32,7 @@
   \date $Date$
 */
 
-#ifndef CustomPixmap_h
-#define CustomPixmap_h
-
+#include <assert.h>
 #include <list>
 #include <string>
 #include <QPixmap>

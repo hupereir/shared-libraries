@@ -32,6 +32,8 @@
 
 #include <QPalette>
 
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "OptionModel.h"
 #include "XmlOptions.h"
 
@@ -39,7 +41,7 @@ using namespace std;
 
 //_______________________________________________
 const char* OptionModel::column_titles_[ OptionModel::n_columns ] =
-{ "name", "value" };
+{ "name", "", "value" };
 
 //_______________________________________________
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
@@ -53,7 +55,6 @@ Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
 //__________________________________________________________________
 QVariant OptionModel::data( const QModelIndex& index, int role ) const
 {
-  Debug::Throw( "OptionModel::data.\n" );
   
   // check index, role and column
   if( !index.isValid() ) return QVariant();
@@ -66,10 +67,13 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
     switch( index.column() )
     {
       case NAME: return option.first.c_str();
-      case VALUE: return ( option.second.hasFlag( Option::DEFAULT ) ? option.second.raw() + " (*)":option.second.raw() ).c_str();
+      case VALUE: return option.second.raw().c_str();
       default: return QVariant();
     }
   }
+
+  if( role == Qt::DecorationRole && index.column() == DEFAULT )
+  { return option.second.hasFlag( Option::DEFAULT ) ? IconEngine::get( ICONS::DIALOG_ACCEPT ):QVariant(); }
   
   if( role == Qt::ToolTipRole && index.column() == NAME ) 
   { return option.second.comments().c_str(); }
@@ -81,7 +85,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
 //__________________________________________________________________
 bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int role )
 {
-  Debug::Throw( "OptionModel::setData.\n" );
+
   if( !(index.isValid() && index.column() == VALUE && role == Qt::EditRole ) ) return false;
   
   // retrieve option
@@ -96,6 +100,9 @@ bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int r
     // add new one
     option.second.setRaw( qPrintable( value.toString() ) );
     add( option );
+
+    if( XmlOptions::get().isSpecialOption( option.first ) ) emit specialOptionModified( option );
+    else emit optionModified( option );
     
   }
   
@@ -131,13 +138,11 @@ bool OptionModel::SortFTor::operator () ( OptionPair first, OptionPair second ) 
     case NAME: 
     {
       if( first.first != second.first ) return first.first < second.first;
-      //else if( first.second.hasFlag( Option::DEFAULT ) ) return false;
       else return first.second.raw() < second.second.raw();
     }
     case VALUE: 
     {
       if( first.first != second.first ) return first.second.raw() < second.second.raw();
-      //else if( first.second.hasFlag( Option::DEFAULT ) ) return false;
       else return false;
     }
     default:
