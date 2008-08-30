@@ -42,7 +42,7 @@
 #include "HelpManager.h"
 #include "HelpModel.h"
 #include "NewItemDialog.h"
-#include "QtUtil.h"
+#include "QuestionDialog.h"
 #include "TextEditor.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
@@ -411,7 +411,7 @@ void HelpDialog::_deleteItem( void )
   QModelIndex current( list_->selectionModel()->currentIndex() );
   if( !current.isValid() ) return;
 
-  if( !QtUtil::questionDialog( this, "Delete current help item ?" ) ) return;
+  if( !QuestionDialog( this, "Delete current help item ?" ).exec() ) return;
   model_.remove( model_.get( current ) );
   html_editor_->clear();
   plain_editor_->clear();
@@ -425,7 +425,7 @@ void HelpDialog::_askForSave( void )
   Debug::Throw( "HelpDialog::_askForSave.\n" );
   
   // double check that modifications are permanent
-  if( HelpManager::modified() && !( QtUtil::questionDialog( this, "Help has been modified. Save ?" ) ) )
+  if( HelpManager::modified() && !( QuestionDialog( this, "Help has been modified. Save ?" ).exec() ) )
   {
     
     HelpManager::restoreBackup();
