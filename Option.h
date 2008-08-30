@@ -138,7 +138,29 @@ class Option:public Counter {
   //! flags
   bool hasFlag( const Flag& flag ) const
   { return flags_ & flag; }
-
+  
+  //! used to retrieve file records that match a given flag
+  class HasFlagFTor
+  {
+    
+    public:
+    
+    //! constructor
+    HasFlagFTor( const unsigned int& flag ):
+      flag_( flag )
+      {}
+      
+    //! predicate
+    bool operator() ( const Option& option ) const
+    { return option.flags() & flag_; }
+      
+    private:
+    
+    // predicted flag
+    unsigned int flag_;
+    
+  };
+  
   //@}
 
   //! raw accessor
