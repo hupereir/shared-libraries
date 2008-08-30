@@ -55,6 +55,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   mainLayout().addWidget( list );
   list->setModel( &model_ );
   list->setRootIsDecorated( false );
+  list->setMask( (1<<OptionModel::NAME)|(1<<OptionModel::VALUE) );
   
   // retrieve environment variables from QProcess
   QStringList env( QProcess::systemEnvironment() );

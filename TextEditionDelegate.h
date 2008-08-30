@@ -32,11 +32,20 @@
   \date    $Date$
 */
 
-#include <QItemDelegate>
 #include "Counter.h"
 
 //! treeView item delegate for edition
+#if QT_VERSION >= 0x040400
+
+#include <QStyledItemDelegate>
+class TextEditionDelegate : public QStyledItemDelegate, public Counter
+
+#else
+
+#include <QItemDelegate>
 class TextEditionDelegate : public QItemDelegate, public Counter
+#endif
+
 {
 
   public:

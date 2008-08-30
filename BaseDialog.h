@@ -44,7 +44,23 @@
 class BaseDialog: public QDialog
 {
 
+  Q_OBJECT
+  
   public:
+  
+  //! dialog centering enumeration
+  enum Centering {
+    
+    //! center widget on mouse pointer
+    CENTER_ON_POINTER,
+        
+    //! center widget on parent widget
+    CENTER_ON_PARENT,
+        
+    //! center widget on desktop
+    CENTER_ON_DESKTOP
+        
+  };
   
   //! constructor
   BaseDialog( QWidget *parent = 0, Qt::WFlags flags = 0);
@@ -55,15 +71,23 @@ class BaseDialog: public QDialog
   //! restore window size
   virtual QSize sizeHint( void ) const;
 
+  //! center widget on pointer
+  BaseDialog& centerOnPointer( void );
+  
   //! center widget on argument widget
-  void centerOnDesktop( void );
+  BaseDialog& centerOnDesktop( void );
   
   //! center on parent widget
-  void centerOnParent( void )
-  { centerOnWidget( parentWidget() ); }
+  BaseDialog& centerOnParent( void )
+  { return centerOnWidget( parentWidget() ); }
   
   //! center widget on argument widget
-  void centerOnWidget( QWidget* );
+  BaseDialog& centerOnWidget( QWidget* );
+ 
+  public slots:
+  
+  //! uniconify
+  BaseDialog& uniconify( void );
  
   protected:
     

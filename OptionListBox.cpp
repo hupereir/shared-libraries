@@ -29,6 +29,7 @@
    \date $Date$
 */
 
+#include <algorithm>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
@@ -123,7 +124,13 @@ void OptionListBox::read( void )
   Debug::Throw( "OptionListBox::read.\n" );
 
   // retrieve all values from Options, insert in list
-  Options::List values( XmlOptions::get().specialOptions( optionName() ) );
+  Options::List values( XmlOptions::get().specialOptions( optionName() ) );  
+  
+  // check if one option is default, set first otherwise
+  if( !values.empty() && find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::DEFAULT ) ) == values.end() )
+  { values.front().setFlag( Option::DEFAULT ); }
+  
+  // add to model.
   OptionModel::Set options;
   for( Options::List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
   { options.insert( OptionPair( optionName(), *iter ) ); }
@@ -175,6 +182,7 @@ void OptionListBox::_add( void )
   BrowsedLineEditor::Editor* line_edit( 0 );
   if( browsable_ ) 
   {
+    
     BrowsedLineEditor* browse_edit = new BrowsedLineEditor( &dialog );
     dialog.mainLayout().addWidget( browse_edit );
     browse_edit->setFileMode( file_mode_ );
@@ -188,7 +196,8 @@ void OptionListBox::_add( void )
   }
   
   // map dialog
-  dialog.centerOnParent();
+  //dialog.centerOnParent();
+  dialog.centerOnPointer();
   
   if( dialog.exec() == QDialog::Rejected ) return;
   if( line_edit->text().isEmpty() ) return;
@@ -227,7 +236,7 @@ void OptionListBox::_edit( void )
   line_edit->setText( option.second.raw().c_str() );
 
   // map dialog
-  dialog.centerOnParent();
+  dialog.centerOnPointer();
   if( dialog.exec() == QDialog::Rejected ) return;
   
   if( line_edit->text().isEmpty() ) return;
@@ -271,5 +280,7 @@ void OptionListBox::_setDefault( void )
   Options::Pair current_option( model_.get( current ) );
   current_option.second.setFlag( Option::DEFAULT );
   model_.add( current_option );
+
+  _list().resizeColumns();
 
 }

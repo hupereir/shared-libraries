@@ -32,15 +32,15 @@
   \date $Date$
 */
 
-#include <qdialog.h>
 #include <string>
 
+#include "BaseDialog.h"
 #include "Counter.h"
 #include "LineEditor.h"
 #include "Str.h"
 
 //! find_text dialog for text editor widgets
-class SelectLineDialog: public QDialog, public Counter
+class SelectLineDialog: public BaseDialog, public Counter
 {
 
   //! Qt meta object declaration

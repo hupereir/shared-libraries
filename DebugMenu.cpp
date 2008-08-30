@@ -34,7 +34,6 @@
 #include "Debug.h"
 #include "DebugMenu.h"
 #include "IconCacheDialog.h"
-#include "QtUtil.h"
 #include "OptionDialog.h"
 #include "SystemEnvironmentDialog.h"
 
@@ -64,16 +63,16 @@ void DebugMenu::_showCounterDialog( void )
   if( !counter_dialog_ ) {
     
     counter_dialog_ = new CounterDialog( qApp->activeWindow() );
-    counter_dialog_->move( QtUtil::centerOnWidget( counter_dialog_->sizeHint(), qApp->activeWindow() ) );
+    counter_dialog_->centerOnWidget( qApp->activeWindow() );
     counter_dialog_->update();
     counter_dialog_->show();
     
   } else {
     
     counter_dialog_->update();
-    QtUtil::centerOnWidget( counter_dialog_, qApp->activeWindow() );
+    counter_dialog_->centerOnWidget( qApp->activeWindow() );
     counter_dialog_->show();
-    QtUtil::uniconify( counter_dialog_ );
+    counter_dialog_->uniconify();
   
   }
   
@@ -88,16 +87,16 @@ void DebugMenu::_showIconCacheDialog( void )
   if( !icon_cache_dialog_ ) {
     
     icon_cache_dialog_ = new IconCacheDialog( qApp->activeWindow() );
-    icon_cache_dialog_->move( QtUtil::centerOnWidget( icon_cache_dialog_->sizeHint(), qApp->activeWindow() ) );
+    icon_cache_dialog_->centerOnWidget( qApp->activeWindow() );
     icon_cache_dialog_->update();
     icon_cache_dialog_->show();
     
   } else {
     
     icon_cache_dialog_->update();
-    QtUtil::centerOnWidget( icon_cache_dialog_, qApp->activeWindow() );
+    icon_cache_dialog_->centerOnWidget( qApp->activeWindow() );
     icon_cache_dialog_->show();
-    QtUtil::uniconify( icon_cache_dialog_ );
+    icon_cache_dialog_->uniconify();
   
   }
   
@@ -109,7 +108,7 @@ void DebugMenu::_showSystemEnvironment( void )
   Debug::Throw( "DebugMenu::_showSystemEnvironment.\n" );
   
   SystemEnvironmentDialog* dialog = new SystemEnvironmentDialog( qApp->activeWindow() );
-  dialog->move( QtUtil::centerOnWidget( dialog->sizeHint(), qApp->activeWindow() ) );
+  dialog->centerOnWidget( qApp->activeWindow() );
   dialog->show();
   return;
   
@@ -121,7 +120,7 @@ void DebugMenu::_showOptions( void )
   Debug::Throw( "DebugMenu::_showOptions.\n" );
   
   OptionDialog* dialog = new OptionDialog( qApp->activeWindow() );
-  dialog->move( QtUtil::centerOnWidget( dialog->sizeHint(), qApp->activeWindow() ) );
+  dialog->centerOnWidget( qApp->activeWindow() );
   dialog->show();
   return;
   

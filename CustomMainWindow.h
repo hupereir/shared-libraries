@@ -98,11 +98,16 @@ class CustomMainWindow: public QMainWindow
   //! install toolbar visibility actions
   /*! returns true if lockable toolbars are found */
   virtual bool installToolBarsActions( QMenu& );
-    
+   
   signals:
   
   //! toolbar configuration changed
   void toolbarConfigurationChanged( void );
+
+  public slots:
+  
+  //! uniconify
+  void uniconify( void );
   
   protected:
     

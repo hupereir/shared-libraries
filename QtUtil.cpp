@@ -352,6 +352,8 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
 
   // get parent position and size
   QPoint point( widget->pos() );
+  if( widget != widget->window() ) point = widget->mapToGlobal( point );
+  
   QSize parent_size( widget->frameSize() );
 
   Debug::Throw() << "QtUtil::centerOnWidget - parent size: (" << parent_size.width() << "," << parent_size.height() << ")" << endl;
@@ -371,7 +373,7 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
   if( point.x() < 0 ) point.setX( 0 );
   if( point.y() < 0 ) point.setY( 0 );
   return point;
-  //widget->mapToGlobal( point );
+
 }
 
 //____________________________________________________________

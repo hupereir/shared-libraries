@@ -50,6 +50,7 @@ noinst_HEADERS = \
   IconFileDialog.h \
   IconSize.h \
   IconSizeMenu.h \
+  InformationDialog.h \
   ItemModel.h \
   LineEditor.h \
   LineNumberDisplay.h \
@@ -75,6 +76,7 @@ noinst_HEADERS = \
   PixmapEngine.h \
   ProcessDialog.h \
   ProcessFrame.h \
+  QuestionDialog.h \
   QtUtil.h \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
@@ -149,6 +151,7 @@ libbase_qt_a_SOURCES = \
   IconFileDialog.cpp \
   IconSize.cpp \
   IconSizeMenu.cpp \
+  InformationDialog.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
@@ -159,6 +162,7 @@ libbase_qt_a_SOURCES = \
   PixmapEngine.cpp \
   ProcessDialog.cpp \
   ProcessFrame.cpp \
+  QuestionDialog.cpp \
   QtUtil.cpp \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
@@ -191,6 +195,7 @@ libbase_qt_a_SOURCES = \
 nodist_libbase_qt_a_SOURCES = \
   qrc_basePixmaps.cpp \
   moc_BaseConfigurationDialog.cpp \
+  moc_BaseDialog.cpp \
   moc_BlockHighlight.cpp \
   moc_BrowsedLineEditor.cpp \
   moc_ColorDisplay.cpp \

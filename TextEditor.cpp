@@ -2466,7 +2466,7 @@ void TextEditor::_findFromDialog( void )
   _findDialog().enableRegExp( true );
 
   // raise dialog
-  QtUtil::centerOnParent( &_findDialog() );
+  _findDialog().centerOnParent();
   _findDialog().show();
 
   /*
@@ -2506,9 +2506,7 @@ void TextEditor::_replaceFromDialog( void )
     // create
   if( !replace_dialog_ ) _createReplaceDialog();
 
-  // raise dialog
-  //QtUtil::centerOnPointer( &_replaceDialog() );
-  QtUtil::centerOnParent( &_replaceDialog() );
+  _replaceDialog().centerOnParent();
   _replaceDialog().show();
 
   /*
@@ -2550,7 +2548,7 @@ void TextEditor::_selectLineFromDialog( void )
   }
 
   select_line_dialog_->editor().clear();
-  QtUtil::centerOnParent( select_line_dialog_ );
+  select_line_dialog_->centerOnParent();
   select_line_dialog_->show();
   select_line_dialog_->activateWindow();
   select_line_dialog_->editor().setFocus();

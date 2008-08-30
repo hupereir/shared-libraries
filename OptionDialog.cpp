@@ -36,6 +36,7 @@
 #include "BaseIcons.h"
 #include "OptionDialog.h"
 #include "IconEngine.h"
+#include "IconSize.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
 #include "Str.h"
@@ -89,9 +90,6 @@ OptionDialog::OptionDialog( QWidget* parent ):
   _list().setRootIsDecorated( true );
   _list().setItemDelegate( new TextEditionDelegate( this ) );
   _list().setIconSize( QSize( 16, 16 ) );
-  
-  // connect( &_list(), SIGNAL( collapsed( const QModelIndex& ) ), &_list(), SLOT( resizeColumns() ) );
-  // connect( &_list(), SIGNAL( expanded( const QModelIndex& ) ), &_list(), SLOT( resizeColumns() ) );
 
   // store current option state as backup and update model
   backup_options_ = XmlOptions::get();
@@ -143,7 +141,7 @@ void OptionDialog::_reload( void )
   model_.add( option_set );
 
   _list().resizeColumns();
-  _list().setColumnWidth( OptionModel::DEFAULT, 20 );
+  _list().setColumnWidth( OptionModel::DEFAULT, IconSize::SMALL+4 );
 
   // check signal
   if( !( XmlOptions::get() == backup_options_ ) )
@@ -157,7 +155,7 @@ void OptionDialog::_reload( void )
 //______________________________________________________________
 void OptionDialog::_optionModified( OptionPair option )
 { 
-  Debug::Throw(0) << "OptionDialog::_optionModified - " << option.first << " value: " << option.second.raw() << endl; 
+  Debug::Throw() << "OptionDialog::_optionModified - " << option.first << " value: " << option.second.raw() << endl; 
   if( XmlOptions::get().raw( option.first ) != option.second.raw() )
   { 
     XmlOptions::get().setRaw( option.first, option.second.raw() );
@@ -171,5 +169,25 @@ void OptionDialog::_optionModified( OptionPair option )
 //______________________________________________________________
 void OptionDialog::_specialOptionModified( OptionPair option )
 { 
-  Debug::Throw(0) << "OptionDialog::_specialOptionModified - " << option.first << " value: " << option.second.raw() << endl; 
+  Debug::Throw() << "OptionDialog::_specialOptionModified - " << option.first  << endl; 
+
+  // find all matching options from model
+  QModelIndex index( model_.index( OptionPair( option.first, "" ) ) );
+  assert( index.isValid() );
+  
+  OptionModel::List values( model_.children( index ) );
+  XmlOptions::get().clearSpecialOptions( option.first );
+  
+  if( !values.empty() )
+  {
+
+    XmlOptions::get().keep( option.first );
+    for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); iter++ )
+    { 
+      if( !iter->second.raw().empty() )
+      { XmlOptions::get().add( iter->first, iter->second ); }
+    }
+
+  }
+
 }

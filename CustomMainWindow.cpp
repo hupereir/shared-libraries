@@ -168,6 +168,10 @@ bool CustomMainWindow::installToolBarsActions( QMenu& menu )
   return has_lockable_toolbars;
   
 }
+ 
+//________________________________________________________________
+void CustomMainWindow::uniconify( void )
+{ QtUtil::uniconify( this ); }
   
 //____________________________________________________________
 void CustomMainWindow::resizeEvent( QResizeEvent* event )

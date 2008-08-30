@@ -40,7 +40,11 @@ using namespace std;
 
 //______________________________________________________________
 TextEditionDelegate::TextEditionDelegate( QObject *parent ):
+#if QT_VERSION >= 0x040400
+  QStyledItemDelegate( parent ),
+#else
   QItemDelegate( parent ),
+#endif
   Counter( "TextEditionDelegate" )
 { Debug::Throw( "TextEditionDelegate::TextEditionDelegate.\n" ); }
 

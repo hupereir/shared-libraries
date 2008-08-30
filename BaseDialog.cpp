@@ -35,6 +35,7 @@
 
 using namespace std;
 
+//__________________________________________________
 BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
   QDialog( parent, flags ),
   size_watcher_( this )
@@ -58,20 +59,40 @@ QSize BaseDialog::sizeHint( void ) const
 }
 
 //________________________________________________________________
-void BaseDialog::centerOnDesktop( void )
+BaseDialog& BaseDialog::centerOnPointer( void )
 {
   
-  Debug::Throw( "BaseDialog::centerOnDesktop" );
-  move( QtUtil::centerOnDesktop( sizeHint() ) );
+  Debug::Throw( "BaseDialog::centerOnPointer" );
+  move( QtUtil::centerOnPointer( sizeHint() ) );
   
 }
 
 //________________________________________________________________
-void BaseDialog::centerOnWidget( QWidget* parent )
+BaseDialog& BaseDialog::centerOnDesktop( void )
+{
+  
+  Debug::Throw( "BaseDialog::centerOnDesktop" );
+  move( QtUtil::centerOnDesktop( sizeHint() ) );
+  return *this;
+  
+}
+
+//________________________________________________________________
+BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 {
   
   Debug::Throw( "BaseDialog::centerOnWidget" );
   move( QtUtil::centerOnWidget( sizeHint(), parent ) );
+  return *this;
+  
+}
+
+//________________________________________________________________
+BaseDialog& BaseDialog::uniconify( void )
+{ 
+  
+  QtUtil::uniconify( this ); 
+  return *this;
   
 }
 

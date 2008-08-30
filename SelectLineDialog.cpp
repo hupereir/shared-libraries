@@ -43,7 +43,7 @@ using namespace std;
 
 //_______________________________________________________
 SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
-    QDialog( parent, flags ),
+    BaseDialog( parent, flags ),
     Counter( "SelectLineDialog" )
 {
   

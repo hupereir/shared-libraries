@@ -46,6 +46,7 @@ HEADERS = \
   IconFileDialog.h \
   IconSize.h \
   IconSizeMenu.h \
+  InformationDialog.h \
   ItemModel.h \
   LineEditor.h \
   LineNumberDisplay.h \
@@ -71,6 +72,7 @@ HEADERS = \
   PixmapEngine.h \
   ProcessDialog.h \
   ProcessFrame.h \
+  QuestionDialog.h \
   QtUtil.h \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
@@ -143,6 +145,7 @@ SOURCES = \
   IconFileDialog.cpp \
   IconSize.cpp \
   IconSizeMenu.cpp \
+  InformationDialog.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
@@ -153,6 +156,7 @@ SOURCES = \
   PixmapEngine.cpp \
   ProcessDialog.cpp \
   ProcessFrame.cpp \
+  QuestionDialog.cpp \
   QtUtil.cpp \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
