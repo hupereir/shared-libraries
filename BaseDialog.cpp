@@ -64,7 +64,7 @@ BaseDialog& BaseDialog::centerOnPointer( void )
   
   Debug::Throw( "BaseDialog::centerOnPointer" );
   move( QtUtil::centerOnPointer( sizeHint() ) );
-  
+  return *this;
 }
 
 //________________________________________________________________

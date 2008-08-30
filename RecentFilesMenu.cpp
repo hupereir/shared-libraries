@@ -36,8 +36,8 @@
 #include "BaseIcons.h"
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
+#include "QuestionDialog.h"
 #include "RecentFilesMenu.h"
-#include "QtUtil.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -114,8 +114,8 @@ void RecentFilesMenu::_updateActions( void )
 //______________________________________
 void RecentFilesMenu::_clean( void )
 {    
-  if( !_fileList().check() && !QtUtil::questionDialog( this,"clear list ?" ) ) return;
-  else if( _fileList().check() && !QtUtil::questionDialog( this,"Remove invalid or duplicated files from list ?" ) ) return;
+  if( !_fileList().check() && !QuestionDialog( this,"clear list ?" ).exec() ) return;
+  else if( _fileList().check() && !QuestionDialog( this,"Remove invalid or duplicated files from list ?" ).exec() ) return;
   _fileList().clean();
 }
 

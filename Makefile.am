@@ -10,6 +10,7 @@ INCLUDES =  \
   -I$(top_srcdir)/base
   
 noinst_HEADERS = \
+  Color.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
   BlockHighlight.h \
@@ -115,6 +116,7 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-qt.a
 
 libbase_qt_a_SOURCES = \
+  Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \
   BlockHighlight.cpp \

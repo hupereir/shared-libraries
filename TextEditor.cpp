@@ -38,6 +38,7 @@
 #include <QTextLayout>
 
 #include "BaseIcons.h"
+#include "Color.h"
 #include "TextEditor.h"
 #include "CustomTextDocument.h"
 #include "FindDialog.h"
@@ -47,7 +48,7 @@
 #include "SelectLineDialog.h"
 #include "TextBlockData.h"
 #include "TextSeparator.h"
-#include "QtUtil.h"
+#include "InformationDialog.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -477,7 +478,7 @@ void TextEditor::showReplacements( const unsigned int& counts )
   if( !counts ) what << "string not found.";
   else if( counts == 1 ) what << "1 replacement performed";
   else what << counts << " replacements performed";
-  QtUtil::infoDialog( this, what.str() );
+  InformationDialog( this, what.str().c_str() ).exec();
   return;
 
 }
@@ -1436,7 +1437,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
     { color = highlight_color_; }
 
     if( data->hasFlag( TextBlock::HAS_BACKGROUND ) )
-    { color = QtUtil::mergeColors( color, data->background() ); }
+    { color = BASE::Color( color ).merge( data->background() ); }
 
     if( color.isValid() )
     {
@@ -1700,7 +1701,7 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
     QRegExp regexp( selection.text() );
     if( !regexp.isValid() )
     {
-      QtUtil::infoDialog( this, "invalid regular expression. Find canceled" );
+      InformationDialog( this, "invalid regular expression. Find canceled" ).exec();
       return false;
     }
 
@@ -1807,7 +1808,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
     QRegExp regexp( selection.text() );
     if( !regexp.isValid() )
     {
-      QtUtil::infoDialog( this, "invalid regular expression. Find canceled" );
+      InformationDialog( this, "invalid regular expression. Find canceled" ).exec();
       return false;
     }
 
@@ -1950,7 +1951,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     QRegExp regexp( selection.text() );
     if( !regexp.isValid() )
     {
-      QtUtil::infoDialog( this, "invalid regular expression. Find canceled" );
+      InformationDialog( this, "invalid regular expression. Find canceled" ).exec();
       return false;
     }
 

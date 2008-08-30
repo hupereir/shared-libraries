@@ -39,6 +39,7 @@
 #include "IconSize.h"
 #include "IconBrowsedButton.h"
 #include "IconFileDialog.h"
+#include "InformationDialog.h"
 #include "XmlOptions.h"
 #include "QtUtil.h"
 
@@ -88,7 +89,7 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
   {
     ostringstream what;
     what << "invalid icon file " << file;  
-    QtUtil::infoDialog( this, what.str() );
+    InformationDialog( this, what.str().c_str() ).exec();
   }
   
   // if file, set pixmap to empty
@@ -123,13 +124,13 @@ void IconBrowsedButton::_browse( void )
   // check file size
   if( files.size() > 1 ) 
   {
-    QtUtil::infoDialog( this, "Too many files selected." );
+    InformationDialog( this, "Too many files selected." ).exec();
     return;
   }
   
   if( files.size() < 1 )
   {
-    QtUtil::infoDialog( this, "No file selected." );
+    InformationDialog( this, "No file selected." ).exec();
     return;
   }
     

@@ -34,7 +34,7 @@
 
 #include "CustomSlider.h"
 #include "Debug.h"
-#include "QtUtil.h"
+#include "InformationDialog.h"
 #include "Str.h"
 
 using namespace std;
@@ -67,7 +67,7 @@ CustomSlider::CustomSlider( QWidget* parent ):
 void CustomSlider::setValue( int value )
 {
   if( value < slider_->minimum() || value > slider_->maximum() ) {
-    QtUtil::infoDialog( this, "invalid value" );
+    InformationDialog( this, "invalid value" ).exec();
     return;
   }
   
@@ -85,7 +85,7 @@ void CustomSlider::_updateSlider( void )
   int value( Str( qPrintable( line_edit_->text() ) ).get<int>(&error) );
   if( error || value < slider_->minimum() || value > slider_->maximum() ) 
   {
-    QtUtil::infoDialog( this, "invalid value" );
+    InformationDialog( this, "invalid value" ).exec();
     return;
   }
   

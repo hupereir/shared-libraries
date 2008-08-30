@@ -41,7 +41,7 @@
 #include "ColorDisplay.h"
 #include "Debug.h"
 #include "IconEngine.h"
-#include "QtUtil.h"
+#include "InformationDialog.h"
 
 using namespace std;
 
@@ -202,7 +202,7 @@ void ColorDisplay::_selectColorFromText( void )
       if( !( text.isNull() || text.isEmpty() ) ) what << "Invalid color: " << qPrintable( text );
       else what << "Invalid color";
       
-      QtUtil::infoDialog( this, what.str().c_str() );
+      InformationDialog( this, what.str().c_str() ).exec();
       editor_.setText( NONE );
     }
   }
@@ -239,7 +239,7 @@ void ColorDisplay::LocalLineEdit::setColor( QColor color )
     if( !( text().isNull() || text().isEmpty() ) ) what << "Invalid color: " << qPrintable( text() );
     else what << "Invalid color";
     
-    QtUtil::infoDialog( this, what.str().c_str() );
+    InformationDialog( this, what.str().c_str() ).exec();
     
     // update text
     setText( NONE );

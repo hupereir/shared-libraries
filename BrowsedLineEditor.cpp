@@ -40,7 +40,7 @@
 #include "LineEditor.h"
 #include "File.h"
 #include "IconEngine.h"
-#include "QtUtil.h"
+#include "InformationDialog.h"
 #include "Util.h"
 #include "Debug.h"
 
@@ -115,13 +115,13 @@ void BrowsedLineEditor::_browse( void )
   // check file size
   if( files.size() > 1 ) 
   {
-    QtUtil::infoDialog( this, "Too many files selected." );
+    InformationDialog( this, "Too many files selected." ).exec();
     return;
   }
   
   if( files.size() < 1 )
   {
-    QtUtil::infoDialog( this, "No file selected." );
+    InformationDialog( this, "No file selected." ).exec();
     return;
   }
     

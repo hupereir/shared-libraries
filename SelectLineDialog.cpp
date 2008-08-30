@@ -37,7 +37,6 @@
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "SelectLineDialog.h"
-#include "QtUtil.h"
 
 using namespace std;
 
@@ -53,16 +52,16 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   setWindowTitle( "goto line number" );
     
   // create vbox layout
-  setLayout( new QVBoxLayout() );
+  QVBoxLayout *vlayout;
+  setLayout( vlayout = new QVBoxLayout() );
   layout()->setSpacing(5);
   layout()->setMargin(10);
     
   // insert text editor
   QLabel *label( new QLabel( "&Goto line number: ", this ) );
-  layout()->addWidget( label );
-  QtUtil::fixSize( label );
+  vlayout->addWidget( label, 0 );
   
-  layout()->addWidget( editor_ = new LineEditor( this ) );
+  vlayout->addWidget( editor_ = new LineEditor( this ), 1 );
   label->setBuddy( editor_ );
   connect( editor_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
   connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
@@ -75,7 +74,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   QHBoxLayout* h_layout( new QHBoxLayout() );
   h_layout->setMargin(0);
   h_layout->setSpacing( 5 );
-  layout()->addItem( h_layout );
+  vlayout->addLayout( h_layout, 0 );
   
   // insert Find button
   QPushButton *button;
@@ -89,7 +88,6 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   setMinimumSize( QSize( 250, 100 ) );
-  adjustSize();
   
 }
  

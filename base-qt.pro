@@ -12,6 +12,7 @@ HEADERS = \
   BoxSelection.h \
   BrowsedLineEditor.h \
   ClockLabel.h \
+  Color.h \
   ColorDisplay.h \
   ColorMenu.h \
   ColumnSelectionMenu.h \
@@ -109,6 +110,7 @@ HEADERS = \
   XmlUtil.h
 
 SOURCES = \
+  Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \
   BlockHighlight.cpp \

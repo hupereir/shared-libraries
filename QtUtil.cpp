@@ -56,148 +56,6 @@ const unsigned int QtUtil::max_opacity_ = 0xffffffff;
 const char* QtUtil::opacity_prop_name_ = "_NET_WM_WINDOW_OPACITY";
 
 //____________________________________________________________
-void QtUtil::infoDialog(
-  QWidget* parent,
-  const string& text,
-  QtUtil::DialogCenter dialog_center )
-{
-  Debug::Throw( "QtUtil::infoDialog.\n" );
-  BaseDialog dialog( parent );
-
-  // create vbox layout
-  QVBoxLayout* layout=new QVBoxLayout();
-  layout->setMargin(10);
-  layout->setSpacing(10);
-  dialog.setLayout( layout );
-
-  //! try load Question icon
-  QPixmap question_pixmap = PixmapEngine::get( ICONS::INFORMATION );
-
-  // insert main vertical box
-  if( question_pixmap.isNull() )
-  { layout->addWidget( new QLabel( text.c_str(), &dialog ), 1, Qt::AlignHCenter ); }
-  else
-  {
-
-    QHBoxLayout *h_layout( new QHBoxLayout() );
-    h_layout->setSpacing(10);
-    h_layout->setMargin(0);
-    layout->addLayout( h_layout, 1 );
-    QLabel* label = new QLabel( &dialog );
-    label->setPixmap( question_pixmap );
-    h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( new QLabel( text.c_str(), &dialog ), 1, Qt::AlignHCenter );
-
-  }
-
-  // insert OK and Cancel button
-  QPushButton *button( new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "OK", &dialog ) );
-  dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( accept() ) );
-  layout->addWidget( button, 0, Qt::AlignHCenter );
-  
-  layout->activate();
-  dialog.adjustSize();
-
-  // manage widget
-  switch( dialog_center ) 
-  {
-    case CENTER_ON_POINTER:
-      centerOnPointer( &dialog );
-      break;
-
-    case CENTER_ON_PARENT:
-      centerOnParent( &dialog );
-      break;
-
-    case CENTER_ON_DESKTOP:
-      centerOnDesktop( &dialog );
-      break;
-
-    default: break;
-  }
-
-  dialog.exec();
-  return;
-
-}
-
-//____________________________________________________________
-bool QtUtil::questionDialog(
-  QWidget* parent,
-  const string& text,
-  QtUtil::DialogCenter dialog_center )
-{
-
-  Debug::Throw( "QtUtil::questionDialog.\n" );
-  BaseDialog dialog( parent );
-
-  // create vbox layout
-  QVBoxLayout* layout=new QVBoxLayout();
-  layout->setMargin(10);
-  layout->setSpacing(10);
-  dialog.setLayout( layout );
-
-  //! try load Question icon
-  QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );
-
-  // insert main vertical box
-  if( question_pixmap.isNull() )
-  { layout->addWidget( new QLabel( text.c_str(), &dialog ), 1, Qt::AlignHCenter ); }
-  else
-  {
-
-    QHBoxLayout *h_layout( new QHBoxLayout() );
-    h_layout->setSpacing(10);
-    h_layout->setMargin(0);
-    layout->addLayout( h_layout, 1 );
-    QLabel* label = new QLabel( &dialog );
-    label->setPixmap( question_pixmap );
-    h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( new QLabel( text.c_str(), &dialog ), 1, Qt::AlignHCenter );
-
-  }
-
-  // insert hbox layout for buttons
-  QHBoxLayout *hbox_layout( new QHBoxLayout() );
-  hbox_layout->setSpacing( 5 );
-  layout->addLayout( hbox_layout );
-
-  // insert OK button
-  QPushButton *button;
-  hbox_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Yes", &dialog ) );
-  dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( accept() ) );
-
-  // insert Cancel button
-  hbox_layout->addWidget( button  = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&No", &dialog ) );
-  dialog.connect( button, SIGNAL( clicked() ), &dialog, SLOT( reject() ) );
-
-  // manage widget
-  layout->activate();
-  dialog.adjustSize();
-
-  // manage widget
-  switch( dialog_center ) {
-    case CENTER_ON_POINTER:
-      centerOnPointer( &dialog );
-      break;
-
-    case CENTER_ON_PARENT:
-      centerOnParent( &dialog );
-      break;
-
-    case CENTER_ON_DESKTOP:
-      centerOnDesktop( &dialog );
-      break;
-
-    default: break;
-  }
-
-  bool out = ( dialog.exec() == QMessageBox::Accepted );
-  return out;
-
-}
-
-//____________________________________________________________
 QRegion QtUtil::round( const QRect& region, const unsigned int& corners )
 {
 
@@ -450,19 +308,6 @@ void QtUtil::uniconify( QWidget *widget )
   Debug::Throw( "QtUtil::uniconify.\n" );
   if( !widget->isTopLevel() ) return;
 
-//   #ifdef Q_WS_X11
-//
-//   // this strongly uses X11 and is not portable
-//   XWMHints* h( XGetWMHints( QX11Info::display(), widget->winId() ) );
-//   h->initial_state = NormalState;
-//   XSetWMHints( QX11Info::display(), widget->winId(), h );
-//   XMapWindow( QX11Info::display(), widget->winId() );
-//   XRaiseWindow( QX11Info::display(), widget->winId() );
-//   // widget->show();
-//   // widget->raise();
-//
-//   #else
-
   // this is portable but may not work on old enough X11 Qt versions
   if( widget->window()->isMinimized() )
   { widget->window()->hide(); }
@@ -470,8 +315,6 @@ void QtUtil::uniconify( QWidget *widget )
   widget->activateWindow();
   widget->window()->show();
   widget->window()->raise();
-
-//  #endif
 
   return;
 
@@ -491,17 +334,3 @@ void QtUtil::setOpacity( QWidget* widget, const double& value )
   widget->setWindowOpacity( value );
 }
 
-//__________________________________________________________
-QColor QtUtil::mergeColors( const QColor& first, const QColor& second, const double& intensity )
-{
-  if( !first.isValid() ) return second;
-  if( !second.isValid() ) return first;
-  if( first == second ) return first;
-
-  double red = intensity*first.red() + (1.0-intensity )*second.red();
-  double green = intensity*first.green() + (1.0-intensity )*second.green();
-  double blue = intensity*first.blue() + (1.0-intensity )*second.blue();
-  double alpha = intensity*first.alpha() + (1.0-intensity )*second.alpha();
-
-  return QColor( int( red ), int( green ), int( blue ), int( alpha ) );
-}

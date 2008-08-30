@@ -1,3 +1,6 @@
+#ifndef QtUtil_h
+#define QtUtil_h
+ 
 // $Id$
 
 /******************************************************************************
@@ -20,9 +23,7 @@
 *                         
 *                         
 *******************************************************************************/
-#ifndef QtUtil_h
-#define QtUtil_h
- 
+
 /*!
   \file QtUtil.h
   \brief Qt utility static methods
@@ -44,20 +45,6 @@
 class QtUtil {
   public:
   
-  //! dialog centering enumeration
-  enum DialogCenter {
-    
-    //! center widget on mouse pointer
-    CENTER_ON_POINTER,
-        
-    //! center widget on parent widget
-    CENTER_ON_PARENT,
-        
-    //! center widget on desktop
-    CENTER_ON_DESKTOP
-        
-  };
-  
   //! dimension to be fixed
   enum FixMode {
     
@@ -70,18 +57,6 @@ class QtUtil {
     //! widget has fixed height
     HEIGHT = 2
   };
-
-  //! create an modal MessageBox
-  static void infoDialog( 
-    QWidget* parent, 
-    const std::string& text,
-    DialogCenter dialog_center = CENTER_ON_PARENT ); 
-
-  //! create an modal MessageBox
-  static bool questionDialog( 
-    QWidget* parent, 
-    const std::string& text,
-    DialogCenter dialog_center = CENTER_ON_PARENT ); 
 
   //! corners
   enum Corner
@@ -129,43 +104,15 @@ class QtUtil {
 
   //! uniconify a top level widget
   static void uniconify( QWidget* widget );
-
-  //! recompute QLineEditSize according to enclosed text
-  template< typename T >
-  static void expand( T* widget, const std::string& ref_text = "" )
-  {
-    if( !widget ) return;
-    std::string text( (ref_text.size() ) ? ref_text: qPrintable( widget->text() ) );
-    QFontMetrics font( widget->fontMetrics() );
-    int width( font.width( std::string( text+"   " ).c_str() ) );
-    int extra_width( widget->frameSize().width() - widget->width() );
-    widget->resize( QSize( width, 0 ) );
-    widget->setMinimumSize( QSize( width + extra_width, 0 ) );
-    return;
-  }
   
   //! recompute QLabel according to enclosed text
   static void expand( QLabel* label, const std::string& text = "" );
-  
-  //! uniconify a top level widget
-  // static void Uniconify( QWidget* widget );
-  
-  //! set SizePolicy to fixed
-  static void fixSize( QWidget* widget, int mode = WIDTH|HEIGHT )
-  { 
-    widget->setSizePolicy( QSizePolicy( 
-      (mode & WIDTH )  ? QSizePolicy::Fixed:QSizePolicy::Expanding, 
-      (mode & HEIGHT ) ? QSizePolicy::Fixed:QSizePolicy::Expanding )); 
-  }
        
   //! retrieve widget (composite) opacity
   static unsigned int opacity( const QWidget* );
   
   //! set widget (composite) opacity
   static void setOpacity( QWidget*, const double& value );
-
-  //! merge colors
-  static QColor mergeColors( const QColor& first, const QColor& second, const double& intensity = 0.5 );
   
   protected:
       
