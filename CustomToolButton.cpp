@@ -40,6 +40,7 @@
 
 #include "CustomToolButton.h"
 #include "IconEngine.h"
+#include "IconSize.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -69,7 +70,7 @@ bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
   if( rotation_ == value ) return false;
   
   // rotate icon if any
-  CustomPixmap pixmap( icon().pixmap( CustomPixmap::LARGE, QIcon::Normal ) );
+  CustomPixmap pixmap( icon().pixmap( IconSize::LARGE, QIcon::Normal ) );
   if( !pixmap.isNull() )
   {
     
@@ -141,7 +142,7 @@ void CustomToolButton::_updateConfiguration( void )
   
   if( !_updateFromOptions() ) return;
   
-  setIconSize( iconSize( (CustomPixmap::IconSize) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
+  setIconSize( IconSize( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
   setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
   
   adjustSize();

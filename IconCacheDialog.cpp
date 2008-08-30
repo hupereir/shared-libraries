@@ -35,6 +35,7 @@
 #include "CustomPixmap.h"
 #include "IconCacheDialog.h"
 #include "IconEngine.h"
+#include "IconSize.h"
 #include "TreeView.h"
 
 using namespace std;
@@ -57,7 +58,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
   list_ = new TreeView( this );  
   layout()->addWidget( list_ );
   list_->setModel( &model_ );  
-  list_->setIconSize( QSize( 32, 32 ) );
+  list_->setIconSize( IconSize( IconSize::LARGE ) );
   
   // update button
   QHBoxLayout *h_layout = new QHBoxLayout();

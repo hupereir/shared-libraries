@@ -43,8 +43,9 @@ HEADERS = \
   IconCacheDialog.h \
   IconCacheModel.h \
   IconEngine.h \
-  IconSizeMenu.h \
   IconFileDialog.h \
+  IconSize.h \
+  IconSizeMenu.h \
   ItemModel.h \
   LineEditor.h \
   LineNumberDisplay.h \
@@ -140,10 +141,11 @@ SOURCES = \
   IconCacheModel.cpp \
   IconEngine.cpp \
   IconFileDialog.cpp \
+  IconSize.cpp \
+  IconSizeMenu.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
-  IconSizeMenu.cpp \
   ListWidget.cpp \
   OptionDialog.cpp \
   OptionListBox.cpp \

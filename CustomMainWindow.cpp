@@ -105,10 +105,10 @@ QMenu* CustomMainWindow::createPopupMenu( void )
   ToolBarMenu& menu = toolBarMenu( this );
   
   menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-  menu.iconSizeMenu().select( (CustomPixmap::IconSize) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+  menu.iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
   
   connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
-  connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( CustomPixmap::IconSize ) ), SLOT( _updateToolButtonIconSize( CustomPixmap::IconSize ) ) );  
+  connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateToolButtonIconSize( IconSize::Size ) ) );  
   return &menu;
   
 }
@@ -190,9 +190,7 @@ void CustomMainWindow::_updateConfiguration( void )
   Debug::Throw( "CustomMainWindow::_updateConfiguration.\n" );
   
   // icon size
-  int icon_size( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-  if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
-  setIconSize( QSize( icon_size, icon_size ) );
+  setIconSize( IconSize( this, (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
   
   // text label for toolbars
   setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
@@ -213,7 +211,7 @@ void CustomMainWindow::_updateToolButtonStyle( Qt::ToolButtonStyle style )
 }
 
 //____________________________________________________________
-void CustomMainWindow::_updateToolButtonIconSize( CustomPixmap::IconSize size )
+void CustomMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 {
   
   Debug::Throw( "CustomMainWindow::_updateToolButtonIconSize.\n" );

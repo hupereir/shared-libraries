@@ -35,12 +35,13 @@
 #include <QWidgetAction>
 
 #include "ColorMenu.h"
+#include "IconSize.h"
 #include "Str.h"
 
 using namespace std;
 
 //________________________________________________
-const QSize ColorMenu::PixmapSize = QSize( 20, 20 );
+const QSize ColorMenu::PixmapSize = IconSize( IconSize::MEDIUM );
 const std::string ColorMenu::NONE = "None";
 
 //_______________________________________________

@@ -48,6 +48,7 @@ noinst_HEADERS = \
   IconCacheModel.h \
   IconEngine.h \
   IconFileDialog.h \
+  IconSize.h \
   IconSizeMenu.h \
   ItemModel.h \
   LineEditor.h \
@@ -146,6 +147,7 @@ libbase_qt_a_SOURCES = \
   IconCacheModel.cpp \
   IconEngine.cpp \
   IconFileDialog.cpp \
+  IconSize.cpp \
   IconSizeMenu.cpp \
   ItemModel.cpp \
   LineEditor.cpp \

@@ -46,11 +46,11 @@ IconSizeMenu::IconSizeMenu( QWidget* parent ):
   QActionGroup *group = new QActionGroup( this );
   connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
 
-  const CustomPixmap::IconSizeMap& sizes( CustomPixmap::iconSizes() );
+  const IconSize::Map& sizes( IconSize::map() );
 
   // generic action
   QAction* action; 
-  for( CustomPixmap::IconSizeMap::const_iterator iter = sizes.begin(); iter != sizes.end(); iter++ )
+  for( IconSize::Map::const_iterator iter = sizes.begin(); iter != sizes.end(); iter++ )
   {
     addAction( action = new QAction( iter->second, this ) );
     action->setCheckable( true );
@@ -61,7 +61,7 @@ IconSizeMenu::IconSizeMenu( QWidget* parent ):
 }
 
 //_____________________________________________________________________________
-void IconSizeMenu::select( CustomPixmap::IconSize size )
+void IconSizeMenu::select( IconSize::Size size )
 {
   
   Debug::Throw( "IconSizeMenu::select.\n" );

@@ -42,6 +42,7 @@
 
 #include "CustomToolButton.h"
 #include "Debug.h"  
+#include "IconSize.h"  
 #include "WindowSizeWatcher.h"  
 #include "XmlOptions.h"  
 
@@ -125,7 +126,7 @@ class CustomMainWindow: public QMainWindow
   void _updateToolButtonStyle( Qt::ToolButtonStyle );
  
   //! toolbar text position
-  void _updateToolButtonIconSize( CustomPixmap::IconSize );
+  void _updateToolButtonIconSize( IconSize::Size );
     
   //! lock toolbars
   void _lockToolBars( bool ); 

@@ -38,9 +38,10 @@
 #include "LineEditor.h"
 #include "CustomDialog.h"
 #include "Debug.h"
-#include "TextEditionDelegate.h"
+#include "IconSize.h"
 #include "OptionListBox.h"
 #include "QtUtil.h"
+#include "TextEditionDelegate.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 
@@ -73,7 +74,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   _list().setRootIsDecorated( false );
   _list().setMask( 1<<OptionModel::DEFAULT|1<<OptionModel::VALUE );
   _list().setItemDelegate( new TextEditionDelegate( this ) );
-  _list().setIconSize( QSize( 16, 16 ) );
+  _list().setIconSize( IconSize( IconSize::SMALL ) );
   layout->addWidget( &_list(), 1 );
   
   // set connections

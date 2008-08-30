@@ -33,6 +33,7 @@
 */
 
 #include <QSize>
+#include <QWidget>
 #include <map>
 
 //! default icon sizes
@@ -52,6 +53,9 @@ class IconSize: public QSize
     HUGE = 48
   };
 
+  //! constructor
+  IconSize( QWidget* parent, Size size );
+  
   //! constructor
   IconSize( Size size );
    

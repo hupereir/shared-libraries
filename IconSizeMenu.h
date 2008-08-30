@@ -38,6 +38,7 @@
 #include "Counter.h"
 #include "CustomToolButton.h"
 #include "Debug.h"
+#include "IconSize.h"
 
 //! provides icon size selection menu
 class IconSizeMenu: public QMenu, public Counter
@@ -51,12 +52,12 @@ class IconSizeMenu: public QMenu, public Counter
   IconSizeMenu( QWidget* parent = 0 );
     
   //! select size
-  void select( CustomPixmap::IconSize );
+  void select( IconSize::Size );
 
   signals:
     
   //! emmitted when a new size is selected
-  void iconSizeSelected( CustomPixmap::IconSize );
+  void iconSizeSelected( IconSize::Size );
   
   private slots:
 
@@ -66,7 +67,7 @@ class IconSizeMenu: public QMenu, public Counter
   private:
     
   //! action map
-  typedef std::map<QAction*, CustomPixmap::IconSize > ActionMap;
+  typedef std::map<QAction*, IconSize::Size > ActionMap;
     
   //! toolbar text action map
   ActionMap actions_;

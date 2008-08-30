@@ -30,6 +30,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QStyle>
 
 #include "IconSize.h"
@@ -42,11 +43,26 @@ IconSize::Map IconSize::map_;
 //__________________________________________________________________
 IconSize::IconSize( IconSize::Size size )
 {
-  
-  int icon_size( size );
-  if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+
+  assert( size != DEFAULT );
   setWidth( size );
   setHeight( size );
+  
+}
+
+//__________________________________________________________________
+IconSize::IconSize( QWidget* parent, IconSize::Size size )
+{
+  
+  int icon_size( size );
+  if( size == DEFAULT )
+  { 
+    assert( parent );
+    icon_size =  parent->style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+  }
+  
+  setWidth( icon_size );
+  setHeight( icon_size );
   
 }
 
