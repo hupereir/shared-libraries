@@ -36,7 +36,6 @@ using namespace std;
 
 //____________________________________________________________
 Counter::Counter( const std::string& name ):
-  name_( name ),
   count_( 0 )
 {
   count_ = Singleton::get().counterMap().counter( name );
@@ -46,10 +45,8 @@ Counter::Counter( const std::string& name ):
   
 //____________________________________________________________
 Counter::Counter( const Counter& counter ):
-  name_( counter.name_ ),
-  count_( 0 )
+  count_( counter.count_ )
 {
-  count_ = Singleton::get().counterMap().counter( name_ );
   (*count_) ++;
   return;
 }

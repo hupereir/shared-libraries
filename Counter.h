@@ -69,9 +69,6 @@ class Counter {
     
   private:
   
-  //! the object name associated to the counter
-  std::string name_; 
-  
   //! pointer to integer counter
   int* count_;
     
