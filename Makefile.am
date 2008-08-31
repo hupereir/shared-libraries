@@ -44,6 +44,7 @@ noinst_HEADERS = \
   FlatStyle.h \
   FontEditor.h \
   FontInfo.h \
+  HtmlTextNode.h \
   IconBrowsedButton.h \
   IconCacheDialog.h \
   IconCacheModel.h \
@@ -146,6 +147,7 @@ libbase_qt_a_SOURCES = \
   FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
+  HtmlTextNode.cpp \
   IconBrowsedButton.cpp \
   IconCacheDialog.cpp \
   IconCacheModel.cpp \
