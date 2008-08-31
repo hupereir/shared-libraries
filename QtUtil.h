@@ -32,8 +32,6 @@
   \date $Date$
 */
 #include <QDialog>
-#include <QLabel>
-#include <QLineEdit>
 #include <string>
 
 
@@ -105,9 +103,6 @@ class QtUtil {
   //! uniconify a top level widget
   static void uniconify( QWidget* widget );
   
-  //! recompute QLabel according to enclosed text
-  static void expand( QLabel* label, const std::string& text = "" );
-       
   //! retrieve widget (composite) opacity
   static unsigned int opacity( const QWidget* );
   
