@@ -156,6 +156,14 @@ class FileRecord: public Counter
     properties_[tag] = value; 
     return *this;
   }
+
+  //! add information
+  template <typename T>
+  FileRecord& addProperty( const std::string& tag, const T& value )
+  { 
+    properties_[tag] = Str().assign<T>( value ); 
+    return *this;
+  }
   
   //! true if information is available
   bool hasProperty( const std::string& tag ) const
