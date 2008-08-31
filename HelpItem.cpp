@@ -33,7 +33,7 @@
 #include <iostream>
 
 #include "HelpItem.h"
-#include "XmlUtil.h"
+#include "XmlString.h"
 
 using namespace std;
 using namespace BASE;
@@ -52,7 +52,7 @@ HelpItem::HelpItem( const QDomElement& element ):
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
 
-    if( attribute.name() == XML_LABEL ) label_ = XmlUtil::xmlToText( attribute.value() );
+    if( attribute.name() == XML_LABEL ) label_ = XmlString( attribute.value() ).toText();
     else Debug::Throw() << "HelpItem::HelpItem - unrecognized attribute: " << qPrintable( attribute.name() ) << endl;
     
   }
@@ -62,7 +62,7 @@ HelpItem::HelpItem( const QDomElement& element ):
   for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
   {
     QDomElement child_element = child_node.toElement();
-    if( child_element.tagName() == XML_TEXT ) text_ = XmlUtil::xmlToText( child_element.text() );
+    if( child_element.tagName() == XML_TEXT ) text_ = XmlString( child_element.text() ).toText();
     else cout << "HelpItem::HelpItem - unrecognized child " << qPrintable( child_element.tagName() ) << endl;
   }
 
@@ -73,13 +73,13 @@ QDomElement HelpItem::domElement( QDomDocument& parent ) const
 {
   Debug::Throw( "HelpItem::DomElement.\n" );
   QDomElement out = parent.createElement( XML_ITEM );
-  out.setAttribute( XML_LABEL, XmlUtil::textToXml( label_ ) );
+  out.setAttribute( XML_LABEL, XmlString( label_ ).toXml() );
 
   // text child
   if( text_.size() )
   out.
     appendChild( parent.createElement( XML_TEXT ) ).
-    appendChild( parent.createTextNode( XmlUtil::textToXml( text_ ) ) );
+    appendChild( parent.createTextNode( XmlString( text_ ).toXml() ) );
 
   return out;
 
