@@ -32,7 +32,6 @@
 #include <QStringList>
 
 #include "Debug.h"
-#include "HtmlString.h"
 #include "HtmlTextNode.h"
 
 //_________________________________________
