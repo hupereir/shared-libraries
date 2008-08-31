@@ -31,7 +31,7 @@
 
 #include "XmlFileRecord.h"
 #include "Str.h" 
-#include "XmlUtil.h" 
+#include "XmlString.h" 
 
 using namespace std;
 
@@ -55,7 +55,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    if( attribute.name() == XML_FILE ) setFile( qPrintable( XmlUtil::xmlToText( attribute.value() ) ) );
+    if( attribute.name() == XML_FILE ) setFile( qPrintable( XmlString( attribute.value() ).toText() ) );
     else if( attribute.name() == XML_TIME ) setTime( attribute.value().toInt() );
     else if( attribute.name() == XML_FLAGS ) setFlags( attribute.value().toUInt() );
     else if( attribute.name() == XML_VALID ) setValid( attribute.value().toInt() );
@@ -69,7 +69,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 {
   Debug::Throw( "XmlFileRecord::domElement.\n" );
   QDomElement out( parent.createElement( XML_RECORD ) );
-  out.setAttribute( XML_FILE, XmlUtil::textToXml( file().c_str() ) );
+  out.setAttribute( XML_FILE, XmlString( file().c_str() ).toXml() );
   out.setAttribute( XML_TIME, Str().assign<int>( XmlFileRecord::time() ).c_str() );
   out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ).c_str() );
 

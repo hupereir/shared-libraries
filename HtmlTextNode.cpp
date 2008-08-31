@@ -32,6 +32,7 @@
 #include <QStringList>
 
 #include "Debug.h"
+#include "HtmlString.h"
 #include "HtmlTextNode.h"
 
 //_________________________________________
@@ -47,6 +48,7 @@ HtmlTextNode::HtmlTextNode( const QString& text, QDomElement& parent, QDomDocume
   
   // first append the first line
   QStringList::iterator iter = lines.begin(); 
+ // parent.appendChild( document.createTextNode( HtmlString(*iter).toHtml() ) );
   parent.appendChild( document.createTextNode( *iter ) );
   iter++;
   

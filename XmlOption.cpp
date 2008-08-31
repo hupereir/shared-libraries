@@ -32,7 +32,7 @@
 
 #include "Str.h"
 #include "XmlOption.h"
-#include "XmlUtil.h"
+#include "XmlString.h"
 using namespace std;
 
 //________________________________________________
@@ -47,8 +47,8 @@ XmlOption::XmlOption( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    if( attribute.name() == OPTIONS::VALUE ) setRaw( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
-    else if( attribute.name() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlUtil::xmlToText(attribute.value()) ) );
+    if( attribute.name() == OPTIONS::VALUE ) setRaw( qPrintable( XmlString( attribute.value() ).toText() ) );
+    else if( attribute.name() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlString( attribute.value() ).toText() ) );
     
     // old style options
     else if( attribute.name() == OPTIONS::OPTIONS ) {
@@ -68,7 +68,7 @@ XmlOption::XmlOption( const QDomElement& element )
   {
     QDomElement child_element = child_node.toElement();
     if( child_element.tagName() == OPTIONS::COMMENTS )
-    setComments( qPrintable( XmlUtil::xmlToText( child_element.text() ) ) );
+    setComments( qPrintable( XmlString( child_element.text() ).toText() ) );
     else cout << "XmlOption::XmlOption - unrecognized child " << qPrintable( child_element.tagName() ) << ".\n";
   }
 
@@ -83,13 +83,13 @@ QDomElement XmlOption::domElement( QDomDocument& parent ) const
   Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
   
   QDomElement out = parent.createElement( name().c_str() );
-  out.setAttribute( OPTIONS::VALUE, XmlUtil::textToXml( raw().c_str() ) );
+  out.setAttribute( OPTIONS::VALUE, XmlString( raw().c_str() ).toXml() );
   out.setAttribute( OPTIONS::FLAGS, QString().setNum( flags() ) );
   if( comments().size() )
   {
     out.
       appendChild( parent.createElement( OPTIONS::COMMENTS ) ).
-      appendChild( parent.createTextNode( XmlUtil::textToXml( comments().c_str() ) ) );
+      appendChild( parent.createTextNode( XmlString( comments().c_str() ).toXml() ) );
   }
   
   return out;

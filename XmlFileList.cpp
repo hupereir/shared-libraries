@@ -36,7 +36,6 @@
 #include "XmlFileList.h"
 #include "XmlFileRecord.h"
 #include "XmlOptions.h"
-#include "XmlUtil.h"
 #include "XmlError.h"
 
 using namespace std;

@@ -112,7 +112,7 @@ noinst_HEADERS = \
   XmlOptions.h \
   XmlTextFormatBlock.h \
   XmlTimeStamp.h \
-  XmlUtil.h
+  XmlString.h
 
 noinst_LIBRARIES = libbase-qt.a
 
@@ -194,7 +194,7 @@ libbase_qt_a_SOURCES = \
   XmlOptions.cpp \
   XmlTextFormatBlock.cpp \
   XmlTimeStamp.cpp \
-  XmlUtil.cpp
+  XmlString.cpp
 
 nodist_libbase_qt_a_SOURCES = \
   qrc_basePixmaps.cpp \

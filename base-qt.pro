@@ -108,7 +108,7 @@ HEADERS = \
   XmlOptions.h \
   XmlTextFormatBlock.h \
   XmlTimeStamp.h \
-  XmlUtil.h
+  XmlString.h
 
 SOURCES = \
   Color.cpp \
@@ -188,4 +188,4 @@ SOURCES = \
   XmlOptions.cpp \
   XmlTextFormatBlock.cpp \
   XmlTimeStamp.cpp \
-  XmlUtil.cpp
+  XmlString.cpp
