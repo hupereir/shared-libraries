@@ -88,7 +88,8 @@ void ApplicationManager::init( ArgList args )
   Debug::Throw( debug_level, "ApplicationManager::init.\n" );
 
   // connect server to port
-  if( !_server().listen( QHostAddress::Any, SERVER_PORT ) )
+  //if( !_server().listen( QHostAddress::Any, SERVER_PORT ) )
+  if( !_server().listen( QHostAddress::LocalHost, SERVER_PORT ) )
   {  Debug::Throw( debug_level ) << "ApplicationManager::init - unable to listen to port " << SERVER_PORT << endl; }
   
   // connect client to port
