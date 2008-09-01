@@ -82,7 +82,7 @@ QSize CustomMainWindow::sizeHint( void ) const
 void CustomMainWindow::centerOnDesktop( void )
 {
   
-  Debug::Throw( "CustomMainWindow::centerOnDesktop" );
+  Debug::Throw( "CustomMainWindow::centerOnDesktop.\n" );
   move( QtUtil::centerOnDesktop( sizeHint() ) );
   
 }
@@ -91,7 +91,7 @@ void CustomMainWindow::centerOnDesktop( void )
 void CustomMainWindow::centerOnWidget( QWidget* parent )
 {
   
-  Debug::Throw( "CustomMainWindow::centerOnWidget" );
+  Debug::Throw( "CustomMainWindow::centerOnWidget.\n" );
   move( QtUtil::centerOnWidget( sizeHint(), parent ) );
   
 }
