@@ -66,6 +66,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text, BaseDialog::Cente
     h_layout->setSpacing(10);
     h_layout->setMargin(0);
     layout->addLayout( h_layout, 1 );
+
     QLabel* label = new QLabel( this );
     label->setPixmap( question_pixmap );
     h_layout->addWidget( label, 0, Qt::AlignHCenter );

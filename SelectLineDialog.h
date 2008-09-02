@@ -36,7 +36,7 @@
 
 #include "BaseDialog.h"
 #include "Counter.h"
-#include "CustomComboBox.h"
+#include "LineEditor.h"
 #include "Str.h"
 
 //! find_text dialog for text editor widgets
@@ -52,7 +52,7 @@ class SelectLineDialog: public BaseDialog, public Counter
   SelectLineDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
   
   //! retrieve editor
-  CustomComboBox& editor( void ) const
+  LineEditor& editor( void ) const
   { return *editor_; }
 
   signals:
@@ -62,16 +62,13 @@ class SelectLineDialog: public BaseDialog, public Counter
   
   private slots:
   
-  //! save current text in combo-box
-  void _storeSelectedLine( void );
-  
   //! retrieve line number and emit signal
   void _selectLine( void );
     
   private:
   
   //! line editor for text to find
-  CustomComboBox* editor_;      
+  LineEditor* editor_;      
     
 };
 #endif
