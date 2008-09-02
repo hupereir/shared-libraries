@@ -252,8 +252,8 @@ string Util::tmp( void )
   
   #else 
   
-  // use hard-coded linux /tmp path
-  return "/tmp"; 
+  // use environment variable or /tmp path
+  return env( "TMP", "/tmp" );
   
   #endif
   

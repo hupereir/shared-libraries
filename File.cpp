@@ -80,7 +80,9 @@ unsigned int File::userId( void ) const
 string File::userName( void ) const
 { 
   if( !exists() ) return string();
-  return qPrintable( QFileInfo( c_str() ).owner() );
+  QString out( QFileInfo( c_str() ).owner() );
+  if( out.isNull() || out.isEmpty() ) out = QString().setNum( QFileInfo( c_str() ).ownerId() );
+  return qPrintable( out );
 }
 
 //_____________________________________________________________________
