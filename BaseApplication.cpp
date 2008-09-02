@@ -141,10 +141,15 @@ void BaseApplication::_about( string name, string version, string stamp )
 {
 
   Debug::Throw( "BaseApplication::about.\n" );
+  
+  // modify version to remvoe qt4 for version
+  if( Str( version ).contains( "qt4_" ) )
+  { version = Str( version ).replace( "qt4_", "" ) + " (qt4)"; }
+  
   ostringstream what;
-  if( !name.empty() ) { what << "<b>" << name << "</b> "; }
-  if( !version.empty() ) { what << "version " << version << " "; }
-  if( !stamp.empty() ) { what << "(" << stamp << ")"; }
+  if( !name.empty() ) { what << "<b>" << name << "</b>"; }
+  if( !version.empty() ) { what << " version " << version; }
+  if( !stamp.empty() ) { what << " build: " << stamp; }
 
   what 
     << "<p>This application was written for personal use only. "
