@@ -61,15 +61,20 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   QLabel *label( new QLabel( "&Goto line number: ", this ) );
   vlayout->addWidget( label, 0 );
   
-  vlayout->addWidget( editor_ = new LineEditor( this ), 1 );
+  vlayout->addWidget( editor_ = new CustomComboBox( this ), 1 );
   label->setBuddy( editor_ );
-  connect( editor_, SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
-  connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( const QString& ) ) );
-  editor_->setHasClearButton( true );
+  editor().setEditable( true );
+  editor().setCaseSensitive( Qt::CaseSensitive );
+  editor().setAutoCompletion( true );
+
+  //connect( editor(), SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
+  connect( &editor(), SIGNAL(activated( int )), SLOT( _selectLine( void ) ) );
+  connect( &editor(), SIGNAL(editTextChanged( const QString& ) ), SLOT( _selectLine( void ) ) );
+  // editor().setHasClearButton( true );
   
   QIntValidator *validator = new QIntValidator( this );
   validator->setBottom(0);
-  editor_->setValidator( validator );
+  editor().lineEdit()->setValidator( validator );
  
   QHBoxLayout* h_layout( new QHBoxLayout() );
   h_layout->setMargin(0);
@@ -81,6 +86,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Ok", this ) );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), SLOT( _selectLine( void ) ) );
+  connect( button, SIGNAL( clicked( void ) ), SLOT( _storeSelectedLine( void ) ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
       
   // insert Cancel button
@@ -91,3 +97,16 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   
 }
  
+//_______________________________________________________
+void SelectLineDialog::_storeSelectedLine( void )
+{ 
+  
+  QString current( editor_->currentText() );
+  if( editor().findText( current ) < 0 )
+  { editor().addItem( current ); }
+  
+}
+  
+//_______________________________________________________
+void SelectLineDialog::_selectLine( void )
+{ emit lineSelected( Str( qPrintable( editor_->currentText() ) ).get<int>()-1 ); }
