@@ -147,9 +147,9 @@ void BaseApplication::_about( string name, string version, string stamp )
   { version = Str( version ).replace( "qt4_", "" ) + " (qt4)"; }
   
   ostringstream what;
-  if( !name.empty() ) { what << "<b>" << name << "</b>"; }
-  if( !version.empty() ) { what << " version " << version; }
-  if( !stamp.empty() ) { what << " build: " << stamp; }
+  if( !name.empty() ) { what << "<h3>" << name << "</h3>"; }
+  if( !version.empty() ) { what << "version " << version; }
+  if( !stamp.empty() ) { what << " (" << stamp << ")"; }
 
   what 
     << "<p>This application was written for personal use only. "
