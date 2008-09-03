@@ -48,6 +48,9 @@ CustomComboBox::CustomComboBox( QWidget* parent ):
   // always disable autoComplation, since it is reimplemented
   QComboBox::setAutoCompletion( false );
   
+  // size policy
+  setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ) );
+ 
 }
 
 //____________________________________________________
@@ -65,7 +68,6 @@ void CustomComboBox::setEditable( bool value )
   if( !editor_ ) 
   {
     editor_ = new ComboLineEdit( this );
-    editor_->setHasClearButton( true );
     editor_->setFrame( false );
     setLineEdit( editor_ );
     connect( editor_, SIGNAL( autoComplete( QString ) ), SLOT( _autoComplete( QString ) ) );

@@ -55,6 +55,7 @@ LineEditor::LineEditor( QWidget* parent ):
   has_frame_( true ),
   clear_icon_( IconEngine::get( ICONS::EDIT_CLEAR ) )
 {    
+  
   Debug::Throw( "LineEditor::LineEditor.\n" );
 
   // this is a kludge so that the widget appears correctly for all styles
@@ -70,6 +71,7 @@ LineEditor::LineEditor( QWidget* parent ):
     
   // set clear button visible
   setHasClearButton( true );
+  setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ) );
   
 }
 

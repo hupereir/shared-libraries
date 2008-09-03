@@ -58,14 +58,7 @@ class ReplaceDialog: public FindDialog
   //! string to replace
   QString replaceText( void ) const
   { return replace_editor_->currentText(); }
-  
-  //! get location button hbox
-  QBoxLayout& locationLayout( void )
-  { 
-    assert( location_layout_ );
-    return *location_layout_; 
-  }
-  
+    
   //! retrieve text selection from dialog
   virtual TextSelection selection( const bool& no_increment ) const;
 

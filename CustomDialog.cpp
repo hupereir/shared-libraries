@@ -66,6 +66,7 @@ CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFla
   if( flags & OK_BUTTON ) {
     button_layout_->addWidget( ok_button_ = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&OK", this ) );
     connect( ok_button_, SIGNAL( clicked() ), SLOT( accept() ) );
+    ok_button_->setDefault( true );
   }
   
   // insert OK and Cancel button

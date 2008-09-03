@@ -52,7 +52,7 @@ class ComboLineEdit: public LineEditor
   //! constructor
   ComboLineEdit( QWidget* parent ):
     LineEditor( parent )
-  { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
+ { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
 
   signals:
   
