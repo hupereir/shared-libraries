@@ -41,10 +41,10 @@
 #include "Color.h"
 #include "TextEditor.h"
 #include "CustomTextDocument.h"
-#include "FindDialog.h"
+#include "BaseFindDialog.h"
 #include "IconEngine.h"
 #include "LineNumberDisplay.h"
-#include "ReplaceDialog.h"
+#include "BaseReplaceDialog.h"
 #include "SelectLineDialog.h"
 #include "TextBlockData.h"
 #include "TextSeparator.h"
@@ -1658,16 +1658,14 @@ TextSelection TextEditor::_selection( void ) const
 }
 
 //______________________________________________________________________
-void TextEditor::_createFindDialog( void )
+void TextEditor::_createBaseFindDialog( void )
 {
 
-  Debug::Throw( "TextEditor::_createFindDialog.\n" );
+  Debug::Throw( "TextEditor::_createBaseFindDialog.\n" );
   if( !find_dialog_ )
   {
 
-    find_dialog_ = new FindDialog( this );
-    find_dialog_->polish();
-
+    find_dialog_ = new BaseFindDialog( this );
     connect( find_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
     connect( this, SIGNAL( noMatchFound() ), find_dialog_, SLOT( noMatchFound() ) );
     connect( this, SIGNAL( matchFound() ), find_dialog_, SLOT( clearLabel() ) );
@@ -1887,16 +1885,14 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
 }
 
 //______________________________________________________________________
-void TextEditor::_createReplaceDialog( void )
+void TextEditor::_createBaseReplaceDialog( void )
 {
 
-  Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
+  Debug::Throw( "TextEditor::_createBaseReplaceDialog.\n" );
   if( !replace_dialog_ )
   {
 
-    replace_dialog_ = new ReplaceDialog( this );
-    replace_dialog_->polish();
-
+    replace_dialog_ = new BaseReplaceDialog( this );
     connect( replace_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
     connect( replace_dialog_, SIGNAL( replace( TextSelection ) ), SLOT( replace( TextSelection ) ) );
     connect( replace_dialog_, SIGNAL( replaceInWindow( TextSelection ) ), SLOT( replaceInWindow( TextSelection ) ) );
@@ -2461,7 +2457,7 @@ void TextEditor::_findFromDialog( void )
   Debug::Throw( "TextEditor::_findFromDialog.\n" );
 
   // create
-  if( !find_dialog_ ) _createFindDialog();
+  if( !find_dialog_ ) _createBaseFindDialog();
 
   // enable/disable regexp
   _findDialog().enableRegExp( true );
@@ -2505,7 +2501,7 @@ void TextEditor::_replaceFromDialog( void )
   if( isReadOnly() ) return;
 
     // create
-  if( !replace_dialog_ ) _createReplaceDialog();
+  if( !replace_dialog_ ) _createBaseReplaceDialog();
 
   _replaceDialog().centerOnParent();
   _replaceDialog().show();

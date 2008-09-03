@@ -59,8 +59,8 @@
 #include "TextPosition.h"
 #include "TextSelection.h"
 
-class FindDialog;
-class ReplaceDialog;
+class BaseFindDialog;
+class BaseReplaceDialog;
 class SelectLineDialog;
 
 class LineNumberDisplay;
@@ -504,14 +504,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   { last_selection_ = selection; }
   
   //! find dialog
-  virtual FindDialog& _findDialog( void )
+  virtual BaseFindDialog& _findDialog( void )
   {
     assert( find_dialog_ );
     return *find_dialog_;
   }
   
   //! find dialog
-  virtual void _createFindDialog( void );
+  virtual void _createBaseFindDialog( void );
   
   //! find selection in forward direction
   virtual bool _findForward( const TextSelection& selection, const bool& rewind );
@@ -520,14 +520,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual bool _findBackward( const TextSelection& selection, const bool& rewind );
   
   //! replace dialog
-  virtual ReplaceDialog& _replaceDialog( void )
+  virtual BaseReplaceDialog& _replaceDialog( void )
   {
     assert( replace_dialog_ );
     return *replace_dialog_;
   }
   
   //! find dialog
-  virtual void _createReplaceDialog( void );
+  virtual void _createBaseReplaceDialog( void );
 
   //! define how cursor should be updated while replacing
   enum CursorMode
@@ -707,10 +707,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   ///@{
   
   //! find dialog
-  FindDialog* find_dialog_;
+  BaseFindDialog* find_dialog_;
 
   //! find dialog
-  ReplaceDialog* replace_dialog_;
+  BaseReplaceDialog* replace_dialog_;
   
   //! line number dialog
   SelectLineDialog* select_line_dialog_;

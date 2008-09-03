@@ -40,7 +40,7 @@ noinst_HEADERS = \
   FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
-  FindDialog.h \
+  BaseFindDialog.h \
   FlatStyle.h \
   FontEditor.h \
   FontInfo.h \
@@ -82,7 +82,7 @@ noinst_HEADERS = \
   QtUtil.h \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
-  ReplaceDialog.h \
+  BaseReplaceDialog.h \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
@@ -143,7 +143,7 @@ libbase_qt_a_SOURCES = \
   ErrorHandler.cpp \
   FileList.cpp \
   FileRecordModel.cpp \
-  FindDialog.cpp \
+  BaseFindDialog.cpp \
   FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
@@ -170,7 +170,7 @@ libbase_qt_a_SOURCES = \
   QtUtil.cpp \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
-  ReplaceDialog.cpp \
+  BaseReplaceDialog.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
@@ -218,7 +218,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_DockPanel.cpp \
   moc_FileList.cpp \
   moc_FileRecordModel.cpp \
-  moc_FindDialog.cpp \
+  moc_BaseFindDialog.cpp \
   moc_FontEditor.cpp \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
@@ -234,7 +234,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_ProcessFrame.cpp \
   moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
-  moc_ReplaceDialog.cpp \
+  moc_BaseReplaceDialog.cpp \
   moc_SelectLineDialog.cpp \
   moc_StatusBar.cpp \
   moc_TabbedDialog.cpp \

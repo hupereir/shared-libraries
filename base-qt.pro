@@ -36,7 +36,7 @@ HEADERS = \
   FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
-  FindDialog.h \
+  BaseFindDialog.h \
   FlatStyle.h \
   FontEditor.h \
   FontInfo.h \
@@ -78,7 +78,7 @@ HEADERS = \
   QtUtil.h \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
-  ReplaceDialog.h \
+  BaseReplaceDialog.h \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
@@ -137,7 +137,7 @@ SOURCES = \
   ErrorHandler.cpp \
   FileList.cpp \
   FileRecordModel.cpp \
-  FindDialog.cpp \
+  BaseFindDialog.cpp \
   FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
@@ -164,7 +164,7 @@ SOURCES = \
   QtUtil.cpp \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
-  ReplaceDialog.cpp \
+  BaseReplaceDialog.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
