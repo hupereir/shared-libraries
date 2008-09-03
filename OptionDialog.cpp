@@ -80,7 +80,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     layout->addWidget( label );
   }
   layout->addWidget( new QLabel( 
-    "This dialog allows one to modify options directly by editting them in the list.\n"
+    "This dialog allows one to modify options manually by editting them in the list.\n"
     "The modifications are directly applied to the application. The reload button allows\n"
     "one to restore the state of the application at the time the dialog was oppened.\n", this ), 1 );
   
