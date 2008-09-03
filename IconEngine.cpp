@@ -79,8 +79,13 @@ QIcon IconEngine::_get( const QPixmap& pixmap )
   if( pixmap.isNull() ) return QIcon( pixmap );
   
   QIcon out( pixmap );
-  //out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );
-  //out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::Off );
+  
+#if QT_VERSION < 0x040300
+  // better looking disabled icons are generated only for versions prior to qt 4.3
+  out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );
+  out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::Off );
+#endif
+  
   return out;
   
 }
@@ -92,9 +97,14 @@ QIcon IconEngine::_get( const QIcon& icon )
   Debug::Throw( "IconEngine::get (QIcon).\n" );
   
   QIcon out( icon );
-  //QPixmap pixmap;
-  //if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::On )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );
-  //if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::Off )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::Off );
+  
+#if QT_VERSION < 0x040300
+  // better looking disabled icons are generated only for versions prior to qt 4.3
+  QPixmap pixmap;
+  if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::On )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );
+  if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::Off )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::Off );
+#endif
+  
   return out;
   
 }
