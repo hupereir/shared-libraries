@@ -11,7 +11,6 @@ INCLUDES =  \
   -I$(top_srcdir)/base-qt 
 
 noinst_HEADERS = \
-  HelpDelegate.h \
   HelpDialog.h \
   HelpItem.h \
   HelpManager.h \
@@ -21,7 +20,6 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-help.a
 
 libbase_help_a_SOURCES = \
-  HelpDelegate.cpp \
   HelpDialog.cpp \
   HelpItem.cpp \
   HelpManager.cpp \

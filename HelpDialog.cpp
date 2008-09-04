@@ -38,7 +38,7 @@
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "HelpDialog.h"
-#include "HelpDelegate.h"
+#include "TextEditionDelegate.h"
 #include "HelpManager.h"
 #include "HelpModel.h"
 #include "NewItemDialog.h"
@@ -74,7 +74,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   list_->setMaximumWidth(150);
   layout->addWidget( list_ );
   list_->setModel( &model_ );
-  list_->setItemDelegate( new HelpDelegate( this ) );
+  list_->setItemDelegate( new TextEditionDelegate( this ) );
   list_->setSortingEnabled( false );
   list_->header()->hide();
    
