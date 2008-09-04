@@ -1,3 +1,6 @@
+#ifndef BaseReplaceDialog_h
+#define BaseReplaceDialog_h
+
 // $Id$
 
 /******************************************************************************
@@ -22,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file ReplaceDialog.h
+  \file BaseReplaceDialog.h
   \brief replace_text dialog for text editor widgets
   \author Hugo Pereira
   \version $Revision$
@@ -30,17 +33,14 @@
 */
 
 
-#ifndef ReplaceDialog_h
-#define ReplaceDialog_h
-
 #include <assert.h>
 
 #include "Counter.h"
 #include "CustomComboBox.h"
-#include "FindDialog.h"
+#include "BaseFindDialog.h"
 
 //! replace_text dialog for text editor widgets
-class ReplaceDialog: public FindDialog
+class BaseReplaceDialog: public BaseFindDialog
 {
 
   //! Qt meta object declaration
@@ -49,7 +49,7 @@ class ReplaceDialog: public FindDialog
   public:
   
   //! constructor
-  ReplaceDialog( QWidget* parent = 0, Qt::WFlags flags = 0 );
+  BaseReplaceDialog( QWidget* parent = 0, Qt::WFlags flags = 0 );
     
   //! string to replace
   void setReplaceText( const QString& text )
@@ -65,9 +65,6 @@ class ReplaceDialog: public FindDialog
   //! synchronize searched strings and ComboBox
   virtual void synchronize( void );
 
-  //! create children, polish widget
-  virtual void polish( void );
-    
   signals: 
   
   //! emmited when Replace is pressed
@@ -106,15 +103,6 @@ class ReplaceDialog: public FindDialog
 
     
   protected:
-  
-  //! Find editor
-  virtual void _createEditor( void );
-  
-  //! location buttons
-  virtual void _createLocationButtons( void );
-    
-  //! action buttons
-  virtual void _createButtons( void );
   
   //! replace editor
   virtual CustomComboBox& _replaceEditor( void )
