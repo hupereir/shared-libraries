@@ -41,9 +41,7 @@ FileRecord::PropertyId::NameMap FileRecord::PropertyId::name_map_;
 //_______________________________________________
 FileRecord::PropertyId::Id FileRecord::PropertyId::get( std::string name )
 {
-  
-  std::cout << "FileRecord::PropertyId::get - name: " << name << endl;
-  
+    
   // see if iterator exists in list
   IdMap::const_iterator iter;
   if( ( iter = id_map_.find( name ) ) != id_map_.end() )
@@ -53,8 +51,6 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( std::string name )
   id_map_.insert( make_pair( name, counter_ ) );
   name_map_.push_back( name );
   counter_++;
-  
-  std::cout << "FileRecord::PropertyId::get - counter: " << counter_-1 << endl;
 
   return counter_-1;
   
@@ -63,7 +59,6 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( std::string name )
 //_______________________________________________
 std::string FileRecord::PropertyId::get( FileRecord::PropertyId::Id id )
 {
-  std::cout << "FileRecord::PropertyId::get - id: " << id << endl;
   assert( id < name_map_.size() );
   return name_map_[id];
 }
