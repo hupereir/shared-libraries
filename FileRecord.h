@@ -195,19 +195,6 @@ class FileRecord: public Counter
   
   //! add property
   FileRecord& addProperty( PropertyId::Id, std::string );
-
-  //! add property
-  template <typename T>
-  FileRecord& addProperty( std::string tag, const T& value )
-  { return addProperty<T>( tag, value ); }
-
-  //! add property
-  template <typename T>
-  FileRecord& addProperty( PropertyId::Id id, const T& value )
-  { 
-    properties_[ id ] = Str().assign<T>( value ); 
-    return *this;
-  }
   
   //! true if property is available
   bool hasProperty( std::string tag ) const
@@ -233,20 +220,6 @@ class FileRecord: public Counter
   {
     PropertyMap::const_iterator iter(  properties_.find( id ) );
     return ( iter == properties_.end() ) ? "":iter->second;
-  }
-  
-  //! convert string to any type using string streamer
-  template <typename T>
-  T property( const std::string& tag ) const
-  { return property<T>( PropertyId::get( tag ) ); }
-  
-  //! convert string to any type using string streamer
-  template <typename T>
-  T property( PropertyId::Id id ) const
-  {
-    PropertyMap::const_iterator iter(  properties_.find( id ) );
-    assert( iter != properties_.end() );
-    return Str( iter->second ).get<T>();
   }
 
   //@}
