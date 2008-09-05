@@ -150,48 +150,107 @@ class FileRecord: public Counter
     return *this;
   }
 
-  //! add information
-  FileRecord& addProperty( const std::string& tag, const std::string& value )
-  { 
-    properties_[tag] = value; 
-    return *this;
-  }
+  
+  //!@name properties
+  //@{
+  
+  //! map string to unsigned int property ID
+  class PropertyId
+  {
+    
+    public: 
+    
+    typedef unsigned short Id;
+    
+    //! get id matching name
+    /*! insert in map if name is new */
+    static Id get( std::string name );
+   
+    //! get name matching id
+    /*! throw exception if not found */
+    static std::string get( Id );
+     
+    private:
+    
+    //! counter
+    static Id counter_;
+    
+    //! id map
+    typedef std::map< std::string, Id > IdMap;
+    
+    //! id map
+    static IdMap id_map_;
+    
+    //! id map
+    typedef std::vector< std::string > NameMap;
+    
+    //! name map
+    static NameMap name_map_;
+    
+  };
 
-  //! add information
+  //! add property
+  FileRecord& addProperty( std::string tag, std::string value )
+  { return addProperty( PropertyId::get( tag ), value ); }
+  
+  //! add property
+  FileRecord& addProperty( PropertyId::Id, std::string );
+
+  //! add property
   template <typename T>
-  FileRecord& addProperty( const std::string& tag, const T& value )
+  FileRecord& addProperty( std::string tag, const T& value )
+  { return addProperty<T>( tag, value ); }
+
+  //! add property
+  template <typename T>
+  FileRecord& addProperty( PropertyId::Id id, const T& value )
   { 
-    properties_[tag] = Str().assign<T>( value ); 
+    properties_[ id ] = Str().assign<T>( value ); 
     return *this;
   }
   
-  //! true if information is available
-  bool hasProperty( const std::string& tag ) const
-  { return properties_.find( tag ) != properties_.end(); }
-  
-  //! additional information map
-  typedef std::map< std::string, std::string > PropertyMap;
+  //! true if property is available
+  bool hasProperty( std::string tag ) const
+  { return hasProperty( PropertyId::get( tag ) ); }
+    
+  //! true if property is available
+  bool hasProperty( PropertyId::Id id ) const
+  { return properties_.find( id ) != properties_.end(); }
+
+  //! additional property map
+  typedef std::map< PropertyId::Id, std::string > PropertyMap;
   
   //! property map
   const PropertyMap& properties( void ) const
   { return properties_; }
 
-  //! retrieve information
-  std::string property( const std::string& tag ) const
+  //! retrieve property
+  std::string property( std::string tag ) const
+  { return property( PropertyId::get( tag ) ); }
+
+  //! retrieve property
+  std::string property( PropertyId::Id id ) const
   {
-    PropertyMap::const_iterator iter(  properties_.find( tag ) );
+    PropertyMap::const_iterator iter(  properties_.find( id ) );
     return ( iter == properties_.end() ) ? "":iter->second;
   }
   
   //! convert string to any type using string streamer
   template <typename T>
   T property( const std::string& tag ) const
+  { return property<T>( PropertyId::get( tag ) ); }
+  
+  //! convert string to any type using string streamer
+  template <typename T>
+  T property( PropertyId::Id id ) const
   {
-    PropertyMap::const_iterator iter(  properties_.find( tag ) );
+    PropertyMap::const_iterator iter(  properties_.find( id ) );
     assert( iter != properties_.end() );
     return Str( iter->second ).get<T>();
   }
 
+  //@}
+  
   //! used to sort records according to files
   class FileFTor
   {
