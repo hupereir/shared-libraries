@@ -69,10 +69,13 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
   connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateReplaceComboBox( void ) ) );
   connect( _replaceEditor().lineEdit(), SIGNAL(textChanged( const QString& )), SLOT( _replaceTextChanged( const QString& ) ) );
+ 
+  // change tab order
+  setTabOrder( &editor(), &_replaceEditor() );
   
   // location buttons
   QPushButton *button( 0 );
-  
+  QPushButton *previous( 0 );
   // insert selection button
   _locationLayout().addWidget( button = new QPushButton( "&Selection", this ) );
   button->setAutoDefault( false );
@@ -83,6 +86,10 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   _addDisabledButton( button );
   button->setAutoDefault( false );
 
+  // change tab order
+  setTabOrder( &_entireWordCheckBox(), button );
+  previous = button;
+  
   // insert window button
   _locationLayout().addWidget( button = new QPushButton( "&Window", this ) );
   button->setAutoDefault( false );  
@@ -92,7 +99,10 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   button->setToolTip( "replace all occurence of the search string in the entire window" );
   _addDisabledButton( button );
   button->setAutoDefault( false );
+  replace_window_button_ = button;
 
+  setTabOrder( previous, button );
+  
   // replace buttons
   button = new QPushButton( "&Replace", this );
   button->setAutoDefault( false );
@@ -102,6 +112,11 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   _addDisabledButton( button );
   _buttonLayout().insertWidget( 1, button );
   button->setAutoDefault( false );
+  
+  setTabOrder( &_findButton(), button );
+  
+  // disable buttons
+  _updateButtons();
 
 }
 

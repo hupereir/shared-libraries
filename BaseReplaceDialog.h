@@ -106,18 +106,16 @@ class BaseReplaceDialog: public BaseFindDialog
   
   //! replace editor
   virtual CustomComboBox& _replaceEditor( void )
-  {
-    assert( replace_editor_ );
-    return *replace_editor_;
-  }
+  { return *replace_editor_; }
   
   //! replace editor
   const virtual CustomComboBox& _replaceEditor( void ) const
-  {
-    assert( replace_editor_ );
-    return *replace_editor_;
-  }
+  { return *replace_editor_; }
 
+  //! replace window button
+  QPushButton& _replaceWindowButton( void ) const
+  { return *replace_window_button_; }
+  
   private:
             
   //! add string to both combo box and static set
@@ -133,9 +131,9 @@ class BaseReplaceDialog: public BaseFindDialog
 
   //! line editor for text to replace
   CustomComboBox* replace_editor_;      
-  
-  //! hbox for selection replacement buttons
-  QBoxLayout* location_layout_;
+    
+  //! replace in window button
+  QPushButton* replace_window_button_;
   
   //! replaced strings
   static std::set<QString> replaced_strings_;  

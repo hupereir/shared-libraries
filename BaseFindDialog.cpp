@@ -119,6 +119,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
   _addDisabledButton( button );
   button->setDefault( true );
   button->setAutoDefault( false );
+  find_button_ = button;
   
   // insert Cancel button
   _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );

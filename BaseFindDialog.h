@@ -60,10 +60,7 @@ class BaseFindDialog: public BaseDialog, public Counter
   
   //! retrieve editor
   virtual CustomComboBox& editor( void ) const
-  {
-    assert( editor_ );
-    return *editor_;
-  }
+  { return *editor_; }
 
   //! string to find
   virtual void setText( const QString& text )
@@ -75,7 +72,7 @@ class BaseFindDialog: public BaseDialog, public Counter
 
   //! synchronize searched strings and ComboBox
   virtual void synchronize( void );
-
+  
   //! string to find
   virtual QString text( void ) const
   { return editor().currentText(); }
@@ -136,26 +133,25 @@ class BaseFindDialog: public BaseDialog, public Counter
   protected:
       
   //! edtion layout
-  QBoxLayout& _editorLayout()
-  { 
-    assert( editor_layout_ );
-    return *editor_layout_;
-  }
+  QBoxLayout& _editorLayout() const
+  { return *editor_layout_; }
   
   //! locations layout
-  QBoxLayout& _locationLayout()
-  { 
-    assert( location_layout_ );
-    return *location_layout_;
-  }
+  QBoxLayout& _locationLayout() const
+  { return *location_layout_; }
   
   //! button layout
-  QBoxLayout& _buttonLayout()
-  { 
-    assert( button_layout_ );
-    return *button_layout_;
-  }
+  QBoxLayout& _buttonLayout() const
+  { return *button_layout_; }
 
+  //! "entire word" checkbox
+  QCheckBox& _entireWordCheckBox() const
+  { return *entire_word_checkbox_; }
+    
+  //! "find" button
+  QPushButton& _findButton( void ) const
+  { return *find_button_; }
+  
   //! add button to disabled button list
   virtual void _addDisabledButton( QAbstractButton* button )
   { buttons_.push_back( button ); }
@@ -201,6 +197,9 @@ class BaseFindDialog: public BaseDialog, public Counter
   //! regular expression search if checked
   QCheckBox* regexp_checkbox_;
 
+  //! find button
+  QPushButton* find_button_;
+  
   //! list of buttons to enable/disable depending of the editor text
   std::vector< QAbstractButton* > buttons_;
 
