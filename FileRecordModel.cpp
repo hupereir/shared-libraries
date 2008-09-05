@@ -196,8 +196,8 @@ void FileRecordModel::_updateColumns( const ValueType& value )
   for( FileRecord::PropertyMap::const_iterator iter = properties.begin(); iter != properties.end(); iter++ )
   {
     // look for property name in list of columns
-    if( find( column_titles_.begin(), column_titles_.end(), QString( iter->first.c_str() ) ) == column_titles_.end() )
-    { column_titles_.push_back( iter->first.c_str() ); }
+    if( find( column_titles_.begin(), column_titles_.end(), QString( FileRecord::PropertyId::get( iter->first ).c_str() ) ) == column_titles_.end() )
+    { column_titles_.push_back( FileRecord::PropertyId::get( iter->first ).c_str() ); }
     
   }
   

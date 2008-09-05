@@ -55,6 +55,12 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
+    
+    Debug::Throw() << "XmlFileRecord::XmlFileRecord -"
+      << " name: " << qPrintable( attribute.name() ) 
+      << " value: " << qPrintable( attribute.value() ) 
+      << endl; 
+    
     if( attribute.name() == XML_FILE ) setFile( qPrintable( XmlString( attribute.value() ).toText() ) );
     else if( attribute.name() == XML_TIME ) setTime( attribute.value().toInt() );
     else if( attribute.name() == XML_FLAGS ) setFlags( attribute.value().toUInt() );
@@ -76,7 +82,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
   if( flags() ) out.setAttribute( XML_FLAGS, Str().assign<unsigned int>( flags() ).c_str() );
   
   for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); iter++ )
-  { out.setAttribute( iter->first.c_str(), iter->second.c_str() ); }
+  { out.setAttribute( PropertyId::get(iter->first).c_str(), iter->second.c_str() ); }
   
   return out;
 }
