@@ -52,6 +52,9 @@ class XmlFileRecord: public FileRecord
   static const QString XML_TIME;
   static const QString XML_FLAGS;
   static const QString XML_VALID;
+  static const QString XML_PROPERTY;
+  static const QString XML_NAME;
+  static const QString XML_VALUE;
   //@} 
 
   //! constructor
