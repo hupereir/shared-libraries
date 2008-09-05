@@ -49,7 +49,8 @@ FileRecordModel::IconCache FileRecordModel::icons_;
 FileRecordModel::FileRecordModel( QObject* parent ):
   ListModel<FileRecord>( parent ),
   Counter( "FileRecordModel" ),
-  show_icons_( true )
+  show_icons_( true ),
+  icon_property_id_( FileRecord::PropertyId::get( FileRecordProperties::ICON ) )
 {
   Debug::Throw("FileRecordModel::FileRecordModel.\n" );
 
@@ -131,7 +132,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
       
       case PATH: return QString( record.file().path().c_str() );
       case TIME: return QString( TimeStamp( record.time() ).string().c_str() );
-      
+      case ICON: return QVariant();
       default:
       if( index.column() < (int) column_titles_.size() && record.hasProperty( qPrintable( column_titles_[index.column()] ) ) )
       { return record.property( qPrintable( column_titles_[index.column()] ) ).c_str(); }
@@ -139,10 +140,10 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
    
     }
     
-  } else if( _showIcons() && role == Qt::DecorationRole && index.column() == ICON && record.hasProperty( FileRecordProperties::ICON ) ) {
+  } else if( _showIcons() && role == Qt::DecorationRole && index.column() == ICON && record.hasProperty( icon_property_id_ ) ) {
     
     // icon
-    return _icon( record.property( FileRecordProperties::ICON ) );
+    return _icon( record.property( icon_property_id_ ) );
     
   } else if( role == Qt::ToolTipRole ) return QString( record.file().c_str() );
  
@@ -190,6 +191,8 @@ void FileRecordModel::_updateConfiguration( void )
 //____________________________________________________________
 void FileRecordModel::_updateColumns( const ValueType& value )
 {
+  
+  Debug::Throw( "FileRecordModel::_updateColumns.\n" );
   
   // loop over available properties
   const FileRecord::PropertyMap& properties( value.properties() );

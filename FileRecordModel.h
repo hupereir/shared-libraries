@@ -156,6 +156,9 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
   //! true if icons are to be shown
   bool show_icons_;
   
+  //! icon property id
+  FileRecord::PropertyId::Id icon_property_id_;
+
   //! column titles
   std::vector<QString> column_titles_;
  
