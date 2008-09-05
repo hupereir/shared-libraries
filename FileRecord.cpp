@@ -41,7 +41,7 @@ FileRecord::PropertyId::NameMap FileRecord::PropertyId::name_map_;
 //_______________________________________________
 FileRecord::PropertyId::Id FileRecord::PropertyId::get( std::string name )
 {
-    
+
   // see if iterator exists in list
   IdMap::const_iterator iter;
   if( ( iter = id_map_.find( name ) ) != id_map_.end() )
