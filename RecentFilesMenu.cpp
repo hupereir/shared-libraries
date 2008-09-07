@@ -154,7 +154,19 @@ void RecentFilesMenu::_loadFiles( void )
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   {
     
-    QString label( iter->file().c_str() );
+    ostringstream what;
+
+    if( 0 )
+    {
+    
+      string local_name( iter->file().localName() );
+      string path( iter->file().path() );
+      what << local_name;
+      if( !path.empty() ) what << " [" << path << "]";
+    
+    } else { what << iter->file(); }
+    
+    QString label( what.str().c_str() );
     QAction* action = addAction( label );
     
     // add icon
