@@ -33,7 +33,6 @@
 #include <QStyle>
 #include <QStyleOptionButton>
 
-#include "CustomPixmap.h"
 #include "PixmapEngine.h"
 #include "XmlOptions.h"
 
