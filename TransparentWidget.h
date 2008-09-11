@@ -116,13 +116,13 @@ namespace TRANSPARENCY {
     //@{
    
     //! move
-    virtual void moveEvent( QMoveEvent* event );
+    virtual void moveEvent( QMoveEvent* );
     
     //! resize
-    virtual void resizeEvent( QResizeEvent* event );
+    virtual void resizeEvent( QResizeEvent* );
     
     //! show
-    virtual void showEvent( QShowEvent* event );
+    virtual void showEvent( QShowEvent* );
     
     //! enter event
     virtual void enterEvent( QEvent *event );
@@ -131,7 +131,7 @@ namespace TRANSPARENCY {
     virtual void leaveEvent( QEvent *event );
  
     //! paint
-    virtual void paintEvent( QPaintEvent* event );
+    virtual void paintEvent( QPaintEvent* );
         
     //@}
     
