@@ -288,5 +288,7 @@ OptionListBox::EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDia
   
   }
   
+  setMinimumSize( QSize( 320, 0 ) );
+
   return;
 }
