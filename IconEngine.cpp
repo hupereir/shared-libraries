@@ -51,21 +51,24 @@ bool IconEngine::reload( void )
   
   if( !PixmapEngine::get().reload() ) return false;
   for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
-  { cache_[iter->first] = _get( iter->first ); }
+  { cache_[iter->first] = _get( iter->first, false ); }
   
   return true;
 }
 
 //__________________________________________________________
-QIcon IconEngine::_get( const string& file )
+QIcon IconEngine::_get( const string& file, bool from_cache )
 {
   Debug::Throw( "IconEngine::_get (file).\n" );
 
   // try find file in cache
-  Cache::iterator iter( cache_.find( file ) );
-  if( iter != cache_.end() ) return iter->second;
+  if( from_cache )
+  {
+    Cache::iterator iter( cache_.find( file ) );
+    if( iter != cache_.end() ) return iter->second;
+  }
   
-  QIcon out( _get( PixmapEngine::get( file ) ) );
+  QIcon out( _get( PixmapEngine::get( file, from_cache ) ) );
   cache_.insert( make_pair( file, out ) );
   return out;
   

@@ -114,13 +114,13 @@ class IconEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  QIcon _get( const std::string& file );
+  QIcon _get( const std::string&, bool from_cache = true );
 
   //! create icon
-  QIcon _get( const QPixmap& pixmap );
+  QIcon _get( const QPixmap& );
   
   //! create icon
-  QIcon _get( const QIcon& icon );
+  QIcon _get( const QIcon& );
   
   //@}
     

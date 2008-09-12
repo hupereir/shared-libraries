@@ -57,21 +57,24 @@ bool PixmapEngine::reload( void )
 
   _setPixmapPath( path_list );
   for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
-  { cache_[iter->first] = _get( iter->first ); }
+  { cache_[iter->first] = _get( iter->first, false ); }
 
   return true;
 }
 
 //__________________________________________________________
-QPixmap PixmapEngine::_get( const string& file )
+QPixmap PixmapEngine::_get( const string& file, bool from_cache )
 {
   Debug::Throw( "PixmapEngine::_get (file).\n" );
   
   if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
 
   // try find file in cache
-  Cache::iterator iter( cache_.find( file ) );
-  if( iter != cache_.end() ) return iter->second;
+  if( from_cache )
+  {
+    Cache::iterator iter( cache_.find( file ) );
+    if( iter != cache_.end() ) return iter->second;
+  }
   
   // create output
   QPixmap out;

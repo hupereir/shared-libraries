@@ -196,10 +196,7 @@ void OptionListBox::_add( void )
   }
   
   // map dialog
-  //dialog.centerOnParent();
-  dialog.centerOnPointer();
-  
-  if( dialog.exec() == QDialog::Rejected ) return;
+  if( dialog.centerOnParent().exec() == QDialog::Rejected ) return;
   if( line_edit->text().isEmpty() ) return;
   
   // create new item
@@ -236,13 +233,17 @@ void OptionListBox::_edit( void )
   line_edit->setText( option.second.raw().c_str() );
 
   // map dialog
-  dialog.centerOnPointer();
-  if( dialog.exec() == QDialog::Rejected ) return;
+  if( dialog.centerOnParent().exec() == QDialog::Rejected ) return;
   
   if( line_edit->text().isEmpty() ) return;
   
-  option.second.setRaw( qPrintable( line_edit->text() ) );
+  // first remove old option
   model_.remove( option );
+
+  // modify value 
+  option.second.setRaw( qPrintable( line_edit->text() ) );
+  
+  // re-add to model
   model_.add( option );
   
   return;
