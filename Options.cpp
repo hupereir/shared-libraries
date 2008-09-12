@@ -47,9 +47,9 @@ Options::Options( void ):
 
 
   keep( "PIXMAP_PATH" );
-  add( "PIXMAP_PATH", ":/pixmaps/oxygen" );
-  add( "PIXMAP_PATH", ":/pixmaps/crystal");
-  add( "PIXMAP_PATH", ":/pixmaps");
+  add( "PIXMAP_PATH", Option( ":/pixmaps/oxygen" ).setFlag( Option::RECORDABLE, false ) );
+  add( "PIXMAP_PATH", Option( ":/pixmaps/crystal" ).setFlag( Option::RECORDABLE, false ) );
+  add( "PIXMAP_PATH", Option( ":/pixmaps" ).setFlag( Option::RECORDABLE, false ) );
  
   /* 
     generic options (default values)
