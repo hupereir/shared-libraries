@@ -47,7 +47,7 @@ const char* OptionModel::column_titles_[ OptionModel::n_columns ] =
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
 {
   if (!index.isValid()) return 0;
-  else if( !get( index ).second.hasFlag( Option::RECORDABLE ) ) return 0;
+  else if( !get( index ).second.hasFlag( Option::RECORDABLE ) ) return Qt::ItemIsSelectable;
   else if( !( isReadOnly() || rowCount( index ) ) && index.column() == VALUE ) return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
   else return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }

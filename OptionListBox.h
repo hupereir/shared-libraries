@@ -38,6 +38,8 @@
 
 #include <cmath>
 
+#include "BrowsedLineEditor.h"
+#include "CustomDialog.h"
 #include "OptionWidget.h"
 #include "OptionModel.h"
 #include "Options.h"
@@ -89,6 +91,25 @@ class OptionListBox: public QWidget, public OptionWidget
 
   private:
 
+  //! used to edit options
+  class EditDialog: public CustomDialog
+  {
+    public:
+    
+    //! constructor
+    EditDialog( QWidget*, bool, QFileDialog::FileMode );
+    
+    //! editor
+    BrowsedLineEditor::Editor& editor( void ) const
+    { return *editor_; }
+    
+    private:
+    
+    //! editor
+    BrowsedLineEditor::Editor* editor_;
+    
+  };
+  
   //! list
   TreeView& _list( void ) const
   { return *list_; }    

@@ -35,11 +35,9 @@
 #include <QLabel>
 #include <sstream>
 
-#include "BrowsedLineEditor.h"
-#include "LineEditor.h"
-#include "CustomDialog.h"
 #include "Debug.h"
 #include "IconSize.h"
+#include "LineEditor.h"
 #include "OptionListBox.h"
 #include "QtUtil.h"
 #include "TextEditionDelegate.h"
@@ -80,6 +78,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   
   // set connections
   connect( _list().selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
+  connect( _list().selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
   
   QVBoxLayout* button_layout = new QVBoxLayout();
   button_layout->setMargin(0);
@@ -159,14 +158,24 @@ void OptionListBox::_updateButtons( void )
 {
   Debug::Throw( "OptionListBox::_updateButtons.\n" );
 
-  int selection_size( _list().selectionModel()->selectedRows().size() );  
-  
-  // enable buttons depending on the size of the list
-  edit_->setEnabled( selection_size == 1 );
-  default_->setEnabled( selection_size == 1 );
 
-  remove_action_->setEnabled( selection_size != 0 );
-  remove_->setEnabled( selection_size != 0 );
+  QModelIndex current( _list().selectionModel()->currentIndex() );
+  edit_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );
+  default_->setEnabled( current.isValid() );
+
+  OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
+  bool remove_enabled( false );
+  for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); iter++ )
+  { 
+    if( iter->second.hasFlag( Option::RECORDABLE ) ) 
+    { 
+      remove_enabled = true;
+      break;
+    }
+  }
+  
+  remove_action_->setEnabled( remove_enabled );
+  remove_->setEnabled( remove_enabled );
   
 }   
 
@@ -174,33 +183,14 @@ void OptionListBox::_updateButtons( void )
 void OptionListBox::_add( void )
 {
   Debug::Throw( "OptionListBox::_add.\n" );
-
-  // create dialog
-  CustomDialog dialog( this );
-
-  // create editor, either directly or from BrowsedLineEditor
-  BrowsedLineEditor::Editor* line_edit( 0 );
-  if( browsable_ ) 
-  {
-    
-    BrowsedLineEditor* browse_edit = new BrowsedLineEditor( &dialog );
-    dialog.mainLayout().addWidget( browse_edit );
-    browse_edit->setFileMode( file_mode_ );
-    line_edit = &browse_edit->editor();
-    
-  } else {
-    
-    line_edit = new BrowsedLineEditor::Editor( &dialog );
-    dialog.mainLayout().addWidget( line_edit );
-  
-  }
   
   // map dialog
+  EditDialog dialog( this, browsable_, file_mode_ );
   if( dialog.centerOnParent().exec() == QDialog::Rejected ) return;
-  if( line_edit->text().isEmpty() ) return;
+  if( dialog.editor().text().isEmpty() ) return;
   
   // create new item
-  model_.add( Options::Pair( optionName(), qPrintable( line_edit->text() ) ) );
+  model_.add( Options::Pair( optionName(), qPrintable( dialog.editor().text() ) ) );
 
 }
 
@@ -213,35 +203,22 @@ void OptionListBox::_edit( void )
   QModelIndex current( _list().selectionModel()->currentIndex() );
   assert( current.isValid() );
 
-  // create dialog
-  CustomDialog dialog( this );
-
-  // create editor, either directly or from BrowsedLineEditor
-  BrowsedLineEditor::Editor* line_edit( 0 );
-  if( browsable_ ) 
-  {
-    BrowsedLineEditor* browse_edit = new BrowsedLineEditor( &dialog );
-    dialog.mainLayout().addWidget( browse_edit );
-    browse_edit->setFileMode( file_mode_ );
-    line_edit = &browse_edit->editor();
-  } else {
-    line_edit = new BrowsedLineEditor::Editor( &dialog );
-    dialog.mainLayout().addWidget( line_edit );
-  }
-
   Options::Pair option( model_.get( current ) );
-  line_edit->setText( option.second.raw().c_str() );
+  assert( option.second.hasFlag( Option::RECORDABLE ) );
+  
+  // create dialog
+  EditDialog dialog( this, browsable_, file_mode_ );
+  dialog.editor().setText( option.second.raw().c_str() );
 
   // map dialog
   if( dialog.centerOnParent().exec() == QDialog::Rejected ) return;
-  
-  if( line_edit->text().isEmpty() ) return;
+  if( dialog.editor().text().isEmpty() ) return;
   
   // first remove old option
   model_.remove( option );
 
   // modify value 
-  option.second.setRaw( qPrintable( line_edit->text() ) );
+  option.second.setRaw( qPrintable( dialog.editor().text() ) );
   
   // re-add to model
   model_.add( option );
@@ -255,9 +232,14 @@ void OptionListBox::_remove( void )
 {
   Debug::Throw( "OptionListBox::_remove.\n" );
 
-  // retrieve selected items; make sure they do not include the navigator
+  // retrieve selected items; retrieve only recordable options
   OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
-  model_.remove( OptionModel::Set( selection.begin(), selection.end() ) );
+  OptionModel::List removed;
+  for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); iter++ )
+  { if( iter->second.hasFlag( Option::RECORDABLE ) ) removed.push_back( *iter ); }
+  
+  // remove
+  model_.remove( OptionModel::Set( removed.begin(), removed.end() ) );
   
   return;
 
@@ -284,4 +266,27 @@ void OptionListBox::_setDefault( void )
 
   _list().resizeColumns();
 
+}
+
+//_______________________________________________________
+OptionListBox::EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode mode ):
+  CustomDialog( parent )
+{ 
+
+  if( browsable ) 
+  {
+    
+    BrowsedLineEditor* browse_edit = new BrowsedLineEditor( this );
+    mainLayout().addWidget( browse_edit );
+    browse_edit->setFileMode( mode );
+    editor_ = &browse_edit->editor();
+    
+  } else {
+    
+    editor_ = new BrowsedLineEditor::Editor( this );
+    mainLayout().addWidget( &editor() );
+  
+  }
+  
+  return;
 }
