@@ -140,10 +140,15 @@ bool CustomMainWindow::installToolBarsActions( QMenu& menu )
   {
     
     CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
-    if( toolbar ) { menu.addAction( &toolbar->visibilityAction() ); }
-    else {
+    if( toolbar ) { 
+    
+      Debug::Throw() << "CustomMainWindow::installToolBarsActions (custom) - " << qPrintable( (*iter)->windowTitle() ) << endl;
+      menu.addAction( &toolbar->visibilityAction() ); 
+    
+    } else {
       
       // add visibility action
+      Debug::Throw() << "CustomMainWindow::installToolBarsActions - " << qPrintable( (*iter)->windowTitle() ) << endl;
       QAction* action = new QAction( (*iter)->windowTitle(), &menu );
       action->setCheckable( true );
       action->setChecked( (*iter)->isVisible() );
