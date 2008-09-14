@@ -131,14 +131,16 @@ class CustomToolBar: public QToolBar, public Counter
   //! move event
   virtual void moveEvent( QMoveEvent* );
   
+  protected slots:
+
+  //! toggle visibility
+  virtual void _toggleVisibility( bool );
+  
   private slots:
   
   //! update configuration
   void _updateConfiguration( void );
-  
-  //! toggle visibility
-  void _toggleVisibility( bool );
-  
+    
   private:
   
   //! install actions

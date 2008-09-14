@@ -92,6 +92,35 @@ void CustomToolBar::moveEvent( QMoveEvent* event )
   }
   
 }
+
+
+//_______________________________________________________________
+void CustomToolBar::_toggleVisibility( bool state )
+{
+
+  Debug::Throw() << "CustomToolBar::_toggleVisibility - name: " << option_name_ << " state: " << state << endl;
+  if( !option_name_.empty() )
+  {
+    
+    // save state
+    XmlOptions::get().set<bool>( option_name_, state );
+    
+    // save position
+    // try cast parent to QMainWindow
+    QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );  
+    if( parent )
+    {
+      string location_name( option_name_ + "_LOCATION" );
+      XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+    }
+    
+  }
+
+  // change visibility
+  setVisible( state );
+  
+}
+
 //_______________________________________________________________
 void CustomToolBar::_updateConfiguration( void )
 {
@@ -157,32 +186,6 @@ void CustomToolBar::_updateConfiguration( void )
   Debug::Throw() << "CustomToolBar::_updateConfiguration - option_name: " << option_name_ << " visibility: " << visibility << endl;
   visibilityAction().setChecked( visibility );  
 
-}
-
-//_______________________________________________________________
-void CustomToolBar::_toggleVisibility( bool state )
-{
-
-  Debug::Throw() << "CustomToolBar::_toggleVisibility - name: " << option_name_ << " state: " << state << endl;
-  if( !option_name_.empty() )
-  {
-    
-    // save state
-    XmlOptions::get().set<bool>( option_name_, state );
-    
-    // save position
-    // try cast parent to QMainWindow
-    QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );  
-    if( parent )
-    {
-      string location_name( option_name_ + "_LOCATION" );
-      XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
-    }
-    
-  }
-  
-  if( !state ) hide();
-  else show();  
 }
 
 //_______________________________________________________________
