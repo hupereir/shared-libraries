@@ -44,7 +44,16 @@ SvgEngine SvgEngine::singleton_;
 SvgEngine::SvgEngine( void ):
   Counter( "SvgEngine" ),
   svg_offset_( 0 )
-{ Debug::Throw( "SvgEngine::SvgEngine.\n" ); }
+{ 
+  Debug::Throw( "SvgEngine::SvgEngine.\n" ); 
+
+  // default option values
+  XmlOptions::get().keep( "SVG_BACKGROUND" );
+  XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg" ).setFlag( Option::RECORDABLE, false ) );
+  XmlOptions::get().add( "USE_SVG", "1" );
+  XmlOptions::get().add( "SVG_OFFSET", "3");
+  
+}
 
 //__________________________________________________________
 bool SvgEngine::reload( void )
