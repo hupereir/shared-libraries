@@ -31,8 +31,8 @@
 
 #include <QLabel>
 
-#include "GridLayout.h"
 #include "Debug.h"
+#include "GridLayout.h"
 #include "OptionBrowsedLineEditor.h"
 #include "OptionComboBox.h"
 #include "SpellCheckConfiguration.h"

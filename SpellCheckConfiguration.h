@@ -1,3 +1,7 @@
+
+#ifndef _SpellCheckConfiguration_h_
+#define _SpellCheckConfiguration_h_
+
 // $Id$
 
 /******************************************************************************
@@ -20,9 +24,6 @@
 *                         
 *                         
 *******************************************************************************/
-
-#ifndef _SpellCheckConfiguration_h_
-#define _SpellCheckConfiguration_h_
 
 /*!
    \file    SpellCheckConfiguration.h
