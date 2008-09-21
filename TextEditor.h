@@ -603,7 +603,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //@}
   
   //! toggle insertion mode
-  virtual void _toggleInsertMode( void );
+  virtual void _toggleOverwriteMode( void );
   
   //!@name tab emulation
   //@{

@@ -1359,7 +1359,7 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
   // insertion mode
   if( event->key() == Qt::Key_Insert )
   {
-    _toggleInsertMode();
+    _toggleOverwriteMode();
     event->ignore();
     return;
   }
@@ -2054,9 +2054,9 @@ bool TextEditor::_setLeftMargin( const int& margin )
 }
 
 //_____________________________________________________________
-void TextEditor::_toggleInsertMode( void )
+void TextEditor::_toggleOverwriteMode( void )
 {
-  Debug::Throw( "TextEditor::_toggleInsertMode.\n" );
+  Debug::Throw( "TextEditor::_toggleOverwriteMode.\n" );
   setOverwriteMode( !overwriteMode() );
   emit overwriteModeChanged();
   return;
