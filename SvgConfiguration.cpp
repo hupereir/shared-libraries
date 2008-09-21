@@ -48,6 +48,7 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
   QGroupBox( "Svg Background", parent ),
   Counter( "SvgConfiguration" )
 {
+  
   Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
 
   QVBoxLayout *box_layout = new QVBoxLayout();
