@@ -48,7 +48,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   QObject( parent ),
   Counter( "ApplicationManager" ),
   server_( new Server( this ) ),
-  client_( new Client( this, new QTcpSocket( this ) ) ),
+  client_( new Client( this, new QLocalSocket( this ) ) ),
   state_( AWAITING_REPLY ),
   timer_( this )
 { 
@@ -59,7 +59,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   connect( &_server(), SIGNAL( newConnection() ), SLOT( _newConnection() ) );
 
   // create new socket
-  connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
+  connect( &client().socket(), SIGNAL( error( QLocalSocket::LocalSocketError ) ), SLOT( _error( QLocalSocket::LocalSocketError ) ) );
   connect( &client().socket(), SIGNAL( disconnected() ), SLOT( init() ) );
   connect( &client(), SIGNAL( messageAvailable() ), SLOT( _process() ) );
   
@@ -89,12 +89,14 @@ void ApplicationManager::init( ArgList args )
 
   // connect server to port
   //if( !_server().listen( QHostAddress::Any, SERVER_PORT ) )
-  if( !_server().listen( QHostAddress::LocalHost, SERVER_PORT ) )
+  // if( !_server().listen( QHostAddress::LocalHost, SERVER_PORT ) )
+  if( !_server().listen( Server::server_name ) )
   {  Debug::Throw( debug_level ) << "ApplicationManager::init - unable to listen to port " << SERVER_PORT << endl; }
   
   // connect client to port
   client().socket().abort();
-  client().socket().connectToHost( "localhost", SERVER_PORT );    
+  //client().socket().connectToHost( "localhost", SERVER_PORT );    
+  client().socket().connectToServer( Server::server_name );    
     
   // emit initialization signal
   emit initialized();
@@ -283,7 +285,7 @@ void ApplicationManager::_connectionClosed( void )
   // look for disconnected clients in client map
   {
     ClientMap::iterator iter;
-    while( ( iter = find_if(  _acceptedClients().begin(), _acceptedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) )  ) != _acceptedClients().end() )
+    while( ( iter = find_if(  _acceptedClients().begin(), _acceptedClients().end(), SameStateFTor( QLocalSocket::UnconnectedState ) )  ) != _acceptedClients().end() )
     { 
       
       // broadcast client as dead
@@ -298,7 +300,7 @@ void ApplicationManager::_connectionClosed( void )
   // look for disconnected clients in connected clients list
   {
     ClientList::iterator iter;
-    while( ( iter = find_if( _connectedClients().begin(), _connectedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != _connectedClients().end() )
+    while( ( iter = find_if( _connectedClients().begin(), _connectedClients().end(), SameStateFTor( QLocalSocket::UnconnectedState ) ) ) != _connectedClients().end() )
     { 
       (*iter)->deleteLater();
       _connectedClients().erase( iter );
@@ -310,7 +312,7 @@ void ApplicationManager::_connectionClosed( void )
 }
   
 //_____________________________________________________
-void ApplicationManager::_error( QAbstractSocket::SocketError error )
+void ApplicationManager::_error( QLocalSocket::LocalSocketError error )
 {
   Debug::Throw( debug_level ) << "ApplicationManager::_error - error=" << error << endl;
 

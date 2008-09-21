@@ -49,7 +49,6 @@
 
 namespace SERVER
 {
-
   
   //! default server port
   enum { 
@@ -152,7 +151,7 @@ namespace SERVER
       public:
       
       //! constructor
-      SameStateFTor( QAbstractSocket::SocketState state ):
+      SameStateFTor( QLocalSocket::LocalSocketState state ):
         state_( state )
         {}
         
@@ -167,7 +166,7 @@ namespace SERVER
       private:
       
       //! prediction
-      QAbstractSocket::SocketState state_;
+      QLocalSocket::LocalSocketState state_;
         
     };
      
@@ -211,7 +210,7 @@ namespace SERVER
     virtual void _connectionClosed( void );
     
     //! client recieves errors
-    virtual void _error( QAbstractSocket::SocketError );
+    virtual void _error( QLocalSocket::LocalSocketError );
     
     //! no reply came within delay
     void _replyTimeOut( void );

@@ -36,10 +36,12 @@ using namespace std;
 using namespace SERVER;
 
 static const int debug_level(1);
+const QString Server::server_name = "/tmp/local_server";
+
 
 //__________________________________________________
 Server::Server( QObject *parent ):
-  QTcpServer( parent ),
+  QLocalServer( parent ),
   Counter( "Server" )
 { Debug::Throw( debug_level, "Server::Server.\n" ); }
 

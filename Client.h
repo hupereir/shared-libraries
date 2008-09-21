@@ -32,7 +32,7 @@
 #ifndef Client_h
 #define Client_h
 
-#include <QTcpSocket>
+#include <QLocalSocket>
 #include <string>
 #include <list>
 
@@ -55,17 +55,17 @@ namespace SERVER
     typedef std::list< Client* > List;
       
     //! constructor
-    Client( QObject* parent, QTcpSocket* socket );
+    Client( QObject* parent, QLocalSocket* socket );
   
     //! destructor
     virtual ~Client( void );
 
     //! associated socket
-    QTcpSocket& socket()
+    QLocalSocket& socket()
     { return *socket_; }
 
     //! associated socket
-    const QTcpSocket& socket() const
+    const QLocalSocket& socket() const
     { return *socket_; }
     
     /*! returns true if message could be sent */
@@ -95,7 +95,7 @@ namespace SERVER
     private:    
     
     //! parent socket
-    QTcpSocket* socket_;
+    QLocalSocket* socket_;
     
     //! true if has message available
     bool has_message_;
