@@ -72,7 +72,7 @@ InformationDialog::InformationDialog( QWidget* parent, QString text, BaseDialog:
   }
 
   // insert OK and Cancel button
-  QPushButton *button( new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "OK", this ) );
+  QPushButton *button( new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&OK", this ) );
   connect( button, SIGNAL( clicked() ), this, SLOT( accept() ) );
   layout->addWidget( button, 0, Qt::AlignHCenter );
   

@@ -38,13 +38,14 @@
 #include <QTextLayout>
 
 #include "BaseIcons.h"
+#include "BaseReplaceDialog.h"
 #include "Color.h"
 #include "TextEditor.h"
 #include "CustomTextDocument.h"
 #include "BaseFindDialog.h"
 #include "IconEngine.h"
 #include "LineNumberDisplay.h"
-#include "BaseReplaceDialog.h"
+// #include "RoundedPath.h"
 #include "SelectLineDialog.h"
 #include "TextBlockData.h"
 #include "TextSeparator.h"
@@ -1456,8 +1457,9 @@ void TextEditor::paintEvent( QPaintEvent* event )
     painter.setPen( _boxSelection().color() );
     painter.setBrush( _boxSelection().brush() );
 
-    // the adjustment is due 
     painter.drawRect( _boxSelection().rect() );
+    // painter.setRenderHint( QPainter::Antialiasing );
+    // painter.drawPath( RoundedPath( QRectF( _boxSelection().rect() ) ) );
 
   }
   painter.end();
