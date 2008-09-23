@@ -41,7 +41,7 @@ using namespace SERVER;
 static const int debug_level(1);
 
 //_______________________________________________________
-Client::Client( QObject* parent, QLocalSocket* socket ):
+Client::Client( QObject* parent, QTcpSocket* socket ):
   QObject( parent ),
   Counter( "Client" ),
   socket_( socket ),
@@ -61,7 +61,7 @@ bool Client::sendMessage( const ServerCommand& command )
 {
   Debug::Throw( debug_level ) << "Client::sendMessage - " << command << endl;
   
-  if( !socket().state() ==  QLocalSocket::ConnectedState ) return false;
+  if( !socket().state() ==  QAbstractSocket::ConnectedState ) return false;
   QTextStream os( &socket() );
   os << command << QString("\n");
   return true;

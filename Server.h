@@ -32,7 +32,7 @@
 #ifndef Server_h
 #define Server_h
 
-#include <QLocalServer>
+#include <QTcpServer>
 #include <string>
 
 #include "Counter.h"
@@ -47,16 +47,13 @@ namespace SERVER
 {
   
   //!  interprocess communication server
-  class Server: public QLocalServer, public Counter
+  class Server: public QTcpServer, public Counter
   {
   
     //! Qt meta object macro
     Q_OBJECT
   
     public:
-    
-    //! default server name
-    static const QString server_name;
     
     //! constructor
     Server( QObject* parent );
