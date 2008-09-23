@@ -41,7 +41,6 @@
 #include <assert.h>
 
 #include "Counter.h"
-#include "PixmapEngine.h"
 
 //! customized Icon factory to provide better looking disabled icons
 class SvgEngine: public Counter

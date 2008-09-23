@@ -1,6 +1,9 @@
 TEMPLATE = lib
 CONFIG = staticlib
 
+CONFIG += qt
+QT += xml svg
+
 INCLUDEPATH += ../base ../base-qt
 DEPENDPATH += . ../base ../base-qt
 
@@ -12,6 +15,3 @@ HEADERS = \
 SOURCES = \
   SvgConfiguration.cpp \
   SvgEngine.cpp
-
-CONFIG += qt
-QT += xml svg
