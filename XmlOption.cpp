@@ -79,26 +79,26 @@ XmlOption::XmlOption( const QDomElement& element )
 }
 
 //________________________________________________
-QDomElement XmlOption::domElement( QDomDocument& parent ) const
+QDomElement XmlOption::domElement( QDomDocument& document ) const
 {
 
   Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
   
-  QDomElement out = parent.createElement( name().c_str() );
+  QDomElement out = document.createElement( name().c_str() );
   
   out.
-    appendChild( parent.createElement( OPTIONS::VALUE ) ).
-    appendChild( parent.createTextNode( XmlString( raw().c_str() ).toXml() ) );
+    appendChild( document.createElement( OPTIONS::VALUE ) ).
+    appendChild( document.createTextNode( XmlString( raw().c_str() ).toXml() ) );
 
   out.
-    appendChild( parent.createElement( OPTIONS::FLAGS ) ).
-    appendChild( parent.createTextNode( QString().setNum( flags() ) ) );
+    appendChild( document.createElement( OPTIONS::FLAGS ) ).
+    appendChild( document.createTextNode( QString().setNum( flags() ) ) );
 
   if( comments().size() )
   {
     out.
-      appendChild( parent.createElement( OPTIONS::COMMENTS ) ).
-      appendChild( parent.createTextNode( XmlString( comments().c_str() ).toXml() ) );
+      appendChild( document.createElement( OPTIONS::COMMENTS ) ).
+      appendChild( document.createTextNode( XmlString( comments().c_str() ).toXml() ) );
   }
    
   return out;

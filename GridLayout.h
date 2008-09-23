@@ -78,6 +78,14 @@ class GridLayout: public QGridLayout, public Counter
     QGridLayout::addWidget( widget, row_, column_, alignment );
     _increment();
   }
+
+  //! add widget
+  void addLayout( QLayout* layout, Qt::Alignment alignment = 0 )
+  {
+    assert( max_count_ > 0 );
+    QGridLayout::addLayout( layout, row_, column_, alignment );
+    _increment();
+  }
     
   //! set current position in grid
   void setLocation( const int& row, const int& column )

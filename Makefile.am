@@ -13,6 +13,7 @@ noinst_HEADERS = \
   Color.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
+  BaseReplaceDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
   BrowsedLineEditor.h \
@@ -82,7 +83,7 @@ noinst_HEADERS = \
   QtUtil.h \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
-  BaseReplaceDialog.h \
+  RoundedPath.h \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
@@ -120,6 +121,7 @@ libbase_qt_a_SOURCES = \
   Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \
+  BaseReplaceDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
   BrowsedLineEditor.cpp \
@@ -170,7 +172,7 @@ libbase_qt_a_SOURCES = \
   QtUtil.cpp \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
-  BaseReplaceDialog.cpp \
+  RoundedPath.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
@@ -200,6 +202,7 @@ nodist_libbase_qt_a_SOURCES = \
   qrc_basePixmaps.cpp \
   moc_BaseConfigurationDialog.cpp \
   moc_BaseDialog.cpp \
+  moc_BaseReplaceDialog.cpp \
   moc_BlockHighlight.cpp \
   moc_BrowsedLineEditor.cpp \
   moc_ColorDisplay.cpp \
@@ -234,7 +237,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_ProcessFrame.cpp \
   moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
-  moc_BaseReplaceDialog.cpp \
   moc_SelectLineDialog.cpp \
   moc_StatusBar.cpp \
   moc_TabbedDialog.cpp \

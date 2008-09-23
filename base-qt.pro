@@ -8,6 +8,7 @@ DEPENDPATH += . ../base
 HEADERS = \
   BaseConfigurationDialog.h \
   BaseDialog.h \
+  BaseReplaceDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
   BrowsedLineEditor.h \
@@ -78,7 +79,7 @@ HEADERS = \
   QtUtil.h \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
-  BaseReplaceDialog.h \
+  RoundedPath.h \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
@@ -114,6 +115,7 @@ SOURCES = \
   Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \
+  BaseReplaceDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
   BrowsedLineEditor.cpp \
@@ -164,7 +166,7 @@ SOURCES = \
   QtUtil.cpp \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
-  BaseReplaceDialog.cpp \
+  RoundedPath.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
