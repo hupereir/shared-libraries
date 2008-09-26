@@ -118,6 +118,14 @@ namespace BASE
     //! if help manager is modified, ask for save
     void _askForSave( void );
     
+    //! list
+    TreeView& _list( void ) const
+    { return *list_; }
+    
+    //! model
+    HelpModel& _model( void ) 
+    { return model_; }
+    
     //! model
     HelpModel model_;
     

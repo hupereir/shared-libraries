@@ -71,12 +71,12 @@ HelpDialog::HelpDialog( QWidget *parent ):
   
   // add help list
   list_ = new TreeView( this );
-  list_->setMaximumWidth(150);
+  _list().setMaximumWidth(150);
   layout->addWidget( list_ );
-  list_->setModel( &model_ );
-  list_->setItemDelegate( new TextEditionDelegate( this ) );
-  list_->setSortingEnabled( false );
-  list_->header()->hide();
+  _list().setModel( &model_ );
+  _list().setItemDelegate( new TextEditionDelegate( this ) );
+  _list().setSortingEnabled( false );
+  _list().header()->hide();
    
   // stack widget to switch between html and plain text editor
   layout->addLayout( stack_layout_ = new QStackedLayout() );
@@ -162,7 +162,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   stack_layout_->setCurrentWidget( html_frame_ );
     
   // connect list to text edit
-  connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex&, const QModelIndex& ) ) );
+  connect( _list().selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex&, const QModelIndex& ) ) );
   connect( &model_, SIGNAL( itemMoved( int ) ), SLOT( _moveItem( int ) ) );
   connect( &model_, SIGNAL( itemRenamed( QModelIndex, QString ) ), SLOT( _renameItem( QModelIndex, QString ) ) );
 
@@ -182,7 +182,13 @@ void HelpDialog::setItems( const HelpItem::List& items )
   html_editor_->clear();
   plain_editor_->clear();
   
-  model_.set( HelpModel::List( items.begin(), items.end() ) );
+  // set items 
+  _model().set( HelpModel::List( items.begin(), items.end() ) );
+  
+  // select first index
+  if( (!_list().selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) ) 
+  { _list().selectionModel()->setCurrentIndex( _model().index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
+  
   
   return;
 
@@ -193,7 +199,7 @@ void HelpDialog::addItem( const HelpItem& item )
 {
 
   Debug::Throw( "HelpDialog::AddItem.\n" );
-  model_.add( item );
+  _model().add( item );
   return;
 
 }
@@ -212,7 +218,7 @@ void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previo
   Debug::Throw( "HelpDialog::_Display.\n" );
   
   // save modifications to current item, if needed
-  if( model_.editionEnabled() && previous.isValid() && current != previous ) 
+  if( _model().editionEnabled() && previous.isValid() && current != previous ) 
   { _updateItemFromEditor( previous ); }
   
   // check validity
@@ -226,7 +232,7 @@ void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previo
   } else {
   
     // retrieve item
-    const HelpItem& item( model_.get( current ) );
+    const HelpItem& item( _model().get( current ) );
 
     // update editors
     if( plain_editor_->toPlainText() != item.text() )
@@ -247,17 +253,17 @@ void HelpDialog::_updateItemFromEditor( QModelIndex index, bool forced )
   Debug::Throw( "HelpDialog::_updateItemFromEditor.\n" );
  
   // current index
-  if( !index.isValid() ) index = list_->selectionModel()->currentIndex();
+  if( !index.isValid() ) index = _list().selectionModel()->currentIndex();
   
   // update current item text if being edited
-  if( model_.editionEnabled() && index.isValid() )
+  if( _model().editionEnabled() && index.isValid() )
   { 
-    HelpItem item( model_.get( index ) );
+    HelpItem item( _model().get( index ) );
     bool modified = !(item.text() == qPrintable( plain_editor_->toPlainText() ) );
     if( forced || modified ) 
     {
       item.setText( qPrintable( plain_editor_->toPlainText() ) );
-      model_.replace( index, item );
+      _model().replace( index, item );
       _updateHelpManager();
     }
   }
@@ -270,7 +276,7 @@ void HelpDialog::_updateHelpManager( void )
   Debug::Throw( "HelpDialog::_updateHelpManager.\n" );
   
   // retrieve all texts, pass to help manager
-  const HelpModel::List& model_list( model_.get() );
+  const HelpModel::List& model_list( _model().get() );
   HelpManager::install( HelpItem::List( model_list.begin(), model_list.end() ) );
   HelpManager::setModified( true );
   
@@ -283,31 +289,31 @@ void HelpDialog::_toggleEdition( void )
   Debug::Throw( "HelpDialog::_ToggleEdition.\n" );  
   
   // current index
-  QModelIndex current( list_->selectionModel()->currentIndex() );
+  QModelIndex current( _list().selectionModel()->currentIndex() );
   
-  if( !model_.editionEnabled() )
+  if( !_model().editionEnabled() )
   {
     
     // backup help manager
     HelpManager::backup();
-    model_.setEditionEnabled( true );
-    list_->setDragEnabled(true);
-    list_->setAcceptDrops(true);
+    _model().setEditionEnabled( true );
+    _list().setDragEnabled(true);
+    _list().setAcceptDrops(true);
    
     // modify current item display
-    if( current.isValid() ) plain_editor_->setPlainText( model_.get(current).text() );
+    if( current.isValid() ) plain_editor_->setPlainText( _model().get(current).text() );
     stack_layout_->setCurrentWidget( plain_frame_ );
     
   } else {
 
     // save modifications to current item, if needed
     if( current.isValid() ) _updateItemFromEditor( current );
-    model_.setEditionEnabled( false );
-    list_->setDragEnabled(false);
-    list_->setAcceptDrops(false);
+    _model().setEditionEnabled( false );
+    _list().setDragEnabled(false);
+    _list().setAcceptDrops(false);
     _askForSave();
 
-    if( current.isValid() ) html_editor_->setHtml( model_.get(current).text() );
+    if( current.isValid() ) html_editor_->setHtml( _model().get(current).text() );
     stack_layout_->setCurrentWidget( html_frame_ );
     
   }
@@ -320,46 +326,46 @@ void HelpDialog::_toggleEdition( void )
 void HelpDialog::_moveItem( int row )
 {
   Debug::Throw( "HelpDialog::_moveItem.\n" );
-  QModelIndex current( list_->selectionModel()->currentIndex() );
+  QModelIndex current( _list().selectionModel()->currentIndex() );
   if( !current.isValid() ) return;
-  HelpItem item( model_.get( current ) );
+  HelpItem item( _model().get( current ) );
   
   // add at last position if row is not valid
-  if( row < 0 || row >= model_.rowCount() ) {
+  if( row < 0 || row >= _model().rowCount() ) {
 
     // clear selection and current index
-    list_->clearSelection();
-    list_->selectionModel()->setCurrentIndex( QModelIndex(), QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    _list().clearSelection();
+    _list().selectionModel()->setCurrentIndex( QModelIndex(), QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
 
     // remove old position item
-    model_.remove( item );
-    model_.add( item );
+    _model().remove( item );
+    _model().add( item );
     
     // select last row
-    QModelIndex index( model_.index( model_.rowCount()-1, 0 ) );
-    list_->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
-    list_->selectionModel()->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    QModelIndex index( _model().index( _model().rowCount()-1, 0 ) );
+    _list().selectionModel()->select( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    _list().selectionModel()->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
 
   } else if( row == current.row() ) return;
   else {
 
     // clear selection and current index
-    list_->clearSelection();
-    list_->selectionModel()->setCurrentIndex( QModelIndex(), QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    _list().clearSelection();
+    _list().selectionModel()->setCurrentIndex( QModelIndex(), QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
 
     // remove old position item
-    model_.remove( item );
+    _model().remove( item );
     
     // update row if needed
     if( current.row() < row ) row--;
     
     // re-add item at new position
-    QModelIndex index( model_.index( row, 0 ) );
-    model_.insert( index, item );
+    QModelIndex index( _model().index( row, 0 ) );
+    _model().insert( index, item );
    
     // set new index as selected
-    list_->selectionModel()->select( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
-    list_->selectionModel()->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    _list().selectionModel()->select( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
+    _list().selectionModel()->setCurrentIndex( index, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows );
     
   } 
   
@@ -375,11 +381,11 @@ void HelpDialog::_renameItem( QModelIndex index, QString value )
 {
   Debug::Throw( "HelpDialog::_renameItem.\n" );
   if( !index.isValid() || value.isNull() || value.isEmpty() ) return;
-  HelpItem item( model_.get( index ) );
+  HelpItem item( _model().get( index ) );
   if( value != item.label() )
   {
     item.setLabel( value );
-    model_.replace( index, item );
+    _model().replace( index, item );
     HelpManager::setModified( true );
     _updateHelpManager();
   }
@@ -396,7 +402,7 @@ void HelpDialog::_newItem( void )
   // retrieve item name
   QString item_name( dialog.itemName() );
   if( item_name.isEmpty() ) return;
-  model_.add( HelpItem( item_name, "" ) );
+  _model().add( HelpItem( item_name, "" ) );
   HelpManager::setModified( true );
   
 }
@@ -408,11 +414,11 @@ void HelpDialog::_deleteItem( void )
   Debug::Throw( "HelpDialog::_deleteItem.\n" );
 
   // current index
-  QModelIndex current( list_->selectionModel()->currentIndex() );
+  QModelIndex current( _list().selectionModel()->currentIndex() );
   if( !current.isValid() ) return;
 
   if( !QuestionDialog( this, "Delete current help item ?" ).exec() ) return;
-  model_.remove( model_.get( current ) );
+  _model().remove( _model().get( current ) );
   html_editor_->clear();
   plain_editor_->clear();
   HelpManager::setModified( true );
