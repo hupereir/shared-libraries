@@ -88,7 +88,6 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 //_________________________________________________________
 QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
 {  
-  Debug::Throw( "TabbedDialog::addPage.\n" );
   
   // create scroll area
   QScrollArea* scroll = new QScrollArea();
@@ -100,9 +99,14 @@ QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
   QWidget* main( new QWidget() );
   scroll->setWidget( main );
   
+  
   // add to stack and model
   _stack().addWidget( scroll );
   _model().add( scroll );
+  
+  // set current index
+  if( (!_list().selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) ) 
+  { _list().selectionModel()->setCurrentIndex( _model().index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
   
   QVBoxLayout* layout( new QVBoxLayout() );
   layout->setSpacing( 5 );
@@ -133,7 +137,6 @@ void TabbedDialog::_display( const QModelIndex& index )
   if( !index.isValid() ) return;
   _stack().setCurrentWidget( _model().get( index ) );  
 }
-
 
 //_______________________________________________
 const char* TabbedDialog::Model::column_titles_[ TabbedDialog::Model::n_columns ] =
