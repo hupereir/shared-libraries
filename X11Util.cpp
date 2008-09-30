@@ -217,7 +217,11 @@ bool X11Util::removeProperty( const QWidget& widget, const Atoms& atom )
 }
 
 //________________________________________________________________________
-bool X11Util::moveResizeWidget( const QWidget& widget, const QPoint& position, const X11Util::Direction& direction )
+bool X11Util::moveResizeWidget( 
+  const QWidget& widget, 
+  const QPoint& position, 
+  const X11Util::Direction& direction, 
+  Qt::MouseButton button )
 {
   
   Debug::Throw() << "X11Util::moveResizeWidget - (" << position.x() << "," << position.y() << ")" << endl;
@@ -241,7 +245,7 @@ bool X11Util::moveResizeWidget( const QWidget& widget, const QPoint& position, c
   event.xclient.data.l[0] = position.x();
   event.xclient.data.l[1] = position.y();
   event.xclient.data.l[2] = direction; 
-  event.xclient.data.l[3] = Button1;
+  event.xclient.data.l[3] = button;
   event.xclient.data.l[4] = 0;
   XUngrabPointer( display, QX11Info::appTime() );
   XSendEvent(display, 

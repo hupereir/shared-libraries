@@ -93,7 +93,11 @@ class X11Util
 
   //! move/resize widget using X11 window manager
   /*! returns true on success */
-  static bool moveResizeWidget( const QWidget& widget, const QPoint& position, const Direction& direction );
+  static bool moveResizeWidget( 
+    const QWidget& widget, 
+    const QPoint& position, 
+    const Direction& direction, 
+    Qt::MouseButton button = Qt::LeftButton );
   
   
   #ifdef Q_WS_X11
