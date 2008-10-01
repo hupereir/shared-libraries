@@ -63,6 +63,14 @@ class DockPanel: public QWidget, public Counter
   virtual ~DockPanel()
   {}
      
+  //! option name (needed to store sticky and stays-on-top state)
+  void setOptionName( const std::string& value )
+  {
+    sticky_option_name_ = value + "_STICKY";
+    stays_on_top_option_name_ = value + "_STAYS_ON_TOP";
+    _updateConfiguration();
+  }
+  
   //! get panel (to add contents)
   virtual QWidget& panel( void )
   { 
@@ -169,7 +177,7 @@ class DockPanel: public QWidget, public Counter
   void detached( void );
   
   protected slots:
-      
+  
   //! toggle dock
   virtual void _toggleDock( void );
   
@@ -201,11 +209,35 @@ class DockPanel: public QWidget, public Counter
     
   };
   
+  private slots:
+  
+  //! configuration
+  void _updateConfiguration( void );
+  
   private:
   
+  //! true if option name is set
+  bool _hasOptionName( void ) const
+  { return !(_stickyOptionName().empty() || _staysOnTopOptionName().empty() ); }
+  
+  //! option name
+  const std::string& _stickyOptionName( void ) const
+  { return sticky_option_name_; }
+  
+  //! option name
+  const std::string& _staysOnTopOptionName( void ) const
+  { return stays_on_top_option_name_; }
+
   //! dock title
   std::string title_;
-      
+  
+  //! option name 
+  /*! needed to store sticky and stays on top state */
+  std::string sticky_option_name_;
+  
+  //! option name
+  std::string stays_on_top_option_name_;
+  
   //! vertical layout for main_ widget
   QVBoxLayout* main_layout_;
   

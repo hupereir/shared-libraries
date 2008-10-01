@@ -30,6 +30,7 @@
 */
 
 #include <QGridLayout>
+#include <QApplication>
 
 #include "DockPanel.h"
 #include "Debug.h"
@@ -88,6 +89,9 @@ DockPanel::DockPanel( QWidget* parent ):
   grid_layout->addWidget( size_grip_ = new LocalGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
   size_grip_->hide();
 
+  // connections
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  
 }
 
 //___________________________________________________________
@@ -151,6 +155,8 @@ void DockPanel::_toggleDock( void )
 void DockPanel::_toggleStaysOnTop( bool state )
 {
 
+  Debug::Throw( 0, "DockPanel::_toggleStaysOnTop.\n" );
+
   // check that widget is top level
   if( main().parentWidget() ) return;
 
@@ -185,13 +191,20 @@ void DockPanel::_toggleStaysOnTop( bool state )
   #endif
   if( visible ) main().show();
 
+  // update option if any
+  if( _hasOptionName() )
+  { 
+    XmlOptions::get().set<bool>( _staysOnTopOptionName(), state ); 
+    Debug::Throw(0) << "DockPanel::_toggleStaysOnTop - " << _staysOnTopOptionName() << ": " << state << endl;
+  }
+
 }
 
 //__________________________________________________________
 void DockPanel::_toggleSticky( bool state )
 {
 
-  Debug::Throw( "DockPanel::_toggleSticky.\n" );
+  Debug::Throw( 0, "DockPanel::_toggleSticky.\n" );
 
   // check that widget is top level
   if( main().parentWidget() ) return;
@@ -208,6 +221,27 @@ void DockPanel::_toggleSticky( bool state )
   // show widget again, if needed
   if( visible ) main().show();
 
+  // update option if any
+  if( _hasOptionName() )
+  { 
+    XmlOptions::get().set<bool>( _stickyOptionName(), state ); 
+    Debug::Throw(0) << "DockPanel::_toggleSticky - " << _stickyOptionName() << ": " << state << endl;
+  }
+  
+}
+
+//___________________________________________________________
+void DockPanel::_updateConfiguration( void )
+{
+  
+  Debug::Throw(0, "DockPanel::_updateConfiguration.\n" );
+  
+  if( _hasOptionName() )
+  {
+    if( XmlOptions::get().find( _staysOnTopOptionName() ) ) main().staysOnTopAction().setChecked( XmlOptions::get().get<bool>( _staysOnTopOptionName() ) ); 
+    if( XmlOptions::get().find( _stickyOptionName() ) ) main().stickyAction().setChecked( XmlOptions::get().get<bool>( _stickyOptionName() ) ); 
+  }
+  
 }
 
 //___________________________________________________________
