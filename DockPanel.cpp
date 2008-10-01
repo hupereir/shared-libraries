@@ -155,7 +155,7 @@ void DockPanel::_toggleDock( void )
 void DockPanel::_toggleStaysOnTop( bool state )
 {
 
-  Debug::Throw( 0, "DockPanel::_toggleStaysOnTop.\n" );
+  Debug::Throw( "DockPanel::_toggleStaysOnTop.\n" );
 
   // check that widget is top level
   if( main().parentWidget() ) return;
@@ -195,7 +195,7 @@ void DockPanel::_toggleStaysOnTop( bool state )
   if( _hasOptionName() )
   { 
     XmlOptions::get().set<bool>( _staysOnTopOptionName(), state ); 
-    Debug::Throw(0) << "DockPanel::_toggleStaysOnTop - " << _staysOnTopOptionName() << ": " << state << endl;
+    Debug::Throw() << "DockPanel::_toggleStaysOnTop - " << _staysOnTopOptionName() << ": " << state << endl;
   }
 
 }
@@ -204,7 +204,7 @@ void DockPanel::_toggleStaysOnTop( bool state )
 void DockPanel::_toggleSticky( bool state )
 {
 
-  Debug::Throw( 0, "DockPanel::_toggleSticky.\n" );
+  Debug::Throw( "DockPanel::_toggleSticky.\n" );
 
   // check that widget is top level
   if( main().parentWidget() ) return;
@@ -225,7 +225,7 @@ void DockPanel::_toggleSticky( bool state )
   if( _hasOptionName() )
   { 
     XmlOptions::get().set<bool>( _stickyOptionName(), state ); 
-    Debug::Throw(0) << "DockPanel::_toggleSticky - " << _stickyOptionName() << ": " << state << endl;
+    Debug::Throw() << "DockPanel::_toggleSticky - " << _stickyOptionName() << ": " << state << endl;
   }
   
 }
@@ -234,7 +234,7 @@ void DockPanel::_toggleSticky( bool state )
 void DockPanel::_updateConfiguration( void )
 {
   
-  Debug::Throw(0, "DockPanel::_updateConfiguration.\n" );
+  Debug::Throw( "DockPanel::_updateConfiguration.\n" );
   
   if( _hasOptionName() )
   {
