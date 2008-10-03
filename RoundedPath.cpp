@@ -59,7 +59,7 @@ RoundedPath::RoundedPath( QPolygonF polygon, const int& border )
     QPointF offset;
     
     // move close to next corner
-    if( abs( corner.y() - current.y() ) < 1 ) 
+    if( std::abs( corner.y() - current.y() ) < 1 ) 
     { 
       direction = HORIZONTAL; 
       offset = QPointF( corner.x() < current.x() ? border:-border, 0 );
@@ -75,10 +75,10 @@ RoundedPath::RoundedPath( QPolygonF polygon, const int& border )
     lineTo( current );
      
     // check that direction is changed
-    if( ( abs( next.y() - corner.y() ) < 1 && direction == HORIZONTAL ) || ( abs( next.x() - corner.x() ) < 1 && direction == VERTICAL ) ) continue;
+    if( ( std::abs( next.y() - corner.y() ) < 1 && direction == HORIZONTAL ) || ( std::abs( next.x() - corner.x() ) < 1 && direction == VERTICAL ) ) continue;
     
     // curve around next corner
-    if( abs( next.y() - corner.y() ) < 1 ) offset = QPointF( corner.x() < next.x() ? border:-border, 0 );
+    if( std::abs( next.y() - corner.y() ) < 1 ) offset = QPointF( corner.x() < next.x() ? border:-border, 0 );
     else offset = QPointF( 0, corner.y() < next.y() ? border:-border );
     current = corner+offset;
     quadTo( corner, current );
