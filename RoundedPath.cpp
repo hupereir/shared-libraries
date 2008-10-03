@@ -30,6 +30,7 @@
 */
 
 #include <assert.h>
+#include <cmath>
 
 #include "RoundedPath.h"
 #include "Debug.h"
