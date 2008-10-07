@@ -53,6 +53,9 @@ class UserSelectionFrame: public QWidget, public Counter
   //! set user
   void setUser( const QString& user );
 
+  //! users
+  std::set<std::string> users( void ) const;
+  
   //! selected user
   std::string user( void ) const;  
     

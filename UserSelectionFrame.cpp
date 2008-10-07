@@ -73,6 +73,21 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
 }
 
 //____________________________________________________________
+set<string> UserSelectionFrame::users( void ) const
+{ 
+  
+  set<string> out;
+  for( int i=0; i< _editor().QComboBox::count(); i++ )
+  {
+    const QString& user( _editor().itemText( i ) );
+    if( !user.isNull() ) out.insert( qPrintable( user ) ); 
+  }
+
+  return out;
+
+}
+
+//____________________________________________________________
 void UserSelectionFrame::setUser( const QString& user )
 { 
   Debug::Throw() << "UserSelectionFrame::set - user: " << qPrintable(user) << endl;
@@ -92,7 +107,7 @@ void UserSelectionFrame::setUser( const QString& user )
 
   return;
 }
-
+  
 //________________________________________________________________
 void UserSelectionFrame::updateUsers( set<string> users )
 {
