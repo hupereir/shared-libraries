@@ -164,7 +164,7 @@ class DockPanel: public QWidget, public Counter
   //! main widget
   LocalWidget& main( void ) const
   { return *main_; }
-
+  
   signals:
   
   //! emmited when state is changed

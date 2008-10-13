@@ -55,20 +55,20 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
   layout()->setSpacing(5);
   layout()->addWidget( editor_ = new CustomComboBox( this ) );
   
-  _editor().setMinimumSize( QSize( 100, 0 ) ); 
-  _editor().setAutoCompletion( true );
-  _editor().setEditable( true );
-  _editor().setToolTip( "User selection" );
+  editor().setMinimumSize( QSize( 100, 0 ) ); 
+  editor().setAutoCompletion( true );
+  editor().setEditable( true );
+  editor().setToolTip( "User selection" );
   
   _timer().setSingleShot( true );
   connect( &_timer(), SIGNAL( timeout() ), SLOT( _userChanged() ) );
   
   // send appropriate signal directly
-  connect( &_editor(), SIGNAL( activated( const QString & ) ), SLOT( _userChanged() ) );
+  connect( &editor(), SIGNAL( activated( const QString & ) ), SLOT( _userChanged() ) );
   
   // one must add a timer here so that the signal gets
   // emmitted only after some delay, to avoid to many signals are sent when typing
-  connect( &_editor(), SIGNAL( editTextChanged( const QString & ) ),  SLOT( _delayedUserChanged() ) );
+  connect( &editor(), SIGNAL( editTextChanged( const QString & ) ),  SLOT( _delayedUserChanged() ) );
 
 }
 
@@ -77,9 +77,9 @@ set<string> UserSelectionFrame::users( void ) const
 { 
   
   set<string> out;
-  for( int i=0; i< _editor().QComboBox::count(); i++ )
+  for( int i=0; i< editor().QComboBox::count(); i++ )
   {
-    const QString& user( _editor().itemText( i ) );
+    const QString& user( editor().itemText( i ) );
     if( !user.isNull() ) out.insert( qPrintable( user ) ); 
   }
 
@@ -93,17 +93,17 @@ void UserSelectionFrame::setUser( const QString& user )
   Debug::Throw() << "UserSelectionFrame::set - user: " << qPrintable(user) << endl;
   if( user.isNull() || user.isEmpty() ) return;
   
-  for( int i=0; i< _editor().QComboBox::count(); i++ )
+  for( int i=0; i< editor().QComboBox::count(); i++ )
   {
-    if( user == _editor().itemText( i ) )
+    if( user == editor().itemText( i ) )
     { 
-      _editor().setCurrentIndex(i);
+      editor().setCurrentIndex(i);
       return;
     }
   }
   
-  _editor().addItem( user );
-  _editor().setEditText( user );
+  editor().addItem( user );
+  editor().setEditText( user );
 
   return;
 }
@@ -117,18 +117,18 @@ void UserSelectionFrame::updateUsers( set<string> users )
   users.insert( user() );
 
   // remove items which are not in the set of users
-  for( int i=0; i< _editor().QComboBox::count(); )
+  for( int i=0; i< editor().QComboBox::count(); )
   {
     
-    const QString& user( _editor().itemText( i ) );
+    const QString& user( editor().itemText( i ) );
     if( user.isNull() ) 
     {
-      _editor().removeItem( i );
+      editor().removeItem( i );
       continue;
     }
         
     set<string>::iterator iter( users.find( qPrintable( user ) ) );
-    if( iter == users.end() ) _editor().removeItem( i );
+    if( iter == users.end() ) editor().removeItem( i );
     else {
       
       users.erase( iter );
@@ -138,7 +138,7 @@ void UserSelectionFrame::updateUsers( set<string> users )
   }
 
   for( set<string>::const_iterator iter =  users.begin(); iter != users.end(); iter++ )
-  { if( !iter->empty() ) _editor().addItem( iter->c_str() ); }
+  { if( !iter->empty() ) editor().addItem( iter->c_str() ); }
   
 }
 
@@ -146,7 +146,7 @@ void UserSelectionFrame::updateUsers( set<string> users )
 string UserSelectionFrame::user( void ) const
 { 
   Debug::Throw( "UserSelectionFrame::user.\n" );
-  QString user(  _editor().currentText() );
+  QString user(  editor().currentText() );
   if( user.isNull() || user.isEmpty() ) return "";
   return qPrintable( user.trimmed() ); 
 }

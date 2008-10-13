@@ -58,7 +58,14 @@ class UserSelectionFrame: public QWidget, public Counter
   
   //! selected user
   std::string user( void ) const;  
-    
+  
+  //! editor
+  CustomComboBox& editor( void ) const
+  { 
+    assert( editor_ );
+    return *editor_;
+  }
+  
   signals:
   
   //! emitted when user is changed
@@ -84,13 +91,6 @@ class UserSelectionFrame: public QWidget, public Counter
   QTimer &_timer( void )
   { return timer_; }
   
-  //! editor
-  CustomComboBox& _editor( void ) const
-  { 
-    assert( editor_ );
-    return *editor_;
-  }
-
   //! delay for userChanged signal emission
   static const unsigned int delay_;
   

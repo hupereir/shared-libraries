@@ -49,6 +49,7 @@ using namespace std;
 CustomToolButton::CustomToolButton( QWidget* parent ):
     QToolButton( parent ),
     Counter( "CustomToolButton" ),
+    update_from_options_( true ),
     rotation_( NONE )
 {
 
