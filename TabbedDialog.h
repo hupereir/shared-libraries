@@ -105,7 +105,7 @@ class TabbedDialog: public BaseDialog, public Counter
     //@{
     
     //! flags
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const
+    virtual Qt::ItemFlags flags(const QModelIndex& ) const
     { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
     
     //! return data
@@ -131,7 +131,7 @@ class TabbedDialog: public BaseDialog, public Counter
     protected: 
     
     //! sort
-    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
+    virtual void _sort( int, Qt::SortOrder order = Qt::AscendingOrder )
     {}
   
     //! list column names

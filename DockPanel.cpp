@@ -150,7 +150,6 @@ void DockPanel::_toggleDock( void )
 
 }
 
-
 //__________________________________________________________
 void DockPanel::_toggleStaysOnTop( bool state )
 {

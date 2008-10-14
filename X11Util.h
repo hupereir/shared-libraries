@@ -81,7 +81,7 @@ class X11Util
   static bool hasProperty( const QWidget& widget, const Atoms& atom );
   
   //! change property
-  static bool changeProperty( const QWidget& widget, const Atoms& atom, const unsigned int& value );
+  static bool changeProperty( const QWidget&, const Atoms&, const int& );
   
   //! remove property from NET_WM_STATE
   static bool removeProperty( const QWidget& widget, const Atoms& atom );

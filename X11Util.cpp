@@ -143,7 +143,7 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 }
 
 //________________________________________________________________________
-bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const unsigned int& value )
+bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const int& nelements )
 {
 
   Debug::Throw( "X11Util::changeProperty.\n" );
@@ -157,7 +157,7 @@ bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const un
   Atom net_wm_state( findAtom(_NET_WM_STATE) );
   Atom searched( findAtom( atom ) );
   
-  XChangeProperty (display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&searched, value );
+  XChangeProperty (display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&searched, nelements );
   return true;
   #endif
   
@@ -177,7 +177,7 @@ bool X11Util::removeProperty( const QWidget& widget, const Atoms& atom )
   Display* display( QX11Info::display() );
   Atom net_wm_state( findAtom(_NET_WM_STATE) );
   Atom searched( findAtom( atom ) );
-  
+      
   Atom actual;
   int format;
   unsigned char *data;
