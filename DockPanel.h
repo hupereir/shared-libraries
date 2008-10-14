@@ -81,18 +81,19 @@ class DockPanel: public QWidget, public Counter
   //! set detachable group panel title
   void setTitle( const std::string& title )
   { title_ = title; }
-    
+
   //! local widget to implement close_event of the content
   class LocalWidget: public QFrame, public Counter
   {
+    
     public:
     
     //! constructor
-    LocalWidget( DockPanel* parent );
+    LocalWidget( QWidget* parent );
     
     //! update actions
     void updateActions( bool );
-  
+    
     //! detach action
     QAction& detachAction( void ) const
     { return *detach_action_; }
@@ -100,7 +101,7 @@ class DockPanel: public QWidget, public Counter
     //! stay on top
     QAction& staysOnTopAction( void ) const
     { return *stays_on_top_action_; }
-
+    
     //! widget is hidden from taskbar
     QAction& stickyAction( void ) const
     { return *sticky_action_; }
@@ -118,13 +119,13 @@ class DockPanel: public QWidget, public Counter
     
     //! mouse move event [overloaded]
     virtual void mouseReleaseEvent( QMouseEvent* );     
-   
+    
     //! mouse move event [overloaded]
     virtual void mouseDoubleClickEvent( QMouseEvent* );     
-
+    
     //! timer event [overloaded]
     virtual void timerEvent( QTimerEvent* );     
-   
+    
     //! actions
     void _installActions( void );
     
@@ -140,16 +141,16 @@ class DockPanel: public QWidget, public Counter
     
     //! attach/detach action
     QAction* detach_action_;
-
+    
     //! stay on top
     QAction* stays_on_top_action_;
- 
+    
     //! make window sticky
     QAction* sticky_action_;
     
     //! button state
     Qt::MouseButton button_;
-  
+    
     //! move timer
     QBasicTimer timer_;
     
@@ -160,11 +161,17 @@ class DockPanel: public QWidget, public Counter
     QPoint click_pos_;
     
   };
-
+  
   //! main widget
   LocalWidget& main( void ) const
   { return *main_; }
-  
+
+  //! restore window size
+  virtual QSize minimumSizeHint( void ) const;
+
+  //! restore window size
+  virtual QSize sizeHint( void ) const;
+
   signals:
   
   //! emmited when state is changed
@@ -175,6 +182,10 @@ class DockPanel: public QWidget, public Counter
   
   //! emmited when panel is detached
   void detached( void );
+  
+  //! visibility changed
+  void visibilityChanged( bool );
+  
   
   protected slots:
   
@@ -188,6 +199,9 @@ class DockPanel: public QWidget, public Counter
   virtual void _toggleSticky( bool );
 
   protected:
+
+  //! hide event
+  virtual void hideEvent( QHideEvent* );
     
   //! local QSizeGrip
   /*! the paint event method is overridden so that the size grip is invisible */

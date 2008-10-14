@@ -94,6 +94,14 @@ DockPanel::DockPanel( QWidget* parent ):
   
 }
 
+//__________________________________________________
+QSize DockPanel::minimumSizeHint( void ) const
+{ return isVisible() ? QSize(0,0):QWidget::minimumSizeHint(); }
+
+//__________________________________________________
+QSize DockPanel::sizeHint( void ) const
+{ return isVisible() ? QSize(0,0):QWidget::sizeHint(); }
+
 //___________________________________________________________
 void DockPanel::_toggleDock( void )
 {
@@ -244,9 +252,9 @@ void DockPanel::_updateConfiguration( void )
 }
 
 //___________________________________________________________
-DockPanel::LocalWidget::LocalWidget( DockPanel* parent ):
+DockPanel::LocalWidget::LocalWidget( QWidget* parent ):
   QFrame( parent ),
-  Counter( "DockPanel::LocalWidget" ),
+  Counter( "LocalWidget" ),
   button_( Qt::NoButton ),
   move_enabled_( false )
 {
@@ -262,6 +270,14 @@ void DockPanel::LocalWidget::updateActions( bool detached )
   stickyAction().setEnabled( detached );
   staysOnTopAction().setEnabled( detached );
 
+}
+
+//___________________________________________________________
+void DockPanel::hideEvent( QHideEvent* event )
+{
+  Debug::Throw( "DockPanel::hideEvent.\n" );
+  emit visibilityChanged( false );
+  QWidget::hideEvent( event );
 }
 
 //___________________________________________________________
