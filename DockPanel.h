@@ -166,12 +166,6 @@ class DockPanel: public QWidget, public Counter
   LocalWidget& main( void ) const
   { return *main_; }
 
-  //! restore window size
-  virtual QSize minimumSizeHint( void ) const;
-
-  //! restore window size
-  virtual QSize sizeHint( void ) const;
-
   signals:
   
   //! emmited when state is changed

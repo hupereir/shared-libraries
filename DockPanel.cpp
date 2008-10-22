@@ -94,14 +94,6 @@ DockPanel::DockPanel( QWidget* parent ):
   
 }
 
-//__________________________________________________
-QSize DockPanel::minimumSizeHint( void ) const
-{ return isVisible() ? QSize(0,0):QWidget::minimumSizeHint(); }
-
-//__________________________________________________
-QSize DockPanel::sizeHint( void ) const
-{ return isVisible() ? QSize(0,0):QWidget::sizeHint(); }
-
 //___________________________________________________________
 void DockPanel::_toggleDock( void )
 {
