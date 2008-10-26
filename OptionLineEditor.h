@@ -53,7 +53,7 @@ class OptionLineEditor: public LineEditor, public OptionWidget
   { setText( XmlOptions::get().raw( optionName() ).c_str() ); }
   
   //! write value to option
-  void Write( void ) const
+  void write( void ) const
   { XmlOptions::get().setRaw( optionName(), qPrintable( text() ) ); }
         
 };
