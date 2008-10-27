@@ -137,10 +137,14 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
 {
 
   QPainter painter( this );
-  painter.setRenderHints(QPainter::SmoothPixmapTransform);
-  painter.setClipRect(event->rect());
-  painter.setCompositionMode(QPainter::CompositionMode_Source );
-   
+  
+  if( CompositeEngine::get().isValid() ) 
+  {
+    painter.setRenderHints(QPainter::SmoothPixmapTransform);
+    painter.setClipRect(event->rect());
+    painter.setCompositionMode(QPainter::CompositionMode_Source );
+  }
+  
   if( _backgroundChanged() ) _updateBackgroundPixmap();
   if( !_backgroundPixmap().isNull() )
   {
