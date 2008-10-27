@@ -51,6 +51,8 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
 { 
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
 
+  setAttribute(Qt::WA_NoSystemBackground);
+
   // actions
   _installActions();
 
@@ -129,24 +131,28 @@ void TransparentWidget::leaveEvent( QEvent* event )
 //____________________________________________________________________
 void TransparentWidget::paintEvent( QPaintEvent* event )
 {
-  
-  if( _backgroundChanged() ) _updateBackgroundPixmap();
-  if( !_backgroundPixmap().isNull() )
-  {
-    QPainter painter( this );
-    QRect rect( TransparentWidget::rect()&event->rect() );
-    painter.drawPixmap( rect, _backgroundPixmap(), rect );
-    
-    if( _highlighted() && _highlightColor().isValid() )
-    {
-      painter.setPen( Qt::NoPen );
-      painter.setBrush( _highlightColor() );
-      painter.drawRect( rect );
-    }
 
-    painter.end();
+  QPainter painter( this );
+  painter.setRenderHints(QPainter::SmoothPixmapTransform);
+  painter.setClipRect(event->rect());
+  painter.setCompositionMode(QPainter::CompositionMode_Source );
+  painter.fillRect(rect(), Qt::transparent);
+   
+//   if( _backgroundChanged() ) _updateBackgroundPixmap();
+//   if( !_backgroundPixmap().isNull() )
+//   {
+//     QRect rect( TransparentWidget::rect()&event->rect() );
+//     painter.drawPixmap( rect, _backgroundPixmap(), rect );
+//   }
+  
+  if( _highlighted() && _highlightColor().isValid() )
+  {
+    painter.setPen( Qt::NoPen );
+    painter.setBrush( _highlightColor() );
+    painter.drawRect( rect() );
   }
   
+  painter.end();
   QWidget::paintEvent( event );  
   
 }
