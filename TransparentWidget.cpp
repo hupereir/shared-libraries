@@ -38,6 +38,8 @@
 #include "TransparentWidget.h"
 #include "XmlOptions.h"
 
+#include "CompositeEngine.h"
+
 using namespace std;
 using namespace TRANSPARENCY;
 
@@ -51,7 +53,9 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
 { 
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
 
-  setAttribute(Qt::WA_NoSystemBackground);
+  // 
+  if( CompositeEngine::get().isValid() ) 
+  { setAttribute(Qt::WA_NoSystemBackground); }
 
   // actions
   _installActions();
@@ -136,14 +140,13 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
   painter.setClipRect(event->rect());
   painter.setCompositionMode(QPainter::CompositionMode_Source );
-  painter.fillRect(rect(), Qt::transparent);
    
-//   if( _backgroundChanged() ) _updateBackgroundPixmap();
-//   if( !_backgroundPixmap().isNull() )
-//   {
-//     QRect rect( TransparentWidget::rect()&event->rect() );
-//     painter.drawPixmap( rect, _backgroundPixmap(), rect );
-//   }
+  if( _backgroundChanged() ) _updateBackgroundPixmap();
+  if( !_backgroundPixmap().isNull() )
+  {
+    QRect rect( TransparentWidget::rect()&event->rect() );
+    painter.drawPixmap( rect, _backgroundPixmap(), rect );
+  }
   
   if( _highlighted() && _highlightColor().isValid() )
   {
@@ -198,6 +201,14 @@ void TransparentWidget::_updateBackgroundPixmap( void )
     // solid background
     _backgroundPixmap() = QPixmap( size() );
     _backgroundPixmap().fill( palette().color( backgroundRole() ) );
+    
+  } else if( CompositeEngine::get().isValid() ) {
+    
+    _backgroundPixmap() = QPixmap( size() );
+    QPainter painter( &_backgroundPixmap() );
+    painter.setRenderHints(QPainter::SmoothPixmapTransform);
+    painter.setCompositionMode(QPainter::CompositionMode_Source );
+    painter.fillRect( _backgroundPixmap().rect(), Qt::transparent);    
     
   } else {
     

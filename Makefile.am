@@ -13,6 +13,7 @@ INCLUDES =  \
     
 noinst_HEADERS = \
   BackgroundPixmap.h \
+  CompositeEngine.h \
   TransparencyConfiguration.h \
   TransparentWidget.h
 
@@ -20,6 +21,7 @@ noinst_LIBRARIES = libbase-transparency.a
 
 libbase_transparency_a_SOURCES = \
   BackgroundPixmap.cpp \
+  CompositeEngine.cpp \
   TransparencyConfiguration.cpp \
   TransparentWidget.cpp
 
