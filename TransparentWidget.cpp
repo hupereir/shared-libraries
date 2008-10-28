@@ -137,20 +137,18 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
 {
 
   QPainter painter( this );
+  painter.setClipRect(event->rect());
   
   if( CompositeEngine::get().isValid() ) 
   {
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
-    painter.setClipRect(event->rect());
     painter.setCompositionMode(QPainter::CompositionMode_Source );
   }
   
   if( _backgroundChanged() ) _updateBackgroundPixmap();
+  
   if( !_backgroundPixmap().isNull() )
-  {
-    QRect rect( TransparentWidget::rect()&event->rect() );
-    painter.drawPixmap( rect, _backgroundPixmap(), rect );
-  }
+  { painter.drawPixmap( rect(), _backgroundPixmap(), rect() ); }
   
   if( _highlighted() && _highlightColor().isValid() )
   {

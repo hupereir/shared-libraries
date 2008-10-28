@@ -69,6 +69,12 @@ namespace TRANSPARENCY
     //! constructor
     CompositeEngine( void );
     
+    //! returns true if composition is enabled
+    bool _compositingEnabled( void ) const;
+    
+    //! returns true if composition is enabled
+    bool _compositingEnabled( Display* ) const;
+
     //! validity
     bool valid_;
     

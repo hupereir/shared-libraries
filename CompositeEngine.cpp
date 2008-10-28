@@ -31,6 +31,9 @@
 #include "CompositeEngine.h"
 #include "Debug.h"
 
+#include <QX11Info>
+#include <X11/extensions/composite.h>
+
 using namespace std;
 using namespace TRANSPARENCY;
 
@@ -55,8 +58,13 @@ CompositeEngine::CompositeEngine( void ):
 void CompositeEngine::initialize( void )
 {
   
+  Debug::Throw( "CompositeEngine::initialize\n" );
+  
   if( initialized_ ) return;
   initialized_ = true;
+  
+  // do nothing if compositing is not enabled
+  if( !_compositingEnabled() ) return;
   
   // display
   display_ = XOpenDisplay(0);
@@ -83,4 +91,30 @@ void CompositeEngine::initialize( void )
     
   }
   
+}
+
+//_______________________________________________________________
+bool CompositeEngine::_compositingEnabled( void ) const
+{
+  Debug::Throw( "CompositeEngine::_compositingEnabled\n" );
+  if( QX11Info::display()) return _compositingEnabled( QX11Info::display() );
+  else {
+    Debug::Throw( "CompositeEngine::_compositingEnabled - creating dummy display\n" );
+    Display* display = XOpenDisplay( 0 );
+    bool valid( _compositingEnabled( display ) );
+    XCloseDisplay( display );
+    return valid;
+  }
+}
+
+//_______________________________________________________________
+bool CompositeEngine::_compositingEnabled( Display* display ) const
+{
+  Debug::Throw( "CompositeEngine::_compositingEnabled (display)\n" );
+  
+  char atom_name[ 100 ];
+  sprintf( atom_name, "_NET_WM_CM_S%d", DefaultScreen( display ));
+  Atom atom( XInternAtom( display, atom_name, false ) );
+  return XGetSelectionOwner( display, atom ) != None;
+
 }
