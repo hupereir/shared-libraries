@@ -32,7 +32,10 @@
 */
 
 #include <Qt>
-#include <X11/extensions/Xrender.h>
+
+#ifdef Q_WS_X11
+#include <X11/Xlib.h>
+#endif
 
 namespace TRANSPARENCY
 {

@@ -32,8 +32,10 @@
 #include "Debug.h"
 #include "XmlOptions.h"
 
+#ifdef Q_WS_X11
 #include <QX11Info>
-#include <X11/extensions/composite.h>
+#include <X11/extensions/Xrender.h>
+#endif
 
 using namespace std;
 using namespace TRANSPARENCY;
