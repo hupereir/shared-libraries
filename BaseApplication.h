@@ -54,6 +54,9 @@ class BaseApplication: public QApplication
   
   //! constructor
   BaseApplication( int argc, char*argv[] ); 
+  
+  //! constructor
+  BaseApplication( Display*, int argc, char*argv[], Qt::HANDLE, Qt::HANDLE ); 
    
   //! destructor
   virtual ~BaseApplication( void );
