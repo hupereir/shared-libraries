@@ -6,6 +6,7 @@ INCLUDEPATH += ../base ../base-qt
 DEPENDPATH += . ../base ../base-qt
 
 HEADERS = \
+DefaultHelpText.h \
 HelpDialog.h \
 HelpItem.h \
 HelpManager.h \

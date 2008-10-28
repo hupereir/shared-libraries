@@ -11,6 +11,7 @@ INCLUDES =  \
   -I$(top_srcdir)/base-qt 
 
 noinst_HEADERS = \
+	DefaultHelpText.h \
   HelpDialog.h \
   HelpItem.h \
   HelpManager.h \

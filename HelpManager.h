@@ -70,7 +70,7 @@ namespace BASE
     { items_ = items; }
     
     //! install help. Put items in the menu, create associated objects 
-    static void install( const char *text[] );
+    static void install( const char *text[], bool clear = true );
     
     //! install help, from file
     static void install( const File& file );

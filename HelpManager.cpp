@@ -75,13 +75,13 @@ HelpManager::HelpManager( QObject* parent ):
 }
 
 //_________________________________________________________
-void HelpManager::install( const char *text[] )
+void HelpManager::install( const char *text[], bool clear )
 {
 
   Debug::Throw( "HelpManager::install.\n" );
 
   // clear existing text
-  clear();
+  if( clear ) HelpManager::clear();
   
   //! loop over help text
   for( unsigned int i=0; text[i]; i++ ) {
