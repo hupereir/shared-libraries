@@ -48,7 +48,7 @@ XmlError XmlOptions::error_;
 bool XmlOptions::read( File file )
 {
   
-  Debug::Throw(0) << "XmlOptions::read - file=\"" << file << "\"\n";
+  Debug::Throw() << "XmlOptions::read - file=\"" << file << "\"\n";
 
   // check filename is valid
   if( !file.size() ) file = file_;
