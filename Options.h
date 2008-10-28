@@ -62,7 +62,7 @@ class Options: public Counter
   typedef std::map< std::string, List > SpecialMap;
     
   //! constructor
-  Options( void );
+  Options( bool install_default_options = false );
   
   //! destructor
   virtual ~Options( void ) 
