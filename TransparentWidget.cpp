@@ -54,7 +54,7 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
 
   // 
-  if( CompositeEngine::get().isValid() ) 
+  if( CompositeEngine::get().isEnabled() ) 
   { setAttribute(Qt::WA_NoSystemBackground); }
 
   // actions
@@ -86,12 +86,16 @@ void TransparentWidget::_setHighlightColor( const QColor& color )
 //____________________________________________________________________
 void TransparentWidget::moveEvent( QMoveEvent* event )
 {
-  if( _transparent() && !( _tintColor().isValid() && _tintColor().alpha() == 255 )  ) 
-  {
-    _setBackgroundChanged( true );
-    update();
-  }
+  // check cases where background does not need update
+  if( !_transparent() ) return QWidget::moveEvent( event );
+  if( CompositeEngine::get().isEnabled() ) return QWidget::moveEvent( event );
+  if( _tintColor().isValid() && _tintColor().alpha() == 255 ) return QWidget::moveEvent( event );
+ 
+  // update background
+  _setBackgroundChanged( true );
+  update();
   QWidget::moveEvent( event );
+  
 }
 
 
@@ -139,7 +143,7 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   QPainter painter( this );
   painter.setClipRect(event->rect());
   
-  if( CompositeEngine::get().isValid() ) 
+  if( CompositeEngine::get().isEnabled() ) 
   {
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
     painter.setCompositionMode(QPainter::CompositionMode_Source );
@@ -204,7 +208,7 @@ void TransparentWidget::_updateBackgroundPixmap( void )
     _backgroundPixmap() = QPixmap( size() );
     _backgroundPixmap().fill( palette().color( backgroundRole() ) );
     
-  } else if( CompositeEngine::get().isValid() ) {
+  } else if( CompositeEngine::get().isEnabled() ) {
     
     _backgroundPixmap() = QPixmap( size() );
     QPainter painter( &_backgroundPixmap() );

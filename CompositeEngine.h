@@ -49,9 +49,17 @@ namespace TRANSPARENCY
     Display* display( void ) const
     { return display_; }
     
-    //! validity
-    bool isValid( void ) const
-    { return valid_; }
+    //! availability
+    bool isAvailable( void ) const
+    { return available_; }
+    
+    //! enability
+    bool isEnabled( void ) const
+    { return available_ && enabled_; }
+    
+    //! enability
+    void setEnabled( const bool& value ) 
+    { enabled_ = value; }
     
     //! initialize
     void initialize( void );
@@ -76,7 +84,10 @@ namespace TRANSPARENCY
     bool _compositingEnabled( Display* ) const;
 
     //! validity
-    bool valid_;
+    bool available_;
+    
+    //! enability
+    bool enabled_;
     
     //! initialized
     bool initialized_;

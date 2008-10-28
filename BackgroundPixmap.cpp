@@ -44,6 +44,8 @@
 #include "BackgroundPixmap.h"
 #include "Debug.h"
 
+#include "CompositeEngine.h"
+
 using namespace std;
   
 //_____________________________________________________
@@ -147,6 +149,9 @@ bool BackgroundPixmap::x11Event( XEvent* event )
 {
   
   Debug::Throw( "BackgroundPixmap::x11Event.\n" );
+  
+  // check compositing
+  if( CompositeEngine::get().isEnabled() ) return false;
   
   // cast event to a property event
   XPropertyEvent *property_event = (XPropertyEvent*) event;

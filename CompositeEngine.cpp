@@ -46,7 +46,8 @@ CompositeEngine& CompositeEngine::get( void )
 
 //_______________________________________________________________
 CompositeEngine::CompositeEngine( void ):
-  valid_( false ),
+  available_( false ),
+  enabled_( true ),
   initialized_( false ),
   display_( 0 ),
   visual_( 0 ),
@@ -62,6 +63,9 @@ void CompositeEngine::initialize( void )
   
   if( initialized_ ) return;
   initialized_ = true;
+  
+  // reset
+  available_ = false;
   
   // do nothing if compositing is not enabled
   if( !_compositingEnabled() ) return;
@@ -85,10 +89,18 @@ void CompositeEngine::initialize( void )
     {
       visual_ = visual_info[i].visual;
       colormap_ = XCreateColormap(display_, RootWindow(display_, screen), visual_, AllocNone);
-      valid_ = true;
+      available_ = true;
       break;
     }
     
+  }
+  
+  // need to close the display if not available
+  // to let Qt use its own.
+  if( !available_ )
+  {
+    XCloseDisplay( display_ );
+    display_ = 0;
   }
   
 }
