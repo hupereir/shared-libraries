@@ -47,11 +47,7 @@ namespace TRANSPARENCY
       
     //! singleton
     static CompositeEngine& get( void );
-    
-    //! display
-    Display* display( void ) const
-    { return display_; }
-    
+        
     //! availability
     bool isAvailable( void ) const
     { return available_; }
@@ -71,6 +67,11 @@ namespace TRANSPARENCY
     //! initialize
     void initialize( void );
     
+    #ifdef Q_WS_X11
+    
+    //! display
+    Display* display( void ) const
+    { return display_; }
     //! visual
     Qt::HANDLE visual( void ) const
     { return Qt::HANDLE( visual_ ); }
@@ -79,6 +80,8 @@ namespace TRANSPARENCY
     Qt::HANDLE colormap( void ) const
     { return Qt::HANDLE( colormap_ ); }
     
+    #endif
+
     private:
     
     //! constructor
@@ -87,11 +90,19 @@ namespace TRANSPARENCY
     //! returns true if composition is enabled
     bool _compositingEnabled( void ) const;
     
+    #ifdef Q_WS_X11
     //! returns true if composition is enabled
     bool _compositingEnabled( Display* ) const;
 
-    //! singleton
-    static CompositeEngine singleton_;
+    //! display
+    Display* display_;
+    
+    //! visual
+    Visual* visual_;
+    
+    //! colormap
+    Colormap colormap_;
+    #endif
     
     //! validity
     bool available_;
@@ -101,15 +112,9 @@ namespace TRANSPARENCY
     
     //! initialized
     bool initialized_;
-    
-    //! display
-    Display* display_;
-    
-    //! visual
-    Visual* visual_;
-    
-    //! colormap
-    Colormap colormap_;
+        
+    //! singleton
+    static CompositeEngine singleton_;
     
   };
   

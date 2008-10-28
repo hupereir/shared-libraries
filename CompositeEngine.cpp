@@ -45,18 +45,22 @@ CompositeEngine CompositeEngine::singleton_;
 
 //_______________________________________________________________
 CompositeEngine& CompositeEngine::get( void )
-{ 
-  return singleton_; 
-}
+{ return singleton_; }
 
 //_______________________________________________________________
 CompositeEngine::CompositeEngine( void ):
-  available_( false ),
-  enabled_( true ),
-  initialized_( false ),
+  
+  #ifdef Q_WS_X11
   display_( 0 ),
   visual_( 0 ),
-  colormap_( 0 )
+  colormap_( 0 ),
+  #endif
+  
+  available_( false ),
+  enabled_( true ),
+  initialized_( false )
+  
+  
 { 
   Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); 
   XmlOptions::get().add( "TRANSPARENCY_USE_COMPOSITE", "1" );
@@ -78,6 +82,7 @@ void CompositeEngine::initialize( void )
   // do nothing if compositing is not enabled
   if( !_compositingEnabled() ) return;
   
+  #ifdef Q_WS_X11
   // display
   display_ = XOpenDisplay(0);
   
@@ -110,6 +115,7 @@ void CompositeEngine::initialize( void )
     XCloseDisplay( display_ );
     display_ = 0;
   }
+  #endif
   
 }
 
@@ -117,6 +123,8 @@ void CompositeEngine::initialize( void )
 bool CompositeEngine::_compositingEnabled( void ) const
 {
   Debug::Throw( "CompositeEngine::_compositingEnabled\n" );
+  
+  #ifdef Q_WS_X11
   if( QX11Info::display()) return _compositingEnabled( QX11Info::display() );
   else {
     Debug::Throw( "CompositeEngine::_compositingEnabled - creating dummy display\n" );
@@ -125,9 +133,14 @@ bool CompositeEngine::_compositingEnabled( void ) const
     XCloseDisplay( display );
     return valid;
   }
+  #else
+  return false;
+  #endif
+  
 }
 
 //_______________________________________________________________
+#ifdef Q_WS_X11
 bool CompositeEngine::_compositingEnabled( Display* display ) const
 {
   Debug::Throw( "CompositeEngine::_compositingEnabled (display)\n" );
@@ -138,3 +151,4 @@ bool CompositeEngine::_compositingEnabled( Display* display ) const
   return XGetSelectionOwner( display, atom ) != None;
 
 }
+#endif

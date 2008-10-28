@@ -15,6 +15,7 @@ noinst_HEADERS = \
   BackgroundPixmap.h \
   CompositeEngine.h \
   TransparencyConfiguration.h \
+  TransparencyHelpText.h \
   TransparentWidget.h
 
 noinst_LIBRARIES = libbase-transparency.a

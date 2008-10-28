@@ -69,11 +69,12 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   addOptionWidget( checkbox );
 
   // enable/disable compositing
-  layout->addWidget( checkbox = new OptionCheckBox( "use compositing", this, "TRANSPARENCY_USE_COMPOSITE" ) );
-  checkbox->setToolTip( "enable/disable compositing" );
-  addOptionWidget( checkbox );
-  
-  checkbox->setEnabled( CompositeEngine::get().isAvailable() );
+  if( CompositeEngine::get().isAvailable() )
+  {
+    layout->addWidget( checkbox = new OptionCheckBox( "use compositing", this, "TRANSPARENCY_USE_COMPOSITE" ) );
+    checkbox->setToolTip( "enable/disable compositing" );
+    addOptionWidget( checkbox );
+  }
   
   GridLayout* grid_layout = new GridLayout();
   grid_layout->setSpacing(5);
