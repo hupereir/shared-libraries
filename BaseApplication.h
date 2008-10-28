@@ -55,9 +55,11 @@ class BaseApplication: public QApplication
   //! constructor
   BaseApplication( int argc, char*argv[] ); 
   
+  #ifdef Q_WS_X11
   //! constructor
   BaseApplication( Display*, int argc, char*argv[], Qt::HANDLE, Qt::HANDLE ); 
-   
+  #endif
+  
   //! destructor
   virtual ~BaseApplication( void );
   

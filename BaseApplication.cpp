@@ -58,6 +58,7 @@ BaseApplication::BaseApplication( int argc, char*argv[] ) :
 }
 
 //____________________________________________
+#ifdef Q_WS_X11
 BaseApplication::BaseApplication( Display* display, int argc, char*argv[], Qt::HANDLE visual, Qt::HANDLE colormap ) :
   QApplication( display, argc, argv, visual, colormap ),
   application_manager_( 0 ),
@@ -67,6 +68,7 @@ BaseApplication::BaseApplication( Display* display, int argc, char*argv[], Qt::H
   Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
   if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) setStyle( new FlatStyle() );
 }
+#endif
 
 //____________________________________________
 BaseApplication::~BaseApplication( void )
