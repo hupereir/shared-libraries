@@ -42,6 +42,7 @@
 #include "XmlOptions.h"
 
 using namespace std;
+using namespace SVG;
 
 //___________________________________________
 SvgConfiguration::SvgConfiguration( QWidget* parent ):

@@ -42,84 +42,89 @@
 
 #include "Counter.h"
 
-//! customized Icon factory to provide better looking disabled icons
-class SvgEngine: public Counter
+//! svg namespace
+namespace SVG
 {
-  
-  public:
-  
-  //! retrieve singleton
-  static SvgEngine& get( void )
-  { return singleton_; }
-  
-  //! create pixmap
-  /*! the size is stored into a cache to avoid duplicate pixmaps manipulations */
-  static QPixmap get( const QSize& size )
-  { return get()._get( size ); }
-  
-  //! is valid
-  bool isValid( void ) const
-  { return svg_.isValid(); }
-  
-  //! reload all icons set in cache from new path list
-  /*! return true if changed */
-  bool reload( void );
-  
-  private:
-  
-  //! load svg
-  bool _loadSvg( void );
-  
-  //! validate svg
-  bool _validateSvg( void ) const;
-      
-  //! singleton
-  static SvgEngine singleton_;
-    
-  //!@name non static methods are hidden
-  //@{
-  
-  //! constructor
-  SvgEngine( void );
-  
-  //! create icon
-  /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  QPixmap _get( const QSize&, bool from_cache = true );
-  
-  //@}
 
-  //! ordered QSize subclass
-  class Size: public QSize
+  //! customized Icon factory to provide better looking disabled icons
+  class SvgEngine: public Counter
   {
     
     public:
     
+    //! retrieve singleton
+    static SvgEngine& get( void )
+    { return singleton_; }
+    
+    //! create pixmap
+    /*! the size is stored into a cache to avoid duplicate pixmaps manipulations */
+    static QPixmap get( const QSize& size )
+    { return get()._get( size ); }
+    
+    //! is valid
+    bool isValid( void ) const
+    { return svg_.isValid(); }
+    
+    //! reload all icons set in cache from new path list
+    /*! return true if changed */
+    bool reload( void );
+    
+    private:
+    
+    //! load svg
+    bool _loadSvg( void );
+    
+    //! validate svg
+    bool _validateSvg( void ) const;
+    
+    //! singleton
+    static SvgEngine singleton_;
+    
+    //!@name non static methods are hidden
+    //@{
+    
     //! constructor
-    Size( const QSize& size ):
-      QSize( size )
+    SvgEngine( void );
+    
+    //! create icon
+    /*! the file is stored into a cache to avoid all pixmaps manipulations */
+    QPixmap _get( const QSize&, bool from_cache = true );
+    
+    //@}
+    
+    //! ordered QSize subclass
+    class Size: public QSize
+    {
+      
+      public:
+      
+      //! constructor
+      Size( const QSize& size ):
+        QSize( size )
       {}
       
-    // order
-    bool operator < ( const Size& size )  const
-    { return ( width() < size.width() || ( width() == size.width() && height() < size.height() ) ); }
+      // order
+      bool operator < ( const Size& size )  const
+      { return ( width() < size.width() || ( width() == size.width() && height() < size.height() ) ); }
+      
+    };
+    
+    //! svg file
+    std::string svg_file_;
+    
+    //! svg renderer
+    QSvgRenderer svg_;
+    
+    //! svg offest
+    int svg_offset_;
+    
+    //! map size and pixmap
+    typedef std::map< Size, QPixmap > Cache;
+    
+    //! map size and pixmap
+    Cache cache_;
     
   };
-
-  //! svg file
-  std::string svg_file_;
-  
-  //! svg renderer
-  QSvgRenderer svg_;
-  
-  //! svg offest
-  int svg_offset_;
-
-  //! map size and pixmap
-  typedef std::map< Size, QPixmap > Cache;
-
-  //! map size and pixmap
-  Cache cache_;
-  
 };
 
 #endif

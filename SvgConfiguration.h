@@ -36,21 +36,26 @@
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
-//! SVG common configuration
-class SvgConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+namespace SVG
 {
-  
-  Q_OBJECT
-  
-  public:
-      
-  //! constructor
-  SvgConfiguration( QWidget* parent );
- 
-  private slots:
 
-  //! show svg path dialog
-  virtual void _editSvgPathList( void );
+  //! SVG common configuration
+  class SvgConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+  {
+    
+    Q_OBJECT
+      
+    public:
+      
+    //! constructor
+    SvgConfiguration( QWidget* parent );
+    
+    private slots:
+
+    //! show svg path dialog
+    virtual void _editSvgPathList( void );
+  
+  };
   
 };
 

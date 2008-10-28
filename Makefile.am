@@ -14,6 +14,7 @@ INCLUDES =  \
 noinst_HEADERS = \
   SvgConfiguration.h \
   SvgEngine.h \
+  SvgHelpText.h \
   Svg.h
 
 noinst_LIBRARIES = libbase-svg.a

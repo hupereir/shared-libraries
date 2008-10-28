@@ -36,6 +36,7 @@
 #include "XmlOptions.h"
 
 using namespace std;
+using namespace SVG;
 
 //__________________________________________________________
 SvgEngine SvgEngine::singleton_;

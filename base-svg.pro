@@ -10,6 +10,7 @@ DEPENDPATH += . ../base ../base-qt
 HEADERS = \
   SvgConfiguration.h \
   SvgEngine.h \
+  SvgHelpText.h \
   Svg.h
 
 SOURCES = \
