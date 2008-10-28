@@ -171,7 +171,7 @@ void TransparentWidget::_updateConfiguration( void )
 {
   
   Debug::Throw( "TransparentWidget::_updateConfiguration.\n" );
-  
+    
   // use transparency
   _setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
   
@@ -192,7 +192,10 @@ void TransparentWidget::_updateConfiguration( void )
     highlight_color.setAlpha( highlight_intensity );
     _setHighlightColor( highlight_color );
   } else _setHighlightColor( QColor() );
- 
+  
+  // composite
+  CompositeEngine::get().setEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_COMPOSITE" ) );
+
 }
   
 //____________________________________________________________________

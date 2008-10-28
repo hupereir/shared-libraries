@@ -58,8 +58,12 @@ namespace TRANSPARENCY
     { return available_ && enabled_; }
     
     //! enability
-    void setEnabled( const bool& value ) 
-    { enabled_ = value; }
+    bool setEnabled( const bool& value ) 
+    { 
+      if( enabled_ == value ) return false;
+      enabled_ = value;
+      return true;
+    }
     
     //! initialize
     void initialize( void );
@@ -76,13 +80,16 @@ namespace TRANSPARENCY
     
     //! constructor
     CompositeEngine( void );
-    
+        
     //! returns true if composition is enabled
     bool _compositingEnabled( void ) const;
     
     //! returns true if composition is enabled
     bool _compositingEnabled( Display* ) const;
 
+    //! singleton
+    static CompositeEngine singleton_;
+    
     //! validity
     bool available_;
     

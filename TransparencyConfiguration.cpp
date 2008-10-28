@@ -39,6 +39,8 @@
 #include "OptionSpinBox.h"
 #include "TransparencyConfiguration.h"
 
+#include "CompositeEngine.h"
+
 using namespace std;
 using namespace TRANSPARENCY;
 
@@ -65,6 +67,13 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   layout->addWidget( checkbox = new OptionCheckBox( "use transparency", this, "TRANSPARENT" ) );
   checkbox->setToolTip( "enable/disable transparent background" );
   addOptionWidget( checkbox );
+
+  // enable/disable compositing
+  layout->addWidget( checkbox = new OptionCheckBox( "use compositing", this, "TRANSPARENCY_USE_COMPOSITE" ) );
+  checkbox->setToolTip( "enable/disable compositing" );
+  addOptionWidget( checkbox );
+  
+  checkbox->setEnabled( CompositeEngine::get().isAvailable() );
   
   GridLayout* grid_layout = new GridLayout();
   grid_layout->setSpacing(5);
@@ -141,6 +150,6 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   slider->slider().setMaximum( 100 );
   slider->setToolTip( "widget opacity" );
   addOptionWidget( slider );
-
+  
   return;
 }

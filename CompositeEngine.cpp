@@ -30,6 +30,7 @@
 
 #include "CompositeEngine.h"
 #include "Debug.h"
+#include "XmlOptions.h"
 
 #include <QX11Info>
 #include <X11/extensions/composite.h>
@@ -38,10 +39,12 @@ using namespace std;
 using namespace TRANSPARENCY;
 
 //_______________________________________________________________
+CompositeEngine CompositeEngine::singleton_;
+
+//_______________________________________________________________
 CompositeEngine& CompositeEngine::get( void )
-{
-  static CompositeEngine singleton;
-  return singleton;
+{ 
+  return singleton_; 
 }
 
 //_______________________________________________________________
@@ -52,7 +55,10 @@ CompositeEngine::CompositeEngine( void ):
   display_( 0 ),
   visual_( 0 ),
   colormap_( 0 )
-{ Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); }
+{ 
+  Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); 
+  XmlOptions::get().add( "TRANSPARENCY_USE_COMPOSITE", "1" );
+}
 
 
 //_______________________________________________________________
