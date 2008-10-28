@@ -41,14 +41,14 @@ using namespace std;
 
 //____________________________________________________________________
 File XmlOptions::file_;
-Options XmlOptions::singleton_;
+Options XmlOptions::singleton_( true );
 XmlError XmlOptions::error_;
 
 //____________________________________________________________________
 bool XmlOptions::read( File file )
 {
   
-  Debug::Throw() << "XmlOptions::read - file=\"" << file << "\"\n";
+  Debug::Throw(0) << "XmlOptions::read - file=\"" << file << "\"\n";
 
   // check filename is valid
   if( !file.size() ) file = file_;
