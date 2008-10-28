@@ -45,7 +45,7 @@ SvgEngine::SvgEngine( void ):
   Counter( "SvgEngine" ),
   svg_offset_( 0 )
 { 
-  Debug::Throw( 0, "SvgEngine::SvgEngine.\n" ); 
+  Debug::Throw( "SvgEngine::SvgEngine.\n" ); 
 
   // default option values
   XmlOptions::get().keep( "SVG_BACKGROUND" );
