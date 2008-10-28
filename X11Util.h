@@ -56,7 +56,8 @@ class X11Util
     _NET_WM_STATE_STAYS_ON_TOP,
     _NET_WM_STATE_ABOVE,
     _NET_WM_STATE_SKIP_TASKBAR,
-    _NET_WM_MOVERESIZE
+    _NET_WM_MOVERESIZE,
+    _NET_WM_CM
   };
   
   enum Direction

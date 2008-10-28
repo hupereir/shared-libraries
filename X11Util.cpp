@@ -274,6 +274,7 @@ X11Util::AtomNameMap X11Util::_initializeAtomNames( void )
   out[_NET_WM_STATE_ABOVE] = "_NET_WM_STATE_ABOVE";
   out[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
   out[_NET_WM_MOVERESIZE] = "_NET_WM_MOVERESIZE";
+  out[_NET_WM_CM] = "_NET_WM_CM";
   
   return out;
 }
