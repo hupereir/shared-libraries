@@ -92,9 +92,7 @@ bool IconCacheModel::SortFTor::operator () ( IconEngine::Pair first, IconEngine:
   {
 
     case ICON: return first.first < second.first;
-    default:
-    throw runtime_error( DESCRIPTION( "invalid column" ) );
-    return true;
+    default: return true;
   }
 
 }

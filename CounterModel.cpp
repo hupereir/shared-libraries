@@ -109,9 +109,8 @@ bool CounterModel::SortFTor::operator () ( CounterPair first, CounterPair second
 
     case NAME: return first.first < second.first;
     case COUNT: return first.second < second.second;
-    default:
-    throw runtime_error( DESCRIPTION( "invalid column" ) );
-    return true;
+    default: return true;
+    
   }
  
 }

@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+#include <sstream>
 #include <QHeaderView>
 
 #include "Debug.h"

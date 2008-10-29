@@ -145,9 +145,7 @@ bool OptionModel::SortFTor::operator () ( OptionPair first, OptionPair second ) 
       if( first.first != second.first ) return first.second.raw() < second.second.raw();
       else return false;
     }
-    default:
-    throw runtime_error( DESCRIPTION( "invalid column" ) );
-    return true;
+    default: return true;
   }
 
 }

@@ -29,10 +29,11 @@
 \date $Date$
 */
 
+#include <sstream>
+
 #include <QApplication>
 #include <QCursor>
 #include <QDesktopWidget>
-
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QToolButton>
