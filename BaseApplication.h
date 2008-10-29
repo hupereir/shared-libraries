@@ -35,6 +35,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QCursor>
+#include <sstream>
 #include <string>
 
 #include "ApplicationManager.h"
