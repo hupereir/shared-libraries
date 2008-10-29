@@ -163,8 +163,7 @@ bool SpellInterface::setText(
   end_ = end;
 
   // check limits
-  if( begin_ > text_.size() ) throw runtime_error( DESCRIPTION( "invalid begin_ index" ) );
-  if( end_ > text_.size() ) throw runtime_error( DESCRIPTION( "invalid end_ index" ) );
+  assert( begin_ <= text_.size() && end_ <= text_.size() );
 
   end_ += offset_;
   position_ = 0;
