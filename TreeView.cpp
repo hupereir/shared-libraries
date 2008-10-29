@@ -237,7 +237,11 @@ void TreeView::_raiseMenu( const QPoint & pos )
   // move and show menu
   menu().adjustSize();
   QtUtil::moveWidget( &menu(), QCursor::pos() );
-  menu().show();
+  menu().exec();
+  
+  // save mask after menu execution, 
+  // to keep visible columns in sync with option
+  saveMask();
   
 }
 
