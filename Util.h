@@ -61,14 +61,20 @@ class Util
   static std::string timeString( void );
    
   //! runs a Unix command 
-  static bool run( const std::string& val )
+  static bool run( std::string val )
   { return run( QString( val.c_str() ) ); }
 
   //! runs a Unix command 
-  static bool run( const QString& val );
-  
+  static bool run( QString val );
+
+  //! runs a Unix command 
+  static bool run( QString command, QString arguments );
+   
   //! runs a Unix command 
   static bool run( QStringList arguments );
+
+  //! runs a Unix command 
+  static bool run( QString command, QStringList arguments );
    
   //! runs a Unix command in specified directory
   static void runAt( const std::string& path, const std::string& val );

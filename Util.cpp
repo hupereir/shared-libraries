@@ -84,31 +84,39 @@ string Util::timeString( void )
 }
 
 //____________________________________________  
-bool Util::run( const QString& value )
+bool Util::run( QString value )
 {
   Debug::Throw( "Util::run" );
   return run( value.split( QRegExp("\\s"), QString::SkipEmptyParts ) );
 }
   
 //____________________________________________  
+bool Util::run( QString program, QString value )
+{
+  Debug::Throw( "Util::run" );
+  return run( program, value.split( QRegExp("\\s"), QString::SkipEmptyParts ) );
+}
+
+//____________________________________________  
 bool Util::run( QStringList arguments )
 {
   Debug::Throw( "Util::run" );
   if( arguments.empty() ) return false;
-  
-  // dump arguments for debugging
-  if( Debug::level() > 0 )
-  {
-    for( QStringList::iterator iter = arguments.begin(); iter != arguments.end(); iter++ )
-    { Debug::Throw() << "Util::run - argument: \"" << qPrintable( *iter ) << "\"" << endl; }  
-  }
-  
+    
   QString program( arguments.front() );
   arguments.pop_front();
+  
+  return run( program, arguments );
+  
+}     
+
+//____________________________________________  
+bool Util::run( QString program, QStringList arguments )
+{
+  Debug::Throw( "Util::run" );
   if( arguments.empty() ) return QProcess::startDetached( program );
   else return QProcess::startDetached( program, arguments );
- 
-}     
+}
 
 //____________________________________________  
 void Util::runAt( const string& path, const string& value )
