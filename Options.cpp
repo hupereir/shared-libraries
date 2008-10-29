@@ -100,12 +100,7 @@ Options::Options( bool install_default_options ):
 Option& Options::option( const string& name )
 {
   Map::iterator iter( options_.find( name ) );
-  if( iter == options_.end() ) {
-    std::ostringstream what;
-    what << "option named " << name << " not found";
-    std::cout << DESCRIPTION( what.str() ) << std::endl;
-  }
-
+  assert( iter != options_.end() );
   return iter->second;
 }
 

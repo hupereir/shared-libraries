@@ -98,19 +98,11 @@ class Options: public Counter
   std::list<T> specialOptions( const std::string& name )
   {
     
-    try {
-     
-      List option_list( specialOptions( name ) );
-      std::list<T> out;
-      for( List::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
-      { out.push_back( iter->get<T>() ); }
-      return out; 
-    
-    } catch( std::exception &e ) { 
-      std::ostringstream o;
-      o << "XmlOptions::specialOptions - name: " << name << ", " << e.what();
-      throw std::logic_error( DESCRIPTION(o.str()) );
-    }
+    List option_list( specialOptions( name ) );
+    std::list<T> out;
+    for( List::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
+    { out.push_back( iter->get<T>() ); }
+    return out; 
     
   }
   
@@ -131,17 +123,7 @@ class Options: public Counter
   //! option value accessor
   template < typename T >
   T get( const std::string& name )
-  {
-    
-    try {
-      return option( name ).get<T>(); 
-    } catch( std::exception &e ) { 
-      std::ostringstream o;
-      o << "XmlOptions::get - name: " << name << ", " << e.what();
-      throw std::logic_error( DESCRIPTION(o.str()) );
-    }
-    
-  }
+  { return option( name ).get<T>(); }
 
   //! option raw value accessor
   virtual std::string raw( const std::string& name )

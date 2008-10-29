@@ -161,8 +161,7 @@ string TimeStamp::string( TimeStamp::Format format ) const
     o << tm_.tm_min;
     break;
     
-    default:
-    throw runtime_error( DESCRIPTION( "unrecognized format" ) );
+    default: break;
   
   }
   

@@ -35,7 +35,6 @@
 #include <assert.h>
 #include <iostream>
 #include <sstream>
-#include <stdexcept>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -180,22 +179,12 @@ class Option:public Counter {
   {
     
     // check if option is set
-    if( !set_ ) 
-    {
-      std::ostringstream o; 
-      o << "option not set";
-      throw std::logic_error( DESCRIPTION(o.str()) );
-    }
+    assert( set_ ); 
     
     // cast value
     std::istringstream s( value_ );
     T out; s >> out;
-    if( s.rdstate() & std::ios::failbit ) 
-    {
-      std::ostringstream o; 
-      o << "Wrong type for registered value=" << value_;
-      throw std::logic_error( DESCRIPTION(o.str()) );
-    }
+    assert( !(s.rdstate() & std::ios::failbit ) ); 
     return out;
   }
   

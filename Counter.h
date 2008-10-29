@@ -34,10 +34,7 @@
 
 #include <map>
 #include <string>
-#include <stdexcept>
 #include <iostream>
-
-#include "Exception.h"
 
 /*!
    \class   Counter

@@ -35,11 +35,12 @@
   \date $Date$
 */
 
-#include <string>
-#include <map>
-#include <list>
-#include <iostream>
 #include <algorithm>
+#include <assert.h>
+#include <iostream>
+#include <list>
+#include <map>
+#include <string>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -131,7 +132,7 @@ class ArgList: public Counter
   Arg& get( const Tag& tag )
   {
     Debug::Throw( "ArgList::Get.\n" );
-    if( !find( tag ) ) throw std::runtime_error( DESCRIPTION( "tag not found" ) );  
+    assert( find( tag ) );
     return *std::find( tag_list_.begin(), tag_list_.end(), tag );
   }
   
@@ -139,8 +140,7 @@ class ArgList: public Counter
   const Arg& get( const Tag& tag ) const
   {
     Debug::Throw( "ArgList::Get [const].\n" );
-    if( !find( tag ) ) throw std::runtime_error( DESCRIPTION( "tag not found" ) );  
-    return *std::find( tag_list_.begin(), tag_list_.end(), tag );
+    assert( find( tag ) );
   }
   
   //! return all arguments
