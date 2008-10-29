@@ -100,7 +100,11 @@ Options::Options( bool install_default_options ):
 Option& Options::option( const string& name )
 {
   Map::iterator iter( options_.find( name ) );
+  
+  if( iter == options_.end() ) 
+  { Debug::Throw(0) << "Options::option - unable to find option named " << name << endl; }
   assert( iter != options_.end() );
+
   return iter->second;
 }
 
