@@ -33,6 +33,7 @@
 */
 
 #include <QAction>
+#include <QCheckBox>
 #include <QFileDialog> 
 #include <QPushButton> 
 
@@ -103,10 +104,20 @@ class OptionListBox: public QWidget, public OptionWidget
     BrowsedLineEditor::Editor& editor( void ) const
     { return *editor_; }
     
+    //! checkbox
+    QCheckBox& checkbox( void ) const
+    { 
+      assert( checkbox_ );
+      return *checkbox_; 
+    }
+        
     private:
     
     //! editor
     BrowsedLineEditor::Editor* editor_;
+  
+    //! default checkbox
+    QCheckBox* checkbox_;
     
   };
   

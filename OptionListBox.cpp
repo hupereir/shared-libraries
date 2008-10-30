@@ -186,11 +186,26 @@ void OptionListBox::_add( void )
   
   // map dialog
   EditDialog dialog( this, browsable_, file_mode_ );
+  dialog.checkbox().setChecked( true );
+  
   if( dialog.centerOnParent().exec() == QDialog::Rejected ) return;
   if( dialog.editor().text().isEmpty() ) return;
   
   // create new item
-  model_.add( Options::Pair( optionName(), qPrintable( dialog.editor().text() ) ) );
+  Options::Pair option( optionName(), qPrintable( dialog.editor().text() ) );
+  model_.add( option );
+  
+  // make sure item is selected
+  QModelIndex index( model_.index( option ) );
+  if( index != _list().selectionModel()->currentIndex() )
+  {
+    _list().selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
+    _list().selectionModel()->setCurrentIndex( index,  QItemSelectionModel::Current|QItemSelectionModel::Rows );
+  }
+  
+  // update default state
+  if( dialog.checkbox().isEnabled() && dialog.checkbox().isChecked() )
+  { _setDefault(); }
 
 }
 
@@ -209,7 +224,12 @@ void OptionListBox::_edit( void )
   // create dialog
   EditDialog dialog( this, browsable_, file_mode_ );
   dialog.editor().setText( option.second.raw().c_str() );
-
+  if( option.second.hasFlag( Option::DEFAULT ) ) 
+  {
+    dialog.checkbox().setChecked( true );
+    dialog.checkbox().setEnabled( false );
+  }
+  
   // map dialog
   if( dialog.centerOnParent().exec() == QDialog::Rejected ) return;
   if( dialog.editor().text().isEmpty() ) return;
@@ -222,6 +242,18 @@ void OptionListBox::_edit( void )
   
   // re-add to model
   model_.add( option );
+  
+  // make sure item is selected
+  QModelIndex index( model_.index( option ) );
+  if( index != _list().selectionModel()->currentIndex() )
+  {
+    _list().selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
+    _list().selectionModel()->setCurrentIndex( index,  QItemSelectionModel::Current|QItemSelectionModel::Rows );
+  }  
+  
+  // update default state
+  if( dialog.checkbox().isEnabled() && dialog.checkbox().isChecked() )
+  { _setDefault(); }
   
   return;
 
@@ -273,20 +305,28 @@ OptionListBox::EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDia
   CustomDialog( parent )
 { 
 
+  _setSizeOptionName( "OPTIONLISTBOX_EDIT" );
+  QVBoxLayout* v_layout = new QVBoxLayout();
+  v_layout->setMargin(0);
+  v_layout->setSpacing(5);
+  mainLayout().addLayout( v_layout );
+  
   if( browsable ) 
   {
     
     BrowsedLineEditor* browse_edit = new BrowsedLineEditor( this );
-    mainLayout().addWidget( browse_edit );
+    v_layout->addWidget( browse_edit );
     browse_edit->setFileMode( mode );
     editor_ = &browse_edit->editor();
     
   } else {
     
     editor_ = new BrowsedLineEditor::Editor( this );
-    mainLayout().addWidget( &editor() );
+    v_layout->addWidget( &editor() );
   
   }
+  
+  v_layout->addWidget( checkbox_ = new QCheckBox( "Set as default", this ) );
   
   setMinimumSize( QSize( 320, 0 ) );
 
