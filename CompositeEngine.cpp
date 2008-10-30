@@ -134,7 +134,7 @@ bool CompositeEngine::_compositingEnabled( void ) const
     return valid;
   }
   #else
-  return false;
+  return true;
   #endif
   
 }
