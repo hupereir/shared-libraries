@@ -31,14 +31,14 @@
    \date    $Date$
 */
 
-#include <QGroupBox>
+#include <QWidget>
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
 namespace TRANSPARENCY
 {
   //! transparency common configuration
-  class TransparencyConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+  class TransparencyConfiguration: public QWidget, public OptionWidgetList, public Counter
   {
     public:
     
