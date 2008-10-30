@@ -115,6 +115,8 @@ void CompositeEngine::initialize( void )
     XCloseDisplay( display_ );
     display_ = 0;
   }
+  #else 
+  available_ = false;
   #endif
   
 }
@@ -134,7 +136,7 @@ bool CompositeEngine::_compositingEnabled( void ) const
     return valid;
   }
   #else
-  return true;
+  return false;
   #endif
   
 }
