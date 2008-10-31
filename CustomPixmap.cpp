@@ -32,14 +32,36 @@
 #include <assert.h>
 #include <QBitmap>
 #include <QImage>
+#include <QIcon>
 #include <QPainter>
+#include <QFileIconProvider>
 
 #include "CustomPixmap.h"
 #include "Debug.h"
+#include "IconSize.h"
 #include "File.h"
 #include "PixmapEngine.h"
 
 using namespace std;
+
+//_________________________________________________
+CustomPixmap::CustomPixmap( const QString& file, bool use_provider ):
+  Counter( "CustomPixmap" ),
+  QPixmap( file )
+{
+  Debug::Throw( "CustomPixmap::CustomPixmap.\n" );    
+
+  if( isNull() && use_provider )
+  {
+    
+    QIcon icon( QFileIconProvider().icon( file ) );
+    if( icon.isNull() ) return;
+    QPixmap out( icon.pixmap( IconSize( IconSize::MAXIMUM ) ) );
+    *this = out;
+    
+  }
+  
+}
 
 //_________________________________________________
 CustomPixmap CustomPixmap::find( const string& file )

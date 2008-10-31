@@ -37,6 +37,7 @@ using namespace std;
 #include <QPushButton>
 #include <QSplitter>
 
+#include "CustomPixmap.h"
 #include "IconFileDialog.h"
 #include "File.h"  
 #include "Debug.h"  
@@ -75,7 +76,7 @@ IconFileDialog::IconFileDialog( QWidget* parent ):
     h_layout->addWidget( button );
     connect( button, SIGNAL( clicked() ), SLOT( _preview() ) );
     
-  } else Debug::Throw(0) << "ustomFileDialog::CustomFileDialog - unable to find splitter." << endl;
+  } else Debug::Throw(0) << "CustomFileDialog::CustomFileDialog - unable to find splitter." << endl;
   
   connect( this, SIGNAL( currentChanged ( const QString& ) ), SLOT( _currentChanged( const QString& ) ) );
   
@@ -95,15 +96,16 @@ void IconFileDialog::_preview( void )
 
   Debug::Throw( "IconFileDialog::_preview.\n" );
   
-  QImage image( current_path_ );
-  if( image.isNull() ) preview_->setPixmap( QPixmap() );
+  CustomPixmap pixmap( current_path_, true );
+  if( pixmap.isNull() ) preview_->setPixmap( QPixmap() );
   else {
     
-    if( image.width() > preview_->width() || image.height() > preview_->height() )
-    { image = image.scaled( preview_->size(), Qt::KeepAspectRatio ); }
-    preview_->setPixmap( QPixmap::fromImage( image ) );
+    if( pixmap.width() > preview_->width()*0.8 || pixmap.height() > preview_->height()*0.8 )
+    { pixmap = pixmap.scaled( preview_->width()*0.8, preview_->height()*0.8, Qt::KeepAspectRatio, Qt::SmoothTransformation ); }
+    preview_->setPixmap( pixmap );
     
-  } 
+  }
 
   Debug::Throw( "IconFileDialog::_preview - done.\n" );
+  
 }

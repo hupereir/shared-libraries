@@ -50,7 +50,8 @@ class IconSize: public QSize
     SMALL = 16,
     MEDIUM = 22,
     LARGE = 32,
-    HUGE = 48
+    HUGE = 48,
+    MAXIMUM = 256
   };
 
   //! constructor

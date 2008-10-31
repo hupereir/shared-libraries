@@ -78,25 +78,30 @@ QPixmap PixmapEngine::_get( const string& file, bool from_cache )
   
   // create output
   QPixmap out;
-  for( list<string>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
-  {
+  if( QFileInfo( file.c_str() ).isAbsolute() ) { out = QPixmap( file.c_str() ); } 
+  else {
     
-    // skip empty path
-    if( iter->empty() ) continue;
-
-    // prepare filename
-    File icon_file;
-    
-    // see if path is internal resource path
-    if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
-    else icon_file = File( *iter ).find( file );
-    
-    // load pixmap
-    if( !icon_file.empty() )
+    for( list<string>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
     {
-      out.load( icon_file.c_str() );
-      if( !out.isNull() ) break;
+    
+      // skip empty path
+      if( iter->empty() ) continue;
+      
+      // prepare filename
+      File icon_file;
+      
+      // see if path is internal resource path
+      if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
+      else icon_file = File( *iter ).find( file );
+      
+      // load pixmap
+      if( !icon_file.empty() )
+      {
+        out.load( icon_file.c_str() );
+        if( !out.isNull() ) break;
+      }
     }
+    
   }
     
   cache_.insert( make_pair( file, out ) );
