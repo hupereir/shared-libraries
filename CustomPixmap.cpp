@@ -132,13 +132,6 @@ CustomPixmap CustomPixmap::merge( const QPixmap& pixmap, Corner corner ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::scale( const unsigned int& width, const unsigned int& height ) const
-{
-  QImage image( toImage() );
-  return CustomPixmap().fromImage( image.scaled( width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation) );
-}
-
-//_________________________________________________
 CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color ) const
 {
   

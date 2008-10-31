@@ -78,7 +78,7 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
     
     // resize pixmap
     if( pixmap.size() != IconSize( IconSize::HUGE ) )
-    pixmap = pixmap.scale( IconSize( IconSize::HUGE ) );
+    pixmap = pixmap.scaled( IconSize( IconSize::HUGE ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
     
     setIcon( pixmap );
     return;

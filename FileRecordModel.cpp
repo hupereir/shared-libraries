@@ -240,13 +240,13 @@ QIcon FileRecordModel::_icon( const std::string& name )
   // pixmap size
   unsigned int pixmap_size = XmlOptions::get().get<unsigned int>( "LIST_ICON_SIZE" );
   QSize size( pixmap_size, pixmap_size );
-  QSize scaled(size*0.9);
+  QSize scale(size*0.9);
   
   CustomPixmap base( CustomPixmap().find( name )  );
   
   QIcon icon;
   if( !base.isNull() )
-  { icon = CustomPixmap().empty( size ).merge( base.scale( scaled ), CustomPixmap::CENTER ); }
+  { icon = CustomPixmap().empty( size ).merge( base.scaled( scale, Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::CENTER ); }
   
   // insert in map
   icons_.insert( make_pair( name, icon ) );

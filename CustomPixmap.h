@@ -68,22 +68,7 @@ class CustomPixmap: public QPixmap, public Counter
   
   //! find first file matching name in list of path
   virtual CustomPixmap find( const std::string& file );
-  
-  //! resize
-  virtual CustomPixmap scale( const unsigned int& width, const unsigned int& height ) const;
-  
-  //! resize
-  virtual CustomPixmap scale( const QSize& size ) const
-  { return scale( size.width(), size.height() ); }
-  
-  //! resize
-  virtual CustomPixmap scaleWidth( const int& width ) const
-  { return scale( width, (width*this->height())/this->width() ); }
-
-  //! resize
-  virtual CustomPixmap scaleHeight( const int& height ) const
-  { return scale( (height*this->width())/this->height(), height ); }
-   
+     
   //! rotation
   enum Rotation
   {
