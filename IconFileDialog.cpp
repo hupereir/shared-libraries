@@ -96,7 +96,7 @@ void IconFileDialog::_preview( void )
 
   Debug::Throw( "IconFileDialog::_preview.\n" );
   
-  CustomPixmap pixmap( current_path_, true );
+  CustomPixmap pixmap( current_path_ );
   if( pixmap.isNull() ) preview_->setPixmap( QPixmap() );
   else {
     

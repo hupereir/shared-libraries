@@ -45,13 +45,20 @@
 using namespace std;
 
 //_________________________________________________
-CustomPixmap::CustomPixmap( const QString& file, bool use_provider ):
-  Counter( "CustomPixmap" ),
-  QPixmap( file )
+CustomPixmap::CustomPixmap( const QString& file ):
+  QPixmap( file ),
+  Counter( "CustomPixmap" )
 {
   Debug::Throw( "CustomPixmap::CustomPixmap.\n" );    
-
-  if( isNull() && use_provider )
+  
+  /* 
+  under windows, if pixmap is null, and file is an executable of a link
+  try load the icon using FileIncoProvider
+  */
+  #ifdef Q_WS_WIN
+  if( !isNull() ) return;
+  FileInfo info( file );
+  if( info.isExecutable() || info.isSymLink() )
   {
     
     QIcon icon( QFileIconProvider().icon( file ) );
@@ -60,6 +67,7 @@ CustomPixmap::CustomPixmap( const QString& file, bool use_provider ):
     *this = out;
     
   }
+  #endif
   
 }
 

@@ -62,7 +62,7 @@ class CustomPixmap: public QPixmap, public Counter
     {}
     
   //! constructor
-  CustomPixmap( const QString& file, bool use_provider = false );
+  CustomPixmap( const QString& file );
       
   //! destructor
   virtual ~CustomPixmap() 

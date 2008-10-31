@@ -67,7 +67,7 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
   Debug::Throw() << "IconBrowsedButton::setFile - " << file << endl;
   
   // load pixmap
-  CustomPixmap pixmap( file.c_str(), true );
+  CustomPixmap pixmap( file.c_str() );
   
   // update file if pixmap is valid or current file is undefined
   if( !pixmap.isNull() || file_ == NO_ICON )
