@@ -57,7 +57,7 @@ CustomPixmap::CustomPixmap( const QString& file ):
   */
   #ifdef Q_WS_WIN
   if( !isNull() ) return;
-  FileInfo info( file );
+  QFileInfo info( file );
   if( info.isExecutable() || info.isSymLink() )
   {
     
