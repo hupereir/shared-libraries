@@ -63,47 +63,42 @@ bool PixmapEngine::reload( void )
 }
 
 //__________________________________________________________
-QPixmap PixmapEngine::_get( const string& file, unsigned int flags )
+QPixmap PixmapEngine::_get( const string& file, bool from_cache )
 {
   Debug::Throw( "PixmapEngine::_get (file).\n" );
   
+  if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+
   // try find file in cache
-  if( flags & FROM_CACHE )
+  if( from_cache )
   {
     Cache::iterator iter( cache_.find( file ) );
     if( iter != cache_.end() ) return iter->second;
   }
-
-  if( flags & ABSOLUTE_PATH ) { QPixmap out( file ); } 
-  else {
   
-    // set pixmap path option
-    if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  // create output
+  QPixmap out;
+  for( list<string>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
+  {
     
-    // create output
-    QPixmap out;
-    for( list<string>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
+    // skip empty path
+    if( iter->empty() ) continue;
+
+    // prepare filename
+    File icon_file;
+    
+    // see if path is internal resource path
+    if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
+    else icon_file = File( *iter ).find( file );
+    
+    // load pixmap
+    if( !icon_file.empty() )
     {
-      
-      // skip empty path
-      if( iter->empty() ) continue;
-      
-      // prepare filename
-      File icon_file;
-      
-      // see if path is internal resource path
-      if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
-      else icon_file = File( *iter ).find( file );
-      
-      // load pixmap
-      if( !icon_file.empty() )
-      {
-        out.load( icon_file.c_str() );
-        if( !out.isNull() ) break;
-      }
+      out.load( icon_file.c_str() );
+      if( !out.isNull() ) break;
     }
-  
   }
+    
   cache_.insert( make_pair( file, out ) );
   return out;
   

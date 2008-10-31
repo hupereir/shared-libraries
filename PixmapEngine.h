@@ -50,27 +50,10 @@ class PixmapEngine: public Counter
   static PixmapEngine& get( void )
   { return singleton_; }
   
-  //! flags used to look for pixmaps
-  enum Flags
-  {
-    //! no flags
-    NONE = 0,
-      
-    //! use cache first
-    FROM_CACHE = 1<<0,
-    
-    //! use absolute path
-    /*! pixmap path, set from options, is not used */
-    ABSOLUTE_PATH = 1<<1,
-    
-    //! use file icon provider (windows only)
-    USE_PROVIDER = 1<<2
-  }
-  
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  static QPixmap get( const std::string& file, unsigned int flags = NONE )
-  { return get()._get( file, flags ); }
+  static QPixmap get( const std::string& file, bool from_cache = true )
+  { return get()._get( file, from_cache ); }
 
   //! map files and QPixmap
   typedef std::map< std::string, QPixmap > Cache;
@@ -132,7 +115,7 @@ class PixmapEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  QPixmap _get( const std::string& file, unsigned int flags );
+  QPixmap _get( const std::string& file, bool from_cache );
   
   //@}
   
