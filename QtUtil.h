@@ -55,27 +55,7 @@ class QtUtil {
     //! widget has fixed height
     HEIGHT = 2
   };
-
-  //! corners
-  enum Corner
-  {
-    TOP_LEFT = 1<<0,
-    TOP_RIGHT = 1<<1,
-    BOTTOM_LEFT  = 1<<2,
-    BOTTOM_RIGHT = 1<<3,
-    TOP = TOP_LEFT | TOP_RIGHT,
-    BOTTOM = BOTTOM_LEFT | BOTTOM_RIGHT,
-    LEFT = TOP_LEFT | BOTTOM_LEFT,
-    RIGHT = TOP_RIGHT | BOTTOM_RIGHT,
-    ALL = TOP | BOTTOM
-  };  
-  
-  //! return a rounded Region from input
-  static QRegion round( const QRect& region, const unsigned int& corners = ALL );
-  
-  //! return a rounded Region from input
-  static QPixmap round( const QPixmap& pixmap, const unsigned int& corners = ALL );
-  
+    
   //! move menu to position taking proper care of the screen borders
   static void moveWidget( QWidget* widget, QPoint position );
  
@@ -102,12 +82,6 @@ class QtUtil {
 
   //! uniconify a top level widget
   static void uniconify( QWidget* widget );
-  
-  //! retrieve widget (composite) opacity
-  static unsigned int opacity( const QWidget* );
-  
-  //! set widget (composite) opacity
-  static void setOpacity( QWidget*, const double& value );
   
   protected:
       

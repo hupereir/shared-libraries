@@ -84,6 +84,7 @@ noinst_HEADERS = \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
   RoundedPath.h \
+  RoundedRegion.h \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
@@ -173,6 +174,7 @@ libbase_qt_a_SOURCES = \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
   RoundedPath.cpp \
+  RoundedRegion.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
