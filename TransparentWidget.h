@@ -68,6 +68,10 @@ namespace TRANSPARENCY {
 
     //@}
     
+    //! window opacity
+    /*! this overloads the QWidget method to hack for WIN system */ 
+    void setWindowOpacity( double );
+    
     protected:
         
     //! enable/disable transparency
@@ -112,6 +116,10 @@ namespace TRANSPARENCY {
     virtual const QPixmap& _backgroundPixmap( void ) const
     { return background_pixmap_; }
   
+    //! opacity
+    const double& _opacity( void ) const
+    { return opacity_; }
+    
     //!@name event handlers
     //@{
    
@@ -177,7 +185,7 @@ namespace TRANSPARENCY {
     QAction* reload_background_action_;
     
     //@}
-    
+      
     //! transparency enabled
     bool transparent_;
     
@@ -190,6 +198,9 @@ namespace TRANSPARENCY {
     //! true when pointer is in window
     bool highlighted_;
     
+    //! window opacity
+    double opacity_;
+
     //! tint color
     QColor highlight_color_;
     
@@ -197,7 +208,7 @@ namespace TRANSPARENCY {
     QPixmap background_pixmap_;
     
   };
-    
+  
 };
 
 #endif

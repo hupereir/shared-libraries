@@ -50,7 +50,8 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   Counter( "TransparentWidget" ),
   transparent_( false ),
   background_changed_( true ),
-  highlighted_( false )
+  highlighted_( false ),
+  opacity_( 1 )
 { 
  
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
@@ -67,6 +68,26 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   
 }
 
+//____________________________________________________________________
+void TransparentWidget::setWindowOpacity( double value )
+{
+  
+  // store
+  opacity_ = value;
+
+  #if Q_WS_WIN
+
+  // on windows, update opacity only if CompositeEngine is disabled
+  // otherwise, it is handled via WinUtil
+  if( !TRANSPARENCY::CompositeEngine::get().isEnabled() )
+  { QWidget::setWindowOpacity( value ); }
+  
+  #else
+  QWidget::setWindowOpacity( value );
+  #endif
+
+}
+  
 //____________________________________________________________________
 void TransparentWidget::_setTintColor( const QColor& color )
 {
@@ -183,7 +204,7 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   #endif
   
   #ifdef Q_WS_WIN
-  WinUtil( this ).update( widget_pixmap );
+  WinUtil( this ).update( widget_pixmap, _opacity() );
   #endif
   
 }
@@ -216,7 +237,8 @@ void TransparentWidget::_updateConfiguration( void )
   } else _setHighlightColor( QColor() );
   
   // composite
-  CompositeEngine::get().setEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_COMPOSITE" ) );
+  if( CompositeEngine::get().setEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_COMPOSITE" ) ) )
+  { setWindowOpacity( _opacity() ); }
 
 }
   
