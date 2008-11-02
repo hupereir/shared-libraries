@@ -193,7 +193,7 @@ string Util::env( const string& val, const string& default_value )
 string Util::user( void )
 { 
   Debug::Throw( "Util::user.\n" ); 
-  #ifdef Q_WS_WIN32
+  #ifdef Q_WS_WIN
   return env( "USERNAME", "unknown user" ); 
   #else 
   // first try look for USERNAME environment variable
@@ -233,7 +233,7 @@ string Util::home( void )
 {
   Debug::Throw( "Util::home.\n" );
   
-  #ifdef Q_WS_WIN32
+  #ifdef Q_WS_WIN
   
   // use drive+path for windows
   string drive( env( "HOMEDRIVE","C:" ) );
@@ -253,7 +253,7 @@ string Util::tmp( void )
 {
   Debug::Throw( "Util::tmp.\n" );
   
-  #ifdef Q_WS_WIN32
+  #ifdef Q_WS_WIN
   
   // use system environment
   return env( "TEMP", env( "TMP", "C:/tmp" ) );
@@ -273,7 +273,7 @@ string Util::host( bool short_name )
   // use system environment
   // it does not work for windows
   Debug::Throw( "Util::host.\n" ); 
-  #ifdef Q_WS_WIN32
+  #ifdef Q_WS_WIN
   string out( env( "COMPUTERNAME", "unknown" ) );
   #else
   string out( env( "HOSTNAME", "unknown" ) );
