@@ -36,6 +36,7 @@
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "TransparentWidget.h"
+#include "WinUtil.h"
 #include "XmlOptions.h"
 
 #include "CompositeEngine.h"
@@ -51,6 +52,7 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   background_changed_( true ),
   highlighted_( false )
 { 
+ 
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
 
   // 
@@ -140,11 +142,12 @@ void TransparentWidget::leaveEvent( QEvent* event )
 void TransparentWidget::paintEvent( QPaintEvent* event )
 {
 
-  widget_pixmap_ = QPixmap( size() );
+  QPixmap widget_pixmap = QPixmap( size() );
+  widget_pixmap.fill( Qt::transparent );
   
-  QPainter painter( &widget_pixmap_ );
+  QPainter painter( &widget_pixmap );
   painter.setClipRect(event->rect());
-  
+    
   if( CompositeEngine::get().isEnabled() ) 
   {
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
@@ -164,18 +167,23 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   }
   
   painter.end();
+
+  _paint( widget_pixmap );
   
-  _paint( widget_pixmap_ );
-  
+  #ifdef Q_WS_X11
+  QPainter painter( this );
+  painter.setClipRect(event->rect());
+  if( CompositeEngine::get().isEnabled() ) 
   {
-    QPainter painter( this );
-    if( CompositeEngine::get().isEnabled() ) 
-    {
-      painter.setRenderHints(QPainter::SmoothPixmapTransform);
-      painter.setCompositionMode(QPainter::CompositionMode_Source );
-    }
-    painter.drawPixmap( QPoint(0,0), widget_pixmap_ );
+    painter.setRenderHints(QPainter::SmoothPixmapTransform);
+    painter.setCompositionMode(QPainter::CompositionMode_Source );
   }
+  painter.drawPixmap( QPoint(0,0), widget_pixmap );
+  #endif
+  
+  #ifdef Q_WS_WIN
+  WinUtil( this ).update( widget_pixmap );
+  #endif
   
 }
 
