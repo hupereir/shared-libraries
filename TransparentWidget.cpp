@@ -167,7 +167,6 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   }
   
   painter.end();
-
   _paint( widget_pixmap );
   
   #ifdef Q_WS_X11
@@ -180,7 +179,6 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
       painter.setCompositionMode(QPainter::CompositionMode_Source );
     }
     painter.drawPixmap( QPoint(0,0), widget_pixmap );
-    painter.end();
   }
   #endif
   
@@ -285,4 +283,4 @@ void TransparentWidget::_installActions( void )
   reload_background_action_->setToolTip( "Reinitialize transparent background" );
   connect( reload_background_action_, SIGNAL( triggered() ), &BackgroundPixmap::get(), SLOT( reload() ) );
   
-};
+}
