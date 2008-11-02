@@ -115,8 +115,13 @@ void CompositeEngine::initialize( void )
     XCloseDisplay( display_ );
     display_ = 0;
   }
-  #else 
-  available_ = false;
+  #endif
+
+  #ifdef Q_WS_WIN
+  // on windows, 
+  // composition mode is available by default
+  // TODO: check version to make sure this is true
+  available_ = true;
   #endif
   
 }
@@ -135,9 +140,17 @@ bool CompositeEngine::_compositingEnabled( void ) const
     XCloseDisplay( display );
     return valid;
   }
-  #else
-  return false;
   #endif
+
+  #ifdef Q_WS_WIN
+  // on windows, 
+  // composition mode is available by default
+  // TODO: check version to make sure this is true
+  return true;
+  #endif
+  
+  // on all other systems, return false
+  return false;
   
 }
 
