@@ -140,7 +140,9 @@ void TransparentWidget::leaveEvent( QEvent* event )
 void TransparentWidget::paintEvent( QPaintEvent* event )
 {
 
-  QPainter painter( this );
+  widget_pixmap_ = QPixmap( size() );
+  
+  QPainter painter( &widget_pixmap_ );
   painter.setClipRect(event->rect());
   
   if( CompositeEngine::get().isEnabled() ) 
@@ -163,7 +165,17 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   
   painter.end();
   
-  _paint( *this );
+  _paint( widget_pixmap_ );
+  
+  {
+    QPainter painter( this );
+    if( CompositeEngine::get().isEnabled() ) 
+    {
+      painter.setRenderHints(QPainter::SmoothPixmapTransform);
+      painter.setCompositionMode(QPainter::CompositionMode_Source );
+    }
+    painter.drawPixmap( QPoint(0,0), widget_pixmap_ );
+  }
   
 }
 

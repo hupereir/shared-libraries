@@ -196,6 +196,9 @@ namespace TRANSPARENCY {
     //! store background pixmap
     QPixmap background_pixmap_;
     
+    //! widget pixmap
+    QPixmap widget_pixmap_;
+    
   };
     
 };
