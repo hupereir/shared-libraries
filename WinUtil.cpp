@@ -37,8 +37,6 @@
 #include <windows.h>
 #endif
 
-#include "Debug.h"
-
 using namespace std;
 
 //_______________________________________
@@ -87,7 +85,6 @@ void WinUtil::update( QPixmap& pixmap, double opacity ) const
 bool WinUtil::hasFlag( unsigned long flag ) const
 {
 
-  Debug::Throw( "WinUtil::isLayered" );
   #ifdef Q_WS_WIN
   return GetWindowLong( _target().winId(), GWL_EXSTYLE) & flag;
   #else 
