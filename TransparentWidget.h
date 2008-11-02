@@ -143,6 +143,10 @@ namespace TRANSPARENCY {
     const bool& _backgroundChanged( void ) const
     { return background_changed_; }
     
+    //! paint on devide
+    /*! this must be re-implemented by derived classes */
+    virtual void _paint( QPaintDevice& ) = 0;
+    
     protected slots:
     
     //! update configuration

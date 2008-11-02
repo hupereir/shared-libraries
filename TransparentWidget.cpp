@@ -162,7 +162,8 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   }
   
   painter.end();
-  QWidget::paintEvent( event );  
+  
+  _paint( *this );
   
 }
 
