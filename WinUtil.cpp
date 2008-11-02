@@ -42,7 +42,7 @@
 using namespace std;
 
 //_______________________________________
-void WinUtil::update( QPixmap& pixmap ) const
+void WinUtil::update( QPixmap& pixmap, double opacity ) const
 {
 
   #ifdef Q_WS_WIN
@@ -64,7 +64,7 @@ void WinUtil::update( QPixmap& pixmap ) const
   BLENDFUNCTION blend;
   blend.BlendOp             = AC_SRC_OVER;
   blend.BlendFlags          = 0;
-  blend.SourceConstantAlpha = 255;
+  blend.SourceConstantAlpha = int( opacity*255 );
   blend.AlphaFormat         = AC_SRC_ALPHA;
   hBitmap = pixmap.toWinHBITMAP(QPixmap::PremultipliedAlpha); 
   oldBitmap = (HBITMAP)SelectObject(memDc, hBitmap);

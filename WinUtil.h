@@ -47,7 +47,7 @@ class WinUtil
  { assert( target_ ); }
   
   //! update layered widget using pixmap
-  void update( QPixmap& ) const;
+  void update( QPixmap&, double ) const;
   
   private:
   
