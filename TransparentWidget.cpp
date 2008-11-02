@@ -75,7 +75,7 @@ void TransparentWidget::setWindowOpacity( double value )
   // store
   opacity_ = value;
 
-  #if Q_WS_WIN
+  #ifdef Q_WS_WIN
 
   // on windows, update opacity only if CompositeEngine is disabled
   // otherwise, it is handled via WinUtil
