@@ -49,6 +49,12 @@ class WinUtil
   //! update layered widget using pixmap
   void update( QPixmap&, double ) const;
   
+  //! set flag
+  void setFlag( unsigned long, bool value = true ) const;
+  
+  //! has flag
+  bool hasFlag( unsigned long ) const;
+  
   private:
   
   // target widget

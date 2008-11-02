@@ -46,7 +46,7 @@ void WinUtil::update( QPixmap& pixmap, double opacity ) const
 {
 
   #ifdef Q_WS_WIN
-  if( !_isLayered() ) _setLayered();
+  if( !hasFlag( WS_EX_LAYERED) ) setFlag( WS_EX_LAYERED );
   
   HBITMAP oldBitmap;
   HBITMAP hBitmap;	
@@ -84,12 +84,12 @@ void WinUtil::update( QPixmap& pixmap, double opacity ) const
 }
 
 //_______________________________________
-bool WinUtil::_isLayered( void ) const
+bool WinUtil::hasFlag( unsigned long flag ) const
 {
 
   Debug::Throw( "WinUtil::isLayered" );
   #ifdef Q_WS_WIN
-  return GetWindowLong( _target().winId(), GWL_EXSTYLE) & WS_EX_LAYERED;
+  return GetWindowLong( _target().winId(), GWL_EXSTYLE) & flag;
   #else 
   return false;
   #endif
@@ -97,11 +97,12 @@ bool WinUtil::_isLayered( void ) const
 }
 
 //_______________________________________
-void WinUtil::_setLayered() const
+void WinUtil::setFlag( unsigned long flag, bool value ) const
 {
   
   #ifdef Q_WS_WIN
-  SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) | WS_EX_LAYERED);
+  if( value ) SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) | flag);
+  else SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) & (~flag));
   #endif
   
 }
