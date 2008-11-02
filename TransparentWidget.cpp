@@ -190,7 +190,12 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   painter.end();
   _paint( widget_pixmap );
   
-  #ifdef Q_WS_X11
+  
+  #ifdef Q_WS_WIN
+  if( CompositeEngine::get().isEnabled() ) { WinUtil( this ).update( widget_pixmap, _opacity() ); }
+  else
+  #endif
+
   {
     QPainter painter( this );
     painter.setClipRect(event->rect());
@@ -201,11 +206,6 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
     }
     painter.drawPixmap( QPoint(0,0), widget_pixmap );
   }
-  #endif
-  
-  #ifdef Q_WS_WIN
-  WinUtil( this ).update( widget_pixmap, _opacity() );
-  #endif
   
 }
 
