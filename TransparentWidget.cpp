@@ -161,13 +161,33 @@ void TransparentWidget::leaveEvent( QEvent* event )
 
 //____________________________________________________________________
 void TransparentWidget::paintEvent( QPaintEvent* event )
-{
-
-  QPixmap widget_pixmap = QPixmap( size() );
-  widget_pixmap.fill( Qt::transparent );
+{  
   
-  QPainter painter( &widget_pixmap );
-  painter.setClipRect(event->rect());
+  // handle painting on windows with compositing enabled 
+  // using a pixmap buffer, to allow true transparency
+  #ifdef Q_WS_WIN
+  if( CompositeEngine::get().isEnabled() ) 
+  { 
+    QPixmap widget_pixmap = QPixmap( size() );
+    widget_pixmap.fill( Qt::transparent );
+    _paintBackground( widget_pixmap, event->rect() );
+    _paint( widget_pixmap, event->rect() );
+    WinUtil( this ).update( widget_pixmap, _opacity() ); 
+  } else
+  #endif
+
+  {
+    _paintBackground( *this, event->rect() );
+    _paint( *this, event->rect() );
+  }
+  
+}
+
+//________________________________________________________________________
+void TransparentWidget::_paintBackground( QPaintDevice& device, const QRect& rect )
+{
+  QPainter painter( &device );
+  painter.setClipRect( rect );
     
   if( CompositeEngine::get().isEnabled() ) 
   {
@@ -178,35 +198,16 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   if( _backgroundChanged() ) _updateBackgroundPixmap();
   
   if( !_backgroundPixmap().isNull() )
-  { painter.drawPixmap( rect(), _backgroundPixmap(), rect() ); }
+  { painter.drawPixmap( TransparentWidget::rect(), _backgroundPixmap(), TransparentWidget::rect() ); }
   
   if( _highlighted() && _highlightColor().isValid() )
   {
     painter.setPen( Qt::NoPen );
     painter.setBrush( _highlightColor() );
-    painter.drawRect( rect() );
+    painter.drawRect( TransparentWidget::rect() );
   }
   
   painter.end();
-  _paint( widget_pixmap );
-  
-  
-  #ifdef Q_WS_WIN
-  if( CompositeEngine::get().isEnabled() ) { WinUtil( this ).update( widget_pixmap, _opacity() ); }
-  else
-  #endif
-
-  {
-    QPainter painter( this );
-    painter.setClipRect(event->rect());
-    if( CompositeEngine::get().isEnabled() ) 
-    {
-      painter.setRenderHints(QPainter::SmoothPixmapTransform);
-      painter.setCompositionMode(QPainter::CompositionMode_Source );
-    }
-    painter.drawPixmap( QPoint(0,0), widget_pixmap );
-  }
-  
 }
 
 //____________________________________________________________________
