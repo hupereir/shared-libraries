@@ -74,7 +74,7 @@ BaseApplication::BaseApplication( Display* display, int argc, char*argv[], Qt::H
 BaseApplication::~BaseApplication( void )
 { 
 
-  Debug::Throw( "BaseApplication::BaseApplication.\n" );
+  Debug::Throw( "BaseApplication::~BaseApplication.\n" );
   emit saveConfiguration();
   XmlOptions::write();
 
