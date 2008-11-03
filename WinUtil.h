@@ -50,10 +50,10 @@ class WinUtil
   void update( QPixmap&, double ) const;
   
   //! set flag
-  void setFlag( unsigned long, bool value = true ) const;
+  void setFlag( long int, bool value = true ) const;
   
   //! has flag
-  bool hasFlag( unsigned long ) const;
+  bool hasFlag( long int ) const;
   
   private:
   
