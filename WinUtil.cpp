@@ -29,8 +29,6 @@
   \date    $Date$
 */
 
-#include <sstream>
-
 #include "WinUtil.h"
 
 #ifdef Q_WS_WIN
