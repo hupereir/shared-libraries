@@ -31,11 +31,13 @@
 
 using namespace std;
 
+#include <QFileInfo>
 #include <QImage>
 #include <QLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QSplitter>
+#include <QUrl>
 
 #include "CustomPixmap.h"
 #include "IconFileDialog.h"
@@ -60,7 +62,7 @@ IconFileDialog::IconFileDialog( QWidget* parent ):
     main->setLayout( v_layout );
     v_layout->setSpacing(5);
     v_layout->setMargin(0);
-    v_layout->addWidget( preview_ = new QLabel( main ), 1 );
+    v_layout->addWidget( preview_ = new Label( main ), 1 );
     preview_->setAlignment( Qt::AlignCenter );
     preview_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
     
@@ -70,7 +72,7 @@ IconFileDialog::IconFileDialog( QWidget* parent ):
     v_layout->addLayout( h_layout );
     
     h_layout->addWidget( automatic_preview_ = new QCheckBox( "&Automatic preview", main ) );
-    automatic_preview_->setChecked( true );
+    _automaticPreviewCheckbox().setChecked( true );
     
     QPushButton* button = new QPushButton( "&Preview", main );
     h_layout->addWidget( button );
@@ -83,25 +85,56 @@ IconFileDialog::IconFileDialog( QWidget* parent ):
 }  
 
 //______________________________________________________________________
-void IconFileDialog::dragEnterEvent( QDragEnterEvent *event )
+IconFileDialog::Label::Label( QWidget* parent ):
+  QLabel( parent ),
+  Counter( "IconFileDialog::Label" )
+{ setAcceptDrops( true ); }
+
+//______________________________________________________________________
+void IconFileDialog::Label::dragEnterEvent( QDragEnterEvent *event )
 {
-  Debug::Throw(0, "IconFileDialog::dragEnterEvent.\n" );
+  Debug::Throw( "IconFileDialog::Label::dragEnterEvent.\n" );
   if (event->mimeData()->hasUrls()) event->acceptProposedAction();
 }
 
 //______________________________________________________________________
-void IconFileDialog::dropEvent( QDropEvent *event )
+void IconFileDialog::Label::dropEvent( QDropEvent *event )
 {
-  Debug::Throw(0, "IconFileDialog::dropEvent.\n" );
-}
 
+  Debug::Throw( "IconFileDialog::Label::dropEvent.\n" );
+  
+  // check if event is valid
+  if( !event->mimeData()->hasUrls() ) return;
+  
+  // loop over event URLs
+  QList<QUrl> urls( event->mimeData()->urls() );
+  for( QList<QUrl>::const_iterator iter = urls.begin(); iter != urls.end(); iter++ )
+  {
+    QFileInfo file_info( iter->toLocalFile() );
+    if( file_info.exists() )
+    {
+      IconFileDialog& dialog( *static_cast<IconFileDialog*>( window() ) );
+      if( file_info.isDir() ) dialog.setDirectory( file_info.filePath() );
+      else {
+        
+        dialog.setDirectory( file_info.path() );
+        dialog.selectFile( file_info.fileName() );
+        if( dialog._automaticPreviewCheckbox().isChecked() ) dialog._currentChanged( file_info.filePath() );
+        
+      }
+      event->acceptProposedAction();
+      return;
+    }
+  }
+  
+}
 
 //______________________________________________________________________
 void IconFileDialog::_currentChanged( const QString& value )
 { 
   Debug::Throw( "IconFileDialog::_currentChanged.\n" );
   current_path_ = value;
-  if( automatic_preview_->isChecked() ) _preview();
+  if( _automaticPreviewCheckbox().isChecked() ) _preview();
 }
 
 //______________________________________________________________________

@@ -31,6 +31,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <string>
 #include <QCheckBox>
 #include <QDragEnterEvent>
@@ -62,14 +63,6 @@ class IconFileDialog: public CustomFileDialog
     CustomFileDialog::selectFile( filename );
   }
 
-  protected:
-
-  //! drag enter event
-  virtual void dragEnterEvent( QDragEnterEvent* );
-
-  //! drop event
-  virtual void dropEvent( QDropEvent* );
-  
   private slots:
   
   //! update current
@@ -89,13 +82,36 @@ class IconFileDialog: public CustomFileDialog
   private:
   
   //! automatic preview checkbox
+  QCheckBox& _automaticPreviewCheckbox( void ) const
+  { 
+    assert( automatic_preview_ );
+    return *automatic_preview_;
+  }
+  
+  //! automatic preview checkbox
   QCheckBox* automatic_preview_;
   
   //! current file
   QString current_path_;
-  
+
+  class Label: public QLabel, public Counter
+  {
+    public:
+    
+    //! constructor
+    Label( QWidget* parent );
+    
+    private:
+    
+    //! drag enter event
+    virtual void dragEnterEvent( QDragEnterEvent* );
+
+    //! drop event
+    virtual void dropEvent( QDropEvent* );
+  };
+    
   //! preview label
-  QLabel* preview_;
+  Label* preview_;
   
 };
 
