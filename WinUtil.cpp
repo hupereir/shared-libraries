@@ -29,8 +29,9 @@
   \date    $Date$
 */
 
+#include <sstream>
+
 #include "WinUtil.h"
-#include "XmlOptions.h"
 
 #ifdef Q_WS_WIN
 #define _WIN32_WINNT 0x0500
@@ -45,7 +46,7 @@ void WinUtil::update( QPixmap& pixmap, double opacity ) const
 {
 
   #ifdef Q_WS_WIN
-  if( !hasFlag( WS_EX_LAYERED) ) setFlag( WS_EX_LAYERED );
+  if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
   
   HBITMAP oldBitmap;
   HBITMAP hBitmap;	
@@ -101,7 +102,6 @@ void WinUtil::setFlag( long int flag, bool value ) const
   #ifdef Q_WS_WIN
   if( value ) SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) | flag);
   else SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) & (~flag));
-  XmlOptions::get().set<long int>( "WINDOW_FLAGS", GetWindowLong( _target().winId(), GWL_EXSTYLE) );
   #endif
  
   
