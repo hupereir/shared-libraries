@@ -83,6 +83,20 @@ IconFileDialog::IconFileDialog( QWidget* parent ):
 }  
 
 //______________________________________________________________________
+void IconFileDialog::dragEnterEvent( QDragEnterEvent *event )
+{
+  Debug::Throw(0, "IconFileDialog::dragEnterEvent.\n" );
+  if (event->mimeData()->hasUrls()) event->acceptProposedAction();
+}
+
+//______________________________________________________________________
+void IconFileDialog::dropEvent( QDropEvent *event )
+{
+  Debug::Throw(0, "IconFileDialog::dropEvent.\n" );
+}
+
+
+//______________________________________________________________________
 void IconFileDialog::_currentChanged( const QString& value )
 { 
   Debug::Throw( "IconFileDialog::_currentChanged.\n" );

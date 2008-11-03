@@ -33,6 +33,8 @@
 
 #include <string>
 #include <QCheckBox>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QLabel>
 
 #include "CustomFileDialog.h"
@@ -60,6 +62,14 @@ class IconFileDialog: public CustomFileDialog
     CustomFileDialog::selectFile( filename );
   }
 
+  protected:
+
+  //! drag enter event
+  virtual void dragEnterEvent( QDragEnterEvent* );
+
+  //! drop event
+  virtual void dropEvent( QDropEvent* );
+  
   private slots:
   
   //! update current
