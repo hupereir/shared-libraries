@@ -175,8 +175,12 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
   { 
     QPixmap widget_pixmap = QPixmap( size() );
     widget_pixmap.fill( Qt::transparent );
-    _paintBackground( widget_pixmap, event->rect() );
-    _paint( widget_pixmap, event->rect() );
+    
+    // for true transparency on windows, one has to repaint the entire pixmap
+    // this might be improved if the widget_pixmap is not erased at each pass
+    _paintBackground( widget_pixmap, rect() );
+    _paint( widget_pixmap, rect() );
+    
     WinUtil( this ).update( widget_pixmap, _opacity() ); 
   } else
   #endif
