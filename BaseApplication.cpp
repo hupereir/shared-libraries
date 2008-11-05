@@ -55,6 +55,7 @@ BaseApplication::BaseApplication( int argc, char*argv[] ) :
 {
   Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
   if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) setStyle( new FlatStyle() );
+  connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 }
 
 //____________________________________________
@@ -67,6 +68,7 @@ BaseApplication::BaseApplication( Display* display, int argc, char*argv[], Qt::H
 {
   Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
   if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) setStyle( new FlatStyle() );
+  connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 }
 #endif
 
@@ -141,9 +143,6 @@ bool BaseApplication::realizeWidget( void )
   
   configuration_action_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default &Configuration", this );
   connect( configuration_action_, SIGNAL( triggered() ), SLOT( _configuration() ) ); 
-
-  // configuration
-  connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
   realized_ = true;
   return true;

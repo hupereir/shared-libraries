@@ -129,7 +129,7 @@ class BaseApplication: public QApplication
   private slots:
   
   //! configuration
-  virtual void _updateConfiguration( void );
+  void _updateConfiguration( void );
       
   protected:
   
