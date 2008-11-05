@@ -160,9 +160,6 @@ namespace TRANSPARENCY {
 
     protected slots:
     
-    //! update configuration
-    virtual void _updateConfiguration( void );
-
     //! update background pixmap
     virtual void _updateBackgroundPixmap( void );
     
@@ -172,6 +169,11 @@ namespace TRANSPARENCY {
       _setBackgroundChanged( true );
       update();
     }
+
+    private slots:
+    
+    //! update configuration
+    void _updateConfiguration( void );
     
     private:
 

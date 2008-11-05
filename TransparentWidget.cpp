@@ -30,6 +30,7 @@
 */
 
 #include <assert.h>
+#include <QApplication>
 #include <QPainter>
 
 #include "BackgroundPixmap.h"
@@ -63,6 +64,10 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   // actions
   _installActions();
 
+  // configuration
+  _updateConfiguration();
+  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  
   // connections
   connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( _reloadBackground() ) );
   
