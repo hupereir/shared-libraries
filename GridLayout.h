@@ -86,7 +86,11 @@ class GridLayout: public QGridLayout, public Counter
     QGridLayout::addLayout( layout, row_, column_, alignment );
     _increment();
   }
-    
+ 
+  //! reset location
+  void reset( void )
+  { setLocation( 0, 0 ); }
+  
   //! set current position in grid
   void setLocation( const int& row, const int& column )
   { row_ = row; column_ = column; }
