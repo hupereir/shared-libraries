@@ -87,10 +87,6 @@ class GridLayout: public QGridLayout, public Counter
     _increment();
   }
  
-  //! reset location
-  void reset( void )
-  { setLocation( 0, 0 ); }
-  
   //! set current position in grid
   void setLocation( const int& row, const int& column )
   { row_ = row; column_ = column; }
