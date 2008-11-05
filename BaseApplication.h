@@ -69,17 +69,6 @@ class BaseApplication: public QApplication
   
   //! create all widgets
   virtual bool realizeWidget( void );
-          
-  //! set application busy
-  virtual void busy( void ) 
-  {
-    setOverrideCursor( Qt::WaitCursor ); 
-    processEvents(); 
-  }
-  
-  //! set application idle
-  virtual void idle( void )
-  { restoreOverrideCursor(); }
   
   //!@name actions
   //@{
@@ -101,6 +90,19 @@ class BaseApplication: public QApplication
   { return *close_action_; }
     
   //@}
+  
+  public slots:
+  
+  //! set application busy
+  virtual void busy( void ) 
+  {
+    setOverrideCursor( Qt::WaitCursor ); 
+    processEvents(); 
+  }
+  
+  //! set application idle
+  virtual void idle( void )
+  { restoreOverrideCursor(); }
   
   signals:
   

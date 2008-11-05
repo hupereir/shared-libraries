@@ -116,6 +116,7 @@ void BaseApplication::initApplicationManager( void )
     
   // initialization
   application_manager_->init( args_ );
+  Debug::Throw( "BaseApplication::initApplicationManager - done.\n" ); 
   
 }
 
