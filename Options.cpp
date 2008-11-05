@@ -131,8 +131,15 @@ bool Options::add( const std::string& name, const Option& option, bool overwrite
       
       if( option.hasFlag( Option::DEFAULT ) && !same_option_iter->hasFlag( Option::DEFAULT ) )
       {
-        
+      
+        // remove old option
         iter->second.erase( same_option_iter );
+        
+        // set all remaining options to non default
+        for( List::iterator same_option_iter = iter->second.begin(); same_option_iter != iter->second.end(); same_option_iter ++ )
+        { same_option_iter->setFlag( Option::DEFAULT, false ); }
+        
+        // set current option to DEFAULT
         iter->second.insert( iter->second.begin(), option );
         return true;
         
