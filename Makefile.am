@@ -16,6 +16,7 @@ crystal/editpaste.png \
 crystal/encrypted.png \
 crystal/exit.png \
 crystal/fileopen.png \
+crystal/fileopen-folder.png \
 crystal/dialog-information.png \
 crystal/messagebox_warning.png \
 crystal/qt-logo.png \
@@ -42,6 +43,7 @@ oxygen/editpaste.png \
 oxygen/encrypted.png \
 oxygen/exit.png \
 oxygen/fileopen.png \
+oxygen/fileopen-folder.png \
 oxygen/messagebox_warning.png \
 oxygen/qt-logo.png \
 oxygen/redo.png \
