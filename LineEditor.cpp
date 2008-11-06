@@ -359,6 +359,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
   
   // draw white background
   QPainter painter( this );
+  painter.setClipRect( event->rect() );
   style()->drawPrimitive(QStyle::PE_PanelLineEdit, &panel, &painter, this);
   
   // paint the button at the correct place
@@ -391,7 +392,8 @@ void LineEditor::paintEvent( QPaintEvent* event )
   {
 
     // draw frame
-    QPainter painter( this );    
+    QPainter painter( this );  
+    painter.setClipRect( event->rect() );
     style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
     painter.end();
     

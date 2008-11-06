@@ -85,6 +85,8 @@ void ColorMenu::paintEvent( QPaintEvent* event )
   
   // loop over actions associated to existing colors
   QPainter painter( this );
+  painter.setClipRect( event->rect() );
+  
   painter.setPen( Qt::NoPen );
   for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
   {

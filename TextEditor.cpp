@@ -862,6 +862,7 @@ bool TextEditor::event( QEvent* event )
     if( _leftMargin() ) 
     {
       QPainter painter( this );
+      painter.setClipRect( static_cast<QPaintEvent*>(event)->rect() );
       _drawMargins( painter );
       painter.end();
     }
@@ -1408,15 +1409,13 @@ void TextEditor::resizeEvent( QResizeEvent* event )
 void TextEditor::paintEvent( QPaintEvent* event )
 {
   // handle block background
-  QRect rect = event->rect();
-  QTextBlock first( cursorForPosition( rect.topLeft() ).block() );
-  QTextBlock last( cursorForPosition( rect.bottomRight() ).block() );
-
-  // translate rect from widget to viewport coordinates
-  rect.translate( scrollbarPosition() );
+  QTextBlock first( cursorForPosition( event->rect().topLeft() ).block() );
+  QTextBlock last( cursorForPosition( event->rect().bottomRight() ).block() );
 
   // create painter and translate from widget to viewport coordinates
   QPainter painter( viewport() );
+  painter.setClipRect( event->rect() );
+  
   painter.translate( -scrollbarPosition() );
   painter.setPen( Qt::NoPen );
   
@@ -1443,7 +1442,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
     if( color.isValid() )
     {
       painter.setBrush( color );
-      painter.drawRect( block_rect&rect );
+      painter.drawRect( block_rect );
     }
 
   }
@@ -1458,8 +1457,6 @@ void TextEditor::paintEvent( QPaintEvent* event )
     painter.setBrush( _boxSelection().brush() );
 
     painter.drawRect( _boxSelection().rect() );
-    // painter.setRenderHint( QPainter::Antialiasing );
-    // painter.drawPath( RoundedPath( QRectF( _boxSelection().rect() ) ) );
 
   }
   painter.end();
@@ -1473,6 +1470,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
   in which case the paintEvent is likely to correspond to a cursor blicking event, and no update is needed
   This is done to minimize the amount of CPU
   */
+  QRect rect( event->rect().translated( scrollbarPosition() ) );
   if( _leftMargin() && ( _rectChanged( rect ) || rect.width() != cursorWidth() ) ) 
   { QFrame::update( QRect( frameWidth(), frameWidth(), _leftMargin(), height() ) ); }
   

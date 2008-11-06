@@ -39,7 +39,6 @@
 #include <QLayout>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QPainter>
 
 #include "BaseIcons.h"
 #include "BaseDialog.h"

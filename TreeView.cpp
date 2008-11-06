@@ -200,11 +200,12 @@ void TreeView::paintEvent( QPaintEvent* event )
     QRect rect( visualRect( model()->index( 0, selected_column ) ) );
     
     QPainter painter( viewport() );
+    painter.setClipRect( event->rect() );
     rect.setTop(0);
     rect.setHeight( height() );
     painter.setBrush( _selectedColumnColor() );
     painter.setPen( Qt::NoPen );
-    painter.drawRect( rect.intersected( event->rect() ) );
+    painter.drawRect( rect );
     painter.end();
     
   }

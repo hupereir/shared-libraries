@@ -28,7 +28,6 @@
 */
 
 #include <QApplication>
-#include <QPainter>
 
 #include "ColorDisplay.h"
 #include "ListWidget.h"

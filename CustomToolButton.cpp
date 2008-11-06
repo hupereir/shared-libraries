@@ -32,7 +32,6 @@
 #include <QApplication>
 #include <QIcon>
 #include <QPixmap>
-#include <QPainter>
 #include <QStylePainter>
 #include <QStyleOptionToolButton>
 
