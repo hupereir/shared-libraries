@@ -2133,8 +2133,8 @@ void TextEditor::_drawMargins( QPainter& painter )
   int height( TextEditor::height() - 2*frameWidth() );
   if( horizontalScrollBar()->isVisible() ) { height -= horizontalScrollBar()->height() + 2; }
   
+  painter.setClipRect( painter.clipRegion().boundingRect().intersected( QRect( 0, 0, _leftMargin(), height ).translated( frameWidth(),  frameWidth() ) ) );
   painter.translate( frameWidth(),  frameWidth() );
-  painter.setClipRect( 0, 0, _leftMargin(), height );
   
   painter.setBrush( _marginBackgroundColor() );
   painter.setPen( Qt::NoPen );
