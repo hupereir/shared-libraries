@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
-EXTRA_DIST = base-svg.pro svg.qrc background.svg background-translucent.svg
+EXTRA_DIST = base-svg.pro baseSvg.qrc background.svg background-translucent.svg
 
 INCLUDES =  \
   -I$(qt_includes) \
@@ -24,7 +24,7 @@ libbase_svg_a_SOURCES =  \
   SvgEngine.cpp
 
 nodist_libbase_svg_a_SOURCES =  \
-  qrc_svg.cpp \
+  qrc_baseSvg.cpp \
   moc_SvgConfiguration.cpp
 	
 clean-local:
