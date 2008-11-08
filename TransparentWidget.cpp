@@ -99,7 +99,7 @@ void TransparentWidget::_setTintColor( const QColor& color )
   Debug::Throw( "TransparentWidget::tint.\n" ); 
   if( tint_color_ == color ) return;
   tint_color_ = color;
-  _setBackgroundChanged( true );
+  setBackgroundChanged( true );
 }
 
 //____________________________________________________________________
@@ -120,7 +120,7 @@ void TransparentWidget::moveEvent( QMoveEvent* event )
   if( _tintColor().isValid() && _tintColor().alpha() == 255 ) return QWidget::moveEvent( event );
  
   // update background
-  _setBackgroundChanged( true );
+  setBackgroundChanged( true );
   update();
   QWidget::moveEvent( event );
   
@@ -130,14 +130,14 @@ void TransparentWidget::moveEvent( QMoveEvent* event )
 //____________________________________________________________________
 void TransparentWidget::resizeEvent( QResizeEvent* event )
 {
-  _setBackgroundChanged( true );
+  setBackgroundChanged( true );
   QWidget::resizeEvent( event );
 }
 
 //____________________________________________________________________
 void TransparentWidget::showEvent( QShowEvent* event )
 {
-  _setBackgroundChanged( true );
+  setBackgroundChanged( true );
   update(); 
   QWidget::showEvent( event );
 }
@@ -296,7 +296,7 @@ void TransparentWidget::_updateBackgroundPixmap( void )
     painter.end();
   }
   
-  _setBackgroundChanged( false );
+  setBackgroundChanged( false );
   
   return;
   

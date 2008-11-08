@@ -71,7 +71,11 @@ namespace TRANSPARENCY {
     //! window opacity
     /*! this overloads the QWidget method to hack for WIN system */ 
     void setWindowOpacity( double );
-    
+        
+    //! background changed
+    void setBackgroundChanged( const bool& value )
+    { background_changed_ = value; }
+
     protected:
         
     //! enable/disable transparency
@@ -79,7 +83,7 @@ namespace TRANSPARENCY {
     {
       if( value == transparent_ ) return;
       transparent_ = value;
-      _setBackgroundChanged( true );
+      setBackgroundChanged( true );
     }
   
     //! transparency
@@ -142,11 +146,7 @@ namespace TRANSPARENCY {
     virtual void paintEvent( QPaintEvent* );
         
     //@}
-    
-    //! background changed
-    void _setBackgroundChanged( const bool& value )
-    { background_changed_ = value; }
-    
+       
     //! background changed
     const bool& _backgroundChanged( void ) const
     { return background_changed_; }
@@ -166,7 +166,7 @@ namespace TRANSPARENCY {
     //! force reloading of the background 
     virtual void _reloadBackground( void )
     { 
-      _setBackgroundChanged( true );
+      setBackgroundChanged( true );
       update();
     }
 
