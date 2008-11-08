@@ -209,6 +209,12 @@ namespace TRANSPARENCY {
     //! tint color
     QColor highlight_color_;
     
+    #ifdef Q_WS_WIN
+    //! widget pixmap
+    /*! it is used as widget storage when using full translucency */
+    QPixmap widget_pixmap_;
+    #endif
+    
     //! background pixmap
     QPixmap background_pixmap_;
     

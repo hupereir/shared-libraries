@@ -131,6 +131,15 @@ void TransparentWidget::moveEvent( QMoveEvent* event )
 void TransparentWidget::resizeEvent( QResizeEvent* event )
 {
   setBackgroundChanged( true );
+
+  #ifdef Q_WS_WIN
+  if( CompositeEngine::get().isEnabled() ) 
+  { 
+    widget_pixmap_ = QPixmap( size() ); 
+    widget_pixmap_.fill( Qt::transparent );
+  }
+  #endif
+  
   QWidget::resizeEvent( event );
 }
 
@@ -168,20 +177,14 @@ void TransparentWidget::leaveEvent( QEvent* event )
 void TransparentWidget::paintEvent( QPaintEvent* event )
 {  
   
+  #ifdef Q_WS_WIN
   // handle painting on windows with compositing enabled 
   // using a pixmap buffer, to allow true transparency
-  #ifdef Q_WS_WIN
   if( CompositeEngine::get().isEnabled() ) 
   { 
-    QPixmap widget_pixmap = QPixmap( size() );
-    widget_pixmap.fill( Qt::transparent );
-    
-    // for true transparency on windows, one has to repaint the entire pixmap
-    // this might be improved if the widget_pixmap is not erased at each pass
-    _paintBackground( widget_pixmap, rect() );
-    _paint( widget_pixmap, rect() );
-    
-    WinUtil( this ).update( widget_pixmap, _opacity() ); 
+    _paintBackground( widget_pixmap_, event->rect() );
+    _paint( widget_pixmap_, event->rect() );
+    WinUtil( this ).update( widget_pixmap_, _opacity() ); 
   } else
   #endif
 
@@ -250,6 +253,14 @@ void TransparentWidget::_updateConfiguration( void )
   if( CompositeEngine::get().setEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_COMPOSITE" ) ) )
   { setWindowOpacity( _opacity() ); }
 
+  #ifdef Q_WS_WIN
+  // create widget pixmap when compositing is enabled
+  if( CompositeEngine::get().isEnabled() ) { 
+    widget_pixmap_ = QPixmap( size() );
+    widget_pixmap_.fill( Qt::transparent );
+  } else widget_pixmap_ = QPixmap();
+  #endif
+  
 }
   
 //____________________________________________________________________
