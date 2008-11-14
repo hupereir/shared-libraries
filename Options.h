@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <iostream>
 #include <vector>
 #include <map>
@@ -78,20 +79,27 @@ class Options: public Counter
     return out;
   }
 
-  //! adds a new option. Return true if option is added
-  virtual bool add( const std::string& name, const Option& option, bool overwrite = true );
-  
-  //! retrieve list of special (i.e. kept) options
-  virtual const SpecialMap& specialOptions() const
+  //! retrieve Option map
+  const virtual Map& options( void ) const
+  { return options_; }
+ 
+  //! retrieve special Option map
+  const virtual SpecialMap& specialOptions( void ) const
   { return special_options_; }
   
+  //! adds a new option. Return true if option is added
+  virtual bool add( const std::string& name, Option option );
+    
   //! retrieve list of special (i.e. kept) options matching a given name
   virtual List& specialOptions( const std::string& name )
-  { return special_options_[name]; }
+  { 
+    SpecialMap::iterator iter( special_options_.find( name ) );
+    assert( iter != special_options_.end() );
+    return iter->second; 
+  }
   
   //! returns true if option name is special
-  virtual bool isSpecialOption( const std::string& name ) const
-  { return special_options_.find( name ) != special_options_.end(); }
+  virtual bool isSpecialOption( const std::string& name ) const;
   
   //! retrieve list of special (i.e. kept) options matching a given name
   template < typename T > 
@@ -109,39 +117,32 @@ class Options: public Counter
   //! clear list of special (i.e. kept) options matching a given name
   virtual void clearSpecialOptions( const std::string& name );
   
-  //! returns all options
-  const Map& options( void ) const
-  { return options_; }
-  
   //! returns true if option with matching name is found
   virtual bool find( const std::string& name )
   { return options_.find( name ) != options_.end(); }
- 
-  //! option accessor
-  virtual Option& option( const std::string& name );
- 
+  
   //! option value accessor
   template < typename T >
-  T get( const std::string& name )
-  { return option( name ).get<T>(); }
+  T get( const std::string& name ) const
+  { return _find( name )->second.get<T>(); }
 
   //! option raw value accessor
-  virtual std::string raw( const std::string& name )
-  { return option( name ).raw(); }
-
+  virtual std::string raw( const std::string& name ) const
+  { return _find( name )->second.raw(); }
+  
   //! option value modifier
   template < typename T >
   void set( const std::string& name, const T& value )
   { 
-    if( !find( name ) ) add( name, "" );
-    option( name ).set<T>( value ); 
+    assert( !isSpecialOption( name ) );
+    options_[name].set<T>( value );
   }
 
   //! option raw value modifier
   virtual void setRaw( const std::string& name, const std::string& value )
   { 
-    if( find( name ) ) option( name ).setRaw( value ); 
-    else add( name, value );
+    assert( !isSpecialOption( name ) );
+    options_[name].setRaw( value );
   }
   
   /*! \brief
@@ -159,11 +160,12 @@ class Options: public Counter
     
   //! dump options to stream
   virtual void dump( std::ostream& out = std::cout ) const;
+
+  protected:
   
-  //! retrieve Option map
-  virtual Map& map( void )
-  { return options_; }
-    
+  //! find name 
+  Map::const_iterator _find( const std::string& name ) const;
+  
   private:
    
   //! option map

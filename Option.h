@@ -1,4 +1,4 @@
-#ifndef Option_h
+ #ifndef Option_h
 #define Option_h
 
 // $Id$
@@ -49,31 +49,23 @@ class Option:public Counter {
   //! default creator
   Option(): 
     Counter( "Option" ),
-    value_( "" ),
-    comments_( "" ),
-    flags_( RECORDABLE ),
-    set_( false )
+    flags_( RECORDABLE )
   {}
     
   //! default creator
   Option( const char* value, const unsigned int& flags = RECORDABLE ):
     Counter( "Option" ),
-    comments_( "" ),
-    flags_( flags ),
-    set_( false )
+    flags_( flags )
   {
     assert( value );
     value_ = value;
-    set_ = !value_.empty();
   }
   
   //! filled creator
   Option( const std::string& value, const unsigned int& flags = RECORDABLE ): 
     Counter( "Option" ),
     value_( value ),
-    comments_( "" ),
-    flags_( flags ),
-    set_( !value.empty() )
+    flags_( flags )
   {}
  
   //! filled creator
@@ -81,8 +73,7 @@ class Option:public Counter {
     Counter( "Option" ),
     value_( value ),
     comments_( comments ),
-    flags_( flags ),
-    set_( !value.empty() )
+    flags_( flags )
   {}
   
   //! less than operator
@@ -111,8 +102,9 @@ class Option:public Counter {
   enum Flag
   {
     NONE = 0,
-    DEFAULT = 1<<0,
+    CURRENT = 1 << 0,
     RECORDABLE = 1<<1
+    //DEFAULT = 1<<2,
   };
   
   //! flags
@@ -159,6 +151,14 @@ class Option:public Counter {
     unsigned int flag_;
     
   };
+
+  //! current
+  bool isCurrent( void ) const
+  { return flags_ & CURRENT; }
+  
+  //! current
+  void setCurrent( const bool& value )
+  { setFlag( CURRENT, value ); }
   
   //@}
 
@@ -179,7 +179,7 @@ class Option:public Counter {
   {
     
     // check if option is set
-    assert( set_ ); 
+    assert( !value_.empty() ); 
     
     // cast value
     std::istringstream s( value_ );
@@ -194,12 +194,12 @@ class Option:public Counter {
   {
     std::ostringstream s; s << value;
     value_ = s.str();
-    set_ = true;
     return *this;
   }
   
   //! check status
-  const bool& set( void ) const {return set_;}
+  const bool& set( void ) const 
+  {return !value_.empty();}
 
   //! method used to dump the option to stream
   friend std::ostream &operator << (std::ostream &o,const Option &opt)
@@ -209,13 +209,14 @@ class Option:public Counter {
     return o;
   }   
   
-  protected:
-  
-  //! validity
-  void _setValid( const bool& value )
-  { set_ = value; }
-  
+  //! restore default value
+  void restoreDefault()
+  {}
+    
   private:
+  
+  //! option default value
+  std::string default_value_;
   
   //! option value
   std::string value_;
@@ -225,9 +226,6 @@ class Option:public Counter {
   
   //! flags
   unsigned int flags_;
-  
-  //! true if option was initialized with value  
-  bool set_;         
   
 };
 

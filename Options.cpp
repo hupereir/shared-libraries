@@ -56,117 +56,99 @@ Options::Options( bool install_default_options ):
     add( "PIXMAP_PATH", Option( ":/pixmaps/crystal" ) );
     add( "PIXMAP_PATH", Option( ":/pixmaps" ) );
     
-    add( "DEBUG_LEVEL", Option( "0" , "debug verbosity level" ) ); 
-    add( "SORT_FILES_BY_DATE", Option( "0" , "sort files by access date in open previous menu" ) ); 
-    add( "USE_FLAT_THEME", Option( "0", "use flat theme in replacement of plastique theme" ) );
+    set( "DEBUG_LEVEL", Option( "0" , "debug verbosity level" ) ); 
+    set( "SORT_FILES_BY_DATE", Option( "0" , "sort files by access date in open previous menu" ) ); 
+    set( "USE_FLAT_THEME", Option( "0", "use flat theme in replacement of plastique theme" ) );
     
     // fonts
-    add( "FIXED_FONT_NAME", Option( "Sans" , "fixed font" ) ); 
-    add( "FONT_NAME", Option( "Sans" , "main font" ) ); 
+    set( "FIXED_FONT_NAME", Option( "Sans" , "fixed font" ) ); 
+    set( "FONT_NAME", Option( "Sans" , "main font" ) ); 
     
     // toolbars default configuration
-    add( "TOOLBUTTON_ICON_SIZE", Option( "32" , "text label in tool buttons" ) ); 
-    add( "TOOLBUTTON_TEXT_POSITION", Option( "0" , "text label in tool buttons" ) ); 
-    add( "LOCK_TOOLBARS", Option( "0" , "lock toolbars position" ) );
+    set( "TOOLBUTTON_ICON_SIZE", Option( "32" , "text label in tool buttons" ) ); 
+    set( "TOOLBUTTON_TEXT_POSITION", Option( "0" , "text label in tool buttons" ) ); 
+    set( "LOCK_TOOLBARS", Option( "0" , "lock toolbars position" ) );
     
     // text editors default configuration
-    add( "TAB_EMULATION", Option( "1" , "enable tab emulation" ) );
-    add( "TAB_SIZE", Option( "2" , "emulated tab size" ) );
-    add( "WRAP_TEXT", Option( "0" , "text wrapping" ) );
-    add( "SHOW_LINE_NUMBERS", Option( "0" , "line numbers" ) );
+    set( "TAB_EMULATION", Option( "1" , "enable tab emulation" ) );
+    set( "TAB_SIZE", Option( "2" , "emulated tab size" ) );
+    set( "WRAP_TEXT", Option( "0" , "text wrapping" ) );
+    set( "SHOW_LINE_NUMBERS", Option( "0" , "line numbers" ) );
     
-    add( "HIGHLIGHT_PARAGRAPH", Option( "1", "enable paragraph highlighting" ) ); 
-    add( "HIGHLIGHT_COLOR", Option( "#fffdd4", "current paragraph highlight color" ) ); 
+    set( "HIGHLIGHT_PARAGRAPH", Option( "1", "enable paragraph highlighting" ) ); 
+    set( "HIGHLIGHT_COLOR", Option( "#fffdd4", "current paragraph highlight color" ) ); 
     
     // list configuration
-    add( "ALTERNATE_COLOR", Option( "None", "background color for even items in ListBox and ListView" ) ); 
-    add( "SELECTED_COLUMN_COLOR", Option( "#fffdd4", "background color for selected column" ) ); 
-    add( "LIST_ICON_SIZE", Option( "24", "default icon size in lists" ) );
+    set( "ALTERNATE_COLOR", Option( "None", "background color for even items in ListBox and ListView" ) ); 
+    set( "SELECTED_COLUMN_COLOR", Option( "#fffdd4", "background color for selected column" ) ); 
+    set( "LIST_ICON_SIZE", Option( "24", "default icon size in lists" ) );
     
     // textEditor margins
-    add( "MARGIN_FOREGROUND", "#136872" );
-    add( "MARGIN_BACKGROUND", "#ecffec" );
-    add( "MARGIN_VERTICAL_LINE", "1" );
+    set( "MARGIN_FOREGROUND", "#136872" );
+    set( "MARGIN_BACKGROUND", "#ecffec" );
+    set( "MARGIN_VERTICAL_LINE", "1" );
     
     
     // box selection
-    add( "BOX_SELECTION_ALPHA", Option( "20", "alpha threshold for box selection - between 0 and 100" ) );
+    set( "BOX_SELECTION_ALPHA", Option( "20", "alpha threshold for box selection - between 0 and 100" ) );
     
   }
   
 }
 
-//____________________________________________________
-Option& Options::option( const string& name )
-{
-  Map::iterator iter( options_.find( name ) );
-  
-  if( iter == options_.end() ) 
-  { Debug::Throw(0) << "Options::option - unable to find option named " << name << endl; }
-  assert( iter != options_.end() );
-
-  return iter->second;
-}
+//________________________________________________
+bool Options::isSpecialOption( const std::string& name ) const
+{ return special_options_.find( name ) != special_options_.end(); }
 
 //________________________________________________
 void Options::clearSpecialOptions( const string& name )
 {
-
-  if( special_options_.find( name ) == special_options_.end() ) return;
+  assert( isSpecialOption( name ) );
   special_options_[name].clear();
 }
 
 //________________________________________________
-bool Options::add( const std::string& name, const Option& option, bool overwrite )
+bool Options::add( const std::string& name, Option option )
 {
   
   // store option as special if requested
   SpecialMap::iterator iter( special_options_.find( name ) );
-  if( iter != special_options_.end() )
+  assert( iter != special_options_.end() );
+  
+  // if option is first, set as current
+  if( iter->second.empty() ) option.setCurrent( true );
+  else if( option.isCurrent() )
   {
     
-    List::iterator same_option_iter = std::find( iter->second.begin(), iter->second.end(), option );
-    if( same_option_iter != iter->second.end() )
-    {
-      
-      if( option.hasFlag( Option::DEFAULT ) && !same_option_iter->hasFlag( Option::DEFAULT ) )
-      {
-      
-        // remove old option
-        iter->second.erase( same_option_iter );
-        
-        // set all remaining options to non default
-        for( List::iterator same_option_iter = iter->second.begin(); same_option_iter != iter->second.end(); same_option_iter ++ )
-        { same_option_iter->setFlag( Option::DEFAULT, false ); }
-        
-        // set current option to DEFAULT
-        iter->second.insert( iter->second.begin(), option );
-        return true;
-        
-      } else return false;
+    // set all remaining options to non default
+    for( List::iterator option_iter = iter->second.begin(); option_iter != iter->second.end(); option_iter ++ )
+    { option_iter->setCurrent( false ); }
+  
+  }
+  
+  // see if option is already in list
+  List::iterator same_option_iter = std::find( iter->second.begin(), iter->second.end(), option );
+  if( same_option_iter != iter->second.end() ) 
+  { 
     
+    // if flags are identical, do nothing and return false
+    if( same_option_iter->flags() == option.flags() ) return false;
+    else {
+      
+      // update flags otherwise and return true
+      same_option_iter->setFlags( option.flags() );
+      return true;
+      
     }
     
-    if( option.hasFlag( Option::DEFAULT ) && !iter->second.empty() ) 
-    {
-      
-      iter->second.front().setFlag( Option::DEFAULT, 0 );
-      iter->second.insert( iter->second.begin(), option );
-      
-    } else iter->second.push_back( option );
+  } else {
     
+    // otherwise, insert option and return true
+    iter->second.push_back( option );
     return true;
-    
+  
   }
-
-  // check if option is already in the map and should not be overwritten
-  if( !( options_.find( name ) == options_.end() || overwrite ) )
-  return false;
-
-  // insert option in map, possibly overwriting existing
-  options_[name] = option;
-  return true;
-
+    
 }
 
 //________________________________________________
@@ -191,4 +173,12 @@ void Options::dump( ostream& out ) const
   
   out << endl;
   
+}
+
+//________________________________________________
+Options::Map::const_iterator Options::_find( const std::string& name ) const
+{
+  Map::const_iterator out( options_.find( name ) );
+  assert( out != options_.end() );
+  return out;
 }
