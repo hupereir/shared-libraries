@@ -56,7 +56,7 @@ Options::Options( bool install_default_options ):
     common to all applications
     */
     keep( "PIXMAP_PATH" );
-    add( "PIXMAP_PATH", Option( ":/pixmaps/oxygen" ) );
+    add( "PIXMAP_PATH", Option( ":/pixmaps/oxygen", Option::RECORDABLE|Option::CURRENT ) );
     add( "PIXMAP_PATH", Option( ":/pixmaps/crystal" ) );
     add( "PIXMAP_PATH", Option( ":/pixmaps" ) );
     
