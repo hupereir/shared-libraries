@@ -51,7 +51,7 @@
 #include "OptionListBox.h"
 #include "OptionSlider.h"
 #include "OptionSpinBox.h"
-#include "QtUtil.h"
+#include "QuestionDialog.h"
 #include "Str.h"
 
 using namespace std;
@@ -421,6 +421,30 @@ void BaseConfigurationDialog::_restore( void )
 void BaseConfigurationDialog::_restoreDefaults( void )
 { 
   Debug::Throw( "BaseConfigurationDialog::_restoreDefaults.\n" );
+  
+  // list options that have no default values
+  const Options::Map& options( XmlOptions::get().options() );
+  set<string> names;
+  for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); iter++ )
+  { if( iter->second.defaultValue().empty() ) names.insert( iter->first ); }
+  
+  ostringstream what;
+  if( !names.empty() )
+  {
+
+    if( names.size() > 1 ) 
+    {
+      what << "Following options have no default values: " << endl;
+      for( set<string>::const_iterator iter = names.begin(); iter != names.end(); iter++ )
+      { what << "  " << *iter << endl; }
+    } else what << "Option " << *names.begin() << " has no default value." << endl;
+    
+    what << "Restore default anyway ?";
+  } else { what << "Restore all options to their default values ?"; }
+  
+  // ask confirmation
+  if( !QuestionDialog( this, what.str().c_str() ).centerOnWidget( this ).exec() ) return;
+
   XmlOptions::get().restoreDefaults();
   _read();
   emit configurationChanged();
