@@ -47,34 +47,16 @@ class Option:public Counter {
   public:
 
   //! default creator
-  Option(): 
-    Counter( "Option" ),
-    flags_( RECORDABLE )
-  {}
+  Option();
     
   //! default creator
-  Option( const char* value, const unsigned int& flags = RECORDABLE ):
-    Counter( "Option" ),
-    flags_( flags )
-  {
-    assert( value );
-    value_ = value;
-  }
+  Option( const char* value, const unsigned int& flags = RECORDABLE );
   
   //! filled creator
-  Option( const std::string& value, const unsigned int& flags = RECORDABLE ): 
-    Counter( "Option" ),
-    value_( value ),
-    flags_( flags )
-  {}
+  Option( const std::string& value, const unsigned int& flags = RECORDABLE );
  
   //! filled creator
-  Option( const std::string& value, const std::string& comments, const unsigned int& flags = RECORDABLE ): 
-    Counter( "Option" ),
-    value_( value ),
-    comments_( comments ),
-    flags_( flags )
-  {}
+  Option( const std::string& value, const std::string& comments, const unsigned int& flags = RECORDABLE );
   
   //! less than operator
   bool operator < (const Option& option ) const
@@ -104,7 +86,6 @@ class Option:public Counter {
     NONE = 0,
     CURRENT = 1 << 0,
     RECORDABLE = 1<<1
-    //DEFAULT = 1<<2,
   };
   
   //! flags
@@ -145,6 +126,11 @@ class Option:public Counter {
     bool operator() ( const Option& option ) const
     { return option.flags() & flag_; }
       
+    //! sorting predicate
+    /*! it is used to ensure that options that have a given flag appear first in a list */
+    bool operator() (const Option& first, const Option& second ) const
+    { return ( (first.flags() & flag_) && !(second.flags()&flag_) ); }
+    
     private:
     
     // predicted flag
@@ -154,13 +140,22 @@ class Option:public Counter {
 
   //! current
   bool isCurrent( void ) const
-  { return flags_ & CURRENT; }
+  { return hasFlag( CURRENT ); }
   
   //! current
-  void setCurrent( const bool& value )
-  { setFlag( CURRENT, value ); }
-  
+  Option& setCurrent( const bool& value )
+  { return setFlag( CURRENT, value ); }
+    
   //@}
+
+  //! default
+  Option& setDefault( void )
+  { 
+    default_value_ = value_;
+    default_flags_ = flags_;
+    return *this;
+  }
+  
 
   //! raw accessor
   const std::string& raw( void ) const
@@ -172,6 +167,10 @@ class Option:public Counter {
     value_ = value; 
     return *this;
   }
+  
+  //! default value
+  const std::string& defaultValue( void ) const
+  { return default_value_; }
 
   //! accessor
   template < typename T >
@@ -198,7 +197,7 @@ class Option:public Counter {
   }
   
   //! check status
-  const bool& set( void ) const 
+  bool set( void ) const 
   {return !value_.empty();}
 
   //! method used to dump the option to stream
@@ -207,16 +206,17 @@ class Option:public Counter {
     if( !opt.set() ) o << "not set";
     else o << opt.raw();
     return o;
-  }   
+  }
   
   //! restore default value
-  void restoreDefault()
-  {}
+  Option& restoreDefault()
+  { 
+    value_ = default_value_;
+    flags_ = default_flags_;
+    return *this;
+  }
     
   private:
-  
-  //! option default value
-  std::string default_value_;
   
   //! option value
   std::string value_;
@@ -226,6 +226,12 @@ class Option:public Counter {
   
   //! flags
   unsigned int flags_;
+  
+  //! option default value
+  std::string default_value_;
+ 
+  //! default flags
+  unsigned int default_flags_;
   
 };
 

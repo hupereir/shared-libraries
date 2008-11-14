@@ -42,11 +42,15 @@ using namespace std;
 Options::Options( bool install_default_options ):
   Counter( "Options" ),
   options_(),
-  special_options_()
+  special_options_(),
+  auto_default_( false )
 {
 
   if( install_default_options )
   {
+    
+    setAutoDefault( true );
+    
     /* 
     generic options (default values)
     common to all applications
@@ -92,6 +96,8 @@ Options::Options( bool install_default_options ):
     // box selection
     set( "BOX_SELECTION_ALPHA", Option( "20", "alpha threshold for box selection - between 0 and 100" ) );
     
+    setAutoDefault( false );
+    
   }
   
 }
@@ -108,12 +114,15 @@ void Options::clearSpecialOptions( const string& name )
 }
 
 //________________________________________________
-bool Options::add( const std::string& name, Option option )
+bool Options::add( const std::string& name, Option option, const bool& is_default )
 {
   
   // store option as special if requested
   SpecialMap::iterator iter( special_options_.find( name ) );
   assert( iter != special_options_.end() );
+  
+  // set as default
+  if( is_default || _autoDefault() ) option.setDefault();
   
   // if option is first, set as current
   if( iter->second.empty() ) option.setCurrent( true );
@@ -137,6 +146,7 @@ bool Options::add( const std::string& name, Option option )
       
       // update flags otherwise and return true
       same_option_iter->setFlags( option.flags() );
+      std::sort( iter->second.begin(), iter->second.end(), Option::HasFlagFTor( Option::CURRENT ) );
       return true;
       
     }
@@ -145,26 +155,52 @@ bool Options::add( const std::string& name, Option option )
     
     // otherwise, insert option and return true
     iter->second.push_back( option );
+    std::sort( iter->second.begin(), iter->second.end(), Option::HasFlagFTor( Option::CURRENT ) );
     return true;
   
   }
+  
     
 }
 
 //________________________________________________
-void Options::dump( ostream& out ) const
+void Options::restoreDefaults( void )
 {
-  Debug::Throw( "Options::dump.\n" );
   
-  // dump normal options
-  for( Map::const_iterator iter = options_.begin(); iter != options_.end(); iter++ )
+  // restore standard options
+  for( Map::iterator iter = options_.begin(); iter != options_.end(); iter++ )
+  { 
+    if( iter->second.defaultValue().empty() ) continue;
+    iter->second.restoreDefault(); 
+  }
+    
+  // restore standard options
+  for( SpecialMap::iterator iter = special_options_.begin(); iter != special_options_.end(); iter++ )
+  {
+    Options::List option_list( iter->second );
+    iter->second.clear();
+    for( Options::List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
+    { 
+      if( list_iter->defaultValue().empty() ) continue;
+      add( iter->first, list_iter->restoreDefault() );
+    }
+  }
+  
+}
+
+//________________________________________________
+std::ostream &operator << (std::ostream &out,const Options &options)
+{
+
+  // print normal options
+  for( Options::Map::const_iterator iter = options.options().begin(); iter != options.options().end(); iter++ )
   out << "  " << iter->first << ":" << iter->second << endl;
 
   // write special options
-  for( SpecialMap::const_iterator iter = special_options_.begin(); iter != special_options_.end(); iter++ )
+  for( Options::SpecialMap::const_iterator iter = options.specialOptions().begin(); iter != options.specialOptions().end(); iter++ )
   {
-    List option_list( iter->second );
-    for( List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
+    const Options::List& option_list( iter->second );
+    for( Options::List::const_iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
     {
       if( list_iter->hasFlag( Option::RECORDABLE ) && list_iter->set() && list_iter->raw().size() )
       { out << "  " << iter->first << ":" << *list_iter << endl; }

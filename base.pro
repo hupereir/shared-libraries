@@ -30,6 +30,7 @@ SOURCES = \
   File.cpp \
   FileRecord.cpp \
   Key.cpp \
+  Option.cpp \
   Options.cpp \
   Singleton.cpp \
   Str.cpp \

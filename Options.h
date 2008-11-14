@@ -88,7 +88,7 @@ class Options: public Counter
   { return special_options_; }
   
   //! adds a new option. Return true if option is added
-  virtual bool add( const std::string& name, Option option );
+  virtual bool add( const std::string&, Option, const bool& is_default = false );
     
   //! retrieve list of special (i.e. kept) options matching a given name
   virtual List& specialOptions( const std::string& name )
@@ -129,20 +129,25 @@ class Options: public Counter
   //! option raw value accessor
   virtual std::string raw( const std::string& name ) const
   { return _find( name )->second.raw(); }
-  
+   
   //! option value modifier
   template < typename T >
-  void set( const std::string& name, const T& value )
+  void set( const std::string& name, const T& value, const bool& is_default = false )
   { 
     assert( !isSpecialOption( name ) );
-    options_[name].set<T>( value );
+    Option &option( options_[name] );
+    option.set<T>( value );
+    if( is_default || _autoDefault() ) option.setDefault();
+    
   }
 
   //! option raw value modifier
-  virtual void setRaw( const std::string& name, const std::string& value )
+  virtual void setRaw( const std::string& name, const std::string& value, const bool& is_default = false )
   { 
     assert( !isSpecialOption( name ) );
-    options_[name].setRaw( value );
+    Option &option( options_[name] );
+    option.setRaw( value );
+    if( is_default || _autoDefault() ) option.setDefault();
   }
   
   /*! \brief
@@ -158,13 +163,21 @@ class Options: public Counter
     special_options_.insert( make_pair( name, List() ) );
   }
     
-  //! dump options to stream
-  virtual void dump( std::ostream& out = std::cout ) const;
-
+  //! auto-default
+  void setAutoDefault( const bool& value ) 
+  { auto_default_ = value; }
+  
+  //! restore defaults
+  void restoreDefaults( void );
+  
   protected:
   
   //! find name 
   Map::const_iterator _find( const std::string& name ) const;
+  
+  //! auto-default
+  const bool& _autoDefault( void ) const
+  { return auto_default_; }
   
   private:
    
@@ -173,7 +186,13 @@ class Options: public Counter
   
   //! set of option names to be kept separately
   SpecialMap special_options_;
-        
+       
+  //! if true all options inserted are also set as default
+  bool auto_default_;
+  
+  //! streamer
+  friend std::ostream &operator << (std::ostream &,const Options &);
+  
 };
 
 #endif
