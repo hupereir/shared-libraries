@@ -120,6 +120,10 @@ class Options: public Counter
   //! returns true if option with matching name is found
   virtual bool find( const std::string& name )
   { return options_.find( name ) != options_.end(); }
+
+  //! returns true if option with matching name is found
+  virtual const Option& option( const std::string& name ) const
+  { return options_.find( name )->second; }
   
   //! option value accessor
   template < typename T >
