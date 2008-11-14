@@ -94,7 +94,8 @@ bool XmlOptions::read( File file )
     } else {
       
       XmlOption option( element );
-      get().add( option.name(), option, true );
+      if( get().isSpecialOption( option.name() ) ) get().add( option.name(), option );
+      else get().set( option.name(), option );
       
     }
 
@@ -153,7 +154,7 @@ bool XmlOptions::write( File file )
   }
 
   // write standard options
-  for( Options::Map::const_iterator iter = get().map().begin(); iter != get().map().end(); iter++ )
+  for( Options::Map::const_iterator iter = get().options().begin(); iter != get().options().end(); iter++ )
   { 
    
     if( iter->second.hasFlag( Option::RECORDABLE ) && iter->second.set() && iter->second.raw().size() )

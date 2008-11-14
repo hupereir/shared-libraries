@@ -141,7 +141,7 @@ void OptionDialog::_reload( void )
   model_.add( option_set );
 
   _list().resizeColumns();
-  _list().setColumnWidth( OptionModel::DEFAULT, IconSize::SMALL+4 );
+  _list().setColumnWidth( OptionModel::CURRENT, IconSize::SMALL+4 );
 
   // check signal
   if( !( XmlOptions::get() == backup_options_ ) )

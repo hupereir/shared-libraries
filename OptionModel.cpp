@@ -72,8 +72,8 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
     }
   }
 
-  if( role == Qt::DecorationRole && index.column() == DEFAULT )
-  { return option.second.hasFlag( Option::DEFAULT ) ? IconEngine::get( ICONS::DIALOG_ACCEPT ):QVariant(); }
+  if( role == Qt::DecorationRole && index.column() == CURRENT )
+  { return option.second.isCurrent() ? IconEngine::get( ICONS::DIALOG_ACCEPT ):QVariant(); }
   
   if( role == Qt::ToolTipRole && index.column() == NAME ) 
   { return option.second.comments().c_str(); }

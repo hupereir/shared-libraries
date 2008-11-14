@@ -71,7 +71,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   _list().setSelectionMode( QAbstractItemView::ExtendedSelection );  
   _list().setModel( &model_ );
   _list().setRootIsDecorated( false );
-  _list().setMask( 1<<OptionModel::DEFAULT|1<<OptionModel::VALUE );
+  _list().setMask( 1<<OptionModel::CURRENT|1<<OptionModel::VALUE );
   _list().setItemDelegate( new TextEditionDelegate( this ) );
   _list().setIconSize( IconSize( IconSize::SMALL ) );
   layout->addWidget( &_list(), 1 );
@@ -126,8 +126,8 @@ void OptionListBox::read( void )
   Options::List values( XmlOptions::get().specialOptions( optionName() ) );  
   
   // check if one option is default, set first otherwise
-  if( !values.empty() && find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::DEFAULT ) ) == values.end() )
-  { values.front().setFlag( Option::DEFAULT ); }
+  if( !values.empty() && find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::CURRENT ) ) == values.end() )
+  { values.front().setCurrent( true ); }
   
   // add to model.
   OptionModel::Set options;
@@ -224,7 +224,7 @@ void OptionListBox::_edit( void )
   // create dialog
   EditDialog dialog( this, browsable_, file_mode_ );
   dialog.editor().setText( option.second.raw().c_str() );
-  if( option.second.hasFlag( Option::DEFAULT ) ) 
+  if( option.second.isCurrent() ) 
   {
     dialog.checkbox().setChecked( true );
     dialog.checkbox().setEnabled( false );
@@ -288,12 +288,12 @@ void OptionListBox::_setDefault( void )
 
   OptionModel::List options( model_.children() );
   for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); iter++ )
-  { iter->second.setFlag( Option::DEFAULT, false ); }
+  { iter->second.setCurrent( false ); }
   
   model_.set( OptionModel::Set( options.begin(), options.end() ) );
   
   Options::Pair current_option( model_.get( current ) );
-  current_option.second.setFlag( Option::DEFAULT );
+  current_option.second.setCurrent( true );
   model_.add( current_option );
 
   _list().resizeColumns();

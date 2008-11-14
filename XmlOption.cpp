@@ -49,13 +49,7 @@ XmlOption::XmlOption( const QDomElement& element )
     if( attribute.isNull() ) continue;
     if( attribute.name() == OPTIONS::VALUE ) setRaw( qPrintable( XmlString( attribute.value() ).toText() ) );
     else if( attribute.name() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlString( attribute.value() ).toText() ) );
-    
-    // old style options
-    else if( attribute.name() == OPTIONS::OPTIONS ) {
-      if( OPTIONS::FRONT.indexOf( attribute.value(), 0, Qt::CaseInsensitive ) >= 0 ) setFlag( DEFAULT, true );
-    
-    // new style options
-    } else if( attribute.name() == OPTIONS::FLAGS ) {
+    else if( attribute.name() == OPTIONS::FLAGS ) {
       
       setFlags( (unsigned int) attribute.value().toInt() );
     
