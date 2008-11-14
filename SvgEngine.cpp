@@ -49,11 +49,13 @@ SvgEngine::SvgEngine( void ):
   Debug::Throw( "SvgEngine::SvgEngine.\n" ); 
 
   // default option values
+  XmlOptions::get().setAutoDefault( true );
   XmlOptions::get().keep( "SVG_BACKGROUND" );
-  XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg" ) );
+  XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg", Option::RECORDABLE|Option::CURRENT ) );
   XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-translucent.svg" ) );
-  XmlOptions::get().add( "USE_SVG", "1" );
-  XmlOptions::get().add( "SVG_OFFSET", "0" );
+  XmlOptions::get().set( "USE_SVG", "1" );
+  XmlOptions::get().set( "SVG_OFFSET", "0" );
+  XmlOptions::get().setAutoDefault( false );
   
 }
 
