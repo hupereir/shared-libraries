@@ -1,7 +1,3 @@
-
-#ifndef OptionWidget_h
-#define OptionWidget_h
-
 // $Id$
 
 /******************************************************************************
@@ -26,50 +22,35 @@
 *******************************************************************************/
 
 /*!
-   \file    OptionWidget.h
-   \brief   base class for option manipulating widgets
+   \file    OptionWidgetList.cpp
+   \brief   abstract container for OptionWidgets
    \author  Hugo Pereira
    \version $Revision$
    \date    $Date$
 */
 
-#include <string>
+#include "OptionWidgetList.h"
 
-//! base class for option manipulating widgets
-/*! 
-  OptionWidgets are used as a base class to register widgets associated 
-  to a given Option in a Configuration dialog. They have a string member, which
-  is the option name, and 2 pure virtual functions for reading and writting the
-  option. These must be reimplemented into specific widgets.
-*/
-class OptionWidget
+using namespace std;
+
+//______________________________________________________________________
+void OptionWidgetList::read( void )
 {
-  public:
-      
-  //! constructor
-  OptionWidget( const std::string& name ):
-    option_name_( name )
-  {}
-  
-  //! destructor
-  virtual ~OptionWidget()
-  {}
-  
-  //! set widget value from option value
-  virtual void read( void ) = 0;
-  
-  //! set option value from widget value
-  virtual void write( void ) const = 0;
-  
-  //! option name
-  const std::string& optionName( void ) const
-  { return option_name_; }
-  
-  private:
-  
-  //! name of the option linked to the widget    
-  std::string option_name_;
-  
-};
-
-#endif
+  Debug::Throw( "OptionWidgetList::read.\n" );
+  for( std::vector< OptionWidget* >::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
+  { 
+    Debug::Throw() << "OptionWidgetList::read - " << (*iter)->optionName() << endl;
+    (*iter)->read(); 
+  }
+}
+   
+//______________________________________________________________________
+void OptionWidgetList::write( void ) const
+{
+  Debug::Throw( "OptionWidgetList::write\n" );
+  for( std::vector< OptionWidget* >::const_iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
+  { 
+    Debug::Throw() << "OptionWidgetList::write - " << (*iter)->optionName() << endl;   
+    (*iter)->write(); 
+  }
+}

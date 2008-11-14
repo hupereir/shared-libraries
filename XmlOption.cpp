@@ -68,8 +68,6 @@ XmlOption::XmlOption( const QDomElement& element )
 
   }
 
-  _setValid( raw().size() );
-
 }
 
 //________________________________________________

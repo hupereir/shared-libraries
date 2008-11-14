@@ -67,20 +67,10 @@ class OptionWidgetList: public OptionWidget
   }
   
   //! read options
-  virtual void read( void )
-  {
-    Debug::Throw( "OptionWidgetList::read.\n" );
-    for( std::vector< OptionWidget* >::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
-    { (*iter)->read(); }
-  }
+  virtual void read( void );
   
   //! read options
-  virtual void write( void ) const
-  {
-    Debug::Throw( "OptionWidgetList::write\n" );
-    for( std::vector< OptionWidget* >::const_iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
-    { (*iter)->write(); }
-  }
+  virtual void write( void ) const;
   
   private:
   

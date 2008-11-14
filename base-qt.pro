@@ -161,6 +161,7 @@ SOURCES = \
   OptionDialog.cpp \
   OptionListBox.cpp \
   OptionModel.cpp \
+  OptionWidgetList.cpp \
   PixmapEngine.cpp \
   ProcessDialog.cpp \
   ProcessFrame.cpp \

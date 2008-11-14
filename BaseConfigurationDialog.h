@@ -119,7 +119,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
   virtual void _restore();
   
   //! restore default options
-  virtual void _restoreDefaults( void ) = 0;
+  virtual void _restoreDefaults( void );
 
   //! save configuration from options
   virtual void _save();

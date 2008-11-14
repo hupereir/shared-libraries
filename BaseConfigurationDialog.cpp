@@ -418,6 +418,15 @@ void BaseConfigurationDialog::_restore( void )
 }
 
 //__________________________________________________
+void BaseConfigurationDialog::_restoreDefaults( void )
+{ 
+  Debug::Throw( "BaseConfigurationDialog::_restoreDefaults.\n" );
+  XmlOptions::get().restoreDefaults();
+  _read();
+  emit configurationChanged();
+}
+
+//__________________________________________________
 void BaseConfigurationDialog::_save( void )
 {
   
