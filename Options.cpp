@@ -117,7 +117,7 @@ void Options::clearSpecialOptions( const string& name )
 bool Options::add( const std::string& name, Option option, const bool& is_default )
 {
   
-  Debug::Throw(0) << "Options::add - name: " << name << endl;
+  Debug::Throw() << "Options::add - name: " << name << endl;
   
   // store option as special if requested
   SpecialMap::iterator iter( special_options_.find( name ) );
