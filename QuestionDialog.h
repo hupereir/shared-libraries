@@ -37,25 +37,21 @@
 #include <QLabel>
 #include <QLayout>
 
-#include "BaseDialog.h"
+#include "CustomDialog.h"
 #include "Counter.h"
 
 //! simplified question dialog
-class QuestionDialog: public BaseDialog, public Counter
+class QuestionDialog: public CustomDialog
 {
   
   public:
   
   //! constructor
-  QuestionDialog( QWidget* parent, QString text = QString(), BaseDialog::Centering = BaseDialog::CENTER_ON_PARENT );  
+  QuestionDialog( QWidget* parent, QString text = QString() );  
 
   //! set text
   void setText( const QString& text )
   { _label().setText( text ); }
-  
-  //! main layout
-  QBoxLayout& mainLayout( void ) const
-  { return *main_layout_; }
   
   protected:
   
@@ -64,9 +60,6 @@ class QuestionDialog: public BaseDialog, public Counter
   { return *label_; }
   
   private:  
-
-  //! main layout
-  QBoxLayout *main_layout_;
   
   //! main label
   QLabel *label_;

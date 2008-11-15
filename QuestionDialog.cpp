@@ -38,32 +38,19 @@
 #include "QuestionDialog.h"
 
 //____________________________________________________________
-QuestionDialog::QuestionDialog( QWidget* parent, QString text, BaseDialog::Centering dialog_center ):
-  BaseDialog( parent ),
-  Counter( "QuestionDialog" )
+QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
+  CustomDialog( parent, OK_BUTTON | CANCEL_BUTTON )
 {
 
   Debug::Throw( "QtUtil::question\n" );
 
-  // create vbox layout
-  QVBoxLayout* layout=new QVBoxLayout();
-  layout->setMargin(10);
-  layout->setSpacing(10);
-  setLayout( layout );
-
-  // main layout
-  layout->addLayout( main_layout_ = new QVBoxLayout() );
-  mainLayout().setMargin(0);
-  mainLayout().setSpacing(10);
-  
-
   //! try load Question icon
   QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );
-  // insert main vertical box
+
   if( question_pixmap.isNull() )
   { 
     
-    mainLayout().addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignHCenter ); 
+    mainLayout().addWidget( label_ = new QLabel( text, this ) ); 
   
   } else {
 
@@ -75,43 +62,8 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text, BaseDialog::Cente
     QLabel* label = new QLabel( this );
     label->setPixmap( question_pixmap );
     h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignHCenter );
+    h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
 
-  }
-
-  // insert hbox layout for buttons
-  QHBoxLayout *hbox_layout( new QHBoxLayout() );
-  hbox_layout->setSpacing( 5 );
-  layout->addLayout( hbox_layout );
-
-  // insert OK button
-  QPushButton *button;
-  hbox_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Yes", this ) );
-  connect( button, SIGNAL( clicked() ), this, SLOT( accept() ) );
-
-  // insert Cancel button
-  hbox_layout->addWidget( button  = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&No", this ) );
-  connect( button, SIGNAL( clicked() ), this, SLOT( reject() ) );
-
-  // manage widget
-  layout->activate();
-  adjustSize();
-
-  // manage widget
-  switch( dialog_center ) {
-    case CENTER_ON_POINTER:
-      centerOnPointer();
-      break;
-
-    case CENTER_ON_PARENT:
-      centerOnParent();
-      break;
-
-    case CENTER_ON_DESKTOP:
-      centerOnDesktop();
-      break;
-
-    default: break;
   }
 
 }

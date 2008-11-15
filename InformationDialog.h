@@ -34,18 +34,33 @@
 */
 
 #include <QString>
+#include <QLabel>
 
-#include "BaseDialog.h"
-#include "Counter.h"
+#include "CustomDialog.h"
 
 //! simplified question dialog
-class InformationDialog: public BaseDialog, public Counter
+class InformationDialog: public CustomDialog
 {
   
   public:
   
   //! constructor
-  InformationDialog( QWidget* parent, QString text, BaseDialog::Centering = BaseDialog::CENTER_ON_PARENT );  
+  InformationDialog( QWidget* parent, QString text );  
+
+  //! set text
+  void setText( const QString& text ) const
+  { _label().setText( text ); }
+  
+  protected:
+  
+  //! label
+  QLabel& _label( void ) const
+  { return *label_; }
+  
+  private:
+  
+  //! label
+  QLabel* label_; 
   
 };
 

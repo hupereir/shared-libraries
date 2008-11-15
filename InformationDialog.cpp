@@ -30,7 +30,6 @@
   \date $Date$
 */
 
-#include <QLabel>
 #include <QLayout>
 #include <QPushButton>
 
@@ -40,60 +39,30 @@
 #include "PixmapEngine.h"
 
 //____________________________________________________________
-InformationDialog::InformationDialog( QWidget* parent, QString text, BaseDialog::Centering dialog_center ):
-  BaseDialog( parent ),
-  Counter( "InformationDialog" )
+InformationDialog::InformationDialog( QWidget* parent, QString text ):
+  CustomDialog( parent, OK_BUTTON )
 {
-
-  // create vbox layout
-  QVBoxLayout* layout=new QVBoxLayout();
-  layout->setMargin(10);
-  layout->setSpacing(10);
-  setLayout( layout );
 
   //! try load Question icon
   QPixmap question_pixmap = PixmapEngine::get( ICONS::INFORMATION );
 
   // insert main vertical box
   if( question_pixmap.isNull() )
-  { layout->addWidget( new QLabel( text, this ), 1, Qt::AlignHCenter ); }
-  else
-  {
+  { 
+
+    mainLayout().addWidget( label_ = new QLabel( text, this ) ); 
+  
+  } else {
 
     QHBoxLayout *h_layout( new QHBoxLayout() );
     h_layout->setSpacing(10);
     h_layout->setMargin(0);
-    layout->addLayout( h_layout, 1 );
+    mainLayout().addLayout( h_layout, 1 );
     QLabel* label = new QLabel( this );
     label->setPixmap( question_pixmap );
     h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( new QLabel( text, this ), 1, Qt::AlignHCenter );
+    h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
 
-  }
-
-  // insert OK and Cancel button
-  QPushButton *button( new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&OK", this ) );
-  connect( button, SIGNAL( clicked() ), this, SLOT( accept() ) );
-  layout->addWidget( button, 0, Qt::AlignHCenter );
-  
-  layout->activate();
-  adjustSize();
-
-  // manage widget
-  switch( dialog_center ) {
-    case CENTER_ON_POINTER:
-      centerOnPointer();
-      break;
-
-    case CENTER_ON_PARENT:
-      centerOnParent();
-      break;
-
-    case CENTER_ON_DESKTOP:
-      centerOnDesktop();
-      break;
-
-    default: break;
   }
 
 }
