@@ -61,7 +61,7 @@ CompositeEngine::CompositeEngine( void ):
   initialized_( false )
 { 
   Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); 
-  XmlOptions::get().set( "TRANSPARENCY_USE_COMPOSITE", Option( "1" ).setDefault() );
+  XmlOptions::get().set( "TRANSPARENCY_USE_COMPOSITE", "1",  true );
 }
 
 
