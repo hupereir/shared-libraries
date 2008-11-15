@@ -57,7 +57,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
     QHBoxLayout *h_layout( new QHBoxLayout() );
     h_layout->setSpacing(10);
     h_layout->setMargin(0);
-    mainLayout().addLayout( h_layout, 1 );
+    mainLayout().addLayout( h_layout );
 
     QLabel* label = new QLabel( this );
     label->setPixmap( question_pixmap );
