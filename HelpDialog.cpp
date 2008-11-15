@@ -62,7 +62,7 @@ HelpDialog::HelpDialog( QWidget *parent ):
   // tell dialog to delete when close
   setAttribute( Qt::WA_DeleteOnClose );
 
-  _setSizeOptionName( "HELP_DIALOG" );
+  setSizeOptionName( "HELP_DIALOG" );
   
   QHBoxLayout *layout = new QHBoxLayout();
   layout->setSpacing(5);
