@@ -210,7 +210,7 @@ std::ostream &operator << (std::ostream &out,const Options &options)
   }
   
   out << endl;
-  
+  return out;
 }
 
 //________________________________________________
