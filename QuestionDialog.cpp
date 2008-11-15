@@ -30,8 +30,6 @@
   \date $Date$
 */
 
-#include <QLabel>
-#include <QLayout>
 #include <QPushButton>
 
 #include "BaseIcons.h"
@@ -53,24 +51,31 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text, BaseDialog::Cente
   layout->setSpacing(10);
   setLayout( layout );
 
+  // main layout
+  layout->addLayout( main_layout_ = new QVBoxLayout() );
+  mainLayout().setMargin(0);
+  mainLayout().setSpacing(10);
+  
+
   //! try load Question icon
   QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );
-
   // insert main vertical box
   if( question_pixmap.isNull() )
-  { layout->addWidget( new QLabel( text, this ), 1, Qt::AlignHCenter ); }
-  else
-  {
+  { 
+    
+    mainLayout().addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignHCenter ); 
+  
+  } else {
 
     QHBoxLayout *h_layout( new QHBoxLayout() );
     h_layout->setSpacing(10);
     h_layout->setMargin(0);
-    layout->addLayout( h_layout, 1 );
+    mainLayout().addLayout( h_layout, 1 );
 
     QLabel* label = new QLabel( this );
     label->setPixmap( question_pixmap );
     h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( new QLabel( text, this ), 1, Qt::AlignHCenter );
+    h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignHCenter );
 
   }
 

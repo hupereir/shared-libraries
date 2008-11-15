@@ -48,7 +48,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
   
   Debug::Throw( "IconCacheDialog::IconCacheDialog.\n" );
   setWindowTitle( "icon cache" );
-  _setSizeOptionName( "ICON_CACHE_DIALOG" );
+  setSizeOptionName( "ICON_CACHE_DIALOG" );
   
   setLayout( new QVBoxLayout() );
   layout()->setMargin(10);

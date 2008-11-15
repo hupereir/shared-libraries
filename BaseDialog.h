@@ -83,7 +83,11 @@ class BaseDialog: public QDialog
   
   //! center widget on argument widget
   BaseDialog& centerOnWidget( QWidget* );
- 
+
+  //! size option name
+  virtual void setSizeOptionName( const std::string& name )
+  { size_watcher_.setSizeOptionName( name ); }
+
   public slots:
   
   //! uniconify
@@ -93,11 +97,7 @@ class BaseDialog: public QDialog
     
   //! resize event
   void resizeEvent( QResizeEvent* );
-  
-  //! size option name
-  virtual void _setSizeOptionName( const std::string& name )
-  { size_watcher_.setSizeOptionName( name ); }
-    
+      
   private:
   
   //! size watch

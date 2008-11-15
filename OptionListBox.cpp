@@ -305,7 +305,7 @@ OptionListBox::EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDia
   CustomDialog( parent )
 { 
 
-  _setSizeOptionName( "OPTIONLISTBOX_EDIT" );
+  setSizeOptionName( "OPTIONLISTBOX_EDIT" );
   QVBoxLayout* v_layout = new QVBoxLayout();
   v_layout->setMargin(0);
   v_layout->setSpacing(5);

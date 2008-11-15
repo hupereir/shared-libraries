@@ -99,6 +99,10 @@ class CustomMainWindow: public QMainWindow
   /*! returns true if lockable toolbars are found */
   virtual bool installToolBarsActions( QMenu& );
    
+  //! size option name
+  virtual void setSizeOptionName( const std::string& name )
+  { size_watcher_.setSizeOptionName( name ); }
+
   signals:
   
   //! toolbar configuration changed
@@ -115,10 +119,6 @@ class CustomMainWindow: public QMainWindow
   /* need to save updated window size */
   virtual void resizeEvent( QResizeEvent* );
   
-  //! size option name
-  virtual void _setSizeOptionName( const std::string& name )
-  { size_watcher_.setSizeOptionName( name ); }
-
   //! true if main window has toolbars
   virtual bool _hasToolBars( void ) const;
  

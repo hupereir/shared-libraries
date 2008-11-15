@@ -47,7 +47,7 @@ ProcessDialog::ProcessDialog( QWidget* parent ):
 
   // tell frame to delete on exit
   setAttribute( Qt::WA_DeleteOnClose );
-  _setSizeOptionName( "PROCESS_DIALOG" );
+  setSizeOptionName( "PROCESS_DIALOG" );
   
   // create layout
   setLayout( new QVBoxLayout() );

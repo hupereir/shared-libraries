@@ -49,10 +49,12 @@
 #include "OptionFontEditor.h"
 #include "OptionLineEditor.h"
 #include "OptionListBox.h"
+#include "OptionModel.h"
 #include "OptionSlider.h"
 #include "OptionSpinBox.h"
 #include "QuestionDialog.h"
 #include "Str.h"
+#include "TreeView.h"
 
 using namespace std;
 using namespace Qt;
@@ -66,7 +68,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
   setWindowTitle( "Configuration" );
-  _setSizeOptionName( "CONFIGURATION_DIALOG" );
+  setSizeOptionName( "CONFIGURATION_DIALOG" );
 
   // add restore default button to layout
   QPushButton* button;
@@ -424,26 +426,29 @@ void BaseConfigurationDialog::_restoreDefaults( void )
   
   // list options that have no default values
   const Options::Map& options( XmlOptions::get().options() );
-  set<string> names;
+  OptionModel::Set local;
   for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); iter++ )
-  { if( iter->second.defaultValue().empty() ) names.insert( iter->first ); }
-  
-  ostringstream what;
-  if( !names.empty() )
+  { if( iter->second.defaultValue().empty() ) local.insert( OptionPair( *iter ) ); }
+
+  QuestionDialog dialog( this );
+  dialog.setSizeOptionName( "RESTORE_DEFAULT_DIALOG" );
+  if( !local.empty() )
   {
 
-    if( names.size() > 1 ) 
-    {
-      what << "Following options have no default values: " << endl;
-      for( set<string>::const_iterator iter = names.begin(); iter != names.end(); iter++ )
-      { what << "  " << *iter << endl; }
-    } else what << "Option " << *names.begin() << " has no default value." << endl;
-    
-    what << "Restore default anyway ?";
-  } else { what << "Restore all options to their default values ?"; }
+    dialog.setText( "Following options have no default values. Restore default anyway ? " );
+    TreeView* view = new TreeView( &dialog );
+    OptionModel* model = new OptionModel( &dialog );
+    model->add( local );
+    view->setModel( model );
+    view->setMask( (1<<OptionModel::NAME) | (1<<OptionModel::VALUE) );
+    view->resizeColumns();
+    dialog.mainLayout().addWidget( view );
+    dialog.resize( 450, 300 );
+
+  } else { dialog.setText( "Restore all options to their default values ?" ); }
   
   // ask confirmation
-  if( !QuestionDialog( this, what.str().c_str() ).centerOnWidget( this ).exec() ) return;
+  if( !dialog.centerOnWidget( this ).exec() ) return;
 
   XmlOptions::get().restoreDefaults();
   _read();
