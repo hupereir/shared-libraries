@@ -52,25 +52,40 @@ class ErrorHandler
   //! check/display Qt error messages
   static void Throw( QtMsgType type, const char* message );
   
+  //! singleton
+  static ErrorHandler& get( void )
+  { 
+    static  ErrorHandler singleton;
+    return singleton;
+  }
+  
   //! adds a disabled message in the list
-  static void disableMessage( const std::string& message ) 
+  void disableMessage( const std::string& message ) 
   { disabled_messages_.push_back( message ); }
   
   //! adds a disabled message in the list
-  static void clearDisabledMessages( void ) 
+  void clearDisabledMessages( void ) 
   { disabled_messages_.clear(); }
   
   //! exit
-  static void exit( void ) 
-  { }
+  void exit( void ) const
+  {}
+
+  protected:
+  
+  //! constructor
+  ErrorHandler( void );
+  
+  typedef std::list< std::string > MessageList;
+  
+  //! disabled message
+  const MessageList& _disabledMessages( void ) const
+  { return disabled_messages_; }
   
   private:
   
   //! all messages containing one of the string in the list are not displayed
-  static std::list< std::string > disabled_messages_;
-  
-  //! number of recieved disabled message
-  static unsigned int n_disabled_;
+  std::list< std::string > disabled_messages_;
   
 };
 

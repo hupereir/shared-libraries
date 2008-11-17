@@ -38,10 +38,6 @@
 using namespace std;
 
 //_____________________________________________________________
-list<string> ErrorHandler::disabled_messages_;
-unsigned int ErrorHandler::n_disabled_( 0 );
-
-//_____________________________________________________________
 void ErrorHandler::Throw( QtMsgType type, const char* message )
 {
   Debug::Throw() << "ErrorHandler::Throw - " << message << endl;
@@ -50,7 +46,7 @@ void ErrorHandler::Throw( QtMsgType type, const char* message )
   
   // check if message is to be disabled
   bool disabled( false );
-  for( list<string>::iterator it=disabled_messages_.begin(); it != disabled_messages_.end(); it++ )
+  for( MessageList::const_iterator it=get()._disabledMessages().begin(); it != get()._disabledMessages().end(); it++ )
   {
     if( local_message.find( *it ) != string::npos ) {
       disabled = true;
@@ -80,6 +76,16 @@ void ErrorHandler::Throw( QtMsgType type, const char* message )
       
   }
   
-  if( disabled ) n_disabled_++;
   return;
+}
+
+//_______________________________________________________________
+ErrorHandler::ErrorHandler( void )
+{
+
+  // install 'default' disabled messages
+  disableMessage( "QSocketNotifier: invalid socket" );
+  disableMessage( "QServerSocket: failed to bind or listen to the socket" );
+  disableMessage( "QPixmap::resize: TODO: resize alpha data" );
+
 }

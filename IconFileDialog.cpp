@@ -50,9 +50,7 @@ IconFileDialog::IconFileDialog( QWidget* parent ):
   CustomFileDialog( parent )
 {
   Debug::Throw( "IconFileDialog::IconFileDialog.\n" );
-  
-  setFileMode( QFileDialog::AnyFile );
-  
+    
   QSplitter* splitter = findChild<QSplitter*>( "splitter" );
   if( splitter )
   {

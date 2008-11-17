@@ -109,6 +109,9 @@ void IconBrowsedButton::_browse( void )
   Debug::Throw( "IconBrowsedButton::_Browse.\n" );
      
   IconFileDialog dialog( this );
+  dialog.setFileMode( QFileDialog::AnyFile );
+  dialog.setAcceptMode( QFileDialog::AcceptOpen );
+  dialog.setWindowTitle( "Open" );
   QtUtil::centerOnParent( &dialog );
   
   if( file_ != NO_ICON ) { 
