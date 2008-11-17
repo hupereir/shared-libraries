@@ -1,3 +1,6 @@
+#ifndef Client_h
+#define Client_h
+
 // $Id$
 
 /******************************************************************************
@@ -28,9 +31,6 @@
    \version $Revision$
    \date    $Date$
 */
-
-#ifndef Client_h
-#define Client_h
 
 #include <QTcpSocket>
 #include <string>

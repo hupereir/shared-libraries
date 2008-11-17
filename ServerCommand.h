@@ -1,3 +1,6 @@
+#ifndef ServerCommand_h
+#define ServerCommand_h
+
 // $Id$
 
 /******************************************************************************
@@ -28,9 +31,6 @@
    \version $Revision$
    \date    $Date$
 */
-
-#ifndef ServerCommand_h
-#define ServerCommand_h
 
 #include <QTextStream>
 #include <iostream>
