@@ -87,14 +87,16 @@ void ApplicationManager::init( ArgList args )
 
   Debug::Throw( debug_level, "ApplicationManager::init.\n" );
 
+  // address
+  QHostAddress address( QHostAddress::LocalHost );
+  
   // connect server to port
-  //if( !_server().listen( QHostAddress::Any, SERVER_PORT ) )
-  if( !_server().listen( QHostAddress::LocalHost, SERVER_PORT ) )
+  if( !_server().listen( address, SERVER_PORT ) )
   {  Debug::Throw( debug_level ) << "ApplicationManager::init - unable to listen to port " << SERVER_PORT << endl; }
   
   // connect client to port
   client().socket().abort();
-  client().socket().connectToHost( "localhost", SERVER_PORT );    
+  client().socket().connectToHost( address, SERVER_PORT );    
     
   // emit initialization signal
   emit initialized();

@@ -86,7 +86,7 @@ BaseApplication::~BaseApplication( void )
     application_manager_ = 0;
   }
 
-  ErrorHandler::exit();  
+  ErrorHandler::get().exit();  
   
 }
 
