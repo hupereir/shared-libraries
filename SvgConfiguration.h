@@ -53,7 +53,7 @@ namespace SVG
     private slots:
 
     //! show svg path dialog
-    virtual void _editSvgPathList( void );
+    virtual void _editSvgFileList( void );
   
   };
   

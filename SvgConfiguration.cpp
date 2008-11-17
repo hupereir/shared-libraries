@@ -70,7 +70,7 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
 
   grid_layout->addWidget( new QLabel( "filename: ", this ) );
   QPushButton *button = new QPushButton( "Edit svg file list", this );
-  connect( button, SIGNAL( clicked() ), SLOT( _editSvgPathList() ) );
+  connect( button, SIGNAL( clicked() ), SLOT( _editSvgFileList() ) );
   grid_layout->addWidget( button );
   button->setToolTip( 
     "Set the list of valid backgrounds.\n"
@@ -92,10 +92,10 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
 }
 
 //__________________________________________________
-void SvgConfiguration::_editSvgPathList( void )
+void SvgConfiguration::_editSvgFileList( void )
 {
   
-  Debug::Throw( "SvgConfiguration::_editSvgPathList.\n" );
+  Debug::Throw( "SvgConfiguration::_editSvgFileList.\n" );
   CustomDialog dialog( this );
 
   // store backup
