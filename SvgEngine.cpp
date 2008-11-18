@@ -133,6 +133,7 @@ QPixmap SvgEngine::_get( const QSize& size, bool from_cache )
 //________________________________________________
 bool SvgEngine::_loadSvg( void )
 {
+  
   Debug::Throw( "SvgEngine::_loadSvg.\n" );
   
   // get options
@@ -153,6 +154,7 @@ bool SvgEngine::_loadSvg( void )
 
   if( !found )  svg_.load( QString() );
   return changed;
+  
 }
 
 //________________________________________________
