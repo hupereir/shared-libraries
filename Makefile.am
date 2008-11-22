@@ -50,7 +50,7 @@ noinst_HEADERS = \
   IconCacheDialog.h \
   IconCacheModel.h \
   IconEngine.h \
-  IconFileDialog.h \
+  ImageFileDialog.h \
   IconSize.h \
   IconSizeMenu.h \
   InformationDialog.h \
@@ -156,7 +156,7 @@ libbase_qt_a_SOURCES = \
   IconCacheDialog.cpp \
   IconCacheModel.cpp \
   IconEngine.cpp \
-  IconFileDialog.cpp \
+  ImageFileDialog.cpp \
   IconSize.cpp \
   IconSizeMenu.cpp \
   InformationDialog.cpp \
@@ -230,7 +230,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_FontEditor.cpp \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
-  moc_IconFileDialog.cpp \
+  moc_ImageFileDialog.cpp \
   moc_IconSizeMenu.cpp \
   moc_LineEditor.cpp \
   moc_LineNumberDisplay.cpp \

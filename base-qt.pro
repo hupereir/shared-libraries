@@ -46,7 +46,7 @@ HEADERS = \
   IconCacheDialog.h \
   IconCacheModel.h \
   IconEngine.h \
-  IconFileDialog.h \
+  ImageFileDialog.h \
   IconSize.h \
   IconSizeMenu.h \
   InformationDialog.h \
@@ -150,7 +150,7 @@ SOURCES = \
   IconCacheDialog.cpp \
   IconCacheModel.cpp \
   IconEngine.cpp \
-  IconFileDialog.cpp \
+  ImageFileDialog.cpp \
   IconSize.cpp \
   IconSizeMenu.cpp \
   InformationDialog.cpp \

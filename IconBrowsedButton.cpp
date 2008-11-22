@@ -38,7 +38,7 @@
 #include "File.h"
 #include "IconSize.h"
 #include "IconBrowsedButton.h"
-#include "IconFileDialog.h"
+#include "ImageFileDialog.h"
 #include "InformationDialog.h"
 #include "XmlOptions.h"
 #include "QtUtil.h"
@@ -108,7 +108,7 @@ void IconBrowsedButton::_browse( void )
 {
   Debug::Throw( "IconBrowsedButton::_Browse.\n" );
      
-  IconFileDialog dialog( this );
+  ImageFileDialog dialog( this );
   dialog.setFileMode( QFileDialog::AnyFile );
   dialog.setAcceptMode( QFileDialog::AcceptOpen );
   dialog.setWindowTitle( "Open" );
