@@ -30,8 +30,7 @@
 */
 
 #include <sstream>
-#include <qbitmap.h>
-#include <qimage.h>
+#include <QUrl>
 
 #include "LineEditor.h"
 #include "CustomPixmap.h"
@@ -57,11 +56,12 @@ IconBrowsedButton::IconBrowsedButton( QWidget* parent, const File& file):
   setAutoRaise( false );
   setFile( file, false ); 
   connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
+  setAcceptDrops( true );
 }
   
 
 //_____________________________________________
-void IconBrowsedButton::setFile( const File& file, const bool& check )
+bool IconBrowsedButton::setFile( const File& file, const bool& check )
 {
   
   Debug::Throw() << "IconBrowsedButton::setFile - " << file << endl;
@@ -82,7 +82,7 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
     pixmap = pixmap.scaled( IconSize( IconSize::HUGE ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
     
     setIcon( pixmap );
-    return;
+    return true;
   }
   
   // popup dialog if invalid
@@ -99,7 +99,7 @@ void IconBrowsedButton::setFile( const File& file, const bool& check )
     setIcon( no_icon_pixmap_ );
   }
       
-  return;
+  return false;
   
 } 
 
@@ -140,4 +140,32 @@ void IconBrowsedButton::_browse( void )
     
   setFile( File( qPrintable( files.front() ) ), true );
   return; 
+}
+
+//______________________________________________________________________
+void IconBrowsedButton::dragEnterEvent( QDragEnterEvent *event )
+{
+  Debug::Throw( "IconBrowsedButton::dragEnterEvent.\n" );
+  if (event->mimeData()->hasUrls()) event->acceptProposedAction();
+}
+
+//______________________________________________________________________
+void IconBrowsedButton::dropEvent( QDropEvent *event )
+{
+
+  Debug::Throw( "IconBrowsedButton::dropEvent.\n" );
+  
+  // check if event is valid
+  if( !event->mimeData()->hasUrls() ) return;
+  
+  // loop over event URLs
+  QList<QUrl> urls( event->mimeData()->urls() );
+  for( QList<QUrl>::const_iterator iter = urls.begin(); iter != urls.end(); iter++ )
+  {
+    QFileInfo file_info( iter->toLocalFile() );
+    if( file_info.exists() && setFile( File( qPrintable( file_info.filePath() ) ), true ) ) event->acceptProposedAction();
+  }
+  
+  return;
+  
 }

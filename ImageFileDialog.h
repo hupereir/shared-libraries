@@ -101,13 +101,14 @@ class ImageFileDialog: public CustomFileDialog
     //! constructor
     Label( QWidget* parent );
     
-    private:
+    protected:
     
     //! drag enter event
     virtual void dragEnterEvent( QDragEnterEvent* );
 
     //! drop event
     virtual void dropEvent( QDropEvent* );
+    
   };
     
   //! preview label

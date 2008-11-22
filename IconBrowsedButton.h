@@ -69,7 +69,15 @@ class IconBrowsedButton: public CustomToolButton
   { return file_; }
   
   //! iconFile
-  virtual void setFile( const File& file, const bool& check );
+  virtual bool setFile( const File& file, const bool& check );
+
+  protected:
+  
+  //! drag enter event
+  virtual void dragEnterEvent( QDragEnterEvent* );
+  
+  //! drop event
+  virtual void dropEvent( QDropEvent* );
 
   protected slots:
       
