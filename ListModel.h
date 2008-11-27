@@ -330,10 +330,10 @@ template<class T> class ListModel : public ItemModel
   }
   
   //! return index associated to a given value
-  virtual QModelIndex index( const ValueType& value ) const
+  virtual QModelIndex index( const ValueType& value, int column = 0 ) const
   { 
     for( unsigned int row=0; row<values_.size(); row++ )
-    { if( value == values_[row] ) return index( row, 0 ); }
+    { if( value == values_[row] ) return index( row, column ); }
     return QModelIndex();
   }
 
