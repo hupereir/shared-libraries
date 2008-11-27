@@ -204,8 +204,9 @@ void QtUtil::uniconify( QWidget *widget )
   if( widget->window()->isMinimized() )
   { widget->window()->hide(); }
 
-  widget->activateWindow();
   widget->window()->show();
+  
+  widget->activateWindow();
   widget->window()->raise();
 
   return;
