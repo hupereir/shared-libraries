@@ -88,6 +88,10 @@ class BrowsedLineEditor: public QWidget, public Counter
   QFileDialog::ViewMode viewMode( void ) const
   { return view_mode_; }
   
+  //! set file dialog
+  void setFileDialog( CustomFileDialog* dialog )
+  { file_dialog_ = dialog; }
+  
   //! retrieve working directory
   std::string workDirectory( void ) const
   { return work_directory_; }
@@ -112,6 +116,9 @@ class BrowsedLineEditor: public QWidget, public Counter
   
   //! default working directory
   std::string work_directory_;
+
+  //! pointer to file dialog
+  CustomFileDialog* file_dialog_;
   
   //! File dialog mode
   QFileDialog::FileMode file_mode_;

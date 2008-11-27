@@ -52,7 +52,8 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   Counter( "BrowsedLineEditor" ),
   work_directory_( Util::workingDirectory() ),
   file_mode_( QFileDialog::ExistingFile ),
-  view_mode_( QFileDialog::List )
+  view_mode_( QFileDialog::List ),
+  file_dialog_( 0 )
 {
   Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
   
@@ -94,10 +95,10 @@ void BrowsedLineEditor::_browse( void )
   Debug::Throw( "BrowsedLineEditor::_browse.\n" );
     
   // create file dialog
-  CustomFileDialog dialog( this );
-  dialog.setFileMode( file_mode_ );
-  dialog.setViewMode( view_mode_ );
-  dialog.setAcceptMode( QFileDialog::AcceptOpen );
+  if( !file_dialog_ ) file_dialog_ = new CustomFileDialog( this );
+  file_dialog_->setFileMode( file_mode_ );
+  file_dialog_->setViewMode( view_mode_ );
+  file_dialog_->setAcceptMode( QFileDialog::AcceptOpen );
 
   // retrieve text, check if path is valid, assign to FileDialog
   File current_directory( qPrintable( line_edit_->text() ) );
@@ -105,13 +106,13 @@ void BrowsedLineEditor::_browse( void )
     current_directory.isDirectory() ||
     ( current_directory = current_directory.path() ).isDirectory() 
     ) 
-  dialog.setDirectory( current_directory.c_str() );
-  else dialog.setDirectory( work_directory_.c_str() );
+  file_dialog_->setDirectory( current_directory.c_str() );
+  else file_dialog_->setDirectory( work_directory_.c_str() );
  
-  if( dialog.exec() != QDialog::Accepted ) return;
+  if( file_dialog_->exec() != QDialog::Accepted ) return;
 
   // retrieve selected files
-  QStringList files( dialog.selectedFiles() );
+  QStringList files( file_dialog_->selectedFiles() );
     
   // check file size
   if( files.size() > 1 ) 
