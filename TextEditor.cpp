@@ -33,6 +33,7 @@
 #include <QClipboard>
 #include <QMenu>
 #include <QPainter>
+#include <QProgressDialog>
 #include <QRegExp>
 #include <QTextBlock>
 #include <QTextLayout>
@@ -45,7 +46,6 @@
 #include "BaseFindDialog.h"
 #include "IconEngine.h"
 #include "LineNumberDisplay.h"
-// #include "RoundedPath.h"
 #include "SelectLineDialog.h"
 #include "TextBlockData.h"
 #include "TextSeparator.h"
@@ -1907,7 +1907,7 @@ void TextEditor::_createBaseReplaceDialog( void )
 }
 
 //______________________________________________________________________
-unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode )
+unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode, bool show_progress )
 {
 
   Debug::Throw()
@@ -1929,6 +1929,8 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
   // check cursor
   if( !cursor.hasSelection() ) return 0;
 
+  show_progress = true;
+  
   // store number of matches
   // and make local copy of cursor
   unsigned int found = 0;
@@ -1936,6 +1938,13 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
   int saved_anchor( min( cursor.position(), cursor.anchor() ) );
   int saved_position( max( cursor.position(), cursor.anchor() ) );
   int current_position( saved_anchor );
+
+  QProgressDialog* dialog(0);
+  if( show_progress )
+  { 
+    dialog = new QProgressDialog( this ); 
+    dialog->setLabelText( "Replace text in selection" );
+  } 
 
   // check if regexp should be used or not
   if( selection.flag( TextSelection::REGEXP ) )
@@ -1948,6 +1957,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     if( !regexp.isValid() )
     {
       InformationDialog( this, "invalid regular expression. Find canceled" ).exec();
+      if( dialog ) dialog->deleteLater();
       return false;
     }
 
@@ -1956,11 +1966,13 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
     // replace everything in selected text
     QString selected_text( cursor.selectedText() );
+    if( dialog ) dialog->setMaximum( selected_text.size() );
+    
     for( int position = 0; (position = regexp.indexIn( selected_text, position )) != -1; )
     {
       // replace in selected text
       selected_text.replace( position, regexp.matchedLength(), selection.replaceText() );
-
+      
       // replace in cursor
       /* this is to allow for undoing the changes one by one */
       cursor.setPosition( saved_anchor + position );
@@ -1973,6 +1985,13 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
       current_position = saved_anchor + position;
 
       found++;
+      
+      if( dialog ) 
+      {
+        dialog->setValue( position );
+        qApp->processEvents();
+        if( dialog->wasCanceled() ) break;
+      }
 
     }
 
@@ -1987,6 +2006,8 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
   } else {
 
     Debug::Throw( "TextEditor::_replaceInRange - normal replacement.\n" );
+
+    if( dialog ) dialog->setMaximum( cursor.selectedText().size() );
 
     // changes local cursor to beginning of the selection
     cursor.setPosition( saved_anchor );
@@ -2005,12 +2026,14 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
       saved_position += selection.replaceText().size() - selection.text().size();
       found ++;
 
-      Debug::Throw()
-        << "TextEditor::_replaceInRange -"
-        << " current: " << current_position
-        << " saved: " << saved_position
-        << " found: " << found
-        << endl;
+      if( dialog ) 
+      {
+        dialog->setMaximum( saved_position );
+        dialog->setValue( current_position );
+        qApp->processEvents();
+        if( dialog->wasCanceled() ) break;
+      }
+
     }
 
     if( mode == EXPAND )
@@ -2022,6 +2045,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
   }
 
   Debug::Throw( "TextEditor::_replaceInRange - done.\n" );
+  if( dialog ) dialog->deleteLater();
   return found;
 
 }
