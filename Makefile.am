@@ -1,6 +1,8 @@
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = \
+crystal/add.png \
+crystal/button_cancel.png \
 crystal/clear_left.png \
 crystal/color.png \
 crystal/colorpicker.png \
@@ -27,6 +29,8 @@ crystal/trashcan_empty.png \
 crystal/undo.png \
 crystal/viewmag.png \
 \
+oxygen/add.png \
+oxygen/button_cancel.png \
 oxygen/clear_left.png \
 oxygen/color.png \
 oxygen/colorpicker.png \
