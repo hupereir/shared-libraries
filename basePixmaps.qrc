@@ -1,6 +1,8 @@
 <!DOCTYPE RCC><RCC version="1.0">
   <qresource>
 
+    <file alias="pixmaps/crystal/add.png">../base-pixmaps/crystal/add.png</file>
+    <file alias="pixmaps/crystal/button_cancel.png">../base-pixmaps/crystal/button_cancel.png</file>
     <file alias="pixmaps/crystal/clear_left.png">../base-pixmaps/crystal/clear_left.png</file>
     <file alias="pixmaps/crystal/color.png">../base-pixmaps/crystal/color.png</file>
     <file alias="pixmaps/crystal/colorpicker.png">../base-pixmaps/crystal/colorpicker.png</file>
@@ -27,6 +29,8 @@
     <file alias="pixmaps/crystal/undo.png">../base-pixmaps/crystal/undo.png</file>
     <file alias="pixmaps/crystal/viewmag.png">../base-pixmaps/crystal/viewmag.png</file>
 
+    <file alias="pixmaps/oxygen/add.png">../base-pixmaps/oxygen/add.png</file>
+    <file alias="pixmaps/oxygen/button_cancel.png">../base-pixmaps/oxygen/button_cancel.png</file>
     <file alias="pixmaps/oxygen/clear_left.png">../base-pixmaps/oxygen/clear_left.png</file>
     <file alias="pixmaps/oxygen/color.png">../base-pixmaps/oxygen/color.png</file>
     <file alias="pixmaps/oxygen/colorpicker.png">../base-pixmaps/oxygen/colorpicker.png</file>

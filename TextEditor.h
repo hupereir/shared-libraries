@@ -542,7 +542,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   };
   
   //! replace selection in range refered to by cursor
-  virtual unsigned int _replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode, bool show_progress = false );
+  virtual unsigned int _replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode, bool show_progress );
   
   //@}
 

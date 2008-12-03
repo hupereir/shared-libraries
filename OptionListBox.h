@@ -137,17 +137,33 @@ class OptionListBox: public QWidget, public OptionWidget
   //! value list
   TreeView* list_;
   
+  //!@name buttons
+  //@{
+
   //! edit button
   QPushButton* edit_;
   
   //! remove button
   QPushButton* remove_;
       
+    //! default button
+  QPushButton* default_;
+  
+  //@}
+  
+  //!@name actions
+  //@{
+  
+  //! remove action
+  QAction* edit_action_;
+
   //! remove action
   QAction* remove_action_;
 
-    //! default button
-  QPushButton* default_;
+  //! remove action
+  QAction* default_action_;
 
+  //@}
+  
 };
 #endif

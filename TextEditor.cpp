@@ -751,14 +751,14 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool
     Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
     BoxSelection::CursorList cursors( _boxSelection().cursorList() );
     for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
-    { counts += _replaceInRange( selection, *iter, MOVE ); }
+    { counts += _replaceInRange( selection, *iter, MOVE, false ); }
 
     _boxSelection().clear();
 
   } else {
     Debug::Throw( "TextEditor::replaceInSelection - normal selection.\n" );
     QTextCursor cursor( textCursor() );
-    counts = _replaceInRange( selection, cursor, EXPAND );
+    counts = _replaceInRange( selection, cursor, EXPAND, true );
   }
 
   Debug::Throw( "TextEditor::replaceInSelection - done.\n" );
@@ -780,7 +780,7 @@ unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& s
   QTextCursor cursor( textCursor() );
   cursor.movePosition( QTextCursor::Start );
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
-  unsigned int counts( _replaceInRange( selection, cursor, EXPAND ) );
+  unsigned int counts( _replaceInRange( selection, cursor, EXPAND, true ) );
 
   if( show_dialog ) showReplacements( counts );
   return counts;

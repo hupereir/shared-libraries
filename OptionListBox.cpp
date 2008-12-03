@@ -36,6 +36,8 @@
 #include <sstream>
 
 #include "Debug.h"
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "IconSize.h"
 #include "LineEditor.h"
 #include "OptionListBox.h"
@@ -89,26 +91,42 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   QPushButton *button;
   button_layout->addWidget( button = new QPushButton( "&Add", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( _add() ) );
+ 
+  // Add action
+  QAction* action;
+  addAction( action = new QAction( IconEngine::get( ICONS::ADD ), "&Add", this ) );
+  connect( action, SIGNAL( triggered() ), SLOT( _add() ) );
+  _list().menu().addAction( action );
   
   // Edit button
-  button_layout->addWidget( edit_ = new QPushButton( "&Edit", this ) );
+  button_layout->addWidget( edit_ = new QPushButton( IconEngine::get( ICONS::EDIT ), "&Edit", this ) );
   connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
   edit_->setToolTip( "edit selected value" );
 
+  addAction( edit_action_ = new QAction( "&Edit", this ) );
+  connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
+  edit_action_->setShortcut( Qt::CTRL + Qt::Key_N );
+  _list().menu().addAction( edit_action_ );
+  
   // remove button
+  button_layout->addWidget( remove_ = new QPushButton( IconEngine::get( ICONS::REMOVE ), "&Remove", this ) );
+  connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
+  remove_->setToolTip( "remove selected value" );
+
   addAction( remove_action_ = new QAction( "Remo&ve", this ) );
   connect( remove_action_, SIGNAL( triggered() ), SLOT( _remove() ) );
   remove_action_->setShortcut( Qt::Key_Delete );
-  remove_action_->setToolTip( "Remove selected value" );
-  
-  button_layout->addWidget( remove_ = new QPushButton( "&Remove", this ) );
-  connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
-  remove_->setToolTip( "remove selected value" );
+  remove_action_->setToolTip( "Remove selected value" );  
+  _list().menu().addAction( remove_action_ );
 
   // set default button
   button_layout->addWidget( default_ = new QPushButton( "&Default", this ) );
   connect( default_, SIGNAL( clicked() ), SLOT( _setDefault() ) );
   default_->setToolTip( "set selected value as default\n(move it to the top of the list)" );
+
+  addAction( default_action_ = new QAction( "&Default", this ) );
+  connect( default_action_, SIGNAL( triggered() ), SLOT( _setDefault() ) );
+  _list().menu().addAction( default_action_ );
 
   button_layout->addStretch(1);
   
@@ -161,7 +179,10 @@ void OptionListBox::_updateButtons( void )
 
   QModelIndex current( _list().selectionModel()->currentIndex() );
   edit_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );
+  edit_action_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );
+
   default_->setEnabled( current.isValid() );
+  default_action_->setEnabled( current.isValid() );
 
   OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
   bool remove_enabled( false );
