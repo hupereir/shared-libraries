@@ -96,6 +96,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   QAction* action;
   addAction( action = new QAction( IconEngine::get( ICONS::ADD ), "&Add", this ) );
   connect( action, SIGNAL( triggered() ), SLOT( _add() ) );
+  action->setShortcut( Qt::CTRL + Qt::Key_N );
   _list().menu().addAction( action );
   
   // remove button
@@ -116,7 +117,6 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
 
   addAction( edit_action_ = new QAction( IconEngine::get( ICONS::EDIT ),  "&Edit", this ) );
   connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
-  edit_action_->setShortcut( Qt::CTRL + Qt::Key_N );
   _list().menu().addAction( edit_action_ );
   
   // set default button
