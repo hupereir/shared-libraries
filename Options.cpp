@@ -1,3 +1,4 @@
+
 // $Id$
 
 /******************************************************************************
@@ -216,7 +217,7 @@ std::ostream &operator << (std::ostream &out,const Options &options)
 //________________________________________________
 Options::Map::const_iterator Options::_find( const std::string& name ) const
 {
-  // cout << "Options::_find - Looking for option " << name << endl;
+  //cout << "Options::_find - Looking for option " << name << endl;
   Map::const_iterator out( options_.find( name ) );
   assert( out != options_.end() );
   return out;
