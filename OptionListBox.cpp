@@ -98,27 +98,27 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   connect( action, SIGNAL( triggered() ), SLOT( _add() ) );
   _list().menu().addAction( action );
   
-  // Edit button
-  button_layout->addWidget( edit_ = new QPushButton( IconEngine::get( ICONS::EDIT ), "&Edit", this ) );
-  connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
-  edit_->setToolTip( "edit selected value" );
-
-  addAction( edit_action_ = new QAction( "&Edit", this ) );
-  connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
-  edit_action_->setShortcut( Qt::CTRL + Qt::Key_N );
-  _list().menu().addAction( edit_action_ );
-  
   // remove button
-  button_layout->addWidget( remove_ = new QPushButton( IconEngine::get( ICONS::REMOVE ), "&Remove", this ) );
+  button_layout->addWidget( remove_ = new QPushButton( "&Remove", this ) );
   connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
   remove_->setToolTip( "remove selected value" );
 
-  addAction( remove_action_ = new QAction( "Remo&ve", this ) );
+  addAction( remove_action_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remo&ve", this ) );
   connect( remove_action_, SIGNAL( triggered() ), SLOT( _remove() ) );
   remove_action_->setShortcut( Qt::Key_Delete );
   remove_action_->setToolTip( "Remove selected value" );  
   _list().menu().addAction( remove_action_ );
 
+  // Edit button
+  button_layout->addWidget( edit_ = new QPushButton( "&Edit", this ) );
+  connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
+  edit_->setToolTip( "edit selected value" );
+
+  addAction( edit_action_ = new QAction( IconEngine::get( ICONS::EDIT ),  "&Edit", this ) );
+  connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
+  edit_action_->setShortcut( Qt::CTRL + Qt::Key_N );
+  _list().menu().addAction( edit_action_ );
+  
   // set default button
   button_layout->addWidget( default_ = new QPushButton( "&Default", this ) );
   connect( default_, SIGNAL( clicked() ), SLOT( _setDefault() ) );
