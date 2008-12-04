@@ -52,6 +52,7 @@ Option::Option( const char* value, const unsigned int& flags ):
 Option::Option( const std::string& value, const unsigned int& flags ): 
   Counter( "Option" ),
   value_( value ),
+  flags_( flags ),
   default_flags_( RECORDABLE )
 {}
 

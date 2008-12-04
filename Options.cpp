@@ -156,7 +156,6 @@ bool Options::add( const std::string& name, Option option, const bool& is_defaul
     
   } else {
     
-    // otherwise, insert option and return true
     iter->second.push_back( option );
     std::sort( iter->second.begin(), iter->second.end(), Option::HasFlagFTor( Option::CURRENT ) );
     return true;
