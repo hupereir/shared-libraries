@@ -114,12 +114,20 @@ bool XmlOptions::write( File file )
 
   // check filename is valid
   if( file.empty() ) file = file_;
-  if( file.empty() ) return false;
+  if( file.empty() ) 
+  {
+    Debug::Throw( "XmlOptions::write - file is empty.\n" );
+    return false;
+  }
   
   // output file
   QFile out( file.c_str() );
-  if( !out.open( QIODevice::WriteOnly ) ) return false;
-
+  if( !out.open( QIODevice::WriteOnly ) )
+  {
+    Debug::Throw() << "XmlOptions::write - cannot write to file " << file << endl;
+    return false;
+  }
+  
   // create document
   QDomDocument document;
 
@@ -145,10 +153,17 @@ bool XmlOptions::write( File file )
     Options::List option_list( iter->second );
     for( Options::List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
     {
-     
+      
+      if( !list_iter->hasFlag( Option::RECORDABLE ) )
+      { Debug::Throw(0) << "XmlOptions::write - option " << iter->first << " is not recordable" << endl; }
+      
       if( list_iter->hasFlag( Option::RECORDABLE ) && list_iter->set() && list_iter->raw().size() )
-      { top.appendChild( XmlOption( iter->first, *list_iter ).domElement( document ) ); }
-    
+      { 
+        
+        top.appendChild( XmlOption( iter->first, *list_iter ).domElement( document ) ); 
+      
+      } else Debug::Throw(0) << "XmlOptions::write - skipping option " << iter->first << endl;
+      
     }
   
   }
