@@ -36,7 +36,6 @@
 
 #include "BaseIcons.h"
 #include "ErrorHandler.h"
-#include "FlatStyle.h"
 #include "IconEngine.h"
 #include "BaseApplication.h"
 #include "QtUtil.h"
