@@ -23,12 +23,13 @@
 
 /*!
   \file Application.cc
-  \brief application Main Window singleton object
+  \brief application main object
   \author  Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
+#include <QApplication>
 #include <QLayout>
 #include <QLabel>
 #include <QMessageBox>
@@ -47,30 +48,12 @@ using namespace SERVER;
 using namespace Qt;
 
 //____________________________________________
-BaseApplication::BaseApplication( int argc, char*argv[] ) :
-  QApplication( argc, argv ),
+BaseApplication::BaseApplication( QObject* parent, ArgList arguments ) :
+  QObject( parent ),
   application_manager_( 0 ),
-  args_( argc, argv ),
+  arguments_( arguments ),
   realized_( false )
-{
-  Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
-  if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) setStyle( new FlatStyle() );
-  connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-}
-
-//____________________________________________
-#ifdef Q_WS_X11
-BaseApplication::BaseApplication( Display* display, int argc, char*argv[], Qt::HANDLE visual, Qt::HANDLE colormap ) :
-  QApplication( display, argc, argv, visual, colormap ),
-  application_manager_( 0 ),
-  args_( argc, argv ),
-  realized_( false )
-{
-  Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
-  if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) setStyle( new FlatStyle() );
-  connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-}
-#endif
+{ Debug::Throw( "BaseApplication::BaseApplication.\n" ); }
 
 //____________________________________________
 BaseApplication::~BaseApplication( void )
@@ -86,7 +69,8 @@ BaseApplication::~BaseApplication( void )
     application_manager_ = 0;
   }
 
-  ErrorHandler::get().exit();  
+  // ErrorHandler::get().exit();  
+  Debug::Throw( "BaseApplication::~BaseApplication - done.\n" );
   
 }
 
@@ -97,7 +81,7 @@ void BaseApplication::initApplicationManager( void )
 
   if( _hasApplicationManager() ) return;
 
-  if( args_.find( "--no-server" ) ) 
+  if( arguments_.find( "--no-server" ) ) 
   {
     realizeWidget();
     return;
@@ -117,7 +101,7 @@ void BaseApplication::initApplicationManager( void )
     SLOT( _processRequest( const ArgList& ) ) );
     
   // initialization
-  application_manager_->init( args_ );
+  application_manager_->init( arguments_ );
   Debug::Throw( "BaseApplication::initApplicationManager - done.\n" ); 
   
 }
@@ -135,11 +119,11 @@ bool BaseApplication::realizeWidget( void )
   connect( about_action_, SIGNAL( triggered() ), SLOT( _about() ) ); 
 
   aboutqt_action_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About &Qt", this );
-  connect( aboutqt_action_, SIGNAL( triggered() ), SLOT( aboutQt() ) ); 
+  connect( aboutqt_action_, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) ); 
 
   close_action_ = new QAction( IconEngine::get( ICONS::EXIT ), "E&xit", this );
   close_action_->setShortcut( CTRL+Key_Q );
-  connect( close_action_, SIGNAL( triggered() ), SLOT( quit() ) ); 
+  connect( close_action_, SIGNAL( triggered() ), qApp, SLOT( quit() ) ); 
   
   configuration_action_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default &Configuration", this );
   connect( configuration_action_, SIGNAL( triggered() ), SLOT( _configuration() ) ); 
@@ -179,7 +163,7 @@ void BaseApplication::_about( string name, string version, string stamp )
   dialog.setIconPixmap( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
   dialog.setText( what.str().c_str() );
   dialog.adjustSize();
-  QtUtil::centerOnWidget( &dialog, activeWindow() );
+  QtUtil::centerOnWidget( &dialog, qApp->activeWindow() );
   dialog.exec();
 
 }
@@ -190,16 +174,16 @@ void BaseApplication::_updateConfiguration( void )
   Debug::Throw( "BaseApplication::_updateConfiguration.\n" );
   
   // application icon
-  setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+  qApp->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
 
   // set fonts
   QFont font;
   font.fromString( XmlOptions::get().raw( "FONT_NAME" ).c_str() );
-  setFont( font );
+  qApp->setFont( font );
   
   font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ).c_str() );
-  setFont( font, "QLineEdit" ); 
-  setFont( font, "QTextEdit" ); 
+  qApp->setFont( font, "QLineEdit" ); 
+  qApp->setFont( font, "QTextEdit" ); 
     
   // debug
   Debug::setLevel( XmlOptions::get().get<int>( "DEBUG_LEVEL" ) );
@@ -226,7 +210,7 @@ void BaseApplication::_stateChanged( ApplicationManager::State state )
     break;
     
     case ApplicationManager::DEAD:
-    quit();
+    qApp->quit();
     break;
     
     default:
@@ -237,3 +221,13 @@ void BaseApplication::_stateChanged( ApplicationManager::State state )
   
 }
   
+//____________________________________________
+void BaseApplication::busy( void )
+{
+  qApp->setOverrideCursor( Qt::WaitCursor ); 
+  qApp->processEvents(); 
+}
+  
+//____________________________________________
+void BaseApplication::idle( void )
+{ qApp->restoreOverrideCursor(); }

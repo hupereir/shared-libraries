@@ -26,17 +26,17 @@
 
 /*!
   \file BaseApplication.h
-  \brief Main Window singleton object
+  \brief application main object
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
 #include <QAction>
-#include <QApplication>
 #include <QCursor>
 #include <sstream>
 #include <string>
+#include <QObject>
 
 #include "ApplicationManager.h"
 #include "ArgList.h"
@@ -45,22 +45,17 @@
 class MainWindow;
 
 //! Main Window singleton object
-class BaseApplication: public QApplication
+class BaseApplication: public QObject
 {
 
   //! Qt meta object declaration
   Q_OBJECT
 
   public:
-  
+    
   //! constructor
-  BaseApplication( int argc, char*argv[] ); 
-  
-  #ifdef Q_WS_X11
-  //! constructor
-  BaseApplication( Display*, int argc, char*argv[], Qt::HANDLE, Qt::HANDLE ); 
-  #endif
-  
+  BaseApplication( QObject* parent, ArgList arguments = ArgList() ); 
+    
   //! destructor
   virtual ~BaseApplication( void );
   
@@ -94,15 +89,10 @@ class BaseApplication: public QApplication
   public slots:
   
   //! set application busy
-  virtual void busy( void ) 
-  {
-    setOverrideCursor( Qt::WaitCursor ); 
-    processEvents(); 
-  }
+  virtual void busy( void );
   
   //! set application idle
-  virtual void idle( void )
-  { restoreOverrideCursor(); }
+  virtual void idle( void );
   
   signals:
   
@@ -146,15 +136,15 @@ class BaseApplication: public QApplication
   
   //! argument list
   void _setArguments( ArgList args )
-  { args_ = args; }
+  { arguments_ = args; }
   
   //! argument list
   ArgList& _arguments( void )
-  { return args_; }
+  { return arguments_; }
   
   //! argument list
   const ArgList& _arguments( void ) const
-  { return args_; }
+  { return arguments_; }
   
   //! realized
   bool _realized( void ) const
@@ -172,12 +162,12 @@ class BaseApplication: public QApplication
   }
   
   private:
-   
+     
   //! pointer to application manager
   SERVER::ApplicationManager* application_manager_;
    
   //! command line arguments
-  ArgList args_;
+  ArgList arguments_;
   
   //! true when Realized Widget has been called.
   bool realized_; 
