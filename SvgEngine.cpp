@@ -52,6 +52,7 @@ SvgEngine::SvgEngine( void ):
   XmlOptions::get().setAutoDefault( true );
   XmlOptions::get().keep( "SVG_BACKGROUND" );
   XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg", Option::RECORDABLE|Option::CURRENT ) );
+  XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-simple.svg" ) );
   XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-translucent.svg" ) );
   XmlOptions::get().set( "USE_SVG", "1" );
   XmlOptions::get().set( "SVG_OFFSET", "0" );
