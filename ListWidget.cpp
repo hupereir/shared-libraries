@@ -27,10 +27,9 @@
   \date $Date$
 */
 
-#include <QApplication>
-
 #include "ColorDisplay.h"
 #include "ListWidget.h"
+#include "Singleton.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -42,7 +41,7 @@ ListWidget::ListWidget( QWidget* parent ):
 {
   
   Debug::Throw( "ListWidget::ListWidget.\n" ); 
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
   
 }  

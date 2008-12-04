@@ -29,7 +29,6 @@
   \date $Date$
 */
 
-#include <QApplication>
 #include <QIcon>
 #include <QPixmap>
 #include <QStylePainter>
@@ -40,6 +39,7 @@
 #include "CustomToolButton.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "Singleton.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -58,7 +58,7 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
   setAutoRaise( true );
 
   // configuration
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
   
 }

@@ -30,13 +30,13 @@
 */
 
 #include <QAbstractTextDocumentLayout>
-#include <QApplication>
 #include <QPainter>
 #include <QScrollBar>
 #include <QTextDocument>
 #include <QTextBlock>
 #include <QTextLayout>
 
+#include "Singleton.h"
 #include "TextEditor.h"
 #include "Debug.h"
 #include "LineNumberDisplay.h"
@@ -62,7 +62,7 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
   connect( _editor().document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged() ) );
   connect( _editor().document(), SIGNAL( contentsChanged() ), SLOT( _contentsChanged() ) );
 
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
   // update configuration
   _updateConfiguration();

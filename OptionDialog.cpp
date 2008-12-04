@@ -28,7 +28,6 @@
    \date $Date$
 */
 
-#include <QApplication>
 #include <QPushButton>
 #include <QLabel>
 #include <QLayout>
@@ -37,6 +36,7 @@
 #include "OptionDialog.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "Singleton.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
 #include "Str.h"
@@ -98,7 +98,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
   // connections
   connect( &model_, SIGNAL( optionModified( OptionPair ) ), SLOT( _optionModified( OptionPair ) ) );
   connect( &model_, SIGNAL( specialOptionModified( OptionPair ) ), SLOT( _specialOptionModified( OptionPair ) ) );
-  connect( this, SIGNAL( configurationChanged() ), qApp, SIGNAL( configurationChanged() ) );
+  connect( this, SIGNAL( configurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
   
   // insert hbox layout for buttons
   QBoxLayout* button_layout = new QBoxLayout( QBoxLayout::LeftToRight );

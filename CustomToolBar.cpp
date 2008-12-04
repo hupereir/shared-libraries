@@ -29,10 +29,9 @@
   \date $Date$
 */
 
-#include <QApplication>
-
 #include "CustomToolBar.h"
 #include "CustomToolButton.h"
+#include "Singleton.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -52,7 +51,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const std::
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
   _installActions();
   
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
 }
 

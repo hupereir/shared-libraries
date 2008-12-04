@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+#include <QApplication>
 #include <QAbstractTextDocumentLayout>
 #include <QClipboard>
 #include <QMenu>
@@ -40,6 +41,7 @@
 
 #include "BaseIcons.h"
 #include "BaseReplaceDialog.h"
+#include "InformationDialog.h"
 #include "Color.h"
 #include "TextEditor.h"
 #include "CustomTextDocument.h"
@@ -47,9 +49,9 @@
 #include "IconEngine.h"
 #include "LineNumberDisplay.h"
 #include "SelectLineDialog.h"
+#include "Singleton.h"
 #include "TextBlockData.h"
 #include "TextSeparator.h"
-#include "InformationDialog.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -100,7 +102,7 @@ TextEditor::TextEditor( QWidget *parent ):
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
   connect( this, SIGNAL( selectionChanged() ), SLOT( _updateClipboard() ) );
   connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
   // track changes of block counts
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );

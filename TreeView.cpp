@@ -28,7 +28,6 @@
 */
 
 #include <assert.h>
-#include <QApplication>
 #include <QCursor>
 #include <QHeaderView>
 #include <QPainter>
@@ -37,6 +36,7 @@
 #include "ColumnSelectionMenu.h"
 #include "ColumnSortingMenu.h"
 #include "QtUtil.h"
+#include "Singleton.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 
@@ -69,7 +69,7 @@ TreeView::TreeView( QWidget* parent ):
   connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
 
   // configuration
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
    
 }

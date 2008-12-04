@@ -30,11 +30,11 @@
 */
 
 #include <QGridLayout>
-#include <QApplication>
 
 #include "DockPanel.h"
 #include "Debug.h"
 #include "File.h"
+#include "Singleton.h"
 #include "XmlOptions.h"
 #include "X11Util.h"
 
@@ -90,7 +90,7 @@ DockPanel::DockPanel( QWidget* parent ):
   size_grip_->hide();
 
   // connections
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
 }
 

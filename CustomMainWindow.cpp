@@ -30,7 +30,6 @@
 */
 
 #include <assert.h>
-#include <QApplication>
 #include <QToolBar>
 
 #include "BaseIcons.h"
@@ -39,6 +38,7 @@
 #include "CustomMainWindow.h"
 #include "CustomToolBar.h"
 #include "CustomToolButton.h"
+#include "Singleton.h"
 #include "ToolBarMenu.h"
 #include "ToolButtonStyleMenu.h"
 #include "QtUtil.h"
@@ -58,8 +58,8 @@ CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
   lockToolBarsAction().setChecked( false );
   connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
   
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-  connect( this, SIGNAL( toolbarConfigurationChanged() ), qApp, SIGNAL( configurationChanged() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( this, SIGNAL( toolbarConfigurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
   _updateConfiguration();
     
 }

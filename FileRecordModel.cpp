@@ -32,11 +32,11 @@
 #include <algorithm>
 #include <assert.h>
 #include <QIcon>
-#include <QApplication>
 
 #include "CustomPixmap.h"
 #include "FileRecordBaseProperties.h"
 #include "FileRecordModel.h"
+#include "Singleton.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -58,7 +58,7 @@ FileRecordModel::FileRecordModel( QObject* parent ):
   column_titles_.push_back( "path" );
   column_titles_.push_back( "last accessed" );
 
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
 }
   

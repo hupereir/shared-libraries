@@ -33,6 +33,7 @@
 #include <QFile>
 
 #include "Debug.h"
+#include "Singleton.h"
 #include "XmlFileList.h"
 #include "XmlFileRecord.h"
 #include "XmlOptions.h"
@@ -49,7 +50,7 @@ XmlFileList::XmlFileList( QObject* parent ):
 { 
   
   Debug::Throw( "XmlFileList::XmlFileList.\n" );
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
   _updateConfiguration();
 

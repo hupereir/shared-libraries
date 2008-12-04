@@ -180,6 +180,7 @@ bool XmlOptions::write( File file )
   out.write( document.toByteArray() );
   out.close();
 
+  Debug::Throw( "XmlOptions::write - done.\n" );
   return true;
 
 }
