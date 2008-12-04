@@ -33,6 +33,9 @@
    \date    $Date$
 */
 
+#include <assert.h>
+#include <QObject>
+
 #include "CounterMap.h"
 
 //! a class singleton used to centralize all objects that need static creation
@@ -49,13 +52,37 @@ class Singleton
   CounterMap& counterMap( void ) 
   { return counter_map_; }
   
+  //! set application
+  void setApplication( QObject* application )
+  { 
+    assert( !application_ );
+    application_ = application;
+  }
+  
+  //! application
+  QObject* application()
+  { 
+    assert( application_ );
+    return application_; 
+  }
+  
+  
+  //! cast
+  template< typename T >
+  T* application( void )
+  { 
+    assert( application_ );
+    return static_cast<T*>( application_ );  
+  }
+  
   //! destructor
   ~Singleton( void );
   
   private:
   
   //! constructor
-  Singleton( void )
+  Singleton( void ):
+    application_(0)
   {}
   
   //! singleton
@@ -64,6 +91,8 @@ class Singleton
   //! counter map
   CounterMap counter_map_; 
 
+  QObject* application_;
+  
 };
 
 #endif
