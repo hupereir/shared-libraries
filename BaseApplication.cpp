@@ -36,6 +36,7 @@
 
 #include "BaseIcons.h"
 #include "ErrorHandler.h"
+#include "FlatStyle.h"
 #include "IconEngine.h"
 #include "BaseApplication.h"
 #include "QtUtil.h"
@@ -53,8 +54,11 @@ BaseApplication::BaseApplication( QObject* parent, ArgList arguments ) :
   arguments_( arguments ),
   realized_( false )
 { 
+  
   Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
   connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) qApp->setStyle( new FlatStyle() );
+
 }
 
 //____________________________________________
