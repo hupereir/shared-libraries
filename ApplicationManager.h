@@ -35,6 +35,7 @@
 #include <assert.h>
 #include <QObject>
 #include <QTimer>
+#include <QTcpServer>
 
 #include <iostream>
 #include <list>
@@ -44,7 +45,6 @@
 #include "ArgList.h"
 #include "Client.h"
 #include "Counter.h"
-#include "Server.h"
 #include "ServerCommand.h"
 
 namespace SERVER
@@ -131,7 +131,7 @@ namespace SERVER
     protected:
          
     //! reference to server
-    virtual Server& _server() const
+    virtual QTcpServer& _server() const
     { 
       assert( server_ );
       return *server_;
@@ -225,7 +225,7 @@ namespace SERVER
     private:
     
     //! Server 
-    Server* server_;
+    QTcpServer* server_;
     
     //! Client
     Client* client_;

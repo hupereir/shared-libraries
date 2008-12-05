@@ -35,7 +35,6 @@
 #include "Client.h"
 #include "Debug.h"
 #include "Util.h"
-#include "Server.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -47,7 +46,7 @@ static const int debug_level(1);
 ApplicationManager::ApplicationManager( QObject* parent ):
   QObject( parent ),
   Counter( "ApplicationManager" ),
-  server_( new Server( this ) ),
+  server_( new QTcpServer( this ) ),
   client_( new Client( this, new QTcpSocket( this ) ) ),
   state_( AWAITING_REPLY ),
   timer_( this )

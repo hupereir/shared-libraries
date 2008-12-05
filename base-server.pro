@@ -9,14 +9,12 @@ HEADERS = \
   ApplicationManager.h \
   BaseApplication.h \
   Client.h \
-  Server.h \
   ServerCommand.h
 
 SOURCES = \
   ApplicationManager.cpp \
   BaseApplication.cpp \
   Client.cpp \
-  Server.cpp \
   ServerCommand.cpp
 
 CONFIG += qt
