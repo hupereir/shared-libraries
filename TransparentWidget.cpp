@@ -30,12 +30,12 @@
 */
 
 #include <assert.h>
-#include <QApplication>
 #include <QPainter>
 
 #include "BackgroundPixmap.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
+#include "Singleton.h"
 #include "TransparentWidget.h"
 #include "WinUtil.h"
 #include "XmlOptions.h"
@@ -66,7 +66,7 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
 
   // configuration
   _updateConfiguration();
-  connect( qApp, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
   // connections
   connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( _reloadBackground() ) );
