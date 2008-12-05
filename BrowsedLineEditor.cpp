@@ -1,3 +1,5 @@
+
+
 // $Id$
 
 /******************************************************************************
@@ -51,9 +53,9 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   QWidget( parent ),
   Counter( "BrowsedLineEditor" ),
   work_directory_( Util::workingDirectory() ),
+  file_dialog_( 0 ),
   file_mode_( QFileDialog::ExistingFile ),
-  view_mode_( QFileDialog::List ),
-  file_dialog_( 0 )
+  view_mode_( QFileDialog::List )
 {
   Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
   

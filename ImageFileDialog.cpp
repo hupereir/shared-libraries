@@ -146,7 +146,7 @@ void ImageFileDialog::_preview( void )
   else {
     
     if( pixmap.width() > preview_->width()*0.8 || pixmap.height() > preview_->height()*0.8 )
-    { pixmap = pixmap.scaled( preview_->width()*0.8, preview_->height()*0.8, Qt::KeepAspectRatio, Qt::SmoothTransformation ); }
+    { pixmap = pixmap.scaled( int(preview_->width()*0.8), int(preview_->height()*0.8), Qt::KeepAspectRatio, Qt::SmoothTransformation ); }
     preview_->setPixmap( pixmap );
     
   }
