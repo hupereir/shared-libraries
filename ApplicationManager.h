@@ -53,7 +53,7 @@ namespace SERVER
   
   //! default server port
   enum { 
-    SERVER_PORT = 4242, 
+    SERVER_PORT = 8082, 
     TEST_PORT = 4243
   };
 
