@@ -52,7 +52,10 @@ BaseApplication::BaseApplication( QObject* parent, ArgList arguments ) :
   application_manager_( 0 ),
   arguments_( arguments ),
   realized_( false )
-{ Debug::Throw( "BaseApplication::BaseApplication.\n" ); }
+{ 
+  Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
+  connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+}
 
 //____________________________________________
 BaseApplication::~BaseApplication( void )
