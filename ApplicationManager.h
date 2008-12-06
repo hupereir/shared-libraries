@@ -33,9 +33,10 @@
 */
 
 #include <assert.h>
+#include <QBasicTimer>
 #include <QObject>
-#include <QTimer>
 #include <QTcpServer>
+#include <QTimerEvent>
 
 #include <iostream>
 #include <list>
@@ -130,6 +131,9 @@ namespace SERVER
       
     protected:
          
+    //! timer event
+    virtual void timerEvent( QTimerEvent* );
+    
     //! reference to server
     virtual QTcpServer& _server() const
     { 
@@ -213,9 +217,6 @@ namespace SERVER
     //! client recieves errors
     virtual void _error( QAbstractSocket::SocketError );
     
-    //! no reply came within delay
-    void _replyTimeOut( void );
-    
     //! redistribute message when a connected client sends one
     virtual void _redirect( void );
         
@@ -242,8 +243,8 @@ namespace SERVER
     //! manager status
     State state_;
   
-    //! QTimer for reply timeout
-    QTimer timer_;
+    //! reply timeout
+    QBasicTimer timer_;
   
   };
 };

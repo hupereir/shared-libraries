@@ -48,8 +48,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   Counter( "ApplicationManager" ),
   server_( new QTcpServer( this ) ),
   client_( new Client( this, new QTcpSocket( this ) ) ),
-  state_( AWAITING_REPLY ),
-  timer_( this )
+  state_( AWAITING_REPLY )
 { 
 
   Debug::Throw( debug_level, "ApplicationManager::ApplicationManager.\n" );
@@ -110,14 +109,10 @@ void ApplicationManager::init( ArgList args )
   
   // send request command
   client().sendMessage( command );
-  
-  // run timeout timer to force state ALIVE if no reply comes
-  connect( &timer_, SIGNAL( timeout() ), SLOT( _replyTimeOut() ) );
-  
+    
   // time out delay (for existing server to reply)
   int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 ); 
-  timer_.setSingleShot( true );
-  timer_.start( timeout_delay );
+  timer_.start( timeout_delay, this );
   
   Debug::Throw( debug_level, "ApplicationManager::init. done.\n" );
   
@@ -130,6 +125,21 @@ void ApplicationManager::setApplicationName( const string& name )
   id_ = ApplicationId( name, Util::user(), Str( Util::env( "DISPLAY", "0.0" ) ).replace( ":", "" ) );
 }
 
+//______________________________________________________________
+void ApplicationManager::timerEvent(QTimerEvent *event)
+{
+  
+  Debug::Throw( "ApplicationManager::timerEvent.\n" );
+  
+  if (event->timerId() == timer_.timerId() ) 
+  { 
+    timer_.stop();
+    if( state_ == AWAITING_REPLY ) setState( ALIVE );
+  }
+
+  return QObject::timerEvent( event );
+  
+}
 
 //_____________________________________________________
 Client* ApplicationManager::_register( const ApplicationId& id, Client* client, bool forced )
@@ -161,7 +171,8 @@ void ApplicationManager::_redirect( const std::string& message, Client* sender )
 
   // parse message
   istringstream in( message );
-  while( (in.rdstate() & ios::failbit ) == 0 ) {
+  while( (in.rdstate() & ios::failbit ) == 0 ) 
+  {
     
     ServerCommand command;
     in >> command;
@@ -319,13 +330,6 @@ void ApplicationManager::_error( QAbstractSocket::SocketError error )
   if( state_ != DEAD ) setState( ALIVE );
   
   return;
-}
-
-//_____________________________________________________
-void ApplicationManager::_replyTimeOut( void )
-{
-  Debug::Throw( debug_level, "ApplicationManager::_replyTimeOut.\n" );
-  if( state_ == AWAITING_REPLY ) setState( ALIVE );
 }
 
 //_____________________________________________________
