@@ -140,21 +140,22 @@ bool BaseApplication::realizeWidget( void )
 }
 
 //_______________________________________________
-void BaseApplication::_about( string name, string version, string stamp )
+void BaseApplication::_about( QString name, QString version, QString stamp )
 {
 
   Debug::Throw( "BaseApplication::about.\n" );
   
   // modify version to remvoe qt4 for version
-  if( Str( version ).contains( "qt4_" ) )
-  { version = Str( version ).replace( "qt4_", "" ) + " (qt4)"; }
+  if( version.indexOf( "qt4_" ) >= 0 )
+  { version = version.replace( "qt4_", "" ) + " (qt4)"; }
   
-  ostringstream what;
-  if( !name.empty() ) { what << "<h3>" << name << "</h3>"; }
-  if( !version.empty() ) { what << "version " << version; }
-  if( !stamp.empty() ) { what << " (" << stamp << ")"; }
+  QString buffer;
+  QTextStream in( &buffer );
+  if( !name.isEmpty() ) { in << "<h3>" << name << "</h3>"; }
+  if( !version.isEmpty() ) { in << "version " << version; }
+  if( !stamp.isEmpty() ) { in << " (" << stamp << ")"; }
 
-  what 
+  in 
     << "<p>This application was written for personal use only. "
     << "It is not meant to be bug free, although all efforts "
     << "are made so that it remains/becomes so. "
@@ -167,7 +168,7 @@ void BaseApplication::_about( string name, string version, string stamp )
   QMessageBox dialog;
   dialog.setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
   dialog.setIconPixmap( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-  dialog.setText( what.str().c_str() );
+  dialog.setText( buffer );
   dialog.adjustSize();
   QtUtil::centerOnWidget( &dialog, qApp->activeWindow() );
   dialog.exec();

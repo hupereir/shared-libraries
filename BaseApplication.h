@@ -124,15 +124,11 @@ class BaseApplication: public QObject
   protected:
   
   //! application 'about' dialog
-  virtual void _about( std::string, std::string version = "", std::string stamp = "" );
+  virtual void _about( QString, QString version = "", QString stamp = "" );
   
   //! application 'about' dialog
-  virtual void _about( std::string name, double version, std::string stamp = "" )
-  {
-    std::ostringstream what; 
-    what << version;
-    _about( name, what.str(), stamp );
-  }
+  virtual void _about( QString name, double version, QString stamp = "" )
+  { _about( name, QString().setNum( version ), stamp ); }
   
   //! argument list
   void _setArguments( ArgList args )
