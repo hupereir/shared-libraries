@@ -73,14 +73,14 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
 }
 
 //____________________________________________________________
-set<string> UserSelectionFrame::users( void ) const
+set<QString> UserSelectionFrame::users( void ) const
 { 
   
-  set<string> out;
+  set<QString> out;
   for( int i=0; i< editor().QComboBox::count(); i++ )
   {
     const QString& user( editor().itemText( i ) );
-    if( !user.isNull() ) out.insert( qPrintable( user ) ); 
+    if( !user.isNull() ) out.insert( user ); 
   }
 
   return out;
@@ -109,7 +109,7 @@ void UserSelectionFrame::setUser( const QString& user )
 }
   
 //________________________________________________________________
-void UserSelectionFrame::updateUsers( set<string> users )
+void UserSelectionFrame::updateUsers( set<QString> users )
 {
   Debug::Throw( "UserSelectionFrame::updateUsers.\n" );
     
@@ -127,7 +127,7 @@ void UserSelectionFrame::updateUsers( set<string> users )
       continue;
     }
         
-    set<string>::iterator iter( users.find( qPrintable( user ) ) );
+    set<QString>::iterator iter( users.find( qPrintable( user ) ) );
     if( iter == users.end() ) editor().removeItem( i );
     else {
       
@@ -137,13 +137,13 @@ void UserSelectionFrame::updateUsers( set<string> users )
     }
   }
 
-  for( set<string>::const_iterator iter =  users.begin(); iter != users.end(); iter++ )
-  { if( !iter->empty() ) editor().addItem( iter->c_str() ); }
+  for( set<QString>::const_iterator iter =  users.begin(); iter != users.end(); iter++ )
+  { if( !iter->isEmpty() ) editor().addItem( *iter ); }
   
 }
 
 //____________________________________________________________
-string UserSelectionFrame::user( void ) const
+QString UserSelectionFrame::user( void ) const
 { 
   Debug::Throw( "UserSelectionFrame::user.\n" );
   QString user(  editor().currentText() );
@@ -154,7 +154,7 @@ string UserSelectionFrame::user( void ) const
 //____________________________________________________________
 void UserSelectionFrame::_userChanged( void )
 {
-  std::string new_user( user() );
+  QString new_user( user() );
   if( new_user == user_ ) return;
   user_ = new_user;
   emit userChanged( user_ ); 

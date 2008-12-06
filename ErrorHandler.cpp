@@ -87,5 +87,6 @@ ErrorHandler::ErrorHandler( void )
   disableMessage( "QSocketNotifier: invalid socket" );
   disableMessage( "QServerSocket: failed to bind or listen to the socket" );
   disableMessage( "QPixmap::resize: TODO: resize alpha data" );
-
+  disableMessage( "QPainterPath::arcTo: Adding arc where a parameter is NaN, results are undefined" );
+  
 }

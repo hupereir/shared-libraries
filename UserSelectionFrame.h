@@ -54,10 +54,10 @@ class UserSelectionFrame: public QWidget, public Counter
   void setUser( const QString& user );
 
   //! users
-  std::set<std::string> users( void ) const;
+  std::set<QString> users( void ) const;
   
   //! selected user
-  std::string user( void ) const;  
+  QString user( void ) const;  
   
   //! editor
   CustomComboBox& editor( void ) const
@@ -69,12 +69,12 @@ class UserSelectionFrame: public QWidget, public Counter
   signals:
   
   //! emitted when user is changed
-  void userChanged( std::string );
+  void userChanged( QString );
   
   public slots:
   
   //! update user list
-  void updateUsers( std::set<std::string> );
+  void updateUsers( std::set<QString> );
 
   private slots:
   
@@ -102,7 +102,7 @@ class UserSelectionFrame: public QWidget, public Counter
       
   //! current user 
   /*! it is used to avoid emmitting signal when user was changed but fall back to the current one*/
-  std::string user_;
+  QString user_;
   
 };
 
