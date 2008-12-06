@@ -33,7 +33,7 @@
 */
 
 #include <iostream>
-#include <string>
+#include <QString>
 
 #include "Counter.h"
 
@@ -52,42 +52,42 @@ namespace SERVER
     
     //! constructor
     ApplicationId( 
-      const std::string& name = "", 
-      const std::string& user = "",
-      const std::string& display = "" ):
+      const QString& name = "", 
+      const QString& user = "",
+      const QString& display = "" ):
       Counter( "ApplicationId" ),
       name_( name ),
-      user_( user + std::string("@")+display )
+      user_( user + QString("@")+display )
     {};
       
     //! name
-    const std::string& name( void ) const
+    const QString& name( void ) const
     { return name_; }
     
     //! name 
-    void setName( const std::string& value )
+    void setName( const QString& value )
     { name_ = value; }
 
     //! short name
-    std::string userName( void ) const
+    QString userName( void ) const
     {
-      size_t position( user_.find( "@" ) );
-      return (position == std::string::npos ) ? user_ : user_.substr(0, position);
+      int position( user_.indexOf( "@" ) );
+      return (position < 9 ) ? user_ : user_.left(position);
     }
 
     //! short name
-    std::string display( void ) const
+    QString display( void ) const
     {
-      size_t position( user_.find( "@" ) );
-      return (position == std::string::npos ) ? "" : user_.substr(position+1, user_.size()-position-1);
+      int position( user_.indexOf( "@" ) );
+      return (position < 0 ) ? "" : user_.mid(position+1 );
     }
     
     //! user
-    const std::string& user( void ) const
+    const QString& user( void ) const
     { return user_; }
 
     //! user
-    void setUser( const std::string& value )
+    void setUser( const QString& value )
     { user_ = value; }
       
     //! equal to operator
@@ -112,23 +112,30 @@ namespace SERVER
   
     //! returns true if user and name makes sense
     bool isValid( void ) const
-    { return !(name().empty() || user().empty() ); }
+    { return !(name().isEmpty() || user().isEmpty() ); }
     
     private:
     
     //! application name
-    std::string name_;
+    QString name_;
     
     //! application user
-    std::string user_;
+    QString user_;
     
     //! streamer
     friend std::ostream& operator << ( std::ostream& out, const ApplicationId& id )
     { 
-      out << id.name() << " (" << id.user() << ")";
+      out << qPrintable( id.name() ) << " (" << qPrintable( id.user() ) << ")";
       return out;
     }
    
+    //! streamer
+    friend QTextStream& operator << ( QTextStream& out, const ApplicationId& id )
+    { 
+      out << qPrintable( id.name() ) << " (" << qPrintable( id.user() ) << ")";
+      return out;
+    }
+
   };
 };
 

@@ -29,15 +29,16 @@
    \date    $Date$
 */
 
+#include <QStringList>
+
 #include "Debug.h"
 #include "ServerCommand.h"
-#include "Str.h"
 
 using namespace std;
 using namespace SERVER;
 
 //___________________________________________
-const string ServerCommand::separator_( "::" ); 
+const QString ServerCommand::separator_( "::" ); 
 
 //__________________________________________________________________
 ServerCommand::ConversionMap ServerCommand::conversions_;
@@ -71,7 +72,7 @@ void ServerCommand::_initializeCommandNames( void ) const
 }
 
 //___________________________________________
-ServerCommand::ServerCommand( const string& command_line ):
+ServerCommand::ServerCommand( const QString& command_line ):
   Counter( "ServerCommand" ),
   timestamp_( TimeStamp::now() ),
   command_( NONE )
@@ -79,64 +80,53 @@ ServerCommand::ServerCommand( const string& command_line ):
   
   Debug::Throw( "ServerCommand::ServerCommand.\n" );
   
-  int index( 0 );
-  size_t pos;
-  Str buffer( command_line );
-  while( ( pos = buffer.find( separator_ ) ) != string::npos )
+  // split
+  QStringList words( command_line.split( separator_ ) );
+  
+  // loop over words
+  for( int index = 0; index < words.size(); index++ )
   {
-    
-    Str word( buffer.substr( 0, pos ) );
-    switch ( index ){
+    QString word( words[index] );
+    switch ( index )
+    {
       case 0: id_.setName( word ); break;
       case 1: id_.setUser( word ); break;
-      case 2: command_ = (CommandType) word.get<unsigned int>(); break;
-      default: args_.add( word ); break;
+      case 2: command_ = (CommandType) word.toUInt(); break;
+      default: args_.add( qPrintable( word ) ); break;
     }
     
-    index++;
-    buffer = buffer.substr( pos+separator_.size(), buffer.size()-pos-separator_.size() );
-
-  }
-
-  // see if there is remaining keyword to find
-  if( buffer.size() )
-  switch( index ) {
-    case 0: id_.setName( buffer ); break;
-    case 1: id_.setUser( buffer ); break;
-    case 2: command_ = (CommandType) buffer.get<unsigned int>(); break;
-    default: args_.add( buffer ); break;
   }
   
   Debug::Throw() << "ServerCommand::ServerCommand - id=" << id() << endl;
-  Debug::Throw() << "ServerCommand::ServerCommand - command=" << commandName() << endl;
+  Debug::Throw() << "ServerCommand::ServerCommand - command=" << qPrintable( commandName() ) << endl;
     
   return;
   
 }
 
 //__________________________________________________
-ServerCommand::operator std::string (void) const
+ServerCommand::operator QString (void) const
 {
   Debug::Throw( "ServerCommand::operator (string).\n" );
   if( !id().isValid() ) return "";
-  Str buffer = id().name() + ServerCommand::separator_ + id().user() + ServerCommand::separator_ + Str().assign<CommandType>(command());
+  QStringList words;
+  
+  words << id().name() << id().user() << QString().setNum(command());
   
   // add arguments  
   for( ArgList::TagList::const_iterator tag_iter = args_.get().begin(); tag_iter != args_.get().end(); tag_iter++ )
   {
-    if( tag_iter->tag().size() ) buffer += ServerCommand::separator_ + tag_iter->tag();
+    if( tag_iter->tag().size() ) words << tag_iter->tag().c_str();
     for( list<string>::const_iterator opt_iter = tag_iter->options().begin(); opt_iter != tag_iter->options().end(); opt_iter++ )
-    if( opt_iter->size() ) buffer += ServerCommand::separator_ + *opt_iter;
+    { if( opt_iter->size() ) words << opt_iter->c_str(); }
   }
     
+  QString buffer( words.join( separator_ ) );
+  
   // apply conversion
   initializeConversions();
-  for( 
-      ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
-      iter != ServerCommand::conversions_.end();
-      iter++
-  ) 
-  buffer = buffer.replace( iter->first, iter->second );
+  for( ConversionMap::const_iterator iter = ServerCommand::conversions_.begin(); iter != ServerCommand::conversions_.end(); iter++ ) 
+  { buffer = buffer.replace( iter->first, iter->second ); }
   return buffer;
 }
 
@@ -144,10 +134,11 @@ ServerCommand::operator std::string (void) const
 //! create command from stream
 namespace SERVER {
 
-  istream & operator >> ( istream& in, ServerCommand & command )
+  //__________________________________________________
+  QTextStream & operator >> ( QTextStream& in, ServerCommand & command )
   {
     
-    Str buffer;
+    QString buffer;
     in >> buffer;
     
     // apply conversion
@@ -162,44 +153,13 @@ namespace SERVER {
     return in;
     
   }
-  
-  //__________________________________________________
-  QTextStream & operator >> ( QTextStream& in, ServerCommand & command )
-  {
-    
-    QString buffer;
-    in >> buffer;
-    
-    // apply conversion
-    command.initializeConversions();
-    for( 
-      ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
-      iter != ServerCommand::conversions_.end();
-      iter++
-    ) { buffer = buffer.replace( iter->second.c_str(), iter->first.c_str() ); }
-    
-    command = ServerCommand( qPrintable( buffer ) );
-    return in;
-    
-  }
-
-  //__________________________________________________
-  //! dump command to stream
-  ostream & operator << ( ostream& out, const ServerCommand &command )
-  {
-    
-    out << string( command );
-    return out;
-    
-  }
-  
     
   //__________________________________________________
   //! dump command to stream
   QTextStream & operator << ( QTextStream& out, const ServerCommand &command )
   {
     
-    out << string( command ).c_str();
+    out << QString( command );
     return out;
     
   }

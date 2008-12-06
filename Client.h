@@ -76,7 +76,7 @@ namespace SERVER
     { return has_message_; }
     
     //! current message
-    const std::string& message( void ) const
+    const QString& message( void ) const
     { return message_; }
     
     //! reset
@@ -101,7 +101,7 @@ namespace SERVER
     bool has_message_;
     
     //! current message
-    std::string message_;
+    QString message_;
     
   };
 };

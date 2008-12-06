@@ -29,8 +29,8 @@
    \date    $Date$
 */
 
+#include <QTextStream>
 #include <assert.h>
-#include <sstream>
 
 #include "Client.h"
 #include "Debug.h"
@@ -59,11 +59,11 @@ Client::~Client( void )
 //_______________________________________________________
 bool Client::sendMessage( const ServerCommand& command )
 {
-  Debug::Throw( debug_level ) << "Client::sendMessage - " << command << endl;
+  Debug::Throw( debug_level ) << "Client::sendMessage - " << qPrintable( QString(command) ) << endl;
   
   if( !socket().state() ==  QAbstractSocket::ConnectedState ) return false;
   QTextStream os( &socket() );
-  os << command << QString("\n");
+  os << command << "\n";
   return true;
   
 }
@@ -79,19 +79,20 @@ void Client::reset( void )
 //_______________________________________________________
 void Client::_readMessage( void )
 {
+
   Debug::Throw(  debug_level, "Client::_readMessage.\n" );
-  ostringstream out;
+  message_.clear();
+  QTextStream stream( &message_ );
   
   // read from the server
-  while ( socket().canReadLine() ) {
-    string line( (const char*) socket().readLine() );
-    if( line.size() && line != "\n" )
-    out << line;
+  while ( socket().canReadLine() ) 
+  {
+    QString line( socket().readLine() );
+    if( !( line.isEmpty() || line == "\n" ) ) stream << line;
   }
 
   // store message and emit signal
   has_message_ = true;
-  message_ = out.str();
   emit messageAvailable();  
 
 }

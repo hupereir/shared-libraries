@@ -74,7 +74,7 @@ namespace SERVER
     };
       
     //! constructor
-    ServerCommand( const std::string& buffer = "" );
+    ServerCommand( const QString& buffer = "" );
   
     //! constructor
     ServerCommand( 
@@ -111,7 +111,7 @@ namespace SERVER
     { return timeStamp() >= command.timeStamp() && id() == command.id(); }
     
     //! convert to a string
-    operator std::string( void ) const;    
+    operator QString( void ) const;    
     
     //! time stamp
     const TimeStamp& timeStamp( void ) const
@@ -134,7 +134,7 @@ namespace SERVER
     { command_ = command; }
     
     //! command name
-    std::string commandName( void ) const
+    QString commandName( void ) const
     {
       _initializeCommandNames();
       return command_names_[ command() ];
@@ -163,7 +163,7 @@ namespace SERVER
     ApplicationId id_;
     
     //! user name
-    std::string user_;
+    QString user_;
     
     //! command
     CommandType command_;
@@ -172,14 +172,8 @@ namespace SERVER
     ArgList args_;
     
     //! separator
-    static const std::string separator_;    
-    
-    //! create command from stream
-    friend std::istream &operator >> (std::istream &in, ServerCommand &);   
-    
-    //! dump command to stream
-    friend std::ostream &operator << (std::ostream &out,const ServerCommand &);   
-    
+    static const QString separator_;    
+        
     //! create command from stream
     friend QTextStream &operator >> ( QTextStream &, ServerCommand& );   
 
@@ -187,13 +181,13 @@ namespace SERVER
     friend QTextStream & operator<< ( QTextStream &, const ServerCommand& );
   
     //! command names
-    typedef std::map<CommandType, std::string > CommandMap;
+    typedef std::map<CommandType, QString > CommandMap;
     
     //! command names
     static CommandMap command_names_;
     
     //! text conversion pair type
-    typedef std::map<std::string, std::string> ConversionMap;
+    typedef std::map<QString, QString> ConversionMap;
       
     //! text conversion pair list
     static ConversionMap conversions_;

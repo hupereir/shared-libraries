@@ -105,7 +105,7 @@ void ApplicationManager::init( ArgList args )
   
   // add command line arguments if any
   command.setArguments( args );
-  Debug::Throw( debug_level ) << "ApplicationManager::init - " << command << endl;
+  Debug::Throw( debug_level ) << "ApplicationManager::init - " << qPrintable( QString( command ) ) << endl;
   
   // send request command
   client().sendMessage( command );
@@ -119,10 +119,10 @@ void ApplicationManager::init( ArgList args )
 }
 
 //_____________________________________________________
-void ApplicationManager::setApplicationName( const string& name )
+void ApplicationManager::setApplicationName( const QString& name )
 { 
-  Debug::Throw( debug_level, "ApplicationManager::setApplicationName.\n" );
-  id_ = ApplicationId( name, Util::user(), Str( Util::env( "DISPLAY", "0.0" ) ).replace( ":", "" ) );
+  Debug::Throw( debug_level ) << "ApplicationManager::setApplicationName - " << qPrintable( name ) << endl;
+  id_ = ApplicationId( name, Util::user().c_str(), QString( Util::env( "DISPLAY", "0.0" ).c_str() ).replace( ":", "" ) );
 }
 
 //______________________________________________________________
@@ -164,14 +164,14 @@ Client* ApplicationManager::_register( const ApplicationId& id, Client* client, 
 }
 
 //_____________________________________________________
-void ApplicationManager::_redirect( const std::string& message, Client* sender )
+void ApplicationManager::_redirect( QString message, Client* sender )
 {
   
-  Debug::Throw() << "ApplicationManager::_redirect - message: " << message << endl;
+  Debug::Throw() << "ApplicationManager::_redirect - message: " << qPrintable( message ) << endl;
 
   // parse message
-  istringstream in( message );
-  while( (in.rdstate() & ios::failbit ) == 0 ) 
+  QTextStream in( &message );
+  while( in.status() == QTextStream::Ok ) 
   {
     
     ServerCommand command;
@@ -261,10 +261,10 @@ void ApplicationManager::_redirect( const std::string& message, Client* sender )
 }
 
 //_____________________________________________________
-void ApplicationManager::_broadcast( const string& message, Client* sender )
+void ApplicationManager::_broadcast( QString message, Client* sender )
 {
   
-  Debug::Throw( debug_level ) << "ApplicationManager::_Broadcast - message: " << message << endl;
+  Debug::Throw( debug_level ) << "ApplicationManager::_Broadcast - message: " << qPrintable( message ) << endl;
   
   for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
   { if( (*iter) != sender ) (*iter)->sendMessage( message ); }
@@ -342,7 +342,7 @@ void ApplicationManager::_redirect( void )
   while( ( iter = find_if(  _connectedClients().begin(), _connectedClients().end(), HasMessageFTor() ) ) != _connectedClients().end() )
   { 
     assert( (*iter)->hasMessage() );
-    string message( (*iter)->message() );
+    QString message( (*iter)->message() );
     (*iter)->reset();
     _redirect( message, *iter );
   }
@@ -360,11 +360,11 @@ void ApplicationManager::_process( void )
   assert( client().hasMessage() );
   
   // retrieve message and reset
-  string message( client().message() );
+  QString message( client().message() );
   client().reset();
   
-  istringstream in( message );
-  while( (in.rdstate() & ios::failbit ) == 0 ) 
+  QTextStream in( &message );
+  while( in.status() == QTextStream::Ok ) 
   {
     
     ServerCommand command;

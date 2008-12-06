@@ -95,7 +95,7 @@ void BaseApplication::initApplicationManager( void )
   
   // create application manager
   application_manager_ = new ApplicationManager( this );
-  application_manager_->setApplicationName( XmlOptions::get().get<string>( "APP_NAME" ) );
+  application_manager_->setApplicationName( XmlOptions::get().get<string>( "APP_NAME" ).c_str() );
   
   // connections
   connect( 

@@ -74,7 +74,7 @@ namespace SERVER
     virtual ~ApplicationManager( void );
      
     //! application name
-    virtual void setApplicationName( const std::string& name );
+    virtual void setApplicationName( const QString& name );
   
     //! comamnd line usage
     static void usage( void );
@@ -201,10 +201,10 @@ namespace SERVER
     virtual Client* _register( const ApplicationId& id, Client* client, bool forced = false );
 
     //! redirect message 
-    virtual void _redirect( const std::string& message, Client* sender );
+    virtual void _redirect( QString message, Client* sender );
     
     //! broadcast a message to all registered clients but the sender (if valid)
-    virtual void _broadcast( const std::string& message, Client* sender = 0 );
+    virtual void _broadcast( QString message, Client* sender = 0 );
 
     protected slots:
     
