@@ -138,13 +138,14 @@ void ProcessFrame::_toggleUpdate( bool checked )
 //_____________________________________________________________
 void ProcessFrame::_read( void )
 {
-  
-  if( process_.bytesAvailable() < 0 ) return;
-  char* data = new char[process_.bytesAvailable()];
-  qint64 size = process_.read( data, process_.bytesAvailable() );
-  if( size <= 0 ) return;
-  append( QString( data ).left( size ) ); 
-
+  while( process_.bytesAvailable() > 0 )
+  {
+    char* data = new char[process_.bytesAvailable()];
+    qint64 size = process_.read( data, process_.bytesAvailable() );
+    if( size <= 0 ) return;
+    append( QString( data ).left( size ) ); 
+    delete[] data;
+  }
 }
 
 //_______________________________________________
