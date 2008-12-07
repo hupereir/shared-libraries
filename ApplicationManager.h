@@ -1,3 +1,6 @@
+#ifndef ApplicationManager_h
+#define ApplicationManager_h
+
 // $Id$
 
 /******************************************************************************
@@ -20,9 +23,6 @@
 *                         
 *                         
 *******************************************************************************/
-
-#ifndef ApplicationManager_h
-#define ApplicationManager_h
 
 /*!
    \file    ApplicationManager.h
@@ -150,42 +150,25 @@ namespace SERVER
     typedef std::list< Client* > ClientList;
 
     //! used to retrieve clients for a given state
-    class SameStateFTor
+    class SameStateFTor: public BaseClient::SameStateFTor
     {
       public:
       
       //! constructor
       SameStateFTor( QAbstractSocket::SocketState state ):
-        state_( state )
+        BaseClient::SameStateFTor( state )
         {}
         
       //! predicate
-      bool operator() ( const Client* client ) const
-      { return client->socket().state() == state_; }
-      
-      //! predicate
       bool operator() ( const ClientPair& pair ) const
-      { return pair.second->socket().state() == state_; }
-      
-      private:
-      
-      //! prediction
-      QAbstractSocket::SocketState state_;
-        
-    };
-     
-    //! used to retrieve clients with available messages
-    class HasMessageFTor
-    {
-      
-      public:
-      
+      { return BaseClient::SameStateFTor::operator() (pair.second); }
+              
       //! predicate
       bool operator() ( const Client* client ) const
-      { return client->hasMessage(); }
-      
+      { return BaseClient::SameStateFTor::operator() (client); }
+
     };
-    
+         
     //! map of accepted clients
     ClientMap& _acceptedClients( void ) 
     { return accepted_clients_; }

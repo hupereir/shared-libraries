@@ -32,84 +32,40 @@
    \date    $Date$
 */
 
-#include <QTcpSocket>
 #include <string>
 #include <list>
 
 #include "Counter.h"
+#include "BaseClient.h"
 #include "ServerCommand.h"
 
 namespace SERVER
 {
   
   //! interprocess communication client
-  class Client : public QObject, public Counter
+  class Client : public BaseClient
   {
   
-    //! Qt meta object macro
-    Q_OBJECT
-    
     public:
     
     //! client list
     typedef std::list< Client* > List;
       
     //! constructor
-    Client( QObject* parent, QTcpSocket* socket );
+    Client( QObject* parent, QTcpSocket* socket ):
+      BaseClient( parent, socket )
+    {}
   
     //! destructor
-    virtual ~Client( void );
-
-    //! associated socket
-    QTcpSocket& socket()
-    { return *socket_; }
-
-    //! associated socket
-    const QTcpSocket& socket() const
-    { return *socket_; }
+    virtual ~Client( void )
+    {}
     
     /*! returns true if message could be sent */
-    bool sendCommand( const ServerCommand& );
-    
-    //! true if message is available
-    const bool& hasMessage( void ) const
-    { return has_message_; }
-    
-    //! current message
-    const QString& message( void ) const
-    { return message_; }
-    
-    //! reset
-    void reset( void );
-    
-    signals:
-    
-    //! emitted when a message is available
-    void messageAvailable();
-     
-    private slots:
-
-    //! send messages
-    void _sendCommands( void );
-    
-    //! reads messages
-    void _readMessage( void );
-    
-    private:    
-    
-    //! parent socket
-    QTcpSocket* socket_;
-    
-    //! true if has message available
-    bool has_message_;
-    
-    //! commands
-    ServerCommand::List commands_;
-    
-    //! current message
-    QString message_;
-    
+    bool sendCommand( const ServerCommand& command )
+    { return sendMessage( QString(command) ); }
+             
   };
+  
 };
 
 #endif
