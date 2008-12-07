@@ -30,12 +30,11 @@
    \date    $Date$
 */
 
-#include "Str.h"
 #include "XmlTimeStamp.h"
 
 using namespace std;
 
-const string XmlTimeStamp::XML_TIME( "time" );
+const QString XmlTimeStamp::XML_TIME( "time" );
 
 //______________________________________________________
 XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
@@ -46,19 +45,14 @@ XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    Str name( qPrintable( attribute.name() ) );
-    Str value( qPrintable( attribute.value() ) );
-    
-    if( name == XML_TIME ) setTime( value.get<time_t>() );
-    else cout << "XmlTimeStamp::XmlTimeStamp - unrecognized attribute: " << name << endl;
+    if( attribute.name() == XML_TIME ) setTime( attribute.value().toUInt() );
   }
 };
 
 //_______________________________________________________
 QDomElement XmlTimeStamp::domElement( const QString& name, QDomDocument& parent ) const
 {
-  
   QDomElement out( parent.createElement( name ) );
-  out.setAttribute( XML_TIME.c_str(), Str().assign<time_t>( unixTime() ).c_str() );
+  out.setAttribute( XML_TIME, QString().setNum( unixTime() ) );
   return out;  
 }

@@ -53,7 +53,7 @@ class XmlTimeStamp:public TimeStamp
   {}
     
   //! creator from DOM
-  XmlTimeStamp( const QDomElement& element );
+  XmlTimeStamp( const QDomElement& );
   
   //! create from timestamp
   XmlTimeStamp( const TimeStamp& stamp ):
@@ -61,10 +61,10 @@ class XmlTimeStamp:public TimeStamp
   {}
   
   //! get DOM element
-  QDomElement domElement( const QString& name, QDomDocument& parent ) const;
+  QDomElement domElement( const QString&, QDomDocument& ) const;
   
   //! XML XmlTimeStamp keyword
-  static const std::string XML_TIME;
+  static const QString XML_TIME;
 
 };
 
