@@ -49,6 +49,7 @@ Client::Client( QObject* parent, QTcpSocket* socket ):
 {
   Debug::Throw( debug_level, "Client::Client.\n" );
   assert( socket );
+  connect( socket_, SIGNAL( connected() ), SLOT( _sendCommands() ) );
   connect( socket_, SIGNAL( readyRead() ), SLOT( _readMessage() ) );
 }
 
@@ -57,13 +58,12 @@ Client::~Client( void )
 { Debug::Throw( debug_level, "Client::~Client.\n" ); }
 
 //_______________________________________________________
-bool Client::sendMessage( const ServerCommand& command )
+bool Client::sendCommand( const ServerCommand& command )
 {
-  Debug::Throw( debug_level ) << "Client::sendMessage - " << qPrintable( QString(command) ) << endl;
   
-  if( !socket().state() ==  QAbstractSocket::ConnectedState ) return false;
-  QTextStream os( &socket() );
-  os << command << "\n";
+  Debug::Throw( debug_level ) << "Client::sendCommand - " << qPrintable( QString(command) ) << endl;
+  commands_.push_back( command );
+  if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
   return true;
   
 }
@@ -75,6 +75,20 @@ void Client::reset( void )
   has_message_ = false;
 }
 
+//_______________________________________________________
+void Client::_sendCommands( void )
+{
+
+  Debug::Throw(  debug_level, "Client::_sendCommands.\n" );
+  while( commands_.size() && socket().state() == QAbstractSocket::ConnectedState )
+  {
+    ServerCommand command( commands_.front() );
+    QTextStream os( &socket() );
+    os << command << "\n";
+    commands_.pop_front();
+  }
+  
+}
 
 //_______________________________________________________
 void Client::_readMessage( void )

@@ -108,7 +108,7 @@ void ApplicationManager::init( ArgList args )
   Debug::Throw( debug_level ) << "ApplicationManager::init - " << qPrintable( QString( command ) ) << endl;
   
   // send request command
-  client().sendMessage( command );
+  client().sendCommand( command );
     
   // time out delay (for existing server to reply)
   int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 ); 
@@ -193,18 +193,18 @@ void ApplicationManager::_redirect( QString message, Client* sender )
       if( sender == existing_client ) { 
 
         // tell client it is accepted
-        sender->sendMessage( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
+        sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
         _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
                 
       } else if( command.args().find( "--replace" ) ) {
          
         // tell existing client to die
         ServerCommand abort_command( command.id(), ServerCommand::ABORT );
-        existing_client->sendMessage( abort_command );     
+        existing_client->sendCommand( abort_command );     
         _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
         
         // tell new client it is accepted   
-        sender->sendMessage( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
+        sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
         _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
         _register( command.id(), sender, true );
         
@@ -212,11 +212,11 @@ void ApplicationManager::_redirect( QString message, Client* sender )
 
         // tell existing client to die
         ServerCommand abort_command( command.id(), ServerCommand::ABORT );
-        existing_client->sendMessage( abort_command );     
+        existing_client->sendCommand( abort_command );     
         _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
         
         // tell new client it is denied too   
-        sender->sendMessage( ServerCommand( command.id(), ServerCommand::DENIED ) );
+        sender->sendCommand( ServerCommand( command.id(), ServerCommand::DENIED ) );
         _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
         _register( command.id(), sender, true );
       
@@ -225,7 +225,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
         // tell existing client to raise itself
         ServerCommand raise_command( command.id(), ServerCommand::RAISE );
         raise_command.setArguments( command.args() );
-        existing_client->sendMessage( raise_command ); 
+        existing_client->sendCommand( raise_command ); 
                
       }
       
@@ -244,10 +244,10 @@ void ApplicationManager::_redirect( QString message, Client* sender )
       */
       
       for( ClientMap::iterator it=accepted_clients_.begin(); it!=accepted_clients_.end(); it++ )
-      { sender->sendMessage( ServerCommand( it->first, ServerCommand::IDENTIFY ) ); }
+      { sender->sendCommand( ServerCommand( it->first, ServerCommand::IDENTIFY ) ); }
       
       // identify the server
-      sender->sendMessage( ServerCommand( id_, ServerCommand::IDENTIFY_SERVER ) );
+      sender->sendCommand( ServerCommand( id_, ServerCommand::IDENTIFY_SERVER ) );
       
       continue;
       
@@ -267,7 +267,7 @@ void ApplicationManager::_broadcast( QString message, Client* sender )
   Debug::Throw( debug_level ) << "ApplicationManager::_Broadcast - message: " << qPrintable( message ) << endl;
   
   for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
-  { if( (*iter) != sender ) (*iter)->sendMessage( message ); }
+  { if( (*iter) != sender ) (*iter)->sendCommand( message ); }
   
 }
 
@@ -380,7 +380,7 @@ void ApplicationManager::_process( void )
     if( state_ == ALIVE && ( command.command() == ServerCommand::RAISE ) ) 
     {
       
-      client().sendMessage( ServerCommand( id_, ServerCommand::ALIVE ) );
+      client().sendCommand( ServerCommand( id_, ServerCommand::ALIVE ) );
       emit serverRequest( command.args() );
       continue;
     

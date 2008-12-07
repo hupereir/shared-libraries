@@ -73,6 +73,9 @@ namespace SERVER
       UNLOCK
     };
       
+    //! list
+    typedef std::list<ServerCommand> List;
+    
     //! constructor
     ServerCommand( const QString& buffer = "" );
   

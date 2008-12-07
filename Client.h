@@ -69,7 +69,7 @@ namespace SERVER
     { return *socket_; }
     
     /*! returns true if message could be sent */
-    bool sendMessage( const ServerCommand& );
+    bool sendCommand( const ServerCommand& );
     
     //! true if message is available
     const bool& hasMessage( void ) const
@@ -88,6 +88,9 @@ namespace SERVER
     void messageAvailable();
      
     private slots:
+
+    //! send messages
+    void _sendCommands( void );
     
     //! reads messages
     void _readMessage( void );
@@ -99,6 +102,9 @@ namespace SERVER
     
     //! true if has message available
     bool has_message_;
+    
+    //! commands
+    ServerCommand::List commands_;
     
     //! current message
     QString message_;
