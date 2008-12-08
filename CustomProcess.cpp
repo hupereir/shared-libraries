@@ -43,6 +43,7 @@ CustomProcess::CustomProcess( QObject* parent ):
 //____________________________________________________
 CustomProcess::~CustomProcess( void )
 { if( state() != QProcess::NotRunning ) kill(); }
+
 //____________________________________________________
 void CustomProcess::start( const string& arguments, OpenMode mode )
 {
@@ -70,7 +71,7 @@ void CustomProcess::start( const QStringList& arguments, OpenMode mode )
 void CustomProcess::setAutoDelete( void )
 { 
   Debug::Throw( "CustomProcess::setAutoDelete.\n" );
-  connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( _autoDelete() ) ); 
+  connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( deleteLater() ) ); 
 }
 
 //______________________________________________________________

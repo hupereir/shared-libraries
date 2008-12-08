@@ -78,16 +78,7 @@ class CustomProcess: public QProcess, public Counter
     
   //! error message
   static std::string errorMessage( QProcess::ProcessError error );
-  
-  private slots:
-  
-  //! delete this object at job completion
-  void _autoDelete( void )
-  { 
-    Debug::Throw( "CustomProcess::_autoDelete.\n" );
-    delete this; 
-  }
-    
+      
 };
 
 
