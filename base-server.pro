@@ -10,12 +10,11 @@ HEADERS = \
   ApplicationId.h \
   ApplicationManager.h \
   BaseApplication.h \
-  BaseClient.h \
   Client.h \
   ServerCommand.h
 
 SOURCES = \
   ApplicationManager.cpp \
   BaseApplication.cpp \
-	BaseClient.cpp \
+	Client.cpp \
   ServerCommand.cpp

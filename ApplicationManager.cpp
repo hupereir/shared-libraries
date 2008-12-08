@@ -339,7 +339,7 @@ void ApplicationManager::_redirect( void )
   Debug::Throw( debug_level, "Application::_redirect.\n" );
 
   ClientList::iterator iter;
-  while( ( iter = find_if(  _connectedClients().begin(), _connectedClients().end(), BaseClient::HasMessageFTor() ) ) != _connectedClients().end() )
+  while( ( iter = find_if(  _connectedClients().begin(), _connectedClients().end(), Client::HasMessageFTor() ) ) != _connectedClients().end() )
   { 
     assert( (*iter)->hasMessage() );
     QString message( (*iter)->message() );

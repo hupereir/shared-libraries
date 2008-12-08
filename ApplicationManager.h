@@ -150,22 +150,22 @@ namespace SERVER
     typedef std::list< Client* > ClientList;
 
     //! used to retrieve clients for a given state
-    class SameStateFTor: public BaseClient::SameStateFTor
+    class SameStateFTor: public Client::SameStateFTor
     {
       public:
       
       //! constructor
       SameStateFTor( QAbstractSocket::SocketState state ):
-        BaseClient::SameStateFTor( state )
+        Client::SameStateFTor( state )
         {}
         
       //! predicate
       bool operator() ( const ClientPair& pair ) const
-      { return BaseClient::SameStateFTor::operator() (pair.second); }
+      { return Client::SameStateFTor::operator() (pair.second); }
               
       //! predicate
       bool operator() ( const Client* client ) const
-      { return BaseClient::SameStateFTor::operator() (client); }
+      { return Client::SameStateFTor::operator() (client); }
 
     };
          
