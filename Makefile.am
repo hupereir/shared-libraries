@@ -59,6 +59,7 @@ noinst_HEADERS = \
   LineNumberDisplay.h \
   ListModel.h \
   ListWidget.h \
+  MessageBuffer.h \
   MultipleClickCounter.h \
   OptionBrowsedLineEditor.h \
   OptionCheckBox.h \
