@@ -170,7 +170,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
   Debug::Throw() << "ApplicationManager::_redirect - message: " << qPrintable( message ) << endl;
 
   // parse message
-  QTextStream in( &message );
+  QTextStream in( &message, QIODevice::ReadOnly );
   while( in.status() == QTextStream::Ok ) 
   {
     
@@ -363,7 +363,7 @@ void ApplicationManager::_process( void )
   QString message( client().message() );
   client().reset();
   
-  QTextStream in( &message );
+  QTextStream in( &message, QIODevice::ReadOnly );
   while( in.status() == QTextStream::Ok ) 
   {
     

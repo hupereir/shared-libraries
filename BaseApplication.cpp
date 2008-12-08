@@ -150,7 +150,7 @@ void BaseApplication::_about( QString name, QString version, QString stamp )
   { version = version.replace( "qt4_", "" ) + " (qt4)"; }
   
   QString buffer;
-  QTextStream in( &buffer );
+  QTextStream in( &buffer, QIODevice::WriteOnly );
   if( !name.isEmpty() ) { in << "<h3>" << name << "</h3>"; }
   if( !version.isEmpty() ) { in << "version " << version; }
   if( !stamp.isEmpty() ) { in << " (" << stamp << ")"; }

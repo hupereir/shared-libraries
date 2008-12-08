@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 /*!
-   \file    Client.cpp
+   \file    BaseClient.cpp
    \brief   Interprocess communication client
    \author  Hugo Pereira
    \version $Revision$
@@ -32,77 +32,78 @@
 #include <QTextStream>
 #include <assert.h>
 
-#include "Client.h"
+#include "BaseClient.h"
 #include "Debug.h"
 
 using namespace std;
 using namespace SERVER;
 
-static const int debug_level(1);
 
 //_______________________________________________________
-Client::Client( QObject* parent, QTcpSocket* socket ):
+BaseClient::BaseClient( QObject* parent, QTcpSocket* socket ):
   QObject( parent ),
-  Counter( "Client" ),
+  Counter( "BaseClient" ),
   socket_( socket ),
   has_message_( false )
 {
-  Debug::Throw( debug_level, "Client::Client.\n" );
+  Debug::Throw( "BaseClient::BaseClient.\n" );
   assert( socket );
-  connect( socket_, SIGNAL( connected() ), SLOT( _sendCommands() ) );
+  connect( socket_, SIGNAL( connected() ), SLOT( _sendMessages() ) );
   connect( socket_, SIGNAL( readyRead() ), SLOT( _readMessage() ) );
 }
 
 //_______________________________________________________
-Client::~Client( void )
-{ Debug::Throw( debug_level, "Client::~Client.\n" ); }
+BaseClient::~BaseClient( void )
+{ Debug::Throw( "BaseClient::~BaseClient.\n" ); }
 
 //_______________________________________________________
-bool Client::sendCommand( const ServerCommand& command )
+bool BaseClient::sendMessage( const QString& message )
 {
   
-  Debug::Throw( debug_level ) << "Client::sendCommand - " << qPrintable( QString(command) ) << endl;
-  commands_.push_back( command );
-  if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
+  Debug::Throw() << "BaseClient::sendCommand - " << qPrintable( message ) << endl;
+  messages_.push_back( message );
+  if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendMessages();
   return true;
   
 }
 
 //_______________________________________________________
-void Client::reset( void )
+void BaseClient::reset( void )
 {
-  Debug::Throw( debug_level, "Client::reset.\n" );
+  Debug::Throw( "BaseClient::reset.\n" );
   has_message_ = false;
 }
 
 //_______________________________________________________
-void Client::_sendCommands( void )
+void BaseClient::_sendMessages( void )
 {
 
-  Debug::Throw(  debug_level, "Client::_sendCommands.\n" );
-  while( commands_.size() && socket().state() == QAbstractSocket::ConnectedState )
+  Debug::Throw( "BaseClient::_sendMessages.\n" );
+  while( messages_.size() && socket().state() == QAbstractSocket::ConnectedState )
   {
-    ServerCommand command( commands_.front() );
+    QString message( messages_.front() );
+    //QTextStream os( &socket(), QIODevice::WriteOnly );
     QTextStream os( &socket() );
-    os << command << "\n";
-    commands_.pop_front();
+    os << message << endl;
+    messages_.pop_front();
   }
   
 }
 
 //_______________________________________________________
-void Client::_readMessage( void )
+void BaseClient::_readMessage( void )
 {
 
-  Debug::Throw(  debug_level, "Client::_readMessage.\n" );
+  Debug::Throw( "BaseClient::_readMessage.\n" );
   message_.clear();
-  QTextStream stream( &message_ );
-  
-  // read from the server
-  while ( socket().canReadLine() ) 
+  QTextStream stream( &message_, QIODevice::WriteOnly );  
+  while( socket().bytesAvailable() > 0 )
   {
-    QString line( socket().readLine() );
-    if( !( line.isEmpty() || line == "\n" ) ) stream << line;
+    char* data = new char[socket().bytesAvailable()];
+    qint64 size = socket().read( data, socket().bytesAvailable() );
+    if( size <= 0 ) return;
+    stream << QString( data ).left( size );
+    delete[] data;
   }
 
   // store message and emit signal
