@@ -35,13 +35,11 @@
 #include <QMessageBox>
 
 #include "BaseIcons.h"
-#include "ErrorHandler.h"
 #include "FlatStyle.h"
 #include "IconEngine.h"
 #include "BaseApplication.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
-#include "Util.h"
 
 using namespace std;
 using namespace SERVER;
@@ -49,10 +47,7 @@ using namespace Qt;
 
 //____________________________________________
 BaseApplication::BaseApplication( QObject* parent, ArgList arguments ) :
-  QObject( parent ),
-  application_manager_( 0 ),
-  arguments_( arguments ),
-  realized_( false )
+  BaseCoreApplication( parent, arguments )
 { 
   
   Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
@@ -63,54 +58,7 @@ BaseApplication::BaseApplication( QObject* parent, ArgList arguments ) :
 
 //____________________________________________
 BaseApplication::~BaseApplication( void )
-{ 
-
-  Debug::Throw( "BaseApplication::~BaseApplication.\n" );
-  emit saveConfiguration();
-  XmlOptions::write();
-
-  if( _hasApplicationManager() ) 
-  {
-    delete application_manager_; 
-    application_manager_ = 0;
-  }
-
-  // ErrorHandler::get().exit();  
-  Debug::Throw( "BaseApplication::~BaseApplication - done.\n" );
-  
-}
-
-//____________________________________________
-void BaseApplication::initApplicationManager( void )
-{
-  Debug::Throw( "BaseApplication::initApplicationManager.\n" ); 
-
-  if( _hasApplicationManager() ) return;
-
-  if( arguments_.find( "--no-server" ) ) 
-  {
-    realizeWidget();
-    return;
-  }
-  
-  // create application manager
-  application_manager_ = new ApplicationManager( this );
-  application_manager_->setApplicationName( XmlOptions::get().get<string>( "APP_NAME" ).c_str() );
-  
-  // connections
-  connect( 
-    application_manager_, SIGNAL( stateChanged( SERVER::ApplicationManager::State ) ),
-    SLOT( _stateChanged( SERVER::ApplicationManager::State ) ) );
-    
-  connect( 
-    application_manager_, SIGNAL( serverRequest( const ArgList& ) ), 
-    SLOT( _processRequest( const ArgList& ) ) );
-    
-  // initialization
-  application_manager_->init( arguments_ );
-  Debug::Throw( "BaseApplication::initApplicationManager - done.\n" ); 
-  
-}
+{ Debug::Throw( "BaseApplication::~BaseApplication.\n" ); }
 
 //____________________________________________
 bool BaseApplication::realizeWidget( void )
@@ -118,7 +66,7 @@ bool BaseApplication::realizeWidget( void )
   Debug::Throw( "BaseApplication::realizeWidget.\n" );
    
   //! check if the method has already been called.
-  if( realized_ ) return false;
+  if( !BaseCoreApplication::realizeWidget() ) return false;
 
   // actions
   about_action_ = new QAction( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).c_str() ), "About &this", this );
@@ -134,10 +82,20 @@ bool BaseApplication::realizeWidget( void )
   configuration_action_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default &Configuration", this );
   connect( configuration_action_, SIGNAL( triggered() ), SLOT( _configuration() ) ); 
   
-  realized_ = true;
-  return true;
-  
+  return true;  
 }
+
+
+//____________________________________________
+void BaseApplication::busy( void )
+{
+  qApp->setOverrideCursor( Qt::WaitCursor ); 
+  qApp->processEvents(); 
+}
+  
+//____________________________________________
+void BaseApplication::idle( void )
+{ qApp->restoreOverrideCursor(); }
 
 //_______________________________________________
 void BaseApplication::_about( QString name, QString version, QString stamp )
@@ -191,10 +149,7 @@ void BaseApplication::_updateConfiguration( void )
   font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ).c_str() );
   qApp->setFont( font, "QLineEdit" ); 
   qApp->setFont( font, "QTextEdit" ); 
-    
-  // debug
-  Debug::setLevel( XmlOptions::get().get<int>( "DEBUG_LEVEL" ) );
-    
+        
   // reload IconEngine cache (in case of icon_path_list that changed)
   IconEngine::get().reload();
 
@@ -202,39 +157,3 @@ void BaseApplication::_updateConfiguration( void )
   Debug::Throw( "BaseApplication::_updateConfiguration - done.\n" );
   
 }
-
-//________________________________________________
-void BaseApplication::_stateChanged( ApplicationManager::State state )
-{
-
-  Debug::Throw() << "BaseApplication::_stateChanged - state=" << state << endl;
-
-  switch ( state ) 
-  {
-  
-    case ApplicationManager::ALIVE:
-    realizeWidget();
-    break;
-    
-    case ApplicationManager::DEAD:
-    qApp->quit();
-    break;
-    
-    default:
-    break;
-  }
-  
-  return;
-  
-}
-  
-//____________________________________________
-void BaseApplication::busy( void )
-{
-  qApp->setOverrideCursor( Qt::WaitCursor ); 
-  qApp->processEvents(); 
-}
-  
-//____________________________________________
-void BaseApplication::idle( void )
-{ qApp->restoreOverrideCursor(); }

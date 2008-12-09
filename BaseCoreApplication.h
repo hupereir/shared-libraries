@@ -1,5 +1,5 @@
-#ifndef BaseApplication_h
-#define BaseApplication_h
+#ifndef BaseCoreApplication_h
+#define BaseCoreApplication_h
 
 // $Id$
 
@@ -25,24 +25,21 @@
  *******************************************************************************/
 
 /*!
-  \file BaseApplication.h
+  \file BaseCoreApplication.h
   \brief application main object
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <QAction>
 #include <QObject>
 
 #include "ApplicationManager.h"
 #include "ArgList.h"
-#include "BaseCoreApplication.h"
-
-class MainWindow;
+#include "Counter.h"
 
 //! Main Window singleton object
-class BaseApplication: public BaseCoreApplication
+class BaseCoreApplication: public QObject
 {
 
   //! Qt meta object declaration
@@ -51,83 +48,78 @@ class BaseApplication: public BaseCoreApplication
   public:
     
   //! constructor
-  BaseApplication( QObject* parent, ArgList arguments = ArgList() ); 
+  BaseCoreApplication( QObject* parent, ArgList arguments = ArgList() ); 
     
   //! destructor
-  virtual ~BaseApplication( void );
+  virtual ~BaseCoreApplication( void );
+  
+  //! initialize application manager
+  virtual void initApplicationManager( void );
   
   //! create all widgets
   virtual bool realizeWidget( void );
-  
-  //!@name actions
-  //@{
     
-  //! about
-  QAction& aboutAction( void ) const
-  { return *about_action_; }
-
-  //! about
-  QAction& aboutQtAction( void ) const
-  { return *aboutqt_action_; }
+  signals:
   
-  //! configuration
-  QAction& configurationAction( void ) const
-  { return *configuration_action_; }
+  //! emmited when configuration needs to be saved
+  void saveConfiguration( void );
   
-  //! exit safely
-  QAction& closeAction( void ) const
-  { return *close_action_; }
-    
-  //@}
-  
-  public slots:
-  
-  //! set application busy
-  virtual void busy( void );
-  
-  //! set application idle
-  virtual void idle( void );
+  //! emmited when configuration is changed
+  void configurationChanged( void );
   
   protected slots:
-     
-  //! process request from application manager
-  virtual void _about( void ) = 0;
  
-  //! configuration
-  virtual void _configuration( void ) = 0;
-
+  //! application manager state is changed
+  virtual void _stateChanged( SERVER::ApplicationManager::State );
+    
+  //! process request from application manager
+  virtual void _processRequest( const ArgList& ) 
+  {}
+  
   private slots:
   
   //! configuration
   void _updateConfiguration( void );
       
   protected:
+    
+  //! argument list
+  void _setArguments( ArgList args )
+  { arguments_ = args; }
   
-  //! application 'about' dialog
-  virtual void _about( QString, QString version = "", QString stamp = "" );
+  //! argument list
+  ArgList& _arguments( void )
+  { return arguments_; }
   
-  //! application 'about' dialog
-  virtual void _about( QString name, double version, QString stamp = "" )
-  { _about( name, QString().setNum( version ), stamp ); }
-     
+  //! argument list
+  const ArgList& _arguments( void ) const
+  { return arguments_; }
+  
+  //! realized
+  bool _realized( void ) const
+  { return realized_; }
+  
+  //! application manager
+  bool _hasApplicationManager( void ) const
+  { return (bool) application_manager_; }
+  
+  //! application manager
+  SERVER::ApplicationManager& _applicationManager( void ) const
+  { 
+    assert( application_manager_ );
+    return *application_manager_;
+  }
+  
   private:
      
-  //!@name actions
-  //@{
+  //! pointer to application manager
+  SERVER::ApplicationManager* application_manager_;
+   
+  //! command line arguments
+  ArgList arguments_;
   
-  //! about action
-  QAction* about_action_;
-  
-  //! about qt
-  QAction* aboutqt_action_;
-  
-  //! configure
-  QAction* configuration_action_;
-  
-  //! close
-  QAction* close_action_;
-  
-  //@}
+  //! true when Realized Widget has been called.
+  bool realized_; 
 
 };
 
