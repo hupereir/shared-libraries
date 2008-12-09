@@ -39,8 +39,6 @@
 #include "ArgList.h"
 #include "BaseCoreApplication.h"
 
-class MainWindow;
-
 //! Main Window singleton object
 class BaseApplication: public BaseCoreApplication
 {
