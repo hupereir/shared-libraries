@@ -135,6 +135,9 @@ class Options: public Counter
   { return _find( name )->second.raw(); }
    
   //! option value modifier
+  void set( const std::string& name, Option option, const bool& is_default = false );
+
+  //! option value modifier
   template < typename T >
   void set( const std::string& name, const T& value, const bool& is_default = false )
   { 

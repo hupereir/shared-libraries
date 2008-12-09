@@ -115,6 +115,15 @@ void Options::clearSpecialOptions( const string& name )
 }
 
 //________________________________________________
+void Options::set( const std::string& name, Option option, const bool& is_default )
+{
+  Debug::Throw() << "Options::set - name: " << name << endl;
+  assert( !isSpecialOption( name ) );
+  if( is_default || _autoDefault() ) option.setDefault();
+  options_[name] = option;
+}
+
+//________________________________________________
 bool Options::add( const std::string& name, Option option, const bool& is_default )
 {
   
