@@ -59,7 +59,6 @@ void StatusBar::addClock( void )
 void StatusBar::addLabel( const int& stretch )
 {
   Debug::Throw( "StatusBar::addLabel.\n" );
-  
   StatusBarLabel* label = new StatusBarLabel( this );
   label->setMargin(2);
   addPermanentWidget( label, stretch );
