@@ -78,11 +78,10 @@ class Debug
   {}
   
   //! return singleton
-  static Debug& _get( void )
-  { return singleton_; }
+  static Debug& _get( void );
   
   //! singleton
-  static Debug singleton_;
+  //static Debug singleton_;
 
   //! debug level
   int level_;  

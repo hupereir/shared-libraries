@@ -30,4 +30,10 @@
 */
 
 #include "Debug.h"
-Debug Debug::singleton_;
+
+//_______________________________________________
+Debug& Debug::_get( void )
+{ 
+  static Debug singleton_; 
+  return singleton_; 
+}

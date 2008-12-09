@@ -45,8 +45,7 @@ class Singleton
   public:
   
   //! return singleton
-  static Singleton& get( void )
-  { return singleton_; }
+  static Singleton& get( void );
   
   //! counter map
   CounterMap& counterMap( void ) 
@@ -86,7 +85,7 @@ class Singleton
   {}
   
   //! singleton
-  static Singleton singleton_;
+  //static Singleton singleton_;
 
   //! counter map
   CounterMap counter_map_; 

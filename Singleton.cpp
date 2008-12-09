@@ -32,7 +32,16 @@
 
 #include "Singleton.h"
 
-Singleton Singleton::singleton_;
+// Singleton Singleton::singleton_;
+
+
+//__________________________________________________
+Singleton& Singleton::get( void )
+{ 
+  static Singleton singleton_;
+  return singleton_; 
+}
+
 
 //__________________________________________________
 Singleton::~Singleton( void )
