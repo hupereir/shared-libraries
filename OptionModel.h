@@ -74,14 +74,15 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
   public:
 
   //! number of columns
-  enum { n_columns = 4 };
+  enum { n_columns = 5 };
 
   //! column type enumeration
   enum ColumnType {
     NAME,
     CURRENT,
     VALUE,
-    DEFAULT_VALUE
+    DEFAULT_VALUE,
+    FLAGS
   };
 
   //! constructor

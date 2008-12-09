@@ -78,8 +78,6 @@ noinst_HEADERS = \
   OptionWidget.h \
   OptionWidgetList.h \
   PixmapEngine.h \
-  ProcessDialog.h \
-  ProcessFrame.h \
   QuestionDialog.h \
   QtUtil.h \
   RecentFilesMenu.h \
@@ -170,8 +168,6 @@ libbase_qt_a_SOURCES = \
   OptionModel.cpp \
   OptionWidgetList.cpp \
   PixmapEngine.cpp \
-  ProcessDialog.cpp \
-  ProcessFrame.cpp \
   QuestionDialog.cpp \
   QtUtil.cpp \
   RecentFilesMenu.cpp \
@@ -240,7 +236,6 @@ nodist_libbase_qt_a_SOURCES = \
 	moc_OptionDialog.cpp \
   moc_OptionListBox.cpp \
   moc_OptionModel.cpp \
-  moc_ProcessFrame.cpp \
   moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
   moc_SelectLineDialog.cpp \

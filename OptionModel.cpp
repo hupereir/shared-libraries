@@ -41,7 +41,7 @@ using namespace std;
 
 //_______________________________________________
 const char* OptionModel::column_titles_[ OptionModel::n_columns ] =
-{ "name", "", "current value", "default value" };
+{ "name", "", "current value", "default value", "flags" };
 
 //_______________________________________________
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
@@ -69,6 +69,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
       case NAME: return option.first.c_str();
       case VALUE: return option.second.raw().c_str();
       case DEFAULT_VALUE: return option.second.defaultValue().c_str();
+      case FLAGS: return option.second.flags();
       default: return QVariant();
     }
   }

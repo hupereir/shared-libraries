@@ -74,8 +74,6 @@ HEADERS = \
   OptionWidget.h \
   OptionWidgetList.h \
   PixmapEngine.h \
-  ProcessDialog.h \
-  ProcessFrame.h \
   QuestionDialog.h \
   QtUtil.h \
   RecentFilesMenu.h \
@@ -164,8 +162,6 @@ SOURCES = \
   OptionModel.cpp \
   OptionWidgetList.cpp \
   PixmapEngine.cpp \
-  ProcessDialog.cpp \
-  ProcessFrame.cpp \
   QuestionDialog.cpp \
   QtUtil.cpp \
   RecentFilesMenu.cpp \
