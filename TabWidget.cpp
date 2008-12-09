@@ -125,7 +125,8 @@ void TabWidget::_toggleDock( void )
     
     // reparent to top level
     setParent( 0 );
-    setFrameStyle( QFrame::Panel | QFrame::Raised );
+    //setFrameStyle( QFrame::Panel | QFrame::Raised );
+    setFrameStyle( QFrame::NoFrame );
  
     // window flags
     Qt::WindowFlags flags = Qt::FramelessWindowHint|Qt::Tool;

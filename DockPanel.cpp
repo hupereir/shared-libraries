@@ -121,7 +121,8 @@ void DockPanel::_toggleDock( void )
 
     // change parent
     main().setParent( 0 );
-    main().setFrameStyle( QFrame::Panel|QFrame::Raised );
+    //main().setFrameStyle( QFrame::Panel|QFrame::Raised );
+    main().setFrameStyle( QFrame::NoFrame );
 
     // window flags
     Qt::WindowFlags flags = Qt::FramelessWindowHint|Qt::Tool;
