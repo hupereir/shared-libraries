@@ -121,17 +121,16 @@ void DockPanel::_toggleDock( void )
 
     // change parent
     main().setParent( 0 );
-    //main().setFrameStyle( QFrame::Panel|QFrame::Raised );
     main().setFrameStyle( QFrame::NoFrame );
 
     // window flags
-    Qt::WindowFlags flags = Qt::FramelessWindowHint|Qt::Tool;
-    main().setWindowFlags( flags );
+    //main().setWindowFlags( Qt::FramelessWindowHint|Qt::Tool );
+    main().setWindowFlags( Qt::FramelessWindowHint|Qt::Window );
 
     // move and resize
     main().move( mapToGlobal( QPoint(0,0) ) );
     main().setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-    if( !title_.empty() ) main().setWindowTitle( title_.c_str() );
+    if( !title_.isEmpty() ) main().setWindowTitle( title_ );
 
     // change action text
     main().updateActions( true );

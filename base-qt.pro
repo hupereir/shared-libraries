@@ -154,7 +154,7 @@ SOURCES = \
   IconSizeMenu.cpp \
   ImageFileDialog.cpp \
   InformationDialog.cpp \
-  IOString.h \
+  IOString.cpp \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \

@@ -64,7 +64,7 @@ class DockPanel: public QWidget, public Counter
   {}
      
   //! option name (needed to store sticky and stays-on-top state)
-  void setOptionName( const std::string& value )
+  void setOptionName( std::string value )
   {
     sticky_option_name_ = value + "_STICKY";
     stays_on_top_option_name_ = value + "_STAYS_ON_TOP";
@@ -79,7 +79,7 @@ class DockPanel: public QWidget, public Counter
   }
   
   //! set detachable group panel title
-  void setTitle( const std::string& title )
+  void setTitle( const QString& title )
   { title_ = title; }
 
   //! local widget to implement close_event of the content
@@ -237,7 +237,7 @@ class DockPanel: public QWidget, public Counter
   { return stays_on_top_option_name_; }
 
   //! dock title
-  std::string title_;
+  QString title_;
   
   //! option name 
   /*! needed to store sticky and stays on top state */
