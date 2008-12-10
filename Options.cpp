@@ -131,6 +131,9 @@ bool Options::add( const std::string& name, Option option, const bool& is_defaul
   
   // store option as special if requested
   SpecialMap::iterator iter( special_options_.find( name ) );
+
+  // check option
+  if( iter == special_options_.end() ) { cout << "Options::add - invalid option: " << name << endl; }
   assert( iter != special_options_.end() );
   
   // set as default
@@ -225,8 +228,8 @@ std::ostream &operator << (std::ostream &out,const Options &options)
 //________________________________________________
 Options::Map::const_iterator Options::_find( const std::string& name ) const
 {
-  //cout << "Options::_find - Looking for option " << name << endl;
   Map::const_iterator out( options_.find( name ) );
+  if( out == options_.end() ) { cout << "Options::_find - invalid option: " << name << endl; }
   assert( out != options_.end() );
   return out;
 }
