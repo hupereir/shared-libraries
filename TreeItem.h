@@ -206,34 +206,15 @@ template<class T> class TreeItem: public TreeItemBase
   }
   
   //! add child [recursive]
+  /*! note: this code assumes that the value is not already in the tree */
   bool add( ConstReference value )
   {
-
-    // check if item is this
-    if( get() == value ) {
-      set( value );
-      return true;
-    }
     
     // try add to this list of children
     if( value.isChild( get() ) )
     {
-      
-      // loop over children, see if one match
-      bool found( false );
-      for( typename List::iterator iter = children_.begin(); iter != children_.end() && !found; iter++ )
-      {
-        if( iter->get() == value ) 
-        {
-          iter->set( value );
-          found = true;
-        }
-      }
-      
-      // add if not found
-      if( !found ) children_.push_back( TreeItem( map_, this, value ) );
+      children_.push_back( TreeItem( map_, this, value ) );
       return true;
-      
     }
     
     // try add to children
@@ -249,12 +230,19 @@ template<class T> class TreeItem: public TreeItemBase
     }
     
     return added;
+    
   }
   
   //! update children from existing values [recursive]
-  /*! updated items are removed from the set */ 
+  /*! 
+  updated items are removed from the set.
+  children that are not found in the set are removed from the tree
+  */ 
   void set( ValueSet& values )
   {
+
+    // check if there are remainig values
+    if( values.empty() ) return;
     
     // first update children that are found in set
     for( unsigned int row = 0; row < childCount(); )
@@ -262,41 +250,48 @@ template<class T> class TreeItem: public TreeItemBase
       typename ValueSet::iterator found( values.find( child(row).get() ) );
       if( found == values.end() ) remove( row );
       else {
+        
+        // update child
         child(row).set( *found );
         values.erase( found );
+        
+        // update child children recursively
+        child(row).set( values );
         row++;
+        
       }
     
     }
-    
-    // update (recursive) children with remaining values
-    for( unsigned int row = 0; row < childCount(); row++ )
-    { child(row).set( values ); }  
-    
+        
     return;
     
   }
   
   //! update children from existing values [recursive]
-  /*! updated items are removed from the set */ 
+  /*! 
+  updated items are removed from the set.
+  children that are not found in the set are left unchanged
+  */ 
   void update( ValueSet& values )
   {
     
     // check if there are remainig values
     if( values.empty() ) return;
     
-    // see if current item is in list 
-    // if yes update and erase
-    typename ValueSet::iterator found( values.find( get() ) );
-    if( found != values.end() )
-    {
-      set( *found );
-      values.erase( found );
+    // first update children that are found in set
+    for( unsigned int row = 0; row < childCount(); row++ )
+    { 
+      
+      typename ValueSet::iterator found( values.find( child(row).get() ) );
+      if( found != values.end() ) 
+      {
+        child(row).set( *found );
+        values.erase( found );
+      }
+      
+      child(row).update( values );
+      
     }
-    
-    // do the same with children
-    for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
-    { iter->update( values ); }
     
     return;
     

@@ -46,10 +46,11 @@ HEADERS = \
   IconCacheDialog.h \
   IconCacheModel.h \
   IconEngine.h \
-  ImageFileDialog.h \
   IconSize.h \
   IconSizeMenu.h \
+  ImageFileDialog.h \
   InformationDialog.h \
+  IOString.h \
   ItemModel.h \
   LineEditor.h \
   LineNumberDisplay.h \
@@ -149,10 +150,11 @@ SOURCES = \
   IconCacheDialog.cpp \
   IconCacheModel.cpp \
   IconEngine.cpp \
-  ImageFileDialog.cpp \
   IconSize.cpp \
   IconSizeMenu.cpp \
+  ImageFileDialog.cpp \
   InformationDialog.cpp \
+  IOString.h \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
