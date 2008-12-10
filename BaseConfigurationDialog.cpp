@@ -200,6 +200,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
   // tabs
   if( flag & TEXTEDIT ) { textEditConfiguration( parent ); }
 
+  Debug::Throw( "BaseConfigurationDialog::baseConfiguration - done.\n" );
 }
 
 //__________________________________________________
@@ -376,6 +377,8 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   layout->addWidget( checkbox = new OptionCheckBox( "Show line numbers", box, "SHOW_LINE_NUMBERS" ) );
   checkbox->setToolTip( "Turn on/off line numbers" );
   addOptionWidget( checkbox );
+
+  Debug::Throw( "BaseConfigurationDialog::textEditConfiguration - done.\n" );
 
 }
 

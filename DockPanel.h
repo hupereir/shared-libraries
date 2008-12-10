@@ -60,8 +60,7 @@ class DockPanel: public QWidget, public Counter
   DockPanel( QWidget* parent );
 
   //! destructor
-  virtual ~DockPanel()
-  {}
+  virtual ~DockPanel();
      
   //! option name (needed to store sticky and stays-on-top state)
   void setOptionName( std::string value )

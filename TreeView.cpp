@@ -106,13 +106,19 @@ int TreeView::visibleColumnCount( void ) const
 }
 
 //_______________________________________________
-void TreeView::setMaskOptionName( const std::string& value )
+bool TreeView::setMaskOptionName( const std::string& value )
 { 
 
   Debug::Throw( "TreeView::setMaskOptionName.\n" );
+  if( mask_option_name_ == value ) return false;
+
+  // store option name
   mask_option_name_ = value; 
   if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
-
+  
+  // update mask
+  updateMask(); 
+    
 }
 
 //_______________________________________________

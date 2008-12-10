@@ -95,6 +95,10 @@ DockPanel::DockPanel( QWidget* parent ):
 }
 
 //___________________________________________________________
+DockPanel::~DockPanel( void )
+{ Debug::Throw( "DockPanel::~DockPanel.\n" ); }
+
+//___________________________________________________________
 void DockPanel::_toggleDock( void )
 {
 
@@ -267,7 +271,7 @@ void DockPanel::LocalWidget::updateActions( bool detached )
 //___________________________________________________________
 void DockPanel::hideEvent( QHideEvent* event )
 {
-  Debug::Throw( "DockPanel::hideEvent.\n" );
+  Debug::Throw( 0, "DockPanel::hideEvent.\n" );
   emit visibilityChanged( false );
   QWidget::hideEvent( event );
 }
