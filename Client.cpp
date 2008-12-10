@@ -34,6 +34,7 @@
 
 #include "Client.h"
 #include "Debug.h"
+#include "IOString.h"
 
 using namespace std;
 using namespace SERVER;
@@ -94,16 +95,9 @@ void Client::_readMessage( void )
 {
 
   Debug::Throw( "Client::_readMessage.\n" );
-  message_.clear();
-  QTextStream stream( &message_, QIODevice::WriteOnly );  
-  while( socket().bytesAvailable() > 0 )
-  {
-    char* data = new char[socket().bytesAvailable()];
-    qint64 size = socket().read( data, socket().bytesAvailable() );
-    if( size <= 0 ) return;
-    stream << QString( data ).left( size );
-    delete[] data;
-  }
+
+  // read everything from socket and store as message
+  message_ = IOString( socket() );  
 
   // store message and emit signal
   has_message_ = true;
