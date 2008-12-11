@@ -96,7 +96,15 @@ DockPanel::DockPanel( QWidget* parent ):
 
 //___________________________________________________________
 DockPanel::~DockPanel( void )
-{ Debug::Throw( "DockPanel::~DockPanel.\n" ); }
+{ 
+  
+  Debug::Throw( "DockPanel::~DockPanel.\n" ); 
+  
+  // in detached mode, the panel must be explicitely deleted,
+  // because it does not have the right parent
+  if( !main().parent() ) { main().deleteLater(); }
+
+}
 
 //___________________________________________________________
 void DockPanel::_toggleDock( void )
@@ -271,7 +279,7 @@ void DockPanel::LocalWidget::updateActions( bool detached )
 //___________________________________________________________
 void DockPanel::hideEvent( QHideEvent* event )
 {
-  Debug::Throw( 0, "DockPanel::hideEvent.\n" );
+  Debug::Throw( "DockPanel::hideEvent.\n" );
   emit visibilityChanged( false );
   QWidget::hideEvent( event );
 }
