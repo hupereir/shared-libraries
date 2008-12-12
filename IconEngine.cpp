@@ -36,8 +36,14 @@
 
 using namespace std;
 
+
 //__________________________________________________________
-IconEngine IconEngine::singleton_;
+IconEngine& IconEngine::get( void )
+{ 
+  //! singleton
+  static IconEngine singleton_;
+  return singleton_; 
+}
 
 //__________________________________________________________
 IconEngine::IconEngine( void ):

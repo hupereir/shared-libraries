@@ -39,7 +39,12 @@
 using namespace std;
 
 //__________________________________________________________
-PixmapEngine PixmapEngine::singleton_;
+PixmapEngine& PixmapEngine::get( void )
+{ 
+  //! singleton
+  static PixmapEngine singleton_;
+  return singleton_; 
+}
 
 //__________________________________________________________
 PixmapEngine::PixmapEngine( void ):

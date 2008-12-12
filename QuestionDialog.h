@@ -33,6 +33,7 @@
   \date $Date$
 */
 
+#include <assert.h>
 #include <QString>
 #include <QLabel>
 #include <QLayout>
@@ -55,11 +56,24 @@ class QuestionDialog: public CustomDialog
   
   protected:
   
+  //! text layout
+  QVBoxLayout& _textLayout( void ) const
+  { 
+    assert( text_layout_ );
+    return *text_layout_; 
+  }
+  
   //! label
   QLabel& _label( void ) const
-  { return *label_; }
+  { 
+    assert( label_ );
+    return *label_; 
+  }
   
   private:  
+
+  //! text layout
+  QVBoxLayout* text_layout_;
   
   //! main label
   QLabel *label_;

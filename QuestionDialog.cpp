@@ -23,7 +23,7 @@
 *******************************************************************************/
 
 /*!
-  \file Questioncpp
+  \file QuestionDialog.cpp
   \brief simplified question dialog
   \author Hugo Pereira
   \version $Revision$
@@ -44,15 +44,16 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
 
   Debug::Throw( "QtUtil::question\n" );
 
+  text_layout_ = new QVBoxLayout();
+  text_layout_->setSpacing(5);
+  text_layout_->setMargin(0);
+  text_layout_->addWidget( label_ = new QLabel( text, this ) ); 
+  
   //! try load Question icon
   QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );
 
-  if( question_pixmap.isNull() )
-  { 
-    
-    mainLayout().addWidget( label_ = new QLabel( text, this ) ); 
-  
-  } else {
+  if( question_pixmap.isNull() ) mainLayout().addItem( text_layout_ );
+  else {
 
     QHBoxLayout *h_layout( new QHBoxLayout() );
     h_layout->setSpacing(10);
@@ -61,8 +62,8 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
 
     QLabel* label = new QLabel( this );
     label->setPixmap( question_pixmap );
-    h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
+    h_layout->addWidget( label, 0, Qt::AlignHCenter|Qt::AlignTop );
+    h_layout->addItem( text_layout_ );
 
   }
 

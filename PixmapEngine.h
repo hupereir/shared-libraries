@@ -47,8 +47,7 @@ class PixmapEngine: public Counter
   public:
   
   //! retrieve singleton
-  static PixmapEngine& get( void )
-  { return singleton_; }
+  static PixmapEngine& get( void );
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
@@ -103,10 +102,7 @@ class PixmapEngine: public Counter
   { return pixmap_path_; }
   
   private:
-      
-  //! singleton
-  static PixmapEngine singleton_;
-    
+          
   //!@name non static methods are hidden
   //@{
   
