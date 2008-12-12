@@ -43,26 +43,25 @@ InformationDialog::InformationDialog( QWidget* parent, QString text ):
   CustomDialog( parent, OK_BUTTON )
 {
 
-  text_layout_ = new QVBoxLayout();
-  text_layout_->setSpacing(5);
-  text_layout_->setMargin(0);
-  text_layout_->addWidget( label_ = new QLabel( text, this ) ); 
-
   //! try load Question icon
   QPixmap question_pixmap = PixmapEngine::get( ICONS::INFORMATION );
 
-  if( question_pixmap.isNull() ) mainLayout().addItem( text_layout_ );
-  else {
+  // insert main vertical box
+  if( question_pixmap.isNull() )
+  { 
+
+    mainLayout().addWidget( label_ = new QLabel( text, this ) ); 
+  
+  } else {
 
     QHBoxLayout *h_layout( new QHBoxLayout() );
     h_layout->setSpacing(10);
     h_layout->setMargin(0);
     mainLayout().addLayout( h_layout );
-
     QLabel* label = new QLabel( this );
     label->setPixmap( question_pixmap );
-    h_layout->addWidget( label, 0, Qt::AlignHCenter|Qt::AlignTop );
-    h_layout->addItem( text_layout_ );
+    h_layout->addWidget( label, 0, Qt::AlignHCenter );
+    h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
 
   }
 
