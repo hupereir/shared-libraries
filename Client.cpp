@@ -98,7 +98,7 @@ bool Client::_readMessage( void )
 
   // read everything from socket and store as message
   message_ = IOString( socket() );  
-  if( message_.empty() ) return false;
+  if( message_.isEmpty() ) return false;
   
   // store message and emit signal
   has_message_ = true;
