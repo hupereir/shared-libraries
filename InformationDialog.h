@@ -45,7 +45,7 @@ class InformationDialog: public CustomDialog
   public:
   
   //! constructor
-  InformationDialog( QWidget* parent, QString text );  
+  InformationDialog( QWidget* parent, QString text = "" );  
 
   //! set text
   void setText( const QString& text ) const
@@ -53,11 +53,24 @@ class InformationDialog: public CustomDialog
   
   protected:
   
+  //! text layout
+  QVBoxLayout& _textLayout( void ) const
+  { 
+    assert( text_layout_ );
+    return *text_layout_; 
+  }
+  
   //! label
   QLabel& _label( void ) const
-  { return *label_; }
+  { 
+    assert( label_ );
+    return *label_; 
+  }
   
   private:
+  
+  //! text layout
+  QVBoxLayout* text_layout_;
   
   //! label
   QLabel* label_; 
