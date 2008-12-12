@@ -91,16 +91,18 @@ void Client::_sendCommands( void )
 }
 
 //_______________________________________________________
-void Client::_readMessage( void )
+bool Client::_readMessage( void )
 {
 
   Debug::Throw( "Client::_readMessage.\n" );
 
   // read everything from socket and store as message
   message_ = IOString( socket() );  
-
+  if( message_.empty() ) return false;
+  
   // store message and emit signal
   has_message_ = true;
   emit messageAvailable();  
-
+  return true;
+  
 }

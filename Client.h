@@ -123,7 +123,7 @@ namespace SERVER
     protected slots:
     
     //! reads messages
-    virtual void _readMessage( void );
+    virtual bool _readMessage( void );
     
     private slots:
     
