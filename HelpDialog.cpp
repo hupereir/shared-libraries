@@ -30,10 +30,11 @@
 */
 
 #include <QAction>
+#include <QHeaderView>
 #include <QLayout>
 #include <QPushButton>
 #include <QShortcut>
-#include <QHeaderView>
+#include <QTextStream>
 
 #include "BaseIcons.h"
 #include "IconEngine.h"
@@ -145,15 +146,18 @@ HelpDialog::HelpDialog( QWidget *parent ):
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setToolTip( "Close the reference manual window" );
   
-  h_layout->addWidget( button = new QPushButton( "&End edition", plain_frame_ ) );  
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), "&Apply", plain_frame_ ) );  
   connect( button, SIGNAL( clicked() ), SLOT( _toggleEdition() ) );
   button->setToolTip( "edit current help" );
 
-  h_layout->addWidget( button = new QPushButton( "&Delete item", plain_frame_ ) );  
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), "&Show help string", plain_frame_ ) );  
+  connect( button, SIGNAL( clicked() ), SLOT( _showHelpString() ) );
+
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::REMOVE ), "&Delete item", plain_frame_ ) );  
   connect( button, SIGNAL( clicked() ), SLOT( _deleteItem() ) );
   button->setToolTip( "delete current help item" );
 
-  h_layout->addWidget( button = new QPushButton( "&Add item", plain_frame_ ) );  
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::ADD ), "&Add item", plain_frame_ ) );  
   connect( button, SIGNAL( clicked() ), SLOT( _newItem() ) );
   button->setToolTip( "add a new help item" );
   h_layout->addStretch( 1 );
@@ -423,6 +427,51 @@ void HelpDialog::_deleteItem( void )
   plain_editor_->clear();
   HelpManager::setModified( true );
   
+}
+
+//_________________________________________________________
+void HelpDialog::_showHelpString( void )
+{
+  Debug::Throw( "HelpDialog::_showHelpString.\n" );
+
+  
+  // write output to stream
+  QString buffer;
+  QTextStream stream( &buffer );
+  
+  // retrieve all items from dialog
+  stream << "static const char* HelpText[] = {\n";
+  HelpItem::List items( _model().get() );
+  for( HelpItem::List::const_iterator iter = items.begin(); iter != items.end(); iter++ )
+  {
+    
+    // dump label
+    stream << "  //_________________________________________________________\n"; 
+    stream << "  \"" << iter->label() << "\",\n";
+    
+    // dump text
+    QString text( iter->text() );
+    text.replace( "\"", "\\\"" );
+    text.replace( "\n", "\\n\"\n  \"" );
+    stream << "  \"" << text << "\"";
+    stream << ",\n";
+    stream << "\n";
+  }
+  stream << "  0\n";
+  stream << "};\n";
+  
+  CustomDialog dialog( 0, CustomDialog::OK_BUTTON );
+  TextEditor* editor( new TextEditor( &dialog ) );
+
+  editor->setWrapFromOptions( false );
+  editor->wrapModeAction().setChecked( false );
+  editor->setPlainText( buffer );
+  dialog.mainLayout().addWidget( editor );
+  dialog.resize( 600, 500 );
+  
+  // center 
+  dialog.centerOnWidget( qApp->activeWindow() ).exec();
+
 }
 
 //_________________________________________________________

@@ -113,6 +113,9 @@ namespace BASE
     //! delete current item
     void _deleteItem( void );
     
+    //! show text
+    void _showHelpString( void );
+    
     private:
     
     //! if help manager is modified, ask for save
