@@ -74,6 +74,9 @@ ApplicationManager::~ApplicationManager( void )
 //_________________________________________
 void ApplicationManager::usage( void )
 {
+  cout << "server mode options : " << endl;
+  cout << "Server mode is used to avoid that multiple instances of the same application run at the same time. " << endl;
+  cout << "Following options are used to control the running instance, or ignore this mode." << endl;
   cout << "  --replace\t\t replace existing instance with new one." << endl;
   cout << "  --no-server\t\t ignore server mode. runs new application instance." << endl;
   cout << "  --abort\t\t exit existing instance." <<  endl;
