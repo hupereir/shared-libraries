@@ -50,16 +50,16 @@ SvgEngine::SvgEngine( void ):
   Counter( "SvgEngine" ),
   svg_offset_( 0 )
 { 
-  Debug::Throw( "SvgEngine::SvgEngine.\n" ); 
 
   // default option values
+  Debug::Throw( "SvgEngine::SvgEngine.\n" ); 
   XmlOptions::get().setAutoDefault( true );
   XmlOptions::get().keep( "SVG_BACKGROUND" );
   XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg", Option::RECORDABLE|Option::CURRENT ) );
   XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-simple.svg" ) );
   XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-translucent.svg" ) );
-  XmlOptions::get().set( "USE_SVG", "1" );
-  XmlOptions::get().set( "SVG_OFFSET", "0" );
+  XmlOptions::get().set( "USE_SVG", Option("1") );
+  XmlOptions::get().set( "SVG_OFFSET", Option("0") );
   XmlOptions::get().setAutoDefault( false );
   
 }
