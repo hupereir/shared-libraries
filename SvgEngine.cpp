@@ -42,7 +42,6 @@ using namespace SVG;
 SvgEngine& SvgEngine::get( void )
 {
   static SvgEngine singleton;
-  if( !singleton.initialized_ ) { singleton._initialize(); }
   return singleton; 
 }
 
@@ -50,12 +49,8 @@ SvgEngine& SvgEngine::get( void )
 SvgEngine::SvgEngine( void ):
   Counter( "SvgEngine" ),
   svg_offset_( 0 )
-{}
-
-//__________________________________________________________
-void SvgEngine::_initialize( void )
 {
-  Debug::Throw( "SvgEngine::_initialize.\n" );
+  Debug::Throw( "SvgEngine::SvgEngine.\n" );
   XmlOptions::get().setAutoDefault( true );
   XmlOptions::get().keep( "SVG_BACKGROUND" );
   XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg", Option::RECORDABLE|Option::CURRENT ) );
@@ -64,7 +59,6 @@ void SvgEngine::_initialize( void )
   XmlOptions::get().set( "USE_SVG", Option("1") );
   XmlOptions::get().set( "SVG_OFFSET", Option("0") );
   XmlOptions::get().setAutoDefault( false );
-  initialized_ = true;
   return;
 }
 

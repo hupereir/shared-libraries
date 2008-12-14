@@ -87,13 +87,7 @@ namespace SVG
     QPixmap _get( const QSize&, bool from_cache = true );
     
     //@}
-    
-    //! initialization
-    bool initialized_;
-    
-    //! initialize
-    void _initialize( void );
-    
+        
     //! ordered QSize subclass
     class Size: public QSize
     {
