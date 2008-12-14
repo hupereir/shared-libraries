@@ -53,8 +53,7 @@ namespace SVG
     public:
     
     //! retrieve singleton
-    static SvgEngine& get( void )
-    { return singleton_; }
+    static SvgEngine& get( void );
     
     //! create pixmap
     /*! the size is stored into a cache to avoid duplicate pixmaps manipulations */
@@ -76,9 +75,6 @@ namespace SVG
     
     //! validate svg
     bool _validateSvg( void ) const;
-    
-    //! singleton
-    static SvgEngine singleton_;
     
     //!@name non static methods are hidden
     //@{

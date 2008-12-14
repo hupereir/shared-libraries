@@ -39,7 +39,11 @@ using namespace std;
 using namespace SVG;
 
 //__________________________________________________________
-SvgEngine SvgEngine::singleton_;
+SvgEngine& SvgEngine::get( void )
+{
+  static SvgEngine singleton_;
+  return singleton_; 
+}
 
 //__________________________________________________________
 SvgEngine::SvgEngine( void ):
