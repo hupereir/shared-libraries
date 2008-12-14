@@ -88,6 +88,12 @@ namespace SVG
     
     //@}
     
+    //! initialization
+    bool initialized_;
+    
+    //! initialize
+    void _initialize( void );
+    
     //! ordered QSize subclass
     class Size: public QSize
     {
