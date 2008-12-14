@@ -112,9 +112,6 @@ namespace TRANSPARENCY
     
     //! initialized
     bool initialized_;
-        
-    //! singleton
-    static CompositeEngine singleton_;
     
   };
   

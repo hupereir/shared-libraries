@@ -41,11 +41,14 @@ using namespace std;
 using namespace TRANSPARENCY;
 
 //_______________________________________________________________
-CompositeEngine CompositeEngine::singleton_;
-
-//_______________________________________________________________
 CompositeEngine& CompositeEngine::get( void )
-{ return singleton_; }
+{ 
+          
+  //! singleton
+  static CompositeEngine singleton;
+  return singleton; 
+
+}
 
 //_______________________________________________________________
 CompositeEngine::CompositeEngine( void ):
@@ -61,7 +64,7 @@ CompositeEngine::CompositeEngine( void ):
   initialized_( false )
 { 
   Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); 
-  XmlOptions::get().set( "TRANSPARENCY_USE_COMPOSITE", "1",  true );
+  XmlOptions::get().set( "TRANSPARENCY_USE_COMPOSITE", Option("1"), true );
 }
 
 
