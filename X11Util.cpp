@@ -36,8 +36,18 @@
 using namespace std;
 
 //________________________________________________________________________
-X11Util::AtomNameMap X11Util::atom_names_ = _initializeAtomNames();
-X11Util::SupportedAtomMap X11Util::supported_atoms_;
+X11Util::AtomNameMap& X11Util::_atomNames( void )
+{
+  static AtomNameMap names = _initializeAtomNames();
+  return names;
+}
+
+//________________________________________________________________________
+X11Util::SupportedAtomMap& X11Util::_supportedAtoms()
+{ 
+  static SupportedAtomMap atoms;
+  return atoms;
+}
 
 //________________________________________________________________________
 bool X11Util::isSupported( const Atoms& atom )
@@ -45,8 +55,8 @@ bool X11Util::isSupported( const Atoms& atom )
   
   #ifdef Q_WS_X11
   
-  SupportedAtomMap::const_iterator iter( supported_atoms_.find( atom ) );
-  if( iter != supported_atoms_.end() ) return iter->second;
+  SupportedAtomMap::const_iterator iter( _supportedAtoms().find( atom ) );
+  if( iter != _supportedAtoms().end() ) return iter->second;
   
   Display* display( QX11Info::display() );
   Atom net_supported( findAtom( _NET_SUPPORTED ) );
@@ -71,8 +81,9 @@ bool X11Util::isSupported( const Atoms& atom )
     // try cast data to atom
     Atom found( *(Atom*)data );
     
-    if( found == searched ) {
-      supported_atoms_[atom] = true;
+    if( found == searched ) 
+    {
+      _supportedAtoms()[atom] = true;
       return true;
     }
     
@@ -81,7 +92,7 @@ bool X11Util::isSupported( const Atoms& atom )
     
   }
   
-  supported_atoms_[atom] = false;
+  _supportedAtoms()[atom] = false;
 
   #endif
   
@@ -282,7 +293,11 @@ X11Util::AtomNameMap X11Util::_initializeAtomNames( void )
 #ifdef Q_WS_X11
 
 //________________________________________________________________________
-X11Util::AtomMap X11Util::atoms_;
+X11Util::AtomMap& X11Util::_atoms( void )
+{
+  static AtomMap atoms;
+  return atoms;
+}
 
 //________________________________________________________________________
 Atom X11Util::findAtom( const Atoms& atom )
@@ -291,13 +306,13 @@ Atom X11Util::findAtom( const Atoms& atom )
   Debug::Throw( "X11Util::findAtom.\n" );
   
   // find atom in map
-  AtomMap::iterator iter( atoms_.find( atom ) );
-  if( iter != atoms_.end() ) return iter->second;
+  AtomMap::iterator iter( _atoms().find( atom ) );
+  if( iter != _atoms().end() ) return iter->second;
   
   // create atom if not found
   Display* display( QX11Info::display() );
-  Atom out( XInternAtom(display, atom_names_[atom].c_str(), false ) );
-  atoms_[atom] = out;
+  Atom out( XInternAtom(display, _atomNames()[atom].c_str(), false ) );
+  _atoms()[atom] = out;
   return out;
   
 }

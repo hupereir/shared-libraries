@@ -55,19 +55,22 @@ class CustomToolBar: public QToolBar, public Counter
   
   //! destructor
   virtual ~CustomToolBar( void );
+
+  // map toolbar area and name
+  typedef std::map< std::string, Qt::ToolBarArea> AreaMap; 
   
   //! get area from name
   static Qt::ToolBarArea nameToArea( const std::string& name )
   { 
-    std::map< std::string, Qt::ToolBarArea>::iterator iter = toolbar_areas_.find( name );
-    return iter == toolbar_areas_.end() ? (Qt::ToolBarArea) 0 :iter->second;
+    AreaMap::iterator iter = _toolbarAreas().find( name );
+    return iter == _toolbarAreas().end() ? (Qt::ToolBarArea) 0 :iter->second;
   }
   
   //! get name from toobar area
   static std::string areaToName( const Qt::ToolBarArea& value )
   { 
     
-    for( std::map< std::string, Qt::ToolBarArea>::iterator iter = toolbar_areas_.begin(); iter != toolbar_areas_.end(); iter++ )
+    for( AreaMap::iterator iter = _toolbarAreas().begin(); iter != _toolbarAreas().end(); iter++ )
     { if( iter->second == value ) return iter->first; }
    
     return "";
@@ -146,9 +149,6 @@ class CustomToolBar: public QToolBar, public Counter
   //! install actions
   void _installActions( void );
   
-  //! initialize area map
-  static bool _initializeAreas( void );
-  
   //! assocated option name
   std::string option_name_;
   
@@ -160,12 +160,12 @@ class CustomToolBar: public QToolBar, public Counter
   
   //! use lock from options
   bool lock_from_options_;
+  
+  //! initialize area map
+  static AreaMap _initializeAreas( void );
 
   //! map name and toolbar are
-  static std::map< std::string, Qt::ToolBarArea> toolbar_areas_;
-
-  //! keep track of map initialization
-  static bool initialized_;
+  static AreaMap& _toolbarAreas( void );
   
 };
 

@@ -64,13 +64,8 @@ class IconSize: public QSize
   typedef std::map<Size, QString> Map;
   
   //! text to icon size
-  static const Map& map( void );  
-  
-  private:
-  
-  //! icon size map
-  static Map map_; 
-  
+  static Map& map( void );  
+    
 };
 
 #endif

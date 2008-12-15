@@ -41,7 +41,6 @@
 using namespace std;
 
 //________________________________________________
-const QSize ColorMenu::PixmapSize = IconSize( IconSize::MEDIUM );
 const std::string ColorMenu::NONE = "None";
 
 //_______________________________________________
@@ -125,17 +124,7 @@ void ColorMenu::_display( void )
   {
     
     // create pixmap if not done already
-    if( iter->second == Qt::NoBrush )
-    {
-      
-      //QRectF rect( QPointF(0,0), QSize( sizeHint().width()-6, PixmapSize.height() ) );
-      // QRectF rect( QPointF(0,0), PixmapSize );
-      // QLinearGradient gradient(rect.topLeft(), rect.bottomRight());
-      // gradient.setColorAt(0, iter->first );
-      // gradient.setColorAt(1, iter->first.light(135));
-      iter->second = QBrush( iter->first ); 
-      
-    }
+    if( iter->second == Qt::NoBrush ) iter->second = QBrush( iter->first ); 
     
     // create action
     QAction* action = new QAction( this );

@@ -37,7 +37,6 @@
 #include <QString>
 
 #include "Counter.h"
-#include "File.h"
 
 //! Xml parsing error container
 class XmlError: public Counter
@@ -46,7 +45,7 @@ class XmlError: public Counter
   public:
        
   //! constructor
-  XmlError( const File& file = File( "" ) ):
+  XmlError( const QString& file = QString() ):
     Counter( "XmlError" ),
     file_ ( file ),
     error_( "" ),
@@ -62,7 +61,7 @@ class XmlError: public Counter
   { return error_.length() != 0; }
   
   //! File
-  const File& file( void ) const
+  const QString& file( void ) const
   { return file_; }
   
   //! error
@@ -92,7 +91,7 @@ class XmlError: public Counter
   private:
 
   //! file
-  File file_;
+  QString file_;
             
   //! error
   QString error_;
@@ -106,7 +105,7 @@ class XmlError: public Counter
   //! dumper
   friend std::ostream& operator << ( std::ostream &out, const XmlError& error )
   {
-    if( error.file().size() ) out << error.file().localName() << ": ";
+    if( !error.file().isEmpty() ) out << qPrintable( error.file() ) << ": ";
     else out << "message: ";
     out << qPrintable( error.error() ) << " at line " << error.line() << ", column " << error.column();
     return out;

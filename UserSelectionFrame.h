@@ -92,7 +92,7 @@ class UserSelectionFrame: public QWidget, public Counter
   { return timer_; }
   
   //! delay for userChanged signal emission
-  static const unsigned int delay_;
+  unsigned int delay_;
   
   //! user changed timer
   QTimer timer_;

@@ -161,7 +161,7 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
   bool read_only_;
   
   //! column titles
-  static const char* column_titles_[ n_columns ];
+  static const QString column_titles_[ n_columns ];
    
 };
 

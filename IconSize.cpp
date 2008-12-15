@@ -38,9 +38,6 @@
 using namespace std;
 
 //__________________________________________________________________
-IconSize::Map IconSize::map_;
-
-//__________________________________________________________________
 IconSize::IconSize( IconSize::Size size )
 {
 
@@ -67,16 +64,17 @@ IconSize::IconSize( QWidget* parent, IconSize::Size size )
 }
 
 //______________________________________________________________________
-const IconSize::Map& IconSize::map( void )
+IconSize::Map& IconSize::map( void )
 { 
-  if( map_.empty() )
+  static Map size_map;
+  if( size_map.empty() )
   {
-    map_.insert( make_pair( DEFAULT, "&Default" ) );
-    map_.insert( make_pair( SMALL, "&Small (16x16)" ) );
-    map_.insert( make_pair( MEDIUM, "&Medium (22x22)" ) );
-    map_.insert( make_pair( LARGE, "&Large (32x32)") );
-    map_.insert( make_pair( HUGE, "&Huge (48x48)" ) );
+    size_map.insert( make_pair( DEFAULT, "&Default" ) );
+    size_map.insert( make_pair( SMALL, "&Small (16x16)" ) );
+    size_map.insert( make_pair( MEDIUM, "&Medium (22x22)" ) );
+    size_map.insert( make_pair( LARGE, "&Large (32x32)") );
+    size_map.insert( make_pair( HUGE, "&Huge (48x48)" ) );
   }
   
-  return map_;
+  return size_map;
 }

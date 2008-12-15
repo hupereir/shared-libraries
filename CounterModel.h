@@ -121,7 +121,7 @@ class CounterModel: public ListModel<CounterPair>
   };
 
   //! column titles
-  static const char* column_titles_[ n_columns ];
+  static const QString column_titles_[ n_columns ];
    
 };
 

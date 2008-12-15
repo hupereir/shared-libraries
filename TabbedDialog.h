@@ -115,7 +115,7 @@ class TabbedDialog: public BaseDialog, public Counter
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
     {   
       if( orientation == Qt::Horizontal && role == Qt::DisplayRole && section >= 0 && section < n_columns )
-      { return QString( column_titles_[section] ); }
+      { return column_titles_[section]; }
       
       // return empty
       return QVariant(); 
@@ -135,7 +135,7 @@ class TabbedDialog: public BaseDialog, public Counter
     {}
   
     //! list column names
-    static const char* column_titles_[n_columns];    
+    static const QString column_titles_[n_columns];    
     
   };
 

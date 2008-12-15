@@ -34,15 +34,34 @@
 #include <QDomElement>
 #include <QFile>
 
+#include "File.h"
+#include "Options.h"
+#include "XmlError.h"
 #include "XmlOption.h"
 #include "XmlOptions.h"
 
 using namespace std;
 
 //____________________________________________________________________
-File XmlOptions::file_;
-Options XmlOptions::singleton_( true );
-XmlError XmlOptions::error_;
+File& XmlOptions::file( void )
+{
+  static File file;
+  return file;
+}
+
+//____________________________________________________________________
+XmlError& XmlOptions::error( void )
+{
+  static XmlError error;
+  return error;
+}
+
+//____________________________________________________________________
+Options& XmlOptions::get( void )
+{ 
+  static Options singleton( true );
+  return singleton;
+}
 
 //____________________________________________________________________
 bool XmlOptions::read( File file )
@@ -51,11 +70,11 @@ bool XmlOptions::read( File file )
   Debug::Throw() << "XmlOptions::read - file=\"" << file << "\"\n";
 
   // check filename is valid
-  if( !file.size() ) file = file_;
+  if( !file.size() ) file = XmlOptions::file();
   if( !file.size() ) return false;
 
   // store requested file
-  file_ = file;
+  XmlOptions::file() = file;
 
   // parse the file
   QFile qtfile( file.c_str() );
@@ -67,8 +86,8 @@ bool XmlOptions::read( File file )
 
   // dom document
   QDomDocument document;
-  error_ = XmlError( file );
-  if ( !document.setContent( &qtfile, &error_.error(), &error_.line(), &error_.column() ) ) 
+  error() = XmlError( file.c_str() );
+  if ( !document.setContent( &qtfile, &error().error(), &error().line(), &error().column() ) ) 
   {
     qtfile.close();
     return false;
@@ -113,7 +132,7 @@ bool XmlOptions::write( File file )
   Debug::Throw( "XmlOptions::write.\n" );
 
   // check filename is valid
-  if( file.empty() ) file = file_;
+  if( file.empty() ) file = XmlOptions::file();
   if( file.empty() ) 
   {
     Debug::Throw( "XmlOptions::write - file is empty.\n" );

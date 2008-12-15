@@ -37,8 +37,11 @@
 using namespace std;
 
 //_______________________________________________________________
-std::map< std::string, Qt::ToolBarArea > CustomToolBar::toolbar_areas_;
-bool CustomToolBar::initialized_ = CustomToolBar::_initializeAreas();
+CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas( void )
+{
+  static AreaMap areas = _initializeAreas();
+  return areas;
+}
 
 //_______________________________________________________________
 CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const std::string& option_name ):
@@ -200,12 +203,13 @@ void CustomToolBar::_installActions( void )
 }
 
 //_______________________________________________________________
-bool CustomToolBar::_initializeAreas( void )
+CustomToolBar::AreaMap CustomToolBar::_initializeAreas( void )
 {
-  toolbar_areas_.insert( make_pair( "none", Qt::NoToolBarArea ) );
-  toolbar_areas_.insert( make_pair( "left", Qt::LeftToolBarArea ) );
-  toolbar_areas_.insert( make_pair( "right", Qt::RightToolBarArea ) );
-  toolbar_areas_.insert( make_pair( "top", Qt::TopToolBarArea ) );
-  toolbar_areas_.insert( make_pair( "bottom", Qt::BottomToolBarArea ) );
-  return true;
+  AreaMap out;
+  out.insert( make_pair( "none", Qt::NoToolBarArea ) );
+  out.insert( make_pair( "left", Qt::LeftToolBarArea ) );
+  out.insert( make_pair( "right", Qt::RightToolBarArea ) );
+  out.insert( make_pair( "top", Qt::TopToolBarArea ) );
+  out.insert( make_pair( "bottom", Qt::BottomToolBarArea ) );
+  return out;
 }

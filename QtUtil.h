@@ -82,15 +82,7 @@ class QtUtil {
 
   //! uniconify a top level widget
   static void uniconify( QWidget* widget );
-  
-  protected:
-      
-  //! maximum value for opacity setting (corresponds to solid)
-  static const unsigned int max_opacity_;
-  
-  //! opacity property name
-  static const char* opacity_prop_name_;
-
+    
 };
 
 #endif

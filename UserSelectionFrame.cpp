@@ -40,12 +40,10 @@ using namespace std;
 
 
 //____________________________________________________________
-const unsigned int UserSelectionFrame::delay_ = 500; 
-
-//____________________________________________________________
 UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
   QWidget( parent ),
   Counter( "UserSelectionFrame" ),
+  delay_( 500 ),
   timer_( this )
 {
   

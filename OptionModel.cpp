@@ -40,7 +40,7 @@
 using namespace std;
 
 //_______________________________________________
-const char* OptionModel::column_titles_[ OptionModel::n_columns ] =
+const QString OptionModel::column_titles_[ OptionModel::n_columns ] =
 { "name", "", "current value", "default value", "flags" };
 
 //_______________________________________________
@@ -121,7 +121,7 @@ QVariant OptionModel::headerData(int section, Qt::Orientation orientation, int r
     role == Qt::DisplayRole && 
     section >= 0 && 
     section < n_columns )
-  { return QString( column_titles_[section] ); }
+  { return column_titles_[section]; }
   
   // return empty
   return QVariant(); 

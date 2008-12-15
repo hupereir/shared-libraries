@@ -42,7 +42,11 @@
 using namespace std;
 
 //__________________________________________________________________
-FileRecordModel::IconCache FileRecordModel::icons_;
+FileRecordModel::IconCache& FileRecordModel::_icons( void )
+{
+  static IconCache cache;
+  return cache;
+}
 
 //__________________________________________________________________
 FileRecordModel::FileRecordModel( QObject* parent ):
@@ -184,7 +188,7 @@ void FileRecordModel::_add( const ValueType& value )
 void FileRecordModel::_updateConfiguration( void )
 {
   Debug::Throw( "FileRecordModel::_updateConfiguration.\n" );
-  icons_.clear();
+  _icons().clear();
 }
 
 //____________________________________________________________
@@ -234,8 +238,8 @@ QIcon FileRecordModel::_icon( const std::string& name )
   
   Debug::Throw( "FileRecordModel::_icon.\n" );
   
-  IconCache::const_iterator iter( icons_.find( name ) );
-  if( iter != icons_.end() ) return iter->second;
+  IconCache::const_iterator iter( _icons().find( name ) );
+  if( iter != _icons().end() ) return iter->second;
 
   // pixmap size
   unsigned int pixmap_size = XmlOptions::get().get<unsigned int>( "LIST_ICON_SIZE" );
@@ -249,7 +253,7 @@ QIcon FileRecordModel::_icon( const std::string& name )
   { icon = CustomPixmap().empty( size ).merge( base.scaled( scale, Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::CENTER ); }
   
   // insert in map
-  icons_.insert( make_pair( name, icon ) );
+  _icons().insert( make_pair( name, icon ) );
   
   return icon;
    

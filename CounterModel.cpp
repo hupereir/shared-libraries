@@ -36,7 +36,7 @@
 using namespace std;
 
 //_______________________________________________
-const char* CounterModel::column_titles_[ CounterModel::n_columns ] =
+const QString CounterModel::column_titles_[ CounterModel::n_columns ] =
 { 
   "name",
   "counts"
@@ -82,7 +82,7 @@ QVariant CounterModel::headerData(int section, Qt::Orientation orientation, int 
     role == Qt::DisplayRole && 
     section >= 0 && 
     section < n_columns )
-  { return QString( column_titles_[section] ); }
+  { return column_titles_[section]; }
   
   // return empty
   return QVariant(); 

@@ -51,10 +51,6 @@
 using namespace std;
 
 //____________________________________________________________
-const unsigned int QtUtil::max_opacity_ = 0xffffffff;
-const char* QtUtil::opacity_prop_name_ = "_NET_WM_WINDOW_OPACITY";
-
-//____________________________________________________________
 void QtUtil::moveWidget( QWidget* widget, QPoint position )
 {
 

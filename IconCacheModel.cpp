@@ -36,7 +36,7 @@
 using namespace std;
 
 //_______________________________________________
-const char* IconCacheModel::column_titles_[ IconCacheModel::n_columns ] =
+const QString IconCacheModel::column_titles_[ IconCacheModel::n_columns ] =
 { "icon" };
 
 //__________________________________________________________________
@@ -66,7 +66,7 @@ QVariant IconCacheModel::headerData(int section, Qt::Orientation orientation, in
     role == Qt::DisplayRole && 
     section >= 0 && 
     section < n_columns )
-  { return QString( column_titles_[section] ); }
+  { return column_titles_[section]; }
   
   // return empty
   return QVariant(); 

@@ -38,7 +38,11 @@
 using namespace std;
 
 //________________________________________________________________________
-set<QString> BaseReplaceDialog::replaced_strings_;
+set<QString>& BaseReplaceDialog::_replacedStrings()
+{
+  static set<QString> strings;
+  return strings;
+}
 
 //________________________________________________________________________
 BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
@@ -140,7 +144,7 @@ void BaseReplaceDialog::synchronize( void )
   
   // replace editor
   _replaceEditor().clear();
-  for( set<QString>::iterator iter = replaced_strings_.begin(); iter != replaced_strings_.end(); iter++ )
+  for( set<QString>::iterator iter = _replacedStrings().begin(); iter != _replacedStrings().end(); iter++ )
   { _replaceEditor().addItem( *iter ); }
   
   // clear replace combobox text

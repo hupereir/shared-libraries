@@ -117,14 +117,17 @@ class BaseReplaceDialog: public BaseFindDialog
   { return *replace_window_button_; }
   
   private:
+
+  //! replaced strings
+  static std::set<QString>& _replacedStrings();  
             
   //! add string to both combo box and static set
   void _addReplacedString( const QString& text  )
   {
     if( text.isEmpty() ) return;
-    if( replaced_strings_.find( text ) == replaced_strings_.end() )
+    if( _replacedStrings().find( text ) == _replacedStrings().end() )
     {
-      replaced_strings_.insert( text );
+      _replacedStrings().insert( text );
       replace_editor_->addItem( text );
     }
   }
@@ -134,9 +137,6 @@ class BaseReplaceDialog: public BaseFindDialog
     
   //! replace in window button
   QPushButton* replace_window_button_;
-  
-  //! replaced strings
-  static std::set<QString> replaced_strings_;  
   
 };
 #endif

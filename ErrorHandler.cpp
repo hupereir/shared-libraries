@@ -38,6 +38,13 @@
 using namespace std;
 
 //_____________________________________________________________
+ErrorHandler& ErrorHandler::get( void )
+{ 
+  static  ErrorHandler singleton;
+  return singleton;
+}
+
+//_____________________________________________________________
 void ErrorHandler::Throw( QtMsgType type, const char* message )
 {
   Debug::Throw() << "ErrorHandler::Throw - " << message << endl;

@@ -116,13 +116,13 @@ class X11Util
   static AtomNameMap _initializeAtomNames( void );
   
   //! atom names
-  static AtomNameMap  atom_names_;
+  static AtomNameMap& _atomNames( void );
   
   //! supported atoms
   typedef std::map<Atoms, bool > SupportedAtomMap;
   
   //! supported atoms
-  static SupportedAtomMap supported_atoms_;
+  static SupportedAtomMap& _supportedAtoms( void );
   
   #ifdef Q_WS_X11
   
@@ -130,7 +130,7 @@ class X11Util
   typedef std::map<Atoms, Atom> AtomMap;
   
   //! atoms
-  static AtomMap atoms_;
+  static AtomMap& _atoms( void );
   
   #endif
   

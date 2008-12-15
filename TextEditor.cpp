@@ -57,7 +57,11 @@
 using namespace std;
 
 //______________________________________________
-TextSelection TextEditor::last_selection_;
+TextSelection& TextEditor::lastSelection( void )
+{
+  static TextSelection selection;
+  return selection;
+}
 
 //______________________________________________
 TextEditor::TextEditor( QWidget *parent ):

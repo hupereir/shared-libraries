@@ -45,8 +45,7 @@ class TextSeparator
   typedef std::set< QChar > SeparatorSet;
     
   //! return singleton
-  static const TextSeparator& get( void )
-  { return singleton_; }
+  static const TextSeparator& get( void );
   
   //! retrieve base separators
   const SeparatorSet& base() const
@@ -65,9 +64,6 @@ class TextSeparator
   //! constructor
   TextSeparator( void );
            
-  //! singleton
-  static TextSeparator singleton_;
-  
   //! base separators (space, tab, end of line)
   SeparatorSet base_separators_;
   

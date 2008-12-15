@@ -68,7 +68,7 @@ class XmlString: public QString
   void _initConversions( void ) const;
     
   //! text to Xml conversion pair list
-  static ConversionList conversions_;
+  static ConversionList& _conversions( void );
  
   
 };

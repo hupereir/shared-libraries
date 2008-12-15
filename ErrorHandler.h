@@ -53,11 +53,7 @@ class ErrorHandler
   static void Throw( QtMsgType type, const char* message );
   
   //! singleton
-  static ErrorHandler& get( void )
-  { 
-    static  ErrorHandler singleton;
-    return singleton;
-  }
+  static ErrorHandler& get( void );
   
   //! adds a disabled message in the list
   void disableMessage( const std::string& message ) 

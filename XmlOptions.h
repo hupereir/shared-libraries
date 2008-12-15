@@ -35,7 +35,8 @@
 
 #include "File.h"
 #include "Options.h"
-#include "XmlError.h"
+
+class XmlError;
 
 //! Option file parser based on xml
 class XmlOptions
@@ -44,8 +45,7 @@ class XmlOptions
   public:
   
   //! retrieve singleton
-  static Options& get( void )
-  { return singleton_; }
+  static Options& get( void );
   
   //! read from file
   static bool read( File file = File( "" ) );
@@ -54,19 +54,10 @@ class XmlOptions
   static bool write( File file = File("") );
   
   //! file
-  static const File& file()
-  { return file_; }
-  
-  private:
-  
-  //! singleton
-  static Options singleton_;
-  
-  //! file name
-  static File file_;
+  static File& file();
   
   //! xml error
-  static XmlError error_;
+  static XmlError& error();
   
 };
 

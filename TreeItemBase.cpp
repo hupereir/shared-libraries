@@ -31,5 +31,9 @@
 
 #include "TreeItemBase.h"
 
-// running id
-TreeItemBase::Id TreeItemBase::running_id_ = 0;
+//______________________________________________________________
+TreeItemBase::Id& TreeItemBase::_runningId( void )
+{
+  static Id id(0);
+  return id;
+}

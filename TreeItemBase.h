@@ -98,8 +98,7 @@ class TreeItemBase: public Counter
   { id_ = id; }
   
   //! running id
-  static Id& _runningId( void )
-  { return running_id_; }
+  static Id& _runningId( void );
   
   private:
   
@@ -108,9 +107,6 @@ class TreeItemBase: public Counter
   
   //! flags
   unsigned int flags_;
-  
-  //! running id
-  static Id running_id_;
   
 };
 

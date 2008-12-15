@@ -153,6 +153,12 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
   //! icon
   static QIcon _icon( const std::string& );
   
+  //! icon cache
+  typedef std::map<std::string, QIcon> IconCache;
+   
+  //! type icon cache
+  static IconCache& _icons( void ); 
+  
   //! true if icons are to be shown
   bool show_icons_;
   
@@ -161,13 +167,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
 
   //! column titles
   std::vector<QString> column_titles_;
- 
-  //! icon cache
-  typedef std::map<std::string, QIcon> IconCache;
-   
-  //! type icon cache
-  static IconCache icons_; 
-   
+    
 };
 
 #endif

@@ -157,8 +157,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual void showReplacements( const unsigned int& counts );
  
   //! last searched selection
-  static const TextSelection& lastSelection( void )
-  { return last_selection_; }
+  static TextSelection& lastSelection( void );
 
   //!@name text wrap
   //@{
@@ -501,7 +500,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
  
   //! last searched selection
   static void _setLastSelection( const TextSelection& selection )
-  { last_selection_ = selection; }
+  { lastSelection() = selection; }
   
   //! find dialog
   virtual BaseFindDialog& _findDialog( void )
@@ -714,9 +713,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! line number dialog
   SelectLineDialog* select_line_dialog_;
-  
-  //! last used selection
-  static TextSelection last_selection_;
   
   //@}
   

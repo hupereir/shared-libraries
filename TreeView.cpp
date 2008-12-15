@@ -118,7 +118,8 @@ bool TreeView::setMaskOptionName( const std::string& value )
   
   // update mask
   updateMask(); 
-    
+  return true;
+  
 }
 
 //_______________________________________________

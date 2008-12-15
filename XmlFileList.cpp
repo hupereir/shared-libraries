@@ -88,7 +88,7 @@ bool XmlFileList::_read( void )
 
   // dom document
   QDomDocument document;
-  XmlError error( db_file_ );
+  XmlError error( db_file_.c_str() );
   if ( !document.setContent( &in, &error.error(), &error.line(), &error.column() ) ) {
     in.close();
     Debug::Throw() << error << endl;

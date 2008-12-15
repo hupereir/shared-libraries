@@ -160,9 +160,9 @@ class BaseFindDialog: public BaseDialog, public Counter
   virtual void _addSearchedString( const QString& text  )
   {
     if( text.isEmpty() ) return;
-    if( searched_strings_.find( text ) == searched_strings_.end() )
+    if( _searchedStrings().find( text ) == _searchedStrings().end() )
     {
-      searched_strings_.insert( text );
+      _searchedStrings().insert( text );
       editor().addItem( text );
     }
   }
@@ -204,7 +204,7 @@ class BaseFindDialog: public BaseDialog, public Counter
   std::vector< QAbstractButton* > buttons_;
 
   //! set of previously searched strings
-  static std::set< QString > searched_strings_;
+  static std::set< QString >& _searchedStrings( void );
   
   //! notification label
   QLabel* label_;

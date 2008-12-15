@@ -54,7 +54,6 @@ CustomFileDialog::CustomFileDialog( QWidget* parent ):
   setViewMode( List );
   connect( this, SIGNAL( currentChanged( const QString& ) ), SLOT( _saveWorkingDirectory( const QString& ) ) );
 
-    
 }  
 
 //______________________________________________________________________

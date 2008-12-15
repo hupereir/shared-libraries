@@ -139,7 +139,7 @@ void TabbedDialog::_display( const QModelIndex& index )
 }
 
 //_______________________________________________
-const char* TabbedDialog::Model::column_titles_[ TabbedDialog::Model::n_columns ] =
+const QString TabbedDialog::Model::column_titles_[ TabbedDialog::Model::n_columns ] =
 { "" };
 
 

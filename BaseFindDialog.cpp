@@ -40,7 +40,11 @@
 using namespace std;
 
 //________________________________________________________________________
-set<QString> BaseFindDialog::searched_strings_;
+set<QString>& BaseFindDialog::_searchedStrings( void )
+{
+  static set<QString> strings;
+  return strings;
+}
 
 //________________________________________________________________________
 BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
@@ -138,7 +142,7 @@ void BaseFindDialog::synchronize( void )
   Debug::Throw( "BaseFindDialog::synchronize.\n" );
   editor().clear();
   
-  for( set<QString>::iterator iter = searched_strings_.begin(); iter != searched_strings_.end(); iter++ )
+  for( set<QString>::iterator iter = _searchedStrings().begin(); iter != _searchedStrings().end(); iter++ )
   { editor().addItem( *iter ); }
 
 }
