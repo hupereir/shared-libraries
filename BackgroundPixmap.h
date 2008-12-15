@@ -35,14 +35,12 @@
 #include <QObject>
 #include <QPixmap>
 
-#include "Counter.h"
-
 //! stores/manipulates the X11 background Pixmap
 namespace TRANSPARENCY
 {
   
   //! stores/manipulates the X11 background Pixmap
-  class BackgroundPixmap: public QObject, public Counter
+  class BackgroundPixmap: public QObject
   {
     
     //! Qt meta object declaration
@@ -51,11 +49,7 @@ namespace TRANSPARENCY
     public:
       
     //! returns singleton
-    static BackgroundPixmap& get( void )
-    { 
-      if( !singleton_ ) singleton_ = new BackgroundPixmap();
-      return *singleton_;
-    }
+    static BackgroundPixmap& get( void );
     
     //! returns true if background image is valid
     bool isValid( void ) const
@@ -91,9 +85,6 @@ namespace TRANSPARENCY
     //! try load the desktopwindow tp which arg widget belongs
     bool _loadDesktopWindow( void );
        
-    //! singleton
-    static BackgroundPixmap *singleton_;
-    
     //! full background image
     QPixmap background_pixmap_;
 

@@ -50,8 +50,6 @@ using namespace std;
   
 //_____________________________________________________
 using namespace TRANSPARENCY;
-BackgroundPixmap* BackgroundPixmap::singleton_;
-
 namespace TRANSPARENCY
 {
   
@@ -88,8 +86,14 @@ namespace TRANSPARENCY
 };   
 
 //_____________________________________________________
-BackgroundPixmap::BackgroundPixmap( void ):
-  Counter( "BackgroundPixmap" )
+BackgroundPixmap& BackgroundPixmap::get( void )
+{ 
+  static BackgroundPixmap singleton;
+  return singleton;
+}
+    
+//_____________________________________________________
+BackgroundPixmap::BackgroundPixmap( void )
 { 
   Debug::Throw( "BackgroundPixmap::BackgroundPixmap.\n" );
   
