@@ -58,49 +58,49 @@ namespace BASE
     virtual ~HelpManager( void )
     { Debug::Throw( "HelpManager::~HelpManager.\n" ); }
     
-    //!@name static accessors
+    //!@name accessors
     //@{
     
     //! input file
-    static void setFile( const File& file )
+    void setFile( const QString& file )
     { file_ = file; }
  
     //! install help. Put items in the menu, create associated objects 
-    static void install( const HelpItem::List& items )
+    void install( const HelpItem::List& items )
     { items_ = items; }
     
     //! install help. Put items in the menu, create associated objects 
-    static void install( const char *text[], bool clear = true );
+    void install( const QString text[], bool clear = true );
     
     //! install help, from file
-    static void install( const File& file );
+    void install( const QString& file );
     
     //! copy current items to backup
-    static void backup( void )
+    void backup( void )
     { backup_items_ = items_; }
     
     //! restore backup
-    static void restoreBackup( void )
+    void restoreBackup( void )
     { items_ = backup_items_; }
     
     //! list of items
-    static const HelpItem::List& items( void )
+    const HelpItem::List& items( void )
     { return items_; }
     
     //! clear help
-    static void clear( void )
+    void clear( void )
     { items_.clear(); }
     
     //! modifiaction 
-    static void setModified( const bool& value )
+    void setModified( const bool& value )
     { modified_ = value; }
     
     //! modification
-    static bool& modified( void ) 
+    bool& modified( void ) 
     { return modified_; }
     
     //! set dialog caption
-    static void setWindowTitle( const std::string& value )
+    void setWindowTitle( const QString& value )
     { window_title_ = value; }
     
     //@}
@@ -138,19 +138,19 @@ namespace BASE
     //@}
         
     //! window title
-    static std::string window_title_;
+    QString window_title_;
     
     //! help filename
-    static File file_;
+    QString file_;
 
     //! modification state
-    static bool modified_;
+    bool modified_;
     
     //! complete set of help items
-    static HelpItem::List items_;
+    HelpItem::List items_;
     
     //! complete set of help items
-    static HelpItem::List backup_items_;
+    HelpItem::List backup_items_;
     
   };
   

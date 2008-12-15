@@ -32,6 +32,7 @@
    \date    $Date$
 */
 
+#include <assert.h>
 #include <QPushButton>
 #include <QStackedLayout>
 
@@ -45,6 +46,8 @@ class TreeView;
 namespace BASE
 {
   
+  class HelpManager;
+
   //! reference manual display dialog
   class HelpDialog:public BaseDialog, public Counter
   {
@@ -54,7 +57,7 @@ namespace BASE
     public:
   
     //! constructor
-    HelpDialog( QWidget *parent = 0 );
+    HelpDialog( HelpManager& manager, QWidget *parent = 0 );
 
     //! clear items
     void clear( void )
@@ -125,9 +128,19 @@ namespace BASE
     TreeView& _list( void ) const
     { return *list_; }
     
+    //! help manager
+    HelpManager& _manager( void ) const
+    {
+      assert( manager_ );
+      return *manager_; 
+    }
+    
     //! model
     HelpModel& _model( void ) 
     { return model_; }
+    
+    //! help manager
+    HelpManager* manager_;
     
     //! model
     HelpModel model_;

@@ -41,6 +41,7 @@
 #include "HelpManager.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
+#include "XmlError.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -49,16 +50,19 @@ using namespace BASE;
 
 //_________________________________________________________
 // static members initialization
-string HelpManager::window_title_( "Reference Manual" );
-bool HelpManager::modified_( false );
-HelpItem::List HelpManager::items_;
-HelpItem::List HelpManager::backup_items_;
-File HelpManager::file_;
+
+//bool HelpManager::modified_( false );
+
+//HelpItem::List HelpManager::items_;
+//HelpItem::List HelpManager::backup_items_;
+//QString HelpManager::file_;
 
 //_________________________________________________________
 HelpManager::HelpManager( QObject* parent ):
   QObject( parent ),
-  Counter( "HelpManager" )
+  Counter( "HelpManager" ),
+  window_title_( "Reference Manual" ),
+  modified_( false )
 { 
   
   Debug::Throw( "HelpManager::HelpManager.\n" );
@@ -75,7 +79,7 @@ HelpManager::HelpManager( QObject* parent ):
 }
 
 //_________________________________________________________
-void HelpManager::install( const char *text[], bool clear )
+void HelpManager::install( const QString text[], bool clear )
 {
 
   Debug::Throw( "HelpManager::install.\n" );
@@ -84,11 +88,11 @@ void HelpManager::install( const char *text[], bool clear )
   if( clear ) HelpManager::clear();
   
   //! loop over help text
-  for( unsigned int i=0; text[i]; i++ ) {
+  for( unsigned int i=0; !text[i].isNull(); i++ ) {
 
     QString label( text[i] );
     i++;
-    if( !text[i] ) break;
+    if( text[i].isNull() ) break;
     items_.push_back( HelpItem( label, text[i] ) );
   }
 
@@ -97,17 +101,17 @@ void HelpManager::install( const char *text[], bool clear )
 }
 
 //_________________________________________________________
-void HelpManager::install( const File& file )
+void HelpManager::install( const QString& file )
 {
 
   Debug::Throw( "HelpManager::Install.\n" );
   
   // set file and check
   file_ = file;
-  if( !file_.exists() ) return;
+  if( !QFileInfo( file_ ).exists() ) return;
 
   // parse the file
-  QFile qtfile( file.c_str() );
+  QFile qtfile( file );
   if ( !qtfile.open( QIODevice::ReadOnly ) )
   {
     Debug::Throw( "HelpManager::install - cannot open file.\n" );
@@ -149,8 +153,8 @@ void HelpManager::_display( void )
   Debug::Throw( "HelpManager::_display.\n" );
   
   // create dialog
-  HelpDialog* dialog( new HelpDialog( 0 ) );
-  dialog->setWindowTitle( window_title_.c_str() );
+  HelpDialog* dialog( new HelpDialog( *this ) );
+  dialog->setWindowTitle( window_title_ );
   dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
   dialog->setItems( items_ );
   dialog->setEditEnabled( file_.size() );
@@ -208,12 +212,13 @@ void HelpManager::_dumpHelpString( void )
 void HelpManager::_save( void )
 {
   
-  Debug::Throw() << "HelpManager::_save - file: " << file_ << endl;
+  Debug::Throw() << "HelpManager::_save - file: " << qPrintable( file_ ) << endl;
   
-  if( file_.empty() ) return;
+  if( file_.isEmpty() ) return;
   if( !modified() ) return;
+  
   // output file
-  QFile out( file_.c_str() );
+  QFile out( file_ );
   if( !out.open( QIODevice::WriteOnly ) ) return;
   
   // create document

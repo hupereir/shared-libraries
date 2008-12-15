@@ -39,6 +39,7 @@
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "HelpDialog.h"
+#include "HelpManager.h"
 #include "TextEditionDelegate.h"
 #include "HelpManager.h"
 #include "HelpModel.h"
@@ -53,9 +54,10 @@ using namespace Qt;
 using namespace BASE;
 
 //_________________________________________________________
-HelpDialog::HelpDialog( QWidget *parent ):
+HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   BaseDialog( parent, Qt::Window ),
-  Counter( "HelpDialog" )
+  Counter( "HelpDialog" ),
+  manager_( &manager )
 {
 
   Debug::Throw( "HelpDialog::HelpDialog.\n" );
@@ -281,8 +283,8 @@ void HelpDialog::_updateHelpManager( void )
   
   // retrieve all texts, pass to help manager
   const HelpModel::List& model_list( _model().get() );
-  HelpManager::install( HelpItem::List( model_list.begin(), model_list.end() ) );
-  HelpManager::setModified( true );
+  _manager().install( HelpItem::List( model_list.begin(), model_list.end() ) );
+  _manager().setModified( true );
   
 }
 
@@ -299,7 +301,7 @@ void HelpDialog::_toggleEdition( void )
   {
     
     // backup help manager
-    HelpManager::backup();
+    _manager().backup();
     _model().setEditionEnabled( true );
     _list().setDragEnabled(true);
     _list().setAcceptDrops(true);
@@ -374,7 +376,7 @@ void HelpDialog::_moveItem( int row )
   } 
   
   // set manager as modified
-  HelpManager::setModified( true );
+  _manager().setModified( true );
   _updateHelpManager();
   return;
   
@@ -390,7 +392,7 @@ void HelpDialog::_renameItem( QModelIndex index, QString value )
   {
     item.setLabel( value );
     _model().replace( index, item );
-    HelpManager::setModified( true );
+    _manager().setModified( true );
     _updateHelpManager();
   }
   return;  
@@ -407,7 +409,7 @@ void HelpDialog::_newItem( void )
   QString item_name( dialog.itemName() );
   if( item_name.isEmpty() ) return;
   _model().add( HelpItem( item_name, "" ) );
-  HelpManager::setModified( true );
+  _manager().setModified( true );
   
 }
 
@@ -425,7 +427,7 @@ void HelpDialog::_deleteItem( void )
   _model().remove( _model().get( current ) );
   html_editor_->clear();
   plain_editor_->clear();
-  HelpManager::setModified( true );
+  _manager().setModified( true );
   
 }
 
@@ -480,12 +482,12 @@ void HelpDialog::_askForSave( void )
   Debug::Throw( "HelpDialog::_askForSave.\n" );
   
   // double check that modifications are permanent
-  if( HelpManager::modified() && !( QuestionDialog( this, "Help has been modified. Save ?" ).exec() ) )
+  if( _manager().modified() && !( QuestionDialog( this, "Help has been modified. Save ?" ).exec() ) )
   {
     
-    HelpManager::restoreBackup();
+    _manager().restoreBackup();
     stack_layout_->setCurrentWidget( html_frame_ );
-    setItems( HelpManager::items() );
+    setItems( _manager().items() );
     
   } 
   
