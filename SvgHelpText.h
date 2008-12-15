@@ -35,7 +35,7 @@
 //! eLogbook help text
 namespace SVG
 {
-  static const char* HelpText[] = 
+  static const QString HelpText[] = 
   {
   
     //_________________________________________________
