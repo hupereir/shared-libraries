@@ -398,7 +398,7 @@ File File::truncatedName( void ) const
   
   return *this;
 
-}  
+}
 
 //_____________________________________________________________________
 list<File> File::listFiles( const unsigned int& flags ) const

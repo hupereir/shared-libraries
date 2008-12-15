@@ -34,9 +34,25 @@
 using namespace std;
 
 //_______________________________________________
-FileRecord::PropertyId::Id FileRecord::PropertyId::counter_( 0 );
-FileRecord::PropertyId::IdMap FileRecord::PropertyId::id_map_;
-FileRecord::PropertyId::NameMap FileRecord::PropertyId::name_map_;
+FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap( void )
+{
+  static FileRecord::PropertyId::IdMap id_map;
+  return id_map;
+}
+
+//_______________________________________________
+FileRecord::PropertyId::NameMap& FileRecord::PropertyId::_nameMap( void )
+{
+  static FileRecord::PropertyId::NameMap name_map;
+  return name_map;
+}
+
+//_______________________________________________
+FileRecord::PropertyId::Id& FileRecord::PropertyId::_counter( void )
+{ 
+  static Id counter(0);
+  return counter;
+}
 
 //_______________________________________________
 FileRecord::PropertyId::Id FileRecord::PropertyId::get( std::string name )
@@ -44,23 +60,23 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( std::string name )
 
   // see if iterator exists in list
   IdMap::const_iterator iter;
-  if( ( iter = id_map_.find( name ) ) != id_map_.end() )
+  if( ( iter = _idMap().find( name ) ) != _idMap().end() )
   { return iter->second; }
   
   // insert otherwise, increment counter and return proper value
-  id_map_.insert( make_pair( name, counter_ ) );
-  name_map_.push_back( name );
-  counter_++;
+  _idMap().insert( make_pair( name, _counter() ) );
+  _nameMap().push_back( name );
+  _counter()++;
 
-  return counter_-1;
+  return _counter()-1;
   
 }
 
 //_______________________________________________
 std::string FileRecord::PropertyId::get( FileRecord::PropertyId::Id id )
 {
-  assert( id < name_map_.size() );
-  return name_map_[id];
+  assert( id < _nameMap().size() );
+  return _nameMap()[id];
 }
 
 //_______________________________________________

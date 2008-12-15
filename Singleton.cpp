@@ -32,9 +32,6 @@
 
 #include "Singleton.h"
 
-// Singleton Singleton::singleton_;
-
-
 //__________________________________________________
 Singleton& Singleton::get( void )
 { 

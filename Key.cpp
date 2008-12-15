@@ -34,4 +34,8 @@
 using namespace BASE;
 
 //______________________________________________
-Key::key_type Key::key_counter_( 0 );
+Key::key_type& Key::_counter( void )
+{ 
+  static key_type counter(0);
+  return counter;
+}

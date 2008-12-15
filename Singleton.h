@@ -84,9 +84,6 @@ class Singleton
     application_(0)
   {}
   
-  //! singleton
-  //static Singleton singleton_;
-
   //! counter map
   CounterMap counter_map_; 
 

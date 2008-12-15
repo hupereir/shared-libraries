@@ -34,6 +34,6 @@
 //_______________________________________________
 Debug& Debug::_get( void )
 { 
-  static Debug singleton_; 
-  return singleton_; 
+  static Debug singleton; 
+  return singleton; 
 }

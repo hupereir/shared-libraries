@@ -173,19 +173,19 @@ class FileRecord: public Counter
     private:
     
     //! counter
-    static Id counter_;
+    static Id& _counter( void );
     
     //! id map
     typedef std::map< std::string, Id > IdMap;
     
     //! id map
-    static IdMap id_map_;
+    static IdMap& _idMap();
     
     //! id map
     typedef std::vector< std::string > NameMap;
     
     //! name map
-    static NameMap name_map_;
+    static NameMap& _nameMap();
     
   };
 

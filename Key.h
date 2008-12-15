@@ -77,7 +77,7 @@ namespace BASE
     
     //! constructor 
     Key( void ): 
-      key_( key_counter_++ ) 
+      key_( _counter()++ ) 
     {} 
       
     //! \brief copy constructor 
@@ -88,7 +88,7 @@ namespace BASE
     in the list 
     */ 
     Key( const Key& key ): 
-      key_( key_counter_++ ), 
+      key_( _counter()++ ), 
       associated_keys_( key.associated_keys_ ) 
     { 
       for( key_set::iterator iter = associated_keys_.begin(); iter != associated_keys_.end(); iter++ ) 
@@ -233,7 +233,7 @@ namespace BASE
     key_set associated_keys_; 
     
     //! unique id counter 
-    static key_type key_counter_; 
+    static key_type& _counter( void ); 
     
     //! to dump Key and associations 
     friend std::ostream &operator << (std::ostream &out,const Key &key) 
