@@ -38,37 +38,49 @@ using namespace std;
 using namespace SERVER;
 
 //___________________________________________
-const QString ServerCommand::separator_( "::" ); 
+const QString& ServerCommand::_separator( void )
+{
+  static const QString sep( "::" );
+  return sep;
+}
 
 //__________________________________________________________________
-ServerCommand::ConversionMap ServerCommand::conversions_;
+ServerCommand::ConversionMap& ServerCommand::_conversions( void )
+{
+  static ConversionMap conversions;
+  return conversions;
+}
 
 //__________________________________________________________________
-ServerCommand::CommandMap ServerCommand::command_names_;
+ServerCommand::CommandMap& ServerCommand::_commandNames( void )
+{
+  static CommandMap names;
+  return names;
+}
 
 //___________________________________________
 void ServerCommand::initializeConversions( void ) const
 {
-  if( !conversions_.empty() ) return;
-  conversions_.insert( std::make_pair( " ", "SERVER_SPACE" ) );
+  if( !_conversions().empty() ) return;
+  _conversions().insert( std::make_pair( " ", "SERVER_SPACE" ) );
   return;
 }
 
 //_________________________________________
 void ServerCommand::_initializeCommandNames( void ) const
 {
-  if( !command_names_.empty() ) return;
-  command_names_.insert( make_pair( NONE, "" ) );
-  command_names_.insert( make_pair( ACCEPTED, "ACCEPTED" ) );
-  command_names_.insert( make_pair( DENIED, "DENIED" ) );
-  command_names_.insert( make_pair( ABORT, "ABORT" ) );
-  command_names_.insert( make_pair( IDENTIFY, "IDENTIFY" ) );
-  command_names_.insert( make_pair( IDENTIFY_SERVER, "SERVER" ) );
-  command_names_.insert( make_pair( KILLED, "KILLED" ) );
-  command_names_.insert( make_pair( RAISE, "RAISE" ) );
-  command_names_.insert( make_pair( ALIVE, "ALIVE" ) );
-  command_names_.insert( make_pair( REQUEST, "REQUEST" ) );
-  command_names_.insert( make_pair( UNLOCK, "UNLOCK" ) );
+  if( !_commandNames().empty() ) return;
+  _commandNames().insert( make_pair( NONE, "" ) );
+  _commandNames().insert( make_pair( ACCEPTED, "ACCEPTED" ) );
+  _commandNames().insert( make_pair( DENIED, "DENIED" ) );
+  _commandNames().insert( make_pair( ABORT, "ABORT" ) );
+  _commandNames().insert( make_pair( IDENTIFY, "IDENTIFY" ) );
+  _commandNames().insert( make_pair( IDENTIFY_SERVER, "SERVER" ) );
+  _commandNames().insert( make_pair( KILLED, "KILLED" ) );
+  _commandNames().insert( make_pair( RAISE, "RAISE" ) );
+  _commandNames().insert( make_pair( ALIVE, "ALIVE" ) );
+  _commandNames().insert( make_pair( REQUEST, "REQUEST" ) );
+  _commandNames().insert( make_pair( UNLOCK, "UNLOCK" ) );
 }
 
 //___________________________________________
@@ -81,7 +93,7 @@ ServerCommand::ServerCommand( const QString& command_line ):
   Debug::Throw( "ServerCommand::ServerCommand.\n" );
   
   // split
-  QStringList words( command_line.split( separator_ ) );
+  QStringList words( command_line.split( _separator() ) );
   
   // loop over words
   for( int index = 0; index < words.size(); index++ )
@@ -121,11 +133,11 @@ ServerCommand::operator QString (void) const
     { if( opt_iter->size() ) words << opt_iter->c_str(); }
   }
     
-  QString buffer( words.join( separator_ ) );
+  QString buffer( words.join( _separator() ) );
   
   // apply conversion
   initializeConversions();
-  for( ConversionMap::const_iterator iter = ServerCommand::conversions_.begin(); iter != ServerCommand::conversions_.end(); iter++ ) 
+  for( ConversionMap::const_iterator iter = ServerCommand::_conversions().begin(); iter != ServerCommand::_conversions().end(); iter++ ) 
   { buffer = buffer.replace( iter->first, iter->second ); }
   return buffer;
 }
@@ -144,8 +156,8 @@ namespace SERVER {
     // apply conversion
     command.initializeConversions();
     for( 
-      ServerCommand::ConversionMap::const_iterator iter = ServerCommand::conversions_.begin();
-      iter != ServerCommand::conversions_.end();
+      ServerCommand::ConversionMap::const_iterator iter = ServerCommand::_conversions().begin();
+      iter != ServerCommand::_conversions().end();
       iter++
     ) { buffer = buffer.replace( iter->second, iter->first ); }
     

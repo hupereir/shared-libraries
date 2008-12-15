@@ -140,7 +140,7 @@ namespace SERVER
     QString commandName( void ) const
     {
       _initializeCommandNames();
-      return command_names_[ command() ];
+      return _commandNames()[ command() ];
     }
     
     //! argument
@@ -156,6 +156,21 @@ namespace SERVER
     
     private:
     
+    //! command names
+    typedef std::map<CommandType, QString > CommandMap;
+    
+    //! command names
+    static CommandMap& _commandNames( void );
+    
+    //! text conversion pair type
+    typedef std::map<QString, QString> ConversionMap;
+      
+    //! text conversion pair list
+    static ConversionMap& _conversions( void );
+
+    //! separator
+    static const QString& _separator( void );    
+
     //! map command types to names
     void _initializeCommandNames( void ) const;
         
@@ -174,27 +189,12 @@ namespace SERVER
     //! arguments
     ArgList args_;
     
-    //! separator
-    static const QString separator_;    
-        
     //! create command from stream
     friend QTextStream &operator >> ( QTextStream &, ServerCommand& );   
 
     //! dump command to stream
     friend QTextStream & operator<< ( QTextStream &, const ServerCommand& );
-  
-    //! command names
-    typedef std::map<CommandType, QString > CommandMap;
-    
-    //! command names
-    static CommandMap command_names_;
-    
-    //! text conversion pair type
-    typedef std::map<QString, QString> ConversionMap;
-      
-    //! text conversion pair list
-    static ConversionMap conversions_;
-      
+        
   };
 };
 
