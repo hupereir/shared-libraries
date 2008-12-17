@@ -34,10 +34,10 @@
 #include <QClipboard>
 #include <QMenu>
 #include <QPainter>
-#include <QProgressDialog>
 #include <QRegExp>
 #include <QTextBlock>
 #include <QTextLayout>
+#include <QTextStream>
 
 #include "BaseIcons.h"
 #include "BaseReplaceDialog.h"
@@ -282,7 +282,6 @@ void TextEditor::setPlainText( const QString& text )
   bool enabled( blockHighlight().isEnabled() );
   blockHighlight().setEnabled( false );
   QTextEdit::setPlainText( text );
-  qApp->processEvents();
   blockHighlight().setEnabled( enabled );
 
 }
@@ -481,11 +480,13 @@ void TextEditor::showReplacements( const unsigned int& counts )
 
   Debug::Throw( "TextEditor::showReplacements.\n" );
 
-  ostringstream what;
-  if( !counts ) what << "string not found.";
-  else if( counts == 1 ) what << "1 replacement performed";
-  else what << counts << " replacements performed";
-  InformationDialog( this, what.str().c_str() ).exec();
+  QString buffer;
+  QTextStream stream( &buffer );
+  if( !counts ) stream << "string not found.";
+  else if( counts == 1 ) stream << "1 replacement performed";
+  else stream << counts << " replacements performed";
+  InformationDialog( this, buffer ).centerOnWidget( qApp->activeWindow() ).exec();
+  
   return;
 
 }
@@ -1906,6 +1907,10 @@ void TextEditor::_createBaseReplaceDialog( void )
     connect( this, SIGNAL( noMatchFound() ), replace_dialog_, SLOT( noMatchFound() ) );
     connect( this, SIGNAL( matchFound() ), replace_dialog_, SLOT( clearLabel() ) );
 
+    connect( this, SIGNAL( busy( int ) ), replace_dialog_, SLOT( busy( int ) ) );
+    connect( this, SIGNAL( progressAvailable( int ) ), replace_dialog_, SLOT( progressAvailable( int ) ) );
+    connect( this, SIGNAL( idle( void ) ), replace_dialog_, SLOT( idle( void ) ) );
+    
   }
 
   return;
@@ -1935,8 +1940,6 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
   // check cursor
   if( !cursor.hasSelection() ) return 0;
 
-  show_progress = true;
-  
   // store number of matches
   // and make local copy of cursor
   unsigned int found = 0;
@@ -1944,13 +1947,6 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
   int saved_anchor( min( cursor.position(), cursor.anchor() ) );
   int saved_position( max( cursor.position(), cursor.anchor() ) );
   int current_position( saved_anchor );
-
-  QProgressDialog* dialog(0);
-  if( show_progress )
-  { 
-    dialog = new QProgressDialog( this ); 
-    dialog->setLabelText( "Replace text in selection" );
-  } 
 
   // check if regexp should be used or not
   if( selection.flag( TextSelection::REGEXP ) )
@@ -1963,7 +1959,6 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     if( !regexp.isValid() )
     {
       InformationDialog( this, "invalid regular expression. Find canceled" ).exec();
-      if( dialog ) dialog->deleteLater();
       return false;
     }
 
@@ -1972,7 +1967,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
     // replace everything in selected text
     QString selected_text( cursor.selectedText() );
-    if( dialog ) dialog->setMaximum( selected_text.size() );
+    emit busy( selected_text.size() );
     
     for( int position = 0; (position = regexp.indexIn( selected_text, position )) != -1; )
     {
@@ -1992,14 +1987,11 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
       found++;
       
-      if( dialog ) 
-      {
-        dialog->setValue( position );
-        qApp->processEvents();
-        if( dialog->wasCanceled() ) break;
-      }
+      emit progressAvailable( position );
 
     }
+    
+    emit idle();
 
     // update cursor
     if( mode == EXPAND )
@@ -2013,7 +2005,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
     Debug::Throw( "TextEditor::_replaceInRange - normal replacement.\n" );
 
-    if( dialog ) dialog->setMaximum( cursor.selectedText().size() );
+    emit busy( cursor.selectedText().size() );
 
     // changes local cursor to beginning of the selection
     cursor.setPosition( saved_anchor );
@@ -2032,15 +2024,12 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
       saved_position += selection.replaceText().size() - selection.text().size();
       found ++;
 
-      if( dialog ) 
-      {
-        dialog->setMaximum( saved_position );
-        dialog->setValue( current_position );
-        qApp->processEvents();
-        if( dialog->wasCanceled() ) break;
-      }
+      emit busy( saved_position );
+      emit progressAvailable( current_position );
 
     }
+    
+    emit idle();
 
     if( mode == EXPAND )
     {
@@ -2051,7 +2040,6 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
   }
 
   Debug::Throw( "TextEditor::_replaceInRange - done.\n" );
-  if( dialog ) dialog->deleteLater();
   return found;
 
 }

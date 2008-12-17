@@ -32,8 +32,8 @@
   \date $Date$
 */
 
-
 #include <assert.h>
+#include <QProgressDialog>
 
 #include "Counter.h"
 #include "CustomComboBox.h"
@@ -51,6 +51,9 @@ class BaseReplaceDialog: public BaseFindDialog
   //! constructor
   BaseReplaceDialog( QWidget* parent = 0, Qt::WFlags flags = 0 );
     
+  //! destructor
+  virtual ~BaseReplaceDialog( void );
+
   //! string to replace
   void setReplaceText( const QString& text )
   { replace_editor_->setEditText( text ); }
@@ -78,6 +81,17 @@ class BaseReplaceDialog: public BaseFindDialog
   
   //! emmited when text replacement is changed
   void replaceTextChanged( QString text_replace );  
+
+  public slots:
+  
+  //! recieved busy from editor
+  void busy( int );
+  
+  //! recieved progress available from editor
+  void progressAvailable( int );
+  
+  //! recievend idle from editor
+  void idle( void );
   
   protected slots:
   
@@ -90,18 +104,15 @@ class BaseReplaceDialog: public BaseFindDialog
   { emit replace( selection( false ) ); }
       
   //! create Selection object when replace button is pressed
-  void _replaceInWindow( void )
-  { emit replaceInWindow( selection( false ) ); }
-      
+  void _replaceInWindow( void );
+
   //! create Selection object when replace button is pressed
-  void _replaceInSelection( void )
-  { emit replaceInSelection( selection( false ) ); }
+  void _replaceInSelection( void );
     
   //! emmited when text replacement is changed
   void _replaceTextChanged( const QString& text )
   { emit replaceTextChanged( text ); }
 
-    
   protected:
   
   //! replace editor
@@ -115,6 +126,25 @@ class BaseReplaceDialog: public BaseFindDialog
   //! replace window button
   QPushButton& _replaceWindowButton( void ) const
   { return *replace_window_button_; }
+
+  //! show progress bar
+  void _setShowProgress( const bool& value )
+  { show_progress_ = value; }
+  
+  //! show progress
+  const bool& _showProgress( void ) const
+  { return show_progress_; }
+  
+  //! true if progress dialog was created
+  bool _hasProgressDialog( void ) const
+  { return bool( progress_dialog_ ); }
+  
+  //! progressDialog
+  QProgressDialog& _progressDialog( void ) const
+  { 
+    assert( progress_dialog_ ); 
+    return *progress_dialog_;
+  }
   
   private:
 
@@ -137,6 +167,12 @@ class BaseReplaceDialog: public BaseFindDialog
     
   //! replace in window button
   QPushButton* replace_window_button_;
+  
+  // true if progress dialog is to be shown
+  bool show_progress_;
+
+  //! progress dialog
+  QProgressDialog* progress_dialog_;
   
 };
 #endif

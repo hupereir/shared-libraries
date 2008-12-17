@@ -31,9 +31,11 @@
 
 #include <QLabel>
 #include <QPushButton>
+#include <QApplication>
 
 #include "Debug.h"
 #include "BaseReplaceDialog.h"
+#include "QtUtil.h"
 
 using namespace std;
 
@@ -46,7 +48,9 @@ set<QString>& BaseReplaceDialog::_replacedStrings()
 
 //________________________________________________________________________
 BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
-    BaseFindDialog( parent, flags )
+    BaseFindDialog( parent, flags ),
+    show_progress_( false ),
+    progress_dialog_( 0 )
 {
   Debug::Throw( "BaseReplaceDialog::BaseReplaceDialog.\n" );
   
@@ -125,6 +129,13 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
 }
 
 //_____________________________________________________
+BaseReplaceDialog::~BaseReplaceDialog( void )
+{
+  Debug::Throw( "BaseReplaceDialog::~BaseReplaceDialog.\n" );
+  if( _hasProgressDialog() ) delete &_progressDialog();
+}
+
+//_____________________________________________________
 TextSelection BaseReplaceDialog::selection( const bool& no_increment ) const
 {
   
@@ -153,4 +164,61 @@ void BaseReplaceDialog::synchronize( void )
   // set focus to find editor
   editor().setFocus();
   
+}
+
+//__________________________________________________
+void BaseReplaceDialog::busy( int value )
+{
+  Debug::Throw( "BaseReplaceDialog::busy.\n" );
+  if( !_showProgress() ) return;
+  
+  // create dialog if needed
+  if( !_hasProgressDialog() )
+  { 
+    progress_dialog_ = new QProgressDialog(0); 
+    _progressDialog().setLabelText( "Replace text in selection" );
+  }
+  
+  // show dialog if needed
+  if( !_progressDialog().isVisible() )
+  { 
+    QtUtil::centerOnWidget( &_progressDialog(), this ); 
+    _progressDialog().show();
+  }
+  
+  // set maximum
+  _progressDialog().setMaximum( value );
+
+}
+
+//__________________________________________________
+void BaseReplaceDialog::progressAvailable( int value )
+{
+  Debug::Throw( "BaseReplaceDialog::progressAvailable.\n" );
+  if( !( _showProgress() && _hasProgressDialog() ) ) return;
+  _progressDialog().setValue( value );
+  qApp->processEvents();
+}
+
+//__________________________________________________
+void BaseReplaceDialog::idle( void )
+{
+  if( !( _showProgress() && _hasProgressDialog() ) ) return;
+  _progressDialog().reset();
+  _progressDialog().hide();
+  _setShowProgress( false );
+}
+
+//__________________________________________________
+void BaseReplaceDialog::_replaceInWindow( void )
+{ 
+  _setShowProgress( true );
+  emit replaceInWindow( selection( false ) ); 
+}
+      
+//__________________________________________________
+void BaseReplaceDialog::_replaceInSelection( void )
+{ 
+  _setShowProgress( true );
+  emit replaceInSelection( selection( false ) ); 
 }

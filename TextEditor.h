@@ -335,6 +335,15 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   signals:
   
+  //! busy signal
+  void busy( int );
+  
+  //! progress
+  void progressAvailable( int );
+  
+  //! idle
+  void idle( void );
+
   //! emmitted when selection could not be found
   void noMatchFound( void );
   
