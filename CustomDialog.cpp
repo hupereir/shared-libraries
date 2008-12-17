@@ -64,14 +64,16 @@ CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFla
   
   // insert OK and Cancel button
   if( flags & OK_BUTTON ) {
-    button_layout_->addWidget( ok_button_ = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&OK", this ) );
+    QIcon icon( IconEngine::get( ( flags & CANCEL_BUTTON ) ? ICONS::DIALOG_ACCEPT : ICONS::DIALOG_CLOSE ) );
+    QString text( ( flags & CANCEL_BUTTON ) ? "&Ok":"&Close" );
+    button_layout_->addWidget( ok_button_ = new QPushButton( icon, text, this ) );
     connect( ok_button_, SIGNAL( clicked() ), SLOT( accept() ) );
     ok_button_->setDefault( true );
   }
   
   // insert OK and Cancel button
   if( flags & CANCEL_BUTTON ) {
-    button_layout_->addWidget( cancel_button_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Cancel", this ) );
+    button_layout_->addWidget( cancel_button_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Cancel", this ) );
     connect( cancel_button_, SIGNAL( clicked() ), SLOT( reject() ) );
   }
   
