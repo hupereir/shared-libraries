@@ -17,7 +17,8 @@ noinst_HEADERS = \
   BaseApplication.h \
   BaseCoreApplication.h \
   Client.h \
-  ServerCommand.h
+  ServerCommand.h \
+  ServerConfiguration.h
 
 noinst_LIBRARIES = libbase-server.a
 
@@ -26,7 +27,8 @@ libbase_server_a_SOURCES = \
   BaseApplication.cpp \
   BaseCoreApplication.cpp \
   Client.cpp \
-  ServerCommand.cpp
+  ServerCommand.cpp \
+  ServerConfiguration.cpp
 
 nodist_libbase_server_a_SOURCES = \
   moc_ApplicationManager.cpp \

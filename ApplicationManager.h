@@ -51,12 +51,6 @@
 namespace SERVER
 {
 
-  
-  //! default server port
-  enum { 
-    SERVER_PORT = 8082
-  };
-
   //! ensures only one instance of an application is running
   class ApplicationManager: public QObject, public Counter
   {

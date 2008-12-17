@@ -40,8 +40,6 @@
 using namespace std;
 using namespace SERVER;
 
-static const int debug_level(1);
-
 //_________________________________________
 ApplicationManager::ApplicationManager( QObject* parent ):
   QObject( parent ),
@@ -51,7 +49,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   state_( AWAITING_REPLY )
 { 
 
-  Debug::Throw( debug_level, "ApplicationManager::ApplicationManager.\n" );
+  Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
   setApplicationName( "GENERIC_APPLICATION" ); 
 
   connect( &_server(), SIGNAL( newConnection() ), SLOT( _newConnection() ) );
@@ -66,7 +64,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
 //_________________________________________
 ApplicationManager::~ApplicationManager( void )
 { 
-  Debug::Throw( debug_level, "ApplicationManager::~ApplicationManager.\n" ); 
+  Debug::Throw( "ApplicationManager::~ApplicationManager.\n" ); 
   delete client_;
   delete server_;
 }
@@ -86,18 +84,25 @@ void ApplicationManager::usage( void )
 void ApplicationManager::init( ArgList args )
 {
 
-  Debug::Throw( debug_level, "ApplicationManager::init.\n" );
+  Debug::Throw( "ApplicationManager::init.\n" );
+
+  if( !XmlOptions::get().find( "SERVER_HOST" ) )
+  { XmlOptions::get().set( "SERVER_HOST", Option( qPrintable( QHostAddress( QHostAddress::LocalHost ).toString() ), "default port" ) ); }
+
+  if( !XmlOptions::get().find( "SERVER_PORT" ) )
+  { XmlOptions::get().set( "SERVER_PORT", Option( "8082" ), "default port" ); }
 
   // address
-  QHostAddress address( QHostAddress::LocalHost );
-  
+  QHostAddress address( XmlOptions::get().raw( "SERVER_HOST" ).c_str() );
+  unsigned int port( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
+
   // connect server to port
-  if( !_server().listen( address, SERVER_PORT ) )
-  {  Debug::Throw( debug_level ) << "ApplicationManager::init - unable to listen to port " << SERVER_PORT << endl; }
+  if( !_server().listen( address, port ) )
+  {  Debug::Throw() << "ApplicationManager::init - unable to listen to port " << port << endl; }
   
   // connect client to port
   client().socket().abort();
-  client().socket().connectToHost( address, SERVER_PORT );    
+  client().socket().connectToHost( address, port );    
     
   // emit initialization signal
   emit initialized();
@@ -108,7 +113,7 @@ void ApplicationManager::init( ArgList args )
   
   // add command line arguments if any
   command.setArguments( args );
-  Debug::Throw( debug_level ) << "ApplicationManager::init - " << qPrintable( QString( command ) ) << endl;
+  Debug::Throw() << "ApplicationManager::init - " << qPrintable( QString( command ) ) << endl;
   
   // send request command
   client().sendCommand( command );
@@ -117,14 +122,14 @@ void ApplicationManager::init( ArgList args )
   int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 ); 
   timer_.start( timeout_delay, this );
   
-  Debug::Throw( debug_level, "ApplicationManager::init. done.\n" );
+  Debug::Throw( "ApplicationManager::init. done.\n" );
   
 }
 
 //_____________________________________________________
 void ApplicationManager::setApplicationName( const QString& name )
 { 
-  Debug::Throw( debug_level ) << "ApplicationManager::setApplicationName - " << qPrintable( name ) << endl;
+  Debug::Throw() << "ApplicationManager::setApplicationName - " << qPrintable( name ) << endl;
   id_ = ApplicationId( name, Util::user().c_str(), QString( Util::env( "DISPLAY", "0.0" ).c_str() ).replace( ":", "" ) );
 }
 
@@ -147,7 +152,7 @@ void ApplicationManager::timerEvent(QTimerEvent *event)
 //_____________________________________________________
 Client* ApplicationManager::_register( const ApplicationId& id, Client* client, bool forced )
 {
-  Debug::Throw( debug_level, "ApplicationManager::_register.\n" );
+  Debug::Throw( "ApplicationManager::_register.\n" );
   
   if( forced ) {
     
@@ -267,7 +272,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
 void ApplicationManager::_broadcast( QString message, Client* sender )
 {
   
-  Debug::Throw( debug_level ) << "ApplicationManager::_Broadcast - message: " << qPrintable( message ) << endl;
+  Debug::Throw() << "ApplicationManager::_Broadcast - message: " << qPrintable( message ) << endl;
   
   for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
   { if( (*iter) != sender ) (*iter)->sendCommand( message ); }
@@ -277,7 +282,7 @@ void ApplicationManager::_broadcast( QString message, Client* sender )
 //_____________________________________________________
 void ApplicationManager::_newConnection()
 {
-  Debug::Throw( debug_level, "ApplicationManager::_newConnection.\n" );
+  Debug::Throw( "ApplicationManager::_newConnection.\n" );
   
   // check pending connection
   if( !_server().hasPendingConnections() ) return;
@@ -293,7 +298,7 @@ void ApplicationManager::_newConnection()
 //_____________________________________________________
 void ApplicationManager::_connectionClosed( void )
 {
-  Debug::Throw( debug_level, "ApplicationManager::_connectionClosed.\n" );
+  Debug::Throw( "ApplicationManager::_connectionClosed.\n" );
   
   // look for disconnected clients in client map
   {
@@ -327,7 +332,7 @@ void ApplicationManager::_connectionClosed( void )
 //_____________________________________________________
 void ApplicationManager::_error( QAbstractSocket::SocketError error )
 {
-  Debug::Throw( debug_level ) << "ApplicationManager::_error - error=" << error << endl;
+  Debug::Throw() << "ApplicationManager::_error - error=" << error << endl;
 
   // when an error occur and state is not dead, state is forced alive
   if( state_ != DEAD ) setState( ALIVE );
@@ -339,7 +344,7 @@ void ApplicationManager::_error( QAbstractSocket::SocketError error )
 void ApplicationManager::_redirect( void )
 {
   
-  Debug::Throw( debug_level, "Application::_redirect.\n" );
+  Debug::Throw( "Application::_redirect.\n" );
 
   ClientList::iterator iter;
   while( ( iter = find_if(  _connectedClients().begin(), _connectedClients().end(), Client::HasMessageFTor() ) ) != _connectedClients().end() )
@@ -358,7 +363,7 @@ void ApplicationManager::_redirect( void )
 void ApplicationManager::_process( void )
 {
   
-  Debug::Throw( debug_level, "Application::_process.\n" );
+  Debug::Throw( "Application::_process.\n" );
   
   assert( client().hasMessage() );
   
