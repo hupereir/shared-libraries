@@ -48,6 +48,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   host_( QHostAddress::LocalHost ),
   port_( 8082 ),
   server_( new QTcpServer( this ) ),
+  server_initialized_( false ),
   client_( new Client( this, new QTcpSocket( this ) ) ),
   state_( AWAITING_REPLY )
 { 
@@ -59,11 +60,15 @@ ApplicationManager::ApplicationManager( QObject* parent ):
 
   // create new socket
   connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
-  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( initialize() ) );
+  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( _serverConnectionClosed() ) );
   connect( &client(), SIGNAL( messageAvailable() ), SLOT( _process() ) );
 
-  // load default values for options.
-  
+  if( !XmlOptions::get().find( "SERVER_HOST" ) )
+  { XmlOptions::get().set( "SERVER_HOST", Option( qPrintable( QHostAddress( QHostAddress::LocalHost ).toString() ), "default port" ) ); }
+
+  if( !XmlOptions::get().find( "SERVER_PORT" ) )
+  { XmlOptions::get().set( "SERVER_PORT", Option( "8082" ), "default port" ); }
+
 }
 
 //_________________________________________
@@ -80,6 +85,8 @@ void ApplicationManager::usage( void )
   cout << "server mode options : " << endl;
   cout << "Server mode is used to avoid that multiple instances of the same application run at the same time. " << endl;
   cout << "Following options are used to control the running instance, or ignore this mode." << endl;
+  cout << "  --server-host\t\t use specified host for communication" << endl;
+  cout << "  --server-port\t\t use specified port for communication" << endl;
   cout << "  --replace\t\t replace existing instance with new one." << endl;
   cout << "  --no-server\t\t ignore server mode. runs new application instance." << endl;
   cout << "  --abort\t\t exit existing instance." <<  endl;
@@ -90,19 +97,30 @@ void ApplicationManager::initialize( ArgList arguments )
 {
 
   Debug::Throw( "ApplicationManager::init.\n" );
-
-  if( !XmlOptions::get().find( "SERVER_HOST" ) )
-  { XmlOptions::get().set( "SERVER_HOST", Option( qPrintable( QHostAddress( QHostAddress::LocalHost ).toString() ), "default port" ) ); }
-
-  if( !XmlOptions::get().find( "SERVER_PORT" ) )
-  { XmlOptions::get().set( "SERVER_PORT", Option( "8082" ), "default port" ); }
-
-  // address
-  _setHost( QHostAddress( XmlOptions::get().raw( "SERVER_HOST" ).c_str() ) );
-  _setPort( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
-  _setArguments( arguments );
   
-  _initializeServer();
+  // store arguments
+  _setArguments( arguments );
+
+  // overwrite host from command line arguments
+  ArgList::Arg argument;
+  if( arguments.find( "--server-host" )&& !( argument = arguments.get( "--server-host" ) ).options().empty() ) 
+  {
+
+    XmlOptions::get().setRaw( "SERVER_HOST", argument.options().front() ); 
+    _setHost( QHostAddress( argument.options().front().c_str() ) );
+    
+  } else _setHost( QHostAddress( XmlOptions::get().raw( "SERVER_HOST" ).c_str() ) );
+
+  // overwrite port from command line arguments
+  if( arguments.find( "--server-port" )&& !( argument = arguments.get( "--server-port" ) ).options().empty() )
+  {
+    
+    XmlOptions::get().setRaw( "SERVER_PORT", argument.options().front() ); 
+    _setPort( QString( argument.options().front().c_str() ).toUInt() );
+    
+  } else _setPort( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
+    
+  //_initializeServer();
   _initializeClient();
   
   Debug::Throw( "ApplicationManager::init. done.\n" );
@@ -120,12 +138,21 @@ void ApplicationManager::setApplicationName( const QString& name )
 void ApplicationManager::timerEvent(QTimerEvent *event)
 {
   
-  Debug::Throw( "ApplicationManager::timerEvent.\n" );
-  
   if (event->timerId() == timer_.timerId() ) 
   { 
+    
+    Debug::Throw( "ApplicationManager::timerEvent.\n" );
     timer_.stop();
-    if( state_ == AWAITING_REPLY ) setState( ALIVE );
+    
+    if( state_ == AWAITING_REPLY )
+    {
+      if( !_serverInitialized() )
+      {
+        _initializeServer();
+        _initializeClient();
+      } else setState( ALIVE );
+    }
+    
   }
 
   return QObject::timerEvent( event );
@@ -273,15 +300,24 @@ void ApplicationManager::_newConnection()
   // create client from pending connection 
   Client *client( new Client( this, _server().nextPendingConnection() ) );
   connect( client, SIGNAL( messageAvailable() ), SLOT( _redirect() ) );
-  connect( &client->socket(), SIGNAL( disconnected() ), SLOT( _connectionClosed() ) );
+  connect( &client->socket(), SIGNAL( disconnected() ), SLOT( _clientConnectionClosed() ) );
   _connectedClients().push_back( client );
   
 }
 
 //_____________________________________________________
-void ApplicationManager::_connectionClosed( void )
+void ApplicationManager::_serverConnectionClosed( void )
 {
-  Debug::Throw( "ApplicationManager::_connectionClosed.\n" );
+  Debug::Throw( "ApplicationManager::_serverConnectionClosed - lost connection to server.\n" );
+  _setServerInitialized( false );
+  initialize();
+}
+
+//_____________________________________________________
+void ApplicationManager::_clientConnectionClosed( void )
+{
+  
+  Debug::Throw( "ApplicationManager::_clientConnectionClosed - client has disconnected.\n" );
   
   // look for disconnected clients in client map
   {
@@ -315,11 +351,28 @@ void ApplicationManager::_connectionClosed( void )
 //_____________________________________________________
 void ApplicationManager::_error( QAbstractSocket::SocketError error )
 {
-  Debug::Throw() << "ApplicationManager::_error - error=" << error << endl;
-
-  // when an error occur and state is not dead, state is forced alive
-  if( state_ != DEAD ) setState( ALIVE );
   
+  Debug::Throw() << "ApplicationManager::_error - error:" << qPrintable( client().socket().errorString() ) << endl;
+    
+  if( error == QAbstractSocket::ConnectionRefusedError )
+  {
+    // stop timeout signal
+    timer_.stop();
+    
+    // do nothing if client has already been denied connection
+    if( state_ == DEAD ) return;
+    
+    // try initialize server
+    if( !_serverInitialized() )
+    {
+      _initializeServer();
+      _initializeClient();
+    } else setState( ALIVE );
+    
+  } else {
+    Debug::Throw() << "ApplicationManager::_error - unhandled error:" << qPrintable( client().socket().errorString() ) << endl;
+  }
+    
   return;
 }
 
@@ -396,8 +449,9 @@ void ApplicationManager::_process( void )
     // if client awaits reply and connection is accepted, stay alive
     if( state_ == AWAITING_REPLY && command.command() == ServerCommand::ACCEPTED ) 
     {
-      setState( ALIVE );
+      Debug::Throw() << "Application::_process - accepted" << endl;
       timer_.stop();
+      setState( ALIVE );
       continue;
     }
  
@@ -413,16 +467,17 @@ bool ApplicationManager::_initializeServer( void )
   
   Debug::Throw( "ApplicationManager::_initializeServer.\n" );
   
+  _setServerInitialized( true );
+  
   // connect server to port
   if( !_server().listen( _host(), _port() ) ) 
   { 
-    Debug::Throw() << "ApplicationManager::init - unable to listen to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl; 
+    Debug::Throw() << "ApplicationManager::_initializeServer - unable to listen to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl; 
     return false;
-    
+  } else {
+    Debug::Throw() << "ApplicationManager::_initializeServer - listening to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
+    return true;
   }
-  
-  Debug::Throw() << "ApplicationManager::init - listening to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
-  return true;
   
 }
 
@@ -432,7 +487,8 @@ bool ApplicationManager::_initializeClient( void )
 {
 
   Debug::Throw( "ApplicationManager::_initializeClient.\n" );
-  
+  Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
+
   // connect client to port
   client().socket().abort();
   client().socket().connectToHost( _host(), _port() );    
@@ -446,7 +502,7 @@ bool ApplicationManager::_initializeClient( void )
   
   // add command line arguments if any
   command.setArguments( _arguments() );
-  Debug::Throw() << "ApplicationManager::init - " << qPrintable( QString( command ) ) << endl;
+  Debug::Throw() << "ApplicationManager::_initializeClient - " << qPrintable( QString( command ) ) << endl;
   
   // send request command
   client().sendCommand( command );

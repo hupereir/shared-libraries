@@ -190,8 +190,11 @@ namespace SERVER
     virtual void _newConnection( void );
         
     //! a connection was closed
-    virtual void _connectionClosed( void );
+    virtual void _serverConnectionClosed( void );
     
+    //! a connection was closed
+    virtual void _clientConnectionClosed( void );
+
     //! client recieves errors
     virtual void _error( QAbstractSocket::SocketError );
     
@@ -233,6 +236,14 @@ namespace SERVER
     //! initialize server
     bool _initializeServer( void );
     
+    //! server initialization
+    bool _serverInitialized( void ) const
+    { return server_initialized_; }
+    
+    //! server initialization
+    void _setServerInitialized( bool value ) 
+    { server_initialized_ = value; }
+      
     // host
     QHostAddress host_;
     
@@ -244,6 +255,9 @@ namespace SERVER
     
     //! Server 
     QTcpServer* server_;
+    
+    //! true if initializeServer was called
+    bool server_initialized_;
     
     //! Client
     Client* client_;
