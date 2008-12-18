@@ -40,7 +40,7 @@
 #include <iostream>
 #include <list>
 #include <map>
-#include <string>
+#include <QString>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -57,7 +57,7 @@ class ArgList: public Counter
   public:
   
   //! Tag short cut
-  typedef std::string Tag;
+  typedef QString Tag;
   
   //! used to store options which do not come after a tag
   static const Tag NULL_TAG;
@@ -83,7 +83,7 @@ class ArgList: public Counter
     { return tag_ == tag; }
     
     //! add an option
-    void addOption( const std::string& option )
+    void addOption( const QString& option )
     { 
       Debug::Throw( "ArgList::Arg::addOption.\n" );
       if( std::find( options_.begin(), options_.end(), option ) == options_.end() )
@@ -91,11 +91,11 @@ class ArgList: public Counter
     }
     
     //! retrieve options
-    std::list< std::string >& options( void )
+    std::list< QString >& options( void )
     { return options_; }
      
     //! retrieve options
-    const std::list< std::string >& options( void ) const
+    const std::list< QString >& options( void ) const
     { return options_; }
    
     private:
@@ -104,7 +104,7 @@ class ArgList: public Counter
     ArgList::Tag tag_;
     
     //! list of options
-    std::list< std::string > options_;
+    std::list< QString > options_;
   
     //! dump to stream
     friend std::ostream &operator << (std::ostream &out,const ArgList &arg_list);   
@@ -118,11 +118,11 @@ class ArgList: public Counter
   ArgList( int argc = 0, char* argv[] = 0 );  
 
   //! add command line option
-  void add( std::string argv );
+  void add( QString argv );
   
   //! returns true if argument is a tag
-  static bool isTag( std::string arg )
-  { return arg.substr(0,1) == "-"; }
+  static bool isTag( QString arg )
+  { return arg.left(1) == "-"; }
   
   //! returns true if tag is found in the map
   bool find( const Tag& tag ) const

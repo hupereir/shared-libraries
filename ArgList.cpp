@@ -35,7 +35,7 @@
 using namespace std;
 
 //______________________________________________________
-const string ArgList::NULL_TAG = "";
+const QString ArgList::NULL_TAG = "";
 
 //______________________________________________________
 ArgList::ArgList( int argc, char* argv[] ):
@@ -52,22 +52,22 @@ ArgList::ArgList( int argc, char* argv[] ):
 };
   
 //______________________________________________________
-void ArgList::add( std::string arg )
+void ArgList::add( QString arg )
 {
   Debug::Throw( "ArgList::add.\n" );
-  if( arg.empty() ) return;
+  if( arg.isEmpty() ) return;
       
   // check if argument is a tag name
   if( isTag( arg ) ) 
   {
     
     // check if arg contains "=" sign
-    size_t position( arg.find( "=" ) );
-    string arg_option;
-    if( position != string::npos )
+    int position( arg.indexOf( "=" ) );
+    QString arg_option;
+    if( position >= 0 )
     {
-      arg_option = arg.substr( position+1, arg.size()-position-1 );
-      arg = arg.substr( 0, position );
+      arg_option = arg.mid( position+1 );
+      arg = arg.left( position );
     }
     
     last_tag_ = arg;
@@ -88,7 +88,7 @@ std::ostream &operator << (std::ostream &out,const ArgList::Arg &arg)
 
   // dump tagged options
   out << arg.tag() << " ";
-  for( list< string >::const_iterator opt_iter = arg.options().begin(); opt_iter != arg.options().end(); opt_iter++ )
+  for( list< QString >::const_iterator opt_iter = arg.options().begin(); opt_iter != arg.options().end(); opt_iter++ )
   out << *opt_iter << " ";
   out << endl;
   return out;  
@@ -115,9 +115,9 @@ void ArgList::_clean( void )
   Debug::Throw( "ArgList::_clean.\n" );
   for( TagList::iterator iter = tag_list_.begin(); iter != tag_list_.end(); iter++ )
   {
-    const list<string> &options( iter->options() );
-    list<string> tmp;
-    for( list<string>::const_iterator opt_iter = options.begin(); opt_iter != options.end(); opt_iter++ )
+    const list<QString> &options( iter->options() );
+    list<QString> tmp;
+    for( list<QString>::const_iterator opt_iter = options.begin(); opt_iter != options.end(); opt_iter++ )
     if( opt_iter->size() ) tmp.push_back( *opt_iter );
     if( tmp.empty() ) tmp.push_back( "" );    
     iter->options() = tmp;  
