@@ -95,10 +95,10 @@ void ApplicationManager::init( ArgList args )
   // address
   QHostAddress address( XmlOptions::get().raw( "SERVER_HOST" ).c_str() );
   unsigned int port( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
-
+  
   // connect server to port
-  if( !_server().listen( address, port ) )
-  {  Debug::Throw() << "ApplicationManager::init - unable to listen to port " << port << endl; }
+  // if( !_server().listen( address, port ) )
+  // {  Debug::Throw() << "ApplicationManager::init - unable to listen to port " << port << endl; }
   
   // connect client to port
   client().socket().abort();
@@ -113,7 +113,7 @@ void ApplicationManager::init( ArgList args )
   
   // add command line arguments if any
   command.setArguments( args );
-  Debug::Throw() << "ApplicationManager::init - " << qPrintable( QString( command ) ) << endl;
+  Debug::Throw(0) << "ApplicationManager::init - " << qPrintable( QString( command ) ) << endl;
   
   // send request command
   client().sendCommand( command );
@@ -122,7 +122,7 @@ void ApplicationManager::init( ArgList args )
   int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 ); 
   timer_.start( timeout_delay, this );
   
-  Debug::Throw( "ApplicationManager::init. done.\n" );
+  Debug::Throw( 0, "ApplicationManager::init. done.\n" );
   
 }
 
@@ -137,12 +137,21 @@ void ApplicationManager::setApplicationName( const QString& name )
 void ApplicationManager::timerEvent(QTimerEvent *event)
 {
   
-  Debug::Throw( "ApplicationManager::timerEvent.\n" );
+  Debug::Throw( 0,"ApplicationManager::timerEvent.\n" );
   
   if (event->timerId() == timer_.timerId() ) 
   { 
     timer_.stop();
-    if( state_ == AWAITING_REPLY ) setState( ALIVE );
+    if( state_ == AWAITING_REPLY ) {
+      QHostAddress address( XmlOptions::get().raw( "SERVER_HOST" ).c_str() );
+      unsigned int port( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
+      
+      if( !_server().listen( address, port ) )
+      {  Debug::Throw() << "ApplicationManager::init - unable to listen to port " << port << endl; }
+      
+      init();
+      // setState( ALIVE );
+    }
   }
 
   return QObject::timerEvent( event );
@@ -282,7 +291,7 @@ void ApplicationManager::_broadcast( QString message, Client* sender )
 //_____________________________________________________
 void ApplicationManager::_newConnection()
 {
-  Debug::Throw( "ApplicationManager::_newConnection.\n" );
+  Debug::Throw( 0, "ApplicationManager::_newConnection.\n" );
   
   // check pending connection
   if( !_server().hasPendingConnections() ) return;
@@ -332,11 +341,17 @@ void ApplicationManager::_connectionClosed( void )
 //_____________________________________________________
 void ApplicationManager::_error( QAbstractSocket::SocketError error )
 {
-  Debug::Throw() << "ApplicationManager::_error - error=" << error << endl;
+  Debug::Throw(0) << "ApplicationManager::_error - error=" << error << endl;
 
   // when an error occur and state is not dead, state is forced alive
-  if( state_ != DEAD ) setState( ALIVE );
-  
+  if( state_ != DEAD ) {
+    QHostAddress address( XmlOptions::get().raw( "SERVER_HOST" ).c_str() );
+    unsigned int port( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
+    if( !_server().listen( address, port ) )
+    {  Debug::Throw() << "ApplicationManager::init - unable to listen to port " << port << endl; }
+    init();
+    //setState( ALIVE );
+  }  
   return;
 }
 
