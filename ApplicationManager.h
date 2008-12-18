@@ -34,7 +34,6 @@
 
 #include <assert.h>
 #include <QBasicTimer>
-#include <QHostAddress>
 #include <QObject>
 #include <QTcpServer>
 #include <QTimerEvent>
@@ -43,6 +42,8 @@
 #include <list>
 #include <map>
 #include <string>
+
+#include <QHostAddress>
 
 #include "ArgList.h"
 #include "Client.h"
@@ -128,14 +129,6 @@ namespace SERVER
     //! timer event
     virtual void timerEvent( QTimerEvent* );
     
-    //! server
-    bool _hasClient( void ) const
-    { return bool( client_ ); }
-    
-    //! server
-    bool _hasServer( void ) const
-    { return bool( server_ ); }
-    
     //! reference to server
     virtual QTcpServer& _server() const
     { 
@@ -161,10 +154,6 @@ namespace SERVER
       SameStateFTor( QAbstractSocket::SocketState state ):
         Client::SameStateFTor( state )
         {}
-        
-      //! destructor
-      virtual ~SameStateFTor( void )
-      {}
         
       //! predicate
       bool operator() ( const ClientPair& pair ) const
@@ -197,9 +186,6 @@ namespace SERVER
 
     protected slots:
     
-    //! reset connection
-    virtual void _resetConnection( void );
-    
     //! a new connection is granted
     virtual void _newConnection( void );
         
@@ -217,12 +203,12 @@ namespace SERVER
   
     private:
     
-    //! host address
+    //! host
     const QHostAddress& _host( void ) const
     { return host_; }
     
-    //! host address
-    void _setHost( const QHostAddress& host )
+    //! host
+    void _setHost( const QHostAddress& host ) 
     { host_ = host; }
     
     //! port
@@ -230,7 +216,7 @@ namespace SERVER
     { return port_; }
     
     //! port
-    void _setPort( const unsigned int& port )
+    void _setPort( const unsigned int& port ) 
     { port_ = port; }
     
     //! arguments
@@ -240,12 +226,21 @@ namespace SERVER
     //! arguments
     void _setArguments( const ArgList& arguments )
     { arguments_ = arguments; }
-    
-    //! initialize client
+
+    // initialize client
     bool _initializeClient( void );
     
     //! initialize server
     bool _initializeServer( void );
+    
+    // host
+    QHostAddress host_;
+    
+    // port
+    unsigned int port_;
+    
+    // arguments
+    ArgList arguments_;
     
     //! Server 
     QTcpServer* server_;
@@ -268,15 +263,6 @@ namespace SERVER
     //! reply timeout
     QBasicTimer timer_;
   
-    //! host address
-    QHostAddress host_;
-    
-    //! port
-    unsigned int port_;
-    
-    //! initialization arguments
-    ArgList arguments_;
-    
   };
 };
 

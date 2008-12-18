@@ -40,30 +40,46 @@
 using namespace std;
 using namespace SERVER;
 
+
 //_________________________________________
 ApplicationManager::ApplicationManager( QObject* parent ):
   QObject( parent ),
   Counter( "ApplicationManager" ),
-  server_( 0 ),
-  client_( 0 ),
+  host_( QHostAddress::LocalHost ),
+  port_( 8082 ),
+  server_( new QTcpServer( this ) ),
+  client_( new Client( this, new QTcpSocket( this ) ) ),
   state_( AWAITING_REPLY )
 { 
 
   Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
-  setApplicationName( "GENERIC_APPLICATION" );   
+  setApplicationName( "GENERIC_APPLICATION" ); 
+
+  connect( &_server(), SIGNAL( newConnection() ), SLOT( _newConnection() ) );
+
+  // create new socket
+  connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
+  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( initialize() ) );
+  connect( &client(), SIGNAL( messageAvailable() ), SLOT( _process() ) );
+
+  // load default values for options.
+  
 }
 
 //_________________________________________
 ApplicationManager::~ApplicationManager( void )
 { 
   Debug::Throw( "ApplicationManager::~ApplicationManager.\n" ); 
-  if( _hasClient() ) delete client_;
-  if( _hasServer() ) delete server_;
+  delete client_;
+  delete server_;
 }
 
 //_________________________________________
 void ApplicationManager::usage( void )
 {
+  cout << "server mode options : " << endl;
+  cout << "Server mode is used to avoid that multiple instances of the same application run at the same time. " << endl;
+  cout << "Following options are used to control the running instance, or ignore this mode." << endl;
   cout << "  --replace\t\t replace existing instance with new one." << endl;
   cout << "  --no-server\t\t ignore server mode. runs new application instance." << endl;
   cout << "  --abort\t\t exit existing instance." <<  endl;
@@ -73,8 +89,7 @@ void ApplicationManager::usage( void )
 void ApplicationManager::initialize( ArgList arguments )
 {
 
-  Debug::Throw( "ApplicationManager::initialize.\n" );
-
+  Debug::Throw( "ApplicationManager::init.\n" );
 
   if( !XmlOptions::get().find( "SERVER_HOST" ) )
   { XmlOptions::get().set( "SERVER_HOST", Option( qPrintable( QHostAddress( QHostAddress::LocalHost ).toString() ), "default port" ) ); }
@@ -87,39 +102,30 @@ void ApplicationManager::initialize( ArgList arguments )
   _setPort( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
   _setArguments( arguments );
   
-  // try connect to server
+  _initializeServer();
   _initializeClient();
-     
-  Debug::Throw( "ApplicationManager::initialize. done.\n" );
+  
+  Debug::Throw( "ApplicationManager::init. done.\n" );
   
 }
 
 //_____________________________________________________
 void ApplicationManager::setApplicationName( const QString& name )
 { 
-  Debug::Throw( "ApplicationManager::setApplicationName.\n" );
+  Debug::Throw() << "ApplicationManager::setApplicationName - " << qPrintable( name ) << endl;
   id_ = ApplicationId( name, Util::user().c_str(), QString( Util::env( "DISPLAY", "0.0" ).c_str() ).replace( ":", "" ) );
 }
-
 
 //______________________________________________________________
 void ApplicationManager::timerEvent(QTimerEvent *event)
 {
   
-  Debug::Throw( 0, "ApplicationManager::timerEvent.\n" );
+  Debug::Throw( "ApplicationManager::timerEvent.\n" );
+  
   if (event->timerId() == timer_.timerId() ) 
   { 
-    
     timer_.stop();
-    if( state_ == AWAITING_REPLY ) 
-    {
-      // client connection failed.
-      // try initialize server if not already done
-      // accept connection otherwise
-      if( _hasServer() || !_initializeServer() ) setState( ALIVE );
-      else _initializeClient();
-    }
-    
+    if( state_ == AWAITING_REPLY ) setState( ALIVE );
   }
 
   return QObject::timerEvent( event );
@@ -227,6 +233,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
       identification request. Loop over registered clients
       send the associated Identity to the sender
       */
+      
       for( ClientMap::iterator it=accepted_clients_.begin(); it!=accepted_clients_.end(); it++ )
       { sender->sendCommand( ServerCommand( it->first, ServerCommand::IDENTIFY ) ); }
       
@@ -256,37 +263,10 @@ void ApplicationManager::_broadcast( QString message, Client* sender )
 }
 
 //_____________________________________________________
-void ApplicationManager::_resetConnection( void )
-{
-  
-  Debug::Throw( "ApplicationManager::_resetConnection.\n" );
-  Debug::Throw(0) << "ApplicationManager::_resetConnection - " << id() << " disconnected from server." << endl;
-  
-  // do nothing if dead
-  if( state_ == DEAD ) return;
-  
-  if( _hasServer() ) 
-  {
-    delete server_;
-    server_ = 0;
-  }
-  
-  if( _hasClient() )
-  {
-    delete &client().socket();
-    delete client_;
-    client_ = 0;
-  }
-  
-  // try reinitialize client
-  _initializeClient();
-  
-}
-
-//_____________________________________________________
 void ApplicationManager::_newConnection()
 {
   Debug::Throw( "ApplicationManager::_newConnection.\n" );
+  
   // check pending connection
   if( !_server().hasPendingConnections() ) return;
   
@@ -301,7 +281,7 @@ void ApplicationManager::_newConnection()
 //_____________________________________________________
 void ApplicationManager::_connectionClosed( void )
 {
-  Debug::Throw("ApplicationManager::_connectionClosed.\n" );
+  Debug::Throw( "ApplicationManager::_connectionClosed.\n" );
   
   // look for disconnected clients in client map
   {
@@ -335,20 +315,11 @@ void ApplicationManager::_connectionClosed( void )
 //_____________________________________________________
 void ApplicationManager::_error( QAbstractSocket::SocketError error )
 {
-  Debug::Throw(0) << "ApplicationManager::_error - error: " << qPrintable( client().socket().errorString() ) << endl;
-  
-  // stop timeout
-  timer_.stop();
-  
-  // do nothing if dead
-  if( state_ == DEAD ) return; 
+  Debug::Throw() << "ApplicationManager::_error - error=" << error << endl;
 
-  // client connection failed.
-  // try initialize server if not already done
-  // accept connection otherwise
-  if( _hasServer() || !_initializeServer() ) setState( ALIVE );
-  else _initializeClient();
-
+  // when an error occur and state is not dead, state is forced alive
+  if( state_ != DEAD ) setState( ALIVE );
+  
   return;
 }
 
@@ -369,6 +340,7 @@ void ApplicationManager::_redirect( void )
 
   return;
 }
+
 
 //_____________________________________________________
 void ApplicationManager::_process( void )
@@ -436,20 +408,33 @@ void ApplicationManager::_process( void )
 }
 
 //__________________________________________________________________________
-bool ApplicationManager::_initializeClient( void )
+bool ApplicationManager::_initializeServer( void )
 {
   
-  Debug::Throw( 0, "ApplicationManager::_initializeClient.\n" );
-
-  if( _hasClient() ) return false;
+  Debug::Throw( "ApplicationManager::_initializeServer.\n" );
   
-  // client initialization
-  client_ = new Client( this, new QTcpSocket( this ) );
-  connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
-  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( _resetConnection() ) );
-  connect( &client(), SIGNAL( messageAvailable() ), SLOT( _process() ) );
+  // connect server to port
+  if( !_server().listen( _host(), _port() ) ) 
+  { 
+    Debug::Throw() << "ApplicationManager::init - unable to listen to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl; 
+    return false;
+    
+  }
+  
+  Debug::Throw() << "ApplicationManager::init - listening to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
+  return true;
+  
+}
 
+
+//__________________________________________________________________________
+bool ApplicationManager::_initializeClient( void )
+{
+
+  Debug::Throw( "ApplicationManager::_initializeClient.\n" );
+  
   // connect client to port
+  client().socket().abort();
   client().socket().connectToHost( _host(), _port() );    
     
   // emit initialization signal
@@ -461,7 +446,7 @@ bool ApplicationManager::_initializeClient( void )
   
   // add command line arguments if any
   command.setArguments( _arguments() );
-  Debug::Throw() << "ApplicationManager::_initializeClient - " << qPrintable( QString( command ) ) << endl;
+  Debug::Throw() << "ApplicationManager::init - " << qPrintable( QString( command ) ) << endl;
   
   // send request command
   client().sendCommand( command );
@@ -469,29 +454,7 @@ bool ApplicationManager::_initializeClient( void )
   // time out delay (for existing server to reply)
   int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 ); 
   timer_.start( timeout_delay, this );
+
   return true;
   
-}
-
-//__________________________________________________________________________
-bool ApplicationManager::_initializeServer( void )
-{
-  
-  Debug::Throw( 0, "ApplicationManager::_initializeServer.\n" );
-
-  // check if server exists. Create one if not.
-  if( _hasServer() ) return false;
-  server_ = new QTcpServer( this );
-  
-  // server connections
-  connect( &_server(), SIGNAL( newConnection() ), SLOT( _newConnection() ) );
-  
-  // connect server to port
-  if( !_server().listen( _host(), _port() ) )
-  {  
-    Debug::Throw() << "ApplicationManager::init - unable to listen to port " << _port() << endl;
-    return false;
-  }
-  
-  return true;
 }
