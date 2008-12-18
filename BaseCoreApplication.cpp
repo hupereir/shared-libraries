@@ -101,7 +101,7 @@ void BaseCoreApplication::initApplicationManager( void )
     SLOT( _processRequest( const ArgList& ) ) );
     
   // initialization
-  application_manager_->init( arguments_ );
+  application_manager_->initialize( arguments_ );
   Debug::Throw( "BaseCoreApplication::initApplicationManager - done.\n" ); 
   
 }
