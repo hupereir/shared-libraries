@@ -45,18 +45,12 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   QObject( parent ),
   Counter( "ApplicationManager" ),
   server_( 0 ),
-  client_( new Client( this, new QTcpSocket( this ) ) ),
+  client_( 0 ),
   state_( AWAITING_REPLY )
 { 
 
   Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
-  setApplicationName( "GENERIC_APPLICATION" ); 
-
-  // client initialization
-  connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
-  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( _resetConnection() ) );
-  connect( &client(), SIGNAL( messageAvailable() ), SLOT( _process() ) );
-  
+  setApplicationName( "GENERIC_APPLICATION" );   
 }
 
 //_________________________________________
@@ -112,7 +106,7 @@ void ApplicationManager::setApplicationName( const QString& name )
 void ApplicationManager::timerEvent(QTimerEvent *event)
 {
   
-  Debug::Throw( "ApplicationManager::timerEvent.\n" );
+  Debug::Throw( 0, "ApplicationManager::timerEvent.\n" );
   if (event->timerId() == timer_.timerId() ) 
   { 
     
@@ -277,6 +271,13 @@ void ApplicationManager::_resetConnection( void )
     server_ = 0;
   }
   
+  if( _hasClient() )
+  {
+    delete &client().socket();
+    delete client_;
+    client_ = 0;
+  }
+  
   // try reinitialize client
   _initializeClient();
   
@@ -334,7 +335,10 @@ void ApplicationManager::_connectionClosed( void )
 //_____________________________________________________
 void ApplicationManager::_error( QAbstractSocket::SocketError error )
 {
-  Debug::Throw() << "ApplicationManager::_error - error=" << error << endl;
+  Debug::Throw(0) << "ApplicationManager::_error - error: " << qPrintable( client().socket().errorString() ) << endl;
+  
+  // stop timeout
+  timer_.stop();
   
   // do nothing if dead
   if( state_ == DEAD ) return; 
@@ -435,11 +439,17 @@ void ApplicationManager::_process( void )
 bool ApplicationManager::_initializeClient( void )
 {
   
-  Debug::Throw( "ApplicationManager::_initializeClient.\n" );
+  Debug::Throw( 0, "ApplicationManager::_initializeClient.\n" );
+
+  if( _hasClient() ) return false;
+  
+  // client initialization
+  client_ = new Client( this, new QTcpSocket( this ) );
+  connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
+  connect( &client().socket(), SIGNAL( disconnected() ), SLOT( _resetConnection() ) );
+  connect( &client(), SIGNAL( messageAvailable() ), SLOT( _process() ) );
 
   // connect client to port
-  client().socket().disconnectFromHost();
-  client().socket().abort();
   client().socket().connectToHost( _host(), _port() );    
     
   // emit initialization signal
@@ -467,7 +477,7 @@ bool ApplicationManager::_initializeClient( void )
 bool ApplicationManager::_initializeServer( void )
 {
   
-  Debug::Throw( "ApplicationManager::_initializeClient.\n" );
+  Debug::Throw( 0, "ApplicationManager::_initializeServer.\n" );
 
   // check if server exists. Create one if not.
   if( _hasServer() ) return false;
