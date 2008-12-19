@@ -92,6 +92,10 @@ namespace SERVER
         state_( state )
         {}
         
+      //! destructor
+      virtual ~SameStateFTor( void )
+      {}
+      
       //! predicate
       virtual bool operator() ( const Client* client ) const
       { return client->socket().state() == state_; }

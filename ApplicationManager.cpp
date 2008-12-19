@@ -243,6 +243,9 @@ void ApplicationManager::_redirect( QString message, Client* sender )
         // tell existing client to raise itself
         ServerCommand raise_command( command.id(), ServerCommand::RAISE );
         raise_command.setArguments( command.args() );
+        
+        Debug::Throw() << "ApplicationManager::_redirect - command: " << qPrintable( QString( raise_command ) ) << endl;
+        
         existing_client->sendCommand( raise_command ); 
                
       }

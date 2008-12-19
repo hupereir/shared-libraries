@@ -155,6 +155,10 @@ namespace SERVER
         Client::SameStateFTor( state )
         {}
         
+      //! destructor
+      virtual ~SameStateFTor( void )
+      {}
+        
       //! predicate
       bool operator() ( const ClientPair& pair ) const
       { return Client::SameStateFTor::operator() (pair.second); }
