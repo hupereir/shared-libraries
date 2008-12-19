@@ -120,7 +120,6 @@ void ApplicationManager::initialize( ArgList arguments )
     
   } else _setPort( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
     
-  //_initializeServer();
   _initializeClient();
   
   Debug::Throw( "ApplicationManager::init. done.\n" );
@@ -185,7 +184,7 @@ Client* ApplicationManager::_register( const ApplicationId& id, Client* client, 
 void ApplicationManager::_redirect( QString message, Client* sender )
 {
   
-  Debug::Throw() << "ApplicationManager::_redirect - message: " << qPrintable( message ) << endl;
+  Debug::Throw() << "ApplicationManager::_redirect - message: " << qPrintable( message ) << endl;    
 
   // parse message
   QTextStream in( &message, QIODevice::ReadOnly );
@@ -391,6 +390,7 @@ void ApplicationManager::_redirect( void )
     assert( (*iter)->hasMessage() );
     QString message( (*iter)->message() );
     (*iter)->reset();
+    
     _redirect( message, *iter );
   }
 
