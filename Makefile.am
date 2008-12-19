@@ -11,6 +11,8 @@ INCLUDES =  \
 noinst_HEADERS = \
   ArgList.h \
   Command.h \
+  CommandLineArguments.h \
+  CommandLineParser.h \
   Counter.h \
   CounterMap.h \
   CustomProcess.h \
@@ -33,6 +35,8 @@ noinst_LIBRARIES = libbase.a
 libbase_a_SOURCES = \
   ArgList.cpp \
   Command.cpp \
+  CommandLineArguments.cpp \
+  CommandLineParser.cpp \
   Counter.cpp \
   CustomProcess.cpp \
  	Debug.cpp \

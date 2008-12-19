@@ -4,6 +4,8 @@ CONFIG = staticlib qt
 HEADERS = \
   ArgList.h \
   Command.h \
+  CommandLineArguments.h \
+  CommandLineParser.h \
   Counter.h \
   CounterMap.h \
   CustomProcess.h \
@@ -24,6 +26,8 @@ HEADERS = \
 SOURCES = \
   ArgList.cpp \
   Command.cpp \
+  CommandLineArguments.cpp \
+  CommandLineParser.cpp \
   Counter.cpp \
   CustomProcess.cpp \
  	Debug.cpp \
