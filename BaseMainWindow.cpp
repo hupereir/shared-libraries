@@ -22,7 +22,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomMainWindow.cpp
+  \file BaseMainWindow.cpp
   \brief customized QMainWindow
   \author Hugo Pereira
   \version $Revision$
@@ -31,11 +31,12 @@
 
 #include <assert.h>
 #include <QToolBar>
+#include <QWindowStateChangeEvent>
 
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
-#include "CustomMainWindow.h"
+#include "BaseMainWindow.h"
 #include "CustomToolBar.h"
 #include "CustomToolButton.h"
 #include "Singleton.h"
@@ -46,11 +47,12 @@
 using namespace std;
 
 //____________________________________________________________
-CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
+BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
   QMainWindow( parent, wflags ),
-  size_watcher_( this )
+  size_watcher_( this ),
+  was_maximized_( false )
 { 
-  Debug::Throw( "CustomMainWindow::CustomMainWindow.\n" );
+  Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
   
   // lock toolbars action
   addAction( lock_toolbars_action_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock toolbars", this ) );
@@ -65,41 +67,41 @@ CustomMainWindow::CustomMainWindow( QWidget *parent, Qt::WFlags wflags):
 }
 
 //__________________________________________________
-QSize CustomMainWindow::minimumSizeHint( void ) const
+QSize BaseMainWindow::minimumSizeHint( void ) const
 {
   QSize out( size_watcher_.sizeHint() );
   return out.isValid() ? out:QMainWindow::minimumSizeHint();
 }
 
 //__________________________________________________
-QSize CustomMainWindow::sizeHint( void ) const
+QSize BaseMainWindow::sizeHint( void ) const
 {
   QSize out( size_watcher_.sizeHint() );
   return out.isValid() ? out:QMainWindow::sizeHint();
 }
 
 //________________________________________________________________
-void CustomMainWindow::centerOnDesktop( void )
+void BaseMainWindow::centerOnDesktop( void )
 {
   
-  Debug::Throw( "CustomMainWindow::centerOnDesktop.\n" );
+  Debug::Throw( "BaseMainWindow::centerOnDesktop.\n" );
   move( QtUtil::centerOnDesktop( sizeHint() ) );
   
 }
 
 //________________________________________________________________
-void CustomMainWindow::centerOnWidget( QWidget* parent )
+void BaseMainWindow::centerOnWidget( QWidget* parent )
 {
   
-  Debug::Throw( "CustomMainWindow::centerOnWidget.\n" );
+  Debug::Throw( "BaseMainWindow::centerOnWidget.\n" );
   move( QtUtil::centerOnWidget( sizeHint(), parent ) );
   
 }
 
 //________________________________________________________________
-QMenu* CustomMainWindow::createPopupMenu( void )
+QMenu* BaseMainWindow::createPopupMenu( void )
 {
-  Debug::Throw( "CustomMainWindow::createPopupMenu.\n" );
+  Debug::Throw( "BaseMainWindow::createPopupMenu.\n" );
   if( !_hasToolBars() ) return QMainWindow::createPopupMenu();
   
   ToolBarMenu& menu = toolBarMenu( this );
@@ -114,7 +116,7 @@ QMenu* CustomMainWindow::createPopupMenu( void )
 }
 
 //________________________________________________________________
-ToolBarMenu& CustomMainWindow::toolBarMenu( QWidget* parent )
+ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
 {
   
   ToolBarMenu* menu = new ToolBarMenu( parent );
@@ -130,9 +132,9 @@ ToolBarMenu& CustomMainWindow::toolBarMenu( QWidget* parent )
 }
 
 //________________________________________________________________
-bool CustomMainWindow::installToolBarsActions( QMenu& menu )
+bool BaseMainWindow::installToolBarsActions( QMenu& menu )
 {
-  Debug::Throw( "CustomMainWindow::installToolBarsActions.\n" );
+  Debug::Throw( "BaseMainWindow::installToolBarsActions.\n" );
 
   bool has_lockable_toolbars( false );
   QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
@@ -142,13 +144,13 @@ bool CustomMainWindow::installToolBarsActions( QMenu& menu )
     CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
     if( toolbar ) { 
     
-      Debug::Throw() << "CustomMainWindow::installToolBarsActions (custom) - " << qPrintable( (*iter)->windowTitle() ) << endl;
+      Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << qPrintable( (*iter)->windowTitle() ) << endl;
       menu.addAction( &toolbar->visibilityAction() ); 
     
     } else {
       
       // add visibility action
-      Debug::Throw() << "CustomMainWindow::installToolBarsActions - " << qPrintable( (*iter)->windowTitle() ) << endl;
+      Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << qPrintable( (*iter)->windowTitle() ) << endl;
       QAction* action = new QAction( (*iter)->windowTitle(), &menu );
       action->setCheckable( true );
       action->setChecked( (*iter)->isVisible() );
@@ -175,28 +177,68 @@ bool CustomMainWindow::installToolBarsActions( QMenu& menu )
 }
  
 //________________________________________________________________
-void CustomMainWindow::uniconify( void )
-{ QtUtil::uniconify( this ); }
+void BaseMainWindow::uniconify( void )
+{ 
+
+  Debug::Throw( "BaseMainWindow::uniconify" );
+  if( isMinimized() ) 
+  {
+    
+    if( _wasMaximized() ) showMaximized();
+    else showNormal();
+    
+  } else if( isHidden() ) show();
   
+  activateWindow();
+  raise();
+
+}
+
+//_______________________________________________________
+bool BaseMainWindow::event( QEvent* event )
+{
+    
+  // check that all needed widgets/actions are valid and checked.
+  switch (event->type()) 
+  {
+          
+    case QEvent::WindowStateChange:
+    {
+      // cast
+      QWindowStateChangeEvent *state_event( static_cast<QWindowStateChangeEvent*>(event) );
+      
+      if( windowState() & Qt::WindowMinimized )
+      { _setWasMaximized( state_event->oldState() & Qt::WindowMaximized ); }
+      
+    }
+    break;
+        
+    default: break;
+  }
+  
+  return QMainWindow::event( event );
+  
+}
+
 //____________________________________________________________
-void CustomMainWindow::resizeEvent( QResizeEvent* event )
+void BaseMainWindow::resizeEvent( QResizeEvent* event )
 {
   size_watcher_.restart(); 
   return QMainWindow::resizeEvent( event );
 }
  
 //________________________________________________________________
-bool CustomMainWindow::_hasToolBars( void ) const
+bool BaseMainWindow::_hasToolBars( void ) const
 {
-  Debug::Throw( "CustomMainWindow::_hasToolBars.\n" );
+  Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
   return (bool) qFindChild<QToolBar*>( this );
 }
 
 //____________________________________________________________
-void CustomMainWindow::_updateConfiguration( void )
+void BaseMainWindow::_updateConfiguration( void )
 { 
   
-  Debug::Throw( "CustomMainWindow::_updateConfiguration.\n" );
+  Debug::Throw( "BaseMainWindow::_updateConfiguration.\n" );
   
   // icon size
   setIconSize( IconSize( this, (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
@@ -210,29 +252,29 @@ void CustomMainWindow::_updateConfiguration( void )
 }
 
 //____________________________________________________________
-void CustomMainWindow::_updateToolButtonStyle( Qt::ToolButtonStyle style )
+void BaseMainWindow::_updateToolButtonStyle( Qt::ToolButtonStyle style )
 {
   
-  Debug::Throw( "CustomMainWindow::_updateToolButtonStyle.\n" );
+  Debug::Throw( "BaseMainWindow::_updateToolButtonStyle.\n" );
   XmlOptions::get().set<int>( "TOOLBUTTON_TEXT_POSITION", (int)style );
   emit toolbarConfigurationChanged();
   
 }
 
 //____________________________________________________________
-void CustomMainWindow::_updateToolButtonIconSize( IconSize::Size size )
+void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 {
   
-  Debug::Throw( "CustomMainWindow::_updateToolButtonIconSize.\n" );
+  Debug::Throw( "BaseMainWindow::_updateToolButtonIconSize.\n" );
   XmlOptions::get().set<int>( "TOOLBUTTON_ICON_SIZE", size );
   emit toolbarConfigurationChanged();
 
 }
 
 //____________________________________________________________
-void CustomMainWindow::_lockToolBars( bool value )
+void BaseMainWindow::_lockToolBars( bool value )
 {
-  Debug::Throw( "CustomMainWindow::_lockToolBars.\n" );
+  Debug::Throw( "BaseMainWindow::_lockToolBars.\n" );
   QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
   for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
   {

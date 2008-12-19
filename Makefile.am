@@ -28,7 +28,7 @@ noinst_HEADERS = \
   CustomDialog.h \
   CustomFileDialog.h \
   GridLayout.h \
-  CustomMainWindow.h \
+  BaseMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
   CustomTextDocument.h \
@@ -137,7 +137,7 @@ libbase_qt_a_SOURCES = \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
-  CustomMainWindow.cpp \
+  BaseMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
   CustomToolBar.cpp \
@@ -217,7 +217,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CounterDialog.cpp \
   moc_CustomComboBox.cpp \
   moc_CustomFileDialog.cpp \
-  moc_CustomMainWindow.cpp \
+  moc_BaseMainWindow.cpp \
   moc_CustomSlider.cpp \
   moc_CustomToolBar.cpp \
   moc_CustomToolButton.cpp \

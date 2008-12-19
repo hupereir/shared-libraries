@@ -1,5 +1,5 @@
-#ifndef CustomMainWindow_h
-#define CustomMainWindow_h
+#ifndef BaseMainWindow_h
+#define BaseMainWindow_h
 
 // $Id$
  
@@ -25,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file CustomMainWindow.h
+  \file BaseMainWindow.h
   \brief customized QMainWindow
   \author Hugo Pereira
   \version $Revision$
@@ -49,10 +49,10 @@
 class ToolBarMenu;
 
 /*!
-  \class CustomMainWindow
+  \class BaseMainWindow
   \brief customized QDialog
 */
-class CustomMainWindow: public QMainWindow
+class BaseMainWindow: public QMainWindow
 {
   
   Q_OBJECT
@@ -60,11 +60,11 @@ class CustomMainWindow: public QMainWindow
   public:
   
   //! constructor
-  CustomMainWindow( QWidget *parent, Qt::WFlags wflags = 0);
+  BaseMainWindow( QWidget *parent, Qt::WFlags wflags = 0);
   
   //! destructor
-  virtual ~CustomMainWindow( void )
-  { Debug::Throw( "CustomMainWindow::~CustomMainWindow.\n" ); }
+  virtual ~BaseMainWindow( void )
+  { Debug::Throw( "BaseMainWindow::~BaseMainWindow.\n" ); }
 
   //! restore window size
   virtual QSize minimumSizeHint( void ) const;
@@ -115,6 +115,9 @@ class CustomMainWindow: public QMainWindow
   
   protected:
     
+  //! generic event
+  virtual bool event( QEvent* );
+
   //! resize event
   /* need to save updated window size */
   virtual void resizeEvent( QResizeEvent* );
@@ -122,6 +125,14 @@ class CustomMainWindow: public QMainWindow
   //! true if main window has toolbars
   virtual bool _hasToolBars( void ) const;
  
+  //! maximize state prior to minimization
+  bool _wasMaximized( void ) const
+  { return was_maximized_; }
+  
+  //! maximize state prior to minimization
+  void _setWasMaximized( bool value )
+  { was_maximized_ = value; }
+    
   private slots:
   
   //! update configuration
@@ -137,13 +148,16 @@ class CustomMainWindow: public QMainWindow
   void _lockToolBars( bool ); 
   
   private:
-    
+      
   //! size watcher
   WindowSizeWatcher size_watcher_;
   
   //! lock toolbars
   QAction* lock_toolbars_action_;
-    
+
+  //! window state prior to minimization
+  bool was_maximized_;
+  
 };
 
 #endif 

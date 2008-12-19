@@ -24,7 +24,7 @@ HEADERS = \
   CustomDialog.h \
   CustomFileDialog.h \
   GridLayout.h \
-  CustomMainWindow.h \
+  BaseMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
   CustomTextDocument.h \
@@ -131,7 +131,7 @@ SOURCES = \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
-  CustomMainWindow.cpp \
+  BaseMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
   CustomToolBar.cpp \
