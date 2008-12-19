@@ -29,6 +29,8 @@
   \date $Date$
 */
 
+#include <QWindowStateChangeEvent>
+
 #include "BaseDialog.h"
 #include "Debug.h"
 #include "QtUtil.h"
@@ -38,7 +40,8 @@ using namespace std;
 //__________________________________________________
 BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
   QDialog( parent, flags ),
-  size_watcher_( this )
+  size_watcher_( this ),
+  was_maximized_( false )
 { 
   Debug::Throw( "BaseDialog::BaseDialog.\n" );
   setSizeGripEnabled ( true );
@@ -90,9 +93,45 @@ BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 //________________________________________________________________
 BaseDialog& BaseDialog::uniconify( void )
 { 
+
+  Debug::Throw( "BaseDialog::uniconify" );
+  if( isMinimized() ) 
+  {
+    
+    if( _wasMaximized() ) showMaximized();
+    else showNormal();
+    
+  } else if( isHidden() ) show();
   
-  QtUtil::uniconify( this ); 
+  activateWindow();
+  raise();
   return *this;
+  
+}
+
+//_______________________________________________________
+bool BaseDialog::event( QEvent* event )
+{
+    
+  // check that all needed widgets/actions are valid and checked.
+  switch (event->type()) 
+  {
+          
+    case QEvent::WindowStateChange:
+    {
+      // cast
+      QWindowStateChangeEvent *state_event( static_cast<QWindowStateChangeEvent*>(event) );
+      
+      if( windowState() & Qt::WindowMinimized )
+      { _setWasMaximized( state_event->oldState() & Qt::WindowMaximized ); }
+      
+    }
+    break;
+        
+    default: break;
+  }
+  
+  return QDialog::event( event );
   
 }
 

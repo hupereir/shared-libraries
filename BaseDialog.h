@@ -94,15 +94,29 @@ class BaseDialog: public QDialog
   BaseDialog& uniconify( void );
  
   protected:
+
+  //! generic event
+  virtual bool event( QEvent* );
     
   //! resize event
   void resizeEvent( QResizeEvent* );
       
+  //! maximize state prior to minimization
+  bool _wasMaximized( void ) const
+  { return was_maximized_; }
+  
+  //! maximize state prior to minimization
+  void _setWasMaximized( bool value )
+  { was_maximized_ = value; }
+
   private:
   
   //! size watch
   WindowSizeWatcher size_watcher_;
       
+  //! window state prior to minimization
+  bool was_maximized_;
+
 };
 
 #endif 
