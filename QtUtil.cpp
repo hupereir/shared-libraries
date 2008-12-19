@@ -197,13 +197,13 @@ void QtUtil::uniconify( QWidget *widget )
   if( !widget->isTopLevel() ) return;
 
   // this is portable but may not work on old enough X11 Qt versions
-  if( widget->window()->isMinimized() )
-  { widget->window()->hide(); }
+  // if( widget->window()->isMinimized() )
+  // { widget->window()->hide(); }
 
-  widget->window()->show();
+  widget->window()->showMaximized();
   
-  widget->activateWindow();
-  widget->window()->raise();
+  //widget->activateWindow();
+  //widget->window()->raise();
 
   return;
 
