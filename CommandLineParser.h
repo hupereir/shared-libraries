@@ -58,7 +58,7 @@ class CommandLineParser: public Counter
   void usage( void ) const;
   
   //! parse
-  void parse( const CommandLineArguments& );
+  CommandLineParser& parse( const CommandLineArguments&, bool ignore_warnings = true );
   
   //! clear
   void clear( void );
@@ -80,13 +80,14 @@ class CommandLineParser: public Counter
   QString option( QString ) const;
   
   //! orphans
+  /*! list of command line arguments located at the end of the list and that do not match any option */
   QStringList& orphans( void ) 
   { return orphans_; }
   
   private:
   
   //! discard orphans
-  void _discardOrphans( void );
+  void _discardOrphans( bool ignore_warnings );
   
   //! returns true if string is a tag
   bool _isTag( QString ) const;
@@ -145,6 +146,34 @@ class CommandLineParser: public Counter
   //! options
   typedef std::map<QString, Option> OptionMap;
   
+  //! used to select tag of maximum length
+  class MinLengthFTor
+  {
+    
+    public:
+    
+    //! predicate
+    bool operator () ( const FlagMap::value_type& first, const FlagMap::value_type& second )
+    { return first.first.size() < second.first.size(); }
+  
+    //! predicate
+    bool operator () ( const OptionMap::value_type& first, const OptionMap::value_type& second )
+    { return first.first.size() < second.first.size(); }
+    
+  };
+  
+  //! used to select tag of maximum length
+  class MinTypeLengthFTor
+  {
+    
+    public:
+      
+    //! predicate
+    bool operator () ( const OptionMap::value_type& first, const OptionMap::value_type& second )
+    { return first.second.type_.size() < second.second.type_.size(); }
+    
+  };
+
   //! options
   OptionMap options_;
   

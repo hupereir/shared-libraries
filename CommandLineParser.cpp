@@ -29,7 +29,11 @@
   \date $Date$
 */
 
+#include <algorithm>
 #include <assert.h>
+
+#include <QTextStream>
+
 #include "CommandLineParser.h"
 
 using namespace std;
@@ -37,7 +41,10 @@ using namespace std;
 //________________________________________________________
 CommandLineParser::CommandLineParser( void ):
   Counter( "CommandLineParser" )
-{ Debug::Throw( "CommandLineParser::CommandLineParser.\n" ); }
+{ 
+  Debug::Throw( "CommandLineParser::CommandLineParser.\n" ); 
+  registerFlag( "--help", "print this help and exit" );
+}
 
 //________________________________________________________
 void CommandLineParser::registerFlag( QString tag_name, QString help_text )
@@ -53,19 +60,39 @@ void CommandLineParser::usage( void ) const
 
   Debug::Throw( "CommandLineParser::usage.\n" );
   
+  int max_length = 1+ max(
+    max_element( flags_.begin(), flags_.end(), MinLengthFTor() )->first.size(), 
+    max_element( options_.begin(), options_.end(), MinLengthFTor() )->first.size() ); 
+  
+  int max_type_length = 1+ max_element( options_.begin(), options_.end(), MinTypeLengthFTor() )->second.type_.size(); 
+
+  QString buffer;
+  QTextStream stream( &buffer );
+
   // print flags
   for( FlagMap::const_iterator iter = flags_.begin(); iter != flags_.end(); iter++ )
-  { cout << "  " << qPrintable( iter->first ) << "\t\t" << qPrintable( iter->second.help_text_ ) << endl; }
+  { 
+    stream << "  ";
+    stream << iter->first.leftJustified( max_length + max_type_length + 1 );
+    stream << iter->second.help_text_ << endl; 
+  }
   
   // print options
   for( OptionMap::const_iterator iter = options_.begin(); iter != options_.end(); iter++ )
-  { cout << "  " << qPrintable( iter->first ) << " " << qPrintable( iter->second.type_ ) << "\t\t" << qPrintable( iter->second.help_text_ ) << endl; }
+  { 
+    stream << "  ";
+    stream << iter->first.leftJustified( max_length );
+    stream << iter->second.type_.leftJustified( max_type_length + 1 );    
+    stream << iter->second.help_text_ << endl; 
+  }
+  
+  cout << qPrintable( buffer );
   
   return;
 }
 
 //________________________________________________________
-void CommandLineParser::parse( const CommandLineArguments& arguments )
+CommandLineParser& CommandLineParser::parse( const CommandLineArguments& arguments, bool ignore_warnings )
 {
   Debug::Throw( "CommandLineParser::parse.\n" );
 
@@ -73,7 +100,7 @@ void CommandLineParser::parse( const CommandLineArguments& arguments )
   clear();
   
   // check size
-  if( arguments.isEmpty() ) return;
+  if( arguments.isEmpty() ) return *this;
 
   application_name_ = arguments[0];
   for( int index = 1; index < arguments.size(); index++ )
@@ -87,7 +114,7 @@ void CommandLineParser::parse( const CommandLineArguments& arguments )
       FlagMap::iterator iter( flags_.find( tag_name ) );
       if( iter != flags_.end() ) 
       {
-        _discardOrphans();
+        _discardOrphans( ignore_warnings );
         iter->second.set_ = true;
         continue;
       }
@@ -103,16 +130,21 @@ void CommandLineParser::parse( const CommandLineArguments& arguments )
           QString value( arguments[index+1] );
           if( !( value.isEmpty() || _isTag(value) ) ) 
           {
-            _discardOrphans();
+            _discardOrphans( ignore_warnings );
             iter->second.set_ = true;
             iter->second.value_ = value;
             index++;
+            continue;
           } 
         }
         
-        Debug::Throw(0) << "CommandLineParser::parse -"
-          << " expected argument of type " << qPrintable( iter->second.type_ )
-          << " after option " << qPrintable( iter->first ) << endl;
+        if( !ignore_warnings )
+        {
+          Debug::Throw(0) << "CommandLineParser::parse -"
+            << " expected argument of type " << qPrintable( iter->second.type_ )
+            << " after option " << qPrintable( iter->first ) << endl;
+        }
+        
         continue;
       }
     }
@@ -120,8 +152,12 @@ void CommandLineParser::parse( const CommandLineArguments& arguments )
     // see if tag is an option
     if( _isTag( tag_name ) )
     {
-      Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << qPrintable( tag_name ) << endl;
+      
+      if( !ignore_warnings )
+      { Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << qPrintable( tag_name ) << endl; }
+      
       continue;
+      
     }
     
     // add to orphans
@@ -129,7 +165,7 @@ void CommandLineParser::parse( const CommandLineArguments& arguments )
   
   }
   
-  return;
+  return *this;
   
 }
 
@@ -158,7 +194,10 @@ void CommandLineParser::clear( void )
 //_______________________________________________________
 CommandLineArguments CommandLineParser::arguments( void ) const
 { 
+  Debug::Throw( "CommandLineParser::arguments.\n" );
+  
   CommandLineArguments out;
+  out << application_name_; 
   
   // add flags
   for( FlagMap::const_iterator iter = flags_.begin(); iter != flags_.end(); iter++ )
@@ -199,15 +238,18 @@ QString CommandLineParser::option( QString tag ) const
 }
 
 //_______________________________________________________
-void CommandLineParser::_discardOrphans( void )
+void CommandLineParser::_discardOrphans( bool ignore_warnings )
 {
   // print discarded orphans
   if( orphans_.isEmpty() ) return;
-
-  Debug::Throw(0) << "CommandLineParser::parse - following orphans are discarded: " << endl;
-  for( QStringList::const_iterator iter = orphans_.begin(); iter != orphans_.end(); iter++ )
-  { cout << "  " << qPrintable( *iter ) << endl; }
-
+  
+  if( !ignore_warnings )
+  {
+    Debug::Throw(0) << "CommandLineParser::parse - following orphans are discarded: " << endl;
+    for( QStringList::const_iterator iter = orphans_.begin(); iter != orphans_.end(); iter++ )
+    { cout << "  " << qPrintable( *iter ) << endl; }
+  }
+  
   orphans_.clear();
 }
 

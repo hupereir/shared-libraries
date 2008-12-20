@@ -2,7 +2,6 @@ TEMPLATE = lib
 CONFIG = staticlib qt
 
 HEADERS = \
-  ArgList.h \
   Command.h \
   CommandLineArguments.h \
   CommandLineParser.h \
@@ -24,7 +23,6 @@ HEADERS = \
   Util.h
 
 SOURCES = \
-  ArgList.cpp \
   Command.cpp \
   CommandLineArguments.cpp \
   CommandLineParser.cpp \

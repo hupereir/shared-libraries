@@ -9,7 +9,6 @@ INCLUDES =  \
  -I$(qt_includes)/QtGui
 
 noinst_HEADERS = \
-  ArgList.h \
   Command.h \
   CommandLineArguments.h \
   CommandLineParser.h \
@@ -33,7 +32,6 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase.a
 
 libbase_a_SOURCES = \
-  ArgList.cpp \
   Command.cpp \
   CommandLineArguments.cpp \
   CommandLineParser.cpp \
