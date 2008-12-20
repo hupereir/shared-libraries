@@ -43,7 +43,7 @@ using namespace SERVER;
 using namespace Qt;
 
 //____________________________________________
-BaseCoreApplication::BaseCoreApplication( QObject* parent, ArgList arguments ) :
+BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments arguments ) :
   QObject( parent ),
   application_manager_( 0 ),
   arguments_( arguments ),
@@ -81,7 +81,7 @@ void BaseCoreApplication::initApplicationManager( void )
 
   if( _hasApplicationManager() ) return;
 
-  if( arguments_.find( "--no-server" ) ) 
+  if( ApplicationManager::commandLineParser( _arguments() ).hasFlag( "--no-server" ) ) 
   {
     realizeWidget();
     return;
@@ -97,8 +97,8 @@ void BaseCoreApplication::initApplicationManager( void )
     SLOT( _stateChanged( SERVER::ApplicationManager::State ) ) );
     
   connect( 
-    application_manager_, SIGNAL( serverRequest( const ArgList& ) ), 
-    SLOT( _processRequest( const ArgList& ) ) );
+    application_manager_, SIGNAL( serverRequest( const CommandLineArguments& ) ), 
+    SLOT( _processRequest( const CommandLineArguments& ) ) );
     
   // initialization
   application_manager_->initialize( arguments_ );

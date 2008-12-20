@@ -29,6 +29,7 @@
    \date    $Date$
 */
 
+#include <algorithm>
 #include <sstream>
 
 #include "ApplicationManager.h"
@@ -80,20 +81,34 @@ ApplicationManager::~ApplicationManager( void )
 }
 
 //_________________________________________
+CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments arguments, bool ignore_warnings )
+{
+
+  CommandLineParser out;
+  out.registerFlag( "--replace", "replace existing application instance with new one" );
+  out.registerFlag( "--no-server", "ignore server mode. Run new application instance" );
+  out.registerFlag( "--abort", "exit existing instance" );
+  out.registerOption( "--server-host", "string", "use specified host for server communication" );
+  out.registerOption( "--server-port", "interger", "use specified port for server communication" );
+  
+  if( !arguments.isEmpty() )
+  { out.parse( arguments, ignore_warnings ); }
+  
+  return out;
+  
+}
+
+//_________________________________________
 void ApplicationManager::usage( void )
 {
   cout << "server mode options : " << endl;
   cout << "Server mode is used to avoid that multiple instances of the same application run at the same time. " << endl;
   cout << "Following options are used to control the running instance, or ignore this mode." << endl;
-  cout << "  --server-host\t\t use specified host for communication" << endl;
-  cout << "  --server-port\t\t use specified port for communication" << endl;
-  cout << "  --replace\t\t replace existing instance with new one." << endl;
-  cout << "  --no-server\t\t ignore server mode. runs new application instance." << endl;
-  cout << "  --abort\t\t exit existing instance." <<  endl;
+  commandLineParser().usage();
 }
 
 //_____________________________________________________
-void ApplicationManager::initialize( ArgList arguments )
+void ApplicationManager::initialize( CommandLineArguments arguments )
 {
 
   Debug::Throw( "ApplicationManager::init.\n" );
@@ -102,24 +117,27 @@ void ApplicationManager::initialize( ArgList arguments )
   _setArguments( arguments );
 
   // overwrite host from command line arguments
-  ArgList::Arg argument;
-  if( arguments.find( "--server-host" )&& !( argument = arguments.get( "--server-host" ) ).options().empty() ) 
+  CommandLineParser parser( commandLineParser( _arguments() ) );
+  if( parser.hasOption( "--server-host" ) )
   {
-
-    XmlOptions::get().setRaw( "SERVER_HOST", argument.options().front() ); 
-    _setHost( QHostAddress( argument.options().front().c_str() ) );
+    
+    QString host( parser.option( "--server-host" ) );
+    XmlOptions::get().setRaw( "SERVER_HOST", qPrintable( host ) ); 
+    _setHost( QHostAddress( host ) );
     
   } else _setHost( QHostAddress( XmlOptions::get().raw( "SERVER_HOST" ).c_str() ) );
 
   // overwrite port from command line arguments
-  if( arguments.find( "--server-port" )&& !( argument = arguments.get( "--server-port" ) ).options().empty() )
+  if( parser.hasOption( "--server-port" ) )
   {
     
-    XmlOptions::get().setRaw( "SERVER_PORT", argument.options().front() ); 
-    _setPort( QString( argument.options().front().c_str() ).toUInt() );
+    unsigned int port( parser.option( "--server-port" ).toUInt() );
+    XmlOptions::get().set<unsigned int>( "SERVER_PORT", port ); 
+    _setPort( port );
     
   } else _setPort( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
     
+  Debug::Throw() << "ApplicationManager::initialize - port: " << _port() << endl;
   _initializeClient();
   
   Debug::Throw( "ApplicationManager::init. done.\n" );
@@ -194,7 +212,8 @@ void ApplicationManager::_redirect( QString message, Client* sender )
     ServerCommand command;
     in >> command;
     if( !command.id().isValid() ) continue;
-    
+
+    CommandLineParser parser( commandLineParser( command.arguments() ) );
     if( command.command() == ServerCommand::UNLOCK ) 
     {
       
@@ -213,7 +232,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
         sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
         _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
                 
-      } else if( command.args().find( "--replace" ) ) {
+      } else if( parser.hasFlag( "--replace" ) ) {
          
         // tell existing client to die
         ServerCommand abort_command( command.id(), ServerCommand::ABORT );
@@ -225,7 +244,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
         _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
         _register( command.id(), sender, true );
         
-      } else if( command.args().find( "--abort" ) ) {
+      } else if( parser.hasFlag( "--abort" ) ) {
 
         // tell existing client to die
         ServerCommand abort_command( command.id(), ServerCommand::ABORT );
@@ -241,7 +260,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
         
         // tell existing client to raise itself
         ServerCommand raise_command( command.id(), ServerCommand::RAISE );
-        raise_command.setArguments( command.args() );
+        raise_command.setArguments( command.arguments() );
         
         Debug::Throw() << "ApplicationManager::_redirect - command: " << qPrintable( QString( raise_command ) ) << endl;
         
@@ -428,7 +447,7 @@ void ApplicationManager::_process( void )
     {
       
       client().sendCommand( ServerCommand( id_, ServerCommand::ALIVE ) );
-      emit serverRequest( command.args() );
+      emit serverRequest( command.arguments() );
       continue;
     
     }
@@ -478,7 +497,7 @@ bool ApplicationManager::_initializeServer( void )
     Debug::Throw() << "ApplicationManager::_initializeServer - unable to listen to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl; 
     return false;
   } else {
-    Debug::Throw() << "ApplicationManager::_initializeServer - listening to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
+    Debug::Throw(0) << "ApplicationManager::_initializeServer - listening to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
     return true;
   }
   

@@ -36,8 +36,8 @@
 #include <QObject>
 
 #include "ApplicationManager.h"
-#include "ArgList.h"
 #include "BaseCoreApplication.h"
+#include "CommandLineArguments.h"
 
 //! Main Window singleton object
 class BaseApplication: public BaseCoreApplication
@@ -49,7 +49,7 @@ class BaseApplication: public BaseCoreApplication
   public:
     
   //! constructor
-  BaseApplication( QObject* parent, ArgList arguments = ArgList() ); 
+  BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() ); 
     
   //! destructor
   virtual ~BaseApplication( void );

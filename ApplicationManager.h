@@ -45,8 +45,9 @@
 
 #include <QHostAddress>
 
-#include "ArgList.h"
 #include "Client.h"
+#include "CommandLineArguments.h"
+#include "CommandLineParser.h"
 #include "Counter.h"
 #include "ServerCommand.h"
 
@@ -70,10 +71,13 @@ namespace SERVER
      
     //! application name
     virtual void setApplicationName( const QString& name );
-  
-    //! comamnd line usage
+        
+    //! commandLine parser
+    static CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignore_warnings = true );
+    
+    //! usage
     static void usage( void );
-      
+    
     //! application state enumeration
     enum State {
       
@@ -111,7 +115,7 @@ namespace SERVER
     public slots:
     
     //! (re)initialize server/client connections
-    virtual void initialize( ArgList args = ArgList() );
+    virtual void initialize( CommandLineArguments args = CommandLineArguments() );
     
     signals:
     
@@ -119,7 +123,7 @@ namespace SERVER
     void stateChanged( SERVER::ApplicationManager::State state );
     
     //! emitted when manager is ALIVE and request is recieved
-    void serverRequest( const ArgList& args );
+    void serverRequest( const CommandLineArguments& args );
    
     //! emitted when the server is (re)initialized
     void initialized( void );
@@ -227,11 +231,11 @@ namespace SERVER
     { port_ = port; }
     
     //! arguments
-    const ArgList& _arguments( void ) const
+    const CommandLineArguments& _arguments( void ) const
     { return arguments_; }
     
     //! arguments
-    void _setArguments( const ArgList& arguments )
+    void _setArguments( const CommandLineArguments& arguments )
     { arguments_ = arguments; }
 
     // initialize client
@@ -255,7 +259,7 @@ namespace SERVER
     unsigned int port_;
     
     // arguments
-    ArgList arguments_;
+    CommandLineArguments arguments_;
     
     //! Server 
     QTcpServer* server_;

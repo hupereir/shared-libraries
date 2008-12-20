@@ -39,7 +39,7 @@
 #include <string>
 
 #include "ApplicationId.h"
-#include "ArgList.h"  
+#include "CommandLineArguments.h"  
 #include "Counter.h"  
 #include "Debug.h"  
 #include "TimeStamp.h"  
@@ -144,12 +144,12 @@ namespace SERVER
     }
     
     //! argument
-    void setArguments( const ArgList& args )
-    { args_ = args; }
+    void setArguments( const CommandLineArguments& arguments )
+    { arguments_ = arguments; }
     
     //! arguments
-    const ArgList& args( void ) const
-    { return args_; }
+    const CommandLineArguments& arguments( void ) const
+    { return arguments_; }
 
     //! text conversions pair list
     void initializeConversions( void ) const;
@@ -187,7 +187,7 @@ namespace SERVER
     CommandType command_;
     
     //! arguments
-    ArgList args_;
+    CommandLineArguments arguments_;
     
     //! create command from stream
     friend QTextStream &operator >> ( QTextStream &, ServerCommand& );   

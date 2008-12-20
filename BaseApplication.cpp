@@ -46,7 +46,7 @@ using namespace SERVER;
 using namespace Qt;
 
 //____________________________________________
-BaseApplication::BaseApplication( QObject* parent, ArgList arguments ) :
+BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :
   BaseCoreApplication( parent, arguments )
 { 
   

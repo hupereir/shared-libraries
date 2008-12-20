@@ -104,7 +104,7 @@ ServerCommand::ServerCommand( const QString& command_line ):
       case 0: id_.setName( word ); break;
       case 1: id_.setUser( word ); break;
       case 2: command_ = (CommandType) word.toUInt(); break;
-      default: args_.add( qPrintable( word ) ); break;
+      default: arguments_ << word; break;
     }
     
   }
@@ -124,14 +124,7 @@ ServerCommand::operator QString (void) const
   QStringList words;
   
   words << id().name() << id().user() << QString().setNum(command());
-  
-  // add arguments  
-  for( ArgList::TagList::const_iterator tag_iter = args_.get().begin(); tag_iter != args_.get().end(); tag_iter++ )
-  {
-    if( tag_iter->tag().size() ) words << tag_iter->tag().c_str();
-    for( list<string>::const_iterator opt_iter = tag_iter->options().begin(); opt_iter != tag_iter->options().end(); opt_iter++ )
-    { if( opt_iter->size() ) words << opt_iter->c_str(); }
-  }
+  words << arguments();
     
   QString buffer( words.join( _separator() ) );
   
@@ -140,6 +133,7 @@ ServerCommand::operator QString (void) const
   for( ConversionMap::const_iterator iter = ServerCommand::_conversions().begin(); iter != ServerCommand::_conversions().end(); iter++ ) 
   { buffer = buffer.replace( iter->first, iter->second ); }
   return buffer;
+  
 }
 
 //__________________________________________________

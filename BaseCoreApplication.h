@@ -35,8 +35,9 @@
 #include <QObject>
 
 #include "ApplicationManager.h"
-#include "ArgList.h"
+#include "CommandLineArguments.h"
 #include "Counter.h"
+
 
 //! Main Window singleton object
 class BaseCoreApplication: public QObject
@@ -48,7 +49,7 @@ class BaseCoreApplication: public QObject
   public:
     
   //! constructor
-  BaseCoreApplication( QObject* parent, ArgList arguments = ArgList() ); 
+  BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() ); 
     
   //! destructor
   virtual ~BaseCoreApplication( void );
@@ -73,7 +74,7 @@ class BaseCoreApplication: public QObject
   virtual void _stateChanged( SERVER::ApplicationManager::State );
     
   //! process request from application manager
-  virtual void _processRequest( const ArgList& ) 
+  virtual void _processRequest( const CommandLineArguments& ) 
   {}
   
   private slots:
@@ -84,15 +85,15 @@ class BaseCoreApplication: public QObject
   protected:
     
   //! argument list
-  void _setArguments( ArgList args )
-  { arguments_ = args; }
+  void _setArguments( CommandLineArguments arguments )
+  { arguments_ = arguments; }
   
   //! argument list
-  ArgList& _arguments( void )
+  CommandLineArguments& _arguments( void )
   { return arguments_; }
   
   //! argument list
-  const ArgList& _arguments( void ) const
+  const CommandLineArguments& _arguments( void ) const
   { return arguments_; }
   
   //! realized
@@ -116,7 +117,7 @@ class BaseCoreApplication: public QObject
   SERVER::ApplicationManager* application_manager_;
    
   //! command line arguments
-  ArgList arguments_;
+  CommandLineArguments arguments_;
   
   //! true when Realized Widget has been called.
   bool realized_; 
