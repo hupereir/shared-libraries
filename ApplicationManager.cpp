@@ -497,7 +497,7 @@ bool ApplicationManager::_initializeServer( void )
     Debug::Throw() << "ApplicationManager::_initializeServer - unable to listen to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl; 
     return false;
   } else {
-    Debug::Throw(0) << "ApplicationManager::_initializeServer - listening to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
+    Debug::Throw() << "ApplicationManager::_initializeServer - listening to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
     return true;
   }
   
