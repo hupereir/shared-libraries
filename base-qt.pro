@@ -104,6 +104,7 @@ HEADERS = \
   WindowSizeWatcher.h \
   WinUtil.h \
   X11Util.h \
+  XmlCommandLineArguments.h \
   XmlError.h \
   XmlFileList.h \
   XmlFileRecord.h \
@@ -188,6 +189,7 @@ SOURCES = \
   WinUtil.cpp \
   WindowSizeWatcher.cpp \
   X11Util.cpp \
+  XmlCommandLineArguments.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \
   XmlOption.cpp \

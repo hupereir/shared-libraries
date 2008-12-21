@@ -108,6 +108,7 @@ noinst_HEADERS = \
   WindowSizeWatcher.h \
   WinUtil.h \
   X11Util.h \
+  XmlCommandLineArguments.h \
   XmlError.h \
   XmlFileList.h \
   XmlFileRecord.h \
@@ -194,6 +195,7 @@ libbase_qt_a_SOURCES = \
   WinUtil.cpp \
   WindowSizeWatcher.cpp \
   X11Util.cpp \
+  XmlCommandLineArguments.cpp \
   XmlFileList.cpp \
   XmlFileRecord.cpp \
   XmlOption.cpp \

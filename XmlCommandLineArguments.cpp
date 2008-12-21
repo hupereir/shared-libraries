@@ -23,40 +23,48 @@
 
 
 /*!
-   \file    XmlTimeStamp.cpp
+   \file    XmlCommandLineArguments.cpp
    \brief   Xml interface to time manipulation object
    \author  Hugo Pereira
    \version $Revision$
    \date    $Date$
 */
 
-#include "Debug.h"
-#include "XmlTimeStamp.h"
+#include "XmlCommandLineArguments.h"
+#include "XmlString.h"
 
 using namespace std;
 
-const QString XmlTimeStamp::XML_TIME( "time" );
+const QString XmlCommandLineArguments::XML_ARGUMENT( "c" );
 
 //______________________________________________________
-XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
+XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
 {
-  Debug::Throw( "XmlTimeStamp::XmlTimeStamp" );
   
-  // parse attributes
-  QDomNamedNodeMap attributes( element.attributes() );
-  for( unsigned int i=0; i<attributes.length(); i++ )
+  Debug::Throw( "XmlCommandLineArguments::XmlCommandLineArguments" );
+
+  // parse children elements
+  for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
   {
-    QDomAttr attribute( attributes.item( i ).toAttr() );
-    if( attribute.isNull() ) continue;
-    if( attribute.name() == XML_TIME ) setTime( attribute.value().toUInt() );
+    QDomElement child_element = child_node.toElement();
+    if( child_element.isNull() ) continue;
+
+    if( child_element.tagName() == XML_ARGUMENT ) { push_back( XmlString( child_element.text() ).toText() ); }
+    else Debug::Throw() << "XmlCommandLineArguments::XmlCommandLineArguments - unrecognized child: " << qPrintable( child_element.tagName() ) << endl;
+  
   }
+  
 };
 
 //_______________________________________________________
-QDomElement XmlTimeStamp::domElement( const QString& name, QDomDocument& document ) const
+QDomElement XmlCommandLineArguments::domElement( const QString& name, QDomDocument& parent ) const
 {
-  Debug::Throw( "XmlTimeStamp::domElement" );
-  QDomElement out( document.createElement( name ) );
-  out.setAttribute( XML_TIME, QString().setNum( unixTime() ) );
+  QDomElement out( parent.createElement( name ) );
+  for( const_iterator iter = begin(); iter != end(); iter++ )
+  {
+    out.
+      appendChild( parent.createElement( XML_ARGUMENT ) ).
+      appendChild( parent.createTextNode( XmlString( *iter ).toXml() ) );
+  }
   return out;  
 }

@@ -1,3 +1,6 @@
+#ifndef XmlCommandLineArguments_h
+#define XmlCommandLineArguments_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,42 +24,48 @@
 *                         
 *******************************************************************************/
 
-
 /*!
-   \file    XmlTimeStamp.cpp
-   \brief   Xml interface to time manipulation object
-   \author  Hugo Pereira
+   \file XmlCommandLineArguments.h
+   \brief Xml interface to time manipulation object
+   \author Hugo Pereira
    \version $Revision$
-   \date    $Date$
+   \date $Date$
 */
 
-#include "Debug.h"
-#include "XmlTimeStamp.h"
+#include <QDomDocument>
+#include <QDomElement>
+#include <QString>
 
-using namespace std;
+#include "CommandLineArguments.h"
 
-const QString XmlTimeStamp::XML_TIME( "time" );
+/*!
+   \class XmlCommandLineArguments
+   \brief Xml interface to time manipulation object
+*/
 
-//______________________________________________________
-XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
+class XmlCommandLineArguments:public CommandLineArguments 
 {
-  Debug::Throw( "XmlTimeStamp::XmlTimeStamp" );
+
+  public:
   
-  // parse attributes
-  QDomNamedNodeMap attributes( element.attributes() );
-  for( unsigned int i=0; i<attributes.length(); i++ )
-  {
-    QDomAttr attribute( attributes.item( i ).toAttr() );
-    if( attribute.isNull() ) continue;
-    if( attribute.name() == XML_TIME ) setTime( attribute.value().toUInt() );
-  }
+  //! empty creator
+  XmlCommandLineArguments( void )
+  {}
+    
+  //! creator from DOM
+  XmlCommandLineArguments( const QDomElement& );
+  
+  //! create from CommandLineArguments
+  XmlCommandLineArguments( const CommandLineArguments& stamp ):
+    CommandLineArguments( stamp )
+  {}
+  
+  //! get DOM element
+  QDomElement domElement( const QString&, QDomDocument& ) const;
+  
+  //! XML XmlCommandLineArguments keyword
+  static const QString XML_ARGUMENT;
+
 };
 
-//_______________________________________________________
-QDomElement XmlTimeStamp::domElement( const QString& name, QDomDocument& document ) const
-{
-  Debug::Throw( "XmlTimeStamp::domElement" );
-  QDomElement out( document.createElement( name ) );
-  out.setAttribute( XML_TIME, QString().setNum( unixTime() ) );
-  return out;  
-}
+#endif
