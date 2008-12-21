@@ -32,6 +32,10 @@
    \date    $Date$
 */
 
+#include <QDomDocument>
+#include <QDomElement>
+#include <QTextStream>
+
 #include <iostream>
 #include <QString>
 
@@ -51,15 +55,14 @@ namespace SERVER
     public:
     
     //! constructor
-    ApplicationId( 
-      const QString& name = "", 
-      const QString& user = "",
-      const QString& display = "" ):
-      Counter( "ApplicationId" ),
-      name_( name ),
-      user_( user + QString("@")+display )
-    {};
+    ApplicationId( const QString& name = "", const QString& user = "", const QString& display = "" );
       
+    //! constructor
+    ApplicationId( const QDomElement& );
+    
+    //! dom element
+    QDomElement domElement( QDomDocument& ) const;
+    
     //! name
     const QString& name( void ) const
     { return name_; }
@@ -69,18 +72,10 @@ namespace SERVER
     { name_ = value; }
 
     //! short name
-    QString userName( void ) const
-    {
-      int position( user_.indexOf( "@" ) );
-      return (position < 0 ) ? user_ : user_.left(position);
-    }
+    QString userName( void ) const;
 
     //! short name
-    QString display( void ) const
-    {
-      int position( user_.indexOf( "@" ) );
-      return (position < 0 ) ? "" : user_.mid(position+1 );
-    }
+    QString display( void ) const;
     
     //! user
     const QString& user( void ) const

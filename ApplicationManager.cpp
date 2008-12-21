@@ -451,23 +451,22 @@ void ApplicationManager::_process( void )
     // if client awaits reply and connection is refused, 
     if( state_ == AWAITING_REPLY && command.command() == ServerCommand::DENIED ) 
     {
-      setState( DEAD );
       timer_.stop();
+      setState( DEAD );
       continue;
     }
   
     // client is alive and recieved an ABORT command.
     if( state_ == ALIVE && command.command() == ServerCommand::ABORT ) 
     {
-      setState( DEAD );
       timer_.stop();
+      setState( DEAD );
       continue;
     }
    
     // if client awaits reply and connection is accepted, stay alive
     if( state_ == AWAITING_REPLY && command.command() == ServerCommand::ACCEPTED ) 
     {
-      Debug::Throw() << "Application::_process - accepted" << endl;
       timer_.stop();
       setState( ALIVE );
       continue;
@@ -488,14 +487,7 @@ bool ApplicationManager::_initializeServer( void )
   _setServerInitialized( true );
   
   // connect server to port
-  if( !_server().listen( _host(), _port() ) ) 
-  { 
-    Debug::Throw() << "ApplicationManager::_initializeServer - unable to listen to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl; 
-    return false;
-  } else {
-    Debug::Throw() << "ApplicationManager::_initializeServer - listening to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
-    return true;
-  }
+  return _server().listen( _host(), _port() );
   
 }
 

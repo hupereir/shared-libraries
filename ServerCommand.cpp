@@ -33,6 +33,8 @@
 
 #include "Debug.h"
 #include "ServerCommand.h"
+#include "ServerXmlDef.h"
+#include "XmlCommandLineArguments.h"
 
 using namespace std;
 using namespace SERVER;
@@ -114,6 +116,57 @@ ServerCommand::ServerCommand( const QString& command_line ):
     
   return;
   
+}
+
+//___________________________________________
+ServerCommand::ServerCommand( const QDomElement& element ):
+  Counter( "ServerCommand" ),
+  timestamp_( TimeStamp::now() ),
+  command_( NONE )
+{
+  
+  Debug::Throw( "ServerCommand::ServerCommand (dom).\n" );
+  
+  // parse attributes
+  QDomNamedNodeMap attributes( element.attributes() );
+  for( unsigned int i=0; i<attributes.length(); i++ )
+  {
+    QDomAttr attribute( attributes.item( i ).toAttr() );
+    if( attribute.isNull() ) continue;
+    if( attribute.name() == SERVER_XML::TYPE ) setCommand( (CommandType) attribute.value().toUInt() );
+    else Debug::Throw(0) << "ServerCommand::ServerCommand - unrecognized attribute: " << qPrintable( attribute.name() ) << endl;
+  }
+  
+  // loop over children
+  // parse children elements
+  for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
+  {
+    QDomElement child_element = child_node.toElement();
+    if( child_element.isNull() ) continue;
+    QString tag_name( child_element.tagName() );
+    if( tag_name == SERVER_XML::ID ) setId( ApplicationId( child_element ) );
+    else if( tag_name == SERVER_XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) ); 
+  }
+  
+}
+
+//__________________________________________________
+QDomElement ServerCommand::domElement( QDomDocument& document ) const
+{
+
+  Debug::Throw( "ServerCommand::domElement.\n" );
+  QDomElement out( document.createElement( SERVER_XML::COMMAND ) );
+  
+  // type
+  out.setAttribute( SERVER_XML::TYPE, QString().setNum( command() ) );
+  
+  // id
+  out.appendChild( id().domElement( document ) );
+  
+  // arguments
+  if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( SERVER_XML::ARGUMENTS, document ) );
+  return out;  
+
 }
 
 //__________________________________________________

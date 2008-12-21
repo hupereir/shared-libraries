@@ -32,11 +32,13 @@
    \date    $Date$
 */
 
+#include <QDomElement>
+#include <QDomDocument>
+#include <QString>
 #include <QTextStream>
 #include <iostream>
 #include <list>
 #include <map>
-#include <string>
 
 #include "ApplicationId.h"
 #include "CommandLineArguments.h"  
@@ -78,7 +80,7 @@ namespace SERVER
     
     //! constructor
     ServerCommand( const QString& buffer = "" );
-  
+      
     //! constructor
     ServerCommand( 
       const ApplicationId& id,
@@ -89,6 +91,12 @@ namespace SERVER
       command_( command )
     { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
   
+    //! constructor
+    ServerCommand( const QDomElement& );
+
+    //! dom element
+    QDomElement domElement( QDomDocument& ) const;
+    
     //! equal-to operator 
     bool operator == ( const ServerCommand& command ) const
     { 

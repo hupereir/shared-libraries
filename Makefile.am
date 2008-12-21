@@ -18,11 +18,13 @@ noinst_HEADERS = \
   BaseCoreApplication.h \
   Client.h \
   ServerCommand.h \
-  ServerConfiguration.h
+  ServerConfiguration.h \
+  ServerXmlDef.h
 
 noinst_LIBRARIES = libbase-server.a
 
 libbase_server_a_SOURCES = \
+  ApplicationId.cpp \
   ApplicationManager.cpp \
   BaseApplication.cpp \
   BaseCoreApplication.cpp \
