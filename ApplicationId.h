@@ -72,7 +72,7 @@ namespace SERVER
     QString userName( void ) const
     {
       int position( user_.indexOf( "@" ) );
-      return (position < 9 ) ? user_ : user_.left(position);
+      return (position < 0 ) ? user_ : user_.left(position);
     }
 
     //! short name

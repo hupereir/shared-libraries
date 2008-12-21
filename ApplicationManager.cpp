@@ -202,7 +202,7 @@ Client* ApplicationManager::_register( const ApplicationId& id, Client* client, 
 void ApplicationManager::_redirect( QString message, Client* sender )
 {
   
-  Debug::Throw() << "ApplicationManager::_redirect - message: " << qPrintable( message ) << endl;    
+  Debug::Throw() << "ApplicationManager::_redirect - message: \"" << qPrintable( message ) << "\"" << endl;    
 
   // parse message
   QTextStream in( &message, QIODevice::ReadOnly );
@@ -233,7 +233,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
         _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
                 
       } else if( parser.hasFlag( "--replace" ) ) {
-         
+                 
         // tell existing client to die
         ServerCommand abort_command( command.id(), ServerCommand::ABORT );
         existing_client->sendCommand( abort_command );     
@@ -261,9 +261,6 @@ void ApplicationManager::_redirect( QString message, Client* sender )
         // tell existing client to raise itself
         ServerCommand raise_command( command.id(), ServerCommand::RAISE );
         raise_command.setArguments( command.arguments() );
-        
-        Debug::Throw() << "ApplicationManager::_redirect - command: " << qPrintable( QString( raise_command ) ) << endl;
-        
         existing_client->sendCommand( raise_command ); 
                
       }
@@ -303,8 +300,7 @@ void ApplicationManager::_redirect( QString message, Client* sender )
 void ApplicationManager::_broadcast( QString message, Client* sender )
 {
   
-  Debug::Throw() << "ApplicationManager::_Broadcast - message: " << qPrintable( message ) << endl;
-  
+  Debug::Throw() << "ApplicationManager::_Broadcast - message: " << qPrintable( message ) << endl;  
   for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
   { if( (*iter) != sender ) (*iter)->sendCommand( message ); }
   

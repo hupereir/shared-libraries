@@ -60,16 +60,16 @@ namespace SERVER
     //! command type
     enum CommandType
     {
-      NONE,
-      ACCEPTED,
-      ALIVE,
-      DENIED,
-      ABORT,
-      IDENTIFY,
-      IDENTIFY_SERVER,
-      KILLED,
-      RAISE,
-      REQUEST,
+      NONE,// 0
+      ACCEPTED,// 1
+      ALIVE,// 2
+      DENIED,// 3
+      ABORT,// 4
+      IDENTIFY,// 5
+      IDENTIFY_SERVER,// 6
+      KILLED,// 7
+      RAISE,// 8
+      REQUEST,// 9
       UNLOCK
     };
       
