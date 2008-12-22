@@ -39,33 +39,11 @@
 using namespace std;
 using namespace SERVER;
 
-//___________________________________________
-const QString& ServerCommand::_separator( void )
-{
-  static const QString sep( "::" );
-  return sep;
-}
-
-//__________________________________________________________________
-ServerCommand::ConversionMap& ServerCommand::_conversions( void )
-{
-  static ConversionMap conversions;
-  return conversions;
-}
-
 //__________________________________________________________________
 ServerCommand::CommandMap& ServerCommand::_commandNames( void )
 {
   static CommandMap names;
   return names;
-}
-
-//___________________________________________
-void ServerCommand::initializeConversions( void ) const
-{
-  if( !_conversions().empty() ) return;
-  _conversions().insert( std::make_pair( " ", "SERVER_SPACE" ) );
-  return;
 }
 
 //_________________________________________
@@ -86,42 +64,19 @@ void ServerCommand::_initializeCommandNames( void ) const
 }
 
 //___________________________________________
-ServerCommand::ServerCommand( const QString& command_line ):
+ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& command ):
   Counter( "ServerCommand" ),
   timestamp_( TimeStamp::now() ),
-  command_( NONE )
-{
-  
-  Debug::Throw( "ServerCommand::ServerCommand.\n" );
-  
-  // split
-  QStringList words( command_line.split( _separator() ) );
-  
-  // loop over words
-  for( int index = 0; index < words.size(); index++ )
-  {
-    QString word( words[index] );
-    switch ( index )
-    {
-      case 0: id_.setName( word ); break;
-      case 1: id_.setUser( word ); break;
-      case 2: command_ = (CommandType) word.toUInt(); break;
-      default: arguments_ << word; break;
-    }
+  client_id_( 0 ),
+  id_( id ),
+  command_( command )
+{ Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
     
-  }
-  
-  Debug::Throw() << "ServerCommand::ServerCommand - id=" << id() << endl;
-  Debug::Throw() << "ServerCommand::ServerCommand - command=" << qPrintable( commandName() ) << endl;
-    
-  return;
-  
-}
-
 //___________________________________________
 ServerCommand::ServerCommand( const QDomElement& element ):
   Counter( "ServerCommand" ),
   timestamp_( TimeStamp::now() ),
+  client_id_( 0 ),
   command_( NONE )
 {
   
@@ -168,59 +123,3 @@ QDomElement ServerCommand::domElement( QDomDocument& document ) const
   return out;  
 
 }
-
-//__________________________________________________
-ServerCommand::operator QString (void) const
-{
-  Debug::Throw( "ServerCommand::operator (string).\n" );
-  if( !id().isValid() ) return "";
-  QStringList words;
-  
-  words << id().name() << id().user() << QString().setNum(command());
-  words << arguments();
-    
-  QString buffer( words.join( _separator() ) );
-  
-  // apply conversion
-  initializeConversions();
-  for( ConversionMap::const_iterator iter = ServerCommand::_conversions().begin(); iter != ServerCommand::_conversions().end(); iter++ ) 
-  { buffer = buffer.replace( iter->first, iter->second ); }
-  return buffer;
-  
-}
-
-//__________________________________________________
-//! create command from stream
-namespace SERVER {
-
-  //__________________________________________________
-  QTextStream & operator >> ( QTextStream& in, ServerCommand & command )
-  {
-    
-    QString buffer;
-    in >> buffer;
-    
-    // apply conversion
-    command.initializeConversions();
-    for( 
-      ServerCommand::ConversionMap::const_iterator iter = ServerCommand::_conversions().begin();
-      iter != ServerCommand::_conversions().end();
-      iter++
-    ) { buffer = buffer.replace( iter->second, iter->first ); }
-    
-    command = ServerCommand( buffer );
-    return in;
-    
-  }
-    
-  //__________________________________________________
-  //! dump command to stream
-  QTextStream & operator << ( QTextStream& out, const ServerCommand &command )
-  {
-    
-    out << QString( command );
-    return out;
-    
-  }
-
-};

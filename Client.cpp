@@ -35,17 +35,26 @@
 #include "Client.h"
 #include "Debug.h"
 #include "IOString.h"
+#include "ServerXmlDef.h"
+#include "XmlError.h"
 
 using namespace std;
 using namespace SERVER;
 
 
 //_______________________________________________________
+unsigned int& Client::_counter( void )
+{
+  static unsigned int counter( 0 );
+  return counter;
+}
+
+//_______________________________________________________
 Client::Client( QObject* parent, QTcpSocket* socket ):
   QObject( parent ),
   Counter( "Client" ),
-  socket_( socket ),
-  has_message_( false )
+  id_( _counter()++ ),
+  socket_( socket )
 {
   Debug::Throw( "Client::Client.\n" );
   assert( socket );
@@ -61,7 +70,6 @@ Client::~Client( void )
 bool Client::sendCommand( const ServerCommand& command )
 {
   
-  Debug::Throw() << "Client::sendCommand - " << qPrintable( QString( command ) ) << endl;
   commands_.push_back( command );
   if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
   return true;
@@ -69,24 +77,21 @@ bool Client::sendCommand( const ServerCommand& command )
 }
 
 //_______________________________________________________
-void Client::reset( void )
-{
-  Debug::Throw( "Client::reset.\n" );
-  has_message_ = false;
-}
-
-//_______________________________________________________
 void Client::_sendCommands( void )
 {
 
-  Debug::Throw( "Client::_sendCommands.\n" );
+  if( commands_.empty() ) return;
+  
+  QDomDocument document;
+  QDomElement top = document.appendChild( document.createElement( SERVER_XML::TRANSMISSION ) ).toElement();
   while( commands_.size() && socket().state() == QAbstractSocket::ConnectedState )
   {
-    QString message( commands_.front() );
-    QTextStream os( &socket() );
-    os << message << endl;
+    top.appendChild( commands_.front().domElement( document ) );
     commands_.pop_front();
   }
+  
+  QTextStream os( &socket() );
+  os << document.toString() << endl;
   
 }
 
@@ -94,15 +99,61 @@ void Client::_sendCommands( void )
 bool Client::_readMessage( void )
 {
 
-  Debug::Throw( "Client::_readMessage.\n" );
-
   // read everything from socket and store as message
-  message_ = IOString( socket() );  
-  if( message_.isEmpty() ) return false;
+  IOString message( socket() );
+  if( message.isEmpty() ) return false;
   
-  // store message and emit signal
-  has_message_ = true;
-  emit messageAvailable();  
+  // add to buffer
+  buffer_.append( message );
+  
+  // parse buffer
+  static const QString begin_tag = (QStringList() << "<" << SERVER_XML::TRANSMISSION << ">" ).join("");
+  static const QString end_tag = (QStringList() << "</" << SERVER_XML::TRANSMISSION << ">" ).join("");
+
+  while(1)
+  {
+    
+    // get first tag
+    int begin_position( _messageBuffer().text().indexOf( begin_tag, _messageBuffer().position() ) );
+    if( begin_position < 0 ) break;
+    
+    // get end tag
+    int end_position( _messageBuffer().text().indexOf( end_tag, begin_position+begin_tag.size() ) );
+    if( end_position < 0 ) break;
+    
+    // create QDomDocument
+    QString local( _messageBuffer().text().mid( begin_position, end_position+end_tag.size()-begin_position ) );
+    
+    // create document
+    QDomDocument document;
+    XmlError error; 
+    if ( !document.setContent( local, &error.error(), &error.line(), &error.column() ) ) { Debug::Throw() << error << endl; }
+    else {
+      
+      // parse document 
+      QDomElement doc_element = document.documentElement();
+      assert( doc_element.tagName() == SERVER_XML::TRANSMISSION );
+      
+      for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
+      {
+        QDomElement element = node.toElement();
+        if( element.isNull() ) continue;
+        if( element.tagName() == SERVER_XML::COMMAND ) {
+
+          ServerCommand command( element );
+          emit commandAvailable( command.setClientId( id() ) );
+          
+        } else { cout << "ServerCommand::_readMessage - unrecognized tagname: " << qPrintable( element.tagName() ) << endl; }
+        
+      }
+      
+    }
+    
+    // flush buffer
+    _messageBuffer().flush( end_position+end_tag.size() );
+      
+  }
+  
   return true;
   
 }

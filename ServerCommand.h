@@ -62,34 +62,24 @@ namespace SERVER
     //! command type
     enum CommandType
     {
-      NONE,// 0
-      ACCEPTED,// 1
-      ALIVE,// 2
-      DENIED,// 3
-      ABORT,// 4
-      IDENTIFY,// 5
-      IDENTIFY_SERVER,// 6
-      KILLED,// 7
-      RAISE,// 8
-      REQUEST,// 9
+      NONE,
+      ACCEPTED,
+      ALIVE,
+      DENIED,
+      ABORT,
+      IDENTIFY,
+      IDENTIFY_SERVER,
+      KILLED,
+      RAISE,
+      REQUEST,
       UNLOCK
     };
       
     //! list
     typedef std::list<ServerCommand> List;
-    
-    //! constructor
-    ServerCommand( const QString& buffer = "" );
       
     //! constructor
-    ServerCommand( 
-      const ApplicationId& id,
-      const CommandType& command = NONE ):
-      Counter( "ServerCommand" ),
-      timestamp_( TimeStamp::now() ),
-      id_( id ),
-      command_( command )
-    { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
+    ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = NONE );
   
     //! constructor
     ServerCommand( const QDomElement& );
@@ -121,12 +111,20 @@ namespace SERVER
     bool isChild( const ServerCommand& command ) const
     { return timeStamp() >= command.timeStamp() && id() == command.id(); }
     
-    //! convert to a string
-    operator QString( void ) const;    
-    
     //! time stamp
     const TimeStamp& timeStamp( void ) const
     { return timestamp_; }
+    
+    //! client id
+    const unsigned int& clientId( void ) const
+    { return client_id_; }
+    
+    //! client id
+    ServerCommand& setClientId( unsigned int value )
+    { 
+      client_id_ = value;
+      return *this;
+    }
     
     //! application id
     const ApplicationId& id( void ) const
@@ -159,9 +157,6 @@ namespace SERVER
     const CommandLineArguments& arguments( void ) const
     { return arguments_; }
 
-    //! text conversions pair list
-    void initializeConversions( void ) const;
-    
     private:
     
     //! command names
@@ -169,15 +164,6 @@ namespace SERVER
     
     //! command names
     static CommandMap& _commandNames( void );
-    
-    //! text conversion pair type
-    typedef std::map<QString, QString> ConversionMap;
-      
-    //! text conversion pair list
-    static ConversionMap& _conversions( void );
-
-    //! separator
-    static const QString& _separator( void );    
 
     //! map command types to names
     void _initializeCommandNames( void ) const;
@@ -185,23 +171,17 @@ namespace SERVER
     //! time stamp
     TimeStamp timestamp_;
     
+    //! client id
+    unsigned int client_id_;
+    
     //! application id
     ApplicationId id_;
-    
-    //! user name
-    QString user_;
     
     //! command
     CommandType command_;
     
     //! arguments
     CommandLineArguments arguments_;
-    
-    //! create command from stream
-    friend QTextStream &operator >> ( QTextStream &, ServerCommand& );   
-
-    //! dump command to stream
-    friend QTextStream & operator<< ( QTextStream &, const ServerCommand& );
         
   };
 };

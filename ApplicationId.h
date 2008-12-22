@@ -34,9 +34,6 @@
 
 #include <QDomDocument>
 #include <QDomElement>
-#include <QTextStream>
-
-#include <iostream>
 #include <QString>
 
 #include "Counter.h"
@@ -117,20 +114,6 @@ namespace SERVER
     //! application user
     QString user_;
     
-    //! streamer
-    friend std::ostream& operator << ( std::ostream& out, const ApplicationId& id )
-    { 
-      out << qPrintable( id.name() ) << " (" << qPrintable( id.user() ) << ")";
-      return out;
-    }
-   
-    //! streamer
-    friend QTextStream& operator << ( QTextStream& out, const ApplicationId& id )
-    { 
-      out << qPrintable( id.name() ) << " (" << qPrintable( id.user() ) << ")";
-      return out;
-    }
-
   };
 };
 

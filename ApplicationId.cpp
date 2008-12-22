@@ -55,7 +55,7 @@ ApplicationId::ApplicationId( const QDomElement& element ):
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    if( attribute.name() == SERVER_XML::NAME ) setUser( attribute.value() );
+    if( attribute.name() == SERVER_XML::USER ) setUser( attribute.value() );
     else if( attribute.name() == SERVER_XML::NAME ) setName( attribute.value() );
     else Debug::Throw() << "ApplicationId::ApplicationId - unrecognized attribute " << qPrintable( attribute.name() ) << endl;
   }

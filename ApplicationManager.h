@@ -187,10 +187,10 @@ namespace SERVER
     virtual Client* _register( const ApplicationId& id, Client* client, bool forced = false );
 
     //! redirect message 
-    virtual void _redirect( QString message, Client* sender );
+    virtual void _redirect( ServerCommand, Client* );
     
     //! broadcast a message to all registered clients but the sender (if valid)
-    virtual void _broadcast( QString message, Client* sender = 0 );
+    virtual void _broadcast( ServerCommand, Client* sender = 0 );
 
     protected slots:
     
@@ -207,11 +207,14 @@ namespace SERVER
     virtual void _error( QAbstractSocket::SocketError );
     
     //! redistribute message when a connected client sends one
-    virtual void _redirect( void );
+    virtual void _redirect( SERVER::ServerCommand );
         
     //! reads signal from server
-    void _process( void );
-  
+    void _process( SERVER::ServerCommand );
+
+    //! start timeout
+    void _startTimer( void );
+    
     private:
     
     //! host

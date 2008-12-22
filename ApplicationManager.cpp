@@ -61,14 +61,15 @@ ApplicationManager::ApplicationManager( QObject* parent ):
 
   // create new socket
   connect( &client().socket(), SIGNAL( error( QAbstractSocket::SocketError ) ), SLOT( _error( QAbstractSocket::SocketError ) ) );
+  connect( &client().socket(), SIGNAL( connected() ), SLOT( _startTimer() ) );
   connect( &client().socket(), SIGNAL( disconnected() ), SLOT( _serverConnectionClosed() ) );
-  connect( &client(), SIGNAL( messageAvailable() ), SLOT( _process() ) );
+  connect( &client(), SIGNAL( commandAvailable( SERVER::ServerCommand ) ), SLOT( _process( SERVER::ServerCommand ) ) );
 
   if( !XmlOptions::get().find( "SERVER_HOST" ) )
   { XmlOptions::get().set( "SERVER_HOST", Option( qPrintable( QHostAddress( QHostAddress::LocalHost ).toString() ), "default port" ) ); }
 
   if( !XmlOptions::get().find( "SERVER_PORT" ) )
-  { XmlOptions::get().set( "SERVER_PORT", Option( "8082" ), "default port" ); }
+  { XmlOptions::get().set( "SERVER_PORT", Option( "8090" ), "default port" ); }
 
 }
 
@@ -161,14 +162,18 @@ void ApplicationManager::timerEvent(QTimerEvent *event)
     Debug::Throw( "ApplicationManager::timerEvent.\n" );
     timer_.stop();
     
-    if( state_ == AWAITING_REPLY )
-    {
-      if( !_serverInitialized() )
-      {
-        _initializeServer();
-        _initializeClient();
-      } else setState( ALIVE );
-    }
+    // the timer is triggered only when the client is connected
+    // its expiration means it could not recieve acceptation/denial
+    // from the server it is connected to.
+    // the application is then set to ALIVE
+    if( state_ == AWAITING_REPLY ) setState( ALIVE );
+//     {
+//       if( !_serverInitialized() )
+//       {
+//         _initializeServer();
+//         _initializeClient();
+//       } else setState( ALIVE );
+//     }
     
   }
 
@@ -199,110 +204,102 @@ Client* ApplicationManager::_register( const ApplicationId& id, Client* client, 
 }
 
 //_____________________________________________________
-void ApplicationManager::_redirect( QString message, Client* sender )
+void ApplicationManager::_redirect( ServerCommand command, Client* sender )
 {
   
-  Debug::Throw() << "ApplicationManager::_redirect - message: \"" << qPrintable( message ) << "\"" << endl;    
+  Debug::Throw() << "ApplicationManager::_redirect -" 
+    << "  app:" << qPrintable( command.id().name() ) 
+    << " command: " << qPrintable( command.commandName() )  
+    << endl;    
 
-  // parse message
-  QTextStream in( &message, QIODevice::ReadOnly );
-  while( in.status() == QTextStream::Ok ) 
+  CommandLineParser parser( commandLineParser( command.arguments() ) );
+  if( command.command() == ServerCommand::UNLOCK ) 
   {
     
-    ServerCommand command;
-    in >> command;
-    if( !command.id().isValid() ) continue;
-
-    CommandLineParser parser( commandLineParser( command.arguments() ) );
-    if( command.command() == ServerCommand::UNLOCK ) 
-    {
-      
-      // unlock request. Clear list of registered applications
-      accepted_clients_.clear();
-      continue;
-      
-    } else if( command.command() == ServerCommand::REQUEST ) {
-      
-      // server request 
-      Client *existing_client = _register( command.id(), sender );
-      
-      if( sender == existing_client ) { 
-
-        // tell client it is accepted
-        sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
-        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
-                
-      } else if( parser.hasFlag( "--replace" ) ) {
-                 
-        // tell existing client to die
-        ServerCommand abort_command( command.id(), ServerCommand::ABORT );
-        existing_client->sendCommand( abort_command );     
-        _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
-        
-        // tell new client it is accepted   
-        sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
-        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
-        _register( command.id(), sender, true );
-        
-      } else if( parser.hasFlag( "--abort" ) ) {
-
-        // tell existing client to die
-        ServerCommand abort_command( command.id(), ServerCommand::ABORT );
-        existing_client->sendCommand( abort_command );     
-        _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
-        
-        // tell new client it is denied too   
-        sender->sendCommand( ServerCommand( command.id(), ServerCommand::DENIED ) );
-        _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
-        _register( command.id(), sender, true );
-      
-      } else {
-        
-        // tell existing client to raise itself
-        ServerCommand raise_command( command.id(), ServerCommand::RAISE );
-        raise_command.setArguments( command.arguments() );
-        existing_client->sendCommand( raise_command ); 
-               
-      }
-      
-      continue;
-            
-    } else if( command.command() == ServerCommand::ALIVE ) {
- 
-      // client exist and is alive. Deny current
-      _broadcast( ServerCommand( command.id(), ServerCommand::DENIED ) );
+    // unlock request. Clear list of registered applications
+    accepted_clients_.clear();
+    return;
     
-    } else if( command.command() == ServerCommand::IDENTIFY ) {
+  } else if( command.command() == ServerCommand::REQUEST ) {
       
-      /* 
-      identification request. Loop over registered clients
-      send the associated Identity to the sender
-      */
+    // server request 
+    Client *existing_client = _register( command.id(), sender );
+    
+    if( sender == existing_client ) { 
       
-      for( ClientMap::iterator it=accepted_clients_.begin(); it!=accepted_clients_.end(); it++ )
-      { sender->sendCommand( ServerCommand( it->first, ServerCommand::IDENTIFY ) ); }
+      // tell client it is accepted
+      sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
+      _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
       
-      // identify the server
-      sender->sendCommand( ServerCommand( id_, ServerCommand::IDENTIFY_SERVER ) );
+    } else if( parser.hasFlag( "--replace" ) ) {
       
-      continue;
+      // tell existing client to die
+      ServerCommand abort_command( command.id(), ServerCommand::ABORT );
+      existing_client->sendCommand( abort_command );     
+      _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
+      
+      // tell new client it is accepted   
+      sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
+      _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
+      _register( command.id(), sender, true );
+      
+    } else if( parser.hasFlag( "--abort" ) ) {
+      
+      // tell existing client to die
+      ServerCommand abort_command( command.id(), ServerCommand::ABORT );
+      existing_client->sendCommand( abort_command );     
+      _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
+      
+      // tell new client it is denied too   
+      sender->sendCommand( ServerCommand( command.id(), ServerCommand::DENIED ) );
+      _broadcast( ServerCommand( command.id(), ServerCommand::IDENTIFY ), sender );
+      _register( command.id(), sender, true );
+      
+    } else {
+      
+      // tell existing client to raise itself
+      ServerCommand raise_command( command.id(), ServerCommand::RAISE );
+      raise_command.setArguments( command.arguments() );
+      existing_client->sendCommand( raise_command ); 
       
     }
     
-    // redirect unrecognized message to all clients but the sender
-    _broadcast( command, sender );
+    return;
+            
+  } else if( command.command() == ServerCommand::ALIVE ) {
+ 
+    // client exist and is alive. Deny current
+    _broadcast( ServerCommand( command.id(), ServerCommand::DENIED ) );
+    
+  } else if( command.command() == ServerCommand::IDENTIFY ) {
+    
+    /* 
+    identification request. Loop over registered clients
+    send the associated Identity to the sender
+    */
+    
+    for( ClientMap::iterator it=accepted_clients_.begin(); it!=accepted_clients_.end(); it++ )
+    { sender->sendCommand( ServerCommand( it->first, ServerCommand::IDENTIFY ) ); }
+    
+    // identify the server
+    sender->sendCommand( ServerCommand( id_, ServerCommand::IDENTIFY_SERVER ) );
+    
+    return;
     
   }
-
+    
+  // redirect unrecognized message to all clients but the sender
+  _broadcast( command, sender );
+    
 }
 
 //_____________________________________________________
-void ApplicationManager::_broadcast( QString message, Client* sender )
+void ApplicationManager::_broadcast( ServerCommand command, Client* sender )
 {
   
-  Debug::Throw() << "ApplicationManager::_Broadcast - message: " << qPrintable( message ) << endl;  
+  Debug::Throw() << "ApplicationManager::_Broadcast - id: " << qPrintable( command.id().name() ) << " command: " << qPrintable( command.commandName() ) << endl;
   for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
-  { if( (*iter) != sender ) (*iter)->sendCommand( message ); }
+  { if( (*iter) != sender ) (*iter)->sendCommand( command ); }
   
 }
 
@@ -316,7 +313,7 @@ void ApplicationManager::_newConnection()
   
   // create client from pending connection 
   Client *client( new Client( this, _server().nextPendingConnection() ) );
-  connect( client, SIGNAL( messageAvailable() ), SLOT( _redirect() ) );
+  connect( client, SIGNAL( commandAvailable( SERVER::ServerCommand ) ), SLOT( _redirect( SERVER::ServerCommand ) ) );
   connect( &client->socket(), SIGNAL( disconnected() ), SLOT( _clientConnectionClosed() ) );
   _connectedClients().push_back( client );
   
@@ -394,84 +391,68 @@ void ApplicationManager::_error( QAbstractSocket::SocketError error )
 }
 
 //_____________________________________________________
-void ApplicationManager::_redirect( void )
+void ApplicationManager::_redirect( ServerCommand command )
 {
   
   Debug::Throw( "Application::_redirect.\n" );
 
-  ClientList::iterator iter;
-  while( ( iter = find_if(  _connectedClients().begin(), _connectedClients().end(), Client::HasMessageFTor() ) ) != _connectedClients().end() )
-  { 
-    assert( (*iter)->hasMessage() );
-    QString message( (*iter)->message() );
-    (*iter)->reset();
-    
-    _redirect( message, *iter );
-  }
-
+  ClientList::iterator iter( find_if(  _connectedClients().begin(), _connectedClients().end(), Client::SameIdFTor( command.clientId() ) ) );
+  assert( iter != _connectedClients().end() );
+  _redirect( command, *iter );
+  
   return;
 }
 
 
 //_____________________________________________________
-void ApplicationManager::_process( void )
+void ApplicationManager::_process( ServerCommand command )
 {
   
-  Debug::Throw( "Application::_process.\n" );
-  
-  assert( client().hasMessage() );
-  
-  // retrieve message and reset
-  QString message( client().message() );
-  client().reset();
-  
-  QTextStream in( &message, QIODevice::ReadOnly );
-  while( in.status() == QTextStream::Ok ) 
+  Debug::Throw() << "ApplicationManager::_process -"
+    << "  app:" << qPrintable( command.id().name() ) 
+    << " command: " << qPrintable( command.commandName() )  
+    << endl;    
+
+  assert( client().id() == command.clientId() );
+          
+  // check command id is valid
+  if( !command.id().isValid() ) return;
+    
+  // check id match
+  if( !( command.id() == id() ) ) return; 
+    
+  // if client is alive and message is matching server_request, send server_exist
+  if( state_ == ALIVE && ( command.command() == ServerCommand::RAISE ) ) 
   {
-    
-    ServerCommand command;
-    in >> command;
-        
-    // check command id is valid
-    if( !command.id().isValid() ) continue;
-    
-    // check id match
-    if( !( command.id() == id() ) ) continue; 
-    
-    // if client is alive and message is matching server_request, send server_exist
-    if( state_ == ALIVE && ( command.command() == ServerCommand::RAISE ) ) 
-    {
       
-      client().sendCommand( ServerCommand( id_, ServerCommand::ALIVE ) );
-      emit serverRequest( command.arguments() );
-      continue;
+    client().sendCommand( ServerCommand( id_, ServerCommand::ALIVE ) );
+    emit serverRequest( command.arguments() );
+    return;
     
-    }
+  }
   
-    // if client awaits reply and connection is refused, 
-    if( state_ == AWAITING_REPLY && command.command() == ServerCommand::DENIED ) 
-    {
-      timer_.stop();
-      setState( DEAD );
-      continue;
-    }
+  // if client awaits reply and connection is refused, 
+  if( state_ == AWAITING_REPLY && command.command() == ServerCommand::DENIED ) 
+  {
+    timer_.stop();
+    setState( DEAD );
+    return;
+  }
   
-    // client is alive and recieved an ABORT command.
-    if( state_ == ALIVE && command.command() == ServerCommand::ABORT ) 
-    {
-      timer_.stop();
-      setState( DEAD );
-      continue;
-    }
-   
-    // if client awaits reply and connection is accepted, stay alive
-    if( state_ == AWAITING_REPLY && command.command() == ServerCommand::ACCEPTED ) 
-    {
-      timer_.stop();
-      setState( ALIVE );
-      continue;
-    }
- 
+  // client is alive and recieved an ABORT command.
+  if( state_ == ALIVE && command.command() == ServerCommand::ABORT ) 
+  {
+    timer_.stop();
+    setState( DEAD );
+    return;
+  }
+  
+  // if client awaits reply and connection is accepted, stay alive
+  if( state_ == AWAITING_REPLY && command.command() == ServerCommand::ACCEPTED ) 
+  {
+    timer_.stop();
+    setState( ALIVE );
+    return;
   }
   
   return;
@@ -512,15 +493,19 @@ bool ApplicationManager::_initializeClient( void )
   
   // add command line arguments if any
   command.setArguments( _arguments() );
-  Debug::Throw() << "ApplicationManager::_initializeClient - " << qPrintable( QString( command ) ) << endl;
   
   // send request command
   client().sendCommand( command );
     
-  // time out delay (for existing server to reply)
-  int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 ); 
-  timer_.start( timeout_delay, this );
-
   return true;
   
+}
+
+//__________________________________________________________________________
+void ApplicationManager::_startTimer( void )
+{
+  // time out delay (for existing server to reply)
+  // one should really start the timer only when the client is connected
+  int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 ); 
+  timer_.start( timeout_delay, this );
 }

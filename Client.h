@@ -37,6 +37,7 @@
 #include <list>
 
 #include "Counter.h"
+#include "MessageBuffer.h"
 #include "ServerCommand.h"
 
 namespace SERVER
@@ -60,6 +61,10 @@ namespace SERVER
     //! destructor
     virtual ~Client( void );
 
+    //! id
+    unsigned int id( void ) const
+    { return id_; }
+    
     //! associated socket
     QTcpSocket& socket()
     { return *socket_; }
@@ -70,17 +75,6 @@ namespace SERVER
     
     /*! returns true if message could be sent */
     bool sendCommand( const ServerCommand& );
-    
-    //! true if message is available
-    virtual const bool& hasMessage( void ) const
-    { return has_message_; }
-    
-    //! current message
-    virtual const QString& message( void ) const
-    { return message_; }
-    
-    //! reset
-    virtual void reset( void );
     
     //! used to retrieve clients for a given state
     class SameStateFTor
@@ -107,23 +101,43 @@ namespace SERVER
         
     };
      
-    //! used to retrieve clients with available messages
-    class HasMessageFTor
+    //! used to retrieve client matching id
+    class SameIdFTor
     {
       
       public:
       
+      //! constructor
+      SameIdFTor( unsigned int id ):
+        id_( id )
+        {}
+      
+      //! destructor
+      virtual ~SameIdFTor( void )
+      {}
+      
       //! predicate
-      bool operator() ( const Client* client ) const
-      { return client->hasMessage(); }
+      virtual bool operator() ( const Client* client ) const
+      { return client->id() == id_; }
+        
+      protected:
+      
+      //! prediction
+      unsigned int id_;
       
     };
-
+    
     signals:
     
     //! emitted when a message is available
-    virtual void messageAvailable();
-        
+    virtual void commandAvailable( SERVER::ServerCommand );
+     
+    protected:
+    
+    //! buffer
+    MessageBuffer& _messageBuffer( void )
+    { return buffer_; }
+    
     protected slots:
     
     //! reads messages
@@ -136,20 +150,26 @@ namespace SERVER
     
     private:    
     
+    //! client counter
+    static unsigned int& _counter( void );
+    
+    //! client id
+    unsigned int id_;
+    
     //! parent socket
     QTcpSocket* socket_;
     
-    //! true if has message available
-    bool has_message_;
-    
     //! messages
     typedef std::list< ServerCommand > CommandList;
+   
+    //! commands
     CommandList commands_;
     
-    //! current message
-    QString message_;
+    //! buffer
+    MessageBuffer buffer_;
     
   };
+  
 };
 
 #endif
