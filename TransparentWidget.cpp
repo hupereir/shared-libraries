@@ -126,7 +126,6 @@ void TransparentWidget::moveEvent( QMoveEvent* event )
   
 }
 
-
 //____________________________________________________________________
 void TransparentWidget::resizeEvent( QResizeEvent* event )
 {
