@@ -176,6 +176,8 @@ void TransparentWidget::leaveEvent( QEvent* event )
 void TransparentWidget::paintEvent( QPaintEvent* event )
 {  
   
+  Debug::Throw( "TransparentWidget::paintEvent.\n" );
+  
   #ifdef Q_WS_WIN
   // handle painting on windows with compositing enabled 
   // using a pixmap buffer, to allow true transparency
@@ -192,11 +194,13 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
     _paint( *this, event->rect() );
   }
   
+  Debug::Throw( "TransparentWidget::paintEvent - done.\n" );
 }
 
 //________________________________________________________________________
 void TransparentWidget::_paintBackground( QPaintDevice& device, const QRect& rect )
 {
+  Debug::Throw( "TransparentWidget::_paintBackground.\n" );
   QPainter painter( &device );
   painter.setClipRect( rect );
     
@@ -207,9 +211,11 @@ void TransparentWidget::_paintBackground( QPaintDevice& device, const QRect& rec
   }
   
   if( _backgroundChanged() ) _updateBackgroundPixmap();
-  
+  Debug::Throw( "TransparentWidget::_paintBackground - backgrond updated.\n" );
+
   if( !_backgroundPixmap().isNull() )
   { painter.drawPixmap( TransparentWidget::rect(), _backgroundPixmap(), TransparentWidget::rect() ); }
+  Debug::Throw( "TransparentWidget::_paintBackground - pixmap drawn.\n" );
   
   if( _highlighted() && _highlightColor().isValid() )
   {
@@ -217,8 +223,10 @@ void TransparentWidget::_paintBackground( QPaintDevice& device, const QRect& rec
     painter.setBrush( _highlightColor() );
     painter.drawRect( TransparentWidget::rect() );
   }
+  Debug::Throw( "TransparentWidget::_paintBackground - highlight done.\n" );
   
   painter.end();
+  Debug::Throw( "TransparentWidget::_paintBackground - done.\n" );
 }
 
 //____________________________________________________________________
