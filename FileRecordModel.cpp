@@ -75,7 +75,7 @@ int FileRecordModel::findColumn( const QString& value ) const
 {
   for( unsigned int index = 0; index < column_titles_.size(); index++ )
   { if( column_titles_[index] == value ) return index;  }
-  assert(0);
+  return -1;
 }
 
 //__________________________________________________________________
