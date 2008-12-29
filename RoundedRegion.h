@@ -44,6 +44,7 @@ class RoundedRegion: public QRegion
   //! corners
   enum Corner
   {
+    NONE = 0,
     TOP_LEFT = 1<<0,
     TOP_RIGHT = 1<<1,
     BOTTOM_LEFT  = 1<<2,
@@ -56,7 +57,7 @@ class RoundedRegion: public QRegion
   };  
   
   //! constructor
-  RoundedRegion( QRect, unsigned int corners = ALL );
+  RoundedRegion( QRect, unsigned int corners );
   
 };
 
