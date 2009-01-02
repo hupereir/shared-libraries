@@ -81,6 +81,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   // set connections
   connect( _list().selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
   connect( _list().selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
+  connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _setDefault() ) );
   
   QVBoxLayout* button_layout = new QVBoxLayout();
   button_layout->setMargin(0);
