@@ -108,16 +108,11 @@ BackgroundPixmap::BackgroundPixmap( void )
 QPixmap BackgroundPixmap::pixmap( const QRect& rect ) const
 { 
   
-  Debug::Throw( "BackgroundPixmap::pixmap.\n" );
-  
-  // check background pixmap validity
-  if( background_pixmap_.isNull() ) return QPixmap();
-  
   // rect is contained entirely in background
   if( background_pixmap_.rect().contains( rect ) ) 
   { return background_pixmap_.copy( rect ); }
-    
-  // for 1-pixel pixmaps, just fill the output
+  
+  // for 1pixel pixmaps, just fill the output
   if( background_pixmap_.size() == QSize(1,1) )
   {
     QPixmap pixmap( rect.size() );
@@ -128,7 +123,6 @@ QPixmap BackgroundPixmap::pixmap( const QRect& rect ) const
   // for too small pixmaps, perform tile    
   // compute tile origin
   QRect background_rect( background_pixmap_.rect() );
-  Debug::Throw() << "BackgroundPixmap::pixmap - rect: " << background_pixmap_.width() << "," << background_pixmap_.height() << endl;
   int x_origin( background_rect.left() );
   int y_origin( background_rect.top() );
   while( x_origin > rect.left() ) x_origin -= background_rect.width();
@@ -191,17 +185,8 @@ void BackgroundPixmap::reload( void )
   
   #ifdef Q_WS_X11
   // try load desktop windows ID
-  if( !_loadDesktopWindow() )
-  {
-    Debug::Throw(0) << "BackgroundPixmap::reload - failed to load desktop window" << endl; 
-    emit backgroundChanged();
-    return;
-  }
-  if( !atom_ ) 
-  {
-    Debug::Throw(0) << "BackgroundPixmap::reload - invalid atom" << endl; 
-    return;
-  }
+  if( !_loadDesktopWindow() ) return;
+  if( !atom_ ) return;
   
   // load display 
   Display* display( QX11Info::display() );
@@ -265,7 +250,14 @@ void BackgroundPixmap::reload( void )
   } 
   
   #endif 
-
+  
+  if( background_pixmap_.isNull() )
+  {
+    Debug::Throw() << "BackgroundPixmap::reload - pixmap is null" << endl; 
+    background_pixmap_ = QPixmap( qApp->desktop()->size() );
+    background_pixmap_.fill();
+  }
+  
   emit backgroundChanged();
   
   return;
@@ -290,8 +282,7 @@ bool BackgroundPixmap::_loadDesktopWindow( void )
   Window parent( None );
   for( Window current_window = top; current_window != None; current_window = parent )
   {
-    
-    Debug::Throw(0) << "BackgroundPixmap::_loadDesktopWindow - current window: " << current_window << endl;
+  
     Window root( None );
     Window *children( 0 );
     unsigned int n_children( 0 );
