@@ -28,6 +28,7 @@
   \date    $Date$
 */
 
+#include "BackgroundPixmap.h"
 #include "CompositeEngine.h"
 #include "Debug.h"
 #include "XmlOptions.h"
@@ -125,6 +126,18 @@ void CompositeEngine::initialize( void )
   available_ = true;
   #endif
   
+}
+
+//_______________________________________________________________
+bool CompositeEngine::setEnabled( bool value )
+{ 
+  if( enabled_ == value ) return false;
+  enabled_ = value;
+  
+  // if disabled, reload background pixmap for fake transparency
+  if( !value ) { BackgroundPixmap::get().reload(); }
+  
+  return true;
 }
 
 //_______________________________________________________________

@@ -108,6 +108,9 @@ BackgroundPixmap::BackgroundPixmap( void )
 QPixmap BackgroundPixmap::pixmap( const QRect& rect ) const
 { 
   
+  // check background pixmap validity
+  if( background_pixmap_.isNull() ) return QPixmap();
+  
   // rect is contained entirely in background
   if( background_pixmap_.rect().contains( rect ) ) 
   { return background_pixmap_.copy( rect ); }
@@ -183,10 +186,22 @@ void BackgroundPixmap::reload( void )
   // reset background_pixmap_
   background_pixmap_ = QPixmap();
   
+  // do nothing if compositing is enabled
+  if( CompositeEngine::get().isEnabled() ) return;
+  
   #ifdef Q_WS_X11
   // try load desktop windows ID
-  if( !_loadDesktopWindow() ) return;
-  if( !atom_ ) return;
+  if( !_loadDesktopWindow() ) 
+  {
+    Debug::Throw(0, "BackgroundPixmap::reload - invalid desktop window.\n" );
+    return;
+  }
+  
+  if( !atom_ ) 
+  {
+    Debug::Throw(0, "BackgroundPixmap::reload - invalid atom.\n" );
+    return;
+  }
   
   // load display 
   Display* display( QX11Info::display() );
@@ -198,13 +213,11 @@ void BackgroundPixmap::reload( void )
   XGetWindowProperty( 
       display, desktop_, atom_, 0L, 1L, false, AnyPropertyType,
       &type, &format, &length, &after, &data);
-  
-  Debug::Throw() << "BackgroundPixmap::reload - XGetWindowProperty" << endl; 
-  
+    
   // check property type
   if( type != XA_PIXMAP ) 
   {
-    Debug::Throw() << "BackgroundPixmap::reload - invalid type" << endl; 
+    Debug::Throw(0) << "BackgroundPixmap::reload - invalid pixmap type" << endl; 
     return;
   }
   
@@ -212,7 +225,7 @@ void BackgroundPixmap::reload( void )
   Pixmap *pixmap( (Pixmap*) data );
   if( !pixmap ) 
   {
-    Debug::Throw() << "BackgroundPixmap::reload - invalid pixmap" << endl; 
+    Debug::Throw(0) << "BackgroundPixmap::reload - invalid pixmap" << endl; 
     return;
   }
   
@@ -225,9 +238,7 @@ void BackgroundPixmap::reload( void )
   XGetGeometry( display, *pixmap, &root, &x, &y, &width, &height, &border, &depth );
   
   if( width && height )
-  {
-    Debug::Throw() << "BackgroundPixmap::reload - size: (" << width << "," << height << ")" << endl; 
-  
+  {  
     /* 
       convert to an XImage
       the ZPixmap format is a guess
@@ -245,20 +256,12 @@ void BackgroundPixmap::reload( void )
     } 
     
     background_pixmap_ = QPixmap::fromImage( image );
-    Debug::Throw() << "BackgroundPixmap::reload - pixmap done." << endl; 
     
   } 
   
   #endif 
   
-  if( background_pixmap_.isNull() )
-  {
-    Debug::Throw() << "BackgroundPixmap::reload - pixmap is null" << endl; 
-    background_pixmap_ = QPixmap( qApp->desktop()->size() );
-    background_pixmap_.fill();
-  }
-  
-  emit backgroundChanged();
+  if( !background_pixmap_.isNull() ) emit backgroundChanged();
   
   return;
 }

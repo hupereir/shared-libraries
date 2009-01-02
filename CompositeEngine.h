@@ -57,12 +57,7 @@ namespace TRANSPARENCY
     { return available_ && enabled_; }
     
     //! enability
-    bool setEnabled( const bool& value ) 
-    { 
-      if( enabled_ == value ) return false;
-      enabled_ = value;
-      return true;
-    }
+    bool setEnabled( bool value );
     
     //! initialize
     void initialize( void );
