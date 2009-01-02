@@ -193,12 +193,13 @@ void BackgroundPixmap::reload( void )
   // try load desktop windows ID
   if( !_loadDesktopWindow() )
   {
-    Debug::Throw() << "BackgroundPixmap::reload - failed to load desktop window" << endl; 
+    Debug::Throw(0) << "BackgroundPixmap::reload - failed to load desktop window" << endl; 
+    emit backgroundChanged();
     return;
   }
   if( !atom_ ) 
   {
-    Debug::Throw() << "BackgroundPixmap::reload - invalid atom" << endl; 
+    Debug::Throw(0) << "BackgroundPixmap::reload - invalid atom" << endl; 
     return;
   }
   
@@ -290,7 +291,7 @@ bool BackgroundPixmap::_loadDesktopWindow( void )
   for( Window current_window = top; current_window != None; current_window = parent )
   {
     
-    Debug::Throw() << "BackgroundPixmap::_loadDesktopWindow - current window: " << current_window << endl;
+    Debug::Throw(0) << "BackgroundPixmap::_loadDesktopWindow - current window: " << current_window << endl;
     Window root( None );
     Window *children( 0 );
     unsigned int n_children( 0 );
