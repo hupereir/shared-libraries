@@ -32,7 +32,7 @@
   \date    $Date$
 */
 
-//! eLogbook help text
+//! SVG help text
 namespace SVG
 {
   static const QString HelpText[] = 
@@ -41,14 +41,31 @@ namespace SVG
     //_________________________________________________
     "Svg background",
     "<h2>Svg background</h2>"
-    ""
-    "<p>This section describes the various options used to set the SVG background of widgets in the application."
+    "<h3>Configuration</h3>"
+    "<p>This section describes the various options used to assign a SVG-based background to widgets in the application. "
     "These options can be modified in the <i>Background</i> panel of the configuration dialog</p>"
     "<p>The following options are available:</p>"
     "<ul>"
-    "<li><i>use svg</i>.</li>"
-    "<li><i>filename</i>.</li>"
-    "<li><i>offset</i>.</li>",
+    "<li><i>use svg</i> enables the use of a SVG file to specify the background to be used. The SVG file must contain a specific set of elements ids"
+    "listed below for the application to be able to use it.</li>"
+    "<li><i>filename</i> is the name of the file from where the background is loaded.</li>"
+    "<li><i>offset</i> is a possible offset to be added between the SVG file <i>border</i> and the widget true border. A positive offset means "
+    "that the SVG background will be smaller than the widget true size. A negative value means that the SVG background is larger than the widget. "
+    "This option is used notably to accommodate SVG files that have large empty (that is: transparent) borders on the sides.</li>"
+    "</ul>"
+    "<h3>File format specifications</h3>"
+    "<p>A set of <i>default</i> SVG backgrounds are embedded in the applications. One can use alternative disk-resident files at will provided that the corresponding SVG "
+    "contains the following element ids: </p>"
+    "<ul>"
+    "<li><i>top</i>, <i>left</i>, <i>right</i> and <i>bottom</i> for the sides of the background. top and bottom sides are stretched horizontally to match the widget width; "
+    "left and right sides are stretched vertically to match the widget height.</li>"
+    "<li><i>topleft</i>, <i>bottomleft</i>, <i>topright</i> and <i>bottomright</i> for the corners of the background. These are never stretched, whatever the widget size.</li>"
+    "<li><i>center</i> the center of the background, stretched both horizontally and vertically, to match the widget size, together with the background sides.</li>"
+    "</ul>"
+    "<h3>Possible conflicts with transparency settings</h3>"
+    "<p>It is recommended to enable the use of transparency when applying a SVG background to the widget, so that the transparent part of the background do-appear transparent with respect to "
+    "the desktop, rather than with respect to the widget default background. However, this usually conflict with the use of a non-zero tint and highlight color among the various "
+    "transparency settings. It is thus recommended to disable those by setting the corresponding intensity to 0 (see the relevant section of this help for further details.</p>",
     0 
   };
     
