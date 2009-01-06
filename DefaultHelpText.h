@@ -41,8 +41,10 @@ namespace BASE
     //_________________________________________________________
     "Contact",
     "<h2>Contact</h2>\n"
-    "<p>For suggestions and bug reports, please contact the author directly at: \n"
-    "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>",
+    "<p>Latest software versions can be downloaded at:</p>"
+    "<p><a href=\"\">http://www.phenix.bnl.gov/WWW/publish/hpereira/software/index.php?page=introduction</a></p>"
+    "<p>For suggestions and bug reports, please contact the author directly at:</p>"
+    "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a></p>",
     
     //_________________________________________________________
     "Notes",
