@@ -41,17 +41,12 @@ namespace BASE
     //_________________________________________________________
     "Contact",
     "<h2>Contact</h2>\n"
-    "\n"
-    "<p>Latest versions of eLogbook can be downloaded at <p><a href=\"http://www.phenix.bnl.gov/WWW/publish/hpereira/php/show_software_package.php?package=eLogbook\">http://www.phenix.bnl.gov/WWW/publish/hpereira/php/show_software_package.php?package=eLogbook</a>\n"
-    "\n"
     "<p>For suggestions and bug reports, please contact the author directly at: \n"
-    "\n"
     "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>",
     
     //_________________________________________________________
     "Notes",
     "<h2>Notes</h2>\n"
-    "\n"
     "<p>This section is left empty for the user to add his own comments on QEdit.",  0 
     
   };
