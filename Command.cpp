@@ -33,24 +33,13 @@
 #include "CustomProcess.h"
 #include "Debug.h"
 
-
 //____________________________________________  
-bool Command::run( void ) const
-{
-  
-  Debug::Throw( "Util::run" );
-  if( isEmpty() ) return false;
-  return QProcess::startDetached( front(), mid(1) );
-  
-}     
-
-//____________________________________________  
-void Command::runAt( const QString& path ) const
+void Command::run( const QString& path ) const
 { 
 
   CustomProcess *p = new CustomProcess();
   p->setAutoDelete();
-  p->setWorkingDirectory( path );
+  if( !path.isEmpty() ) p->setWorkingDirectory( path );
   p->start( *this );
   return;
   

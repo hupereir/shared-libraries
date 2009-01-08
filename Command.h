@@ -48,16 +48,19 @@ class Command: public QStringList, public Counter
     {}
   
   //! constructor
+  Command( const QStringList& other ):
+    QStringList( other ),
+    Counter( "Command" )
+  {}
+    
+  //! constructor
   Command( const QString& in ):
     QStringList( _parse( in ) ),
     Counter( "Command" )
   {}
     
   // run
-  bool run( void ) const;
-  
-  // run in given directory
-  void runAt( const QString& path ) const;
+  void run( const QString& working_directory = QString() ) const;
   
   // streamers
   Command & operator<< ( const QString & str )
