@@ -52,6 +52,7 @@ FileRecordModel::IconCache& FileRecordModel::_icons( void )
 FileRecordModel::FileRecordModel( QObject* parent ):
   ListModel<FileRecord>( parent ),
   Counter( "FileRecordModel" ),
+  drag_enabled_( false ),
   show_icons_( true ),
   icon_property_id_( FileRecord::PropertyId::get( FileRecordProperties::ICON ) )
 {
@@ -84,15 +85,16 @@ Qt::ItemFlags FileRecordModel::flags(const QModelIndex &index) const
   
   // default flags
   Qt::ItemFlags flags;
-  if( index.isValid() )
-  {
+  if( !index.isValid() ) return flags;
+
+  // check associated record validity
+  const FileRecord& record( get(index) );
+  if( !record.isValid() ) return flags;
   
-    // check associated record validity
-    const FileRecord& record( get(index) );
-    if( record.isValid() ) flags |=  Qt::ItemIsEnabled |  Qt::ItemIsSelectable;
-  
-  }
-  
+  // default flags
+  flags |=  Qt::ItemIsEnabled |  Qt::ItemIsSelectable;
+  if( dragEnabled() ) flags |= Qt::ItemIsDragEnabled;
+    
   return flags;
   
 }

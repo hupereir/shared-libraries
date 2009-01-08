@@ -97,6 +97,14 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     ListModel<FileRecord>::update( values );
   }
   
+  //! enable drag
+  const bool& dragEnabled( void ) const
+  { return drag_enabled_; }
+  
+  //! enable drag
+  void setDragEnabled( const bool& value )
+  { drag_enabled_ = value; }
+
   protected:
   
   const bool& _showIcons( void ) const
@@ -159,6 +167,9 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
   //! type icon cache
   static IconCache& _icons( void ); 
   
+  //! drag flag
+  bool drag_enabled_;
+
   //! true if icons are to be shown
   bool show_icons_;
   
