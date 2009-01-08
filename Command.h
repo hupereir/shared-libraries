@@ -34,11 +34,10 @@
 
 #include <QString>
 #include <QStringList>
-#include <iostream>
 
 #include "Counter.h"
 
-class Command: public QString, public Counter
+class Command: public QStringList, public Counter
 {
   
   public: 
@@ -49,23 +48,40 @@ class Command: public QString, public Counter
     {}
   
   //! constructor
-  Command( const std::string& in ):
-    QString( in.c_str() ),
-    Counter( "Command" )
-  {}  
-  //! constructor
   Command( const QString& in ):
-    QString( in ),
+    QStringList( _parse( in ) ),
     Counter( "Command" )
   {}
     
+  // run
+  bool run( void ) const;
+  
+  // run in given directory
+  void runAt( const QString& path ) const;
+  
+  // streamers
+  Command & operator<< ( const QString & str )
+  {
+    QStringList::operator << ( str );
+    return *this;
+  }
+  
+  // streamers
+  Command & operator<< ( const QStringList & other )
+  {
+    QStringList::operator << ( other );
+    return *this;
+  }
+  
+  private: 
+  
   //! parse command 
   /*! 
     parse command so that first string in the list 
     is the command name and following strings are all arguments
     first argument must start with a "-"
   */
-  QStringList parse( void ) const;
+  QStringList _parse( const QString& ) const;
     
 };
 

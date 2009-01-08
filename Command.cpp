@@ -30,22 +30,47 @@
 */
 
 #include "Command.h"
+#include "CustomProcess.h"
 #include "Debug.h"
 
+
+//____________________________________________  
+bool Command::run( void ) const
+{
+  
+  Debug::Throw( "Util::run" );
+  if( isEmpty() ) return false;
+  return QProcess::startDetached( front(), mid(1) );
+  
+}     
+
+//____________________________________________  
+void Command::runAt( const QString& path ) const
+{ 
+
+  CustomProcess *p = new CustomProcess();
+  p->setAutoDelete();
+  p->setWorkingDirectory( path );
+  p->start( *this );
+  return;
+  
+}     
+
 //_________________________________________________________
-QStringList Command::parse( void ) const
+QStringList Command::_parse( const QString &in ) const
 {
   
   Debug::Throw( "Command::parse.\n" );
-  int position( indexOf( "-" ) );
+  int position( in.indexOf( "-" ) );
   if( position < 0 )
-  { return QStringList() << trimmed(); }
+  { return QStringList() << in.trimmed(); }
     
   // split everything that is after the first dash, using white spaces as separator
   // and assign them as arguments.
   // note that this is not universal: if the arguments have filenames that includes white 
   // spaces, they will be also split.
-  QStringList tmp( mid( position ).split( QRegExp("\\s+" ), SkipEmptyParts ) );
-  return QStringList() << left( position ).trimmed() << tmp;
+  QStringList tmp( in.mid( position ).split( QRegExp("\\s+" ), QString::SkipEmptyParts ) );
+  return QStringList() << in.left( position ).trimmed() << tmp;
 
 }
+

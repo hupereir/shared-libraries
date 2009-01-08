@@ -59,32 +59,7 @@ class Util
     format is dd/mm/yy hh:mm:ss
   */
   static std::string timeString( void );
-   
-  //! runs a Unix command 
-  static bool run( std::string val )
-  { return run( QString( val.c_str() ) ); }
-
-  //! runs a Unix command 
-  static bool run( QString val );
-
-  //! runs a Unix command 
-  static bool run( QString command, QString arguments );
-   
-  //! runs a Unix command 
-  static bool run( QStringList arguments );
-
-  //! runs a Unix command 
-  static bool run( QString command, QStringList arguments );
-   
-  //! runs a Unix command in specified directory
-  static void runAt( const std::string& path, const std::string& val );
-   
-  //! runs a Unix command in specified directory
-  static void runAt( const std::string& path, QStringList arguments );
-   
-  //! returns all children processes starting from pid. [recursive]
-  static std::list< unsigned int > allChildren( const unsigned int pid_ );
-  
+      
   //! returns environment variable or empty string
   static std::string env( const std::string&, const std::string& default_value = "" );
   
