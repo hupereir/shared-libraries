@@ -64,7 +64,7 @@ class CustomProcess: public QProcess, public Counter
     add arguments. 
     every space separated argument is added separately
   */
-  void start( const std::string& arguments, OpenMode mode = ReadWrite );
+  void start( const QString& arguments, OpenMode mode = ReadWrite );
   
   /*! 
     \brief 

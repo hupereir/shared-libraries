@@ -45,10 +45,10 @@ CustomProcess::~CustomProcess( void )
 { if( state() != QProcess::NotRunning ) kill(); }
 
 //____________________________________________________
-void CustomProcess::start( const string& arguments, OpenMode mode )
+void CustomProcess::start( const QString& arguments, OpenMode mode )
 {
-  Debug::Throw() << "CustomProcess::start - " << arguments << endl;
-  return start( QString( arguments.c_str() ).split( QRegExp("\\s"), QString::SkipEmptyParts ), mode );
+  Debug::Throw() << "CustomProcess::start - " << qPrintable( arguments ) << endl;
+  return start( arguments.split( QRegExp("\\s"), QString::SkipEmptyParts ), mode );
 }
 
 //____________________________________________________
