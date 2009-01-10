@@ -114,6 +114,8 @@ void TransparentWidget::_setHighlightColor( const QColor& color )
 //____________________________________________________________________
 void TransparentWidget::moveEvent( QMoveEvent* event )
 {
+  Debug::Throw() << "TransparentWidget::moveEvent - " << event->pos().x() << "," << event->pos().y() << endl;
+  
   // check cases where background does not need update
   if( !_transparent() ) return QWidget::moveEvent( event );
   if( CompositeEngine::get().isEnabled() ) return QWidget::moveEvent( event );
