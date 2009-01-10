@@ -246,6 +246,9 @@ class LineEditor: public QLineEdit, public Counter
   //! frame
   bool has_frame_;
   
+  //! true if clear button is triggered
+  bool triggered_;
+  
   //! clear pixmap
   QIcon clear_icon_;
   

@@ -53,6 +53,7 @@ LineEditor::LineEditor( QWidget* parent ):
   modified_( false ),
   has_clear_button_( false ),
   has_frame_( true ),
+  triggered_( false ),
   clear_icon_( IconEngine::get( ICONS::EDIT_CLEAR ) )
 {    
   
@@ -314,9 +315,9 @@ void LineEditor::mousePressEvent( QMouseEvent* event )
   // check clear button
   if( !_hasClearButton() ) return QLineEdit::mousePressEvent( event );
 
-  // check if outside of clear button (if any)
-  if( isReadOnly() || text().isEmpty() || !_clearButtonRect().contains( event->pos() ) ) 
-  { return QLineEdit::mousePressEvent( event ); }
+  // check if within clear button (if any)
+  if( !( isReadOnly() || text().isEmpty() ) && _clearButtonRect().contains( event->pos() ) )   triggered_ = true;
+  else QLineEdit::mousePressEvent( event );
 
   return;
   
@@ -327,18 +328,21 @@ void LineEditor::mouseReleaseEvent( QMouseEvent* event )
 {
   
   Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
-  if( isReadOnly() || text().isEmpty() || !(_hasClearButton() && _clearButtonRect().contains( event->pos() ) ) ) 
+  if( !( isReadOnly() || text().isEmpty() ) && _hasClearButton() && _clearButtonRect().contains( event->pos() ) && triggered_ ) 
   { 
-    
-    QLineEdit::mouseReleaseEvent( event );
-    emit cursorPositionChanged( cursorPosition( ) );
-    
-  } else {
     
     clear();
     emit cleared();
     
+  } else {
+
+    QLineEdit::mouseReleaseEvent( event );
+    emit cursorPositionChanged( cursorPosition( ) );
+        
   }
+  
+  triggered_ = false;
+  return;
   
 }
 
