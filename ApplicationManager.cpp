@@ -167,13 +167,6 @@ void ApplicationManager::timerEvent(QTimerEvent *event)
     // from the server it is connected to.
     // the application is then set to ALIVE
     if( state_ == AWAITING_REPLY ) setState( ALIVE );
-//     {
-//       if( !_serverInitialized() )
-//       {
-//         _initializeServer();
-//         _initializeClient();
-//       } else setState( ALIVE );
-//     }
     
   }
 
