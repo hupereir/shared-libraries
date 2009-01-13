@@ -43,7 +43,7 @@ namespace SERVER
     public:
     
     //! constructor
-    ServerConfiguration( QWidget* parent );
+    ServerConfiguration( QWidget*, QString title = QString() );
     
   };
 };
