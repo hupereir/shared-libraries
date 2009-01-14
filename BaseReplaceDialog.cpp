@@ -207,6 +207,7 @@ void BaseReplaceDialog::idle( void )
   _progressDialog().reset();
   _progressDialog().hide();
   _setShowProgress( false );
+  qApp->processEvents();
 }
 
 //__________________________________________________

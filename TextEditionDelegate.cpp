@@ -49,7 +49,7 @@ TextEditionDelegate::TextEditionDelegate( QObject *parent ):
 { Debug::Throw( "TextEditionDelegate::TextEditionDelegate.\n" ); }
 
 //______________________________________________________________
-QWidget* TextEditionDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget* TextEditionDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 { 
   Debug::Throw( "TextEditionDelegate::createEditor.\n" );
   LineEditor *editor = new LineEditor( parent ); 
