@@ -85,7 +85,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   connect( button, SIGNAL( clicked() ), SLOT( _update() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );  
   button->setToolTip( 
-    "apply changes to options.\n"
+    "Apply changes to options.\n"
     "Note: the application may have to be restarted so that\n"
     "all changes are taken into account." );
   
@@ -95,7 +95,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
   button->setToolTip( 
-    "apply changes to options and close window.\n"
+    "Apply changes to options and close window.\n"
     "Note: the application may have to be restarted so that\n"
     "all changes are taken into account." );
   button->setAutoDefault( false );
@@ -105,7 +105,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
-  button->setToolTip( "discard changes to options and close window" );
+  button->setToolTip( "Discard changes to options and close window" );
   button->setAutoDefault( false );
     
 }
@@ -116,7 +116,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
   
   Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
   
-  if( !parent ) parent = &addPage( "Base" );
+  if( !parent ) parent = &addPage( "Base", "Generic settings common to most applications" );
   
   // base
   if( flag & BASE )
@@ -178,7 +178,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     addOptionWidget( edit );
       
     // pixmap path
-    grid_layout->addWidget( new QLabel( "pixmaps: ", box ) );
+    grid_layout->addWidget( new QLabel( "Pixmaps: ", box ) );
     QPushButton *button = new QPushButton( "Edit pixmap path list", box );
     connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
     grid_layout->addWidget( button );
@@ -210,7 +210,7 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   Debug::Throw( "BaseConfigurationDialog::listConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "Lists" );
+  if( !parent ) parent = &addPage( "Lists", "Look-and-feel for list widgets" );
   
   QGroupBox* box = new QGroupBox( "Lists", parent );
   GridLayout* grid_layout = new GridLayout();
@@ -247,7 +247,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "Text edition" );
+  if( !parent ) parent = &addPage( "Text edition", "Configuration and look-and-feel for text edition widgets" );
   
   // tab emulation
   QGroupBox* box = new QGroupBox( "Tab emulation", parent );
