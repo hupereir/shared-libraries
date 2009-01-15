@@ -72,13 +72,13 @@ ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):
     "that only one instance of each application runs at a time." );
   
   // host
-  grid_layout->addWidget( new QLabel( "host:", box ) );
+  grid_layout->addWidget( new QLabel( "Host:", box ) );
   grid_layout->addWidget( line_editor = new OptionLineEditor( box, "SERVER_HOST" ) );
   line_editor->setToolTip( tooltip );
   addOptionWidget( line_editor );
  
   // shadow color
-  grid_layout->addWidget( new QLabel( "port:", box ) );
+  grid_layout->addWidget( new QLabel( "Port:", box ) );
   grid_layout->addWidget( spin_box = new OptionSpinBox( box, "SERVER_PORT" ) );
   spin_box->setMinimum(0);
   spin_box->setMaximum(10000);

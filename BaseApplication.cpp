@@ -147,7 +147,6 @@ void BaseApplication::_updateConfiguration( void )
   qApp->setFont( font );
   
   font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ).c_str() );
-  qApp->setFont( font, "QLineEdit" ); 
   qApp->setFont( font, "QTextEdit" ); 
         
   // reload IconEngine cache (in case of icon_path_list that changed)
