@@ -64,7 +64,7 @@ class TabbedDialog: public BaseDialog, public Counter
   }
   
   //! adds a new Item, returns associated Box
-  virtual QWidget& addPage( const QString&, const bool& expand = false );
+  virtual QWidget& addPage( const QString&, const QString& tooltip = QString(), const bool& expand = false );
   
   protected slots: 
   

@@ -86,23 +86,44 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 }
 
 //_________________________________________________________
-QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
+QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, const bool& expand )
 {  
+  
+  // base widget
+  QWidget* base = new QWidget();
+  base->setLayout( new QVBoxLayout() );
+  base->layout()->setMargin(0);
+  base->layout()->setSpacing(5);
+  base->setObjectName( title );
+  
+  if( !tooltip.isEmpty() ) {
+    
+    QLabel *label( new QLabel( tooltip, base ) );
+    QFont font( label->font() );
+    font.setWeight( QFont::Bold );
+    label->setFont( font );
+    label->setMargin(5);
+    base->layout()->addWidget( label );
+    
+  }
   
   // create scroll area
   QScrollArea* scroll = new QScrollArea();
   scroll->setWidgetResizable ( true );
   scroll->setFrameStyle( QFrame::NoFrame );
-  scroll->setObjectName( title );
+  base->layout()->addWidget( scroll );
   
   // create main widget
   QWidget* main( new QWidget() );
   scroll->setWidget( main );
-  
-  
+   
+  QPalette palette( scroll->palette() );
+  palette.setBrush( QPalette::Window, _stack().palette().brush( QPalette::Window ) );
+  scroll->setPalette( palette );
+ 
   // add to stack and model
-  _stack().addWidget( scroll );
-  _model().add( scroll );
+  _stack().addWidget( base );
+  _model().add( base );
   
   // set current index
   if( (!_list().selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) ) 
@@ -115,18 +136,20 @@ QWidget& TabbedDialog::addPage( const QString& title, const bool& expand )
     
   // in expanded mode, the main widget is returned directly
   if( expand ) return *main;
-  
-  // in non-expanded mode (the default)
-  // a widget is created inside main, and a stretch is added at the bottom
-  // the created widget is return
-  QWidget* contents( new QWidget( main ) );
-  contents->setLayout( new QVBoxLayout() );
-  contents->layout()->setSpacing(5);
-  contents->layout()->setMargin(0);
-  
-  layout->addWidget( contents );
-  layout->addStretch();
-  return *contents;
+  else {
+    
+    // in non-expanded mode (the default)
+    // a widget is created inside main, and a stretch is added at the bottom
+    // the created widget is return
+    QWidget* contents( new QWidget( main ) );
+    contents->setLayout( new QVBoxLayout() );
+    contents->layout()->setSpacing(5);
+    contents->layout()->setMargin(0);
+    
+    layout->addWidget( contents );
+    layout->addStretch();
+    return *contents;
+  }
   
 }
 

@@ -210,7 +210,7 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   Debug::Throw( "BaseConfigurationDialog::listConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "Lists", "Look-and-feel for list widgets" );
+  if( !parent ) parent = &addPage( "Lists", "Look-and-feel for item lists" );
   
   QGroupBox* box = new QGroupBox( "Lists", parent );
   GridLayout* grid_layout = new GridLayout();
@@ -247,7 +247,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "Text edition", "Configuration and look-and-feel for text edition widgets" );
+  if( !parent ) parent = &addPage( "Text edition", "Configuration and look-and-feel for text edition" );
   
   // tab emulation
   QGroupBox* box = new QGroupBox( "Tab emulation", parent );
