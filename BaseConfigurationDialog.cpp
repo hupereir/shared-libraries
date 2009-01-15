@@ -116,7 +116,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
   
   Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
   
-  if( !parent ) parent = &addPage( "Base", "Generic settings common to most applications" );
+  if( !parent ) parent = &addPage( "Base", "Generic settings" );
   
   // base
   if( flag & BASE )
