@@ -77,8 +77,16 @@ class CustomProcess: public QProcess, public Counter
   void setAutoDelete();
     
   //! error message
-  static std::string errorMessage( QProcess::ProcessError error );
+  static QString errorMessage( QProcess::ProcessError error );
       
+  private slots:
+  
+  //! completed
+  void _finished( int, QProcess::ExitStatus );
+  
+  //! error
+  void _error( QProcess::ProcessError );
+  
 };
 
 

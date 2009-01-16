@@ -38,7 +38,11 @@ using namespace std;
 CustomProcess::CustomProcess( QObject* parent ):
   QProcess( parent ),
   Counter( "CustomProcess" )
-{}
+{
+  Debug::Throw( "CustomProcess::CustomProcess.\n" );
+  connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( _finished( int, QProcess::ExitStatus ) ) );
+  connect( this, SIGNAL( error( QProcess::ProcessError ) ), SLOT( _error( QProcess::ProcessError ) ) );
+}
 
 //____________________________________________________
 CustomProcess::~CustomProcess( void )
@@ -78,7 +82,7 @@ void CustomProcess::setAutoDelete( void )
 }
 
 //______________________________________________________________
-string CustomProcess::errorMessage( ProcessError error )
+QString CustomProcess::errorMessage( ProcessError error )
 { 
   switch( error )
   {
@@ -90,4 +94,18 @@ string CustomProcess::errorMessage( ProcessError error )
     case ReadError: return "Process ended du to read error";  
     default: return "Process ended with unknown error";
   }
+  
 }
+
+//______________________________________________________________
+void CustomProcess::_finished( int exit_code, QProcess::ExitStatus exit_status )
+{ 
+  Debug::Throw() << "CustomProcess::_finished -"
+    << " exit code: " << exit_code 
+    << " exit status: " << exit_status
+    << endl;
+}
+
+//______________________________________________________________
+void CustomProcess::_error( ProcessError error )
+{ Debug::Throw() << "CustomProcess::_error - " << qPrintable( errorMessage( error ) ) << endl; }
