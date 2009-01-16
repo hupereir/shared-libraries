@@ -124,6 +124,7 @@ void BaseApplication::_about( QString name, QString version, QString stamp )
     << "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>";
 
   QMessageBox dialog;
+  dialog.setWindowTitle( QString( "About ")+name );
   dialog.setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
   dialog.setIconPixmap( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
   dialog.setText( buffer );
