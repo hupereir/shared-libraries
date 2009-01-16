@@ -101,7 +101,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button->setAutoDefault( false );
   
   // cancel button
-  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Cancel", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Cancel", this ), 1 );
   connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
