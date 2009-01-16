@@ -15,6 +15,7 @@ crystal/edit.png \
 crystal/editcopy.png \
 crystal/editcut.png \
 crystal/editpaste.png \
+crystal/edit-rename.png \
 crystal/encrypted.png \
 crystal/exit.png \
 crystal/fileopen.png \
@@ -44,6 +45,7 @@ oxygen/edit.png \
 oxygen/editcopy.png \
 oxygen/editcut.png \
 oxygen/editpaste.png \
+oxygen/edit-rename.png \
 oxygen/encrypted.png \
 oxygen/exit.png \
 oxygen/fileopen.png \
