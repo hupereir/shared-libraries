@@ -40,6 +40,7 @@ namespace ICONS
   
   static const std::string ADD="add.png";  
   static const std::string REMOVE="button_cancel.png";  
+  static const std::string RENAME="edit-rename.png";  
   static const std::string ABOUT_QT = "qt-logo.png";
   static const std::string DIALOG_OK = "dialog-ok.png";
   static const std::string DIALOG_OK_APPLY = "dialog-ok-apply.png";
