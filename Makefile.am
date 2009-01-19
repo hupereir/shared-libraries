@@ -11,6 +11,7 @@ INCLUDES =  \
   
 noinst_HEADERS = \
   AnimatedStackedWidget.h \
+  AnimatedTextEditor.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
   BaseReplaceDialog.h \
@@ -124,6 +125,7 @@ noinst_LIBRARIES = libbase-qt.a
 
 libbase_qt_a_SOURCES = \
   AnimatedStackedWidget.cpp \
+  AnimatedTextEditor.cpp \
   Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \

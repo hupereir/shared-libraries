@@ -51,39 +51,69 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
 }
 
 //___________________________________________________________________
+void TransitionWidget::resize( const QSize& size )
+{
+  Debug::Throw( "TransitionWidget::resize.\n" );
+  first_ = Pixmap( size );
+  second_ = Pixmap( size );
+  QWidget::resize( size );
+}
+
+//___________________________________________________________________
+void TransitionWidget::setStartWidget( QWidget* widget )
+{ 
+  Debug::Throw( "TransitionWidget::setStartWidget.\n" );
+  first_.fromWidget( widget ); 
+}
+
+
+//___________________________________________________________________
+void TransitionWidget::setEndWidget( QWidget* widget )
+{ 
+  Debug::Throw( "TransitionWidget::setEndWidget.\n" );
+  second_.fromWidget( widget ); 
+}
+
+//___________________________________________________________________
 void TransitionWidget::start( QSize size, QWidget* first, QWidget* second )
 {
   Debug::Throw( "TransitionWidget::start.\n" );
   resize( size );
-  first_ = WidgetPixmap( first, size );  
-  second_ = WidgetPixmap( second, size );
-  if( timeLine().state() != QTimeLine::Running ) timeLine().start();
-  
+  setStartWidget( first );
+  setEndWidget( second );
+  start();
 }
+
+//___________________________________________________________________
+void TransitionWidget::start( void )
+{ if( timeLine().state() != QTimeLine::Running ) timeLine().start(); }
 
 //___________________________________________________________________
 void TransitionWidget::paintEvent( QPaintEvent* event )
 {
   
   qreal frame = timeLine().currentFrame();
-  if( timeLine().state() != QTimeLine::Running ) 
-  { return; }
   
+  bool running( timeLine().state() == QTimeLine::Running );
   if( mode_ != NONE )
   {
     QPainter painter( this );
     painter.fillRect( rect(), Qt::transparent );
     
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
-    if( mode_ & FADE_FIRST ) painter.setOpacity( frame/1000 );
-    painter.drawPixmap( QPoint(0,0), first_ );
+    if( running ) {
+      
+      if( mode_ & FADE_FIRST ) painter.setOpacity( frame/1000 );
+      painter.drawPixmap( QPoint(0,0), first_ );
     
-    if( mode_ & FADE_SECOND ) painter.setOpacity( 1.0 - frame/1000 );
-    painter.drawPixmap( QPoint(0,0), second_ );
-    painter.end();
+      if( mode_ & FADE_SECOND ) painter.setOpacity( 1.0 - frame/1000 );
+      painter.drawPixmap( QPoint(0,0), second_ );
+      painter.end();
+      
+    } else painter.drawPixmap( QPoint(0,0), first_ );
   }
   
-  if( frame <= 0 ) { timeLine().stop(); }
+  if( running && frame <= 0 ) { timeLine().stop(); }
   
 }
 
@@ -96,19 +126,34 @@ void TransitionWidget::_updateConfiguration( void )
 } 
 
 //___________________________________________________________________
-TransitionWidget::WidgetPixmap::WidgetPixmap( QWidget* parent, QSize size ):
+TransitionWidget::Pixmap::Pixmap( void ):
+  Counter( "TransitionWidget::Pixmap" )
+  {}
+  
+//___________________________________________________________________
+TransitionWidget::Pixmap::Pixmap( QSize size ):
   QPixmap( size ),
-  Counter( "TransitionWidget::WidgetPixmap" )
+  Counter( "TransitionWidget::Pixmap" )
+{ 
+  Debug::Throw( "TransitionWidget::Pixmap::Pixmap.\n" );
+  assert( size.isValid() );
+  fill( Qt::transparent ); 
+}
+
+//___________________________________________________________________
+void TransitionWidget::Pixmap::fromWidget( QWidget* parent )
 {
-  Debug::Throw( "TransitionWidget::WidgetPixmap::WidgetPixmap.\n" );
-  fill( Qt::transparent );
+  
+  Debug::Throw( "TransitionWidget::Pixmap::fromWidget.\n" );
+  if( isNull() ) return;
+  
   QPainter painter( this );
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
-  if( !parent->isVisible() ) parent->resize( size );
+  if( !( parent->isVisible() || size() == parent->size() ) ) parent->resize( size() );
   qApp->processEvents();
   
   // draw widget children (and not the parent)
   parent->render( &painter, QPoint( 0, 0 ), QRegion(), QWidget::DrawChildren );
-  
   painter.end();
+  
 }

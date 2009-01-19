@@ -48,9 +48,21 @@ class TransitionWidget: public QWidget, public Counter
   //! constructor
   TransitionWidget( QWidget* parent = 0 );
 
+  //! resize
+  virtual void resize( const QSize& );
+
+  //! set starting widget
+  void setStartWidget( QWidget* );
+
+  //! set starting widget
+  void setEndWidget( QWidget* );
+
   //! start
   void start( QSize, QWidget*, QWidget* );
-  
+ 
+  //! start
+  void start( void );
+ 
   //! timeline
   QTimeLine& timeLine( void )
   { return time_line_; }
@@ -81,12 +93,18 @@ class TransitionWidget: public QWidget, public Counter
   private:
   
   //! used to copy pixmap from widget
-  class WidgetPixmap: public QPixmap, public Counter
+  class Pixmap: public QPixmap, public Counter
   {
     public:
     
     //! constructor
-    WidgetPixmap( QWidget*, QSize );
+    Pixmap( void );
+    
+    //! constructor
+    Pixmap( QSize size );
+    
+    //! copy pixmap
+    void fromWidget( QWidget* );
     
   };
   
@@ -97,10 +115,10 @@ class TransitionWidget: public QWidget, public Counter
   QTimeLine time_line_;
     
   //! current widget pixmap
-  QPixmap first_;
+  Pixmap first_;
   
   //! second pixmap
-  QPixmap second_;
+  Pixmap second_;
   
 };
   

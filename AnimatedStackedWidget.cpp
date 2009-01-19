@@ -83,6 +83,9 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
 
   // check index is changed
   if( widget == currentWidget() ) return QStackedWidget::setCurrentWidget( widget );
+
+  // check index is changed
+  if( !isVisible() ) return QStackedWidget::setCurrentWidget( widget );
   
   // check if there is already a current widget
   if( !currentWidget() ) return QStackedWidget::setCurrentWidget( widget ); 
@@ -91,7 +94,7 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
   widget_ = widget;
 
   // start transitionWidget
-  transitionWidget().start( size(), currentWidget(), widget_ );
+  transitionWidget().start( size(), this, widget_ );
   QStackedWidget::setCurrentWidget( &transitionWidget() );
   
 }
