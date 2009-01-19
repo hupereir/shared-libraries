@@ -6,6 +6,7 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
+  AnimatedStackedWidget.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
   BaseReplaceDialog.h \
@@ -115,6 +116,7 @@ HEADERS = \
   XmlString.h
 
 SOURCES = \
+  AnimatedStackedWidget.cpp \
   Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \

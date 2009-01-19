@@ -10,7 +10,7 @@ INCLUDES =  \
   -I$(top_srcdir)/base
   
 noinst_HEADERS = \
-  Color.h \
+  AnimatedStackedWidget.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
   BaseReplaceDialog.h \
@@ -18,6 +18,7 @@ noinst_HEADERS = \
   BoxSelection.h \
   BrowsedLineEditor.h \
   ClockLabel.h \
+  Color.h \
   ColorDisplay.h \
   ColorMenu.h \
   ColumnSelectionMenu.h \
@@ -121,6 +122,7 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-qt.a
 
 libbase_qt_a_SOURCES = \
+  AnimatedStackedWidget.cpp \
   Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \
@@ -206,6 +208,7 @@ libbase_qt_a_SOURCES = \
 
 nodist_libbase_qt_a_SOURCES = \
   qrc_basePixmaps.cpp \
+	moc_AnimatedStackedWidget.cpp \
   moc_BaseConfigurationDialog.cpp \
   moc_BaseDialog.cpp \
   moc_BaseReplaceDialog.cpp \

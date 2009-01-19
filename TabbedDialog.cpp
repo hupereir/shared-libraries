@@ -38,6 +38,7 @@
 #include <QLayout>
 #include <QLabel>
 
+#include "AnimatedStackedWidget.h"
 #include "TabbedDialog.h"
 #include "TreeView.h"
 
@@ -63,7 +64,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
   
   // add widgets
   h_layout->addWidget( list_ = new TreeView( this ), 0 );
-  h_layout->addWidget( stack_ = new QStackedWidget(0), 1 );
+  h_layout->addWidget( stack_ = new AnimatedStackedWidget(0), 1 );
   
   // configure list
   _list().setMaximumWidth(150);
@@ -83,6 +84,13 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
   // close window shortcut
   connect( new QShortcut( Qt::CTRL+Qt::Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
   
+}
+
+//______________________________________________________________
+TabbedDialog::~TabbedDialog( void )
+{
+  Debug::Throw( "TabbedDialog::~TabbedDialog.\n" );
+  return;
 }
 
 //_________________________________________________________

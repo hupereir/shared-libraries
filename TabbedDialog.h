@@ -34,7 +34,7 @@
 #include <QCloseEvent>
 #include <QDialog>
 #include <QLayout>
-#include <QStackedWidget>
+//#include <QStackedWidget>
 #include <list>
 
 #include "XmlOptions.h"
@@ -42,6 +42,7 @@
 #include "OptionWidget.h"
 #include "ListModel.h"
 
+class AnimatedStackedWidget;
 class TreeView;
 
 //! tabbed dialog
@@ -57,11 +58,7 @@ class TabbedDialog: public BaseDialog, public Counter
   TabbedDialog( QWidget *parent );
 
   //! destructor
-  virtual ~TabbedDialog()
-  {
-    Debug::Throw( "TabbedDialog::~TabbedDialog.\n" );
-    return;
-  }
+  virtual ~TabbedDialog();
   
   //! adds a new Item, returns associated Box
   virtual QWidget& addPage( const QString&, const QString& tooltip = QString(), const bool& expand = false );
@@ -78,7 +75,7 @@ class TabbedDialog: public BaseDialog, public Counter
   { return *list_; }
 
   //! retrieve stack
-  virtual QStackedWidget& _stack( void )
+  virtual AnimatedStackedWidget& _stack( void )
   { return *stack_; }
 
   //! button layout
@@ -150,7 +147,7 @@ class TabbedDialog: public BaseDialog, public Counter
   TreeView* list_;
 
   //! Widget stack
-  QStackedWidget* stack_;
+  AnimatedStackedWidget* stack_;
   
   //! button layout (needed to add extra buttons)
   QHBoxLayout *button_layout_;
