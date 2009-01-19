@@ -193,11 +193,11 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     addOptionWidget( spinbox );
   
     // debug level
-    grid_layout->addWidget( new QLabel( "Animation speed (ms): ", box ) );
+    grid_layout->addWidget( new QLabel( "Animations duration (ms): ", box ) );
     spinbox = new OptionSpinBox( box, "ANIMATION_DURATION" );
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 5000 );
-    spinbox->setToolTip( "Animations duration" );
+    spinbox->setToolTip( "Animations duration.\nSetting this value to zero disables all animations." );
     grid_layout->addWidget( spinbox );
     addOptionWidget( spinbox );
   

@@ -42,6 +42,7 @@ using namespace std;
 TransitionWidget::TransitionWidget( QWidget *parent ):
   QWidget( parent ),
   Counter( "TransitionWidget" ),
+  enabled_( true ),
   mode_( FADE_BOTH )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
@@ -121,7 +122,9 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
 void TransitionWidget::_updateConfiguration( void )
 {
   Debug::Throw( "TransitionWidget::_updateConfiguration.\n" );
-  timeLine().setDuration( XmlOptions::get().get<int>( "ANIMATION_DURATION" ) );
+  int duration( XmlOptions::get().get<int>( "ANIMATION_DURATION" ) );
+  setEnabled( duration > 0 );
+  if( enabled() ) timeLine().setDuration( duration );
   timeLine().setFrameRange( XmlOptions::get().get<int>( "ANIMATION_FRAMES" ), 0 );
 } 
 

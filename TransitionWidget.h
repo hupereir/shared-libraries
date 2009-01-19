@@ -67,6 +67,14 @@ class TransitionWidget: public QWidget, public Counter
   QTimeLine& timeLine( void )
   { return time_line_; }
   
+  //! enability
+  void setEnabled( bool value )
+  { enabled_ = value; }
+  
+  //! enability
+  const bool& enabled( void ) const
+  { return enabled_; }
+  
   //! modes
   enum Mode
   {
@@ -107,6 +115,9 @@ class TransitionWidget: public QWidget, public Counter
     void fromWidget( QWidget* );
     
   };
+ 
+  //! enability
+  bool enabled_;
   
   //! mode
   unsigned int mode_; 

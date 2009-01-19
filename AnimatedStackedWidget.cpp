@@ -61,7 +61,7 @@ void AnimatedStackedWidget::setCurrentIndex( int index )
   Debug::Throw( "AnimatedStackedWidget::setCurrentIndex.\n" );
   
   // check animation time
-  if( transitionWidget().timeLine().duration() <= 0 ) 
+  if( !transitionWidget().enabled() ) 
   { return QStackedWidget::setCurrentIndex( index ); }
   
   // check index is changed
@@ -78,7 +78,7 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
 {
   
   // check widget validity and animation time
-  if( !(  transitionWidget().timeLine().duration()>0 && widget && indexOf( widget ) >= 0 ) )
+  if( !(  transitionWidget().enabled() && widget && indexOf( widget ) >= 0 ) )
   { return QStackedWidget::setCurrentWidget( widget ); } 
 
   // check index is changed

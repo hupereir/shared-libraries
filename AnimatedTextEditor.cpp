@@ -50,6 +50,10 @@ AnimatedTextEditor::~AnimatedTextEditor( void )
 //________________________________________________________
 void AnimatedTextEditor::setPlainText( const QString& text )
 {
+  
+  // check enability
+  if( !_transitionWidget().enabled() ) return TextEditor::setPlainText( text );
+  
   _transitionWidget().resize( size() );
   _transitionWidget().setStartWidget( this );
   _transitionWidget().show();
@@ -64,6 +68,9 @@ void AnimatedTextEditor::setPlainText( const QString& text )
 //________________________________________________________
 void AnimatedTextEditor::setHtml( const QString& text )
 {
+  // check enability
+  if( !_transitionWidget().enabled() ) return TextEditor::setHtml( text );
+
   _transitionWidget().resize( size() );
   _transitionWidget().setStartWidget( this );
   _transitionWidget().show();
