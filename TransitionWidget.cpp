@@ -104,10 +104,10 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
     if( running ) {
       
-      if( mode_ & FADE_FIRST ) painter.setOpacity( frame/1000 );
+      if( mode_ & FADE_FIRST ) painter.setOpacity( double(frame)/timeLine().startFrame() );
       painter.drawPixmap( QPoint(0,0), first_ );
     
-      if( mode_ & FADE_SECOND ) painter.setOpacity( 1.0 - frame/1000 );
+      if( mode_ & FADE_SECOND ) painter.setOpacity( 1.0 - double(frame)/timeLine().startFrame() );
       painter.drawPixmap( QPoint(0,0), second_ );
       painter.end();
       
@@ -153,7 +153,6 @@ void TransitionWidget::Pixmap::fromWidget( QWidget* parent )
   QPainter painter( this );
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
   if( !( parent->isVisible() || size() == parent->size() ) ) parent->resize( size() );
-  qApp->processEvents();
   
   // draw widget children (and not the parent)
   parent->render( &painter, QPoint( 0, 0 ), QRegion(), QWidget::DrawChildren );
