@@ -459,6 +459,13 @@ void BaseConfigurationDialog::_restoreDefaults( void )
 }
 
 //__________________________________________________
+void BaseConfigurationDialog::_read( void )
+{ 
+  Debug::Throw( "BaseConfigurationDialog::_read.\n" );
+  OptionWidgetList::read(); 
+}
+
+//__________________________________________________
 void BaseConfigurationDialog::_save( void )
 {
   

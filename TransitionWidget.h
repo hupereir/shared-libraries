@@ -1,5 +1,5 @@
-#ifndef _AnimatedStackedWidget_h_
-#define _AnimatedStackedWidget_h_
+#ifndef TransitionWidget_h
+#define TransitionWidget_h
 
 // $Id$
 /******************************************************************************
@@ -24,58 +24,68 @@
 *******************************************************************************/
 
 /*!
-  \file AnimatedStackedWidget.h
-  \brief animated stacked widget
+  \file TransitionWidget.cpp
+  \brief widget used for smooth transition between two widgets
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <QStackedWidget>
+#include <QPaintEvent>
+#include <QPixmap>
+#include <QTimeLine>
+#include <QWidget>
 
 #include "Counter.h"
-#include "TransitionWidget.h"
 
-//! tabbed dialog
-/*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
-class AnimatedStackedWidget: public QStackedWidget, public Counter
+class TransitionWidget: public QWidget, public Counter
 {
 
   Q_OBJECT
-
+  
   public:
-
-  //! creator
-  AnimatedStackedWidget( QWidget *parent );
-
-  //! destructor
-  virtual ~AnimatedStackedWidget();
-
-  public slots:
   
-  //! current index
-  void setCurrentIndex( int );
-    
-  //! current widget
-  void setCurrentWidget( QWidget* );
+  //! constructor
+  TransitionWidget( QWidget* parent = 0 );
+
+  //! start
+  void start( QSize, QWidget*, QWidget* );
   
-  protected slots:
+  //! timeline
+  QTimeLine& timeLine( void )
+  { return time_line_; }
   
-  //! animation finished
-  void _animationFinished( void );
+  protected:
+  
+  //! paint event
+  virtual void paintEvent( QPaintEvent* );
+  
+  private slots:
+  
+  //! configuration
+  void _updateConfiguration( void );
   
   private:
   
-  TransitionWidget& _transitionWidget( void ) const
-  { return *transition_widget_; }
+  //! used to copy pixmap from widget
+  class WidgetPixmap: public QPixmap, public Counter
+  {
+    public:
+    
+    //! constructor
+    WidgetPixmap( QWidget*, QSize );
+    
+  };
   
-  //! current widget
-  QWidget* widget_; 
+  //! timeline
+  QTimeLine time_line_;
+    
+  //! current widget pixmap
+  QPixmap first_;
   
-  //! transitionWidget
-  TransitionWidget* transition_widget_;
+  //! second pixmap
+  QPixmap second_;
   
 };
-
-
+  
 #endif

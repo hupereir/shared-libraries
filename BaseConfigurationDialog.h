@@ -101,11 +101,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
   virtual void _editPixmapPathList( void );
   
   //! read configuration from options
-  virtual void _read()
-  { 
-    Debug::Throw( "BaseConfigurationDialog::_read.\n" );
-    OptionWidgetList::read(); 
-  }
+  virtual void _read();
 
   //! update configuration
   virtual void _update()

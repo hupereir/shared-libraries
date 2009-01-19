@@ -99,6 +99,7 @@ noinst_HEADERS = \
   TextSeparator.h \
   ToolBarMenu.h \
   ToolButtonStyleMenu.h \
+  TransitionWidget.h \
   TreeItem.h \
   TreeItemBase.h \
   TreeModel.h \
@@ -189,6 +190,7 @@ libbase_qt_a_SOURCES = \
   TextSeparator.cpp \
   ToolBarMenu.cpp \
   ToolButtonStyleMenu.cpp \
+  TransitionWidget.cpp \
   TreeItemBase.cpp \
   TreeView.cpp \
   TreeViewConfiguration.cpp \
@@ -247,6 +249,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_RemoveLineBuffer.cpp \
   moc_SelectLineDialog.cpp \
   moc_StatusBar.cpp \
+  moc_TransitionWidget.cpp \
   moc_TabbedDialog.cpp \
   moc_TabWidget.cpp \
   moc_TextEditor.cpp \

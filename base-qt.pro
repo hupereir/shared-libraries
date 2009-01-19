@@ -95,6 +95,7 @@ HEADERS = \
   TextSeparator.h \
   ToolBarMenu.h \
   ToolButtonStyleMenu.h \
+  TransitionWidget.h \
   TreeItem.h \
   TreeItemBase.h \
   TreeModel.h \
@@ -183,6 +184,7 @@ SOURCES = \
   TextSeparator.cpp \
   ToolBarMenu.cpp \
   ToolButtonStyleMenu.cpp \
+  TransitionWidget.cpp \
   TreeItemBase.cpp \
   TreeView.cpp \
   TreeViewConfiguration.cpp \

@@ -34,78 +34,17 @@
 #include "Debug.h"
 
 using namespace std;
-//___________________________________________________________________
-Fader::Fader( QWidget *parent ):
-  QWidget( parent ),
-  Counter( "Fader" ),
-  time_line_( 300, this )
-{
-  timeLine().setFrameRange(1000, 0);  
-  connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT(update())); 
-}
-
-//___________________________________________________________________
-void Fader::start( QSize size, QWidget* first, QWidget* second )
-{
-  resize( size );
-  first_pixmap_ = QPixmap( size );  
-  first_pixmap_.fill( Qt::transparent );
-  {
-    QPainter painter( &first_pixmap_ );
-    painter.setRenderHints(QPainter::SmoothPixmapTransform);
-    first->render( &painter, QPoint( 0, 0 ), QRegion(), QWidget::DrawChildren );
-    painter.end();
-  }
-
-  second_pixmap_ = QPixmap( size );
-  second_pixmap_.fill( Qt::transparent );
-  {
-    QPainter painter( &second_pixmap_ );
-    painter.setRenderHints(QPainter::SmoothPixmapTransform);
-    second->resize( size );
-    second->render( &painter, QPoint( 0, 0 ), QRegion(), QWidget::DrawChildren );
-    painter.end();
-  }
-
-  if( timeLine().state() != QTimeLine::Running ) timeLine().start();
-  
-}
-
-//___________________________________________________________________
-void Fader::paintEvent( QPaintEvent* event )
-{
-  
-  qreal frame = timeLine().currentFrame();
-  if( timeLine().state() != QTimeLine::Running ) 
-  { return; }
-  
-  QPainter painter( this );
-  painter.fillRect( rect(), Qt::transparent );
-  
-  painter.setRenderHints(QPainter::SmoothPixmapTransform);
-  painter.setOpacity( frame/1000 );
-  painter.drawPixmap( QPoint(0,0), first_pixmap_ );
-  
-  painter.setOpacity( 1.0 - frame/1000 );
-  painter.drawPixmap( QPoint(0,0), second_pixmap_ );
-  painter.end();
-  
-  if( frame <= 0 ) { timeLine().stop(); }
-}
 
 //___________________________________________________________________
 AnimatedStackedWidget::AnimatedStackedWidget( QWidget* parent ):
   QStackedWidget( parent ),
   Counter( "AnimatedStackedWidget" ),
   widget_( 0 ),
-  fader_( new Fader( this ) )
+  transition_widget_( new TransitionWidget() )
 {
   Debug::Throw( "AnimatedStackedWidget::AnimatedStackedWidget.\n" );
- 
-  { setAttribute(Qt::WA_NoSystemBackground); }
-                                              
-  addWidget( &_fader() );
-  connect( &_fader().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
+  addWidget( &_transitionWidget() );
+  connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
 }
 
 //______________________________________________________________
@@ -137,16 +76,12 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
   // store current widget
   widget_ = widget;
 
-  // start fader
-  _fader().start( size(), currentWidget(), widget_ );
-  QStackedWidget::setCurrentWidget( &_fader() );
- // _fader().show();
+  // start transitionWidget
+  _transitionWidget().start( size(), currentWidget(), widget_ );
+  QStackedWidget::setCurrentWidget( &_transitionWidget() );
   
 }
 
 //___________________________________________________________________
 void AnimatedStackedWidget::_animationFinished( void )
-{
-  _fader().hide();
-  QStackedWidget::setCurrentWidget( widget_ );
-}
+{ QStackedWidget::setCurrentWidget( widget_ ); }
