@@ -41,7 +41,8 @@ using namespace std;
 //___________________________________________________________________
 TransitionWidget::TransitionWidget( QWidget *parent ):
   QWidget( parent ),
-  Counter( "TransitionWidget" )
+  Counter( "TransitionWidget" ),
+  mode_( FADE_BOTH )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
   connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT(update())); 
@@ -68,16 +69,19 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   if( timeLine().state() != QTimeLine::Running ) 
   { return; }
   
-  QPainter painter( this );
-  painter.fillRect( rect(), Qt::transparent );
-  
-  painter.setRenderHints(QPainter::SmoothPixmapTransform);
-  painter.setOpacity( frame/1000 );
-  painter.drawPixmap( QPoint(0,0), first_ );
-  
-  painter.setOpacity( 1.0 - frame/1000 );
-  painter.drawPixmap( QPoint(0,0), second_ );
-  painter.end();
+  if( mode_ != NONE )
+  {
+    QPainter painter( this );
+    painter.fillRect( rect(), Qt::transparent );
+    
+    painter.setRenderHints(QPainter::SmoothPixmapTransform);
+    if( mode_ & FADE_FIRST ) painter.setOpacity( frame/1000 );
+    painter.drawPixmap( QPoint(0,0), first_ );
+    
+    if( mode_ & FADE_SECOND ) painter.setOpacity( 1.0 - frame/1000 );
+    painter.drawPixmap( QPoint(0,0), second_ );
+    painter.end();
+  }
   
   if( frame <= 0 ) { timeLine().stop(); }
   
@@ -102,6 +106,9 @@ TransitionWidget::WidgetPixmap::WidgetPixmap( QWidget* parent, QSize size ):
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
   if( !parent->isVisible() ) parent->resize( size );
   qApp->processEvents();
+  
+  // draw widget children (and not the parent)
   parent->render( &painter, QPoint( 0, 0 ), QRegion(), QWidget::DrawChildren );
+  
   painter.end();
 }

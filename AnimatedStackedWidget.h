@@ -51,6 +51,11 @@ class AnimatedStackedWidget: public QStackedWidget, public Counter
   //! destructor
   virtual ~AnimatedStackedWidget();
 
+  //! transition widget
+  TransitionWidget& transitionWidget( void ) const
+  { return *transition_widget_; }
+  
+
   public slots:
   
   //! current index
@@ -65,9 +70,6 @@ class AnimatedStackedWidget: public QStackedWidget, public Counter
   void _animationFinished( void );
   
   private:
-  
-  TransitionWidget& _transitionWidget( void ) const
-  { return *transition_widget_; }
   
   //! current widget
   QWidget* widget_; 

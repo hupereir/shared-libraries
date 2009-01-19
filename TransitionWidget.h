@@ -55,6 +55,19 @@ class TransitionWidget: public QWidget, public Counter
   QTimeLine& timeLine( void )
   { return time_line_; }
   
+  //! modes
+  enum Mode
+  {
+    NONE = 0,
+    FADE_FIRST = 1<<0,
+    FADE_SECOND = 1<<1,
+    FADE_BOTH = FADE_FIRST | FADE_SECOND
+  };
+  
+  //! mode
+  void setMode( const unsigned int mode )
+  { mode_ = mode; }
+  
   protected:
   
   //! paint event
@@ -76,6 +89,9 @@ class TransitionWidget: public QWidget, public Counter
     WidgetPixmap( QWidget*, QSize );
     
   };
+  
+  //! mode
+  unsigned int mode_; 
   
   //! timeline
   QTimeLine time_line_;
