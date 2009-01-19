@@ -45,7 +45,7 @@
 #include "HelpModel.h"
 #include "NewItemDialog.h"
 #include "QuestionDialog.h"
-#include "TextEditor.h"
+#include "AnimatedTextEditor.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 
@@ -82,10 +82,11 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   _list().header()->hide();
    
   // stack widget to switch between html and plain text editor
-  layout->addLayout( stack_layout_ = new QStackedLayout() );
-  
+  layout->addWidget( stack_ = new AnimatedStackedWidget( this ) );
+  stack_->transitionWidget().setMode( TransitionWidget::FADE_SECOND );
+    
   // add html editor
-  stack_layout_->addWidget( html_frame_ = new QWidget( this ) );
+  stack_->addWidget( html_frame_ = new QWidget( this ) );
   
   // vbox layout for editor and button
   QVBoxLayout *v_layout = new QVBoxLayout();
@@ -93,7 +94,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   v_layout->setSpacing( 5 );
   html_frame_->setLayout( v_layout );
   
-  v_layout->addWidget( html_editor_ = new TextEditor( html_frame_ ) );
+  v_layout->addWidget( html_editor_ = new AnimatedTextEditor( html_frame_ ) );
   html_editor_->setReadOnly( true );
   html_editor_->setWrapFromOptions( false );
   html_editor_->wrapModeAction().setChecked( true );
@@ -123,7 +124,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   Debug::Throw( "HelpDialog::HelpDialog - html button frame done.\n" );
 
   // add plain editor
-  stack_layout_->addWidget( plain_frame_ = new QWidget( this ) );
+  stack_->addWidget( plain_frame_ = new QWidget( this ) );
 
   // vbox layout for editor and button
   v_layout = new QVBoxLayout();
@@ -132,7 +133,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   plain_frame_->setLayout( v_layout );
 
   // plain editor
-  v_layout->addWidget( plain_editor_ = new TextEditor( plain_frame_ ) );
+  v_layout->addWidget( plain_editor_ = new AnimatedTextEditor( plain_frame_ ) );
   plain_editor_->setReadOnly( false );
   plain_editor_->setWrapFromOptions( false );
   plain_editor_->wrapModeAction().setChecked( true );
@@ -165,7 +166,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   h_layout->addStretch( 1 );
 
   // make sure html edition is visible at start up  
-  stack_layout_->setCurrentWidget( html_frame_ );
+  stack_->setCurrentWidget( html_frame_ );
     
   // connect list to text edit
   connect( _list().selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex&, const QModelIndex& ) ) );
@@ -308,7 +309,7 @@ void HelpDialog::_toggleEdition( void )
    
     // modify current item display
     if( current.isValid() ) plain_editor_->setPlainText( _model().get(current).text() );
-    stack_layout_->setCurrentWidget( plain_frame_ );
+    stack_->setCurrentWidget( plain_frame_ );
     
   } else {
 
@@ -320,7 +321,7 @@ void HelpDialog::_toggleEdition( void )
     _askForSave();
 
     if( current.isValid() ) html_editor_->setHtml( _model().get(current).text() );
-    stack_layout_->setCurrentWidget( html_frame_ );
+    stack_->setCurrentWidget( html_frame_ );
     
   }
 
@@ -486,7 +487,7 @@ void HelpDialog::_askForSave( void )
   {
     
     _manager().restoreBackup();
-    stack_layout_->setCurrentWidget( html_frame_ );
+    stack_->setCurrentWidget( html_frame_ );
     setItems( _manager().items() );
     
   } 

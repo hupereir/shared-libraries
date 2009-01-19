@@ -34,13 +34,13 @@
 
 #include <assert.h>
 #include <QPushButton>
-#include <QStackedLayout>
 
+#include "AnimatedStackedWidget.h"
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "HelpModel.h"
 
-class TextEditor;
+class AnimatedTextEditor;
 class TreeView;
 
 namespace BASE
@@ -149,7 +149,7 @@ namespace BASE
     TreeView *list_;
     
     //! stack layout to switch between editors
-    QStackedLayout* stack_layout_;
+    AnimatedStackedWidget* stack_;
     
     //! html edition frame
     QWidget* html_frame_;
@@ -158,10 +158,10 @@ namespace BASE
     QWidget* plain_frame_;
     
     //! read-only text editor
-    TextEditor *html_editor_;
+    AnimatedTextEditor *html_editor_;
     
     //! plain text editor
-    TextEditor *plain_editor_; 
+    AnimatedTextEditor *plain_editor_; 
     
     //! edition button
     QPushButton *edit_button_;
