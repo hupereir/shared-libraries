@@ -32,7 +32,6 @@
 */
 
 #include <QLayout>
-#include <QStackedWidget>
 #include <list>
 
 #include "TabbedDialog.h"

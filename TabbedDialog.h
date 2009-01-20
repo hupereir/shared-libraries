@@ -34,7 +34,6 @@
 #include <QCloseEvent>
 #include <QDialog>
 #include <QLayout>
-//#include <QStackedWidget>
 #include <list>
 
 #include "XmlOptions.h"
