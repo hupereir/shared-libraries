@@ -65,6 +65,9 @@ class AnimatedTabWidget: public QTabWidget, public Counter
   
   protected slots:
   
+  //! update current widget
+  void _updateCurrentWidget( int );
+  
   //! animation finished
   void _animationFinished( void );
   

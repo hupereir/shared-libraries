@@ -104,11 +104,18 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
     if( running ) {
       
-      if( mode_ & FADE_FIRST ) painter.setOpacity( double(frame)/timeLine().startFrame() );
-      painter.drawPixmap( QPoint(0,0), first_ );
-    
-      if( mode_ & FADE_SECOND ) painter.setOpacity( 1.0 - double(frame)/timeLine().startFrame() );
-      painter.drawPixmap( QPoint(0,0), second_ );
+      if( mode_ & FADE_FIRST ) 
+      {
+        painter.setOpacity( double(frame)/timeLine().startFrame() );
+        painter.drawPixmap( QPoint(0,0), first_ );
+      }
+      
+      if( mode_ & FADE_SECOND ) 
+      {
+        painter.setOpacity( 1.0 - double(frame)/timeLine().startFrame() );
+        painter.drawPixmap( QPoint(0,0), second_ );
+      }
+      
       painter.end();
       
     } else painter.drawPixmap( QPoint(0,0), first_ );

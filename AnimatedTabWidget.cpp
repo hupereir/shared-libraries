@@ -30,6 +30,7 @@
 */
 
 #include <QPainter>
+#include <QTabBar>
 
 #include "AnimatedTabWidget.h"
 #include "Debug.h"
@@ -43,6 +44,10 @@ AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
   transition_widget_( new TransitionWidget() )
 {
   Debug::Throw( "AnimatedTabWidget::AnimatedTabWidget.\n" );
+  
+  // need to disconnect tabBar from relevant signal, to replace it with local version.
+  // tabBar()->disconnect( SIGNAL( currentChanged( int ) ) );  
+  connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _updateCurrentWidget( int ) ) );  
   connect( &transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
 }
 
@@ -92,12 +97,21 @@ void AnimatedTabWidget::setCurrentWidget( QWidget* widget )
   transitionWidget().setStartWidget( currentWidget() );
   transitionWidget().setParent( widget );
   transitionWidget().show();
+  
   setUpdatesEnabled( false );
   QTabWidget::setCurrentWidget( widget );
   transitionWidget().setEndWidget( widget );
   transitionWidget().start();
   setUpdatesEnabled( true );
   
+}
+
+//___________________________________________________________________
+void AnimatedTabWidget::_updateCurrentWidget( int index )
+{
+  Debug::Throw( 0, "AnimatedTabWidget::_updateCurrentWidget.\n" );
+  if( index < QTabWidget::count() && index >= 0 ) AnimatedTabWidget::setCurrentWidget( widget( index ) );
+  emit currentChanged(index);
 }
 
 //___________________________________________________________________

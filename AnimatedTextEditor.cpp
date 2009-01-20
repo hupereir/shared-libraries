@@ -41,6 +41,7 @@ AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):
 {
   Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
+  _transitionWidget().setMode( TransitionWidget::FADE_FIRST );
 }
 
 //________________________________________________________
@@ -79,7 +80,6 @@ void AnimatedTextEditor::setHtml( const QString& text )
 
   setUpdatesEnabled( false );
   TextEditor::setHtml( text );
-  _transitionWidget().setEndWidget( this );
   _transitionWidget().start();
   setUpdatesEnabled( true );
 }
