@@ -156,7 +156,6 @@ void TransitionWidget::Pixmap::fromWidget( QWidget* parent )
   
   // draw widget children (and not the parent)
   parent->render( &painter, QPoint( 0, 0 ), QRegion(), QWidget::DrawChildren );
-  //parent->render( &painter, QPoint( 0, 0 ) );
   painter.end();
   
 }
