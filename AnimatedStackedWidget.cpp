@@ -57,11 +57,19 @@ AnimatedStackedWidget::~AnimatedStackedWidget( void )
 
 //___________________________________________________________________
 int AnimatedStackedWidget::currentIndex( void ) const
-{ return transitionWidget().timeLine().state() == QTimeLine::Running ? indexOf( widget_ ):QStackedWidget::currentIndex(); }
+{ 
+  if( transitionWidget().timeLine().state() == QTimeLine::Running ) return indexOf( widget_ );
+  else if( currentWidget() == &transitionWidget() ) return -1; 
+  else return QStackedWidget::currentIndex(); 
+}
 
 //___________________________________________________________________
 QWidget* AnimatedStackedWidget::currentWidget( void ) const
-{ return transitionWidget().timeLine().state() == QTimeLine::Running ? widget_:QStackedWidget::currentWidget(); }
+{ 
+  if( transitionWidget().timeLine().state() == QTimeLine::Running ) return widget_;
+  else if( QStackedWidget::currentWidget() == &transitionWidget() ) return 0;
+  else return QStackedWidget::currentWidget();
+}
 
 //___________________________________________________________________
 void AnimatedStackedWidget::setCurrentIndex( int index )
