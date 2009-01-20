@@ -7,6 +7,7 @@ DEPENDPATH += . ../base
 
 HEADERS = \
   AnimatedStackedWidget.h \
+  AnimatedTabWidget.h \
   AnimatedTextEditor.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
@@ -119,6 +120,7 @@ HEADERS = \
 
 SOURCES = \
   AnimatedStackedWidget.cpp \
+  AnimatedTabWidget.cpp \
   AnimatedTextEditor.cpp \
   Color.cpp \
   BaseConfigurationDialog.cpp \
