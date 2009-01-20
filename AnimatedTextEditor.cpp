@@ -58,6 +58,7 @@ void AnimatedTextEditor::setPlainText( const QString& text )
   _transitionWidget().setStartWidget( this );
   _transitionWidget().show();
   
+  // setup animation between old and new text
   setUpdatesEnabled( false );
   TextEditor::setPlainText( text );
   _transitionWidget().setEndWidget( this );
@@ -71,6 +72,7 @@ void AnimatedTextEditor::setHtml( const QString& text )
   // check enability
   if( !_transitionWidget().enabled() ) return TextEditor::setHtml( text );
 
+  // setup animation between old and new text
   _transitionWidget().resize( size() );
   _transitionWidget().setStartWidget( this );
   _transitionWidget().show();
