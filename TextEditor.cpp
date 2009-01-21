@@ -2472,7 +2472,7 @@ void TextEditor::_blockCountChanged( int count )
 //_____________________________________________________________________
 void TextEditor::_findFromDialog( void )
 {
-  Debug::Throw( "TextEditor::_findFromDialog.\n" );
+  Debug::Throw( 0, "TextEditor::_findFromDialog.\n" );
 
   // create
   if( !find_dialog_ ) _createBaseFindDialog();
@@ -2498,10 +2498,20 @@ void TextEditor::_findFromDialog( void )
   // set default text
   // update find text
   QString text;
-  if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _findDialog().setText( text );
-  else if( textCursor().hasSelection() ) _findDialog().setText( textCursor().selectedText() );
-  else if( !( text = lastSelection().text() ).isEmpty() ) _findDialog().setText( text );
-
+  if( ( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() )
+  {
+    if( textCursor().hasSelection() ) text = textCursor().selectedText();
+    else text = lastSelection().text();
+  }
+  
+  if( !text.isEmpty() )
+  {
+    const int max_length( 1024 );
+    text = text.left( max_length );
+    Debug::Throw(0) << "TextEditor::_findFromDialog - text: " << qPrintable( text ) << endl;
+    _findDialog().setText( text );
+  }
+  
   // changes focus
   _findDialog().activateWindow();
   _findDialog().editor().setFocus();
