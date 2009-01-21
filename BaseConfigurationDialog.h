@@ -67,18 +67,24 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     LIST = 1<<2,
     
     //! textEdit emulations
-    TEXTEDIT = 1<<3
+    TEXTEDIT = 1<<3,
+    
+    //! animations
+    ANIMATIONS = 1<<4
     
   };
 
   //! adds configuration box for base options used in all appications
-  void baseConfiguration( QWidget* parent = 0, const unsigned int& flag = BASE|LIST );
+  void baseConfiguration( QWidget* parent = 0, const unsigned int& flag = BASE|LIST|ANIMATIONS );
 
   //! list configuration box
   void listConfiguration( QWidget* parent = 0 );
 
   //! TextEdit configuration box
   void textEditConfiguration( QWidget* parent = 0 );
+  
+  //! animations
+  void animationConfiguration( QWidget* parent = 0 );
   
   signals:
 

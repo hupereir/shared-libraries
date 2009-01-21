@@ -192,22 +192,17 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     grid_layout->addWidget( spinbox );
     addOptionWidget( spinbox );
   
-    // debug level
-    grid_layout->addWidget( new QLabel( "Animations duration (ms): ", box ) );
-    spinbox = new OptionSpinBox( box, "ANIMATION_DURATION" );
-    spinbox->setMinimum( 0 );
-    spinbox->setMaximum( 5000 );
-    spinbox->setToolTip( "Animations duration.\nSetting this value to zero disables all animations." );
-    grid_layout->addWidget( spinbox );
-    addOptionWidget( spinbox );
   
   }
     
   // list
   if( flag & LIST ) { listConfiguration( parent ); }
   
-  // tabs
+  // edition
   if( flag & TEXTEDIT ) { textEditConfiguration( parent ); }
+  
+  // edition
+  if( flag & ANIMATIONS ) { animationConfiguration( parent ); }
 
   Debug::Throw( "BaseConfigurationDialog::baseConfiguration - done.\n" );
 }
@@ -243,6 +238,7 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   OptionSpinBox* spinbox;
   grid_layout->addWidget( new QLabel( "List items icon size ", box ) ); 
   grid_layout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
+  spinbox->setToolTip( "Default size of the icons displayed in lists" );
   spinbox->setMinimum(8);
   spinbox->setMaximum(96);
   addOptionWidget( spinbox );
@@ -256,7 +252,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "Text edition", "Configuration and look-and-feel for text edition" );
+  if( !parent ) parent = &addPage( "Text display/edition", "Configuration and look-and-feel for text display and edition" );
   
   // tab emulation
   QGroupBox* box = new QGroupBox( "Tab emulation", parent );
@@ -389,6 +385,62 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
 
   Debug::Throw( "BaseConfigurationDialog::textEditConfiguration - done.\n" );
 
+}
+
+//__________________________________________________
+void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
+{
+  
+  Debug::Throw( "BaseConfigurationDialog::animationConfiguration.\n" );
+
+  // make sure parent is valid
+  QGroupBox* box;
+  if( !parent ) 
+  {
+    parent = &addPage( "Animations", "Animation settings" );
+    box = new QGroupBox( parent );
+  } else box = new QGroupBox( "Animations", parent );
+  
+  QVBoxLayout* layout = new QVBoxLayout();
+  layout->setMargin(5);
+  layout->setSpacing(5);
+  box->setLayout( layout );
+  parent->layout()->addWidget( box );
+
+  OptionCheckBox* checkbox;
+  OptionSpinBox* spinbox;
+  layout->addWidget( checkbox = new OptionCheckBox( "Enable animations", box, "ENABLE_ANIMATIONS" ) );
+  checkbox->setToolTip( 
+    "Turn on/off animations.\n Warning: animations are still experimental\n"
+    "and might significantly slow-down the system." );
+  addOptionWidget( checkbox );
+  
+  GridLayout* grid_layout = new GridLayout();
+  grid_layout->setSpacing(5);
+  grid_layout->setMargin(0);
+  grid_layout->setMaxCount(2);
+  box->layout()->addItem( grid_layout );
+  
+  // animations
+  grid_layout->addWidget( new QLabel( "duration (ms): ", box ) );
+  spinbox = new OptionSpinBox( box, "ANIMATION_DURATION" );
+  spinbox->setMinimum( 10 );
+  spinbox->setMaximum( 5000 );
+  spinbox->setToolTip( "Animations duration." );
+  grid_layout->addWidget( spinbox );
+  addOptionWidget( spinbox );
+ 
+  // animations
+  grid_layout->addWidget( new QLabel( "frames: ", box ) );
+  spinbox = new OptionSpinBox( box, "ANIMATION_FRAMES" );
+  spinbox->setMinimum( 0 );
+  spinbox->setMaximum( 1000 );
+  spinbox->setToolTip( "Maximum number of frames shown for one animation.\n"
+    "A large number is recomanded, since frames are dropped whenever the\n"
+    "system is too slow anyway." );
+  grid_layout->addWidget( spinbox );
+  addOptionWidget( spinbox );
+  
 }
 
 //__________________________________________________

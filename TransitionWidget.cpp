@@ -120,10 +120,8 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
 void TransitionWidget::_updateConfiguration( void )
 {
   Debug::Throw( "TransitionWidget::_updateConfiguration.\n" );
-  int duration( XmlOptions::get().get<int>( "ANIMATION_DURATION" ) );
-  bool enabled( XmlOptions::get().get<bool>( "ENABLE_ANIMATIONS" ) );
-  setEnabled( enabled && duration > 0 );
-  if( TransitionWidget::enabled() ) timeLine().setDuration( duration );
+  setEnabled(  XmlOptions::get().get<bool>( "ENABLE_ANIMATIONS" ) );
+  timeLine().setDuration( XmlOptions::get().get<int>( "ANIMATION_DURATION" ) );
   timeLine().setFrameRange( XmlOptions::get().get<int>( "ANIMATION_FRAMES" ), 0 );
 } 
 
