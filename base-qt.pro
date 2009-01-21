@@ -12,6 +12,7 @@ HEADERS = \
   BaseConfigurationDialog.h \
   BaseDialog.h \
   BaseFindDialog.h \
+  BaseIcons.h \
   BaseMainWindow.h \
   BaseReplaceDialog.h \
   BlockHighlight.h \
@@ -28,7 +29,6 @@ HEADERS = \
   CustomComboBox.h \
   CustomDialog.h \
   CustomFileDialog.h \
-  GridLayout.h \
   CustomPixmap.h \
   CustomSlider.h \
   CustomTextDocument.h \
@@ -36,7 +36,6 @@ HEADERS = \
   CustomToolButton.h \
   DebugMenu.h \
   DockPanel.h \
-  BaseIcons.h \
   ErrorHandler.h \
   FileList.h \
   FileRecordBaseProperties.h \
@@ -44,6 +43,7 @@ HEADERS = \
   FlatStyle.h \
   FontEditor.h \
   FontInfo.h \
+  GridLayout.h \
   HtmlTextNode.h \
   IconBrowsedButton.h \
   IconCacheDialog.h \
