@@ -75,20 +75,35 @@ class TransitionWidget: public QWidget, public Counter
   //! modes
   enum FadingMode
   {
+    
+    //! no fading
     NONE = 0,
+      
+    //! use first widget to fade on top of final state
     FADE_FIRST = 1<<0,
+    
+    //! use second widget to fade on top of initial state
     FADE_SECOND = 1<<1,
+    
+    //! use second widget to fade on top of first widget
     FADE_BOTH = FADE_FIRST | FADE_SECOND
+    
   };
   
   //! fading mode
   void setFadingMode( const unsigned int& mode )
-  { fading_mode_ = mode; }
+  { 
+    fading_mode_ = mode; 
+    if( fading_mode_ == NONE ) setEnabled( false );
+  }
   
   //! copy mode
   enum CopyMode
   {
+    //! use QWidget::render() to copy widget to pixmap
     RENDER,
+      
+    //! use QPixmap::grabWidget() to copy widget to pixmap
     GRAB
   };
   
