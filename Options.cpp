@@ -93,6 +93,7 @@ Options::Options( bool install_default_options ):
     set( "MARGIN_BACKGROUND", "#ecffec" );
     set( "MARGIN_VERTICAL_LINE", "1" );
     
+    set( "ENABLE_ANIMATIONS", "1" );
     set( "ANIMATION_DURATION", "300" );
     set( "ANIMATION_FRAMES", "1000" );
     
