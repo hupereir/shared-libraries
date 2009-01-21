@@ -11,6 +11,8 @@ HEADERS = \
   AnimatedTextEditor.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
+  BaseFindDialog.h \
+  BaseMainWindow.h \
   BaseReplaceDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
@@ -27,7 +29,6 @@ HEADERS = \
   CustomDialog.h \
   CustomFileDialog.h \
   GridLayout.h \
-  BaseMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
   CustomTextDocument.h \
@@ -40,7 +41,6 @@ HEADERS = \
   FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
-  BaseFindDialog.h \
   FlatStyle.h \
   FontEditor.h \
   FontInfo.h \
@@ -125,6 +125,8 @@ SOURCES = \
   Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \
+  BaseFindDialog.cpp \
+  BaseMainWindow.cpp \
   BaseReplaceDialog.cpp \
   BlockHighlight.cpp \
   BoxSelection.cpp \
@@ -139,7 +141,6 @@ SOURCES = \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
-  BaseMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
   CustomToolBar.cpp \
@@ -149,7 +150,6 @@ SOURCES = \
   ErrorHandler.cpp \
   FileList.cpp \
   FileRecordModel.cpp \
-  BaseFindDialog.cpp \
   FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
