@@ -41,7 +41,8 @@ AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):
 {
   Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
-  _transitionWidget().setMode( TransitionWidget::FADE_FIRST );
+  _transitionWidget().setFadingMode( TransitionWidget::FADE_FIRST );
+  _transitionWidget().setCopyMode( TransitionWidget::GRAB );
 }
 
 //________________________________________________________

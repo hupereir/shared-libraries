@@ -43,7 +43,8 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
   QWidget( parent ),
   Counter( "TransitionWidget" ),
   enabled_( true ),
-  mode_( FADE_BOTH )
+  fading_mode_( FADE_BOTH ),
+  copy_mode_( RENDER )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
   connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT(update())); 
@@ -52,19 +53,24 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
 }
 
 //___________________________________________________________________
-void TransitionWidget::resize( const QSize& size )
-{
-  Debug::Throw( "TransitionWidget::resize.\n" );
-  first_ = Pixmap( size );
-  second_ = Pixmap( size );
-  QWidget::resize( size );
-}
-
-//___________________________________________________________________
 void TransitionWidget::setStartWidget( QWidget* widget )
 { 
   Debug::Throw( "TransitionWidget::setStartWidget.\n" );
-  first_.fromWidget( widget ); 
+  switch( copy_mode_ )
+  {
+    case RENDER:
+    first_ = Pixmap( size() );
+    first_.fromWidget( widget ); 
+    break;
+    
+    case GRAB:
+    first_ = QPixmap::grabWidget( widget, widget->rect() );
+    break;
+    
+    default: 
+    assert(0);
+  }
+  
 }
 
 
@@ -72,7 +78,21 @@ void TransitionWidget::setStartWidget( QWidget* widget )
 void TransitionWidget::setEndWidget( QWidget* widget )
 { 
   Debug::Throw( "TransitionWidget::setEndWidget.\n" );
-  second_.fromWidget( widget ); 
+  switch( copy_mode_ )
+  {
+    case RENDER:
+    second_ = Pixmap( size() );
+    second_.fromWidget( widget ); 
+    break;
+    
+    case GRAB:
+    first_ = QPixmap::grabWidget( widget, widget->rect() );
+    break;
+    
+    default: 
+    assert(0);
+  }
+    
 }
 
 //___________________________________________________________________
@@ -96,7 +116,7 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   qreal frame = timeLine().currentFrame();
   
   bool running( timeLine().state() == QTimeLine::Running );
-  if( mode_ != NONE )
+  if( fading_mode_ != NONE )
   {
     QPainter painter( this );
     painter.fillRect( rect(), Qt::transparent );
@@ -104,13 +124,13 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
     if( running ) {
       
-      if( mode_ & FADE_FIRST ) 
+      if( fading_mode_ & FADE_FIRST ) 
       {
         painter.setOpacity( double(frame)/timeLine().startFrame() );
         painter.drawPixmap( QPoint(0,0), first_ );
       }
       
-      if( mode_ & FADE_SECOND ) 
+      if( fading_mode_ & FADE_SECOND ) 
       {
         painter.setOpacity( 1.0 - double(frame)/timeLine().startFrame() );
         painter.drawPixmap( QPoint(0,0), second_ );
@@ -149,6 +169,12 @@ TransitionWidget::Pixmap::Pixmap( QSize size ):
   assert( size.isValid() );
   fill( Qt::transparent ); 
 }
+ 
+//___________________________________________________________________
+TransitionWidget::Pixmap::Pixmap( const QPixmap& pixmap ):
+  QPixmap( pixmap ),
+  Counter( "TransitionWidget::Pixmap" )
+{}
 
 //___________________________________________________________________
 void TransitionWidget::Pixmap::fromWidget( QWidget* parent )

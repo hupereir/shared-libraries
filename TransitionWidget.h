@@ -48,9 +48,6 @@ class TransitionWidget: public QWidget, public Counter
   //! constructor
   TransitionWidget( QWidget* parent = 0 );
 
-  //! resize
-  virtual void resize( const QSize& );
-
   //! set starting widget
   void setStartWidget( QWidget* );
 
@@ -76,7 +73,7 @@ class TransitionWidget: public QWidget, public Counter
   { return enabled_; }
   
   //! modes
-  enum Mode
+  enum FadingMode
   {
     NONE = 0,
     FADE_FIRST = 1<<0,
@@ -84,9 +81,20 @@ class TransitionWidget: public QWidget, public Counter
     FADE_BOTH = FADE_FIRST | FADE_SECOND
   };
   
-  //! mode
-  void setMode( const unsigned int mode )
-  { mode_ = mode; }
+  //! fading mode
+  void setFadingMode( const unsigned int& mode )
+  { fading_mode_ = mode; }
+  
+  //! copy mode
+  enum CopyMode
+  {
+    RENDER,
+    GRAB
+  };
+  
+  //! copy mode
+  void setCopyMode( const CopyMode& mode )
+  { copy_mode_ = mode; }
   
   protected:
   
@@ -111,6 +119,9 @@ class TransitionWidget: public QWidget, public Counter
     //! constructor
     Pixmap( QSize size );
     
+    //! constructor
+    Pixmap( const QPixmap& );
+    
     //! copy pixmap
     void fromWidget( QWidget* );
     
@@ -119,8 +130,11 @@ class TransitionWidget: public QWidget, public Counter
   //! enability
   bool enabled_;
   
-  //! mode
-  unsigned int mode_; 
+  //! fading mode
+  unsigned int fading_mode_; 
+  
+  //! copy
+  CopyMode copy_mode_;
   
   //! timeline
   QTimeLine time_line_;
