@@ -48,11 +48,14 @@ class TransitionWidget: public QWidget, public Counter
   //! constructor
   TransitionWidget( QWidget* parent = 0 );
 
-  //! set starting widget
-  void setStartWidget( QWidget* );
+  //! resize
+  virtual void resize( const QSize& );
 
   //! set starting widget
-  void setEndWidget( QWidget* );
+  void setStartWidget( QWidget*, const QRect& rect = QRect() );
+
+  //! set starting widget
+  void setEndWidget( QWidget*, const QRect& rect = QRect() );
 
   //! start
   void start( QSize, QWidget*, QWidget* );
@@ -138,10 +141,13 @@ class TransitionWidget: public QWidget, public Counter
     Pixmap( const QPixmap& );
     
     //! copy pixmap
-    void fromWidget( QWidget* );
+    void fromWidget( QWidget*, const QRect& );
     
   };
  
+  // get pixmap from widget
+  Pixmap _pixmap( QWidget*, const QRect& ) const;
+  
   //! enability
   bool enabled_;
   
@@ -154,6 +160,13 @@ class TransitionWidget: public QWidget, public Counter
   //! timeline
   QTimeLine time_line_;
     
+  //! temporary size
+  /*! 
+  it is used to store "resize" commands
+  in case the internal size() is not accounted for immediatly 
+  */
+  QSize size_;
+  
   //! current widget pixmap
   Pixmap first_;
   

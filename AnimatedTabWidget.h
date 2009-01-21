@@ -54,15 +54,7 @@ class AnimatedTabWidget: public QTabWidget, public Counter
   //! transition widget
   TransitionWidget& transitionWidget( void ) const
   { return *transition_widget_; }
-  
-  public slots:
-  
-  //! current index
-  void setCurrentIndex( int );
     
-  //! current widget
-  void setCurrentWidget( QWidget* );
-  
   protected slots:
   
   //! update current widget
@@ -72,6 +64,9 @@ class AnimatedTabWidget: public QTabWidget, public Counter
   void _animationFinished( void );
   
   private:
+  
+  //! previous widget
+  QWidget* previous_widget_;
   
   //! transitionWidget
   TransitionWidget* transition_widget_;

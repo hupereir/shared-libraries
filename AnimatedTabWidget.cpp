@@ -41,12 +41,13 @@ using namespace std;
 AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
   QTabWidget( parent ),
   Counter( "AnimatedTabWidget" ),
-  transition_widget_( new TransitionWidget() )
+  previous_widget_( 0 ),
+  transition_widget_( new TransitionWidget( this ) )
 {
   Debug::Throw( "AnimatedTabWidget::AnimatedTabWidget.\n" );
+  transitionWidget().setFadingMode( TransitionWidget::FADE_FIRST );
+  transitionWidget().setCopyMode( TransitionWidget::RENDER );
   
-  // need to disconnect tabBar from relevant signal, to replace it with local version.
-  // tabBar()->disconnect( SIGNAL( currentChanged( int ) ) );  
   connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _updateCurrentWidget( int ) ) );  
   connect( &transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
 }
@@ -59,59 +60,20 @@ AnimatedTabWidget::~AnimatedTabWidget( void )
 }
 
 //___________________________________________________________________
-void AnimatedTabWidget::setCurrentIndex( int index )
-{ 
-  Debug::Throw( "AnimatedTabWidget::setCurrentIndex.\n" );
-  
-  // check animation time
-  if( !transitionWidget().enabled() ) 
-  { return QTabWidget::setCurrentIndex( index ); }
-  
-  // check index is changed
-  if( index == currentIndex() ) return QTabWidget::setCurrentIndex( index );
-  
-  // check widget
-  QWidget* widget =  AnimatedTabWidget::widget( index );
-  if( !widget ) QTabWidget::setCurrentIndex( index );
-  else setCurrentWidget( widget );
-}
-
-//___________________________________________________________________
-void AnimatedTabWidget::setCurrentWidget( QWidget* widget )
-{
-  
-  // check widget validity and animation time
-  if( !(  transitionWidget().enabled() && widget && indexOf( widget ) >= 0 ) )
-  { return QTabWidget::setCurrentWidget( widget ); } 
-
-  // check index is changed
-  if( widget == currentWidget() ) return QTabWidget::setCurrentWidget( widget );
-
-  // check index is changed
-  if( !isVisible() ) return QTabWidget::setCurrentWidget( widget );
-  
-  // check if there is already a current widget
-  if( !currentWidget() ) return QTabWidget::setCurrentWidget( widget ); 
-  
-  transitionWidget().resize( currentWidget()->size() );
-  transitionWidget().setStartWidget( currentWidget() );
-  transitionWidget().setParent( widget );
-  transitionWidget().show();
-  
-  setUpdatesEnabled( false );
-  QTabWidget::setCurrentWidget( widget );
-  transitionWidget().setEndWidget( widget );
-  transitionWidget().start();
-  setUpdatesEnabled( true );
-  
-}
-
-//___________________________________________________________________
 void AnimatedTabWidget::_updateCurrentWidget( int index )
 {
-  Debug::Throw( 0, "AnimatedTabWidget::_updateCurrentWidget.\n" );
-  if( index < QTabWidget::count() && index >= 0 ) AnimatedTabWidget::setCurrentWidget( widget( index ) );
-  emit currentChanged(index);
+  Debug::Throw( "AnimatedTabWidget::_updateCurrentWidget.\n" );
+  
+  // check enability
+  if( !transitionWidget().enabled() ) return;
+  
+  QWidget* widget( QTabWidget::widget( index ) );
+  transitionWidget().resize( widget->size() );
+  transitionWidget().setParent( widget );
+  if( previous_widget_ ) transitionWidget().setStartWidget( previous_widget_ );
+  transitionWidget().show();
+  transitionWidget().start();
+  
 }
 
 //___________________________________________________________________
@@ -119,4 +81,5 @@ void AnimatedTabWidget::_animationFinished( void )
 { 
   transitionWidget().setParent( this );
   transitionWidget().hide();
+  previous_widget_ = currentWidget();  
 }

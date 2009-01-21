@@ -53,52 +53,23 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
 }
 
 //___________________________________________________________________
-void TransitionWidget::setStartWidget( QWidget* widget )
-{ 
-  Debug::Throw( "TransitionWidget::setStartWidget.\n" );
-  switch( copy_mode_ )
-  {
-    case RENDER:
-    first_ = Pixmap( size() );
-    first_.fromWidget( widget ); 
-    break;
-    
-    case GRAB:
-    first_ = QPixmap::grabWidget( widget, widget->rect() );
-    break;
-    
-    default: 
-    assert(0);
-  }
-  
+void TransitionWidget::resize( const QSize& size )
+{
+  size_ = size;
+  QWidget::resize( size );
 }
-
 
 //___________________________________________________________________
-void TransitionWidget::setEndWidget( QWidget* widget )
-{ 
-  Debug::Throw( "TransitionWidget::setEndWidget.\n" );
-  switch( copy_mode_ )
-  {
-    case RENDER:
-    second_ = Pixmap( size() );
-    second_.fromWidget( widget ); 
-    break;
-    
-    case GRAB:
-    first_ = QPixmap::grabWidget( widget, widget->rect() );
-    break;
-    
-    default: 
-    assert(0);
-  }
-    
-}
+void TransitionWidget::setStartWidget( QWidget* widget, const QRect& rect )
+{ first_ = _pixmap( widget, rect ); }
+
+//___________________________________________________________________
+void TransitionWidget::setEndWidget( QWidget* widget, const QRect& rect )
+{ second_ = _pixmap( widget, rect ); }
 
 //___________________________________________________________________
 void TransitionWidget::start( QSize size, QWidget* first, QWidget* second )
 {
-  Debug::Throw( "TransitionWidget::start.\n" );
   resize( size );
   setStartWidget( first );
   setEndWidget( second );
@@ -150,10 +121,34 @@ void TransitionWidget::_updateConfiguration( void )
 {
   Debug::Throw( "TransitionWidget::_updateConfiguration.\n" );
   int duration( XmlOptions::get().get<int>( "ANIMATION_DURATION" ) );
-  setEnabled( duration > 0 );
-  if( enabled() ) timeLine().setDuration( duration );
+  bool enabled( XmlOptions::get().get<bool>( "ENABLE_ANIMATIONS" ) );
+  setEnabled( enabled && duration > 0 );
+  if( TransitionWidget::enabled() ) timeLine().setDuration( duration );
   timeLine().setFrameRange( XmlOptions::get().get<int>( "ANIMATION_FRAMES" ), 0 );
 } 
+
+//___________________________________________________________________
+TransitionWidget::Pixmap TransitionWidget::_pixmap( QWidget* widget, const QRect& rect ) const
+{
+  assert( widget );
+  Pixmap out;
+  switch( copy_mode_ )
+  {
+    case RENDER:
+    out = Pixmap( size_ );
+    out.fromWidget( widget, rect ); 
+    break;
+    
+    case GRAB:
+    out = QPixmap::grabWidget( widget, rect.isNull() ? widget->rect():rect );
+    break;
+    
+    default: 
+    assert(0);
+  }
+  
+  return out;
+}
 
 //___________________________________________________________________
 TransitionWidget::Pixmap::Pixmap( void ):
@@ -177,10 +172,9 @@ TransitionWidget::Pixmap::Pixmap( const QPixmap& pixmap ):
 {}
 
 //___________________________________________________________________
-void TransitionWidget::Pixmap::fromWidget( QWidget* parent )
+void TransitionWidget::Pixmap::fromWidget( QWidget* parent, const QRect& rect )
 {
   
-  Debug::Throw( "TransitionWidget::Pixmap::fromWidget.\n" );
   if( isNull() ) return;
   
   QPainter painter( this );
@@ -188,7 +182,7 @@ void TransitionWidget::Pixmap::fromWidget( QWidget* parent )
   if( !( parent->isVisible() || size() == parent->size() ) ) parent->resize( size() );
   
   // draw widget children (and not the parent)
-  parent->render( &painter, QPoint( 0, 0 ), QRegion(), QWidget::DrawChildren );
+  parent->render( &painter, QPoint( 0, 0 ), rect, QWidget::DrawChildren );
   painter.end();
   
 }
