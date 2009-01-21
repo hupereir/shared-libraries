@@ -58,15 +58,18 @@ void TransitionWidget::resize( const QSize& size )
 }
 
 //___________________________________________________________________
-void TransitionWidget::setStartWidget( QWidget* widget, QRect rect )
+void TransitionWidget::setStartWidget( QWidget* widget, QRect rect, bool from_parent )
 {
   
   assert( widget );
   if( rect.isNull() ) rect = widget->rect();
   
   // use window() widget
-  rect = rect.translated( widget->mapTo( widget->window(), widget->rect().topLeft() ) );
-  widget = widget->window(); 
+  if( from_parent )
+  {
+    rect = rect.translated( widget->mapTo( widget->window(), widget->rect().topLeft() ) );
+    widget = widget->window(); 
+  }
   
   // grab
   first_ = QPixmap::grabWidget( widget, rect );

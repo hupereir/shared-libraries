@@ -56,7 +56,7 @@ void AnimatedLineEditor::setText( const QString& text )
   if( !( _transitionWidget().enabled() && isVisible() ) ) return LineEditor::setText( text );
   
   _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this );
+  _transitionWidget().setStartWidget( this, QRect(), true );
   _transitionWidget().show();
   
   // setup animation between old and new text

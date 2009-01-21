@@ -81,7 +81,7 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
 
   // start _transitionWidget
   _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this );
+  _transitionWidget().setStartWidget( this, QRect(), true );
   _transitionWidget().setParent( widget );
   _transitionWidget().show();
   

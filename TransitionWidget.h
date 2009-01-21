@@ -52,7 +52,7 @@ class TransitionWidget: public QWidget, public Counter
   virtual void resize( const QSize& );
 
   //! set starting widget
-  void setStartWidget( QWidget*, QRect rect = QRect() );
+  void setStartWidget( QWidget*, QRect rect = QRect(), bool from_parent = false );
  
   //! start
   void start( void );

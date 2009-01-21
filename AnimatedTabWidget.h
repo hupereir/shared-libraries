@@ -51,10 +51,6 @@ class AnimatedTabWidget: public QTabWidget, public Counter
 
   //! destructor
   virtual ~AnimatedTabWidget();
-
-  //! transition widget
-  TransitionWidget& transitionWidget( void ) const
-  { return *transition_widget_; }
     
   protected slots:
   
@@ -65,6 +61,10 @@ class AnimatedTabWidget: public QTabWidget, public Counter
   void _animationFinished( void );
   
   private:
+
+  //! transition widget
+  TransitionWidget& _transitionWidget( void ) const
+  { return *transition_widget_; }
   
   //! previous widget
   QWidget* previous_widget_;
