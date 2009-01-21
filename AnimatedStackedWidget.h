@@ -34,10 +34,10 @@
 #include <QStackedWidget>
 
 #include "Counter.h"
-#include "TransitionWidget.h"
 
-//! tabbed dialog
-/*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
+class TransitionWidget;
+
+//! animated stacked widget
 class AnimatedStackedWidget: public QStackedWidget, public Counter
 {
 

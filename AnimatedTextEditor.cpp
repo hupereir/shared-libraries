@@ -31,6 +31,7 @@
 
 #include "AnimatedTextEditor.h"
 #include "Debug.h"
+#include "TransitionWidget.h"
 
 using namespace std;
 

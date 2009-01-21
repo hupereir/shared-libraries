@@ -33,7 +33,8 @@
 */
 
 #include "TextEditor.h"
-#include "TransitionWidget.h"
+
+class TransitionWidget;
 
 class AnimatedTextEditor: public TextEditor
 {

@@ -33,6 +33,7 @@
 
 #include "AnimatedStackedWidget.h"
 #include "Debug.h"
+#include "TransitionWidget.h"
 
 using namespace std;
 

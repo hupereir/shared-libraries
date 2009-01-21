@@ -34,7 +34,8 @@
 #include <QTabWidget>
 
 #include "Counter.h"
-#include "TransitionWidget.h"
+
+class TransitionWidget;
 
 //! tabbed dialog
 /*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */

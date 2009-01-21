@@ -34,6 +34,7 @@
 
 #include "AnimatedTabWidget.h"
 #include "Debug.h"
+#include "TransitionWidget.h"
 
 using namespace std;
 
