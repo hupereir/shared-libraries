@@ -22,38 +22,38 @@
 *******************************************************************************/
 
 /*!
-  \file AnimatedTextEditor.cpp
+  \file AnimatedLineEditor.cpp
   \brief Customized QTextEdit object
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include "AnimatedTextEditor.h"
+#include "AnimatedLineEditor.h"
 #include "Debug.h"
 #include "TransitionWidget.h"
 
 using namespace std;
 
 //________________________________________________________
-AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):
-  TextEditor( parent ),
+AnimatedLineEditor::AnimatedLineEditor( QWidget* parent ):
+  LineEditor( parent ),
   transition_widget_( new TransitionWidget(this) )
 {
-  Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
+  Debug::Throw( "AnimatedLineEditor::AnimatedLineEditor.\n" );
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 }
 
 //________________________________________________________
-AnimatedTextEditor::~AnimatedTextEditor( void )
-{ Debug::Throw( "AnimatedTextEditor::~AnimatedTextEditor.\n" ); }
+AnimatedLineEditor::~AnimatedLineEditor( void )
+{ Debug::Throw( "AnimatedLineEditor::~AnimatedLineEditor.\n" ); }
 
 //________________________________________________________
-void AnimatedTextEditor::setPlainText( const QString& text )
+void AnimatedLineEditor::setText( const QString& text )
 {
   
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return TextEditor::setPlainText( text );
+  if( !( _transitionWidget().enabled() && isVisible() ) ) return LineEditor::setText( text );
   
   _transitionWidget().resize( size() );
   _transitionWidget().setStartWidget( this );
@@ -61,33 +61,16 @@ void AnimatedTextEditor::setPlainText( const QString& text )
   
   // setup animation between old and new text
   setUpdatesEnabled( false );
-  TextEditor::setPlainText( text );
-  _transitionWidget().start();
-  setUpdatesEnabled( true );
-}
- 
-//________________________________________________________
-void AnimatedTextEditor::setHtml( const QString& text )
-{
-  // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return TextEditor::setHtml( text );
-
-  // setup animation between old and new text
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this );
-  _transitionWidget().show();
-
-  setUpdatesEnabled( false );
-  TextEditor::setHtml( text );
+  LineEditor::setText( text );
   _transitionWidget().start();
   setUpdatesEnabled( true );
 }
 
 //________________________________________________________
-void AnimatedTextEditor::clear( void )
+void AnimatedLineEditor::clear( void )
 {
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return TextEditor::clear();
+  if( !( _transitionWidget().enabled() && isVisible() ) ) return LineEditor::clear();
 
   // setup animation between old and new text
   _transitionWidget().resize( size() );
@@ -95,7 +78,7 @@ void AnimatedTextEditor::clear( void )
   _transitionWidget().show();
 
   setUpdatesEnabled( false );
-  TextEditor::clear();
+  LineEditor::clear();
   _transitionWidget().start();
   setUpdatesEnabled( true );
 }

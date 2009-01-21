@@ -26,7 +26,7 @@
 
 /*!
   \file AnimatedTextEditor.h
-  \brief Customized QTextEdit object
+  \brief Animated text editor
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -36,6 +36,8 @@
 
 class TransitionWidget;
 
+//! Animated text editor
+/*! uses fading when calling setPlainText, setHTML or clear */
 class AnimatedTextEditor: public TextEditor
 {
     
@@ -53,6 +55,9 @@ class AnimatedTextEditor: public TextEditor
   //! set text
   virtual void setHtml( const QString& );
 
+  //! clear
+  virtual void clear( void );
+  
   private:
   
   //! transition widget

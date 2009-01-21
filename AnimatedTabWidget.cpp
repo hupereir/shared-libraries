@@ -46,8 +46,6 @@ AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
   transition_widget_( new TransitionWidget( this ) )
 {
   Debug::Throw( "AnimatedTabWidget::AnimatedTabWidget.\n" );
-  transitionWidget().setFadingMode( TransitionWidget::FADE_FIRST );
-  transitionWidget().setCopyMode( TransitionWidget::RENDER );
   
   connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _updateCurrentWidget( int ) ) );  
   connect( &transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
@@ -66,7 +64,11 @@ void AnimatedTabWidget::_updateCurrentWidget( int index )
   Debug::Throw( "AnimatedTabWidget::_updateCurrentWidget.\n" );
   
   // check enability
-  if( !transitionWidget().enabled() ) return;
+  if( !( transitionWidget().enabled() && isVisible() ) ) 
+  {
+    previous_widget_ = widget( index );  
+    return;
+  }
   
   QWidget* widget( QTabWidget::widget( index ) );
   transitionWidget().resize( widget->size() );

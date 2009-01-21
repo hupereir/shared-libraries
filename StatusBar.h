@@ -33,15 +33,16 @@
 */
 
 #include <assert.h>
-#include <QLabel>
 #include <QApplication>
 #include <QStatusBar>
 #include <string>
 #include <vector>
 
+#include "AnimatedLabel.h"
 #include "Counter.h"
+
 //! local label for additional slots
-class StatusBarLabel: public QLabel, public Counter
+class StatusBarLabel: public AnimatedLabel
 {
   
   //! Qt meta object macro
@@ -49,8 +50,7 @@ class StatusBarLabel: public QLabel, public Counter
 
   public:
   StatusBarLabel( QWidget* parent = 0 ):
-    QLabel( parent ),
-    Counter( "StatusBarLabel" )
+    AnimatedLabel( parent )
   {}
     
   public slots:
@@ -59,7 +59,7 @@ class StatusBarLabel: public QLabel, public Counter
   virtual void setText( const QString& message, const bool& value = true )
   {
     if( value ) setTextAndUpdate( message );
-    else QLabel::setText( message );
+    else AnimatedLabel::setText( message );
   }
   
   //! set label text and process events

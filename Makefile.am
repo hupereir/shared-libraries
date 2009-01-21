@@ -10,6 +10,8 @@ INCLUDES =  \
   -I$(top_srcdir)/base
   
 noinst_HEADERS = \
+  AnimatedLabel.h \
+  AnimatedLineEditor.h \
   AnimatedStackedWidget.h \
   AnimatedTabWidget.h \
   AnimatedTextEditor.h \
@@ -125,6 +127,8 @@ noinst_HEADERS = \
 noinst_LIBRARIES = libbase-qt.a
 
 libbase_qt_a_SOURCES = \
+  AnimatedLabel.cpp \
+  AnimatedLineEditor.cpp \
   AnimatedStackedWidget.cpp \
   AnimatedTabWidget.cpp \
   AnimatedTextEditor.cpp \
@@ -214,6 +218,8 @@ libbase_qt_a_SOURCES = \
 
 nodist_libbase_qt_a_SOURCES = \
   qrc_basePixmaps.cpp \
+  moc_AnimatedLabel.cpp \
+  moc_AnimatedLineEditor.cpp \
   moc_AnimatedStackedWidget.cpp \
   moc_AnimatedTabWidget.cpp \
   moc_BaseConfigurationDialog.cpp \

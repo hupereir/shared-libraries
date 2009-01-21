@@ -6,6 +6,8 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
+  AnimatedLabel.h \
+  AnimatedLineEditor.h \
   AnimatedStackedWidget.h \
   AnimatedTabWidget.h \
   AnimatedTextEditor.h \
@@ -119,6 +121,8 @@ HEADERS = \
   XmlString.h
 
 SOURCES = \
+  AnimatedLabel.cpp \
+  AnimatedLineEditor.cpp \
   AnimatedStackedWidget.cpp \
   AnimatedTabWidget.cpp \
   AnimatedTextEditor.cpp \

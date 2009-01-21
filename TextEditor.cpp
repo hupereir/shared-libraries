@@ -842,7 +842,7 @@ void TextEditor::removeLine()
 }
 
 //________________________________________________
-void TextEditor::clear()
+void TextEditor::clear( void )
 {
   Debug::Throw( "TextEditor::clear.\n" );
 
@@ -2472,7 +2472,7 @@ void TextEditor::_blockCountChanged( int count )
 //_____________________________________________________________________
 void TextEditor::_findFromDialog( void )
 {
-  Debug::Throw( 0, "TextEditor::_findFromDialog.\n" );
+  Debug::Throw( "TextEditor::_findFromDialog.\n" );
 
   // create
   if( !find_dialog_ ) _createBaseFindDialog();
@@ -2508,7 +2508,6 @@ void TextEditor::_findFromDialog( void )
   {
     const int max_length( 1024 );
     text = text.left( max_length );
-    Debug::Throw(0) << "TextEditor::_findFromDialog - text: " << qPrintable( text ) << endl;
     _findDialog().setText( text );
   }
   

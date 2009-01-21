@@ -52,13 +52,7 @@ class TransitionWidget: public QWidget, public Counter
   virtual void resize( const QSize& );
 
   //! set starting widget
-  void setStartWidget( QWidget*, const QRect& rect = QRect() );
-
-  //! set starting widget
-  void setEndWidget( QWidget*, const QRect& rect = QRect() );
-
-  //! start
-  void start( QSize, QWidget*, QWidget* );
+  void setStartWidget( QWidget*, QRect rect = QRect() );
  
   //! start
   void start( void );
@@ -74,46 +68,7 @@ class TransitionWidget: public QWidget, public Counter
   //! enability
   const bool& enabled( void ) const
   { return enabled_; }
-  
-  //! modes
-  enum FadingMode
-  {
     
-    //! no fading
-    NONE = 0,
-      
-    //! use first widget to fade on top of final state
-    FADE_FIRST = 1<<0,
-    
-    //! use second widget to fade on top of initial state
-    FADE_SECOND = 1<<1,
-    
-    //! use second widget to fade on top of first widget
-    FADE_BOTH = FADE_FIRST | FADE_SECOND
-    
-  };
-  
-  //! fading mode
-  void setFadingMode( const unsigned int& mode )
-  { 
-    fading_mode_ = mode; 
-    if( fading_mode_ == NONE ) setEnabled( false );
-  }
-  
-  //! copy mode
-  enum CopyMode
-  {
-    //! use QWidget::render() to copy widget to pixmap
-    RENDER,
-      
-    //! use QPixmap::grabWidget() to copy widget to pixmap
-    GRAB
-  };
-  
-  //! copy mode
-  void setCopyMode( const CopyMode& mode )
-  { copy_mode_ = mode; }
-  
   protected:
   
   //! paint event
@@ -125,38 +80,10 @@ class TransitionWidget: public QWidget, public Counter
   void _updateConfiguration( void );
   
   private:
-  
-  //! used to copy pixmap from widget
-  class Pixmap: public QPixmap, public Counter
-  {
-    public:
-    
-    //! constructor
-    Pixmap( void );
-    
-    //! constructor
-    Pixmap( QSize size );
-    
-    //! constructor
-    Pixmap( const QPixmap& );
-    
-    //! copy pixmap
-    void fromWidget( QWidget*, const QRect& );
-    
-  };
- 
-  // get pixmap from widget
-  Pixmap _pixmap( QWidget*, const QRect& ) const;
-  
+   
   //! enability
   bool enabled_;
-  
-  //! fading mode
-  unsigned int fading_mode_; 
-  
-  //! copy
-  CopyMode copy_mode_;
-  
+   
   //! timeline
   QTimeLine time_line_;
     
@@ -168,11 +95,8 @@ class TransitionWidget: public QWidget, public Counter
   QSize size_;
   
   //! current widget pixmap
-  Pixmap first_;
-  
-  //! second pixmap
-  Pixmap second_;
-  
+  QPixmap first_;
+    
 };
   
 #endif

@@ -41,12 +41,10 @@ using namespace std;
 AnimatedStackedWidget::AnimatedStackedWidget( QWidget* parent ):
   QStackedWidget( parent ),
   Counter( "AnimatedStackedWidget" ),
-  widget_( 0 ),
-  transition_widget_( new TransitionWidget() )
+  transition_widget_( new TransitionWidget( this ) )
 {
   Debug::Throw( "AnimatedStackedWidget::AnimatedStackedWidget.\n" );
-  addWidget( &transitionWidget() );
-  connect( &transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
+  connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
 }
 
 //______________________________________________________________
@@ -57,65 +55,46 @@ AnimatedStackedWidget::~AnimatedStackedWidget( void )
 }
 
 //___________________________________________________________________
-int AnimatedStackedWidget::currentIndex( void ) const
-{ 
-  if( transitionWidget().timeLine().state() == QTimeLine::Running ) return indexOf( widget_ );
-  else if( currentWidget() == &transitionWidget() ) return -1; 
-  else return QStackedWidget::currentIndex(); 
-}
-
-//___________________________________________________________________
-QWidget* AnimatedStackedWidget::currentWidget( void ) const
-{ 
-  if( transitionWidget().timeLine().state() == QTimeLine::Running ) return widget_;
-  else if( QStackedWidget::currentWidget() == &transitionWidget() ) return 0;
-  else return QStackedWidget::currentWidget();
-}
-
-//___________________________________________________________________
 void AnimatedStackedWidget::setCurrentIndex( int index )
 { 
   Debug::Throw( "AnimatedStackedWidget::setCurrentIndex.\n" );
   
   // check animation time
-  if( !transitionWidget().enabled() ) 
-  { return QStackedWidget::setCurrentIndex( index ); }
+  if( !_transitionWidget().enabled() ) return QStackedWidget::setCurrentIndex( index );
   
   // check index is changed
   if( index == currentIndex() ) return QStackedWidget::setCurrentIndex( index );
   
-  // check widget
-  QWidget* widget =  AnimatedStackedWidget::widget( index );
-  if( !widget ) QStackedWidget::setCurrentIndex( index );
-  else setCurrentWidget( widget );
+  // pass to setCurrentWidget method
+  setCurrentWidget( AnimatedStackedWidget::widget( index ) );
 }
 
 //___________________________________________________________________
 void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
 {
-  
+
+  // check index is changed
+  if( widget == currentWidget() || !widget ) return QStackedWidget::setCurrentWidget( widget );
+    
   // check widget validity and animation time
-  if( !(  transitionWidget().enabled() && widget && indexOf( widget ) >= 0 ) )
-  { return QStackedWidget::setCurrentWidget( widget ); } 
+  if( !(  _transitionWidget().enabled() && isVisible() ) ) return QStackedWidget::setCurrentWidget( widget );
 
-  // check index is changed
-  if( widget == currentWidget() ) return QStackedWidget::setCurrentWidget( widget );
-
-  // check index is changed
-  if( !isVisible() ) return QStackedWidget::setCurrentWidget( widget );
+  // start _transitionWidget
+  _transitionWidget().resize( size() );
+  _transitionWidget().setStartWidget( this );
+  _transitionWidget().setParent( widget );
+  _transitionWidget().show();
   
-  // check if there is already a current widget
-  if( !currentWidget() ) return QStackedWidget::setCurrentWidget( widget ); 
-  
-  // store current widget (so that it gets displayed at the end of the animation)
-  widget_ = widget;
-
-  // start transitionWidget
-  transitionWidget().start( size(), this, widget_ );
-  QStackedWidget::setCurrentWidget( &transitionWidget() );
+  setUpdatesEnabled( false );
+  QStackedWidget::setCurrentWidget( widget );
+  _transitionWidget().start();
+  setUpdatesEnabled( true );
   
 }
 
 //___________________________________________________________________
 void AnimatedStackedWidget::_animationFinished( void )
-{ QStackedWidget::setCurrentWidget( widget_ ); }
+{ 
+  _transitionWidget().setParent( this );
+  _transitionWidget().hide();
+}

@@ -77,8 +77,7 @@ void ClockTimer::_checkCurrentTime( void )
 
 //________________________________________________________________
 ClockLabel::ClockLabel( QWidget* parent ):
-  QLabel( parent ),
-  Counter( "ClockLabel" ),
+  AnimatedLabel( parent ),
   timer_( this )
 {
     

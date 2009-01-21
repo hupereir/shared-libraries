@@ -93,8 +93,13 @@ class LineEditor: public QLineEdit, public Counter
   public slots:
   
   //! set text
-  void setTextString( const std::string& value )
+  virtual void setTextString( const std::string& value )
   { setText( QString( value.c_str() ) ); }
+  
+  //! set text
+  /*! copy base class method to make it virtual */
+  virtual void setText( const QString& value )
+  { QLineEdit::setText( value ); }
   
   //! changes selection to uppercase
   void lowerCase( void );

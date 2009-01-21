@@ -1,7 +1,8 @@
-#ifndef _AnimatedStackedWidget_h_
-#define _AnimatedStackedWidget_h_
+#ifndef AnimatedLabel_h
+#define AnimatedLabel_h
 
 // $Id$
+
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -13,67 +14,61 @@
 *
 * This software is distributed in the hope that it will be useful, but WITHOUT
 * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License along with
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* software; if not, write to the Free Software , Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
 *
 *******************************************************************************/
 
 /*!
-  \file AnimatedStackedWidget.h
-  \brief animated stacked widget
+  \file AnimatedLabel.h
+  \brief animated QLabel object
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <QStackedWidget>
+#include <QLabel>
 
 #include "Counter.h"
 
 class TransitionWidget;
 
-//! animated stacked widget
-class AnimatedStackedWidget: public QStackedWidget, public Counter
+class AnimatedLabel: public QLabel, public Counter
 {
-
+  
   Q_OBJECT
-
+    
   public:
+  
+  //! constructor
+  AnimatedLabel( QWidget* parent = 0 );
+  
+  //! destrutor
+  virtual ~AnimatedLabel( void );
 
-  //! creator
-  AnimatedStackedWidget( QWidget *parent );
-
-  //! destructor
-  virtual ~AnimatedStackedWidget();
-   
   public slots:
   
-  //! current index
-  void setCurrentIndex( int );
-    
-  //! current widget
-  void setCurrentWidget( QWidget* );
-  
-  protected slots:
-  
-  //! animation finished
-  void _animationFinished( void );
-  
-  private:
+  //! set text
+  virtual void setText( const QString & );
+   
+  //! clear
+  virtual void clear( void );
 
+  private:
+  
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
-   
-  //! transitionWidget
+  
+  //! transition widget
   TransitionWidget* transition_widget_;
   
+  
 };
-
 
 #endif
