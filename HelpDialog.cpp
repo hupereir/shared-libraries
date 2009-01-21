@@ -84,7 +84,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
    
   // stack widget to switch between html and plain text editor
   layout->addWidget( stack_ = new AnimatedStackedWidget( this ) );
-  stack_->transitionWidget().setMode( TransitionWidget::FADE_SECOND );
+  //stack_->transitionWidget().setFadingMode( TransitionWidget::FADE_SECOND );
     
   // add html editor
   stack_->addWidget( html_frame_ = new QWidget( this ) );
