@@ -580,6 +580,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! left margin
   bool _setLeftMargin( const int& margin );
   
+  //! margin rect
+  QRect _marginRect( void ) const;
+  
   //! vertical line display
   const bool& _drawVerticalLine( void ) const
   { return draw_vertical_line_; }
@@ -869,6 +872,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! margin color
   QColor margin_background_color_;
 
+  //! true when margin need update
+  bool need_margin_update_;
+  
   //! store rect of last update
   QRect rect_;
   

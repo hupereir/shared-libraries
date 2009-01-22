@@ -45,7 +45,7 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
   enabled_( true )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
-  connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT(update())); 
+  connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT( _update()) ); 
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
 }
@@ -78,7 +78,7 @@ void TransitionWidget::start( void )
 void TransitionWidget::paintEvent( QPaintEvent* event )
 {
   
-  //Debug::Throw( "TransitionWidget::paintEvent.\n" );
+  Debug::Throw( "TransitionWidget::paintEvent.\n" );
   
   qreal frame = timeLine().currentFrame();
   
@@ -101,6 +101,13 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   
 }
 
+//___________________________________________________________________
+void TransitionWidget::_update( void )
+{
+  Debug::Throw( "TransitionWidget::_update.\n" );
+  update();
+}
+  
 //___________________________________________________________________
 void TransitionWidget::_updateConfiguration( void )
 {

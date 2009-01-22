@@ -81,7 +81,8 @@ TextEditor::TextEditor( QWidget *parent ):
   synchronize_( false ),
   box_selection_( this ),
   remove_line_buffer_( this ),
-  click_counter_( this )
+  click_counter_( this ),
+  need_margin_update_( true )
 {
 
   Debug::Throw( "TextEditor::TextEditor.\n" );
@@ -865,16 +866,27 @@ bool TextEditor::event( QEvent* event )
   {
     
     case QEvent::Paint:
-    Debug::Throw( "TextEditor::event.\n" );
     if( _leftMargin() ) 
     {
+      
+      // case event
+      QPaintEvent* paint_event( static_cast<QPaintEvent*>(event) );
+      Debug::Throw() 
+        << "TextEditor::event - "
+        << paint_event->rect().width() << "," 
+        << paint_event->rect().height() 
+        << endl;
+
+      if( paint_event->rect().contains( _marginRect() ) )
+      { need_margin_update_ = false; }
+            
+      // paint margins
       QPainter painter( this );
-      painter.setClipRect( static_cast<QPaintEvent*>(event)->rect() );
+      painter.setClipRect( paint_event->rect() );
       _drawMargins( painter );
       painter.end();
+      
     }
-    event->accept();
-    return true;
     break;
     
     default: break;
@@ -1418,7 +1430,7 @@ void TextEditor::resizeEvent( QResizeEvent* event )
 void TextEditor::paintEvent( QPaintEvent* event )
 {
   
-  //Debug::Throw() << "TextEditor::paintEvent - " << event->rect().width() << "," << event->rect().height() << endl;
+  Debug::Throw() << "TextEditor::paintEvent - " << event->rect().width() << "," << event->rect().height() << endl;
     
   // handle block background
   QTextBlock first( cursorForPosition( event->rect().topLeft() ).block() );
@@ -1483,20 +1495,9 @@ void TextEditor::paintEvent( QPaintEvent* event )
   This is done to minimize the amount of CPU
   */
   QRect rect( event->rect().translated( scrollbarPosition() ) );
-  if( _leftMargin() && ( _rectChanged( rect ) || rect.width() != cursorWidth() ) ) 
-  { 
-    
-    QRect dest( frameWidth(), frameWidth(), _leftMargin(), height() );
-    
-//     Debug::Throw() 
-//       << "TextEditor::paintEvent - updating frame - " 
-//       << " rect: " << rect.width() << "," << rect.height() 
-//       << " dest: " << dest.width() << "," << dest.height() 
-//       << endl;
-    
-    QFrame::update( dest ); 
-    
-  }
+  if( !need_margin_update_ ) need_margin_update_ = true;
+  else if( _leftMargin() && ( _rectChanged( rect ) || rect.width() != cursorWidth() ) ) 
+  { QFrame::update( _marginRect() ); } 
   
   return;
 
@@ -2087,6 +2088,10 @@ bool TextEditor::_setLeftMargin( const int& margin )
   return true;
 
 }
+
+//_____________________________________________________________
+QRect TextEditor::_marginRect( void ) const
+{ return QRect( frameWidth(), frameWidth(), _leftMargin(), height()-2*frameWidth() ); }
 
 //_____________________________________________________________
 void TextEditor::_toggleOverwriteMode( void )
