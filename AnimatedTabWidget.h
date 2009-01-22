@@ -31,11 +31,38 @@
   \date $Date$
 */
 
+#include <QTabBar>
 #include <QTabWidget>
 
 #include "Counter.h"
 
 class TransitionWidget;
+
+//! tabbar
+class AnimatedTabBar: public QTabBar, public Counter
+{
+  
+  Q_OBJECT
+  
+  public:
+  
+  //! constructor
+  AnimatedTabBar( QWidget* parent ):
+    QTabBar( parent ),
+    Counter( "AnimatedTabBar" )
+  {}
+  
+  signals:
+  
+  //! clicked
+  void clicked( void );
+  
+  protected:
+  
+  //! mouse press event
+  virtual void mousePressEvent( QMouseEvent* );
+  
+};
 
 //! tabbed dialog
 /*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
@@ -55,8 +82,11 @@ class AnimatedTabWidget: public QTabWidget, public Counter
   protected slots:
   
   //! update current widget
-  void _updateCurrentWidget( int );
+  void _updateCurrentWidget( void );
   
+  //! animation finished
+  void _startAnimation( void );
+   
   //! animation finished
   void _animationFinished( void );
   
@@ -65,9 +95,6 @@ class AnimatedTabWidget: public QTabWidget, public Counter
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
-  
-  //! previous widget
-  QWidget* previous_widget_;
   
   //! transitionWidget
   TransitionWidget* transition_widget_;

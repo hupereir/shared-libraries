@@ -39,17 +39,26 @@
 using namespace std;
 
 //___________________________________________________________________
+void AnimatedTabBar::mousePressEvent( QMouseEvent* event )
+{
+  Debug::Throw( "AnimatedTabWidget::mousePressEvent.\n" );
+  if( event->button() == Qt::LeftButton ) emit clicked();
+  QTabBar::mousePressEvent( event );
+}
+
+//___________________________________________________________________
 AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
   QTabWidget( parent ),
   Counter( "AnimatedTabWidget" ),
-  previous_widget_( 0 ),
   transition_widget_( new TransitionWidget( this ) )
 {
   Debug::Throw( "AnimatedTabWidget::AnimatedTabWidget.\n" );
   
+  setTabBar( new AnimatedTabBar( this ) );
+  
   _transitionWidget().hide();
-  _transitionWidget().setCopyMode( TransitionWidget::RENDER );
-  connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _updateCurrentWidget( int ) ) );  
+  connect( tabBar(), SIGNAL( clicked() ), SLOT( _updateCurrentWidget() ) );  
+  connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _startAnimation() ) );  
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
   
 }
@@ -62,21 +71,29 @@ AnimatedTabWidget::~AnimatedTabWidget( void )
 }
 
 //___________________________________________________________________
-void AnimatedTabWidget::_updateCurrentWidget( int index )
+void AnimatedTabWidget::_updateCurrentWidget( void )
 {
   Debug::Throw( "AnimatedTabWidget::_updateCurrentWidget.\n" );
-  
+
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) 
-  {
-    previous_widget_ = widget( index );  
-    return;
-  }
+  if( !( _transitionWidget().enabled() && isVisible() ) ) return;
   
-  QWidget* widget( QTabWidget::widget( index ) );
+  // check
+  QWidget *widget( currentWidget() );
+  if( !widget ) return;
+  
   _transitionWidget().resize( widget->size() );
-  _transitionWidget().setParent( widget );
-  if( previous_widget_ ) _transitionWidget().setStartWidget( previous_widget_ );
+  _transitionWidget().setStartWidget( widget, QRect(), true );
+  
+}
+
+//___________________________________________________________________
+void AnimatedTabWidget::_startAnimation( void )
+{
+  Debug::Throw( "AnimatedTabWidget::_startAnimation.\n" );
+  
+  if( !( _transitionWidget().enabled() && isVisible() ) ) return;
+  _transitionWidget().setParent( currentWidget() );
   _transitionWidget().show();
   _transitionWidget().start();
   
@@ -87,5 +104,4 @@ void AnimatedTabWidget::_animationFinished( void )
 { 
   _transitionWidget().setParent( this );
   _transitionWidget().hide();
-  previous_widget_ = currentWidget();  
 }
