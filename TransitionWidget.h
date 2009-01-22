@@ -48,9 +48,6 @@ class TransitionWidget: public QWidget, public Counter
   //! constructor
   TransitionWidget( QWidget* parent = 0 );
 
-  //! resize
-  virtual void resize( const QSize& );
-
   //! set starting widget
   void setStartWidget( QWidget*, QRect rect = QRect(), bool from_parent = false );
  
@@ -68,20 +65,6 @@ class TransitionWidget: public QWidget, public Counter
   //! enability
   const bool& enabled( void ) const
   { return enabled_; }
-  
-  //! copy mode
-  enum CopyMode
-  {
-    //! use QWidget::render() to copy widget to pixmap
-    RENDER,
-      
-    //! use QPixmap::grabWidget() to copy widget to pixmap
-    GRAB_WIDGET
-  };
-  
-  //! copy mode
-  void setCopyMode( const CopyMode& mode )
-  { copy_mode_ = mode; }
       
   protected:
   
@@ -98,19 +81,9 @@ class TransitionWidget: public QWidget, public Counter
   //! enability
   bool enabled_;
   
-  //! copy
-  CopyMode copy_mode_;
-   
   //! timeline
   QTimeLine time_line_;
-    
-  //! temporary size
-  /*! 
-  it is used to store "resize" commands
-  in case the internal size() is not accounted for immediatly 
-  */
-  QSize size_;
-  
+      
   //! current widget pixmap
   QPixmap first_;
     

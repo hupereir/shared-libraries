@@ -42,8 +42,7 @@ using namespace std;
 TransitionWidget::TransitionWidget( QWidget *parent ):
   QWidget( parent ),
   Counter( "TransitionWidget" ),
-  enabled_( true ),
-  copy_mode_( GRAB_WIDGET )
+  enabled_( true )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
   connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT(update())); 
@@ -52,48 +51,17 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
 }
 
 //___________________________________________________________________
-void TransitionWidget::resize( const QSize& size )
-{
-  size_ = size;
-  QWidget::resize( size );
-}
-
-//___________________________________________________________________
 void TransitionWidget::setStartWidget( QWidget* widget, QRect rect, bool from_parent )
 {
   
   assert( widget );
   if( rect.isNull() ) rect = widget->rect();
-  
-  // use window() widget
-  switch( copy_mode_ )
+  if( from_parent )
   {
-    case GRAB_WIDGET:
-    {
-      if( from_parent )
-      {
-        rect = rect.translated( widget->mapTo( widget->window(), widget->rect().topLeft() ) );
-        widget = widget->window(); 
-      }
-      first_ = QPixmap::grabWidget( widget, rect );
-      break;
-    }
-  
-    case RENDER:
-    {
-      //assert( !from_parent );
-      first_ = QPixmap( size_ );
-      first_.fill( Qt::transparent );
-      QPainter painter( &first_ );
-      painter.setRenderHints(QPainter::SmoothPixmapTransform);  
-      widget->render( &painter, QPoint( 0, 0 ), rect, QWidget::DrawChildren );
-      painter.end();
-      break;      
-    }
-    
-    default: assert(0);
-    
+    rect = rect.translated( widget->mapTo( widget->window(), widget->rect().topLeft() ) );
+    widget = widget->window(); 
   }
+  first_ = QPixmap::grabWidget( widget, rect );
   
 }
 
