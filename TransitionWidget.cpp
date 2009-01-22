@@ -78,6 +78,7 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   bool running( timeLine().state() == QTimeLine::Running );
 
   QPainter painter( this );
+  painter.setClipRect( event->rect() );
   painter.fillRect( rect(), Qt::transparent );
   
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
