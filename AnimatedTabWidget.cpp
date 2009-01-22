@@ -48,6 +48,7 @@ AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
   Debug::Throw( "AnimatedTabWidget::AnimatedTabWidget.\n" );
   
   _transitionWidget().hide();
+  _transitionWidget().setCopyMode( TransitionWidget::RENDER );
   connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _updateCurrentWidget( int ) ) );  
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
   
