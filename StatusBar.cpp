@@ -69,6 +69,6 @@ void StatusBar::addLabel( const int& stretch )
 void StatusBarLabel::setTextAndUpdate( const QString& message )
 { 
   Debug::Throw() << "StatusBar::StatusBarLabel::setTextAndUpdate - message: " << qPrintable( message ) << endl;
-  AnimatedLabel::setText( message );
+  QLabel::setText( message );
   qApp->processEvents();
 }
