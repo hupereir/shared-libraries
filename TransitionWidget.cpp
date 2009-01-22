@@ -54,6 +54,7 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
 void TransitionWidget::setStartWidget( QWidget* widget, QRect rect, bool from_parent )
 {
   
+  //Debug::Throw( "TransitionWidget::setStartWidget.\n" );
   assert( widget );
   if( rect.isNull() ) rect = widget->rect();
   if( from_parent )
@@ -62,16 +63,22 @@ void TransitionWidget::setStartWidget( QWidget* widget, QRect rect, bool from_pa
     widget = widget->window(); 
   }
   first_ = QPixmap::grabWidget( widget, rect );
+  Debug::Throw( "TransitionWidget::setStartWidget - done.\n" );
   
 }
 
 //___________________________________________________________________
 void TransitionWidget::start( void )
-{ if( timeLine().state() != QTimeLine::Running ) timeLine().start(); }
+{ 
+  //Debug::Throw( "TransitionWidget::start.\n" );
+  if( timeLine().state() != QTimeLine::Running ) timeLine().start(); 
+}
 
 //___________________________________________________________________
 void TransitionWidget::paintEvent( QPaintEvent* event )
 {
+  
+  //Debug::Throw( "TransitionWidget::paintEvent.\n" );
   
   qreal frame = timeLine().currentFrame();
   

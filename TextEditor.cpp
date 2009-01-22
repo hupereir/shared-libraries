@@ -861,11 +861,11 @@ void TextEditor::clear( void )
 bool TextEditor::event( QEvent* event )
 {
   
-  // check that all needed widgets/actions are valid and checked.
   switch (event->type()) 
   {
     
     case QEvent::Paint:
+    Debug::Throw( "TextEditor::event.\n" );
     if( _leftMargin() ) 
     {
       QPainter painter( this );
@@ -873,6 +873,8 @@ bool TextEditor::event( QEvent* event )
       _drawMargins( painter );
       painter.end();
     }
+    event->accept();
+    return true;
     break;
     
     default: break;
@@ -1415,6 +1417,9 @@ void TextEditor::resizeEvent( QResizeEvent* event )
 //______________________________________________________________
 void TextEditor::paintEvent( QPaintEvent* event )
 {
+  
+  //Debug::Throw() << "TextEditor::paintEvent - " << event->rect().width() << "," << event->rect().height() << endl;
+    
   // handle block background
   QTextBlock first( cursorForPosition( event->rect().topLeft() ).block() );
   QTextBlock last( cursorForPosition( event->rect().bottomRight() ).block() );
@@ -1479,7 +1484,19 @@ void TextEditor::paintEvent( QPaintEvent* event )
   */
   QRect rect( event->rect().translated( scrollbarPosition() ) );
   if( _leftMargin() && ( _rectChanged( rect ) || rect.width() != cursorWidth() ) ) 
-  { QFrame::update( QRect( frameWidth(), frameWidth(), _leftMargin(), height() ) ); }
+  { 
+    
+    QRect dest( frameWidth(), frameWidth(), _leftMargin(), height() );
+    
+//     Debug::Throw() 
+//       << "TextEditor::paintEvent - updating frame - " 
+//       << " rect: " << rect.width() << "," << rect.height() 
+//       << " dest: " << dest.width() << "," << dest.height() 
+//       << endl;
+    
+    QFrame::update( dest ); 
+    
+  }
   
   return;
 
