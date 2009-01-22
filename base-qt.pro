@@ -11,6 +11,7 @@ HEADERS = \
   AnimatedStackedWidget.h \
   AnimatedTabWidget.h \
   AnimatedTextEditor.h \
+  AnimatedTreeView.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
   BaseFindDialog.h \
@@ -126,6 +127,7 @@ SOURCES = \
   AnimatedStackedWidget.cpp \
   AnimatedTabWidget.cpp \
   AnimatedTextEditor.cpp \
+  AnimatedTreeView.cpp \
   Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \

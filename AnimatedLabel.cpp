@@ -54,7 +54,7 @@ void AnimatedLabel::setText( const QString& text )
 {
   
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return QLabel::setText( text );
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return QLabel::setText( text );
   
   _transitionWidget().resize( size() );
   _transitionWidget().setStartWidget( this, QRect(), true );
@@ -71,7 +71,7 @@ void AnimatedLabel::setText( const QString& text )
 void AnimatedLabel::clear( void )
 {
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return QLabel::clear();
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return QLabel::clear();
 
   // setup animation between old and new text
   _transitionWidget().resize( size() );

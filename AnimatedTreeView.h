@@ -1,3 +1,6 @@
+#ifndef _AnimatedTreeView_h_
+#define _AnimatedTreeView_h_
+
 // $Id$
 
 /******************************************************************************
@@ -22,77 +25,45 @@
 *******************************************************************************/
  
 /*!
-  \file ClockLabel.h
-  \brief self-updated label displaying current date and time 
+  \file AnimatedTreeView.h
+  \brief animated Tree View
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#ifndef _ClockLabel_h_
-#define _ClockLabel_h_
+#include "TreeView.h"
 
-#include <QDateTime>
-#include <QLabel>
-#include <QTimer>
+class TransitionWidget;
 
-#include <string>
-
-#include "Counter.h"
-#include "TimeStamp.h"
-
-//! clock timer. Emit signal when current time is changed
-class ClockTimer: public QTimer, public Counter
+//! customized tree view
+class AnimatedTreeView: public TreeView
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
-  
   public:
   
   //! constructor
-  ClockTimer( QWidget *parent );
+  AnimatedTreeView( QWidget* parent );
+     
+  //! destructor
+  virtual ~AnimatedTreeView( void )
+  {}
+
+  //! initialize animation
+  bool initializeAnimation( void );
   
-  //! get interval (seconds) prior to next update
-  static int interval( void ) 
-  { return 60 - (TimeStamp::now() % 60); }
-  
-  signals:
-  
-  //! emmited every time current time is changed
-  void timeChanged( const QString& );
-  
-  protected slots:
-  
-  //! check current time, generate time string if new; emit TimeChanged
-  void _checkCurrentTime( void );
+  //! start animation
+  bool startAnimation( void );
   
   private:
- 
-  //! current time
-  TimeStamp time_;
+
+  //! transition widget
+  TransitionWidget& _transitionWidget( void ) const
+  { return *transition_widget_; }
+  
+  //! transition widget
+  TransitionWidget* transition_widget_; 
   
 };
-
-//! self-updated label displaying current date and time 
-class ClockLabel:public QLabel
-{
- 
-  public:
-  
-  //! constructor
-  ClockLabel( QWidget* parent );
-
-  //! retrieve timer
-  ClockTimer& timer( void )
-  { return timer_; }
-
-  private:
-  
-  //! static timer
-  ClockTimer timer_;
-
-};
-
 
 #endif

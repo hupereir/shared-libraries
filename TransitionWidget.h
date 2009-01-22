@@ -63,7 +63,7 @@ class TransitionWidget: public QWidget, public Counter
   { enabled_ = value; }
   
   //! enability
-  const bool& enabled( void ) const
+  const bool& isEnabled( void ) const
   { return enabled_; }
       
   protected:

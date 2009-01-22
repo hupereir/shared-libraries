@@ -54,7 +54,7 @@ class TreeView: public QTreeView, public Counter
   TreeView( QWidget* parent );
      
   //! destructor
-  ~TreeView( void )
+  virtual ~TreeView( void )
   {}
 
   //!@name contextual menu

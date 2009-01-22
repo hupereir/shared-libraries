@@ -76,7 +76,7 @@ void AnimatedTabWidget::_updateCurrentWidget( void )
   Debug::Throw( "AnimatedTabWidget::_updateCurrentWidget.\n" );
 
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return;
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;
   
   // check
   QWidget *widget( currentWidget() );
@@ -92,7 +92,7 @@ void AnimatedTabWidget::_startAnimation( void )
 {
   Debug::Throw( "AnimatedTabWidget::_startAnimation.\n" );
   
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return;
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;
   _transitionWidget().setParent( currentWidget() );
   _transitionWidget().show();
   _transitionWidget().start();

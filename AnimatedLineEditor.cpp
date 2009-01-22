@@ -53,7 +53,7 @@ void AnimatedLineEditor::setText( const QString& text )
 {
   
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return LineEditor::setText( text );
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return LineEditor::setText( text );
   
   _transitionWidget().resize( size() );
   _transitionWidget().setStartWidget( this, QRect(), true );
@@ -70,7 +70,7 @@ void AnimatedLineEditor::setText( const QString& text )
 void AnimatedLineEditor::clear( void )
 {
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return LineEditor::clear();
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return LineEditor::clear();
 
   // setup animation between old and new text
   _transitionWidget().resize( size() );

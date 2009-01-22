@@ -53,7 +53,7 @@ void AnimatedTextEditor::setPlainText( const QString& text )
 {
   
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return TextEditor::setPlainText( text );
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setPlainText( text );
   
   _transitionWidget().resize( size() );
   _transitionWidget().setStartWidget( this );
@@ -70,7 +70,7 @@ void AnimatedTextEditor::setPlainText( const QString& text )
 void AnimatedTextEditor::setHtml( const QString& text )
 {
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return TextEditor::setHtml( text );
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setHtml( text );
 
   // setup animation between old and new text
   _transitionWidget().resize( size() );
@@ -87,7 +87,7 @@ void AnimatedTextEditor::setHtml( const QString& text )
 void AnimatedTextEditor::clear( void )
 {
   // check enability
-  if( !( _transitionWidget().enabled() && isVisible() ) ) return TextEditor::clear();
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::clear();
 
   // setup animation between old and new text
   _transitionWidget().resize( size() );

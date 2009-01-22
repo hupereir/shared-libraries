@@ -22,77 +22,55 @@
 *******************************************************************************/
  
 /*!
-  \file ClockLabel.h
-  \brief self-updated label displaying current date and time 
+  \file AnimatedTreeView.cpp
+  \brief animated Tree View
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#ifndef _ClockLabel_h_
-#define _ClockLabel_h_
+#include "AnimatedTreeView.h"
+#include "Debug.h"
+#include "TransitionWidget.h"
 
-#include <QDateTime>
-#include <QLabel>
-#include <QTimer>
+using namespace std;
 
-#include <string>
+//________________________________________________________________________
+AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
+  TreeView( parent ),
+  transition_widget_( new TransitionWidget( this ) )
+{
+  Debug::Throw( "AnimatedTreeView::AnimatedTreeView.\n" );
 
-#include "Counter.h"
-#include "TimeStamp.h"
+  // transition widget
+  _transitionWidget().hide();
+  connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), &_transitionWidget(), SLOT( hide() ) );
+  
+}
 
-//! clock timer. Emit signal when current time is changed
-class ClockTimer: public QTimer, public Counter
+//________________________________________________________________________
+bool AnimatedTreeView::initializeAnimation( void )
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
-  
-  public:
-  
-  //! constructor
-  ClockTimer( QWidget *parent );
-  
-  //! get interval (seconds) prior to next update
-  static int interval( void ) 
-  { return 60 - (TimeStamp::now() % 60); }
-  
-  signals:
-  
-  //! emmited every time current time is changed
-  void timeChanged( const QString& );
-  
-  protected slots:
-  
-  //! check current time, generate time string if new; emit TimeChanged
-  void _checkCurrentTime( void );
-  
-  private:
- 
-  //! current time
-  TimeStamp time_;
-  
-};
+  // transition
+  if( _transitionWidget().isEnabled() && QTreeView::isVisible() )
+  {
+    _transitionWidget().resize( size() );
+    _transitionWidget().setStartWidget( this );
+    _transitionWidget().show();
+    return true;
+  } else return false;
 
-//! self-updated label displaying current date and time 
-class ClockLabel:public QLabel
+}
+
+//________________________________________________________________________
+bool AnimatedTreeView::startAnimation( void )
 {
- 
-  public:
-  
-  //! constructor
-  ClockLabel( QWidget* parent );
+  // transition
+  if( _transitionWidget().isEnabled() && QTreeView::isVisible() ) 
+  {
+    _transitionWidget().start();
+    return true;
+  } else return false;
 
-  //! retrieve timer
-  ClockTimer& timer( void )
-  { return timer_; }
-
-  private:
-  
-  //! static timer
-  ClockTimer timer_;
-
-};
-
-
-#endif
+}
