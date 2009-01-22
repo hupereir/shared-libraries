@@ -43,7 +43,7 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
   QWidget( parent ),
   Counter( "TransitionWidget" ),
   enabled_( true ),
-  copy_mode_( RENDER )
+  copy_mode_( GRAB_WIDGET )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
   connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT(update())); 
@@ -81,7 +81,7 @@ void TransitionWidget::setStartWidget( QWidget* widget, QRect rect, bool from_pa
   
     case RENDER:
     {
-      assert( !from_parent );
+      //assert( !from_parent );
       first_ = QPixmap( size_ );
       first_.fill( Qt::transparent );
       QPainter painter( &first_ );
