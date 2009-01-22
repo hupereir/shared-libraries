@@ -61,10 +61,9 @@ void AnimatedLabel::setText( const QString& text )
   _transitionWidget().show();
   
   // setup animation between old and new text
-  setUpdatesEnabled( false );
   QLabel::setText( text );
   _transitionWidget().start();
-  setUpdatesEnabled( true );
+
 }
  
 //________________________________________________________
@@ -78,8 +77,6 @@ void AnimatedLabel::clear( void )
   _transitionWidget().setStartWidget( window(), rect().translated( mapTo( window(), rect().topLeft() ) ) );
   _transitionWidget().show();
 
-  setUpdatesEnabled( false );
   QLabel::clear();
   _transitionWidget().start();
-  setUpdatesEnabled( true );
 }

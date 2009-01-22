@@ -60,10 +60,9 @@ void AnimatedLineEditor::setText( const QString& text )
   _transitionWidget().show();
   
   // setup animation between old and new text
-  setUpdatesEnabled( false );
   LineEditor::setText( text );
   _transitionWidget().start();
-  setUpdatesEnabled( true );
+
 }
 
 //________________________________________________________
@@ -77,8 +76,7 @@ void AnimatedLineEditor::clear( void )
   _transitionWidget().setStartWidget( this );
   _transitionWidget().show();
 
-  setUpdatesEnabled( false );
   LineEditor::clear();
   _transitionWidget().start();
-  setUpdatesEnabled( true );
+
 }

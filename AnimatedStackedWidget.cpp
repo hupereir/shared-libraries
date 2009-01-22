@@ -85,10 +85,8 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
   _transitionWidget().setParent( widget );
   _transitionWidget().show();
   
-  setUpdatesEnabled( false );
   QStackedWidget::setCurrentWidget( widget );
   _transitionWidget().start();
-  setUpdatesEnabled( true );
   
 }
 
