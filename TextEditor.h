@@ -872,9 +872,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! margin color
   QColor margin_background_color_;
 
-  //! true when margin need update
-  bool need_margin_update_;
-  
   //! store rect of last update
   QRect rect_;
   

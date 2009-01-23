@@ -81,8 +81,7 @@ TextEditor::TextEditor( QWidget *parent ):
   synchronize_( false ),
   box_selection_( this ),
   remove_line_buffer_( this ),
-  click_counter_( this ),
-  need_margin_update_( true )
+  click_counter_( this )
 {
 
   Debug::Throw( "TextEditor::TextEditor.\n" );
@@ -877,9 +876,6 @@ bool TextEditor::event( QEvent* event )
         << paint_event->rect().height() 
         << endl;
 
-      if( paint_event->rect().contains( _marginRect() ) )
-      { need_margin_update_ = false; }
-            
       // paint margins
       QPainter painter( this );
       painter.setClipRect( paint_event->rect() );
@@ -1495,8 +1491,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
   This is done to minimize the amount of CPU
   */
   QRect rect( event->rect().translated( scrollbarPosition() ) );
-  if( !need_margin_update_ ) need_margin_update_ = true;
-  else if( _leftMargin() && ( _rectChanged( rect ) || rect.width() != cursorWidth() ) ) 
+  if( _leftMargin() && ( _rectChanged( rect ) || rect.width() != cursorWidth() ) ) 
   { QFrame::update( _marginRect() ); } 
   
   return;
