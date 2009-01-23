@@ -76,9 +76,6 @@ class TransitionWidget: public QWidget, public Counter
   //! configuration
   void _updateConfiguration( void );
   
-  //! update
-  void _update( void );
-  
   private:
    
   //! enability

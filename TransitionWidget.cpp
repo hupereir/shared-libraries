@@ -45,7 +45,7 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
   enabled_( true )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
-  connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT( _update()) ); 
+  connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT( update()) ); 
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
 }
@@ -77,35 +77,28 @@ void TransitionWidget::start( void )
 //___________________________________________________________________
 void TransitionWidget::paintEvent( QPaintEvent* event )
 {
-  
-  Debug::Throw( "TransitionWidget::paintEvent.\n" );
-  
-  qreal frame = timeLine().currentFrame();
-  
-  bool running( timeLine().state() == QTimeLine::Running );
-
+    
+  // create painter
   QPainter painter( this );
   painter.setClipRect( event->rect() );
   painter.fillRect( rect(), Qt::transparent );
-  
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
-  if( running ) {
-    
-    painter.setOpacity( double(frame)/timeLine().startFrame() );
-    painter.drawPixmap( QPoint(0,0), first_ );
-    painter.end();
-    
-  } else painter.drawPixmap( QPoint(0,0), first_ );
-    
-  if( running && frame <= 0 ) { timeLine().stop(); }
   
-}
+  if( timeLine().state() == QTimeLine::Running ) {
+    
+    // if running, get frame and update painter opacity
+    qreal frame = timeLine().currentFrame();
+    painter.setOpacity( frame/timeLine().startFrame() );
+    
+    // stop if needed
+    if( frame <= 0 ) { timeLine().stop(); }
 
-//___________________________________________________________________
-void TransitionWidget::_update( void )
-{
-  Debug::Throw( "TransitionWidget::_update.\n" );
-  update();
+  }
+  
+  // draw pixmap
+  painter.drawPixmap( QPoint(0,0), first_ );
+  painter.end();   
+  
 }
   
 //___________________________________________________________________

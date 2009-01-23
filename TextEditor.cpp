@@ -873,11 +873,6 @@ bool TextEditor::event( QEvent* event )
       
       // case event
       QPaintEvent* paint_event( static_cast<QPaintEvent*>(event) );
-      Debug::Throw() 
-        << "TextEditor::event - "
-        << paint_event->rect().width() << "," 
-        << paint_event->rect().height() 
-        << endl;
 
       // paint margins
       QPainter painter( this );
@@ -1441,8 +1436,6 @@ void TextEditor::resizeEvent( QResizeEvent* event )
 void TextEditor::paintEvent( QPaintEvent* event )
 {
   
-  Debug::Throw() << "TextEditor::paintEvent - " << event->rect().width() << "," << event->rect().height() << endl;
-    
   // handle block background
   QTextBlock first( cursorForPosition( event->rect().topLeft() ).block() );
   QTextBlock last( cursorForPosition( event->rect().bottomRight() ).block() );
@@ -1482,18 +1475,13 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
   }
 
-  if(
-    _boxSelection().state() == BoxSelection::STARTED ||
-    _boxSelection().state() == BoxSelection::FINISHED
-    )
-  {
-    
+  if( _boxSelection().state() == BoxSelection::STARTED || _boxSelection().state() == BoxSelection::FINISHED )
+  {    
     painter.setPen( _boxSelection().color() );
     painter.setBrush( _boxSelection().brush() );
-
     painter.drawRect( _boxSelection().rect() );
-
   }
+  
   painter.end();
   
   // base class painting
