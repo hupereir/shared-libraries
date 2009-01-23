@@ -41,6 +41,7 @@ AnimatedLineEditor::AnimatedLineEditor( QWidget* parent ):
   transition_widget_( new TransitionWidget(this) )
 {
   Debug::Throw( "AnimatedLineEditor::AnimatedLineEditor.\n" );
+  _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 }
 

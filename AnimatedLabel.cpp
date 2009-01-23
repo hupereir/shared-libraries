@@ -42,6 +42,7 @@ AnimatedLabel::AnimatedLabel( QWidget* parent ):
   transition_widget_( new TransitionWidget(this) )
 {
   Debug::Throw( "AnimatedLabel::AnimatedLabel.\n" );
+  _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 }
 
