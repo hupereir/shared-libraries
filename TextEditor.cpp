@@ -833,10 +833,27 @@ void TextEditor::removeLine()
   if( isReadOnly() ) return;
 
   QTextCursor cursor( textCursor() );
-  cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
-  cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
-  remove_line_buffer_.append( cursor.selectedText() );
+    cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
 
+  // create cursor selection, depending on whether next block is valid or not
+  if( cursor.block().next().isValid() ) 
+  {
+    cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
+    remove_line_buffer_.append( cursor.selectedText() );
+  } else {
+
+    // move to previous character
+    if( cursor.block().previous().isValid() ) 
+    {
+      cursor.movePosition( QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor );
+      cursor.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor );
+    }
+    
+    // move to end of current block
+    cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
+    remove_line_buffer_.append( cursor.selectedText() );
+  }
+    
   setUpdatesEnabled( false );
   setTextCursor( cursor );
   cut();
