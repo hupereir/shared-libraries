@@ -54,13 +54,15 @@ class AnimatedTreeView: public TreeView
   
   //! start animation
   bool startAnimation( void );
-  
-  private:
 
+  protected:
+  
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
   
+  private:
+
   //! transition widget
   TransitionWidget* transition_widget_; 
   

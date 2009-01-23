@@ -63,12 +63,14 @@ class AnimatedStackedWidget: public QStackedWidget, public Counter
   
   //! animation finished
   void _animationFinished( void );
-  
-  private:
 
+  protected:
+  
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
+
+  private:
    
   //! transitionWidget
   TransitionWidget* transition_widget_;

@@ -58,11 +58,13 @@ class AnimatedTextEditor: public TextEditor
   //! clear
   virtual void clear( void );
   
-  private:
-  
+  protected:
+
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
+  
+  private:
   
   //! transition widget
   TransitionWidget* transition_widget_;

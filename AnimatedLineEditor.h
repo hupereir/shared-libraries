@@ -58,12 +58,14 @@ class AnimatedLineEditor: public LineEditor
   
   //! set text
   virtual void setText( const QString& );
-  
-  private:
+
+  protected:
   
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
+
+  private:
   
   //! transition widget
   TransitionWidget* transition_widget_;

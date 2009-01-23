@@ -1510,9 +1510,12 @@ void TextEditor::timerEvent(QTimerEvent *event)
 //______________________________________________________________
 void TextEditor::scrollContentsBy( int dx, int dy )
 {
-  Debug::Throw() << "TextEditor::scrollContentsBy." << endl;
-  _setMarginDirty();
+  // mark margins dirty if vertical scroll is non empty
+  if( dy != 0 ) _setMarginDirty();
+  
+  // base class call
   QTextEdit::scrollContentsBy( dx, dy );
+  
 }
 
 //______________________________________________________________

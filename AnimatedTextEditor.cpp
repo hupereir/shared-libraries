@@ -41,6 +41,7 @@ AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):
   transition_widget_( new TransitionWidget(this) )
 {
   Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
+  _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 }
 
