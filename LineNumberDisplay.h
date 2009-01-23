@@ -38,7 +38,6 @@
 #include <QPaintEvent>
 #include <QTextBlock>
 #include <QObject>
-#include <QWheelEvent>
 
 #include "Counter.h"
 #include "Debug.h"

@@ -497,6 +497,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual void timerEvent( QTimerEvent* event );
   
   //@}
+
+  //! scroll
+  virtual void scrollContentsBy( int dx, int dy );
   
   //! install default actions
   virtual void _installActions( void );
@@ -582,6 +585,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! margin rect
   QRect _marginRect( void ) const;
+  
+  //! true when margin needs repaint
+  bool _marginDirty( void ) const
+  { return margin_dirty_; }
   
   //! vertical line display
   const bool& _drawVerticalLine( void ) const
@@ -704,16 +711,11 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! select line from dialog
   virtual void _selectLineFromDialog( void );
 
-  private:
-    
-  //! true if rect is different from argument, and update
-  bool _rectChanged( const QRect& rect )
-  { 
-    if( rect_ == rect ) return false;
-    rect_ = rect;
-    return true;
-  }
+  //! set margin as dirty
+  void _setMarginDirty( bool value = true );
   
+  private:
+      
   //!@name replace/find selection
   ///@{
   
@@ -866,14 +868,14 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! current block highlight color
   QColor highlight_color_;
 
+  //! true when margins are dirty (need repaint)
+  bool margin_dirty_;
+  
   //! margin color
   QColor margin_foreground_color_;
   
   //! margin color
   QColor margin_background_color_;
-
-  //! store rect of last update
-  QRect rect_;
   
   //! store possible mouse drag start position
   QPoint drag_start_;

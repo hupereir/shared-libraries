@@ -81,7 +81,8 @@ TextEditor::TextEditor( QWidget *parent ):
   synchronize_( false ),
   box_selection_( this ),
   remove_line_buffer_( this ),
-  click_counter_( this )
+  click_counter_( this ),
+  margin_dirty_( true )
 {
 
   Debug::Throw( "TextEditor::TextEditor.\n" );
@@ -110,6 +111,7 @@ TextEditor::TextEditor( QWidget *parent ):
 
   // track changes of block counts
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
+  connect( TextEditor::document(), SIGNAL( contentsChanged() ), SLOT( _setMarginDirty() ) );
 
   // update configuration
   _updateConfiguration();
@@ -451,6 +453,7 @@ void TextEditor::synchronize( TextEditor* editor )
   // track changes of block counts
   lineNumberDisplay().synchronize( &editor->lineNumberDisplay() );
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
+  connect( TextEditor::document(), SIGNAL( contentsChanged() ), SLOT( _setMarginDirty() ) );
 
   // margin
   _setLeftMargin( editor->_leftMargin() );
@@ -882,9 +885,22 @@ bool TextEditor::event( QEvent* event )
       _drawMargins( painter );
       painter.end();
       
+      // update dirty flag
+      // this is done only if the entire margin is redrawn
+      if( paint_event->rect().contains( _marginRect() ) )
+      { _setMarginDirty( false ); }
+
     }
     break;
-    
+        
+    case QEvent::Wheel:
+    {
+      QWheelEvent *wheel_event( static_cast<QWheelEvent*>(event) );
+      if( QRect( frameWidth(),  frameWidth(), _leftMargin(), height() ).contains( wheel_event->pos() ) )
+      { qApp->sendEvent( viewport(), event ); }
+      return false;
+    }
+
     default: break;
   }
     
@@ -1258,7 +1274,6 @@ void TextEditor::dropEvent( QDropEvent* event )
 
       // drag action is from this widget
       // insert selection at current location and remove old selection
-
       Debug::Throw( "TextEditor::dropEvent - moving selection.\n" );
       cursor.beginEditBlock();
       cursor.removeSelectedText();
@@ -1483,16 +1498,6 @@ void TextEditor::paintEvent( QPaintEvent* event )
   
   // base class painting
   QTextEdit::paintEvent( event );
-    
-  // this is needed to force update of editor's margin  
-  /* 
-  update is performed every time the rect changes or when its width is larger than the cursor width 
-  in which case the paintEvent is likely to correspond to a cursor blicking event, and no update is needed
-  This is done to minimize the amount of CPU
-  */
-  QRect rect( event->rect().translated( scrollbarPosition() ) );
-  if( _leftMargin() && ( _rectChanged( rect ) || rect.width() != cursorWidth() ) ) 
-  { QFrame::update( _marginRect() ); } 
   
   return;
 
@@ -1512,6 +1517,14 @@ void TextEditor::timerEvent(QTimerEvent *event)
 
   return QTextEdit::timerEvent( event );
   
+}
+
+//______________________________________________________________
+void TextEditor::scrollContentsBy( int dx, int dy )
+{
+  Debug::Throw() << "TextEditor::scrollContentsBy." << endl;
+  _setMarginDirty();
+  QTextEdit::scrollContentsBy( dx, dy );
 }
 
 //______________________________________________________________
@@ -2192,7 +2205,7 @@ void TextEditor::_drawMargins( QPainter& painter )
     showLineNumberAction().isVisible() && 
     showLineNumberAction().isChecked() )
   { lineNumberDisplay().paint( painter ); }
-  
+ 
 }
 
 //________________________________________________
@@ -2594,4 +2607,14 @@ void TextEditor::_selectLineFromDialog( void )
   select_line_dialog_->activateWindow();
   select_line_dialog_->editor().setFocus();
 
+}
+
+//________________________________________________
+void TextEditor::_setMarginDirty( bool value )
+{
+ 
+  if( value == margin_dirty_ ) return;
+  margin_dirty_ = value;
+  if( value ) QFrame::update( _marginRect() );
+  
 }
