@@ -30,13 +30,13 @@
    \date    $Date$
 */
 
+#include <QDir>
 #include <QProcess>
 #include <QStringList>
 #include <unistd.h>
 
 #include <iostream>
 #include <sstream>
-#include <QDir>
 
 #include "CustomProcess.h"
 #include "Util.h"

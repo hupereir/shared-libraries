@@ -154,13 +154,13 @@ class File: public Str
   
   //! adds path to a file
   /*! note: the file is taken raw. No truncation/expension performed.*/
-  virtual File addPath( const std::string& path ) const;
+  virtual File addPath( const std::string& path, bool use_absolute = false ) const;
   
   //! expand a file name replacing .. or ~ to full path
   virtual File expand( void ) const;
   
   //! get path associated to full name
-  virtual File path( void ) const;
+  virtual File path( bool use_absolute = true ) const;
   
   //! remove path from full name
   virtual File localName( void ) const;

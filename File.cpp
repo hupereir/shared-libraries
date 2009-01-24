@@ -319,7 +319,7 @@ bool File::rename( File new_file ) const
 }
 
 //____________________________________________  
-File File::addPath( const string& path ) const
+File File::addPath( const string& path, bool use_absolute ) const
 {  
     
   // returns 0 if either path nor file are given
@@ -336,7 +336,7 @@ File File::addPath( const string& path ) const
 
   QFileInfo info;
   info.setFile( QDir( path.c_str() ), c_str() );
-  return File( qPrintable( info.absoluteFilePath() ) );
+  return use_absolute ? File( qPrintable( info.absoluteFilePath() ) ): File( qPrintable( info.filePath() ) );
 
 }         
  
@@ -353,8 +353,12 @@ File File::expand( void ) const
 }
 
 //_____________________________________________________________________
-File File::path( void ) const
-{ return empty() ? File(): File(qPrintable( QFileInfo(c_str()).absolutePath() )); }
+File File::path( bool use_absolute ) const
+{ 
+  if( empty() ) return File();
+  if( use_absolute ) return File( qPrintable( QFileInfo(c_str()).absolutePath() ) );
+  else return File( qPrintable( QFileInfo(c_str()).path() ) );
+}
 
 //_____________________________________________________________________
 File File::localName( void ) const
