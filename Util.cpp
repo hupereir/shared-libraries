@@ -36,6 +36,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <QDir>
 
 #include "CustomProcess.h"
 #include "Util.h"
@@ -205,7 +206,7 @@ int Util::pid( void )
      
 //______________________________________________________________________
 string Util::workingDirectory( void )
-{ return env( "PWD", "." ); }
+{ return qPrintable( QDir::currentPath() ); }
 
 //______________________________________________________________________
 string Util::convertTime( float value )
