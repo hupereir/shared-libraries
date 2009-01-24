@@ -49,14 +49,14 @@ CustomProcess::~CustomProcess( void )
 { if( state() != QProcess::NotRunning ) kill(); }
 
 //____________________________________________________
-void CustomProcess::start( const QString& arguments, OpenMode mode )
+void CustomProcess::start( QString arguments, OpenMode mode )
 {
   Debug::Throw() << "CustomProcess::start - " << qPrintable( arguments ) << endl;
   return start( arguments.split( QRegExp("\\s"), QString::SkipEmptyParts ), mode );
 }
 
 //____________________________________________________
-void CustomProcess::start( const QStringList& arguments, OpenMode mode )
+void CustomProcess::start( QStringList arguments, OpenMode mode )
 {
   
   if( arguments.empty() ) return;
@@ -65,9 +65,12 @@ void CustomProcess::start( const QStringList& arguments, OpenMode mode )
   QStringList local_args( arguments );
   local_args.pop_front();
   Debug::Throw() << "CustomProcess::start - (qstringlist)"
-    << " program: " << qPrintable( program ) 
-    << " arguments: " << qPrintable( local_args.join( " " ) )
+    << " program: \"" << qPrintable( program ) << "\"" 
+    << " argc: " << local_args.size()
+    << " argv: \"" << qPrintable( local_args.join( " " ) ) << "\""
     << endl;
+  
+  //return QProcess::start( program, mode );
   
   if( local_args.empty() ) return QProcess::start( program, mode );
   else return QProcess::start( program, local_args, mode );

@@ -64,14 +64,14 @@ class CustomProcess: public QProcess, public Counter
     add arguments. 
     every space separated argument is added separately
   */
-  void start( const QString& arguments, OpenMode mode = ReadWrite );
+  void start( QString arguments, OpenMode mode = ReadWrite );
   
   /*! 
     \brief 
     add arguments. 
     every space separated argument is added separately
   */
-  void start( const QStringList& arguments, OpenMode mode = ReadWrite );
+  void start( QStringList arguments, OpenMode mode = ReadWrite );
  
   //! \brief ensure object is deleted at job completion
   void setAutoDelete();

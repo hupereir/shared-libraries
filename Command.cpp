@@ -33,6 +33,8 @@
 #include "CustomProcess.h"
 #include "Debug.h"
 
+using namespace std;
+
 //____________________________________________  
 void Command::run( const QString& path ) const
 { 
@@ -43,7 +45,7 @@ void Command::run( const QString& path ) const
   p->start( *this );
   return;
   
-}     
+}
 
 //_________________________________________________________
 QStringList Command::_parse( const QString &in ) const
@@ -52,14 +54,18 @@ QStringList Command::_parse( const QString &in ) const
   Debug::Throw( "Command::parse.\n" );
   int position( in.indexOf( "-" ) );
   if( position < 0 )
-  { return QStringList() << in.trimmed(); }
+  { 
+    QStringList out;
+    out << in.trimmed(); 
+    return out;
+  }
     
   // split everything that is after the first dash, using white spaces as separator
   // and assign them as arguments.
   // note that this is not universal: if the arguments have filenames that includes white 
   // spaces, they will be also split.
   QStringList tmp( in.mid( position ).split( QRegExp("\\s+" ), QString::SkipEmptyParts ) );
-  return QStringList() << in.left( position ).trimmed() << tmp;
+  return QStringList() << in.left( position ) << tmp;
 
 }
 
