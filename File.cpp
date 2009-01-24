@@ -47,10 +47,6 @@
 using namespace std;
 
 //_____________________________________________________________________
-File File::root( void )
-{ return File( qPrintable( QDir::rootPath() ) ); }
-
-//_____________________________________________________________________
 bool File::isAbsolute( void ) const
 { return QFileInfo( c_str() ).isAbsolute(); }
 
