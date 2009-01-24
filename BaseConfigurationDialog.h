@@ -48,7 +48,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
   public:
 
   //! creator
-  BaseConfigurationDialog( QWidget *parent );
+  BaseConfigurationDialog( QWidget *parent = 0 );
 
   //! destructor
   virtual ~BaseConfigurationDialog()
