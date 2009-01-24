@@ -101,7 +101,7 @@ QString CustomProcess::errorMessage( ProcessError error )
 //______________________________________________________________
 void CustomProcess::_finished( int exit_code, QProcess::ExitStatus exit_status )
 { 
-  Debug::Throw(0) << "CustomProcess::_finished -"
+  Debug::Throw() << "CustomProcess::_finished -"
     << " exit code: " << exit_code 
     << " exit status: " << exit_status
     << endl;
@@ -109,4 +109,4 @@ void CustomProcess::_finished( int exit_code, QProcess::ExitStatus exit_status )
 
 //______________________________________________________________
 void CustomProcess::_error( ProcessError error )
-{ Debug::Throw(0) << "CustomProcess::_error - " << qPrintable( errorMessage( error ) ) << endl; }
+{ Debug::Throw() << "CustomProcess::_error - " << qPrintable( errorMessage( error ) ) << endl; }
