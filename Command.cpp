@@ -52,20 +52,32 @@ QStringList Command::_parse( const QString &in ) const
 {
   
   Debug::Throw( "Command::parse.\n" );
-  int position( in.indexOf( "-" ) );
-  if( position < 0 )
-  { 
-    QStringList out;
-    out << in.trimmed(); 
-    return out;
-  }
-    
-  // split everything that is after the first dash, using white spaces as separator
-  // and assign them as arguments.
-  // note that this is not universal: if the arguments have filenames that includes white 
-  // spaces, they will be also split.
-  QStringList tmp( in.mid( position ).split( QRegExp("\\s+" ), QString::SkipEmptyParts ) );
-  return QStringList() << in.left( position ) << tmp;
 
+  // first split using '"' as separator to get "single sting" arguments that contain strings
+  QStringList local = in.split( "\"", QString::KeepEmptyParts );
+  QStringList out;
+  
+  // split strings that are not enclosed into quotes using white spaces as separator
+  bool split( true );
+  for( QStringList::const_iterator iter = local.begin(); iter != local.end(); iter++ )
+  { 
+    if( !iter->isEmpty() )
+    {
+      if( split ) out << iter->split( QRegExp( "\\s+" ), QString::SkipEmptyParts );
+      else out << *iter;
+    }
+    
+    split = !split;
+  }
+
+  // print output
+  if( Debug::level() >= 1 )
+  {
+    for( QStringList::const_iterator iter = out.begin(); iter != out.end(); iter++ )
+    { Debug::Throw() << "Command::parse - \"" << qPrintable( *iter ) << "\"" << endl; }
+  }
+  
+  return out;
+  
 }
 
