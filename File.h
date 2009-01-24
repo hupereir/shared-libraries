@@ -55,6 +55,9 @@ class File: public Str
     Str( value )
   {}
   
+  //! root path
+  static File root( void );
+
   //! returns true if file has absolute pathname
   bool isAbsolute( void ) const;
   
@@ -176,7 +179,7 @@ class File: public Str
   
   //! return first file with matching short name, or empty string if not found
   virtual File find( const File& file, bool case_sensitive = true ) const;
-  
+    
   //! return list of files in a directory
   enum ListFlags
   {
