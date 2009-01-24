@@ -80,7 +80,6 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   painter.setClipRect( event->rect() );
   painter.fillRect( rect(), Qt::transparent );
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
-  painter.setCompositionMode( QPainter::CompositionMode_Source );
   
   if( timeLine().state() == QTimeLine::Running ) {
     
@@ -103,7 +102,9 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
 void TransitionWidget::_updateConfiguration( void )
 {
   Debug::Throw( "TransitionWidget::_updateConfiguration.\n" );
+  
   setEnabled(  XmlOptions::get().get<bool>( "ENABLE_ANIMATIONS" ) );
   timeLine().setDuration( XmlOptions::get().get<int>( "ANIMATION_DURATION" ) );
   timeLine().setFrameRange( XmlOptions::get().get<int>( "ANIMATION_FRAMES" ), 0 );
+    
 } 
