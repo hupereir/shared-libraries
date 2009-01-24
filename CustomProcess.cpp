@@ -69,11 +69,9 @@ void CustomProcess::start( QStringList arguments, OpenMode mode )
     << " argc: " << local_args.size()
     << " argv: \"" << qPrintable( local_args.join( " " ) ) << "\""
     << endl;
-  
-  //return QProcess::start( program, mode );
-  
+    
   if( local_args.empty() ) return QProcess::start( program, mode );
-  else return QProcess::start( program, local_args, mode );
+  else return QProcess::start( program, local_args,  mode );
   
 }
 
@@ -103,7 +101,7 @@ QString CustomProcess::errorMessage( ProcessError error )
 //______________________________________________________________
 void CustomProcess::_finished( int exit_code, QProcess::ExitStatus exit_status )
 { 
-  Debug::Throw() << "CustomProcess::_finished -"
+  Debug::Throw(0) << "CustomProcess::_finished -"
     << " exit code: " << exit_code 
     << " exit status: " << exit_status
     << endl;
@@ -111,4 +109,4 @@ void CustomProcess::_finished( int exit_code, QProcess::ExitStatus exit_status )
 
 //______________________________________________________________
 void CustomProcess::_error( ProcessError error )
-{ Debug::Throw() << "CustomProcess::_error - " << qPrintable( errorMessage( error ) ) << endl; }
+{ Debug::Throw(0) << "CustomProcess::_error - " << qPrintable( errorMessage( error ) ) << endl; }

@@ -36,14 +36,16 @@
 using namespace std;
 
 //____________________________________________  
-void Command::run( const QString& path ) const
+bool Command::run( const QString& path ) const
 { 
-
-  CustomProcess *p = new CustomProcess();
-  p->setAutoDelete();
-  if( !path.isEmpty() ) p->setWorkingDirectory( path );
-  p->start( *this );
-  return;
+  
+  Debug::Throw( "Command::run.\n" );
+  if( empty() ) return false;
+  
+  QString program( front() );
+  QStringList arguments( *this );
+  arguments.pop_front();
+  return QProcess::startDetached( program, arguments, path );
   
 }
 
@@ -51,11 +53,11 @@ void Command::run( const QString& path ) const
 QStringList Command::_parse( const QString &in ) const
 {
   
-  Debug::Throw( "Command::parse.\n" );
-
+  Debug::Throw( "Command::parse.\n" );  
+  QStringList out;
+  
   // first split using '"' as separator to get "single sting" arguments that contain strings
   QStringList local = in.split( "\"", QString::KeepEmptyParts );
-  QStringList out;
   
   // split strings that are not enclosed into quotes using white spaces as separator
   bool split( true );
@@ -64,7 +66,7 @@ QStringList Command::_parse( const QString &in ) const
     if( !iter->isEmpty() )
     {
       if( split ) out << iter->split( QRegExp( "\\s+" ), QString::SkipEmptyParts );
-      else out << *iter;
+      else out << QString("\"") + *iter + "\"" ;
     }
     
     split = !split;
@@ -74,7 +76,7 @@ QStringList Command::_parse( const QString &in ) const
   if( Debug::level() >= 1 )
   {
     for( QStringList::const_iterator iter = out.begin(); iter != out.end(); iter++ )
-    { Debug::Throw() << "Command::parse - \"" << qPrintable( *iter ) << "\"" << endl; }
+    { Debug::Throw(0) << "Command::parse - \"" << qPrintable( *iter ) << "\"" << endl; }
   }
   
   return out;
