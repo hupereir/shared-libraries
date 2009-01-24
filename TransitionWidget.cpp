@@ -69,10 +69,7 @@ void TransitionWidget::setStartWidget( QWidget* widget, QRect rect, bool from_pa
 
 //___________________________________________________________________
 void TransitionWidget::start( void )
-{ 
-  //Debug::Throw( "TransitionWidget::start.\n" );
-  if( timeLine().state() != QTimeLine::Running ) timeLine().start(); 
-}
+{ if( timeLine().state() != QTimeLine::Running ) timeLine().start(); }
 
 //___________________________________________________________________
 void TransitionWidget::paintEvent( QPaintEvent* event )
@@ -83,6 +80,7 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   painter.setClipRect( event->rect() );
   painter.fillRect( rect(), Qt::transparent );
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
+  painter.setCompositionMode( QPainter::CompositionMode_Source );
   
   if( timeLine().state() == QTimeLine::Running ) {
     
