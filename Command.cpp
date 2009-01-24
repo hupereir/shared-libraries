@@ -29,8 +29,9 @@
    \date    $Date$
 */
 
+#include <QProcess>
+
 #include "Command.h"
-#include "CustomProcess.h"
 #include "Debug.h"
 
 using namespace std;
