@@ -81,6 +81,17 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   painter.fillRect( rect(), Qt::transparent );
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
   
+  #ifdef Q_WS_WIN
+  /* 
+  under windows, it seems composition mode must be set to source
+  explicitely, at least for applications that use true translucency
+  otherwise, the transparency effects are messed-up. Other applications
+  are apparently not affected. On linux on the other hand, non-compositing 
+  applications show wrong effects if this is on
+  */
+  painter.setCompositionMode( QPainter::CompositionMode_Source );
+  #endif
+  
   if( timeLine().state() == QTimeLine::Running ) {
     
     // if running, get frame and update painter opacity
