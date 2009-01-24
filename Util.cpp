@@ -145,39 +145,14 @@ string Util::domain( void )
 string Util::home( void )
 {
   Debug::Throw( "Util::home.\n" );
-  
-  #ifdef Q_WS_WIN
-  
-  // use drive+path for windows
-  string drive( env( "HOMEDRIVE","C:" ) );
-  string home( env( "HOMEPATH","/"));
-  return drive+home;
-  #else 
-  
-  // use system environment
-  return env( "HOME","." ); 
-  
-  #endif
-  
+  return qPrintable( QDir::homePath() );
 }
 
 //______________________________________________________________________
 string Util::tmp( void )
 {
   Debug::Throw( "Util::tmp.\n" );
-  
-  #ifdef Q_WS_WIN
-  
-  // use system environment
-  return env( "TEMP", env( "TMP", "C:/tmp" ) );
-  
-  #else 
-  
-  // use environment variable or /tmp path
-  return env( "TMP", "/tmp" );
-  
-  #endif
-  
+  return qPrintable( QDir::tempPath() );
 }
 //______________________________________________________________________
 string Util::host( bool short_name )
