@@ -65,7 +65,6 @@ class Singleton
     return application_; 
   }
   
-  
   //! cast
   template< typename T >
   T* application( void )
