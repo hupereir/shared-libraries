@@ -139,6 +139,7 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
 {
   
   ToolBarMenu* menu = new ToolBarMenu( parent );
+  
   bool has_lockable_toolbars( installToolBarsActions( *menu->addMenu( "&ToolBars" ) ) );
   if( has_lockable_toolbars ) 
   {

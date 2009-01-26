@@ -77,13 +77,8 @@ TreeView::TreeView( QWidget* parent ):
 //_______________________________________________
 QMenu& TreeView::menu( void )
 {  
-  if( !hasMenu() ) 
-  {
-    setContextMenuPolicy( Qt::CustomContextMenu );
-    connect( this, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseMenu( const QPoint& ) ) );
-    menu_ = new QMenu( this );
-  }
   
+  if( !hasMenu() ) menu_ = new QMenu( this );  
   return *menu_;
 
 }
@@ -222,6 +217,25 @@ void TreeView::paintEvent( QPaintEvent* event )
 }
 
 //__________________________________________________________
+void TreeView::contextMenuEvent( QContextMenuEvent* event )
+{
+  
+  Debug::Throw( "TreeView::contextMenuEvent.\n" );
+  
+  // check if menu was created
+  if( !hasMenu() ) return;
+      
+  // move and show menu
+  menu().adjustSize();
+  menu().exec( event->globalPos() );
+  
+  // save mask after menu execution, 
+  // to keep visible columns in sync with option
+  saveMask();
+  
+}
+
+//__________________________________________________________
 void TreeView::_installActions( void )
 {
   Debug::Throw( "TreeView::_installActions.\n" );
@@ -231,26 +245,6 @@ void TreeView::_installActions( void )
   select_all_action_->setShortcutContext( WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-}
-
-//___________________________________
-void TreeView::_raiseMenu( const QPoint & pos )
-{ 
-  
-  Debug::Throw( "TreeView::_raiseMenu.\n" );
-  
-  // check if menu was created
-  if( !hasMenu() ) return;
-      
-  // move and show menu
-  menu().adjustSize();
-  QtUtil::moveWidget( &menu(), QCursor::pos() );
-  menu().exec();
-  
-  // save mask after menu execution, 
-  // to keep visible columns in sync with option
-  saveMask();
-  
 }
 
 //___________________________________

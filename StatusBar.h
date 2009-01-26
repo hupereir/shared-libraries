@@ -34,6 +34,7 @@
 
 #include <assert.h>
 #include <QApplication>
+#include <QContextMenuEvent>
 #include <QLabel>
 #include <QStatusBar>
 #include <string>
@@ -99,6 +100,11 @@ class StatusBar: public QStatusBar, public Counter
     assert( i < labels_.size() );
     return *labels_[i];  
   }
+  
+  protected:
+  
+  //! context menu
+  virtual void contextMenuEvent( QContextMenuEvent* );
   
   private:
 

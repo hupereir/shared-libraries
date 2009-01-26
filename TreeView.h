@@ -32,6 +32,7 @@
   \date $Date$
 */
 
+#include <QContextMenuEvent>
 #include <QMenu>
 #include <QTreeView>
 #include <QAction>
@@ -129,6 +130,9 @@ class TreeView: public QTreeView, public Counter
   //! paint event
   virtual void paintEvent( QPaintEvent* );
     
+  //! context menu
+  virtual void contextMenuEvent( QContextMenuEvent* );
+  
   //! selected column color
   const QColor& _selectedColumnColor( void ) const
   { return selected_column_color_; }
@@ -142,9 +146,6 @@ class TreeView: public QTreeView, public Counter
   
   protected slots:
    
-  //! popup contextual menu
-  virtual void _raiseMenu( const QPoint& );
-  
   //! header menu
   virtual void _raiseHeaderMenu( const QPoint& );
   

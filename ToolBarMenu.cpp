@@ -41,9 +41,18 @@ ToolBarMenu::ToolBarMenu( QWidget* parent ):
   QMenu( parent ),
   Counter( "ToolBarMenu" )
 {
-  
+
   Debug::Throw( "ToolBarMenu::ToolBarMenu.\n" );
+
+  // make sure object is deleted when closing
+  setAttribute( Qt::WA_DeleteOnClose, true );
+  
+  // add tool buttons and icon size submenus
   addMenu( toolbutton_style_menu_ = new ToolButtonStyleMenu( this ) );
   addMenu( icon_size_menu_ = new IconSizeMenu( this ) );
   
 }
+
+//____________________________________________________
+ToolBarMenu::~ToolBarMenu( void )
+{ Debug::Throw( "ToolBarMenu::~ToolBarMenu.\n" ); }

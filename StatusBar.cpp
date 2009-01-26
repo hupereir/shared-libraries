@@ -30,6 +30,7 @@
 */
 
 #include <QMainWindow>
+#include <QMenu>
 
 #include "StatusBar.h"
 #include "ClockLabel.h"
@@ -66,9 +67,19 @@ void StatusBar::addLabel( const int& stretch )
 }
 
 //__________________________________________________________________
+void StatusBar::contextMenuEvent( QContextMenuEvent *event )
+{
+  Debug::Throw( "StatusBar::contextMenuEvent.\n" );
+  QMenu& menu( *static_cast<QMainWindow*>(parent())->createPopupMenu() );
+  menu.exec( event->globalPos() ); 
+  menu.deleteLater();
+}
+  
+//__________________________________________________________________
 void StatusBarLabel::setTextAndUpdate( const QString& message )
 { 
   Debug::Throw() << "StatusBar::StatusBarLabel::setTextAndUpdate - message: " << qPrintable( message ) << endl;
   QLabel::setText( message );
   qApp->processEvents();
 }
+

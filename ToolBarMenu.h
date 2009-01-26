@@ -49,6 +49,9 @@ class ToolBarMenu: public QMenu, public Counter
   //! constructor
   ToolBarMenu( QWidget* parent = 0 );
     
+  //! destructor
+  virtual ~ToolBarMenu( void );
+  
   //! tool button style menu
   ToolButtonStyleMenu &toolButtonStyleMenu( void ) const
   {

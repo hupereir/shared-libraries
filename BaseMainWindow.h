@@ -104,7 +104,7 @@ class BaseMainWindow: public QMainWindow
   virtual QMenu* createPopupMenu( void );
 
   //! toolbar menu
-  virtual ToolBarMenu& toolBarMenu( QWidget* parent );
+  virtual ToolBarMenu& toolBarMenu( QWidget* parent = 0 );
   
   //! install toolbar visibility actions
   /*! returns true if lockable toolbars are found */
