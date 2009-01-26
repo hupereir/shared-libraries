@@ -54,6 +54,7 @@ oxygen/messagebox_warning.png \
 oxygen/qt-logo.png \
 oxygen/redo.png \
 oxygen/reload.png \
+oxygen/show-menu.png \
 oxygen/toggle_log.png \
 oxygen/trashcan_empty.png \
 oxygen/undo.png \
