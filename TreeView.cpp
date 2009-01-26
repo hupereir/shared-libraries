@@ -31,6 +31,7 @@
 #include <QCursor>
 #include <QHeaderView>
 #include <QPainter>
+#include <QScrollBar>
 
 #include "ColorDisplay.h"
 #include "ColumnSelectionMenu.h"
@@ -71,7 +72,7 @@ TreeView::TreeView( QWidget* parent ):
   // configuration
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
-   
+     
 }
 
 //_______________________________________________

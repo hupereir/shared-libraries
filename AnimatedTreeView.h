@@ -39,7 +39,7 @@ class TransitionWidget;
 //! customized tree view
 class AnimatedTreeView: public TreeView
 {
-
+  
   public:
   
   //! constructor
@@ -60,12 +60,12 @@ class AnimatedTreeView: public TreeView
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
-  
+   
   private:
 
   //! transition widget
   TransitionWidget* transition_widget_; 
-  
+   
 };
 
 #endif

@@ -255,7 +255,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_LineNumberDisplay.cpp \
   moc_ListWidget.cpp \
   moc_MultipleClickCounter.cpp \
-	moc_OptionDialog.cpp \
+	 moc_OptionDialog.cpp \
   moc_OptionListBox.cpp \
   moc_OptionModel.cpp \
   moc_RecentFilesMenu.cpp \

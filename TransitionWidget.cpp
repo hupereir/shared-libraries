@@ -45,7 +45,7 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
   enabled_( true )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
-  connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT( update()) ); 
+  connect( &timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( update()) ); 
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
 }

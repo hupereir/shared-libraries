@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+//#include "AnimatedScrollBar.h"
 #include "AnimatedTreeView.h"
 #include "Debug.h"
 #include "TransitionWidget.h"
@@ -45,6 +46,10 @@ AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
   // transition widget
   _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), &_transitionWidget(), SLOT( hide() ) );
+  
+//   AnimatedScrollBar* scrollbar = new AnimatedScrollBar( this );
+//   scrollbar->setOrientation( Qt::Vertical );
+//   setVerticalScrollBar( scrollbar );
   
 }
 
