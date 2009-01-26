@@ -328,10 +328,10 @@ void TransparentWidget::_installActions( void )
 {
   Debug::Throw( "TransparentWidget::_installAction.\n" );
   
-  addAction( update_background_action_ = new QAction( "&Update background", this ) );
+  addAction( update_background_action_ = new QAction( "&Update Background", this ) );
   connect( update_background_action_, SIGNAL( triggered() ), SLOT( _updateBackgroundPixmap() ) );
 
-  reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload background", this );
+  reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload Background", this );
   reload_background_action_->setToolTip( "Reinitialize transparent background" );
 
   connect( reload_background_action_, SIGNAL( triggered() ), &BackgroundPixmap::get(), SLOT( reload() ) );
