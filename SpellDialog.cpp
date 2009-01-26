@@ -58,7 +58,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
 
   // window title
   setWindowTitle( read_only ? "Spell check (read-only)" : "Spell check" );
-  setSizeOptionName( "SPELL_DIALOG" );
+  setOptionName( "SPELL_DIALOG" );
   
   // create vbox layout
   QVBoxLayout* layout=new QVBoxLayout();
