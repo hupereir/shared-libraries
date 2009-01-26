@@ -121,7 +121,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   
   h_layout->addWidget( edit_button_ = new QPushButton( IconEngine::get( ICONS::EDIT ), "&Edit", html_frame_ ) );  
   connect( edit_button_, SIGNAL( clicked() ), SLOT( _toggleEdition() ) );
-  edit_button_->setToolTip( "edit current help" );
+  edit_button_->setToolTip( "Edit current help" );
   h_layout->addStretch( 1 );
   Debug::Throw( "HelpDialog::HelpDialog - html button frame done.\n" );
 
@@ -153,28 +153,25 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   
   h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), "&Apply", plain_frame_ ) );  
   connect( button, SIGNAL( clicked() ), SLOT( _toggleEdition() ) );
-  button->setToolTip( "edit current help" );
+  button->setToolTip( "Edit current help" );
   h_layout->addStretch( 1 );
 
-  //h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), "&Show help string", plain_frame_ ) );  
   h_layout->addWidget( tool_button = new QToolButton( plain_frame_ ) );  
   tool_button->setIcon( IconEngine::get( ICONS::FIND ) );
   tool_button->setAutoRaise( true );
   tool_button->setToolTip( "Display help string in separate dialog." );
   connect( tool_button, SIGNAL( clicked() ), SLOT( _showHelpString() ) );
 
-  //h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::REMOVE ), "&Delete item", plain_frame_ ) );  
   h_layout->addWidget( tool_button = new QToolButton( plain_frame_ ) );  
   tool_button->setIcon( IconEngine::get( ICONS::REMOVE ) );
   tool_button->setAutoRaise( true );
-  tool_button->setToolTip( "delete current help item" );
+  tool_button->setToolTip( "Delete current help item" );
   connect( tool_button, SIGNAL( clicked() ), SLOT( _deleteItem() ) );
 
-  //h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::ADD ), "&Add item", plain_frame_ ) );  
   h_layout->addWidget( tool_button = new QToolButton( plain_frame_ ) );  
   tool_button->setIcon( IconEngine::get( ICONS::ADD ) );
   tool_button->setAutoRaise( true );
-  tool_button->setToolTip( "add a new help item" );
+  tool_button->setToolTip( "Add a new help item" );
   connect( tool_button, SIGNAL( clicked() ), SLOT( _newItem() ) );
 
   // make sure html edition is visible at start up  
