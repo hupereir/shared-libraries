@@ -81,6 +81,9 @@ class BaseMainWindow: public QMainWindow
   
   //! center widget on argument widget
   void centerOnWidget( QWidget* );
+
+  //! set menu bar (overloaded)
+  void setMenuBar( QMenuBar* );
   
   //! lock toolbars
   QAction& lockToolBarsAction( void ) const

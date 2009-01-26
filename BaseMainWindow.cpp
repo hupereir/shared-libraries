@@ -30,6 +30,7 @@
 */
 
 #include <assert.h>
+#include <QMenuBar>
 #include <QToolBar>
 #include <QWindowStateChangeEvent>
 
@@ -71,6 +72,17 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
   connect( this, SIGNAL( toolbarConfigurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
   _updateConfiguration();
     
+}
+
+//__________________________________________________
+void BaseMainWindow::setMenuBar( QMenuBar* menu )
+{
+  
+  Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
+  QMainWindow::setMenuBar( menu );
+  if( !menuBar() ) return;
+  menuBar()->setVisible( showMenuAction().isChecked() );
+  
 }
 
 //__________________________________________________
