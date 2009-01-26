@@ -89,6 +89,14 @@ class BaseMainWindow: public QMainWindow
     return *lock_toolbars_action_; 
   }
    
+  
+  //! lock toolbars
+  QAction& showMenuAction( void ) const
+  { 
+    assert( show_menu_action_ );
+    return *show_menu_action_; 
+  }
+
   //! create context menu (overloaded)
   virtual QMenu* createPopupMenu( void );
 
@@ -147,6 +155,9 @@ class BaseMainWindow: public QMainWindow
   //! lock toolbars
   void _lockToolBars( bool ); 
   
+  //! toggle menu
+  void _showMenu( bool );
+  
   private:
       
   //! size watcher
@@ -155,6 +166,9 @@ class BaseMainWindow: public QMainWindow
   //! lock toolbars
   QAction* lock_toolbars_action_;
 
+  //! toggle menu
+  QAction* show_menu_action_;
+  
   //! window state prior to minimization
   bool was_maximized_;
   
