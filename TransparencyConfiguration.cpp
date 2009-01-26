@@ -70,16 +70,16 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   box->layout()->setMargin(5);
   
   // enable/disable transparency
-  box->layout()->addWidget( checkbox = new OptionCheckBox( "use transparency", box, "TRANSPARENT" ) );
-  checkbox->setToolTip( "enable/disable transparent background" );
+  box->layout()->addWidget( checkbox = new OptionCheckBox( "Use transparency", box, "TRANSPARENT" ) );
+  checkbox->setToolTip( "Enable/disable transparent background" );
   addOptionWidget( checkbox );
 
   // enable/disable compositing
   if( CompositeEngine::get().isAvailable() )
   {
     
-    box->layout()->addWidget( checkbox = new OptionCheckBox( "use compositing", box, "TRANSPARENCY_USE_COMPOSITE" ) );
-    checkbox->setToolTip( "enable/disable compositing" );
+    box->layout()->addWidget( checkbox = new OptionCheckBox( "Use compositing", box, "TRANSPARENCY_USE_COMPOSITE" ) );
+    checkbox->setToolTip( "Enable/disable compositing" );
     addOptionWidget( checkbox );
     
   }
@@ -90,12 +90,12 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   box->layout()->addItem( h_layout );
   
   // opacity
-  h_layout->addWidget( new QLabel( "opacity (composite):", box ) );
+  h_layout->addWidget( new QLabel( "Opacity (composite):", box ) );
   h_layout->addWidget( slider = new OptionSlider( this, "TRANSPARENCY_OPACITY" ) );
   slider->setScale( 1.0/2.55 );
   slider->slider().setMinimum( 0 );
   slider->slider().setMaximum( 100 );
-  slider->setToolTip( "widget opacity" );
+  slider->setToolTip( "Widget opacity" );
   addOptionWidget( slider );
   
   // colors
@@ -108,64 +108,64 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   box->setLayout( grid_layout );
 
   // foreground color
-  grid_layout->addWidget( new QLabel( "foreground color:", box ) );
+  grid_layout->addWidget( new QLabel("Foreground color:", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_FOREGROUND_COLOR" ) );
-  color_display->setToolTip( "text/display foreground color" );
+  color_display->setToolTip( "Text/display foreground color" );
   addOptionWidget( color_display );
  
   // shadow color
-  grid_layout->addWidget( new QLabel( "shadow color:", box ) );
+  grid_layout->addWidget( new QLabel( "Shadow color:", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_SHADOW_COLOR" ) );
-  color_display->setToolTip( "text/display shadow color" );
+  color_display->setToolTip( "Text/display shadow color" );
   addOptionWidget( color_display );
  
   // tint color
-  grid_layout->addWidget( new QLabel( "tint color:", box ) );
+  grid_layout->addWidget( new QLabel( "Tint color:", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_TINT_COLOR" ) );
-  color_display->setToolTip( "transparent background tint color" );
+  color_display->setToolTip( "Transparent background tint color" );
   addOptionWidget( color_display );
 
   // highlight color
-  grid_layout->addWidget( new QLabel( "highlight color:", box ) );
+  grid_layout->addWidget( new QLabel( "Highlight color:", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
-  color_display->setToolTip( "highlight color when entering widget" );
+  color_display->setToolTip( "Highlight color when entering widget" );
   addOptionWidget( color_display );
 
   // shadow offset
-  grid_layout->addWidget( new QLabel( "shadow offset: ", box ) );
+  grid_layout->addWidget( new QLabel( "Shadow offset: ", box ) );
   grid_layout->addWidget( spinbox = new OptionSpinBox( box, "TRANSPARENCY_SHADOW_OFFSET" ) );
   spinbox->setMinimum( 0 );
   spinbox->setMaximum( 10 );
   spinbox->setToolTip( 
-    "offset between text shadow and text.\n"
+    "Offset between text shadow and text.\n"
     "0 means no shadow." );
   addOptionWidget( spinbox );
   
   // foreground intensity
-  grid_layout->addWidget( new QLabel( "foreground intensity:", box ) );
+  grid_layout->addWidget( new QLabel("Foreground intensity:", box ) );
   grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
   slider->setScale( 1.0/2.55 );
   slider->slider().setMinimum( 0 );
   slider->slider().setMaximum( 100 );
-  slider->setToolTip( "foreground color intensity" );
+  slider->setToolTip("Foreground color intensity" );
   addOptionWidget( slider );
   
   // tint intensity
-  grid_layout->addWidget( new QLabel( "tint intensity:", box ) );
+  grid_layout->addWidget( new QLabel( "Tint intensity:", box ) );
   grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_TINT_INTENSITY" ) );
   slider->setScale( 1.0/2.55 );
   slider->slider().setMinimum( 0 );
   slider->slider().setMaximum( 100 );
-  slider->setToolTip( "transparent background tint intensity" );
+  slider->setToolTip( "Transparent background tint intensity" );
   addOptionWidget( slider );
   
   // tint intensity
-  grid_layout->addWidget( new QLabel( "highlight intensity:", box ) );
+  grid_layout->addWidget( new QLabel( "Highlight intensity:", box ) );
   grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
   slider->setScale( 1.0/2.55 );
   slider->slider().setMinimum( 0 );
   slider->slider().setMaximum( 100 );
-  slider->setToolTip( "transparent background highlight intensity" );
+  slider->setToolTip( "Transparent background highlight intensity" );
   addOptionWidget( slider );
   
   return;
