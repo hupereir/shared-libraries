@@ -485,7 +485,7 @@ void TextEditor::showReplacements( const unsigned int& counts )
 
   QString buffer;
   QTextStream stream( &buffer );
-  if( !counts ) stream << "string not found.";
+  if( !counts ) stream << "String not found.";
   else if( counts == 1 ) stream << "1 replacement performed";
   else stream << counts << " replacements performed";
   InformationDialog( this, buffer ).centerOnWidget( qApp->activeWindow() ).exec();
@@ -1740,7 +1740,7 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
     QRegExp regexp( selection.text() );
     if( !regexp.isValid() )
     {
-      InformationDialog( this, "invalid regular expression. Find canceled" ).exec();
+      InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
       return false;
     }
 
@@ -1847,7 +1847,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
     QRegExp regexp( selection.text() );
     if( !regexp.isValid() )
     {
-      InformationDialog( this, "invalid regular expression. Find canceled" ).exec();
+      InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
       return false;
     }
 
@@ -1992,7 +1992,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     QRegExp regexp( selection.text() );
     if( !regexp.isValid() )
     {
-      InformationDialog( this, "invalid regular expression. Find canceled" ).exec();
+      InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
       return false;
     }
 
@@ -2414,7 +2414,7 @@ void TextEditor::_toggleBlockHighlight( bool state )
 //________________________________________________
 bool TextEditor::_toggleWrapMode( bool state )
 {
-  Debug::Throw() << "TextEditor::_toggleWrapMode - " << (state ? "true":"false") << endl;
+  Debug::Throw() << "TextEditor::_toggleWrapMode - " << (state ? "True":"false") << endl;
   LineWrapMode mode( state ? QTextEdit::WidgetWidth : QTextEdit::NoWrap );
   if( mode == lineWrapMode() ) return false;
 
@@ -2441,7 +2441,7 @@ bool TextEditor::_toggleWrapMode( bool state )
 bool TextEditor::_toggleTabEmulation( bool state )
 {
 
-  Debug::Throw() << "TextEditor::_toggleTabEmulation - " << (state ? "true":"false") << endl;
+  Debug::Throw() << "TextEditor::_toggleTabEmulation - " << (state ? "True":"false") << endl;
 
   // check if changed
   if( has_tab_emulation_ == state ) return false;

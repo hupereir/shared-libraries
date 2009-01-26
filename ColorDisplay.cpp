@@ -73,15 +73,13 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   QToolButton *button;
   layout->addWidget( button = new QToolButton( this ), 0 );
   button->setIcon( IconEngine::get( ICONS::OPEN ) );
-  button->setToolTip( "select color from dialog" );
-  //button->setAutoRaise( true );
+  button->setToolTip( "Select color from dialog" );
   connect( button, SIGNAL( clicked() ), SLOT( _selectColor() ) );
   
   // grab button
   layout->addWidget( button = new QToolButton( this ), 0 );
   button->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
-  button->setToolTip( "grap color from screen" );
-  //button->setAutoRaise( true );
+  button->setToolTip( "Grap color from screen" );
   connect( button, SIGNAL( clicked() ), SLOT( _grabColor() ) );
   
 } 

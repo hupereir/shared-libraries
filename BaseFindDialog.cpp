@@ -90,16 +90,16 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
   layout()->addItem( grid_layout );
   
   // insert checkboxes
-  grid_layout->addWidget( backward_checkbox_ = new QCheckBox( "&search backward", this ) );
-  grid_layout->addWidget( case_sensitive_checkbox_ = new QCheckBox( "&case sensitive", this ) );
-  grid_layout->addWidget( regexp_checkbox_ = new QCheckBox( "&regular expresion", this ) );
-  grid_layout->addWidget( entire_word_checkbox_ = new QCheckBox( "&entire word", this ) );
+  grid_layout->addWidget( backward_checkbox_ = new QCheckBox( "&Search backward", this ) );
+  grid_layout->addWidget( case_sensitive_checkbox_ = new QCheckBox( "&Case sensitive", this ) );
+  grid_layout->addWidget( regexp_checkbox_ = new QCheckBox( "&Regular expresion", this ) );
+  grid_layout->addWidget( entire_word_checkbox_ = new QCheckBox( "&Entire word", this ) );
   connect( regexp_checkbox_, SIGNAL( toggled( bool ) ), SLOT( _regExpChecked( bool ) ) );
 
   // tooltips
-  backward_checkbox_->setToolTip( "perform search backward" ); 
-  case_sensitive_checkbox_->setToolTip( "case sensitive search" ); 
-  regexp_checkbox_->setToolTip( "search text using regular expression" ); 
+  backward_checkbox_->setToolTip( "Perform search backward" ); 
+  case_sensitive_checkbox_->setToolTip( "Case sensitive search" ); 
+  regexp_checkbox_->setToolTip( "Search text using regular expression" ); 
 
   // notification label
   layout()->addWidget( label_ = new QLabel( this ) );

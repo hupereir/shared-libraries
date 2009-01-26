@@ -65,7 +65,7 @@ CounterDialog::CounterDialog( QWidget* parent ):
   layout()->addItem( h_layout );
   
   QPushButton *button;
-  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Update", this ) );
+  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( update() ) );
   button->setAutoDefault( false );
    

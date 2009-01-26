@@ -103,7 +103,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   // remove button
   button_layout->addWidget( remove_ = new QPushButton( "&Remove", this ) );
   connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
-  remove_->setToolTip( "remove selected value" );
+  remove_->setToolTip( "Remove selected value" );
 
   addAction( remove_action_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remo&ve", this ) );
   connect( remove_action_, SIGNAL( triggered() ), SLOT( _remove() ) );
@@ -114,7 +114,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   // Edit button
   button_layout->addWidget( edit_ = new QPushButton( "&Edit", this ) );
   connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
-  edit_->setToolTip( "edit selected value" );
+  edit_->setToolTip( "Edit selected value" );
 
   addAction( edit_action_ = new QAction( IconEngine::get( ICONS::EDIT ),  "&Edit", this ) );
   connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
@@ -123,7 +123,7 @@ OptionListBox::OptionListBox( QWidget* parent, const string& name ):
   // set default button
   button_layout->addWidget( default_ = new QPushButton( "&Default", this ) );
   connect( default_, SIGNAL( clicked() ), SLOT( _setDefault() ) );
-  default_->setToolTip( "set selected value as default\n(move it to the top of the list)" );
+  default_->setToolTip( "Set selected value as default\n(move it to the top of the list)" );
 
   addAction( default_action_ = new QAction( "&Default", this ) );
   connect( default_action_, SIGNAL( triggered() ), SLOT( _setDefault() ) );

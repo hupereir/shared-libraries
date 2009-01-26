@@ -83,7 +83,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     
     // add tooltip
     ostringstream what;
-    what << "show/hide column \"" << qPrintable( column_name ) << "\"";
+    what << "Show/hide column \"" << qPrintable( column_name ) << "\"";
     checkbox->setToolTip( what.str().c_str() );
     
   }
