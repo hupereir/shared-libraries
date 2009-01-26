@@ -37,6 +37,20 @@
 using namespace std;
 
 //_________________________________________________________
+void WindowSizeWatcher::setOptionName( const std::string& name )
+{
+  Debug::Throw( "WindowSizeWatcher::setOptionName.\n" );
+  if( name.empty() )
+  { 
+    width_option_name_.clear();
+    height_option_name_.clear();
+  } else {
+    width_option_name_ = name + "_WIDTH"; 
+    height_option_name_ = name + "_HEIGHT"; 
+  }
+}
+
+//_________________________________________________________
 QSize WindowSizeWatcher::sizeHint( void ) const
 {
   

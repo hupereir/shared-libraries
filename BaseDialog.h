@@ -85,8 +85,8 @@ class BaseDialog: public QDialog
   BaseDialog& centerOnWidget( QWidget* );
 
   //! size option name
-  virtual void setSizeOptionName( const std::string& name )
-  { size_watcher_.setSizeOptionName( name ); }
+  virtual void setOptionName( const std::string& name )
+  { size_watcher_.setOptionName( name ); }
 
   public slots:
   

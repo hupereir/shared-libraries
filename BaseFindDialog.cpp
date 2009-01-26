@@ -52,7 +52,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
     Counter( "BaseFindDialog" )
 {
   Debug::Throw( "BaseFindDialog::BaseFindDialog.\n" );
-  setSizeOptionName( "FIND_DIALOG" );
+  setOptionName( "FIND_DIALOG" );
   
   // set dialog title
   setWindowTitle( "find" );

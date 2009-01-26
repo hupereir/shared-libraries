@@ -56,7 +56,7 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   
   // set dialog title
   setWindowTitle( "replace" );
-  setSizeOptionName( "REPLACE_DIALOG" );
+  setOptionName( "REPLACE_DIALOG" );
 
   // create aditional widgets
   // insert text editor

@@ -47,7 +47,7 @@ CounterDialog::CounterDialog( QWidget* parent ):
   
   Debug::Throw( "CounterDialog::CounterDialog.\n" );
   setWindowTitle( "object counters" );
-  setSizeOptionName( "COUNTER_DIALOG" );
+  setOptionName( "COUNTER_DIALOG" );
     
   setLayout( new QVBoxLayout() );
   layout()->setMargin(10);

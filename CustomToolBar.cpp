@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+#include "BaseMainWindow.h"
 #include "CustomToolBar.h"
 #include "CustomToolButton.h"
 #include "Singleton.h"
@@ -95,7 +96,6 @@ void CustomToolBar::moveEvent( QMoveEvent* event )
   
 }
 
-
 //_______________________________________________________________
 void CustomToolBar::_toggleVisibility( bool state )
 {
@@ -140,8 +140,14 @@ void CustomToolBar::_updateConfiguration( void )
   setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
 
   // lock
-  if( lockFromOptions() ) setMovable( !XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) );
-
+  if( lockFromOptions() ) {
+    
+    BaseMainWindow* mainwindow( dynamic_cast<BaseMainWindow*>( window() ) );
+    if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().find( mainwindow->lockToolBarsOptionName() ) )
+    setMovable( !XmlOptions::get().get<bool>( mainwindow->lockToolBarsOptionName() ) );
+    
+  }
+  
   // visibility
   bool visibility( (!option_name_.empty() && XmlOptions::get().find( option_name_ ) ) ? XmlOptions::get().get<bool>( option_name_ ):true );
   bool current_visibility( isVisible() );

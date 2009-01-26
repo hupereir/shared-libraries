@@ -52,11 +52,7 @@ class WindowSizeWatcher: public QObject, public Counter
   {}
     
   //! size option name
-  virtual void setSizeOptionName( const std::string& name )
-  { 
-    width_option_name_ = name + "_WIDTH"; 
-    height_option_name_ = name + "_HEIGHT"; 
-  }
+  virtual void setOptionName( const std::string& name );
     
   //! size hint
   /*! an invalid size is returned when option name is not set */

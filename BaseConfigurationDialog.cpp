@@ -68,7 +68,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   
   Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
   setWindowTitle( "Configuration" );
-  setSizeOptionName( "CONFIGURATION_DIALOG" );
+  setOptionName( "CONFIGURATION_DIALOG" );
 
   // add restore default button to layout
   QPushButton* button;
@@ -495,7 +495,7 @@ void BaseConfigurationDialog::_restoreDefaults( void )
   { if( iter->second.defaultValue().empty() ) local.insert( OptionPair( *iter ) ); }
 
   QuestionDialog dialog( this );
-  dialog.setSizeOptionName( "RESTORE_DEFAULT_DIALOG" );
+  dialog.setOptionName( "RESTORE_DEFAULT_DIALOG" );
   if( !local.empty() )
   {
 

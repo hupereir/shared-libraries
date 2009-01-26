@@ -32,7 +32,6 @@
   \date $Date$
 */
 
-#include <QMainWindow>
 #include <QHideEvent>
 #include <QShowEvent>
 #include <QToolBar>

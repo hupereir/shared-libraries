@@ -110,9 +110,20 @@ class BaseMainWindow: public QMainWindow
   /*! returns true if lockable toolbars are found */
   virtual bool installToolBarsActions( QMenu& );
    
-  //! size option name
-  virtual void setSizeOptionName( const std::string& name )
-  { size_watcher_.setSizeOptionName( name ); }
+  //! option name
+  virtual void setOptionName( const std::string& name );
+      
+  //! menu option name
+  bool hasOptionName( void ) const
+  { return !lockToolBarsOptionName().empty(); }
+      
+  //! menu option name
+  const std::string& lockToolBarsOptionName( void ) const
+  { return lock_toolbars_option_name_; }
+
+  //! menu option name
+  const std::string& showMenuOptionName( void ) const
+  { return show_menu_option_name_; }
 
   signals:
   
@@ -143,7 +154,7 @@ class BaseMainWindow: public QMainWindow
   //! maximize state prior to minimization
   void _setWasMaximized( bool value )
   { was_maximized_ = value; }
-    
+
   private slots:
   
   //! update configuration
@@ -162,7 +173,13 @@ class BaseMainWindow: public QMainWindow
   void _showMenu( bool );
   
   private:
-      
+  
+  //! option name
+  std::string lock_toolbars_option_name_;
+  
+  //! option name
+  std::string show_menu_option_name_;
+
   //! size watcher
   WindowSizeWatcher size_watcher_;
   

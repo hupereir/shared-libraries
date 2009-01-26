@@ -58,7 +58,7 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
   // lock toolbars action
   addAction( lock_toolbars_action_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock toolbars", this ) );
   lockToolBarsAction().setCheckable( true );
-  lockToolBarsAction().setChecked( false );
+  lockToolBarsAction().setChecked( true );
   connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
   
   // show menu action
@@ -66,12 +66,39 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
   showMenuAction().setCheckable( true );
   showMenuAction().setChecked( true );
   showMenuAction().setShortcut( Qt::CTRL + Qt::Key_M );
+  showMenuAction().setEnabled( false );
   connect( &showMenuAction(), SIGNAL( toggled( bool ) ), SLOT( _showMenu( bool ) ) );
   
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   connect( this, SIGNAL( toolbarConfigurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
   _updateConfiguration();
     
+}
+
+//__________________________________________________
+void BaseMainWindow::setOptionName( const std::string& name )
+{ 
+  
+  Debug::Throw( "BaseMainWindow::setOptionName.\n" );
+  size_watcher_.setOptionName( name ); 
+  
+  if( name.empty() ) {
+  
+    lock_toolbars_option_name_.clear();
+    show_menu_option_name_.clear();
+
+  } else {
+   
+    lock_toolbars_option_name_ = name+"_LOCK_TOOLBARS";
+    if( !XmlOptions::get().find( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
+    else { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
+
+    show_menu_option_name_ = name+"_SHOW_MENU";
+    if( !XmlOptions::get().find( showMenuOptionName() ) ) XmlOptions::get().set<bool>( showMenuOptionName(), showMenuAction().isChecked() );
+    else showMenuAction().setChecked( XmlOptions::get().get<bool>( showMenuOptionName() ) );
+    
+  }
+  
 }
 
 //__________________________________________________
@@ -82,7 +109,7 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
   QMainWindow::setMenuBar( menu );
   if( !menuBar() ) return;
   menuBar()->setVisible( showMenuAction().isChecked() );
-  
+  showMenuAction().setEnabled( true );
 }
 
 //__________________________________________________
@@ -127,7 +154,6 @@ QMenu* BaseMainWindow::createPopupMenu( void )
   
   menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
   menu.iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-  menu.addAction( &showMenuAction() );
   connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
   connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateToolButtonIconSize( IconSize::Size ) ) );  
   return &menu;
@@ -147,6 +173,9 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     menu->addAction( &lockToolBarsAction() );
   }
   
+  // show/hide menu
+  menu->addAction( &showMenuAction() );
+
   return *menu;
 
 }
@@ -267,13 +296,18 @@ void BaseMainWindow::_updateConfiguration( void )
   setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
   
   // toolbars locked
-  if( XmlOptions::get().find( "LOCK_TOOLBARS" ) )
-  { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( "LOCK_TOOLBARS" ) ); }
+  if( hasOptionName() )
+  {
+    
+    // toolbars locked
+    if( XmlOptions::get().find( lockToolBarsOptionName() ) )
+    { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
   
-  // menu visibility
-  if( XmlOptions::get().find( "SHOW_MENU" ) )
-  { showMenuAction().setChecked( XmlOptions::get().get<bool>( "SHOW_MENU" ) ); }
-  
+    // menu visibility
+    if( XmlOptions::get().find( showMenuOptionName() ) )
+    { showMenuAction().setChecked( XmlOptions::get().get<bool>( showMenuOptionName() ) ); }
+    
+  }
 }
 
 //____________________________________________________________
@@ -316,7 +350,7 @@ void BaseMainWindow::_lockToolBars( bool value )
   
   }
   
-  XmlOptions::get().set<bool>( "LOCK_TOOLBARS", value );
+  if( hasOptionName() ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), value );
   return;
 }
 
@@ -330,6 +364,6 @@ void BaseMainWindow::_showMenu( bool value )
   menuWidget()->setVisible( value );
   
   // save option
-  XmlOptions::get().set<bool>( "SHOW_MENU", value );
+  if( hasOptionName() ) XmlOptions::get().set<bool>( showMenuOptionName(), value );
   
 }  
