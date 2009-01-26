@@ -409,12 +409,17 @@ void LineEditor::paintEvent( QPaintEvent* event )
 void LineEditor::_modified( const QString& text )
 {
   Debug::Throw( "LineEditor::_modified.\n" );
+  
+  // modification signal
   bool modified( text != backup_ );
   if( modified != modified_ )
   { 
     modified_ = modified;
     emit modificationChanged( modified_ );
   }
+  
+  // clear actiosn enability
+  if( modified ) clear_action_->setEnabled( !(isReadOnly() || text.isEmpty() ) );
   
 }
 
