@@ -69,7 +69,7 @@ bool BaseApplication::realizeWidget( void )
   if( !BaseCoreApplication::realizeWidget() ) return false;
 
   // actions
-  about_action_ = new QAction( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).c_str() ), "About &this", this );
+  about_action_ = new QAction( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).c_str() ), "About this &Application", this );
   connect( about_action_, SIGNAL( triggered() ), SLOT( _about() ) ); 
 
   aboutqt_action_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About &Qt", this );
