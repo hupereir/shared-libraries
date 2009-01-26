@@ -68,8 +68,8 @@ ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):
   box->setLayout( grid_layout );
 
   QString tooltip( "The application server configuration refers to the host name\n"
-    "and port used for inter-process communication. It notably ensures\n"
-    "that only one instance of each application runs at a time." );
+    "And port used for inter-process communication. It notably ensures\n"
+    "That only one instance of each application runs at a time." );
   
   // host
   grid_layout->addWidget( new QLabel( "Host:", box ) );
