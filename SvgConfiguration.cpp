@@ -75,8 +75,8 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
   button->setToolTip( 
     "Set the list of valid backgrounds.\n"
     "Valid backgrounds are typical plasma svg backgrounds.\n"
-    "They must contains element ids like \"Topleft\",\n"
-    "\"Top\", \"Center\", etc." );
+    "They must contains element ids like \"topleft\",\n"
+    "\"top\", \"center\", etc." );
   
   OptionSpinBox* spinbox;
   grid_layout->addWidget( new QLabel( "Offset: ", this ) );
@@ -86,7 +86,7 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
   spinbox->setToolTip( 
     "Offset used to draw svg.\n"
     "Positive offset will make the SVG larger than the\n"
-    "Actual window size, thus shinking its edges\n" );
+    "actual window size, thus shinking its edges\n" );
   addOptionWidget( spinbox );
 
 }
