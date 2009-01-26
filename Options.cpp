@@ -72,7 +72,6 @@ Options::Options( bool install_default_options ):
     // toolbars default configuration
     set( "TOOLBUTTON_ICON_SIZE", Option( "32" , "text label in tool buttons" ) ); 
     set( "TOOLBUTTON_TEXT_POSITION", Option( "0" , "text label in tool buttons" ) ); 
-    set( "LOCK_TOOLBARS", Option( "1" , "lock toolbars position" ) );
     
     // text editors default configuration
     set( "TAB_EMULATION", Option( "1" , "enable tab emulation" ) );
