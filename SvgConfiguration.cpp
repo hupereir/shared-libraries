@@ -58,8 +58,8 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
   setLayout( box_layout );
 
   OptionCheckBox* checkbox;
-  box_layout->addWidget( checkbox = new OptionCheckBox( "use svg background", this, "USE_SVG" )); 
-  checkbox->setToolTip( "use svg to paint background" );
+  box_layout->addWidget( checkbox = new OptionCheckBox( "Use svg background", this, "USE_SVG" )); 
+  checkbox->setToolTip( "Use svg to paint background" );
   addOptionWidget( checkbox ); 
 
   GridLayout *grid_layout = new GridLayout();
@@ -75,18 +75,18 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
   button->setToolTip( 
     "Set the list of valid backgrounds.\n"
     "Valid backgrounds are typical plasma svg backgrounds.\n"
-    "They must contains element ids like \"topleft\",\n"
-    "\"top\", \"center\", etc." );
+    "They must contains element ids like \"Topleft\",\n"
+    "\"Top\", \"Center\", etc." );
   
   OptionSpinBox* spinbox;
-  grid_layout->addWidget( new QLabel( "offset: ", this ) );
+  grid_layout->addWidget( new QLabel( "Offset: ", this ) );
   grid_layout->addWidget( spinbox = new OptionSpinBox( this, "SVG_OFFSET" ) );
   spinbox->setMinimum( -16 );
   spinbox->setMaximum( 16 );
   spinbox->setToolTip( 
     "Offset used to draw svg.\n"
-    "positive offset will make the SVG larger than the\n"
-    "actual window size, thus shinking its edges\n" );
+    "Positive offset will make the SVG larger than the\n"
+    "Actual window size, thus shinking its edges\n" );
   addOptionWidget( spinbox );
 
 }
@@ -104,7 +104,6 @@ void SvgConfiguration::_editSvgFileList( void )
   dialog.mainLayout().addWidget( new QLabel("Svg pathname: ", &dialog ) );
   OptionListBox *listbox = new OptionListBox( &dialog, "SVG_BACKGROUND" );
   listbox->setBrowsable( true );
-  //listbox->setFileMode( QFileDialog::Directory );
   listbox->setToolTip( "Pathname to load background svg" );
   listbox->read();
   dialog.mainLayout().addWidget( listbox );
