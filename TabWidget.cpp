@@ -313,12 +313,12 @@ void TabWidget::_installActions( void )
   Debug::Throw( "TabWidget::_installActions.\n" );
   
   // detach action
-  addAction( detach_action_ = new QAction( "&detach", this ) );
+  addAction( detach_action_ = new QAction( "&Detach", this ) );
   detach_action_->setToolTip( "dock/undock panel" );
   connect( detach_action_, SIGNAL( triggered() ), SLOT( _toggleDock() ) );
 
   // stays on top
-  addAction( stays_on_top_action_ = new QAction( "&Stays on top", this ) );
+  addAction( stays_on_top_action_ = new QAction( "&Stays on Top", this ) );
   stays_on_top_action_->setToolTip( "keep window on top of all others" );
   stays_on_top_action_->setCheckable( true );
   stays_on_top_action_->setChecked( false );

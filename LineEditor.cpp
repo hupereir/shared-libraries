@@ -461,17 +461,17 @@ void LineEditor::_installActions( void )
   addAction( clear_action_ = new QAction( "&Clear", this ) );
   connect( clear_action_, SIGNAL( triggered() ), SLOT( clear() ) );
 
-  addAction( select_all_action_ = new QAction( "Select all", this ) );
+  addAction( select_all_action_ = new QAction( "Select &All", this ) );
   select_all_action_->setShortcut( CTRL+Key_A );
   select_all_action_->setShortcutContext( WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
   
-  addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
+  addAction( upper_case_action_ = new QAction( "&Upper Case", this ) );
   upper_case_action_->setShortcut( CTRL+Key_U );
   upper_case_action_->setShortcutContext( WidgetShortcut );
   connect( upper_case_action_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
-  addAction( lower_case_action_ = new QAction( "&Lower case", this ) );
+  addAction( lower_case_action_ = new QAction( "&Lower Case", this ) );
   lower_case_action_->setShortcut( SHIFT+CTRL+Key_U );
   lower_case_action_->setShortcutContext( WidgetShortcut );
   connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );

@@ -1570,17 +1570,17 @@ void TextEditor::_installActions( void )
   addAction( clear_action_ = new QAction( "&Clear", this ) );
   connect( clear_action_, SIGNAL( triggered() ), SLOT( clear() ) );
 
-  addAction( select_all_action_ = new QAction( "Select all", this ) );
+  addAction( select_all_action_ = new QAction( "Select &All", this ) );
   select_all_action_->setShortcut( Qt::CTRL + Qt::Key_A );
   select_all_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-  addAction( upper_case_action_ = new QAction( "&Upper case", this ) );
+  addAction( upper_case_action_ = new QAction( "&Upper Case", this ) );
   upper_case_action_->setShortcut( Qt::CTRL + Qt::Key_U );
   upper_case_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( upper_case_action_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
-  addAction( lower_case_action_ = new QAction( "&Lower case", this ) );
+  addAction( lower_case_action_ = new QAction( "&Lower Case", this ) );
   lower_case_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_U );
   lower_case_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( lower_case_action_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
@@ -1590,7 +1590,7 @@ void TextEditor::_installActions( void )
   find_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_action_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
-  addAction( find_again_action_ = new QAction( "F&ind again", this ) );
+  addAction( find_again_action_ = new QAction( "F&ind Again", this ) );
   find_again_action_->setShortcut( Qt::CTRL + Qt::Key_G );
   find_again_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_again_action_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
@@ -1600,7 +1600,7 @@ void TextEditor::_installActions( void )
   find_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_again_backward_action_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
-  addAction( find_selection_action_ = new QAction( "Find &selection", this ) );
+  addAction( find_selection_action_ = new QAction( "Find &Selection", this ) );
   find_selection_action_->setShortcut( Qt::CTRL + Qt::Key_H );
   find_selection_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( find_selection_action_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
@@ -1615,7 +1615,7 @@ void TextEditor::_installActions( void )
   replace_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_action_, SIGNAL( triggered() ), SLOT( _replaceFromDialog() ) );
 
-  addAction( replace_again_action_ = new QAction( "Replace again", this ) );
+  addAction( replace_again_action_ = new QAction( "Replace Again", this ) );
   replace_again_action_->setShortcut( Qt::CTRL + Qt::Key_T );
   replace_again_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_again_action_, SIGNAL( triggered() ), SLOT( replaceAgainForward() ) );
@@ -1625,20 +1625,20 @@ void TextEditor::_installActions( void )
   replace_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( replace_again_backward_action_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
 
-  addAction( goto_line_action_ = new QAction( "&Goto line number", this ) );
+  addAction( goto_line_action_ = new QAction( "&Goto Line Number", this ) );
   goto_line_action_->setShortcut( Qt::CTRL + Qt::Key_L );
   goto_line_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( goto_line_action_, SIGNAL( triggered() ), SLOT( _selectLineFromDialog() ) );
 
   // remove line action
-  QAction* remove_line_action( new QAction( "&Remove current line", this ) );
+  QAction* remove_line_action( new QAction( "&Remove Current Line", this ) );
   addAction( remove_line_action );
   remove_line_action->setShortcut( Qt::CTRL + Qt::Key_K );
   remove_line_action->setShortcutContext( Qt::WidgetShortcut );
   connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
 
   // current block highlight
-  addAction( block_highlight_action_ = new QAction( "&Highlight current paragraph", this ) );
+  addAction( block_highlight_action_ = new QAction( "&Highlight Current Paragraph", this ) );
   block_highlight_action_->setCheckable( true );
   block_highlight_action_->setChecked( blockHighlight().isEnabled() );
   block_highlight_action_->setShortcut( Qt::Key_F12 );
@@ -1646,7 +1646,7 @@ void TextEditor::_installActions( void )
   connect( block_highlight_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleBlockHighlight( bool ) ) );
 
   // wrap mode
-  addAction( wrap_mode_action_ = new QAction( "&Wrap text", this ) );
+  addAction( wrap_mode_action_ = new QAction( "&Wrap Text", this ) );
   wrap_mode_action_->setCheckable( true );
   wrap_mode_action_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
   wrap_mode_action_->setShortcut( Qt::Key_F10 );
@@ -1654,13 +1654,13 @@ void TextEditor::_installActions( void )
   connect( wrap_mode_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
 
   // tab emulation action
-  addAction( tab_emulation_action_ = new QAction( "&Emulate tabs", this ) );
+  addAction( tab_emulation_action_ = new QAction( "&Emulate Tabs", this ) );
   tab_emulation_action_->setCheckable( true );
   tab_emulation_action_->setChecked( has_tab_emulation_ );
   connect( tab_emulation_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );
   
   // line number action
-  addAction( show_line_number_action_ =new QAction( "Show line numbers", this ) );
+  addAction( show_line_number_action_ =new QAction( "Show Line Numbers", this ) );
   show_line_number_action_->setToolTip( "Show/hide line numbers" );
   show_line_number_action_->setCheckable( true );
   show_line_number_action_->setShortcut( Qt::Key_F11 );

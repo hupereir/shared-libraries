@@ -56,13 +56,13 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
   Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
   
   // lock toolbars action
-  addAction( lock_toolbars_action_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock toolbars", this ) );
+  addAction( lock_toolbars_action_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock Toolbars", this ) );
   lockToolBarsAction().setCheckable( true );
   lockToolBarsAction().setChecked( true );
   connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
   
   // show menu action
-  addAction( show_menu_action_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "&Show menu bar", this ) );
+  addAction( show_menu_action_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "&Show Menubar", this ) );
   showMenuAction().setCheckable( true );
   showMenuAction().setChecked( true );
   showMenuAction().setShortcut( Qt::CTRL + Qt::Key_M );

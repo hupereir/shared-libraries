@@ -241,7 +241,7 @@ void TreeView::_installActions( void )
 {
   Debug::Throw( "TreeView::_installActions.\n" );
 
-  addAction( select_all_action_ = new QAction( "Select all", this ) );
+  addAction( select_all_action_ = new QAction( "Select All", this ) );
   select_all_action_->setShortcut( CTRL+Key_A );
   select_all_action_->setShortcutContext( WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
