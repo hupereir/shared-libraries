@@ -85,7 +85,6 @@ void DictionaryMenu::_reset( void )
   // add reset button
   QAction* action;
   addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
-  action->setShortcut( Qt::Key_F5 );
   connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
   
   // load dictionaries from spell interface
