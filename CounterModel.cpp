@@ -38,8 +38,8 @@ using namespace std;
 //_______________________________________________
 const QString CounterModel::column_titles_[ CounterModel::n_columns ] =
 { 
-  "name",
-  "counts"
+  "Name",
+  "Counts"
 };
 
 //__________________________________________________________________

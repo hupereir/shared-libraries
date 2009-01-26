@@ -37,7 +37,7 @@ using namespace std;
 
 //_______________________________________________
 const QString IconCacheModel::column_titles_[ IconCacheModel::n_columns ] =
-{ "icon" };
+{ "Icon" };
 
 //__________________________________________________________________
 QVariant IconCacheModel::data( const QModelIndex& index, int role ) const

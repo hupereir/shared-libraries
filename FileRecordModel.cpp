@@ -59,9 +59,9 @@ FileRecordModel::FileRecordModel( QObject* parent ):
   Debug::Throw("FileRecordModel::FileRecordModel.\n" );
 
   column_titles_.push_back( "" );
-  column_titles_.push_back( "file" );
-  column_titles_.push_back( "path" );
-  column_titles_.push_back( "last accessed" );
+  column_titles_.push_back( "File" );
+  column_titles_.push_back( "Path" );
+  column_titles_.push_back( "Last Accessed" );
 
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   

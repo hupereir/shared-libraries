@@ -41,7 +41,7 @@ using namespace std;
 
 //_______________________________________________
 const QString OptionModel::column_titles_[ OptionModel::n_columns ] =
-{ "name", "", "current value", "default value", "flags" };
+{ "Name", "", "Current Value", "Default Value", "Flags" };
 
 //_______________________________________________
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
