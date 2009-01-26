@@ -69,7 +69,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   grid_layout->addWidget( combobox );
   combobox->setToolTip( 
     "Default dictionary used with files for which\n"
-    "A dictionary has not been manually selected" );
+    "a dictionary has not been manually selected" );
   addOptionWidget( combobox );
  
   const set<string>& dictionaries( interface.dictionaries() );
@@ -82,7 +82,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   grid_layout->addWidget( combobox );
   combobox->setToolTip( 
     "Default filtering mode used with files for which\n"
-    "A filtering mode has not been manually selected" );
+    "a filtering mode has not been manually selected" );
   addOptionWidget( combobox );
 
   const set<string>& filters( interface.filters() );
