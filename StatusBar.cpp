@@ -70,9 +70,10 @@ void StatusBar::addLabel( const int& stretch )
 void StatusBar::contextMenuEvent( QContextMenuEvent *event )
 {
   Debug::Throw( "StatusBar::contextMenuEvent.\n" );
-  QMenu& menu( *static_cast<QMainWindow*>(parent())->createPopupMenu() );
-  menu.exec( event->globalPos() ); 
-  menu.deleteLater();
+  QMenu* menu( static_cast<QMainWindow*>(parent())->createPopupMenu() );
+  if( !menu ) return;
+  menu->exec( event->globalPos() ); 
+  menu->deleteLater();
 }
   
 //__________________________________________________________________

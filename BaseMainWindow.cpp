@@ -148,15 +148,23 @@ void BaseMainWindow::centerOnWidget( QWidget* parent )
 QMenu* BaseMainWindow::createPopupMenu( void )
 {
   Debug::Throw( "BaseMainWindow::createPopupMenu.\n" );
-  if( !_hasToolBars() ) return QMainWindow::createPopupMenu();
+  if( !_hasToolBars() ) 
+  {
+
+    QMenu* menu = new QMenu( this );
+    menu->addAction(&showMenuAction() );
+    return menu;
+    
+  } else {
   
-  ToolBarMenu& menu = toolBarMenu( this );
+    ToolBarMenu& menu = toolBarMenu( this );
+    menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    menu.iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+    connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
+    connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateToolButtonIconSize( IconSize::Size ) ) );  
+    return &menu;
   
-  menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-  menu.iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-  connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
-  connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateToolButtonIconSize( IconSize::Size ) ) );  
-  return &menu;
+  }
   
 }
 
@@ -164,6 +172,7 @@ QMenu* BaseMainWindow::createPopupMenu( void )
 ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
 {
   
+  Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
   ToolBarMenu* menu = new ToolBarMenu( parent );
   
   bool has_lockable_toolbars( installToolBarsActions( *menu->addMenu( "&ToolBars" ) ) );
