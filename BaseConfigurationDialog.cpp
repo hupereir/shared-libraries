@@ -87,7 +87,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button->setToolTip( 
     "Apply changes to options.\n"
     "Note: the application may have to be restarted so that\n"
-    "All changes are taken into account." );
+    "all changes are taken into account." );
   
   // ok button
   _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), "&Ok", this ), 1 );
@@ -97,7 +97,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button->setToolTip( 
     "Apply changes to options and close window.\n"
     "Note: the application may have to be restarted so that\n"
-    "All changes are taken into account." );
+    "all changes are taken into account." );
   button->setAutoDefault( false );
   
   // cancel button
@@ -333,7 +333,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   
   grid_layout->addWidget( new QLabel(
     "Note: box selection is enabled in text editors\n"
-    "Only if the corresponding font has fixed pitch."), 2, 0, 1, 2 );
+    "only if the corresponding font has fixed pitch."), 2, 0, 1, 2 );
 
   // margins
   parent->layout()->addWidget( box = new QGroupBox( "Margin appearance", parent ) );
@@ -412,7 +412,7 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
   layout->addWidget( checkbox = new OptionCheckBox( "Enable animations", box, "ENABLE_ANIMATIONS" ) );
   checkbox->setToolTip( 
     "Turn on/off animations.\n Warning: animations are still experimental\n"
-    "And might significantly slow-down the system." );
+    "and might significantly slow-down the system." );
   addOptionWidget( checkbox );
   
   GridLayout* grid_layout = new GridLayout();
@@ -437,7 +437,7 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
   spinbox->setMaximum( 1000 );
   spinbox->setToolTip( "Maximum number of frames shown for one animation.\n"
     "A large number is recomanded, since frames are dropped whenever the\n"
-    "System is too slow anyway." );
+    "system is too slow anyway." );
   grid_layout->addWidget( spinbox );
   addOptionWidget( spinbox );
   
