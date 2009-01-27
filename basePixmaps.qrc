@@ -21,6 +21,7 @@
     <file alias="pixmaps/crystal/exit.png">../base-pixmaps/crystal/exit.png</file>
     <file alias="pixmaps/crystal/fileopen.png">../base-pixmaps/crystal/fileopen.png</file>
     <file alias="pixmaps/crystal/fileopen-folder.png">../base-pixmaps/crystal/fileopen-folder.png</file>
+    <file alias="pixmaps/crystal/fileprint.png">../base-pixmaps/crystal/fileprint.png</file>
     <file alias="pixmaps/crystal/messagebox_warning.png">../base-pixmaps/crystal/messagebox_warning.png</file>
     <file alias="pixmaps/crystal/qt-logo.png">../base-pixmaps/crystal/qt-logo.png</file>
     <file alias="pixmaps/crystal/redo.png">../base-pixmaps/crystal/redo.png</file>
@@ -50,6 +51,7 @@
     <file alias="pixmaps/oxygen/exit.png">../base-pixmaps/oxygen/exit.png</file>
     <file alias="pixmaps/oxygen/fileopen.png">../base-pixmaps/oxygen/fileopen.png</file>
     <file alias="pixmaps/oxygen/fileopen-folder.png">../base-pixmaps/oxygen/fileopen-folder.png</file>
+    <file alias="pixmaps/oxygen/fileprint.png">../base-pixmaps/oxygen/fileprint.png</file>
     <file alias="pixmaps/oxygen/messagebox_warning.png">../base-pixmaps/oxygen/messagebox_warning.png</file>
     <file alias="pixmaps/oxygen/qt-logo.png">../base-pixmaps/oxygen/qt-logo.png</file>
     <file alias="pixmaps/oxygen/redo.png">../base-pixmaps/oxygen/redo.png</file>
