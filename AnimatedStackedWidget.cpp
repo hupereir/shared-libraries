@@ -79,15 +79,17 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
     
   // check widget validity and animation time
   if( !(  _transitionWidget().isEnabled() && isVisible() ) ) return QStackedWidget::setCurrentWidget( widget );
-
-  // start _transitionWidget
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this, QRect(), true );
-  _transitionWidget().setParent( widget );
-  _transitionWidget().show();
+  else {
+   
+    // reparent transition widget so that it appears on top of current widget
+    // warning: need to reparent it back when transition is finished to avoid 
+    // the transition widget to be deleted when the widget is deleted
+    _transitionWidget().setParent( widget );
+    _transitionWidget().initialize( widget );
+    QStackedWidget::setCurrentWidget( widget );
+    _transitionWidget().start();
   
-  QStackedWidget::setCurrentWidget( widget );
-  _transitionWidget().start();
+  }
   
 }
 

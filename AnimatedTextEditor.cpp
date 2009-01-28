@@ -41,6 +41,7 @@ AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):
   transition_widget_( new TransitionWidget(this) )
 {
   Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
+  _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
   _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 }
@@ -55,14 +56,12 @@ void AnimatedTextEditor::setPlainText( const QString& text )
   
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setPlainText( text );
+  else {
+    _transitionWidget().initialize();
+    TextEditor::setPlainText( text );
+    _transitionWidget().start();
+  }
   
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this );
-  _transitionWidget().show();
-  
-  TextEditor::setPlainText( text );
-  _transitionWidget().start();
-
 }
  
 //________________________________________________________
@@ -70,14 +69,11 @@ void AnimatedTextEditor::setHtml( const QString& text )
 {
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setHtml( text );
-
-  // setup animation between old and new text
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this );
-  _transitionWidget().show();
-
-  TextEditor::setHtml( text );
-  _transitionWidget().start();
+  else {
+    _transitionWidget().initialize( this );
+    TextEditor::setHtml( text );
+    _transitionWidget().start();
+  }
 }
 
 //________________________________________________________
@@ -85,13 +81,10 @@ void AnimatedTextEditor::clear( void )
 {
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::clear();
-
-  // setup animation between old and new text
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this );
-  _transitionWidget().show();
-
-  TextEditor::clear();
-  _transitionWidget().start();
+  else {
+    _transitionWidget().initialize();
+    TextEditor::clear();
+    _transitionWidget().start();
+  }
 
 }

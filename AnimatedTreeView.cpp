@@ -44,13 +44,10 @@ AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
   Debug::Throw( "AnimatedTreeView::AnimatedTreeView.\n" );
 
   // transition widget
+  _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
   _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), &_transitionWidget(), SLOT( hide() ) );
-  
-//   AnimatedScrollBar* scrollbar = new AnimatedScrollBar( this );
-//   scrollbar->setOrientation( Qt::Vertical );
-//   setVerticalScrollBar( scrollbar );
-  
+    
 }
 
 //________________________________________________________________________
@@ -60,9 +57,7 @@ bool AnimatedTreeView::initializeAnimation( void )
   // transition
   if( _transitionWidget().isEnabled() && QTreeView::isVisible() )
   {
-    _transitionWidget().resize( size() );
-    _transitionWidget().setStartWidget( this );
-    _transitionWidget().show();
+    _transitionWidget().initialize();
     return true;
   } else return false;
 

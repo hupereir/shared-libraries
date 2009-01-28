@@ -42,7 +42,8 @@ using namespace std;
 TransitionWidget::TransitionWidget( QWidget *parent ):
   QWidget( parent ),
   Counter( "TransitionWidget" ),
-  enabled_( true )
+  enabled_( true ),
+  flags_( FROM_PARENT | SHOW )
 {
   Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
   connect( &timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( update()) ); 
@@ -51,19 +52,29 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
 }
 
 //___________________________________________________________________
-void TransitionWidget::setStartWidget( QWidget* widget, QRect rect, bool from_parent )
+void TransitionWidget::initialize( QWidget* widget )
 {
   
-  //Debug::Throw( "TransitionWidget::setStartWidget.\n" );
+  // check widget
+  if( !widget ) widget = parentWidget();
   assert( widget );
-  if( rect.isNull() ) rect = widget->rect();
-  if( from_parent )
+
+  // resize
+  QRect rect( widget->rect() );
+  resize( rect.size() );
+  
+  // use parent window instead of widget if requested
+  if( flags() & FROM_PARENT )
   {
     rect = rect.translated( widget->mapTo( widget->window(), widget->rect().topLeft() ) );
-    widget = widget->window(); 
+    widget = widget->window();
   }
-  first_ = QPixmap::grabWidget( widget, rect );
-  Debug::Throw( "TransitionWidget::setStartWidget - done.\n" );
+  
+  // grab pixmap
+  pixmap_ = QPixmap::grabWidget( widget, rect );
+  
+  // show widget
+  if( flags() & SHOW ) TransitionWidget::show();
   
 }
 
@@ -104,7 +115,7 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   }
   
   // draw pixmap
-  painter.drawPixmap( QPoint(0,0), first_ );
+  painter.drawPixmap( QPoint(0,0), pixmap_ );
   painter.end();   
   
 }

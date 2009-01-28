@@ -48,8 +48,35 @@ class TransitionWidget: public QWidget, public Counter
   //! constructor
   TransitionWidget( QWidget* parent = 0 );
 
+  //! flags
+  enum Flag
+  {
+    NONE = 0,
+    FROM_PARENT = 1<<0,
+    SHOW = 1<<1
+  };
+
+  //! flags
+  TransitionWidget& setFlags( unsigned int value )
+  { 
+    flags_ = value; 
+    return *this;
+  }
+  
+  //! flags
+  TransitionWidget& setFlag( Flag flag, const bool& value = true )
+  {
+    if( value ) { flags_ |= flag; }
+    else { flags_ &= (~flag); } 
+    return *this;
+  }
+  
+  //! flags
+  const unsigned int& flags( void ) const
+  { return flags_; }
+  
   //! set starting widget
-  void setStartWidget( QWidget*, QRect rect = QRect(), bool from_parent = false );
+  void initialize( QWidget* widget = 0 );
  
   //! start
   void start( void );
@@ -81,11 +108,14 @@ class TransitionWidget: public QWidget, public Counter
   //! enability
   bool enabled_;
   
+  //! flags
+  unsigned int flags_;
+  
   //! timeline
   QTimeLine time_line_;
       
   //! current widget pixmap
-  QPixmap first_;
+  QPixmap pixmap_;
     
 };
   

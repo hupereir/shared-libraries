@@ -56,6 +56,7 @@ AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
   
   setTabBar( new AnimatedTabBar( this ) );
   
+  _transitionWidget().setFlag( TransitionWidget::SHOW, false );
   _transitionWidget().hide();
   connect( tabBar(), SIGNAL( clicked() ), SLOT( _updateCurrentWidget() ) );  
   connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _startAnimation() ) );  
@@ -81,15 +82,14 @@ void AnimatedTabWidget::_updateCurrentWidget( void )
   // check
   QWidget *widget( currentWidget() );
   if( !widget ) return;
-  
-  _transitionWidget().resize( widget->size() );
-  _transitionWidget().setStartWidget( widget, QRect(), true );
+  _transitionWidget().initialize( widget );
   
 }
 
 //___________________________________________________________________
 void AnimatedTabWidget::_startAnimation( void )
 {
+  
   Debug::Throw( "AnimatedTabWidget::_startAnimation.\n" );
   
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;

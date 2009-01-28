@@ -41,6 +41,7 @@ AnimatedLineEditor::AnimatedLineEditor( QWidget* parent ):
   transition_widget_( new TransitionWidget(this) )
 {
   Debug::Throw( "AnimatedLineEditor::AnimatedLineEditor.\n" );
+  _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
   _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 }
@@ -55,15 +56,14 @@ void AnimatedLineEditor::setText( const QString& text )
   
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return LineEditor::setText( text );
+  else {
+    
+    _transitionWidget().initialize();  
+    LineEditor::setText( text );
+    _transitionWidget().start();
+    
+  }
   
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this, QRect(), true );
-  _transitionWidget().show();
-  
-  // setup animation between old and new text
-  LineEditor::setText( text );
-  _transitionWidget().start();
-
 }
 
 //________________________________________________________
@@ -71,13 +71,11 @@ void AnimatedLineEditor::clear( void )
 {
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return LineEditor::clear();
-
-  // setup animation between old and new text
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this );
-  _transitionWidget().show();
-
-  LineEditor::clear();
-  _transitionWidget().start();
+  else {
+    
+    _transitionWidget().initialize();  
+    LineEditor::clear();
+    _transitionWidget().start();
+  }
 
 }

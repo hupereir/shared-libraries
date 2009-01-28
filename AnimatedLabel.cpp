@@ -42,6 +42,7 @@ AnimatedLabel::AnimatedLabel( QWidget* parent ):
   transition_widget_( new TransitionWidget(this) )
 {
   Debug::Throw( "AnimatedLabel::AnimatedLabel.\n" );
+  _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
   _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 }
@@ -56,15 +57,14 @@ void AnimatedLabel::setText( const QString& text )
   
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return QLabel::setText( text );
+  else {
+    
+    _transitionWidget().initialize();
+    QLabel::setText( text );
+    _transitionWidget().start();
+    
+  }
   
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( this, QRect(), true );
-  _transitionWidget().show();
-  
-  // setup animation between old and new text
-  QLabel::setText( text );
-  _transitionWidget().start();
-
 }
  
 //________________________________________________________
@@ -72,12 +72,12 @@ void AnimatedLabel::clear( void )
 {
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return QLabel::clear();
+  else {
+     
+    _transitionWidget().initialize();
+    QLabel::clear();
+    _transitionWidget().start();
+      
+  }
 
-  // setup animation between old and new text
-  _transitionWidget().resize( size() );
-  _transitionWidget().setStartWidget( window(), rect().translated( mapTo( window(), rect().topLeft() ) ) );
-  _transitionWidget().show();
-
-  QLabel::clear();
-  _transitionWidget().start();
 }
