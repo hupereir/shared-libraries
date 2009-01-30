@@ -176,6 +176,7 @@ void BaseReplaceDialog::busy( int value )
   if( !_hasProgressDialog() )
   { 
     progress_dialog_ = new QProgressDialog(0); 
+    _progressDialog().setAttribute( Qt::WA_DeleteOnClose, true );
     _progressDialog().setLabelText( "Replace text in selection" );
   }
   
@@ -205,9 +206,9 @@ void BaseReplaceDialog::idle( void )
 {
   if( !( _showProgress() && _hasProgressDialog() ) ) return;
   _progressDialog().reset();
-  _progressDialog().hide();
+  _progressDialog().close();
+  progress_dialog_ = 0;
   _setShowProgress( false );
-  qApp->processEvents();
 }
 
 //__________________________________________________

@@ -382,3 +382,7 @@ void DockPanel::LocalWidget::_installActions( void )
   sticky_action_->setCheckable( true );
 
 }
+
+//___________________________________________________________
+void DockPanel::LocalGrip::paintEvent( QPaintEvent* event )
+{ return QSizeGrip::paintEvent( event ); }

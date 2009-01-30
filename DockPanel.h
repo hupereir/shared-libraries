@@ -211,8 +211,7 @@ class DockPanel: public QWidget, public Counter
     protected:
     
     //! paint
-    void paintEvent( QPaintEvent* event )
-    { QWidget::paintEvent( event ); }
+    void paintEvent( QPaintEvent* );
     
   };
   
