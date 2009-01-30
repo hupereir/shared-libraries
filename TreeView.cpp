@@ -68,6 +68,7 @@ TreeView::TreeView( QWidget* parent ):
   // header menu
   header()->setContextMenuPolicy( Qt::CustomContextMenu );
   connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
+  connect( header(), SIGNAL( sortIndicatorChanged( int, Qt::SortOrder ) ), SLOT( saveSortOrder() ) );
 
   // configuration
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
@@ -102,19 +103,51 @@ int TreeView::visibleColumnCount( void ) const
 }
 
 //_______________________________________________
-bool TreeView::setMaskOptionName( const std::string& value )
+bool TreeView::setOptionName( const std::string& value )
 { 
 
-  Debug::Throw( "TreeView::setMaskOptionName.\n" );
-  if( mask_option_name_ == value ) return false;
+  Debug::Throw( "TreeView::setOptionName.\n" );
 
-  // store option name
-  mask_option_name_ = value; 
-  if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
+  std::string tmp;
   
-  // update mask
-  updateMask(); 
-  return true;
+  // mask
+  bool mask_changed( false );
+  tmp = value + "_MASK";
+  if( mask_option_name_ != tmp  ) 
+  {
+    mask_option_name_ = tmp;
+    mask_changed = true;
+    if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
+    else updateMask(); 
+  }
+  
+  // sort order
+  bool sort_changed( false );
+  tmp = value + "_SORT_ORDER";
+  if( sort_order_option_name_ != tmp  ) 
+  {
+    sort_order_option_name_ = tmp;
+    sort_changed = true;    
+  }
+  
+  // sort column
+  tmp = value + "_SORT_COLUMN";
+  if( sort_column_option_name_ != tmp  ) 
+  {
+    
+    sort_column_option_name_ = tmp;
+    sort_changed = true;
+    
+  }
+
+  // reload sorting
+  if( sort_changed ) 
+  {
+    if( !( XmlOptions::get().find( sortOrderOptionName() ) && XmlOptions::get().find( sortColumnOptionName() ) ) ) saveSortOrder(); 
+    else updateSortOrder();
+  }
+  
+  return mask_changed || sort_changed;
   
 }
 
@@ -167,7 +200,7 @@ void TreeView::updateMask( void )
 
   // check model and option availability
   if( !model() ) return;
-  if( !hasMaskOptionName() ) return;
+  if( !hasOptionName() ) return;
   if( !XmlOptions::get().find( maskOptionName() ) ) return;
   
   // assign mask from options
@@ -181,9 +214,31 @@ void TreeView::saveMask( void )
 {
   
   Debug::Throw( "TreeView::saveMask.\n" );
-  if( !hasMaskOptionName() ) return;
+  if( !hasOptionName() ) return;
   XmlOptions::get().set<unsigned int>( maskOptionName(), mask() );
 
+}
+
+//_____________________________________________________________________
+void TreeView::updateSortOrder( void )
+{
+  
+  Debug::Throw( "TreeView::updateSortOrder.\n" );
+  if( !hasOptionName() ) return;
+  if( XmlOptions::get().find( sortColumnOptionName() ) && XmlOptions::get().find( sortColumnOptionName() ) )
+  { sortByColumn( XmlOptions::get().get<int>( sortColumnOptionName() ), (Qt::SortOrder)(XmlOptions::get().get<int>( sortOrderOptionName() ) ) ); }
+  
+}
+
+//_____________________________________________________________________
+void TreeView::saveSortOrder( void )
+{
+  
+  Debug::Throw( "TreeView::saveSortOrder.\n" );
+  if( !hasOptionName() ) return;
+  XmlOptions::get().set<int>( sortOrderOptionName(), header()->sortIndicatorOrder() ); 
+  XmlOptions::get().set<int>( sortColumnOptionName(), header()->sortIndicatorSection() ); 
+  
 }
 
 //__________________________________________________________
@@ -280,6 +335,7 @@ void TreeView::_updateConfiguration( void )
     
   // load mask from option, if any
   updateMask();
+  updateSortOrder();
   
   // try load alternate colors from option
   QColor color;

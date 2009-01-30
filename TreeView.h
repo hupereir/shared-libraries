@@ -80,15 +80,23 @@ class TreeView: public QTreeView, public Counter
   //@{
   
   //! option name
-  virtual bool setMaskOptionName( const std::string& );
+  virtual bool setOptionName( const std::string& );
   
   //! option name 
-  virtual bool hasMaskOptionName( void ) const
+  virtual bool hasOptionName( void ) const
   { return !maskOptionName().empty(); }
   
   //! option name
   virtual const std::string& maskOptionName( void ) const
   { return mask_option_name_; }
+  
+  //! sort column option name
+  virtual const std::string& sortColumnOptionName( void ) const
+  { return sort_column_option_name_; }
+  
+  //! sort order option name
+  virtual const std::string& sortOrderOptionName( void ) const
+  { return sort_order_option_name_; }
   
   //! get mask
   virtual unsigned int mask( void ) const;
@@ -124,7 +132,13 @@ class TreeView: public QTreeView, public Counter
   virtual void saveMask( void );
 
   //@}
-
+  
+  //! sort order
+  virtual void updateSortOrder( void );
+  
+  //! sort order
+  virtual void saveSortOrder( void );
+  
   protected:
   
   //! paint event
@@ -148,7 +162,7 @@ class TreeView: public QTreeView, public Counter
    
   //! header menu
   virtual void _raiseHeaderMenu( const QPoint& );
-  
+
   private slots:
     
   //! update alternate item color
@@ -169,6 +183,12 @@ class TreeView: public QTreeView, public Counter
   
   //! mask option name
   std::string mask_option_name_;
+  
+  //! sort column option name
+  std::string sort_column_option_name_;
+  
+  //! sort order option name
+  std::string sort_order_option_name_;
   
   //! true if icon size is to be set from options
   bool icon_size_from_options_;
