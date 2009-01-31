@@ -43,18 +43,11 @@ namespace SVG
   class SvgConfiguration: public QGroupBox, public OptionWidgetList, public Counter
   {
     
-    Q_OBJECT
-      
     public:
       
     //! constructor
     SvgConfiguration( QWidget* parent );
-    
-    private slots:
-
-    //! show svg path dialog
-    virtual void _editSvgFileList( void );
-  
+      
   };
   
 };

@@ -67,16 +67,6 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
   grid_layout->setMargin(0);
   grid_layout->setMaxCount( 2 );
   box_layout->addLayout( grid_layout );
-
-  grid_layout->addWidget( new QLabel( "filename: ", this ) );
-  QPushButton *button = new QPushButton( "Edit svg file list", this );
-  connect( button, SIGNAL( clicked() ), SLOT( _editSvgFileList() ) );
-  grid_layout->addWidget( button );
-  button->setToolTip( 
-    "Set the list of valid backgrounds.\n"
-    "Valid backgrounds are typical plasma svg backgrounds.\n"
-    "They must contains element ids like \"topleft\",\n"
-    "\"top\", \"center\", etc." );
   
   OptionSpinBox* spinbox;
   grid_layout->addWidget( new QLabel( "Offset: ", this ) );
@@ -89,33 +79,10 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
     "actual window size, thus shinking its edges\n" );
   addOptionWidget( spinbox );
 
-}
-
-//__________________________________________________
-void SvgConfiguration::_editSvgFileList( void )
-{
-  
-  Debug::Throw( "SvgConfiguration::_editSvgFileList.\n" );
-  CustomDialog dialog( this );
-
-  // store backup
-  Options::List backup_options = XmlOptions::get().specialOptions( "SVG_BACKGROUND" );
-  
-  dialog.mainLayout().addWidget( new QLabel("Svg pathname: ", &dialog ) );
-  OptionListBox *listbox = new OptionListBox( &dialog, "SVG_BACKGROUND" );
+  OptionListBox *listbox = new OptionListBox( this, "SVG_BACKGROUND" );
   listbox->setBrowsable( true );
   listbox->setToolTip( "Pathname to load background svg" );
-  listbox->read();
-  dialog.mainLayout().addWidget( listbox );
-  
-  // 
-  if( dialog.exec() ) listbox->write();
-  else { 
-    // restore old values
-    XmlOptions::get().clearSpecialOptions( "SVG_BACKGROUND" );
-    for( Options::List::iterator iter = backup_options.begin(); iter != backup_options.end(); iter++ )
-    { XmlOptions::get().add( "SVG_BACKGROUND", *iter ); }
-  }
-  return;
+  box_layout->addWidget( listbox );
+  addOptionWidget( listbox );
   
 }

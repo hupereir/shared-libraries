@@ -24,8 +24,7 @@ libbase_svg_a_SOURCES =  \
   SvgEngine.cpp
 
 nodist_libbase_svg_a_SOURCES =  \
-  qrc_baseSvg.cpp \
-  moc_SvgConfiguration.cpp
+  qrc_baseSvg.cpp
 	
 clean-local:
 	rm -f moc_*.cpp
