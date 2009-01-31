@@ -34,7 +34,6 @@
 
 #include "StatusBar.h"
 #include "ClockLabel.h"
-#include "QtUtil.h"
 #include "Debug.h"
 
 using namespace std;

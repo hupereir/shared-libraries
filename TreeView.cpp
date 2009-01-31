@@ -36,7 +36,6 @@
 #include "ColorDisplay.h"
 #include "ColumnSelectionMenu.h"
 #include "ColumnSortingMenu.h"
-#include "QtUtil.h"
 #include "Singleton.h"
 #include "TreeView.h"
 #include "XmlOptions.h"

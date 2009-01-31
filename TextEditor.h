@@ -540,6 +540,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! find dialog
   virtual void _createBaseReplaceDialog( void );
 
+  //! progress dialog
+  virtual void _createProgressDialog( void );
+  
   //! define how cursor should be updated while replacing
   enum CursorMode
   { 
@@ -553,7 +556,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   };
   
   //! replace selection in range refered to by cursor
-  virtual unsigned int _replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode, bool show_progress );
+  virtual unsigned int _replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode );
   
   //@}
 

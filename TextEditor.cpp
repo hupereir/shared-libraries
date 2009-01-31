@@ -34,6 +34,7 @@
 #include <QClipboard>
 #include <QMenu>
 #include <QPainter>
+#include <QProgressDialog>
 #include <QRegExp>
 #include <QTextBlock>
 #include <QTextLayout>
@@ -48,6 +49,7 @@
 #include "BaseFindDialog.h"
 #include "IconEngine.h"
 #include "LineNumberDisplay.h"
+#include "QtUtil.h"
 #include "SelectLineDialog.h"
 #include "Singleton.h"
 #include "TextBlockData.h"
@@ -753,6 +755,9 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool
   // the shortcut still can be called
   if( isReadOnly() ) return 0;
 
+  // progress dialog
+  if( show_dialog ) _createProgressDialog();
+
   unsigned int counts(0);
 
   if( _boxSelection().state() == BoxSelection::FINISHED )
@@ -761,14 +766,14 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool
     Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
     BoxSelection::CursorList cursors( _boxSelection().cursorList() );
     for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
-    { counts += _replaceInRange( selection, *iter, MOVE, false ); }
+    { counts += _replaceInRange( selection, *iter, MOVE ); }
 
     _boxSelection().clear();
 
   } else {
     Debug::Throw( "TextEditor::replaceInSelection - normal selection.\n" );
     QTextCursor cursor( textCursor() );
-    counts = _replaceInRange( selection, cursor, EXPAND, true );
+    counts = _replaceInRange( selection, cursor, EXPAND );
   }
 
   Debug::Throw( "TextEditor::replaceInSelection - done.\n" );
@@ -783,6 +788,9 @@ unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& s
 
   Debug::Throw( "TextEditor::replaceInWindow.\n" );
 
+  // progress dialog
+  if( show_dialog ) _createProgressDialog();
+  
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return 0;
@@ -790,7 +798,7 @@ unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& s
   QTextCursor cursor( textCursor() );
   cursor.movePosition( QTextCursor::Start );
   cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
-  unsigned int counts( _replaceInRange( selection, cursor, EXPAND, true ) );
+  unsigned int counts( _replaceInRange( selection, cursor, EXPAND ) );
 
   if( show_dialog ) showReplacements( counts );
   return counts;
@@ -1940,10 +1948,6 @@ void TextEditor::_createBaseReplaceDialog( void )
     connect( replace_dialog_, SIGNAL( replaceInSelection( TextSelection ) ), SLOT( replaceInSelection( TextSelection ) ) );
     connect( this, SIGNAL( noMatchFound() ), replace_dialog_, SLOT( noMatchFound() ) );
     connect( this, SIGNAL( matchFound() ), replace_dialog_, SLOT( clearLabel() ) );
-
-    connect( this, SIGNAL( busy( int ) ), replace_dialog_, SLOT( busy( int ) ) );
-    connect( this, SIGNAL( progressAvailable( int ) ), replace_dialog_, SLOT( progressAvailable( int ) ) );
-    connect( this, SIGNAL( idle( void ) ), replace_dialog_, SLOT( idle( void ) ) );
     
   }
 
@@ -1951,8 +1955,31 @@ void TextEditor::_createBaseReplaceDialog( void )
 
 }
 
+
+//__________________________________________________
+void TextEditor::_createProgressDialog( void )
+{
+  
+  Debug::Throw( "TextEditor::_createProgressDialog.\n" );
+  
+  // create dialog
+  QProgressDialog* dialog = new QProgressDialog(0); 
+  dialog->setAttribute( Qt::WA_DeleteOnClose, true );
+  dialog->setLabelText( "Replace text in selection" );
+
+  // connections
+  connect( this, SIGNAL( busy( int ) ), dialog, SLOT( setMaximum( int ) ) );
+  connect( this, SIGNAL( progressAvailable( int ) ), dialog, SLOT( setValue( int ) ) );
+  connect( this, SIGNAL( idle( void ) ), dialog, SLOT( close( void ) ) );
+
+  QtUtil::centerOnWidget( dialog, this ); 
+  dialog->show();
+  
+}
+
+
 //______________________________________________________________________
-unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode, bool show_progress )
+unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode )
 {
 
   Debug::Throw()

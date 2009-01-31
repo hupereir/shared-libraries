@@ -41,7 +41,6 @@
 #include "IconSize.h"
 #include "LineEditor.h"
 #include "OptionListBox.h"
-#include "QtUtil.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
 #include "XmlOptions.h"

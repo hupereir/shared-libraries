@@ -42,7 +42,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
   CustomDialog( parent, OK_BUTTON | CANCEL_BUTTON )
 {
 
-  Debug::Throw( "QtUtil::question\n" );
+  Debug::Throw( "QuestionDialog::QuestionDialog\n" );
 
   //! try load Question icon
   QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );

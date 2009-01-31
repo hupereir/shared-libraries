@@ -33,13 +33,12 @@
 */
 
 #include <assert.h>
-#include <QProgressDialog>
 
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "BaseFindDialog.h"
 
-//! replace_text dialog for text editor widgets
+//! replace_text dialogs
 class BaseReplaceDialog: public BaseFindDialog
 {
 
@@ -81,17 +80,6 @@ class BaseReplaceDialog: public BaseFindDialog
   
   //! emmited when text replacement is changed
   void replaceTextChanged( QString text_replace );  
-
-  public slots:
-  
-  //! recieved busy from editor
-  void busy( int );
-  
-  //! recieved progress available from editor
-  void progressAvailable( int );
-  
-  //! recievend idle from editor
-  void idle( void );
   
   protected slots:
   
@@ -126,25 +114,6 @@ class BaseReplaceDialog: public BaseFindDialog
   //! replace window button
   QPushButton& _replaceWindowButton( void ) const
   { return *replace_window_button_; }
-
-  //! show progress bar
-  void _setShowProgress( const bool& value )
-  { show_progress_ = value; }
-  
-  //! show progress
-  const bool& _showProgress( void ) const
-  { return show_progress_; }
-  
-  //! true if progress dialog was created
-  bool _hasProgressDialog( void ) const
-  { return bool( progress_dialog_ ); }
-  
-  //! progressDialog
-  QProgressDialog& _progressDialog( void ) const
-  { 
-    assert( progress_dialog_ ); 
-    return *progress_dialog_;
-  }
   
   private:
 
@@ -167,12 +136,6 @@ class BaseReplaceDialog: public BaseFindDialog
     
   //! replace in window button
   QPushButton* replace_window_button_;
-  
-  // true if progress dialog is to be shown
-  bool show_progress_;
-
-  //! progress dialog
-  QProgressDialog* progress_dialog_;
   
 };
 #endif

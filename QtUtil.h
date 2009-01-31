@@ -42,20 +42,7 @@
 
 class QtUtil {
   public:
-  
-  //! dimension to be fixed
-  enum FixMode {
-    
-    //! widget can be extended in both directions
-    NONE = 0,
-        
-    //! widget has fixed width
-    WIDTH = 1,
-        
-    //! widget has fixed height
-    HEIGHT = 2
-  };
-    
+      
   //! move menu to position taking proper care of the screen borders
   static void moveWidget( QWidget* widget, QPoint position );
  

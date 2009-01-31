@@ -35,7 +35,6 @@
 #include "BaseIcons.h"
 #include "FontEditor.h"
 #include "IconEngine.h"
-#include "QtUtil.h"
 
 using namespace std;
 
