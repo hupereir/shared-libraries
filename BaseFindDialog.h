@@ -77,6 +77,13 @@ class BaseFindDialog: public BaseDialog, public Counter
   virtual QString text( void ) const
   { return editor().currentText(); }
 
+  //! enable/disable entire word
+  virtual void enableEntireWord( const bool& value )
+  {
+    if( !value ) entire_word_checkbox_->setChecked( false );
+    entire_word_checkbox_->setEnabled( value );    
+  }
+  
   //! enable/disable RegExp
   virtual void enableRegExp( const bool& value )
   {

@@ -1785,6 +1785,7 @@ void TextEditor::_createBaseFindDialog( void )
   {
 
     find_dialog_ = new BaseFindDialog( this );
+    find_dialog_->setWindowTitle( "Find in Text" );
     connect( find_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
     connect( this, SIGNAL( noMatchFound() ), find_dialog_, SLOT( noMatchFound() ) );
     connect( this, SIGNAL( matchFound() ), find_dialog_, SLOT( clearLabel() ) );
@@ -2012,6 +2013,7 @@ void TextEditor::_createBaseReplaceDialog( void )
   {
 
     replace_dialog_ = new BaseReplaceDialog( this );
+    find_dialog_->setWindowTitle( "Replace in Text" );
     connect( replace_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
     connect( replace_dialog_, SIGNAL( replace( TextSelection ) ), SLOT( replace( TextSelection ) ) );
     connect( replace_dialog_, SIGNAL( replaceInWindow( TextSelection ) ), SLOT( replaceInWindow( TextSelection ) ) );

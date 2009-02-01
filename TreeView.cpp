@@ -399,7 +399,14 @@ void TreeView::_createBaseFindDialog( void )
   if( !find_dialog_ )
   {
 
+    // create dialog
     find_dialog_ = new BaseFindDialog( this );
+    find_dialog_->setWindowTitle( "Find in List" );
+    
+    // for now entire word is disabled, because it is unclear how to handle it
+    find_dialog_->enableEntireWord( false );
+    
+    // connections
     connect( find_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
     connect( this, SIGNAL( noMatchFound() ), find_dialog_, SLOT( noMatchFound() ) );
     connect( this, SIGNAL( matchFound() ), find_dialog_, SLOT( clearLabel() ) );
