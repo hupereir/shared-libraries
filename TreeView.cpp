@@ -36,6 +36,7 @@
 #include "BaseFindDialog.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
+#include "InformationDialog.h"
 #include "ColorDisplay.h"
 #include "ColumnSelectionMenu.h"
 #include "ColumnSortingMenu.h"
@@ -346,7 +347,7 @@ void TreeView::contextMenuEvent( QContextMenuEvent* event )
 TextSelection TreeView::selection( void ) const
 {
   
-  Debug::Throw( 0, "TreeView::_selection.\n" );
+  Debug::Throw( "TreeView::_selection.\n" );
 
   // copy last selection
   TextSelection out( "" );
@@ -358,7 +359,7 @@ TextSelection TreeView::selection( void ) const
   else if( selectionModel() && model() && selectionModel()->currentIndex().isValid() )
   {
     
-    Debug::Throw( 0, "TreeView::_selection - checking current.\n" );
+    Debug::Throw( "TreeView::_selection - checking current.\n" );
     
     QModelIndex current( selectionModel()->currentIndex() );
     if( !(text =  model()->data( current ).toString()).isEmpty() ) out.setText( text );
@@ -411,30 +412,188 @@ void TreeView::_createBaseFindDialog( void )
 
 
 //______________________________________________________________________
-bool TreeView::_findForward( const TextSelection& selection, const bool& rewind )
+bool TreeView::_findForward( const TextSelection& selection, bool rewind )
 {
-  Debug::Throw( 0, "TreeView::_findForward.\n" );
+  Debug::Throw( "TreeView::_findForward.\n" );
   if( selection.text().isEmpty() ) return false;
 
   // store selection
   TextEditor::setLastSelection( selection );
 
-  // useless
+  // check model and selection model
+  if( !( model() && selectionModel() ) ) return false;
+  
+  QRegExp regexp;
+  if( selection.flag( TextSelection::REGEXP ) )
+  {
+
+    // construct regexp and check
+    regexp.setPattern( selection.text() );
+    if( !regexp.isValid() )
+    {
+      InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+      return false;
+    }
+
+    // case sensitivity
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+  
+  }
+
+  // set first index
+  QModelIndex current( selectionModel()->currentIndex() );
+  QModelIndex index( ( selection.flag( TextSelection::NO_INCREMENT ) ) ? current:_indexAfter( current ) );
+  
+  // if index index is invalid and rewind, set index index of the model
+  if( (!index.isValid()) && rewind ) {
+    rewind = false;
+    index = _firstIndex();
+  }
+  
+  // no starting index found. Return
+  if( !index.isValid() ) return false;
+  
+  // loop over indexes
+  while( index.isValid() )
+  {
+    
+    QString text;
+    bool accepted( false );
+    
+    // check if column is visible
+    if( !( (text = model()->data( index ).toString() ).isEmpty() || isColumnHidden( index.column() ) ) )
+    {
+            
+      // check if text match
+      if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.indexIn( text ) >= 0 ) accepted = true; }
+      else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
+      { accepted = true; }
+      
+    }
+      
+    if( accepted )
+    {
+      
+      QItemSelectionModel::SelectionFlags command( QItemSelectionModel::Clear|QItemSelectionModel::Select );
+      if( allColumnsShowFocus() ) command |= QItemSelectionModel::Rows;
+      selectionModel()->select( index, command );
+      
+      // update current index
+      command = QItemSelectionModel::Current;
+      if( allColumnsShowFocus() ) command |= QItemSelectionModel::Rows;
+      selectionModel()->setCurrentIndex( index,  command );
+      
+      // quit loop
+      return true;
+      
+    } else {
+      
+      index = _indexAfter( index );
+      if( rewind && !index.isValid() )
+      {
+        rewind = false;
+        index = _firstIndex();
+      }
+      
+    }
+      
+  }
+      
+  // no match found
   return false;
 
 }
 
 //______________________________________________________________________
-bool TreeView::_findBackward( const TextSelection& selection, const bool& rewind )
+bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
 {
 
-  Debug::Throw( 0, "TreeView::_findBackward.\n" );
+  Debug::Throw( "TreeView::_findBackward.\n" );
   if( selection.text().isEmpty() ) return false;
 
   // store selection
   TextEditor::setLastSelection( selection );
 
-  // useless
+  // check model and selection model
+  if( !( model() && selectionModel() ) ) return false;
+  
+  QRegExp regexp;
+  if( selection.flag( TextSelection::REGEXP ) )
+  {
+
+    // construct regexp and check
+    regexp.setPattern( selection.text() );
+    if( !regexp.isValid() )
+    {
+      InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+      return false;
+    }
+
+    // case sensitivity
+    regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+  
+  }
+
+  // set first index
+  QModelIndex current( selectionModel()->currentIndex() );
+  QModelIndex index( ( selection.flag( TextSelection::NO_INCREMENT ) ) ? current:_indexBefore( current ) );
+  
+  // if index index is invalid and rewind, set index index of the model
+  if( (!index.isValid()) && rewind ) {
+    rewind = false;
+    index = _lastIndex();
+  }
+
+  
+  // no starting index found. Return
+  if( !index.isValid() ) return false;
+    
+  // loop over indexes
+  while( index.isValid() )
+  {
+    
+    QString text;
+    bool accepted( false );
+    
+    // check if column is visible
+    if( !( (text = model()->data( index ).toString() ).isEmpty() || isColumnHidden( index.column() ) ) )
+    {
+           
+      // check if text match
+      if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.indexIn( text ) >= 0 ) accepted = true; }
+      else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
+      { accepted = true; }
+      
+    }
+      
+    if( accepted )
+    {
+      
+      QItemSelectionModel::SelectionFlags command( QItemSelectionModel::Clear|QItemSelectionModel::Select );
+      if( allColumnsShowFocus() ) command |= QItemSelectionModel::Rows;
+      selectionModel()->select( index, command );
+      
+      // update current index
+      command = QItemSelectionModel::Current;
+      if( allColumnsShowFocus() ) command |= QItemSelectionModel::Rows;
+      selectionModel()->setCurrentIndex( index,  command );
+      
+      // quit loop
+      return true;
+      
+    } else {
+      
+      index = _indexBefore( index );
+      if( rewind && !index.isValid() )
+      {
+        rewind = false;
+        index = _lastIndex();
+      }
+      
+    }
+      
+  }
+  
   return false;
 
 }
@@ -503,28 +662,7 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
 //_____________________________________________________________________
 void TreeView::_findFromDialog( void )
 {
-  Debug::Throw( 0, "TreeView::_findFromDialog.\n" );
-
-  // create
-  if( !find_dialog_ ) _createBaseFindDialog();
-
-  // enable/disable regexp
-  _findDialog().enableRegExp( true );
-
-  // raise dialog
-  _findDialog().centerOnParent();
-  _findDialog().show();
-
-  /*
-    setting the default text values
-    must be done after the dialog is shown
-    otherwise it may be automatically resized
-    to very large sizes due to the input text
-  */
-
-  // set default string to find
-  _findDialog().synchronize();
-  _findDialog().clearLabel();
+  Debug::Throw( "TreeView::_findFromDialog.\n" );
 
   // set default text
   // update find text
@@ -533,9 +671,17 @@ void TreeView::_findFromDialog( void )
   {
     const int max_length( 1024 );
     text = text.left( max_length );
-    _findDialog().setText( text );
   }
-  
+    
+  // create
+  if( !find_dialog_ ) _createBaseFindDialog();
+  _findDialog().enableRegExp( true );
+  _findDialog().centerOnParent();
+  _findDialog().show();
+  _findDialog().synchronize();
+  _findDialog().clearLabel();
+  _findDialog().setText( text );
+
   // changes focus
   _findDialog().activateWindow();
   _findDialog().editor().setFocus();
@@ -578,4 +724,102 @@ void TreeView::_updateConfiguration( void )
     QTreeView::setIconSize( QSize( icon_size, icon_size )  );
   } 
     
+}
+
+//_________________________________________________________
+QModelIndex TreeView::_firstIndex( void ) const
+{ return model()->index( 0, 0 ); }
+
+//_________________________________________________________
+QModelIndex TreeView::_lastIndex( void ) const
+{ 
+  
+  Debug::Throw( "TreeView::_lastIndex.\n" );
+  
+  if( !model()->rowCount() ) return QModelIndex();
+  
+  QModelIndex out( model()->index( model()->rowCount()-1, 0 ) );
+  while( out.isValid() && isExpanded( out ) && model()->hasChildren( out ) )
+  { out = model()->index( model()->rowCount( out )-1, 0, out ); }
+      
+  // select last column
+  QModelIndex parent = model()->parent( out );
+  out = model()->index( out.row(), model()->columnCount( parent )-1, parent );
+  
+  return out;
+  
+}
+
+//_________________________________________________________
+QModelIndex TreeView::_indexAfter( const QModelIndex& current ) const
+{
+  
+  assert( model() );
+  QModelIndex out;
+  if( !current.isValid() ) return out;
+  
+  // get parent
+  QModelIndex parent( model()->parent( current ) );
+    
+  // assign next column if valid
+  if( current.column()+1 < model()->columnCount( parent ) ) out = model()->index( current.row(), current.column()+1, parent );
+  else {
+
+    QModelIndex first_column_index( model()->index( current.row(), 0 ) );
+    
+    // assign first children if current is expanded and has children
+    if( first_column_index.isValid() && isExpanded( first_column_index ) && model()->hasChildren( first_column_index ) )
+    { out = model()->index( 0, 0, first_column_index ); }
+      
+    // assign next row if valid
+    if( !out.isValid() ) out = model()->index( current.row()+1, 0, parent );
+    
+    // assign next row from parent if valid
+    if( (!out.isValid()) && parent.isValid() ) out = model()->index( parent.row()+1, 0, model()->parent( parent ) );
+    
+  }
+  
+  return out;
+  
+}
+
+
+//_________________________________________________________
+QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
+{
+  Debug::Throw() << "TreeView::_indexBefore - " << current.row() << "," << current.column() << "," << current.isValid() << endl;
+  assert( model() );
+  QModelIndex out;
+  if( !current.isValid() ) return out;
+  
+  // get parent
+  QModelIndex parent( model()->parent( current ) );
+    
+  // assign next column if valid
+  if( current.column() > 0 ) out = model()->index( current.row(), current.column()-1, parent );
+  else {
+
+    if( current.row() > 0 )
+    {
+      
+      out = model()->index( current.row()-1, 0, parent );
+      while( out.isValid() && isExpanded( out ) && model()->hasChildren( out ) ) 
+      { out = model()->index( model()->rowCount( out )-1, 0, out ); }
+      
+      // select last column
+      parent = model()->parent( out );
+      out = model()->index( out.row(), model()->columnCount( parent )-1, parent );
+      
+    } else {
+      
+      // select last column of parent
+      if( parent.isValid() )
+      { out = model()->index( parent.row(), model()->columnCount( model()->parent( parent ) )-1, model()->parent( parent ) ); }
+      
+    }
+  
+  }
+  
+  return out;
+  
 }

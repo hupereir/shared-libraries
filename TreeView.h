@@ -221,10 +221,10 @@ class TreeView: public QTreeView, public Counter
   virtual void _createBaseFindDialog( void );
   
   //! find selection in forward direction
-  virtual bool _findForward( const TextSelection& selection, const bool& rewind );
+  virtual bool _findForward( const TextSelection& selection, bool rewind );
 
   //! find selection in backward direction
-  virtual bool _findBackward( const TextSelection& selection, const bool& rewind );
+  virtual bool _findBackward( const TextSelection& selection, bool rewind );
 
   protected slots:
    
@@ -240,9 +240,21 @@ class TreeView: public QTreeView, public Counter
   void _updateConfiguration( void );
 
   private:
-
+  
   //! install actions
   virtual void _installActions( void );   
+
+  //! return first index
+  QModelIndex _firstIndex() const;
+  
+  //! return last index
+  QModelIndex _lastIndex() const;
+  
+  //! return next index of current
+  QModelIndex _indexAfter( const QModelIndex& index ) const;
+
+  //! return previous index
+  QModelIndex _indexBefore( const QModelIndex& index ) const;
   
   //! find dialog
   BaseFindDialog* find_dialog_;

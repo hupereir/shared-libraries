@@ -2609,16 +2609,6 @@ void TextEditor::_findFromDialog( void )
 {
   Debug::Throw( "TextEditor::_findFromDialog.\n" );
 
-  // create
-  if( !find_dialog_ ) _createBaseFindDialog();
-
-  // enable/disable regexp
-  _findDialog().enableRegExp( true );
-
-  // raise dialog
-  _findDialog().centerOnParent();
-  _findDialog().show();
-
   // set default text
   // update find text
   QString text( selection().text() );  
@@ -2628,14 +2618,11 @@ void TextEditor::_findFromDialog( void )
     text = text.left( max_length );
   }
 
-  /*
-    setting the default text values
-    must be done after the dialog is shown
-    otherwise it may be automatically resized
-    to very large sizes due to the input text
-  */
-  
-  // set default string to find
+  // create
+  if( !find_dialog_ ) _createBaseFindDialog();
+  _findDialog().enableRegExp( true );
+  _findDialog().centerOnParent();
+  _findDialog().show();
   _findDialog().synchronize();
   _findDialog().clearLabel();
   _findDialog().setText( text );
