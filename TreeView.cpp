@@ -33,10 +33,14 @@
 #include <QPainter>
 #include <QScrollBar>
 
+#include "BaseFindDialog.h"
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "ColorDisplay.h"
 #include "ColumnSelectionMenu.h"
 #include "ColumnSortingMenu.h"
 #include "Singleton.h"
+#include "TextEditor.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 
@@ -47,6 +51,7 @@ using namespace Qt;
 TreeView::TreeView( QWidget* parent ):
   QTreeView( parent ),
   Counter( "TreeView" ),
+  find_dialog_( 0 ),
   menu_( 0 ),
   icon_size_from_options_( true )
 {
@@ -73,6 +78,16 @@ TreeView::TreeView( QWidget* parent ):
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
      
+}
+
+//_______________________________________________
+void TreeView::setFindEnabled( bool value )
+{
+  find_action_->setEnabled( value );
+  find_selection_action_->setEnabled( value );
+  find_again_action_->setEnabled( value );
+  find_selection_backward_action_->setEnabled( value );
+  find_again_backward_action_->setEnabled( value );
 }
 
 //_______________________________________________
@@ -240,6 +255,43 @@ void TreeView::saveSortOrder( void )
   
 }
 
+//______________________________________________________________________
+void TreeView::find( TextSelection selection )
+{
+  Debug::Throw( "TreeView::find.\n" );
+  bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) ); 
+  if( found ) emit matchFound();
+  else emit noMatchFound();
+}
+
+//______________________________________________________________________
+void TreeView::findSelectionForward( void )
+{ 
+  Debug::Throw( "TreeView::findSelectionForward.\n" );
+  _findForward( _selection(), true ); 
+}
+
+//______________________________________________________________________
+void TreeView::findSelectionBackward( void )
+{ 
+  Debug::Throw( "TreeView::findSelectionBackward.\n" );
+  _findBackward( _selection(), true ); 
+}
+
+//______________________________________________________________________
+void TreeView::findAgainForward( void )
+{ 
+  Debug::Throw( "TreeView::findAgainForward.\n" );
+  _findForward( TextEditor::lastSelection(), true ); 
+}
+
+//______________________________________________________________________
+void TreeView::findAgainBackward( void )
+{ 
+  Debug::Throw( "TreeView::findAgainBackward.\n" );
+  _findBackward( TextEditor::lastSelection(), true ); 
+}
+
 //__________________________________________________________
 void TreeView::paintEvent( QPaintEvent* event )
 {
@@ -290,6 +342,102 @@ void TreeView::contextMenuEvent( QContextMenuEvent* event )
   
 }
 
+//______________________________________________________________________
+TextSelection TreeView::_selection( void ) const
+{
+  
+  Debug::Throw( 0, "TreeView::_selection.\n" );
+
+  // copy last selection
+  TextSelection out( "" );
+  out.setFlag( TextSelection::CASE_SENSITIVE, TextEditor::lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
+  out.setFlag( TextSelection::ENTIRE_WORD, TextEditor::lastSelection().flag( TextSelection::ENTIRE_WORD ) );
+
+  QString text;
+  if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
+  else if( selectionModel() && model() && selectionModel()->currentIndex().isValid() )
+  {
+    
+    Debug::Throw( 0, "TreeView::_selection - checking current.\n" );
+    
+    QModelIndex current( selectionModel()->currentIndex() );
+    if( !(text =  model()->data( current ).toString()).isEmpty() ) out.setText( text );
+    else if( allColumnsShowFocus() )
+    {
+   
+      QModelIndex parent( model()->parent( current ) );
+      
+      // loop over all columns, retrieve 
+      for( int column = 0; column < model()->columnCount( parent ); column++ )
+      {
+        // get index from column
+        QModelIndex index( model()->index( current.row(), column, parent ) );
+        if( index.isValid() && !(text =  model()->data( index ).toString()).isEmpty() )
+        { 
+          out.setText( text );
+          break;
+        }
+        
+      }
+      
+    }
+  }
+  
+  // if everything else failed, retrieve last selection
+  if( text.isEmpty() ) out.setText( TextEditor::lastSelection().text() );
+  
+  return out;
+
+  
+}
+//______________________________________________________________________
+void TreeView::_createBaseFindDialog( void )
+{
+
+  Debug::Throw( "TreeView::_createBaseFindDialog.\n" );
+  if( !find_dialog_ )
+  {
+
+    find_dialog_ = new BaseFindDialog( this );
+    connect( find_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
+    connect( this, SIGNAL( noMatchFound() ), find_dialog_, SLOT( noMatchFound() ) );
+    connect( this, SIGNAL( matchFound() ), find_dialog_, SLOT( clearLabel() ) );
+
+  }
+
+  return;
+
+}
+
+
+//______________________________________________________________________
+bool TreeView::_findForward( const TextSelection& selection, const bool& rewind )
+{
+  Debug::Throw( 0, "TreeView::_findForward.\n" );
+  if( selection.text().isEmpty() ) return false;
+
+  // store selection
+  TextEditor::setLastSelection( selection );
+
+  // useless
+  return false;
+
+}
+
+//______________________________________________________________________
+bool TreeView::_findBackward( const TextSelection& selection, const bool& rewind )
+{
+
+  Debug::Throw( 0, "TreeView::_findBackward.\n" );
+  if( selection.text().isEmpty() ) return false;
+
+  // store selection
+  TextEditor::setLastSelection( selection );
+
+  // useless
+  return false;
+
+}
 //__________________________________________________________
 void TreeView::_installActions( void )
 {
@@ -299,6 +447,31 @@ void TreeView::_installActions( void )
   select_all_action_->setShortcut( CTRL+Key_A );
   select_all_action_->setShortcutContext( WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
+
+  addAction( find_action_ = new QAction( IconEngine::get( ICONS::FIND ), "&Find", this ) );
+  find_action_->setShortcut( Qt::CTRL + Qt::Key_F );
+  find_action_->setShortcutContext( Qt::WidgetShortcut );
+  connect( find_action_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
+
+  addAction( find_again_action_ = new QAction( "F&ind Again", this ) );
+  find_again_action_->setShortcut( Qt::CTRL + Qt::Key_G );
+  find_again_action_->setShortcutContext( Qt::WidgetShortcut );
+  connect( find_again_action_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
+
+  addAction( find_again_backward_action_ = new QAction( this ) );
+  find_again_backward_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
+  find_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
+  connect( find_again_backward_action_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
+
+  addAction( find_selection_action_ = new QAction( "Find &Selection", this ) );
+  find_selection_action_->setShortcut( Qt::CTRL + Qt::Key_H );
+  find_selection_action_->setShortcutContext( Qt::WidgetShortcut );
+  connect( find_selection_action_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
+
+  addAction( find_selection_backward_action_ = new QAction( this ) );
+  find_selection_backward_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
+  find_selection_backward_action_->setShortcutContext( Qt::WidgetShortcut );
+  connect( find_selection_backward_action_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
 }
 
@@ -325,6 +498,49 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
   // to keep visible columns in sync with option
   saveMask();
   
+}
+
+//_____________________________________________________________________
+void TreeView::_findFromDialog( void )
+{
+  Debug::Throw( "TreeView::_findFromDialog.\n" );
+
+  // create
+  if( !find_dialog_ ) _createBaseFindDialog();
+
+  // enable/disable regexp
+  _findDialog().enableRegExp( true );
+
+  // raise dialog
+  _findDialog().centerOnParent();
+  _findDialog().show();
+
+  /*
+    setting the default text values
+    must be done after the dialog is shown
+    otherwise it may be automatically resized
+    to very large sizes due to the input text
+  */
+
+  // set default string to find
+  _findDialog().synchronize();
+  _findDialog().clearLabel();
+
+  // set default text
+  // update find text
+  QString text( _selection().text() );  
+  if( !text.isEmpty() )
+  {
+    const int max_length( 1024 );
+    text = text.left( max_length );
+    _findDialog().setText( text );
+  }
+  
+  // changes focus
+  _findDialog().activateWindow();
+  _findDialog().editor().setFocus();
+
+  return;
 }
 
 //_____________________________________________________________________

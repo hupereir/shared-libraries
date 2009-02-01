@@ -700,11 +700,48 @@ void TextEditor::lowerCase( void )
     
     // process box selection
     _boxSelection().toLower(); 
-  
+    
   }  
   
   return;
+  
+}
 
+//______________________________________________________________________
+void TextEditor::find( TextSelection selection )
+{
+  Debug::Throw( "TextEditor::find.\n" );
+  bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) ); 
+  if( found ) emit matchFound();
+  else emit noMatchFound();
+}
+
+//______________________________________________________________________
+void TextEditor::findSelectionForward( void )
+{ 
+  Debug::Throw( "TextEditor::findSelectionForward.\n" );
+  _findForward( _selection(), true ); 
+}
+
+//______________________________________________________________________
+void TextEditor::findSelectionBackward( void )
+{ 
+  Debug::Throw( "TextEditor::findSelectionBackward.\n" );
+  _findBackward( _selection(), true ); 
+}
+
+//______________________________________________________________________
+void TextEditor::findAgainForward( void )
+{ 
+  Debug::Throw( "TextEditor::findAgainForward.\n" );
+  _findForward( lastSelection(), true ); 
+}
+
+//______________________________________________________________________
+void TextEditor::findAgainBackward( void )
+{ 
+  Debug::Throw( "TextEditor::findAgainBackward.\n" );
+  _findBackward( lastSelection(), true ); 
 }
 
 //______________________________________________________________________
@@ -746,28 +783,46 @@ void TextEditor::replace( TextSelection selection )
 }
 
 //______________________________________________________________________
+void TextEditor::replaceAgainForward( void )
+{
+  Debug::Throw( "TextEditor::replaceAgainForward.\n" );
+  TextSelection selection( lastSelection() );
+  selection.setFlag( TextSelection::BACKWARD, false );
+  replace( selection );
+}
+
+//______________________________________________________________________
+void TextEditor::replaceAgainBackward( void )
+{
+  Debug::Throw( "TextEditor::replaceAgainBackward.\n" );
+  TextSelection selection( lastSelection() );
+  selection.setFlag( TextSelection::BACKWARD, true );
+  replace( selection );
+}
+
+//______________________________________________________________________
 unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool& show_dialog )
 {
-
+  
   Debug::Throw( "TextEditor::replaceInSelection.\n" );
-
+  
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return 0;
-
+  
   // progress dialog
   if( show_dialog ) _createProgressDialog();
-
+  
   unsigned int counts(0);
-
+  
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
-
+    
     Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
     BoxSelection::CursorList cursors( _boxSelection().cursorList() );
     for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
     { counts += _replaceInRange( selection, *iter, MOVE ); }
-
+    
     _boxSelection().clear();
 
   } else {
@@ -1694,14 +1749,16 @@ TextSelection TextEditor::_selection( void ) const
   // copy last selection
   TextSelection out( "" );
 
-  // try set from current selection
-  QString text;
-  if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
-  else if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );
-
   // copy attributes from last selection
   out.setFlag( TextSelection::CASE_SENSITIVE, lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
   out.setFlag( TextSelection::ENTIRE_WORD, lastSelection().flag( TextSelection::ENTIRE_WORD ) );
+
+  // try set from current selection
+  QString text;
+  if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
+  else if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );  
+  else out.setText( lastSelection().text() );
+  
   return out;
 
 }
@@ -1732,7 +1789,7 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
   if( selection.text().isEmpty() ) return false;
 
   // store selection
-  _setLastSelection( selection );
+  setLastSelection( selection );
 
   // retrieve current cursor
   QTextCursor cursor( textCursor() );
@@ -1840,7 +1897,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
 
   Debug::Throw( "TextEditor::_findBackward.\n" );
   if( selection.text().isEmpty() ) return false;
-  _setLastSelection( selection );
+  setLastSelection( selection );
 
   // retrieve current cursor
   QTextCursor cursor( textCursor() );
@@ -1996,7 +2053,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
   // check selection
   if( selection.text().isEmpty() ) return 0;
-  _setLastSelection( selection );
+  setLastSelection( selection );
 
   // check cursor
   if( !cursor.hasSelection() ) return 0;
@@ -2562,13 +2619,7 @@ void TextEditor::_findFromDialog( void )
 
   // set default text
   // update find text
-  QString text;
-  if( ( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() )
-  {
-    if( textCursor().hasSelection() ) text = textCursor().selectedText();
-    else text = lastSelection().text();
-  }
-  
+  QString text( _selection().text() );  
   if( !text.isEmpty() )
   {
     const int max_length( 1024 );

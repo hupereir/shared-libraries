@@ -32,6 +32,8 @@
   \date $Date$
 */
 
+#include <assert.h>
+
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QTreeView>
@@ -41,6 +43,9 @@
 #include <vector>
 
 #include "Counter.h"
+#include "TextSelection.h"
+
+class BaseFindDialog;
 
 //! customized tree view
 class TreeView: public QTreeView, public Counter
@@ -58,6 +63,9 @@ class TreeView: public QTreeView, public Counter
   virtual ~TreeView( void )
   {}
 
+  //! enable list finding
+  void setFindEnabled( bool value );
+  
   //!@name contextual menu
   //@{
   
@@ -113,6 +121,35 @@ class TreeView: public QTreeView, public Counter
     icon_size_from_options_ = false;
   }
   
+  //!@name actions
+  //@{
+  
+  //! select all
+  QAction& selectAllAction( void ) const 
+  { return *select_all_action_; }
+  
+  //! find from dialog
+  QAction& findAction( void ) const
+  { return *find_action_; }
+
+  //! find selection again
+  QAction& findSelectionAction( void ) const
+  { return *find_selection_action_; }
+
+  //! find again
+  QAction& findAgainAction( void ) const
+  { return *find_again_action_; }
+
+  //@}
+  
+  signals:
+  
+  //! emmitted when selection could not be found
+  void noMatchFound( void );
+  
+  //! emmitted when selection could be found
+  void matchFound( void );
+  
   public slots:
   
   //! resize all visible columns to match contents
@@ -138,6 +175,21 @@ class TreeView: public QTreeView, public Counter
   
   //! sort order
   virtual void saveSortOrder( void );
+     
+  //! find next occurence of TextSelection
+  virtual void find( TextSelection selection );
+  
+  //! find current selection forward
+  virtual void findSelectionForward( void );
+
+  //! find current selection backward
+  virtual void findSelectionBackward( void );
+  
+  //! find last search forward
+  virtual void findAgainForward( void );
+
+  //! find last search forward
+  virtual void findAgainBackward( void );
   
   protected:
   
@@ -155,13 +207,32 @@ class TreeView: public QTreeView, public Counter
   void _setSelectedColumnColor( const QColor& color )
   { selected_column_color_ = color; }
   
-  //! install actions
-  virtual void _installActions( void );
+  //! create TextSelection object from this selection, or clipboard
+  TextSelection _selection( void ) const;
+
+  //! find dialog
+  virtual BaseFindDialog& _findDialog( void )
+  {
+    assert( find_dialog_ );
+    return *find_dialog_;
+  }
   
+  //! find dialog
+  virtual void _createBaseFindDialog( void );
+  
+  //! find selection in forward direction
+  virtual bool _findForward( const TextSelection& selection, const bool& rewind );
+
+  //! find selection in backward direction
+  virtual bool _findBackward( const TextSelection& selection, const bool& rewind );
+
   protected slots:
    
   //! header menu
   virtual void _raiseHeaderMenu( const QPoint& );
+
+  //! find text from dialog
+  virtual void _findFromDialog( void );
 
   private slots:
     
@@ -170,12 +241,33 @@ class TreeView: public QTreeView, public Counter
 
   private:
 
+  //! install actions
+  virtual void _installActions( void );   
+  
+  //! find dialog
+  BaseFindDialog* find_dialog_;
+
   //!@name actions
   //@{
    
   //! select all document
   QAction* select_all_action_;
+    
+  //! find from dialog
+  QAction* find_action_;
+
+  //! find selection again
+  QAction* find_selection_action_;
+
+  //! find selection backward
+  QAction* find_selection_backward_action_;
+
+  //! find again
+  QAction* find_again_action_;
   
+  //! find again backward
+  QAction* find_again_backward_action_;
+
   //@}
   
   //! popup menu for right click

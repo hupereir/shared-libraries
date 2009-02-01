@@ -159,6 +159,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! last searched selection
   static TextSelection& lastSelection( void );
 
+  //! last searched selection
+  static void setLastSelection( const TextSelection& selection )
+  { lastSelection() = selection; }
+
   //!@name text wrap
   //@{
   
@@ -192,67 +196,67 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //!@name actions
   //@{
   
-  QAction& undoAction( void )
+  QAction& undoAction( void ) const
   { return *undo_action_; }
   
   //! redo
-  QAction& redoAction( void )
+  QAction& redoAction( void ) const
   { return *redo_action_; }
   
   //! cut selection
-  QAction& cutAction( void )
+  QAction& cutAction( void ) const
   { return *cut_action_; }
   
   //! copy selection
-  QAction& copyAction( void )
+  QAction& copyAction( void ) const
   { return *copy_action_; }
   
   //! paste clipboard
-  QAction& pasteAction( void )
+  QAction& pasteAction( void ) const
   { return *paste_action_;  }
 
   //! convert selection to upper case
-  QAction& lowerCaseAction( void )
+  QAction& lowerCaseAction( void ) const
   { return *upper_case_action_; }
   
   //! convert selection to lower case
-  QAction& upperCaseAction( void )
+  QAction& upperCaseAction( void ) const
   { return *lower_case_action_; }
   
   //! find from dialog
-  QAction& findAction( void )
+  QAction& findAction( void ) const
   { return *find_action_; }
 
   //! find selection again
-  QAction& findSelectionAction( void )
+  QAction& findSelectionAction( void ) const
   { return *find_selection_action_; }
 
   //! find again
-  QAction& findAgainAction( void )
+  QAction& findAgainAction( void ) const
   { return *find_again_action_; }
   
   //! replace
-  QAction& replaceAction( void )
+  QAction& replaceAction( void ) const
   { return *replace_action_; }
 
   //! replace again
-  QAction& replaceAgainAction( void )
+  QAction& replaceAgainAction( void ) const
   { return *replace_again_action_; }
 
   //! goto line number
-  QAction& gotoLineAction( void )
+  QAction& gotoLineAction( void ) const
   { return *goto_line_action_; } 
  
   //! block highlight action
-  QAction& blockHighlightAction( void )
+  QAction& blockHighlightAction( void ) const
   { return *block_highlight_action_; }
   
   //! toggle wrap mode
-  QAction& wrapModeAction( void )
+  QAction& wrapModeAction( void ) const
   { return *wrap_mode_action_; }
   
   //! toggle tab emulation
-  QAction& tabEmulationAction( void )
+  QAction& tabEmulationAction( void ) const
   { return *tab_emulation_action_; }
   
   //! show line numbers
@@ -374,41 +378,19 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual void lowerCase( void );
     
   //! find next occurence of TextSelection
-  virtual void find( TextSelection selection )
-  { 
-    Debug::Throw( "TextEditor::find.\n" );
-    bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) ); 
-    if( found ) emit matchFound();
-    else emit noMatchFound();
-  }
+  virtual void find( TextSelection selection );
   
   //! find current selection forward
-  virtual void findSelectionForward( void )
-  { 
-    Debug::Throw( "TextEditor::findSelectionForward.\n" );
-    _findForward( _selection(), true ); 
-  }
+  virtual void findSelectionForward( void );
 
   //! find current selection backward
-  virtual void findSelectionBackward( void )
-  { 
-    Debug::Throw( "TextEditor::findSelectionBackward.\n" );
-    _findBackward( _selection(), true ); 
-  }
+  virtual void findSelectionBackward( void );
   
   //! find last search forward
-  virtual void findAgainForward( void )
-  { 
-    Debug::Throw( "TextEditor::findAgainForward.\n" );
-    _findForward( lastSelection(), true ); 
-  }
+  virtual void findAgainForward( void );
 
   //! find last search forward
-  virtual void findAgainBackward( void )
-  { 
-    Debug::Throw( "TextEditor::findAgainBackward.\n" );
-    _findBackward( lastSelection(), true ); 
-  }
+  virtual void findAgainBackward( void );
   
   //! find next occurence of TextSelection
   virtual void replace( TextSelection selection );
@@ -420,22 +402,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   virtual unsigned int replaceInWindow( TextSelection selection, const bool& show_dialog = true );
   
   //! replace again forward
-  virtual void replaceAgainForward( void )
-  {
-    Debug::Throw( "TextEditor::replaceAgainForward.\n" );
-    TextSelection selection( lastSelection() );
-    selection.setFlag( TextSelection::BACKWARD, false );
-    replace( selection );
-  }
+  virtual void replaceAgainForward( void );
 
   //! replace again forward
-  virtual void replaceAgainBackward( void )
-  {
-    Debug::Throw( "TextEditor::replaceAgainBackward.\n" );
-    TextSelection selection( lastSelection() );
-    selection.setFlag( TextSelection::BACKWARD, true );
-    replace( selection );
-  }
+  virtual void replaceAgainBackward( void );
     
   //! select line by number
   virtual void selectLine( int index ); 
@@ -509,11 +479,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! create TextSelection object from this selection, or clipboard
   TextSelection _selection( void ) const;
- 
-  //! last searched selection
-  static void _setLastSelection( const TextSelection& selection )
-  { lastSelection() = selection; }
-  
+   
   //! find dialog
   virtual BaseFindDialog& _findDialog( void )
   {
@@ -719,7 +685,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   private:
       
-  //!@name replace/find selection
+  //!@name dialogs
   ///@{
   
   //! find dialog
