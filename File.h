@@ -61,6 +61,9 @@ class File: public Str
   //! try create
   bool create( void ) const;
     
+  //! time of file creation
+  virtual time_t created( void ) const;
+    
   //! time of file last modification
   virtual time_t lastModified( void ) const;
 

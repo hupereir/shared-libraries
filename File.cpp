@@ -55,6 +55,13 @@ bool File::create( void ) const
 { return QFile( c_str() ).open( QIODevice::WriteOnly ); }
 
 //_____________________________________________________________________
+time_t File::created( void ) const
+{ 
+  if( !exists() ) return -1;
+  return QFileInfo( c_str() ).created().toTime_t();
+}
+
+//_____________________________________________________________________
 time_t File::lastModified( void ) const
 { 
   if( !exists() ) return -1;
