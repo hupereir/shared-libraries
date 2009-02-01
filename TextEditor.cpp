@@ -720,14 +720,14 @@ void TextEditor::find( TextSelection selection )
 void TextEditor::findSelectionForward( void )
 { 
   Debug::Throw( "TextEditor::findSelectionForward.\n" );
-  _findForward( _selection(), true ); 
+  _findForward( selection(), true ); 
 }
 
 //______________________________________________________________________
 void TextEditor::findSelectionBackward( void )
 { 
   Debug::Throw( "TextEditor::findSelectionBackward.\n" );
-  _findBackward( _selection(), true ); 
+  _findBackward( selection(), true ); 
 }
 
 //______________________________________________________________________
@@ -1742,9 +1742,9 @@ void TextEditor::_installActions( void )
 }
 
 //______________________________________________________________________
-TextSelection TextEditor::_selection( void ) const
+TextSelection TextEditor::selection( void ) const
 {
-  Debug::Throw( "TextEditor::_selection.\n" );
+  Debug::Throw( "TextEditor::selection.\n" );
 
   // copy last selection
   TextSelection out( "" );
@@ -1755,9 +1755,22 @@ TextSelection TextEditor::_selection( void ) const
 
   // try set from current selection
   QString text;
-  if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
-  else if( textCursor().hasSelection() ) out.setText( textCursor().selectedText() );  
-  else out.setText( lastSelection().text() );
+  if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) {
+    
+    Debug::Throw( "TextEditor::selection - from clipboard.\n" );
+    out.setText( text );
+  
+  } else if( textCursor().hasSelection() ) {
+    
+    Debug::Throw() << "TextEditor::selection - from cursor: " << qPrintable( textCursor().selectedText() ) << endl;
+    out.setText( textCursor().selectedText() );  
+    
+  } else {
+  
+    Debug::Throw( "TextEditor::selection - from last selection.\n" );   
+    out.setText( lastSelection().text() );
+    
+  }
   
   return out;
 
@@ -2606,26 +2619,26 @@ void TextEditor::_findFromDialog( void )
   _findDialog().centerOnParent();
   _findDialog().show();
 
+  // set default text
+  // update find text
+  QString text( selection().text() );  
+  if( !text.isEmpty() )
+  {
+    const int max_length( 1024 );
+    text = text.left( max_length );
+  }
+
   /*
     setting the default text values
     must be done after the dialog is shown
     otherwise it may be automatically resized
     to very large sizes due to the input text
   */
-
+  
   // set default string to find
   _findDialog().synchronize();
   _findDialog().clearLabel();
-
-  // set default text
-  // update find text
-  QString text( _selection().text() );  
-  if( !text.isEmpty() )
-  {
-    const int max_length( 1024 );
-    text = text.left( max_length );
-    _findDialog().setText( text );
-  }
+  _findDialog().setText( text );
   
   // changes focus
   _findDialog().activateWindow();

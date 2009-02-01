@@ -66,6 +66,9 @@ class TreeView: public QTreeView, public Counter
   //! enable list finding
   void setFindEnabled( bool value );
   
+  //! TextSelection object from this selection, or clipboard
+  TextSelection selection( void ) const;
+  
   //!@name contextual menu
   //@{
   
@@ -207,9 +210,6 @@ class TreeView: public QTreeView, public Counter
   void _setSelectedColumnColor( const QColor& color )
   { selected_column_color_ = color; }
   
-  //! create TextSelection object from this selection, or clipboard
-  TextSelection _selection( void ) const;
-
   //! find dialog
   virtual BaseFindDialog& _findDialog( void )
   {

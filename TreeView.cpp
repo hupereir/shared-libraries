@@ -268,14 +268,14 @@ void TreeView::find( TextSelection selection )
 void TreeView::findSelectionForward( void )
 { 
   Debug::Throw( "TreeView::findSelectionForward.\n" );
-  _findForward( _selection(), true ); 
+  _findForward( selection(), true ); 
 }
 
 //______________________________________________________________________
 void TreeView::findSelectionBackward( void )
 { 
   Debug::Throw( "TreeView::findSelectionBackward.\n" );
-  _findBackward( _selection(), true ); 
+  _findBackward( selection(), true ); 
 }
 
 //______________________________________________________________________
@@ -343,7 +343,7 @@ void TreeView::contextMenuEvent( QContextMenuEvent* event )
 }
 
 //______________________________________________________________________
-TextSelection TreeView::_selection( void ) const
+TextSelection TreeView::selection( void ) const
 {
   
   Debug::Throw( 0, "TreeView::_selection.\n" );
@@ -503,7 +503,7 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
 //_____________________________________________________________________
 void TreeView::_findFromDialog( void )
 {
-  Debug::Throw( "TreeView::_findFromDialog.\n" );
+  Debug::Throw( 0, "TreeView::_findFromDialog.\n" );
 
   // create
   if( !find_dialog_ ) _createBaseFindDialog();
@@ -528,7 +528,7 @@ void TreeView::_findFromDialog( void )
 
   // set default text
   // update find text
-  QString text( _selection().text() );  
+  QString text( selection().text() );  
   if( !text.isEmpty() )
   {
     const int max_length( 1024 );

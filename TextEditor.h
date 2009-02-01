@@ -156,6 +156,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! popup dialog with the number of replacement performed
   virtual void showReplacements( const unsigned int& counts );
  
+  //! TextSelection object from this selection, or clipboard
+  TextSelection selection( void ) const;
+
   //! last searched selection
   static TextSelection& lastSelection( void );
 
@@ -477,9 +480,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //!@name find/replace selection
   //@{
   
-  //! create TextSelection object from this selection, or clipboard
-  TextSelection _selection( void ) const;
-   
   //! find dialog
   virtual BaseFindDialog& _findDialog( void )
   {
