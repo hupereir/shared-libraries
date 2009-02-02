@@ -102,7 +102,7 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
 bool ScrollObject::keyPressEvent( QKeyEvent* event )
 {
   
-  Debug::Throw( "ScrollObject::keyPressEvent.\n" );
+  Debug::Throw( 0, "ScrollObject::keyPressEvent.\n" );
   
   // check event
   if( !event ) return false;

@@ -87,6 +87,7 @@ HEADERS = \
   RemoveLineBuffer.h \
   RoundedPath.h \
   RoundedRegion.h \
+  ScrollObject.h \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
@@ -184,6 +185,7 @@ SOURCES = \
   RemoveLineBuffer.cpp \
   RoundedPath.cpp \
   RoundedRegion.cpp \
+  ScrollObject.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
