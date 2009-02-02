@@ -85,7 +85,7 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
     // warning: need to reparent it back when transition is finished to avoid 
     // the transition widget to be deleted when the widget is deleted
     _transitionWidget().setParent( widget );
-    _transitionWidget().initialize( widget );
+    _transitionWidget().initialize( this );
     QStackedWidget::setCurrentWidget( widget );
     _transitionWidget().start();
   
