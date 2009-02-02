@@ -91,6 +91,7 @@ noinst_HEADERS = \
   RemoveLineBuffer.h \
   RoundedPath.h \
   RoundedRegion.h \
+  ScrollObject.h \
   SelectLineDialog.h \
   StatusBar.h \
   SystemEnvironmentDialog.h \
@@ -190,6 +191,7 @@ libbase_qt_a_SOURCES = \
   RemoveLineBuffer.cpp \
   RoundedPath.cpp \
   RoundedRegion.cpp \
+  ScrollObject.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \
   SystemEnvironmentDialog.cpp \
@@ -260,6 +262,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_OptionModel.cpp \
   moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
+  moc_ScrollObject.cpp \
   moc_SelectLineDialog.cpp \
   moc_StatusBar.cpp \
   moc_TransitionWidget.cpp \

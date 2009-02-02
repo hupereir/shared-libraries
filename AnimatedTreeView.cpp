@@ -32,6 +32,8 @@
 //#include "AnimatedScrollBar.h"
 #include "AnimatedTreeView.h"
 #include "Debug.h"
+
+#include "ScrollObject.h"
 #include "TransitionWidget.h"
 
 using namespace std;
@@ -48,6 +50,11 @@ AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
   transitionWidget().hide();
   connect( &transitionWidget().timeLine(), SIGNAL( finished() ), &transitionWidget(), SLOT( hide() ) );
     
+  setVerticalScrollMode( QAbstractItemView::ScrollPerPixel );
+  setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
+
+  new ScrollObject( this );
+  
 }
 
 //________________________________________________________________________

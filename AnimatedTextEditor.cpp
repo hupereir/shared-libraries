@@ -31,6 +31,7 @@
 
 #include "AnimatedTextEditor.h"
 #include "Debug.h"
+#include "ScrollObject.h"
 #include "TransitionWidget.h"
 
 using namespace std;
@@ -44,6 +45,9 @@ AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):
   _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
   _transitionWidget().hide();
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
+
+  new ScrollObject( this );
+  
 }
 
 //________________________________________________________
