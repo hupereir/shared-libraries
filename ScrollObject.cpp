@@ -102,10 +102,8 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
 bool ScrollObject::keyPressEvent( QKeyEvent* event )
 {
   
-  Debug::Throw( 0, "ScrollObject::keyPressEvent.\n" );
-  
   // check event
-  if( !event ) return false;
+  // if( !event ) return false;
   
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
@@ -118,11 +116,9 @@ bool ScrollObject::keyPressEvent( QKeyEvent* event )
 //_______________________________________________
 bool ScrollObject::wheelEvent( QWheelEvent* event )
 {
-
-  Debug::Throw( "ScrollObject::wheelEvent.\n" );
  
   // check event
-  if( !event ) return false;
+  // assert( !event ) return false;
 
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
