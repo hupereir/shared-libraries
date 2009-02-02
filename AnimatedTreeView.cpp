@@ -44,9 +44,9 @@ AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
   Debug::Throw( "AnimatedTreeView::AnimatedTreeView.\n" );
 
   // transition widget
-  _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
-  _transitionWidget().hide();
-  connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), &_transitionWidget(), SLOT( hide() ) );
+  transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
+  transitionWidget().hide();
+  connect( &transitionWidget().timeLine(), SIGNAL( finished() ), &transitionWidget(), SLOT( hide() ) );
     
 }
 
@@ -55,9 +55,9 @@ bool AnimatedTreeView::initializeAnimation( void )
 {
 
   // transition
-  if( _transitionWidget().isEnabled() && QTreeView::isVisible() )
+  if( transitionWidget().isEnabled() && QTreeView::isVisible() )
   {
-    _transitionWidget().initialize();
+    transitionWidget().initialize();
     return true;
   } else return false;
 
@@ -67,9 +67,9 @@ bool AnimatedTreeView::initializeAnimation( void )
 bool AnimatedTreeView::startAnimation( void )
 {
   // transition
-  if( _transitionWidget().isEnabled() && QTreeView::isVisible() ) 
+  if( transitionWidget().isEnabled() && QTreeView::isVisible() ) 
   {
-    _transitionWidget().start();
+    transitionWidget().start();
     return true;
   } else return false;
 
