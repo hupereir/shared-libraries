@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+#include <QApplication>
 #include <QPainter>
 
 #include "AnimatedStackedWidget.h"
@@ -80,13 +81,14 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
   // check widget validity and animation time
   if( !(  _transitionWidget().isEnabled() && isVisible() ) ) return QStackedWidget::setCurrentWidget( widget );
   else {
-   
+        
     // reparent transition widget so that it appears on top of current widget
     // warning: need to reparent it back when transition is finished to avoid 
     // the transition widget to be deleted when the widget is deleted
     _transitionWidget().setParent( widget );
     _transitionWidget().initialize( this );
     QStackedWidget::setCurrentWidget( widget );
+    qApp->processEvents();
     _transitionWidget().start();
   
   }
