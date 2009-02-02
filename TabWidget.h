@@ -149,26 +149,6 @@ class TabWidget: public QFrame, public Counter
   void _setMoveEnabled( const bool& value ) 
   { move_enabled_ = value; }
   
-  //! local QSizeGrip
-  /*! the paint event method is overridden so that the size grip is invisible */
-  class LocalGrip: public QSizeGrip, public Counter
-  {
-    
-    public:
-    //! constructor
-    LocalGrip( QWidget* parent ):
-      QSizeGrip( parent ),
-      Counter( "QSizeGrip" )
-    {};
-    
-    protected:
-    
-    //! paint
-    void paintEvent( QPaintEvent* event )
-    { QWidget::paintEvent( event ); }
-    
-  };
-  
   //! flags
   unsigned int flags_;
   
@@ -185,7 +165,7 @@ class TabWidget: public QFrame, public Counter
   QWidget* box_;
       
   //! size grip
-  LocalGrip* size_grip_;
+  QSizeGrip* size_grip_;
     
   //! index in parent tab
   int index_;

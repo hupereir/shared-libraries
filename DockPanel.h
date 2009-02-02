@@ -196,25 +196,6 @@ class DockPanel: public QWidget, public Counter
   //! hide event
   virtual void hideEvent( QHideEvent* );
     
-  //! local QSizeGrip
-  /*! the paint event method is overridden so that the size grip is invisible */
-  class LocalGrip: public QSizeGrip, public Counter
-  {
-    
-    public:
-    //! constructor
-    LocalGrip( QWidget* parent ):
-      QSizeGrip( parent ),
-      Counter( "QSizeGrip" )
-    {};
-    
-    protected:
-    
-    //! paint
-    void paintEvent( QPaintEvent* );
-    
-  };
-  
   private slots:
   
   //! configuration
@@ -254,7 +235,7 @@ class DockPanel: public QWidget, public Counter
   QWidget* panel_;
     
   //! size grip
-  LocalGrip* size_grip_;
+  QSizeGrip* size_grip_;
 
   friend class LocalWidget;
   

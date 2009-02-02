@@ -86,7 +86,7 @@ DockPanel::DockPanel( QWidget* parent ):
   main_layout_->addWidget( panel_, 1 );
 
   // invisible size grip
-  grid_layout->addWidget( size_grip_ = new LocalGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+  grid_layout->addWidget( size_grip_ = new QSizeGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
   size_grip_->hide();
 
   // connections
@@ -382,7 +382,3 @@ void DockPanel::LocalWidget::_installActions( void )
   sticky_action_->setCheckable( true );
 
 }
-
-//___________________________________________________________
-void DockPanel::LocalGrip::paintEvent( QPaintEvent* event )
-{ return QSizeGrip::paintEvent( event ); }
