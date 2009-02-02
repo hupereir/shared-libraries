@@ -252,7 +252,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
 
   // make sure parent is valid
-  if( !parent ) parent = &addPage( "Text display/edition", "Configuration and look-and-feel for text display and edition" );
+  if( !parent ) parent = &addPage( "Text display/edition", "Settings for text display and edition" );
   
   // tab emulation
   QGroupBox* box = new QGroupBox( "Tab emulation", parent );
