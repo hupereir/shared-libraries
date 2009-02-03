@@ -50,6 +50,10 @@ class AnimatedLabel: public QLabel, public Counter
   
   //! destrutor
   virtual ~AnimatedLabel( void );
+  
+  //! transition widget
+  TransitionWidget& transitionWidget( void ) const
+  { return *transition_widget_; }
 
   public slots:
   
@@ -58,12 +62,6 @@ class AnimatedLabel: public QLabel, public Counter
    
   //! clear
   virtual void clear( void );
-
-  protected:
-  
-  //! transition widget
-  TransitionWidget& _transitionWidget( void ) const
-  { return *transition_widget_; }
 
   private:
   
