@@ -108,6 +108,7 @@ namespace SERVER
     }
     
     //! true if this command is a child of argument
+    /*! this is needed to have commands appear in Tree view */
     bool isChild( const ServerCommand& command ) const
     { return timeStamp() >= command.timeStamp() && id() == command.id(); }
     
