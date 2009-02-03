@@ -46,7 +46,7 @@ ScrollObject::ScrollObject( QAbstractScrollArea* parent ):
   QObject( parent ),
   Counter( "ScrollObject" ),
   enabled_( true ),
-  mode_( NONE ),
+  mode_(0),
   auto_repeat_( false ),
   target_( parent )
 {
@@ -63,9 +63,14 @@ ScrollObject::ScrollObject( QAbstractScrollArea* parent ):
   connect( &_timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( _scroll( int ) ) ); 
   connect( &_timeLine(), SIGNAL( finished( void ) ), this, SLOT( _finished( void )) ); 
   
-  // install event filters
-  _target().viewport()->installEventFilter(this);
-  _target().installEventFilter(this);
+  targets_.insert( &_target() );
+  targets_.insert( _target().viewport() );
+  targets_.insert( _target().verticalScrollBar() );
+  targets_.insert( _target().horizontalScrollBar() );
+  
+  // install filters
+  for( ObjectSet::iterator iter = targets_.begin(); iter != targets_.end(); iter++ )
+  { (*iter)->installEventFilter(this); }
   
 }
 
@@ -80,8 +85,8 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
   
   // check enability
   if( !isEnabled() ) return false;
-  if( object != &_target() && object != _target().viewport() ) return false;
-
+  if( targets_.find( object ) == targets_.end() ) return false;
+  
   // check event type
   switch( event->type() )
   {
@@ -93,7 +98,10 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
     return keyReleaseEvent( static_cast<QKeyEvent*>( event ) );
     
     case QEvent::Wheel:
-    return wheelEvent( static_cast<QWheelEvent*>( event ) );
+    {
+      Qt::Orientation orientation( object == _target().horizontalScrollBar() ? Qt::Horizontal : Qt::Vertical );
+      return wheelEvent( static_cast<QWheelEvent*>( event), orientation );
+    }
     
     case QEvent::MouseButtonPress:
     return mousePressEvent( static_cast<QMouseEvent*>( event ) );
@@ -109,8 +117,8 @@ bool ScrollObject::keyPressEvent( QKeyEvent* event )
    
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
-  if( event->key() == Qt::Key_PageUp ) { _setAutoRepeat( true ); return _previousPage(); }
-  if( event->key() == Qt::Key_PageDown ) { _setAutoRepeat( true ); return _nextPage(); }
+  if( event->key() == Qt::Key_PageUp ) { _setAutoRepeat( true ); return _previousPage( Qt::Vertical ); }
+  if( event->key() == Qt::Key_PageDown ) { _setAutoRepeat( true ); return _nextPage( Qt::Vertical ); }
   return false;
   
 }
@@ -123,21 +131,19 @@ bool ScrollObject::keyReleaseEvent( QKeyEvent* event )
 }
 
 //_______________________________________________
-bool ScrollObject::wheelEvent( QWheelEvent* event )
+bool ScrollObject::wheelEvent( QWheelEvent* event, Qt::Orientation orientation )
 {
 
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
   if( _timeLine().state() == QTimeLine::Running ) _setAutoRepeat( true );
-  //return _pageStep( event->delta() / 120 );
   
   // factor 3 here is not understood. It was added to mimic at best 
-  // the scale when animation is turned off.
-  return _singleStep( (3*event->delta())/120 );  
+  // the scale when animation is turned off. Need to check against Qt sources
+  return _singleStep( (3*event->delta())/120, orientation );  
 
 }
   
-
 //_______________________________________________
 bool ScrollObject::mousePressEvent( QMouseEvent* )
 {
@@ -161,7 +167,7 @@ bool ScrollObject::_setCurrent( QPoint position ) const
 {
   
   bool accepted( false );
-  if( (mode_&HORIZONTAL) && _target().horizontalScrollBar() ) 
+  if( (mode_&Qt::Horizontal) && _target().horizontalScrollBar() ) 
   {
     if( position.x() < _target().horizontalScrollBar()->minimum() ) position.setX( _target().horizontalScrollBar()->minimum() );
     else if( position.x() > _target().verticalScrollBar()->maximum() ) position.setX( _target().horizontalScrollBar()->maximum() );
@@ -169,7 +175,7 @@ bool ScrollObject::_setCurrent( QPoint position ) const
     _target().horizontalScrollBar()->setValue( position.x() );
   }
   
-  if( (mode_&VERTICAL) && _target().verticalScrollBar() ) 
+  if( (mode_&Qt::Vertical) && _target().verticalScrollBar() ) 
   {
     if( position.y() < _target().verticalScrollBar()->minimum() ) position.setY( _target().verticalScrollBar()->minimum() );
     else if( position.y() > _target().verticalScrollBar()->maximum() ) position.setY( _target().verticalScrollBar()->maximum() );
@@ -219,27 +225,70 @@ void ScrollObject::_updateConfiguration( void )
 }
 
 //_____________________________________________________________________
-bool ScrollObject::_singleStep( int delta )
-{ return ( _target().verticalScrollBar() && _scrollBy( QPoint( 0, -delta*_target().verticalScrollBar()->singleStep() ) ) ); }
+bool ScrollObject::_singleStep( int delta, unsigned int orientation )
+{ 
+
+  if( !delta ) return false;
+  
+  QPoint offset(0,0);
+  bool accepted = false;
+  if( (orientation & Qt::Horizontal) && _target().horizontalScrollBar() )
+  { 
+    accepted = true; 
+    offset.setX( -delta*_target().horizontalScrollBar()->singleStep() );
+  } 
+  
+  if( (orientation & Qt::Vertical) && _target().verticalScrollBar() )
+  { 
+    accepted = true;
+    offset.setY( -delta*_target().verticalScrollBar()->singleStep() );
+  }
+  
+  return accepted && _scrollBy( offset );
+  
+}
 
 //_____________________________________________________________________
-bool ScrollObject::_pageStep( int delta )
-{ return ( _target().verticalScrollBar() && _scrollBy( QPoint( 0, -delta*_target().verticalScrollBar()->pageStep() ) ) ); }
+bool ScrollObject::_pageStep( int delta, unsigned int mode )
+{ 
+
+  if( !delta ) return false;
+  
+  QPoint offset(0,0);
+  bool accepted = false;
+  if( ( mode & Qt::Horizontal ) && _target().horizontalScrollBar() )
+  { 
+    accepted = true; 
+    offset.setX( -delta*_target().horizontalScrollBar()->pageStep() );
+  }
+  
+  if( ( mode & Qt::Vertical ) && _target().verticalScrollBar() )
+  { 
+    accepted = true;
+    offset.setY( -delta*_target().verticalScrollBar()->pageStep() );
+  }
+  
+  return accepted && _scrollBy( offset );
+  
+}
 
 //_____________________________________________________________________
-bool ScrollObject::_previousPage( void )
-{ return _pageStep(1); }
+bool ScrollObject::_previousPage( unsigned int mode )
+{ return _pageStep(1, mode ); }
 
 //_____________________________________________________________________
-bool ScrollObject::_nextPage( void )
-{ return _pageStep(-1); }
+bool ScrollObject::_nextPage( unsigned int mode )
+{ return _pageStep(-1, mode); }
 
 //_____________________________________________________________________
 bool ScrollObject::_scrollBy( QPoint value )
 {
-  mode_ = NONE;
-  if( value.x() ) mode_ |= HORIZONTAL;
-  if( value.y() ) mode_ |= VERTICAL;
+  
+  // set mode based on offset values
+  mode_ = 0;
+  if( value.x() ) mode_ |= Qt::Horizontal;
+  if( value.y() ) mode_ |= Qt::Vertical;
+  
   _setStart( _current() );
   _setStep( QPointF( 
     qreal( value.x() )/_timeLine().endFrame(),

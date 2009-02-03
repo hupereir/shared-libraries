@@ -33,12 +33,10 @@
 */
 
 #include <assert.h>
+#include <set>
 
 #include <QAbstractScrollArea>
 #include <QTimeLine>
-
-#include <string>
-#include <vector>
 
 #include "Counter.h"
 
@@ -77,7 +75,7 @@ class ScrollObject: public QObject, public Counter
   bool keyReleaseEvent( QKeyEvent* );
   
   //! wheel event
-  bool wheelEvent( QWheelEvent* );
+  bool wheelEvent( QWheelEvent*, Qt::Orientation );
   
   //! wheel event
   bool mousePressEvent( QMouseEvent* );
@@ -135,16 +133,16 @@ class ScrollObject: public QObject, public Counter
   private: 
   
   //! single step
-  bool _singleStep( int );
+  bool _singleStep( int, unsigned int );
   
   //! page step
-  bool _pageStep( int );
+  bool _pageStep( int, unsigned int );
   
   //! previous page
-  bool _previousPage( void );
+  bool _previousPage( unsigned int );
   
   //! next page
-  bool _nextPage( void );
+  bool _nextPage( unsigned int );
   
   //! scroll contents
   bool _scrollBy( QPoint );
@@ -169,6 +167,12 @@ class ScrollObject: public QObject, public Counter
   
   // target
   QAbstractScrollArea* target_;
+
+  //! set of captured objects
+  typedef std::set<QObject*> ObjectSet;
+  
+  //! set of captured objects
+  ObjectSet targets_;
   
   // smooth scrolling
   QTimeLine time_line_;
