@@ -201,8 +201,8 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
   // edition
   if( flag & TEXTEDIT ) { textEditConfiguration( parent ); }
   
-  // edition
-  if( flag & ANIMATIONS ) { animationConfiguration( parent ); }
+  // animation (go to a new page)
+  if( flag & ANIMATIONS ) { animationConfiguration(); }
 
   Debug::Throw( "BaseConfigurationDialog::baseConfiguration - done.\n" );
 }
@@ -395,42 +395,52 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 
   // make sure parent is valid
   QGroupBox* box;
-  if( !parent ) 
-  {
-    parent = &addPage( "Animations", "Animation settings" );
-    box = new QGroupBox( parent );
+  if( !parent ) {
+    parent = &addPage( "Animations", "Generic animation settings" );
+    box = new QGroupBox( parent ); 
   } else box = new QGroupBox( "Animations", parent );
   
-  QVBoxLayout* layout = new QVBoxLayout();
-  layout->setMargin(5);
-  layout->setSpacing(5);
-  box->setLayout( layout );
+  box->setLayout( new QVBoxLayout() );
+  box->layout()->setMargin(5);
+  box->layout()->setSpacing(5);
+
+  parent->layout()->addWidget( new QLabel( 
+    "Warning: animations are still experimental\n"
+    "and might significantly slow-down the system.", parent ) );
+
   parent->layout()->addWidget( box );
 
-  OptionCheckBox* checkbox;
-  OptionSpinBox* spinbox;
-  layout->addWidget( checkbox = new OptionCheckBox( "Enable animations", box, "ENABLE_ANIMATIONS" ) );
-  checkbox->setToolTip( 
-    "Turn on/off animations.\n Warning: animations are still experimental\n"
-    "and might significantly slow-down the system." );
-  addOptionWidget( checkbox );
-  
   GridLayout* grid_layout = new GridLayout();
   grid_layout->setSpacing(5);
   grid_layout->setMargin(0);
   grid_layout->setMaxCount(2);
   box->layout()->addItem( grid_layout );
+
+  grid_layout->addWidget( new QLabel( "type", box ), 0, 0, Qt::AlignHCenter );
+  grid_layout->addWidget( new QLabel( "duration (ms)", box ), 0, 1, Qt::AlignHCenter );
   
-  // animations
-  grid_layout->addWidget( new QLabel( "Duration (ms): ", box ) );
-  spinbox = new OptionSpinBox( box, "ANIMATION_DURATION" );
+  OptionCheckBox* checkbox;
+  OptionSpinBox* spinbox;
+  grid_layout->addWidget( checkbox = new OptionCheckBox( "Smooth Transitions", box, "SMOOTH_TRANSITION_ENABLED" ) );
+  checkbox->setToolTip( "Enables fading transition when changing display contents." );
+  addOptionWidget( checkbox );
+    
+  grid_layout->addWidget( spinbox = new OptionSpinBox( box, "SMOOTH_TRANSITION_DURATION" ) );
   spinbox->setMinimum( 10 );
   spinbox->setMaximum( 5000 );
-  spinbox->setToolTip( "Animations duration." );
-  grid_layout->addWidget( spinbox );
+  spinbox->setToolTip( "Smooth transitions duration (ms)." );
   addOptionWidget( spinbox );
- 
-  // animations
+  
+   grid_layout->addWidget( checkbox = new OptionCheckBox( "Smooth Scrolling", box, "SMOOTH_SCROLLING_ENABLED" ) );
+  checkbox->setToolTip( "Enables smooth scrolling when using page-up/page-down buttons, or mouse wheel." );
+  addOptionWidget( checkbox );
+    
+  grid_layout->addWidget( spinbox = new OptionSpinBox( box, "SMOOTH_SCROLLING_DURATION" ) );
+  spinbox->setMinimum( 10 );
+  spinbox->setMaximum( 5000 );
+  spinbox->setToolTip( "Smooth scrolling duration (ms)." );
+  addOptionWidget( spinbox );
+
   grid_layout->addWidget( new QLabel( "Frames: ", box ) );
   spinbox = new OptionSpinBox( box, "ANIMATION_FRAMES" );
   spinbox->setMinimum( 0 );
@@ -440,6 +450,8 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     "system is too slow anyway." );
   grid_layout->addWidget( spinbox );
   addOptionWidget( spinbox );
+  
+  
   
 }
 

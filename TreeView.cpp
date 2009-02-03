@@ -241,7 +241,15 @@ void TreeView::updateSortOrder( void )
   Debug::Throw( "TreeView::updateSortOrder.\n" );
   if( !hasOptionName() ) return;
   if( XmlOptions::get().find( sortColumnOptionName() ) && XmlOptions::get().find( sortColumnOptionName() ) )
-  { sortByColumn( XmlOptions::get().get<int>( sortColumnOptionName() ), (Qt::SortOrder)(XmlOptions::get().get<int>( sortOrderOptionName() ) ) ); }
+  { 
+    bool changed( 
+      header()->sortIndicatorSection() != XmlOptions::get().get<int>( sortColumnOptionName() ) || 
+      header()->sortIndicatorOrder() != XmlOptions::get().get<int>( sortOrderOptionName() ) );
+    
+    if( changed )
+    { sortByColumn( XmlOptions::get().get<int>( sortColumnOptionName() ), (Qt::SortOrder)(XmlOptions::get().get<int>( sortOrderOptionName() ) ) ); }
+    
+  }
   
 }
 

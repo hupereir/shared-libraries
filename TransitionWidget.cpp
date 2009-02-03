@@ -107,11 +107,8 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
     
     // if running, get frame and update painter opacity
     qreal frame = timeLine().currentFrame();
-    painter.setOpacity( frame/timeLine().startFrame() );
+    painter.setOpacity( 1.0 - frame/timeLine().endFrame() );
     
-    // stop if needed
-    if( frame <= 0 ) { timeLine().stop(); }
-
   }
   
   // draw pixmap
@@ -124,9 +121,8 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
 void TransitionWidget::_updateConfiguration( void )
 {
   Debug::Throw( "TransitionWidget::_updateConfiguration.\n" );
-  
-  setEnabled(  XmlOptions::get().get<bool>( "ENABLE_ANIMATIONS" ) );
-  timeLine().setDuration( XmlOptions::get().get<int>( "ANIMATION_DURATION" ) );
-  timeLine().setFrameRange( XmlOptions::get().get<int>( "ANIMATION_FRAMES" ), 0 );
+  setEnabled(  XmlOptions::get().get<bool>( "SMOOTH_TRANSITION_ENABLED" ) );
+  timeLine().setDuration( XmlOptions::get().get<int>( "SMOOTH_TRANSITION_DURATION" ) );
+  timeLine().setFrameRange( 0, XmlOptions::get().get<int>( "ANIMATION_FRAMES" ) );
     
 } 

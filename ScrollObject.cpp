@@ -78,10 +78,8 @@ ScrollObject::~ScrollObject( void )
 bool ScrollObject::eventFilter( QObject* object, QEvent* event)
 {
   
-  Debug::Throw( "ScrollObject::eventFilter.\n" );
-
+  // check enability
   if( !isEnabled() ) return false;
-  
   if( object != &_target() && object != _target().viewport() ) return false;
 
   // check event type
@@ -214,8 +212,8 @@ void ScrollObject::_updateConfiguration( void )
   Debug::Throw( "ScrollObject::_updateConfiguration.\n" );
         
   // smooth scrolling
-  setEnabled(  XmlOptions::get().get<bool>( "ENABLE_ANIMATIONS" ) );
-  _timeLine().setDuration( XmlOptions::get().get<int>( "ANIMATION_DURATION" ) );
+  setEnabled(  XmlOptions::get().get<bool>( "SMOOTH_SCROLLING_ENABLED" ) );
+  _timeLine().setDuration( XmlOptions::get().get<int>( "SMOOTH_SCROLLING_DURATION" ) );
   _timeLine().setFrameRange( 0, XmlOptions::get().get<int>( "ANIMATION_FRAMES" ) );
   
 }

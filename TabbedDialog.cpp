@@ -39,6 +39,7 @@
 #include <QLabel>
 
 #include "AnimatedStackedWidget.h"
+#include "ScrollObject.h"
 #include "TabbedDialog.h"
 #include "TreeView.h"
 
@@ -120,6 +121,9 @@ QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, co
   scroll->setWidgetResizable ( true );
   scroll->setFrameStyle( QFrame::NoFrame );
   base->layout()->addWidget( scroll );
+  
+  // add smooth scrolling object
+  new ScrollObject( scroll );
   
   // create main widget
   QWidget* main( new QWidget() );
