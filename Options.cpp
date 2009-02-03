@@ -92,10 +92,13 @@ Options::Options( bool install_default_options ):
     set( "MARGIN_BACKGROUND", "#ecffec" );
     set( "MARGIN_VERTICAL_LINE", "1" );
     
-    set( "ENABLE_ANIMATIONS", "1" );
-    set( "ANIMATION_DURATION", "300" );
     set( "ANIMATION_FRAMES", "1000" );
+    set( "SMOOTH_TRANSITION_ENABLED", "1" );
+    set( "SMOOTH_TRANSITION_DURATION", "300" );
     
+    set( "SMOOTH_SCROLLING_ENABLED", "1" );
+    set( "SMOOTH_SCROLLING_DURATION", "100" );
+
     // box selection
     set( "BOX_SELECTION_ALPHA", Option( "20", "alpha threshold for box selection - between 0 and 100" ) );
     
