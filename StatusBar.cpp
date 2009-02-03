@@ -33,6 +33,7 @@
 #include <QMenu>
 
 #include "StatusBar.h"
+#include "TransitionWidget.h"
 #include "ClockLabel.h"
 #include "Debug.h"
 
@@ -60,9 +61,12 @@ void StatusBar::addLabel( const int& stretch, bool animated )
 {
   Debug::Throw( "StatusBar::addLabel.\n" );
   
-  QLabel* label = (animated) ? 
-    static_cast<QLabel*>(new AnimatedStatusBarLabel( this )):
-    static_cast<QLabel*>(new StatusBarLabel( this ));
+  StatusBarLabel* label(new StatusBarLabel( this ) );
+  if( !animated )
+  { 
+    label->transitionWidget().setEnableOnOptions( false );
+    label->transitionWidget().setEnabled( false );
+  }
   
   label->setMargin(2);
   addPermanentWidget( label, stretch );
@@ -82,14 +86,6 @@ void StatusBar::contextMenuEvent( QContextMenuEvent *event )
 //__________________________________________________________________
 void StatusBarLabel::setTextAndUpdate( const QString& message )
 { 
-  QLabel::setText( message );
-  qApp->processEvents();
-}
-
-//__________________________________________________________________
-void AnimatedStatusBarLabel::setTextAndUpdate( const QString& message )
-{ 
   AnimatedLabel::setText( message );
   qApp->processEvents();
 }
-

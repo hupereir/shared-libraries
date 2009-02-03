@@ -85,6 +85,10 @@ class TransitionWidget: public QWidget, public Counter
   QTimeLine& timeLine( void )
   { return time_line_; }
   
+  //! enable on options
+  void setEnableOnOptions( bool value )
+  { enable_on_options_ = value; }
+  
   //! enability
   void setEnabled( bool value )
   { enabled_ = value; }
@@ -105,6 +109,9 @@ class TransitionWidget: public QWidget, public Counter
   
   private:
    
+  //! use options to enable
+  bool enable_on_options_;
+  
   //! enability
   bool enabled_;
   

@@ -35,7 +35,6 @@
 #include <assert.h>
 #include <QApplication>
 #include <QContextMenuEvent>
-#include <QLabel>
 #include <QStatusBar>
 #include <string>
 #include <vector>
@@ -44,7 +43,7 @@
 #include "Counter.h"
 
 //! local label for additional slots
-class StatusBarLabel: public QLabel
+class StatusBarLabel: public AnimatedLabel
 {
   
   //! Qt meta object macro
@@ -52,32 +51,6 @@ class StatusBarLabel: public QLabel
 
   public:
   StatusBarLabel( QWidget* parent = 0 ):
-    QLabel( parent )
-  {}
-    
-  public slots:
-  
-  //! set text
-  virtual void setText( const QString& message, const bool& value = true )
-  {
-    if( value ) setTextAndUpdate( message );
-    else QLabel::setText( message );
-  }
-  
-  //! set label text and process events
-  void setTextAndUpdate( const QString& );
-
-};
-  
-//! local label for additional slots
-class AnimatedStatusBarLabel: public AnimatedLabel
-{
-  
-  //! Qt meta object macro
-  Q_OBJECT
-
-  public:
-  AnimatedStatusBarLabel( QWidget* parent = 0 ):
     AnimatedLabel( parent )
   {}
     
@@ -94,7 +67,7 @@ class AnimatedStatusBarLabel: public AnimatedLabel
   void setTextAndUpdate( const QString& );
 
 };
-
+  
 /*!
    \class StatusBar
    \brief  customized line edit for application state
@@ -122,7 +95,7 @@ class StatusBar: public QStatusBar, public Counter
   { for( unsigned int i=0; i<n; i++ ) addLabel( stretch, animated ); }
   
   //! retrieves label with given index
-  virtual QLabel& label( const unsigned int& i = 0  ) const
+  virtual StatusBarLabel& label( const unsigned int& i = 0  ) const
   {
     assert( i < labels_.size() );
     return *labels_[i];  
@@ -136,7 +109,7 @@ class StatusBar: public QStatusBar, public Counter
   private:
 
   //! vector of output labels.
-  std::vector< QLabel* > labels_;
+  std::vector< StatusBarLabel* > labels_;
   
 };
 
