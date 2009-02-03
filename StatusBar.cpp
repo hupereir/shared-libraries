@@ -56,10 +56,14 @@ void StatusBar::addClock( void )
 }
 
 //____________________________________________
-void StatusBar::addLabel( const int& stretch )
+void StatusBar::addLabel( const int& stretch, bool animated )
 {
   Debug::Throw( "StatusBar::addLabel.\n" );
-  StatusBarLabel* label = new StatusBarLabel( this );
+  
+  QLabel* label = (animated) ? 
+    static_cast<QLabel*>(new AnimatedStatusBarLabel( this )):
+    static_cast<QLabel*>(new StatusBarLabel( this ));
+  
   label->setMargin(2);
   addPermanentWidget( label, stretch );
   labels_.push_back( label );  
@@ -78,8 +82,14 @@ void StatusBar::contextMenuEvent( QContextMenuEvent *event )
 //__________________________________________________________________
 void StatusBarLabel::setTextAndUpdate( const QString& message )
 { 
-  Debug::Throw() << "StatusBar::StatusBarLabel::setTextAndUpdate - message: " << qPrintable( message ) << endl;
   QLabel::setText( message );
+  qApp->processEvents();
+}
+
+//__________________________________________________________________
+void AnimatedStatusBarLabel::setTextAndUpdate( const QString& message )
+{ 
+  AnimatedLabel::setText( message );
   qApp->processEvents();
 }
 
