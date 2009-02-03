@@ -79,6 +79,9 @@ class ScrollObject: public QObject, public Counter
   //! wheel event
   bool wheelEvent( QWheelEvent* );
   
+  //! wheel event
+  bool mousePressEvent( QMouseEvent* );
+  
   //! time line
   QTimeLine& _timeLine( void ) 
   { return time_line_; }
@@ -132,6 +135,9 @@ class ScrollObject: public QObject, public Counter
   private: 
   
   //! single step
+  bool _singleStep( int );
+  
+  //! page step
   bool _pageStep( int );
   
   //! previous page

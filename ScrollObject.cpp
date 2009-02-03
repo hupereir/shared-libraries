@@ -92,10 +92,13 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
     return keyPressEvent( dynamic_cast<QKeyEvent*>( event ) );
     
     case QEvent::KeyRelease:
-    return keyReleaseEvent( dynamic_cast<QKeyEvent*>( event ) );
+    return keyReleaseEvent( static_cast<QKeyEvent*>( event ) );
     
     case QEvent::Wheel:
-    return wheelEvent( dynamic_cast<QWheelEvent*>( event ) );
+    return wheelEvent( static_cast<QWheelEvent*>( event ) );
+    
+    case QEvent::MouseButtonPress:
+    return mousePressEvent( static_cast<QMouseEvent*>( event ) );
     
     default: return false;
   }
@@ -128,10 +131,25 @@ bool ScrollObject::wheelEvent( QWheelEvent* event )
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
   if( _timeLine().state() == QTimeLine::Running ) _setAutoRepeat( true );
-  return _pageStep( event->delta() / 120 );  
+  //return _pageStep( event->delta() / 120 );
+  
+  // factor 3 here is not understood. It was added to mimic at best 
+  // the scale when animation is turned off.
+  return _singleStep( (3*event->delta())/120 );  
 
 }
   
+
+//_______________________________________________
+bool ScrollObject::mousePressEvent( QMouseEvent* )
+{
+   
+  _timeLine().stop();
+  _setAutoRepeat( false );
+  return false;
+  
+}
+
 //_____________________________________________________
 QPoint ScrollObject::_current( void ) const
 {
@@ -201,6 +219,10 @@ void ScrollObject::_updateConfiguration( void )
   _timeLine().setFrameRange( 0, XmlOptions::get().get<int>( "ANIMATION_FRAMES" ) );
   
 }
+
+//_____________________________________________________________________
+bool ScrollObject::_singleStep( int delta )
+{ return ( _target().verticalScrollBar() && _scrollBy( QPoint( 0, -delta*_target().verticalScrollBar()->singleStep() ) ) ); }
 
 //_____________________________________________________________________
 bool ScrollObject::_pageStep( int delta )
