@@ -73,6 +73,9 @@ class ScrollObject: public QObject, public Counter
   //! keypress event
   bool keyPressEvent( QKeyEvent* );
   
+  //! keypress event
+  bool keyReleaseEvent( QKeyEvent* );
+  
   //! wheel event
   bool wheelEvent( QWheelEvent* );
   
@@ -106,6 +109,14 @@ class ScrollObject: public QObject, public Counter
   const QPointF& _step( void ) const
   { return step_; }
   
+  //! auto_repeat
+  void _setAutoRepeat( bool value )
+  { auto_repeat_ = value; }
+  
+  //! auto_repeat
+  bool _autoRepeat( void ) const
+  { return auto_repeat_; }
+  
   protected slots:
 
   //! animated scroll
@@ -121,7 +132,7 @@ class ScrollObject: public QObject, public Counter
   private: 
   
   //! single step
-  bool _singleStep( int );
+  bool _pageStep( int );
   
   //! previous page
   bool _previousPage( void );
@@ -146,6 +157,9 @@ class ScrollObject: public QObject, public Counter
   
   //! scroll mode
   unsigned int mode_;
+  
+  //! auto repeat
+  bool auto_repeat_;
   
   // target
   QAbstractScrollArea* target_;

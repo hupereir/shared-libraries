@@ -47,6 +47,7 @@ ScrollObject::ScrollObject( QAbstractScrollArea* parent ):
   Counter( "ScrollObject" ),
   enabled_( true ),
   mode_( NONE ),
+  auto_repeat_( false ),
   target_( parent )
 {
   Debug::Throw( "ScrollObject::ScrollObject.\n" );   
@@ -58,7 +59,7 @@ ScrollObject::ScrollObject( QAbstractScrollArea* parent ):
   _updateConfiguration();
   
   // connect time line
-  //_timeLine().setCurveShape( QTimeLine::LinearCurve );
+  _timeLine().setCurveShape( QTimeLine::LinearCurve );
   connect( &_timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( _scroll( int ) ) ); 
   connect( &_timeLine(), SIGNAL( finished( void ) ), this, SLOT( _finished( void )) ); 
   
@@ -90,6 +91,9 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
     case QEvent::KeyPress:
     return keyPressEvent( dynamic_cast<QKeyEvent*>( event ) );
     
+    case QEvent::KeyRelease:
+    return keyReleaseEvent( dynamic_cast<QKeyEvent*>( event ) );
+    
     case QEvent::Wheel:
     return wheelEvent( dynamic_cast<QWheelEvent*>( event ) );
     
@@ -101,28 +105,30 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
 //_______________________________________________
 bool ScrollObject::keyPressEvent( QKeyEvent* event )
 {
-  
-  // check event
-  // if( !event ) return false;
-  
+   
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
-  if( event->key() == Qt::Key_PageUp ) return _previousPage();
-  if( event->key() == Qt::Key_PageDown ) return _nextPage();
+  if( event->key() == Qt::Key_PageUp ) { _setAutoRepeat( true ); return _previousPage(); }
+  if( event->key() == Qt::Key_PageDown ) { _setAutoRepeat( true ); return _nextPage(); }
   return false;
   
 }
 
 //_______________________________________________
+bool ScrollObject::keyReleaseEvent( QKeyEvent* event )
+{
+  _setAutoRepeat( false );
+  return false;
+}
+
+//_______________________________________________
 bool ScrollObject::wheelEvent( QWheelEvent* event )
 {
- 
-  // check event
-  // assert( !event ) return false;
 
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
-  return _singleStep( event->delta() / 8 );  
+  if( _timeLine().state() == QTimeLine::Running ) _setAutoRepeat( true );
+  return _pageStep( event->delta() / 120 );  
 
 }
   
@@ -163,12 +169,6 @@ bool ScrollObject::_setCurrent( QPoint position ) const
 void ScrollObject::_scroll( int frame )
 {
 
-  // stop if needed
-  if( frame >= _timeLine().endFrame() ) { 
-    frame = _timeLine().endFrame();
-    _timeLine().stop();
-  }
-
   // calculate current point  
   if( !_setCurrent( QPoint(
     _start().x() + _step().x()*frame,
@@ -179,7 +179,16 @@ void ScrollObject::_scroll( int frame )
 
 //_____________________________________________________________________
 void ScrollObject::_finished( void )
-{ Debug::Throw( 0, "ScrollObject::_finished.\n" ); }
+{ 
+  Debug::Throw( "ScrollObject::_finished.\n" ); 
+  if( _autoRepeat() )
+  {
+    _setAutoRepeat( false );
+    _setStart( _current() );
+    _timeLine().start();
+  }
+  
+}
 
 //_____________________________________________________________________
 void ScrollObject::_updateConfiguration( void )
@@ -194,16 +203,16 @@ void ScrollObject::_updateConfiguration( void )
 }
 
 //_____________________________________________________________________
-bool ScrollObject::_singleStep( int delta )
-{ return ( _target().verticalScrollBar() && _scrollBy( QPoint( 0, -delta*_target().verticalScrollBar()->singleStep() ) ) ); }
+bool ScrollObject::_pageStep( int delta )
+{ return ( _target().verticalScrollBar() && _scrollBy( QPoint( 0, -delta*_target().verticalScrollBar()->pageStep() ) ) ); }
 
 //_____________________________________________________________________
 bool ScrollObject::_previousPage( void )
-{ return ( _target().verticalScrollBar() && _scrollBy( QPoint( 0, -_target().verticalScrollBar()->pageStep() ) ) ); }
+{ return _pageStep(1); }
 
 //_____________________________________________________________________
 bool ScrollObject::_nextPage( void )
-{ return ( _target().verticalScrollBar() && _scrollBy( QPoint( 0, _target().verticalScrollBar()->pageStep() ) ) ); }
+{ return _pageStep(-1); }
 
 //_____________________________________________________________________
 bool ScrollObject::_scrollBy( QPoint value )
@@ -217,7 +226,11 @@ bool ScrollObject::_scrollBy( QPoint value )
     qreal( value.y() )/_timeLine().endFrame()
     ) );
 
-  if( _timeLine().state() != QTimeLine::NotRunning ) _timeLine().stop();
-  _timeLine().start();
+  if( _timeLine().state() == QTimeLine::NotRunning ) _timeLine().start();
+  else if( !_autoRepeat() ) {
+    _timeLine().stop();
+    _timeLine().start();
+  }
+  
   return true;
 }
