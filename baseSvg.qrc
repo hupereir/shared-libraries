@@ -3,5 +3,6 @@
     <file alias="svg/background.svg">background.svg</file>
     <file alias="svg/background-simple.svg">background-simple.svg</file>
     <file alias="svg/background-translucent.svg">background-translucent.svg</file>
+    <file alias="svg/background-translucent-2.svg">background-translucent-2.svg</file>
   </qresource>
 </RCC>

@@ -1,5 +1,11 @@
 AUTOMAKE_OPTIONS = foreign
-EXTRA_DIST = base-svg.pro baseSvg.qrc background.svg background-simple.svg background-translucent.svg
+EXTRA_DIST = base-svg.pro \
+  baseSvg.qrc \
+  background.svg \
+  background-simple.svg \
+  background-translucent.svg \
+  background-translucent-2.svg
+
 
 INCLUDES =  \
   -I$(qt_includes) \
