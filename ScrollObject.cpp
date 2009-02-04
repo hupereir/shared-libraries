@@ -29,6 +29,7 @@
 
 #include <assert.h>
 
+#include <QApplication>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QScrollBar>
@@ -117,8 +118,8 @@ bool ScrollObject::keyPressEvent( QKeyEvent* event )
    
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
-  if( event->key() == Qt::Key_PageUp ) { _setAutoRepeat( true ); return _previousPage( Qt::Vertical ); }
-  if( event->key() == Qt::Key_PageDown ) { _setAutoRepeat( true ); return _nextPage( Qt::Vertical ); }
+  if( event->key() == Qt::Key_PageUp ) { _setAutoRepeat( _timeLine().state() == QTimeLine::Running ); return _previousPage( Qt::Vertical ); }
+  if( event->key() == Qt::Key_PageDown ) { _setAutoRepeat( _timeLine().state() == QTimeLine::Running ); return _nextPage( Qt::Vertical ); }
   return false;
   
 }
@@ -136,11 +137,8 @@ bool ScrollObject::wheelEvent( QWheelEvent* event, Qt::Orientation orientation )
 
   // check key against page up or page down
   if( event->modifiers() != Qt::NoModifier ) return false;
-  if( _timeLine().state() == QTimeLine::Running ) _setAutoRepeat( true );
-  
-  // factor 3 here is not understood. It was added to mimic at best 
-  // the scale when animation is turned off. Need to check against Qt sources
-  return _singleStep( (3*event->delta())/120, orientation );  
+  if( _timeLine().state() == QTimeLine::Running ) _setAutoRepeat( true );  
+  return _singleStep( (QApplication::wheelScrollLines()*event->delta())/120, orientation );  
 
 }
   
