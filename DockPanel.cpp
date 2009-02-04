@@ -362,6 +362,10 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
 }
 
 //___________________________________________________________
+void DockPanel::LocalWidget::paintEvent( QPaintEvent *event )
+{ QFrame::paintEvent( event ); }
+ 
+//___________________________________________________________
 void DockPanel::LocalWidget::_installActions( void )
 {
 

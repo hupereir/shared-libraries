@@ -29,6 +29,8 @@
   \date $Date$
 */
 
+#include <QApplication>
+
 #include "AnimatedLabel.h"
 #include "Debug.h"
 #include "TransitionWidget.h"
@@ -58,7 +60,6 @@ void AnimatedLabel::setText( const QString& text )
   // check enability
   if( !( transitionWidget().isEnabled() && isVisible() ) ) return QLabel::setText( text );
   else {
-    
     transitionWidget().initialize();
     QLabel::setText( text );
     transitionWidget().start();

@@ -125,6 +125,9 @@ class DockPanel: public QWidget, public Counter
     //! timer event [overloaded]
     virtual void timerEvent( QTimerEvent* );     
     
+    //! paint event
+    virtual void paintEvent( QPaintEvent* );
+    
     //! actions
     void _installActions( void );
     
