@@ -36,9 +36,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include <sstream>
-#include <string>
 #include <list>
+
+#include <QString>
+#include <QTextStream>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -51,16 +52,16 @@ class Options: public Counter
   public: 
    
   //! pair
-  typedef std::pair< std::string, Option > Pair;
+  typedef std::pair< QString, Option > Pair;
   
   //! shortCut for option map
-  typedef std::map< std::string, Option > Map;
+  typedef std::map< QString, Option > Map;
 
   //! shortCut for option list
   typedef std::vector< Option > List;
         
   //! shortCut for option map
-  typedef std::map< std::string, List > SpecialMap;
+  typedef std::map< QString, List > SpecialMap;
     
   //! constructor
   Options( bool install_default_options = false );
@@ -88,10 +89,10 @@ class Options: public Counter
   { return special_options_; }
   
   //! adds a new option. Return true if option is added
-  virtual bool add( const std::string&, Option, const bool& is_default = false );
+  virtual bool add( const QString&, Option, const bool& is_default = false );
     
   //! retrieve list of special (i.e. kept) options matching a given name
-  virtual List& specialOptions( const std::string& name )
+  virtual List& specialOptions( const QString& name )
   { 
     SpecialMap::iterator iter( special_options_.find( name ) );
     assert( iter != special_options_.end() );
@@ -99,11 +100,11 @@ class Options: public Counter
   }
   
   //! returns true if option name is special
-  virtual bool isSpecialOption( const std::string& name ) const;
+  virtual bool isSpecialOption( const QString& name ) const;
   
   //! retrieve list of special (i.e. kept) options matching a given name
   template < typename T > 
-  std::list<T> specialOptions( const std::string& name )
+  std::list<T> specialOptions( const QString& name )
   {
     
     List option_list( specialOptions( name ) );
@@ -115,31 +116,31 @@ class Options: public Counter
   }
   
   //! clear list of special (i.e. kept) options matching a given name
-  virtual void clearSpecialOptions( const std::string& name );
+  virtual void clearSpecialOptions( const QString& name );
   
   //! returns true if option with matching name is found
-  virtual bool find( const std::string& name )
+  virtual bool find( const QString& name )
   { return options_.find( name ) != options_.end(); }
 
   //! option matching given name
-  virtual const Option& option( const std::string& name ) const
+  virtual const Option& option( const QString& name ) const
   { return options_.find( name )->second; }
   
   //! option value accessor
   template < typename T >
-  T get( const std::string& name ) const
+  T get( const QString& name ) const
   { return _find( name )->second.get<T>(); }
 
   //! option raw value accessor
-  virtual std::string raw( const std::string& name ) const
+  virtual QString raw( const QString& name ) const
   { return _find( name )->second.raw(); }
    
   //! option value modifier
-  void set( const std::string& name, Option option, const bool& is_default = false );
+  void set( const QString& name, Option option, const bool& is_default = false );
 
   //! option value modifier
   template < typename T >
-  void set( const std::string& name, const T& value, const bool& is_default = false )
+  void set( const QString& name, const T& value, const bool& is_default = false )
   { 
     assert( !isSpecialOption( name ) );
     Option &option( options_[name] );
@@ -149,7 +150,7 @@ class Options: public Counter
   }
 
   //! option raw value modifier
-  virtual void setRaw( const std::string& name, const std::string& value, const bool& is_default = false )
+  virtual void setRaw( const QString& name, const QString& value, const bool& is_default = false )
   { 
     assert( !isSpecialOption( name ) );
     Option &option( options_[name] );
@@ -164,7 +165,7 @@ class Options: public Counter
     takes more time with respect to the "standard" options, which are stored
     in a map.
   */
-  virtual void keep( const std::string& name )
+  virtual void keep( const QString& name )
   { 
     if( special_options_.find( name ) == special_options_.end() )
     special_options_.insert( make_pair( name, List() ) );
@@ -177,10 +178,17 @@ class Options: public Counter
   //! restore defaults
   void restoreDefaults( void );
   
+  //! print
+  void print( void ) const
+  {
+    QTextStream what( stdout );
+    what << *this;
+  }
+  
   protected:
   
   //! find name 
-  Map::const_iterator _find( const std::string& name ) const;
+  Map::const_iterator _find( const QString& name ) const;
   
   //! auto-default
   const bool& _autoDefault( void ) const
@@ -198,7 +206,7 @@ class Options: public Counter
   bool auto_default_;
   
   //! streamer
-  friend std::ostream &operator << (std::ostream &,const Options &);
+  friend QTextStream &operator << ( QTextStream &,const Options &);
   
 };
 

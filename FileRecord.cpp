@@ -55,7 +55,7 @@ FileRecord::PropertyId::Id& FileRecord::PropertyId::_counter( void )
 }
 
 //_______________________________________________
-FileRecord::PropertyId::Id FileRecord::PropertyId::get( std::string name )
+FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
 {
 
   // see if iterator exists in list
@@ -73,7 +73,7 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( std::string name )
 }
 
 //_______________________________________________
-std::string FileRecord::PropertyId::get( FileRecord::PropertyId::Id id )
+QString FileRecord::PropertyId::get( FileRecord::PropertyId::Id id )
 {
   assert( id < _nameMap().size() );
   return _nameMap()[id];
@@ -88,7 +88,7 @@ bool FileRecord::operator == (const FileRecord& record ) const
 { return file() == record.file(); }
 
 //_______________________________________________
-FileRecord& FileRecord::addProperty( PropertyId::Id id, std::string value )
+FileRecord& FileRecord::addProperty( PropertyId::Id id, QString value )
 {
   
   properties_[ id ] = value; 

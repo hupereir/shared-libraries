@@ -47,48 +47,33 @@ class Util
   template< typename T > 
   static T sqr( const T& t)
   { return t*t; }
-        
-  /*! 
-    returns time stamp associated to current date
-    format is dd-mm-yy_hh-mm-ss
-  */
-  static std::string timeStamp( void );
-    
-  /*! 
-    returns time string associated to current date
-    format is dd/mm/yy hh:mm:ss
-  */
-  static std::string timeString( void );
-      
+       
   //! returns environment variable or empty string
-  static std::string env( const std::string&, const std::string& default_value = "" );
+  static QString env( const QString&, const QString& default_value = "" );
   
   //!  user name
-  static std::string user( void );
+  static QString user( void );
   
   //! returns the domain name
-  static std::string domain( void );
+  static QString domain( void );
   
   //! user home directory
-  static std::string home( void );
+  static QString home( void );
     
   //! temporary directory ("/tmp")
-  static std::string tmp( void );
+  static QString tmp( void );
   
   /*! returns the host name. 
     \par short_name if true returns only the string located before the first '.'
   */
-  static std::string host( bool short_name = false );  
+  static QString host( bool short_name = false );  
   
   //! application pid
   static int pid( void );  
   
   //! returns the work directory
-  static std::string workingDirectory( void );  
+  static QString workingDirectory( void );  
 
-  //! converts a time in second into an hour/min/sec character string
-  static std::string convertTime( float value );
-  
 };
 
 #endif

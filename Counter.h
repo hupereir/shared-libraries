@@ -32,9 +32,8 @@
    \date    $Date$
 */
 
+#include <QString>
 #include <map>
-#include <string>
-#include <iostream>
 
 /*!
    \class   Counter
@@ -45,10 +44,10 @@ class Counter {
   public:
   
   //! counter name and counts pair
-  typedef std::pair<std::string, int> Pair;
+  typedef std::pair<QString, int> Pair;
       
   //! constructor
-  Counter( const std::string& name );
+  Counter( const QString& name );
   
   //! constructor
   Counter( const Counter& counter );
@@ -60,9 +59,6 @@ class Counter {
   //! retrieves counter count
   int count( void ) const
   { return (count_) ? *count_:0; }
-  
-  //! prints all counters to stream
-  static void print( std::ostream& o = std::cout );
     
   private:
   

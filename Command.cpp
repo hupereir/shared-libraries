@@ -77,7 +77,7 @@ QStringList Command::_parse( const QString &in ) const
   if( Debug::level() >= 1 )
   {
     for( QStringList::const_iterator iter = out.begin(); iter != out.end(); iter++ )
-    { Debug::Throw(0) << "Command::parse - \"" << qPrintable( *iter ) << "\"" << endl; }
+    { Debug::Throw(0) << "Command::parse - \"" << *iter << "\"" << endl; }
   }
   
   return out;

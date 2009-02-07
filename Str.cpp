@@ -1,6 +1,3 @@
-#ifndef CounterMap_h
-#define CounterMap_h
-
 // $Id$
 
 /******************************************************************************
@@ -25,35 +22,11 @@
 *******************************************************************************/
 
 /*!
-   \file    CounterMap.h
-   \brief   Object counter storage map
+   \file    Str.cpp
+   \brief   some utilities to handle strings safely
    \author  Hugo Pereira
    \version $Revision$
    \date    $Date$
 */
 
-#include <map>
-#include <QString>
-
-//! Object counter storage map
-class CounterMap: public std::map<QString, int>
-{
-  
-  public: 
-  
-  //!  get counter for a given name
-  /*! 
-  if the name is found, returns adress of the existing counter
-  creates new counter otherwise and returns adress
-  */
-  int* counter( const QString& name )
-  {
-    iterator iter = find( name );
-    if( iter == end() )
-      return &(insert( std::make_pair( name, 0 ) ).first->second);
-    else return &(iter->second);
-  }    
-  
-};
-
-#endif
+#include "Str.h"

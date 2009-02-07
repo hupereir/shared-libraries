@@ -35,7 +35,7 @@
 using namespace std;
 
 //____________________________________________________________
-Counter::Counter( const std::string& name ):
+Counter::Counter( const QString& name ):
   count_( 0 )
 {
   count_ = Singleton::get().counterMap().counter( name );
@@ -49,12 +49,4 @@ Counter::Counter( const Counter& counter ):
 {
   (*count_) ++;
   return;
-}
-  
-//____________________________________________________
-void Counter::print( ostream& out )
-{
-  for( CounterMap::iterator iter = Singleton::get().counterMap().begin(); iter != Singleton::get().counterMap().end(); iter++ )
-  out << iter->first << ": " << iter->second << endl;
-  out << endl;
 }

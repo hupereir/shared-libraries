@@ -31,7 +31,6 @@
 */
 
 #include <algorithm>
-#include <fstream>
 #include <list>
 
 #include "Debug.h"
@@ -109,18 +108,18 @@ Options::Options( bool install_default_options ):
 }
 
 //________________________________________________
-bool Options::isSpecialOption( const std::string& name ) const
+bool Options::isSpecialOption( const QString& name ) const
 { return special_options_.find( name ) != special_options_.end(); }
 
 //________________________________________________
-void Options::clearSpecialOptions( const string& name )
+void Options::clearSpecialOptions( const QString& name )
 {
   assert( isSpecialOption( name ) );
   special_options_[name].clear();
 }
 
 //________________________________________________
-void Options::set( const std::string& name, Option option, const bool& is_default )
+void Options::set( const QString& name, Option option, const bool& is_default )
 {
   Debug::Throw() << "Options::set - name: " << name << endl;
   assert( !isSpecialOption( name ) );
@@ -129,7 +128,7 @@ void Options::set( const std::string& name, Option option, const bool& is_defaul
 }
 
 //________________________________________________
-bool Options::add( const std::string& name, Option option, const bool& is_default )
+bool Options::add( const QString& name, Option option, const bool& is_default )
 {
   
   Debug::Throw() << "Options::add - name: " << name << endl;
@@ -138,7 +137,7 @@ bool Options::add( const std::string& name, Option option, const bool& is_defaul
   SpecialMap::iterator iter( special_options_.find( name ) );
 
   // check option
-  if( iter == special_options_.end() ) { cout << "Options::add - invalid option: " << name << endl; }
+  if( iter == special_options_.end() ) { QTextStream( stdout ) << "Options::add - invalid option: " << name << endl; }
   assert( iter != special_options_.end() );
   
   // set as default
@@ -189,7 +188,7 @@ void Options::restoreDefaults( void )
   // restore standard options
   for( Map::iterator iter = options_.begin(); iter != options_.end(); iter++ )
   { 
-    if( iter->second.defaultValue().empty() ) continue;
+    if( iter->second.defaultValue().isEmpty() ) continue;
     iter->second.restoreDefault(); 
   }
     
@@ -200,7 +199,7 @@ void Options::restoreDefaults( void )
     iter->second.clear();
     for( Options::List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
     { 
-      if( list_iter->defaultValue().empty() ) continue;
+      if( list_iter->defaultValue().isEmpty() ) continue;
       add( iter->first, list_iter->restoreDefault() );
     }
   }
@@ -208,7 +207,7 @@ void Options::restoreDefaults( void )
 }
 
 //________________________________________________
-std::ostream &operator << (std::ostream &out,const Options &options)
+QTextStream &operator << ( QTextStream &out,const Options &options)
 {
 
   // print normal options
@@ -231,10 +230,10 @@ std::ostream &operator << (std::ostream &out,const Options &options)
 }
 
 //________________________________________________
-Options::Map::const_iterator Options::_find( const std::string& name ) const
+Options::Map::const_iterator Options::_find( const QString& name ) const
 {
   Map::const_iterator out( options_.find( name ) );
-  if( out == options_.end() ) { cout << "Options::_find - invalid option: " << name << endl; }
+  if( out == options_.end() ) { QTextStream( stdout ) << "Options::_find - invalid option: " << name << endl; }
   assert( out != options_.end() );
   return out;
 }

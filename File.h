@@ -33,15 +33,13 @@
 */
 
 #include <QFileInfo>
-#include <time.h>
-#include <string>
+#include <QString>
 #include <list>
 
 #include "Counter.h"
-#include "Str.h"
 
 //! file manipulation utility
-class File: public Str
+class File: public QString
 {
   
   public:
@@ -51,8 +49,8 @@ class File: public Str
   {}
   
   //! constructor
-  File( const std::string& value ):
-    Str( value )
+  File( const QString& value ):
+    QString( value )
   {}
   
   //! returns true if file has absolute pathname
@@ -77,30 +75,30 @@ class File: public Str
   virtual unsigned int groupId( void ) const;
   
   //! user name
-  virtual std::string userName( void ) const;
+  virtual QString userName( void ) const;
 
   //! group name
-  virtual std::string groupName( void ) const;
+  virtual QString groupName( void ) const;
   
   //! permission string
   virtual QFile::Permissions permissions( void ) const;
 
   //! permission string
-  virtual std::string permissionsString( void ) const
+  virtual QString permissionsString( void ) const
   { return permissionsString( permissions() ); }
   
   //! permission string
-  std::string permissionsString( const QFile::Permissions& ) const;
+  QString permissionsString( const QFile::Permissions& ) const;
   
   //! file size
   virtual unsigned int fileSize( void ) const;
   
   //! file size (string version)
-  virtual std::string sizeString( void ) const
+  virtual QString sizeString( void ) const
   { return sizeString( fileSize() ); }
   
   //! file size (string version)
-  static std::string sizeString( const unsigned int& size );
+  static QString sizeString( const unsigned int& size );
     
   //! tells if a file exists
   virtual bool exists( void ) const;
@@ -157,7 +155,7 @@ class File: public Str
   
   //! adds path to a file
   /*! note: the file is taken raw. No truncation/expension performed.*/
-  virtual File addPath( const std::string& path, bool use_absolute = false ) const;
+  virtual File addPath( const QString& path, bool use_absolute = false ) const;
   
   //! expand a file name replacing .. or ~ to full path
   virtual File expand( void ) const;
@@ -210,7 +208,7 @@ class File: public Str
     private:
     
     //! predicted file
-    std::string file_;
+    QString file_;
     
   };
   

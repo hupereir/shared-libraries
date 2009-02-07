@@ -32,6 +32,15 @@
 #include "Option.h"
 
 //________________________________________________________
+QTextStream& operator >> ( QTextStream& in, bool& value )
+{
+  short unsigned int local;
+  in >> local;
+  value = (bool)( local );
+  return in;
+}
+
+//________________________________________________________
 Option::Option(): 
   Counter( "Option" ),
   flags_( RECORDABLE ),
@@ -49,7 +58,7 @@ Option::Option( const char* value, const unsigned int& flags ):
 }
   
 //________________________________________________________
-Option::Option( const std::string& value, const unsigned int& flags ): 
+Option::Option( const QString& value, const unsigned int& flags ): 
   Counter( "Option" ),
   value_( value ),
   flags_( flags ),
@@ -57,7 +66,7 @@ Option::Option( const std::string& value, const unsigned int& flags ):
 {}
 
 //________________________________________________________
-Option::Option( const std::string& value, const std::string& comments, const unsigned int& flags ): 
+Option::Option( const QString& value, const QString& comments, const unsigned int& flags ): 
   Counter( "Option" ),
   value_( value ),
   comments_( comments ),

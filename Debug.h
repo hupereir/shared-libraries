@@ -33,9 +33,11 @@
    \date    $Date$
 */
 
+#include <QTextStream>
+#include <QIODevice>
+#include <QString>
+
 #include <iostream>
-#include <fstream>
-#include <string>
 
 /*!
    \class   Debug
@@ -47,20 +49,21 @@ class Debug
   public:
   
   //! writes string to clog if level is lower than level_
-  static void Throw( int level, std::string str )
+  static void Throw( int level, QString str )
   {   
     if( _get().level_ < level ) return;  
-    std::clog << str;  
+    QTextStream log_stream( stdout );
+    log_stream << str;  
     return;
   }
   
   //! writes string to clog if level_ is bigger than 0
-  static void Throw( std::string str ) 
+  static void Throw( QString str ) 
   { Throw( 1, str ); }
 
   //! returns either clog or dummy stream depending of the level
-  static std::ostream& Throw( int level = 1 )
-  { return ( _get().level_ < level ) ? _get().null_stream_ : std::clog; }
+  static QTextStream& Throw( int level = 1 )
+  { return ( _get().level_ < level ) ? _get().null_stream_ : _get().std_stream_; }
    
   //! sets the debug level. Everything thrown of bigger level is not discarded
   static void setLevel( const int& level ) 
@@ -74,7 +77,9 @@ class Debug
 
   //! private constructor
   Debug( void ):
-    level_( 0 )
+    level_( 0 ),
+    null_stream_( &null_device_ ),
+    std_stream_( stdout )
   {}
   
   //! return singleton
@@ -85,36 +90,34 @@ class Debug
   
   //! null stream. 
   /*! Used to throw everything if the level is not high enough */  
-  class NullStreamBuff : public std::streambuf
+  class NullIODevice : public QIODevice
   {
     public:
     
     //! constructor
-    NullStreamBuff()
+    NullIODevice()
     {}
   
+    protected:
+    
+    // read
+    virtual qint64 readData ( char*, qint64 )
+    { return 0; }
+    
+    // read
+    virtual qint64 writeData( const char*, qint64 )
+    { return 0; }
+    
   };
 
-  //! null stream. 
-  /*! Used to throw everything if the level is not high enough */  
-  class NullStream : public std::ostream
-  {
-    
-    public:
-
-    //! constructor
-    NullStream() : std::ostream(&_streamBuff){}
-
-    private:
-    
-    //! buffer
-    NullStreamBuff _streamBuff;
-    
-   };
-
+  //! null device
+  NullIODevice null_device_; 
   
   //! dummy stream to discard the text of two high debug level
-  NullStream null_stream_;
+  QTextStream null_stream_;
+
+  //! standard stream
+  QTextStream std_stream_;
   
 };
 

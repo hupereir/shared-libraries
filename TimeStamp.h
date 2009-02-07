@@ -98,7 +98,7 @@ class TimeStamp:public Counter
   { return int( time_ ); }  
 
   //! default string for invalid timestamps
-  static const std::string STAMP_UNKNOWN;
+  static const QString STAMP_UNKNOWN;
   
   //! timestamp format enumeration
   enum Format {
@@ -132,7 +132,7 @@ class TimeStamp:public Counter
   };
   
   //! if timestamp is valid, returns formated string 
-  virtual std::string string( Format format = SHORT ) const;
+  virtual QString toString( Format format = SHORT ) const;
 
   //! returns time in second
   virtual time_t unixTime( void ) const 
@@ -209,10 +209,10 @@ class TimeStamp:public Counter
   struct tm tm_;  
   
   //! day names
-  static const std::string days_[];    
+  static const QString days_[];    
   
   //! month names
-  static const std::string months_[];  
+  static const QString months_[];  
 
 };
 

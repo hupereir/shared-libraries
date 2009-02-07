@@ -31,7 +31,8 @@
   \date $Date$
 */
 
-#include <iostream>
+#include <QString>
+#include <QTextStream>
 #include <list>
 
 #include "Counter.h"
@@ -53,7 +54,7 @@ namespace FORMAT
     //! constructor
     TextFormatBlock( 
       const int& begin = 0, const int& end = 0,
-      const unsigned int format = 0, const std::string& color = "" ):
+      const unsigned int format = 0, const QString& color = "" ):
       Counter( "TextFormatBlock" ),
       begin_( begin ),
       end_( end ),
@@ -108,11 +109,11 @@ namespace FORMAT
     { return format_; }
     
     //! color
-    const std::string& color() const 
+    const QString& color() const 
     { return color_; }
     
     //! color
-    std::string& color() 
+    QString& color() 
     { return color_; }
     
     //! get TextFormatBlock matching a given begin position
@@ -222,27 +223,27 @@ namespace FORMAT
     unsigned int format_;
     
     //! color
-    std::string color_;
+    QString color_;
     
     //! streamer
-    friend std::ostream& operator << ( std::ostream& out, const TextFormatBlock& format )
+    friend QTextStream& operator << ( QTextStream& out, const TextFormatBlock& format )
     {
       out 
         << "begin: " << format.begin()
         << " end: " << format.end() 
         << " format: " << format.format() 
         << " color: " << format.color()
-        << std::endl;
+        << endl;
       return out;
     } 
     
     //! streamer
-    friend std::ostream& operator << ( std::ostream& out, const TextFormatBlock::List& formats )
+    friend QTextStream& operator << ( QTextStream& out, const TextFormatBlock::List& formats )
     {
-      out << "TextFormatList: " << std::endl;
+      out << "TextFormatList: " << endl;
       for( TextFormatBlock::List::const_iterator iter = formats.begin(); iter != formats.end(); iter++ )
       { out << *iter; }
-      out << std::endl;
+      out << endl;
       return out;
     }
 

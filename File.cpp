@@ -48,31 +48,31 @@ using namespace std;
 
 //_____________________________________________________________________
 bool File::isAbsolute( void ) const
-{ return QFileInfo( c_str() ).isAbsolute(); }
+{ return QFileInfo( *this ).isAbsolute(); }
 
 //_____________________________________________________________________
 bool File::create( void ) const
-{ return QFile( c_str() ).open( QIODevice::WriteOnly ); }
+{ return QFile( *this ).open( QIODevice::WriteOnly ); }
 
 //_____________________________________________________________________
 time_t File::created( void ) const
 { 
   if( !exists() ) return -1;
-  return QFileInfo( c_str() ).created().toTime_t();
+  return QFileInfo( *this ).created().toTime_t();
 }
 
 //_____________________________________________________________________
 time_t File::lastModified( void ) const
 { 
   if( !exists() ) return -1;
-  return QFileInfo( c_str() ).lastModified().toTime_t();
+  return QFileInfo( *this ).lastModified().toTime_t();
 }
 
 //_____________________________________________________________________
 time_t File::lastAccessed( void ) const
 { 
   if( !exists() ) return -1;
-  return QFileInfo( c_str() ).lastRead().toTime_t();
+  return QFileInfo( *this ).lastRead().toTime_t();
 }
 
 
@@ -80,45 +80,45 @@ time_t File::lastAccessed( void ) const
 unsigned int File::userId( void ) const
 { 
   if( !exists() ) return 0;
-  return QFileInfo( c_str() ).ownerId();
+  return QFileInfo( *this ).ownerId();
 }
 
 //_____________________________________________________________________
-string File::userName( void ) const
+QString File::userName( void ) const
 { 
-  if( !exists() ) return string();
-  QString out( QFileInfo( c_str() ).owner() );
-  if( out.isNull() || out.isEmpty() ) out = QString().setNum( QFileInfo( c_str() ).ownerId() );
-  return qPrintable( out );
+  if( !exists() ) return QString();
+  QString out( QFileInfo( *this ).owner() );
+  if( out.isNull() || out.isEmpty() ) out = QString().setNum( QFileInfo( *this ).ownerId() );
+  return out;
 }
 
 //_____________________________________________________________________
 unsigned int File::groupId( void ) const
 { 
   if( !exists() ) return 0;
-  return QFileInfo( c_str() ).groupId();
+  return QFileInfo( *this ).groupId();
 }
 
 //_____________________________________________________________________
-string File::groupName( void ) const
+QString File::groupName( void ) const
 { 
-  if( !exists() ) return string();
-  return qPrintable( QFileInfo( c_str() ).group() );
+  if( !exists() ) return QString();
+  return QFileInfo( *this ).group();
 }
 
 //_____________________________________________________________________ 
 QFile::Permissions File::permissions( void ) const
-{ return QFileInfo( c_str() ).permissions(); }
+{ return QFileInfo( *this ).permissions(); }
 
 //_____________________________________________________________________ 
-std::string File::permissionsString( const QFile::Permissions& mode ) const
+QString File::permissionsString( const QFile::Permissions& mode ) const
 {
-  
-  ostringstream what;
+  QString out;
+  QTextStream what( &out );
   
   // link, directory or regular file
-  if( QFileInfo( c_str() ).isDir() ) what << "l";
-  else if( QFileInfo( c_str() ).isSymLink() ) what << "d";
+  if( QFileInfo( *this ).isDir() ) what << "l";
+  else if( QFileInfo( *this ).isSymLink() ) what << "d";
   else what << "-";
   
   // user permissions
@@ -136,23 +136,23 @@ std::string File::permissionsString( const QFile::Permissions& mode ) const
   what << ( ( mode & QFile::WriteOther ) ? "w":"-" );    
   what << ( ( mode & QFile::ExeOther   ) ? "x":"-" );    
   
-  return what.str();
+  return out;
   
 }
 //_____________________________________________________________________
 unsigned int File::fileSize( void ) const
 { 
   if( !exists() ) return 0;
-  return QFileInfo( c_str() ).size();
+  return QFileInfo( *this ).size();
 }
  
 //_____________________________________________________________________
-string File::sizeString( const unsigned int& size_int ) 
+QString File::sizeString( const unsigned int& size_int ) 
 { 
   double size = (double) size_int;
   if( size < 0 ) return "-";
   
-  static const char* unit[] = { 
+  static const QString unit[] = { 
     "",
     "k",
     "M",
@@ -162,53 +162,52 @@ string File::sizeString( const unsigned int& size_int )
   if( size == 0 ) return "0";
   
   int power = static_cast<int>( log( size )/log( static_cast<double>(1024) ) );
-  char size_str[7];
-  if( !power ) sprintf( size_str, "%7.0f", size ); 
+  QString out;
+  
+  if( !power ) out.sprintf( "%7.0f", size ); 
   else {
   
     if( power > 3 ) power = 3;
     size /= pow( static_cast<double>(1024), static_cast<double>(power) );
-    sprintf( size_str, "%7.1f", size );
+    out.sprintf( "%7.1f", size );
   
   }
   
-  int pos( 0 );
-  while( size_str[pos] == ' ' ) pos++;
-  
-  return string( size_str+pos ) + unit[power];
+  return out.trimmed() + unit[power];
 
 }
 
 //_____________________________________________________________________
 bool File::exists( void ) const
-{ return QFileInfo( c_str() ).exists(); }
+{ return QFileInfo( *this ).exists(); }
 
 //_____________________________________________________________________
 bool File::isWritable( void ) const
-{ return empty() || QFile( c_str() ).open( QIODevice::ReadWrite ); }
+{ return isEmpty() || QFile( *this ).open( QIODevice::ReadWrite ); }
 
 //_____________________________________________________________________
 bool File::isDirectory( void ) const
-{ return !empty() && QFileInfo( c_str() ).isDir(); }
+{ return !isEmpty() && QFileInfo( *this ).isDir(); }
 
 //_____________________________________________________________________
 bool File::isLink( void ) const
-{ return !empty() && QFileInfo( c_str() ).isSymLink(); }
+{ return !isEmpty() && QFileInfo( *this ).isSymLink(); }
 
 //_____________________________________________________________________
 bool File::isHidden( void ) const
-{ return !empty() && QFileInfo( c_str() ).isHidden(); }
+{ return !isEmpty() && QFileInfo( *this ).isHidden(); }
 
 //_____________________________________________________________________
 File File::version( void ) const
 { 
   
   int version=0;
-  string expand( File::expand() );
+  QString expand( File::expand() );
   File out( expand );
-  while( out.exists() ) {
-    ostringstream o; o << expand << "_" << version;
-    out = o.str();
+  while( out.exists() ) 
+  {
+    out.clear();
+    QTextStream(&out) << expand << "_" << version;
     version++;
   }
   
@@ -222,15 +221,15 @@ File File::backup( void ) const
   // check filename is valid and file exists
   if( !exists() ) return File();
   
-  string expand( File::expand() );
-  string backup( expand+"~" );
+  QString expand( File::expand() );
+  QString backup( expand+"~" );
   
   // open this file
-  QFile in( expand.c_str() );
+  QFile in( expand );
   if( !in.open( QIODevice::ReadOnly ) ) return File();
   
   // open backup
-  QFile out( backup.c_str() );
+  QFile out( backup );
   if( !out.open( QIODevice::WriteOnly ) ) return File();
   
   out.write( in.readAll() );
@@ -250,8 +249,8 @@ bool File::diff(const File& file ) const
   // one of the file does not exists and the other does
   if( !( exists() && file.exists() ) ) return true;
   
-  QFile first( c_str() );
-  QFile second( file.c_str() );
+  QFile first( *this );
+  QFile second( file );
   bool first_open( first.open( QIODevice::ReadOnly ) );
   bool second_open( second.open( QIODevice::ReadOnly ) );
 
@@ -273,7 +272,7 @@ bool File::isEqual( const File& file ) const
 
 //_____________________________________________________________________
 File File::readLink( void ) const
-{ return File( qPrintable( QFileInfo( c_str() ).canonicalFilePath() ) ); }
+{ return File( QFileInfo( *this ).canonicalFilePath() ); }
   
 //_____________________________________________________________________
 bool File::remove( void ) const
@@ -283,7 +282,7 @@ bool File::remove( void ) const
   
   // check if file exists and remove
   // if it does not exists, do nothing and returns true (file was removed already)
-  if( exists() ) return QFile( c_str() ).remove();
+  if( exists() ) return QFile( *this ).remove();
   else return true;
   
 }
@@ -297,20 +296,20 @@ bool File::removeRecursive( void ) const
   if( !isDirectory() ) return remove();
   
   // list content of directory
-  QDir dir( c_str() );
+  QDir dir( *this );
   QStringList files( dir.entryList() );
   for( QStringList::iterator iter = files.begin(); iter != files.end(); iter++ )
   { 
     // skip "." and ".."
     if( (*iter) == "." || (*iter) == ".." ) continue;
-    File file = File( qPrintable( *iter ) ).addPath( *this );
+    File file = File(*iter).addPath( *this );
     if( file.isLink() || !file.isDirectory() )
     {
       if( !file.remove() ) return false;
     } else if( !file.removeRecursive() ) return false; 
   }
   dir.cdUp();
-  dir.rmdir( c_str() );
+  dir.rmdir( *this );
   return true;
 }
  
@@ -320,41 +319,42 @@ bool File::rename( File new_file ) const
   
   // check if file exists and rename
   // return false  otherwise
-  if( exists() ) return QFile( c_str() ).rename( new_file.c_str() );
+  if( exists() ) return QFile( *this ).rename( new_file );
   else return false;
   
 }
 
 //____________________________________________  
-File File::addPath( const string& path, bool use_absolute ) const
+File File::addPath( const QString& path, bool use_absolute ) const
 {  
     
   // returns 0 if either path nor file are given
-  if( empty() && path.empty() ) return File();
+  if( isEmpty() && path.isEmpty() ) return File();
   
   // return path if path is given but not the file
-  if( empty() ) return path;
+  if( isEmpty() ) return path;
   
   // if file is absolute, keep unchanged
   if( isAbsolute() ) return *this;
   
   // returns file if it is relative but path is not given
-  if( !path.size() ) return string("./")+(*this);
+  if( !path.size() ) return QString("./")+(*this);
 
   QFileInfo info;
-  info.setFile( QDir( path.c_str() ), c_str() );
-  return use_absolute ? File( qPrintable( info.absoluteFilePath() ) ): File( qPrintable( info.filePath() ) );
+  info.setFile( QDir( path ), *this );
+  return use_absolute ? info.absoluteFilePath(): info.filePath();
 
 }         
  
 //_____________________________________________________________________
 File File::expand( void ) const
 { 
-  if( empty() ) return File();
-  File out( qPrintable( QFileInfo(c_str()).absoluteFilePath() ) );
+  if( isEmpty() ) return File();
+  File out( QFileInfo(*this).absoluteFilePath() );
 
   // remove trailing slash, except for root
   if( out.size() > 1 && out[out.size()-1] == '/' ) out.resize( out.size()-1 );
+  
   return out;
   
 }
@@ -362,33 +362,35 @@ File File::expand( void ) const
 //_____________________________________________________________________
 File File::path( bool use_absolute ) const
 { 
-  if( empty() ) return File();
-  if( use_absolute ) return File( qPrintable( QFileInfo(c_str()).absolutePath() ) );
-  else return File( qPrintable( QFileInfo(c_str()).path() ) );
+  
+  if( isEmpty() ) return File();
+  if( use_absolute ) return QFileInfo(*this).absolutePath();
+  else return QFileInfo(*this).path();
+  
 }
 
 //_____________________________________________________________________
 File File::localName( void ) const
-{ return empty() ? File(): File(qPrintable( QFileInfo(c_str()).fileName() )); }
+{ return isEmpty() ? File(): File( QFileInfo(*this).fileName() ); }
 
 //_____________________________________________________________________
 File File::canonicalName( void ) const
 { 
-  if( empty() ) return File();
-  QString canonical_name( QFileInfo(c_str()).canonicalFilePath() );
-  return canonical_name.isEmpty() ? File():File( qPrintable( canonical_name ) );
+  if( isEmpty() ) return File();
+  QString canonical_name( QFileInfo(*this).canonicalFilePath() );
+  return canonical_name.isEmpty() ? File():File( canonical_name );
 }
 
 //_____________________________________________________________________
 File File::extension( void ) const
 {  
   // check file name
-  if( empty() ) return File();
+  if( isEmpty() ) return File();
   
   // loop over characters
-  string local( localName() ); 
-  size_t dotpos = local.rfind(".");
-  return File( dotpos == string::npos ? "" : local.substr( dotpos+1, local.size()-dotpos-1 ) );
+  QString local( localName() ); 
+  int dotpos = local.lastIndexOf(".");
+  return File( dotpos < 0 ? "" : local.mid( dotpos+1 ) );
   
 }
 
@@ -397,15 +399,15 @@ File File::truncatedName( void ) const
 {
 
   // check file name
-  if( empty() ) return File();
+  if( isEmpty() ) return File();
   
   // loop over characters
-  size_t dotpos = rfind(".");
-  size_t slashpos = rfind( "/" );
+  int dotpos = lastIndexOf(".");
+  int slashpos = lastIndexOf( "/" );
 
-  if( dotpos == string::npos ) return *this;
-  if( slashpos == string::npos ) return File(dotpos? substr(0,dotpos):"");
-  if( slashpos < dotpos ) return substr(0,dotpos);
+  if( dotpos < 0 ) return *this;
+  if( slashpos < 0 ) return File( dotpos >= 0 ? left(dotpos):"");
+  if( slashpos < dotpos ) return left(dotpos);
   
   return *this;
 
@@ -415,7 +417,7 @@ File File::truncatedName( void ) const
 list<File> File::listFiles( const unsigned int& flags ) const
 {
   
-  // Debug::Throw(0) << "File::listFiles - this: " << c_str() << " - hidden: " << (flags&SHOW_HIDDEN) << endl;
+  // Debug::Throw(0) << "File::listFiles - this: " << *this << " - hidden: " << (flags&SHOW_HIDDEN) << endl;
   
   File full_name( expand() );
   list<File> out;
@@ -425,7 +427,7 @@ list<File> File::listFiles( const unsigned int& flags ) const
   QDir::Filters filter = QDir::AllEntries;
   if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
   
-  QDir dir( full_name.c_str() );
+  QDir dir( full_name );
   QStringList files( dir.entryList( filter ) );
   for( QStringList::iterator iter = files.begin(); iter != files.end(); iter++ )
   {
@@ -433,8 +435,8 @@ list<File> File::listFiles( const unsigned int& flags ) const
     if( *iter == "." || *iter == ".." ) continue;
     
     QFileInfo file_info;
-    file_info.setFile( QDir( c_str() ), *iter );
-    File found( qPrintable( file_info.absoluteFilePath() ) );
+    file_info.setFile( QDir( *this ), *iter );
+    File found( file_info.absoluteFilePath() );
     out.push_back( found );
     
     // Debug::Throw( 0 ) << "File::listFiles - " << found << endl;
@@ -463,7 +465,7 @@ list<File> File::listFiles( const unsigned int& flags ) const
 File File::find( const File& file, bool case_sensitive ) const
 {
   
-  Debug::Throw() << "File::find - this: " << c_str() << endl;
+  Debug::Throw() << "File::find - this: " << *this << endl;
   if( !( exists() && isDirectory() ) ) return File();
   list<File> files( listFiles( RECURSIVE ) );
   list<File> directories;
@@ -471,7 +473,7 @@ File File::find( const File& file, bool case_sensitive ) const
   {
         
     // check if file match
-    if( File( *iter ).localName().Str::isEqual( file, case_sensitive ) )
+    if( File( *iter ).localName().compare( file, case_sensitive ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
     return *iter;
     
     // check if file is directory        

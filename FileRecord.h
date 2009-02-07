@@ -39,7 +39,6 @@
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
-#include "Str.h"
 #include "TimeStamp.h"
 
 //! handles previously opened file and tags 
@@ -72,7 +71,7 @@ class FileRecord: public Counter
   { return file_; }
 
   //! file
-  FileRecord& setFile( const std::string& file )
+  FileRecord& setFile( const QString& file )
   { 
     file_ = file; 
     return *this;
@@ -164,11 +163,11 @@ class FileRecord: public Counter
     
     //! get id matching name
     /*! insert in map if name is new */
-    static Id get( std::string name );
+    static Id get( QString name );
    
     //! get name matching id
     /*! throw exception if not found */
-    static std::string get( Id );
+    static QString get( Id );
      
     private:
     
@@ -176,13 +175,13 @@ class FileRecord: public Counter
     static Id& _counter( void );
     
     //! id map
-    typedef std::map< std::string, Id > IdMap;
+    typedef std::map< QString, Id > IdMap;
     
     //! id map
     static IdMap& _idMap();
     
     //! id map
-    typedef std::vector< std::string > NameMap;
+    typedef std::vector< QString > NameMap;
     
     //! name map
     static NameMap& _nameMap();
@@ -190,14 +189,14 @@ class FileRecord: public Counter
   };
 
   //! add property
-  FileRecord& addProperty( std::string tag, std::string value )
+  FileRecord& addProperty( QString tag, QString value )
   { return addProperty( PropertyId::get( tag ), value ); }
   
   //! add property
-  FileRecord& addProperty( PropertyId::Id, std::string );
+  FileRecord& addProperty( PropertyId::Id, QString );
   
   //! true if property is available
-  bool hasProperty( std::string tag ) const
+  bool hasProperty( QString tag ) const
   { return hasProperty( PropertyId::get( tag ) ); }
     
   //! true if property is available
@@ -205,18 +204,18 @@ class FileRecord: public Counter
   { return properties_.find( id ) != properties_.end(); }
 
   //! additional property map
-  typedef std::map< PropertyId::Id, std::string > PropertyMap;
+  typedef std::map< PropertyId::Id, QString > PropertyMap;
   
   //! property map
   const PropertyMap& properties( void ) const
   { return properties_; }
 
   //! retrieve property
-  std::string property( std::string tag ) const
+  QString property( QString tag ) const
   { return property( PropertyId::get( tag ) ); }
 
   //! retrieve property
-  std::string property( PropertyId::Id id ) const
+  QString property( PropertyId::Id id ) const
   {
     PropertyMap::const_iterator iter(  properties_.find( id ) );
     return ( iter == properties_.end() ) ? "":iter->second;
@@ -363,11 +362,11 @@ class FileRecord: public Counter
   bool valid_;
   
   //! streamers
-  friend std::ostream& operator << ( std::ostream& out, const FileRecord& record )
+  friend QTextStream& operator << ( QTextStream& out, const FileRecord& record )
   {
-    out << record.file() << std::endl;
+    out << record.file() << endl;
     for( PropertyMap::const_iterator iter = record.properties().begin(); iter != record.properties().end(); iter++ )
-    { out << "  " << iter->first << ": " << iter->second << std::endl; }
+    { out << "  " << iter->first << ": " << iter->second << endl; }
     return out;
   }
 

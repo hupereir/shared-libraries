@@ -40,7 +40,7 @@
 
 using namespace std;
 
-const string TimeStamp::days_[] = {
+const QString TimeStamp::days_[] = {
   "Sun",
   "Mon",
   "Tue",
@@ -50,7 +50,7 @@ const string TimeStamp::days_[] = {
   "Sat" 
   }; 
 
-const string TimeStamp::months_[] = {
+const QString TimeStamp::months_[] = {
   "Jan",
   "Feb",
   "Mar",
@@ -65,7 +65,7 @@ const string TimeStamp::months_[] = {
   "Dec" };
 
 //_______________________________
-const string TimeStamp::STAMP_UNKNOWN( "unknown" ); 
+const QString TimeStamp::STAMP_UNKNOWN( "unknown" ); 
 
 //_____________________________________
 TimeStamp TimeStamp::now( void )
@@ -79,12 +79,12 @@ TimeStamp TimeStamp::now( void )
 }
 
 //___________________________________
-string TimeStamp::string( TimeStamp::Format format ) const
+QString TimeStamp::toString( TimeStamp::Format format ) const
 {
   if( !(is_valid_ ) ) return STAMP_UNKNOWN;
   
-  ostringstream o;
-  
+  QString out;
+  QTextStream o( &out );
   switch (format) {
     
     case DATE:
@@ -120,11 +120,11 @@ string TimeStamp::string( TimeStamp::Format format ) const
     break;
 
     case SHORT:
-    o << this->string( DATE ) << " " << this->string( TIME );
+    o << toString( DATE ) << " " << toString( TIME );
     break;
       
     case SHORT_US:
-    o << this->string( DATE_US ) << " " << this->string( TIME );
+    o << toString( DATE_US ) << " " << toString( TIME );
     break;
     
     
@@ -134,7 +134,7 @@ string TimeStamp::string( TimeStamp::Format format ) const
     o << months_[tm_.tm_mon] << " ";
     o << tm_.tm_year+1900 << " ";
   
-    o << this->string( TIME );
+    o << toString( TIME );
     o << ":";
     if( tm_.tm_sec < 10 ) o << "0"; 
     o << tm_.tm_sec << " ";
@@ -165,5 +165,5 @@ string TimeStamp::string( TimeStamp::Format format ) const
   
   }
   
-  return o.str();
+  return out;
 }

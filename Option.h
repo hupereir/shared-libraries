@@ -33,17 +33,24 @@
 */
 
 #include <assert.h>
-#include <iostream>
-#include <sstream>
+#include <QString>
+#include <QTextStream>
 
 #include "Counter.h"
 #include "Debug.h"
+
+
+//! stream boolean
+/*! not sure if this is a valid writing or not */
+QTextStream& operator >> ( QTextStream& in, bool& value );
 
 /*!
    \class   Option
    \brief   Option objects for string, int, bool and double options
 */
-class Option:public Counter {
+class Option:public Counter 
+{
+  
   public:
 
   //! default creator
@@ -53,10 +60,10 @@ class Option:public Counter {
   Option( const char* value, const unsigned int& flags = RECORDABLE );
   
   //! filled creator
-  Option( const std::string& value, const unsigned int& flags = RECORDABLE );
+  Option( const QString& value, const unsigned int& flags = RECORDABLE );
  
   //! filled creator
-  Option( const std::string& value, const std::string& comments, const unsigned int& flags = RECORDABLE );
+  Option( const QString& value, const QString& comments, const unsigned int& flags = RECORDABLE );
   
   //! less than operator
   bool operator < (const Option& option ) const
@@ -67,11 +74,11 @@ class Option:public Counter {
   { return value_ == option.value_; }
 
   //! option comments
-  const std::string& comments( void ) const
+  const QString& comments( void ) const
   { return comments_; }
   
   //! option comments
-  Option& setComments( const std::string& comments )
+  Option& setComments( const QString& comments )
   { 
     comments_ = comments; 
     return *this;
@@ -158,18 +165,18 @@ class Option:public Counter {
   
 
   //! raw accessor
-  const std::string& raw( void ) const
+  const QString& raw( void ) const
   { return value_; }
 
   //! raw modifier
-  Option& setRaw( const std::string& value )
+  Option& setRaw( const QString& value )
   { 
     value_ = value; 
     return *this;
   }
   
   //! default value
-  const std::string& defaultValue( void ) const
+  const QString& defaultValue( void ) const
   { return default_value_; }
 
   //! accessor
@@ -178,12 +185,15 @@ class Option:public Counter {
   {
     
     // check if option is set
-    assert( !value_.empty() ); 
+    assert( !value_.isEmpty() ); 
     
     // cast value
-    std::istringstream s( value_ );
-    T out; s >> out;
-    assert( !(s.rdstate() & std::ios::failbit ) ); 
+    // the const-cast here is because the string should not be affected
+    // (hence the ReadOnly) but Qt does not allow to pass a const pointer
+    QTextStream s( const_cast<QString*>(&value_), QIODevice::ReadOnly );
+    T out; 
+    s >> out;
+    assert( s.status() == QTextStream::Ok ); 
     return out;
   }
   
@@ -191,22 +201,17 @@ class Option:public Counter {
   template < typename T >
   Option& set( const T& value )
   {
-    std::ostringstream s; s << value;
-    value_ = s.str();
+
+    value_.clear();
+    QTextStream s( &value_, QIODevice::WriteOnly );
+    s << value;
     return *this;
+  
   }
   
   //! check status
   bool set( void ) const 
-  {return !value_.empty();}
-
-  //! method used to dump the option to stream
-  friend std::ostream &operator << (std::ostream &o,const Option &opt)
-  {
-    if( !opt.set() ) o << "not set";
-    else o << opt.raw();
-    return o;
-  }
+  {return !value_.isEmpty();}
   
   //! restore default value
   Option& restoreDefault()
@@ -219,19 +224,27 @@ class Option:public Counter {
   private:
   
   //! option value
-  std::string value_;
+  QString value_;
   
   //! option comments
-  std::string comments_; 
+  QString comments_; 
   
   //! flags
   unsigned int flags_;
   
   //! option default value
-  std::string default_value_;
+  QString default_value_;
  
   //! default flags
   unsigned int default_flags_;
+    
+  //! streamer
+  friend QTextStream &operator << ( QTextStream &out, const Option &option )
+  {
+    if( !option.set() ) out << "not set";
+    else out << option.raw();
+    return out;
+  }
   
 };
 

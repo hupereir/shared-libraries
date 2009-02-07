@@ -86,7 +86,7 @@ void CommandLineParser::usage( void ) const
     stream << iter->second.help_text_ << endl; 
   }
   
-  cout << qPrintable( buffer );
+  QTextStream( stdout ) << buffer;
   
   return;
 }
@@ -141,8 +141,8 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
         if( !ignore_warnings )
         {
           Debug::Throw(0) << "CommandLineParser::parse -"
-            << " expected argument of type " << qPrintable( iter->second.type_ )
-            << " after option " << qPrintable( iter->first ) << endl;
+            << " expected argument of type " << iter->second.type_
+            << " after option " << iter->first << endl;
         }
         
         continue;
@@ -154,7 +154,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
     {
       
       if( !ignore_warnings )
-      { Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << qPrintable( tag_name ) << endl; }
+      { Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << tag_name << endl; }
       
       continue;
       
@@ -247,7 +247,7 @@ void CommandLineParser::_discardOrphans( bool ignore_warnings )
   {
     Debug::Throw(0) << "CommandLineParser::parse - following orphans are discarded: " << endl;
     for( QStringList::const_iterator iter = orphans_.begin(); iter != orphans_.end(); iter++ )
-    { cout << "  " << qPrintable( *iter ) << endl; }
+    { QTextStream( stdout ) << "  " << *iter << endl; }
   }
   
   orphans_.clear();
