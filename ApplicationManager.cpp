@@ -66,7 +66,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   connect( &client(), SIGNAL( commandAvailable( SERVER::ServerCommand ) ), SLOT( _process( SERVER::ServerCommand ) ) );
 
   if( !XmlOptions::get().find( "SERVER_HOST" ) )
-  { XmlOptions::get().set( "SERVER_HOST", Option( qPrintable( QHostAddress( QHostAddress::LocalHost ).toString() ), "default port" ) ); }
+  { XmlOptions::get().set( "SERVER_HOST", Option( QHostAddress( QHostAddress::LocalHost ).toString(), "default port" ) ); }
 
   if( !XmlOptions::get().find( "SERVER_PORT" ) )
   { XmlOptions::get().set( "SERVER_PORT", Option( "8090" ), "default port" ); }
@@ -123,10 +123,10 @@ void ApplicationManager::initialize( CommandLineArguments arguments )
   {
     
     QString host( parser.option( "--server-host" ) );
-    XmlOptions::get().setRaw( "SERVER_HOST", qPrintable( host ) ); 
+    XmlOptions::get().setRaw( "SERVER_HOST", host ); 
     _setHost( QHostAddress( host ) );
     
-  } else _setHost( QHostAddress( XmlOptions::get().raw( "SERVER_HOST" ).c_str() ) );
+  } else _setHost( QHostAddress( XmlOptions::get().raw( "SERVER_HOST" ) ) );
 
   // overwrite port from command line arguments
   if( parser.hasOption( "--server-port" ) )
@@ -148,8 +148,8 @@ void ApplicationManager::initialize( CommandLineArguments arguments )
 //_____________________________________________________
 void ApplicationManager::setApplicationName( const QString& name )
 { 
-  Debug::Throw() << "ApplicationManager::setApplicationName - " << qPrintable( name ) << endl;
-  id_ = ApplicationId( name, Util::user().c_str(), QString( Util::env( "DISPLAY", "0.0" ).c_str() ).replace( ":", "" ) );
+  Debug::Throw() << "ApplicationManager::setApplicationName - " << name << endl;
+  id_ = ApplicationId( name, Util::user(), Util::env( "DISPLAY", "0.0" ).replace( ":", "" ) );
 }
 
 //______________________________________________________________
@@ -201,8 +201,8 @@ void ApplicationManager::_redirect( ServerCommand command, Client* sender )
 {
   
   Debug::Throw() << "ApplicationManager::_redirect -" 
-    << "  app:" << qPrintable( command.id().name() ) 
-    << " command: " << qPrintable( command.commandName() )  
+    << "  app:" << command.id().name() 
+    << " command: " << command.commandName()  
     << endl;    
 
   CommandLineParser parser( commandLineParser( command.arguments() ) );
@@ -290,7 +290,7 @@ void ApplicationManager::_redirect( ServerCommand command, Client* sender )
 void ApplicationManager::_broadcast( ServerCommand command, Client* sender )
 {
   
-  Debug::Throw() << "ApplicationManager::_Broadcast - id: " << qPrintable( command.id().name() ) << " command: " << qPrintable( command.commandName() ) << endl;
+  Debug::Throw() << "ApplicationManager::_Broadcast - id: " << command.id().name() << " command: " << command.commandName() << endl;
   for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
   { if( (*iter) != sender ) (*iter)->sendCommand( command ); }
   
@@ -359,7 +359,7 @@ void ApplicationManager::_clientConnectionClosed( void )
 void ApplicationManager::_error( QAbstractSocket::SocketError error )
 {
   
-  Debug::Throw() << "ApplicationManager::_error - error:" << qPrintable( client().socket().errorString() ) << endl;
+  Debug::Throw() << "ApplicationManager::_error - error:" << client().socket().errorString() << endl;
     
   if( error == QAbstractSocket::ConnectionRefusedError )
   {
@@ -377,7 +377,7 @@ void ApplicationManager::_error( QAbstractSocket::SocketError error )
     } else setState( ALIVE );
     
   } else {
-    Debug::Throw() << "ApplicationManager::_error - unhandled error:" << qPrintable( client().socket().errorString() ) << endl;
+    Debug::Throw() << "ApplicationManager::_error - unhandled error:" << client().socket().errorString() << endl;
   }
     
   return;
@@ -402,8 +402,8 @@ void ApplicationManager::_process( ServerCommand command )
 {
   
   Debug::Throw() << "ApplicationManager::_process -"
-    << "  app:" << qPrintable( command.id().name() ) 
-    << " command: " << qPrintable( command.commandName() )  
+    << "  app:" << command.id().name() 
+    << " command: " << command.commandName()  
     << endl;    
 
   assert( client().id() == command.clientId() );
@@ -471,7 +471,7 @@ bool ApplicationManager::_initializeClient( void )
 {
 
   Debug::Throw( "ApplicationManager::_initializeClient.\n" );
-  Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << qPrintable( _host().toString() ) << " port: " << _port() << endl;
+  Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << _host().toString() << " port: " << _port() << endl;
 
   // connect client to port
   client().socket().abort();

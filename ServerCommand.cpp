@@ -89,7 +89,7 @@ ServerCommand::ServerCommand( const QDomElement& element ):
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
     if( attribute.name() == SERVER_XML::TYPE ) setCommand( (CommandType) attribute.value().toUInt() );
-    else Debug::Throw(0) << "ServerCommand::ServerCommand - unrecognized attribute: " << qPrintable( attribute.name() ) << endl;
+    else Debug::Throw(0) << "ServerCommand::ServerCommand - unrecognized attribute: " << attribute.name() << endl;
   }
   
   // loop over children

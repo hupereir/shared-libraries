@@ -143,7 +143,7 @@ bool Client::_readMessage( void )
           ServerCommand command( element );
           emit commandAvailable( command.setClientId( id() ) );
           
-        } else { cout << "ServerCommand::_readMessage - unrecognized tagname: " << qPrintable( element.tagName() ) << endl; }
+        } else { Debug::Throw(0) << "ServerCommand::_readMessage - unrecognized tagname: " << element.tagName() << endl; }
         
       }
       

@@ -69,7 +69,7 @@ bool BaseApplication::realizeWidget( void )
   if( !BaseCoreApplication::realizeWidget() ) return false;
 
   // actions
-  about_action_ = new QAction( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).c_str() ), "About this &Application", this );
+  about_action_ = new QAction( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ), "About this &Application", this );
   connect( about_action_, SIGNAL( triggered() ), SLOT( _about() ) ); 
 
   aboutqt_action_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About &Qt", this );
@@ -125,8 +125,8 @@ void BaseApplication::_about( QString name, QString version, QString stamp )
 
   QMessageBox dialog;
   dialog.setWindowTitle( QString( "About ")+name );
-  dialog.setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-  dialog.setIconPixmap( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+  dialog.setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
+  dialog.setIconPixmap( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
   dialog.setText( buffer );
   dialog.adjustSize();
   QtUtil::centerOnWidget( &dialog, qApp->activeWindow() );
@@ -140,14 +140,14 @@ void BaseApplication::_updateConfiguration( void )
   Debug::Throw( "BaseApplication::_updateConfiguration.\n" );
   
   // application icon
-  qApp->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+  qApp->setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
 
   // set fonts
   QFont font;
-  font.fromString( XmlOptions::get().raw( "FONT_NAME" ).c_str() );
+  font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
   qApp->setFont( font );
   
-  font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ).c_str() );
+  font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
   qApp->setFont( font, "QTextEdit" ); 
         
   // reload IconEngine cache (in case of icon_path_list that changed)
