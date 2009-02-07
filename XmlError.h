@@ -113,10 +113,10 @@ class XmlError: public Counter
   }
   
   //! dumper
-  friend std::ostream& operator << ( std::ostream &out, const List& errors )
+  friend QTextStream& operator << ( QTextStream &out, const List& errors )
   {
     for( List::const_iterator iter = errors.begin(); iter != errors.end(); iter++ )
-    out << *iter << std::endl;
+    out << *iter << endl;
     return out;
   }
     

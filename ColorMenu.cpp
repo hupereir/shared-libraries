@@ -41,7 +41,7 @@
 using namespace std;
 
 //________________________________________________
-const std::string ColorMenu::NONE = "None";
+const QString ColorMenu::NONE = "None";
 
 //_______________________________________________
 ColorMenu::ColorMenu( QWidget* parent ):
@@ -54,12 +54,10 @@ ColorMenu::ColorMenu( QWidget* parent ):
 }
 
 //_______________________________________________
-void ColorMenu::add( const string& colorname )
+void ColorMenu::add( const QString& colorname )
 { 
   Debug::Throw( "ColorMenu::add.\n" );
-  
-  if( colorname != NONE ) _add( QColor( colorname.c_str() ) );
-  
+  if( colorname.compare( NONE, Qt::CaseInsensitive ) != 0 ) _add( QColor( colorname ) );  
 }
 
 //_______________________________________________

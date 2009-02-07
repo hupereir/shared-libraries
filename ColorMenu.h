@@ -36,7 +36,6 @@
 #include <QPaintEvent>
 #include <QPixmap>
 
-#include <string>
 #include <set>
 
 #include "Counter.h"
@@ -52,7 +51,7 @@ class ColorMenu: public QMenu, public Counter
   public: 
 
   //! default name for no-color
-  static const std::string NONE;
+  static const QString NONE;
 
   //! used to sort colors in set
   class ColorLessFTor
@@ -76,7 +75,7 @@ class ColorMenu: public QMenu, public Counter
   { Debug::Throw( "ColorMenu::~ColorMenu.\n" ); }
   
   //! add a color
-  void add( const std::string& );
+  void add( const QString& );
 
   //! retrieve colors
   ColorSet colors() const;

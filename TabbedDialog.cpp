@@ -129,10 +129,6 @@ QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, co
   QWidget* main( new QWidget() );
   scroll->setWidget( main );
    
-  QPalette palette( scroll->palette() );
-  palette.setBrush( QPalette::Window, _stack().palette().brush( QPalette::Window ) );
-  scroll->setPalette( palette );
- 
   // add to stack and model
   _stack().addWidget( base );
   _model().add( base );
