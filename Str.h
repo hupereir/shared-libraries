@@ -54,13 +54,6 @@ class Str: public QString, public Counter
     Counter( "Str" )
   {}
                                                   
-  //! append a string to another
-  Str& append( const QString& str )
-  { 
-    *this += str;
-    return *this;
-  }
-  
   //! convert anything to string and fill
   template <typename T> 
   Str& assign( T value )
@@ -75,11 +68,6 @@ class Str: public QString, public Counter
     return *this;
   }
   
-  //! convert anything to string and fill
-  template <typename T> 
-  Str& append( T value )
-  { return append( Str().assign<T>( value ) ); }
-      
   //! convert string to any type using string streamer
   template <typename T>
   T get( bool* error = 0 ) const
