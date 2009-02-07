@@ -108,7 +108,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   _list().header()->hide();
   
   connect( _list().selectionModel(), SIGNAL( currentChanged(const QModelIndex &, const QModelIndex &) ), SLOT( _selectSuggestion( const QModelIndex& ) ) );
-  if( !read_only ) { connect( &_list(), SIGNAL( activated( QModelIndex& ) ), SLOT( _replace( const QModelIndex& ) ) ); }
+  if( !read_only ) { connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _replace( const QModelIndex& ) ) ); }
 
   // grid layout for dictionary and filter
   grid_layout = new GridLayout();
@@ -591,16 +591,4 @@ QVariant SpellDialog::Model::data( const QModelIndex &index, int role) const
 
 //__________________________________________________________________
 QVariant SpellDialog::Model::headerData(int section, Qt::Orientation orientation, int role) const
-{
-
-  if( 
-    orientation == Qt::Horizontal && 
-    role == Qt::DisplayRole && 
-    section >= 0 && 
-    section < n_columns )
-  { return column_titles_[section]; }
-  
-  // return empty
-  return QVariant(); 
-
-}
+{ return QVariant(); }

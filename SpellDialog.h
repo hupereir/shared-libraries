@@ -186,12 +186,7 @@ namespace SPELLCHECK
       
       virtual void _sort(int, Qt::SortOrder)
       { return; }
-      
-      private: 
-      
-      //! column titles
-      static const QString column_titles_[ n_columns ];
-      
+            
     };
       
     //! update text editor selection
