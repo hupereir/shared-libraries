@@ -143,14 +143,15 @@ bool SvgEngine::_loadSvg( void )
   // get options
   bool changed( true );
   bool found( false );
-  list<string> file_list( XmlOptions::get().specialOptions<string>( "SVG_BACKGROUND" ) );
-  for( list<string>::const_iterator iter = file_list.begin(); iter != file_list.end(); iter++ )
+  Options::List file_list( XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) );
+  for( Options::List::const_iterator iter = file_list.begin(); iter != file_list.end(); iter++ )
   {
-    svg_.load( QString( iter->c_str() ) );
+    QString file( iter->raw() );
+    svg_.load( QString( file ) );
     if( svg_.isValid() && _validateSvg() ) 
     {
-      changed = ( svg_file_ != *iter );
-      svg_file_ = *iter;
+      changed = ( svg_file_ != file );
+      svg_file_ = file;
       found = true; 
       break;
     }

@@ -106,7 +106,7 @@ namespace SVG
     };
     
     //! svg file
-    std::string svg_file_;
+    QString svg_file_;
     
     //! svg renderer
     QSvgRenderer svg_;
