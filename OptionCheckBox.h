@@ -43,8 +43,8 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
   public:
   
   //! constructor
-  OptionCheckBox( const std::string& label, QWidget* parent, const std::string& option_name ):
-      QCheckBox( label.c_str(), parent ),
+  OptionCheckBox( const QString& label, QWidget* parent, const QString& option_name ):
+      QCheckBox( label, parent ),
       OptionWidget( option_name )
   {}
   

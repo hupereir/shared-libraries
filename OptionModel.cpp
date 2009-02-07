@@ -66,9 +66,9 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
   {
     switch( index.column() )
     {
-      case NAME: return option.first.c_str();
-      case VALUE: return option.second.raw().c_str();
-      case DEFAULT_VALUE: return option.second.defaultValue().c_str();
+      case NAME: return option.first;
+      case VALUE: return option.second.raw();
+      case DEFAULT_VALUE: return option.second.defaultValue();
       case FLAGS: return option.second.flags();
       default: return QVariant();
     }
@@ -78,7 +78,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
   { return option.second.isCurrent() ? IconEngine::get( ICONS::DIALOG_ACCEPT ):QVariant(); }
   
   if( role == Qt::ToolTipRole && index.column() == NAME ) 
-  { return option.second.comments().c_str(); }
+  { return option.second.comments(); }
   
   return QVariant();
   
@@ -93,14 +93,14 @@ bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int r
   // retrieve option
   OptionPair option( get( index ) );
   
-  if( !( value.toString().isNull() || value.toString() == option.second.raw().c_str() ) )
+  if( !( value.toString().isNull() || value.toString() == option.second.raw() ) )
   {
     
     // remove old value
     remove( option );
 
     // add new one
-    option.second.setRaw( qPrintable( value.toString() ) );
+    option.second.setRaw( value.toString() );
     add( option );
 
     if( XmlOptions::get().isSpecialOption( option.first ) ) emit specialOptionModified( option );

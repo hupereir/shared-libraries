@@ -43,9 +43,9 @@ class OptionIconBrowsedButton: public IconBrowsedButton, public OptionWidget
   public:
   
   //! constructor
-  OptionIconBrowsedButton( QWidget* parent, const std::string& option_name ):
-      IconBrowsedButton( parent ),
-      OptionWidget( option_name )
+  OptionIconBrowsedButton( QWidget* parent, const QString& option_name ):
+    IconBrowsedButton( parent ),
+    OptionWidget( option_name )
   {}
   
   //! read value from option

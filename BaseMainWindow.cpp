@@ -76,13 +76,13 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
 }
 
 //__________________________________________________
-void BaseMainWindow::setOptionName( const std::string& name )
+void BaseMainWindow::setOptionName( const QString& name )
 { 
   
   Debug::Throw( "BaseMainWindow::setOptionName.\n" );
   size_watcher_.setOptionName( name ); 
   
-  if( name.empty() ) {
+  if( name.isEmpty() ) {
   
     lock_toolbars_option_name_.clear();
     show_menu_option_name_.clear();
@@ -202,13 +202,13 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
     CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
     if( toolbar ) { 
     
-      Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << qPrintable( (*iter)->windowTitle() ) << endl;
+      Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << (*iter)->windowTitle() << endl;
       menu.addAction( &toolbar->visibilityAction() ); 
     
     } else {
       
       // add visibility action
-      Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << qPrintable( (*iter)->windowTitle() ) << endl;
+      Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << (*iter)->windowTitle() << endl;
       QAction* action = new QAction( (*iter)->windowTitle(), &menu );
       action->setCheckable( true );
       action->setChecked( (*iter)->isVisible() );

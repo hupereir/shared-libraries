@@ -52,7 +52,7 @@ class IconEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  static QIcon get( const std::string& file )
+  static QIcon get( const QString& file )
   { return get()._get( file ); }
 
   //! create icon
@@ -64,10 +64,10 @@ class IconEngine: public Counter
   { return get()._get( icon ); }
     
   //! map files and QIcon
-  typedef std::map< std::string, QIcon > Cache;
+  typedef std::map< QString, QIcon > Cache;
 
   //! map files and QIcon
-  class Pair: public std::pair<std::string, QIcon >, public Counter
+  class Pair: public std::pair<QString, QIcon >, public Counter
   {
     
     public:
@@ -78,8 +78,8 @@ class IconEngine: public Counter
     {}
     
     //! constructor
-    Pair( const std::pair<std::string, QIcon >& pair ):
-      std::pair<std::string, QIcon >( pair ),
+    Pair( const std::pair<QString, QIcon >& pair ):
+      std::pair<QString, QIcon >( pair ),
       Counter( "IconEngine::Pair" )
     {}
     
@@ -110,7 +110,7 @@ class IconEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  QIcon _get( const std::string&, bool from_cache = true );
+  QIcon _get( const QString&, bool from_cache = true );
 
   //! create icon
   QIcon _get( const QPixmap& );

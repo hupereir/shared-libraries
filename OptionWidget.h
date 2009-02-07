@@ -33,7 +33,7 @@
    \date    $Date$
 */
 
-#include <string>
+#include <QString>
 
 //! base class for option manipulating widgets
 /*! 
@@ -47,7 +47,7 @@ class OptionWidget
   public:
       
   //! constructor
-  OptionWidget( const std::string& name ):
+  OptionWidget( const QString& name ):
     option_name_( name )
   {}
   
@@ -62,13 +62,13 @@ class OptionWidget
   virtual void write( void ) const = 0;
   
   //! option name
-  const std::string& optionName( void ) const
+  const QString& optionName( void ) const
   { return option_name_; }
   
   private:
   
   //! name of the option linked to the widget    
-  std::string option_name_;
+  QString option_name_;
   
 };
 

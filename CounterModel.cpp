@@ -31,8 +31,6 @@
 */
 
 #include "CounterModel.h"
-#include "Str.h"
-
 using namespace std;
 
 //_______________________________________________
@@ -59,10 +57,10 @@ QVariant CounterModel::data( const QModelIndex& index, int role ) const
     switch( index.column() )
     {
       case NAME:
-      return QString( counter.first.c_str() );
+      return counter.first;
       
       case COUNT:
-      return QString( Str().assign<int>(counter.second).c_str() );
+      return counter.second;
       
       default:
       return QVariant();

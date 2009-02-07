@@ -48,7 +48,7 @@
 using namespace std;
 
 //_______________________________________________________
-OptionListBox::OptionListBox( QWidget* parent, const string& name ):
+OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     QWidget( parent ),
     OptionWidget( name ),
     browsable_( false ),
@@ -213,7 +213,7 @@ void OptionListBox::_add( void )
   if( dialog.editor().text().isEmpty() ) return;
   
   // create new item
-  Options::Pair option( optionName(), qPrintable( dialog.editor().text() ) );
+  Options::Pair option( optionName(), dialog.editor().text() );
   model_.add( option );
   
   // make sure item is selected
@@ -244,7 +244,7 @@ void OptionListBox::_edit( void )
   
   // create dialog
   EditDialog dialog( this, browsable_, file_mode_ );
-  dialog.editor().setText( option.second.raw().c_str() );
+  dialog.editor().setText( option.second.raw() );
   if( option.second.isCurrent() ) 
   {
     dialog.checkbox().setChecked( true );
@@ -259,7 +259,7 @@ void OptionListBox::_edit( void )
   model_.remove( option );
 
   // modify value 
-  option.second.setRaw( qPrintable( dialog.editor().text() ) );
+  option.second.setRaw( dialog.editor().text() );
   
   // re-add to model
   model_.add( option );

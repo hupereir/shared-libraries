@@ -44,7 +44,7 @@ class OptionSpinBox: public QSpinBox, public OptionWidget
   public:
   
   //! constructor
-  OptionSpinBox( QWidget* parent, const std::string& option_name ):
+  OptionSpinBox( QWidget* parent, const QString& option_name ):
       QSpinBox( parent ),
       OptionWidget( option_name ),
       scale_( 1 )

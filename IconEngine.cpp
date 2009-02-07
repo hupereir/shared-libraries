@@ -63,7 +63,7 @@ bool IconEngine::reload( void )
 }
 
 //__________________________________________________________
-QIcon IconEngine::_get( const string& file, bool from_cache )
+QIcon IconEngine::_get( const QString& file, bool from_cache )
 {
   Debug::Throw( "IconEngine::_get (file).\n" );
 

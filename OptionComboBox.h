@@ -44,7 +44,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
   public:
   
   //! constructor
-  OptionComboBox( QWidget* parent, const std::string& option_name ):
+  OptionComboBox( QWidget* parent, const QString& option_name ):
       CustomComboBox( parent ),
       OptionWidget( option_name )
   {}
@@ -52,12 +52,12 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
   //! read value from option
   void read( void )
   { 
-    std::string value( XmlOptions::get().raw( optionName() ) );
-    int found( findText( value.c_str() ) );
+    QString value( XmlOptions::get().raw( optionName() ) );
+    int found( findText( value ) );
     if( found < 0 ) 
     {
-      addItem( value.c_str() );
-      found = findText( value.c_str() );  
+      addItem( value );
+      found = findText( value );  
     }
     
     setCurrentIndex( found );
@@ -65,7 +65,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
   
   //! write value to option
   void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), qPrintable( currentText() ) ); }
+  { XmlOptions::get().setRaw( optionName(), currentText() ); }
         
 };
 #endif

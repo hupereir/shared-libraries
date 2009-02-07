@@ -32,12 +32,12 @@
 using namespace std;
 
 #include "CustomFileDialog.h"
-#include "File.h"  
+//#include "File.h"  
 #include "Debug.h"  
 #include "Util.h"  
 
 //______________________________________________________________________
-File CustomFileDialog::working_directory_( Util::workingDirectory() );
+QString CustomFileDialog::working_directory_( Util::workingDirectory() );
 
 //______________________________________________________________________
 CustomFileDialog::CustomFileDialog( QWidget* parent ):
@@ -46,8 +46,8 @@ CustomFileDialog::CustomFileDialog( QWidget* parent ):
 {
   
   Debug::Throw() <<  "CustomFileDialog::CustomFileDialog - working directory: " << working_directory_ << endl;
-  if( !working_directory_.empty() && File( working_directory_ ).isDirectory() )
-  { setDirectory( QDir( working_directory_.c_str() ) ); }
+  if( !working_directory_.isEmpty() && QFileInfo( working_directory_ ).isDir() )
+  { setDirectory( QDir( working_directory_ ) ); }
   
   // set default view mode to list rather than detail because detail sometime has problems
   // with column sizes.
@@ -60,5 +60,5 @@ CustomFileDialog::CustomFileDialog( QWidget* parent ):
 void CustomFileDialog::_saveWorkingDirectory( const QString& directory )
 { 
   Debug::Throw( "CustomFileDialog::_saveWorkingDirectory.\n" );
-  working_directory_ = File( qPrintable( directory ) ).path();
+  working_directory_ = QFileInfo( directory ).absolutePath();
 }

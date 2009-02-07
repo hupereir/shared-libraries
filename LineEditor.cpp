@@ -191,11 +191,9 @@ void LineEditor::lowerCase( void )
   if( !hasSelectedText() ) return;
   
   // do nothing if selection is not valid
-  Str selection = Str( qPrintable( selectedText() ) ).lowerCase();
-  
-  // remove current selection
+  QString selection = selectedText().toLower();
   cut();
-  insert( selection.c_str() );
+  insert( selection );
 }
 
 //_____________________________________________________________________
@@ -210,11 +208,9 @@ void LineEditor::upperCase( void )
   if( !hasSelectedText() ) return;
   
   // get uppercased selection
-  Str selection = Str( qPrintable( selectedText() ) ).upperCase();
-  
-  // remove current selection
+  QString selection = selectedText().toUpper();
   cut();
-  insert( selection.c_str() );
+  insert( selection );
 }
 
 //_______________________________________________________

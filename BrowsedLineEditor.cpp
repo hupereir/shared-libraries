@@ -79,15 +79,15 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
 }
 
 //____________________________________________________________
-void BrowsedLineEditor::setWorkDirectory( const string& directory )
+void BrowsedLineEditor::setWorkDirectory( const QString& directory )
 {
-  line_edit_->setText( directory.c_str() );
+  line_edit_->setText( directory );
   work_directory_ = directory;
 }
 
 //____________________________________________________________
-void BrowsedLineEditor::setFile( const string& file )
-{ line_edit_->setText( file.c_str() ); } 
+void BrowsedLineEditor::setFile( const QString& file )
+{ line_edit_->setText( file ); } 
 
 //____________________________________________________________
 void BrowsedLineEditor::_browse( void )
@@ -101,13 +101,10 @@ void BrowsedLineEditor::_browse( void )
   file_dialog_->setAcceptMode( QFileDialog::AcceptOpen );
 
   // retrieve text, check if path is valid, assign to FileDialog
-  File current_directory( qPrintable( line_edit_->text() ) );
-  if( 
-    current_directory.isDirectory() ||
-    ( current_directory = current_directory.path() ).isDirectory() 
-    ) 
-  file_dialog_->setDirectory( current_directory.c_str() );
-  else file_dialog_->setDirectory( work_directory_.c_str() );
+  File current_directory( line_edit_->text() );
+  if( current_directory.isDirectory() || ( current_directory = current_directory.path() ).isDirectory() ) 
+  file_dialog_->setDirectory( current_directory );
+  else file_dialog_->setDirectory( work_directory_ );
  
   if( file_dialog_->exec() != QDialog::Accepted ) return;
 
@@ -127,7 +124,7 @@ void BrowsedLineEditor::_browse( void )
     return;
   }
     
-  setFile( qPrintable( files.front() ) );
+  setFile( files.front() );
   
   return; 
 }

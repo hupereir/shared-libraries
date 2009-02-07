@@ -46,7 +46,7 @@ class OptionFontInfo: public FontInfo, public OptionWidget
   public:
 
   //! constructor
-  OptionFontInfo( QWidget* parent, const std::string& option_name ):
+  OptionFontInfo( QWidget* parent, const QString& option_name ):
     FontInfo( parent ),
     OptionWidget( option_name )
   {}

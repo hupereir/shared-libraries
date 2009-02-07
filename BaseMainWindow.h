@@ -111,18 +111,18 @@ class BaseMainWindow: public QMainWindow
   virtual bool installToolBarsActions( QMenu& );
    
   //! option name
-  virtual void setOptionName( const std::string& name );
+  virtual void setOptionName( const QString& name );
       
   //! menu option name
   bool hasOptionName( void ) const
-  { return !lockToolBarsOptionName().empty(); }
+  { return !lockToolBarsOptionName().isEmpty(); }
       
   //! menu option name
-  const std::string& lockToolBarsOptionName( void ) const
+  const QString& lockToolBarsOptionName( void ) const
   { return lock_toolbars_option_name_; }
 
   //! menu option name
-  const std::string& showMenuOptionName( void ) const
+  const QString& showMenuOptionName( void ) const
   { return show_menu_option_name_; }
 
   signals:
@@ -175,10 +175,10 @@ class BaseMainWindow: public QMainWindow
   private:
   
   //! option name
-  std::string lock_toolbars_option_name_;
+  QString lock_toolbars_option_name_;
   
   //! option name
-  std::string show_menu_option_name_;
+  QString show_menu_option_name_;
 
   //! size watcher
   WindowSizeWatcher size_watcher_;

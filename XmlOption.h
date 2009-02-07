@@ -32,8 +32,6 @@
    \date $Date$
 */
 
-#include <string>
-
 #include <QDomDocument>
 #include <QDomElement>
 #include <QString>
@@ -73,7 +71,7 @@ class XmlOption:public Option
   public:
 
   //! constructor
-  XmlOption( const std::string& name, const Option& option ):
+  XmlOption( const QString& name, const Option& option ):
     Option( option ),
     name_( name )
     {}
@@ -85,17 +83,17 @@ class XmlOption:public Option
   QDomElement domElement( QDomDocument& parent ) const;
   
   //! name
-  void setName( const std::string& value )
+  void setName( const QString& value )
   { name_ = value; }
   
   //! name
-  const std::string name( void ) const
+  const QString& name( void ) const
   { return name_; }
   
   private:
   
   //! option name
-  std::string name_;
+  QString name_;
   
 };
 

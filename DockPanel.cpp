@@ -141,7 +141,9 @@ void DockPanel::_toggleDock( void )
 
     // move and resize
     main().move( mapToGlobal( QPoint(0,0) ) );
-    main().setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+    
+    // warning: innefficient
+    main().setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
     if( !title_.isEmpty() ) main().setWindowTitle( title_ );
 
     // change action text
@@ -203,11 +205,7 @@ void DockPanel::_toggleStaysOnTop( bool state )
   if( visible ) main().show();
 
   // update option if any
-  if( _hasOptionName() )
-  { 
-    XmlOptions::get().set<bool>( _staysOnTopOptionName(), state ); 
-    Debug::Throw() << "DockPanel::_toggleStaysOnTop - " << _staysOnTopOptionName() << ": " << state << endl;
-  }
+  if( _hasOptionName() ) XmlOptions::get().set<bool>( _staysOnTopOptionName(), state ); 
 
 }
 
@@ -233,11 +231,7 @@ void DockPanel::_toggleSticky( bool state )
   if( visible ) main().show();
 
   // update option if any
-  if( _hasOptionName() )
-  { 
-    XmlOptions::get().set<bool>( _stickyOptionName(), state ); 
-    Debug::Throw() << "DockPanel::_toggleSticky - " << _stickyOptionName() << ": " << state << endl;
-  }
+  if( _hasOptionName() ) XmlOptions::get().set<bool>( _stickyOptionName(), state ); 
   
 }
 

@@ -195,7 +195,7 @@ void LineNumberDisplay::_updateConfiguration( void )
     
   // colors
   {
-    QColor color( XmlOptions::get().get<string>( "HIGHLIGHT_COLOR" ).c_str() );
+    QColor color( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ) );
     highlight_color_ = color.isValid() ? color:_editor().palette().color( QPalette::Highlight );
   }
 

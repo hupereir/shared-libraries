@@ -58,11 +58,11 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() || attribute.name().isEmpty() ) continue;
-    if( attribute.name() == XML_FILE ) setFile( qPrintable( XmlString( attribute.value() ).toText() ) );
+    if( attribute.name() == XML_FILE ) setFile( XmlString( attribute.value() ).toText() );
     else if( attribute.name() == XML_TIME ) setTime( attribute.value().toInt() );
     else if( attribute.name() == XML_FLAGS ) setFlags( attribute.value().toUInt() );
     else if( attribute.name() == XML_VALID ) setValid( attribute.value().toInt() );
-    else addProperty( qPrintable( attribute.name() ), qPrintable( attribute.value() ) );
+    else addProperty( attribute.name(), attribute.value() );
   }
 
   // parse children elements
@@ -87,14 +87,14 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
         
         if( attribute.name() == XML_NAME ) property.first = XmlString( attribute.value() ).toText();
         else if( attribute.name() == XML_VALUE ) property.second = XmlString( attribute.value() ).toText();
-        else cout << "XmlFileRecord::XmlFileRecord - unrecognized attribute " << qPrintable( attribute.name() ) << endl;
+        else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized attribute " << attribute.name() << endl;
         
       }
       
       if( !( property.first.isEmpty() || property.second.isEmpty() ) )
-      { addProperty( qPrintable( property.first ), qPrintable( property.second ) ); }
+      { addProperty( property.first, property.second ); }
       
-    } else cout << "XmlFileRecord::XmlFileRecord - unrecognized child " << qPrintable( child_element.tagName() ) << ".\n";
+    } else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized child " << child_element.tagName() << ".\n";
   }
   
 }
@@ -104,20 +104,17 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 {
   Debug::Throw( "XmlFileRecord::domElement.\n" );
   QDomElement out( parent.createElement( XML_RECORD ) );
-  out.setAttribute( XML_FILE, XmlString( file().c_str() ).toXml() );
-  out.setAttribute( XML_TIME, Str().assign<int>( XmlFileRecord::time() ).c_str() );
-  out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ).c_str() );
+  out.setAttribute( XML_FILE, XmlString( file() ).toXml() );
+  out.setAttribute( XML_TIME, Str().assign<int>( XmlFileRecord::time() ) );
+  out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ) );
 
-  if( flags() ) out.setAttribute( XML_FLAGS, Str().assign<unsigned int>( flags() ).c_str() );
-  
-  // for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); iter++ )
-  // { out.setAttribute( PropertyId::get(iter->first).c_str(), iter->second.c_str() ); }
-  
+  if( flags() ) out.setAttribute( XML_FLAGS, Str().assign<unsigned int>( flags() ) );
+    
   for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); iter++ )
   {
     QDomElement property( parent.createElement( XML_PROPERTY ) );
-    property.setAttribute( XML_NAME, XmlString( PropertyId::get(iter->first).c_str() ).toXml() );
-    property.setAttribute( XML_VALUE, XmlString( iter->second.c_str() ) );
+    property.setAttribute( XML_NAME, XmlString( PropertyId::get(iter->first) ).toXml() );
+    property.setAttribute( XML_VALUE, XmlString( iter->second ) );
     out.appendChild( property );
   }
   

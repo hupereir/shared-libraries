@@ -63,7 +63,7 @@ class DockPanel: public QWidget, public Counter
   virtual ~DockPanel();
      
   //! option name (needed to store sticky and stays-on-top state)
-  void setOptionName( std::string value )
+  void setOptionName( QString value )
   {
     sticky_option_name_ = value + "_STICKY";
     stays_on_top_option_name_ = value + "_STAYS_ON_TOP";
@@ -208,14 +208,14 @@ class DockPanel: public QWidget, public Counter
   
   //! true if option name is set
   bool _hasOptionName( void ) const
-  { return !(_stickyOptionName().empty() || _staysOnTopOptionName().empty() ); }
+  { return !(_stickyOptionName().isEmpty() || _staysOnTopOptionName().isEmpty() ); }
   
   //! option name
-  const std::string& _stickyOptionName( void ) const
+  const QString& _stickyOptionName( void ) const
   { return sticky_option_name_; }
   
   //! option name
-  const std::string& _staysOnTopOptionName( void ) const
+  const QString& _staysOnTopOptionName( void ) const
   { return stays_on_top_option_name_; }
 
   //! dock title
@@ -223,10 +223,10 @@ class DockPanel: public QWidget, public Counter
   
   //! option name 
   /*! needed to store sticky and stays on top state */
-  std::string sticky_option_name_;
+  QString sticky_option_name_;
   
   //! option name
-  std::string stays_on_top_option_name_;
+  QString stays_on_top_option_name_;
   
   //! vertical layout for main_ widget
   QVBoxLayout* main_layout_;

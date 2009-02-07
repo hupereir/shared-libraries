@@ -55,13 +55,13 @@ class OptionPair: public Options::Pair
   {}
   
   //! constructor
-  OptionPair( const std::string& name, const Option& option ):
+  OptionPair( const QString& name, const Option& option ):
     Options::Pair( name, option )
   {}
 
   //! returns true if this record is a child of argument
   bool isChild( const OptionPair& option ) const
-  { return option.first == first && option.second.raw().empty(); }
+  { return option.first == first && option.second.raw().isEmpty(); }
 
 };
 

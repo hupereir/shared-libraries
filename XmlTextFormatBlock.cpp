@@ -76,9 +76,9 @@ XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
     
     // format
     else if( name == XML_FORMAT ) format() =value.toInt();
-    else if( name == XML_COLOR ) color() = qPrintable( value );
+    else if( name == XML_COLOR ) color() = value;
     
-    else cerr << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized timestamp attribute: \"" << qPrintable( name ) << "\"\n";
+    else Debug::Throw(0) << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized text format attribute: \"" << name << "\"\n";
   }
 
 }
@@ -87,9 +87,9 @@ XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
 QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
 {
   QDomElement out( parent.createElement( XML_TAG ) );
-  out.setAttribute( XML_BEGIN, Str().assign<int>(begin()).c_str() );  
-  out.setAttribute( XML_END, Str().assign<int>(end()).c_str() );  
-  out.setAttribute( XML_FORMAT, Str().assign<unsigned int>(format()).c_str() );
-  out.setAttribute( XML_COLOR, color().c_str() );
+  out.setAttribute( XML_BEGIN, Str().assign<int>(begin()) );  
+  out.setAttribute( XML_END, Str().assign<int>(end()) );  
+  out.setAttribute( XML_FORMAT, Str().assign<unsigned int>(format()) );
+  out.setAttribute( XML_COLOR, color() );
   return out;  
 }

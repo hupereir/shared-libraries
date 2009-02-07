@@ -83,7 +83,7 @@ void BoxSelection::updateConfiguration( void )
   // retrieve box selection color from options
   QColor color;
   if( XmlOptions::get().find( "BOX_SELECTION_COLOR" ) )
-  { color = QColor( XmlOptions::get().raw( "BOX_SELECTION_COLOR" ).c_str() ); }
+  { color = QColor( XmlOptions::get().raw( "BOX_SELECTION_COLOR" ) ); }
   
   // if invalid, use the normal selection color
   if( !color.isValid() ) color = parent_->palette().color( QPalette::Highlight );

@@ -118,7 +118,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
       case FILE:
       {
         // store local nmae
-        string local_name( record.file().localName() );
+        QString local_name( record.file().localName() );
         
         // loop over previous rows to find a match and increment version number
         unsigned int version( 0 );
@@ -128,19 +128,20 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         }
         
         // form output string.
-        ostringstream what;
-        if( local_name.empty() ) what << "untitled";
+        QString buffer;
+        QTextStream what( &buffer );
+        if( local_name.isEmpty() ) what << "untitled";
         else what << local_name;
         if( version ) what << " (" << version+1 << ")";
-        return what.str().c_str();
+        return buffer;
       }
       
-      case PATH: return QString( record.file().path().c_str() );
-      case TIME: return QString( TimeStamp( record.time() ).string().c_str() );
+      case PATH: return record.file().path();
+      case TIME: return TimeStamp( record.time() ).toString();
       case ICON: return QVariant();
       default:
-      if( index.column() < (int) column_titles_.size() && record.hasProperty( qPrintable( column_titles_[index.column()] ) ) )
-      { return record.property( qPrintable( column_titles_[index.column()] ) ).c_str(); }
+      if( index.column() < (int) column_titles_.size() && record.hasProperty( column_titles_[index.column()] ) )
+      { return record.property( column_titles_[index.column()] ); }
       else return QVariant();
    
     }
@@ -150,7 +151,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
     // icon
     return _icon( record.property( icon_property_id_ ) );
     
-  } else if( role == Qt::ToolTipRole ) return QString( record.file().c_str() );
+  } else if( role == Qt::ToolTipRole ) return record.file();
  
   // alignment
   else if( role == Qt::TextAlignmentRole && index.column() == ICON ) return Qt::AlignCenter;
@@ -204,8 +205,8 @@ void FileRecordModel::_updateColumns( const ValueType& value )
   for( FileRecord::PropertyMap::const_iterator iter = properties.begin(); iter != properties.end(); iter++ )
   {
     // look for property name in list of columns
-    if( find( column_titles_.begin(), column_titles_.end(), QString( FileRecord::PropertyId::get( iter->first ).c_str() ) ) == column_titles_.end() )
-    { column_titles_.push_back( FileRecord::PropertyId::get( iter->first ).c_str() ); }
+    if( find( column_titles_.begin(), column_titles_.end(), FileRecord::PropertyId::get( iter->first ) ) == column_titles_.end() )
+    { column_titles_.push_back( FileRecord::PropertyId::get( iter->first ) ); }
     
   }
   
@@ -224,9 +225,9 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
     case TIME: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
     default: 
     {
-      string name( qPrintable( column_titles_[type_] ) );
-      string first_property( first.property( name ) );
-      string second_property( second.property( name ) );
+      QString name( column_titles_[type_] );
+      QString first_property( first.property( name ) );
+      QString second_property( second.property( name ) );
       return ( first_property != second_property ) ? first_property < second_property :  first.file().localName() < second.file().localName();
     }
     
@@ -235,7 +236,7 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
 }
 
 //________________________________________________________
-QIcon FileRecordModel::_icon( const std::string& name )
+QIcon FileRecordModel::_icon( const QString& name )
 {
   
   Debug::Throw( "FileRecordModel::_icon.\n" );

@@ -33,7 +33,6 @@
   \date $Date$
 */
 
-#include "File.h"
 #include "Options.h"
 
 class XmlError;
@@ -48,13 +47,13 @@ class XmlOptions
   static Options& get( void );
   
   //! read from file
-  static bool read( File file = File( "" ) );
+  static bool read( QString file = QString() );
 
   //! write options to file
-  static bool write( File file = File("") );
+  static bool write( QString file = QString() );
   
   //! file
-  static File& file();
+  static QString& file();
   
   //! xml error
   static XmlError& error();

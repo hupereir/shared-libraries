@@ -122,12 +122,12 @@ class TextSelection
   unsigned int flags_;
     
   //! streamer
-  friend std::ostream &operator << (std::ostream &out,const TextSelection &selection)
+  friend QTextStream &operator << (QTextStream &out,const TextSelection &selection)
   {
     out 
         << "TextSelection -"
-        << " text: " << qPrintable(selection.text()) 
-        << " replacement: " << qPrintable(selection.replaceText())
+        << " text: " << selection.text() 
+        << " replacement: " << selection.replaceText()
         << " backward: " << (selection.flag(BACKWARD) ? "true":"false")
         << " case_sensitive: " << (selection.flag(CASE_SENSITIVE) ? "true":"false")
         << " entire_word: " << (selection.flag(ENTIRE_WORD) ? "true":"false")        

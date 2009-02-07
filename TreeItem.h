@@ -365,7 +365,7 @@ template<class T> class TreeItem: public TreeItemBase
   List children_;
 
   //! streamer
-  friend std::ostream& operator << (std::ostream& out , const TreeItem& item )
+  friend QTextStream& operator << (QTextStream& out , const TreeItem& item )
   {
 
     // indent 2 space characters per parent
@@ -377,7 +377,7 @@ template<class T> class TreeItem: public TreeItemBase
     }
   
     // print job pid
-    out << item.id() << " " << item.get() << std::endl;
+    out << item.id() << " " << item.get() << endl;
   
     // print job children
     for( unsigned int i=0; i<item.childCount(); i++ )

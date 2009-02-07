@@ -35,6 +35,7 @@
 
 #include <list>
 #include <QString>
+#include <QTextStream>
 
 #include "Counter.h"
 
@@ -103,11 +104,11 @@ class XmlError: public Counter
   int column_;
   
   //! dumper
-  friend std::ostream& operator << ( std::ostream &out, const XmlError& error )
+  friend QTextStream& operator << ( QTextStream &out, const XmlError& error )
   {
-    if( !error.file().isEmpty() ) out << qPrintable( error.file() ) << ": ";
+    if( !error.file().isEmpty() ) out << error.file() << ": ";
     else out << "message: ";
-    out << qPrintable( error.error() ) << " at line " << error.line() << ", column " << error.column();
+    out << error.error() << " at line " << error.line() << ", column " << error.column();
     return out;
   }
   

@@ -159,10 +159,10 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
   void _updateColumns( const ValueType& value );
 
   //! icon
-  static QIcon _icon( const std::string& );
+  static QIcon _icon( const QString& );
   
   //! icon cache
-  typedef std::map<std::string, QIcon> IconCache;
+  typedef std::map<QString, QIcon> IconCache;
    
   //! type icon cache
   static IconCache& _icons( void ); 

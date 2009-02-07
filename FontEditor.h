@@ -33,9 +33,7 @@
 
 #include <QFont>
 #include <QFontDialog>
-
-#include <sstream>
-#include <string>
+#include <QTextStream>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -61,9 +59,9 @@ class FontEditor: public QWidget, public Counter
   }
   
   //! display font
-  virtual void setFont( const std::string& font )
+  virtual void setFont( const QString& font )
   { 
-    font_.fromString( font.c_str() );
+    font_.fromString( font );
     _updateLabel();
   }
   
@@ -87,9 +85,9 @@ class FontEditor: public QWidget, public Counter
   //! update label
   virtual void _updateLabel( void )
   { 
-    std::ostringstream what;
-    what << qPrintable( font().family() ) << ", " << font().pointSize() << "pt";
-    label_->setText( what.str().c_str() ); 
+    QString buffer;
+    QTextStream( &buffer ) << font().family() << ", " << font().pointSize() << "pt";
+    label_->setText( buffer ); 
   }
   
   private: 

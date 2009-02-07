@@ -43,9 +43,9 @@
 using namespace std;
 
 //____________________________________________________________________
-File& XmlOptions::file( void )
+QString& XmlOptions::file( void )
 {
-  static File file;
+  static QString file;
   return file;
 }
 
@@ -64,20 +64,20 @@ Options& XmlOptions::get( void )
 }
 
 //____________________________________________________________________
-bool XmlOptions::read( File file )
+bool XmlOptions::read( QString file )
 {
   
   Debug::Throw() << "XmlOptions::read - file=\"" << file << "\"\n";
 
   // check filename is valid
-  if( !file.size() ) file = XmlOptions::file();
-  if( !file.size() ) return false;
+  if( file.isEmpty() ) file = XmlOptions::file();
+  if( file.isEmpty() ) return false;
 
   // store requested file
   XmlOptions::file() = file;
 
   // parse the file
-  QFile qtfile( file.c_str() );
+  QFile qtfile( file );
   if ( !qtfile.open( QIODevice::ReadOnly ) )
   {
     Debug::Throw( "XmlOptions::read - cannot open file.\n" );
@@ -86,7 +86,7 @@ bool XmlOptions::read( File file )
 
   // dom document
   QDomDocument document;
-  error() = XmlError( file.c_str() );
+  error() = XmlError( file );
   if ( !document.setContent( &qtfile, &error().error(), &error().line(), &error().column() ) ) 
   {
     qtfile.close();
@@ -107,7 +107,7 @@ bool XmlOptions::read( File file )
       Debug::Throw( "XmlOptions::read - special options" );
 
       // retrieve Value attribute
-      string value( qPrintable( element.attribute( OPTIONS::VALUE ) ) );
+      QString value( element.attribute( OPTIONS::VALUE ) );
       if( value.size() ) get().keep( value );
     
     } else {
@@ -126,21 +126,21 @@ bool XmlOptions::read( File file )
 }
 
 //________________________________________________
-bool XmlOptions::write( File file )
+bool XmlOptions::write( QString file )
 {
   
-  Debug::Throw( "XmlOptions::write.\n" );
+  Debug::Throw() << "XmlOptions::write - " << file << endl;
 
   // check filename is valid
-  if( file.empty() ) file = XmlOptions::file();
-  if( file.empty() ) 
+  if( file.isEmpty() ) file = XmlOptions::file();
+  if( file.isEmpty() ) 
   {
     Debug::Throw( "XmlOptions::write - file is empty.\n" );
     return false;
   }
   
   // output file
-  QFile out( file.c_str() );
+  QFile out( file );
   if( !out.open( QIODevice::WriteOnly ) )
   {
     Debug::Throw() << "XmlOptions::write - cannot write to file " << file << endl;
@@ -161,7 +161,7 @@ bool XmlOptions::write( File file )
     
     // dump option name
     QDomElement element = document.createElement( OPTIONS::SPECIAL_OPTION );
-    element.setAttribute( OPTIONS::VALUE, iter->first.c_str() );
+    element.setAttribute( OPTIONS::VALUE, iter->first );
     top.appendChild( element );
   }
 

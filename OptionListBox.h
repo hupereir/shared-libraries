@@ -57,7 +57,7 @@ class OptionListBox: public QWidget, public OptionWidget
   public:
 
   //! constructor
-  OptionListBox( QWidget* parent, const std::string& option_name );
+  OptionListBox( QWidget* parent, const QString& option_name );
 
   //! read value from option
   void read( void );

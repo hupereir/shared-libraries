@@ -197,11 +197,12 @@ void ColorDisplay::_selectColorFromText( void )
     if( !color.isValid() ) 
     {
       
-      ostringstream what;
-      if( !( text.isNull() || text.isEmpty() ) ) what << "Invalid color: " << qPrintable( text );
+      QString buffer;
+      QTextStream what( &buffer );
+      if( !( text.isNull() || text.isEmpty() ) ) what << "Invalid color: " << text;
       else what << "Invalid color";
       
-      InformationDialog( this, what.str().c_str() ).exec();
+      InformationDialog( this,buffer ).exec();
       editor_.setText( NONE );
     }
   }
@@ -234,11 +235,12 @@ void ColorDisplay::LocalLineEdit::setColor( QColor color )
   if( !color.isValid() ) 
   {
     
-    ostringstream what;
-    if( !( text().isNull() || text().isEmpty() ) ) what << "Invalid color: " << qPrintable( text() );
+    QString buffer;
+    QTextStream what( &buffer );
+    if( !( text().isNull() || text().isEmpty() ) ) what << "Invalid color: " << text();
     else what << "Invalid color";
     
-    InformationDialog( this, what.str().c_str() ).exec();
+    InformationDialog( this, buffer ).exec();
     
     // update text
     setText( NONE );

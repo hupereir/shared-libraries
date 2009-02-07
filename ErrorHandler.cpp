@@ -30,6 +30,7 @@
   \date $Date$
 */
 
+#include <QTextStream>
 #include <cstdlib>
 
 #include "ErrorHandler.h"
@@ -49,36 +50,38 @@ void ErrorHandler::Throw( QtMsgType type, const char* message )
 {
   Debug::Throw() << "ErrorHandler::Throw - " << message << endl;
   
-  string local_message( message );
+  QString local_message( message );
   
   // check if message is to be disabled
   bool disabled( false );
   for( MessageList::const_iterator it=get()._disabledMessages().begin(); it != get()._disabledMessages().end(); it++ )
   {
-    if( local_message.find( *it ) != string::npos ) {
+    if( local_message.indexOf( *it ) >= 0 ) 
+    {
       disabled = true;
       break;
     }
   }  
     
   // check message type
+  QTextStream what( stderr );
   switch ( type ) {
     
     case QtDebugMsg: break;
     
     case QtWarningMsg:
-    if( !disabled ) cerr << "ErrorHandler::Throw - warning: " << message << endl;
+    if( !disabled ) what << "ErrorHandler::Throw - warning: " << message << endl;
     break;
     
     case QtFatalMsg:
-    cerr << "ErrorHandler::Throw - fatal: " << message << endl;
+    what << "ErrorHandler::Throw - fatal: " << message << endl;
     disabled = false;
     abort();
     break;
       
     default:
     if( !disabled )
-    cerr << "ErrorHandler::Throw - unknown: " << message << endl;
+    what << "ErrorHandler::Throw - unknown: " << message << endl;
     break;
       
   }

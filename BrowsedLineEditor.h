@@ -93,16 +93,16 @@ class BrowsedLineEditor: public QWidget, public Counter
   { file_dialog_ = dialog; }
   
   //! retrieve working directory
-  std::string workDirectory( void ) const
+  const QString& workDirectory( void ) const
   { return work_directory_; }
   
   public slots:
   
   //! set working directory
-  void setWorkDirectory( const std::string& directory );
+  void setWorkDirectory( const QString& directory );
 
   //! set line_edit_file
-  void setFile( const std::string& file );
+  void setFile( const QString& file );
   
   private slots:
 
@@ -115,7 +115,7 @@ class BrowsedLineEditor: public QWidget, public Counter
   Editor *line_edit_;
   
   //! default working directory
-  std::string work_directory_;
+  QString work_directory_;
 
   //! pointer to file dialog
   CustomFileDialog* file_dialog_;

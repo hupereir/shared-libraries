@@ -61,11 +61,11 @@ class TabWidget: public QFrame, public Counter
   TabWidget( QTabWidget* parent );
   
   //! set tab title
-  void setTitle( const std::string& title )
+  void setTitle( const QString& title )
   { title_ = title; }
   
   //! title
-  const std::string& title( void ) const
+  const QString& title( void ) const
   { return title_; }
   
   //! get parent TabWidget
@@ -153,7 +153,7 @@ class TabWidget: public QFrame, public Counter
   unsigned int flags_;
   
   //! title
-  std::string title_; 
+  QString title_; 
   
   //! parent TabWidget
   QTabWidget* parent_;

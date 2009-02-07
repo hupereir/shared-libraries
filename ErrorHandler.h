@@ -56,7 +56,7 @@ class ErrorHandler
   static ErrorHandler& get( void );
   
   //! adds a disabled message in the list
-  void disableMessage( const std::string& message ) 
+  void disableMessage( const QString& message ) 
   { disabled_messages_.push_back( message ); }
   
   //! adds a disabled message in the list
@@ -72,7 +72,7 @@ class ErrorHandler
   //! constructor
   ErrorHandler( void );
   
-  typedef std::list< std::string > MessageList;
+  typedef std::list< QString > MessageList;
   
   //! disabled message
   const MessageList& _disabledMessages( void ) const
@@ -81,7 +81,7 @@ class ErrorHandler
   private:
   
   //! all messages containing one of the string in the list are not displayed
-  std::list< std::string > disabled_messages_;
+  std::list< QString > disabled_messages_;
   
 };
 

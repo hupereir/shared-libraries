@@ -45,29 +45,31 @@
 using namespace std;
 
 //_____________________________________________
-const std::string IconBrowsedButton::NO_ICON = "none";
+const QString IconBrowsedButton::NO_ICON = "none";
     
 //_____________________________________________
-IconBrowsedButton::IconBrowsedButton( QWidget* parent, const File& file):
+IconBrowsedButton::IconBrowsedButton( QWidget* parent, const QString& file):
   CustomToolButton( parent ),
   file_( NO_ICON )
 { 
+  
   setIconSize( IconSize( IconSize::HUGE ) );
   setAutoRaise( false );
   setFile( file, false ); 
   connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
   setAcceptDrops( true );
+  
 }
   
 
 //_____________________________________________
-bool IconBrowsedButton::setFile( const File& file, const bool& check )
+bool IconBrowsedButton::setFile( const QString& file, const bool& check )
 {
   
   Debug::Throw() << "IconBrowsedButton::setFile - " << file << endl;
   
   // load pixmap
-  CustomPixmap pixmap( file.c_str() );
+  CustomPixmap pixmap( file );
   
   // update file if pixmap is valid or current file is undefined
   if( !pixmap.isNull() || file_ == NO_ICON )
@@ -88,9 +90,9 @@ bool IconBrowsedButton::setFile( const File& file, const bool& check )
   // popup dialog if invalid
   if( check )
   {
-    ostringstream what;
-    what << "invalid icon file " << file;  
-    InformationDialog( this, what.str().c_str() ).exec();
+    QString buffer;
+    QTextStream( &buffer ) << "invalid icon file " << file;  
+    InformationDialog( this, buffer ).exec();
   }
   
   // if file, set pixmap to empty
@@ -115,9 +117,12 @@ void IconBrowsedButton::_browse( void )
   QtUtil::centerOnParent( &dialog );
   
   if( file_ != NO_ICON ) { 
-    File path( file_.path() );
-    if( path.exists() && path.isDirectory() ) dialog.setDirectory( file_.path().c_str() );
-    dialog.selectFile( file_.c_str() ); 
+    
+    // warning: inneficient
+    File path( File( file_ ).path() );
+    if( path.exists() && path.isDirectory() ) dialog.setDirectory( path );
+    dialog.selectFile( file_ ); 
+    
   }
   
   if( dialog.exec() == QDialog::Rejected ) return;
@@ -138,7 +143,7 @@ void IconBrowsedButton::_browse( void )
     return;
   }
     
-  setFile( File( qPrintable( files.front() ) ), true );
+  setFile( files.front(), true );
   return; 
 }
 
@@ -163,7 +168,7 @@ void IconBrowsedButton::dropEvent( QDropEvent *event )
   for( QList<QUrl>::const_iterator iter = urls.begin(); iter != urls.end(); iter++ )
   {
     QFileInfo file_info( iter->toLocalFile() );
-    if( file_info.exists() && setFile( File( qPrintable( file_info.filePath() ) ), true ) ) event->acceptProposedAction();
+    if( file_info.exists() && setFile( file_info.filePath(), true ) ) event->acceptProposedAction();
   }
   
   return;

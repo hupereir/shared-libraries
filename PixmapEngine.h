@@ -51,14 +51,14 @@ class PixmapEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  static QPixmap get( const std::string& file, bool from_cache = true )
+  static QPixmap get( const QString& file, bool from_cache = true )
   { return get()._get( file, from_cache ); }
 
   //! map files and QPixmap
-  typedef std::map< std::string, QPixmap > Cache;
+  typedef std::map< QString, QPixmap > Cache;
 
   //! map files and QPixmap
-  class Pair: public std::pair<std::string, QPixmap >, public Counter
+  class Pair: public std::pair<QString, QPixmap >, public Counter
   {
     
     public:
@@ -69,8 +69,8 @@ class PixmapEngine: public Counter
     {}
     
     //! constructor
-    Pair( const std::pair<std::string, QPixmap >& pair ):
-      std::pair<std::string, QPixmap >( pair ),
+    Pair( const std::pair<QString, QPixmap >& pair ):
+      std::pair<QString, QPixmap >( pair ),
       Counter( "PixmapEngine::Pair" )
     {}
     
@@ -94,11 +94,11 @@ class PixmapEngine: public Counter
   protected:
     
   //! pixmap path
-  void _setPixmapPath( const std::list< std::string >& path_list )
+  void _setPixmapPath( const std::list< QString >& path_list )
   { pixmap_path_ = path_list; }
   
   //! pixmap path
-  const std::list< std::string >& _pixmapPath( void ) const
+  const std::list< QString >& _pixmapPath( void ) const
   { return pixmap_path_; }
   
   private:
@@ -111,12 +111,12 @@ class PixmapEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  QPixmap _get( const std::string& file, bool from_cache );
+  QPixmap _get( const QString& file, bool from_cache );
   
   //@}
   
   //! pixmap path
-  std::list< std::string > pixmap_path_;
+  std::list< QString > pixmap_path_;
 
   //! map files and QPixmap
   Cache cache_;

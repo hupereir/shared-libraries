@@ -43,8 +43,8 @@ class OptionRadioButton: public QRadioButton, public OptionWidget
   public:
   
   //! constructor
-  OptionRadioButton( const std::string& label, QWidget* parent, const std::string& option_name ):
-      QRadioButton( label.c_str(), parent ),
+  OptionRadioButton( const QString& label, QWidget* parent, const QString& option_name ):
+      QRadioButton( label, parent ),
       OptionWidget( option_name )
   {}
   

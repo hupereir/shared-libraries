@@ -67,7 +67,7 @@ class MultipleClickCounter: public QTimer, public Counter
   //! increment counter and return current value
   const unsigned int& increment( const int& position  = 0 )
   { 
-    Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << std::endl;
+    Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << endl;
     
     // restart timer
     start();

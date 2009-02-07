@@ -30,7 +30,6 @@
    \date $Date$
 */
 
-#include "Str.h"
 #include "XmlOption.h"
 #include "XmlString.h"
 using namespace std;
@@ -39,7 +38,7 @@ using namespace std;
 XmlOption::XmlOption( const QDomElement& element )
 {
   Debug::Throw( "XmlOption::XmlOption.\n" );
-  setName( qPrintable( element.nodeName() ) );
+  setName( element.nodeName() );
   
   // parse attributes
   QDomNamedNodeMap attributes( element.attributes() );
@@ -47,13 +46,13 @@ XmlOption::XmlOption( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    if( attribute.name() == OPTIONS::VALUE ) setRaw( qPrintable( XmlString( attribute.value() ).toText() ) );
-    else if( attribute.name() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlString( attribute.value() ).toText() ) );
+    if( attribute.name() == OPTIONS::VALUE ) setRaw( XmlString( attribute.value() ).toText() );
+    else if( attribute.name() == OPTIONS::COMMENTS ) setComments( XmlString( attribute.value() ).toText() );
     else if( attribute.name() == OPTIONS::FLAGS ) {
       
       setFlags( (unsigned int) attribute.value().toInt() );
     
-    } else cout << "XmlOption::XmlOption - unrecognized attribute " << qPrintable( attribute.name() ) << ".\n";
+    } else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized attribute " << attribute.name() << ".\n";
     
   }
 
@@ -61,10 +60,10 @@ XmlOption::XmlOption( const QDomElement& element )
   for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
   {
     QDomElement child_element = child_node.toElement();
-    if( child_element.tagName() == OPTIONS::COMMENTS ) setComments( qPrintable( XmlString( child_element.text() ).toText() ) );
-    else if( child_element.tagName() == OPTIONS::VALUE ) setRaw( qPrintable( XmlString( child_element.text() ).toText() ) );  
+    if( child_element.tagName() == OPTIONS::COMMENTS ) setComments( XmlString( child_element.text() ).toText() );
+    else if( child_element.tagName() == OPTIONS::VALUE ) setRaw( XmlString( child_element.text() ).toText() );  
     else if( child_element.tagName() == OPTIONS::FLAGS ) setFlags( (unsigned int) child_element.text().toInt() );
-    else cout << "XmlOption::XmlOption - unrecognized child " << qPrintable( child_element.tagName() ) << ".\n";
+    else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized child " << child_element.tagName() << ".\n";
 
   }
 
@@ -76,11 +75,11 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
 
   Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
   
-  QDomElement out = document.createElement( name().c_str() );
+  QDomElement out = document.createElement( name() );
   
   out.
     appendChild( document.createElement( OPTIONS::VALUE ) ).
-    appendChild( document.createTextNode( XmlString( raw().c_str() ).toXml() ) );
+    appendChild( document.createTextNode( XmlString( raw() ).toXml() ) );
 
   out.
     appendChild( document.createElement( OPTIONS::FLAGS ) ).
@@ -90,7 +89,7 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
   {
     out.
       appendChild( document.createElement( OPTIONS::COMMENTS ) ).
-      appendChild( document.createTextNode( XmlString( comments().c_str() ).toXml() ) );
+      appendChild( document.createTextNode( XmlString( comments() ).toXml() ) );
   }
    
   return out;

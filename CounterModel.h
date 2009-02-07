@@ -32,15 +32,12 @@
   \date $Date$
 */
 
-#include <string.h>
-#include <sstream>
-
 #include "ListModel.h"
 #include "Counter.h"
 #include "Debug.h"
 
 //! counter pair
-class CounterPair: public std::pair<std::string, int>
+class CounterPair: public std::pair<QString, int>
 {
   public:
   
@@ -49,8 +46,8 @@ class CounterPair: public std::pair<std::string, int>
   {}
   
   //! constructor
-  CounterPair( const std::pair<std::string, int>& pair ):
-    std::pair<std::string, int>( pair )
+  CounterPair( const std::pair<QString, int>& pair ):
+    std::pair<QString, int>( pair )
     {}
 
   //! less than operator

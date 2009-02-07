@@ -32,8 +32,7 @@
    \date $Date$
 */
 
-#include <list>     
-#include <string>   
+#include <QString>   
 #include <qdom.h>   
 
 #include "FileList.h"
@@ -63,7 +62,7 @@ class XmlFileList: public FileList
   virtual bool _write( void );
  
   //! set db file
-  virtual bool _setDBFile( const File& file );
+  virtual bool _setDBFile( const QString& file );
   
   private slots:
   
@@ -79,7 +78,7 @@ class XmlFileList: public FileList
   bool _deprecatedRead( void );
   
   //! file from/to wich the files are saved
-  File db_file_;
+  QString db_file_;
 
 };
 #endif

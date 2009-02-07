@@ -37,10 +37,10 @@
 using namespace std;
 
 //_________________________________________________________
-void WindowSizeWatcher::setOptionName( const std::string& name )
+void WindowSizeWatcher::setOptionName( const QString& name )
 {
   Debug::Throw( "WindowSizeWatcher::setOptionName.\n" );
-  if( name.empty() )
+  if( name.isEmpty() )
   { 
     width_option_name_.clear();
     height_option_name_.clear();

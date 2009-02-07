@@ -31,12 +31,12 @@
   \date    $Date$
 */
 
-#include <string>
+#include <QString>
 
 /*! list properties commonly used for FileRecord objects */
 namespace FileRecordProperties
 {
-  static const std::string ICON = "icon";  
+  static const QString ICON = "icon";  
 };
 
 #endif

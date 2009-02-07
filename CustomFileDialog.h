@@ -53,7 +53,7 @@ class CustomFileDialog: public QFileDialog, public Counter
   CustomFileDialog( QWidget* parent );  
 
   //! working directory
-  static const File& workingDirectory( void )
+  static const QString& workingDirectory( void )
   { return working_directory_; }  
 
   private slots:
@@ -64,7 +64,7 @@ class CustomFileDialog: public QFileDialog, public Counter
   private:
   
   //! static string to store working directory
-  static File working_directory_;
+  static QString working_directory_;
   
 };
 

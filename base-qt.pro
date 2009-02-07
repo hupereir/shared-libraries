@@ -61,7 +61,6 @@ HEADERS = \
   LineEditor.h \
   LineNumberDisplay.h \
   ListModel.h \
-  ListWidget.h \
   MessageBuffer.h \
   MultipleClickCounter.h \
   OptionBrowsedLineEditor.h \
@@ -173,7 +172,6 @@ SOURCES = \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
-  ListWidget.cpp \
   OptionDialog.cpp \
   OptionListBox.cpp \
   OptionModel.cpp \

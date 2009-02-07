@@ -36,12 +36,11 @@ using namespace std;
 //______________________________________________________________________
 void OptionWidgetList::read( void )
 {
+  
   Debug::Throw( "OptionWidgetList::read.\n" );
   for( std::vector< OptionWidget* >::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
-  { 
-    Debug::Throw() << "OptionWidgetList::read - " << (*iter)->optionName() << endl;
-    (*iter)->read(); 
-  }
+  { (*iter)->read(); }
+  
 }
    
 //______________________________________________________________________
@@ -49,8 +48,5 @@ void OptionWidgetList::write( void ) const
 {
   Debug::Throw( "OptionWidgetList::write\n" );
   for( std::vector< OptionWidget* >::const_iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
-  { 
-    Debug::Throw() << "OptionWidgetList::write - " << (*iter)->optionName() << endl;   
-    (*iter)->write(); 
-  }
+  { (*iter)->write(); }
 }

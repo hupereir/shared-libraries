@@ -105,7 +105,7 @@ void TabWidget::_toggleDock( void )
     
     // reinsert into parent and select
     setFrameStyle( QFrame::NoFrame );
-    parent_->QTabWidget::insertTab( index_, this, title_.c_str() );
+    parent_->QTabWidget::insertTab( index_, this, title_ );
     parent_->QTabWidget::setCurrentWidget( this );
     
     // modify button text
@@ -134,8 +134,11 @@ void TabWidget::_toggleDock( void )
    
     // move and resize
     move( parent->mapToGlobal( QPoint(0,0) ) );    
-    setWindowIcon( QPixmap(File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
-    if( !title_.empty() ) { setWindowTitle( title_.c_str() ); }
+    
+    // warning: innefficient
+    setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
+    
+    if( !title_.isEmpty() ) { setWindowTitle( title_ ); }
 
     // change action text
     updateActions( true );

@@ -65,7 +65,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
     QStringList parsed( (iter)->split( "=" ) );
     if( parsed.empty() ) continue;
     
-    options.insert( OptionPair( qPrintable( parsed[0] ), parsed.size() > 1 ? qPrintable( parsed[1] ): "" ) );
+    options.insert( OptionPair( parsed[0], parsed.size() > 1 ? parsed[1]: "" ) );
   
   }
   

@@ -89,7 +89,7 @@ void CustomComboBox::_autoComplete( QString text )
   
   Debug::Throw() 
     << "CustomComboBox::_autoComplete -"
-    << " text:" << qPrintable( text ) 
+    << " text:" << text 
     << " case:" << (case_ == Qt::CaseSensitive ? "caseSensitive":"caseInsensitive" )
     << endl;
   
@@ -106,7 +106,7 @@ void CustomComboBox::_autoComplete( QString text )
     // see if text match item
     if( item_text.length() <= text.length() ) continue;
     if( item_text.indexOf( text, 0, case_ ) != 0 ) continue;
-    Debug::Throw() << "CustomComboBox::_autoComplete - found matching text: " << qPrintable( item_text ) << endl; 
+    Debug::Throw() << "CustomComboBox::_autoComplete - found matching text: " << item_text << endl; 
        
     // found text
     setEditText( item_text );

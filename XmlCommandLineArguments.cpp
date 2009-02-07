@@ -50,7 +50,7 @@ XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
     if( child_element.isNull() ) continue;
 
     if( child_element.tagName() == XML_ARGUMENT ) { push_back( XmlString( child_element.text() ).toText() ); }
-    else Debug::Throw() << "XmlCommandLineArguments::XmlCommandLineArguments - unrecognized child: " << qPrintable( child_element.tagName() ) << endl;
+    else Debug::Throw() << "XmlCommandLineArguments::XmlCommandLineArguments - unrecognized child: " << child_element.tagName() << endl;
   
   }
   

@@ -88,7 +88,7 @@ set<QString> UserSelectionFrame::users( void ) const
 //____________________________________________________________
 void UserSelectionFrame::setUser( const QString& user )
 { 
-  Debug::Throw() << "UserSelectionFrame::set - user: " << qPrintable(user) << endl;
+  Debug::Throw() << "UserSelectionFrame::set - user: " << user << endl;
   if( user.isNull() || user.isEmpty() ) return;
   
   for( int i=0; i< editor().QComboBox::count(); i++ )
@@ -125,7 +125,7 @@ void UserSelectionFrame::updateUsers( set<QString> users )
       continue;
     }
         
-    set<QString>::iterator iter( users.find( qPrintable( user ) ) );
+    set<QString>::iterator iter( users.find( user ) );
     if( iter == users.end() ) editor().removeItem( i );
     else {
       
@@ -146,7 +146,7 @@ QString UserSelectionFrame::user( void ) const
   Debug::Throw( "UserSelectionFrame::user.\n" );
   QString user(  editor().currentText() );
   if( user.isNull() || user.isEmpty() ) return "";
-  return qPrintable( user.trimmed() ); 
+  return user.trimmed(); 
 }
 
 //____________________________________________________________

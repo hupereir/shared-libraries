@@ -41,7 +41,7 @@ class OptionFontEditor: public FontEditor, public OptionWidget
   
   public:
   //! constructor
-  OptionFontEditor( QWidget* parent, const std::string& option_name ):
+  OptionFontEditor( QWidget* parent, const QString& option_name ):
       FontEditor( parent ),
       OptionWidget( option_name )
   {}
@@ -52,7 +52,7 @@ class OptionFontEditor: public FontEditor, public OptionWidget
   
   //! write value to option
   void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), qPrintable( font().toString() ) ); }
+  { XmlOptions::get().setRaw( optionName(), font().toString() ); }
         
 };
 

@@ -1762,7 +1762,7 @@ TextSelection TextEditor::selection( void ) const
   
   } else if( textCursor().hasSelection() ) {
     
-    Debug::Throw() << "TextEditor::selection - from cursor: " << qPrintable( textCursor().selectedText() ) << endl;
+    Debug::Throw() << "TextEditor::selection - from cursor: " << textCursor().selectedText() << endl;
     out.setText( textCursor().selectedText() );  
     
   } else {
@@ -2058,8 +2058,8 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     << "TextEditor::_replaceInRange -"
     << " anchor: " << cursor.anchor()
     << " position: " << cursor.position()
-    << " selection: " << qPrintable( selection.text() )
-    << " replacement: " << qPrintable( selection.replaceText() )
+    << " selection: " << selection.text()
+    << " replacement: " << selection.replaceText()
     << endl;
 
   // need to check for editability because apparently even if calling action is disabled,
@@ -2236,9 +2236,9 @@ bool TextEditor::_setTabSize( const int& tab_size )
   // define emulated tabs
   emulated_tab_ = QString( tab_size, ' ' );
 
-  ostringstream what;
-  what << "^(" << qPrintable( emulated_tab_ ) << ")" << "+";
-  emulated_tab_regexp_.setPattern( what.str().c_str() );
+  QString buffer;
+  QTextStream( &buffer ) << "^(" << emulated_tab_ << ")" << "+";
+  emulated_tab_regexp_.setPattern( buffer );
 
   return true;
 }
@@ -2333,14 +2333,14 @@ void TextEditor::_updateConfiguration( void )
   tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
 
   // paragraph highlighting
-  highlight_color_ = QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ).c_str() );
+  highlight_color_ = QColor( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ) );
   blockHighlight().setEnabled( highlight_color_.isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
   blockHighlightAction().setEnabled( highlight_color_.isValid() );
   blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
 
   // line numbers
-  _setMarginForegroundColor( QColor( XmlOptions::get().get<string>("MARGIN_FOREGROUND").c_str() ) );
-  _setMarginBackgroundColor( QColor( XmlOptions::get().get<string>("MARGIN_BACKGROUND").c_str() ) );
+  _setMarginForegroundColor( QColor( XmlOptions::get().raw("MARGIN_FOREGROUND") ) );
+  _setMarginBackgroundColor( QColor( XmlOptions::get().raw("MARGIN_BACKGROUND") ) );
   _setDrawVerticalLine( XmlOptions::get().get<bool>( "MARGIN_VERTICAL_LINE" ) );
   
   // update margins
@@ -2444,7 +2444,7 @@ void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
 
   if( mode == QClipboard::Selection )
   {
-    Debug::Throw() << "TextEditor::_updateClipboardActions - clipboard: " << qPrintable( qApp->clipboard()->text( QClipboard::Selection ) ) << endl;
+    Debug::Throw() << "TextEditor::_updateClipboardActions - clipboard: " << qApp->clipboard()->text( QClipboard::Selection ) << endl;
     find_selection_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
     find_selection_backward_action_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
   }

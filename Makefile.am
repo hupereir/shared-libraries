@@ -18,6 +18,9 @@ noinst_HEADERS = \
   AnimatedTreeView.h \
   BaseConfigurationDialog.h \
   BaseDialog.h \
+  BaseFindDialog.h \
+  BaseIcons.h \
+  BaseMainWindow.h \
   BaseReplaceDialog.h \
   BlockHighlight.h \
   BoxSelection.h \
@@ -33,8 +36,6 @@ noinst_HEADERS = \
   CustomComboBox.h \
   CustomDialog.h \
   CustomFileDialog.h \
-  GridLayout.h \
-  BaseMainWindow.h \
   CustomPixmap.h \
   CustomSlider.h \
   CustomTextDocument.h \
@@ -42,15 +43,14 @@ noinst_HEADERS = \
   CustomToolButton.h \
   DebugMenu.h \
   DockPanel.h \
-  BaseIcons.h \
   ErrorHandler.h \
   FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
-  BaseFindDialog.h \
   FlatStyle.h \
   FontEditor.h \
   FontInfo.h \
+  GridLayout.h \
   HtmlTextNode.h \
   IconBrowsedButton.h \
   IconCacheDialog.h \
@@ -65,7 +65,6 @@ noinst_HEADERS = \
   LineEditor.h \
   LineNumberDisplay.h \
   ListModel.h \
-  ListWidget.h \
   MessageBuffer.h \
   MultipleClickCounter.h \
   OptionBrowsedLineEditor.h \
@@ -135,7 +134,8 @@ libbase_qt_a_SOURCES = \
   AnimatedTabWidget.cpp \
   AnimatedTextEditor.cpp \
   AnimatedTreeView.cpp \
-  Color.cpp \
+  BaseFindDialog.cpp \
+  BaseMainWindow.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \
   BaseReplaceDialog.cpp \
@@ -143,6 +143,7 @@ libbase_qt_a_SOURCES = \
   BoxSelection.cpp \
   BrowsedLineEditor.cpp \
   ClockLabel.cpp \
+  Color.cpp \
   ColorDisplay.cpp \
   ColorMenu.cpp \
   ColumnSelectionMenu.cpp \
@@ -152,7 +153,6 @@ libbase_qt_a_SOURCES = \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomFileDialog.cpp \
-  BaseMainWindow.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
   CustomToolBar.cpp \
@@ -162,7 +162,6 @@ libbase_qt_a_SOURCES = \
   ErrorHandler.cpp \
   FileList.cpp \
   FileRecordModel.cpp \
-  BaseFindDialog.cpp \
   FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
@@ -179,7 +178,6 @@ libbase_qt_a_SOURCES = \
   ItemModel.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
-  ListWidget.cpp \
   OptionDialog.cpp \
   OptionListBox.cpp \
   OptionModel.cpp \
@@ -228,6 +226,8 @@ nodist_libbase_qt_a_SOURCES = \
   moc_AnimatedTabWidget.cpp \
   moc_BaseConfigurationDialog.cpp \
   moc_BaseDialog.cpp \
+  moc_BaseFindDialog.cpp \
+  moc_BaseMainWindow.cpp \
   moc_BaseReplaceDialog.cpp \
   moc_BlockHighlight.cpp \
   moc_BrowsedLineEditor.cpp \
@@ -239,7 +239,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CounterDialog.cpp \
   moc_CustomComboBox.cpp \
   moc_CustomFileDialog.cpp \
-  moc_BaseMainWindow.cpp \
   moc_CustomSlider.cpp \
   moc_CustomToolBar.cpp \
   moc_CustomToolButton.cpp \
@@ -247,7 +246,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_DockPanel.cpp \
   moc_FileList.cpp \
   moc_FileRecordModel.cpp \
-  moc_BaseFindDialog.cpp \
   moc_FontEditor.cpp \
   moc_IconBrowsedButton.cpp \
   moc_IconCacheDialog.cpp \
@@ -255,7 +253,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_IconSizeMenu.cpp \
   moc_LineEditor.cpp \
   moc_LineNumberDisplay.cpp \
-  moc_ListWidget.cpp \
   moc_MultipleClickCounter.cpp \
 	 moc_OptionDialog.cpp \
   moc_OptionListBox.cpp \

@@ -59,11 +59,11 @@ class RecentFilesMenu: public QMenu, public Counter
   virtual ~RecentFilesMenu( void );
 
   //! check if a file is in database, removes it if yes
-  virtual void remove( const std::string& file )
+  virtual void remove( const QString& file )
   { _fileList().remove( File( file ).expand() ); }
 
   //! check if a file is in database, adds it if not, select the file
-  virtual void select( const std::string& file )
+  virtual void select( const QString& file )
   {
     File new_file( File( file ).expand() );
     emit fileSelected( _fileList().add( new_file ) );
@@ -92,7 +92,7 @@ class RecentFilesMenu: public QMenu, public Counter
   public slots:
   
   //! check if a file is in database, adds it if not
-  virtual FileRecord& add( const std::string& file )
+  virtual FileRecord& add( const QString& file )
   { return _fileList().add( File( file ) ); }
   
   //! check if a file is in database, adds it if not

@@ -118,12 +118,12 @@ int TreeView::visibleColumnCount( void ) const
 }
 
 //_______________________________________________
-bool TreeView::setOptionName( const std::string& value )
+bool TreeView::setOptionName( const QString& value )
 { 
 
   Debug::Throw( "TreeView::setOptionName.\n" );
 
-  std::string tmp;
+  QString tmp;
   
   // mask
   bool mask_changed( false );
@@ -715,8 +715,8 @@ void TreeView::_updateConfiguration( void )
   
   // try load alternate colors from option
   QColor color;
-  Str colorname( XmlOptions::get().get<string>("ALTERNATE_COLOR").c_str() );
-  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) color = QColor( colorname.c_str() );
+  QString colorname( XmlOptions::get().raw("ALTERNATE_COLOR") );
+  if( !colorname.startsWith( ColorDisplay::NONE, Qt::CaseInsensitive ) ) color = QColor( colorname );
   
   if( !color.isValid() ) { setAlternatingRowColors( false ); }
   else {
@@ -728,8 +728,8 @@ void TreeView::_updateConfiguration( void )
   
   // try load selected column color from option
   color = QColor();
-  colorname = Str( XmlOptions::get().get<string>("SELECTED_COLUMN_COLOR").c_str() );
-  if( !colorname.isEqual( qPrintable( ColorDisplay::NONE ), false ) ) color = QColor( colorname.c_str() );
+  colorname = XmlOptions::get().raw("SELECTED_COLUMN_COLOR");
+  if( !colorname.startsWith( ColorDisplay::NONE, Qt::CaseInsensitive ) ) color = QColor( colorname );
   _setSelectedColumnColor( color );
   
   // icon size

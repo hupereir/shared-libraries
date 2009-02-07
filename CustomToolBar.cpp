@@ -45,7 +45,7 @@ CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas( void )
 }
 
 //_______________________________________________________________
-CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const std::string& option_name ):
+CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QString& option_name ):
   QToolBar( title, parent ),
   Counter( "CustomToolBar" ),
   option_name_( option_name ),
@@ -84,14 +84,13 @@ void CustomToolBar::hideEvent( QHideEvent* event )
 //_______________________________________________________________
 void CustomToolBar::moveEvent( QMoveEvent* event )
 {
-  if( isFloating() || option_name_.empty() ) return QToolBar::moveEvent( event );
+  if( isFloating() || option_name_.isEmpty() ) return QToolBar::moveEvent( event );
   
   QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );  
   if( parent )
   {
-    string location_name( option_name_ + "_LOCATION" );
-    Debug::Throw() << "CustomToolBar::moveEvent - " << location_name << ": " << CustomToolBar::areaToName( parent->toolBarArea( this ) ) << endl;
-    XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+    QString location_name( option_name_ + "_LOCATION" );
+    XmlOptions::get().setRaw( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
   }
   
 }
@@ -101,7 +100,7 @@ void CustomToolBar::_toggleVisibility( bool state )
 {
 
   Debug::Throw() << "CustomToolBar::_toggleVisibility - name: " << option_name_ << " state: " << state << endl;
-  if( !option_name_.empty() )
+  if( !option_name_.isEmpty() )
   {
     
     // save state
@@ -112,8 +111,8 @@ void CustomToolBar::_toggleVisibility( bool state )
     QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );  
     if( parent )
     {
-      string location_name( option_name_ + "_LOCATION" );
-      XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+      QString location_name( option_name_ + "_LOCATION" );
+      XmlOptions::get().setRaw( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
     }
     
   }
@@ -149,16 +148,16 @@ void CustomToolBar::_updateConfiguration( void )
   }
   
   // visibility
-  bool visibility( (!option_name_.empty() && XmlOptions::get().find( option_name_ ) ) ? XmlOptions::get().get<bool>( option_name_ ):true );
+  bool visibility( (!option_name_.isEmpty() && XmlOptions::get().find( option_name_ ) ) ? XmlOptions::get().get<bool>( option_name_ ):true );
   bool current_visibility( isVisible() );
   
   // position
   // try cast parent to QMainWindow
   QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );  
-  if( parent && !option_name_.empty() )
+  if( parent && !option_name_.isEmpty() )
   {
     
-    string location_name( option_name_ + "_LOCATION" );
+    QString location_name( option_name_ + "_LOCATION" );
     
     Qt::ToolBarArea location = (XmlOptions::get().find( location_name )) ? (Qt::ToolBarArea) nameToArea( XmlOptions::get().raw( location_name ) ):Qt::TopToolBarArea;
     Qt::ToolBarArea current_location = parent->toolBarArea( this );
@@ -186,12 +185,15 @@ void CustomToolBar::_updateConfiguration( void )
     
     // set options according to values
     XmlOptions::get().set<bool>( option_name_, !isHidden() );
-    XmlOptions::get().set<string>( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+    XmlOptions::get().setRaw( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
     
   }
     
   // update visibility action according to state for CustomToolbars
-  Debug::Throw() << "CustomToolBar::_updateConfiguration - option_name: " << option_name_ << " visibility: " << visibility << endl;
+  Debug::Throw() << "CustomToolBar::_updateConfiguration -"
+    << " option_name: " << option_name_ 
+    << " visibility: " << visibility << endl;
+  
   visibilityAction().setChecked( visibility );  
 
 }
@@ -200,9 +202,9 @@ void CustomToolBar::_updateConfiguration( void )
 void CustomToolBar::_installActions( void )
 {
   Debug::Throw( "CustomToolBar::_installActions.\n" );
-  ostringstream what;
-  what << "&" << qPrintable( windowTitle() );
-  visibility_action_ = new QAction( what.str().c_str(), this );
+  QString buffer;
+  QTextStream( &buffer) << "&" << windowTitle();
+  visibility_action_ = new QAction( buffer, this );
   visibility_action_->setCheckable( true );
   visibility_action_->setChecked( true );
   connect( visibility_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleVisibility( bool ) ) );

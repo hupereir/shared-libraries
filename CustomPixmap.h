@@ -69,7 +69,7 @@ class CustomPixmap: public QPixmap, public Counter
   {}
   
   //! find first file matching name in list of path
-  virtual CustomPixmap find( const std::string& file );
+  virtual CustomPixmap find( const QString& file );
      
   //! rotation
   enum Rotation

@@ -32,45 +32,45 @@
   \date $Date$
 */
 
-#include <string>
+#include <QString>
 
 //! namespace for base icons static name wrapper
 namespace ICONS
 {
   
-  static const std::string ADD="add.png";  
-  static const std::string REMOVE="button_cancel.png";  
-  static const std::string RENAME="edit-rename.png";  
-  static const std::string ABOUT_QT = "qt-logo.png";
-  static const std::string DIALOG_OK = "dialog-ok.png";
-  static const std::string DIALOG_OK_APPLY = "dialog-ok-apply.png";
-  static const std::string DIALOG_ACCEPT = DIALOG_OK_APPLY;
-  static const std::string DIALOG_CANCEL = "dialog-cancel.png";
-  static const std::string DIALOG_CLOSE = "dialog-close.png";
-  static const std::string EDIT = "edit.png";
-  static const std::string UNDO= "undo.png";
-  static const std::string REDO= "redo.png";
-  static const std::string EDIT_CLEAR = "clear_left.png"; 
-  static const std::string CUT = "editcut.png";
-  static const std::string COPY = "editcopy.png";
-  static const std::string EXIT = "exit.png";
-  static const std::string PASTE = "editpaste.png";
-  static const std::string PRINT = "fileprint.png"; 
-  static const std::string FIND = "viewmag.png";
-  static const std::string FIND_LARGE = "viewmag-large.png";
-  static const std::string COLOR = "color.png";
-  static const std::string COLOR_PICKER = "colorpicker.png";
-  static const std::string CONFIGURE = "configure.png";
-  static const std::string HELP = "toggle_log.png";
-  static const std::string LOCK = "encrypted.png";
-  static const std::string SHOW_MENU = "show-menu.png";
-  static const std::string OPEN = "fileopen.png";
-  static const std::string OPEN_FOLDER = "fileopen-folder.png";
-  static const std::string PIN = "stock_pin.png";
-  static const std::string RELOAD = "reload.png";
-  static const std::string DELETE = "trashcan_empty.png";
-  static const std::string WARNING = "messagebox_warning.png";
-  static const std::string INFORMATION = "dialog-information.png";
+  static const QString ADD="add.png";  
+  static const QString REMOVE="button_cancel.png";  
+  static const QString RENAME="edit-rename.png";  
+  static const QString ABOUT_QT = "qt-logo.png";
+  static const QString DIALOG_OK = "dialog-ok.png";
+  static const QString DIALOG_OK_APPLY = "dialog-ok-apply.png";
+  static const QString DIALOG_ACCEPT = DIALOG_OK_APPLY;
+  static const QString DIALOG_CANCEL = "dialog-cancel.png";
+  static const QString DIALOG_CLOSE = "dialog-close.png";
+  static const QString EDIT = "edit.png";
+  static const QString UNDO= "undo.png";
+  static const QString REDO= "redo.png";
+  static const QString EDIT_CLEAR = "clear_left.png"; 
+  static const QString CUT = "editcut.png";
+  static const QString COPY = "editcopy.png";
+  static const QString EXIT = "exit.png";
+  static const QString PASTE = "editpaste.png";
+  static const QString PRINT = "fileprint.png"; 
+  static const QString FIND = "viewmag.png";
+  static const QString FIND_LARGE = "viewmag-large.png";
+  static const QString COLOR = "color.png";
+  static const QString COLOR_PICKER = "colorpicker.png";
+  static const QString CONFIGURE = "configure.png";
+  static const QString HELP = "toggle_log.png";
+  static const QString LOCK = "encrypted.png";
+  static const QString SHOW_MENU = "show-menu.png";
+  static const QString OPEN = "fileopen.png";
+  static const QString OPEN_FOLDER = "fileopen-folder.png";
+  static const QString PIN = "stock_pin.png";
+  static const QString RELOAD = "reload.png";
+  static const QString DELETE = "trashcan_empty.png";
+  static const QString WARNING = "messagebox_warning.png";
+  static const QString INFORMATION = "dialog-information.png";
 
 };
 

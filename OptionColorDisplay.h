@@ -43,18 +43,18 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
   public:
   
   //! constructor
-  OptionColorDisplay( QWidget* parent, const std::string& option_name ):
+  OptionColorDisplay( QWidget* parent, const QString& option_name ):
       ColorDisplay( parent ),
       OptionWidget( option_name )
   {}
   
   //! read value from option
   void read( void )
-  { setColor( XmlOptions::get().get<std::string>( optionName() ).c_str() ); }
+  { setColor( XmlOptions::get().raw( optionName() ) ); }
   
   //! write value to option
   void write( void ) const
-  { XmlOptions::get().set<std::string>( optionName(), qPrintable( colorName() ) ); }
+  { XmlOptions::get().setRaw( optionName(), colorName() ); }
         
 };
 #endif

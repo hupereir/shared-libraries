@@ -49,7 +49,7 @@ class TreeViewConfiguration: public QGroupBox, public OptionWidget
   public:
   
   //! constructor
-  TreeViewConfiguration( QWidget* parent, QTreeView* target, const std::string& option_name  );
+  TreeViewConfiguration( QWidget* parent, QTreeView* target, const QString& option_name  );
 
   //! read value from option
   void read( void );

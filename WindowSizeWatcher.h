@@ -52,7 +52,7 @@ class WindowSizeWatcher: public QObject, public Counter
   {}
     
   //! size option name
-  virtual void setOptionName( const std::string& name );
+  virtual void setOptionName( const QString& name );
     
   //! size hint
   /*! an invalid size is returned when option name is not set */
@@ -72,14 +72,14 @@ class WindowSizeWatcher: public QObject, public Counter
 
   //! true when option name was set
   bool _hasSizeOptionName( void ) const
-  { return !width_option_name_.empty(); }
+  { return !width_option_name_.isEmpty(); }
 
   //! size option name
-  virtual const std::string _heightOptionName( void ) const
+  virtual const QString _heightOptionName( void ) const
   { return height_option_name_; }
   
   //! size option name
-  virtual const std::string _widthOptionName( void ) const
+  virtual const QString _widthOptionName( void ) const
   { return width_option_name_; }
 
   //! save window size
@@ -89,10 +89,10 @@ class WindowSizeWatcher: public QObject, public Counter
   QBasicTimer resize_timer_;
   
   //! window size option name
-  std::string width_option_name_;
+  QString width_option_name_;
 
   //! window size option name
-  std::string height_option_name_;
+  QString height_option_name_;
   
 };
 

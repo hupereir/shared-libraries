@@ -32,12 +32,11 @@
 #define IconBrowsedButton_h
 
 #include <QIconSet>
+#include <QString>
 
 #include "CustomToolButton.h"
 #include "Counter.h"  
 #include "Debug.h"  
-#include "File.h"  
-#include "Util.h"  
 
 /*!
   \class IconBrowsedButton
@@ -52,12 +51,12 @@ class IconBrowsedButton: public CustomToolButton
   public:
   
   //! no icon filename
-  static const std::string NO_ICON;
+  static const QString NO_ICON;
       
   //! creator
   IconBrowsedButton( 
     QWidget* parent,   
-    const File& file = NO_ICON
+    const QString& file = NO_ICON
   );
   
   //! destructor
@@ -65,11 +64,11 @@ class IconBrowsedButton: public CustomToolButton
   {}
   
   //! iconFile
-  virtual const File& file( void ) const
+  virtual const QString& file( void ) const
   { return file_; }
   
   //! iconFile
-  virtual bool setFile( const File& file, const bool& check );
+  virtual bool setFile( const QString& file, const bool& check );
 
   protected:
   
@@ -90,7 +89,7 @@ class IconBrowsedButton: public CustomToolButton
   QPixmap no_icon_pixmap_;
     
   //! icon file
-  File file_;
+  QString file_;
   
 };
 

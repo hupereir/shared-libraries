@@ -44,7 +44,7 @@ class OptionSlider: public CustomSlider, public OptionWidget
   public:
   
   //! constructor
-  OptionSlider( QWidget* parent, const std::string& option_name ):
+  OptionSlider( QWidget* parent, const QString& option_name ):
       CustomSlider( parent ),
       OptionWidget( option_name ),
       scale_( 1 )

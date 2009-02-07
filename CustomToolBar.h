@@ -50,23 +50,23 @@ class CustomToolBar: public QToolBar, public Counter
   public:
     
   //! constructor
-  CustomToolBar( const QString& title = QString(), QWidget* parent = 0, const std::string& option_name = "" );
+  CustomToolBar( const QString& title = QString(), QWidget* parent = 0, const QString& option_name = "" );
   
   //! destructor
   virtual ~CustomToolBar( void );
 
   // map toolbar area and name
-  typedef std::map< std::string, Qt::ToolBarArea> AreaMap; 
+  typedef std::map< QString, Qt::ToolBarArea> AreaMap; 
   
   //! get area from name
-  static Qt::ToolBarArea nameToArea( const std::string& name )
+  static Qt::ToolBarArea nameToArea( const QString& name )
   { 
     AreaMap::iterator iter = _toolbarAreas().find( name );
     return iter == _toolbarAreas().end() ? (Qt::ToolBarArea) 0 :iter->second;
   }
   
   //! get name from toobar area
-  static std::string areaToName( const Qt::ToolBarArea& value )
+  static QString areaToName( const Qt::ToolBarArea& value )
   { 
     
     for( AreaMap::iterator iter = _toolbarAreas().begin(); iter != _toolbarAreas().end(); iter++ )
@@ -111,13 +111,13 @@ class CustomToolBar: public QToolBar, public Counter
     public:
     
     //! constructor
-    LocationComboBox( QWidget* parent, const std::string& option ):
+    LocationComboBox( QWidget* parent, const QString& option ):
         OptionComboBox( parent, option )
     {
-      addItem( CustomToolBar::areaToName( Qt::TopToolBarArea ).c_str() );
-      addItem( CustomToolBar::areaToName( Qt::BottomToolBarArea ).c_str() );
-      addItem( CustomToolBar::areaToName( Qt::LeftToolBarArea ).c_str() );
-      addItem( CustomToolBar::areaToName( Qt::RightToolBarArea ).c_str() );
+      addItem( CustomToolBar::areaToName( Qt::TopToolBarArea ) );
+      addItem( CustomToolBar::areaToName( Qt::BottomToolBarArea ) );
+      addItem( CustomToolBar::areaToName( Qt::LeftToolBarArea ) );
+      addItem( CustomToolBar::areaToName( Qt::RightToolBarArea ) );
     }
     
   };
@@ -149,7 +149,7 @@ class CustomToolBar: public QToolBar, public Counter
   void _installActions( void );
   
   //! assocated option name
-  std::string option_name_;
+  QString option_name_;
   
   //! visibility action
   QAction* visibility_action_;

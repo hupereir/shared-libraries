@@ -44,7 +44,7 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
   public:
   
   //! constructor
-  OptionBrowsedLineEditor( QWidget* parent, const std::string& option_name ):
+  OptionBrowsedLineEditor( QWidget* parent, const QString& option_name ):
       BrowsedLineEditor( parent ),
       OptionWidget( option_name )
   {}
@@ -55,7 +55,7 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
   
   //! write value to option
   void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), qPrintable( editor().text() ) ); }
+  { XmlOptions::get().setRaw( optionName(), editor().text() ); }
         
 };
 #endif

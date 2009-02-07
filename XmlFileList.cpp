@@ -57,7 +57,7 @@ XmlFileList::XmlFileList( QObject* parent ):
 }
   
 //_______________________________________________
-bool XmlFileList::_setDBFile( const File& file )
+bool XmlFileList::_setDBFile( const QString& file )
 {
   Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
 
@@ -76,10 +76,10 @@ bool XmlFileList::_setDBFile( const File& file )
 bool XmlFileList::_read( void )
 {
   Debug::Throw( "XmlFileList::_read.\n" );
-  if( db_file_.empty() || !db_file_.exists() ) return false;
+  if( db_file_.isEmpty() || !QFileInfo(db_file_).exists() ) return false;
 
   // parse the file
-  QFile in( db_file_.c_str() );
+  QFile in( db_file_ );
   if ( !in.open( QIODevice::ReadOnly ) )
   {
     Debug::Throw( "XmlFileList::_read - cannot open file.\n" );
@@ -88,7 +88,7 @@ bool XmlFileList::_read( void )
 
   // dom document
   QDomDocument document;
-  XmlError error( db_file_.c_str() );
+  XmlError error( db_file_ );
   if ( !document.setContent( &in, &error.error(), &error.line(), &error.column() ) ) {
     in.close();
     Debug::Throw() << error << endl;
@@ -104,7 +104,7 @@ bool XmlFileList::_read( void )
 
     // special options
     if( element.tagName() == XmlFileRecord::XML_RECORD ) _add( XmlFileRecord( element ), true, false );
-    else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << qPrintable( element.tagName() ) << endl;
+    else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << element.tagName() << endl;
   }
 
   emit contentsChanged();
@@ -116,14 +116,14 @@ bool XmlFileList::_read( void )
 bool XmlFileList::_write( void )
 {
   Debug::Throw( "XmlFileList::_write.\n" );
-  if( db_file_.empty() ) 
+  if( db_file_.isEmpty() ) 
   {
     Debug::Throw( "XmlFileList::_write - no file.\n" );    
     return false;
   }
   
   // output file
-  QFile out( db_file_.c_str() );
+  QFile out( db_file_ );
   if( !out.open( QIODevice::WriteOnly ) ) return false;
 
   // get records truncated list
@@ -174,16 +174,16 @@ bool XmlFileList::_deprecatedRead( void )
   Debug::Throw( "FileList::_deprecatedRead.\n" );
   
   // check file
-  if( db_file_.empty() || !db_file_.exists() ) return false; 
+  if( db_file_.isEmpty() || !QFileInfo(db_file_).exists() ) return false; 
   
   // open stream
-  QFile in( db_file_.c_str() );
+  QFile in( db_file_ );
   if( !in.open( QIODevice::ReadOnly ) ) return false;
       
   while( in.canReadLine() ) 
   { 
     QString line( in.readLine( 1024 ) );
-    _add( FileRecord( File( qPrintable( line ) ) ), true, false ); 
+    _add( FileRecord( File( line ) ), true, false ); 
   }
   
   in.close();

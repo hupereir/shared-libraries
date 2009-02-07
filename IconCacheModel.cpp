@@ -31,7 +31,6 @@
 */
 
 #include "IconCacheModel.h"
-#include "Str.h"
 
 using namespace std;
 
@@ -51,7 +50,7 @@ QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
   const IconEngine::Pair& icon_pair( get(index) );
   
   // return text associated to file and column
-  if( role == Qt::DisplayRole && index.column() == ICON ) return icon_pair.first.c_str();
+  if( role == Qt::DisplayRole && index.column() == ICON ) return icon_pair.first;
   if( role == Qt::DecorationRole && index.column() == ICON ) return icon_pair.second;
   return QVariant();
   

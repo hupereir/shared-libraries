@@ -82,7 +82,7 @@ void CustomSlider::_updateSlider( void )
   
   // retrieve/check text from line_edit_
   bool error( false );
-  int value( Str( qPrintable( line_edit_->text() ) ).get<int>(&error) );
+  int value( Str( line_edit_->text() ).get<int>(&error) );
   if( error || value < slider_->minimum() || value > slider_->maximum() ) 
   {
     InformationDialog( this, "invalid value" ).exec();

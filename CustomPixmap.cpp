@@ -72,7 +72,7 @@ CustomPixmap::CustomPixmap( const QString& file ):
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::find( const string& file )
+CustomPixmap CustomPixmap::find( const QString& file )
 {
   
   Debug::Throw( "CustomPixmap::find.\n" );    

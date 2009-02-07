@@ -29,10 +29,12 @@
   \date $Date$
 */
 
+#include <QFileInfo>
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOptionButton>
 
+#include "File.h"
 #include "PixmapEngine.h"
 #include "XmlOptions.h"
 
@@ -57,7 +59,7 @@ bool PixmapEngine::reload( void )
   Debug::Throw( "PixmapEngine::reload.\n" );
  
   // load path from options
-  list<string> path_list( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  list<QString> path_list( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
   if( path_list == _pixmapPath() ) return false;
 
   _setPixmapPath( path_list );
@@ -68,11 +70,11 @@ bool PixmapEngine::reload( void )
 }
 
 //__________________________________________________________
-QPixmap PixmapEngine::_get( const string& file, bool from_cache )
+QPixmap PixmapEngine::_get( const QString& file, bool from_cache )
 {
   Debug::Throw( "PixmapEngine::_get (file).\n" );
   
-  if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<string>( "PIXMAP_PATH" ) );
+  if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
 
   // try find file in cache
   if( from_cache )
@@ -83,26 +85,26 @@ QPixmap PixmapEngine::_get( const string& file, bool from_cache )
   
   // create output
   QPixmap out;
-  if( QFileInfo( file.c_str() ).isAbsolute() ) { out = QPixmap( file.c_str() ); } 
+  if( QFileInfo( file ).isAbsolute() ) { out = QPixmap( file ); } 
   else {
     
-    for( list<string>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
+    for( list<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
     {
     
       // skip empty path
-      if( iter->empty() ) continue;
+      if( iter->isEmpty() ) continue;
       
       // prepare filename
       File icon_file;
       
       // see if path is internal resource path
-      if( iter->substr( 0, 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
+      if( iter->left( 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
       else icon_file = File( *iter ).find( file );
       
       // load pixmap
-      if( !icon_file.empty() )
+      if( !icon_file.isEmpty() )
       {
-        out.load( icon_file.c_str() );
+        out.load( icon_file );
         if( !out.isNull() ) break;
       }
     }

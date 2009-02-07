@@ -70,7 +70,7 @@ void ClockTimer::_checkCurrentTime( void )
   setInterval( 1000 * interval() );
   
   // emit time changed signal
-  emit timeChanged( time_.string(format ).c_str() );
+  emit timeChanged( time_.toString( format ) );
   return;
   
 }
@@ -90,6 +90,6 @@ ClockLabel::ClockLabel( QWidget* parent ):
   timer_.setInterval( 1000 * ClockTimer::interval() );
   timer_.start();
   
-  setText( TimeStamp::now().string( format ).c_str() );
+  setText( TimeStamp::now().toString( format ) );
   
 }

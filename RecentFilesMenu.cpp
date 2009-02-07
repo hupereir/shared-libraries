@@ -79,7 +79,7 @@ bool RecentFilesMenu::openLastValidFile( void )
   
   Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );
   FileRecord record( _fileList().lastValidFile() );
-  if( record.file().empty() ) return false;
+  if( record.file().isEmpty() ) return false;
   
   emit fileSelected( record );
   return true;
@@ -153,20 +153,8 @@ void RecentFilesMenu::_loadFiles( void )
   // retrieve stored file record
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   {
-    
-    ostringstream what;
-
-    if( 0 )
-    {
-    
-      string local_name( iter->file().localName() );
-      string path( iter->file().path() );
-      what << local_name;
-      if( !path.empty() ) what << " [" << path << "]";
-    
-    } else { what << iter->file(); }
-    
-    QString label( what.str().c_str() );
+        
+    QString label( iter->file() );
     QAction* action = addAction( label );
     
     // add icon

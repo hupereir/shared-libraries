@@ -43,18 +43,18 @@ class OptionLineEditor: public LineEditor, public OptionWidget
   public:
   
   //! constructor
-  OptionLineEditor( QWidget* parent, const std::string& option_name ):
-      LineEditor( parent ),
-      OptionWidget( option_name )
+  OptionLineEditor( QWidget* parent, const QString& option_name ):
+    LineEditor( parent ),
+    OptionWidget( option_name )
   {}
   
   //! read value from option
   void read( void )
-  { setText( XmlOptions::get().raw( optionName() ).c_str() ); }
+  { setText( XmlOptions::get().raw( optionName() ) ); }
   
   //! write value to option
   void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), qPrintable( text() ) ); }
+  { XmlOptions::get().setRaw( optionName(), text() ); }
         
 };
 #endif

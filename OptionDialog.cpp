@@ -169,7 +169,7 @@ void OptionDialog::_optionModified( OptionPair option )
 //______________________________________________________________
 void OptionDialog::_specialOptionModified( OptionPair option )
 { 
-  Debug::Throw() << "OptionDialog::_specialOptionModified - " << option.first  << endl; 
+  Debug::Throw() << "OptionDialog::_specialOptionModified - " << option.first << endl; 
 
   // find all matching options from model
   QModelIndex index( model_.index( OptionPair( option.first, "" ) ) );
@@ -184,7 +184,7 @@ void OptionDialog::_specialOptionModified( OptionPair option )
     XmlOptions::get().keep( option.first );
     for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); iter++ )
     { 
-      if( !iter->second.raw().empty() )
+      if( !iter->second.raw().isEmpty() )
       { XmlOptions::get().add( iter->first, iter->second ); }
     }
 

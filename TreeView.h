@@ -91,22 +91,22 @@ class TreeView: public QTreeView, public Counter
   //@{
   
   //! option name
-  virtual bool setOptionName( const std::string& );
+  virtual bool setOptionName( const QString& );
   
   //! option name 
   virtual bool hasOptionName( void ) const
-  { return !maskOptionName().empty(); }
+  { return !maskOptionName().isEmpty(); }
   
   //! option name
-  virtual const std::string& maskOptionName( void ) const
+  virtual const QString& maskOptionName( void ) const
   { return mask_option_name_; }
   
   //! sort column option name
-  virtual const std::string& sortColumnOptionName( void ) const
+  virtual const QString& sortColumnOptionName( void ) const
   { return sort_column_option_name_; }
   
   //! sort order option name
-  virtual const std::string& sortOrderOptionName( void ) const
+  virtual const QString& sortOrderOptionName( void ) const
   { return sort_order_option_name_; }
   
   //! get mask
@@ -286,13 +286,13 @@ class TreeView: public QTreeView, public Counter
   QMenu *menu_;
   
   //! mask option name
-  std::string mask_option_name_;
+  QString mask_option_name_;
   
   //! sort column option name
-  std::string sort_column_option_name_;
+  QString sort_column_option_name_;
   
   //! sort order option name
-  std::string sort_order_option_name_;
+  QString sort_order_option_name_;
   
   //! true if icon size is to be set from options
   bool icon_size_from_options_;

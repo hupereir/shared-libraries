@@ -29,11 +29,11 @@
   \date $Date$
 */
 
-#include <sstream>
 #include <assert.h>
 #include <QHeaderView>
 #include <QLayout>
 #include <QPushButton>
+#include <QTextStream>
 #include <QToolTip>
 
 #include "Debug.h"
@@ -43,7 +43,7 @@
 using namespace std;
 
 //____________________________________________________________________________
-TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const string& option_name ):
+TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& option_name ):
     QGroupBox( parent ),
     OptionWidget( option_name )
 {
@@ -70,11 +70,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     // retrieve column name
     QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );    
     if( column_name.isNull() || column_name.isEmpty() )
-    {
-      ostringstream what;
-      what << "column " << index+1;
-      column_name = what.str().c_str();
-    }
+    { QTextStream( &column_name ) << "column " << index+1; }
     
     // add checkbox
     checkbox = new QCheckBox( column_name, this );
@@ -82,9 +78,9 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     checkbox_.push_back( checkbox );
     
     // add tooltip
-    ostringstream what;
-    what << "Show/hide column \"" << qPrintable( column_name ) << "\"";
-    checkbox->setToolTip( what.str().c_str() );
+    QString buffer;
+    QTextStream( &buffer ) << "Show/hide column \"" << column_name << "\"";
+    checkbox->setToolTip( buffer );
     
   }
   
