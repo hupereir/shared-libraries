@@ -45,7 +45,7 @@ using namespace std;
 //_______________________________________________
 RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
   QMenu( parent ),
-  Counter( " RecentFilesMenu" ),
+  Counter( "RecentFilesMenu" ),
   file_list_( &files )
 { 
   Debug::Throw( "RecentFilesMenu::RecentFilesMenu.\n" );
