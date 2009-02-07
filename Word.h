@@ -37,7 +37,7 @@
 namespace SPELLCHECK
 {
   //! keep track of misspelled words in text
-  class Word: public std::string
+  class Word: public QString
   {
     public:
 
@@ -45,8 +45,8 @@ namespace SPELLCHECK
     typedef std::set<Word> Set;
         
     //! constructor
-    Word( const std::string& word = "", const int& position = 0 ):
-        std::string( word ),
+    Word( const QString& word = "", const int& position = 0 ):
+        QString( word ),
         position_( position )
     {}    
     

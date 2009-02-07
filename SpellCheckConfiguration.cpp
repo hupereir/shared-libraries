@@ -72,9 +72,9 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
     "a dictionary has not been manually selected" );
   addOptionWidget( combobox );
  
-  const set<string>& dictionaries( interface.dictionaries() );
-  for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
-  { combobox->addItem( iter->c_str() ); }
+  const set<QString>& dictionaries( interface.dictionaries() );
+  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
+  { combobox->addItem( *iter ); }
   
   // filters
   grid_layout->addWidget( new QLabel( "Default Filter: ", this ) );
@@ -85,8 +85,8 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
     "a filtering mode has not been manually selected" );
   addOptionWidget( combobox );
 
-  const set<string>& filters( interface.filters() );
-  for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
-  { combobox->addItem(iter->c_str() ); }
+  const set<QString>& filters( interface.filters() );
+  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
+  { combobox->addItem(*iter ); }
   
 }

@@ -38,7 +38,7 @@ using namespace std;
 using namespace SPELLCHECK;
 
 //_______________________________________________
-const string SpellInterface::NO_FILTER = "none";
+const QString SpellInterface::NO_FILTER = "none";
 
 //_______________________________________________
 SpellInterface::SpellInterface( void ):
@@ -80,7 +80,7 @@ SpellInterface::~SpellInterface( void )
 }
 
 //____________________________________________________
-bool SpellInterface::setDictionary( const std::string& dictionary )
+bool SpellInterface::setDictionary( const QString& dictionary )
 {
 
   Debug::Throw( "SpellInterface::setDictionary.\n" );
@@ -101,12 +101,12 @@ bool SpellInterface::setDictionary( const std::string& dictionary )
   if( spell_checker_ ) aspell_speller_save_all_word_lists( spell_checker_ );
 
   // update main dictionary
-  aspell_config_replace(spell_config_, "lang", dictionary.c_str() );
+  aspell_config_replace(spell_config_, "lang", qPrintable( dictionary ) );
   dictionary_ = dictionary;
 
   // update personal dictionary
-  string personal_dictionary = Util::env( "HOME" ) + "/.aspell." + dictionary + ".pws";
-  aspell_config_replace(spell_config_, "personal", personal_dictionary.c_str() );
+  QString personal_dictionary = Util::env( "HOME" ) + "/.aspell." + dictionary + ".pws";
+  aspell_config_replace(spell_config_, "personal", qPrintable( personal_dictionary ) );
 
   // reset
   return _reset();
@@ -114,7 +114,7 @@ bool SpellInterface::setDictionary( const std::string& dictionary )
 }
 
 //____________________________________________________
-bool SpellInterface::setFilter( const std::string& filter )
+bool SpellInterface::setFilter( const QString& filter )
 {
 
   Debug::Throw( "SpellInterface::setFilter.\n" );
@@ -131,7 +131,7 @@ bool SpellInterface::setFilter( const std::string& filter )
   }
 
   // update filter
-  aspell_config_replace(spell_config_, "mode", filter.c_str() );
+  aspell_config_replace(spell_config_, "mode", qPrintable( filter ) );
   filter_ = filter;
 
   // reset SpellChecker
@@ -141,14 +141,14 @@ bool SpellInterface::setFilter( const std::string& filter )
 
 //__________________________________________
 bool SpellInterface::setText(
-    const string& text,
-    const unsigned int &begin,
-    const unsigned int &end )
+    const QString& text,
+    const int &begin,
+    const int &end )
 {
   Debug::Throw( "SpellInterface::setText.\n" );
 
   // check text
-  if( text.empty() ) 
+  if( text.isEmpty() ) 
   {
     Debug::Throw( "SpellInterface::setText - empty.\n" );  
     return true;
@@ -169,7 +169,7 @@ bool SpellInterface::setText(
   position_ = 0;
   offset_ = 0;
   aspell_document_checker_reset( document_checker_ );
-  aspell_document_checker_process(document_checker_, text_.substr( begin_, end_-begin_).c_str(), -1);
+  aspell_document_checker_process(document_checker_, qPrintable( text_.mid( begin_, end_-begin_) ), -1);
   
   return true;
 
@@ -177,12 +177,12 @@ bool SpellInterface::setText(
 
 
 //____________________________________________________
-bool SpellInterface::addWord( const string& word )
+bool SpellInterface::addWord( const QString& word )
 {
   Debug::Throw( "SpellInterface::addWord.\n" );
 
   // check word
-  if( word.empty() ) return false;
+  if( word.isEmpty() ) return false;
 
   // check spellchecker
   if( !spell_checker_ ) {
@@ -191,13 +191,13 @@ bool SpellInterface::addWord( const string& word )
   }
 
   // retrieve word from editor
-  aspell_speller_add_to_personal(spell_checker_, word.c_str(), -1);
+  aspell_speller_add_to_personal(spell_checker_, qPrintable( word ), -1);
   return true;
 
 }
 
 //____________________________________________________
-bool SpellInterface::replace( const std::string& word )
+bool SpellInterface::replace( const QString& word )
 {
 
   Debug::Throw( "SpellInterface::replace.\n" );
@@ -219,8 +219,8 @@ bool SpellInterface::replace( const std::string& word )
   // inform spellchecker of the replacement
   aspell_speller_store_replacement(
       spell_checker_,
-      word_.c_str(), -1,
-      word.c_str(), -1 );
+      qPrintable( word_ ), -1,
+      qPrintable( word ), -1 );
 
   // update checked text
   checked_text_.replace( begin_+position_+offset_, word_.size(), word );
@@ -234,14 +234,14 @@ bool SpellInterface::nextWord( void )
 {
 
   // check filter 
-  if( filter_.empty() )
+  if( filter_.isEmpty() )
   {
     error_ = "no filter set";
     return false;
   }
     
   // check filter 
-  if( dictionary_.empty() )
+  if( dictionary_.isEmpty() )
   {
     error_ = "no dictionary set";
     return false;
@@ -269,7 +269,7 @@ bool SpellInterface::nextWord( void )
     position_ = token.offset;
 
     // retrieve word
-    word_ = text_.substr( begin_+position_, token.len );
+    word_ = text_.mid( begin_+position_, token.len );
     return true;
   }
 
@@ -282,19 +282,19 @@ bool SpellInterface::nextWord( void )
 }
 
 //____________________________________________________
-vector< string > SpellInterface::suggestions( const std::string& word ) const
+vector< QString > SpellInterface::suggestions( const QString& word ) const
 {
 
   Debug::Throw( "SpellInterface::suggestions.\n" );
 
   // check spell checker
-  vector<string> out;
+  vector<QString> out;
   if( !spell_checker_ ) {
     Debug::Throw(0, "SpellInterface::suggestions - no spell checker" );
     return out;
   }
 
-  const AspellWordList * suggestions( aspell_speller_suggest( spell_checker_, word.c_str(), -1 ) );
+  const AspellWordList * suggestions( aspell_speller_suggest( spell_checker_, qPrintable( word ), -1 ) );
   AspellStringEnumeration * elements( aspell_word_list_elements( suggestions ) );
 
   const char * suggestion( 0 );
@@ -357,18 +357,18 @@ void SpellInterface::_loadFilters( void )
   filters_.clear();
   filters_.insert( NO_FILTER );
 
-  string command( XmlOptions::get().raw("ASPELL") + " dump modes" );
-  FILE *tmp = popen( command.c_str(), "r" );
+  QString command( XmlOptions::get().raw("ASPELL") + " dump modes" );
+  FILE *tmp = popen( qPrintable( command ), "r" );
   static const int linesize( 128 );
   char buf[linesize];
   while( fgets( buf, linesize, tmp ) ) 
   {
 
     if( !strlen( buf ) ) continue;
-    istringstream in( buf );
-    string mode;
+    QTextStream in( buf );
+    QString mode;
     in >> mode;
-    if( !(in.rdstate() & ios::failbit ) && mode.size() )
+    if( in.status() == QTextStream::Ok && !mode.isEmpty() )
     filters_.insert( mode );
   }
 
@@ -418,7 +418,7 @@ bool SpellInterface::_reset( void )
     position_ = 0;
     offset_ = 0;
     aspell_document_checker_reset( document_checker_ );
-    aspell_document_checker_process(document_checker_, text_.substr( begin_, end_-begin_).c_str(), -1);
+    aspell_document_checker_process(document_checker_, qPrintable( text_.mid( begin_, end_-begin_) ), -1);
     Debug::Throw( "SpellInterface::_reset - assigning text, done.\n" );  
   }
 

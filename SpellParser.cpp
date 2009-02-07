@@ -55,14 +55,14 @@ Word::Set SpellParser::parse( const QString& text )
   if( !enabled_ ) return ( Word::Set() );
   
   // retrieve misspelled words
-  interface().setText( qPrintable( text ) );
+  interface().setText( text );
   Word::Set words;
   while(1)
   {
     interface().nextWord();
-    string word( interface().word() );
+    QString word( interface().word() );
     int position( interface().position() );
-    if( word.empty() ) break;
+    if( word.isEmpty() ) break;
     if( interface().isWordIgnored( word ) ) continue;
     
     Debug::Throw() << "SpellParser::highlightParagraph - new word: " << word << " position: " << position << endl;

@@ -43,10 +43,12 @@
 
 #include "BaseDialog.h"
 #include "Counter.h"
-#include "ListWidget.h"
+#include "ListModel.h"
 #include "LineEditor.h"
 #include "SpellInterface.h"
 #include "TextPosition.h" 
+
+class TreeView;
 
 namespace SPELLCHECK
 {
@@ -83,18 +85,18 @@ namespace SPELLCHECK
     }
     
     //! dictionary
-    bool setDictionary( const std::string& dict );
+    bool setDictionary( const QString& dict );
     
     //! dictionary
-    std::string dictionary( void ) const
-    { return qPrintable( dictionary_->itemText( dictionary_->currentIndex() ) ); }
+    QString dictionary( void ) const
+    { return dictionary_->itemText( dictionary_->currentIndex() ); }
     
     //! filter
-    bool setFilter( const std::string& filter );
+    bool setFilter( const QString& filter );
         
     //! dictionary
-    std::string filter( void ) const
-    { return qPrintable( filter_->itemText( filter_->currentIndex() ) ); }
+    QString filter( void ) const
+    { return filter_->itemText( filter_->currentIndex() ); }
 
     //! go to next word to be checked
     void nextWord( void );
@@ -102,7 +104,7 @@ namespace SPELLCHECK
     signals:
     
     //! ignore word
-    void ignoreWord( const std::string& );
+    void ignoreWord( const QString& );
     
     //! need update
     void needUpdate( void );
@@ -116,7 +118,7 @@ namespace SPELLCHECK
     protected slots:
   
     //! select suggestion, update replace_line_edit_
-    virtual void _selectSuggestion(); 
+    virtual void _selectSuggestion( const QModelIndex& ); 
   
     //! select suggestion, update replace_line_edit_
     virtual void _addWord( void ); 
@@ -136,34 +138,81 @@ namespace SPELLCHECK
       
     //! ignore
     virtual void _ignore( void );
-      
+    
     //! ignore all
     virtual void _ignoreAll( void );
     
     //! replace
-    virtual void _replace(  QListWidgetItem* item = 0 );
+    virtual void _replace( const QModelIndex& index = QModelIndex() );
     
     //! replace All
     virtual void _replaceAll( void );
-        
+    
     protected:
-            
+    
     //! close
     virtual void closeEvent( QCloseEvent *e );
-         
+    
     private:
     
+    //! qlistview for object IconCaches
+    class Model: public ListModel<QString>
+    {    
+      
+      public: 
+      
+      //! number of columns
+      enum { n_columns = 1 };
+      
+      //! column type enumeration
+      enum ColumnType { NAME };
+      
+      //!@name methods reimplemented from base class
+      //@{
+      
+      // return data for a given index
+      virtual QVariant data(const QModelIndex &index, int role) const;
+      
+      //! header data
+      virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+      
+      //! number of columns for a given index
+      virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+      { return n_columns; }
+      
+      //@}
+      
+      protected: 
+      
+      virtual void _sort(int, Qt::SortOrder)
+      { return; }
+      
+      private: 
+      
+      //! column titles
+      static const QString column_titles_[ n_columns ];
+      
+    };
+      
     //! update text editor selection
     void _updateSelection( const unsigned int&, const unsigned int& );
     
     //! replace text editor selection
     void _replaceSelection( const QString& );
-   
+    
     //! update suggestion list and editor for words
     void _displayWord( const QString& word );
     
     //! spell checking completed
     void _completed( void );
+    
+    //! model
+    Model& _model( void )
+    { return model_; }
+    
+    //! list
+    TreeView& _list( void ) const
+    { return *list_; }
     
     //! spell interface
     SpellInterface interface_;
@@ -180,8 +229,11 @@ namespace SPELLCHECK
     //! line editor for text replacement
     LineEditor *replace_line_edit_;
     
+    //! model
+    Model model_;
+    
     //! listbox for suggestions
-    ListWidget *suggestion_list_box_;
+    TreeView *list_;
   
     //! combo box for dictionary
     QComboBox *dictionary_;

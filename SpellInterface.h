@@ -53,26 +53,26 @@ namespace SPELLCHECK
     ~SpellInterface( void );
     
     //! no filter
-    static const std::string NO_FILTER;
+    static const QString NO_FILTER;
     
     //!@name dictionary
     //@{
     
     //! get list of available dictionaries
-    const std::set< std::string >& dictionaries( void ) const
+    const std::set< QString >& dictionaries( void ) const
     { return dictionaries_; }
     
     //! current dictionary
-    const std::string dictionary( void ) const
+    const QString dictionary( void ) const
     { return dictionary_; }
 
     //! true if dictionary is available
-    bool hasDictionary( const std::string& dictionary ) const
+    bool hasDictionary( const QString& dictionary ) const
     { return dictionaries_.find( dictionary ) != dictionaries_.end(); }
 
     //! select dictionary
     /*! returns false in case of error */
-    bool setDictionary( const std::string& dictionary );
+    bool setDictionary( const QString& dictionary );
     
     //@}
     
@@ -80,20 +80,20 @@ namespace SPELLCHECK
     //@{
     
     //! get list of available filters
-    const std::set< std::string >& filters( void ) const
+    const std::set< QString >& filters( void ) const
     { return filters_; }
 
     //! current filter
-    const std::string filter( void ) const
+    const QString filter( void ) const
     { return filter_; }
 
     //! true if filter is available
-    bool hasFilter( const std::string& filter ) const
+    bool hasFilter( const QString& filter ) const
     { return filters_.find( filter ) != filters_.end(); }
     
     //! select filter
     /*! returns false in case of error */
-    bool setFilter( const std::string& filter );
+    bool setFilter( const QString& filter );
     
     //@}
     
@@ -101,19 +101,19 @@ namespace SPELLCHECK
     //@{
     
     //! add word to static list
-    void ignoreWord( const std::string& word )
+    void ignoreWord( const QString& word )
     { ignored_words_.insert( word ); }
     
     //! returns true if word is ignored
-    bool isWordIgnored( const std::string& word )
+    bool isWordIgnored( const QString& word )
     { return ignored_words_.find( word ) != ignored_words_.end(); }
     
     //! set list of ignored words
-    void setIgnoredWords( const std::set<std::string> words )
+    void setIgnoredWords( const std::set<QString> words )
     { ignored_words_ = words; }
     
     //! merge list of ignored words
-    void mergeIgnoredWords( const std::set<std::string> words )
+    void mergeIgnoredWords( const std::set<QString> words )
     { ignored_words_.insert( words.begin(), words.end() ); }
     
     //! clear ignored words
@@ -121,14 +121,14 @@ namespace SPELLCHECK
     { ignored_words_.clear(); }
     
     //! get list of ignored words
-    const std::set< std::string > ignoredWords( void )
+    const std::set< QString > ignoredWords( void )
     { return ignored_words_; }
     
     //!@name text
     //@{
        
     //! set text to be checked
-    bool setText( const std::string& text )
+    bool setText( const QString& text )
     { return setText( text, 0, text.size() ); }
     
     //! set text to be checked
@@ -138,38 +138,38 @@ namespace SPELLCHECK
       \param begin selection begin position
       \param end selection end position in the text
     */  
-    bool setText( const std::string& text, const unsigned int& begin, const unsigned int& end );
+    bool setText( const QString& text, const int& begin, const int& end );
 
     //! retrieve original text
-    const std::string& text( void ) const
+    const QString& text( void ) const
     { return text_; }
     
     //! retrieve checked text
-    const std::string& checkedText( void ) const
+    const QString& checkedText( void ) const
     { return checked_text_; }
     
     //@}
     
     //! retrieve error
-    const std::string& error( void ) const
+    const QString& error( void ) const
     { return error_; }
     
     
     //! retrieve current word being checked
-    const std::string& word( void ) const
+    const QString& word( void ) const
     { return word_; }
     
     //! retrieve position of current word in original text
-    unsigned int position( void ) const
+    int position( void ) const
     { return position_+begin_; }
     
     //! retrieve position offset between original text and checked text
-    const unsigned int& offset( void ) const
+    const int& offset( void ) const
     { return offset_; }
     
     //! add word to dictionary
     /*! return false on error */
-    bool addWord( const std::string& word );
+    bool addWord( const QString& word );
 
     //! add current word to dictionary
     /*! return false on error */
@@ -177,14 +177,14 @@ namespace SPELLCHECK
     { return addWord( word() ); }
         
     //! replace current word with argument in checked text
-    bool replace( const std::string& new_word );
+    bool replace( const QString& new_word );
     
     //! retrieve next word to be checked
     /*! return false when there is an error */
     bool nextWord( void );
     
     //! retrieve list of suggestions for current word
-    std::vector< std::string > suggestions( const std::string& word ) const;
+    std::vector< QString > suggestions( const QString& word ) const;
     
     //! save word list in personal dictionary
     void saveWordList( void );
@@ -214,44 +214,44 @@ namespace SPELLCHECK
   
     //! set of available dictionaries
     /*! loaded in constructor */
-    std::set<std::string> dictionaries_;    
+    std::set<QString> dictionaries_;    
     
     //! set of available filters
     /*! loaded in constructor */
-    std::set<std::string> filters_; 
+    std::set<QString> filters_; 
     
     //! ignored words
-    std::set<std::string> ignored_words_;
+    std::set<QString> ignored_words_;
        
     //! original text to be checked
-    std::string text_;
+    QString text_;
     
     //! text being checked
-    std::string checked_text_;
+    QString checked_text_;
     
     //! current word being checked
-    std::string word_;
+    QString word_;
     
     //! begin position to be checked in text 
-    unsigned int begin_;
+    int begin_;
     
     //! end position to be checked in text
-    unsigned int end_;
+    int end_;
     
     //! position in started text (counted from begin_)
-    unsigned int position_;
+    int position_;
     
     //! offset between checked_text_ and text_
-    unsigned int offset_;    
+    int offset_;    
     
     //! configuration error
-    std::string error_;
+    QString error_;
     
     //! dictionary
-    std::string dictionary_;
+    QString dictionary_;
     
     //! filter
-    std::string filter_;
+    QString filter_;
     
     //! aspell configuration singleton
     AspellConfig* spell_config_;

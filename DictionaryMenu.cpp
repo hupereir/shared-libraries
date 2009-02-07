@@ -88,15 +88,15 @@ void DictionaryMenu::_reset( void )
   connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
   
   // load dictionaries from spell interface
-  set< string > dictionaries( SPELLCHECK::SpellInterface().dictionaries() );
+  set< QString > dictionaries( SPELLCHECK::SpellInterface().dictionaries() );
   if( !dictionaries.empty() ) addSeparator();
   
-  for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
+  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
   { 
-    QAction* action( new QAction( iter->c_str(), this ) ); 
+    QAction* action( new QAction( *iter, this ) ); 
     action->setCheckable( true );
-    action->setChecked( iter->c_str() == dictionary );
-    action_map_.insert( make_pair( action, iter->c_str() ) );
+    action->setChecked( *iter == dictionary );
+    action_map_.insert( make_pair( action, *iter ) );
     addAction( action );
     group_->addAction( action );
   }

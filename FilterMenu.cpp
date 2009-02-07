@@ -57,7 +57,7 @@ FilterMenu::FilterMenu( QWidget* parent ):
 void FilterMenu::select( const QString& filter )
 {
   
-  Debug::Throw() << "FilterMenu::select - filter: " << qPrintable( filter ) << endl;
+  Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
   
   for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
   { if( iter->second == filter ) iter->first->setChecked( true ); }  
@@ -82,13 +82,13 @@ void FilterMenu::_reset( void )
   connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
   
   // load filters from spell interface
-  set< string > filters( SPELLCHECK::SpellInterface().filters() );
+  set< QString > filters( SPELLCHECK::SpellInterface().filters() );
   if( !filters.empty() ) addSeparator();
-  for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
+  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   { 
-    QAction* action( new QAction( iter->c_str(), this ) ); 
+    QAction* action( new QAction( *iter, this ) ); 
     action->setCheckable( true );
-    action_map_.insert( make_pair( action, iter->c_str() ) );
+    action_map_.insert( make_pair( action, *iter ) );
     addAction( action );
     group_->addAction( action );
   }

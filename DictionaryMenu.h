@@ -36,7 +36,6 @@
 #include <QActionGroup>
 #include <QMenu>
 #include <map>
-#include <string>
 
 #include "Counter.h"
 

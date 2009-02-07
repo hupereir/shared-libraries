@@ -33,6 +33,7 @@
 #include <sstream>
 
 #include <QLayout>
+#include <QHeaderView>
 #include <QPushButton>
 #include <QTextCursor>
 
@@ -43,6 +44,7 @@
 #include "InformationDialog.h"
 #include "SpellDialog.h"
 #include "SpellInterface.h"
+#include "TreeView.h" 
 #include "Util.h"
 
 using namespace std;
@@ -101,9 +103,12 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   v_layout->addWidget( label, 0 );
 
   // suggestions
-  v_layout->addWidget(  suggestion_list_box_ = new ListWidget( this ), 1 );
-  connect( suggestion_list_box_, SIGNAL( itemSelectionChanged() ), SLOT( _selectSuggestion() ) );
-  if( !read_only ) { connect( suggestion_list_box_, SIGNAL( itemActivated( QListWidgetItem* ) ), SLOT( _replace( QListWidgetItem* ) ) ); }
+  v_layout->addWidget(  list_ = new TreeView( this ) );
+  _list().setModel( &_model() );
+  _list().header()->hide();
+  
+  connect( _list().selectionModel(), SIGNAL( currentChanged(const QModelIndex &, const QModelIndex &) ), SLOT( _selectSuggestion( const QModelIndex& ) ) );
+  if( !read_only ) { connect( &_list(), SIGNAL( activated( QModelIndex& ) ), SLOT( _replace( const QModelIndex& ) ) ); }
 
   // grid layout for dictionary and filter
   grid_layout = new GridLayout();
@@ -116,9 +121,9 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   grid_layout->addWidget( new QLabel( "Dictionary: ", this ) );
   grid_layout->addWidget( dictionary_ = new QComboBox( this ) );
 
-  const set<string>& dictionaries( interface().dictionaries() );
-  for( set<string>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
-  dictionary_->addItem(iter->c_str() );
+  const set<QString>& dictionaries( interface().dictionaries() );
+  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
+  dictionary_->addItem(*iter );
   connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
   // filter combobox
@@ -127,9 +132,9 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
 
   grid_layout->setColumnStretch( 1, 1 ); 
   
-  set<string> filters( interface().filters() );
-  for( set<string>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
-  filter_->addItem( iter->c_str() );
+  set<QString> filters( interface().filters() );
+  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
+  filter_->addItem( *iter );
   connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
 
   // right vbox
@@ -206,8 +211,8 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
   }
 
   // asign text
-  if( !interface().setText( qPrintable( editor().toPlainText() ), index_begin, index_end ) )
-  { InformationDialog( this, interface().error().c_str() ).exec(); } 
+  if( !interface().setText( editor().toPlainText(), index_begin, index_end ) )
+  { InformationDialog( this, interface().error() ).exec(); } 
 
   // set TextEditor as ReadOnly
   read_only_editor_ = editor().isReadOnly();
@@ -235,24 +240,24 @@ void SpellDialog::showFilter( const bool& value )
 }
 
 //____________________________________________________
-bool SpellDialog::setDictionary( const std::string& dictionary )
+bool SpellDialog::setDictionary( const QString& dictionary )
 {
   Debug::Throw( "SpellDialog::setDictionary.\n" );
 
   // find matching index
-  int index( dictionary_->findText( dictionary.c_str() ) );
+  int index( dictionary_->findText( dictionary ) );
   if( index < 0 ) 
   {
-    ostringstream what;
-    what << "invalid dictionary: " << dictionary;
-    InformationDialog( this, what.str().c_str() ).exec();
+    QString buffer;
+    QTextStream( &buffer ) << "invalid dictionary: " << dictionary;
+    InformationDialog( this, buffer ).exec();
     return false;
   }
   
   // update interface
   if( !interface().setDictionary( dictionary ) )
   {
-    InformationDialog( this, interface().error().c_str() ).exec();
+    InformationDialog( this, interface().error() ).exec();
     return false;
   }
   
@@ -264,24 +269,24 @@ bool SpellDialog::setDictionary( const std::string& dictionary )
 }
 
 //____________________________________________________
-bool SpellDialog::setFilter( const std::string& filter )
+bool SpellDialog::setFilter( const QString& filter )
 {
   Debug::Throw( "SpellDialog::setFilter.\n" );
   
   // find matching index
-  int index( filter_->findText( filter.c_str() ) );
+  int index( filter_->findText( filter ) );
   if( index < 0 ) 
   {
-    ostringstream what;
-    what << "invalid dictionary: " << filter;
-    InformationDialog( this, what.str().c_str() ).exec();
+    QString buffer;
+    QTextStream( &buffer ) << "invalid dictionary: " << filter;
+    InformationDialog( this, buffer ).exec();
     return false;
   }
   
   // update interface
   if( !interface().setFilter( filter ) )
   {
-    InformationDialog( this, interface().error().c_str() ).exec();
+    InformationDialog( this, interface().error() ).exec();
     return false;
   }
   
@@ -293,17 +298,10 @@ bool SpellDialog::setFilter( const std::string& filter )
 }
 
 //____________________________________________________
-void SpellDialog::_selectSuggestion()
+void SpellDialog::_selectSuggestion( const QModelIndex& index )
 {
   Debug::Throw( "SpellDialog::_selectSuggestion.\n" );
-
-  // retrieve selected items
-  QList<QListWidgetItem*> items( suggestion_list_box_->QListWidget::selectedItems() );
-  if( items.empty() ) return;
-  
-  // try cast item
-  replace_line_edit_->setText( items.front()->text() );
-
+  if( index.isValid() ) { replace_line_edit_->setText( _model().get( index ) ); }
 }
 
 //____________________________________________________
@@ -313,17 +311,17 @@ void SpellDialog::_selectDictionary( const QString& dictionary )
   Debug::Throw( "SpellDialog::_SelectDictionary.\n" );
 
  // see if changed
-  if( interface().dictionary() == qPrintable( dictionary ) ) return;
+  if( interface().dictionary() == dictionary ) return;
   
   // try update interface
-  if( !interface().setDictionary( qPrintable( dictionary ) ) )
+  if( !interface().setDictionary( dictionary ) )
   {
-    InformationDialog( this, interface().error().c_str() ).exec();
+    InformationDialog( this, interface().error() ).exec();
     return;
   }
 
   // emit signal
-  emit dictionaryChanged( interface().dictionary().c_str() );
+  emit dictionaryChanged( interface().dictionary() );
 
   // restart
   _restart();
@@ -337,17 +335,17 @@ void SpellDialog::_selectFilter( const QString& filter )
   Debug::Throw( "SpellDialog::_SelectFilter.\n" );
   
   // see if changed
-  if( interface().filter() == qPrintable( filter ) ) return;
+  if( interface().filter() == filter ) return;
   
   // try update interface
-  if( !interface().setFilter( qPrintable( filter ) ) )
+  if( !interface().setFilter( filter ) )
   {
-    InformationDialog( this, interface().error().c_str() ).exec();
+    InformationDialog( this, interface().error() ).exec();
     return;
   }
 
   // emit signal
-  emit filterChanged( interface().filter().c_str() );
+  emit filterChanged( interface().filter() );
 
   // restart
   _restart();
@@ -361,7 +359,7 @@ void SpellDialog::_restart( void )
 
   if( !interface().reset() )
   {
-    InformationDialog( this, interface().error().c_str() ).exec();
+    InformationDialog( this, interface().error() ).exec();
     return;
   }
 
@@ -378,7 +376,7 @@ void SpellDialog::_addWord( void )
 
   if( !interface().addWord( interface().word() ) )
   {
-    InformationDialog( this, interface().error().c_str() ).exec();
+    InformationDialog( this, interface().error() ).exec();
     return;
   }
 
@@ -414,20 +412,23 @@ void SpellDialog::_ignoreAll( void )
 {
 
   Debug::Throw( "SpellDialog::_ignoreAll.\n" );
-  string old_word( qPrintable( line_edit_->text() ) );
-  interface().ignoreWord( old_word );
+  interface().ignoreWord( line_edit_->text() );
   _ignore();
 
 }
 
 //____________________________________________________
-void SpellDialog::_replace( QListWidgetItem* )
+void SpellDialog::_replace( const QModelIndex& index )
 {
 
   Debug::Throw( "SpellDialog::_replace.\n" );
-  QString word( replace_line_edit_->text() );
+  QModelIndex local( index );
+  if( !local.isValid() ) local = _list().selectionModel()->currentIndex();
+  if( !local.isValid() ) return;
+  
+  QString word( _model().get( index ) );
 
-  if( interface().replace( qPrintable( word ) ) )
+  if( interface().replace( word ) )
   _replaceSelection( word );
 
   // parse next word
@@ -454,19 +455,19 @@ void SpellDialog::nextWord( void )
   Debug::Throw( "SpellDialog::nextWord.\n" );
 
   bool accepted( false );
-  string word( "" );
+  QString word( "" );
   while( !accepted )
   {
     // get next word from interface
     if( !interface().nextWord() )
     {
-      InformationDialog( this, interface().error().c_str() ).exec();
+      InformationDialog( this, interface().error() ).exec();
       return;
     }
 
     // check for completed spelling
     word = interface().word();
-    if( word.empty() ) 
+    if( word.isEmpty() ) 
     {
       Debug::Throw() << "SpellDialog::NextWord - empty word " << endl;
       break;
@@ -478,14 +479,14 @@ void SpellDialog::nextWord( void )
     if( interface().isWordIgnored( word ) ) continue;
 
     // see if word is in replace all list
-    if( replaced_words_.find( word.c_str() ) != replaced_words_.end() )
+    if( replaced_words_.find( word ) != replaced_words_.end() )
     {
       
       // automatic replacement
-      std::map< QString, QString >::iterator iter = replaced_words_.find( word.c_str() );
+      std::map< QString, QString >::iterator iter = replaced_words_.find( word );
       _updateSelection( interface().position() + interface().offset(), word.size() );
       _replaceSelection( iter->second );
-      interface().replace( qPrintable( iter->second ) );
+      interface().replace( iter->second );
       continue;
     }
 
@@ -497,14 +498,14 @@ void SpellDialog::nextWord( void )
   {
 
     _updateSelection( interface().position() + interface().offset(), word.size() );
-    _displayWord( word.c_str() );
+    _displayWord( word );
 
   } else {
 
     // spelling completed. Clear everything
     line_edit_->clear();
     replace_line_edit_->clear();
-    suggestion_list_box_->clear();
+    _model().clear();
     state_label_->setText( "Spelling\n completed" );
 
   }
@@ -556,18 +557,50 @@ void SpellDialog::_displayWord( const QString& word )
   replace_line_edit_->setText( word );
 
   // clear list of suggestions
-  suggestion_list_box_->clear();
-  bool first = true;
-  vector<string> suggestions( interface().suggestions( qPrintable( word ) ) );
-  for( vector<string>::iterator iter = suggestions.begin(); iter != suggestions.end(); iter++ )
-  {
-    QListWidgetItem *item = new QListWidgetItem( suggestion_list_box_ );
-    item->setText( iter->c_str() );
-    if( first )
+  _model().clear();
+  Model::List suggestions( interface().suggestions( word ) );
+  _model().add( suggestions ); 
+  
+  // would need to select first item
+  
+}
+
+//_________________________________________________
+QVariant SpellDialog::Model::data( const QModelIndex &index, int role) const
+{
+  
+  // check index, role and column
+  if( !index.isValid() ) return QVariant();
+  
+  // retrieve associated file info
+  const QString& word( get(index) );
+  
+  // return text associated to file and column
+  if( role == Qt::DisplayRole ) {
+    
+    switch( index.column() )
     {
-      suggestion_list_box_->setItemSelected( item, true );
-      first = false;
+      case NAME: return word;
+      default: return QVariant();
     }
   }
+ 
+  return QVariant();
   
+}
+
+//__________________________________________________________________
+QVariant SpellDialog::Model::headerData(int section, Qt::Orientation orientation, int role) const
+{
+
+  if( 
+    orientation == Qt::Horizontal && 
+    role == Qt::DisplayRole && 
+    section >= 0 && 
+    section < n_columns )
+  { return column_titles_[section]; }
+  
+  // return empty
+  return QVariant(); 
+
 }

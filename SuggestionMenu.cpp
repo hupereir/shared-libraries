@@ -61,7 +61,7 @@ void SuggestionMenu::_aboutToShow( void )
   Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
   
   // retrieve list of suggestions
-  vector<string> suggestions( interface_.suggestions( qPrintable( word_ ) ) );
+  vector<QString> suggestions( interface_.suggestions( word_ ) );
   Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
   
   // add words
@@ -71,7 +71,7 @@ void SuggestionMenu::_aboutToShow( void )
   { 
     
     Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestions[i] << endl;
-    suggestions_.insert( make_pair( addAction( suggestions[i].c_str() ), suggestions[i].c_str() ) ); 
+    suggestions_.insert( make_pair( addAction( suggestions[i] ), suggestions[i] ) ); 
   }  
   addSeparator();
   
@@ -100,7 +100,7 @@ void SuggestionMenu::_addWord( void )
   
   Debug::Throw( "SuggestionMenu::_addWord.\n" );
   if( word_.isEmpty() ) return;
-  interface_.addWord( qPrintable( word_ ) );
+  interface_.addWord( word_ );
   interface_.saveWordList();
   emit ignoreWord( word_ ); 
   
