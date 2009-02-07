@@ -101,7 +101,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   html_editor_->wrapModeAction().setChecked( true );
   
   QFont font;
-  font.fromString( XmlOptions::get().raw( "FONT_NAME" ).c_str() );
+  font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
   html_editor_->setFont( font );
   
   Debug::Throw( "HelpDialog::HelpDialog - html editor done.\n" );
@@ -275,10 +275,10 @@ void HelpDialog::_updateItemFromEditor( QModelIndex index, bool forced )
   if( _model().editionEnabled() && index.isValid() )
   { 
     HelpItem item( _model().get( index ) );
-    bool modified = !(item.text() == qPrintable( plain_editor_->toPlainText() ) );
+    bool modified = !(item.text() == plain_editor_->toPlainText() );
     if( forced || modified ) 
     {
-      item.setText( qPrintable( plain_editor_->toPlainText() ) );
+      item.setText( plain_editor_->toPlainText() );
       _model().replace( index, item );
       _updateHelpManager();
     }

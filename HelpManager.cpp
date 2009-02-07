@@ -32,6 +32,7 @@
 #include <QApplication>
 #include <QAction>
 #include <QFile>
+#include <QTextStream>
 #include <QVBoxLayout>
 
 #include "BaseDialog.h"
@@ -155,7 +156,7 @@ void HelpManager::_display( void )
   // create dialog
   HelpDialog* dialog( new HelpDialog( *this ) );
   dialog->setWindowTitle( window_title_ );
-  dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand().c_str() ) );
+  dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
   dialog->setItems( items_ );
   dialog->setEditEnabled( file_.size() );
   dialog->centerOnWidget( qApp->activeWindow() );
@@ -171,7 +172,8 @@ void HelpManager::_dumpHelpString( void )
   Debug::Throw( "HelpManager::_dumpHelpString.\n" );
   
   // write output to stream
-  ostringstream out;
+  QString buffer;
+  QTextStream out( &buffer );
   
   // retrieve all items from dialog
   out << "static const char* HelpText[] = {\n";
@@ -180,13 +182,13 @@ void HelpManager::_dumpHelpString( void )
     
     // dump label
     out << "  //_________________________________________________________\n"; 
-    out << "  \"" << qPrintable( iter->label() ) << "\",\n";
+    out << "  \"" << iter->label() << "\",\n";
     
     // dump text
     QString text( iter->text() );
     text = text.replace( "\"", "\\\"" );
     text = text.replace( "\n", "\\n\"\n  \"" );
-    out << "  \"" << qPrintable( text ) << "\"";
+    out << "  \"" << text << "\"";
     out << ",\n";
     out << "\n";
   }
@@ -200,7 +202,7 @@ void HelpManager::_dumpHelpString( void )
 
   text_edit->setWrapFromOptions( false );
   text_edit->wrapModeAction().setChecked( false );
-  text_edit->setPlainText( out.str().c_str() );
+  text_edit->setPlainText( buffer );
   dialog->layout()->addWidget( text_edit );
   dialog->resize( 600, 500 );
   dialog->centerOnWidget( qApp->activeWindow() );
@@ -212,7 +214,7 @@ void HelpManager::_dumpHelpString( void )
 void HelpManager::_save( void )
 {
   
-  Debug::Throw() << "HelpManager::_save - file: " << qPrintable( file_ ) << endl;
+  Debug::Throw() << "HelpManager::_save - file: " << file_ << endl;
   
   if( file_.isEmpty() ) return;
   if( !modified() ) return;

@@ -69,7 +69,7 @@ bool HelpModel::setData(const QModelIndex &index, const QVariant& value, int rol
   if( !(index.isValid() && index.column() == LABEL && role == Qt::EditRole ) ) return false;
   if( value.toString().isNull() || value.toString().isEmpty() ) return false;
   const HelpItem& item = get( index );
-  if( item.label() == qPrintable( value.toString() ) ) return false;
+  if( item.label() == value.toString() ) return false;
   emit itemRenamed( index, value.toString() );
   emit dataChanged( index, index );
   return true;

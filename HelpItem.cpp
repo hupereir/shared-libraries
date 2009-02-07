@@ -53,7 +53,7 @@ HelpItem::HelpItem( const QDomElement& element ):
     if( attribute.isNull() ) continue;
 
     if( attribute.name() == XML_LABEL ) label_ = XmlString( attribute.value() ).toText();
-    else Debug::Throw() << "HelpItem::HelpItem - unrecognized attribute: " << qPrintable( attribute.name() ) << endl;
+    else Debug::Throw() << "HelpItem::HelpItem - unrecognized attribute: " << attribute.name() << endl;
     
   }
 
@@ -63,7 +63,7 @@ HelpItem::HelpItem( const QDomElement& element ):
   {
     QDomElement child_element = child_node.toElement();
     if( child_element.tagName() == XML_TEXT ) text_ = XmlString( child_element.text() ).toText();
-    else cout << "HelpItem::HelpItem - unrecognized child " << qPrintable( child_element.tagName() ) << endl;
+    else Debug::Throw(0) << "HelpItem::HelpItem - unrecognized child " << child_element.tagName() << endl;
   }
 
 }

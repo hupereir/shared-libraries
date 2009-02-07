@@ -56,7 +56,7 @@ class NewItemDialog: public CustomDialog
   
   //! keyword
   QString itemName( void ) const
-  { return qPrintable( editor_->text() ); }
+  { return editor_->text(); }
         
   private:
         
