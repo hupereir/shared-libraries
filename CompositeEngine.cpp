@@ -28,9 +28,10 @@
   \date    $Date$
 */
 
+#include "Debug.h"
+
 #include "BackgroundPixmap.h"
 #include "CompositeEngine.h"
-#include "Debug.h"
 #include "XmlOptions.h"
 
 #ifdef Q_WS_X11

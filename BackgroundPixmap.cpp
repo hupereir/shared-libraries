@@ -33,6 +33,8 @@
 #include <QDesktopWidget> 
 #include <QPainter> 
 
+#include "Debug.h"
+
 #ifdef Q_WS_X11
 #include <QX11Info>
 #include <X11/Xlib.h>
@@ -42,7 +44,6 @@
 
 #define _BackgroundPixmap_p_
 #include "BackgroundPixmap.h"
-#include "Debug.h"
 
 #include "CompositeEngine.h"
 
