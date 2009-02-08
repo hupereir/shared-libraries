@@ -30,7 +30,7 @@
 */
 
 #include <QHBoxLayout>
-#include <sstream>
+
 
 #include "CustomSlider.h"
 #include "Debug.h"
@@ -97,8 +97,6 @@ void CustomSlider::_updateSlider( void )
 void CustomSlider::_updateLineEdit( int value )
 {
   Debug::Throw( "CustomSlider::_updateLineEdit.\n" );
-  ostringstream what; 
-  what << value;
-  line_edit_->setText( what.str().c_str() );
+  line_edit_->setText( QString().setNum( value ) );
   return;
 }

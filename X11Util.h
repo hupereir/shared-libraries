@@ -110,7 +110,7 @@ class X11Util
   private:
   
   //! atom names
-  typedef std::map<Atoms, std::string> AtomNameMap; 
+  typedef std::map<Atoms, QString> AtomNameMap; 
   
   //! atom names
   static AtomNameMap _initializeAtomNames( void );

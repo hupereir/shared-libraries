@@ -29,7 +29,7 @@
   \date $Date$
 */
 
-#include <sstream>
+
 #include <QHeaderView>
 
 #include "Debug.h"
@@ -77,9 +77,9 @@ void ColumnSelectionMenu::_updateActions( void )
     QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );    
     if( column_name.isNull() || column_name.isEmpty() )
     {
-      ostringstream what;
-      what << "column " << index+1;
-      column_name = what.str().c_str();
+      QString buffer;
+      QTextStream( &buffer ) << "column " << index+1;
+      column_name = buffer;
     }    
   
     QAction* action = new QAction( column_name, this );

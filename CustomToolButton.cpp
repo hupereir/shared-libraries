@@ -34,7 +34,7 @@
 #include <QStylePainter>
 #include <QStyleOptionToolButton>
 
-#include <sstream>
+
 
 #include "CustomToolButton.h"
 #include "IconEngine.h"

@@ -30,7 +30,7 @@
 */
 
 #include <algorithm>
-#include <sstream>
+
 #include <set>
 
 #include "BaseIcons.h"

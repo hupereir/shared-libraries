@@ -311,7 +311,7 @@ Atom X11Util::findAtom( const Atoms& atom )
   
   // create atom if not found
   Display* display( QX11Info::display() );
-  Atom out( XInternAtom(display, _atomNames()[atom].c_str(), false ) );
+  Atom out( XInternAtom(display, qPrintable( _atomNames()[atom] ), false ) );
   _atoms()[atom] = out;
   return out;
   

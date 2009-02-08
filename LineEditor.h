@@ -93,8 +93,8 @@ class LineEditor: public QLineEdit, public Counter
   public slots:
   
   //! set text
-  virtual void setTextString( const std::string& value )
-  { setText( QString( value.c_str() ) ); }
+  virtual void setTextString( const QString& value )
+  { setText( value ); }
   
   //! set text
   /*! copy base class method to make it virtual */

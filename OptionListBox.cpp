@@ -33,7 +33,7 @@
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
-#include <sstream>
+
 
 #include "Debug.h"
 #include "BaseIcons.h"
