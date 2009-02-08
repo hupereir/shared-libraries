@@ -33,7 +33,7 @@
 */
 
 #include <map>
-#include <string>
+
 
 #include "BaseDialog.h"
 #include "CounterModel.h"

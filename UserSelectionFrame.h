@@ -33,7 +33,7 @@
 */
 
 #include <set>
-#include <string>
+
 #include <QTimer>
 
 #include "Counter.h"

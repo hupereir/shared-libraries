@@ -37,7 +37,7 @@
 #include <QToolButton>
 #include <map>
 
-#include <string>
+
 
 #include "Counter.h"  
 #include "CustomPixmap.h"

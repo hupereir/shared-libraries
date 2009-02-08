@@ -36,7 +36,7 @@
 #include <QApplication>
 #include <QContextMenuEvent>
 #include <QStatusBar>
-#include <string>
+
 #include <vector>
 
 #include "AnimatedLabel.h"

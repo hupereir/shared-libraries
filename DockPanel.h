@@ -42,7 +42,7 @@
 #include <QLayout>
 #include <QSizeGrip>
 
-#include <string>
+
 
 #include "Counter.h"
 #include "Debug.h"

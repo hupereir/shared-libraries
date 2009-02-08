@@ -29,8 +29,8 @@
   \date $Date$
 */
 
-#include <iostream>
-#include <string>
+
+
 #include "TextSeparator.h"
 
 using namespace std;

@@ -34,7 +34,7 @@
 
 #include <assert.h>
 #include <list>     
-#include <string>   
+   
 #include <QObject>   
 
 #include "Counter.h"

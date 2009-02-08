@@ -32,7 +32,7 @@
   \date $Date$
 */
 #include <QDialog>
-#include <string>
+
 
 
 /*!

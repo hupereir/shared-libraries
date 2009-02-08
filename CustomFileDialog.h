@@ -32,7 +32,7 @@
 */
 
 #include <qfiledialog.h>
-#include <string>
+
 
 #include "Counter.h"  
 #include "File.h"  

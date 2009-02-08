@@ -41,7 +41,7 @@
 #include <QLayout>
 #include <QSizeGrip>
 #include <QTabWidget>
-#include <string>
+
 
 #include "Counter.h"
 #include "Debug.h"

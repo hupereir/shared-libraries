@@ -34,8 +34,8 @@
 */
 
 #include <QApplication>
-#include <iostream>
-#include <string>
+
+
 #include <list>
 
 /*!

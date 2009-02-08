@@ -36,7 +36,7 @@
 #include <QLabel>
 #include <QTimer>
 
-#include <string>
+
 
 #include "Counter.h"
 #include "TimeStamp.h"

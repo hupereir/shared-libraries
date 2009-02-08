@@ -36,7 +36,7 @@
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QLayout>
-#include <string>
+
 
 #include "BaseDialog.h"
 #include "Counter.h"  

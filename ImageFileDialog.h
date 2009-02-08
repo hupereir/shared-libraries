@@ -32,7 +32,7 @@
 */
 
 #include <assert.h>
-#include <string>
+
 #include <QCheckBox>
 #include <QDragEnterEvent>
 #include <QDropEvent>

@@ -38,7 +38,7 @@
 
 #include <assert.h>
 #include <QWidget>
-#include <string>
+
 
 #include "Counter.h"
 #include "CustomFileDialog.h"

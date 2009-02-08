@@ -33,7 +33,7 @@
 */
 
 #include <map>
-#include <string>
+
 
 #include "CustomDialog.h"
 #include "OptionModel.h"

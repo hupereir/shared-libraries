@@ -33,8 +33,8 @@
 */  
 
 #include <QString>
-#include <string>
-#include <iostream>
+
+
 
 #include "Debug.h"
 

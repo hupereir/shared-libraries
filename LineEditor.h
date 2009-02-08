@@ -39,7 +39,7 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 
-#include <string>
+
 #include <vector>
 
 #include "Counter.h"

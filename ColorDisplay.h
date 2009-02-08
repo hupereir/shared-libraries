@@ -33,7 +33,7 @@
 
 #include <QColorDialog>
 #include <QMouseEvent>
-#include <string>
+
 
 #include "Counter.h"
 #include "LineEditor.h"

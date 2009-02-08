@@ -39,7 +39,7 @@
 #include <QTreeView>
 #include <QAction>
 
-#include <string>
+
 #include <vector>
 
 #include "Counter.h"
