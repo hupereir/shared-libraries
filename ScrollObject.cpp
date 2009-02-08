@@ -191,8 +191,8 @@ void ScrollObject::_scroll( int frame )
 
   // calculate current point  
   if( !_setCurrent( QPoint(
-    _start().x() + _step().x()*frame,
-    _start().y() + _step().y()*frame ) ) )
+    int(_start().x() + _step().x()*frame),
+    int(_start().y() + _step().y()*frame ) ) ) )
   { _timeLine().stop(); }
   
 }
