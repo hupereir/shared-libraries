@@ -30,8 +30,6 @@
   \date $Date$
 */
 
-#include <sstream>
-
 #include <QLayout>
 #include <QHeaderView>
 #include <QPushButton>
