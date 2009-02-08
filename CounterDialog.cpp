@@ -32,6 +32,7 @@
 #include <QLayout>
 
 #include "BaseIcons.h"
+#include "CounterMap.h"
 #include "CounterDialog.h"
 #include "IconEngine.h"
 #include "Singleton.h"
@@ -80,11 +81,14 @@ void CounterDialog::update( void )
 {
   
   Debug::Throw( "CounterDialog::update.\n" );
-    
+      
   // retrieve counters 
-  CounterMap& counters( Singleton::get().counterMap() );
+  CounterMap& counters( CounterMap::get() );
+  QMutexLocker lock( &counters.mutex() );
+    
   model_.add( CounterModel::List( counters.begin(), counters.end() ) );
   
+  // resize list
   list_->resizeColumnToContents( CounterModel::NAME );
     
 }
