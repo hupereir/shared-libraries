@@ -52,8 +52,7 @@ class Debug
   static void Throw( int level, QString str )
   {   
     if( _get().level_ < level ) return;  
-    QTextStream log_stream( stdout );
-    log_stream << str;  
+    _get().std_stream_ << str;  
     return;
   }
   
