@@ -53,6 +53,10 @@ class File: public QString
     QString( value )
   {}
   
+  //! destructor
+  virtual ~File( void )
+  {}
+  
   //! returns true if file has absolute pathname
   bool isAbsolute( void ) const;
   
