@@ -33,7 +33,7 @@
 */
 
 #include <string.h>
-#include <sstream>
+
 
 #include "ListModel.h"
 #include "HelpItem.h"
