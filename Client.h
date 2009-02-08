@@ -33,7 +33,7 @@
 */
 
 #include <QTcpSocket>
-#include <string>
+
 #include <list>
 
 #include "Counter.h"

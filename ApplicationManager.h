@@ -38,10 +38,10 @@
 #include <QTcpServer>
 #include <QTimerEvent>
 
-#include <iostream>
+
 #include <list>
 #include <map>
-#include <string>
+
 
 #include <QHostAddress>
 

@@ -36,7 +36,7 @@
 #include <QDomDocument>
 #include <QString>
 #include <QTextStream>
-#include <iostream>
+
 #include <list>
 #include <map>
 
