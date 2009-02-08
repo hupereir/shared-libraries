@@ -33,7 +33,7 @@
 #include <QLayout>
 
 #include "SystemEnvironmentDialog.h"
-#include "TreeView.h"
+#include "AnimatedTreeView.h"
 #include "Str.h"
 
 using namespace std;
@@ -51,7 +51,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   setAttribute( Qt::WA_DeleteOnClose );
   
   // insert list
-  TreeView* list = new TreeView( this );
+  AnimatedTreeView* list = new AnimatedTreeView( this );
   mainLayout().addWidget( list );
   list->setModel( &model_ );
   list->setRootIsDecorated( false );

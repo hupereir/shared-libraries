@@ -36,7 +36,7 @@
 #include "CounterDialog.h"
 #include "IconEngine.h"
 #include "Singleton.h"
-#include "TreeView.h"
+#include "AnimatedTreeView.h"
 
 using namespace std;
 
@@ -55,8 +55,7 @@ CounterDialog::CounterDialog( QWidget* parent ):
   layout()->setSpacing(10);
   
   // insert main vertical box
-  list_ = new TreeView( this );  
-  layout()->addWidget( list_ );
+  layout()->addWidget( list_ = new AnimatedTreeView( this ) );
   list_->setModel( &model_ );  
   
   // update button

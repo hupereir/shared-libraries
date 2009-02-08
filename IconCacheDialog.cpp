@@ -36,7 +36,7 @@
 #include "IconCacheDialog.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "TreeView.h"
+#include "AnimatedTreeView.h"
 
 using namespace std;
 
@@ -55,7 +55,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
   layout()->setSpacing(10);
   
   // insert main vertical box
-  list_ = new TreeView( this );  
+  list_ = new AnimatedTreeView( this );  
   layout()->addWidget( list_ );
   list_->setModel( &model_ );  
   list_->setIconSize( IconSize( IconSize::LARGE ) );
