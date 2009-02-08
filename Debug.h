@@ -27,42 +27,105 @@
 
 /*!
    \file    Debug.h
-   \brief   option driven debugging facility 
+   \brief   Thread-safe option driven debugging class
    \author  Hugo Pereira
    \version $Revision$
    \date    $Date$
 */
 
+#include <iostream>
+
 #include <QTextStream>
 #include <QIODevice>
 #include <QString>
+#include <QMutex>
+#include <QMutexLocker>
 
-
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <stack>
 
 /*!
    \class   Debug
-   \brief   option driven debugging class 
+   \brief   Thread-safe debugging class
 */
 
 class Debug
 {
   public:
+    
+  class LockedStream
+  {
+    
+    public:
+    
+    //! constructor
+    LockedStream( QTextStream& stream, QMutex& mutex ):
+      mutex_lock_( &mutex ),
+      stream_( stream )
+    {}
+     
+    //! constructor
+    LockedStream( const LockedStream& ref ):
+      mutex_lock_( ref.mutex_lock_.mutex() ),
+      stream_( ref.stream_ )
+    {}
+     
+    //! destructor
+    virtual ~LockedStream( void )
+    {}
+   
+    //! cast to QTextStream
+    operator QTextStream& () const 
+    { return stream_; }
+
+    //! stream operator
+    template<typename T> LockedStream& operator<<(const T &r) 
+    { 
+      stream_ << r;
+      return *this;
+    }
+    
+    private:
+    
+    //! locker
+    QMutexLocker mutex_lock_;
+        
+    //! stream
+    QTextStream& stream_;
+        
+  };
   
   //! writes string to clog if level is lower than level_
   static void Throw( int level, QString str )
-  {   
-    if( _get().level_ < level ) return;  
-    _get().std_stream_ << str;  
+  {  
+    // lock
+    QMutexLocker lock( &_get()._mutex() );
+    
+    // check level
+    if( _get().level_ < level ) return; 
+    
+    // prit string to stream
+    _get()._stdStream() << str;
+    
     return;
+    
   }
   
   //! writes string to clog if level_ is bigger than 0
   static void Throw( QString str ) 
   { Throw( 1, str ); }
-
+  
   //! returns either clog or dummy stream depending of the level
-  static QTextStream& Throw( int level = 1 )
-  { return ( _get().level_ < level ) ? _get().null_stream_ : _get().std_stream_; }
+  static LockedStream Throw( int level = 1 )
+  { 
+    // return proper stream depending on debugging level
+    return ( _get().level_ < level ) ? 
+      LockedStream( _get()._nullStream(), _get()._mutex() ) : 
+      LockedStream( _get()._stdStream(), _get()._mutex() ); 
+  }
    
   //! sets the debug level. Everything thrown of bigger level is not discarded
   static void setLevel( const int& level ) 
@@ -84,10 +147,11 @@ class Debug
   //! return singleton
   static Debug& _get( void );
   
-  //! debug level
-  int level_;  
+  //! mutex
+  QMutex& _mutex( void )
+  { return mutex_; }
   
-  //! null stream. 
+  //! null device. 
   /*! Used to throw everything if the level is not high enough */  
   class NullIODevice : public QIODevice
   {
@@ -110,14 +174,34 @@ class Debug
   };
 
   //! null device
-  NullIODevice null_device_; 
+  NullIODevice& _nullDevice( void )
+  { return null_device_; }
   
-  //! dummy stream to discard the text of two high debug level
-  QTextStream null_stream_;
+  //! null device
+  QTextStream& _nullStream( void )
+  { return null_stream_; }
+  
+  //! null device
+  QTextStream& _stdStream( void )
+  { return std_stream_; }
 
-  //! standard stream
-  QTextStream std_stream_;
+  //! debug level
+  int level_;  
   
+  //! mutex
+  mutable QMutex mutex_;
+    
+  //! null device
+  NullIODevice null_device_; 
+
+  //! null stream
+  QTextStream null_stream_;
+  
+  //! default stream
+  QTextStream std_stream_;
+
 };
+
+//Debug::LockedStream& endl( Debug::LockedStream& );
 
 #endif

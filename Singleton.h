@@ -36,8 +36,6 @@
 #include <assert.h>
 #include <QObject>
 
-#include "CounterMap.h"
-
 //! a class singleton used to centralize all objects that need static creation
 class Singleton
 {
@@ -46,10 +44,6 @@ class Singleton
   
   //! return singleton
   static Singleton& get( void );
-  
-  //! counter map
-  CounterMap& counterMap( void ) 
-  { return counter_map_; }
   
   //! set application
   void setApplication( QObject* application )
@@ -74,7 +68,8 @@ class Singleton
   }
   
   //! destructor
-  ~Singleton( void );
+  ~Singleton( void )
+  {}
   
   private:
   
@@ -82,9 +77,6 @@ class Singleton
   Singleton( void ):
     application_(0)
   {}
-  
-  //! counter map
-  CounterMap counter_map_; 
 
   QObject* application_;
   

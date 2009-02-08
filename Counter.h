@@ -53,13 +53,11 @@ class Counter {
   Counter( const Counter& counter );
 
   //! destructor
-  virtual ~Counter( void )
-  { if( count_ ) (*count_)--; }
+  virtual ~Counter( void );
   
   //! retrieves counter count
-  int count( void ) const
-  { return (count_) ? *count_:0; }
-    
+  int count( void ) const;
+  
   private:
   
   //! pointer to integer counter

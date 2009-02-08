@@ -30,7 +30,7 @@
 */
 
 #include "Counter.h"
-#include "Singleton.h"
+#include "CounterMap.h"
 
 using namespace std;
 
@@ -38,8 +38,8 @@ using namespace std;
 Counter::Counter( const QString& name ):
   count_( 0 )
 {
-  count_ = Singleton::get().counterMap().counter( name );
-  (*count_) ++;
+  count_ = CounterMap::get().counter( name );
+  CounterMap::get().increment( *count_ );
   return;
 }
   
@@ -47,6 +47,14 @@ Counter::Counter( const QString& name ):
 Counter::Counter( const Counter& counter ):
   count_( counter.count_ )
 {
-  (*count_) ++;
+  CounterMap::get().increment( *count_ );
   return;
 }
+
+//____________________________________________________________
+Counter::~Counter( void )
+{ if( count_ ) CounterMap::get().decrement( *count_ ); }
+  
+//____________________________________________________________
+int Counter::count( void ) const
+{ return (count_) ? *count_:0; }

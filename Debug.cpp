@@ -23,7 +23,7 @@
 
 /*!
    \file    Debug.cpp
-   \brief   option driven debugging facility 
+   \brief   Thread-safe option driven debugging class
    \author  Hugo Pereira
    \version $Revision$
    \date    $Date$

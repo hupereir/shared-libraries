@@ -39,7 +39,3 @@ Singleton& Singleton::get( void )
   return singleton_; 
 }
 
-
-//__________________________________________________
-Singleton::~Singleton( void )
-{ counterMap().clear(); }

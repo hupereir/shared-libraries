@@ -36,8 +36,9 @@ libbase_a_SOURCES = \
   CommandLineArguments.cpp \
   CommandLineParser.cpp \
   Counter.cpp \
+  CounterMap.cpp \
   CustomProcess.cpp \
- 	Debug.cpp \
+  Debug.cpp \
   File.cpp \
   FileRecord.cpp \
   Key.cpp \

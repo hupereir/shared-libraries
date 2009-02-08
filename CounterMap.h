@@ -26,7 +26,7 @@
 
 /*!
    \file    CounterMap.h
-   \brief   Object counter storage map
+   \brief   thread-safe Object counter storage map
    \author  Hugo Pereira
    \version $Revision$
    \date    $Date$
@@ -34,12 +34,17 @@
 
 #include <map>
 #include <QString>
+#include <QMutex>
+#include <QMutexLocker>
 
-//! Object counter storage map
+//! thread-safe Object counter storage map
 class CounterMap: public std::map<QString, int>
 {
   
   public: 
+  
+  //! singleton
+  static CounterMap& get( void );
   
   //!  get counter for a given name
   /*! 
@@ -49,10 +54,36 @@ class CounterMap: public std::map<QString, int>
   int* counter( const QString& name )
   {
     iterator iter = find( name );
-    if( iter == end() )
-      return &(insert( std::make_pair( name, 0 ) ).first->second);
+    if( iter == end() ) return &(insert( std::make_pair( name, 0 ) ).first->second);
     else return &(iter->second);
   }    
+  
+  //! increment
+  void increment( int& counter )
+  {
+    QMutexLocker locker( &mutex() );
+    counter++;
+  }
+    
+  //! increment
+  void decrement( int& counter )
+  {
+    QMutexLocker locker( &mutex() );
+    counter--;
+  }
+  
+  //! mutex
+  QMutex& mutex( void )
+  { return mutex_; }
+
+  private:
+  
+  //! constructor
+  CounterMap( void )
+  {}
+  
+  //! mutex
+  QMutex mutex_;
   
 };
 
