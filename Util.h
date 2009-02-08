@@ -32,7 +32,7 @@
    \date    $Date$
 */
 #include <QStringList>
-#include <string>
+
 #include <list>
 
 /*!

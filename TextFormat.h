@@ -31,7 +31,7 @@
   \date $Date$
 */
 
-#include <iostream>
+
 #include <list>
 
 namespace FORMAT

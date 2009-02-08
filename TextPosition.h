@@ -33,7 +33,7 @@
 */
 
 
-#include <string>
+
 #include "Counter.h"
 
 //! stores paragraph and index (in paragraph) into unique structure

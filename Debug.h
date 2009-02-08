@@ -37,7 +37,7 @@
 #include <QIODevice>
 #include <QString>
 
-#include <iostream>
+
 
 /*!
    \class   Debug

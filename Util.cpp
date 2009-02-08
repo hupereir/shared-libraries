@@ -35,7 +35,7 @@
 #include <QStringList>
 #include <unistd.h>
 
-#include <iostream>
+
 
 
 #include "CustomProcess.h"

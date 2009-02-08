@@ -35,7 +35,7 @@
 #include <QProcess>
 #include <QObject>
 #include <list>
-#include <string>
+
 
 #include "Counter.h"
 #include "Debug.h"

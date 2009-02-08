@@ -33,7 +33,7 @@
 */
 
 #include <assert.h>
-#include <iostream>
+
 #include <vector>
 #include <map>
 #include <list>
