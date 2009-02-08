@@ -30,7 +30,7 @@
    \date    $Date$
 */
 
-#include <iostream>
+
 
 #include "HelpItem.h"
 #include "XmlString.h"
