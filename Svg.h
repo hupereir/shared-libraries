@@ -33,7 +33,7 @@
   \date    $Date$
 */
 
-#include <string>
+
 #include <QString>
 
 /*
