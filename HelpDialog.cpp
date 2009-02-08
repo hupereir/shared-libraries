@@ -37,6 +37,8 @@
 #include <QShortcut>
 #include <QTextStream>
 
+#include "AnimatedTextEditor.h"
+#include "AnimatedTreeView.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "HelpDialog.h"
@@ -46,8 +48,6 @@
 #include "HelpModel.h"
 #include "NewItemDialog.h"
 #include "QuestionDialog.h"
-#include "AnimatedTextEditor.h"
-#include "TreeView.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -74,7 +74,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
   setLayout( layout );
   
   // add help list
-  list_ = new TreeView( this );
+  list_ = new AnimatedTreeView( this );
   _list().setMaximumWidth(150);
   layout->addWidget( list_ );
   _list().setModel( &model_ );
