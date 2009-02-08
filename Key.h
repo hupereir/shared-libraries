@@ -32,10 +32,10 @@
   \date $Date$
 */
 
+#include <QTextStream>
 #include <algorithm>
 #include <assert.h>
 #include <set>
-#include <iostream>
 
 //! base namespace
 namespace BASE 
@@ -236,7 +236,7 @@ namespace BASE
     static key_type& _counter( void ); 
     
     //! to dump Key and associations 
-    friend std::ostream &operator << (std::ostream &out,const Key &key) 
+    friend QTextStream &operator << (QTextStream &out,const Key &key) 
     { 
       
       //! dump this key uid 
@@ -249,7 +249,7 @@ namespace BASE
         { out << " " << (*iter)->key(); }
       } 
         
-      out << std::endl; 
+      out << endl; 
       return out; 
     } 
     

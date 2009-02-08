@@ -32,8 +32,8 @@
 #include <algorithm>
 #include <cmath>
 #include <set>
-#include <sstream> 
-#include <fstream>
+ 
+
 
 #include <QDateTime>
 #include <QDir>

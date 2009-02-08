@@ -32,7 +32,7 @@
   \date $Date$
 */
 
-#include <iostream>
+
 #include <string>
 #include "Counter.h"
 
@@ -108,7 +108,7 @@ class TextPosition: public Counter
   int index_;
 
   //! dump to stream
-  friend std::ostream& operator << ( std::ostream& out, const TextPosition& position )
+  friend QTextStream& operator << ( QTextStream& out, const TextPosition& position )
   {
     out << "(" << position.paragraph() << "," << position.index() << ")";
     return out;
