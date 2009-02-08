@@ -30,7 +30,7 @@
 */
 
 
-#include <string>
+
 #include "SpellInterface.h"
 #include "SpellParser.h"
 #include "Word.h"

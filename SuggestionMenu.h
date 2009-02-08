@@ -35,7 +35,7 @@
 #include <QMenu>
 
 #include <map>
-#include <string>
+
 
 #include "Counter.h"
 #include "SpellInterface.h"

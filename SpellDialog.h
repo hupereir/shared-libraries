@@ -37,7 +37,7 @@
 #include <QLabel>
 #include <QTextEdit>
 
-#include <string>
+
 #include <map>
 #include <set>
 

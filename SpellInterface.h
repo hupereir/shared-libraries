@@ -35,7 +35,7 @@
 #include <aspell.h>
 #include <vector>
 #include <set>
-#include <string>
+
 
 #include "Counter.h"
 namespace SPELLCHECK
