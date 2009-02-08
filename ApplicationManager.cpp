@@ -30,7 +30,7 @@
 */
 
 #include <algorithm>
-#include <sstream>
+
 
 #include "ApplicationManager.h"
 #include "Client.h"
