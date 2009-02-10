@@ -577,9 +577,8 @@ void TextEditor::setBackground( QTextBlock block, const QColor& color )
   if( !data ) block.setUserData( data = new TextBlockData() );
 
   // try assign color
-  if( data->setBackground( color ) )
+  if( data->setBackground( color ) && updatesEnabled() )
   { document()->markContentsDirty(block.position(), block.length()-1); }
-
   return;
 
 }
@@ -590,7 +589,7 @@ void TextEditor::clearBackground( QTextBlock block )
 
   Debug::Throw( "TextEditor::clearBackground.\n" );
   TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
-  if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) )
+  if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) && updatesEnabled()  )
   { document()->markContentsDirty(block.position(), block.length()-1); }
 
   return;

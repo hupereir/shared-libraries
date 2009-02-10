@@ -40,6 +40,7 @@ HEADERS = \
   DebugMenu.h \
   DockPanel.h \
   ErrorHandler.h \
+  FileDialog.h \
   FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
@@ -154,6 +155,7 @@ SOURCES = \
   DebugMenu.cpp \
   DockPanel.cpp \
   ErrorHandler.cpp \
+  FileDialog.cpp \
   FileList.cpp \
   FileRecordModel.cpp \
   FlatStyle.cpp \

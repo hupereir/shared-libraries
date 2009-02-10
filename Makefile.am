@@ -44,6 +44,7 @@ noinst_HEADERS = \
   DebugMenu.h \
   DockPanel.h \
   ErrorHandler.h \
+  FileDialog.h \
   FileList.h \
   FileRecordBaseProperties.h \
   FileRecordModel.h \
@@ -160,6 +161,7 @@ libbase_qt_a_SOURCES = \
   DebugMenu.cpp \
   DockPanel.cpp \
   ErrorHandler.cpp \
+  FileDialog.cpp \
   FileList.cpp \
   FileRecordModel.cpp \
   FlatStyle.cpp \
