@@ -37,11 +37,11 @@
 
 
 #include <assert.h>
+#include <QFileDialog>
 #include <QWidget>
 
 
 #include "Counter.h"
-#include "CustomFileDialog.h"
 
 class LineEditor;
 
@@ -72,59 +72,34 @@ class BrowsedLineEditor: public QWidget, public Counter
     return *line_edit_; 
   }
     
+  //! open mode
+  void setAcceptMode( const QFileDialog::AcceptMode mode )
+  { accept_mode_ = mode; }
+
   //! file mode
   void setFileMode( const QFileDialog::FileMode& mode ) 
   { file_mode_ = mode; }
   
-  //! file mode
-  QFileDialog::FileMode fileMode( void ) const
-  { return file_mode_; }
-
-  //! view mode
-  void setViewMode( const QFileDialog::ViewMode& mode ) 
-  { view_mode_ = mode; }
-  
-  //! view mode
-  QFileDialog::ViewMode viewMode( void ) const
-  { return view_mode_; }
-  
-  //! set file dialog
-  void setFileDialog( CustomFileDialog* dialog )
-  { file_dialog_ = dialog; }
-  
-  //! retrieve working directory
-  const QString& workDirectory( void ) const
-  { return work_directory_; }
-  
   public slots:
-  
-  //! set working directory
-  void setWorkDirectory( const QString& directory );
 
   //! set line_edit_file
   void setFile( const QString& file );
   
-  private slots:
+  protected slots:
 
   //! opens a file dialog, stores result in line edit 
-  void _browse( void );
+  virtual void _browse( void );
   
   private:
   
   //! line editor widget
   Editor *line_edit_;
   
-  //! default working directory
-  QString work_directory_;
-
-  //! pointer to file dialog
-  CustomFileDialog* file_dialog_;
+  //! accept mode
+  QFileDialog::AcceptMode accept_mode_;
   
   //! File dialog mode
   QFileDialog::FileMode file_mode_;
-  
-  //! File dialog view mode
-  QFileDialog::ViewMode view_mode_;
   
 };
 

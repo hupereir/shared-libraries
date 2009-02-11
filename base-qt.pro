@@ -31,7 +31,6 @@ HEADERS = \
   CounterModel.h \
   CustomComboBox.h \
   CustomDialog.h \
-  CustomFileDialog.h \
   CustomPixmap.h \
   CustomSlider.h \
   CustomTextDocument.h \
@@ -147,7 +146,6 @@ SOURCES = \
   CounterModel.cpp \
   CustomComboBox.cpp \
   CustomDialog.cpp \
-  CustomFileDialog.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
   CustomToolBar.cpp \

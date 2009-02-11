@@ -39,6 +39,7 @@
 #include "BrowsedLineEditor.h"
 #include "LineEditor.h"
 #include "File.h"
+#include "FileDialog.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
 #include "Util.h"
@@ -50,11 +51,10 @@ using namespace std;
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   QWidget( parent ),
   Counter( "BrowsedLineEditor" ),
-  work_directory_( Util::workingDirectory() ),
-  file_dialog_( 0 ),
-  file_mode_( QFileDialog::ExistingFile ),
-  view_mode_( QFileDialog::List )
+  accept_mode_( QFileDialog::AcceptOpen ),
+  file_mode_( QFileDialog::ExistingFile )
 {
+  
   Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
   
   // insert horizontal layout
@@ -65,7 +65,6 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
   
   // create line editor
   line_edit_ = new Editor( this );
-  //line_edit_->setHasClearButton( false );
   layout->addWidget( line_edit_, 1 );
   
   // create push_button
@@ -79,52 +78,20 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
 }
 
 //____________________________________________________________
-void BrowsedLineEditor::setWorkDirectory( const QString& directory )
-{
-  line_edit_->setText( directory );
-  work_directory_ = directory;
-}
-
-//____________________________________________________________
 void BrowsedLineEditor::setFile( const QString& file )
-{ line_edit_->setText( file ); } 
+{ editor().setText( file ); } 
 
 //____________________________________________________________
 void BrowsedLineEditor::_browse( void )
 { 
+  
   Debug::Throw( "BrowsedLineEditor::_browse.\n" );
-    
-  // create file dialog
-  if( !file_dialog_ ) file_dialog_ = new CustomFileDialog( this );
-  file_dialog_->setFileMode( file_mode_ );
-  file_dialog_->setViewMode( view_mode_ );
-  file_dialog_->setAcceptMode( QFileDialog::AcceptOpen );
+  FileDialog dialog( this );
+  dialog.setAcceptMode( accept_mode_ );
+  dialog.setFileMode( file_mode_ );
+  if( !editor().text().isNull() ) dialog.selectFile( editor().text() );
 
-  // retrieve text, check if path is valid, assign to FileDialog
-  File current_directory( line_edit_->text() );
-  if( current_directory.isDirectory() || ( current_directory = current_directory.path() ).isDirectory() ) 
-  file_dialog_->setDirectory( current_directory );
-  else file_dialog_->setDirectory( work_directory_ );
- 
-  if( file_dialog_->exec() != QDialog::Accepted ) return;
-
-  // retrieve selected files
-  QStringList files( file_dialog_->selectedFiles() );
-    
-  // check file size
-  if( files.size() > 1 ) 
-  {
-    InformationDialog( this, "Too many files selected." ).exec();
-    return;
-  }
-  
-  if( files.size() < 1 )
-  {
-    InformationDialog( this, "No file selected." ).exec();
-    return;
-  }
-    
-  setFile( files.front() );
-  
-  return; 
+  QString file( dialog.getFile() );
+  if( !file.isNull() ) setFile( file ); 
+  return;
 }

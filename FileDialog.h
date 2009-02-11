@@ -50,7 +50,7 @@ class FileDialog: public QObject, public Counter
   //! creator
   FileDialog( QWidget* parent );  
     
-  //! file mode
+  //! open mode
   FileDialog& setAcceptMode( const QFileDialog::AcceptMode mode )
   { 
     accept_mode_ = mode; 
@@ -71,12 +71,8 @@ class FileDialog: public QObject, public Counter
     return *this;
   }
   
-  //! working directory
-  FileDialog& setWorkingDirectory( const QString& directory )
-  { 
-    working_directory_ = directory;
-    return *this; 
-  }
+  //! default file/directory
+  FileDialog& selectFile( const QString& file );
   
   //! filter
   FileDialog& setFilter( const QString& filter )
@@ -98,6 +94,10 @@ class FileDialog: public QObject, public Counter
   //! get list of files
   QStringList getFiles( void );
   
+  //! reference to statically scoped working directory
+  const QString& workingDirectory() const
+  { return _workingDirectory(); }
+  
   private:
   
   //! reference to statically scoped working directory
@@ -112,14 +112,17 @@ class FileDialog: public QObject, public Counter
   //! caption
   QString caption_;
   
-  //! working directory
-  QString working_directory_;
+  //! default file
+  QString default_file_;
   
   //! filter
   QString filter_;
   
   //! options
   QFileDialog::Options options_;
+  
+  //! needed to allow ImageFileDialog to acces working directory
+  friend class ImageFileDialog;
   
 };
 

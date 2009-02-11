@@ -36,16 +36,16 @@
 #include <QCheckBox>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QFileDialog>
 #include <QLabel>
 
-#include "CustomFileDialog.h"
 #include "File.h"  
 
 /*!
   \class ImageFileDialog
   \brief customized file selection dialog, to store last selected directory
 */
-class ImageFileDialog: public CustomFileDialog
+class ImageFileDialog: public QFileDialog
 {
 
   //! Qt meta object declaration
@@ -60,7 +60,7 @@ class ImageFileDialog: public CustomFileDialog
   void selectFile( const QString& filename )
   {
     emit _currentChanged( filename );
-    CustomFileDialog::selectFile( filename );
+    QFileDialog::selectFile( filename );
   }
 
   private slots:
@@ -75,10 +75,15 @@ class ImageFileDialog: public CustomFileDialog
   
   virtual void showEvent( QShowEvent* e )
   {
-    CustomFileDialog::showEvent( e );
+    QFileDialog::showEvent( e );
     _preview(); 
   }
   
+  private slots:
+  
+  //! stores working directory when changed
+  void _saveWorkingDirectory( const QString& directory );
+
   private:
   
   //! automatic preview checkbox
@@ -108,7 +113,7 @@ class ImageFileDialog: public CustomFileDialog
 
     //! drop event
     virtual void dropEvent( QDropEvent* );
-    
+        
   };
     
   //! preview label

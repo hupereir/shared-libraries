@@ -41,16 +41,24 @@ using namespace std;
 
 #include "CustomPixmap.h"
 #include "ImageFileDialog.h"
+#include "FileDialog.h"
 #include "File.h"  
 #include "Debug.h"  
 #include "Util.h"  
 
 //______________________________________________________________________
 ImageFileDialog::ImageFileDialog( QWidget* parent ):
-  CustomFileDialog( parent )
+  QFileDialog( parent )
 {
   Debug::Throw( "ImageFileDialog::ImageFileDialog.\n" );
-    
+ 
+  // working directory
+  if( !FileDialog::_workingDirectory().isEmpty() && QFileInfo( FileDialog::_workingDirectory() ).isDir() )
+  { setDirectory( QDir( FileDialog::_workingDirectory() ) ); }
+ 
+  connect( this, SIGNAL( currentChanged( const QString& ) ), SLOT( _saveWorkingDirectory( const QString& ) ) );
+  
+  // add image display
   QSplitter* splitter = findChild<QSplitter*>( "splitter" );
   if( splitter )
   {
@@ -76,7 +84,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     h_layout->addWidget( button );
     connect( button, SIGNAL( clicked() ), SLOT( _preview() ) );
     
-  } else Debug::Throw(0) << "CustomFileDialog::CustomFileDialog - unable to find splitter." << endl;
+  } else Debug::Throw(0) << "QFileDialog::QFileDialog - unable to find splitter." << endl;
   
   connect( this, SIGNAL( currentChanged ( const QString& ) ), SLOT( _currentChanged( const QString& ) ) );
   
@@ -125,6 +133,13 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
     }
   }
   
+}
+
+//______________________________________________________________________
+void ImageFileDialog::_saveWorkingDirectory( const QString& directory )
+{ 
+  Debug::Throw( "ImageFileDialog::_saveWorkingDirectory.\n" );
+  FileDialog::_workingDirectory() = QFileInfo( directory ).absolutePath();
 }
 
 //______________________________________________________________________
