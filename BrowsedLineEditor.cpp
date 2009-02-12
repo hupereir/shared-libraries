@@ -87,8 +87,8 @@ void BrowsedLineEditor::_browse( void )
   
   Debug::Throw( "BrowsedLineEditor::_browse.\n" );
   FileDialog dialog( this );
-  dialog.setAcceptMode( accept_mode_ );
-  dialog.setFileMode( file_mode_ );
+  dialog.setAcceptMode( _acceptMode() );
+  dialog.setFileMode( _fileMode() );
   if( !editor().text().isNull() ) dialog.selectFile( editor().text() );
 
   QString file( dialog.getFile() );

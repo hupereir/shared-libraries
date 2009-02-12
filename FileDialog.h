@@ -49,59 +49,95 @@ class FileDialog: public QObject, public Counter
   
   //! creator
   FileDialog( QWidget* parent );  
-    
+   
+  //! destructor
+  virtual ~FileDialog( void )
+  {}
+  
   //! open mode
-  FileDialog& setAcceptMode( const QFileDialog::AcceptMode mode )
+  virtual FileDialog& setAcceptMode( const QFileDialog::AcceptMode mode )
   { 
     accept_mode_ = mode; 
     return *this;
   }
     
   //! file mode
-  FileDialog& setFileMode( const QFileDialog::FileMode mode )
+  virtual FileDialog& setFileMode( const QFileDialog::FileMode mode )
   { 
     file_mode_ = mode; 
     return *this;
   }
   
   //! caption
-  FileDialog& setCaption( const QString& caption )
+  virtual FileDialog& setCaption( const QString& caption )
   { 
     caption_ = caption; 
     return *this;
   }
   
   //! default file/directory
-  FileDialog& selectFile( const QString& file );
+  /*! it is used as a starting selection when file dialog is opened */
+  virtual FileDialog& selectFile( const QString& file );
   
   //! filter
-  FileDialog& setFilter( const QString& filter )
+  virtual FileDialog& setFilter( const QString& filter )
   { 
     filter_ = filter;
     return *this;
   }
   
   //! options
-  FileDialog& setOptions( const QFileDialog::Options& options )
+  virtual FileDialog& setOptions( const QFileDialog::Options& options )
   { 
     options_ = options;
     return *this;
   }
   
   //! get file
-  QString getFile( void );
+  virtual QString getFile( void );
   
   //! get list of files
-  QStringList getFiles( void );
+  virtual QStringList getFiles( void );
   
   //! reference to statically scoped working directory
-  const QString& workingDirectory() const
+  virtual const QString& workingDirectory() const
   { return _workingDirectory(); }
   
-  private:
+  protected:
   
   //! reference to statically scoped working directory
   static QString& _workingDirectory();
+  
+  //! accept mode
+  virtual const QFileDialog::AcceptMode& _acceptMode( void ) const
+  { return accept_mode_; }
+  
+  //! file mode 
+  virtual const QFileDialog::FileMode& _fileMode( void ) const
+  { return file_mode_; }
+  
+  //! caption
+  virtual const QString& _caption( void ) const
+  { return caption_; }
+  
+  //! selected file
+  /*! it is used as a starting selection when file dialog is opened */
+  virtual const QString& _selectedFile( void ) const
+  { return selected_file_; }
+  
+  //! filter
+  virtual const QString& _filter( void ) const
+  { return filter_; }
+  
+  //! options
+  virtual const QFileDialog::Options& _options( void ) const
+  { return options_; }
+  
+  //! options
+  virtual QFileDialog::Options& _options( void )
+  { return options_; }
+ 
+  private:
   
   //! accept mode
   QFileDialog::AcceptMode accept_mode_;
@@ -113,7 +149,7 @@ class FileDialog: public QObject, public Counter
   QString caption_;
   
   //! default file
-  QString default_file_;
+  QString selected_file_;
   
   //! filter
   QString filter_;

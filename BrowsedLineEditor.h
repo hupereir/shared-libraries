@@ -66,24 +66,34 @@ class BrowsedLineEditor: public QWidget, public Counter
   BrowsedLineEditor( QWidget* parent );
     
   //! retrieve line editor
-  Editor& editor( void ) const
+  virtual Editor& editor( void ) const
   { 
     assert( line_edit_ );
     return *line_edit_; 
   }
     
   //! open mode
-  void setAcceptMode( const QFileDialog::AcceptMode mode )
+  virtual void setAcceptMode( const QFileDialog::AcceptMode mode )
   { accept_mode_ = mode; }
 
   //! file mode
-  void setFileMode( const QFileDialog::FileMode& mode ) 
+  virtual void setFileMode( const QFileDialog::FileMode& mode ) 
   { file_mode_ = mode; }
   
   public slots:
 
   //! set line_edit_file
-  void setFile( const QString& file );
+  virtual void setFile( const QString& file );
+  
+  protected:
+  
+  //! accept mode
+  virtual const QFileDialog::AcceptMode& _acceptMode( void ) const
+  { return accept_mode_; }
+  
+  //! file mode 
+  virtual const QFileDialog::FileMode& _fileMode( void ) const
+  { return file_mode_; }
   
   protected slots:
 
