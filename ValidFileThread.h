@@ -47,7 +47,7 @@ class ValidFileEvent: public QEvent, public Counter
         
   //! constructor
   ValidFileEvent( const FileRecord::List& records, const bool& has_invalid_records ):
-    QEvent( QEvent::User ),
+    QEvent( eventType() ),
     Counter( "ValidFileEvent" ),
     records_( records ),
     has_invalid_records_( has_invalid_records )
@@ -56,6 +56,9 @@ class ValidFileEvent: public QEvent, public Counter
   //! destructor
   ~ValidFileEvent( void )
   {}
+  
+  //! static event type
+  static QEvent::Type eventType( void );
   
   //! records
   const FileRecord::List& records()
@@ -110,7 +113,7 @@ class ValidFileThread: public QThread, public Counter
   //! check duplicates
   bool check_duplicates_;
   
-  //! filename where data is to be saved
+  //! list of records to be checked
   FileRecord::List records_;
   
 };

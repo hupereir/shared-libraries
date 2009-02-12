@@ -37,6 +37,20 @@
 using namespace std;
 
 //______________________________________________________
+QEvent::Type ValidFileEvent::eventType( void )
+{
+  
+  #if QT_VERSION >= 0x040400
+  static QEvent::Type event_type = (QEvent::Type) QEvent::registerEventType();
+  #else
+  static QEvent::Type event_type = QEvent::User;
+  #endif
+  
+  return event_type;
+  
+}
+
+//______________________________________________________
 void ValidFileThread::run( void )
 {
 
