@@ -92,6 +92,12 @@ CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments ar
   out.registerOption( "--server-host", "string", "use specified host for server communication" );
   out.registerOption( "--server-port", "interger", "use specified port for server communication" );
   
+  // these are additional flags recognized by Qt. 
+  // this may be system dependent, and vary from one Qt version to the other, 
+  // but is not very important. They are listed here only to avoid warnings from the application.
+  out.registerOption( "-style", "string", "Qt widget style" );
+  out.registerOption( "-graphicssystem", "string", "Qt drawing backend (raster|opengl)" );
+  
   if( !arguments.isEmpty() )
   { out.parse( arguments, ignore_warnings ); }
   
