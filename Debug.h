@@ -107,8 +107,8 @@ class Debug
     // check level
     if( _get().level_ < level ) return; 
     
-    // prit string to stream
-    _get()._stdStream() << str;
+    // print string to stream
+    _get()._stdStream() << str << flush;
     
     return;
     
