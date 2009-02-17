@@ -1478,7 +1478,6 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
   return;
 }
 
-
 //_______________________________________________________
 void TextEditor::focusInEvent( QFocusEvent* event )
 {
