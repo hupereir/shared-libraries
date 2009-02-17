@@ -66,8 +66,7 @@ void CommandLineParser::usage( void ) const
   
   int max_type_length = 1+ max_element( options_.begin(), options_.end(), MinTypeLengthFTor() )->second.type_.size(); 
 
-  QString buffer;
-  QTextStream stream( &buffer );
+  QTextStream stream( stdout );
 
   // print flags
   for( FlagMap::const_iterator iter = flags_.begin(); iter != flags_.end(); iter++ )
@@ -85,8 +84,11 @@ void CommandLineParser::usage( void ) const
     stream << iter->second.type_.leftJustified( max_type_length + 1 );    
     stream << iter->second.help_text_ << endl; 
   }
-  
-  QTextStream( stdout ) << buffer;
+    
+  stream 
+    << "Note: special tag \"-\" can be added to separate options from the last list of arguments "
+    << "(e.g. list of files to be opened)" 
+    << endl;
   
   return;
 }
@@ -102,18 +104,50 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
   // check size
   if( arguments.isEmpty() ) return *this;
 
+  // first argument is application name
   application_name_ = arguments[0];
+  
+  // check if all options should be orphans 
+  // this should be triggered by adding "-" in the command line
+  bool auto_orphan( false );
+  
   for( int index = 1; index < arguments.size(); index++ )
   {
     
     QString tag_name( arguments[index] );
     if( tag_name.isEmpty() ) continue;
     
+    if( tag_name == "-" )
+    {
+      if( auto_orphan && !ignore_warnings ) 
+      {
+        QTextStream(stdout) << "CommandLineParser::parse -"
+          << " option delimiter \"-\" appears multiple times "
+          << endl;
+      } 
+      
+      auto_orphan = true;
+      continue;
+    }
+    
     // see if tag is in flag list
     {
       FlagMap::iterator iter( flags_.find( tag_name ) );
       if( iter != flags_.end() ) 
       {
+        if( auto_orphan )
+        {
+          if( !ignore_warnings )
+          {
+            QTextStream(stdout) << "CommandLineParser::parse -"
+              << " tag " << tag_name << " appears after option delimiter \"-\". It is ignored."
+              << endl;
+          }
+            
+          continue;
+          
+        }
+        
         _discardOrphans( ignore_warnings );
         iter->second.set_ = true;
         continue;
@@ -125,8 +159,27 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
       OptionMap::iterator iter( options_.find( tag_name ) );
       if( iter != options_.end() )
       {
+        
+        if( auto_orphan )
+        {
+        
+          if( !ignore_warnings )
+          {
+            QTextStream(stdout) << "CommandLineParser::parse -"
+              << " tag " << tag_name << " appears after option delimiter \"-\". It is ignored."
+              << endl;
+          }
+            
+          // also skip next entry
+          if( index+1 < arguments.size() ) index++;
+        
+          continue;
+          
+        }
+
         if( index+1 < arguments.size() )
         {
+          
           QString value( arguments[index+1] );
           if( !( value.isEmpty() || _isTag(value) ) ) 
           {
@@ -136,10 +189,9 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
             index++;
             continue;
           } 
-        }
-        
-        if( !ignore_warnings )
-        {
+          
+        } else if( !ignore_warnings ) {
+          
           Debug::Throw(0) << "CommandLineParser::parse -"
             << " expected argument of type " << iter->second.type_
             << " after option " << iter->first << endl;
