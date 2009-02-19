@@ -101,12 +101,12 @@ bool SpellInterface::setDictionary( const QString& dictionary )
   if( spell_checker_ ) aspell_speller_save_all_word_lists( spell_checker_ );
 
   // update main dictionary
-  aspell_config_replace(spell_config_, "lang", qPrintable( dictionary ) );
+  aspell_config_replace(spell_config_, "lang", dictionary.toAscii().constData() );
   dictionary_ = dictionary;
 
   // update personal dictionary
   QString personal_dictionary = Util::env( "HOME" ) + "/.aspell." + dictionary + ".pws";
-  aspell_config_replace(spell_config_, "personal", qPrintable( personal_dictionary ) );
+  aspell_config_replace(spell_config_, "personal", personal_dictionary.toAscii().constData() );
 
   // reset
   return _reset();
@@ -131,7 +131,7 @@ bool SpellInterface::setFilter( const QString& filter )
   }
 
   // update filter
-  aspell_config_replace(spell_config_, "mode", qPrintable( filter ) );
+  aspell_config_replace(spell_config_, "mode", filter.toAscii().constData() );
   filter_ = filter;
 
   // reset SpellChecker
@@ -164,12 +164,12 @@ bool SpellInterface::setText(
 
   // check limits
   assert( begin_ <= text_.size() && end_ <= text_.size() );
-
+  
   end_ += offset_;
   position_ = 0;
   offset_ = 0;
   aspell_document_checker_reset( document_checker_ );
-  aspell_document_checker_process(document_checker_, qPrintable( text_.mid( begin_, end_-begin_) ), -1);
+  aspell_document_checker_process(document_checker_, text_.mid( begin_, end_-begin_).toAscii().constData(), -1);
   
   return true;
 
@@ -191,7 +191,7 @@ bool SpellInterface::addWord( const QString& word )
   }
 
   // retrieve word from editor
-  aspell_speller_add_to_personal(spell_checker_, qPrintable( word ), -1);
+  aspell_speller_add_to_personal(spell_checker_, word.toAscii().constData(), -1);
   return true;
 
 }
@@ -219,8 +219,8 @@ bool SpellInterface::replace( const QString& word )
   // inform spellchecker of the replacement
   aspell_speller_store_replacement(
       spell_checker_,
-      qPrintable( word_ ), -1,
-      qPrintable( word ), -1 );
+      word_.toAscii().constData(), -1,
+      word.toAscii().constData(), -1 );
 
   // update checked text
   checked_text_.replace( begin_+position_+offset_, word_.size(), word );
@@ -294,7 +294,7 @@ vector< QString > SpellInterface::suggestions( const QString& word ) const
     return out;
   }
 
-  const AspellWordList * suggestions( aspell_speller_suggest( spell_checker_, qPrintable( word ), -1 ) );
+  const AspellWordList * suggestions( aspell_speller_suggest( spell_checker_, word.toAscii().constData(), -1 ) );
   AspellStringEnumeration * elements( aspell_word_list_elements( suggestions ) );
 
   const char * suggestion( 0 );
@@ -358,7 +358,7 @@ void SpellInterface::_loadFilters( void )
   filters_.insert( NO_FILTER );
 
   QString command( XmlOptions::get().raw("ASPELL") + " dump modes" );
-  FILE *tmp = popen( qPrintable( command ), "r" );
+  FILE *tmp = popen( command.toAscii().constData(), "r" );
   static const int linesize( 128 );
   char buf[linesize];
   while( fgets( buf, linesize, tmp ) ) 
@@ -418,7 +418,7 @@ bool SpellInterface::_reset( void )
     position_ = 0;
     offset_ = 0;
     aspell_document_checker_reset( document_checker_ );
-    aspell_document_checker_process(document_checker_, qPrintable( text_.mid( begin_, end_-begin_) ), -1);
+    aspell_document_checker_process(document_checker_, text_.mid( begin_, end_-begin_).toAscii().constData(), -1);
     Debug::Throw( "SpellInterface::_reset - assigning text, done.\n" );  
   }
 
