@@ -172,9 +172,11 @@ void BaseFindDialog::_regExpChecked( bool value )
 void BaseFindDialog::_updateButtons( const QString& text )
 {
   Debug::Throw( "BaseFindDialog::_updateButtons.\n" );
-  bool enabled( !text.isEmpty() );
+  
+  bool enabled( !( text.isNull() || text.isEmpty() ) );
 
   for( vector< QAbstractButton* >::iterator iter = _disabledButtons().begin(); iter != _disabledButtons().end(); iter++ )
-  (*iter)->setEnabled( enabled );
+  { (*iter)->setEnabled( enabled ); }
 
+  Debug::Throw( "BaseFindDialog::_updateButtons - done.\n" );
 }

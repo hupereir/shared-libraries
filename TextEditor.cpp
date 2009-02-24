@@ -2011,7 +2011,7 @@ void TextEditor::_createBaseReplaceDialog( void )
   {
 
     replace_dialog_ = new BaseReplaceDialog( this );
-    find_dialog_->setWindowTitle( "Replace in Text" );
+    replace_dialog_->setWindowTitle( "Replace in Text" );
     connect( replace_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
     connect( replace_dialog_, SIGNAL( replace( TextSelection ) ), SLOT( replace( TextSelection ) ) );
     connect( replace_dialog_, SIGNAL( replaceInWindow( TextSelection ) ), SLOT( replaceInWindow( TextSelection ) ) );
@@ -2021,6 +2021,7 @@ void TextEditor::_createBaseReplaceDialog( void )
     
   }
 
+  Debug::Throw( "TextEditor::_createBaseReplaceDialog - done.\n" );
   return;
 
 }
@@ -2673,6 +2674,7 @@ void TextEditor::_replaceFromDialog( void )
   _replaceDialog().activateWindow();
   _replaceDialog().editor().setFocus();
 
+  Debug::Throw( "TextEditor::_replaceFromDialog - done.\n" );
   return;
 }
 

@@ -124,6 +124,8 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   // disable buttons
   _updateButtons();
 
+  Debug::Throw( "BaseReplaceDialog::BaseReplaceDialog. Done.\n" );
+  
 }
 
 //_____________________________________________________
