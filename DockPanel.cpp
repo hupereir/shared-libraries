@@ -107,6 +107,10 @@ DockPanel::~DockPanel( void )
 }
 
 //___________________________________________________________
+QSize DockPanel::minimumSizeHint( void ) const
+{ return QSize(0,0); }
+
+//___________________________________________________________
 void DockPanel::_toggleDock( void )
 {
 

@@ -168,6 +168,9 @@ class DockPanel: public QWidget, public Counter
   LocalWidget& main( void ) const
   { return *main_; }
 
+  //! minimum size hint
+  QSize minimumSizeHint( void ) const;
+
   signals:
   
   //! emmited when state is changed
