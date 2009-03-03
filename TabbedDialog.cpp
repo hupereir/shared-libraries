@@ -54,8 +54,8 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
   Debug::Throw( "TabbedDialog::TabbedDialog.\n" );
   
   QVBoxLayout* layout( new QVBoxLayout() );
-  layout->setSpacing(10);
-  layout->setMargin(10);
+  layout->setSpacing(5);
+  layout->setMargin(0);
   setLayout( layout );
   
   QHBoxLayout* h_layout = new QHBoxLayout();

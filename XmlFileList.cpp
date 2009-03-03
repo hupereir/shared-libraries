@@ -103,8 +103,14 @@ bool XmlFileList::_read( void )
     if( element.isNull() ) continue;
 
     // special options
-    if( element.tagName() == XmlFileRecord::XML_RECORD ) _add( XmlFileRecord( element ), true, false );
-    else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << element.tagName() << endl;
+    if( element.tagName() == XmlFileRecord::XML_RECORD ) 
+    {
+    
+      XmlFileRecord record( element );
+      if( !record.file().isEmpty() ) _add( XmlFileRecord( element ), true, false );
+      else Debug::Throw(0, "XmlFileList::_read - attend to add empty record. Discarded.\n" );
+    
+    } else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << element.tagName() << endl;
   }
 
   emit contentsChanged();
@@ -138,7 +144,14 @@ bool XmlFileList::_write( void )
   // loop over records
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
   { 
+    
     Debug::Throw() << "XmlFileList::_write - " << *iter;
+    if( iter->file().isEmpty() )
+    { 
+      Debug::Throw(0, "XmlFileList::_write - attend to write empty record. Discarded.\n" );
+      continue;
+    }
+    
     top.appendChild( XmlFileRecord( *iter ).domElement( document ) ); 
   }
 

@@ -156,6 +156,9 @@ FileRecord& FileList::_add(
   const bool& emit_signal )
 {
   
+  // do not add empty files
+  assert( !record.file().isEmpty() ); 
+  
   FileRecord::List::iterator iter = find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( record.file() ) );
   if( iter != _records().end() ) 
   {
