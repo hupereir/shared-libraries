@@ -131,18 +131,9 @@ bool TreeView::setOptionName( const QString& value )
   if( mask_option_name_ != tmp  ) 
   {
     mask_option_name_ = tmp;
-    Debug::Throw(0) << "TreeView::setOptionName - option: " << mask_option_name_ << endl;
-    Debug::Throw(0) << "TreeView::setOptionName - mask (before): " << mask() << endl; 
-
     mask_changed = true;
     if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
-    else 
-    {
-      Debug::Throw(0) << "TreeView::setOptionName - mask (option): " << XmlOptions::get().get<unsigned int>( maskOptionName() ) << endl;
-      updateMask(); 
-    }
-    
-    Debug::Throw(0) << "TreeView::setOptionName - mask (after): " << mask() << endl; 
+    else updateMask(); 
   }
   
   // sort order
@@ -182,11 +173,7 @@ unsigned int TreeView::mask( void ) const
   assert( model() );
   unsigned int mask = 0;
   for( int index=0; model() && index < model()->columnCount(); index++ )
-  {
-    if( !isColumnHidden( index ) ) mask |= (1<<index);
-    Debug::Throw(0) << "TreeView::mask - column: " << index << " obtained: " << !isColumnHidden( index ) << endl;
-  }
-  Debug::Throw(0) << "TreeView::mask - mask: " << mask << endl;
+  if( !isColumnHidden( index ) ) mask |= (1<<index);
   return mask;
 }
 
@@ -195,17 +182,14 @@ void TreeView::setMask( const unsigned int& mask )
 {
   
   Debug::Throw( "TreeView::setMask.\n" );
-  Debug::Throw(0) << "TreeView::setMask - column counts: " << model()->columnCount() << endl;
   for( int index=0; index < model()->columnCount(); index++ )
   {
     
     // see if there is a change between new and old mask
     if( isColumnHidden( index ) == !(mask & (1<<index) ) ) continue;
-    Debug::Throw(0) << "TreeView::setMask - column: " << index << " requested: " << (mask & (1<<index)) << endl;
     setColumnHidden( index, !(mask & (1<<index) ) );
-    Debug::Throw(0) << "TreeView::setMask - column: " << index << " obtained: " << !isColumnHidden( index ) << endl;
     
-  }
+  }  
   
   return;
   
@@ -245,7 +229,6 @@ void TreeView::saveMask( void )
 {
   
   Debug::Throw( "TreeView::saveMask.\n" );
-  Debug::Throw(0) << "TreeView::saveMask - option name: " << mask_option_name_ << " mask: " << mask() << endl;
   if( !hasOptionName() ) return;
   XmlOptions::get().set<unsigned int>( maskOptionName(), mask() );
 
