@@ -418,9 +418,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! clear
   virtual void clear( void );
- 
-  //! reset (clear text even in read-only mode, and reset undo/redo history)
-  virtual void reset( void );
   
   protected:
   

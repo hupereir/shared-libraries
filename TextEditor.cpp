@@ -934,18 +934,11 @@ void TextEditor::clear( void )
   
   setUpdatesEnabled( false );
   selectAll();
-  QTextEdit::cut();  
-  setUpdatesEnabled( true );  
-
-}
-
-//________________________________________________
-void TextEditor::reset( void )
-{  
-  Debug::Throw( "TextEditor::reset.\n" );
-  QTextEdit::clear();
-}
+  cut();  
+  setUpdatesEnabled( true );
   
+}
+
 //_______________________________________________________
 bool TextEditor::event( QEvent* event )
 {
