@@ -77,8 +77,7 @@ class RecentFilesMenu: public QMenu, public Counter
   { return current_file_; }
 
   //! set current file
-  void setCurrentFile( const File& file )
-  { setCurrentFile( _fileList().add( file.expand() ) ); }
+  void setCurrentFile( const File& file );
   
   //! set current file
   void setCurrentFile( const FileRecord& file )

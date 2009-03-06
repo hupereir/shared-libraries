@@ -85,6 +85,10 @@ bool RecentFilesMenu::openLastValidFile( void )
   return true;
 
 }
+
+//______________________________________
+void RecentFilesMenu::setCurrentFile( const File& file )
+{ if( !file.isEmpty() ) setCurrentFile( _fileList().add( file.expand() ) ); }
   
 //______________________________________
 void RecentFilesMenu::_updateActions( void )
