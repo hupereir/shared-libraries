@@ -53,6 +53,10 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
 }
 
 //___________________________________________________________________
+TransitionWidget::~TransitionWidget()
+{ Debug::Throw( "TransitionWidget::~TransitionWidget.\n" ); }
+
+//___________________________________________________________________
 void TransitionWidget::initialize( QWidget* widget )
 {
   

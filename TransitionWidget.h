@@ -48,6 +48,9 @@ class TransitionWidget: public QWidget, public Counter
   //! constructor
   TransitionWidget( QWidget* parent = 0 );
 
+  //! destructor
+  virtual ~TransitionWidget();
+
   //! flags
   enum Flag
   {
