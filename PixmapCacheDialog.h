@@ -1,5 +1,5 @@
-#ifndef IconCacheDialog_h
-#define IconCacheDialog_h
+#ifndef PixmapCacheDialog_h
+#define PixmapCacheDialog_h
 
 // $Id$
 
@@ -25,8 +25,8 @@
  *******************************************************************************/
 
 /*!
-   \file IconCacheDialog.h
-   \brief displays IconCache names and counts
+   \file PixmapCacheDialog.h
+   \brief displays PixmapCache names and counts
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
@@ -37,12 +37,12 @@
 
 #include "BaseDialog.h"
 #include "Counter.h"
-#include "IconCacheModel.h"
+#include "PixmapCacheModel.h"
 
 class TreeView;
 
-//! displays IconCache names and counts
-class IconCacheDialog: public BaseDialog, public Counter
+//! displays PixmapCache names and counts
+class PixmapCacheDialog: public BaseDialog, public Counter
 {
 
   //! Qt meta object declaration
@@ -51,21 +51,21 @@ class IconCacheDialog: public BaseDialog, public Counter
   public:
           
   // constructor
-  IconCacheDialog( QWidget* parent );
+  PixmapCacheDialog( QWidget* parent );
   
   //! destructor
-  virtual ~IconCacheDialog( void )
+  virtual ~PixmapCacheDialog( void )
   {}
 
   public slots:
   
-  //! update IconCache list
+  //! update PixmapCache list
   void update();
   
   private:
   
   //! model
-  IconCacheModel model_;
+  PixmapCacheModel model_;
 
   //! list
   TreeView* list_;

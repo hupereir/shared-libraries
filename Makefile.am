@@ -53,8 +53,6 @@ noinst_HEADERS = \
   GridLayout.h \
   HtmlTextNode.h \
   IconBrowsedButton.h \
-  IconCacheDialog.h \
-  IconCacheModel.h \
   IconEngine.h \
   IconSize.h \
   IconSizeMenu.h \
@@ -83,6 +81,8 @@ noinst_HEADERS = \
   OptionSpinBox.h \
   OptionWidget.h \
   OptionWidgetList.h \
+ 	PixmapCacheDialog.h \
+  PixmapCacheModel.h \
   PixmapEngine.h \
   QuestionDialog.h \
   QtUtil.h \
@@ -167,8 +167,6 @@ libbase_qt_a_SOURCES = \
   FontInfo.cpp \
   HtmlTextNode.cpp \
   IconBrowsedButton.cpp \
-  IconCacheDialog.cpp \
-  IconCacheModel.cpp \
   IconEngine.cpp \
   IconSize.cpp \
   IconSizeMenu.cpp \
@@ -182,6 +180,8 @@ libbase_qt_a_SOURCES = \
   OptionListBox.cpp \
   OptionModel.cpp \
   OptionWidgetList.cpp \
+  PixmapCacheDialog.cpp \
+  PixmapCacheModel.cpp \
   PixmapEngine.cpp \
   QuestionDialog.cpp \
   QtUtil.cpp \
@@ -247,15 +247,15 @@ nodist_libbase_qt_a_SOURCES = \
   moc_FileRecordModel.cpp \
   moc_FontEditor.cpp \
   moc_IconBrowsedButton.cpp \
-  moc_IconCacheDialog.cpp \
   moc_ImageFileDialog.cpp \
   moc_IconSizeMenu.cpp \
   moc_LineEditor.cpp \
   moc_LineNumberDisplay.cpp \
   moc_MultipleClickCounter.cpp \
-	 moc_OptionDialog.cpp \
+  moc_OptionDialog.cpp \
   moc_OptionListBox.cpp \
   moc_OptionModel.cpp \
+  moc_PixmapCacheDialog.cpp \
   moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
   moc_ScrollObject.cpp \

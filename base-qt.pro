@@ -49,8 +49,6 @@ HEADERS = \
   GridLayout.h \
   HtmlTextNode.h \
   IconBrowsedButton.h \
-  IconCacheDialog.h \
-  IconCacheModel.h \
   IconEngine.h \
   IconSize.h \
   IconSizeMenu.h \
@@ -79,6 +77,8 @@ HEADERS = \
   OptionSpinBox.h \
   OptionWidget.h \
   OptionWidgetList.h \
+  PixmapCacheDialog.h \
+  PixmapCacheModel.h \
   PixmapEngine.h \
   QuestionDialog.h \
   QtUtil.h \
@@ -161,8 +161,6 @@ SOURCES = \
   FontInfo.cpp \
   HtmlTextNode.cpp \
   IconBrowsedButton.cpp \
-  IconCacheDialog.cpp \
-  IconCacheModel.cpp \
   IconEngine.cpp \
   IconSize.cpp \
   IconSizeMenu.cpp \
@@ -176,6 +174,8 @@ SOURCES = \
   OptionListBox.cpp \
   OptionModel.cpp \
   OptionWidgetList.cpp \
+  PixmapCacheDialog.cpp \
+  PixmapCacheModel.cpp \
   PixmapEngine.cpp \
   QuestionDialog.cpp \
   QtUtil.cpp \

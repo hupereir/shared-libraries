@@ -38,7 +38,7 @@
 #include "Counter.h"
 
 class CounterDialog;
-class IconCacheDialog;
+class PixmapCacheDialog;
 
 /*!
   \class DebugMenu
@@ -76,7 +76,7 @@ class DebugMenu: public QMenu, public Counter
   void _showCounterDialog( void ); 
  
   //! icon cache dialog
-  void _showIconCacheDialog( void );
+  void _showPixmapCacheDialog( void );
   
   //! show system environment
   void _showSystemEnvironment( void );
@@ -90,7 +90,7 @@ class DebugMenu: public QMenu, public Counter
   CounterDialog* counter_dialog_;
   
   //! non modal icon cache dialog
-  IconCacheDialog* icon_cache_dialog_;
+  PixmapCacheDialog* pixmap_cache_dialog_;
      
 };
 #endif

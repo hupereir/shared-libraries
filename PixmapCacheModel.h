@@ -1,5 +1,5 @@
-#ifndef _IconCacheModel_h_
-#define _IconCacheModel_h_
+#ifndef _PixmapCacheModel_h_
+#define _PixmapCacheModel_h_
 
 // $Id$
 
@@ -25,8 +25,8 @@
 *******************************************************************************/
  
 /*!
-  \file IconCacheModel.h
-  \brief model for object IconCaches
+  \file PixmapCacheModel.h
+  \brief model for object PixmapCaches
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -37,11 +37,11 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "IconEngine.h"
+#include "PixmapEngine.h"
 #include "ListModel.h"
 
-//! qlistview for object IconCaches
-class IconCacheModel: public ListModel<IconEngine::Pair>, public Counter
+//! qlistview for object PixmapCaches
+class PixmapCacheModel: public ListModel<PixmapEngine::Pair>, public Counter
 {
 
   public:
@@ -55,9 +55,9 @@ class IconCacheModel: public ListModel<IconEngine::Pair>, public Counter
   };
 
   //! constructor
-  IconCacheModel( QObject* parent = 0 ):
-    ListModel<IconEngine::Pair>( parent ),
-    Counter( "IconCacheModel" )
+  PixmapCacheModel( QObject* parent = 0 ):
+    ListModel<PixmapEngine::Pair>( parent ),
+    Counter( "PixmapCacheModel" )
   {}
   
   //!@name methods reimplemented from base class
@@ -82,7 +82,7 @@ class IconCacheModel: public ListModel<IconEngine::Pair>, public Counter
             
   private:
   
-  //! used to sort IconCaches
+  //! used to sort PixmapCaches
   class SortFTor: public ItemModel::SortFTor
   {
     
@@ -94,7 +94,7 @@ class IconCacheModel: public ListModel<IconEngine::Pair>, public Counter
       {}
       
     //! prediction
-    bool operator() ( IconEngine::Pair, IconEngine::Pair ) const;
+    bool operator() ( PixmapEngine::Pair, PixmapEngine::Pair ) const;
     
   };
 

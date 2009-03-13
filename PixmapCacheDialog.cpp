@@ -21,8 +21,8 @@
  *                            
  *******************************************************************************/
 /*!
-   \file IconCacheDialog.cpp
-   \brief displays IconCache names and counts
+   \file PixmapCacheDialog.cpp
+   \brief displays PixmapCache names and counts
    \author Hugo Pereira
    \version $Revision$
    \date $Date$
@@ -33,20 +33,20 @@
 
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
-#include "IconCacheDialog.h"
-#include "IconEngine.h"
+#include "PixmapCacheDialog.h"
+#include "PixmapEngine.h"
 #include "IconSize.h"
 #include "AnimatedTreeView.h"
 
 using namespace std;
 
 //__________________________________________________________________________
-IconCacheDialog::IconCacheDialog( QWidget* parent ):
+PixmapCacheDialog::PixmapCacheDialog( QWidget* parent ):
   BaseDialog( parent, Qt::Window ),
-  Counter( "IconCacheDialog" )
+  Counter( "PixmapCacheDialog" )
 {
   
-  Debug::Throw( "IconCacheDialog::IconCacheDialog.\n" );
+  Debug::Throw( "PixmapCacheDialog::PixmapCacheDialog.\n" );
   setWindowTitle( "icon cache" );
   setOptionName( "ICON_CACHE_DIALOG" );
   
@@ -67,26 +67,26 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
   layout()->addItem( h_layout );
   
   QPushButton *button;
-  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::RELOAD ),"&Update", this ) );
+  h_layout->addWidget( button = new QPushButton( PixmapEngine::get( ICONS::RELOAD ),"&Update", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( update() ) );
   button->setAutoDefault( false );
    
-  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ),"&Close", this ) );
+  h_layout->addWidget( button = new QPushButton( PixmapEngine::get( ICONS::DIALOG_CLOSE ),"&Close", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
   button->setAutoDefault( false );
     
 }
 
 //__________________________________________________________________________
-void IconCacheDialog::update( void )
+void PixmapCacheDialog::update( void )
 {
   
-  Debug::Throw( "IconCacheDialog::update.\n" );
+  Debug::Throw( "PixmapCacheDialog::update.\n" );
     
   // retrieve cache 
-  const IconEngine::Cache& cache( IconEngine::cache() );
-  model_.set( IconCacheModel::List( cache.begin(), cache.end() ) );
+  const PixmapEngine::Cache& cache( PixmapEngine::cache() );
+  model_.set( PixmapCacheModel::List( cache.begin(), cache.end() ) );
 
-  list_->resizeColumnToContents( IconCacheModel::ICON );
+  list_->resizeColumnToContents( PixmapCacheModel::ICON );
     
 }

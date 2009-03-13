@@ -33,7 +33,7 @@
 #include "CounterDialog.h"
 #include "Debug.h"
 #include "DebugMenu.h"
-#include "IconCacheDialog.h"
+#include "PixmapCacheDialog.h"
 #include "OptionDialog.h"
 #include "SystemEnvironmentDialog.h"
 
@@ -44,12 +44,12 @@ DebugMenu::DebugMenu( QWidget* parent, unsigned int flags ):
   QMenu( parent ),
   Counter( "DebugMenu" ),
   counter_dialog_( 0 ),
-  icon_cache_dialog_( 0 )
+  pixmap_cache_dialog_( 0 )
 {
   
   Debug::Throw( "DebugMenu::DebugMenu.\n" );
   if( flags&COUNTERS ) addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
-  if( flags&ICONS ) addAction( "&Icon Cache ", this, SLOT( _showIconCacheDialog() ) );
+  if( flags&ICONS ) addAction( "&Icon Cache ", this, SLOT( _showPixmapCacheDialog() ) );
   if( flags&SYSTEM ) addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
   if( flags&OPTIONS ) addAction( "&Run-time options", this, SLOT( _showOptions() ) );
 }  
@@ -79,24 +79,24 @@ void DebugMenu::_showCounterDialog( void )
 }
 
 //_______________________________________________
-void DebugMenu::_showIconCacheDialog( void )
+void DebugMenu::_showPixmapCacheDialog( void )
 {
-  Debug::Throw( "DebugMenu::_ShowIconCacheDialog.\n" );
+  Debug::Throw( "DebugMenu::_ShowPixmapCacheDialog.\n" );
   
-  // check IconCache dialog has been build
-  if( !icon_cache_dialog_ ) {
+  // check PixmapCache dialog has been build
+  if( !pixmap_cache_dialog_ ) {
     
-    icon_cache_dialog_ = new IconCacheDialog( qApp->activeWindow() );
-    icon_cache_dialog_->centerOnWidget( qApp->activeWindow() );
-    icon_cache_dialog_->update();
-    icon_cache_dialog_->show();
+    pixmap_cache_dialog_ = new PixmapCacheDialog( qApp->activeWindow() );
+    pixmap_cache_dialog_->centerOnWidget( qApp->activeWindow() );
+    pixmap_cache_dialog_->update();
+    pixmap_cache_dialog_->show();
     
   } else {
     
-    icon_cache_dialog_->update();
-    icon_cache_dialog_->centerOnWidget( qApp->activeWindow() );
-    icon_cache_dialog_->show();
-    icon_cache_dialog_->uniconify();
+    pixmap_cache_dialog_->update();
+    pixmap_cache_dialog_->centerOnWidget( qApp->activeWindow() );
+    pixmap_cache_dialog_->show();
+    pixmap_cache_dialog_->uniconify();
   
   }
   
