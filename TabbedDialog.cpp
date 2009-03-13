@@ -78,7 +78,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
   
   // button layout
   button_layout_ = new QHBoxLayout();
-  button_layout_->setMargin(0);
+  button_layout_->setMargin(5);
   button_layout_->setSpacing(5);
   layout->addLayout( button_layout_, 0 );
   

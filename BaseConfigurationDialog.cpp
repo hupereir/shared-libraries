@@ -445,9 +445,10 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
   spinbox = new OptionSpinBox( box, "ANIMATION_FRAMES" );
   spinbox->setMinimum( 0 );
   spinbox->setMaximum( 1000 );
-  spinbox->setToolTip( "Maximum number of frames shown for one animation.\n"
-    "A large number is recomanded, since frames are dropped whenever the\n"
-    "system is too slow anyway." );
+  spinbox->setToolTip( 
+    "Maximum number of frames shown for one animation.\n"
+    "A large number is recomanded, since frames are \n"
+    "dropped whenever the system is too slow anyway." );
   grid_layout->addWidget( spinbox );
   addOptionWidget( spinbox );
   
