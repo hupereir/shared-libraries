@@ -57,10 +57,6 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
  
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
 
-  // 
-  // if( CompositeEngine::get().isEnabled() ) 
-  // { setAttribute(Qt::WA_NoSystemBackground); }
-
   // actions
   _installActions();
 
