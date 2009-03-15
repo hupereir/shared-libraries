@@ -57,6 +57,9 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
  
   Debug::Throw( "TransparentWidget::TransparentWidget.\n" ); 
 
+  // opaque background
+  setAttribute( Qt::WA_OpaquePaintEvent, true );
+
   // actions
   _installActions();
 
