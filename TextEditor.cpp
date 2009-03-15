@@ -1562,6 +1562,9 @@ void TextEditor::paintEvent( QPaintEvent* event )
   
   painter.end();
   
+  // redraw margins
+  // _setMarginDirty();
+  
   // base class painting
   QTextEdit::paintEvent( event );
   
@@ -2701,7 +2704,7 @@ void TextEditor::_selectLineFromDialog( void )
 void TextEditor::_setMarginDirty( bool value )
 {
  
-  if( value == margin_dirty_ ) return;
+  //if( value == margin_dirty_ ) return;
   margin_dirty_ = value;
   if( value ) QFrame::update( _marginRect() );
   
