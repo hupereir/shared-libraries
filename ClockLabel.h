@@ -33,11 +33,9 @@
 #define _ClockLabel_h_
 
 #include <QDateTime>
-#include <QLabel>
 #include <QTimer>
 
-
-
+#include "AnimatedLabel.h"
 #include "Counter.h"
 #include "TimeStamp.h"
 
@@ -75,7 +73,7 @@ class ClockTimer: public QTimer, public Counter
 };
 
 //! self-updated label displaying current date and time 
-class ClockLabel:public QLabel
+class ClockLabel:public AnimatedLabel
 {
  
   public:

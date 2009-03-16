@@ -32,6 +32,7 @@
 
 #include "ClockLabel.h"
 #include "Debug.h"
+#include "TransitionWidget.h"
 
 using namespace std;
 
@@ -54,7 +55,7 @@ void ClockTimer::_checkCurrentTime( void )
 
   Debug::Throw( "ClockTimer::_CheckCurrentTime.\n" );
   TimeStamp new_time( TimeStamp::now() );
-  
+
   // check time hour and/or minute differ
   if( 
     time_.isValid() && 
@@ -77,12 +78,15 @@ void ClockTimer::_checkCurrentTime( void )
 
 //________________________________________________________________
 ClockLabel::ClockLabel( QWidget* parent ):
-  QLabel( parent ),
+  AnimatedLabel( parent ),
   timer_( this )
 {
     
   Debug::Throw( "ClockLabel::ClockLabel.\n" );
   
+  // needed for proper background to be set
+  transitionWidget().setFlag( TransitionWidget::FROM_PARENT, true );
+ 
   // create static clock timer, updated every 10 seconds
   connect( &timer_, SIGNAL( timeChanged( const QString& ) ), SLOT( setText( const QString& ) ) );
   
