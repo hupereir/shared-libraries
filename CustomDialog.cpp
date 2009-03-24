@@ -29,6 +29,8 @@
   \date $Date$
 */
 
+#include <QFrame>
+
 #include "BaseIcons.h"
 #include "CustomDialog.h"
 #include "IconEngine.h"
@@ -48,23 +50,33 @@ CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFla
   // create vbox layout
   QVBoxLayout* layout( new QVBoxLayout() );
   setLayout( layout );
-  layout->setSpacing(10);
+  layout->setSpacing(5);
   layout->setMargin(10);
   
   main_layout_ = new QVBoxLayout();
   main_layout_->setSpacing(10);
   main_layout_->setMargin(0);
   layout->addLayout( main_layout_, 1 );
-    
+
+  // separator
+  if( flags & SEPARATOR )
+  {
+    QFrame* frame( new QFrame( this ) );
+    frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
+    layout->addWidget( frame );
+  }
+  
   // insert hbox layout for buttons
   button_layout_ = new QBoxLayout( QBoxLayout::LeftToRight );
-  button_layout_->setSpacing(10);
+  button_layout_->setSpacing(5);
   button_layout_->setMargin(0);
   layout->addLayout( button_layout_, 0 );
   
+  button_layout_->addStretch( 1 );
+  
   // insert OK and Cancel button
   if( flags & OK_BUTTON ) {
-    QIcon icon( IconEngine::get( ( flags & CANCEL_BUTTON ) ? ICONS::DIALOG_ACCEPT : ICONS::DIALOG_CLOSE ) );
+    QIcon icon( IconEngine::get( ( flags & CANCEL_BUTTON ) ? ICONS::DIALOG_OK : ICONS::DIALOG_CLOSE ) );
     QString text( ( flags & CANCEL_BUTTON ) ? "&Ok":"&Close" );
     button_layout_->addWidget( ok_button_ = new QPushButton( icon, text, this ) );
     connect( ok_button_, SIGNAL( clicked() ), SLOT( accept() ) );

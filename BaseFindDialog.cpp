@@ -28,6 +28,7 @@
   \date $Date$
 */
 
+#include <QFrame>
 #include <QPushButton>
 
 #include "BaseIcons.h"
@@ -110,11 +111,17 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
   _locationLayout().setMargin(0);
   _locationLayout().setSpacing(5);
   
+  // horizontal separator
+  QFrame* frame( new QFrame( this ) );
+  frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
+  layout()->addWidget( frame );
+
   // buttons
   layout()->addItem( button_layout_ = new QHBoxLayout() );
   _buttonLayout().setMargin( 0 );
   _buttonLayout().setSpacing( 5 );
- 
+  _buttonLayout().addStretch(1);
+  
   // insert Find button
   QPushButton *button;
   _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), "&Find", this ) );

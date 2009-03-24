@@ -78,7 +78,7 @@ class TabbedDialog: public BaseDialog, public Counter
   { return *stack_; }
 
   //! button layout
-  QHBoxLayout& _buttonLayout( void ) const
+  QBoxLayout& _buttonLayout( void ) const
   { return *button_layout_; }
   
   private:
@@ -149,7 +149,7 @@ class TabbedDialog: public BaseDialog, public Counter
   AnimatedStackedWidget* stack_;
   
   //! button layout (needed to add extra buttons)
-  QHBoxLayout *button_layout_;
+  QBoxLayout *button_layout_;
 
 };
 

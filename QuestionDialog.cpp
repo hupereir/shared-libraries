@@ -39,7 +39,7 @@
 
 //____________________________________________________________
 QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
-  CustomDialog( parent, OK_BUTTON | CANCEL_BUTTON )
+  CustomDialog( parent, OK_BUTTON | CANCEL_BUTTON | SEPARATOR )
 {
 
   Debug::Throw( "QuestionDialog::QuestionDialog\n" );

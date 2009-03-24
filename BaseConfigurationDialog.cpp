@@ -81,7 +81,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   _buttonLayout().addStretch( 1 );
   
   // apply button
-  _buttonLayout().addWidget( button = new QPushButton(IconEngine::get( ICONS::DIALOG_OK_APPLY ), "&Apply", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton(IconEngine::get( ICONS::DIALOG_OK_APPLY ), "&Apply", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( _update() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );  
   button->setToolTip( 
@@ -90,7 +90,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     "all changes are taken into account." );
   
   // ok button
-  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), "&Ok", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), "&Ok", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( _save() ) );  
   connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( accept() ) );  
@@ -101,7 +101,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
   button->setAutoDefault( false );
   
   // cancel button
-  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Cancel", this ), 1 );
+  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Cancel", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
   connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );  
   connect( button, SIGNAL( clicked() ), SLOT( reject() ) );

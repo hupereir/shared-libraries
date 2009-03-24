@@ -61,7 +61,10 @@ class CustomDialog: public BaseDialog, public Counter
     OK_BUTTON = 1<<0,
     
     //! dialog has CANCEL button
-    CANCEL_BUTTON = 1<<1 
+    CANCEL_BUTTON = 1<<1,
+    
+    //! separator
+    SEPARATOR = 1<<2
   };
   
   //! constructor

@@ -77,7 +77,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
   connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
   
   // button layout
-  button_layout_ = new QHBoxLayout();
+  button_layout_ = new QBoxLayout( QBoxLayout::LeftToRight );
   button_layout_->setMargin(5);
   button_layout_->setSpacing(5);
   layout->addLayout( button_layout_, 0 );
