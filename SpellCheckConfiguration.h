@@ -43,7 +43,7 @@ class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public
   public:
       
   //! constructor
-  SpellCheckConfiguration( QWidget* parent );
+  SpellCheckConfiguration( QWidget* );
  
 };
 
