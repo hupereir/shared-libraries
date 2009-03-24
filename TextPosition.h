@@ -32,7 +32,7 @@
   \date $Date$
 */
 
-
+#include <QTextStream>
 
 #include "Counter.h"
 
