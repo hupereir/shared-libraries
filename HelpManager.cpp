@@ -35,8 +35,8 @@
 #include <QTextStream>
 #include <QVBoxLayout>
 
-#include "BaseDialog.h"
 #include "BaseIcons.h"
+#include "CustomDialog.h"
 #include "Debug.h"
 #include "HelpDialog.h"
 #include "HelpManager.h"
@@ -195,16 +195,15 @@ void HelpManager::_dumpHelpString( void )
   out << "  0\n";
   out << "};\n";
   
-  BaseDialog* dialog = new BaseDialog();
-  dialog->setLayout( new QVBoxLayout() );
-  dialog->layout()->setMargin(10);
-  TextEditor *text_edit = new TextEditor( dialog );
+  CustomDialog* dialog = new CustomDialog( 0, CustomDialog::OK_BUTTON );
+  TextEditor *editor = new TextEditor( dialog );
+  dialog->mainLayout().addWidget( editor );
 
-  text_edit->setWrapFromOptions( false );
-  text_edit->wrapModeAction().setChecked( false );
-  text_edit->setPlainText( buffer );
-  dialog->layout()->addWidget( text_edit );
+  editor->setWrapFromOptions( false );
+  editor->wrapModeAction().setChecked( false );
+  editor->setPlainText( buffer );
   dialog->resize( 600, 500 );
+  dialog->setOptionName( "DUMP_HELP_DIALOG" );
   dialog->centerOnWidget( qApp->activeWindow() );
   dialog->show();
   
