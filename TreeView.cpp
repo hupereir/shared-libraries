@@ -338,6 +338,12 @@ void TreeView::contextMenuEvent( QContextMenuEvent* event )
   
   Debug::Throw( "TreeView::contextMenuEvent.\n" );
   
+  // base class implementation
+  // QTreeView::contextMenuEvent( event );
+
+  // apparently this signal is not called any more
+  emit customContextMenuRequested( event->pos() );
+  
   // check if menu was created
   if( !hasMenu() ) return;
       
@@ -348,7 +354,7 @@ void TreeView::contextMenuEvent( QContextMenuEvent* event )
   // save mask after menu execution, 
   // to keep visible columns in sync with option
   saveMask();
-  
+    
 }
 
 //______________________________________________________________________

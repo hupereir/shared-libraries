@@ -81,7 +81,7 @@ class FileList: public QObject, public Counter
   /*! creates new fileRecord if not found */
   virtual FileRecord& get( const File& file )
   { return _add( FileRecord( file ), false ); }
-   
+  
   //! gets file list size
   virtual int size( void ) const
   { return _records().size(); }
@@ -89,7 +89,10 @@ class FileList: public QObject, public Counter
   //! all records
   FileRecord::List records( void ) const
   { return _truncatedList( _records() ); }
-  
+      
+  //! set record
+  virtual void set( const FileRecord::List& );
+
   //! all files
   std::list< File > files( void ) const;
   
@@ -102,6 +105,9 @@ class FileList: public QObject, public Counter
     
   //! clean files. Remove either invalid or all files, depending on check_
   virtual void clean( void );
+  
+  //! clear files. Remove all
+  virtual void clear( void );
   
   //! check flag
   virtual const bool& check( void ) const

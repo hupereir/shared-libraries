@@ -86,6 +86,7 @@ noinst_HEADERS = \
   PixmapEngine.h \
   QuestionDialog.h \
   QtUtil.h \
+  RecentFilesConfiguration.h \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
   RoundedPath.h \
@@ -185,6 +186,7 @@ libbase_qt_a_SOURCES = \
   PixmapEngine.cpp \
   QuestionDialog.cpp \
   QtUtil.cpp \
+  RecentFilesConfiguration.cpp \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
   RoundedPath.cpp \
@@ -256,6 +258,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_OptionListBox.cpp \
   moc_OptionModel.cpp \
   moc_PixmapCacheDialog.cpp \
+	 moc_RecentFilesConfiguration.cpp \
   moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
   moc_ScrollObject.cpp \

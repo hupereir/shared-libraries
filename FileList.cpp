@@ -53,6 +53,16 @@ void FileList::remove( const File& file )
 }
 
 //___________________________________________________
+void FileList::set( const FileRecord::List& records )
+{
+  
+  Debug::Throw( "FileList::set.\n" );
+  _records() = records;
+  emit contentsChanged();
+  
+}
+
+//___________________________________________________
 list<File> FileList::files( void ) const
 {
   Debug::Throw( "FileList::files.\n" );
@@ -138,6 +148,13 @@ void FileList::clean( void )
   return;
 }
 
+//___________________________________________________
+void FileList::clear( void )
+{
+  Debug::Throw( "FileList::clear" );
+  _records().clear();    
+  return;
+}
 //_______________________________________________
 void FileList::_setMaxSize( const int& value )
 {

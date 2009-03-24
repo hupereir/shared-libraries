@@ -82,6 +82,7 @@ HEADERS = \
   PixmapEngine.h \
   QuestionDialog.h \
   QtUtil.h \
+  RecentFilesConfiguration.h \
   RecentFilesMenu.h \
   RemoveLineBuffer.h \
   RoundedPath.h \
@@ -179,6 +180,7 @@ SOURCES = \
   PixmapEngine.cpp \
   QuestionDialog.cpp \
   QtUtil.cpp \
+  RecentFilesConfiguration.cpp \
   RecentFilesMenu.cpp \
   RemoveLineBuffer.cpp \
   RoundedPath.cpp \
