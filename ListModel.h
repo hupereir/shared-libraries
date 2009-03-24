@@ -36,8 +36,6 @@
 #include <set>
 #include <vector>
 
-#include "Counter.h"
-#include "Debug.h"
 #include "ItemModel.h"
 
 //! Job model. Stores job information for display in lists
