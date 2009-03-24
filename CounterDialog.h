@@ -35,13 +35,13 @@
 #include <map>
 
 
-#include "BaseDialog.h"
+#include "CustomDialog.h"
 #include "CounterModel.h"
 
 class TreeView;
 
 //! displays Counter names and counts
-class CounterDialog: public BaseDialog, public Counter
+class CounterDialog: public CustomDialog
 {
 
   //! Qt meta object declaration

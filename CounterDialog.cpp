@@ -42,37 +42,22 @@ using namespace std;
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):
-  BaseDialog( parent, Qt::Window ),
-  Counter( "CounterDialog" )
+  CustomDialog( parent, OK_BUTTON, Qt::Window )
 {
   
   Debug::Throw( "CounterDialog::CounterDialog.\n" );
   setWindowTitle( "object counters" );
   setOptionName( "COUNTER_DIALOG" );
     
-  setLayout( new QVBoxLayout() );
-  layout()->setMargin(10);
-  layout()->setSpacing(10);
-  
   // insert main vertical box
-  layout()->addWidget( list_ = new AnimatedTreeView( this ) );
+  mainLayout().addWidget( list_ = new AnimatedTreeView( this ) );
   list_->setModel( &model_ );  
-  
-  // update button
-  QHBoxLayout *h_layout = new QHBoxLayout();
-  h_layout->setSpacing(10);
-  h_layout->setMargin(0);
-  layout()->addItem( h_layout );
-  
+    
   QPushButton *button;
-  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+  buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( update() ) );
   button->setAutoDefault( false );
-   
-  h_layout->addWidget( button = new QPushButton(  IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-  button->setAutoDefault( false );
-    
+       
 }
 
 //__________________________________________________________________________

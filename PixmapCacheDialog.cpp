@@ -42,39 +42,24 @@ using namespace std;
 
 //__________________________________________________________________________
 PixmapCacheDialog::PixmapCacheDialog( QWidget* parent ):
-  BaseDialog( parent, Qt::Window ),
-  Counter( "PixmapCacheDialog" )
+  CustomDialog( parent, OK_BUTTON, Qt::Window )
 {
   
   Debug::Throw( "PixmapCacheDialog::PixmapCacheDialog.\n" );
   setWindowTitle( "icon cache" );
   setOptionName( "ICON_CACHE_DIALOG" );
-  
-  setLayout( new QVBoxLayout() );
-  layout()->setMargin(10);
-  layout()->setSpacing(10);
-  
+    
   // insert main vertical box
   list_ = new AnimatedTreeView( this );  
-  layout()->addWidget( list_ );
+  mainLayout().addWidget( list_ );
   list_->setModel( &model_ );  
   list_->setIconSize( IconSize( IconSize::LARGE ) );
-  
-  // update button
-  QHBoxLayout *h_layout = new QHBoxLayout();
-  h_layout->setSpacing(10);
-  h_layout->setMargin(0);
-  layout()->addItem( h_layout );
-  
+    
   QPushButton *button;
-  h_layout->addWidget( button = new QPushButton( PixmapEngine::get( ICONS::RELOAD ),"&Update", this ) );
+  buttonLayout().insertWidget( 1, button = new QPushButton( PixmapEngine::get( ICONS::RELOAD ),"&Update", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( update() ) );
   button->setAutoDefault( false );
    
-  h_layout->addWidget( button = new QPushButton( PixmapEngine::get( ICONS::DIALOG_CLOSE ),"&Close", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-  button->setAutoDefault( false );
-    
 }
 
 //__________________________________________________________________________

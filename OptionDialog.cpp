@@ -46,7 +46,7 @@ using namespace std;
 
 //__________________________________________________________________________
 OptionDialog::OptionDialog( QWidget* parent ):
-  BaseDialog( parent )
+  CustomDialog( parent, OK_BUTTON )
 {
   
   Debug::Throw( "OptionDialog::OptionDialog.\n" );
@@ -58,16 +58,11 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
   // set model editable
   model_.setReadOnly( false );
-
-  QVBoxLayout *main_layout = new QVBoxLayout();
-  main_layout->setMargin( 10 );
-  main_layout->setSpacing( 10 );
-  setLayout( main_layout );
   
   QHBoxLayout* layout = new QHBoxLayout();
   layout->setSpacing(20);
   layout->setMargin(0);
-  main_layout->addLayout( layout );
+  mainLayout().addLayout( layout );
 
   //! try load Question icon
   QPixmap question_pixmap( PixmapEngine::get( ICONS::WARNING ) );
@@ -85,7 +80,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     "one to restore the state of the application at the time the dialog was oppened.\n", this ), 1 );
   
   // insert list
-  main_layout->addWidget( list_ = new TreeView( this ) );
+  mainLayout().addWidget( list_ = new TreeView( this ) );
   _list().setModel( &model_ );
   _list().setRootIsDecorated( true );
   _list().setItemDelegate( new TextEditionDelegate( this ) );
@@ -99,21 +94,13 @@ OptionDialog::OptionDialog( QWidget* parent ):
   connect( &model_, SIGNAL( optionModified( OptionPair ) ), SLOT( _optionModified( OptionPair ) ) );
   connect( &model_, SIGNAL( specialOptionModified( OptionPair ) ), SLOT( _specialOptionModified( OptionPair ) ) );
   connect( this, SIGNAL( configurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
-  
-  // insert hbox layout for buttons
-  QBoxLayout* button_layout = new QBoxLayout( QBoxLayout::LeftToRight );
-  button_layout->setSpacing(10);
-  button_layout->setMargin(0);
-  main_layout->addLayout( button_layout, 0 );
-  
+    
   // insert OK and Cancel button
   QPushButton *button;
-  button_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+  buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
   connect( button, SIGNAL( clicked() ), SLOT( _reload() ) );
+  button->setAutoDefault( false );
   
-  button_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( accept() ) );
-
 }
 
 //______________________________________________________________

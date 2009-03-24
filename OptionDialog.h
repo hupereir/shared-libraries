@@ -35,7 +35,7 @@
 #include <map>
 
 
-#include "BaseDialog.h"
+#include "CustomDialog.h"
 #include "OptionModel.h"
 #include "XmlOptions.h"
 
@@ -43,7 +43,7 @@
 class TreeView;
 
 //! displays Counter names and counts
-class OptionDialog: public BaseDialog
+class OptionDialog: public CustomDialog
 {
 
   Q_OBJECT

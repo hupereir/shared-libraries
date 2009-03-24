@@ -83,6 +83,7 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   QPushButton *previous( 0 );
   
   // insert selection button
+  _locationLayout().addWidget( new QLabel( "Replace in: ", this ) );
   _locationLayout().addWidget( button = new QPushButton( "&Selection", this ) );
   button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), SLOT( _replaceInSelection( void ) ) );

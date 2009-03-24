@@ -54,7 +54,7 @@ CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFla
   layout->setMargin(10);
   
   main_layout_ = new QVBoxLayout();
-  main_layout_->setSpacing(10);
+  main_layout_->setSpacing(5);
   main_layout_->setMargin(0);
   layout->addLayout( main_layout_, 1 );
 

@@ -35,14 +35,14 @@
 #include <map>
 
 
-#include "BaseDialog.h"
+#include "CustomDialog.h"
 #include "Counter.h"
 #include "PixmapCacheModel.h"
 
 class TreeView;
 
 //! displays PixmapCache names and counts
-class PixmapCacheDialog: public BaseDialog, public Counter
+class PixmapCacheDialog: public CustomDialog
 {
 
   //! Qt meta object declaration

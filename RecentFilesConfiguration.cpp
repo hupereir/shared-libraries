@@ -164,6 +164,7 @@ void RecentFilesConfiguration::_remove( void )
   if( selection.isEmpty() ) return;
   
   _model().remove( _model().get( selection ) );
+  _list().selectionModel()->clear();
   
   _reloadButton().setEnabled( true );
   _clearButton().setEnabled( !_model().get().empty() );
