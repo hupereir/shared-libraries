@@ -112,7 +112,6 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   
   // replace buttons
   button = new QPushButton( "&Replace", this );
-  button->setAutoDefault( false );
   connect( button, SIGNAL( clicked( void ) ), SLOT( _replace( void ) ) );
   connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
   connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );

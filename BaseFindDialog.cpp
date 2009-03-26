@@ -128,7 +128,6 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
   connect( button, SIGNAL( clicked( void ) ), SLOT( _find( void ) ) );
   connect( button, SIGNAL( clicked( void ) ), SLOT( _updateFindComboBox( void ) ) );
   _addDisabledButton( button );
-  button->setDefault( true );
   button->setAutoDefault( false );
   find_button_ = button;
   
