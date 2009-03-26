@@ -134,7 +134,7 @@ namespace SVG
   }  
   
   //__________________________________________________________
-  QPixmap SvgEngine::_get( const QSize& size, bool from_cache )
+  const QPixmap& SvgEngine::_get( const QSize& size, bool from_cache )
   {
     Debug::Throw( "SvgEngine::_get.\n" );
     
@@ -148,9 +148,7 @@ namespace SVG
     // add to map
     SvgPixmap pixmap( size );
     pixmap.render( svg_, svg_offset_ );
-    cache_.insert( make_pair( size, pixmap ) );
-    
-    return pixmap;
+    return cache_.insert( make_pair( size, pixmap ) ).first->second;
     
   }
   

@@ -58,7 +58,7 @@ namespace SVG
     
     //! create pixmap
     /*! the size is stored into a cache to avoid duplicate pixmaps manipulations */
-    static QPixmap get( const QSize& size )
+    static const QPixmap& get( const QSize& size )
     { return get()._get( size ); }
     
     //! destructor
@@ -98,7 +98,7 @@ namespace SVG
     
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    QPixmap _get( const QSize&, bool from_cache = true );
+    const QPixmap& _get( const QSize&, bool from_cache = true );
     
     //@}
     
