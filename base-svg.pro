@@ -11,8 +11,14 @@ HEADERS = \
   SvgConfiguration.h \
   SvgEngine.h \
   SvgHelpText.h \
+  SvgImage.h \
+  SvgPixmap.h \
+  SvgThread.h \
   Svg.h
 
 SOURCES = \
   SvgConfiguration.cpp \
-  SvgEngine.cpp
+  SvgEngine.cpp \
+  SvgImage.cpp \
+  SvgPixmap.cpp \
+  SvgThread.cpp

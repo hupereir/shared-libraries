@@ -32,22 +32,23 @@
   \date $Date$
 */
 
-#include <QPixmap>
 #include <QSize>
 #include <QSvgRenderer>
+#include <QObject>
 
-#include <map>
-#include <list>
 #include <assert.h>
+#include <vector>
 
 #include "Counter.h"
+#include "SvgPixmap.h"
+#include "SvgThread.h"
 
 //! svg namespace
 namespace SVG
 {
 
   //! customized Icon factory to provide better looking disabled icons
-  class SvgEngine: public Counter
+  class SvgEngine: public QObject, public Counter
   {
     
     public:
@@ -60,13 +61,26 @@ namespace SVG
     static QPixmap get( const QSize& size )
     { return get()._get( size ); }
     
+    //! destructor
+    virtual ~SvgEngine( void )
+    {}
+    
     //! is valid
     bool isValid( void ) const
     { return svg_.isValid(); }
     
+    //! preload sizes
+    /*! uses a separate thread, in order not to slow down application */
+    void preload( std::vector<QSize> );
+    
     //! reload all icons set in cache from new path list
     /*! return true if changed */
     bool reload( void );
+    
+    protected:
+      
+    //! custom event, used for preloading
+    void customEvent( QEvent* );
     
     private:
     
@@ -87,23 +101,6 @@ namespace SVG
     QPixmap _get( const QSize&, bool from_cache = true );
     
     //@}
-        
-    //! ordered QSize subclass
-    class Size: public QSize
-    {
-      
-      public:
-      
-      //! constructor
-      Size( const QSize& size ):
-        QSize( size )
-      {}
-      
-      // order
-      bool operator < ( const Size& size )  const
-      { return ( width() < size.width() || ( width() == size.width() && height() < size.height() ) ); }
-      
-    };
     
     //! svg file
     QString svg_file_;
@@ -113,12 +110,12 @@ namespace SVG
     
     //! svg offest
     int svg_offset_;
-    
+       
     //! map size and pixmap
-    typedef std::map< Size, QPixmap > Cache;
-    
-    //! map size and pixmap
-    Cache cache_;
+    SvgPixmap::Cache cache_;
+  
+    //! thread preload sizes
+    SvgThread thread_;
     
   };
 };
