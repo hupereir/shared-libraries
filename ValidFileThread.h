@@ -32,8 +32,8 @@
   \date $Date$
 */
 
-#include <QThread>
 #include <QEvent>
+#include <QThread>
 
 #include "Counter.h"
 #include "Debug.h" 

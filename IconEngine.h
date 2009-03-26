@@ -52,7 +52,7 @@ class IconEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  static QIcon get( const QString& file )
+  static const QIcon& get( const QString& file )
   { return get()._get( file ); }
 
   //! create icon
@@ -110,7 +110,7 @@ class IconEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  QIcon _get( const QString&, bool from_cache = true );
+  const QIcon& _get( const QString&, bool from_cache = true );
 
   //! create icon
   QIcon _get( const QPixmap& );

@@ -51,7 +51,7 @@ class PixmapEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  static QPixmap get( const QString& file, bool from_cache = true )
+  static const QPixmap& get( const QString& file, bool from_cache = true )
   { return get()._get( file, from_cache ); }
 
   //! map files and QPixmap
@@ -111,7 +111,7 @@ class PixmapEngine: public Counter
   
   //! create icon
   /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  QPixmap _get( const QString& file, bool from_cache );
+  const QPixmap& _get( const QString& file, bool from_cache );
   
   //@}
   

@@ -70,7 +70,7 @@ bool PixmapEngine::reload( void )
 }
 
 //__________________________________________________________
-QPixmap PixmapEngine::_get( const QString& file, bool from_cache )
+const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
 {
   Debug::Throw( "PixmapEngine::_get (file).\n" );
   
@@ -111,7 +111,6 @@ QPixmap PixmapEngine::_get( const QString& file, bool from_cache )
     
   }
     
-  cache_.insert( make_pair( file, out ) );
-  return out;
+  return cache_.insert( make_pair( file, out ) ).first->second;
   
 }

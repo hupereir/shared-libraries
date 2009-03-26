@@ -63,7 +63,7 @@ bool IconEngine::reload( void )
 }
 
 //__________________________________________________________
-QIcon IconEngine::_get( const QString& file, bool from_cache )
+const QIcon& IconEngine::_get( const QString& file, bool from_cache )
 {
   Debug::Throw( "IconEngine::_get (file).\n" );
 
@@ -75,8 +75,7 @@ QIcon IconEngine::_get( const QString& file, bool from_cache )
   }
   
   QIcon out( _get( PixmapEngine::get( file, from_cache ) ) );
-  cache_.insert( make_pair( file, out ) );
-  return out;
+  return cache_.insert( make_pair( file, out ) ).first->second;
   
 }
 
