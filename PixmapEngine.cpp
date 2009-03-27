@@ -74,8 +74,6 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
 {
   Debug::Throw( "PixmapEngine::_get (file).\n" );
   
-  if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-
   // try find file in cache
   if( from_cache )
   {
@@ -88,6 +86,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
   if( QFileInfo( file ).isAbsolute() ) { out = QPixmap( file ); } 
   else {
     
+    if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
     for( list<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
     {
     
@@ -107,6 +106,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
         out.load( icon_file );
         if( !out.isNull() ) break;
       }
+    
     }
     
   }
