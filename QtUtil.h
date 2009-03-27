@@ -56,19 +56,19 @@ class QtUtil {
   static QPoint centerOnDesktop( const QSize& size );
 
   //! center widget on pointer
-  static void centerOnPointer( QWidget* widget );
+  static QWidget* centerOnPointer( QWidget* widget );
  
   //! center widget on parent top level widget
-  static void centerOnParent( QWidget* widget );
+  static QWidget* centerOnParent( QWidget* widget );
   
   //! center widget on parent top level widget
-  static void centerOnWidget( QWidget* widget, QWidget* parent );
+  static QWidget* centerOnWidget( QWidget* widget, QWidget* parent );
   
   //! center widget on desktop widget
-  static void centerOnDesktop( QWidget* widget );
+  static QWidget* centerOnDesktop( QWidget* widget );
 
   //! uniconify a top level widget
-  static void uniconify( QWidget* widget );
+  static QWidget* uniconify( QWidget* widget );
     
 };
 

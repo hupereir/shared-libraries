@@ -148,7 +148,7 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
 }
 
 //____________________________________________________________
-void QtUtil::centerOnPointer( QWidget* widget )
+QWidget* QtUtil::centerOnPointer( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnPointer.\n" );
   assert( widget );
@@ -156,11 +156,11 @@ void QtUtil::centerOnPointer( QWidget* widget )
   // move widget
   widget->move( centerOnPointer( widget->frameSize() ) );
   qApp->processEvents();
-  return;
+  return widget;
 }
 
 //____________________________________________________________
-void QtUtil::centerOnParent( QWidget* widget )
+QWidget* QtUtil::centerOnParent( QWidget* widget )
 {
   assert( widget );
   return centerOnWidget( widget, widget->parentWidget() );
@@ -168,7 +168,7 @@ void QtUtil::centerOnParent( QWidget* widget )
 
 
 //____________________________________________________________
-void QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
+QWidget* QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 {
   Debug::Throw( "QtUtil::centerOnParent.\n" );
   assert( widget );
@@ -176,26 +176,26 @@ void QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
   // get parent widget
   if( !( parent && parent->window() ) ) centerOnDesktop( widget );
   else widget->move( centerOnWidget( widget->frameSize(), parent->window() ) );
-  return;
+  return widget;
 }
 
 
 //____________________________________________________________
-void QtUtil::centerOnDesktop( QWidget* widget )
+QWidget* QtUtil::centerOnDesktop( QWidget* widget )
 {
   Debug::Throw( "QtUtil::centerOnDesktop.\n" );
   assert( widget );
   widget->move( centerOnDesktop( widget->frameSize() ) );
-  return;
+  return widget;
 }
 
 //____________________________________________________________
-void QtUtil::uniconify( QWidget *widget )
+QWidget* QtUtil::uniconify( QWidget *widget )
 {
 
   Debug::Throw( "QtUtil::uniconify.\n" );
 
-  if( !widget->isTopLevel() ) return;
+  if( !widget->isTopLevel() ) return widget;
   widget = widget->window();  
 
   if( widget->isMinimized() ) widget->showNormal();
@@ -204,7 +204,7 @@ void QtUtil::uniconify( QWidget *widget )
   widget->activateWindow();
   widget->raise();
 
-  return;
+  return widget;
 
 }
 
