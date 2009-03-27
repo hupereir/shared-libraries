@@ -33,14 +33,13 @@
 */
 
 #include <QSize>
-#include <QSvgRenderer>
 #include <QObject>
 
 #include <assert.h>
 #include <vector>
 
 #include "Counter.h"
-#include "SvgPixmap.h"
+#include "SvgRenderer.h"
 #include "SvgThread.h"
 
 //! svg namespace
@@ -86,10 +85,7 @@ namespace SVG
     
     //! load svg
     bool _loadSvg( void );
-    
-    //! validate svg
-    bool _validateSvg( void ) const;
-    
+      
     //!@name non static methods are hidden
     //@{
     
@@ -106,13 +102,13 @@ namespace SVG
     QString svg_file_;
     
     //! svg renderer
-    QSvgRenderer svg_;
+    SvgRenderer svg_;
     
     //! svg offest
     int svg_offset_;
        
     //! map size and pixmap
-    SvgPixmap::Cache cache_;
+    PixmapCache cache_;
   
     //! thread preload sizes
     SvgThread thread_;

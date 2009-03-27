@@ -35,6 +35,9 @@
 
 
 #include <QString>
+#include <QPixmap>
+#include <QImage>
+#include <map>
 
 /*
   BaseSvg is not necessary here
@@ -55,6 +58,29 @@ namespace SVG
   static const QString BOTTOM_LEFT="bottomleft";
   static const QString LEFT="left";
   static const QString CENTER="center";
+  
+
+  //! ordered QSize subclass
+  class Size: public QSize
+  {
+    
+    public:
+    
+    //! constructor
+    Size( const QSize& size ):
+      QSize( size )
+    {}
+      
+    // order
+    bool operator < ( const Size& size )  const
+    { return ( width() < size.width() || ( width() == size.width() && height() < size.height() ) ); }
+    
+  };
+  
+  
+  //! map size and pixmap
+  typedef std::map< Size, QPixmap > PixmapCache;
+  typedef std::map< Size, QImage > ImageCache;
         
 };
 

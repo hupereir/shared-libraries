@@ -21,8 +21,7 @@ noinst_HEADERS = \
   SvgConfiguration.h \
   SvgEngine.h \
   SvgHelpText.h \
-  SvgImage.h \
-  SvgPixmap.h \
+  SvgRenderer.h \
   SvgThread.h \
   Svg.h
 
@@ -31,8 +30,7 @@ noinst_LIBRARIES = libbase-svg.a
 libbase_svg_a_SOURCES =  \
   SvgConfiguration.cpp \
   SvgEngine.cpp \
-  SvgImage.cpp \
-  SvgPixmap.cpp \
+  SvgRenderer.cpp \
   SvgThread.cpp
 
 nodist_libbase_svg_a_SOURCES =  \

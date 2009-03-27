@@ -1,5 +1,5 @@
-#ifndef SvgImage_h
-#define SvgImage_h
+#ifndef SvgRenderer_h
+#define SvgRenderer_h
 
 // $Id$
 
@@ -25,57 +25,41 @@
 *******************************************************************************/
  
 /*!
-  \file SvgImage.h
+  \file SvgRenderer.h
   \brief construct pixmap of given size using Svg renderer
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <QImage>
 #include <QSvgRenderer>
-#include <map>
+#include <QPaintDevice>
 
 #include "Counter.h"
 
 //! construct pixmap of given size using Svg renderer
 namespace SVG
 {
-  class SvgImage: public QImage
+  class SvgRenderer: public QSvgRenderer
   {
     
     public:
      
     //! constructor
-    SvgImage( const QSize& size = QSize() );
-    
-    //! render
-    SvgImage& render( QSvgRenderer&, const double& offset = 0 );
+    SvgRenderer( void ):
+      QSvgRenderer()
+      {}
     
     //! destructor
-    virtual ~SvgImage( void )
+    virtual ~SvgRenderer( void )
     {}
 
-    //! ordered QSize subclass
-    class Size: public QSize
-    {
-      
-      public:
-      
-      //! constructor
-      Size( const QSize& size ):
-        QSize( size )
-      {}
-      
-      // order
-      bool operator < ( const Size& size )  const
-      { return ( width() < size.width() || ( width() == size.width() && height() < size.height() ) ); }
-      
-    };
-  
-    //! map size and pixmap
-    typedef std::map< Size, SvgImage > Cache;
+    //! render
+    void render( QPaintDevice&, const double& offset = 0 );
 
+    //! validity
+    virtual bool isValid( void ) const;
+    
   };
 
 };

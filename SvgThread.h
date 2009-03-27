@@ -33,13 +33,13 @@
 */
 
 #include <QEvent>
-#include <QSvgRenderer>
 #include <QThread>
 #include <vector>
 
 #include "Counter.h"
 #include "Debug.h" 
-#include "SvgImage.h"
+#include "SvgRenderer.h"
+#include "Svg.h"
 
 //! used to post a new grid when ready
 namespace SVG
@@ -51,7 +51,7 @@ namespace SVG
     public:
     
     //! constructor
-    SvgEvent( const SvgImage::Cache& cache ):
+    SvgEvent( const ImageCache& cache ):
       QEvent( eventType() ),
       Counter( "SvgEvent" ),
       cache_( cache )
@@ -65,13 +65,13 @@ namespace SVG
     static QEvent::Type eventType( void );
     
     //! records
-    const SvgImage::Cache& cache() const
+    const ImageCache& cache() const
     { return cache_; }
         
     private:
     
     //! Svg cache
-    SvgImage::Cache cache_;
+    ImageCache cache_;
         
   };
   
@@ -109,7 +109,7 @@ namespace SVG
     QObject* reciever_;
     
     //! svg renderer
-    QSvgRenderer svg_;
+    SvgRenderer svg_;
     
     //! svg offset
     double svg_offset_;

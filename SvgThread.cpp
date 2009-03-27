@@ -60,12 +60,13 @@ namespace SVG
     if( !svg_.isValid() ) return;
     if( sizes_.empty() ) return;
     
-    SvgImage::Cache cache;
+    ImageCache cache;
     for( std::vector<QSize>::const_iterator iter = sizes_.begin(); iter != sizes_.end(); iter++ )
     {
 
-      SvgImage image( *iter );
-      image.render( svg_, svg_offset_ );
+      QImage image( *iter, QImage::Format_ARGB32_Premultiplied );
+      image.fill( Qt::transparent );
+      svg_.render( image, svg_offset_ );
       cache.insert( make_pair( *iter, image ) );
       
     }

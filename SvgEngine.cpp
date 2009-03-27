@@ -88,7 +88,7 @@ namespace SVG
       
       svg_offset_ = svg_offset;
       vector<QSize> sizes;
-      for( SvgPixmap::Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
+      for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
       { sizes.push_back( iter->first ); }
 
       cache_.clear();
@@ -128,7 +128,7 @@ namespace SVG
     SvgEvent* svg_event( dynamic_cast<SvgEvent*>(event) );
     if( !svg_event ) return QObject::customEvent( event );
 
-    for( SvgImage::Cache::const_iterator iter = svg_event->cache().begin(); iter != svg_event->cache().end(); iter++ )
+    for( ImageCache::const_iterator iter = svg_event->cache().begin(); iter != svg_event->cache().end(); iter++ )
     { cache_.insert( make_pair( iter->first, QPixmap::fromImage( iter->second ) ) ); }    
     
   }  
@@ -141,13 +141,15 @@ namespace SVG
     // try find file in cache
     if( from_cache )
     {
-      SvgPixmap::Cache::iterator iter( cache_.find( size ) );
+      PixmapCache::iterator iter( cache_.find( size ) );
       if( iter != cache_.end() ) return iter->second;
     }
     
     // add to map
-    SvgPixmap pixmap( size );
-    pixmap.render( svg_, svg_offset_ );
+    QPixmap pixmap( size );
+    pixmap.fill( Qt::transparent );
+    svg_.render( pixmap, svg_offset_ );
+    
     return cache_.insert( make_pair( size, pixmap ) ).first->second;
     
   }
@@ -166,7 +168,7 @@ namespace SVG
     {
       QString file( iter->raw() );
       svg_.load( QString( file ) );
-      if( svg_.isValid() && _validateSvg() ) 
+      if( svg_.isValid() ) 
       {
         changed = ( svg_file_ != file );
         svg_file_ = file;
@@ -179,24 +181,5 @@ namespace SVG
     return changed;
     
   }
-  
-  //________________________________________________
-  bool SvgEngine::_validateSvg( void ) const
-  {
-    Debug::Throw( "SvgEngine::_validateSvg.\n" );
     
-    if( !svg_.elementExists( SVG::TOP_LEFT ) ) return false;
-    if( !svg_.elementExists( SVG::TOP ) ) return false;
-    if( !svg_.elementExists( SVG::TOP_RIGHT ) ) return false;
-    
-    if( !svg_.elementExists( SVG::BOTTOM_LEFT ) ) return false;
-    if( !svg_.elementExists( SVG::BOTTOM ) ) return false;
-    if( !svg_.elementExists( SVG::BOTTOM_RIGHT ) ) return false;
-    
-    if( !svg_.elementExists( SVG::LEFT ) ) return false;
-    if( !svg_.elementExists( SVG::CENTER ) ) return false;
-    if( !svg_.elementExists( SVG::RIGHT ) ) return false;
-    return true;
-  }
-  
 }
