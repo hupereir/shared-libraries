@@ -32,6 +32,7 @@
    \date    $Date$
 */
 
+#include <QAction>
 #include <QPushButton>
 #include <QWidget>
 
@@ -64,11 +65,11 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
   //! update actions
   void _updateButtons( void );
   
+  //! clean
+  void _clean( void );
+  
   //! remove 
   void _remove( void );
-  
-  //! clear
-  void _clear( void );
   
   //! reload
   void _reload( void );
@@ -91,18 +92,30 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
   TreeView& _list( void ) const
   { return *list_; }
 
+  //! clean
+  QPushButton& _cleanButton( void ) const
+  { return *clean_button_; }
+
   //! remove
   QPushButton& _removeButton( void ) const
   { return *remove_button_; }
-  
-  //! clear
-  QPushButton& _clearButton( void ) const
-  { return *clear_button_; }
   
   //! reload
   QPushButton& _reloadButton( void ) const
   { return *reload_button_; }
   
+  //! clean
+  QAction& _cleanAction( void ) const
+  { return *clean_action_; }
+
+  //! remove
+  QAction& _removeAction( void ) const
+  { return *remove_action_; }
+  
+  //! reload
+  QAction& _reloadAction( void ) const
+  { return *reload_action_; }
+
   private:
 
   //! file list
@@ -113,16 +126,29 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
   
   //! file record list
   TreeView* list_;
-  
+ 
+  //! clean
+  QPushButton *clean_button_;
+
   //! remove
   QPushButton *remove_button_;
-  
-  //! clear
-  QPushButton *clear_button_;
-  
+ 
   //! reload
   QPushButton *reload_button_;
   
+  //!@name actions
+  //@{
+  
+  //! clean action
+  QAction* clean_action_;
+  
+  //! remove action
+  QAction* remove_action_;
+
+  //! remove action
+  QAction* reload_action_;
+  
+  //@}
   
 };
 

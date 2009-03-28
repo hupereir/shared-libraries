@@ -42,9 +42,6 @@
 using namespace std;
 
 //_______________________________________________ 
-static const string XML_FILE_LIST = "file_list";
-
-//_______________________________________________ 
 XmlFileList::XmlFileList( QObject* parent ):
   FileList( parent )
 { 
@@ -107,7 +104,7 @@ bool XmlFileList::_read( void )
     {
     
       XmlFileRecord record( element );
-      if( !record.file().isEmpty() ) _add( XmlFileRecord( element ), true, false );
+      if( !record.file().isEmpty() ) _add( record, true, false );
       else Debug::Throw(0, "XmlFileList::_read - attend to add empty record. Discarded.\n" );
     
     } else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << element.tagName() << endl;
@@ -139,7 +136,7 @@ bool XmlFileList::_write( void )
   QDomDocument document;
 
   // create main element
-  QDomElement top = document.appendChild( document.createElement( XML_FILE_LIST.c_str() ) ).toElement();
+  QDomElement top = document.appendChild( document.createElement( XmlFileRecord::XML_FILE_LIST ) ).toElement();
 
   // loop over records
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )

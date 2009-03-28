@@ -47,6 +47,7 @@ class XmlFileRecord: public FileRecord
   
   //!@name XML names
   //@{
+  static const QString XML_FILE_LIST;
   static const QString XML_RECORD;
   static const QString XML_FILE;
   static const QString XML_TIME;

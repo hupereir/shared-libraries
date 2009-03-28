@@ -403,11 +403,6 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
   box->setLayout( new QVBoxLayout() );
   box->layout()->setMargin(5);
   box->layout()->setSpacing(5);
-
-  parent->layout()->addWidget( new QLabel( 
-    "Warning: animations are still experimental\n"
-    "and might significantly slow-down the system.", parent ) );
-
   parent->layout()->addWidget( box );
 
   GridLayout* grid_layout = new GridLayout();

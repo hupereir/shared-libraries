@@ -37,6 +37,7 @@ using namespace std;
 
 //!@name XML names
 //@{
+const QString XmlFileRecord::XML_FILE_LIST = "file_list";
 const QString XmlFileRecord::XML_RECORD = "record";
 const QString XmlFileRecord::XML_FILE = "file";
 const QString XmlFileRecord::XML_TIME = "time";

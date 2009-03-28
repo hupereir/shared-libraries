@@ -90,6 +90,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
   // Add button
   QPushButton *button;
   button_layout->addWidget( button = new QPushButton( "&Add", this ) );
+  button->setIcon( IconEngine::get( ICONS::ADD ) );
   connect( button, SIGNAL( clicked() ), SLOT( _add() ) );
  
   // Add action
@@ -102,6 +103,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
   // remove button
   button_layout->addWidget( remove_ = new QPushButton( "&Remove", this ) );
   connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
+  remove_->setIcon( IconEngine::get( ICONS::REMOVE ) );
   remove_->setToolTip( "Remove selected value" );
 
   addAction( remove_action_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remo&ve", this ) );
@@ -113,9 +115,10 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
   // Edit button
   button_layout->addWidget( edit_ = new QPushButton( "&Edit", this ) );
   connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
+  edit_->setIcon( IconEngine::get( ICONS::RENAME ) );
   edit_->setToolTip( "Edit selected value" );
 
-  addAction( edit_action_ = new QAction( IconEngine::get( ICONS::EDIT ),  "&Edit", this ) );
+  addAction( edit_action_ = new QAction( IconEngine::get( ICONS::RENAME ),  "&Edit", this ) );
   connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
   _list().menu().addAction( edit_action_ );
   
@@ -123,8 +126,9 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
   button_layout->addWidget( default_ = new QPushButton( "&Default", this ) );
   connect( default_, SIGNAL( clicked() ), SLOT( _setDefault() ) );
   default_->setToolTip( "Set selected value as default\n(move it to the top of the list)" );
-
-  addAction( default_action_ = new QAction( "&Default", this ) );
+  default_->setIcon( IconEngine::get( ICONS::DIALOG_OK_APPLY ) );
+  
+  addAction( default_action_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), "&Default", this ) );
   connect( default_action_, SIGNAL( triggered() ), SLOT( _setDefault() ) );
   _list().menu().addAction( default_action_ );
 
