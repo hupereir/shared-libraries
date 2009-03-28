@@ -75,7 +75,6 @@ bool HelpModel::setData(const QModelIndex &index, const QVariant& value, int rol
   return true;
 }
 
-
 //______________________________________________________________________
 QStringList HelpModel::mimeTypes( void ) const
 {
