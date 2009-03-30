@@ -189,13 +189,13 @@ void DockPanel::_toggleStaysOnTop( bool state )
   if( state )
   {
 
-    X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
-    X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_ABOVE, 1 );
+    X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
+    X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_ABOVE, 1 );
 
   } else {
 
-    X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP);
-    X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_ABOVE);
+    X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP);
+    X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_ABOVE);
 
   }
 
@@ -228,8 +228,8 @@ void DockPanel::_toggleSticky( bool state )
   if( visible ) main().hide();
 
   // change property depending on state
-  if( state ) X11Util::changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1 );
-  else X11Util::removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
+  if( state ) X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1 );
+  else X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
 
   // show widget again, if needed
   if( visible ) main().show();
@@ -351,7 +351,7 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
   if( button_ != Qt::LeftButton ) return;
 
   if( parent() ) detachAction().trigger();
-  if( X11Util::moveWidget( *this, QCursor::pos() ) ) return;
+  if( X11Util::get().moveWidget( *this, QCursor::pos() ) ) return;
   else {
     _setMoveEnabled( true );
     setCursor( Qt::SizeAllCursor );

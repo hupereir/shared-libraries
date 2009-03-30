@@ -176,13 +176,13 @@ void TabWidget::_toggleStaysOnTop( bool state )
   if( state )
   {
 
-    X11Util::changeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
-    X11Util::changeProperty( *this, X11Util::_NET_WM_STATE_ABOVE, 1 );
+    X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
+    X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_ABOVE, 1 );
 
   } else {
 
-    X11Util::removeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP);
-    X11Util::removeProperty( *this, X11Util::_NET_WM_STATE_ABOVE);
+    X11Util::get().removeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP);
+    X11Util::get().removeProperty( *this, X11Util::_NET_WM_STATE_ABOVE);
 
   }
 
@@ -212,8 +212,8 @@ void TabWidget::_toggleSticky( bool state )
   if( visible ) hide();
 
   // change property depending on state
-  if( state ) X11Util::changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, 1 );
-  else X11Util::removeProperty( *this, X11Util::_NET_WM_STATE_STICKY );
+  if( state ) X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, 1 );
+  else X11Util::get().removeProperty( *this, X11Util::_NET_WM_STATE_STICKY );
 
   // show widget again, if needed
   if( visible ) show();
@@ -265,7 +265,7 @@ void TabWidget::mouseMoveEvent( QMouseEvent* event )
     
     timer_.stop();
     if( parent() ) detachAction().trigger();    
-    if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
+    if( X11Util::get().moveWidget( *this, QCursor::pos() ) ) return; 
     else { 
       
       // enable
@@ -301,7 +301,7 @@ void TabWidget::timerEvent( QTimerEvent *event )
   if( button_ != Qt::LeftButton ) return;
   
   if( parent() ) detachAction().trigger();
-  if( X11Util::moveWidget( *this, QCursor::pos() ) ) return; 
+  if( X11Util::get().moveWidget( *this, QCursor::pos() ) ) return; 
   else {
     _setMoveEnabled( true );
     setCursor( Qt::SizeAllCursor );

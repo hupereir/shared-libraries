@@ -77,11 +77,6 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
   _list().setIconSize( IconSize( IconSize::SMALL ) );
   layout->addWidget( &_list(), 1 );
   
-  // set connections
-  connect( _list().selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
-  connect( _list().selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
-  connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _setDefault() ) );
-  
   QVBoxLayout* button_layout = new QVBoxLayout();
   button_layout->setMargin(0);
   button_layout->setSpacing( 5 );
@@ -133,7 +128,12 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
   _list().menu().addAction( default_action_ );
 
   button_layout->addStretch(1);
-  
+      
+  // set connections
+  connect( _list().selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
+  connect( _list().selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
+  connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _setDefault() ) );
+
   // update buttons
   _updateButtons();
   
@@ -179,7 +179,6 @@ void OptionListBox::write( void ) const
 void OptionListBox::_updateButtons( void )
 {
   Debug::Throw( "OptionListBox::_updateButtons.\n" );
-
 
   QModelIndex current( _list().selectionModel()->currentIndex() );
   edit_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );

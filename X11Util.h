@@ -47,6 +47,9 @@ class X11Util
   
   public:
   
+  //! singleton
+  static X11Util& get( void );
+  
   //! Atoms enumeration
   enum Atoms
   {
@@ -76,25 +79,25 @@ class X11Util
   };
   
   //! supported atoms
-  static bool isSupported( const Atoms& atom );
+  bool isSupported( const Atoms& atom );
 
   //! return true if property is found in NET_WM_STATE
-  static bool hasProperty( const QWidget& widget, const Atoms& atom );
+  bool hasProperty( const QWidget& widget, const Atoms& atom );
   
   //! change property
-  static bool changeProperty( const QWidget&, const Atoms&, const int& );
+  bool changeProperty( const QWidget&, const Atoms&, const int& );
   
   //! remove property from NET_WM_STATE
-  static bool removeProperty( const QWidget& widget, const Atoms& atom );
+  bool removeProperty( const QWidget& widget, const Atoms& atom );
   
   //! move widget using X11 window manager
   /*! returns true on success */
-  static bool moveWidget( const QWidget& widget, const QPoint& position )
+  bool moveWidget( const QWidget& widget, const QPoint& position )
   { return moveResizeWidget( widget, position, X11Util::_NET_WM_MOVERESIZE_MOVE ); }
 
   //! move/resize widget using X11 window manager
   /*! returns true on success */
-  static bool moveResizeWidget( 
+  bool moveResizeWidget( 
     const QWidget& widget, 
     const QPoint& position, 
     const Direction& direction, 
@@ -104,25 +107,46 @@ class X11Util
   #ifdef Q_WS_X11
   
   //! find atom
-  static Atom findAtom( const Atoms& atom );
+  Atom findAtom( const Atoms& atom );
   
   #endif
+  
+  //! key state
+  enum KeyState
+  {
+    KEY_ON,
+    KEY_OFF,
+    KEY_UNKNOWN
+  };
+  
+  //! get key state
+  KeyState keyState( Qt::Key );
+  
   private:
+  
+  //! constructor
+  X11Util( void );
   
   //! atom names
   typedef std::map<Atoms, QString> AtomNameMap; 
   
   //! atom names
-  static AtomNameMap _initializeAtomNames( void );
+  AtomNameMap _initializeAtomNames( void );
   
   //! atom names
-  static AtomNameMap& _atomNames( void );
+  AtomNameMap& _atomNames( void )
+  { return atom_names_; }
+  
+  AtomNameMap atom_names_;
   
   //! supported atoms
   typedef std::map<Atoms, bool > SupportedAtomMap;
   
   //! supported atoms
-  static SupportedAtomMap& _supportedAtoms( void );
+  SupportedAtomMap& _supportedAtoms( void )
+  { return supported_atoms_; }
+  
+  SupportedAtomMap supported_atoms_;
   
   #ifdef Q_WS_X11
   
@@ -130,7 +154,11 @@ class X11Util
   typedef std::map<Atoms, Atom> AtomMap;
   
   //! atoms
-  static AtomMap& _atoms( void );
+  AtomMap& _atoms( void )
+  { return atoms_; }
+
+  //! atoms
+  AtomMap atoms_;
   
   #endif
   

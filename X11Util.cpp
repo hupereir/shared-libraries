@@ -36,18 +36,22 @@
 using namespace std;
 
 //________________________________________________________________________
-X11Util::AtomNameMap& X11Util::_atomNames( void )
+X11Util& X11Util::get( void )
 {
-  static AtomNameMap names = _initializeAtomNames();
-  return names;
+  static X11Util singleton;
+  return singleton;
 }
 
 //________________________________________________________________________
-X11Util::SupportedAtomMap& X11Util::_supportedAtoms()
+X11Util::X11Util( void )
 { 
-  static SupportedAtomMap atoms;
-  return atoms;
+  Debug::Throw( "X11Util::X11Util" ); 
+  _atomNames() = _initializeAtomNames();
 }
+
+//________________________________________________________________________
+X11Util::KeyState X11Util::keyState( Qt::Key key )
+{ return KEY_UNKNOWN; }
 
 //________________________________________________________________________
 bool X11Util::isSupported( const Atoms& atom )
@@ -291,13 +295,6 @@ X11Util::AtomNameMap X11Util::_initializeAtomNames( void )
 }
 
 #ifdef Q_WS_X11
-
-//________________________________________________________________________
-X11Util::AtomMap& X11Util::_atoms( void )
-{
-  static AtomMap atoms;
-  return atoms;
-}
 
 //________________________________________________________________________
 Atom X11Util::findAtom( const Atoms& atom )
