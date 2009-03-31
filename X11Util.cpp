@@ -46,12 +46,8 @@ X11Util& X11Util::get( void )
 X11Util::X11Util( void )
 { 
   Debug::Throw( "X11Util::X11Util" ); 
-  _atomNames() = _initializeAtomNames();
+  _initializeAtomNames();
 }
-
-//________________________________________________________________________
-X11Util::KeyState X11Util::keyState( Qt::Key key )
-{ return KEY_UNKNOWN; }
 
 //________________________________________________________________________
 bool X11Util::isSupported( const Atoms& atom )
@@ -87,7 +83,7 @@ bool X11Util::isSupported( const Atoms& atom )
     
     if( found == searched ) 
     {
-      _supportedAtoms()[atom] = true;
+      supported_atoms_[atom] = true;
       return true;
     }
     
@@ -96,7 +92,7 @@ bool X11Util::isSupported( const Atoms& atom )
     
   }
   
-  _supportedAtoms()[atom] = false;
+  supported_atoms_[atom] = false;
 
   #endif
   
@@ -155,6 +151,66 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
   return false;
   #endif
   
+}
+
+//________________________________________________________________________
+X11Util::KeyState X11Util::keyState( Qt::Key key )
+{ 
+  
+  Debug::Throw( "X11Util::keyState.\n" );
+  
+  #ifdef Q_WS_X11
+  
+  // map Qt Key to X11
+  int key_symbol(0);
+  switch( key )
+  {
+    case Qt::Key_CapsLock: 
+    key_symbol = XK_Caps_Lock;
+    break;
+    
+    case Qt::Key_NumLock:
+    key_symbol = XK_Num_Lock;
+    break;
+    
+    default:
+    return KEY_UNKNOWN;
+    
+  }
+
+  // get matching key code
+  Display* display( QX11Info::display() );
+  KeyCode key_code = XKeysymToKeycode( display, key_symbol );
+
+  
+  // convert key code to bit mask
+  XModifierKeymap* modifiers = XGetModifierMapping(display);
+  int key_mask = 0;
+  for( int i = 0; i<8; i++ )
+  {
+    if( modifiers->modifiermap[modifiers->max_keypermod * i] == key_code) 
+    { key_mask = 1 << i; }
+  }
+  
+  // get key bits
+  unsigned int key_bits;
+  Window window_1, window_2;
+  int i3, i4, i5, i6;
+  XQueryPointer(
+    display, DefaultRootWindow(display), &window_1, &window_2,
+    &i3, &i4, &i5, &i6, &key_bits 
+    );
+  
+  XFreeModifiermap( modifiers );
+  
+  // compare bits to maks
+  return ( key_bits & key_mask ) ? KEY_ON:KEY_OFF;
+
+  #else
+  
+  return KEY_UNKNOWN; 
+  
+  #endif
 }
 
 //________________________________________________________________________
@@ -276,22 +332,21 @@ bool X11Util::moveResizeWidget(
 
 
 //________________________________________________________________________
-X11Util::AtomNameMap X11Util::_initializeAtomNames( void )
+void X11Util::_initializeAtomNames( void )
 {
 
   Debug::Throw( "X11Util::_initializeAtomNames.\n" );
   
-  AtomNameMap out;
-  out[_NET_SUPPORTED] = "_NET_SUPPORTED";
-  out[_NET_WM_STATE] = "_NET_WM_STATE";
-  out[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
-  out[_NET_WM_STATE_STAYS_ON_TOP] = "_NET_WM_STATE_STAYS_ON_TOP";
-  out[_NET_WM_STATE_ABOVE] = "_NET_WM_STATE_ABOVE";
-  out[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
-  out[_NET_WM_MOVERESIZE] = "_NET_WM_MOVERESIZE";
-  out[_NET_WM_CM] = "_NET_WM_CM";
+  atom_names_[_NET_SUPPORTED] = "_NET_SUPPORTED";
+  atom_names_[_NET_WM_STATE] = "_NET_WM_STATE";
+  atom_names_[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
+  atom_names_[_NET_WM_STATE_STAYS_ON_TOP] = "_NET_WM_STATE_STAYS_ON_TOP";
+  atom_names_[_NET_WM_STATE_ABOVE] = "_NET_WM_STATE_ABOVE";
+  atom_names_[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
+  atom_names_[_NET_WM_MOVERESIZE] = "_NET_WM_MOVERESIZE";
+  atom_names_[_NET_WM_CM] = "_NET_WM_CM";
   
-  return out;
+  return;
 }
 
 #ifdef Q_WS_X11
@@ -308,8 +363,8 @@ Atom X11Util::findAtom( const Atoms& atom )
   
   // create atom if not found
   Display* display( QX11Info::display() );
-  Atom out( XInternAtom(display, qPrintable( _atomNames()[atom] ), false ) );
-  _atoms()[atom] = out;
+  Atom out( XInternAtom(display, qPrintable( atom_names_[atom] ), false ) );
+  atoms_[atom] = out;
   return out;
   
 }

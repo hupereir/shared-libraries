@@ -339,7 +339,24 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   { return point + scrollbarPosition(); }
   
   //@}
+
+  //! modifiers
+  enum Modifier
+  {
+    MODIFIER_NONE = 0,
+    MODIFIER_CAPS_LOCK = 1<<0,
+    MODIFIER_NUM_LOCK = 1<<1,
+    MODIFIER_INSERT = 1<<2
+  };
   
+  //! modifiers
+  const unsigned int& modifiers( void ) const
+  { return modifiers_; }
+
+  //! modifiers
+  bool modifier( const Modifier& key ) const
+  { return modifiers_&key; }
+
   signals:
   
   //! busy signal
@@ -361,7 +378,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   void hasFocus( TextEditor* );
 
   //! overwrite mode changed
-  void overwriteModeChanged();
+  void modifiersChanged( unsigned int );
 
   public slots:
  
@@ -625,6 +642,15 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     
   //! draw margins
   virtual void _drawMargins( QPainter& );
+      
+  //! modifiers
+  bool _setModifier( const Modifier& key, bool value )
+  { 
+    if( modifier( key ) == value ) return false;
+    if( value ) modifiers_ |= key;
+    else modifiers_ &= ~key;
+    return true;
+  }
   
   private slots:
   
@@ -852,6 +878,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! box selection timer
   /*! it mimics QTextEdit autoscroll timer to update box selection */
   QBasicTimer box_selection_timer_;
+  
+  //! keyboard modifiers
+  /*! this is a bitwise or of the Modifiers enumeration */
+  unsigned int modifiers_;
   
 };
 

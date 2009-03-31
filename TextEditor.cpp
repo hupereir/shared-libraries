@@ -56,6 +56,8 @@
 #include "TextSeparator.h"
 #include "XmlOptions.h"
 
+#include "X11Util.h"
+
 using namespace std;
 
 //______________________________________________
@@ -84,7 +86,8 @@ TextEditor::TextEditor( QWidget *parent ):
   box_selection_( this ),
   remove_line_buffer_( this ),
   click_counter_( this ),
-  margin_dirty_( true )
+  margin_dirty_( true ),
+  modifiers_( MODIFIER_NONE )
 {
 
   Debug::Throw( "TextEditor::TextEditor.\n" );
@@ -1471,10 +1474,19 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     event->ignore();
     return;
   }
-
+    
   // default event handling
   QTextEdit::keyPressEvent( event );
 
+  // check NumLock and CapsLock  
+  /*! right now this works only on X11 */
+  #ifdef Q_WS_X11
+  bool changed( false );
+  if( event->key() == Qt::Key_CapsLock ) changed = _setModifier( MODIFIER_CAPS_LOCK, !modifier( MODIFIER_CAPS_LOCK ) );
+  else if( event->key() == Qt::Key_NumLock ) changed = _setModifier( MODIFIER_NUM_LOCK, !modifier( MODIFIER_NUM_LOCK ) );
+  if( changed ) { emit modifiersChanged( modifiers() ); }
+  #endif
+  
   return;
 }
 
@@ -1482,6 +1494,12 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
 void TextEditor::focusInEvent( QFocusEvent* event )
 {
   Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
+  
+  if( 
+    _setModifier( MODIFIER_CAPS_LOCK, X11Util::get().keyState( Qt::Key_CapsLock ) == X11Util::KEY_ON ) ||
+    _setModifier( MODIFIER_NUM_LOCK, X11Util::get().keyState( Qt::Key_NumLock ) == X11Util::KEY_ON ) )
+  { emit modifiersChanged( modifiers() );}
+  
   emit hasFocus( this );
   QTextEdit::focusInEvent( event );
 }
@@ -2213,10 +2231,12 @@ QRect TextEditor::_marginRect( void ) const
 //_____________________________________________________________
 void TextEditor::_toggleOverwriteMode( void )
 {
+
   Debug::Throw( "TextEditor::_toggleOverwriteMode.\n" );
   setOverwriteMode( !overwriteMode() );
-  emit overwriteModeChanged();
+  if( _setModifier( MODIFIER_INSERT, overwriteMode() ) ) emit modifiersChanged( modifiers() );
   return;
+  
 }
 
 //________________________________________________

@@ -114,8 +114,8 @@ class X11Util
   //! key state
   enum KeyState
   {
-    KEY_ON,
     KEY_OFF,
+    KEY_ON,
     KEY_UNKNOWN
   };
   
@@ -131,10 +131,10 @@ class X11Util
   typedef std::map<Atoms, QString> AtomNameMap; 
   
   //! atom names
-  AtomNameMap _initializeAtomNames( void );
+  void _initializeAtomNames( void );
   
   //! atom names
-  AtomNameMap& _atomNames( void )
+  const AtomNameMap& _atomNames( void ) const
   { return atom_names_; }
   
   AtomNameMap atom_names_;
@@ -143,7 +143,7 @@ class X11Util
   typedef std::map<Atoms, bool > SupportedAtomMap;
   
   //! supported atoms
-  SupportedAtomMap& _supportedAtoms( void )
+  const SupportedAtomMap& _supportedAtoms( void ) const
   { return supported_atoms_; }
   
   SupportedAtomMap supported_atoms_;
@@ -154,6 +154,7 @@ class X11Util
   typedef std::map<Atoms, Atom> AtomMap;
   
   //! atoms
+  // const AtomMap& _atoms( void ) const
   AtomMap& _atoms( void )
   { return atoms_; }
 
