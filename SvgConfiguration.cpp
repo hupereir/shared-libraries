@@ -21,7 +21,6 @@
 *
 *******************************************************************************/
 
-
 /*!
    \file SvgConfiguration.cpp
    \brief   Svg common configuration
