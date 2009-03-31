@@ -1479,12 +1479,10 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
 
   // check NumLock and CapsLock  
   /*! right now this works only on X11 */
-  #ifdef Q_WS_X11
   bool changed( false );
   if( event->key() == Qt::Key_CapsLock ) changed = _setModifier( MODIFIER_CAPS_LOCK, !modifier( MODIFIER_CAPS_LOCK ) );
   else if( event->key() == Qt::Key_NumLock ) changed = _setModifier( MODIFIER_NUM_LOCK, !modifier( MODIFIER_NUM_LOCK ) );
   if( changed ) { emit modifiersChanged( modifiers() ); }
-  #endif
   
   return;
 }
