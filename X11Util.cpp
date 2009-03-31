@@ -154,66 +154,6 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 }
 
 //________________________________________________________________________
-X11Util::KeyState X11Util::keyState( Qt::Key key )
-{ 
-  
-  Debug::Throw( "X11Util::keyState.\n" );
-  
-  #ifdef Q_WS_X11
-  
-  // map Qt Key to X11
-  int key_symbol(0);
-  switch( key )
-  {
-    case Qt::Key_CapsLock: 
-    key_symbol = XK_Caps_Lock;
-    break;
-    
-    case Qt::Key_NumLock:
-    key_symbol = XK_Num_Lock;
-    break;
-    
-    default:
-    return KEY_UNKNOWN;
-    
-  }
-
-  // get matching key code
-  Display* display( QX11Info::display() );
-  KeyCode key_code = XKeysymToKeycode( display, key_symbol );
-
-  
-  // convert key code to bit mask
-  XModifierKeymap* modifiers = XGetModifierMapping(display);
-  int key_mask = 0;
-  for( int i = 0; i<8; i++ )
-  {
-    if( modifiers->modifiermap[modifiers->max_keypermod * i] == key_code) 
-    { key_mask = 1 << i; }
-  }
-  
-  // get key bits
-  unsigned int key_bits;
-  Window window_1, window_2;
-  int i3, i4, i5, i6;
-  XQueryPointer(
-    display, DefaultRootWindow(display), &window_1, &window_2,
-    &i3, &i4, &i5, &i6, &key_bits 
-    );
-  
-  XFreeModifiermap( modifiers );
-  
-  // compare bits to maks
-  return ( key_bits & key_mask ) ? KEY_ON:KEY_OFF;
-
-  #else
-  
-  return KEY_UNKNOWN; 
-  
-  #endif
-}
-
-//________________________________________________________________________
 bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const int& nelements )
 {
 

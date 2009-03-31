@@ -110,18 +110,7 @@ class X11Util
   Atom findAtom( const Atoms& atom );
   
   #endif
-  
-  //! key state
-  enum KeyState
-  {
-    KEY_OFF,
-    KEY_ON,
-    KEY_UNKNOWN
-  };
-  
-  //! get key state
-  KeyState keyState( Qt::Key );
-  
+    
   private:
   
   //! constructor

@@ -48,6 +48,7 @@
 #include "CustomTextDocument.h"
 #include "BaseFindDialog.h"
 #include "IconEngine.h"
+#include "KeyModifier.h"
 #include "LineNumberDisplay.h"
 #include "QtUtil.h"
 #include "SelectLineDialog.h"
@@ -55,8 +56,6 @@
 #include "TextBlockData.h"
 #include "TextSeparator.h"
 #include "XmlOptions.h"
-
-#include "X11Util.h"
 
 using namespace std;
 
@@ -1496,8 +1495,8 @@ void TextEditor::focusInEvent( QFocusEvent* event )
   Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
   
   if( 
-    _setModifier( MODIFIER_CAPS_LOCK, X11Util::get().keyState( Qt::Key_CapsLock ) == X11Util::KEY_ON ) ||
-    _setModifier( MODIFIER_NUM_LOCK, X11Util::get().keyState( Qt::Key_NumLock ) == X11Util::KEY_ON ) )
+    _setModifier( MODIFIER_CAPS_LOCK, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::ON ) ||
+    _setModifier( MODIFIER_NUM_LOCK, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::ON ) )
   { emit modifiersChanged( modifiers() );}
   
   emit hasFocus( this );

@@ -56,6 +56,7 @@ HEADERS = \
   InformationDialog.h \
   IOString.h \
   ItemModel.h \
+  KeyModifier.h \
   LineEditor.h \
   LineNumberDisplay.h \
   ListModel.h \
@@ -169,6 +170,7 @@ SOURCES = \
   InformationDialog.cpp \
   IOString.cpp \
   ItemModel.cpp \
+  KeyModifier.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
   OptionDialog.cpp \

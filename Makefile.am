@@ -60,6 +60,7 @@ noinst_HEADERS = \
   InformationDialog.h \
   IOString.h \
   ItemModel.h \
+  KeyModifier.h \
   LineEditor.h \
   LineNumberDisplay.h \
   ListModel.h \
@@ -175,6 +176,7 @@ libbase_qt_a_SOURCES = \
   InformationDialog.cpp \
   IOString.cpp \
   ItemModel.cpp \
+  KeyModifier.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
   OptionDialog.cpp \
