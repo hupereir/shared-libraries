@@ -164,33 +164,38 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     addOptionWidget( checkbox );
     
     // base font    
-    grid_layout->addWidget( new QLabel( "Default font: ", box ) );
+    QLabel* label;
+    grid_layout->addWidget( label = new QLabel( "Default font: ", box ) );
     OptionFontEditor *edit = new OptionFontEditor( box, "FONT_NAME" );
     edit->setToolTip( "Default font name for all widgets" );
     grid_layout->addWidget( edit );
     addOptionWidget( edit );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     
     // fixed font
-    grid_layout->addWidget( new QLabel( "Fixed font: ", box ) );
+    grid_layout->addWidget( label = new QLabel( "Fixed font: ", box ) );
     edit = new OptionFontEditor( box, "FIXED_FONT_NAME" );
     edit->setToolTip( "Default font name (fixed) for text widgets" );
     grid_layout->addWidget( edit );
     addOptionWidget( edit );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
       
     // pixmap path
-    grid_layout->addWidget( new QLabel( "Pixmaps: ", box ) );
+    grid_layout->addWidget( label = new QLabel( "Pixmaps: ", box ) );
     QPushButton *button = new QPushButton( "Edit Pixmap Path List", box );
     connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
     grid_layout->addWidget( button );
-  
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
+
     // debug level
-    grid_layout->addWidget( new QLabel( "Debug level: ", box ) );
+    grid_layout->addWidget( label = new QLabel( "Debug level: ", box ) );
     OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 5 );
     spinbox->setToolTip( "Debug verbosity level" );
     grid_layout->addWidget( spinbox );
     addOptionWidget( spinbox );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
   
   
   }
@@ -224,24 +229,28 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   box->setLayout( grid_layout );
   parent->layout()->addWidget( box );
     
+  QLabel* label;
   OptionColorDisplay* color;
-  grid_layout->addWidget( new QLabel( "Item alternate background color: ", box ) );  
+  grid_layout->addWidget( label = new QLabel( "Item alternate background color: ", box ) );  
   grid_layout->addWidget( color = new OptionColorDisplay( box, "ALTERNATE_COLOR" ) );
   color->setToolTip( "Alternate item background color in lists.\n Set it to \"None\" do disable alternate item color." );
   addOptionWidget( color );
+  label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
    
-  grid_layout->addWidget( new QLabel( "Selected column background color: ", box ) ); 
+  grid_layout->addWidget( label = new QLabel( "Selected column background color: ", box ) ); 
   grid_layout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
   color->setToolTip( "Selected column background color in lists.\n Set it to \"None\" do disable alternate item color." );
   addOptionWidget( color );
+  label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
   
   OptionSpinBox* spinbox;
-  grid_layout->addWidget( new QLabel( "List items icon size: ", box ) ); 
+  grid_layout->addWidget( label = new QLabel( "List items icon size: ", box ) ); 
   grid_layout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
   spinbox->setToolTip( "Default size of the icons displayed in lists" );
   spinbox->setMinimum(8);
   spinbox->setMaximum(96);
   addOptionWidget( spinbox );
+  label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
   
 }
 
@@ -356,16 +365,19 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   box->layout()->addItem( grid_layout );
 
   OptionColorDisplay* color_display;
+  QLabel* label;
   
-  grid_layout->addWidget( new QLabel( "Margin foreground: ", box ) );
+  grid_layout->addWidget( label = new QLabel( "Margin foreground: ", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
   addOptionWidget( color_display );
   color_display->setToolTip( "Margins foreground color" );
+  label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
-  grid_layout->addWidget( new QLabel( "Margin background: ", box ) );
+  grid_layout->addWidget( label = new QLabel( "Margin background: ", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
   addOptionWidget( color_display );
   color_display->setToolTip( "Margins background color" );
+  label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
   // misc
   parent->layout()->addWidget( box = new QGroupBox( "Flags", parent ) );
