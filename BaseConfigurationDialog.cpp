@@ -225,18 +225,18 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
   parent->layout()->addWidget( box );
     
   OptionColorDisplay* color;
-  grid_layout->addWidget( new QLabel( "Item alternate background color ", box ) );  
+  grid_layout->addWidget( new QLabel( "Item alternate background color: ", box ) );  
   grid_layout->addWidget( color = new OptionColorDisplay( box, "ALTERNATE_COLOR" ) );
   color->setToolTip( "Alternate item background color in lists.\n Set it to \"None\" do disable alternate item color." );
   addOptionWidget( color );
    
-  grid_layout->addWidget( new QLabel( "Selected column background color ", box ) ); 
+  grid_layout->addWidget( new QLabel( "Selected column background color: ", box ) ); 
   grid_layout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
   color->setToolTip( "Selected column background color in lists.\n Set it to \"None\" do disable alternate item color." );
   addOptionWidget( color );
   
   OptionSpinBox* spinbox;
-  grid_layout->addWidget( new QLabel( "List items icon size ", box ) ); 
+  grid_layout->addWidget( new QLabel( "List items icon size: ", box ) ); 
   grid_layout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
   spinbox->setToolTip( "Default size of the icons displayed in lists" );
   spinbox->setMinimum(8);
@@ -357,12 +357,12 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
 
   OptionColorDisplay* color_display;
   
-  grid_layout->addWidget( new QLabel( "Margin foreground", box ) );
+  grid_layout->addWidget( new QLabel( "Margin foreground: ", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
   addOptionWidget( color_display );
   color_display->setToolTip( "Margins foreground color" );
 
-  grid_layout->addWidget( new QLabel( "Margin background", box ) );
+  grid_layout->addWidget( new QLabel( "Margin background: ", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
   addOptionWidget( color_display );
   color_display->setToolTip( "Margins background color" );
