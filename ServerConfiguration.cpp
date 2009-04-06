@@ -65,6 +65,7 @@ ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):
   grid_layout->setSpacing(5);
   grid_layout->setMargin(5);
   grid_layout->setMaxCount( 2 );
+  grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
   box->setLayout( grid_layout );
 
   QString tooltip( "The application server configuration refers to the host name\n"
