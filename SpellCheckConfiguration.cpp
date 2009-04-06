@@ -54,6 +54,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   grid_layout->setSpacing( 5 );
   grid_layout->setMargin( 5 );
   grid_layout->setMaxCount( 2 );
+  grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
   setLayout( grid_layout );
 
   // aspell command
@@ -62,7 +63,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   grid_layout->addWidget( editor );
   editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
   addOptionWidget( editor );
-  
+    
   // dictionaries
   grid_layout->addWidget( new QLabel( "Default Dictionary: ", this ) );
   OptionComboBox* combobox(  new OptionComboBox( this, "DICTIONARY" ) );
