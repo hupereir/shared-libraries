@@ -32,8 +32,11 @@
 */
 
 #include <assert.h>
+#include <vector>
 #include <QGridLayout>
+
 #include "Counter.h"
+
 class GridLayout: public QGridLayout, public Counter
 {
   
@@ -48,10 +51,23 @@ class GridLayout: public QGridLayout, public Counter
     column_(0),
     row_(0)
   {}
-  
+    
+  //! column alignments
+  typedef std::vector<Qt::Alignment> AlignmentList;
+
   //! set columns
   void setMaxCount( const int& max_count )
-  { max_count_ = max_count; }
+  { 
+    max_count_ = max_count; 
+    column_alignments_ = AlignmentList( max_count, (Qt::Alignment)0 );
+  }  
+  
+  //! set column alignment
+  void setColumnAlignment( const int& column, const Qt::Alignment alignment )
+  {
+    assert( _boundCheck( column ) );
+    column_alignments_[column] = alignment;
+  }
   
   //! set orientation
   void setOrientation( const Qt::Orientation& orientation )
@@ -59,13 +75,14 @@ class GridLayout: public QGridLayout, public Counter
   
   //! add widget
   void addWidget( QWidget* widget, int row, int column, Qt::Alignment alignment = 0 )
-  { addWidget( widget, row, column, 1, 1, alignment ); } 
+  { GridLayout::addWidget( widget, row, column, 1, 1, alignment ); } 
   
   //! add wodget
   void addWidget ( QWidget * widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
   {
     assert( rowSpan > 0 );
     assert( columnSpan > 0 );
+    if( alignment == 0 && _boundCheck( column ) ) alignment = column_alignments_[column];
     QGridLayout::addWidget( widget, row, column, rowSpan, columnSpan, alignment ); 
     setLocation( row+rowSpan-1, column+columnSpan-1 );
     _increment();
@@ -75,6 +92,7 @@ class GridLayout: public QGridLayout, public Counter
   void addWidget( QWidget* widget, Qt::Alignment alignment = 0 )
   {
     assert( max_count_ > 0 );
+    if( alignment == 0 &&  _boundCheck( column_ ) ) alignment = column_alignments_[column_];
     QGridLayout::addWidget( widget, row_, column_, alignment );
     _increment();
   }
@@ -83,6 +101,7 @@ class GridLayout: public QGridLayout, public Counter
   void addLayout( QLayout* layout, Qt::Alignment alignment = 0 )
   {
     assert( max_count_ > 0 );
+    if( alignment == 0 &&  _boundCheck( column_ ) ) alignment = column_alignments_[column_];
     QGridLayout::addLayout( layout, row_, column_, alignment );
     _increment();
   }
@@ -92,6 +111,10 @@ class GridLayout: public QGridLayout, public Counter
   { row_ = row; column_ = column; }
   
   private:
+  
+  //! bound check
+  bool _boundCheck( const int& column ) const
+  { return column >= 0 && column < int( column_alignments_.size() ); }
   
   //! increment from last position
   void _increment()
@@ -120,6 +143,9 @@ class GridLayout: public QGridLayout, public Counter
   
   //! number of columns
   int max_count_;
+  
+  //! column alignments
+  AlignmentList column_alignments_;
   
   //! current column
   int column_;

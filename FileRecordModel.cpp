@@ -222,6 +222,7 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
   {
 
     case FILE: return first.file().localName() < second.file().localName();
+    case PATH: return first.file().path() < second.file().path();
     case TIME: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
     default: 
     {

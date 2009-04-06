@@ -64,16 +64,22 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
   // group box for additional options
   layout->addWidget( box = new QGroupBox( "Options", this ) );
   
-  GridLayout* grid_layout = new GridLayout();
-  grid_layout->setSpacing(5);
-  grid_layout->setMargin(5);
-  grid_layout->setMaxCount(2);
-  box->setLayout( grid_layout );
+  QVBoxLayout* v_layout = new QVBoxLayout();
+  v_layout->setMargin(5);
+  v_layout->setSpacing(5);
+  box->setLayout( v_layout );
+
+  QHBoxLayout* h_layout = new QHBoxLayout();
+  h_layout->setSpacing(5);
+  h_layout->setMargin(0);
+  v_layout->addLayout( h_layout );
+
 
   // previous file history size
   OptionSpinBox *spinbox;
-  grid_layout->addWidget( new QLabel( "Recent files history size", box ) );
-  grid_layout->addWidget( spinbox = new OptionSpinBox( box, "DB_SIZE" ) );
+  h_layout->addWidget( new QLabel( "Recent files history size", box ) );
+  h_layout->addWidget( spinbox = new OptionSpinBox( box, "DB_SIZE" ) );
+  h_layout->addStretch(1);
   spinbox->setMinimum( 0 );
   spinbox->setMaximum( 100 );
   addOptionWidget( spinbox );
@@ -81,7 +87,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
   // sort previous files by date
   OptionCheckBox* checkbox;
-  grid_layout->addWidget( checkbox = new OptionCheckBox( "Sort recent files by date", box, "SORT_FILES_BY_DATE" ), 3, 0, 1, 2 );
+  v_layout->addWidget( checkbox = new OptionCheckBox( "Sort recent files by date", box, "SORT_FILES_BY_DATE" ) );
   checkbox->setToolTip( "Sort files by date rather than name in Open Previous menu." );
   addOptionWidget( checkbox );
   
@@ -98,7 +104,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
   connect( _list().selectionModel(), SIGNAL( selectionChanged(const QItemSelection &, const QItemSelection &) ), SLOT( _updateButtons() ) );
 
-  QVBoxLayout* v_layout = new QVBoxLayout();
+  v_layout = new QVBoxLayout();
   v_layout->setSpacing(5);
   v_layout->setMargin(0);
   box->layout()->addItem( v_layout );
