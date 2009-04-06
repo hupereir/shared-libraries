@@ -61,15 +61,15 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
   checkbox->setToolTip( "Use svg to paint background" );
   addOptionWidget( checkbox ); 
 
-  GridLayout *grid_layout = new GridLayout();
-  grid_layout->setSpacing(5);
-  grid_layout->setMargin(0);
-  grid_layout->setMaxCount( 2 );
-  box_layout->addLayout( grid_layout );
+  QHBoxLayout *h_layout = new QHBoxLayout();
+  h_layout->setMargin(0);
+  h_layout->setSpacing(5);
+  box_layout->addLayout( h_layout );
   
   OptionSpinBox* spinbox;
-  grid_layout->addWidget( new QLabel( "Offset: ", this ) );
-  grid_layout->addWidget( spinbox = new OptionSpinBox( this, "SVG_OFFSET" ) );
+  h_layout->addWidget( new QLabel( "Offset: ", this ) );
+  h_layout->addWidget( spinbox = new OptionSpinBox( this, "SVG_OFFSET" ) );
+  h_layout->addStretch();
   spinbox->setMinimum( -16 );
   spinbox->setMaximum( 16 );
   spinbox->setToolTip( 
