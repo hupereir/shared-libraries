@@ -105,6 +105,7 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   grid_layout->setSpacing(5);
   grid_layout->setMargin(5);
   grid_layout->setMaxCount( 2 );
+  grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
   box->setLayout( grid_layout );
 
   // foreground color
