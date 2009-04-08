@@ -51,7 +51,7 @@ class OptionDialog: public CustomDialog
   public:
           
   //! constructor
-  OptionDialog( QWidget* parent );
+  OptionDialog( QWidget* );
   
   //! destructor
   virtual ~OptionDialog( void )
