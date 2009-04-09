@@ -155,7 +155,7 @@ void BaseFindDialog::synchronize( void )
 
 //________________________________________________________________________ 
 void BaseFindDialog::noMatchFound( void )
-{ label_->setText( "No match found ..." ); }
+{ if( !editor().currentText().isEmpty() ) label_->setText( "Not Found" ); }
 
 //________________________________________________________________________ 
 void BaseFindDialog::clearLabel( void )
