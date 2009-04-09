@@ -70,6 +70,7 @@ TextSelection& TextEditor::lastSelection( void )
 TextEditor::TextEditor( QWidget *parent ):
   QTextEdit( parent ),
   Counter( "TextEditor" ),
+  margin_widget_( new MarginWidget( this ) ),
   find_dialog_( 0 ),
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
@@ -120,6 +121,9 @@ TextEditor::TextEditor( QWidget *parent ):
   // update configuration
   _updateConfiguration();
   _blockCountChanged(0);
+  
+  _marginWidget().show();
+  
 }
 
 //________________________________________________
@@ -941,49 +945,6 @@ void TextEditor::clear( void )
   
 }
 
-//_______________________________________________________
-bool TextEditor::event( QEvent* event )
-{
-  
-  switch (event->type()) 
-  {
-    
-    case QEvent::Paint:
-    if( _leftMargin() ) 
-    {
-      
-      // case event
-      QPaintEvent* paint_event( static_cast<QPaintEvent*>(event) );
-
-      // paint margins
-      QPainter painter( this );
-      painter.setClipRect( paint_event->rect() );
-      _drawMargins( painter );
-      painter.end();
-      
-      // update dirty flag
-      // this is done only if the entire margin is redrawn
-      if( paint_event->rect().contains( _marginRect() ) )
-      { _setMarginDirty( false ); }
-
-    }
-    break;
-        
-    case QEvent::Wheel:
-    {
-      QWheelEvent *wheel_event( static_cast<QWheelEvent*>(event) );
-      if( QRect( frameWidth(),  frameWidth(), _leftMargin(), height() ).contains( wheel_event->pos() ) )
-      { qApp->sendEvent( viewport(), event ); }
-      return false;
-    }
-
-    default: break;
-  }
-    
-  return QTextEdit::event( event );
-
-}
-
 //________________________________________________
 void TextEditor::enterEvent( QEvent* event )
 {
@@ -1516,6 +1477,11 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 void TextEditor::resizeEvent( QResizeEvent* event )
 {
   QTextEdit::resizeEvent( event );
+    
+  // update margin widget geometry
+  QRect rect( contentsRect() );
+  _marginWidget().setGeometry( QRect( rect.topLeft(), QSize( _marginWidget().width(), rect.height() ) ) );
+    
   if( lineWrapMode() == QTextEdit::NoWrap ) return;
   if( event->oldSize().width() == event->size().width() ) return;
   if( !hasLineNumberDisplay() ) return;
@@ -1577,9 +1543,6 @@ void TextEditor::paintEvent( QPaintEvent* event )
   
   painter.end();
   
-  // redraw margins
-  // _setMarginDirty();
-  
   // base class painting
   QTextEdit::paintEvent( event );
   
@@ -1606,6 +1569,7 @@ void TextEditor::timerEvent(QTimerEvent *event)
 //______________________________________________________________
 void TextEditor::scrollContentsBy( int dx, int dy )
 {
+  
   // mark margins dirty if vertical scroll is non empty
   if( dy != 0 ) _setMarginDirty();
   
@@ -2216,14 +2180,14 @@ bool TextEditor::_setLeftMargin( const int& margin )
 
   left_margin_ = margin;
   setViewportMargins( _leftMargin(), 0, 0, 0 );
-  
+  _marginWidget().resize( _leftMargin(), _marginWidget().height() );
   return true;
 
 }
 
 //_____________________________________________________________
 QRect TextEditor::_marginRect( void ) const
-{ return QRect( frameWidth(), frameWidth(), _leftMargin(), height()-2*frameWidth() ); }
+{ return QRect( 0, 0, _leftMargin(), height()-2*frameWidth() ); }
 
 //_____________________________________________________________
 void TextEditor::_toggleOverwriteMode( void )
@@ -2307,8 +2271,8 @@ void TextEditor::_drawMargins( QPainter& painter )
   int height( TextEditor::height() - 2*frameWidth() );
   if( horizontalScrollBar()->isVisible() ) { height -= horizontalScrollBar()->height() + 2; }
   
-  painter.setClipRect( painter.clipRegion().boundingRect().intersected( QRect( 0, 0, _leftMargin(), height ).translated( frameWidth(),  frameWidth() ) ) );
-  painter.translate( frameWidth(),  frameWidth() );
+  // clip
+  painter.setClipRect( painter.clipRegion().boundingRect().intersected( QRect( 0, 0, _leftMargin(), height ) ) );
   
   painter.setBrush( _marginBackgroundColor() );
   painter.setPen( Qt::NoPen );
@@ -2720,9 +2684,52 @@ void TextEditor::_selectLineFromDialog( void )
 //________________________________________________
 void TextEditor::_setMarginDirty( bool value )
 {
- 
-  //if( value == margin_dirty_ ) return;
-  margin_dirty_ = value;
-  if( value ) QFrame::update( _marginRect() );
   
+  if( margin_dirty_ == value ) return;
+  
+  margin_dirty_ = value;
+  if( value ) _marginWidget().update( _marginRect() );
+}
+
+//________________________________________________
+TextEditor::MarginWidget::MarginWidget( TextEditor* parent ):
+  QWidget( parent ),
+  Counter( "TextEditor::Counter" ),
+  editor_( parent )
+{ Debug::Throw( "TextEditor::MarginWidget::Marginwidget.\n" ); }
+
+//________________________________________________
+void TextEditor::MarginWidget::paintEvent( QPaintEvent* event )
+{ 
+  
+  // paint margins
+  QPainter painter( this );
+  painter.setClipRect( event->rect() );
+  _editor()._drawMargins( painter );
+  painter.end();
+  
+  // clear dirty flag
+  _editor()._setMarginDirty( false );
+      
+}
+
+//_______________________________________________________
+bool TextEditor::MarginWidget::event( QEvent* event )
+{
+  
+  switch (event->type()) 
+  {
+        
+    case QEvent::Wheel:
+    {
+      QWheelEvent *wheel_event( static_cast<QWheelEvent*>(event) );
+      qApp->sendEvent( _editor().viewport(), event );
+      return false;
+    }
+
+    default: break;
+  }
+    
+  return QWidget::event( event );
+
 }

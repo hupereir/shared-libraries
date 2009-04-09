@@ -441,9 +441,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //!@name event handlers
   //@{
   
-  //! generic event
-  virtual bool event( QEvent* );
-
   //! enter event handler
   void enterEvent( QEvent *event );
 
@@ -652,6 +649,42 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     return true;
   }
   
+  // margin widget
+  class MarginWidget: public QWidget, public Counter
+  {
+    
+    public:
+    
+    //! constructor
+    MarginWidget( TextEditor* );
+    
+    //! destructor
+    virtual ~MarginWidget( void )
+    {}
+    
+    protected:
+    
+    //! generic event
+    virtual bool event( QEvent* );
+
+    //! paint event
+    virtual void paintEvent( QPaintEvent* );
+    
+    //! parent editor
+    TextEditor& _editor( void ) const
+    { return *editor_; }
+    
+    private:
+    
+    //! parent editor
+    TextEditor* editor_;
+    
+  };
+  
+  //! margin widget
+  MarginWidget& _marginWidget( void ) const
+  { return *margin_widget_; }
+  
   private slots:
   
   //! update configuration
@@ -711,6 +744,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   private:
       
+  //! margin widget
+  MarginWidget* margin_widget_;
+  
   //!@name dialogs
   ///@{
   
