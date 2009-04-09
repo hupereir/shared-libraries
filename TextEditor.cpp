@@ -2696,7 +2696,10 @@ TextEditor::MarginWidget::MarginWidget( TextEditor* parent ):
   QWidget( parent ),
   Counter( "TextEditor::Counter" ),
   editor_( parent )
-{ Debug::Throw( "TextEditor::MarginWidget::Marginwidget.\n" ); }
+{ 
+  Debug::Throw( "TextEditor::MarginWidget::Marginwidget.\n" ); 
+  setAttribute( Qt::WA_OpaquePaintEvent, true );
+}
 
 //________________________________________________
 void TextEditor::MarginWidget::paintEvent( QPaintEvent* event )
