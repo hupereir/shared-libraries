@@ -48,9 +48,6 @@
 class CustomProcess: public QProcess, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
-
   public:
 
   //! creator
@@ -78,14 +75,6 @@ class CustomProcess: public QProcess, public Counter
     
   //! error message
   static QString errorMessage( QProcess::ProcessError error );
-      
-  private slots:
-  
-  //! completed
-  void _finished( int, QProcess::ExitStatus );
-  
-  //! error
-  void _error( QProcess::ProcessError );
   
 };
 

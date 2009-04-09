@@ -29,20 +29,20 @@
   \date $Date$
 */
 
-#include "CustomProcess.h"
-#include "Debug.h"
+/*
+important note:
+customProcess must _not_ call Debug method because underlying multithreading
+might cause the application to hang, notably when process crashes
+*/
 
+#include "CustomProcess.h"
 using namespace std;
 
 //____________________________________________________
 CustomProcess::CustomProcess( QObject* parent ):
   QProcess( parent ),
   Counter( "CustomProcess" )
-{
-  Debug::Throw( "CustomProcess::CustomProcess.\n" );
-  connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( _finished( int, QProcess::ExitStatus ) ) );
-  connect( this, SIGNAL( error( QProcess::ProcessError ) ), SLOT( _error( QProcess::ProcessError ) ) );
-}
+{}
 
 //____________________________________________________
 CustomProcess::~CustomProcess( void )
@@ -50,10 +50,7 @@ CustomProcess::~CustomProcess( void )
 
 //____________________________________________________
 void CustomProcess::start( QString arguments, OpenMode mode )
-{
-  Debug::Throw() << "CustomProcess::start - " << arguments << endl;
-  return start( arguments.split( QRegExp("\\s"), QString::SkipEmptyParts ), mode );
-}
+{ return start( arguments.split( QRegExp("\\s"), QString::SkipEmptyParts ), mode ); }
 
 //____________________________________________________
 void CustomProcess::start( QStringList arguments, OpenMode mode )
@@ -64,11 +61,6 @@ void CustomProcess::start( QStringList arguments, OpenMode mode )
   QString program( arguments.front() );
   QStringList local_args( arguments );
   local_args.pop_front();
-  Debug::Throw() << "CustomProcess::start - (qstringlist)"
-    << " program: \"" << program << "\"" 
-    << " argc: " << local_args.size()
-    << " argv: \"" << local_args.join( " " ) << "\""
-    << endl;
     
   if( local_args.empty() ) return QProcess::start( program, mode );
   else return QProcess::start( program, local_args,  mode );
@@ -77,10 +69,7 @@ void CustomProcess::start( QStringList arguments, OpenMode mode )
 
 //______________________________________________________________
 void CustomProcess::setAutoDelete( void )
-{ 
-  Debug::Throw( "CustomProcess::setAutoDelete.\n" );
-  connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( deleteLater() ) ); 
-}
+{ connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), SLOT( deleteLater() ) ); }
 
 //______________________________________________________________
 QString CustomProcess::errorMessage( ProcessError error )
@@ -97,16 +86,3 @@ QString CustomProcess::errorMessage( ProcessError error )
   }
   
 }
-
-//______________________________________________________________
-void CustomProcess::_finished( int exit_code, QProcess::ExitStatus exit_status )
-{ 
-  Debug::Throw() << "CustomProcess::_finished -"
-    << " exit code: " << exit_code 
-    << " exit status: " << exit_status
-    << endl;
-}
-
-//______________________________________________________________
-void CustomProcess::_error( ProcessError error )
-{ Debug::Throw() << "CustomProcess::_error - " << errorMessage( error ) << endl; }

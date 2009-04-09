@@ -49,9 +49,6 @@ libbase_a_SOURCES = \
   TimeStamp.cpp \
   Util.cpp
 
-nodist_libbase_a_SOURCES = \
-  moc_CustomProcess.cpp
-
 clean-local:
 	rm -f moc_*.cpp
 
