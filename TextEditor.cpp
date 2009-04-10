@@ -77,7 +77,6 @@ TextEditor::TextEditor( QWidget *parent ):
   select_line_dialog_( 0 ),
   line_number_display_( 0 ),
   left_margin_( 0 ),
-  draw_vertical_line_( false ),
   active_( false ),
   wrap_from_options_( true ),
   line_number_from_options_( true ),
@@ -115,13 +114,13 @@ TextEditor::TextEditor( QWidget *parent ):
 
   // track changes of block counts
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
-  connect( TextEditor::document(), SIGNAL( contentsChanged() ), &marginWidget(), SLOT( setDirty() ) );
+  connect( TextEditor::document(), SIGNAL( contentsChanged() ), &_marginWidget(), SLOT( setDirty() ) );
 
   // update configuration
   _updateConfiguration();
   _blockCountChanged(0);
   
-  marginWidget().show();
+  _marginWidget().show();
   
 }
 
@@ -286,7 +285,7 @@ void TextEditor::setPlainText( const QString& text )
 {
   Debug::Throw( "TextEditor::setPlainText.\n" );
 
-  lineNumberDisplay().clear();
+  _lineNumberDisplay().clear();
   
   bool enabled( blockHighlight().isEnabled() );
   blockHighlight().setEnabled( false );
@@ -308,7 +307,7 @@ void TextEditor::setHtml( const QString& text )
 }
 
 //___________________________________________________________________________
-void TextEditor::drawMargins( QPainter& painter )
+void TextEditor::paintMargin( QPainter& painter )
 {
        
   int height( TextEditor::height() - 2*frameWidth() );
@@ -316,28 +315,35 @@ void TextEditor::drawMargins( QPainter& painter )
   
   // clip
   painter.setClipRect( QRect( 0, 0, _leftMargin(), height ), Qt::IntersectClip );
-  
-  painter.setBrush( _marginBackgroundColor() );
   painter.setPen( Qt::NoPen );
-  painter.drawRect( 0, 0, _leftMargin(), height );
   
-  if( _drawVerticalLine() ) {
-    painter.setBrush( QBrush( _marginForegroundColor(), Qt::Dense4Pattern ) );
+  if( _marginWidget().drawVerticalLine() ) {
+    painter.setBrush( QBrush( _marginWidget().palette().color( QPalette::WindowText ), Qt::Dense4Pattern ) );
     painter.drawRect( _leftMargin()-1, 0, 1, height ); 
-    painter.setBrush( _marginBackgroundColor() );
   } 
   
-  painter.setPen( _marginForegroundColor() );
-  int y_offset = verticalScrollBar()->value();      
-  painter.translate( 0, -y_offset );
+  painter.translate( 0, -verticalScrollBar()->value() );
+
+  // draw current block rect
+  if( blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() && _currentBlockRect().isValid() )
+  {
+    
+    painter.setBrush( highlight_color_ );    
+    painter.drawRect( _currentBlockRect() );
+  
+  }
+
+  // set brush and pen suitable to further painting
+  painter.setBrush( Qt::NoBrush );
+  painter.setPen(_marginWidget().palette().color( QPalette::WindowText )  );
   
   // draw lines
   if( 
-    hasLineNumberDisplay() && 
+    _hasLineNumberDisplay() && 
     hasLineNumberAction() && 
     showLineNumberAction().isVisible() && 
     showLineNumberAction().isChecked() )
-  { lineNumberDisplay().paint( painter ); }
+  { _lineNumberDisplay().paint( painter ); }
  
 }
 
@@ -492,9 +498,9 @@ void TextEditor::synchronize( TextEditor* editor )
   wrapModeAction().setChecked( editor->wrapModeAction().isChecked() );
   
   // track changes of block counts
-  lineNumberDisplay().synchronize( &editor->lineNumberDisplay() );
+  _lineNumberDisplay().synchronize( &editor->_lineNumberDisplay() );
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
-  connect( TextEditor::document(), SIGNAL( contentsChanged() ), &marginWidget(), SLOT( setDirty() ) );
+  connect( TextEditor::document(), SIGNAL( contentsChanged() ), &_marginWidget(), SLOT( setDirty() ) );
 
   // margin
   _setLeftMargin( editor->_leftMargin() );
@@ -1513,14 +1519,14 @@ void TextEditor::resizeEvent( QResizeEvent* event )
     
   // update margin widget geometry
   QRect rect( contentsRect() );
-  marginWidget().setGeometry( QRect( rect.topLeft(), QSize( marginWidget().width(), rect.height() ) ) );
+  _marginWidget().setGeometry( QRect( rect.topLeft(), QSize( _marginWidget().width(), rect.height() ) ) );
     
   if( lineWrapMode() == QTextEdit::NoWrap ) return;
   if( event->oldSize().width() == event->size().width() ) return;
-  if( !hasLineNumberDisplay() ) return;
+  if( !_hasLineNumberDisplay() ) return;
   
   // tell line number display to update at next draw
-  lineNumberDisplay().needUpdate();
+  _lineNumberDisplay().needUpdate();
   
 }
 
@@ -1555,7 +1561,15 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
     QColor color;
     if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
-    { color = highlight_color_; }
+    { 
+      color = highlight_color_; 
+      
+      // update current block rect
+      // and redraw margin if changed
+      if( _setCurrentBlockRect( QRect( QPoint(0, block_rect.topLeft().y() ), QSize( _marginWidget().width(), block_rect.height() ) ) ) )
+      { _marginWidget().setDirty(); }
+      
+    }
 
     if( data->hasFlag( TextBlock::HAS_BACKGROUND ) )
     { color = BASE::Color( color ).merge( data->background() ); }
@@ -1605,7 +1619,7 @@ void TextEditor::scrollContentsBy( int dx, int dy )
 {
   
   // mark margins dirty if vertical scroll is non empty
-  if( dy != 0 ) marginWidget().setDirty();
+  if( dy != 0 ) _marginWidget().setDirty();
   
   // base class call
   QTextEdit::scrollContentsBy( dx, dy );
@@ -2214,14 +2228,10 @@ bool TextEditor::_setLeftMargin( const int& margin )
 
   left_margin_ = margin;
   setViewportMargins( _leftMargin(), 0, 0, 0 );
-  marginWidget().resize( _leftMargin(), marginWidget().height() );
+  _marginWidget().resize( _leftMargin(), _marginWidget().height() );
   return true;
 
 }
-
-//_____________________________________________________________
-QRect TextEditor::_marginRect( void ) const
-{ return QRect( 0, 0, _leftMargin(), height()-2*frameWidth() ); }
 
 //_____________________________________________________________
 void TextEditor::_toggleOverwriteMode( void )
@@ -2283,14 +2293,14 @@ void TextEditor::_insertTab( void )
 }
 
 //___________________________________________________________________________
-bool TextEditor::_updateMargins( void )
+bool TextEditor::_updateMargin( void )
 {
 
-  Debug::Throw( "TextEditor::_updateMargins.\n" );
+  Debug::Throw( "TextEditor::_updateMargin.\n" );
   int left_margin( 0 );
   
   if( showLineNumberAction().isChecked() && showLineNumberAction().isVisible() )
-  { left_margin += lineNumberDisplay().width(); }
+  { left_margin += _lineNumberDisplay().width(); }
   
   return _setLeftMargin( left_margin );
   if( left_margin_ == left_margin ) return false;
@@ -2321,14 +2331,9 @@ void TextEditor::_updateConfiguration( void )
   blockHighlightAction().setEnabled( highlight_color_.isValid() );
   blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
 
-  // line numbers
-  _setMarginForegroundColor( QColor( XmlOptions::get().raw("MARGIN_FOREGROUND") ) );
-  _setMarginBackgroundColor( QColor( XmlOptions::get().raw("MARGIN_BACKGROUND") ) );
-  _setDrawVerticalLine( XmlOptions::get().get<bool>( "MARGIN_VERTICAL_LINE" ) );
-  
   // update margins
-  lineNumberDisplay().updateWidth( document()->blockCount() );
-  _updateMargins();
+  _lineNumberDisplay().updateWidth( document()->blockCount() );
+  _updateMargin();
   
   // update box configuration
   // clear
@@ -2473,7 +2478,6 @@ void TextEditor::_toggleBlockHighlight( bool state )
   else blockHighlight().clear();
 
   // redraw
-  lineNumberDisplay().setNeedCurrentBlockUpdate( true );
   update();
   
   // propagate to other displays
@@ -2555,7 +2559,7 @@ bool TextEditor::_toggleTabEmulation( bool state )
 void TextEditor::_toggleShowLineNumbers( bool state )
 {
 
-  _updateMargins();
+  _updateMargin();
   
   // update options
   XmlOptions::get().set<bool>( "SHOW_LINE_NUMBERS", state );
@@ -2582,9 +2586,9 @@ void TextEditor::_blockCountChanged( int count )
 {
   
   Debug::Throw( "TextEditor::_blockCountChanged.\n" );
-  if( !( hasLineNumberDisplay() && lineNumberDisplay().updateWidth( count ) ) ) return;
+  if( !( _hasLineNumberDisplay() && _lineNumberDisplay().updateWidth( count ) ) ) return;
   if( !( hasLineNumberAction() && showLineNumberAction().isChecked() && showLineNumberAction().isVisible() ) ) return;
-  _updateMargins();
+  _updateMargin();
   update();
   
 }

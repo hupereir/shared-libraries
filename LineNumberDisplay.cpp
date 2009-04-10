@@ -36,7 +36,6 @@
 #include <QTextBlock>
 #include <QTextLayout>
 
-#include "Singleton.h"
 #include "TextEditor.h"
 #include "Debug.h"
 #include "LineNumberDisplay.h"
@@ -50,7 +49,6 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
   Counter( "LineNumberDisplay" ),
   editor_( editor ),
   need_update_( true ),
-  need_current_block_update_( true ),
   width_( 0 )
 {
   
@@ -62,10 +60,6 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
   connect( _editor().document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged() ) );
   connect( _editor().document(), SIGNAL( contentsChanged() ), SLOT( _contentsChanged() ) );
 
-  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-
-  // update configuration
-  _updateConfiguration();
 }
 
 //__________________________________________
@@ -107,7 +101,6 @@ void LineNumberDisplay::clear( void )
 {  
   Debug::Throw( "LineNumberDisplay::clear.\n" );
   line_number_data_.clear();
-  current_block_data_ = LineNumberData();
   need_update_ = true;
 }
 
@@ -124,19 +117,11 @@ void LineNumberDisplay::paint( QPainter& painter )
   
   // calculate dimensions
   int y_offset = _editor().verticalScrollBar()->value() - _editor().frameWidth();
-  int height( _editor().height() - 2*_editor().frameWidth() );
-  if( _editor().horizontalScrollBar()->isVisible() ) { height -= _editor().horizontalScrollBar()->height() + 2; }
+  int height( _editor().contentsRect().height() );
   
   // translate
   height += y_offset;
   
-  // current block highlight
-  if( need_current_block_update_ && highlight_color_.isValid() )
-  {    
-    has_current_block_ = _updateCurrentBlockData();
-    need_current_block_update_ = false;    
-  }
-
   // get begin and end cursor positions
   int first_index = _editor().cursorForPosition( QPoint( 0, 0 ) ).position();
   int last_index = _editor().cursorForPosition( QPoint( 0, _editor().height() ) ).position();
@@ -160,22 +145,6 @@ void LineNumberDisplay::paint( QPainter& painter )
     // check position
     if( iter->isValid() && iter->position() > height ) continue;
     
-    // highlight
-    if( has_current_block_  && *iter == current_block_data_ ) 
-    {
-      // check validity
-      if( !current_block_data_.isValid() ) _updateLineNumberData( block, id, current_block_data_ );
-      
-      // draw background
-      painter.save();
-      painter.setPen( Qt::NoPen );
-      painter.setBrush( highlight_color_ );
-      //painter.drawRect( 0, current_block_data_.position(), width_, metric.lineSpacing() );
-      painter.drawRect( 0, current_block_data_.position(), 2*width_, metric.lineSpacing() );
-      painter.restore();
-      
-    } 
-    
     QString numtext( QString::number( iter->lineNumber() ) );
     painter.drawText(
       0, iter->position(), width_-8,
@@ -185,20 +154,6 @@ void LineNumberDisplay::paint( QPainter& painter )
         
   }
   
-}
-
-//________________________________________________________
-void LineNumberDisplay::_updateConfiguration( void )
-{
-  
-  Debug::Throw( "LineNumberDisplay::_updateConfiguration.\n" );
-    
-  // colors
-  {
-    QColor color( XmlOptions::get().raw( "HIGHLIGHT_COLOR" ) );
-    highlight_color_ = color.isValid() ? color:_editor().palette().color( QPalette::Highlight );
-  }
-
 }
 
 //________________________________________________________
@@ -261,44 +216,4 @@ void LineNumberDisplay::_updateLineNumberData( QTextBlock& block, unsigned int& 
   QRectF rect( _editor().document()->documentLayout()->blockBoundingRect( block ) );
   data.setPosition( (int)block.layout()->position().y() );
 
-}
-
-//________________________________________________________
-bool LineNumberDisplay::_updateCurrentBlockData( void )
-{
-
-  // do nothing if not enabled
-  if( !_editor().blockHighlightAction().isChecked() ) return false;
-  
-  // font metric
-  const QFontMetrics metric( _editor().fontMetrics() );
-  
-  // get begin and end cursor positions
-  int first_index = _editor().cursorForPosition( QPoint( 0, 0 ) ).position();
-  int last_index = _editor().cursorForPosition( QPoint( 0, _editor().height() ) ).position();
-
-  // get document
-  QTextDocument &document( *_editor().document() );
-  QTextBlock block = document.begin();
-  LineNumberData::List::iterator iter( line_number_data_.begin() );
-  for( ; block.isValid() && iter != line_number_data_.end(); block = block.next(), iter++ )
-  {
-    
-    // skip if block is not (yet) in window
-    if( iter->cursor() < first_index ) continue;
-    
-    // stop if block is outside (below) window
-    if( iter->cursor() > last_index ) break;
-    
-    // block data
-    TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
-    if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) )
-    { 
-      current_block_data_ = *iter;
-      return true;
-    }
-    
-  }
-
-  return false;
 }

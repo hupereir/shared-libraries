@@ -34,9 +34,7 @@
 #include <QTextBlock>
 
 #include "BlockHighlight.h"
-#include "LineNumberDisplay.h"
 #include "TextEditor.h"
-#include "TextEditorMarginWidget.h"
 #include "TextBlockData.h"
 
 using namespace std;
@@ -70,7 +68,6 @@ void BlockHighlight::clear( void )
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
       
       // mark contents dirty to trigger document update
-      // parent_->document()->markContentsDirty(block.position(), block.length()-1);
       _updateEditors();
       
     }
@@ -89,7 +86,6 @@ void BlockHighlight::highlight( void )
   
   clear();
   timer_.start(50, this );
-  //_highlight();
   
 }
 
@@ -146,15 +142,6 @@ void BlockHighlight::_updateEditors( void )
   BASE::KeySet<TextEditor> editors( parent_ );
   editors.insert( parent_ );
   for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
-  { 
-    
-    if( (*iter)->hasLineNumberDisplay() ) (*iter)->lineNumberDisplay().setNeedCurrentBlockUpdate( true );
-    (*iter)->viewport()->update(); 
-
-    // also update margin
-    if( (*iter)->showLineNumberAction().isVisible() &&  (*iter)->showLineNumberAction().isChecked() )
-    { (*iter)->marginWidget().setDirty(); }
-    
-  }
+  { (*iter)->viewport()->update(); }
   
 }

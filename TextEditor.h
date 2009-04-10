@@ -110,12 +110,8 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! set text
   virtual void setHtml( const QString& );
       
-  //! margin widget
-  TextEditorMarginWidget& marginWidget( void ) const
-  { return *margin_widget_; }
-
   //! draw margins
-  virtual void drawMargins( QPainter& );
+  virtual void paintMargin( QPainter& );
       
   //! select word under cursor
   virtual void selectWord( void );
@@ -299,19 +295,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! block highlight object
   BlockHighlight& blockHighlight() const
   { return *block_highlight_; }
-    
-  //!@name line numbers
-  //@{
-  
-  //! line number display
-  bool hasLineNumberDisplay( void ) const
-  { return line_number_display_; }
-  
-  //! line number display
-  LineNumberDisplay& lineNumberDisplay( void ) const
-  { return *line_number_display_; }
-  
-  //@}
   
   //! changes block background
   virtual void setBackground( QTextBlock, const QColor& );
@@ -572,42 +555,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! left margin
   bool _setLeftMargin( const int& margin );
-  
-  //! margin rect
-  QRect _marginRect( void ) const;
-  
-  //! true when margin needs repaint
-  bool _marginDirty( void ) const
-  { return margin_dirty_; }
-  
-  //! vertical line display
-  const bool& _drawVerticalLine( void ) const
-  { return draw_vertical_line_; }
-  
-  //! vertical line display
-  bool _setDrawVerticalLine( const bool& value )
-  { 
-    if( value == _drawVerticalLine() ) return false;
-    draw_vertical_line_ = value; 
-    return true;
-  }
-  
-  //! margin foreground
-  const QColor& _marginForegroundColor( void ) const
-  { return margin_foreground_color_; }
-
-  //! margin foreground
-  void _setMarginForegroundColor( const QColor& color )
-  { margin_foreground_color_ = color; }
-  
-  //! margin background
-  const QColor& _marginBackgroundColor( void ) const
-  { return margin_background_color_; }
-
-  //! margin background
-  void _setMarginBackgroundColor( const QColor& color )
-  { margin_background_color_ = color; }
-
+   
   //@}
   
   //! toggle insertion mode
@@ -640,10 +588,44 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   { return emulated_tab_regexp_; }
   
   //@}
-
+  
+  //!@name margin
+  //!@{
+  
+  //! margin widget
+  TextEditorMarginWidget& _marginWidget( void ) const
+  { return *margin_widget_; }
+  
   //! update margins
-  virtual bool _updateMargins( void );
+  virtual bool _updateMargin( void );
+  
+  //! current block rect
+  virtual const QRect& _currentBlockRect( void ) const
+  { return current_block_rect_; }
     
+  //! current block rect
+  virtual bool _setCurrentBlockRect( const QRect& rect )
+  {
+    if( rect == current_block_rect_ ) return false;
+    current_block_rect_ = rect;
+    return true;
+  }
+  
+  //@}
+
+  //!@name line numbers
+  //@{
+  
+  //! line number display
+  bool _hasLineNumberDisplay( void ) const
+  { return line_number_display_; }
+  
+  //! line number display
+  LineNumberDisplay& _lineNumberDisplay( void ) const
+  { return *line_number_display_; }
+  
+  //@}
+  
   //! modifiers
   bool _setModifier( const Modifier& key, bool value )
   { 
@@ -712,6 +694,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! margin widget
   TextEditorMarginWidget* margin_widget_;
   
+  //! current block rect
+  /*! needed for block highlighting in margin */
+  QRect current_block_rect_;
+  
   //!@name dialogs
   ///@{
   
@@ -734,9 +720,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   
   //! left margin width
   int left_margin_;
-
-  //! vertical line
-  bool draw_vertical_line_;
 
   //@}
   
@@ -864,15 +847,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! current block highlight color
   QColor highlight_color_;
 
-  //! true when margins are dirty (need repaint)
-  bool margin_dirty_;
-  
-  //! margin color
-  QColor margin_foreground_color_;
-  
-  //! margin color
-  QColor margin_background_color_;
-  
   //! store possible mouse drag start position
   QPoint drag_start_;
   

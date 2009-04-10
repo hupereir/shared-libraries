@@ -55,16 +55,22 @@ class TextEditorMarginWidget: public QWidget, public Counter
   virtual ~TextEditorMarginWidget( void )
   {}
   
+  //! vertical line
+  const bool& drawVerticalLine( void ) const
+  { return draw_vertical_line_; }
+  
   public slots:
   
   //! dirty
   void setDirty( void );
   
+  private slots:
+  
+  //! configuration
+  void _updateConfiguration( void );
+  
   protected:
-  
-  //! generic event
-  virtual bool event( QEvent* );
-  
+    
   //! paint event
   virtual void paintEvent( QPaintEvent* );
   
@@ -79,6 +85,9 @@ class TextEditorMarginWidget: public QWidget, public Counter
   
   //! dirty flag
   bool dirty_;
+
+  //! draw vertical line
+  bool draw_vertical_line_;
   
 };
 
