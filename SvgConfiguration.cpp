@@ -83,5 +83,11 @@ SvgConfiguration::SvgConfiguration( QWidget* parent ):
   listbox->setToolTip( "Pathname to load background svg" );
   box_layout->addWidget( listbox );
   addOptionWidget( listbox );
-  
+
+  checkbox->setChecked( false );
+  spinbox->setEnabled( false );
+  listbox->setEnabled( false );
+  connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
+  connect( checkbox, SIGNAL( toggled( bool ) ), listbox, SLOT( setEnabled( bool ) ) );
+
 }
