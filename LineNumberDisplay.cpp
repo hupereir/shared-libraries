@@ -66,7 +66,6 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
 
   // update configuration
   _updateConfiguration();
-  
 }
 
 //__________________________________________
@@ -171,7 +170,8 @@ void LineNumberDisplay::paint( QPainter& painter )
       painter.save();
       painter.setPen( Qt::NoPen );
       painter.setBrush( highlight_color_ );
-      painter.drawRect( 0, current_block_data_.position(), width_, metric.lineSpacing() );
+      //painter.drawRect( 0, current_block_data_.position(), width_, metric.lineSpacing() );
+      painter.drawRect( 0, current_block_data_.position(), 2*width_, metric.lineSpacing() );
       painter.restore();
       
     } 

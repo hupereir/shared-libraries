@@ -99,6 +99,7 @@ noinst_HEADERS = \
   TabbedDialog.h \
   TabWidget.h \
   TextEditor.h \
+  TextEditorMarginWidget.h \
   TextEditionDelegate.h \
   TextBlockData.h \
   TextBlockFlags.h \
@@ -200,6 +201,7 @@ libbase_qt_a_SOURCES = \
   TabbedDialog.cpp \
   TabWidget.cpp \
   TextEditor.cpp \
+  TextEditorMarginWidget.cpp \
   TextEditionDelegate.cpp \
   TextSeparator.cpp \
   ToolBarMenu.cpp \
@@ -266,11 +268,12 @@ nodist_libbase_qt_a_SOURCES = \
   moc_ScrollObject.cpp \
   moc_SelectLineDialog.cpp \
   moc_StatusBar.cpp \
-  moc_TransitionWidget.cpp \
   moc_TabbedDialog.cpp \
   moc_TabWidget.cpp \
   moc_TextEditor.cpp \
+  moc_TextEditorMarginWidget.cpp \
   moc_ToolButtonStyleMenu.cpp \
+  moc_TransitionWidget.cpp \
   moc_TreeView.cpp \
   moc_TreeViewConfiguration.cpp \
   moc_UserSelectionFrame.cpp \

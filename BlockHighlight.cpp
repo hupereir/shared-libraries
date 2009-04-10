@@ -36,6 +36,7 @@
 #include "BlockHighlight.h"
 #include "LineNumberDisplay.h"
 #include "TextEditor.h"
+#include "TextEditorMarginWidget.h"
 #include "TextBlockData.h"
 
 using namespace std;
@@ -146,8 +147,14 @@ void BlockHighlight::_updateEditors( void )
   editors.insert( parent_ );
   for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
   { 
+    
     if( (*iter)->hasLineNumberDisplay() ) (*iter)->lineNumberDisplay().setNeedCurrentBlockUpdate( true );
     (*iter)->viewport()->update(); 
+
+    // also update margin
+    if( (*iter)->showLineNumberAction().isVisible() &&  (*iter)->showLineNumberAction().isChecked() )
+    { (*iter)->marginWidget().setDirty(); }
+    
   }
   
 }

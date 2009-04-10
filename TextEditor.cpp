@@ -54,6 +54,7 @@
 #include "SelectLineDialog.h"
 #include "Singleton.h"
 #include "TextBlockData.h"
+#include "TextEditorMarginWidget.h"
 #include "TextSeparator.h"
 #include "XmlOptions.h"
 
@@ -70,7 +71,7 @@ TextSelection& TextEditor::lastSelection( void )
 TextEditor::TextEditor( QWidget *parent ):
   QTextEdit( parent ),
   Counter( "TextEditor" ),
-  margin_widget_( new MarginWidget( this ) ),
+  margin_widget_( new TextEditorMarginWidget( this ) ),
   find_dialog_( 0 ),
   replace_dialog_( 0 ),
   select_line_dialog_( 0 ),
@@ -86,7 +87,6 @@ TextEditor::TextEditor( QWidget *parent ):
   box_selection_( this ),
   remove_line_buffer_( this ),
   click_counter_( this ),
-  margin_dirty_( true ),
   modifiers_( MODIFIER_NONE )
 {
 
@@ -106,7 +106,6 @@ TextEditor::TextEditor( QWidget *parent ):
   // line number
   line_number_display_ = new LineNumberDisplay( this );
 
-  // signal to make sure selectionsynchronized is  between clones
   connect( this, SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
   connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
   connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
@@ -116,13 +115,13 @@ TextEditor::TextEditor( QWidget *parent ):
 
   // track changes of block counts
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
-  connect( TextEditor::document(), SIGNAL( contentsChanged() ), SLOT( _setMarginDirty() ) );
+  connect( TextEditor::document(), SIGNAL( contentsChanged() ), &marginWidget(), SLOT( setDirty() ) );
 
   // update configuration
   _updateConfiguration();
   _blockCountChanged(0);
   
-  _marginWidget().show();
+  marginWidget().show();
   
 }
 
@@ -308,6 +307,40 @@ void TextEditor::setHtml( const QString& text )
   
 }
 
+//___________________________________________________________________________
+void TextEditor::drawMargins( QPainter& painter )
+{
+       
+  int height( TextEditor::height() - 2*frameWidth() );
+  if( horizontalScrollBar()->isVisible() ) { height -= horizontalScrollBar()->height() + 2; }
+  
+  // clip
+  painter.setClipRect( QRect( 0, 0, _leftMargin(), height ), Qt::IntersectClip );
+  
+  painter.setBrush( _marginBackgroundColor() );
+  painter.setPen( Qt::NoPen );
+  painter.drawRect( 0, 0, _leftMargin(), height );
+  
+  if( _drawVerticalLine() ) {
+    painter.setBrush( QBrush( _marginForegroundColor(), Qt::Dense4Pattern ) );
+    painter.drawRect( _leftMargin()-1, 0, 1, height ); 
+    painter.setBrush( _marginBackgroundColor() );
+  } 
+  
+  painter.setPen( _marginForegroundColor() );
+  int y_offset = verticalScrollBar()->value();      
+  painter.translate( 0, -y_offset );
+  
+  // draw lines
+  if( 
+    hasLineNumberDisplay() && 
+    hasLineNumberAction() && 
+    showLineNumberAction().isVisible() && 
+    showLineNumberAction().isChecked() )
+  { lineNumberDisplay().paint( painter ); }
+ 
+}
+
 //________________________________________________
 void TextEditor::selectWord( void )
 {  Debug::Throw( "TextEditor::selectWord.\n" );
@@ -461,7 +494,7 @@ void TextEditor::synchronize( TextEditor* editor )
   // track changes of block counts
   lineNumberDisplay().synchronize( &editor->lineNumberDisplay() );
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
-  connect( TextEditor::document(), SIGNAL( contentsChanged() ), SLOT( _setMarginDirty() ) );
+  connect( TextEditor::document(), SIGNAL( contentsChanged() ), &marginWidget(), SLOT( setDirty() ) );
 
   // margin
   _setLeftMargin( editor->_leftMargin() );
@@ -1480,7 +1513,7 @@ void TextEditor::resizeEvent( QResizeEvent* event )
     
   // update margin widget geometry
   QRect rect( contentsRect() );
-  _marginWidget().setGeometry( QRect( rect.topLeft(), QSize( _marginWidget().width(), rect.height() ) ) );
+  marginWidget().setGeometry( QRect( rect.topLeft(), QSize( marginWidget().width(), rect.height() ) ) );
     
   if( lineWrapMode() == QTextEdit::NoWrap ) return;
   if( event->oldSize().width() == event->size().width() ) return;
@@ -1517,6 +1550,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
     // retrieve block rect
     QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
+    block_rect.setLeft(0);
     block_rect.setWidth( viewport()->width() + scrollbarPosition().x() );
 
     QColor color;
@@ -1571,7 +1605,7 @@ void TextEditor::scrollContentsBy( int dx, int dy )
 {
   
   // mark margins dirty if vertical scroll is non empty
-  if( dy != 0 ) _setMarginDirty();
+  if( dy != 0 ) marginWidget().setDirty();
   
   // base class call
   QTextEdit::scrollContentsBy( dx, dy );
@@ -2180,7 +2214,7 @@ bool TextEditor::_setLeftMargin( const int& margin )
 
   left_margin_ = margin;
   setViewportMargins( _leftMargin(), 0, 0, 0 );
-  _marginWidget().resize( _leftMargin(), _marginWidget().height() );
+  marginWidget().resize( _leftMargin(), marginWidget().height() );
   return true;
 
 }
@@ -2262,40 +2296,6 @@ bool TextEditor::_updateMargins( void )
   if( left_margin_ == left_margin ) return false;
   return true;
   
-}
-
-//___________________________________________________________________________
-void TextEditor::_drawMargins( QPainter& painter )
-{
-       
-  int height( TextEditor::height() - 2*frameWidth() );
-  if( horizontalScrollBar()->isVisible() ) { height -= horizontalScrollBar()->height() + 2; }
-  
-  // clip
-  painter.setClipRect( painter.clipRegion().boundingRect().intersected( QRect( 0, 0, _leftMargin(), height ) ) );
-  
-  painter.setBrush( _marginBackgroundColor() );
-  painter.setPen( Qt::NoPen );
-  painter.drawRect( 0, 0, _leftMargin(), height );
-  
-  if( _drawVerticalLine() ) {
-    painter.setBrush( QBrush( _marginForegroundColor(), Qt::Dense4Pattern ) );
-    painter.drawRect( _leftMargin()-1, 0, 1, height ); 
-    painter.setBrush( _marginBackgroundColor() );
-  } 
-  
-  painter.setPen( _marginForegroundColor() );
-  int y_offset = verticalScrollBar()->value();      
-  painter.translate( 0, -y_offset );
-  
-  // draw lines
-  if( 
-    hasLineNumberDisplay() && 
-    hasLineNumberAction() && 
-    showLineNumberAction().isVisible() && 
-    showLineNumberAction().isChecked() )
-  { lineNumberDisplay().paint( painter ); }
- 
 }
 
 //________________________________________________
@@ -2678,61 +2678,5 @@ void TextEditor::_selectLineFromDialog( void )
   select_line_dialog_->show();
   select_line_dialog_->activateWindow();
   select_line_dialog_->editor().setFocus();
-
-}
-
-//________________________________________________
-void TextEditor::_setMarginDirty( bool value )
-{
-  
-  if( margin_dirty_ == value ) return;
-  
-  margin_dirty_ = value;
-  if( value ) _marginWidget().update( _marginRect() );
-}
-
-//________________________________________________
-TextEditor::MarginWidget::MarginWidget( TextEditor* parent ):
-  QWidget( parent ),
-  Counter( "TextEditor::Counter" ),
-  editor_( parent )
-{ 
-  Debug::Throw( "TextEditor::MarginWidget::Marginwidget.\n" ); 
-  setAttribute( Qt::WA_OpaquePaintEvent, true );
-}
-
-//________________________________________________
-void TextEditor::MarginWidget::paintEvent( QPaintEvent* event )
-{ 
-  
-  // paint margins
-  QPainter painter( this );
-  painter.setClipRect( event->rect() );
-  _editor()._drawMargins( painter );
-  painter.end();
-  
-  // clear dirty flag
-  _editor()._setMarginDirty( false );
-      
-}
-
-//_______________________________________________________
-bool TextEditor::MarginWidget::event( QEvent* event )
-{
-  
-  switch (event->type()) 
-  {
-        
-    case QEvent::Wheel:
-    {
-      QWheelEvent *wheel_event( static_cast<QWheelEvent*>(event) );
-      qApp->sendEvent( _editor().viewport(), event );
-      return false;
-    }
-
-    default: break;
-  }
-    
-  return QWidget::event( event );
 
 }

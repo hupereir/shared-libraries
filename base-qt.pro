@@ -95,6 +95,7 @@ HEADERS = \
   TabbedDialog.h \
   TabWidget.h \
   TextEditor.h \
+  TextEditorMarginWidget.h \
   TextEditionDelegate.h \
   TextBlockData.h \
   TextBlockFlags.h \
@@ -194,6 +195,7 @@ SOURCES = \
   TabbedDialog.cpp \
   TabWidget.cpp \
   TextEditor.cpp \
+  TextEditorMarginWidget.cpp \
   TextEditionDelegate.cpp \
   TextSeparator.cpp \
   ToolBarMenu.cpp \
