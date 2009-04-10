@@ -1566,7 +1566,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
       
       // update current block rect
       // and redraw margin if changed
-      if( _setCurrentBlockRect( QRect( QPoint(0, block_rect.topLeft().y() ), QSize( _marginWidget().width(), block_rect.height() ) ) ) )
+      if( _setCurrentBlockRect( QRect( QPoint(0, int(block_rect.topLeft().y()) ), QSize( _marginWidget().width(), int(block_rect.height()) ) ) ) )
       { _marginWidget().setDirty(); }
       
     }
