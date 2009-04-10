@@ -2330,10 +2330,11 @@ void TextEditor::_updateConfiguration( void )
   blockHighlight().setEnabled( highlight_color_.isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
   blockHighlightAction().setEnabled( highlight_color_.isValid() );
   blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-
+  
   // update margins
   _lineNumberDisplay().updateWidth( document()->blockCount() );
   _updateMargin();
+  _marginWidget().setDirty();
   
   // update box configuration
   // clear

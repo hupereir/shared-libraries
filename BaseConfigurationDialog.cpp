@@ -297,7 +297,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   checkbox->setToolTip( "Turn on/off current paragraph highlighting" );
   layout->addWidget( checkbox );
   addOptionWidget( checkbox );
- 
+  
   GridLayout* grid_layout = new GridLayout();
   grid_layout->setMargin(0);
   grid_layout->setSpacing(5);
@@ -308,6 +308,10 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
   grid_layout->addWidget( color );
   addOptionWidget( color );
+  
+  checkbox->setChecked( false );
+  color->setEnabled( false );
+  connect( checkbox, SIGNAL( toggled( bool ) ), color, SLOT( setEnabled( bool ) ) );
 
   // box selection
   box = new QGroupBox( "Box selection", parent );
@@ -429,7 +433,11 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
   spinbox->setToolTip( "Smooth transitions duration (ms)." );
   addOptionWidget( spinbox );
   
-   grid_layout->addWidget( checkbox = new OptionCheckBox( "Smooth Scrolling", box, "SMOOTH_SCROLLING_ENABLED" ) );
+  checkbox->setChecked( false );
+  spinbox->setEnabled( false );
+  connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
+  
+  grid_layout->addWidget( checkbox = new OptionCheckBox( "Smooth Scrolling", box, "SMOOTH_SCROLLING_ENABLED" ) );
   checkbox->setToolTip( "Enables smooth scrolling when using page-up/page-down buttons, or mouse wheel." );
   addOptionWidget( checkbox );
     
@@ -438,6 +446,10 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
   spinbox->setMaximum( 5000 );
   spinbox->setToolTip( "Smooth scrolling duration (ms)." );
   addOptionWidget( spinbox );
+
+  checkbox->setChecked( false );
+  spinbox->setEnabled( false );
+  connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
 
   grid_layout->addWidget( new QLabel( "Frames: ", box ) );
   spinbox = new OptionSpinBox( box, "ANIMATION_FRAMES" );
