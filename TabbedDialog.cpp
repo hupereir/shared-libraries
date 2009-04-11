@@ -120,8 +120,20 @@ QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, co
   QScrollArea* scroll = new QScrollArea();
   scroll->setWidgetResizable ( true );
   scroll->setFrameStyle( QFrame::NoFrame );
-  base->layout()->addWidget( scroll );
   
+  // disable background painting
+  /*! 
+  this is needed to have scrollarea contents background match
+  the one from the main window
+  */
+  scroll->setAttribute( Qt::WA_NoSystemBackground, true );
+  base->layout()->addWidget( scroll );
+
+  // add custom viewport with no background
+  QWidget *view_port = new QWidget();
+  view_port->setAttribute( Qt::WA_NoSystemBackground, true );
+  scroll->setViewport( view_port );  
+    
   // add smooth scrolling object
   new ScrollObject( scroll );
   
@@ -129,6 +141,10 @@ QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, co
   QWidget* main( new QWidget() );
   scroll->setWidget( main );
    
+  // disable background auto-fill
+  /* it is set to true via scrollarea::setWidget */
+  main->setAutoFillBackground( false );
+  
   // add to stack and model
   _stack().addWidget( base );
   _model().add( base );

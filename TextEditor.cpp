@@ -317,11 +317,6 @@ void TextEditor::paintMargin( QPainter& painter )
   painter.setClipRect( QRect( 0, 0, _leftMargin(), height ), Qt::IntersectClip );
   painter.setPen( Qt::NoPen );
   
-  if( _marginWidget().drawVerticalLine() ) {
-    painter.setBrush( QBrush( _marginWidget().palette().color( QPalette::WindowText ), Qt::Dense4Pattern ) );
-    painter.drawRect( _leftMargin()-1, 0, 1, height ); 
-  } 
-  
   painter.translate( 0, -verticalScrollBar()->value() );
 
   // draw current block rect
@@ -332,6 +327,11 @@ void TextEditor::paintMargin( QPainter& painter )
     painter.drawRect( _currentBlockRect() );
   
   }
+  
+  if( _marginWidget().drawVerticalLine() ) {
+    painter.setBrush( QBrush( _marginWidget().palette().color( QPalette::WindowText ), Qt::Dense4Pattern ) );
+    painter.drawRect( _leftMargin()-1, verticalScrollBar()->value(), 1, height+verticalScrollBar()->value() ); 
+  } 
 
   // set brush and pen suitable to further painting
   painter.setBrush( Qt::NoBrush );
