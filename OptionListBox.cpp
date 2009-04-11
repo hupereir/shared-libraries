@@ -110,10 +110,10 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
   // Edit button
   button_layout->addWidget( edit_ = new QPushButton( "&Edit", this ) );
   connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
-  edit_->setIcon( IconEngine::get( ICONS::RENAME ) );
+  edit_->setIcon( IconEngine::get( ICONS::EDIT ) );
   edit_->setToolTip( "Edit selected value" );
 
-  addAction( edit_action_ = new QAction( IconEngine::get( ICONS::RENAME ),  "&Edit", this ) );
+  addAction( edit_action_ = new QAction( IconEngine::get( ICONS::EDIT ),  "&Edit", this ) );
   connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
   _list().menu().addAction( edit_action_ );
   
