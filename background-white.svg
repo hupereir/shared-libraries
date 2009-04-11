@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="18.871795"
-     inkscape:cx="15.39469"
-     inkscape:cy="26.699079"
+     inkscape:cx="7.7377607"
+     inkscape:cy="24.367557"
      inkscape:current-layer="left"
      showgrid="true"
      inkscape:grid-bbox="true"
@@ -1245,7 +1245,8 @@
        y1="54.990761"
        x2="68"
        y2="83.003082"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,2.1997999e-3)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient7141"
@@ -1356,8 +1357,8 @@
          xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAFCAYAAACTphZWAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz AAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAA8SURB VAiZlcrBCcAgFATR9zWHXNKAPVinZSeXfxBBIQPDMrCBGw8aOkb2hYqQlNyY3FKW/nU+Mp/fdMsH DjYDBMEc/mEAAAAASUVORK5CYII= " />
       <path
          id="path7363"
-         d="M 64,70.9978 L 64,75.9978 L 71,75.9978 L 71,70.9978 L 64,70.9978 z "
-         style="fill:url(#linearGradient3397);fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:1.08779998000000000;stroke-opacity:1" />
+         d="M 64,71 L 64,76 L 71,76 L 71,71 L 64,71 z"
+         style="fill:url(#linearGradient3397);fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:1.08779998;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="ccccc"
          id="path7365"
@@ -1381,8 +1382,8 @@
          xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAMCAYAAAC0qUeeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz AAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAC4SURB VCiRbdG7TgQxDIXhzzO7WoG4dAgqJGp4Tl6SAioqKsR9Z0yxziiMsHQUOfbv2E5gh1Nc4Q73OMMW A6JkcLDEHl/4KD+tbKjLCT+V+Fx+rmTAXMFvvOKhwKliCzB2PY2ld9zWHK1NKhgrzXjDTQ0ffWVt 2rIJL3jEOU6qwH6TmRkRczdgq/6JJ1ziGheRmSKi73tbzx+VjuvcReZhnR0wFLQpsGlckjugrbSB i/4k/wMtX434BeAyPDXJmOz/AAAAAElFTkSuQmCC " />
       <path
          id="path7172"
-         d="M 64,77 L 64,77.4375 C 64,81.0681 66.93185,84 70.5625,84 L 71,84 L 71,77 L 64,77 z "
-         style="fill:#dadada;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:1.08779998000000000;stroke-opacity:1" />
+         d="M 64,76.999083 L 64,77.436583 C 64,81.067183 66.93185,83.999083 70.5625,83.999083 L 71,83.999083 L 71,76.999083 L 64,76.999083 z"
+         style="fill:#dadada;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:1.08779998;stroke-opacity:1" />
       <path
          id="path7174"
          d="M 64,76.9978 L 64,77.4353 C 64,78.7101 64.37518,79.8999 65,80.904 L 65,76.9978 L 64,76.9978 z "
