@@ -4,7 +4,7 @@ EXTRA_DIST = base-svg.pro \
   background.svg \
   background-simple.svg \
   background-translucent.svg \
-  background-translucent-2.svg
+  background-white.svg
 
 
 INCLUDES =  \
