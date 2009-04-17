@@ -77,12 +77,12 @@ class GridLayout: public QGridLayout, public Counter
   void addWidget( QWidget* widget, int row, int column, Qt::Alignment alignment = 0 )
   { GridLayout::addWidget( widget, row, column, 1, 1, alignment ); } 
   
-  //! add wodget
+  //! add widget
   void addWidget ( QWidget * widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
   {
     assert( rowSpan > 0 );
     assert( columnSpan > 0 );
-    if( alignment == 0 && _boundCheck( column ) ) alignment = column_alignments_[column];
+    if( alignment == 0 && _boundCheck( column ) && columnSpan == 1 ) alignment = column_alignments_[column];
     QGridLayout::addWidget( widget, row, column, rowSpan, columnSpan, alignment ); 
     setLocation( row+rowSpan-1, column+columnSpan-1 );
     _increment();
