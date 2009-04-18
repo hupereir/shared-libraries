@@ -362,16 +362,22 @@ void LineEditor::paintEvent( QPaintEvent* event )
   if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
   
   // draw white background
-  QPainter painter( this );
-  painter.setClipRect( event->rect() );
-  style()->drawPrimitive(QStyle::PE_PanelLineEdit, &panel, &painter, this);
+  {
+    QPainter painter( this );
+    painter.setClipRect( event->rect() );
+    style()->drawPrimitive(QStyle::PE_PanelLineEdit, &panel, &painter, this);
+    painter.end();
+  }
   
-  _paintClearButton( painter );
-  
-  painter.end();
-
   // normal painting (without frame)
   QLineEdit::paintEvent( event );
+  
+  // draw clear button
+  { 
+    QPainter painter( this );
+    _paintClearButton( painter );
+    painter.end();
+  }
   
   if( hasFrame() ) 
   {
@@ -481,11 +487,11 @@ void LineEditor::_paintClearButton( QPainter& painter, const bool& check )
     
   // get widget rect an adjust
   QRect rect( LineEditor::rect() );
-  int offset( hasFrame() ? _frameWidth():0 );
-  if( hasFrame() ) { rect.adjust( 0, offset-1, -offset-1, -offset-1 ); }   
+  if( hasFrame() ) { rect.adjust( 0, _frameWidth(), -_frameWidth()-1, -_frameWidth() ); }   
   
-  // set the proper right margin
-  rect.setLeft( rect.right() - fontMetrics().lineSpacing() -1 );
+  // set the proper right margin, so that button rect is a square
+  // rect.setLeft( rect.right() - fontMetrics().lineSpacing() - 1 );
+  rect.setLeft( rect.right() - rect.height() );
   
   _clearIcon().paint( 
     &painter, rect, 
