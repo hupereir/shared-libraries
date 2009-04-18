@@ -35,11 +35,11 @@
 #include <QLabel>
 
 
+#include "AnimatedLineEditor.h"
 #include "Debug.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "LineEditor.h"
 #include "OptionListBox.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"

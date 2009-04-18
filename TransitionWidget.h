@@ -79,7 +79,7 @@ class TransitionWidget: public QWidget, public Counter
   { return flags_; }
   
   //! set starting widget
-  void initialize( QWidget* widget = 0 );
+  void initialize( QWidget* widget = 0, QRect rect = QRect() );
  
   //! start
   void start( void );

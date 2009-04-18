@@ -336,7 +336,8 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     MODIFIER_NONE = 0,
     MODIFIER_CAPS_LOCK = 1<<0,
     MODIFIER_NUM_LOCK = 1<<1,
-    MODIFIER_INSERT = 1<<2
+    MODIFIER_INSERT = 1<<2,
+    MODIFIER_WRAP = 1<<3
   };
   
   //! modifiers

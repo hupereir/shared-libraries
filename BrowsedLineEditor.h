@@ -43,7 +43,7 @@
 
 #include "Counter.h"
 
-class LineEditor;
+class AnimatedLineEditor;
 
 /*! 
   \class BrowsedLineEditor
@@ -60,7 +60,7 @@ class BrowsedLineEditor: public QWidget, public Counter
 
   public:
   
-  typedef LineEditor Editor;
+  typedef AnimatedLineEditor Editor;
     
   //! constructor;
   BrowsedLineEditor( QWidget* parent );

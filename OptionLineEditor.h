@@ -32,19 +32,19 @@
    \date    $Date$
 */
 
-#include "LineEditor.h"
+#include "AnimatedLineEditor.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
 //! QLineEdit associated to an option for configuration dialogs
-class OptionLineEditor: public LineEditor, public OptionWidget
+class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
 {
   
   public:
   
   //! constructor
   OptionLineEditor( QWidget* parent, const QString& option_name ):
-    LineEditor( parent ),
+    AnimatedLineEditor( parent ),
     OptionWidget( option_name )
   {}
   

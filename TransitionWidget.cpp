@@ -57,16 +57,16 @@ TransitionWidget::~TransitionWidget()
 { Debug::Throw( "TransitionWidget::~TransitionWidget.\n" ); }
 
 //___________________________________________________________________
-void TransitionWidget::initialize( QWidget* widget )
+void TransitionWidget::initialize( QWidget* widget, QRect rect )
 {
   
   // check widget
   if( !widget ) widget = parentWidget();
   assert( widget );
 
-  // resize
-  QRect rect( widget->rect() );
-  resize( rect.size() );
+  // change rect
+  if( rect.isNull() ) rect = widget->rect();
+  setGeometry( rect );
   
   // use parent window instead of widget if requested
   if( flags() & FROM_PARENT )

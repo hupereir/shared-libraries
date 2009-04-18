@@ -32,8 +32,8 @@
 
 #include <QAbstractItemModel>
 
+#include "AnimatedLineEditor.h"
 #include "TextEditionDelegate.h"
-#include "LineEditor.h"
 #include "Debug.h"
 
 using namespace std;
@@ -52,7 +52,7 @@ TextEditionDelegate::TextEditionDelegate( QObject *parent ):
 QWidget* TextEditionDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 { 
   Debug::Throw( "TextEditionDelegate::createEditor.\n" );
-  LineEditor *editor = new LineEditor( parent ); 
+  AnimatedLineEditor *editor = new AnimatedLineEditor( parent ); 
   editor->setFrame( false );
   return editor;
 }
@@ -62,7 +62,7 @@ void TextEditionDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
 {
   Debug::Throw( "TextEditionDelegate::setEditorData.\n" );
   QString text = index.model()->data(index, Qt::DisplayRole).toString();
-  LineEditor *line_editor = static_cast<LineEditor*>(editor);
+  AnimatedLineEditor *line_editor = static_cast<AnimatedLineEditor*>(editor);
   line_editor->setText( text );
 }
 
@@ -70,7 +70,7 @@ void TextEditionDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
 void TextEditionDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
   Debug::Throw( "TextEditionDelegate::setModelData.\n" );
-  LineEditor *line_editor = static_cast<LineEditor*>(editor);
+  AnimatedLineEditor *line_editor = static_cast<AnimatedLineEditor*>(editor);
   QString value( line_editor->text() );
   model->setData( index, value, Qt::EditRole);
 }

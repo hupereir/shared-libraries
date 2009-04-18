@@ -1740,6 +1740,7 @@ void TextEditor::_installActions( void )
   addAction( wrap_mode_action_ = new QAction( "&Wrap Text", this ) );
   wrap_mode_action_->setCheckable( true );
   wrap_mode_action_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
+  _setModifier( MODIFIER_WRAP, lineWrapMode() == QTextEdit::WidgetWidth ); 
   wrap_mode_action_->setShortcut( Qt::Key_F10 );
   wrap_mode_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( wrap_mode_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
@@ -2506,6 +2507,7 @@ bool TextEditor::_toggleWrapMode( bool state )
   if( mode == lineWrapMode() ) return false;
 
   setLineWrapMode( mode );
+  if( _setModifier( MODIFIER_WRAP, state ) ) emit modifiersChanged( modifiers() );
 
   // propagate to associated display
   if( isSynchronized() )
@@ -2522,6 +2524,7 @@ bool TextEditor::_toggleWrapMode( bool state )
   }
 
   return true;
+  
 }
 
 //________________________________________________

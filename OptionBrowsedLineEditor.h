@@ -32,8 +32,8 @@
    \date    $Date$
 */
 
+#include "AnimatedLineEditor.h"
 #include "BrowsedLineEditor.h"
-#include "LineEditor.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 

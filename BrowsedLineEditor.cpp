@@ -35,9 +35,9 @@
 #include <QHBoxLayout>
 #include <QToolButton>
 
+#include "AnimatedLineEditor.h"
 #include "BaseIcons.h"
 #include "BrowsedLineEditor.h"
-#include "LineEditor.h"
 #include "File.h"
 #include "FileDialog.h"
 #include "IconEngine.h"
