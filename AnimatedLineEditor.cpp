@@ -79,8 +79,9 @@ void AnimatedLineEditor::setText( const QString& text )
 //________________________________________________________
 void AnimatedLineEditor::clear( void )
 {
+  
   // check enability
-  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return LineEditor::clear();
+  if( !( _transitionWidget().isEnabled() && isVisible() && timeLine().state() == QTimeLine::NotRunning ) ) return LineEditor::clear();
   else {
     
     _transitionWidget().initialize();  

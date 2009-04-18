@@ -56,7 +56,7 @@ class LineEditor: public QLineEdit, public Counter
     
   public:
    
-  //! constructor;
+  //! constructor
   LineEditor( QWidget* parent );
   
   //! read-only state
@@ -91,10 +91,6 @@ class LineEditor: public QLineEdit, public Counter
   void cleared( void );
   
   public slots:
-  
-  //! set text
-  virtual void setTextString( const QString& value )
-  { setText( value ); }
   
   //! set text
   /*! copy base class method to make it virtual */

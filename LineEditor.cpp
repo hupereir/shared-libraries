@@ -487,12 +487,12 @@ void LineEditor::_paintClearButton( QPainter& painter, const bool& check )
     
   // get widget rect an adjust
   QRect rect( LineEditor::rect() );
-  if( hasFrame() ) { rect.adjust( 0, _frameWidth(), -_frameWidth()-1, -_frameWidth() ); }   
+  if( hasFrame() ) rect.adjust( 0, _frameWidth(), -_frameWidth()-1, -_frameWidth() ); 
   
   // set the proper right margin, so that button rect is a square
-  // rect.setLeft( rect.right() - fontMetrics().lineSpacing() - 1 );
   rect.setLeft( rect.right() - rect.height() );
   
+  painter.setRenderHints(QPainter::SmoothPixmapTransform);
   _clearIcon().paint( 
     &painter, rect, 
     Qt::AlignRight|Qt::AlignVCenter, 
