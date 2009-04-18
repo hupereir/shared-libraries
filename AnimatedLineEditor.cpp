@@ -29,9 +29,13 @@
   \date $Date$
 */
 
+#include <QPainter>
+
 #include "AnimatedLineEditor.h"
 #include "Debug.h"
+#include "Singleton.h"
 #include "TransitionWidget.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
@@ -43,7 +47,13 @@ AnimatedLineEditor::AnimatedLineEditor( QWidget* parent ):
   Debug::Throw( "AnimatedLineEditor::AnimatedLineEditor.\n" );
   _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
   _transitionWidget().hide();
+  
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
+  connect( &timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( update( void )) );   
+  connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+
+  _updateConfiguration();
+  
 }
 
 //________________________________________________________
@@ -77,5 +87,43 @@ void AnimatedLineEditor::clear( void )
     LineEditor::clear();
     _transitionWidget().start();
   }
+
+}
+
+//___________________________________________________________________
+void AnimatedLineEditor::_updateConfiguration( void )
+{
+  
+  Debug::Throw( "TransitionWidget::_updateConfiguration.\n" );
+  timeLine().setDuration( XmlOptions::get().get<int>( "SMOOTH_TRANSITION_DURATION" ) );
+  timeLine().setFrameRange( 0, XmlOptions::get().get<int>( "ANIMATION_FRAMES" ) );
+    
+} 
+
+//________________________________________________
+bool AnimatedLineEditor::_toggleClearButton( const bool& value )
+{ 
+  if( !LineEditor::_toggleClearButton( value ) ) return false;
+  
+  // start smooth painting of clear button
+  if( isVisible() && _transitionWidget().isEnabled() && timeLine().state() == QTimeLine::NotRunning ) 
+  { timeLine().start(); }
+  
+  return true;
+}
+
+//________________________________________________
+void AnimatedLineEditor::_paintClearButton( QPainter& painter )
+{  
+
+  // if time line is not running, run normal paint
+  if( timeLine().state() != QTimeLine::Running ) return LineEditor::_paintClearButton( painter );
+
+  // calculate opacity
+  qreal frame = timeLine().currentFrame();
+  if( _clearButtonVisible() ) painter.setOpacity( frame/timeLine().endFrame() );
+  else  painter.setOpacity( 1-frame/timeLine().endFrame() );
+  LineEditor::_paintClearButton( painter, false );
+  painter.setOpacity( 1 ); 
 
 }

@@ -32,6 +32,8 @@
   \date $Date$
 */
 
+#include <QTimeLine>
+
 #include "LineEditor.h"
 
 class TransitionWidget;
@@ -51,6 +53,10 @@ class AnimatedLineEditor: public LineEditor
   //! destrutor
   virtual ~AnimatedLineEditor( void );
 
+  //! timeline
+  QTimeLine& timeLine( void )
+  { return time_line_; }
+
   public slots:
   
   //! clear
@@ -65,8 +71,22 @@ class AnimatedLineEditor: public LineEditor
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
 
+  //! toggle clear button
+  virtual bool _toggleClearButton( const bool& );
+  
+  //! paint clear button
+  virtual void _paintClearButton( QPainter& );
+
+  private slots:
+  
+  //! configuration
+  virtual void _updateConfiguration( void );
+  
   private:
   
+  //! timeline
+  QTimeLine time_line_;    
+
   //! transition widget
   TransitionWidget* transition_widget_;
   

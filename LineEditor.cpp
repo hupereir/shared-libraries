@@ -52,6 +52,7 @@ LineEditor::LineEditor( QWidget* parent ):
   Counter( "LineEditor" ),
   modified_( false ),
   has_clear_button_( false ),
+  clear_button_visible_( false ),
   has_frame_( true ),
   triggered_( false ),
   clear_icon_( IconEngine::get( ICONS::EDIT_CLEAR ) )
@@ -349,6 +350,9 @@ void LineEditor::paintEvent( QPaintEvent* event )
   // check clear button
   if( isReadOnly() || !_hasClearButton() ) return QLineEdit::paintEvent( event );
 
+  // paint the button at the correct place
+  _toggleClearButton( !(isReadOnly() || text().isNull() || text().isEmpty() ) );
+  
   // initialize option
   QStyleOptionFrameV2 panel;
   panel.initFrom( this );
@@ -362,27 +366,8 @@ void LineEditor::paintEvent( QPaintEvent* event )
   painter.setClipRect( event->rect() );
   style()->drawPrimitive(QStyle::PE_PanelLineEdit, &panel, &painter, this);
   
-  // paint the button at the correct place
-  if( !(isReadOnly() || text().isNull() || text().isEmpty() ) )
-  {
-    
-    // get widget rect an adjust
-    QRect rect( LineEditor::rect() );
-    int offset( hasFrame() ? _frameWidth():0 );
-    if( hasFrame() ) { rect.adjust( 0, offset-1, -offset-1, -offset-1 ); }   
-    
-    // set the proper right margin
-    rect.setLeft( rect.right() - fontMetrics().lineSpacing() -1 );
-    
-    clear_icon_.paint( 
-      &painter, rect, 
-      Qt::AlignRight|Qt::AlignVCenter, 
-      isEnabled() ? QIcon::Normal : QIcon::Disabled );
-    
-    _setClearButtonRect( rect );
-    
-  }
-    
+  _paintClearButton( painter );
+  
   painter.end();
 
   // normal painting (without frame)
@@ -478,6 +463,37 @@ void LineEditor::_installActions( void )
   _updateUndoRedoActions();
   _updateSelectionActions();
 
+}
+
+//________________________________________________
+bool LineEditor::_toggleClearButton( const bool& value )
+{
+  if( value == _clearButtonVisible() ) return false;
+  _setClearButtonVisible( value );
+  return true;
+}
+
+//________________________________________________
+void LineEditor::_paintClearButton( QPainter& painter, const bool& check )
+{
+  
+  if( check && !_clearButtonVisible() ) return;
+    
+  // get widget rect an adjust
+  QRect rect( LineEditor::rect() );
+  int offset( hasFrame() ? _frameWidth():0 );
+  if( hasFrame() ) { rect.adjust( 0, offset-1, -offset-1, -offset-1 ); }   
+  
+  // set the proper right margin
+  rect.setLeft( rect.right() - fontMetrics().lineSpacing() -1 );
+  
+  _clearIcon().paint( 
+    &painter, rect, 
+    Qt::AlignRight|Qt::AlignVCenter, 
+    isEnabled() ? QIcon::Normal : QIcon::Disabled );
+  
+  _setClearButtonRect( rect );
+  
 }
 
 //________________________________________________

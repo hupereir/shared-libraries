@@ -101,6 +101,11 @@ class LineEditor: public QLineEdit, public Counter
   virtual void setText( const QString& value )
   { QLineEdit::setText( value ); }
   
+  //! clear
+  /*! copy base class method to make it virtual */
+  virtual void clear( void )
+  { QLineEdit::clear(); }
+
   //! changes selection to uppercase
   void lowerCase( void );
   
@@ -142,6 +147,39 @@ class LineEditor: public QLineEdit, public Counter
   const bool& _hasClearButton( void )
   { return has_clear_button_; }
   
+  //! clear button rect
+  const QRect& _clearButtonRect( void ) const
+  { return clear_button_rect_; }
+  
+  //! clear button rect
+  virtual void _setClearButtonRect( const QRect& rect )
+  { clear_button_rect_ = rect; }
+
+  //! toggle clear button
+  virtual bool _toggleClearButton( const bool& );
+  
+  //! clear button visibility
+  virtual const bool& _clearButtonVisible( void ) const
+  { return clear_button_visible_; }
+
+  //! set clear button visibility
+  virtual void _setClearButtonVisible( const bool& value ) 
+  { clear_button_visible_ = value; }
+  
+  //! paint clear button
+  virtual void _paintClearButton( QPainter& painter )
+  { _paintClearButton( painter, true ); }
+
+  //! paint clear button
+  virtual void _paintClearButton( QPainter&, const bool& );
+
+  //! framewidth
+  int _frameWidth( void ) const;
+    
+  //! clear icon
+  virtual const QIcon& _clearIcon( void ) const
+  { return clear_icon_; }
+  
   protected slots:
   
   //! update modification state
@@ -181,17 +219,6 @@ class LineEditor: public QLineEdit, public Counter
   { return is_oxygen_; }
   
   //@}
-  
-  //! framewidth
-  int _frameWidth( void ) const;
-  
-  //! clear button rect
-  const QRect& _clearButtonRect( void ) const
-  { return clear_button_rect_; }
-  
-  //! clear button rect
-  void _setClearButtonRect( const QRect& rect )
-  { clear_button_rect_ = rect; }
   
   //! modification state
   bool modified_;
@@ -244,6 +271,9 @@ class LineEditor: public QLineEdit, public Counter
   
   //! true when clear button should be drawn
   bool has_clear_button_;
+  
+  //! true when clear button is visible
+  bool clear_button_visible_;
   
   //! clear button rect
   QRect clear_button_rect_;
