@@ -105,9 +105,13 @@ bool AnimatedLineEditor::_toggleClearButton( const bool& value )
 { 
   if( !LineEditor::_toggleClearButton( value ) ) return false;
   
-  // start smooth painting of clear button
-  if( isVisible() && _transitionWidget().isEnabled() && timeLine().state() == QTimeLine::NotRunning ) 
-  { timeLine().start(); }
+  // check various cases where timeline should not be started
+  if( _transitionWidget().timeLine().state() != QTimeLine::NotRunning ) return true;
+  if( !(isVisible() && _transitionWidget().isEnabled() ) ) return true;
+  if( timeLine().state() != QTimeLine::NotRunning ) return true;
+
+  // start timeline
+  timeLine().start();
   
   return true;
 }
