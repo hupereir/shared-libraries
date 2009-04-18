@@ -35,7 +35,7 @@
 #include <assert.h>
 #include <QSlider>
 
-#include "LineEditor.h"
+#include "AnimatedLineEditor.h"
 #include "Counter.h"  
 #include "Debug.h"  
 /*!
@@ -72,7 +72,7 @@ class CustomSlider: public QWidget, public Counter
   }
   
   //! retrieve LineEditor
-  LineEditor& lineEditor( void )
+  AnimatedLineEditor& lineEditor( void )
   {
     assert( line_edit_ );
     return *line_edit_;
@@ -91,7 +91,7 @@ class CustomSlider: public QWidget, public Counter
   QSlider *slider_;
   
   //! associated LineEdit
-  LineEditor *line_edit_;
+  AnimatedLineEditor *line_edit_;
   
   private slots:
   

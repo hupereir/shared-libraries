@@ -221,7 +221,7 @@ void ColorDisplay::_selectColorFromText( void )
 QColor ColorDisplay::LocalLineEdit::color( void ) const
 { 
   Debug::Throw( "ColorDisplay::LocalLineEdit::color.\n" );
-  QString text( LineEditor::text() );
+  QString text( AnimatedLineEditor::text() );
   if( text == ColorDisplay::NONE || text.isEmpty() ) return QColor();
   else return QColor( text );
 }

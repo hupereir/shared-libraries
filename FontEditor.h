@@ -37,7 +37,7 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "LineEditor.h"
+#include "AnimatedLineEditor.h"
 
 //! readonly font name display and font dialog
 class FontEditor: public QWidget, public Counter
@@ -93,7 +93,7 @@ class FontEditor: public QWidget, public Counter
   private: 
                 
   //! font name
-  LineEditor* label_;
+  AnimatedLineEditor* label_;
   
   //! selected font
   QFont font_;

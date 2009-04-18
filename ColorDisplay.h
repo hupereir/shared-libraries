@@ -36,7 +36,7 @@
 
 
 #include "Counter.h"
-#include "LineEditor.h"
+#include "AnimatedLineEditor.h"
 
 //! used to display colors and a choose button
 class ColorDisplay: public QWidget, public Counter
@@ -91,14 +91,14 @@ class ColorDisplay: public QWidget, public Counter
   private:
   
   //! internal customized label to have correct background color
-  class LocalLineEdit : public LineEditor
+  class LocalLineEdit : public AnimatedLineEditor
   {
     
     public:
     
     //! constructor
     LocalLineEdit( QWidget *parent ):
-      LineEditor( parent )
+      AnimatedLineEditor( parent )
     {}
       
     //! retrieve color

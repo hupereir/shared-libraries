@@ -61,7 +61,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   QLabel *label( new QLabel( "&Goto line number: ", this ) );
   vlayout->addWidget( label, 0 );
   
-  vlayout->addWidget( editor_ = new LineEditor( this ), 1 );
+  vlayout->addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
   label->setBuddy( editor_ );
 
   //connect( editor(), SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );

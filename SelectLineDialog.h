@@ -36,7 +36,7 @@
 
 #include "BaseDialog.h"
 #include "Counter.h"
-#include "LineEditor.h"
+#include "AnimatedLineEditor.h"
 #include "Str.h"
 
 //! find_text dialog for text editor widgets
@@ -52,7 +52,7 @@ class SelectLineDialog: public BaseDialog, public Counter
   SelectLineDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
   
   //! retrieve editor
-  LineEditor& editor( void ) const
+  AnimatedLineEditor& editor( void ) const
   { return *editor_; }
 
   signals:
@@ -68,7 +68,7 @@ class SelectLineDialog: public BaseDialog, public Counter
   private:
   
   //! line editor for text to find
-  LineEditor* editor_;      
+  AnimatedLineEditor* editor_;      
     
 };
 #endif

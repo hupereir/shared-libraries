@@ -49,7 +49,7 @@ FontEditor::FontEditor( QWidget *parent ):
   layout->setSpacing(2);
   setLayout( layout );
 
-  label_ =  new LineEditor( this );
+  label_ =  new AnimatedLineEditor( this );
   label_->setReadOnly( true );
   label_->setHasClearButton( false );
   label_->setAlignment( Qt::AlignCenter );
