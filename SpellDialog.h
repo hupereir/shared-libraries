@@ -44,7 +44,7 @@
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "ListModel.h"
-#include "LineEditor.h"
+#include "AnimatedLineEditor.h"
 #include "SpellInterface.h"
 #include "TextPosition.h" 
 
@@ -219,10 +219,10 @@ namespace SPELLCHECK
     bool read_only_editor_;
     
     //! line editor for original word
-    LineEditor *line_edit_;
+    AnimatedLineEditor *line_edit_;
             
     //! line editor for text replacement
-    LineEditor *replace_line_edit_;
+    AnimatedLineEditor *replace_line_edit_;
     
     //! model
     Model model_;
