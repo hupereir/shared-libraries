@@ -59,6 +59,11 @@ class ComboLineEdit: public AnimatedLineEditor
   //! emited when autocompletion is requested
   void autoComplete( QString );
   
+  public slots:
+  
+  //! start animation
+  void startAnimation( void );
+  
   protected:
   
   //! overloaded keypress event

@@ -29,7 +29,10 @@
   \date $Date$
 */
 
+#include <QAbstractItemView>
+
 #include "CustomComboBox.h"
+#include "TransitionWidget.h"
 
 using namespace std;
 using namespace Qt;
@@ -71,8 +74,19 @@ void CustomComboBox::setEditable( bool value )
     editor_->setFrame( false );
     setLineEdit( editor_ );
     connect( editor_, SIGNAL( autoComplete( QString ) ), SLOT( _autoComplete( QString ) ) );
+    connect( view(), SIGNAL( pressed( QModelIndex ) ), editor_, SLOT( startAnimation( void ) ) );
+    connect( view(), SIGNAL( activated( QModelIndex ) ), editor_, SLOT( startAnimation( void ) ) );
   }
   
+}
+
+//____________________________________________________
+void ComboLineEdit::startAnimation( void )
+{
+  Debug::Throw( "ComboLineEdit::startAnimation.\n" );
+  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;
+  _transitionWidget().initialize();  
+  _transitionWidget().start();  
 }
 
 //____________________________________________________
