@@ -176,6 +176,7 @@ namespace SVG
     bool changed( true );
     
     // try get from plasma interface if needed
+    #ifndef Q_WS_WIN
     if( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_INTERFACE" ) )
     {
       
@@ -199,6 +200,7 @@ namespace SVG
         }
       }
     }
+    #endif
     
     bool found( false );
     Options::List file_list( XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) );

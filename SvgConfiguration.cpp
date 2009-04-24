@@ -86,6 +86,7 @@ namespace SVG
     addOptionWidget( spinbox );
     
     // plasma interface
+    #ifndef Q_WS_WIN
     QGroupBox* plasma_box;
     layout()->addWidget( plasma_box = new QGroupBox( "Plasma interface (KDE only)", this ) );
     plasma_box->setLayout( new QVBoxLayout() );
@@ -103,6 +104,7 @@ namespace SVG
       "If checked, the plasma theme's translucent background,\n"
       "if available, if used in place of the solid background" );
     addOptionWidget( transparent_checkbox );
+    #endif
     
     // SVG file
     QGroupBox* file_list_box;
@@ -119,18 +121,17 @@ namespace SVG
     
     // initiali setup and connections
     svg_checkbox->setChecked( false );
-    plasma_checkbox->setChecked( false );
-    //spinbox->setEnabled( false );
-    //listbox->setEnabled( false );
-    plasma_box->setEnabled( false );
     file_list_box->setEnabled( false );
     
-    connect( svg_checkbox, SIGNAL( toggled( bool ) ), plasma_box, SLOT( setEnabled( bool ) ) );
-    connect( svg_checkbox, SIGNAL( toggled( bool ) ), file_list_box, SLOT( setEnabled( bool ) ) );
+    #ifndef Q_WS_WIN
+    plasma_checkbox->setChecked( false );
+    plasma_box->setEnabled( false );
     connect( plasma_checkbox, SIGNAL( toggled( bool ) ), file_list_box, SLOT( setDisabled( bool ) ) );
+    connect( svg_checkbox, SIGNAL( toggled( bool ) ), plasma_box, SLOT( setEnabled( bool ) ) );
+    #endif
     
-    //connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
-    //connect( checkbox, SIGNAL( toggled( bool ) ), listbox, SLOT( setEnabled( bool ) ) );
+    connect( svg_checkbox, SIGNAL( toggled( bool ) ), file_list_box, SLOT( setEnabled( bool ) ) );
+
     
   }
   
