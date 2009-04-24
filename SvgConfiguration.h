@@ -31,7 +31,7 @@
    \date    $Date$
 */
 
-#include <QGroupBox>
+#include <QWidget>
 
 #include "Counter.h"
 #include "OptionWidgetList.h"
@@ -40,7 +40,7 @@ namespace SVG
 {
 
   //! SVG common configuration
-  class SvgConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+  class SvgConfiguration: public QWidget, public OptionWidgetList, public Counter
   {
     
     public:

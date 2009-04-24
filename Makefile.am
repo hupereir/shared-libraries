@@ -21,6 +21,7 @@ noinst_HEADERS = \
   SvgConfiguration.h \
   SvgEngine.h \
   SvgHelpText.h \
+  SvgPlasmaInterface.h \
   SvgRenderer.h \
   SvgThread.h \
   Svg.h
@@ -30,10 +31,13 @@ noinst_LIBRARIES = libbase-svg.a
 libbase_svg_a_SOURCES =  \
   SvgConfiguration.cpp \
   SvgEngine.cpp \
+  SvgPlasmaInterface.cpp \
   SvgRenderer.cpp \
   SvgThread.cpp
 
 nodist_libbase_svg_a_SOURCES =  \
+  moc_SvgEngine.cpp \
+  moc_SvgPlasmaInterface.cpp \
   qrc_baseSvg.cpp
 	
 clean-local:

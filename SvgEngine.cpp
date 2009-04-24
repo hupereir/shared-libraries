@@ -31,6 +31,7 @@
 
 #include <QPainter>
 
+#include "SvgPlasmaInterface.h"
 #include "SvgEngine.h"
 #include "Svg.h"
 #include "XmlOptions.h"
@@ -50,10 +51,12 @@ namespace SVG
   //__________________________________________________________
   SvgEngine::SvgEngine( void ):
     Counter( "SvgEngine" ),
+    plasma_interface_( 0 ),
     svg_offset_( 0 ),
     thread_( this )
   {
     Debug::Throw( "SvgEngine::SvgEngine.\n" );
+    
     XmlOptions::get().setAutoDefault( true );
     XmlOptions::get().keep( "SVG_BACKGROUND" );
     XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg", Option::RECORDABLE|Option::CURRENT ) );
@@ -62,9 +65,17 @@ namespace SVG
     XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-translucent.svg" ) );
     XmlOptions::get().set( "USE_SVG", Option("1") );
     XmlOptions::get().set( "SVG_OFFSET", Option("0") );
+    XmlOptions::get().set( "SVG_USE_PLASMA_INTERFACE", Option( "1" ) );
+    XmlOptions::get().set( "SVG_USE_PLASMA_TRANSPARENT", Option( "0" ) );
     XmlOptions::get().setAutoDefault( false );
+        
     return;
   }
+  
+  //__________________________________________________________
+  SvgEngine::~SvgEngine( void )
+  { Debug::Throw( "SvgEngine::~SvgEngine.\n" ); }
+  
   
   //__________________________________________________________
   bool SvgEngine::reload( void )
@@ -94,6 +105,7 @@ namespace SVG
       cache_.clear();
       preload( sizes );
       
+      emit SvgEngine::changed();
       return true;
     }
     
@@ -162,6 +174,32 @@ namespace SVG
     
     // get options
     bool changed( true );
+    
+    // try get from plasma interface if needed
+    if( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_INTERFACE" ) )
+    {
+      
+      bool first( !_hasPlasmaInterface() );
+      if( first ) _initializePlasmaInterface();
+      if( _plasmaInterface().setTransparent( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_TRANSPARENT" ) ) | first )
+      { _plasmaInterface().loadFile(); }
+      
+      Debug::Throw() << "SvgEngine::_loadSvg - validity: " << _plasmaInterface().isValid() << endl;
+      
+      if( _plasmaInterface().isValid() )
+      {
+        QString file( _plasmaInterface().fileName() );
+        svg_.load( QString( file ) );
+        if( svg_.isValid() ) 
+        {
+          changed = ( svg_file_ != file );
+          svg_file_ = file;
+          
+          return changed;
+        }
+      }
+    }
+    
     bool found( false );
     Options::List file_list( XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) );
     for( Options::List::const_iterator iter = file_list.begin(); iter != file_list.end(); iter++ )
@@ -181,5 +219,18 @@ namespace SVG
     return changed;
     
   }
-    
-}
+  
+  //________________________________
+  void SvgEngine::_initializePlasmaInterface( void )
+  {
+  
+    Debug::Throw( "SvgEngine::_initializePlasmaInterface.\n" );
+    assert( !_hasPlasmaInterface() );
+    plasma_interface_ = new SvgPlasmaInterface( this );
+    _plasmaInterface().loadTheme();
+    connect( &_plasmaInterface(), SIGNAL( themeChanged() ), SLOT( reload() ) );
+  
+  }
+  
+};
+

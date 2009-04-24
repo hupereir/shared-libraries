@@ -28,6 +28,7 @@
    \date    $Date$
 */
 
+#include <QGroupBox>
 #include <QLabel>
 #include <QPushButton>
 
@@ -41,53 +42,96 @@
 #include "XmlOptions.h"
 
 using namespace std;
-using namespace SVG;
 
-//___________________________________________
-SvgConfiguration::SvgConfiguration( QWidget* parent ):
-  QGroupBox( "Svg Background", parent ),
-  Counter( "SvgConfiguration" )
+namespace SVG
 {
+  //___________________________________________
+  SvgConfiguration::SvgConfiguration( QWidget* parent ):
+    QWidget( parent ),
+    Counter( "SvgConfiguration" )
+  {
+    
+    Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
+    
+    setLayout( new QVBoxLayout() );
+    layout()->setSpacing(5);
+    layout()->setMargin(5);
+    
+    QGroupBox* box;
+    layout()->addWidget( box = new QGroupBox( "General", this ) );
+    box->setLayout( new QVBoxLayout() );
+    box->layout()->setSpacing(5);
+    box->layout()->setMargin(5);
+
+    OptionCheckBox* svg_checkbox;
+    box->layout()->addWidget( svg_checkbox = new OptionCheckBox( "Use svg background", box, "USE_SVG" )); 
+    svg_checkbox->setToolTip( "Use svg to paint background" );
+    addOptionWidget( svg_checkbox ); 
+    
+    QHBoxLayout *h_layout = new QHBoxLayout();
+    h_layout->setMargin(0);
+    h_layout->setSpacing(5);
+    box->layout()->addItem( h_layout );
+    
+    OptionSpinBox* spinbox;
+    h_layout->addWidget( new QLabel( "Offset: ", box ) );
+    h_layout->addWidget( spinbox = new OptionSpinBox( box, "SVG_OFFSET" ) );
+    h_layout->addStretch();
+    spinbox->setMinimum( -16 );
+    spinbox->setMaximum( 16 );
+    spinbox->setToolTip( 
+      "Offset used to draw svg.\n"
+      "Positive offset will make the SVG larger than the\n"
+      "actual window size, thus shinking its edges\n" );
+    addOptionWidget( spinbox );
+    
+    // plasma interface
+    QGroupBox* plasma_box;
+    layout()->addWidget( plasma_box = new QGroupBox( "Plasma interface (KDE only)", this ) );
+    plasma_box->setLayout( new QVBoxLayout() );
+    plasma_box->layout()->setSpacing(5);
+    plasma_box->layout()->setMargin(5);
+    
+    OptionCheckBox* plasma_checkbox;
+    plasma_box->layout()->addWidget( plasma_checkbox = new OptionCheckBox( "Use plasma interface", plasma_box, "SVG_USE_PLASMA_INTERFACE" ) );
+    plasma_checkbox->setToolTip( "If checked, the KDE plasma theme is used for this application theme" );
+    addOptionWidget( plasma_checkbox );
+    
+    OptionCheckBox* transparent_checkbox;
+    plasma_box->layout()->addWidget( transparent_checkbox = new OptionCheckBox( "Use translucent SVG file", plasma_box, "SVG_USE_PLASMA_TRANSPARENT" ) );
+    transparent_checkbox->setToolTip( 
+      "If checked, the plasma theme's translucent background,\n"
+      "if available, if used in place of the solid background" );
+    addOptionWidget( transparent_checkbox );
+    
+    // SVG file
+    QGroupBox* file_list_box;
+    layout()->addWidget( file_list_box = new QGroupBox( "Svg file", this ) );
+    file_list_box->setLayout( new QVBoxLayout() );
+    file_list_box->layout()->setSpacing(5);
+    file_list_box->layout()->setMargin(5);
+    
+    OptionListBox *listbox = new OptionListBox( file_list_box, "SVG_BACKGROUND" );
+    listbox->setBrowsable( true );
+    listbox->setToolTip( "Pathname to load background svg" );
+    file_list_box->layout()->addWidget( listbox );
+    addOptionWidget( listbox );
+    
+    // initiali setup and connections
+    svg_checkbox->setChecked( false );
+    plasma_checkbox->setChecked( false );
+    //spinbox->setEnabled( false );
+    //listbox->setEnabled( false );
+    plasma_box->setEnabled( false );
+    file_list_box->setEnabled( false );
+    
+    connect( svg_checkbox, SIGNAL( toggled( bool ) ), plasma_box, SLOT( setEnabled( bool ) ) );
+    connect( svg_checkbox, SIGNAL( toggled( bool ) ), file_list_box, SLOT( setEnabled( bool ) ) );
+    connect( plasma_checkbox, SIGNAL( toggled( bool ) ), file_list_box, SLOT( setDisabled( bool ) ) );
+    
+    //connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
+    //connect( checkbox, SIGNAL( toggled( bool ) ), listbox, SLOT( setEnabled( bool ) ) );
+    
+  }
   
-  Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
-
-  QVBoxLayout *box_layout = new QVBoxLayout();
-  box_layout->setSpacing(5);
-  box_layout->setMargin(5);
-  setLayout( box_layout );
-
-  OptionCheckBox* checkbox;
-  box_layout->addWidget( checkbox = new OptionCheckBox( "Use svg background", this, "USE_SVG" )); 
-  checkbox->setToolTip( "Use svg to paint background" );
-  addOptionWidget( checkbox ); 
-
-  QHBoxLayout *h_layout = new QHBoxLayout();
-  h_layout->setMargin(0);
-  h_layout->setSpacing(5);
-  box_layout->addLayout( h_layout );
-  
-  OptionSpinBox* spinbox;
-  h_layout->addWidget( new QLabel( "Offset: ", this ) );
-  h_layout->addWidget( spinbox = new OptionSpinBox( this, "SVG_OFFSET" ) );
-  h_layout->addStretch();
-  spinbox->setMinimum( -16 );
-  spinbox->setMaximum( 16 );
-  spinbox->setToolTip( 
-    "Offset used to draw svg.\n"
-    "Positive offset will make the SVG larger than the\n"
-    "actual window size, thus shinking its edges\n" );
-  addOptionWidget( spinbox );
-
-  OptionListBox *listbox = new OptionListBox( this, "SVG_BACKGROUND" );
-  listbox->setBrowsable( true );
-  listbox->setToolTip( "Pathname to load background svg" );
-  box_layout->addWidget( listbox );
-  addOptionWidget( listbox );
-
-  checkbox->setChecked( false );
-  spinbox->setEnabled( false );
-  listbox->setEnabled( false );
-  connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
-  connect( checkbox, SIGNAL( toggled( bool ) ), listbox, SLOT( setEnabled( bool ) ) );
-
-}
+};

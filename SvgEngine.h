@@ -45,10 +45,14 @@
 //! svg namespace
 namespace SVG
 {
-
+  
+  class SvgPlasmaInterface;
+  
   //! customized Icon factory to provide better looking disabled icons
   class SvgEngine: public QObject, public Counter
   {
+    
+    Q_OBJECT;
     
     public:
     
@@ -61,8 +65,7 @@ namespace SVG
     { return get()._get( size ); }
     
     //! destructor
-    virtual ~SvgEngine( void )
-    {}
+    virtual ~SvgEngine( void );
     
     //! is valid
     bool isValid( void ) const
@@ -71,6 +74,13 @@ namespace SVG
     //! preload sizes
     /*! uses a separate thread, in order not to slow down application */
     void preload( std::vector<QSize> );
+    
+    signals:
+    
+    //! emmitted when svg files are changed
+    void changed( void );
+    
+    public slots: 
     
     //! reload all icons set in cache from new path list
     /*! return true if changed */
@@ -97,6 +107,20 @@ namespace SVG
     const QPixmap& _get( const QSize&, bool from_cache = true );
     
     //@}
+    
+    //! plasma interface
+    bool _hasPlasmaInterface( void ) const
+    { return plasma_interface_; }
+    
+    //! initialise plasma interface
+    void _initializePlasmaInterface( void );
+    
+    //! plasma interface
+    SvgPlasmaInterface& _plasmaInterface( void ) const
+    { return *plasma_interface_; }
+    
+    //! plasma interface
+    SvgPlasmaInterface *plasma_interface_;
     
     //! svg file
     QString svg_file_;
