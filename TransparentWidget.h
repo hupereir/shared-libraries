@@ -76,6 +76,15 @@ namespace TRANSPARENCY {
     void setBackgroundChanged( const bool& value )
     { background_changed_ = value; }
 
+    public slots:
+    
+    //! force reloading of the background 
+    virtual void reloadBackground( void )
+    { 
+      setBackgroundChanged( true );
+      update();
+    }
+    
     protected:
         
     //! enable/disable transparency
@@ -163,13 +172,6 @@ namespace TRANSPARENCY {
     //! update background pixmap
     virtual void _updateBackgroundPixmap( void );
     
-    //! force reloading of the background 
-    virtual void _reloadBackground( void )
-    { 
-      setBackgroundChanged( true );
-      update();
-    }
-
     private slots:
     
     //! update configuration

@@ -68,7 +68,7 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
   // connections
-  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( _reloadBackground() ) );
+  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( reloadBackground() ) );
   
 }
 
