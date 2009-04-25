@@ -78,12 +78,12 @@ namespace SVG
   
   
   //__________________________________________________________
-  bool SvgEngine::reload( void )
+  bool SvgEngine::reload( const bool& forced )
   { 
     Debug::Throw( "SvgEngine::reload.\n" );
     
     // try load background file
-    bool changed( _loadSvg() );
+    bool changed( _loadSvg( forced ) );
     if( !isValid() )
     { 
       cache_.clear();
@@ -167,13 +167,12 @@ namespace SVG
   }
   
   //________________________________________________
-  bool SvgEngine::_loadSvg( void )
+  bool SvgEngine::_loadSvg( const bool& forced )
   {
     
     Debug::Throw( "SvgEngine::_loadSvg.\n" );
     
-    // get options
-    bool changed( true );
+    bool changed( false );
     
     // try get from plasma interface if needed
     #ifndef Q_WS_WIN
@@ -182,21 +181,22 @@ namespace SVG
       
       bool first( !_hasPlasmaInterface() );
       if( first ) _initializePlasmaInterface();
-      if( _plasmaInterface().setTransparent( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_TRANSPARENT" ) ) | first )
-      { _plasmaInterface().loadFile(); }
+      else if( forced ) changed |= _plasmaInterface().loadTheme();
       
-      Debug::Throw() << "SvgEngine::_loadSvg - validity: " << _plasmaInterface().isValid() << endl;
-      
+      changed |=  _plasmaInterface().setTransparent( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_TRANSPARENT" ) );
+      if( changed || first || forced )  _plasmaInterface().loadFile();
+            
       if( _plasmaInterface().isValid() )
       {
         QString file( _plasmaInterface().fileName() );
         svg_.load( QString( file ) );
         if( svg_.isValid() ) 
         {
+          
           changed = ( svg_file_ != file );
           svg_file_ = file;
           
-          return changed;
+          return changed || forced;
         }
       }
     }
@@ -218,7 +218,7 @@ namespace SVG
     }
     
     if( !found )  svg_.load( QString() );
-    return changed;
+    return changed || forced;
     
   }
   

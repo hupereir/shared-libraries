@@ -74,7 +74,7 @@ namespace SVG
     //! preload sizes
     /*! uses a separate thread, in order not to slow down application */
     void preload( std::vector<QSize> );
-    
+
     signals:
     
     //! emmitted when svg files are changed
@@ -84,7 +84,7 @@ namespace SVG
     
     //! reload all icons set in cache from new path list
     /*! return true if changed */
-    bool reload( void );
+    bool reload( const bool& forced = false );
     
     protected:
       
@@ -94,7 +94,7 @@ namespace SVG
     private:
     
     //! load svg
-    bool _loadSvg( void );
+    bool _loadSvg( const bool& forced );
       
     //!@name non static methods are hidden
     //@{
@@ -108,12 +108,12 @@ namespace SVG
     
     //@}
     
+    //! initialise plasma interface
+    void _initializePlasmaInterface( void );
+        
     //! plasma interface
     bool _hasPlasmaInterface( void ) const
     { return plasma_interface_; }
-    
-    //! initialise plasma interface
-    void _initializePlasmaInterface( void );
     
     //! plasma interface
     SvgPlasmaInterface& _plasmaInterface( void ) const
