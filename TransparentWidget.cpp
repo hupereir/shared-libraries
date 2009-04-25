@@ -68,7 +68,7 @@ TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
   // connections
-  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( reloadBackground() ) );
+  connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( setBackgroundChanged() ) );
   
 }
 
@@ -92,10 +92,19 @@ void TransparentWidget::setWindowOpacity( double value )
 
 }
   
+
+//____________________________________________________________________
+void TransparentWidget::setBackgroundChanged( void )
+{ 
+  Debug::Throw( "TransparentWidget::setBackgroundChanged.\n"  ); 
+  setBackgroundChanged( true );
+  update();
+}
+
 //____________________________________________________________________
 void TransparentWidget::_setTintColor( const QColor& color )
 {
-  Debug::Throw( "TransparentWidget::tint.\n" ); 
+  Debug::Throw( "TransparentWidget::_setTintColor.\n" ); 
   if( tint_color_ == color ) return;
   tint_color_ = color;
   setBackgroundChanged( true );
@@ -272,6 +281,13 @@ void TransparentWidget::_updateConfiguration( void )
 }
   
 //____________________________________________________________________
+void TransparentWidget::_reloadBackground( void )
+{
+  Debug::Throw( "TransparentWidget::_reloadBackground.\n" );
+  BackgroundPixmap::get().reload();
+}
+
+//____________________________________________________________________
 void TransparentWidget::_updateBackgroundPixmap( void )
 {
   
@@ -333,6 +349,6 @@ void TransparentWidget::_installActions( void )
   reload_background_action_ = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload Background", this );
   reload_background_action_->setToolTip( "Reinitialize transparent background" );
   reload_background_action_->setShortcut( Qt::Key_F5 );
-  connect( reload_background_action_, SIGNAL( triggered() ), &BackgroundPixmap::get(), SLOT( reload() ) );
+  connect( reload_background_action_, SIGNAL( triggered( void ) ), SLOT( _reloadBackground( void ) ) );
   
 }

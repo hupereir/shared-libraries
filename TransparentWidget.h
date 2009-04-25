@@ -79,11 +79,7 @@ namespace TRANSPARENCY {
     public slots:
     
     //! force reloading of the background 
-    virtual void reloadBackground( void )
-    { 
-      setBackgroundChanged( true );
-      update();
-    }
+    virtual void setBackgroundChanged( void );
     
     protected:
         
@@ -168,6 +164,9 @@ namespace TRANSPARENCY {
     virtual void _paint( QPaintDevice&, const QRect& ) = 0;
 
     protected slots:
+    
+    //! reload background
+    virtual void _reloadBackground( void );
     
     //! update background pixmap
     virtual void _updateBackgroundPixmap( void );
