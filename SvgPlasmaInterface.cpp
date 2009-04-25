@@ -130,20 +130,32 @@ namespace SVG
   bool SvgPlasmaInterface::loadFile( void )
   { 
     
-    Debug::Throw( "SvgPlasmaInterface::loadFile.\n" );
-    const File background_transparent( "translucentbackground.svgz" );
-    const File background_standard( "background.svgz" );
+    Debug::Throw() << "SvgPlasmaInterface::loadFile - path: " << _path() << endl;
+
+    const QStringList files_standard( QStringList() << "background.svgz" << "background.svg" );
+    const QStringList files_transparent( QStringList() << "translucentbackground.svgz" << "translucentbackground.svg"  << "background.svgz" << "background.svg");
 
     // check path
     if( !_path().exists() ) return _setValid( false );
     
+    bool found( false );
+    File filename;
+    const QStringList& files( _transparent() ? files_transparent:files_standard );
+    
+    for( QStringList::const_iterator iter = files.begin(); iter != files.end() && !found; iter++ )
+    { 
+    
+      filename = File(*iter).addPath( _path() );
+      if( filename.exists() ) found = true;
+      
+    }
+    
     // construct full filename base on theme and transparency setting
-    File filename = (_transparent() ? background_transparent:background_standard ).addPath( _path() );    
     Debug::Throw() << "SvgPlasmaInterface::loadFile - filename: " << filename << " exists: " << filename.exists() << endl;
 
     bool changed( false );
-    changed |= _setValid( filename.exists() );
-    changed |= _setFileName( filename );
+    changed |= _setValid( found );
+    changed |= _setFileName( found ? filename:File() );
     return changed;
     
   }
@@ -174,19 +186,33 @@ namespace SVG
   {
     Debug::Throw() << "SvgPlasmaInterface::_setTheme - theme: " << theme << endl;
     File path;
-    QTextStream( &path ) << "/usr/share/apps/desktoptheme/" << theme << "/widgets";
+    
+    // try use user-scoped path
+    QTextStream( &path ) << Util::home() << "/.kde4/share/apps/desktoptheme/" << theme << "/widgets";
+    if( !path.exists() )       
+    {
+
+      path.clear();
+      
+      // try use system-scoped path
+      QTextStream( &path ) << "/usr/share/apps/desktoptheme/" << theme << "/widgets";
+      
+    } else return _setPath( path );
+          
     if( !path.exists() )
     {
+      
+      // try use default theme
       if( theme == "default" ) 
       {
         bool changed( false );
         changed |= _setPath( File() );
         changed |= _setValid( false );
-        return false;
+        return changed;
       } else return _setTheme( "default" );
     
     } else return _setPath( path );
-    
+        
   }
   
 };
