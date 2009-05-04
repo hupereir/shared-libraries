@@ -28,7 +28,7 @@
   \version $Revision$
   \date    $Date$
 */
-  
+
 #include "Debug.h"
 #include "KeyModifier.h"
 
@@ -41,6 +41,12 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
+
+// this is a hack to allow compilation at BNL
+// not sure whether this is armless or not
+#define XK_MISCELLANY
+#include <X11/keysymdef.h>
+
 #endif
 
 //______________________________________
