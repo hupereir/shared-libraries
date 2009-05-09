@@ -86,25 +86,7 @@ QString Util::user( void )
 QString Util::domain( void )
 {
   Debug::Throw( "Util::domain.\n" ); 
-  
-  #ifdef Q_WS_X11
-  
-  // use build-in unix function
-  char *buf = new char[ LONGSTR ];
-  if( !buf ) return "";
-  getdomainname( buf, LONGSTR );
-  QString out( buf );
-  delete[] buf;
-  return out;
-  
-  #else
-  
-  // use system environment.
-  // should work for windows
-  return env( "USERDOMAIN","localdomain");
-  
-  #endif
-  
+  return QHostInfo::localDomainName();
 }  
 
 //______________________________________________________________________

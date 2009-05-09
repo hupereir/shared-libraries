@@ -1,5 +1,6 @@
 TEMPLATE = lib
 CONFIG = staticlib qt
+QT += network
 
 HEADERS = \
   Command.h \
