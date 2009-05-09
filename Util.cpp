@@ -31,6 +31,7 @@
 */
 
 #include <QDir>
+#include <QHostInfo>
 #include <QProcess>
 #include <QStringList>
 #include <unistd.h>
@@ -126,17 +127,15 @@ QString Util::host( bool short_name )
   // use system environment
   // it does not work for windows
   Debug::Throw( "Util::host.\n" ); 
-  #ifdef Q_WS_WIN
-  QString out( env( "COMPUTERNAME", "unknown" ) );
-  #else
-  QString out( env( "HOSTNAME", "unknown" ) );
-  #endif
-  
+  QString out( QHostInfo::localHostName() );
   if( ! short_name ) return out;
-
-  int pos( out.indexOf( "." ) ); 
-  if( pos <0 ) return out;
-  return out.left( pos );
+  else {
+    
+    int pos( out.indexOf( "." ) ); 
+    if( pos <0 ) return out;
+    return out.left( pos );
+  
+  }
   
 }
  

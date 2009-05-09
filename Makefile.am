@@ -5,8 +5,9 @@ INCLUDES =  \
  -I$(qt_includes) \
  -I$(qt_includes)/Qt \
  -I$(qt_includes)/QtCore  \
+ -I$(qt_includes)/QtNetwork \
  -I$(qt_includes)/QtXml \
- -I$(qt_includes)/QtGui
+	-I$(qt_includes)/QtGui
 
 noinst_HEADERS = \
   Command.h \
