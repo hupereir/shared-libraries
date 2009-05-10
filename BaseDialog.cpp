@@ -29,11 +29,13 @@
   \date $Date$
 */
 
+#include <QTextStream>
 #include <QWindowStateChangeEvent>
 
 #include "BaseDialog.h"
 #include "Debug.h"
 #include "QtUtil.h"
+#include "Util.h"
 
 using namespace std;
 
@@ -45,6 +47,25 @@ BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
 { 
   Debug::Throw( "BaseDialog::BaseDialog.\n" );
   setSizeGripEnabled ( true );
+}
+
+//__________________________________________________
+BaseDialog::~BaseDialog( void )
+{ Debug::Throw( "BaseDialog::~BaseDialog.\n" ); }
+
+//__________________________________________________
+void BaseDialog::setWindowTitle( const QString& title )
+{
+  
+  Debug::Throw( "BaseDialog::setWindowTitle.\n" );
+  QString host( Util::host() );
+  if( host == "localhost" ) QDialog::setWindowTitle( title );
+  else {
+    QString buffer;
+    QTextStream( &buffer ) << title << " [" << Util::host() << "]";
+    QDialog::setWindowTitle( buffer );
+  }
+  
 }
 
 //__________________________________________________

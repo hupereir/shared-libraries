@@ -65,6 +65,12 @@ class BaseDialog: public QDialog
   //! constructor
   BaseDialog( QWidget *parent = 0, Qt::WFlags flags = 0);
   
+  //! destructor
+  virtual ~BaseDialog( void );
+  
+  //! window title
+  virtual void setWindowTitle( const QString& );
+  
   //! restore window size
   virtual QSize minimumSizeHint( void ) const;
 

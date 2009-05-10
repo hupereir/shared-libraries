@@ -31,6 +31,7 @@
 
 #include <assert.h>
 #include <QMenuBar>
+#include <QTextStream>
 #include <QToolBar>
 #include <QWindowStateChangeEvent>
 
@@ -40,10 +41,11 @@
 #include "BaseMainWindow.h"
 #include "CustomToolBar.h"
 #include "CustomToolButton.h"
+#include "QtUtil.h"
 #include "Singleton.h"
 #include "ToolBarMenu.h"
 #include "ToolButtonStyleMenu.h"
-#include "QtUtil.h"
+#include "Util.h"
 
 using namespace std;
 
@@ -97,6 +99,21 @@ void BaseMainWindow::setOptionName( const QString& name )
     if( !XmlOptions::get().find( showMenuOptionName() ) ) XmlOptions::get().set<bool>( showMenuOptionName(), showMenuAction().isChecked() );
     else showMenuAction().setChecked( XmlOptions::get().get<bool>( showMenuOptionName() ) );
     
+  }
+  
+}
+
+//__________________________________________________
+void BaseMainWindow::setWindowTitle( const QString& title )
+{
+  
+  Debug::Throw( "BaseMainWindow::setWindowTitle.\n" );
+  QString host( Util::host() );
+  if( host == "localhost" ) QMainWindow::setWindowTitle( title );
+  else {
+    QString buffer;
+    QTextStream( &buffer ) << title << " [" << Util::host() << "]";
+    QMainWindow::setWindowTitle( buffer );
   }
   
 }

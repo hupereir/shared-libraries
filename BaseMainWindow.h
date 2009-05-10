@@ -82,6 +82,9 @@ class BaseMainWindow: public QMainWindow
   //! center widget on argument widget
   void centerOnWidget( QWidget* );
 
+  //! window title
+  virtual void setWindowTitle( const QString& );
+
   //! set menu bar (overloaded)
   void setMenuBar( QMenuBar* );
   
@@ -91,7 +94,6 @@ class BaseMainWindow: public QMainWindow
     assert( lock_toolbars_action_ );
     return *lock_toolbars_action_; 
   }
-   
   
   //! lock toolbars
   QAction& showMenuAction( void ) const
@@ -124,7 +126,7 @@ class BaseMainWindow: public QMainWindow
   //! menu option name
   const QString& showMenuOptionName( void ) const
   { return show_menu_option_name_; }
-
+  
   signals:
   
   //! toolbar configuration changed
