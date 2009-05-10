@@ -107,14 +107,8 @@ void BaseMainWindow::setOptionName( const QString& name )
 void BaseMainWindow::setWindowTitle( const QString& title )
 {
   
-  Debug::Throw( "BaseMainWindow::setWindowTitle.\n" );
-  QString host( Util::host() );
-  if( host == "localhost" ) QMainWindow::setWindowTitle( title );
-  else {
-    QString buffer;
-    QTextStream( &buffer ) << title << " [" << Util::host() << "]";
-    QMainWindow::setWindowTitle( buffer );
-  }
+  Debug::Throw( "BaseMainWindow::setWindowTitle.\n" );  
+  QMainWindow::setWindowTitle( Util::windowTitle( title ) );
   
 }
 

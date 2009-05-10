@@ -2069,11 +2069,7 @@ void TextEditor::_createProgressDialog( void )
   QProgressDialog* dialog = new QProgressDialog(0); 
   dialog->setAttribute( Qt::WA_DeleteOnClose, true );
   dialog->setLabelText( "Replace text in selection" );
-  
-  QString title( "Replace in Text" );
-  QString host( Util::host( true ) );
-  if( host != "localhost" ) QTextStream( &title ) << " [" << host << "]";
-  dialog->setWindowTitle( title );
+  dialog->setWindowTitle( Util::windowTitle( "Replace in Text" ) );
 
   // connections
   connect( this, SIGNAL( busy( int ) ), dialog, SLOT( setMaximum( int ) ) );

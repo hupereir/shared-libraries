@@ -58,14 +58,7 @@ BaseDialog& BaseDialog::setWindowTitle( const QString& title )
 {
   
   Debug::Throw( "BaseDialog::setWindowTitle.\n" );
-  QString host( Util::host() );
-  if( host == "localhost" ) QDialog::setWindowTitle( title );
-  else {
-    QString buffer;
-    QTextStream( &buffer ) << title << " [" << Util::host() << "]";
-    QDialog::setWindowTitle( buffer );
-  }
-  
+  QDialog::setWindowTitle( Util::windowTitle( title ) );
   return *this;
   
 }
