@@ -100,8 +100,7 @@ namespace BASE
     { return modified_; }
     
     //! set dialog caption
-    void setWindowTitle( const QString& value )
-    { window_title_ = value; }
+    void setWindowTitle( const QString& value );
     
     //@}
     

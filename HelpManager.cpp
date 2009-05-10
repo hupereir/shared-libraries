@@ -50,15 +50,6 @@ using namespace Qt;
 using namespace BASE;
 
 //_________________________________________________________
-// static members initialization
-
-//bool HelpManager::modified_( false );
-
-//HelpItem::List HelpManager::items_;
-//HelpItem::List HelpManager::backup_items_;
-//QString HelpManager::file_;
-
-//_________________________________________________________
 HelpManager::HelpManager( QObject* parent ):
   QObject( parent ),
   Counter( "HelpManager" ),
@@ -70,6 +61,7 @@ HelpManager::HelpManager( QObject* parent ):
   
   // actions
   display_action_ = new QAction( IconEngine::get( ICONS::HELP ), "&Reference Manual", this );
+  display_action_->setShortcut( Qt::Key_F1 );
   connect( display_action_, SIGNAL( triggered() ), SLOT( _display() ) );
   
   dump_action_ = new QAction( "D&ump Help", this );
@@ -146,7 +138,15 @@ void HelpManager::install( const QString& file )
   return;
 
 }
-  
+ 
+//_____________________________________________________
+void HelpManager::setWindowTitle( const QString& value )
+{ 
+  Debug::Throw( "HelpManager::setWindowTitle.\n" );
+  window_title_ = value; 
+  displayAction().setText( value );
+}
+
 //_____________________________________________________
 void HelpManager::_display( void )
 {
