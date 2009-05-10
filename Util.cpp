@@ -87,7 +87,7 @@ QString Util::domain( void )
 {
   Debug::Throw( "Util::domain.\n" ); 
   
-  #if QT_VERSION >= 0x040400
+  #if QT_VERSION >= 0x040500
   
   return QHostInfo::localDomainName();
   
