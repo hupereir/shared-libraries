@@ -56,6 +56,7 @@
 #include "TextBlockData.h"
 #include "TextEditorMarginWidget.h"
 #include "TextSeparator.h"
+#include "Util.h"
 #include "XmlOptions.h"
 
 using namespace std;
@@ -535,7 +536,7 @@ void TextEditor::showReplacements( const unsigned int& counts )
   if( !counts ) stream << "String not found.";
   else if( counts == 1 ) stream << "1 replacement performed";
   else stream << counts << " replacements performed";
-  InformationDialog( this, buffer ).centerOnWidget( qApp->activeWindow() ).exec();
+  InformationDialog( this, buffer ).setWindowTitle( "Replace in Text" ).centerOnWidget( qApp->activeWindow() ).exec();
   
   return;
 
@@ -2068,6 +2069,11 @@ void TextEditor::_createProgressDialog( void )
   QProgressDialog* dialog = new QProgressDialog(0); 
   dialog->setAttribute( Qt::WA_DeleteOnClose, true );
   dialog->setLabelText( "Replace text in selection" );
+  
+  QString title( "Replace in Text" );
+  QString host( Util::host( true ) );
+  if( host != "localhost" ) QTextStream( &title ) << " [" << host << "]";
+  dialog->setWindowTitle( title );
 
   // connections
   connect( this, SIGNAL( busy( int ) ), dialog, SLOT( setMaximum( int ) ) );

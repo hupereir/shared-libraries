@@ -69,7 +69,7 @@ class BaseDialog: public QDialog
   virtual ~BaseDialog( void );
   
   //! window title
-  virtual void setWindowTitle( const QString& );
+  virtual BaseDialog& setWindowTitle( const QString& );
   
   //! restore window size
   virtual QSize minimumSizeHint( void ) const;

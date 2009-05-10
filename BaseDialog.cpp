@@ -54,7 +54,7 @@ BaseDialog::~BaseDialog( void )
 { Debug::Throw( "BaseDialog::~BaseDialog.\n" ); }
 
 //__________________________________________________
-void BaseDialog::setWindowTitle( const QString& title )
+BaseDialog& BaseDialog::setWindowTitle( const QString& title )
 {
   
   Debug::Throw( "BaseDialog::setWindowTitle.\n" );
@@ -65,6 +65,8 @@ void BaseDialog::setWindowTitle( const QString& title )
     QTextStream( &buffer ) << title << " [" << Util::host() << "]";
     QDialog::setWindowTitle( buffer );
   }
+  
+  return *this;
   
 }
 
