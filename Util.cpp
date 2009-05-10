@@ -41,15 +41,15 @@
 #include "Str.h"
 #include "Debug.h"
 
+using namespace std;
+  
 /*! \brief
-  static 'long' QString size 
-  for c_like system QString access
+static 'long' QString size 
+for c_like system QString access
 */
 
 static const int LONGSTR = 256;
 
-using namespace std;
-   
 //______________________________________________________________________
 QString Util::env( const QString& val, const QString& default_value )
 {
@@ -86,7 +86,29 @@ QString Util::user( void )
 QString Util::domain( void )
 {
   Debug::Throw( "Util::domain.\n" ); 
+  
+  #if QT_VERSION >= 0x040400
+  
   return QHostInfo::localDomainName();
+  
+  #else 
+  #ifdef Q_WS_X11
+  
+  // use build-in unix function
+  char *buf = new char[ LONGSTR ];
+  if( !buf ) return "";
+  getdomainname( buf, LONGSTR );
+  QString out( buf );
+  delete[] buf;
+  return out;
+  
+  #else
+  
+  // use system environment.
+  // should work for windows
+  return env( "USERDOMAIN","localdomain");
+  #endif
+  #endif
 }  
 
 //______________________________________________________________________
