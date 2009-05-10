@@ -111,6 +111,21 @@ QString Util::domain( void )
   #endif
 }  
 
+//_____________________________________________________
+QString Util::windowTitle( const QString& title )
+{
+ 
+  Debug::Throw( "Util::windowTitle.\n" );
+  QString host( Util::host() );
+  if( host == "localhost" ) return title;
+  else {
+    QString buffer;
+    QTextStream( &buffer ) << title << " [" << Util::host() << "]";
+    return buffer;
+  }
+  
+}
+
 //______________________________________________________________________
 QString Util::home( void )
 {

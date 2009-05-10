@@ -68,6 +68,9 @@ class Util
   */
   static QString host( bool short_name = false );  
   
+  //! append host to input string to form window title
+  static QString windowTitle( const QString& );
+  
   //! application pid
   static int pid( void );  
   
