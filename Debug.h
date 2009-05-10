@@ -62,24 +62,16 @@ class Debug
     public:
     
     //! constructor
-    LockedStream( QTextStream& stream, QMutex& mutex ):
-      mutex_lock_( &mutex ),
-      stream_( stream )
-    {}
+    LockedStream( QTextStream&, QMutex& );
      
     //! constructor
-    LockedStream( const LockedStream& ref ):
-      mutex_lock_( ref.mutex_lock_.mutex() ),
-      stream_( ref.stream_ )
-    {}
+    LockedStream( const LockedStream& ref );
      
     //! destructor
-    virtual ~LockedStream( void )
-    {}
+    virtual ~LockedStream( void );
    
     //! cast to QTextStream
-    operator QTextStream& () const 
-    { return stream_; }
+    operator QTextStream& () const;
 
     //! stream operator
     template<typename T> LockedStream& operator<<(const T &r) 
@@ -99,57 +91,30 @@ class Debug
   };
   
   //! writes string to clog if level is lower than level_
-  static void Throw( int level, QString str )
-  {  
-    // lock
-    QMutexLocker lock( &_get()._mutex() );
-    
-    // check level
-    if( _get().level_ < level ) return; 
-    
-    // print string to stream
-    _get()._stdStream() << str << flush;
-    
-    return;
-    
-  }
+  static void Throw( int level, QString str );
   
   //! writes string to clog if level_ is bigger than 0
-  static void Throw( QString str ) 
-  { Throw( 1, str ); }
+  static void Throw( QString str );
   
   //! returns either clog or dummy stream depending of the level
-  static LockedStream Throw( int level = 1 )
-  { 
-    // return proper stream depending on debugging level
-    return ( _get().level_ < level ) ? 
-      LockedStream( _get()._nullStream(), _get()._mutex() ) : 
-      LockedStream( _get()._stdStream(), _get()._mutex() ); 
-  }
+  static LockedStream Throw( int level = 1 );
    
   //! sets the debug level. Everything thrown of bigger level is not discarded
-  static void setLevel( const int& level ) 
-  { _get().level_ = level; }
+  static void setLevel( const int& level );
   
   //! retrieves the debug level
-  static const int& level( void ) 
-  { return _get().level_; }
+  static const int& level( void );
 
   private:
 
   //! private constructor
-  Debug( void ):
-    level_( 0 ),
-    null_stream_( &null_device_ ),
-    std_stream_( stdout )
-  {}
+  Debug( void );
   
   //! return singleton
   static Debug& _get( void );
   
   //! mutex
-  QMutex& _mutex( void )
-  { return mutex_; }
+  QMutex& _mutex( void );
   
   //! null device. 
   /*! Used to throw everything if the level is not high enough */  
@@ -158,32 +123,26 @@ class Debug
     public:
     
     //! constructor
-    NullIODevice()
-    {}
+    NullIODevice();
   
     protected:
     
     // read
-    virtual qint64 readData ( char*, qint64 )
-    { return 0; }
+    virtual qint64 readData ( char*, qint64 );
     
     // read
-    virtual qint64 writeData( const char*, qint64 )
-    { return 0; }
+    virtual qint64 writeData( const char*, qint64 );
     
   };
 
   //! null device
-  NullIODevice& _nullDevice( void )
-  { return null_device_; }
+  NullIODevice& _nullDevice( void );
   
   //! null device
-  QTextStream& _nullStream( void )
-  { return null_stream_; }
+  QTextStream& _nullStream( void );
   
   //! null device
-  QTextStream& _stdStream( void )
-  { return std_stream_; }
+  QTextStream& _stdStream( void );
 
   //! debug level
   int level_;  
@@ -201,7 +160,5 @@ class Debug
   QTextStream std_stream_;
 
 };
-
-//Debug::LockedStream& endl( Debug::LockedStream& );
 
 #endif
