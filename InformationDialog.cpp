@@ -24,7 +24,7 @@
 
 /*!
   \file Questioncpp
-  \brief simplified question dialog
+  \brief simple information dialog
   \author Hugo Pereira
   \version $Revision$
   \date $Date$

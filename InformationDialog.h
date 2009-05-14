@@ -27,7 +27,7 @@
 
 /*!
   \file InformationDialog.h
-  \brief simplified question dialog
+  \brief simple information dialog
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -38,7 +38,7 @@
 
 #include "CustomDialog.h"
 
-//! simplified question dialog
+//! simple information dialog
 class InformationDialog: public CustomDialog
 {
   
