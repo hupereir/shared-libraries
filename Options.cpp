@@ -60,31 +60,31 @@ Options::Options( bool install_default_options ):
     add( "PIXMAP_PATH", Option( ":/pixmaps/crystal" ) );
     add( "PIXMAP_PATH", Option( ":/pixmaps" ) );
     
-    set( "DEBUG_LEVEL", Option( "0" , "debug verbosity level" ) ); 
-    set( "SORT_FILES_BY_DATE", Option( "0" , "sort files by access date in open previous menu" ) ); 
-    set( "USE_FLAT_THEME", Option( "0", "use flat theme in replacement of plastique theme" ) );
+    set( "DEBUG_LEVEL", Option( "0" , "Debug verbosity level" ) ); 
+    set( "SORT_FILES_BY_DATE", Option( "0" , "Sort files by access date in open previous menu" ) ); 
+    set( "USE_FLAT_THEME", Option( "0", "Use flat theme in replacement of plastique theme" ) );
     
     // fonts
-    set( "FIXED_FONT_NAME", Option( "Sans" , "fixed font" ) ); 
-    set( "FONT_NAME", Option( "Sans" , "main font" ) ); 
+    set( "FIXED_FONT_NAME", Option( "Sans" , "Fixed font (used for editors)" ) ); 
+    set( "FONT_NAME", Option( "Sans" , "Main font (used for all widgets but editors)" ) ); 
     
     // toolbars default configuration
-    set( "TOOLBUTTON_ICON_SIZE", Option( "32" , "text label in tool buttons" ) ); 
-    set( "TOOLBUTTON_TEXT_POSITION", Option( "0" , "text label in tool buttons" ) ); 
+    set( "TOOLBUTTON_ICON_SIZE", Option( "32" , "Icon size used for tool buttons" ) ); 
+    set( "TOOLBUTTON_TEXT_POSITION", Option( "0" , "Text label position in tool buttons" ) ); 
     
     // text editors default configuration
-    set( "TAB_EMULATION", Option( "1" , "enable tab emulation" ) );
-    set( "TAB_SIZE", Option( "2" , "emulated tab size" ) );
-    set( "WRAP_TEXT", Option( "0" , "text wrapping" ) );
-    set( "SHOW_LINE_NUMBERS", Option( "0" , "line numbers" ) );
+    set( "TAB_EMULATION", Option( "1" , "Emulate tabs with space characters in text editors" ) );
+    set( "TAB_SIZE", Option( "2" , "Emulated tab size" ) );
+    set( "WRAP_TEXT", Option( "0" , "Text wrapping" ) );
+    set( "SHOW_LINE_NUMBERS", Option( "0" , "Display line numbers on the side of text editors" ) );
     
-    set( "HIGHLIGHT_PARAGRAPH", Option( "1", "enable paragraph highlighting" ) ); 
-    set( "HIGHLIGHT_COLOR", Option( "#fffdd4", "current paragraph highlight color" ) ); 
+    set( "HIGHLIGHT_PARAGRAPH", Option( "1", "Enable current paragraph highlighting" ) ); 
+    set( "HIGHLIGHT_COLOR", Option( "#fffdd4", "Current paragraph highlight color" ) ); 
     
     // list configuration
-    set( "ALTERNATE_COLOR", Option( "None", "background color for even items in ListBox and ListView" ) ); 
-    set( "SELECTED_COLUMN_COLOR", Option( "#fffdd4", "background color for selected column" ) ); 
-    set( "LIST_ICON_SIZE", Option( "24", "default icon size in lists" ) );
+    set( "ALTERNATE_COLOR", Option( "None", "Background color for even items in lists" ) ); 
+    set( "SELECTED_COLUMN_COLOR", Option( "#fffdd4", "Background color for selected column in list" ) ); 
+    set( "LIST_ICON_SIZE", Option( "24", "Default icon size in lists" ) );
     
     // textEditor margins
     set( "MARGIN_FOREGROUND", "#136872" );
@@ -99,7 +99,10 @@ Options::Options( bool install_default_options ):
     set( "SMOOTH_SCROLLING_DURATION", "100" );
 
     // box selection
-    set( "BOX_SELECTION_ALPHA", Option( "20", "alpha threshold for box selection - between 0 and 100" ) );
+    set( "BOX_SELECTION_ALPHA", Option( "20", "Alpha threshold for box selection - between 0 and 100" ) );
+    
+    // size grip
+    set( "SIZE_GRIP_ENABLED", Option( "0", "Draw size grip in bottom left corner of windows" ) );
     
     setAutoDefault( false );
     
