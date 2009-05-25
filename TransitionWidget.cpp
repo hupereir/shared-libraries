@@ -88,6 +88,10 @@ void TransitionWidget::start( void )
 { if( timeLine().state() != QTimeLine::Running ) timeLine().start(); }
 
 //___________________________________________________________________
+void TransitionWidget::mousePressEvent( QMouseEvent* )
+{ if( isVisible() ) hide(); }
+
+//___________________________________________________________________
 void TransitionWidget::paintEvent( QPaintEvent* event )
 {
     

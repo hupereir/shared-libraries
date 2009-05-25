@@ -38,12 +38,11 @@
 #include <QActionGroup>
 #include <QMainWindow>
 #include <QMenu>
-#include <QResizeEvent>
 
 #include "CustomToolButton.h"
 #include "Debug.h"  
 #include "IconSize.h"  
-#include "WindowSizeWatcher.h"  
+#include "WindowMonitor.h"  
 #include "XmlOptions.h"  
 
 class ToolBarMenu;
@@ -142,10 +141,6 @@ class BaseMainWindow: public QMainWindow
   //! generic event
   virtual bool event( QEvent* );
 
-  //! resize event
-  /* need to save updated window size */
-  virtual void resizeEvent( QResizeEvent* );
-  
   //! true if main window has toolbars
   virtual bool _hasToolBars( void ) const;
  
@@ -183,7 +178,7 @@ class BaseMainWindow: public QMainWindow
   QString show_menu_option_name_;
 
   //! size watcher
-  WindowSizeWatcher size_watcher_;
+  WindowMonitor monitor_;
   
   //! lock toolbars
   QAction* lock_toolbars_action_;

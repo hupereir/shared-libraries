@@ -202,6 +202,22 @@ class DockPanel: public QWidget, public Counter
   //! hide event
   virtual void hideEvent( QHideEvent* );
     
+  //! has size grip
+  bool _hasSizeGrip( void ) const
+  { return (bool)size_grip_; }
+  
+  //! size grip
+  QSizeGrip& _sizeGrip( void ) const
+  { return *size_grip_; }
+  
+  //! show size grip
+  void _showSizeGrip( void )
+  { if( _hasSizeGrip() ) _sizeGrip().show(); }
+  
+  //! hide size grip
+  void _hideSizeGrip( void )
+  { if( _hasSizeGrip() ) _sizeGrip().hide(); }
+  
   private slots:
   
   //! configuration

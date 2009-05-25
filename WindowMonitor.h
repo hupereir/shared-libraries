@@ -1,5 +1,5 @@
-#ifndef WindowSizeWatcher_h
-#define WindowSizeWatcher_h
+#ifndef WindowMonitor_h
+#define WindowMonitor_h
 
 // $Id$
  
@@ -25,7 +25,7 @@
 *******************************************************************************/
  
 /*!
-  \file WindowSizeWatcher.h
+  \file WindowMonitor.h
   \brief used to automatically save size of top level widgets
   \author Hugo Pereira
   \version $Revision$
@@ -40,27 +40,38 @@
 #include "Counter.h"
 
 //! used to automatically save size of top level widgets
-class WindowSizeWatcher: public QObject, public Counter
+class WindowMonitor: public QObject, public Counter
 {
   
   public:
   
   //! constructor
-  WindowSizeWatcher( QWidget* parent ):
-    QObject( parent ),
-    Counter( "WindowSizeWatcher" )
-  {}
-    
+  WindowMonitor( QWidget* );
+  
+  //! mode
+  enum Mode
+  {
+    NONE = 0,
+    SIZE = 1<<0,
+    POSITION = 1<<1
+  };
+  
+  //! mode
+  void setMode( const unsigned int value )
+  { mode_ = value; }
+  
   //! size option name
-  virtual void setOptionName( const QString& name );
+  virtual void setOptionName( const QString& );
     
   //! size hint
   /*! an invalid size is returned when option name is not set */
   QSize sizeHint( void ) const;
-  
-  //! restart timer 
-  /*! it is needed to save window size during resize events */
-  void restart( void );
+
+  //! position
+  QPoint position( void ) const;
+    
+  //! event filter
+  virtual bool eventFilter( QObject*, QEvent* );
   
   protected:
     
@@ -70,23 +81,41 @@ class WindowSizeWatcher: public QObject, public Counter
   
   private:
 
+  //! mode
+  const unsigned int& _mode( void ) const
+  { return mode_; }
+  
   //! true when option name was set
-  bool _hasSizeOptionName( void ) const
+  bool _hasOptionName( void ) const
   { return !width_option_name_.isEmpty(); }
 
   //! size option name
-  virtual const QString _heightOptionName( void ) const
+  virtual const QString& _heightOptionName( void ) const
   { return height_option_name_; }
   
   //! size option name
-  virtual const QString _widthOptionName( void ) const
+  virtual const QString& _widthOptionName( void ) const
   { return width_option_name_; }
 
+  //! x option name
+  virtual const QString& _xOptionName( void ) const
+  { return x_option_name_; }
+  
+  //! y option name
+  virtual const QString& _yOptionName( void ) const
+  { return y_option_name_; }
+  
   //! save window size
   void _saveWindowSize( void ) const;
 
+  //! save position
+  void _saveWindowPosition( void ) const;
+  
   //! resize timer
-  QBasicTimer resize_timer_;
+  QBasicTimer timer_;
+  
+  //! mode
+  unsigned int mode_;
   
   //! window size option name
   QString width_option_name_;
@@ -94,6 +123,12 @@ class WindowSizeWatcher: public QObject, public Counter
   //! window size option name
   QString height_option_name_;
   
+  //! position option name
+  QString x_option_name_;
+  
+  //! position option name
+  QString y_option_name_;
+
 };
 
 #endif

@@ -115,7 +115,7 @@ noinst_HEADERS = \
   TreeViewConfiguration.h \
   UserSelectionFrame.h \
   ValidFileThread.h \
-  WindowSizeWatcher.h \
+  WindowMonitor.h \
   WinUtil.h \
   X11Util.h \
   XmlCommandLineArguments.h \
@@ -213,7 +213,7 @@ libbase_qt_a_SOURCES = \
   UserSelectionFrame.cpp \
   ValidFileThread.cpp \
   WinUtil.cpp \
-  WindowSizeWatcher.cpp \
+  WindowMonitor.cpp \
   X11Util.cpp \
   XmlCommandLineArguments.cpp \
   XmlFileList.cpp \

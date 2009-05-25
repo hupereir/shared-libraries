@@ -36,6 +36,7 @@
 #include "TransitionWidget.h"
 #include "ClockLabel.h"
 #include "Debug.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ StatusBar::StatusBar( QWidget* parent ):
 { 
   Debug::Throw( "StatusBar::StatusBar.\n" ); 
   assert( dynamic_cast<QMainWindow*>( parent ) );
+  setSizeGripEnabled( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
 }
 
 
@@ -53,7 +55,16 @@ StatusBar::StatusBar( QWidget* parent ):
 void StatusBar::addClock( void )
 { 
   Debug::Throw( "StatusBar::addClock.\n" );
-  addPermanentWidget( new ClockLabel( this ) ); 
+  ClockLabel* clock = new ClockLabel( this );
+  
+  if( !isSizeGripEnabled() )
+  {
+    int left, right, top, bottom;
+    clock->getContentsMargins( &left, &top, &right, &bottom );
+    clock->setContentsMargins( left, top, right + 15, bottom );
+  }
+  
+  addPermanentWidget( clock ); 
 }
 
 //____________________________________________

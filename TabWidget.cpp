@@ -45,6 +45,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
     QFrame(), 
     Counter( "TabWidget" ),
     parent_( parent ),
+    size_grip_( 0 ),
     index_( 0 ),
     button_( Qt::NoButton ),
     move_enabled_( false )
@@ -72,8 +73,11 @@ TabWidget::TabWidget( QTabWidget* parent ):
   main_layout_->addWidget( box_ );
    
   // size grip
-  grid_layout->addWidget( size_grip_ = new QSizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
-  size_grip_->hide(); 
+  if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
+  {
+    grid_layout->addWidget( size_grip_ = new QSizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+    _hideSizeGrip();
+  }
 
   _installActions();
   updateActions( false );
@@ -109,7 +113,7 @@ void TabWidget::_toggleDock( void )
     parent_->QTabWidget::setCurrentWidget( this );
     
     // modify button text
-    size_grip_->hide();
+    _hideSizeGrip();
         
     emit attached();
     
@@ -147,7 +151,7 @@ void TabWidget::_toggleDock( void )
     _toggleSticky( stickyAction().isChecked() );
 
     // show widgets
-    size_grip_->show();
+    _showSizeGrip();
     show();
     
     // signal

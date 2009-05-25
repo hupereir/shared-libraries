@@ -128,6 +128,22 @@ class TabWidget: public QFrame, public Counter
   //! actions
   void _installActions( void );
   
+  //! has size grip
+  bool _hasSizeGrip( void ) const
+  { return (bool)size_grip_; }
+  
+  //! size grip
+  QSizeGrip& _sizeGrip( void ) const
+  { return *size_grip_; }
+  
+  //! show size grip
+  void _showSizeGrip( void )
+  { if( _hasSizeGrip() ) _sizeGrip().show(); }
+  
+  //! hide size grip
+  void _hideSizeGrip( void )
+  { if( _hasSizeGrip() ) _sizeGrip().hide(); }
+
   protected slots:
       
   //! toggle dock

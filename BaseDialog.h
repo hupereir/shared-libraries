@@ -33,9 +33,8 @@
 */
 
 #include <QDialog>
-#include <QResizeEvent>
 
-#include "WindowSizeWatcher.h"  
+#include "WindowMonitor.h"  
 
 /*!
   \class BaseDialog
@@ -92,7 +91,7 @@ class BaseDialog: public QDialog
 
   //! size option name
   virtual void setOptionName( const QString& name )
-  { size_watcher_.setOptionName( name ); }
+  { monitor_.setOptionName( name ); }
 
   public slots:
   
@@ -104,9 +103,6 @@ class BaseDialog: public QDialog
   //! generic event
   virtual bool event( QEvent* );
     
-  //! resize event
-  void resizeEvent( QResizeEvent* );
-      
   //! maximize state prior to minimization
   bool _wasMaximized( void ) const
   { return was_maximized_; }
@@ -118,7 +114,7 @@ class BaseDialog: public QDialog
   private:
   
   //! size watch
-  WindowSizeWatcher size_watcher_;
+  WindowMonitor monitor_;
       
   //! window state prior to minimization
   bool was_maximized_;

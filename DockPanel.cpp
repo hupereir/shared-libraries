@@ -43,7 +43,8 @@ using namespace std;
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent ):
   QWidget( parent ),
-  Counter( "DockPanel" )
+  Counter( "DockPanel" ),
+  size_grip_( 0 )
 {
   Debug::Throw( "DockPanel::DockPanel.\n" );
 
@@ -86,9 +87,12 @@ DockPanel::DockPanel( QWidget* parent ):
   main_layout_->addWidget( panel_, 1 );
 
   // size grip
-  grid_layout->addWidget( size_grip_ = new QSizeGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
-  size_grip_->hide();
-
+  if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
+  { 
+    grid_layout->addWidget( size_grip_ = new QSizeGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+    _hideSizeGrip();
+  }
+  
   // connections
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   
@@ -122,7 +126,8 @@ void DockPanel::_toggleDock( void )
     // change parent
     main().setParent( this );
     layout()->addWidget( main_ );
-    size_grip_->hide();
+    _hideSizeGrip();
+    
     main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
     main().show();
 
@@ -157,7 +162,7 @@ void DockPanel::_toggleDock( void )
     _toggleSticky( main().stickyAction().isChecked() );
 
     // show widgets
-    size_grip_->show();
+    _showSizeGrip();
     main().show();
 
     // signals

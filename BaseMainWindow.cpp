@@ -52,7 +52,7 @@ using namespace std;
 //____________________________________________________________
 BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
   QMainWindow( parent, wflags ),
-  size_watcher_( this ),
+  monitor_( this ),
   was_maximized_( false )
 { 
   Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
@@ -82,7 +82,7 @@ void BaseMainWindow::setOptionName( const QString& name )
 { 
   
   Debug::Throw( "BaseMainWindow::setOptionName.\n" );
-  size_watcher_.setOptionName( name ); 
+  monitor_.setOptionName( name ); 
   
   if( name.isEmpty() ) {
   
@@ -126,14 +126,14 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
 //__________________________________________________
 QSize BaseMainWindow::minimumSizeHint( void ) const
 {
-  QSize out( size_watcher_.sizeHint() );
+  QSize out( monitor_.sizeHint() );
   return out.isValid() ? out:QMainWindow::minimumSizeHint();
 }
 
 //__________________________________________________
 QSize BaseMainWindow::sizeHint( void ) const
 {
-  QSize out( size_watcher_.sizeHint() );
+  QSize out( monitor_.sizeHint() );
   return out.isValid() ? out:QMainWindow::sizeHint();
 }
 
@@ -287,13 +287,6 @@ bool BaseMainWindow::event( QEvent* event )
   
   return QMainWindow::event( event );
   
-}
-
-//____________________________________________________________
-void BaseMainWindow::resizeEvent( QResizeEvent* event )
-{
-  size_watcher_.restart(); 
-  return QMainWindow::resizeEvent( event );
 }
  
 //________________________________________________________________

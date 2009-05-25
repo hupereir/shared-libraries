@@ -56,7 +56,7 @@ class ScrollObject: public QObject, public Counter
   virtual ~ScrollObject( void );
     
   //! event filter
-  bool eventFilter( QObject*, QEvent* );
+  virtual bool eventFilter( QObject*, QEvent* );
   
   //! enability
   void setEnabled( bool value )

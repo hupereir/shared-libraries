@@ -158,10 +158,20 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned
     layout->addLayout( grid_layout );
      
     // flat theme
-    OptionCheckBox* checkbox( new OptionCheckBox( "Use flat plastique theme", box, "USE_FLAT_THEME" ) );
-    grid_layout->addWidget( checkbox, 0, 0, 1, 2 );
-    checkbox->setToolTip( "Use customized flat plastique theme for widget appearance and layout.\nThe application must be restarted to take changes to this option into account." );
-    addOptionWidget( checkbox );
+    {
+      OptionCheckBox* checkbox( new OptionCheckBox( "Use flat plastique theme", box, "USE_FLAT_THEME" ) );
+      grid_layout->addWidget( checkbox, 0, 0, 1, 2 );
+      checkbox->setToolTip( "Use customized flat plastique theme for widget appearance and layout.\nThe application must be restarted to take changes to this option into account." );
+      addOptionWidget( checkbox );
+    }
+    
+    // size grip
+    {
+      OptionCheckBox* checkbox( new OptionCheckBox( "Enable size grip", box, "SIZE_GRIP_ENABLED" ) );
+      grid_layout->addWidget( checkbox, 1, 0, 1, 2 );
+      checkbox->setToolTip( "Draw a small widget in bottom-right corner of windows allowing to resize the window.\nThe application must be restarted to take changes to this option into account." );
+      addOptionWidget( checkbox );
+    }
     
     // base font    
     grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );

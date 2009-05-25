@@ -36,17 +36,18 @@
 #include "Debug.h"
 #include "QtUtil.h"
 #include "Util.h"
+#include "XmlOptions.h"
 
 using namespace std;
 
 //__________________________________________________
 BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
   QDialog( parent, flags ),
-  size_watcher_( this ),
+  monitor_( this ),
   was_maximized_( false )
 { 
   Debug::Throw( "BaseDialog::BaseDialog.\n" );
-  setSizeGripEnabled ( true );
+  setSizeGripEnabled ( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
 }
 
 //__________________________________________________
@@ -66,14 +67,14 @@ BaseDialog& BaseDialog::setWindowTitle( const QString& title )
 //__________________________________________________
 QSize BaseDialog::minimumSizeHint( void ) const
 {
-  QSize out( size_watcher_.sizeHint() );
+  QSize out( monitor_.sizeHint() );
   return out.isValid() ? out:QDialog::minimumSizeHint();
 }
 
 //__________________________________________________
 QSize BaseDialog::sizeHint( void ) const
 {
-  QSize out( size_watcher_.sizeHint() );
+  QSize out( monitor_.sizeHint() );
   return out.isValid() ? out:QDialog::sizeHint();
 }
 
@@ -149,11 +150,4 @@ bool BaseDialog::event( QEvent* event )
   
   return QDialog::event( event );
   
-}
-
-//____________________________________________________________
-void BaseDialog::resizeEvent( QResizeEvent* event )
-{
-  size_watcher_.restart(); 
-  return QDialog::resizeEvent( event );
 }

@@ -102,6 +102,13 @@ class TransitionWidget: public QWidget, public Counter
       
   protected:
   
+  //! mouse press event
+  /*! 
+  on mouse press, widget is automatically hidden. This prevents cases where "normal"
+  hiding (at end of animation) fails for whatever reason
+  */
+  virtual void mousePressEvent( QMouseEvent* );
+  
   //! paint event
   virtual void paintEvent( QPaintEvent* );
   
