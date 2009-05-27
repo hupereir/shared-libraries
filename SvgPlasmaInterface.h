@@ -32,7 +32,7 @@
   \date $Date$
 */
 
-#include <assert.h>
+#include <cassert>
 #include <QObject>
 #include <QString>
 #include <QFileSystemWatcher>

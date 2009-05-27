@@ -35,7 +35,7 @@
 #include <QSize>
 #include <QObject>
 
-#include <assert.h>
+#include <cassert>
 #include <vector>
 
 #include "Counter.h"
