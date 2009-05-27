@@ -35,7 +35,7 @@
 #include <QPixmap>
 #include <map>
 #include <list>
-#include <assert.h>
+#include <cassert>
 
 #include "Counter.h"
 #include "Debug.h"

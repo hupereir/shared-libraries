@@ -36,7 +36,7 @@
 #include <QCheckBox>
 #include <QTreeView>
 
-#include <assert.h>
+#include <cassert>
 
 #include <vector>
 

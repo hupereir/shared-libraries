@@ -31,7 +31,7 @@
 */
 
 
-#include <assert.h>
+#include <cassert>
 #include <QApplication>
 #include <QCursor>
 #include <QDesktopWidget>

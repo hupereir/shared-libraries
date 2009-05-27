@@ -33,7 +33,7 @@
   \date $Date$
 */
 
-#include <assert.h>
+#include <cassert>
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QLayout>

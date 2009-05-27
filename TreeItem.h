@@ -33,7 +33,7 @@
 */
 
 #include <algorithm>
-#include <assert.h>
+#include <cassert>
 #include <map>
 #include <set>
 #include <vector>

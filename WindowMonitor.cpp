@@ -29,7 +29,7 @@
   \date $Date$
 */
 
-#include <assert.h>
+#include <cassert>
 
 #include "XmlOptions.h"
 #include "WindowMonitor.h"

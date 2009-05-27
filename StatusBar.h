@@ -32,7 +32,7 @@
    \date $Date$
 */
 
-#include <assert.h>
+#include <cassert>
 #include <QApplication>
 #include <QContextMenuEvent>
 #include <QStatusBar>

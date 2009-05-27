@@ -73,7 +73,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
   main_layout_->addWidget( box_ );
    
   // size grip
-  if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
+  //if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
   {
     grid_layout->addWidget( size_grip_ = new QSizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
     _hideSizeGrip();

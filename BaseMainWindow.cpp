@@ -29,7 +29,7 @@
   \date $Date$
 */
 
-#include <assert.h>
+#include <cassert>
 #include <QMenuBar>
 #include <QTextStream>
 #include <QToolBar>

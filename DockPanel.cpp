@@ -87,7 +87,7 @@ DockPanel::DockPanel( QWidget* parent ):
   main_layout_->addWidget( panel_, 1 );
 
   // size grip
-  if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
+  //if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
   { 
     grid_layout->addWidget( size_grip_ = new QSizeGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
     _hideSizeGrip();

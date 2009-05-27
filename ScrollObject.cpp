@@ -27,7 +27,7 @@
   \date $Date$
 */
 
-#include <assert.h>
+#include <cassert>
 
 #include <QApplication>
 #include <QEvent>
