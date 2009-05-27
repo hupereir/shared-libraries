@@ -33,7 +33,7 @@
    \date    $Date$
 */
 
-#include <assert.h>
+#include <cassert>
 #include <QObject>
 
 //! a class singleton used to centralize all objects that need static creation
