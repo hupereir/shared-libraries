@@ -30,7 +30,7 @@
 */
 
 #include <QTextStream>
-#include <assert.h>
+#include <cassert>
 
 #include "Client.h"
 #include "Debug.h"

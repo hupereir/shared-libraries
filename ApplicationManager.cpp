@@ -108,7 +108,7 @@ CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments ar
 //_________________________________________
 void ApplicationManager::usage( void )
 {
-  Debug::Throw(0) << "server mode options : " << endl;
+  Debug::Throw(0) << "server mode options: " << endl;
   Debug::Throw(0) << "Server mode is used to avoid that multiple instances of the same application run at the same time. " << endl;
   Debug::Throw(0) << "Following options are used to control the running instance, or ignore this mode." << endl;
   commandLineParser().usage();
