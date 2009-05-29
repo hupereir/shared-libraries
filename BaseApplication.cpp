@@ -42,18 +42,17 @@
 #include "XmlOptions.h"
 
 using namespace std;
-using namespace SERVER;
-using namespace Qt;
 
+  
 //____________________________________________
 BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :
   BaseCoreApplication( parent, arguments )
 { 
-  
+    
   Debug::Throw( "BaseApplication::BaseApplication.\n" ); 
   connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) qApp->setStyle( new FlatStyle() );
-
+  
 }
 
 //____________________________________________
@@ -64,19 +63,19 @@ BaseApplication::~BaseApplication( void )
 bool BaseApplication::realizeWidget( void )
 {
   Debug::Throw( "BaseApplication::realizeWidget.\n" );
-   
+  
   //! check if the method has already been called.
   if( !BaseCoreApplication::realizeWidget() ) return false;
-
+  
   // actions
   about_action_ = new QAction( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ), "About this &Application", this );
   connect( about_action_, SIGNAL( triggered() ), SLOT( _about() ) ); 
-
+  
   aboutqt_action_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About &Qt", this );
   connect( aboutqt_action_, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) ); 
-
+  
   close_action_ = new QAction( IconEngine::get( ICONS::EXIT ), "E&xit", this );
-  close_action_->setShortcut( CTRL+Key_Q );
+  close_action_->setShortcut( Qt::CTRL + Qt::Key_Q );
   connect( close_action_, SIGNAL( triggered() ), qApp, SLOT( quit() ) ); 
   
   configuration_action_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default &Configuration", this );
@@ -92,7 +91,7 @@ void BaseApplication::busy( void )
   qApp->setOverrideCursor( Qt::WaitCursor ); 
   qApp->processEvents(); 
 }
-  
+
 //____________________________________________
 void BaseApplication::idle( void )
 { qApp->restoreOverrideCursor(); }
@@ -100,7 +99,7 @@ void BaseApplication::idle( void )
 //_______________________________________________
 void BaseApplication::_about( QString name, QString version, QString stamp )
 {
-
+  
   Debug::Throw( "BaseApplication::about.\n" );
   
   // modify version to remvoe qt4 for version
@@ -112,7 +111,7 @@ void BaseApplication::_about( QString name, QString version, QString stamp )
   if( !name.isEmpty() ) { in << "<h3>" << name << "</h3>"; }
   if( !version.isEmpty() ) { in << "version " << version; }
   if( !stamp.isEmpty() ) { in << " (" << stamp << ")"; }
-
+  
   in 
     << "<p>This application was written for personal use only. "
     << "It is not meant to be bug free, although all efforts "
@@ -120,18 +119,20 @@ void BaseApplication::_about( QString name, QString version, QString stamp )
     
     << "<p>Suggestions, comments and bug reports are welcome. "
     << "Please use the following e-mail address:"
-
+    
     << "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>";
-
+  
   QMessageBox dialog;
   dialog.setWindowTitle( QString( "About ")+name );
-  dialog.setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
-  dialog.setIconPixmap( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
+  
+  QPixmap pixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) );
+  dialog.setWindowIcon( pixmap );
+  dialog.setIconPixmap( pixmap );
   dialog.setText( buffer );
   dialog.adjustSize();
   QtUtil::centerOnWidget( &dialog, qApp->activeWindow() );
   dialog.exec();
-
+  
 }
 
 //_______________________________________________
@@ -141,7 +142,7 @@ void BaseApplication::_updateConfiguration( void )
   
   // application icon
   qApp->setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
-
+  
   // set fonts
   QFont font;
   font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
@@ -149,10 +150,10 @@ void BaseApplication::_updateConfiguration( void )
   
   font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
   qApp->setFont( font, "QTextEdit" ); 
-        
+  
   // reload IconEngine cache (in case of icon_path_list that changed)
   IconEngine::get().reload();
-
+  
   // emit signal to propagate changes to other widgets
   Debug::Throw( "BaseApplication::_updateConfiguration - done.\n" );
   
