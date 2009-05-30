@@ -69,14 +69,11 @@ class BaseCoreApplication: public QObject
   void configurationChanged( void );
   
   protected slots:
- 
-  //! application manager state is changed
-  virtual void _stateChanged( SERVER::ApplicationManager::State );
+
+  //! process command from server
+  /*! returns true if command has been accepted */
+  virtual bool _processCommand( SERVER::ServerCommand );
     
-  //! process request from application manager
-  virtual void _processRequest( const CommandLineArguments& ) 
-  {}
-  
   private slots:
   
   //! configuration

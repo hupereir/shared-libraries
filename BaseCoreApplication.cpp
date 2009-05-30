@@ -40,7 +40,6 @@
 #include "XmlOptions.h"
 
 using namespace std;
-using namespace SERVER;
 using namespace Qt;
 
 //____________________________________________
@@ -82,24 +81,18 @@ void BaseCoreApplication::initApplicationManager( void )
 
   if( _hasApplicationManager() ) return;
 
-  if( ApplicationManager::commandLineParser( _arguments() ).hasFlag( "--no-server" ) ) 
+  if( SERVER::ApplicationManager::commandLineParser( _arguments() ).hasFlag( "--no-server" ) ) 
   {
     realizeWidget();
     return;
   }
   
   // create application manager
-  application_manager_ = new ApplicationManager( this );
+  application_manager_ = new SERVER::ApplicationManager( this );
   application_manager_->setApplicationName( XmlOptions::get().raw( "APP_NAME" ) );
   
   // connections
-  connect( 
-    application_manager_, SIGNAL( stateChanged( SERVER::ApplicationManager::State ) ),
-    SLOT( _stateChanged( SERVER::ApplicationManager::State ) ) );
-    
-  connect( 
-    application_manager_, SIGNAL( serverRequest( const CommandLineArguments& ) ), 
-    SLOT( _processRequest( const CommandLineArguments& ) ) );
+  connect( application_manager_, SIGNAL( commandRecieved( SERVER::ServerCommand ) ), SLOT( _processCommand( SERVER::ServerCommand ) ) );
     
   // initialization
   application_manager_->initialize( arguments_ );
@@ -134,26 +127,26 @@ void BaseCoreApplication::_updateConfiguration( void )
 }
 
 //________________________________________________
-void BaseCoreApplication::_stateChanged( ApplicationManager::State state )
+bool BaseCoreApplication::_processCommand( SERVER::ServerCommand command )
 {
 
-  Debug::Throw() << "BaseCoreApplication::_stateChanged - state=" << state << endl;
-
-  switch ( state ) 
+  switch( command.command() )
   {
-  
-    case ApplicationManager::ALIVE:
+
+    case SERVER::ServerCommand::ACCEPTED:
     realizeWidget();
-    break;
+    return true;
     
-    case ApplicationManager::DEAD:
+    case SERVER::ServerCommand::ABORT:
+    case SERVER::ServerCommand::DENIED:
     qApp->quit();
-    break;
+    return true;
     
     default:
     break;
+  
   }
   
-  return;
+  return false;
   
 }

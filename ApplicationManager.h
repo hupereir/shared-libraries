@@ -95,10 +95,11 @@ namespace SERVER
     };
     
     //! changes application state, emit signal if changed
-    virtual void setState( const State& state )
+    virtual bool setState( const State& state )
     {
-      if( state == state_ ) return;
-      emit stateChanged( (state_ = state ) ); 
+      if( state == state_ ) return false;
+      state_ = state;
+      return true;
     }
     
     //! reference to "this" client
@@ -120,11 +121,14 @@ namespace SERVER
     signals:
     
     //! emitted when manager state is changed
-    void stateChanged( SERVER::ApplicationManager::State state );
+    // void stateChanged( SERVER::ApplicationManager::State state );
     
     //! emitted when manager is ALIVE and request is recieved
-    void serverRequest( const CommandLineArguments& args );
+    // void serverRequest( const CommandLineArguments& args );
    
+    //! emitted when a given command is recieved 
+    void commandRecieved( SERVER::ServerCommand );
+    
     //! emitted when the server is (re)initialized
     void initialized( void );
       

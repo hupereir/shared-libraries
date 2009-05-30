@@ -72,7 +72,9 @@ namespace SERVER
       KILLED,
       RAISE,
       REQUEST,
-      UNLOCK
+      UNLOCK,
+      GEOMETRY_REQUEST,
+      GEOMETRY
     };
       
     //! list

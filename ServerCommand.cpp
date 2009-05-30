@@ -61,6 +61,8 @@ void ServerCommand::_initializeCommandNames( void ) const
   _commandNames().insert( make_pair( ALIVE, "ALIVE" ) );
   _commandNames().insert( make_pair( REQUEST, "REQUEST" ) );
   _commandNames().insert( make_pair( UNLOCK, "UNLOCK" ) );
+  _commandNames().insert( make_pair( GEOMETRY_REQUEST, "GEOMETRY_REQUEST" ) );
+  _commandNames().insert( make_pair( GEOMETRY, "GEOMETRY" ) );
 }
 
 //___________________________________________

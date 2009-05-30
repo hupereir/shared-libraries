@@ -42,7 +42,6 @@
 #include "XmlOptions.h"
 
 using namespace std;
-
   
 //____________________________________________
 BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :
