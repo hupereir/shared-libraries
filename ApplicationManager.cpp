@@ -480,8 +480,12 @@ void ApplicationManager::_process( ServerCommand command )
       return;
     } else break;
 
-    default: break;
-  
+    default: 
+    {
+      emit commandRecieved( command );
+      break;
+    }
+    
   }
   
 }
