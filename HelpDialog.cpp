@@ -471,7 +471,7 @@ void HelpDialog::_showHelpString( void )
   stream << "  0\n";
   stream << "};\n";
   
-  CustomDialog dialog( 0, CustomDialog::OK_BUTTON );
+  CustomDialog dialog( 0, CustomDialog::OkButton );
   TextEditor* editor( new TextEditor( &dialog ) );
 
   editor->setWrapFromOptions( false );

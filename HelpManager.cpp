@@ -195,7 +195,7 @@ void HelpManager::_dumpHelpString( void )
   out << "  0\n";
   out << "};\n";
   
-  CustomDialog* dialog = new CustomDialog( 0, CustomDialog::OK_BUTTON );
+  CustomDialog* dialog = new CustomDialog( 0, CustomDialog::OkButton );
   TextEditor *editor = new TextEditor( dialog );
   dialog->mainLayout().addWidget( editor );
 
