@@ -40,7 +40,7 @@ using namespace std;
 
 //__________________________________________________________________________
 SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
-  CustomDialog( parent, CustomDialog::OK_BUTTON )
+  CustomDialog( parent, OkButton )
 {
   
   Debug::Throw( "SystemEnvironmentDialog::SystemEnvironmentDialog.\n" );

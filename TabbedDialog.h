@@ -1,3 +1,7 @@
+
+#ifndef _TabbedDialog_h_
+#define _TabbedDialog_h_
+
 // $Id$
 /******************************************************************************
 *
@@ -27,9 +31,6 @@
   \version $Revision$
   \date $Date$
 */
-
-#ifndef _TabbedDialog_h_
-#define _TabbedDialog_h_
 
 #include <QCloseEvent>
 #include <QDialog>

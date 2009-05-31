@@ -42,7 +42,7 @@ using namespace std;
 
 //__________________________________________________________________________
 PixmapCacheDialog::PixmapCacheDialog( QWidget* parent ):
-  CustomDialog( parent, OK_BUTTON, Qt::Window )
+  CustomDialog( parent, OkButton, Qt::Window )
 {
   
   Debug::Throw( "PixmapCacheDialog::PixmapCacheDialog.\n" );

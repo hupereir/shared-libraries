@@ -56,22 +56,22 @@ class CustomDialog: public BaseDialog, public Counter
   enum Flag 
   {
     //! no flags
-    NONE = 0,
+    None = 0,
     
     //! dialog has OK button
-    OK_BUTTON = 1<<0,
+    OkButton = 1<<0,
     
     //! dialog has CANCEL button
-    CANCEL_BUTTON = 1<<1,
+    CancelButton = 1<<1,
     
     //! separator
-    SEPARATOR = 1<<2
+    Separator = 1<<2
   };
   
   //! constructor
   CustomDialog( 
     QWidget *parent, 
-    const unsigned int& flags = OK_BUTTON | CANCEL_BUTTON, 
+    const unsigned int& flags = OkButton | CancelButton, 
     Qt::WFlags wflags = 0);  
   
   //! destructor
@@ -94,24 +94,24 @@ class CustomDialog: public BaseDialog, public Counter
  
   //! returns true if OK button is valid
   bool hasOkButton( void )
-  { return ok_button_; }
+  { return OkButton_; }
    
   //! retrieve OK button
   QPushButton& okButton( void ) const
   {
-    assert( ok_button_ );
-    return *ok_button_;
+    assert( OkButton_ );
+    return *OkButton_;
   }
   
   //! returns true if Cancel button is valid
   bool hasCancelButton( void )
-  { return cancel_button_; }
+  { return CancelButton_; }
   
   //! retrieve CANCEL button
   QPushButton& cancelButton( void ) const
   {
-    assert( cancel_button_ );
-    return *cancel_button_;
+    assert( CancelButton_ );
+    return *CancelButton_;
   }
   
     
@@ -124,10 +124,10 @@ class CustomDialog: public BaseDialog, public Counter
   QBoxLayout *button_layout_;
   
   //! ok QPushButton, if any
-  QPushButton *ok_button_;
+  QPushButton *OkButton_;
   
   //! cancel QPushButton, if any
-  QPushButton *cancel_button_;
+  QPushButton *CancelButton_;
   
 };
 

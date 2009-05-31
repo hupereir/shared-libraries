@@ -42,7 +42,7 @@ using namespace std;
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):
-  CustomDialog( parent, OK_BUTTON, Qt::Window )
+  CustomDialog( parent, OkButton, Qt::Window )
 {
   
   Debug::Throw( "CounterDialog::CounterDialog.\n" );

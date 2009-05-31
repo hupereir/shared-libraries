@@ -42,8 +42,8 @@ using namespace std;
 CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFlags wflags):
   BaseDialog( parent, wflags ),
   Counter( "CustomDialog" ),
-  ok_button_( 0 ),
-  cancel_button_( 0 )
+  OkButton_( 0 ),
+  CancelButton_( 0 )
 {
 
   Debug::Throw( "CustomDialog::CustomDialog.\n" );
@@ -60,7 +60,7 @@ CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFla
   layout->addLayout( main_layout_, 1 );
 
   // separator
-  if( flags & SEPARATOR )
+  if( flags & Separator )
   {
     QFrame* frame( new QFrame( this ) );
     frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
@@ -76,18 +76,18 @@ CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFla
   button_layout_->addStretch( 1 );
   
   // insert OK and Cancel button
-  if( flags & OK_BUTTON ) {
-    QIcon icon( IconEngine::get( ( flags & CANCEL_BUTTON ) ? ICONS::DIALOG_OK : ICONS::DIALOG_CLOSE ) );
-    QString text( ( flags & CANCEL_BUTTON ) ? "&Ok":"&Close" );
-    button_layout_->addWidget( ok_button_ = new QPushButton( icon, text, this ) );
-    connect( ok_button_, SIGNAL( clicked() ), SLOT( accept() ) );
-    ok_button_->setDefault( true );
+  if( flags & OkButton ) {
+    QIcon icon( IconEngine::get( ( flags & CancelButton ) ? ICONS::DIALOG_OK : ICONS::DIALOG_CLOSE ) );
+    QString text( ( flags & CancelButton ) ? "&Ok":"&Close" );
+    button_layout_->addWidget( OkButton_ = new QPushButton( icon, text, this ) );
+    connect( OkButton_, SIGNAL( clicked() ), SLOT( accept() ) );
+    OkButton_->setDefault( true );
   }
   
   // insert OK and Cancel button
-  if( flags & CANCEL_BUTTON ) {
-    button_layout_->addWidget( cancel_button_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Cancel", this ) );
-    connect( cancel_button_, SIGNAL( clicked() ), SLOT( reject() ) );
+  if( flags & CancelButton ) {
+    button_layout_->addWidget( CancelButton_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Cancel", this ) );
+    connect( CancelButton_, SIGNAL( clicked() ), SLOT( reject() ) );
   }
   
 }

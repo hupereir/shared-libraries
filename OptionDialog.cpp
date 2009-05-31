@@ -46,7 +46,7 @@ using namespace std;
 
 //__________________________________________________________________________
 OptionDialog::OptionDialog( QWidget* parent ):
-  CustomDialog( parent, OK_BUTTON )
+  CustomDialog( parent, OkButton )
 {
   
   Debug::Throw( "OptionDialog::OptionDialog.\n" );

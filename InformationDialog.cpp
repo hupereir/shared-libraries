@@ -40,7 +40,7 @@
 
 //____________________________________________________________
 InformationDialog::InformationDialog( QWidget* parent, QString text ):
-  CustomDialog( parent, OK_BUTTON | SEPARATOR )
+  CustomDialog( parent, OkButton| Separator )
 {
 
   //! try load Question icon
