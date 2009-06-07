@@ -14,6 +14,7 @@ INCLUDES =  \
 noinst_HEADERS = \
   BackgroundPixmap.h \
   CompositeEngine.h \
+  Effects.h \
   TransparencyConfiguration.h \
   TransparencyHelpText.h \
   TransparentWidget.h

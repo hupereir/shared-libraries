@@ -6,10 +6,11 @@ INCLUDEPATH += ../base ../base-qt
 DEPENDPATH += . ../base ../base-qt
 
 HEADERS = \
-TransparencyHelpText.h \
 BackgroundPixmap.h \
 CompositeEngine.h \
+Effects.h \
 TransparencyConfiguration.h \
+TransparencyHelpText.h \
 TransparentWidget.h
 
 SOURCES = \
