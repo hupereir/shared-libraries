@@ -15,6 +15,7 @@ noinst_HEADERS = \
   BackgroundPixmap.h \
   CompositeEngine.h \
   Effects.h \
+  ShadowLabel.h \
   TransparencyConfiguration.h \
   TransparencyHelpText.h \
   TransparentWidget.h
@@ -24,6 +25,7 @@ noinst_LIBRARIES = libbase-transparency.a
 libbase_transparency_a_SOURCES = \
   BackgroundPixmap.cpp \
   CompositeEngine.cpp \
+  ShadowLabel.cpp \
   TransparencyConfiguration.cpp \
   TransparentWidget.cpp
 
