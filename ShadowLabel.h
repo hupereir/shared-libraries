@@ -45,19 +45,38 @@ namespace TRANSPARENCY
     public:
     
     //! constructor
+    ShadowLabel( QWidget* parent ):
+      QLabel( parent ),
+      Counter( "ShadowLabel" ),
+      shadow_offset_( 0 )
+    {}
+     
+    //! constructor
     ShadowLabel( const QString& text, QWidget* parent ):
       QLabel( text, parent ),
       Counter( "ShadowLabel" ),
-      shadow_color_( Qt::white )
+      shadow_offset_( 0 )
     {}
+   
+    //! shadow
+    void setShadow( const QColor& color, int offset )
+    {
+      setShadowColor( color );
+      setShadowOffset( offset );
+    }
+    
+    //! shadow offset
+    void setShadowOffset( int value )
+    { shadow_offset_ = value; }
     
     //! shadow color
     void setShadowColor( const QColor& color )
     { shadow_color_ = color; }
+         
+    protected:
     
-    //! render
-    void render( QPaintDevice*, const QPoint&, const QRegion&, RenderFlags );
-     
+    virtual void paintEvent( QPaintEvent* );
+    
     private slots:
     
     //! configuration
@@ -65,6 +84,17 @@ namespace TRANSPARENCY
     {}
     
     private:
+    
+    //! shadow offset
+    const int& _shadowOffset( void ) const
+    { return shadow_offset_; }
+    
+    //! shadow color
+    const QColor& _shadowColor( void ) const
+    { return shadow_color_; }
+    
+    //! shadow offset
+    int shadow_offset_;
     
     //! shadow color
     QColor shadow_color_; 

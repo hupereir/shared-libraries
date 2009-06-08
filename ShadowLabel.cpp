@@ -30,6 +30,8 @@
   \date    $Date$
 */
 
+#include <QPaintEvent>
+
 #include "Debug.h"
 #include "Effects.h"
 #include "ShadowLabel.h"
@@ -37,24 +39,33 @@
 namespace TRANSPARENCY
 {
   //__________________________________________________________________________________
-  void ShadowLabel::render( QPaintDevice* device, const QPoint& point, const QRegion& region, RenderFlags flags )
+  void ShadowLabel::paintEvent( QPaintEvent* event )
   {
         
-    QPixmap pixmap( device->width(), device->height() );
+    if( text().isEmpty() ) return;
+    
+    QPixmap pixmap( size() );
     pixmap.fill( Qt::transparent );
     
     {
       QPainter painter( &pixmap );
-      painter.setPen( Qt::black );
-      QLabel::render( &painter, point, region, flags );
+      painter.setClipRect( event->rect() );
+      painter.setPen( palette().color( QPalette::WindowText ) );
+      painter.setFont( font() );
+      painter.drawText( rect(), alignment(), text() );
+      painter.end();
     }  
     
-    QImage image( pixmap.toImage() );
-    TRANSPARENCY::Effects::shadowBlur(image, 2, shadow_color_ );
+    QPainter painter( this );
+    if( _shadowOffset() > 0 && _shadowColor().isValid() )
+    {
+      QImage image( pixmap.toImage() );
+      TRANSPARENCY::Effects::shadowBlur(image, _shadowOffset(), _shadowColor() );
+      painter.drawImage( rect().topLeft(), image);
+    }
     
-    QPainter painter( device );
-    painter.drawImage( rect().topLeft(), image);
     painter.drawPixmap( rect().topLeft(), pixmap );
+    painter.end();
     
   }
 }
