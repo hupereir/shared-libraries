@@ -54,6 +54,13 @@ class CommandLineArguments: public QStringList, public Counter
   //! constructor
   CommandLineArguments( const QStringList& );
   
+  //! return arg counts
+  int argc( void ) const
+  { return size(); }
+  
+  //! return argv
+  char** argv( void ) const;
+  
 };
 
 #endif

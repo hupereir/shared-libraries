@@ -49,3 +49,18 @@ CommandLineArguments::CommandLineArguments( const QStringList& ref ):
   QStringList( ref ),
   Counter( "CommandLineArguments" )
 {}
+
+//_____________________________________________________________________
+char** CommandLineArguments::argv( void ) const
+{
+  char** out = new char*[argc()];
+  int count(0);
+  for( QStringList::const_iterator iter = begin(); iter != end(); iter++, count++ )
+  {
+    char* arg = new char[iter->size()+1];
+    sprintf( arg, "%s", qPrintable( *iter ) );
+    out[count] = arg;
+  }
+  
+  return out;
+}
