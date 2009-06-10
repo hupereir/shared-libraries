@@ -54,8 +54,8 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
   layout()->addWidget( editor_ = new CustomComboBox( this ) );
   
   editor().setMinimumSize( QSize( 100, 0 ) ); 
-  editor().setAutoCompletion( true );
   editor().setEditable( true );
+  editor().setAutoCompletion( true );
   editor().setToolTip( "User selection" );
   
   _timer().setSingleShot( true );

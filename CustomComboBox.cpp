@@ -29,7 +29,9 @@
   \date $Date$
 */
 
+#include <cassert>
 #include <QAbstractItemView>
+#include <QCompleter>
 
 #include "CustomComboBox.h"
 #include "TransitionWidget.h"
@@ -41,15 +43,11 @@ using namespace Qt;
 CustomComboBox::CustomComboBox( QWidget* parent ):
   QComboBox( parent ),
   Counter( "CustomComboBox" ),
-  editor_( 0 ),
-  auto_completion_( false ),
-  case_( Qt::CaseInsensitive )
+  editor_( 0 )
 { 
   
   Debug::Throw( "CustomComboBox::CustomComboBox.\n" ); 
-  
-  // always disable autoComplation, since it is reimplemented
-  QComboBox::setAutoCompletion( false );
+  setAutoCompletion( false );
   
   // size policy
   setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ) );
@@ -73,10 +71,30 @@ void CustomComboBox::setEditable( bool value )
     editor_ = new ComboLineEdit( this );
     editor_->setFrame( false );
     setLineEdit( editor_ );
-    connect( editor_, SIGNAL( autoComplete( QString ) ), SLOT( _autoComplete( QString ) ) );
     connect( view(), SIGNAL( pressed( QModelIndex ) ), editor_, SLOT( startAnimation( void ) ) );
     connect( view(), SIGNAL( activated( QModelIndex ) ), editor_, SLOT( startAnimation( void ) ) );
   }
+  
+}
+
+//____________________________________________________
+void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity case_sensitivity )
+{
+  Debug::Throw( "CustomComboBox::setAutoCompletion.\n" );
+  
+  if( value )
+  {
+    assert( isEditable() );
+    
+    if( !completer() ) setCompleter( new QCompleter( this ) );
+
+    completer()->setCaseSensitivity( case_sensitivity );
+    
+  } else {
+    setCompleter(0);
+  }
+  
+  return;
   
 }
 
@@ -87,50 +105,4 @@ void ComboLineEdit::startAnimation( void )
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;
   _transitionWidget().initialize();  
   _transitionWidget().start();  
-}
-
-//____________________________________________________
-void ComboLineEdit::keyPressEvent( QKeyEvent* event )
-{
-  Debug::Throw( "ComboLineEdit::keyPressEvent.\n" );
-  QLineEdit::keyPressEvent( event );
-  if( !( event->key() == Key_Backspace || event->key() == Key_Delete ) ) emit autoComplete( text() );
-}
-
-//____________________________________________________
-void CustomComboBox::_autoComplete( QString text )
-{
-  
-  Debug::Throw() 
-    << "CustomComboBox::_autoComplete -"
-    << " text:" << text 
-    << " case:" << (case_ == Qt::CaseSensitive ? "caseSensitive":"caseInsensitive" )
-    << endl;
-  
-  if( !(editor_ && auto_completion_) ) return;
-  if( text.isEmpty() || text.isNull() ) return;
-      
-  // loop over items, find matching
-  for( int i=0; i< QComboBox::count(); i++ )
-  {
-    
-    QString item_text( itemText( i ) );
-    if( item_text.isNull() || item_text.isEmpty() ) continue;
-            
-    // see if text match item
-    if( item_text.length() <= text.length() ) continue;
-    if( item_text.indexOf( text, 0, case_ ) != 0 ) continue;
-    Debug::Throw() << "CustomComboBox::_autoComplete - found matching text: " << item_text << endl; 
-       
-    // found text
-    setEditText( item_text );
-    
-    // update selection
-    editor_->setCursorPosition( item_text.length() );
-    editor_->cursorBackward( true, item_text.length()-text.length() );
-    
-  }
-  
-  return;
-  
 }

@@ -51,24 +51,14 @@ class ComboLineEdit: public AnimatedLineEditor
   
   //! constructor
   ComboLineEdit( QWidget* parent ):
-    AnimatedLineEditor( parent )
- { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
-
-  signals:
-  
-  //! emited when autocompletion is requested
-  void autoComplete( QString );
+  AnimatedLineEditor( parent )
+  { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
   
   public slots:
   
   //! start animation
   void startAnimation( void );
-  
-  protected:
-  
-  //! overloaded keypress event
-  virtual void keyPressEvent( QKeyEvent* event );
-  
+    
 };
 
 //! Customized QCombobox to handle case sensitive auto completion
@@ -87,29 +77,13 @@ class CustomComboBox: public QComboBox, public Counter
   void setEditable( bool value );
 
   //! auto completion
-  void setAutoCompletion( bool value )
-  { auto_completion_ = value; }
-  
-  //! case sensitivity
-  void setCaseSensitive( Qt::CaseSensitivity value )
-  { case_ = value; }
-  
-  private slots:
-  
-  //! auto completion
-  void _autoComplete( QString );
-  
+  void setAutoCompletion( bool value, Qt::CaseSensitivity  = Qt::CaseInsensitive);
+    
   private:
   
   //! local line editor
   ComboLineEdit* editor_;
   
-  //! auto completion
-  bool auto_completion_;
-  
-  //! case sensitivity
-  Qt::CaseSensitivity case_;
-
 };
 
 #endif

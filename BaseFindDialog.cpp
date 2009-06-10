@@ -74,8 +74,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
   _editorLayout().addWidget( editor_ = new CustomComboBox( this ) );
   label->setBuddy( &editor() );
   editor().setEditable( true );
-  editor().setCaseSensitive( Qt::CaseSensitive );
-  editor().setAutoCompletion( true );
+  editor().setAutoCompletion( true, Qt::CaseSensitive );
     
   connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
   connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );

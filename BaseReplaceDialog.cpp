@@ -68,8 +68,7 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
   disconnect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), this, SLOT( _findNoIncrement() ) ); 
 
   _replaceEditor().setEditable( true );
-  _replaceEditor().setCaseSensitive( Qt::CaseSensitive );
-  _replaceEditor().setAutoCompletion( true );
+  _replaceEditor().setAutoCompletion( true, Qt::CaseSensitive );
   connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _replace( void ) ) );
   connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
   connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateReplaceComboBox( void ) ) );
