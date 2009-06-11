@@ -1,6 +1,6 @@
 // $Id$
-#ifndef _ColorDisplay_h_
-#define _ColorDisplay_h_
+#ifndef _ColorGrabButton_h_
+#define _ColorGrabButton_h_
 
 /******************************************************************************
 *                         
@@ -24,81 +24,62 @@
 *******************************************************************************/
 
 /*!
-\file ColorDisplay.h
-\brief used to display colors and a choose button
+\file ColorGrabButton.h
+\brief used to pick color from screen
 \author Hugo Pereira
 \version $Revision$
 \date $Date$
 */
 
-#include <QColorDialog>
+#include <QMouseEvent>
+#include <QToolButton>
 
 #include "Counter.h"
-#include "AnimatedLineEditor.h"
 
-class ColorGrabButton;
-
-//! used to display colors and a choose button
-class ColorDisplay: public QWidget, public Counter
+//! used to pick color from screen
+class ColorGrabButton : public QToolButton, public Counter
 {
   
-  //! Qt metaobject macro
   Q_OBJECT
-    
+  
   public:
-    
-  //! default name for no color
-  static const QString NONE;
-    
+  
   //! constructor
-  ColorDisplay( QWidget* parent );
-  
-  //! retrieve color name
-  QString colorName( void ) const
-  { 
-    QString out( editor_.text() );
-    return out.isEmpty() ? NONE:out;
-  }
-    
-  public slots:
-  
-  //! set color
-  void setColor( QString );
+  ColorGrabButton( QWidget* );
 
-  private slots:
+  //! destructor
+  virtual ~ColorGrabButton( void )
+  {}
+
+  signals:
   
-  //! change color (from button)
-  void _selectColorFromDialog( void );
+  void colorSelected( QString );
   
-  //! change color (from line editor)
-  void _selectColorFromText( void );
-    
+  protected slots:
+  
+  void _grabColor( void );
+  
+  protected:
+   
+  //! mouse press event [overloaded]
+  virtual void mousePressEvent( QMouseEvent* );
+  
+  //! mouse release event [overloaded]
+  virtual void mouseReleaseEvent( QMouseEvent* );
+
+  //! mouse move event [overloaded]
+  virtual void mouseMoveEvent( QMouseEvent* );
+
   private:
   
-  //! internal customized label to have correct background color
-  class LocalLineEdit : public AnimatedLineEditor
-  {
-    
-    public:
-    
-    //! constructor
-    LocalLineEdit( QWidget *parent ):
-      AnimatedLineEditor( parent )
-    {}
-      
-    //! retrieve color
-    QColor color( void ) const;
-    
-    //! set color
-    void setColor( QColor color );
-        
-  };
-    
-  //! label used to display the color
-  LocalLineEdit editor_;
-
-  //! grab button
-  ColorGrabButton* grab_button_;
+  void _selectColorFromMouseEvent( QMouseEvent* );
+  
+  //! is set to true when colorgrab is activated
+  bool locked_;
+  
+  //! is true when the mouse is down
+  bool mouse_down_;
   
 };
+
 #endif

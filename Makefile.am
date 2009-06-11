@@ -28,6 +28,7 @@ noinst_HEADERS = \
   ClockLabel.h \
   Color.h \
   ColorDisplay.h \
+  ColorGrabButton.h \
   ColorMenu.h \
   ColumnSelectionMenu.h \
   ColumnSortingMenu.h \
@@ -148,6 +149,7 @@ libbase_qt_a_SOURCES = \
   ClockLabel.cpp \
   Color.cpp \
   ColorDisplay.cpp \
+  ColorGrabButton.cpp \
   ColorMenu.cpp \
   ColumnSelectionMenu.cpp \
   ColumnSortingMenu.cpp \
@@ -238,6 +240,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_BlockHighlight.cpp \
   moc_BrowsedLineEditor.cpp \
   moc_ColorDisplay.cpp \
+	moc_ColorGrabButton.cpp \
   moc_ColorMenu.cpp \
   moc_ColumnSelectionMenu.cpp \
   moc_ColumnSortingMenu.cpp \

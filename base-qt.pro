@@ -24,6 +24,7 @@ HEADERS = \
   ClockLabel.h \
   Color.h \
   ColorDisplay.h \
+  ColorGrabButton.h \
   ColorMenu.h \
   ColumnSelectionMenu.h \
   ColumnSortingMenu.h \
@@ -131,7 +132,6 @@ SOURCES = \
   AnimatedTabWidget.cpp \
   AnimatedTextEditor.cpp \
   AnimatedTreeView.cpp \
-  Color.cpp \
   BaseConfigurationDialog.cpp \
   BaseDialog.cpp \
   BaseFindDialog.cpp \
@@ -141,7 +141,9 @@ SOURCES = \
   BoxSelection.cpp \
   BrowsedLineEditor.cpp \
   ClockLabel.cpp \
+  Color.cpp \
   ColorDisplay.cpp \
+  ColorGrabButton.cpp \
   ColorMenu.cpp \
   ColumnSelectionMenu.cpp \
   ColumnSortingMenu.cpp \
