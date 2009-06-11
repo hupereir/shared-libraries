@@ -50,18 +50,111 @@ using namespace std;
 const QString ColorDisplay::NONE = "None";
 
 //______________________________________________
+ColorToolButton::ColorToolButton( QWidget* parent ):
+  QToolButton( parent ),
+  Counter( "ColorToolButton" ),
+  locked_( false ),
+  mouse_down_( false )
+{
+  Debug::Throw( "ColorToolButton::ColorToolButton.\n" );
+  connect( this, SIGNAL( clicked( void ) ), SLOT( _grabColor( void ) ) );
+}
+
+
+//________________________________________________________
+void ColorToolButton::_grabColor( void )
+{ 
+  
+  Debug::Throw( 0, "ColorToolButton::_grabColor.\n" );
+  //qApp->setOverrideCursor( Qt::CrossCursor );
+  grabMouse(Qt::CrossCursor);
+  locked_ = true;
+
+}
+
+
+//_____________________________________________________________
+void ColorToolButton::mousePressEvent( QMouseEvent *event )
+{
+  Debug::Throw( 0, "ColorToolButton::mousePressEvent.\n" );
+  
+  // check button
+  if( event->button() != Qt::LeftButton ) return QToolButton::mousePressEvent( event );
+    
+  // do nothing if mouse is not locked
+  if( !locked_ ) return QToolButton::mousePressEvent( event );
+
+  // do nothing if mouse is already down
+  if( mouse_down_ ) return;
+  mouse_down_ = true;
+
+}
+  
+//_____________________________________________________________
+void ColorToolButton::mouseReleaseEvent( QMouseEvent *event )
+{
+  Debug::Throw( 0, "ColorToolButton::mouseReleaseEvent.\n" );
+    
+  // do nothing if mouse is not locked
+  if( !locked_ ) return QToolButton::mouseReleaseEvent( event );
+  
+  // check button
+  if( event->button() == Qt::LeftButton && mouse_down_ )
+  {  
+    // get color under mouse
+    _selectColorFromMouseEvent( event );
+  }
+  
+  mouse_down_ = false;
+  locked_ = false;
+  releaseMouse();
+  
+  // restore original cursor
+  // qApp->restoreOverrideCursor( ); 
+  
+}
+
+//_____________________________________________________________
+void ColorToolButton::mouseMoveEvent( QMouseEvent *event )
+{
+  
+  Debug::Throw( 0, "ColorToolButton::mouseMoveEvent.\n" );
+  
+  // do nothing if mouse is not locked
+  if( !( locked_ && mouse_down_ ) ) return QToolButton::mouseMoveEvent( event );
+  _selectColorFromMouseEvent( event );
+
+}
+
+//_____________________________________________________________
+void ColorToolButton::_selectColorFromMouseEvent( QMouseEvent *event )
+{
+  Debug::Throw() << "ColorToolButton::_selectColorFromMouseEvent - (" << event->globalX() << "," << event->globalY() << ")" << endl;
+    
+  // grab desktop window under cursor
+  // convert to image.
+  QImage image( QPixmap::grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
+
+  // ensure image is deep enough
+  if (image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
+  
+  // assign color to the selection frame
+  emit colorSelected( QColor( image.pixel( 1, 1 ) ).name() );
+  
+  return;
+}
+
+//______________________________________________
 ColorDisplay::ColorDisplay( QWidget* parent ):
   QWidget( parent ),
   Counter( "ColorDisplay" ),
-  editor_( this ),
-  locked_( false ),
-  mouse_down_( false )
+  editor_( this )
 {
   Debug::Throw( "ColorDisplay::ColorDisplay.\n" );
 
   QHBoxLayout *layout = new QHBoxLayout();
   layout->setMargin(0);
-  layout->setSpacing(2  );
+  layout->setSpacing(2);
   setLayout( layout );
   
   editor_.setHasClearButton( false );
@@ -74,113 +167,30 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
   layout->addWidget( button = new QToolButton( this ), 0 );
   button->setIcon( IconEngine::get( ICONS::OPEN ) );
   button->setToolTip( "Select color from dialog" );
-  connect( button, SIGNAL( clicked() ), SLOT( _selectColor() ) );
+  connect( button, SIGNAL( clicked( void ) ), SLOT( _selectColorFromDialog( void ) ) );
   
   // grab button
-  layout->addWidget( button = new QToolButton( this ), 0 );
-  button->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
-  button->setToolTip( "Grap color from screen" );
-  connect( button, SIGNAL( clicked() ), SLOT( _grabColor() ) );
+  layout->addWidget( grab_button_ = new ColorToolButton( this ), 0 );
+  grab_button_->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
+  grab_button_->setToolTip( "Grap color from screen" );
+  connect( grab_button_, SIGNAL( colorSelected( QString ) ), SLOT( setColor( QString ) ) );
   
-} 
+}
 
 //________________________________________________________
-void ColorDisplay::setColor( const QString& color )
+void ColorDisplay::setColor( QString color )
 { 
   Debug::Throw( "ColorDisplay::setColor.\n" );
   editor_.setText( color );
   editor_.setColor( color == NONE ? palette().color( QPalette::Window ):QColor(color) );
 }
 
-//_____________________________________________________________
-void ColorDisplay::mousePressEvent( QMouseEvent *event )
-{
-  Debug::Throw( "ColorDisplay::mousePressEvent.\n" );
-  
-  // check button
-  if( event->button() != Qt::LeftButton ) return QWidget::mousePressEvent( event );
-    
-  // do nothing if mouse is not locked
-  if( !locked_ ) return QWidget::mousePressEvent( event );
-
-  // do nothing if mouse is already down
-  if( mouse_down_ ) return;
-  mouse_down_ = true;
-
-}
-  
-//_____________________________________________________________
-void ColorDisplay::mouseReleaseEvent( QMouseEvent *event )
-{
-  Debug::Throw( "ColorDisplay::mouseReleaseEvent.\n" );
-    
-  // do nothing if mouse is not locked
-  if( !locked_ ) return QWidget::mouseReleaseEvent( event );
-  
-  // check button
-  if( event->button() == Qt::LeftButton && mouse_down_ )
-  {  
-    // get color under mouse
-    _selectColor( event );
-  }
-  
-  mouse_down_ = false;
-  locked_ = false;
-  releaseMouse();
-  
-  // restore original cursor
-  qApp->restoreOverrideCursor( ); 
-  
-}
-
-//_____________________________________________________________
-void ColorDisplay::mouseMoveEvent( QMouseEvent *event )
-{
-  
-  Debug::Throw( "ColorDisplay::mouseMoveEvent.\n" );
-  
-  // do nothing if mouse is not locked
-  if( !( locked_ && mouse_down_ ) ) return QWidget::mouseMoveEvent( event );
-  _selectColor( event );
-
-}
-
 //________________________________________________________
-void ColorDisplay::_selectColor( void )
+void ColorDisplay::_selectColorFromDialog( void )
 { 
   Debug::Throw( "ColorDisplay::_selectColor.\n" );
   QColor color( QColorDialog::getColor( editor_.color(), this ) );
   if( color.isValid() ) setColor( color.name() ); 
-}
-
-
-//_____________________________________________________________
-void ColorDisplay::_selectColor( QMouseEvent *event )
-{
-  Debug::Throw() << "ColorDisplay::_SelectColor - (" << event->globalX() << "," << event->globalY() << ")" << endl;
-    
-  // grab desktop window under cursor
-  // convert to image.
-  QImage image( QPixmap::grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
-
-  // ensure image is deep enough
-  if (image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
-  
-  // assign color to the selection frame
-  setColor( QColor( image.pixel( 1, 1 ) ).name() );
-  
-  return;
-}
-
-//________________________________________________________
-void ColorDisplay::_grabColor( void )
-{ 
-  
-  Debug::Throw( "ColorDisplay::_grabColor.\n" );
-  qApp->setOverrideCursor( Qt::CrossCursor );
-  grabMouse();
-  locked_ = true;
-
 }
 
 //________________________________________________________
