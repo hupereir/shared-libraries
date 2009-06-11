@@ -65,8 +65,7 @@ ColorToolButton::ColorToolButton( QWidget* parent ):
 void ColorToolButton::_grabColor( void )
 { 
   
-  Debug::Throw( 0, "ColorToolButton::_grabColor.\n" );
-  //qApp->setOverrideCursor( Qt::CrossCursor );
+  Debug::Throw( "ColorToolButton::_grabColor.\n" );
   grabMouse(Qt::CrossCursor);
   locked_ = true;
 
@@ -93,7 +92,7 @@ void ColorToolButton::mousePressEvent( QMouseEvent *event )
 //_____________________________________________________________
 void ColorToolButton::mouseReleaseEvent( QMouseEvent *event )
 {
-  Debug::Throw( 0, "ColorToolButton::mouseReleaseEvent.\n" );
+  Debug::Throw( "ColorToolButton::mouseReleaseEvent.\n" );
     
   // do nothing if mouse is not locked
   if( !locked_ ) return QToolButton::mouseReleaseEvent( event );
@@ -109,16 +108,13 @@ void ColorToolButton::mouseReleaseEvent( QMouseEvent *event )
   locked_ = false;
   releaseMouse();
   
-  // restore original cursor
-  // qApp->restoreOverrideCursor( ); 
-  
 }
 
 //_____________________________________________________________
 void ColorToolButton::mouseMoveEvent( QMouseEvent *event )
 {
   
-  Debug::Throw( 0, "ColorToolButton::mouseMoveEvent.\n" );
+  Debug::Throw( "ColorToolButton::mouseMoveEvent.\n" );
   
   // do nothing if mouse is not locked
   if( !( locked_ && mouse_down_ ) ) return QToolButton::mouseMoveEvent( event );
