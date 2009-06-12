@@ -63,7 +63,7 @@ void ColorGrabButton::_grabColor( void )
 //_____________________________________________________________
 void ColorGrabButton::mousePressEvent( QMouseEvent *event )
 {
-  Debug::Throw( 0, "ColorGrabButton::mousePressEvent.\n" );
+  Debug::Throw( "ColorGrabButton::mousePressEvent.\n" );
   
   // check button
   if( event->button() != Qt::LeftButton ) return QToolButton::mousePressEvent( event );
