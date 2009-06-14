@@ -221,11 +221,8 @@ void TransparentWidget::_paintBackground( QPaintDevice& device, const QRect& rec
   }
   
   if( _backgroundChanged() ) _updateBackgroundPixmap();
-  Debug::Throw( "TransparentWidget::_paintBackground - backgrond updated.\n" );
-
   if( !_backgroundPixmap().isNull() )
   { painter.drawPixmap( TransparentWidget::rect(), _backgroundPixmap(), TransparentWidget::rect() ); }
-  Debug::Throw( "TransparentWidget::_paintBackground - pixmap drawn.\n" );
   
   if( _highlighted() && _highlightColor().isValid() )
   {
@@ -233,10 +230,9 @@ void TransparentWidget::_paintBackground( QPaintDevice& device, const QRect& rec
     painter.setBrush( _highlightColor() );
     painter.drawRect( TransparentWidget::rect() );
   }
-  Debug::Throw( "TransparentWidget::_paintBackground - highlight done.\n" );
   
   painter.end();
-  Debug::Throw( "TransparentWidget::_paintBackground - done.\n" );
+
 }
 
 //____________________________________________________________________
