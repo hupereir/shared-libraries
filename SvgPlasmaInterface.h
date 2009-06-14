@@ -37,15 +37,12 @@
 #include <QString>
 #include <QFileSystemWatcher>
 
-#include "Counter.h"
-#include "File.h"
-
 //! svg namespace
 namespace SVG
 {
 
   //! kde specific interface to plasma to load matching Svg background
-  class SvgPlasmaInterface: public QObject, public Counter
+  class SvgPlasmaInterface: public QObject
   {
     
     Q_OBJECT
@@ -58,21 +55,20 @@ namespace SVG
     //! destructor
     virtual ~SvgPlasmaInterface( void );
     
+    // image path
+    bool setImagePath( QString value )
+    { 
+      if( image_path_ == value ) return false;
+      image_path_ = value;
+      return true;
+    }
+    
     //! validity
     const bool& isValid( void ) const
     { return valid_; }
     
-    //! transparent background 
-    /*! returns true when changed */
-    bool setTransparent( const bool& value )
-    { 
-      if( transparent_ == value ) return false;
-      transparent_ = value; 
-      return true; 
-    }
-    
     //! filename
-    const File& fileName( void ) const
+    const QString& fileName( void ) const
     { return filename_; }
     
     //! get default theme from configuration file
@@ -103,15 +99,11 @@ namespace SVG
       return true;
     }
     
-    //! transparent background
-    const bool& _transparent( void ) const
-    { return transparent_; }
-
     //! set theme
     bool _setTheme( const QString& );
     
     //! set path matching theme
-    bool _setPath( const File& path )
+    bool _setPath( const QString& path )
     { 
       if( path_ == path ) return false;
       path_ = path;
@@ -119,12 +111,16 @@ namespace SVG
     }
     
     //! get path matching theme
-    const File& _path( void ) const
+    const QString& _path( void ) const
     { return path_; }
    
+    //! image path
+    const QString& _imagePath( void ) const
+    { return image_path_; }
+    
     //! set filename
     /*! returns true when changed */
-    bool _setFileName( const File& file )
+    bool _setFileName( const QString& file )
     {
       if( filename_ == file ) return false;
       filename_ = file;
@@ -148,18 +144,18 @@ namespace SVG
     //! validity
     bool valid_;
     
-    //! transparency
-    bool transparent_;
-    
     //! configuration file
-    File configuration_file_;
+    QString configuration_file_;
 
     //! path to file name 
     /*! loaded from plasma configuration */
-    File path_;
+    QString path_;
+    
+    //! path to image (relative to path_)
+    QString image_path_;
     
     //! filename
-    File filename_;
+    QString filename_;
 
     //! file system watcher
     /*! needed to track modifications of kde configuration file */

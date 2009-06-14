@@ -37,6 +37,7 @@
 #include "GridLayout.h"
 #include "OptionListBox.h"
 #include "OptionCheckBox.h"
+#include "OptionComboBox.h"
 #include "OptionSpinBox.h"
 #include "SvgConfiguration.h"
 #include "XmlOptions.h"
@@ -98,12 +99,20 @@ namespace SVG
     plasma_checkbox->setToolTip( "If checked, the KDE plasma theme is used for this application theme" );
     addOptionWidget( plasma_checkbox );
     
-    OptionCheckBox* transparent_checkbox;
-    plasma_box->layout()->addWidget( transparent_checkbox = new OptionCheckBox( "Use translucent SVG file", plasma_box, "SVG_USE_PLASMA_TRANSPARENT" ) );
-    transparent_checkbox->setToolTip( 
-      "If checked, the plasma theme's translucent background,\n"
-      "if available, if used in place of the solid background" );
-    addOptionWidget( transparent_checkbox );
+    h_layout = new QHBoxLayout();
+    h_layout->setMargin(0);
+    h_layout->setSpacing(5);
+    plasma_box->layout()->addItem(h_layout);
+    h_layout->addWidget( new QLabel( "Plasma background image path: ", plasma_box ) );
+
+    OptionComboBox* plasma_image_path;
+    h_layout->addWidget( plasma_image_path = new OptionComboBox( plasma_box, "SVG_PLASMA_IMAGE_PATH" ) );
+    plasma_image_path->addItems( QStringList() 
+      << "dialogs/background"
+      << "widgets/background"
+      << "widgets/translucentbackground" );
+    plasma_image_path->setToolTip( "Relative path of the svg file used for the background" );
+    addOptionWidget( plasma_image_path );
     #endif
     
     // SVG file

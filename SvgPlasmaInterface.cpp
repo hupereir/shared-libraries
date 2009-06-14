@@ -30,12 +30,14 @@
 */
 
 #include <cassert>
+
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
+#include <QStringList>
 #include <QTextStream>
 
-#include "Debug.h"
 #include "SvgPlasmaInterface.h"
-#include "Util.h"
 
 namespace SVG
 {
@@ -43,119 +45,119 @@ namespace SVG
   //_________________________________________________
   SvgPlasmaInterface::SvgPlasmaInterface( QObject* parent ):
     QObject( parent ),
-    Counter( "SvgPlasmaInterface" ),
     valid_( false ),
-    transparent_( false ),
+    image_path_( "widgets/background" ),
     file_system_watcher_(0)
-  { Debug::Throw( "SvgPlasmaInterface::SvgPlasmaInterface.\n" ); }
-
+  {}
+  
   //_________________________________________________
   SvgPlasmaInterface::~SvgPlasmaInterface( void )
-  { Debug::Throw( "SvgPlasmaInterface::~SvgPlasmaInterface.\n" ); }
+  {}
   
   //_________________________________________________
   bool SvgPlasmaInterface::loadTheme( void )
   {
     
-    Debug::Throw( "SvgPlasmaInterface::_loadTheme.\n" );
-        
+    QStringList configuration_files;
+    configuration_files 
+      << ".kde/share/config/plasmarc"
+      << ".kde4/share/config/plasmarc";
+    
     // open file
-    configuration_file_ = File( ".kde4/share/config/plasmarc" ).addPath( Util::home() );
-    QFile in( configuration_file_ );
-    if ( !in.open( QIODevice::ReadOnly ) )
+    for( QStringList::const_iterator iter = configuration_files.begin(); iter != configuration_files.end(); iter++ )
     {
-      Debug::Throw() << "SvgPlasmaInterface::_loadTheme - unable to load plasma configuration file " << configuration_file_ << endl;
-      bool changed( false );
-      changed |= _setValid( false );
-      changed |= _setPath( File() );
-      return changed;
-    }
-    
-    // add file to file system watcher
-    if( !_hasFileSystemWatcher() ) 
-    {
-      _initializeFileSystemWatcher();
-      _fileSystemWatcher().addPath( configuration_file_ );
-    }
-    
-    // get all lines inside QStringList
-    QStringList lines = QString( in.readAll() ).split( '\n' );
-    
-    bool found_theme( false );
-    QRegExp theme_tag( "^\\s*\\[Theme\\]\\s*$" );
-    QRegExp section_tag( "^\\[\\S*\\]\\s*$" );
-    QRegExp empty_line( "^\\s*$" );
-    QRegExp name_tag( "^\\s*name\\s*=\\s*(\\S*)\\s*$" );
-    
-    QString theme;
-    for( QStringList::const_iterator iter = lines.begin(); iter != lines.end(); iter++ )
-    {
-      if( !found_theme )
+      QFileInfo info( QDir::home(), *iter );
+      
+      // QTextStream(stdout) << "SvgPlasmaInterface::loadTheme - trying " << info.absoluteFilePath() << endl;
+
+      if( !info.exists() ) continue;
+      
+      configuration_file_ = info.absoluteFilePath();
+      QFile in( configuration_file_ );
+      if ( !in.open( QIODevice::ReadOnly ) ) continue;
+
+      // add file to file system watcher
+      if( !_hasFileSystemWatcher() ) 
       {
-       
-        if( iter->indexOf( theme_tag ) >= 0 )
+        _initializeFileSystemWatcher();
+        _fileSystemWatcher().addPath( configuration_file_ );
+      }
+      
+      // get all lines inside QStringList
+      QStringList lines = QString( in.readAll() ).split( '\n' );
+      
+      bool found_theme( false );
+      QRegExp theme_tag( "^\\s*\\[Theme\\]\\s*$" );
+      QRegExp section_tag( "^\\[\\S*\\]\\s*$" );
+      QRegExp empty_line( "^\\s*$" );
+      QRegExp name_tag( "^\\s*name\\s*=\\s*(\\S*)\\s*$" );
+      
+      QString theme;
+      for( QStringList::const_iterator iter = lines.begin(); iter != lines.end(); iter++ )
+      {
+        if( !found_theme )
         {
-          Debug::Throw( "SvgPlasmaInterface::_loadTheme - found theme tag.\n" );
-          found_theme = true;
-        }
+          
+          if( iter->indexOf( theme_tag ) >= 0 ) found_theme = true;
+          continue;
+          
+        } else if( iter->indexOf( section_tag ) >= 0 ) break;
+        else if( iter->indexOf( empty_line ) >= 0 ) continue;
+        else if( iter->indexOf( name_tag ) >= 0 ) {
+          
+          theme = name_tag.cap(1);
+          break;
+          
+        } else continue;
         
-        continue;
-      
-      } else if( iter->indexOf( section_tag ) >= 0 ) {
-       
-        // check for next tag
-        Debug::Throw( "SvgPlasmaInterface::_loadTheme - found next tag.\n" );
-        break;
-        
-      } else if( iter->indexOf( empty_line ) >= 0 ) {
-       
-        // check for empty lines
-        continue;
-        
-      } else if( iter->indexOf( name_tag ) >= 0 ) {
-        
-        theme = name_tag.cap(1);
-        Debug::Throw() << "SvgPlasmaInterface::_loadTheme - found theme: " << theme << endl;
-        break;
-        
-      } else continue;
-      
+      }
+    
+      return _setTheme( (theme.isNull() || theme.isEmpty() ) ? "default":theme );
+ 
     }
-    
-    return _setTheme( (theme.isNull() || theme.isEmpty() ) ? "default":theme );
-    
+
+    // configuration file not found.
+    bool changed( false );
+    changed |= _setValid( false );
+    changed |= _setPath( QString() );
+    return changed;
+   
   }
 
   //_________________________________________________
   bool SvgPlasmaInterface::loadFile( void )
   { 
     
-    Debug::Throw() << "SvgPlasmaInterface::loadFile - path: " << _path() << endl;
-
-    const QStringList files_standard( QStringList() << "background.svgz" << "background.svg" );
-    const QStringList files_transparent( QStringList() << "translucentbackground.svgz" << "translucentbackground.svg"  << "background.svgz" << "background.svg");
-
     // check path
-    if( !_path().exists() ) return _setValid( false );
+    if( !QFileInfo( _path() ).exists() ) return _setValid( false );
+
+    // generate possible file names
+    QStringList files;
+    files 
+      << _imagePath()
+      << _imagePath() + ".svg"
+      << _imagePath() + ".svgz";
     
     bool found( false );
-    File filename;
-    const QStringList& files( _transparent() ? files_transparent:files_standard );
-    
-    for( QStringList::const_iterator iter = files.begin(); iter != files.end() && !found; iter++ )
+    QString filename;    
+    for( QStringList::const_iterator iter = files.begin(); iter != files.end(); iter++ )
     { 
     
-      filename = File(*iter).addPath( _path() );
-      if( filename.exists() ) found = true;
+      QFileInfo info( QDir(_path()), *iter );
+      if( info.exists() )
+      {
+        
+        filename = info.absoluteFilePath();
+        found = true;
+        break;
+      }
       
     }
     
     // construct full filename base on theme and transparency setting
-    Debug::Throw() << "SvgPlasmaInterface::loadFile - filename: " << filename << " exists: " << filename.exists() << endl;
-
     bool changed( false );
     changed |= _setValid( found );
-    changed |= _setFileName( found ? filename:File() );
+    changed |= _setFileName( found ? filename:QString() );
     return changed;
     
   }
@@ -163,7 +165,6 @@ namespace SVG
   //_________________________________________________
   void SvgPlasmaInterface::_configurationFileChanged( const QString& file )
   {
-    Debug::Throw(0) << "SvgPlasmaInterface::_configurationFileChanged - " << file << endl;
     assert( file == configuration_file_ );
     if( loadTheme() ) {
       loadFile();
@@ -175,7 +176,6 @@ namespace SVG
   //_____________________________________________________________
   void SvgPlasmaInterface::_initializeFileSystemWatcher( void )
   {
-    Debug::Throw( "SvgPlasmaInterface::_initializeFileSystemWatcher.\n" );
     assert( !_hasFileSystemWatcher() );
     file_system_watcher_ = new QFileSystemWatcher();
     connect( &_fileSystemWatcher(), SIGNAL( fileChanged( const QString& ) ), SLOT( _configurationFileChanged( const QString& ) ) );
@@ -184,35 +184,35 @@ namespace SVG
   //_________________________________________________
   bool SvgPlasmaInterface::_setTheme( const QString& theme )
   {
-    Debug::Throw() << "SvgPlasmaInterface::_setTheme - theme: " << theme << endl;
-    File path;
     
     // try use user-scoped path
-    QTextStream( &path ) << Util::home() << "/.kde4/share/apps/desktoptheme/" << theme << "/widgets";
-    if( !path.exists() )       
-    {
-
-      path.clear();
-      
-      // try use system-scoped path
-      QTextStream( &path ) << "/usr/share/apps/desktoptheme/" << theme << "/widgets";
-      
-    } else return _setPath( path );
-          
-    if( !path.exists() )
-    {
-      
-      // try use default theme
-      if( theme == "default" ) 
-      {
-        bool changed( false );
-        changed |= _setPath( File() );
-        changed |= _setValid( false );
-        return changed;
-      } else return _setTheme( "default" );
+    QStringList local_path;
+    local_path 
+      << ".kde/share/apps/desktoptheme/"
+      << ".kde4/share/apps/desktoptheme/";
     
-    } else return _setPath( path );
-        
+    for( QStringList::const_iterator iter = local_path.begin(); iter != local_path.end(); iter++ )
+    {
+      QFileInfo info( QDir::home(), *iter + theme );
+      // QTextStream(stdout) << "SvgPlasmaInterface::_setTheme - trying " << info.absoluteFilePath() << endl;
+      if( info.exists() ) return _setPath( info.absoluteFilePath() );
+      
+    }
+
+    // try use global path
+    QFileInfo info( QDir("/usr/share/apps/desktoptheme/"), theme );
+    // QTextStream(stdout) << "SvgPlasmaInterface::_setTheme - trying " << info.absoluteFilePath() << endl;
+    if( info.exists() ) return _setPath( info.absoluteFilePath() );
+      
+    // try use default theme
+    if( theme == "default" ) 
+    {
+      bool changed( false );
+      changed |= _setPath( QString() );
+      changed |= _setValid( false );
+      return changed;
+    } else return _setTheme( "default" );
+    
   }
   
 };

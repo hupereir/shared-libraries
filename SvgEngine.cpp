@@ -66,7 +66,7 @@ namespace SVG
     XmlOptions::get().set( "USE_SVG", Option("1") );
     XmlOptions::get().set( "SVG_OFFSET", Option("0") );
     XmlOptions::get().set( "SVG_USE_PLASMA_INTERFACE", Option( "1" ) );
-    XmlOptions::get().set( "SVG_USE_PLASMA_TRANSPARENT", Option( "0" ) );
+    XmlOptions::get().set( "SVG_PLASMA_IMAGE_PATH", Option( "dialogs/background" ) );
     XmlOptions::get().setAutoDefault( false );
         
     return;
@@ -183,7 +183,7 @@ namespace SVG
       if( first ) _initializePlasmaInterface();
       else if( forced ) changed |= _plasmaInterface().loadTheme();
       
-      changed |=  _plasmaInterface().setTransparent( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_TRANSPARENT" ) );
+      changed |= _plasmaInterface().setImagePath( XmlOptions::get().raw( "SVG_PLASMA_IMAGE_PATH" ) );
       if( changed || first || forced )  _plasmaInterface().loadFile();
             
       if( _plasmaInterface().isValid() )
