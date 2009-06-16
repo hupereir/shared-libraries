@@ -97,8 +97,8 @@ namespace SVG
     { svg_offset_ = value; }
     
     //! set file
-    void setSizes( const std::vector<QSize>& sizes )
-    { sizes_ = sizes; }
+    void setSvgIdList( const SvgId::List& svg_ids )
+    { svg_ids_ = svg_ids; }
         
     //! Check files validity. Post a SvgEvent when finished
     void run( void );
@@ -115,7 +115,7 @@ namespace SVG
     double svg_offset_;
     
     //! requested sizes
-    std::vector<QSize> sizes_;
+    SvgId::List svg_ids_;
     
   };
   

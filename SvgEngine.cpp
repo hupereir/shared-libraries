@@ -98,12 +98,12 @@ namespace SVG
     {
       
       svg_offset_ = svg_offset;
-      vector<QSize> sizes;
+      SvgId::List svg_id_list;
       for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
-      { sizes.push_back( iter->first ); }
+      { svg_id_list.push_back( iter->first ); }
 
       cache_.clear();
-      preload( sizes );
+      preload( svg_id_list );
       
       emit SvgEngine::changed();
       return true;
@@ -114,17 +114,17 @@ namespace SVG
   }
   
   //__________________________________________________________
-  void SvgEngine::preload( vector<QSize> sizes )
+  void SvgEngine::preload( const SvgId::List& svg_ids )
   { 
     
     Debug::Throw( "SvgEngine::preload.\n" );
-    if( sizes.empty() ) return;
+    if( svg_ids.empty() ) return;
     if( !isValid() ) return;
     if( thread_.isRunning() ) return;
     
     thread_.setSvgFile( svg_file_ );
     thread_.setSvgOffset( svg_offset_ );
-    thread_.setSizes( sizes );
+    thread_.setSvgIdList( svg_ids );
     thread_.start();
     
   }
@@ -146,23 +146,19 @@ namespace SVG
   }  
   
   //__________________________________________________________
-  const QPixmap& SvgEngine::_get( const QSize& size, bool from_cache )
+  const QPixmap& SvgEngine::_get( const SvgId& id, bool from_cache )
   {
     Debug::Throw( "SvgEngine::_get.\n" );
     
-    // try find file in cache
-    if( from_cache )
-    {
-      PixmapCache::iterator iter( cache_.find( size ) );
-      if( iter != cache_.end() ) return iter->second;
-    }
+    PixmapCache::iterator iter( cache_.find( id ) );
+    if( iter != cache_.end() ) return iter->second;
     
     // add to map
-    QPixmap pixmap( size );
+    QPixmap pixmap( id.size() );
     pixmap.fill( Qt::transparent );
-    svg_.render( pixmap, svg_offset_ );
+    svg_.render( pixmap, svg_offset_, id.id() );
     
-    return cache_.insert( make_pair( size, pixmap ) ).first->second;
+    return cache_.insert( make_pair( id, pixmap ) ).first->second;
     
   }
   

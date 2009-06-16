@@ -1,5 +1,5 @@
-#ifndef SvgRenderer_h
-#define SvgRenderer_h
+#ifndef SvgId_h
+#define SvgId_h
 
 // $Id$
 
@@ -25,42 +25,69 @@
 *******************************************************************************/
  
 /*!
-  \file SvgRenderer.h
-  \brief construct pixmap of given size using Svg renderer
+  \file SvgId.h
+  \brief 
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
 */
 
-#include <QSvgRenderer>
-#include <QPaintDevice>
+#include <QSize>
+#include <QString>
+#include <vector>
 
-#include "Counter.h"
-
-//! construct pixmap of given size using Svg renderer
+//! svg namespace
 namespace SVG
 {
-  class SvgRenderer: public QSvgRenderer
+  class SvgId
   {
-    
     public:
-     
+    
+    typedef std::vector<SvgId> List;
+    
     //! constructor
-    SvgRenderer( void ):
-      QSvgRenderer()
+    SvgId( QSize size ):
+      size_( size )
       {}
     
-    //! destructor
-    virtual ~SvgRenderer( void )
+    //! constructor
+    SvgId( QString name, QSize size ):
+      id_( name ),
+      size_( size )
     {}
+    
+    //! equal to operator
+    bool operator == (const SvgId& id ) const
+    { return size_ == id.size_ && id_ == id.id_; }
+    
+    //! less than operator
+    bool operator < (const SvgId& id ) const
+    {
+      
+      if( size_.width() != id.size_.width() ) return size_.width() < id.size_.width();
+      else if( size_.height() != id.size_.height() ) return size_.height() < id.size_.height();
+      else return id_ < id.id_; 
 
-    //! render
-    void render( QPaintDevice&, const double& offset = 0, const QString& id = QString() );
-
-    //! validity
-    virtual bool isValid( void ) const;
+    }
+    
+    //! id
+    const QString& id( void ) const
+    { return id_; }
+    
+    //! size
+    const QSize& size( void ) const
+    { return size_; }
+    
+    private:
+    
+    //! name
+    QString id_;
+    
+    //! size
+    QSize size_;
     
   };
-
 };
+
 #endif
+  

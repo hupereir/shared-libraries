@@ -26,7 +26,7 @@
  
 /*!
   \file SvgEngine.h
-  \brief customized Icon factory to provide better looking disabled icons
+  \brief svg basic engine
   \author Hugo Pereira
   \version $Revision$
   \date $Date$
@@ -61,8 +61,8 @@ namespace SVG
     
     //! create pixmap
     /*! the size is stored into a cache to avoid duplicate pixmaps manipulations */
-    static const QPixmap& get( const QSize& size )
-    { return get()._get( size ); }
+    static const QPixmap& get( SvgId id )
+    { return get()._get( id ); }
     
     //! destructor
     virtual ~SvgEngine( void );
@@ -73,7 +73,7 @@ namespace SVG
     
     //! preload sizes
     /*! uses a separate thread, in order not to slow down application */
-    void preload( std::vector<QSize> );
+    void preload( const SvgId::List& );
 
     signals:
     
@@ -104,7 +104,7 @@ namespace SVG
     
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    const QPixmap& _get( const QSize&, bool from_cache = true );
+    const QPixmap& _get( const SvgId&, bool from_cache = true );
     
     //@}
     

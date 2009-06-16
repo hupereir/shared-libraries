@@ -24,6 +24,7 @@ noinst_HEADERS = \
   SvgPlasmaInterface.h \
   SvgRenderer.h \
   SvgThread.h \
+  SvgId.h \
   Svg.h
 
 noinst_LIBRARIES = libbase-svg.a

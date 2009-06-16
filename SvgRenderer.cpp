@@ -35,35 +35,45 @@
 
 namespace SVG
 {
-  
+ 
   //________________________________________________
-  void SvgRenderer::render( QPaintDevice& device, const double& offset )
+  void SvgRenderer::render( QPaintDevice& device, const double& offset, const QString& id )
   {
-    
+
     // check device size
     if( device.height() <= 0 || device.width() <= 0 ) return;
     
     // create painter
     QPainter painter( &device );    
-    QSizeF corner_size( boundsOnElement( SVG::TOP_LEFT ).size() );    
-    double width = device.width() + 2.0*(offset - corner_size.width() );
-    double height = device.height() + 2.0*( offset - corner_size.height() );
+    if( !id.isEmpty() )
+    {
     
-    // paint corners
-    QSvgRenderer::render( &painter, SVG::TOP_LEFT, QRectF( QPointF( -offset, -offset ), corner_size ) ); 
-    QSvgRenderer::render( &painter, SVG::TOP, QRectF( QPointF( corner_size.width()-offset, -offset ), QSizeF( width, corner_size.height() ) ) );
-    QSvgRenderer::render( &painter, SVG::TOP_RIGHT, QRectF( QPointF( width + corner_size.width() - offset , -offset ), corner_size ) ); 
+      double width = device.width() + 2.0*offset;
+      double height = device.height() + 2.0*offset;
+      QSvgRenderer::render( &painter, id, QRectF( QPointF( - offset, - offset ), QSizeF( width, height ) ) );
     
-    QSvgRenderer::render( &painter, SVG::BOTTOM_LEFT, QRectF( QPointF( -offset, height+corner_size.height() - offset ), corner_size ) ); 
-    QSvgRenderer::render( &painter, SVG::BOTTOM, QRectF( QPointF( corner_size.width() - offset, height+corner_size.height() - offset ), QSizeF( width, corner_size.height() ) ) );
-    QSvgRenderer::render( &painter, SVG::BOTTOM_RIGHT, QRectF( QPointF( width + corner_size.width() - offset, height+corner_size.height() - offset ), corner_size ) ); 
-    
-    QSvgRenderer::render( &painter, SVG::LEFT, QRectF( QPointF( -offset, corner_size.height() - offset ), QSizeF( corner_size.width(), height ) ) );
-    QSvgRenderer::render( &painter, SVG::RIGHT, QRectF( QPointF( width + corner_size.width()- offset, corner_size.height()- offset ), QSizeF( corner_size.width(), height ) ) );
-    QSvgRenderer::render( &painter, SVG::CENTER, QRectF( QPointF( corner_size.width() - offset, corner_size.height() - offset ), QSizeF( width, height ) ) );
+    } else {
 
-    return;
+      QSizeF corner_size( boundsOnElement( SVG::TOP_LEFT ).size() );    
+      double width = device.width() + 2.0*(offset - corner_size.width() );
+      double height = device.height() + 2.0*( offset - corner_size.height() );
+      
+      // paint corners
+      QSvgRenderer::render( &painter, SVG::TOP_LEFT, QRectF( QPointF( -offset, -offset ), corner_size ) ); 
+      QSvgRenderer::render( &painter, SVG::TOP, QRectF( QPointF( corner_size.width()-offset, -offset ), QSizeF( width, corner_size.height() ) ) );
+      QSvgRenderer::render( &painter, SVG::TOP_RIGHT, QRectF( QPointF( width + corner_size.width() - offset , -offset ), corner_size ) ); 
+      
+      QSvgRenderer::render( &painter, SVG::BOTTOM_LEFT, QRectF( QPointF( -offset, height+corner_size.height() - offset ), corner_size ) ); 
+      QSvgRenderer::render( &painter, SVG::BOTTOM, QRectF( QPointF( corner_size.width() - offset, height+corner_size.height() - offset ), QSizeF( width, corner_size.height() ) ) );
+      QSvgRenderer::render( &painter, SVG::BOTTOM_RIGHT, QRectF( QPointF( width + corner_size.width() - offset, height+corner_size.height() - offset ), corner_size ) ); 
+      
+      QSvgRenderer::render( &painter, SVG::LEFT, QRectF( QPointF( -offset, corner_size.height() - offset ), QSizeF( corner_size.width(), height ) ) );
+      QSvgRenderer::render( &painter, SVG::RIGHT, QRectF( QPointF( width + corner_size.width()- offset, corner_size.height()- offset ), QSizeF( corner_size.width(), height ) ) );
+      QSvgRenderer::render( &painter, SVG::CENTER, QRectF( QPointF( corner_size.width() - offset, corner_size.height() - offset ), QSizeF( width, height ) ) );
+    }
     
+    return;
+      
   }
  
   //________________________________________________
