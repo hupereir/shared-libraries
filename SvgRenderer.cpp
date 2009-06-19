@@ -92,7 +92,7 @@ namespace SVG
         QPointF pos = QPoint(0, 0);
         QSizeF overlay_size = boundsOnElement("overlay").size();
 
-        if( elementExists( "hint-overlay-stretch") ) overlay_size = QSize( width, height );
+        if( elementExists( "hint-overlay-stretch") ) overlay_size = QSizeF( width, height );
         else if( elementExists( "hint-overlay-tile-horizontal" ) ) overlay_size.setWidth(width );
         else if( elementExists( "hint-overlay-tile-vertical") ) overlay_size.setHeight( height );
 
