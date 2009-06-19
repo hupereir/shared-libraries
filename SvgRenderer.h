@@ -48,7 +48,7 @@ namespace SVG
     //! constructor
     SvgRenderer( void ):
       QSvgRenderer()
-      {}
+    {}
     
     //! destructor
     virtual ~SvgRenderer( void )
