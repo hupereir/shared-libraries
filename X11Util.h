@@ -103,7 +103,6 @@ class X11Util
     const Direction& direction, 
     Qt::MouseButton button = Qt::LeftButton );
   
-  
   #ifdef Q_WS_X11
   
   //! find atom
