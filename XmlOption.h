@@ -48,13 +48,19 @@ namespace OPTIONS {
   static const QString SPECIAL_OPTION = "SPECIAL_OPTION";
 
   //! Xml option tag
+  static const QString OPTION = "Option";
+  
+  //! Xml option tag
   static const QString OPTIONS = "Options";
 
-  //! Xml string for FRONT added special options
-  static const QString FLAGS = "flags";  
+  //! option name tag
+  static const QString NAME = "Name";
 
   //! Xml string for value field
   static const QString VALUE = "Value";
+  
+  //! Xml string for FRONT added special options
+  static const QString FLAGS = "flags";  
 
   //! Xml string for comments field
   static const QString COMMENTS = "Comments";

@@ -38,7 +38,14 @@ using namespace std;
 XmlOption::XmlOption( const QDomElement& element )
 {
   Debug::Throw( "XmlOption::XmlOption.\n" );
-  setName( element.nodeName() );
+  
+  // old implementation (kept for backward compatibility
+  // element name is option name
+  if( element.nodeName() != OPTIONS::OPTION ) 
+  {
+    Debug::Throw(0) << "XmlOption::XmlOption - using old XmlOption implementation." << endl;
+    setName( element.nodeName() );
+  }
   
   // parse attributes
   QDomNamedNodeMap attributes( element.attributes() );
@@ -46,7 +53,8 @@ XmlOption::XmlOption( const QDomElement& element )
   {
     QDomAttr attribute( attributes.item( i ).toAttr() );
     if( attribute.isNull() ) continue;
-    if( attribute.name() == OPTIONS::VALUE ) setRaw( XmlString( attribute.value() ).toText() );
+    if( attribute.name() == OPTIONS::NAME ) setName( attribute.value() );
+    else if( attribute.name() == OPTIONS::VALUE ) setRaw( XmlString( attribute.value() ).toText() );
     else if( attribute.name() == OPTIONS::COMMENTS ) setComments( XmlString( attribute.value() ).toText() );
     else if( attribute.name() == OPTIONS::FLAGS ) {
       
@@ -60,8 +68,9 @@ XmlOption::XmlOption( const QDomElement& element )
   for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
   {
     QDomElement child_element = child_node.toElement();
-    if( child_element.tagName() == OPTIONS::COMMENTS ) setComments( XmlString( child_element.text() ).toText() );
+    if( child_element.tagName() == OPTIONS::NAME ) setName( child_element.text() );
     else if( child_element.tagName() == OPTIONS::VALUE ) setRaw( XmlString( child_element.text() ).toText() );  
+    else if( child_element.tagName() == OPTIONS::COMMENTS ) setComments( XmlString( child_element.text() ).toText() );
     else if( child_element.tagName() == OPTIONS::FLAGS ) setFlags( (unsigned int) child_element.text().toInt() );
     else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized child " << child_element.tagName() << ".\n";
 
@@ -75,8 +84,12 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
 
   Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
   
-  QDomElement out = document.createElement( name() );
+  QDomElement out = document.createElement( OPTIONS::OPTION );
   
+  out.
+    appendChild( document.createElement( OPTIONS::NAME ) ).
+    appendChild( document.createTextNode( name() ) );
+
   out.
     appendChild( document.createElement( OPTIONS::VALUE ) ).
     appendChild( document.createTextNode( XmlString( raw() ).toXml() ) );

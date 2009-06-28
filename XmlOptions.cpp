@@ -110,14 +110,22 @@ bool XmlOptions::read( QString file )
       QString value( element.attribute( OPTIONS::VALUE ) );
       if( value.size() ) get().keep( value );
     
-    } else {
+    } else if( element.tagName() == OPTIONS::OPTION ) {
       
       XmlOption option( element );
       if( get().isSpecialOption( option.name() ) ) get().add( option.name(), option );
       else get().set( option.name(), option );
       
-    }
+    } else {
 
+      // old implementation, kept for backward compatibility
+      // element name is the option name
+      XmlOption option( element );
+      if( get().isSpecialOption( option.name() ) ) get().add( option.name(), option );
+      else get().set( option.name(), option );
+    
+    }
+    
   }
 
 
