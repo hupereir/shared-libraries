@@ -70,15 +70,15 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 {
   
   Q_OBJECT
-  
+    
   public:
-  
+    
   //! constructor
   TextEditor( QWidget* parent = 0 );
   
   //! destrutor
   virtual ~TextEditor( void );
-    
+  
   //! retrieve number of blocks in document
   virtual int blockCount( void ) const;
   

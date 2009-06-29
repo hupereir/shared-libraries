@@ -58,8 +58,9 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
   }
   
   //! flag bitset for the Base configuration
-  enum ConfigFlags
+  enum ConfigurationFlags
   {
+    
     //! base (font, icons and debug level
     BASE = 1<<0,
 
@@ -70,18 +71,40 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     TEXTEDIT = 1<<3,
     
     //! animations
-    ANIMATIONS = 1<<4
+    ANIMATIONS = 1<<4,
+    
+    //! tab emulation
+    TAB_EMULATION = 1<<5,
+    
+    //! paragraph highlight
+    PARAGRAPH_HIGHLIGHT = 1<<6,
+    
+    //! box selection
+    BOX_SELECTION = 1<<7,
+    
+    //! margins
+    MARGINS = 1<<8,
+    
+    //! misc
+    TEXT_EDITION_FLAGS = 1<<9,
+    
+    //! default
+    DEFAULT = BASE|LIST|ANIMATIONS,
+
+    //! all text edition
+    ALL_TEXT_EDITION = TAB_EMULATION|PARAGRAPH_HIGHLIGHT|BOX_SELECTION|MARGINS|TEXT_EDITION_FLAGS
+    
     
   };
 
   //! adds configuration box for base options used in all appications
-  void baseConfiguration( QWidget* parent = 0, const unsigned int& flag = BASE|LIST|ANIMATIONS );
+  void baseConfiguration( QWidget* parent = 0, unsigned long flag = DEFAULT );
 
   //! list configuration box
   void listConfiguration( QWidget* parent = 0 );
 
   //! TextEdit configuration box
-  void textEditConfiguration( QWidget* parent = 0 );
+  void textEditConfiguration( QWidget* parent = 0, unsigned long flag = ALL_TEXT_EDITION );
   
   //! animations
   void animationConfiguration( QWidget* parent = 0 );

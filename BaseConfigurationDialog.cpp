@@ -111,7 +111,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::baseConfiguration( QWidget* parent, const unsigned int& flag )
+void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long flag )
 {
   
   Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
@@ -258,7 +258,7 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
+void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned long flag )
 {
   
   Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
@@ -267,141 +267,164 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent )
   if( !parent ) parent = &addPage( "Text display/edition", "Settings for text display and edition" );
   
   // tab emulation
-  QGroupBox* box = new QGroupBox( "Tab emulation", parent );
-  QVBoxLayout* layout = new QVBoxLayout();
-  layout->setMargin(5);
-  layout->setSpacing(5);
-  box->setLayout( layout );
-  parent->layout()->addWidget( box );
-     
-  QHBoxLayout* h_layout = new QHBoxLayout();
-  h_layout->setSpacing(5);
-  h_layout->setMargin(0);
-  layout->addLayout( h_layout );
-  
-
-  OptionCheckBox* checkbox = new OptionCheckBox( "Emulate tabs", box, "TAB_EMULATION" );
-  checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
-  layout->addWidget( checkbox );
-  addOptionWidget( checkbox );
-  
-  h_layout->addWidget(new QLabel( "Tab size: ", box ) );
-  OptionSpinBox* spinbox = new OptionSpinBox( box, "TAB_SIZE" );
-  spinbox->setMinimum( 2 );
-  spinbox->setMaximum( 20 );
-  spinbox->setToolTip( "Tab size (in unit of space characters)." );
-  h_layout->addWidget( spinbox );
-  h_layout->addStretch( 1 );
-  
-  addOptionWidget( spinbox );
-  
-  // paragraph highlighting
-  box = new QGroupBox( "Paragrap highlighting", parent );
-  layout = new QVBoxLayout();
-  layout->setMargin(5);
-  layout->setSpacing(5);
-  box->setLayout( layout );
-  parent->layout()->addWidget( box );
-  
-  checkbox = new OptionCheckBox( "Highlight current paragraph", box, "HIGHLIGHT_PARAGRAPH" );
-  checkbox->setToolTip( "Turn on/off current paragraph highlighting" );
-  layout->addWidget( checkbox );
-  addOptionWidget( checkbox );
-  
-  GridLayout* grid_layout = new GridLayout();
-  grid_layout->setMargin(0);
-  grid_layout->setSpacing(5);
-  grid_layout->setMaxCount(2);
-  layout->addLayout( grid_layout );
-  
-  grid_layout->addWidget( new QLabel( "Paragraph highlight color: " ) );
-  OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
-  grid_layout->addWidget( color );
-  addOptionWidget( color );
-  
-  checkbox->setChecked( false );
-  color->setEnabled( false );
-  connect( checkbox, SIGNAL( toggled( bool ) ), color, SLOT( setEnabled( bool ) ) );
-
-  // box selection
-  box = new QGroupBox( "Box selection", parent );
-  grid_layout = new GridLayout();
-  grid_layout->setMargin(5);
-  grid_layout->setSpacing(5);
-  grid_layout->setMaxCount(2);
-  box->setLayout( grid_layout );
-  parent->layout()->addWidget( box );
-  
-  grid_layout->addWidget( new QLabel( "Alpha channel" ) );
-  OptionSlider *slider = new OptionSlider( box, "BOX_SELECTION_ALPHA" );
-  slider->slider().setMinimum( 0 );
-  slider->slider().setMaximum( 100 );
-  slider->setToolTip( "Alpha channel (i.e. opacity) of the box selection highlight color" );
-  grid_layout->addWidget( slider );
-  addOptionWidget( slider );
-  
-  if( XmlOptions::get().find( "BOX_SELECTION_COLOR" ) )
+  if( flag & TAB_EMULATION )
   {
-    grid_layout->addWidget( new QLabel( "Box selection color" ) );
-    OptionColorDisplay* color = new OptionColorDisplay( box, "BOX_SELECTION_COLOR" );
-    grid_layout->addWidget( color );
-    addOptionWidget( color );
+    QGroupBox* box = new QGroupBox( "Tab emulation", parent );
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setMargin(5);
+    layout->setSpacing(5);
+    box->setLayout( layout );
+    parent->layout()->addWidget( box );
+    
+    QHBoxLayout* h_layout = new QHBoxLayout();
+    h_layout->setSpacing(5);
+    h_layout->setMargin(0);
+    layout->addLayout( h_layout );
+    
+    
+    OptionCheckBox* checkbox = new OptionCheckBox( "Emulate tabs", box, "TAB_EMULATION" );
+    checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
+    layout->addWidget( checkbox );
+    addOptionWidget( checkbox );
+    
+    h_layout->addWidget(new QLabel( "Tab size: ", box ) );
+    OptionSpinBox* spinbox = new OptionSpinBox( box, "TAB_SIZE" );
+    spinbox->setMinimum( 2 );
+    spinbox->setMaximum( 20 );
+    spinbox->setToolTip( "Tab size (in unit of space characters)." );
+    h_layout->addWidget( spinbox );
+    h_layout->addStretch( 1 );
+    
+    addOptionWidget( spinbox );
+  
   }
   
-  grid_layout->addWidget( new QLabel(
-    "Note: box selection is enabled in text editors\n"
-    "only if the corresponding font has fixed pitch."), 2, 0, 1, 2 );
-
+  // paragraph highlighting
+  if( flag & PARAGRAPH_HIGHLIGHT )
+  {
+    QGroupBox* box = new QGroupBox( "Paragrap highlighting", parent );
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setMargin(5);
+    layout->setSpacing(5);
+    box->setLayout( layout );
+    parent->layout()->addWidget( box );
+    
+    OptionCheckBox* checkbox = new OptionCheckBox( "Highlight current paragraph", box, "HIGHLIGHT_PARAGRAPH" );
+    checkbox->setToolTip( "Turn on/off current paragraph highlighting" );
+    layout->addWidget( checkbox );
+    addOptionWidget( checkbox );
+    
+    GridLayout* grid_layout = new GridLayout();
+    grid_layout->setMargin(0);
+    grid_layout->setSpacing(5);
+    grid_layout->setMaxCount(2);
+    layout->addLayout( grid_layout );
+    
+    grid_layout->addWidget( new QLabel( "Paragraph highlight color: " ) );
+    OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
+    grid_layout->addWidget( color );
+    addOptionWidget( color );
+    
+    checkbox->setChecked( false );
+    color->setEnabled( false );
+    connect( checkbox, SIGNAL( toggled( bool ) ), color, SLOT( setEnabled( bool ) ) );
+    
+  }
+  
+  // box selection
+  if( flag & BOX_SELECTION )
+  {
+    QGroupBox* box = new QGroupBox( "Box selection", parent );
+    GridLayout* grid_layout = new GridLayout();
+    grid_layout->setMargin(5);
+    grid_layout->setSpacing(5);
+    grid_layout->setMaxCount(2);
+    box->setLayout( grid_layout );
+    parent->layout()->addWidget( box );
+    
+    grid_layout->addWidget( new QLabel( "Alpha channel" ) );
+    OptionSlider *slider = new OptionSlider( box, "BOX_SELECTION_ALPHA" );
+    slider->slider().setMinimum( 0 );
+    slider->slider().setMaximum( 100 );
+    slider->setToolTip( "Alpha channel (i.e. opacity) of the box selection highlight color" );
+    grid_layout->addWidget( slider );
+    addOptionWidget( slider );
+    
+    if( XmlOptions::get().find( "BOX_SELECTION_COLOR" ) )
+    {
+      grid_layout->addWidget( new QLabel( "Box selection color" ) );
+      OptionColorDisplay* color = new OptionColorDisplay( box, "BOX_SELECTION_COLOR" );
+      grid_layout->addWidget( color );
+      addOptionWidget( color );
+    }
+    
+    grid_layout->addWidget( new QLabel(
+      "Note: box selection is enabled in text editors\n"
+      "only if the corresponding font has fixed pitch."), 2, 0, 1, 2 );
+  }
+  
   // margins
-  parent->layout()->addWidget( box = new QGroupBox( "Margin appearance", parent ) );
- 
-  box->setLayout( new QVBoxLayout() );
-  box->layout()->setSpacing(5);
-  box->layout()->setMargin(5);
-
-  box->layout()->addWidget( checkbox = new OptionCheckBox( "Draw vertical line", box, "MARGIN_VERTICAL_LINE" ) );
-  checkbox->setToolTip( 
-    "Draw vertical line between margin and body text. "
-    "Margins are used to display additional informations such as tags and line numbers."
-    );
-  addOptionWidget( checkbox );
+  if( flag & MARGINS )
+  {
+    QGroupBox* box;
+    parent->layout()->addWidget( box = new QGroupBox( "Margin appearance", parent ) );
+    
+    box->setLayout( new QVBoxLayout() );
+    box->layout()->setSpacing(5);
+    box->layout()->setMargin(5);
+    
+    OptionCheckBox* checkbox;
+    box->layout()->addWidget( checkbox = new OptionCheckBox( "Draw vertical line", box, "MARGIN_VERTICAL_LINE" ) );
+    checkbox->setToolTip( 
+      "Draw vertical line between margin and body text. "
+      "Margins are used to display additional informations such as tags and line numbers."
+      );
+    addOptionWidget( checkbox );
+    
+    GridLayout* grid_layout = new GridLayout();
+    grid_layout->setSpacing(5);
+    grid_layout->setMargin(0);
+    grid_layout->setMaxCount(2);
+    grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+    box->layout()->addItem( grid_layout );
+    
+    OptionColorDisplay* color_display;  
+    grid_layout->addWidget( new QLabel( "Margin foreground: ", box ) );
+    grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
+    addOptionWidget( color_display );
+    color_display->setToolTip( "Margins foreground color" );
+    
+    grid_layout->addWidget( new QLabel( "Margin background: ", box ) );
+    grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
+    addOptionWidget( color_display );
+    color_display->setToolTip( "Margins background color" );
+    
+  }
   
-  grid_layout = new GridLayout();
-  grid_layout->setSpacing(5);
-  grid_layout->setMargin(0);
-  grid_layout->setMaxCount(2);
-  grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-  box->layout()->addItem( grid_layout );
+  if( flag & TEXT_EDITION_FLAGS )
+  {
 
-  OptionColorDisplay* color_display;  
-  grid_layout->addWidget( new QLabel( "Margin foreground: ", box ) );
-  grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
-  addOptionWidget( color_display );
-  color_display->setToolTip( "Margins foreground color" );
-
-  grid_layout->addWidget( new QLabel( "Margin background: ", box ) );
-  grid_layout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
-  addOptionWidget( color_display );
-  color_display->setToolTip( "Margins background color" );
-
-  // misc
-  parent->layout()->addWidget( box = new QGroupBox( "Flags", parent ) );
-  layout = new QVBoxLayout();
-  layout->setMargin(5);
-  layout->setSpacing(5);
-  box->setLayout( layout );
+    // misc
+    QGroupBox* box;
+    parent->layout()->addWidget( box = new QGroupBox( "Flags", parent ) );
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setMargin(5);
+    layout->setSpacing(5);
+    box->setLayout( layout );
+    
+    OptionCheckBox* checkbox = new OptionCheckBox( "Wrap text", box, "WRAP_TEXT" );
+    checkbox->setToolTip( "Turn on/off line wrapping at editor border" );
+    layout->addWidget( checkbox );
+    addOptionWidget( checkbox );
   
-  checkbox = new OptionCheckBox( "Wrap text", box, "WRAP_TEXT" );
-  checkbox->setToolTip( "Turn on/off line wrapping at editor border" );
-  layout->addWidget( checkbox );
-  addOptionWidget( checkbox );
+    layout->addWidget( checkbox = new OptionCheckBox( "Show line numbers", box, "SHOW_LINE_NUMBERS" ) );
+    checkbox->setToolTip( "Turn on/off line numbers" );
+    addOptionWidget( checkbox );
+    
+  }
   
-  layout->addWidget( checkbox = new OptionCheckBox( "Show line numbers", box, "SHOW_LINE_NUMBERS" ) );
-  checkbox->setToolTip( "Turn on/off line numbers" );
-  addOptionWidget( checkbox );
-
   Debug::Throw( "BaseConfigurationDialog::textEditConfiguration - done.\n" );
-
+    
 }
 
 //__________________________________________________

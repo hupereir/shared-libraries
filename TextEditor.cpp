@@ -2255,8 +2255,9 @@ bool TextEditor::_setTabSize( const int& tab_size )
   assert( tab_size > 0 );
 
   int stop_width( tab_size * QFontMetrics( font() ).width( " " ) );
-  if( tab_size == emulated_tab_.size() && tabStopWidth() == stop_width ) return false;
-
+  if( tab_size == emulated_tab_.size() && tabStopWidth() == stop_width ) 
+  { return false; }
+  
   // create strings and regular expressions
   // define normal tabs
   normal_tab_ = "\t";
@@ -2265,11 +2266,12 @@ bool TextEditor::_setTabSize( const int& tab_size )
 
   // define emulated tabs
   emulated_tab_ = QString( tab_size, ' ' );
-
   QString buffer;
   QTextStream( &buffer ) << "^(" << emulated_tab_ << ")" << "+";
   emulated_tab_regexp_.setPattern( buffer );
 
+  // update tab string according to tab emulation state
+  if( _hasTabEmulation() ) tab_ = emulated_tab_;
   return true;
 }
 
@@ -2323,7 +2325,7 @@ void TextEditor::_updateConfiguration( void )
 
   if( lineNumbersFromOptions() )
   { showLineNumberAction().setChecked( XmlOptions::get().get<bool>( "SHOW_LINE_NUMBERS" ) ); }
-
+  
   // tab emulation
   _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
   tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
