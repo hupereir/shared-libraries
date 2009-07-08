@@ -41,11 +41,7 @@ XmlOption::XmlOption( const QDomElement& element )
   
   // old implementation (kept for backward compatibility
   // element name is option name
-  if( element.nodeName() != OPTIONS::OPTION ) 
-  {
-    Debug::Throw(0) << "XmlOption::XmlOption - using old XmlOption implementation." << endl;
-    setName( element.nodeName() );
-  }
+  if( element.nodeName() != OPTIONS::OPTION ) setName( element.nodeName() );
   
   // parse attributes
   QDomNamedNodeMap attributes( element.attributes() );

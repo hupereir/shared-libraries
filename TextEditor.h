@@ -347,7 +347,15 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
   //! modifiers
   bool modifier( const Modifier& key ) const
   { return modifiers_&key; }
-
+ 
+  // return true if block is an empty line
+  virtual bool isEmptyBlock( const QTextBlock& block ) const
+  { return false; }
+  
+  //! return true is block is to be ignored from indentation scheme
+  virtual bool ignoreBlock( const QTextBlock& block ) const
+  { return false; }
+  
   signals:
   
   //! busy signal

@@ -53,6 +53,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
   lock_from_options_( true )
 {
   Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
+  if( !option_name.isEmpty() ) setObjectName( option_name );
   _installActions();
   
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
