@@ -39,7 +39,8 @@
 #include "ItemModel.h"
 
 //! Job model. Stores job information for display in lists
-template<class T> class ListModel : public ItemModel
+template<typename T, typename EqualTo = std::equal_to<T>, typename LessThan = std::less<T> > 
+class ListModel : public ItemModel
 {
    
   public:
@@ -57,7 +58,7 @@ template<class T> class ListModel : public ItemModel
   typedef std::vector<ValueType> List;
   
   //! list of vector
-  typedef std::set<ValueType> Set;
+  typedef std::set<ValueType, LessThan> Set;
 
   //! constructor
   ListModel(QObject *parent = 0):
@@ -114,7 +115,7 @@ template<class T> class ListModel : public ItemModel
   virtual void setIndexSelected( const QModelIndex& index, bool value )
   { 
     if( value ) selection_.push_back( get(index) ); 
-    else selection_.erase( std::remove( selection_.begin(), selection_.end(), get(index) ), selection_.end() );
+    else selection_.erase( std::remove_if( selection_.begin(), selection_.end(), std::bind2nd( EqualTo(), get(index) ) ), selection_.end() );
   } 
       
   //! get list of internal selected items
@@ -275,7 +276,7 @@ template<class T> class ListModel : public ItemModel
     {
     
       // see if iterator is in list
-      typename List::iterator found_iter( std::find( values.begin(), values.end(), *iter ) );
+      typename List::iterator found_iter( std::find_if( values.begin(), values.end(), std::bind2nd( EqualTo(), *iter ) ) );
       if( found_iter == values.end() ) removed_values.push_back( *iter );
       else {
         *iter = *found_iter;
@@ -331,7 +332,7 @@ template<class T> class ListModel : public ItemModel
   virtual QModelIndex index( const ValueType& value, int column = 0 ) const
   { 
     for( unsigned int row=0; row<values_.size(); row++ )
-    { if( value == values_[row] ) return index( row, column ); }
+    { if( EqualTo()(value, values_[row]) ) return index( row, column ); }
     return QModelIndex();
   }
 
@@ -346,7 +347,7 @@ template<class T> class ListModel : public ItemModel
   //! add, without update
   virtual void _add( const ValueType& value )
   {
-    typename List::iterator iter = std::find( values_.begin(), values_.end(), value );
+    typename List::iterator iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
     if( iter == values_.end() ) values_.push_back( value ); 
     else *iter = value;
   }
@@ -364,8 +365,8 @@ template<class T> class ListModel : public ItemModel
   //! remove, without update
   virtual void _remove( const ValueType& value )
   {
-    values_.erase( std::remove( values_.begin(), values_.end(), value ), values_.end() );
-    selection_.erase( std::remove( selection_.begin(), selection_.end(), value ), selection_.end() );
+    values_.erase( std::remove_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value )), values_.end() );
+    selection_.erase( std::remove_if( selection_.begin(), selection_.end(), std::bind2nd( EqualTo(), value ) ), selection_.end() );
   }
   
   private:
