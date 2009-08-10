@@ -111,8 +111,11 @@ namespace SVG
         } else continue;
         
       }
-    
-      return _setTheme( (theme.isNull() || theme.isEmpty() ) ? "default":theme );
+      
+      if( theme.isNull() || theme.isEmpty() ) theme = "default";
+      //Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - theme: " << theme << endl;
+      
+      return _setTheme( theme );
  
     }
 
@@ -191,17 +194,17 @@ namespace SVG
       << ".kde/share/apps/desktoptheme/"
       << ".kde4/share/apps/desktoptheme/";
     
-    for( QStringList::const_iterator iter = local_path.begin(); iter != local_path.end(); iter++ )
+    if( theme != "default" )
     {
-      QFileInfo info( QDir::home(), *iter + theme );
-      // QTextStream(stdout) << "SvgPlasmaInterface::_setTheme - trying " << info.absoluteFilePath() << endl;
-      if( info.exists() ) return _setPath( info.absoluteFilePath() );
-      
+      for( QStringList::const_iterator iter = local_path.begin(); iter != local_path.end(); iter++ )
+      {
+        QFileInfo info( QDir::home(), *iter + theme );
+        if( info.exists() ) return _setPath( info.absoluteFilePath() );      
+      }
     }
-
+    
     // try use global path
     QFileInfo info( QDir("/usr/share/apps/desktoptheme/"), theme );
-    // QTextStream(stdout) << "SvgPlasmaInterface::_setTheme - trying " << info.absoluteFilePath() << endl;
     if( info.exists() ) return _setPath( info.absoluteFilePath() );
       
     // try use default theme
