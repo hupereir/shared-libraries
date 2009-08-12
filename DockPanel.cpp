@@ -40,6 +40,7 @@
 
 using namespace std;
 
+
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent ):
   QWidget( parent ),
@@ -223,24 +224,41 @@ void DockPanel::_toggleSticky( bool state )
 {
 
   Debug::Throw( "DockPanel::_toggleSticky.\n" );
-
+  
   // check that widget is top level
   if( main().parentWidget() ) return;
 
-  // the widget must first be hidden
-  // prior to modifying the property
-  bool visible( !main().isHidden() );
-  if( visible ) main().hide();
+  #ifdef Q_WS_X11
+  if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
+  {
+      
+    // the widget must first be hidden
+    // prior to modifying the property
+    bool visible( !main().isHidden() );
+    if( visible ) main().hide();
+    
+    // change property depending on state
+    if( state ) X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1);
+    else X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
+    
+    // show widget again, if needed
+    if( visible ) main().show();
 
-  // change property depending on state
-  if( state ) X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1 );
-  else X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
+  } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
+    
+    bool visible( !main().isHidden() );
+    if( visible ) main().hide();
 
-  // show widget again, if needed
-  if( visible ) main().show();
+    X11Util::get().changeCardinal( main(), X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:0 );
+    
+    // show widget again, if needed
+    if( visible ) main().show();
 
-  // update option if any
-  if( _hasOptionName() ) XmlOptions::get().set<bool>( _stickyOptionName(), state ); 
+  }
+  
+  #endif
+  
+  return;
   
 }
 

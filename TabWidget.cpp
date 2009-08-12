@@ -210,17 +210,37 @@ void TabWidget::_toggleSticky( bool state )
   // check that widget is top level
   if( parentWidget() ) return;
 
-  // the widget must first be hidden
-  // prior to modifying the property
-  bool visible( !isHidden() );
-  if( visible ) hide();
+  #ifdef Q_WS_X11
+  if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
+  {
+      
+    // the widget must first be hidden
+    // prior to modifying the property
+    bool visible( !isHidden() );
+    if( visible ) hide();
+    
+    // change property depending on state
+    if( state ) X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, 1);
+    else X11Util::get().removeProperty( *this, X11Util::_NET_WM_STATE_STICKY );
+    
+    // show widget again, if needed
+    if( visible ) show();
 
-  // change property depending on state
-  if( state ) X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, 1 );
-  else X11Util::get().removeProperty( *this, X11Util::_NET_WM_STATE_STICKY );
-
-  // show widget again, if needed
-  if( visible ) show();
+  } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
+    
+    // the widget must first be hidden
+    // prior to modifying the property
+    bool visible( !isHidden() );
+    if( visible ) hide();
+    
+    X11Util::get().changeCardinal( *this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:0 );
+    
+    // show widget again, if needed
+    if( visible ) show();
+    
+  }
+  
+  #endif
 
 }
 

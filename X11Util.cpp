@@ -32,7 +32,9 @@
 
 #include "Debug.h"
 #include "X11Util.h"
- 
+
+#include <QDesktopWidget>
+
 using namespace std;
 
 //________________________________________________________________________
@@ -55,8 +57,14 @@ bool X11Util::isSupported( const Atoms& atom )
   
   #ifdef Q_WS_X11
   
+  Debug::Throw() << "X11Util::isSupported - " << atom_names_[atom] << endl;
+  
   SupportedAtomMap::const_iterator iter( _supportedAtoms().find( atom ) );
-  if( iter != _supportedAtoms().end() ) return iter->second;
+  if( iter != _supportedAtoms().end() ) 
+  {
+    Debug::Throw() << "X11Util::isSupported - " << atom_names_[atom] << (iter->second ? " true ":" false ") << endl;
+    return iter->second;
+  }
   
   Display* display( QX11Info::display() );
   Atom net_supported( findAtom( _NET_SUPPORTED ) );
@@ -84,6 +92,7 @@ bool X11Util::isSupported( const Atoms& atom )
     if( found == searched ) 
     {
       supported_atoms_[atom] = true;
+      Debug::Throw() << "X11Util::isSupported - " << atom_names_[atom] << " true " << endl;
       return true;
     }
     
@@ -93,6 +102,7 @@ bool X11Util::isSupported( const Atoms& atom )
   }
   
   supported_atoms_[atom] = false;
+  Debug::Throw() << "X11Util::isSupported - " << atom_names_[atom] << " false " << endl;
 
   #endif
   
@@ -153,6 +163,44 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
   
 }
 
+//_______________________________________________________
+unsigned long X11Util::cardinal( const QWidget& widget, const Atoms& atom )
+{
+  
+  Debug::Throw( "X11Util::cardinal" );
+  
+  #ifdef Q_WS_X11
+  
+  // make sure atom is supported
+  if( !isSupported( atom ) ) return false;
+
+  Display* display( QX11Info::display() );
+  Atom searched( findAtom(atom) );  
+  Atom actual;
+  int format;
+  unsigned char *data;
+  
+  unsigned long n, left;
+  XGetWindowProperty( 
+    display, widget.winId(), searched, 
+    0, 1L, false, 
+    XA_CARDINAL, &actual,  
+    &format, &n, &left, 
+    (unsigned char **) &data);
+    
+  // finish if no data is found
+  if( data == None ) return 0;
+  
+  // try cast data to atom and compare
+  unsigned long found( *(int*)data );
+  return found;
+  
+  #else
+  return 0;
+  #endif
+  
+}
+
 //________________________________________________________________________
 bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const int& nelements )
 {
@@ -169,6 +217,28 @@ bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const in
   Atom searched( findAtom( atom ) );
   
   XChangeProperty (display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeAppend, (unsigned char *)&searched, nelements );
+  return true;
+  #endif
+  
+  return false;
+}
+
+
+//________________________________________________________________________
+bool X11Util::changeCardinal( const QWidget& widget, const Atoms& atom, const unsigned long& value )
+{
+
+  Debug::Throw( "X11Util::changeProperty.\n" );
+
+  #ifdef Q_WS_X11
+
+  // make sure atom is supported
+  if( !isSupported( atom ) ) return false;
+
+  Display* display( QX11Info::display() );
+  Atom searched( findAtom( atom ) );
+  
+  XChangeProperty (display, widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, (unsigned char *)&value, 1 );
   return true;
   #endif
   
@@ -278,6 +348,7 @@ void X11Util::_initializeAtomNames( void )
   Debug::Throw( "X11Util::_initializeAtomNames.\n" );
   
   atom_names_[_NET_SUPPORTED] = "_NET_SUPPORTED";
+  atom_names_[_NET_WM_DESKTOP] = "_NET_WM_DESKTOP";
   atom_names_[_NET_WM_STATE] = "_NET_WM_STATE";
   atom_names_[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
   atom_names_[_NET_WM_STATE_STAYS_ON_TOP] = "_NET_WM_STATE_STAYS_ON_TOP";

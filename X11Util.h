@@ -50,10 +50,14 @@ class X11Util
   //! singleton
   static X11Util& get( void );
   
+  //! used for stickyness
+  static const unsigned long ALL_DESKTOPS = ~0;
+
   //! Atoms enumeration
   enum Atoms
   {
     _NET_SUPPORTED,
+    _NET_WM_DESKTOP,
     _NET_WM_STATE,
     _NET_WM_STATE_STICKY,
     _NET_WM_STATE_STAYS_ON_TOP,
@@ -82,14 +86,20 @@ class X11Util
   bool isSupported( const Atoms& atom );
 
   //! return true if property is found in NET_WM_STATE
-  bool hasProperty( const QWidget& widget, const Atoms& atom );
-  
+  bool hasProperty( const QWidget&, const Atoms& );
+
   //! change property
   bool changeProperty( const QWidget&, const Atoms&, const int& );
   
   //! remove property from NET_WM_STATE
-  bool removeProperty( const QWidget& widget, const Atoms& atom );
+  bool removeProperty( const QWidget&, const Atoms& );
+
+  //! get atom carninal value
+  unsigned long cardinal( const QWidget&, const Atoms& );
   
+  //! get atom carninal value
+  bool changeCardinal( const QWidget&, const Atoms&, const unsigned long& value );
+    
   //! move widget using X11 window manager
   /*! returns true on success */
   bool moveWidget( const QWidget& widget, const QPoint& position )
@@ -98,9 +108,9 @@ class X11Util
   //! move/resize widget using X11 window manager
   /*! returns true on success */
   bool moveResizeWidget( 
-    const QWidget& widget, 
-    const QPoint& position, 
-    const Direction& direction, 
+    const QWidget&, 
+    const QPoint&, 
+    const Direction&, 
     Qt::MouseButton button = Qt::LeftButton );
   
   #ifdef Q_WS_X11
