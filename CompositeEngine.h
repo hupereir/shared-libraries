@@ -1,6 +1,6 @@
 #ifndef CompositeEngine_h
 #define CompositeEngine_h
- 
+
 // $Id$
 
 /***************************************************************************
@@ -39,77 +39,77 @@
 
 namespace TRANSPARENCY
 {
-  
+
   //! initialize compositing, if available
   class CompositeEngine
   {
     public:
-      
+
     //! singleton
     static CompositeEngine& get( void );
-        
+
     //! availability
     bool isAvailable( void ) const
     { return available_; }
-    
+
     //! enability
     bool isEnabled( void ) const
     { return available_ && enabled_; }
-    
+
     //! enability
     bool setEnabled( bool value );
-    
+
     //! initialize
     void initialize( void );
-    
+
     #ifdef Q_WS_X11
-    
+
     //! display
     Display* display( void ) const
     { return display_; }
     //! visual
     Qt::HANDLE visual( void ) const
     { return Qt::HANDLE( visual_ ); }
-    
+
     //! colormar
     Qt::HANDLE colormap( void ) const
     { return Qt::HANDLE( colormap_ ); }
-    
+
     #endif
 
     private:
-    
+
     //! constructor
     CompositeEngine( void );
-        
+
     //! returns true if composition is enabled
     bool _compositingEnabled( void ) const;
-    
+
     #ifdef Q_WS_X11
     //! returns true if composition is enabled
     bool _compositingEnabled( Display* ) const;
 
     //! display
     Display* display_;
-    
+
     //! visual
     Visual* visual_;
-    
+
     //! colormap
     Colormap colormap_;
     #endif
-    
+
     //! validity
     bool available_;
-    
+
     //! enability
     bool enabled_;
-    
+
     //! initialized
     bool initialized_;
-    
+
   };
-  
+
 };
 
 #endif

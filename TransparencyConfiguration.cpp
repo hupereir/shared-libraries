@@ -1,24 +1,24 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
 
 /*!
@@ -51,24 +51,24 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   Counter( "TransparencyConfiguration" )
 {
   Debug::Throw( "TransparencyConfiguration::TransparencyConfiguration.\n" );
-  
+
   setLayout( new QVBoxLayout() );
   layout()->setSpacing(5);
   layout()->setMargin(0);
-   
+
   // generic objects
   QGroupBox *box;
   OptionColorDisplay* color_display;
   OptionSlider* slider;
   OptionSpinBox* spinbox;
   OptionCheckBox* checkbox;
-  
+
   // general
   layout()->addWidget( box = new QGroupBox( "General", this ) );
   box->setLayout( new QVBoxLayout() );
   box->layout()->setSpacing(5);
   box->layout()->setMargin(5);
-  
+
   // enable/disable transparency
   box->layout()->addWidget( checkbox = new OptionCheckBox( "Use transparency", box, "TRANSPARENT" ) );
   checkbox->setToolTip( "Enable/disable transparent background" );
@@ -77,18 +77,18 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   // enable/disable compositing
   if( CompositeEngine::get().isAvailable() )
   {
-    
+
     box->layout()->addWidget( checkbox = new OptionCheckBox( "Use compositing", box, "TRANSPARENCY_USE_COMPOSITE" ) );
     checkbox->setToolTip( "Enable/disable compositing" );
     addOptionWidget( checkbox );
-    
+
   }
-    
+
   QHBoxLayout* h_layout = new QHBoxLayout();
   h_layout->setSpacing(5);
   h_layout->setMargin(0);
   box->layout()->addItem( h_layout );
-  
+
   // opacity
   h_layout->addWidget( new QLabel( "Opacity (composite):", box ) );
   h_layout->addWidget( slider = new OptionSlider( this, "TRANSPARENCY_OPACITY" ) );
@@ -97,10 +97,10 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   slider->slider().setMaximum( 100 );
   slider->setToolTip( "Widget opacity" );
   addOptionWidget( slider );
-  
+
   // colors
   layout()->addWidget( box = new QGroupBox( "Colors", this ) );
-  
+
   GridLayout* grid_layout = new GridLayout();
   grid_layout->setSpacing(5);
   grid_layout->setMargin(5);
@@ -113,13 +113,13 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_FOREGROUND_COLOR" ) );
   color_display->setToolTip( "Text/display foreground color" );
   addOptionWidget( color_display );
- 
+
   // shadow color
   grid_layout->addWidget( new QLabel( "Shadow color:", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_SHADOW_COLOR" ) );
   color_display->setToolTip( "Text/display shadow color" );
   addOptionWidget( color_display );
- 
+
   // tint color
   grid_layout->addWidget( new QLabel( "Tint color:", box ) );
   grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_TINT_COLOR" ) );
@@ -137,11 +137,11 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   grid_layout->addWidget( spinbox = new OptionSpinBox( box, "TRANSPARENCY_SHADOW_OFFSET" ) );
   spinbox->setMinimum( 0 );
   spinbox->setMaximum( 10 );
-  spinbox->setToolTip( 
+  spinbox->setToolTip(
     "Offset between text shadow and text.\n"
     "0 means no shadow." );
   addOptionWidget( spinbox );
-  
+
   // foreground intensity
   grid_layout->addWidget( new QLabel("Foreground intensity:", box ) );
   grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
@@ -150,7 +150,7 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   slider->slider().setMaximum( 100 );
   slider->setToolTip("Foreground color intensity" );
   addOptionWidget( slider );
-  
+
   // tint intensity
   grid_layout->addWidget( new QLabel( "Tint intensity:", box ) );
   grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_TINT_INTENSITY" ) );
@@ -159,7 +159,7 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   slider->slider().setMaximum( 100 );
   slider->setToolTip( "Transparent background tint intensity" );
   addOptionWidget( slider );
-  
+
   // tint intensity
   grid_layout->addWidget( new QLabel( "Highlight intensity:", box ) );
   grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
@@ -168,6 +168,6 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
   slider->slider().setMaximum( 100 );
   slider->setToolTip( "Transparent background highlight intensity" );
   addOptionWidget( slider );
-  
+
   return;
 }

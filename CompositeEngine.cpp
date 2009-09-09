@@ -44,28 +44,28 @@ using namespace TRANSPARENCY;
 
 //_______________________________________________________________
 CompositeEngine& CompositeEngine::get( void )
-{ 
-          
+{
+
   //! singleton
   static CompositeEngine singleton;
-  return singleton; 
+  return singleton;
 
 }
 
 //_______________________________________________________________
 CompositeEngine::CompositeEngine( void ):
-  
+
   #ifdef Q_WS_X11
   display_( 0 ),
   visual_( 0 ),
   colormap_( 0 ),
   #endif
-  
+
   available_( false ),
   enabled_( true ),
   initialized_( false )
-{ 
-  Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); 
+{
+  Debug::Throw( "CompositeEngine::CompositeEngine.\n" );
   XmlOptions::get().set( "TRANSPARENCY_USE_COMPOSITE", Option("1"), true );
 }
 
@@ -73,31 +73,31 @@ CompositeEngine::CompositeEngine( void ):
 //_______________________________________________________________
 void CompositeEngine::initialize( void )
 {
-  
+
   Debug::Throw( "CompositeEngine::initialize\n" );
-  
+
   if( initialized_ ) return;
   initialized_ = true;
-  
+
   // reset
   available_ = false;
-  
+
   // do nothing if compositing is not enabled
   if( !_compositingEnabled() ) return;
-  
+
   #ifdef Q_WS_X11
   // display
   display_ = XOpenDisplay(0);
-  
-  int screen = DefaultScreen(display_);  
+
+  int screen = DefaultScreen(display_);
   int n_visuals;
-  
+
   XVisualInfo templ;
   templ.screen  = screen;
   templ.depth   = 32;
   templ.c_class = TrueColor;
-  XVisualInfo *visual_info = XGetVisualInfo(display_, VisualScreenMask | VisualDepthMask | VisualClassMask, &templ, &n_visuals);    
-      
+  XVisualInfo *visual_info = XGetVisualInfo(display_, VisualScreenMask | VisualDepthMask | VisualClassMask, &templ, &n_visuals);
+
   for (int i = 0; i < n_visuals; ++i)
   {
     XRenderPictFormat *format = XRenderFindVisualFormat(display_, visual_info[i].visual);
@@ -108,9 +108,9 @@ void CompositeEngine::initialize( void )
       available_ = true;
       break;
     }
-    
+
   }
-  
+
   // need to close the display if not available
   // to let Qt use its own.
   if( !available_ )
@@ -121,23 +121,23 @@ void CompositeEngine::initialize( void )
   #endif
 
   #ifdef Q_WS_WIN
-  // on windows, 
+  // on windows,
   // composition mode is available by default
   // TODO: check version to make sure this is true
   available_ = true;
   #endif
-  
+
 }
 
 //_______________________________________________________________
 bool CompositeEngine::setEnabled( bool value )
-{ 
+{
   if( enabled_ == value ) return false;
   enabled_ = value;
-  
+
   // if disabled, reload background pixmap for fake transparency
   if( !value ) { BackgroundPixmap::get().reload(); }
-  
+
   return true;
 }
 
@@ -145,7 +145,7 @@ bool CompositeEngine::setEnabled( bool value )
 bool CompositeEngine::_compositingEnabled( void ) const
 {
   Debug::Throw( "CompositeEngine::_compositingEnabled\n" );
-  
+
   #ifdef Q_WS_X11
   if( QX11Info::display()) return _compositingEnabled( QX11Info::display() );
   else {
@@ -158,15 +158,15 @@ bool CompositeEngine::_compositingEnabled( void ) const
   #endif
 
   #ifdef Q_WS_WIN
-  // on windows, 
+  // on windows,
   // composition mode is available by default
   // TODO: check version to make sure this is true
   return true;
   #endif
-  
+
   // on all other systems, return false
   return false;
-  
+
 }
 
 //_______________________________________________________________
@@ -174,7 +174,7 @@ bool CompositeEngine::_compositingEnabled( void ) const
 bool CompositeEngine::_compositingEnabled( Display* display ) const
 {
   Debug::Throw( "CompositeEngine::_compositingEnabled (display)\n" );
-  
+
   char atom_name[ 100 ];
   sprintf( atom_name, "_NET_WM_CM_S%d", DefaultScreen( display ));
   Atom atom( XInternAtom( display, atom_name, false ) );

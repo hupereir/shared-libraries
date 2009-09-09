@@ -10,7 +10,7 @@ INCLUDES =  \
   -I$(qt_includes)/QtXml \
 	-I$(top_srcdir)/base \
 	-I$(top_srcdir)/base-qt
-    
+
 noinst_HEADERS = \
   BackgroundPixmap.h \
   CompositeEngine.h \
@@ -32,7 +32,7 @@ libbase_transparency_a_SOURCES = \
 nodist_libbase_transparency_a_SOURCES = \
   moc_BackgroundPixmap.cpp \
   moc_TransparentWidget.cpp
-  
+
 clean-local:
 	 rm -f moc_*.cpp
 
