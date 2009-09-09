@@ -49,7 +49,7 @@ FileRecord::PropertyId::NameMap& FileRecord::PropertyId::_nameMap( void )
 
 //_______________________________________________
 FileRecord::PropertyId::Id& FileRecord::PropertyId::_counter( void )
-{ 
+{
   static Id counter(0);
   return counter;
 }
@@ -62,14 +62,14 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
   IdMap::const_iterator iter;
   if( ( iter = _idMap().find( name ) ) != _idMap().end() )
   { return iter->second; }
-  
+
   // insert otherwise, increment counter and return proper value
   _idMap().insert( make_pair( name, _counter() ) );
   _nameMap().push_back( name );
   _counter()++;
 
   return _counter()-1;
-  
+
 }
 
 //_______________________________________________
@@ -90,7 +90,7 @@ bool FileRecord::operator == (const FileRecord& record ) const
 //_______________________________________________
 FileRecord& FileRecord::addProperty( PropertyId::Id id, QString value )
 {
-  
-  properties_[ id ] = value; 
+
+  properties_[ id ] = value;
   return *this;
 }
