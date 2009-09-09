@@ -59,12 +59,12 @@ SpellInterface::SpellInterface( void ):
   _loadDictionaries();
   _loadFilters();
   _resetSpellChecker();
-  
+
   // set default filter
   setFilter( NO_FILTER );
-  
+
   Debug::Throw( "SpellInterface::SpellInterface - done.\n" );
-    
+
 }
 
 //__________________________________________
@@ -76,7 +76,7 @@ SpellInterface::~SpellInterface( void )
   if( document_checker_ ) delete_aspell_document_checker( document_checker_ );
   if( spell_checker_ ) delete_aspell_speller( spell_checker_ );
   Debug::Throw( "SpellInterface::~SpellInterface - done.\n" );
-  
+
 }
 
 //____________________________________________________
@@ -148,12 +148,12 @@ bool SpellInterface::setText(
   Debug::Throw( "SpellInterface::setText.\n" );
 
   // check text
-  if( text.isEmpty() ) 
+  if( text.isEmpty() )
   {
-    Debug::Throw( "SpellInterface::setText - empty.\n" );  
+    Debug::Throw( "SpellInterface::setText - empty.\n" );
     return true;
   }
-  
+
   // store text
   text_ = text;
   checked_text_ = text;
@@ -164,13 +164,13 @@ bool SpellInterface::setText(
 
   // check limits
   assert( begin_ <= text_.size() && end_ <= text_.size() );
-  
+
   end_ += offset_;
   position_ = 0;
   offset_ = 0;
   aspell_document_checker_reset( document_checker_ );
   aspell_document_checker_process(document_checker_, text_.mid( begin_, end_-begin_).toAscii().constData(), -1);
-  
+
   return true;
 
 }
@@ -233,20 +233,20 @@ bool SpellInterface::replace( const QString& word )
 bool SpellInterface::nextWord( void )
 {
 
-  // check filter 
+  // check filter
   if( filter_.isEmpty() )
   {
     error_ = "no filter set";
     return false;
   }
-    
-  // check filter 
+
+  // check filter
   if( dictionary_.isEmpty() )
   {
     error_ = "no dictionary set";
     return false;
   }
-    
+
   // check text size
   if( !text_.size() )
   {
@@ -361,7 +361,7 @@ void SpellInterface::_loadFilters( void )
   FILE *tmp = popen( command.toAscii().constData(), "r" );
   static const int linesize( 128 );
   char buf[linesize];
-  while( fgets( buf, linesize, tmp ) ) 
+  while( fgets( buf, linesize, tmp ) )
   {
 
     if( !strlen( buf ) ) continue;
@@ -394,35 +394,35 @@ bool SpellInterface::_reset( void )
   document_checker_ = 0;
 
   //!reset spell checker
-  if( !_resetSpellChecker() ) 
+  if( !_resetSpellChecker() )
   {
     Debug::Throw( "SpellInterface::_reset - _resetSpellChecker failed.\n" );
     return false;
   }
-  
+
   // recreate document checker
   AspellCanHaveError* err = new_aspell_document_checker(spell_checker_);
   if( aspell_error_number(err) )
   {
     error_ = aspell_error_message( err );
-    Debug::Throw( "SpellInterface::_reset - unable to create document_checker.\n" ); 
+    Debug::Throw( "SpellInterface::_reset - unable to create document_checker.\n" );
     return false;
   } else document_checker_ = to_aspell_document_checker(err);
 
   // assign text if any
   if( checked_text_.size() )
   {
-    Debug::Throw( "SpellInterface::_reset - assigning text.\n" );  
+    Debug::Throw( "SpellInterface::_reset - assigning text.\n" );
     text_ = checked_text_;
     end_ += offset_;
     position_ = 0;
     offset_ = 0;
     aspell_document_checker_reset( document_checker_ );
     aspell_document_checker_process(document_checker_, text_.mid( begin_, end_-begin_).toAscii().constData(), -1);
-    Debug::Throw( "SpellInterface::_reset - assigning text, done.\n" );  
+    Debug::Throw( "SpellInterface::_reset - assigning text, done.\n" );
   }
 
-  Debug::Throw( "SpellInterface::_reset - done.\n" );   
+  Debug::Throw( "SpellInterface::_reset - done.\n" );
   return true;
 
 }
@@ -435,7 +435,7 @@ bool SpellInterface::_resetSpellChecker( void )
 
   // check config
   if( !spell_config_ ) {
-    Debug::Throw( "SpellInterface::_resetSpellChecker - invalid aspell configuration.\n" ); 
+    Debug::Throw( "SpellInterface::_resetSpellChecker - invalid aspell configuration.\n" );
     error_ = "invalid aspell configuration";
     return false;
   }
@@ -448,7 +448,7 @@ bool SpellInterface::_resetSpellChecker( void )
   AspellCanHaveError* err = new_aspell_speller(spell_config_);
   if( aspell_error_number(err) )
   {
-    Debug::Throw( "SpellInterface::_resetSpellChecker - failed to create speller.\n" );  
+    Debug::Throw( "SpellInterface::_resetSpellChecker - failed to create speller.\n" );
     error_ = aspell_error_message( err );
     return false;
   } else spell_checker_ = to_aspell_speller(err);

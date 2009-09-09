@@ -41,7 +41,7 @@
 #include "Counter.h"
 #include "Debug.h"
 #include "SpellInterface.h"
-#include "TextFormat.h" 
+#include "TextFormat.h"
 #include "Word.h"
 
 namespace SPELLCHECK
@@ -59,7 +59,7 @@ namespace SPELLCHECK
     //! destructor
     virtual ~SpellParser( void )
     { Debug::Throw( "SpellParser::~SpellParser.\n" ); }
-    
+
     //! highlight paragraph
     virtual Word::Set parse( const QString& text );
 
@@ -70,45 +70,45 @@ namespace SPELLCHECK
     //! color
     virtual const QColor& color( void ) const
     { return color_; }
-    
+
     //! font format
     /* returns true if changed */
     virtual bool setFontFormat( const unsigned int& format );
-    
+
     //! font format
     virtual const unsigned int& fontFormat( void ) const
     { return font_format_; }
-   
+
     //! enabled. Returns true if changed.
     bool setEnabled( const bool& value )
-    { 
+    {
       if( enabled_ == value ) return false;
-      enabled_ = value; 
+      enabled_ = value;
       return true;
     }
-    
+
     //! enabled
     const bool& isEnabled( void ) const
     { return enabled_; }
-          
+
     //! spell interface
     virtual SpellInterface& interface( void )
     { return interface_; }
-    
+
     private:
-    
+
     //! enabled
     bool enabled_;
-    
+
     //! spell interface
     SpellInterface interface_;
-    
+
     //! highlight color
     QColor color_;
-    
+
     //! font format (is a bitwise or of TextFormatInfo bits)
     unsigned int font_format_;
-        
+
   };
 
 };

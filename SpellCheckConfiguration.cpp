@@ -63,25 +63,25 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   grid_layout->addWidget( editor );
   editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
   addOptionWidget( editor );
-    
+
   // dictionaries
   grid_layout->addWidget( new QLabel( "Default Dictionary: ", this ) );
   OptionComboBox* combobox(  new OptionComboBox( this, "DICTIONARY" ) );
   grid_layout->addWidget( combobox );
-  combobox->setToolTip( 
+  combobox->setToolTip(
     "Default dictionary used with files for which\n"
     "a dictionary has not been manually selected" );
   addOptionWidget( combobox );
- 
+
   const set<QString>& dictionaries( interface.dictionaries() );
   for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
   { combobox->addItem( *iter ); }
-  
+
   // filters
   grid_layout->addWidget( new QLabel( "Default Filter: ", this ) );
   combobox = new OptionComboBox( this, "DICTIONARY_FILTER" );
   grid_layout->addWidget( combobox );
-  combobox->setToolTip( 
+  combobox->setToolTip(
     "Default filtering mode used with files for which\n"
     "a filtering mode has not been manually selected" );
   addOptionWidget( combobox );
@@ -89,5 +89,5 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   const set<QString>& filters( interface.filters() );
   for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
   { combobox->addItem(*iter ); }
-  
+
 }

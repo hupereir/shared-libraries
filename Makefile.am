@@ -22,7 +22,7 @@ noinst_HEADERS = \
   Word.h
 
 noinst_LIBRARIES = libbase-spellcheck.a
-  
+
 libbase_spellcheck_a_SOURCES =  \
   AutoSpellConfiguration.cpp \
   DictionaryMenu.cpp \
@@ -32,13 +32,13 @@ libbase_spellcheck_a_SOURCES =  \
   SpellInterface.cpp \
   SpellParser.cpp \
   SuggestionMenu.cpp
-	
+
 nodist_libbase_spellcheck_a_SOURCES =  \
   moc_DictionaryMenu.cpp \
   moc_FilterMenu.cpp \
   moc_SpellDialog.cpp \
   moc_SuggestionMenu.cpp
-	
+
 clean-local:
 	 rm -f moc_*.cpp
 

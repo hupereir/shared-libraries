@@ -47,13 +47,13 @@ AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
   Counter( "AutoSpellConfiguration" )
 {
   Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
-  
+
   GridLayout* grid_layout( new GridLayout() );
   grid_layout->setSpacing( 5 );
   grid_layout->setMargin( 5 );
   grid_layout->setMaxCount( 2 );
   setLayout( grid_layout );
-  
+
   // suggestions
   grid_layout->addWidget( new QLabel( "Max number of suggestions: ", this ) );
   OptionSpinBox* spinbox = new OptionSpinBox( this, "MAX_SUGGESTIONS" ) ;
@@ -62,7 +62,7 @@ AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
   spinbox->setMaximum( 50 );
   spinbox->setToolTip( "Maximum number of suggestions in suggestion menu.\n 0 means no limit." );
   addOptionWidget( spinbox );
-  
+
   // options
   grid_layout->addWidget( new QLabel( "Highlight color: ", this ), 1, 0 );
   OptionColorDisplay *colordisplay = new OptionColorDisplay( this, "AUTOSPELL_COLOR" );
@@ -75,5 +75,5 @@ AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
   grid_layout->addWidget( fontinfo );
   fontinfo->setToolTip( "Font format for misspelled words" );
   addOptionWidget( fontinfo );
-  
+
 }
