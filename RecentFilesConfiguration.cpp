@@ -59,11 +59,11 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
   setLayout( layout );
   layout->setMargin(0);
   layout->setSpacing( 5 );
-  
+
   QGroupBox* box;
   // group box for additional options
   layout->addWidget( box = new QGroupBox( "Options", this ) );
-  
+
   QVBoxLayout* v_layout = new QVBoxLayout();
   v_layout->setMargin(5);
   v_layout->setSpacing(5);
@@ -90,13 +90,13 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
   v_layout->addWidget( checkbox = new OptionCheckBox( "Sort recent files by date", box, "SORT_FILES_BY_DATE" ) );
   checkbox->setToolTip( "Sort files by date rather than name in Open Previous menu." );
   addOptionWidget( checkbox );
-  
+
   // group box for file list
   layout->addWidget( box = new QGroupBox( "Files", this ), 1 );
   box->setLayout( new QHBoxLayout() );
   box->layout()->setSpacing(5);
   box->layout()->setMargin(5);
-  
+
   box->layout()->addWidget( list_ = new TreeView( box ) );
   _list().setModel( &model_ );
   _list().sortByColumn( XmlOptions::get().get<bool>( "SORT_FILES_BY_DATE" ) ? FileRecordModel::TIME:FileRecordModel::FILE );
@@ -108,7 +108,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
   v_layout->setSpacing(5);
   v_layout->setMargin(0);
   box->layout()->addItem( v_layout );
-  
+
   // clean
   v_layout->addWidget( clean_button_ = new QPushButton( "&Clean", box ) );
   clean_button_->setToolTip( "Remove invalid files" );
@@ -130,30 +130,30 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
   remove_action_->setShortcut( Qt::Key_Delete );
   _list().menu().addAction( remove_action_ );
   _list().addAction( remove_action_ );
-  
+
   // reload
   v_layout->addWidget( reload_button_ = new QPushButton( "&Reload", box ) );
   reload_button_->setToolTip( "Reload file list" );
   reload_button_->setIcon( IconEngine::get( ICONS::RELOAD ) );
   connect( reload_button_, SIGNAL( clicked() ), SLOT( _reload() ) );
-  
+
   addAction( reload_action_ = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
   connect( reload_action_, SIGNAL( triggered() ), SLOT( _reload() ) );
   _list().menu().addAction( reload_action_ );
 
   v_layout->addStretch( 1 );
- 
+
   // connections
   _reloadButton().setEnabled( false );
-  
+
 }
 
 //__________________________________________________________________________
 void RecentFilesConfiguration::read( void )
-{ 
+{
   Debug::Throw( "RecentFilesConfiguration::read.\n" );
-  OptionWidgetList::read(); 
-  
+  OptionWidgetList::read();
+
   _reload();
   _list().resizeColumns();
 
@@ -161,45 +161,45 @@ void RecentFilesConfiguration::read( void )
 
 //__________________________________________________________________________
 void RecentFilesConfiguration::write( void ) const
-{ 
+{
   Debug::Throw( "RecentFilesConfiguration::write.\n" );
-  OptionWidgetList::write(); 
-  
+  OptionWidgetList::write();
+
   // put model contents into file list
   _recentFiles().set( _model().get() );
-  
+
 }
 
 //__________________________________________________________________________
-void RecentFilesConfiguration::_updateButtons( void ) 
+void RecentFilesConfiguration::_updateButtons( void )
 {
-  
+
   Debug::Throw( "RecentFilesConfiguration::_updateButtons.\n" );
   QList<QModelIndex> selection( _list().selectionModel()->selectedRows() );
   _removeButton().setEnabled( !selection.empty() );
-  
+
 }
 
 //__________________________________________________________________________
 void RecentFilesConfiguration::_remove( void )
 {
-  
+
   Debug::Throw( "RecentFilesConfiguration::_remove.\n" );
   QList<QModelIndex> selection( _list().selectionModel()->selectedRows() );
   if( selection.isEmpty() ) return;
-  
+
   // ask confirmation
   if( !QuestionDialog( this, "Remove selected files from list ?" ).centerOnParent().exec() ) return;
-  
+
   _model().remove( _model().get( selection ) );
   _list().selectionModel()->clear();
-  
+
   _reloadButton().setEnabled( true );
-  
+
   // records
   FileRecordModel::List records( _model().get() );
   _cleanButton().setEnabled( find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) != records.end() );
-  
+
 }
 
 //__________________________________________________________________________
@@ -212,24 +212,24 @@ void RecentFilesConfiguration::_clean( void )
   records.erase(
     remove_if( records.begin(), records.end(), FileRecord::InvalidFTor() ),
     records.end() );
-  
+
   _model().set( records );
 
   _reloadButton().setEnabled( true );
   _cleanButton().setEnabled( false );
   _updateButtons();
-  
+
 }
 
 //__________________________________________________________________________
 void RecentFilesConfiguration::_reload( void )
 {
-  
+
   Debug::Throw( "RecentFilesConfiguration::_reload.\n" );
   FileRecord::List records( _recentFiles().records() );
   _model().set( records );
   _list().selectionModel()->clear();
-  
+
   _reloadButton().setEnabled( false );
   _cleanButton().setEnabled( find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) != records.end() );
   _updateButtons();

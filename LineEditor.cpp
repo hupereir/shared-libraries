@@ -1,26 +1,26 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
- 
+
 /*!
   \file LineEditor.cpp
   \brief customized QLineEdit object
@@ -56,71 +56,71 @@ LineEditor::LineEditor( QWidget* parent ):
   has_frame_( true ),
   triggered_( false ),
   clear_icon_( IconEngine::get( ICONS::EDIT_CLEAR ) )
-{    
-  
+{
+
   Debug::Throw( "LineEditor::LineEditor.\n" );
 
   // this is a kludge so that the widget appears correctly for all styles
   // because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
   // style attribute
   _setIsOxygen( style()->objectName().contains( "oxygen", Qt::CaseInsensitive ) );
-    
+
   // actions
   _installActions();
-  
+
   // modification state call-back
   connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _modified( const QString& ) ) );
-    
+
   // set clear button visible
   setHasClearButton( true );
   setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ) );
-  
+
 }
 
 //_____________________________________________________________________
 void LineEditor::setReadOnly( bool value )
-{ 
-  
+{
+
   if( value == isReadOnly() ) return;
   QLineEdit::setReadOnly( value );
-  
+
   if( isReadOnly() )
   {
-    
+
     // reset frame
     QLineEdit::setFrame( has_frame_ );
-    
+
     // reset contents margins
     setContentsMargins( 0, 0, 0, 0 );
-        
+
   } else if( _hasClearButton() ) {
-    
+
     // set frame flag from base class
     setFrame( QLineEdit::hasFrame() );
-    
+
     // disable QLineEdit frame
     QLineEdit::setFrame( false );
 
     // reset contents margins
     int offset( hasFrame() ? _frameWidth():0 );
     setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
-    
+
   }
-  
+
   return;
-  
+
 }
 
 //_____________________________________________________________________
 void LineEditor::setModified( const bool& value )
-{ 
+{
   Debug::Throw( "LineEditor::setModified.\n" );
   if( value != modified_ )
   {
     modified_ = value;
     if( !value ) backup_ = text();
     emit modificationChanged( value );
-  }  
+  }
 }
 
 //______________________________________________________________
@@ -128,16 +128,16 @@ void LineEditor::setHasClearButton( const bool& value )
 {
 
   Debug::Throw() << "LineEditor::setHasClearButton - value: " << value << endl;
-  
+
   if( value == has_clear_button_ ) return;
   has_clear_button_ = value;
-  
+
   if( _hasClearButton() )
   {
 
     // set frame flag from base class
     setFrame( QLineEdit::hasFrame() );
-    
+
     // disable QLineEdit frame
     QLineEdit::setFrame( false );
 
@@ -146,51 +146,51 @@ void LineEditor::setHasClearButton( const bool& value )
     setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
 
   } else {
-    
+
     // reset frame
     QLineEdit::setFrame( has_frame_ );
-    
+
     // reset contents margins
     setContentsMargins( 0, 0, 0, 0 );
-  
+
   }
-  
+
   update();
-  
+
 }
-  
+
 //______________________________________________________________
 void LineEditor::setFrame( const bool& value )
 {
-  
+
   Debug::Throw() << "LineEditor::setFrame - value: " << value << endl;
-  
+
   // do nothing if value is unchanged
   if( value == hasFrame() ) return;
-  
+
   has_frame_ = value;
   if( !_hasClearButton() ) QLineEdit::setFrame( value );
   else {
-    
+
     // reset contents margins
     int offset( hasFrame() ? _frameWidth():0 );
     setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
-    
+
   }
-  
+
 }
 
 //_____________________________________________________________________
 void LineEditor::lowerCase( void )
 {
   Debug::Throw( "LineEditor::lowerCase.\n" );
-  
+
   // do nothing if object is read only
   if( isReadOnly() ) return;
-  
+
   // do nothing if selection is not valid
   if( !hasSelectedText() ) return;
-  
+
   // do nothing if selection is not valid
   QString selection = selectedText().toLower();
   cut();
@@ -201,13 +201,13 @@ void LineEditor::lowerCase( void )
 void LineEditor::upperCase( void )
 {
   Debug::Throw( "LineEditor::upperCase.\n" );
-   
+
   // do nothing if object is read only
   if( isReadOnly() ) return;
-  
+
   // do nothing if selection is not valid
   if( !hasSelectedText() ) return;
-  
+
   // get uppercased selection
   QString selection = selectedText().toUpper();
   cut();
@@ -217,32 +217,32 @@ void LineEditor::upperCase( void )
 //_______________________________________________________
 bool LineEditor::event( QEvent* event )
 {
-    
+
   // check that all needed widgets/actions are valid and checked.
-  switch (event->type()) 
+  switch (event->type())
   {
-    
+
     case QEvent::ToolTip:
     {
-      
+
       // check if button is available
       if( isReadOnly() || ( !_hasClearButton() ) || text().isEmpty() ) break;
-      
+
       // cast
       QHelpEvent *help_event = static_cast<QHelpEvent*>(event);
       if( contentsRect().contains( help_event->pos() ) ) break;
-      
+
       // set appropriate tooltip
       QToolTip::showText( help_event->globalPos(), "Clear text" );
       return true;
-      
+
     }
-    
+
     break;
-    
+
     default: break;
   }
-    
+
   return QLineEdit::event( event );
 
 }
@@ -250,7 +250,7 @@ bool LineEditor::event( QEvent* event )
 //_______________________________________________________________
 void LineEditor::contextMenuEvent(QContextMenuEvent *event)
 {
-  
+
   // menu
   QMenu menu( this );
   menu.addAction( undo_action_ );
@@ -262,45 +262,45 @@ void LineEditor::contextMenuEvent(QContextMenuEvent *event)
   menu.addAction( paste_action_ );
   menu.addAction( clear_action_ );
   menu.addSeparator();
- 
-  menu.addAction( select_all_action_ ); 
+
+  menu.addAction( select_all_action_ );
   menu.addAction( upper_case_action_ );
   menu.addAction( lower_case_action_ );
-  
+
   menu.exec( event->globalPos() );
-  
+
 }
 
 //_____________________________________________
 void LineEditor::keyPressEvent( QKeyEvent* event )
 {
-  
+
   // process base class function
   QLineEdit::keyPressEvent( event );
 
   // emit signal
   emit cursorPositionChanged( cursorPosition() );
-  
+
 }
 
 
 //________________________________________________
 void LineEditor::mouseMoveEvent( QMouseEvent* event )
 {
-  
+
   // check clear button
   if( !_hasClearButton() ) return QLineEdit::mouseMoveEvent( event );
-  
+
   // check event position vs button location
-  if( !_clearButtonRect().contains( event->pos() ) || text().isEmpty() ) 
-  { 
-    
+  if( !_clearButtonRect().contains( event->pos() ) || text().isEmpty() )
+  {
+
     // make sure cursor is properly set
-    if( cursor().shape() != Qt::IBeamCursor ) setCursor( Qt::IBeamCursor ); 
-    return QLineEdit::mouseMoveEvent( event ); 
-    
+    if( cursor().shape() != Qt::IBeamCursor ) setCursor( Qt::IBeamCursor );
+    return QLineEdit::mouseMoveEvent( event );
+
   } else if( cursor().shape() == Qt::IBeamCursor ) unsetCursor();
-  
+
 }
 
 //________________________________________________
@@ -317,42 +317,42 @@ void LineEditor::mousePressEvent( QMouseEvent* event )
   else QLineEdit::mousePressEvent( event );
 
   return;
-  
+
 }
 
 //_____________________________________________
 void LineEditor::mouseReleaseEvent( QMouseEvent* event )
 {
-  
+
   Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
-  if( !( isReadOnly() || text().isEmpty() ) && _hasClearButton() && _clearButtonRect().contains( event->pos() ) && triggered_ ) 
-  { 
-    
+  if( !( isReadOnly() || text().isEmpty() ) && _hasClearButton() && _clearButtonRect().contains( event->pos() ) && triggered_ )
+  {
+
     clear();
     emit cleared();
-    
+
   } else {
 
     QLineEdit::mouseReleaseEvent( event );
     emit cursorPositionChanged( cursorPosition( ) );
-        
+
   }
-  
+
   triggered_ = false;
   return;
-  
+
 }
 
 //________________________________________________
 void LineEditor::paintEvent( QPaintEvent* event )
 {
-  
+
   // check clear button
   if( isReadOnly() || !_hasClearButton() ) return QLineEdit::paintEvent( event );
 
   // paint the button at the correct place
   _toggleClearButton( !(isReadOnly() || text().isNull() || text().isEmpty() ) );
-  
+
   // initialize option
   QStyleOptionFrameV2 panel;
   panel.initFrom( this );
@@ -360,7 +360,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
   panel.lineWidth = (hasFrame()) ? style()->pixelMetric(QStyle::PM_DefaultFrameWidth):0;
   panel.state |= QStyle::State_Sunken;
   if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
-  
+
   // draw white background
   {
     QPainter painter( this );
@@ -368,26 +368,26 @@ void LineEditor::paintEvent( QPaintEvent* event )
     style()->drawPrimitive(QStyle::PE_PanelLineEdit, &panel, &painter, this);
     painter.end();
   }
-  
+
   // normal painting (without frame)
   QLineEdit::paintEvent( event );
-  
+
   // draw clear button
-  { 
+  {
     QPainter painter( this );
     _paintClearButton( painter );
     painter.end();
   }
-  
-  if( hasFrame() ) 
+
+  if( hasFrame() )
   {
 
     // draw frame
-    QPainter painter( this );  
+    QPainter painter( this );
     painter.setClipRect( event->rect() );
     style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
     painter.end();
-    
+
   }
 
 }
@@ -396,18 +396,18 @@ void LineEditor::paintEvent( QPaintEvent* event )
 void LineEditor::_modified( const QString& text )
 {
   Debug::Throw( "LineEditor::_modified.\n" );
-  
+
   // modification signal
   bool modified( text != backup_ );
   if( modified != modified_ )
-  { 
+  {
     modified_ = modified;
     emit modificationChanged( modified_ );
   }
-  
+
   // clear actiosn enability
   if( modified ) clear_action_->setEnabled( !(isReadOnly() || text.isEmpty() ) );
-  
+
 }
 
 //__________________________________________________________
@@ -452,7 +452,7 @@ void LineEditor::_installActions( void )
   select_all_action_->setShortcut( CTRL+Key_A );
   select_all_action_->setShortcutContext( WidgetShortcut );
   connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
-  
+
   addAction( upper_case_action_ = new QAction( "&Upper Case", this ) );
   upper_case_action_->setShortcut( CTRL+Key_U );
   upper_case_action_->setShortcutContext( WidgetShortcut );
@@ -482,24 +482,24 @@ bool LineEditor::_toggleClearButton( const bool& value )
 //________________________________________________
 void LineEditor::_paintClearButton( QPainter& painter, const bool& check )
 {
-  
+
   if( check && !_clearButtonVisible() ) return;
-    
+
   // get widget rect an adjust
   QRect rect( LineEditor::rect() );
-  if( hasFrame() ) rect.adjust( 0, _frameWidth(), -_frameWidth()-1, -_frameWidth() ); 
-  
+  if( hasFrame() ) rect.adjust( 0, _frameWidth(), -_frameWidth()-1, -_frameWidth() );
+
   // set the proper right margin, so that button rect is a square
   rect.setLeft( rect.right() - rect.height() );
-  
+
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
-  _clearIcon().paint( 
-    &painter, rect, 
-    Qt::AlignRight|Qt::AlignVCenter, 
+  _clearIcon().paint(
+    &painter, rect,
+    Qt::AlignRight|Qt::AlignVCenter,
     isEnabled() ? QIcon::Normal : QIcon::Disabled );
-  
+
   _setClearButtonRect( rect );
-  
+
 }
 
 //________________________________________________
@@ -513,28 +513,28 @@ void LineEditor::_updateUndoRedoActions( void )
 //________________________________________________
 void LineEditor::_updateSelectionActions()
 {
-  
+
   Debug::Throw( "LineEditor::_updateSelectionActions.\n" );
 
   bool has_selection( hasSelectedText() );
   bool editable( !isReadOnly() );
-  
+
   cut_action_->setEnabled( has_selection && editable );
   copy_action_->setEnabled( has_selection );
   upper_case_action_->setEnabled( has_selection && editable );
   lower_case_action_->setEnabled( has_selection && editable );
-  
+
 }
 
 //________________________________________________
 void LineEditor::_updatePasteAction( void )
 {
-  
+
   Debug::Throw( "LineEditor::_updatePasteAction.\n" );
   bool editable( !isReadOnly() );
   bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
   paste_action_->setEnabled( editable && has_clipboard );
-  
+
 }
 
 //______________________________________________________________

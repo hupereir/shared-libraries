@@ -44,14 +44,14 @@ CustomComboBox::CustomComboBox( QWidget* parent ):
   QComboBox( parent ),
   Counter( "CustomComboBox" ),
   editor_( 0 )
-{ 
-  
-  Debug::Throw( "CustomComboBox::CustomComboBox.\n" ); 
+{
+
+  Debug::Throw( "CustomComboBox::CustomComboBox.\n" );
   setAutoCompletion( false );
-  
+
   // size policy
   setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ) );
- 
+
 }
 
 //____________________________________________________
@@ -59,14 +59,14 @@ void CustomComboBox::setEditable( bool value )
 {
   Debug::Throw( "CustomComboBox::setEditable.\n" );
   QComboBox::setEditable( value );
-  
+
   if( !value )
   {
     if( editor_ ) delete editor_;
     return;
   }
-  
-  if( !editor_ ) 
+
+  if( !editor_ )
   {
     editor_ = new ComboLineEdit( this );
     editor_->setFrame( false );
@@ -74,28 +74,28 @@ void CustomComboBox::setEditable( bool value )
     connect( view(), SIGNAL( pressed( QModelIndex ) ), editor_, SLOT( startAnimation( void ) ) );
     connect( view(), SIGNAL( activated( QModelIndex ) ), editor_, SLOT( startAnimation( void ) ) );
   }
-  
+
 }
 
 //____________________________________________________
 void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity case_sensitivity )
 {
   Debug::Throw( "CustomComboBox::setAutoCompletion.\n" );
-  
+
   if( value )
   {
     assert( isEditable() );
-    
+
     if( !completer() ) setCompleter( new QCompleter( this ) );
 
     completer()->setCaseSensitivity( case_sensitivity );
-    
+
   } else {
     setCompleter(0);
   }
-  
+
   return;
-  
+
 }
 
 //____________________________________________________
@@ -103,6 +103,6 @@ void ComboLineEdit::startAnimation( void )
 {
   Debug::Throw( "ComboLineEdit::startAnimation.\n" );
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;
-  _transitionWidget().initialize();  
-  _transitionWidget().start();  
+  _transitionWidget().initialize();
+  _transitionWidget().start();
 }

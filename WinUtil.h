@@ -38,38 +38,38 @@
 
 class WinUtil
 {
-  
+
   public:
-    
+
   //! constructor
   WinUtil( QWidget* target ):
     target_( target )
     { assert( target_ ); }
-  
+
   //! update layered widget using pixmap
   void update( QPixmap&, double ) const;
-  
+
   //! set flag
   void setFlag( long int, bool value = true ) const;
-  
+
   //! has flag
   bool hasFlag( long int ) const;
-  
+
   private:
-  
+
   // target widget
   QWidget& _target( void ) const
   { return *target_; }
-  
+
   // returns true if widget is of type layered window
   bool _isLayered() const;
-  
+
   //! set widget a layered window
   void _setLayered() const;
 
   //! target widget
   QWidget *target_;
-  
+
 };
 
 #endif

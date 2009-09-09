@@ -30,8 +30,8 @@
 */
 
 #include "XmlFileRecord.h"
-#include "Str.h" 
-#include "XmlString.h" 
+#include "Str.h"
+#include "XmlString.h"
 
 using namespace std;
 
@@ -42,10 +42,10 @@ const QString XmlFileRecord::XML_RECORD = "record";
 const QString XmlFileRecord::XML_FILE = "file";
 const QString XmlFileRecord::XML_TIME = "time";
 const QString XmlFileRecord::XML_FLAGS = "flags";
-const QString XmlFileRecord::XML_VALID= "valid"; 
-const QString XmlFileRecord::XML_PROPERTY= "property"; 
-const QString XmlFileRecord::XML_NAME= "name"; 
-const QString XmlFileRecord::XML_VALUE= "value"; 
+const QString XmlFileRecord::XML_VALID= "valid";
+const QString XmlFileRecord::XML_PROPERTY= "property";
+const QString XmlFileRecord::XML_NAME= "name";
+const QString XmlFileRecord::XML_VALUE= "value";
 //@}
 
 //_______________________________________________
@@ -73,31 +73,31 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     if( child_element.isNull() ) continue;
 
     QString tag_name( child_element.tagName() );
-    if( tag_name == XML_PROPERTY ) 
+    if( tag_name == XML_PROPERTY )
     {
 
       std::pair< QString, QString > property;
-      
+
       // load attributes
       QDomNamedNodeMap attributes( child_element.attributes() );
       for( unsigned int i=0; i<attributes.length(); i++ )
       {
-        
+
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() || attribute.name().isEmpty() ) continue;
-        
+
         if( attribute.name() == XML_NAME ) property.first = XmlString( attribute.value() ).toText();
         else if( attribute.name() == XML_VALUE ) property.second = XmlString( attribute.value() ).toText();
         else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized attribute " << attribute.name() << endl;
-        
+
       }
-      
+
       if( !( property.first.isEmpty() || property.second.isEmpty() ) )
       { addProperty( property.first, property.second ); }
-      
+
     } else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized child " << child_element.tagName() << ".\n";
   }
-  
+
 }
 
 //_______________________________________________
@@ -110,7 +110,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
   out.setAttribute( XML_VALID, Str().assign<bool>( isValid() ) );
 
   if( flags() ) out.setAttribute( XML_FLAGS, Str().assign<unsigned int>( flags() ) );
-    
+
   for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); iter++ )
   {
     QDomElement property( parent.createElement( XML_PROPERTY ) );
@@ -118,6 +118,6 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
     property.setAttribute( XML_VALUE, XmlString( iter->second ) );
     out.appendChild( property );
   }
-  
+
   return out;
 }

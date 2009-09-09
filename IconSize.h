@@ -4,26 +4,26 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
- 
+
 /*!
   \file IconSize.h
   \brief default icon sizes
@@ -39,10 +39,10 @@
 //! default icon sizes
 class IconSize: public QSize
 {
-  
+
   public:
-  
-   
+
+
   //! icon sizes
   enum Size
   {
@@ -56,16 +56,16 @@ class IconSize: public QSize
 
   //! constructor
   IconSize( QWidget* parent, Size size );
-  
+
   //! constructor
   IconSize( Size size );
-   
-  //! map text to icon size 
+
+  //! map text to icon size
   typedef std::map<Size, QString> Map;
-  
+
   //! text to icon size
-  static Map& map( void );  
-    
+  static Map& map( void );
+
 };
 
 #endif

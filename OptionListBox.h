@@ -34,8 +34,8 @@
 
 #include <QAction>
 #include <QCheckBox>
-#include <QFileDialog> 
-#include <QPushButton> 
+#include <QFileDialog>
+#include <QPushButton>
 
 #include <cmath>
 
@@ -72,12 +72,12 @@ class OptionListBox: public QWidget, public OptionWidget
   //! set file dialog mode
   void setFileMode( const QFileDialog::FileMode& mode )
   { file_mode_ = mode; }
-  
+
   private slots:
 
   //! update buttons
   void _updateButtons( void );
-  
+
   //! add a value
   void _add( void );
 
@@ -96,64 +96,64 @@ class OptionListBox: public QWidget, public OptionWidget
   class EditDialog: public CustomDialog
   {
     public:
-    
+
     //! constructor
     EditDialog( QWidget*, bool, QFileDialog::FileMode );
-    
+
     //! editor
     BrowsedLineEditor::Editor& editor( void ) const
     { return *editor_; }
-    
+
     //! checkbox
     QCheckBox& checkbox( void ) const
-    { 
+    {
       assert( checkbox_ );
-      return *checkbox_; 
+      return *checkbox_;
     }
-        
+
     private:
-    
+
     //! editor
     BrowsedLineEditor::Editor* editor_;
-  
+
     //! default checkbox
     QCheckBox* checkbox_;
-    
+
   };
-  
+
   //! list
   TreeView& _list( void ) const
-  { return *list_; }    
-  
+  { return *list_; }
+
   //! if true, use browsable line editor for Add
   bool browsable_;
-  
+
   //! browsable dialog mode
   QFileDialog::FileMode file_mode_;
-          
+
   //! model
   OptionModel model_;
-  
+
   //! value list
   TreeView* list_;
-  
+
   //!@name buttons
   //@{
 
   //! edit button
   QPushButton* edit_;
-  
+
   //! remove button
   QPushButton* remove_;
-      
+
     //! default button
   QPushButton* default_;
-  
+
   //@}
-  
+
   //!@name actions
   //@{
-  
+
   //! remove action
   QAction* edit_action_;
 
@@ -164,6 +164,6 @@ class OptionListBox: public QWidget, public OptionWidget
   QAction* default_action_;
 
   //@}
-  
+
 };
 #endif

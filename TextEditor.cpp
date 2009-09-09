@@ -120,9 +120,9 @@ TextEditor::TextEditor( QWidget *parent ):
   // update configuration
   _updateConfiguration();
   _blockCountChanged(0);
-  
+
   _marginWidget().show();
-  
+
 }
 
 //________________________________________________
@@ -171,7 +171,7 @@ int TextEditor::blockCount( void ) const
   Debug::Throw( "TextEditor::blockCount.\n" );
 
   int count = 0;
-  for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next() ) 
+  for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next() )
   { count += blockCount( block ); }
   return count;
 }
@@ -179,11 +179,11 @@ int TextEditor::blockCount( void ) const
 //________________________________________________
 bool TextEditor::isCursorVisible( void ) const
 {
-  
+
   QRect cursor_rect( cursorRect() );
   QRect rect( viewport()->rect() );
   return rect.intersects( cursor_rect );
-  
+
 }
 
 //________________________________________________
@@ -195,15 +195,15 @@ TextPosition TextEditor::textPosition( void )
 
   // calculate index
   TextPosition out;
-  
+
   #if QT_VERSION >= 0x040200
-  
+
   // direct access as introduced in Qt 4.2
   out.index() = cursor.columnNumber();
   out.paragraph() = cursor.blockNumber();
-  
+
   #else
-  
+
   // slow access for prior versions of Qt
   out.index() = cursor.position() - block.position();
   while( block.isValid() )
@@ -214,9 +214,9 @@ TextPosition TextEditor::textPosition( void )
 
   // need to decrement once
   out.paragraph()--;
-  
+
   #endif
-  
+
   return out;
 
 }
@@ -287,7 +287,7 @@ void TextEditor::setPlainText( const QString& text )
   Debug::Throw( "TextEditor::setPlainText.\n" );
 
   _lineNumberDisplay().clear();
-  
+
   bool enabled( blockHighlight().isEnabled() );
   blockHighlight().setEnabled( false );
   QTextEdit::setPlainText( text );
@@ -304,48 +304,48 @@ void TextEditor::setHtml( const QString& text )
   blockHighlight().setEnabled( false );
   QTextEdit::setHtml( text );
   blockHighlight().setEnabled( enabled );
-  
+
 }
 
 //___________________________________________________________________________
 void TextEditor::paintMargin( QPainter& painter )
 {
-       
+
   int height( TextEditor::height() - 2*frameWidth() );
   if( horizontalScrollBar()->isVisible() ) { height -= horizontalScrollBar()->height() + 2; }
-  
+
   // clip
   painter.setClipRect( QRect( 0, 0, _leftMargin(), height ), Qt::IntersectClip );
   painter.setPen( Qt::NoPen );
-  
+
   painter.translate( 0, -verticalScrollBar()->value() );
 
   // draw current block rect
   if( blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() && _currentBlockRect().isValid() )
   {
-    
-    painter.setBrush( highlight_color_ );    
+
+    painter.setBrush( highlight_color_ );
     painter.drawRect( _currentBlockRect() );
-  
+
   }
-  
+
   if( _marginWidget().drawVerticalLine() ) {
     painter.setBrush( QBrush( _marginWidget().palette().color( QPalette::WindowText ), Qt::Dense4Pattern ) );
-    painter.drawRect( _leftMargin()-1, verticalScrollBar()->value(), 1, height+verticalScrollBar()->value() ); 
-  } 
+    painter.drawRect( _leftMargin()-1, verticalScrollBar()->value(), 1, height+verticalScrollBar()->value() );
+  }
 
   // set brush and pen suitable to further painting
   painter.setBrush( Qt::NoBrush );
   painter.setPen(_marginWidget().palette().color( QPalette::WindowText )  );
-  
+
   // draw lines
-  if( 
-    _hasLineNumberDisplay() && 
-    hasLineNumberAction() && 
-    showLineNumberAction().isVisible() && 
+  if(
+    _hasLineNumberDisplay() &&
+    hasLineNumberAction() &&
+    showLineNumberAction().isVisible() &&
     showLineNumberAction().isChecked() )
   { _lineNumberDisplay().paint( painter ); }
- 
+
 }
 
 //________________________________________________
@@ -412,11 +412,11 @@ void TextEditor::selectLine( void )
   // assign cursor to text editor and make sure it is visible
   setTextCursor( cursor );
   ensureCursorVisible();
-  
+
   // updateClipboard need to be called manually
   // because somehow the selectionChanged signal is not caught.
   _updateClipboard();
-  
+
   return;
 
 }
@@ -425,9 +425,9 @@ void TextEditor::selectLine( void )
 //________________________________________________
 void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
 {
-  
-  static QRegExp regexp( "\\s+$" ); 
-  
+
+  static QRegExp regexp( "\\s+$" );
+
   QTextCursor cursor( textCursor() );
   if( cursor.hasSelection() )
   {
@@ -435,31 +435,31 @@ void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
     // get selection, look for trailing spaces
     QString text( cursor.selectedText() );
     if( regexp.indexIn( text ) >= 0 )
-    { 
-      
+    {
+
       // create local cursor, copy current, in proper order
       QTextCursor local( document() );
       local.beginEditBlock();
       local.setPosition( min( cursor.position(), cursor.anchor() ), QTextCursor::MoveAnchor );
       local.setPosition( max( cursor.position(), cursor.anchor() ), QTextCursor::KeepAnchor );
       local.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, regexp.matchedLength() );
-      
+
       local.mergeCharFormat( format );
       local.endEditBlock();
-      
+
       return;
-      
+
     }
 
-  } else if( _boxSelection().state() == BoxSelection::FINISHED ) { 
-    
+  } else if( _boxSelection().state() == BoxSelection::FINISHED ) {
+
     // process box selection
-    // _boxSelection().setCharFormat( format ); 
-    _boxSelection().mergeCharFormat( format ); 
+    // _boxSelection().setCharFormat( format );
+    _boxSelection().mergeCharFormat( format );
     return;
-    
-  }  
-  
+
+  }
+
   QTextEdit::mergeCurrentCharFormat( format );
   return;
 
@@ -497,7 +497,7 @@ void TextEditor::synchronize( TextEditor* editor )
 
   // synchronize wrap mode
   wrapModeAction().setChecked( editor->wrapModeAction().isChecked() );
-  
+
   // track changes of block counts
   _lineNumberDisplay().synchronize( &editor->_lineNumberDisplay() );
   connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
@@ -505,7 +505,7 @@ void TextEditor::synchronize( TextEditor* editor )
 
   // margin
   _setLeftMargin( editor->_leftMargin() );
-  
+
   Debug::Throw( "TextEditor::synchronize - done.\n" );
 
   return;
@@ -515,14 +515,14 @@ void TextEditor::synchronize( TextEditor* editor )
 //_____________________________________________________________________
 bool TextEditor::setActive( const bool& active )
 {
-  
+
   Debug::Throw( "TextEditor::setActive.\n" );
-  
+
   // check if value is changed
   if( isActive() == active ) return false;
   active_ = active;
   return true;
-  
+
 }
 
 //__________________________________________________________________
@@ -537,7 +537,7 @@ void TextEditor::showReplacements( const unsigned int& counts )
   else if( counts == 1 ) stream << "1 replacement performed";
   else stream << counts << " replacements performed";
   InformationDialog( this, buffer ).setWindowTitle( "Replace in Text" ).centerOnWidget( qApp->activeWindow() ).exec();
-  
+
   return;
 
 }
@@ -556,7 +556,7 @@ void TextEditor::setReadOnly( bool readonly )
 void TextEditor::resetUndoRedoStack( void )
 {
   if( isReadOnly() || !document()->isUndoRedoEnabled() ) return;
-  
+
   Debug::Throw(" TextEditor::resetUndoRedoStack.\n");
   document()->setUndoRedoEnabled( false );
   document()->setUndoRedoEnabled( true );
@@ -580,7 +580,7 @@ void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions
     menu.addAction( redo_action_ );
     menu.addSeparator();
   }
-  
+
   menu.addAction( cut_action_ );
   menu.addAction( copy_action_ );
   menu.addAction( paste_action_ );
@@ -599,17 +599,17 @@ void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions
     menu.addAction( find_selection_action_);
     menu.addSeparator();
   }
-  
+
   menu.addAction( replace_action_ );
-  
+
   if( all_actions )
   {
     menu.addAction( replace_again_action_ );
     menu.addAction( goto_line_action_);
   }
-  
+
   return;
-  
+
 }
 
 //___________________________________________________________________________
@@ -693,7 +693,7 @@ void TextEditor::paste( void )
     _boxSelection().fromClipboard( QClipboard::Clipboard );
     _boxSelection().clear();
   } else QTextEdit::paste();
-  
+
 }
 
 //________________________________________________
@@ -706,19 +706,19 @@ void TextEditor::upperCase( void )
   if( isReadOnly() ) return;
 
   QTextCursor cursor( textCursor() );
-  if( cursor.hasSelection() ) 
-  { 
-    
-    // process standard selection    
-    cursor.insertText( cursor.selectedText().toUpper() ); 
-    
-  } else if( _boxSelection().state() == BoxSelection::FINISHED ) { 
-    
+  if( cursor.hasSelection() )
+  {
+
+    // process standard selection
+    cursor.insertText( cursor.selectedText().toUpper() );
+
+  } else if( _boxSelection().state() == BoxSelection::FINISHED ) {
+
     // process box selection
-    _boxSelection().toUpper(); 
-  
-  }  
-    
+    _boxSelection().toUpper();
+
+  }
+
   return;
 
 }
@@ -735,58 +735,58 @@ void TextEditor::lowerCase( void )
 
   QTextCursor cursor( textCursor() );
 
-  if( cursor.hasSelection() ) 
-  { 
-    
-    // process standard selection    
-    cursor.insertText( cursor.selectedText().toLower() ); 
-    
-  } else if( _boxSelection().state() == BoxSelection::FINISHED ) { 
-    
+  if( cursor.hasSelection() )
+  {
+
+    // process standard selection
+    cursor.insertText( cursor.selectedText().toLower() );
+
+  } else if( _boxSelection().state() == BoxSelection::FINISHED ) {
+
     // process box selection
-    _boxSelection().toLower(); 
-    
-  }  
-  
+    _boxSelection().toLower();
+
+  }
+
   return;
-  
+
 }
 
 //______________________________________________________________________
 void TextEditor::find( TextSelection selection )
 {
   Debug::Throw( "TextEditor::find.\n" );
-  bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) ); 
+  bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) );
   if( found ) emit matchFound();
   else emit noMatchFound();
 }
 
 //______________________________________________________________________
 void TextEditor::findSelectionForward( void )
-{ 
+{
   Debug::Throw( "TextEditor::findSelectionForward.\n" );
-  _findForward( selection(), true ); 
+  _findForward( selection(), true );
 }
 
 //______________________________________________________________________
 void TextEditor::findSelectionBackward( void )
-{ 
+{
   Debug::Throw( "TextEditor::findSelectionBackward.\n" );
-  _findBackward( selection(), true ); 
+  _findBackward( selection(), true );
 }
 
 //______________________________________________________________________
 void TextEditor::findAgainForward( void )
-{ 
+{
   Debug::Throw( "TextEditor::findAgainForward.\n" );
-  _findForward( lastSelection(), true ); 
+  _findForward( lastSelection(), true );
 }
 
 //______________________________________________________________________
 void TextEditor::findAgainBackward( void )
-{ 
+{
   Debug::Throw( "TextEditor::findAgainBackward.\n" );
-  _findBackward( lastSelection(), true ); 
+  _findBackward( lastSelection(), true );
 }
 
 //______________________________________________________________________
@@ -805,17 +805,17 @@ void TextEditor::replace( TextSelection selection )
   bool accepted( true );
   accepted &= cursor.hasSelection();
   if( selection.flag( TextSelection::REGEXP ) )
-  { 
+  {
     accepted &= QRegExp( selection.text() ).exactMatch( cursor.selectedText() );
   } else {
-    
+
     accepted &= ( !cursor.selectedText().compare(
       selection.text(),
       selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) );
-    
+
   }
 
-  if( accepted ) 
+  if( accepted )
   {
     cursor.insertText( selection.replaceText() );
     setTextCursor( cursor );
@@ -848,26 +848,26 @@ void TextEditor::replaceAgainBackward( void )
 //______________________________________________________________________
 unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool& show_dialog )
 {
-  
+
   Debug::Throw( "TextEditor::replaceInSelection.\n" );
-  
+
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return 0;
-  
+
   // progress dialog
   if( show_dialog ) _createProgressDialog();
-  
+
   unsigned int counts(0);
-  
+
   if( _boxSelection().state() == BoxSelection::FINISHED )
   {
-    
+
     Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
     BoxSelection::CursorList cursors( _boxSelection().cursorList() );
     for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
     { counts += _replaceInRange( selection, *iter, MOVE ); }
-    
+
     _boxSelection().clear();
 
   } else {
@@ -890,7 +890,7 @@ unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& s
 
   // progress dialog
   if( show_dialog ) _createProgressDialog();
-  
+
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return 0;
@@ -944,24 +944,24 @@ void TextEditor::removeLine()
     cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
 
   // create cursor selection, depending on whether next block is valid or not
-  if( cursor.block().next().isValid() ) 
+  if( cursor.block().next().isValid() )
   {
     cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
     remove_line_buffer_.append( cursor.selectedText() );
   } else {
 
     // move to previous character
-    if( cursor.block().previous().isValid() ) 
+    if( cursor.block().previous().isValid() )
     {
       cursor.movePosition( QTextCursor::PreviousCharacter, QTextCursor::MoveAnchor );
       cursor.movePosition( QTextCursor::NextCharacter, QTextCursor::KeepAnchor );
     }
-    
+
     // move to end of current block
     cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
     remove_line_buffer_.append( cursor.selectedText() );
   }
-    
+
   setUpdatesEnabled( false );
   setTextCursor( cursor );
   cut();
@@ -977,12 +977,12 @@ void TextEditor::clear( void )
   // need to check for editability because apparently even if calling action is disabled,
   // the shortcut still can be called
   if( isReadOnly() ) return;
-  
+
   setUpdatesEnabled( false );
   selectAll();
-  cut();  
+  cut();
   setUpdatesEnabled( true );
-  
+
 }
 
 //________________________________________________
@@ -994,20 +994,20 @@ void TextEditor::enterEvent( QEvent* event )
   _updateClipboardActions( QClipboard::Clipboard );
   _updateClipboardActions( QClipboard::Selection );
   #endif
-  
+
   QTextEdit::enterEvent( event );
-  
+
 }
-  
+
 //________________________________________________
 void TextEditor::mousePressEvent( QMouseEvent* event )
 {
 
   Debug::Throw( "TextEditor::mousePressEvent.\n" );
 
-  if( event->button() == Qt::MidButton ) 
+  if( event->button() == Qt::MidButton )
   { Debug::Throw( "TextEditor::mousePressEvent - middle mouse button.\n" ); }
-  
+
   // check button
   if( event->button() == Qt::LeftButton )
   {
@@ -1119,11 +1119,11 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
     _synchronizeBoxSelection();
     emit copyAvailable( true );
 
-    if( box_selection_timer_.isActive()) 
+    if( box_selection_timer_.isActive())
     {
       if( viewport()->rect().contains( event->pos() ) ) box_selection_timer_.stop();
     } else if (!viewport()->rect().contains( event->pos() )) box_selection_timer_.start(100, this);
-    
+
     return;
 
   }
@@ -1167,8 +1167,8 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
   Debug::Throw( "TextEditor::mouseReleaseEvent.\n" );
 
   box_selection_timer_.stop();
-  
-  if( event->button() == Qt::MidButton ) 
+
+  if( event->button() == Qt::MidButton )
   { Debug::Throw( "TextEditor::mouseReleaseEvent - middle mouse button.\n" ); }
 
   // no need to check for enability because there is no way for the box to start if disabled
@@ -1199,12 +1199,12 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
     return;
   }
 
-  if( event->button() == Qt::MidButton  && _boxSelection().state() == BoxSelection::FINISHED ) 
+  if( event->button() == Qt::MidButton  && _boxSelection().state() == BoxSelection::FINISHED )
   {
     _boxSelection().clear();
     _boxSelection().clear();
-  } 
-  
+  }
+
   // process event
   QTextEdit::mouseReleaseEvent( event );
 
@@ -1451,10 +1451,10 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
       _boxSelection().clear();
 
     } else if( !(event->text().isNull() || event->text().isEmpty() ) ) {
-      
+
       _boxSelection().fromString( event->text() );
       _boxSelection().clear();
-      
+
     }
 
     return;
@@ -1474,17 +1474,17 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     event->ignore();
     return;
   }
-    
+
   // default event handling
   QTextEdit::keyPressEvent( event );
 
-  // check NumLock and CapsLock  
+  // check NumLock and CapsLock
   /*! right now this works only on X11 */
   bool changed( false );
   if( event->key() == Qt::Key_CapsLock ) changed = _setModifier( MODIFIER_CAPS_LOCK, !modifier( MODIFIER_CAPS_LOCK ) );
   else if( event->key() == Qt::Key_NumLock ) changed = _setModifier( MODIFIER_NUM_LOCK, !modifier( MODIFIER_NUM_LOCK ) );
   if( changed ) { emit modifiersChanged( modifiers() ); }
-  
+
   return;
 }
 
@@ -1492,12 +1492,12 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
 void TextEditor::focusInEvent( QFocusEvent* event )
 {
   Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
-  
-  if( 
+
+  if(
     _setModifier( MODIFIER_CAPS_LOCK, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::ON ) ||
     _setModifier( MODIFIER_NUM_LOCK, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::ON ) )
   { emit modifiersChanged( modifiers() );}
-  
+
   emit hasFocus( this );
   QTextEdit::focusInEvent( event );
 }
@@ -1517,24 +1517,24 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 void TextEditor::resizeEvent( QResizeEvent* event )
 {
   QTextEdit::resizeEvent( event );
-    
+
   // update margin widget geometry
   QRect rect( contentsRect() );
   _marginWidget().setGeometry( QRect( rect.topLeft(), QSize( _marginWidget().width(), rect.height() ) ) );
-    
+
   if( lineWrapMode() == QTextEdit::NoWrap ) return;
   if( event->oldSize().width() == event->size().width() ) return;
   if( !_hasLineNumberDisplay() ) return;
-  
+
   // tell line number display to update at next draw
   _lineNumberDisplay().needUpdate();
-  
+
 }
 
 //______________________________________________________________
 void TextEditor::paintEvent( QPaintEvent* event )
 {
-  
+
   // handle block background
   QTextBlock first( cursorForPosition( event->rect().topLeft() ).block() );
   QTextBlock last( cursorForPosition( event->rect().bottomRight() ).block() );
@@ -1542,10 +1542,10 @@ void TextEditor::paintEvent( QPaintEvent* event )
   // create painter and translate from widget to viewport coordinates
   QPainter painter( viewport() );
   painter.setClipRect( event->rect() );
-  
+
   painter.translate( -scrollbarPosition() );
   painter.setPen( Qt::NoPen );
-  
+
   // loop over found blocks
   for( QTextBlock block( first ); block != last.next() && block.isValid(); block = block.next() )
   {
@@ -1562,14 +1562,14 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
     QColor color;
     if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
-    { 
-      color = highlight_color_; 
-      
+    {
+      color = highlight_color_;
+
       // update current block rect
       // and redraw margin if changed
       if( _setCurrentBlockRect( QRect( QPoint(0, int(block_rect.topLeft().y()) ), QSize( _marginWidget().width(), int(block_rect.height()) ) ) ) )
       { _marginWidget().setDirty(); }
-      
+
     }
 
     if( data->hasFlag( TextBlock::HAS_BACKGROUND ) )
@@ -1584,17 +1584,17 @@ void TextEditor::paintEvent( QPaintEvent* event )
   }
 
   if( _boxSelection().state() == BoxSelection::STARTED || _boxSelection().state() == BoxSelection::FINISHED )
-  {    
+  {
     painter.setPen( _boxSelection().color() );
     painter.setBrush( _boxSelection().brush() );
     painter.drawRect( _boxSelection().rect() );
   }
-  
+
   painter.end();
-  
+
   // base class painting
   QTextEdit::paintEvent( event );
-  
+
   return;
 
 }
@@ -1602,8 +1602,8 @@ void TextEditor::paintEvent( QPaintEvent* event )
 //______________________________________________________________
 void TextEditor::timerEvent(QTimerEvent *event)
 {
-  
-  if (event->timerId() == box_selection_timer_.timerId() ) 
+
+  if (event->timerId() == box_selection_timer_.timerId() )
   {
     const QPoint global_position = QCursor::pos();
     const QPoint position = viewport()->mapFromGlobal(global_position);
@@ -1612,19 +1612,19 @@ void TextEditor::timerEvent(QTimerEvent *event)
   }
 
   return QTextEdit::timerEvent( event );
-  
+
 }
 
 //______________________________________________________________
 void TextEditor::scrollContentsBy( int dx, int dy )
 {
-  
+
   // mark margins dirty if vertical scroll is non empty
   if( dy != 0 ) _marginWidget().setDirty();
-  
+
   // base class call
   QTextEdit::scrollContentsBy( dx, dy );
-  
+
 }
 
 //______________________________________________________________
@@ -1741,7 +1741,7 @@ void TextEditor::_installActions( void )
   addAction( wrap_mode_action_ = new QAction( "&Wrap Text", this ) );
   wrap_mode_action_->setCheckable( true );
   wrap_mode_action_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
-  _setModifier( MODIFIER_WRAP, lineWrapMode() == QTextEdit::WidgetWidth ); 
+  _setModifier( MODIFIER_WRAP, lineWrapMode() == QTextEdit::WidgetWidth );
   wrap_mode_action_->setShortcut( Qt::Key_F10 );
   wrap_mode_action_->setShortcutContext( Qt::WidgetShortcut );
   connect( wrap_mode_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
@@ -1751,7 +1751,7 @@ void TextEditor::_installActions( void )
   tab_emulation_action_->setCheckable( true );
   tab_emulation_action_->setChecked( has_tab_emulation_ );
   connect( tab_emulation_action_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );
-  
+
   // line number action
   addAction( show_line_number_action_ =new QAction( "Show Line Numbers", this ) );
   show_line_number_action_->setToolTip( "Show/hide line numbers" );
@@ -1786,22 +1786,22 @@ TextSelection TextEditor::selection( void ) const
   // try set from current selection
   QString text;
   if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) {
-    
+
     Debug::Throw( "TextEditor::selection - from clipboard.\n" );
     out.setText( text );
-  
+
   } else if( textCursor().hasSelection() ) {
-    
+
     Debug::Throw() << "TextEditor::selection - from cursor: " << textCursor().selectedText() << endl;
-    out.setText( textCursor().selectedText() );  
-    
+    out.setText( textCursor().selectedText() );
+
   } else {
-  
-    Debug::Throw( "TextEditor::selection - from last selection.\n" );   
+
+    Debug::Throw( "TextEditor::selection - from last selection.\n" );
     out.setText( lastSelection().text() );
-    
+
   }
-  
+
   return out;
 
 }
@@ -1893,11 +1893,11 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
     found.setPosition( position, QTextCursor::MoveAnchor );
     found.setPosition( position+length, QTextCursor::KeepAnchor );
     setTextCursor( found );
-    
+
     // copy selected text to clipboard
     if( qApp->clipboard()->supportsSelection() )
     { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
-    
+
     return true;
 
   } else {
@@ -1918,13 +1918,13 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
 
     if( found.isNull() ) return false;
     else {
-      
+
       setTextCursor( found );
 
       // copy selected text to clipboard
       if( qApp->clipboard()->supportsSelection() )
       { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
-      
+
       return true;
     }
 
@@ -2003,7 +2003,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
     // copy selected text to clipboard
     if( qApp->clipboard()->supportsSelection() )
     { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
-    
+
     return true;
 
   } else {
@@ -2050,7 +2050,7 @@ void TextEditor::_createBaseReplaceDialog( void )
     connect( replace_dialog_, SIGNAL( replaceInSelection( TextSelection ) ), SLOT( replaceInSelection( TextSelection ) ) );
     connect( this, SIGNAL( noMatchFound() ), replace_dialog_, SLOT( noMatchFound() ) );
     connect( this, SIGNAL( matchFound() ), replace_dialog_, SLOT( clearLabel() ) );
-    
+
   }
 
   Debug::Throw( "TextEditor::_createBaseReplaceDialog - done.\n" );
@@ -2062,11 +2062,11 @@ void TextEditor::_createBaseReplaceDialog( void )
 //__________________________________________________
 void TextEditor::_createProgressDialog( void )
 {
-  
+
   Debug::Throw( "TextEditor::_createProgressDialog.\n" );
-  
+
   // create dialog
-  QProgressDialog* dialog = new QProgressDialog(0); 
+  QProgressDialog* dialog = new QProgressDialog(0);
   dialog->setAttribute( Qt::WA_DeleteOnClose, true );
   dialog->setLabelText( "Replace text in selection" );
   dialog->setWindowTitle( Util::windowTitle( "Replace in Text" ) );
@@ -2076,9 +2076,9 @@ void TextEditor::_createProgressDialog( void )
   connect( this, SIGNAL( progressAvailable( int ) ), dialog, SLOT( setValue( int ) ) );
   connect( this, SIGNAL( idle( void ) ), dialog, SLOT( close( void ) ) );
 
-  QtUtil::centerOnWidget( dialog, this ); 
+  QtUtil::centerOnWidget( dialog, this );
   dialog->show();
-  
+
 }
 
 
@@ -2133,12 +2133,12 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     // replace everything in selected text
     QString selected_text( cursor.selectedText() );
     emit busy( selected_text.size() );
-    
+
     for( int position = 0; (position = regexp.indexIn( selected_text, position )) != -1; )
     {
       // replace in selected text
       selected_text.replace( position, regexp.matchedLength(), selection.replaceText() );
-      
+
       // replace in cursor
       /* this is to allow for undoing the changes one by one */
       cursor.setPosition( saved_anchor + position );
@@ -2151,11 +2151,11 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
       current_position = saved_anchor + position;
 
       found++;
-      
+
       emit progressAvailable( position );
 
     }
-    
+
     emit idle();
 
     // update cursor
@@ -2193,7 +2193,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
       emit progressAvailable( current_position );
 
     }
-    
+
     emit idle();
 
     if( mode == EXPAND )
@@ -2244,7 +2244,7 @@ void TextEditor::_toggleOverwriteMode( void )
   setOverwriteMode( !overwriteMode() );
   if( _setModifier( MODIFIER_INSERT, overwriteMode() ) ) emit modifiersChanged( modifiers() );
   return;
-  
+
 }
 
 //________________________________________________
@@ -2255,9 +2255,9 @@ bool TextEditor::_setTabSize( const int& tab_size )
   assert( tab_size > 0 );
 
   int stop_width( tab_size * QFontMetrics( font() ).width( " " ) );
-  if( tab_size == emulated_tab_.size() && tabStopWidth() == stop_width ) 
+  if( tab_size == emulated_tab_.size() && tabStopWidth() == stop_width )
   { return false; }
-  
+
   // create strings and regular expressions
   // define normal tabs
   normal_tab_ = "\t";
@@ -2303,14 +2303,14 @@ bool TextEditor::_updateMargin( void )
 
   Debug::Throw( "TextEditor::_updateMargin.\n" );
   int left_margin( 0 );
-  
+
   if( showLineNumberAction().isChecked() && showLineNumberAction().isVisible() )
   { left_margin += _lineNumberDisplay().width(); }
-  
+
   return _setLeftMargin( left_margin );
   if( left_margin_ == left_margin ) return false;
   return true;
-  
+
 }
 
 //________________________________________________
@@ -2325,7 +2325,7 @@ void TextEditor::_updateConfiguration( void )
 
   if( lineNumbersFromOptions() )
   { showLineNumberAction().setChecked( XmlOptions::get().get<bool>( "SHOW_LINE_NUMBERS" ) ); }
-  
+
   // tab emulation
   _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
   tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
@@ -2335,12 +2335,12 @@ void TextEditor::_updateConfiguration( void )
   blockHighlight().setEnabled( highlight_color_.isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
   blockHighlightAction().setEnabled( highlight_color_.isValid() );
   blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-  
+
   // update margins
   _lineNumberDisplay().updateWidth( document()->blockCount() );
   _updateMargin();
   _marginWidget().setDirty();
-  
+
   // update box configuration
   // clear
   _boxSelection().updateConfiguration();
@@ -2449,11 +2449,11 @@ void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
 void TextEditor::_updateClipboard( void )
 {
   Debug::Throw( "TextEditor::_updateClipboard.\n" );
-  
+
   // copy selected text to clipboard
   if( qApp->clipboard()->supportsSelection() && textCursor().hasSelection() )
   { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
-  
+
 }
 
 //________________________________________________
@@ -2470,22 +2470,22 @@ void TextEditor::_updatePasteAction( void )
 //_________________________________________________
 void TextEditor::_toggleBlockHighlight( bool state )
 {
-  
+
   Debug::Throw( "TextEditor::_toggleBlockHighlight.\n" );
-  
+
   // enable
   blockHighlight().setEnabled( highlight_color_.isValid() && state );
-  
+
   // update options
   XmlOptions::get().set<bool>( "HIGHLIGHT_PARAGRAPH", state );
-  
+
   // update current paragraph
   if( blockHighlight().isEnabled() ) blockHighlight().highlight();
   else blockHighlight().clear();
 
   // redraw
   update();
-  
+
   // propagate to other displays
   if( isSynchronized() )
   {
@@ -2528,7 +2528,7 @@ bool TextEditor::_toggleWrapMode( bool state )
   }
 
   return true;
-  
+
 }
 
 //________________________________________________
@@ -2568,10 +2568,10 @@ void TextEditor::_toggleShowLineNumbers( bool state )
 {
 
   _updateMargin();
-  
+
   // update options
   XmlOptions::get().set<bool>( "SHOW_LINE_NUMBERS", state );
-  
+
   // propagate to other displays
   if( isSynchronized() )
   {
@@ -2592,13 +2592,13 @@ void TextEditor::_toggleShowLineNumbers( bool state )
 //________________________________________________________
 void TextEditor::_blockCountChanged( int count )
 {
-  
+
   Debug::Throw( "TextEditor::_blockCountChanged.\n" );
   if( !( _hasLineNumberDisplay() && _lineNumberDisplay().updateWidth( count ) ) ) return;
   if( !( hasLineNumberAction() && showLineNumberAction().isChecked() && showLineNumberAction().isVisible() ) ) return;
   _updateMargin();
   update();
-  
+
 }
 
 //_____________________________________________________________________
@@ -2608,7 +2608,7 @@ void TextEditor::_findFromDialog( void )
 
   // set default text
   // update find text
-  QString text( selection().text() );  
+  QString text( selection().text() );
   if( !text.isEmpty() )
   {
     const int max_length( 1024 );
@@ -2623,7 +2623,7 @@ void TextEditor::_findFromDialog( void )
   _findDialog().synchronize();
   _findDialog().clearLabel();
   _findDialog().setText( text );
-  
+
   // changes focus
   _findDialog().activateWindow();
   _findDialog().editor().setFocus();

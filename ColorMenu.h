@@ -4,26 +4,26 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
- 
+
 /*!
   \file ColorMenu.h
   \brief color selection menu
@@ -47,8 +47,8 @@ class ColorMenu: public QMenu, public Counter
 
   //! Qt meta object declaration
   Q_OBJECT
-    
-  public: 
+
+  public:
 
   //! default name for no-color
   static const QString NONE;
@@ -57,11 +57,11 @@ class ColorMenu: public QMenu, public Counter
   class ColorLessFTor
   {
     public:
-    
+
     //! predicate
     bool operator() (const QColor& first, const QColor& second ) const
     { return first.name() < second.name(); }
-    
+
   };
 
   //! sorted set of colors
@@ -69,33 +69,33 @@ class ColorMenu: public QMenu, public Counter
 
   //! constructor
   ColorMenu( QWidget* parent );
-  
+
   //! destructor
-  virtual ~ColorMenu( void ) 
+  virtual ~ColorMenu( void )
   { Debug::Throw( "ColorMenu::~ColorMenu.\n" ); }
-  
+
   //! add a color
   void add( const QString& );
 
   //! retrieve colors
   ColorSet colors() const;
-  
+
   //! retrieves last selected color
   const QColor& lastColor( void ) const
   { return last_color_; }
-  
+
   signals:
-  
-  //! emmited when a color is selected    
+
+  //! emmited when a color is selected
   void selected( QColor );
 
   protected:
 
   //! paint event (overloaded)
   void paintEvent( QPaintEvent* event );
-  
+
   private slots:
-     
+
   //! display colors when about to show
   void _display( void );
 
@@ -106,11 +106,11 @@ class ColorMenu: public QMenu, public Counter
   /*! emits colorSelected with an invalid color */
   void _default( void );
 
-  //! get color associated to action, emit ColorSelected        
+  //! get color associated to action, emit ColorSelected
   void _selected( QAction* );
-  
-  private: 
- 
+
+  private:
+
   //! add a color
   void _add( const QColor& );
 
@@ -122,12 +122,12 @@ class ColorMenu: public QMenu, public Counter
 
   //! map actions to colors
   typedef std::map<QAction*, QColor> ActionMap;
-  
+
   //! map actions to colors
   ActionMap actions_;
-  
+
   //! keep track of the last selected color
   QColor last_color_;
-         
+
 };
 #endif

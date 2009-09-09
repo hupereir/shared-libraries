@@ -47,13 +47,13 @@ TextEditorMarginWidget::TextEditorMarginWidget( TextEditor* parent ):
 {
   Debug::Throw( "TextEditorMarginWidget::TextEditorMarginWidget.\n" );
   resize(0,0);
-  
+
   setBackgroundRole( QPalette::Window );
   setAutoFillBackground( true );
-  
+
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
-  
+
 }
 
 //________________________________________________________________
@@ -69,21 +69,21 @@ void TextEditorMarginWidget::setDirty( void )
 //________________________________________________________________
 void TextEditorMarginWidget::_updateConfiguration( void )
 {
-  
-  Debug::Throw( "TextEditorMarginWiget::_updateConfiguration.\n" );    
+
+  Debug::Throw( "TextEditorMarginWiget::_updateConfiguration.\n" );
 
   // update palette using colors from options
   QPalette palette( TextEditorMarginWidget::palette() );
   QColor color;
-  
+
   if( ( color = QColor( XmlOptions::get().raw("MARGIN_FOREGROUND") ) ).isValid() )
   { palette.setColor( QPalette::WindowText, color ); }
-  
+
   if( ( color = QColor( XmlOptions::get().raw("MARGIN_BACKGROUND") ) ).isValid() )
   { palette.setColor( QPalette::Window, color ); }
 
   setPalette( palette );
-  
+
   // draw vertical line
   draw_vertical_line_ = XmlOptions::get().get<bool>( "MARGIN_VERTICAL_LINE" );
 
@@ -91,15 +91,15 @@ void TextEditorMarginWidget::_updateConfiguration( void )
 
 //________________________________________________
 void TextEditorMarginWidget::paintEvent( QPaintEvent* event )
-{ 
-    
+{
+
   // paint margins
   QPainter painter( this );
-  painter.setClipRect( event->rect() );  
+  painter.setClipRect( event->rect() );
   _editor().paintMargin( painter );
   painter.end();
-  
+
   // clear dirty flag
   dirty_ = false;
-  
+
 }

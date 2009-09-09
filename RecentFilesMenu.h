@@ -71,39 +71,39 @@ class RecentFilesMenu: public QMenu, public Counter
 
   //! open last valid file, returns true if any
   bool openLastValidFile( void );
-    
+
   //! current file
   const FileRecord& currentFile( void ) const
   { return current_file_; }
 
   //! set current file
   void setCurrentFile( const File& file );
-  
+
   //! set current file
   void setCurrentFile( const FileRecord& file )
   { current_file_ = file; }
-  
+
   signals:
 
   //! signal emited when a file is selected
   void fileSelected( FileRecord );
-  
+
   public slots:
-  
+
   //! check if a file is in database, adds it if not
   virtual FileRecord& add( const QString& file )
   { return _fileList().add( File( file ) ); }
-  
+
   //! check if a file is in database, adds it if not
   virtual FileRecord& add( File file )
-  { return _fileList().add( file.expand() ); }  
-    
+  { return _fileList().add( file.expand() ); }
+
   private slots:
-  
+
   //! update actions
   /*! this is trigger by the fileList valid file check completion */
   void _updateActions( void );
-  
+
   //! remove unfound files from file list
   void _clean( void );
 
@@ -117,33 +117,33 @@ class RecentFilesMenu: public QMenu, public Counter
 
   //! file list
   FileList& _fileList( void ) const
-  { 
+  {
     assert( file_list_ );
     return *file_list_;
   }
-  
+
   //! clean action
   QAction& _cleanAction( void ) const
   { return *clean_action_; }
-  
+
   //! associated file list
   FileList* file_list_;
-  
+
   //! store current file (to appear checked in list)
   FileRecord current_file_;
-  
+
   //! action group
   QActionGroup* action_group_;
-  
+
   //! clean action
   QAction* clean_action_;
-  
+
   //! map actions to file recors
   typedef std::map<QAction*, FileRecord> ActionMap;
-  
+
   //! map actions to FileRecords
   ActionMap actions_;
-  
+
 };
 
 #endif

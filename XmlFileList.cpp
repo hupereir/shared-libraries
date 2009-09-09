@@ -41,18 +41,18 @@
 
 using namespace std;
 
-//_______________________________________________ 
+//_______________________________________________
 XmlFileList::XmlFileList( QObject* parent ):
   FileList( parent )
-{ 
-  
+{
+
   Debug::Throw( "XmlFileList::XmlFileList.\n" );
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
   _updateConfiguration();
 
 }
-  
+
 //_______________________________________________
 bool XmlFileList::_setDBFile( const QString& file )
 {
@@ -60,13 +60,13 @@ bool XmlFileList::_setDBFile( const QString& file )
 
   // check file
   if( db_file_ == file && !_records().empty() ) return false;
-    
+
   // store file and read
   db_file_ = file;
   _read();
-  
+
   return true;
-  
+
 }
 
 //_______________________________________________
@@ -100,18 +100,18 @@ bool XmlFileList::_read( void )
     if( element.isNull() ) continue;
 
     // special options
-    if( element.tagName() == XmlFileRecord::XML_RECORD ) 
+    if( element.tagName() == XmlFileRecord::XML_RECORD )
     {
-    
+
       XmlFileRecord record( element );
       if( !record.file().isEmpty() ) _add( record, true, false );
       else Debug::Throw(0, "XmlFileList::_read - attend to add empty record. Discarded.\n" );
-    
+
     } else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << element.tagName() << endl;
   }
 
   emit contentsChanged();
-  
+
   return true;
 }
 
@@ -119,19 +119,19 @@ bool XmlFileList::_read( void )
 bool XmlFileList::_write( void )
 {
   Debug::Throw( "XmlFileList::_write.\n" );
-  if( db_file_.isEmpty() ) 
+  if( db_file_.isEmpty() )
   {
-    Debug::Throw( "XmlFileList::_write - no file.\n" );    
+    Debug::Throw( "XmlFileList::_write - no file.\n" );
     return false;
   }
-  
+
   // output file
   QFile out( db_file_ );
   if( !out.open( QIODevice::WriteOnly ) ) return false;
 
   // get records truncated list
   FileRecord::List records( _truncatedList( _records() ) );
-    
+
   // create document
   QDomDocument document;
 
@@ -140,21 +140,21 @@ bool XmlFileList::_write( void )
 
   // loop over records
   for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
-  { 
-    
+  {
+
     Debug::Throw() << "XmlFileList::_write - " << *iter;
     if( iter->file().isEmpty() )
-    { 
+    {
       Debug::Throw(0, "XmlFileList::_write - attend to write empty record. Discarded.\n" );
       continue;
     }
-    
-    top.appendChild( XmlFileRecord( *iter ).domElement( document ) ); 
+
+    top.appendChild( XmlFileRecord( *iter ).domElement( document ) );
   }
 
   out.write( document.toByteArray() );
   out.close();
-    
+
   return true;
 }
 
@@ -163,12 +163,12 @@ bool XmlFileList::_write( void )
 void XmlFileList::_updateConfiguration( void )
 {
   Debug::Throw( "XmlFileList::_updateConfiguration.\n" );
-  
+
   // DB file
   _setDBFile( XmlOptions::get().raw("DB_FILE") );
   _setMaxSize( XmlOptions::get().get<int>( "DB_SIZE" ) );
   return;
-  
+
 }
 
 //______________________________________
@@ -177,28 +177,28 @@ void XmlFileList::_saveConfiguration( void )
   Debug::Throw( "XmlFileList::_saveConfiguration.\n" );
   _write();
 }
-  
+
 //_______________________________________________
 bool XmlFileList::_deprecatedRead( void )
 {
   Debug::Throw( "FileList::_deprecatedRead.\n" );
-  
+
   // check file
-  if( db_file_.isEmpty() || !QFileInfo(db_file_).exists() ) return false; 
-  
+  if( db_file_.isEmpty() || !QFileInfo(db_file_).exists() ) return false;
+
   // open stream
   QFile in( db_file_ );
   if( !in.open( QIODevice::ReadOnly ) ) return false;
-      
-  while( in.canReadLine() ) 
-  { 
+
+  while( in.canReadLine() )
+  {
     QString line( in.readLine( 1024 ) );
-    _add( FileRecord( File( line ) ), true, false ); 
+    _add( FileRecord( File( line ) ), true, false );
   }
-  
+
   in.close();
-  
+
   emit contentsChanged();
-  
+
   return true;
 }

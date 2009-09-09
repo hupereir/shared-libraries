@@ -56,45 +56,45 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     Debug::Throw( "BaseConfigurationDialog::~BaseConfigurationDialog.\n" );
     return;
   }
-  
+
   //! flag bitset for the Base configuration
   enum ConfigurationFlags
   {
-    
+
     //! base (font, icons and debug level
     BASE = 1<<0,
 
     //! lists
     LIST = 1<<2,
-    
+
     //! textEdit emulations
     TEXTEDIT = 1<<3,
-    
+
     //! animations
     ANIMATIONS = 1<<4,
-    
+
     //! tab emulation
     TAB_EMULATION = 1<<5,
-    
+
     //! paragraph highlight
     PARAGRAPH_HIGHLIGHT = 1<<6,
-    
+
     //! box selection
     BOX_SELECTION = 1<<7,
-    
+
     //! margins
     MARGINS = 1<<8,
-    
+
     //! misc
     TEXT_EDITION_FLAGS = 1<<9,
-    
+
     //! default
     DEFAULT = BASE|LIST|ANIMATIONS,
 
     //! all text edition
     ALL_TEXT_EDITION = TAB_EMULATION|PARAGRAPH_HIGHLIGHT|BOX_SELECTION|MARGINS|TEXT_EDITION_FLAGS
-    
-    
+
+
   };
 
   //! adds configuration box for base options used in all appications
@@ -105,21 +105,21 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
   //! TextEdit configuration box
   void textEditConfiguration( QWidget* parent = 0, unsigned long flag = ALL_TEXT_EDITION );
-  
+
   //! animations
   void animationConfiguration( QWidget* parent = 0 );
-  
+
   signals:
 
   //! apply button pressed
   void apply( void );
-  
+
   //! ok button pressed
   void ok( void );
-  
+
   //! canceled button pressed
   void cancel( void );
-  
+
   //! emmited when configuration is changed
   void configurationChanged();
 
@@ -127,7 +127,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
   //! show pixmap path dialog
   virtual void _editPixmapPathList( void );
-  
+
   //! read configuration from options
   virtual void _read();
 
@@ -135,13 +135,13 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
   virtual void _update()
   {
     Debug::Throw( "BaseConfigurationDialog::_update.\n" );
-    OptionWidgetList::write(); 
+    OptionWidgetList::write();
     _checkModified();
   }
 
   //! restore configuration
   virtual void _restore();
-  
+
   //! restore default options
   virtual void _restoreDefaults( void );
 
@@ -156,7 +156,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     emit configurationChanged();
     modified_options_ = XmlOptions::get();
   }
-    
+
   private:
 
   //! pointer to modified options

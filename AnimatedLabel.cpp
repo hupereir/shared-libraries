@@ -56,29 +56,29 @@ AnimatedLabel::~AnimatedLabel( void )
 //________________________________________________________
 void AnimatedLabel::setText( const QString& text )
 {
-  
+
   // check enability
   if( !( transitionWidget().isEnabled() && isVisible() ) ) return QLabel::setText( text );
   else {
     transitionWidget().initialize();
     QLabel::setText( text );
     transitionWidget().start();
-    
+
   }
-  
+
 }
- 
+
 //________________________________________________________
 void AnimatedLabel::clear( void )
 {
   // check enability
   if( !( transitionWidget().isEnabled() && isVisible() ) ) return QLabel::clear();
   else {
-     
+
     transitionWidget().initialize();
     QLabel::clear();
     transitionWidget().start();
-      
+
   }
 
 }

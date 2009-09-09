@@ -45,39 +45,39 @@ void WinUtil::update( QPixmap& pixmap, double opacity ) const
 
   #ifdef Q_WS_WIN
   if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
-  
+
   HBITMAP oldBitmap;
-  HBITMAP hBitmap;	
+  HBITMAP hBitmap;
   SIZE size;
   size.cx = pixmap.width();
   size.cy = pixmap.height();
   HDC screenDc = GetDC(NULL);
   POINT pointSource;
   pointSource.x = 0;
-  pointSource.y = 0; 
+  pointSource.y = 0;
   POINT topPos;
   topPos.x = _target().x();
-  topPos.y = _target().y();	
+  topPos.y = _target().y();
   HDC memDc = CreateCompatibleDC(screenDc);
   BLENDFUNCTION blend;
   blend.BlendOp             = AC_SRC_OVER;
   blend.BlendFlags          = 0;
   blend.SourceConstantAlpha = int( opacity*255 );
   blend.AlphaFormat         = AC_SRC_ALPHA;
-  hBitmap = pixmap.toWinHBITMAP(QPixmap::PremultipliedAlpha); 
+  hBitmap = pixmap.toWinHBITMAP(QPixmap::PremultipliedAlpha);
   oldBitmap = (HBITMAP)SelectObject(memDc, hBitmap);
-  
+
   UpdateLayeredWindow( _target().winId(), screenDc,  &topPos,  &size, memDc,  &pointSource, 0, &blend, ULW_ALPHA);
-  
+
   ReleaseDC( NULL, screenDc);
   if (hBitmap != NULL)
   {
     SelectObject(memDc, oldBitmap);
-    DeleteObject(hBitmap); 
+    DeleteObject(hBitmap);
     DeleteObject(hBitmap);
   }
-  DeleteDC(memDc); 
-  
+  DeleteDC(memDc);
+
   #endif
 }
 
@@ -87,20 +87,20 @@ bool WinUtil::hasFlag( long int flag ) const
 
   #ifdef Q_WS_WIN
   return GetWindowLong( _target().winId(), GWL_EXSTYLE) & flag;
-  #else 
+  #else
   return false;
   #endif
-  
+
 }
 
 //_______________________________________
 void WinUtil::setFlag( long int flag, bool value ) const
 {
-  
+
   #ifdef Q_WS_WIN
   if( value ) SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) | flag);
   else SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) & (~flag));
   #endif
- 
-  
+
+
 }

@@ -36,12 +36,12 @@
 
 class KeyModifier
 {
-  
+
   public:
-  
+
   //! constructor
   KeyModifier( const Qt::Key& );
-  
+
   //! state
   enum State
   {
@@ -49,15 +49,15 @@ class KeyModifier
     ON,
     UNKNOWN
   };
-  
+
   //! get state
   State state( void ) const;
-  
+
   private:
-  
+
   //! key
   Qt::Key key_;
-  
+
 };
 
 #endif

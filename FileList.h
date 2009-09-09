@@ -33,9 +33,9 @@
 */
 
 #include <cassert>
-#include <list>     
-   
-#include <QObject>   
+#include <list>
+
+#include <QObject>
 
 #include "Counter.h"
 #include "Debug.h"
@@ -69,7 +69,7 @@ class FileList: public QObject, public Counter
 
   //! returns true if file is found in list
   virtual bool has( const File& file ) const;
-  
+
   //! add file.
   virtual FileRecord& add( const File& file )
   { return _add( FileRecord( file ) ); }
@@ -81,34 +81,34 @@ class FileList: public QObject, public Counter
   /*! creates new fileRecord if not found */
   virtual FileRecord& get( const File& file )
   { return _add( FileRecord( file ), false ); }
-  
+
   //! gets file list size
   virtual int size( void ) const
   { return _records().size(); }
-  
+
   //! all records
   FileRecord::List records( void ) const
   { return _truncatedList( _records() ); }
-      
+
   //! set record
   virtual void set( const FileRecord::List& );
 
   //! all files
   std::list< File > files( void ) const;
-  
+
   //! get last valid file
   virtual FileRecord lastValidFile( void );
-    
+
   //! returns true if file list can be cleaned
   virtual bool cleanEnabled( void ) const
   { return (check()) ? clean_enabled_ : !_records().empty(); }
-    
+
   //! clean files. Remove either invalid or all files, depending on check_
   virtual void clean( void );
-  
+
   //! clear files. Remove all
   virtual void clear( void );
-  
+
   //! check flag
   virtual const bool& check( void ) const
   { return check_; }
@@ -116,68 +116,68 @@ class FileList: public QObject, public Counter
   //! check_ flag
   virtual void setCheck( const bool& value )
   { check_ = value; }
-  
+
   signals:
-    
+
   //! emmited when thread has completed validity check
   void validFilesChecked( void );
-  
+
   //! emmited when contents is changed
   void contentsChanged( void );
-  
+
   public slots:
-    
+
   //! run thread to check file validity
   void checkValidFiles( void );
-  
+
   protected:
-  
+
   //! custom event, used to retrieve file validity check event
   void customEvent( QEvent* );
-   
+
   //! maximum Size
   virtual void _setMaxSize( const int& value );
 
   //! maximum size
   virtual const int& _maxSize( void ) const
   { return max_size_; }
- 
+
   //! add record to current list
-  virtual FileRecord& _add( 
-    const FileRecord& record, 
+  virtual FileRecord& _add(
+    const FileRecord& record,
     const bool& update_timestamp = true,
     const bool& emit_signal = true );
-  
+
   //! truncate list if larger than max_size_
   virtual FileRecord::List _truncatedList( FileRecord::List ) const;
 
   //! list of files records
   virtual const FileRecord::List& _records( void ) const
   { return records_; }
- 
+
   //! list of files records
   virtual FileRecord::List& _records( void )
   { return records_; }
 
-  
+
   private:
-  
+
   //! clean enabled
   void _setCleanEnabled( const bool& value )
   { clean_enabled_ = value; }
-  
+
   //! maximum size (negative means no limit)
   int max_size_;
 
   //! if true, check file validity
   bool check_;
-  
+
   //! true if clean action is enabled
-  bool clean_enabled_; 
-  
+  bool clean_enabled_;
+
   //! thread to check file validity
   ValidFileThread thread_;
-  
+
   //! current list of files
   FileRecord::List records_;
 

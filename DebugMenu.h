@@ -1,26 +1,26 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
- 
+
 /*!
   \file DebugMenu.h
   \brief some basic runtime debuging
@@ -51,8 +51,8 @@ class DebugMenu: public QMenu, public Counter
   //! Qt meta object declaration
   Q_OBJECT
 
-  public: 
-  
+  public:
+
   //! flags
   enum Flag
   {
@@ -62,35 +62,35 @@ class DebugMenu: public QMenu, public Counter
     OPTIONS = 1<<4,
     DEFAULT = COUNTERS | ICONS | SYSTEM | OPTIONS
   };
-    
+
   //! constructor
   DebugMenu( QWidget* parent, unsigned int flags = DEFAULT );
-  
+
   //! destructor
-  ~DebugMenu( void ) 
+  ~DebugMenu( void )
   {}
-  
+
   private slots:
 
   //! print object counters
-  void _showCounterDialog( void ); 
- 
+  void _showCounterDialog( void );
+
   //! icon cache dialog
   void _showPixmapCacheDialog( void );
-  
+
   //! show system environment
   void _showSystemEnvironment( void );
-  
+
   //! show options
   void _showOptions( void );
-  
-  private: 
+
+  private:
 
   //! non modal Counter dialog
   CounterDialog* counter_dialog_;
-  
+
   //! non modal icon cache dialog
   PixmapCacheDialog* pixmap_cache_dialog_;
-     
+
 };
 #endif

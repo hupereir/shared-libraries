@@ -41,27 +41,27 @@ class TransitionWidget;
 //! tabbar
 class AnimatedTabBar: public QTabBar, public Counter
 {
-  
+
   Q_OBJECT
-  
+
   public:
-  
+
   //! constructor
   AnimatedTabBar( QWidget* parent ):
     QTabBar( parent ),
     Counter( "AnimatedTabBar" )
   {}
-  
+
   signals:
-  
+
   //! clicked
   void clicked( void );
-  
+
   protected:
-  
+
   //! mouse press event
   virtual void mousePressEvent( QMouseEvent* );
-  
+
 };
 
 //! tabbed dialog
@@ -78,29 +78,29 @@ class AnimatedTabWidget: public QTabWidget, public Counter
 
   //! destructor
   virtual ~AnimatedTabWidget();
-    
+
   protected slots:
-  
+
   //! update current widget
   void _updateCurrentWidget( void );
-  
+
   //! animation finished
   void _startAnimation( void );
-   
+
   //! animation finished
   void _animationFinished( void );
 
   protected:
-  
+
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
 
   private:
-  
+
   //! transitionWidget
   TransitionWidget* transition_widget_;
-  
+
 };
 
 

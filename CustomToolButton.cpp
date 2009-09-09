@@ -1,26 +1,26 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
- 
+
 /*!
   \file CustomToolButton.cpp
   \brief customized tool button to display tooltip in a dedicated label
@@ -53,37 +53,37 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
 {
 
   Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
-  
+
   // auto-raise
   setAutoRaise( true );
 
   // configuration
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   _updateConfiguration();
-  
+
 }
-  
+
 //______________________________________________________________________
 bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
 {
   Debug::Throw( "CustomToolButton::rotate.\n" );
   if( rotation_ == value ) return false;
-  
+
   // rotate icon if any
   CustomPixmap pixmap( icon().pixmap( IconSize::LARGE, QIcon::Normal ) );
   if( !pixmap.isNull() )
   {
-    
+
     // clockwise rotations
     if( ( rotation_ == NONE && value == COUNTERCLOCKWISE ) || ( rotation_ == CLOCKWISE && value == NONE ) )
     { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::CLOCKWISE ) ) ); }
-    
+
     if( ( rotation_ == NONE && value == CLOCKWISE ) || ( rotation_ == COUNTERCLOCKWISE && value == NONE ) )
     { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::COUNTERCLOCKWISE ) ) ); }
-  
+
   } else { Debug::Throw(0) << "CustomToolButton::rotate - null pixmap." << endl; }
-  
-  rotation_ = value; 
+
+  rotation_ = value;
   return true;
 }
 
@@ -96,26 +96,26 @@ QSize CustomToolButton::sizeHint( void ) const
 
 //______________________________________________________________________
 void CustomToolButton::paintEvent( QPaintEvent* event )
-{ 
-  
+{
+
   // default implementation if not rotated
   if( _rotation() == NONE ) return QToolButton::paintEvent( event );
-  
+
   // rotated paint
   QStylePainter painter(this);
   QStyleOptionToolButton option;
   initStyleOption(&option);
-  
+
   // first draw normal frame and not text/icon
   option.text = QString();
-  option.icon = QIcon();  
+  option.icon = QIcon();
   painter.drawComplexControl(QStyle::CC_ToolButton, option);
-  
+
   // rotate the options
   QSize size( option.rect.size() );
   size.transpose();
   option.rect.setSize( size );
-  
+
   // rotate the painter
   if( _rotation() == COUNTERCLOCKWISE )
   {
@@ -125,13 +125,13 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
     painter.translate( width(), 0 );
     painter.rotate( 90 );
   }
-  
+
   // paint text and icon
   option.text = text();
   option.icon = icon();
   painter.drawControl(QStyle::CE_ToolButtonLabel, option);
   painter.end();
-  
+
   return;
 }
 
@@ -139,12 +139,12 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
 void CustomToolButton::_updateConfiguration( void )
 {
   Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
-  
+
   if( !_updateFromOptions() ) return;
-  
+
   setIconSize( IconSize( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
   setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-  
+
   adjustSize();
-  
+
 }

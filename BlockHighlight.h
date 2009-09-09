@@ -44,59 +44,59 @@ class TextEditor;
 //! handles current block highlighting
 class BlockHighlight: public QObject, public Counter
 {
-    
+
   Q_OBJECT
-  
+
   public:
-  
+
   //! constructor
   BlockHighlight( TextEditor* parent );
-  
+
   //! destructor
   virtual ~BlockHighlight( void )
   { Debug::Throw( "BlockHighlight::~BlockHighlight.\n" ); }
-  
+
   //! enable/disable
   void setEnabled( const bool& value )
   { enabled_ = value; }
-    
+
   //! enable/disable
   const bool& isEnabled( void ) const
   { return enabled_; }
-  
+
   //! clear highlighted block
   void clear( void );
-    
+
   public slots:
-  
+
   //! highlight
   void highlight( void );
-  
+
   protected:
-  
+
   //! delayed highlighting
   virtual void timerEvent( QTimerEvent* event );
-  
+
   //! highlight
   void _highlight( void );
-  
+
   private:
-  
+
   //! trigger update associated editors
   void _updateEditors( void );
-  
+
   //! parent editor
   TextEditor* parent_;
-  
+
   //! associated timer
   QBasicTimer timer_;
-  
+
   //! true if enabled
   bool enabled_;
-  
+
   //! true when cleared
   bool cleared_;
-  
+
 };
 
 #endif

@@ -43,37 +43,37 @@ class TextEditor;
 // margin widget
 class TextEditorMarginWidget: public QWidget, public Counter
 {
-  
+
   Q_OBJECT
-  
+
   public:
-  
+
   //! constructor
   TextEditorMarginWidget( TextEditor* );
-  
+
   //! destructor
   virtual ~TextEditorMarginWidget( void )
   {}
-  
+
   //! vertical line
   const bool& drawVerticalLine( void ) const
   { return draw_vertical_line_; }
-  
+
   public slots:
-  
+
   //! dirty
   void setDirty( void );
-  
+
   private slots:
-  
+
   //! configuration
   void _updateConfiguration( void );
-  
+
   protected:
-    
+
   //! paint event
   virtual void paintEvent( QPaintEvent* );
-  
+
   //! parent editor
   TextEditor& _editor( void ) const
   { return *editor_; }
@@ -82,13 +82,13 @@ class TextEditorMarginWidget: public QWidget, public Counter
 
   //! parent editor
   TextEditor* editor_;
-  
+
   //! dirty flag
   bool dirty_;
 
   //! draw vertical line
   bool draw_vertical_line_;
-  
+
 };
 
 #endif

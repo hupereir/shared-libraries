@@ -58,15 +58,15 @@ AnimatedStackedWidget::~AnimatedStackedWidget( void )
 
 //___________________________________________________________________
 void AnimatedStackedWidget::setCurrentIndex( int index )
-{ 
+{
   Debug::Throw( "AnimatedStackedWidget::setCurrentIndex.\n" );
-  
+
   // check animation time
   if( !transitionWidget().isEnabled() ) return QStackedWidget::setCurrentIndex( index );
-  
+
   // check index is changed
   if( index == currentIndex() ) return QStackedWidget::setCurrentIndex( index );
-  
+
   // pass to setCurrentWidget method
   setCurrentWidget( AnimatedStackedWidget::widget( index ) );
 }
@@ -77,27 +77,27 @@ void AnimatedStackedWidget::setCurrentWidget( QWidget* widget )
 
   // check index is changed
   if( widget == currentWidget() || !widget ) return QStackedWidget::setCurrentWidget( widget );
-    
+
   // check widget validity and animation time
   if( !(  transitionWidget().isEnabled() && isVisible() ) ) return QStackedWidget::setCurrentWidget( widget );
   else {
-        
+
     // reparent transition widget so that it appears on top of current widget
-    // warning: need to reparent it back when transition is finished to avoid 
+    // warning: need to reparent it back when transition is finished to avoid
     // the transition widget to be deleted when the widget is deleted
     transitionWidget().setParent( widget );
     transitionWidget().initialize( this );
     QStackedWidget::setCurrentWidget( widget );
     qApp->processEvents();
     transitionWidget().start();
-  
+
   }
-  
+
 }
 
 //___________________________________________________________________
 void AnimatedStackedWidget::_animationFinished( void )
-{ 
+{
   transitionWidget().setParent( this );
   transitionWidget().hide();
 }

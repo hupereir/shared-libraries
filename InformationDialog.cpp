@@ -48,10 +48,10 @@ InformationDialog::InformationDialog( QWidget* parent, QString text ):
 
   // insert main vertical box
   if( question_pixmap.isNull() )
-  { 
+  {
 
-    mainLayout().addWidget( label_ = new QLabel( text, this ) ); 
-  
+    mainLayout().addWidget( label_ = new QLabel( text, this ) );
+
   } else {
 
     QHBoxLayout *h_layout( new QHBoxLayout() );

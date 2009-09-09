@@ -59,12 +59,12 @@ class TabbedDialog: public BaseDialog, public Counter
 
   //! destructor
   virtual ~TabbedDialog();
-  
+
   //! adds a new Item, returns associated Box
   virtual QWidget& addPage( const QString&, const QString& tooltip = QString(), const bool& expand = false );
-  
-  protected slots: 
-  
+
+  protected slots:
+
   //! display item page
   virtual void _display( const QModelIndex& );
 
@@ -81,74 +81,74 @@ class TabbedDialog: public BaseDialog, public Counter
   //! button layout
   QBoxLayout& _buttonLayout( void ) const
   { return *button_layout_; }
-  
+
   private:
-  
+
   //! model
   class Model: public ListModel<QWidget*>
   {
-    
+
     public:
-    
+
     //! number of columns
     enum { n_columns = 1 };
-    
+
     //! column type enumeration
     enum ColumnType {
       NAME
     };
-    
+
     //!@name methods reimplemented from base class
     //@{
-    
+
     //! flags
     virtual Qt::ItemFlags flags(const QModelIndex& ) const
     { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
-    
+
     //! return data
     virtual QVariant data(const QModelIndex &index, int role) const;
-    
+
     //! header data
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
-    {   
+    {
       if( orientation == Qt::Horizontal && role == Qt::DisplayRole && section >= 0 && section < n_columns )
       { return column_titles_[section]; }
-      
+
       // return empty
-      return QVariant(); 
-    
+      return QVariant();
+
     }
-    
+
     //! number of columns for a given index
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
     { return n_columns; }
-    
+
     //@}
-  
-    protected: 
-    
+
+    protected:
+
     //! sort
     virtual void _sort( int, Qt::SortOrder order = Qt::AscendingOrder )
     {}
-  
+
     //! list column names
-    static const QString column_titles_[n_columns];    
-    
+    static const QString column_titles_[n_columns];
+
   };
 
   //! model
   Model& _model( void )
   { return model_; }
-  
+
   //! model
   Model model_;
-  
+
   //! Configuration list
   TreeView* list_;
 
   //! Widget stack
   AnimatedStackedWidget* stack_;
-  
+
   //! button layout (needed to add extra buttons)
   QBoxLayout *button_layout_;
 

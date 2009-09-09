@@ -42,14 +42,14 @@ class TransitionWidget;
 /*! uses fading when calling setPlainText, setHTML or clear */
 class AnimatedLineEditor: public LineEditor
 {
-    
+
   Q_OBJECT
-  
+
   public:
-  
+
   //! constructor
   AnimatedLineEditor( QWidget* parent = 0 );
-  
+
   //! destrutor
   virtual ~AnimatedLineEditor( void );
 
@@ -58,39 +58,39 @@ class AnimatedLineEditor: public LineEditor
   { return time_line_; }
 
   public slots:
-  
+
   //! clear
   virtual void clear( void );
-  
+
   //! set text
   virtual void setText( const QString& );
 
   protected:
-  
+
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
 
   //! toggle clear button
   virtual bool _toggleClearButton( const bool& );
-  
+
   //! paint clear button
   virtual void _paintClearButton( QPainter& );
 
   private slots:
-  
+
   //! configuration
   virtual void _updateConfiguration( void );
-  
+
   private:
-  
+
   //! timeline
-  QTimeLine time_line_;    
+  QTimeLine time_line_;
 
   //! transition widget
   TransitionWidget* transition_widget_;
-  
-  
+
+
 };
 
 #endif

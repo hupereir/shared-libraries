@@ -37,9 +37,9 @@
 //! namespace for base icons static name wrapper
 namespace ICONS
 {
-  
+
   static const QString ABOUT_QT = "qt-logo.png";
-  static const QString ADD="add.png";  
+  static const QString ADD="add.png";
   static const QString COLOR = "color.png";
   static const QString COLOR_PICKER = "colorpicker.png";
   static const QString CONFIGURE = "configure.png";
@@ -52,7 +52,7 @@ namespace ICONS
   static const QString DIALOG_OK_APPLY = "dialog-ok-apply.png";
   static const QString DIALOG_ACCEPT = DIALOG_OK_APPLY;
   static const QString EDIT = "edit.png";
-  static const QString EDIT_CLEAR = "clear_left.png"; 
+  static const QString EDIT_CLEAR = "clear_left.png";
   static const QString EXIT = "exit.png";
   static const QString FIND = "viewmag.png";
   static const QString FIND_LARGE = "viewmag-large.png";
@@ -63,11 +63,11 @@ namespace ICONS
   static const QString OPEN_FOLDER = "fileopen-folder.png";
   static const QString PASTE = "editpaste.png";
   static const QString PIN = "stock_pin.png";
-  static const QString PRINT = "fileprint.png"; 
+  static const QString PRINT = "fileprint.png";
   static const QString REDO= "redo.png";
   static const QString RELOAD = "reload.png";
-  static const QString REMOVE="button_cancel.png";  
-  static const QString RENAME="edit-rename.png";  
+  static const QString REMOVE="button_cancel.png";
+  static const QString RENAME="edit-rename.png";
   static const QString SHOW_MENU = "show-menu.png";
   static const QString UNDO= "undo.png";
   static const QString WARNING = "messagebox_warning.png";

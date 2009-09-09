@@ -1,26 +1,26 @@
 // $Id$
- 
+
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
- 
+
 /*!
   \file FileDialog.cpp
   \brief customized file selection dialog, to store last selected directory
@@ -57,10 +57,10 @@ FileDialog::FileDialog( QWidget* parent ):
 
 //_______________________________________________________
 FileDialog& FileDialog::selectFile( const QString& file )
-{ 
+{
   selected_file_ = file;
   _workingDirectory() = QFileInfo( file ).isDir() ? file: File( file ).path();
-  return *this; 
+  return *this;
 }
 
 //_______________________________________________________
@@ -72,26 +72,26 @@ QString FileDialog::getFile( void )
   {
     if( _fileMode() == QFileDialog::DirectoryOnly || _fileMode() == QFileDialog::Directory )
     {
-      
+
       _options() |= QFileDialog::ShowDirsOnly;
       out = QFileDialog::getExistingDirectory( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _options() );
-      
+
     } else {
-      
+
       out = QFileDialog::getOpenFileName( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
-      
+
     }
-    
+
   } else {
-    
+
     out = QFileDialog::getSaveFileName( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
-    
+
   }
-        
-  // store working directory 
+
+  // store working directory
   if( !out.isNull() ) _workingDirectory() = QFileInfo( out ).path();
   return out;
-  
+
 }
 
 //_______________________________________________________
@@ -102,6 +102,6 @@ QStringList FileDialog::getFiles( void )
   assert( _acceptMode() == QFileDialog::AcceptOpen );
   assert( _fileMode() == QFileDialog::ExistingFiles );
   QStringList out( QFileDialog::getOpenFileNames( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() ) );
-  if( !(out.empty() || out.front().isNull() ) ) _workingDirectory() = QFileInfo( out.front() ).path(); 
+  if( !(out.empty() || out.front().isNull() ) ) _workingDirectory() = QFileInfo( out.front() ).path();
   return out;
 }

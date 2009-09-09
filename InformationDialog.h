@@ -41,27 +41,27 @@
 //! simple information dialog
 class InformationDialog: public CustomDialog
 {
-  
+
   public:
-  
+
   //! constructor
-  InformationDialog( QWidget* parent, QString text );  
+  InformationDialog( QWidget* parent, QString text );
 
   //! set text
   void setText( const QString& text ) const
   { _label().setText( text ); }
-  
+
   protected:
-  
+
   //! label
   QLabel& _label( void ) const
   { return *label_; }
-  
+
   private:
-  
+
   //! label
-  QLabel* label_; 
-  
+  QLabel* label_;
+
 };
 
 #endif

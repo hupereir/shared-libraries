@@ -40,36 +40,36 @@ class TransitionWidget;
 /*! uses fading when calling setPlainText, setHTML or clear */
 class AnimatedTextEditor: public TextEditor
 {
-    
+
   public:
-  
+
   //! constructor
   AnimatedTextEditor( QWidget* parent = 0 );
-  
+
   //! destrutor
   virtual ~AnimatedTextEditor( void );
-      
+
   //! set text
   virtual void setPlainText( const QString& );
-  
+
   //! set text
   virtual void setHtml( const QString& );
 
   //! clear
   virtual void clear( void );
-  
+
   protected:
 
   //! transition widget
   TransitionWidget& _transitionWidget( void ) const
   { return *transition_widget_; }
-  
+
   private:
-  
+
   //! transition widget
   TransitionWidget* transition_widget_;
-  
-  
+
+
 };
 
 #endif

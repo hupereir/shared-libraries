@@ -37,26 +37,26 @@
 //_________________________________________
 HtmlTextNode::HtmlTextNode( const QString& text, QDomElement& parent, QDomDocument& document )
 {
-  
+
   Debug::Throw( "HtmlTextNode::HtmlTextNode.\n" );
   QStringList lines( text.split( '\n' ) );
   if( lines.empty() ) return;
 
   // loop over lines
   // need to convert line accents
-  
+
   // first append the first line
-  QStringList::iterator iter = lines.begin(); 
+  QStringList::iterator iter = lines.begin();
  // parent.appendChild( document.createTextNode( HtmlString(*iter).toHtml() ) );
   parent.appendChild( document.createTextNode( *iter ) );
   iter++;
-  
+
   // append remaining lines, after end of line tag
   for( ;iter != lines.end(); iter++ )
   {
     parent.appendChild( document.createElement( "br" ) );
     parent.appendChild( document.createTextNode( *iter ) );
   }
-  
-  return;  
+
+  return;
 }

@@ -56,23 +56,23 @@ class AnimatedStackedWidget: public QStackedWidget, public Counter
   { return *transition_widget_; }
 
   public slots:
-  
+
   //! current index
   void setCurrentIndex( int );
-    
+
   //! current widget
   void setCurrentWidget( QWidget* );
-  
+
   protected slots:
-  
+
   //! animation finished
   void _animationFinished( void );
 
   private:
-   
+
   //! transitionWidget
   TransitionWidget* transition_widget_;
-  
+
 };
 
 

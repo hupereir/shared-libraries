@@ -58,6 +58,6 @@ class OptionFontInfo: public FontInfo, public OptionWidget
   //! write value to option
   void write( void ) const
   { XmlOptions::get().set<unsigned int>( optionName(), format() ); }
-  
+
 };
 #endif

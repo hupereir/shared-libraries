@@ -53,15 +53,15 @@ AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
   transition_widget_( new TransitionWidget( this ) )
 {
   Debug::Throw( "AnimatedTabWidget::AnimatedTabWidget.\n" );
-  
+
   setTabBar( new AnimatedTabBar( this ) );
-  
+
   _transitionWidget().setFlag( TransitionWidget::SHOW, false );
   _transitionWidget().hide();
-  connect( tabBar(), SIGNAL( clicked() ), SLOT( _updateCurrentWidget() ) );  
-  connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _startAnimation() ) );  
+  connect( tabBar(), SIGNAL( clicked() ), SLOT( _updateCurrentWidget() ) );
+  connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _startAnimation() ) );
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
-  
+
 }
 
 //______________________________________________________________
@@ -78,30 +78,30 @@ void AnimatedTabWidget::_updateCurrentWidget( void )
 
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;
-  
+
   // check
   QWidget *widget( currentWidget() );
   if( !widget ) return;
   _transitionWidget().initialize( widget );
-  
+
 }
 
 //___________________________________________________________________
 void AnimatedTabWidget::_startAnimation( void )
 {
-  
+
   Debug::Throw( "AnimatedTabWidget::_startAnimation.\n" );
-  
+
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;
   _transitionWidget().setParent( currentWidget() );
   _transitionWidget().show();
   _transitionWidget().start();
-  
+
 }
 
 //___________________________________________________________________
 void AnimatedTabWidget::_animationFinished( void )
-{ 
+{
   _transitionWidget().setParent( this );
   _transitionWidget().hide();
 }

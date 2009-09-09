@@ -51,74 +51,74 @@ BlockHighlight::BlockHighlight( TextEditor* parent ):
 //______________________________________________________________________
 void BlockHighlight::clear( void )
 {
-  
+
   if( cleared_ ) return;
-  
+
   // loop over all blocks
   for( QTextBlock block = parent_->document()->begin(); block.isValid(); block = block.next() )
   {
-    
+
     if( parent_->textCursor().block() == block && isEnabled() ) continue;
-    
+
     TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
-    if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) ) 
+    if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) )
     {
 
       // reset flag
       data->setFlag( TextBlock::CURRENT_BLOCK, false );
-      
+
       // mark contents dirty to trigger document update
       _updateEditors();
-      
+
     }
-    
+
   }
-  
+
   cleared_ = true;
 
 }
 
 //______________________________________________________________________
 void BlockHighlight::highlight( void )
-{  
-  
+{
+
   if( !isEnabled() ) return;
-  
+
   clear();
   timer_.start(50, this );
-  
+
 }
 
 //______________________________________________________________________
 void BlockHighlight::timerEvent( QTimerEvent* event )
 {
 
-  if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event ); 
-  
+  if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event );
+
   // stop timer
   // (all BasicTimers restart automatically by default)
-  timer_.stop(); 
-  
+  timer_.stop();
+
   _highlight();
-  
+
 }
- 
+
 //______________________________________________________________________
 void BlockHighlight::_highlight( void )
-{  
+{
 
   if( !isEnabled() ) return;
- 
+
   // retrieve current block
-  QTextBlock block( parent_->textCursor().block() );  
-  
+  QTextBlock block( parent_->textCursor().block() );
+
   TextBlockData* data = static_cast<TextBlockData*>( block.userData() );
   if( !data )
   {
     data = new TextBlockData();
     block.setUserData( data );
   } else if( data->hasFlag( TextBlock::CURRENT_BLOCK ) ) return;
-  
+
   // need to redo the clear a second time, forced,
   // in case the previous draw action occured after the previous clear.
   cleared_ = false;
@@ -130,18 +130,18 @@ void BlockHighlight::_highlight( void )
   // mark contents dirty to trigger document update
   // parent_->document()->markContentsDirty(block.position(), block.length()-1);
   _updateEditors();
-  
+
   cleared_ = false;
-  
+
 }
 
 //______________________________________________________________________
 void BlockHighlight::_updateEditors( void )
 {
-  
+
   BASE::KeySet<TextEditor> editors( parent_ );
   editors.insert( parent_ );
   for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
   { (*iter)->viewport()->update(); }
-  
+
 }

@@ -99,7 +99,7 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
   // get parent position and size
   QPoint point( widget->pos() );
   if( widget != widget->window() ) point = widget->mapToGlobal( point );
-  
+
   QSize parent_size( widget->frameSize() );
 
   Debug::Throw() << "QtUtil::centerOnWidget - parent size: (" << parent_size.width() << "," << parent_size.height() << ")" << endl;
@@ -196,16 +196,14 @@ QWidget* QtUtil::uniconify( QWidget *widget )
   Debug::Throw( "QtUtil::uniconify.\n" );
 
   if( !widget->isTopLevel() ) return widget;
-  widget = widget->window();  
+  widget = widget->window();
 
   if( widget->isMinimized() ) widget->showNormal();
   else if( widget->isHidden() ) widget->show();
-  
+
   widget->activateWindow();
   widget->raise();
 
   return widget;
 
 }
-
-

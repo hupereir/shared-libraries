@@ -38,22 +38,22 @@
 //______________________________________________________________
 void RemoveLineBuffer::append( const QString& value )
 {
-  
+
   Debug::Throw( "RemoveLineBuffer::append.\n" );
-  buffer_ += value; 
-  
+  buffer_ += value;
+
 }
 
 //________________________________________________________________
 void RemoveLineBuffer::clear( void )
 {
-  
+
   if( buffer_.isEmpty() ) return;
   Debug::Throw( "RemoveLineBuffer::clear.\n" );
- 
+
   qApp->clipboard()->setText( buffer_, QClipboard::Clipboard );
   buffer_.clear();
-  
+
   return;
-  
+
 }

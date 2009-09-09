@@ -89,22 +89,22 @@ DockPanel::DockPanel( QWidget* parent ):
 
   // size grip
   //if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
-  { 
+  {
     grid_layout->addWidget( size_grip_ = new QSizeGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
     _hideSizeGrip();
   }
-  
+
   // connections
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-  
+
 }
 
 //___________________________________________________________
 DockPanel::~DockPanel( void )
-{ 
-  
-  Debug::Throw( "DockPanel::~DockPanel.\n" ); 
-  
+{
+
+  Debug::Throw( "DockPanel::~DockPanel.\n" );
+
   // in detached mode, the panel must be explicitely deleted,
   // because it does not have the right parent
   if( !main().parent() ) { main().deleteLater(); }
@@ -128,7 +128,7 @@ void DockPanel::_toggleDock( void )
     main().setParent( this );
     layout()->addWidget( main_ );
     _hideSizeGrip();
-    
+
     main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
     main().show();
 
@@ -151,7 +151,7 @@ void DockPanel::_toggleDock( void )
 
     // move and resize
     main().move( mapToGlobal( QPoint(0,0) ) );
-    
+
     // warning: innefficient
     main().setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
     if( !title_.isEmpty() ) main().setWindowTitle( title_ );
@@ -215,7 +215,7 @@ void DockPanel::_toggleStaysOnTop( bool state )
   if( visible ) main().show();
 
   // update option if any
-  if( _hasOptionName() ) XmlOptions::get().set<bool>( _staysOnTopOptionName(), state ); 
+  if( _hasOptionName() ) XmlOptions::get().set<bool>( _staysOnTopOptionName(), state );
 
 }
 
@@ -224,56 +224,56 @@ void DockPanel::_toggleSticky( bool state )
 {
 
   Debug::Throw( "DockPanel::_toggleSticky.\n" );
-  
+
   // check that widget is top level
   if( main().parentWidget() ) return;
 
   #ifdef Q_WS_X11
   if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
   {
-      
+
     // the widget must first be hidden
     // prior to modifying the property
     bool visible( !main().isHidden() );
     if( visible ) main().hide();
-    
+
     // change property depending on state
     if( state ) X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1);
     else X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
-    
+
     // show widget again, if needed
     if( visible ) main().show();
 
   } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
-    
+
     bool visible( !main().isHidden() );
     if( visible ) main().hide();
 
     X11Util::get().changeCardinal( main(), X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:0 );
-    
+
     // show widget again, if needed
     if( visible ) main().show();
 
   }
-  
+
   #endif
-  
+
   return;
-  
+
 }
 
 //___________________________________________________________
 void DockPanel::_updateConfiguration( void )
 {
-  
+
   Debug::Throw( "DockPanel::_updateConfiguration.\n" );
-  
+
   if( _hasOptionName() )
   {
-    if( XmlOptions::get().find( _staysOnTopOptionName() ) ) main().staysOnTopAction().setChecked( XmlOptions::get().get<bool>( _staysOnTopOptionName() ) ); 
-    if( XmlOptions::get().find( _stickyOptionName() ) ) main().stickyAction().setChecked( XmlOptions::get().get<bool>( _stickyOptionName() ) ); 
+    if( XmlOptions::get().find( _staysOnTopOptionName() ) ) main().staysOnTopAction().setChecked( XmlOptions::get().get<bool>( _staysOnTopOptionName() ) );
+    if( XmlOptions::get().find( _stickyOptionName() ) ) main().stickyAction().setChecked( XmlOptions::get().get<bool>( _stickyOptionName() ) );
   }
-  
+
 }
 
 //___________________________________________________________
@@ -385,7 +385,7 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
 //___________________________________________________________
 void DockPanel::LocalWidget::paintEvent( QPaintEvent *event )
 { QFrame::paintEvent( event ); }
- 
+
 //___________________________________________________________
 void DockPanel::LocalWidget::_installActions( void )
 {

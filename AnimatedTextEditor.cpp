@@ -47,7 +47,7 @@ AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):
   connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 
   new ScrollObject( this );
-  
+
 }
 
 //________________________________________________________
@@ -57,7 +57,7 @@ AnimatedTextEditor::~AnimatedTextEditor( void )
 //________________________________________________________
 void AnimatedTextEditor::setPlainText( const QString& text )
 {
-  
+
   // check enability
   if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setPlainText( text );
   else {
@@ -65,9 +65,9 @@ void AnimatedTextEditor::setPlainText( const QString& text )
     TextEditor::setPlainText( text );
     _transitionWidget().start();
   }
-  
+
 }
- 
+
 //________________________________________________________
 void AnimatedTextEditor::setHtml( const QString& text )
 {

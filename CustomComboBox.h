@@ -43,33 +43,33 @@
 //! local line editor to handle autocompletion
 class ComboLineEdit: public AnimatedLineEditor
 {
-  
+
   //! Qt meta object declaration
-  Q_OBJECT  
-  
-  public: 
-  
+  Q_OBJECT
+
+  public:
+
   //! constructor
   ComboLineEdit( QWidget* parent ):
   AnimatedLineEditor( parent )
   { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
-  
+
   public slots:
-  
+
   //! start animation
   void startAnimation( void );
-    
+
 };
 
 //! Customized QCombobox to handle case sensitive auto completion
 class CustomComboBox: public QComboBox, public Counter
 {
-  
+
   //! Qt meta object declaration
-  Q_OBJECT  
-  
+  Q_OBJECT
+
   public:
-  
+
   //! constructor
   CustomComboBox( QWidget* parent );
 
@@ -78,12 +78,12 @@ class CustomComboBox: public QComboBox, public Counter
 
   //! auto completion
   void setAutoCompletion( bool value, Qt::CaseSensitivity  = Qt::CaseInsensitive);
-    
+
   private:
-  
+
   //! local line editor
   ComboLineEdit* editor_;
-  
+
 };
 
 #endif

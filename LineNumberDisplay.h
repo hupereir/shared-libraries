@@ -49,61 +49,61 @@ class LineNumberDisplay: public QObject, public Counter
 {
 
   //! Qt meta object
-  Q_OBJECT  
+  Q_OBJECT
 
   public:
-    
+
   //! constructor
   LineNumberDisplay(TextEditor*);
 
   //! destructor
   virtual ~LineNumberDisplay();
-  
+
   //! synchronization
   void synchronize( LineNumberDisplay* );
-  
+
   //! width
   virtual bool updateWidth( const int& );
-  
+
   //! width
   virtual const int& width( void ) const
   { return width_; }
-  
+
   //! clear everything
   void clear();
-  
+
   //! paint
   virtual void paint( QPainter& );
 
   public slots:
-  
+
   //! need update
   void needUpdate( void )
   { need_update_ = true; }
-  
+
   private slots:
-    
+
   //! contents changed
   void _contentsChanged( void );
-  
+
   //! block count changed
   void _blockCountChanged( void );
-    
+
   private:
-  
+
   //! editor
   TextEditor& _editor( void ) const
   { return *editor_; }
-    
+
   //! map block number and position
   class LineNumberData
   {
-    
+
     public:
-    
+
     //! list of data
     typedef std::vector<LineNumberData> List;
-    
+
     //! constructor
     LineNumberData( const unsigned int& id = 0, const unsigned int& line_number = 0, const int& cursor = 0):
       id_( id ),
@@ -112,11 +112,11 @@ class LineNumberDisplay: public QObject, public Counter
       position_( -1 ),
       valid_( false )
     {}
-    
+
     //! equal to operator
     bool operator == (const LineNumberData& data )
     { return id() == data.id(); }
-    
+
     //! id
     const unsigned int& id( void ) const
     { return id_; }
@@ -124,66 +124,66 @@ class LineNumberDisplay: public QObject, public Counter
     //! line number
     const unsigned int& lineNumber( void ) const
     { return line_number_; }
-    
+
     //! y
     const int& cursor( void ) const
     { return cursor_; }
-    
+
     //! position
     void setPosition( const int& position )
     {
       valid_ = (position >= 0);
       position_ = position;
     }
-    
+
     //! position
     const int& position( void ) const
     { return position_; }
-    
+
     //! validity
     const bool& isValid( void ) const
     { return valid_; }
-    
+
     private:
-    
+
     //! block id
     unsigned int id_;
-    
+
     //! line number
     unsigned int line_number_;
-    
+
     //! position
     int cursor_;
 
     //! position
     int position_;
-    
+
     //! validity
     bool valid_;
-    
+
   };
 
   //! update line number data
   void _updateLineNumberData( void );
-  
-  //! update invalid data 
+
+  //! update invalid data
   void _updateLineNumberData( QTextBlock&, unsigned int&, LineNumberData& ) const;
-  
+
   //! associated editor
   TextEditor* editor_;
-  
+
   //! true when line number data update is needed
   bool need_update_;
 
   //! width
   int width_;
-  
+
   //! line number data
   LineNumberData::List line_number_data_;
-  
+
   //! current block data
   LineNumberData current_block_data_;
-  
+
 };
 
 #endif

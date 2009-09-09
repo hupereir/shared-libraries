@@ -48,10 +48,10 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
   QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );
 
   if( question_pixmap.isNull() )
-  { 
-    
-    mainLayout().addWidget( label_ = new QLabel( text, this ) ); 
-  
+  {
+
+    mainLayout().addWidget( label_ = new QLabel( text, this ) );
+
   } else {
 
     QHBoxLayout *h_layout( new QHBoxLayout() );

@@ -52,17 +52,17 @@ class FontInfo: public QWidget
 
   private:
 
-  //! bold 
+  //! bold
   QCheckBox* bold_;
-  
+
   //! italic
   QCheckBox* italic_;
-  
+
   //! underline
   QCheckBox* underline_;
-  
+
   //! strike
   QCheckBox* strike_;
-  
+
 };
 #endif

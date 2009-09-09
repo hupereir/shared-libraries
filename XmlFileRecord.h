@@ -34,8 +34,8 @@
 
 #include <QDomElement>
 #include <QDomDocument>
-#include <QString> 
-#include <list>  
+#include <QString>
+#include <list>
 
 #include "FileRecord.h"
 
@@ -44,7 +44,7 @@ class XmlFileRecord: public FileRecord
 {
 
   public:
-  
+
   //!@name XML names
   //@{
   static const QString XML_FILE_LIST;
@@ -56,7 +56,7 @@ class XmlFileRecord: public FileRecord
   static const QString XML_PROPERTY;
   static const QString XML_NAME;
   static const QString XML_VALUE;
-  //@} 
+  //@}
 
   //! constructor
   XmlFileRecord( const FileRecord& file ):
@@ -68,7 +68,7 @@ class XmlFileRecord: public FileRecord
 
   //! write to dom
   QDomElement domElement( QDomDocument& parent ) const;
-  
+
 };
 
 #endif

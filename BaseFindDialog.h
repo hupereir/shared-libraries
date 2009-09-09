@@ -57,14 +57,14 @@ class BaseFindDialog: public BaseDialog, public Counter
 
   //! constructor
   BaseFindDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
-  
+
   //! retrieve editor
   virtual CustomComboBox& editor( void ) const
   { return *editor_; }
 
   //! string to find
   virtual void setText( const QString& text )
-  { 
+  {
     _addSearchedString( text );
     editor().setEditText( text );
     editor().lineEdit()->selectAll();
@@ -72,7 +72,7 @@ class BaseFindDialog: public BaseDialog, public Counter
 
   //! synchronize searched strings and ComboBox
   virtual void synchronize( void );
-  
+
   //! string to find
   virtual QString text( void ) const
   { return editor().currentText(); }
@@ -81,9 +81,9 @@ class BaseFindDialog: public BaseDialog, public Counter
   virtual void enableEntireWord( const bool& value )
   {
     if( !value ) entire_word_checkbox_->setChecked( false );
-    entire_word_checkbox_->setEnabled( value );    
+    entire_word_checkbox_->setEnabled( value );
   }
-  
+
   //! enable/disable RegExp
   virtual void enableRegExp( const bool& value )
   {
@@ -94,7 +94,7 @@ class BaseFindDialog: public BaseDialog, public Counter
   //! get selection
   virtual TextSelection selection( const bool& no_increment ) const
   {
-    
+
     TextSelection out( editor().currentText() );
     out.setFlag( TextSelection::BACKWARD, backward_checkbox_->isChecked() );
     out.setFlag( TextSelection::CASE_SENSITIVE, case_sensitive_checkbox_->isChecked() );
@@ -103,26 +103,26 @@ class BaseFindDialog: public BaseDialog, public Counter
     out.setFlag( TextSelection::NO_INCREMENT, no_increment );
     return out;
   }
-  
+
   signals:
 
   //! emmited when Find is pressed
   void find( TextSelection );
 
   public slots:
-  
+
   //! set notification label to "no match found"
   virtual void noMatchFound( void );
 
-  //! clear notification label 
+  //! clear notification label
   virtual void clearLabel( void );
 
   protected slots:
-  
+
   //! update combo box with current text
   virtual void _updateFindComboBox( void )
   { _addSearchedString( editor().currentText() ); }
-  
+
   //! create Selection object when find button is pressed
   virtual void _find( void )
   { emit find( selection( false ) ); }
@@ -133,20 +133,20 @@ class BaseFindDialog: public BaseDialog, public Counter
 
   //! update button state when regexp checkbox is checked
   virtual void _regExpChecked( bool );
-  
+
   //! update button state depending on the string to find
   virtual void _updateButtons( const QString& text = QString() );
 
   protected:
-      
+
   //! edtion layout
   QBoxLayout& _editorLayout() const
   { return *editor_layout_; }
-  
+
   //! locations layout
   QBoxLayout& _locationLayout() const
   { return *location_layout_; }
-  
+
   //! button layout
   QBoxLayout& _buttonLayout() const
   { return *button_layout_; }
@@ -154,11 +154,11 @@ class BaseFindDialog: public BaseDialog, public Counter
   //! "entire word" checkbox
   QCheckBox& _entireWordCheckBox() const
   { return *entire_word_checkbox_; }
-    
+
   //! "find" button
   QPushButton& _findButton( void ) const
   { return *find_button_; }
-  
+
   //! add button to disabled button list
   virtual void _addDisabledButton( QAbstractButton* button )
   { buttons_.push_back( button ); }
@@ -173,22 +173,22 @@ class BaseFindDialog: public BaseDialog, public Counter
       editor().addItem( text );
     }
   }
-    
+
   //! list of disabled buttons
   virtual std::vector<QAbstractButton*>& _disabledButtons( void )
   { return buttons_; }
-  
+
   private:
- 
+
   //! editor layout
   QBoxLayout* editor_layout_;
-  
+
   //! location layout
   QBoxLayout* location_layout_;
-  
+
   //! button layout
   QBoxLayout* button_layout_;
-  
+
   //! line editor for text to find
   CustomComboBox* editor_;
 
@@ -200,21 +200,21 @@ class BaseFindDialog: public BaseDialog, public Counter
 
   //! entire word check box
   QCheckBox* entire_word_checkbox_;
-  
+
   //! regular expression search if checked
   QCheckBox* regexp_checkbox_;
 
   //! find button
   QPushButton* find_button_;
-  
+
   //! list of buttons to enable/disable depending of the editor text
   std::vector< QAbstractButton* > buttons_;
 
   //! set of previously searched strings
   static std::set< QString >& _searchedStrings( void );
-  
+
   //! notification label
   QLabel* label_;
-  
+
 };
 #endif

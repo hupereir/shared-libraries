@@ -42,9 +42,9 @@ class TransitionWidget: public QWidget, public Counter
 {
 
   Q_OBJECT
-  
+
   public:
-  
+
   //! constructor
   TransitionWidget( QWidget* parent = 0 );
 
@@ -61,79 +61,79 @@ class TransitionWidget: public QWidget, public Counter
 
   //! flags
   TransitionWidget& setFlags( unsigned int value )
-  { 
-    flags_ = value; 
+  {
+    flags_ = value;
     return *this;
   }
-  
+
   //! flags
   TransitionWidget& setFlag( Flag flag, const bool& value = true )
   {
     if( value ) { flags_ |= flag; }
-    else { flags_ &= (~flag); } 
+    else { flags_ &= (~flag); }
     return *this;
   }
-  
+
   //! flags
   const unsigned int& flags( void ) const
   { return flags_; }
-  
+
   //! set starting widget
   void initialize( QWidget* widget = 0, QRect rect = QRect() );
- 
+
   //! start
   void start( void );
- 
+
   //! timeline
   QTimeLine& timeLine( void )
   { return time_line_; }
-  
+
   //! enable on options
   void setEnableOnOptions( bool value )
   { enable_on_options_ = value; }
-  
+
   //! enability
   void setEnabled( bool value )
   { enabled_ = value; }
-  
+
   //! enability
   const bool& isEnabled( void ) const
   { return enabled_; }
-      
+
   protected:
-  
+
   //! mouse press event
-  /*! 
+  /*!
   on mouse press, widget is automatically hidden. This prevents cases where "normal"
   hiding (at end of animation) fails for whatever reason
   */
   virtual void mousePressEvent( QMouseEvent* );
-  
+
   //! paint event
   virtual void paintEvent( QPaintEvent* );
-  
+
   private slots:
-  
+
   //! configuration
   void _updateConfiguration( void );
-  
+
   private:
-   
+
   //! use options to enable
   bool enable_on_options_;
-  
+
   //! enability
   bool enabled_;
-  
+
   //! flags
   unsigned int flags_;
-  
+
   //! timeline
   QTimeLine time_line_;
-      
+
   //! current widget pixmap
   QPixmap pixmap_;
-    
+
 };
-  
+
 #endif

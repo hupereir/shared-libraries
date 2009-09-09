@@ -40,35 +40,35 @@ class TransitionWidget;
 
 class AnimatedLabel: public QLabel, public Counter
 {
-  
+
   Q_OBJECT
-    
+
   public:
-  
+
   //! constructor
   AnimatedLabel( QWidget* parent = 0 );
-  
+
   //! destrutor
   virtual ~AnimatedLabel( void );
-  
+
   //! transition widget
   TransitionWidget& transitionWidget( void ) const
   { return *transition_widget_; }
 
   public slots:
-  
+
   //! set text
   virtual void setText( const QString & );
-   
+
   //! clear
   virtual void clear( void );
 
   private:
-  
+
   //! transition widget
   TransitionWidget* transition_widget_;
-  
-  
+
+
 };
 
 #endif

@@ -41,11 +41,11 @@
 //! handles multiple clicks and timeout
 class MultipleClickCounter: public QTimer, public Counter
 {
-  
+
   Q_OBJECT
-  
+
   public:
-  
+
   //! constructor
   MultipleClickCounter( QObject* parent ):
     QTimer( parent ),
@@ -53,22 +53,22 @@ class MultipleClickCounter: public QTimer, public Counter
     to_reset_( true ),
     position_( 0 ),
     count_( 0 )
-  { 
-    Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" ); 
+  {
+    Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" );
     connect( this, SIGNAL( timeout() ), SLOT( _reset() ) );
     setSingleShot( true );
     setInterval( QApplication::doubleClickInterval() );
   }
-  
+
   //! destructor
   virtual ~MultipleClickCounter( void )
   { Debug::Throw( "MultipleClickCounter::~MultipleClickCounter.\n" ); }
-  
+
   //! increment counter and return current value
   const unsigned int& increment( const int& position  = 0 )
-  { 
+  {
     Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << endl;
-    
+
     // restart timer
     start();
 
@@ -80,47 +80,47 @@ class MultipleClickCounter: public QTimer, public Counter
       to_reset_ = false;
       position_ = position;
       count_ = 1;
-      
+
     } else {
-      
+
       // same position in text
       // increment, check against maximum
-      count_++; 
+      count_++;
       if( count_ > MAX_COUNT ) count_ = 1;
-      
-    } 
-    
+
+    }
+
     return count_;
-    
+
   }
-  
+
   //! returns current counts
   const unsigned int& counts( void ) const
   { return count_; }
-  
+
   private slots:
-  
+
   //! reset
   void _reset( void )
-  { 
+  {
     Debug::Throw( "MultipleClickCounter::reset.\n" );
     to_reset_ = true;
   }
-  
+
   private:
-  
+
   //! max number of clicks
   enum {MAX_COUNT = 4};
-  
+
   //! true if need to reset at next increment
   bool to_reset_;
-  
+
   //! last click position in text
   int position_;
-  
+
   //! current number of clicks
-  unsigned int count_; 
-  
+  unsigned int count_;
+
 };
 
 #endif

@@ -8,7 +8,7 @@ INCLUDES =  \
   -I$(qt_includes)/QtXml \
   -I$(qt_includes)/QtGui \
   -I$(top_srcdir)/base
-  
+
 noinst_HEADERS = \
   AnimatedLabel.h \
   AnimatedLineEditor.h \

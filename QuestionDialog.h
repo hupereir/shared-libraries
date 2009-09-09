@@ -43,27 +43,27 @@
 //! simplified question dialog
 class QuestionDialog: public CustomDialog
 {
-  
+
   public:
-  
+
   //! constructor
-  QuestionDialog( QWidget* parent, QString text = QString() );  
+  QuestionDialog( QWidget* parent, QString text = QString() );
 
   //! set text
   void setText( const QString& text )
   { _label().setText( text ); }
-  
+
   protected:
-  
+
   //! label
   QLabel& _label( void ) const
   { return *label_; }
-  
-  private:  
-  
+
+  private:
+
   //! main label
   QLabel *label_;
-  
+
 };
 
 #endif

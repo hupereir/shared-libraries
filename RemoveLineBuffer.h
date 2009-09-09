@@ -41,30 +41,30 @@
 //! handles consecutive calls to remove line in a single Clipboard block
 class RemoveLineBuffer: public QObject, public Counter
 {
-  
+
   Q_OBJECT
-  
+
   public:
-  
+
   //! constructor
   RemoveLineBuffer( QObject* parent ):
     QObject( parent ),
     Counter( "RemoveLineBuffer" )
   { Debug::Throw( "RemoveLineBuffer::RemoveLineBuffer.\n" ); }
-  
+
   //! append string to buffer
   void append( const QString& value );
-  
+
   public slots:
-  
+
   //! clear buffer to clipboard
   void clear( void );
-  
+
   private:
-  
+
   //! buffer string
   QString buffer_;
-  
+
 };
 
 #endif
