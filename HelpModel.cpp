@@ -2,26 +2,26 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
- 
+
 /*!
 \file HelpModel.h
 \brief model for help items
@@ -54,18 +54,18 @@ Qt::ItemFlags HelpModel::flags(const QModelIndex &index) const
 //__________________________________________________________________
 QVariant HelpModel::data( const QModelIndex& index, int role ) const
 {
-    
+
   // check index, role and column
   if( !index.isValid() ) return QVariant();
   if( role != Qt::DisplayRole ) return QVariant();
   if( index.column() != LABEL ) return QVariant();
-  return QString( get(index).label() ); 
-  
+  return QString( get(index).label() );
+
 }
 
 //__________________________________________________________________
 bool HelpModel::setData(const QModelIndex &index, const QVariant& value, int role )
-{ 
+{
   if( !(index.isValid() && index.column() == LABEL && role == Qt::EditRole ) ) return false;
   if( value.toString().isNull() || value.toString().isEmpty() ) return false;
   const HelpItem& item = get( index );
@@ -88,14 +88,14 @@ QMimeData* HelpModel::mimeData(const QModelIndexList &indexes) const
 {
 
   assert( indexes.size() == 1 );
-  
+
   // create mime data
   QMimeData *mime = new QMimeData();
-  
+
   // set DRAG type
   for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
   { if( iter->isValid() ) mime->setData( DRAG, get( *iter ).label().toAscii() ); }
-  
+
   return mime;
 
 }
@@ -103,19 +103,19 @@ QMimeData* HelpModel::mimeData(const QModelIndexList &indexes) const
 
 //__________________________________________________________________
 bool HelpModel::dropMimeData(const QMimeData* data , Qt::DropAction action, int row, int column, const QModelIndex& parent)
-{ 
-    
+{
+
   // check action
   if( action == Qt::IgnoreAction) return true;
-  
+
   // Drag from Keyword model
-  if( data->hasFormat( DRAG ) ) 
+  if( data->hasFormat( DRAG ) )
   {
     assert( !parent.isValid() );
     emit itemMoved( row );
     return true;
   }
- 
-  return false; 
-  
+
+  return false;
+
 }

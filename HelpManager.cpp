@@ -55,20 +55,20 @@ HelpManager::HelpManager( QObject* parent ):
   Counter( "HelpManager" ),
   window_title_( "Reference Manual" ),
   modified_( false )
-{ 
-  
+{
+
   Debug::Throw( "HelpManager::HelpManager.\n" );
-  
+
   // actions
   display_action_ = new QAction( IconEngine::get( ICONS::HELP ), "&Reference Manual", this );
   display_action_->setShortcut( Qt::Key_F1 );
   connect( display_action_, SIGNAL( triggered() ), SLOT( _display() ) );
-  
+
   dump_action_ = new QAction( "D&ump Help", this );
   connect( dump_action_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
-  
+
   connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _save() ) );
-  
+
 }
 
 //_________________________________________________________
@@ -79,7 +79,7 @@ void HelpManager::install( const QString text[], bool clear )
 
   // clear existing text
   if( clear ) HelpManager::clear();
-  
+
   //! loop over help text
   for( unsigned int i=0; !text[i].isNull(); i++ ) {
 
@@ -98,7 +98,7 @@ void HelpManager::install( const QString& file )
 {
 
   Debug::Throw( "HelpManager::Install.\n" );
-  
+
   // set file and check
   file_ = file;
   if( !QFileInfo( file_ ).exists() ) return;
@@ -118,10 +118,10 @@ void HelpManager::install( const QString& file )
     qtfile.close();
     return;
   }
-    
+
   // clear existing help
   clear();
-  
+
   // loop over dom elements
   QDomElement doc_element = document.documentElement();
   QDomNode node = doc_element.firstChild();
@@ -132,27 +132,27 @@ void HelpManager::install( const QString& file )
 
     // special options
     if( element.tagName() == XML_ITEM ) items_.push_back( HelpItem( element ) );
-    
+
   }
-  
+
   return;
 
 }
- 
+
 //_____________________________________________________
 void HelpManager::setWindowTitle( const QString& value )
-{ 
+{
   Debug::Throw( "HelpManager::setWindowTitle.\n" );
-  window_title_ = value; 
+  window_title_ = value;
   displayAction().setText( value );
 }
 
 //_____________________________________________________
 void HelpManager::_display( void )
 {
-  
+
   Debug::Throw( "HelpManager::_display.\n" );
-  
+
   // create dialog
   HelpDialog* dialog( new HelpDialog( *this ) );
   dialog->setWindowTitle( window_title_ );
@@ -162,28 +162,28 @@ void HelpManager::_display( void )
   dialog->centerOnWidget( qApp->activeWindow() );
   dialog->show();
   return;
-  
+
 }
 
 //_________________________________________________________
 void HelpManager::_dumpHelpString( void )
 {
-  
+
   Debug::Throw( "HelpManager::_dumpHelpString.\n" );
-  
+
   // write output to stream
   QString buffer;
   QTextStream out( &buffer );
-  
+
   // retrieve all items from dialog
   out << "static const char* HelpText[] = {\n";
   for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
   {
-    
+
     // dump label
-    out << "  //_________________________________________________________\n"; 
+    out << "  //_________________________________________________________\n";
     out << "  \"" << iter->label() << "\",\n";
-    
+
     // dump text
     QString text( iter->text() );
     text = text.replace( "\"", "\\\"" );
@@ -194,7 +194,7 @@ void HelpManager::_dumpHelpString( void )
   }
   out << "  0\n";
   out << "};\n";
-  
+
   CustomDialog* dialog = new CustomDialog( 0, CustomDialog::OkButton );
   TextEditor *editor = new TextEditor( dialog );
   dialog->mainLayout().addWidget( editor );
@@ -206,32 +206,32 @@ void HelpManager::_dumpHelpString( void )
   dialog->setOptionName( "DUMP_HELP_DIALOG" );
   dialog->centerOnWidget( qApp->activeWindow() );
   dialog->show();
-  
+
 }
 
 //_____________________________________________________
 void HelpManager::_save( void )
 {
-  
+
   Debug::Throw() << "HelpManager::_save - file: " << file_ << endl;
-  
+
   if( file_.isEmpty() ) return;
   if( !modified() ) return;
-  
+
   // output file
   QFile out( file_ );
   if( !out.open( QIODevice::WriteOnly ) ) return;
-  
+
   // create document
   QDomDocument document;
-  
+
   // top element
   QDomElement top = document.appendChild( document.createElement( XML_HELP ) ).toElement();
   for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
   { top.appendChild( iter->domElement( document ) ); }
- 
+
   out.write( document.toByteArray() );
   out.close();
   setModified( false );
-  return; 
+  return;
 }

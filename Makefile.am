@@ -8,7 +8,7 @@ INCLUDES =  \
   -I$(qt_includes)/QtXml \
   -I$(qt_includes)/QtGui \
   -I$(top_srcdir)/base \
-  -I$(top_srcdir)/base-qt 
+  -I$(top_srcdir)/base-qt
 
 noinst_HEADERS = \
 	DefaultHelpText.h \
@@ -16,7 +16,7 @@ noinst_HEADERS = \
   HelpItem.h \
   HelpManager.h \
   HelpModel.h \
-  NewItemDialog.h 
+  NewItemDialog.h
 
 noinst_LIBRARIES = libbase-help.a
 
@@ -25,12 +25,12 @@ libbase_help_a_SOURCES = \
   HelpItem.cpp \
   HelpManager.cpp \
   HelpModel.cpp \
-  NewItemDialog.cpp 
+  NewItemDialog.cpp
 
 nodist_libbase_help_a_SOURCES = \
   moc_HelpDialog.cpp \
   moc_HelpManager.cpp \
-  moc_HelpModel.cpp 
+  moc_HelpModel.cpp
 
 clean-local:
 	rm -f moc_*.cpp
