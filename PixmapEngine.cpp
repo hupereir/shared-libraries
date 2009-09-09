@@ -72,7 +72,7 @@ bool PixmapEngine::reload( void )
 //__________________________________________________________
 const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
 {
-  Debug::Throw( "PixmapEngine::_get (file).\n" );
+  Debug::Throw(0) << "PixmapEngine::_get - file: " << file << " from cache: " << from_cache << endl;
 
   // try find file in cache
   if( from_cache )
@@ -89,7 +89,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
     if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
     for( list<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
     {
-
+            
       // skip empty path
       if( iter->isEmpty() ) continue;
 
@@ -99,6 +99,8 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
       // see if path is internal resource path
       if( iter->left( 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
       else icon_file = File( *iter ).find( file );
+
+      Debug::Throw(0) << "Pixmap::_get - searching " << icon_file << endl;
 
       // load pixmap
       if( !icon_file.isEmpty() )
