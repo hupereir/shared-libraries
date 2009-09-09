@@ -1,24 +1,24 @@
 // $Id$
 
 /******************************************************************************
-*                         
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>             
-*                         
-* This is free software; you can redistribute it and/or modify it under the    
-* terms of the GNU General Public License as published by the Free Software    
-* Foundation; either version 2 of the License, or (at your option) any later   
-* version.                             
-*                          
-* This software is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License        
-* for more details.                     
-*                          
-* You should have received a copy of the GNU General Public License along with 
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple     
-* Place, Suite 330, Boston, MA  02111-1307 USA                           
-*                         
-*                         
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
 *******************************************************************************/
 
 /*!
@@ -73,7 +73,7 @@ ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& comman
   id_( id ),
   command_( command )
 { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
-    
+
 //___________________________________________
 ServerCommand::ServerCommand( const QDomElement& element ):
   Counter( "ServerCommand" ),
@@ -81,9 +81,9 @@ ServerCommand::ServerCommand( const QDomElement& element ):
   client_id_( 0 ),
   command_( NONE )
 {
-  
+
   Debug::Throw( "ServerCommand::ServerCommand (dom).\n" );
-  
+
   // parse attributes
   QDomNamedNodeMap attributes( element.attributes() );
   for( unsigned int i=0; i<attributes.length(); i++ )
@@ -93,7 +93,7 @@ ServerCommand::ServerCommand( const QDomElement& element ):
     if( attribute.name() == SERVER_XML::TYPE ) setCommand( (CommandType) attribute.value().toUInt() );
     else Debug::Throw(0) << "ServerCommand::ServerCommand - unrecognized attribute: " << attribute.name() << endl;
   }
-  
+
   // loop over children
   // parse children elements
   for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
@@ -102,9 +102,9 @@ ServerCommand::ServerCommand( const QDomElement& element ):
     if( child_element.isNull() ) continue;
     QString tag_name( child_element.tagName() );
     if( tag_name == SERVER_XML::ID ) setId( ApplicationId( child_element ) );
-    else if( tag_name == SERVER_XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) ); 
+    else if( tag_name == SERVER_XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
   }
-  
+
 }
 
 //__________________________________________________
@@ -113,15 +113,15 @@ QDomElement ServerCommand::domElement( QDomDocument& document ) const
 
   Debug::Throw( "ServerCommand::domElement.\n" );
   QDomElement out( document.createElement( SERVER_XML::COMMAND ) );
-  
+
   // type
   out.setAttribute( SERVER_XML::TYPE, QString().setNum( command() ) );
-  
+
   // id
   out.appendChild( id().domElement( document ) );
-  
+
   // arguments
   if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( SERVER_XML::ARGUMENTS, document ) );
-  return out;  
+  return out;
 
 }
