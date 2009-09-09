@@ -28,7 +28,7 @@ noinst_HEADERS = \
   Svg.h
 
 noinst_LIBRARIES = libbase-svg.a
-  
+
 libbase_svg_a_SOURCES =  \
   SvgConfiguration.cpp \
   SvgEngine.cpp \
@@ -40,7 +40,7 @@ nodist_libbase_svg_a_SOURCES =  \
   moc_SvgEngine.cpp \
   moc_SvgPlasmaInterface.cpp \
   qrc_baseSvg.cpp
-	
+
 clean-local:
 	rm -f moc_*.cpp
 	rm -f qrc_*.cpp
