@@ -46,7 +46,7 @@ CounterDialog::CounterDialog( QWidget* parent ):
 {
 
   Debug::Throw( "CounterDialog::CounterDialog.\n" );
-  setWindowTitle( "object counters" );
+  setWindowTitle( "Object Counters" );
   setOptionName( "COUNTER_DIALOG" );
 
   // insert main vertical box

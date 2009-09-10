@@ -49,7 +49,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   Debug::Throw( "SelectLineDialog::SelectLineDialog.\n" );
 
   // set dialog title
-  setWindowTitle( "goto line number" );
+  setWindowTitle( "Goto Line Number" );
 
   // create vbox layout
   QVBoxLayout *vlayout;

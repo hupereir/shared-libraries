@@ -50,7 +50,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 {
 
   Debug::Throw( "OptionDialog::OptionDialog.\n" );
-  setWindowTitle( "object counters" );
+  setWindowTitle( "Object Counters" );
   setOptionName( "OPTION_DIALOG" );
 
   // tell dialog to delete when close

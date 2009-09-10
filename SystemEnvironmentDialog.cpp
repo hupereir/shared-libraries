@@ -44,7 +44,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
 {
 
   Debug::Throw( "SystemEnvironmentDialog::SystemEnvironmentDialog.\n" );
-  setWindowTitle( "object counters" );
+  setWindowTitle( "System Environment Variables" );
   setOptionName( "SYSTEM_ENVIRONMENT_DIALOG" );
 
   // tell dialog to delete when close

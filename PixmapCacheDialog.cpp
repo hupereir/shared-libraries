@@ -46,7 +46,7 @@ PixmapCacheDialog::PixmapCacheDialog( QWidget* parent ):
 {
 
   Debug::Throw( "PixmapCacheDialog::PixmapCacheDialog.\n" );
-  setWindowTitle( "icon cache" );
+  setWindowTitle( "Pixmap Cache" );
   setOptionName( "ICON_CACHE_DIALOG" );
 
   // insert main vertical box

@@ -56,7 +56,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
   setOptionName( "FIND_DIALOG" );
 
   // set dialog title
-  setWindowTitle( "find" );
+  setWindowTitle( "Find" );
 
   // create vbox layout
   setLayout( new QVBoxLayout() );
