@@ -76,6 +76,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
   h_layout->setMargin(0);
   h_layout->setSpacing( 5 );
   vlayout->addLayout( h_layout, 0 );
+  h_layout->addStretch(1);
 
   // insert Find button
   QPushButton *button;
