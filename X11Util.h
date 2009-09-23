@@ -57,12 +57,14 @@ class X11Util
   enum Atoms
   {
     _NET_SUPPORTED,
+    _NET_CURRENT_DESKTOP,
     _NET_WM_DESKTOP,
     _NET_WM_STATE,
     _NET_WM_STATE_STICKY,
     _NET_WM_STATE_STAYS_ON_TOP,
     _NET_WM_STATE_ABOVE,
     _NET_WM_STATE_SKIP_TASKBAR,
+    _NET_WM_STATE_SKIP_PAGER,
     _NET_WM_MOVERESIZE,
     _NET_WM_CM
   };
@@ -89,16 +91,30 @@ class X11Util
   bool hasProperty( const QWidget&, const Atoms& );
 
   //! change property
-  bool changeProperty( const QWidget&, const Atoms&, const int& );
+  bool changeProperty( const QWidget& widget, const Atoms& atom, bool value )
+  {
+    return widget.isHidden()  ?
+      _changeProperty( widget, atom, value ):
+      _requestPropertyChange( widget, atom, value );
+  }
 
-  //! remove property from NET_WM_STATE
-  bool removeProperty( const QWidget&, const Atoms& );
+  //! print window state
+  void printWindowState( const QWidget& );
 
   //! get atom carninal value
-  unsigned long cardinal( const QWidget&, const Atoms& );
+  unsigned long cardinal( const QWidget& widget, const Atoms& atom )
+  { return cardinal( widget.winId(), atom ); }
 
   //! get atom carninal value
-  bool changeCardinal( const QWidget&, const Atoms&, const unsigned long& value );
+  unsigned long cardinal( const WId&, const Atoms& );
+
+  //! get atom carninal value
+  bool changeCardinal( const QWidget& widget, const Atoms& atom, const unsigned long& value )
+  {
+    return widget.isHidden() ?
+      _changeCardinal( widget, atom, value ):
+      _requestCardinalChange( widget, atom, value );
+  }
 
   //! move widget using X11 window manager
   /*! returns true on success */
@@ -124,6 +140,18 @@ class X11Util
 
   //! constructor
   X11Util( void );
+
+  //! change property
+  bool _changeProperty( const QWidget&, const Atoms&, bool value );
+
+  //! change property
+  bool _requestPropertyChange( const QWidget&, const Atoms&, bool value );
+
+  //! cardinal
+  bool _changeCardinal( const QWidget&, const Atoms&, const unsigned long& value );
+
+  //! cardinal
+  bool _requestCardinalChange( const QWidget&, const Atoms&, const unsigned long& value );
 
   //! atom names
   typedef std::map<Atoms, QString> AtomNameMap;

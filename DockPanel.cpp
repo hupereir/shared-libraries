@@ -147,7 +147,6 @@ void DockPanel::_toggleDock( void )
     main().setFrameStyle( QFrame::NoFrame );
 
     // window flags
-    //main().setWindowFlags( Qt::FramelessWindowHint|Qt::Tool );
     main().setWindowFlags( Qt::FramelessWindowHint|Qt::Window );
 
     // move and resize
