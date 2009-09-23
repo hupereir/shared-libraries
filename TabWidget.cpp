@@ -168,36 +168,24 @@ void TabWidget::_toggleStaysOnTop( bool state )
   // check that widget is top level
   if( parentWidget() ) return;
 
-  bool visible( !isHidden() );
-  if( visible ) hide();
-
   #ifdef Q_WS_X11
 
-  // on X11 one uses NET_WM directly
-  // because the QT equivalent conflicts with the STICKY flag below
-
-  // change property depending on state
-  if( state )
-  {
-
-    X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
-    X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_ABOVE, 1 );
-
-  } else {
-
-    X11Util::get().removeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP);
-    X11Util::get().removeProperty( *this, X11Util::_NET_WM_STATE_ABOVE);
-
-  }
+  // change property
+  X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
+  X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_ABOVE, state );
 
   #else
+
+  bool visible( !isHidden() );
+  if( visible ) hide();
 
   // Qt implementation
   if( state ) setWindowFlags( windowFlags() | Qt::WindowStaysOnTopHint );
   else setWindowFlags( windowFlags() & ~Qt::WindowStaysOnTopHint );
 
-  #endif
   if( visible ) show();
+
+  #endif
 
 }
 
@@ -214,29 +202,12 @@ void TabWidget::_toggleSticky( bool state )
   if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
   {
 
-    // the widget must first be hidden
-    // prior to modifying the property
-    bool visible( !isHidden() );
-    if( visible ) hide();
-
-    // change property depending on state
-    if( state ) X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, 1);
-    else X11Util::get().removeProperty( *this, X11Util::_NET_WM_STATE_STICKY );
-
-    // show widget again, if needed
-    if( visible ) show();
+    X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, state );
 
   } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
 
-    // the widget must first be hidden
-    // prior to modifying the property
-    bool visible( !isHidden() );
-    if( visible ) hide();
-
-    X11Util::get().changeCardinal( *this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:0 );
-
-    // show widget again, if needed
-    if( visible ) show();
+    unsigned long desktop = X11Util::get().cardinal( QX11Info::appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
+    X11Util::get().changeCardinal( *this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
 
   }
 

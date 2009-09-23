@@ -29,6 +29,7 @@
   \date $Date$
 */
 
+#include <QApplication>
 #include <QGridLayout>
 
 #include "DockPanel.h"
@@ -183,36 +184,23 @@ void DockPanel::_toggleStaysOnTop( bool state )
   // check that widget is top level
   if( main().parentWidget() ) return;
 
-  bool visible( !main().isHidden() );
-  if( visible ) main().hide();
-
   #ifdef Q_WS_X11
 
-  // on X11 one uses NET_WM directly
-  // because the QT equivalent conflicts with the STICKY flag below
-
-  // change property depending on state
-  if( state )
-  {
-
-    X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP, 1 );
-    X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_ABOVE, 1 );
-
-  } else {
-
-    X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP);
-    X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_ABOVE);
-
-  }
+  X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
+  X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_ABOVE, state );
 
   #else
+
+  bool visible( !main().isHidden() );
+  if( visible ) main().hide();
 
   // Qt implementation
   if( state ) main().setWindowFlags( main().windowFlags() | Qt::WindowStaysOnTopHint );
   else main().setWindowFlags( main().windowFlags() & ~Qt::WindowStaysOnTopHint );
 
-  #endif
   if( visible ) main().show();
+
+  #endif
 
   // update option if any
   if( _hasOptionName() ) XmlOptions::get().set<bool>( _staysOnTopOptionName(), state );
@@ -232,27 +220,12 @@ void DockPanel::_toggleSticky( bool state )
   if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
   {
 
-    // the widget must first be hidden
-    // prior to modifying the property
-    bool visible( !main().isHidden() );
-    if( visible ) main().hide();
-
-    // change property depending on state
-    if( state ) X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, 1);
-    else X11Util::get().removeProperty( main(), X11Util::_NET_WM_STATE_STICKY );
-
-    // show widget again, if needed
-    if( visible ) main().show();
+    X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, state );
 
   } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
 
-    bool visible( !main().isHidden() );
-    if( visible ) main().hide();
-
-    X11Util::get().changeCardinal( main(), X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:0 );
-
-    // show widget again, if needed
-    if( visible ) main().show();
+    unsigned long desktop = X11Util::get().cardinal( QX11Info::appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
+    X11Util::get().changeCardinal( main(), X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
 
   }
 
