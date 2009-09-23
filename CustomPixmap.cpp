@@ -174,7 +174,7 @@ CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::disabled( void )
+CustomPixmap CustomPixmap::disabled( void ) const
 {
 
   Debug::Throw( "CustomPixmap::disabled.\n" );
@@ -204,31 +204,29 @@ CustomPixmap CustomPixmap::disabled( void )
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::active( void )
+CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 {
 
-  Debug::Throw( "CustomPixmap::active.\n" );
-  QImage image( toImage() );
+  Debug::Throw( "CustomPixmap::highlighted.\n" );
+  if( opacity <= 0 ) return *this;
+  opacity = qMin( opacity, 1.0 );
 
-  // retrieve dimensions
-  int width( image.width() );
-  int height( image.height() );
+  // apply highlight
+  QPixmap out( *this );
+  QPixmap alpha_channel( out.alphaChannel() );
+  QPainter painter( &out );
 
-  QColor merged_color;
-  for( int x = 0; x < width; x++ )
-  {
-    for( int y = 0; y < height; y++ )
-    {
+  painter.setRenderHints(QPainter::SmoothPixmapTransform);
+  painter.setPen( Qt::NoPen );
 
-      QColor color( image.pixel( x, y ) );
-      color = color.light( 120 );
-      image.setPixel( x, y, color.rgb() );
+  QColor color( Qt::white );
+  color.setAlphaF( opacity );
+  painter.setBrush( color );
 
-    }
-  }
+  painter.drawRect( out.rect() );
+  painter.end();
 
-  CustomPixmap out( image );
-  out.setAlphaChannel( alphaChannel() );
+  out.setAlphaChannel( alpha_channel );
   return out;
 
 }

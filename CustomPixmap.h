@@ -104,10 +104,14 @@ class CustomPixmap: public QPixmap, public Counter
     const QColor& color = Qt::transparent ) const;
 
   //! return greyed (inactive) pixmap, build from the current
-  virtual CustomPixmap disabled( void );
+  virtual CustomPixmap disabled( void ) const;
+
+  //! return highlighted pixmap
+  virtual CustomPixmap highlighted( qreal opacity ) const;
 
   //! return highlighted (active) pixmap, build from the current
-  virtual CustomPixmap active( void );
+  virtual CustomPixmap active( void ) const
+  { return highlighted( 0.2 ); }
 
 };
 
