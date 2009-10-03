@@ -63,7 +63,10 @@ LineEditor::LineEditor( QWidget* parent ):
   // this is a kludge so that the widget appears correctly for all styles
   // because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
   // style attribute
-  _setIsOxygen( style()->objectName().contains( "oxygen", Qt::CaseInsensitive ) );
+  _setIsOxygen(
+    style()->objectName().contains( "oxygen", Qt::CaseInsensitive ) ||
+    style()->objectName().contains( "nitrogen", Qt::CaseInsensitive )
+    );
 
   // actions
   _installActions();

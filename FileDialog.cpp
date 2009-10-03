@@ -74,17 +74,18 @@ QString FileDialog::getFile( void )
     {
 
       _options() |= QFileDialog::ShowDirsOnly;
-      out = QFileDialog::getExistingDirectory( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _options() );
+      out = QFileDialog::getExistingDirectory( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _options() );
 
     } else {
 
-      out = QFileDialog::getOpenFileName( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
+      out = QFileDialog::getOpenFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
 
     }
 
   } else {
 
-    out = QFileDialog::getSaveFileName( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
+    Debug::Throw( 0, "FileDialog::getFile - getSaveFileName.\n" );
+    out = QFileDialog::getSaveFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
 
   }
 
