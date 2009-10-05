@@ -97,7 +97,7 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
 
   // create painter
   QPainter painter( this );
-  painter.setClipRect( event->rect() );
+  //painter.setClipRect( event->rect() );
   painter.fillRect( rect(), Qt::transparent );
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
 
@@ -112,13 +112,14 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   painter.setCompositionMode( QPainter::CompositionMode_Source );
   #endif
 
-  if( timeLine().state() == QTimeLine::Running ) {
+  if( timeLine().state() == QTimeLine::Running )
+  {
 
-    // if running, get frame and update painter opacity
-    qreal frame = timeLine().currentFrame();
-    painter.setOpacity( 1.0 - frame/timeLine().endFrame() );
+    qreal opacity( 1.0 - qreal( timeLine().currentFrame() )/qreal( timeLine().endFrame() ) );
+    painter.setOpacity( opacity );
 
   }
+
 
   // draw pixmap
   painter.drawPixmap( QPoint(0,0), pixmap_ );
