@@ -63,6 +63,7 @@ void ServerCommand::_initializeCommandNames( void ) const
   _commandNames().insert( make_pair( UNLOCK, "UNLOCK" ) );
   _commandNames().insert( make_pair( GEOMETRY_REQUEST, "GEOMETRY_REQUEST" ) );
   _commandNames().insert( make_pair( GEOMETRY, "GEOMETRY" ) );
+  _commandNames().insert( make_pair( OPTION, "OPTION" ) );
 }
 
 //___________________________________________
@@ -71,7 +72,8 @@ ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& comman
   timestamp_( TimeStamp::now() ),
   client_id_( 0 ),
   id_( id ),
-  command_( command )
+  command_( command ),
+  option_( "", Option() )
 { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
 
 //___________________________________________
@@ -79,7 +81,8 @@ ServerCommand::ServerCommand( const QDomElement& element ):
   Counter( "ServerCommand" ),
   timestamp_( TimeStamp::now() ),
   client_id_( 0 ),
-  command_( NONE )
+  command_( NONE ),
+  option_( "", Option() )
 {
 
   Debug::Throw( "ServerCommand::ServerCommand (dom).\n" );
@@ -103,6 +106,11 @@ ServerCommand::ServerCommand( const QDomElement& element ):
     QString tag_name( child_element.tagName() );
     if( tag_name == SERVER_XML::ID ) setId( ApplicationId( child_element ) );
     else if( tag_name == SERVER_XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
+    else if( tag_name == OPTIONS::OPTION )
+    {
+      assert( command() == ServerCommand::OPTION );
+      setXmlOption( XmlOption( child_element ) );
+    }
   }
 
 }
@@ -122,6 +130,9 @@ QDomElement ServerCommand::domElement( QDomDocument& document ) const
 
   // arguments
   if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( SERVER_XML::ARGUMENTS, document ) );
+  if( command() == ServerCommand::OPTION && !option_.name().isEmpty() )
+  { out.appendChild( option_.domElement( document ) ); }
+
   return out;
 
 }

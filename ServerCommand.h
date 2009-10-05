@@ -45,6 +45,7 @@
 #include "Counter.h"
 #include "Debug.h"
 #include "TimeStamp.h"
+#include "XmlOption.h"
 
 namespace SERVER
 {
@@ -74,7 +75,8 @@ namespace SERVER
       REQUEST,
       UNLOCK,
       GEOMETRY_REQUEST,
-      GEOMETRY
+      GEOMETRY,
+      OPTION
     };
 
     //! list
@@ -160,6 +162,20 @@ namespace SERVER
     const CommandLineArguments& arguments( void ) const
     { return arguments_; }
 
+    //! option
+    void setXmlOption( const XmlOption& option )
+    {
+      assert( command() == ServerCommand::OPTION );
+      option_ = option;
+    }
+
+    //! option
+    const XmlOption& option( void ) const
+    {
+      assert( command() == ServerCommand::OPTION );
+      return option_;
+    }
+
     private:
 
     //! command names
@@ -185,6 +201,9 @@ namespace SERVER
 
     //! arguments
     CommandLineArguments arguments_;
+
+    //! option
+    XmlOption option_;
 
   };
 };
