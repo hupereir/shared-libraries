@@ -1,3 +1,9 @@
+TopTop
+
+
+
+
+
 TEMPLATE = lib
 CONFIG = staticlib qt
 QT += xml
@@ -102,6 +108,7 @@ HEADERS = \
   TextBlockFlags.h \
   TextSelection.h \
   TextSeparator.h \
+  TileSet.h \
   ToolBarMenu.h \
   ToolButtonStyleMenu.h \
   TransitionWidget.h \
@@ -200,6 +207,7 @@ SOURCES = \
   TextEditorMarginWidget.cpp \
   TextEditionDelegate.cpp \
   TextSeparator.cpp \
+  TileSet.cpp \
   ToolBarMenu.cpp \
   ToolButtonStyleMenu.cpp \
   TransitionWidget.cpp \

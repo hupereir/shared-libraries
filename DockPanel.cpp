@@ -32,7 +32,6 @@
 #include "DockPanel.h"
 
 #include <QtGui/QApplication>
-#include <QtGui/QGridLayout>
 #include <QtGui/QPainter>
 
 #include "Debug.h"
@@ -47,8 +46,7 @@ using namespace std;
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent ):
   QWidget( parent ),
-  Counter( "DockPanel" ),
-  sizeGrip_( 0 )
+  Counter( "DockPanel" )
 {
   Debug::Throw( "DockPanel::DockPanel.\n" );
 
@@ -69,17 +67,11 @@ DockPanel::DockPanel( QWidget* parent ):
 
   Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
 
-  // grid layout to overlay main layout and invisible grip
-  QGridLayout *grid_layout( new QGridLayout() );
-  grid_layout->setMargin(0);
-  grid_layout->setSpacing(0);
-  main().setLayout( grid_layout );
-
   // vertical layout for children
   mainLayout_ = new QVBoxLayout();
   mainLayout_->setMargin( 5 );
   mainLayout_->setSpacing( 5 );
-  grid_layout->addLayout( mainLayout_, 0, 0, 1, 1 );
+  main().setLayout( mainLayout_ );
 
   // vertical panel
   Debug::Throw( "DocPanel::DockPanel - panel.\n" );
@@ -89,13 +81,6 @@ DockPanel::DockPanel( QWidget* parent ):
   panel_->layout()->setSpacing(2);
 
   mainLayout_->addWidget( panel_, 1 );
-
-  // size grip
-  //if( XmlOptions::get().get<bool>( "sizeGrip_ENABLED" ) )
-  {
-    grid_layout->addWidget( sizeGrip_ = new QSizeGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
-    _hideSizeGrip();
-  }
 
   // connections
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
@@ -130,7 +115,6 @@ void DockPanel::_toggleDock( void )
     // change parent
     main().setParent( this );
     layout()->addWidget( main_ );
-    _hideSizeGrip();
 
     main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
     main().show();
@@ -164,8 +148,6 @@ void DockPanel::_toggleDock( void )
     _toggleStaysOnTop( main().staysOnTopAction().isChecked() );
     _toggleSticky( main().stickyAction().isChecked() );
 
-    // show widgets
-    // _showSizeGrip();
     main().show();
 
     // signals
