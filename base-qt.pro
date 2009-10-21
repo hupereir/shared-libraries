@@ -1,9 +1,3 @@
-TopTop
-
-
-
-
-
 TEMPLATE = lib
 CONFIG = staticlib qt
 QT += xml
