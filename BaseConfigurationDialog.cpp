@@ -124,7 +124,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
 
     // base
     QGroupBox* box;
-    box = new QGroupBox(  parent );
+    box = new QGroupBox( "Generic", parent );
     parent->layout()->addWidget( box );
 
     QHBoxLayout* h_layout = new QHBoxLayout();
