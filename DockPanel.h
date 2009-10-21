@@ -42,10 +42,9 @@
 #include <QLayout>
 #include <QSizeGrip>
 
-
-
 #include "Counter.h"
 #include "Debug.h"
+#include "TileSet.h"
 
 //! detachable generic panel
 class DockPanel: public QWidget, public Counter
@@ -65,8 +64,8 @@ class DockPanel: public QWidget, public Counter
   //! option name (needed to store sticky and stays-on-top state)
   void setOptionName( QString value )
   {
-    sticky_option_name_ = value + "_STICKY";
-    stays_on_top_option_name_ = value + "_STAYS_ON_TOP";
+    stickyOptionName_ = value + "_STICKY";
+    staysOnTopOptionName_ = value + "_STAYS_ON_TOP";
     _updateConfiguration();
   }
 
@@ -95,15 +94,15 @@ class DockPanel: public QWidget, public Counter
 
     //! detach action
     QAction& detachAction( void ) const
-    { return *detach_action_; }
+    { return *detachAction_; }
 
     //! stay on top
     QAction& staysOnTopAction( void ) const
-    { return *stays_on_top_action_; }
+    { return *staysOnTopAction_; }
 
     //! widget is hidden from taskbar
     QAction& stickyAction( void ) const
-    { return *sticky_action_; }
+    { return *stickyAction_; }
 
     protected:
 
@@ -135,20 +134,20 @@ class DockPanel: public QWidget, public Counter
 
     //! move enabled
     const bool& _moveEnabled( void ) const
-    { return move_enabled_; }
+    { return moveEnabled_; }
 
     //! move enabled
     void _setMoveEnabled( const bool& value )
-    { move_enabled_ = value; }
+    { moveEnabled_ = value; }
 
     //! attach/detach action
-    QAction* detach_action_;
+    QAction* detachAction_;
 
     //! stay on top
-    QAction* stays_on_top_action_;
+    QAction* staysOnTopAction_;
 
     //! make window sticky
-    QAction* sticky_action_;
+    QAction* stickyAction_;
 
     //! button state
     Qt::MouseButton button_;
@@ -157,10 +156,13 @@ class DockPanel: public QWidget, public Counter
     QBasicTimer timer_;
 
     //! true when move is enabled
-    bool move_enabled_;
+    bool moveEnabled_;
 
     //! click position
-    QPoint click_pos_;
+    QPoint clickPos_;
+
+    //! TileSet
+    TileSet tileSet_;
 
   };
 
@@ -204,11 +206,11 @@ class DockPanel: public QWidget, public Counter
 
   //! has size grip
   bool _hasSizeGrip( void ) const
-  { return (bool)size_grip_; }
+  { return (bool)sizeGrip_; }
 
   //! size grip
   QSizeGrip& _sizeGrip( void ) const
-  { return *size_grip_; }
+  { return *sizeGrip_; }
 
   //! show size grip
   void _showSizeGrip( void )
@@ -231,24 +233,24 @@ class DockPanel: public QWidget, public Counter
 
   //! option name
   const QString& _stickyOptionName( void ) const
-  { return sticky_option_name_; }
+  { return stickyOptionName_; }
 
   //! option name
   const QString& _staysOnTopOptionName( void ) const
-  { return stays_on_top_option_name_; }
+  { return staysOnTopOptionName_; }
 
   //! dock title
   QString title_;
 
   //! option name
   /*! needed to store sticky and stays on top state */
-  QString sticky_option_name_;
+  QString stickyOptionName_;
 
   //! option name
-  QString stays_on_top_option_name_;
+  QString staysOnTopOptionName_;
 
   //! vertical layout for main_ widget
-  QVBoxLayout* main_layout_;
+  QVBoxLayout* mainLayout_;
 
   //! detachable main widget
   LocalWidget* main_;
@@ -257,7 +259,7 @@ class DockPanel: public QWidget, public Counter
   QWidget* panel_;
 
   //! size grip
-  QSizeGrip* size_grip_;
+  QSizeGrip* sizeGrip_;
 
   friend class LocalWidget;
 

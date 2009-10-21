@@ -83,7 +83,7 @@ noinst_HEADERS = \
   OptionSpinBox.h \
   OptionWidget.h \
   OptionWidgetList.h \
- 	PixmapCacheDialog.h \
+  PixmapCacheDialog.h \
   PixmapCacheModel.h \
   PixmapEngine.h \
   QuestionDialog.h \
@@ -106,6 +106,7 @@ noinst_HEADERS = \
   TextBlockFlags.h \
   TextSelection.h \
   TextSeparator.h \
+  TileSet.h \
   ToolBarMenu.h \
   ToolButtonStyleMenu.h \
   TransitionWidget.h \
@@ -206,6 +207,7 @@ libbase_qt_a_SOURCES = \
   TextEditorMarginWidget.cpp \
   TextEditionDelegate.cpp \
   TextSeparator.cpp \
+  TileSet.cpp \
   ToolBarMenu.cpp \
   ToolButtonStyleMenu.cpp \
   TransitionWidget.cpp \

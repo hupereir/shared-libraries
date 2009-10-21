@@ -29,10 +29,12 @@
   \date $Date$
 */
 
-#include <QApplication>
-#include <QGridLayout>
-
 #include "DockPanel.h"
+
+#include <QtGui/QApplication>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPainter>
+
 #include "Debug.h"
 #include "File.h"
 #include "Singleton.h"
@@ -46,7 +48,7 @@ using namespace std;
 DockPanel::DockPanel( QWidget* parent ):
   QWidget( parent ),
   Counter( "DockPanel" ),
-  size_grip_( 0 )
+  sizeGrip_( 0 )
 {
   Debug::Throw( "DockPanel::DockPanel.\n" );
 
@@ -74,10 +76,10 @@ DockPanel::DockPanel( QWidget* parent ):
   main().setLayout( grid_layout );
 
   // vertical layout for children
-  main_layout_ = new QVBoxLayout();
-  main_layout_->setMargin( 5 );
-  main_layout_->setSpacing( 5 );
-  grid_layout->addLayout( main_layout_, 0, 0, 1, 1 );
+  mainLayout_ = new QVBoxLayout();
+  mainLayout_->setMargin( 10 );
+  mainLayout_->setSpacing( 5 );
+  grid_layout->addLayout( mainLayout_, 0, 0, 1, 1 );
 
   // vertical panel
   Debug::Throw( "DocPanel::DockPanel - panel.\n" );
@@ -86,12 +88,12 @@ DockPanel::DockPanel( QWidget* parent ):
   panel_->layout()->setMargin(0);
   panel_->layout()->setSpacing(2);
 
-  main_layout_->addWidget( panel_, 1 );
+  mainLayout_->addWidget( panel_, 1 );
 
   // size grip
-  //if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
+  //if( XmlOptions::get().get<bool>( "sizeGrip_ENABLED" ) )
   {
-    grid_layout->addWidget( size_grip_ = new QSizeGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+    grid_layout->addWidget( sizeGrip_ = new QSizeGrip( main_ ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
     _hideSizeGrip();
   }
 
@@ -163,7 +165,7 @@ void DockPanel::_toggleDock( void )
     _toggleSticky( main().stickyAction().isChecked() );
 
     // show widgets
-    _showSizeGrip();
+    // _showSizeGrip();
     main().show();
 
     // signals
@@ -253,10 +255,11 @@ DockPanel::LocalWidget::LocalWidget( QWidget* parent ):
   QFrame( parent ),
   Counter( "LocalWidget" ),
   button_( Qt::NoButton ),
-  move_enabled_( false )
+  moveEnabled_( false )
 {
   _installActions();
   setContextMenuPolicy( Qt::ActionsContextMenu );
+  setAttribute(Qt::WA_TranslucentBackground);
 }
 
 //___________________________________________________________
@@ -293,7 +296,7 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
 
   if( button_ == Qt::LeftButton )
   {
-    click_pos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft());
+    clickPos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft());
     timer_.start( 200, this );
   }
 
@@ -322,7 +325,7 @@ void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
   if( !_moveEnabled() ) return;
 
   // move widget, the standard way
-  QPoint point(event->globalPos() - click_pos_ );
+  QPoint point(event->globalPos() - clickPos_ );
   move( point );
 
 }
@@ -356,7 +359,39 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
 
 //___________________________________________________________
 void DockPanel::LocalWidget::paintEvent( QPaintEvent *event )
-{ QFrame::paintEvent( event ); }
+{
+  if( parentWidget() || !QX11Info::isCompositingManagerRunning() ) { QFrame::paintEvent( event ); }
+  else {
+
+    if( tileSet_.isEmpty() )
+    {
+      const int size = 5;
+      QPixmap pixmap = QPixmap( size*2, size*2 );
+      pixmap.fill( Qt::transparent );
+
+      QPainter p( &pixmap );
+      p.setRenderHint( QPainter::Antialiasing );
+      p.setPen( Qt::NoPen );
+
+      QColor color( palette().window().color() );
+      p.setBrush( color );
+
+      // draw ellipse.
+      p.drawEllipse( QRectF( size-4, size-4, 8, 8 ) );
+      tileSet_ = TileSet(pixmap, size, size, 1, 1);
+
+    }
+
+    QPainter p( this );
+    tileSet_.render( rect(), &p );
+    QColor color( palette().window().color() );
+    p.setBrush( color );
+    p.setPen( Qt::NoPen );
+    p.drawRect( rect().adjusted(4, 4, -4, -4 ) );
+
+  }
+
+}
 
 //___________________________________________________________
 void DockPanel::LocalWidget::_installActions( void )
@@ -365,17 +400,17 @@ void DockPanel::LocalWidget::_installActions( void )
   Debug::Throw( "DockPanel::LocalWidget::_installActions.\n" );
 
   // detach
-  addAction( detach_action_ = new QAction( "&Detach", this ) );
-  detach_action_->setToolTip( "Dock/undock panel" );
+  addAction( detachAction_ = new QAction( "&Detach", this ) );
+  detachAction_->setToolTip( "Dock/undock panel" );
 
   // stays on top
-  addAction( stays_on_top_action_ = new QAction( "&Stays on Top", this ) );
-  stays_on_top_action_->setToolTip( "Keep window on top of all others" );
-  stays_on_top_action_->setCheckable( true );
+  addAction( staysOnTopAction_ = new QAction( "&Stays on Top", this ) );
+  staysOnTopAction_->setToolTip( "Keep window on top of all others" );
+  staysOnTopAction_->setCheckable( true );
 
   // sticky
-  addAction( sticky_action_ = new QAction( "&Sticky", this ) );
-  sticky_action_->setToolTip( "Make window appear on all desktops" );
-  sticky_action_->setCheckable( true );
+  addAction( stickyAction_ = new QAction( "&Sticky", this ) );
+  stickyAction_->setToolTip( "Make window appear on all desktops" );
+  stickyAction_->setCheckable( true );
 
 }
