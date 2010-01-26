@@ -53,23 +53,30 @@ using namespace std;
 BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
   QMainWindow( parent, wflags ),
   monitor_( this ),
-  was_maximized_( false )
+  wasMaximized_( false )
 {
   Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
 
   // lock toolbars action
-  addAction( lock_toolbars_action_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock Toolbars", this ) );
+  addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock Toolbars", this ) );
   lockToolBarsAction().setCheckable( true );
   lockToolBarsAction().setChecked( true );
   connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
 
   // show menu action
-  addAction( show_menu_action_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "&Show Menubar", this ) );
-  showMenuAction().setCheckable( true );
-  showMenuAction().setChecked( true );
-  showMenuAction().setShortcut( Qt::CTRL + Qt::Key_M );
-  showMenuAction().setEnabled( false );
-  connect( &showMenuAction(), SIGNAL( toggled( bool ) ), SLOT( _showMenu( bool ) ) );
+  addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "&Show Menu Bar", this ) );
+  showMenuBarAction().setCheckable( true );
+  showMenuBarAction().setChecked( true );
+  showMenuBarAction().setShortcut( Qt::CTRL + Qt::Key_M );
+  showMenuBarAction().setEnabled( false );
+  connect( &showMenuBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleMenuBar( bool ) ) );
+
+  // show statusbar
+  addAction( showStatusBarAction_ = new QAction( "&Show Status Bar", this ) );
+  showStatusBarAction().setCheckable( true );
+  showStatusBarAction().setChecked( true );
+  showStatusBarAction().setEnabled( false );
+  connect( &showStatusBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStatusBar( bool ) ) );
 
   connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
   connect( this, SIGNAL( toolbarConfigurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
@@ -86,18 +93,22 @@ void BaseMainWindow::setOptionName( const QString& name )
 
   if( name.isEmpty() ) {
 
-    lock_toolbars_option_name_.clear();
-    show_menu_option_name_.clear();
+    lockToolBarsOptionName_.clear();
+    showMenuBarOptionName_.clear();
 
   } else {
 
-    lock_toolbars_option_name_ = name+"_LOCK_TOOLBARS";
+    lockToolBarsOptionName_ = name+"_LOCK_TOOLBARS";
     if( !XmlOptions::get().find( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
     else { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
 
-    show_menu_option_name_ = name+"_SHOW_MENU";
-    if( !XmlOptions::get().find( showMenuOptionName() ) ) XmlOptions::get().set<bool>( showMenuOptionName(), showMenuAction().isChecked() );
-    else showMenuAction().setChecked( XmlOptions::get().get<bool>( showMenuOptionName() ) );
+    showMenuBarOptionName_ = name+"_SHOW_MENU";
+    if( !XmlOptions::get().find( showMenuBarOptionName() ) ) XmlOptions::get().set<bool>( showMenuBarOptionName(), showMenuBarAction().isChecked() );
+    else showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) );
+
+    showStatusBarOptionName_ = name+"_SHOW_STATUS";
+    if( !XmlOptions::get().find( showStatusBarOptionName() ) ) XmlOptions::get().set<bool>( showStatusBarOptionName(), showStatusBarAction().isChecked() );
+    else showStatusBarAction().setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName() ) );
 
   }
 
@@ -119,8 +130,19 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
   Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
   QMainWindow::setMenuBar( menu );
   if( !menuBar() ) return;
-  menuBar()->setVisible( showMenuAction().isChecked() );
-  showMenuAction().setEnabled( true );
+  menuBar()->setVisible( showMenuBarAction().isChecked() );
+  showMenuBarAction().setEnabled( true );
+}
+
+//__________________________________________________
+void BaseMainWindow::setStatusBar( QStatusBar* widget )
+{
+
+  Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
+  QMainWindow::setStatusBar( widget );
+  if( !statusBar() ) return;
+  statusBar()->setVisible( showStatusBarAction().isChecked() );
+  showStatusBarAction().setEnabled( true );
 }
 
 //__________________________________________________
@@ -163,7 +185,7 @@ QMenu* BaseMainWindow::createPopupMenu( void )
   {
 
     QMenu* menu = new QMenu( this );
-    menu->addAction(&showMenuAction() );
+    menu->addAction(&showMenuBarAction() );
     return menu;
 
   } else {
@@ -194,7 +216,8 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
   }
 
   // show/hide menu
-  menu->addAction( &showMenuAction() );
+  menu->addAction( &showMenuBarAction() );
+  menu->addAction( &showStatusBarAction() );
 
   return *menu;
 
@@ -317,8 +340,8 @@ void BaseMainWindow::_updateConfiguration( void )
     { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
 
     // menu visibility
-    if( XmlOptions::get().find( showMenuOptionName() ) )
-    { showMenuAction().setChecked( XmlOptions::get().get<bool>( showMenuOptionName() ) ); }
+    if( XmlOptions::get().find( showMenuBarOptionName() ) )
+    { showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) ); }
 
   }
 }
@@ -367,16 +390,28 @@ void BaseMainWindow::_lockToolBars( bool value )
   return;
 }
 
-
 //____________________________________________________________
-void BaseMainWindow::_showMenu( bool value )
+void BaseMainWindow::_toggleMenuBar( bool value )
 {
-  Debug::Throw( "BaseMainWindow::_showMenu.\n" );
+  Debug::Throw( "BaseMainWindow::_toggleMenuBar.\n" );
 
   if( !menuWidget() ) return;
   menuWidget()->setVisible( value );
 
   // save option
-  if( hasOptionName() ) XmlOptions::get().set<bool>( showMenuOptionName(), value );
+  if( hasOptionName() ) XmlOptions::get().set<bool>( showMenuBarOptionName(), value );
+
+}
+
+//____________________________________________________________
+void BaseMainWindow::_toggleStatusBar( bool value )
+{
+  Debug::Throw( "BaseMainWindow::_toggleStatusBar.\n" );
+
+  if( !statusBar() ) return;
+  statusBar()->setVisible( value );
+
+  // save option
+  if( hasOptionName() ) XmlOptions::get().set<bool>( showStatusBarOptionName(), value );
 
 }

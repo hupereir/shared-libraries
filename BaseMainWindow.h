@@ -34,10 +34,11 @@
 
 #include <cassert>
 
-#include <QAction>
-#include <QActionGroup>
-#include <QMainWindow>
-#include <QMenu>
+#include <QtGui/QAction>
+#include <QtGui/QActionGroup>
+#include <QtGui/QMainWindow>
+#include <QtGui/QMenu>
+#include <QtGui/QStatusBar>
 
 #include "CustomToolButton.h"
 #include "Debug.h"
@@ -87,18 +88,28 @@ class BaseMainWindow: public QMainWindow
   //! set menu bar (overloaded)
   void setMenuBar( QMenuBar* );
 
+  //! set menu bar (overloaded)
+  void setStatusBar( QStatusBar* );
+
   //! lock toolbars
   QAction& lockToolBarsAction( void ) const
   {
-    assert( lock_toolbars_action_ );
-    return *lock_toolbars_action_;
+    assert( lockToolBarsAction_ );
+    return *lockToolBarsAction_;
   }
 
-  //! lock toolbars
-  QAction& showMenuAction( void ) const
+  //! show menubar
+  QAction& showMenuBarAction( void ) const
   {
-    assert( show_menu_action_ );
-    return *show_menu_action_;
+    assert( showMenuBarAction_ );
+    return *showMenuBarAction_;
+  }
+
+  //! show status bar
+  QAction& showStatusBarAction( void ) const
+  {
+    assert( showStatusBarAction_ );
+    return *showStatusBarAction_;
   }
 
   //! create context menu (overloaded)
@@ -120,11 +131,15 @@ class BaseMainWindow: public QMainWindow
 
   //! menu option name
   const QString& lockToolBarsOptionName( void ) const
-  { return lock_toolbars_option_name_; }
+  { return lockToolBarsOptionName_; }
 
   //! menu option name
-  const QString& showMenuOptionName( void ) const
-  { return show_menu_option_name_; }
+  const QString& showMenuBarOptionName( void ) const
+  { return showMenuBarOptionName_; }
+
+  //! status bar option name
+  const QString& showStatusBarOptionName( void ) const
+  { return showStatusBarOptionName_; }
 
   signals:
 
@@ -146,11 +161,11 @@ class BaseMainWindow: public QMainWindow
 
   //! maximize state prior to minimization
   bool _wasMaximized( void ) const
-  { return was_maximized_; }
+  { return wasMaximized_; }
 
   //! maximize state prior to minimization
   void _setWasMaximized( bool value )
-  { was_maximized_ = value; }
+  { wasMaximized_ = value; }
 
   private slots:
 
@@ -167,27 +182,36 @@ class BaseMainWindow: public QMainWindow
   void _lockToolBars( bool );
 
   //! toggle menu
-  void _showMenu( bool );
+  void _toggleMenuBar( bool );
+
+  //! toggle status bar
+  void _toggleStatusBar( bool );
 
   private:
 
   //! option name
-  QString lock_toolbars_option_name_;
+  QString lockToolBarsOptionName_;
 
   //! option name
-  QString show_menu_option_name_;
+  QString showMenuBarOptionName_;
+
+  //! option name
+  QString showStatusBarOptionName_;
 
   //! size watcher
   WindowMonitor monitor_;
 
   //! lock toolbars
-  QAction* lock_toolbars_action_;
+  QAction* lockToolBarsAction_;
 
   //! toggle menu
-  QAction* show_menu_action_;
+  QAction* showMenuBarAction_;
+
+  //! toggle statusBar
+  QAction* showStatusBarAction_;
 
   //! window state prior to minimization
-  bool was_maximized_;
+  bool wasMaximized_;
 
 };
 

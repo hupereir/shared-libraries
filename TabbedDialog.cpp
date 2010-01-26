@@ -60,7 +60,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
   QHBoxLayout* h_layout = new QHBoxLayout();
   h_layout->setMargin(0);
-  h_layout->setSpacing(10);
+  h_layout->setSpacing(5);
   layout->addLayout( h_layout );
 
   // add widgets
@@ -121,18 +121,10 @@ QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, co
   scroll->setWidgetResizable ( true );
   scroll->setFrameStyle( QFrame::NoFrame );
 
-  // disable background painting
-  /*!
-  this is needed to have scrollarea contents background match
-  the one from the main window
-  */
-  scroll->setAttribute( Qt::WA_NoSystemBackground, true );
   base->layout()->addWidget( scroll );
 
-  // add custom viewport with no background
-  QWidget *view_port = new QWidget();
-  view_port->setAttribute( Qt::WA_NoSystemBackground, true );
-  scroll->setViewport( view_port );
+  QWidget *viewport = new QWidget();
+  scroll->setViewport( viewport );
 
   // add smooth scrolling object
   new ScrollObject( scroll );
@@ -199,7 +191,8 @@ QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
 
   // retrieve associated file info
   QWidget& widget( *get()[index.row()] );
-     // return text associated to file and column
+
+  // return text associated to file and column
   if( role == Qt::DisplayRole )
   {
 
