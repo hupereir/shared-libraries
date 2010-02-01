@@ -267,7 +267,7 @@ void DockPanel::LocalWidget::closeEvent( QCloseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::closeEvent.\n" );
   if( !parent() ) detachAction().trigger();
-  event->ignore();
+  //event->ignore();
 }
 
 //___________________________________________________________

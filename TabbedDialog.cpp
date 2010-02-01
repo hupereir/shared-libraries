@@ -123,19 +123,12 @@ QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, co
 
   base->layout()->addWidget( scroll );
 
-  QWidget *viewport = new QWidget();
-  scroll->setViewport( viewport );
-
   // add smooth scrolling object
   new ScrollObject( scroll );
 
   // create main widget
   QWidget* main( new QWidget() );
   scroll->setWidget( main );
-
-  // disable background auto-fill
-  /* it is set to true via scrollarea::setWidget */
-  main->setAutoFillBackground( false );
 
   // add to stack and model
   _stack().addWidget( base );

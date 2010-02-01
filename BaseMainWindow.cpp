@@ -138,7 +138,7 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
 void BaseMainWindow::setStatusBar( QStatusBar* widget )
 {
 
-  Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
+  Debug::Throw( "BaseMainWindow::setStatusBar.\n" );
   QMainWindow::setStatusBar( widget );
   if( !statusBar() ) return;
   statusBar()->setVisible( showStatusBarAction().isChecked() );
@@ -186,6 +186,7 @@ QMenu* BaseMainWindow::createPopupMenu( void )
 
     QMenu* menu = new QMenu( this );
     menu->addAction(&showMenuBarAction() );
+    menu->addAction(&showStatusBarAction() );
     return menu;
 
   } else {
