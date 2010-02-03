@@ -30,10 +30,16 @@
   \date $Date$
 */
 
-#include <QApplication>
-#include <QGridLayout>
-
 #include "TabWidget.h"
+
+#include <QtGui/QApplication>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPainter>
+#include <QtGui/QStyleHintReturnMask>
+#include <QtGui/QStyleOption>
+#include <QtGui/QStyleOptionMenuItem>
+#include <QtGui/QStyleOptionFrame>
+
 #include "File.h"
 #include "XmlOptions.h"
 #include "X11Util.h"
@@ -42,7 +48,7 @@ using namespace std;
 
 //________________________________________________________
 TabWidget::TabWidget( QTabWidget* parent ):
-    QFrame(),
+    QWidget(),
     Counter( "TabWidget" ),
     parent_( parent ),
     size_grip_( 0 ),
@@ -52,7 +58,8 @@ TabWidget::TabWidget( QTabWidget* parent ):
 {
 
   Debug::Throw( "TabWidget::TabWidget.\n" );
-  setFrameStyle( QFrame::NoFrame );
+
+  setAttribute(Qt::WA_TranslucentBackground);
 
   // grid layout to overlay main layout and invisible grip
   QGridLayout *grid_layout( new QGridLayout() );
@@ -72,16 +79,15 @@ TabWidget::TabWidget( QTabWidget* parent ):
 
   main_layout_->addWidget( box_ );
 
-  // size grip
-  //if( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) )
   {
-    grid_layout->addWidget( size_grip_ = new QSizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+    grid_layout->addWidget( size_grip_ = new SizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
     _hideSizeGrip();
   }
 
   _installActions();
   updateActions( false );
   setContextMenuPolicy( Qt::ActionsContextMenu );
+
 
 }
 
@@ -108,7 +114,6 @@ void TabWidget::_toggleDock( void )
     updateActions( false );
 
     // reinsert into parent and select
-    setFrameStyle( QFrame::NoFrame );
     parent_->QTabWidget::insertTab( index_, this, title_ );
     parent_->QTabWidget::setCurrentWidget( this );
 
@@ -129,7 +134,6 @@ void TabWidget::_toggleDock( void )
 
     // reparent to top level
     setParent( 0 );
-    setFrameStyle( QFrame::NoFrame );
 
     // window flags
     setWindowFlags( Qt::FramelessWindowHint|Qt::Window );
@@ -232,7 +236,7 @@ void TabWidget::mousePressEvent( QMouseEvent* event )
     timer_.start( 200, this );
   }
 
-  return QFrame::mousePressEvent( event );
+  return QWidget::mousePressEvent( event );
 }
 
 //___________________________________________________________
@@ -243,7 +247,7 @@ void TabWidget::mouseReleaseEvent( QMouseEvent* event )
   _setMoveEnabled( false );
   unsetCursor();
   timer_.stop();
-  return QFrame::mouseReleaseEvent( event );
+  return QWidget::mouseReleaseEvent( event );
 }
 
 //___________________________________________________________
@@ -251,7 +255,7 @@ void TabWidget::mouseMoveEvent( QMouseEvent* event )
 {
 
   // check button
-  if( button_ != Qt::LeftButton ) return QFrame::mouseMoveEvent( event );
+  if( button_ != Qt::LeftButton ) return QWidget::mouseMoveEvent( event );
 
   // if not yet enabled, enable immediately and stop timer
   if( !_moveEnabled() ) {
@@ -288,7 +292,7 @@ void TabWidget::timerEvent( QTimerEvent *event )
 {
 
   Debug::Throw( "TabWidget::timerEvent.\n" );
-  if( event->timerId() != timer_.timerId() ) return QFrame::timerEvent( event );
+  if( event->timerId() != timer_.timerId() ) return QWidget::timerEvent( event );
 
   timer_.stop();
   if( button_ != Qt::LeftButton ) return;
@@ -298,6 +302,51 @@ void TabWidget::timerEvent( QTimerEvent *event )
   else {
     _setMoveEnabled( true );
     setCursor( Qt::SizeAllCursor );
+  }
+
+}
+
+//___________________________________________________________
+void TabWidget::resizeEvent( QResizeEvent *event )
+{
+
+    QStyleHintReturnMask menuMask;
+    QStyleOption option;
+    option.initFrom(this);
+    if( style()->styleHint(QStyle::SH_Menu_Mask, &option, this, &menuMask) )
+    { setMask(menuMask.region); }
+
+}
+
+//___________________________________________________________
+void TabWidget::paintEvent( QPaintEvent *event )
+{
+  if( parentWidget() ) { QWidget::paintEvent( event ); }
+  else {
+
+    QPainter p( this );
+
+    if( !style()->inherits( "OxygenStyle" ) )
+    {  p.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
+
+    // background
+    QStyleOptionMenuItem menuOpt;
+    menuOpt.initFrom(this);
+    menuOpt.state = QStyle::State_None;
+    menuOpt.checkType = QStyleOptionMenuItem::NotCheckable;
+    menuOpt.maxIconWidth = 0;
+    menuOpt.tabWidth = 0;
+    style()->drawPrimitive(QStyle::PE_PanelMenu, &menuOpt, &p, this);
+
+    // frame
+    QStyleOptionFrame frame;
+    frame.rect = rect();
+    frame.palette = palette();
+    frame.state = QStyle::State_None;
+    frame.lineWidth = style()->pixelMetric(QStyle::PM_MenuPanelWidth);
+    frame.midLineWidth = 0;
+    style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, &p, this);
+    p.end();
   }
 
 }

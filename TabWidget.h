@@ -33,14 +33,13 @@
 */
 
 #include <cassert>
-#include <QAction>
-#include <QBasicTimer>
-#include <QCloseEvent>
-#include <QFrame>
-#include <QLabel>
-#include <QLayout>
-#include <QSizeGrip>
-#include <QTabWidget>
+#include <QtGui/QAction>
+#include <QtCore/QBasicTimer>
+#include <QtGui/QCloseEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QSizeGrip>
+#include <QtGui/QTabWidget>
 
 
 #include "Counter.h"
@@ -49,7 +48,7 @@
 class TabWidget;
 
 //! Tab Child container
-class TabWidget: public QFrame, public Counter
+class TabWidget: public QWidget, public Counter
 {
 
   //! Qt meta object declaration
@@ -108,22 +107,28 @@ class TabWidget: public QFrame, public Counter
   protected:
 
   //! close event
-  virtual void closeEvent( QCloseEvent* event );
+  virtual void closeEvent( QCloseEvent* );
 
   //! mouse press event [overloaded]
-  virtual void mousePressEvent( QMouseEvent *);
+  virtual void mousePressEvent( QMouseEvent* );
 
   //! mouse move event [overloaded]
-  virtual void mouseMoveEvent( QMouseEvent *);
+  virtual void mouseMoveEvent( QMouseEvent* );
 
   //! mouse move event [overloaded]
-  virtual void mouseReleaseEvent( QMouseEvent *);
+  virtual void mouseReleaseEvent( QMouseEvent* );
 
   //! mouse move event [overloaded]
-  virtual void mouseDoubleClickEvent( QMouseEvent *);
+  virtual void mouseDoubleClickEvent( QMouseEvent* );
 
   //! timer event [overloaded]
-  virtual void timerEvent( QTimerEvent *);
+  virtual void timerEvent( QTimerEvent* );
+
+  //! resize
+  virtual void resizeEvent( QResizeEvent* );
+
+  //! paint
+  virtual void paintEvent( QPaintEvent* );
 
   //! actions
   void _installActions( void );
@@ -180,8 +185,23 @@ class TabWidget: public QFrame, public Counter
   //! contents vbox
   QWidget* box_;
 
+  class SizeGrip: public QSizeGrip
+  {
+    public:
+
+    SizeGrip( QWidget* parent ):
+      QSizeGrip( parent )
+      {}
+
+    protected:
+
+    virtual void paintEvent( QPaintEvent* )
+    {}
+
+  };
+
   //! size grip
-  QSizeGrip* size_grip_;
+  SizeGrip* size_grip_;
 
   //! index in parent tab
   int index_;

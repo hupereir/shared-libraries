@@ -33,6 +33,10 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QPainter>
+#include <QtGui/QStyleHintReturnMask>
+#include <QtGui/QStyleOption>
+#include <QtGui/QStyleOptionMenuItem>
+#include <QtGui/QStyleOptionFrame>
 
 #include "Debug.h"
 #include "File.h"
@@ -241,7 +245,10 @@ DockPanel::LocalWidget::LocalWidget( QWidget* parent ):
 {
   _installActions();
   setContextMenuPolicy( Qt::ActionsContextMenu );
+
+  // should move to "polish"
   setAttribute(Qt::WA_TranslucentBackground);
+
 }
 
 //___________________________________________________________
@@ -266,8 +273,11 @@ void DockPanel::hideEvent( QHideEvent* event )
 void DockPanel::LocalWidget::closeEvent( QCloseEvent* event )
 {
   Debug::Throw( "DockPanel::LocalWidget::closeEvent.\n" );
-  if( !parent() ) detachAction().trigger();
-  //event->ignore();
+  if( !parent() )
+  {
+    detachAction().trigger();
+    event->ignore();
+  }
 }
 
 //___________________________________________________________
@@ -340,37 +350,46 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
 }
 
 //___________________________________________________________
+void DockPanel::LocalWidget::resizeEvent( QResizeEvent *event )
+{
+
+    QStyleHintReturnMask menuMask;
+    QStyleOption option;
+    option.initFrom(this);
+    if( style()->styleHint(QStyle::SH_Menu_Mask, &option, this, &menuMask) )
+    { setMask(menuMask.region); }
+
+}
+
+//___________________________________________________________
 void DockPanel::LocalWidget::paintEvent( QPaintEvent *event )
 {
-  if( parentWidget() || !QX11Info::isCompositingManagerRunning() ) { QFrame::paintEvent( event ); }
+  if( parentWidget() ) { QFrame::paintEvent( event ); }
   else {
 
-    if( tileSet_.isEmpty() )
-    {
-      const int size = 5;
-      QPixmap pixmap = QPixmap( size*2, size*2 );
-      pixmap.fill( Qt::transparent );
-
-      QPainter p( &pixmap );
-      p.setRenderHint( QPainter::Antialiasing );
-      p.setPen( Qt::NoPen );
-
-      QColor color( palette().window().color() );
-      p.setBrush( color );
-
-      // draw ellipse.
-      p.drawEllipse( QRectF( size-4, size-4, 8, 8 ) );
-      tileSet_ = TileSet(pixmap, size, size, 1, 1);
-
-    }
-
     QPainter p( this );
-    tileSet_.render( rect(), &p );
-    QColor color( palette().window().color() );
-    p.setBrush( color );
-    p.setPen( Qt::NoPen );
-    p.drawRect( rect().adjusted(4, 4, -4, -4 ) );
 
+    if( !style()->inherits( "OxygenStyle" ) )
+    {  p.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
+
+    // background
+    QStyleOptionMenuItem menuOpt;
+    menuOpt.initFrom(this);
+    menuOpt.state = QStyle::State_None;
+    menuOpt.checkType = QStyleOptionMenuItem::NotCheckable;
+    menuOpt.maxIconWidth = 0;
+    menuOpt.tabWidth = 0;
+    style()->drawPrimitive(QStyle::PE_PanelMenu, &menuOpt, &p, this);
+
+    // frame
+    QStyleOptionFrame frame;
+    frame.rect = rect();
+    frame.palette = palette();
+    frame.state = QStyle::State_None;
+    frame.lineWidth = style()->pixelMetric(QStyle::PM_MenuPanelWidth);
+    frame.midLineWidth = 0;
+    style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, &p, this);
+    p.end();
   }
 
 }
