@@ -70,7 +70,7 @@ HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
 
   QHBoxLayout *layout = new QHBoxLayout();
   layout->setSpacing(5);
-  layout->setMargin(10);
+  //layout->setMargin(10);
   setLayout( layout );
 
   // add help list
