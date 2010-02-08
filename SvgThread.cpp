@@ -60,6 +60,8 @@ namespace SVG
     if( !svg_.isValid() ) return;
     if( svg_ids_.empty() ) return;
 
+    svg_.updateConfiguration();
+
     ImageCache cache;
     for( SvgId::List::const_iterator iter = svg_ids_.begin(); iter != svg_ids_.end(); iter++ )
     {

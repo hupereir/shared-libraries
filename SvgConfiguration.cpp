@@ -99,6 +99,11 @@ namespace SVG
     plasma_checkbox->setToolTip( "If checked, the KDE plasma theme is used for this application theme" );
     addOptionWidget( plasma_checkbox );
 
+    OptionCheckBox* checkbox;
+    plasma_box->layout()->addWidget( checkbox = new OptionCheckBox( "Draw overlay", plasma_box, "SVG_DRAW_OVERLAY" ) );
+    checkbox->setToolTip( "If checked, overlay pictures, if any, found in the SVG file, are drawn on top of the background" );
+    addOptionWidget( checkbox );
+
     h_layout = new QHBoxLayout();
     h_layout->setMargin(0);
     h_layout->setSpacing(5);

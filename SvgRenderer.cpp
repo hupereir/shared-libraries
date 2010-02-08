@@ -29,12 +29,29 @@
   \date $Date$
 */
 
-#include <QPainter>
-#include "Svg.h"
 #include "SvgRenderer.h"
+#include "Svg.h"
+#include "XmlOptions.h"
+
+#include <QtGui/QPainter>
 
 namespace SVG
 {
+
+  //________________________________________________
+  SvgRenderer::SvgRenderer( void ):
+    QSvgRenderer(),
+    drawOverlay_( true )
+  {}
+
+  //________________________________________________
+  bool SvgRenderer::updateConfiguration( void )
+  {
+    bool drawOverlay( XmlOptions::get().get<bool>( "SVG_DRAW_OVERLAY" ) );
+    if( drawOverlay == drawOverlay_ ) return false;
+    drawOverlay_ = drawOverlay;
+    return true;
+  }
 
   //________________________________________________
   void SvgRenderer::render( QPaintDevice& device, const double& offset, const QString& id )
@@ -85,7 +102,7 @@ namespace SVG
       painter.drawImage( QPoint(0,0), main_image );
 
       //Overlays
-      if( elementExists("overlay") )
+      if( drawOverlay_ && elementExists("overlay") )
       {
 
 

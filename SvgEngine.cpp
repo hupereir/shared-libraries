@@ -67,6 +67,7 @@ namespace SVG
     XmlOptions::get().set( "SVG_OFFSET", Option("0") );
     XmlOptions::get().set( "SVG_USE_PLASMA_INTERFACE", Option( "1" ) );
     XmlOptions::get().set( "SVG_PLASMA_IMAGE_PATH", Option( "dialogs/background" ) );
+    XmlOptions::get().set( "SVG_DRAW_OVERLAY", Option("0") );
     XmlOptions::get().setAutoDefault( false );
 
     return;
@@ -82,8 +83,8 @@ namespace SVG
   {
     Debug::Throw( "SvgEngine::reload.\n" );
 
-    // try load background file
-    bool changed( _loadSvg( forced ) );
+    bool configurationChanged( svg_.updateConfiguration() );
+    bool fileChanged( _loadSvg( forced ) );
     if( !isValid() )
     {
       cache_.clear();
@@ -94,7 +95,7 @@ namespace SVG
     int svg_offset( XmlOptions::get().get<int>( "SVG_OFFSET" ) );
 
     // reload cache
-    if( changed || svg_offset != svg_offset_ )
+    if( configurationChanged || fileChanged || svg_offset != svg_offset_ )
     {
 
       svg_offset_ = svg_offset;

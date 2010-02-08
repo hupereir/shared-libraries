@@ -46,9 +46,7 @@ namespace SVG
     public:
 
     //! constructor
-    SvgRenderer( void ):
-      QSvgRenderer()
-    {}
+    SvgRenderer( void );
 
     //! destructor
     virtual ~SvgRenderer( void )
@@ -59,6 +57,14 @@ namespace SVG
 
     //! validity
     virtual bool isValid( void ) const;
+
+    //! configuration
+    bool updateConfiguration( void );
+
+    private:
+
+    bool drawOverlay_;
+
 
   };
 
