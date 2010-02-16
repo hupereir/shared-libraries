@@ -85,7 +85,7 @@ TextEditor::TextEditor( QWidget *parent ):
     showLineNumberAction_( 0 ),
     synchronize_( false ),
     boxSelection_( this ),
-    cursorMonitor_( this ),
+    cursorMonitor_( viewport() ),
     removeLineBuffer_( this ),
     clickCounter_( this ),
     modifiers_( MODIFIER_NONE )
@@ -2352,6 +2352,8 @@ void TextEditor::_updateConfiguration( void )
         emit copyAvailable( false );
     }
 
+    cursorMonitor_.setEnabled( XmlOptions::get().get<bool>( "AUTOHIDE_CURSOR" ) );
+    cursorMonitor_.setAutoHideDelay( XmlOptions::get().get<int>( "AUTOHIDE_CURSOR_DELAY" ) * 1000 );
 
     return;
 

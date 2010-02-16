@@ -44,12 +44,16 @@ CursorMonitor::CursorMonitor( QWidget* parent ):
     autoHideDelay_( 1000 ),
     cursorState_( CursorVisible ),
     savedCursorShape_( parent->cursor().shape() )
-{ parent->installEventFilter(this); }
+{
+    parent->setMouseTracking( true );
+    parent->installEventFilter(this);
+}
 
 //_________________________________________________________
 bool CursorMonitor::eventFilter( QObject* o, QEvent* e )
 {
     if( !( o && o==parent() ) ) return false;
+    if( !enabled_ ) return false;
 
     switch( e->type() )
     {
@@ -61,10 +65,10 @@ bool CursorMonitor::eventFilter( QObject* o, QEvent* e )
 
         case QEvent::Enter:
         case QEvent::FocusIn:
+        case QEvent::MouseMove:
         case QEvent::MouseButtonPress:
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonDblClick:
-        case QEvent::MouseMove:
         case QEvent::Show:
         case QEvent::Hide:
         case QEvent::Wheel:

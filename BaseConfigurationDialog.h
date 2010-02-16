@@ -24,11 +24,11 @@
 *******************************************************************************/
 
 /*!
-  \file BaseConfigurationDialog.h
-  \brief base configuration dialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BaseConfigurationDialog.h
+\brief base configuration dialog
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QLayout>
@@ -43,136 +43,136 @@
 class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! creator
-  BaseConfigurationDialog( QWidget *parent = 0 );
+        //! creator
+        BaseConfigurationDialog( QWidget *parent = 0 );
 
-  //! destructor
-  virtual ~BaseConfigurationDialog()
-  {
-    Debug::Throw( "BaseConfigurationDialog::~BaseConfigurationDialog.\n" );
-    return;
-  }
+    //! destructor
+    virtual ~BaseConfigurationDialog()
+    {
+        Debug::Throw( "BaseConfigurationDialog::~BaseConfigurationDialog.\n" );
+        return;
+    }
 
-  //! flag bitset for the Base configuration
-  enum ConfigurationFlags
-  {
+    //! flag bitset for the Base configuration
+    enum ConfigurationFlags
+    {
 
-    //! base (font, icons and debug level
-    BASE = 1<<0,
+        //! base (font, icons and debug level
+        BASE = 1<<0,
 
-    //! lists
-    LIST = 1<<2,
+        //! lists
+        LIST = 1<<2,
 
-    //! textEdit emulations
-    TEXTEDIT = 1<<3,
+        //! textEdit emulations
+        TEXTEDIT = 1<<3,
+
+        //! animations
+        ANIMATIONS = 1<<4,
+
+        //! tab emulation
+        TAB_EMULATION = 1<<5,
+
+        //! paragraph highlight
+        PARAGRAPH_HIGHLIGHT = 1<<6,
+
+        //! box selection
+        BOX_SELECTION = 1<<7,
+
+        //! margins
+        MARGINS = 1<<8,
+
+        //! misc
+        TEXT_EDITION_FLAGS = 1<<9,
+
+        //! default
+        DEFAULT = BASE|LIST|ANIMATIONS,
+
+        //! all text edition
+        ALL_TEXT_EDITION = TAB_EMULATION|PARAGRAPH_HIGHLIGHT|BOX_SELECTION|MARGINS|TEXT_EDITION_FLAGS
+
+
+    };
+
+    //! adds configuration box for base options used in all appications
+    void baseConfiguration( QWidget* parent = 0, unsigned long flag = DEFAULT );
+
+    //! list configuration box
+    void listConfiguration( QWidget* parent = 0 );
+
+    //! TextEdit configuration box
+    void textEditConfiguration( QWidget* parent = 0, unsigned long flag = ALL_TEXT_EDITION );
 
     //! animations
-    ANIMATIONS = 1<<4,
+    void animationConfiguration( QWidget* parent = 0 );
 
-    //! tab emulation
-    TAB_EMULATION = 1<<5,
+    signals:
 
-    //! paragraph highlight
-    PARAGRAPH_HIGHLIGHT = 1<<6,
+    //! apply button pressed
+    void apply( void );
 
-    //! box selection
-    BOX_SELECTION = 1<<7,
+    //! ok button pressed
+    void ok( void );
 
-    //! margins
-    MARGINS = 1<<8,
+    //! canceled button pressed
+    void cancel( void );
 
-    //! misc
-    TEXT_EDITION_FLAGS = 1<<9,
+    //! emmited when configuration is changed
+    void configurationChanged();
 
-    //! default
-    DEFAULT = BASE|LIST|ANIMATIONS,
+    protected slots:
 
-    //! all text edition
-    ALL_TEXT_EDITION = TAB_EMULATION|PARAGRAPH_HIGHLIGHT|BOX_SELECTION|MARGINS|TEXT_EDITION_FLAGS
+    //! show pixmap path dialog
+    virtual void _editPixmapPathList( void );
 
+    //! read configuration from options
+    virtual void _read();
 
-  };
+    //! update configuration
+    virtual void _update()
+    {
+        Debug::Throw( "BaseConfigurationDialog::_update.\n" );
+        OptionWidgetList::write();
+        _checkModified();
+    }
 
-  //! adds configuration box for base options used in all appications
-  void baseConfiguration( QWidget* parent = 0, unsigned long flag = DEFAULT );
+    //! restore configuration
+    virtual void _restore();
 
-  //! list configuration box
-  void listConfiguration( QWidget* parent = 0 );
+    //! restore default options
+    virtual void _restoreDefaults( void );
 
-  //! TextEdit configuration box
-  void textEditConfiguration( QWidget* parent = 0, unsigned long flag = ALL_TEXT_EDITION );
+    //! save configuration from options
+    virtual void _save();
 
-  //! animations
-  void animationConfiguration( QWidget* parent = 0 );
+    //! see if options have been modified. Emit signal if yes
+    virtual void _checkModified( void )
+    {
+        Debug::Throw( "BaseConfigurationDialog::_checkModified.\n" );
+        if( modifiedOptions_ == XmlOptions::get() ) return;
+        emit configurationChanged();
+        modifiedOptions_ = XmlOptions::get();
+    }
 
-  signals:
+    private:
 
-  //! apply button pressed
-  void apply( void );
-
-  //! ok button pressed
-  void ok( void );
-
-  //! canceled button pressed
-  void cancel( void );
-
-  //! emmited when configuration is changed
-  void configurationChanged();
-
-  protected slots:
-
-  //! show pixmap path dialog
-  virtual void _editPixmapPathList( void );
-
-  //! read configuration from options
-  virtual void _read();
-
-  //! update configuration
-  virtual void _update()
-  {
-    Debug::Throw( "BaseConfigurationDialog::_update.\n" );
-    OptionWidgetList::write();
-    _checkModified();
-  }
-
-  //! restore configuration
-  virtual void _restore();
-
-  //! restore default options
-  virtual void _restoreDefaults( void );
-
-  //! save configuration from options
-  virtual void _save();
-
-  //! see if options have been modified. Emit signal if yes
-  virtual void _checkModified( void )
-  {
-    Debug::Throw( "BaseConfigurationDialog::_checkModified.\n" );
-    if( modified_options_ == XmlOptions::get() ) return;
-    emit configurationChanged();
-    modified_options_ = XmlOptions::get();
-  }
-
-  private:
-
-  //! pointer to modified options
-  /*!
+    //! pointer to modified options
+    /*!
     it is needed to keep track of the changes
     so that the ConfigChanged signal is sent only
     when required
-  */
-  Options modified_options_;
+    */
+    Options modifiedOptions_;
 
-  //! pointer to original options set
-  /*!
+    //! pointer to original options set
+    /*!
     it is needed to keep track of the changes
     so that initial set is restored when pressing the cancel button
-  */
-  Options backup_options_;
+    */
+    Options backupOptions_;
 
 };
 
