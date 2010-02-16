@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file BaseMainWindow.cpp
-  \brief customized QMainWindow
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BaseMainWindow.cpp
+\brief customized QMainWindow
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -51,36 +51,36 @@ using namespace std;
 
 //____________________________________________________________
 BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
-  QMainWindow( parent, wflags ),
-  monitor_( this ),
-  wasMaximized_( false )
+    QMainWindow( parent, wflags ),
+    monitor_( this ),
+    wasMaximized_( false )
 {
-  Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
+    Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
 
-  // lock toolbars action
-  addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock Toolbars", this ) );
-  lockToolBarsAction().setCheckable( true );
-  lockToolBarsAction().setChecked( true );
-  connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
+    // lock toolbars action
+    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock Toolbars", this ) );
+    lockToolBarsAction().setCheckable( true );
+    lockToolBarsAction().setChecked( true );
+    connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
 
-  // show menu action
-  addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "&Show Menu Bar", this ) );
-  showMenuBarAction().setCheckable( true );
-  showMenuBarAction().setChecked( true );
-  showMenuBarAction().setShortcut( Qt::CTRL + Qt::Key_M );
-  showMenuBarAction().setEnabled( false );
-  connect( &showMenuBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleMenuBar( bool ) ) );
+    // show menu action
+    addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "&Show Menu Bar", this ) );
+    showMenuBarAction().setCheckable( true );
+    showMenuBarAction().setChecked( true );
+    showMenuBarAction().setShortcut( Qt::CTRL + Qt::Key_M );
+    showMenuBarAction().setEnabled( false );
+    connect( &showMenuBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleMenuBar( bool ) ) );
 
-  // show statusbar
-  addAction( showStatusBarAction_ = new QAction( "&Show Status Bar", this ) );
-  showStatusBarAction().setCheckable( true );
-  showStatusBarAction().setChecked( true );
-  showStatusBarAction().setEnabled( false );
-  connect( &showStatusBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStatusBar( bool ) ) );
+    // show statusbar
+    addAction( showStatusBarAction_ = new QAction( "&Show Status Bar", this ) );
+    showStatusBarAction().setCheckable( true );
+    showStatusBarAction().setChecked( true );
+    showStatusBarAction().setEnabled( false );
+    connect( &showStatusBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStatusBar( bool ) ) );
 
-  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-  connect( this, SIGNAL( toolbarConfigurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
-  _updateConfiguration();
+    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( this, SIGNAL( toolbarConfigurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
+    _updateConfiguration();
 
 }
 
@@ -88,29 +88,29 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
 void BaseMainWindow::setOptionName( const QString& name )
 {
 
-  Debug::Throw( "BaseMainWindow::setOptionName.\n" );
-  monitor_.setOptionName( name );
+    Debug::Throw( "BaseMainWindow::setOptionName.\n" );
+    monitor_.setOptionName( name );
 
-  if( name.isEmpty() ) {
+    if( name.isEmpty() ) {
 
-    lockToolBarsOptionName_.clear();
-    showMenuBarOptionName_.clear();
+        lockToolBarsOptionName_.clear();
+        showMenuBarOptionName_.clear();
 
-  } else {
+    } else {
 
-    lockToolBarsOptionName_ = name+"_LOCK_TOOLBARS";
-    if( !XmlOptions::get().find( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
-    else { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
+        lockToolBarsOptionName_ = name+"_LOCK_TOOLBARS";
+        if( !XmlOptions::get().find( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
+        else { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
 
-    showMenuBarOptionName_ = name+"_SHOW_MENU";
-    if( !XmlOptions::get().find( showMenuBarOptionName() ) ) XmlOptions::get().set<bool>( showMenuBarOptionName(), showMenuBarAction().isChecked() );
-    else showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) );
+        showMenuBarOptionName_ = name+"_SHOW_MENU";
+        if( !XmlOptions::get().find( showMenuBarOptionName() ) ) XmlOptions::get().set<bool>( showMenuBarOptionName(), showMenuBarAction().isChecked() );
+        else showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) );
 
-    showStatusBarOptionName_ = name+"_SHOW_STATUS";
-    if( !XmlOptions::get().find( showStatusBarOptionName() ) ) XmlOptions::get().set<bool>( showStatusBarOptionName(), showStatusBarAction().isChecked() );
-    else showStatusBarAction().setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName() ) );
+        showStatusBarOptionName_ = name+"_SHOW_STATUS";
+        if( !XmlOptions::get().find( showStatusBarOptionName() ) ) XmlOptions::get().set<bool>( showStatusBarOptionName(), showStatusBarAction().isChecked() );
+        else showStatusBarAction().setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName() ) );
 
-  }
+    }
 
 }
 
@@ -118,8 +118,8 @@ void BaseMainWindow::setOptionName( const QString& name )
 void BaseMainWindow::setWindowTitle( const QString& title )
 {
 
-  Debug::Throw( "BaseMainWindow::setWindowTitle.\n" );
-  QMainWindow::setWindowTitle( Util::windowTitle( title ) );
+    Debug::Throw( "BaseMainWindow::setWindowTitle.\n" );
+    QMainWindow::setWindowTitle( Util::windowTitle( title ) );
 
 }
 
@@ -127,44 +127,44 @@ void BaseMainWindow::setWindowTitle( const QString& title )
 void BaseMainWindow::setMenuBar( QMenuBar* menu )
 {
 
-  Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
-  QMainWindow::setMenuBar( menu );
-  if( !menuBar() ) return;
-  menuBar()->setVisible( showMenuBarAction().isChecked() );
-  showMenuBarAction().setEnabled( true );
+    Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
+    QMainWindow::setMenuBar( menu );
+    if( !menuBar() ) return;
+    menuBar()->setVisible( showMenuBarAction().isChecked() );
+    showMenuBarAction().setEnabled( true );
 }
 
 //__________________________________________________
 void BaseMainWindow::setStatusBar( QStatusBar* widget )
 {
 
-  Debug::Throw( "BaseMainWindow::setStatusBar.\n" );
-  QMainWindow::setStatusBar( widget );
-  if( !statusBar() ) return;
-  statusBar()->setVisible( showStatusBarAction().isChecked() );
-  showStatusBarAction().setEnabled( true );
+    Debug::Throw( "BaseMainWindow::setStatusBar.\n" );
+    QMainWindow::setStatusBar( widget );
+    if( !statusBar() ) return;
+    statusBar()->setVisible( showStatusBarAction().isChecked() );
+    showStatusBarAction().setEnabled( true );
 }
 
 //__________________________________________________
 QSize BaseMainWindow::minimumSizeHint( void ) const
 {
-  QSize out( monitor_.sizeHint() );
-  return out.isValid() ? out:QMainWindow::minimumSizeHint();
+    QSize out( monitor_.sizeHint() );
+    return out.isValid() ? out:QMainWindow::minimumSizeHint();
 }
 
 //__________________________________________________
 QSize BaseMainWindow::sizeHint( void ) const
 {
-  QSize out( monitor_.sizeHint() );
-  return out.isValid() ? out:QMainWindow::sizeHint();
+    QSize out( monitor_.sizeHint() );
+    return out.isValid() ? out:QMainWindow::sizeHint();
 }
 
 //________________________________________________________________
 void BaseMainWindow::centerOnDesktop( void )
 {
 
-  Debug::Throw( "BaseMainWindow::centerOnDesktop.\n" );
-  move( QtUtil::centerOnDesktop( sizeHint() ) );
+    Debug::Throw( "BaseMainWindow::centerOnDesktop.\n" );
+    move( QtUtil::centerOnDesktop( sizeHint() ) );
 
 }
 
@@ -172,33 +172,33 @@ void BaseMainWindow::centerOnDesktop( void )
 void BaseMainWindow::centerOnWidget( QWidget* parent )
 {
 
-  Debug::Throw( "BaseMainWindow::centerOnWidget.\n" );
-  move( QtUtil::centerOnWidget( sizeHint(), parent ) );
+    Debug::Throw( "BaseMainWindow::centerOnWidget.\n" );
+    move( QtUtil::centerOnWidget( sizeHint(), parent ) );
 
 }
 
 //________________________________________________________________
 QMenu* BaseMainWindow::createPopupMenu( void )
 {
-  Debug::Throw( "BaseMainWindow::createPopupMenu.\n" );
-  if( !_hasToolBars() )
-  {
+    Debug::Throw( "BaseMainWindow::createPopupMenu.\n" );
+    if( !_hasToolBars() )
+    {
 
-    QMenu* menu = new QMenu( this );
-    menu->addAction(&showMenuBarAction() );
-    menu->addAction(&showStatusBarAction() );
-    return menu;
+        QMenu* menu = new QMenu( this );
+        menu->addAction(&showMenuBarAction() );
+        menu->addAction(&showStatusBarAction() );
+        return menu;
 
-  } else {
+    } else {
 
-    ToolBarMenu& menu = toolBarMenu( this );
-    menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-    menu.iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-    connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
-    connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateToolButtonIconSize( IconSize::Size ) ) );
-    return &menu;
+        ToolBarMenu& menu = toolBarMenu( this );
+        menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+        menu.iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+        connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
+        connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateToolButtonIconSize( IconSize::Size ) ) );
+        return &menu;
 
-  }
+    }
 
 }
 
@@ -206,66 +206,66 @@ QMenu* BaseMainWindow::createPopupMenu( void )
 ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
 {
 
-  Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
-  ToolBarMenu* menu = new ToolBarMenu( parent );
+    Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
+    ToolBarMenu* menu = new ToolBarMenu( parent );
 
-  bool has_lockable_toolbars( installToolBarsActions( *menu->addMenu( "&ToolBars" ) ) );
-  if( has_lockable_toolbars )
-  {
-    menu->addSeparator();
-    menu->addAction( &lockToolBarsAction() );
-  }
+    bool has_lockable_toolbars( installToolBarsActions( *menu->addMenu( "&ToolBars" ) ) );
+    if( has_lockable_toolbars )
+    {
+        menu->addSeparator();
+        menu->addAction( &lockToolBarsAction() );
+    }
 
-  // show/hide menu
-  menu->addAction( &showMenuBarAction() );
-  menu->addAction( &showStatusBarAction() );
+    // show/hide menu
+    menu->addAction( &showMenuBarAction() );
+    menu->addAction( &showStatusBarAction() );
 
-  return *menu;
+    return *menu;
 
 }
 
 //________________________________________________________________
 bool BaseMainWindow::installToolBarsActions( QMenu& menu )
 {
-  Debug::Throw( "BaseMainWindow::installToolBarsActions.\n" );
+    Debug::Throw( "BaseMainWindow::installToolBarsActions.\n" );
 
-  bool has_lockable_toolbars( false );
-  QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
-  for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
-  {
+    bool has_lockable_toolbars( false );
+    QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
+    for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
+    {
 
-    CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
-    if( toolbar ) {
+        CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
+        if( toolbar ) {
 
-      Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << (*iter)->windowTitle() << endl;
-      menu.addAction( &toolbar->visibilityAction() );
+            Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << (*iter)->windowTitle() << endl;
+            menu.addAction( &toolbar->visibilityAction() );
 
-    } else {
+        } else {
 
-      // add visibility action
-      Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << (*iter)->windowTitle() << endl;
-      QAction* action = new QAction( (*iter)->windowTitle(), &menu );
-      action->setCheckable( true );
-      action->setChecked( (*iter)->isVisible() );
-      connect( action, SIGNAL( toggled( bool ) ), (*iter), SLOT( setVisible( bool ) ) );
-      menu.addAction( action );
+            // add visibility action
+            Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << (*iter)->windowTitle() << endl;
+            QAction* action = new QAction( (*iter)->windowTitle(), &menu );
+            action->setCheckable( true );
+            action->setChecked( (*iter)->isVisible() );
+            connect( action, SIGNAL( toggled( bool ) ), (*iter), SLOT( setVisible( bool ) ) );
+            menu.addAction( action );
+
+        }
+
+        // skip if lockable toolbar was already found
+        if( has_lockable_toolbars ) continue;
+
+        // skip if parent is not this
+        if( !((*iter)->parentWidget() == this) ) continue;
+
+        // try cast to CustomToolBar and check for 'lock from options'
+        if( toolbar && toolbar->lockFromOptions() ) continue;
+
+        has_lockable_toolbars = true;
 
     }
 
-    // skip if lockable toolbar was already found
-    if( has_lockable_toolbars ) continue;
-
-    // skip if parent is not this
-    if( !((*iter)->parentWidget() == this) ) continue;
-
-    // try cast to CustomToolBar and check for 'lock from options'
-    if( toolbar && toolbar->lockFromOptions() ) continue;
-
-    has_lockable_toolbars = true;
-
-  }
-
-  return has_lockable_toolbars;
+    return has_lockable_toolbars;
 
 }
 
@@ -273,17 +273,17 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
 void BaseMainWindow::uniconify( void )
 {
 
-  Debug::Throw( "BaseMainWindow::uniconify" );
-  if( isMinimized() )
-  {
+    Debug::Throw( "BaseMainWindow::uniconify" );
+    if( isMinimized() )
+    {
 
-    if( _wasMaximized() ) showMaximized();
-    else showNormal();
+        if( _wasMaximized() ) showMaximized();
+        else showNormal();
 
-  } else if( isHidden() ) show();
+    } else if( isHidden() ) show();
 
-  activateWindow();
-  raise();
+    activateWindow();
+    raise();
 
 }
 
@@ -291,69 +291,69 @@ void BaseMainWindow::uniconify( void )
 bool BaseMainWindow::event( QEvent* event )
 {
 
-  // check that all needed widgets/actions are valid and checked.
-  switch (event->type())
-  {
-
-    case QEvent::WindowStateChange:
+    // check that all needed widgets/actions are valid and checked.
+    switch (event->type())
     {
-      // cast
-      QWindowStateChangeEvent *state_event( static_cast<QWindowStateChangeEvent*>(event) );
 
-      if( windowState() & Qt::WindowMinimized )
-      { _setWasMaximized( state_event->oldState() & Qt::WindowMaximized ); }
+        case QEvent::WindowStateChange:
+        {
+            // cast
+            QWindowStateChangeEvent *state_event( static_cast<QWindowStateChangeEvent*>(event) );
 
+            if( windowState() & Qt::WindowMinimized )
+            { _setWasMaximized( state_event->oldState() & Qt::WindowMaximized ); }
+
+        }
+        break;
+
+        default: break;
     }
-    break;
 
-    default: break;
-  }
-
-  return QMainWindow::event( event );
+    return QMainWindow::event( event );
 
 }
 
 //________________________________________________________________
 bool BaseMainWindow::_hasToolBars( void ) const
 {
-  Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
-  return (bool) qFindChild<QToolBar*>( this );
+    Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
+    return (bool) qFindChild<QToolBar*>( this );
 }
 
 //____________________________________________________________
 void BaseMainWindow::_updateConfiguration( void )
 {
 
-  Debug::Throw( "BaseMainWindow::_updateConfiguration.\n" );
+    Debug::Throw( "BaseMainWindow::_updateConfiguration.\n" );
 
-  // icon size
-  setIconSize( IconSize( this, (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
+    // icon size
+    setIconSize( IconSize( this, (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
 
-  // text label for toolbars
-  setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-
-  // toolbars locked
-  if( hasOptionName() )
-  {
+    // text label for toolbars
+    setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
 
     // toolbars locked
-    if( XmlOptions::get().find( lockToolBarsOptionName() ) )
-    { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
+    if( hasOptionName() )
+    {
 
-    // menu visibility
-    if( XmlOptions::get().find( showMenuBarOptionName() ) )
-    { showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) ); }
+        // toolbars locked
+        if( XmlOptions::get().find( lockToolBarsOptionName() ) )
+        { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
 
-  }
+        // menu visibility
+        if( XmlOptions::get().find( showMenuBarOptionName() ) )
+        { showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) ); }
+
+    }
 }
 
 //____________________________________________________________
 void BaseMainWindow::_updateToolButtonStyle( Qt::ToolButtonStyle style )
 {
 
-  Debug::Throw( "BaseMainWindow::_updateToolButtonStyle.\n" );
-  XmlOptions::get().set<int>( "TOOLBUTTON_TEXT_POSITION", (int)style );
-  emit toolbarConfigurationChanged();
+    Debug::Throw( "BaseMainWindow::_updateToolButtonStyle.\n" );
+    XmlOptions::get().set<int>( "TOOLBUTTON_TEXT_POSITION", (int)style );
+    emit toolbarConfigurationChanged();
 
 }
 
@@ -361,58 +361,58 @@ void BaseMainWindow::_updateToolButtonStyle( Qt::ToolButtonStyle style )
 void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 {
 
-  Debug::Throw( "BaseMainWindow::_updateToolButtonIconSize.\n" );
-  XmlOptions::get().set<int>( "TOOLBUTTON_ICON_SIZE", size );
-  emit toolbarConfigurationChanged();
+    Debug::Throw( "BaseMainWindow::_updateToolButtonIconSize.\n" );
+    XmlOptions::get().set<int>( "TOOLBUTTON_ICON_SIZE", size );
+    emit toolbarConfigurationChanged();
 
 }
 
 //____________________________________________________________
 void BaseMainWindow::_lockToolBars( bool value )
 {
-  Debug::Throw( "BaseMainWindow::_lockToolBars.\n" );
-  QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
-  for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
-  {
+    Debug::Throw( "BaseMainWindow::_lockToolBars.\n" );
+    QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
+    for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
+    {
 
-    // skip if parent is not this
-    if( !((*iter)->window() == this) ) continue;
+        // skip if parent is not this
+        if( !((*iter)->window() == this) ) continue;
 
-    // try cast to CustomToolBar and check for 'lock from options'
-    CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
-    if( toolbar && toolbar->lockFromOptions() ) continue;
+        // try cast to CustomToolBar and check for 'lock from options'
+        CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
+        if( toolbar && toolbar->lockFromOptions() ) continue;
 
-    // update movability
-    (*iter)->setMovable( !value );
+        // update movability
+        (*iter)->setMovable( !value );
 
-  }
+    }
 
-  if( hasOptionName() ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), value );
-  return;
+    if( hasOptionName() ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), value );
+    return;
 }
 
 //____________________________________________________________
 void BaseMainWindow::_toggleMenuBar( bool value )
 {
-  Debug::Throw( "BaseMainWindow::_toggleMenuBar.\n" );
+    Debug::Throw( "BaseMainWindow::_toggleMenuBar.\n" );
 
-  if( !menuWidget() ) return;
-  menuWidget()->setVisible( value );
+    if( !menuWidget() ) return;
+    menuWidget()->setVisible( value );
 
-  // save option
-  if( hasOptionName() ) XmlOptions::get().set<bool>( showMenuBarOptionName(), value );
+    // save option
+    if( hasOptionName() ) XmlOptions::get().set<bool>( showMenuBarOptionName(), value );
 
 }
 
 //____________________________________________________________
 void BaseMainWindow::_toggleStatusBar( bool value )
 {
-  Debug::Throw( "BaseMainWindow::_toggleStatusBar.\n" );
+    Debug::Throw( "BaseMainWindow::_toggleStatusBar.\n" );
 
-  if( !statusBar() ) return;
-  statusBar()->setVisible( value );
+    if( !statusBar() ) return;
+    statusBar()->setVisible( value );
 
-  // save option
-  if( hasOptionName() ) XmlOptions::get().set<bool>( showStatusBarOptionName(), value );
+    // save option
+    if( hasOptionName() ) XmlOptions::get().set<bool>( showStatusBarOptionName(), value );
 
 }

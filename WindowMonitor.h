@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file WindowMonitor.h
-  \brief used to automatically save size of top level widgets
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file WindowMonitor.h
+\brief used to automatically save size of top level widgets
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QBasicTimer>
@@ -43,91 +43,91 @@
 class WindowMonitor: public QObject, public Counter
 {
 
-  public:
+    public:
 
-  //! constructor
-  WindowMonitor( QWidget* );
+    //! constructor
+    WindowMonitor( QWidget* );
 
-  //! mode
-  enum Mode
-  {
-    NONE = 0,
-    SIZE = 1<<0,
-    POSITION = 1<<1
-  };
+    //! mode
+    enum Mode
+    {
+        NONE = 0,
+        SIZE = 1<<0,
+        POSITION = 1<<1
+    };
 
-  //! mode
-  void setMode( const unsigned int value )
-  { mode_ = value; }
+    //! mode
+    void setMode( const unsigned int value )
+    { mode_ = value; }
 
-  //! size option name
-  virtual void setOptionName( const QString& );
+    //! size option name
+    virtual void setOptionName( const QString& );
 
-  //! size hint
-  /*! an invalid size is returned when option name is not set */
-  QSize sizeHint( void ) const;
+    //! size hint
+    /*! an invalid size is returned when option name is not set */
+    QSize sizeHint( void ) const;
 
-  //! position
-  QPoint position( void ) const;
+    //! position
+    QPoint position( void ) const;
 
-  //! event filter
-  virtual bool eventFilter( QObject*, QEvent* );
+    //! event filter
+    virtual bool eventFilter( QObject*, QEvent* );
 
-  protected:
+    protected:
 
-  //! timer event
-  /* need to save updated window size */
-  virtual void timerEvent( QTimerEvent* );
+    //! timer event
+    /* need to save updated window size */
+    virtual void timerEvent( QTimerEvent* );
 
-  private:
+    private:
 
-  //! mode
-  const unsigned int& _mode( void ) const
-  { return mode_; }
+    //! mode
+    const unsigned int& _mode( void ) const
+    { return mode_; }
 
-  //! true when option name was set
-  bool _hasOptionName( void ) const
-  { return !width_option_name_.isEmpty(); }
+    //! true when option name was set
+    bool _hasOptionName( void ) const
+    { return !widthOptionName_.isEmpty(); }
 
-  //! size option name
-  virtual const QString& _heightOptionName( void ) const
-  { return height_option_name_; }
+    //! size option name
+    virtual const QString& _heightOptionName( void ) const
+    { return heightOptionName_; }
 
-  //! size option name
-  virtual const QString& _widthOptionName( void ) const
-  { return width_option_name_; }
+    //! size option name
+    virtual const QString& _widthOptionName( void ) const
+    { return widthOptionName_; }
 
-  //! x option name
-  virtual const QString& _xOptionName( void ) const
-  { return x_option_name_; }
+    //! x option name
+    virtual const QString& _xOptionName( void ) const
+    { return xOptionName_; }
 
-  //! y option name
-  virtual const QString& _yOptionName( void ) const
-  { return y_option_name_; }
+    //! y option name
+    virtual const QString& _yOptionName( void ) const
+    { return yOptionName_; }
 
-  //! save window size
-  void _saveWindowSize( void ) const;
+    //! save window size
+    void _saveWindowSize( void ) const;
 
-  //! save position
-  void _saveWindowPosition( void ) const;
+    //! save position
+    void _saveWindowPosition( void ) const;
 
-  //! resize timer
-  QBasicTimer timer_;
+    //! resize timer
+    QBasicTimer timer_;
 
-  //! mode
-  unsigned int mode_;
+    //! mode
+    unsigned int mode_;
 
-  //! window size option name
-  QString width_option_name_;
+    //! window size option name
+    QString widthOptionName_;
 
-  //! window size option name
-  QString height_option_name_;
+    //! window size option name
+    QString heightOptionName_;
 
-  //! position option name
-  QString x_option_name_;
+    //! position option name
+    QString xOptionName_;
 
-  //! position option name
-  QString y_option_name_;
+    //! position option name
+    QString yOptionName_;
 
 };
 

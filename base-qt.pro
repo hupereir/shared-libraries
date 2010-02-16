@@ -30,6 +30,7 @@ HEADERS = \
   ColumnSortingMenu.h \
   CounterDialog.h \
   CounterModel.h \
+  CursorMonitor.h \
   CustomComboBox.h \
   CustomDialog.h \
   CustomPixmap.h \
@@ -150,6 +151,7 @@ SOURCES = \
   ColumnSortingMenu.cpp \
   CounterDialog.cpp \
   CounterModel.cpp \
+  CursorMonitor.cpp \
   CustomComboBox.cpp \
   CustomDialog.cpp \
   CustomPixmap.cpp \
