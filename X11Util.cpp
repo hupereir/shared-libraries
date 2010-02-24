@@ -39,9 +39,12 @@ using namespace std;
 
 //_______________________
 int debug_level = 1;
+
+#ifdef Q_WS_X11
 const unsigned long netwm_sendevent_mask = (
   SubstructureRedirectMask|
   SubstructureNotifyMask);
+#endif
 
 //________________________________________________________________________
 X11Util& X11Util::get( void )
@@ -492,10 +495,10 @@ void X11Util::_initializeAtomNames( void )
 void X11Util::printWindowState( const QWidget& widget )
 {
 
+  #ifdef Q_WS_X11
   Display* display( QX11Info::display() );
   Atom net_wm_state( findAtom(_NET_WM_STATE) );
 
-  #ifdef Q_WS_X11
   Atom type;
   int format;
   unsigned char *data;
