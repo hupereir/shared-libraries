@@ -75,7 +75,7 @@ ColorMenu::ColorSet ColorMenu::colors( void ) const
 void ColorMenu::paintEvent( QPaintEvent* event )
 {
 
-  static const int margin = 2;
+  static const int margin = 5;
 
   // default paint
   QMenu::paintEvent( event );
@@ -89,11 +89,10 @@ void ColorMenu::paintEvent( QPaintEvent* event )
   {
     QRect action_rect( actionGeometry( iter->first ) );
     if( !event->rect().intersects( action_rect ) ) continue;
-    action_rect.adjust( 2*margin + 20, margin, -2*margin-1, -margin );
-    action_rect.setWidth( action_rect.height() );
+    action_rect.adjust( 2*margin, margin+1, -2*margin-1, -margin );
     painter.setBrush( colors_[iter->second] );
     painter.setRenderHints(QPainter::Antialiasing );
-    painter.drawEllipse( action_rect );
+    painter.drawRoundedRect( action_rect, 4, 4 );
   }
 
   painter.end();
