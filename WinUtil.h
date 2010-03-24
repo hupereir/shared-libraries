@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file    WinUtil.h
-  \brief   some Win32 specific utilities
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
+\file    WinUtil.h
+\brief   some Win32 specific utilities
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include <cassert>
@@ -39,36 +39,39 @@
 class WinUtil
 {
 
-  public:
+    public:
 
-  //! constructor
-  WinUtil( QWidget* target ):
-    target_( target )
+    //! constructor
+    WinUtil( QWidget* target ):
+        target_( target )
     { assert( target_ ); }
 
-  //! update layered widget using pixmap
-  void update( QPixmap&, double ) const;
+    //! update layered widget using pixmap
+    void update( QPixmap&, double ) const;
 
-  //! set flag
-  void setFlag( long int, bool value = true ) const;
+    //! toggle hide from taskbar for Windows
+    bool toggleHideFromTaskbar( bool ) const;
 
-  //! has flag
-  bool hasFlag( long int ) const;
+    //! set flag
+    void setFlag( long int, bool value = true ) const;
 
-  private:
+    //! has flag
+    bool hasFlag( long int ) const;
 
-  // target widget
-  QWidget& _target( void ) const
-  { return *target_; }
+    private:
 
-  // returns true if widget is of type layered window
-  bool _isLayered() const;
+    // target widget
+    QWidget& _target( void ) const
+    { return *target_; }
 
-  //! set widget a layered window
-  void _setLayered() const;
+    // returns true if widget is of type layered window
+    bool _isLayered() const;
 
-  //! target widget
-  QWidget *target_;
+    //! set widget a layered window
+    void _setLayered() const;
+
+    //! target widget
+    QWidget *target_;
 
 };
 
