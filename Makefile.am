@@ -44,6 +44,7 @@ noinst_HEADERS = \
   CustomToolButton.h \
   DebugMenu.h \
   DockPanel.h \
+  ElidedLabel.h \
   ErrorHandler.h \
   FileDialog.h \
   FileList.h \
@@ -166,6 +167,7 @@ libbase_qt_a_SOURCES = \
   CustomToolButton.cpp \
   DebugMenu.cpp \
   DockPanel.cpp \
+  ElidedLabel.cpp \
   ErrorHandler.cpp \
   FileDialog.cpp \
   FileList.cpp \
