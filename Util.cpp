@@ -23,11 +23,11 @@
 
 
 /*!
-   \file    Util.cpp
-   \brief   some facilities used everywhere
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
+\file    Util.cpp
+\brief   some facilities used everywhere
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include <QDir>
@@ -54,107 +54,112 @@ static const int LONGSTR = 256;
 QString Util::env( const QString& val, const QString& default_value )
 {
 
-  QStringList environment( QProcess::systemEnvironment() );
-  for( QStringList::iterator iter = environment.begin(); iter != environment.end(); iter++ )
-  {
-    int position( iter->indexOf( "=" ) );
-    if( position <= 0 ) continue;
+    QStringList environment( QProcess::systemEnvironment() );
+    for( QStringList::iterator iter = environment.begin(); iter != environment.end(); iter++ )
+    {
+        int position( iter->indexOf( "=" ) );
+        if( position <= 0 ) continue;
 
-    QString var( iter->left( position ) );
-    if( var == QString( val ) ) return iter->mid( position+1 );
-  }
+        QString var( iter->left( position ) );
+        if( var == QString( val ) ) return iter->mid( position+1 );
+    }
 
-  return default_value;
+    return default_value;
 
 }
 
 //______________________________________________________________________
 QString Util::user( void )
 {
-  Debug::Throw( "Util::user.\n" );
-  #ifdef Q_WS_WIN
-  return env( "USERNAME", "unknown user" );
-  #else
-  // first try look for USERNAME environment variable
-  // if failed, try USER
-  // if failed, return unknown.
-  return env( "USERNAME", env( "USER", "unknown user" ) );
-  #endif
+    Debug::Throw( "Util::user.\n" );
+    #ifdef Q_WS_WIN
+    return env( "USERNAME", "unknown user" );
+    #else
+    // first try look for USERNAME environment variable
+    // if failed, try USER
+    // if failed, return unknown.
+    return env( "USERNAME", env( "USER", "unknown user" ) );
+    #endif
 }
 
 //______________________________________________________________________
 QString Util::domain( void )
 {
-  Debug::Throw( "Util::domain.\n" );
+    Debug::Throw( "Util::domain.\n" );
 
-  #if QT_VERSION >= 0x040500
+    #if QT_VERSION >= 0x040500
 
-  return QHostInfo::localDomainName();
+    return QHostInfo::localDomainName();
 
-  #else
-  #ifdef Q_WS_X11
+    #else
+    #ifdef Q_WS_X11
 
-  // use build-in unix function
-  char *buf = new char[ LONGSTR ];
-  if( !buf ) return "";
-  getdomainname( buf, LONGSTR );
-  QString out( buf );
-  delete[] buf;
-  return out;
+    // use build-in unix function
+    char *buf = new char[ LONGSTR ];
+    if( !buf ) return "";
+    getdomainname( buf, LONGSTR );
+    QString out( buf );
+    delete[] buf;
+    return out;
 
-  #else
+    #else
 
-  // use system environment.
-  // should work for windows
-  return env( "USERDOMAIN","localdomain");
-  #endif
-  #endif
+    // use system environment.
+    // should work for windows
+    return env( "USERDOMAIN","localdomain");
+    #endif
+    #endif
 }
 
 //_____________________________________________________
 QString Util::windowTitle( const QString& title )
 {
 
-  Debug::Throw( "Util::windowTitle.\n" );
-  QString host( Util::host() );
-  if( host == "localhost" ) return title;
-  else {
-    QString buffer;
-    QTextStream( &buffer ) << title << " [" << Util::host() << "]";
-    return buffer;
-  }
+    Debug::Throw( "Util::windowTitle.\n" );
+
+    #if Q_WS_X11
+    QString host( Util::host() );
+    if( host == "localhost" ) return title;
+    else {
+        QString buffer;
+        QTextStream( &buffer ) << title << " [" << Util::host() << "]";
+        return buffer;
+    }
+    #endif
+
+    return title;
 
 }
 
 //______________________________________________________________________
 QString Util::home( void )
 {
-  Debug::Throw( "Util::home.\n" );
-  return QDir::homePath();
+    Debug::Throw( "Util::home.\n" );
+    return QDir::homePath();
 }
 
 //______________________________________________________________________
 QString Util::tmp( void )
 {
-  Debug::Throw( "Util::tmp.\n" );
-  return QDir::tempPath();
+    Debug::Throw( "Util::tmp.\n" );
+    return QDir::tempPath();
 }
 //______________________________________________________________________
 QString Util::host( bool short_name )
 {
 
-  // use system environment
-  // it does not work for windows
-  Debug::Throw( "Util::host.\n" );
-  QString out( QHostInfo::localHostName() );
-  if( ! short_name ) return out;
-  else {
+    // use system environment
+    // it does not work for windows
+    Debug::Throw( "Util::host.\n" );
+    QString out( QHostInfo::localHostName() );
+    if( ! short_name ) return out;
+    else {
 
-    int pos( out.indexOf( "." ) );
-    if( pos <0 ) return out;
-    return out.left( pos );
+        int pos( out.indexOf( "." ) );
+        if( pos <0 ) return out;
+        return out.left( pos );
 
-  }
+    }
 
 }
 

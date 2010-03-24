@@ -25,57 +25,57 @@
 #define Util_h
 
 /*!
-   \file    Util.h
-   \brief   some utilities used everywhere
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
+\file    Util.h
+\brief   some utilities used everywhere
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 #include <QStringList>
 
 #include <list>
 
 /*!
-   \class   Util
-   \brief   some utilities used everywhere
+\class   Util
+\brief   some utilities used everywhere
 */
 class Util
 {
-  public:
+    public:
 
-  //! square a number
-  template< typename T >
-  static T sqr( const T& t)
-  { return t*t; }
+    //! square a number
+    template< typename T >
+        static T sqr( const T& t)
+    { return t*t; }
 
-  //! returns environment variable or empty string
-  static QString env( const QString&, const QString& default_value = "" );
+    //! returns environment variable or empty string
+    static QString env( const QString&, const QString& default_value = "" );
 
-  //!  user name
-  static QString user( void );
+    //!  user name
+    static QString user( void );
 
-  //! returns the domain name
-  static QString domain( void );
+    //! returns the domain name
+    static QString domain( void );
 
-  //! user home directory
-  static QString home( void );
+    //! user home directory
+    static QString home( void );
 
-  //! temporary directory ("/tmp")
-  static QString tmp( void );
+    //! temporary directory ("/tmp")
+    static QString tmp( void );
 
-  /*! returns the host name.
+    /*! returns the host name.
     \par short_name if true returns only the string located before the first '.'
-  */
-  static QString host( bool short_name = false );
+    */
+    static QString host( bool short_name = false );
 
-  //! append host to input string to form window title
-  static QString windowTitle( const QString& );
+    //! append host to input string to form window title
+    static QString windowTitle( const QString& );
 
-  //! application pid
-  static int pid( void );
+    //! application pid
+    static int pid( void );
 
-  //! returns the work directory
-  static QString workingDirectory( void );
+    //! returns the work directory
+    static QString workingDirectory( void );
 
 };
 
