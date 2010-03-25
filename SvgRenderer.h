@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file SvgRenderer.h
-  \brief construct pixmap of given size using Svg renderer
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file SvgRenderer.h
+\brief construct pixmap of given size using Svg renderer
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QSvgRenderer>
@@ -40,33 +40,58 @@
 //! construct pixmap of given size using Svg renderer
 namespace SVG
 {
-  class SvgRenderer: public QSvgRenderer
-  {
+    class SvgRenderer: public QSvgRenderer
+    {
 
-    public:
+        public:
 
-    //! constructor
-    SvgRenderer( void );
+        //! constructor
+        SvgRenderer( void );
 
-    //! destructor
-    virtual ~SvgRenderer( void )
-    {}
+        //! destructor
+        virtual ~SvgRenderer( void )
+        {}
 
-    //! render
-    void render( QPaintDevice&, const double& offset = 0, const QString& id = QString() );
+        //! render
+        void render( QPaintDevice&, const double& offset = 0, const QString& id = QString() );
 
-    //! validity
-    virtual bool isValid( void ) const;
+        //! validity
+        virtual bool isValid( void ) const;
 
-    //! configuration
-    bool updateConfiguration( void );
+        //! configuration
+        bool updateConfiguration( void );
 
-    private:
+        private:
 
-    bool drawOverlay_;
+        class Margins
+        {
+            public:
+
+            //! constructor
+            Margins( void ):
+                left(0),
+                right(0),
+                top(0),
+                bottom(0)
+            {}
+
+            double left;
+            double right;
+            double top;
+            double bottom;
+        };
+
+        //! load margins
+        Margins _margins( void ) const;
+
+        //! true if render has overlay
+        bool _hasOverlay( void ) const;
+        bool _hasOverlayMask( void ) const;
+
+        bool drawOverlay_;
 
 
-  };
+    };
 
 };
 #endif

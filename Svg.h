@@ -5,32 +5,32 @@
 // $Id$
 
 /******************************************************************************
- *
- * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
- *
- * This is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This software is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * software; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA  02111-1307 USA
- *
- *
- *******************************************************************************/
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
+*******************************************************************************/
 
 /*!
-  \file    Svg.h
-  \brief   Icon filenames
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
+\file    Svg.h
+\brief   Icon filenames
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 
@@ -42,29 +42,45 @@
 #include "SvgId.h"
 
 /*
-  BaseSvg is not necessary here
-  but it is included to avoid conflicts
-  between icons wrapping names
+BaseSvg is not necessary here
+but it is included to avoid conflicts
+between icons wrapping names
 */
 
 //! namespace for icon static name wrappers
 namespace SVG
 {
 
-  static const QString TOP_LEFT="topleft";
-  static const QString TOP="top";
-  static const QString TOP_RIGHT="topright";
-  static const QString RIGHT="right";
-  static const QString BOTTOM_RIGHT="bottomright";
-  static const QString BOTTOM="bottom";
-  static const QString BOTTOM_LEFT="bottomleft";
-  static const QString LEFT="left";
-  static const QString CENTER="center";
+    static const QString TOP_LEFT="topleft";
+    static const QString TOP="top";
+    static const QString TOP_RIGHT="topright";
+    static const QString RIGHT="right";
+    static const QString BOTTOM_RIGHT="bottomright";
+    static const QString BOTTOM="bottom";
+    static const QString BOTTOM_LEFT="bottomleft";
+    static const QString LEFT="left";
+    static const QString CENTER="center";
 
+    static const QString MASK_TOP_LEFT="mask-overlay-topleft";
+    static const QString MASK_TOP="mask-overlay-top";
+    static const QString MASK_TOP_RIGHT="mask-overlay-topright";
+    static const QString MASK_RIGHT="mask-overlay-right";
+    static const QString MASK_BOTTOM_RIGHT="mask-overlay-bottomright";
+    static const QString MASK_BOTTOM="mask-overlay-bottom";
+    static const QString MASK_BOTTOM_LEFT="mask-overlay-bottomleft";
+    static const QString MASK_LEFT="mask-overlay-left";
+    static const QString MASK_CENTER="mask-overlay-center";
 
-  //! map size and pixmap
-  typedef std::map< SvgId, QPixmap > PixmapCache;
-  typedef std::map< SvgId, QImage > ImageCache;
+    static const QString OVERLAY="overlay";
+
+    static const QString MARGIN_LEFT="hint-left-margin";
+    static const QString MARGIN_RIGHT="hint-right-margin";
+    static const QString MARGIN_TOP="hint-top-margin";
+    static const QString MARGIN_BOTTOM="hint-bottom-margin";
+
+    //! map size and pixmap
+    typedef std::map< SvgId, QPixmap > PixmapCache;
+    typedef std::map< SvgId, QImage > ImageCache;
 
 };
 
