@@ -41,6 +41,7 @@ HEADERS = \
   DebugMenu.h \
   DockPanel.h \
   ErrorHandler.h \
+  ElidedLabel.h \
   FileDialog.h \
   FileList.h \
   FileRecordBaseProperties.h \
@@ -160,6 +161,7 @@ SOURCES = \
   CustomToolButton.cpp \
   DebugMenu.cpp \
   DockPanel.cpp \
+  ElidedLabel.cpp \
   ErrorHandler.cpp \
   FileDialog.cpp \
   FileList.cpp \
