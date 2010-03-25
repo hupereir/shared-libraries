@@ -38,7 +38,7 @@
 ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
 QLabel( parent ),
 Counter( "ElidedLabel" ),
-elideMode_( Qt::ElideMiddle ),
+elideMode_( Qt::ElideLeft ),
 fullText_( text )
 {
 
@@ -55,7 +55,7 @@ fullText_( text )
 ElidedLabel::ElidedLabel(  QWidget* parent ):
 QLabel( parent ),
 Counter( "ElidedLabel" ),
-elideMode_( Qt::ElideMiddle )
+elideMode_( Qt::ElideLeft )
 {
 
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
@@ -111,5 +111,23 @@ void ElidedLabel::updateElidedText( void )
         setToolTip(QString());
 
     }
+
+}
+
+//___________________________________________________
+QSize ElidedLabel::minimumSizeHint() const
+{
+  QSize sh = QLabel::minimumSizeHint();
+  sh.setWidth(-1);
+  return sh;
+}
+
+//___________________________________________________
+QSize ElidedLabel::sizeHint() const
+{
+
+  QFontMetrics fm(fontMetrics());
+  int textWidth = fm.width(fullText_);
+  return QSize(textWidth, QLabel::sizeHint().height());
 
 }
