@@ -53,7 +53,7 @@ namespace SVG
         {}
 
         //! render
-        void render( QPaintDevice&, const double& offset = 0, const QString& id = QString() );
+        void render( QPaintDevice&, double offset = 0, const QString& id = QString() );
 
         //! validity
         virtual bool isValid( void ) const;
@@ -61,7 +61,7 @@ namespace SVG
         //! configuration
         bool updateConfiguration( void );
 
-        private:
+        protected:
 
         class Margins
         {
@@ -84,9 +84,16 @@ namespace SVG
         //! load margins
         Margins _margins( void ) const;
 
-        //! true if render has overlay
-        bool _hasOverlay( void ) const;
-        bool _hasOverlayMask( void ) const;
+        //! true if svg has overlay
+        virtual bool _hasOverlay( void ) const;
+
+        //! true if svg has all elements matching prefix
+        virtual bool _hasPrefix( QString prefix = "" ) const;
+
+        //! render prefix to image
+        virtual void _render( QImage& target, double offset = 0, QString prefix = "" );
+
+        private:
 
         bool drawOverlay_;
 

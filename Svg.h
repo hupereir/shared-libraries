@@ -61,16 +61,6 @@ namespace SVG
     static const QString LEFT="left";
     static const QString CENTER="center";
 
-    static const QString MASK_TOP_LEFT="mask-overlay-topleft";
-    static const QString MASK_TOP="mask-overlay-top";
-    static const QString MASK_TOP_RIGHT="mask-overlay-topright";
-    static const QString MASK_RIGHT="mask-overlay-right";
-    static const QString MASK_BOTTOM_RIGHT="mask-overlay-bottomright";
-    static const QString MASK_BOTTOM="mask-overlay-bottom";
-    static const QString MASK_BOTTOM_LEFT="mask-overlay-bottomleft";
-    static const QString MASK_LEFT="mask-overlay-left";
-    static const QString MASK_CENTER="mask-overlay-center";
-
     static const QString OVERLAY="overlay";
 
     static const QString MARGIN_LEFT="hint-left-margin";
