@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file CustomSlider.cpp
-  \brief customized QSlider associated to a LineEditor
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file CustomSlider.cpp
+\brief customized QSlider associated to a LineEditor
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QHBoxLayout>
@@ -41,62 +41,74 @@ using namespace std;
 
 //_________________________________________________________
 CustomSlider::CustomSlider( QWidget* parent ):
-  QWidget( parent ),
-  Counter( "CustomSlider" )
+    QWidget( parent ),
+    Counter( "CustomSlider" ),
+    spinBoxLocked_( false ),
+    sliderLocked_( false )
 {
-  Debug::Throw( "CustomSlider::CustomSlider.\n" );
+    Debug::Throw( "CustomSlider::CustomSlider.\n" );
 
-  setLayout( new QHBoxLayout() );
-  layout()->setMargin(0);
-  layout()->setSpacing(5);
+    setLayout( new QHBoxLayout() );
+    layout()->setMargin(0);
+    layout()->setSpacing(5);
 
-  layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
-  layout()->addWidget( line_edit_ = new AnimatedLineEditor( this ) );
-  line_edit_->setHasClearButton( false );
+    layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
+    layout()->addWidget( spinBox_ = new QSpinBox( this ) );
 
-  connect( line_edit_, SIGNAL( returnPressed() ),   SLOT( _updateSlider() ) );
-  connect( slider_, SIGNAL( valueChanged( int ) ),  SLOT( _updateLineEdit( int ) ) );
+    connect( spinBox_, SIGNAL( valueChanged( int ) ),   SLOT( _updateSlider( int ) ) );
+    connect( slider_, SIGNAL( valueChanged( int ) ),  SLOT( _updateSpinBox( int ) ) );
 
-  line_edit_->setMaximumSize( QSize(
-    line_edit_->fontMetrics().width("  -100  "),
-    line_edit_->height()) );
+//     spinBox_->setMaximumSize( QSize(
+//         spinBox_->fontMetrics().width("  -100  "),
+//         spinBox_->height()) );
 
 }
 
 //_________________________________________________________
 void CustomSlider::setValue( int value )
 {
-  if( value < slider_->minimum() || value > slider_->maximum() ) {
-    InformationDialog( this, "invalid value" ).exec();
-    return;
-  }
+    if( value < slider_->minimum() || value > slider_->maximum() ) {
+        InformationDialog( this, "invalid value" ).exec();
+        return;
+    }
 
-  slider_->setValue( value );
-  _updateLineEdit( value );
+    slider_->setValue( value );
+    _updateSpinBox( value );
 }
 
 //_________________________________________________________
-void CustomSlider::_updateSlider( void )
+void CustomSlider::_updateSlider( int value )
 {
-  Debug::Throw( "CustomSlider::_updateSlider.\n" );
+    Debug::Throw( "CustomSlider::_updateSlider.\n" );
 
-  // retrieve/check text from line_edit_
-  bool error( false );
-  int value( Str( line_edit_->text() ).get<int>(&error) );
-  if( error || value < slider_->minimum() || value > slider_->maximum() )
-  {
-    InformationDialog( this, "invalid value" ).exec();
+    if( sliderLocked_ )
+    {
+        sliderLocked_ = false;
+        return;
+    }
+
+    if( value < slider_->minimum() || value > slider_->maximum() )
+    {
+        InformationDialog( this, "invalid value" ).exec();
+        return;
+    }
+
+    spinBoxLocked_ = true;
+    slider_->setValue( value );
     return;
-  }
-
-  slider_->setValue( value );
-  return;
 }
 
 //_________________________________________________________
-void CustomSlider::_updateLineEdit( int value )
+void CustomSlider::_updateSpinBox( int value )
 {
-  Debug::Throw( "CustomSlider::_updateLineEdit.\n" );
-  line_edit_->setText( QString().setNum( value ) );
-  return;
+
+    if( spinBoxLocked_ )
+    {
+        spinBoxLocked_ = false;
+        return;
+    }
+
+    sliderLocked_ = true;
+    spinBox_->setValue( value );
+    return;
 }

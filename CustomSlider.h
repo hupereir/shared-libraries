@@ -26,80 +26,107 @@
 
 /*!
 \file CustomSlider.h
-\brief customized QSlider associated to a LineEditor
+\brief customized QSlider associated to a QSpinBox
 \author Hugo Pereira
 \version $Revision$
 \date $Date$
 */
 
 #include <cassert>
-#include <QSlider>
+#include <QtGui/QSlider>
+#include <QtGui/QSpinBox>
 
-#include "AnimatedLineEditor.h"
 #include "Counter.h"
 #include "Debug.h"
 /*!
 \class CustomSlider
-\brief customized QSlider associated to a LineEditor
+\brief customized QSlider associated to a QSpinBox
 */
 class CustomSlider: public QWidget, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! creator
-  CustomSlider( QWidget* parent );
+        //! creator
+        CustomSlider( QWidget* parent );
 
-  //! destructor
-  ~CustomSlider( void )
-  {}
+    //! destructor
+    ~CustomSlider( void )
+    {}
 
-  //! retrieve QSlider
-  QSlider& slider( void )
-  {
-    assert( slider_ );
-    return *slider_;
-  }
+    //! changes value
+    void setValue( int value );
 
-  //! retrieve QSlider
-  const QSlider& slider( void ) const
-  {
-    assert( slider_ );
-    return *slider_;
-  }
+    //! retrieves value
+    int value( void ) const
+    { return slider_->value(); }
 
-  //! retrieve LineEditor
-  AnimatedLineEditor& lineEditor( void )
-  {
-    assert( line_edit_ );
-    return *line_edit_;
-  }
+    //! range
+    void setRange( int minimum, int maximum )
+    {
+        setMinimum( minimum );
+        setMaximum( maximum );
+    }
 
-  //! changes value
-  void setValue( int value );
+    //! minumum
+    void setMinimum( int value )
+    {
+        slider().setMinimum( value );
+        spinBox().setMinimum( value );
+    }
 
-  //! retrieves value
-  int value( void ) const
-  { return slider_->value(); }
+    //! minumum
+    void setMaximum( int value )
+    {
+        slider().setMaximum( value );
+        spinBox().setMaximum( value );
+    }
 
-  private:
+    protected:
 
-  //! associated slider
-  QSlider *slider_;
+    //! retrieve QSlider
+    QSlider& slider( void )
+    {
+        assert( slider_ );
+        return *slider_;
+    }
 
-  //! associated LineEdit
-  AnimatedLineEditor *line_edit_;
+    //! retrieve QSlider
+    const QSlider& slider( void ) const
+    {
+        assert( slider_ );
+        return *slider_;
+    }
 
-  private slots:
+    //! retrieve QSpinBox
+    QSpinBox& spinBox( void )
+    {
+        assert( spinBox_ );
+        return *spinBox_;
+    }
 
-  //! changes QSlider value according to LineEditor
-  void _updateSlider( void );
+    private slots:
 
-  //! changes LineEditor value according to QSlider
-  void _updateLineEdit( int );
+    //! changes QSlider value according to QSpinBox
+    void _updateSlider( int );
+
+    //! changes QSpinBox value according to QSlider
+    void _updateSpinBox( int );
+
+    private:
+
+    //! associated slider
+    QSlider *slider_;
+
+    //! associated LineEdit
+    QSpinBox *spinBox_;
+
+    //! locks
+    bool spinBoxLocked_;
+    bool sliderLocked_;
 
 };
 

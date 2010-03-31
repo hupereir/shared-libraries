@@ -329,8 +329,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
 
         gridLayout->addWidget( new QLabel( "Alpha channel" ) );
         OptionSlider *slider = new OptionSlider( box, "BOX_SELECTION_ALPHA" );
-        slider->slider().setMinimum( 0 );
-        slider->slider().setMaximum( 100 );
+        slider->setRange( 0, 100 );
         slider->setToolTip( "Alpha channel (i.e. opacity) of the box selection highlight color" );
         gridLayout->addWidget( slider );
         addOptionWidget( slider );
