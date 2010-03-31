@@ -118,7 +118,7 @@ namespace SVG
                 overlayPainter.end();
 
                 QString maskPrefix;
-                if( _hasPrefix( "overlay-mask" ) ) maskPrefix = "overlay-mask";
+                if( _hasPrefix( "mask-overlay" ) ) maskPrefix = "mask-overlay";
                 else if( _hasPrefix( "mask" ) ) maskPrefix = "mask";
 
                 if( !maskPrefix.isEmpty() )
