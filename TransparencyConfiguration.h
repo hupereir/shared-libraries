@@ -37,15 +37,15 @@
 
 namespace TRANSPARENCY
 {
-  //! transparency common configuration
-  class TransparencyConfiguration: public QWidget, public OptionWidgetList, public Counter
-  {
-    public:
+    //! transparency common configuration
+    class TransparencyConfiguration: public QWidget, public OptionWidgetList, public Counter
+    {
+        public:
 
-    //! constructor
-    TransparencyConfiguration( QWidget* parent );
+        //! constructor
+        TransparencyConfiguration( QWidget* parent );
 
-  };
+    };
 };
 
 #endif
