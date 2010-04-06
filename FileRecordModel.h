@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file FileRecordModel.h
-  \brief model for object counters
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file FileRecordModel.h
+\brief model for object counters
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <string.h>
@@ -44,140 +44,140 @@
 class FileRecordModel: public ListModel<FileRecord>, public Counter
 {
 
-  Q_OBJECT
-
-  public:
-
-  //! column type enumeration
-  enum ColumnType {
-    ICON,
-    FILE,
-    PATH,
-    TIME
-  };
-
-  //! constructor
-  FileRecordModel( QObject* parent = 0 );
-
-  //! show icons
-  void setShowIcons( const bool& value )
-  { show_icons_ = value; }
-
-  //!@name methods reimplemented from base class
-  //@{
-
-  //! flags
-  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-
-  // return data for a given index
-  virtual QVariant data(const QModelIndex &, int ) const;
-
-  //! header data
-  virtual QVariant headerData(int, Qt::Orientation, int role = Qt::DisplayRole) const;
-
-  //! number of columns for a given index
-  virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-
-  //! column matching given name, if any
-  virtual int findColumn( const QString& ) const;
-
-  //@}
-
-  //! set values (overloaded)
-  void set( const List& values )
-  {
-    _updateColumns( values );
-    ListModel<FileRecord>::set( values );
-  }
-
-  //! set values (overloaded)
-  void update( const List& values )
-  {
-    _updateColumns( values );
-    ListModel<FileRecord>::update( values );
-  }
-
-  //! enable drag
-  const bool& dragEnabled( void ) const
-  { return drag_enabled_; }
-
-  //! enable drag
-  void setDragEnabled( const bool& value )
-  { drag_enabled_ = value; }
-
-  protected:
-
-  const bool& _showIcons( void ) const
-  { return show_icons_; }
-
-  //! sort
-  virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
-
-  //! add, without update
-  virtual void _add( const ValueType& );
-
-  private slots:
-
-  //! configuration
-  void _updateConfiguration( void );
-
-  private:
-
-  //! used to sort Counters
-  class SortFTor: public ItemModel::SortFTor
-  {
+    Q_OBJECT
 
     public:
 
-    //! constructor
-    SortFTor( const int& type, Qt::SortOrder order, const std::vector<QString>& column_titles ):
-      ItemModel::SortFTor( type, order ),
-      column_titles_( column_titles )
-      {}
+    //! column type enumeration
+    enum ColumnType {
+        ICON,
+        FILE,
+        PATH,
+        TIME
+    };
 
-    //! prediction
-    bool operator() ( FileRecord, FileRecord ) const;
+    //! constructor
+    FileRecordModel( QObject* parent = 0 );
+
+    //! show icons
+    void setShowIcons( const bool& value )
+    { showIcons_ = value; }
+
+    //!@name methods reimplemented from base class
+    //@{
+
+    //! flags
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+
+    // return data for a given index
+    virtual QVariant data(const QModelIndex &, int ) const;
+
+    //! header data
+    virtual QVariant headerData(int, Qt::Orientation, int role = Qt::DisplayRole) const;
+
+    //! number of columns for a given index
+    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+
+    //! column matching given name, if any
+    virtual int findColumn( const QString& ) const;
+
+    //@}
+
+    //! set values (overloaded)
+    void set( const List& values )
+    {
+        _updateColumns( values );
+        ListModel<FileRecord>::set( values );
+    }
+
+    //! set values (overloaded)
+    void update( const List& values )
+    {
+        _updateColumns( values );
+        ListModel<FileRecord>::update( values );
+    }
+
+    //! enable drag
+    const bool& dragEnabled( void ) const
+    { return dragEnabled_; }
+
+    //! enable drag
+    void setDragEnabled( const bool& value )
+    { dragEnabled_ = value; }
+
+    protected:
+
+    const bool& _showIcons( void ) const
+    { return showIcons_; }
+
+    //! sort
+    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
+
+    //! add, without update
+    virtual void _add( const ValueType& );
+
+    private slots:
+
+    //! configuration
+    void _updateConfiguration( void );
 
     private:
 
-    // column titles
-    std::vector<QString> column_titles_;
+    //! used to sort Counters
+    class SortFTor: public ItemModel::SortFTor
+    {
 
-  };
+        public:
 
-  //! update columns
-  void _updateColumns( const List& values )
-  {
+        //! constructor
+        SortFTor( const int& type, Qt::SortOrder order, const std::vector<QString>& column_titles ):
+            ItemModel::SortFTor( type, order ),
+            columnTitles_( column_titles )
+        {}
 
-    // update columns
-    for( List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
-    { _updateColumns( *iter ); }
+        //! prediction
+        bool operator() ( FileRecord, FileRecord ) const;
 
-  }
+        private:
 
-  //! update columns
-  void _updateColumns( const ValueType& value );
+        // column titles
+        std::vector<QString> columnTitles_;
 
-  //! icon
-  static QIcon _icon( const QString& );
+    };
 
-  //! icon cache
-  typedef std::map<QString, QIcon> IconCache;
+    //! update columns
+    void _updateColumns( const List& values )
+    {
 
-  //! type icon cache
-  static IconCache& _icons( void );
+        // update columns
+        for( List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
+        { _updateColumns( *iter ); }
 
-  //! drag flag
-  bool drag_enabled_;
+    }
 
-  //! true if icons are to be shown
-  bool show_icons_;
+    //! update columns
+    void _updateColumns( const ValueType& value );
 
-  //! icon property id
-  FileRecord::PropertyId::Id icon_property_id_;
+    //! icon
+    static QIcon _icon( const QString& );
 
-  //! column titles
-  std::vector<QString> column_titles_;
+    //! icon cache
+    typedef std::map<QString, QIcon> IconCache;
+
+    //! type icon cache
+    static IconCache& _icons( void );
+
+    //! drag flag
+    bool dragEnabled_;
+
+    //! true if icons are to be shown
+    bool showIcons_;
+
+    //! icon property id
+    FileRecord::PropertyId::Id iconPropertyId_;
+
+    //! column titles
+    std::vector<QString> columnTitles_;
 
 };
 

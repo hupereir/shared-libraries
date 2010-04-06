@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file DockPanel.h
-  \brief detachable generic panel
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file DockPanel.h
+\brief detachable generic panel
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -48,202 +48,202 @@
 class DockPanel: public QWidget, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  DockPanel( QWidget* parent );
+        //! constructor
+        DockPanel( QWidget* parent );
 
-  //! destructor
-  virtual ~DockPanel();
+    //! destructor
+    virtual ~DockPanel();
 
-  //! option name (needed to store sticky and stays-on-top state)
-  void setOptionName( QString value )
-  {
-    stickyOptionName_ = value + "_STICKY";
-    staysOnTopOptionName_ = value + "_STAYS_ON_TOP";
-    _updateConfiguration();
-  }
+    //! option name (needed to store sticky and stays-on-top state)
+    void setOptionName( QString value )
+    {
+        stickyOptionName_ = value + "_STICKY";
+        staysOnTopOptionName_ = value + "_STAYS_ON_TOP";
+        _updateConfiguration();
+    }
 
-  //! get panel (to add contents)
-  virtual QWidget& panel( void )
-  {
-    assert( panel_ );
-    return *panel_;
-  }
+    //! get panel (to add contents)
+    virtual QWidget& panel( void )
+    {
+        assert( panel_ );
+        return *panel_;
+    }
 
-  //! set detachable group panel title
-  void setTitle( const QString& title )
-  { title_ = title; }
+    //! set detachable group panel title
+    void setTitle( const QString& title )
+    { title_ = title; }
 
-  //! local widget to implement close_event of the content
-  class LocalWidget: public QFrame, public Counter
-  {
+    //! local widget to implement close_event of the content
+    class LocalWidget: public QFrame, public Counter
+    {
 
-    public:
+        public:
 
-    //! constructor
-    LocalWidget( QWidget* parent );
+        //! constructor
+        LocalWidget( QWidget* parent );
 
-    //! update actions
-    void updateActions( bool );
+        //! update actions
+        void updateActions( bool );
 
-    //! detach action
-    QAction& detachAction( void ) const
-    { return *detachAction_; }
+        //! detach action
+        QAction& detachAction( void ) const
+        { return *detachAction_; }
 
-    //! stay on top
-    QAction& staysOnTopAction( void ) const
-    { return *staysOnTopAction_; }
+        //! stay on top
+        QAction& staysOnTopAction( void ) const
+        { return *staysOnTopAction_; }
 
-    //! widget is hidden from taskbar
-    QAction& stickyAction( void ) const
-    { return *stickyAction_; }
+        //! widget is hidden from taskbar
+        QAction& stickyAction( void ) const
+        { return *stickyAction_; }
+
+        protected:
+
+        //! closeEvent
+        virtual void closeEvent( QCloseEvent* event );
+
+        //! mouse press event [overloaded]
+        virtual void mousePressEvent( QMouseEvent* );
+
+        //! mouse move event [overloaded]
+        virtual void mouseMoveEvent( QMouseEvent* );
+
+        //! mouse move event [overloaded]
+        virtual void mouseReleaseEvent( QMouseEvent* );
+
+        //! mouse move event [overloaded]
+        virtual void mouseDoubleClickEvent( QMouseEvent* );
+
+        //! timer event [overloaded]
+        virtual void timerEvent( QTimerEvent* );
+
+        //! paint event
+        virtual void resizeEvent( QResizeEvent* );
+
+        //! paint event
+        virtual void paintEvent( QPaintEvent* );
+
+        //! actions
+        void _installActions( void );
+
+        private:
+
+        //! move enabled
+        const bool& _moveEnabled( void ) const
+        { return moveEnabled_; }
+
+        //! move enabled
+        void _setMoveEnabled( const bool& value )
+        { moveEnabled_ = value; }
+
+        //! attach/detach action
+        QAction* detachAction_;
+
+        //! stay on top
+        QAction* staysOnTopAction_;
+
+        //! make window sticky
+        QAction* stickyAction_;
+
+        //! button state
+        Qt::MouseButton button_;
+
+        //! move timer
+        QBasicTimer timer_;
+
+        //! true when move is enabled
+        bool moveEnabled_;
+
+        //! click position
+        QPoint clickPos_;
+
+        //! TileSet
+        TileSet tileSet_;
+
+    };
+
+    //! main widget
+    LocalWidget& main( void ) const
+    { return *main_; }
+
+    //! minimum size hint
+    QSize minimumSizeHint( void ) const;
+
+    signals:
+
+    //! emmited when state is changed
+    void attached( bool state );
+
+    //! emmited when panel is attached
+    void attached( void );
+
+    //! emmited when panel is detached
+    void detached( void );
+
+    //! visibility changed
+    void visibilityChanged( bool );
+
+
+    protected slots:
+
+    //! toggle dock
+    virtual void _toggleDock( void );
+
+    //! stays on top
+    virtual void _toggleStaysOnTop( bool );
+
+    //! toggle window stickyness
+    virtual void _toggleSticky( bool );
 
     protected:
 
-    //! closeEvent
-    virtual void closeEvent( QCloseEvent* event );
+    //! hide event
+    virtual void hideEvent( QHideEvent* );
 
-    //! mouse press event [overloaded]
-    virtual void mousePressEvent( QMouseEvent* );
+    private slots:
 
-    //! mouse move event [overloaded]
-    virtual void mouseMoveEvent( QMouseEvent* );
-
-    //! mouse move event [overloaded]
-    virtual void mouseReleaseEvent( QMouseEvent* );
-
-    //! mouse move event [overloaded]
-    virtual void mouseDoubleClickEvent( QMouseEvent* );
-
-    //! timer event [overloaded]
-    virtual void timerEvent( QTimerEvent* );
-
-    //! paint event
-    virtual void resizeEvent( QResizeEvent* );
-
-    //! paint event
-    virtual void paintEvent( QPaintEvent* );
-
-    //! actions
-    void _installActions( void );
+    //! configuration
+    void _updateConfiguration( void );
 
     private:
 
-    //! move enabled
-    const bool& _moveEnabled( void ) const
-    { return moveEnabled_; }
+    //! true if option name is set
+    bool _hasOptionName( void ) const
+    { return !(_stickyOptionName().isEmpty() || _staysOnTopOptionName().isEmpty() ); }
 
-    //! move enabled
-    void _setMoveEnabled( const bool& value )
-    { moveEnabled_ = value; }
+    //! option name
+    const QString& _stickyOptionName( void ) const
+    { return stickyOptionName_; }
 
-    //! attach/detach action
-    QAction* detachAction_;
+    //! option name
+    const QString& _staysOnTopOptionName( void ) const
+    { return staysOnTopOptionName_; }
 
-    //! stay on top
-    QAction* staysOnTopAction_;
+    //! dock title
+    QString title_;
 
-    //! make window sticky
-    QAction* stickyAction_;
+    //! option name
+    /*! needed to store sticky and stays on top state */
+    QString stickyOptionName_;
 
-    //! button state
-    Qt::MouseButton button_;
+    //! option name
+    QString staysOnTopOptionName_;
 
-    //! move timer
-    QBasicTimer timer_;
+    //! vertical layout for main_ widget
+    QVBoxLayout* mainLayout_;
 
-    //! true when move is enabled
-    bool moveEnabled_;
+    //! detachable main widget
+    LocalWidget* main_;
 
-    //! click position
-    QPoint clickPos_;
+    //! contents panel
+    QWidget* panel_;
 
-    //! TileSet
-    TileSet tileSet_;
-
-  };
-
-  //! main widget
-  LocalWidget& main( void ) const
-  { return *main_; }
-
-  //! minimum size hint
-  QSize minimumSizeHint( void ) const;
-
-  signals:
-
-  //! emmited when state is changed
-  void attached( bool state );
-
-  //! emmited when panel is attached
-  void attached( void );
-
-  //! emmited when panel is detached
-  void detached( void );
-
-  //! visibility changed
-  void visibilityChanged( bool );
-
-
-  protected slots:
-
-  //! toggle dock
-  virtual void _toggleDock( void );
-
-  //! stays on top
-  virtual void _toggleStaysOnTop( bool );
-
-  //! toggle window stickyness
-  virtual void _toggleSticky( bool );
-
-  protected:
-
-  //! hide event
-  virtual void hideEvent( QHideEvent* );
-
-  private slots:
-
-  //! configuration
-  void _updateConfiguration( void );
-
-  private:
-
-  //! true if option name is set
-  bool _hasOptionName( void ) const
-  { return !(_stickyOptionName().isEmpty() || _staysOnTopOptionName().isEmpty() ); }
-
-  //! option name
-  const QString& _stickyOptionName( void ) const
-  { return stickyOptionName_; }
-
-  //! option name
-  const QString& _staysOnTopOptionName( void ) const
-  { return staysOnTopOptionName_; }
-
-  //! dock title
-  QString title_;
-
-  //! option name
-  /*! needed to store sticky and stays on top state */
-  QString stickyOptionName_;
-
-  //! option name
-  QString staysOnTopOptionName_;
-
-  //! vertical layout for main_ widget
-  QVBoxLayout* mainLayout_;
-
-  //! detachable main widget
-  LocalWidget* main_;
-
-  //! contents panel
-  QWidget* panel_;
-
-  friend class LocalWidget;
+    friend class LocalWidget;
 
 };
 

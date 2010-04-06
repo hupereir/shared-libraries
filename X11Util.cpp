@@ -286,8 +286,7 @@ bool X11Util::moveResizeWidget(
   event.xclient.data.l[4] = 0;
   XUngrabPointer( display, QX11Info::appTime() );
   XSendEvent(display,
-    QX11Info::appRootWindow( widget.x11Info().screen()), false,
-    SubstructureRedirectMask | SubstructureNotifyMask, &event);
+    QX11Info::appRootWindow( widget.x11Info().screen()), false, netwm_sendevent_mask, &event);
   return true;
 
   #else
