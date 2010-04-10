@@ -128,18 +128,16 @@ class DockPanel: public QWidget, public Counter
         //! paint event
         virtual void paintEvent( QPaintEvent* );
 
+        //! start drag
+        bool _startDrag( void );
+
+        //! reset drag
+        void _resetDrag( void );
+
         //! actions
         void _installActions( void );
 
         private:
-
-        //! move enabled
-        const bool& _moveEnabled( void ) const
-        { return moveEnabled_; }
-
-        //! move enabled
-        void _setMoveEnabled( const bool& value )
-        { moveEnabled_ = value; }
 
         //! attach/detach action
         QAction* detachAction_;
@@ -156,14 +154,17 @@ class DockPanel: public QWidget, public Counter
         //! move timer
         QBasicTimer timer_;
 
-        //! true when move is enabled
-        bool moveEnabled_;
-
         //! click position
-        QPoint clickPos_;
+        QPoint dragPosition_;
 
-        //! TileSet
-        TileSet tileSet_;
+        //! drag distance
+        int dragDistance_;
+
+        //! drag delay
+        int dragDelay_;
+
+        //! dragging
+        bool isDragging_;
 
     };
 

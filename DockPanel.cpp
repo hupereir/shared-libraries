@@ -241,7 +241,9 @@ DockPanel::LocalWidget::LocalWidget( QWidget* parent ):
     QFrame( parent ),
     Counter( "LocalWidget" ),
     button_( Qt::NoButton ),
-    moveEnabled_( false )
+    dragDistance_(6),
+    dragDelay_( QApplication::doubleClickInterval() ),
+    isDragging_( false )
 {
     _installActions();
     setContextMenuPolicy( Qt::ActionsContextMenu );
@@ -283,30 +285,25 @@ void DockPanel::LocalWidget::closeEvent( QCloseEvent* event )
 //___________________________________________________________
 void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
 {
-    Debug::Throw( "DockPanel::LocalWidget::mousePressEvent.\n" );
     button_ = event->button();
 
     if( button_ == Qt::LeftButton )
     {
-        clickPos_ = event->pos() + QPoint(geometry().topLeft() - frameGeometry().topLeft());
-        timer_.start( 200, this );
+        event->accept();
+        isDragging_ = false;
+        dragPosition_ = event->pos();
+        timer_.start( dragDelay_, this );
     }
-    event->accept();
     return;
-    //QFrame::mousePressEvent( event );
 }
 
 //___________________________________________________________
 void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
 {
     Debug::Throw( "DockPanel::LocalWidget::mouseReleaseEvent.\n" );
-    button_ = Qt::NoButton;
-    _setMoveEnabled( false );
-    unsetCursor();
-    timer_.stop();
     event->accept();
+    _resetDrag();
     return;
-    //QFrame::mouseReleaseEvent( event );
 }
 
 //___________________________________________________________
@@ -314,16 +311,18 @@ void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
 {
 
     // check button
-    if( button_ != Qt::LeftButton ) return QFrame::mouseMoveEvent( event );
+    if( button_ != Qt::LeftButton )
+    { return QFrame::mouseMoveEvent( event ); }
+
+    timer_.stop();
+
+    // check against drag distance
+    if( QPoint( event->pos() - dragPosition_ ).manhattanLength() < dragDistance_ )
+    { return QFrame::mouseMoveEvent( event ); }
 
     event->accept();
-
-    // if not yet enabled, enable immediately and stop timer
-    if( !_moveEnabled() ) return;
-
-    // move widget, the standard way
-    QPoint point(event->globalPos() - clickPos_ );
-    move( point );
+    if( !_startDrag() )
+    { move( event->globalPos() - dragPosition_ ); }
 
 }
 
@@ -345,12 +344,7 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
     timer_.stop();
     if( button_ != Qt::LeftButton ) return;
 
-    if( parent() ) detachAction().trigger();
-    if( X11Util::get().moveWidget( *this, QCursor::pos() ) ) return;
-    else {
-        _setMoveEnabled( true );
-        setCursor( Qt::SizeAllCursor );
-    }
+    _startDrag();
 
 }
 
@@ -419,4 +413,32 @@ void DockPanel::LocalWidget::_installActions( void )
     stickyAction_->setToolTip( "Make window appear on all desktops" );
     stickyAction_->setCheckable( true );
 
+}
+
+//___________________________________________________________
+bool DockPanel::LocalWidget::_startDrag( void )
+{
+
+    if( parentWidget() ) {
+
+        detachAction().trigger();
+        return true;
+
+    } else if( !isDragging_ ) {
+
+        isDragging_ = true;
+        return X11Util::get().moveWidget( *this, mapToGlobal( dragPosition_ ) );
+
+    } else return false;
+
+}
+
+//___________________________________________________________
+void DockPanel::LocalWidget::_resetDrag( void )
+{
+    unsetCursor();
+    button_ = Qt::NoButton;
+    dragPosition_ = QPoint();
+    timer_.stop();
+    isDragging_ = false;
 }

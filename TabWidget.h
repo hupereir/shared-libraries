@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file TabWidget.h
-  \brief Tab widget with detachable pages
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file TabWidget.h
+\brief Tab widget with detachable pages
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -51,181 +51,185 @@ class TabWidget;
 class TabWidget: public QWidget, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  TabWidget( QTabWidget* parent );
+        //! constructor
+        TabWidget( QTabWidget* parent );
 
-  //! set tab title
-  void setTitle( const QString& title )
-  { title_ = title; }
+    //! set tab title
+    void setTitle( const QString& title )
+    { title_ = title; }
 
-  //! title
-  const QString& title( void ) const
-  { return title_; }
+    //! title
+    const QString& title( void ) const
+    { return title_; }
 
-  //! get parent TabWidget
-  QTabWidget& parentTabWidget( void )
-  {
-    assert( parent_ );
-    return *parent_;
-  }
+    //! get parent TabWidget
+    QTabWidget& parentTabWidget( void )
+    {
+        assert( parent_ );
+        return *parent_;
+    }
 
-  //! get box
-  QWidget& box( void )
-  {
-    assert( box_ );
-    return *box_;
-  }
+    //! get box
+    QWidget& box( void )
+    {
+        assert( box_ );
+        return *box_;
+    }
 
-  //! update actions
-  void updateActions( bool );
+    //! update actions
+    void updateActions( bool );
 
-  //! detach action
-  QAction& detachAction( void ) const
-  { return *detach_action_; }
+    //! detach action
+    QAction& detachAction( void ) const
+    { return *detachAction_; }
 
-  //! stay on top
-  QAction& staysOnTopAction( void ) const
-  { return *stays_on_top_action_; }
+    //! stay on top
+    QAction& staysOnTopAction( void ) const
+    { return *staysOnTopAction_; }
 
-  //! widget is hidden from taskbar
-  QAction& stickyAction( void ) const
-  { return *sticky_action_; }
+    //! widget is hidden from taskbar
+    QAction& stickyAction( void ) const
+    { return *stickyAction_; }
 
-  signals:
+    signals:
 
-  //! emmited when box is detached
-  void detached( void );
+    //! emmited when box is detached
+    void detached( void );
 
-  //! emmited when box is attached
-  void attached( void );
-
-  protected:
-
-  //! close event
-  virtual void closeEvent( QCloseEvent* );
-
-  //! mouse press event [overloaded]
-  virtual void mousePressEvent( QMouseEvent* );
-
-  //! mouse move event [overloaded]
-  virtual void mouseMoveEvent( QMouseEvent* );
-
-  //! mouse move event [overloaded]
-  virtual void mouseReleaseEvent( QMouseEvent* );
-
-  //! mouse move event [overloaded]
-  virtual void mouseDoubleClickEvent( QMouseEvent* );
-
-  //! timer event [overloaded]
-  virtual void timerEvent( QTimerEvent* );
-
-  //! resize
-  virtual void resizeEvent( QResizeEvent* );
-
-  //! paint
-  virtual void paintEvent( QPaintEvent* );
-
-  //! actions
-  void _installActions( void );
-
-  //! has size grip
-  bool _hasSizeGrip( void ) const
-  { return (bool)size_grip_; }
-
-  //! size grip
-  QSizeGrip& _sizeGrip( void ) const
-  { return *size_grip_; }
-
-  //! show size grip
-  void _showSizeGrip( void )
-  { if( _hasSizeGrip() ) _sizeGrip().show(); }
-
-  //! hide size grip
-  void _hideSizeGrip( void )
-  { if( _hasSizeGrip() ) _sizeGrip().hide(); }
-
-  protected slots:
-
-  //! toggle dock
-  virtual void _toggleDock( void );
-
-  //! stays on top
-  virtual void _toggleStaysOnTop( bool );
-
-  //! toggle window stickyness
-  virtual void _toggleSticky( bool );
-
-  private:
-
-  //! move enabled
-  const bool& _moveEnabled( void ) const
-  { return move_enabled_; }
-
-  //! move enabled
-  void _setMoveEnabled( const bool& value )
-  { move_enabled_ = value; }
-
-  //! flags
-  unsigned int flags_;
-
-  //! title
-  QString title_;
-
-  //! parent TabWidget
-  QTabWidget* parent_;
-
-  //! vertical layout
-  QVBoxLayout* main_layout_;
-
-  //! contents vbox
-  QWidget* box_;
-
-  class SizeGrip: public QSizeGrip
-  {
-    public:
-
-    SizeGrip( QWidget* parent ):
-      QSizeGrip( parent )
-      {}
+    //! emmited when box is attached
+    void attached( void );
 
     protected:
 
-    virtual void paintEvent( QPaintEvent* )
-    {}
+    //! close event
+    virtual void closeEvent( QCloseEvent* );
 
-  };
+    //! mouse press event [overloaded]
+    virtual void mousePressEvent( QMouseEvent* );
 
-  //! size grip
-  SizeGrip* size_grip_;
+    //! mouse move event [overloaded]
+    virtual void mouseMoveEvent( QMouseEvent* );
 
-  //! index in parent tab
-  int index_;
+    //! mouse move event [overloaded]
+    virtual void mouseReleaseEvent( QMouseEvent* );
 
-  //! attach/detach action
-  QAction* detach_action_;
+    //! mouse move event [overloaded]
+    virtual void mouseDoubleClickEvent( QMouseEvent* );
 
-  //! stay on top
-  QAction* stays_on_top_action_;
+    //! timer event [overloaded]
+    virtual void timerEvent( QTimerEvent* );
 
-  //! make window sticky
-  QAction* sticky_action_;
+    //! resize
+    virtual void resizeEvent( QResizeEvent* );
 
-  //! button state
-  Qt::MouseButton button_;
+    //! paint
+    virtual void paintEvent( QPaintEvent* );
 
-  //! move timer
-  QBasicTimer timer_;
+    //! actions
+    void _installActions( void );
 
-  //! true when move is enabled
-  bool move_enabled_;
+    //! has size grip
+    bool _hasSizeGrip( void ) const
+    { return (bool)sizeGrip_; }
 
-  //! click position
-  QPoint click_pos_;
+    //! size grip
+    QSizeGrip& _sizeGrip( void ) const
+    { return *sizeGrip_; }
+
+    //! show size grip
+    void _showSizeGrip( void )
+    { if( _hasSizeGrip() ) _sizeGrip().show(); }
+
+    //! hide size grip
+    void _hideSizeGrip( void )
+    { if( _hasSizeGrip() ) _sizeGrip().hide(); }
+
+    //! start drag
+    bool _startDrag( void );
+
+    //! reset drag
+    void _resetDrag( void );
+
+    protected slots:
+
+    //! toggle dock
+    virtual void _toggleDock( void );
+
+    //! stays on top
+    virtual void _toggleStaysOnTop( bool );
+
+    //! toggle window stickyness
+    virtual void _toggleSticky( bool );
+
+    private:
+
+    //! flags
+    unsigned int flags_;
+
+    //! title
+    QString title_;
+
+    //! parent TabWidget
+    QTabWidget* parent_;
+
+    //! vertical layout
+    QVBoxLayout* main_layout_;
+
+    //! contents vbox
+    QWidget* box_;
+
+    class SizeGrip: public QSizeGrip
+    {
+        public:
+
+        SizeGrip( QWidget* parent ):
+            QSizeGrip( parent )
+            {}
+
+        protected:
+
+        virtual void paintEvent( QPaintEvent* )
+        {}
+
+    };
+
+    //! size grip
+    SizeGrip* sizeGrip_;
+
+    //! index in parent tab
+    int index_;
+
+    //! attach/detach action
+    QAction* detachAction_;
+
+    //! stay on top
+    QAction* staysOnTopAction_;
+
+    //! make window sticky
+    QAction* stickyAction_;
+
+    //! button state
+    Qt::MouseButton button_;
+
+    //! move timer
+    QBasicTimer timer_;
+
+    //! click position
+    QPoint dragPosition_;
+
+    //! drag distance
+    int dragDistance_;
+
+    //! drag delay
+    int dragDelay_;
+
+    //! true when move is enabled
+    bool isDragging_;
 
 };
 #endif
