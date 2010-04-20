@@ -117,7 +117,7 @@ QString Util::windowTitle( const QString& title )
 
     Debug::Throw( "Util::windowTitle.\n" );
 
-    #if Q_WS_X11
+    #ifdef Q_WS_X11
     QString host( Util::host() );
     if( host == "localhost" ) return title;
     else {
