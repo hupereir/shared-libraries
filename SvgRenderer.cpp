@@ -80,8 +80,6 @@ namespace SVG
             mainImage.fill( Qt::transparent );
 
             QSizeF cornerSize( boundsOnElement( SVG::TOP_LEFT ).size() );
-            double width = mainImage.width() + 2.0*(offset - cornerSize.width() );
-            double height = mainImage.height() + 2.0*( offset - cornerSize.height() );
 
             _render( mainImage, offset );
             QPainter painter( &device );

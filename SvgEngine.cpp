@@ -138,7 +138,7 @@ namespace SVG
 
     if( event->type() != SvgEvent::eventType() ) return QObject::customEvent( event );
 
-    SvgEvent* svg_event( dynamic_cast<SvgEvent*>(event) );
+    SvgEvent* svg_event( static_cast<SvgEvent*>(event) );
     if( !svg_event ) return QObject::customEvent( event );
 
     for( ImageCache::const_iterator iter = svg_event->cache().begin(); iter != svg_event->cache().end(); iter++ )
