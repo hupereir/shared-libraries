@@ -23,11 +23,11 @@
 *******************************************************************************/
 
 /*!
-  \file ClockLabel.cpp
-  \brief a self-updated label displaying current date and time
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ClockLabel.cpp
+\brief a self-updated label displaying current date and time
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include "ClockLabel.h"
@@ -42,58 +42,60 @@ static const TimeStamp::Format format( TimeStamp::JOB_TAG );
 
 //__________________________________________________________
 ClockTimer::ClockTimer( QWidget *parent ):
-  QTimer( parent ),
-  Counter( "ClockTimer" )
+    QObject( parent ),
+    Counter( "ClockTimer" )
 {
-  Debug::Throw( "ClockTimer::ClockTimer.\n" );
-  connect( this, SIGNAL( timeout() ), SLOT( _checkCurrentTime() ) );
+    Debug::Throw( "ClockTimer::ClockTimer.\n" );
+    timer_.start( 1000*interval(), this );
 }
 
 //__________________________________________________________
-void ClockTimer::_checkCurrentTime( void )
+void ClockTimer::timerEvent( QTimerEvent* event )
 {
 
-  Debug::Throw( "ClockTimer::_CheckCurrentTime.\n" );
-  TimeStamp new_time( TimeStamp::now() );
+    Debug::Throw( "ClockTimer::timerEvent.\n" );
+    TimeStamp new_time( TimeStamp::now() );
 
-  // check time hour and/or minute differ
-  if(
-    time_.isValid() &&
-    new_time.hours() == time_.hours() &&
-    new_time.minutes() == time_.minutes() &&
-    new_time.seconds() == time_.seconds() )
-  {
-    time_ = new_time;
-    return;
-  }
+    if( event->timerId() == timer_.timerId() )
+    {
 
-  time_ = new_time;
-  setInterval( 1000 * interval() );
+        timer_.stop();
 
-  // emit time changed signal
-  emit timeChanged( time_.toString( format ) );
-  return;
+        // check time hour and/or minute differ
+        if(
+            time_.isValid() &&
+            new_time.hours() == time_.hours() &&
+            new_time.minutes() == time_.minutes() &&
+            new_time.seconds() == time_.seconds() )
+        {
+            time_ = new_time;
+            return;
+        }
+
+        time_ = new_time;
+        timer_.start( 1000 * interval(), this );
+
+        // emit time changed signal
+        emit timeChanged( time_.toString( format ) );
+
+    } else return QObject::timerEvent( event );
 
 }
 
 //________________________________________________________________
 ClockLabel::ClockLabel( QWidget* parent ):
-  AnimatedLabel( parent ),
-  timer_( this )
+    AnimatedLabel( parent ),
+    timer_( this )
 {
 
-  Debug::Throw( "ClockLabel::ClockLabel.\n" );
+    Debug::Throw( "ClockLabel::ClockLabel.\n" );
 
-  // needed for proper background to be set
-  transitionWidget().setFlag( TransitionWidget::FROM_PARENT, true );
+    // needed for proper background to be set
+    transitionWidget().setFlag( TransitionWidget::FROM_PARENT, true );
 
-  // create static clock timer, updated every 10 seconds
-  connect( &timer_, SIGNAL( timeChanged( const QString& ) ), SLOT( setText( const QString& ) ) );
+    // create static clock timer, updated every 10 seconds
+    connect( &timer_, SIGNAL( timeChanged( const QString& ) ), SLOT( setText( const QString& ) ) );
 
-  timer_.setSingleShot( false );
-  timer_.setInterval( 1000 * ClockTimer::interval() );
-  timer_.start();
-
-  setText( TimeStamp::now().toString( format ) );
+    setText( TimeStamp::now().toString( format ) );
 
 }

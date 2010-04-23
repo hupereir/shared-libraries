@@ -22,53 +22,58 @@
 *******************************************************************************/
 
 /*!
-  \file ClockLabel.h
-  \brief self-updated label displaying current date and time
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ClockLabel.h
+\brief self-updated label displaying current date and time
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #ifndef _ClockLabel_h_
 #define _ClockLabel_h_
 
 #include <QDateTime>
-#include <QTimer>
+#include <QBasicTimer>
 
 #include "AnimatedLabel.h"
 #include "Counter.h"
 #include "TimeStamp.h"
 
 //! clock timer. Emit signal when current time is changed
-class ClockTimer: public QTimer, public Counter
+class ClockTimer: public QObject, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! constructor
-  ClockTimer( QWidget *parent );
+    //! constructor
+    ClockTimer( QWidget *parent );
 
-  //! get interval (seconds) prior to next update
-  static int interval( void )
-  { return 60 - (TimeStamp::now() % 60); }
+    signals:
 
-  signals:
+    //! emmited every time current time is changed
+    void timeChanged( const QString& );
 
-  //! emmited every time current time is changed
-  void timeChanged( const QString& );
+    protected:
 
-  protected slots:
+    virtual void timerEvent( QTimerEvent* );
 
-  //! check current time, generate time string if new; emit TimeChanged
-  void _checkCurrentTime( void );
+    //! check current time, generate time string if new; emit TimeChanged
+    //void _checkCurrentTime( void );
 
-  private:
+    private:
 
-  //! current time
-  TimeStamp time_;
+    //! get interval (seconds) prior to next update
+    int interval( void ) const
+    { return 60 - (TimeStamp::now() % 60); }
+
+    //! timer
+    QBasicTimer timer_;
+
+    //! current time
+    TimeStamp time_;
 
 };
 
@@ -76,19 +81,19 @@ class ClockTimer: public QTimer, public Counter
 class ClockLabel:public AnimatedLabel
 {
 
-  public:
+    public:
 
-  //! constructor
-  ClockLabel( QWidget* parent );
+    //! constructor
+    ClockLabel( QWidget* parent );
 
-  //! retrieve timer
-  ClockTimer& timer( void )
-  { return timer_; }
+    //! retrieve timer
+    ClockTimer& timer( void )
+    { return timer_; }
 
-  private:
+    private:
 
-  //! static timer
-  ClockTimer timer_;
+    //! static timer
+    ClockTimer timer_;
 
 };
 

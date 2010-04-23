@@ -106,7 +106,7 @@ void FileList::customEvent( QEvent* event )
 
   if( event->type() != ValidFileEvent::eventType() ) return QObject::customEvent( event );
 
-  ValidFileEvent* valid_file_event( dynamic_cast<ValidFileEvent*>(event) );
+  ValidFileEvent* valid_file_event( static_cast<ValidFileEvent*>(event) );
   if( !valid_file_event ) return QObject::customEvent( event );
 
   // set file records validity

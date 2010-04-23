@@ -246,7 +246,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_BlockHighlight.cpp \
   moc_BrowsedLineEditor.cpp \
   moc_ColorDisplay.cpp \
-	moc_ColorGrabButton.cpp \
+  moc_ColorGrabButton.cpp \
   moc_ColorMenu.cpp \
   moc_ColumnSelectionMenu.cpp \
   moc_ColumnSortingMenu.cpp \
@@ -254,6 +254,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_CounterDialog.cpp \
   moc_CustomComboBox.cpp \
   moc_CustomSlider.cpp \
+  moc_CustomTextDocument.cpp \
   moc_CustomToolBar.cpp \
   moc_CustomToolButton.cpp \
   moc_DebugMenu.cpp \
@@ -266,12 +267,11 @@ nodist_libbase_qt_a_SOURCES = \
   moc_IconSizeMenu.cpp \
   moc_LineEditor.cpp \
   moc_LineNumberDisplay.cpp \
-  moc_MultipleClickCounter.cpp \
   moc_OptionDialog.cpp \
   moc_OptionListBox.cpp \
   moc_OptionModel.cpp \
   moc_PixmapCacheDialog.cpp \
-	 moc_RecentFilesConfiguration.cpp \
+  moc_RecentFilesConfiguration.cpp \
   moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
   moc_ScrollObject.cpp \

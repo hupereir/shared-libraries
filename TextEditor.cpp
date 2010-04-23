@@ -133,7 +133,7 @@ TextEditor::~TextEditor( void )
     Debug::Throw() << "TextEditor::~TextEditor - key: " << key() << endl;
 
     // cast document
-    CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( TextEditor::document() ) );
+    CustomTextDocument* document( qobject_cast<CustomTextDocument*>( TextEditor::document() ) );
     if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) document->deleteLater();
 
     // update associates synchronization flags
@@ -473,11 +473,11 @@ void TextEditor::synchronize( TextEditor* editor )
     Debug::Throw( "TextEditor::synchronize.\n" );
 
     // retrieve and cast old document
-    CustomTextDocument* document( dynamic_cast<CustomTextDocument*>( QTextEdit::document() ) );
+    CustomTextDocument* document( qobject_cast<CustomTextDocument*>( QTextEdit::document() ) );
 
     // assign new document and associate
     setDocument( editor->document() );
-    BASE::Key::associate( this, dynamic_cast<CustomTextDocument*>( editor->document() ) );
+    BASE::Key::associate( this, qobject_cast<CustomTextDocument*>( editor->document() ) );
 
     // delete old document, if needed
     if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) delete document;

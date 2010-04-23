@@ -46,7 +46,7 @@ StatusBar::StatusBar( QWidget* parent ):
   Counter( "StatusBar" )
 {
   Debug::Throw( "StatusBar::StatusBar.\n" );
-  assert( dynamic_cast<QMainWindow*>( parent ) );
+  assert( qobject_cast<QMainWindow*>( parent ) );
   setSizeGripEnabled( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
 
   // if no size grip, still leaves some space to the right of the widget

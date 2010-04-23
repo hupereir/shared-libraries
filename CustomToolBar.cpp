@@ -87,7 +87,7 @@ void CustomToolBar::moveEvent( QMoveEvent* event )
 {
   if( isFloating() || option_name_.isEmpty() ) return QToolBar::moveEvent( event );
 
-  QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );
+  QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
   if( parent )
   {
     QString location_name( option_name_ + "_LOCATION" );
@@ -109,7 +109,7 @@ void CustomToolBar::_toggleVisibility( bool state )
 
     // save position
     // try cast parent to QMainWindow
-    QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );
+    QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
     if( parent )
     {
       QString location_name( option_name_ + "_LOCATION" );
@@ -142,7 +142,7 @@ void CustomToolBar::_updateConfiguration( void )
   // lock
   if( lockFromOptions() ) {
 
-    BaseMainWindow* mainwindow( dynamic_cast<BaseMainWindow*>( window() ) );
+    BaseMainWindow* mainwindow( qobject_cast<BaseMainWindow*>( window() ) );
     if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().find( mainwindow->lockToolBarsOptionName() ) )
     setMovable( !XmlOptions::get().get<bool>( mainwindow->lockToolBarsOptionName() ) );
 
@@ -154,7 +154,7 @@ void CustomToolBar::_updateConfiguration( void )
 
   // position
   // try cast parent to QMainWindow
-  QMainWindow* parent( dynamic_cast<QMainWindow*>( parentWidget() ) );
+  QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
   if( parent && !option_name_.isEmpty() )
   {
 

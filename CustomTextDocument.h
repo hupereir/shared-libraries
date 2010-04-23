@@ -24,16 +24,17 @@
 *******************************************************************************/
 
 /*!
-   \file CustomTextDocument.h
-   \brief customized TextDocument to derive from BASE::Key
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file CustomTextDocument.h
+\brief customized TextDocument to derive from BASE::Key
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
-#include <QTextDocument>
+#include <QtGui/QTextDocument>
 
 #include "Counter.h"
+#include "Debug.h"
 #include "Key.h"
 
 //! customized TextDocument to derive from BASE::Key
@@ -41,17 +42,19 @@
 class CustomTextDocument: public QTextDocument, public BASE::Key, public Counter
 {
 
-  public:
+    Q_OBJECT
 
-  //! constructor
-  CustomTextDocument( QObject* parent = 0 ):
-    QTextDocument( parent ),
-    Counter( "CustomTextDocument" )
-  { Debug::Throw( "CustomTextDocument::CustomTextDocument.\n" ); }
+    public:
 
-  //! destructor
-  virtual ~CustomTextDocument( void )
-  { Debug::Throw( "CustomTextDocument::~CustomTextDocument.\n" ); }
+    //! constructor
+    CustomTextDocument( QObject* parent = 0 ):
+        QTextDocument( parent ),
+        Counter( "CustomTextDocument" )
+    { Debug::Throw( "CustomTextDocument::CustomTextDocument.\n" ); }
+
+    //! destructor
+    virtual ~CustomTextDocument( void )
+    { Debug::Throw( "CustomTextDocument::~CustomTextDocument.\n" ); }
 
 };
 

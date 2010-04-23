@@ -93,7 +93,7 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
   {
 
     case QEvent::KeyPress:
-    return keyPressEvent( dynamic_cast<QKeyEvent*>( event ) );
+    return keyPressEvent( static_cast<QKeyEvent*>( event ) );
 
     case QEvent::KeyRelease:
     return keyReleaseEvent( static_cast<QKeyEvent*>( event ) );

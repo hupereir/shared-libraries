@@ -25,101 +25,102 @@
 *******************************************************************************/
 
 /*!
-  \file MultipleClickCounter.h
-  \brief handles multiple clicks and timeout
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file MultipleClickCounter.h
+\brief handles multiple clicks and timeout
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QApplication>
-#include <QTimer>
+#include <QBasicTimer>
 
 #include "Counter.h"
 #include "Debug.h"
 
 //! handles multiple clicks and timeout
-class MultipleClickCounter: public QTimer, public Counter
+class MultipleClickCounter: public QObject, public Counter
 {
 
-  Q_OBJECT
+    public:
 
-  public:
-
-  //! constructor
-  MultipleClickCounter( QObject* parent ):
-    QTimer( parent ),
-    Counter( "MultipleClickCounter" ),
-    to_reset_( true ),
-    position_( 0 ),
-    count_( 0 )
-  {
-    Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" );
-    connect( this, SIGNAL( timeout() ), SLOT( _reset() ) );
-    setSingleShot( true );
-    setInterval( QApplication::doubleClickInterval() );
-  }
-
-  //! destructor
-  virtual ~MultipleClickCounter( void )
-  { Debug::Throw( "MultipleClickCounter::~MultipleClickCounter.\n" ); }
-
-  //! increment counter and return current value
-  const unsigned int& increment( const int& position  = 0 )
-  {
-    Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << endl;
-
-    // restart timer
-    start();
-
-    // increment counts
-    if( position_ != position || to_reset_ )
+    //! constructor
+    MultipleClickCounter( QObject* parent ):
+        QObject( parent ),
+        Counter( "MultipleClickCounter" ),
+        toReset_( true ),
+        position_( 0 ),
+        count_( 0 )
     {
+        Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" );
+    }
 
-      // reset
-      to_reset_ = false;
-      position_ = position;
-      count_ = 1;
+    //! destructor
+    virtual ~MultipleClickCounter( void )
+    { Debug::Throw( "MultipleClickCounter::~MultipleClickCounter.\n" ); }
 
-    } else {
+    //! increment counter and return current value
+    const unsigned int& increment( const int& position  = 0 )
+    {
+        Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << endl;
 
-      // same position in text
-      // increment, check against maximum
-      count_++;
-      if( count_ > MAX_COUNT ) count_ = 1;
+        // restart timer
+        timer_.start( QApplication::doubleClickInterval(), this );
+
+        // increment counts
+        if( position_ != position || toReset_ )
+        {
+
+            // reset
+            toReset_ = false;
+            position_ = position;
+            count_ = 1;
+
+        } else {
+
+            // same position in text
+            // increment, check against maximum
+            count_++;
+            if( count_ > MAX_COUNT ) count_ = 1;
+
+        }
+
+        return count_;
 
     }
 
-    return count_;
+    //! returns current counts
+    const unsigned int& counts( void ) const
+    { return count_; }
 
-  }
+    protected:
 
-  //! returns current counts
-  const unsigned int& counts( void ) const
-  { return count_; }
+    //! timerEvent
+    virtual void timerEvent( QTimerEvent* e )
+    {
+        if( e->timerId() == timer_.timerId() )
+        {
+            timer_.stop();
+            toReset_ = true;
+        } else return QObject::timerEvent( e );
+    }
 
-  private slots:
+    private:
 
-  //! reset
-  void _reset( void )
-  {
-    Debug::Throw( "MultipleClickCounter::reset.\n" );
-    to_reset_ = true;
-  }
+    //! max number of clicks
+    enum {MAX_COUNT = 4};
 
-  private:
+    //! timer
+    QBasicTimer timer_;
 
-  //! max number of clicks
-  enum {MAX_COUNT = 4};
+    //! true if need to reset at next increment
+    bool toReset_;
 
-  //! true if need to reset at next increment
-  bool to_reset_;
+    //! last click position in text
+    int position_;
 
-  //! last click position in text
-  int position_;
-
-  //! current number of clicks
-  unsigned int count_;
+    //! current number of clicks
+    unsigned int count_;
 
 };
 

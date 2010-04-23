@@ -234,7 +234,7 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
     for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
     {
 
-        CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
+        CustomToolBar* toolbar( qobject_cast<CustomToolBar*>( *iter ) );
         if( toolbar ) {
 
             Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << (*iter)->windowTitle() << endl;
@@ -371,19 +371,18 @@ void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 void BaseMainWindow::_lockToolBars( bool value )
 {
     Debug::Throw( "BaseMainWindow::_lockToolBars.\n" );
-    QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
-    for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
+    foreach( QToolBar* toolbar, qFindChildren<QToolBar*>( this ) )
     {
 
         // skip if parent is not this
-        if( !((*iter)->window() == this) ) continue;
+        if( !(toolbar->window() == this) ) continue;
 
         // try cast to CustomToolBar and check for 'lock from options'
-        CustomToolBar* toolbar( dynamic_cast<CustomToolBar*>( *iter ) );
-        if( toolbar && toolbar->lockFromOptions() ) continue;
+        CustomToolBar* customtoolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+        if( customtoolbar && customtoolbar->lockFromOptions() ) continue;
 
         // update movability
-        (*iter)->setMovable( !value );
+        toolbar->setMovable( !value );
 
     }
 

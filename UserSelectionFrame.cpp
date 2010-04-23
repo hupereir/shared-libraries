@@ -43,8 +43,7 @@ using namespace std;
 UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
   QWidget( parent ),
   Counter( "UserSelectionFrame" ),
-  delay_( 500 ),
-  timer_( this )
+  delay_( 500 )
 {
 
   Debug::Throw( "UserSelectionFrame::UserSelectionFrame\n" );
@@ -57,9 +56,6 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
   editor().setEditable( true );
   editor().setAutoCompletion( true );
   editor().setToolTip( "User selection" );
-
-  _timer().setSingleShot( true );
-  connect( &_timer(), SIGNAL( timeout() ), SLOT( _userChanged() ) );
 
   // send appropriate signal directly
   connect( &editor(), SIGNAL( activated( const QString & ) ), SLOT( _userChanged() ) );
