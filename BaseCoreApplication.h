@@ -4,32 +4,32 @@
 // $Id$
 
 /******************************************************************************
- *
- * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
- *
- * This is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This software is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * software; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA  02111-1307 USA
- *
- *
- *******************************************************************************/
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
+*******************************************************************************/
 
 /*!
-  \file BaseCoreApplication.h
-  \brief application main object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BaseCoreApplication.h
+\brief application main object
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QObject>
@@ -43,81 +43,82 @@
 class BaseCoreApplication: public QObject
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
+        //! constructor
+        BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
-  //! destructor
-  virtual ~BaseCoreApplication( void );
+    //! destructor
+    virtual ~BaseCoreApplication( void );
 
-  //! initialize application manager
-  virtual void initApplicationManager( void );
+    //! initialize application manager
+    virtual void initApplicationManager( void );
 
-  //! create all widgets
-  virtual bool realizeWidget( void );
+    //! create all widgets
+    virtual bool realizeWidget( void );
 
-  signals:
+    signals:
 
-  //! emmited when configuration needs to be saved
-  void saveConfiguration( void );
+    //! emmited when configuration needs to be saved
+    void saveConfiguration( void );
 
-  //! emmited when configuration is changed
-  void configurationChanged( void );
+    //! emmited when configuration is changed
+    void configurationChanged( void );
 
-  protected slots:
+    protected slots:
 
-  //! process command from server
-  /*! returns true if command has been accepted */
-  virtual bool _processCommand( SERVER::ServerCommand );
 
-  private slots:
+    //! process command from server
+    /*! returns true if command has been accepted */
+    virtual bool _processCommand( SERVER::ServerCommand );
 
-  //! configuration
-  void _updateConfiguration( void );
+    private slots:
 
-  protected:
+    //! configuration
+    void _updateConfiguration( void );
 
-  //! argument list
-  void _setArguments( CommandLineArguments arguments )
-  { arguments_ = arguments; }
+    protected:
 
-  //! argument list
-  CommandLineArguments& _arguments( void )
-  { return arguments_; }
+    //! argument list
+    void _setArguments( CommandLineArguments arguments )
+    { arguments_ = arguments; }
 
-  //! argument list
-  const CommandLineArguments& _arguments( void ) const
-  { return arguments_; }
+    //! argument list
+    CommandLineArguments& _arguments( void )
+    { return arguments_; }
 
-  //! realized
-  bool _realized( void ) const
-  { return realized_; }
+    //! argument list
+    const CommandLineArguments& _arguments( void ) const
+    { return arguments_; }
 
-  //! application manager
-  bool _hasApplicationManager( void ) const
-  { return (bool) application_manager_; }
+    //! realized
+    bool _realized( void ) const
+    { return realized_; }
 
-  //! application manager
-  SERVER::ApplicationManager& _applicationManager( void ) const
-  {
-    assert( application_manager_ );
-    return *application_manager_;
-  }
+    //! application manager
+    bool _hasApplicationManager( void ) const
+    { return (bool) application_manager_; }
 
-  private:
+    //! application manager
+    SERVER::ApplicationManager& _applicationManager( void ) const
+    {
+        assert( application_manager_ );
+        return *application_manager_;
+    }
 
-  //! pointer to application manager
-  SERVER::ApplicationManager* application_manager_;
+    private:
 
-  //! command line arguments
-  CommandLineArguments arguments_;
+    //! pointer to application manager
+    SERVER::ApplicationManager* application_manager_;
 
-  //! true when Realized Widget has been called.
-  bool realized_;
+    //! command line arguments
+    CommandLineArguments arguments_;
+
+    //! true when Realized Widget has been called.
+    bool realized_;
 
 };
 

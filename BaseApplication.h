@@ -4,32 +4,32 @@
 // $Id$
 
 /******************************************************************************
- *
- * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
- *
- * This is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This software is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * software; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA  02111-1307 USA
- *
- *
- *******************************************************************************/
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
+*******************************************************************************/
 
 /*!
-  \file BaseApplication.h
-  \brief application main object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BaseApplication.h
+\brief application main object
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QAction>
@@ -43,89 +43,92 @@
 class BaseApplication: public BaseCoreApplication
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
+        //! constructor
+        BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
-  //! destructor
-  virtual ~BaseApplication( void );
+    //! destructor
+    virtual ~BaseApplication( void );
 
-  //! create all widgets
-  virtual bool realizeWidget( void );
+    //! create all widgets
+    virtual bool realizeWidget( void );
 
-  //!@name actions
-  //@{
+    //!@name actions
+    //@{
 
-  //! about
-  QAction& aboutAction( void ) const
-  { return *about_action_; }
+    //! about
+    QAction& aboutAction( void ) const
+    { return *aboutAction_; }
 
-  //! about
-  QAction& aboutQtAction( void ) const
-  { return *aboutqt_action_; }
+    //! about
+    QAction& aboutQtAction( void ) const
+    { return *aboutqtAction_; }
 
-  //! configuration
-  QAction& configurationAction( void ) const
-  { return *configuration_action_; }
+    //! configuration
+    QAction& configurationAction( void ) const
+    { return *configurationAction_; }
 
-  //! exit safely
-  QAction& closeAction( void ) const
-  { return *close_action_; }
+    //! exit safely
+    QAction& closeAction( void ) const
+    { return *closeAction_; }
 
-  //@}
+    //@}
 
-  public slots:
+    public slots:
 
-  //! set application busy
-  virtual void busy( void );
+    //! set application busy
+    virtual void busy( void );
 
-  //! set application idle
-  virtual void idle( void );
+    //! set application idle
+    virtual void idle( void );
 
-  protected slots:
+    protected slots:
 
-  //! process request from application manager
-  virtual void _about( void ) = 0;
+    //! process request from application manager
+    virtual void _about( void ) = 0;
 
-  //! configuration
-  virtual void _configuration( void ) = 0;
+    //! configuration
+    virtual void _configuration( void ) = 0;
 
-  private slots:
+    //! about to quit
+    virtual void _aboutToQuit( void );
 
-  //! configuration
-  void _updateConfiguration( void );
+    private slots:
 
-  protected:
+    //! configuration
+    void _updateConfiguration( void );
 
-  //! application 'about' dialog
-  virtual void _about( QString, QString version = "", QString stamp = "" );
+    protected:
 
-  //! application 'about' dialog
-  virtual void _about( QString name, double version, QString stamp = "" )
-  { _about( name, QString().setNum( version ), stamp ); }
+    //! application 'about' dialog
+    virtual void _about( QString, QString version = "", QString stamp = "" );
 
-  private:
+    //! application 'about' dialog
+    virtual void _about( QString name, double version, QString stamp = "" )
+    { _about( name, QString().setNum( version ), stamp ); }
 
-  //!@name actions
-  //@{
+    private:
 
-  //! about action
-  QAction* about_action_;
+    //!@name actions
+    //@{
 
-  //! about qt
-  QAction* aboutqt_action_;
+    //! about action
+    QAction* aboutAction_;
 
-  //! configure
-  QAction* configuration_action_;
+    //! about qt
+    QAction* aboutqtAction_;
 
-  //! close
-  QAction* close_action_;
+    //! configure
+    QAction* configurationAction_;
 
-  //@}
+    //! close
+    QAction* closeAction_;
+
+    //@}
 
 };
 
