@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file TextEditorMarginWidget.h
-  \brief widget used to draw margins in TextEditors
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file TextEditorMarginWidget.h
+\brief widget used to draw margins in TextEditors
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QEvent>
@@ -44,50 +44,50 @@ class TextEditor;
 class TextEditorMarginWidget: public QWidget, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  TextEditorMarginWidget( TextEditor* );
+        //! constructor
+        TextEditorMarginWidget( TextEditor* );
 
-  //! destructor
-  virtual ~TextEditorMarginWidget( void )
-  {}
+    //! destructor
+    virtual ~TextEditorMarginWidget( void )
+    {}
 
-  //! vertical line
-  const bool& drawVerticalLine( void ) const
-  { return draw_vertical_line_; }
+    //! vertical line
+    const bool& drawVerticalLine( void ) const
+    { return drawVerticalLine_; }
 
-  public slots:
+    public slots:
 
-  //! dirty
-  void setDirty( void );
+    //! dirty
+    void setDirty( void );
 
-  private slots:
+    private slots:
 
-  //! configuration
-  void _updateConfiguration( void );
+    //! configuration
+    void _updateConfiguration( void );
 
-  protected:
+    protected:
 
-  //! paint event
-  virtual void paintEvent( QPaintEvent* );
+    //! paint event
+    virtual void paintEvent( QPaintEvent* );
 
-  //! parent editor
-  TextEditor& _editor( void ) const
-  { return *editor_; }
+    //! parent editor
+    TextEditor& _editor( void ) const
+    { return *editor_; }
 
-  private:
+    private:
 
-  //! parent editor
-  TextEditor* editor_;
+    //! parent editor
+    TextEditor* editor_;
 
-  //! dirty flag
-  bool dirty_;
+    //! dirty flag
+    bool dirty_;
 
-  //! draw vertical line
-  bool draw_vertical_line_;
+    //! draw vertical line
+    bool drawVerticalLine_;
 
 };
 

@@ -51,239 +51,208 @@
 class LineEditor: public QLineEdit, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  LineEditor( QWidget* parent );
+        //! constructor
+        LineEditor( QWidget* parent );
 
-  //! read-only state
-  void setReadOnly( bool );
+    //! read-only state
+    void setReadOnly( bool );
 
-  //! set editor as modified
-  void setModified( const bool& value );
+    //! set editor as modified
+    void setModified( const bool& value );
 
-  //! modification state
-  const bool& isModified( void ) const
-  { return modified_; }
+    //! modification state
+    const bool& isModified( void ) const
+    { return modified_; }
 
-  //! set clear button
-  void setHasClearButton( const bool& );
+    //! set clear button
+    void setHasClearButton( const bool& );
 
-  //! set frame
-  void setFrame( const bool& );
+    //! set frame
+    void setFrame( const bool& );
 
-  //! has frame
-  bool hasFrame( void ) const
-  { return has_frame_; }
+    //! has frame
+    bool hasFrame( void ) const
+    { return hasFrame_; }
 
-  signals:
+    signals:
 
-  //! signal emmited when the cursor changes position
-  void cursorPositionChanged( int position );
+    //! signal emmited when the cursor changes position
+    void cursorPositionChanged( int position );
 
-  //! modification state changed
-  void modificationChanged( bool );
+    //! modification state changed
+    void modificationChanged( bool );
 
-  //! emmited when clear button is pressed
-  void cleared( void );
+    //! emmited when clear button is pressed
+    void cleared( void );
 
-  public slots:
+    public slots:
 
-  //! set text
-  /*! copy base class method to make it virtual */
-  virtual void setText( const QString& value )
-  { QLineEdit::setText( value ); }
+    //! set text
+    /*! copy base class method to make it virtual */
+    virtual void setText( const QString& value )
+    { QLineEdit::setText( value ); }
 
-  //! clear
-  /*! copy base class method to make it virtual */
-  virtual void clear( void )
-  { QLineEdit::clear(); }
+    //! clear
+    /*! copy base class method to make it virtual */
+    virtual void clear( void )
+    { QLineEdit::clear(); }
 
-  //! changes selection to uppercase
-  void lowerCase( void );
+    //! changes selection to uppercase
+    void lowerCase( void );
 
-  //! changes selection to uppercase
-  void upperCase( void );
+    //! changes selection to uppercase
+    void upperCase( void );
 
-  protected:
+    protected:
 
-  //!@name event handlers
-  //@{
+    //!@name event handlers
+    //@{
 
-  //! generic event
-  virtual bool event( QEvent* );
+    //! generic event
+    virtual bool event( QEvent* );
 
-  //! paint
-  void paintEvent( QPaintEvent* );
+    //! paint
+    void paintEvent( QPaintEvent* );
 
-  //! context menu (overloaded)
-  virtual void contextMenuEvent( QContextMenuEvent* );
+    //! context menu (overloaded)
+    virtual void contextMenuEvent( QContextMenuEvent* );
 
-  //! overloaded key press event
-  virtual void keyPressEvent( QKeyEvent* );
+    //! overloaded key press event
+    virtual void keyPressEvent( QKeyEvent* );
 
-  //! overloaded mouse event handler
-  virtual void mouseMoveEvent( QMouseEvent* );
+    //! overloaded mouse event handler
+    virtual void mouseMoveEvent( QMouseEvent* );
 
-  //! overloaded mouse event handler
-  virtual void mousePressEvent( QMouseEvent* );
+    //! overloaded mouse event handler
+    virtual void mousePressEvent( QMouseEvent* );
 
-  //! mouse move
-  void mouseReleaseEvent( QMouseEvent* );
+    //! mouse move
+    void mouseReleaseEvent( QMouseEvent* );
 
-  //@}
+    //@}
 
-  //! install actions
-  virtual void _installActions( void );
+    //! install actions
+    virtual void _installActions( void );
 
-  //! has clear button
-  const bool& _hasClearButton( void )
-  { return has_clear_button_; }
+    //! has clear button
+    const bool& _hasClearButton( void )
+    { return hasClearButton_; }
 
-  //! clear button rect
-  const QRect& _clearButtonRect( void ) const
-  { return clear_button_rect_; }
+    //! clear button rect
+    const QRect& _clearButtonRect( void ) const
+    { return clear_button_rect_; }
 
-  //! clear button rect
-  virtual void _setClearButtonRect( const QRect& rect )
-  { clear_button_rect_ = rect; }
+    //! clear button rect
+    virtual void _setClearButtonRect( const QRect& rect )
+    { clear_button_rect_ = rect; }
 
-  //! toggle clear button
-  virtual bool _toggleClearButton( const bool& );
+    //! toggle clear button
+    virtual bool _toggleClearButton( const bool& );
 
-  //! clear button visibility
-  virtual const bool& _clearButtonVisible( void ) const
-  { return clear_button_visible_; }
+    //! clear button visibility
+    virtual const bool& _clearButtonVisible( void ) const
+    { return clearButtonVisible_; }
 
-  //! set clear button visibility
-  virtual void _setClearButtonVisible( const bool& value )
-  { clear_button_visible_ = value; }
+    //! set clear button visibility
+    virtual void _setClearButtonVisible( const bool& value )
+    { clearButtonVisible_ = value; }
 
-  //! paint clear button
-  virtual void _paintClearButton( QPainter& painter )
-  { _paintClearButton( painter, true ); }
+    //! paint clear button
+    virtual void _paintClearButton( QPainter& painter )
+    { _paintClearButton( painter, true ); }
 
-  //! paint clear button
-  virtual void _paintClearButton( QPainter&, const bool& );
+    //! paint clear button
+    virtual void _paintClearButton( QPainter&, const bool& );
 
-  //! framewidth
-  int _frameWidth( void ) const;
+    //! framewidth
+    int _frameWidth( void ) const;
 
-  //! clear icon
-  virtual const QIcon& _clearIcon( void ) const
-  { return clear_icon_; }
+    //! clear icon
+    virtual const QIcon& _clearIcon( void ) const
+    { return clearIcon_; }
 
-  protected slots:
+    protected slots:
 
-  //! update modification state
-  virtual void _modified( const QString& text );
+    //! update modification state
+    virtual void _modified( const QString& text );
 
-  //! update action status
-  virtual void _updateSelectionActions( void );
+    //! update action status
+    virtual void _updateSelectionActions( void );
 
-  //! update paste action
-  /*! depends on clipboard status and editability */
-  virtual void _updatePasteAction( void );
+    //! update paste action
+    /*! depends on clipboard status and editability */
+    virtual void _updatePasteAction( void );
 
-  //! update undo/redo actions
-  virtual void _updateUndoRedoActions( void );
+    //! update undo/redo actions
+    virtual void _updateUndoRedoActions( void );
 
-  private:
+    private:
 
-  //!@name oxygen style
-  //@{
+    //! modification state
+    bool modified_;
 
-  //! oxygen style
-  /*!
-  this is a kludge so that the widget appears correctly for all styles
-  because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
-  style attribute
-  */
-  void _setIsOxygen( const bool& value )
-  { is_oxygen_ = value; }
+    //! backup string to track modifications
+    QString backup_;
 
-  //! oxygen style
-  /*!
-  this is a kludge so that the widget appears correctly for all styles
-  because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
-  style attribute
-  */
-  const bool& _isOxygen( void ) const
-  { return is_oxygen_; }
+    //!@name default actions
+    //@{
 
-  //@}
+    //! undo
+    QAction* undoAction_;
 
-  //! modification state
-  bool modified_;
+    //! redo
+    QAction* redoAction_;
 
-  //! backup string to track modifications
-  QString backup_;
+    //! cut selection
+    QAction* cutAction_;
 
-  //!@name default actions
-  //@{
+    //! copy selection
+    QAction* copyAction_;
 
-  //! undo
-  QAction* undo_action_;
+    //! paste clipboard
+    QAction* pasteAction_;
 
-  //! redo
-  QAction* redo_action_;
+    //! clear document
+    QAction* clearAction_;
 
-  //! cut selection
-  QAction* cut_action_;
+    //! select all document
+    QAction* selectAllAction_;
 
-  //! copy selection
-  QAction* copy_action_;
+    //! convert selection to upper case
+    QAction* upperCaseAction_;
 
-  //! paste clipboard
-  QAction* paste_action_;
+    //! convert selection to lower case
+    QAction* lowerCaseAction_;
 
-  //! clear document
-  QAction* clear_action_;
+    //@}
 
-  //! select all document
-  QAction* select_all_action_;
+    //!@name properties
+    //@{
 
-  //! convert selection to upper case
-  QAction* upper_case_action_;
+    //! true when clear button should be drawn
+    bool hasClearButton_;
 
-  //! convert selection to lower case
-  QAction* lower_case_action_;
+    //! true when clear button is visible
+    bool clearButtonVisible_;
 
-  //@}
+    //! clear button rect
+    QRect clear_button_rect_;
 
-  //!@name properties
-  //@{
+    //! frame
+    bool hasFrame_;
 
-  //! true when oxygen style is used
-  /*!
-  this is a kludge so that the widget appears correctly for all styles
-  because there seem to be something wrong in the way oxygen handles the PM_DefaultFrameWidth
-  style attribute
-  */
-  bool is_oxygen_;
+    //! true if clear button is triggered
+    bool triggered_;
 
-  //! true when clear button should be drawn
-  bool has_clear_button_;
+    //! clear pixmap
+    QIcon clearIcon_;
 
-  //! true when clear button is visible
-  bool clear_button_visible_;
-
-  //! clear button rect
-  QRect clear_button_rect_;
-
-  //! frame
-  bool has_frame_;
-
-  //! true if clear button is triggered
-  bool triggered_;
-
-  //! clear pixmap
-  QIcon clear_icon_;
-
-  //@}
+    //@}
 
 };
 
