@@ -374,16 +374,16 @@ void LineEditor::paintEvent( QPaintEvent* event )
         painter.end();
     }
 
-    if( hasFrame() )
-    {
-
-        // draw frame
-        QPainter painter( this );
-        painter.setClipRect( event->rect() );
-        style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
-        painter.end();
-
-    }
+//     if( hasFrame() )
+//     {
+//
+//         // draw frame
+//         QPainter painter( this );
+//         painter.setClipRect( event->rect() );
+//         style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
+//         painter.end();
+//
+//     }
 
 }
 

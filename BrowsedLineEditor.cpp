@@ -22,14 +22,14 @@
 *******************************************************************************/
 
 /*!
-  \file BrowsedLineEditor.cpp
-  \brief combined QLineEdit + associated browse button
-  line edit is also customized to have faster popup menu
-  result of the file dialog associated to the button is stored into the
-  LineEditor object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BrowsedLineEditor.cpp
+\brief combined QLineEdit + associated browse button
+line edit is also customized to have faster popup menu
+result of the file dialog associated to the button is stored into the
+LineEditor object
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QHBoxLayout>
@@ -49,32 +49,32 @@ using namespace std;
 
 //____________________________________________________________
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
-  QWidget( parent ),
-  Counter( "BrowsedLineEditor" ),
-  accept_mode_( QFileDialog::AcceptOpen ),
-  file_mode_( QFileDialog::ExistingFile )
+    QWidget( parent ),
+    Counter( "BrowsedLineEditor" ),
+    acceptMode_( QFileDialog::AcceptOpen ),
+    fileMode_( QFileDialog::ExistingFile )
 {
 
-  Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
+    Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
 
-  // insert horizontal layout
-  QHBoxLayout *layout = new QHBoxLayout();
-  layout->setMargin(0);
-  layout->setSpacing(2);
-  setLayout( layout );
+    // insert horizontal layout
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->setMargin(0);
+    layout->setSpacing(2);
+    setLayout( layout );
 
-  // create line editor
-  line_edit_ = new Editor( this );
-  layout->addWidget( line_edit_, 1 );
+    // create line editor
+    line_edit_ = new Editor( this );
+    layout->addWidget( line_edit_, 1, Qt::AlignBottom );
 
-  // create push_button
-  QToolButton *button = new QToolButton( this );
-  button->setIcon( IconEngine::get( ICONS::OPEN ) );
-  button->setToolTip( "Browse file system" );
-  layout->addWidget( button, 0 );
+    // create push_button
+    QToolButton *button = new QToolButton( this );
+    button->setIcon( IconEngine::get( ICONS::OPEN ) );
+    button->setToolTip( "Browse file system" );
+    layout->addWidget( button, 0, Qt::AlignVCenter );
 
-  // connect push_button
-  connect( button, SIGNAL( clicked() ), SLOT( _browse() ) );
+    // connect push_button
+    connect( button, SIGNAL( clicked() ), SLOT( _browse() ) );
 }
 
 //____________________________________________________________
@@ -85,13 +85,13 @@ void BrowsedLineEditor::setFile( const QString& file )
 void BrowsedLineEditor::_browse( void )
 {
 
-  Debug::Throw( "BrowsedLineEditor::_browse.\n" );
-  FileDialog dialog( this );
-  dialog.setAcceptMode( _acceptMode() );
-  dialog.setFileMode( _fileMode() );
-  if( !editor().text().isNull() ) dialog.selectFile( editor().text() );
+    Debug::Throw( "BrowsedLineEditor::_browse.\n" );
+    FileDialog dialog( this );
+    dialog.setAcceptMode( _acceptMode() );
+    dialog.setFileMode( _fileMode() );
+    if( !editor().text().isNull() ) dialog.selectFile( editor().text() );
 
-  QString file( dialog.getFile() );
-  if( !file.isNull() ) setFile( file );
-  return;
+    QString file( dialog.getFile() );
+    if( !file.isNull() ) setFile( file );
+    return;
 }

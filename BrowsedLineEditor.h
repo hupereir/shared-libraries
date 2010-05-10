@@ -25,14 +25,14 @@
 *******************************************************************************/
 
 /*!
-  \file BrowsedLineEditor.h
-  \brief combined QLineEdit + associated browse button
-  line edit is also customized to have faster popup menu
-  result of the file dialog associated to the button is stored into the
-  LineEditor object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BrowsedLineEditor.h
+\brief combined QLineEdit + associated browse button
+line edit is also customized to have faster popup menu
+result of the file dialog associated to the button is stored into the
+LineEditor object
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 
@@ -46,70 +46,70 @@
 class AnimatedLineEditor;
 
 /*!
-  \class BrowsedLineEditor
-  \brief combined QLineEdit + associated browse button
-  line edit is also customized to have faster popup menu
-  result of the file dialog associated to the button is stored into the
-  LineEditor object
+\class BrowsedLineEditor
+\brief combined QLineEdit + associated browse button
+line edit is also customized to have faster popup menu
+result of the file dialog associated to the button is stored into the
+LineEditor object
 */
 class BrowsedLineEditor: public QWidget, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  typedef AnimatedLineEditor Editor;
+        typedef AnimatedLineEditor Editor;
 
-  //! constructor;
-  BrowsedLineEditor( QWidget* parent );
+    //! constructor;
+    BrowsedLineEditor( QWidget* parent );
 
-  //! retrieve line editor
-  virtual Editor& editor( void ) const
-  {
-    assert( line_edit_ );
-    return *line_edit_;
-  }
+    //! retrieve line editor
+    virtual Editor& editor( void ) const
+    {
+        assert( line_edit_ );
+        return *line_edit_;
+    }
 
-  //! open mode
-  virtual void setAcceptMode( const QFileDialog::AcceptMode mode )
-  { accept_mode_ = mode; }
+    //! open mode
+    virtual void setAcceptMode( const QFileDialog::AcceptMode mode )
+    { acceptMode_ = mode; }
 
-  //! file mode
-  virtual void setFileMode( const QFileDialog::FileMode& mode )
-  { file_mode_ = mode; }
+    //! file mode
+    virtual void setFileMode( const QFileDialog::FileMode& mode )
+    { fileMode_ = mode; }
 
-  public slots:
+    public slots:
 
-  //! set line_edit_file
-  virtual void setFile( const QString& file );
+    //! set line_edit_file
+    virtual void setFile( const QString& file );
 
-  protected:
+    protected:
 
-  //! accept mode
-  virtual const QFileDialog::AcceptMode& _acceptMode( void ) const
-  { return accept_mode_; }
+    //! accept mode
+    virtual const QFileDialog::AcceptMode& _acceptMode( void ) const
+    { return acceptMode_; }
 
-  //! file mode
-  virtual const QFileDialog::FileMode& _fileMode( void ) const
-  { return file_mode_; }
+    //! file mode
+    virtual const QFileDialog::FileMode& _fileMode( void ) const
+    { return fileMode_; }
 
-  protected slots:
+    protected slots:
 
-  //! opens a file dialog, stores result in line edit
-  virtual void _browse( void );
+    //! opens a file dialog, stores result in line edit
+    virtual void _browse( void );
 
-  private:
+    private:
 
-  //! line editor widget
-  Editor *line_edit_;
+    //! line editor widget
+    Editor *line_edit_;
 
-  //! accept mode
-  QFileDialog::AcceptMode accept_mode_;
+    //! accept mode
+    QFileDialog::AcceptMode acceptMode_;
 
-  //! File dialog mode
-  QFileDialog::FileMode file_mode_;
+    //! File dialog mode
+    QFileDialog::FileMode fileMode_;
 
 };
 
