@@ -58,9 +58,9 @@ class BrowsedLineEditor: public QWidget, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        typedef AnimatedLineEditor Editor;
+    typedef AnimatedLineEditor Editor;
 
     //! constructor;
     BrowsedLineEditor( QWidget* parent );
@@ -68,8 +68,8 @@ class BrowsedLineEditor: public QWidget, public Counter
     //! retrieve line editor
     virtual Editor& editor( void ) const
     {
-        assert( line_edit_ );
-        return *line_edit_;
+        assert( lineEditor_ );
+        return *lineEditor_;
     }
 
     //! open mode
@@ -82,7 +82,7 @@ class BrowsedLineEditor: public QWidget, public Counter
 
     public slots:
 
-    //! set line_edit_file
+    //! set lineEditor_file
     virtual void setFile( const QString& file );
 
     protected:
@@ -103,7 +103,7 @@ class BrowsedLineEditor: public QWidget, public Counter
     private:
 
     //! line editor widget
-    Editor *line_edit_;
+    Editor *lineEditor_;
 
     //! accept mode
     QFileDialog::AcceptMode acceptMode_;

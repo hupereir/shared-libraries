@@ -64,14 +64,14 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     setLayout( layout );
 
     // create line editor
-    line_edit_ = new Editor( this );
-    layout->addWidget( line_edit_, 1, Qt::AlignBottom );
+    lineEditor_ = new Editor( this );
+    layout->addWidget( lineEditor_, 1 );
 
     // create push_button
     QToolButton *button = new QToolButton( this );
     button->setIcon( IconEngine::get( ICONS::OPEN ) );
     button->setToolTip( "Browse file system" );
-    layout->addWidget( button, 0, Qt::AlignVCenter );
+    layout->addWidget( button, 0 );
 
     // connect push_button
     connect( button, SIGNAL( clicked() ), SLOT( _browse() ) );

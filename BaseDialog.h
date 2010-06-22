@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file BaseDialog.h
-  \brief customized QDialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BaseDialog.h
+\brief customized QDialog
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QDialog>
@@ -37,87 +37,87 @@
 #include "WindowMonitor.h"
 
 /*!
-  \class BaseDialog
-  \brief customized QDialog
+\class BaseDialog
+\brief customized QDialog
 */
 class BaseDialog: public QDialog
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! dialog centering enumeration
-  enum Centering {
+    //! dialog centering enumeration
+    enum Centering {
 
-    //! center widget on mouse pointer
-    CENTER_ON_POINTER,
+        //! center widget on mouse pointer
+        CENTER_ON_POINTER,
 
-    //! center widget on parent widget
-    CENTER_ON_PARENT,
+        //! center widget on parent widget
+        CENTER_ON_PARENT,
 
-    //! center widget on desktop
-    CENTER_ON_DESKTOP
+        //! center widget on desktop
+        CENTER_ON_DESKTOP
 
-  };
+    };
 
-  //! constructor
-  BaseDialog( QWidget *parent = 0, Qt::WFlags flags = 0);
+    //! constructor
+    BaseDialog( QWidget *parent = 0, Qt::WFlags flags = 0);
 
-  //! destructor
-  virtual ~BaseDialog( void );
+    //! destructor
+    virtual ~BaseDialog( void );
 
-  //! window title
-  virtual BaseDialog& setWindowTitle( const QString& );
+    //! window title
+    virtual BaseDialog& setWindowTitle( const QString& );
 
-  //! restore window size
-  virtual QSize minimumSizeHint( void ) const;
+    //! restore window size
+    virtual QSize minimumSizeHint( void ) const;
 
-  //! restore window size
-  virtual QSize sizeHint( void ) const;
+    //! restore window size
+    virtual QSize sizeHint( void ) const;
 
-  //! center widget on pointer
-  BaseDialog& centerOnPointer( void );
+    //! center widget on pointer
+    BaseDialog& centerOnPointer( void );
 
-  //! center widget on argument widget
-  BaseDialog& centerOnDesktop( void );
+    //! center widget on argument widget
+    BaseDialog& centerOnDesktop( void );
 
-  //! center on parent widget
-  BaseDialog& centerOnParent( void )
-  { return centerOnWidget( parentWidget() ); }
+    //! center on parent widget
+    BaseDialog& centerOnParent( void )
+    { return centerOnWidget( parentWidget() ); }
 
-  //! center widget on argument widget
-  BaseDialog& centerOnWidget( QWidget* );
+    //! center widget on argument widget
+    BaseDialog& centerOnWidget( QWidget* );
 
-  //! size option name
-  virtual void setOptionName( const QString& name )
-  { monitor_.setOptionName( name ); }
+    //! size option name
+    virtual void setOptionName( const QString& name )
+    { monitor_.setOptionName( name ); }
 
-  public slots:
+    public slots:
 
-  //! uniconify
-  BaseDialog& uniconify( void );
+    //! uniconify
+    BaseDialog& uniconify( void );
 
-  protected:
+    protected:
 
-  //! generic event
-  virtual bool event( QEvent* );
+    //! generic event
+    virtual bool event( QEvent* );
 
-  //! maximize state prior to minimization
-  bool _wasMaximized( void ) const
-  { return was_maximized_; }
+    //! maximize state prior to minimization
+    bool _wasMaximized( void ) const
+    { return wasMaximized_; }
 
-  //! maximize state prior to minimization
-  void _setWasMaximized( bool value )
-  { was_maximized_ = value; }
+    //! maximize state prior to minimization
+    void _setWasMaximized( bool value )
+    { wasMaximized_ = value; }
 
-  private:
+    private:
 
-  //! size watch
-  WindowMonitor monitor_;
+    //! size watch
+    WindowMonitor monitor_;
 
-  //! window state prior to minimization
-  bool was_maximized_;
+    //! window state prior to minimization
+    bool wasMaximized_;
 
 };
 

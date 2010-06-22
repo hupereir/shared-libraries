@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file BaseDialog.cpp
-  \brief customized QDialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BaseDialog.cpp
+\brief customized QDialog
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QTextStream>
@@ -42,12 +42,12 @@ using namespace std;
 
 //__________________________________________________
 BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
-  QDialog( parent, flags ),
-  monitor_( this ),
-  was_maximized_( false )
+    QDialog( parent, flags ),
+    monitor_( this ),
+    wasMaximized_( false )
 {
-  Debug::Throw( "BaseDialog::BaseDialog.\n" );
-  setSizeGripEnabled ( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
+    Debug::Throw( "BaseDialog::BaseDialog.\n" );
+    setSizeGripEnabled ( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
 }
 
 //__________________________________________________
@@ -58,42 +58,42 @@ BaseDialog::~BaseDialog( void )
 BaseDialog& BaseDialog::setWindowTitle( const QString& title )
 {
 
-  Debug::Throw( "BaseDialog::setWindowTitle.\n" );
-  QDialog::setWindowTitle( Util::windowTitle( title ) );
-  return *this;
+    Debug::Throw( "BaseDialog::setWindowTitle.\n" );
+    QDialog::setWindowTitle( Util::windowTitle( title ) );
+    return *this;
 
 }
 
 //__________________________________________________
 QSize BaseDialog::minimumSizeHint( void ) const
 {
-  QSize out( monitor_.sizeHint() );
-  return out.isValid() ? out:QDialog::minimumSizeHint();
+    QSize out( monitor_.sizeHint() );
+    return out.isValid() ? out:QDialog::minimumSizeHint();
 }
 
 //__________________________________________________
 QSize BaseDialog::sizeHint( void ) const
 {
-  QSize out( monitor_.sizeHint() );
-  return out.isValid() ? out:QDialog::sizeHint();
+    QSize out( monitor_.sizeHint() );
+    return out.isValid() ? out:QDialog::sizeHint();
 }
 
 //________________________________________________________________
 BaseDialog& BaseDialog::centerOnPointer( void )
 {
 
-  Debug::Throw( "BaseDialog::centerOnPointer" );
-  move( QtUtil::centerOnPointer( sizeHint() ) );
-  return *this;
+    Debug::Throw( "BaseDialog::centerOnPointer" );
+    move( QtUtil::centerOnPointer( sizeHint() ) );
+    return *this;
 }
 
 //________________________________________________________________
 BaseDialog& BaseDialog::centerOnDesktop( void )
 {
 
-  Debug::Throw( "BaseDialog::centerOnDesktop" );
-  move( QtUtil::centerOnDesktop( sizeHint() ) );
-  return *this;
+    Debug::Throw( "BaseDialog::centerOnDesktop" );
+    move( QtUtil::centerOnDesktop( sizeHint() ) );
+    return *this;
 
 }
 
@@ -101,9 +101,9 @@ BaseDialog& BaseDialog::centerOnDesktop( void )
 BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 {
 
-  Debug::Throw( "BaseDialog::centerOnWidget" );
-  move( QtUtil::centerOnWidget( sizeHint(), parent ) );
-  return *this;
+    Debug::Throw( "BaseDialog::centerOnWidget" );
+    move( QtUtil::centerOnWidget( sizeHint(), parent ) );
+    return *this;
 
 }
 
@@ -111,18 +111,18 @@ BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 BaseDialog& BaseDialog::uniconify( void )
 {
 
-  Debug::Throw( "BaseDialog::uniconify" );
-  if( isMinimized() )
-  {
+    Debug::Throw( "BaseDialog::uniconify" );
+    if( isMinimized() )
+    {
 
-    if( _wasMaximized() ) showMaximized();
-    else showNormal();
+        if( _wasMaximized() ) showMaximized();
+        else showNormal();
 
-  } else if( isHidden() ) show();
+    } else if( isHidden() ) show();
 
-  activateWindow();
-  raise();
-  return *this;
+    activateWindow();
+    raise();
+    return *this;
 
 }
 
@@ -130,24 +130,25 @@ BaseDialog& BaseDialog::uniconify( void )
 bool BaseDialog::event( QEvent* event )
 {
 
-  // check that all needed widgets/actions are valid and checked.
-  switch (event->type())
-  {
-
-    case QEvent::WindowStateChange:
+    // check that all needed widgets/actions are valid and checked.
+    switch (event->type())
     {
-      // cast
-      QWindowStateChangeEvent *state_event( static_cast<QWindowStateChangeEvent*>(event) );
 
-      if( windowState() & Qt::WindowMinimized )
-      { _setWasMaximized( state_event->oldState() & Qt::WindowMaximized ); }
+        case QEvent::WindowStateChange:
+        {
+            // cast
+            QWindowStateChangeEvent *state_event( static_cast<QWindowStateChangeEvent*>(event) );
 
+            if( windowState() & Qt::WindowMinimized )
+            { _setWasMaximized( state_event->oldState() & Qt::WindowMaximized ); }
+
+        }
+        break;
+
+        default: break;
     }
-    break;
 
-    default: break;
-  }
-
-  return QDialog::event( event );
+    return QDialog::event( event );
 
 }
+
