@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file    X11Util.h
-  \brief   some X11 specific utilities
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
+\file    X11Util.h
+\brief   some X11 specific utilities
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include <QWidget>
@@ -45,149 +45,147 @@
 class X11Util
 {
 
-  public:
+    public:
 
-  //! singleton
-  static X11Util& get( void );
+    //! singleton
+    static X11Util& get( void );
 
-  //! used for stickyness
-  static const unsigned long ALL_DESKTOPS = ~0;
+    //! used for stickyness
+    static const unsigned long ALL_DESKTOPS = ~0;
 
-  //! Atoms enumeration
-  enum Atoms
-  {
-    _NET_SUPPORTED,
-    _NET_CURRENT_DESKTOP,
-    _NET_WM_DESKTOP,
-    _NET_WM_STATE,
-    _NET_WM_STATE_STICKY,
-    _NET_WM_STATE_STAYS_ON_TOP,
-    _NET_WM_STATE_ABOVE,
-    _NET_WM_STATE_SKIP_TASKBAR,
-    _NET_WM_STATE_SKIP_PAGER,
-    _NET_WM_MOVERESIZE,
-    _NET_WM_CM
-  };
+    //! Atoms enumeration
+    enum Atoms {
+        _NET_SUPPORTED,
+        _NET_CURRENT_DESKTOP,
+        _NET_WM_DESKTOP,
+        _NET_WM_STATE,
+        _NET_WM_STATE_STICKY,
+        _NET_WM_STATE_STAYS_ON_TOP,
+        _NET_WM_STATE_ABOVE,
+        _NET_WM_STATE_SKIP_TASKBAR,
+        _NET_WM_STATE_SKIP_PAGER,
+        _NET_WM_MOVERESIZE,
+        _NET_WM_CM
+    };
 
-  enum Direction
-  {
-    _NET_WM_MOVERESIZE_SIZE_TOPLEFT=0,
-    _NET_WM_MOVERESIZE_SIZE_TOP=1,
-    _NET_WM_MOVERESIZE_SIZE_TOPRIGHT=2,
-    _NET_WM_MOVERESIZE_SIZE_RIGHT=3,
-    _NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT=4,
-    _NET_WM_MOVERESIZE_SIZE_BOTTOM=5,
-    _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT=6,
-    _NET_WM_MOVERESIZE_SIZE_LEFT=7,
-    _NET_WM_MOVERESIZE_MOVE=8,
-    _NET_WM_MOVERESIZE_SIZE_KEYBOARD=9,
-    _NET_WM_MOVERESIZE_MOVE_KEYBOARD=10,
-  };
+    enum Direction {
+        _NET_WM_MOVERESIZE_SIZE_TOPLEFT=0,
+        _NET_WM_MOVERESIZE_SIZE_TOP=1,
+        _NET_WM_MOVERESIZE_SIZE_TOPRIGHT=2,
+        _NET_WM_MOVERESIZE_SIZE_RIGHT=3,
+        _NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT=4,
+        _NET_WM_MOVERESIZE_SIZE_BOTTOM=5,
+        _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT=6,
+        _NET_WM_MOVERESIZE_SIZE_LEFT=7,
+        _NET_WM_MOVERESIZE_MOVE=8,
+        _NET_WM_MOVERESIZE_SIZE_KEYBOARD=9,
+        _NET_WM_MOVERESIZE_MOVE_KEYBOARD=10,
+    };
 
-  //! supported atoms
-  bool isSupported( const Atoms& atom );
+    //! supported atoms
+    bool isSupported( const Atoms& atom );
 
-  //! return true if property is found in NET_WM_STATE
-  bool hasProperty( const QWidget&, const Atoms& );
+    //! return true if property is found in NET_WM_STATE
+    bool hasProperty( const QWidget&, const Atoms& );
 
-  //! change property
-  bool changeProperty( const QWidget& widget, const Atoms& atom, bool value )
-  {
-    return widget.isHidden()  ?
-      _changeProperty( widget, atom, value ):
-      _requestPropertyChange( widget, atom, value );
-  }
+    //! change property
+    bool changeProperty( const QWidget& widget, const Atoms& atom, bool value )
+    {
+        return widget.isHidden()  ?
+            _changeProperty( widget, atom, value ):
+            _requestPropertyChange( widget, atom, value );
+    }
 
-  //! print window state
-  void printWindowState( const QWidget& );
+    //! print window state
+    void printWindowState( const QWidget& );
 
-  //! get atom carninal value
-  unsigned long cardinal( const QWidget& widget, const Atoms& atom )
-  { return cardinal( widget.winId(), atom ); }
+    //! get atom carninal value
+    unsigned long cardinal( const QWidget& widget, const Atoms& atom )
+    { return cardinal( widget.winId(), atom ); }
 
-  //! get atom carninal value
-  unsigned long cardinal( const WId&, const Atoms& );
+    //! get atom carninal value
+    unsigned long cardinal( const WId&, const Atoms& );
 
-  //! get atom carninal value
-  bool changeCardinal( const QWidget& widget, const Atoms& atom, const unsigned long& value )
-  {
-    return widget.isHidden() ?
-      _changeCardinal( widget, atom, value ):
-      _requestCardinalChange( widget, atom, value );
-  }
+    //! get atom carninal value
+    bool changeCardinal( const QWidget& widget, const Atoms& atom, const unsigned long& value )
+    {
+        return widget.isHidden() ?
+            _changeCardinal( widget, atom, value ):
+            _requestCardinalChange( widget, atom, value );
+    }
 
-  //! move widget using X11 window manager
-  /*! returns true on success */
-  bool moveWidget( const QWidget& widget, const QPoint& position )
-  { return moveResizeWidget( widget, position, X11Util::_NET_WM_MOVERESIZE_MOVE ); }
+    //! move widget using X11 window manager
+    /*! returns true on success */
+    bool moveWidget( const QWidget& widget, const QPoint& position )
+    { return moveResizeWidget( widget, position, X11Util::_NET_WM_MOVERESIZE_MOVE ); }
 
-  //! move/resize widget using X11 window manager
-  /*! returns true on success */
-  bool moveResizeWidget(
-    const QWidget&,
-    const QPoint&,
-    const Direction&,
-    Qt::MouseButton button = Qt::LeftButton );
+    //! move/resize widget using X11 window manager
+    /*! returns true on success */
+    bool moveResizeWidget(
+        const QWidget&,
+        const QPoint&,
+        const Direction&,
+        Qt::MouseButton button = Qt::LeftButton );
 
-  #ifdef Q_WS_X11
+    #ifdef Q_WS_X11
 
-  //! find atom
-  Atom findAtom( const Atoms& atom );
+    //! find atom
+    Atom findAtom( const Atoms& atom );
 
-  #endif
+    #endif
 
-  private:
+    private:
 
-  //! constructor
-  X11Util( void );
+    //! constructor
+    X11Util( void );
 
-  //! change property
-  bool _changeProperty( const QWidget&, const Atoms&, bool value );
+    //! change property
+    bool _changeProperty( const QWidget&, const Atoms&, bool value );
 
-  //! change property
-  bool _requestPropertyChange( const QWidget&, const Atoms&, bool value );
+    //! change property
+    bool _requestPropertyChange( const QWidget&, const Atoms&, bool value );
 
-  //! cardinal
-  bool _changeCardinal( const QWidget&, const Atoms&, const unsigned long& value );
+    //! cardinal
+    bool _changeCardinal( const QWidget&, const Atoms&, const unsigned long& value );
 
-  //! cardinal
-  bool _requestCardinalChange( const QWidget&, const Atoms&, const unsigned long& value );
+    //! cardinal
+    bool _requestCardinalChange( const QWidget&, const Atoms&, const unsigned long& value );
 
-  //! atom names
-  typedef std::map<Atoms, QString> AtomNameMap;
+    //! atom names
+    typedef std::map<Atoms, QString> AtomNameMap;
 
-  //! atom names
-  void _initializeAtomNames( void );
+    //! atom names
+    void _initializeAtomNames( void );
 
-  //! atom names
-  const AtomNameMap& _atomNames( void ) const
-  { return atom_names_; }
+    //! atom names
+    const AtomNameMap& _atomNames( void ) const
+    { return atom_names_; }
 
-  AtomNameMap atom_names_;
+    AtomNameMap atom_names_;
 
-  //! supported atoms
-  typedef std::map<Atoms, bool > SupportedAtomMap;
+    //! supported atoms
+    typedef std::map<Atoms, bool > SupportedAtomMap;
 
-  //! supported atoms
-  const SupportedAtomMap& _supportedAtoms( void ) const
-  { return supported_atoms_; }
+    //! supported atoms
+    const SupportedAtomMap& _supportedAtoms( void ) const
+    { return supported_atoms_; }
 
-  SupportedAtomMap supported_atoms_;
+    SupportedAtomMap supported_atoms_;
 
-  #ifdef Q_WS_X11
+    #ifdef Q_WS_X11
 
-  //! atom map
-  typedef std::map<Atoms, Atom> AtomMap;
+    //! atom map
+    typedef std::map<Atoms, Atom> AtomMap;
 
-  //! atoms
-  // const AtomMap& _atoms( void ) const
-  AtomMap& _atoms( void )
-  { return atoms_; }
+    //! atoms
+    // const AtomMap& _atoms( void ) const
+    AtomMap& _atoms( void )
+    { return atoms_; }
 
-  //! atoms
-  AtomMap atoms_;
+    //! atoms
+    AtomMap atoms_;
 
-  #endif
+    #endif
 
 };
 
