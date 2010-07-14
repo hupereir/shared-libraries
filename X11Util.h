@@ -65,7 +65,10 @@ class X11Util
         _NET_WM_STATE_SKIP_TASKBAR,
         _NET_WM_STATE_SKIP_PAGER,
         _NET_WM_MOVERESIZE,
-        _NET_WM_CM
+        _NET_WM_CM,
+
+        // kde specific atoms
+        _KDE_NET_WM_BLUR_BEHIND_REGION
     };
 
     enum Direction {
@@ -95,6 +98,9 @@ class X11Util
             _changeProperty( widget, atom, value ):
             _requestPropertyChange( widget, atom, value );
     }
+
+    //! change property
+    bool changeProperty( const QWidget&, const Atoms&, const unsigned char*, int size );
 
     //! print window state
     void printWindowState( const QWidget& );

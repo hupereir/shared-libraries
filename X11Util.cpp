@@ -90,7 +90,7 @@ bool X11Util::isSupported( const Atoms& atom )
         display, QX11Info::appRootWindow(),
         net_supported, 0l, 2048l,
         false, XA_ATOM, &type,
-        &format, &count, &unused, (unsigned char **) &data) != Success )
+        &format, &count, &unused, &data) != Success )
     {
         Debug::Throw(debug_level) << "X11Util::isSupported - XGetProperty failed" << endl;
         return false;
@@ -162,7 +162,7 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
         0L, 2048L, false,
         XA_ATOM, &type,
         &format, &count, &unused,
-        (unsigned char **) &data) != Success )
+        &data) != Success )
     {
         Debug::Throw(debug_level) << "X11Util::hasProperty - XGetProperty failed" << endl;
         return false;
@@ -238,7 +238,7 @@ unsigned long X11Util::cardinal( const WId& wid, const Atoms& atom )
         0, 1L, false,
         XA_CARDINAL, &type,
         &format, &n, &left,
-        (unsigned char **) &data);
+        &data);
 
     // finish if no data is found
     if( data == None ) return 0;
@@ -295,6 +295,21 @@ bool X11Util::moveResizeWidget(
 }
 
 //________________________________________________________________________
+bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const unsigned char* data, int size )
+{
+    #ifdef Q_WS_X11
+    Display* display( QX11Info::display() );
+    Atom searched( findAtom( atom ) );
+    XChangeProperty (display, widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, data, size );
+
+    return true;
+    #endif
+
+    return false;
+
+}
+
+//________________________________________________________________________
 bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool state )
 {
 
@@ -323,7 +338,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
         0L, 2048L, false,
         XA_ATOM, &type,
         &format, &count, &unused,
-        (unsigned char **) &data) != Success )
+        &data) != Success )
     {
         Debug::Throw(debug_level) << "X11Util::_changeProperty - XGetProperty failed" << endl;
         return false;
@@ -368,7 +383,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
         for( std::list<Atom>::iterator iter = atoms.begin(); iter != atoms.end(); iter++ )
         { data[count++] = *iter; }
 
-        XChangeProperty( display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeReplace, (unsigned char *)data, count);
+        XChangeProperty( display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeReplace, reinterpret_cast<const unsigned char*>(data), count);
     }
 
     //printWindowState( widget );
@@ -428,7 +443,7 @@ bool X11Util::_changeCardinal( const QWidget& widget, const Atoms& atom, const u
     Display* display( QX11Info::display() );
     Atom searched( findAtom( atom ) );
 
-    XChangeProperty (display, widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, (unsigned char *)&value, 1 );
+    XChangeProperty (display, widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, reinterpret_cast<const unsigned char *>(&value), 1 );
     return true;
     #endif
 
@@ -486,6 +501,7 @@ void X11Util::_initializeAtomNames( void )
     atom_names_[_NET_WM_STATE_SKIP_PAGER] = "_NET_WM_STATE_SKIP_PAGER";
     atom_names_[_NET_WM_MOVERESIZE] = "_NET_WM_MOVERESIZE";
     atom_names_[_NET_WM_CM] = "_NET_WM_CM";
+    atom_names_[_KDE_NET_WM_BLUR_BEHIND_REGION] = "_KDE_NET_WM_BLUR_BEHIND_REGION";
 
     return;
 }
@@ -511,7 +527,7 @@ void X11Util::printWindowState( const QWidget& widget )
         0L, 2048L, false,
         XA_ATOM, &type,
         &format, &count, &unused,
-        (unsigned char **) &data) != Success )
+        &data) != Success )
     {
         Debug::Throw(debug_level) << "X11Util::printWindowState - XGetProperty failed" << endl;
         return;
