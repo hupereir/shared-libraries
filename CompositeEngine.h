@@ -4,31 +4,31 @@
 // $Id$
 
 /***************************************************************************
- *   Copyright (C) 2006 by Helio Chissini de Castro   *
- *   helio@mandriva.com   *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+*   Copyright (C) 2006 by Helio Chissini de Castro   *
+*   helio@mandriva.com   *
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+*   This program is distributed in the hope that it will be useful,       *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU General Public License for more details.                          *
+*                                                                         *
+*   You should have received a copy of the GNU General Public License     *
+*   along with this program; if not, write to the                         *
+*   Free Software Foundation, Inc.,                                       *
+*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+***************************************************************************/
 
 /*!
-  \file    CompositeEngine.h
-  \brief   initialize compositing, if available
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
+\file    CompositeEngine.h
+\brief   initialize compositing, if available
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include <Qt>
@@ -40,75 +40,75 @@
 namespace TRANSPARENCY
 {
 
-  //! initialize compositing, if available
-  class CompositeEngine
-  {
-    public:
+    //! initialize compositing, if available
+    class CompositeEngine
+    {
+        public:
 
-    //! singleton
-    static CompositeEngine& get( void );
+        //! singleton
+        static CompositeEngine& get( void );
 
-    //! availability
-    bool isAvailable( void ) const
-    { return available_; }
+        //! availability
+        bool isAvailable( void ) const
+        { return available_; }
 
-    //! enability
-    bool isEnabled( void ) const
-    { return available_ && enabled_; }
+        //! enability
+        bool isEnabled( void ) const
+        { return available_ && enabled_; }
 
-    //! enability
-    bool setEnabled( bool value );
+        //! enability
+        bool setEnabled( bool value );
 
-    //! initialize
-    void initialize( void );
+        //! initialize
+        void initialize( void );
 
-    #ifdef Q_WS_X11
+        #ifdef Q_WS_X11
 
-    //! display
-    Display* display( void ) const
-    { return display_; }
-    //! visual
-    Qt::HANDLE visual( void ) const
-    { return Qt::HANDLE( visual_ ); }
+        //! display
+        Display* display( void ) const
+        { return display_; }
+        //! visual
+        Qt::HANDLE visual( void ) const
+        { return Qt::HANDLE( visual_ ); }
 
-    //! colormar
-    Qt::HANDLE colormap( void ) const
-    { return Qt::HANDLE( colormap_ ); }
+        //! colormar
+        Qt::HANDLE colormap( void ) const
+        { return Qt::HANDLE( colormap_ ); }
 
-    #endif
+        #endif
 
-    private:
+        private:
 
-    //! constructor
-    CompositeEngine( void );
+        //! constructor
+        CompositeEngine( void );
 
-    //! returns true if composition is enabled
-    bool _compositingEnabled( void ) const;
+        //! returns true if composition is enabled
+        bool _compositingEnabled( void ) const;
 
-    #ifdef Q_WS_X11
-    //! returns true if composition is enabled
-    bool _compositingEnabled( Display* ) const;
+        #ifdef Q_WS_X11
+        //! returns true if composition is enabled
+        bool _compositingEnabled( Display* ) const;
 
-    //! display
-    Display* display_;
+        //! display
+        Display* display_;
 
-    //! visual
-    Visual* visual_;
+        //! visual
+        Visual* visual_;
 
-    //! colormap
-    Colormap colormap_;
-    #endif
+        //! colormap
+        Colormap colormap_;
+        #endif
 
-    //! validity
-    bool available_;
+        //! validity
+        bool available_;
 
-    //! enability
-    bool enabled_;
+        //! enability
+        bool enabled_;
 
-    //! initialized
-    bool initialized_;
+        //! initialized
+        bool initialized_;
 
-  };
+    };
 
 };
 

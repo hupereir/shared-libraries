@@ -24,11 +24,11 @@
 *******************************************************************************/
 
 /*!
-  \file    TransparentWidget.h
-  \brief   transparent widget
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
+\file    TransparentWidget.h
+\brief   transparent widget
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include <QAction>
@@ -43,183 +43,194 @@
 //! clock widgets
 namespace TRANSPARENCY {
 
-  //! transparent widget
-  class TransparentWidget: public QWidget, public Counter
-  {
-
-    //! Qt meta object declaration
-    Q_OBJECT
-
-    public:
-
-    //! constructor
-    TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
-
-    //!@name actions
-    //@{
-
-    //! update background
-    QAction& updateBackgroundAction( void ) const
-    { return *update_background_action_; }
-
-    //! reload background action
-    QAction& reloadBackgroundAction( void ) const
-    { return *reload_background_action_; }
-
-    //@}
-
-    //! window opacity
-    /*! this overloads the QWidget method to hack for WIN system */
-    void setWindowOpacity( double );
-
-    //! background changed
-    void setBackgroundChanged( const bool& value )
-    { background_changed_ = value; }
-
-    public slots:
-
-    //! force reloading of the background
-    virtual void setBackgroundChanged( void );
-
-    protected:
-
-    //! enable/disable transparency
-    virtual void _setTransparent( const bool& value )
+    //! transparent widget
+    class TransparentWidget: public QWidget, public Counter
     {
-      if( value == transparent_ ) return;
-      transparent_ = value;
-      setBackgroundChanged( true );
-    }
 
-    //! transparency
-    virtual const bool& _transparent( void ) const
-    { return transparent_; }
+        //! Qt meta object declaration
+        Q_OBJECT
 
-    //! tint
-    virtual void _setTintColor( const QColor& );
+            public:
 
-    //! tint color
-    virtual const QColor& _tintColor( void ) const
-    { return tint_color_; }
+            //! constructor
+            TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
 
-    //! highlight
-    virtual void _setHighlightColor( const QColor& );
+        //!@name actions
+        //@{
 
-    //! highlight color
-    virtual const QColor& _highlightColor( void ) const
-    { return highlight_color_; }
+        //! update background
+        QAction& updateBackgroundAction( void ) const
+        { return *updateBackgroundAction_; }
 
-    //! highlighted
-    virtual void _setHighlighted( bool value )
-    { highlighted_ = value; }
+        //! reload background action
+        QAction& reloadBackgroundAction( void ) const
+        { return *reloadBackgroundAction_; }
 
-    //! highlighted
-    virtual const bool& _highlighted( void ) const
-    { return highlighted_; }
+        //@}
 
-    //! background pixmap
-    virtual QPixmap& _backgroundPixmap( void )
-    { return background_pixmap_; }
+        //! window opacity
+        /*! this overloads the QWidget method to hack for WIN system */
+        void setWindowOpacity( double );
 
-    //! background pixmap
-    virtual const QPixmap& _backgroundPixmap( void ) const
-    { return background_pixmap_; }
+        //! background changed
+        void setBackgroundChanged( const bool& value )
+        { backgroundChanged_ = value; }
 
-    //! opacity
-    const double& _opacity( void ) const
-    { return opacity_; }
+        public slots:
 
-    //!@name event handlers
-    //@{
+        //! force reloading of the background
+        virtual void setBackgroundChanged( void );
 
-    //! move
-    virtual void moveEvent( QMoveEvent* );
+        protected:
 
-    //! resize
-    virtual void resizeEvent( QResizeEvent* );
+        //! enable/disable transparency
+        virtual void _setTransparent( const bool& value )
+        {
+            if( value == transparent_ ) return;
+            transparent_ = value;
+            setBackgroundChanged( true );
+        }
 
-    //! show
-    virtual void showEvent( QShowEvent* );
+        //! enable/disable transparency
+        virtual void _setBlurEnabled( const bool& value )
+        {
+            if( value == blurEnabled_ ) return;
+            blurEnabled_ = value;
+            setBackgroundChanged( true );
+        }
 
-    //! enter event
-    virtual void enterEvent( QEvent *event );
+        //! transparency
+        virtual const bool& _transparent( void ) const
+        { return transparent_; }
 
-    //! leave event
-    virtual void leaveEvent( QEvent *event );
+        //! tint
+        virtual void _setTintColor( const QColor& );
 
-    //! paint
-    virtual void paintEvent( QPaintEvent* );
+        //! tint color
+        virtual const QColor& _tintColor( void ) const
+        { return tintColor_; }
 
-    //@}
+        //! highlight
+        virtual void _setHighlightColor( const QColor& );
 
-    //! background changed
-    const bool& _backgroundChanged( void ) const
-    { return background_changed_; }
+        //! highlight color
+        virtual const QColor& _highlightColor( void ) const
+        { return highlightColor_; }
 
-    //! paint background on devide
-    virtual void _paintBackground( QPaintDevice&, const QRect& );
+        //! highlighted
+        virtual void _setHighlighted( bool value )
+        { highlighted_ = value; }
 
-    //! paint main widget on devide
-    /*! this must be re-implemented by derived classes */
-    virtual void _paint( QPaintDevice&, const QRect& ) = 0;
+        //! highlighted
+        virtual const bool& _highlighted( void ) const
+        { return highlighted_; }
 
-    protected slots:
+        //! background pixmap
+        virtual QPixmap& _backgroundPixmap( void )
+        { return backgroundPixmap_; }
 
-    //! reload background
-    virtual void _reloadBackground( void );
+        //! background pixmap
+        virtual const QPixmap& _backgroundPixmap( void ) const
+        { return backgroundPixmap_; }
 
-    //! update background pixmap
-    virtual void _updateBackgroundPixmap( void );
+        //! opacity
+        const double& _opacity( void ) const
+        { return opacity_; }
 
-    private slots:
+        //!@name event handlers
+        //@{
 
-    //! update configuration
-    void _updateConfiguration( void );
+        //! move
+        virtual void moveEvent( QMoveEvent* );
 
-    private:
+        //! resize
+        virtual void resizeEvent( QResizeEvent* );
 
-    //! actions
-    void _installActions( void );
+        //! show
+        virtual void showEvent( QShowEvent* );
 
-    //!@name actions
-    //@{
+        //! enter event
+        virtual void enterEvent( QEvent *event );
 
-    //! update background
-    QAction *update_background_action_;
+        //! leave event
+        virtual void leaveEvent( QEvent *event );
 
-    //! reload background
-    QAction* reload_background_action_;
+        //! paint
+        virtual void paintEvent( QPaintEvent* );
 
-    //@}
+        //@}
 
-    //! transparency enabled
-    bool transparent_;
+        //! background changed
+        const bool& _backgroundChanged( void ) const
+        { return backgroundChanged_; }
 
-    //! true when background needs to be reloaded
-    bool background_changed_;
+        //! paint background on devide
+        virtual void _paintBackground( QPaintDevice&, const QRect& );
 
-    //! tint color
-    QColor tint_color_;
+        //! paint main widget on devide
+        /*! this must be re-implemented by derived classes */
+        virtual void _paint( QPaintDevice&, const QRect& ) = 0;
 
-    //! true when pointer is in window
-    bool highlighted_;
+        protected slots:
 
-    //! window opacity
-    double opacity_;
+        //! reload background
+        virtual void _reloadBackground( void );
 
-    //! tint color
-    QColor highlight_color_;
+        //! update background pixmap
+        virtual void _updateBackgroundPixmap( void );
 
-    #ifdef Q_WS_WIN
-    //! widget pixmap
-    /*! it is used as widget storage when using full translucency */
-    QPixmap widget_pixmap_;
-    #endif
+        private slots:
 
-    //! background pixmap
-    QPixmap background_pixmap_;
+        //! update configuration
+        void _updateConfiguration( void );
 
-  };
+        private:
+
+        //! actions
+        void _installActions( void );
+
+        //!@name actions
+        //@{
+
+        //! update background
+        QAction *updateBackgroundAction_;
+
+        //! reload background
+        QAction* reloadBackgroundAction_;
+
+        //@}
+
+        //! transparency enabled
+        bool transparent_;
+
+        //! true when background needs to be reloaded
+        bool backgroundChanged_;
+
+        //! tint color
+        QColor tintColor_;
+
+        //! true when pointer is in window
+        bool highlighted_;
+
+        //! true when blur is enabled
+        bool blurEnabled_;
+
+        //! window opacity
+        double opacity_;
+
+        //! tint color
+        QColor highlightColor_;
+
+        #ifdef Q_WS_WIN
+        //! widget pixmap
+        /*! it is used as widget storage when using full translucency */
+        QPixmap widgetPixmap_;
+        #endif
+
+        //! background pixmap
+        QPixmap backgroundPixmap_;
+
+    };
 
 };
 

@@ -81,6 +81,14 @@ TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
         box->layout()->addWidget( checkbox = new OptionCheckBox( "Use compositing", box, "TRANSPARENCY_USE_COMPOSITE" ) );
         checkbox->setToolTip( "Enable/disable compositing" );
         addOptionWidget( checkbox );
+        QCheckBox* compositingCheckBox( checkbox );
+
+        box->layout()->addWidget( checkbox = new OptionCheckBox( "Enable blur behind transparent regions", box, "TRANSPARENCY_USE_BLUR" ) );
+        checkbox->setToolTip( "Enable/disable blur behind transparent regions" );
+        addOptionWidget( checkbox );
+        checkbox->setEnabled( false );
+
+        connect( compositingCheckBox, SIGNAL( toggled( bool ) ), checkbox, SLOT( setEnabled( bool ) ) );
 
     }
 
