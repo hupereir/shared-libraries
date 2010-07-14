@@ -56,10 +56,14 @@ namespace SVG
         void render( QPaintDevice&, double offset = 0, const QString& id = QString() );
 
         //! validity
-        virtual bool isValid( void ) const;
+        virtual bool isValid( void ) const
+        { return isValid_; }
 
         //! configuration
         bool updateConfiguration( void );
+
+        //! load file
+        virtual bool load( const QString& );
 
         protected:
 
@@ -81,22 +85,65 @@ namespace SVG
             double bottom;
         };
 
+        enum SvgElement
+        {
+            TopLeft = 1<<0,
+            Top = 1<<1,
+            TopRight = 1<<2,
+            Left = 1<<3,
+            Center = 1<<4,
+            Right = 1<<5,
+            BottomLeft = 1<<6,
+            Bottom = 1<<7,
+            BottomRight = 1<<8,
+            Ring = TopLeft|Top|TopRight|Left|Right|BottomLeft|Bottom|BottomRight,
+            All = Ring|Center
+        };
+
         //! load margins
         Margins _margins( void ) const;
-
-        //! true if svg has overlay
-        virtual bool _hasOverlay( void ) const;
 
         //! true if svg has all elements matching prefix
         virtual bool _hasPrefix( QString prefix = "" ) const;
 
         //! render prefix to image
-        virtual void _render( QImage& target, double offset = 0, QString prefix = "" );
+        virtual void _render( QImage& target, double offset = 0, QString prefix = "", int elements = All, bool padding = true );
 
         private:
 
+        //! true if overlay (when present) must be drawn
         bool drawOverlay_;
 
+        //! validity
+        bool isValid_;
+
+        //! true if overlay is present
+        bool hasOverlay_;
+
+        //! overlay hints
+        enum OverlayHint {
+            OverlayNone = 0,
+            OverlayStretch = 1<<0,
+            OverlayTileHorizontal = 1<<1,
+            OverlayTileVertical = 1<<2,
+            OverlayPosRight = 1<<3,
+            OverlayPosBottom = 1<<4
+        };
+
+        //! overlay hints
+        int overlayHints_;
+
+        //! painting hints
+        enum Hint {
+            HintNone,
+            HintComposeOverBorder,
+        };
+
+        //! painting hints
+        int hints_;
+
+        //! prefix for loading mask
+        QString maskPrefix_;
 
     };
 

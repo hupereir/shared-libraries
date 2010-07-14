@@ -51,22 +51,22 @@ between icons wrapping names
 namespace SVG
 {
 
-    static const QString TOP_LEFT="topleft";
-    static const QString TOP="top";
-    static const QString TOP_RIGHT="topright";
-    static const QString RIGHT="right";
-    static const QString BOTTOM_RIGHT="bottomright";
-    static const QString BOTTOM="bottom";
-    static const QString BOTTOM_LEFT="bottomleft";
-    static const QString LEFT="left";
-    static const QString CENTER="center";
+    static const QString TopLeft="topleft";
+    static const QString Top="top";
+    static const QString TopRight="topright";
+    static const QString Left="left";
+    static const QString Center="center";
+    static const QString Right="right";
+    static const QString BottomRight="bottomright";
+    static const QString Bottom="bottom";
+    static const QString BottomLeft="bottomleft";
 
-    static const QString OVERLAY="overlay";
+    static const QString Overlay="overlay";
 
-    static const QString MARGIN_LEFT="hint-left-margin";
-    static const QString MARGIN_RIGHT="hint-right-margin";
-    static const QString MARGIN_TOP="hint-top-margin";
-    static const QString MARGIN_BOTTOM="hint-bottom-margin";
+    static const QString MarginLeft="hint-left-margin";
+    static const QString MarginRight="hint-right-margin";
+    static const QString MarginTop="hint-top-margin";
+    static const QString MarginBottom="hint-bottom-margin";
 
     //! map size and pixmap
     typedef std::map< SvgId, QPixmap > PixmapCache;
