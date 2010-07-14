@@ -25,11 +25,11 @@
 #define SpellDialog_h
 
 /*!
-  \file SpellDialog.h
-  \brief spell checker popup dialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file SpellDialog.h
+\brief spell checker popup dialog
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -53,199 +53,199 @@ class TreeView;
 namespace SPELLCHECK
 {
 
-  //! spell checker popup dialog
-  class SpellDialog: public BaseDialog, public Counter
-  {
-
-    //! Qt meta object declaration
-    Q_OBJECT
-
-    public:
-
-    //! constructor
-    SpellDialog( QTextEdit* parent, const bool& read_only = false );
-
-    //! destructor
-    virtual ~SpellDialog();
-
-    //! set read-only (enable/disable modification buttons)
-
-    //! toggle filter combo box visibility
-    virtual void showFilter( const bool& value );
-
-    //! spell interface
-    virtual SpellInterface& interface( void )
-    { return interface_; }
-
-    //! editor
-    QTextEdit &editor( void )
-    {
-      assert( editor_ );
-      return *editor_;
-    }
-
-    //! dictionary
-    bool setDictionary( const QString& dict );
-
-    //! dictionary
-    QString dictionary( void ) const
-    { return dictionary_->itemText( dictionary_->currentIndex() ); }
-
-    //! filter
-    bool setFilter( const QString& filter );
-
-    //! dictionary
-    QString filter( void ) const
-    { return filter_->itemText( filter_->currentIndex() ); }
-
-    //! go to next word to be checked
-    void nextWord( void );
-
-    signals:
-
-    //! ignore word
-    void ignoreWord( const QString& );
-
-    //! need update
-    void needUpdate( void );
-
-    //! filter has changed
-    void filterChanged( QString );
-
-    //! dictionary has changed
-    void dictionaryChanged( QString );
-
-    protected slots:
-
-    //! select suggestion, update replace_line_edit_
-    virtual void _selectSuggestion( const QModelIndex& );
-
-    //! select suggestion, update replace_line_edit_
-    virtual void _addWord( void );
-
-    //! check word in Replace Editor
-    virtual void _checkWord( void );
-
-    //! select dictionary
-    virtual void _selectDictionary( const QString& dict );
-
-    //! select dictionary
-    virtual void _selectFilter( const QString& filter );
-
-    //! recheck text from start
-    /*! initial begin/end are reset to the full text */
-    virtual void _restart( void );
-
-    //! ignore
-    virtual void _ignore( void );
-
-    //! ignore all
-    virtual void _ignoreAll( void );
-
-    //! replace
-    virtual void _replace( const QModelIndex& index = QModelIndex() );
-
-    //! replace All
-    virtual void _replaceAll( void );
-
-    protected:
-
-    //! close
-    virtual void closeEvent( QCloseEvent *e );
-
-    private:
-
-    //! qlistview for object IconCaches
-    class Model: public ListModel<QString>
+    //! spell checker popup dialog
+    class SpellDialog: public BaseDialog, public Counter
     {
 
-      public:
+        //! Qt meta object declaration
+        Q_OBJECT
 
-      //! number of columns
-      enum { n_columns = 1 };
+            public:
 
-      //! column type enumeration
-      enum ColumnType { NAME };
+            //! constructor
+            SpellDialog( QTextEdit* parent, const bool& read_only = false );
 
-      //!@name methods reimplemented from base class
-      //@{
+        //! destructor
+        virtual ~SpellDialog();
 
-      // return data for a given index
-      virtual QVariant data(const QModelIndex &index, int role) const;
+        //! set read-only (enable/disable modification buttons)
 
-      //! header data
-      virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+        //! toggle filter combo box visibility
+        virtual void showFilter( const bool& value );
 
-      //! number of columns for a given index
-      virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
-      { return n_columns; }
+        //! spell interface
+        virtual SpellInterface& interface( void )
+        { return interface_; }
 
-      //@}
+        //! editor
+        QTextEdit &editor( void )
+        {
+            assert( editor_ );
+            return *editor_;
+        }
 
-      protected:
+        //! dictionary
+        bool setDictionary( const QString& dict );
 
-      virtual void _sort(int, Qt::SortOrder)
-      { return; }
+        //! dictionary
+        QString dictionary( void ) const
+        { return dictionary_->itemText( dictionary_->currentIndex() ); }
+
+        //! filter
+        bool setFilter( const QString& filter );
+
+        //! dictionary
+        QString filter( void ) const
+        { return filter_->itemText( filter_->currentIndex() ); }
+
+        //! go to next word to be checked
+        void nextWord( void );
+
+        signals:
+
+        //! ignore word
+        void ignoreWord( const QString& );
+
+        //! need update
+        void needUpdate( void );
+
+        //! filter has changed
+        void filterChanged( QString );
+
+        //! dictionary has changed
+        void dictionaryChanged( QString );
+
+        protected slots:
+
+        //! select suggestion, update replaceEditor_
+        virtual void _selectSuggestion( const QModelIndex& );
+
+        //! select suggestion, update replaceEditor_
+        virtual void _addWord( void );
+
+        //! check word in Replace Editor
+        virtual void _checkWord( void );
+
+        //! select dictionary
+        virtual void _selectDictionary( const QString& dict );
+
+        //! select dictionary
+        virtual void _selectFilter( const QString& filter );
+
+        //! recheck text from start
+        /*! initial begin/end are reset to the full text */
+        virtual void _restart( void );
+
+        //! ignore
+        virtual void _ignore( void );
+
+        //! ignore all
+        virtual void _ignoreAll( void );
+
+        //! replace
+        virtual void _replace( const QModelIndex& index = QModelIndex() );
+
+        //! replace All
+        virtual void _replaceAll( void );
+
+        protected:
+
+        //! close
+        virtual void closeEvent( QCloseEvent *e );
+
+        private:
+
+        //! qlistview for object IconCaches
+        class Model: public ListModel<QString>
+        {
+
+            public:
+
+            //! number of columns
+            enum { n_columns = 1 };
+
+            //! column type enumeration
+            enum ColumnType { NAME };
+
+            //!@name methods reimplemented from base class
+            //@{
+
+            // return data for a given index
+            virtual QVariant data(const QModelIndex &index, int role) const;
+
+            //! header data
+            virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+            //! number of columns for a given index
+            virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+            { return n_columns; }
+
+            //@}
+
+            protected:
+
+            virtual void _sort(int, Qt::SortOrder)
+            { return; }
+
+        };
+
+        //! update text editor selection
+        void _updateSelection( const unsigned int&, const unsigned int& );
+
+        //! replace text editor selection
+        void _replaceSelection( const QString& );
+
+        //! update suggestion list and editor for words
+        void _displayWord( const QString& word );
+
+        //! spell checking completed
+        void _completed( void );
+
+        //! model
+        Model& _model( void )
+        { return model_; }
+
+        //! list
+        TreeView& _list( void ) const
+        { return *list_; }
+
+        //! spell interface
+        SpellInterface interface_;
+
+        //! text editor
+        QTextEdit* editor_;
+
+        //! initial readonly state
+        bool readOnly_;
+
+        //! line editor for original word
+        AnimatedLineEditor *editor_;
+
+        //! line editor for text replacement
+        AnimatedLineEditor *replaceEditor_;
+
+        //! model
+        Model model_;
+
+        //! listbox for suggestions
+        TreeView *list_;
+
+        //! combo box for dictionary
+        QComboBox *dictionary_;
+
+        //! filter label
+        QLabel *filterLabel_;
+
+        //! combo box for filter
+        QComboBox *filter_;
+
+        //! state frame for message
+        QLabel* stateLabel_;
+
+        //! list of automatic replace words
+        std::map< QString, QString > replacedWords_;
 
     };
-
-    //! update text editor selection
-    void _updateSelection( const unsigned int&, const unsigned int& );
-
-    //! replace text editor selection
-    void _replaceSelection( const QString& );
-
-    //! update suggestion list and editor for words
-    void _displayWord( const QString& word );
-
-    //! spell checking completed
-    void _completed( void );
-
-    //! model
-    Model& _model( void )
-    { return model_; }
-
-    //! list
-    TreeView& _list( void ) const
-    { return *list_; }
-
-    //! spell interface
-    SpellInterface interface_;
-
-    //! text editor
-    QTextEdit* editor_;
-
-    //! initial readonly state
-    bool read_only_editor_;
-
-    //! line editor for original word
-    AnimatedLineEditor *line_edit_;
-
-    //! line editor for text replacement
-    AnimatedLineEditor *replace_line_edit_;
-
-    //! model
-    Model model_;
-
-    //! listbox for suggestions
-    TreeView *list_;
-
-    //! combo box for dictionary
-    QComboBox *dictionary_;
-
-    //! filter label
-    QLabel *filter_label_;
-
-    //! combo box for filter
-    QComboBox *filter_;
-
-    //! state frame for message
-    QLabel* state_label_;
-
-    //! list of automatic replace words
-    std::map< QString, QString > replaced_words_;
-
-  };
 };
 
 #endif

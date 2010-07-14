@@ -23,11 +23,11 @@
 *******************************************************************************/
 
 /*!
-  \file SpellDialog.cpp
-  \brief spell checker popup dialog
-  \author  Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file SpellDialog.cpp
+\brief spell checker popup dialog
+\author  Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QLayout>
@@ -50,173 +50,178 @@ using namespace SPELLCHECK;
 
 //_______________________________________________
 SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
-  BaseDialog( parent ),
-  Counter( "SpellDialog" ),
-  editor_( parent )
+    BaseDialog( parent ),
+    Counter( "SpellDialog" ),
+    editor_( parent )
 {
-  Debug::Throw( "SpellDialog::SpellDialog.\n" );
+    Debug::Throw( "SpellDialog::SpellDialog.\n" );
 
-  // window title
-  setWindowTitle( read_only ? "Spell Check (read-only)" : "Spell Check" );
-  setOptionName( "SPELL_DIALOG" );
+    // window title
+    setWindowTitle( read_only ? "Spell Check (read-only)" : "Spell Check" );
+    setOptionName( "SPELL_DIALOG" );
 
-  // create vbox layout
-  QVBoxLayout* layout=new QVBoxLayout();
-  layout->setMargin(10);
-  layout->setSpacing(5);
-  setLayout( layout );
+    // create vbox layout
+    QVBoxLayout* layout=new QVBoxLayout();
+    layout->setMargin(10);
+    layout->setSpacing(5);
+    setLayout( layout );
 
-  // horizontal layout for suggestions and buttons
-  QHBoxLayout* h_layout = new QHBoxLayout();
-  h_layout->setMargin(0);
-  h_layout->setSpacing(10);
-  layout->addLayout( h_layout, 1 );
+    // horizontal layout for suggestions and buttons
+    QHBoxLayout* h_layout = new QHBoxLayout();
+    h_layout->setMargin(0);
+    h_layout->setSpacing(10);
+    layout->addLayout( h_layout, 1 );
 
-  // insert left vertical box
-  QVBoxLayout *v_layout = new QVBoxLayout();
-  v_layout->setMargin( 0 );
-  v_layout->setSpacing(5);
-  h_layout->addLayout( v_layout );
+    // insert left vertical box
+    QVBoxLayout *v_layout = new QVBoxLayout();
+    v_layout->setMargin( 0 );
+    v_layout->setSpacing(5);
+    h_layout->addLayout( v_layout );
 
-  // grid for text editors
-  GridLayout *grid_layout = new GridLayout();
-  grid_layout->setMargin( 0 );
-  grid_layout->setSpacing(5);
-  grid_layout->setMaxCount( 2 );
-  v_layout->addLayout( grid_layout, 0 );
+    // grid for text editors
+    GridLayout *grid_layout = new GridLayout();
+    grid_layout->setMargin( 0 );
+    grid_layout->setSpacing(5);
+    grid_layout->setMaxCount( 2 );
+    v_layout->addLayout( grid_layout, 0 );
 
-  // misspelled word line editor
-  grid_layout->addWidget( new QLabel( "Misspelled word: ", this ) );
-  grid_layout->addWidget( line_edit_ = new AnimatedLineEditor( this ) );
-  line_edit_->setReadOnly( true );
+    // misspelled word line editor
+    QLabel* label;
+    grid_layout->addWidget( label = new QLabel( "Misspelled word: ", this ) );
+    grid_layout->addWidget( editor_ = new AnimatedLineEditor( this ) );
+    editor_->setReadOnly( true );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
-  // replacement line editor
-  grid_layout->addWidget( new QLabel( "Replace with: ", this ) );
-  grid_layout->addWidget( replace_line_edit_ = new AnimatedLineEditor( this ) );
-  if( read_only ) replace_line_edit_->setEnabled( false );
+    // replacement line editor
+    grid_layout->addWidget( label = new QLabel( "Replace with: ", this ) );
+    grid_layout->addWidget( replaceEditor_ = new AnimatedLineEditor( this ) );
+    if( read_only ) replaceEditor_->setEnabled( false );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
-  grid_layout->setColumnStretch( 1, 1 );
+    grid_layout->setColumnStretch( 1, 1 );
 
-  QLabel* label = new QLabel( "Suggestions: ", this );
-  v_layout->addWidget( label, 0 );
+    QLabel* label = new QLabel( "Suggestions: ", this );
+    v_layout->addWidget( label, 0 );
 
-  // suggestions
-  v_layout->addWidget(  list_ = new TreeView( this ) );
-  _list().setModel( &_model() );
-  _list().header()->hide();
+    // suggestions
+    v_layout->addWidget(  list_ = new TreeView( this ) );
+    _list().setModel( &_model() );
+    _list().header()->hide();
 
-  connect( _list().selectionModel(), SIGNAL( currentChanged(const QModelIndex &, const QModelIndex &) ), SLOT( _selectSuggestion( const QModelIndex& ) ) );
-  if( !read_only ) { connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _replace( const QModelIndex& ) ) ); }
+    connect( _list().selectionModel(), SIGNAL( currentChanged(const QModelIndex &, const QModelIndex &) ), SLOT( _selectSuggestion( const QModelIndex& ) ) );
+    if( !read_only ) { connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _replace( const QModelIndex& ) ) ); }
 
-  // grid layout for dictionary and filter
-  grid_layout = new GridLayout();
-  grid_layout->setMargin( 0 );
-  grid_layout->setSpacing(5);
-  grid_layout->setMaxCount( 2 );
-  v_layout->addLayout( grid_layout, 0 );
+    // grid layout for dictionary and filter
+    grid_layout = new GridLayout();
+    grid_layout->setMargin( 0 );
+    grid_layout->setSpacing(5);
+    grid_layout->setMaxCount( 2 );
+    v_layout->addLayout( grid_layout, 0 );
 
-  // dictionaries combobox
-  grid_layout->addWidget( new QLabel( "Dictionary: ", this ) );
-  grid_layout->addWidget( dictionary_ = new QComboBox( this ) );
+    // dictionaries combobox
+    grid_layout->addWidget( label = new QLabel( "Dictionary: ", this ) );
+    grid_layout->addWidget( dictionary_ = new QComboBox( this ) );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
-  const set<QString>& dictionaries( interface().dictionaries() );
-  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
-  dictionary_->addItem(*iter );
-  connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
+    const set<QString>& dictionaries( interface().dictionaries() );
+    for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
+        dictionary_->addItem(*iter );
+    connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
-  // filter combobox
-  grid_layout->addWidget( filter_label_ = new QLabel( "Filter: ", this ) );
-  grid_layout->addWidget( filter_ = new QComboBox( this ) );
+    // filter combobox
+    grid_layout->addWidget( filterLabel_ = new QLabel( "Filter: ", this ) );
+    grid_layout->addWidget( filter_ = new QComboBox( this ) );
+    filterLabel_->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
-  grid_layout->setColumnStretch( 1, 1 );
+    grid_layout->setColumnStretch( 1, 1 );
 
-  set<QString> filters( interface().filters() );
-  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
-  filter_->addItem( *iter );
-  connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
+    set<QString> filters( interface().filters() );
+    for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
+        filter_->addItem( *iter );
+    connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
 
-  // right vbox
-  v_layout = new QVBoxLayout();
-  v_layout->setMargin( 0 );
-  v_layout->setSpacing(5);
-  h_layout->addLayout( v_layout );
+    // right vbox
+    v_layout = new QVBoxLayout();
+    v_layout->setMargin( 0 );
+    v_layout->setSpacing(5);
+    h_layout->addLayout( v_layout );
 
-  // add word button
-  QPushButton* button;
-  v_layout->addWidget( button = new QPushButton( "&Add Word", this ) );
-  connect( button, SIGNAL(clicked()), SLOT( _addWord() ) );
+    // add word button
+    QPushButton* button;
+    v_layout->addWidget( button = new QPushButton( "&Add Word", this ) );
+    connect( button, SIGNAL(clicked()), SLOT( _addWord() ) );
 
-  // check word button
-  v_layout->addWidget( button = new QPushButton( "&Check Word", this ) );
-  connect( button, SIGNAL(clicked()), SLOT( _checkWord() ) );
+    // check word button
+    v_layout->addWidget( button = new QPushButton( "&Check Word", this ) );
+    connect( button, SIGNAL(clicked()), SLOT( _checkWord() ) );
 
-  // recheck button
-  v_layout->addWidget( button = new QPushButton( "Recheck &Page", this ) );
-  connect( button, SIGNAL(clicked()), SLOT( _restart() ) );
+    // recheck button
+    v_layout->addWidget( button = new QPushButton( "Recheck &Page", this ) );
+    connect( button, SIGNAL(clicked()), SLOT( _restart() ) );
 
-  QFrame* frame;
-  v_layout->addWidget( frame = new QFrame(this) );
-  frame->setFrameShape( QFrame::HLine );
+    QFrame* frame;
+    v_layout->addWidget( frame = new QFrame(this) );
+    frame->setFrameShape( QFrame::HLine );
 
-  // replace button
-  v_layout->addWidget( button = new QPushButton( "&Replace", this ) );
-  connect( button, SIGNAL(clicked()), SLOT( _replace() ) );
-  if( read_only ) button->setEnabled( false );
+    // replace button
+    v_layout->addWidget( button = new QPushButton( "&Replace", this ) );
+    connect( button, SIGNAL(clicked()), SLOT( _replace() ) );
+    if( read_only ) button->setEnabled( false );
 
-  // replace button
-  v_layout->addWidget( button = new QPushButton( "R&eplace All", this ) );
-  connect( button, SIGNAL(clicked()), SLOT( _replaceAll() ) );
-  if( read_only ) button->setEnabled( false );
+    // replace button
+    v_layout->addWidget( button = new QPushButton( "R&eplace All", this ) );
+    connect( button, SIGNAL(clicked()), SLOT( _replaceAll() ) );
+    if( read_only ) button->setEnabled( false );
 
-  v_layout->addWidget( frame = new QFrame(this) );
-  frame->setFrameShape( QFrame::HLine );
+    v_layout->addWidget( frame = new QFrame(this) );
+    frame->setFrameShape( QFrame::HLine );
 
-  // ignore button
-  v_layout->addWidget( button = new QPushButton( "&Ignore", this ) );
-  connect( button, SIGNAL(clicked()), SLOT( _ignore() ) );
+    // ignore button
+    v_layout->addWidget( button = new QPushButton( "&Ignore", this ) );
+    connect( button, SIGNAL(clicked()), SLOT( _ignore() ) );
 
-  // ignore button
-  v_layout->addWidget( button = new QPushButton( "I&gnore All", this ) );
-  connect( button, SIGNAL(clicked()), SLOT( _ignoreAll() ) );
+    // ignore button
+    v_layout->addWidget( button = new QPushButton( "I&gnore All", this ) );
+    connect( button, SIGNAL(clicked()), SLOT( _ignoreAll() ) );
 
-  // state label_
-  v_layout->addWidget( state_label_ = new QLabel( " ", this ), 1 );
-  state_label_->setAlignment( Qt::AlignCenter );
+    // state label_
+    v_layout->addWidget( stateLabel_ = new QLabel( " ", this ), 1 );
+    stateLabel_->setAlignment( Qt::AlignCenter );
 
-  // close button
-  v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
-  connect( button, SIGNAL(clicked()), SLOT( close() ) );
+    // close button
+    v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
+    connect( button, SIGNAL(clicked()), SLOT( close() ) );
 
-  // change font
-  QFont font( state_label_->font() );
-  font.setWeight( QFont::Bold );
-  state_label_->setFont( font );
+    // change font
+    QFont font( stateLabel_->font() );
+    font.setWeight( QFont::Bold );
+    stateLabel_->setFont( font );
 
-  // change color
-  QPalette palette( state_label_->palette() );
-  palette.setColor( QPalette::WindowText, Qt::red );
-  state_label_->setPalette( palette );
+    // change color
+    QPalette palette( stateLabel_->palette() );
+    palette.setColor( QPalette::WindowText, Qt::red );
+    stateLabel_->setPalette( palette );
 
-  // set text
-  // check Editor seletion
-  unsigned int index_begin( 0 );
-  unsigned int index_end( editor().toPlainText().length() );
-  if( editor().textCursor().hasSelection() )
-  {
-    index_begin = editor().textCursor().anchor();
-    index_end = editor().textCursor().position();
-    if( index_begin > index_end ) swap( index_begin, index_end );
-  }
+    // set text
+    // check Editor seletion
+    unsigned int index_begin( 0 );
+    unsigned int index_end( editor().toPlainText().length() );
+    if( editor().textCursor().hasSelection() )
+    {
+        index_begin = editor().textCursor().anchor();
+        index_end = editor().textCursor().position();
+        if( index_begin > index_end ) swap( index_begin, index_end );
+    }
 
-  // asign text
-  if( !interface().setText( editor().toPlainText(), index_begin, index_end ) )
-  { InformationDialog( this, interface().error() ).exec(); }
+    // asign text
+    if( !interface().setText( editor().toPlainText(), index_begin, index_end ) )
+    { InformationDialog( this, interface().error() ).exec(); }
 
-  // set TextEditor as ReadOnly
-  read_only_editor_ = editor().isReadOnly();
-  editor().setReadOnly( true );
+    // set TextEditor as ReadOnly
+    readOnly_ = editor().isReadOnly();
+    editor().setReadOnly( true );
 
-  Debug::Throw( "SpellDialog::SpellDialog - done.\n" );
+    Debug::Throw( "SpellDialog::SpellDialog - done.\n" );
 
 }
 
@@ -227,102 +232,102 @@ SpellDialog::~SpellDialog( void )
 //__________________________________________
 void SpellDialog::showFilter( const bool& value )
 {
-  Debug::Throw( "SpellDialog::showFilter.\n" );
-  if( value ){
-    filter_label_->show();
-    filter_->show();
-  } else {
-    filter_label_->hide();
-    filter_->hide();
-  }
+    Debug::Throw( "SpellDialog::showFilter.\n" );
+    if( value ){
+        filterLabel_->show();
+        filter_->show();
+    } else {
+        filterLabel_->hide();
+        filter_->hide();
+    }
 }
 
 //____________________________________________________
 bool SpellDialog::setDictionary( const QString& dictionary )
 {
-  Debug::Throw( "SpellDialog::setDictionary.\n" );
+    Debug::Throw( "SpellDialog::setDictionary.\n" );
 
-  // find matching index
-  int index( dictionary_->findText( dictionary ) );
-  if( index < 0 )
-  {
-    QString buffer;
-    QTextStream( &buffer ) << "invalid dictionary: " << dictionary;
-    InformationDialog( this, buffer ).exec();
-    return false;
-  }
+    // find matching index
+    int index( dictionary_->findText( dictionary ) );
+    if( index < 0 )
+    {
+        QString buffer;
+        QTextStream( &buffer ) << "invalid dictionary: " << dictionary;
+        InformationDialog( this, buffer ).exec();
+        return false;
+    }
 
-  // update interface
-  if( !interface().setDictionary( dictionary ) )
-  {
-    InformationDialog( this, interface().error() ).exec();
-    return false;
-  }
+    // update interface
+    if( !interface().setDictionary( dictionary ) )
+    {
+        InformationDialog( this, interface().error() ).exec();
+        return false;
+    }
 
-  // select index
-  dictionary_->setCurrentIndex( index );
+    // select index
+    dictionary_->setCurrentIndex( index );
 
-  return true;
+    return true;
 
 }
 
 //____________________________________________________
 bool SpellDialog::setFilter( const QString& filter )
 {
-  Debug::Throw( "SpellDialog::setFilter.\n" );
+    Debug::Throw( "SpellDialog::setFilter.\n" );
 
-  // find matching index
-  int index( filter_->findText( filter ) );
-  if( index < 0 )
-  {
-    QString buffer;
-    QTextStream( &buffer ) << "invalid dictionary: " << filter;
-    InformationDialog( this, buffer ).exec();
-    return false;
-  }
+    // find matching index
+    int index( filter_->findText( filter ) );
+    if( index < 0 )
+    {
+        QString buffer;
+        QTextStream( &buffer ) << "invalid dictionary: " << filter;
+        InformationDialog( this, buffer ).exec();
+        return false;
+    }
 
-  // update interface
-  if( !interface().setFilter( filter ) )
-  {
-    InformationDialog( this, interface().error() ).exec();
-    return false;
-  }
+    // update interface
+    if( !interface().setFilter( filter ) )
+    {
+        InformationDialog( this, interface().error() ).exec();
+        return false;
+    }
 
-  // select index
-  filter_->setCurrentIndex( index );
+    // select index
+    filter_->setCurrentIndex( index );
 
-  return true;
+    return true;
 
 }
 
 //____________________________________________________
 void SpellDialog::_selectSuggestion( const QModelIndex& index )
 {
-  Debug::Throw( "SpellDialog::_selectSuggestion.\n" );
-  if( index.isValid() ) { replace_line_edit_->setText( _model().get( index ) ); }
+    Debug::Throw( "SpellDialog::_selectSuggestion.\n" );
+    if( index.isValid() ) { replaceEditor_->setText( _model().get( index ) ); }
 }
 
 //____________________________________________________
 void SpellDialog::_selectDictionary( const QString& dictionary )
 {
 
-  Debug::Throw( "SpellDialog::_SelectDictionary.\n" );
+    Debug::Throw( "SpellDialog::_SelectDictionary.\n" );
 
- // see if changed
-  if( interface().dictionary() == dictionary ) return;
+    // see if changed
+    if( interface().dictionary() == dictionary ) return;
 
-  // try update interface
-  if( !interface().setDictionary( dictionary ) )
-  {
-    InformationDialog( this, interface().error() ).exec();
-    return;
-  }
+    // try update interface
+    if( !interface().setDictionary( dictionary ) )
+    {
+        InformationDialog( this, interface().error() ).exec();
+        return;
+    }
 
-  // emit signal
-  emit dictionaryChanged( interface().dictionary() );
+    // emit signal
+    emit dictionaryChanged( interface().dictionary() );
 
-  // restart
-  _restart();
+    // restart
+    _restart();
 
 }
 
@@ -330,78 +335,78 @@ void SpellDialog::_selectDictionary( const QString& dictionary )
 void SpellDialog::_selectFilter( const QString& filter )
 {
 
-  Debug::Throw( "SpellDialog::_SelectFilter.\n" );
+    Debug::Throw( "SpellDialog::_SelectFilter.\n" );
 
-  // see if changed
-  if( interface().filter() == filter ) return;
+    // see if changed
+    if( interface().filter() == filter ) return;
 
-  // try update interface
-  if( !interface().setFilter( filter ) )
-  {
-    InformationDialog( this, interface().error() ).exec();
-    return;
-  }
+    // try update interface
+    if( !interface().setFilter( filter ) )
+    {
+        InformationDialog( this, interface().error() ).exec();
+        return;
+    }
 
-  // emit signal
-  emit filterChanged( interface().filter() );
+    // emit signal
+    emit filterChanged( interface().filter() );
 
-  // restart
-  _restart();
+    // restart
+    _restart();
 
 }
 
 //____________________________________________________
 void SpellDialog::_restart( void )
 {
-  Debug::Throw( "SpellDialog::_restart.\n" );
+    Debug::Throw( "SpellDialog::_restart.\n" );
 
-  if( !interface().reset() )
-  {
-    InformationDialog( this, interface().error() ).exec();
-    return;
-  }
+    if( !interface().reset() )
+    {
+        InformationDialog( this, interface().error() ).exec();
+        return;
+    }
 
-  // get next mispelled word
-  state_label_->setText( "" );
-  nextWord();
+    // get next mispelled word
+    stateLabel_->setText( "" );
+    nextWord();
 
 }
 
 //____________________________________________________
 void SpellDialog::_addWord( void )
 {
-  Debug::Throw( "SpellDialog::_addWord.\n" );
+    Debug::Throw( "SpellDialog::_addWord.\n" );
 
-  if( !interface().addWord( interface().word() ) )
-  {
-    InformationDialog( this, interface().error() ).exec();
-    return;
-  }
+    if( !interface().addWord( interface().word() ) )
+    {
+        InformationDialog( this, interface().error() ).exec();
+        return;
+    }
 
-  emit ignoreWord( interface().word() );
-  emit needUpdate();
+    emit ignoreWord( interface().word() );
+    emit needUpdate();
 
-  // get next mispelled word
-  nextWord();
+    // get next mispelled word
+    nextWord();
 
 }
 
 //____________________________________________________
 void SpellDialog::_checkWord( void )
 {
-  Debug::Throw( "SpellDialog::_checkWord.\n" );
+    Debug::Throw( "SpellDialog::_checkWord.\n" );
 
-  // retrieve check word
-  _displayWord( replace_line_edit_->text() );
-  return;
+    // retrieve check word
+    _displayWord( replaceEditor_->text() );
+    return;
 }
 
 //____________________________________________________
 void SpellDialog::_ignore( void )
 {
 
-  Debug::Throw( "SpellDialog::_ignore.\n" );
-  nextWord();
+    Debug::Throw( "SpellDialog::_ignore.\n" );
+    nextWord();
 
 }
 
@@ -409,9 +414,9 @@ void SpellDialog::_ignore( void )
 void SpellDialog::_ignoreAll( void )
 {
 
-  Debug::Throw( "SpellDialog::_ignoreAll.\n" );
-  interface().ignoreWord( line_edit_->text() );
-  _ignore();
+    Debug::Throw( "SpellDialog::_ignoreAll.\n" );
+    interface().ignoreWord( editor_->text() );
+    _ignore();
 
 }
 
@@ -419,18 +424,18 @@ void SpellDialog::_ignoreAll( void )
 void SpellDialog::_replace( const QModelIndex& index )
 {
 
-  Debug::Throw( "SpellDialog::_replace.\n" );
-  QModelIndex local( index );
-  if( !local.isValid() ) local = _list().selectionModel()->currentIndex();
-  if( !local.isValid() ) return;
+    Debug::Throw( "SpellDialog::_replace.\n" );
+    QModelIndex local( index );
+    if( !local.isValid() ) local = _list().selectionModel()->currentIndex();
+    if( !local.isValid() ) return;
 
-  QString word( _model().get( index ) );
+    QString word( _model().get( index ) );
 
-  if( interface().replace( word ) )
-  _replaceSelection( word );
+    if( interface().replace( word ) )
+        _replaceSelection( word );
 
-  // parse next word
-  nextWord();
+    // parse next word
+    nextWord();
 
 }
 
@@ -438,11 +443,11 @@ void SpellDialog::_replace( const QModelIndex& index )
 void SpellDialog::_replaceAll( void )
 {
 
-  Debug::Throw( "SpellDialog::_replaceAll.\n" );
-  QString old_word( line_edit_->text() );
-  QString new_word( replace_line_edit_->text() );
-  replaced_words_.insert( make_pair( old_word, new_word ) );
-  _replace();
+    Debug::Throw( "SpellDialog::_replaceAll.\n" );
+    QString old_word( editor_->text() );
+    QString new_word( replaceEditor_->text() );
+    replacedWords_.insert( make_pair( old_word, new_word ) );
+    _replace();
 
 }
 
@@ -450,86 +455,86 @@ void SpellDialog::_replaceAll( void )
 void SpellDialog::nextWord( void )
 {
 
-  Debug::Throw( "SpellDialog::nextWord.\n" );
+    Debug::Throw( "SpellDialog::nextWord.\n" );
 
-  bool accepted( false );
-  QString word( "" );
-  while( !accepted )
-  {
-    // get next word from interface
-    if( !interface().nextWord() )
+    bool accepted( false );
+    QString word( "" );
+    while( !accepted )
     {
-      InformationDialog( this, interface().error() ).exec();
-      return;
+        // get next word from interface
+        if( !interface().nextWord() )
+        {
+            InformationDialog( this, interface().error() ).exec();
+            return;
+        }
+
+        // check for completed spelling
+        word = interface().word();
+        if( word.isEmpty() )
+        {
+            Debug::Throw() << "SpellDialog::NextWord - empty word " << endl;
+            break;
+        }
+
+        Debug::Throw() << "SpellDialog::NextWord - word: " << word << endl;
+
+        // see if word is in ignore list
+        if( interface().isWordIgnored( word ) ) continue;
+
+        // see if word is in replace all list
+        if( replacedWords_.find( word ) != replacedWords_.end() )
+        {
+
+            // automatic replacement
+            std::map< QString, QString >::iterator iter = replacedWords_.find( word );
+            _updateSelection( interface().position() + interface().offset(), word.size() );
+            _replaceSelection( iter->second );
+            interface().replace( iter->second );
+            continue;
+        }
+
+        accepted = true;
+
     }
 
-    // check for completed spelling
-    word = interface().word();
-    if( word.isEmpty() )
-    {
-      Debug::Throw() << "SpellDialog::NextWord - empty word " << endl;
-      break;
-    }
-
-    Debug::Throw() << "SpellDialog::NextWord - word: " << word << endl;
-
-    // see if word is in ignore list
-    if( interface().isWordIgnored( word ) ) continue;
-
-    // see if word is in replace all list
-    if( replaced_words_.find( word ) != replaced_words_.end() )
+    if( accepted )
     {
 
-      // automatic replacement
-      std::map< QString, QString >::iterator iter = replaced_words_.find( word );
-      _updateSelection( interface().position() + interface().offset(), word.size() );
-      _replaceSelection( iter->second );
-      interface().replace( iter->second );
-      continue;
+        _updateSelection( interface().position() + interface().offset(), word.size() );
+        _displayWord( word );
+
+    } else {
+
+        // spelling completed. Clear everything
+        editor_->clear();
+        replaceEditor_->clear();
+        _model().clear();
+        stateLabel_->setText( "Spelling\n completed" );
+
     }
 
-    accepted = true;
-
-  }
-
-  if( accepted )
-  {
-
-    _updateSelection( interface().position() + interface().offset(), word.size() );
-    _displayWord( word );
-
-  } else {
-
-    // spelling completed. Clear everything
-    line_edit_->clear();
-    replace_line_edit_->clear();
-    _model().clear();
-    state_label_->setText( "Spelling\n completed" );
-
-  }
-
-  return;
+    return;
 
 }
 
 //__________________________________________
 void SpellDialog::closeEvent( QCloseEvent *e )
 {
-  Debug::Throw( "SpellDialog::closeEvent.\n" );
-  interface().saveWordList();
-  editor().setReadOnly( read_only_editor_ );
-  QDialog::closeEvent( e );
+    Debug::Throw( "SpellDialog::closeEvent.\n" );
+    interface().saveWordList();
+    editor().setReadOnly( readOnly_ );
+    QDialog::closeEvent( e );
 }
 
 //_________________________________________________________________
 void SpellDialog::_updateSelection( const unsigned int& index, const unsigned int& length )
 {
-  Debug::Throw() << "SpellDialog::_updateSelection - index=" << index << endl;
-  QTextCursor cursor( editor().textCursor() );
-  cursor.setPosition( index, QTextCursor::MoveAnchor );
-  cursor.setPosition( index+length, QTextCursor::KeepAnchor );
-  editor().setTextCursor( cursor );
-  Debug::Throw( "SpellChecker::_UpdateSelection. done.\n" );
+    Debug::Throw() << "SpellDialog::_updateSelection - index=" << index << endl;
+    QTextCursor cursor( editor().textCursor() );
+    cursor.setPosition( index, QTextCursor::MoveAnchor );
+    cursor.setPosition( index+length, QTextCursor::KeepAnchor );
+    editor().setTextCursor( cursor );
+    Debug::Throw( "SpellChecker::_UpdateSelection. done.\n" );
 
 }
 
@@ -537,10 +542,10 @@ void SpellDialog::_updateSelection( const unsigned int& index, const unsigned in
 void SpellDialog::_replaceSelection( const QString& word )
 {
 
-  Debug::Throw( "SpellDialog::_ReplaceSelection.\n" );
-  editor().setReadOnly( false );
-  editor().textCursor().insertText( word );
-  editor().setReadOnly( true );
+    Debug::Throw( "SpellDialog::_ReplaceSelection.\n" );
+    editor().setReadOnly( false );
+    editor().textCursor().insertText( word );
+    editor().setReadOnly( true );
 
 }
 
@@ -548,18 +553,18 @@ void SpellDialog::_replaceSelection( const QString& word )
 void SpellDialog::_displayWord( const QString& word )
 {
 
-  Debug::Throw( "SpellDialog::_displayWord.\n" );
+    Debug::Throw( "SpellDialog::_displayWord.\n" );
 
-  // set text in line_editor
-  line_edit_->setText( word );
-  replace_line_edit_->setText( word );
+    // set text in line_editor
+    editor_->setText( word );
+    replaceEditor_->setText( word );
 
-  // clear list of suggestions
-  _model().clear();
-  Model::List suggestions( interface().suggestions( word ) );
-  _model().add( suggestions );
+    // clear list of suggestions
+    _model().clear();
+    Model::List suggestions( interface().suggestions( word ) );
+    _model().add( suggestions );
 
-  // would need to select first item
+    // would need to select first item
 
 }
 
@@ -567,23 +572,23 @@ void SpellDialog::_displayWord( const QString& word )
 QVariant SpellDialog::Model::data( const QModelIndex &index, int role) const
 {
 
-  // check index, role and column
-  if( !index.isValid() ) return QVariant();
+    // check index, role and column
+    if( !index.isValid() ) return QVariant();
 
-  // retrieve associated file info
-  const QString& word( get(index) );
+    // retrieve associated file info
+    const QString& word( get(index) );
 
-  // return text associated to file and column
-  if( role == Qt::DisplayRole ) {
+    // return text associated to file and column
+    if( role == Qt::DisplayRole ) {
 
-    switch( index.column() )
-    {
-      case NAME: return word;
-      default: return QVariant();
+        switch( index.column() )
+        {
+            case NAME: return word;
+            default: return QVariant();
+        }
     }
-  }
 
-  return QVariant();
+    return QVariant();
 
 }
 
