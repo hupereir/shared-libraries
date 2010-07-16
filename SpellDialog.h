@@ -216,10 +216,10 @@ namespace SPELLCHECK
         QTextEdit* editor_;
 
         //! initial readonly state
-        bool readOnly_;
+        bool readOnlyEditor_;
 
         //! line editor for original word
-        AnimatedLineEditor *editor_;
+        AnimatedLineEditor *sourceEditor_;
 
         //! line editor for text replacement
         AnimatedLineEditor *replaceEditor_;
@@ -243,7 +243,7 @@ namespace SPELLCHECK
         QLabel* stateLabel_;
 
         //! list of automatic replace words
-        std::map< QString, QString > replacedWords_;
+        std::map< QString, QString > replaced_words_;
 
     };
 };

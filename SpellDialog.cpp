@@ -86,17 +86,14 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
     v_layout->addLayout( grid_layout, 0 );
 
     // misspelled word line editor
-    QLabel* label;
-    grid_layout->addWidget( label = new QLabel( "Misspelled word: ", this ) );
-    grid_layout->addWidget( editor_ = new AnimatedLineEditor( this ) );
-    editor_->setReadOnly( true );
-    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
+    grid_layout->addWidget( new QLabel( "Misspelled word: ", this ) );
+    grid_layout->addWidget( sourceEditor_ = new AnimatedLineEditor( this ) );
+    sourceEditor_->setReadOnly( true );
 
     // replacement line editor
-    grid_layout->addWidget( label = new QLabel( "Replace with: ", this ) );
+    grid_layout->addWidget( new QLabel( "Replace with: ", this ) );
     grid_layout->addWidget( replaceEditor_ = new AnimatedLineEditor( this ) );
     if( read_only ) replaceEditor_->setEnabled( false );
-    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
     grid_layout->setColumnStretch( 1, 1 );
 
@@ -119,9 +116,8 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
     v_layout->addLayout( grid_layout, 0 );
 
     // dictionaries combobox
-    grid_layout->addWidget( label = new QLabel( "Dictionary: ", this ) );
+    grid_layout->addWidget( new QLabel( "Dictionary: ", this ) );
     grid_layout->addWidget( dictionary_ = new QComboBox( this ) );
-    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
     const set<QString>& dictionaries( interface().dictionaries() );
     for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
@@ -131,7 +127,6 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
     // filter combobox
     grid_layout->addWidget( filterLabel_ = new QLabel( "Filter: ", this ) );
     grid_layout->addWidget( filter_ = new QComboBox( this ) );
-    filterLabel_->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
     grid_layout->setColumnStretch( 1, 1 );
 
@@ -218,7 +213,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
     { InformationDialog( this, interface().error() ).exec(); }
 
     // set TextEditor as ReadOnly
-    readOnly_ = editor().isReadOnly();
+    readOnlyEditor_ = editor().isReadOnly();
     editor().setReadOnly( true );
 
     Debug::Throw( "SpellDialog::SpellDialog - done.\n" );
@@ -415,7 +410,7 @@ void SpellDialog::_ignoreAll( void )
 {
 
     Debug::Throw( "SpellDialog::_ignoreAll.\n" );
-    interface().ignoreWord( editor_->text() );
+    interface().ignoreWord( sourceEditor_->text() );
     _ignore();
 
 }
@@ -444,9 +439,9 @@ void SpellDialog::_replaceAll( void )
 {
 
     Debug::Throw( "SpellDialog::_replaceAll.\n" );
-    QString old_word( editor_->text() );
+    QString old_word( sourceEditor_->text() );
     QString new_word( replaceEditor_->text() );
-    replacedWords_.insert( make_pair( old_word, new_word ) );
+    replaced_words_.insert( make_pair( old_word, new_word ) );
     _replace();
 
 }
@@ -482,11 +477,11 @@ void SpellDialog::nextWord( void )
         if( interface().isWordIgnored( word ) ) continue;
 
         // see if word is in replace all list
-        if( replacedWords_.find( word ) != replacedWords_.end() )
+        if( replaced_words_.find( word ) != replaced_words_.end() )
         {
 
             // automatic replacement
-            std::map< QString, QString >::iterator iter = replacedWords_.find( word );
+            std::map< QString, QString >::iterator iter = replaced_words_.find( word );
             _updateSelection( interface().position() + interface().offset(), word.size() );
             _replaceSelection( iter->second );
             interface().replace( iter->second );
@@ -506,7 +501,7 @@ void SpellDialog::nextWord( void )
     } else {
 
         // spelling completed. Clear everything
-        editor_->clear();
+        sourceEditor_->clear();
         replaceEditor_->clear();
         _model().clear();
         stateLabel_->setText( "Spelling\n completed" );
@@ -522,7 +517,7 @@ void SpellDialog::closeEvent( QCloseEvent *e )
 {
     Debug::Throw( "SpellDialog::closeEvent.\n" );
     interface().saveWordList();
-    editor().setReadOnly( readOnly_ );
+    editor().setReadOnly( readOnlyEditor_ );
     QDialog::closeEvent( e );
 }
 
@@ -556,7 +551,7 @@ void SpellDialog::_displayWord( const QString& word )
     Debug::Throw( "SpellDialog::_displayWord.\n" );
 
     // set text in line_editor
-    editor_->setText( word );
+    sourceEditor_->setText( word );
     replaceEditor_->setText( word );
 
     // clear list of suggestions
