@@ -24,11 +24,11 @@
 *******************************************************************************/
 
 /*!
-  \file ImageFileDialog.h
-  \brief customized file selection dialog, to store last selected directory
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ImageFileDialog.h
+\brief customized file selection dialog, to store last selected directory
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -42,82 +42,82 @@
 #include "File.h"
 
 /*!
-  \class ImageFileDialog
-  \brief customized file selection dialog, to store last selected directory
+\class ImageFileDialog
+\brief customized file selection dialog, to store last selected directory
 */
 class ImageFileDialog: public QFileDialog
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! creator
-  ImageFileDialog( QWidget* parent );
+        //! creator
+        ImageFileDialog( QWidget* parent );
 
-  //! select file
-  void selectFile( const QString& filename )
-  {
-    emit _currentChanged( filename );
-    QFileDialog::selectFile( filename );
-  }
+    //! select file
+    void selectFile( const QString& filename )
+    {
+        emit _currentChanged( filename );
+        QFileDialog::selectFile( filename );
+    }
 
-  private slots:
+    private slots:
 
-  //! update current
-  void _currentChanged( const QString& path );
+    //! update current
+    void _currentChanged( const QString& path );
 
-  //! display current image
-  void _preview( void );
-
-  protected:
-
-  virtual void showEvent( QShowEvent* e )
-  {
-    QFileDialog::showEvent( e );
-    _preview();
-  }
-
-  private slots:
-
-  //! stores working directory when changed
-  void _saveWorkingDirectory( const QString& directory );
-
-  private:
-
-  //! automatic preview checkbox
-  QCheckBox& _automaticPreviewCheckbox( void ) const
-  {
-    assert( automatic_preview_ );
-    return *automatic_preview_;
-  }
-
-  //! automatic preview checkbox
-  QCheckBox* automatic_preview_;
-
-  //! current file
-  QString current_path_;
-
-  class Label: public QLabel, public Counter
-  {
-    public:
-
-    //! constructor
-    Label( QWidget* parent );
+    //! display current image
+    void _preview( void );
 
     protected:
 
-    //! drag enter event
-    virtual void dragEnterEvent( QDragEnterEvent* );
+    virtual void showEvent( QShowEvent* e )
+    {
+        QFileDialog::showEvent( e );
+        _preview();
+    }
 
-    //! drop event
-    virtual void dropEvent( QDropEvent* );
+    private slots:
 
-  };
+    //! stores working directory when changed
+    void _saveWorkingDirectory( const QString& directory );
 
-  //! preview label
-  Label* preview_;
+    private:
+
+    //! automatic preview checkbox
+    QCheckBox& _automaticPreviewCheckbox( void ) const
+    {
+        assert( automaticPreview_ );
+        return *automaticPreview_;
+    }
+
+    //! automatic preview checkbox
+    QCheckBox* automaticPreview_;
+
+    //! current file
+    QString currentPath_;
+
+    class Label: public QLabel, public Counter
+    {
+        public:
+
+        //! constructor
+        Label( QWidget* parent );
+
+        protected:
+
+        //! drag enter event
+        virtual void dragEnterEvent( QDragEnterEvent* );
+
+        //! drop event
+        virtual void dropEvent( QDropEvent* );
+
+    };
+
+    //! preview label
+    Label* preview_;
 
 };
 

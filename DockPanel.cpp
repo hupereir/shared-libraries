@@ -368,7 +368,7 @@ void DockPanel::LocalWidget::paintEvent( QPaintEvent *event )
 
         QPainter p( this );
 
-        if( !style()->inherits( "OxygenStyle" ) )
+        if( !style()->inherits( "Oxygen::Style" ) )
         {  p.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
 
         // background
