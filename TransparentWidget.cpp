@@ -151,22 +151,6 @@ void TransparentWidget::resizeEvent( QResizeEvent* event )
     }
     #endif
 
-    static const unsigned int margin = 10;
-    if( blurEnabled_ )
-    {
-        QRect r( rect()
-            .translated( mapTo( window(), QPoint(0,0) ) )
-            .adjusted( margin, margin, -margin, -margin ) );
-        QVector<unsigned long> data;
-        data << r.x() << r.y() << r.width() << r.height();
-        X11Util::get().changeProperty(
-            *this,
-            X11Util::_KDE_NET_WM_BLUR_BEHIND_REGION,
-            reinterpret_cast<const unsigned char *>(data.constData()),
-            data.size());
-
-    }
-
     QWidget::resizeEvent( event );
 }
 

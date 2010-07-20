@@ -171,6 +171,10 @@ namespace TRANSPARENCY {
         /*! this must be re-implemented by derived classes */
         virtual void _paint( QPaintDevice&, const QRect& ) = 0;
 
+        //! true if blur is enabled
+        virtual bool _blurEnabled( void ) const
+        { return blurEnabled_; }
+
         protected slots:
 
         //! reload background
