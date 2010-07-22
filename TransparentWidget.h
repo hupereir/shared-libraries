@@ -175,6 +175,13 @@ namespace TRANSPARENCY {
         virtual bool _blurEnabled( void ) const
         { return blurEnabled_; }
 
+        //! update blur region
+        virtual void _updateBlurRegion( void ) const
+        { _updateBlurRegion( rect().translated( mapTo( window(), QPoint(0,0) ) ) ); }
+        
+        //! update blur region
+        virtual void _updateBlurRegion( const QRegion& ) const;
+        
         protected slots:
 
         //! reload background

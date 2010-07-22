@@ -351,3 +351,21 @@ void TransparentWidget::_installActions( void )
     connect( reloadBackgroundAction_, SIGNAL( triggered( void ) ), SLOT( _reloadBackground( void ) ) );
 
 }
+
+
+//__________________________________________________________
+void TransparentWidget::_updateBlurRegion( const QRegion& region ) const
+{
+        
+    QVector<QRect> rects( region.rects() );
+    QVector<unsigned long> data;
+    foreach( const QRect& r, rects )
+    { data << r.x() << r.y() << r.width() << r.height(); }
+
+    X11Util::get().changeProperty(
+        *this,
+        X11Util::_KDE_NET_WM_BLUR_BEHIND_REGION,
+        reinterpret_cast<const unsigned char *>(data.constData()),
+        data.size());
+    
+}
