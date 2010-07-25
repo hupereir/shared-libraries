@@ -62,6 +62,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
     Debug::Throw( "TabWidget::TabWidget.\n" );
 
     setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_StyledBackground);
 
     // grid layout to overlay main layout and invisible grip
     QGridLayout *grid_layout( new QGridLayout() );
@@ -314,7 +315,7 @@ void TabWidget::paintEvent( QPaintEvent *event )
 
         QPainter p( this );
 
-        if( !style()->inherits( "OxygenStyle" ) )
+        if( !( style()->inherits( "OxygenStyle" ) || style()->inherits( "Oxygen::Style" ) ) )
         {  p.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
 
         // background

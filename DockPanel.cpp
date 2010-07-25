@@ -250,6 +250,7 @@ DockPanel::LocalWidget::LocalWidget( QWidget* parent ):
 
     // should move to "polish"
     setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_StyledBackground);
 
 }
 
