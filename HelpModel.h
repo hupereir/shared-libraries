@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file HelpModel.h
-  \brief model for help items
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file HelpModel.h
+\brief model for help items
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <string.h>
@@ -41,91 +41,91 @@
 
 namespace BASE
 {
-
-  //! model for help items
-  class HelpModel: public ListModel<HelpItem>, public Counter
-  {
-
-    //! Qt meta object declaration
-    Q_OBJECT
-
-    public:
-
-    //! used to tag Keyword drags
-    static const QString DRAG;
-
-    //! number of columns
-    enum { n_columns = 1 };
-
-    //! column type enumeration
-    enum ColumnType { LABEL };
-
-    //! constructor
-    HelpModel( void ):
-      Counter( "HelpModel" ),
-      edition_enabled_( false )
-      {}
-
+    
+    //! model for help items
+    class HelpModel: public ListModel<HelpItem>, public Counter
+    {
+        
+        //! Qt meta object declaration
+        Q_OBJECT
+            
+            public:
+            
+            //! used to tag Keyword drags
+            static const QString DRAG;
+        
+        //! number of columns
+        enum { nColumns = 1 };
+        
+        //! column type enumeration
+        enum ColumnType { LABEL };
+        
+        //! constructor
+        HelpModel( void ):
+        Counter( "HelpModel" ),
+        editionEnabled_( false )
+    {}
+    
     //!@name methods reimplemented from base class
     //@{
-
+    
     //! flags
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-
-
+    
+    
     // return data for a given index
     virtual QVariant data(const QModelIndex &index, int role) const;
-
+    
     // modify data
     virtual bool setData(const QModelIndex &index, const QVariant& value, int role = Qt::EditRole );
-
+    
     //! header data
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
     { return QVariant(); }
-
+    
     //! number of columns for a given index
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
-    { return n_columns; }
-
+    { return nColumns; }
+    
     //! mime type
     virtual QStringList mimeTypes( void ) const;
-
+    
     //! mime data
     virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
-
+    
     //! drop mine data
     virtual bool dropMimeData(const QMimeData*, Qt::DropAction, int row, int column, const QModelIndex&);
-
+    
     //@}
-
+    
     //! edition
     void setEditionEnabled( const bool& value )
-    { edition_enabled_ = value; }
-
+    { editionEnabled_ = value; }
+    
     //! edition
     const bool& editionEnabled( void ) const
-    { return edition_enabled_; }
-
+    { return editionEnabled_; }
+    
     signals:
-
+    
     //! emitted when an item is dragged to a different position
     void itemMoved( int row );
-
+    
     //! emmited when an item label is renamed
     void itemRenamed( QModelIndex index, QString label );
-
+    
     protected:
-
+    
     //! sorting
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
     {}
-
+    
     private:
-
+    
     //! edition enabled
-    bool edition_enabled_;
-
-  };
+    bool editionEnabled_;
+    
+};
 
 };
 

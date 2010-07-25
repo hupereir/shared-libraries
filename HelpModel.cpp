@@ -45,77 +45,77 @@ const QString HelpModel::DRAG = "base/helpmodel/drag";
 //__________________________________________________________________
 Qt::ItemFlags HelpModel::flags(const QModelIndex &index) const
 {
-  if (!index.isValid()) return (editionEnabled() ? Qt::ItemIsDropEnabled: Qt::ItemFlags(0) );
-  Qt::ItemFlags flags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
-  if(editionEnabled()) flags |= (Qt::ItemIsDragEnabled | Qt::ItemIsEditable);
-  return flags;
+    if (!index.isValid()) return (editionEnabled() ? Qt::ItemIsDropEnabled: Qt::ItemFlags(0) );
+    Qt::ItemFlags flags( Qt::ItemIsEnabled | Qt::ItemIsSelectable );
+    if(editionEnabled()) flags |= (Qt::ItemIsDragEnabled | Qt::ItemIsEditable);
+    return flags;
 }
 
 //__________________________________________________________________
 QVariant HelpModel::data( const QModelIndex& index, int role ) const
 {
-
-  // check index, role and column
-  if( !index.isValid() ) return QVariant();
-  if( role != Qt::DisplayRole ) return QVariant();
-  if( index.column() != LABEL ) return QVariant();
-  return QString( get(index).label() );
-
+    
+    // check index, role and column
+    if( !index.isValid() ) return QVariant();
+    if( role != Qt::DisplayRole ) return QVariant();
+    if( index.column() != LABEL ) return QVariant();
+    return QString( get(index).label() );
+    
 }
 
 //__________________________________________________________________
 bool HelpModel::setData(const QModelIndex &index, const QVariant& value, int role )
 {
-  if( !(index.isValid() && index.column() == LABEL && role == Qt::EditRole ) ) return false;
-  if( value.toString().isNull() || value.toString().isEmpty() ) return false;
-  const HelpItem& item = get( index );
-  if( item.label() == value.toString() ) return false;
-  emit itemRenamed( index, value.toString() );
-  emit dataChanged( index, index );
-  return true;
+    if( !(index.isValid() && index.column() == LABEL && role == Qt::EditRole ) ) return false;
+    if( value.toString().isNull() || value.toString().isEmpty() ) return false;
+    const HelpItem& item = get( index );
+    if( item.label() == value.toString() ) return false;
+    emit itemRenamed( index, value.toString() );
+    emit dataChanged( index, index );
+    return true;
 }
 
 //______________________________________________________________________
 QStringList HelpModel::mimeTypes( void ) const
 {
-  QStringList types;
-  types << DRAG;
-  return types;
+    QStringList types;
+    types << DRAG;
+    return types;
 }
 
 //______________________________________________________________________
 QMimeData* HelpModel::mimeData(const QModelIndexList &indexes) const
 {
-
-  assert( indexes.size() == 1 );
-
-  // create mime data
-  QMimeData *mime = new QMimeData();
-
-  // set DRAG type
-  for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
-  { if( iter->isValid() ) mime->setData( DRAG, get( *iter ).label().toAscii() ); }
-
-  return mime;
-
+    
+    assert( indexes.size() == 1 );
+    
+    // create mime data
+    QMimeData *mime = new QMimeData();
+    
+    // set DRAG type
+    for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
+    { if( iter->isValid() ) mime->setData( DRAG, get( *iter ).label().toAscii() ); }
+    
+    return mime;
+    
 }
 
 
 //__________________________________________________________________
 bool HelpModel::dropMimeData(const QMimeData* data , Qt::DropAction action, int row, int column, const QModelIndex& parent)
 {
-
-  // check action
-  if( action == Qt::IgnoreAction) return true;
-
-  // Drag from Keyword model
-  if( data->hasFormat( DRAG ) )
-  {
-    assert( !parent.isValid() );
-    emit itemMoved( row );
-    return true;
-  }
-
-  return false;
-
+    
+    // check action
+    if( action == Qt::IgnoreAction) return true;
+    
+    // Drag from Keyword model
+    if( data->hasFormat( DRAG ) )
+    {
+        assert( !parent.isValid() );
+        emit itemMoved( row );
+        return true;
+    }
+    
+    return false;
+    
 }
