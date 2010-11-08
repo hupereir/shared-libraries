@@ -25,18 +25,17 @@
 *******************************************************************************/
 
 /*!
-  \file SvgThread.h
-  \brief check validity of a set of files
-  \author  Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file SvgThread.h
+\brief check validity of a set of files
+\author  Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QEvent>
 #include <QThread>
 #include <vector>
 
-#include "Counter.h"
 #include "Debug.h"
 #include "SvgRenderer.h"
 #include "Svg.h"
@@ -45,79 +44,77 @@
 namespace SVG
 {
 
-  class SvgEvent: public QEvent, public Counter
-  {
+    class SvgEvent: public QEvent
+    {
 
-    public:
+        public:
 
-    //! constructor
-    SvgEvent( const ImageCache& cache ):
-      QEvent( eventType() ),
-      Counter( "SvgEvent" ),
-      cache_( cache )
-    {}
+        //! constructor
+        SvgEvent( const ImageCache& cache ):
+            QEvent( eventType() ),
+            cache_( cache )
+        {}
 
-    //! destructor
-    ~SvgEvent( void )
-    {}
+        //! destructor
+        ~SvgEvent( void )
+        {}
 
-    //! static event type
-    static QEvent::Type eventType( void );
+        //! static event type
+        static QEvent::Type eventType( void );
 
-    //! records
-    const ImageCache& cache() const
-    { return cache_; }
+        //! records
+        const ImageCache& cache() const
+        { return cache_; }
 
-    private:
+        private:
 
-    //! Svg cache
-    ImageCache cache_;
+        //! Svg cache
+        ImageCache cache_;
 
-  };
+    };
 
-  //! independent thread used to automatically save file
-  class SvgThread: public QThread, public Counter
-  {
+    //! independent thread used to automatically save file
+    class SvgThread: public QThread
+    {
 
-    public:
+        public:
 
-    //! constructor
-    SvgThread( QObject* reciever ):
-      Counter( "SvgThread" ),
-      reciever_( reciever ),
-      svg_offset_( 0 )
-    {}
+        //! constructor
+        SvgThread( QObject* reciever ):
+            reciever_( reciever ),
+            svgOffset_( 0 )
+        {}
 
-    //! svg file
-    void setSvgFile( const QString& file )
-    { svg_.load( file ); }
+        //! svg file
+        void setSvgFile( const QString& file )
+        { svg_.load( file ); }
 
-    //! offset
-    void setSvgOffset( const double& value )
-    { svg_offset_ = value; }
+        //! offset
+        void setSvgOffset( const double& value )
+        { svgOffset_ = value; }
 
-    //! set file
-    void setSvgIdList( const SvgId::List& svg_ids )
-    { svg_ids_ = svg_ids; }
+        //! set file
+        void setSvgIdList( const SvgId::List& svg_ids )
+        { svgIds_ = svg_ids; }
 
-    //! Check files validity. Post a SvgEvent when finished
-    void run( void );
+        //! Check files validity. Post a SvgEvent when finished
+        void run( void );
 
-    private:
+        private:
 
-    //! reciever object for posted events
-    QObject* reciever_;
+        //! reciever object for posted events
+        QObject* reciever_;
 
-    //! svg renderer
-    SvgRenderer svg_;
+        //! svg renderer
+        SvgRenderer svg_;
 
-    //! svg offset
-    double svg_offset_;
+        //! svg offset
+        double svgOffset_;
 
-    //! requested sizes
-    SvgId::List svg_ids_;
+        //! requested sizes
+        SvgId::List svgIds_;
 
-  };
+    };
 
 }
 

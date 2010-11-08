@@ -22,11 +22,19 @@
 *******************************************************************************/
 
 /*!
+<<<<<<< SvgEngine.cpp
 \file SvgEngine.cpp
 \brief customized Icon factory to provide better looking disabled icons
 \author Hugo Pereira
 \version $Revision$
 \date $Date$
+=======
+\file SvgEngine.cpp
+\brief customized Icon factory to provide better looking disabled icons
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
+>>>>>>> 1.32
 */
 
 #include <QPainter>

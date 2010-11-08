@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file SvgThread.cpp
-  \brief check validity of a set of files
-  \author  Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file SvgThread.cpp
+\brief check validity of a set of files
+\author  Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <algorithm>
@@ -39,43 +39,43 @@ using namespace std;
 namespace SVG
 {
 
-  //______________________________________________________
-  QEvent::Type SvgEvent::eventType( void )
-  {
-
-    #if QT_VERSION >= 0x040400
-    static QEvent::Type event_type = (QEvent::Type) QEvent::registerEventType();
-    #else
-    static QEvent::Type event_type = QEvent::User;
-    #endif
-
-    return event_type;
-
-  }
-
-  //______________________________________________________
-  void SvgThread::run( void )
-  {
-
-    if( !svg_.isValid() ) return;
-    if( svg_ids_.empty() ) return;
-
-    svg_.updateConfiguration();
-
-    ImageCache cache;
-    for( SvgId::List::const_iterator iter = svg_ids_.begin(); iter != svg_ids_.end(); iter++ )
+    //______________________________________________________
+    QEvent::Type SvgEvent::eventType( void )
     {
 
-      QImage image( iter->size(), QImage::Format_ARGB32_Premultiplied );
-      image.fill( Qt::transparent );
-      svg_.render( image, svg_offset_, iter->id() );
-      cache.insert( make_pair( *iter, image ) );
+        #if QT_VERSION >= 0x040400
+        static QEvent::Type event_type = (QEvent::Type) QEvent::registerEventType();
+        #else
+        static QEvent::Type event_type = QEvent::User;
+        #endif
+
+        return event_type;
 
     }
 
-    qApp->postEvent( reciever_, new SvgEvent( cache ) );
-    return;
+    //______________________________________________________
+    void SvgThread::run( void )
+    {
 
-  }
+        if( !svg_.isValid() ) return;
+        if( svgIds_.empty() ) return;
+
+        svg_.updateConfiguration();
+
+        ImageCache cache;
+        for( SvgId::List::const_iterator iter = svgIds_.begin(); iter != svgIds_.end(); iter++ )
+        {
+
+            QImage image( iter->size(), QImage::Format_ARGB32_Premultiplied );
+            image.fill( Qt::transparent );
+            svg_.render( image, svgOffset_, iter->id() );
+            cache.insert( make_pair( *iter, image ) );
+
+        }
+
+        qApp->postEvent( reciever_, new SvgEvent( cache ) );
+        return;
+
+    }
 
 };
