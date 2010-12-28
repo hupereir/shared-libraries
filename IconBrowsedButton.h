@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file IconBrowsedButton.h
-  \brief icon browser. The icon is displayed as the button label
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file IconBrowsedButton.h
+\brief icon browser. The icon is displayed as the button label
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 #ifndef IconBrowsedButton_h
 #define IconBrowsedButton_h
@@ -39,57 +39,57 @@
 #include "Debug.h"
 
 /*!
-  \class IconBrowsedButton
-  \brief customized tool button to display tooltip in a dedicated label
+\class IconBrowsedButton
+\brief customized tool button to display tooltip in a dedicated label
 */
 class IconBrowsedButton: public CustomToolButton
 {
 
-  //! Qt meta object macros
-  Q_OBJECT
+    //! Qt meta object macros
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! no icon filename
-  static const QString NO_ICON;
+        //! no icon filename
+        static const QString NO_ICON;
 
-  //! creator
-  IconBrowsedButton(
-    QWidget* parent,
-    const QString& file = NO_ICON
-  );
+    //! creator
+    IconBrowsedButton(
+        QWidget* parent,
+        const QString& file = NO_ICON
+        );
 
-  //! destructor
-  ~IconBrowsedButton( void )
-  {}
+    //! destructor
+    ~IconBrowsedButton( void )
+    {}
 
-  //! iconFile
-  virtual const QString& file( void ) const
-  { return file_; }
+    //! iconFile
+    virtual const QString& file( void ) const
+    { return file_; }
 
-  //! iconFile
-  virtual bool setFile( const QString& file, const bool& check );
+    //! iconFile
+    virtual bool setFile( const QString& file, const bool& check );
 
-  protected:
+    protected:
 
-  //! drag enter event
-  virtual void dragEnterEvent( QDragEnterEvent* );
+    //! drag enter event
+    virtual void dragEnterEvent( QDragEnterEvent* );
 
-  //! drop event
-  virtual void dropEvent( QDropEvent* );
+    //! drop event
+    virtual void dropEvent( QDropEvent* );
 
-  protected slots:
+    protected slots:
 
-  //! opens file dialog to browse icon file
-  virtual void _browse( void );
+    //! opens file dialog to browse icon file
+    virtual void _browse( void );
 
-  private:
+    private:
 
-  //! empty pixmap
-  QPixmap no_icon_pixmap_;
+    //! empty pixmap
+    QPixmap noIconPixmap_;
 
-  //! icon file
-  QString file_;
+    //! icon file
+    QString file_;
 
 };
 

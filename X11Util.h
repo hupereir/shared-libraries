@@ -165,18 +165,18 @@ class X11Util
 
     //! atom names
     const AtomNameMap& _atomNames( void ) const
-    { return atom_names_; }
+    { return atomNames_; }
 
-    AtomNameMap atom_names_;
+    AtomNameMap atomNames_;
 
     //! supported atoms
     typedef std::map<Atoms, bool > SupportedAtomMap;
 
     //! supported atoms
     const SupportedAtomMap& _supportedAtoms( void ) const
-    { return supported_atoms_; }
+    { return supportedAtoms_; }
 
-    SupportedAtomMap supported_atoms_;
+    SupportedAtomMap supportedAtoms_;
 
     #ifdef Q_WS_X11
 

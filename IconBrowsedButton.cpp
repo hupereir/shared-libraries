@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file IconBrowsedButton.cpp
-  \brief icon browser. The icon is displayed as the button label
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file IconBrowsedButton.cpp
+\brief icon browser. The icon is displayed as the button label
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 
@@ -49,15 +49,15 @@ const QString IconBrowsedButton::NO_ICON = "none";
 
 //_____________________________________________
 IconBrowsedButton::IconBrowsedButton( QWidget* parent, const QString& file):
-  CustomToolButton( parent ),
-  file_( NO_ICON )
+    CustomToolButton( parent ),
+    file_( NO_ICON )
 {
 
-  setIconSize( IconSize( IconSize::HUGE ) );
-  setAutoRaise( false );
-  setFile( file, false );
-  connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
-  setAcceptDrops( true );
+    setIconSize( IconSize( IconSize::HUGE ) );
+    setAutoRaise( false );
+    setFile( file, false );
+    connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
+    setAcceptDrops( true );
 
 }
 
@@ -66,111 +66,112 @@ IconBrowsedButton::IconBrowsedButton( QWidget* parent, const QString& file):
 bool IconBrowsedButton::setFile( const QString& file, const bool& check )
 {
 
-  Debug::Throw() << "IconBrowsedButton::setFile - " << file << endl;
+    Debug::Throw() << "IconBrowsedButton::setFile - " << file << endl;
 
-  // load pixmap
-  CustomPixmap pixmap( file );
+    // load pixmap
+    CustomPixmap pixmap( file );
 
-  // update file if pixmap is valid or current file is undefined
-  if( !pixmap.isNull() || file_ == NO_ICON )
-  { file_ = file; }
+    // update file if pixmap is valid or current file is undefined
+    if( !pixmap.isNull() || file_ == NO_ICON )
+    { file_ = file; }
 
-  // update pixmap if valid
-  if( !pixmap.isNull() )
-  {
+    // update pixmap if valid
+    if( !pixmap.isNull() )
+    {
 
-    // resize pixmap
-    if( pixmap.size() != IconSize( IconSize::HUGE ) )
-    pixmap = pixmap.scaled( IconSize( IconSize::HUGE ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
+        // resize pixmap
+        if( pixmap.size() != IconSize( IconSize::HUGE ) )
+            pixmap = pixmap.scaled( IconSize( IconSize::HUGE ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
 
-    setIcon( pixmap );
-    return true;
-  }
+        setIcon( pixmap );
+        return true;
+    }
 
-  // popup dialog if invalid
-  if( check )
-  {
-    QString buffer;
-    QTextStream( &buffer ) << "invalid icon file " << file;
-    InformationDialog( this, buffer ).exec();
-  }
+    // popup dialog if invalid
+    if( check )
+    {
+        QString buffer;
+        QTextStream( &buffer ) << "invalid icon file " << file;
+        InformationDialog( this, buffer ).exec();
+    }
 
-  // if file, set pixmap to empty
-  if( no_icon_pixmap_.isNull() ) {
-    no_icon_pixmap_ = CustomPixmap().empty( IconSize( IconSize::HUGE ) );
-    setIcon( no_icon_pixmap_ );
-  }
+    // if file, set pixmap to empty
+    if( noIconPixmap_.isNull() ) {
+        noIconPixmap_ = CustomPixmap().empty( IconSize( IconSize::HUGE ) );
+        setIcon( noIconPixmap_ );
+    }
 
-  return false;
+    return false;
 
 }
 
 //_____________________________________________
 void IconBrowsedButton::_browse( void )
 {
-  Debug::Throw( "IconBrowsedButton::_Browse.\n" );
+    Debug::Throw( "IconBrowsedButton::_Browse.\n" );
 
-  ImageFileDialog dialog( this );
-  dialog.setFileMode( QFileDialog::AnyFile );
-  dialog.setAcceptMode( QFileDialog::AcceptOpen );
-  dialog.setWindowTitle( "Open" );
-  QtUtil::centerOnParent( &dialog );
+    ImageFileDialog dialog( this );
+    dialog.setFileMode( QFileDialog::AnyFile );
+    dialog.setAcceptMode( QFileDialog::AcceptOpen );
+    dialog.setWindowTitle( "Open" );
+    QtUtil::centerOnParent( &dialog );
 
-  if( file_ != NO_ICON ) {
+    if( file_ != NO_ICON ) {
 
-    // warning: inneficient
-    File path( File( file_ ).path() );
-    if( path.exists() && path.isDirectory() ) dialog.setDirectory( path );
-    dialog.selectFile( file_ );
+        // warning: inneficient
+        File path( File( file_ ).path() );
+        if( path.exists() && path.isDirectory() ) dialog.setDirectory( path );
+        dialog.selectFile( file_ );
 
-  }
+    }
 
-  if( dialog.exec() == QDialog::Rejected ) return;
+    dialog.show();
+    if( dialog.exec() == QDialog::Rejected ) return;
 
-  // retrieve selected files
-  QStringList files( dialog.selectedFiles() );
+    // retrieve selected files
+    QStringList files( dialog.selectedFiles() );
 
-  // check file size
-  if( files.size() > 1 )
-  {
-    InformationDialog( this, "Too many files selected." ).exec();
+    // check file size
+    if( files.size() > 1 )
+    {
+        InformationDialog( this, "Too many files selected." ).exec();
+        return;
+    }
+
+    if( files.size() < 1 )
+    {
+        InformationDialog( this, "No file selected." ).exec();
+        return;
+    }
+
+    setFile( files.front(), true );
     return;
-  }
-
-  if( files.size() < 1 )
-  {
-    InformationDialog( this, "No file selected." ).exec();
-    return;
-  }
-
-  setFile( files.front(), true );
-  return;
 }
 
 //______________________________________________________________________
 void IconBrowsedButton::dragEnterEvent( QDragEnterEvent *event )
 {
-  Debug::Throw( "IconBrowsedButton::dragEnterEvent.\n" );
-  if (event->mimeData()->hasUrls()) event->acceptProposedAction();
+    Debug::Throw( "IconBrowsedButton::dragEnterEvent.\n" );
+    if (event->mimeData()->hasUrls()) event->acceptProposedAction();
 }
 
 //______________________________________________________________________
 void IconBrowsedButton::dropEvent( QDropEvent *event )
 {
 
-  Debug::Throw( "IconBrowsedButton::dropEvent.\n" );
+    Debug::Throw( "IconBrowsedButton::dropEvent.\n" );
 
-  // check if event is valid
-  if( !event->mimeData()->hasUrls() ) return;
+    // check if event is valid
+    if( !event->mimeData()->hasUrls() ) return;
 
-  // loop over event URLs
-  QList<QUrl> urls( event->mimeData()->urls() );
-  for( QList<QUrl>::const_iterator iter = urls.begin(); iter != urls.end(); iter++ )
-  {
-    QFileInfo file_info( iter->toLocalFile() );
-    if( file_info.exists() && setFile( file_info.filePath(), true ) ) event->acceptProposedAction();
-  }
+    // loop over event URLs
+    QList<QUrl> urls( event->mimeData()->urls() );
+    for( QList<QUrl>::const_iterator iter = urls.begin(); iter != urls.end(); iter++ )
+    {
+        QFileInfo file_info( iter->toLocalFile() );
+        if( file_info.exists() && setFile( file_info.filePath(), true ) ) event->acceptProposedAction();
+    }
 
-  return;
+    return;
 
 }

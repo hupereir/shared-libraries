@@ -66,12 +66,12 @@ bool X11Util::isSupported( const Atoms& atom )
 
     #ifdef Q_WS_X11
 
-    Debug::Throw( debug_level ) << "X11Util::isSupported - " << atom_names_[atom] << endl;
+    Debug::Throw( debug_level ) << "X11Util::isSupported - " << atomNames_[atom] << endl;
 
     SupportedAtomMap::const_iterator iter( _supportedAtoms().find( atom ) );
     if( iter != _supportedAtoms().end() )
     {
-        Debug::Throw() << "X11Util::isSupported - " << atom_names_[atom] << (iter->second ? " true ":" false ") << endl;
+        Debug::Throw() << "X11Util::isSupported - " << atomNames_[atom] << (iter->second ? " true ":" false ") << endl;
         return iter->second;
     }
 
@@ -126,7 +126,7 @@ bool X11Util::isSupported( const Atoms& atom )
     }
 
     if( first ) first = false;
-    supported_atoms_[atom] = found;
+    supportedAtoms_[atom] = found;
     return found;
 
     #endif
@@ -139,7 +139,7 @@ bool X11Util::isSupported( const Atoms& atom )
 bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 {
 
-    Debug::Throw(debug_level) << "X11Util::hasProperty - " << atom_names_[atom] << endl;
+    Debug::Throw(debug_level) << "X11Util::hasProperty - " << atomNames_[atom] << endl;
 
     #ifdef Q_WS_X11
 
@@ -313,7 +313,7 @@ bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const un
 bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool state )
 {
 
-    Debug::Throw(debug_level) << "X11Util::_changeProperty - atom: " << atom_names_[atom] << " state: " << state << endl;
+    Debug::Throw(debug_level) << "X11Util::_changeProperty - atom: " << atomNames_[atom] << " state: " << state << endl;
 
     #ifdef Q_WS_X11
     //printWindowState( widget );
@@ -397,7 +397,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
 bool X11Util::_requestPropertyChange( const QWidget& widget, const Atoms& atom, bool value )
 {
 
-    Debug::Throw(debug_level) << "X11Util::_requestPropertyChange - atom: " << atom_names_[atom] << " state: " << value << endl;
+    Debug::Throw(debug_level) << "X11Util::_requestPropertyChange - atom: " << atomNames_[atom] << " state: " << value << endl;
 
     #ifdef Q_WS_X11
 
@@ -490,18 +490,18 @@ void X11Util::_initializeAtomNames( void )
 
     Debug::Throw( "X11Util::_initializeAtomNames.\n" );
 
-    atom_names_[_NET_SUPPORTED] = "_NET_SUPPORTED";
-    atom_names_[_NET_CURRENT_DESKTOP] = "_NET_CURRENT_DESKTOP";
-    atom_names_[_NET_WM_DESKTOP] = "_NET_WM_DESKTOP";
-    atom_names_[_NET_WM_STATE] = "_NET_WM_STATE";
-    atom_names_[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
-    atom_names_[_NET_WM_STATE_STAYS_ON_TOP] = "_NET_WM_STATE_STAYS_ON_TOP";
-    atom_names_[_NET_WM_STATE_ABOVE] = "_NET_WM_STATE_ABOVE";
-    atom_names_[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
-    atom_names_[_NET_WM_STATE_SKIP_PAGER] = "_NET_WM_STATE_SKIP_PAGER";
-    atom_names_[_NET_WM_MOVERESIZE] = "_NET_WM_MOVERESIZE";
-    atom_names_[_NET_WM_CM] = "_NET_WM_CM";
-    atom_names_[_KDE_NET_WM_BLUR_BEHIND_REGION] = "_KDE_NET_WM_BLUR_BEHIND_REGION";
+    atomNames_[_NET_SUPPORTED] = "_NET_SUPPORTED";
+    atomNames_[_NET_CURRENT_DESKTOP] = "_NET_CURRENT_DESKTOP";
+    atomNames_[_NET_WM_DESKTOP] = "_NET_WM_DESKTOP";
+    atomNames_[_NET_WM_STATE] = "_NET_WM_STATE";
+    atomNames_[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
+    atomNames_[_NET_WM_STATE_STAYS_ON_TOP] = "_NET_WM_STATE_STAYS_ON_TOP";
+    atomNames_[_NET_WM_STATE_ABOVE] = "_NET_WM_STATE_ABOVE";
+    atomNames_[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
+    atomNames_[_NET_WM_STATE_SKIP_PAGER] = "_NET_WM_STATE_SKIP_PAGER";
+    atomNames_[_NET_WM_MOVERESIZE] = "_NET_WM_MOVERESIZE";
+    atomNames_[_NET_WM_CM] = "_NET_WM_CM";
+    atomNames_[_KDE_NET_WM_BLUR_BEHIND_REGION] = "_KDE_NET_WM_BLUR_BEHIND_REGION";
 
     return;
 }
@@ -568,7 +568,7 @@ Atom X11Util::findAtom( const Atoms& atom )
 
     // create atom if not found
     Display* display( QX11Info::display() );
-    Atom out( XInternAtom(display, qPrintable( atom_names_[atom] ), false ) );
+    Atom out( XInternAtom(display, qPrintable( atomNames_[atom] ), false ) );
     atoms_[atom] = out;
     return out;
 
