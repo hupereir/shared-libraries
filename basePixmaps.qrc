@@ -56,6 +56,7 @@
     <file alias="pixmaps/oxygen/qt-logo.png">../base-pixmaps/oxygen/qt-logo.png</file>
     <file alias="pixmaps/oxygen/redo.png">../base-pixmaps/oxygen/redo.png</file>
     <file alias="pixmaps/oxygen/reload.png">../base-pixmaps/oxygen/reload.png</file>
+    <file alias="pixmaps/oxygen/run-build.png">../base-pixmaps/oxygen/run-build.png</file>
     <file alias="pixmaps/oxygen/show-menu.png">../base-pixmaps/oxygen/show-menu.png</file>
     <file alias="pixmaps/oxygen/toggle_log.png">../base-pixmaps/oxygen/toggle_log.png</file>
     <file alias="pixmaps/oxygen/trashcan_empty.png">../base-pixmaps/oxygen/trashcan_empty.png</file>

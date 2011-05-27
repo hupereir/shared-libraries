@@ -52,9 +52,9 @@ using namespace Qt;
 TreeView::TreeView( QWidget* parent ):
   QTreeView( parent ),
   Counter( "TreeView" ),
-  find_dialog_( 0 ),
+  findDialog_( 0 ),
   menu_( 0 ),
-  icon_size_from_options_( true )
+  iconSizeFromOptions_( true )
 {
   Debug::Throw( "TreeView::TreeView.\n" );
 
@@ -84,11 +84,11 @@ TreeView::TreeView( QWidget* parent ):
 //_______________________________________________
 void TreeView::setFindEnabled( bool value )
 {
-  find_action_->setEnabled( value );
-  find_selection_action_->setEnabled( value );
-  find_again_action_->setEnabled( value );
-  find_selection_backward_action_->setEnabled( value );
-  find_again_backward_action_->setEnabled( value );
+  findAction_->setEnabled( value );
+  findSelectionAction_->setEnabled( value );
+  findAgainAction_->setEnabled( value );
+  findSelectionBackwardAction_->setEnabled( value );
+  findAgainBackwardAction_->setEnabled( value );
 }
 
 //_______________________________________________
@@ -128,9 +128,9 @@ bool TreeView::setOptionName( const QString& value )
   // mask
   bool mask_changed( false );
   tmp = value + "_MASK";
-  if( mask_option_name_ != tmp  )
+  if( maskOptionName_ != tmp  )
   {
-    mask_option_name_ = tmp;
+    maskOptionName_ = tmp;
     mask_changed = true;
     if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
     else updateMask();
@@ -139,18 +139,18 @@ bool TreeView::setOptionName( const QString& value )
   // sort order
   bool sort_changed( false );
   tmp = value + "_SORT_ORDER";
-  if( sort_order_option_name_ != tmp  )
+  if( sortOrderOptionName_ != tmp  )
   {
-    sort_order_option_name_ = tmp;
+    sortOrderOptionName_ = tmp;
     sort_changed = true;
   }
 
   // sort column
   tmp = value + "_SORT_COLUMN";
-  if( sort_column_option_name_ != tmp  )
+  if( sortColumnOptionName_ != tmp  )
   {
 
-    sort_column_option_name_ = tmp;
+    sortColumnOptionName_ = tmp;
     sort_changed = true;
 
   }
@@ -410,20 +410,20 @@ void TreeView::_createBaseFindDialog( void )
 {
 
   Debug::Throw( "TreeView::_createBaseFindDialog.\n" );
-  if( !find_dialog_ )
+  if( !findDialog_ )
   {
 
     // create dialog
-    find_dialog_ = new BaseFindDialog( this );
-    find_dialog_->setWindowTitle( "Find in List" );
+    findDialog_ = new BaseFindDialog( this );
+    findDialog_->setWindowTitle( "Find in List" );
 
     // for now entire word is disabled, because it is unclear how to handle it
-    find_dialog_->enableEntireWord( false );
+    findDialog_->enableEntireWord( false );
 
     // connections
-    connect( find_dialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
-    connect( this, SIGNAL( noMatchFound() ), find_dialog_, SLOT( noMatchFound() ) );
-    connect( this, SIGNAL( matchFound() ), find_dialog_, SLOT( clearLabel() ) );
+    connect( findDialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
+    connect( this, SIGNAL( noMatchFound() ), findDialog_, SLOT( noMatchFound() ) );
+    connect( this, SIGNAL( matchFound() ), findDialog_, SLOT( clearLabel() ) );
 
   }
 
@@ -623,35 +623,35 @@ void TreeView::_installActions( void )
 {
   Debug::Throw( "TreeView::_installActions.\n" );
 
-  addAction( select_all_action_ = new QAction( "Select All", this ) );
-  select_all_action_->setShortcut( CTRL+Key_A );
-  select_all_action_->setShortcutContext( WidgetShortcut );
-  connect( select_all_action_, SIGNAL( triggered() ), SLOT( selectAll() ) );
+  addAction( selectAllAction_ = new QAction( "Select All", this ) );
+  selectAllAction_->setShortcut( CTRL+Key_A );
+  selectAllAction_->setShortcutContext( WidgetShortcut );
+  connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-  addAction( find_action_ = new QAction( IconEngine::get( ICONS::FIND ), "&Find", this ) );
-  find_action_->setShortcut( Qt::CTRL + Qt::Key_F );
-  find_action_->setShortcutContext( Qt::WidgetShortcut );
-  connect( find_action_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
+  addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "&Find", this ) );
+  findAction_->setShortcut( Qt::CTRL + Qt::Key_F );
+  findAction_->setShortcutContext( Qt::WidgetShortcut );
+  connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
-  addAction( find_again_action_ = new QAction( "F&ind Again", this ) );
-  find_again_action_->setShortcut( Qt::CTRL + Qt::Key_G );
-  find_again_action_->setShortcutContext( Qt::WidgetShortcut );
-  connect( find_again_action_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
+  addAction( findAgainAction_ = new QAction( "F&ind Again", this ) );
+  findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
+  findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
+  connect( findAgainAction_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
 
-  addAction( find_again_backward_action_ = new QAction( this ) );
-  find_again_backward_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
-  find_again_backward_action_->setShortcutContext( Qt::WidgetShortcut );
-  connect( find_again_backward_action_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
+  addAction( findAgainBackwardAction_ = new QAction( this ) );
+  findAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
+  findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
+  connect( findAgainBackwardAction_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
-  addAction( find_selection_action_ = new QAction( "Find &Selection", this ) );
-  find_selection_action_->setShortcut( Qt::CTRL + Qt::Key_H );
-  find_selection_action_->setShortcutContext( Qt::WidgetShortcut );
-  connect( find_selection_action_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
+  addAction( findSelectionAction_ = new QAction( "Find &Selection", this ) );
+  findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
+  findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
+  connect( findSelectionAction_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
 
-  addAction( find_selection_backward_action_ = new QAction( this ) );
-  find_selection_backward_action_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
-  find_selection_backward_action_->setShortcutContext( Qt::WidgetShortcut );
-  connect( find_selection_backward_action_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
+  addAction( findSelectionBackwardAction_ = new QAction( this ) );
+  findSelectionBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
+  findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
+  connect( findSelectionBackwardAction_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
 }
 
@@ -695,7 +695,7 @@ void TreeView::_findFromDialog( void )
   }
 
   // create
-  if( !find_dialog_ ) _createBaseFindDialog();
+  if( !findDialog_ ) _createBaseFindDialog();
   _findDialog().enableRegExp( true );
   _findDialog().centerOnParent();
   _findDialog().show();
@@ -739,7 +739,7 @@ void TreeView::_updateConfiguration( void )
   _setSelectedColumnColor( color );
 
   // icon size
-  if( icon_size_from_options_ )
+  if( iconSizeFromOptions_ )
   {
     int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
     QTreeView::setIconSize( QSize( icon_size, icon_size )  );

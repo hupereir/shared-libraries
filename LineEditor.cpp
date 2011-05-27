@@ -138,7 +138,7 @@ void LineEditor::setHasClearButton( const bool& value )
 
         // reset contents margins
         int offset( hasFrame() ? _frameWidth():0 );
-        setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
+        setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 3, offset );
 
     } else {
 

@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file TreeView.h
-  \brief customized Tree View
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file TreeView.h
+\brief customized Tree View
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -51,254 +51,254 @@ class BaseFindDialog;
 class TreeView: public QTreeView, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  TreeView( QWidget* parent );
+        //! constructor
+        TreeView( QWidget* parent );
 
-  //! destructor
-  virtual ~TreeView( void )
-  {}
+    //! destructor
+    virtual ~TreeView( void )
+    {}
 
-  //! enable list finding
-  void setFindEnabled( bool value );
+    //! enable list finding
+    void setFindEnabled( bool value );
 
-  //! TextSelection object from this selection, or clipboard
-  TextSelection selection( void ) const;
+    //! TextSelection object from this selection, or clipboard
+    TextSelection selection( void ) const;
 
-  //!@name contextual menu
-  //@{
+    //!@name contextual menu
+    //@{
 
-  //! returns true if menu has been initialized
-  virtual bool hasMenu( void ) const
-  { return menu_; }
+    //! returns true if menu has been initialized
+    virtual bool hasMenu( void ) const
+    { return menu_; }
 
-  //! retrieve popup menu
-  virtual QMenu& menu( void );
+    //! retrieve popup menu
+    virtual QMenu& menu( void );
 
-  //@}
+    //@}
 
-  //! true if given index is visible
-  bool isVisible( const QModelIndex& index ) const;
+    //! true if given index is visible
+    bool isVisible( const QModelIndex& index ) const;
 
-  //! number of visible columns
-  virtual int visibleColumnCount( void ) const;
+    //! number of visible columns
+    virtual int visibleColumnCount( void ) const;
 
-  //!@name column mask
-  //@{
+    //!@name column mask
+    //@{
 
-  //! option name
-  virtual bool setOptionName( const QString& );
+    //! option name
+    virtual bool setOptionName( const QString& );
 
-  //! option name
-  virtual bool hasOptionName( void ) const
-  { return !maskOptionName().isEmpty(); }
+    //! option name
+    virtual bool hasOptionName( void ) const
+    { return !maskOptionName().isEmpty(); }
 
-  //! option name
-  virtual const QString& maskOptionName( void ) const
-  { return mask_option_name_; }
+    //! option name
+    virtual const QString& maskOptionName( void ) const
+    { return maskOptionName_; }
 
-  //! sort column option name
-  virtual const QString& sortColumnOptionName( void ) const
-  { return sort_column_option_name_; }
+    //! sort column option name
+    virtual const QString& sortColumnOptionName( void ) const
+    { return sortColumnOptionName_; }
 
-  //! sort order option name
-  virtual const QString& sortOrderOptionName( void ) const
-  { return sort_order_option_name_; }
+    //! sort order option name
+    virtual const QString& sortOrderOptionName( void ) const
+    { return sortOrderOptionName_; }
 
-  //! get mask
-  virtual unsigned int mask( void ) const;
+    //! get mask
+    virtual unsigned int mask( void ) const;
 
-  //! set mask manually
-  virtual void setMask( const unsigned int& );
+    //! set mask manually
+    virtual void setMask( const unsigned int& );
 
-  //@}
+    //@}
 
-  //! set icon size manually and disable option
-  void setIconSize( const QSize& size )
-  {
-    QTreeView::setIconSize( size );
-    icon_size_from_options_ = false;
-  }
+    //! set icon size manually and disable option
+    void setIconSize( const QSize& size )
+    {
+        QTreeView::setIconSize( size );
+        iconSizeFromOptions_ = false;
+    }
 
-  //!@name actions
-  //@{
+    //!@name actions
+    //@{
 
-  //! select all
-  QAction& selectAllAction( void ) const
-  { return *select_all_action_; }
+    //! select all
+    QAction& selectAllAction( void ) const
+    { return *selectAllAction_; }
 
-  //! find from dialog
-  QAction& findAction( void ) const
-  { return *find_action_; }
+    //! find from dialog
+    QAction& findAction( void ) const
+    { return *findAction_; }
 
-  //! find selection again
-  QAction& findSelectionAction( void ) const
-  { return *find_selection_action_; }
+    //! find selection again
+    QAction& findSelectionAction( void ) const
+    { return *findSelectionAction_; }
 
-  //! find again
-  QAction& findAgainAction( void ) const
-  { return *find_again_action_; }
+    //! find again
+    QAction& findAgainAction( void ) const
+    { return *findAgainAction_; }
 
-  //@}
+    //@}
 
-  signals:
+    signals:
 
-  //! emmitted when selection could not be found
-  void noMatchFound( void );
+    //! emmitted when selection could not be found
+    void noMatchFound( void );
 
-  //! emmitted when selection could be found
-  void matchFound( void );
+    //! emmitted when selection could be found
+    void matchFound( void );
 
-  public slots:
+    public slots:
 
-  //! resize all visible columns to match contents
-  virtual void resizeColumns()
-  { resizeColumns( mask() ); }
+    //! resize all visible columns to match contents
+    virtual void resizeColumns()
+    { resizeColumns( mask() ); }
 
-  //! resize all visible columns to match contents
-  virtual void resizeColumns( const unsigned int& mask );
+    //! resize all visible columns to match contents
+    virtual void resizeColumns( const unsigned int& mask );
 
-  //!@name column mask
-  //@{
+    //!@name column mask
+    //@{
 
-  //! update column mask from option, if any
-  virtual void updateMask( void );
+    //! update column mask from option, if any
+    virtual void updateMask( void );
 
-  //! save column mask to option, if any
-  virtual void saveMask( void );
+    //! save column mask to option, if any
+    virtual void saveMask( void );
 
-  //@}
+    //@}
 
-  //! sort order
-  virtual void updateSortOrder( void );
+    //! sort order
+    virtual void updateSortOrder( void );
 
-  //! sort order
-  virtual void saveSortOrder( void );
+    //! sort order
+    virtual void saveSortOrder( void );
 
-  //! find next occurence of TextSelection
-  virtual void find( TextSelection selection );
+    //! find next occurence of TextSelection
+    virtual void find( TextSelection selection );
 
-  //! find current selection forward
-  virtual void findSelectionForward( void );
+    //! find current selection forward
+    virtual void findSelectionForward( void );
 
-  //! find current selection backward
-  virtual void findSelectionBackward( void );
+    //! find current selection backward
+    virtual void findSelectionBackward( void );
 
-  //! find last search forward
-  virtual void findAgainForward( void );
+    //! find last search forward
+    virtual void findAgainForward( void );
 
-  //! find last search forward
-  virtual void findAgainBackward( void );
+    //! find last search forward
+    virtual void findAgainBackward( void );
 
-  protected:
+    protected:
 
-  //! paint event
-  virtual void paintEvent( QPaintEvent* );
+    //! paint event
+    virtual void paintEvent( QPaintEvent* );
 
-  //! context menu
-  virtual void contextMenuEvent( QContextMenuEvent* );
+    //! context menu
+    virtual void contextMenuEvent( QContextMenuEvent* );
 
-  //! selected column color
-  const QColor& _selectedColumnColor( void ) const
-  { return selected_column_color_; }
+    //! selected column color
+    const QColor& _selectedColumnColor( void ) const
+    { return selectedColumnColor_; }
 
-  //! selected column color
-  void _setSelectedColumnColor( const QColor& color )
-  { selected_column_color_ = color; }
+    //! selected column color
+    void _setSelectedColumnColor( const QColor& color )
+    { selectedColumnColor_ = color; }
 
-  //! find dialog
-  virtual BaseFindDialog& _findDialog( void )
-  {
-    assert( find_dialog_ );
-    return *find_dialog_;
-  }
+    //! find dialog
+    virtual BaseFindDialog& _findDialog( void )
+    {
+        assert( findDialog_ );
+        return *findDialog_;
+    }
 
-  //! find dialog
-  virtual void _createBaseFindDialog( void );
+    //! find dialog
+    virtual void _createBaseFindDialog( void );
 
-  //! find selection in forward direction
-  virtual bool _findForward( const TextSelection& selection, bool rewind );
+    //! find selection in forward direction
+    virtual bool _findForward( const TextSelection& selection, bool rewind );
 
-  //! find selection in backward direction
-  virtual bool _findBackward( const TextSelection& selection, bool rewind );
+    //! find selection in backward direction
+    virtual bool _findBackward( const TextSelection& selection, bool rewind );
 
-  protected slots:
+    protected slots:
 
-  //! header menu
-  virtual void _raiseHeaderMenu( const QPoint& );
+    //! header menu
+    virtual void _raiseHeaderMenu( const QPoint& );
 
-  //! find text from dialog
-  virtual void _findFromDialog( void );
+    //! find text from dialog
+    virtual void _findFromDialog( void );
 
-  private slots:
+    private slots:
 
-  //! update alternate item color
-  void _updateConfiguration( void );
+    //! update alternate item color
+    void _updateConfiguration( void );
 
-  private:
+    private:
 
-  //! install actions
-  virtual void _installActions( void );
+    //! install actions
+    virtual void _installActions( void );
 
-  //! return first index
-  QModelIndex _firstIndex() const;
+    //! return first index
+    QModelIndex _firstIndex() const;
 
-  //! return last index
-  QModelIndex _lastIndex() const;
+    //! return last index
+    QModelIndex _lastIndex() const;
 
-  //! return next index of current
-  QModelIndex _indexAfter( const QModelIndex& index ) const;
+    //! return next index of current
+    QModelIndex _indexAfter( const QModelIndex& index ) const;
 
-  //! return previous index
-  QModelIndex _indexBefore( const QModelIndex& index ) const;
+    //! return previous index
+    QModelIndex _indexBefore( const QModelIndex& index ) const;
 
-  //! find dialog
-  BaseFindDialog* find_dialog_;
+    //! find dialog
+    BaseFindDialog* findDialog_;
 
-  //!@name actions
-  //@{
+    //!@name actions
+    //@{
 
-  //! select all document
-  QAction* select_all_action_;
+    //! select all document
+    QAction* selectAllAction_;
 
-  //! find from dialog
-  QAction* find_action_;
+    //! find from dialog
+    QAction* findAction_;
 
-  //! find selection again
-  QAction* find_selection_action_;
+    //! find selection again
+    QAction* findSelectionAction_;
 
-  //! find selection backward
-  QAction* find_selection_backward_action_;
+    //! find selection backward
+    QAction* findSelectionBackwardAction_;
 
-  //! find again
-  QAction* find_again_action_;
+    //! find again
+    QAction* findAgainAction_;
 
-  //! find again backward
-  QAction* find_again_backward_action_;
+    //! find again backward
+    QAction* findAgainBackwardAction_;
 
-  //@}
+    //@}
 
-  //! popup menu for right click
-  QMenu *menu_;
+    //! popup menu for right click
+    QMenu *menu_;
 
-  //! mask option name
-  QString mask_option_name_;
+    //! mask option name
+    QString maskOptionName_;
 
-  //! sort column option name
-  QString sort_column_option_name_;
+    //! sort column option name
+    QString sortColumnOptionName_;
 
-  //! sort order option name
-  QString sort_order_option_name_;
+    //! sort order option name
+    QString sortOrderOptionName_;
 
-  //! true if icon size is to be set from options
-  bool icon_size_from_options_;
+    //! true if icon size is to be set from options
+    bool iconSizeFromOptions_;
 
-  //! selected column background color
-  QColor selected_column_color_;
+    //! selected column background color
+    QColor selectedColumnColor_;
 
 };
 

@@ -61,6 +61,8 @@ DockPanel::DockPanel( QWidget* parent ):
 
     // main widget
     layout()->addWidget( main_ = new LocalWidget( this ) );
+    main_->setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
+
     main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
     connect( &main().detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
 

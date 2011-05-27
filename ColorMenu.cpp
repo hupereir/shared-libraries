@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file ColorMenu.cpp
-  \brief color picker
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ColorMenu.cpp
+\brief color picker
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QColorDialog>
@@ -45,57 +45,57 @@ const QString ColorMenu::NONE = "None";
 
 //_______________________________________________
 ColorMenu::ColorMenu( QWidget* parent ):
-  QMenu( parent ),
-  Counter( "ColorMenu" )
+    QMenu( parent ),
+    Counter( "ColorMenu" )
 {
-  Debug::Throw( "ColorMenu::ColorMenu.\n" );
-  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
-  connect( this, SIGNAL( aboutToShow() ), SLOT( _display() ) );
+    Debug::Throw( "ColorMenu::ColorMenu.\n" );
+    connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
+    connect( this, SIGNAL( aboutToShow() ), SLOT( _display() ) );
 }
 
 //_______________________________________________
 void ColorMenu::add( const QString& colorname )
 {
-  Debug::Throw( "ColorMenu::add.\n" );
-  if( colorname.compare( NONE, Qt::CaseInsensitive ) != 0 ) _add( QColor( colorname ) );
+    Debug::Throw( "ColorMenu::add.\n" );
+    if( colorname.compare( NONE, Qt::CaseInsensitive ) != 0 ) _add( QColor( colorname ) );
 }
 
 //_______________________________________________
 ColorMenu::ColorSet ColorMenu::colors( void ) const
 {
 
-  ColorSet out;
-  for( ColorMap::const_iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
-  { out.insert( iter->first ); }
+    ColorSet out;
+    for( ColorMap::const_iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
+    { out.insert( iter->first ); }
 
-  return out;
+    return out;
 }
 
 //_______________________________________________
 void ColorMenu::paintEvent( QPaintEvent* event )
 {
 
-  static const int margin = 5;
+    static const int margin = 5;
 
-  // default paint
-  QMenu::paintEvent( event );
+    // default paint
+    QMenu::paintEvent( event );
 
-  // loop over actions associated to existing colors
-  QPainter painter( this );
-  painter.setClipRect( event->rect() );
+    // loop over actions associated to existing colors
+    QPainter painter( this );
+    painter.setClipRect( event->rect() );
 
-  painter.setPen( Qt::NoPen );
-  for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
-  {
-    QRect action_rect( actionGeometry( iter->first ) );
-    if( !event->rect().intersects( action_rect ) ) continue;
-    action_rect.adjust( 2*margin, margin+1, -2*margin-1, -margin );
-    painter.setBrush( colors_[iter->second] );
-    painter.setRenderHints(QPainter::Antialiasing );
-    painter.drawRoundedRect( action_rect, 4, 4 );
-  }
+    painter.setPen( Qt::NoPen );
+    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    {
+        QRect action_rect( actionGeometry( iter->first ) );
+        if( !event->rect().intersects( action_rect ) ) continue;
+        action_rect.adjust( 2*margin, margin+1, -2*margin-1, -margin );
+        painter.setBrush( colors_[iter->second] );
+        painter.setRenderHints(QPainter::Antialiasing );
+        painter.drawRoundedRect( action_rect, 4, 4 );
+    }
 
-  painter.end();
+    painter.end();
 
 }
 
@@ -103,34 +103,34 @@ void ColorMenu::paintEvent( QPaintEvent* event )
 void ColorMenu::_display( void )
 {
 
-  Debug::Throw( "ColorMenu::_display.\n" );
+    Debug::Throw( "ColorMenu::_display.\n" );
 
-  // clear menu
-  clear();
+    // clear menu
+    clear();
 
-  // new color action
-  addAction( "&New", this, SLOT( _new() ) );
+    // new color action
+    addAction( "&New", this, SLOT( _new() ) );
 
-  // default color action
-  addAction( "&Default", this, SLOT( _default() ) );
+    // default color action
+    addAction( "&Default", this, SLOT( _default() ) );
 
-  // clear actions
-  actions_.clear();
+    // clear actions
+    actions_.clear();
 
-  for( ColorMap::iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
-  {
+    for( ColorMap::iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
+    {
 
-    // create pixmap if not done already
-    if( iter->second == Qt::NoBrush ) iter->second = QBrush( iter->first );
+        // create pixmap if not done already
+        if( iter->second == Qt::NoBrush ) iter->second = QBrush( iter->first );
 
-    // create action
-    QAction* action = new QAction( this );
-    actions_.insert( make_pair( action, iter->first ) );
-    addAction( action );
+        // create action
+        QAction* action = new QAction( this );
+        actions_.insert( make_pair( action, iter->first ) );
+        addAction( action );
 
-  };
+    };
 
-  return;
+    return;
 
 }
 
@@ -138,14 +138,14 @@ void ColorMenu::_display( void )
 void ColorMenu::_new( void )
 {
 
-  Debug::Throw( "ColorMenu::_new.\n" );
-  QColor color( QColorDialog::getColor( Qt::white, this ) );
-  if( color.isValid() )
-  {
-    _add( color );
-    last_color_ = color;
-    emit selected( color );
-  }
+    Debug::Throw( "ColorMenu::_new.\n" );
+    QColor color( QColorDialog::getColor( Qt::white, this ) );
+    if( color.isValid() )
+    {
+        _add( color );
+        lastColor_ = color;
+        emit selected( color );
+    }
 
 }
 
@@ -153,30 +153,30 @@ void ColorMenu::_new( void )
 void ColorMenu::_default( void )
 {
 
-  Debug::Throw( "ColorMenu::_default.\n" );
-  last_color_ = QColor();
-  emit selected( QColor() );
+    Debug::Throw( "ColorMenu::_default.\n" );
+    lastColor_ = QColor();
+    emit selected( QColor() );
 
 }
 
 //_______________________________________________
 void ColorMenu::_selected( QAction* action )
 {
-  Debug::Throw( "ColorMenu::_selected.\n" );
-  std::map<QAction*,QColor>::iterator iter = actions_.find( action );
-  if( iter != actions_.end() )
-  {
-    last_color_ = iter->second;
-    emit selected( iter->second );
-  }
+    Debug::Throw( "ColorMenu::_selected.\n" );
+    std::map<QAction*,QColor>::iterator iter = actions_.find( action );
+    if( iter != actions_.end() )
+    {
+        lastColor_ = iter->second;
+        emit selected( iter->second );
+    }
 }
 
 //_______________________________________________
 void ColorMenu::_add( const QColor& color )
 {
 
-  if( color.isValid() && colors_.find( color ) == colors_.end() )
-  { colors_.insert( make_pair( color, QPixmap() ) ); }
+    if( color.isValid() && colors_.find( color ) == colors_.end() )
+    { colors_.insert( make_pair( color, QPixmap() ) ); }
 
-  return;
+    return;
 }

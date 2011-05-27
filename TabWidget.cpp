@@ -63,6 +63,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
 
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_StyledBackground);
+    setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
 
     // grid layout to overlay main layout and invisible grip
     QGridLayout *grid_layout( new QGridLayout() );

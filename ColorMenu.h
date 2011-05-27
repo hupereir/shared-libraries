@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file ColorMenu.h
-  \brief color selection menu
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ColorMenu.h
+\brief color selection menu
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QMenu>
@@ -45,89 +45,89 @@
 class ColorMenu: public QMenu, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! default name for no-color
-  static const QString NONE;
+        //! default name for no-color
+        static const QString NONE;
 
-  //! used to sort colors in set
-  class ColorLessFTor
-  {
-    public:
+    //! used to sort colors in set
+    class ColorLessFTor
+    {
+        public:
 
-    //! predicate
-    bool operator() (const QColor& first, const QColor& second ) const
-    { return first.name() < second.name(); }
+        //! predicate
+        bool operator() (const QColor& first, const QColor& second ) const
+        { return first.name() < second.name(); }
 
-  };
+    };
 
-  //! sorted set of colors
-  typedef std::set<QColor, ColorLessFTor> ColorSet;
+    //! sorted set of colors
+    typedef std::set<QColor, ColorLessFTor> ColorSet;
 
-  //! constructor
-  ColorMenu( QWidget* parent );
+    //! constructor
+    ColorMenu( QWidget* parent );
 
-  //! destructor
-  virtual ~ColorMenu( void )
-  { Debug::Throw( "ColorMenu::~ColorMenu.\n" ); }
+    //! destructor
+    virtual ~ColorMenu( void )
+    { Debug::Throw( "ColorMenu::~ColorMenu.\n" ); }
 
-  //! add a color
-  void add( const QString& );
+    //! add a color
+    void add( const QString& );
 
-  //! retrieve colors
-  ColorSet colors() const;
+    //! retrieve colors
+    ColorSet colors() const;
 
-  //! retrieves last selected color
-  const QColor& lastColor( void ) const
-  { return last_color_; }
+    //! retrieves last selected color
+    const QColor& lastColor( void ) const
+    { return lastColor_; }
 
-  signals:
+    signals:
 
-  //! emmited when a color is selected
-  void selected( QColor );
+    //! emmited when a color is selected
+    void selected( QColor );
 
-  protected:
+    protected:
 
-  //! paint event (overloaded)
-  void paintEvent( QPaintEvent* event );
+    //! paint event (overloaded)
+    void paintEvent( QPaintEvent* event );
 
-  private slots:
+    private slots:
 
-  //! display colors when about to show
-  void _display( void );
+    //! display colors when about to show
+    void _display( void );
 
-  //! adds a new color
-  void _new( void );
+    //! adds a new color
+    void _new( void );
 
-  //! select the no color choice
-  /*! emits colorSelected with an invalid color */
-  void _default( void );
+    //! select the no color choice
+    /*! emits colorSelected with an invalid color */
+    void _default( void );
 
-  //! get color associated to action, emit ColorSelected
-  void _selected( QAction* );
+    //! get color associated to action, emit ColorSelected
+    void _selected( QAction* );
 
-  private:
+    private:
 
-  //! add a color
-  void _add( const QColor& );
+    //! add a color
+    void _add( const QColor& );
 
-  //! map colors to display pixmap
-  typedef std::map<QColor, QBrush, ColorLessFTor> ColorMap;
+    //! map colors to display pixmap
+    typedef std::map<QColor, QBrush, ColorLessFTor> ColorMap;
 
-  //! list of loaded colors
-  ColorMap colors_;
+    //! list of loaded colors
+    ColorMap colors_;
 
-  //! map actions to colors
-  typedef std::map<QAction*, QColor> ActionMap;
+    //! map actions to colors
+    typedef std::map<QAction*, QColor> ActionMap;
 
-  //! map actions to colors
-  ActionMap actions_;
+    //! map actions to colors
+    ActionMap actions_;
 
-  //! keep track of the last selected color
-  QColor last_color_;
+    //! keep track of the last selected color
+    QColor lastColor_;
 
 };
 #endif
