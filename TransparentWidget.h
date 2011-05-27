@@ -50,10 +50,10 @@ namespace TRANSPARENCY {
         //! Qt meta object declaration
         Q_OBJECT
 
-            public:
+        public:
 
-            //! constructor
-            TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
+        //! constructor
+        TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
 
         //!@name actions
         //@{
@@ -65,6 +65,10 @@ namespace TRANSPARENCY {
         //! reload background action
         QAction& reloadBackgroundAction( void ) const
         { return *reloadBackgroundAction_; }
+
+        //! reload blur region action
+        QAction& reloadBlurRegionAction( void ) const
+        { return *reloadBlurRegionAction_; }
 
         //@}
 
@@ -176,12 +180,8 @@ namespace TRANSPARENCY {
         { return blurEnabled_; }
 
         //! update blur region
-        virtual void _updateBlurRegion( void ) const
-        { _updateBlurRegion( rect().translated( mapTo( window(), QPoint(0,0) ) ) ); }
-        
-        //! update blur region
-        virtual void _updateBlurRegion( const QRegion& ) const;
-        
+        virtual void _updateBlurRegion( const QRegion& );
+
         protected slots:
 
         //! reload background
@@ -189,6 +189,13 @@ namespace TRANSPARENCY {
 
         //! update background pixmap
         virtual void _updateBackgroundPixmap( void );
+
+        //! update blur region
+        virtual void _updateBlurRegion( void )
+        {
+            if( blurRegion_.isEmpty() ) blurRegion_ = rect().translated( mapTo( window(), QPoint(0,0) ) );
+            _updateBlurRegion( blurRegion_ );
+        }
 
         private slots:
 
@@ -209,6 +216,9 @@ namespace TRANSPARENCY {
         //! reload background
         QAction* reloadBackgroundAction_;
 
+        //! reload blur region
+        QAction* reloadBlurRegionAction_;
+
         //@}
 
         //! transparency enabled
@@ -225,6 +235,9 @@ namespace TRANSPARENCY {
 
         //! true when blur is enabled
         bool blurEnabled_;
+
+        //! store last blur region
+        QRegion blurRegion_;
 
         //! window opacity
         double opacity_;

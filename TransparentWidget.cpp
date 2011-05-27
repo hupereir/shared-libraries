@@ -246,6 +246,7 @@ void TransparentWidget::_updateConfiguration( void )
     // use transparency
     _setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
     _setBlurEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_BLUR" ) );
+    reloadBlurRegionAction_->setEnabled( _blurEnabled() );
 
     // tint
     QColor tint_color( XmlOptions::get().raw( "TRANSPARENCY_TINT_COLOR" ) );
@@ -342,21 +343,25 @@ void TransparentWidget::_installActions( void )
 {
     Debug::Throw( "TransparentWidget::_installAction.\n" );
 
-    addAction( updateBackgroundAction_ = new QAction( "&Update Background", this ) );
+    addAction( updateBackgroundAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Update Background", this ) );
     connect( updateBackgroundAction_, SIGNAL( triggered() ), SLOT( _updateBackgroundPixmap() ) );
 
-    reloadBackgroundAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload Background", this );
+    reloadBackgroundAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Background", this );
     reloadBackgroundAction_->setToolTip( "Reinitialize transparent background" );
     reloadBackgroundAction_->setShortcut( Qt::Key_F5 );
     connect( reloadBackgroundAction_, SIGNAL( triggered( void ) ), SLOT( _reloadBackground( void ) ) );
+
+    addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Blur Region", this ) );
+    connect( reloadBlurRegionAction_, SIGNAL( triggered( void ) ), SLOT( _updateBlurRegion( void ) ) );
 
 }
 
 
 //__________________________________________________________
-void TransparentWidget::_updateBlurRegion( const QRegion& region ) const
+void TransparentWidget::_updateBlurRegion( const QRegion& region )
 {
-        
+
+    blurRegion_ = region;
     QVector<QRect> rects( region.rects() );
     QVector<unsigned long> data;
     foreach( const QRect& r, rects )
@@ -367,5 +372,5 @@ void TransparentWidget::_updateBlurRegion( const QRegion& region ) const
         X11Util::_KDE_NET_WM_BLUR_BEHIND_REGION,
         reinterpret_cast<const unsigned char *>(data.constData()),
         data.size());
-    
+
 }
