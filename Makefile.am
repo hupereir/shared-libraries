@@ -56,6 +56,7 @@ EXTRA_DIST = \
 		oxygen/qt-logo.png \
 		oxygen/redo.png \
 		oxygen/reload.png \
+		oxygen/run-build.png \
 		oxygen/show-menu.png \
 		oxygen/toggle_log.png \
 		oxygen/trashcan_empty.png \
