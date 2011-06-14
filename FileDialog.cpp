@@ -84,7 +84,7 @@ QString FileDialog::getFile( void )
 
   } else {
 
-    Debug::Throw( 0, "FileDialog::getFile - getSaveFileName.\n" );
+    Debug::Throw( "FileDialog::getFile - getSaveFileName.\n" );
     out = QFileDialog::getSaveFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
 
   }

@@ -142,7 +142,7 @@ bool X11Util::isSupported( const Atoms& atom )
     }
 
     if( first ) first = false;
-    supported_atoms_[atom] = found;
+    supportedAtoms_[atom] = found;
     if ( data ) XFree( data );
 
     return found;
