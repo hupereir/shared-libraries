@@ -1,5 +1,5 @@
-#ifndef _LineEditor_h_
-#define _LineEditor_h_
+#ifndef LineEditor_h
+#define LineEditor_h
 
 // $Id$
 
@@ -24,25 +24,16 @@
 *
 *******************************************************************************/
 
-/*!
-\file LineEditor.h
-\brief customized QLineEdit object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "Counter.h"
 
-#include <QContextMenuEvent>
-#include <QKeyEvent>
-#include <QLineEdit>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QPaintEvent>
-
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLineEdit>
+#include <QtGui/QMenu>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPaintEvent>
 
 #include <vector>
-
-#include "Counter.h"
 
 /*!
 \class LineEditor

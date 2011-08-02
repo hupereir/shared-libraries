@@ -36,9 +36,11 @@
 
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
+#include <QtGui/QDockWidget>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QStatusBar>
+#include <QtGui/QStyle>
 
 #include "CustomToolButton.h"
 #include "Debug.h"
@@ -57,10 +59,10 @@ class BaseMainWindow: public QMainWindow
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        BaseMainWindow( QWidget *parent, Qt::WFlags wflags = 0);
+    //! constructor
+    BaseMainWindow( QWidget *parent, Qt::WFlags wflags = 0);
 
     //! destructor
     virtual ~BaseMainWindow( void )
@@ -212,6 +214,65 @@ class BaseMainWindow: public QMainWindow
 
     //! window state prior to minimization
     bool wasMaximized_;
+
+};
+
+//___________________________________________________________________
+class DockWidget: public QDockWidget, public Counter
+{
+    Q_OBJECT
+
+    public:
+
+    //! constructor
+    DockWidget( const QString& title ):
+        QDockWidget( title ),
+        Counter( "DockWidget" ),
+        title_( 0L ),
+        locked_( false )
+    {}
+
+    //! destructor
+    virtual ~DockWidget( void )
+    {}
+
+    //! lock
+    void setLocked( bool value );
+
+    private:
+
+    // Empty titlebar for the dock widgets when "Lock Layout" has been activated.
+    class TitleBar : public QWidget
+    {
+        public:
+
+        //! constructor
+        TitleBar(QWidget* parent = 0):
+            QWidget(parent)
+        {}
+
+        //! destructor
+        virtual ~TitleBar()
+        {}
+
+        //! minimum size
+        virtual QSize minimumSizeHint() const
+        {
+            const int border = style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin);
+            return QSize(border, border);
+        }
+
+        //! size
+        virtual QSize sizeHint() const
+        { return minimumSizeHint(); }
+
+    };
+
+    //! title widget
+    TitleBar* title_;
+
+    //! locked
+    bool locked_;
 
 };
 

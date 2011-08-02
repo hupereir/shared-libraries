@@ -47,8 +47,6 @@
 #include "ToolButtonStyleMenu.h"
 #include "Util.h"
 
-using namespace std;
-
 //____________________________________________________________
 BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
     QMainWindow( parent, wflags ),
@@ -413,5 +411,28 @@ void BaseMainWindow::_toggleStatusBar( bool value )
 
     // save option
     if( hasOptionName() ) XmlOptions::get().set<bool>( showStatusBarOptionName(), value );
+
+}
+
+
+//______________________________________________________________
+void DockWidget::setLocked( bool value )
+{
+
+    Debug::Throw() << "DockWidget::setLocked: " << value << endl;
+    if( value != locked_ )
+    {
+
+        locked_ = value;
+
+        if( locked_ )
+        {
+
+            if( !title_ ) title_ = new TitleBar( this );
+            setTitleBarWidget( title_ );
+
+        } else setTitleBarWidget(0);
+
+    }
 
 }

@@ -78,6 +78,12 @@ QString FileDialog::getFile( void )
 
     } else {
 
+      Debug::Throw() << "FileDialog::getFile - parent: " << qobject_cast<QWidget*>( parent() ) << endl;
+      Debug::Throw() << "FileDialog::getFile - caption: " << _caption() << endl;
+      Debug::Throw() << "FileDialog::getFile - selection: " << _selectedFile() << endl;
+      Debug::Throw() << "FileDialog::getFile - filter: " << _filter() << endl;
+      Debug::Throw() << "FileDialog::getFile - options: " << _options() << endl;
+
       out = QFileDialog::getOpenFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
 
     }
@@ -88,6 +94,8 @@ QString FileDialog::getFile( void )
     out = QFileDialog::getSaveFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, _options() );
 
   }
+
+  Debug::Throw( "FileDialog::getFile. Done.\n" );
 
   // store working directory
   if( !out.isNull() ) _workingDirectory() = QFileInfo( out ).path();
