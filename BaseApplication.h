@@ -46,10 +46,10 @@ class BaseApplication: public BaseCoreApplication
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
+    //! constructor
+    BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
     //! destructor
     virtual ~BaseApplication( void );
