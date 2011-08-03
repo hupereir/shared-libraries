@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-   \file FileRecord.h
-   \brief handles previously opened file and tags
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file FileRecord.h
+\brief handles previously opened file and tags
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include "FileRecord.h"
@@ -36,47 +36,47 @@ using namespace std;
 //_______________________________________________
 FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap( void )
 {
-  static FileRecord::PropertyId::IdMap id_map;
-  return id_map;
+    static FileRecord::PropertyId::IdMap id_map;
+    return id_map;
 }
 
 //_______________________________________________
 FileRecord::PropertyId::NameMap& FileRecord::PropertyId::_nameMap( void )
 {
-  static FileRecord::PropertyId::NameMap name_map;
-  return name_map;
+    static FileRecord::PropertyId::NameMap name_map;
+    return name_map;
 }
 
 //_______________________________________________
 FileRecord::PropertyId::Id& FileRecord::PropertyId::_counter( void )
 {
-  static Id counter(0);
-  return counter;
+    static Id counter(0);
+    return counter;
 }
 
 //_______________________________________________
 FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
 {
 
-  // see if iterator exists in list
-  IdMap::const_iterator iter;
-  if( ( iter = _idMap().find( name ) ) != _idMap().end() )
-  { return iter->second; }
+    // see if iterator exists in list
+    IdMap::const_iterator iter;
+    if( ( iter = _idMap().find( name ) ) != _idMap().end() )
+    { return iter->second; }
 
-  // insert otherwise, increment counter and return proper value
-  _idMap().insert( make_pair( name, _counter() ) );
-  _nameMap().push_back( name );
-  _counter()++;
+    // insert otherwise, increment counter and return proper value
+    _idMap().insert( make_pair( name, _counter() ) );
+    _nameMap().push_back( name );
+    _counter()++;
 
-  return _counter()-1;
+    return _counter()-1;
 
 }
 
 //_______________________________________________
 QString FileRecord::PropertyId::get( FileRecord::PropertyId::Id id )
 {
-  assert( id < _nameMap().size() );
-  return _nameMap()[id];
+    assert( id < _nameMap().size() );
+    return _nameMap()[id];
 }
 
 //_______________________________________________
@@ -91,6 +91,6 @@ bool FileRecord::operator == (const FileRecord& record ) const
 FileRecord& FileRecord::addProperty( PropertyId::Id id, QString value )
 {
 
-  properties_[ id ] = value;
-  return *this;
+    properties_[ id ] = value;
+    return *this;
 }
