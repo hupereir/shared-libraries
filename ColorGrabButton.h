@@ -40,45 +40,45 @@
 class ColorGrabButton : public QToolButton, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  ColorGrabButton( QWidget* );
+        //! constructor
+        ColorGrabButton( QWidget* );
 
-  //! destructor
-  virtual ~ColorGrabButton( void )
-  {}
+    //! destructor
+    virtual ~ColorGrabButton( void )
+    {}
 
-  signals:
+    signals:
 
-  void colorSelected( QString );
+    void colorSelected( QString );
 
-  protected slots:
+    protected slots:
 
-  void _grabColor( void );
+    void _grabColor( void );
 
-  protected:
+    protected:
 
-  //! mouse press event [overloaded]
-  virtual void mousePressEvent( QMouseEvent* );
+    //! mouse press event [overloaded]
+    virtual void mousePressEvent( QMouseEvent* );
 
-  //! mouse release event [overloaded]
-  virtual void mouseReleaseEvent( QMouseEvent* );
+    //! mouse release event [overloaded]
+    virtual void mouseReleaseEvent( QMouseEvent* );
 
-  //! mouse move event [overloaded]
-  virtual void mouseMoveEvent( QMouseEvent* );
+    //! mouse move event [overloaded]
+    virtual void mouseMoveEvent( QMouseEvent* );
 
-  private:
+    private:
 
-  void _selectColorFromMouseEvent( QMouseEvent* );
+    void _selectColorFromMouseEvent( QMouseEvent* );
 
-  //! is set to true when colorgrab is activated
-  bool locked_;
+    //! is set to true when colorgrab is activated
+    bool locked_;
 
-  //! is true when the mouse is down
-  bool mouse_down_;
+    //! is true when the mouse is down
+    bool mouseDown_;
 
 };
 

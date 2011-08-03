@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-   \file XmlFileList.h
-   \brief Xml interface to FileList
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file XmlFileList.h
+\brief Xml interface to FileList
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QString>
@@ -41,44 +41,44 @@
 class XmlFileList: public FileList
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constuctor
-  XmlFileList( QObject* parent = 0 );
+        //! constuctor
+        XmlFileList( QObject* parent = 0 );
 
-  //! destructor
-  virtual ~XmlFileList( void )
-  {}
+    //! destructor
+    virtual ~XmlFileList( void )
+    {}
 
-  protected:
+    protected:
 
-  //! Read fileList from file
-  virtual bool _read( void );
+    //! Read fileList from file
+    virtual bool _read( void );
 
-  //! write fileList to file
-  virtual bool _write( void );
+    //! write fileList to file
+    virtual bool _write( void );
 
-  //! set db file
-  virtual bool _setDBFile( const QString& file );
+    //! set db file
+    virtual bool _setDBFile( const QString& file );
 
-  private slots:
+    private slots:
 
-  //! update configuration
-  void _updateConfiguration( void );
+    //! update configuration
+    void _updateConfiguration( void );
 
-  //! save configuration
-  void _saveConfiguration( void );
+    //! save configuration
+    void _saveConfiguration( void );
 
-  private:
+    private:
 
-  //! read flat list (for backward compatibility)
-  bool _deprecatedRead( void );
+    //! read flat list (for backward compatibility)
+    bool _deprecatedRead( void );
 
-  //! file from/to wich the files are saved
-  QString db_file_;
+    //! file from/to wich the files are saved
+    QString dbFile_;
 
 };
 #endif

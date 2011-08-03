@@ -32,8 +32,6 @@
 \date $Date$
 */
 
-#include <string.h>
-
 
 #include "Counter.h"
 #include "Debug.h"

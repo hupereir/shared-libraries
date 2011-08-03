@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-   \file FileList.h
-   \brief handles list of files saved into resource file for later reopening
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file FileList.h
+\brief handles list of files saved into resource file for later reopening
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -48,138 +48,138 @@
 class FileList: public QObject, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! constructor
-  FileList( QObject* parent ):
-    QObject( parent ),
-    Counter( "FileList" ),
-    max_size_( -1 ),
-    check_( true ),
-    clean_enabled_( false ),
-    thread_( this )
-  {}
+    //! constructor
+    FileList( QObject* parent ):
+        QObject( parent ),
+        Counter( "FileList" ),
+        maxSize_( -1 ),
+        check_( true ),
+        cleanEnabled_( false ),
+        thread_( this )
+    {}
 
-  //! destructor
-  virtual ~FileList( void )
-  { Debug::Throw( "FileList::~FileList.\n" ); }
+    //! destructor
+    virtual ~FileList( void )
+    { Debug::Throw( "FileList::~FileList.\n" ); }
 
-  //! returns true if file is found in list
-  virtual bool has( const File& file ) const;
+    //! returns true if file is found in list
+    virtual bool has( const File& file ) const;
 
-  //! add file.
-  virtual FileRecord& add( const File& file )
-  { return _add( FileRecord( file ) ); }
+    //! add file.
+    virtual FileRecord& add( const File& file )
+    { return _add( FileRecord( file ) ); }
 
-  //! remove file from database
-  virtual void remove( const File& file );
+    //! remove file from database
+    virtual void remove( const File& file );
 
-  //! get filerecord associated to a name
-  /*! creates new fileRecord if not found */
-  virtual FileRecord& get( const File& file )
-  { return _add( FileRecord( file ), false ); }
+    //! get filerecord associated to a name
+    /*! creates new fileRecord if not found */
+    virtual FileRecord& get( const File& file )
+    { return _add( FileRecord( file ), false ); }
 
-  //! gets file list size
-  virtual int size( void ) const
-  { return _records().size(); }
+    //! gets file list size
+    virtual int size( void ) const
+    { return _records().size(); }
 
-  //! all records
-  FileRecord::List records( void ) const
-  { return _truncatedList( _records() ); }
+    //! all records
+    FileRecord::List records( void ) const
+    { return _truncatedList( _records() ); }
 
-  //! set record
-  virtual void set( const FileRecord::List& );
+    //! set record
+    virtual void set( const FileRecord::List& );
 
-  //! all files
-  std::list< File > files( void ) const;
+    //! all files
+    std::list< File > files( void ) const;
 
-  //! get last valid file
-  virtual FileRecord lastValidFile( void );
+    //! get last valid file
+    virtual FileRecord lastValidFile( void );
 
-  //! returns true if file list can be cleaned
-  virtual bool cleanEnabled( void ) const
-  { return (check()) ? clean_enabled_ : !_records().empty(); }
+    //! returns true if file list can be cleaned
+    virtual bool cleanEnabled( void ) const
+    { return (check()) ? cleanEnabled_ : !_records().empty(); }
 
-  //! clean files. Remove either invalid or all files, depending on check_
-  virtual void clean( void );
+    //! clean files. Remove either invalid or all files, depending on check_
+    virtual void clean( void );
 
-  //! clear files. Remove all
-  virtual void clear( void );
+    //! clear files. Remove all
+    virtual void clear( void );
 
-  //! check flag
-  virtual const bool& check( void ) const
-  { return check_; }
+    //! check flag
+    virtual const bool& check( void ) const
+    { return check_; }
 
-  //! check_ flag
-  virtual void setCheck( const bool& value )
-  { check_ = value; }
+    //! check_ flag
+    virtual void setCheck( const bool& value )
+    { check_ = value; }
 
-  signals:
+    signals:
 
-  //! emmited when thread has completed validity check
-  void validFilesChecked( void );
+    //! emmited when thread has completed validity check
+    void validFilesChecked( void );
 
-  //! emmited when contents is changed
-  void contentsChanged( void );
+    //! emmited when contents is changed
+    void contentsChanged( void );
 
-  public slots:
+    public slots:
 
-  //! run thread to check file validity
-  void checkValidFiles( void );
+    //! run thread to check file validity
+    void checkValidFiles( void );
 
-  protected:
+    protected:
 
-  //! custom event, used to retrieve file validity check event
-  void customEvent( QEvent* );
+    //! custom event, used to retrieve file validity check event
+    void customEvent( QEvent* );
 
-  //! maximum Size
-  virtual void _setMaxSize( const int& value );
+    //! maximum Size
+    virtual void _setMaxSize( const int& value );
 
-  //! maximum size
-  virtual const int& _maxSize( void ) const
-  { return max_size_; }
+    //! maximum size
+    virtual const int& _maxSize( void ) const
+    { return maxSize_; }
 
-  //! add record to current list
-  virtual FileRecord& _add(
-    const FileRecord& record,
-    const bool& update_timestamp = true,
-    const bool& emit_signal = true );
+    //! add record to current list
+    virtual FileRecord& _add(
+        const FileRecord& record,
+        const bool& update_timestamp = true,
+        const bool& emit_signal = true );
 
-  //! truncate list if larger than max_size_
-  virtual FileRecord::List _truncatedList( FileRecord::List ) const;
+    //! truncate list if larger than maxSize_
+    virtual FileRecord::List _truncatedList( FileRecord::List ) const;
 
-  //! list of files records
-  virtual const FileRecord::List& _records( void ) const
-  { return records_; }
+    //! list of files records
+    virtual const FileRecord::List& _records( void ) const
+    { return records_; }
 
-  //! list of files records
-  virtual FileRecord::List& _records( void )
-  { return records_; }
+    //! list of files records
+    virtual FileRecord::List& _records( void )
+    { return records_; }
 
 
-  private:
+    private:
 
-  //! clean enabled
-  void _setCleanEnabled( const bool& value )
-  { clean_enabled_ = value; }
+    //! clean enabled
+    void _setCleanEnabled( const bool& value )
+    { cleanEnabled_ = value; }
 
-  //! maximum size (negative means no limit)
-  int max_size_;
+    //! maximum size (negative means no limit)
+    int maxSize_;
 
-  //! if true, check file validity
-  bool check_;
+    //! if true, check file validity
+    bool check_;
 
-  //! true if clean action is enabled
-  bool clean_enabled_;
+    //! true if clean action is enabled
+    bool cleanEnabled_;
 
-  //! thread to check file validity
-  ValidFileThread thread_;
+    //! thread to check file validity
+    ValidFileThread thread_;
 
-  //! current list of files
-  FileRecord::List records_;
+    //! current list of files
+    FileRecord::List records_;
 
 };
 #endif

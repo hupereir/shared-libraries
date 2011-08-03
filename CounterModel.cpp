@@ -23,51 +23,50 @@
 *******************************************************************************/
 
 /*!
-  \file CounterModel.cpp
-  \brief model for object counters
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file CounterModel.cpp
+\brief model for object counters
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include "CounterModel.h"
-using namespace std;
 
 //_______________________________________________
 const QString CounterModel::columnTitles_[ CounterModel::nColumns ] =
 {
-  "Name",
-  "Counts"
+    "Name",
+    "Counts"
 };
 
 //__________________________________________________________________
 QVariant CounterModel::data( const QModelIndex& index, int role ) const
 {
-  Debug::Throw( "CounterModel::data.\n" );
+    Debug::Throw( "CounterModel::data.\n" );
 
-  // check index, role and column
-  if( !index.isValid() ) return QVariant();
+    // check index, role and column
+    if( !index.isValid() ) return QVariant();
 
-  // retrieve associated file info
-  const CounterPair& counter( get(index) );
+    // retrieve associated file info
+    const CounterPair& counter( get(index) );
 
-  // return text associated to file and column
-  if( role == Qt::DisplayRole ) {
+    // return text associated to file and column
+    if( role == Qt::DisplayRole ) {
 
-    switch( index.column() )
-    {
-      case NAME:
-      return counter.first;
+        switch( index.column() )
+        {
+            case NAME:
+            return counter.first;
 
-      case COUNT:
-      return counter.second;
+            case COUNT:
+            return counter.second;
 
-      default:
-      return QVariant();
+            default:
+            return QVariant();
+        }
     }
-  }
 
-  return QVariant();
+    return QVariant();
 
 }
 
@@ -75,15 +74,15 @@ QVariant CounterModel::data( const QModelIndex& index, int role ) const
 QVariant CounterModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 
-  if(
-    orientation == Qt::Horizontal &&
-    role == Qt::DisplayRole &&
-    section >= 0 &&
-    section < nColumns )
-  { return columnTitles_[section]; }
+    if(
+        orientation == Qt::Horizontal &&
+        role == Qt::DisplayRole &&
+        section >= 0 &&
+        section < nColumns )
+    { return columnTitles_[section]; }
 
-  // return empty
-  return QVariant();
+    // return empty
+    return QVariant();
 
 }
 
@@ -91,8 +90,8 @@ QVariant CounterModel::headerData(int section, Qt::Orientation orientation, int 
 void CounterModel::_sort( int column, Qt::SortOrder order )
 {
 
-  Debug::Throw() << "CounterModel::sort - column: " << column << " order: " << order << endl;
-  std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
+    Debug::Throw() << "CounterModel::sort - column: " << column << " order: " << order << endl;
+    std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
 
 }
 
@@ -100,15 +99,15 @@ void CounterModel::_sort( int column, Qt::SortOrder order )
 bool CounterModel::SortFTor::operator () ( CounterPair first, CounterPair second ) const
 {
 
-  if( order_ == Qt::AscendingOrder ) swap( first, second );
+    if( order_ == Qt::AscendingOrder ) std::swap( first, second );
 
-  switch( type_ )
-  {
+    switch( type_ )
+    {
 
-    case NAME: return first.first < second.first;
-    case COUNT: return first.second < second.second;
-    default: return true;
+        case NAME: return first.first < second.first;
+        case COUNT: return first.second < second.second;
+        default: return true;
 
-  }
+    }
 
 }

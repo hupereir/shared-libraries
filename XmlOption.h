@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-   \file XmlOption.h
-   \brief Xml implementation of the Option object
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file XmlOption.h
+\brief Xml implementation of the Option object
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QDomDocument>
@@ -41,32 +41,32 @@
 //! some XML definitions specific to Option management
 namespace OPTIONS {
 
-  /*!
+    /*!
     \brief Xml special options tag.
     special meaning that option name do not have to be unique
-  */
-  static const QString SPECIAL_OPTION = "SPECIAL_OPTION";
+    */
+    static const QString SPECIAL_OPTION = "SPECIAL_OPTION";
 
-  //! Xml option tag
-  static const QString OPTION = "Option";
+    //! Xml option tag
+    static const QString OPTION = "Option";
 
-  //! Xml option tag
-  static const QString OPTIONS = "Options";
+    //! Xml option tag
+    static const QString OPTIONS = "Options";
 
-  //! option name tag
-  static const QString NAME = "Name";
+    //! option name tag
+    static const QString NAME = "Name";
 
-  //! Xml string for value field
-  static const QString VALUE = "Value";
+    //! Xml string for value field
+    static const QString VALUE = "Value";
 
-  //! Xml string for FRONT added special options
-  static const QString FLAGS = "flags";
+    //! Xml string for FRONT added special options
+    static const QString FLAGS = "flags";
 
-  //! Xml string for comments field
-  static const QString COMMENTS = "Comments";
+    //! Xml string for comments field
+    static const QString COMMENTS = "Comments";
 
-  //! Xml string for FRONT added special options
-  static const QString FRONT = "FRONT";
+    //! Xml string for FRONT added special options
+    static const QString FRONT = "FRONT";
 
 };
 
@@ -74,32 +74,32 @@ namespace OPTIONS {
 class XmlOption:public Option
 {
 
-  public:
+    public:
 
-  //! constructor
-  XmlOption( const QString& name, const Option& option ):
-    Option( option ),
-    name_( name )
+    //! constructor
+    XmlOption( const QString& name, const Option& option ):
+        Option( option ),
+        name_( name )
     {}
 
-  //! creator from DOM node
-  XmlOption( const QDomElement& element );
+    //! creator from DOM node
+    XmlOption( const QDomElement& element );
 
-  //! retrieve DomElement from option
-  QDomElement domElement( QDomDocument& parent ) const;
+    //! retrieve DomElement from option
+    QDomElement domElement( QDomDocument& parent ) const;
 
-  //! name
-  void setName( const QString& value )
-  { name_ = value; }
+    //! name
+    void setName( const QString& value )
+    { name_ = value; }
 
-  //! name
-  const QString& name( void ) const
-  { return name_; }
+    //! name
+    const QString& name( void ) const
+    { return name_; }
 
-  private:
+    private:
 
-  //! option name
-  QString name_;
+    //! option name
+    QString name_;
 
 };
 

@@ -40,13 +40,13 @@ using namespace std;
 
 //______________________________________________
 ColorGrabButton::ColorGrabButton( QWidget* parent ):
-  QToolButton( parent ),
-  Counter( "ColorGrabButton" ),
-  locked_( false ),
-  mouse_down_( false )
+    QToolButton( parent ),
+    Counter( "ColorGrabButton" ),
+    locked_( false ),
+    mouseDown_( false )
 {
-  Debug::Throw( "ColorGrabButton::ColorGrabButton.\n" );
-  connect( this, SIGNAL( clicked( void ) ), SLOT( _grabColor( void ) ) );
+    Debug::Throw( "ColorGrabButton::ColorGrabButton.\n" );
+    connect( this, SIGNAL( clicked( void ) ), SLOT( _grabColor( void ) ) );
 }
 
 
@@ -54,26 +54,26 @@ ColorGrabButton::ColorGrabButton( QWidget* parent ):
 void ColorGrabButton::_grabColor( void )
 {
 
-  Debug::Throw( "ColorGrabButton::_grabColor.\n" );
-  grabMouse(Qt::CrossCursor);
-  locked_ = true;
+    Debug::Throw( "ColorGrabButton::_grabColor.\n" );
+    grabMouse(Qt::CrossCursor);
+    locked_ = true;
 
 }
 
 //_____________________________________________________________
 void ColorGrabButton::mousePressEvent( QMouseEvent *event )
 {
-  Debug::Throw( "ColorGrabButton::mousePressEvent.\n" );
+    Debug::Throw( "ColorGrabButton::mousePressEvent.\n" );
 
-  // check button
-  if( event->button() != Qt::LeftButton ) return QToolButton::mousePressEvent( event );
+    // check button
+    if( event->button() != Qt::LeftButton ) return QToolButton::mousePressEvent( event );
 
-  // do nothing if mouse is not locked
-  if( !locked_ ) return QToolButton::mousePressEvent( event );
+    // do nothing if mouse is not locked
+    if( !locked_ ) return QToolButton::mousePressEvent( event );
 
-  // do nothing if mouse is already down
-  if( mouse_down_ ) return;
-  mouse_down_ = true;
+    // do nothing if mouse is already down
+    if( mouseDown_ ) return;
+    mouseDown_ = true;
 
 }
 
@@ -81,21 +81,21 @@ void ColorGrabButton::mousePressEvent( QMouseEvent *event )
 void ColorGrabButton::mouseReleaseEvent( QMouseEvent *event )
 {
 
-  Debug::Throw( "ColorGrabButton::mouseReleaseEvent.\n" );
+    Debug::Throw( "ColorGrabButton::mouseReleaseEvent.\n" );
 
-  // do nothing if mouse is not locked
-  if( !locked_ ) return QToolButton::mouseReleaseEvent( event );
+    // do nothing if mouse is not locked
+    if( !locked_ ) return QToolButton::mouseReleaseEvent( event );
 
-  // check button
-  if( event->button() == Qt::LeftButton && mouse_down_ )
-  {
-    // get color under mouse
-    _selectColorFromMouseEvent( event );
-  }
+    // check button
+    if( event->button() == Qt::LeftButton && mouseDown_ )
+    {
+        // get color under mouse
+        _selectColorFromMouseEvent( event );
+    }
 
-  mouse_down_ = false;
-  locked_ = false;
-  releaseMouse();
+    mouseDown_ = false;
+    locked_ = false;
+    releaseMouse();
 
 }
 
@@ -103,28 +103,28 @@ void ColorGrabButton::mouseReleaseEvent( QMouseEvent *event )
 void ColorGrabButton::mouseMoveEvent( QMouseEvent *event )
 {
 
-  Debug::Throw( "ColorGrabButton::mouseMoveEvent.\n" );
+    Debug::Throw( "ColorGrabButton::mouseMoveEvent.\n" );
 
-  // do nothing if mouse is not locked
-  if( !( locked_ && mouse_down_ ) ) return QToolButton::mouseMoveEvent( event );
-  _selectColorFromMouseEvent( event );
+    // do nothing if mouse is not locked
+    if( !( locked_ && mouseDown_ ) ) return QToolButton::mouseMoveEvent( event );
+    _selectColorFromMouseEvent( event );
 
 }
 
 //_____________________________________________________________
 void ColorGrabButton::_selectColorFromMouseEvent( QMouseEvent *event )
 {
-  Debug::Throw() << "ColorGrabButton::_selectColorFromMouseEvent - (" << event->globalX() << "," << event->globalY() << ")" << endl;
+    Debug::Throw() << "ColorGrabButton::_selectColorFromMouseEvent - (" << event->globalX() << "," << event->globalY() << ")" << endl;
 
-  // grab desktop window under cursor
-  // convert to image.
-  QImage image( QPixmap::grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
+    // grab desktop window under cursor
+    // convert to image.
+    QImage image( QPixmap::grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
 
-  // ensure image is deep enough
-  if (image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
+    // ensure image is deep enough
+    if (image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
 
-  // assign color to the selection frame
-  emit colorSelected( QColor( image.pixel( 1, 1 ) ).name() );
+    // assign color to the selection frame
+    emit colorSelected( QColor( image.pixel( 1, 1 ) ).name() );
 
-  return;
+    return;
 }

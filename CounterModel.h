@@ -40,86 +40,85 @@
 class CounterPair: public std::pair<QString, int>
 {
     public:
-    
+
     //! constructor
     CounterPair( void )
     {}
-    
+
     //! constructor
     CounterPair( const std::pair<QString, int>& pair ):
         std::pair<QString, int>( pair )
     {}
-        
+
     //! less than operator
     bool operator < ( const CounterPair& pair ) const
     {
         return first < pair.first;
     }
-    
+
     //! equal to operator
     bool operator == (const CounterPair& pair ) const
     { return first == pair.first; }
-    
+
 };
 
 //! qlistview for object counters
 class CounterModel: public ListModel<CounterPair>
 {
-    
+
     public:
-    
+
     //! number of columns
     enum { nColumns = 2 };
-    
+
     //! column type enumeration
     enum ColumnType {
         NAME,
         COUNT
     };
-    
-    
+
     //!@name methods reimplemented from base class
     //@{
-    
+
     // return data for a given index
     virtual QVariant data(const QModelIndex &index, int role) const;
-    
+
     //! header data
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    
+
     //! number of columns for a given index
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
     { return nColumns; }
-    
+
     //@}
-    
+
     protected:
-    
+
     //! sort
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
-    
+
     private:
-    
-    
+
+
     //! used to sort IconCaches
     class SortFTor: public ItemModel::SortFTor
     {
-        
+
         public:
-        
+
         //! constructor
         SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
             ItemModel::SortFTor( type, order )
             {}
-            
+
         //! prediction
         bool operator() ( CounterPair, CounterPair ) const;
-        
+
     };
-    
+
     //! column titles
     static const QString columnTitles_[ nColumns ];
-    
+
 };
 
 #endif

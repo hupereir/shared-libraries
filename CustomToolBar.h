@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file CustomToolBar.h
-  \brief customized tool bar to handle position and visibility from Options
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file CustomToolBar.h
+\brief customized tool bar to handle position and visibility from Options
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QHideEvent>
@@ -45,126 +45,126 @@
 class CustomToolBar: public QToolBar, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  CustomToolBar( const QString& title = QString(), QWidget* parent = 0, const QString& option_name = "" );
+        //! constructor
+        CustomToolBar( const QString& title = QString(), QWidget* parent = 0, const QString& option_name = "" );
 
-  //! destructor
-  virtual ~CustomToolBar( void );
+    //! destructor
+    virtual ~CustomToolBar( void );
 
-  // map toolbar area and name
-  typedef std::map< QString, Qt::ToolBarArea> AreaMap;
+    // map toolbar area and name
+    typedef std::map< QString, Qt::ToolBarArea> AreaMap;
 
-  //! get area from name
-  static Qt::ToolBarArea nameToArea( const QString& name )
-  {
-    AreaMap::iterator iter = _toolbarAreas().find( name );
-    return iter == _toolbarAreas().end() ? (Qt::ToolBarArea) 0 :iter->second;
-  }
-
-  //! get name from toobar area
-  static QString areaToName( const Qt::ToolBarArea& value )
-  {
-
-    for( AreaMap::iterator iter = _toolbarAreas().begin(); iter != _toolbarAreas().end(); iter++ )
-    { if( iter->second == value ) return iter->first; }
-
-    return "";
-
-  }
-
-  //! lock from options
-  const bool& lockFromOptions( void ) const
-  { return lock_from_options_; }
-
-  //! set movable
-  /* when called directly from the application, the lock_from_options_ flag is set to false */
-  void setMovable( bool value )
-  {
-    lock_from_options_ = false;
-    return QToolBar::setMovable( value );
-  }
-
-  //! lock from options
-  const bool& sizeFromOptions( void ) const
-  { return size_from_options_; }
-
-  //! set movable
-  /* when called directly from the application, the lock_from_options_ flag is set to false */
-  void setIconSize( const QSize& size )
-  {
-    size_from_options_ = false;
-    return QToolBar::setIconSize( size );
-  }
-
-  //! visibility action
-  QAction& visibilityAction( void ) const
-  { return *visibility_action_; }
-
-  //! location option combo box
-  class LocationComboBox: public OptionComboBox
-  {
-
-    public:
-
-    //! constructor
-    LocationComboBox( QWidget* parent, const QString& option ):
-        OptionComboBox( parent, option )
+    //! get area from name
+    static Qt::ToolBarArea nameToArea( const QString& name )
     {
-      addItem( CustomToolBar::areaToName( Qt::TopToolBarArea ) );
-      addItem( CustomToolBar::areaToName( Qt::BottomToolBarArea ) );
-      addItem( CustomToolBar::areaToName( Qt::LeftToolBarArea ) );
-      addItem( CustomToolBar::areaToName( Qt::RightToolBarArea ) );
+        AreaMap::iterator iter = _toolbarAreas().find( name );
+        return iter == _toolbarAreas().end() ? (Qt::ToolBarArea) 0 :iter->second;
     }
 
-  };
+    //! get name from toobar area
+    static QString areaToName( const Qt::ToolBarArea& value )
+    {
 
-  protected:
+        for( AreaMap::iterator iter = _toolbarAreas().begin(); iter != _toolbarAreas().end(); iter++ )
+        { if( iter->second == value ) return iter->first; }
 
-  //! show event
-  virtual void showEvent( QShowEvent* );
+        return "";
 
-  //! hide event
-  virtual void hideEvent( QHideEvent* );
+    }
 
-  //! move event
-  virtual void moveEvent( QMoveEvent* );
+    //! lock from options
+    const bool& lockFromOptions( void ) const
+    { return lockFromOptions_; }
 
-  protected slots:
+    //! set movable
+    /* when called directly from the application, the lockFromOptions_ flag is set to false */
+    void setMovable( bool value )
+    {
+        lockFromOptions_ = false;
+        return QToolBar::setMovable( value );
+    }
 
-  //! toggle visibility
-  virtual void _toggleVisibility( bool );
+    //! lock from options
+    const bool& sizeFromOptions( void ) const
+    { return sizeFromOptions_; }
 
-  private slots:
+    //! set movable
+    /* when called directly from the application, the lockFromOptions_ flag is set to false */
+    void setIconSize( const QSize& size )
+    {
+        sizeFromOptions_ = false;
+        return QToolBar::setIconSize( size );
+    }
 
-  //! update configuration
-  void _updateConfiguration( void );
+    //! visibility action
+    QAction& visibilityAction( void ) const
+    { return *visibilityAction_; }
 
-  private:
+    //! location option combo box
+    class LocationComboBox: public OptionComboBox
+    {
 
-  //! install actions
-  void _installActions( void );
+        public:
 
-  //! assocated option name
-  QString option_name_;
+        //! constructor
+        LocationComboBox( QWidget* parent, const QString& option ):
+            OptionComboBox( parent, option )
+        {
+            addItem( CustomToolBar::areaToName( Qt::TopToolBarArea ) );
+            addItem( CustomToolBar::areaToName( Qt::BottomToolBarArea ) );
+            addItem( CustomToolBar::areaToName( Qt::LeftToolBarArea ) );
+            addItem( CustomToolBar::areaToName( Qt::RightToolBarArea ) );
+        }
 
-  //! visibility action
-  QAction* visibility_action_;
+    };
 
-  //! use icon size from options
-  bool size_from_options_;
+    protected:
 
-  //! use lock from options
-  bool lock_from_options_;
+    //! show event
+    virtual void showEvent( QShowEvent* );
 
-  //! initialize area map
-  static AreaMap _initializeAreas( void );
+    //! hide event
+    virtual void hideEvent( QHideEvent* );
 
-  //! map name and toolbar are
-  static AreaMap& _toolbarAreas( void );
+    //! move event
+    virtual void moveEvent( QMoveEvent* );
+
+    protected slots:
+
+    //! toggle visibility
+    virtual void _toggleVisibility( bool );
+
+    private slots:
+
+    //! update configuration
+    void _updateConfiguration( void );
+
+    private:
+
+    //! install actions
+    void _installActions( void );
+
+    //! assocated option name
+    QString optionName_;
+
+    //! visibility action
+    QAction* visibilityAction_;
+
+    //! use icon size from options
+    bool sizeFromOptions_;
+
+    //! use lock from options
+    bool lockFromOptions_;
+
+    //! initialize area map
+    static AreaMap _initializeAreas( void );
+
+    //! map name and toolbar are
+    static AreaMap& _toolbarAreas( void );
 
 };
 

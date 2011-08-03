@@ -25,16 +25,16 @@
 *******************************************************************************/
 
 /*!
-   \file XmlFileRecord.h
-   \brief xml interface to FileRecord
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file XmlFileRecord.h
+\brief xml interface to FileRecord
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
-#include <QDomElement>
-#include <QDomDocument>
-#include <QString>
+#include <QtXml/QDomElement>
+#include <QtXml/QDomDocument>
+#include <QtCore/QString>
 #include <list>
 
 #include "FileRecord.h"
@@ -43,31 +43,31 @@
 class XmlFileRecord: public FileRecord
 {
 
-  public:
+    public:
 
-  //!@name XML names
-  //@{
-  static const QString XML_FILE_LIST;
-  static const QString XML_RECORD;
-  static const QString XML_FILE;
-  static const QString XML_TIME;
-  static const QString XML_FLAGS;
-  static const QString XML_VALID;
-  static const QString XML_PROPERTY;
-  static const QString XML_NAME;
-  static const QString XML_VALUE;
-  //@}
+    //!@name XML names
+    //@{
+    static const QString XML_FILE_LIST;
+    static const QString XML_RECORD;
+    static const QString XML_FILE;
+    static const QString XML_TIME;
+    static const QString XML_FLAGS;
+    static const QString XML_VALID;
+    static const QString XML_PROPERTY;
+    static const QString XML_NAME;
+    static const QString XML_VALUE;
+    //@}
 
-  //! constructor
-  XmlFileRecord( const FileRecord& file ):
-    FileRecord( file )
-  {}
+    //! constructor
+    XmlFileRecord( const FileRecord& file ):
+        FileRecord( file )
+    {}
 
-  //! constructor
-  XmlFileRecord( const QDomElement& dom );
+    //! constructor
+    XmlFileRecord( const QDomElement& dom );
 
-  //! write to dom
-  QDomElement domElement( QDomDocument& parent ) const;
+    //! write to dom
+    QDomElement domElement( QDomDocument& parent ) const;
 
 };
 

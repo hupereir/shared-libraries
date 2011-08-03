@@ -25,46 +25,46 @@
 *******************************************************************************/
 
 /*!
-   \file XmlTimeStamp.h
-   \brief Xml interface to time manipulation object
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file XmlTimeStamp.h
+\brief Xml interface to time manipulation object
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
-
-#include <QDomDocument>
-#include <QDomElement>
-#include <QString>
 
 #include "TimeStamp.h"
 
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
+#include <QtCore/QString>
+
 /*!
-   \class XmlTimeStamp
-   \brief Xml interface to time manipulation object
+\class XmlTimeStamp
+\brief Xml interface to time manipulation object
 */
 
 class XmlTimeStamp:public TimeStamp
 {
 
-  public:
+    public:
 
-  //! empty creator
-  XmlTimeStamp( void )
-  {}
+    //! empty constructor
+    XmlTimeStamp( void )
+    {}
 
-  //! creator from DOM
-  XmlTimeStamp( const QDomElement& );
+    //! constructor from DOM
+    XmlTimeStamp( const QDomElement& );
 
-  //! create from timestamp
-  XmlTimeStamp( const TimeStamp& stamp ):
-    TimeStamp( stamp )
-  {}
+    //! create from timestamp
+    XmlTimeStamp( const TimeStamp& stamp ):
+        TimeStamp( stamp )
+    {}
 
-  //! get DOM element
-  QDomElement domElement( const QString&, QDomDocument& ) const;
+    //! get DOM element
+    QDomElement domElement( const QString&, QDomDocument& ) const;
 
-  //! XML XmlTimeStamp keyword
-  static const QString XML_TIME;
+    //! XML XmlTimeStamp keyword
+    static const QString XML_TIME;
 
 };
 
