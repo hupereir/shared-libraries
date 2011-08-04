@@ -114,6 +114,13 @@ class BaseMainWindow: public QMainWindow
         return *showStatusBarAction_;
     }
 
+    //! show status bar
+    QAction& lockLayoutAction( void ) const
+    {
+        assert( lockLayoutAction_ );
+        return *lockLayoutAction_;
+    }
+
     //! create context menu (overloaded)
     virtual QMenu* createPopupMenu( void );
 
@@ -158,8 +165,17 @@ class BaseMainWindow: public QMainWindow
     //! generic event
     virtual bool event( QEvent* );
 
+    //! true if main window has menu
+    virtual bool _hasMenuBar( void ) const;
+
+    //! true if main window has menu
+    virtual bool _hasStatusBar( void ) const;
+
     //! true if main window has toolbars
     virtual bool _hasToolBars( void ) const;
+
+    //! true if main window has docks
+    virtual bool _hasDockWidgets( void ) const;
 
     //! maximize state prior to minimization
     bool _wasMaximized( void ) const
@@ -168,6 +184,15 @@ class BaseMainWindow: public QMainWindow
     //! maximize state prior to minimization
     void _setWasMaximized( bool value )
     { wasMaximized_ = value; }
+
+    protected slots:
+
+    //! lock layout
+    void _toggleLockLayout( void )
+    { _lockLayout( !layoutLocked_ ); }
+
+    //! lock layout
+    void _lockLayout( bool );
 
     private slots:
 
@@ -212,8 +237,14 @@ class BaseMainWindow: public QMainWindow
     //! toggle statusBar
     QAction* showStatusBarAction_;
 
+    //! lock layout
+    QAction* lockLayoutAction_;
+
     //! window state prior to minimization
     bool wasMaximized_;
+
+    //! true when layout is locked
+    bool layoutLocked_;
 
 };
 

@@ -51,7 +51,8 @@
 BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
     QMainWindow( parent, wflags ),
     monitor_( this ),
-    wasMaximized_( false )
+    wasMaximized_( false ),
+    layoutLocked_( false )
 {
     Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
 
@@ -76,8 +77,12 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
     showStatusBarAction().setEnabled( false );
     connect( &showStatusBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStatusBar( bool ) ) );
 
+    lockLayoutAction_ = new QAction( "Lock Layout", this );
+    connect( &lockLayoutAction(), SIGNAL( triggered() ), SLOT( _toggleLockLayout() ) );
+
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     connect( this, SIGNAL( toolbarConfigurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
+
     _updateConfiguration();
 
 }
@@ -183,8 +188,9 @@ QMenu* BaseMainWindow::createPopupMenu( void )
     {
 
         QMenu* menu = new QMenu( this );
-        menu->addAction(&showMenuBarAction() );
-        menu->addAction(&showStatusBarAction() );
+        if( _hasMenuBar() ) menu->addAction(&showMenuBarAction() );
+        if( _hasStatusBar() ) menu->addAction(&showStatusBarAction() );
+        if( _hasDockWidgets() ) menu->addAction(&lockLayoutAction() );
         return menu;
 
     } else {
@@ -215,8 +221,9 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     }
 
     // show/hide menu
-    menu->addAction( &showMenuBarAction() );
-    menu->addAction( &showStatusBarAction() );
+    if( _hasMenuBar() ) menu->addAction( &showMenuBarAction() );
+    if( _hasStatusBar() ) menu->addAction( &showStatusBarAction() );
+    if( _hasDockWidgets() ) menu->addAction(&lockLayoutAction() );
 
     return *menu;
 
@@ -312,10 +319,31 @@ bool BaseMainWindow::event( QEvent* event )
 }
 
 //________________________________________________________________
+bool BaseMainWindow::_hasMenuBar( void ) const
+{
+    Debug::Throw( "BaseMainWindow::_hasMenuBar.\n" );
+    return (bool) qFindChild<QMenuBar*>( this );
+}
+
+//________________________________________________________________
+bool BaseMainWindow::_hasStatusBar( void ) const
+{
+    Debug::Throw( "BaseMainWindow::_hasStatusBar.\n" );
+    return (bool) qFindChild<QStatusBar*>( this );
+}
+
+//________________________________________________________________
 bool BaseMainWindow::_hasToolBars( void ) const
 {
     Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
     return (bool) qFindChild<QToolBar*>( this );
+}
+
+//________________________________________________________________
+bool BaseMainWindow::_hasDockWidgets( void ) const
+{
+    Debug::Throw( "BaseMainWindow::_hasDockWidgets.\n" );
+    return (bool) qFindChild<DockWidget*>( this );
 }
 
 //____________________________________________________________
@@ -414,6 +442,25 @@ void BaseMainWindow::_toggleStatusBar( bool value )
 
 }
 
+//________________________________________________________________________________________
+void BaseMainWindow::_lockLayout( bool locked )
+{
+    Debug::Throw( "BaseMainWindow::_lockLayout\n" );
+    layoutLocked_ = locked;
+    lockLayoutAction_->setText( locked ? "Unlock Layout":"LockLayout" );
+
+    // loop over dock widgets and toggle
+    foreach( QObject* child, children() )
+    {
+        DockWidget* dock = qobject_cast<DockWidget*>(child);
+        if( dock )
+        {
+            Debug::Throw( "MainWindow::_lockLayout - found dock.\n" );
+            dock->setLocked( locked );
+        }
+    }
+
+}
 
 //______________________________________________________________
 void DockWidget::setLocked( bool value )
