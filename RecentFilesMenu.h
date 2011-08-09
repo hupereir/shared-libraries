@@ -25,11 +25,11 @@
 #define RecentFilesMenu_h
 
 /*!
-   \file   RecentFilesMenu.h
-   \brief   customized popup menu to open a previous logbook
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file   RecentFilesMenu.h
+\brief   customized popup menu to open a previous logbook
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QMenu>
@@ -41,108 +41,108 @@
 #include "FileList.h"
 
 /*!
-   \class   RecentFilesMenu
-   \brief   customized popup menu to open a previously opened file
+\class   RecentFilesMenu
+\brief   customized popup menu to open a previously opened file
 */
 class RecentFilesMenu: public QMenu, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  RecentFilesMenu( QWidget*, FileList& );
+        //! constructor
+        RecentFilesMenu( QWidget*, FileList& );
 
-  //! destructor
-  virtual ~RecentFilesMenu( void );
+    //! destructor
+    virtual ~RecentFilesMenu( void );
 
-  //! check if a file is in database, removes it if yes
-  virtual void remove( const QString& file )
-  { _fileList().remove( File( file ).expand() ); }
+    //! check if a file is in database, removes it if yes
+    virtual void remove( const QString& file )
+    { _fileList().remove( File( file ).expand() ); }
 
-  //! check if a file is in database, adds it if not, select the file
-  virtual void select( const QString& file )
-  {
-    File new_file( File( file ).expand() );
-    emit fileSelected( _fileList().add( new_file ) );
-  }
+    //! check if a file is in database, adds it if not, select the file
+    virtual void select( const QString& file )
+    {
+        File new_file( File( file ).expand() );
+        emit fileSelected( _fileList().add( new_file ) );
+    }
 
-  //! open last valid file, returns true if any
-  bool openLastValidFile( void );
+    //! open last valid file, returns true if any
+    bool openLastValidFile( void );
 
-  //! current file
-  const FileRecord& currentFile( void ) const
-  { return current_file_; }
+    //! current file
+    const FileRecord& currentFile( void ) const
+    { return currentFile_; }
 
-  //! set current file
-  void setCurrentFile( const File& file );
+    //! set current file
+    void setCurrentFile( const File& file );
 
-  //! set current file
-  void setCurrentFile( const FileRecord& file )
-  { current_file_ = file; }
+    //! set current file
+    void setCurrentFile( const FileRecord& file )
+    { currentFile_ = file; }
 
-  signals:
+    signals:
 
-  //! signal emited when a file is selected
-  void fileSelected( FileRecord );
+    //! signal emited when a file is selected
+    void fileSelected( FileRecord );
 
-  public slots:
+    public slots:
 
-  //! check if a file is in database, adds it if not
-  virtual FileRecord& add( const QString& file )
-  { return _fileList().add( File( file ) ); }
+    //! check if a file is in database, adds it if not
+    virtual FileRecord& add( const QString& file )
+    { return _fileList().add( File( file ) ); }
 
-  //! check if a file is in database, adds it if not
-  virtual FileRecord& add( File file )
-  { return _fileList().add( file.expand() ); }
+    //! check if a file is in database, adds it if not
+    virtual FileRecord& add( File file )
+    { return _fileList().add( file.expand() ); }
 
-  private slots:
+    private slots:
 
-  //! update actions
-  /*! this is trigger by the fileList valid file check completion */
-  void _updateActions( void );
+    //! update actions
+    /*! this is trigger by the fileList valid file check completion */
+    void _updateActions( void );
 
-  //! remove unfound files from file list
-  void _clean( void );
+    //! remove unfound files from file list
+    void _clean( void );
 
-  //! open file
-  void _open( QAction* );
+    //! open file
+    void _open( QAction* );
 
-  //! display files from internal list
-  void _loadFiles( void );
+    //! display files from internal list
+    void _loadFiles( void );
 
-  private:
+    private:
 
-  //! file list
-  FileList& _fileList( void ) const
-  {
-    assert( file_list_ );
-    return *file_list_;
-  }
+    //! file list
+    FileList& _fileList( void ) const
+    {
+        assert( fileList_ );
+        return *fileList_;
+    }
 
-  //! clean action
-  QAction& _cleanAction( void ) const
-  { return *clean_action_; }
+    //! clean action
+    QAction& _cleanAction( void ) const
+    { return *cleanAction_; }
 
-  //! associated file list
-  FileList* file_list_;
+    //! associated file list
+    FileList* fileList_;
 
-  //! store current file (to appear checked in list)
-  FileRecord current_file_;
+    //! store current file (to appear checked in list)
+    FileRecord currentFile_;
 
-  //! action group
-  QActionGroup* action_group_;
+    //! action group
+    QActionGroup* actionGroup_;
 
-  //! clean action
-  QAction* clean_action_;
+    //! clean action
+    QAction* cleanAction_;
 
-  //! map actions to file recors
-  typedef std::map<QAction*, FileRecord> ActionMap;
+    //! map actions to file recors
+    typedef std::map<QAction*, FileRecord> ActionMap;
 
-  //! map actions to FileRecords
-  ActionMap actions_;
+    //! map actions to FileRecords
+    ActionMap actions_;
 
 };
 

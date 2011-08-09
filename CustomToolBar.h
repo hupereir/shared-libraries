@@ -47,10 +47,10 @@ class CustomToolBar: public QToolBar, public Counter
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        CustomToolBar( const QString& title = QString(), QWidget* parent = 0, const QString& option_name = "" );
+    //! constructor
+    CustomToolBar( const QString& title = QString(), QWidget* parent = 0, const QString& = "" );
 
     //! destructor
     virtual ~CustomToolBar( void );

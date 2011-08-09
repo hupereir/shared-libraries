@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-   \file RecentFilesMenu.cpp
-   \brief customized popup menu to open a previous logbook
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file RecentFilesMenu.cpp
+\brief customized popup menu to open a previous logbook
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <algorithm>
@@ -44,28 +44,28 @@ using namespace std;
 
 //_______________________________________________
 RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
-  QMenu( parent ),
-  Counter( "RecentFilesMenu" ),
-  file_list_( &files )
+    QMenu( parent ),
+    Counter( "RecentFilesMenu" ),
+    fileList_( &files )
 {
-  Debug::Throw( "RecentFilesMenu::RecentFilesMenu.\n" );
+    Debug::Throw( "RecentFilesMenu::RecentFilesMenu.\n" );
 
-  setTitle( "Open &Recent" );
-  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
-  connect( this, SIGNAL( aboutToShow( void ) ), &_fileList(), SLOT( checkValidFiles( void ) ) );
-  connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _loadFiles( void ) ) );
-  connect( &_fileList(), SIGNAL( validFilesChecked( void ) ), SLOT( _updateActions( void ) ) );
+    setTitle( "Open &Recent" );
+    connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
+    connect( this, SIGNAL( aboutToShow( void ) ), &_fileList(), SLOT( checkValidFiles( void ) ) );
+    connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _loadFiles( void ) ) );
+    connect( &_fileList(), SIGNAL( validFilesChecked( void ) ), SLOT( _updateActions( void ) ) );
 
-  // icons
-  setIcon( IconEngine::get( ICONS::OPEN ) );
+    // icons
+    setIcon( IconEngine::get( ICONS::OPEN ) );
 
-  action_group_ = new QActionGroup( this );
-  action_group_->setExclusive( true );
+    actionGroup_ = new QActionGroup( this );
+    actionGroup_->setExclusive( true );
 
-  addAction( clean_action_ = new QAction( IconEngine::get( ICONS::DELETE ), "&Clean", this ) );
-  connect( &_cleanAction(), SIGNAL( triggered() ), SLOT( _clean() ) );
-  _cleanAction().setEnabled( false );
-  addSeparator();
+    addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), "&Clean", this ) );
+    connect( &_cleanAction(), SIGNAL( triggered() ), SLOT( _clean() ) );
+    _cleanAction().setEnabled( false );
+    addSeparator();
 
 }
 
@@ -77,12 +77,12 @@ RecentFilesMenu::~RecentFilesMenu( void )
 bool RecentFilesMenu::openLastValidFile( void )
 {
 
-  Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );
-  FileRecord record( _fileList().lastValidFile() );
-  if( record.file().isEmpty() ) return false;
+    Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );
+    FileRecord record( _fileList().lastValidFile() );
+    if( record.file().isEmpty() ) return false;
 
-  emit fileSelected( record );
-  return true;
+    emit fileSelected( record );
+    return true;
 
 }
 
@@ -94,83 +94,83 @@ void RecentFilesMenu::setCurrentFile( const File& file )
 void RecentFilesMenu::_updateActions( void )
 {
 
-  Debug::Throw( "RecentFilesMenu::_updateActions.\n" );
+    Debug::Throw( "RecentFilesMenu::_updateActions.\n" );
 
-  // set actions enability
-  FileRecord::List records( _fileList().records() );
-  for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
-  {
+    // set actions enability
+    FileRecord::List records( _fileList().records() );
+    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    {
 
-    FileRecord::List::const_iterator found = find_if(
-      records.begin(),
-      records.end(),
-      FileRecord::SameFileFTor( iter->second.file() ) );
-    if( found == records.end() ) continue;
-    iter->second.setValid( found->isValid() );
-    iter->first->setEnabled( found->isValid() );
+        FileRecord::List::const_iterator found = find_if(
+            records.begin(),
+            records.end(),
+            FileRecord::SameFileFTor( iter->second.file() ) );
+        if( found == records.end() ) continue;
+        iter->second.setValid( found->isValid() );
+        iter->first->setEnabled( found->isValid() );
 
-  }
+    }
 
-  _cleanAction().setEnabled( _fileList().cleanEnabled() );
+    _cleanAction().setEnabled( _fileList().cleanEnabled() );
 
 }
 
 //______________________________________
 void RecentFilesMenu::_clean( void )
 {
-  if( !_fileList().check() && !QuestionDialog( this,"clear list ?" ).exec() ) return;
-  else if( _fileList().check() && !QuestionDialog( this,"Remove invalid or duplicated files from list ?" ).exec() ) return;
-  _fileList().clean();
+    if( !_fileList().check() && !QuestionDialog( this,"clear list ?" ).exec() ) return;
+    else if( _fileList().check() && !QuestionDialog( this,"Remove invalid or duplicated files from list ?" ).exec() ) return;
+    _fileList().clean();
 }
 
 //_______________________________________________
 void RecentFilesMenu::_open( QAction* action )
 {
 
-  Debug::Throw( "RecentFilesMenu::_Open.\n" );
+    Debug::Throw( "RecentFilesMenu::_Open.\n" );
 
-  // find Action in map
-  ActionMap::iterator iter( actions_.find( action ) );
-  if( iter == actions_.end() ) return;
-  emit fileSelected( iter->second );
+    // find Action in map
+    ActionMap::iterator iter( actions_.find( action ) );
+    if( iter == actions_.end() ) return;
+    emit fileSelected( iter->second );
 
 }
 
 //_______________________________________________
 void RecentFilesMenu::_loadFiles( void )
 {
-  Debug::Throw( "RecentFilesMenu::_loadFiles.\n" );
+    Debug::Throw( "RecentFilesMenu::_loadFiles.\n" );
 
-  // run thread to check file validity
-  _cleanAction().setEnabled( _fileList().cleanEnabled() );
+    // run thread to check file validity
+    _cleanAction().setEnabled( _fileList().cleanEnabled() );
 
-  // clear menu an actions map
-  for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
-  { delete iter->first; }
-  actions_.clear();
+    // clear menu an actions map
+    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    { delete iter->first; }
+    actions_.clear();
 
-  // redo all actions
-  FileRecord::List records( _fileList().records() );
-  if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") ) { sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
-  else { sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
+    // redo all actions
+    FileRecord::List records( _fileList().records() );
+    if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") ) { sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
+    else { sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
 
-  // retrieve stored file record
-  for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
-  {
+    // retrieve stored file record
+    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
+    {
 
-    QString label( iter->file() );
-    QAction* action = addAction( label );
+        QString label( iter->file() );
+        QAction* action = addAction( label );
 
-    // add icon
-    if( iter->hasProperty( FileRecordProperties::ICON ) ) { action->setIcon( IconEngine::get( iter->property( FileRecordProperties::ICON ) ) ); }
+        // add icon
+        if( iter->hasProperty( FileRecordProperties::ICON ) ) { action->setIcon( IconEngine::get( iter->property( FileRecordProperties::ICON ) ) ); }
 
-    // check action if match file
-    action->setCheckable( true );
-    action->setChecked( iter->file() == currentFile().file() );
-    action_group_->addAction( action );
+        // check action if match file
+        action->setCheckable( true );
+        action->setChecked( iter->file() == currentFile().file() );
+        actionGroup_->addAction( action );
 
-    if( _fileList().check() ) action->setEnabled( iter->file().size() && iter->isValid() );
-    actions_.insert( make_pair( action, *iter ) );
-  }
+        if( _fileList().check() ) action->setEnabled( iter->file().size() && iter->isValid() );
+        actions_.insert( make_pair( action, *iter ) );
+    }
 
 }

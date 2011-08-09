@@ -100,6 +100,13 @@ class BaseMainWindow: public QMainWindow
         return *lockToolBarsAction_;
     }
 
+    //! lock/unlock layout
+    QAction& lockLayoutAction( void ) const
+    {
+        assert( lockLayoutAction_ );
+        return *lockLayoutAction_;
+    }
+
     //! show menubar
     QAction& showMenuBarAction( void ) const
     {
@@ -112,13 +119,6 @@ class BaseMainWindow: public QMainWindow
     {
         assert( showStatusBarAction_ );
         return *showStatusBarAction_;
-    }
-
-    //! show status bar
-    QAction& lockLayoutAction( void ) const
-    {
-        assert( lockLayoutAction_ );
-        return *lockLayoutAction_;
     }
 
     //! create context menu (overloaded)
@@ -138,9 +138,13 @@ class BaseMainWindow: public QMainWindow
     bool hasOptionName( void ) const
     { return !lockToolBarsOptionName().isEmpty(); }
 
-    //! menu option name
+    //! toolbar option name
     const QString& lockToolBarsOptionName( void ) const
     { return lockToolBarsOptionName_; }
+
+    //! layout option name
+    const QString& lockLayoutOptionName( void ) const
+    { return lockLayoutOptionName_; }
 
     //! menu option name
     const QString& showMenuBarOptionName( void ) const
@@ -185,15 +189,6 @@ class BaseMainWindow: public QMainWindow
     void _setWasMaximized( bool value )
     { wasMaximized_ = value; }
 
-    protected slots:
-
-    //! lock layout
-    void _toggleLockLayout( void )
-    { _lockLayout( !layoutLocked_ ); }
-
-    //! lock layout
-    void _lockLayout( bool );
-
     private slots:
 
     //! update configuration
@@ -214,10 +209,16 @@ class BaseMainWindow: public QMainWindow
     //! toggle status bar
     void _toggleStatusBar( bool );
 
+    //! lock layout
+    void _lockLayout( bool );
+
     private:
 
     //! option name
     QString lockToolBarsOptionName_;
+
+    //! option name
+    QString lockLayoutOptionName_;
 
     //! option name
     QString showMenuBarOptionName_;
@@ -242,68 +243,6 @@ class BaseMainWindow: public QMainWindow
 
     //! window state prior to minimization
     bool wasMaximized_;
-
-    //! true when layout is locked
-    bool layoutLocked_;
-
-};
-
-//___________________________________________________________________
-class DockWidget: public QDockWidget, public Counter
-{
-    Q_OBJECT
-
-    public:
-
-    //! constructor
-    DockWidget( const QString& title ):
-        QDockWidget( title ),
-        Counter( "DockWidget" ),
-        title_( 0L ),
-        locked_( false )
-    {}
-
-    //! destructor
-    virtual ~DockWidget( void )
-    {}
-
-    //! lock
-    void setLocked( bool value );
-
-    private:
-
-    // Empty titlebar for the dock widgets when "Lock Layout" has been activated.
-    class TitleBar : public QWidget
-    {
-        public:
-
-        //! constructor
-        TitleBar(QWidget* parent = 0):
-            QWidget(parent)
-        {}
-
-        //! destructor
-        virtual ~TitleBar()
-        {}
-
-        //! minimum size
-        virtual QSize minimumSizeHint() const
-        {
-            const int border = style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin);
-            return QSize(border, border);
-        }
-
-        //! size
-        virtual QSize sizeHint() const
-        { return minimumSizeHint(); }
-
-    };
-
-    //! title widget
-    TitleBar* title_;
-
-    //! locked
-    bool locked_;
 
 };
 

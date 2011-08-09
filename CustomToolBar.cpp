@@ -35,8 +35,6 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-using namespace std;
-
 //_______________________________________________________________
 CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas( void )
 {
@@ -45,15 +43,15 @@ CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas( void )
 }
 
 //_______________________________________________________________
-CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QString& option_name ):
+CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QString& optionName ):
     QToolBar( title, parent ),
     Counter( "CustomToolBar" ),
-    optionName_( option_name ),
+    optionName_( optionName ),
     sizeFromOptions_( true ),
     lockFromOptions_( true )
 {
     Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
-    if( !option_name.isEmpty() ) setObjectName( option_name );
+    if( !optionName.isEmpty() ) setObjectName( optionName );
     _installActions();
 
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
@@ -90,8 +88,8 @@ void CustomToolBar::moveEvent( QMoveEvent* event )
     QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
     if( parent )
     {
-        QString location_name( optionName_ + "_LOCATION" );
-        XmlOptions::get().setRaw( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+        QString locationName( optionName_ + "_LOCATION" );
+        XmlOptions::get().setRaw( locationName, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
     }
 
 }
@@ -112,8 +110,8 @@ void CustomToolBar::_toggleVisibility( bool state )
         QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
         if( parent )
         {
-            QString location_name( optionName_ + "_LOCATION" );
-            XmlOptions::get().setRaw( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+            QString locationName( optionName_ + "_LOCATION" );
+            XmlOptions::get().setRaw( locationName, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
         }
 
     }
@@ -158,9 +156,9 @@ void CustomToolBar::_updateConfiguration( void )
     if( parent && !optionName_.isEmpty() )
     {
 
-        QString location_name( optionName_ + "_LOCATION" );
+        QString locationName( optionName_ + "_LOCATION" );
 
-        Qt::ToolBarArea location = (XmlOptions::get().find( location_name )) ? (Qt::ToolBarArea) nameToArea( XmlOptions::get().raw( location_name ) ):Qt::TopToolBarArea;
+        Qt::ToolBarArea location = (XmlOptions::get().find( locationName )) ? (Qt::ToolBarArea) nameToArea( XmlOptions::get().raw( locationName ) ):Qt::TopToolBarArea;
         Qt::ToolBarArea current_location = parent->toolBarArea( this );
 
         // some dump
@@ -186,13 +184,13 @@ void CustomToolBar::_updateConfiguration( void )
 
         // set options according to values
         XmlOptions::get().set<bool>( optionName_, !isHidden() );
-        XmlOptions::get().setRaw( location_name, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+        XmlOptions::get().setRaw( locationName, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
 
     }
 
     // update visibility action according to state for CustomToolbars
     Debug::Throw() << "CustomToolBar::_updateConfiguration -"
-        << " option_name: " << optionName_
+        << " optionName: " << optionName_
         << " visibility: " << visibility << endl;
 
     visibilityAction().setChecked( visibility );
@@ -215,10 +213,10 @@ void CustomToolBar::_installActions( void )
 CustomToolBar::AreaMap CustomToolBar::_initializeAreas( void )
 {
     AreaMap out;
-    out.insert( make_pair( "none", Qt::NoToolBarArea ) );
-    out.insert( make_pair( "left", Qt::LeftToolBarArea ) );
-    out.insert( make_pair( "right", Qt::RightToolBarArea ) );
-    out.insert( make_pair( "top", Qt::TopToolBarArea ) );
-    out.insert( make_pair( "bottom", Qt::BottomToolBarArea ) );
+    out.insert( std::make_pair( "none", Qt::NoToolBarArea ) );
+    out.insert( std::make_pair( "left", Qt::LeftToolBarArea ) );
+    out.insert( std::make_pair( "right", Qt::RightToolBarArea ) );
+    out.insert( std::make_pair( "top", Qt::TopToolBarArea ) );
+    out.insert( std::make_pair( "bottom", Qt::BottomToolBarArea ) );
     return out;
 }
