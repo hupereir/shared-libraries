@@ -56,9 +56,7 @@ Options::Options( bool install_default_options ):
         common to all applications
         */
         keep( "PIXMAP_PATH" );
-        add( "PIXMAP_PATH", Option( ":/pixmaps/oxygen", Option::RECORDABLE|Option::CURRENT ) );
-        add( "PIXMAP_PATH", Option( ":/pixmaps/crystal" ) );
-        add( "PIXMAP_PATH", Option( ":/pixmaps" ) );
+        add( "PIXMAP_PATH", Option( ":/pixmaps", Option::RECORDABLE|Option::CURRENT ) );
 
         set( "DEBUG_LEVEL", Option( "0" , "Debug verbosity level" ) );
         set( "SORT_FILES_BY_DATE", Option( "0" , "Sort files by access date in open previous menu" ) );
