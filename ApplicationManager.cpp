@@ -66,7 +66,7 @@ ApplicationManager::ApplicationManager( QObject* parent ):
   connect( &client(), SIGNAL( commandAvailable( SERVER::ServerCommand ) ), SLOT( _process( SERVER::ServerCommand ) ) );
 
   if( !XmlOptions::get().find( "SERVER_HOST" ) )
-  { XmlOptions::get().set( "SERVER_HOST", Option( QHostAddress( QHostAddress::LocalHost ).toString(), "default port" ) ); }
+  { XmlOptions::get().set( "SERVER_HOST", Option( QHostAddress( QHostAddress::LocalHost ).toString() ) ); }
 
   if( !XmlOptions::get().find( "SERVER_PORT" ) )
   { XmlOptions::get().set( "SERVER_PORT", Option( "8090" ), "default port" ); }
@@ -132,7 +132,7 @@ void ApplicationManager::initialize( CommandLineArguments arguments )
     XmlOptions::get().setRaw( "SERVER_HOST", host );
     _setHost( QHostAddress( host ) );
 
-  } else _setHost( QHostAddress( XmlOptions::get().raw( "SERVER_HOST" ) ) );
+  } else _setHost( QHostAddress( QString( XmlOptions::get().raw( "SERVER_HOST" ) ) ) );
 
   // overwrite port from command line arguments
   if( parser.hasOption( "--server-port" ) )
