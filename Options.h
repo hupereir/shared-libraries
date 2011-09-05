@@ -132,7 +132,7 @@ class Options: public Counter
     { return _find( name )->second.get<T>(); }
 
     //! option raw value accessor
-    virtual QString raw( const QString& name ) const
+    virtual QByteArray raw( const QString& name ) const
     { return _find( name )->second.raw(); }
 
     //! option value modifier
@@ -150,11 +150,20 @@ class Options: public Counter
     }
 
     //! option raw value modifier
-    virtual void setRaw( const QString& name, const QString& value, const bool& is_default = false )
+    virtual void setRaw( const QString& name, const QByteArray& value, const bool& is_default = false )
     {
         assert( !isSpecialOption( name ) );
         Option &option( options_[name] );
         option.setRaw( value );
+        if( is_default || _autoDefault() ) option.setDefault();
+    }
+
+    //! option raw value modifier
+    virtual void setRaw( const QString& name, const QString& value, const bool& is_default = false )
+    {
+        assert( !isSpecialOption( name ) );
+        Option &option( options_[name] );
+        option.setRaw( value.toUtf8() );
         if( is_default || _autoDefault() ) option.setDefault();
     }
 

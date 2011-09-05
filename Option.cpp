@@ -44,32 +44,40 @@ QTextStream& operator >> ( QTextStream& in, bool& value )
 Option::Option():
   Counter( "Option" ),
   flags_( RECORDABLE ),
-  default_flags_( RECORDABLE )
+  defaultFlags_( RECORDABLE )
   {}
 
 //________________________________________________________
 Option::Option( const char* value, const unsigned int& flags ):
   Counter( "Option" ),
   flags_( flags ),
-  default_flags_( RECORDABLE )
+  defaultFlags_( RECORDABLE )
 {
   assert( value );
   value_ = value;
 }
 
 //________________________________________________________
-Option::Option( const QString& value, const unsigned int& flags ):
+Option::Option( const QByteArray& value, const unsigned int& flags ):
   Counter( "Option" ),
   value_( value ),
   flags_( flags ),
-  default_flags_( RECORDABLE )
+  defaultFlags_( RECORDABLE )
 {}
 
 //________________________________________________________
-Option::Option( const QString& value, const QString& comments, const unsigned int& flags ):
+Option::Option( const QString& value, const unsigned int& flags ):
+  Counter( "Option" ),
+  value_( value.toUtf8() ),
+  flags_( flags ),
+  defaultFlags_( RECORDABLE )
+{}
+
+//________________________________________________________
+Option::Option( const QByteArray& value, const QString& comments, const unsigned int& flags ):
   Counter( "Option" ),
   value_( value ),
   comments_( comments ),
   flags_( flags ),
-  default_flags_( RECORDABLE )
+  defaultFlags_( RECORDABLE )
 {}
