@@ -249,7 +249,7 @@ void TransparentWidget::_updateConfiguration( void )
     reloadBlurRegionAction_->setEnabled( _blurEnabled() );
 
     // tint
-    QColor tint_color( XmlOptions::get().raw( "TRANSPARENCY_TINT_COLOR" ) );
+    QColor tint_color( XmlOptions::get().get<QString>( "TRANSPARENCY_TINT_COLOR" ) );
     unsigned int tint_intensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_TINT_INTENSITY" ) );
     if( tint_color.isValid() && tint_intensity )
     {
@@ -258,7 +258,7 @@ void TransparentWidget::_updateConfiguration( void )
     } else _setTintColor( QColor() );
 
     // highlight
-    QColor highlight_color( XmlOptions::get().raw( "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
+    QColor highlight_color( XmlOptions::get().get<QString>( "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
     unsigned int highlight_intensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
     if( highlight_color.isValid() && highlight_intensity )
     {
