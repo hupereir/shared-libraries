@@ -338,9 +338,6 @@ void TreeView::contextMenuEvent( QContextMenuEvent* event )
 
   Debug::Throw( "TreeView::contextMenuEvent.\n" );
 
-  // base class implementation
-  // QTreeView::contextMenuEvent( event );
-
   // apparently this signal is not called any more
   emit customContextMenuRequested( event->pos() );
 

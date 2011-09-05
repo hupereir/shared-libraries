@@ -49,84 +49,84 @@ void WindowMonitor::setOptionName( const QString& name )
     Debug::Throw( "WindowMonitor::setOptionName.\n" );
     if( name.isEmpty() )
     {
-        
+
         widthOptionName_.clear();
         heightOptionName_.clear();
         xOptionName_.clear();
         yOptionName_.clear();
-        
+
     } else {
-        
+
         widthOptionName_ = name + "_WIDTH";
         heightOptionName_ = name + "_HEIGHT";
         xOptionName_ = name + "_X";
         yOptionName_ = name + "_Y";
-        
+
     }
 }
 
 //_________________________________________________________
 QSize WindowMonitor::sizeHint( void ) const
 {
-    
+
     // resize
     if( _hasOptionName() && ( _mode()&SIZE ) && XmlOptions::get().find( _widthOptionName() ) && XmlOptions::get().find( _heightOptionName() ) )
     {
-        
+
         QSize size(
             XmlOptions::get().get<int>( _widthOptionName() ),
             XmlOptions::get().get<int>( _heightOptionName() ) );
-        
+
         Debug::Throw()
             << "WindowMonitor::sizeHint - ("
             << size.width() << ","
             << size.height() << ")"
             << endl;
-        
+
         return size;
-        
+
     } else return QSize();
-    
+
 }
 
 //_______________________________________________________
 QPoint WindowMonitor::position( void ) const
 {
-    
+
     // resize
     if( _hasOptionName() && ( _mode()&POSITION ) && XmlOptions::get().find( _xOptionName() ) && XmlOptions::get().find( _yOptionName() ) )
     {
-        
+
         QPoint position(
             XmlOptions::get().get<int>( _xOptionName() ),
             XmlOptions::get().get<int>( _yOptionName() ) );
-        
+
         Debug::Throw()
             << "WindowMonitor::position - ("
             << position.x() << ","
             << position.y() << ")"
             << endl;
-        
+
         return position;
-        
+
     } else return QPoint();
-    
+
 }
 
 //_______________________________________________________
 bool WindowMonitor::eventFilter( QObject* target, QEvent* event )
 {
-    
+
     if( target != parent()  ) return false;
     if( !_hasOptionName() ) return false;
     if(
         (event->type() == QEvent::Resize && ( _mode()&SIZE )) ||
         (event->type() == QEvent::Move && ( _mode()&POSITION ) ) )
     { timer_.start( 200, this ); }
-        
+
     return false;
 }
-    
+
 //_______________________________________________________
 void WindowMonitor::timerEvent( QTimerEvent* event )
 {

@@ -215,14 +215,11 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
     ToolBarMenu* menu = new ToolBarMenu( parent );
 
-    bool has_lockable_toolbars( installToolBarsActions( *menu->addMenu( "&ToolBars" ) ) );
-    if( has_lockable_toolbars )
-    {
-        menu->addSeparator();
-        menu->addAction( &lockToolBarsAction() );
-    }
+    const bool hasLockableToolbars( installToolBarsActions( *menu->addMenu( "&ToolBars" ) ) );
+    bool needSeparator( hasLockableToolbars || _hasMenuBar() || _hasStatusBar() || _hasDockWidgets() );
+    if( needSeparator ) menu->addSeparator();
 
-    // show/hide menu
+    if( hasLockableToolbars ) menu->addAction( &lockToolBarsAction() );
     if( _hasMenuBar() ) menu->addAction( &showMenuBarAction() );
     if( _hasStatusBar() ) menu->addAction( &showStatusBarAction() );
     if( _hasDockWidgets() ) menu->addAction(&lockLayoutAction() );
@@ -236,7 +233,7 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
 {
     Debug::Throw( "BaseMainWindow::installToolBarsActions.\n" );
 
-    bool has_lockable_toolbars( false );
+    bool hasLockableToolbars( false );
     QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
     for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
     {
@@ -260,7 +257,7 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
         }
 
         // skip if lockable toolbar was already found
-        if( has_lockable_toolbars ) continue;
+        if( hasLockableToolbars ) continue;
 
         // skip if parent is not this
         if( !((*iter)->parentWidget() == this) ) continue;
@@ -268,11 +265,11 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
         // try cast to CustomToolBar and check for 'lock from options'
         if( toolbar && toolbar->lockFromOptions() ) continue;
 
-        has_lockable_toolbars = true;
+        hasLockableToolbars = true;
 
     }
 
-    return has_lockable_toolbars;
+    return hasLockableToolbars;
 
 }
 

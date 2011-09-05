@@ -32,6 +32,13 @@
 \date $Date$
 */
 
+
+#include "CustomToolButton.h"
+#include "Debug.h"
+#include "IconSize.h"
+#include "WindowMonitor.h"
+#include "XmlOptions.h"
+
 #include <cassert>
 
 #include <QtGui/QAction>
@@ -41,12 +48,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QStatusBar>
 #include <QtGui/QStyle>
-
-#include "CustomToolButton.h"
-#include "Debug.h"
-#include "IconSize.h"
-#include "WindowMonitor.h"
-#include "XmlOptions.h"
 
 class ToolBarMenu;
 

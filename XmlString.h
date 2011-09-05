@@ -25,50 +25,50 @@
 *******************************************************************************/
 
 /*!
-   \file XmlString.h
-   \brief Some Xml utilities
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file XmlString.h
+\brief Some Xml utilities
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <list>
 #include <QString>
 
 /*!
-   \class XmlString
-   \brief Some Xml utilities
+\class XmlString
+\brief Some Xml utilities
 */
 
 class XmlString: public QString
 {
-
-  public:
-
-  //! constructor
-  XmlString( const QString& value ):
-    QString( value )
+    
+    public:
+    
+    //! constructor
+    XmlString( const QString& value ):
+        QString( value )
     {}
+        
+    //! convert input string from text to xml
+    QString toXml( void ) const;
 
-  //! convert input string from text to xml
-  QString toXml( void ) const;
+    //! convert input string from xml to text
+    QString toText( void ) const;
 
-  //! convert input string from xml to text
-  QString toText( void ) const;
+    private:
 
-  private:
+    //! text to Xml conversion pair type
+    typedef std::pair<QString, QString> Conversion;
 
-  //! text to Xml conversion pair type
-  typedef std::pair<QString, QString> Conversion;
+    //! text to Xml conversion pair type
+    typedef std::list< Conversion > ConversionList;
 
-  //! text to Xml conversion pair type
-  typedef std::list< Conversion > ConversionList;
+    //! initialize Xml to text conversion pair list
+    void _initConversions( void ) const;
 
-  //! initialize Xml to text conversion pair list
-  void _initConversions( void ) const;
-
-  //! text to Xml conversion pair list
-  static ConversionList& _conversions( void );
+    //! text to Xml conversion pair list
+    static ConversionList& _conversions( void );
 
 
 };

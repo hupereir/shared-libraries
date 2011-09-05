@@ -88,7 +88,7 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
 
     out.
         appendChild( document.createElement( OPTIONS::VALUE ) ).
-        appendChild( document.createTextNode( XmlString( raw() ).toXml() ) );
+        appendChild( document.createTextNode( XmlString( QString::fromUtf8( raw(), raw().size() ) ).toXml() ) );
 
     out.
         appendChild( document.createElement( OPTIONS::FLAGS ) ).
