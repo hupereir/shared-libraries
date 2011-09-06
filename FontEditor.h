@@ -24,11 +24,11 @@
 *******************************************************************************/
 
 /*!
-  \file FontEditor.h
-  \brief readonly font name display and font dialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file FontEditor.h
+\brief readonly font name display and font dialog
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QFont>
@@ -43,60 +43,60 @@
 class FontEditor: public QWidget, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  FontEditor( QWidget *parent );
+        //! constructor
+        FontEditor( QWidget *parent );
 
-  //! display font
-  virtual void setFont( const QFont& font )
-  {
-    font_ = font;
-    _updateLabel();
-  }
+    //! display font
+    virtual void setFont( const QFont& font )
+    {
+        font_ = font;
+        _updateLabel();
+    }
 
-  //! display font
-  virtual void setFont( const QString& font )
-  {
-    font_.fromString( font );
-    _updateLabel();
-  }
+    //! display font
+    virtual void setFont( const QString& font )
+    {
+        font_.fromString( font );
+        _updateLabel();
+    }
 
-  //! retrieve font
-  virtual const QFont& font( void ) const
-  { return font_; }
+    //! retrieve font
+    virtual const QFont& font( void ) const
+    { return font_; }
 
-  protected slots:
+    protected slots:
 
-  //! select font from dialog
-  virtual void _selectFont( void )
-  {
-    bool ok( false );
-    QFont font = QFontDialog::getFont( &ok, this->font(), this );
-    if( ok ) setFont( font );
-    return;
-  }
+    //! select font from dialog
+    virtual void _selectFont( void )
+    {
+        bool ok( false );
+        QFont font = QFontDialog::getFont( &ok, this->font(), this );
+        if( ok ) setFont( font );
+        return;
+    }
 
-  protected:
+    protected:
 
-  //! update label
-  virtual void _updateLabel( void )
-  {
-    QString buffer;
-    QTextStream( &buffer ) << font().family() << ", " << font().pointSize() << "pt";
-    label_->setText( buffer );
-  }
+    //! update label
+    virtual void _updateLabel( void )
+    {
+        QString buffer;
+        QTextStream( &buffer ) << font().family() << ", " << font().pointSize() << "pt";
+        label_->setText( buffer );
+    }
 
-  private:
+    private:
 
-  //! font name
-  AnimatedLineEditor* label_;
+    //! font name
+    AnimatedLineEditor* label_;
 
-  //! selected font
-  QFont font_;
+    //! selected font
+    QFont font_;
 
 };
 #endif

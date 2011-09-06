@@ -1,4 +1,4 @@
-  // $Id$
+// $Id$
 
 /******************************************************************************
 *
@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file FontEditor.cpp
-  \brief three line editors and a browser to select fonts
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file FontEditor.cpp
+\brief three line editors and a browser to select fonts
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QHBoxLayout>
@@ -40,34 +40,34 @@ using namespace std;
 
 //______________________________________________
 FontEditor::FontEditor( QWidget *parent ):
-  QWidget( parent ),
-  Counter( "FontEditor" )
+    QWidget( parent ),
+    Counter( "FontEditor" )
 {
 
-  QHBoxLayout *layout( new QHBoxLayout() );
-  layout->setMargin(0);
-  layout->setSpacing(2);
-  setLayout( layout );
+    QHBoxLayout *layout( new QHBoxLayout() );
+    layout->setMargin(0);
+    layout->setSpacing(2);
+    setLayout( layout );
 
-  label_ =  new AnimatedLineEditor( this );
-  label_->setReadOnly( true );
-  label_->setHasClearButton( false );
-  label_->setAlignment( Qt::AlignCenter );
-  label_->setFont( font() );
-  layout->addWidget( label_, 1 );
+    label_ =  new AnimatedLineEditor( this );
+    label_->setReadOnly( true );
+    label_->setHasClearButton( false );
+    label_->setAlignment( Qt::AlignCenter );
+    label_->setFont( font() );
+    layout->addWidget( label_, 1 );
 
-  // update palette
-  QPalette palette( label_->palette() );
-  palette.setBrush( QPalette::Base, palette.brush( QPalette::Window ) );
-  label_->setPalette( palette );
+    // update palette
+    QPalette palette( label_->palette() );
+    palette.setBrush( QPalette::Base, palette.brush( QPalette::Window ) );
+    label_->setPalette( palette );
 
-  // create push_button
-  QToolButton *button( new QToolButton( this ) );
-  button->setIcon( IconEngine::get( ICONS::OPEN ) );
-  button->setAutoRaise( false );
-  layout->addWidget( button, 0 );
+    // create push_button
+    QToolButton *button( new QToolButton( this ) );
+    button->setAutoRaise( true );
+    button->setIcon( IconEngine::get( ICONS::OPEN ) );
+    layout->addWidget( button, 0 );
 
-  // connect push_button
-  connect( button, SIGNAL( clicked() ), SLOT( _selectFont() ) );
-  setFont( font() );
+    // connect push_button
+    connect( button, SIGNAL( clicked() ), SLOT( _selectFont() ) );
+    setFont( font() );
 }

@@ -42,63 +42,63 @@ class ColorGrabButton;
 class ColorDisplay: public QWidget, public Counter
 {
 
-  //! Qt metaobject macro
-  Q_OBJECT
-
-  public:
-
-  //! default name for no color
-  static const QString NONE;
-
-  //! constructor
-  ColorDisplay( QWidget* parent );
-
-  //! retrieve color name
-  QString colorName( void ) const
-  {
-    QString out( editor_.text() );
-    return out.isEmpty() ? NONE:out;
-  }
-
-  public slots:
-
-  //! set color
-  void setColor( QString );
-
-  private slots:
-
-  //! change color (from button)
-  void _selectColorFromDialog( void );
-
-  //! change color (from line editor)
-  void _selectColorFromText( void );
-
-  private:
-
-  //! internal customized label to have correct background color
-  class LocalLineEdit : public AnimatedLineEditor
-  {
+    //! Qt metaobject macro
+    Q_OBJECT
 
     public:
 
-    //! constructor
-    LocalLineEdit( QWidget *parent ):
-      AnimatedLineEditor( parent )
-    {}
+    //! default name for no color
+    static const QString NONE;
 
-    //! retrieve color
-    QColor color( void ) const;
+    //! constructor
+    ColorDisplay( QWidget* parent );
+
+    //! retrieve color name
+    QString colorName( void ) const
+    {
+        QString out( editor_.text() );
+        return out.isEmpty() ? NONE:out;
+    }
+
+    public slots:
 
     //! set color
-    void setColor( QColor color );
+    void setColor( QString );
 
-  };
+    private slots:
 
-  //! label used to display the color
-  LocalLineEdit editor_;
+    //! change color (from button)
+    void _selectColorFromDialog( void );
 
-  //! grab button
-  ColorGrabButton* grab_button_;
+    //! change color (from line editor)
+    void _selectColorFromText( void );
+
+    private:
+
+    //! internal customized label to have correct background color
+    class LocalLineEdit : public AnimatedLineEditor
+    {
+
+        public:
+
+        //! constructor
+        LocalLineEdit( QWidget *parent ):
+            AnimatedLineEditor( parent )
+        {}
+
+        //! retrieve color
+        QColor color( void ) const;
+
+        //! set color
+        void setColor( QColor color );
+
+    };
+
+    //! label used to display the color
+    LocalLineEdit editor_;
+
+    //! grab button
+    ColorGrabButton* grabButton_;
 
 };
 #endif

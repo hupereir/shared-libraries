@@ -69,6 +69,8 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
 
     // create push_button
     QToolButton *button = new QToolButton( this );
+    button->setAutoRaise( true );
+
     button->setIcon( IconEngine::get( ICONS::OPEN ) );
     button->setToolTip( "Browse file system" );
     layout->addWidget( button, 0 );

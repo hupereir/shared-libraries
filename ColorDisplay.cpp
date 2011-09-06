@@ -52,127 +52,129 @@ const QString ColorDisplay::NONE = "None";
 
 //______________________________________________
 ColorDisplay::ColorDisplay( QWidget* parent ):
-  QWidget( parent ),
-  Counter( "ColorDisplay" ),
-  editor_( this )
+    QWidget( parent ),
+    Counter( "ColorDisplay" ),
+    editor_( this )
 {
-  Debug::Throw( "ColorDisplay::ColorDisplay.\n" );
+    Debug::Throw( "ColorDisplay::ColorDisplay.\n" );
 
-  QHBoxLayout *layout = new QHBoxLayout();
-  layout->setMargin(0);
-  layout->setSpacing(2);
-  setLayout( layout );
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->setMargin(0);
+    layout->setSpacing(2);
+    setLayout( layout );
 
-  editor_.setHasClearButton( false );
-  editor_.setAlignment( Qt::AlignCenter );
-  layout->addWidget( &editor_, 1 );
-  connect( &editor_, SIGNAL( returnPressed() ), SLOT( _selectColorFromText() ) );
+    editor_.setHasClearButton( false );
+    editor_.setAlignment( Qt::AlignCenter );
+    layout->addWidget( &editor_, 1 );
+    connect( &editor_, SIGNAL( returnPressed() ), SLOT( _selectColorFromText() ) );
 
-  // browse button
-  QToolButton *button;
-  layout->addWidget( button = new QToolButton( this ), 0 );
-  button->setIcon( IconEngine::get( ICONS::OPEN ) );
-  button->setToolTip( "Select color from dialog" );
-  connect( button, SIGNAL( clicked( void ) ), SLOT( _selectColorFromDialog( void ) ) );
+    // browse button
+    QToolButton *button;
+    layout->addWidget( button = new QToolButton( this ), 0 );
+    button->setAutoRaise( true );
+    button->setIcon( IconEngine::get( ICONS::OPEN ) );
+    button->setToolTip( "Select color from dialog" );
+    connect( button, SIGNAL( clicked( void ) ), SLOT( _selectColorFromDialog( void ) ) );
 
-  // grab button
-  layout->addWidget( grab_button_ = new ColorGrabButton( this ), 0 );
-  grab_button_->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
-  grab_button_->setToolTip( "Grap color from screen" );
-  connect( grab_button_, SIGNAL( colorSelected( QString ) ), SLOT( setColor( QString ) ) );
+    // grab button
+    layout->addWidget( grabButton_ = new ColorGrabButton( this ), 0 );
+    grabButton_->setAutoRaise( true );
+    grabButton_->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
+    grabButton_->setToolTip( "Grap color from screen" );
+    connect( grabButton_, SIGNAL( colorSelected( QString ) ), SLOT( setColor( QString ) ) );
 
 }
 
 //________________________________________________________
 void ColorDisplay::setColor( QString color )
 {
-  Debug::Throw( "ColorDisplay::setColor.\n" );
-  editor_.setText( color );
-  editor_.setColor( color == NONE ? palette().color( QPalette::Window ):QColor(color) );
+    Debug::Throw( "ColorDisplay::setColor.\n" );
+    editor_.setText( color );
+    editor_.setColor( color == NONE ? palette().color( QPalette::Window ):QColor(color) );
 }
 
 //________________________________________________________
 void ColorDisplay::_selectColorFromDialog( void )
 {
-  Debug::Throw( "ColorDisplay::_selectColor.\n" );
-  QColor color( QColorDialog::getColor( editor_.color(), this ) );
-  if( color.isValid() ) setColor( color.name() );
+    Debug::Throw( "ColorDisplay::_selectColor.\n" );
+    QColor color( QColorDialog::getColor( editor_.color(), this ) );
+    if( color.isValid() ) setColor( color.name() );
 }
 
 //________________________________________________________
 void ColorDisplay::_selectColorFromText( void )
 {
-  Debug::Throw( "ColorDisplay::_selectColorFromText.\n" );
+    Debug::Throw( "ColorDisplay::_selectColorFromText.\n" );
 
-  QColor color;
-  QString text = editor_.text();
+    QColor color;
+    QString text = editor_.text();
 
-  if( text != NONE )
-  {
-    color = QColor( text );
-    if( !color.isValid() )
+    if( text != NONE )
+    {
+        color = QColor( text );
+        if( !color.isValid() )
+        {
+
+            QString buffer;
+            QTextStream what( &buffer );
+            if( !( text.isNull() || text.isEmpty() ) ) what << "Invalid color: " << text;
+            else what << "Invalid color";
+
+            InformationDialog( this,buffer ).exec();
+            editor_.setText( NONE );
+        }
+    }
+
+    if( color.isValid() )
     {
 
-      QString buffer;
-      QTextStream what( &buffer );
-      if( !( text.isNull() || text.isEmpty() ) ) what << "Invalid color: " << text;
-      else what << "Invalid color";
+        editor_.setColor( color );
+        editor_.setText( color.name() );
 
-      InformationDialog( this,buffer ).exec();
-      editor_.setText( NONE );
-    }
-  }
-
-  if( color.isValid() )
-  {
-
-    editor_.setColor( color );
-    editor_.setText( color.name() );
-
-  } else editor_.setColor( palette().color( QPalette::Window ) );
+    } else editor_.setColor( palette().color( QPalette::Window ) );
 
 }
 
 //_______________________________________________
 QColor ColorDisplay::LocalLineEdit::color( void ) const
 {
-  Debug::Throw( "ColorDisplay::LocalLineEdit::color.\n" );
-  QString text( AnimatedLineEditor::text() );
-  if( text == ColorDisplay::NONE || text.isEmpty() ) return QColor();
-  else return QColor( text );
+    Debug::Throw( "ColorDisplay::LocalLineEdit::color.\n" );
+    QString text( AnimatedLineEditor::text() );
+    if( text == ColorDisplay::NONE || text.isEmpty() ) return QColor();
+    else return QColor( text );
 }
 
 //_________________________________________________________
 void ColorDisplay::LocalLineEdit::setColor( QColor color )
 {
-  Debug::Throw( "ColorDisplay::LocalLineEdit::setColor.\n" );
+    Debug::Throw( "ColorDisplay::LocalLineEdit::setColor.\n" );
 
-  // check color validity
-  if( !color.isValid() )
-  {
+    // check color validity
+    if( !color.isValid() )
+    {
 
-    QString buffer;
-    QTextStream what( &buffer );
-    if( !( text().isNull() || text().isEmpty() ) ) what << "Invalid color: " << text();
-    else what << "Invalid color";
+        QString buffer;
+        QTextStream what( &buffer );
+        if( !( text().isNull() || text().isEmpty() ) ) what << "Invalid color: " << text();
+        else what << "Invalid color";
 
-    InformationDialog( this, buffer ).exec();
+        InformationDialog( this, buffer ).exec();
 
-    // update text
-    setText( NONE );
+        // update text
+        setText( NONE );
 
-    // reassign color
-    color = QLineEdit().palette().color( QPalette::Base );
+        // reassign color
+        color = QLineEdit().palette().color( QPalette::Base );
 
-  }
+    }
 
-  // retrieve palette, change background/foreground
-  QPalette palette( ColorDisplay::LocalLineEdit::palette() );
-  palette.setColor( QPalette::Base, color );
-  palette.setColor( QPalette::Text, (color.value() >= 175) ? Qt::black:Qt::white );
+    // retrieve palette, change background/foreground
+    QPalette palette( ColorDisplay::LocalLineEdit::palette() );
+    palette.setColor( QPalette::Base, color );
+    palette.setColor( QPalette::Text, (color.value() >= 175) ? Qt::black:Qt::white );
 
-  // update
-  setPalette(palette);
-  update();
+    // update
+    setPalette(palette);
+    update();
 
 }
