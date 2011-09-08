@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = foreign
+ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = base-help.pro
 
 INCLUDES =  \
