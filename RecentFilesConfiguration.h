@@ -78,7 +78,7 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
 
     //! file list
     FileList& _recentFiles( void ) const
-    { return *recent_files_; }
+    { return *recentFiles_; }
 
     //! model
     FileRecordModel& _model( void )
@@ -119,7 +119,7 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
     private:
 
     //! file list
-    FileList* recent_files_;
+    FileList* recentFiles_;
 
     //! file record model
     FileRecordModel model_;

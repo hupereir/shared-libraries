@@ -1,38 +1,38 @@
 <!DOCTYPE RCC><RCC version="1.0">
   <qresource>
 
-    <file alias="pixmaps/add.png">../base-pixmaps/add.png</file>
-    <file alias="pixmaps/button_cancel.png">../base-pixmaps/button_cancel.png</file>
-    <file alias="pixmaps/clear_left.png">../base-pixmaps/clear_left.png</file>
-    <file alias="pixmaps/color.png">../base-pixmaps/color.png</file>
-    <file alias="pixmaps/colorpicker.png">../base-pixmaps/colorpicker.png</file>
+    <file alias="pixmaps/application-exit.png">../base-pixmaps/application-exit.png</file>
+    <file alias="pixmaps/color-picker.png">../base-pixmaps/color-picker.png</file>
     <file alias="pixmaps/configure.png">../base-pixmaps/configure.png</file>
+    <file alias="pixmaps/dialog-cancel.png">../base-pixmaps/dialog-cancel.png</file>
+    <file alias="pixmaps/dialog-close.png">../base-pixmaps/dialog-close.png</file>
     <file alias="pixmaps/dialog-information.png">../base-pixmaps/dialog-information.png</file>
     <file alias="pixmaps/dialog-ok-apply.png">../base-pixmaps/dialog-ok-apply.png</file>
     <file alias="pixmaps/dialog-ok.png">../base-pixmaps/dialog-ok.png</file>
-    <file alias="pixmaps/dialog-cancel.png">../base-pixmaps/dialog-cancel.png</file>
-    <file alias="pixmaps/dialog-close.png">../base-pixmaps/dialog-close.png</file>
+    <file alias="pixmaps/document-encrypt.png">../base-pixmaps/document-encrypt.png</file>
+    <file alias="pixmaps/document-open-folder.png">../base-pixmaps/document-open-folder.png</file>
+    <file alias="pixmaps/document-open.png">../base-pixmaps/document-open.png</file>
+    <file alias="pixmaps/document-print.png">../base-pixmaps/document-print.png</file>
+    <file alias="pixmaps/edit-clear-locationbar-rtl.png">../base-pixmaps/edit-clear-locationbar-rtl.png</file>
+    <file alias="pixmaps/edit-copy.png">../base-pixmaps/edit-copy.png</file>
+    <file alias="pixmaps/edit-cut.png">../base-pixmaps/edit-cut.png</file>
+    <file alias="pixmaps/edit-paste.png">../base-pixmaps/edit-paste.png</file>
     <file alias="pixmaps/edit.png">../base-pixmaps/edit.png</file>
-    <file alias="pixmaps/editcopy.png">../base-pixmaps/editcopy.png</file>
-    <file alias="pixmaps/editcut.png">../base-pixmaps/editcut.png</file>
-    <file alias="pixmaps/editpaste.png">../base-pixmaps/editpaste.png</file>
+    <file alias="pixmaps/edit-redo.png">../base-pixmaps/edit-redo.png</file>
     <file alias="pixmaps/edit-rename.png">../base-pixmaps/edit-rename.png</file>
-    <file alias="pixmaps/encrypted.png">../base-pixmaps/encrypted.png</file>
-    <file alias="pixmaps/exit.png">../base-pixmaps/exit.png</file>
-    <file alias="pixmaps/fileopen.png">../base-pixmaps/fileopen.png</file>
-    <file alias="pixmaps/fileopen-folder.png">../base-pixmaps/fileopen-folder.png</file>
-    <file alias="pixmaps/fileprint.png">../base-pixmaps/fileprint.png</file>
+    <file alias="pixmaps/edit-undo.png">../base-pixmaps/edit-undo.png</file>
+    <file alias="pixmaps/format-fill-color.png">../base-pixmaps/format-fill-color.png</file>
+    <file alias="pixmaps/help-contents.png">../base-pixmaps/help-contents.png</file>
+    <file alias="pixmaps/list-add.png">../base-pixmaps/list-add.png</file>
+    <file alias="pixmaps/list-remove.png">../base-pixmaps/list-remove.png</file>
     <file alias="pixmaps/messagebox_warning.png">../base-pixmaps/messagebox_warning.png</file>
     <file alias="pixmaps/qt-logo.png">../base-pixmaps/qt-logo.png</file>
-    <file alias="pixmaps/redo.png">../base-pixmaps/redo.png</file>
-    <file alias="pixmaps/reload.png">../base-pixmaps/reload.png</file>
     <file alias="pixmaps/run-build.png">../base-pixmaps/run-build.png</file>
     <file alias="pixmaps/show-menu.png">../base-pixmaps/show-menu.png</file>
-    <file alias="pixmaps/toggle_log.png">../base-pixmaps/toggle_log.png</file>
-    <file alias="pixmaps/trashcan_empty.png">../base-pixmaps/trashcan_empty.png</file>
-    <file alias="pixmaps/undo.png">../base-pixmaps/undo.png</file>
-    <file alias="pixmaps/viewmag.png">../base-pixmaps/viewmag.png</file>
-    <file alias="pixmaps/viewmag-large.png">../base-pixmaps/viewmag-large.png</file>
+    <file alias="pixmaps/user-trash.png">../base-pixmaps/user-trash.png</file>
+    <file alias="pixmaps/view-refresh.png">../base-pixmaps/view-refresh.png</file>
+    <file alias="pixmaps/zoom-in-large.png">../base-pixmaps/zoom-in-large.png</file>
+    <file alias="pixmaps/zoom-in.png">../base-pixmaps/zoom-in.png</file>
 
 </qresource>
 </RCC>

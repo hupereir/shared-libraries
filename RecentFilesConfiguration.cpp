@@ -51,7 +51,7 @@ using namespace std;
 RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& recent_files ):
     QWidget( parent ),
     Counter( "RecentFilesConfiguration" ),
-    recent_files_( &recent_files )
+    recentFiles_( &recent_files )
 {
     Debug::Throw( "RecentFilesConfiguration::RecentFilesConfiguration.\n" );
 
