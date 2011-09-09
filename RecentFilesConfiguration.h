@@ -26,10 +26,10 @@
 *******************************************************************************/
 
 /*!
-   \file    RecentFilesConfiguration.h
-   \brief   configure files in recent files menu
-   \version $Revision$
-   \date    $Date$
+\file    RecentFilesConfiguration.h
+\brief   configure files in recent files menu
+\version $Revision$
+\date    $Date$
 */
 
 #include <QAction>
@@ -47,108 +47,108 @@ class TreeView;
 class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  RecentFilesConfiguration( QWidget*, FileList& );
+        //! constructor
+        RecentFilesConfiguration( QWidget*, FileList& );
 
-  //! read options
-  virtual void read( void );
+    //! read options
+    virtual void read( void );
 
-  //! read options
-  virtual void write( void ) const;
+    //! read options
+    virtual void write( void ) const;
 
-  private slots:
+    private slots:
 
-  //! update actions
-  void _updateButtons( void );
+    //! update actions
+    void _updateButtons( void );
 
-  //! clean
-  void _clean( void );
+    //! clean
+    void _clean( void );
 
-  //! remove
-  void _remove( void );
+    //! remove
+    void _remove( void );
 
-  //! reload
-  void _reload( void );
+    //! reload
+    void _reload( void );
 
-  protected:
+    protected:
 
-  //! file list
-  FileList& _recentFiles( void ) const
-  { return *recent_files_; }
+    //! file list
+    FileList& _recentFiles( void ) const
+    { return *recent_files_; }
 
-  //! model
-  FileRecordModel& _model( void )
-  { return model_; }
+    //! model
+    FileRecordModel& _model( void )
+    { return model_; }
 
-  //! model
-  const FileRecordModel& _model( void ) const
-  { return model_; }
+    //! model
+    const FileRecordModel& _model( void ) const
+    { return model_; }
 
-  //! list
-  TreeView& _list( void ) const
-  { return *list_; }
+    //! list
+    TreeView& _list( void ) const
+    { return *list_; }
 
-  //! clean
-  QPushButton& _cleanButton( void ) const
-  { return *clean_button_; }
+    //! clean
+    QPushButton& _cleanButton( void ) const
+    { return *cleanButton_; }
 
-  //! remove
-  QPushButton& _removeButton( void ) const
-  { return *remove_button_; }
+    //! remove
+    QPushButton& _removeButton( void ) const
+    { return *removeButton_; }
 
-  //! reload
-  QPushButton& _reloadButton( void ) const
-  { return *reload_button_; }
+    //! reload
+    QPushButton& _reloadButton( void ) const
+    { return *reloadButton_; }
 
-  //! clean
-  QAction& _cleanAction( void ) const
-  { return *clean_action_; }
+    //! clean
+    QAction& _cleanAction( void ) const
+    { return *cleanAction_; }
 
-  //! remove
-  QAction& _removeAction( void ) const
-  { return *remove_action_; }
+    //! remove
+    QAction& _removeAction( void ) const
+    { return *removeAction_; }
 
-  //! reload
-  QAction& _reloadAction( void ) const
-  { return *reload_action_; }
+    //! reload
+    QAction& _reloadAction( void ) const
+    { return *reloadAction_; }
 
-  private:
+    private:
 
-  //! file list
-  FileList* recent_files_;
+    //! file list
+    FileList* recent_files_;
 
-  //! file record model
-  FileRecordModel model_;
+    //! file record model
+    FileRecordModel model_;
 
-  //! file record list
-  TreeView* list_;
+    //! file record list
+    TreeView* list_;
 
-  //! clean
-  QPushButton *clean_button_;
+    //! clean
+    QPushButton *cleanButton_;
 
-  //! remove
-  QPushButton *remove_button_;
+    //! remove
+    QPushButton *removeButton_;
 
-  //! reload
-  QPushButton *reload_button_;
+    //! reload
+    QPushButton *reloadButton_;
 
-  //!@name actions
-  //@{
+    //!@name actions
+    //@{
 
-  //! clean action
-  QAction* clean_action_;
+    //! clean action
+    QAction* cleanAction_;
 
-  //! remove action
-  QAction* remove_action_;
+    //! remove action
+    QAction* removeAction_;
 
-  //! remove action
-  QAction* reload_action_;
+    //! remove action
+    QAction* reloadAction_;
 
-  //@}
+    //@}
 
 };
 
