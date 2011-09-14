@@ -24,7 +24,6 @@
 #include "BaseMainWindow.h"
 
 #include "BaseIcons.h"
-#include "CustomDockWidget.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
 #include "CustomToolBar.h"
@@ -54,12 +53,6 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
     lockToolBarsAction().setCheckable( true );
     lockToolBarsAction().setChecked( true );
     connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
-
-    // lock layout
-    addAction( lockLayoutAction_ = new QAction( "&Lock Layout", this ) );
-    lockLayoutAction().setCheckable( true );
-    lockLayoutAction().setChecked( false );
-    connect( &lockLayoutAction(), SIGNAL( toggled( bool ) ), SLOT( _lockLayout( bool ) ) );
 
     // show menu action
     addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "&Show Menu Bar", this ) );
@@ -93,7 +86,6 @@ void BaseMainWindow::setOptionName( const QString& name )
     if( name.isEmpty() ) {
 
         lockToolBarsOptionName_.clear();
-        lockLayoutOptionName_.clear();
         showMenuBarOptionName_.clear();
         showStatusBarOptionName_.clear();
 
@@ -102,10 +94,6 @@ void BaseMainWindow::setOptionName( const QString& name )
         lockToolBarsOptionName_ = name+"_LOCK_TOOLBARS";
         if( !XmlOptions::get().find( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
         else { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
-
-        lockLayoutOptionName_ = name+"_LOCK_LAYOUT";
-        if( !XmlOptions::get().find( lockLayoutOptionName() ) ) XmlOptions::get().set<bool>( lockLayoutOptionName(), lockLayoutAction().isChecked() );
-        else { lockLayoutAction().setChecked( XmlOptions::get().get<bool>( lockLayoutOptionName() ) ); }
 
         showMenuBarOptionName_ = name+"_SHOW_MENU";
         if( !XmlOptions::get().find( showMenuBarOptionName() ) ) XmlOptions::get().set<bool>( showMenuBarOptionName(), showMenuBarAction().isChecked() );
@@ -192,7 +180,6 @@ QMenu* BaseMainWindow::createPopupMenu( void )
         QMenu* menu = new QMenu( this );
         if( _hasMenuBar() ) menu->addAction(&showMenuBarAction() );
         if( _hasStatusBar() ) menu->addAction(&showStatusBarAction() );
-        if( _hasDockWidgets() ) menu->addAction(&lockLayoutAction() );
         return menu;
 
     } else {
@@ -216,13 +203,12 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     ToolBarMenu* menu = new ToolBarMenu( parent );
 
     const bool hasLockableToolbars( installToolBarsActions( *menu->addMenu( "&ToolBars" ) ) );
-    bool needSeparator( hasLockableToolbars || _hasMenuBar() || _hasStatusBar() || _hasDockWidgets() );
+    bool needSeparator( hasLockableToolbars || _hasMenuBar() || _hasStatusBar() );
     if( needSeparator ) menu->addSeparator();
 
     if( hasLockableToolbars ) menu->addAction( &lockToolBarsAction() );
     if( _hasMenuBar() ) menu->addAction( &showMenuBarAction() );
     if( _hasStatusBar() ) menu->addAction( &showStatusBarAction() );
-    if( _hasDockWidgets() ) menu->addAction(&lockLayoutAction() );
 
     return *menu;
 
@@ -338,13 +324,6 @@ bool BaseMainWindow::_hasToolBars( void ) const
     return (bool) qFindChild<QToolBar*>( this );
 }
 
-//________________________________________________________________
-bool BaseMainWindow::_hasDockWidgets( void ) const
-{
-    Debug::Throw( "BaseMainWindow::_hasDockWidgets.\n" );
-    return (bool) qFindChild<CustomDockWidget*>( this );
-}
-
 //____________________________________________________________
 void BaseMainWindow::_updateConfiguration( void )
 {
@@ -364,10 +343,6 @@ void BaseMainWindow::_updateConfiguration( void )
         // toolbars locked
         if( XmlOptions::get().find( lockToolBarsOptionName() ) )
         { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
-
-        // toolbars locked
-        if( XmlOptions::get().find( lockLayoutOptionName() ) )
-        { lockLayoutAction().setChecked( XmlOptions::get().get<bool>( lockLayoutOptionName() ) ) ; }
 
         // menu visibility
         if( XmlOptions::get().find( showMenuBarOptionName() ) )
@@ -446,21 +421,5 @@ void BaseMainWindow::_toggleStatusBar( bool value )
 
     // save option
     if( hasOptionName() ) XmlOptions::get().set<bool>( showStatusBarOptionName(), value );
-
-}
-
-//________________________________________________________________________________________
-void BaseMainWindow::_lockLayout( bool value )
-{
-    Debug::Throw() << "BaseMainWindow::_lockLayout - locked: " << value << endl;
-
-    if( hasOptionName() ) XmlOptions::get().set<bool>( lockLayoutOptionName(), value );
-
-    // loop over dock widgets and toggle
-    foreach( QObject* child, children() )
-    {
-        CustomDockWidget* dock = qobject_cast<CustomDockWidget*>(child);
-        if( dock ) dock->setLocked( value );
-    }
 
 }

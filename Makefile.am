@@ -36,7 +36,6 @@ noinst_HEADERS = \
   CounterModel.h \
   CursorMonitor.h \
   CustomComboBox.h \
-  CustomDockWidget.h \
   CustomDialog.h \
   CustomPixmap.h \
   CustomSlider.h \
@@ -162,7 +161,6 @@ libbase_qt_a_SOURCES = \
   CursorMonitor.cpp \
   CustomComboBox.cpp \
   CustomDialog.cpp \
-  CustomDockWidget.cpp \
   CustomPixmap.cpp \
   CustomSlider.cpp \
   CustomToolBar.cpp \
@@ -254,7 +252,6 @@ nodist_libbase_qt_a_SOURCES = \
   moc_ColumnSortingMenu.cpp \
   moc_ClockLabel.cpp \
   moc_CounterDialog.cpp \
-  moc_CustomDockWidget.cpp \
   moc_CustomComboBox.cpp \
   moc_CustomSlider.cpp \
   moc_CustomTextDocument.cpp \

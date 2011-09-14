@@ -43,7 +43,6 @@
 
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
-#include <QtGui/QDockWidget>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QStatusBar>
@@ -101,13 +100,6 @@ class BaseMainWindow: public QMainWindow
         return *lockToolBarsAction_;
     }
 
-    //! lock/unlock layout
-    QAction& lockLayoutAction( void ) const
-    {
-        assert( lockLayoutAction_ );
-        return *lockLayoutAction_;
-    }
-
     //! show menubar
     QAction& showMenuBarAction( void ) const
     {
@@ -143,10 +135,6 @@ class BaseMainWindow: public QMainWindow
     const QString& lockToolBarsOptionName( void ) const
     { return lockToolBarsOptionName_; }
 
-    //! layout option name
-    const QString& lockLayoutOptionName( void ) const
-    { return lockLayoutOptionName_; }
-
     //! menu option name
     const QString& showMenuBarOptionName( void ) const
     { return showMenuBarOptionName_; }
@@ -179,9 +167,6 @@ class BaseMainWindow: public QMainWindow
     //! true if main window has toolbars
     virtual bool _hasToolBars( void ) const;
 
-    //! true if main window has docks
-    virtual bool _hasDockWidgets( void ) const;
-
     //! maximize state prior to minimization
     bool _wasMaximized( void ) const
     { return wasMaximized_; }
@@ -210,16 +195,10 @@ class BaseMainWindow: public QMainWindow
     //! toggle status bar
     void _toggleStatusBar( bool );
 
-    //! lock layout
-    void _lockLayout( bool );
-
     private:
 
     //! option name
     QString lockToolBarsOptionName_;
-
-    //! option name
-    QString lockLayoutOptionName_;
 
     //! option name
     QString showMenuBarOptionName_;
@@ -238,9 +217,6 @@ class BaseMainWindow: public QMainWindow
 
     //! toggle statusBar
     QAction* showStatusBarAction_;
-
-    //! lock layout
-    QAction* lockLayoutAction_;
 
     //! window state prior to minimization
     bool wasMaximized_;
