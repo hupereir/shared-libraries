@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file    Roundedcpp
-  \brief   rounded QPainterPath based on polygon
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
+\file    Roundedcpp
+\brief   rounded QPainterPath based on polygon
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include <cassert>
@@ -41,49 +41,49 @@ using namespace std;
 RoundedPath::RoundedPath( QPolygonF polygon, const int& border )
 {
 
-  enum Direction { HORIZONTAL, VERTICAL };
-  Direction direction( HORIZONTAL );
+    enum Direction { HORIZONTAL, VERTICAL };
+    Direction direction( HORIZONTAL );
 
-  // check polygon size
-  assert( polygon.size() >= 5 );
-  assert( border > 0 );
+    // check polygon size
+    assert( polygon.size() >= 5 );
+    assert( border > 0 );
 
-  QPointF first( polygon[0] + QPointF( border, 0 ) );
-  QPointF current( first );
-  moveTo( first );
+    QPointF first( polygon[0] + QPointF( border, 0 ) );
+    QPointF current( first );
+    moveTo( first );
 
-  for( int i = 1; i < polygon.size(); i++ )
-  {
-
-    QPointF corner( polygon[i] );
-    QPointF next( i < polygon.size()-1 ? polygon[i+1]:first );
-    QPointF offset;
-
-    // move close to next corner
-    if( std::abs( corner.y() - current.y() ) < 1 )
+    for( int i = 1; i < polygon.size(); i++ )
     {
-      direction = HORIZONTAL;
-      offset = QPointF( corner.x() < current.x() ? border:-border, 0 );
 
-    } else {
+        QPointF corner( polygon[i] );
+        QPointF next( i < polygon.size()-1 ? polygon[i+1]:first );
+        QPointF offset;
 
-      direction = VERTICAL;
-      offset = QPointF( 0, corner.y() < current.y() ? border:-border );
+        // move close to next corner
+        if( std::abs( corner.y() - current.y() ) < 1 )
+        {
+            direction = HORIZONTAL;
+            offset = QPointF( corner.x() < current.x() ? border:-border, 0 );
+
+        } else {
+
+            direction = VERTICAL;
+            offset = QPointF( 0, corner.y() < current.y() ? border:-border );
+
+        }
+
+        current = corner+offset;
+        lineTo( current );
+
+        // check that direction is changed
+        if( ( std::abs( next.y() - corner.y() ) < 1 && direction == HORIZONTAL ) || ( std::abs( next.x() - corner.x() ) < 1 && direction == VERTICAL ) ) continue;
+
+        // curve around next corner
+        if( std::abs( next.y() - corner.y() ) < 1 ) offset = QPointF( corner.x() < next.x() ? border:-border, 0 );
+        else offset = QPointF( 0, corner.y() < next.y() ? border:-border );
+        current = corner+offset;
+        quadTo( corner, current );
 
     }
-
-    current = corner+offset;
-    lineTo( current );
-
-    // check that direction is changed
-    if( ( std::abs( next.y() - corner.y() ) < 1 && direction == HORIZONTAL ) || ( std::abs( next.x() - corner.x() ) < 1 && direction == VERTICAL ) ) continue;
-
-    // curve around next corner
-    if( std::abs( next.y() - corner.y() ) < 1 ) offset = QPointF( corner.x() < next.x() ? border:-border, 0 );
-    else offset = QPointF( 0, corner.y() < next.y() ? border:-border );
-    current = corner+offset;
-    quadTo( corner, current );
-
-  }
 
 }
