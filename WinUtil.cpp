@@ -31,7 +31,7 @@
 
 #include "WinUtil.h"
 
-#ifdef Q_WS_WIN
+#if defined(Q_WS_WIN)
 #define _WIN32_WINNT 0x0500
 #define WINVER 0x0500
 #include <windows.h>
@@ -43,7 +43,7 @@ using namespace std;
 void WinUtil::update( QPixmap& pixmap, double opacity ) const
 {
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
 
     HBITMAP oldBitmap;
@@ -85,7 +85,7 @@ void WinUtil::update( QPixmap& pixmap, double opacity ) const
 bool WinUtil::toggleHideFromTaskbar( bool state ) const
 {
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
 
     // check flag has changed
     if( hasFlag( WS_EX_TOOLWINDOW ) != state )
@@ -113,7 +113,7 @@ bool WinUtil::toggleHideFromTaskbar( bool state ) const
 bool WinUtil::hasFlag( long int flag ) const
 {
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     return GetWindowLong( _target().winId(), GWL_EXSTYLE) & flag;
     #else
     return false;
@@ -125,7 +125,7 @@ bool WinUtil::hasFlag( long int flag ) const
 void WinUtil::setFlag( long int flag, bool value ) const
 {
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     if( value ) SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) | flag);
     else SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) & (~flag));
     #endif

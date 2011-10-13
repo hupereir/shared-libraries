@@ -101,7 +101,7 @@ void TransitionWidget::paintEvent( QPaintEvent* event )
   painter.fillRect( rect(), Qt::transparent );
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
 
-  #ifdef Q_WS_WIN
+  #if defined(Q_WS_WIN)
   /*
   under windows, it seems composition mode must be set to source
   explicitely, at least for applications that use true translucency

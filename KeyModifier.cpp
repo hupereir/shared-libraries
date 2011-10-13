@@ -32,11 +32,11 @@
 #include "Debug.h"
 #include "KeyModifier.h"
 
-#ifdef Q_WS_WIN
+#if defined(Q_WS_WIN)
 #include <windows.h>
 #endif
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 #include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -60,13 +60,13 @@ KeyModifier::State KeyModifier::state( void ) const
 
   Debug::Throw( "KeyModifier::state.\n" );
 
-  #ifdef Q_WS_WIN
+  #if defined(Q_WS_WIN)
   if( key_ == Qt::Key_CapsLock ) return ( GetKeyState(VK_CAPITAL) ) ? ON:OFF;
   else if( key_ == Qt::Key_NumLock ) return ( GetKeyState(VK_NUMLOCK) ) ? ON:OFF;
   else return UNKNOWN;
   #endif
 
-  #ifdef Q_WS_X11
+  #if defined(Q_WS_X11)
   // map Qt Key to X11
   int key_symbol(0);
   switch( key_ )

@@ -35,7 +35,7 @@
 #include <QWidget>
 #include <map>
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 #include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -133,7 +133,7 @@ class X11Util
         const Direction&,
         Qt::MouseButton button = Qt::LeftButton );
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     //! find atom
     Atom findAtom( const Atoms& atom );
@@ -178,7 +178,7 @@ class X11Util
 
     SupportedAtomMap supportedAtoms_;
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     //! atom map
     typedef std::map<Atoms, Atom> AtomMap;

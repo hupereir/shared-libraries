@@ -40,7 +40,7 @@ using namespace std;
 //_______________________
 int debug_level = 1;
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 const unsigned long netwm_sendevent_mask = (
     SubstructureRedirectMask|
     SubstructureNotifyMask);
@@ -64,7 +64,7 @@ X11Util::X11Util( void )
 bool X11Util::isSupported( const Atoms& atom )
 {
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     Debug::Throw( debug_level ) << "X11Util::isSupported - " << atomNames_[atom] << endl;
 
@@ -159,7 +159,7 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 
     Debug::Throw(debug_level) << "X11Util::hasProperty - " << atomNames_[atom] << endl;
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -257,7 +257,7 @@ unsigned long X11Util::cardinal( const WId& wid, const Atoms& atom )
 
     Debug::Throw( "X11Util::cardinal" );
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -301,7 +301,7 @@ bool X11Util::moveResizeWidget(
 
     if( !widget.isWindow() ) return false;
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     // check
     if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
@@ -333,7 +333,7 @@ bool X11Util::moveResizeWidget(
 //________________________________________________________________________
 bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const unsigned char* data, int size )
 {
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
     Display* display( QX11Info::display() );
     Atom searched( findAtom( atom ) );
     XChangeProperty (display, widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, data, size );
@@ -351,7 +351,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
 
     Debug::Throw(debug_level) << "X11Util::_changeProperty - atom: " << atomNames_[atom] << " state: " << state << endl;
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -441,7 +441,7 @@ bool X11Util::_requestPropertyChange( const QWidget& widget, const Atoms& atom, 
 
     Debug::Throw(debug_level) << "X11Util::_requestPropertyChange - atom: " << atomNames_[atom] << " state: " << value << endl;
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -477,7 +477,7 @@ bool X11Util::_changeCardinal( const QWidget& widget, const Atoms& atom, const u
 
     Debug::Throw( "X11Util::_changeCardinal.\n" );
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -498,7 +498,7 @@ bool X11Util::_requestCardinalChange( const QWidget& widget, const Atoms& atom, 
 
     Debug::Throw( "X11Util::_requestChangeCardinal.\n" );
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -552,7 +552,7 @@ void X11Util::_initializeAtomNames( void )
 void X11Util::printWindowState( const QWidget& widget )
 {
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
     Display* display( QX11Info::display() );
     Atom net_wm_state( findAtom(_NET_WM_STATE) );
 
@@ -595,7 +595,7 @@ void X11Util::printWindowState( const QWidget& widget )
 
 }
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 
 //________________________________________________________________________
 Atom X11Util::findAtom( const Atoms& atom )
