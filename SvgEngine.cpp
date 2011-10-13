@@ -170,7 +170,7 @@ namespace SVG
         bool changed( false );
 
         // try get from plasma interface if needed
-        #ifndef Q_WS_WIN
+        #if !defined(Q_WS_WIN)
         if( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_INTERFACE" ) )
         {
 

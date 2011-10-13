@@ -87,7 +87,7 @@ namespace SVG
     addOptionWidget( spinbox );
 
     // plasma interface
-    #ifndef Q_WS_WIN
+    #if !defined(Q_WS_WIN)
     QGroupBox* plasma_box;
     layout()->addWidget( plasma_box = new QGroupBox( "Plasma interface (KDE only)", this ) );
     plasma_box->setLayout( new QVBoxLayout() );
@@ -137,7 +137,7 @@ namespace SVG
     svg_checkbox->setChecked( false );
     file_list_box->setEnabled( false );
 
-    #ifndef Q_WS_WIN
+    #if !defined(Q_WS_WIN)
     plasma_checkbox->setChecked( false );
     plasma_box->setEnabled( false );
     connect( plasma_checkbox, SIGNAL( toggled( bool ) ), file_list_box, SLOT( setDisabled( bool ) ) );
