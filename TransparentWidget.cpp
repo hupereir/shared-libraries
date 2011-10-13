@@ -81,7 +81,7 @@ void TransparentWidget::setWindowOpacity( double value )
     // store
     opacity_ = value;
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
 
     // on windows, update opacity only if CompositeEngine is disabled
     // otherwise, it is handled via WinUtil
@@ -143,7 +143,7 @@ void TransparentWidget::resizeEvent( QResizeEvent* event )
 {
     setBackgroundChanged( true );
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     if( CompositeEngine::get().isEnabled() )
     {
         widgetPixmap_ = QPixmap( size() );
@@ -190,7 +190,7 @@ void TransparentWidget::paintEvent( QPaintEvent* event )
 
     Debug::Throw( "TransparentWidget::paintEvent.\n" );
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     // handle painting on windows with compositing enabled
     // using a pixmap buffer, to allow true transparency
     if( CompositeEngine::get().isEnabled() )
@@ -270,7 +270,7 @@ void TransparentWidget::_updateConfiguration( void )
     if( CompositeEngine::get().setEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_COMPOSITE" ) ) )
     { setWindowOpacity( _opacity() ); }
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     // create widget pixmap when compositing is enabled
     if( CompositeEngine::get().isEnabled() ) {
         widgetPixmap_ = QPixmap( size() );

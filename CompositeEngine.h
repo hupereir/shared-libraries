@@ -33,7 +33,7 @@
 
 #include <Qt>
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 #include <X11/Xlib.h>
 #endif
 
@@ -62,7 +62,7 @@ namespace TRANSPARENCY
         //! initialize
         void initialize( void );
 
-        #ifdef Q_WS_X11
+        #if defined(Q_WS_X11)
 
         //! display
         Display* display( void ) const
@@ -85,7 +85,7 @@ namespace TRANSPARENCY
         //! returns true if composition is enabled
         bool _compositingEnabled( void ) const;
 
-        #ifdef Q_WS_X11
+        #if defined(Q_WS_X11)
         //! returns true if composition is enabled
         bool _compositingEnabled( Display* ) const;
 

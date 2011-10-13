@@ -62,7 +62,7 @@ namespace TRANSPARENCY
     QPixmap fullPixmap() const
     { return background_pixmap_; }
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
     //! check X11 event
     bool x11Event( XEvent* event );
     #endif
@@ -88,7 +88,7 @@ namespace TRANSPARENCY
     //! full background image
     QPixmap background_pixmap_;
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     //! desktop window id
     WId desktop_;

@@ -34,7 +34,7 @@
 #include "CompositeEngine.h"
 #include "XmlOptions.h"
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 #include <QX11Info>
 #include <X11/extensions/Xrender.h>
 #endif
@@ -55,7 +55,7 @@ CompositeEngine& CompositeEngine::get( void )
 //_______________________________________________________________
 CompositeEngine::CompositeEngine( void ):
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
     display_( 0 ),
     visual_( 0 ),
     colormap_( 0 ),
@@ -87,7 +87,7 @@ void CompositeEngine::initialize( void )
     // do nothing if compositing is not enabled
     if( !_compositingEnabled() ) return;
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
     // display
     display_ = XOpenDisplay(0);
 
@@ -122,7 +122,7 @@ void CompositeEngine::initialize( void )
     }
     #endif
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     // on windows,
     // composition mode is available by default
     // TODO: check version to make sure this is true
@@ -148,7 +148,7 @@ bool CompositeEngine::_compositingEnabled( void ) const
 {
     Debug::Throw( "CompositeEngine::_compositingEnabled\n" );
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
     if( QX11Info::display()) return _compositingEnabled( QX11Info::display() );
     else {
         Debug::Throw( "CompositeEngine::_compositingEnabled - creating dummy display\n" );
@@ -159,7 +159,7 @@ bool CompositeEngine::_compositingEnabled( void ) const
     }
     #endif
 
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     // on windows,
     // composition mode is available by default
     // TODO: check version to make sure this is true
@@ -172,7 +172,7 @@ bool CompositeEngine::_compositingEnabled( void ) const
 }
 
 //_______________________________________________________________
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 bool CompositeEngine::_compositingEnabled( Display* display ) const
 {
     Debug::Throw( "CompositeEngine::_compositingEnabled (display)\n" );

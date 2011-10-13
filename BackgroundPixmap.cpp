@@ -35,7 +35,7 @@
 
 #include "Debug.h"
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 #include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -57,7 +57,7 @@ namespace TRANSPARENCY
   //! get lowest bit (shift) from integer value (little/big endianness)
   int _lowestBit( const unsigned int& val );
 
-  #ifdef Q_WS_X11
+  #if defined(Q_WS_X11)
   // pointer to pixel converter
   typedef QRgb (*PixelConverter) (XImage* image, const unsigned int& x, const unsigned int& y);
 
@@ -98,7 +98,7 @@ BackgroundPixmap::BackgroundPixmap( void )
 {
   Debug::Throw( "BackgroundPixmap::BackgroundPixmap.\n" );
 
-  #ifdef Q_WS_X11
+  #if defined(Q_WS_X11)
   desktop_ = 0;
   #endif
 
@@ -152,7 +152,7 @@ QPixmap BackgroundPixmap::pixmap( const QRect& rect ) const
 }
 
 //_____________________________________________________
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 bool BackgroundPixmap::x11Event( XEvent* event )
 {
 
@@ -190,7 +190,7 @@ void BackgroundPixmap::reload( void )
   // do nothing if compositing is enabled
   if( CompositeEngine::get().isEnabled() ) return;
 
-  #ifdef Q_WS_X11
+  #if defined(Q_WS_X11)
   // try load desktop windows ID
   if( !_loadDesktopWindow() )
   {
@@ -271,7 +271,7 @@ void BackgroundPixmap::reload( void )
 bool BackgroundPixmap::_loadDesktopWindow( void )
 {
 
-  #ifdef Q_WS_X11
+  #if defined(Q_WS_X11)
   Debug::Throw( "BackgroundPixmap::_loadDesktopWindow.\n" );
 
   // get the display
@@ -331,7 +331,7 @@ int TRANSPARENCY::_lowestBit( const unsigned int& val)
     return (i == max_bits ) ? -1 : i;
 }
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11)
 
 //_____________________________________________________
 TRANSPARENCY::PixelConverter TRANSPARENCY::_converter( XImage* image )
