@@ -72,7 +72,7 @@ QString Util::env( const QString& val, const QString& default_value )
 QString Util::user( void )
 {
     Debug::Throw( "Util::user.\n" );
-    #ifdef Q_WS_WIN
+    #if defined(Q_WS_WIN)
     return env( "USERNAME", "unknown user" );
     #else
     // first try look for USERNAME environment variable
@@ -92,7 +92,7 @@ QString Util::domain( void )
     return QHostInfo::localDomainName();
 
     #else
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
 
     // use build-in unix function
     char *buf = new char[ LONGSTR ];
@@ -117,7 +117,7 @@ QString Util::windowTitle( const QString& title )
 
     Debug::Throw( "Util::windowTitle.\n" );
 
-    #ifdef Q_WS_X11
+    #if defined(Q_WS_X11)
     QString host( Util::host() );
     if( host == "localhost" ) return title;
     else {
