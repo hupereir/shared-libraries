@@ -31,13 +31,12 @@
 \date $Date$
 */
 
-#include <QFont>
-#include <QFontDialog>
-#include <QTextStream>
-
 #include "Counter.h"
 #include "Debug.h"
-#include "AnimatedLineEditor.h"
+
+#include <QtGui/QFont>
+#include <QtGui/QFontDialog>
+#include <QtGui/QLabel>
 
 //! readonly font name display and font dialog
 class FontEditor: public QWidget, public Counter
@@ -93,7 +92,7 @@ class FontEditor: public QWidget, public Counter
     private:
 
     //! font name
-    AnimatedLineEditor* label_;
+    QLabel* label_;
 
     //! selected font
     QFont font_;

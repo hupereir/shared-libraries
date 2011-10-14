@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-   \file StatusBar.h
-   \brief status bar
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file StatusBar.h
+\brief status bar
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -46,70 +46,70 @@
 class StatusBarLabel: public AnimatedLabel
 {
 
-  //! Qt meta object macro
-  Q_OBJECT
+    //! Qt meta object macro
+    Q_OBJECT
 
-  public:
-  StatusBarLabel( QWidget* parent = 0 ):
+    public:
+    StatusBarLabel( QWidget* parent = 0 ):
     AnimatedLabel( parent )
-  {}
+    {}
 
-  public slots:
+    public slots:
 
-  //! set text
-  virtual void setText( const QString& message, const bool& value = true )
-  {
-    if( value ) setTextAndUpdate( message );
-    else AnimatedLabel::setText( message );
-  }
+    //! set text
+    virtual void setText( const QString& message, const bool& value = true )
+    {
+        if( value ) setTextAndUpdate( message );
+        else AnimatedLabel::setText( message );
+    }
 
-  //! set label text and process events
-  void setTextAndUpdate( const QString& );
+    //! set label text and process events
+    void setTextAndUpdate( const QString& );
 
 };
 
 /*!
-   \class StatusBar
-   \brief  customized line edit for application state
+\class StatusBar
+\brief  customized line edit for application state
 */
 class StatusBar: public QStatusBar, public Counter
 {
 
-  public:
+    public:
 
-  //! constructor
-  StatusBar( QWidget* parent );
+    //! constructor
+    StatusBar( QWidget* parent );
 
-  //! destructor
-  ~StatusBar( void )
-  {}
+    //! destructor
+    ~StatusBar( void )
+    {}
 
-  //! add clock
-  void addClock( void );
+    //! add clock
+    void addClock( void );
 
-  //! add label
-  void addLabel( const int& stretch = 0, bool animated = false );
+    //! add label
+    void addLabel( const int& stretch = 0, bool animated = false );
 
-  //! add labels
-  void addLabels( const unsigned int& n, const int& stretch = 0, bool animated = false )
-  { for( unsigned int i=0; i<n; i++ ) addLabel( stretch, animated ); }
+    //! add labels
+    void addLabels( const unsigned int& n, const int& stretch = 0, bool animated = false )
+    { for( unsigned int i=0; i<n; i++ ) addLabel( stretch, animated ); }
 
-  //! retrieves label with given index
-  virtual StatusBarLabel& label( const unsigned int& i = 0  ) const
-  {
-    assert( i < labels_.size() );
-    return *labels_[i];
-  }
+    //! retrieves label with given index
+    virtual StatusBarLabel& label( const unsigned int& i = 0  ) const
+    {
+        assert( i < labels_.size() );
+        return *labels_[i];
+    }
 
-  protected:
+    protected:
 
-  //! context menu
-  virtual void contextMenuEvent( QContextMenuEvent* );
+    //! context menu
+    virtual void contextMenuEvent( QContextMenuEvent* );
 
-  private:
+    private:
 
-  //! vector of output labels.
-  std::vector< StatusBarLabel* > labels_;
+    //! vector of output labels.
+    std::vector< StatusBarLabel* > labels_;
 
 };
 

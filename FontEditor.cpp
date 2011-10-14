@@ -29,12 +29,12 @@
 \date $Date$
 */
 
-#include <QHBoxLayout>
-#include <QToolButton>
-
 #include "BaseIcons.h"
 #include "FontEditor.h"
 #include "IconEngine.h"
+
+#include <QtGui/QLayout>
+#include <QtGui/QToolButton>
 
 using namespace std;
 
@@ -49,11 +49,10 @@ FontEditor::FontEditor( QWidget *parent ):
     layout->setSpacing(2);
     setLayout( layout );
 
-    label_ =  new AnimatedLineEditor( this );
-    label_->setReadOnly( true );
-    label_->setHasClearButton( false );
+    label_ =  new QLabel( this );
     label_->setAlignment( Qt::AlignCenter );
     label_->setFont( font() );
+    label_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken);
     layout->addWidget( label_, 1 );
 
     // update palette

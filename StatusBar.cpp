@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-   \file StatusBar.cpp
-   \brief  customized line edit for application state
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file StatusBar.cpp
+\brief  customized line edit for application state
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QMainWindow>
@@ -42,21 +42,20 @@ using namespace std;
 
 //___________________________________________
 StatusBar::StatusBar( QWidget* parent ):
-  QStatusBar( parent ),
-  Counter( "StatusBar" )
+    QStatusBar( parent ),
+    Counter( "StatusBar" )
 {
-  Debug::Throw( "StatusBar::StatusBar.\n" );
-  assert( qobject_cast<QMainWindow*>( parent ) );
-  setSizeGripEnabled( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
+    Debug::Throw( "StatusBar::StatusBar.\n" );
+    assert( qobject_cast<QMainWindow*>( parent ) );
+    setSizeGripEnabled( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
 
-  // if no size grip, still leaves some space to the right of the widget
-  if( !isSizeGripEnabled() )
-  {
-    int left, right, top, bottom;
-    getContentsMargins( &left, &top, &right, &bottom );
-    setContentsMargins( left, top, right + 15, bottom );
-  }
-
+    // if no size grip, still leaves some space to the right of the widget
+    if( !isSizeGripEnabled() )
+    {
+        int left, right, top, bottom;
+        getContentsMargins( &left, &top, &right, &bottom );
+        setContentsMargins( left+2, top, right + 2, bottom );
+    }
 
 }
 
@@ -64,41 +63,41 @@ StatusBar::StatusBar( QWidget* parent ):
 //___________________________________________
 void StatusBar::addClock( void )
 {
-  Debug::Throw( "StatusBar::addClock.\n" );
-  ClockLabel* clock = new ClockLabel( this );
-  addPermanentWidget( clock );
+    Debug::Throw( "StatusBar::addClock.\n" );
+    ClockLabel* clock = new ClockLabel( this );
+    addPermanentWidget( clock );
 }
 
 //____________________________________________
 void StatusBar::addLabel( const int& stretch, bool animated )
 {
-  Debug::Throw( "StatusBar::addLabel.\n" );
+    Debug::Throw( "StatusBar::addLabel.\n" );
 
-  StatusBarLabel* label(new StatusBarLabel( this ) );
-  if( !animated )
-  {
-    label->transitionWidget().setEnableOnOptions( false );
-    label->transitionWidget().setEnabled( false );
-  }
+    StatusBarLabel* label(new StatusBarLabel( this ) );
+    if( !animated )
+    {
+        label->transitionWidget().setEnableOnOptions( false );
+        label->transitionWidget().setEnabled( false );
+    }
 
-  label->setMargin(2);
-  addPermanentWidget( label, stretch );
-  labels_.push_back( label );
+    label->setMargin(2);
+    addPermanentWidget( label, stretch );
+    labels_.push_back( label );
 }
 
 //__________________________________________________________________
 void StatusBar::contextMenuEvent( QContextMenuEvent *event )
 {
-  Debug::Throw( "StatusBar::contextMenuEvent.\n" );
-  QMenu* menu( static_cast<QMainWindow*>(parent())->createPopupMenu() );
-  if( !menu ) return;
-  menu->exec( event->globalPos() );
-  menu->deleteLater();
+    Debug::Throw( "StatusBar::contextMenuEvent.\n" );
+    QMenu* menu( static_cast<QMainWindow*>(parent())->createPopupMenu() );
+    if( !menu ) return;
+    menu->exec( event->globalPos() );
+    menu->deleteLater();
 }
 
 //__________________________________________________________________
 void StatusBarLabel::setTextAndUpdate( const QString& message )
 {
-  AnimatedLabel::setText( message );
-  qApp->processEvents();
+    AnimatedLabel::setText( message );
+    qApp->processEvents();
 }
