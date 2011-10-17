@@ -29,18 +29,30 @@
 
 #include "Color.h"
 
-
-//__________________________________________________________
-QColor BASE::Color::merge( QColor other, double intensity )
+namespace BASE
 {
-  if( !isValid() ) return other;
-  if( !other.isValid() ) return *this;
-  if( other == *this ) return *this;
 
-  double red = intensity*Color::red() + (1.0-intensity )*other.red();
-  double green = intensity*Color::green() + (1.0-intensity )*other.green();
-  double blue = intensity*Color::blue() + (1.0-intensity )*other.blue();
-  double alpha = intensity*Color::alpha() + (1.0-intensity )*other.alpha();
+    //__________________________________________________________
+    QColor Color::merge( const QColor& other, qreal intensity ) const
+    {
+        if( !isValid() ) return other;
+        if( !other.isValid() ) return *this;
+        if( other == *this ) return *this;
 
-  return QColor( int( red ), int( green ), int( blue ), int( alpha ) );
+        double red = intensity*Color::red() + (1.0-intensity )*other.red();
+        double green = intensity*Color::green() + (1.0-intensity )*other.green();
+        double blue = intensity*Color::blue() + (1.0-intensity )*other.blue();
+        double alpha = intensity*Color::alpha() + (1.0-intensity )*other.alpha();
+
+        return QColor( int( red ), int( green ), int( blue ), int( alpha ) );
+    }
+
+    //__________________________________________________________
+    QColor Color::addAlpha( qreal intensity ) const
+    {
+        QColor out( *this );
+        out.setAlpha( intensity*alpha() );
+        return out;
+    }
+
 }

@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file Color.h
-  \brief color utilities
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file Color.h
+\brief color utilities
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QColor>
@@ -37,20 +37,23 @@
 namespace BASE
 {
 
-  class Color: public QColor
-  {
+    class Color: public QColor
+    {
 
-    public:
+        public:
 
-    //! constructor
-    Color( QColor& color ):
-      QColor( color )
-      {}
+        //! constructor
+        Color( const QColor& color ):
+            QColor( color )
+        {}
 
-    //! merge argument color with intensity to this one
-    QColor merge( QColor , double intensity = 0.5 );
+        //! merge argument color with intensity to this one
+        QColor merge( const QColor& , qreal = 0.5 ) const;
 
-  };
+        //! add alpha
+        QColor addAlpha( qreal = 0.5 ) const;
+
+    };
 
 
 };
