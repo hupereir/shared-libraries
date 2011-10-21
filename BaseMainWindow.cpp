@@ -230,11 +230,9 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
         // try cast to custom
         CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
 
-        // skip if not requested to appear
-        if( customToolbar && !customToolbar->appearsInMenu() ) continue;
-
         // skip toolbars that are not direct children
-        if( toolbar->parentWidget() != this && !customToolbar ) continue;
+        if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
+        { continue; }
 
         if( customToolbar ) {
 
@@ -339,12 +337,9 @@ bool BaseMainWindow::_hasToolBars( void ) const
         // cast to custom
         CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
 
-
-        // skip if not requested to appear
-        if( customToolbar && !customToolbar->appearsInMenu() ) continue;
-
         // skip toolbars that are not direct children
-        if( toolbar->parentWidget() != this && !customToolbar ) continue;
+        if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
+        { continue; }
 
         return true;
     }

@@ -123,10 +123,12 @@ class CustomToolBar: public QToolBar, public Counter
     };
 
     //! true if visible in menu
+    /*! the flag is ignored if parent is MainWindow */
     bool appearsInMenu( void ) const
     { return appearsInMenu_; }
 
     //! true if visible in menu
+    /*! the flag is ignored if parent is MainWindow */
     void setAppearsInMenu( bool value )
     { appearsInMenu_ = value; }
 
@@ -169,6 +171,7 @@ class CustomToolBar: public QToolBar, public Counter
     bool lockFromOptions_;
 
     //! true if toolbar must appear in menu
+    /*! the flag is ignored if parent is MainWindow */
     bool appearsInMenu_;
 
     //! initialize area map
