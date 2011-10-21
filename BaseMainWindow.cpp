@@ -221,23 +221,29 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
 
     bool hasLockableToolbars( false );
     QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
-    for( QList<QToolBar*>::iterator iter = toolbars.begin(); iter != toolbars.end(); iter++ )
+    foreach( QToolBar* toolbar, toolbars )
     {
 
-        CustomToolBar* toolbar( qobject_cast<CustomToolBar*>( *iter ) );
-        if( toolbar ) {
+        // skip toolbars with no names
+        if( toolbar->windowTitle().isEmpty() ) continue;
 
-            Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << (*iter)->windowTitle() << endl;
-            menu.addAction( &toolbar->visibilityAction() );
+        // skip toolbars that are not direct children
+        if( toolbar->parentWidget() != this ) continue;
+
+        CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+        if( customToolbar ) {
+
+            Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << toolbar->windowTitle() << endl;
+            menu.addAction( &customToolbar->visibilityAction() );
 
         } else {
 
             // add visibility action
-            Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << (*iter)->windowTitle() << endl;
-            QAction* action = new QAction( (*iter)->windowTitle(), &menu );
+            Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << toolbar->windowTitle() << endl;
+            QAction* action = new QAction( toolbar->windowTitle(), &menu );
             action->setCheckable( true );
-            action->setChecked( (*iter)->isVisible() );
-            connect( action, SIGNAL( toggled( bool ) ), (*iter), SLOT( setVisible( bool ) ) );
+            action->setChecked( toolbar->isVisible() );
+            connect( action, SIGNAL( toggled( bool ) ), toolbar, SLOT( setVisible( bool ) ) );
             menu.addAction( action );
 
         }
@@ -245,11 +251,8 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
         // skip if lockable toolbar was already found
         if( hasLockableToolbars ) continue;
 
-        // skip if parent is not this
-        if( !((*iter)->parentWidget() == this) ) continue;
-
         // try cast to CustomToolBar and check for 'lock from options'
-        if( toolbar && toolbar->lockFromOptions() ) continue;
+        if( customToolbar && customToolbar->lockFromOptions() ) continue;
 
         hasLockableToolbars = true;
 
@@ -321,7 +324,21 @@ bool BaseMainWindow::_hasStatusBar( void ) const
 bool BaseMainWindow::_hasToolBars( void ) const
 {
     Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
-    return (bool) qFindChild<QToolBar*>( this );
+    QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
+    foreach( QToolBar* toolbar, toolbars )
+    {
+
+        // skip toolbars with no names
+        if( toolbar->windowTitle().isEmpty() ) continue;
+
+        // skip toolbars that are not direct children
+        if( toolbar->parentWidget() != this ) continue;
+
+        return true;
+    }
+
+    return false;
+
 }
 
 //____________________________________________________________
