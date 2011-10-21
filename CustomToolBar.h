@@ -122,6 +122,14 @@ class CustomToolBar: public QToolBar, public Counter
 
     };
 
+    //! true if visible in menu
+    bool appearsInMenu( void ) const
+    { return appearsInMenu_; }
+
+    //! true if visible in menu
+    void setAppearsInMenu( bool value )
+    { appearsInMenu_ = value; }
+
     protected:
 
     //! show event
@@ -159,6 +167,9 @@ class CustomToolBar: public QToolBar, public Counter
 
     //! use lock from options
     bool lockFromOptions_;
+
+    //! true if toolbar must appear in menu
+    bool appearsInMenu_;
 
     //! initialize area map
     static AreaMap _initializeAreas( void );

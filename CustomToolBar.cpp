@@ -48,7 +48,8 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     Counter( "CustomToolBar" ),
     optionName_( optionName ),
     sizeFromOptions_( true ),
-    lockFromOptions_( true )
+    lockFromOptions_( true ),
+    appearsInMenu_( false )
 {
     Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
     if( !optionName.isEmpty() ) setObjectName( optionName );

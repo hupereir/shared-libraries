@@ -227,10 +227,15 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
         // skip toolbars with no names
         if( toolbar->windowTitle().isEmpty() ) continue;
 
-        // skip toolbars that are not direct children
-        if( toolbar->parentWidget() != this ) continue;
-
+        // try cast to custom
         CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+
+        // skip if not requested to appear
+        if( customToolbar && !customToolbar->appearsInMenu() ) continue;
+
+        // skip toolbars that are not direct children
+        if( toolbar->parentWidget() != this && !customToolbar ) continue;
+
         if( customToolbar ) {
 
             Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << toolbar->windowTitle() << endl;
@@ -331,8 +336,15 @@ bool BaseMainWindow::_hasToolBars( void ) const
         // skip toolbars with no names
         if( toolbar->windowTitle().isEmpty() ) continue;
 
+        // cast to custom
+        CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+
+
+        // skip if not requested to appear
+        if( customToolbar && !customToolbar->appearsInMenu() ) continue;
+
         // skip toolbars that are not direct children
-        if( toolbar->parentWidget() != this ) continue;
+        if( toolbar->parentWidget() != this && !customToolbar ) continue;
 
         return true;
     }
