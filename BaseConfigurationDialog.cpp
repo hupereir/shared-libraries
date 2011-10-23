@@ -223,18 +223,27 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
     if( !parent ) parent = &addPage( "Lists", "Look-and-feel for item lists" );
 
     QGroupBox* box = new QGroupBox( "Lists", parent );
-    GridLayout* gridLayout = new GridLayout();
-    gridLayout->setMaxCount(2);
-    gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-    box->setLayout( gridLayout );
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin( 2 );
+    box->setLayout( vLayout );
     parent->layout()->addWidget( box );
 
-    OptionColorDisplay* color;
-    gridLayout->addWidget( new QLabel( "Item alternate background color: ", box ) );
-    gridLayout->addWidget( color = new OptionColorDisplay( box, "ALTERNATE_COLOR" ) );
-    color->setToolTip( "Alternate item background color in lists.\n Set it to \"None\" do disable alternate item color." );
-    addOptionWidget( color );
+    OptionCheckBox* checkbox( new OptionCheckBox( "Use alternate color for items in list", box, "USE_ALTERNATE_COLOR" ) );
+    vLayout->addWidget( checkbox );
+    addOptionWidget( checkbox );
 
+    const QPalette palette( this->palette() );
+    if( palette.color( QPalette::AlternateBase ) == palette.color( QPalette::Base ) )
+    { checkbox->setEnabled( false ); }
+
+    GridLayout* gridLayout = new GridLayout();
+    gridLayout->setMargin(0);
+    gridLayout->setMaxCount(2);
+    gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+    vLayout->addLayout( gridLayout );
+
+
+    OptionColorDisplay* color;
     gridLayout->addWidget( new QLabel( "Selected column background color: ", box ) );
     gridLayout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
     color->setToolTip( "Selected column background color in lists.\n Set it to \"None\" do disable alternate item color." );

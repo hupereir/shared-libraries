@@ -45,10 +45,10 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! creator
-        BaseConfigurationDialog( QWidget *parent = 0 );
+    //! creator
+    BaseConfigurationDialog( QWidget *parent = 0 );
 
     //! destructor
     virtual ~BaseConfigurationDialog()
