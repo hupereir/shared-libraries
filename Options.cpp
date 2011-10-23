@@ -82,7 +82,7 @@ Options::Options( bool install_default_options ):
         set( "HIGHLIGHT_COLOR", Option( "#fffdd4", "Current paragraph highlight color" ) );
 
         // list configuration
-        set( "ALTERNATE_COLOR", Option( "None", "Background color for even items in lists" ) );
+        set( "USE_ALTERNATE_COLOR", "0" );
         set( "SELECTED_COLUMN_COLOR", Option( "#fffdd4", "Background color for selected column in list" ) );
         set( "LIST_ICON_SIZE", Option( "24", "Default icon size in lists" ) );
 
