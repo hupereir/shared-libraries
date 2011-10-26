@@ -35,7 +35,7 @@
 #include "Debug.h"
 #include "TransitionWidget.h"
 
-using namespace std;
+
 
 //________________________________________________________
 AnimatedLabel::AnimatedLabel( QWidget* parent ):

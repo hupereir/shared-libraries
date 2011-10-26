@@ -33,7 +33,7 @@
 
 #include "TextSeparator.h"
 
-using namespace std;
+
 
 //___________________________________
 const TextSeparator& TextSeparator::get( void )

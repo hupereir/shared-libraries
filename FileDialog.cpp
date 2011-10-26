@@ -36,7 +36,7 @@
 #include "FileDialog.h"
 #include "Util.h"
 
-using namespace std;
+
 
 //_______________________________________________________
 QString& FileDialog::_workingDirectory( void )

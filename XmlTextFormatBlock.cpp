@@ -32,7 +32,7 @@
 #include "Str.h"
 #include "XmlTextFormatBlock.h"
 
-using namespace std;
+
 using namespace FORMAT;
 
 //____________________________________

@@ -40,7 +40,7 @@
 #include "XmlOption.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //____________________________________________________________________
 QString& XmlOptions::file( void )

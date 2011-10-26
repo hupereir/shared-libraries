@@ -29,16 +29,15 @@
   \date $Date$
 */
 
-#include <QFileInfo>
-#include <QPainter>
-#include <QStyle>
-#include <QStyleOptionButton>
 
 #include "File.h"
 #include "PixmapEngine.h"
 #include "XmlOptions.h"
 
-using namespace std;
+#include <QFileInfo>
+#include <QPainter>
+#include <QStyle>
+#include <QStyleOptionButton>
 
 //__________________________________________________________
 PixmapEngine& PixmapEngine::get( void )
@@ -59,10 +58,10 @@ bool PixmapEngine::reload( void )
   Debug::Throw( "PixmapEngine::reload.\n" );
 
   // load path from options
-  list<QString> path_list( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-  if( path_list == _pixmapPath() ) return false;
+  std::list<QString> pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
+  if( pathList == _pixmapPath() ) return false;
 
-  _setPixmapPath( path_list );
+  _setPixmapPath( pathList );
   for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
   { cache_[iter->first] = _get( iter->first, false ); }
 
@@ -87,9 +86,9 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
   else {
 
     if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-    for( list<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
+    for( std::list<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
     {
-            
+
       // skip empty path
       if( iter->isEmpty() ) continue;
 
@@ -111,6 +110,6 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
 
   }
 
-  return cache_.insert( make_pair( file, out ) ).first->second;
+  return cache_.insert( std::make_pair( file, out ) ).first->second;
 
 }

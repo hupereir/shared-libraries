@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file ColumnSortingMenu.h
-  \brief handels column visibility in TreeViews
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ColumnSortingMenu.h
+\brief handels column visibility in TreeViews
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -46,45 +46,45 @@
 class ColumnSortingMenu:public QMenu, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  ColumnSortingMenu( QWidget*, QTreeView*, const QString& title = "Sort &By" );
+        //! constructor
+        ColumnSortingMenu( QWidget*, QTreeView*, const QString& title = "Sort &By" );
 
-  private slots:
+    private slots:
 
-  //! update actions
-  void _updateActions( void );
+    //! update actions
+    void _updateActions( void );
 
-  //! revert order
-  void _revertOrder( void );
+    //! revert order
+    void _revertOrder( void );
 
-  //! update mask when triggering actions
-  void _sort( QAction* action );
+    //! update mask when triggering actions
+    void _sort( QAction* action );
 
-  private:
+    private:
 
-  //! target
-  QTreeView& _target( void )
-  {
-    assert( target_ );
-    return *target_;
-  }
+    //! target
+    QTreeView& _target( void )
+    {
+        assert( target_ );
+        return *target_;
+    }
 
-  //! target
-  QTreeView* target_;
+    //! target
+    QTreeView* target_;
 
-  //! action group
-  QActionGroup* group_;
+    //! action group
+    QActionGroup* group_;
 
-  //! map action to column index
-  typedef std::map< QAction*, int > ActionMap;
+    //! map action to column index
+    typedef std::map< QAction*, int > ActionMap;
 
-  //! map action to column index
-  ActionMap actions_;
+    //! map action to column index
+    ActionMap actions_;
 
 };
 

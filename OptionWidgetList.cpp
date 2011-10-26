@@ -31,7 +31,7 @@
 
 #include "OptionWidgetList.h"
 
-using namespace std;
+
 
 //______________________________________________________________________
 void OptionWidgetList::read( void )

@@ -42,7 +42,7 @@
 #include "XmlOptions.h"
 #include "QtUtil.h"
 
-using namespace std;
+
 
 //_____________________________________________
 const QString IconBrowsedButton::NO_ICON = "none";

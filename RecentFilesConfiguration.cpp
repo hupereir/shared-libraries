@@ -45,7 +45,7 @@
 #include "RecentFilesConfiguration.h"
 #include "TreeView.h"
 
-using namespace std;
+
 
 //___________________________________________
 RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& recent_files ):

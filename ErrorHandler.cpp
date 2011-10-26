@@ -36,7 +36,7 @@
 #include "ErrorHandler.h"
 #include "Debug.h"
 
-using namespace std;
+
 
 //_____________________________________________________________
 ErrorHandler& ErrorHandler::get( void )

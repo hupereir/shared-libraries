@@ -36,7 +36,7 @@
 #include "CustomComboBox.h"
 #include "TransitionWidget.h"
 
-using namespace std;
+
 using namespace Qt;
 
 //___________________________________________________

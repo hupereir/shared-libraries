@@ -36,7 +36,7 @@
 #include "CustomDialog.h"
 #include "IconEngine.h"
 
-using namespace std;
+
 
 //____________________________________________________________
 CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFlags wflags):

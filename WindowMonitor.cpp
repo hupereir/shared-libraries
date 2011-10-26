@@ -34,7 +34,7 @@
 #include "XmlOptions.h"
 #include "WindowMonitor.h"
 
-using namespace std;
+
 
 //_________________________________________________________
 WindowMonitor::WindowMonitor( QWidget* parent ):

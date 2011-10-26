@@ -42,7 +42,7 @@
 #include "File.h"
 #include "PixmapEngine.h"
 
-using namespace std;
+
 
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QString& file ):

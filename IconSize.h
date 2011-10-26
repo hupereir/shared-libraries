@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file IconSize.h
-  \brief default icon sizes
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file IconSize.h
+\brief default icon sizes
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QSize>
@@ -40,31 +40,31 @@
 class IconSize: public QSize
 {
 
-  public:
+    public:
 
 
-  //! icon sizes
-  enum Size
-  {
-    DEFAULT = 0,
-    SMALL = 16,
-    MEDIUM = 22,
-    LARGE = 32,
-    HUGE = 48,
-    MAXIMUM = 256
-  };
+    //! icon sizes
+    enum Size
+    {
+        DEFAULT = 0,
+        SMALL = 16,
+        MEDIUM = 22,
+        LARGE = 32,
+        HUGE = 48,
+        MAXIMUM = 256
+    };
 
-  //! constructor
-  IconSize( QWidget* parent, Size size );
+    //! constructor
+    IconSize( QWidget* parent, Size size );
 
-  //! constructor
-  IconSize( Size size );
+    //! constructor
+    IconSize( Size size );
 
-  //! map text to icon size
-  typedef std::map<Size, QString> Map;
+    //! map text to icon size
+    typedef std::map<Size, QString> Map;
 
-  //! text to icon size
-  static Map& map( void );
+    //! text to icon size
+    static Map& map( void );
 
 };
 

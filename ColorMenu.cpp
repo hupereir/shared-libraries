@@ -38,8 +38,6 @@
 #include "IconSize.h"
 #include "Str.h"
 
-using namespace std;
-
 //________________________________________________
 const QString ColorMenu::NONE = "None";
 
@@ -125,7 +123,7 @@ void ColorMenu::_display( void )
 
         // create action
         QAction* action = new QAction( this );
-        actions_.insert( make_pair( action, iter->first ) );
+        actions_.insert( std::make_pair( action, iter->first ) );
         addAction( action );
 
     };
@@ -176,7 +174,7 @@ void ColorMenu::_add( const QColor& color )
 {
 
     if( color.isValid() && colors_.find( color ) == colors_.end() )
-    { colors_.insert( make_pair( color, QPixmap() ) ); }
+    { colors_.insert( std::make_pair( color, QPixmap() ) ); }
 
     return;
 }

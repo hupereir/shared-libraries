@@ -37,7 +37,7 @@
 #include <windows.h>
 #endif
 
-using namespace std;
+
 
 //_______________________________________
 void WinUtil::update( QPixmap& pixmap, double opacity ) const

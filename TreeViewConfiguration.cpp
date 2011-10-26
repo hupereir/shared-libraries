@@ -40,7 +40,7 @@
 #include "TreeViewConfiguration.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //____________________________________________________________________________
 TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& option_name ):

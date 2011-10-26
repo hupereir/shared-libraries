@@ -36,7 +36,7 @@
 #include "TextEditionDelegate.h"
 #include "Debug.h"
 
-using namespace std;
+
 
 //______________________________________________________________
 TextEditionDelegate::TextEditionDelegate( QObject *parent ):

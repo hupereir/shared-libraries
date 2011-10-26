@@ -56,7 +56,7 @@
 #include "Str.h"
 #include "TreeView.h"
 
-using namespace std;
+
 using namespace Qt;
 
 //_________________________________________________________

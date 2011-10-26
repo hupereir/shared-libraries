@@ -32,21 +32,6 @@
 \date $Date$
 */
 
-#include <cassert>
-#include <QAction>
-#include <QBasicTimer>
-#include <QClipboard>
-#include <QContextMenuEvent>
-#include <QFocusEvent>
-#include <QResizeEvent>
-#include <QScrollBar>
-#include <QTextBlockFormat>
-#include <QTextCursor>
-#include <QTextEdit>
-#include <QTimerEvent>
-
-#include <vector>
-
 #include "BlockHighlight.h"
 #include "BoxSelection.h"
 #include "Counter.h"
@@ -60,6 +45,22 @@
 #include "TextPosition.h"
 #include "TextSelection.h"
 
+#include <cassert>
+#include <QtGui/QAction>
+#include <QtGui/QClipboard>
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QFocusEvent>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QScrollBar>
+#include <QtGui/QTextBlockFormat>
+#include <QtGui/QTextCursor>
+#include <QtGui/QTextEdit>
+
+#include <QtCore/QBasicTimer>
+#include <QtCore/QTimerEvent>
+
+#include <vector>
+
 class BaseFindDialog;
 class BaseReplaceDialog;
 class SelectLineDialog;
@@ -69,268 +70,268 @@ class LineNumberDisplay;
 //! Customized QTextEdit object
 class TextEditor: public QTextEdit, public BASE::Key, public Counter
 {
-    
+
     Q_OBJECT
-        
+
         public:
-        
+
         //! constructor
         TextEditor( QWidget* parent = 0 );
-    
+
     //! destrutor
     virtual ~TextEditor( void );
-    
+
     //! retrieve number of blocks in document
     virtual int blockCount( void ) const;
-    
+
     //! retrieve number of blocks associated to argument
     /*! the default implementation returns 1. In QEdit, it is reimplemented accounts for collapsed blocks */
     virtual int blockCount( const QTextBlock& ) const
     { return 1; }
-    
+
     //! retrieve current text position
     virtual TextPosition textPosition( void );
-    
+
     //! return true if current textCursor is visible
     virtual bool isCursorVisible( void ) const;
-    
+
     //!@name conversions between absolute index and TextPosition
     //@{
-    
+
     //! text position from index
     virtual TextPosition positionFromIndex( const int& index ) const;
-    
+
     //! index from text position
     virtual int indexFromPosition( const TextPosition& index ) const;
-    
+
     //@}
-    
+
     //! set text
     virtual void setPlainText( const QString& );
-    
+
     //! set text
     virtual void setHtml( const QString& );
-    
+
     //! draw margins
     virtual void paintMargin( QPainter& );
-    
+
     //! select word under cursor
     virtual void selectWord( void );
-    
+
     //! select line under cursor
     virtual void selectLine( void );
-    
+
     //! set textChar format
     /*!
     this overloads the base class method (although the later is not virtual)
     in order to properly handle box selection, if any
     */
     void mergeCurrentCharFormat( const QTextCharFormat & modifier );
-    
+
     //! clear box selection
     virtual void clearBoxSelection( void )
     {
         if( _boxSelection().state() == BoxSelection::FINISHED )
         { _boxSelection().clear(); }
     }
-    
+
     //!@name synchronization
     //@{
-    
+
     //! synchronization
     virtual void setSynchronized( const bool& value )
     { synchronize_ = value; }
-    
+
     //! synchronization
     virtual const bool& isSynchronized( void ) const
     { return synchronize_; }
-    
+
     //! clone (and synchronize) text editor
     virtual void synchronize( TextEditor* editor );
-    
+
     //! activity
     virtual bool setActive( const bool& value );
-    
+
     //! activity
     virtual const bool& isActive( void ) const
     { return active_; }
-    
+
     //@}
-    
+
     //! popup dialog with the number of replacement performed
     virtual void showReplacements( const unsigned int& counts );
-    
+
     //! TextSelection object from this selection, or clipboard
     TextSelection selection( void ) const;
-    
+
     //! last searched selection
     static TextSelection& lastSelection( void );
-    
+
     //! last searched selection
     static void setLastSelection( const TextSelection& selection )
     { lastSelection() = selection; }
-    
+
     //!@name text wrap
     //@{
-    
+
     //! enable/disable reading of text wrapping mode from options
     const bool& wrapFromOptions( void ) const
     { return wrapFromOptions_; }
-    
+
     //! enable/disable reading of text wrapping mode from options
     void setWrapFromOptions( const bool& value )
     { wrapFromOptions_ = value; }
-    
+
     //! enable/disable reading of line number display from options
     const bool& lineNumbersFromOptions( void ) const
     { return lineNumberFromOptions_; }
-    
+
     //! enable/disable reading of line number display from options
     void setLineNumbersFromOptions( const bool& value )
     { lineNumberFromOptions_ = value; }
-    
+
     //@}
-    
+
     //! read-only
     virtual void setReadOnly( bool readonly );
-    
+
     //! reset undo/redo history
     virtual void resetUndoRedoStack( void );
-    
+
     //! put actions in context menu
     virtual void installContextMenuActions( QMenu& menu, const bool& all_actions = true );
-    
+
     //!@name actions
     //@{
-    
+
     QAction& undoAction( void ) const
     { return *undoAction_; }
-    
+
     //! redo
     QAction& redoAction( void ) const
     { return *redoAction_; }
-    
+
     //! cut selection
     QAction& cutAction( void ) const
     { return *cutAction_; }
-    
+
     //! copy selection
     QAction& copyAction( void ) const
     { return *copyAction_; }
-    
+
     //! paste clipboard
     QAction& pasteAction( void ) const
     { return *pasteAction_;  }
-    
+
     //! convert selection to upper case
     QAction& lowerCaseAction( void ) const
     { return *upperCaseAction_; }
-    
+
     //! convert selection to lower case
     QAction& upperCaseAction( void ) const
     { return *lowerCaseAction_; }
-    
+
     //! find from dialog
     QAction& findAction( void ) const
     { return *findAction_; }
-    
+
     //! find selection again
     QAction& findSelectionAction( void ) const
     { return *findSelectionAction_; }
-    
+
     //! find again
     QAction& findAgainAction( void ) const
     { return *findAgainAction_; }
-    
+
     //! replace
     QAction& replaceAction( void ) const
     { return *replaceAction_; }
-    
+
     //! replace again
     QAction& replaceAgainAction( void ) const
     { return *replaceAgainAction_; }
-    
+
     //! goto line number
     QAction& gotoLineAction( void ) const
     { return *gotoLineAction_; }
-    
+
     //! block highlight action
     QAction& blockHighlightAction( void ) const
     { return *blockHighlightAction_; }
-    
+
     //! toggle wrap mode
     QAction& wrapModeAction( void ) const
     { return *wrapModeAction_; }
-    
+
     //! toggle tab emulation
     QAction& tabEmulationAction( void ) const
     { return *tabEmulationAction_; }
-    
+
     //! show line numbers
     bool hasLineNumberAction( void ) const
     { return showLineNumberAction_; }
-    
+
     //! show line numbers
     QAction& showLineNumberAction( void ) const
     { return *showLineNumberAction_; }
-    
+
     //@}
-    
+
     //!@name tab emulation
     //@{
-    
+
     //! tab character
     virtual const QString& tabCharacter( void ) const
     { return tab_; }
-    
+
     //! tab character
     virtual const QString& normalTabCharacter( void ) const
     { return normalTab_; }
-    
+
     //! tab character
     virtual const QString& emulatedTabCharacter( void ) const
     { return emulatedTab_; }
-    
+
     //@}
-    
+
     //! block highlight object
     BlockHighlight& blockHighlight() const
     { return *blockHighlight_; }
-    
+
     //! changes block background
     virtual void setBackground( QTextBlock, const QColor& );
-    
+
     //! clear block background
     virtual void clearBackground( QTextBlock );
-    
+
     //! clear all blocks background
     virtual void clearAllBackgrounds( void );
-    
+
     //!@name widget to viewport translations
     //@{
-    
+
     //! scrollbar position
     QPoint scrollbarPosition( void ) const
     { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
-    
+
     //! widget to viewport translation
     QRect toViewport( const QRect& rect ) const
     { return rect.translated( -scrollbarPosition() ); }
-    
+
     //! widget to viewport translation
     QPoint toViewport( const QPoint& point ) const
     { return point - scrollbarPosition(); }
-    
+
     //! widget from viewport translation
     QRect fromViewport( const QRect& rect ) const
     { return rect.translated( scrollbarPosition() ); }
-    
+
     //! widget from viewport translation
     QPoint fromViewport( const QPoint& point ) const
     { return point + scrollbarPosition(); }
-    
+
     //@}
-    
+
     //! modifiers
     enum Modifier
     {
@@ -340,113 +341,113 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
         MODIFIER_INSERT = 1<<2,
         MODIFIER_WRAP = 1<<3
     };
-    
+
     //! modifiers
     const unsigned int& modifiers( void ) const
     { return modifiers_; }
-    
+
     //! modifiers
     bool modifier( const Modifier& key ) const
     { return modifiers_&key; }
-    
+
     // return true if block is an empty line
     virtual bool isEmptyBlock( const QTextBlock& block ) const
     { return false; }
-    
+
     //! return true is block is to be ignored from indentation scheme
     virtual bool ignoreBlock( const QTextBlock& block ) const
     { return false; }
-    
+
     signals:
-    
+
     //! busy signal
     void busy( int );
-    
+
     //! progress
     void progressAvailable( int );
-    
+
     //! idle
     void idle( void );
-    
+
     //! emmitted when selection could not be found
     void noMatchFound( void );
-    
+
     //! emmitted when selection could be found
     void matchFound( void );
-    
+
     //! emmited when recieve focus
     void hasFocus( TextEditor* );
-    
+
     //! overwrite mode changed
     void modifiersChanged( unsigned int );
-    
+
     public slots:
-    
+
     //! cut
     virtual void cut( void );
-    
+
     //! copy
     virtual void copy( void );
-    
+
     //! paste
     virtual void paste( void );
-    
+
     //! changes selection to uppercase
     virtual void upperCase( void );
-    
+
     //! changes selection to lower case
     virtual void lowerCase( void );
-    
+
     //! find next occurence of TextSelection
     virtual void find( TextSelection selection );
-    
+
     //! find current selection forward
     virtual void findSelectionForward( void );
-    
+
     //! find current selection backward
     virtual void findSelectionBackward( void );
-    
+
     //! find last search forward
     virtual void findAgainForward( void );
-    
+
     //! find last search forward
     virtual void findAgainBackward( void );
-    
+
     //! find next occurence of TextSelection
     virtual void replace( TextSelection selection );
-    
+
     //! replace selection in range
     virtual unsigned int replaceInSelection( TextSelection selection, const bool& show_dialog = true );
-    
+
     //! replace selection in window, returns number of replacements
     virtual unsigned int replaceInWindow( TextSelection selection, const bool& show_dialog = true );
-    
+
     //! replace again forward
     virtual void replaceAgainForward( void );
-    
+
     //! replace again forward
     virtual void replaceAgainBackward( void );
-    
+
     //! select line by number
     virtual void selectLine( int index );
-    
+
     //! remove current line
     virtual void removeLine( void );
-    
+
     //! clear
     virtual void clear( void );
-    
+
     protected:
-    
+
     //!@name event handlers
     //@{
-    
+
     //! enter event handler
     void enterEvent( QEvent *event );
-    
+
     //! mouse release event [overloaded]
     virtual void mousePressEvent( QMouseEvent* );
-    
+
     //! mouse double click event [overloaded]
     /*!
     for left button, double click events are handled
@@ -454,82 +455,82 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     is handled independently by the MultipleClickCounter object
     */
     virtual void mouseDoubleClickEvent( QMouseEvent* );
-    
+
     //! mouse press event [overloaded]
     virtual void mouseMoveEvent( QMouseEvent* );
-    
+
     //! mouse press event [overloaded]
     virtual void mouseReleaseEvent( QMouseEvent* );
-    
+
     //! drop event
     virtual void dropEvent( QDropEvent* event );
-    
+
     //! keypress event
     virtual void keyPressEvent( QKeyEvent* );
-    
+
     //! focus event [overloaded]
     virtual void focusInEvent( QFocusEvent* );
-    
+
     //! context menu event [overloaded]
     virtual void contextMenuEvent( QContextMenuEvent* );
-    
+
     //! resize event
     /* need to update LineNumberWidget, when wrap is enabled */
     virtual void resizeEvent( QResizeEvent* );
-    
+
     //! repaint event
     virtual void paintEvent( QPaintEvent* );
-    
+
     //! timer event
     virtual void timerEvent( QTimerEvent* event );
-    
+
     //@}
-    
+
     //! scroll
     virtual void scrollContentsBy( int dx, int dy );
-    
+
     //! install default actions
     virtual void _installActions( void );
-    
+
     //!@name find/replace selection
     //@{
-    
+
     //! find dialog
     virtual BaseFindDialog& _findDialog( void )
     {
         assert( findDialog_ );
         return *findDialog_;
     }
-    
+
     //! find dialog
     virtual void _createBaseFindDialog( void );
-    
+
     //! find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, const bool& rewind );
-    
+
     //! find selection in backward direction
     virtual bool _findBackward( const TextSelection& selection, const bool& rewind );
-    
+
     //! replace dialog
     virtual BaseReplaceDialog& _replaceDialog( void )
     {
         assert( replaceDialog_ );
         return *replaceDialog_;
     }
-    
+
     //! find dialog
     virtual void _createBaseReplaceDialog( void );
-    
+
     //! progress dialog
     virtual void _createProgressDialog( void );
-    
+
     //! define how cursor should be updated while replacing
     enum CursorMode
     {
-        
+
         //! cursor selection range is expanded
         EXPAND,
-            
+
         //! cursor position is moved
         MOVE
 

@@ -36,7 +36,7 @@
 #include "Debug.h"
 #include "TransitionWidget.h"
 
-using namespace std;
+
 
 //___________________________________________________________________
 void AnimatedTabBar::mousePressEvent( QMouseEvent* event )

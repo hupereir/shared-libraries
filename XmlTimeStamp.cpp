@@ -33,7 +33,7 @@
 #include "Debug.h"
 #include "XmlTimeStamp.h"
 
-using namespace std;
+
 
 const QString XmlTimeStamp::XML_TIME( "time" );
 

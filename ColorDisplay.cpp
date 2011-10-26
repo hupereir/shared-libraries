@@ -45,7 +45,7 @@
 #include "IconEngine.h"
 #include "InformationDialog.h"
 
-using namespace std;
+
 
 //______________________________________________
 const QString ColorDisplay::NONE = "None";

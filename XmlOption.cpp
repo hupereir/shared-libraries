@@ -32,7 +32,7 @@
 
 #include "XmlOption.h"
 #include "XmlString.h"
-using namespace std;
+
 
 //________________________________________________
 XmlOption::XmlOption( const QDomElement& element )

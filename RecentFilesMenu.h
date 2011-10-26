@@ -32,13 +32,12 @@
 \date $Date$
 */
 
-#include <QMenu>
-
-#include <list>
-
 #include "Counter.h"
 #include "Debug.h"
 #include "FileList.h"
+
+#include <QtGui/QMenu>
+#include <list>
 
 /*!
 \class   RecentFilesMenu

@@ -37,7 +37,7 @@
 #include "InformationDialog.h"
 #include "Str.h"
 
-using namespace std;
+
 
 //_________________________________________________________
 CustomSlider::CustomSlider( QWidget* parent ):

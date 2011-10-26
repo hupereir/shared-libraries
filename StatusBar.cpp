@@ -38,7 +38,7 @@
 #include "Debug.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //___________________________________________
 StatusBar::StatusBar( QWidget* parent ):

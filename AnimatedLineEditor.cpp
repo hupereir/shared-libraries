@@ -37,7 +37,7 @@
 #include "TransitionWidget.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //________________________________________________________
 AnimatedLineEditor::AnimatedLineEditor( QWidget* parent ):

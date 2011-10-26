@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file ColumnSelectionMenu.h
-  \brief handels column visibility in TreeViews
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ColumnSelectionMenu.h
+\brief handels column visibility in TreeViews
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 
@@ -35,82 +35,80 @@
 #include "Debug.h"
 #include "ColumnSelectionMenu.h"
 
-using namespace std;
-
 //_____________________________________________________
 ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, const QString& title ):
-  QMenu( parent ),
-  Counter( "ColumnSelectionMenu" ),
-  target_( target )
+QMenu( parent ),
+Counter( "ColumnSelectionMenu" ),
+target_( target )
 {
-  Debug::Throw( "ColumnSelectionMenu::ColumnSelectionMenu.\n" );
-  setTitle( title );
-  connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _updateActions( void ) ) );
-  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _updateSelectedColumns( QAction* ) ) );
+    Debug::Throw( "ColumnSelectionMenu::ColumnSelectionMenu.\n" );
+    setTitle( title );
+    connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _updateActions( void ) ) );
+    connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _updateSelectedColumns( QAction* ) ) );
 }
 
 //_____________________________________________________
 void ColumnSelectionMenu::_updateActions( void )
 {
 
-  Debug::Throw( "ColumnSelectionMenu::_updateActions.\n" );
+    Debug::Throw( "ColumnSelectionMenu::_updateActions.\n" );
 
-  // clear existing actions
-  for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
-  { delete iter->first; }
-  actions_.clear();
+    // clear existing actions
+    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    { delete iter->first; }
+    actions_.clear();
 
-  // check if the menu already has actions.
-  QList<QAction*> actions( ColumnSelectionMenu::actions() );
-  QAction *first_action( actions.isEmpty() ? 0:actions.front() );
+    // check if the menu already has actions.
+    QList<QAction*> actions( ColumnSelectionMenu::actions() );
+    QAction *first_action( actions.isEmpty() ? 0:actions.front() );
 
-  // retrieve parent header.
-  QHeaderView* header( _target().header() );
-  assert( header );
+    // retrieve parent header.
+    QHeaderView* header( _target().header() );
+    assert( header );
 
-  // loop over columns in header
-  unsigned int visible_columns(0);
-  for( int index=0; index < header->count(); index++ )
-  {
-
-    // retrieve column name
-    QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
-    if( column_name.isNull() || column_name.isEmpty() )
+    // loop over columns in header
+    unsigned int visible_columns(0);
+    for( int index=0; index < header->count(); index++ )
     {
-      QString buffer;
-      QTextStream( &buffer ) << "column " << index+1;
-      column_name = buffer;
+
+        // retrieve column name
+        QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
+        if( column_name.isNull() || column_name.isEmpty() )
+        {
+            QString buffer;
+            QTextStream( &buffer ) << "column " << index+1;
+            column_name = buffer;
+        }
+
+        QAction* action = new QAction( column_name, this );
+        action->setCheckable( true );
+        action->setChecked( !_target().isColumnHidden( index ) );
+        if( !_target().isColumnHidden( index ) ) visible_columns++;
+
+        insertAction( first_action, action );
+        actions_.insert( std::make_pair( action, index ) );
+
     }
 
-    QAction* action = new QAction( column_name, this );
-    action->setCheckable( true );
-    action->setChecked( !_target().isColumnHidden( index ) );
-    if( !_target().isColumnHidden( index ) ) visible_columns++;
-
-    insertAction( first_action, action );
-    actions_.insert( make_pair( action, index ) );
-
-  }
-
-  // if only one column is visible, disable corresponding action
-  if( visible_columns == 1 )
-  {
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
-    { if( iter->first->isChecked() ) iter->first->setEnabled( false ); }
-  }
+    // if only one column is visible, disable corresponding action
+    if( visible_columns == 1 )
+    {
+        for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+        { if( iter->first->isChecked() ) iter->first->setEnabled( false ); }
+    }
 
 }
 
 //______________________________________________________________________________
 void ColumnSelectionMenu::_updateSelectedColumns( QAction* action )
 {
-  Debug::Throw( "ColumnSelectionMenu::_updateSelectedColumns.\n" );
+    Debug::Throw( "ColumnSelectionMenu::_updateSelectedColumns.\n" );
 
-  // retrieve index
-  ActionMap::const_iterator iter = actions_.find( action );
-  if( iter == actions_.end() ) return;
+    // retrieve index
+    ActionMap::const_iterator iter = actions_.find( action );
+    if( iter == actions_.end() ) return;
 
-  // set column visibility
-  _target().setColumnHidden( iter->second, !iter->first->isChecked() );
+    // set column visibility
+    _target().setColumnHidden( iter->second, !iter->first->isChecked() );
 
 }

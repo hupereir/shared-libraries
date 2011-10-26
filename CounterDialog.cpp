@@ -38,7 +38,7 @@
 #include "Singleton.h"
 #include "AnimatedTreeView.h"
 
-using namespace std;
+
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):

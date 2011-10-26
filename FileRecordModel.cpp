@@ -29,17 +29,15 @@
 \date $Date$
 */
 
-#include <algorithm>
-#include <cassert>
-#include <QIcon>
-
 #include "CustomPixmap.h"
 #include "FileRecordBaseProperties.h"
 #include "FileRecordModel.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-using namespace std;
+#include <algorithm>
+#include <cassert>
+#include <QIcon>
 
 //__________________________________________________________________
 FileRecordModel::IconCache& FileRecordModel::_icons( void )
@@ -217,7 +215,7 @@ void FileRecordModel::_updateColumns( const ValueType& value )
 bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord second ) const
 {
 
-    if( order_ == Qt::AscendingOrder ) swap( first, second );
+    if( order_ == Qt::AscendingOrder ) std::swap( first, second );
 
     switch( type_ )
     {
@@ -265,7 +263,7 @@ QIcon FileRecordModel::_icon( const QString& name )
     }
 
     // insert in map
-    _icons().insert( make_pair( name, icon ) );
+    _icons().insert( std::make_pair( name, icon ) );
     return icon;
 
 }

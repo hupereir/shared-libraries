@@ -45,7 +45,7 @@
 #include "TreeView.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //_______________________________________________________
 OptionListBox::OptionListBox( QWidget* parent, const QString& name ):

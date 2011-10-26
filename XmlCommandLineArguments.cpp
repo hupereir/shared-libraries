@@ -33,7 +33,7 @@
 #include "XmlCommandLineArguments.h"
 #include "XmlString.h"
 
-using namespace std;
+
 
 const QString XmlCommandLineArguments::XML_ARGUMENT( "c" );
 

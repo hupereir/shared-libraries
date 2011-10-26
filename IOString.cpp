@@ -31,7 +31,7 @@
 
 #include "IOString.h"
 
-using namespace std;
+
 
 //_________________________________________________________________
 IOString::IOString( QIODevice& device )

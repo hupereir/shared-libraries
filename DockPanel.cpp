@@ -44,7 +44,7 @@
 #include "XmlOptions.h"
 #include "X11Util.h"
 
-using namespace std;
+
 
 
 //___________________________________________________________

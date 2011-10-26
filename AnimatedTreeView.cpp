@@ -36,7 +36,7 @@
 #include "ScrollObject.h"
 #include "TransitionWidget.h"
 
-using namespace std;
+
 
 //________________________________________________________________________
 AnimatedTreeView::AnimatedTreeView( QWidget* parent ):

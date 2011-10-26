@@ -25,101 +25,102 @@
 *******************************************************************************/
 
 /*!
-  \file PixmapEngine.h
-  \brief customized Icon factory to provide better looking disabled icons
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file PixmapEngine.h
+\brief customized Icon factory to provide better looking disabled icons
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
-#include <QPixmap>
-#include <map>
-#include <list>
-#include <cassert>
 
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QtGui/QPixmap>
+#include <map>
+#include <list>
+#include <cassert>
 
 //! customized Icon factory to provide better looking disabled icons
 class PixmapEngine: public Counter
 {
 
-  public:
-
-  //! retrieve singleton
-  static PixmapEngine& get( void );
-
-  //! create icon
-  /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  static const QPixmap& get( const QString& file, bool from_cache = true )
-  { return get()._get( file, from_cache ); }
-
-  //! map files and QPixmap
-  typedef std::map< QString, QPixmap > Cache;
-
-  //! map files and QPixmap
-  class Pair: public std::pair<QString, QPixmap >, public Counter
-  {
-
     public:
 
-    //! constructor
-    Pair( void ):
-      Counter( "PixmapEngine::Pair" )
-    {}
+    //! retrieve singleton
+    static PixmapEngine& get( void );
+
+    //! create icon
+    /*! the file is stored into a cache to avoid all pixmaps manipulations */
+    static const QPixmap& get( const QString& file, bool from_cache = true )
+    { return get()._get( file, from_cache ); }
+
+    //! map files and QPixmap
+    typedef std::map< QString, QPixmap > Cache;
+
+    //! map files and QPixmap
+    class Pair: public std::pair<QString, QPixmap >, public Counter
+    {
+
+        public:
+
+        //! constructor
+        Pair( void ):
+            Counter( "PixmapEngine::Pair" )
+        {}
+
+        //! constructor
+        Pair( const std::pair<QString, QPixmap >& pair ):
+            std::pair<QString, QPixmap >( pair ),
+            Counter( "PixmapEngine::Pair" )
+        {}
+
+        //! equal to operator
+        bool operator == ( const Pair& pair ) const
+        { return first == pair.first; }
+
+        //! less than operator
+        bool operator < ( const Pair& pair ) const
+        { return first < pair.first; }
+
+    };
+
+    //! return cache
+    static const Cache& cache( void )
+    { return get().cache_; }
+
+    //! reload all icons set in cache from new path list
+    bool reload( void );
+
+    protected:
+
+    //! pixmap path
+    void _setPixmapPath( const std::list< QString >& pathList )
+    { pixmapPath_ = pathList; }
+
+    //! pixmap path
+    const std::list< QString >& _pixmapPath( void ) const
+    { return pixmapPath_; }
+
+    private:
+
+    //!@name non static methods are hidden
+    //@{
 
     //! constructor
-    Pair( const std::pair<QString, QPixmap >& pair ):
-      std::pair<QString, QPixmap >( pair ),
-      Counter( "PixmapEngine::Pair" )
-    {}
+    PixmapEngine( void );
 
-    //! equal to operator
-    bool operator == ( const Pair& pair ) const
-    { return first == pair.first; }
+    //! create icon
+    /*! the file is stored into a cache to avoid all pixmaps manipulations */
+    const QPixmap& _get( const QString& file, bool from_cache );
 
-    //! less than operator
-    bool operator < ( const Pair& pair ) const
-    { return first < pair.first; }
+    //@}
 
-  };
+    //! pixmap path
+    std::list< QString > pixmapPath_;
 
-  //! return cache
-  static const Cache& cache( void )
-  { return get().cache_; }
-
-  //! reload all icons set in cache from new path list
-  bool reload( void );
-
-  protected:
-
-  //! pixmap path
-  void _setPixmapPath( const std::list< QString >& path_list )
-  { pixmap_path_ = path_list; }
-
-  //! pixmap path
-  const std::list< QString >& _pixmapPath( void ) const
-  { return pixmap_path_; }
-
-  private:
-
-  //!@name non static methods are hidden
-  //@{
-
-  //! constructor
-  PixmapEngine( void );
-
-  //! create icon
-  /*! the file is stored into a cache to avoid all pixmaps manipulations */
-  const QPixmap& _get( const QString& file, bool from_cache );
-
-  //@}
-
-  //! pixmap path
-  std::list< QString > pixmap_path_;
-
-  //! map files and QPixmap
-  Cache cache_;
+    //! map files and QPixmap
+    Cache cache_;
 
 };
 

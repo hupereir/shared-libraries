@@ -42,7 +42,7 @@
 #include "Str.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //__________________________________________________________________________
 OptionDialog::OptionDialog( QWidget* parent ):

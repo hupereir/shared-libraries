@@ -37,7 +37,7 @@
 #include "TextEditor.h"
 #include "TextBlockData.h"
 
-using namespace std;
+
 
 //_______________________________________________________________________
 BlockHighlight::BlockHighlight( TextEditor* parent ):

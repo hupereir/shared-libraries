@@ -35,8 +35,6 @@
 #include "TextEditor.h"
 #include "XmlOptions.h"
 
-using namespace std;
-
 static const unsigned int debug_level = 1;
 
 //________________________________________________________________________
@@ -47,8 +45,8 @@ BoxSelection::BoxSelection( TextEditor* parent ):
   Counter( "BoxSelection" ),
   parent_( parent ),
   enabled_( false ),
-  font_width_( 0 ),
-  font_height_( 0 ),
+  fontWidth_( 0 ),
+  fontHeight_( 0 ),
   state_( EMPTY )
 { Debug::Throw( debug_level, "BoxSelection::BoxSelection.\n" ); }
 
@@ -116,8 +114,8 @@ bool BoxSelection::checkEnabled( void )
   if( !isEnabled() ) return false;
 
   // read font attributes
-  font_width_ = QFontMetrics( parent_->font() ).width( " " );
-  font_height_ = QFontMetrics( parent_->font() ).height();
+  fontWidth_ = QFontMetrics( parent_->font() ).width( " " );
+  fontHeight_ = QFontMetrics( parent_->font() ).height();
 
   return true;
 }
@@ -236,21 +234,21 @@ bool BoxSelection::fromString( QString input )
   input.replace( "\t", parent_->emulatedTabCharacter() );
 
   // try split
-  QStringList input_list( input.split( "\n" ) );
+  QStringList inputList( input.split( "\n" ) );
 
   // retrieve maximum length
   int columns(0);
-  for( int i=0; i < input_list.size(); i++ )
-  { columns = max( columns, input_list[i].length() ); }
+  for( int i=0; i < inputList.size(); i++ )
+  { columns = std::max( columns, inputList[i].length() ); }
 
   // if there are more lines in current box than in the selection, fill with blank lines
-  for( int i = input_list.size(); i < cursors_.size(); i++ )
-  { input_list.push_back( QString( columns, ' ' ) ); }
+  for( int i = inputList.size(); i < cursors_.size(); i++ )
+  { inputList.push_back( QString( columns, ' ' ) ); }
 
   // loop over items and cursors, replace strings
   QTextCursor cursor( parent_->textCursor() );
   cursor.beginEditBlock();
-  for( int i=0; i < min( input_list.size(), cursors_.size() ); i++ )
+  for( int i=0; i < std::min( inputList.size(), cursors_.size() ); i++ )
   {
 
     cursor.setPosition( cursors_[i].anchor() );
@@ -270,16 +268,16 @@ bool BoxSelection::fromString( QString input )
     cursor.setPosition( cursors_[i].position(), QTextCursor::KeepAnchor );
 
     // insert new text
-    cursor.insertText( input_list[i].rightJustified( extra_length + input_list[i].size() ).leftJustified( extra_length + columns ) );
+    cursor.insertText( inputList[i].rightJustified( extra_length + inputList[i].size() ).leftJustified( extra_length + columns ) );
 
   }
 
-  // if there are more lines in input_list than in current selection, insert new lines
-  for( int i = cursors_.size(); i < input_list.size(); i++ )
+  // if there are more lines in inputList than in current selection, insert new lines
+  for( int i = cursors_.size(); i < inputList.size(); i++ )
   {
     cursor.insertText( QString( '\n' ) +
-      input_list[i]
-      .rightJustified( cursors_.firstColumn() + input_list[i].size() )
+      inputList[i]
+      .rightJustified( cursors_.firstColumn() + inputList[i].size() )
       .leftJustified( cursors_.firstColumn() + columns ) );
   }
 
@@ -498,18 +496,18 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
 void BoxSelection::_updateRect( void )
 {
   Debug::Throw( debug_level, "BoxSelection::_updateRect.\n" );
-  int x_min( min( begin_.x(), end_.x() ) );
-  int x_max( max( begin_.x(), end_.x() ) );
+  int x_min( std::min( begin_.x(), end_.x() ) );
+  int x_max( std::max( begin_.x(), end_.x() ) );
 
-  int y_min( min( begin_.y(), end_.y() ) );
-  int y_max( max( begin_.y(), end_.y() ) );
+  int y_min( std::min( begin_.y(), end_.y() ) );
+  int y_max( std::max( begin_.y(), end_.y() ) );
 
-  QPoint begin( x_min - (x_min%font_width_) + 2, y_min - (y_min%font_height_) + 2 );
-  QPoint end( x_max - (x_max%font_width_) + 1, y_max + font_height_ - (y_max%font_height_) );
+  QPoint begin( x_min - (x_min%fontWidth_) + 2, y_min - (y_min%fontHeight_) + 2 );
+  QPoint end( x_max - (x_max%fontWidth_) + 1, y_max + fontHeight_ - (y_max%fontHeight_) );
 
   // decide location of cursor point
   cursor_.setX( begin_.x() < end_.x() ? end.x() : begin.x() );
-  cursor_.setY( begin_.y() < end_.y() ?  end.y() : begin.y() + font_height_ - 1 );
+  cursor_.setY( begin_.y() < end_.y() ?  end.y() : begin.y() + fontHeight_ - 1 );
   cursor_ = parent_->toViewport( cursor_ );
 
   // compute rect
@@ -525,9 +523,9 @@ void BoxSelection::_store( void )
   Debug::Throw( debug_level, "BoxSelection::_store.\n" );
 
   // retrieve box selection size
-  int first_column = rect().left() / font_width_;
-  int columns = rect().width() / font_width_;
-  int rows = rect().height() / font_height_ + 1;
+  int first_column = rect().left() / fontWidth_;
+  int columns = rect().width() / fontWidth_;
+  int rows = rect().height() / fontHeight_ + 1;
 
   Debug::Throw() << "BoxSelection::_store - [" << first_column << "," << columns << "," << rows << "]" << endl;
 
@@ -538,7 +536,7 @@ void BoxSelection::_store( void )
   {
 
     // vertical offset for this row
-    QPoint voffset( 0, (int)(font_height_*( 0.5+row )) );
+    QPoint voffset( 0, (int)(fontHeight_*( 0.5+row )) );
     QPoint begin( local.topLeft() + voffset );
     QPoint end( local.topRight() + voffset );
 

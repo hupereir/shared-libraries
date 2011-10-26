@@ -29,10 +29,6 @@
 \date $Date$
 */
 
-#include <algorithm>
-
-#include <set>
-
 #include "BaseIcons.h"
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
@@ -40,7 +36,8 @@
 #include "RecentFilesMenu.h"
 #include "XmlOptions.h"
 
-using namespace std;
+#include <algorithm>
+#include <set>
 
 //_______________________________________________
 RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
@@ -170,7 +167,7 @@ void RecentFilesMenu::_loadFiles( void )
         actionGroup_->addAction( action );
 
         if( _fileList().check() ) action->setEnabled( iter->file().size() && iter->isValid() );
-        actions_.insert( make_pair( action, *iter ) );
+        actions_.insert( std::make_pair( action, *iter ) );
     }
 
 }

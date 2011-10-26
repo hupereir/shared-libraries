@@ -39,7 +39,7 @@
 #include "XmlOptions.h"
 #include "XmlError.h"
 
-using namespace std;
+
 
 //_______________________________________________
 XmlFileList::XmlFileList( QObject* parent ):

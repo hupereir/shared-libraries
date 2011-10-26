@@ -48,7 +48,7 @@
 #include "QtUtil.h"
 #include "Util.h"
 
-using namespace std;
+
 
 //____________________________________________________________
 void QtUtil::moveWidget( QWidget* widget, QPoint position )

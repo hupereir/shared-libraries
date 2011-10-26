@@ -38,7 +38,7 @@
 #include "IconSize.h"
 #include "AnimatedTreeView.h"
 
-using namespace std;
+
 
 //__________________________________________________________________________
 PixmapCacheDialog::PixmapCacheDialog( QWidget* parent ):

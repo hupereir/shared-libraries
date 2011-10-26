@@ -38,7 +38,7 @@
 #include "IconEngine.h"
 #include "SelectLineDialog.h"
 
-using namespace std;
+
 
 //_______________________________________________________
 SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):

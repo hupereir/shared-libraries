@@ -42,7 +42,7 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( QWidget* parent ):

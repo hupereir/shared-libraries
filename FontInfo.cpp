@@ -35,7 +35,7 @@
 #include "FontInfo.h"
 #include "TextFormat.h"
 
-using namespace std;
+
 
 //_____________________________________________
 FontInfo::FontInfo( QWidget* parent ):

@@ -34,7 +34,7 @@
 #include "ValidFileThread.h"
 #include "File.h"
 
-using namespace std;
+
 
 //______________________________________________________
 QEvent::Type ValidFileEvent::eventType( void )

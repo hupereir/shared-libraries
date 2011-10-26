@@ -37,7 +37,7 @@
 #include "OptionModel.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //_______________________________________________
 const QString OptionModel::column_titles_[ OptionModel::n_columns ] =

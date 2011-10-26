@@ -37,7 +37,7 @@
 #include "OptionDialog.h"
 #include "SystemEnvironmentDialog.h"
 
-using namespace std;
+
 
 //_______________________________________________________
 DebugMenu::DebugMenu( QWidget* parent, unsigned int flags ):

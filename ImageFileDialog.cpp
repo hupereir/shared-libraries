@@ -29,7 +29,7 @@
 \date $Date$
 */
 
-using namespace std;
+
 
 #include <QFileInfo>
 #include <QImage>

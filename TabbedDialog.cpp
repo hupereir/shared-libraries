@@ -43,7 +43,7 @@
 #include "TabbedDialog.h"
 #include "TreeView.h"
 
-using namespace std;
+
 
 //_________________________________________________________
 TabbedDialog::TabbedDialog( QWidget* parent ):

@@ -36,7 +36,7 @@
 #include "AnimatedTreeView.h"
 #include "Str.h"
 
-using namespace std;
+
 
 //__________________________________________________________________________
 SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):

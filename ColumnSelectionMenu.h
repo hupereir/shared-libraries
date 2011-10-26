@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-  \file ColumnSelectionMenu.h
-  \brief handels column visibility in TreeViews
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ColumnSelectionMenu.h
+\brief handels column visibility in TreeViews
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -45,39 +45,39 @@
 class ColumnSelectionMenu:public QMenu, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  ColumnSelectionMenu( QWidget*, QTreeView*, const QString& title = "&Select Columns" );
+        //! constructor
+        ColumnSelectionMenu( QWidget*, QTreeView*, const QString& title = "&Select Columns" );
 
-  private slots:
+    private slots:
 
-  //! update actions
-  void _updateActions( void );
+    //! update actions
+    void _updateActions( void );
 
-  //! update mask when triggering actions
-  void _updateSelectedColumns( QAction* action );
+    //! update mask when triggering actions
+    void _updateSelectedColumns( QAction* action );
 
-  private:
+    private:
 
-  //! target
-  QTreeView& _target( void )
-  {
-    assert( target_ );
-    return *target_;
-  }
+    //! target
+    QTreeView& _target( void )
+    {
+        assert( target_ );
+        return *target_;
+    }
 
-  //! target
-  QTreeView* target_;
+    //! target
+    QTreeView* target_;
 
-  //! map action to column index
-  typedef std::map< QAction*, int > ActionMap;
+    //! map action to column index
+    typedef std::map< QAction*, int > ActionMap;
 
-  //! map action to column index
-  ActionMap actions_;
+    //! map action to column index
+    ActionMap actions_;
 
 };
 

@@ -21,11 +21,11 @@
 *******************************************************************************/
 
 /*!
-  \file BaseFindDialog.cpp
-  \brief find_text dialog for text editor widgets
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file BaseFindDialog.cpp
+\brief find_text dialog for text editor widgets
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QFrame>
@@ -38,13 +38,11 @@
 #include "Debug.h"
 #include "BaseFindDialog.h"
 
-using namespace std;
-
 //________________________________________________________________________
-set<QString>& BaseFindDialog::_searchedStrings( void )
+std::set<QString>& BaseFindDialog::_searchedStrings( void )
 {
-  static set<QString> strings;
-  return strings;
+    static std::set<QString> strings;
+    return strings;
 }
 
 //________________________________________________________________________
@@ -52,91 +50,91 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
     BaseDialog( parent, flags ),
     Counter( "BaseFindDialog" )
 {
-  Debug::Throw( "BaseFindDialog::BaseFindDialog.\n" );
-  setOptionName( "FIND_DIALOG" );
+    Debug::Throw( "BaseFindDialog::BaseFindDialog.\n" );
+    setOptionName( "FIND_DIALOG" );
 
-  // set dialog title
-  setWindowTitle( "Find" );
+    // set dialog title
+    setWindowTitle( "Find" );
 
-  // create vbox layout
-  setLayout( new QVBoxLayout() );
-  layout()->setMargin( 10 );
-  layout()->setSpacing( 5 );
+    // create vbox layout
+    setLayout( new QVBoxLayout() );
+    layout()->setMargin( 10 );
+    layout()->setSpacing( 5 );
 
-  // edition
-  layout()->addItem( editor_layout_ = new QVBoxLayout() );
-  _editorLayout().setMargin( 0 );
-  _editorLayout().setSpacing( 5 );
+    // edition
+    layout()->addItem( editorLayout_ = new QVBoxLayout() );
+    _editorLayout().setMargin( 0 );
+    _editorLayout().setSpacing( 5 );
 
-  // add editor
-  QLabel *label = new QLabel( "&Text to find:", this );
-  _editorLayout().addWidget( label );
-  _editorLayout().addWidget( editor_ = new CustomComboBox( this ) );
-  label->setBuddy( &editor() );
-  editor().setEditable( true );
-  editor().setAutoCompletion( true, Qt::CaseSensitive );
+    // add editor
+    QLabel *label = new QLabel( "&Text to find:", this );
+    _editorLayout().addWidget( label );
+    _editorLayout().addWidget( editor_ = new CustomComboBox( this ) );
+    label->setBuddy( &editor() );
+    editor().setEditable( true );
+    editor().setAutoCompletion( true, Qt::CaseSensitive );
 
-  connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
-  connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
-  connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
-  connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( void ) ) );
+    connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
+    connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
+    connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
+    connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( void ) ) );
 
-  // locations
-  GridLayout* grid_layout( new GridLayout() );
-  grid_layout->setSpacing( 5 );
-  grid_layout->setMargin( 0 );
-  grid_layout->setMaxCount( 2 );
+    // locations
+    GridLayout* grid_layout( new GridLayout() );
+    grid_layout->setSpacing( 5 );
+    grid_layout->setMargin( 0 );
+    grid_layout->setMaxCount( 2 );
 
-  layout()->addItem( grid_layout );
+    layout()->addItem( grid_layout );
 
-  // insert checkboxes
-  grid_layout->addWidget( backward_checkbox_ = new QCheckBox( "&Search backward", this ) );
-  grid_layout->addWidget( case_sensitive_checkbox_ = new QCheckBox( "&Case sensitive", this ) );
-  grid_layout->addWidget( regexp_checkbox_ = new QCheckBox( "&Regular expresion", this ) );
-  grid_layout->addWidget( entire_word_checkbox_ = new QCheckBox( "&Entire word", this ) );
-  connect( regexp_checkbox_, SIGNAL( toggled( bool ) ), SLOT( _regExpChecked( bool ) ) );
+    // insert checkboxes
+    grid_layout->addWidget( backwardCheckbox_ = new QCheckBox( "&Search backward", this ) );
+    grid_layout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( "&Case sensitive", this ) );
+    grid_layout->addWidget( regexpCheckbox_ = new QCheckBox( "&Regular expresion", this ) );
+    grid_layout->addWidget( entireWordCheckbox_ = new QCheckBox( "&Entire word", this ) );
+    connect( regexpCheckbox_, SIGNAL( toggled( bool ) ), SLOT( _regExpChecked( bool ) ) );
 
-  // tooltips
-  backward_checkbox_->setToolTip( "Perform search backward" );
-  case_sensitive_checkbox_->setToolTip( "Case sensitive search" );
-  regexp_checkbox_->setToolTip( "Search text using regular expression" );
+    // tooltips
+    backwardCheckbox_->setToolTip( "Perform search backward" );
+    caseSensitiveCheckbox_->setToolTip( "Case sensitive search" );
+    regexpCheckbox_->setToolTip( "Search text using regular expression" );
 
-  // notification label
-  layout()->addWidget( label_ = new QLabel( this ) );
-  label_->setMargin( 2 );
+    // notification label
+    layout()->addWidget( label_ = new QLabel( this ) );
+    label_->setMargin( 2 );
 
-  // location layout
-  layout()->addItem( location_layout_ = new QHBoxLayout() );
-  _locationLayout().setMargin(0);
-  _locationLayout().setSpacing(5);
+    // location layout
+    layout()->addItem( locationLayout_ = new QHBoxLayout() );
+    _locationLayout().setMargin(0);
+    _locationLayout().setSpacing(5);
 
-  // horizontal separator
-  QFrame* frame( new QFrame( this ) );
-  frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
-  layout()->addWidget( frame );
+    // horizontal separator
+    QFrame* frame( new QFrame( this ) );
+    frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
+    layout()->addWidget( frame );
 
-  // buttons
-  layout()->addItem( button_layout_ = new QHBoxLayout() );
-  _buttonLayout().setMargin( 0 );
-  _buttonLayout().setSpacing( 5 );
-  _buttonLayout().addStretch(1);
+    // buttons
+    layout()->addItem( buttonLayout_ = new QHBoxLayout() );
+    _buttonLayout().setMargin( 0 );
+    _buttonLayout().setSpacing( 5 );
+    _buttonLayout().addStretch(1);
 
-  // insert Find button
-  QPushButton *button;
-  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), "&Find", this ) );
-  connect( button, SIGNAL( clicked( void ) ), SLOT( _find( void ) ) );
-  connect( button, SIGNAL( clicked( void ) ), SLOT( _updateFindComboBox( void ) ) );
-  _addDisabledButton( button );
-  button->setAutoDefault( false );
-  find_button_ = button;
+    // insert Find button
+    QPushButton *button;
+    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), "&Find", this ) );
+    connect( button, SIGNAL( clicked( void ) ), SLOT( _find( void ) ) );
+    connect( button, SIGNAL( clicked( void ) ), SLOT( _updateFindComboBox( void ) ) );
+    _addDisabledButton( button );
+    button->setAutoDefault( false );
+    findButton_ = button;
 
-  // insert Cancel button
-  _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-  button->setAutoDefault( false );
+    // insert Cancel button
+    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
+    connect( button, SIGNAL( clicked() ), SLOT( close() ) );
+    button->setAutoDefault( false );
 
-  // disable buttons
-  _updateButtons();
+    // disable buttons
+    _updateButtons();
 
 }
 
@@ -144,11 +142,11 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
 void BaseFindDialog::synchronize( void )
 {
 
-  Debug::Throw( "BaseFindDialog::synchronize.\n" );
-  editor().clear();
+    Debug::Throw( "BaseFindDialog::synchronize.\n" );
+    editor().clear();
 
-  for( set<QString>::iterator iter = _searchedStrings().begin(); iter != _searchedStrings().end(); iter++ )
-  { editor().addItem( *iter ); }
+    for( std::set<QString>::iterator iter = _searchedStrings().begin(); iter != _searchedStrings().end(); iter++ )
+    { editor().addItem( *iter ); }
 
 }
 
@@ -163,25 +161,25 @@ void BaseFindDialog::clearLabel( void )
 //________________________________________________________________________
 void BaseFindDialog::_regExpChecked( bool value )
 {
-  Debug::Throw( "BaseFindDialog::_regExpChecked.\n" );
-  case_sensitive_checkbox_->setChecked( value );
-  if( value )
-  {
-    entire_word_checkbox_->setChecked( false );
-    entire_word_checkbox_->setEnabled( false );
-  } else { entire_word_checkbox_->setEnabled( true ); }
+    Debug::Throw( "BaseFindDialog::_regExpChecked.\n" );
+    caseSensitiveCheckbox_->setChecked( value );
+    if( value )
+    {
+        entireWordCheckbox_->setChecked( false );
+        entireWordCheckbox_->setEnabled( false );
+    } else { entireWordCheckbox_->setEnabled( true ); }
 
 }
 
 //________________________________________________________________________
 void BaseFindDialog::_updateButtons( const QString& text )
 {
-  Debug::Throw( "BaseFindDialog::_updateButtons.\n" );
+    Debug::Throw( "BaseFindDialog::_updateButtons.\n" );
 
-  bool enabled( !( text.isNull() || text.isEmpty() ) );
+    bool enabled( !( text.isNull() || text.isEmpty() ) );
 
-  for( vector< QAbstractButton* >::iterator iter = _disabledButtons().begin(); iter != _disabledButtons().end(); iter++ )
-  { (*iter)->setEnabled( enabled ); }
+    for( std::vector< QAbstractButton* >::iterator iter = _disabledButtons().begin(); iter != _disabledButtons().end(); iter++ )
+    { (*iter)->setEnabled( enabled ); }
 
-  Debug::Throw( "BaseFindDialog::_updateButtons - done.\n" );
+    Debug::Throw( "BaseFindDialog::_updateButtons - done.\n" );
 }

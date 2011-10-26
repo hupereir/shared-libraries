@@ -34,7 +34,7 @@
 #include "Debug.h"
 #include "TransitionWidget.h"
 
-using namespace std;
+
 
 //__________________________________________________________
 //! timestamp string format

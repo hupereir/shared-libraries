@@ -38,7 +38,7 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //__________________________________________________
 BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):

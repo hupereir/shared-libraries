@@ -36,7 +36,7 @@
 #include "TransitionWidget.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //___________________________________________________________________
 TransitionWidget::TransitionWidget( QWidget *parent ):

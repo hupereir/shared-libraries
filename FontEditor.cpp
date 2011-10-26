@@ -36,7 +36,7 @@
 #include <QtGui/QLayout>
 #include <QtGui/QToolButton>
 
-using namespace std;
+
 
 //______________________________________________
 FontEditor::FontEditor( QWidget *parent ):

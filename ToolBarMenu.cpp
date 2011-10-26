@@ -34,7 +34,7 @@
 #include "ToolBarMenu.h"
 #include "ToolButtonStyleMenu.h"
 
-using namespace std;
+
 
 //____________________________________________________
 ToolBarMenu::ToolBarMenu( QWidget* parent ):

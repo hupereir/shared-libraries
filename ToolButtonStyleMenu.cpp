@@ -22,50 +22,48 @@
 *******************************************************************************/
 
 /*!
-  \file ToolButtonStyleMenu.cpp
-  \brief provides tool button style selection menu
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ToolButtonStyleMenu.cpp
+\brief provides tool button style selection menu
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
-
-#include <cassert>
 
 #include "Debug.h"
 #include "ToolButtonStyleMenu.h"
 
-using namespace std;
+#include <cassert>
 
 //_____________________________________________________________________________
 ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
-  QMenu( "&Text position", parent ),
-  Counter( "ToolButtonStyleMenu" )
+QMenu( "&Text position", parent ),
+Counter( "ToolButtonStyleMenu" )
 {
-  Debug::Throw( "ToolButtonStyleMenu::ToolButtonStyleMenu.\n" );
+    Debug::Throw( "ToolButtonStyleMenu::ToolButtonStyleMenu.\n" );
 
-  QActionGroup *group = new QActionGroup( this );
-  connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
+    QActionGroup *group = new QActionGroup( this );
+    connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
 
-  // install values
-  typedef list< std::pair<QString, Qt::ToolButtonStyle > > List;
-  static List action_names;
-  if( action_names.empty() )
-  {
-    action_names.push_back( make_pair( "&Icons Only", Qt::ToolButtonIconOnly ) );
-    action_names.push_back( make_pair( "&Text Only", Qt::ToolButtonTextOnly ) );
-    action_names.push_back( make_pair( "Text &Alongside icons", Qt::ToolButtonTextBesideIcon ) );
-    action_names.push_back( make_pair( "Text &Under icons", Qt::ToolButtonTextUnderIcon ) );
-  }
+    // install values
+    typedef std::list< std::pair<QString, Qt::ToolButtonStyle > > List;
+    static List actionNames;
+    if( actionNames.empty() )
+    {
+        actionNames.push_back( std::make_pair( "&Icons Only", Qt::ToolButtonIconOnly ) );
+        actionNames.push_back( std::make_pair( "&Text Only", Qt::ToolButtonTextOnly ) );
+        actionNames.push_back( std::make_pair( "Text &Alongside icons", Qt::ToolButtonTextBesideIcon ) );
+        actionNames.push_back( std::make_pair( "Text &Under icons", Qt::ToolButtonTextUnderIcon ) );
+    }
 
-  // generic action
-  for( List::const_iterator iter = action_names.begin(); iter != action_names.end(); iter++ )
-  {
-    QAction* action = new QAction( iter->first, this );
-    addAction( action );
-    action->setCheckable( true );
-    actions_.insert( make_pair( action, iter->second ) );
-    group->addAction( action );
-  }
+    // generic action
+    for( List::const_iterator iter = actionNames.begin(); iter != actionNames.end(); iter++ )
+    {
+        QAction* action = new QAction( iter->first, this );
+        addAction( action );
+        action->setCheckable( true );
+        actions_.insert( std::make_pair( action, iter->second ) );
+        group->addAction( action );
+    }
 
 }
 
@@ -73,28 +71,28 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
 void ToolButtonStyleMenu::select( Qt::ToolButtonStyle size )
 {
 
-  Debug::Throw( "ToolButtonStyleMenu::select.\n" );
-  for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
-  {
-    if( iter->second == size )
+    Debug::Throw( "ToolButtonStyleMenu::select.\n" );
+    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
     {
-      iter->first->setChecked( true );
-      return;
+        if( iter->second == size )
+        {
+            iter->first->setChecked( true );
+            return;
+        }
     }
-  }
 
-  assert(0);
+    assert(0);
 }
 
 //_____________________________________________________________________________
 void ToolButtonStyleMenu::_selected( QAction* action )
 {
 
-  Debug::Throw( "ToolButtonStyleMenu::_selected.\n" );
+    Debug::Throw( "ToolButtonStyleMenu::_selected.\n" );
 
-  // find matching actions
-  ActionMap::const_iterator iter = actions_.find( action );
-  assert( iter != actions_.end() );
-  emit styleSelected( iter->second );
+    // find matching actions
+    ActionMap::const_iterator iter = actions_.find( action );
+    assert( iter != actions_.end() );
+    emit styleSelected( iter->second );
 
 }

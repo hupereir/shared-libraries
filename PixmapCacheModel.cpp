@@ -32,7 +32,7 @@
 
 #include "PixmapCacheModel.h"
 
-using namespace std;
+
 
 //_______________________________________________
 const QString PixmapCacheModel::column_titles_[ PixmapCacheModel::n_columns ] =

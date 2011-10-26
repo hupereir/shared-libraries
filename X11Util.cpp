@@ -35,7 +35,7 @@
 
 #include <QDesktopWidget>
 
-using namespace std;
+
 
 //_______________________
 int debug_level = 1;

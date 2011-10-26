@@ -34,7 +34,7 @@
 #include "XmlOptions.h"
 #include "CursorMonitor.h"
 
-using namespace std;
+
 
 //_________________________________________________________
 CursorMonitor::CursorMonitor( QWidget* parent ):

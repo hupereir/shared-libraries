@@ -22,41 +22,39 @@
 *******************************************************************************/
 
 /*!
-  \file IconSizeMenu.cpp
-  \brief provides icon size selection menu
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file IconSizeMenu.cpp
+\brief provides icon size selection menu
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
-
-#include <cassert>
 
 #include "Debug.h"
 #include "IconSizeMenu.h"
 
-using namespace std;
+#include <cassert>
 
 //_____________________________________________________________________________
 IconSizeMenu::IconSizeMenu( QWidget* parent ):
-  QMenu( "&Icon size", parent ),
-  Counter( "IconSizeMenu" )
+QMenu( "&Icon size", parent ),
+Counter( "IconSizeMenu" )
 {
-  Debug::Throw( "IconSizeMenu::IconSizeMenu.\n" );
+    Debug::Throw( "IconSizeMenu::IconSizeMenu.\n" );
 
-  QActionGroup *group = new QActionGroup( this );
-  connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
+    QActionGroup *group = new QActionGroup( this );
+    connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
 
-  const IconSize::Map& sizes( IconSize::map() );
+    const IconSize::Map& sizes( IconSize::map() );
 
-  // generic action
-  QAction* action;
-  for( IconSize::Map::const_iterator iter = sizes.begin(); iter != sizes.end(); iter++ )
-  {
-    addAction( action = new QAction( iter->second, this ) );
-    action->setCheckable( true );
-    actions_.insert( make_pair( action, iter->first ) );
-    group->addAction( action );
-  }
+    // generic action
+    QAction* action;
+    for( IconSize::Map::const_iterator iter = sizes.begin(); iter != sizes.end(); iter++ )
+    {
+        addAction( action = new QAction( iter->second, this ) );
+        action->setCheckable( true );
+        actions_.insert( std::make_pair( action, iter->first ) );
+        group->addAction( action );
+    }
 
 }
 
@@ -64,28 +62,28 @@ IconSizeMenu::IconSizeMenu( QWidget* parent ):
 void IconSizeMenu::select( IconSize::Size size )
 {
 
-  Debug::Throw( "IconSizeMenu::select.\n" );
-  for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
-  {
-    if( iter->second == size )
+    Debug::Throw( "IconSizeMenu::select.\n" );
+    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
     {
-      iter->first->setChecked( true );
-      return;
+        if( iter->second == size )
+        {
+            iter->first->setChecked( true );
+            return;
+        }
     }
-  }
 
-  assert(0);
+    assert(0);
 }
 
 //_____________________________________________________________________________
 void IconSizeMenu::_selected( QAction* action )
 {
 
-  Debug::Throw( "IconSizeMenu::_selected.\n" );
+    Debug::Throw( "IconSizeMenu::_selected.\n" );
 
-  // find matching actions
-  ActionMap::const_iterator iter = actions_.find( action );
-  assert( iter != actions_.end() );
-  emit iconSizeSelected( iter->second );
+    // find matching actions
+    ActionMap::const_iterator iter = actions_.find( action );
+    assert( iter != actions_.end() );
+    emit iconSizeSelected( iter->second );
 
 }

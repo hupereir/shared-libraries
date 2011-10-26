@@ -25,50 +25,50 @@
 *******************************************************************************/
 
 /*!
-  \file ToolButtonStyleMenu.h
-  \brief provides tool button style selection menu
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ToolButtonStyleMenu.h
+\brief provides tool button style selection menu
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
-
-#include <QMenu>
-#include <map>
 
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QtGui/QMenu>
+#include <map>
 
 //! provides tool button style selection menu
 class ToolButtonStyleMenu: public QMenu, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! constructor
-  ToolButtonStyleMenu( QWidget* parent = 0 );
+    //! constructor
+    ToolButtonStyleMenu( QWidget* parent = 0 );
 
-  //! select size
-  void select( Qt::ToolButtonStyle );
+    //! select size
+    void select( Qt::ToolButtonStyle );
 
-  signals:
+    signals:
 
-  //! emmitted when a new size is selected
-  void styleSelected( Qt::ToolButtonStyle );
+    //! emmitted when a new size is selected
+    void styleSelected( Qt::ToolButtonStyle );
 
-  private slots:
+    private slots:
 
-  //! size selected from action
-  void _selected( QAction* );
+    //! size selected from action
+    void _selected( QAction* );
 
-  private:
+    private:
 
-  //! action map
-  typedef std::map< QAction*, Qt::ToolButtonStyle > ActionMap;
+    //! action map
+    typedef std::map< QAction*, Qt::ToolButtonStyle > ActionMap;
 
-  //! toolbar text action map
-  ActionMap actions_;
+    //! toolbar text action map
+    ActionMap actions_;
 
 };
 

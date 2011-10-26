@@ -32,12 +32,11 @@
 \date $Date$
 */
 
-#include <set>
-
-#include <QBasicTimer>
-
 #include "Counter.h"
 #include "CustomComboBox.h"
+
+#include <QtCore/QBasicTimer>
+#include <set>
 
 class UserSelectionFrame: public QWidget, public Counter
 {
@@ -45,10 +44,10 @@ class UserSelectionFrame: public QWidget, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        UserSelectionFrame( QWidget* parent );
+    //! constructor
+    UserSelectionFrame( QWidget* parent );
 
     //! set user
     void setUser( const QString& user );

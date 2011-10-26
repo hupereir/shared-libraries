@@ -45,7 +45,7 @@ LineEditor object
 #include "Util.h"
 #include "Debug.h"
 
-using namespace std;
+
 
 //____________________________________________________________
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):

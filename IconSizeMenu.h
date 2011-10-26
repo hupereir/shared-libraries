@@ -25,52 +25,52 @@
 *******************************************************************************/
 
 /*!
-  \file IconSizeMenu.h
-  \brief provides icon size selection menu
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file IconSizeMenu.h
+\brief provides icon size selection menu
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
-
-#include <QMenu>
-#include <map>
 
 #include "Counter.h"
 #include "CustomToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
 
+#include <QMenu>
+#include <map>
+
 //! provides icon size selection menu
 class IconSizeMenu: public QMenu, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  IconSizeMenu( QWidget* parent = 0 );
+        //! constructor
+        IconSizeMenu( QWidget* parent = 0 );
 
-  //! select size
-  void select( IconSize::Size );
+    //! select size
+    void select( IconSize::Size );
 
-  signals:
+    signals:
 
-  //! emmitted when a new size is selected
-  void iconSizeSelected( IconSize::Size );
+    //! emmitted when a new size is selected
+    void iconSizeSelected( IconSize::Size );
 
-  private slots:
+    private slots:
 
-  //! size selected from action
-  void _selected( QAction* );
+    //! size selected from action
+    void _selected( QAction* );
 
-  private:
+    private:
 
-  //! action map
-  typedef std::map<QAction*, IconSize::Size > ActionMap;
+    //! action map
+    typedef std::map<QAction*, IconSize::Size > ActionMap;
 
-  //! toolbar text action map
-  ActionMap actions_;
+    //! toolbar text action map
+    ActionMap actions_;
 
 };
 

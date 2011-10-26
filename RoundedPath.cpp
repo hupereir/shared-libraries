@@ -35,7 +35,7 @@
 #include "RoundedPath.h"
 #include "Debug.h"
 
-using namespace std;
+
 
 //______________________________________________________
 RoundedPath::RoundedPath( QPolygonF polygon, const int& border )

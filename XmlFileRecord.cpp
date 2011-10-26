@@ -33,7 +33,7 @@
 #include "Str.h"
 #include "XmlString.h"
 
-using namespace std;
+
 
 //!@name XML names
 //@{

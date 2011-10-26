@@ -29,16 +29,12 @@
 \date $Date$
 */
 
-#include <algorithm>
-
-
-
 #include "Debug.h"
 #include "FileList.h"
 #include "File.h"
 #include "Str.h"
 
-using namespace std;
+#include <algorithm>
 
 //_______________________________________________
 bool FileList::has( const File& file ) const
@@ -63,13 +59,13 @@ void FileList::set( const FileRecord::List& records )
 }
 
 //___________________________________________________
-list<File> FileList::files( void ) const
+std::list<File> FileList::files( void ) const
 {
     Debug::Throw( "FileList::files.\n" );
 
     FileRecord::List records( _truncatedList( _records() ) );
 
-    list<File> out;
+    std::list<File> out;
     for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
     { out.push_back( iter->file() ); }
 
@@ -182,7 +178,7 @@ FileRecord& FileList::_add(
 
         if( update_timestamp && iter->time() != record.time() )
         {
-            iter->setTime( max( iter->time(), record.time() ) );
+            iter->setTime( std::max( iter->time(), record.time() ) );
             if( emit_signal ) emit contentsChanged();
         }
 

@@ -36,7 +36,7 @@
 #include "ColorGrabButton.h"
 #include "Debug.h"
 
-using namespace std;
+
 
 //______________________________________________
 ColorGrabButton::ColorGrabButton( QWidget* parent ):

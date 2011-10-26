@@ -41,7 +41,7 @@
 #include "LineNumberDisplay.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 //____________________________________________________________________________
 LineNumberDisplay::LineNumberDisplay(TextEditor* editor):

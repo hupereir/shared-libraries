@@ -43,7 +43,7 @@
 #include "IconEngine.h"
 #include "Str.h"
 
-using namespace std;
+
 using namespace Qt;
 
 //____________________________________________________________

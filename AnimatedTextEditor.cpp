@@ -34,7 +34,7 @@
 #include "ScrollObject.h"
 #include "TransitionWidget.h"
 
-using namespace std;
+
 
 //________________________________________________________
 AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):

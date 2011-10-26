@@ -29,17 +29,6 @@
 \date $Date$
 */
 
-#include <QApplication>
-#include <QAbstractTextDocumentLayout>
-#include <QClipboard>
-#include <QMenu>
-#include <QPainter>
-#include <QProgressDialog>
-#include <QRegExp>
-#include <QTextBlock>
-#include <QTextLayout>
-#include <QTextStream>
-
 #include "BaseIcons.h"
 #include "BaseReplaceDialog.h"
 #include "InformationDialog.h"
@@ -59,7 +48,15 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-using namespace std;
+#include <QtGui/QApplication>
+#include <QtGui/QAbstractTextDocumentLayout>
+#include <QtGui/QMenu>
+#include <QtGui/QPainter>
+#include <QtGui/QProgressDialog>
+#include <QtCore/QRegExp>
+#include <QtGui/QTextBlock>
+#include <QtGui/QTextLayout>
+#include <QtCore/QTextStream>
 
 //______________________________________________
 TextSelection& TextEditor::lastSelection( void )
@@ -442,8 +439,8 @@ void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
             // create local cursor, copy current, in proper order
             QTextCursor local( document() );
             local.beginEditBlock();
-            local.setPosition( min( cursor.position(), cursor.anchor() ), QTextCursor::MoveAnchor );
-            local.setPosition( max( cursor.position(), cursor.anchor() ), QTextCursor::KeepAnchor );
+            local.setPosition( std::min( cursor.position(), cursor.anchor() ), QTextCursor::MoveAnchor );
+            local.setPosition( std::max( cursor.position(), cursor.anchor() ), QTextCursor::KeepAnchor );
             local.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, regexp.matchedLength() );
 
             local.mergeCharFormat( format );
@@ -1333,8 +1330,8 @@ void TextEditor::dropEvent( QDropEvent* event )
         QTextCursor new_cursor( cursorForPosition( event->pos() ) );
 
         bool contained(
-            new_cursor.position() >= min( cursor.position(), cursor.anchor() ) &&
-            new_cursor.position() <= max( cursor.position(), cursor.anchor() ) );
+            new_cursor.position() >= std::min( cursor.position(), cursor.anchor() ) &&
+            new_cursor.position() <= std::max( cursor.position(), cursor.anchor() ) );
 
         if( contained && event->source() != this )
         {
@@ -1862,7 +1859,7 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
 
         // if current text has selection that match, make sure pointer is located at the end of it
         if( found.hasSelection() && regexp.exactMatch( found.selectedText() ) )
-        { found.setPosition( max( found.position(), found.anchor() ) ); }
+        { found.setPosition( std::max( found.position(), found.anchor() ) ); }
 
         // move the found to the end of the document
         // and retrieve selected text
@@ -1890,7 +1887,7 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
         if( match < 0 ) return false;
 
         // match found. Update selection and return
-        int position( match + min( found.anchor(), found.position() ) );
+        int position( match + std::min( found.anchor(), found.position() ) );
         found.setPosition( position, QTextCursor::MoveAnchor );
         found.setPosition( position+length, QTextCursor::KeepAnchor );
         setTextCursor( found );
@@ -1969,7 +1966,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
 
         // if current text has selection that match, make sure pointer is located at the end of it
         if( found.hasSelection() && regexp.exactMatch( found.selectedText() ) )
-        { found.setPosition( min( found.position(), found.anchor() ) ); }
+        { found.setPosition( std::min( found.position(), found.anchor() ) ); }
 
         // move cursor to beginning of the text
         found.movePosition( QTextCursor::Start, QTextCursor::KeepAnchor );
@@ -1996,7 +1993,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
         if( match < 0 ) return false;
 
         // match found. Update selection and return
-        int position( match + min( found.anchor(), found.position() )+length );
+        int position( match + std::min( found.anchor(), found.position() )+length );
         found.setPosition( position, QTextCursor::MoveAnchor );
         found.setPosition( position-length, QTextCursor::KeepAnchor );
         setTextCursor( found );
@@ -2110,8 +2107,8 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     // and make local copy of cursor
     unsigned int found = 0;
 
-    int saved_anchor( min( cursor.position(), cursor.anchor() ) );
-    int saved_position( max( cursor.position(), cursor.anchor() ) );
+    int saved_anchor( std::min( cursor.position(), cursor.anchor() ) );
+    int saved_position( std::max( cursor.position(), cursor.anchor() ) );
     int current_position( saved_anchor );
 
     // check if regexp should be used or not
@@ -2287,7 +2284,7 @@ void TextEditor::_insertTab( void )
     else {
 
         // retrieve position from begin of block
-        int position( min( cursor.position(), cursor.anchor() ) );
+        int position( std::min( cursor.position(), cursor.anchor() ) );
         position -= document()->findBlock( position ).position();
         int n( position % emulatedTabCharacter().size() );
         cursor.insertText( emulatedTabCharacter().right( emulatedTabCharacter().size()-n ) );
