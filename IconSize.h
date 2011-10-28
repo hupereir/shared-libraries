@@ -46,12 +46,12 @@ class IconSize: public QSize
     //! icon sizes
     enum Size
     {
-        DEFAULT = 0,
-        SMALL = 16,
-        MEDIUM = 22,
-        LARGE = 32,
-        HUGE = 48,
-        MAXIMUM = 256
+        Default = 0,
+        Small = 16,
+        Medium = 22,
+        Large = 32,
+        Huge = 48,
+        Maximum = 256
     };
 
     //! constructor

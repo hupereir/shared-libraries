@@ -74,7 +74,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
   _list().setRootIsDecorated( false );
   _list().setMask( 1<<OptionModel::CURRENT|1<<OptionModel::VALUE );
   _list().setItemDelegate( new TextEditionDelegate( this ) );
-  _list().setIconSize( IconSize( IconSize::SMALL ) );
+  _list().setIconSize( IconSize( IconSize::Small ) );
   layout->addWidget( &_list(), 1 );
 
   QVBoxLayout* button_layout = new QVBoxLayout();

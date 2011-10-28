@@ -70,7 +70,7 @@ bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
   if( rotation_ == value ) return false;
 
   // rotate icon if any
-  CustomPixmap pixmap( icon().pixmap( IconSize::LARGE, QIcon::Normal ) );
+  CustomPixmap pixmap( icon().pixmap( IconSize::Large, QIcon::Normal ) );
   if( !pixmap.isNull() )
   {
 

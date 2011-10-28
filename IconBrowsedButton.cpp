@@ -53,7 +53,7 @@ IconBrowsedButton::IconBrowsedButton( QWidget* parent, const QString& file):
     file_( NO_ICON )
 {
 
-    setIconSize( IconSize( IconSize::HUGE ) );
+    setIconSize( IconSize( IconSize::Huge ) );
     setAutoRaise( false );
     setFile( file, false );
     connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
@@ -80,8 +80,8 @@ bool IconBrowsedButton::setFile( const QString& file, const bool& check )
     {
 
         // resize pixmap
-        if( pixmap.size() != IconSize( IconSize::HUGE ) )
-            pixmap = pixmap.scaled( IconSize( IconSize::HUGE ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
+        if( pixmap.size() != IconSize( IconSize::Huge ) )
+            pixmap = pixmap.scaled( IconSize( IconSize::Huge ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
 
         setIcon( pixmap );
         return true;
@@ -97,7 +97,7 @@ bool IconBrowsedButton::setFile( const QString& file, const bool& check )
 
     // if file, set pixmap to empty
     if( noIconPixmap_.isNull() ) {
-        noIconPixmap_ = CustomPixmap().empty( IconSize( IconSize::HUGE ) );
+        noIconPixmap_ = CustomPixmap().empty( IconSize( IconSize::Huge ) );
         setIcon( noIconPixmap_ );
     }
 

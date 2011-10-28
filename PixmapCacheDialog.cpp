@@ -53,7 +53,7 @@ PixmapCacheDialog::PixmapCacheDialog( QWidget* parent ):
   list_ = new AnimatedTreeView( this );
   mainLayout().addWidget( list_ );
   list_->setModel( &model_ );
-  list_->setIconSize( IconSize( IconSize::LARGE ) );
+  list_->setIconSize( IconSize( IconSize::Large ) );
 
   QPushButton *button;
   buttonLayout().insertWidget( 1, button = new QPushButton( PixmapEngine::get( ICONS::RELOAD ),"&Update", this ) );

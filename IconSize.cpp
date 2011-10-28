@@ -41,7 +41,7 @@
 IconSize::IconSize( IconSize::Size size )
 {
 
-    assert( size != DEFAULT );
+    assert( size != Default );
     setWidth( size );
     setHeight( size );
 
@@ -52,7 +52,7 @@ IconSize::IconSize( QWidget* parent, IconSize::Size size )
 {
 
     int icon_size( size );
-    if( size == DEFAULT )
+    if( size == Default )
     {
         assert( parent );
         icon_size =  parent->style()->pixelMetric( QStyle::PM_ToolBarIconSize );
@@ -69,11 +69,11 @@ IconSize::Map& IconSize::map( void )
     static Map size_map;
     if( size_map.empty() )
     {
-        size_map.insert( std::make_pair( DEFAULT, "&Default" ) );
-        size_map.insert( std::make_pair( SMALL, "&Small (16x16)" ) );
-        size_map.insert( std::make_pair( MEDIUM, "&Medium (22x22)" ) );
-        size_map.insert( std::make_pair( LARGE, "&Large (32x32)") );
-        size_map.insert( std::make_pair( HUGE, "&Huge (48x48)" ) );
+        size_map.insert( std::make_pair( Default, "&Default" ) );
+        size_map.insert( std::make_pair( Small, "&Small (16x16)" ) );
+        size_map.insert( std::make_pair( Medium, "&Medium (22x22)" ) );
+        size_map.insert( std::make_pair( Large, "&Large (32x32)") );
+        size_map.insert( std::make_pair( Huge, "&Huge (48x48)" ) );
     }
 
     return size_map;
