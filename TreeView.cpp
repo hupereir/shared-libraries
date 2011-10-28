@@ -27,12 +27,6 @@
 \date $Date$
 */
 
-#include <cassert>
-#include <QCursor>
-#include <QHeaderView>
-#include <QPainter>
-#include <QScrollBar>
-
 #include "BaseFindDialog.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
@@ -45,6 +39,11 @@
 #include "TreeView.h"
 #include "XmlOptions.h"
 
+#include <cassert>
+#include <QtGui/QCursor>
+#include <QtGui/QHeaderView>
+#include <QtGui/QPainter>
+#include <QtGui/QScrollBar>
 
 using namespace Qt;
 
@@ -54,7 +53,9 @@ TreeView::TreeView( QWidget* parent ):
     Counter( "TreeView" ),
     findDialog_( 0 ),
     menu_( 0 ),
-    iconSizeFromOptions_( true )
+    iconSizeFromOptions_( true ),
+    vertical_( 0 ),
+    horizontal_( 0 )
 {
     Debug::Throw( "TreeView::TreeView.\n" );
 
@@ -74,9 +75,6 @@ TreeView::TreeView( QWidget* parent ):
     header()->setContextMenuPolicy( Qt::CustomContextMenu );
     connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
     connect( header(), SIGNAL( sortIndicatorChanged( int, Qt::SortOrder ) ), SLOT( saveSortOrder() ) );
-
-    connect( this, SIGNAL( 	expanded( const QModelIndex& ) ), SLOT( resizeColumns() ) );
-    connect( this, SIGNAL( 	collapsed( const QModelIndex& ) ), SLOT( resizeColumns() ) );
 
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
@@ -196,6 +194,20 @@ void TreeView::setMask( const unsigned int& mask )
 
     return;
 
+}
+
+//______________________________________________________
+void TreeView::storeScrollBarPosition( void )
+{
+    if( verticalScrollBar() ) vertical_ = verticalScrollBar()->value();
+    if( horizontalScrollBar() ) horizontal_ = horizontalScrollBar()->value();
+}
+
+//______________________________________________________
+void TreeView::restoreScrollBarPosition( void )
+{
+    if( verticalScrollBar() ) verticalScrollBar()->setValue( vertical_ );
+    if( horizontalScrollBar() ) horizontalScrollBar()->setValue( horizontal_ );
 }
 
 //______________________________________________________

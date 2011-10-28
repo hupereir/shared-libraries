@@ -32,18 +32,17 @@
 \date $Date$
 */
 
-#include <cassert>
-
-#include <QContextMenuEvent>
-#include <QMenu>
-#include <QTreeView>
-#include <QAction>
-
-
-#include <vector>
 
 #include "Counter.h"
 #include "TextSelection.h"
+
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QMenu>
+#include <QtGui/QTreeView>
+#include <QtGui/QAction>
+
+#include <cassert>
+#include <vector>
 
 class BaseFindDialog;
 
@@ -54,10 +53,10 @@ class TreeView: public QTreeView, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        TreeView( QWidget* parent );
+    //! constructor
+    TreeView( QWidget* parent );
 
     //! destructor
     virtual ~TreeView( void )
@@ -144,6 +143,12 @@ class TreeView: public QTreeView, public Counter
     { return *findAgainAction_; }
 
     //@}
+
+    //! store scrollbar position
+    void storeScrollBarPosition( void );
+
+    //! restore scrollbar position
+    void restoreScrollBarPosition( void );
 
     signals:
 
@@ -299,6 +304,12 @@ class TreeView: public QTreeView, public Counter
 
     //! selected column background color
     QColor selectedColumnColor_;
+
+    //! vertical scrollbar position
+    int vertical_;
+
+    //! horizontal scrollbar position
+    int horizontal_;
 
 };
 
