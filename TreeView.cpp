@@ -75,6 +75,9 @@ TreeView::TreeView( QWidget* parent ):
     connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
     connect( header(), SIGNAL( sortIndicatorChanged( int, Qt::SortOrder ) ), SLOT( saveSortOrder() ) );
 
+    connect( this, SIGNAL( 	expanded( const QModelIndex& ) ), SLOT( resizeColumns() ) );
+    connect( this, SIGNAL( 	collapsed( const QModelIndex& ) ), SLOT( resizeColumns() ) );
+
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
