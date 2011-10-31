@@ -35,7 +35,7 @@
 namespace BASE
 {
   //! default help text
-  static const QString HelpText[] =
+  static const QString helpText[] =
   {
 
     //_________________________________________________________

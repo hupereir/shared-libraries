@@ -176,7 +176,7 @@ void HelpManager::_dumpHelpString( void )
   QTextStream out( &buffer );
 
   // retrieve all items from dialog
-  out << "static const char* HelpText[] = {\n";
+  out << "static const char* helpText[] = {\n";
   for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
   {
 

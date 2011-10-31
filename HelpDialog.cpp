@@ -448,7 +448,7 @@ void HelpDialog::_showHelpString( void )
     QTextStream stream( &buffer );
 
     // retrieve all items from dialog
-    stream << "static const char* HelpText[] = {\n";
+    stream << "static const char* helpText[] = {\n";
     HelpItem::List items( _model().get() );
     for( HelpItem::List::const_iterator iter = items.begin(); iter != items.end(); iter++ )
     {
