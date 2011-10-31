@@ -35,7 +35,7 @@
 //! SVG help text
 namespace SVG
 {
-  static const QString HelpText[] =
+  static const QString helpText[] =
   {
 
     //_________________________________________________
