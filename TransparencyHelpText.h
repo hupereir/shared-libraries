@@ -35,7 +35,7 @@
 //! transparency help text
 namespace TRANSPARENCY
 {
-  static const QString HelpText[] =
+  static const QString helpText[] =
   {
 
     //_________________________________________________
