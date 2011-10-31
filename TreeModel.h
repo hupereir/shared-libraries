@@ -88,11 +88,11 @@ template<class T> class TreeModel : public ItemModel
         if( !hasIndex( row, column, parent ) ) return QModelIndex();
 
         // fid parent item
-        const Item& parent_item = parent.isValid() ? _find( parent.internalId() ) : root_;
+        const Item& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
 
         // return new index if matching child is found, or invalid index
-        return (row < (int)parent_item.childCount()) ?
-            createIndex( row, column, parent_item.child(row).id() ):
+        return (row < (int)parentItem.childCount()) ?
+            createIndex( row, column, parentItem.child(row).id() ):
             QModelIndex();
 
     }
@@ -112,13 +112,13 @@ template<class T> class TreeModel : public ItemModel
         if( !( child_item.hasParent() && child_item.parent().hasParent() ) ) return QModelIndex();
 
         // if parent is root return invalid index
-        const Item& parent_item( child_item.parent() );
-        const Item& grand_parent_item( parent_item.parent() );
+        const Item& parentItem( child_item.parent() );
+        const Item& grand_parentItem( parentItem.parent() );
 
         // find parent position in list of grand parent
         int row(0);
-        for( ; row < int( grand_parent_item.childCount() ); row++ )
-        { if( &parent_item == &grand_parent_item.child(row) ) return createIndex( row, 0, parent_item.id() ); }
+        for( ; row < int( grand_parentItem.childCount() ); row++ )
+        { if( &parentItem == &grand_parentItem.child(row) ) return createIndex( row, 0, parentItem.id() ); }
 
         // not found
         return QModelIndex();
@@ -133,8 +133,8 @@ template<class T> class TreeModel : public ItemModel
         if (parent.column() > 0) return 0;
 
         // store parent Job
-        const Item& parent_item = parent.isValid() ? _find( parent.internalId() ) : root_;
-        return parent_item.childCount();
+        const Item& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
+        return parentItem.childCount();
 
     }
 
@@ -168,8 +168,8 @@ template<class T> class TreeModel : public ItemModel
     {
 
         // retrieve parent item
-        const Item& parent_item = parent.isValid() ? _find( parent.internalId() ) : root_;
-        return parent_item.childValues();
+        const Item& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
+        return parentItem.childValues();
 
     }
 
