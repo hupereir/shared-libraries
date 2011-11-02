@@ -478,7 +478,8 @@ bool TreeView::_findForward( const TextSelection& selection, bool rewind )
     QModelIndex index( ( selection.flag( TextSelection::NO_INCREMENT ) ) ? current:_indexAfter( current ) );
 
     // if index index is invalid and rewind, set index index of the model
-    if( (!index.isValid()) && rewind ) {
+    if( (!index.isValid()) && rewind )
+    {
         rewind = false;
         index = _firstIndex();
     }
@@ -521,11 +522,14 @@ bool TreeView::_findForward( const TextSelection& selection, bool rewind )
 
         } else {
 
+            QModelIndex previous( index );
             index = _indexAfter( index );
+
             if( rewind && !index.isValid() )
             {
                 rewind = false;
                 index = _firstIndex();
+
             }
 
         }
@@ -670,7 +674,7 @@ void TreeView::_installActions( void )
 //___________________________________
 void TreeView::_raiseHeaderMenu( const QPoint & pos )
 {
-    Debug::Throw( "TreeView::_raiseHeaderMenu.\n" );
+    Debug::Throw( 0, "TreeView::_raiseHeaderMenu.\n" );
 
     // check number of columns
     if( header()->count() <= 1 ) return;
@@ -697,23 +701,24 @@ void TreeView::_findFromDialog( void )
 {
     Debug::Throw( "TreeView::_findFromDialog.\n" );
 
-    // set default text
-    // update find text
-    QString text( selection().text() );
-    if( !text.isEmpty() )
-    {
-        const int max_length( 1024 );
-        text = text.left( max_length );
-    }
+//     // set default text
+//     // update find text
+//     QString text( selection().text() );
+//     if( !text.isEmpty() )
+//     {
+//         const int max_length( 1024 );
+//         text = text.left( max_length );
+//     }
 
     // create
     if( !findDialog_ ) _createBaseFindDialog();
     _findDialog().enableRegExp( true );
     _findDialog().centerOnParent();
     _findDialog().show();
+
     _findDialog().synchronize();
     _findDialog().clearLabel();
-    _findDialog().setText( text );
+//     _findDialog().setText( text );
 
     // changes focus
     _findDialog().activateWindow();
@@ -791,7 +796,7 @@ QModelIndex TreeView::_indexAfter( const QModelIndex& current ) const
     if( current.column()+1 < model()->columnCount( parent ) ) out = model()->index( current.row(), current.column()+1, parent );
     else {
 
-        QModelIndex first_column_index( model()->index( current.row(), 0 ) );
+        QModelIndex first_column_index( model()->index( current.row(), 0, parent ) );
 
         // assign first children if current is expanded and has children
         if( first_column_index.isValid() && isExpanded( first_column_index ) && model()->hasChildren( first_column_index ) )

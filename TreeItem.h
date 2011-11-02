@@ -74,9 +74,9 @@ template<class T> class TreeItem: public TreeItemBase
   typedef unsigned int Id;
 
   //! root constructor
-  TreeItem( Map& item_map ):
+  TreeItem( Map& itemMap ):
     TreeItemBase(0),
-    map_( item_map ),
+    map_( itemMap ),
     parent_(0)
   { map_[id()] = this; }
 
@@ -327,9 +327,9 @@ template<class T> class TreeItem: public TreeItemBase
 
   //! constructor
   /*! used to insert T in the tree structure */
-  TreeItem( Map& item_map, const TreeItem* parent, ConstReference value ):
+  TreeItem( Map& itemMap, const TreeItem* parent, ConstReference value ):
     TreeItemBase( ++_runningId() ),
-    map_( item_map ),
+    map_( itemMap ),
     parent_( parent ),
     value_( value )
   { map_[id()] = this; }
