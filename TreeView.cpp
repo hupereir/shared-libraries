@@ -674,7 +674,7 @@ void TreeView::_installActions( void )
 //___________________________________
 void TreeView::_raiseHeaderMenu( const QPoint & pos )
 {
-    Debug::Throw( 0, "TreeView::_raiseHeaderMenu.\n" );
+    Debug::Throw( "TreeView::_raiseHeaderMenu.\n" );
 
     // check number of columns
     if( header()->count() <= 1 ) return;
