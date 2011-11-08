@@ -435,7 +435,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     virtual void removeLine( void );
 
     //! clear
-    virtual void clear( void );
+    virtual void clear( bool forced = false );
 
     protected:
 

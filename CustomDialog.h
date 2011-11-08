@@ -25,109 +25,97 @@
 *
 *******************************************************************************/
 
-/*!
-  \file CustomDialog.h
-  \brief customized QDialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <cassert>
-#include <QPushButton>
-#include <QBoxLayout>
-#include <QLayout>
-
-
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "Debug.h"
 
-/*!
-  \class CustomDialog
-  \brief customized QDialog
-*/
+#include <cassert>
+#include <QtGui/QPushButton>
+#include <QtGui/QBoxLayout>
+#include <QtGui/QLayout>
+
+//! customized QDialog
 class CustomDialog: public BaseDialog, public Counter
 {
 
-  public:
+    public:
 
-  //! mask used to define number of buttons in customized dialogs
-  enum Flag
-  {
-    //! no flags
-    None = 0,
+    //! mask used to define number of buttons in customized dialogs
+    enum Flag
+    {
+        //! no flags
+        None = 0,
 
-    //! dialog has OK button
-    OkButton = 1<<0,
+        //! dialog has OK button
+        OkButton = 1<<0,
 
-    //! dialog has CANCEL button
-    CancelButton = 1<<1,
+        //! dialog has CANCEL button
+        CancelButton = 1<<1,
 
-    //! separator
-    Separator = 1<<2
-  };
+        //! separator
+        Separator = 1<<2
+    };
 
-  //! constructor
-  CustomDialog(
-    QWidget *parent,
-    const unsigned int& flags = OkButton | CancelButton,
-    Qt::WFlags wflags = 0);
+    //! constructor
+    CustomDialog(
+        QWidget *parent,
+        const unsigned int& flags = OkButton | CancelButton,
+        Qt::WFlags wflags = 0);
 
-  //! destructor
-  virtual ~CustomDialog( void )
-  {}
+    //! destructor
+    virtual ~CustomDialog( void )
+    {}
 
-  //! retrieve main vbox
-  QBoxLayout& mainLayout( void ) const
-  {
-    assert( main_layout_ );
-    return *main_layout_;
-  }
+    //! retrieve main vbox
+    QBoxLayout& mainLayout( void ) const
+    {
+        assert( mainLayout_ );
+        return *mainLayout_;
+    }
 
-  //! retrieve button layout
-  QBoxLayout& buttonLayout( void ) const
-  {
-    assert( button_layout_ );
-    return *button_layout_;
-  }
+    //! retrieve button layout
+    QBoxLayout& buttonLayout( void ) const
+    {
+        assert( buttonLayout_ );
+        return *buttonLayout_;
+    }
 
-  //! returns true if OK button is valid
-  bool hasOkButton( void )
-  { return OkButton_; }
+    //! returns true if OK button is valid
+    bool hasOkButton( void )
+    { return okButton_; }
 
-  //! retrieve OK button
-  QPushButton& okButton( void ) const
-  {
-    assert( OkButton_ );
-    return *OkButton_;
-  }
+    //! retrieve OK button
+    QPushButton& okButton( void ) const
+    {
+        assert( okButton_ );
+        return *okButton_;
+    }
 
-  //! returns true if Cancel button is valid
-  bool hasCancelButton( void )
-  { return CancelButton_; }
+    //! returns true if Cancel button is valid
+    bool hasCancelButton( void )
+    { return cancelButton_; }
 
-  //! retrieve CANCEL button
-  QPushButton& cancelButton( void ) const
-  {
-    assert( CancelButton_ );
-    return *CancelButton_;
-  }
+    //! retrieve CANCEL button
+    QPushButton& cancelButton( void ) const
+    {
+        assert( cancelButton_ );
+        return *cancelButton_;
+    }
 
 
-  private:
+    private:
 
-  //! main layout
-  QBoxLayout *main_layout_;
+    //! main layout
+    QBoxLayout *mainLayout_;
 
-  //! button hbox
-  QBoxLayout *button_layout_;
+    //! button hbox
+    QBoxLayout *buttonLayout_;
 
-  //! ok QPushButton, if any
-  QPushButton *OkButton_;
+    //! ok QPushButton, if any
+    QPushButton *okButton_;
 
-  //! cancel QPushButton, if any
-  QPushButton *CancelButton_;
+    //! cancel QPushButton, if any
+    QPushButton *cancelButton_;
 
 };
 
