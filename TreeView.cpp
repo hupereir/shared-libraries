@@ -701,14 +701,14 @@ void TreeView::_findFromDialog( void )
 {
     Debug::Throw( "TreeView::_findFromDialog.\n" );
 
-//     // set default text
-//     // update find text
-//     QString text( selection().text() );
-//     if( !text.isEmpty() )
-//     {
-//         const int max_length( 1024 );
-//         text = text.left( max_length );
-//     }
+    // set default text
+    // update find text
+    QString text( selection().text() );
+    if( !text.isEmpty() )
+    {
+        const int max_length( 1024 );
+        text = text.left( max_length );
+    }
 
     // create
     if( !findDialog_ ) _createBaseFindDialog();
@@ -718,7 +718,7 @@ void TreeView::_findFromDialog( void )
 
     _findDialog().synchronize();
     _findDialog().clearLabel();
-//     _findDialog().setText( text );
+    _findDialog().setText( text );
 
     // changes focus
     _findDialog().activateWindow();

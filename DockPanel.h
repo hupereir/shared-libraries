@@ -32,17 +32,21 @@
 \date $Date$
 */
 
-#include <cassert>
-#include <QAction>
-#include <QBasicTimer>
-#include <QCloseEvent>
-#include <QTimerEvent>
-#include <QFrame>
-#include <QLabel>
-#include <QLayout>
 #include "Counter.h"
 #include "Debug.h"
 #include "TileSet.h"
+
+#include <QtCore/QBasicTimer>
+#include <QtCore/QTimerEvent>
+
+#include <QtGui/QAction>
+#include <QtGui/QCloseEvent>
+#include <QtGui/QFrame>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QPixmap>
+
+#include <cassert>
 
 //! detachable generic panel
 class DockPanel: public QWidget, public Counter
@@ -51,10 +55,10 @@ class DockPanel: public QWidget, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        DockPanel( QWidget* parent );
+    //! constructor
+    DockPanel( QWidget* parent );
 
     //! destructor
     virtual ~DockPanel();
@@ -173,7 +177,7 @@ class DockPanel: public QWidget, public Counter
     { return *main_; }
 
     //! minimum size hint
-    QSize minimumSizeHint( void ) const;
+    // QSize minimumSizeHint( void ) const;
 
     signals:
 
@@ -243,6 +247,9 @@ class DockPanel: public QWidget, public Counter
 
     //! contents panel
     QWidget* panel_;
+
+    //! icon pixmap
+    QPixmap pixmap_;
 
     friend class LocalWidget;
 

@@ -30,22 +30,20 @@
 */
 
 #include "DockPanel.h"
+#include "Debug.h"
+#include "File.h"
+#include "Singleton.h"
+#include "XmlOptions.h"
 
 #include <QtGui/QApplication>
 #include <QtGui/QPainter>
 #include <QtGui/QStyleHintReturnMask>
 #include <QtGui/QStyleOption>
 #include <QtGui/QStyleOptionMenuItem>
+#include <QtGui/QStyleOptionDockWidget>
 #include <QtGui/QStyleOptionFrame>
 
-#include "Debug.h"
-#include "File.h"
-#include "Singleton.h"
-#include "XmlOptions.h"
 #include "X11Util.h"
-
-
-
 
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent ):
@@ -63,7 +61,7 @@ DockPanel::DockPanel( QWidget* parent ):
     layout()->addWidget( main_ = new LocalWidget( this ) );
     main_->setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
 
-    main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
+    main().setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
     connect( &main().detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
 
     // connections
@@ -106,8 +104,8 @@ DockPanel::~DockPanel( void )
 }
 
 //___________________________________________________________
-QSize DockPanel::minimumSizeHint( void ) const
-{ return QSize(0,0); }
+// QSize DockPanel::minimumSizeHint( void ) const
+// { return QSize(0,0); }
 
 //___________________________________________________________
 void DockPanel::_toggleDock( void )
@@ -121,11 +119,10 @@ void DockPanel::_toggleDock( void )
         // change parent
         main().setParent( this );
         layout()->addWidget( main_ );
-
-        main().setFrameStyle( QFrame::StyledPanel|QFrame::Raised );
         main().show();
 
         // change action text
+        main().setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
         main().updateActions( false );
 
         // signals
@@ -136,16 +133,16 @@ void DockPanel::_toggleDock( void )
 
         // change parent
         main().setParent( 0 );
-        main().setFrameStyle( QFrame::NoFrame );
 
         // window flags
+        main().setFrameStyle( QFrame::NoFrame );
         main().setWindowFlags( Qt::FramelessWindowHint|Qt::Window );
 
         // move and resize
         main().move( mapToGlobal( QPoint(0,0) ) );
 
-        // warning: innefficient
-        main().setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
+        // pixmap and title
+        if( !pixmap_.isNull() ) main().setWindowIcon( pixmap_ );
         if( !title_.isEmpty() ) main().setWindowTitle( title_ );
 
         // change action text
@@ -230,6 +227,10 @@ void DockPanel::_updateConfiguration( void )
 
     Debug::Throw( "DockPanel::_updateConfiguration.\n" );
 
+    // pixmap
+    pixmap_ = QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() );
+
+    // sticky and stay on top options
     if( _hasOptionName() )
     {
         if( XmlOptions::get().find( _staysOnTopOptionName() ) ) main().staysOnTopAction().setChecked( XmlOptions::get().get<bool>( _staysOnTopOptionName() ) );
@@ -366,32 +367,37 @@ void DockPanel::LocalWidget::resizeEvent( QResizeEvent *event )
 //___________________________________________________________
 void DockPanel::LocalWidget::paintEvent( QPaintEvent *event )
 {
-    if( parentWidget() ) { QFrame::paintEvent( event ); }
+    if( parentWidget() ) return QFrame::paintEvent( event );
     else {
 
-        QPainter p( this );
+        QPainter painter( this );
+        painter.setClipRegion( event->region() );
 
         if( !style()->inherits( "Oxygen::Style" ) )
-        {  p.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
+        {  painter.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
 
-        // background
-        QStyleOptionMenuItem menuOpt;
-        menuOpt.initFrom(this);
-        menuOpt.state = QStyle::State_None;
-        menuOpt.checkType = QStyleOptionMenuItem::NotCheckable;
-        menuOpt.maxIconWidth = 0;
-        menuOpt.tabWidth = 0;
-        style()->drawPrimitive(QStyle::PE_PanelMenu, &menuOpt, &p, this);
+        {
+            // background
+            QStyleOptionMenuItem option;
+            option.initFrom(this);
+            option.state = QStyle::State_None;
+            option.checkType = QStyleOptionMenuItem::NotCheckable;
+            option.maxIconWidth = 0;
+            option.tabWidth = 0;
+            style()->drawPrimitive(QStyle::PE_PanelMenu, &option, &painter, this);
+        }
 
-        // frame
-        QStyleOptionFrame frame;
-        frame.rect = rect();
-        frame.palette = palette();
-        frame.state = QStyle::State_None;
-        frame.lineWidth = style()->pixelMetric(QStyle::PM_MenuPanelWidth);
-        frame.midLineWidth = 0;
-        style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, &p, this);
-        p.end();
+        {
+            // frame
+            QStyleOptionFrame option;
+            option.rect = rect();
+            option.palette = palette();
+            option.state = QStyle::State_None;
+            option.lineWidth = style()->pixelMetric(QStyle::PM_MenuPanelWidth);
+            option.midLineWidth = 0;
+            style()->drawPrimitive(QStyle::PE_FrameMenu, &option, &painter, this);
+        }
+
     }
 
 }
