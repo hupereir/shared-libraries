@@ -969,13 +969,13 @@ void TextEditor::removeLine()
 }
 
 //________________________________________________
-void TextEditor::clear( bool forced )
+void TextEditor::clear( void )
 {
     Debug::Throw( "TextEditor::clear.\n" );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
-    if( isReadOnly() && !forced ) return;
+    if( isReadOnly() ) return;
 
     setUpdatesEnabled( false );
     selectAll();
