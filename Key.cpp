@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file Key.cpp
-  \brief generic key object to handle object association
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file Key.cpp
+\brief generic key object to handle object association
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include "Key.h"
@@ -36,6 +36,6 @@ using namespace BASE;
 //______________________________________________
 Key::key_type& Key::_counter( void )
 {
-  static key_type counter(0);
-  return counter;
+    static key_type counter(0);
+    return counter;
 }

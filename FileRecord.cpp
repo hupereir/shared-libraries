@@ -31,8 +31,6 @@
 
 #include "FileRecord.h"
 
-using namespace std;
-
 //_______________________________________________
 FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap( void )
 {
@@ -64,7 +62,7 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
     { return iter->second; }
 
     // insert otherwise, increment counter and return proper value
-    _idMap().insert( make_pair( name, _counter() ) );
+    _idMap().insert( std::make_pair( name, _counter() ) );
     _nameMap().push_back( name );
     _counter()++;
 

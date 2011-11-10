@@ -22,33 +22,31 @@
 *******************************************************************************/
 
 /*!
-   \file    Counter.cpp
-   \brief   Object counter
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
+\file    Counter.cpp
+\brief   Object counter
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include "Counter.h"
 #include "CounterMap.h"
 
-using namespace std;
-
 //____________________________________________________________
 Counter::Counter( const QString& name ):
-  count_( 0 )
+count_( 0 )
 {
-  count_ = CounterMap::get().counter( name );
-  CounterMap::get().increment( *count_ );
-  return;
+    count_ = CounterMap::get().counter( name );
+    CounterMap::get().increment( *count_ );
+    return;
 }
 
 //____________________________________________________________
 Counter::Counter( const Counter& counter ):
-  count_( counter.count_ )
+    count_( counter.count_ )
 {
-  CounterMap::get().increment( *count_ );
-  return;
+    CounterMap::get().increment( *count_ );
+    return;
 }
 
 //____________________________________________________________

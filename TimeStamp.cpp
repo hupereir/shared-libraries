@@ -38,31 +38,30 @@
 #include "TimeStamp.h"
 #include "Util.h"
 
-using namespace std;
-
 const QString TimeStamp::days_[] = {
-  "Sun",
-  "Mon",
-  "Tue",
-  "Wed",
-  "Thu",
-  "Fri",
-  "Sat"
-  };
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+};
 
 const QString TimeStamp::months_[] = {
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec" };
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec" 
+};
 
 //_______________________________
 const QString TimeStamp::STAMP_UNKNOWN( "unknown" );
@@ -70,100 +69,100 @@ const QString TimeStamp::STAMP_UNKNOWN( "unknown" );
 //_____________________________________
 TimeStamp TimeStamp::now( void )
 {
-  //Debug::Throw( "TimeStamp::now.\n" );
-  TimeStamp out;
-  out.time_ = time(0);
-  out.tm_   = *localtime(&out.time_);
-  out.is_valid_ = ( out.time_>=0 );
-  return out;
+    //Debug::Throw( "TimeStamp::now.\n" );
+    TimeStamp out;
+    out.time_ = time(0);
+    out.tm_   = *localtime(&out.time_);
+    out.is_valid_ = ( out.time_>=0 );
+    return out;
 }
 
 //___________________________________
 QString TimeStamp::toString( TimeStamp::Format format ) const
 {
-  if( !(is_valid_ ) ) return STAMP_UNKNOWN;
+    if( !(is_valid_ ) ) return STAMP_UNKNOWN;
 
-  QString out;
-  QTextStream o( &out );
-  switch (format) {
+    QString out;
+    QTextStream o( &out );
+    switch (format) {
 
-    case DATE:
-    if( tm_.tm_mday < 10 ) o << "0";
-    o << tm_.tm_mday << "/";
-    if( tm_.tm_mon+1 < 10 ) o << "0";
-    o << tm_.tm_mon+1 << "/";
-    o << tm_.tm_year+1900;
-    break;
+        case DATE:
+        if( tm_.tm_mday < 10 ) o << "0";
+        o << tm_.tm_mday << "/";
+        if( tm_.tm_mon+1 < 10 ) o << "0";
+        o << tm_.tm_mon+1 << "/";
+        o << tm_.tm_year+1900;
+        break;
 
-    case DATE_US:
-    o << tm_.tm_year+1900 << "/";
-    if( tm_.tm_mon+1 < 10 ) o << "0";
-    o << tm_.tm_mon+1 << "/";
-    if( tm_.tm_mday < 10 ) o << "0";
-    o << tm_.tm_mday;
-    break;
+        case DATE_US:
+        o << tm_.tm_year+1900 << "/";
+        if( tm_.tm_mon+1 < 10 ) o << "0";
+        o << tm_.tm_mon+1 << "/";
+        if( tm_.tm_mday < 10 ) o << "0";
+        o << tm_.tm_mday;
+        break;
 
-    case TIME:
-    if( tm_.tm_hour < 10 ) o << "0";
-    o << tm_.tm_hour << ":";
-    if( tm_.tm_min < 10 ) o << "0";
-    o << tm_.tm_min;
-    break;
+        case TIME:
+        if( tm_.tm_hour < 10 ) o << "0";
+        o << tm_.tm_hour << ":";
+        if( tm_.tm_min < 10 ) o << "0";
+        o << tm_.tm_min;
+        break;
 
-    case TIME_LONG:
-    if( tm_.tm_hour < 10 ) o << "0";
-    o << tm_.tm_hour << ":";
-    if( tm_.tm_min < 10 ) o << "0";
-    o << tm_.tm_min << ":";
-    if( tm_.tm_sec < 10 ) o << "0";
-    o << tm_.tm_sec;
-    break;
+        case TIME_LONG:
+        if( tm_.tm_hour < 10 ) o << "0";
+        o << tm_.tm_hour << ":";
+        if( tm_.tm_min < 10 ) o << "0";
+        o << tm_.tm_min << ":";
+        if( tm_.tm_sec < 10 ) o << "0";
+        o << tm_.tm_sec;
+        break;
 
-    case SHORT:
-    o << toString( DATE ) << " " << toString( TIME );
-    break;
+        case SHORT:
+        o << toString( DATE ) << " " << toString( TIME );
+        break;
 
-    case SHORT_US:
-    o << toString( DATE_US ) << " " << toString( TIME );
-    break;
+        case SHORT_US:
+        o << toString( DATE_US ) << " " << toString( TIME );
+        break;
 
 
-    case LONG:
-    if( tm_.tm_mday < 10 ) o << "0";
-    o << tm_.tm_mday << " ";
-    o << months_[tm_.tm_mon] << " ";
-    o << tm_.tm_year+1900 << " ";
+        case LONG:
+        if( tm_.tm_mday < 10 ) o << "0";
+        o << tm_.tm_mday << " ";
+        o << months_[tm_.tm_mon] << " ";
+        o << tm_.tm_year+1900 << " ";
 
-    o << toString( TIME );
-    o << ":";
-    if( tm_.tm_sec < 10 ) o << "0";
-    o << tm_.tm_sec << " ";
+        o << toString( TIME );
+        o << ":";
+        if( tm_.tm_sec < 10 ) o << "0";
+        o << tm_.tm_sec << " ";
 
-    o << "(" << days_[tm_.tm_wday] << ")";
-    break;
+        o << "(" << days_[tm_.tm_wday] << ")";
+        break;
 
-    case DATE_TAG:
-    if( tm_.tm_mday < 10 ) o << "0";
-    o << tm_.tm_mday << "_";
-    if( tm_.tm_mon+1 < 10 ) o << "0";
-    o << tm_.tm_mon+1 << "_";
-    if( (tm_.tm_year%100)<10) o << "0";
-    o << tm_.tm_year%100;
-    break;
+        case DATE_TAG:
+        if( tm_.tm_mday < 10 ) o << "0";
+        o << tm_.tm_mday << "_";
+        if( tm_.tm_mon+1 < 10 ) o << "0";
+        o << tm_.tm_mon+1 << "_";
+        if( (tm_.tm_year%100)<10) o << "0";
+        o << tm_.tm_year%100;
+        break;
 
-    case JOB_TAG:
-    o << months_[tm_.tm_mon] << " ";
-    if( tm_.tm_mday < 10 ) o << " ";
-    o << tm_.tm_mday << " ";
-    if( tm_.tm_hour < 10 ) o << "0";
-    o << tm_.tm_hour << ":";
-    if( tm_.tm_min < 10 ) o << "0";
-    o << tm_.tm_min;
-    break;
+        case JOB_TAG:
+        o << months_[tm_.tm_mon] << " ";
+        if( tm_.tm_mday < 10 ) o << " ";
+        o << tm_.tm_mday << " ";
+        if( tm_.tm_hour < 10 ) o << "0";
+        o << tm_.tm_hour << ":";
+        if( tm_.tm_min < 10 ) o << "0";
+        o << tm_.tm_min;
+        break;
 
-    default: break;
+        default: break;
 
-  }
+    }
 
-  return out;
+    return out;
 }

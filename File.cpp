@@ -29,22 +29,18 @@
    \date    $Date$
 */
 
-#include <algorithm>
-#include <cmath>
-#include <set>
-
-
-
-#include <QDateTime>
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
-#include <QStringList>
-
 #include "File.h"
 #include "Debug.h"
 
-using namespace std;
+#include <QtCore/QDateTime>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QStringList>
+
+#include <algorithm>
+#include <cmath>
+#include <set>
 
 //_____________________________________________________________________
 bool File::isAbsolute( void ) const
@@ -298,7 +294,7 @@ bool File::removeRecursive( void ) const
   // list content of directory
   QDir dir( *this );
   QStringList files( dir.entryList() );
-  for( QStringList::iterator iter = files.begin(); iter != files.end(); iter++ )
+  for( QStringList::iterator iter = files.begin(); iter != files.end(); ++iter )
   {
     // skip "." and ".."
     if( (*iter) == "." || (*iter) == ".." ) continue;
@@ -414,13 +410,13 @@ File File::truncatedName( void ) const
 }
 
 //_____________________________________________________________________
-list<File> File::listFiles( const unsigned int& flags ) const
+std::list<File> File::listFiles( const unsigned int& flags ) const
 {
 
   // Debug::Throw(0) << "File::listFiles - this: " << *this << " - hidden: " << (flags&SHOW_HIDDEN) << endl;
 
   File full_name( expand() );
-  list<File> out;
+  std::list<File> out;
   if( !full_name.isDirectory() || (full_name.isLink() && !flags&FOLLOW_LINKS ) ) return out;
 
   // open directory
@@ -429,7 +425,7 @@ list<File> File::listFiles( const unsigned int& flags ) const
 
   QDir dir( full_name );
   QStringList files( dir.entryList( filter ) );
-  for( QStringList::iterator iter = files.begin(); iter != files.end(); iter++ )
+  for( QStringList::iterator iter = files.begin(); iter != files.end(); ++iter )
   {
 
     if( *iter == "." || *iter == ".." ) continue;
@@ -451,7 +447,7 @@ list<File> File::listFiles( const unsigned int& flags ) const
       if( found.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( found ) ) != out.end() ) continue;
 
       // list subdirectory
-      list<File> tmp = found.listFiles( flags );
+      std::list<File> tmp = found.listFiles( flags );
       out.insert( out.end(), tmp.begin(), tmp.end() );
     }
 
@@ -467,9 +463,9 @@ File File::find( const File& file, bool case_sensitive ) const
 
   Debug::Throw() << "File::find - this: " << *this << endl;
   if( !( exists() && isDirectory() ) ) return File();
-  list<File> files( listFiles( RECURSIVE ) );
-  list<File> directories;
-  for( list<File>::iterator iter = files.begin(); iter != files.end(); iter++ )
+  std::list<File> files( listFiles( RECURSIVE ) );
+  std::list<File> directories;
+  for( std::list<File>::iterator iter = files.begin(); iter != files.end(); ++iter )
   {
 
     // check if file match
@@ -482,7 +478,7 @@ File File::find( const File& file, bool case_sensitive ) const
   }
 
   // loop over directories; search recursively
-  for( list<File>::iterator iter = directories.begin(); iter!=directories.end(); iter++ )
+  for( std::list<File>::iterator iter = directories.begin(); iter!=directories.end(); ++iter )
   {
     File found( iter->find( file, case_sensitive ) );
     if( found != File() ) return found;

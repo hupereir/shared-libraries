@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file CustomProcess.cpp
-  \brief customized process to store stdout/stderr in full/flushed streams
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file CustomProcess.cpp
+\brief customized process to store stdout/stderr in full/flushed streams
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 /*
@@ -36,12 +36,11 @@ might cause the application to hang, notably when process crashes
 */
 
 #include "CustomProcess.h"
-using namespace std;
 
 //____________________________________________________
 CustomProcess::CustomProcess( QObject* parent ):
-  QProcess( parent ),
-  Counter( "CustomProcess" )
+QProcess( parent ),
+Counter( "CustomProcess" )
 {}
 
 //____________________________________________________
@@ -56,14 +55,14 @@ void CustomProcess::start( QString arguments, OpenMode mode )
 void CustomProcess::start( QStringList arguments, OpenMode mode )
 {
 
-  if( arguments.empty() ) return;
+    if( arguments.empty() ) return;
 
-  QString program( arguments.front() );
-  QStringList local_args( arguments );
-  local_args.pop_front();
+    QString program( arguments.front() );
+    QStringList local_args( arguments );
+    local_args.pop_front();
 
-  if( local_args.empty() ) return QProcess::start( program, mode );
-  else return QProcess::start( program, local_args,  mode );
+    if( local_args.empty() ) return QProcess::start( program, mode );
+    else return QProcess::start( program, local_args,  mode );
 
 }
 
@@ -74,15 +73,15 @@ void CustomProcess::setAutoDelete( void )
 //______________________________________________________________
 QString CustomProcess::errorMessage( ProcessError error )
 {
-  switch( error )
-  {
+    switch( error )
+    {
 
-    case FailedToStart: return "Process failed to start";
-    case Crashed: return "Process crashed";
-    case Timedout: return "Process timed out";
-    case WriteError: return "Process ended due to write error";
-    case ReadError: return "Process ended du to read error";
-    default: return "Process ended with unknown error";
-  }
+        case FailedToStart: return "Process failed to start";
+        case Crashed: return "Process crashed";
+        case Timedout: return "Process timed out";
+        case WriteError: return "Process ended due to write error";
+        case ReadError: return "Process ended du to read error";
+        default: return "Process ended with unknown error";
+    }
 
 }

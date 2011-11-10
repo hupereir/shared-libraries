@@ -32,18 +32,20 @@
 \date $Date$
 */
 
-#include <cassert>
-
-#include <vector>
-#include <map>
-#include <list>
-
-#include <QString>
-#include <QTextStream>
 
 #include "Counter.h"
 #include "Debug.h"
 #include "Option.h"
+
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+
+#include <cassert>
+#include <vector>
+#include <map>
+#include <list>
+
+
 
 //! Option file parser based on Xml
 class Options: public Counter

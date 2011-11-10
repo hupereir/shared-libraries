@@ -30,13 +30,11 @@
 \date $Date$
 */
 
-#include <algorithm>
-#include <list>
-
 #include "Debug.h"
 #include "Options.h"
 
-using namespace std;
+#include <algorithm>
+#include <list>
 
 //________________________________________________
 Options::Options( bool install_default_options ):
@@ -189,21 +187,21 @@ void Options::restoreDefaults( void )
 {
 
     // restore standard options
-    for( Map::iterator iter = options_.begin(); iter != options_.end(); iter++ )
+    for( Map::iterator iter = options_.begin(); iter != options_.end(); ++iter )
     {
         if( iter->second.defaultValue().isEmpty() ) continue;
         iter->second.restoreDefault();
     }
 
     // restore standard options
-    for( SpecialMap::iterator iter = specialOptions_.begin(); iter != specialOptions_.end(); iter++ )
+    for( SpecialMap::iterator iter = specialOptions_.begin(); iter != specialOptions_.end(); ++iter )
     {
         Options::List option_list( iter->second );
         iter->second.clear();
-        for( Options::List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
+        for( Options::List::iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
         {
-            if( list_iter->defaultValue().isEmpty() ) continue;
-            add( iter->first, list_iter->restoreDefault() );
+            if( listIter->defaultValue().isEmpty() ) continue;
+            add( iter->first, listIter->restoreDefault() );
         }
     }
 
@@ -214,17 +212,17 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
 {
 
     // print normal options
-    for( Options::Map::const_iterator iter = options.options().begin(); iter != options.options().end(); iter++ )
+    for( Options::Map::const_iterator iter = options.options().begin(); iter != options.options().end(); ++iter )
         out << "  " << iter->first << ":" << iter->second << endl;
 
     // write special options
-    for( Options::SpecialMap::const_iterator iter = options.specialOptions().begin(); iter != options.specialOptions().end(); iter++ )
+    for( Options::SpecialMap::const_iterator iter = options.specialOptions().begin(); iter != options.specialOptions().end(); ++iter )
     {
         const Options::List& option_list( iter->second );
-        for( Options::List::const_iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
+        for( Options::List::const_iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
         {
-            if( list_iter->hasFlag( Option::RECORDABLE ) && list_iter->set() && list_iter->raw().size() )
-            { out << "  " << iter->first << ":" << *list_iter << endl; }
+            if( listIter->hasFlag( Option::RECORDABLE ) && listIter->set() && listIter->raw().size() )
+            { out << "  " << iter->first << ":" << *listIter << endl; }
         }
     }
 

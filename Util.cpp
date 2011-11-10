@@ -30,18 +30,17 @@
 \date    $Date$
 */
 
-#include <QDir>
-#include <QHostInfo>
-#include <QProcess>
-#include <QStringList>
-#include <unistd.h>
-
 #include "CustomProcess.h"
 #include "Util.h"
 #include "Str.h"
 #include "Debug.h"
 
-using namespace std;
+#include <QtCore/QDir>
+#include <QtCore/QProcess>
+#include <QtCore/QStringList>
+#include <QtNetwork/QHostInfo>
+
+#include <unistd.h>
 
 /*! \brief
 static 'long' QString size
@@ -55,7 +54,7 @@ QString Util::env( const QString& val, const QString& default_value )
 {
 
     QStringList environment( QProcess::systemEnvironment() );
-    for( QStringList::iterator iter = environment.begin(); iter != environment.end(); iter++ )
+    for( QStringList::iterator iter = environment.begin(); iter != environment.end(); ++iter )
     {
         int position( iter->indexOf( "=" ) );
         if( position <= 0 ) continue;
