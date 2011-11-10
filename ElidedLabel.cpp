@@ -84,7 +84,7 @@ void ElidedLabel::updateElidedText( void )
     bool elided = false;
 
     QStringList lines( fullText_.split( '\n' ) );
-    for( QStringList::const_iterator iter = lines.begin(); iter != lines.end(); iter++ )
+    for( QStringList::const_iterator iter = lines.begin(); iter != lines.end(); ++iter )
     {
         QString line( *iter );
         int lineWidth = fm.width(line);

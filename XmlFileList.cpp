@@ -139,7 +139,7 @@ bool XmlFileList::_write( void )
     QDomElement top = document.appendChild( document.createElement( XmlFileRecord::XML_FILE_LIST ) ).toElement();
 
     // loop over records
-    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
+    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); ++iter )
     {
 
         Debug::Throw() << "XmlFileList::_write - " << *iter;

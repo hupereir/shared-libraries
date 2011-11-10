@@ -153,7 +153,7 @@ void OptionListBox::read( void )
 
   // add to model.
   OptionModel::Set options;
-  for( Options::List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
+  for( Options::List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
   { options.insert( OptionPair( optionName(), *iter ) ); }
 
   model_.set( options );
@@ -170,7 +170,7 @@ void OptionListBox::write( void ) const
   XmlOptions::get().keep( optionName() );
 
   OptionModel::List values( model_.children() );
-  for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); iter++ )
+  for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); ++iter )
   { XmlOptions::get().add( iter->first, iter->second ); }
 
 }
@@ -189,7 +189,7 @@ void OptionListBox::_updateButtons( void )
 
   OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
   bool remove_enabled( false );
-  for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); iter++ )
+  for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); ++iter )
   {
     if( iter->second.hasFlag( Option::RECORDABLE ) )
     {
@@ -291,7 +291,7 @@ void OptionListBox::_remove( void )
   // retrieve selected items; retrieve only recordable options
   OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
   OptionModel::List removed;
-  for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); iter++ )
+  for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); ++iter )
   { if( iter->second.hasFlag( Option::RECORDABLE ) ) removed.push_back( *iter ); }
 
   // remove
@@ -311,7 +311,7 @@ void OptionListBox::_setDefault( void )
   assert( current.isValid() );
 
   OptionModel::List options( model_.children() );
-  for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); iter++ )
+  for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); ++iter )
   { iter->second.setCurrent( false ); }
 
   model_.set( OptionModel::Set( options.begin(), options.end() ) );

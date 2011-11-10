@@ -141,7 +141,7 @@ void BlockHighlight::_updateEditors( void )
 
   BASE::KeySet<TextEditor> editors( parent_ );
   editors.insert( parent_ );
-  for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+  for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
   { (*iter)->viewport()->update(); }
 
 }

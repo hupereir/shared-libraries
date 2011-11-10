@@ -38,7 +38,7 @@ void OptionWidgetList::read( void )
 {
 
   Debug::Throw( "OptionWidgetList::read.\n" );
-  for( std::vector< OptionWidget* >::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
+  for( std::vector< OptionWidget* >::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); ++iter )
   { (*iter)->read(); }
 
 }
@@ -47,6 +47,6 @@ void OptionWidgetList::read( void )
 void OptionWidgetList::write( void ) const
 {
   Debug::Throw( "OptionWidgetList::write\n" );
-  for( std::vector< OptionWidget* >::const_iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); iter++ )
+  for( std::vector< OptionWidget* >::const_iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); ++iter )
   { (*iter)->write(); }
 }

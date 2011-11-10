@@ -111,7 +111,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 
     if( flags() ) out.setAttribute( XML_FLAGS, Str().assign<unsigned int>( flags() ) );
 
-    for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); iter++ )
+    for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); ++iter )
     {
         QDomElement property( parent.createElement( XML_PROPERTY ) );
         property.setAttribute( XML_NAME, XmlString( PropertyId::get(iter->first) ).toXml() );

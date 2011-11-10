@@ -53,7 +53,7 @@ bool IconEngine::reload( void )
     Debug::Throw( "IconEngine::reload.\n" );
 
     if( !PixmapEngine::get().reload() ) return false;
-    for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
+    for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
     { cache_[iter->first] = _get( iter->first, false ); }
 
     return true;

@@ -95,7 +95,7 @@ void RecentFilesMenu::_updateActions( void )
 
     // set actions enability
     FileRecord::List records( _fileList().records() );
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
 
         FileRecord::List::const_iterator found = find_if(
@@ -142,7 +142,7 @@ void RecentFilesMenu::_loadFiles( void )
     _cleanAction().setEnabled( _fileList().cleanEnabled() );
 
     // clear menu an actions map
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     { delete iter->first; }
     actions_.clear();
 
@@ -152,7 +152,7 @@ void RecentFilesMenu::_loadFiles( void )
     else { sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
 
     // retrieve stored file record
-    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
+    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); ++iter )
     {
 
         QString label( iter->file() );

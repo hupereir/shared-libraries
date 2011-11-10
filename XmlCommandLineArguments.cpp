@@ -60,7 +60,7 @@ XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
 QDomElement XmlCommandLineArguments::domElement( const QString& name, QDomDocument& parent ) const
 {
   QDomElement out( parent.createElement( name ) );
-  for( const_iterator iter = begin(); iter != end(); iter++ )
+  for( const_iterator iter = begin(); iter != end(); ++iter )
   {
     out.
       appendChild( parent.createElement( XML_ARGUMENT ) ).

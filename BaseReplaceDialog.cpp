@@ -149,7 +149,7 @@ void BaseReplaceDialog::synchronize( void )
 
     // replace editor
     _replaceEditor().clear();
-    for( std::set<QString>::iterator iter = _replacedStrings().begin(); iter != _replacedStrings().end(); iter++ )
+    for( std::set<QString>::iterator iter = _replacedStrings().begin(); iter != _replacedStrings().end(); ++iter )
     { _replaceEditor().addItem( *iter ); }
 
     // clear replace combobox text

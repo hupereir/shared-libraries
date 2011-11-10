@@ -131,7 +131,7 @@ void UserSelectionFrame::updateUsers( std::set<QString> users )
         }
     }
 
-    for( std::set<QString>::const_iterator iter =  users.begin(); iter != users.end(); iter++ )
+    for( std::set<QString>::const_iterator iter =  users.begin(); iter != users.end(); ++iter )
     { if( !iter->isEmpty() ) editor().addItem( *iter ); }
 
 }

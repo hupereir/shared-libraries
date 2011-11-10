@@ -49,10 +49,10 @@ HtmlTextNode::HtmlTextNode( const QString& text, QDomElement& parent, QDomDocume
   QStringList::iterator iter = lines.begin();
  // parent.appendChild( document.createTextNode( HtmlString(*iter).toHtml() ) );
   parent.appendChild( document.createTextNode( *iter ) );
-  iter++;
+  ++iter;
 
   // append remaining lines, after end of line tag
-  for( ;iter != lines.end(); iter++ )
+  for( ;iter != lines.end(); ++iter )
   {
     parent.appendChild( document.createElement( "br" ) );
     parent.appendChild( document.createTextNode( *iter ) );

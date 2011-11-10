@@ -48,7 +48,7 @@ Counter( "IconSizeMenu" )
 
     // generic action
     QAction* action;
-    for( IconSize::Map::const_iterator iter = sizes.begin(); iter != sizes.end(); iter++ )
+    for( IconSize::Map::const_iterator iter = sizes.begin(); iter != sizes.end(); ++iter )
     {
         addAction( action = new QAction( iter->second, this ) );
         action->setCheckable( true );
@@ -63,7 +63,7 @@ void IconSizeMenu::select( IconSize::Size size )
 {
 
     Debug::Throw( "IconSizeMenu::select.\n" );
-    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
         if( iter->second == size )
         {

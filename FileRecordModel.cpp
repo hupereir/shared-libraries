@@ -201,7 +201,7 @@ void FileRecordModel::_updateColumns( const ValueType& value )
 
     // loop over available properties
     const FileRecord::PropertyMap& properties( value.properties() );
-    for( FileRecord::PropertyMap::const_iterator iter = properties.begin(); iter != properties.end(); iter++ )
+    for( FileRecord::PropertyMap::const_iterator iter = properties.begin(); iter != properties.end(); ++iter )
     {
         // look for property name in list of columns
         if( find( columnTitles_.begin(), columnTitles_.end(), FileRecord::PropertyId::get( iter->first ) ) == columnTitles_.end() )

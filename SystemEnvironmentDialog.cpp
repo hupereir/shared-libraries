@@ -60,7 +60,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
   // retrieve environment variables from QProcess
   QStringList env( QProcess::systemEnvironment() );
   OptionModel::Set options;
-  for( QStringList::iterator iter = env.begin(); iter != env.end(); iter++ )
+  for( QStringList::iterator iter = env.begin(); iter != env.end(); ++iter )
   {
     QStringList parsed( (iter)->split( "=" ) );
     if( parsed.empty() ) continue;

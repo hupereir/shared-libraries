@@ -130,7 +130,7 @@ void LineNumberDisplay::paint( QPainter& painter )
   QTextBlock block( _editor().document()->begin() );
   unsigned int id( 0 );
 
-  for( LineNumberData::List::iterator iter = line_number_data_.begin(); iter != line_number_data_.end(); iter++ )
+  for( LineNumberData::List::iterator iter = line_number_data_.begin(); iter != line_number_data_.end(); ++iter )
   {
 
     // skip if block is not (yet) in window

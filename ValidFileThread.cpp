@@ -57,7 +57,7 @@ void ValidFileThread::run( void )
   bool has_invalid_records( false );
 
   // loop over files, check if exists, set validity accordingly, and post event
-  for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); iter++ )
+  for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); ++iter )
   {
     iter->setValid( File( iter->file() ).exists() );
     has_invalid_records |= !iter->isValid();

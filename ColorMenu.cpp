@@ -63,7 +63,7 @@ ColorMenu::ColorSet ColorMenu::colors( void ) const
 {
 
     ColorSet out;
-    for( ColorMap::const_iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
+    for( ColorMap::const_iterator iter = colors_.begin(); iter != colors_.end(); ++iter )
     { out.insert( iter->first ); }
 
     return out;
@@ -83,7 +83,7 @@ void ColorMenu::paintEvent( QPaintEvent* event )
     painter.setClipRect( event->rect() );
 
     painter.setPen( Qt::NoPen );
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
         QRect action_rect( actionGeometry( iter->first ) );
         if( !event->rect().intersects( action_rect ) ) continue;
@@ -115,7 +115,7 @@ void ColorMenu::_display( void )
     // clear actions
     actions_.clear();
 
-    for( ColorMap::iterator iter = colors_.begin(); iter != colors_.end(); iter++ )
+    for( ColorMap::iterator iter = colors_.begin(); iter != colors_.end(); ++iter )
     {
 
         // create pixmap if not done already

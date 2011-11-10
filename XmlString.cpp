@@ -75,7 +75,7 @@ QString XmlString::toXml( void ) const
 
     QString out(*this);
     if( !( _conversions().size() ) ) _initConversions();
-    for( ConversionList::iterator iter = _conversions().begin(); iter != _conversions().end(); iter++ )
+    for( ConversionList::iterator iter = _conversions().begin(); iter != _conversions().end(); ++iter )
     { if( !iter->first.isEmpty() ) out = out.replace( iter->first, iter->second ); }
 
     return out;
@@ -89,7 +89,7 @@ QString XmlString::toText( void ) const
     if( !( _conversions().size() ) ) _initConversions();
 
     // HTML style conversions (escape characters)
-    for( ConversionList::reverse_iterator iter = _conversions().rbegin(); iter != _conversions().rend(); iter++ )
+    for( ConversionList::reverse_iterator iter = _conversions().rbegin(); iter != _conversions().rend(); ++iter )
     { if( !iter->second.isEmpty() ) out = out.replace( iter->second, iter->first ); }
 
     return out;

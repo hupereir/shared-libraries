@@ -864,7 +864,7 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool
 
         Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
         BoxSelection::CursorList cursors( _boxSelection().cursorList() );
-        for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); iter++ )
+        for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); ++iter )
         { counts += _replaceInRange( selection, *iter, MOVE ); }
 
         _boxSelection().clear();
@@ -2215,7 +2215,7 @@ void TextEditor::_synchronizeBoxSelection( void ) const
 
     // Debug::Throw( "TextEditor::_synchronizeBoxSelection.\n" );
     BASE::KeySet<TextEditor> displays( this );
-    for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
+    for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
     { (*iter)->_boxSelection().synchronize( _boxSelection() ); }
 
 }
@@ -2364,7 +2364,7 @@ void TextEditor::_synchronizeSelection( void )
     if( !isSynchronized() ) return;
 
     BASE::KeySet<TextEditor> editors( this );
-    for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+    for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
     {
         TextEditor &editor( **iter );
 
@@ -2494,7 +2494,7 @@ void TextEditor::_toggleBlockHighlight( bool state )
         setSynchronized( false );
 
         BASE::KeySet<TextEditor> displays( this );
-        for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
+        for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
 
         { if( (*iter)->isSynchronized() ) (*iter)->blockHighlightAction().setChecked( state ); }
         setSynchronized( true );
@@ -2521,7 +2521,7 @@ bool TextEditor::_toggleWrapMode( bool state )
         // to avoid infinite loop
         setSynchronized( false );
         BASE::KeySet<TextEditor> editors( this );
-        for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+        for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
         { if( (*iter)->isSynchronized() ) (*iter)->wrapModeAction().setChecked( state ); }
         setSynchronized( true );
 
@@ -2553,7 +2553,7 @@ bool TextEditor::_toggleTabEmulation( bool state )
         // to avoid infinite loop
         setSynchronized( false );
         BASE::KeySet<TextEditor> editors( this );
-        for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); iter++ )
+        for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
         { if( (*iter)->isSynchronized() ) (*iter)->tabEmulationAction().setChecked( state ); }
         setSynchronized( true );
 
@@ -2580,7 +2580,7 @@ void TextEditor::_toggleShowLineNumbers( bool state )
         setSynchronized( false );
 
         BASE::KeySet<TextEditor> displays( this );
-        for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); iter++ )
+        for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
         { if( (*iter)->isSynchronized() ) (*iter)->showLineNumberAction().setChecked( state ); }
         setSynchronized( true );
 

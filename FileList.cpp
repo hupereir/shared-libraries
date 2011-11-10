@@ -66,7 +66,7 @@ std::list<File> FileList::files( void ) const
     FileRecord::List records( _truncatedList( _records() ) );
 
     std::list<File> out;
-    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); iter++ )
+    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); ++iter )
     { out.push_back( iter->file() ); }
 
     return out;
@@ -80,7 +80,7 @@ FileRecord FileList::lastValidFile( void )
 
     // sort list
     sort( _records().begin(), _records().end(), FileRecord::FirstOpenFTor() );
-    for( FileRecord::List::reverse_iterator iter = _records().rbegin(); iter != _records().rend(); iter++ )
+    for( FileRecord::List::reverse_iterator iter = _records().rbegin(); iter != _records().rend(); ++iter )
     { if( (!check_) || iter->isValid() ) return *iter; }
     return FileRecord( File("") );
 
@@ -108,7 +108,7 @@ void FileList::customEvent( QEvent* event )
     // set file records validity
     FileRecord::List& current_records( _records() );
     const FileRecord::List& records( valid_file_event->records() );
-    for( FileRecord::List::iterator iter = current_records.begin(); iter != current_records.end(); iter++ )
+    for( FileRecord::List::iterator iter = current_records.begin(); iter != current_records.end(); ++iter )
     {
         FileRecord::List::const_iterator found = find_if(
             records.begin(),

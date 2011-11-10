@@ -524,7 +524,7 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
     else {
         // restore old values
         XmlOptions::get().clearSpecialOptions( "PIXMAP_PATH" );
-        for( Options::List::iterator iter = backup_options.begin(); iter != backup_options.end(); iter++ )
+        for( Options::List::iterator iter = backup_options.begin(); iter != backup_options.end(); ++iter )
         { XmlOptions::get().add( "PIXMAP_PATH", *iter ); }
     }
     return;
@@ -550,7 +550,7 @@ void BaseConfigurationDialog::_restoreDefaults( void )
     // list options that have no default values
     const Options::Map& options( XmlOptions::get().options() );
     OptionModel::Set local;
-    for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); iter++ )
+    for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); ++iter )
     { if( iter->second.defaultValue().isEmpty() ) local.insert( OptionPair( *iter ) ); }
 
     QuestionDialog dialog( this );

@@ -70,7 +70,7 @@ ScrollObject::ScrollObject( QAbstractScrollArea* parent ):
   targets_.insert( _target().horizontalScrollBar() );
 
   // install filters
-  for( ObjectSet::iterator iter = targets_.begin(); iter != targets_.end(); iter++ )
+  for( ObjectSet::iterator iter = targets_.begin(); iter != targets_.end(); ++iter )
   { (*iter)->installEventFilter(this); }
 
 }

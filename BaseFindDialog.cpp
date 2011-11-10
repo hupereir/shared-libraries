@@ -145,7 +145,7 @@ void BaseFindDialog::synchronize( void )
     Debug::Throw( "BaseFindDialog::synchronize.\n" );
     editor().clear();
 
-    for( std::set<QString>::iterator iter = _searchedStrings().begin(); iter != _searchedStrings().end(); iter++ )
+    for( std::set<QString>::iterator iter = _searchedStrings().begin(); iter != _searchedStrings().end(); ++iter )
     { editor().addItem( *iter ); }
 
 }
@@ -178,7 +178,7 @@ void BaseFindDialog::_updateButtons( const QString& text )
 
     bool enabled( !( text.isNull() || text.isEmpty() ) );
 
-    for( std::vector< QAbstractButton* >::iterator iter = _disabledButtons().begin(); iter != _disabledButtons().end(); iter++ )
+    for( std::vector< QAbstractButton* >::iterator iter = _disabledButtons().begin(); iter != _disabledButtons().end(); ++iter )
     { (*iter)->setEnabled( enabled ); }
 
     Debug::Throw( "BaseFindDialog::_updateButtons - done.\n" );

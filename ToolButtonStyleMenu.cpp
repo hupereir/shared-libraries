@@ -56,7 +56,7 @@ Counter( "ToolButtonStyleMenu" )
     }
 
     // generic action
-    for( List::const_iterator iter = actionNames.begin(); iter != actionNames.end(); iter++ )
+    for( List::const_iterator iter = actionNames.begin(); iter != actionNames.end(); ++iter )
     {
         QAction* action = new QAction( iter->first, this );
         addAction( action );
@@ -72,7 +72,7 @@ void ToolButtonStyleMenu::select( Qt::ToolButtonStyle size )
 {
 
     Debug::Throw( "ToolButtonStyleMenu::select.\n" );
-    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); iter++ )
+    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
         if( iter->second == size )
         {

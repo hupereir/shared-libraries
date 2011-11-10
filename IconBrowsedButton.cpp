@@ -166,7 +166,7 @@ void IconBrowsedButton::dropEvent( QDropEvent *event )
 
     // loop over event URLs
     QList<QUrl> urls( event->mimeData()->urls() );
-    for( QList<QUrl>::const_iterator iter = urls.begin(); iter != urls.end(); iter++ )
+    for( QList<QUrl>::const_iterator iter = urls.begin(); iter != urls.end(); ++iter )
     {
         QFileInfo file_info( iter->toLocalFile() );
         if( file_info.exists() && setFile( file_info.filePath(), true ) ) event->acceptProposedAction();

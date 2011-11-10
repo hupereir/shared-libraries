@@ -30,9 +30,6 @@
 \date $Date$
 */
 
-#include <QDomDocument>
-#include <QDomElement>
-#include <QFile>
 
 #include "File.h"
 #include "Options.h"
@@ -40,7 +37,9 @@
 #include "XmlOption.h"
 #include "XmlOptions.h"
 
-
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
+#include <QtCore/QFile>
 
 //____________________________________________________________________
 QString& XmlOptions::file( void )
@@ -162,7 +161,7 @@ bool XmlOptions::write( QString file )
     QDomElement top = document.appendChild( document.createElement( OPTIONS::OPTIONS ) ).toElement();
 
     // write list of special option names
-    for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
+    for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); ++iter )
     {
         // check size of options
         if( iter->second.empty() ) continue;
@@ -174,20 +173,20 @@ bool XmlOptions::write( QString file )
     }
 
     // write options
-    for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); iter++ )
+    for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); ++iter )
     {
 
         Options::List option_list( iter->second );
-        for( Options::List::iterator list_iter = option_list.begin(); list_iter != option_list.end(); list_iter++ )
+        for( Options::List::iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
         {
 
-            if( !list_iter->hasFlag( Option::RECORDABLE ) )
+            if( !listIter->hasFlag( Option::RECORDABLE ) )
             { Debug::Throw(0) << "XmlOptions::write - option " << iter->first << " is not recordable" << endl; }
 
-            if( list_iter->hasFlag( Option::RECORDABLE ) && list_iter->set() && list_iter->raw().size() )
+            if( listIter->hasFlag( Option::RECORDABLE ) && listIter->set() && listIter->raw().size() )
             {
 
-                top.appendChild( XmlOption( iter->first, *list_iter ).domElement( document ) );
+                top.appendChild( XmlOption( iter->first, *listIter ).domElement( document ) );
 
             } else Debug::Throw(0) << "XmlOptions::write - skipping option " << iter->first << endl;
 
@@ -196,7 +195,7 @@ bool XmlOptions::write( QString file )
     }
 
     // write standard options
-    for( Options::Map::const_iterator iter = get().options().begin(); iter != get().options().end(); iter++ )
+    for( Options::Map::const_iterator iter = get().options().begin(); iter != get().options().end(); ++iter )
     {
 
         if( iter->second.hasFlag( Option::RECORDABLE ) && iter->second.set() && iter->second.raw().size() )

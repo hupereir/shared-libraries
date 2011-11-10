@@ -62,7 +62,7 @@ bool PixmapEngine::reload( void )
   if( pathList == _pixmapPath() ) return false;
 
   _setPixmapPath( pathList );
-  for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
+  for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
   { cache_[iter->first] = _get( iter->first, false ); }
 
   return true;
@@ -86,7 +86,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
   else {
 
     if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-    for( std::list<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); iter++ )
+    for( std::list<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); ++iter )
     {
 
       // skip empty path
