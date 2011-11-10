@@ -450,7 +450,7 @@ void HelpDialog::_showHelpString( void )
     // retrieve all items from dialog
     stream << "static const char* helpText[] = {\n";
     HelpItem::List items( _model().get() );
-    for( HelpItem::List::const_iterator iter = items.begin(); iter != items.end(); iter++ )
+    for( HelpItem::List::const_iterator iter = items.begin(); iter != items.end(); ++iter )
     {
 
         // dump label

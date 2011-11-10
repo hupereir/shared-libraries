@@ -54,13 +54,13 @@ Qt::ItemFlags HelpModel::flags(const QModelIndex &index) const
 //__________________________________________________________________
 QVariant HelpModel::data( const QModelIndex& index, int role ) const
 {
-    
+
     // check index, role and column
     if( !index.isValid() ) return QVariant();
     if( role != Qt::DisplayRole ) return QVariant();
     if( index.column() != LABEL ) return QVariant();
     return QString( get(index).label() );
-    
+
 }
 
 //__________________________________________________________________
@@ -86,28 +86,28 @@ QStringList HelpModel::mimeTypes( void ) const
 //______________________________________________________________________
 QMimeData* HelpModel::mimeData(const QModelIndexList &indexes) const
 {
-    
+
     assert( indexes.size() == 1 );
-    
+
     // create mime data
     QMimeData *mime = new QMimeData();
-    
+
     // set DRAG type
-    for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
+    for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); ++iter )
     { if( iter->isValid() ) mime->setData( DRAG, get( *iter ).label().toAscii() ); }
-    
+
     return mime;
-    
+
 }
 
 
 //__________________________________________________________________
 bool HelpModel::dropMimeData(const QMimeData* data , Qt::DropAction action, int row, int column, const QModelIndex& parent)
 {
-    
+
     // check action
     if( action == Qt::IgnoreAction) return true;
-    
+
     // Drag from Keyword model
     if( data->hasFormat( DRAG ) )
     {
@@ -115,7 +115,7 @@ bool HelpModel::dropMimeData(const QMimeData* data , Qt::DropAction action, int 
         emit itemMoved( row );
         return true;
     }
-    
+
     return false;
-    
+
 }

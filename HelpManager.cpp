@@ -177,7 +177,7 @@ void HelpManager::_dumpHelpString( void )
 
   // retrieve all items from dialog
   out << "static const char* helpText[] = {\n";
-  for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
+  for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
   {
 
     // dump label
@@ -227,7 +227,7 @@ void HelpManager::_save( void )
 
   // top element
   QDomElement top = document.appendChild( document.createElement( XML_HELP ) ).toElement();
-  for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); iter++ )
+  for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
   { top.appendChild( iter->domElement( document ) ); }
 
   out.write( document.toByteArray() );
