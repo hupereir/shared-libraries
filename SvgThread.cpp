@@ -63,7 +63,7 @@ namespace SVG
         svg_.updateConfiguration();
 
         ImageCache cache;
-        for( SvgId::List::const_iterator iter = svgIds_.begin(); iter != svgIds_.end(); iter++ )
+        for( SvgId::List::const_iterator iter = svgIds_.begin(); iter != svgIds_.end(); ++iter )
         {
 
             QImage image( iter->size(), QImage::Format_ARGB32_Premultiplied );

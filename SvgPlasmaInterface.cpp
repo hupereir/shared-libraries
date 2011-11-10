@@ -64,7 +64,7 @@ namespace SVG
       << ".kde4/share/config/plasmarc";
 
     // open file
-    for( QStringList::const_iterator iter = configuration_files.begin(); iter != configuration_files.end(); iter++ )
+    for( QStringList::const_iterator iter = configuration_files.begin(); iter != configuration_files.end(); ++iter )
     {
       QFileInfo info( QDir::home(), *iter );
 
@@ -93,7 +93,7 @@ namespace SVG
       QRegExp name_tag( "^\\s*name\\s*=\\s*(\\S*)\\s*$" );
 
       QString theme;
-      for( QStringList::const_iterator iter = lines.begin(); iter != lines.end(); iter++ )
+      for( QStringList::const_iterator iter = lines.begin(); iter != lines.end(); ++iter )
       {
         if( !found_theme )
         {
@@ -143,7 +143,7 @@ namespace SVG
 
     bool found( false );
     QString filename;
-    for( QStringList::const_iterator iter = files.begin(); iter != files.end(); iter++ )
+    for( QStringList::const_iterator iter = files.begin(); iter != files.end(); ++iter )
     {
 
       QFileInfo info( QDir(_path()), *iter );
@@ -196,7 +196,7 @@ namespace SVG
 
     if( theme != "default" )
     {
-      for( QStringList::const_iterator iter = local_path.begin(); iter != local_path.end(); iter++ )
+      for( QStringList::const_iterator iter = local_path.begin(); iter != local_path.end(); ++iter )
       {
         QFileInfo info( QDir::home(), *iter + theme );
         if( info.exists() ) return _setPath( info.absoluteFilePath() );

@@ -104,7 +104,7 @@ namespace SVG
 
             svgOffset_ = svg_offset;
             SvgId::List svg_id_list;
-            for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); iter++ )
+            for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
             { svg_id_list.push_back( iter->first ); }
 
             cache_.clear();
@@ -142,7 +142,7 @@ namespace SVG
         SvgEvent* svg_event( static_cast<SvgEvent*>(event) );
         if( !svg_event ) return QObject::customEvent( event );
 
-        for( ImageCache::const_iterator iter = svg_event->cache().begin(); iter != svg_event->cache().end(); iter++ )
+        for( ImageCache::const_iterator iter = svg_event->cache().begin(); iter != svg_event->cache().end(); ++iter )
         { cache_.insert( make_pair( iter->first, QPixmap::fromImage( iter->second ) ) ); }
 
     }
@@ -199,7 +199,7 @@ namespace SVG
 
         bool found( false );
         Options::List file_list( XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) );
-        for( Options::List::const_iterator iter = file_list.begin(); iter != file_list.end(); iter++ )
+        for( Options::List::const_iterator iter = file_list.begin(); iter != file_list.end(); ++iter )
         {
             QString file( iter->raw() );
             svg_.load( QString( file ) );
