@@ -59,7 +59,7 @@ void FilterMenu::select( const QString& filter )
 
   Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
 
-  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
+  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); ++iter )
   { if( iter->second == filter ) iter->first->setChecked( true ); }
 
   return;
@@ -84,7 +84,7 @@ void FilterMenu::_reset( void )
   // load filters from spell interface
   set< QString > filters( SPELLCHECK::SpellInterface().filters() );
   if( !filters.empty() ) addSeparator();
-  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
+  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
   {
     QAction* action( new QAction( *iter, this ) );
     action->setCheckable( true );

@@ -120,7 +120,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
     grid_layout->addWidget( dictionary_ = new QComboBox( this ) );
 
     const set<QString>& dictionaries( interface().dictionaries() );
-    for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
+    for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
         dictionary_->addItem(*iter );
     connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
@@ -131,7 +131,7 @@ SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
     grid_layout->setColumnStretch( 1, 1 );
 
     set<QString> filters( interface().filters() );
-    for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
+    for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
         filter_->addItem( *iter );
     connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
 

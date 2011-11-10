@@ -60,7 +60,7 @@ void DictionaryMenu::select( const QString& dictionary )
 {
   Debug::Throw( "DictionaryMenu::select.\n" );
 
-  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
+  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); ++iter )
   { if( iter->second == dictionary ) iter->first->setChecked( true ); }
 
   return;
@@ -75,7 +75,7 @@ void DictionaryMenu::_reset( void )
 
   // store selected dictionary
   QString dictionary;
-  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); iter++ )
+  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); ++iter )
   { if( iter->first->isChecked() ) dictionary = iter->second; }
 
   // clear actions
@@ -91,7 +91,7 @@ void DictionaryMenu::_reset( void )
   set< QString > dictionaries( SPELLCHECK::SpellInterface().dictionaries() );
   if( !dictionaries.empty() ) addSeparator();
 
-  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
+  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
   {
     QAction* action( new QAction( *iter, this ) );
     action->setCheckable( true );

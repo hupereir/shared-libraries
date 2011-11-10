@@ -74,7 +74,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   addOptionWidget( combobox );
 
   const set<QString>& dictionaries( interface.dictionaries() );
-  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); iter++ )
+  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
   { combobox->addItem( *iter ); }
 
   // filters
@@ -87,7 +87,7 @@ SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
   addOptionWidget( combobox );
 
   const set<QString>& filters( interface.filters() );
-  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++ )
+  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
   { combobox->addItem(*iter ); }
 
 }
