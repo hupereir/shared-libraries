@@ -313,7 +313,7 @@ void ApplicationManager::_broadcast( ServerCommand command, Client* sender )
 {
 
   Debug::Throw() << "ApplicationManager::_Broadcast - id: " << command.id().name() << " command: " << command.commandName() << endl;
-  for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); iter++ )
+  for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); ++iter )
   { if( (*iter) != sender ) (*iter)->sendCommand( command ); }
 
 }
