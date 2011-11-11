@@ -31,17 +31,17 @@
 \date    $Date$
 */
 
-#include <QAction>
-#include <QMoveEvent>
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QShowEvent>
-#include <QWidget>
-
 #include "Counter.h"
 
-//! clock widgets
-namespace TRANSPARENCY {
+#include <QtGui/QAction>
+#include <QtGui/QMoveEvent>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QShowEvent>
+#include <QtGui/QWidget>
+
+namespace TRANSPARENCY
+{
 
     //! transparent widget
     class TransparentWidget: public QWidget, public Counter

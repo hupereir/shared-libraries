@@ -28,10 +28,6 @@
 \date    $Date$
 */
 
-#include <QGroupBox>
-#include <QLabel>
-#include <QLayout>
-
 #include "GridLayout.h"
 #include "Debug.h"
 #include "OptionCheckBox.h"
@@ -40,138 +36,143 @@
 #include "OptionSpinBox.h"
 #include "TransparencyConfiguration.h"
 
+#include <QtGui/QGroupBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+
 #include "CompositeEngine.h"
 
-using namespace std;
-using namespace TRANSPARENCY;
-
-//________________________________________________________________________
-TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
-    QWidget( parent ),
-    Counter( "TransparencyConfiguration" )
+namespace TRANSPARENCY
 {
-    Debug::Throw( "TransparencyConfiguration::TransparencyConfiguration.\n" );
 
-    setLayout( new QVBoxLayout() );
-    layout()->setSpacing(5);
-    layout()->setMargin(0);
-
-    // generic objects
-    QGroupBox *box;
-    OptionColorDisplay* color_display;
-    OptionSlider* slider;
-    OptionSpinBox* spinbox;
-    OptionCheckBox* checkbox;
-
-    // general
-    layout()->addWidget( box = new QGroupBox( "General", this ) );
-    box->setLayout( new QVBoxLayout() );
-    box->layout()->setSpacing(5);
-    box->layout()->setMargin(5);
-
-    // enable/disable transparency
-    box->layout()->addWidget( checkbox = new OptionCheckBox( "Use transparency", box, "TRANSPARENT" ) );
-    checkbox->setToolTip( "Enable/disable transparent background" );
-    addOptionWidget( checkbox );
-
-    // enable/disable compositing
-    if( CompositeEngine::get().isAvailable() )
+    //________________________________________________________________________
+    TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
+        QWidget( parent ),
+        Counter( "TransparencyConfiguration" )
     {
+        Debug::Throw( "TransparencyConfiguration::TransparencyConfiguration.\n" );
 
-        box->layout()->addWidget( checkbox = new OptionCheckBox( "Use compositing", box, "TRANSPARENCY_USE_COMPOSITE" ) );
-        checkbox->setToolTip( "Enable/disable compositing" );
+        setLayout( new QVBoxLayout() );
+        layout()->setSpacing(5);
+        layout()->setMargin(0);
+
+        // generic objects
+        QGroupBox *box;
+        OptionColorDisplay* color_display;
+        OptionSlider* slider;
+        OptionSpinBox* spinbox;
+        OptionCheckBox* checkbox;
+
+        // general
+        layout()->addWidget( box = new QGroupBox( "General", this ) );
+        box->setLayout( new QVBoxLayout() );
+        box->layout()->setSpacing(5);
+        box->layout()->setMargin(5);
+
+        // enable/disable transparency
+        box->layout()->addWidget( checkbox = new OptionCheckBox( "Use transparency", box, "TRANSPARENT" ) );
+        checkbox->setToolTip( "Enable/disable transparent background" );
         addOptionWidget( checkbox );
-        QCheckBox* compositingCheckBox( checkbox );
 
-        box->layout()->addWidget( checkbox = new OptionCheckBox( "Enable blur behind transparent regions", box, "TRANSPARENCY_USE_BLUR" ) );
-        checkbox->setToolTip( "Enable/disable blur behind transparent regions" );
-        addOptionWidget( checkbox );
-        checkbox->setEnabled( false );
+        // enable/disable compositing
+        if( CompositeEngine::get().isAvailable() )
+        {
 
-        connect( compositingCheckBox, SIGNAL( toggled( bool ) ), checkbox, SLOT( setEnabled( bool ) ) );
+            box->layout()->addWidget( checkbox = new OptionCheckBox( "Use compositing", box, "TRANSPARENCY_USE_COMPOSITE" ) );
+            checkbox->setToolTip( "Enable/disable compositing" );
+            addOptionWidget( checkbox );
+            QCheckBox* compositingCheckBox( checkbox );
 
+            box->layout()->addWidget( checkbox = new OptionCheckBox( "Enable blur behind transparent regions", box, "TRANSPARENCY_USE_BLUR" ) );
+            checkbox->setToolTip( "Enable/disable blur behind transparent regions" );
+            addOptionWidget( checkbox );
+            checkbox->setEnabled( false );
+
+            connect( compositingCheckBox, SIGNAL( toggled( bool ) ), checkbox, SLOT( setEnabled( bool ) ) );
+
+        }
+
+        QHBoxLayout* h_layout = new QHBoxLayout();
+        h_layout->setSpacing(5);
+        h_layout->setMargin(0);
+        box->layout()->addItem( h_layout );
+
+        // opacity
+        h_layout->addWidget( new QLabel( "Opacity (composite):", box ) );
+        h_layout->addWidget( slider = new OptionSlider( this, "TRANSPARENCY_OPACITY" ) );
+        slider->setScale( 1.0/2.55 );
+        slider->setRange( 0, 100 );
+        slider->setToolTip( "Widget opacity" );
+        addOptionWidget( slider );
+
+        // colors
+        layout()->addWidget( box = new QGroupBox( "Colors", this ) );
+
+        GridLayout* grid_layout = new GridLayout();
+        grid_layout->setSpacing(5);
+        grid_layout->setMargin(5);
+        grid_layout->setMaxCount( 2 );
+        grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+        box->setLayout( grid_layout );
+
+        // foreground color
+        grid_layout->addWidget( new QLabel("Foreground color:", box ) );
+        grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_FOREGROUND_COLOR" ) );
+        color_display->setToolTip( "Text/display foreground color" );
+        addOptionWidget( color_display );
+
+        // shadow color
+        grid_layout->addWidget( new QLabel( "Shadow color:", box ) );
+        grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_SHADOW_COLOR" ) );
+        color_display->setToolTip( "Text/display shadow color" );
+        addOptionWidget( color_display );
+
+        // tint color
+        grid_layout->addWidget( new QLabel( "Tint color:", box ) );
+        grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_TINT_COLOR" ) );
+        color_display->setToolTip( "Transparent background tint color" );
+        addOptionWidget( color_display );
+
+        // highlight color
+        grid_layout->addWidget( new QLabel( "Highlight color:", box ) );
+        grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
+        color_display->setToolTip( "Highlight color when entering widget" );
+        addOptionWidget( color_display );
+
+        // shadow offset
+        grid_layout->addWidget( new QLabel( "Shadow offset: ", box ) );
+        grid_layout->addWidget( spinbox = new OptionSpinBox( box, "TRANSPARENCY_SHADOW_OFFSET" ) );
+        spinbox->setMinimum( 0 );
+        spinbox->setMaximum( 10 );
+        spinbox->setToolTip(
+            "Offset between text shadow and text.\n"
+            "0 means no shadow." );
+        addOptionWidget( spinbox );
+
+        // foreground intensity
+        grid_layout->addWidget( new QLabel("Foreground intensity:", box ) );
+        grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
+        slider->setScale( 1.0/2.55 );
+        slider->setRange( 0, 100 );
+        slider->setToolTip("Foreground color intensity" );
+        addOptionWidget( slider );
+
+        // tint intensity
+        grid_layout->addWidget( new QLabel( "Tint intensity:", box ) );
+        grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_TINT_INTENSITY" ) );
+        slider->setScale( 1.0/2.55 );
+        slider->setRange( 0, 100 );
+        slider->setToolTip( "Transparent background tint intensity" );
+        addOptionWidget( slider );
+
+        // tint intensity
+        grid_layout->addWidget( new QLabel( "Highlight intensity:", box ) );
+        grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
+        slider->setScale( 1.0/2.55 );
+        slider->setRange( 0, 100 );
+        slider->setToolTip( "Transparent background highlight intensity" );
+        addOptionWidget( slider );
+
+        return;
     }
-
-    QHBoxLayout* h_layout = new QHBoxLayout();
-    h_layout->setSpacing(5);
-    h_layout->setMargin(0);
-    box->layout()->addItem( h_layout );
-
-    // opacity
-    h_layout->addWidget( new QLabel( "Opacity (composite):", box ) );
-    h_layout->addWidget( slider = new OptionSlider( this, "TRANSPARENCY_OPACITY" ) );
-    slider->setScale( 1.0/2.55 );
-    slider->setRange( 0, 100 );
-    slider->setToolTip( "Widget opacity" );
-    addOptionWidget( slider );
-
-    // colors
-    layout()->addWidget( box = new QGroupBox( "Colors", this ) );
-
-    GridLayout* grid_layout = new GridLayout();
-    grid_layout->setSpacing(5);
-    grid_layout->setMargin(5);
-    grid_layout->setMaxCount( 2 );
-    grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-    box->setLayout( grid_layout );
-
-    // foreground color
-    grid_layout->addWidget( new QLabel("Foreground color:", box ) );
-    grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_FOREGROUND_COLOR" ) );
-    color_display->setToolTip( "Text/display foreground color" );
-    addOptionWidget( color_display );
-
-    // shadow color
-    grid_layout->addWidget( new QLabel( "Shadow color:", box ) );
-    grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_SHADOW_COLOR" ) );
-    color_display->setToolTip( "Text/display shadow color" );
-    addOptionWidget( color_display );
-
-    // tint color
-    grid_layout->addWidget( new QLabel( "Tint color:", box ) );
-    grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_TINT_COLOR" ) );
-    color_display->setToolTip( "Transparent background tint color" );
-    addOptionWidget( color_display );
-
-    // highlight color
-    grid_layout->addWidget( new QLabel( "Highlight color:", box ) );
-    grid_layout->addWidget( color_display = new OptionColorDisplay( box, "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
-    color_display->setToolTip( "Highlight color when entering widget" );
-    addOptionWidget( color_display );
-
-    // shadow offset
-    grid_layout->addWidget( new QLabel( "Shadow offset: ", box ) );
-    grid_layout->addWidget( spinbox = new OptionSpinBox( box, "TRANSPARENCY_SHADOW_OFFSET" ) );
-    spinbox->setMinimum( 0 );
-    spinbox->setMaximum( 10 );
-    spinbox->setToolTip(
-        "Offset between text shadow and text.\n"
-        "0 means no shadow." );
-    addOptionWidget( spinbox );
-
-    // foreground intensity
-    grid_layout->addWidget( new QLabel("Foreground intensity:", box ) );
-    grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
-    slider->setScale( 1.0/2.55 );
-    slider->setRange( 0, 100 );
-    slider->setToolTip("Foreground color intensity" );
-    addOptionWidget( slider );
-
-    // tint intensity
-    grid_layout->addWidget( new QLabel( "Tint intensity:", box ) );
-    grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_TINT_INTENSITY" ) );
-    slider->setScale( 1.0/2.55 );
-    slider->setRange( 0, 100 );
-    slider->setToolTip( "Transparent background tint intensity" );
-    addOptionWidget( slider );
-
-    // tint intensity
-    grid_layout->addWidget( new QLabel( "Highlight intensity:", box ) );
-    grid_layout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
-    slider->setScale( 1.0/2.55 );
-    slider->setRange( 0, 100 );
-    slider->setToolTip( "Transparent background highlight intensity" );
-    addOptionWidget( slider );
-
-    return;
 }

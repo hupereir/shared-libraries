@@ -53,14 +53,14 @@ namespace TRANSPARENCY
 
     //! returns true if background image is valid
     bool isValid( void ) const
-    { return !background_pixmap_.isNull(); }
+    { return !backgroundPixmap_.isNull(); }
 
     //! returns a Pixmap of given position and size from the background image
     QPixmap pixmap( const QRect& rect ) const;
 
     //! returns a Pixmap of given position and size from the background image
     QPixmap fullPixmap() const
-    { return background_pixmap_; }
+    { return backgroundPixmap_; }
 
     #if defined(Q_WS_X11)
     //! check X11 event
@@ -86,7 +86,7 @@ namespace TRANSPARENCY
     bool _loadDesktopWindow( void );
 
     //! full background image
-    QPixmap background_pixmap_;
+    QPixmap backgroundPixmap_;
 
     #if defined(Q_WS_X11)
 
