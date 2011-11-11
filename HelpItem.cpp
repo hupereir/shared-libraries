@@ -30,57 +30,55 @@
    \date    $Date$
 */
 
-
-
 #include "HelpItem.h"
 #include "XmlString.h"
 
-using namespace std;
-using namespace BASE;
-
-//_________________________________________________________
-HelpItem::HelpItem( const QDomElement& element ):
-  Counter( "HelpItem" )
+namespace BASE
 {
+    //_________________________________________________________
+    HelpItem::HelpItem( const QDomElement& element ):
+        Counter( "HelpItem" )
+    {
 
-  Debug::Throw( "HelpItem::HelpItem.\n" );
+        Debug::Throw( "HelpItem::HelpItem.\n" );
 
-  // parse attributes
-  QDomNamedNodeMap attributes( element.attributes() );
-  for( unsigned int i=0; i<attributes.length(); i++ )
-  {
-    QDomAttr attribute( attributes.item( i ).toAttr() );
-    if( attribute.isNull() ) continue;
+        // parse attributes
+        QDomNamedNodeMap attributes( element.attributes() );
+        for( unsigned int i=0; i<attributes.length(); i++ )
+        {
+            QDomAttr attribute( attributes.item( i ).toAttr() );
+            if( attribute.isNull() ) continue;
 
-    if( attribute.name() == XML_LABEL ) label_ = XmlString( attribute.value() ).toText();
-    else Debug::Throw() << "HelpItem::HelpItem - unrecognized attribute: " << attribute.name() << endl;
+            if( attribute.name() == XML_LABEL ) label_ = XmlString( attribute.value() ).toText();
+            else Debug::Throw() << "HelpItem::HelpItem - unrecognized attribute: " << attribute.name() << endl;
 
-  }
+        }
 
-  // parse children
-  // parse children elements
-  for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
-  {
-    QDomElement child_element = child_node.toElement();
-    if( child_element.tagName() == XML_TEXT ) text_ = XmlString( child_element.text() ).toText();
-    else Debug::Throw(0) << "HelpItem::HelpItem - unrecognized child " << child_element.tagName() << endl;
-  }
+        // parse children
+        // parse children elements
+        for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
+        {
+            QDomElement child_element = child_node.toElement();
+            if( child_element.tagName() == XML_TEXT ) text_ = XmlString( child_element.text() ).toText();
+            else Debug::Throw(0) << "HelpItem::HelpItem - unrecognized child " << child_element.tagName() << endl;
+        }
 
-}
+    }
 
-//_________________________________________________________
-QDomElement HelpItem::domElement( QDomDocument& parent ) const
-{
-  Debug::Throw( "HelpItem::DomElement.\n" );
-  QDomElement out = parent.createElement( XML_ITEM );
-  out.setAttribute( XML_LABEL, XmlString( label_ ).toXml() );
+    //_________________________________________________________
+    QDomElement HelpItem::domElement( QDomDocument& parent ) const
+    {
+        Debug::Throw( "HelpItem::DomElement.\n" );
+        QDomElement out = parent.createElement( XML_ITEM );
+        out.setAttribute( XML_LABEL, XmlString( label_ ).toXml() );
 
-  // text child
-  if( text_.size() )
-  out.
-    appendChild( parent.createElement( XML_TEXT ) ).
-    appendChild( parent.createTextNode( XmlString( text_ ).toXml() ) );
+        // text child
+        if( text_.size() )
+            out.
+            appendChild( parent.createElement( XML_TEXT ) ).
+            appendChild( parent.createTextNode( XmlString( text_ ).toXml() ) );
 
-  return out;
+        return out;
 
+    }
 }

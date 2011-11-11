@@ -22,18 +22,12 @@
 *******************************************************************************/
 
 /*!
-   \file HelpManager.cpp
-   \brief reference manual help system
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file HelpManager.cpp
+\brief reference manual help system
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
-
-#include <QApplication>
-#include <QAction>
-#include <QFile>
-#include <QTextStream>
-#include <QVBoxLayout>
 
 #include "BaseIcons.h"
 #include "CustomDialog.h"
@@ -45,193 +39,198 @@
 #include "XmlError.h"
 #include "XmlOptions.h"
 
-using namespace std;
-using namespace Qt;
-using namespace BASE;
+#include <QtGui/QApplication>
+#include <QtGui/QAction>
+#include <QtGui/QVBoxLayout>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
-//_________________________________________________________
-HelpManager::HelpManager( QObject* parent ):
-  QObject( parent ),
-  Counter( "HelpManager" ),
-  window_title_( "Reference Manual" ),
-  modified_( false )
+namespace BASE
 {
+    //_________________________________________________________
+    HelpManager::HelpManager( QObject* parent ):
+        QObject( parent ),
+        Counter( "HelpManager" ),
+        window_title_( "Reference Manual" ),
+        modified_( false )
+    {
 
-  Debug::Throw( "HelpManager::HelpManager.\n" );
+        Debug::Throw( "HelpManager::HelpManager.\n" );
 
-  // actions
-  display_action_ = new QAction( IconEngine::get( ICONS::HELP ), "&Reference Manual", this );
-  display_action_->setShortcut( Qt::Key_F1 );
-  connect( display_action_, SIGNAL( triggered() ), SLOT( _display() ) );
+        // actions
+        display_action_ = new QAction( IconEngine::get( ICONS::HELP ), "&Reference Manual", this );
+        display_action_->setShortcut( Qt::Key_F1 );
+        connect( display_action_, SIGNAL( triggered() ), SLOT( _display() ) );
 
-  dump_action_ = new QAction( "D&ump Help", this );
-  connect( dump_action_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
+        dump_action_ = new QAction( "D&ump Help", this );
+        connect( dump_action_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
 
-  connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _save() ) );
+        connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _save() ) );
 
-}
+    }
 
-//_________________________________________________________
-void HelpManager::install( const QString text[], bool clear )
-{
+    //_________________________________________________________
+    void HelpManager::install( const QString text[], bool clear )
+    {
 
-  Debug::Throw( "HelpManager::install.\n" );
+        Debug::Throw( "HelpManager::install.\n" );
 
-  // clear existing text
-  if( clear ) HelpManager::clear();
+        // clear existing text
+        if( clear ) HelpManager::clear();
 
-  //! loop over help text
-  for( unsigned int i=0; !text[i].isNull(); i++ ) {
+        //! loop over help text
+        for( unsigned int i=0; !text[i].isNull(); i++ ) {
 
-    QString label( text[i] );
-    i++;
-    if( text[i].isNull() ) break;
-    items_.push_back( HelpItem( label, text[i] ) );
-  }
+            QString label( text[i] );
+            i++;
+            if( text[i].isNull() ) break;
+            items_.push_back( HelpItem( label, text[i] ) );
+        }
 
-  return;
+        return;
 
-}
+    }
 
-//_________________________________________________________
-void HelpManager::install( const QString& file )
-{
+    //_________________________________________________________
+    void HelpManager::install( const QString& file )
+    {
 
-  Debug::Throw( "HelpManager::Install.\n" );
+        Debug::Throw( "HelpManager::Install.\n" );
 
-  // set file and check
-  file_ = file;
-  if( !QFileInfo( file_ ).exists() ) return;
+        // set file and check
+        file_ = file;
+        if( !QFileInfo( file_ ).exists() ) return;
 
-  // parse the file
-  QFile qtfile( file );
-  if ( !qtfile.open( QIODevice::ReadOnly ) )
-  {
-    Debug::Throw( "HelpManager::install - cannot open file.\n" );
-    return;
-  }
+        // parse the file
+        QFile qtfile( file );
+        if ( !qtfile.open( QIODevice::ReadOnly ) )
+        {
+            Debug::Throw( "HelpManager::install - cannot open file.\n" );
+            return;
+        }
 
-  // dom document
-  QDomDocument document;
-  XmlError error( file );
-  if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) ) {
-    qtfile.close();
-    return;
-  }
+        // dom document
+        QDomDocument document;
+        XmlError error( file );
+        if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) ) {
+            qtfile.close();
+            return;
+        }
 
-  // clear existing help
-  clear();
+        // clear existing help
+        clear();
 
-  // loop over dom elements
-  QDomElement doc_element = document.documentElement();
-  QDomNode node = doc_element.firstChild();
-  for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
-  {
-    QDomElement element = node.toElement();
-    if( element.isNull() ) continue;
+        // loop over dom elements
+        QDomElement doc_element = document.documentElement();
+        QDomNode node = doc_element.firstChild();
+        for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
+        {
+            QDomElement element = node.toElement();
+            if( element.isNull() ) continue;
 
-    // special options
-    if( element.tagName() == XML_ITEM ) items_.push_back( HelpItem( element ) );
+            // special options
+            if( element.tagName() == XML_ITEM ) items_.push_back( HelpItem( element ) );
 
-  }
+        }
 
-  return;
+        return;
 
-}
+    }
 
-//_____________________________________________________
-void HelpManager::setWindowTitle( const QString& value )
-{
-  Debug::Throw( "HelpManager::setWindowTitle.\n" );
-  window_title_ = value;
-  displayAction().setText( value );
-}
+    //_____________________________________________________
+    void HelpManager::setWindowTitle( const QString& value )
+    {
+        Debug::Throw( "HelpManager::setWindowTitle.\n" );
+        window_title_ = value;
+        displayAction().setText( value );
+    }
 
-//_____________________________________________________
-void HelpManager::_display( void )
-{
+    //_____________________________________________________
+    void HelpManager::_display( void )
+    {
 
-  Debug::Throw( "HelpManager::_display.\n" );
+        Debug::Throw( "HelpManager::_display.\n" );
 
-  // create dialog
-  HelpDialog* dialog( new HelpDialog( *this ) );
-  dialog->setWindowTitle( window_title_ );
-  dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
-  dialog->setItems( items_ );
-  dialog->setEditEnabled( file_.size() );
-  dialog->centerOnWidget( qApp->activeWindow() );
-  dialog->show();
-  return;
+        // create dialog
+        HelpDialog* dialog( new HelpDialog( *this ) );
+        dialog->setWindowTitle( window_title_ );
+        dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
+        dialog->setItems( items_ );
+        dialog->setEditEnabled( file_.size() );
+        dialog->centerOnWidget( qApp->activeWindow() );
+        dialog->show();
+        return;
 
-}
+    }
 
-//_________________________________________________________
-void HelpManager::_dumpHelpString( void )
-{
+    //_________________________________________________________
+    void HelpManager::_dumpHelpString( void )
+    {
 
-  Debug::Throw( "HelpManager::_dumpHelpString.\n" );
+        Debug::Throw( "HelpManager::_dumpHelpString.\n" );
 
-  // write output to stream
-  QString buffer;
-  QTextStream out( &buffer );
+        // write output to stream
+        QString buffer;
+        QTextStream out( &buffer );
 
-  // retrieve all items from dialog
-  out << "static const char* helpText[] = {\n";
-  for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
-  {
+        // retrieve all items from dialog
+        out << "static const char* helpText[] = {\n";
+        for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+        {
 
-    // dump label
-    out << "  //_________________________________________________________\n";
-    out << "  \"" << iter->label() << "\",\n";
+            // dump label
+            out << "  //_________________________________________________________\n";
+            out << "  \"" << iter->label() << "\",\n";
 
-    // dump text
-    QString text( iter->text() );
-    text = text.replace( "\"", "\\\"" );
-    text = text.replace( "\n", "\\n\"\n  \"" );
-    out << "  \"" << text << "\"";
-    out << ",\n";
-    out << "\n";
-  }
-  out << "  0\n";
-  out << "};\n";
+            // dump text
+            QString text( iter->text() );
+            text = text.replace( "\"", "\\\"" );
+            text = text.replace( "\n", "\\n\"\n  \"" );
+            out << "  \"" << text << "\"";
+            out << ",\n";
+            out << "\n";
+        }
+        out << "  0\n";
+        out << "};\n";
 
-  CustomDialog* dialog = new CustomDialog( 0, CustomDialog::OkButton );
-  TextEditor *editor = new TextEditor( dialog );
-  dialog->mainLayout().addWidget( editor );
+        CustomDialog* dialog = new CustomDialog( 0, CustomDialog::OkButton );
+        TextEditor *editor = new TextEditor( dialog );
+        dialog->mainLayout().addWidget( editor );
 
-  editor->setWrapFromOptions( false );
-  editor->wrapModeAction().setChecked( false );
-  editor->setPlainText( buffer );
-  dialog->resize( 600, 500 );
-  dialog->setOptionName( "DUMP_HELP_DIALOG" );
-  dialog->centerOnWidget( qApp->activeWindow() );
-  dialog->show();
+        editor->setWrapFromOptions( false );
+        editor->wrapModeAction().setChecked( false );
+        editor->setPlainText( buffer );
+        dialog->resize( 600, 500 );
+        dialog->setOptionName( "DUMP_HELP_DIALOG" );
+        dialog->centerOnWidget( qApp->activeWindow() );
+        dialog->show();
 
-}
+    }
 
-//_____________________________________________________
-void HelpManager::_save( void )
-{
+    //_____________________________________________________
+    void HelpManager::_save( void )
+    {
 
-  Debug::Throw() << "HelpManager::_save - file: " << file_ << endl;
+        Debug::Throw() << "HelpManager::_save - file: " << file_ << endl;
 
-  if( file_.isEmpty() ) return;
-  if( !modified() ) return;
+        if( file_.isEmpty() ) return;
+        if( !modified() ) return;
 
-  // output file
-  QFile out( file_ );
-  if( !out.open( QIODevice::WriteOnly ) ) return;
+        // output file
+        QFile out( file_ );
+        if( !out.open( QIODevice::WriteOnly ) ) return;
 
-  // create document
-  QDomDocument document;
+        // create document
+        QDomDocument document;
 
-  // top element
-  QDomElement top = document.appendChild( document.createElement( XML_HELP ) ).toElement();
-  for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
-  { top.appendChild( iter->domElement( document ) ); }
+        // top element
+        QDomElement top = document.appendChild( document.createElement( XML_HELP ) ).toElement();
+        for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+        { top.appendChild( iter->domElement( document ) ); }
 
-  out.write( document.toByteArray() );
-  out.close();
-  setModified( false );
-  return;
+        out.write( document.toByteArray() );
+        out.close();
+        setModified( false );
+        return;
+    }
 }
