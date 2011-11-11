@@ -29,11 +29,6 @@
 \date $Date$
 */
 
-#include <QApplication>
-#include <QLayout>
-#include <QLabel>
-#include <QMessageBox>
-
 #include "BaseIcons.h"
 #include "FlatStyle.h"
 #include "IconEngine.h"
@@ -41,7 +36,10 @@
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
-using namespace std;
+#include <QtGui/QApplication>
+#include <QtGui/QLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QMessageBox>
 
 //____________________________________________
 BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :

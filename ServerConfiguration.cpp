@@ -28,63 +28,64 @@
    \date    $Date$
 */
 
-#include <QGroupBox>
-#include <QLabel>
-#include <QLayout>
-
 #include "GridLayout.h"
 #include "Debug.h"
 #include "OptionLineEditor.h"
 #include "OptionSpinBox.h"
 #include "ServerConfiguration.h"
 
-using namespace std;
-using namespace SERVER;
+#include <QGroupBox>
+#include <QLabel>
+#include <QLayout>
 
-//________________________________________________________________________
-ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):
-  QWidget( parent ),
-  Counter( "ServerConfiguration" )
+namespace SERVER
 {
-  Debug::Throw( "ServerConfiguration::ServerConfiguration.\n" );
+    //________________________________________________________________________
+    ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):
+        QWidget( parent ),
+        Counter( "ServerConfiguration" )
+    {
+        Debug::Throw( "ServerConfiguration::ServerConfiguration.\n" );
 
-  setLayout( new QVBoxLayout() );
-  layout()->setSpacing(5);
-  layout()->setMargin(0);
+        setLayout( new QVBoxLayout() );
+        layout()->setSpacing(5);
+        layout()->setMargin(0);
 
-  // generic objects
-  QGroupBox *box;
-  OptionLineEditor* line_editor;
-  OptionSpinBox* spin_box;
+        // generic objects
+        QGroupBox *box;
+        OptionLineEditor* line_editor;
+        OptionSpinBox* spin_box;
 
-  // general
-  if( title.isEmpty() ) layout()->addWidget( box = new QGroupBox( this ) );
-  else layout()->addWidget( box = new QGroupBox( title, this ) );
+        // general
+        if( title.isEmpty() ) layout()->addWidget( box = new QGroupBox( this ) );
+        else layout()->addWidget( box = new QGroupBox( title, this ) );
 
-  GridLayout* grid_layout = new GridLayout();
-  grid_layout->setSpacing(5);
-  grid_layout->setMargin(5);
-  grid_layout->setMaxCount( 2 );
-  grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-  box->setLayout( grid_layout );
+        GridLayout* grid_layout = new GridLayout();
+        grid_layout->setSpacing(5);
+        grid_layout->setMargin(5);
+        grid_layout->setMaxCount( 2 );
+        grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+        box->setLayout( grid_layout );
 
-  QString tooltip( "The application server configuration refers to the host name\n"
-    "and port used for inter-process communication. It notably ensures\n"
-    "that only one instance of each application runs at a time." );
+        QString tooltip( "The application server configuration refers to the host name\n"
+            "and port used for inter-process communication. It notably ensures\n"
+            "that only one instance of each application runs at a time." );
 
-  // host
-  grid_layout->addWidget( new QLabel( "Host:", box ) );
-  grid_layout->addWidget( line_editor = new OptionLineEditor( box, "SERVER_HOST" ) );
-  line_editor->setToolTip( tooltip );
-  addOptionWidget( line_editor );
+        // host
+        grid_layout->addWidget( new QLabel( "Host:", box ) );
+        grid_layout->addWidget( line_editor = new OptionLineEditor( box, "SERVER_HOST" ) );
+        line_editor->setToolTip( tooltip );
+        addOptionWidget( line_editor );
 
-  // shadow color
-  grid_layout->addWidget( new QLabel( "Port:", box ) );
-  grid_layout->addWidget( spin_box = new OptionSpinBox( box, "SERVER_PORT" ) );
-  spin_box->setMinimum(0);
-  spin_box->setMaximum(10000);
-  spin_box->setToolTip( tooltip );
-  addOptionWidget( spin_box );
+        // shadow color
+        grid_layout->addWidget( new QLabel( "Port:", box ) );
+        grid_layout->addWidget( spin_box = new OptionSpinBox( box, "SERVER_PORT" ) );
+        spin_box->setMinimum(0);
+        spin_box->setMaximum(10000);
+        spin_box->setToolTip( tooltip );
+        addOptionWidget( spin_box );
 
-  return;
+        return;
+    }
+
 }

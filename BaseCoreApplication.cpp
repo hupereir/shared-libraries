@@ -29,18 +29,11 @@
 \date $Date$
 */
 
-#include <QApplication>
-#include <QLayout>
-#include <QLabel>
-#include <QMessageBox>
 
 #include "ErrorHandler.h"
 #include "BaseCoreApplication.h"
 #include "Debug.h"
 #include "XmlOptions.h"
-
-using namespace std;
-using namespace Qt;
 
 //____________________________________________
 BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments arguments ) :

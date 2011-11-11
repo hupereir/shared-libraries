@@ -32,20 +32,20 @@
    \date    $Date$
 */
 
-#include <QDomElement>
-#include <QDomDocument>
-#include <QString>
-#include <QTextStream>
-
-#include <list>
-#include <map>
-
 #include "ApplicationId.h"
 #include "CommandLineArguments.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "TimeStamp.h"
 #include "XmlOption.h"
+
+#include <QtXml/QDomElement>
+#include <QtXml/QDomDocument>
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+
+#include <list>
+#include <map>
 
 namespace SERVER
 {

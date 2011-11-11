@@ -33,57 +33,58 @@
 #include "Debug.h"
 #include "ServerXmlDef.h"
 
-using namespace std;
-using namespace SERVER;
-
-//____________________________________________________
-ApplicationId::ApplicationId( const QString& name, const QString& user, const QString& display ):
-  Counter( "ApplicationId" ),
-  name_( name ),
-  user_( user + QString("@")+display )
-{ Debug::Throw( "ApplicationId::ApplicationId.\n" ); }
-
-//____________________________________________________
-ApplicationId::ApplicationId( const QDomElement& element ):
-  Counter( "ApplicationId" )
+namespace SERVER
 {
-  Debug::Throw( "ApplicationId::ApplicationId (dom).\n" );
+    
+    //____________________________________________________
+    ApplicationId::ApplicationId( const QString& name, const QString& user, const QString& display ):
+        Counter( "ApplicationId" ),
+        name_( name ),
+        user_( user + QString("@")+display )
+    { Debug::Throw( "ApplicationId::ApplicationId.\n" ); }
+    
+    //____________________________________________________
+    ApplicationId::ApplicationId( const QDomElement& element ):
+        Counter( "ApplicationId" )
+    {
+        Debug::Throw( "ApplicationId::ApplicationId (dom).\n" );
 
-  // parse attributes
-  QDomNamedNodeMap attributes( element.attributes() );
-  for( unsigned int i=0; i<attributes.length(); i++ )
-  {
-    QDomAttr attribute( attributes.item( i ).toAttr() );
-    if( attribute.isNull() ) continue;
-    if( attribute.name() == SERVER_XML::USER ) setUser( attribute.value() );
-    else if( attribute.name() == SERVER_XML::NAME ) setName( attribute.value() );
-    else Debug::Throw() << "ApplicationId::ApplicationId - unrecognized attribute " << attribute.name() << endl;
-  }
+        // parse attributes
+        QDomNamedNodeMap attributes( element.attributes() );
+        for( unsigned int i=0; i<attributes.length(); i++ )
+        {
+            QDomAttr attribute( attributes.item( i ).toAttr() );
+            if( attribute.isNull() ) continue;
+            if( attribute.name() == SERVER_XML::USER ) setUser( attribute.value() );
+            else if( attribute.name() == SERVER_XML::NAME ) setName( attribute.value() );
+            else Debug::Throw() << "ApplicationId::ApplicationId - unrecognized attribute " << attribute.name() << endl;
+        }
 
-}
+    }
 
-//____________________________________________________
-QDomElement ApplicationId::domElement( QDomDocument& document ) const
-{
+    //____________________________________________________
+    QDomElement ApplicationId::domElement( QDomDocument& document ) const
+    {
 
-  Debug::Throw( "ApplicationId::domElement" );
-  QDomElement out( document.createElement( SERVER_XML::ID ) );
-  out.setAttribute( SERVER_XML::NAME, name() );
-  out.setAttribute( SERVER_XML::USER, user() );
-  return out;
+        Debug::Throw( "ApplicationId::domElement" );
+        QDomElement out( document.createElement( SERVER_XML::ID ) );
+        out.setAttribute( SERVER_XML::NAME, name() );
+        out.setAttribute( SERVER_XML::USER, user() );
+        return out;
 
-}
+    }
 
-//____________________________________________________
-QString ApplicationId::userName( void ) const
-{
-  int position( user_.indexOf( "@" ) );
-  return (position < 0 ) ? user_ : user_.left(position);
-}
+    //____________________________________________________
+    QString ApplicationId::userName( void ) const
+    {
+        int position( user_.indexOf( "@" ) );
+        return (position < 0 ) ? user_ : user_.left(position);
+    }
 
-//______________________________________________________
-QString ApplicationId::display( void ) const
-{
-  int position( user_.indexOf( "@" ) );
-  return (position < 0 ) ? "" : user_.mid(position+1 );
+    //______________________________________________________
+    QString ApplicationId::display( void ) const
+    {
+        int position( user_.indexOf( "@" ) );
+        return (position < 0 ) ? "" : user_.mid(position+1 );
+    }
 }

@@ -29,110 +29,112 @@
    \date    $Date$
 */
 
-#include <QStringList>
-
 #include "Debug.h"
 #include "ServerCommand.h"
 #include "ServerXmlDef.h"
 #include "XmlCommandLineArguments.h"
 
-using namespace std;
-using namespace SERVER;
+#include <QtCore/QStringList>
 
-//__________________________________________________________________
-ServerCommand::CommandMap& ServerCommand::_commandNames( void )
-{
-  static CommandMap names;
-  return names;
-}
-
-//_________________________________________
-void ServerCommand::_initializeCommandNames( void ) const
-{
-  if( !_commandNames().empty() ) return;
-  _commandNames().insert( make_pair( NONE, "" ) );
-  _commandNames().insert( make_pair( ACCEPTED, "ACCEPTED" ) );
-  _commandNames().insert( make_pair( DENIED, "DENIED" ) );
-  _commandNames().insert( make_pair( ABORT, "ABORT" ) );
-  _commandNames().insert( make_pair( IDENTIFY, "IDENTIFY" ) );
-  _commandNames().insert( make_pair( IDENTIFY_SERVER, "SERVER" ) );
-  _commandNames().insert( make_pair( KILLED, "KILLED" ) );
-  _commandNames().insert( make_pair( RAISE, "RAISE" ) );
-  _commandNames().insert( make_pair( ALIVE, "ALIVE" ) );
-  _commandNames().insert( make_pair( REQUEST, "REQUEST" ) );
-  _commandNames().insert( make_pair( UNLOCK, "UNLOCK" ) );
-  _commandNames().insert( make_pair( GEOMETRY_REQUEST, "GEOMETRY_REQUEST" ) );
-  _commandNames().insert( make_pair( GEOMETRY, "GEOMETRY" ) );
-  _commandNames().insert( make_pair( OPTION, "OPTION" ) );
-}
-
-//___________________________________________
-ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& command ):
-  Counter( "ServerCommand" ),
-  timestamp_( TimeStamp::now() ),
-  client_id_( 0 ),
-  id_( id ),
-  command_( command ),
-  option_( "", Option() )
-{ Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
-
-//___________________________________________
-ServerCommand::ServerCommand( const QDomElement& element ):
-  Counter( "ServerCommand" ),
-  timestamp_( TimeStamp::now() ),
-  client_id_( 0 ),
-  command_( NONE ),
-  option_( "", Option() )
+namespace SERVER
 {
 
-  Debug::Throw( "ServerCommand::ServerCommand (dom).\n" );
-
-  // parse attributes
-  QDomNamedNodeMap attributes( element.attributes() );
-  for( unsigned int i=0; i<attributes.length(); i++ )
-  {
-    QDomAttr attribute( attributes.item( i ).toAttr() );
-    if( attribute.isNull() ) continue;
-    if( attribute.name() == SERVER_XML::TYPE ) setCommand( (CommandType) attribute.value().toUInt() );
-    else Debug::Throw(0) << "ServerCommand::ServerCommand - unrecognized attribute: " << attribute.name() << endl;
-  }
-
-  // loop over children
-  // parse children elements
-  for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
-  {
-    QDomElement child_element = child_node.toElement();
-    if( child_element.isNull() ) continue;
-    QString tag_name( child_element.tagName() );
-    if( tag_name == SERVER_XML::ID ) setId( ApplicationId( child_element ) );
-    else if( tag_name == SERVER_XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
-    else if( tag_name == OPTIONS::OPTION )
+    //__________________________________________________________________
+    ServerCommand::CommandMap& ServerCommand::_commandNames( void )
     {
-      assert( command() == ServerCommand::OPTION );
-      setXmlOption( XmlOption( child_element ) );
+        static CommandMap names;
+        return names;
     }
-  }
 
-}
+    //_________________________________________
+    void ServerCommand::_initializeCommandNames( void ) const
+    {
+        if( !_commandNames().empty() ) return;
+        _commandNames().insert( std::make_pair( NONE, "" ) );
+        _commandNames().insert( std::make_pair( ACCEPTED, "ACCEPTED" ) );
+        _commandNames().insert( std::make_pair( DENIED, "DENIED" ) );
+        _commandNames().insert( std::make_pair( ABORT, "ABORT" ) );
+        _commandNames().insert( std::make_pair( IDENTIFY, "IDENTIFY" ) );
+        _commandNames().insert( std::make_pair( IDENTIFY_SERVER, "SERVER" ) );
+        _commandNames().insert( std::make_pair( KILLED, "KILLED" ) );
+        _commandNames().insert( std::make_pair( RAISE, "RAISE" ) );
+        _commandNames().insert( std::make_pair( ALIVE, "ALIVE" ) );
+        _commandNames().insert( std::make_pair( REQUEST, "REQUEST" ) );
+        _commandNames().insert( std::make_pair( UNLOCK, "UNLOCK" ) );
+        _commandNames().insert( std::make_pair( GEOMETRY_REQUEST, "GEOMETRY_REQUEST" ) );
+        _commandNames().insert( std::make_pair( GEOMETRY, "GEOMETRY" ) );
+        _commandNames().insert( std::make_pair( OPTION, "OPTION" ) );
+    }
 
-//__________________________________________________
-QDomElement ServerCommand::domElement( QDomDocument& document ) const
-{
+    //___________________________________________
+    ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& command ):
+        Counter( "ServerCommand" ),
+        timestamp_( TimeStamp::now() ),
+        client_id_( 0 ),
+        id_( id ),
+        command_( command ),
+        option_( "", Option() )
+    { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
 
-  Debug::Throw( "ServerCommand::domElement.\n" );
-  QDomElement out( document.createElement( SERVER_XML::COMMAND ) );
+    //___________________________________________
+    ServerCommand::ServerCommand( const QDomElement& element ):
+        Counter( "ServerCommand" ),
+        timestamp_( TimeStamp::now() ),
+        client_id_( 0 ),
+        command_( NONE ),
+        option_( "", Option() )
+    {
 
-  // type
-  out.setAttribute( SERVER_XML::TYPE, QString().setNum( command() ) );
+        Debug::Throw( "ServerCommand::ServerCommand (dom).\n" );
 
-  // id
-  out.appendChild( id().domElement( document ) );
+        // parse attributes
+        QDomNamedNodeMap attributes( element.attributes() );
+        for( unsigned int i=0; i<attributes.length(); i++ )
+        {
+            QDomAttr attribute( attributes.item( i ).toAttr() );
+            if( attribute.isNull() ) continue;
+            if( attribute.name() == SERVER_XML::TYPE ) setCommand( (CommandType) attribute.value().toUInt() );
+            else Debug::Throw(0) << "ServerCommand::ServerCommand - unrecognized attribute: " << attribute.name() << endl;
+        }
 
-  // arguments
-  if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( SERVER_XML::ARGUMENTS, document ) );
-  if( command() == ServerCommand::OPTION && !option_.name().isEmpty() )
-  { out.appendChild( option_.domElement( document ) ); }
+        // loop over children
+        // parse children elements
+        for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
+        {
+            QDomElement child_element = child_node.toElement();
+            if( child_element.isNull() ) continue;
+            QString tag_name( child_element.tagName() );
+            if( tag_name == SERVER_XML::ID ) setId( ApplicationId( child_element ) );
+            else if( tag_name == SERVER_XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
+            else if( tag_name == OPTIONS::OPTION )
+            {
+                assert( command() == ServerCommand::OPTION );
+                setXmlOption( XmlOption( child_element ) );
+            }
+        }
 
-  return out;
+    }
+
+    //__________________________________________________
+    QDomElement ServerCommand::domElement( QDomDocument& document ) const
+    {
+
+        Debug::Throw( "ServerCommand::domElement.\n" );
+        QDomElement out( document.createElement( SERVER_XML::COMMAND ) );
+
+        // type
+        out.setAttribute( SERVER_XML::TYPE, QString().setNum( command() ) );
+
+        // id
+        out.appendChild( id().domElement( document ) );
+
+        // arguments
+        if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( SERVER_XML::ARGUMENTS, document ) );
+        if( command() == ServerCommand::OPTION && !option_.name().isEmpty() )
+        { out.appendChild( option_.domElement( document ) ); }
+
+        return out;
+
+    }
 
 }
