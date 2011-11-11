@@ -32,10 +32,10 @@
    \date    $Date$
 */
 
-#include <QGroupBox>
-
 #include "Counter.h"
 #include "OptionWidgetList.h"
+
+#include <QtGui/QGroupBox>
 
 //! Spell common configuration
 class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public Counter

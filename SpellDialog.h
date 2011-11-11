@@ -32,21 +32,20 @@
 \date $Date$
 */
 
-#include <cassert>
-#include <QComboBox>
-#include <QLabel>
-#include <QTextEdit>
-
-
-#include <map>
-#include <set>
-
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "ListModel.h"
 #include "AnimatedLineEditor.h"
 #include "SpellInterface.h"
 #include "TextPosition.h"
+
+#include <QtGui/QComboBox>
+#include <QtGui/QLabel>
+#include <QtGui/QTextEdit>
+
+#include <cassert>
+#include <map>
+#include <set>
 
 class TreeView;
 
@@ -60,10 +59,10 @@ namespace SPELLCHECK
         //! Qt meta object declaration
         Q_OBJECT
 
-            public:
+        public:
 
-            //! constructor
-            SpellDialog( QTextEdit* parent, const bool& read_only = false );
+        //! constructor
+        SpellDialog( QTextEdit* parent, const bool& read_only = false );
 
         //! destructor
         virtual ~SpellDialog();
@@ -243,7 +242,7 @@ namespace SPELLCHECK
         QLabel* stateLabel_;
 
         //! list of automatic replace words
-        std::map< QString, QString > replaced_words_;
+        std::map< QString, QString > replacedWords_;
 
     };
 };

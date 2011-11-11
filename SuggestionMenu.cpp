@@ -33,75 +33,77 @@
 #include "SuggestionMenu.h"
 #include "XmlOptions.h"
 
-using namespace std;
-using namespace SPELLCHECK;
-
-//________________________________________________
-SuggestionMenu::SuggestionMenu( QWidget* parent, const QString& word, const bool& read_only ):
-  QMenu( parent ),
-  Counter( "SuggestionMenu" ),
-  word_( word )
+namespace SPELLCHECK
 {
 
-  Debug::Throw( "SuggestionMenu::SuggestionMenu.\n" );
+    //________________________________________________
+    SuggestionMenu::SuggestionMenu( QWidget* parent, const QString& word, const bool& read_only ):
+        QMenu( parent ),
+        Counter( "SuggestionMenu" ),
+        word_( word )
+    {
 
-  // item selection
-  interface_.reset();
+        Debug::Throw( "SuggestionMenu::SuggestionMenu.\n" );
 
-  // connections
-  if( !read_only ) connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _select( QAction* ) ) );
-  connect( this, SIGNAL( aboutToShow() ), SLOT( _aboutToShow() ) );
+        // item selection
+        interface_.reset();
 
-}
+        // connections
+        if( !read_only ) connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _select( QAction* ) ) );
+        connect( this, SIGNAL( aboutToShow() ), SLOT( _aboutToShow() ) );
 
-//________________________________________________________
-void SuggestionMenu::_aboutToShow( void )
-{
+    }
 
-  Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
+    //________________________________________________________
+    void SuggestionMenu::_aboutToShow( void )
+    {
 
-  // retrieve list of suggestions
-  vector<QString> suggestions( interface_.suggestions( word_ ) );
-  Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
+        Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
 
-  // add words
-  unsigned int max( XmlOptions::get().get< unsigned int>( "MAX_SUGGESTIONS" ) );
-  if( max == 0 || max > suggestions.size() ) max = suggestions.size();
-  for( int unsigned i=0; i < max; i++ )
-  {
+        // retrieve list of suggestions
+        std::vector<QString> suggestions( interface_.suggestions( word_ ) );
+        Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
 
-    Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestions[i] << endl;
-    suggestions_.insert( make_pair( addAction( suggestions[i] ), suggestions[i] ) );
-  }
-  addSeparator();
+        // add words
+        unsigned int max( XmlOptions::get().get< unsigned int>( "MAX_SUGGESTIONS" ) );
+        if( max == 0 || max > suggestions.size() ) max = suggestions.size();
+        for( int unsigned i=0; i < max; i++ )
+        {
 
-  // add word action
-  addAction( "&add word to dictionary", this, SLOT( _addWord() ) );
+            Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestions[i] << endl;
+            suggestions_.insert( std::make_pair( addAction( suggestions[i] ), suggestions[i] ) );
+        }
+        addSeparator();
 
-  // ignore word action
-  addAction( "&ignore word", this, SLOT( _ignoreWord() ) );
+        // add word action
+        addAction( "&add word to dictionary", this, SLOT( _addWord() ) );
 
-}
+        // ignore word action
+        addAction( "&ignore word", this, SLOT( _ignoreWord() ) );
 
-//________________________________________________
-void SuggestionMenu::_select( QAction* action )
-{
+    }
 
-  Debug::Throw( "SuggestionMenu::_select.\n" );
-  std::map<QAction*,QString>::const_iterator iter( suggestions_.find( action ) );
-  if( iter != suggestions_.end() ) emit suggestionSelected( iter->second );
-  return;
+    //________________________________________________
+    void SuggestionMenu::_select( QAction* action )
+    {
 
-}
+        Debug::Throw( "SuggestionMenu::_select.\n" );
+        std::map<QAction*,QString>::const_iterator iter( suggestions_.find( action ) );
+        if( iter != suggestions_.end() ) emit suggestionSelected( iter->second );
+        return;
 
-//________________________________________________
-void SuggestionMenu::_addWord( void )
-{
+    }
 
-  Debug::Throw( "SuggestionMenu::_addWord.\n" );
-  if( word_.isEmpty() ) return;
-  interface_.addWord( word_ );
-  interface_.saveWordList();
-  emit ignoreWord( word_ );
+    //________________________________________________
+    void SuggestionMenu::_addWord( void )
+    {
+
+        Debug::Throw( "SuggestionMenu::_addWord.\n" );
+        if( word_.isEmpty() ) return;
+        interface_.addWord( word_ );
+        interface_.saveWordList();
+        emit ignoreWord( word_ );
+
+    }
 
 }

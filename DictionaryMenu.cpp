@@ -34,85 +34,85 @@
 #include "IconEngine.h"
 #include "SpellInterface.h"
 
-using namespace std;
-using namespace SPELLCHECK;
-
-//____________________________________________________________________
-DictionaryMenu::DictionaryMenu( QWidget* parent ):
-  QMenu( parent ),
-  Counter( "DictionaryMenu" )
+namespace SPELLCHECK
 {
+    //____________________________________________________________________
+    DictionaryMenu::DictionaryMenu( QWidget* parent ):
+        QMenu( parent ),
+        Counter( "DictionaryMenu" )
+    {
 
-  Debug::Throw( "DictionaryMenu::DictionaryMenu.\n" );
-  setTitle( "&Dictionary" );
+        Debug::Throw( "DictionaryMenu::DictionaryMenu.\n" );
+        setTitle( "&Dictionary" );
 
-  // action group
-  group_ = new QActionGroup( this );
-  group_->setExclusive( true );
+        // action group
+        group_ = new QActionGroup( this );
+        group_->setExclusive( true );
 
-  _reset();
-  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectDictionary( QAction* ) ) );
+        _reset();
+        connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectDictionary( QAction* ) ) );
 
-}
+    }
 
-//____________________________________________________________________
-void DictionaryMenu::select( const QString& dictionary )
-{
-  Debug::Throw( "DictionaryMenu::select.\n" );
+    //____________________________________________________________________
+    void DictionaryMenu::select( const QString& dictionary )
+    {
+        Debug::Throw( "DictionaryMenu::select.\n" );
 
-  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); ++iter )
-  { if( iter->second == dictionary ) iter->first->setChecked( true ); }
+        for( std::map<QAction*,QString>::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        { if( iter->second == dictionary ) iter->first->setChecked( true ); }
 
-  return;
+        return;
 
-}
+    }
 
-//____________________________________________________________________
-void DictionaryMenu::_reset( void )
-{
+    //____________________________________________________________________
+    void DictionaryMenu::_reset( void )
+    {
 
-  Debug::Throw( "DictionaryMenu::_reset.\n" );
+        Debug::Throw( "DictionaryMenu::_reset.\n" );
 
-  // store selected dictionary
-  QString dictionary;
-  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); ++iter )
-  { if( iter->first->isChecked() ) dictionary = iter->second; }
+        // store selected dictionary
+        QString dictionary;
+        for( std::map<QAction*,QString>::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        { if( iter->first->isChecked() ) dictionary = iter->second; }
 
-  // clear actions
-  QMenu::clear();
-  action_map_.clear();
+        // clear actions
+        QMenu::clear();
+        actionMap_.clear();
 
-  // add reset button
-  QAction* action;
-  addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
-  connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
+        // add reset button
+        QAction* action;
+        addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+        connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
 
-  // load dictionaries from spell interface
-  set< QString > dictionaries( SPELLCHECK::SpellInterface().dictionaries() );
-  if( !dictionaries.empty() ) addSeparator();
+        // load dictionaries from spell interface
+        std::set< QString > dictionaries( SPELLCHECK::SpellInterface().dictionaries() );
+        if( !dictionaries.empty() ) addSeparator();
 
-  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
-  {
-    QAction* action( new QAction( *iter, this ) );
-    action->setCheckable( true );
-    action->setChecked( *iter == dictionary );
-    action_map_.insert( make_pair( action, *iter ) );
-    addAction( action );
-    group_->addAction( action );
-  }
+        for( std::set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
+        {
+            QAction* action( new QAction( *iter, this ) );
+            action->setCheckable( true );
+            action->setChecked( *iter == dictionary );
+            actionMap_.insert( std::make_pair( action, *iter ) );
+            addAction( action );
+            group_->addAction( action );
+        }
 
-}
+    }
 
-//______________________________________________________________________________________
-void DictionaryMenu::_selectDictionary( QAction*  action )
-{
+    //______________________________________________________________________________________
+    void DictionaryMenu::_selectDictionary( QAction*  action )
+    {
 
-  Debug::Throw( "DictionaryMenu::_dictionary.\n" );
-  std::map<QAction*,QString>::iterator iter( action_map_.find( action ) );
-  if( iter == action_map_.end() ) return;
+        Debug::Throw( "DictionaryMenu::_dictionary.\n" );
+        std::map<QAction*,QString>::iterator iter( actionMap_.find( action ) );
+        if( iter == actionMap_.end() ) return;
 
-  select( iter->second );
-  emit selectionChanged( iter->second );
-  return;
+        select( iter->second );
+        emit selectionChanged( iter->second );
+        return;
 
+    }
 }

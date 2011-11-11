@@ -34,77 +34,78 @@
 #include "IconEngine.h"
 #include "SpellInterface.h"
 
-using namespace std;
-using namespace SPELLCHECK;
-
-//____________________________________________________________________
-FilterMenu::FilterMenu( QWidget* parent ):
-  QMenu( parent ),
-  Counter( "FilterMenu" )
-{
-  Debug::Throw( "FilterMenu::FilterMenu.\n" );
-  setTitle( "&Filter" );
-
-  // action group
-  group_ = new QActionGroup( this );
-  group_->setExclusive( true );
-
-  _reset();
-  connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectFilter( QAction* ) ) );
-}
-
-//____________________________________________________________________
-void FilterMenu::select( const QString& filter )
+namespace SPELLCHECK
 {
 
-  Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
+    //____________________________________________________________________
+    FilterMenu::FilterMenu( QWidget* parent ):
+        QMenu( parent ),
+        Counter( "FilterMenu" )
+    {
+        Debug::Throw( "FilterMenu::FilterMenu.\n" );
+        setTitle( "&Filter" );
 
-  for( std::map<QAction*,QString>::iterator iter = action_map_.begin(); iter != action_map_.end(); ++iter )
-  { if( iter->second == filter ) iter->first->setChecked( true ); }
+        // action group
+        group_ = new QActionGroup( this );
+        group_->setExclusive( true );
 
-  return;
+        _reset();
+        connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectFilter( QAction* ) ) );
+    }
 
-}
+    //____________________________________________________________________
+    void FilterMenu::select( const QString& filter )
+    {
 
-//____________________________________________________________________
-void FilterMenu::_reset( void )
-{
+        Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
 
-  Debug::Throw( "FilterMenu::_reset.\n" );
+        for( std::map<QAction*,QString>::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        { if( iter->second == filter ) iter->first->setChecked( true ); }
 
-  // clear actions
-  QMenu::clear();
-  action_map_.clear();
+        return;
 
-  // add reset button
-  QAction* action;
-  addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
-  connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
+    }
 
-  // load filters from spell interface
-  set< QString > filters( SPELLCHECK::SpellInterface().filters() );
-  if( !filters.empty() ) addSeparator();
-  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
-  {
-    QAction* action( new QAction( *iter, this ) );
-    action->setCheckable( true );
-    action_map_.insert( make_pair( action, *iter ) );
-    addAction( action );
-    group_->addAction( action );
-  }
+    //____________________________________________________________________
+    void FilterMenu::_reset( void )
+    {
 
-}
+        Debug::Throw( "FilterMenu::_reset.\n" );
 
-//______________________________________________________________________________________
-void FilterMenu::_selectFilter( QAction*  action )
-{
+        // clear actions
+        QMenu::clear();
+        actionMap_.clear();
 
-  Debug::Throw( "FilterMenu::_filter.\n" );
-  std::map<QAction*,QString>::iterator iter( action_map_.find( action ) );
-  if( iter == action_map_.end() ) return;
+        // add reset button
+        QAction* action;
+        addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+        connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
 
-  select( iter->second );
-  emit selectionChanged( iter->second );
-  return;
+        // load filters from spell interface
+        std::set< QString > filters( SPELLCHECK::SpellInterface().filters() );
+        if( !filters.empty() ) addSeparator();
+        for( std::set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
+        {
+            QAction* action( new QAction( *iter, this ) );
+            action->setCheckable( true );
+            actionMap_.insert( std::make_pair( action, *iter ) );
+            addAction( action );
+            group_->addAction( action );
+        }
 
+    }
+
+    //______________________________________________________________________________________
+    void FilterMenu::_selectFilter( QAction*  action )
+    {
+
+        Debug::Throw( "FilterMenu::_filter.\n" );
+        std::map<QAction*,QString>::iterator iter( actionMap_.find( action ) );
+        if( iter == actionMap_.end() ) return;
+
+        select( iter->second );
+        emit selectionChanged( iter->second );
+        return;
+
+    }
 }

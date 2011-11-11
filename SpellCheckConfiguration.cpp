@@ -29,8 +29,6 @@
    \date    $Date$
 */
 
-#include <QLabel>
-
 #include "Debug.h"
 #include "GridLayout.h"
 #include "OptionBrowsedLineEditor.h"
@@ -38,56 +36,55 @@
 #include "SpellCheckConfiguration.h"
 #include "SpellInterface.h"
 
-using namespace std;
-using namespace SPELLCHECK;
+#include <QtGui/QLabel>
 
 //___________________________________________
 SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
-  QGroupBox( "Spell check", parent ),
-  Counter( "SpellCheckConfiguration" )
+QGroupBox( "Spell check", parent ),
+Counter( "SpellCheckConfiguration" )
 {
-  Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
+    Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
 
-  SpellInterface interface;
+    SPELLCHECK::SpellInterface interface;
 
-  GridLayout* grid_layout( new GridLayout() );
-  grid_layout->setSpacing( 5 );
-  grid_layout->setMargin( 5 );
-  grid_layout->setMaxCount( 2 );
-  grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-  setLayout( grid_layout );
+    GridLayout* grid_layout( new GridLayout() );
+    grid_layout->setSpacing( 5 );
+    grid_layout->setMargin( 5 );
+    grid_layout->setMaxCount( 2 );
+    grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+    setLayout( grid_layout );
 
-  // aspell command
-  grid_layout->addWidget( new QLabel( "Aspell Command: ", this ) );
-  OptionBrowsedLineEditor* editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
-  grid_layout->addWidget( editor );
-  editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
-  addOptionWidget( editor );
+    // aspell command
+    grid_layout->addWidget( new QLabel( "Aspell Command: ", this ) );
+    OptionBrowsedLineEditor* editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
+    grid_layout->addWidget( editor );
+    editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
+    addOptionWidget( editor );
 
-  // dictionaries
-  grid_layout->addWidget( new QLabel( "Default Dictionary: ", this ) );
-  OptionComboBox* combobox(  new OptionComboBox( this, "DICTIONARY" ) );
-  grid_layout->addWidget( combobox );
-  combobox->setToolTip(
-    "Default dictionary used with files for which\n"
-    "a dictionary has not been manually selected" );
-  addOptionWidget( combobox );
+    // dictionaries
+    grid_layout->addWidget( new QLabel( "Default Dictionary: ", this ) );
+    OptionComboBox* combobox(  new OptionComboBox( this, "DICTIONARY" ) );
+    grid_layout->addWidget( combobox );
+    combobox->setToolTip(
+        "Default dictionary used with files for which\n"
+        "a dictionary has not been manually selected" );
+    addOptionWidget( combobox );
 
-  const set<QString>& dictionaries( interface.dictionaries() );
-  for( set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
-  { combobox->addItem( *iter ); }
+    const std::set<QString>& dictionaries( interface.dictionaries() );
+    for( std::set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
+    { combobox->addItem( *iter ); }
 
-  // filters
-  grid_layout->addWidget( new QLabel( "Default Filter: ", this ) );
-  combobox = new OptionComboBox( this, "DICTIONARY_FILTER" );
-  grid_layout->addWidget( combobox );
-  combobox->setToolTip(
-    "Default filtering mode used with files for which\n"
-    "a filtering mode has not been manually selected" );
-  addOptionWidget( combobox );
+    // filters
+    grid_layout->addWidget( new QLabel( "Default Filter: ", this ) );
+    combobox = new OptionComboBox( this, "DICTIONARY_FILTER" );
+    grid_layout->addWidget( combobox );
+    combobox->setToolTip(
+        "Default filtering mode used with files for which\n"
+        "a filtering mode has not been manually selected" );
+    addOptionWidget( combobox );
 
-  const set<QString>& filters( interface.filters() );
-  for( set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
-  { combobox->addItem(*iter ); }
+    const std::set<QString>& filters( interface.filters() );
+    for( std::set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
+    { combobox->addItem(*iter ); }
 
 }

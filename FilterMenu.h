@@ -32,13 +32,12 @@
    \date $Date$
 */
 
-#include <QAction>
-#include <QActionGroup>
-#include <QMenu>
-#include <map>
-
-
 #include "Counter.h"
+
+#include <QtGui/QAction>
+#include <QtGui/QActionGroup>
+#include <QtGui/QMenu>
+#include <map>
 
 namespace SPELLCHECK
 {
@@ -76,7 +75,7 @@ namespace SPELLCHECK
     QActionGroup* group_;
 
     //! map filters and action
-    std::map<QAction*, QString> action_map_;
+    std::map<QAction*, QString> actionMap_;
 
   };
 
