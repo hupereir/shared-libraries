@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-   \file TimeStamp.h
-   \brief time manipulation object
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file TimeStamp.h
+\brief time manipulation object
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 
@@ -40,180 +40,215 @@
 #include "Counter.h"
 
 /*!
-   \class TimeStamp
-   \brief time manipulation object
+\class TimeStamp
+\brief time manipulation object
 */
 
 class TimeStamp:public Counter
 {
 
-  public:
+    public:
 
-  //! empty creator
-  TimeStamp( void ):
-    Counter( "TimeStamp" ),
-    is_valid_( false ),
-    time_( -1 )
-  {}
+    //! empty creator
+    TimeStamp( void ):
+        Counter( "TimeStamp" ),
+        valid_( false ),
+        time_( -1 )
+    {}
 
-  //! time_t creator
-  TimeStamp( time_t time ):
-    Counter( "TimeStamp" )
-  { setTime( time ); }
+    //! time_t creator
+    TimeStamp( time_t time ):
+        Counter( "TimeStamp" )
+        { setTime( time ); }
 
-  //! set time
-  virtual bool setTime( time_t time )
-  {
-    is_valid_ = time >= 0;
-    time_ = time;
-    if( is_valid_ ) tm_ = *localtime( &time );
-    return is_valid_;
-  }
+        //! set time
+        virtual bool setTime( time_t time )
+        {
+            valid_ = time >= 0;
+            time_ = time;
+            if( valid_ ) tm_ = *localtime( &time );
+            return valid_;
+        }
 
-  //! convert tm_ into time_
-  virtual bool makeTime( void )
-  {
-    is_valid_ = (time_ = mktime( &tm_ ) ) >= 0;
-    return is_valid_;
-  }
+        //! convert tm_ into time_
+        virtual bool makeTime( void )
+        {
+            valid_ = (time_ = mktime( &tm_ ) ) >= 0;
+            return valid_;
+        }
 
-  //! inferior to operator
-  virtual bool operator < (const TimeStamp& stamp ) const
-  { return( time_ < stamp.time_ ); }
+        //! inferior to operator
+        virtual bool operator < (const TimeStamp& stamp ) const
+        { return( time_ < stamp.time_ ); }
 
-  //! inferior to operator
-  virtual bool operator >= (const TimeStamp& stamp ) const
-  { return( time_ >= stamp.time_ ); }
+        //! inferior to operator
+        virtual bool operator >= (const TimeStamp& stamp ) const
+        { return( time_ >= stamp.time_ ); }
 
-  //! inferior to operator
-  virtual bool operator > (const TimeStamp& stamp ) const
-  { return( time_ > stamp.time_ ); }
+        //! inferior to operator
+        virtual bool operator > (const TimeStamp& stamp ) const
+        { return( time_ > stamp.time_ ); }
 
-  //! inferior to operator
-  virtual bool operator == (const TimeStamp& stamp ) const
-  { return( time_ == stamp.time_ ); }
+        //! inferior to operator
+        virtual bool operator == (const TimeStamp& stamp ) const
+        { return( time_ == stamp.time_ ); }
 
-  //! used to have fast access to the integer value
-  virtual operator int (void) const
-  { return int( time_ ); }
+        //! used to have fast access to the integer value
+        virtual operator int (void) const
+        { return int( time_ ); }
 
-  //! default string for invalid timestamps
-  static const QString STAMP_UNKNOWN;
+        //! default string for invalid timestamps
+        static const QString STAMP_UNKNOWN;
 
-  //! timestamp format enumeration
-  enum Format {
+        //! timestamp format enumeration
+        enum Format {
 
-    //! DD/MM/YYYY
-    DATE,
+            //! DD/MM/YYYY
+            DATE,
 
-    //! YYYY/MM/DD
-    DATE_US,
+            //! YYYY/MM/DD
+            DATE_US,
 
-    //! HH:MM
-    TIME,
+            //! HH:MM
+            TIME,
 
-    //! HH:MM:SS
-    TIME_LONG,
+            //! HH:MM:SS
+            TIME_LONG,
 
-    //! DD MONTH_string YYYY HH:MM:SS (week_day)
-    LONG,
+            //! DD MONTH_string YYYY HH:MM:SS (week_day)
+            LONG,
 
-    //! DD/MM/YYYY HH:MM
-    SHORT,
+            //! DD/MM/YYYY HH:MM
+            SHORT,
 
-    //! YYYY/MM/DD HH:MM
-    SHORT_US,
+            //! YYYY/MM/DD HH:MM
+            SHORT_US,
 
-    //! DD_MM_YY
-    DATE_TAG,
+            //! DD_MM_YY
+            DATE_TAG,
 
-    //! MONTH_string DD HH:MM
-    JOB_TAG
-  };
+            //! MONTH_string DD HH:MM
+            JOB_TAG
+        };
 
-  //! if timestamp is valid, returns formated string
-  virtual QString toString( Format format = SHORT ) const;
+        //! if timestamp is valid, returns formated string
+        virtual QString toString( Format format = SHORT ) const;
 
-  //! returns time in second
-  virtual time_t unixTime( void ) const
-  { return time_; }
+        //! returns time in second
+        virtual time_t unixTime( void ) const
+        { return time_; }
 
-  //! returns TimeStamp corresponding to _now_
-  static TimeStamp now( void );
+        //! returns TimeStamp corresponding to _now_
+        static TimeStamp now( void );
 
-  //! retrieve seconds (between 0 and 59)
-  virtual int seconds( void ) const
-  { return (is_valid_) ? tm_.tm_sec:0; }
+        //! retrieve seconds (between 0 and 59)
+        virtual int seconds( void ) const
+        { return (valid_) ? tm_.tm_sec:0; }
 
-  //! retrieve minutes (between 0 and 59)
-  virtual int minutes( void ) const
-  { return (is_valid_) ? tm_.tm_min:0; }
+        //! retrieve minutes (between 0 and 59)
+        virtual int minutes( void ) const
+        { return (valid_) ? tm_.tm_min:0; }
 
-  //! retrieve hour (between 0 and 23)
-  virtual int hours( void ) const
-  { return (is_valid_) ? tm_.tm_hour:0; }
+        //! retrieve hour (between 0 and 23)
+        virtual int hours( void ) const
+        { return (valid_) ? tm_.tm_hour:0; }
 
-  //! retrieves day (between 1 and 31)
-  virtual int day( void ) const
-  { return (is_valid_) ? tm_.tm_mday:0; }
+        //! retrieves day (between 1 and 31)
+        virtual int day( void ) const
+        { return (valid_) ? tm_.tm_mday:0; }
 
-  //! retrieves month (between 1 and 12)
-  virtual int month( void ) const
-  { return (is_valid_) ? tm_.tm_mon+1:0; }
+        //! retrieves month (between 1 and 12)
+        virtual int month( void ) const
+        { return (valid_) ? tm_.tm_mon+1:0; }
 
-  //! retrieves year (between 1 and 12)
-  virtual int year( void ) const
-  { return (is_valid_) ? tm_.tm_year+1900:0; }
+        //! retrieves year (between 1 and 12)
+        virtual int year( void ) const
+        { return (valid_) ? tm_.tm_year+1900:0; }
 
-  //! seconds (between 0 and 59)
-  virtual void setSeconds( const int& value )
-  { tm_.tm_sec = value; }
+        //! seconds (between 0 and 59)
+        virtual TimeStamp& setSeconds( const int& value )
+        {
+            tm_.tm_sec = value;
+            return *this;
+        }
 
-  //! minutes (between 0 and 59)
-  virtual void setMinutes( const int& value )
-  { tm_.tm_min = value; }
+        //! minutes (between 0 and 59)
+        virtual TimeStamp& setMinutes( const int& value )
+        {
+            tm_.tm_min = value;
+            return *this;
+        }
 
-  //! hour (between 0 and 23)
-  virtual void setHours( const int& value )
-  { tm_.tm_hour = value; }
+        //! hour (between 0 and 23)
+        virtual TimeStamp& setHours( const int& value )
+        {
+            tm_.tm_hour = value;
+            return *this;
+        }
 
-  //! retrieves day (between 1 and 31)
-  virtual void setDay( const int& value )
-  { tm_.tm_mday = value; }
+        //! retrieves day (between 1 and 31)
+        virtual TimeStamp& setDay( const int& value )
+        {
+            tm_.tm_mday = value;
+            return *this;
+        }
 
-  //! retrieves month (between 1 and 12)
-  virtual void setMonth( const int& value )
-  { tm_.tm_mon = value - 1; }
+        //! retrieves month (between 1 and 12)
+        virtual TimeStamp& setMonth( const int& value )
+        {
+            tm_.tm_mon = value - 1;
+            return *this;
+        }
 
-  //! retrieves year (between 1 and 12)
-  virtual void setYear( const int& value )
-  { tm_.tm_year = value - 1900; }
+        //! retrieves month (from string)
+        virtual TimeStamp& setMonth( const QString& value )
+        {
+            for( int index = 0; index < 12; index++ )
+            {
+                if( months_[index] == value )
+                {
+                    tm_.tm_mon = index;
+                    break;
+                }
+            }
+            return *this;
+        }
 
-  //! tells if timestamp is valid or not
-  virtual void setValid( bool value )
-  { is_valid_ = value; }
+        //! retrieves year (between 1 and 12)
+        virtual TimeStamp& setYear( const int& value )
+        {
+            tm_.tm_year = value - 1900;
+            return *this;
+        }
 
-  //! checks if timestamp is valid or not
-  virtual bool isValid( void ) const
-  { return is_valid_; }
+        //! tells if timestamp is valid or not
+        virtual TimeStamp& setValid( bool value )
+        {
+            valid_ = value;
+            return *this;
+        }
 
-  private:
+        //! checks if timestamp is valid or not
+        virtual bool isValid( void ) const
+        { return valid_; }
 
-  //! true if timeStamp is properly set
-  bool is_valid_;
+        private:
 
-  //! unix time in second
-  time_t time_;
+        //! true if timeStamp is properly set
+        bool valid_;
 
-  //! time structure from localtime()
-  struct tm tm_;
+        //! unix time in second
+        time_t time_;
 
-  //! day names
-  static const QString days_[];
+        //! time structure from localtime()
+        struct tm tm_;
 
-  //! month names
-  static const QString months_[];
+        //! day names
+        static const QString days_[];
 
-};
+        //! month names
+        static const QString months_[];
 
-#endif
+    };
+
+    #endif

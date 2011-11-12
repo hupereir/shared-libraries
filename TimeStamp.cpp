@@ -60,7 +60,7 @@ const QString TimeStamp::months_[] = {
     "Sep",
     "Oct",
     "Nov",
-    "Dec" 
+    "Dec"
 };
 
 //_______________________________
@@ -73,18 +73,19 @@ TimeStamp TimeStamp::now( void )
     TimeStamp out;
     out.time_ = time(0);
     out.tm_   = *localtime(&out.time_);
-    out.is_valid_ = ( out.time_>=0 );
+    out.valid_ = ( out.time_>=0 );
     return out;
 }
 
 //___________________________________
 QString TimeStamp::toString( TimeStamp::Format format ) const
 {
-    if( !(is_valid_ ) ) return STAMP_UNKNOWN;
+    if( !(valid_ ) ) return STAMP_UNKNOWN;
 
     QString out;
     QTextStream o( &out );
-    switch (format) {
+    switch (format)
+    {
 
         case DATE:
         if( tm_.tm_mday < 10 ) o << "0";
