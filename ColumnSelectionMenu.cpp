@@ -74,9 +74,6 @@ void ColumnSelectionMenu::_updateActions( void )
     for( int index=0; index < header->count(); index++ )
     {
 
-        // skip locked columns
-        if( treeView && treeView->isColumnVisibilityLocked( index ) ) continue;
-
         // retrieve column name
         QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
         if( column_name.isNull() || column_name.isEmpty() )
@@ -89,6 +86,10 @@ void ColumnSelectionMenu::_updateActions( void )
         QAction* action = new QAction( column_name, this );
         action->setCheckable( true );
         action->setChecked( !_target().isColumnHidden( index ) );
+
+        if( treeView && treeView->isColumnVisibilityLocked( index ) )
+        { action->setEnabled( false ); }
+
         if( !_target().isColumnHidden( index ) ) visibleColumns++;
 
         insertAction( firstAction, action );
