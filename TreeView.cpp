@@ -55,7 +55,8 @@ TreeView::TreeView( QWidget* parent ):
     menu_( 0 ),
     iconSizeFromOptions_( true ),
     vertical_( 0 ),
-    horizontal_( 0 )
+    horizontal_( 0 ),
+    lockedColumns_( 0 )
 {
     Debug::Throw( "TreeView::TreeView.\n" );
 

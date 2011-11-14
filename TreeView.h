@@ -116,6 +116,26 @@ class TreeView: public QTreeView, public Counter
 
     //@}
 
+    //!@name column visibility lock
+    //@{
+
+    //! lock column
+    void lockColumnVisibility( int index )
+    { setColumnVisibilityLocked( index, true ); }
+
+    //! lock/unlock column
+    void setColumnVisibilityLocked( int index, bool value )
+    {
+        if( value ) lockedColumns_ |= (1<<index);
+        else lockedColumns_ &= ~(1<<index);
+    }
+
+    //! true if column visibility is locked
+    bool isColumnVisibilityLocked( int index ) const
+    { return lockedColumns_&(1<<index); }
+
+    //@}
+
     //! set icon size manually and disable option
     void setIconSize( const QSize& size )
     {
@@ -310,6 +330,9 @@ class TreeView: public QTreeView, public Counter
 
     //! horizontal scrollbar position
     int horizontal_;
+
+    //! locked columns
+    unsigned lockedColumns_;
 
 };
 

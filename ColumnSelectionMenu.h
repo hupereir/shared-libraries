@@ -48,10 +48,10 @@ class ColumnSelectionMenu:public QMenu, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        ColumnSelectionMenu( QWidget*, QTreeView*, const QString& title = "&Select Columns" );
+    //! constructor
+    ColumnSelectionMenu( QWidget*, QTreeView*, const QString& title = "&Select Columns" );
 
     private slots:
 

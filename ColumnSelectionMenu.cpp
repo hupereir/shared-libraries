@@ -34,6 +34,7 @@
 
 #include "Debug.h"
 #include "ColumnSelectionMenu.h"
+#include "TreeView.h"
 
 //_____________________________________________________
 ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, const QString& title ):
@@ -60,16 +61,21 @@ void ColumnSelectionMenu::_updateActions( void )
 
     // check if the menu already has actions.
     QList<QAction*> actions( ColumnSelectionMenu::actions() );
-    QAction *first_action( actions.isEmpty() ? 0:actions.front() );
+    QAction *firstAction( actions.isEmpty() ? 0:actions.front() );
 
     // retrieve parent header.
     QHeaderView* header( _target().header() );
     assert( header );
 
+    TreeView* treeView( qobject_cast<TreeView*>( &_target() ) );
+
     // loop over columns in header
-    unsigned int visible_columns(0);
+    unsigned int visibleColumns(0);
     for( int index=0; index < header->count(); index++ )
     {
+
+        // skip locked columns
+        if( treeView && treeView->isColumnVisibilityLocked( index ) ) continue;
 
         // retrieve column name
         QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
@@ -83,15 +89,15 @@ void ColumnSelectionMenu::_updateActions( void )
         QAction* action = new QAction( column_name, this );
         action->setCheckable( true );
         action->setChecked( !_target().isColumnHidden( index ) );
-        if( !_target().isColumnHidden( index ) ) visible_columns++;
+        if( !_target().isColumnHidden( index ) ) visibleColumns++;
 
-        insertAction( first_action, action );
+        insertAction( firstAction, action );
         actions_.insert( std::make_pair( action, index ) );
 
     }
 
     // if only one column is visible, disable corresponding action
-    if( visible_columns == 1 )
+    if( visibleColumns == 1 )
     {
         for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
         { if( iter->first->isChecked() ) iter->first->setEnabled( false ); }
