@@ -43,6 +43,10 @@ class LogWidget: public TextEditor
     void setOptionName( const QString& );
 
     //! verbosity
+    int verbosity( void ) const
+    { return verbosity_; }
+
+    //! verbosity
     void setVerbosity( int value )
     { verbosity_ = value; }
 
