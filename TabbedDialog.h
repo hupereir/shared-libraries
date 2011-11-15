@@ -24,23 +24,15 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TabbedDialog.h
-  \brief base configuration dialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QCloseEvent>
-#include <QDialog>
-#include <QLayout>
-#include <list>
-
 #include "XmlOptions.h"
 #include "BaseDialog.h"
 #include "OptionWidget.h"
 #include "ListModel.h"
+
+#include <QtGui/QCloseEvent>
+#include <QtGui/QDialog>
+#include <QtGui/QLayout>
+#include <list>
 
 class AnimatedStackedWidget;
 class TreeView;
@@ -50,107 +42,107 @@ class TreeView;
 class TabbedDialog: public BaseDialog, public Counter
 {
 
-  Q_OBJECT
-
-  public:
-
-  //! creator
-  TabbedDialog( QWidget *parent );
-
-  //! destructor
-  virtual ~TabbedDialog();
-
-  //! adds a new Item, returns associated Box
-  virtual QWidget& addPage( const QString&, const QString& tooltip = QString(), const bool& expand = false );
-
-  protected slots:
-
-  //! display item page
-  virtual void _display( const QModelIndex& );
-
-  protected:
-
-  //! retrieve list
-  virtual TreeView& _list( void )
-  { return *list_; }
-
-  //! retrieve stack
-  virtual AnimatedStackedWidget& _stack( void )
-  { return *stack_; }
-
-  //! button layout
-  QBoxLayout& _buttonLayout( void ) const
-  { return *button_layout_; }
-
-  private:
-
-  //! model
-  class Model: public ListModel<QWidget*>
-  {
+    Q_OBJECT
 
     public:
 
-    //! number of columns
-    enum { n_columns = 1 };
+    //! creator
+    TabbedDialog( QWidget *parent );
 
-    //! column type enumeration
-    enum ColumnType {
-      NAME
-    };
+    //! destructor
+    virtual ~TabbedDialog();
 
-    //!@name methods reimplemented from base class
-    //@{
+    //! adds a new Item, returns associated Box
+    virtual QWidget& addPage( const QString&, const QString& tooltip = QString(), const bool& expand = false );
 
-    //! flags
-    virtual Qt::ItemFlags flags(const QModelIndex& ) const
-    { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
+    protected slots:
 
-    //! return data
-    virtual QVariant data(const QModelIndex &index, int role) const;
-
-    //! header data
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
-    {
-      if( orientation == Qt::Horizontal && role == Qt::DisplayRole && section >= 0 && section < n_columns )
-      { return column_titles_[section]; }
-
-      // return empty
-      return QVariant();
-
-    }
-
-    //! number of columns for a given index
-    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
-    { return n_columns; }
-
-    //@}
+    //! display item page
+    virtual void _display( const QModelIndex& );
 
     protected:
 
-    //! sort
-    virtual void _sort( int, Qt::SortOrder order = Qt::AscendingOrder )
-    {}
+    //! retrieve list
+    virtual TreeView& _list( void )
+    { return *list_; }
 
-    //! list column names
-    static const QString column_titles_[n_columns];
+    //! retrieve stack
+    virtual AnimatedStackedWidget& _stack( void )
+    { return *stack_; }
 
-  };
+    //! button layout
+    QBoxLayout& _buttonLayout( void ) const
+    { return *buttonLayout_; }
 
-  //! model
-  Model& _model( void )
-  { return model_; }
+    private:
 
-  //! model
-  Model model_;
+    //! model
+    class Model: public ListModel<QWidget*>
+    {
 
-  //! Configuration list
-  TreeView* list_;
+        public:
 
-  //! Widget stack
-  AnimatedStackedWidget* stack_;
+        //! number of columns
+        enum { nColumns = 1 };
 
-  //! button layout (needed to add extra buttons)
-  QBoxLayout *button_layout_;
+        //! column type enumeration
+        enum ColumnType {
+            NAME
+        };
+
+        //!@name methods reimplemented from base class
+        //@{
+
+        //! flags
+        virtual Qt::ItemFlags flags(const QModelIndex& ) const
+        { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
+
+        //! return data
+        virtual QVariant data(const QModelIndex &index, int role) const;
+
+        //! header data
+        virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
+        {
+            if( orientation == Qt::Horizontal && role == Qt::DisplayRole && section >= 0 && section < nColumns )
+            { return column_titles_[section]; }
+
+            // return empty
+            return QVariant();
+
+        }
+
+        //! number of columns for a given index
+        virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+        { return nColumns; }
+
+        //@}
+
+        protected:
+
+        //! sort
+        virtual void _sort( int, Qt::SortOrder order = Qt::AscendingOrder )
+        {}
+
+        //! list column names
+        static const QString column_titles_[nColumns];
+
+    };
+
+    //! model
+    Model& _model( void )
+    { return model_; }
+
+    //! model
+    Model model_;
+
+    //! Configuration list
+    TreeView* list_;
+
+    //! Widget stack
+    AnimatedStackedWidget* stack_;
+
+    //! button layout (needed to add extra buttons)
+    QBoxLayout *buttonLayout_;
 
 };
 
