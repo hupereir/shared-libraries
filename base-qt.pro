@@ -63,6 +63,7 @@ HEADERS = \
   LineEditor.h \
   LineNumberDisplay.h \
   ListModel.h \
+  LogWidget.h \
   MessageBuffer.h \
   MultipleClickCounter.h \
   OptionBrowsedLineEditor.h \
@@ -181,6 +182,7 @@ SOURCES = \
   KeyModifier.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
+  LogWidget.cpp \
   OptionDialog.cpp \
   OptionListBox.cpp \
   OptionModel.cpp \

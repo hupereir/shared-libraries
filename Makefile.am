@@ -67,6 +67,7 @@ noinst_HEADERS = \
   LineEditor.h \
   LineNumberDisplay.h \
   ListModel.h \
+  LogWidget.h \
   MessageBuffer.h \
   MultipleClickCounter.h \
   OptionBrowsedLineEditor.h \
@@ -187,6 +188,7 @@ libbase_qt_a_SOURCES = \
   KeyModifier.cpp \
   LineEditor.cpp \
   LineNumberDisplay.cpp \
+  LogWidget.cpp \
   OptionDialog.cpp \
   OptionListBox.cpp \
   OptionModel.cpp \
@@ -267,6 +269,7 @@ nodist_libbase_qt_a_SOURCES = \
   moc_IconSizeMenu.cpp \
   moc_LineEditor.cpp \
   moc_LineNumberDisplay.cpp \
+  moc_LogWidget.cpp \
   moc_OptionDialog.cpp \
   moc_OptionListBox.cpp \
   moc_OptionModel.cpp \
