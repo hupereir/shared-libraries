@@ -22,74 +22,75 @@
 *******************************************************************************/
 
 /*!
-  \file XmlTextFormatBlock.cpp
-  \brief tracks text format in given text range
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file XmlTextFormatBlock.cpp
+\brief tracks text format in given text range
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include "Str.h"
 #include "XmlTextFormatBlock.h"
 
-
-using namespace FORMAT;
-
-//____________________________________
-const QString XmlTextFormatBlock::XML_TAG = "TextFormat";
-const QString XmlTextFormatBlock::XML_FORMAT = "format";
-const QString XmlTextFormatBlock::XML_COLOR = "color";
-
-const QString XmlTextFormatBlock::XML_BEGIN = "begin";
-const QString XmlTextFormatBlock::XML_END = "end";
-
-// obsolete tag names
-const QString XmlTextFormatBlock::XML_BEGIN_PAR = "begin_par";
-const QString XmlTextFormatBlock::XML_BEGIN_INDEX = "begin_index";
-const QString XmlTextFormatBlock::XML_END_PAR = "end_par";
-const QString XmlTextFormatBlock::XML_END_INDEX = "end_index";
-
-//____________________________________
-XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
+namespace FORMAT
 {
+    //____________________________________
+    const QString XmlTextFormatBlock::XML_TAG = "TextFormat";
+    const QString XmlTextFormatBlock::XML_FORMAT = "format";
+    const QString XmlTextFormatBlock::XML_COLOR = "color";
 
-  // parse attributes
-  QDomNamedNodeMap attributes( element.attributes() );
-  for( unsigned int i=0; i<attributes.length(); i++ )
-  {
-    QDomAttr attribute( attributes.item( i ).toAttr() );
-    if( attribute.isNull() ) continue;
-    QString name( attribute.name() );
-    QString value( attribute.value() );
+    const QString XmlTextFormatBlock::XML_BEGIN = "begin";
+    const QString XmlTextFormatBlock::XML_END = "end";
 
-    // nominal tags
-    if( name == XML_BEGIN ) begin() = value.toInt();
-    else if( name == XML_END ) end() = value.toInt();
+    // obsolete tag names
+    const QString XmlTextFormatBlock::XML_BEGIN_PAR = "begin_par";
+    const QString XmlTextFormatBlock::XML_BEGIN_INDEX = "begin_index";
+    const QString XmlTextFormatBlock::XML_END_PAR = "end_par";
+    const QString XmlTextFormatBlock::XML_END_INDEX = "end_index";
 
-    // obsolete paragraph tags
-    else if( name == XML_BEGIN_PAR ) _parBegin() = value.toInt();
-    else if( name == XML_END_PAR ) _parEnd() = value.toInt();
+    //____________________________________
+    XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
+    {
 
-    // obsolete index tags
-    else if( name == XML_BEGIN_INDEX ) begin() = value.toInt();
-    else if( name == XML_END_INDEX ) end() = value.toInt();
+        // parse attributes
+        QDomNamedNodeMap attributes( element.attributes() );
+        for( unsigned int i=0; i<attributes.length(); i++ )
+        {
+            QDomAttr attribute( attributes.item( i ).toAttr() );
+            if( attribute.isNull() ) continue;
+            QString name( attribute.name() );
+            QString value( attribute.value() );
 
-    // format
-    else if( name == XML_FORMAT ) format() =value.toInt();
-    else if( name == XML_COLOR ) color() = value;
+            // nominal tags
+            if( name == XML_BEGIN ) begin() = value.toInt();
+            else if( name == XML_END ) end() = value.toInt();
 
-    else Debug::Throw(0) << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized text format attribute: \"" << name << "\"\n";
-  }
+            // obsolete paragraph tags
+            else if( name == XML_BEGIN_PAR ) _parBegin() = value.toInt();
+            else if( name == XML_END_PAR ) _parEnd() = value.toInt();
 
-}
+            // obsolete index tags
+            else if( name == XML_BEGIN_INDEX ) begin() = value.toInt();
+            else if( name == XML_END_INDEX ) end() = value.toInt();
 
-//__________________________________________________________
-QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
-{
-  QDomElement out( parent.createElement( XML_TAG ) );
-  out.setAttribute( XML_BEGIN, Str().assign<int>(begin()) );
-  out.setAttribute( XML_END, Str().assign<int>(end()) );
-  out.setAttribute( XML_FORMAT, Str().assign<unsigned int>(format()) );
-  out.setAttribute( XML_COLOR, color() );
-  return out;
+            // format
+            else if( name == XML_FORMAT ) format() =value.toInt();
+            else if( name == XML_COLOR ) color() = value;
+
+            else Debug::Throw(0) << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized text format attribute: \"" << name << "\"\n";
+        }
+
+    }
+
+    //__________________________________________________________
+    QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
+    {
+        QDomElement out( parent.createElement( XML_TAG ) );
+        out.setAttribute( XML_BEGIN, Str().assign<int>(begin()) );
+        out.setAttribute( XML_END, Str().assign<int>(end()) );
+        out.setAttribute( XML_FORMAT, Str().assign<unsigned int>(format()) );
+        out.setAttribute( XML_COLOR, color() );
+        return out;
+    }
+
 }

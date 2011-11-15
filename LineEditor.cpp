@@ -29,22 +29,20 @@
 \date $Date$
 */
 
-#include <QApplication>
-#include <QClipboard>
-#include <QEvent>
-#include <QPainter>
-#include <QStyle>
-#include <QStyleOptionFrameV2>
-#include <QToolTip>
-
-#include "BaseIcons.h"
 #include "LineEditor.h"
+#include "BaseIcons.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "Str.h"
 
+#include <QtGui/QApplication>
+#include <QtGui/QClipboard>
+#include <QtGui/QPainter>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOptionFrameV2>
+#include <QtGui/QToolTip>
 
-using namespace Qt;
+#include <QtCore/QEvent>
 
 //____________________________________________________________
 LineEditor::LineEditor( QWidget* parent ):
@@ -374,17 +372,6 @@ void LineEditor::paintEvent( QPaintEvent* event )
         painter.end();
     }
 
-//     if( hasFrame() )
-//     {
-//
-//         // draw frame
-//         QPainter painter( this );
-//         painter.setClipRect( event->rect() );
-//         style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
-//         painter.end();
-//
-//     }
-
 }
 
 //____________________________________________________________
@@ -411,51 +398,51 @@ void LineEditor::_installActions( void )
     Debug::Throw( "LineEditor::_installActions.\n" );
 
     // create actions
-    addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), "&Undo", this ) );
-    undoAction_->setShortcut( CTRL+Key_Z );
-    undoAction_->setShortcutContext( WidgetShortcut );
+    addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), "Undo", this ) );
+    undoAction_->setShortcut( Qt::CTRL+Qt::Key_Z );
+    undoAction_->setShortcutContext( Qt::WidgetShortcut );
     undoAction_->setEnabled( isUndoAvailable() );
     connect( undoAction_, SIGNAL( triggered() ), SLOT( undo() ) );
 
-    addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), "&Redo", this ) );
-    redoAction_->setShortcut( SHIFT+CTRL+Key_Z );
+    addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), "Redo", this ) );
+    redoAction_->setShortcut( Qt::SHIFT+Qt::CTRL+Qt::Key_Z );
     redoAction_->setEnabled( isRedoAvailable() );
-    redoAction_->setShortcutContext( WidgetShortcut );
+    redoAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( redoAction_, SIGNAL( triggered() ), SLOT( redo() ) );
 
-    addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), "Cu&t", this ) );
-    cutAction_->setShortcut( CTRL+Key_X );
-    cutAction_->setShortcutContext( WidgetShortcut );
+    addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), "Cut", this ) );
+    cutAction_->setShortcut( Qt::CTRL+Qt::Key_X );
+    cutAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( cutAction_, SIGNAL( triggered() ), SLOT( cut() ) );
 
-    addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), "&Copy", this ) );
-    copyAction_->setShortcut( CTRL+Key_C );
-    copyAction_->setShortcutContext( WidgetShortcut );
+    addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), "Copy", this ) );
+    copyAction_->setShortcut( Qt::CTRL+Qt::Key_C );
+    copyAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( copyAction_, SIGNAL( triggered() ), SLOT( copy() ) );
 
-    addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), "&Paste", this ) );
-    pasteAction_->setShortcut( CTRL+Key_V );
-    pasteAction_->setShortcutContext( WidgetShortcut );
+    addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), "Paste", this ) );
+    pasteAction_->setShortcut( Qt::CTRL+Qt::Key_V );
+    pasteAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( pasteAction_, SIGNAL( triggered() ), SLOT( paste() ) );
     connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
     _updatePasteAction();
 
-    addAction( clearAction_ = new QAction( "&Clear", this ) );
+    addAction( clearAction_ = new QAction( "Clear", this ) );
     connect( clearAction_, SIGNAL( triggered() ), SLOT( clear() ) );
 
-    addAction( selectAllAction_ = new QAction( "Select &All", this ) );
-    selectAllAction_->setShortcut( CTRL+Key_A );
-    selectAllAction_->setShortcutContext( WidgetShortcut );
+    addAction( selectAllAction_ = new QAction( "Select All", this ) );
+    selectAllAction_->setShortcut( Qt::CTRL+Qt::Key_A );
+    selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-    addAction( upperCaseAction_ = new QAction( "&Upper Case", this ) );
-    upperCaseAction_->setShortcut( CTRL+Key_U );
-    upperCaseAction_->setShortcutContext( WidgetShortcut );
+    addAction( upperCaseAction_ = new QAction( "Upper Case", this ) );
+    upperCaseAction_->setShortcut( Qt::CTRL+Qt::Key_U );
+    upperCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( upperCaseAction_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
-    addAction( lowerCaseAction_ = new QAction( "&Lower Case", this ) );
-    lowerCaseAction_->setShortcut( SHIFT+CTRL+Key_U );
-    lowerCaseAction_->setShortcutContext( WidgetShortcut );
+    addAction( lowerCaseAction_ = new QAction( "Lower Case", this ) );
+    lowerCaseAction_->setShortcut( Qt::SHIFT+Qt::CTRL+Qt::Key_U );
+    lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( lowerCaseAction_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
     // update actions that depend on the presence of a selection

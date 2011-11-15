@@ -37,7 +37,7 @@
 #include "TransitionWidget.h"
 
 
-using namespace Qt;
+
 
 //___________________________________________________
 CustomComboBox::CustomComboBox( QWidget* parent ):

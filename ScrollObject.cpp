@@ -40,7 +40,7 @@
 #include "XmlOptions.h"
 
 
-using namespace Qt;
+
 
 //_______________________________________________
 ScrollObject::ScrollObject( QAbstractScrollArea* parent ):

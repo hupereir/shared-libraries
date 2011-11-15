@@ -57,7 +57,7 @@
 #include "TreeView.h"
 
 
-using namespace Qt;
+
 
 //_________________________________________________________
 BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):

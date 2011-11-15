@@ -45,8 +45,6 @@
 #include <QtGui/QPainter>
 #include <QtGui/QScrollBar>
 
-using namespace Qt;
-
 //_______________________________________________
 TreeView::TreeView( QWidget* parent ):
     QTreeView( parent ),
@@ -641,16 +639,16 @@ void TreeView::_installActions( void )
     Debug::Throw( "TreeView::_installActions.\n" );
 
     addAction( selectAllAction_ = new QAction( "Select All", this ) );
-    selectAllAction_->setShortcut( CTRL+Key_A );
-    selectAllAction_->setShortcutContext( WidgetShortcut );
+    selectAllAction_->setShortcut( Qt::CTRL+Qt::Key_A );
+    selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "&Find", this ) );
+    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find", this ) );
     findAction_->setShortcut( Qt::CTRL + Qt::Key_F );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
-    addAction( findAgainAction_ = new QAction( "F&ind Again", this ) );
+    addAction( findAgainAction_ = new QAction( "Find Again", this ) );
     findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainAction_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
@@ -660,7 +658,7 @@ void TreeView::_installActions( void )
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainBackwardAction_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
-    addAction( findSelectionAction_ = new QAction( "Find &Selection", this ) );
+    addAction( findSelectionAction_ = new QAction( "Find Selection", this ) );
     findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionAction_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
