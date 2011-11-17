@@ -160,14 +160,6 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
             addOptionWidget( checkbox );
         }
 
-        // size grip
-        {
-            OptionCheckBox* checkbox( new OptionCheckBox( "Enable size grip", box, "SIZE_GRIP_ENABLED" ) );
-            gridLayout->addWidget( checkbox, 1, 0, 1, 2 );
-            checkbox->setToolTip( "Draw a small widget in bottom-right corner of windows allowing to resize the window.\nThe application must be restarted to take changes to this option into account." );
-            addOptionWidget( checkbox );
-        }
-
         // base font
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         gridLayout->addWidget( new QLabel( "Default font: ", box ) );

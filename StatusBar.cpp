@@ -29,16 +29,14 @@
 \date $Date$
 */
 
-#include <QMainWindow>
-#include <QMenu>
-
 #include "StatusBar.h"
 #include "TransitionWidget.h"
 #include "ClockLabel.h"
 #include "Debug.h"
 #include "XmlOptions.h"
 
-
+#include <QtGui/QMainWindow>
+#include <QtGui/QMenu>
 
 //___________________________________________
 StatusBar::StatusBar( QWidget* parent ):
@@ -47,7 +45,7 @@ StatusBar::StatusBar( QWidget* parent ):
 {
     Debug::Throw( "StatusBar::StatusBar.\n" );
     assert( qobject_cast<QMainWindow*>( parent ) );
-    setSizeGripEnabled( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
+    setSizeGripEnabled( false );
 
     // if no size grip, still leaves some space to the right of the widget
     if( !isSizeGripEnabled() )

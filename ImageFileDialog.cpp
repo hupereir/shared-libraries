@@ -29,30 +29,30 @@
 \date $Date$
 */
 
-
-
-#include <QFileInfo>
-#include <QImage>
-#include <QLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QSplitter>
-#include <QUrl>
-
-#include "CustomPixmap.h"
 #include "ImageFileDialog.h"
+#include "CustomPixmap.h"
 #include "FileDialog.h"
 #include "File.h"
 #include "Debug.h"
 #include "Util.h"
 #include "XmlOptions.h"
 
+#include <QtCore/QFileInfo>
+#include <QtCore/QUrl>
+#include <QtGui/QImage>
+#include <QtGui/QLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QSplitter>
+
 //______________________________________________________________________
 ImageFileDialog::ImageFileDialog( QWidget* parent ):
     QFileDialog( parent )
 {
     Debug::Throw( "ImageFileDialog::ImageFileDialog.\n" );
-    setSizeGripEnabled ( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
+
+    // no size grip, ever
+    setSizeGripEnabled( false );
 
     // working directory
     if( !FileDialog::_workingDirectory().isEmpty() && QFileInfo( FileDialog::_workingDirectory() ).isDir() )

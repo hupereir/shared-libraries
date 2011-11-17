@@ -32,15 +32,16 @@
 \date $Date$
 */
 
-#include <cassert>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QStatusBar>
-
-#include <vector>
 
 #include "AnimatedLabel.h"
 #include "Counter.h"
+
+#include <QtGui/QApplication>
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QStatusBar>
+
+#include <cassert>
+#include <vector>
 
 //! local label for additional slots
 class StatusBarLabel: public AnimatedLabel

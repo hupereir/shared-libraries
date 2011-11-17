@@ -32,9 +32,9 @@
 \date $Date$
 */
 
-#include <QDialog>
-
 #include "WindowMonitor.h"
+
+#include <QtGui/QDialog>
 
 /*!
 \class BaseDialog

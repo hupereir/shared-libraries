@@ -29,16 +29,14 @@
 \date $Date$
 */
 
-#include <QTextStream>
-#include <QWindowStateChangeEvent>
-
 #include "BaseDialog.h"
 #include "Debug.h"
 #include "QtUtil.h"
 #include "Util.h"
 #include "XmlOptions.h"
 
-
+#include <QtCore/QTextStream>
+#include <QtGui/QWindowStateChangeEvent>
 
 //__________________________________________________
 BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
@@ -47,7 +45,7 @@ BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
     wasMaximized_( false )
 {
     Debug::Throw( "BaseDialog::BaseDialog.\n" );
-    setSizeGripEnabled ( XmlOptions::get().get<bool>( "SIZE_GRIP_ENABLED" ) );
+    setSizeGripEnabled(false);
 }
 
 //__________________________________________________

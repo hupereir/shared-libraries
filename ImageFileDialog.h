@@ -25,26 +25,21 @@
 
 /*!
 \file ImageFileDialog.h
-\brief customized file selection dialog, to store last selected directory
+\brief file dialog with preview
 \author Hugo Pereira
 \version $Revision$
 \date $Date$
 */
 
-#include <cassert>
-
-#include <QCheckBox>
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QFileDialog>
-#include <QLabel>
-
 #include "File.h"
 
-/*!
-\class ImageFileDialog
-\brief customized file selection dialog, to store last selected directory
-*/
+#include <QtGui/QCheckBox>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDropEvent>
+#include <QtGui/QFileDialog>
+#include <QLabel>
+
+#include <cassert>
 class ImageFileDialog: public QFileDialog
 {
 
