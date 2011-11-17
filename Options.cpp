@@ -99,9 +99,6 @@ Options::Options( bool install_default_options ):
         // box selection
         set( "BOX_SELECTION_ALPHA", Option( "20", "Alpha threshold for box selection - between 0 and 100" ) );
 
-        // size grip
-        set( "SIZE_GRIP_ENABLED", Option( "0", "Draw size grip in bottom left corner of windows" ) );
-
         setAutoDefault( false );
 
     }
