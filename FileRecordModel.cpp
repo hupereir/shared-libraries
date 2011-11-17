@@ -91,7 +91,7 @@ Qt::ItemFlags FileRecordModel::flags(const QModelIndex &index) const
 
     // default flags
     flags |=  Qt::ItemIsEnabled |  Qt::ItemIsSelectable;
-    if( dragEnabled() ) flags |= Qt::ItemIsDragEnabled;
+    if( dragEnabled() && index.column() == FILE ) flags |= Qt::ItemIsDragEnabled;
 
     return flags;
 
