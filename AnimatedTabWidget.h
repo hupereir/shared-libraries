@@ -24,17 +24,17 @@
 *******************************************************************************/
 
 /*!
-  \file AnimatedTabWidget.h
-  \brief animated tabbed widget
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file AnimatedTabWidget.h
+\brief animated tabbed widget
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
-#include <QTabBar>
-#include <QTabWidget>
-
 #include "Counter.h"
+
+#include <QtGui/QTabBar>
+#include <QtGui/QTabWidget>
 
 class TransitionWidget;
 
@@ -42,25 +42,25 @@ class TransitionWidget;
 class AnimatedTabBar: public QTabBar, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! constructor
-  AnimatedTabBar( QWidget* parent ):
-    QTabBar( parent ),
-    Counter( "AnimatedTabBar" )
-  {}
+    //! constructor
+    AnimatedTabBar( QWidget* parent ):
+        QTabBar( parent ),
+        Counter( "AnimatedTabBar" )
+    {}
 
-  signals:
+    signals:
 
-  //! clicked
-  void clicked( void );
+    //! clicked
+    void clicked( void );
 
-  protected:
+    protected:
 
-  //! mouse press event
-  virtual void mousePressEvent( QMouseEvent* );
+    //! mouse press event
+    virtual void mousePressEvent( QMouseEvent* );
 
 };
 
@@ -69,37 +69,37 @@ class AnimatedTabBar: public QTabBar, public Counter
 class AnimatedTabWidget: public QTabWidget, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! creator
-  AnimatedTabWidget( QWidget *parent );
+    //! creator
+    AnimatedTabWidget( QWidget *parent );
 
-  //! destructor
-  virtual ~AnimatedTabWidget();
+    //! destructor
+    virtual ~AnimatedTabWidget();
 
-  protected slots:
+    protected slots:
 
-  //! update current widget
-  void _updateCurrentWidget( void );
+    //! update current widget
+    void _updateCurrentWidget( void );
 
-  //! animation finished
-  void _startAnimation( void );
+    //! animation finished
+    void _startAnimation( void );
 
-  //! animation finished
-  void _animationFinished( void );
+    //! animation finished
+    void _animationFinished( void );
 
-  protected:
+    protected:
 
-  //! transition widget
-  TransitionWidget& _transitionWidget( void ) const
-  { return *transition_widget_; }
+    //! transition widget
+    TransitionWidget& _transitionWidget( void ) const
+    { return *transitionWidget_; }
 
-  private:
+    private:
 
-  //! transitionWidget
-  TransitionWidget* transition_widget_;
+    //! transitionWidget
+    TransitionWidget* transitionWidget_;
 
 };
 

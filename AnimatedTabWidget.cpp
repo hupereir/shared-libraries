@@ -50,7 +50,7 @@ void AnimatedTabBar::mousePressEvent( QMouseEvent* event )
 AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
   QTabWidget( parent ),
   Counter( "AnimatedTabWidget" ),
-  transition_widget_( new TransitionWidget( this ) )
+  transitionWidget_( new TransitionWidget( this ) )
 {
   Debug::Throw( "AnimatedTabWidget::AnimatedTabWidget.\n" );
 

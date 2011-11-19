@@ -24,15 +24,9 @@
 *
 *******************************************************************************/
 
-/*!
-\file TabWidget.h
-\brief Tab widget with detachable pages
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "Counter.h"
+#include "Debug.h"
 
-#include <cassert>
 #include <QtGui/QAction>
 #include <QtCore/QBasicTimer>
 #include <QtGui/QCloseEvent>
@@ -41,9 +35,8 @@
 #include <QtGui/QSizeGrip>
 #include <QtGui/QTabWidget>
 
+#include <cassert>
 
-#include "Counter.h"
-#include "Debug.h"
 // forward declaration
 class TabWidget;
 
@@ -54,10 +47,10 @@ class TabWidget: public QWidget, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        TabWidget( QTabWidget* parent );
+    //! constructor
+    TabWidget( QTabWidget* parent );
 
     //! set tab title
     void setTitle( const QString& title )
@@ -178,7 +171,7 @@ class TabWidget: public QWidget, public Counter
     QTabWidget* parent_;
 
     //! vertical layout
-    QVBoxLayout* main_layout_;
+    QVBoxLayout* mainLayout_;
 
     //! contents vbox
     QWidget* box_;
@@ -189,7 +182,7 @@ class TabWidget: public QWidget, public Counter
 
         SizeGrip( QWidget* parent ):
             QSizeGrip( parent )
-            {}
+        {}
 
         protected:
 

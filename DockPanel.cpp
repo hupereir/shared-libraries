@@ -74,7 +74,7 @@ DockPanel::DockPanel( QWidget* parent ):
     // vertical layout for children
     mainLayout_ = new QVBoxLayout();
     mainLayout_->setMargin( 5 );
-    mainLayout_->setSpacing( 5 );
+    mainLayout_->setSpacing( 2 );
     main().setLayout( mainLayout_ );
 
     // vertical panel

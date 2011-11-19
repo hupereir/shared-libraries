@@ -22,15 +22,9 @@
 *
 *******************************************************************************/
 
-/*!
-\file TabWidget.cpp
-\brief Tab widget with detachable pages
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "TabWidget.h"
+#include "File.h"
+#include "XmlOptions.h"
 
 #include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
@@ -40,8 +34,6 @@
 #include <QtGui/QStyleOptionMenuItem>
 #include <QtGui/QStyleOptionFrame>
 
-#include "File.h"
-#include "XmlOptions.h"
 #include "X11Util.h"
 
 
@@ -66,14 +58,14 @@ TabWidget::TabWidget( QTabWidget* parent ):
     setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
 
     // grid layout to overlay main layout and invisible grip
-    QGridLayout *grid_layout( new QGridLayout() );
-    grid_layout->setMargin(0);
-    grid_layout->setSpacing(0);
-    setLayout( grid_layout );
+    QGridLayout *gridLayout( new QGridLayout() );
+    gridLayout->setMargin(0);
+    gridLayout->setSpacing(0);
+    setLayout( gridLayout );
 
-    grid_layout->addLayout( main_layout_ = new QVBoxLayout(), 0, 0, 1, 1 );
-    main_layout_->setMargin(5);
-    main_layout_->setSpacing(2);
+    gridLayout->addLayout( mainLayout_ = new QVBoxLayout(), 0, 0, 1, 1 );
+    mainLayout_->setMargin(5);
+    mainLayout_->setSpacing(2);
 
     // vertical box
     box_ = new QWidget( this );
@@ -81,10 +73,10 @@ TabWidget::TabWidget( QTabWidget* parent ):
     box().layout()->setSpacing( 2 );
     box().layout()->setMargin( 0 );
 
-    main_layout_->addWidget( box_ );
+    mainLayout_->addWidget( box_ );
 
     {
-        grid_layout->addWidget( sizeGrip_ = new SizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+        gridLayout->addWidget( sizeGrip_ = new SizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
         _hideSizeGrip();
     }
 
