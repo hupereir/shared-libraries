@@ -43,6 +43,10 @@ namespace BASE
         public:
 
         //! constructor
+        Color( const QString& value )
+        { if( value.toUpper() != "NONE" ) setNamedColor( value ); }
+
+        //! constructor
         Color( const QColor& color ):
             QColor( color )
         {}
