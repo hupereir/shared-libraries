@@ -42,7 +42,7 @@
 #include "SvgConfiguration.h"
 #include "XmlOptions.h"
 
-using namespace std;
+
 
 namespace SVG
 {
