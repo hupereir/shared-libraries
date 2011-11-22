@@ -32,7 +32,6 @@
 \date $Date$
 */
 
-
 #include "Counter.h"
 #include "Debug.h"
 #include "Option.h"
@@ -44,8 +43,6 @@
 #include <vector>
 #include <map>
 #include <list>
-
-
 
 //! Option file parser based on Xml
 class Options: public Counter
@@ -179,7 +176,7 @@ class Options: public Counter
     virtual void keep( const QString& name )
     {
         if( specialOptions_.find( name ) == specialOptions_.end() )
-        { specialOptions_.insert( make_pair( name, List() ) ); }
+        { specialOptions_.insert( std::make_pair( name, List() ) ); }
     }
 
     //! auto-default
