@@ -31,11 +31,12 @@
 
 #include "Key.h"
 
-using namespace BASE;
-
-//______________________________________________
-Key::key_type& Key::_counter( void )
+namespace BASE
 {
-    static key_type counter(0);
-    return counter;
+    //______________________________________________
+    Key::key_type& Key::_counter( void )
+    {
+        static key_type counter(0);
+        return counter;
+    }
 }
