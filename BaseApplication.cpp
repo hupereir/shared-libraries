@@ -71,8 +71,8 @@ bool BaseApplication::realizeWidget( void )
     aboutAction_ = new QAction( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ), "About this &Application", this );
     connect( aboutAction_, SIGNAL( triggered() ), SLOT( _about() ) );
 
-    aboutqtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About &Qt", this );
-    connect( aboutqtAction_, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
+    aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About &Qt", this );
+    connect( aboutQtAction_, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
 
     closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), "E&xit", this );
     closeAction_->setShortcut( Qt::CTRL + Qt::Key_Q );

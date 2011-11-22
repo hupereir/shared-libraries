@@ -66,7 +66,7 @@ class BaseApplication: public BaseCoreApplication
 
     //! about
     QAction& aboutQtAction( void ) const
-    { return *aboutqtAction_; }
+    { return *aboutQtAction_; }
 
     //! configuration
     QAction& configurationAction( void ) const
@@ -120,7 +120,7 @@ class BaseApplication: public BaseCoreApplication
     QAction* aboutAction_;
 
     //! about qt
-    QAction* aboutqtAction_;
+    QAction* aboutQtAction_;
 
     //! configure
     QAction* configurationAction_;
