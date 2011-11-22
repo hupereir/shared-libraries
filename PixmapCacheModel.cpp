@@ -23,16 +23,14 @@
 *******************************************************************************/
 
 /*!
-  \file PixmapCacheModel.cpp
-  \brief model for object PixmapCaches
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file PixmapCacheModel.cpp
+\brief model for object PixmapCaches
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include "PixmapCacheModel.h"
-
-
 
 //_______________________________________________
 const QString PixmapCacheModel::column_titles_[ PixmapCacheModel::n_columns ] =
@@ -41,18 +39,18 @@ const QString PixmapCacheModel::column_titles_[ PixmapCacheModel::n_columns ] =
 //__________________________________________________________________
 QVariant PixmapCacheModel::data( const QModelIndex& index, int role ) const
 {
-  Debug::Throw( "PixmapCacheModel::data.\n" );
+    Debug::Throw( "PixmapCacheModel::data.\n" );
 
-  // check index, role and column
-  if( !index.isValid() ) return QVariant();
+    // check index, role and column
+    if( !index.isValid() ) return QVariant();
 
-  // retrieve associated file info
-  const PixmapEngine::Pair& icon_pair( get(index) );
+    // retrieve associated file info
+    const PixmapEngine::Pair& icon_pair( get(index) );
 
-  // return text associated to file and column
-  if( role == Qt::DisplayRole && index.column() == ICON ) return icon_pair.first;
-  if( role == Qt::DecorationRole && index.column() == ICON ) return icon_pair.second;
-  return QVariant();
+    // return text associated to file and column
+    if( role == Qt::DisplayRole && index.column() == ICON ) return icon_pair.first;
+    if( role == Qt::DecorationRole && index.column() == ICON ) return icon_pair.second;
+    return QVariant();
 
 }
 
@@ -60,15 +58,15 @@ QVariant PixmapCacheModel::data( const QModelIndex& index, int role ) const
 QVariant PixmapCacheModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 
-  if(
-    orientation == Qt::Horizontal &&
-    role == Qt::DisplayRole &&
-    section >= 0 &&
-    section < n_columns )
-  { return column_titles_[section]; }
+    if(
+        orientation == Qt::Horizontal &&
+        role == Qt::DisplayRole &&
+        section >= 0 &&
+        section < n_columns )
+    { return column_titles_[section]; }
 
-  // return empty
-  return QVariant();
+    // return empty
+    return QVariant();
 
 }
 
@@ -76,8 +74,8 @@ QVariant PixmapCacheModel::headerData(int section, Qt::Orientation orientation, 
 void PixmapCacheModel::_sort( int column, Qt::SortOrder order )
 {
 
-  Debug::Throw() << "PixmapCacheModel::sort - column: " << column << " order: " << order << endl;
-  std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
+    Debug::Throw() << "PixmapCacheModel::sort - column: " << column << " order: " << order << endl;
+    std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
 
 }
 
@@ -85,13 +83,13 @@ void PixmapCacheModel::_sort( int column, Qt::SortOrder order )
 bool PixmapCacheModel::SortFTor::operator () ( PixmapEngine::Pair first, PixmapEngine::Pair second ) const
 {
 
-  if( order_ == Qt::AscendingOrder ) swap( first, second );
+    if( order_ == Qt::AscendingOrder ) std::swap( first, second );
 
-  switch( type_ )
-  {
+    switch( type_ )
+    {
 
-    case ICON: return first.first < second.first;
-    default: return true;
-  }
+        case ICON: return first.first < second.first;
+        default: return true;
+    }
 
 }

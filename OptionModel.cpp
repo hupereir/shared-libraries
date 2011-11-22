@@ -37,8 +37,6 @@
 #include "OptionModel.h"
 #include "XmlOptions.h"
 
-
-
 //_______________________________________________
 const QString OptionModel::column_titles_[ OptionModel::n_columns ] =
 { "Name", "", "Current Value", "Default Value", "Flags" };
@@ -132,7 +130,7 @@ QVariant OptionModel::headerData(int section, Qt::Orientation orientation, int r
 bool OptionModel::SortFTor::operator () ( OptionPair first, OptionPair second ) const
 {
 
-  if( order_ == Qt::AscendingOrder ) swap( first, second );
+  if( order_ == Qt::AscendingOrder ) std::swap( first, second );
 
   switch( type_ )
   {
