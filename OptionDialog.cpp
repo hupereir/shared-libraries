@@ -44,7 +44,7 @@
 
 //__________________________________________________________________________
 OptionDialog::OptionDialog( QWidget* parent ):
-CustomDialog( parent, OkButton )
+CustomDialog( parent, CloseButton )
 {
 
     Debug::Throw( "OptionDialog::OptionDialog.\n" );

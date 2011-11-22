@@ -44,14 +44,9 @@ class CustomDialog: public BaseDialog, public Counter
     {
         //! no flags
         None = 0,
-
-        //! dialog has OK button
         OkButton = 1<<0,
-
-        //! dialog has CANCEL button
+        CloseButton = 1<<0,
         CancelButton = 1<<1,
-
-        //! separator
         Separator = 1<<2
     };
 

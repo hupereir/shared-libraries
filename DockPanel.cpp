@@ -217,6 +217,9 @@ void DockPanel::_toggleSticky( bool state )
 
     #endif
 
+    // update option if any
+    if( _hasOptionName() ) XmlOptions::get().set<bool>( _stickyOptionName(), state );
+
     return;
 
 }
