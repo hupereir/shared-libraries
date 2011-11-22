@@ -71,14 +71,14 @@ bool BaseApplication::realizeWidget( void )
     aboutAction_ = new QAction( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ), "About this &Application", this );
     connect( aboutAction_, SIGNAL( triggered() ), SLOT( _about() ) );
 
-    aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About &Qt", this );
+    aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About Qt", this );
     connect( aboutQtAction_, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
 
-    closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), "E&xit", this );
+    closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), "Exit", this );
     closeAction_->setShortcut( Qt::CTRL + Qt::Key_Q );
     connect( closeAction_, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
 
-    configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default &Configuration", this );
+    configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default Configuration", this );
     connect( configurationAction_, SIGNAL( triggered() ), SLOT( _configuration() ) );
 
     return true;
