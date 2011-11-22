@@ -21,30 +21,12 @@
 *
 *******************************************************************************/
 
-/*!
-<<<<<<< SvgEngine.cpp
-\file SvgEngine.cpp
-\brief customized Icon factory to provide better looking disabled icons
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-=======
-\file SvgEngine.cpp
-\brief customized Icon factory to provide better looking disabled icons
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
->>>>>>> 1.32
-*/
-
-#include <QPainter>
-
 #include "SvgPlasmaInterface.h"
 #include "SvgEngine.h"
 #include "Svg.h"
 #include "XmlOptions.h"
 
-
+#include <QtGui/QPainter>
 
 namespace SVG
 {
