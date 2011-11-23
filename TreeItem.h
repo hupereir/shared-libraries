@@ -242,14 +242,23 @@ template<class T> class TreeItem: public TreeItemBase
     {
 
         // check if there are remainig values
-        if( values.empty() ) return;
+        if( values.empty() )
+        {
+            // remove all rows
+            while( childCount() > 0 )
+            { remove(0); }
 
-        // first update children that are found in set
+            // and stop here
+            return;
+        }
+
+        // update children that are found in set
+        // remove children that are not found
         for( unsigned int row = 0; row < childCount(); )
         {
             typename ValueSet::iterator found( values.find( child(row).get() ) );
             if( found == values.end() ) remove( row );
-            else {
+            else if( found->isChild( get() ) ) {
 
                 // update child
                 child(row).set( *found );
@@ -258,6 +267,11 @@ template<class T> class TreeItem: public TreeItemBase
                 // update child children recursively
                 child(row).set( values );
                 row++;
+
+            } else {
+
+                // remove row and stop here
+                remove( row );
 
             }
 
@@ -279,7 +293,7 @@ template<class T> class TreeItem: public TreeItemBase
         if( values.empty() ) return;
 
         // first update children that are found in set
-        for( unsigned int row = 0; row < childCount(); row++ )
+        for( unsigned int row = 0; row < childCount();)
         {
 
             typename ValueSet::iterator found( values.find( child(row).get() ) );
@@ -296,10 +310,6 @@ template<class T> class TreeItem: public TreeItemBase
 
                 } else {
 
-                    // check child count
-                    if( child(row).childCount() )
-                    { Debug::Throw(0) << "TreeItem::update - software limitation: updating parent will fail when children are present" << endl; }
-
                     // remove row and stop here
                     remove( row );
                     continue;
@@ -308,7 +318,9 @@ template<class T> class TreeItem: public TreeItemBase
 
             }
 
+            // update child children recursively
             child(row).update( values );
+            row++;
 
         }
 
