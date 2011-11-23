@@ -32,12 +32,12 @@
 \date $Date$
 */
 
-#include <QAction>
-#include <QObject>
-
 #include "ApplicationManager.h"
 #include "BaseCoreApplication.h"
 #include "CommandLineArguments.h"
+
+#include <QtGui/QAction>
+#include <QtCore/QObject>
 
 //! Main Window singleton object
 class BaseApplication: public BaseCoreApplication

@@ -29,10 +29,10 @@
 \date $Date$
 */
 
+#include "BaseApplication.h"
 #include "BaseIcons.h"
 #include "FlatStyle.h"
 #include "IconEngine.h"
-#include "BaseApplication.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
@@ -149,8 +149,8 @@ void BaseApplication::_updateConfiguration( void )
 
     // set fonts
     QFont font;
-    font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
-    qApp->setFont( font );
+//     font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
+//     qApp->setFont( font );
 
     font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
     qApp->setFont( font, "QTextEdit" );
