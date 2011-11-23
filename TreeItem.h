@@ -296,6 +296,10 @@ template<class T> class TreeItem: public TreeItemBase
 
                 } else {
 
+                    // check child count
+                    if( child(row).childCount() )
+                    { Debug::Throw(0) << "TreeItem::update - software limitation: updating parent will fail when children are present" << endl; }
+
                     // remove row and stop here
                     remove( row );
                     continue;
