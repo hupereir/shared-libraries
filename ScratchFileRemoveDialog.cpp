@@ -35,61 +35,38 @@ CustomDialog( parent )
 
     Debug::Throw( 0, "ScratchFileRemoveDialog::ScratchFileRemoveDialog.\n" );
 
-    // horizontal layout for list and comments
-    QHBoxLayout* hLayout( new QHBoxLayout() );
-    hLayout->setSpacing( 5 );
-    hLayout->setMargin( 0 );
-    mainLayout().addLayout( hLayout, 1 );
+    setOptionName( "SCRATCH_DIALOG" );
+
+    // label
+    QLabel* label;
+    mainLayout().addWidget( label = new QLabel(
+        "Following temporary files have been created by the application. "
+        "Select the ones you want to remove.\n", this ) );
 
     // file list
-    QVBoxLayout* vLayout = new QVBoxLayout();
-    vLayout->setSpacing( 5 );
-    vLayout->setMargin( 0 );
-    hLayout->addLayout( vLayout );
-
-    vLayout->addWidget( new QLabel( "Selected files: ", this ) );
-    vLayout->addWidget( list_ = new TreeView( this ), 1 );
+    mainLayout().addWidget( list_ = new TreeView( this ), 1 );
     _list().setModel( &model_ );
     _list().sortByColumn( FileRecordModel::FILE );
     _list().setSelectionMode( QAbstractItemView::MultiSelection );
-    _list().setMask( 1<<FileRecordModel::FILE );
+    _list().setMask(
+        (1<<FileRecordModel::FILE)|
+        (1<<FileRecordModel::PATH) );
 
     model_.add( files );
     model_.sort( FileRecordModel::FILE, Qt::AscendingOrder );
     _list().resizeColumns();
     _list().selectAll();
 
-    // vertical layout for selection buttons and comments
-    vLayout = new QVBoxLayout();
-    vLayout->setSpacing( 5 );
-    vLayout->setMargin( 0 );
-    hLayout->addLayout( vLayout );
-
-    // work layout
-    QVBoxLayout* workLayout = new QVBoxLayout();
-    workLayout->setSpacing( 5 );
-    workLayout->setMargin( 0 );
-    vLayout->addLayout( workLayout, 1 );
-
-    QString buffer;
-    QTextStream( &buffer )
-        << "Following temporary files have" << endl
-        << "been created by the application." << endl
-        << endl
-        << "Select the ones you want to remove";
-
-    workLayout->addWidget( new QLabel( buffer, this ) );
+    // deselect all
+    buttonLayout().insertWidget( 0, clearSelectionButton_ = new QPushButton( "&Clear Selection", this ) );
+    clearSelectionButton_->setToolTip( "Deselect all files in list" );
+    connect( clearSelectionButton_, SIGNAL( clicked() ), _list().selectionModel(), SLOT( clear() ) );
 
     // select all
     QPushButton* button;
-    vLayout->addWidget( button = new QPushButton( "&Select All", this ) );
+    buttonLayout().insertWidget( 0, button = new QPushButton( "&Select All", this ) );
     button->setToolTip( "Select all files in list" );
     connect( button, SIGNAL( clicked() ), &_list(), SLOT( selectAll() ) );
-
-    // deselect all
-    vLayout->addWidget( clearSelectionButton_ = new QPushButton( "&Clear Selection", this ) );
-    clearSelectionButton_->setToolTip( "Deselect all files in list" );
-    connect( clearSelectionButton_, SIGNAL( clicked() ), _list().selectionModel(), SLOT( clear() ) );
 
     // connection
     connect( _list().selectionModel(), SIGNAL( selectionChanged(const QItemSelection &, const QItemSelection &) ), SLOT( _updateButtons() ) );
