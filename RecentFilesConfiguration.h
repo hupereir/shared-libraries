@@ -1,4 +1,3 @@
-
 #ifndef _RecentFilesConfiguration_h_
 #define _RecentFilesConfiguration_h_
 
@@ -25,20 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file    RecentFilesConfiguration.h
-\brief   configure files in recent files menu
-\version $Revision$
-\date    $Date$
-*/
-
-#include <QAction>
-#include <QPushButton>
-#include <QWidget>
-
 #include "Counter.h"
 #include "FileRecordModel.h"
 #include "OptionWidgetList.h"
+
+#include <QtGui/QAction>
+#include <QtGui/QPushButton>
+#include <QtGui/QWidget>
 
 class FileList;
 class TreeView;
@@ -49,10 +41,10 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        RecentFilesConfiguration( QWidget*, FileList& );
+    //! constructor
+    RecentFilesConfiguration( QWidget*, FileList& );
 
     //! read options
     virtual void read( void );

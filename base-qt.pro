@@ -92,6 +92,8 @@ HEADERS = \
   RemoveLineBuffer.h \
   RoundedPath.h \
   RoundedRegion.h \
+  ScratchFileMonitor.h \
+  ScratchFileRemoveDialog.h \
   ScrollObject.h \
   SelectLineDialog.h \
   StatusBar.h \
@@ -197,6 +199,8 @@ SOURCES = \
   RemoveLineBuffer.cpp \
   RoundedPath.cpp \
   RoundedRegion.cpp \
+  ScratchFileMonitor.cpp \
+  ScratchFileRemoveDialog.cpp \
   ScrollObject.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \

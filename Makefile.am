@@ -96,6 +96,8 @@ noinst_HEADERS = \
   RemoveLineBuffer.h \
   RoundedPath.h \
   RoundedRegion.h \
+  ScratchFileMonitor.h \
+  ScratchFileRemoveDialog.h \
   ScrollObject.h \
   SelectLineDialog.h \
   StatusBar.h \
@@ -203,6 +205,8 @@ libbase_qt_a_SOURCES = \
   RemoveLineBuffer.cpp \
   RoundedPath.cpp \
   RoundedRegion.cpp \
+  ScratchFileMonitor.cpp \
+  ScratchFileRemoveDialog.cpp \
   ScrollObject.cpp \
   SelectLineDialog.cpp \
   StatusBar.cpp \
@@ -277,6 +281,8 @@ nodist_libbase_qt_a_SOURCES = \
   moc_RecentFilesConfiguration.cpp \
   moc_RecentFilesMenu.cpp \
   moc_RemoveLineBuffer.cpp \
+  moc_ScratchFileMonitor.cpp \
+  moc_ScratchFileRemoveDialog.cpp \
   moc_ScrollObject.cpp \
   moc_SelectLineDialog.cpp \
   moc_StatusBar.cpp \

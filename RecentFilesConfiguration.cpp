@@ -21,19 +21,7 @@
 *
 *******************************************************************************/
 
-
-/*!
-\file RecentFilesConfiguration.cpp
-\brief   Spell checker common configuration
-\version $Revision$
-\date    $Date$
-*/
-
-#include <QGroupBox>
-#include <QLabel>
-#include <QLayout>
-#include <QShortcut>
-
+#include "RecentFilesConfiguration.h"
 #include "BaseIcons.h"
 #include "Debug.h"
 #include "FileList.h"
@@ -42,10 +30,12 @@
 #include "OptionCheckBox.h"
 #include "OptionSpinBox.h"
 #include "QuestionDialog.h"
-#include "RecentFilesConfiguration.h"
 #include "TreeView.h"
 
-
+#include <QtGui/QGroupBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QShortcut>
 
 //___________________________________________
 RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& recent_files ):
@@ -64,22 +54,22 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     // group box for additional options
     layout->addWidget( box = new QGroupBox( "Options", this ) );
 
-    QVBoxLayout* v_layout = new QVBoxLayout();
-    v_layout->setMargin(5);
-    v_layout->setSpacing(5);
-    box->setLayout( v_layout );
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin(5);
+    vLayout->setSpacing(5);
+    box->setLayout( vLayout );
 
-    QHBoxLayout* h_layout = new QHBoxLayout();
-    h_layout->setSpacing(5);
-    h_layout->setMargin(0);
-    v_layout->addLayout( h_layout );
+    QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setSpacing(5);
+    hLayout->setMargin(0);
+    vLayout->addLayout( hLayout );
 
 
     // previous file history size
     OptionSpinBox *spinbox;
-    h_layout->addWidget( new QLabel( "Recent files history size", box ) );
-    h_layout->addWidget( spinbox = new OptionSpinBox( box, "DB_SIZE" ) );
-    h_layout->addStretch(1);
+    hLayout->addWidget( new QLabel( "Recent files history size", box ) );
+    hLayout->addWidget( spinbox = new OptionSpinBox( box, "DB_SIZE" ) );
+    hLayout->addStretch(1);
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 100 );
     addOptionWidget( spinbox );
@@ -87,7 +77,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     // sort previous files by date
     OptionCheckBox* checkbox;
-    v_layout->addWidget( checkbox = new OptionCheckBox( "Sort recent files by date", box, "SORT_FILES_BY_DATE" ) );
+    vLayout->addWidget( checkbox = new OptionCheckBox( "Sort recent files by date", box, "SORT_FILES_BY_DATE" ) );
     checkbox->setToolTip( "Sort files by date rather than name in Open Previous menu." );
     addOptionWidget( checkbox );
 
@@ -104,13 +94,13 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     connect( _list().selectionModel(), SIGNAL( selectionChanged(const QItemSelection &, const QItemSelection &) ), SLOT( _updateButtons() ) );
 
-    v_layout = new QVBoxLayout();
-    v_layout->setSpacing(5);
-    v_layout->setMargin(0);
-    box->layout()->addItem( v_layout );
+    vLayout = new QVBoxLayout();
+    vLayout->setSpacing(5);
+    vLayout->setMargin(0);
+    box->layout()->addItem( vLayout );
 
     // clean
-    v_layout->addWidget( cleanButton_ = new QPushButton( "&Clean", box ) );
+    vLayout->addWidget( cleanButton_ = new QPushButton( "&Clean", box ) );
     cleanButton_->setToolTip( "Remove invalid files" );
     cleanButton_->setIcon( IconEngine::get( ICONS::DELETE ) );
     connect( cleanButton_, SIGNAL( clicked() ), SLOT( _clean() ) );
@@ -120,7 +110,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     _list().menu().addAction( cleanAction_ );
 
     // remove
-    v_layout->addWidget( removeButton_ = new QPushButton( "&Remove", box ) );
+    vLayout->addWidget( removeButton_ = new QPushButton( "&Remove", box ) );
     removeButton_->setIcon( IconEngine::get( ICONS::REMOVE ) );
     removeButton_->setToolTip( "Remove selected files" );
     connect( removeButton_, SIGNAL( clicked() ), SLOT( _remove() ) );
@@ -132,7 +122,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     _list().addAction( removeAction_ );
 
     // reload
-    v_layout->addWidget( reloadButton_ = new QPushButton( "&Reload", box ) );
+    vLayout->addWidget( reloadButton_ = new QPushButton( "&Reload", box ) );
     reloadButton_->setToolTip( "Reload file list" );
     reloadButton_->setIcon( IconEngine::get( ICONS::RELOAD ) );
     connect( reloadButton_, SIGNAL( clicked() ), SLOT( _reload() ) );
@@ -141,7 +131,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     connect( reloadAction_, SIGNAL( triggered() ), SLOT( _reload() ) );
     _list().menu().addAction( reloadAction_ );
 
-    v_layout->addStretch( 1 );
+    vLayout->addStretch( 1 );
 
     // connections
     _reloadButton().setEnabled( false );

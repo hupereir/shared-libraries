@@ -24,13 +24,7 @@
 *
 *******************************************************************************/
 
-/*!
-\file CursorMonitor.h
-\brief used to automatically save size of top level widgets
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "Counter.h"
 
 #include <QtCore/QBasicTimer>
 #include <QtCore/QObject>
@@ -38,9 +32,7 @@
 #include <QtGui/QCursor>
 #include <QtGui/QWidget>
 
-#include "Counter.h"
-
-//! used to automatically save size of top level widgets
+//! used to automatically hide mouse cursor over a certain widget
 class CursorMonitor: public QObject, public Counter
 {
 
