@@ -28,15 +28,6 @@
 \version $Revision$
 \date $Date$
 */
-#include <QApplication>
-#include <QScrollArea>
-#include <QShortcut>
-#include <QToolTip>
-#include <QGroupBox>
-#include <QHeaderView>
-#include <QLayout>
-#include <QLabel>
-
 #include "BaseIcons.h"
 #include "BaseConfigurationDialog.h"
 #include "GridLayout.h"
@@ -56,8 +47,14 @@
 #include "Str.h"
 #include "TreeView.h"
 
-
-
+#include <QtGui/QApplication>
+#include <QtGui/QScrollArea>
+#include <QtGui/QShortcut>
+#include <QtGui/QToolTip>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHeaderView>
+#include <QtGui/QLayout>
+#include <QtGui/QLabel>
 
 //_________________________________________________________
 BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
@@ -107,6 +104,9 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
     button->setToolTip( "Discard changes to options and close window" );
     button->setAutoDefault( false );
+
+    // close accelerator
+    new QShortcut( Qt::CTRL+Qt::Key_W, this, SLOT( reject() ) );
 
 }
 
