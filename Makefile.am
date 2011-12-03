@@ -27,7 +27,7 @@ list-add.png \
 list-remove.png \
 messagebox_warning.png \
 qt-logo.png \
-run-build.png \
+system-run.png \
 show-menu.png \
 user-trash.png \
 view-refresh.png \
