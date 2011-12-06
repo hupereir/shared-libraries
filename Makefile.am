@@ -22,17 +22,52 @@ noinst_HEADERS = \
 
 noinst_LIBRARIES = libbase-transparency.a
 
-libbase_transparency_a_SOURCES = \
+sources = \
   BackgroundPixmap.cpp \
   CompositeEngine.cpp \
   ShadowLabel.cpp \
   TransparencyConfiguration.cpp \
   TransparentWidget.cpp
 
-nodist_libbase_transparency_a_SOURCES = \
+nodist_sources = \
   moc_BackgroundPixmap.cpp \
   moc_TransparentWidget.cpp
 
+################
+# shared library
+if ENABLE_SHARED
+AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
+
+lib_LTLIBRARIES = libbase-transparency.la
+libbase_transparency_la_LIBADD = -lbase -lbase-qt
+libbase_transparency_la_SOURCES =  $(sources)
+nodist_libbase_transparency_la_SOURCES = $(nodist_sources)
+libbase_transparency_la_CXXFLAGS = $(AM_CXXFLAGS)
+
+# executable
+BUILT_SOURCES = testexternals.c
+noinst_PROGRAMS = testexternals
+testexternals_LDADD = libbase-transparency.la
+
+testexternals.c:
+	echo "//*** this is a generated file. Do not commit, do not edit" > $@
+	echo "int main()" >> $@
+	echo "{" >> $@
+	echo "  return 0;" >> $@
+	echo "}" >> $@
+
+else
+
+################
+# static library
+noinst_LIBRARIES = libbase-transparency.a
+libbase_transparency_a_SOURCES = $(sources)
+nodist_libbase_transparency_a_SOURCES = $(nodist_sources)
+libbase_transparency_a_XXCFLAGS = $(AM_CXXFLAGS)
+
+endif
+
+# clean
 clean-local:
 	 rm -f moc_*.cpp
 
