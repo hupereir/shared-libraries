@@ -155,7 +155,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
     // alignment
     else if( role == Qt::TextAlignmentRole && index.column() == ICON ) return Qt::AlignCenter;
 
-    return QVariant();
+    return ListModel<FileRecord>::data( index, role );
 
 }
 
