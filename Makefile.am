@@ -16,3 +16,8 @@ SUBDIRS =  \
   base-transparency \
   base-pixmaps \
 	$(SPELLCHECK_SOURCE_DIR)
+
+EXTRA_DIST = \
+ INSTALL \
+ COPYING\
+ autogen.sh

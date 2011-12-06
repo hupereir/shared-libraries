@@ -1,5 +1,5 @@
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(textool, 1.4.6)
+AM_INIT_AUTOMAKE(shared-libraries, 1.0.0)
 AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_CXX(CC g++)
 AC_ENABLE_STATIC(no)
@@ -143,8 +143,8 @@ echo "qt_bin       = " $qt_bin
 dnl **************************
 dnl Shared vs static
 
-enable_shared_libs=true;
-AM_CONDITIONAL(ENABLE_SHARED, [test no != $enable_shared_libs])
+enable_shared_libraries=true;
+AM_CONDITIONAL(ENABLE_SHARED, [test no != $enable_shared_libraries])
 
 dnl **************************
 dnl retrieve current timestamp
@@ -153,6 +153,8 @@ AC_SUBST(timestamp)
 echo ""
 echo "timestamp = " $timestamp
 
+dnl *************************
+dnl output files
 echo ""
 AC_OUTPUT( \
   Makefile \
