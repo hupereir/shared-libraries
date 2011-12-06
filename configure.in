@@ -160,7 +160,8 @@ AC_OUTPUT( \
   base-qt/Makefile \
   base-help/Makefile \
   base-server/Makefile \
-  base-spellcheck/Makefile \
   base-svg/Makefile \
-  base-transparency/Makefile
+  base-transparency/Makefile \
+  base-pixmaps/Makefile \
+  base-spellcheck/Makefile
  )

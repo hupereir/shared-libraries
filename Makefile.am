@@ -9,10 +9,10 @@ endif
 
 SUBDIRS =  \
   base \
-  base-pixmaps \
   base-qt \
   base-help \
   base-server \
   base-svg \
   base-transparency \
+  base-pixmaps \
 	$(SPELLCHECK_SOURCE_DIR)
