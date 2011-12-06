@@ -27,8 +27,6 @@ noinst_HEADERS = \
   SvgId.h \
   Svg.h
 
-noinst_LIBRARIES = libbase-svg.a
-
 sources =  \
   SvgConfiguration.cpp \
   SvgEngine.cpp \
