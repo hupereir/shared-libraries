@@ -29,18 +29,53 @@ noinst_HEADERS = \
 
 noinst_LIBRARIES = libbase-svg.a
 
-libbase_svg_a_SOURCES =  \
+sources =  \
   SvgConfiguration.cpp \
   SvgEngine.cpp \
   SvgPlasmaInterface.cpp \
   SvgRenderer.cpp \
   SvgThread.cpp
 
-nodist_libbase_svg_a_SOURCES =  \
+nodist_sources =  \
   moc_SvgEngine.cpp \
   moc_SvgPlasmaInterface.cpp \
   qrc_baseSvg.cpp
 
+################
+# shared library
+if ENABLE_SHARED
+AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
+
+lib_LTLIBRARIES = libbase-svg.la
+libbase_svg_la_LIBADD = -lQtSvg -lbase -lbase-qt
+libbase_svg_la_SOURCES =  $(sources)
+nodist_libbase_svg_la_SOURCES = $(nodist_sources)
+libbase_svg_la_CXXFLAGS = $(AM_CXXFLAGS)
+
+# executable
+BUILT_SOURCES = testexternals.c
+noinst_PROGRAMS = testexternals
+testexternals_LDADD = libbase-svg.la
+
+testexternals.c:
+	echo "//*** this is a generated file. Do not commit, do not edit" > $@
+	echo "int main()" >> $@
+	echo "{" >> $@
+	echo "  return 0;" >> $@
+	echo "}" >> $@
+
+else
+
+################
+# static library
+noinst_LIBRARIES = libbase-svg.a
+libbase_svg_a_SOURCES = $(sources)
+nodist_libbase_svg_a_SOURCES = $(nodist_sources)
+libbase_svg_a_XXCFLAGS = $(AM_CXXFLAGS)
+
+endif
+
+# clean
 clean-local:
 	rm -f moc_*.cpp
 	rm -f qrc_*.cpp
