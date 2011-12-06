@@ -135,9 +135,7 @@ noinst_HEADERS = \
   XmlTimeStamp.h \
   XmlString.h
 
-noinst_LIBRARIES = libbase-qt.a
-
-libbase_qt_a_SOURCES = \
+sources = \
   AnimatedLabel.cpp \
   AnimatedLineEditor.cpp \
   AnimatedStackedWidget.cpp \
@@ -238,7 +236,7 @@ libbase_qt_a_SOURCES = \
   XmlTimeStamp.cpp \
   XmlString.cpp
 
-nodist_libbase_qt_a_SOURCES = \
+nodist_sources = \
   qrc_basePixmaps.cpp \
   moc_AnimatedLabel.cpp \
   moc_AnimatedLineEditor.cpp \
@@ -297,6 +295,39 @@ nodist_libbase_qt_a_SOURCES = \
   moc_UserSelectionFrame.cpp \
   moc_XmlFileList.cpp
 
+# shared library
+if ENABLE_SHARED
+AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
+
+lib_LTLIBRARIES = libbase-qt.la
+libbase_qt_la_LIBADD = -l$(qt_lib) -lQtGui -lQtXml -lbase
+libbase_qt_la_SOURCES = $(sources)
+nodist_libbase_qt_la_SOURCES = $(nodist_sources)
+libbase_qt_la_CXXFLAGS = $(AM_CXXFLAGS)
+
+# executable
+BUILT_SOURCES = testexternals.c
+noinst_PROGRAMS = testexternals
+testexternals_LDADD = libbase-qt.la
+
+testexternals.c:
+	echo "//*** this is a generated file. Do not commit, do not edit" > $@
+	echo "int main()" >> $@
+	echo "{" >> $@
+	echo "  return 0;" >> $@
+	echo "}" >> $@
+
+else
+
+# static library
+noinst_LIBRARIES = libbase-qt.a
+libbase_qt_a_SOURCES = $(sources)
+nodist_libbase_qt_a_SOURCES = $(nodist_sources)
+libbase_qt_a_XXCFLAGS = $(AM_CXXFLAGS)
+
+endif
+
+#clean
 clean-local:
 	rm -f moc_*.cpp
 	rm -f qrc_*.cpp
