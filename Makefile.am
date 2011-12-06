@@ -48,6 +48,7 @@ sources = \
 	TimeStamp.cpp \
 	Util.cpp
 
+################
 # shared library
 if ENABLE_SHARED
 AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
@@ -71,6 +72,7 @@ testexternals.c:
 
 else
 
+################
 # static library
 noinst_LIBRARIES = libbase.a
 libbase_a_SOURCES = $(sources)
