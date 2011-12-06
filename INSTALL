@@ -1,0 +1,100 @@
+// $Id$
+
+/******************************************************************************
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
+*******************************************************************************/
+
+How to install textool
+-----------------------
+
+Get a tarball of latest release and unpack:
+gtar -xzvf textool-X.X.tar.gz or
+tar -xzvf textool-X.X.tar.gz
+
+I. autogen.sh:
+-------------
+
+cd textool-X.X/
+./autogen.sh
+
+(see below or use ./autogen.sh --help for options)
+
+II. Make:
+---------
+
+make install
+
+to install the code. This will install textool in the default installation path of your system (e.g. /usr/local/bin, or /usr/bin, depending on the system).
+This usually requires root privileges at the installation stage. Alternatively a different installation path can be set at configuration
+time using the --prefix autogen option.
+
+III. Local installation:
+------------------------
+
+For a local installation use:
+./autogen.sh --prefix=$HOME
+
+Binaries and resource files will be created in $HOME/bin and
+$HOME/share/textool, respectively.
+
+
+IV. Troubles at configuration:
+------------------------------
+
+autogen.sh may possibly complained of not finding the Qt libraries libraries and/or
+headers. The default path is assumed to be:
+
+/usr/lib/qt4/lib for libraries
+/usr/lib/qt4/include for headers
+/usr/lib/qt4/bin for binaries (namely moc, the Qt meta object file generator)
+
+You can tell autogen.sh where to find non default path:
+
+./autogen.sh --with-Qt=[path]
+
+in which case [path]/lib, [path]/include and [path]/bin will be use in place of
+the defaults.
+
+You can also explicitely define all path:
+using:
+./autogen.sh \
+  --with-Qt-lib=[lib_path] \
+  --with-Qt-include=[include_path] \
+  --with-Qt-bin=[bin_path]
+
+Make sure you have all libraries, header for Qt installed on your platform.
+
+Other plugins are needed to run all textool utilities. They do not make the
+configuration nor the compilation crash. The corresponding tools are however
+disabled.
+
+- A text editor: default is nedit
+- LaTex: default is latex
+- dvi to postscript file convertor: default is dvips
+- postscript to pdf file convertor: default is ps2pdf
+- a dvi file viewer: default is xdvi
+- a postscript file viewer: default is gv
+- a pdf file viewer: default is xpdf
+- a spell checker: default is SpellCheck
+
+Alternate applications can be specified in the resource file.
+
+Questions, comments:
+hugo.pereira@free.fr
