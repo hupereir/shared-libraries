@@ -107,7 +107,8 @@ int TreeView::visibleColumnCount( void ) const
 {
     int out(0);
     for( int index=0; model() && index < model()->columnCount(); index++ )
-        if( !isColumnHidden( index ) ) out++;
+    { if( !isColumnHidden( index ) ) out++; }
+
     return out;
 }
 
@@ -266,6 +267,8 @@ void TreeView::saveSortOrder( void )
 {
 
     Debug::Throw( "TreeView::saveSortOrder.\n" );
+
+    // save option
     if( !hasOptionName() ) return;
     XmlOptions::get().set<int>( sortOrderOptionName(), header()->sortIndicatorOrder() );
     XmlOptions::get().set<int>( sortColumnOptionName(), header()->sortIndicatorSection() );
@@ -314,7 +317,7 @@ void TreeView::paintEvent( QPaintEvent* event )
 {
 
     // check selected column background color
-    if( !_selectedColumnColor().isValid() ) return QTreeView::paintEvent( event );
+    if( !selectedColumnColor_.isValid() ) return QTreeView::paintEvent( event );
 
     // check number of columns
     if( visibleColumnCount() < 2 ) return QTreeView::paintEvent( event );
@@ -322,14 +325,14 @@ void TreeView::paintEvent( QPaintEvent* event )
     {
 
         // get selected column
-        int selected_column( header()->sortIndicatorSection() );
-        QRect rect( visualRect( model()->index( 0, selected_column ) ) );
+        int selectedColumn( header()->sortIndicatorSection() );
+        QRect rect( visualRect( model()->index( 0, selectedColumn ) ) );
 
         QPainter painter( viewport() );
         painter.setClipRect( event->rect() );
         rect.setTop(0);
         rect.setHeight( height() );
-        painter.setBrush( _selectedColumnColor() );
+        painter.setBrush( selectedColumnColor_ );
         painter.setPen( Qt::NoPen );
         painter.drawRect( rect );
         painter.end();
@@ -739,7 +742,7 @@ void TreeView::_updateConfiguration( void )
     QColor color;
     QString colorname( XmlOptions::get().raw("SELECTED_COLUMN_COLOR") );
     if( !colorname.startsWith( ColorDisplay::NONE, Qt::CaseInsensitive ) ) color = QColor( colorname );
-    _setSelectedColumnColor( color );
+    selectedColumnColor_ = color;
 
     // icon size
     if( iconSizeFromOptions_ )

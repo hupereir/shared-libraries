@@ -218,14 +218,6 @@ class TreeView: public QTreeView, public Counter
     //! context menu
     virtual void contextMenuEvent( QContextMenuEvent* );
 
-    //! selected column color
-    const QColor& _selectedColumnColor( void ) const
-    { return selectedColumnColor_; }
-
-    //! selected column color
-    void _setSelectedColumnColor( const QColor& color )
-    { selectedColumnColor_ = color; }
-
     //! find dialog
     virtual BaseFindDialog& _findDialog( void )
     {

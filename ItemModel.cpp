@@ -64,7 +64,3 @@ QModelIndexList ItemModel::indexes( int column, const QModelIndex& parent ) cons
     return out;
 
 }
-
-//____________________________________________________________
-QVariant ItemModel::data(const QModelIndex& index, int role ) const
-{ return QVariant(); }

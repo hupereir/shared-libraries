@@ -31,8 +31,6 @@
 class ItemModel : public QAbstractItemModel
 {
 
-    Q_OBJECT
-
     public:
 
     //! constructor
@@ -44,9 +42,6 @@ class ItemModel : public QAbstractItemModel
 
     //! return all indexes in model starting from parent [recursive]
     QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;
-
-    // return data for a given index
-    virtual QVariant data(const QModelIndex&, int ) const;
 
     //!@name sorting
     //@{

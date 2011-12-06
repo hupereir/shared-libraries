@@ -29,7 +29,7 @@
 //_______________________________________________________________________________________
 void ScratchFileMonitor::add( const File& file )
 {
-    Debug::Throw( "ScratchFileMonitor::add.\n" );
+    Debug::Throw() << "ScratchFileMonitor::add - " << file << endl;
     files_.insert( file );
 }
 
@@ -44,7 +44,7 @@ void ScratchFileMonitor::deleteScratchFiles( void )
     for( FileSet::const_iterator iter = files_.begin(); iter != files_.end(); iter++ )
     {
 
-        if( iter->exists() && iter->isWritable() && !iter->isDirectory() )
+        if( iter->exists() && iter->isWritable() && (iter->isLink() || !iter->isDirectory() ) )
         { records.push_back( FileRecord( *iter ) ); }
 
     }
@@ -55,11 +55,22 @@ void ScratchFileMonitor::deleteScratchFiles( void )
     ScratchFileRemoveDialog dialog( 0L, records );
     if( dialog.exec() == QDialog::Rejected  || ( records = dialog.selectedFiles() ).empty() ) return;
 
-    // remove files
-    for( FileRecordModel::List::iterator iter = records.begin(); iter != records.end(); ++iter )
+    // convert back to std::set
+    FileSet temp;
+    for( FileRecordModel::List::const_reverse_iterator iter = records.rbegin(); iter != records.rend(); ++iter )
+    { temp.insert( iter->file() ); }
+
+    // re-add directories
+    for( FileSet::const_iterator iter = files_.begin(); iter != files_.end(); iter++ )
+    { if( iter->isDirectory() && !iter->isLink() ) temp.insert( *iter ); }
+
+    // remove
+    // use backward iterator
+    for( FileSet::const_reverse_iterator iter = temp.rbegin(); iter != temp.rend(); iter++ )
     {
-        iter->file().remove();
-        files_.erase( iter->file() );
+        Debug::Throw(0) << "ScratchFileMonitor::deleteScratchFiles - removing " << *iter << endl;
+        iter->remove();
+        files_.erase( *iter );
     }
 
 }

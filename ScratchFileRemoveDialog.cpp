@@ -33,7 +33,7 @@ ScratchFileRemoveDialog::ScratchFileRemoveDialog( QWidget* parent, const FileRec
 CustomDialog( parent )
 {
 
-    Debug::Throw( 0, "ScratchFileRemoveDialog::ScratchFileRemoveDialog.\n" );
+    Debug::Throw( "ScratchFileRemoveDialog::ScratchFileRemoveDialog.\n" );
 
     setOptionName( "SCRATCH_DIALOG" );
 
