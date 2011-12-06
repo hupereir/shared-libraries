@@ -24,19 +24,14 @@
 *
 *******************************************************************************/
 
-/*!
-\file    ItemModel.h
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-
-#include <QAbstractItemModel>
+#include <QtCore/QAbstractItemModel>
+#include <QtGui/QColor>
 
 //! Job model. Stores job information for display in lists
 class ItemModel : public QAbstractItemModel
 {
+
+    Q_OBJECT
 
     public:
 
@@ -50,6 +45,9 @@ class ItemModel : public QAbstractItemModel
     //! return all indexes in model starting from parent [recursive]
     QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;
 
+    // return data for a given index
+    virtual QVariant data(const QModelIndex&, int ) const;
+
     //!@name sorting
     //@{
 
@@ -62,11 +60,11 @@ class ItemModel : public QAbstractItemModel
 
     //! current sorting column
     const int& sortColumn( void ) const
-    { return sort_column_; }
+    { return sortColumn_; }
 
     //! current sort order
     const Qt::SortOrder& sortOrder( void ) const
-    { return sort_order_; }
+    { return sortOrder_; }
 
     //@}
 
@@ -104,10 +102,10 @@ class ItemModel : public QAbstractItemModel
     private:
 
     //! sorting column
-    int sort_column_;
+    int sortColumn_;
 
     //! sorting order
-    Qt::SortOrder sort_order_;
+    Qt::SortOrder sortOrder_;
 
 };
 

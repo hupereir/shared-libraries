@@ -19,13 +19,7 @@
 *
 *******************************************************************************/
 
-/*!
-\file TreeView.cpp
-\brief customized Tree View
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "TreeView.h"
 
 #include "BaseFindDialog.h"
 #include "BaseIcons.h"
@@ -36,14 +30,14 @@
 #include "ColumnSortingMenu.h"
 #include "Singleton.h"
 #include "TextEditor.h"
-#include "TreeView.h"
 #include "XmlOptions.h"
 
-#include <cassert>
 #include <QtGui/QCursor>
 #include <QtGui/QHeaderView>
 #include <QtGui/QPainter>
 #include <QtGui/QScrollBar>
+
+#include <cassert>
 
 //_______________________________________________
 TreeView::TreeView( QWidget* parent ):

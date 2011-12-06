@@ -269,8 +269,9 @@ nodist_libbase_qt_a_SOURCES = \
   moc_FileRecordModel.cpp \
   moc_FontEditor.cpp \
   moc_IconBrowsedButton.cpp \
-  moc_ImageFileDialog.cpp \
   moc_IconSizeMenu.cpp \
+  moc_ImageFileDialog.cpp \
+  moc_ItemModel.cpp \
   moc_LineEditor.cpp \
   moc_LineNumberDisplay.cpp \
   moc_LogWidget.cpp \

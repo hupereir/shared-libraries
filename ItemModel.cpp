@@ -21,24 +21,14 @@
 *
 *******************************************************************************/
 
-/*!
-\file    ItemModel.h
-\brief   Job model. Stores job information for display in lists
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-#include "Debug.h"
 #include "ItemModel.h"
-
-
+#include "Debug.h"
 
 //_______________________________________________________________
 ItemModel::ItemModel( QObject* parent ):
     QAbstractItemModel( parent ),
-    sort_column_(0),
-    sort_order_( Qt::AscendingOrder )
+    sortColumn_(0),
+    sortOrder_( Qt::AscendingOrder )
 { Debug::Throw( "ItemModel::ItemModel.\n" ); }
 
 
@@ -48,8 +38,8 @@ void ItemModel::sort( int column, Qt::SortOrder order )
     Debug::Throw() << "ItemModel::sort - column: " << column << " order: " << order << endl;
 
     // store column and order
-    sort_column_ = column;
-    sort_order_ = order;
+    sortColumn_ = column;
+    sortOrder_ = order;
 
     // emit signals and call private methods
     emit layoutAboutToBeChanged();
@@ -74,3 +64,7 @@ QModelIndexList ItemModel::indexes( int column, const QModelIndex& parent ) cons
     return out;
 
 }
+
+//____________________________________________________________
+QVariant ItemModel::data(const QModelIndex& index, int role ) const
+{ return QVariant(); }

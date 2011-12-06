@@ -24,15 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file TreeView.h
-\brief customized Tree View
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
 #include "Counter.h"
 #include "TextSelection.h"
 
