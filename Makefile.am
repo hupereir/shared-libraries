@@ -20,8 +20,6 @@ noinst_HEADERS = \
   TransparencyHelpText.h \
   TransparentWidget.h
 
-noinst_LIBRARIES = libbase-transparency.a
-
 sources = \
   BackgroundPixmap.cpp \
   CompositeEngine.cpp \
