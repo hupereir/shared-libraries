@@ -69,6 +69,7 @@ namespace BASE
 
         QHBoxLayout *layout = new QHBoxLayout();
         layout->setMargin(0);
+        layout->setSpacing(2);
         setLayout( layout );
 
         // add help list
@@ -87,11 +88,11 @@ namespace BASE
         stack_->addWidget( htmlFrame_ = new QWidget( this ) );
 
         // vbox layout for editor and button
-        QVBoxLayout *v_layout = new QVBoxLayout();
-        v_layout->setMargin(0);
-        htmlFrame_->setLayout( v_layout );
+        QVBoxLayout *vLayout = new QVBoxLayout();
+        vLayout->setMargin(0);
+        htmlFrame_->setLayout( vLayout );
 
-        v_layout->addWidget( htmlEditor_ = new AnimatedTextEditor( htmlFrame_ ) );
+        vLayout->addWidget( htmlEditor_ = new AnimatedTextEditor( htmlFrame_ ) );
         htmlEditor_->setReadOnly( true );
         htmlEditor_->setWrapFromOptions( false );
         htmlEditor_->wrapModeAction().setChecked( true );
@@ -103,67 +104,67 @@ namespace BASE
         Debug::Throw( "HelpDialog::HelpDialog - html editor done.\n" );
 
         // button layout
-        QHBoxLayout* h_layout = new QHBoxLayout();
-        h_layout->setSpacing( 5 );
-        h_layout->setMargin(5);
-        h_layout->setDirection( QBoxLayout::RightToLeft );
-        v_layout->addLayout( h_layout );
+        QHBoxLayout* hLayout = new QHBoxLayout();
+        hLayout->setSpacing( 5 );
+        hLayout->setMargin( 5 );
+        hLayout->setDirection( QBoxLayout::RightToLeft );
+        vLayout->addLayout( hLayout );
 
         QToolButton* tool_button;
         QPushButton* button;
-        h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", htmlFrame_ ) );
+        hLayout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", htmlFrame_ ) );
         connect( button, SIGNAL( clicked() ), SLOT( close() ) );
         button->setToolTip( "Close the reference manual window" );
 
-        h_layout->addWidget( editButton_ = new QPushButton( IconEngine::get( ICONS::EDIT ), "&Edit", htmlFrame_ ) );
+        hLayout->addWidget( editButton_ = new QPushButton( IconEngine::get( ICONS::EDIT ), "&Edit", htmlFrame_ ) );
         connect( editButton_, SIGNAL( clicked() ), SLOT( _toggleEdition() ) );
         editButton_->setToolTip( "Edit current help" );
-        h_layout->addStretch( 1 );
+        hLayout->addStretch( 1 );
         Debug::Throw( "HelpDialog::HelpDialog - html button frame done.\n" );
 
         // add plain editor
         stack_->addWidget( plainFrame_ = new QWidget( this ) );
 
         // vbox layout for editor and button
-        v_layout = new QVBoxLayout();
-        v_layout->setMargin(0);
-        plainFrame_->setLayout( v_layout );
+        vLayout = new QVBoxLayout();
+        vLayout->setMargin(0);
+        plainFrame_->setLayout( vLayout );
 
         // plain editor
-        v_layout->addWidget( plainEditor_ = new AnimatedTextEditor( plainFrame_ ) );
+        vLayout->addWidget( plainEditor_ = new AnimatedTextEditor( plainFrame_ ) );
         plainEditor_->setReadOnly( false );
         plainEditor_->setWrapFromOptions( false );
         plainEditor_->wrapModeAction().setChecked( true );
 
         // button layout
-        h_layout = new QHBoxLayout();
-        h_layout->setSpacing( 5 );
-        h_layout->setMargin(5);
-        h_layout->setDirection( QBoxLayout::RightToLeft );
-        v_layout->addLayout( h_layout );
+        hLayout = new QHBoxLayout();
+        hLayout->setSpacing( 5 );
+        hLayout->setMargin(5);
+        hLayout->setDirection( QBoxLayout::RightToLeft );
+        vLayout->addLayout( hLayout );
 
-        h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", plainFrame_ ) );
+        hLayout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", plainFrame_ ) );
         connect( button, SIGNAL( clicked() ), SLOT( close() ) );
         button->setToolTip( "Close the reference manual window" );
 
-        h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), "&Apply", plainFrame_ ) );
+        hLayout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), "&Apply", plainFrame_ ) );
         connect( button, SIGNAL( clicked() ), SLOT( _toggleEdition() ) );
         button->setToolTip( "Edit current help" );
-        h_layout->addStretch( 1 );
+        hLayout->addStretch( 1 );
 
-        h_layout->addWidget( tool_button = new QToolButton( plainFrame_ ) );
+        hLayout->addWidget( tool_button = new QToolButton( plainFrame_ ) );
         tool_button->setIcon( IconEngine::get( ICONS::FIND ) );
         tool_button->setAutoRaise( true );
         tool_button->setToolTip( "Display help string in separate dialog." );
         connect( tool_button, SIGNAL( clicked() ), SLOT( _showHelpString() ) );
 
-        h_layout->addWidget( tool_button = new QToolButton( plainFrame_ ) );
+        hLayout->addWidget( tool_button = new QToolButton( plainFrame_ ) );
         tool_button->setIcon( IconEngine::get( ICONS::REMOVE ) );
         tool_button->setAutoRaise( true );
         tool_button->setToolTip( "Delete current help item" );
         connect( tool_button, SIGNAL( clicked() ), SLOT( _deleteItem() ) );
 
-        h_layout->addWidget( tool_button = new QToolButton( plainFrame_ ) );
+        hLayout->addWidget( tool_button = new QToolButton( plainFrame_ ) );
         tool_button->setIcon( IconEngine::get( ICONS::ADD ) );
         tool_button->setAutoRaise( true );
         tool_button->setToolTip( "Add a new help item" );
