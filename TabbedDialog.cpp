@@ -45,13 +45,13 @@ Counter( "TabbedDialog" )
     Debug::Throw( "TabbedDialog::TabbedDialog.\n" );
 
     QVBoxLayout* layout( new QVBoxLayout() );
-    layout->setSpacing(5);
+    layout->setSpacing(2);
     layout->setMargin(0);
     setLayout( layout );
 
     QHBoxLayout* h_layout = new QHBoxLayout();
     h_layout->setMargin(0);
-    h_layout->setSpacing(5);
+    h_layout->setSpacing(2);
     layout->addLayout( h_layout );
 
     // add widgets
