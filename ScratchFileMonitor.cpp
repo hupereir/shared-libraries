@@ -68,7 +68,6 @@ void ScratchFileMonitor::deleteScratchFiles( void )
     // use backward iterator
     for( FileSet::const_reverse_iterator iter = temp.rbegin(); iter != temp.rend(); iter++ )
     {
-        Debug::Throw(0) << "ScratchFileMonitor::deleteScratchFiles - removing " << *iter << endl;
         iter->remove();
         files_.erase( *iter );
     }
