@@ -50,10 +50,11 @@
 namespace TRANSPARENCY
 {
 
+    #if defined(Q_WS_X11)
+
     //! get lowest bit (shift) from integer value (little/big endianness)
     int _lowestBit( const unsigned int& val );
 
-    #if defined(Q_WS_X11)
     // pointer to pixel converter
     typedef QRgb (*PixelConverter) (XImage* image, const unsigned int& x, const unsigned int& y);
 
@@ -314,6 +315,8 @@ namespace TRANSPARENCY
 
     }
 
+    #if defined(Q_WS_X11)
+
     //_____________________________________________________
     int _lowestBit( const unsigned int& val)
     {
@@ -324,8 +327,6 @@ namespace TRANSPARENCY
         for( i=0; ( !(val & test)) && i < max_bits; i++, test<<=1);
         return (i == max_bits ) ? -1 : i;
     }
-
-    #if defined(Q_WS_X11)
 
     //_____________________________________________________
     PixelConverter _converter( XImage* image )
@@ -414,6 +415,6 @@ namespace TRANSPARENCY
     QRgb _convertPixel_UNKNOWN( XImage* image, const unsigned int& x, const unsigned int& y )
     { return 0; }
 
-};
+    #endif
 
-#endif
+}
