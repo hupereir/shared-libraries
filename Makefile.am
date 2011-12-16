@@ -88,6 +88,7 @@ noinst_HEADERS = \
   PixmapCacheDialog.h \
   PixmapCacheModel.h \
   PixmapEngine.h \
+  PrintPreviewDialog.h \
   QuestionDialog.h \
   QtUtil.h \
   RecentFilesConfiguration.h \
@@ -195,6 +196,7 @@ sources = \
   PixmapCacheDialog.cpp \
   PixmapCacheModel.cpp \
   PixmapEngine.cpp \
+  PrintPreviewDialog.cpp \
   QuestionDialog.cpp \
   QtUtil.cpp \
   RecentFilesConfiguration.cpp \
