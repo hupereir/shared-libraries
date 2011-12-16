@@ -26,7 +26,6 @@ noinst_HEADERS = \
 	Singleton.h \
 	TextFormat.h \
 	TextFormatBlock.h \
-	TextPosition.h \
 	TimeStamp.h \
 	Util.h
 
