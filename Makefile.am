@@ -54,7 +54,6 @@ noinst_HEADERS = \
   FontEditor.h \
   FontInfo.h \
   GridLayout.h \
-  HtmlTextNode.h \
   IconBrowsedButton.h \
   IconEngine.h \
   IconSize.h \
@@ -177,7 +176,6 @@ sources = \
   FlatStyle.cpp \
   FontEditor.cpp \
   FontInfo.cpp \
-  HtmlTextNode.cpp \
   IconBrowsedButton.cpp \
   IconEngine.cpp \
   IconSize.cpp \

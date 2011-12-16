@@ -40,8 +40,8 @@ CustomDialog( parent )
     // label
     QLabel* label;
     mainLayout().addWidget( label = new QLabel(
-        "Following temporary files have been created by the application. "
-        "Select the ones you want to remove.\n", this ) );
+        "Following temporary files have been created by the application.\n"
+        "Select the ones you want to remove:", this ) );
 
     // file list
     mainLayout().addWidget( list_ = new TreeView( this ), 1 );

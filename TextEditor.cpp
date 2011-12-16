@@ -55,7 +55,6 @@
 #include <QtGui/QProgressDialog>
 #include <QtCore/QRegExp>
 #include <QtGui/QTextBlock>
-#include <QtGui/QTextLayout>
 #include <QtCore/QTextStream>
 
 //______________________________________________
