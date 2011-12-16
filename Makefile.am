@@ -109,6 +109,7 @@ noinst_HEADERS = \
   TextEditionDelegate.h \
   TextBlockData.h \
   TextBlockFlags.h \
+  TextPosition.h \
   TextSelection.h \
   TextSeparator.h \
   TileSet.h \
@@ -214,6 +215,7 @@ sources = \
   TextEditor.cpp \
   TextEditorMarginWidget.cpp \
   TextEditionDelegate.cpp \
+  TextPosition.cpp \
   TextSeparator.cpp \
   TileSet.cpp \
   ToolBarMenu.cpp \

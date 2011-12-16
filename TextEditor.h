@@ -73,10 +73,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        TextEditor( QWidget* parent = 0 );
+    //! constructor
+    TextEditor( QWidget* parent = 0 );
 
     //! destrutor
     virtual ~TextEditor( void );
@@ -94,17 +94,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
     //! return true if current textCursor is visible
     virtual bool isCursorVisible( void ) const;
-
-    //!@name conversions between absolute index and TextPosition
-    //@{
-
-    //! text position from index
-    virtual TextPosition positionFromIndex( const int& index ) const;
-
-    //! index from text position
-    virtual int indexFromPosition( const TextPosition& index ) const;
-
-    //@}
 
     //! set text
     virtual void setPlainText( const QString& );
