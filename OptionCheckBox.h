@@ -1,3 +1,6 @@
+#ifndef OptionCheckBox_h
+#define OptionCheckBox_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,40 +24,30 @@
 *
 *******************************************************************************/
 
-#ifndef OptionCheckBox_h
-#define OptionCheckBox_h
-
-/*!
-   \file    OptionCheckBox.h
-   \brief   QCheckBox associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <QCheckBox>
 #include "OptionWidget.h"
 #include "XmlOptions.h"
+
+#include <QtGui/QCheckBox>
 
 //! QCheckBox associated to an option for configuration dialogs
 class OptionCheckBox: public QCheckBox, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionCheckBox( const QString& label, QWidget* parent, const QString& option_name ):
-      QCheckBox( label, parent ),
-      OptionWidget( option_name )
-  {}
+    //! constructor
+    OptionCheckBox( const QString& label, QWidget* parent, const QString& optionName ):
+        QCheckBox( label, parent ),
+        OptionWidget( optionName )
+    {}
 
-  //! read value from option
-  void read( void )
-  { setChecked( XmlOptions::get().get<bool>( optionName() ) ); }
+    //! read value from option
+    virtual void read( void )
+    { setChecked( XmlOptions::get().get<bool>( optionName() ) ); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().set<bool>( optionName(), isChecked() ); }
+    //! write value to option
+    virtual void write( void ) const
+    { XmlOptions::get().set<bool>( optionName(), isChecked() ); }
 
 };
 #endif

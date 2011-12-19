@@ -6,228 +6,230 @@ INCLUDEPATH += ../base
 DEPENDPATH += . ../base
 
 HEADERS = \
-  AnimatedLabel.h \
-  AnimatedLineEditor.h \
-  AnimatedStackedWidget.h \
-  AnimatedTabWidget.h \
-  AnimatedTextEditor.h \
-  AnimatedTreeView.h \
-  BaseConfigurationDialog.h \
-  BaseDialog.h \
-  BaseFindDialog.h \
-  BaseIcons.h \
-  BaseMainWindow.h \
-  BaseReplaceDialog.h \
-  BlockHighlight.h \
-  BoxSelection.h \
-  BrowsedLineEditor.h \
-  ClockLabel.h \
-  Color.h \
-  ColorDisplay.h \
-  ColorGrabButton.h \
-  ColorMenu.h \
-  ColumnSelectionMenu.h \
-  ColumnSortingMenu.h \
-  CounterDialog.h \
-  CounterModel.h \
-  CursorMonitor.h \
-  CustomComboBox.h \
-  CustomDialog.h \
-  CustomPixmap.h \
-  CustomSlider.h \
-  CustomTextDocument.h \
-  CustomToolBar.h \
-  CustomToolButton.h \
-  DebugMenu.h \
-  DockPanel.h \
-  ErrorHandler.h \
-  ElidedLabel.h \
-  FileDialog.h \
-  FileList.h \
-  FileRecordBaseProperties.h \
-  FileRecordModel.h \
-  FlatStyle.h \
-  FontEditor.h \
-  FontInfo.h \
-  GridLayout.h \
-  IconBrowsedButton.h \
-  IconEngine.h \
-  IconSize.h \
-  IconSizeMenu.h \
-  ImageFileDialog.h \
-  InformationDialog.h \
-  IOString.h \
-  ItemModel.h \
-  KeyModifier.h \
-  LineEditor.h \
-  LineNumberDisplay.h \
-  ListModel.h \
-  LogWidget.h \
-  MessageBuffer.h \
-  MultipleClickCounter.h \
-  OptionBrowsedLineEditor.h \
-  OptionCheckBox.h \
-  OptionColorDisplay.h \
-  OptionComboBox.h \
-  OptionDialog.h \
-  OptionFontEditor.h \
-  OptionFontInfo.h \
-  OptionIconBrowsedButton.h \
-  OptionLineEditor.h \
-  OptionListBox.h \
-  OptionModel.h \
-  OptionRadioButton.h \
-  OptionSlider.h \
-  OptionSpinBox.h \
-  OptionWidget.h \
-  OptionWidgetList.h \
-  PixmapCacheDialog.h \
-  PixmapCacheModel.h \
-  PixmapEngine.h \
-  QuestionDialog.h \
-  QtUtil.h \
-  RecentFilesConfiguration.h \
-  RecentFilesMenu.h \
-  RemoveLineBuffer.h \
-  RoundedPath.h \
-  RoundedRegion.h \
-  ScratchFileMonitor.h \
-  ScratchFileRemoveDialog.h \
-  ScrollObject.h \
-  SelectLineDialog.h \
-  StatusBar.h \
-  SystemEnvironmentDialog.h \
-  TabbedDialog.h \
-  TabWidget.h \
-  TextEditor.h \
-  TextEditorMarginWidget.h \
-  TextEditionDelegate.h \
-  TextBlockData.h \
-  TextBlockFlags.h \
-  TextPosition.h \
-  TextSelection.h \
-  TextSeparator.h \
-  TileSet.h \
-  ToolBarMenu.h \
-  ToolButtonStyleMenu.h \
-  TransitionWidget.h \
-  TreeItem.h \
-  TreeItemBase.h \
-  TreeModel.h \
-  TreeView.h \
-  TreeViewConfiguration.h \
-  UserSelectionFrame.h \
-  ValidFileThread.h \
-  WindowMonitor.h \
-  WinUtil.h \
-  X11Util.h \
-  XmlCommandLineArguments.h \
-  XmlError.h \
-  XmlFileList.h \
-  XmlFileRecord.h \
-  XmlOption.h \
-  XmlOptions.h \
-  XmlTextFormatBlock.h \
-  XmlTimeStamp.h \
-  XmlString.h
+AnimatedLabel.h \
+AnimatedLineEditor.h \
+AnimatedStackedWidget.h \
+AnimatedTabWidget.h \
+AnimatedTextEditor.h \
+AnimatedTreeView.h \
+BaseConfigurationDialog.h \
+BaseDialog.h \
+BaseFindDialog.h \
+BaseIcons.h \
+BaseMainWindow.h \
+BasePrintHelper.h \
+BaseReplaceDialog.h \
+BlockHighlight.h \
+BoxSelection.h \
+BrowsedLineEditor.h \
+ClockLabel.h \
+Color.h \
+ColorDisplay.h \
+ColorGrabButton.h \
+ColorMenu.h \
+ColumnSelectionMenu.h \
+ColumnSortingMenu.h \
+CounterDialog.h \
+CounterModel.h \
+CursorMonitor.h \
+CustomComboBox.h \
+CustomDialog.h \
+CustomPixmap.h \
+CustomSlider.h \
+CustomTextDocument.h \
+CustomToolBar.h \
+CustomToolButton.h \
+DebugMenu.h \
+DockPanel.h \
+ErrorHandler.h \
+ElidedLabel.h \
+FileDialog.h \
+FileList.h \
+FileRecordBaseProperties.h \
+FileRecordModel.h \
+FlatStyle.h \
+FontEditor.h \
+FontInfo.h \
+GridLayout.h \
+IconBrowsedButton.h \
+IconEngine.h \
+IconSize.h \
+IconSizeMenu.h \
+ImageFileDialog.h \
+InformationDialog.h \
+IOString.h \
+ItemModel.h \
+KeyModifier.h \
+LineEditor.h \
+LineNumberDisplay.h \
+ListModel.h \
+LogWidget.h \
+MessageBuffer.h \
+MultipleClickCounter.h \
+OptionBrowsedLineEditor.h \
+OptionCheckBox.h \
+OptionColorDisplay.h \
+OptionComboBox.h \
+OptionDialog.h \
+OptionFontEditor.h \
+OptionFontInfo.h \
+OptionIconBrowsedButton.h \
+OptionLineEditor.h \
+OptionListBox.h \
+OptionModel.h \
+OptionRadioButton.h \
+OptionSlider.h \
+OptionSpinBox.h \
+OptionWidget.h \
+OptionWidgetList.h \
+PixmapCacheDialog.h \
+PixmapCacheModel.h \
+PixmapEngine.h \
+QuestionDialog.h \
+QtUtil.h \
+RecentFilesConfiguration.h \
+RecentFilesMenu.h \
+RemoveLineBuffer.h \
+RoundedPath.h \
+RoundedRegion.h \
+ScratchFileMonitor.h \
+ScratchFileRemoveDialog.h \
+ScrollObject.h \
+SelectLineDialog.h \
+StatusBar.h \
+SystemEnvironmentDialog.h \
+TabbedDialog.h \
+TabWidget.h \
+TextEditor.h \
+TextEditorMarginWidget.h \
+TextEditionDelegate.h \
+TextBlockData.h \
+TextBlockFlags.h \
+TextPosition.h \
+TextSelection.h \
+TextSeparator.h \
+TileSet.h \
+ToolBarMenu.h \
+ToolButtonStyleMenu.h \
+TransitionWidget.h \
+TreeItem.h \
+TreeItemBase.h \
+TreeModel.h \
+TreeView.h \
+TreeViewConfiguration.h \
+UserSelectionFrame.h \
+ValidFileThread.h \
+WindowMonitor.h \
+WinUtil.h \
+X11Util.h \
+XmlCommandLineArguments.h \
+XmlError.h \
+XmlFileList.h \
+XmlFileRecord.h \
+XmlOption.h \
+XmlOptions.h \
+XmlTextFormatBlock.h \
+XmlTimeStamp.h \
+XmlString.h
 
 SOURCES = \
-  AnimatedLabel.cpp \
-  AnimatedLineEditor.cpp \
-  AnimatedStackedWidget.cpp \
-  AnimatedTabWidget.cpp \
-  AnimatedTextEditor.cpp \
-  AnimatedTreeView.cpp \
-  BaseConfigurationDialog.cpp \
-  BaseDialog.cpp \
-  BaseFindDialog.cpp \
-  BaseMainWindow.cpp \
-  BaseReplaceDialog.cpp \
-  BlockHighlight.cpp \
-  BoxSelection.cpp \
-  BrowsedLineEditor.cpp \
-  ClockLabel.cpp \
-  Color.cpp \
-  ColorDisplay.cpp \
-  ColorGrabButton.cpp \
-  ColorMenu.cpp \
-  ColumnSelectionMenu.cpp \
-  ColumnSortingMenu.cpp \
-  CounterDialog.cpp \
-  CounterModel.cpp \
-  CursorMonitor.cpp \
-  CustomComboBox.cpp \
-  CustomDialog.cpp \
-  CustomPixmap.cpp \
-  CustomSlider.cpp \
-  CustomToolBar.cpp \
-  CustomToolButton.cpp \
-  DebugMenu.cpp \
-  DockPanel.cpp \
-  ElidedLabel.cpp \
-  ErrorHandler.cpp \
-  FileDialog.cpp \
-  FileList.cpp \
-  FileRecordModel.cpp \
-  FlatStyle.cpp \
-  FontEditor.cpp \
-  FontInfo.cpp \
-  IconBrowsedButton.cpp \
-  IconEngine.cpp \
-  IconSize.cpp \
-  IconSizeMenu.cpp \
-  ImageFileDialog.cpp \
-  InformationDialog.cpp \
-  IOString.cpp \
-  ItemModel.cpp \
-  KeyModifier.cpp \
-  LineEditor.cpp \
-  LineNumberDisplay.cpp \
-  LogWidget.cpp \
-  OptionDialog.cpp \
-  OptionListBox.cpp \
-  OptionModel.cpp \
-  OptionWidgetList.cpp \
-  PixmapCacheDialog.cpp \
-  PixmapCacheModel.cpp \
-  PixmapEngine.cpp \
-  QuestionDialog.cpp \
-  QtUtil.cpp \
-  RecentFilesConfiguration.cpp \
-  RecentFilesMenu.cpp \
-  RemoveLineBuffer.cpp \
-  RoundedPath.cpp \
-  RoundedRegion.cpp \
-  ScratchFileMonitor.cpp \
-  ScratchFileRemoveDialog.cpp \
-  ScrollObject.cpp \
-  SelectLineDialog.cpp \
-  StatusBar.cpp \
-  SystemEnvironmentDialog.cpp \
-  TabbedDialog.cpp \
-  TabWidget.cpp \
-  TextEditor.cpp \
-  TextEditorMarginWidget.cpp \
-  TextEditionDelegate.cpp \
-  TextPosition.cpp \
-  TextSeparator.cpp \
-  TileSet.cpp \
-  ToolBarMenu.cpp \
-  ToolButtonStyleMenu.cpp \
-  TransitionWidget.cpp \
-  TreeItemBase.cpp \
-  TreeView.cpp \
-  TreeViewConfiguration.cpp \
-  UserSelectionFrame.cpp \
-  ValidFileThread.cpp \
-  WinUtil.cpp \
-  WindowMonitor.cpp \
-  X11Util.cpp \
-  XmlCommandLineArguments.cpp \
-  XmlFileList.cpp \
-  XmlFileRecord.cpp \
-  XmlOption.cpp \
-  XmlOptions.cpp \
-  XmlTextFormatBlock.cpp \
-  XmlTimeStamp.cpp \
-  XmlString.cpp
+AnimatedLabel.cpp \
+AnimatedLineEditor.cpp \
+AnimatedStackedWidget.cpp \
+AnimatedTabWidget.cpp \
+AnimatedTextEditor.cpp \
+AnimatedTreeView.cpp \
+BaseConfigurationDialog.cpp \
+BaseDialog.cpp \
+BaseFindDialog.cpp \
+BaseMainWindow.cpp \
+BasePrintHelper.cpp \
+BaseReplaceDialog.cpp \
+BlockHighlight.cpp \
+BoxSelection.cpp \
+BrowsedLineEditor.cpp \
+ClockLabel.cpp \
+Color.cpp \
+ColorDisplay.cpp \
+ColorGrabButton.cpp \
+ColorMenu.cpp \
+ColumnSelectionMenu.cpp \
+ColumnSortingMenu.cpp \
+CounterDialog.cpp \
+CounterModel.cpp \
+CursorMonitor.cpp \
+CustomComboBox.cpp \
+CustomDialog.cpp \
+CustomPixmap.cpp \
+CustomSlider.cpp \
+CustomToolBar.cpp \
+CustomToolButton.cpp \
+DebugMenu.cpp \
+DockPanel.cpp \
+ElidedLabel.cpp \
+ErrorHandler.cpp \
+FileDialog.cpp \
+FileList.cpp \
+FileRecordModel.cpp \
+FlatStyle.cpp \
+FontEditor.cpp \
+FontInfo.cpp \
+IconBrowsedButton.cpp \
+IconEngine.cpp \
+IconSize.cpp \
+IconSizeMenu.cpp \
+ImageFileDialog.cpp \
+InformationDialog.cpp \
+IOString.cpp \
+ItemModel.cpp \
+KeyModifier.cpp \
+LineEditor.cpp \
+LineNumberDisplay.cpp \
+LogWidget.cpp \
+OptionDialog.cpp \
+OptionListBox.cpp \
+OptionModel.cpp \
+OptionWidgetList.cpp \
+PixmapCacheDialog.cpp \
+PixmapCacheModel.cpp \
+PixmapEngine.cpp \
+QuestionDialog.cpp \
+QtUtil.cpp \
+RecentFilesConfiguration.cpp \
+RecentFilesMenu.cpp \
+RemoveLineBuffer.cpp \
+RoundedPath.cpp \
+RoundedRegion.cpp \
+ScratchFileMonitor.cpp \
+ScratchFileRemoveDialog.cpp \
+ScrollObject.cpp \
+SelectLineDialog.cpp \
+StatusBar.cpp \
+SystemEnvironmentDialog.cpp \
+TabbedDialog.cpp \
+TabWidget.cpp \
+TextEditor.cpp \
+TextEditorMarginWidget.cpp \
+TextEditionDelegate.cpp \
+TextPosition.cpp \
+TextSeparator.cpp \
+TileSet.cpp \
+ToolBarMenu.cpp \
+ToolButtonStyleMenu.cpp \
+TransitionWidget.cpp \
+TreeItemBase.cpp \
+TreeView.cpp \
+TreeViewConfiguration.cpp \
+UserSelectionFrame.cpp \
+ValidFileThread.cpp \
+WinUtil.cpp \
+WindowMonitor.cpp \
+X11Util.cpp \
+XmlCommandLineArguments.cpp \
+XmlFileList.cpp \
+XmlFileRecord.cpp \
+XmlOption.cpp \
+XmlOptions.cpp \
+XmlTextFormatBlock.cpp \
+XmlTimeStamp.cpp \
+XmlString.cpp
