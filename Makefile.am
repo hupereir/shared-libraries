@@ -2,6 +2,8 @@ ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = \
 application-exit.png \
+arrow-left.png \
+arrow-right.png \
 color-picker.png \
 configure.png \
 dialog-cancel.png \
