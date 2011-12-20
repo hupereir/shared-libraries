@@ -46,6 +46,10 @@ void BasePrintHelper::setupPage( QPrinter* printer )
     pageRect_ = QRect( headerRect_.bottomLeft(), footerRect_.topRight() );
     pageRect_.adjust( 0, headerRect_.height()/2, 0, -footerRect_.height()/2 );
 
+    // get margins
+    qreal left(0), top(0), right(0), bottom(0);
+    printer->getPageMargins( &left, &top, &right, &bottom, QPrinter::DevicePixel );
+
     return;
 
 }
@@ -82,5 +86,7 @@ void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
 
     // restore
     painter->restore();
+
+    emit pageCountChanged( pageNumber_ );
 
 }

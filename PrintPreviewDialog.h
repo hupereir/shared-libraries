@@ -26,9 +26,20 @@
 #include "CustomDialog.h"
 
 #include <QtGui/QPrintPreviewWidget>
+#include <QtGui/QLineEdit>
+#include <QtGui/QToolButton>
+#include <QtGui/QLabel>
+#include <QtGui/QIntValidator>
+
+class BasePrintHelper;
+
+namespace PRINT
+{ class NavigationWidget; }
 
 class PrintPreviewDialog: public CustomDialog
 {
+
+    Q_OBJECT
 
     public:
 
@@ -39,12 +50,18 @@ class PrintPreviewDialog: public CustomDialog
     virtual ~PrintPreviewDialog( void )
     {}
 
+    // set print helper
+    void setHelper( BasePrintHelper& );
 
-    //! preview widget
-    QPrintPreviewWidget* previewWidget( void )
-    { return previewWidget_; }
+    protected slots:
+
+    //! update page
+    void _updatePage( void );
 
     private:
+
+    //! navigation widget
+    PRINT::NavigationWidget* navigationWidget_;
 
     //! preview widget
     QPrintPreviewWidget* previewWidget_;

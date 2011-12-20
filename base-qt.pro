@@ -85,6 +85,8 @@ OptionWidgetList.h \
 PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
+PrintPreviewDialog.h \
+PrintPreviewDialog_p.h \
 QuestionDialog.h \
 QtUtil.h \
 RecentFilesConfiguration.h \
@@ -193,6 +195,7 @@ OptionWidgetList.cpp \
 PixmapCacheDialog.cpp \
 PixmapCacheModel.cpp \
 PixmapEngine.cpp \
+PrintPreviewDialog.cpp \
 QuestionDialog.cpp \
 QtUtil.cpp \
 RecentFilesConfiguration.cpp \

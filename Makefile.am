@@ -90,6 +90,7 @@ PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
 PrintPreviewDialog.h \
+PrintPreviewDialog_p.h \
 QuestionDialog.h \
 QtUtil.h \
 RecentFilesConfiguration.h \
@@ -250,6 +251,7 @@ moc_BaseConfigurationDialog.cpp \
 moc_BaseDialog.cpp \
 moc_BaseFindDialog.cpp \
 moc_BaseMainWindow.cpp \
+moc_BasePrintHelper.cpp \
 moc_BaseReplaceDialog.cpp \
 moc_BlockHighlight.cpp \
 moc_BrowsedLineEditor.cpp \
@@ -280,6 +282,8 @@ moc_OptionDialog.cpp \
 moc_OptionListBox.cpp \
 moc_OptionModel.cpp \
 moc_PixmapCacheDialog.cpp \
+moc_PrintPreviewDialog.cpp \
+moc_PrintPreviewDialog_p.cpp \
 moc_RecentFilesConfiguration.cpp \
 moc_RecentFilesMenu.cpp \
 moc_RemoveLineBuffer.cpp \

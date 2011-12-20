@@ -2,6 +2,8 @@
   <qresource>
 
     <file alias="pixmaps/application-exit.png">../base-pixmaps/application-exit.png</file>
+    <file alias="pixmaps/arrow-left.png">../base-pixmaps/arrow-left.png</file>
+    <file alias="pixmaps/arrow-right.png">../base-pixmaps/arrow-right.png</file>
     <file alias="pixmaps/color-picker.png">../base-pixmaps/color-picker.png</file>
     <file alias="pixmaps/configure.png">../base-pixmaps/configure.png</file>
     <file alias="pixmaps/dialog-cancel.png">../base-pixmaps/dialog-cancel.png</file>

@@ -37,6 +37,8 @@ class LogEntry;
 class BasePrintHelper: public QObject
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
@@ -60,6 +62,11 @@ class BasePrintHelper: public QObject
     //! set page number manually
     void setPageNumber( int value )
     { pageNumber_ = value; }
+
+    signals:
+
+    //! emmited when number of pages has changed
+    void pageCountChanged( int );
 
     protected:
 
