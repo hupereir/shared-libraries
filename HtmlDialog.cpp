@@ -43,6 +43,8 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
 
     Debug::Throw( "HtmlDialog::HtmlDialog.\n" );
 
+    setOptionName( "HTML_DIALOG" );
+
     // file
     GridLayout *gridLayout = new GridLayout();
     gridLayout->setMargin(0);
