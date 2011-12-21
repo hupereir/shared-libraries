@@ -15,6 +15,7 @@ document-encrypt.png \
 document-open-folder.png \
 document-open.png \
 document-print.png \
+document-print-preview.png \
 edit-clear-locationbar-rtl.png \
 edit-copy.png \
 edit-cut.png \
