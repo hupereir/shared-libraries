@@ -64,6 +64,7 @@ namespace ICONS
     static const QString PASTE = "edit-paste.png";
     static const QString PIN = "stock_pin.png";
     static const QString PRINT = "document-print.png";
+    static const QString PRINT_PREVIEW = "document-print-preview.png";
     static const QString REDO= "edit-redo.png";
     static const QString RELOAD = "view-refresh.png";
     static const QString REMOVE="list-remove.png";

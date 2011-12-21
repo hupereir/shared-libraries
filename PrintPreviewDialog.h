@@ -23,7 +23,7 @@
 *
 ****************************************************************************/
 
-#include "CustomDialog.h"
+#include "BaseDialog.h"
 
 #include <QtGui/QPrintPreviewWidget>
 #include <QtGui/QLineEdit>
@@ -36,7 +36,7 @@ class BasePrintHelper;
 namespace PRINT
 { class NavigationWidget; }
 
-class PrintPreviewDialog: public CustomDialog
+class PrintPreviewDialog: public BaseDialog
 {
 
     Q_OBJECT

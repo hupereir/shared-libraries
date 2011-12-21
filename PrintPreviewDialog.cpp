@@ -213,14 +213,19 @@ namespace PRINT
 
 //_________________________________________________________________
 PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
-    CustomDialog( parent, CloseButton )
+    BaseDialog( parent )
 {
     Debug::Throw( "PrintPreviewDialog::PrintPreviewDialog.\n" );
     setOptionName( "PRINT_PREVIEW_DIALOG" );
-    mainLayout().addWidget( previewWidget_ = new QPrintPreviewWidget( this ) );
+
+    QVBoxLayout* layout( new QVBoxLayout() );
+    layout->setMargin(0);
+    setLayout( layout );
+
+    layout->addWidget( previewWidget_ = new QPrintPreviewWidget( this ) );
     previewWidget_->setZoomMode( QPrintPreviewWidget::FitToWidth );
 
-    mainLayout().addWidget( navigationWidget_ = new PRINT::NavigationWidget( this ), 0, Qt::AlignCenter );
+    layout->addWidget( navigationWidget_ = new PRINT::NavigationWidget( this ), 0, Qt::AlignCenter );
     connect( navigationWidget_, SIGNAL( pageChanged( int ) ), previewWidget_, SLOT( setCurrentPage( int ) ) );
 
     // close accelerator
@@ -229,7 +234,15 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
     // connect scrollbars
     QList<QGraphicsView*> graphicsViews( previewWidget_->findChildren<QGraphicsView*>() );
     if( !graphicsViews.isEmpty() )
-    { connect( graphicsViews.front()->verticalScrollBar(), SIGNAL( valueChanged( int ) ), SLOT( _updatePage( void ) ) ); }
+    {
+
+        // connection on vertical scrollbar
+        connect( graphicsViews.front()->verticalScrollBar(), SIGNAL( valueChanged( int ) ), SLOT( _updatePage( void ) ) );
+
+        // hide horizontal scrollbar
+        graphicsViews.front()->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+    }
 
     resize( 600, 700 );
 }
