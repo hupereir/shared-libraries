@@ -32,6 +32,7 @@ messagebox_warning.png \
 qt-logo.png \
 system-run.png \
 show-menu.png \
+text-html.png \
 user-trash.png \
 view-refresh.png \
 zoom-in-large.png \
