@@ -32,6 +32,7 @@
     <file alias="pixmaps/qt-logo.png">../base-pixmaps/qt-logo.png</file>
     <file alias="pixmaps/system-run.png">../base-pixmaps/system-run.png</file>
     <file alias="pixmaps/show-menu.png">../base-pixmaps/show-menu.png</file>
+    <file alias="pixmaps/text-html.png">../base-pixmaps/text-html.png</file>
     <file alias="pixmaps/user-trash.png">../base-pixmaps/user-trash.png</file>
     <file alias="pixmaps/view-refresh.png">../base-pixmaps/view-refresh.png</file>
     <file alias="pixmaps/zoom-in-large.png">../base-pixmaps/zoom-in-large.png</file>

@@ -53,7 +53,7 @@ namespace PRINT
         // previous page button
         hLayout->addWidget( previousPageButton_ = new QToolButton( this ) );
         previousPageButton_->setAutoRaise( true );
-        previousPageButton_->setIcon( IconEngine::get( ICONS::PREVIOUS_PAGE ) );
+        previousPageButton_->setIcon( IconEngine::get( ICONS::PREVIOUS ) );
         connect( previousPageButton_, SIGNAL( clicked( void ) ), SLOT( _previousPage( void ) ) );
 
         // editor
@@ -75,7 +75,7 @@ namespace PRINT
         // next page button
         hLayout->addWidget( nextPageButton_ = new QToolButton( this ) );
         nextPageButton_->setAutoRaise( true );
-        nextPageButton_->setIcon( IconEngine::get( ICONS::NEXT_PAGE ) );
+        nextPageButton_->setIcon( IconEngine::get( ICONS::NEXT ) );
         connect( nextPageButton_, SIGNAL( clicked( void ) ), SLOT( _nextPage( void ) ) );
 
         // pages

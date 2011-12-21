@@ -74,8 +74,9 @@ namespace ICONS
     static const QString UNDO= "edit-undo.png";
     static const QString WARNING = "messagebox_warning.png";
 
-    static const QString PREVIOUS_PAGE = "arrow-left.png";
-    static const QString NEXT_PAGE = "arrow-right.png";
+    static const QString PREVIOUS = "arrow-left.png";
+    static const QString NEXT = "arrow-right.png";
+    static const QString HTML = "text-html.png";
 
 };
 
