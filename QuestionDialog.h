@@ -25,44 +25,35 @@
 *
 *******************************************************************************/
 
-/*!
-  \file QuestionDialog.h
-  \brief simplified question dialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QString>
-#include <QLabel>
-#include <QLayout>
-
 #include "CustomDialog.h"
 #include "Counter.h"
+
+#include <QtCore/QString>
+#include <QtGui/QLabel>
 
 //! simplified question dialog
 class QuestionDialog: public CustomDialog
 {
 
-  public:
+    public:
 
-  //! constructor
-  QuestionDialog( QWidget* parent, QString text = QString() );
+    //! constructor
+    QuestionDialog( QWidget* parent, QString text = QString() );
 
-  //! set text
-  void setText( const QString& text )
-  { _label().setText( text ); }
+    //! set text
+    void setText( const QString& text )
+    { _label().setText( text ); }
 
-  protected:
+    protected:
 
-  //! label
-  QLabel& _label( void ) const
-  { return *label_; }
+    //! label
+    QLabel& _label( void ) const
+    { return *label_; }
 
-  private:
+    private:
 
-  //! main label
-  QLabel *label_;
+    //! main label
+    QLabel *label_;
 
 };
 

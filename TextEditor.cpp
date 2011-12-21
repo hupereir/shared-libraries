@@ -1570,56 +1570,56 @@ void TextEditor::_installActions( void )
     Debug::Throw( "TextEditor::_installActions.\n" );
 
     // create actions
-    addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), "&Undo", this ) );
+    addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), "Undo", this ) );
     undoAction_->setShortcut( Qt::CTRL + Qt::Key_Z );
     undoAction_->setEnabled( document()->isUndoAvailable() );
     connect( undoAction_, SIGNAL( triggered() ), document(), SLOT( undo() ) );
     connect( this, SIGNAL( undoAvailable( bool ) ), undoAction_, SLOT( setEnabled( bool ) ) );
 
-    addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), "&Redo", this ) );
+    addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), "Redo", this ) );
     redoAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_Z );
     redoAction_->setEnabled( document()->isRedoAvailable() );
     connect( redoAction_, SIGNAL( triggered() ), document(), SLOT( redo() ) );
     connect( this, SIGNAL( redoAvailable( bool ) ), redoAction_, SLOT( setEnabled( bool ) ) );
 
-    addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), "Cu&t", this ) );
+    addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), "Cut", this ) );
     cutAction_->setShortcut( Qt::CTRL + Qt::Key_X );
     connect( cutAction_, SIGNAL( triggered() ), SLOT( cut() ) );
 
-    addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), "&Copy", this ) );
+    addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), "Copy", this ) );
     copyAction_->setShortcut( Qt::CTRL + Qt::Key_C );
     connect( copyAction_, SIGNAL( triggered() ), SLOT( copy() ) );
 
-    addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), "&Paste", this ) );
+    addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), "Paste", this ) );
     pasteAction_->setShortcut( Qt::CTRL + Qt::Key_V );
     connect( pasteAction_, SIGNAL( triggered() ), SLOT( paste() ) );
     connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
     _updatePasteAction();
 
-    addAction( clearAction_ = new QAction( "&Clear", this ) );
+    addAction( clearAction_ = new QAction( "Clear", this ) );
     connect( clearAction_, SIGNAL( triggered() ), SLOT( clear() ) );
 
-    addAction( selectAllAction_ = new QAction( "Select &All", this ) );
+    addAction( selectAllAction_ = new QAction( "Select All", this ) );
     selectAllAction_->setShortcut( Qt::CTRL + Qt::Key_A );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-    addAction( upperCaseAction_ = new QAction( "&Upper Case", this ) );
+    addAction( upperCaseAction_ = new QAction( "Upper Case", this ) );
     upperCaseAction_->setShortcut( Qt::CTRL + Qt::Key_U );
     upperCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( upperCaseAction_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
-    addAction( lowerCaseAction_ = new QAction( "&Lower Case", this ) );
+    addAction( lowerCaseAction_ = new QAction( "Lower Case", this ) );
     lowerCaseAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_U );
     lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( lowerCaseAction_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
-    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "&Find", this ) );
+    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find ...", this ) );
     findAction_->setShortcut( Qt::CTRL + Qt::Key_F );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
-    addAction( findAgainAction_ = new QAction( "F&ind Again", this ) );
+    addAction( findAgainAction_ = new QAction( "Find Again", this ) );
     findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainAction_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
@@ -1629,7 +1629,7 @@ void TextEditor::_installActions( void )
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainBackwardAction_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
-    addAction( findSelectionAction_ = new QAction( "Find &Selection", this ) );
+    addAction( findSelectionAction_ = new QAction( "Find Selection", this ) );
     findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionAction_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
@@ -1639,7 +1639,7 @@ void TextEditor::_installActions( void )
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionBackwardAction_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
-    addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Replace", this ) );
+    addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Replace ...", this ) );
     replaceAction_->setShortcut( Qt::CTRL + Qt::Key_R );
     replaceAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAction_, SIGNAL( triggered() ), SLOT( _replaceFromDialog() ) );
@@ -1654,20 +1654,20 @@ void TextEditor::_installActions( void )
     replaceAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAgainBackwardAction_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
 
-    addAction( gotoLineAction_ = new QAction( "&Goto Line Number", this ) );
+    addAction( gotoLineAction_ = new QAction( "Goto Line Number ...", this ) );
     gotoLineAction_->setShortcut( Qt::CTRL + Qt::Key_L );
     gotoLineAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( gotoLineAction_, SIGNAL( triggered() ), SLOT( _selectLineFromDialog() ) );
 
     // remove line action
-    QAction* remove_line_action( new QAction( "&Remove Current Line", this ) );
+    QAction* remove_line_action( new QAction( "Remove Current Line", this ) );
     addAction( remove_line_action );
     remove_line_action->setShortcut( Qt::CTRL + Qt::Key_K );
     remove_line_action->setShortcutContext( Qt::WidgetShortcut );
     connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
 
     // current block highlight
-    addAction( blockHighlightAction_ = new QAction( "&Highlight Current Paragraph", this ) );
+    addAction( blockHighlightAction_ = new QAction( "Highlight Current Paragraph", this ) );
     blockHighlightAction_->setCheckable( true );
     blockHighlightAction_->setChecked( blockHighlight().isEnabled() );
     blockHighlightAction_->setShortcut( Qt::Key_F12 );
@@ -1675,7 +1675,7 @@ void TextEditor::_installActions( void )
     connect( blockHighlightAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleBlockHighlight( bool ) ) );
 
     // wrap mode
-    addAction( wrapModeAction_ = new QAction( "&Wrap Text", this ) );
+    addAction( wrapModeAction_ = new QAction( "Wrap Text", this ) );
     wrapModeAction_->setCheckable( true );
     wrapModeAction_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
     _setModifier( MODIFIER_WRAP, lineWrapMode() == QTextEdit::WidgetWidth );
@@ -1684,7 +1684,7 @@ void TextEditor::_installActions( void )
     connect( wrapModeAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
 
     // tab emulation action
-    addAction( tabEmulationAction_ = new QAction( "&Emulate Tabs", this ) );
+    addAction( tabEmulationAction_ = new QAction( "Emulate Tabs", this ) );
     tabEmulationAction_->setCheckable( true );
     tabEmulationAction_->setChecked( hasTabEmulation_ );
     connect( tabEmulationAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );

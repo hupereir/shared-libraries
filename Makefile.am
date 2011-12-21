@@ -55,6 +55,7 @@ FlatStyle.h \
 FontEditor.h \
 FontInfo.h \
 GridLayout.h \
+HtmlDialog.h \
 HtmlTextNode.h \
 IconBrowsedButton.h \
 IconEngine.h \
@@ -181,6 +182,7 @@ FileRecordModel.cpp \
 FlatStyle.cpp \
 FontEditor.cpp \
 FontInfo.cpp \
+HtmlDialog.cpp \
 HtmlTextNode.cpp \
 IconBrowsedButton.cpp \
 IconEngine.cpp \
@@ -274,6 +276,7 @@ moc_DockPanel.cpp \
 moc_FileList.cpp \
 moc_FileRecordModel.cpp \
 moc_FontEditor.cpp \
+moc_HtmlDialog.cpp \
 moc_IconBrowsedButton.cpp \
 moc_IconSizeMenu.cpp \
 moc_ImageFileDialog.cpp \

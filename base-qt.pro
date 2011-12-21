@@ -51,6 +51,7 @@ FlatStyle.h \
 FontEditor.h \
 FontInfo.h \
 GridLayout.h \
+HtmlDialog.h \
 HtmlTextNode.h \
 IconBrowsedButton.h \
 IconEngine.h \
@@ -177,6 +178,7 @@ FileRecordModel.cpp \
 FlatStyle.cpp \
 FontEditor.cpp \
 FontInfo.cpp \
+HtmlDialog.cpp \
 HtmlTextNode.cpp \
 IconBrowsedButton.cpp \
 IconEngine.cpp \

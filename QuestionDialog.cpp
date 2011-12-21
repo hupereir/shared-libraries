@@ -22,48 +22,41 @@
 *
 *******************************************************************************/
 
-/*!
-  \file Questioncpp
-  \brief simplified question dialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QPushButton>
+#include "QuestionDialog.h"
 
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "PixmapEngine.h"
-#include "QuestionDialog.h"
+
+#include <QtGui/QPushButton>
 
 //____________________________________________________________
 QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
-  CustomDialog( parent, OkButton | CancelButton| Separator )
+CustomDialog( parent, OkButton | CancelButton| Separator )
 {
 
-  Debug::Throw( "QuestionDialog::QuestionDialog\n" );
+    Debug::Throw( "QuestionDialog::QuestionDialog\n" );
 
-  //! try load Question icon
-  QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );
+    //! try load Question icon
+    QPixmap question_pixmap = PixmapEngine::get( ICONS::WARNING );
 
-  if( question_pixmap.isNull() )
-  {
+    if( question_pixmap.isNull() )
+    {
 
-    mainLayout().addWidget( label_ = new QLabel( text, this ) );
+        mainLayout().addWidget( label_ = new QLabel( text, this ) );
 
-  } else {
+    } else {
 
-    QHBoxLayout *h_layout( new QHBoxLayout() );
-    h_layout->setSpacing(10);
-    h_layout->setMargin(0);
-    mainLayout().addLayout( h_layout );
+        QHBoxLayout *h_layout( new QHBoxLayout() );
+        h_layout->setSpacing(10);
+        h_layout->setMargin(0);
+        mainLayout().addLayout( h_layout );
 
-    QLabel* label = new QLabel( this );
-    label->setPixmap( question_pixmap );
-    h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
+        QLabel* label = new QLabel( this );
+        label->setPixmap( question_pixmap );
+        h_layout->addWidget( label, 0, Qt::AlignHCenter );
+        h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
 
-  }
+    }
 
 }
