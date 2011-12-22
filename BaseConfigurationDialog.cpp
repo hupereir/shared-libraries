@@ -41,8 +41,8 @@
 #include "OptionLineEditor.h"
 #include "OptionListBox.h"
 #include "OptionModel.h"
-#include "OptionSlider.h"
 #include "OptionSpinBox.h"
+#include "OptionSlider.h"
 #include "QuestionDialog.h"
 #include "Str.h"
 #include "TreeView.h"
@@ -153,12 +153,14 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         layout->addLayout( gridLayout );
 
         // flat theme
+        #if !defined(Q_WS_X11)
         {
             OptionCheckBox* checkbox( new OptionCheckBox( "Use flat plastique theme", box, "USE_FLAT_THEME" ) );
             gridLayout->addWidget( checkbox, 0, 0, 1, 2 );
             checkbox->setToolTip( "Use customized flat plastique theme for widget appearance and layout.\nThe application must be restarted to take changes to this option into account." );
             addOptionWidget( checkbox );
         }
+        #endif
 
         // base font
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
@@ -189,7 +191,6 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         spinbox->setToolTip( "Debug verbosity level" );
         gridLayout->addWidget( spinbox );
         addOptionWidget( spinbox );
-
 
     }
 

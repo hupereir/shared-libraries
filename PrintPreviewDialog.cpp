@@ -87,7 +87,7 @@ namespace PRINT
     void NavigationWidget::setPage( int page )
     {
 
-        Debug::Throw( "NavigationWidget::setPage.\n" );
+        Debug::Throw() << "NavigationWidget::setPage - " << page << endl;
         if( page == editor_->text().toInt() ) return;
 
         // update editor and buttons

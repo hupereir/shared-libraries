@@ -1,3 +1,6 @@
+#ifndef OptionSpinBox_h
+#define OptionSpinBox_h
+
 // $Id$
 
 /******************************************************************************
@@ -20,52 +23,72 @@
 *
 *
 *******************************************************************************/
-
-#ifndef OptionSpinBox_h
-#define OptionSpinBox_h
-
-/*!
-   \file    OptionSpinBox.h
-   \brief   QSpinBox associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <QSpinBox>
-#include <cmath>
 #include "OptionWidget.h"
 #include "Options.h"
 
+#include <QtGui/QSpinBox>
+#include <QtGui/QLayout>
+#include <cmath>
+
 //! QSpinBox associated to an option for configuration dialogs
-class OptionSpinBox: public QSpinBox, public OptionWidget
+class OptionSpinBox: public QWidget, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionSpinBox( QWidget* parent, const QString& option_name ):
-      QSpinBox( parent ),
-      OptionWidget( option_name ),
-      scale_( 1 )
-  {}
+    //! constructor
+    OptionSpinBox( QWidget* parent, const QString& option_name ):
+        QWidget( parent ),
+        OptionWidget( option_name ),
+        scale_( 1 )
+    {
+        QHBoxLayout *layout = new QHBoxLayout();
+        layout->setSpacing(0);
+        layout->setMargin(0);
+        setLayout( layout );
+        layout->addWidget( spinBox_ = new QSpinBox( this ) );
+        layout->addStretch( 1 );
+    }
 
-  //! scale (i.e. option = value()/scale)
-  void setScale( const double& scale )
-  { scale_ = scale; }
+    //! scale (i.e. option = value()/scale)
+    void setScale( const double& scale )
+    { scale_ = scale; }
 
-  //! read value from option
-  void read( void )
-  { setValue( static_cast<int>(round(scale_*XmlOptions::get().get<double>( optionName() )))); }
+    //! read value from option
+    void read( void )
+    { setValue( static_cast<int>(round(scale_*XmlOptions::get().get<double>( optionName() )))); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().set<double>( optionName(), static_cast<double>(value())/scale_ ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().set<double>( optionName(), static_cast<double>(value())/scale_ ); }
 
-  private:
+    //!@name wrappers
+    //@{
 
-  //! scale factor (default is 1)
-  double scale_;
+    void setValue( int value )
+    { spinBox_->setValue( value ); }
+
+    int value( void ) const
+    { return spinBox_->value(); }
+
+    void setMinimum( int value )
+    { spinBox_->setMinimum( value ); }
+
+    void setMaximum( int value )
+    { spinBox_->setMaximum( value ); }
+
+    void setToolTip( const QString& value )
+    { spinBox_->setToolTip( value ); }
+
+    //@}
+
+    private:
+
+    //! spinbox
+    QSpinBox* spinBox_;
+
+    //! scale factor (default is 1)
+    double scale_;
 
 };
 #endif
