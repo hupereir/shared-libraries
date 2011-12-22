@@ -27,6 +27,7 @@
 #include "Options.h"
 
 #include <QtGui/QSpinBox>
+#include <QtGui/QLabel>
 #include <QtGui/QLayout>
 #include <cmath>
 
@@ -40,10 +41,11 @@ class OptionSpinBox: public QWidget, public OptionWidget
     OptionSpinBox( QWidget* parent, const QString& option_name ):
         QWidget( parent ),
         OptionWidget( option_name ),
+        unitLabel_( 0 ),
+        spinBox_( 0 ),
         scale_( 1 )
     {
         QHBoxLayout *layout = new QHBoxLayout();
-        layout->setSpacing(0);
         layout->setMargin(0);
         setLayout( layout );
         layout->addWidget( spinBox_ = new QSpinBox( this ) );
@@ -61,6 +63,15 @@ class OptionSpinBox: public QWidget, public OptionWidget
     //! write value to option
     void write( void ) const
     { XmlOptions::get().set<double>( optionName(), static_cast<double>(value())/scale_ ); }
+
+    //! unit
+    void setUnit( const QString& value )
+    {
+        if( !unitLabel_ )
+        { qobject_cast<QBoxLayout*>( layout() )->insertWidget( 1, unitLabel_ = new QLabel( this ) ); }
+
+        unitLabel_->setText( value );
+    }
 
     //!@name wrappers
     //@{
@@ -83,6 +94,9 @@ class OptionSpinBox: public QWidget, public OptionWidget
     //@}
 
     private:
+
+    //! unit label
+    QLabel* unitLabel_;
 
     //! spinbox
     QSpinBox* spinBox_;

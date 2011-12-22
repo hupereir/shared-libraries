@@ -408,10 +408,9 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         hLayout->addWidget( checkbox = new OptionCheckBox( "Auto-hide mouse cursor after ", box, "AUTOHIDE_CURSOR" ) );
         addOptionWidget( checkbox );
 
-        QLabel* label;
         OptionSpinBox* spinbox;
         hLayout->addWidget( spinbox = new OptionSpinBox( box, "AUTOHIDE_CURSOR_DELAY" ) );
-        hLayout->addWidget( label = new QLabel( " seconds", box ) );
+        spinbox->setUnit( "seconds" );
         addOptionWidget( spinbox );
 
         spinbox->setMinimum( 0 );
