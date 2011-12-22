@@ -91,6 +91,9 @@ class BaseApplication: public BaseCoreApplication
     //! process request from application manager
     virtual void _about( void ) = 0;
 
+    //! process request from application manager
+    virtual void _aboutQt( void );
+
     //! configuration
     virtual void _configuration( void ) = 0;
 

@@ -37,9 +37,52 @@
 #include "XmlOptions.h"
 
 #include <QtGui/QApplication>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QMessageBox>
+
+//____________________________________________
+namespace SERVER
+{
+    //! event filter used to change appearance of QMessageBox before show, to match KDE layout
+    class AppEventFilter: public QObject
+    {
+        public:
+        virtual bool eventFilter( QObject*, QEvent* );
+    };
+
+}
+
+//____________________________________________
+bool SERVER::AppEventFilter::eventFilter( QObject* object, QEvent* event )
+{
+    Q_UNUSED( object );
+    switch( event->type() )
+    {
+
+        case QEvent::Show:
+
+        if( QMessageBox* messageBox = qobject_cast<QMessageBox*>( object ) )
+        {
+
+            // try cast to message box and change buttons
+            messageBox->setStandardButtons( QMessageBox::Close );
+
+        } else if( QDialogButtonBox* buttonBox = qobject_cast<QDialogButtonBox*>( object ) ) {
+
+            // try cast to button box and change buttons
+            buttonBox->setCenterButtons( false );
+
+        }
+        break;
+
+        default: break;
+
+    }
+
+    return false;
+}
 
 //____________________________________________
 BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :
@@ -72,7 +115,7 @@ bool BaseApplication::realizeWidget( void )
     connect( aboutAction_, SIGNAL( triggered() ), SLOT( _about() ) );
 
     aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About Qt", this );
-    connect( aboutQtAction_, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
+    connect( aboutQtAction_, SIGNAL( triggered() ), this, SLOT( _aboutQt() ) );
 
     closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), "Exit", this );
     closeAction_->setShortcut( Qt::CTRL + Qt::Key_Q );
@@ -99,6 +142,15 @@ void BaseApplication::idle( void )
 //_______________________________________________
 void BaseApplication::_aboutToQuit( void )
 { Debug::Throw( "BaseApplication::_aboutToQuit.\n" ); }
+
+//_______________________________________________
+void BaseApplication::_aboutQt( void )
+{
+    Debug::Throw( "BaseApplication::aboutQt.\n" );
+    SERVER::AppEventFilter eventFilter;
+    qApp->installEventFilter( &eventFilter );
+    QMessageBox::aboutQt(0);
+}
 
 //_______________________________________________
 void BaseApplication::_about( QString name, QString version, QString stamp )
@@ -128,13 +180,17 @@ void BaseApplication::_about( QString name, QString version, QString stamp )
 
     QMessageBox dialog;
     dialog.setWindowTitle( QString( "About ")+name );
-
     QPixmap pixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) );
     dialog.setWindowIcon( pixmap );
     dialog.setIconPixmap( pixmap );
     dialog.setText( buffer );
     dialog.adjustSize();
     QtUtil::centerOnWidget( &dialog, qApp->activeWindow() );
+
+    SERVER::AppEventFilter eventFilter;
+    qApp->installEventFilter( &eventFilter );
+
+    dialog.show();
     dialog.exec();
 
 }
