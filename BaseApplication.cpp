@@ -74,6 +74,18 @@ bool SERVER::AppEventFilter::eventFilter( QObject* object, QEvent* event )
             // try cast to button box and change buttons
             buttonBox->setCenterButtons( false );
 
+            // insert separator
+            if( QGridLayout* gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
+            {
+
+                // create separator
+                QFrame* frame( new QFrame( buttonBox->parentWidget() ) );
+                frame->setFrameStyle( QFrame::HLine );
+                gridLayout->addWidget( frame, 2, 0, 1, 2 );
+
+                gridLayout->addWidget( buttonBox, 3, 0, 1, 2 );
+            }
+
         }
         break;
 
