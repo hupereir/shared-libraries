@@ -28,6 +28,7 @@
 #include "Debug.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
+#include "IconSize.h"
 
 #include <QtGui/QLayout>
 #include <QtGui/QGraphicsView>
@@ -54,6 +55,7 @@ namespace PRINT
         hLayout->addWidget( previousPageButton_ = new QToolButton( this ) );
         previousPageButton_->setAutoRaise( true );
         previousPageButton_->setIcon( IconEngine::get( ICONS::PREVIOUS ) );
+        previousPageButton_->setIconSize( IconSize( IconSize::Medium ) );
         connect( previousPageButton_, SIGNAL( clicked( void ) ), SLOT( _previousPage( void ) ) );
 
         // editor
@@ -66,7 +68,6 @@ namespace PRINT
         validator_.setTop( 1 );
         editor_->setValidator( &validator_ );
         editor_->setAlignment( Qt::AlignCenter );
-
         connect( editor_, SIGNAL( textEdited( const QString& ) ), SLOT( _updatePage( void ) ) );
 
         // label
@@ -76,6 +77,7 @@ namespace PRINT
         hLayout->addWidget( nextPageButton_ = new QToolButton( this ) );
         nextPageButton_->setAutoRaise( true );
         nextPageButton_->setIcon( IconEngine::get( ICONS::NEXT ) );
+        nextPageButton_->setIconSize( IconSize( IconSize::Medium ) );
         connect( nextPageButton_, SIGNAL( clicked( void ) ), SLOT( _nextPage( void ) ) );
 
         // pages
