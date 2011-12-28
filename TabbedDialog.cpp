@@ -86,7 +86,7 @@ TabbedDialog::~TabbedDialog( void )
 }
 
 //_________________________________________________________
-QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, const bool& expand )
+QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const QString& tooltip, const bool& expand )
 {
 
     // base widget
@@ -94,7 +94,6 @@ QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, co
     base->setLayout( new QVBoxLayout() );
     base->layout()->setMargin(0);
     base->layout()->setSpacing(5);
-    base->setObjectName( title );
 
     if( !tooltip.isEmpty() ) {
 
@@ -121,9 +120,13 @@ QWidget& TabbedDialog::addPage( const QString& title, const QString& tooltip, co
     QWidget* main( new QWidget() );
     scroll->setWidget( main );
 
-    // add to stack and model
+    // add to stack
     _stack().addWidget( base );
-    _model().add( base );
+
+    // add to item
+    Item item( title, base );
+    if( !icon.isNull() ) item.setIcon( icon );
+    _model().add( item );
 
     // set current index
     if( (!_list().selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) )
@@ -158,11 +161,11 @@ void TabbedDialog::_display( const QModelIndex& index )
 {
     Debug::Throw( "TabbedDialog::_display.\n" );
     if( !index.isValid() ) return;
-    _stack().setCurrentWidget( _model().get( index ) );
+    _stack().setCurrentWidget( _model().get( index ).widget() );
 }
 
 //_______________________________________________
-const QString TabbedDialog::Model::column_titles_[ TabbedDialog::Model::nColumns ] =
+const QString TabbedDialog::Model::columnTitles_[ TabbedDialog::Model::nColumns ] =
 { "" };
 
 
@@ -174,7 +177,7 @@ QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
     if( !index.isValid() ) return QVariant();
 
     // retrieve associated file info
-    QWidget& widget( *get()[index.row()] );
+    Item item( get()[index.row()] );
 
     // return text associated to file and column
     if( role == Qt::DisplayRole )
@@ -183,7 +186,7 @@ QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
         switch( index.column() )
         {
 
-            case NAME: return widget.objectName();
+            case NAME: return item.name();
             default: return QVariant();
         }
     }

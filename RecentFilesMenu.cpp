@@ -21,19 +21,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file RecentFilesMenu.cpp
-\brief customized popup menu to open a previous logbook
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "RecentFilesMenu.h"
 
 #include "BaseIcons.h"
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
 #include "QuestionDialog.h"
-#include "RecentFilesMenu.h"
 #include "XmlOptions.h"
 
 #include <algorithm>

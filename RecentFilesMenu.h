@@ -1,3 +1,6 @@
+#ifndef RecentFilesMenu_h
+#define RecentFilesMenu_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,17 +24,6 @@
 *
 *******************************************************************************/
 
-#ifndef RecentFilesMenu_h
-#define RecentFilesMenu_h
-
-/*!
-\file   RecentFilesMenu.h
-\brief   customized popup menu to open a previous logbook
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Counter.h"
 #include "Debug.h"
 #include "FileList.h"
@@ -49,10 +41,10 @@ class RecentFilesMenu: public QMenu, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        RecentFilesMenu( QWidget*, FileList& );
+    //! constructor
+    RecentFilesMenu( QWidget*, FileList& );
 
     //! destructor
     virtual ~RecentFilesMenu( void );

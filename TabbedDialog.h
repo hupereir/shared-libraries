@@ -1,4 +1,3 @@
-
 #ifndef _TabbedDialog_h_
 #define _TabbedDialog_h_
 
@@ -31,6 +30,7 @@
 
 #include <QtGui/QCloseEvent>
 #include <QtGui/QDialog>
+#include <QtGui/QIcon>
 #include <QtGui/QLayout>
 #include <list>
 
@@ -53,7 +53,11 @@ class TabbedDialog: public BaseDialog, public Counter
     virtual ~TabbedDialog();
 
     //! adds a new Item, returns associated Box
-    virtual QWidget& addPage( const QString&, const QString& tooltip = QString(), const bool& expand = false );
+    virtual QWidget& addPage( const QString& title, const QString& tooltip = QString(), const bool& expand = false )
+    { return addPage( QIcon(), title, tooltip, expand ); }
+
+    //! adds a new Item, returns associated Box
+    virtual QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), const bool& expand = false );
 
     protected slots:
 
@@ -76,8 +80,72 @@ class TabbedDialog: public BaseDialog, public Counter
 
     private:
 
+    //! item model
+    class Item: public Counter
+    {
+
+        public:
+
+        //! constructor
+        Item( void ):
+            Counter( "TabbedDialog::Item" ),
+            widget_( 0L )
+        {}
+
+        //! constructor
+        Item( const QString& name, QWidget* widget ):
+            Counter( "TabbedDialog::Item" ),
+            name_( name ),
+            widget_( widget )
+        {}
+
+        //! name
+        void setName( const QString& name )
+        { name_ = name; }
+
+        //! widget
+        void setWidget( QWidget* widget )
+        { widget_ = widget; }
+
+        //! icon
+        void setIcon( const QIcon& icon )
+        { icon_ = icon; }
+
+        //! name
+        const QString& name( void ) const
+        { return name_; }
+
+        //! widget
+        QWidget* widget( void ) const
+        { return widget_; }
+
+        //! icon
+        const QIcon& icon( void ) const
+        { return icon_; }
+
+        //! equal to operator
+        bool operator == (const Item& other ) const
+        { return widget_ == other.widget_;  }
+
+        //! less than operator
+        bool operator < (const Item& other ) const
+        { return widget_ < other.widget_; }
+
+        private:
+
+        //! name
+        QString name_;
+
+        //! associated widget
+        QWidget* widget_;
+
+        //! icon
+        QIcon icon_;
+
+    };
+
     //! model
-    class Model: public ListModel<QWidget*>
+    class Model: public ListModel<Item>
     {
 
         public:
@@ -104,7 +172,7 @@ class TabbedDialog: public BaseDialog, public Counter
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
         {
             if( orientation == Qt::Horizontal && role == Qt::DisplayRole && section >= 0 && section < nColumns )
-            { return column_titles_[section]; }
+            { return columnTitles_[section]; }
 
             // return empty
             return QVariant();
@@ -124,7 +192,7 @@ class TabbedDialog: public BaseDialog, public Counter
         {}
 
         //! list column names
-        static const QString column_titles_[nColumns];
+        static const QString columnTitles_[nColumns];
 
     };
 
