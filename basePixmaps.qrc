@@ -30,7 +30,6 @@
     <file alias="pixmaps/list-remove.png">../base-pixmaps/list-remove.png</file>
     <file alias="pixmaps/messagebox_warning.png">../base-pixmaps/messagebox_warning.png</file>
     <file alias="pixmaps/qt-logo.png">../base-pixmaps/qt-logo.png</file>
-    <file alias="pixmaps/system-run.png">../base-pixmaps/system-run.png</file>
     <file alias="pixmaps/show-menu.png">../base-pixmaps/show-menu.png</file>
     <file alias="pixmaps/text-html.png">../base-pixmaps/text-html.png</file>
     <file alias="pixmaps/user-trash.png">../base-pixmaps/user-trash.png</file>
@@ -38,5 +37,15 @@
     <file alias="pixmaps/zoom-in-large.png">../base-pixmaps/zoom-in-large.png</file>
     <file alias="pixmaps/zoom-in.png">../base-pixmaps/zoom-in.png</file>
 
-</qresource>
+    <!-- configuration icons -->
+    <file alias="pixmaps/system-run.png">../base-pixmaps/system-run.png</file>
+    <file alias="pixmaps/input-mouse.png">../base-pixmaps/input-mouse.png</file>
+    <file alias="pixmaps/preferences-desktop-color.png">../base-pixmaps/preferences-desktop-color.png</file>
+    <file alias="pixmaps/view-list-details.png">../base-pixmaps/view-list-details.png</file>
+    <file alias="pixmaps/view-split-left-right.png">../base-pixmaps/view-split-left-right.png</file>
+    <file alias="pixmaps/configure-toolbars.png">../base-pixmaps/configure-toolbars.png</file>
+    <file alias="pixmaps/document-open-recent.png">../base-pixmaps/document-open-recent.png</file>
+    <file alias="pixmaps/preferences-desktop-filetype-association.png">../base-pixmaps/preferences-desktop-filetype-association.png</file>
+
+  </qresource>
 </RCC>

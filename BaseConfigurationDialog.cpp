@@ -65,7 +65,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 
     Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
     setWindowTitle( "Configuration" );
-    setOptionName( "CONFIGURATION_DIALOG" );
+    setOptionName( "PREFERENCE_DIALOG" );
 
     // add restore default button to layout
     QPushButton* button;
@@ -116,7 +116,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
 
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
 
-    if( !parent ) parent = &addPage( IconEngine::get( ICONS::CONFIGURATION_GENERAL ), "General", "Generic application settings" );
+    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_GENERAL ), "General", "Generic application settings" );
 
     // base
     if( flag & BASE )
@@ -213,7 +213,7 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
     Debug::Throw( "BaseConfigurationDialog::listConfiguration.\n" );
 
     // make sure parent is valid
-    if( !parent ) parent = &addPage( "Lists", "Look-and-feel for item lists" );
+    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_LISTS ), "Lists", "Configure the appearance of item lists" );
 
     QGroupBox* box = new QGroupBox( "Lists", parent );
     QVBoxLayout* vLayout = new QVBoxLayout();

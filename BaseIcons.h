@@ -78,7 +78,15 @@ namespace ICONS
     static const QString NEXT = "arrow-right.png";
     static const QString HTML = "text-html.png";
 
-    static const QString CONFIGURATION_GENERAL="system-run.png";
+    // configuration icons
+    static const QString PREFERENCE_GENERAL="system-run.png";
+    static const QString PREFERENCE_NAVIGATION="input-mouse.png";
+    static const QString PREFERENCE_COLORS="preferences-desktop-color.png";
+    static const QString PREFERENCE_LISTS="view-list-details.png";
+    static const QString PREFERENCE_MULTIPLE_VIEWS="view-split-left-right.png";
+    static const QString PREFERENCE_TOOLBARS="configure-toolbars.png";
+    static const QString PREFERENCE_RECENT_FILES="document-open-recent.png";
+    static const QString PREFERENCE_FILE_TYPES="preferences-desktop-filetype-association.png";
 
 };
 
