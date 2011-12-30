@@ -6,6 +6,7 @@ arrow-left.png \
 arrow-right.png \
 color-picker.png \
 configure.png \
+configure-toolbars.png \
 dialog-cancel.png \
 dialog-close.png \
 dialog-information.png \
@@ -14,6 +15,7 @@ dialog-ok.png \
 document-encrypt.png \
 document-open-folder.png \
 document-open.png \
+document-open-recent.png \
 document-print.png \
 document-print-preview.png \
 edit-clear-locationbar-rtl.png \
@@ -26,14 +28,19 @@ edit-rename.png \
 edit-undo.png \
 format-fill-color.png \
 help-contents.png \
+input-mouse.png \
 list-add.png \
 list-remove.png \
 messagebox_warning.png \
+preferences-desktop-color.png \
+preferences-desktop-filetype-association.png \
 qt-logo.png \
 system-run.png \
 show-menu.png \
 text-html.png \
 user-trash.png \
 view-refresh.png \
+view-list-details.png \
+view-split-left-right.png \
 zoom-in-large.png \
 zoom-in.png
