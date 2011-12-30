@@ -25,7 +25,6 @@
 #include "AnimatedStackedWidget.h"
 #include "ScrollObject.h"
 #include "TabbedDialog.h"
-#include "TreeView.h"
 
 #include <QtGui/QApplication>
 #include <QtGui/QScrollArea>
@@ -35,6 +34,140 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QPainter>
+
+//_________________________________________________________
+TabbedDialog::Delegate::Delegate( QObject *parent ):
+    QAbstractItemDelegate( parent ),
+    Counter( "TabbedDialog::Delegate" ),
+    iconSize_( 32 )
+{ Debug::Throw( "TabbedDialog::Delegate::Delegate.\n" ); }
+
+//_________________________________________________________
+int TabbedDialog::Delegate::_layoutText(QTextLayout *layout, int maxWidth) const
+{
+    qreal height = 0;
+    int textWidth = 0;
+    layout->beginLayout();
+    while( true )
+    {
+        QTextLine line = layout->createLine();
+        if( !line.isValid() ) break;
+        line.setLineWidth(maxWidth);
+        line.setPosition(QPointF(0, height));
+        height += line.height();
+        textWidth = qMax(textWidth, qRound(line.naturalTextWidth() + 0.5));
+    }
+
+    layout->endLayout();
+    return textWidth;
+}
+
+//_________________________________________________________
+void TabbedDialog::Delegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const
+{
+
+    // check index
+    if ( !index.isValid() ) return;
+
+    const QString text = index.model()->data( index, Qt::DisplayRole ).toString();
+    const QIcon icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
+    const QPixmap pixmap = icon.pixmap( iconSize_, iconSize_ );
+
+    QFontMetrics fm = painter->fontMetrics();
+    int wp = pixmap.width();
+    int hp = pixmap.height();
+
+    QTextLayout iconTextLayout( text, option.font );
+    QTextOption textOption( Qt::AlignHCenter );
+    iconTextLayout.setTextOption( textOption );
+    int maxWidth = qMax( 3 * wp, 8 * fm.height() );
+    _layoutText( &iconTextLayout, maxWidth );
+
+    QPen pen = painter->pen();
+    QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
+
+    if( cg == QPalette::Normal && !(option.state & QStyle::State_Active) )
+    { cg = QPalette::Inactive; }
+
+    QStyleOptionViewItemV4 opt(option);
+    opt.showDecorationSelected = true;
+    QStyle *style = opt.widget ? opt.widget->style() : QApplication::style();
+    style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, opt.widget);
+
+    if ( option.state & QStyle::State_Selected )
+    {
+        painter->setPen( option.palette.color( cg, QPalette::HighlightedText ) );
+
+    } else {
+
+        painter->setPen( option.palette.color( cg, QPalette::Text ) );
+
+    }
+
+    if( !pixmap.isNull() )
+    { painter->drawPixmap( option.rect.x() + (option.rect.width()/2)-(wp/2), option.rect.y() + 5, pixmap ); }
+
+    if ( !text.isEmpty() )
+    { iconTextLayout.draw( painter, QPoint( option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + hp+7 ) ); }
+
+    painter->setPen( pen );
+
+    _drawFocus( painter, option, option.rect );
+}
+
+//_________________________________________________________
+QSize TabbedDialog::Delegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const
+{
+
+    if ( !index.isValid() ) return QSize();
+
+    const QString text = index.model()->data( index, Qt::DisplayRole ).toString();
+    const QIcon icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
+    const QPixmap pixmap = icon.pixmap( iconSize_, iconSize_ );
+
+    QFontMetrics fm = option.fontMetrics;
+    int gap = fm.height();
+    int hp = 0;
+    int wp = iconSize_;
+
+    if( !pixmap.isNull() )
+    {
+        hp = pixmap.height();
+        wp = pixmap.width();
+    }
+
+    QTextLayout iconTextLayout( text, option.font );
+    int wt = _layoutText( &iconTextLayout, qMax( 3 * wp, 8 * fm.height() ) );
+    int ht = iconTextLayout.boundingRect().height();
+
+    int width, height;
+    if ( text.isEmpty() ) height = hp;
+    else height = hp + ht + 10;
+
+    width = qMax( wt, wp ) + gap;
+
+    return QSize( width, height );
+}
+
+//_________________________________________________________
+void TabbedDialog::Delegate::_drawFocus( QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect ) const
+{
+    if (option.state & QStyle::State_HasFocus)
+    {
+
+        QStyleOptionFocusRect o;
+        o.QStyleOption::operator=(option);
+        o.rect = rect;
+        o.state |= QStyle::State_KeyboardFocusChange;
+        QPalette::ColorGroup cg = (option.state & QStyle::State_Enabled) ? QPalette::Normal : QPalette::Disabled;
+        o.backgroundColor = option.palette.color( cg, (option.state & QStyle::State_Selected) ? QPalette::Highlight : QPalette::Background );
+
+        QApplication::style()->drawPrimitive( QStyle::PE_FrameFocusRect, &o, painter );
+
+    }
+
+}
 
 //_________________________________________________________
 TabbedDialog::TabbedDialog( QWidget* parent ):
@@ -49,20 +182,20 @@ Counter( "TabbedDialog" )
     layout->setMargin(0);
     setLayout( layout );
 
-    QHBoxLayout* h_layout = new QHBoxLayout();
-    h_layout->setMargin(0);
-    h_layout->setSpacing(2);
-    layout->addLayout( h_layout );
+    QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setMargin(0);
+    hLayout->setSpacing(2);
+    layout->addLayout( hLayout );
 
     // add widgets
-    h_layout->addWidget( list_ = new TreeView( this ), 0 );
-    h_layout->addWidget( stack_ = new AnimatedStackedWidget(0), 1 );
+    hLayout->addWidget( list_ = new QListView( this ), 0 );
+    hLayout->addWidget( stack_ = new AnimatedStackedWidget(0), 1 );
 
     // configure list
     _list().setMaximumWidth(150);
-    _list().header()->hide();
-    _list().setSortingEnabled( false );
     _list().setModel( &model_ );
+    _list().setItemDelegate( &delegate_ );
+    _list().setFlow( QListView::TopToBottom );
 
     // connections
     connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
@@ -180,17 +313,20 @@ QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
     Item item( get()[index.row()] );
 
     // return text associated to file and column
-    if( role == Qt::DisplayRole )
+    if( index.column() == NAME )
     {
 
-        switch( index.column() )
+        switch( role )
         {
+            case Qt::DisplayRole:
+            return item.name();
 
-            case NAME: return item.name();
+            case Qt::DecorationRole:
+            return item.icon().isNull() ? QVariant():item.icon();
+
             default: return QVariant();
         }
-    }
 
-    return QVariant();
+    } else return QVariant();
 
 }

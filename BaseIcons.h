@@ -78,6 +78,8 @@ namespace ICONS
     static const QString NEXT = "arrow-right.png";
     static const QString HTML = "text-html.png";
 
+    static const QString CONFIGURATION_GENERAL="system-run.png";
+
 };
 
 #endif

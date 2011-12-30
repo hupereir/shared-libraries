@@ -116,7 +116,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
 
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
 
-    if( !parent ) parent = &addPage( "Base", "Generic settings" );
+    if( !parent ) parent = &addPage( IconEngine::get( ICONS::CONFIGURATION_GENERAL ), "General", "Generic application settings" );
 
     // base
     if( flag & BASE )

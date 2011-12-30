@@ -32,10 +32,11 @@
 #include <QtGui/QDialog>
 #include <QtGui/QIcon>
 #include <QtGui/QLayout>
+#include <QtGui/QListView>
+#include <QtGui/QTextLayout>
 #include <list>
 
 class AnimatedStackedWidget;
-class TreeView;
 
 //! tabbed dialog
 /*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
@@ -67,7 +68,7 @@ class TabbedDialog: public BaseDialog, public Counter
     protected:
 
     //! retrieve list
-    virtual TreeView& _list( void )
+    virtual QListView& _list( void )
     { return *list_; }
 
     //! retrieve stack
@@ -196,6 +197,38 @@ class TabbedDialog: public BaseDialog, public Counter
 
     };
 
+    //! item delegate
+    class Delegate : public QAbstractItemDelegate, public Counter
+    {
+
+        public:
+
+        //! constructor
+        Delegate( QObject* = 0 );
+
+        //! destructor
+        virtual ~Delegate( void )
+        {}
+
+        //! paint
+        virtual void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
+
+        //! size
+        virtual QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+
+        private:
+
+        //! layout text
+        int _layoutText(QTextLayout*, int) const;
+
+        //! focus
+        void _drawFocus( QPainter*, const QStyleOptionViewItem&, const QRect& ) const;
+
+        //! icon size
+        int iconSize_;
+
+    };
+
     //! model
     Model& _model( void )
     { return model_; }
@@ -203,8 +236,11 @@ class TabbedDialog: public BaseDialog, public Counter
     //! model
     Model model_;
 
+    //! delegate
+    Delegate delegate_;
+
     //! Configuration list
-    TreeView* list_;
+    QListView* list_;
 
     //! Widget stack
     AnimatedStackedWidget* stack_;
