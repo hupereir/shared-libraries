@@ -197,6 +197,11 @@ Counter( "TabbedDialog" )
     _list().setItemDelegate( &delegate_ );
     _list().setFlow( QListView::TopToBottom );
 
+    // change font
+    QFont boldFont( _list().font() );
+    boldFont.setBold( true );
+    _list().setFont( boldFont );
+
     // connections
     connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
 
