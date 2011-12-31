@@ -36,6 +36,7 @@ preferences-desktop-color.png \
 preferences-desktop-theme.png \
 preferences-desktop-filetype-association.png \
 preferences-other.png \
+preferences-system-windows-actions.png \
 qt-logo.png \
 system-run.png \
 show-menu.png \
