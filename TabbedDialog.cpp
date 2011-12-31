@@ -288,7 +288,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
         contents->layout()->setMargin(0);
 
         layout->addWidget( contents );
-        layout->addStretch();
+        layout->addStretch(1);
         return *contents;
     }
 

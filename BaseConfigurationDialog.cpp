@@ -259,7 +259,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
     Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
 
     // make sure parent is valid
-    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_EDITION ), "Text display/edition", "Settings for text display and edition" );
+    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_EDITION ), "Text Edition", "Settings for text display and edition" );
 
     // tab emulation
     if( flag & TAB_EMULATION )

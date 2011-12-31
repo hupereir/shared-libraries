@@ -91,6 +91,7 @@ namespace ICONS
     static const QString PREFERENCE_EDITION="edit-rename.png";
     static const QString PREFERENCE_APPEARANCE="preferences-desktop-theme.png";
     static const QString PREFERENCE_UNSORTED="preferences-other.png";
+    static const QString PREFERENCE_PRINTING="document-print.png";
 
 };
 
