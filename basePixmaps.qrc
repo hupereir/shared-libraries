@@ -41,11 +41,13 @@
     <file alias="pixmaps/system-run.png">../base-pixmaps/system-run.png</file>
     <file alias="pixmaps/input-mouse.png">../base-pixmaps/input-mouse.png</file>
     <file alias="pixmaps/preferences-desktop-color.png">../base-pixmaps/preferences-desktop-color.png</file>
-    <file alias="pixmaps/view-list-details.png">../base-pixmaps/view-list-details.png</file>
+    <file alias="pixmaps/view-list-tree.png">../base-pixmaps/view-list-tree.png</file>
     <file alias="pixmaps/view-split-left-right.png">../base-pixmaps/view-split-left-right.png</file>
     <file alias="pixmaps/configure-toolbars.png">../base-pixmaps/configure-toolbars.png</file>
     <file alias="pixmaps/document-open-recent.png">../base-pixmaps/document-open-recent.png</file>
     <file alias="pixmaps/preferences-desktop-filetype-association.png">../base-pixmaps/preferences-desktop-filetype-association.png</file>
+    <file alias="pixmaps/preferences-desktop-theme.png">../base-pixmaps/preferences-desktop-theme.png</file>
+    <file alias="pixmaps/preferences-other.png">../base-pixmaps/preferences-other.png</file>
     <file alias="pixmaps/tool-animator.png">../base-pixmaps/tool-animator.png</file>
 
   </qresource>
