@@ -46,6 +46,7 @@
     <file alias="pixmaps/configure-toolbars.png">../base-pixmaps/configure-toolbars.png</file>
     <file alias="pixmaps/document-open-recent.png">../base-pixmaps/document-open-recent.png</file>
     <file alias="pixmaps/preferences-desktop-filetype-association.png">../base-pixmaps/preferences-desktop-filetype-association.png</file>
+    <file alias="pixmaps/tool-animator.png">../base-pixmaps/tool-animator.png</file>
 
   </qresource>
 </RCC>

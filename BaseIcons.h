@@ -87,6 +87,7 @@ namespace ICONS
     static const QString PREFERENCE_TOOLBARS="configure-toolbars.png";
     static const QString PREFERENCE_RECENT_FILES="document-open-recent.png";
     static const QString PREFERENCE_FILE_TYPES="preferences-desktop-filetype-association.png";
+    static const QString PREFERENCE_ANIMATIONS="tool-animator.png";
 
 };
 

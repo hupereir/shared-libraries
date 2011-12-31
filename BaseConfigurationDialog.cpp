@@ -434,7 +434,7 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     // make sure parent is valid
     QGroupBox* box;
     if( !parent ) {
-        parent = &addPage( "Animations", "Generic animation settings" );
+        parent = &addPage( IconEngine::get( ICONS::PREFERENCE_ANIMATIONS ), "Animations", "Generic animation settings" );
         box = new QGroupBox( parent );
     } else box = new QGroupBox( "Animations", parent );
 
