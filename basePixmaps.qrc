@@ -48,6 +48,7 @@
     <file alias="pixmaps/preferences-desktop-filetype-association.png">../base-pixmaps/preferences-desktop-filetype-association.png</file>
     <file alias="pixmaps/preferences-desktop-theme.png">../base-pixmaps/preferences-desktop-theme.png</file>
     <file alias="pixmaps/preferences-other.png">../base-pixmaps/preferences-other.png</file>
+    <file alias="pixmaps/preferences-system-windows-actions.png">../base-pixmaps/preferences-system-windows-actions.png</file>
     <file alias="pixmaps/tool-animator.png">../base-pixmaps/tool-animator.png</file>
 
   </qresource>
