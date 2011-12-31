@@ -38,6 +38,7 @@ qt-logo.png \
 system-run.png \
 show-menu.png \
 text-html.png \
+tool-animator.png \
 user-trash.png \
 view-refresh.png \
 view-list-details.png \
