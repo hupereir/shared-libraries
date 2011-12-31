@@ -33,7 +33,9 @@ list-add.png \
 list-remove.png \
 messagebox_warning.png \
 preferences-desktop-color.png \
+preferences-desktop-theme.png \
 preferences-desktop-filetype-association.png \
+preferences-other.png \
 qt-logo.png \
 system-run.png \
 show-menu.png \
@@ -41,7 +43,7 @@ text-html.png \
 tool-animator.png \
 user-trash.png \
 view-refresh.png \
-view-list-details.png \
+view-list-tree.png \
 view-split-left-right.png \
 zoom-in-large.png \
 zoom-in.png
