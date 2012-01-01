@@ -55,8 +55,8 @@ namespace SVG
     Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
 
     setLayout( new QVBoxLayout() );
-    layout()->setSpacing(5);
-    layout()->setMargin(5);
+    layout()->setSpacing(2);
+    layout()->setMargin(0);
 
     QGroupBox* box;
     layout()->addWidget( box = new QGroupBox( "General", this ) );
