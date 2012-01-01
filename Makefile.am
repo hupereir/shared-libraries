@@ -33,6 +33,7 @@ input-mouse.png \
 list-add.png \
 list-remove.png \
 messagebox_warning.png \
+network-server.png \
 preferences-desktop-color.png \
 preferences-desktop-theme.png \
 preferences-desktop-notification.png \
