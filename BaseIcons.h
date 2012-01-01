@@ -92,6 +92,7 @@ namespace ICONS
     static const QString PREFERENCE_APPEARANCE="preferences-desktop-theme.png";
     static const QString PREFERENCE_UNSORTED="preferences-other.png";
     static const QString PREFERENCE_PRINTING="document-print.png";
+    static const QString PREFERENCE_NOTIFICATIONS="preferences-desktop-notification.png";
     static const QString PREFERENCE_MAIN_WINDOW="preferences-system-windows-actions.png";
 
 };
