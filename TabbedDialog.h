@@ -65,6 +65,9 @@ class TabbedDialog: public BaseDialog, public Counter
     //! display item page
     virtual void _display( const QModelIndex& );
 
+    //! update width
+    virtual void _updateWidth( void );
+
     protected:
 
     //! retrieve list

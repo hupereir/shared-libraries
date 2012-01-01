@@ -171,15 +171,15 @@ void TabbedDialog::Delegate::_drawFocus( QPainter *painter, const QStyleOptionVi
 
 //_________________________________________________________
 TabbedDialog::TabbedDialog( QWidget* parent ):
-BaseDialog( parent ),
-Counter( "TabbedDialog" )
+    BaseDialog( parent ),
+    Counter( "TabbedDialog" )
 {
 
     Debug::Throw( "TabbedDialog::TabbedDialog.\n" );
 
     QVBoxLayout* layout( new QVBoxLayout() );
-    layout->setSpacing(2);
     layout->setMargin(0);
+    layout->setSpacing(2);
     setLayout( layout );
 
     QHBoxLayout* hLayout = new QHBoxLayout();
@@ -192,18 +192,15 @@ Counter( "TabbedDialog" )
     hLayout->addWidget( stack_ = new AnimatedStackedWidget(0), 1 );
 
     // configure list
-    _list().setMaximumWidth(150);
     _list().setModel( &model_ );
     _list().setItemDelegate( &delegate_ );
     _list().setFlow( QListView::TopToBottom );
+
 
     // change font
     QFont boldFont( _list().font() );
     boldFont.setBold( true );
     _list().setFont( boldFont );
-
-    // connections
-    connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
 
     // button layout
     buttonLayout_ = new QBoxLayout( QBoxLayout::LeftToRight );
@@ -211,8 +208,12 @@ Counter( "TabbedDialog" )
     buttonLayout_->setSpacing(5);
     layout->addLayout( buttonLayout_, 0 );
 
-    // close window shortcut
+    // connections
+    connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
+    connect( &model_, SIGNAL( layoutChanged() ), this, SLOT( _updateWidth() ) );
     connect( new QShortcut( Qt::CTRL+Qt::Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
+
+    _updateWidth();
 
 }
 
@@ -300,6 +301,17 @@ void TabbedDialog::_display( const QModelIndex& index )
     Debug::Throw( "TabbedDialog::_display.\n" );
     if( !index.isValid() ) return;
     _stack().setCurrentWidget( _model().get( index ).widget() );
+}
+
+//_______________________________________________
+void TabbedDialog::_updateWidth()
+{
+
+    int width = 0;
+    for( int i = 0; i < model_.rowCount(); ++i )
+    { width = qMax( width, _list().sizeHintForIndex( model_.index( i, 0 ) ).width() ); }
+    _list().setFixedWidth( width + 25 );
+
 }
 
 //_______________________________________________
