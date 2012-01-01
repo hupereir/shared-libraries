@@ -4,6 +4,7 @@ EXTRA_DIST = \
 application-exit.png \
 arrow-left.png \
 arrow-right.png \
+bookmarks.png \
 color-picker.png \
 configure.png \
 configure-toolbars.png \
@@ -38,6 +39,7 @@ preferences-desktop-notification.png \
 preferences-desktop-filetype-association.png \
 preferences-other.png \
 preferences-system-windows-actions.png \
+preferences-desktop-wallpaper.png \
 qt-logo.png \
 system-run.png \
 show-menu.png \
