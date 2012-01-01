@@ -34,6 +34,7 @@ list-remove.png \
 messagebox_warning.png \
 preferences-desktop-color.png \
 preferences-desktop-theme.png \
+preferences-desktop-notification.png \
 preferences-desktop-filetype-association.png \
 preferences-other.png \
 preferences-system-windows-actions.png \
