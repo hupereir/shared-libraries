@@ -94,6 +94,8 @@ namespace ICONS
     static const QString PREFERENCE_PRINTING="document-print.png";
     static const QString PREFERENCE_NOTIFICATIONS="preferences-desktop-notification.png";
     static const QString PREFERENCE_MAIN_WINDOW="preferences-system-windows-actions.png";
+    static const QString PREFERENCE_BACKGROUND="preferences-desktop-wallpaper.png";
+    static const QString PREFERENCE_BOOKMARKS="bookmarks.png";
 
 };
 
