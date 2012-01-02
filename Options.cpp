@@ -90,9 +90,17 @@ Options::Options( bool install_default_options ):
         set( "MARGIN_VERTICAL_LINE", "1" );
 
         set( "ANIMATION_FRAMES", "1000" );
+
+        // smooth transitions (disabled under X11 as they usually are handled by the widget style)
+        #if defined(Q_WS_X11)
+        set( "SMOOTH_TRANSITION_ENABLED", "0" );
+        #else
         set( "SMOOTH_TRANSITION_ENABLED", "1" );
+        #endif
+
         set( "SMOOTH_TRANSITION_DURATION", "300" );
 
+        // smooth scrolling
         set( "SMOOTH_SCROLLING_ENABLED", "1" );
         set( "SMOOTH_SCROLLING_DURATION", "100" );
 
