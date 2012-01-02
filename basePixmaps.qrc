@@ -54,6 +54,7 @@
     <file alias="pixmaps/tool-animator.png">../base-pixmaps/tool-animator.png</file>
     <file alias="pixmaps/bookmarks.png">../base-pixmaps/bookmarks.png</file>
     <file alias="pixmaps/network-server.png">../base-pixmaps/network-server.png</file>
+    <file alias="pixmaps/preferences-web-browser-cache.png">../base-pixmaps/preferences-web-browser-cache.png</file>
 
   </qresource>
 </RCC>
