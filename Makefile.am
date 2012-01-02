@@ -41,6 +41,7 @@ preferences-desktop-filetype-association.png \
 preferences-other.png \
 preferences-system-windows-actions.png \
 preferences-desktop-wallpaper.png \
+preferences-web-browser-cache.png \
 qt-logo.png \
 system-run.png \
 show-menu.png \
