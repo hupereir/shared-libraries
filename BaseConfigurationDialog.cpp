@@ -443,15 +443,16 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 
     GridLayout* gridLayout = new GridLayout();
     gridLayout->setMargin(0);
+    gridLayout->setSpacing(5);
     gridLayout->setMaxCount(2);
     box->layout()->addItem( gridLayout );
 
-    gridLayout->addWidget( new QLabel( "type", box ), 0, 0, Qt::AlignHCenter );
-    gridLayout->addWidget( new QLabel( "duration (ms)", box ), 0, 1, Qt::AlignHCenter );
+    gridLayout->addWidget( new QLabel( "type", box ), 0, 0, Qt::AlignCenter );
+    gridLayout->addWidget( new QLabel( "duration (ms)", box ), 0, 1, Qt::AlignLeft|Qt::AlignVCenter );
 
     OptionCheckBox* checkbox;
     OptionSpinBox* spinbox;
-    gridLayout->addWidget( checkbox = new OptionCheckBox( "Smooth Transitions", box, "SMOOTH_TRANSITION_ENABLED" ) );
+    gridLayout->addWidget( checkbox = new OptionCheckBox( "Smooth Transitions ", box, "SMOOTH_TRANSITION_ENABLED" ) );
     checkbox->setToolTip( "Enables fading transition when changing display contents." );
     addOptionWidget( checkbox );
 
@@ -465,7 +466,7 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     spinbox->setEnabled( false );
     connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
 
-    gridLayout->addWidget( checkbox = new OptionCheckBox( "Smooth Scrolling", box, "SMOOTH_SCROLLING_ENABLED" ) );
+    gridLayout->addWidget( checkbox = new OptionCheckBox( "Smooth Scrolling ", box, "SMOOTH_SCROLLING_ENABLED" ) );
     checkbox->setToolTip( "Enables smooth scrolling when using page-up/page-down buttons, or mouse wheel." );
     addOptionWidget( checkbox );
 
@@ -479,7 +480,9 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     spinbox->setEnabled( false );
     connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
 
-    gridLayout->addWidget( new QLabel( "Frames: ", box ) );
+    QLabel* label;
+    gridLayout->addWidget( label = new QLabel( "Frames: ", box ) );
+    label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
     spinbox = new OptionSpinBox( box, "ANIMATION_FRAMES" );
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 1000 );
