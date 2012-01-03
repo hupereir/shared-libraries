@@ -24,19 +24,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file TextEditorMarginWidget.h
-\brief widget used to draw margins in TextEditors
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QEvent>
-#include <QPaintEvent>
-#include <QWidget>
 
 #include "Counter.h"
+
+#include <QtCore/QEvent>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QWidget>
 
 class TextEditor;
 
@@ -46,18 +39,18 @@ class TextEditorMarginWidget: public QWidget, public Counter
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        TextEditorMarginWidget( TextEditor* );
+    //! constructor
+    TextEditorMarginWidget( TextEditor* );
 
     //! destructor
     virtual ~TextEditorMarginWidget( void )
     {}
 
     //! vertical line
-    const bool& drawVerticalLine( void ) const
-    { return drawVerticalLine_; }
+    bool drawVerticalLine( void ) const
+    { return true; }
 
     public slots:
 
@@ -85,9 +78,6 @@ class TextEditorMarginWidget: public QWidget, public Counter
 
     //! dirty flag
     bool dirty_;
-
-    //! draw vertical line
-    bool drawVerticalLine_;
 
 };
 

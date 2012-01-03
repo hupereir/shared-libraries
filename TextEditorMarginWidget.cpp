@@ -21,15 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file TextEditorMarginWidget.cpp
-\brief widget used to draw margins in TextEditors
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QPainter>
 
 #include "Debug.h"
 #include "Singleton.h"
@@ -37,13 +28,14 @@
 #include "TextEditorMarginWidget.h"
 #include "XmlOptions.h"
 
+#include <QtGui/QPainter>
+
 //_____________________________________________________________
 TextEditorMarginWidget::TextEditorMarginWidget( TextEditor* parent ):
-QWidget( parent ),
-Counter( "TextEditorMarginWidget" ),
-editor_( parent ),
-dirty_( false ),
-drawVerticalLine_( false )
+    QWidget( parent ),
+    Counter( "TextEditorMarginWidget" ),
+    editor_( parent ),
+    dirty_( false )
 {
     Debug::Throw( "TextEditorMarginWidget::TextEditorMarginWidget.\n" );
     resize(0,0);
@@ -83,9 +75,6 @@ void TextEditorMarginWidget::_updateConfiguration( void )
     { palette.setColor( QPalette::Window, color ); }
 
     setPalette( palette );
-
-    // draw vertical line
-    drawVerticalLine_ = XmlOptions::get().get<bool>( "MARGIN_VERTICAL_LINE" );
 
 }
 

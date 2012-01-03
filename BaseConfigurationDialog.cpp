@@ -352,21 +352,11 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         QGroupBox* box;
         parent->layout()->addWidget( box = new QGroupBox( "Margin", parent ) );
 
-        box->setLayout( new QVBoxLayout() );
-
-        OptionCheckBox* checkbox;
-        box->layout()->addWidget( checkbox = new OptionCheckBox( "Draw vertical line", box, "MARGIN_VERTICAL_LINE" ) );
-        checkbox->setToolTip(
-            "Draw vertical line between margin and body text. "
-            "Margins are used to display additional informations such as tags and line numbers."
-            );
-        addOptionWidget( checkbox );
-
         GridLayout* gridLayout = new GridLayout();
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-        box->layout()->addItem( gridLayout );
+        box->setLayout( gridLayout );
 
         OptionColorDisplay* color_display;
         gridLayout->addWidget( new QLabel( "Foreground:", box ) );
