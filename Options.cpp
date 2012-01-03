@@ -87,7 +87,6 @@ Options::Options( bool install_default_options ):
         // textEditor margins
         set( "MARGIN_FOREGROUND", "#136872" );
         set( "MARGIN_BACKGROUND", "#ecffec" );
-        set( "MARGIN_VERTICAL_LINE", "1" );
 
         set( "ANIMATION_FRAMES", "1000" );
 
