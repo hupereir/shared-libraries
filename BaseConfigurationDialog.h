@@ -79,21 +79,17 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
         //! paragraph highlight
         PARAGRAPH_HIGHLIGHT = 1<<6,
 
-        //! box selection
-        BOX_SELECTION = 1<<7,
-
         //! margins
-        MARGINS = 1<<8,
+        MARGINS = 1<<7,
 
         //! misc
-        TEXT_EDITION_FLAGS = 1<<9,
+        TEXT_EDITION_FLAGS = 1<<8,
 
         //! default
         DEFAULT = BASE|LIST|ANIMATIONS,
 
         //! all text edition
-        ALL_TEXT_EDITION = TAB_EMULATION|PARAGRAPH_HIGHLIGHT|BOX_SELECTION|MARGINS|TEXT_EDITION_FLAGS
-
+        ALL_TEXT_EDITION = TAB_EMULATION|PARAGRAPH_HIGHLIGHT|MARGINS|TEXT_EDITION_FLAGS
 
     };
 

@@ -264,7 +264,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
     // tab emulation
     if( flag & TAB_EMULATION )
     {
-        QGroupBox* box = new QGroupBox( "Tab emulation", parent );
+        QGroupBox* box = new QGroupBox( "Tab Emulation", parent );
         QVBoxLayout* layout = new QVBoxLayout();
         box->setLayout( layout );
         parent->layout()->addWidget( box );
@@ -294,7 +294,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
     // paragraph highlighting
     if( flag & PARAGRAPH_HIGHLIGHT )
     {
-        QGroupBox* box = new QGroupBox( "Paragrap highlighting", parent );
+        QGroupBox* box = new QGroupBox( "Paragrap Highlighting", parent );
         QVBoxLayout* layout = new QVBoxLayout();
         box->setLayout( layout );
         parent->layout()->addWidget( box );
@@ -321,39 +321,36 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
     }
 
     // box selection
-    if( flag & BOX_SELECTION )
+    if( false )
     {
-        QGroupBox* box = new QGroupBox( "Box selection", parent );
+        QGroupBox* box = new QGroupBox( "Box Selection", parent );
         GridLayout* gridLayout = new GridLayout();
         gridLayout->setMaxCount(2);
         box->setLayout( gridLayout );
         parent->layout()->addWidget( box );
 
-        gridLayout->addWidget( new QLabel( "Alpha channel" ) );
+        gridLayout->addWidget( new QLabel( "Opacity" ) );
         OptionSlider *slider = new OptionSlider( box, "BOX_SELECTION_ALPHA" );
         slider->setRange( 0, 100 );
         slider->setToolTip( "Alpha channel (i.e. opacity) of the box selection highlight color" );
         gridLayout->addWidget( slider );
         addOptionWidget( slider );
 
-        if( XmlOptions::get().find( "BOX_SELECTION_COLOR" ) )
-        {
-            gridLayout->addWidget( new QLabel( "Box selection color" ) );
-            OptionColorDisplay* color = new OptionColorDisplay( box, "BOX_SELECTION_COLOR" );
-            gridLayout->addWidget( color );
-            addOptionWidget( color );
-        }
-
-        gridLayout->addWidget( new QLabel(
-            "Note: box selection is enabled in text editors\n"
+        QLabel* label;
+        gridLayout->addWidget( label = new QLabel(
+            "Note: box selection is enabled in text editors "
             "only if the corresponding font has fixed pitch."), 2, 0, 1, 2 );
+
+        // wrap
+        label->setWordWrap( true );
+
     }
 
     // margins
     if( flag & MARGINS )
     {
         QGroupBox* box;
-        parent->layout()->addWidget( box = new QGroupBox( "Margin appearance", parent ) );
+        parent->layout()->addWidget( box = new QGroupBox( "Margin", parent ) );
 
         box->setLayout( new QVBoxLayout() );
 
@@ -372,12 +369,12 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         box->layout()->addItem( gridLayout );
 
         OptionColorDisplay* color_display;
-        gridLayout->addWidget( new QLabel( "Margin foreground: ", box ) );
+        gridLayout->addWidget( new QLabel( "Foreground:", box ) );
         gridLayout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
         addOptionWidget( color_display );
         color_display->setToolTip( "Margins foreground color" );
 
-        gridLayout->addWidget( new QLabel( "Margin background: ", box ) );
+        gridLayout->addWidget( new QLabel( "Background:", box ) );
         gridLayout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
         addOptionWidget( color_display );
         color_display->setToolTip( "Margins background color" );
@@ -389,7 +386,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
 
         // misc
         QGroupBox* box;
-        parent->layout()->addWidget( box = new QGroupBox( "Flags", parent ) );
+        parent->layout()->addWidget( box = new QGroupBox( "Options", parent ) );
         QVBoxLayout* layout = new QVBoxLayout();
         box->setLayout( layout );
 
@@ -432,17 +429,18 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     Debug::Throw( "BaseConfigurationDialog::animationConfiguration.\n" );
 
     // make sure parent is valid
-    QGroupBox* box;
-    if( !parent ) {
+    QWidget* box;
+    if( !parent )
+    {
         parent = &addPage( IconEngine::get( ICONS::PREFERENCE_ANIMATIONS ), "Animations", "Generic animation settings" );
-        box = new QGroupBox( parent );
+        box = new QWidget( parent );
+
     } else box = new QGroupBox( "Animations", parent );
 
     box->setLayout( new QVBoxLayout() );
     parent->layout()->addWidget( box );
 
     GridLayout* gridLayout = new GridLayout();
-    gridLayout->setMargin(0);
     gridLayout->setSpacing(5);
     gridLayout->setMaxCount(2);
     box->layout()->addItem( gridLayout );

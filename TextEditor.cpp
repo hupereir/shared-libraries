@@ -1493,9 +1493,9 @@ void TextEditor::paintEvent( QPaintEvent* event )
         if( !(data && data->hasFlag( TextBlock::HAS_BACKGROUND|TextBlock::CURRENT_BLOCK ) ) ) continue;
 
         // retrieve block rect
-        QRectF block_rect( document()->documentLayout()->blockBoundingRect( block ) );
-        block_rect.setLeft(0);
-        block_rect.setWidth( viewport()->width() + scrollbarPosition().x() );
+        QRectF blockRect( document()->documentLayout()->blockBoundingRect( block ) );
+        blockRect.setLeft(0);
+        blockRect.setWidth( viewport()->width() + scrollbarPosition().x() );
 
         QColor color;
         if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
@@ -1504,7 +1504,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
             // update current block rect
             // and redraw margin if changed
-            if( _setCurrentBlockRect( QRect( QPoint(0, int(block_rect.topLeft().y()) ), QSize( _marginWidget().width(), int(block_rect.height()) ) ) ) )
+            if( _setCurrentBlockRect( QRect( QPoint(0, int(blockRect.topLeft().y()) ), QSize( _marginWidget().width(), int(blockRect.height()) ) ) ) )
             { _marginWidget().setDirty(); }
 
         }
@@ -1515,16 +1515,21 @@ void TextEditor::paintEvent( QPaintEvent* event )
         if( color.isValid() )
         {
             painter.setBrush( color );
-            painter.drawRect( block_rect );
+            painter.drawRect( blockRect );
         }
 
     }
 
     if( _boxSelection().state() == BoxSelection::STARTED || _boxSelection().state() == BoxSelection::FINISHED )
     {
-        painter.setPen( _boxSelection().color() );
+        painter.setPen( Qt::NoPen );
         painter.setBrush( _boxSelection().brush() );
         painter.drawRect( _boxSelection().rect() );
+
+        painter.setPen( _boxSelection().color() );
+        painter.setBrush( Qt::NoBrush );
+        painter.drawRect( _boxSelection().rect() );
+
     }
 
     painter.end();
