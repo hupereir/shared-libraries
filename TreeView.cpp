@@ -116,7 +116,7 @@ int TreeView::visibleColumnCount( void ) const
 bool TreeView::setOptionName( const QString& value )
 {
 
-    Debug::Throw( "TreeView::setOptionName.\n" );
+    Debug::Throw() << "TreeView::setOptionName - value: " << value << endl;
 
     QString tmp;
 
@@ -129,6 +129,7 @@ bool TreeView::setOptionName( const QString& value )
         mask_changed = true;
         if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
         else updateMask();
+
     }
 
     // sort order
