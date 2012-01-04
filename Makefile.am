@@ -30,6 +30,7 @@ edit-undo.png \
 format-fill-color.png \
 help-contents.png \
 input-mouse.png \
+im-user.png \
 list-add.png \
 list-remove.png \
 messagebox_warning.png \
