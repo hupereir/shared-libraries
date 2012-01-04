@@ -52,12 +52,12 @@ namespace SERVER
         layout()->setMargin(0);
 
         // generic objects
-        QGroupBox *box;
+        QWidget *box;
         OptionLineEditor* line_editor;
         OptionSpinBox* spin_box;
 
         // general
-        if( title.isEmpty() ) layout()->addWidget( box = new QGroupBox( this ) );
+        if( title.isEmpty() ) layout()->addWidget( box = new QWidget( this ) );
         else layout()->addWidget( box = new QGroupBox( title, this ) );
 
         GridLayout* grid_layout = new GridLayout();
