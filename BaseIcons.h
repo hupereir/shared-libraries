@@ -99,6 +99,7 @@ namespace ICONS
     static const QString PREFERENCE_BOOKMARKS="bookmarks.png";
     static const QString PREFERENCE_SERVER="network-server.png";
     static const QString PREFERENCE_CACHE="preferences-web-browser-cache.png";
+    static const QString PREFERENCE_PLAYERS="im-user.png";
 
 };
 

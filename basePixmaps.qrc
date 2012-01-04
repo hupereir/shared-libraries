@@ -38,6 +38,7 @@
     <file alias="pixmaps/zoom-in.png">../base-pixmaps/zoom-in.png</file>
 
     <!-- configuration icons -->
+    <file alias="pixmaps/im-user.png">../base-pixmaps/im-user.png</file>
     <file alias="pixmaps/system-run.png">../base-pixmaps/system-run.png</file>
     <file alias="pixmaps/input-mouse.png">../base-pixmaps/input-mouse.png</file>
     <file alias="pixmaps/preferences-desktop-color.png">../base-pixmaps/preferences-desktop-color.png</file>
