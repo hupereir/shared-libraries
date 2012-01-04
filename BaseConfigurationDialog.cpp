@@ -353,7 +353,6 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         parent->layout()->addWidget( box = new QGroupBox( "Margin", parent ) );
 
         GridLayout* gridLayout = new GridLayout();
-        gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         box->setLayout( gridLayout );

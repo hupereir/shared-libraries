@@ -198,7 +198,10 @@ bool XmlOptions::write( QString file )
     for( Options::Map::const_iterator iter = get().options().begin(); iter != get().options().end(); ++iter )
     {
 
-        if( iter->second.hasFlag( Option::RECORDABLE ) && iter->second.set() && iter->second.raw().size() )
+        if( iter->second.hasFlag( Option::RECORDABLE ) &&
+            iter->second.set() &&
+            iter->second.raw().size() &&
+            iter->second.raw() != iter->second.defaultValue() )
         { top.appendChild( XmlOption( iter->first, iter->second ).domElement( document ) ); }
 
     }
