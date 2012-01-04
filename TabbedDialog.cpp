@@ -23,6 +23,7 @@
 *******************************************************************************/
 
 #include "AnimatedStackedWidget.h"
+#include "IconSize.h"
 #include "ScrollObject.h"
 #include "TabbedDialog.h"
 
@@ -232,16 +233,34 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     QWidget* base = new QWidget();
     base->setLayout( new QVBoxLayout() );
     base->layout()->setMargin(0);
-    base->layout()->setSpacing(5);
+    base->layout()->setSpacing(0);
 
-    if( !tooltip.isEmpty() ) {
+    QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setMargin(0);
+    hLayout->setSpacing(5);
+    base->layout()->addItem( hLayout );
 
-        QLabel *label( new QLabel( tooltip, base ) );
-        QFont font( label->font() );
-        font.setWeight( QFont::Bold );
-        label->setFont( font );
+    // tooltip label
+    QLabel *label( new QLabel( base ) );
+    label->setText( tooltip.isEmpty() ? title:tooltip );
+    QFont font( label->font() );
+    font.setWeight( QFont::Bold );
+    label->setFont( font );
+    label->setMargin(5);
+    hLayout->addWidget( label, 1 );
+
+    if( !icon.isNull() )
+    {
+
+        // change label alignment
+        label->setAlignment( Qt::AlignLeft|Qt::AlignTop );
+
+        // add icon
+        label = new QLabel( base );
         label->setMargin(5);
-        base->layout()->addWidget( label );
+        label->setPixmap( icon.pixmap( IconSize( IconSize::Medium ) ) );
+        label->setAlignment( Qt::AlignRight|Qt::AlignTop );
+        hLayout->addWidget( label, 0 );
 
     }
 
