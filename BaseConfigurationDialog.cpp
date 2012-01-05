@@ -116,7 +116,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
 
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
 
-    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_GENERAL ), "General", "Generic application settings" );
+    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_GENERAL ), "General", "General application settings" );
 
     // base
     if( flag & BASE )
@@ -124,7 +124,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
 
         // base
         QGroupBox* box;
-        box = new QGroupBox( "Generic", parent );
+        box = new QGroupBox( "General", parent );
         parent->layout()->addWidget( box );
 
         QHBoxLayout* hLayout = new QHBoxLayout();
@@ -164,27 +164,32 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
 
         // base font
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-        gridLayout->addWidget( new QLabel( "Default font: ", box ) );
+        gridLayout->addWidget( new QLabel( "Default font:", box ) );
         OptionFontEditor *edit = new OptionFontEditor( box, "FONT_NAME" );
         edit->setToolTip( "Default font name for all widgets" );
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
         // fixed font
-        gridLayout->addWidget( new QLabel( "Fixed font: ", box ) );
+        gridLayout->addWidget( new QLabel( "Fixed font:", box ) );
         edit = new OptionFontEditor( box, "FIXED_FONT_NAME" );
         edit->setToolTip( "Default font name (fixed) for text widgets" );
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
         // pixmap path
-        gridLayout->addWidget( new QLabel( "Pixmaps: ", box ) );
-        QPushButton *button = new QPushButton( "Edit Pixmap Path List", box );
+        gridLayout->addWidget( new QLabel( "Pixmaps:", box ) );
+
+        hLayout = new QHBoxLayout();
+        hLayout->setMargin(0);
+        gridLayout->addLayout( hLayout );
+        QPushButton *button = new QPushButton( IconEngine::get( ICONS::EDIT ), "Edit Pixmap Path List", box );
         connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
-        gridLayout->addWidget( button );
+        hLayout->addWidget( button );
+        hLayout->addStretch(1);
 
         // debug level
-        gridLayout->addWidget( new QLabel( "Debug level: ", box ) );
+        gridLayout->addWidget( new QLabel( "Debug level:", box ) );
         OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 5 );
@@ -213,11 +218,19 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
     Debug::Throw( "BaseConfigurationDialog::listConfiguration.\n" );
 
     // make sure parent is valid
-    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_LISTS ), "Lists", "Configure the appearance of item lists" );
+    QWidget* box;
+    if( !parent )
+    {
 
-    QGroupBox* box = new QGroupBox( "Lists", parent );
+        parent = &addPage( IconEngine::get( ICONS::PREFERENCE_LISTS ), "Lists", "Configure the appearance of item lists" );
+        box = new QWidget( parent );
+
+    } else {
+
+        box = new QGroupBox( "Lists", parent );
+    }
+
     QVBoxLayout* vLayout = new QVBoxLayout();
-    vLayout->setMargin( 2 );
     box->setLayout( vLayout );
     parent->layout()->addWidget( box );
 
@@ -237,13 +250,13 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
 
 
     OptionColorDisplay* color;
-    gridLayout->addWidget( new QLabel( "Selected column background color: ", box ) );
+    gridLayout->addWidget( new QLabel( "Selected column background color:", box ) );
     gridLayout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
     color->setToolTip( "Selected column background color in lists.\n Set it to \"None\" do disable alternate item color." );
     addOptionWidget( color );
 
     OptionSpinBox* spinbox;
-    gridLayout->addWidget( new QLabel( "List items icon size: ", box ) );
+    gridLayout->addWidget( new QLabel( "List items icon size:", box ) );
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
     spinbox->setToolTip( "Default size of the icons displayed in lists" );
     spinbox->setMinimum(8);
@@ -421,7 +434,7 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     QWidget* box;
     if( !parent )
     {
-        parent = &addPage( IconEngine::get( ICONS::PREFERENCE_ANIMATIONS ), "Animations", "Generic animation settings" );
+        parent = &addPage( IconEngine::get( ICONS::PREFERENCE_ANIMATIONS ), "Animations", "Animations configuration" );
         box = new QWidget( parent );
 
     } else box = new QGroupBox( "Animations", parent );
@@ -480,8 +493,6 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     gridLayout->addWidget( spinbox );
     addOptionWidget( spinbox );
 
-
-
 }
 
 //__________________________________________________
@@ -491,9 +502,8 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
     CustomDialog dialog( this );
 
     // store backup
-    Options::List backup_options = XmlOptions::get().specialOptions( "PIXMAP_PATH" );
+    Options::List backupOptions = XmlOptions::get().specialOptions( "PIXMAP_PATH" );
 
-    dialog.mainLayout().addWidget( new QLabel("Pixmap pathname: ", &dialog ) );
     OptionListBox *listbox = new OptionListBox( &dialog, "PIXMAP_PATH" );
     listbox->setBrowsable( true );
     listbox->setFileMode( QFileDialog::Directory );
@@ -501,12 +511,16 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
     listbox->read();
     dialog.mainLayout().addWidget( listbox );
 
+    // customize layout
+    dialog.layout()->setMargin(0);
+    dialog.buttonLayout().setMargin(5);
+
     //
     if( dialog.exec() ) listbox->write();
     else {
         // restore old values
         XmlOptions::get().clearSpecialOptions( "PIXMAP_PATH" );
-        for( Options::List::iterator iter = backup_options.begin(); iter != backup_options.end(); ++iter )
+        for( Options::List::iterator iter = backupOptions.begin(); iter != backupOptions.end(); ++iter )
         { XmlOptions::get().add( "PIXMAP_PATH", *iter ); }
     }
     return;
