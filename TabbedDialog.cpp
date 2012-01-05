@@ -189,14 +189,14 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     layout->addLayout( hLayout );
 
     // add widgets
-    hLayout->addWidget( list_ = new QListView( this ), 0 );
+    hLayout->addWidget( list_ = new TreeView( this ), 0 );
     hLayout->addWidget( stack_ = new AnimatedStackedWidget(0), 1 );
 
     // configure list
     _list().setModel( &model_ );
+    _list().setSortingEnabled( false );
+    _list().header()->hide();
     _list().setItemDelegate( &delegate_ );
-    _list().setFlow( QListView::TopToBottom );
-
 
     // change font
     QFont boldFont( _list().font() );

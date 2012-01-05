@@ -27,12 +27,12 @@
 #include "BaseDialog.h"
 #include "OptionWidget.h"
 #include "ListModel.h"
+#include "TreeView.h"
 
 #include <QtGui/QCloseEvent>
 #include <QtGui/QDialog>
 #include <QtGui/QIcon>
 #include <QtGui/QLayout>
-#include <QtGui/QListView>
 #include <QtGui/QTextLayout>
 #include <list>
 
@@ -71,7 +71,7 @@ class TabbedDialog: public BaseDialog, public Counter
     protected:
 
     //! retrieve list
-    virtual QListView& _list( void )
+    virtual TreeView& _list( void )
     { return *list_; }
 
     //! retrieve stack
@@ -243,7 +243,7 @@ class TabbedDialog: public BaseDialog, public Counter
     Delegate delegate_;
 
     //! Configuration list
-    QListView* list_;
+    TreeView* list_;
 
     //! Widget stack
     AnimatedStackedWidget* stack_;

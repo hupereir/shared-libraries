@@ -234,29 +234,41 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
     box->setLayout( vLayout );
     parent->layout()->addWidget( box );
 
-    OptionCheckBox* checkbox( new OptionCheckBox( "Use alternate color for items in list", box, "USE_ALTERNATE_COLOR" ) );
-    vLayout->addWidget( checkbox );
-    addOptionWidget( checkbox );
+    {
+        OptionCheckBox* checkbox;
+        checkbox = new OptionCheckBox( "Use alternate color for items in list", box, "USE_ALTERNATE_COLOR" );
+        vLayout->addWidget( checkbox );
+        addOptionWidget( checkbox );
 
-    const QPalette palette( this->palette() );
-    if( palette.color( QPalette::AlternateBase ) == palette.color( QPalette::Base ) )
-    { checkbox->setEnabled( false ); }
+        const QPalette palette( this->palette() );
+        if( palette.color( QPalette::AlternateBase ) == palette.color( QPalette::Base ) )
+        { checkbox->setEnabled( false ); }
+
+    }
 
     GridLayout* gridLayout = new GridLayout();
     gridLayout->setMargin(0);
     gridLayout->setMaxCount(2);
-    gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     vLayout->addLayout( gridLayout );
 
+    {
+        OptionCheckBox* checkbox;
+        checkbox = new OptionCheckBox( "Use different backround for selected column:", box, "USE_SELECTED_COLUMN_COLOR" );
+        gridLayout->addWidget( checkbox );
+        addOptionWidget( checkbox );
 
-    OptionColorDisplay* color;
-    gridLayout->addWidget( new QLabel( "Selected column background color:", box ) );
-    gridLayout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
-    color->setToolTip( "Selected column background color in lists.\n Set it to \"None\" do disable alternate item color." );
-    addOptionWidget( color );
+        OptionColorDisplay* color;
+        gridLayout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
+        addOptionWidget( color );
 
+        connect( checkbox, SIGNAL( toggled( bool ) ), color, SLOT( setEnabled( bool ) ) );
+
+    }
+
+    QLabel* label;
     OptionSpinBox* spinbox;
-    gridLayout->addWidget( new QLabel( "List items icon size:", box ) );
+    gridLayout->addWidget( label = new QLabel( "List items icon size:", box ) );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
     spinbox->setToolTip( "Default size of the icons displayed in lists" );
     spinbox->setMinimum(8);

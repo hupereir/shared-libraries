@@ -28,6 +28,7 @@
 #include "ColorDisplay.h"
 #include "ColumnSelectionMenu.h"
 #include "ColumnSortingMenu.h"
+#include "Color.h"
 #include "Singleton.h"
 #include "TextEditor.h"
 #include "XmlOptions.h"
@@ -741,8 +742,10 @@ void TreeView::_updateConfiguration( void )
 
     // try load selected column color from option
     QColor color;
-    QString colorname( XmlOptions::get().raw("SELECTED_COLUMN_COLOR") );
-    if( !colorname.startsWith( ColorDisplay::NONE, Qt::CaseInsensitive ) ) color = QColor( colorname );
+    if( XmlOptions::get().get<bool>( "USE_SELECTED_COLUMN_COLOR" ) )
+    { color = BASE::Color( XmlOptions::get().raw("SELECTED_COLUMN_COLOR") ); }
+
+    // reset
     selectedColumnColor_ = color;
 
     // icon size
