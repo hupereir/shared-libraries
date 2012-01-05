@@ -81,6 +81,7 @@ Options::Options( bool install_default_options ):
 
         // list configuration
         set( "USE_ALTERNATE_COLOR", "0" );
+        set( "USE_SELECTED_COLUMN_COLOR", "1" );
         set( "SELECTED_COLUMN_COLOR", Option( "#fffdd4", "Background color for selected column in list" ) );
         set( "LIST_ICON_SIZE", Option( "24", "Default icon size in lists" ) );
 
