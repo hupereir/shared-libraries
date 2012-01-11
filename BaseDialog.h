@@ -98,6 +98,9 @@ class BaseDialog: public QDialog
     //! uniconify
     BaseDialog& uniconify( void );
 
+    //! stickyness
+    void toggleSticky( bool );
+
     protected:
 
     //! generic event

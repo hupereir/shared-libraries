@@ -21,42 +21,32 @@
 *
 *******************************************************************************/
 
-
-/*!
-   \file    XmlTimeStamp.cpp
-   \brief   Xml interface to time manipulation object
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "Debug.h"
 #include "XmlTimeStamp.h"
-
-
 
 const QString XmlTimeStamp::XML_TIME( "time" );
 
 //______________________________________________________
 XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
 {
-  Debug::Throw( "XmlTimeStamp::XmlTimeStamp" );
+    Debug::Throw( "XmlTimeStamp::XmlTimeStamp.\n" );
 
-  // parse attributes
-  QDomNamedNodeMap attributes( element.attributes() );
-  for( unsigned int i=0; i<attributes.length(); i++ )
-  {
-    QDomAttr attribute( attributes.item( i ).toAttr() );
-    if( attribute.isNull() ) continue;
-    if( attribute.name() == XML_TIME ) setTime( attribute.value().toUInt() );
-  }
+    // parse attributes
+    QDomNamedNodeMap attributes( element.attributes() );
+    for( unsigned int i=0; i<attributes.length(); i++ )
+    {
+        QDomAttr attribute( attributes.item( i ).toAttr() );
+        if( attribute.isNull() ) continue;
+        if( attribute.name() == XML_TIME ) setTime( attribute.value().toUInt() );
+    }
+
 };
 
 //_______________________________________________________
 QDomElement XmlTimeStamp::domElement( const QString& name, QDomDocument& document ) const
 {
-  Debug::Throw( "XmlTimeStamp::domElement" );
-  QDomElement out( document.createElement( name ) );
-  out.setAttribute( XML_TIME, QString().setNum( unixTime() ) );
-  return out;
+    Debug::Throw( "XmlTimeStamp::domElement.\n" );
+    QDomElement out( document.createElement( name ) );
+    out.setAttribute( XML_TIME, QString().setNum( unixTime() ) );
+    return out;
 }

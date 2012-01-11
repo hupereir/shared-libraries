@@ -38,6 +38,8 @@
 #include <QtCore/QTextStream>
 #include <QtGui/QWindowStateChangeEvent>
 
+#include "X11Util.h"
+
 //__________________________________________________
 BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
     QDialog( parent, flags ),
@@ -121,6 +123,31 @@ BaseDialog& BaseDialog::uniconify( void )
     activateWindow();
     raise();
     return *this;
+
+}
+
+//__________________________________________________________
+void BaseDialog::toggleSticky( bool state )
+{
+
+    Debug::Throw( "BaseDialog::toggleSticky.\n" );
+
+    #if defined(Q_WS_X11)
+    if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
+    {
+
+        X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, state );
+
+    } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
+
+        unsigned long desktop = X11Util::get().cardinal( QX11Info::appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
+        X11Util::get().changeCardinal( *this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
+
+    }
+
+    #endif
+
+    return;
 
 }
 

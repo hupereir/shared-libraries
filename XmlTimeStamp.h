@@ -24,25 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file XmlTimeStamp.h
-\brief Xml interface to time manipulation object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "TimeStamp.h"
 
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include <QtCore/QString>
 
-/*!
-\class XmlTimeStamp
-\brief Xml interface to time manipulation object
-*/
-
+//! Xml interface to time manipulation object
 class XmlTimeStamp:public TimeStamp
 {
 

@@ -99,7 +99,6 @@ class CounterModel: public ListModel<CounterPair>
 
     private:
 
-
     //! used to sort IconCaches
     class SortFTor: public ItemModel::SortFTor
     {

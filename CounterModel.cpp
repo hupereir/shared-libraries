@@ -42,7 +42,6 @@ const QString CounterModel::columnTitles_[ CounterModel::nColumns ] =
 //__________________________________________________________________
 QVariant CounterModel::data( const QModelIndex& index, int role ) const
 {
-    Debug::Throw( "CounterModel::data.\n" );
 
     // check index, role and column
     if( !index.isValid() ) return QVariant();
@@ -88,12 +87,7 @@ QVariant CounterModel::headerData(int section, Qt::Orientation orientation, int 
 
 //____________________________________________________________
 void CounterModel::_sort( int column, Qt::SortOrder order )
-{
-
-    Debug::Throw() << "CounterModel::sort - column: " << column << " order: " << order << endl;
-    std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
-
-}
+{ std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
 //________________________________________________________
 bool CounterModel::SortFTor::operator () ( CounterPair first, CounterPair second ) const
