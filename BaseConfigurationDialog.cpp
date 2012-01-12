@@ -444,19 +444,29 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 
     // make sure parent is valid
     QWidget* box;
+
     if( !parent )
     {
+
         parent = &addPage( IconEngine::get( ICONS::PREFERENCE_ANIMATIONS ), "Animations", "Animations configuration" );
         box = new QWidget( parent );
+        box->setLayout( new QVBoxLayout() );
+        box->layout()->setMargin(0);
 
-    } else box = new QGroupBox( "Animations", parent );
+    } else {
 
-    box->setLayout( new QVBoxLayout() );
+        box = new QGroupBox( "Animations", parent );
+        box->setLayout( new QVBoxLayout() );
+        box->layout()->setMargin(5);
+
+    }
+
     parent->layout()->addWidget( box );
 
     GridLayout* gridLayout = new GridLayout();
     gridLayout->setSpacing(5);
     gridLayout->setMaxCount(2);
+    gridLayout->setMargin(0);
     box->layout()->addItem( gridLayout );
 
     gridLayout->addWidget( new QLabel( "type", box ), 0, 0, Qt::AlignCenter );
