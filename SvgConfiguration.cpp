@@ -89,7 +89,7 @@ namespace SVG
     // plasma interface
     #if !defined(Q_WS_WIN)
     QGroupBox* plasma_box;
-    layout()->addWidget( plasma_box = new QGroupBox( "Plasma interface (KDE only)", this ) );
+    layout()->addWidget( plasma_box = new QGroupBox( "Plasma Interface (KDE only)", this ) );
     plasma_box->setLayout( new QVBoxLayout() );
     plasma_box->layout()->setSpacing(5);
     plasma_box->layout()->setMargin(5);
