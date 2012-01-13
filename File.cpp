@@ -421,32 +421,30 @@ File File::truncatedName( void ) const
 }
 
 //_____________________________________________________________________
-std::list<File> File::listFiles( const unsigned int& flags ) const
+File::List File::listFiles( const unsigned int& flags ) const
 {
 
-    // Debug::Throw(0) << "File::listFiles - this: " << *this << " - hidden: " << (flags&SHOW_HIDDEN) << endl;
+    Debug::Throw() << "File::listFiles - this: " << *this << " - hidden: " << (flags&SHOW_HIDDEN) << endl;
 
-    File full_name( expand() );
-    std::list<File> out;
-    if( !full_name.isDirectory() || (full_name.isLink() && !flags&FOLLOW_LINKS ) ) return out;
+    List out;
+    File fullName( expand() );
+    if( !fullName.isDirectory() || (fullName.isLink() && !flags&FOLLOW_LINKS ) ) return out;
 
     // open directory
     QDir::Filters filter = QDir::AllEntries;
     if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
 
-    QDir dir( full_name );
+    QDir dir( fullName );
     QStringList files( dir.entryList( filter ) );
     for( QStringList::iterator iter = files.begin(); iter != files.end(); ++iter )
     {
 
         if( *iter == "." || *iter == ".." ) continue;
 
-        QFileInfo file_info;
-        file_info.setFile( QDir( *this ), *iter );
-        File found( file_info.absoluteFilePath() );
+        QFileInfo fileInfo;
+        fileInfo.setFile( QDir( *this ), *iter );
+        File found( fileInfo.absoluteFilePath() );
         out.push_back( found );
-
-        // Debug::Throw( 0 ) << "File::listFiles - " << found << endl;
 
         // list subdirectory if recursive
         if( flags & RECURSIVE && found.isDirectory() )
@@ -458,7 +456,7 @@ std::list<File> File::listFiles( const unsigned int& flags ) const
             if( found.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( found ) ) != out.end() ) continue;
 
             // list subdirectory
-            std::list<File> tmp = found.listFiles( flags );
+            List tmp = found.listFiles( flags );
             out.insert( out.end(), tmp.begin(), tmp.end() );
         }
 
@@ -474,9 +472,9 @@ File File::find( const File& file, bool case_sensitive ) const
 
     Debug::Throw() << "File::find - this: " << *this << endl;
     if( !( exists() && isDirectory() ) ) return File();
-    std::list<File> files( listFiles( RECURSIVE ) );
-    std::list<File> directories;
-    for( std::list<File>::iterator iter = files.begin(); iter != files.end(); ++iter )
+    List files( listFiles( RECURSIVE ) );
+    List directories;
+    for( List::iterator iter = files.begin(); iter != files.end(); ++iter )
     {
 
         // check if file match
@@ -488,7 +486,7 @@ File File::find( const File& file, bool case_sensitive ) const
     }
 
     // loop over directories; search recursively
-    for( std::list<File>::iterator iter = directories.begin(); iter!=directories.end(); ++iter )
+    for( List::iterator iter = directories.begin(); iter!=directories.end(); ++iter )
     {
         File found( iter->find( file, case_sensitive ) );
         if( found != File() ) return found;

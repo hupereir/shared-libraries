@@ -37,13 +37,16 @@
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QString>
-#include <list>
+#include <vector>
 
 //! file manipulation utility
 class File: public QString
 {
 
     public:
+
+    //! shortcut to list of files
+    typedef std::vector<File> List;
 
     //! constructor
     File( void )
@@ -193,7 +196,7 @@ class File: public QString
     };
 
     //! return list of files in a directory
-    virtual std::list< File > listFiles( const unsigned int& flags ) const;
+    virtual List listFiles( const unsigned int& flags ) const;
 
     //! used to find files pointing to the same link
     class SameLinkFTor
