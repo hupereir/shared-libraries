@@ -54,14 +54,9 @@ QVariant CounterModel::data( const QModelIndex& index, int role ) const
 
         switch( index.column() )
         {
-            case NAME:
-            return counter.first;
-
-            case COUNT:
-            return counter.second;
-
-            default:
-            return QVariant();
+            case NAME: return counter.first;
+            case COUNT: return counter.second;
+            default: return QVariant();
         }
     }
 

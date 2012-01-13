@@ -23,20 +23,13 @@
  *
  *
  *******************************************************************************/
-/*!
-  \file    FileRecordProperties.h
-  \brief   File record property names
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
-*/
 
 #include <QString>
 
 /*! list properties commonly used for FileRecord objects */
 namespace FileRecordProperties
 {
-  static const QString ICON = "icon";
+    static const QString ICON = "icon";
 };
 
 #endif
