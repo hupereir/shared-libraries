@@ -146,7 +146,7 @@ QSize TabbedDialog::Delegate::sizeHint( const QStyleOptionViewItem &option, cons
     if ( text.isEmpty() ) height = hp;
     else height = hp + ht + 10;
 
-    width = qMax( wt, wp ) + gap;
+    width = qMax( wt, wp ) + 2*gap;
 
     return QSize( width, height );
 }
@@ -185,7 +185,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
-    hLayout->setSpacing(2);
+    hLayout->setSpacing(5);
     layout->addLayout( hLayout );
 
     // add widgets
