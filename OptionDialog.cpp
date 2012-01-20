@@ -20,13 +20,6 @@
 *
 *
 *******************************************************************************/
-/*!
-\file OptionDialog.cpp
-\brief displays all run-time options
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 
 #include "BaseIcons.h"
 #include "OptionDialog.h"
@@ -51,6 +44,9 @@ CustomDialog( parent, CloseButton )
     setWindowTitle( "Runtime Options" );
     setOptionName( "OPTION_DIALOG" );
 
+    layout()->setMargin(0);
+    buttonLayout().setMargin(5);
+
     // tell dialog to delete when close
     setAttribute( Qt::WA_DeleteOnClose );
 
@@ -59,23 +55,27 @@ CustomDialog( parent, CloseButton )
 
     QHBoxLayout* layout = new QHBoxLayout();
     layout->setSpacing(20);
-    layout->setMargin(0);
+    layout->setMargin(5);
     mainLayout().addLayout( layout );
 
     //! try load Question icon
-    QPixmap question_pixmap( PixmapEngine::get( ICONS::WARNING ) );
+    QPixmap questionPixmap( PixmapEngine::get( ICONS::WARNING ) );
 
     // insert main vertical box
-    if( !question_pixmap.isNull() )
+    if( !questionPixmap.isNull() )
     {
         QLabel* label = new QLabel( this );
-        label->setPixmap( question_pixmap );
+        label->setPixmap( questionPixmap );
         layout->addWidget( label );
     }
-    layout->addWidget( new QLabel(
-        "This dialog allows one to modify options manually by editting them in the list.\n"
-        "The modifications are directly applied to the application. The reload button allows\n"
-        "one to restore the state of the application at the time the dialog was oppened.\n", this ), 1 );
+
+    QLabel* label;
+    layout->addWidget( label = new QLabel(
+        "This dialog allows one to modify options manually by editting them in the list. "
+        "The modifications are directly applied to the application. The reload button allows "
+        "one to restore the state of the application at the time the dialog was oppened.", this ), 1 );
+
+    label->setWordWrap( true );
 
     // insert list
     mainLayout().addWidget( list_ = new TreeView( this ) );

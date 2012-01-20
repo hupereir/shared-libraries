@@ -24,37 +24,28 @@
  *
  *******************************************************************************/
 
-/*!
-   \file SystemEnvironmentDialog.h
-   \brief displays environment variables
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <map>
-
-
 #include "CustomDialog.h"
 #include "OptionModel.h"
+
+#include <map>
 
 //! displays Counter names and counts
 class SystemEnvironmentDialog: public CustomDialog
 {
 
-  public:
+    public:
 
-  //! constructor
-  SystemEnvironmentDialog( QWidget* parent );
+    //! constructor
+    SystemEnvironmentDialog( QWidget* parent );
 
-  //! destructor
-  virtual ~SystemEnvironmentDialog( void )
-  {}
+    //! destructor
+    virtual ~SystemEnvironmentDialog( void )
+    {}
 
-  private:
+    private:
 
-  //! model
-  OptionModel model_;
+    //! model
+    OptionModel model_;
 
 };
 

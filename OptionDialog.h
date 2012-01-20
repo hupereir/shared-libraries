@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file OptionDialog.h
-\brief displays all run-time options
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "CustomDialog.h"
 #include "OptionModel.h"
 #include "XmlOptions.h"
@@ -47,10 +39,10 @@ class OptionDialog: public CustomDialog
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        OptionDialog( QWidget* );
+    //! constructor
+    OptionDialog( QWidget* );
 
     //! destructor
     virtual ~OptionDialog( void )

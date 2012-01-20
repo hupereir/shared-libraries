@@ -1,35 +1,25 @@
 // $Id$
 
 /******************************************************************************
- *
- * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
- *
- * This is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This software is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.   See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * software; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA   02111-1307 USA
- *
- *
- *******************************************************************************/
-/*!
-   \file CounterDialog.cpp
-   \brief displays Counter names and counts
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <QPushButton>
-#include <QLayout>
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY;  without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.   See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA   02111-1307 USA
+*
+*
+*******************************************************************************/
 
 #include "BaseIcons.h"
 #include "CounterMap.h"
@@ -38,25 +28,27 @@
 #include "Singleton.h"
 #include "AnimatedTreeView.h"
 
-
+#include <QtGui/QPushButton>
+#include <QtGui/QLayout>
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):
-  CustomDialog( parent, OkButton, Qt::Window )
+CustomDialog( parent, OkButton, Qt::Window )
 {
 
-  Debug::Throw( "CounterDialog::CounterDialog.\n" );
-  setWindowTitle( "Object Counters" );
-  setOptionName( "COUNTER_DIALOG" );
+    Debug::Throw( "CounterDialog::CounterDialog.\n" );
+    setWindowTitle( "Object Counters" );
+    setOptionName( "COUNTER_DIALOG" );
 
-  // insert main vertical box
-  mainLayout().addWidget( list_ = new AnimatedTreeView( this ) );
-  list_->setModel( &model_ );
+    layout()->setMargin(0);
+    buttonLayout().setMargin(10);
+    mainLayout().addWidget( list_ = new AnimatedTreeView( this ) );
+    list_->setModel( &model_ );
 
-  QPushButton *button;
-  buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
-  connect( button, SIGNAL( clicked() ), SLOT( update() ) );
-  button->setAutoDefault( false );
+    QPushButton *button;
+    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+    connect( button, SIGNAL( clicked() ), SLOT( update() ) );
+    button->setAutoDefault( false );
 
 }
 
@@ -64,15 +56,15 @@ CounterDialog::CounterDialog( QWidget* parent ):
 void CounterDialog::update( void )
 {
 
-  Debug::Throw( "CounterDialog::update.\n" );
+    Debug::Throw( "CounterDialog::update.\n" );
 
-  // retrieve counters
-  CounterMap& counters( CounterMap::get() );
-  QMutexLocker lock( &counters.mutex() );
+    // retrieve counters
+    CounterMap& counters( CounterMap::get() );
+    QMutexLocker lock( &counters.mutex() );
 
-  model_.add( CounterModel::List( counters.begin(), counters.end() ) );
+    model_.add( CounterModel::List( counters.begin(), counters.end() ) );
 
-  // resize list
-  list_->resizeColumnToContents( CounterModel::NAME );
+    // resize list
+    list_->resizeColumnToContents( CounterModel::NAME );
 
 }
