@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    HelpDialog.cpp
-\brief   reference manual display dialog
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "AnimatedTextEditor.h"
 #include "AnimatedTreeView.h"
 #include "BaseIcons.h"

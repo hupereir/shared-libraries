@@ -1,3 +1,6 @@
+#ifndef HelpManager_h
+#define HelpManager_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,17 +24,6 @@
 *
 *******************************************************************************/
 
-#ifndef Help_h
-#define Help_h
-
-/*!
-   \file    HelpManager.h
-   \brief   reference manual help system
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include <QObject>
 
 #include "Counter.h"
@@ -44,114 +36,114 @@
 namespace BASE
 {
 
-  class HelpManager:public QObject, public Counter
-  {
+    class HelpManager:public QObject, public Counter
+    {
 
-    Q_OBJECT
+        Q_OBJECT
 
-    public:
+        public:
 
-    //! constructor
-    HelpManager( QObject* parent );
+        //! constructor
+        HelpManager( QObject* parent );
 
-    //! destructor
-    virtual ~HelpManager( void )
-    { Debug::Throw( "HelpManager::~HelpManager.\n" ); }
+        //! destructor
+        virtual ~HelpManager( void )
+        { Debug::Throw( "HelpManager::~HelpManager.\n" ); }
 
-    //!@name accessors
-    //@{
+        //!@name accessors
+        //@{
 
-    //! input file
-    void setFile( const QString& file )
-    { file_ = file; }
+        //! input file
+        void setFile( const QString& file )
+        { file_ = file; }
 
-    //! install help. Put items in the menu, create associated objects
-    void install( const HelpItem::List& items )
-    { items_ = items; }
+        //! install help. Put items in the menu, create associated objects
+        void install( const HelpItem::List& items )
+        { items_ = items; }
 
-    //! install help. Put items in the menu, create associated objects
-    void install( const QString text[], bool clear = true );
+        //! install help. Put items in the menu, create associated objects
+        void install( const QString text[], bool clear = true );
 
-    //! install help, from file
-    void install( const QString& file );
+        //! install help, from file
+        void install( const QString& file );
 
-    //! copy current items to backup
-    void backup( void )
-    { backup_items_ = items_; }
+        //! copy current items to backup
+        void backup( void )
+        { backupItems_ = items_; }
 
-    //! restore backup
-    void restoreBackup( void )
-    { items_ = backup_items_; }
+        //! restore backup
+        void restoreBackup( void )
+        { items_ = backupItems_; }
 
-    //! list of items
-    const HelpItem::List& items( void )
-    { return items_; }
+        //! list of items
+        const HelpItem::List& items( void )
+        { return items_; }
 
-    //! clear help
-    void clear( void )
-    { items_.clear(); }
+        //! clear help
+        void clear( void )
+        { items_.clear(); }
 
-    //! modifiaction
-    void setModified( const bool& value )
-    { modified_ = value; }
+        //! modifiaction
+        void setModified( const bool& value )
+        { modified_ = value; }
 
-    //! modification
-    bool& modified( void )
-    { return modified_; }
+        //! modification
+        bool& modified( void )
+        { return modified_; }
 
-    //! set dialog caption
-    void setWindowTitle( const QString& value );
+        //! set dialog caption
+        void setWindowTitle( const QString& value );
 
-    //@}
+        //@}
 
-    //! display action
-    QAction& displayAction( void )
-    { return *display_action_; }
+        //! display action
+        QAction& displayAction( void )
+        { return *displayAction_; }
 
-    //! dump action
-    QAction& dumpAction( void )
-    { return *dump_action_; }
+        //! dump action
+        QAction& dumpAction( void )
+        { return *dumpAction_; }
 
-    protected slots:
+        protected slots:
 
-    //! opens help dialog
-    void _display( void );
+        //! opens help dialog
+        void _display( void );
 
-    //! dump help string in a TextEditor
-    void _dumpHelpString( void );
+        //! dump help string in a TextEditor
+        void _dumpHelpString( void );
 
-    //! save help to file
-    void _save( void );
+        //! save help to file
+        void _save( void );
 
-    private:
+        private:
 
-    //!@name actions
-    //@{
+        //!@name actions
+        //@{
 
-    //! dialog display action
-    QAction* display_action_;
+        //! dialog display action
+        QAction* displayAction_;
 
-    //! dump help string
-    QAction* dump_action_;
+        //! dump help string
+        QAction* dumpAction_;
 
-    //@}
+        //@}
 
-    //! window title
-    QString window_title_;
+        //! window title
+        QString windowTitle_;
 
-    //! help filename
-    QString file_;
+        //! help filename
+        QString file_;
 
-    //! modification state
-    bool modified_;
+        //! modification state
+        bool modified_;
 
-    //! complete set of help items
-    HelpItem::List items_;
+        //! complete set of help items
+        HelpItem::List items_;
 
-    //! complete set of help items
-    HelpItem::List backup_items_;
+        //! complete set of help items
+        HelpItem::List backupItems_;
 
-  };
+    };
 
 };
 

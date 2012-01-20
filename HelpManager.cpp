@@ -51,19 +51,19 @@ namespace BASE
     HelpManager::HelpManager( QObject* parent ):
         QObject( parent ),
         Counter( "HelpManager" ),
-        window_title_( "Reference Manual" ),
+        windowTitle_( "Reference Manual" ),
         modified_( false )
     {
 
         Debug::Throw( "HelpManager::HelpManager.\n" );
 
         // actions
-        display_action_ = new QAction( IconEngine::get( ICONS::HELP ), "&Reference Manual", this );
-        display_action_->setShortcut( Qt::Key_F1 );
-        connect( display_action_, SIGNAL( triggered() ), SLOT( _display() ) );
+        displayAction_ = new QAction( IconEngine::get( ICONS::HELP ), "Reference Manual", this );
+        displayAction_->setShortcut( Qt::Key_F1 );
+        connect( displayAction_, SIGNAL( triggered() ), SLOT( _display() ) );
 
-        dump_action_ = new QAction( "D&ump Help", this );
-        connect( dump_action_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
+        dumpAction_ = new QAction( "Dump Help", this );
+        connect( dumpAction_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
 
         connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _save() ) );
 
@@ -141,7 +141,7 @@ namespace BASE
     void HelpManager::setWindowTitle( const QString& value )
     {
         Debug::Throw( "HelpManager::setWindowTitle.\n" );
-        window_title_ = value;
+        windowTitle_ = value;
         displayAction().setText( value );
     }
 
@@ -153,7 +153,7 @@ namespace BASE
 
         // create dialog
         HelpDialog* dialog( new HelpDialog( *this ) );
-        dialog->setWindowTitle( window_title_ );
+        dialog->setWindowTitle( windowTitle_ );
         dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
         dialog->setItems( items_ );
         dialog->setEditEnabled( file_.size() );
@@ -195,6 +195,8 @@ namespace BASE
 
         CustomDialog* dialog = new CustomDialog( 0, CustomDialog::OkButton );
         TextEditor *editor = new TextEditor( dialog );
+        dialog->layout()->setMargin(0);
+        dialog->buttonLayout().setMargin(5);
         dialog->mainLayout().addWidget( editor );
 
         editor->setWrapFromOptions( false );
