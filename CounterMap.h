@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-   \file    CounterMap.h
-   \brief   thread-safe Object counter storage map
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
+\file    CounterMap.h
+\brief   thread-safe Object counter storage map
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include <map>
@@ -41,49 +41,49 @@
 class CounterMap: public std::map<QString, int>
 {
 
-  public:
+    public:
 
-  //! singleton
-  static CounterMap& get( void );
+    //! singleton
+    static CounterMap& get( void );
 
-  //!  get counter for a given name
-  /*!
-  if the name is found, returns adress of the existing counter
-  creates new counter otherwise and returns adress
-  */
-  int* counter( const QString& name )
-  {
-    iterator iter = find( name );
-    if( iter == end() ) return &(insert( std::make_pair( name, 0 ) ).first->second);
-    else return &(iter->second);
-  }
+    //!  get counter for a given name
+    /*!
+    if the name is found, returns adress of the existing counter
+    creates new counter otherwise and returns adress
+    */
+    int* counter( const QString& name )
+    {
+        iterator iter = find( name );
+        if( iter == end() ) return &(insert( std::make_pair( name, 0 ) ).first->second);
+        else return &(iter->second);
+    }
 
-  //! increment
-  void increment( int& counter )
-  {
-    QMutexLocker locker( &mutex() );
-    counter++;
-  }
+    //! increment
+    void increment( int& counter )
+    {
+        QMutexLocker locker( &mutex() );
+        counter++;
+    }
 
-  //! increment
-  void decrement( int& counter )
-  {
-    QMutexLocker locker( &mutex() );
-    counter--;
-  }
+    //! increment
+    void decrement( int& counter )
+    {
+        QMutexLocker locker( &mutex() );
+        counter--;
+    }
 
-  //! mutex
-  QMutex& mutex( void )
-  { return mutex_; }
+    //! mutex
+    QMutex& mutex( void )
+    { return mutex_; }
 
-  private:
+    private:
 
-  //! constructor
-  CounterMap( void )
-  {}
+    //! constructor
+    CounterMap( void )
+    {}
 
-  //! mutex
-  QMutex mutex_;
+    //! mutex
+    QMutex mutex_;
 
 };
 

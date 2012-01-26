@@ -21,19 +21,11 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    CounterMap.h
-   \brief   thread-safe Object counter storage map
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "CounterMap.h"
 
 //___________________________________________________
 CounterMap& CounterMap::get( void )
 {
-  static CounterMap singleton;
-  return singleton;
+    static CounterMap singleton;
+    return singleton;
 }

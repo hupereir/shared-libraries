@@ -24,44 +24,33 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    Counter.h
-   \brief   Object counter
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <QString>
+#include <QtCore/QString>
 #include <map>
 
-/*!
-   \class   Counter
-   \brief   Object counter
-*/
+//! Object counter
 class Counter {
 
-  public:
+    public:
 
-  //! counter name and counts pair
-  typedef std::pair<QString, int> Pair;
+    //! counter name and counts pair
+    typedef std::pair<QString, int> Pair;
 
-  //! constructor
-  Counter( const QString& name );
+    //! constructor
+    Counter( const QString& name );
 
-  //! constructor
-  Counter( const Counter& counter );
+    //! constructor
+    Counter( const Counter& counter );
 
-  //! destructor
-  virtual ~Counter( void );
+    //! destructor
+    virtual ~Counter( void );
 
-  //! retrieves counter count
-  int count( void ) const;
+    //! retrieves counter count
+    int count( void ) const;
 
-  private:
+    private:
 
-  //! pointer to integer counter
-  int* count_;
+    //! pointer to integer counter
+    int* count_;
 
 };
 

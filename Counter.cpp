@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    Counter.cpp
-\brief   Object counter
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "Counter.h"
 #include "CounterMap.h"
 
