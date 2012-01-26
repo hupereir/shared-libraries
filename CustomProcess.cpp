@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomProcess.cpp
-\brief customized process to store stdout/stderr in full/flushed streams
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 /*
 important note:
 customProcess must _not_ call Debug method because underlying multithreading

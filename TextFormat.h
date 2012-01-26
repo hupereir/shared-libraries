@@ -23,17 +23,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TextFormat.h
-  \brief tracks text format in given text range
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-
-#include <list>
-
 namespace FORMAT
 {
   //! format bit enumaration

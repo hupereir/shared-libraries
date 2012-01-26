@@ -24,22 +24,14 @@
 *
 *******************************************************************************/
 
-/*!
-\file FileRecord.h
-\brief handles previously opened file and tags
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-
-#include <vector>
-
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
 #include "TimeStamp.h"
+
+
+#include <cassert>
+#include <vector>
 
 //! handles previously opened file and tags
 class FileRecord: public Counter

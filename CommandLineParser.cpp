@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file CommandLineParser.cpp
-\brief stores command line arguments
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "CommandLineParser.h"
 
 #include <QtCore/QTextStream>

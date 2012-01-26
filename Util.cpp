@@ -21,15 +21,6 @@
 *
 *******************************************************************************/
 
-
-/*!
-\file    Util.cpp
-\brief   some facilities used everywhere
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "CustomProcess.h"
 #include "Util.h"
 #include "Str.h"

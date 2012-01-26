@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file FileRecord.h
-\brief handles previously opened file and tags
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "FileRecord.h"
 
 //_______________________________________________

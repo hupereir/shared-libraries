@@ -22,14 +22,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file Options.cpp
-\brief Option file parser based on xml
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Debug.h"
 #include "Options.h"
 

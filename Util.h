@@ -1,3 +1,6 @@
+#ifndef Util_h
+#define Util_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,18 +24,7 @@
 *
 *******************************************************************************/
 
-#ifndef Util_h
-#define Util_h
-
-/*!
-\file    Util.h
-\brief   some utilities used everywhere
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-#include <QStringList>
-
+#include <QtCore/QStringList>
 #include <list>
 
 /*!

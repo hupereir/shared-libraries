@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file CommandLineArguments.cpp
-\brief stores command line arguments
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "CommandLineArguments.h"
 #include "Debug.h"
 

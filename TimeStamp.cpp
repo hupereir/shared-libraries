@@ -21,24 +21,15 @@
 *
 *******************************************************************************/
 
-
-/*!
-   \file    TimeStamp.cpp
-   \brief   time manipulation object
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <time.h>
-
-
 #include "Debug.h"
 #include "Str.h"
 #include "TimeStamp.h"
 #include "Util.h"
 
-const QString TimeStamp::days_[] = {
+#include <time.h>
+
+const QString TimeStamp::days_[] =
+{
     "Sun",
     "Mon",
     "Tue",

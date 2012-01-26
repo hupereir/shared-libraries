@@ -1,3 +1,6 @@
+#ifndef Str_h
+#define Str_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,73 +24,62 @@
 *
 *******************************************************************************/
 
-#ifndef Str_h
-#define Str_h
-
-/*!
-   \file Str.h
-   \brief Enhanced stl string
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <QString>
-#include <QStringList>
-
 #include "Debug.h"
 #include "Counter.h"
+
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
 //! Enhanced stl string
 class Str: public QString, public Counter
 {
-  public:
+    public:
 
-  //! constructor
-  Str( void ):
-    Counter( "Str" )
-  {}
+    //! constructor
+    Str( void ):
+        Counter( "Str" )
+    {}
 
-  //! constructor
-  Str( const QString& value ):
-    QString( value ),
-    Counter( "Str" )
-  {}
+    //! constructor
+    Str( const QString& value ):
+        QString( value ),
+        Counter( "Str" )
+    {}
 
-  //! convert anything to string and fill
-  template <typename T>
-  Str& assign( T value )
-  {
-    clear();
-    QTextStream out( this, QIODevice::WriteOnly );
-    out << value;
+    //! convert anything to string and fill
+    template <typename T>
+        Str& assign( T value )
+    {
+        clear();
+        QTextStream out( this, QIODevice::WriteOnly );
+        out << value;
 
-    if( out.status() != QTextStream::Ok )
-    { clear(); }
+        if( out.status() != QTextStream::Ok )
+        { clear(); }
 
-    return *this;
-  }
+        return *this;
+    }
 
-  //! convert string to any type using string streamer
-  template <typename T>
-  T get( bool* error = 0 ) const
-  {
-    if( error ) *error = false;
-    T out;
+    //! convert string to any type using string streamer
+    template <typename T>
+        T get( bool* error = 0 ) const
+    {
+        if( error ) *error = false;
+        T out;
 
-    /*
-    the const cast here is justified by the ReadOnly flag
-    while Qt does not allow to pass a const QString* in QTextStream constructor
-    */
-    QTextStream in( const_cast<Str*>(this), QIODevice::ReadOnly );
-    in >> out;
+        /*
+        the const cast here is justified by the ReadOnly flag
+        while Qt does not allow to pass a const QString* in QTextStream constructor
+        */
+        QTextStream in( const_cast<Str*>(this), QIODevice::ReadOnly );
+        in >> out;
 
-    if( in.status() != QTextStream::Ok ) {
-      if( error ) *error = true;
-      return T();
-    } else return out;
+        if( in.status() != QTextStream::Ok ) {
+            if( error ) *error = true;
+            return T();
+        } else return out;
 
-  }
+    }
 
 };
 

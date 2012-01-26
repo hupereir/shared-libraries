@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file Option.h
-\brief Option objects for string, int, bool and double options
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include <cassert>
 #include <QString>
 #include <QTextStream>

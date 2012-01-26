@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file Key.cpp
-\brief generic key object to handle object association
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Key.h"
 
 namespace BASE

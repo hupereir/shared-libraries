@@ -21,20 +21,11 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    Singleton.cpp
-   \brief   a class singleton used to centralize all objects that need static creation
-   this allows that these objects get deleted in the proper order when leaving the application
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "Singleton.h"
 
 //__________________________________________________
 Singleton& Singleton::get( void )
 {
-  static Singleton singleton_;
-  return singleton_;
+    static Singleton singleton_;
+    return singleton_;
 }

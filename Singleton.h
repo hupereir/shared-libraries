@@ -24,61 +24,52 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    Singleton.h
-   \brief   a class singleton used to centralize all objects that need static creation
-   this allows that these objects get deleted in the proper order when leaving the application
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
+#include <QtCore/QObject>
 #include <cassert>
-#include <QObject>
 
 //! a class singleton used to centralize all objects that need static creation
 class Singleton
 {
 
-  public:
+    public:
 
-  //! return singleton
-  static Singleton& get( void );
+    //! return singleton
+    static Singleton& get( void );
 
-  //! set application
-  void setApplication( QObject* application )
-  {
-    assert( !application_ );
-    application_ = application;
-  }
+    //! set application
+    void setApplication( QObject* application )
+    {
+        assert( !application_ );
+        application_ = application;
+    }
 
-  //! application
-  QObject* application()
-  {
-    assert( application_ );
-    return application_;
-  }
+    //! application
+    QObject* application()
+    {
+        assert( application_ );
+        return application_;
+    }
 
-  //! cast
-  template< typename T >
-  T* application( void )
-  {
-    assert( application_ );
-    return static_cast<T*>( application_ );
-  }
+    //! cast
+    template< typename T >
+        T* application( void )
+    {
+        assert( application_ );
+        return static_cast<T*>( application_ );
+    }
 
-  //! destructor
-  ~Singleton( void )
-  {}
+    //! destructor
+    ~Singleton( void )
+    {}
 
-  private:
+    private:
 
-  //! constructor
-  Singleton( void ):
-    application_(0)
-  {}
+    //! constructor
+    Singleton( void ):
+        application_(0)
+    {}
 
-  QObject* application_;
+    QObject* application_;
 
 };
 

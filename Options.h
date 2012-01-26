@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file Options.h
-\brief Option file parser based on xml
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Counter.h"
 #include "Debug.h"
 #include "Option.h"

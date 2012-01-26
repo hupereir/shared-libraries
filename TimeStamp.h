@@ -24,26 +24,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file TimeStamp.h
-\brief time manipulation object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
+#include "Counter.h"
 
 #include <list>
 #include <time.h>
 
-#include "Counter.h"
-
-/*!
-\class TimeStamp
-\brief time manipulation object
-*/
-
+//! time manipulation object
 class TimeStamp:public Counter
 {
 
@@ -69,71 +55,71 @@ class TimeStamp:public Counter
         if( valid_ ) tm_ = *localtime( &time );
         return valid_;
     }
-    
+
     //! convert tm_ into time_
     virtual bool makeTime( void )
     {
         valid_ = (time_ = mktime( &tm_ ) ) >= 0;
         return valid_;
     }
-    
+
     //! inferior to operator
     virtual bool operator < (const TimeStamp& stamp ) const
     { return( time_ < stamp.time_ ); }
-    
+
     //! inferior to operator
     virtual bool operator >= (const TimeStamp& stamp ) const
     { return( time_ >= stamp.time_ ); }
-    
+
     //! inferior to operator
     virtual bool operator > (const TimeStamp& stamp ) const
     { return( time_ > stamp.time_ ); }
-    
+
     //! inferior to operator
     virtual bool operator == (const TimeStamp& stamp ) const
     { return( time_ == stamp.time_ ); }
-    
+
     //! used to have fast access to the integer value
     virtual operator int (void) const
     { return int( time_ ); }
-    
+
     //! default string for invalid timestamps
     static const QString STAMP_UNKNOWN;
-    
+
     //! timestamp format enumeration
     enum Format {
-        
+
         //! DD/MM/YYYY
         DATE,
-        
+
         //! YYYY/MM/DD
         DATE_US,
-        
+
         //! HH:MM
         TIME,
-        
+
         //! HH:MM:SS
         TIME_LONG,
-        
+
         //! DD MONTH_string YYYY HH:MM:SS (week_day)
         LONG,
-        
+
         //! DD/MM/YYYY HH:MM
         SHORT,
-        
+
         //! YYYY/MM/DD HH:MM
         SHORT_US,
-        
+
         //! DD_MM_YY
         DATE_TAG,
-        
+
         //! MONTH_string DD HH:MM
         JOB_TAG
     };
-    
+
     //! if timestamp is valid, returns formated string
     virtual QString toString( Format format = SHORT ) const;
-    
+
     //! returns time in second
     virtual time_t unixTime( void ) const
     { return time_; }

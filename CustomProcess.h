@@ -1,3 +1,6 @@
+#ifndef _CustomProcess_h_
+#define _CustomProcess_h_
+
 // $Id$
 
 /******************************************************************************
@@ -21,60 +24,44 @@
 *
 *******************************************************************************/
 
-/*!
-  \file CustomProcess.h
-  \brief customized process to store stdout/stderr in full/flushed streams
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#ifndef _CustomProcess_h_
-#define _CustomProcess_h_
-
-#include <QProcess>
-#include <QObject>
-#include <list>
-
 
 #include "Counter.h"
-#include "Debug.h"
 
-/*!
-  \class CustomProcess
-  \brief customized process to store stdout/stderr in full/flushed streams
-*/
+#include <QtCore/QProcess>
+#include <QtCore/QObject>
+#include <list>
 
+//! customized process to store stdout/stderr in full/flushed streams
 class CustomProcess: public QProcess, public Counter
 {
 
-  public:
+    public:
 
-  //! creator
-  CustomProcess( QObject* parent = 0 );
+    //! creator
+    CustomProcess( QObject* parent = 0 );
 
-  //! destructor
-  virtual ~CustomProcess( void );
+    //! destructor
+    virtual ~CustomProcess( void );
 
-  /*!
+    /*!
     \brief
     add arguments.
     every space separated argument is added separately
-  */
-  void start( QString arguments, OpenMode mode = ReadWrite );
+    */
+    void start( QString arguments, OpenMode mode = ReadWrite );
 
-  /*!
+    /*!
     \brief
     add arguments.
     every space separated argument is added separately
-  */
-  void start( QStringList arguments, OpenMode mode = ReadWrite );
+    */
+    void start( QStringList arguments, OpenMode mode = ReadWrite );
 
-  //! \brief ensure object is deleted at job completion
-  void setAutoDelete();
+    //! \brief ensure object is deleted at job completion
+    void setAutoDelete();
 
-  //! error message
-  static QString errorMessage( QProcess::ProcessError error );
+    //! error message
+    static QString errorMessage( QProcess::ProcessError error );
 
 };
 
