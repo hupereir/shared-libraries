@@ -21,6 +21,6 @@ SOURCES = \
   ApplicationManager.cpp \
   BaseApplication.cpp \
   BaseCoreApplication.cpp \
-	Client.cpp \
+  Client.cpp \
   ServerCommand.cpp \
   ServerConfiguration.cpp
