@@ -1,7 +1,7 @@
 TEMPLATE = lib
 CONFIG = staticlib
 CONFIG += qt
-QT += xml network
+QT += xml network dbus
 
 INCLUDEPATH += ../base ../base-qt
 DEPENDPATH += . ../base ../base-qt

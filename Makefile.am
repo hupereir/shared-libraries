@@ -5,6 +5,7 @@ INCLUDES =  \
   -I$(qt_includes) \
   -I$(qt_includes)/Qt \
   -I$(qt_includes)/QtCore  \
+  -I$(qt_includes)/QtDBus  \
   -I$(qt_includes)/QtGui \
   -I$(qt_includes)/QtNetwork \
   -I$(qt_includes)/QtXml \
@@ -33,7 +34,7 @@ sources = \
 nodist_sources = \
   moc_ApplicationManager.cpp \
   moc_BaseApplication.cpp \
-	moc_BaseCoreApplication.cpp \
+  moc_BaseCoreApplication.cpp \
   moc_Client.cpp
 
 # shared library
@@ -41,7 +42,8 @@ if ENABLE_SHARED
 AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
 
 lib_LTLIBRARIES = libbase-server.la
-libbase_server_la_LIBADD = -lbase -lbase-qt
+libbase_server_la_LIBADD = -lbase -lbase-qt -l$(qt_lib) -lQtDBus
+
 libbase_server_la_SOURCES =  $(sources)
 nodist_libbase_server_la_SOURCES = $(nodist_sources)
 libbase_server_la_CXXFLAGS = $(AM_CXXFLAGS)

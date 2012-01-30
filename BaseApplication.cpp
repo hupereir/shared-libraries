@@ -42,6 +42,10 @@
 #include <QtGui/QLabel>
 #include <QtGui/QMessageBox>
 
+#ifndef QT_NO_DBUS
+#include <QtDBus/QDBusConnection>
+#endif
+
 //____________________________________________
 namespace SERVER
 {
@@ -102,8 +106,15 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
 {
 
     Debug::Throw( "BaseApplication::BaseApplication.\n" );
-    connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
     if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) qApp->setStyle( new FlatStyle() );
+
+    // use DBus connection to update on oxygen configuration change
+    #ifndef QT_NO_DBUS
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    dbus.connect( QString(), "/OxygenStyle", "org.kde.Oxygen.Style", "reparseConfiguration", this, SIGNAL(configurationChanged( void ) ) );
+    dbus.connect( QString(), "/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange", this, SIGNAL(configurationChanged( void ) ) );
+    #endif
 
 }
 
@@ -217,8 +228,8 @@ void BaseApplication::_updateConfiguration( void )
 
     // set fonts
     QFont font;
-//     font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
-//     qApp->setFont( font );
+    font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
+    qApp->setFont( font );
 
     font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
     qApp->setFont( font, "QTextEdit" );
