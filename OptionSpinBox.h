@@ -24,7 +24,7 @@
 *
 *******************************************************************************/
 #include "OptionWidget.h"
-#include "Options.h"
+#include "XmlOptions.h"
 
 #include <QtGui/QSpinBox>
 #include <QtGui/QLabel>

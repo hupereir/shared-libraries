@@ -24,58 +24,46 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    OptionWidgetList.h
-   \brief   abstract container for OptionWidgets
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <vector>
-
 #include "Debug.h"
 #include "OptionWidget.h"
 
+#include <QtCore/QVector>
+
 //! abstract container for OptionWidgets
-/*!
-the class derive from OptionWidget too so that one can read/write all contained
-widget at once
-*/
 class OptionWidgetList: public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionWidgetList( void ):
-    OptionWidget( "generic" )
-  {}
+    //! constructor
+    OptionWidgetList( void ):
+        OptionWidget( "generic" )
+    {}
 
-  //! add option widget
-  void addOptionWidget( OptionWidget* widget )
-  {
-    Debug::Throw( "OptionWidgetList::addOptionWidget.\n" );
-    option_widgets_.push_back( widget );
-  }
+    //! add option widget
+    virtual void addOptionWidget( OptionWidget* widget )
+    {
+        Debug::Throw( "OptionWidgetList::addOptionWidget.\n" );
+        optionWidgets_.push_back( widget );
+    }
 
-  //! clear option widgets
-  virtual void clearOptionWidgets( void )
-  {
-    Debug::Throw( "OptionWidgetList::clearOptionWidgets.\n" );
-    option_widgets_.clear();
-  }
+    //! clear option widgets
+    virtual void clearOptionWidgets( void )
+    {
+        Debug::Throw( "OptionWidgetList::clearOptionWidgets.\n" );
+        optionWidgets_.clear();
+    }
 
-  //! read options
-  virtual void read( void );
+    //! read options
+    virtual void read( void );
 
-  //! read options
-  virtual void write( void ) const;
+    //! read options
+    virtual void write( void ) const;
 
-  private:
+    private:
 
-  //! contained options
-  std::vector< OptionWidget* > option_widgets_;
+    //! contained options
+    QVector< OptionWidget* > optionWidgets_;
 
 };
 

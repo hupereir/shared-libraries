@@ -34,7 +34,6 @@
 #include <QtGui/QIcon>
 #include <QtGui/QLayout>
 #include <QtGui/QTextLayout>
-#include <list>
 
 class AnimatedStackedWidget;
 

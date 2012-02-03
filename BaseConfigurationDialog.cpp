@@ -382,16 +382,16 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         box->setLayout( gridLayout );
 
-        OptionColorDisplay* color_display;
+        OptionColorDisplay* colorDisplay;
         gridLayout->addWidget( new QLabel( "Foreground:", box ) );
-        gridLayout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
-        addOptionWidget( color_display );
-        color_display->setToolTip( "Margins foreground color" );
+        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
+        addOptionWidget( colorDisplay );
+        colorDisplay->setToolTip( "Margins foreground color" );
 
         gridLayout->addWidget( new QLabel( "Background:", box ) );
-        gridLayout->addWidget( color_display = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
-        addOptionWidget( color_display );
-        color_display->setToolTip( "Margins background color" );
+        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
+        addOptionWidget( colorDisplay );
+        colorDisplay->setToolTip( "Margins background color" );
 
     }
 
@@ -408,7 +408,6 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         checkbox->setToolTip( "Turn on/off line wrapping at editor border" );
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
-
         layout->addWidget( checkbox = new OptionCheckBox( "Show line numbers", box, "SHOW_LINE_NUMBERS" ) );
         checkbox->setToolTip( "Turn on/off line numbers" );
         addOptionWidget( checkbox );

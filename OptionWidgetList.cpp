@@ -21,32 +21,22 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    OptionWidgetList.cpp
-   \brief   abstract container for OptionWidgets
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "OptionWidgetList.h"
-
-
 
 //______________________________________________________________________
 void OptionWidgetList::read( void )
 {
 
-  Debug::Throw( "OptionWidgetList::read.\n" );
-  for( std::vector< OptionWidget* >::iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); ++iter )
-  { (*iter)->read(); }
+    Debug::Throw( "OptionWidgetList::read.\n" );
+    foreach( OptionWidget* widget, optionWidgets_ )
+    { widget->read(); }
 
 }
 
 //______________________________________________________________________
 void OptionWidgetList::write( void ) const
 {
-  Debug::Throw( "OptionWidgetList::write\n" );
-  for( std::vector< OptionWidget* >::const_iterator iter = option_widgets_.begin(); iter != option_widgets_.end(); ++iter )
-  { (*iter)->write(); }
+    Debug::Throw( "OptionWidgetList::write\n" );
+    foreach( OptionWidget* widget, optionWidgets_ )
+    { widget->write(); }
 }
