@@ -24,20 +24,14 @@
 *
 *******************************************************************************/
 
-/*!
-\file CounterModel.h
-\brief model for object counters
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "ListModel.h"
 #include "Counter.h"
 #include "Debug.h"
 
+#include <QtCore/QPair>
+
 //! counter pair
-class CounterPair: public std::pair<QString, int>
+class CounterPair: public QPair<QString, int>
 {
     public:
 
@@ -46,8 +40,8 @@ class CounterPair: public std::pair<QString, int>
     {}
 
     //! constructor
-    CounterPair( const std::pair<QString, int>& pair ):
-        std::pair<QString, int>( pair )
+    CounterPair( const QPair<QString, int>& pair ):
+        QPair<QString, int>( pair )
     {}
 
     //! less than operator

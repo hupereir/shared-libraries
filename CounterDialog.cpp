@@ -62,7 +62,11 @@ void CounterDialog::update( void )
     CounterMap& counters( CounterMap::get() );
     QMutexLocker lock( &counters.mutex() );
 
-    model_.add( CounterModel::List( counters.begin(), counters.end() ) );
+    CounterModel::List counterList;
+    for( CounterMap::const_iterator iter = counters.begin(); iter != counters.end(); ++iter )
+    { counterList.push_back( qMakePair( iter.key(), iter.value() ) ); }
+
+    model_.add( counterList );
 
     // resize list
     list_->resizeColumnToContents( CounterModel::NAME );
