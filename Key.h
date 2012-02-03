@@ -81,9 +81,9 @@ namespace BASE
         */
         Key( const Key& key ):
             key_( _counter()++ ),
-            associated_keys_( key.associated_keys_ )
+            associatedKeys_( key.associatedKeys_ )
         {
-            for( key_set::iterator iter = associated_keys_.begin(); iter != associated_keys_.end(); iter++ )
+            for( key_set::iterator iter = associatedKeys_.begin(); iter != associatedKeys_.end(); iter++ )
             { (*iter)->_associate( this ); }
         }
 
@@ -111,14 +111,14 @@ namespace BASE
 
         //! retrieve all associated keys
         const key_set& getAssociated( void ) const
-        { return associated_keys_; }
+        { return associatedKeys_; }
 
         //! clear associations for this key
         void clearAssociations( void )
         {
-            for( key_set::iterator iter = associated_keys_.begin(); iter != associated_keys_.end(); iter++ )
+            for( key_set::iterator iter = associatedKeys_.begin(); iter != associatedKeys_.end(); iter++ )
             { (*iter)->_disassociate( this ); }
-            associated_keys_.clear();
+            associatedKeys_.clear();
         }
 
         //! clear associations of a given type for this key
@@ -188,10 +188,10 @@ namespace BASE
         //! return true if keys are associated
         bool isAssociated( const Key* key ) const
         {
-            return find_if(
-                associated_keys_.begin(),
-                associated_keys_.end(),
-                SameKeyFTor( key->key() ) ) != associated_keys_.end();
+            return std::find_if(
+                associatedKeys_.begin(),
+                associatedKeys_.end(),
+                SameKeyFTor( key->key() ) ) != associatedKeys_.end();
         }
 
         //! disassociate two Keys
@@ -212,17 +212,17 @@ namespace BASE
 
         //! add a key to associates
         void _associate( Key* key )
-        { associated_keys_.insert( key ); }
+        { associatedKeys_.insert( key ); }
 
         //! remove a key from associates
         void _disassociate( Key* key )
-        { associated_keys_.erase( key ); }
+        { associatedKeys_.erase( key ); }
 
         //! unique id
         key_type key_;
 
         //! associated keys
-        key_set associated_keys_;
+        key_set associatedKeys_;
 
         //! unique id counter
         static key_type& _counter( void );
@@ -235,9 +235,9 @@ namespace BASE
             out << "key=" << key.key();
 
             // dump associated key uid
-            if( key.associated_keys_.size() ) {
+            if( key.associatedKeys_.size() ) {
                 out << " associations:";
-                for( key_set::iterator iter = key.associated_keys_.begin(); iter != key.associated_keys_.end(); iter++ )
+                for( key_set::iterator iter = key.associatedKeys_.begin(); iter != key.associatedKeys_.end(); iter++ )
                 { out << " " << (*iter)->key(); }
             }
 
