@@ -25,9 +25,9 @@
 *******************************************************************************/
 
 #include <QtCore/QTextStream>
+#include <QtCore/QSet>
 #include <algorithm>
 #include <cassert>
-#include <set>
 
 //! base namespace
 namespace BASE
@@ -37,16 +37,6 @@ namespace BASE
     class Key;
 
     //! \brief is used to sort pointer to keys according to their unique ID
-    class KeyLessFTor
-    {
-
-        public:
-
-        //! compare key pointers according to their unique ID
-        inline bool operator() (const Key* first, const Key* second ) const;
-
-    };
-
     //! \brief generic key object to handle object associations
     /*!
     Generic Key object to handle objects associations. Each Key
@@ -107,7 +97,7 @@ namespace BASE
         { return key_; }
 
         //! shortcut for set of Key
-        typedef std::set< Key*, KeyLessFTor > key_set;
+        typedef QSet< Key* > key_set;
 
         //! retrieve all associated keys
         const key_set& getAssociated( void ) const
@@ -216,7 +206,7 @@ namespace BASE
 
         //! remove a key from associates
         void _disassociate( Key* key )
-        { associatedKeys_.erase( key ); }
+        { associatedKeys_.remove( key ); }
 
         //! unique id
         key_type key_;
@@ -237,7 +227,7 @@ namespace BASE
             // dump associated key uid
             if( key.associatedKeys_.size() ) {
                 out << " associations:";
-                for( key_set::iterator iter = key.associatedKeys_.begin(); iter != key.associatedKeys_.end(); iter++ )
+                for( key_set::const_iterator iter = key.associatedKeys_.begin(); iter != key.associatedKeys_.end(); iter++ )
                 { out << " " << (*iter)->key(); }
             }
 
@@ -253,7 +243,7 @@ namespace BASE
     Contains all objects of type T associated to the Key.
     */
     template<typename T>
-        class KeySet: public std::set< T*, KeyLessFTor >
+    class KeySet: public QSet< T* >
     {
 
         public:
@@ -297,17 +287,29 @@ namespace BASE
         //! Merge argument KeySet with this one
         void merge( const KeySet<T>& key_set )
         {
-            for( typename KeySet<T>::iterator iter = key_set.begin(); iter != key_set.end(); iter++ )
+            for( typename KeySet<T>::const_iterator iter = key_set.begin(); iter != key_set.end(); iter++ )
             { insert( *iter ); }
         }
 
     };
 
-};
+    /*! \brief
+    templatized sorted set of casted keys.
+    Is constructed from a pointer to a Key;
+    Contains all objects of type T associated to the Key.
+    */
+    template<typename T>
+    class KeySetIterator: public QSetIterator< T* >
+    {
+        public:
 
-//______________________________________________________________
-inline bool BASE::KeyLessFTor::operator() ( const Key* first, const Key* second ) const
-{ return *first < *second; }
+        //! constructor
+        KeySetIterator( KeySet<T> keySet ):
+            QSetIterator<T*>( keySet )
+        {}
+    };
+
+};
 
 //______________________________________________________________
 template<typename T> void BASE::Key::clearAssociations( void )
@@ -319,5 +321,9 @@ template<typename T> void BASE::Key::clearAssociations( void )
         _disassociate( *iter );
     }
 }
+
+//____________________________________________________
+inline uint qHash( const BASE::Key*& key )
+{ return key->key(); }
 
 #endif
