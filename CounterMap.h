@@ -24,21 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file    CounterMap.h
-\brief   thread-safe Object counter storage map
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-#include <map>
-#include <QString>
-#include <QMutex>
-#include <QMutexLocker>
+#include <QtCore/QString>
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
+#include <QtCore/QMap>
 
 //! thread-safe Object counter storage map
-class CounterMap: public std::map<QString, int>
+class CounterMap: public QMap<QString, int>
 {
 
     public:
@@ -54,8 +46,8 @@ class CounterMap: public std::map<QString, int>
     int* counter( const QString& name )
     {
         iterator iter = find( name );
-        if( iter == end() ) return &(insert( std::make_pair( name, 0 ) ).first->second);
-        else return &(iter->second);
+        if( iter == end() ) return &( insert( name, 0 ).value() );
+        else return &(iter.value());
     }
 
     //! increment
