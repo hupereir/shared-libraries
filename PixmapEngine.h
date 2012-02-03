@@ -23,22 +23,13 @@
 *
 *
 *******************************************************************************/
-
-/*!
-\file PixmapEngine.h
-\brief customized Icon factory to provide better looking disabled icons
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
 #include "Counter.h"
 #include "Debug.h"
 
 #include <QtGui/QPixmap>
-#include <map>
-#include <list>
+#include <QtCore/QMap>
+#include <QtCore/QVector>
+
 #include <cassert>
 
 //! customized Icon factory to provide better looking disabled icons
@@ -56,10 +47,10 @@ class PixmapEngine: public Counter
     { return get()._get( file, from_cache ); }
 
     //! map files and QPixmap
-    typedef std::map< QString, QPixmap > Cache;
+    typedef QMap< QString, QPixmap > Cache;
 
     //! map files and QPixmap
-    class Pair: public std::pair<QString, QPixmap >, public Counter
+    class Pair: public QPair<QString, QPixmap >, public Counter
     {
 
         public:
@@ -70,8 +61,14 @@ class PixmapEngine: public Counter
         {}
 
         //! constructor
-        Pair( const std::pair<QString, QPixmap >& pair ):
-            std::pair<QString, QPixmap >( pair ),
+        Pair( const QString& key, const QPixmap& value ):
+            QPair<QString, QPixmap>( key, value ),
+            Counter( "PixmapEngine::Pair" )
+        {}
+
+        //! constructor
+        Pair( const QPair<QString, QPixmap >& pair ):
+            QPair<QString, QPixmap >( pair ),
             Counter( "PixmapEngine::Pair" )
         {}
 
@@ -95,11 +92,11 @@ class PixmapEngine: public Counter
     protected:
 
     //! pixmap path
-    void _setPixmapPath( const std::list< QString >& pathList )
+    void _setPixmapPath( const QVector< QString >& pathList )
     { pixmapPath_ = pathList; }
 
     //! pixmap path
-    const std::list< QString >& _pixmapPath( void ) const
+    const QVector< QString >& _pixmapPath( void ) const
     { return pixmapPath_; }
 
     private:
@@ -117,7 +114,7 @@ class PixmapEngine: public Counter
     //@}
 
     //! pixmap path
-    std::list< QString > pixmapPath_;
+    QVector< QString > pixmapPath_;
 
     //! map files and QPixmap
     Cache cache_;

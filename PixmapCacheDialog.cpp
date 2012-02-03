@@ -71,7 +71,11 @@ void PixmapCacheDialog::update( void )
 
     // retrieve cache
     const PixmapEngine::Cache& cache( PixmapEngine::cache() );
-    model_.set( PixmapCacheModel::List( cache.begin(), cache.end() ) );
+    PixmapCacheModel::List modelList;
+    for( PixmapEngine::Cache::const_iterator iter = cache.begin(); iter != cache.end(); ++iter )
+    { modelList.push_back( PixmapEngine::Pair( iter.key(), iter.value() ) ); }
+
+    model_.set( modelList );
 
     list_->resizeColumnToContents( PixmapCacheModel::ICON );
 

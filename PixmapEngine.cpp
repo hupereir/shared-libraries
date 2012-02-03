@@ -21,95 +21,87 @@
 *
 *******************************************************************************/
 
-/*!
-  \file PixmapEngine.cpp
-  \brief customized Icon factory to provide better looking disabled icons
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-
 #include "File.h"
 #include "PixmapEngine.h"
 #include "XmlOptions.h"
 
-#include <QFileInfo>
-#include <QPainter>
-#include <QStyle>
-#include <QStyleOptionButton>
+#include <QtCore/QFileInfo>
+#include <QtGui/QPainter>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOptionButton>
 
 //__________________________________________________________
 PixmapEngine& PixmapEngine::get( void )
 {
-  //! singleton
-  static PixmapEngine singleton_;
-  return singleton_;
+    //! singleton
+    static PixmapEngine singleton_;
+    return singleton_;
 }
 
 //__________________________________________________________
 PixmapEngine::PixmapEngine( void ):
-  Counter( "PixmapEngine" )
+    Counter( "PixmapEngine" )
 { Debug::Throw( "PixmapEngine::PixmapEngine.\n" ); }
 
 //__________________________________________________________
 bool PixmapEngine::reload( void )
 {
-  Debug::Throw( "PixmapEngine::reload.\n" );
+    Debug::Throw( "PixmapEngine::reload.\n" );
 
-  // load path from options
-  std::list<QString> pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-  if( pathList == _pixmapPath() ) return false;
+    // load path from options
+    QVector<QString> pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
+    if( pathList == _pixmapPath() ) return false;
 
-  _setPixmapPath( pathList );
-  for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
-  { cache_[iter->first] = _get( iter->first, false ); }
+    _setPixmapPath( pathList );
+    for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+    { cache_[iter.key()] = _get( iter.key(), false ); }
 
-  return true;
+    return true;
 }
 
 //__________________________________________________________
 const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
 {
-  Debug::Throw( "PixmapEngine::_get (file).\n" );
+    Debug::Throw( "PixmapEngine::_get (file).\n" );
 
-  // try find file in cache
-  if( from_cache )
-  {
-    Cache::iterator iter( cache_.find( file ) );
-    if( iter != cache_.end() ) return iter->second;
-  }
-
-  // create output
-  QPixmap out;
-  if( QFileInfo( file ).isAbsolute() ) { out = QPixmap( file ); }
-  else {
-
-    if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-    for( std::list<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); ++iter )
+    // try find file in cache
+    if( from_cache )
     {
+        Cache::iterator iter( cache_.find( file ) );
+        if( iter != cache_.end() ) return iter.value();
+    }
 
-      // skip empty path
-      if( iter->isEmpty() ) continue;
+    // create output
+    QPixmap out;
+    if( QFileInfo( file ).isAbsolute() ) { out = QPixmap( file ); }
+    else {
 
-      // prepare filename
-      File icon_file;
+        if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
+        for( QVector<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); ++iter )
+        {
 
-      // see if path is internal resource path
-      if( iter->left( 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
-      else icon_file = File( *iter ).find( file );
+            // skip empty path
+            if( iter->isEmpty() ) continue;
 
-      // load pixmap
-      if( !icon_file.isEmpty() )
-      {
-        out.load( icon_file );
-        if( !out.isNull() ) break;
-      }
+            // prepare filename
+            File icon_file;
+
+            // see if path is internal resource path
+            if( iter->left( 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
+            else icon_file = File( *iter ).find( file );
+
+            // load pixmap
+            if( !icon_file.isEmpty() )
+            {
+                out.load( icon_file );
+                if( !out.isNull() ) break;
+            }
+
+        }
 
     }
 
-  }
-
-  return cache_.insert( std::make_pair( file, out ) ).first->second;
+    Cache::iterator iter = cache_.insert( file, out );
+    return iter.value();
 
 }
