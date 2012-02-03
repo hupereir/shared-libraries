@@ -164,11 +164,11 @@ bool XmlOptions::write( QString file )
     for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); ++iter )
     {
         // check size of options
-        if( iter->second.empty() ) continue;
+        if( iter.value().empty() ) continue;
 
         // dump option name
         QDomElement element = document.createElement( OPTIONS::SPECIAL_OPTION );
-        element.setAttribute( OPTIONS::VALUE, iter->first );
+        element.setAttribute( OPTIONS::VALUE, iter.key() );
         top.appendChild( element );
     }
 
@@ -176,19 +176,19 @@ bool XmlOptions::write( QString file )
     for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); ++iter )
     {
 
-        Options::List option_list( iter->second );
+        Options::List option_list( iter.value() );
         for( Options::List::iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
         {
 
             if( !listIter->hasFlag( Option::RECORDABLE ) )
-            { Debug::Throw(0) << "XmlOptions::write - option " << iter->first << " is not recordable" << endl; }
+            { Debug::Throw(0) << "XmlOptions::write - option " << iter.key() << " is not recordable" << endl; }
 
             if( listIter->hasFlag( Option::RECORDABLE ) && listIter->set() && listIter->raw().size() )
             {
 
-                top.appendChild( XmlOption( iter->first, *listIter ).domElement( document ) );
+                top.appendChild( XmlOption( iter.key(), *listIter ).domElement( document ) );
 
-            } else Debug::Throw(0) << "XmlOptions::write - skipping option " << iter->first << endl;
+            } else Debug::Throw(0) << "XmlOptions::write - skipping option " << iter.key() << endl;
 
         }
 
@@ -198,11 +198,11 @@ bool XmlOptions::write( QString file )
     for( Options::Map::const_iterator iter = get().options().begin(); iter != get().options().end(); ++iter )
     {
 
-        if( iter->second.hasFlag( Option::RECORDABLE ) &&
-            iter->second.set() &&
-            iter->second.raw().size() &&
-            iter->second.raw() != iter->second.defaultValue() )
-        { top.appendChild( XmlOption( iter->first, iter->second ).domElement( document ) ); }
+        if( iter.value().hasFlag( Option::RECORDABLE ) &&
+            iter.value().set() &&
+            iter.value().raw().size() &&
+            iter.value().raw() != iter.value().defaultValue() )
+        { top.appendChild( XmlOption( iter.key(), iter.value() ).domElement( document ) ); }
 
     }
 

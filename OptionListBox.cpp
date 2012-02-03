@@ -21,20 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file OptionListBox.cpp
-   \brief ListBox for Special options, and buttons to add/remove values
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <algorithm>
-#include <QHBoxLayout>
-#include <QHeaderView>
-#include <QLabel>
-
-
 #include "AnimatedLineEditor.h"
 #include "Debug.h"
 #include "BaseIcons.h"
@@ -45,7 +31,10 @@
 #include "TreeView.h"
 #include "XmlOptions.h"
 
-
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
+#include <algorithm>
 
 //_______________________________________________________
 OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
@@ -148,7 +137,7 @@ void OptionListBox::read( void )
   Options::List values( XmlOptions::get().specialOptions( optionName() ) );
 
   // check if one option is default, set first otherwise
-  if( !values.empty() && find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::CURRENT ) ) == values.end() )
+  if( !values.empty() && std::find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::CURRENT ) ) == values.end() )
   { values.front().setCurrent( true ); }
 
   // add to model.

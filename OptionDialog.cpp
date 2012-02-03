@@ -111,10 +111,10 @@ void OptionDialog::_reload( void )
     const Options::SpecialMap special_options( backupOptions_.specialOptions() );
     for( Options::SpecialMap::const_iterator iter = special_options.begin(); iter != special_options.end(); ++iter )
     {
-        model_.add( OptionPair( iter->first, "" ) );
+        model_.add( OptionPair( iter.key(), "" ) );
         OptionModel::List options;
-        for( Options::List::const_iterator listIter = iter->second.begin(); listIter != iter->second.end(); ++listIter )
-        { model_.add( OptionPair( iter->first, *listIter ) ); }
+        for( Options::List::const_iterator listIter = iter.value().begin(); listIter != iter.value().end(); ++listIter )
+        { model_.add( OptionPair( iter.key(), *listIter ) ); }
 
     }
 
@@ -122,7 +122,7 @@ void OptionDialog::_reload( void )
     const Options::Map& options( backupOptions_.options() );
     OptionModel::Set option_set;
     for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); ++iter )
-    { option_set.insert( OptionPair( iter->first, iter->second ) ); }
+    { option_set.insert( OptionPair( iter.key(), iter.value() ) ); }
     model_.add( option_set );
 
     _list().resizeColumns();
