@@ -34,9 +34,6 @@
 #include <QtCore/QMap>
 
 #include <cassert>
-#include <vector>
-#include <map>
-#include <list>
 
 //! Option file parser based on Xml
 class Options: public Counter
@@ -100,11 +97,11 @@ class Options: public Counter
 
     //! retrieve list of special (i.e. kept) options matching a given name
     template < typename T >
-        std::list<T> specialOptions( const QString& name )
+        QVector<T> specialOptions( const QString& name )
     {
 
         List option_list( specialOptions( name ) );
-        std::list<T> out;
+        QVector<T> out;
         for( List::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
         { out.push_back( iter->get<T>() ); }
         return out;
