@@ -24,16 +24,15 @@
 *
 *******************************************************************************/
 
-#include <cassert>
-#include <QString>
-#include <QTextStream>
 
 #include "Counter.h"
 #include "Debug.h"
 
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+#include <cassert>
 
 //! stream boolean
-/*! not sure if this is a valid writing or not */
 QTextStream& operator >> ( QTextStream& in, bool& value );
 
 /*!

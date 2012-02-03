@@ -142,19 +142,19 @@ bool Options::add( const QString& name, Option option, const bool& is_default )
     if( is_default || _autoDefault() ) option.setDefault();
 
     // if option is first, set as current
-    if( iter->second.empty() ) option.setCurrent( true );
+    if( iter.value().empty() ) option.setCurrent( true );
     else if( option.isCurrent() )
     {
 
         // set all remaining options to non default
-        for( List::iterator option_iter = iter->second.begin(); option_iter != iter->second.end(); option_iter ++ )
+        for( List::iterator option_iter = iter.value().begin(); option_iter != iter.value().end(); option_iter ++ )
         { option_iter->setCurrent( false ); }
 
     }
 
     // see if option is already in list
-    List::iterator same_option_iter = std::find( iter->second.begin(), iter->second.end(), option );
-    if( same_option_iter != iter->second.end() )
+    List::iterator same_option_iter = std::find( iter.value().begin(), iter.value().end(), option );
+    if( same_option_iter != iter.value().end() )
     {
 
         // if flags are identical, do nothing and return false
@@ -163,15 +163,15 @@ bool Options::add( const QString& name, Option option, const bool& is_default )
 
             // update flags otherwise and return true
             same_option_iter->setFlags( option.flags() );
-            std::sort( iter->second.begin(), iter->second.end(), Option::HasFlagFTor( Option::CURRENT ) );
+            std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::CURRENT ) );
             return true;
 
         }
 
     } else {
 
-        iter->second.push_back( option );
-        std::sort( iter->second.begin(), iter->second.end(), Option::HasFlagFTor( Option::CURRENT ) );
+        iter.value().push_back( option );
+        std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::CURRENT ) );
         return true;
 
     }
@@ -186,19 +186,19 @@ void Options::restoreDefaults( void )
     // restore standard options
     for( Map::iterator iter = options_.begin(); iter != options_.end(); ++iter )
     {
-        if( iter->second.defaultValue().isEmpty() ) continue;
-        iter->second.restoreDefault();
+        if( iter.value().defaultValue().isEmpty() ) continue;
+        iter.value().restoreDefault();
     }
 
     // restore standard options
     for( SpecialMap::iterator iter = specialOptions_.begin(); iter != specialOptions_.end(); ++iter )
     {
-        Options::List option_list( iter->second );
-        iter->second.clear();
-        for( Options::List::iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
+        Options::List optionList( iter.value() );
+        iter.value().clear();
+        for( Options::List::iterator listIter = optionList.begin(); listIter != optionList.end(); ++listIter )
         {
             if( listIter->defaultValue().isEmpty() ) continue;
-            add( iter->first, listIter->restoreDefault() );
+            add( iter.key(), listIter->restoreDefault() );
         }
     }
 
@@ -210,16 +210,16 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
 
     // print normal options
     for( Options::Map::const_iterator iter = options.options().begin(); iter != options.options().end(); ++iter )
-        out << "  " << iter->first << ":" << iter->second << endl;
+        out << "  " << iter.key() << ":" << iter.value() << endl;
 
     // write special options
     for( Options::SpecialMap::const_iterator iter = options.specialOptions().begin(); iter != options.specialOptions().end(); ++iter )
     {
-        const Options::List& option_list( iter->second );
-        for( Options::List::const_iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
+        const Options::List& optionList( iter.value() );
+        for( Options::List::const_iterator listIter = optionList.begin(); listIter != optionList.end(); ++listIter )
         {
             if( listIter->hasFlag( Option::RECORDABLE ) && listIter->set() && listIter->raw().size() )
-            { out << "  " << iter->first << ":" << *listIter << endl; }
+            { out << "  " << iter.key() << ":" << *listIter << endl; }
         }
     }
 

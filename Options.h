@@ -30,6 +30,8 @@
 
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
+#include <QtCore/QVector>
+#include <QtCore/QMap>
 
 #include <cassert>
 #include <vector>
@@ -43,16 +45,19 @@ class Options: public Counter
     public:
 
     //! pair
-    typedef std::pair< QString, Option > Pair;
+    // typedef std::pair< QString, Option > Pair;
+    typedef QPair< QString, Option > Pair;
 
     //! shortCut for option map
-    typedef std::map< QString, Option > Map;
+    // typedef std::map< QString, Option > Map;
+    typedef QMap< QString, Option > Map;
 
     //! shortCut for option list
-    typedef std::vector< Option > List;
+    typedef QVector< Option > List;
 
     //! shortCut for option map
-    typedef std::map< QString, List > SpecialMap;
+    // typedef std::map< QString, List > SpecialMap;
+    typedef QMap< QString, List > SpecialMap;
 
     //! constructor
     Options( bool install_default_options = false );
@@ -87,7 +92,7 @@ class Options: public Counter
     {
         SpecialMap::iterator iter( specialOptions_.find( name ) );
         assert( iter != specialOptions_.end() );
-        return iter->second;
+        return iter.value();
     }
 
     //! returns true if option name is special
@@ -115,16 +120,16 @@ class Options: public Counter
 
     //! option matching given name
     virtual const Option& option( const QString& name ) const
-    { return options_.find( name )->second; }
+    { return options_.find( name ).value(); }
 
     //! option value accessor
     template < typename T >
         T get( const QString& name ) const
-    { return _find( name )->second.get<T>(); }
+    { return _find( name ).value().get<T>(); }
 
     //! option raw value accessor
     virtual QByteArray raw( const QString& name ) const
-    { return _find( name )->second.raw(); }
+    { return _find( name ).value().raw(); }
 
     //! option value modifier
     void set( const QString& name, Option option, const bool& is_default = false );
@@ -168,7 +173,7 @@ class Options: public Counter
     virtual void keep( const QString& name )
     {
         if( specialOptions_.find( name ) == specialOptions_.end() )
-        { specialOptions_.insert( std::make_pair( name, List() ) ); }
+        { specialOptions_.insert( name, List() ); }
     }
 
     //! auto-default
