@@ -32,21 +32,21 @@
 //! base namespace
 namespace BASE
 {
-    
+
     // temporary forward declaration
     class Key;
-    
+
     //! \brief is used to sort pointer to keys according to their unique ID
     class KeyLessFTor
     {
-        
+
         public:
-        
+
         //! compare key pointers according to their unique ID
         inline bool operator() (const Key* first, const Key* second ) const;
-        
+
     };
-    
+
     //! \brief generic key object to handle object associations
     /*!
     Generic Key object to handle objects associations. Each Key
@@ -60,18 +60,18 @@ namespace BASE
     without explicit care of object deletions. Following diagram shows the current object
     association scheme.
     <p><img src="associations.gif" border="0" >
-    
+
     */
     class Key
     {
-        
+
         public:
-        
+
         //! constructor
         Key( void ):
             key_( _counter()++ )
         {}
-            
+
         //! \brief copy constructor
         /*!
         copy constructor.
@@ -86,33 +86,33 @@ namespace BASE
             for( key_set::iterator iter = associated_keys_.begin(); iter != associated_keys_.end(); iter++ )
             { (*iter)->_associate( this ); }
         }
-        
+
         //! destructor
         virtual ~Key( void )
         { clearAssociations(); }
-        
+
         //! equal to operator
         bool operator == (const Key& key ) const
         { return this->key() == key.key(); }
-        
+
         //! lower than operator
         bool operator < (const Key& key ) const
         { return this->key() < key.key(); }
-        
+
         //! shortcut for key unique id
         typedef unsigned long int key_type;
-        
+
         //! retrieve key
         virtual const key_type& key( void ) const
         { return key_; }
-        
+
         //! shortcut for set of Key
         typedef std::set< Key*, KeyLessFTor > key_set;
-        
+
         //! retrieve all associated keys
         const key_set& getAssociated( void ) const
         { return associated_keys_; }
-        
+
         //! clear associations for this key
         void clearAssociations( void )
         {
@@ -120,10 +120,10 @@ namespace BASE
             { (*iter)->_disassociate( this ); }
             associated_keys_.clear();
         }
-        
+
         //! clear associations of a given type for this key
         template<typename T> inline void clearAssociations( void );
-        
+
         //! associated two Keys
         static void associate( Key* first, Key* second )
         {
@@ -131,7 +131,7 @@ namespace BASE
             first->_associate( second );
             second->_associate( first );
         }
-        
+
         //! associated two Keys
         static void associate( Key& first, Key& second )
         {
@@ -139,35 +139,35 @@ namespace BASE
             first._associate( &second );
             second._associate( &first );
         }
-        
+
         //! used to find keys of matching id
         class SameKeyFTor
         {
-            
+
             public:
-            
+
             //! constructor
             SameKeyFTor( const key_type& key ):
                 key_( key )
             {}
-                
+
             //! predicate
             bool operator() (const Key* key ) const
             { return key->key() == key_; }
-            
+
             private:
-            
+
             //! predicted key
             key_type key_;
-            
+
         };
-        
+
         //! used to find keys of matching id
         class IsAssociatedFTor
         {
-            
+
             public:
-            
+
             //! constructor
             IsAssociatedFTor( const Key* key ):
                 key_( key )

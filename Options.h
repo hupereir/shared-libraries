@@ -42,18 +42,15 @@ class Options: public Counter
     public:
 
     //! pair
-    // typedef std::pair< QString, Option > Pair;
     typedef QPair< QString, Option > Pair;
 
     //! shortCut for option map
-    // typedef std::map< QString, Option > Map;
     typedef QMap< QString, Option > Map;
 
     //! shortCut for option list
     typedef QVector< Option > List;
 
     //! shortCut for option map
-    // typedef std::map< QString, List > SpecialMap;
     typedef QMap< QString, List > SpecialMap;
 
     //! constructor

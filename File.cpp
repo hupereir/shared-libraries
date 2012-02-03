@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    File.cpp
-\brief   file manipulation utility
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "File.h"
 #include "Debug.h"
 
@@ -40,7 +32,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <set>
 
 //_____________________________________________________________________
 bool File::isAbsolute( void ) const
@@ -456,8 +447,8 @@ File::List File::listFiles( const unsigned int& flags ) const
             if( found.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( found ) ) != out.end() ) continue;
 
             // list subdirectory
-            List tmp = found.listFiles( flags );
-            out.insert( out.end(), tmp.begin(), tmp.end() );
+            foreach( const File& file, found.listFiles( flags ) )
+            { out.push_back( file ); }
         }
 
     }
@@ -486,9 +477,9 @@ File File::find( const File& file, bool case_sensitive ) const
     }
 
     // loop over directories; search recursively
-    for( List::iterator iter = directories.begin(); iter!=directories.end(); ++iter )
+    foreach( const File& file, directories )
     {
-        File found( iter->find( file, case_sensitive ) );
+        File found( file.find( file, case_sensitive ) );
         if( found != File() ) return found;
     }
 

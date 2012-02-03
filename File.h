@@ -1,7 +1,7 @@
-// $Id$
-
 #ifndef File_h
 #define File_h
+
+// $Id$
 
 /******************************************************************************
 *
@@ -24,20 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file File.h
-\brief   file manipulation utility
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
 #include "Counter.h"
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QString>
-#include <vector>
+#include <QtCore/QVector>
 
 //! file manipulation utility
 class File: public QString
@@ -46,7 +37,7 @@ class File: public QString
     public:
 
     //! shortcut to list of files
-    typedef std::vector<File> List;
+    typedef QVector<File> List;
 
     //! constructor
     File( void )

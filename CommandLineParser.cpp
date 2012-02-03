@@ -36,12 +36,12 @@ Counter( "CommandLineParser" )
 }
 
 //________________________________________________________
-void CommandLineParser::registerFlag( QString tag_name, QString help_text )
-{ flags_.insert( std::make_pair( tag_name, Flag( help_text ) ) ); }
+void CommandLineParser::registerFlag( QString tagName, QString helpText )
+{ flags_.insert( tagName, Flag( helpText ) ); }
 
 //________________________________________________________
-void CommandLineParser::registerOption( QString tag_name, QString type, QString help_text )
-{ options_.insert( std::make_pair( tag_name, Option( type, help_text ) ) ); }
+void CommandLineParser::registerOption( QString tagName, QString type, QString helpText )
+{ options_.insert( tagName, Option( type, helpText ) ); }
 
 //________________________________________________________
 void CommandLineParser::usage( void ) const
@@ -49,11 +49,15 @@ void CommandLineParser::usage( void ) const
 
     Debug::Throw( "CommandLineParser::usage.\n" );
 
-    int max_length = 1+ std::max(
-        std::max_element( flags_.begin(), flags_.end(), MinLengthFTor() )->first.size(),
-        std::max_element( options_.begin(), options_.end(), MinLengthFTor() )->first.size() );
+    const QList<QString> flagKeys( flags_.keys() );
+    const QList<QString> optionKeys( options_.keys() );
 
-    int max_type_length = 1+ max_element( options_.begin(), options_.end(), MinTypeLengthFTor() )->second.type_.size();
+    int max_length = 1+ std::max(
+        std::max_element( flagKeys.begin(), flagKeys.end(), MinLengthFTor() )->size(),
+        std::max_element( optionKeys.begin(), optionKeys.end(), MinLengthFTor() )->size() );
+
+    const QList<Option> optionValues( options_.values() );
+    int max_type_length = 1+ std::max_element( optionValues.begin(), optionValues.end(), MinTypeLengthFTor() )->type_.size();
 
     QTextStream stream( stdout );
 
@@ -61,17 +65,17 @@ void CommandLineParser::usage( void ) const
     for( FlagMap::const_iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
     {
         stream << "  ";
-        stream << iter->first.leftJustified( max_length + max_type_length + 1 );
-        stream << iter->second.help_text_ << endl;
+        stream << iter.key().leftJustified( max_length + max_type_length + 1 );
+        stream << iter.value().helpText_ << endl;
     }
 
     // print options
     for( OptionMap::const_iterator iter = options_.begin(); iter != options_.end(); ++iter )
     {
         stream << "  ";
-        stream << iter->first.leftJustified( max_length );
-        stream << iter->second.type_.leftJustified( max_type_length + 1 );
-        stream << iter->second.help_text_ << endl;
+        stream << iter.key().leftJustified( max_length );
+        stream << iter.value().type_.leftJustified( max_type_length + 1 );
+        stream << iter.value().helpText_ << endl;
     }
 
     stream
@@ -94,7 +98,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
     if( arguments.isEmpty() ) return *this;
 
     // first argument is application name
-    application_name_ = arguments[0];
+    applicationName_ = arguments[0];
 
     // check if all options should be orphans
     // this should be triggered by adding "-" in the command line
@@ -103,10 +107,10 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
     for( int index = 1; index < arguments.size(); index++ )
     {
 
-        QString tag_name( arguments[index] );
-        if( tag_name.isEmpty() ) continue;
+        QString tagName( arguments[index] );
+        if( tagName.isEmpty() ) continue;
 
-        if( tag_name == "-" )
+        if( tagName == "-" )
         {
             if( auto_orphan && !ignore_warnings )
             {
@@ -121,7 +125,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
         // see if tag is in flag list
         {
-            FlagMap::iterator iter( flags_.find( tag_name ) );
+            FlagMap::iterator iter( flags_.find( tagName ) );
             if( iter != flags_.end() )
             {
                 if( auto_orphan )
@@ -129,7 +133,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                     if( !ignore_warnings )
                     {
                         QTextStream(stdout) << "CommandLineParser::parse -"
-                            << " tag " << tag_name << " appears after option delimiter \"-\". It is ignored."
+                            << " tag " << tagName << " appears after option delimiter \"-\". It is ignored."
                             << endl;
                     }
 
@@ -138,14 +142,14 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                 }
 
                 _discardOrphans( ignore_warnings );
-                iter->second.set_ = true;
+                iter.value().set_ = true;
                 continue;
             }
         }
 
         // see if tag is in option list
         {
-            OptionMap::iterator iter( options_.find( tag_name ) );
+            OptionMap::iterator iter( options_.find( tagName ) );
             if( iter != options_.end() )
             {
 
@@ -155,7 +159,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                     if( !ignore_warnings )
                     {
                         QTextStream(stdout) << "CommandLineParser::parse -"
-                            << " tag " << tag_name << " appears after option delimiter \"-\". It is ignored."
+                            << " tag " << tagName << " appears after option delimiter \"-\". It is ignored."
                             << endl;
                     }
 
@@ -173,8 +177,8 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                     if( !( value.isEmpty() || _isTag(value) ) )
                     {
                         _discardOrphans( ignore_warnings );
-                        iter->second.set_ = true;
-                        iter->second.value_ = value;
+                        iter.value().set_ = true;
+                        iter.value().value_ = value;
                         index++;
                         continue;
                     }
@@ -182,8 +186,8 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                 } else if( !ignore_warnings ) {
 
                     Debug::Throw(0) << "CommandLineParser::parse -"
-                        << " expected argument of type " << iter->second.type_
-                        << " after option " << iter->first << endl;
+                        << " expected argument of type " << iter.value().type_
+                        << " after option " << iter.key() << endl;
                 }
 
                 continue;
@@ -191,18 +195,18 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
         }
 
         // see if tag is an option
-        if( _isTag( tag_name ) )
+        if( _isTag( tagName ) )
         {
 
             if( !ignore_warnings )
-            { Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << tag_name << endl; }
+            { Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << tagName << endl; }
 
             continue;
 
         }
 
         // add to orphans
-        orphans_.push_back( tag_name );
+        orphans_.push_back( tagName );
 
     }
 
@@ -216,18 +220,18 @@ void CommandLineParser::clear( void )
 
     Debug::Throw( "CommandLineParser::clear.\n" );
 
-    application_name_.clear();
+    applicationName_.clear();
     orphans_.clear();
 
     // clear flags
     for( FlagMap::iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
-    { iter->second.set_ = false; }
+    { iter.value().set_ = false; }
 
     // clear options
     for( OptionMap::iterator iter = options_.begin(); iter != options_.end(); ++iter )
     {
-        iter->second.set_ = false;
-        iter->second.value_.clear();
+        iter.value().set_ = false;
+        iter.value().value_.clear();
     }
 
 }
@@ -238,15 +242,15 @@ CommandLineArguments CommandLineParser::arguments( void ) const
     Debug::Throw( "CommandLineParser::arguments.\n" );
 
     CommandLineArguments out;
-    out << application_name_;
+    out << applicationName_;
 
     // add flags
     for( FlagMap::const_iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
-    { if( iter->second.set_ ) out << iter->first; }
+    { if( iter.value().set_ ) out << iter.key(); }
 
     // add options
     for( OptionMap::const_iterator iter = options_.begin(); iter != options_.end(); ++iter )
-    { if( iter->second.set_ && !iter->second.value_.isEmpty() ) out << iter->first << iter->second.value_; }
+    { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out << iter.key() << iter.value().value_; }
 
     // add orphans
     for( QStringList::const_iterator iter = orphans_.begin(); iter != orphans_.end(); ++iter )
@@ -260,22 +264,22 @@ CommandLineArguments CommandLineParser::arguments( void ) const
 bool CommandLineParser::hasFlag( QString tag ) const
 {
     FlagMap::const_iterator iter( flags_.find( tag ) );
-    return iter != flags_.end() && iter->second.set_;
+    return iter != flags_.end() && iter.value().set_;
 }
 
 //_______________________________________________________
 bool CommandLineParser::hasOption( QString tag ) const
 {
     OptionMap::const_iterator iter( options_.find( tag ) );
-    return iter != options_.end() && iter->second.set_ && !iter->second.value_.isEmpty();
+    return iter != options_.end() && iter.value().set_ && !iter.value().value_.isEmpty();
 }
 
 //_______________________________________________________
 QString CommandLineParser::option( QString tag ) const
 {
     OptionMap::const_iterator iter( options_.find( tag ) );
-    assert( iter != options_.end() && iter->second.set_ && !iter->second.value_.isEmpty() );
-    return iter->second.value_;
+    assert( iter != options_.end() && iter.value().set_ && !iter.value().value_.isEmpty() );
+    return iter.value().value_;
 }
 
 //_______________________________________________________

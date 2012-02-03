@@ -29,7 +29,7 @@
 #include "Debug.h"
 
 #include <QtCore/QStringList>
-#include <map>
+#include <QtCore/QMap>
 
 //! parse command line argument.
 class CommandLineParser: public Counter
@@ -41,10 +41,10 @@ class CommandLineParser: public Counter
     CommandLineParser();
 
     //! register option
-    void registerOption( QString tag, QString type, QString help_text );
+    void registerOption( QString tag, QString type, QString helpText );
 
     //! register flag
-    void registerFlag( QString tag, QString help_text );
+    void registerFlag( QString tag, QString helpText );
 
     //! print help
     void usage( void ) const;
@@ -60,7 +60,7 @@ class CommandLineParser: public Counter
 
     //! application name
     QString applicationName( void ) const
-    { return application_name_; }
+    { return applicationName_; }
 
     //! return true if flag is on
     bool hasFlag( QString ) const;
@@ -91,9 +91,9 @@ class CommandLineParser: public Counter
         public:
 
         //! constructor
-        Flag( QString help_text = QString() ):
+        Flag( QString helpText = QString() ):
             Counter( "CommandLineParser::Flag" ),
-            help_text_( help_text ),
+            helpText_( helpText ),
             set_( false )
         {}
 
@@ -102,7 +102,7 @@ class CommandLineParser: public Counter
         {}
 
         //! help text
-        QString help_text_;
+        QString helpText_;
 
         //! true if set
         bool set_;
@@ -116,8 +116,8 @@ class CommandLineParser: public Counter
         public:
 
         //! constructor
-        Option( QString type = QString(), QString help_text = QString() ):
-            Flag( help_text ),
+        Option( QString type = QString(), QString helpText = QString() ):
+            Flag( helpText ),
             type_( type )
         {}
 
@@ -130,13 +130,13 @@ class CommandLineParser: public Counter
     };
 
     //! flags
-    typedef std::map<QString, Flag> FlagMap;
+    typedef QMap<QString, Flag> FlagMap;
 
     //! flags
     FlagMap flags_;
 
     //! options
-    typedef std::map<QString, Option> OptionMap;
+    typedef QMap<QString, Option> OptionMap;
 
     //! used to select tag of maximum length
     class MinLengthFTor
@@ -145,12 +145,8 @@ class CommandLineParser: public Counter
         public:
 
         //! predicate
-        bool operator () ( const FlagMap::value_type& first, const FlagMap::value_type& second )
-        { return first.first.size() < second.first.size(); }
-
-        //! predicate
-        bool operator () ( const OptionMap::value_type& first, const OptionMap::value_type& second )
-        { return first.first.size() < second.first.size(); }
+        bool operator () ( const QString& first, const QString& second )
+        { return first.size() < second.size(); }
 
     };
 
@@ -161,8 +157,8 @@ class CommandLineParser: public Counter
         public:
 
         //! predicate
-        bool operator () ( const OptionMap::value_type& first, const OptionMap::value_type& second )
-        { return first.second.type_.size() < second.second.type_.size(); }
+        bool operator () ( const Option& first, const Option& second )
+        { return first.type_.size() < second.type_.size(); }
 
     };
 
@@ -170,7 +166,7 @@ class CommandLineParser: public Counter
     OptionMap options_;
 
     //! application name
-    QString application_name_;
+    QString applicationName_;
 
     //! orphan arguments
     QStringList orphans_;

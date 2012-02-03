@@ -29,9 +29,9 @@
 #include "File.h"
 #include "TimeStamp.h"
 
-
+#include <QtCore/QMap>
+#include <QtCore/QVector>
 #include <cassert>
-#include <vector>
 
 //! handles previously opened file and tags
 class FileRecord: public Counter
@@ -40,8 +40,9 @@ class FileRecord: public Counter
     public:
 
     //! shortcut to list of records
-    //typedef std::list<FileRecord> List;
-    typedef std::vector<FileRecord> List;
+    typedef QVector<FileRecord> List;
+    typedef QVectorIterator<FileRecord> ListIterator;
+
 
     //! constructor
     FileRecord( const File& file = File(""), const TimeStamp& time = TimeStamp::now() ):
@@ -171,13 +172,13 @@ class FileRecord: public Counter
         static Id& _counter( void );
 
         //! id map
-        typedef std::map< QString, Id > IdMap;
+        typedef QMap< QString, Id > IdMap;
 
         //! id map
         static IdMap& _idMap();
 
         //! id map
-        typedef std::vector< QString > NameMap;
+        typedef QVector< QString > NameMap;
 
         //! name map
         static NameMap& _nameMap();
@@ -200,7 +201,7 @@ class FileRecord: public Counter
     { return properties_.find( id ) != properties_.end(); }
 
     //! additional property map
-    typedef std::map< PropertyId::Id, QString > PropertyMap;
+    typedef QMap< PropertyId::Id, QString > PropertyMap;
 
     //! property map
     const PropertyMap& properties( void ) const
@@ -214,7 +215,7 @@ class FileRecord: public Counter
     QString property( PropertyId::Id id ) const
     {
         PropertyMap::const_iterator iter(  properties_.find( id ) );
-        return ( iter == properties_.end() ) ? "":iter->second;
+        return ( iter == properties_.end() ) ? "":iter.value();
     }
 
     //@}
@@ -362,7 +363,7 @@ class FileRecord: public Counter
     {
         out << record.file() << endl;
         for( PropertyMap::const_iterator iter = record.properties().begin(); iter != record.properties().end(); iter++ )
-        { out << "  " << iter->first << ": " << iter->second << endl; }
+        { out << "  " << iter.key() << ": " << iter.value() << endl; }
         return out;
     }
 

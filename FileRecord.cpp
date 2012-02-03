@@ -51,10 +51,10 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
     // see if iterator exists in list
     IdMap::const_iterator iter;
     if( ( iter = _idMap().find( name ) ) != _idMap().end() )
-    { return iter->second; }
+    { return iter.value(); }
 
     // insert otherwise, increment counter and return proper value
-    _idMap().insert( std::make_pair( name, _counter() ) );
+    _idMap().insert( name, _counter() );
     _nameMap().push_back( name );
     _counter()++;
 
