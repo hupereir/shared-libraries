@@ -38,13 +38,13 @@
 
 //_______________________________________________
 bool FileList::has( const File& file ) const
-{ return find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ) != _records().end(); }
+{ return std::find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ) != _records().end(); }
 
 //_______________________________________________
 void FileList::remove( const File& file )
 {
     Debug::Throw() << "FileList::remove - " << file << endl;
-    _records().erase(remove_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ), _records().end() );
+    _records().erase(std::remove_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ), _records().end() );
     return;
 }
 
@@ -59,15 +59,14 @@ void FileList::set( const FileRecord::List& records )
 }
 
 //___________________________________________________
-std::list<File> FileList::files( void ) const
+File::List FileList::files( void ) const
 {
     Debug::Throw( "FileList::files.\n" );
 
     FileRecord::List records( _truncatedList( _records() ) );
-
-    std::list<File> out;
-    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); ++iter )
-    { out.push_back( iter->file() ); }
+    File::List out;
+    foreach( const FileRecord& record, records )
+    { out.push_back( record.file() ); }
 
     return out;
 }
@@ -79,9 +78,15 @@ FileRecord FileList::lastValidFile( void )
     Debug::Throw( "FileList::lastValidFile.\n" );
 
     // sort list
-    sort( _records().begin(), _records().end(), FileRecord::FirstOpenFTor() );
-    for( FileRecord::List::reverse_iterator iter = _records().rbegin(); iter != _records().rend(); ++iter )
-    { if( (!check_) || iter->isValid() ) return *iter; }
+    std::sort( _records().begin(), _records().end(), FileRecord::FirstOpenFTor() );
+    FileRecord::ListIterator iter( _records() );
+    iter.toBack();
+    while( iter.hasPrevious() )
+    {
+        const FileRecord& record( iter.previous() );
+        if( (!check_) || record.isValid() ) return record;
+    }
+
     return FileRecord( File("") );
 
 }
@@ -110,7 +115,7 @@ void FileList::customEvent( QEvent* event )
     const FileRecord::List& records( valid_file_event->records() );
     for( FileRecord::List::iterator iter = current_records.begin(); iter != current_records.end(); ++iter )
     {
-        FileRecord::List::const_iterator found = find_if(
+        FileRecord::List::const_iterator found = std::find_if(
             records.begin(),
             records.end(),
             FileRecord::SameFileFTor( iter->file() ) );
@@ -138,7 +143,7 @@ void FileList::clean( void )
 
     // remove invalid files
     _records().erase(
-        remove_if( _records().begin(), _records().end(), FileRecord::InvalidFTor() ),
+        std::remove_if( _records().begin(), _records().end(), FileRecord::InvalidFTor() ),
         _records().end() );
 
     return;
@@ -172,7 +177,7 @@ FileRecord& FileList::_add(
     // do not add empty files
     assert( !record.file().isEmpty() );
 
-    FileRecord::List::iterator iter = find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( record.file() ) );
+    FileRecord::List::iterator iter = std::find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( record.file() ) );
     if( iter != _records().end() )
     {
 
@@ -204,13 +209,13 @@ FileRecord::List FileList::_truncatedList( FileRecord::List records ) const
     if( maxSize_ > 0 && int(records.size()) > maxSize_ )
     {
 
-        sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() );
+        std::sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() );
         if( check_ )
         {
 
             while( int(records.size()) > maxSize_ )
             {
-                FileRecord::List::iterator iter( find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
+                FileRecord::List::iterator iter( std::find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
                 if( iter != records.end() ) records.erase( iter );
                 else break;
             }

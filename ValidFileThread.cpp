@@ -76,7 +76,7 @@ void ValidFileThread::run( void )
         // check for duplicates
         FileRecord& current( *iter );
         FileRecord::SameCanonicalFileFTor ftor( current.file() );
-        if( find_if( ++iter, records_.end(), ftor ) != records_.end() )
+        if( std::find_if( ++iter, records_.end(), ftor ) != records_.end() )
         {
           current.setValid( false );
           has_invalid_records = true;

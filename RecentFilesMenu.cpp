@@ -91,7 +91,7 @@ void RecentFilesMenu::_updateActions( void )
     for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
 
-        FileRecord::List::const_iterator found = find_if(
+        FileRecord::List::const_iterator found = std::find_if(
             records.begin(),
             records.end(),
             FileRecord::SameFileFTor( iter->second.file() ) );
@@ -141,8 +141,8 @@ void RecentFilesMenu::_loadFiles( void )
 
     // redo all actions
     FileRecord::List records( _fileList().records() );
-    if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") ) { sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
-    else { sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
+    if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") ) { std::sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
+    else { std::sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
 
     // retrieve stored file record
     for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); ++iter )

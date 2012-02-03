@@ -72,7 +72,7 @@ int FileRecordModel::columnCount(const QModelIndex &parent) const
 //__________________________________________________________________
 int FileRecordModel::findColumn( const QString& value ) const
 {
-    for( unsigned int index = 0; index < columnTitles_.size(); index++ )
+    for( int index = 0; index < columnTitles_.size(); ++index )
     { if( columnTitles_[index] == value ) return index;  }
     return -1;
 }
@@ -204,8 +204,8 @@ void FileRecordModel::_updateColumns( const ValueType& value )
     for( FileRecord::PropertyMap::const_iterator iter = properties.begin(); iter != properties.end(); ++iter )
     {
         // look for property name in list of columns
-        if( find( columnTitles_.begin(), columnTitles_.end(), FileRecord::PropertyId::get( iter->first ) ) == columnTitles_.end() )
-        { columnTitles_.push_back( FileRecord::PropertyId::get( iter->first ) ); }
+        if( std::find( columnTitles_.begin(), columnTitles_.end(), FileRecord::PropertyId::get( iter.key() ) ) == columnTitles_.end() )
+        { columnTitles_.push_back( FileRecord::PropertyId::get( iter.key() ) ); }
 
     }
 
@@ -242,7 +242,7 @@ QIcon FileRecordModel::_icon( const QString& name )
     Debug::Throw( "FileRecordModel::_icon.\n" );
 
     IconCache::const_iterator iter( _icons().find( name ) );
-    if( iter != _icons().end() ) return iter->second;
+    if( iter != _icons().end() ) return iter.value();
 
     // pixmap size
     unsigned int pixmap_size = XmlOptions::get().get<unsigned int>( "LIST_ICON_SIZE" );
@@ -263,7 +263,7 @@ QIcon FileRecordModel::_icon( const QString& name )
     }
 
     // insert in map
-    _icons().insert( std::make_pair( name, icon ) );
+    _icons().insert( name, icon );
     return icon;
 
 }

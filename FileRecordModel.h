@@ -128,7 +128,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
         public:
 
         //! constructor
-        SortFTor( const int& type, Qt::SortOrder order, const std::vector<QString>& column_titles ):
+        SortFTor( const int& type, Qt::SortOrder order, const QVector<QString>& column_titles ):
             ItemModel::SortFTor( type, order ),
             columnTitles_( column_titles )
         {}
@@ -139,7 +139,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
         private:
 
         // column titles
-        std::vector<QString> columnTitles_;
+        QVector<QString> columnTitles_;
 
     };
 
@@ -160,7 +160,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     static QIcon _icon( const QString& );
 
     //! icon cache
-    typedef std::map<QString, QIcon> IconCache;
+    typedef QMap<QString, QIcon> IconCache;
 
     //! type icon cache
     static IconCache& _icons( void );
@@ -175,7 +175,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     FileRecord::PropertyId::Id iconPropertyId_;
 
     //! column titles
-    std::vector<QString> columnTitles_;
+    QVector<QString> columnTitles_;
 
 };
 

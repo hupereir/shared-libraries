@@ -157,7 +157,11 @@ void RecentFilesConfiguration::write( void ) const
     OptionWidgetList::write();
 
     // put model contents into file list
-    _recentFiles().set( _model().get() );
+    FileRecord::List records;
+    foreach( const FileRecord& record, _model().get() )
+    { records.push_back( record ); }
+
+    _recentFiles().set( records );
 
 }
 
@@ -217,12 +221,15 @@ void RecentFilesConfiguration::_reload( void )
 {
 
     Debug::Throw( "RecentFilesConfiguration::_reload.\n" );
-    FileRecord::List records( _recentFiles().records() );
-    _model().set( records );
+    FileRecordModel::List recordModelList;
+    foreach( const FileRecord& record, _recentFiles().records() )
+    { recordModelList.push_back( record ); }
+    _model().set( recordModelList );
+
     _list().selectionModel()->clear();
 
     _reloadButton().setEnabled( false );
-    _cleanButton().setEnabled( find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) != records.end() );
+    _cleanButton().setEnabled( std::find_if( recordModelList.begin(), recordModelList.end(), FileRecord::InvalidFTor() ) != recordModelList.end() );
     _updateButtons();
 
 }

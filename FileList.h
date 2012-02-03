@@ -24,25 +24,16 @@
 *
 *******************************************************************************/
 
-/*!
-\file FileList.h
-\brief handles list of files saved into resource file for later reopening
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-#include <list>
-
-#include <QObject>
-
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
 #include "FileRecord.h"
 #include "TimeStamp.h"
 #include "ValidFileThread.h"
+
+#include <cassert>
+#include <QtCore/QObject>
+#include <QtCore/QVector>
 
 //! handles list of files saved into resource file for later reopening
 class FileList: public QObject, public Counter
@@ -94,7 +85,7 @@ class FileList: public QObject, public Counter
     virtual void set( const FileRecord::List& );
 
     //! all files
-    std::list< File > files( void ) const;
+    File::List files( void ) const;
 
     //! get last valid file
     virtual FileRecord lastValidFile( void );
