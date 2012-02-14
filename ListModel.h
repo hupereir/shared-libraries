@@ -54,10 +54,11 @@ class ListModel : public ItemModel
     //! pointer
     typedef T* Pointer;
 
-    //! list of vector
+    //! value list
     typedef std::vector<ValueType> List;
 
-    //! list of vector
+    //! value set
+    /*! TODO: is it really necessary */
     typedef std::set<ValueType, LessThan> Set;
 
     //! constructor

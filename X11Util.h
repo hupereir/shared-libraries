@@ -32,8 +32,8 @@
 \date    $Date$
 */
 
-#include <QWidget>
-#include <map>
+#include <QtGui/QWidget>
+#include <QtCore/QMap>
 
 #if defined(Q_WS_X11)
 #include <QX11Info>
@@ -158,7 +158,7 @@ class X11Util
     bool _requestCardinalChange( const QWidget&, const Atoms&, const unsigned long& value );
 
     //! atom names
-    typedef std::map<Atoms, QString> AtomNameMap;
+    typedef QMap<Atoms, QString> AtomNameMap;
 
     //! atom names
     void _initializeAtomNames( void );
