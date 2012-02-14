@@ -25,7 +25,7 @@
 *******************************************************************************/
 
 #include <QtCore/QString>
-#include <map>
+#include <QtCore/QPair>
 
 //! Object counter
 class Counter {
@@ -33,7 +33,7 @@ class Counter {
     public:
 
     //! counter name and counts pair
-    typedef std::pair<QString, int> Pair;
+    typedef QPair<QString, int> Pair;
 
     //! constructor
     Counter( const QString& name );

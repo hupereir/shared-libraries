@@ -27,7 +27,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
-#include <list>
+#include <QtCore/QVector>
 
 namespace FORMAT
 {
@@ -40,9 +40,9 @@ namespace FORMAT
     */
     class TextFormatBlock: public Counter
     {
-        
+
         public:
-        
+
         //! constructor
         TextFormatBlock(
             const int& begin = 0, const int& end = 0,
@@ -55,114 +55,114 @@ namespace FORMAT
             format_( format ),
             color_( color )
         {}
-        
+
         //! less than operator (based on Begin position)
         bool operator < (const TextFormatBlock& format ) const
         { return begin() < format.begin(); }
-        
+
         //! true if format info is empty
         bool isEmpty( void ) const
         { return begin() == end(); }
-        
+
         //! begin position
         const int& begin() const
         { return begin_; }
-        
+
         //! begin position
         int& begin()
         { return begin_; }
-        
+
         //! end position
         const int& end() const
         { return end_; }
-        
+
         //! end position
         int& end()
         { return end_; }
-        
+
         //!@name obsolete paragraph indexes
         //@{
-        
+
         const int& parBegin() const
         { return parBegin_; }
-        
+
         //!@name obsolete paragraph indexes
         const int& parEnd() const
         { return parEnd_; }
-        
+
         //@}
-        
+
         //! format
         const unsigned int& format() const
         { return format_; }
-        
+
         //! format
         unsigned int& format()
         { return format_; }
-        
+
         //! color
         const QString& color() const
         { return color_; }
-        
+
         //! color
         QString& color()
         { return color_; }
-        
+
         //! get TextFormatBlock matching a given begin position
         class SamePositionBeginFTor
         {
-            
+
             public:
-            
+
             //! constructor
             SamePositionBeginFTor( const int& position ):
                 position_( position )
             {}
-            
+
             //! predicate
             bool operator() (const TextFormatBlock& format ) const
             { return format.begin() == position_; }
-            
+
             private:
-            
+
             //! predicted position
             int position_;
-            
+
         };
-        
+
         //! get TextFormatBlock matching a given end position
         class SamePositionEndFTor
         {
-            
+
             public:
-            
+
             //! constructor
             SamePositionEndFTor( const int& position ):
                 position_( position )
             {}
-            
+
             //! predicate
             bool operator() (const TextFormatBlock& format ) const
             { return format.end() == position_; }
-            
+
             private:
-            
+
             //! predicted position
             int position_;
-            
+
         };
-        
+
         //! get TextFormatBlock containing a given position
         class ContainsFTor
         {
-            
+
             public:
-            
+
             //! constructor
             ContainsFTor( const int& position ):
                 position_( position )
             {}
-                
+
             //! predicate
             bool operator() (const TextFormatBlock& format ) const
             { return position_ >= format.begin() && position_ < format.end(); }
@@ -176,7 +176,7 @@ namespace FORMAT
 
 
         //! format list
-        typedef std::list<FORMAT::TextFormatBlock> List;
+        typedef QVector<FORMAT::TextFormatBlock> List;
 
         protected:
 
