@@ -26,7 +26,7 @@
 
 #include "TreeItemBase.h"
 
-#include <QtCore/QVector>
+#include <QtCore/QList>
 #include <QtCore/QMap>
 #include <algorithm>
 #include <cassert>
@@ -47,13 +47,13 @@ template<class T> class TreeItem: public TreeItemBase
     typedef const T& ConstReference;
 
     //! list of references
-    typedef QVector<T> ValueList;
+    typedef QList<T> ValueList;
 
     //! pointer
     typedef T* Pointer;
 
     //! list of vector
-    typedef QVector<TreeItem> List;
+    typedef QList<TreeItem> List;
 
     //! list of vector
     typedef QMap<int, TreeItem*> Map;
@@ -61,19 +61,12 @@ template<class T> class TreeItem: public TreeItemBase
     //! id type
     typedef unsigned int Id;
 
-    //! dummy constructor
-    TreeItem( void ):
-        TreeItemBase(0),
-        map_(0),
-        parent_(0)
-    {}
-
     //! root constructor
     TreeItem( Map& itemMap ):
         TreeItemBase(0),
-        map_( &itemMap ),
+        map_( itemMap ),
         parent_(0)
-    { (*map_)[id()] = this; }
+    { map_[id()] = this; }
 
     //! copy constructor
     TreeItem( const TreeItem& item ):
@@ -88,7 +81,7 @@ template<class T> class TreeItem: public TreeItemBase
         setFlags( item.flags() );
 
         // store id in map
-        (*map_)[id()] = this;
+        map_[id()] = this;
 
         // reassign parents
         for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
@@ -111,7 +104,7 @@ template<class T> class TreeItem: public TreeItemBase
         // update and store in map
         _eraseFromMap();
         _setId( item.id() );
-        (*map_)[id()] = this;
+        map_[id()] = this;
 
         // reassign parents
         for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
@@ -207,7 +200,7 @@ template<class T> class TreeItem: public TreeItemBase
         // try add to this list of children
         if( value.isChild( get() ) )
         {
-            children_ << TreeItem( *map_, this, value );
+            children_ << TreeItem( map_, this, value );
             return true;
         }
 
@@ -219,7 +212,7 @@ template<class T> class TreeItem: public TreeItemBase
         // add to this if top level
         if( !( added || hasParent() ) )
         {
-            children_ << TreeItem( *map_, this, value );
+            children_ << TreeItem( map_, this, value );
             return true;
         }
 
@@ -259,7 +252,7 @@ template<class T> class TreeItem: public TreeItemBase
 
                 // update child
                 child(row).set( values.at(found) );
-                values.remove( found );
+                values.removeAt( found );
 
                 // update child children recursively
                 child(row).set( values );
@@ -303,7 +296,7 @@ template<class T> class TreeItem: public TreeItemBase
 
                     // re-assign and remove from list
                     child(row).set( values.at(found) );
-                    values.remove( found );
+                    values.removeAt( found );
 
                 } else {
 
@@ -357,10 +350,10 @@ template<class T> class TreeItem: public TreeItemBase
     /*! used to insert T in the tree structure */
     TreeItem( Map& itemMap, const TreeItem* parent, ConstReference value ):
         TreeItemBase( ++_runningId() ),
-        map_( &itemMap ),
+        map_( itemMap ),
         parent_( parent ),
         value_( value )
-    { (*map_)[id()] = this; }
+    { map_[id()] = this; }
 
     //! value
     Reference _get( void )
@@ -373,15 +366,15 @@ template<class T> class TreeItem: public TreeItemBase
     //! erase from map
     void _eraseFromMap( void )
     {
-        typename Map::iterator iter( map_->find( id() ) );
-        if( iter != map_->end() && iter.value() == this )
-        { map_->erase( iter ); }
+        typename Map::iterator iter( map_.find( id() ) );
+        if( iter != map_.end() && iter.value() == this )
+        { map_.erase( iter ); }
     }
 
     private:
 
     //! item map
-    Map* map_;
+    Map& map_;
 
     //! parent
     const TreeItem* parent_;

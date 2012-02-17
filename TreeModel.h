@@ -28,7 +28,7 @@
 #include "ItemModel.h"
 #include "TreeItem.h"
 
-#include <QtCore/QVector>
+#include <QtCore/QList>
 
 //! generic class to store structure in a model
 template<class T> class TreeModel : public ItemModel
@@ -43,10 +43,10 @@ template<class T> class TreeModel : public ItemModel
     typedef T* Pointer;
 
     //! list of vector
-    typedef QVector<ValueType> List;
+    typedef QList<ValueType> List;
 
     //! iterator
-    typedef QVectorIterator<ValueType> ListIterator;
+    typedef QListIterator<ValueType> ListIterator;
 
     //! item
     typedef TreeItem<T> Item;
@@ -400,7 +400,7 @@ template<class T> class TreeModel : public ItemModel
             if( found >= 0 )
             {
                 parent.remove( row );
-                values.remove( found );
+                values.removeAt( found );
             } else row++;
 
         }
