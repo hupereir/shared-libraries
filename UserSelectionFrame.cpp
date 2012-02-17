@@ -67,10 +67,10 @@ delay_( 500 )
 }
 
 //____________________________________________________________
-std::set<QString> UserSelectionFrame::users( void ) const
+QSet<QString> UserSelectionFrame::users( void ) const
 {
 
-    std::set<QString> out;
+    QSet<QString> out;
     for( int i=0; i< editor().QComboBox::count(); i++ )
     {
         const QString& user( editor().itemText( i ) );
@@ -103,7 +103,7 @@ void UserSelectionFrame::setUser( const QString& user )
 }
 
 //________________________________________________________________
-void UserSelectionFrame::updateUsers( std::set<QString> users )
+void UserSelectionFrame::updateUsers( QSet<QString> users )
 {
     Debug::Throw( "UserSelectionFrame::updateUsers.\n" );
 
@@ -121,7 +121,7 @@ void UserSelectionFrame::updateUsers( std::set<QString> users )
             continue;
         }
 
-        std::set<QString>::iterator iter( users.find( user ) );
+        QSet<QString>::iterator iter( users.find( user ) );
         if( iter == users.end() ) editor().removeItem( i );
         else {
 
@@ -131,7 +131,7 @@ void UserSelectionFrame::updateUsers( std::set<QString> users )
         }
     }
 
-    for( std::set<QString>::const_iterator iter =  users.begin(); iter != users.end(); ++iter )
+    for( QSet<QString>::const_iterator iter =  users.begin(); iter != users.end(); ++iter )
     { if( !iter->isEmpty() ) editor().addItem( *iter ); }
 
 }

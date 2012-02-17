@@ -36,7 +36,7 @@
 #include "CustomComboBox.h"
 
 #include <QtCore/QBasicTimer>
-#include <set>
+#include <QtCore/QSet>
 
 class UserSelectionFrame: public QWidget, public Counter
 {
@@ -53,7 +53,7 @@ class UserSelectionFrame: public QWidget, public Counter
     void setUser( const QString& user );
 
     //! users
-    std::set<QString> users( void ) const;
+    QSet<QString> users( void ) const;
 
     //! selected user
     QString user( void ) const;
@@ -73,7 +73,7 @@ class UserSelectionFrame: public QWidget, public Counter
     public slots:
 
     //! update user list
-    void updateUsers( std::set<QString> );
+    void updateUsers( QSet<QString> );
 
     protected:
 
