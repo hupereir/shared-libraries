@@ -60,13 +60,13 @@ CustomDialog( parent, CloseButton )
 
     // retrieve environment variables from QProcess
     QStringList env( QProcess::systemEnvironment() );
-    OptionModel::Set options;
+    OptionModel::List options;
     for( QStringList::iterator iter = env.begin(); iter != env.end(); ++iter )
     {
         QStringList parsed( (iter)->split( "=" ) );
         if( parsed.empty() ) continue;
 
-        options.insert( OptionPair( parsed[0], parsed.size() > 1 ? parsed[1]: "" ) );
+        options << OptionPair( parsed[0], parsed.size() > 1 ? parsed[1]: "" );
 
     }
 

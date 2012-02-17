@@ -120,10 +120,10 @@ void OptionDialog::_reload( void )
 
     // retrieve normal options
     const Options::Map& options( backupOptions_.options() );
-    OptionModel::Set option_set;
+    OptionModel::List optionList;
     for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); ++iter )
-    { option_set.insert( OptionPair( iter.key(), iter.value() ) ); }
-    model_.add( option_set );
+    { optionList << OptionPair( iter.key(), iter.value() ); }
+    model_.add( optionList );
 
     _list().resizeColumns();
     _list().setColumnWidth( OptionModel::CURRENT, IconSize::Small+4 );

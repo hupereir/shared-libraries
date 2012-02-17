@@ -1,4 +1,3 @@
-// $Id$
 
 /******************************************************************************
 *
@@ -141,9 +140,9 @@ void OptionListBox::read( void )
   { values.front().setCurrent( true ); }
 
   // add to model.
-  OptionModel::Set options;
+  OptionModel::List options;
   for( Options::List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
-  { options.insert( OptionPair( optionName(), *iter ) ); }
+  { options << OptionPair( optionName(), *iter ); }
 
   model_.set( options );
   _list().resizeColumns();
@@ -281,10 +280,10 @@ void OptionListBox::_remove( void )
   OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
   OptionModel::List removed;
   for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); ++iter )
-  { if( iter->second.hasFlag( Option::RECORDABLE ) ) removed.push_back( *iter ); }
+  { if( iter->second.hasFlag( Option::RECORDABLE ) ) removed << *iter; }
 
   // remove
-  model_.remove( OptionModel::Set( removed.begin(), removed.end() ) );
+  model_.remove( removed );
 
   return;
 
@@ -303,7 +302,7 @@ void OptionListBox::_setDefault( void )
   for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); ++iter )
   { iter->second.setCurrent( false ); }
 
-  model_.set( OptionModel::Set( options.begin(), options.end() ) );
+  model_.set( options );
 
   Options::Pair current_option( model_.get( current ) );
   current_option.second.setCurrent( true );

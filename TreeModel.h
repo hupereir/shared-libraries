@@ -24,21 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file    TreeModel.h
-\brief   Job model. Stores job information for display in lists
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-#include <list>
-
 #include "Debug.h"
 #include "ItemModel.h"
 #include "TreeItem.h"
 
-//! Job model. Stores job information for display in lists
+#include <QtCore/QVector>
+
+//! generic class to store structure in a model
 template<class T> class TreeModel : public ItemModel
 {
 
@@ -51,10 +43,10 @@ template<class T> class TreeModel : public ItemModel
     typedef T* Pointer;
 
     //! list of vector
-    typedef std::vector<ValueType> List;
+    typedef QVector<ValueType> List;
 
-    //! list of vector
-    typedef std::set<ValueType> Set;
+    //! iterator
+    typedef QVectorIterator<ValueType> ListIterator;
 
     //! item
     typedef TreeItem<T> Item;
@@ -193,7 +185,7 @@ template<class T> class TreeModel : public ItemModel
     {
         List out;
         for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); ++iter )
-        { if( iter->isValid() ) out.push_back( get( *iter ) ); }
+        { if( iter->isValid() ) out << get( *iter ); }
         return out;
     }
 
@@ -206,7 +198,7 @@ template<class T> class TreeModel : public ItemModel
     void clearSelectedIndexes( void )
     {
         for( typename Item::Map::iterator iter = map_.begin(); iter != map_.end(); ++iter )
-        { iter->second->setFlag( Item::SELECTED, false ); }
+        { iter.value()->setFlag( Item::SELECTED, false ); }
     }
 
     //! store index internal selection state
@@ -214,7 +206,7 @@ template<class T> class TreeModel : public ItemModel
     {
         if( !index.isValid() ) return;
         typename Item::Map::iterator iter( map_.find( index.internalId() ) );
-        if( iter != map_.end() ) iter->second->setFlag( Item::SELECTED, value );
+        if( iter != map_.end() ) iter.value()->setFlag( Item::SELECTED, value );
     }
 
     //! get list of internal selected items
@@ -224,11 +216,11 @@ template<class T> class TreeModel : public ItemModel
         for( typename Item::Map::const_iterator iter = map_.begin(); iter != map_.end(); ++iter )
         {
 
-            if( !iter->second->flag( Item::SELECTED ) ) continue;
+            if( !iter.value()->flag( Item::SELECTED ) ) continue;
 
             // retrieve and check index associated to job
-            QModelIndex index( TreeModel::index( iter->second->get() ) );
-            if( index.isValid() ) out.push_back( index );
+            QModelIndex index( TreeModel::index( iter.value()->get() ) );
+            if( index.isValid() ) out << index;
 
         }
 
@@ -244,7 +236,7 @@ template<class T> class TreeModel : public ItemModel
     void clearExpandedIndexes( void )
     {
         for( typename Item::Map::iterator iter = map_.begin(); iter != map_.end(); ++iter )
-        { iter->second->setFlag( Item::EXPANDED, false ); }
+        { iter.value()->setFlag( Item::EXPANDED, false ); }
     }
 
     //! store index internal selection state
@@ -252,7 +244,7 @@ template<class T> class TreeModel : public ItemModel
     {
         if( !index.isValid() ) return;
         typename Item::Map::iterator iter( map_.find( index.internalId() ) );
-        if( iter != map_.end() ) iter->second->setFlag( Item::EXPANDED, value );
+        if( iter != map_.end() ) iter.value()->setFlag( Item::EXPANDED, value );
     }
 
     //! get list of internal selected items
@@ -262,11 +254,11 @@ template<class T> class TreeModel : public ItemModel
         for( typename Item::Map::const_iterator iter = map_.begin(); iter != map_.end(); ++iter )
         {
 
-            if( !iter->second->flag( Item::EXPANDED ) ) continue;
+            if( !iter.value()->flag( Item::EXPANDED ) ) continue;
 
             // retrieve and check index associated to job
-            QModelIndex index( TreeModel::index( iter->second->get() ) );
-            if( index.isValid() ) out.push_back( index );
+            QModelIndex index( TreeModel::index( iter.value()->get() ) );
+            if( index.isValid() ) out << index;
 
         }
 
@@ -278,13 +270,13 @@ template<class T> class TreeModel : public ItemModel
     //! add values
     void add( const ValueType& value )
     {
-        Set values;
-        values.insert( value );
+        List values;
+        values << value;
         add( values );
     }
 
     //! add values
-    void add( Set values )
+    void add( List values )
     {
 
         // check if not empty
@@ -306,7 +298,7 @@ template<class T> class TreeModel : public ItemModel
     items that are not found in list are removed
     items that are found are updated
     */
-    void set( Set values )
+    void set( List values )
     {
 
         // check if not empty
@@ -330,15 +322,15 @@ template<class T> class TreeModel : public ItemModel
     //! remove
     virtual void remove( const ValueType& value )
     {
-        Set values;
-        values.insert( value );
+        List values;
+        values << value;
         remove( values );
         return;
 
     }
 
     //! remove
-    virtual void remove( Set values )
+    virtual void remove( List values )
     {
 
         // check if not empty
@@ -380,11 +372,11 @@ template<class T> class TreeModel : public ItemModel
     { return root_; }
 
     //! add
-    void _add( Set values )
+    void _add( List values )
     {
 
         Debug::Throw( "TreeModel::add.\n" );
-        for( typename Set::iterator iter = values.begin(); iter != values.end(); ++iter )
+        for( typename List::iterator iter = values.begin(); iter != values.end(); ++iter )
         { root_.add( *iter ); }
         Debug::Throw( "TreeModel::add - done.\n" );
 
@@ -394,27 +386,27 @@ template<class T> class TreeModel : public ItemModel
     const Item& _find( typename Item::Id id ) const
     {
         typename Item::Map::const_iterator iter( map_.find( id ) );
-        return iter == map_.end() ? root_:*iter->second;
+        return iter == map_.end() ? root_:*iter.value();
     }
 
     //! remove, without update
-    void _remove( Item& parent, Set& values )
+    void _remove( Item& parent, List& values )
     {
 
         // remove children that are found in list, and remove from list
         for( unsigned int row = 0; row < parent.childCount(); )
         {
-            typename Set::iterator found( values.find( parent.child(row).get() ) );
-            if( found != values.end() )
+            int found( values.indexOf( parent.child(row).get() ) );
+            if( found >= 0 )
             {
                 parent.remove( row );
-                values.erase( found );
+                values.remove( found );
             } else row++;
 
         }
 
         // do the same starting from children, if there are remaining items to remove
-        if( !values.empty() )
+        if( !values.isEmpty() )
         {
             for( unsigned int row = 0; row < parent.childCount(); row++ )
             { _remove( parent.child(row), values ); }
@@ -429,7 +421,7 @@ template<class T> class TreeModel : public ItemModel
         List children( TreeModel::children() );
         map_.clear();
         root_ = Item( map_ );
-        _add( Set( children.begin(), children.end() ) );
+        _add( children );
         _sort();
     }
 

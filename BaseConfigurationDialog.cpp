@@ -566,9 +566,9 @@ void BaseConfigurationDialog::_restoreDefaults( void )
 
     // list options that have no default values
     const Options::Map& options( XmlOptions::get().options() );
-    OptionModel::Set local;
+    OptionModel::List local;
     for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); ++iter )
-    { if( iter.value().defaultValue().isEmpty() ) local.insert( OptionPair( iter.key(), iter.value() ) ); }
+    { if( iter.value().defaultValue().isEmpty() ) local.push_back( OptionPair( iter.key(), iter.value() ) ); }
 
     QuestionDialog dialog( this );
     dialog.setOptionName( "RESTORE_DEFAULT_DIALOG" );

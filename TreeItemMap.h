@@ -24,9 +24,9 @@
 *
 *******************************************************************************/
 
+#include <QtCore/QVector>
+#include <QtCore/QList>
 #include <cassert>
-#include <vector>
-#include <list>
 
 //! used to wrap object T into tree structure
 template<class T> class TreeItemMap
@@ -97,10 +97,10 @@ template<class T> class TreeItemMap
     private:
 
     //! vector of stored items
-    std::vector<T*> items_;
+    QVector<T*> items_;
 
     //! list of empty slots
-    std::list<unsigned int> slots_;
+    QList<unsigned int> slots_;
 
 };
 
