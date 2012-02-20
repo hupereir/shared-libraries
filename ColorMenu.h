@@ -32,6 +32,7 @@
 #include <QtGui/QPixmap>
 #include <QtCore/QSet>
 #include <QtCore/QHash>
+#include <QtCore/QMap>
 
 //! Color selection menu
 class ColorMenu: public QMenu, public Counter
@@ -96,7 +97,7 @@ class ColorMenu: public QMenu, public Counter
     void _add( const QColor& );
 
     //! map colors to display pixmap
-    typedef QHash<QString, QBrush> ColorMap;
+    typedef QMap<QString, QBrush> ColorMap;
 
     //! list of loaded colors
     ColorMap colors_;

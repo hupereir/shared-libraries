@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file ToolButtonStyleMenu.cpp
-\brief provides tool button style selection menu
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Debug.h"
 #include "ToolButtonStyleMenu.h"
 
@@ -45,15 +37,13 @@ Counter( "ToolButtonStyleMenu" )
     connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
 
     // install values
-    typedef std::list< std::pair<QString, Qt::ToolButtonStyle > > List;
-    static List actionNames;
-    if( actionNames.empty() )
-    {
-        actionNames.push_back( std::make_pair( "&Icons Only", Qt::ToolButtonIconOnly ) );
-        actionNames.push_back( std::make_pair( "&Text Only", Qt::ToolButtonTextOnly ) );
-        actionNames.push_back( std::make_pair( "Text &Alongside icons", Qt::ToolButtonTextBesideIcon ) );
-        actionNames.push_back( std::make_pair( "Text &Under icons", Qt::ToolButtonTextUnderIcon ) );
-    }
+    typedef QList< QPair<QString, Qt::ToolButtonStyle > > List;
+    List actionNames;
+    actionNames
+        << QPair<QString, Qt::ToolButtonStyle >( "&Icons Only", Qt::ToolButtonIconOnly )
+        << QPair<QString, Qt::ToolButtonStyle >( "&Text Only", Qt::ToolButtonTextOnly )
+        << QPair<QString, Qt::ToolButtonStyle >( "Text &Alongside icons", Qt::ToolButtonTextBesideIcon )
+        << QPair<QString, Qt::ToolButtonStyle >( "Text &Under icons", Qt::ToolButtonTextUnderIcon );
 
     // generic action
     for( List::const_iterator iter = actionNames.begin(); iter != actionNames.end(); ++iter )
@@ -61,7 +51,7 @@ Counter( "ToolButtonStyleMenu" )
         QAction* action = new QAction( iter->first, this );
         addAction( action );
         action->setCheckable( true );
-        actions_.insert( std::make_pair( action, iter->second ) );
+        actions_.insert( action, iter->second );
         group->addAction( action );
     }
 
@@ -74,9 +64,9 @@ void ToolButtonStyleMenu::select( Qt::ToolButtonStyle size )
     Debug::Throw( "ToolButtonStyleMenu::select.\n" );
     for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
-        if( iter->second == size )
+        if( iter.value() == size )
         {
-            iter->first->setChecked( true );
+            iter.key()->setChecked( true );
             return;
         }
     }
@@ -93,6 +83,6 @@ void ToolButtonStyleMenu::_selected( QAction* action )
     // find matching actions
     ActionMap::const_iterator iter = actions_.find( action );
     assert( iter != actions_.end() );
-    emit styleSelected( iter->second );
+    emit styleSelected( iter.value() );
 
 }

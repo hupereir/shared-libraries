@@ -94,10 +94,10 @@ void RecentFilesMenu::_updateActions( void )
         FileRecord::List::const_iterator found = std::find_if(
             records.begin(),
             records.end(),
-            FileRecord::SameFileFTor( iter->second.file() ) );
+            FileRecord::SameFileFTor( iter.value().file() ) );
         if( found == records.end() ) continue;
-        iter->second.setValid( found->isValid() );
-        iter->first->setEnabled( found->isValid() );
+        iter.value().setValid( found->isValid() );
+        iter.key()->setEnabled( found->isValid() );
 
     }
 
@@ -122,7 +122,7 @@ void RecentFilesMenu::_open( QAction* action )
     // find Action in map
     ActionMap::iterator iter( actions_.find( action ) );
     if( iter == actions_.end() ) return;
-    emit fileSelected( iter->second );
+    emit fileSelected( iter.value() );
 
 }
 
@@ -136,7 +136,7 @@ void RecentFilesMenu::_loadFiles( void )
 
     // clear menu an actions map
     for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
-    { delete iter->first; }
+    { delete iter.key(); }
     actions_.clear();
 
     // redo all actions
@@ -160,7 +160,7 @@ void RecentFilesMenu::_loadFiles( void )
         actionGroup_->addAction( action );
 
         if( _fileList().check() ) action->setEnabled( iter->file().size() && iter->isValid() );
-        actions_.insert( std::make_pair( action, *iter ) );
+        actions_.insert( action, *iter );
     }
 
 }

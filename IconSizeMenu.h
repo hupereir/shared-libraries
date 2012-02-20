@@ -38,10 +38,10 @@ class IconSizeMenu: public QMenu, public Counter
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        IconSizeMenu( QWidget* parent = 0 );
+    //! constructor
+    IconSizeMenu( QWidget* parent = 0 );
 
     //! select size
     void select( IconSize::Size );

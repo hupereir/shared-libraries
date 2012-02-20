@@ -26,7 +26,7 @@
 
 #include <QtGui/QWidget>
 #include <QtCore/QSize>
-#include <QtCore/QHash>
+#include <QtCore/QMap>
 
 //! default icon sizes
 class IconSize: public QSize
@@ -53,7 +53,7 @@ class IconSize: public QSize
     IconSize( Size size );
 
     //! map text to icon size
-    typedef QHash<Size, QString> Map;
+    typedef QMap<Size, QString> Map;
 
     //! text to icon size
     static Map& map( void );

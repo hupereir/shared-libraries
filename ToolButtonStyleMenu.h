@@ -24,19 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file ToolButtonStyleMenu.h
-\brief provides tool button style selection menu
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Counter.h"
 #include "Debug.h"
 
 #include <QtGui/QMenu>
-#include <map>
+#include <QtCore/QMap>
 
 //! provides tool button style selection menu
 class ToolButtonStyleMenu: public QMenu, public Counter
@@ -65,7 +57,7 @@ class ToolButtonStyleMenu: public QMenu, public Counter
     private:
 
     //! action map
-    typedef std::map< QAction*, Qt::ToolButtonStyle > ActionMap;
+    typedef QMap< QAction*, Qt::ToolButtonStyle > ActionMap;
 
     //! toolbar text action map
     ActionMap actions_;

@@ -71,8 +71,8 @@ bool X11Util::isSupported( const Atoms& atom )
     SupportedAtomMap::const_iterator iter( _supportedAtoms().find( atom ) );
     if( iter != _supportedAtoms().end() )
     {
-        Debug::Throw() << "X11Util::isSupported - " << atomNames_[atom] << (iter->second ? " true ":" false ") << endl;
-        return iter->second;
+        Debug::Throw() << "X11Util::isSupported - " << atomNames_[atom] << (iter.value() ? " true ":" false ") << endl;
+        return iter.value();
     }
 
     Display* display( QX11Info::display() );
@@ -605,7 +605,7 @@ Atom X11Util::findAtom( const Atoms& atom )
 
     // find atom in map
     AtomMap::iterator iter( _atoms().find( atom ) );
-    if( iter != _atoms().end() ) return iter->second;
+    if( iter != _atoms().end() ) return iter.value();
 
     // create atom if not found
     Display* display( QX11Info::display() );

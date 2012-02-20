@@ -31,7 +31,7 @@
 #include <QtGui/QHideEvent>
 #include <QtGui/QShowEvent>
 #include <QtGui/QToolBar>
-#include <QtCore/QHash>
+#include <QtCore/QMap>
 
 
 //! customized tool bar to handle position and visibility from Options
@@ -49,7 +49,7 @@ class CustomToolBar: public QToolBar, public Counter
     virtual ~CustomToolBar( void );
 
     // map toolbar area and name
-    typedef QHash< QString, Qt::ToolBarArea> AreaMap;
+    typedef QMap< QString, Qt::ToolBarArea> AreaMap;
 
     //! get area from name
     static Qt::ToolBarArea nameToArea( const QString& name )

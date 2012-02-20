@@ -29,7 +29,7 @@
 #include "FileList.h"
 
 #include <QtGui/QMenu>
-#include <list>
+#include <QtCore/QHash>
 
 /*!
 \class   RecentFilesMenu
@@ -130,7 +130,7 @@ class RecentFilesMenu: public QMenu, public Counter
     QAction* cleanAction_;
 
     //! map actions to file recors
-    typedef std::map<QAction*, FileRecord> ActionMap;
+    typedef QHash<QAction*, FileRecord> ActionMap;
 
     //! map actions to FileRecords
     ActionMap actions_;
