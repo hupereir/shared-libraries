@@ -50,45 +50,70 @@ QT_BEGIN_NAMESPACE
 
 QT_MODULE(Core)
 
+struct QOrderedSetDummyValue
+{};
+
 template <class T>
 class QOrderedSet
 {
-    typedef QMap<T, QHashDummyValue> Map;
+    typedef QMap<T, QOrderedSetDummyValue> Map;
 
 public:
-    inline QOrderedSet() {}
-    inline QOrderedSet(const QOrderedSet<T> &other) : q_map(other.q_map) {}
+    inline QOrderedSet()
+    {}
+
+    inline QOrderedSet(const QOrderedSet<T> &other) :
+        q_map(other.q_map)
+        {}
 
     inline QOrderedSet<T> &operator=(const QOrderedSet<T> &other)
-        { q_map = other.q_map; return *this; }
-#ifdef Q_COMPILER_RVALUE_REFS
+    { q_map = other.q_map; return *this; }
+
+    #ifdef Q_COMPILER_RVALUE_REFS
     inline QOrderedSet<T> &operator=(QOrderedSet<T> &&other)
-        { qSwap(q_map, other.q_map); return *this; }
-#endif
-    inline void swap(QOrderedSet<T> &other) { q_map.swap(other.q_map); }
+    { qSwap(q_map, other.q_map); return *this; }
+    #endif
+
+    inline void swap(QOrderedSet<T> &other)
+    { q_map.swap(other.q_map); }
 
     inline bool operator==(const QOrderedSet<T> &other) const
-        { return q_map == other.q_map; }
+    { return q_map == other.q_map; }
+
     inline bool operator!=(const QOrderedSet<T> &other) const
-        { return q_map != other.q_map; }
+    { return q_map != other.q_map; }
 
-    inline int size() const { return q_map.size(); }
+    inline int size() const
+    { return q_map.size(); }
 
-    inline bool isEmpty() const { return q_map.isEmpty(); }
+    inline bool isEmpty() const
+    { return q_map.isEmpty(); }
 
-    inline int capacity() const { return q_map.capacity(); }
+    inline int capacity() const
+    { return q_map.capacity(); }
+
     inline void reserve(int size);
-    inline void squeeze() { q_map.squeeze(); }
 
-    inline void detach() { q_map.detach(); }
-    inline bool isDetached() const { return q_map.isDetached(); }
-    inline void setSharable(bool sharable) { q_map.setSharable(sharable); }
+    inline void squeeze()
+    { q_map.squeeze(); }
 
-    inline void clear() { q_map.clear(); }
+    inline void detach()
+    { q_map.detach(); }
 
-    inline bool remove(const T &value) { return q_map.remove(value) != 0; }
+    inline bool isDetached() const
+    { return q_map.isDetached(); }
 
-    inline bool contains(const T &value) const { return q_map.contains(value); }
+    inline void setSharable(bool sharable)
+    { q_map.setSharable(sharable); }
+
+    inline void clear()
+    { q_map.clear(); }
+
+    inline bool remove(const T &value)
+    { return q_map.remove(value) != 0; }
+
+    inline bool contains(const T &value) const
+    { return q_map.contains(value); }
 
     bool contains(const QOrderedSet<T> &set) const;
 
@@ -96,7 +121,7 @@ public:
 
     class iterator
     {
-        typedef QMap<T, QHashDummyValue> Map;
+        typedef QMap<T, QOrderedSetDummyValue> Map;
         typename Map::iterator i;
         friend class const_iterator;
 
@@ -107,31 +132,65 @@ public:
         typedef const T *pointer;
         typedef const T &reference;
 
-        inline iterator() {}
-        inline iterator(typename Map::iterator o) : i(o) {}
-        inline iterator(const iterator &o) : i(o.i) {}
-        inline iterator &operator=(const iterator &o) { i = o.i; return *this; }
-        inline const T &operator*() const { return i.key(); }
-        inline const T *operator->() const { return &i.key(); }
-        inline bool operator==(const iterator &o) const { return i == o.i; }
-        inline bool operator!=(const iterator &o) const { return i != o.i; }
+        inline iterator()
+        {}
+
+        inline iterator(typename Map::iterator o) : i(o)
+        {}
+
+        inline iterator(const iterator &o) : i(o.i)
+        {}
+
+        inline iterator &operator=(const iterator &o)
+        { i = o.i; return *this; }
+
+        inline const T &operator*() const
+        { return i.key(); }
+
+        inline const T *operator->() const
+        { return &i.key(); }
+
+        inline bool operator==(const iterator &o) const
+        { return i == o.i; }
+
+        inline bool operator!=(const iterator &o) const
+        { return i != o.i; }
+
         inline bool operator==(const const_iterator &o) const
-            { return i == o.i; }
+        { return i == o.i; }
+
         inline bool operator!=(const const_iterator &o) const
-            { return i != o.i; }
-        inline iterator &operator++() { ++i; return *this; }
-        inline iterator operator++(int) { iterator r = *this; ++i; return r; }
-        inline iterator &operator--() { --i; return *this; }
-        inline iterator operator--(int) { iterator r = *this; --i; return r; }
-        inline iterator operator+(int j) const { return i + j; }
-        inline iterator operator-(int j) const { return i - j; }
-        inline iterator &operator+=(int j) { i += j; return *this; }
-        inline iterator &operator-=(int j) { i -= j; return *this; }
+        { return i != o.i; }
+
+        inline iterator &operator++()
+        { ++i; return *this; }
+
+        inline iterator operator++(int)
+        { iterator r = *this; ++i; return r; }
+
+        inline iterator &operator--()
+        { --i; return *this; }
+
+        inline iterator operator--(int)
+        { iterator r = *this; --i; return r; }
+
+        inline iterator operator+(int j) const
+        { return i + j; }
+
+        inline iterator operator-(int j) const
+        { return i - j; }
+
+        inline iterator &operator+=(int j)
+        { i += j; return *this; }
+
+        inline iterator &operator-=(int j)
+        { i -= j; return *this; }
+
     };
 
     class const_iterator
     {
-        typedef QMap<T, QHashDummyValue> Map;
+        typedef QMap<T, QOrderedSetDummyValue> Map;
         typename Map::const_iterator i;
         friend class iterator;
 
@@ -143,47 +202,102 @@ public:
         typedef const T &reference;
 
         inline const_iterator() {}
-        inline const_iterator(typename Map::const_iterator o) : i(o) {}
-        inline const_iterator(const const_iterator &o) : i(o.i) {}
-        inline const_iterator(const iterator &o)
-            : i(o.i) {}
-        inline const_iterator &operator=(const const_iterator &o) { i = o.i; return *this; }
-        inline const T &operator*() const { return i.key(); }
-        inline const T *operator->() const { return &i.key(); }
-        inline bool operator==(const const_iterator &o) const { return i == o.i; }
-        inline bool operator!=(const const_iterator &o) const { return i != o.i; }
-        inline const_iterator &operator++() { ++i; return *this; }
-        inline const_iterator operator++(int) { const_iterator r = *this; ++i; return r; }
-        inline const_iterator &operator--() { --i; return *this; }
-        inline const_iterator operator--(int) { const_iterator r = *this; --i; return r; }
-        inline const_iterator operator+(int j) const { return i + j; }
-        inline const_iterator operator-(int j) const { return i - j; }
-        inline const_iterator &operator+=(int j) { i += j; return *this; }
-        inline const_iterator &operator-=(int j) { i -= j; return *this; }
+        inline const_iterator(typename Map::const_iterator o):
+            i(o)
+        {}
+        inline const_iterator(const const_iterator &o):
+            i(o.i)
+        {}
+
+        inline const_iterator(const iterator &o):
+            i(o.i)
+            {}
+
+        inline const_iterator &operator=(const const_iterator &o)
+        { i = o.i; return *this; }
+
+        inline const T &operator*() const
+        { return i.key(); }
+
+        inline const T *operator->() const
+        { return &i.key(); }
+
+        inline bool operator==(const const_iterator &o) const
+        { return i == o.i; }
+
+        inline bool operator!=(const const_iterator &o) const
+        { return i != o.i; }
+
+        inline const_iterator &operator++()
+        { ++i; return *this; }
+
+        inline const_iterator operator++(int)
+        { const_iterator r = *this; ++i; return r; }
+
+        inline const_iterator &operator--()
+        { --i; return *this; }
+
+        inline const_iterator operator--(int)
+        { const_iterator r = *this; --i; return r; }
+
+        inline const_iterator operator+(int j) const
+        { return i + j; }
+
+        inline const_iterator operator-(int j) const
+        { return i - j; }
+
+        inline const_iterator &operator+=(int j)
+        { i += j; return *this; }
+
+        inline const_iterator &operator-=(int j)
+        { i -= j; return *this; }
     };
 
     // STL style
-    inline iterator begin() { return q_map.begin(); }
-    inline const_iterator begin() const { return q_map.begin(); }
-    inline const_iterator constBegin() const { return q_map.constBegin(); }
-    inline iterator end() { return q_map.end(); }
-    inline const_iterator end() const { return q_map.end(); }
-    inline const_iterator constEnd() const { return q_map.constEnd(); }
+    inline iterator begin()
+    { return q_map.begin(); }
+
+    inline const_iterator begin() const
+    { return q_map.begin(); }
+
+    inline const_iterator constBegin() const
+    { return q_map.constBegin(); }
+
+    inline iterator end()
+    { return q_map.end(); }
+
+    inline const_iterator end() const
+    { return q_map.end(); }
+
+    inline const_iterator constEnd() const
+    { return q_map.constEnd(); }
+
     iterator erase(iterator i)
-        { return q_map.erase(reinterpret_cast<typename Map::iterator &>(i)); }
+    { return q_map.erase(reinterpret_cast<typename Map::iterator &>(i)); }
 
     // more Qt
     typedef iterator Iterator;
     typedef const_iterator ConstIterator;
-    inline int count() const { return q_map.count(); }
+
+    inline int count() const
+    { return q_map.count(); }
+
     inline const_iterator insert(const T &value) // ### Qt 5: should return an 'iterator'
-        { return static_cast<typename Map::const_iterator>(q_map.insert(value,
-                                                                          QHashDummyValue())); }
-    iterator find(const T &value) { return q_map.find(value); }
-    const_iterator find(const T &value) const { return q_map.find(value); }
-    inline const_iterator constFind(const T &value) const { return find(value); }
+    { return static_cast<typename Map::const_iterator>(q_map.insert(value, QOrderedSetDummyValue())); }
+
+    iterator find(const T &value)
+    { return q_map.find(value); }
+
+    const_iterator find(const T &value) const
+    { return q_map.find(value); }
+
+    inline const_iterator constFind(const T &value) const
+    { return find(value); }
+
     QOrderedSet<T> &unite(const QOrderedSet<T> &other);
+
     QOrderedSet<T> &intersect(const QOrderedSet<T> &other);
+
     QOrderedSet<T> &subtract(const QOrderedSet<T> &other);
 
     // STL compatibility
@@ -196,36 +310,62 @@ public:
     typedef qptrdiff difference_type;
     typedef int size_type;
 
-    inline bool empty() const { return isEmpty(); }
+    inline bool empty() const
+    { return isEmpty(); }
+
     // comfort
-    inline QOrderedSet<T> &operator<<(const T &value) { insert(value); return *this; }
-    inline QOrderedSet<T> &operator|=(const QOrderedSet<T> &other) { unite(other); return *this; }
-    inline QOrderedSet<T> &operator|=(const T &value) { insert(value); return *this; }
-    inline QOrderedSet<T> &operator&=(const QOrderedSet<T> &other) { intersect(other); return *this; }
+    inline QOrderedSet<T> &operator<<(const T &value)
+    { insert(value); return *this; }
+
+    inline QOrderedSet<T> &operator|=(const QOrderedSet<T> &other)
+    { unite(other); return *this; }
+
+    inline QOrderedSet<T> &operator|=(const T &value)
+    { insert(value); return *this; }
+
+    inline QOrderedSet<T> &operator&=(const QOrderedSet<T> &other)
+    { intersect(other); return *this; }
+
     inline QOrderedSet<T> &operator&=(const T &value)
-        { QOrderedSet<T> result; if (contains(value)) result.insert(value); return (*this = result); }
-    inline QOrderedSet<T> &operator+=(const QOrderedSet<T> &other) { unite(other); return *this; }
-    inline QOrderedSet<T> &operator+=(const T &value) { insert(value); return *this; }
-    inline QOrderedSet<T> &operator-=(const QOrderedSet<T> &other) { subtract(other); return *this; }
-    inline QOrderedSet<T> &operator-=(const T &value) { remove(value); return *this; }
+    { QOrderedSet<T> result; if (contains(value)) result.insert(value); return (*this = result); }
+
+    inline QOrderedSet<T> &operator+=(const QOrderedSet<T> &other)
+    { unite(other); return *this; }
+
+    inline QOrderedSet<T> &operator+=(const T &value)
+    { insert(value); return *this; }
+
+    inline QOrderedSet<T> &operator-=(const QOrderedSet<T> &other)
+    { subtract(other); return *this; }
+
+    inline QOrderedSet<T> &operator-=(const T &value)
+    { remove(value); return *this; }
+
     inline QOrderedSet<T> operator|(const QOrderedSet<T> &other) const
-        { QOrderedSet<T> result = *this; result |= other; return result; }
+    { QOrderedSet<T> result = *this; result |= other; return result; }
+
     inline QOrderedSet<T> operator&(const QOrderedSet<T> &other) const
-        { QOrderedSet<T> result = *this; result &= other; return result; }
+    { QOrderedSet<T> result = *this; result &= other; return result; }
+
     inline QOrderedSet<T> operator+(const QOrderedSet<T> &other) const
-        { QOrderedSet<T> result = *this; result += other; return result; }
+    { QOrderedSet<T> result = *this; result += other; return result; }
+
     inline QOrderedSet<T> operator-(const QOrderedSet<T> &other) const
-        { QOrderedSet<T> result = *this; result -= other; return result; }
-#if QT_VERSION < 0x050000
+    { QOrderedSet<T> result = *this; result -= other; return result; }
+
+    #if QT_VERSION < 0x050000
     // ### Qt 5: remove
     inline QOrderedSet<T> operator|(const QOrderedSet<T> &other)
-        { QOrderedSet<T> result = *this; result |= other; return result; }
+    { QOrderedSet<T> result = *this; result |= other; return result; }
+
     inline QOrderedSet<T> operator&(const QOrderedSet<T> &other)
-        { QOrderedSet<T> result = *this; result &= other; return result; }
+    { QOrderedSet<T> result = *this; result &= other; return result; }
+
     inline QOrderedSet<T> operator+(const QOrderedSet<T> &other)
-        { QOrderedSet<T> result = *this; result += other; return result; }
+    { QOrderedSet<T> result = *this; result += other; return result; }
+
     inline QOrderedSet<T> operator-(const QOrderedSet<T> &other)
-        { QOrderedSet<T> result = *this; result -= other; return result; }
+    { QOrderedSet<T> result = *this; result -= other; return result; }
 #endif
 
     QList<T> toList() const;
@@ -308,7 +448,11 @@ Q_OUTOFLINE_TEMPLATE QList<T> QOrderedSet<T>::toList() const
 template <typename T>
 QOrderedSet<T> QOrderedSet<T>::fromList(const QList<T> &list)
 {
-    return list.toSet();
+    QOrderedSet<T> out;
+    foreach( const T& t, list )
+    { out.insert( t ); }
+
+    return out;
 }
 
 Q_DECLARE_SEQUENTIAL_ITERATOR(OrderedSet)
