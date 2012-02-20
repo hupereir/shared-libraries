@@ -24,19 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file    ListModel.h
-\brief   templatized list model
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
+#include "ItemModel.h"
 
+#include <QtCore/QList>
 #include <algorithm>
 #include <set>
-#include <vector>
-
-#include "ItemModel.h"
 
 //! Job model. Stores job information for display in lists
 template<typename T, typename EqualTo = std::equal_to<T>, typename LessThan = std::less<T> >
@@ -55,11 +47,8 @@ class ListModel : public ItemModel
     typedef T* Pointer;
 
     //! value list
-    typedef std::vector<ValueType> List;
-
-    //! value set
-    /*! TODO: is it really necessary */
-    typedef std::set<ValueType, LessThan> Set;
+    typedef QList<ValueType> List;
+    typedef QListIterator<ValueType> ListIterator;
 
     //! constructor
     ListModel(QObject *parent = 0):
@@ -124,7 +113,7 @@ class ListModel : public ItemModel
     {
 
         QModelIndexList out;
-        for( typename List::const_iterator iter = selection_.begin(); iter != selection_.end(); iter++ )
+        for( typename List::const_iterator iter = selection_.begin(); iter != selection_.end(); ++iter )
         {
             QModelIndex index( ListModel::index( *iter ) );
             if( index.isValid() ) out.push_back( index );
@@ -159,41 +148,13 @@ class ListModel : public ItemModel
 
         emit layoutAboutToBeChanged();
 
-        for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
+        for( typename List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
         { _add( *iter ); }
 
         _sort();
         emit layoutChanged();
 
     }
-
-
-    //! add values
-    /*! this method uses a Set to add the values. It speeds up the updating of existing values */
-    virtual void add( Set values )
-    {
-
-        emit layoutAboutToBeChanged();
-
-        for( typename List::iterator iter = values_.begin(); iter != values_.end(); iter++ )
-        {
-            // see if current iterator is found in values set
-            typename Set::iterator found_iter( values.find( *iter ) );
-            if( found_iter != values.end() )
-            {
-                *iter = *found_iter;
-                values.erase( found_iter );
-            }
-        }
-
-        // insert remaining values at the end
-        values_.insert( values_.end(), values.begin(), values.end() );
-
-        _sort();
-        emit layoutChanged();
-
-    }
-
 
     //! insert values
     virtual void insert( const QModelIndex& index, const ValueType& value )
@@ -209,8 +170,11 @@ class ListModel : public ItemModel
         emit layoutAboutToBeChanged();
 
         // need to loop in reverse order so that the "values" ordering is preserved
-        for( typename List::const_reverse_iterator iter = values.rbegin(); iter != values.rend(); iter++ )
-            _insert( index, *iter );
+        ListIterator iter( values );
+        iter.toBack();
+        while( iter.hasPrevious() )
+        { _insert( index, iter.previous() ); }
+
         emit layoutChanged();
     }
 
@@ -247,7 +211,7 @@ class ListModel : public ItemModel
         if( values.empty() ) return;
 
         emit layoutAboutToBeChanged();
-        for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
+        for( typename List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
         { _remove( *iter ); }
         emit layoutChanged();
         return;
@@ -273,7 +237,7 @@ class ListModel : public ItemModel
         List removed_values;
 
         // update values that are common to both lists
-        for( typename List::iterator iter = values_.begin(); iter != values_.end(); iter++ )
+        for( typename List::iterator iter = values_.begin(); iter != values_.end(); ++iter )
         {
 
             // see if iterator is in list
@@ -287,11 +251,11 @@ class ListModel : public ItemModel
         }
 
         // remove values that have not been found in new list
-        for( typename List::const_iterator iter = removed_values.begin(); iter != removed_values.end(); iter++ )
+        for( typename List::const_iterator iter = removed_values.begin(); iter != removed_values.end(); ++iter )
         { _remove( *iter ); }
 
         // add remaining values
-        for( typename List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
+        for( typename List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
         { _add( *iter ); }
 
         _sort();
@@ -324,7 +288,7 @@ class ListModel : public ItemModel
     List get( const QModelIndexList& indexes ) const
     {
         List out;
-        for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); iter++ )
+        for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); ++iter )
         { if( iter->isValid() && iter->row() < int(values_.size()) ) out.push_back( get( *iter ) ); }
         return out;
     }
@@ -332,7 +296,7 @@ class ListModel : public ItemModel
     //! return index associated to a given value
     virtual QModelIndex index( const ValueType& value, int column = 0 ) const
     {
-        for( unsigned int row=0; row<values_.size(); row++ )
+        for( int row=0; row<values_.size(); ++row )
         { if( EqualTo()(value, values_[row]) ) return index( row, column ); }
         return QModelIndex();
     }
@@ -359,7 +323,7 @@ class ListModel : public ItemModel
         if( !index.isValid() ) add( value );
         int row = 0;
         typename List::iterator iter( values_.begin() );
-        for( ;iter != values_.end() && row != index.row(); iter++, row++ ){}
+        for( ;iter != values_.end() && row != index.row(); ++iter, ++row ){}
         values_.insert( iter, value );
     }
 

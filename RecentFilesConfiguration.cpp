@@ -193,7 +193,7 @@ void RecentFilesConfiguration::_remove( void )
 
     // records
     FileRecordModel::List records( _model().get() );
-    _cleanButton().setEnabled( find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) != records.end() );
+    _cleanButton().setEnabled( std::find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) != records.end() );
 
 }
 
@@ -205,7 +205,7 @@ void RecentFilesConfiguration::_clean( void )
     // remove invalid files
     FileRecordModel::List records( _model().get() );
     records.erase(
-        remove_if( records.begin(), records.end(), FileRecord::InvalidFTor() ),
+        std::remove_if( records.begin(), records.end(), FileRecord::InvalidFTor() ),
         records.end() );
 
     _model().set( records );

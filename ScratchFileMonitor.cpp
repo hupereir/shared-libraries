@@ -57,8 +57,10 @@ void ScratchFileMonitor::deleteScratchFiles( void )
 
     // convert back to std::set
     FileSet temp;
-    for( FileRecordModel::List::const_reverse_iterator iter = records.rbegin(); iter != records.rend(); ++iter )
-    { temp.insert( iter->file() ); }
+    FileRecordModel::ListIterator iter( records );
+    iter.toBack();
+    while( iter.hasPrevious() )
+    { temp.insert( iter.previous().file() ); }
 
     // re-add directories
     for( FileSet::const_iterator iter = files_.begin(); iter != files_.end(); iter++ )
