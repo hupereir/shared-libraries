@@ -69,7 +69,7 @@ namespace SVG
             QImage image( iter->size(), QImage::Format_ARGB32_Premultiplied );
             image.fill( Qt::transparent );
             svg_.render( image, svgOffset_, iter->id() );
-            cache.insert( std::make_pair( *iter, image ) );
+            cache.insert( *iter, image );
 
         }
 

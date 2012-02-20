@@ -87,7 +87,7 @@ namespace SVG
             svgOffset_ = svg_offset;
             SvgId::List svg_id_list;
             for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
-            { svg_id_list.push_back( iter->first ); }
+            { svg_id_list.push_back( iter.key() ); }
 
             cache_.clear();
             preload( svg_id_list );
@@ -125,7 +125,7 @@ namespace SVG
         if( !svg_event ) return QObject::customEvent( event );
 
         for( ImageCache::const_iterator iter = svg_event->cache().begin(); iter != svg_event->cache().end(); ++iter )
-        { cache_.insert( std::make_pair( iter->first, QPixmap::fromImage( iter->second ) ) ); }
+        { cache_.insert( iter.key(), QPixmap::fromImage( iter.value() ) ); }
 
     }
 
@@ -134,14 +134,14 @@ namespace SVG
     {
 
         PixmapCache::iterator iter( cache_.find( id ) );
-        if( iter != cache_.end() ) return iter->second;
+        if( iter != cache_.end() ) return iter.value();
 
         // add to map
         QPixmap pixmap( id.size() );
         pixmap.fill( Qt::transparent );
         svg_.render( pixmap, svgOffset_, id.id() );
 
-        return cache_.insert( std::make_pair( id, pixmap ) ).first->second;
+        return cache_.insert( id, pixmap ).value();
 
     }
 

@@ -1,4 +1,3 @@
-
 #ifndef Svg_h
 #define Svg_h
 
@@ -25,27 +24,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file    Svg.h
-\brief   Icon filenames
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-
-#include <QString>
-#include <QPixmap>
-#include <QImage>
-#include <map>
-
 #include "SvgId.h"
 
-/*
-BaseSvg is not necessary here
-but it is included to avoid conflicts
-between icons wrapping names
-*/
+#include <QtCore/QString>
+#include <QtCore/QMap>
+#include <QtGui/QPixmap>
+#include <QtGui/QImage>
 
 //! namespace for icon static name wrappers
 namespace SVG
@@ -69,8 +53,8 @@ namespace SVG
     static const QString MarginBottom="hint-bottom-margin";
 
     //! map size and pixmap
-    typedef std::map< SvgId, QPixmap > PixmapCache;
-    typedef std::map< SvgId, QImage > ImageCache;
+    typedef QMap< SvgId, QPixmap > PixmapCache;
+    typedef QMap< SvgId, QImage > ImageCache;
 
 };
 
