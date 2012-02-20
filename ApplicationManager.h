@@ -32,24 +32,24 @@
    \date    $Date$
 */
 
-#include <cassert>
-#include <QBasicTimer>
-#include <QObject>
-#include <QTcpServer>
-#include <QTimerEvent>
-
-
-#include <list>
-#include <map>
-
-
-#include <QHostAddress>
 
 #include "Client.h"
 #include "CommandLineArguments.h"
 #include "CommandLineParser.h"
 #include "Counter.h"
 #include "ServerCommand.h"
+
+#include <QtCore/QBasicTimer>
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QPair>
+#include <QtCore/QTimerEvent>
+
+#include <QtNetwork/QTcpServer>
+#include <QtNetwork/QHostAddress>
+
+#include <cassert>
 
 namespace SERVER
 {
@@ -145,13 +145,13 @@ namespace SERVER
     }
 
     //! pair of application id and client
-    typedef std::pair< ApplicationId, Client* > ClientPair;
+    typedef QPair< ApplicationId, Client* > ClientPair;
 
     //! map of clients
-    typedef std::map< ApplicationId, Client* > ClientMap;
+    typedef QMap< ApplicationId, Client* > ClientMap;
 
     //! list of clients
-    typedef std::list< Client* > ClientList;
+    typedef QList< Client* > ClientList;
 
     //! used to retrieve clients for a given state
     class SameStateFTor: public Client::SameStateFTor

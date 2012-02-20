@@ -42,10 +42,8 @@
 #include <QtXml/QDomElement>
 #include <QtXml/QDomDocument>
 #include <QtCore/QString>
+#include <QtCore/QHash>
 #include <QtCore/QTextStream>
-
-#include <list>
-#include <map>
 
 namespace SERVER
 {
@@ -122,12 +120,12 @@ namespace SERVER
 
     //! client id
     const unsigned int& clientId( void ) const
-    { return client_id_; }
+    { return clientId_; }
 
     //! client id
     ServerCommand& setClientId( unsigned int value )
     {
-      client_id_ = value;
+      clientId_ = value;
       return *this;
     }
 
@@ -179,7 +177,7 @@ namespace SERVER
     private:
 
     //! command names
-    typedef std::map<CommandType, QString > CommandMap;
+    typedef QHash<CommandType, QString > CommandMap;
 
     //! command names
     static CommandMap& _commandNames( void );
@@ -191,7 +189,7 @@ namespace SERVER
     TimeStamp timestamp_;
 
     //! client id
-    unsigned int client_id_;
+    unsigned int clientId_;
 
     //! application id
     ApplicationId id_;

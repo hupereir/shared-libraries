@@ -288,7 +288,7 @@ namespace SERVER
                 */
 
                 for( ClientMap::iterator it=accepted_clients_.begin(); it!=accepted_clients_.end(); it++ )
-                { sender->sendCommand( ServerCommand( it->first, ServerCommand::IDENTIFY ) ); }
+                { sender->sendCommand( ServerCommand( it.key(), ServerCommand::IDENTIFY ) ); }
 
                 // identify the server
                 sender->sendCommand( ServerCommand( id_, ServerCommand::IDENTIFY_SERVER ) );
@@ -349,11 +349,11 @@ namespace SERVER
         // look for disconnected clients in client map
         {
             ClientMap::iterator iter;
-            while( ( iter = find_if(  _acceptedClients().begin(), _acceptedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) )  ) != _acceptedClients().end() )
+            while( ( iter = std::find_if(  _acceptedClients().begin(), _acceptedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) )  ) != _acceptedClients().end() )
             {
 
                 // broadcast client as dead
-                _broadcast( ServerCommand( iter->first, ServerCommand::KILLED ), iter->second );
+                _broadcast( ServerCommand( iter.key(), ServerCommand::KILLED ), iter.value() );
 
                 // erase from map of accepted clients
                 _acceptedClients().erase( iter );
@@ -364,7 +364,7 @@ namespace SERVER
         // look for disconnected clients in connected clients list
         {
             ClientList::iterator iter;
-            while( ( iter = find_if( _connectedClients().begin(), _connectedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != _connectedClients().end() )
+            while( ( iter = std::find_if( _connectedClients().begin(), _connectedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != _connectedClients().end() )
             {
                 (*iter)->deleteLater();
                 _connectedClients().erase( iter );
@@ -415,7 +415,7 @@ namespace SERVER
 
         Debug::Throw( "Application::_redirect.\n" );
 
-        ClientList::iterator iter( find_if(  _connectedClients().begin(), _connectedClients().end(), Client::SameIdFTor( command.clientId() ) ) );
+        ClientList::iterator iter( std::find_if(  _connectedClients().begin(), _connectedClients().end(), Client::SameIdFTor( command.clientId() ) ) );
         assert( iter != _connectedClients().end() );
         _redirect( command, *iter );
 

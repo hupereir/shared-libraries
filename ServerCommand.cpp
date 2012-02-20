@@ -50,27 +50,27 @@ namespace SERVER
     void ServerCommand::_initializeCommandNames( void ) const
     {
         if( !_commandNames().empty() ) return;
-        _commandNames().insert( std::make_pair( NONE, "" ) );
-        _commandNames().insert( std::make_pair( ACCEPTED, "ACCEPTED" ) );
-        _commandNames().insert( std::make_pair( DENIED, "DENIED" ) );
-        _commandNames().insert( std::make_pair( ABORT, "ABORT" ) );
-        _commandNames().insert( std::make_pair( IDENTIFY, "IDENTIFY" ) );
-        _commandNames().insert( std::make_pair( IDENTIFY_SERVER, "SERVER" ) );
-        _commandNames().insert( std::make_pair( KILLED, "KILLED" ) );
-        _commandNames().insert( std::make_pair( RAISE, "RAISE" ) );
-        _commandNames().insert( std::make_pair( ALIVE, "ALIVE" ) );
-        _commandNames().insert( std::make_pair( REQUEST, "REQUEST" ) );
-        _commandNames().insert( std::make_pair( UNLOCK, "UNLOCK" ) );
-        _commandNames().insert( std::make_pair( GEOMETRY_REQUEST, "GEOMETRY_REQUEST" ) );
-        _commandNames().insert( std::make_pair( GEOMETRY, "GEOMETRY" ) );
-        _commandNames().insert( std::make_pair( OPTION, "OPTION" ) );
+        _commandNames().insert( NONE, "" );
+        _commandNames().insert( ACCEPTED, "ACCEPTED" );
+        _commandNames().insert( DENIED, "DENIED" );
+        _commandNames().insert( ABORT, "ABORT" );
+        _commandNames().insert( IDENTIFY, "IDENTIFY" );
+        _commandNames().insert( IDENTIFY_SERVER, "SERVER" );
+        _commandNames().insert( KILLED, "KILLED" );
+        _commandNames().insert( RAISE, "RAISE" );
+        _commandNames().insert( ALIVE, "ALIVE" );
+        _commandNames().insert( REQUEST, "REQUEST" );
+        _commandNames().insert( UNLOCK, "UNLOCK" );
+        _commandNames().insert( GEOMETRY_REQUEST, "GEOMETRY_REQUEST" );
+        _commandNames().insert( GEOMETRY, "GEOMETRY" );
+        _commandNames().insert( OPTION, "OPTION" );
     }
 
     //___________________________________________
     ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& command ):
         Counter( "ServerCommand" ),
         timestamp_( TimeStamp::now() ),
-        client_id_( 0 ),
+        clientId_( 0 ),
         id_( id ),
         command_( command ),
         option_( "", Option() )
@@ -80,7 +80,7 @@ namespace SERVER
     ServerCommand::ServerCommand( const QDomElement& element ):
         Counter( "ServerCommand" ),
         timestamp_( TimeStamp::now() ),
-        client_id_( 0 ),
+        clientId_( 0 ),
         command_( NONE ),
         option_( "", Option() )
     {
