@@ -61,7 +61,7 @@ namespace SPELLCHECK
         Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
 
         // retrieve list of suggestions
-        QVector<QString> suggestions( interface_.suggestions( word_ ) );
+        QStringList suggestions( interface_.suggestions( word_ ) );
         Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
 
         // add words

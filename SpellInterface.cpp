@@ -282,13 +282,13 @@ namespace SPELLCHECK
     }
 
     //____________________________________________________
-    QVector< QString > SpellInterface::suggestions( const QString& word ) const
+    QStringList SpellInterface::suggestions( const QString& word ) const
     {
 
         Debug::Throw( "SpellInterface::suggestions.\n" );
 
         // check spell checker
-        QVector<QString> out;
+        QStringList out;
         if( !spellChecker_ ) {
             Debug::Throw(0, "SpellInterface::suggestions - no spell checker" );
             return out;

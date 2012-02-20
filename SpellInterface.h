@@ -34,8 +34,9 @@
 
 #include "Counter.h"
 
-#include <QtCore/QVector>
 #include <QtCore/QSet>
+#include <QtCore/QStringList>
+
 #include <aspell.h>
 
 namespace SPELLCHECK
@@ -184,7 +185,7 @@ namespace SPELLCHECK
         bool nextWord( void );
 
         //! retrieve list of suggestions for current word
-        QVector< QString > suggestions( const QString& word ) const;
+        QStringList suggestions( const QString& word ) const;
 
         //! save word list in personal dictionary
         void saveWordList( void );

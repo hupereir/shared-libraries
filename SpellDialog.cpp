@@ -556,7 +556,7 @@ namespace SPELLCHECK
 
         // clear list of suggestions
         _model().clear();
-        Model::List suggestions( interface().suggestions( word ).toStdVector() );
+        Model::List suggestions( interface().suggestions( word ) );
         _model().add( suggestions );
 
         // would need to select first item
