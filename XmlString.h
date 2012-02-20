@@ -32,8 +32,9 @@
 \date $Date$
 */
 
-#include <list>
-#include <QString>
+#include <QtCore/QString>
+#include <QtCore/QPair>
+#include <QtCore/QList>
 
 /*!
 \class XmlString
@@ -42,14 +43,14 @@
 
 class XmlString: public QString
 {
-    
+
     public:
-    
+
     //! constructor
     XmlString( const QString& value ):
         QString( value )
     {}
-        
+
     //! convert input string from text to xml
     QString toXml( void ) const;
 
@@ -59,10 +60,11 @@ class XmlString: public QString
     private:
 
     //! text to Xml conversion pair type
-    typedef std::pair<QString, QString> Conversion;
+    typedef QPair<QString, QString> Conversion;
 
     //! text to Xml conversion pair type
-    typedef std::list< Conversion > ConversionList;
+    typedef QList< Conversion > ConversionList;
+    typedef QListIterator< Conversion > ConversionListIterator;
 
     //! initialize Xml to text conversion pair list
     void _initConversions( void ) const;

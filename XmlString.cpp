@@ -89,8 +89,12 @@ QString XmlString::toText( void ) const
     if( !( _conversions().size() ) ) _initConversions();
 
     // HTML style conversions (escape characters)
-    for( ConversionList::reverse_iterator iter = _conversions().rbegin(); iter != _conversions().rend(); ++iter )
-    { if( !iter->second.isEmpty() ) out = out.replace( iter->second, iter->first ); }
+    ConversionListIterator iter( _conversions() );
+    iter.toBack();
+    while( iter.hasPrevious() )
+    {
+        const Conversion& current( iter.previous() );
+        if( !current.second.isEmpty() ) out = out.replace( current.second, current.first ); }
 
     return out;
 }
