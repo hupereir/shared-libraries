@@ -49,6 +49,7 @@ class ListModel : public ItemModel
     //! value list
     typedef QList<ValueType> List;
     typedef QListIterator<ValueType> ListIterator;
+    typedef QMutableListIterator<ValueType> MutableListIterator;
 
     //! constructor
     ListModel(QObject *parent = 0):
