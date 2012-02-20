@@ -37,7 +37,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
 #include <QtGui/QMenu>
-#include <map>
+#include <QtCore/QHash>
 
 //! dictionary dictionary selection menu
 namespace SPELLCHECK
@@ -74,7 +74,8 @@ namespace SPELLCHECK
     QActionGroup* group_;
 
     //! map dictionaries and action
-    std::map<QAction*, QString> actionMap_;
+    typedef QHash<QAction*, QString> ActionMap;
+    ActionMap actionMap_;
 
   };
 

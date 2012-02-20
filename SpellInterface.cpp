@@ -44,7 +44,7 @@ namespace SPELLCHECK
     SpellInterface::SpellInterface( void ):
         Counter( "SpellInterface" ),
         text_(""),
-        checked_text_(""),
+        checkedText_(""),
         begin_(0),
         end_(0),
         position_(0),
@@ -156,7 +156,7 @@ namespace SPELLCHECK
 
         // store text
         text_ = text;
-        checked_text_ = text;
+        checkedText_ = text;
 
         // store begin/end position
         begin_ = begin;
@@ -223,7 +223,7 @@ namespace SPELLCHECK
             word.toAscii().constData(), -1 );
 
         // update checked text
-        checked_text_.replace( begin_+position_+offset_, word_.size(), word );
+        checkedText_.replace( begin_+position_+offset_, word_.size(), word );
         offset_ += word.size() - word_.size();
         return true;
 
@@ -282,13 +282,13 @@ namespace SPELLCHECK
     }
 
     //____________________________________________________
-    std::vector< QString > SpellInterface::suggestions( const QString& word ) const
+    QVector< QString > SpellInterface::suggestions( const QString& word ) const
     {
 
         Debug::Throw( "SpellInterface::suggestions.\n" );
 
         // check spell checker
-        std::vector<QString> out;
+        QVector<QString> out;
         if( !spellChecker_ ) {
             Debug::Throw(0, "SpellInterface::suggestions - no spell checker" );
             return out;
@@ -299,7 +299,7 @@ namespace SPELLCHECK
 
         const char * suggestion( 0 );
         while( ( suggestion = aspell_string_enumeration_next( elements ) ) )
-            out.push_back( suggestion );
+        { out << suggestion; }
 
         delete_aspell_string_enumeration( elements );
         return out;
@@ -410,10 +410,10 @@ namespace SPELLCHECK
         } else documentChecker_ = to_aspell_document_checker(err);
 
         // assign text if any
-        if( checked_text_.size() )
+        if( checkedText_.size() )
         {
             Debug::Throw( "SpellInterface::_reset - assigning text.\n" );
-            text_ = checked_text_;
+            text_ = checkedText_;
             end_ += offset_;
             position_ = 0;
             offset_ = 0;

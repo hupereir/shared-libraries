@@ -59,8 +59,8 @@ namespace SPELLCHECK
 
         Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
 
-        for( std::map<QAction*,QString>::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
-        { if( iter->second == filter ) iter->first->setChecked( true ); }
+        for( ActionMap::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        { if( iter.value() == filter ) iter.key()->setChecked( true ); }
 
         return;
 
@@ -82,13 +82,13 @@ namespace SPELLCHECK
         connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
 
         // load filters from spell interface
-        std::set< QString > filters( SPELLCHECK::SpellInterface().filters() );
+        QSet< QString > filters( SPELLCHECK::SpellInterface().filters() );
         if( !filters.empty() ) addSeparator();
-        for( std::set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
+        for( QSet<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
         {
             QAction* action( new QAction( *iter, this ) );
             action->setCheckable( true );
-            actionMap_.insert( std::make_pair( action, *iter ) );
+            actionMap_.insert( action, *iter );
             addAction( action );
             group_->addAction( action );
         }
@@ -100,11 +100,11 @@ namespace SPELLCHECK
     {
 
         Debug::Throw( "FilterMenu::_filter.\n" );
-        std::map<QAction*,QString>::iterator iter( actionMap_.find( action ) );
+        ActionMap::iterator iter( actionMap_.find( action ) );
         if( iter == actionMap_.end() ) return;
 
-        select( iter->second );
-        emit selectionChanged( iter->second );
+        select( iter.value() );
+        emit selectionChanged( iter.value() );
         return;
 
     }

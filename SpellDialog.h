@@ -42,10 +42,9 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QLabel>
 #include <QtGui/QTextEdit>
+#include <QtCore/QHash>
 
 #include <cassert>
-#include <map>
-#include <set>
 
 class TreeView;
 
@@ -242,7 +241,7 @@ namespace SPELLCHECK
         QLabel* stateLabel_;
 
         //! list of automatic replace words
-        std::map< QString, QString > replacedWords_;
+        QHash< QString, QString > replacedWords_;
 
     };
 };

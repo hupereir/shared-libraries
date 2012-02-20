@@ -34,9 +34,9 @@
 
 #include "Counter.h"
 
+#include <QtCore/QVector>
+#include <QtCore/QSet>
 #include <aspell.h>
-#include <vector>
-#include <set>
 
 namespace SPELLCHECK
 {
@@ -59,7 +59,7 @@ namespace SPELLCHECK
         //@{
 
         //! get list of available dictionaries
-        const std::set< QString >& dictionaries( void ) const
+        const QSet< QString >& dictionaries( void ) const
         { return dictionaries_; }
 
         //! current dictionary
@@ -80,7 +80,7 @@ namespace SPELLCHECK
         //@{
 
         //! get list of available filters
-        const std::set< QString >& filters( void ) const
+        const QSet< QString >& filters( void ) const
         { return filters_; }
 
         //! current filter
@@ -102,27 +102,27 @@ namespace SPELLCHECK
 
         //! add word to static list
         void ignoreWord( const QString& word )
-        { ignored_words_.insert( word ); }
+        { ignoredWords_.insert( word ); }
 
         //! returns true if word is ignored
         bool isWordIgnored( const QString& word )
-        { return ignored_words_.find( word ) != ignored_words_.end(); }
+        { return ignoredWords_.find( word ) != ignoredWords_.end(); }
 
         //! set list of ignored words
-        void setIgnoredWords( const std::set<QString> words )
-        { ignored_words_ = words; }
+        void setIgnoredWords( const QSet<QString> words )
+        { ignoredWords_ = words; }
 
         //! merge list of ignored words
-        void mergeIgnoredWords( const std::set<QString> words )
-        { ignored_words_.insert( words.begin(), words.end() ); }
+        void mergeIgnoredWords( const QSet<QString> words )
+        { ignoredWords_.unite( words ); }
 
         //! clear ignored words
         void clearIgnoredWords( void )
-        { ignored_words_.clear(); }
+        { ignoredWords_.clear(); }
 
         //! get list of ignored words
-        const std::set< QString > ignoredWords( void )
-        { return ignored_words_; }
+        const QSet< QString > ignoredWords( void )
+        { return ignoredWords_; }
 
         //!@name text
         //@{
@@ -146,7 +146,7 @@ namespace SPELLCHECK
 
         //! retrieve checked text
         const QString& checkedText( void ) const
-        { return checked_text_; }
+        { return checkedText_; }
 
         //@}
 
@@ -184,7 +184,7 @@ namespace SPELLCHECK
         bool nextWord( void );
 
         //! retrieve list of suggestions for current word
-        std::vector< QString > suggestions( const QString& word ) const;
+        QVector< QString > suggestions( const QString& word ) const;
 
         //! save word list in personal dictionary
         void saveWordList( void );
@@ -214,20 +214,20 @@ namespace SPELLCHECK
 
         //! set of available dictionaries
         /*! loaded in constructor */
-        std::set<QString> dictionaries_;
+        QSet<QString> dictionaries_;
 
         //! set of available filters
         /*! loaded in constructor */
-        std::set<QString> filters_;
+        QSet<QString> filters_;
 
         //! ignored words
-        std::set<QString> ignored_words_;
+        QSet<QString> ignoredWords_;
 
         //! original text to be checked
         QString text_;
 
         //! text being checked
-        QString checked_text_;
+        QString checkedText_;
 
         //! current word being checked
         QString word_;
@@ -241,7 +241,7 @@ namespace SPELLCHECK
         //! position in started text (counted from begin_)
         int position_;
 
-        //! offset between checked_text_ and text_
+        //! offset between checkedText_ and text_
         int offset_;
 
         //! configuration error

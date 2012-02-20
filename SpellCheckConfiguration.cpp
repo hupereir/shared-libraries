@@ -47,44 +47,44 @@ Counter( "SpellCheckConfiguration" )
 
     SPELLCHECK::SpellInterface interface;
 
-    GridLayout* grid_layout( new GridLayout() );
-    grid_layout->setSpacing( 5 );
-    grid_layout->setMargin( 5 );
-    grid_layout->setMaxCount( 2 );
-    grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-    setLayout( grid_layout );
+    GridLayout* gridLayout( new GridLayout() );
+    gridLayout->setSpacing( 5 );
+    gridLayout->setMargin( 5 );
+    gridLayout->setMaxCount( 2 );
+    gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+    setLayout( gridLayout );
 
     // aspell command
-    grid_layout->addWidget( new QLabel( "Aspell Command: ", this ) );
+    gridLayout->addWidget( new QLabel( "Aspell Command: ", this ) );
     OptionBrowsedLineEditor* editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
-    grid_layout->addWidget( editor );
+    gridLayout->addWidget( editor );
     editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
     addOptionWidget( editor );
 
     // dictionaries
-    grid_layout->addWidget( new QLabel( "Default Dictionary: ", this ) );
+    gridLayout->addWidget( new QLabel( "Default Dictionary: ", this ) );
     OptionComboBox* combobox(  new OptionComboBox( this, "DICTIONARY" ) );
-    grid_layout->addWidget( combobox );
+    gridLayout->addWidget( combobox );
     combobox->setToolTip(
         "Default dictionary used with files for which\n"
         "a dictionary has not been manually selected" );
     addOptionWidget( combobox );
 
-    const std::set<QString>& dictionaries( interface.dictionaries() );
-    for( std::set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
+    const QSet<QString>& dictionaries( interface.dictionaries() );
+    for( QSet<QString>::const_iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
     { combobox->addItem( *iter ); }
 
     // filters
-    grid_layout->addWidget( new QLabel( "Default Filter: ", this ) );
+    gridLayout->addWidget( new QLabel( "Default Filter: ", this ) );
     combobox = new OptionComboBox( this, "DICTIONARY_FILTER" );
-    grid_layout->addWidget( combobox );
+    gridLayout->addWidget( combobox );
     combobox->setToolTip(
         "Default filtering mode used with files for which\n"
         "a filtering mode has not been manually selected" );
     addOptionWidget( combobox );
 
-    const std::set<QString>& filters( interface.filters() );
-    for( std::set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
+    const QSet<QString>& filters( interface.filters() );
+    for( QSet<QString>::const_iterator iter = filters.begin(); iter != filters.end(); ++iter )
     { combobox->addItem(*iter ); }
 
 }

@@ -118,9 +118,10 @@ namespace SPELLCHECK
         grid_layout->addWidget( new QLabel( "Dictionary: ", this ) );
         grid_layout->addWidget( dictionary_ = new QComboBox( this ) );
 
-        const std::set<QString>& dictionaries( interface().dictionaries() );
-        for( std::set<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
-            dictionary_->addItem(*iter );
+        const QSet<QString>& dictionaries( interface().dictionaries() );
+        for( QSet<QString>::const_iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
+        { dictionary_->addItem(*iter ); }
+
         connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
         // filter combobox
@@ -129,9 +130,9 @@ namespace SPELLCHECK
 
         grid_layout->setColumnStretch( 1, 1 );
 
-        std::set<QString> filters( interface().filters() );
-        for( std::set<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
-            filter_->addItem( *iter );
+        QSet<QString> filters( interface().filters() );
+        for( QSet<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
+        { filter_->addItem( *iter ); }
         connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
 
         // right vbox
@@ -438,9 +439,9 @@ namespace SPELLCHECK
     {
 
         Debug::Throw( "SpellDialog::_replaceAll.\n" );
-        QString old_word( sourceEditor_->text() );
-        QString new_word( replaceEditor_->text() );
-        replacedWords_.insert( std::make_pair( old_word, new_word ) );
+        QString oldWord( sourceEditor_->text() );
+        QString newWord( replaceEditor_->text() );
+        replacedWords_.insert( oldWord, newWord );
         _replace();
 
     }
@@ -480,10 +481,10 @@ namespace SPELLCHECK
             {
 
                 // automatic replacement
-                std::map< QString, QString >::iterator iter = replacedWords_.find( word );
+                QHash< QString, QString >::iterator iter = replacedWords_.find( word );
                 _updateSelection( interface().position() + interface().offset(), word.size() );
-                _replaceSelection( iter->second );
-                interface().replace( iter->second );
+                _replaceSelection( iter.value() );
+                interface().replace( iter.value() );
                 continue;
             }
 
@@ -555,7 +556,7 @@ namespace SPELLCHECK
 
         // clear list of suggestions
         _model().clear();
-        Model::List suggestions( interface().suggestions( word ) );
+        Model::List suggestions( interface().suggestions( word ).toStdVector() );
         _model().add( suggestions );
 
         // would need to select first item

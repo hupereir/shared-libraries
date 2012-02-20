@@ -61,17 +61,17 @@ namespace SPELLCHECK
         Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
 
         // retrieve list of suggestions
-        std::vector<QString> suggestions( interface_.suggestions( word_ ) );
+        QVector<QString> suggestions( interface_.suggestions( word_ ) );
         Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
 
         // add words
-        unsigned int max( XmlOptions::get().get< unsigned int>( "MAX_SUGGESTIONS" ) );
+        int max( XmlOptions::get().get<int>( "MAX_SUGGESTIONS" ) );
         if( max == 0 || max > suggestions.size() ) max = suggestions.size();
-        for( int unsigned i=0; i < max; i++ )
+        for( int i=0; i < max; ++i )
         {
 
             Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestions[i] << endl;
-            suggestions_.insert( std::make_pair( addAction( suggestions[i] ), suggestions[i] ) );
+            suggestions_.insert( addAction( suggestions[i] ), suggestions[i] );
         }
         addSeparator();
 
@@ -88,8 +88,8 @@ namespace SPELLCHECK
     {
 
         Debug::Throw( "SuggestionMenu::_select.\n" );
-        std::map<QAction*,QString>::const_iterator iter( suggestions_.find( action ) );
-        if( iter != suggestions_.end() ) emit suggestionSelected( iter->second );
+        SuggestionMap::const_iterator iter( suggestions_.find( action ) );
+        if( iter != suggestions_.end() ) emit suggestionSelected( iter.value() );
         return;
 
     }
