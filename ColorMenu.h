@@ -24,22 +24,14 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColorMenu.h
-\brief color selection menu
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QMenu>
-#include <QPaintEvent>
-#include <QPixmap>
-
-#include <set>
-
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QtGui/QMenu>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QPixmap>
+#include <QtCore/QSet>
+#include <QtCore/QHash>
 
 //! Color selection menu
 class ColorMenu: public QMenu, public Counter
@@ -48,24 +40,13 @@ class ColorMenu: public QMenu, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! default name for no-color
-        static const QString NONE;
-
-    //! used to sort colors in set
-    class ColorLessFTor
-    {
-        public:
-
-        //! predicate
-        bool operator() (const QColor& first, const QColor& second ) const
-        { return first.name() < second.name(); }
-
-    };
+    //! default name for no-color
+    static const QString NONE;
 
     //! sorted set of colors
-    typedef std::set<QColor, ColorLessFTor> ColorSet;
+    typedef QSet<QString> ColorSet;
 
     //! constructor
     ColorMenu( QWidget* parent );
@@ -115,13 +96,13 @@ class ColorMenu: public QMenu, public Counter
     void _add( const QColor& );
 
     //! map colors to display pixmap
-    typedef std::map<QColor, QBrush, ColorLessFTor> ColorMap;
+    typedef QHash<QString, QBrush> ColorMap;
 
     //! list of loaded colors
     ColorMap colors_;
 
     //! map actions to colors
-    typedef std::map<QAction*, QColor> ActionMap;
+    typedef QHash<QAction*, QColor> ActionMap;
 
     //! map actions to colors
     ActionMap actions_;

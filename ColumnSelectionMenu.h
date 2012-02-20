@@ -24,22 +24,14 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColumnSelectionMenu.h
-\brief handels column visibility in TreeViews
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-#include <QAction>
-#include <QMenu>
-#include <QTreeView>
-#include <map>
-
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QtGui/QAction>
+#include <QtGui/QMenu>
+#include <QtGui/QTreeView>
+#include <QtCore/QHash>
+#include <cassert>
 
 //_______________________________________________________________
 class ColumnSelectionMenu:public QMenu, public Counter
@@ -74,7 +66,7 @@ class ColumnSelectionMenu:public QMenu, public Counter
     QTreeView* target_;
 
     //! map action to column index
-    typedef std::map< QAction*, int > ActionMap;
+    typedef QHash< QAction*, int > ActionMap;
 
     //! map action to column index
     ActionMap actions_;

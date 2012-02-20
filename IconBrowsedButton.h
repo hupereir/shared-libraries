@@ -1,3 +1,6 @@
+#ifndef IconBrowsedButton_h
+#define IconBrowsedButton_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,37 +24,25 @@
 *
 *******************************************************************************/
 
-/*!
-\file IconBrowsedButton.h
-\brief icon browser. The icon is displayed as the button label
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-#ifndef IconBrowsedButton_h
-#define IconBrowsedButton_h
-
-#include <QIconSet>
-#include <QString>
-
 #include "CustomToolButton.h"
 #include "Counter.h"
 #include "Debug.h"
 
-/*!
-\class IconBrowsedButton
-\brief customized tool button to display tooltip in a dedicated label
-*/
+
+#include <QtGui/QIconSet>
+#include <QtCore/QString>
+
+//! customized tool button to display tooltip in a dedicated label
 class IconBrowsedButton: public CustomToolButton
 {
 
     //! Qt meta object macros
     Q_OBJECT
 
-        public:
+    public:
 
-        //! no icon filename
-        static const QString NO_ICON;
+    //! no icon filename
+    static const QString NO_ICON;
 
     //! creator
     IconBrowsedButton(

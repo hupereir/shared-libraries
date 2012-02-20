@@ -61,7 +61,7 @@ void ColumnSortingMenu::_updateActions( void )
 
     // clear existing actions
     for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
-    { delete iter->first; }
+    { delete iter.key(); }
     actions_.clear();
 
     // check if the menu already has actions.
@@ -92,7 +92,7 @@ void ColumnSortingMenu::_updateActions( void )
 
         insertAction( first_action, action );
         group_->addAction( action );
-        actions_.insert( std::make_pair( action, index ) );
+        actions_.insert( action, index );
 
     }
 
@@ -111,7 +111,7 @@ void ColumnSortingMenu::_sort( QAction* action )
     QHeaderView* header = _target().header();
     assert( header );
 
-    header->setSortIndicator( iter->second, header->sortIndicatorOrder() );
+    header->setSortIndicator( iter.value(), header->sortIndicatorOrder() );
 
 }
 

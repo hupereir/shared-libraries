@@ -24,21 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file IconSizeMenu.h
-\brief provides icon size selection menu
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Counter.h"
 #include "CustomToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
 
-#include <QMenu>
-#include <map>
+#include <QtGui/QMenu>
+#include <QtCore/QHash>
 
 //! provides icon size selection menu
 class IconSizeMenu: public QMenu, public Counter
@@ -67,7 +59,7 @@ class IconSizeMenu: public QMenu, public Counter
     private:
 
     //! action map
-    typedef std::map<QAction*, IconSize::Size > ActionMap;
+    typedef QHash<QAction*, IconSize::Size > ActionMap;
 
     //! toolbar text action map
     ActionMap actions_;

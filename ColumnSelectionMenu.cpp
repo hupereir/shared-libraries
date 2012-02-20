@@ -56,7 +56,7 @@ void ColumnSelectionMenu::_updateActions( void )
 
     // clear existing actions
     for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
-    { delete iter->first; }
+    { delete iter.key(); }
     actions_.clear();
 
     // check if the menu already has actions.
@@ -93,7 +93,7 @@ void ColumnSelectionMenu::_updateActions( void )
         if( !_target().isColumnHidden( index ) ) visibleColumns++;
 
         insertAction( firstAction, action );
-        actions_.insert( std::make_pair( action, index ) );
+        actions_.insert( action, index );
 
     }
 
@@ -101,7 +101,7 @@ void ColumnSelectionMenu::_updateActions( void )
     if( visibleColumns == 1 )
     {
         for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
-        { if( iter->first->isChecked() ) iter->first->setEnabled( false ); }
+        { if( iter.key()->isChecked() ) iter.key()->setEnabled( false ); }
     }
 
 }
@@ -116,6 +116,6 @@ void ColumnSelectionMenu::_updateSelectedColumns( QAction* action )
     if( iter == actions_.end() ) return;
 
     // set column visibility
-    _target().setColumnHidden( iter->second, !iter->first->isChecked() );
+    _target().setColumnHidden( iter.value(), !iter.key()->isChecked() );
 
 }

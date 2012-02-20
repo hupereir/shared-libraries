@@ -59,7 +59,6 @@ namespace BASE
 
     };
 
-
 };
 
 #endif

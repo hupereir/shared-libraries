@@ -54,7 +54,7 @@ ColorMenu::ColorMenu( QWidget* parent ):
 //_______________________________________________
 void ColorMenu::add( const QString& colorname )
 {
-    Debug::Throw( "ColorMenu::add.\n" );
+    Debug::Throw() << "ColorMenu::add - name: " << colorname << endl;
     if( colorname.compare( NONE, Qt::CaseInsensitive ) != 0 ) _add( QColor( colorname ) );
 }
 
@@ -64,7 +64,7 @@ ColorMenu::ColorSet ColorMenu::colors( void ) const
 
     ColorSet out;
     for( ColorMap::const_iterator iter = colors_.begin(); iter != colors_.end(); ++iter )
-    { out.insert( iter->first ); }
+    { out.insert( iter.key() ); }
 
     return out;
 }
@@ -85,10 +85,10 @@ void ColorMenu::paintEvent( QPaintEvent* event )
     painter.setPen( Qt::NoPen );
     for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
-        QRect action_rect( actionGeometry( iter->first ) );
+        QRect action_rect( actionGeometry( iter.key() ) );
         if( !event->rect().intersects( action_rect ) ) continue;
         action_rect.adjust( 2*margin, margin+1, -2*margin-1, -margin );
-        painter.setBrush( colors_[iter->second] );
+        painter.setBrush( colors_[iter.value().name()] );
         painter.setRenderHints(QPainter::Antialiasing );
         painter.drawRoundedRect( action_rect, 4, 4 );
     }
@@ -119,11 +119,11 @@ void ColorMenu::_display( void )
     {
 
         // create pixmap if not done already
-        if( iter->second == Qt::NoBrush ) iter->second = QBrush( iter->first );
+        if( iter.value() == Qt::NoBrush ) iter.value() = QColor( iter.key() );
 
         // create action
         QAction* action = new QAction( this );
-        actions_.insert( std::make_pair( action, iter->first ) );
+        actions_.insert( action, iter.key() );
         addAction( action );
 
     };
@@ -161,11 +161,11 @@ void ColorMenu::_default( void )
 void ColorMenu::_selected( QAction* action )
 {
     Debug::Throw( "ColorMenu::_selected.\n" );
-    std::map<QAction*,QColor>::iterator iter = actions_.find( action );
+    ActionMap::const_iterator iter = actions_.find( action );
     if( iter != actions_.end() )
     {
-        lastColor_ = iter->second;
-        emit selected( iter->second );
+        lastColor_ = iter.value();
+        emit selected( iter.value() );
     }
 }
 
@@ -173,8 +173,8 @@ void ColorMenu::_selected( QAction* action )
 void ColorMenu::_add( const QColor& color )
 {
 
-    if( color.isValid() && colors_.find( color ) == colors_.end() )
-    { colors_.insert( std::make_pair( color, QPixmap() ) ); }
+    if( color.isValid() && !colors_.contains( color.name() ) )
+    { colors_.insert( color.name(), QBrush() ); }
 
     return;
 }

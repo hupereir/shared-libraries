@@ -24,17 +24,9 @@
 *
 *******************************************************************************/
 
-/*!
-\file IconSize.h
-\brief default icon sizes
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QSize>
-#include <QWidget>
-#include <map>
+#include <QtGui/QWidget>
+#include <QtCore/QSize>
+#include <QtCore/QHash>
 
 //! default icon sizes
 class IconSize: public QSize
@@ -61,7 +53,7 @@ class IconSize: public QSize
     IconSize( Size size );
 
     //! map text to icon size
-    typedef std::map<Size, QString> Map;
+    typedef QHash<Size, QString> Map;
 
     //! text to icon size
     static Map& map( void );

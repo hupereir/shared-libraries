@@ -24,23 +24,16 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColumnSortingMenu.h
-\brief handels column visibility in TreeViews
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-#include <QAction>
-#include <QActionGroup>
-#include <QMenu>
-#include <QTreeView>
-#include <map>
-
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QtGui/QAction>
+#include <QtGui/QActionGroup>
+#include <QtGui/QMenu>
+#include <QtGui/QTreeView>
+#include <QtCore/QHash>
+
+#include <cassert>
 
 //_______________________________________________________________
 class ColumnSortingMenu:public QMenu, public Counter
@@ -49,10 +42,10 @@ class ColumnSortingMenu:public QMenu, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        ColumnSortingMenu( QWidget*, QTreeView*, const QString& title = "Sort &By" );
+    //! constructor
+    ColumnSortingMenu( QWidget*, QTreeView*, const QString& title = "Sort &By" );
 
     private slots:
 
@@ -81,7 +74,7 @@ class ColumnSortingMenu:public QMenu, public Counter
     QActionGroup* group_;
 
     //! map action to column index
-    typedef std::map< QAction*, int > ActionMap;
+    typedef QHash< QAction*, int > ActionMap;
 
     //! map action to column index
     ActionMap actions_;

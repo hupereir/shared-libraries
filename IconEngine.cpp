@@ -54,7 +54,7 @@ bool IconEngine::reload( void )
 
     if( !PixmapEngine::get().reload() ) return false;
     for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
-    { cache_[iter->first] = _get( iter->first, false ); }
+    { cache_[iter.key()] = _get( iter.key(), false ); }
 
     return true;
 }
@@ -68,11 +68,11 @@ const QIcon& IconEngine::_get( const QString& file, bool from_cache )
     if( from_cache )
     {
         Cache::iterator iter( cache_.find( file ) );
-        if( iter != cache_.end() ) return iter->second;
+        if( iter != cache_.end() ) return iter.value();
     }
 
     QIcon out( _get( PixmapEngine::get( file, from_cache ) ) );
-    return cache_.insert( std::make_pair( file, out ) ).first->second;
+    return cache_.insert( file, out ).value();
 
 }
 

@@ -36,50 +36,51 @@
 #include "Debug.h"
 #include "PixmapEngine.h"
 
-#include <QIcon>
-#include <map>
-#include <list>
+#include <QtGui/QIcon>
+#include <QtCore/QHash>
+#include <QtCore/QPair>
+
 #include <cassert>
 
 //! customized Icon factory to provide better looking disabled icons
 class IconEngine: public Counter
 {
-    
+
     public:
-    
+
     //! retrieve singleton
     static IconEngine& get( void );
-    
+
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
     static const QIcon& get( const QString& file )
     { return get()._get( file ); }
-    
+
     //! create icon
     static QIcon get( const QPixmap& pixmap )
     { return get()._get( pixmap ); }
-    
+
     //! create icon
     static QIcon get( const QIcon& icon )
     { return get()._get( icon ); }
-    
+
     //! map files and QIcon
-    typedef std::map< QString, QIcon > Cache;
-    
+    typedef QHash< QString, QIcon > Cache;
+
     //! map files and QIcon
-    class Pair: public std::pair<QString, QIcon >, public Counter
+    class Pair: public QPair<QString, QIcon >, public Counter
     {
-        
+
         public:
-        
+
         //! constructor
         Pair( void ):
             Counter( "IconEngine::Pair" )
         {}
 
         //! constructor
-        Pair( const std::pair<QString, QIcon >& pair ):
-            std::pair<QString, QIcon >( pair ),
+        Pair( const QPair<QString, QIcon >& pair ):
+            QPair<QString, QIcon >( pair ),
             Counter( "IconEngine::Pair" )
         {}
 

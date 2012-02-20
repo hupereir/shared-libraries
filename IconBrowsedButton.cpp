@@ -21,17 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file IconBrowsedButton.cpp
-\brief icon browser. The icon is displayed as the button label
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
-#include <QUrl>
-
 #include "LineEditor.h"
 #include "CustomPixmap.h"
 #include "File.h"
@@ -42,7 +31,7 @@
 #include "XmlOptions.h"
 #include "QtUtil.h"
 
-
+#include <QtCore/QUrl>
 
 //_____________________________________________
 const QString IconBrowsedButton::NO_ICON = "none";

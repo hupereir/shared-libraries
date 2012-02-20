@@ -50,9 +50,9 @@ Counter( "IconSizeMenu" )
     QAction* action;
     for( IconSize::Map::const_iterator iter = sizes.begin(); iter != sizes.end(); ++iter )
     {
-        addAction( action = new QAction( iter->second, this ) );
+        addAction( action = new QAction( iter.value(), this ) );
         action->setCheckable( true );
-        actions_.insert( std::make_pair( action, iter->first ) );
+        actions_.insert( action, iter.key() );
         group->addAction( action );
     }
 
@@ -65,9 +65,9 @@ void IconSizeMenu::select( IconSize::Size size )
     Debug::Throw( "IconSizeMenu::select.\n" );
     for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
-        if( iter->second == size )
+        if( iter.value() == size )
         {
-            iter->first->setChecked( true );
+            iter.key()->setChecked( true );
             return;
         }
     }
@@ -84,6 +84,6 @@ void IconSizeMenu::_selected( QAction* action )
     // find matching actions
     ActionMap::const_iterator iter = actions_.find( action );
     assert( iter != actions_.end() );
-    emit iconSizeSelected( iter->second );
+    emit iconSizeSelected( iter.value() );
 
 }

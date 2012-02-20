@@ -214,10 +214,10 @@ void CustomToolBar::_installActions( void )
 CustomToolBar::AreaMap CustomToolBar::_initializeAreas( void )
 {
     AreaMap out;
-    out.insert( std::make_pair( "none", Qt::NoToolBarArea ) );
-    out.insert( std::make_pair( "left", Qt::LeftToolBarArea ) );
-    out.insert( std::make_pair( "right", Qt::RightToolBarArea ) );
-    out.insert( std::make_pair( "top", Qt::TopToolBarArea ) );
-    out.insert( std::make_pair( "bottom", Qt::BottomToolBarArea ) );
+    out.insert( "none", Qt::NoToolBarArea );
+    out.insert( "left", Qt::LeftToolBarArea );
+    out.insert( "right", Qt::RightToolBarArea );
+    out.insert( "top", Qt::TopToolBarArea );
+    out.insert( "bottom", Qt::BottomToolBarArea );
     return out;
 }

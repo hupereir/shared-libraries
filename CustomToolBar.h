@@ -24,22 +24,15 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomToolBar.h
-\brief customized tool bar to handle position and visibility from Options
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QHideEvent>
-#include <QShowEvent>
-#include <QToolBar>
-#include <map>
-
 #include "Counter.h"
 #include "Debug.h"
 #include "OptionComboBox.h"
+
+#include <QtGui/QHideEvent>
+#include <QtGui/QShowEvent>
+#include <QtGui/QToolBar>
+#include <QtCore/QHash>
+
 
 //! customized tool bar to handle position and visibility from Options
 class CustomToolBar: public QToolBar, public Counter
@@ -56,13 +49,13 @@ class CustomToolBar: public QToolBar, public Counter
     virtual ~CustomToolBar( void );
 
     // map toolbar area and name
-    typedef std::map< QString, Qt::ToolBarArea> AreaMap;
+    typedef QHash< QString, Qt::ToolBarArea> AreaMap;
 
     //! get area from name
     static Qt::ToolBarArea nameToArea( const QString& name )
     {
         AreaMap::iterator iter = _toolbarAreas().find( name );
-        return iter == _toolbarAreas().end() ? (Qt::ToolBarArea) 0 :iter->second;
+        return iter == _toolbarAreas().end() ? (Qt::ToolBarArea) 0 :iter.value();
     }
 
     //! get name from toobar area
@@ -70,7 +63,7 @@ class CustomToolBar: public QToolBar, public Counter
     {
 
         for( AreaMap::iterator iter = _toolbarAreas().begin(); iter != _toolbarAreas().end(); iter++ )
-        { if( iter->second == value ) return iter->first; }
+        { if( iter.value() == value ) return iter.key(); }
 
         return "";
 
