@@ -24,22 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    HelpItem.h
-   \brief   reference manual item.
-            it contains a title and a text
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <QDomElement>
-#include <QDomDocument>
-
-#include <vector>
 
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QtXml/QDomElement>
+#include <QtXml/QDomDocument>
+#include <QtCore/QList>
 
 //! Help system namespace
 namespace BASE
@@ -98,7 +89,7 @@ namespace BASE
     { return text_; }
 
     //! shortcut to help item list
-    typedef std::vector< HelpItem > List;
+    typedef QList< HelpItem > List;
 
     private:
 

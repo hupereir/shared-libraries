@@ -187,7 +187,7 @@ namespace BASE
         plainEditor_->clear();
 
         // set items
-        _model().set( HelpModel::List( items.begin(), items.end() ) );
+        _model().set( items );
 
         // select first index
         if( (!_list().selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) )
@@ -280,8 +280,7 @@ namespace BASE
         Debug::Throw( "HelpDialog::_updateHelpManager.\n" );
 
         // retrieve all texts, pass to help manager
-        const HelpModel::List& model_list( _model().get() );
-        _manager().install( HelpItem::List( model_list.begin(), model_list.end() ) );
+        _manager().install( _model().get() );
         _manager().setModified( true );
 
     }
