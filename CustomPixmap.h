@@ -24,94 +24,85 @@
 *
 *******************************************************************************/
 
-/*!
-  \file CustomPixmap.h
-  \brief customized QPixmap to look for icon of given name in list of directory
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <cassert>
-#include <list>
-
-#include <QPixmap>
-
 #include "Counter.h"
+
+#include <QtGui/QPixmap>
+#include <cassert>
+
 
 //! customized QPixmap to look for icon of given name in list of directory
 class CustomPixmap: public QPixmap, public Counter
 {
 
-  public:
+    public:
 
-  //! constructor
-  CustomPixmap( const QPixmap& pixmap ):
-    QPixmap( pixmap ),
-    Counter( "CustomPixmap" )
-  {}
-
-  //! constructor
-  CustomPixmap( const QImage& image ):
-    Counter( "CustomPixmap" )
-  { *this = fromImage( image ); }
-
-  //! constructor
-  CustomPixmap( void ):
-    Counter( "CustomPixmap" )
+    //! constructor
+    CustomPixmap( const QPixmap& pixmap ):
+        QPixmap( pixmap ),
+        Counter( "CustomPixmap" )
     {}
 
-  //! constructor
-  CustomPixmap( const QString& file );
+    //! constructor
+    CustomPixmap( const QImage& image ):
+        Counter( "CustomPixmap" )
+    { *this = fromImage( image ); }
 
-  //! destructor
-  virtual ~CustomPixmap()
-  {}
+    //! constructor
+    CustomPixmap( void ):
+        Counter( "CustomPixmap" )
+    {}
+    
+    //! constructor
+    CustomPixmap( const QString& file );
+    
+    //! destructor
+    virtual ~CustomPixmap()
+    {}
+    
+    //! find first file matching name in list of path
+    virtual CustomPixmap find( const QString& file );
+    
+    //! rotation
+    enum Rotation
+    {
+        NONE,
+        CLOCKWISE,
+        COUNTERCLOCKWISE
+    };
+    
+    //! rotation
+    CustomPixmap rotate( const Rotation& value );
+    
+    //! returns a tinted pixmap
+    virtual CustomPixmap tint( const QColor& color, const double& intensity ) const;
+    
+    //! corner enumeration for merging pixmap
+    enum Corner
+    {
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT,
+        CENTER
+    };
 
-  //! find first file matching name in list of path
-  virtual CustomPixmap find( const QString& file );
+    //! merge pixmap, using the specified corner as an anchor
+    virtual CustomPixmap merge( const QPixmap&, Corner corner = TOP_LEFT ) const;
 
-  //! rotation
-  enum Rotation
-  {
-    NONE,
-    CLOCKWISE,
-    COUNTERCLOCKWISE
-  };
+    //! returns an empty pixmap of given size, of given color and possibly transparent
+    virtual CustomPixmap empty(
+        const QSize& size,
+        const QColor& color = Qt::transparent ) const;
 
-  //! rotation
-  CustomPixmap rotate( const Rotation& value );
+    //! return greyed (inactive) pixmap, build from the current
+    virtual CustomPixmap disabled( void ) const;
 
-  //! returns a tinted pixmap
-  virtual CustomPixmap tint( const QColor& color, const double& intensity ) const;
+    //! return highlighted pixmap
+    virtual CustomPixmap highlighted( qreal opacity ) const;
 
-  //! corner enumeration for merging pixmap
-  enum Corner
-  {
-    TOP_LEFT,
-    TOP_RIGHT,
-    BOTTOM_LEFT,
-    BOTTOM_RIGHT,
-    CENTER
-  };
-
-  //! merge pixmap, using the specified corner as an anchor
-  virtual CustomPixmap merge( const QPixmap&, Corner corner = TOP_LEFT ) const;
-
-  //! returns an empty pixmap of given size, of given color and possibly transparent
-  virtual CustomPixmap empty(
-    const QSize& size,
-    const QColor& color = Qt::transparent ) const;
-
-  //! return greyed (inactive) pixmap, build from the current
-  virtual CustomPixmap disabled( void ) const;
-
-  //! return highlighted pixmap
-  virtual CustomPixmap highlighted( qreal opacity ) const;
-
-  //! return highlighted (active) pixmap, build from the current
-  virtual CustomPixmap active( void ) const
-  { return highlighted( 0.2 ); }
+    //! return highlighted (active) pixmap, build from the current
+    virtual CustomPixmap active( void ) const
+    { return highlighted( 0.2 ); }
 
 };
 

@@ -30,7 +30,6 @@
 #include "XmlOptions.h"
 
 #include <algorithm>
-#include <set>
 
 //_______________________________________________
 RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):

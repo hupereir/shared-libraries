@@ -59,8 +59,6 @@
 #include <QtCore/QBasicTimer>
 #include <QtCore/QTimerEvent>
 
-#include <vector>
-
 class BaseFindDialog;
 class BaseReplaceDialog;
 class SelectLineDialog;

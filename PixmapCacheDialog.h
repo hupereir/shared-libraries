@@ -28,8 +28,6 @@
 #include "Counter.h"
 #include "PixmapCacheModel.h"
 
-#include <map>
-
 class TreeView;
 
 //! displays PixmapCache names and counts

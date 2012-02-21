@@ -28,8 +28,6 @@
 #include "OptionModel.h"
 #include "XmlOptions.h"
 
-#include <map>
-
 // forward declaration
 class TreeView;
 

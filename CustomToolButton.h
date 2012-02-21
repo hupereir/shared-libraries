@@ -24,24 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-  \file CustomToolButton.h
-  \brief customized tool button to display tooltip in a dedicated label
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QIconSet>
-#include <QLabel>
-#include <QToolButton>
-#include <map>
-
-
-
 #include "Counter.h"
 #include "CustomPixmap.h"
 #include "Debug.h"
+
+#include <QtGui/QIconSet>
+#include <QtGui/QLabel>
+#include <QtGui/QToolButton>
 
 /*!
   \class CustomToolButton

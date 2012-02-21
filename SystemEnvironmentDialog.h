@@ -27,8 +27,6 @@
 #include "CustomDialog.h"
 #include "OptionModel.h"
 
-#include <map>
-
 //! displays Counter names and counts
 class SystemEnvironmentDialog: public CustomDialog
 {

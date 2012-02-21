@@ -23,21 +23,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseConfigurationDialog.h
-\brief base configuration dialog
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QLayout>
-#include <list>
-
 #include "TabbedDialog.h"
 #include "XmlOptions.h"
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"
+
+#include <QtGui/QLayout>
 
 //! configuration dialog
 class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList

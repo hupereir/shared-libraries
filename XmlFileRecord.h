@@ -24,20 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file XmlFileRecord.h
-\brief xml interface to FileRecord
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "FileRecord.h"
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomDocument>
 #include <QtCore/QString>
-#include <list>
-
-#include "FileRecord.h"
 
 //! xml interface to FileRecord
 class XmlFileRecord: public FileRecord

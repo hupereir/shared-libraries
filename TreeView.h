@@ -33,7 +33,6 @@
 #include <QtGui/QAction>
 
 #include <cassert>
-#include <vector>
 
 class BaseFindDialog;
 

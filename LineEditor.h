@@ -33,8 +33,6 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPaintEvent>
 
-#include <vector>
-
 /*!
 \class LineEditor
 \brief customized line edit to have faster popup menu

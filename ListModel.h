@@ -28,7 +28,6 @@
 
 #include <QtCore/QList>
 #include <algorithm>
-#include <set>
 
 //! Job model. Stores job information for display in lists
 template<typename T, typename EqualTo = std::equal_to<T>, typename LessThan = std::less<T> >

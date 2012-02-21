@@ -27,8 +27,6 @@
 #include "CustomDialog.h"
 #include "CounterModel.h"
 
-#include <map>
-
 class TreeView;
 
 //! displays Counter names and counts
