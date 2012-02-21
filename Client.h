@@ -24,21 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    Client.h
-   \brief   Interprocess communication client
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <QTcpSocket>
-
-#include <list>
-
 #include "Counter.h"
 #include "MessageBuffer.h"
 #include "ServerCommand.h"
+
+#include <QtNetwork/QTcpSocket>
 
 namespace SERVER
 {
