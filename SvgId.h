@@ -25,68 +25,68 @@
 *******************************************************************************/
 
 /*!
-  \file SvgId.h
-  \brief
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file SvgId.h
+\brief
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
-#include <QSize>
-#include <QString>
-#include <vector>
+#include <QtCore/QSize>
+#include <QtCore/QString>
+#include <QtCore/QList>
 
 //! svg namespace
 namespace SVG
 {
-  class SvgId
-  {
-    public:
-
-    typedef std::vector<SvgId> List;
-
-    //! constructor
-    SvgId( QSize size ):
-      size_( size )
-      {}
-
-    //! constructor
-    SvgId( QString name, QSize size ):
-      id_( name ),
-      size_( size )
-    {}
-
-    //! equal to operator
-    bool operator == (const SvgId& id ) const
-    { return size_ == id.size_ && id_ == id.id_; }
-
-    //! less than operator
-    bool operator < (const SvgId& id ) const
+    class SvgId
     {
+        public:
 
-      if( size_.width() != id.size_.width() ) return size_.width() < id.size_.width();
-      else if( size_.height() != id.size_.height() ) return size_.height() < id.size_.height();
-      else return id_ < id.id_;
+        typedef QList<SvgId> List;
 
-    }
+        //! constructor
+        SvgId( QSize size ):
+            size_( size )
+        {}
 
-    //! id
-    const QString& id( void ) const
-    { return id_; }
+        //! constructor
+        SvgId( QString name, QSize size ):
+            id_( name ),
+            size_( size )
+        {}
 
-    //! size
-    const QSize& size( void ) const
-    { return size_; }
+        //! equal to operator
+        bool operator == (const SvgId& id ) const
+        { return size_ == id.size_ && id_ == id.id_; }
 
-    private:
+        //! less than operator
+        bool operator < (const SvgId& id ) const
+        {
 
-    //! name
-    QString id_;
+            if( size_.width() != id.size_.width() ) return size_.width() < id.size_.width();
+            else if( size_.height() != id.size_.height() ) return size_.height() < id.size_.height();
+            else return id_ < id.id_;
 
-    //! size
-    QSize size_;
+        }
 
-  };
+        //! id
+        const QString& id( void ) const
+        { return id_; }
+
+        //! size
+        const QSize& size( void ) const
+        { return size_; }
+
+        private:
+
+        //! name
+        QString id_;
+
+        //! size
+        QSize size_;
+
+    };
 };
 
 #endif
