@@ -24,25 +24,16 @@
 *
 *******************************************************************************/
 
-/*!
-  \file SpellParser.h
-  \brief parse text and store mispelled words and locations
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QColor>
-#include <QFont>
-#include <QString>
-
-#include <map>
-
 #include "Counter.h"
 #include "Debug.h"
 #include "SpellInterface.h"
 #include "TextFormat.h"
 #include "Word.h"
+
+
+#include <QtGui/QColor>
+#include <QtGui/QFont>
+#include <QtCore/QString>
 
 namespace SPELLCHECK
 {
