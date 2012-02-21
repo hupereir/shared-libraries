@@ -26,7 +26,6 @@
 
 #include "Counter.h"
 
-#include <list>
 #include <time.h>
 
 //! time manipulation object

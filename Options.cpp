@@ -26,7 +26,6 @@
 #include "Options.h"
 
 #include <algorithm>
-#include <list>
 
 //________________________________________________
 Options::Options( bool install_default_options ):
