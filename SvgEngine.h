@@ -24,22 +24,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file SvgEngine.h
-\brief svg basic engine
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QSize>
-#include <QObject>
-
-#include <cassert>
-#include <vector>
-
 #include "SvgRenderer.h"
 #include "SvgThread.h"
+
+#include <QtCore/QSize>
+#include <QtCore/QObject>
+#include <cassert>
 
 //! svg namespace
 namespace SVG
