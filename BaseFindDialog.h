@@ -24,27 +24,17 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseFindDialog.h
-\brief find_text dialog for text editor widgets
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QAbstractButton>
-#include <QCheckBox>
-#include <QLabel>
-#include <QLayout>
-
-#include <vector>
-#include <set>
-
-
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "TextSelection.h"
+#include "QOrderedSet.h"
+
+#include <QtGui/QAbstractButton>
+#include <QtGui/QCheckBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtCore/QList>
 
 //! find_text dialog for text editor widgets
 class BaseFindDialog: public BaseDialog, public Counter
@@ -53,10 +43,10 @@ class BaseFindDialog: public BaseDialog, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        BaseFindDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
+    //! constructor
+    BaseFindDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
 
     //! retrieve editor
     virtual CustomComboBox& editor( void ) const
@@ -175,7 +165,7 @@ class BaseFindDialog: public BaseDialog, public Counter
     }
 
     //! list of disabled buttons
-    virtual std::vector<QAbstractButton*>& _disabledButtons( void )
+    virtual QList<QAbstractButton*>& _disabledButtons( void )
     { return buttons_; }
 
     private:
@@ -208,10 +198,10 @@ class BaseFindDialog: public BaseDialog, public Counter
     QPushButton* findButton_;
 
     //! list of buttons to enable/disable depending of the editor text
-    std::vector< QAbstractButton* > buttons_;
+    QList< QAbstractButton* > buttons_;
 
     //! set of previously searched strings
-    static std::set< QString >& _searchedStrings( void );
+    static QOrderedSet< QString >& _searchedStrings( void );
 
     //! notification label
     QLabel* label_;

@@ -24,19 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseReplaceDialog.h
-\brief replace_text dialog for text editor widgets
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "BaseFindDialog.h"
+
+#include <cassert>
 
 //! replace_text dialogs
 class BaseReplaceDialog: public BaseFindDialog
@@ -45,10 +37,10 @@ class BaseReplaceDialog: public BaseFindDialog
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        BaseReplaceDialog( QWidget* parent = 0, Qt::WFlags flags = 0 );
+    //! constructor
+    BaseReplaceDialog( QWidget* parent = 0, Qt::WFlags flags = 0 );
 
     //! destructor
     virtual ~BaseReplaceDialog( void );
@@ -118,7 +110,7 @@ class BaseReplaceDialog: public BaseFindDialog
     private:
 
     //! replaced strings
-    static std::set<QString>& _replacedStrings();
+    static QOrderedSet<QString>& _replacedStrings();
 
     //! add string to both combo box and static set
     void _addReplacedString( const QString& text  )

@@ -21,96 +21,87 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TreeViewConfiguration.cpp
-  \brief Configuration vbox for TreeView columns
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <cassert>
-#include <QHeaderView>
-#include <QLayout>
-#include <QPushButton>
-#include <QTextStream>
-#include <QToolTip>
+#include "TreeViewConfiguration.h"
 
 #include "Debug.h"
-#include "TreeViewConfiguration.h"
 #include "XmlOptions.h"
 
-
+#include <QtGui/QHeaderView>
+#include <QtGui/QLayout>
+#include <QtGui/QPushButton>
+#include <QtGui/QToolTip>
+#include <QtCore/QTextStream>
+#include <cassert>
 
 //____________________________________________________________________________
 TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& option_name ):
-    QGroupBox( parent ),
-    OptionWidget( option_name )
+QGroupBox( parent ),
+OptionWidget( option_name )
 {
 
-  Debug::Throw( "TreeViewConfiguration::TreeViewConfiguration.\n" );
+    Debug::Throw( "TreeViewConfiguration::TreeViewConfiguration.\n" );
 
-  // check target
-  assert( target );
+    // check target
+    assert( target );
 
-  // create vbox layout
-  setLayout( new QVBoxLayout() );
-  layout()->setMargin(5);
-  layout()->setSpacing( 2 );
+    // create vbox layout
+    setLayout( new QVBoxLayout() );
+    layout()->setMargin(5);
+    layout()->setSpacing( 2 );
 
-  // size
-  QCheckBox *checkbox;
+    // size
+    QCheckBox *checkbox;
 
-  // retrieve columns
-  QHeaderView* header( target->header() );
-  assert( header );
-  for( int index=0; index < header->count(); index++ )
-  {
+    // retrieve columns
+    QHeaderView* header( target->header() );
+    assert( header );
+    for( int index=0; index < header->count(); index++ )
+    {
 
-    // retrieve column name
-    QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
-    if( column_name.isNull() || column_name.isEmpty() )
-    { QTextStream( &column_name ) << "column " << index+1; }
+        // retrieve column name
+        QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
+        if( column_name.isNull() || column_name.isEmpty() )
+        { QTextStream( &column_name ) << "column " << index+1; }
 
-    // add checkbox
-    checkbox = new QCheckBox( column_name, this );
-    layout()->addWidget( checkbox );
-    checkbox_.push_back( checkbox );
+        // add checkbox
+        checkbox = new QCheckBox( column_name, this );
+        layout()->addWidget( checkbox );
+        checkbox_.push_back( checkbox );
 
-    // add tooltip
-    QString buffer;
-    QTextStream( &buffer ) << "Show/hide column \"" << column_name << "\"";
-    checkbox->setToolTip( buffer );
+        // add tooltip
+        QString buffer;
+        QTextStream( &buffer ) << "Show/hide column \"" << column_name << "\"";
+        checkbox->setToolTip( buffer );
 
-  }
+    }
 
 }
 
 //____________________________________________________________________________
 void TreeViewConfiguration::read( void )
 {
-  Debug::Throw( "TreeViewConfiguration::read.\n" );
+    Debug::Throw( "TreeViewConfiguration::read.\n" );
 
-  // set check button state according to the backup mask
-  unsigned int mask( XmlOptions::get().get<unsigned int>( optionName() ) );
-  for( unsigned int index = 0; index < checkbox_.size(); index++ )
-  { checkbox_[index]->setChecked( mask & (1<<index) ); }
+    // set check button state according to the backup mask
+    unsigned int mask( XmlOptions::get().get<unsigned int>( optionName() ) );
+    for( int index = 0; index < checkbox_.size(); index++ )
+    { checkbox_[index]->setChecked( mask & (1<<index) ); }
 
-  return;
+    return;
 
 }
 
 //____________________________________________________________________________
 void TreeViewConfiguration::write( void ) const
 {
-  Debug::Throw( "TreeViewConfiguration::write.\n" );
+    Debug::Throw( "TreeViewConfiguration::write.\n" );
 
-  unsigned int mask(0);
-  for( unsigned int index = 0; index < checkbox_.size(); index++ )
-  { mask |= (checkbox_[index]->isChecked() << index); }
+    unsigned int mask(0);
+    for( int index = 0; index < checkbox_.size(); index++ )
+    { mask |= (checkbox_[index]->isChecked() << index); }
 
-  XmlOptions::get().set<unsigned int>( optionName(), mask );
+    XmlOptions::get().set<unsigned int>( optionName(), mask );
 
-  return;
+    return;
 
 }

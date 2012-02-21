@@ -24,43 +24,32 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TreeViewConfiguration.h
-  \brief Configuration vbox for TreeView columns
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QGroupBox>
-#include <QCheckBox>
-#include <QTreeView>
-
-#include <cassert>
-
-#include <vector>
-
 #include "OptionWidget.h"
+
+#include <QtGui/QGroupBox>
+#include <QtGui/QCheckBox>
+#include <QtGui/QTreeView>
+#include <QtCore/QList>
 
 //! Configuration vbox for TreeView columns
 class TreeViewConfiguration: public QGroupBox, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  TreeViewConfiguration( QWidget* parent, QTreeView* target, const QString& option_name  );
+    //! constructor
+    TreeViewConfiguration( QWidget* parent, QTreeView* target, const QString& option_name  );
 
-  //! read value from option
-  void read( void );
+    //! read value from option
+    void read( void );
 
-  //! write value to option
-  void write( void ) const;
+    //! write value to option
+    void write( void ) const;
 
-  private:
+    private:
 
-  //! checkboxes
-  std::vector< QCheckBox* > checkbox_;
+    //! checkboxes
+    QList< QCheckBox* > checkbox_;
 
 };
 #endif

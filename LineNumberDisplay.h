@@ -24,23 +24,16 @@
 *
 *******************************************************************************/
 
-/*!
-  \file LineNumberDisplay.h
-  \brief display line number of a text editor
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QColor>
-#include <QFont>
-#include <QMouseEvent>
-#include <QPaintEvent>
-#include <QTextBlock>
-#include <QObject>
-
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QtGui/QColor>
+#include <QtGui/QFont>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPaintEvent>
+#include <QtGui/QTextBlock>
+#include <QtCore/QObject>
+#include <QtCore/QList>
 
 class TextEditor;
 
@@ -48,141 +41,141 @@ class TextEditor;
 class LineNumberDisplay: public QObject, public Counter
 {
 
-  //! Qt meta object
-  Q_OBJECT
+    //! Qt meta object
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  LineNumberDisplay(TextEditor*);
+        //! constructor
+        LineNumberDisplay(TextEditor*);
 
-  //! destructor
-  virtual ~LineNumberDisplay();
+    //! destructor
+    virtual ~LineNumberDisplay();
 
-  //! synchronization
-  void synchronize( LineNumberDisplay* );
+    //! synchronization
+    void synchronize( LineNumberDisplay* );
 
-  //! width
-  virtual bool updateWidth( const int& );
+    //! width
+    virtual bool updateWidth( const int& );
 
-  //! width
-  virtual const int& width( void ) const
-  { return width_; }
+    //! width
+    virtual const int& width( void ) const
+    { return width_; }
 
-  //! clear everything
-  void clear();
+    //! clear everything
+    void clear();
 
-  //! paint
-  virtual void paint( QPainter& );
+    //! paint
+    virtual void paint( QPainter& );
 
-  public slots:
+    public slots:
 
-  //! need update
-  void needUpdate( void )
-  { need_update_ = true; }
+    //! need update
+    void needUpdate( void )
+    { needsUpdate_ = true; }
 
-  private slots:
+    private slots:
 
-  //! contents changed
-  void _contentsChanged( void );
+    //! contents changed
+    void _contentsChanged( void );
 
-  //! block count changed
-  void _blockCountChanged( void );
-
-  private:
-
-  //! editor
-  TextEditor& _editor( void ) const
-  { return *editor_; }
-
-  //! map block number and position
-  class LineNumberData
-  {
-
-    public:
-
-    //! list of data
-    typedef std::vector<LineNumberData> List;
-
-    //! constructor
-    LineNumberData( const unsigned int& id = 0, const unsigned int& line_number = 0, const int& cursor = 0):
-      id_( id ),
-      line_number_( line_number ),
-      cursor_( cursor ),
-      position_( -1 ),
-      valid_( false )
-    {}
-
-    //! equal to operator
-    bool operator == (const LineNumberData& data )
-    { return id() == data.id(); }
-
-    //! id
-    const unsigned int& id( void ) const
-    { return id_; }
-
-    //! line number
-    const unsigned int& lineNumber( void ) const
-    { return line_number_; }
-
-    //! y
-    const int& cursor( void ) const
-    { return cursor_; }
-
-    //! position
-    void setPosition( const int& position )
-    {
-      valid_ = (position >= 0);
-      position_ = position;
-    }
-
-    //! position
-    const int& position( void ) const
-    { return position_; }
-
-    //! validity
-    const bool& isValid( void ) const
-    { return valid_; }
+    //! block count changed
+    void _blockCountChanged( void );
 
     private:
 
-    //! block id
-    unsigned int id_;
+    //! editor
+    TextEditor& _editor( void ) const
+    { return *editor_; }
 
-    //! line number
-    unsigned int line_number_;
+    //! map block number and position
+    class LineNumberData
+    {
 
-    //! position
-    int cursor_;
+        public:
 
-    //! position
-    int position_;
+        //! list of data
+        typedef QList<LineNumberData> List;
 
-    //! validity
-    bool valid_;
+        //! constructor
+        LineNumberData( const unsigned int& id = 0, const unsigned int& line_number = 0, const int& cursor = 0):
+            id_( id ),
+            lineNumber_( line_number ),
+            cursor_( cursor ),
+            position_( -1 ),
+            valid_( false )
+        {}
 
-  };
+        //! equal to operator
+        bool operator == (const LineNumberData& data )
+        { return id() == data.id(); }
 
-  //! update line number data
-  void _updateLineNumberData( void );
+        //! id
+        const unsigned int& id( void ) const
+        { return id_; }
 
-  //! update invalid data
-  void _updateLineNumberData( QTextBlock&, unsigned int&, LineNumberData& ) const;
+        //! line number
+        const unsigned int& lineNumber( void ) const
+        { return lineNumber_; }
 
-  //! associated editor
-  TextEditor* editor_;
+        //! y
+        const int& cursor( void ) const
+        { return cursor_; }
 
-  //! true when line number data update is needed
-  bool need_update_;
+        //! position
+        void setPosition( const int& position )
+        {
+            valid_ = (position >= 0);
+            position_ = position;
+        }
 
-  //! width
-  int width_;
+        //! position
+        const int& position( void ) const
+        { return position_; }
 
-  //! line number data
-  LineNumberData::List line_number_data_;
+        //! validity
+        const bool& isValid( void ) const
+        { return valid_; }
 
-  //! current block data
-  LineNumberData current_block_data_;
+        private:
+
+        //! block id
+        unsigned int id_;
+
+        //! line number
+        unsigned int lineNumber_;
+
+        //! position
+        int cursor_;
+
+        //! position
+        int position_;
+
+        //! validity
+        bool valid_;
+
+    };
+
+    //! update line number data
+    void _updateLineNumberData( void );
+
+    //! update invalid data
+    void _updateLineNumberData( QTextBlock&, unsigned int&, LineNumberData& ) const;
+
+    //! associated editor
+    TextEditor* editor_;
+
+    //! true when line number data update is needed
+    bool needsUpdate_;
+
+    //! width
+    int width_;
+
+    //! line number data
+    LineNumberData::List lineNumberData_;
+
+    //! current block data
+    LineNumberData currentBlockData_;
 
 };
 

@@ -37,9 +37,9 @@
 #include "BaseReplaceDialog.h"
 
 //________________________________________________________________________
-std::set<QString>& BaseReplaceDialog::_replacedStrings()
+QOrderedSet<QString>& BaseReplaceDialog::_replacedStrings()
 {
-    static std::set<QString> strings;
+    static QOrderedSet<QString> strings;
     return strings;
 }
 
@@ -149,7 +149,7 @@ void BaseReplaceDialog::synchronize( void )
 
     // replace editor
     _replaceEditor().clear();
-    for( std::set<QString>::iterator iter = _replacedStrings().begin(); iter != _replacedStrings().end(); ++iter )
+    for( QOrderedSet<QString>::iterator iter = _replacedStrings().begin(); iter != _replacedStrings().end(); ++iter )
     { _replaceEditor().addItem( *iter ); }
 
     // clear replace combobox text

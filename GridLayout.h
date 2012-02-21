@@ -23,19 +23,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file GridLayout.h
-\brief Customized grid layout with fixed number of column + orientation
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-#include <vector>
-#include <QGridLayout>
 
 #include "Counter.h"
+
+#include <QtGui/QGridLayout>
+#include <QtCore/QVector>
+#include <cassert>
 
 class GridLayout: public QGridLayout, public Counter
 {
@@ -53,7 +46,7 @@ class GridLayout: public QGridLayout, public Counter
     {}
 
     //! column alignments
-    typedef std::vector<Qt::Alignment> AlignmentList;
+    typedef QVector<Qt::Alignment> AlignmentList;
 
     //! set columns
     void setMaxCount( const int& max_count )

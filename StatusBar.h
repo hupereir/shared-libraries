@@ -24,15 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file StatusBar.h
-\brief status bar
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
 #include "AnimatedLabel.h"
 #include "Counter.h"
 
@@ -40,8 +31,9 @@
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QStatusBar>
 
+#include <QtCore/QList>
 #include <cassert>
-#include <vector>
+
 
 //! local label for additional slots
 class StatusBarLabel: public AnimatedLabel
@@ -96,7 +88,7 @@ class StatusBar: public QStatusBar, public Counter
     { for( unsigned int i=0; i<n; i++ ) addLabel( stretch, animated ); }
 
     //! retrieves label with given index
-    virtual StatusBarLabel& label( const unsigned int& i = 0  ) const
+    virtual StatusBarLabel& label( int i = 0  ) const
     {
         assert( i < labels_.size() );
         return *labels_[i];
@@ -110,7 +102,7 @@ class StatusBar: public QStatusBar, public Counter
     private:
 
     //! vector of output labels.
-    std::vector< StatusBarLabel* > labels_;
+    QList< StatusBarLabel* > labels_;
 
 };
 

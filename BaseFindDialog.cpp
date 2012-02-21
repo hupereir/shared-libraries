@@ -39,9 +39,9 @@
 #include "BaseFindDialog.h"
 
 //________________________________________________________________________
-std::set<QString>& BaseFindDialog::_searchedStrings( void )
+QOrderedSet<QString>& BaseFindDialog::_searchedStrings( void )
 {
-    static std::set<QString> strings;
+    static QOrderedSet<QString> strings;
     return strings;
 }
 
@@ -80,18 +80,18 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
     connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( void ) ) );
 
     // locations
-    GridLayout* grid_layout( new GridLayout() );
-    grid_layout->setSpacing( 5 );
-    grid_layout->setMargin( 0 );
-    grid_layout->setMaxCount( 2 );
+    GridLayout* gridLayout( new GridLayout() );
+    gridLayout->setSpacing( 5 );
+    gridLayout->setMargin( 0 );
+    gridLayout->setMaxCount( 2 );
 
-    layout()->addItem( grid_layout );
+    layout()->addItem( gridLayout );
 
     // insert checkboxes
-    grid_layout->addWidget( backwardCheckbox_ = new QCheckBox( "&Search backward", this ) );
-    grid_layout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( "&Case sensitive", this ) );
-    grid_layout->addWidget( regexpCheckbox_ = new QCheckBox( "&Regular expresion", this ) );
-    grid_layout->addWidget( entireWordCheckbox_ = new QCheckBox( "&Entire word", this ) );
+    gridLayout->addWidget( backwardCheckbox_ = new QCheckBox( "&Search backward", this ) );
+    gridLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( "&Case sensitive", this ) );
+    gridLayout->addWidget( regexpCheckbox_ = new QCheckBox( "&Regular expresion", this ) );
+    gridLayout->addWidget( entireWordCheckbox_ = new QCheckBox( "&Entire word", this ) );
     connect( regexpCheckbox_, SIGNAL( toggled( bool ) ), SLOT( _regExpChecked( bool ) ) );
 
     // tooltips
@@ -141,13 +141,11 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
 //________________________________________________________________________
 void BaseFindDialog::synchronize( void )
 {
-
     Debug::Throw( "BaseFindDialog::synchronize.\n" );
     editor().clear();
 
-    for( std::set<QString>::iterator iter = _searchedStrings().begin(); iter != _searchedStrings().end(); ++iter )
+    for( QOrderedSet<QString>::iterator iter = _searchedStrings().begin(); iter != _searchedStrings().end(); ++iter )
     { editor().addItem( *iter ); }
-
 }
 
 //________________________________________________________________________
@@ -178,7 +176,7 @@ void BaseFindDialog::_updateButtons( const QString& text )
 
     bool enabled( !( text.isNull() || text.isEmpty() ) );
 
-    for( std::vector< QAbstractButton* >::iterator iter = _disabledButtons().begin(); iter != _disabledButtons().end(); ++iter )
+    for( QList< QAbstractButton* >::iterator iter = _disabledButtons().begin(); iter != _disabledButtons().end(); ++iter )
     { (*iter)->setEnabled( enabled ); }
 
     Debug::Throw( "BaseFindDialog::_updateButtons - done.\n" );
