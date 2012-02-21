@@ -55,23 +55,29 @@ void ScratchFileMonitor::deleteScratchFiles( void )
     ScratchFileRemoveDialog dialog( 0L, records );
     if( dialog.exec() == QDialog::Rejected  || ( records = dialog.selectedFiles() ).empty() ) return;
 
-    // convert back to std::set
+    // convert back to QSet
     FileSet temp;
-    FileRecordModel::ListIterator iter( records );
-    iter.toBack();
-    while( iter.hasPrevious() )
-    { temp.insert( iter.previous().file() ); }
+    {
+        FileRecordModel::ListIterator iter( records );
+        iter.toBack();
+        while( iter.hasPrevious() )
+        { temp.insert( iter.previous().file() ); }
+    }
 
     // re-add directories
     for( FileSet::const_iterator iter = files_.begin(); iter != files_.end(); iter++ )
     { if( iter->isDirectory() && !iter->isLink() ) temp.insert( *iter ); }
 
     // remove
-    // use backward iterator
-    for( FileSet::const_reverse_iterator iter = temp.rbegin(); iter != temp.rend(); iter++ )
     {
-        iter->remove();
-        files_.erase( *iter );
+        FileSetIterator iter( temp );
+        iter.toBack();
+        while( iter.hasPrevious() )
+        {
+            const File& file( iter.previous() );
+            file.remove();
+            files_.remove( file );
+        }
     }
 
 }

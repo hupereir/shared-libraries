@@ -24,19 +24,10 @@
 *
 *******************************************************************************/
 
-/*!
-  \file ScrollObject.h
-  \brief implements smooth scrolling on scroll area
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
+#include <QtGui/QAbstractScrollArea>
+#include <QtCore/QTimeLine>
+#include <QtCore/QSet>
 #include <cassert>
-#include <set>
-
-#include <QAbstractScrollArea>
-#include <QTimeLine>
 
 #include "Counter.h"
 
@@ -169,7 +160,7 @@ class ScrollObject: public QObject, public Counter
   QAbstractScrollArea* target_;
 
   //! set of captured objects
-  typedef std::set<QObject*> ObjectSet;
+  typedef QSet<QObject*> ObjectSet;
 
   //! set of captured objects
   ObjectSet targets_;

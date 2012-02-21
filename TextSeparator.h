@@ -24,54 +24,46 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TextSeparator.h
-  \brief separators between words
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <set>
-#include <QString>
+#include <QtCore/QSet>
+#include <QtCore/QString>
 
 //! text separator between words
 class TextSeparator
 {
 
-  public:
+    public:
 
-  //! shortcut to set of separators
-  typedef std::set< QChar > SeparatorSet;
+    //! shortcut to set of separators
+    typedef QSet< QChar > SeparatorSet;
 
-  //! return singleton
-  static const TextSeparator& get( void );
+    //! return singleton
+    static const TextSeparator& get( void );
 
-  //! retrieve base separators
-  const SeparatorSet& base() const
-  { return base_separators_; }
+    //! retrieve base separators
+    const SeparatorSet& base() const
+    { return baseSeparators_; }
 
-  //! retrieve base separators
-  const SeparatorSet& extended() const
-  { return extended_separators_; }
+    //! retrieve base separators
+    const SeparatorSet& extended() const
+    { return extendedSeparators_; }
 
-  //! retrieve all separators
-  const SeparatorSet& all() const
-  { return separators_; }
+    //! retrieve all separators
+    const SeparatorSet& all() const
+    { return separators_; }
 
-  private:
+    private:
 
-  //! constructor
-  TextSeparator( void );
+    //! constructor
+    TextSeparator( void );
 
-  //! base separators (space, tab, end of line)
-  SeparatorSet base_separators_;
+    //! base separators (space, tab, end of line)
+    SeparatorSet baseSeparators_;
 
-  //! extended separators (brackets, parenthesis, quotes, etc.)
-  SeparatorSet extended_separators_;
+    //! extended separators (brackets, parenthesis, quotes, etc.)
+    SeparatorSet extendedSeparators_;
 
-  //! all separators
-  SeparatorSet separators_;
+    //! all separators
+    SeparatorSet separators_;
 
 };
 

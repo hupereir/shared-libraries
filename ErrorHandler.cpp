@@ -23,7 +23,7 @@
 
 /*!
   \file ErrorHandler.cpp
-  \brief Customized Qt error handler. Messages in the disabled_messages_ list
+  \brief Customized Qt error handler. Messages in the disabledMessages_ list
   are skipped.
   \author Hugo Pereira
   \version $Revision$
@@ -35,8 +35,6 @@
 
 #include "ErrorHandler.h"
 #include "Debug.h"
-
-
 
 //_____________________________________________________________
 ErrorHandler& ErrorHandler::get( void )

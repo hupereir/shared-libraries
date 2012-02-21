@@ -1,3 +1,6 @@
+#ifndef ErrorHandler_h
+#define ErrorHandler_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,67 +24,53 @@
 *
 *******************************************************************************/
 
-#ifndef ErrorHandler_h
-#define ErrorHandler_h
+#include <QtGui/QApplication>
+#include <QtCore/QStringList>
 
 /*!
-  \file ErrorHandler.h
-  \brief Customized Qt error handler. Messages in the disabled_messages_ list
-  are skipped.
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QApplication>
-
-
-#include <list>
-
-/*!
-  \class ErrorHandler
-  \brief Customized Qt error handler. Messages in the disabled_messages_ list
-  are skipped.
+\class ErrorHandler
+\brief Customized Qt error handler. Messages in the disabledMessages_ list
+are skipped.
 */
 
 class ErrorHandler
 {
 
-  public:
+    public:
 
-  //! check/display Qt error messages
-  static void Throw( QtMsgType type, const char* message );
+    //! check/display Qt error messages
+    static void Throw( QtMsgType type, const char* message );
 
-  //! singleton
-  static ErrorHandler& get( void );
+    //! singleton
+    static ErrorHandler& get( void );
 
-  //! adds a disabled message in the list
-  void disableMessage( const QString& message )
-  { disabled_messages_.push_back( message ); }
+    //! adds a disabled message in the list
+    void disableMessage( const QString& message )
+    { disabledMessages_.push_back( message ); }
 
-  //! adds a disabled message in the list
-  void clearDisabledMessages( void )
-  { disabled_messages_.clear(); }
+    //! adds a disabled message in the list
+    void clearDisabledMessages( void )
+    { disabledMessages_.clear(); }
 
-  //! exit
-  void exit( void ) const
-  {}
+    //! exit
+    void exit( void ) const
+    {}
 
-  protected:
+    protected:
 
-  //! constructor
-  ErrorHandler( void );
+    //! constructor
+    ErrorHandler( void );
 
-  typedef std::list< QString > MessageList;
+    typedef QStringList MessageList;
 
-  //! disabled message
-  const MessageList& _disabledMessages( void ) const
-  { return disabled_messages_; }
+    //! disabled message
+    const MessageList& _disabledMessages( void ) const
+    { return disabledMessages_; }
 
-  private:
+    private:
 
-  //! all messages containing one of the string in the list are not displayed
-  std::list< QString > disabled_messages_;
+    //! all messages containing one of the string in the list are not displayed
+    MessageList disabledMessages_;
 
 };
 

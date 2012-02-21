@@ -20,42 +20,29 @@
 *
 *******************************************************************************/
 
-
-/*!
-  \file TextSeparator.cpp
-  \brief separators between words
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-
-
 #include "TextSeparator.h"
-
-
 
 //___________________________________
 const TextSeparator& TextSeparator::get( void )
 {
-  static TextSeparator singleton;
-  return singleton;
+    static TextSeparator singleton;
+    return singleton;
 }
 
 //___________________________________
 TextSeparator::TextSeparator( void )
 {
 
-  // initialize separator
-  const QString base_separators( " \t\n" );
-  for( int i=0; i< base_separators.size(); i++ )
-  base_separators_.insert( base_separators[i] );
+    // initialize separator
+    const QString base_separators( " \t\n" );
+    for( int i=0; i< base_separators.size(); i++ )
+    { baseSeparators_.insert( base_separators[i] ); }
 
-  const QString extended_separators( ",;.:?!&+-=*/|-()'`{}[]<>\"\\%" );
-  for( int i=0; i< extended_separators.size(); i++ )
-  extended_separators_.insert( extended_separators[i] );
+    const QString extended_separators( ",;.:?!&+-=*/|-()'`{}[]<>\"\\%" );
+    for( int i=0; i< extended_separators.size(); i++ )
+        extendedSeparators_.insert( extended_separators[i] );
 
-  separators_ = base_separators_;
-  separators_.insert( extended_separators_.begin(), extended_separators_.end() );
+    separators_ = baseSeparators_;
+    separators_.unite( extendedSeparators_ );
 
 }

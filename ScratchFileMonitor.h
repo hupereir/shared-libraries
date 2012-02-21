@@ -26,9 +26,9 @@
 
 #include "Counter.h"
 #include "File.h"
+#include "QOrderedSet.h"
 
 #include <QtCore/QObject>
-#include <set>
 
 //! used to automatically
 class ScratchFileMonitor: public QObject, public Counter
@@ -58,7 +58,8 @@ class ScratchFileMonitor: public QObject, public Counter
 
     private:
 
-    typedef std::set<File> FileSet;
+    typedef QOrderedSet<File> FileSet;
+    typedef QOrderedSetIterator<File> FileSetIterator;
     FileSet files_;
 
 };

@@ -24,20 +24,11 @@
 *
 *******************************************************************************/
 
-
-/*!
-   \file XmlError.h
-   \brief Xml parsing error container
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <list>
-#include <QString>
-#include <QTextStream>
-
 #include "Counter.h"
+
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+#include <QtCore/QList>
 
 //! Xml parsing error container
 class XmlError: public Counter
@@ -55,7 +46,7 @@ class XmlError: public Counter
   {}
 
   //! shortcut to list of errors
-  typedef std::list< XmlError > List;
+  typedef QList< XmlError > List;
 
   //! cast to boolean
   operator bool(void) const
