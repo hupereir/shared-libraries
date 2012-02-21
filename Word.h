@@ -23,81 +23,73 @@
 *
 *******************************************************************************/
 
-/*!
-   \file Word.h
-   \brief keep track of misspelled words in text
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <set>
 #include "TextPosition.h"
+#include <QtCore/QSet>
 
 namespace SPELLCHECK
 {
-  //! keep track of misspelled words in text
-  class Word: public QString
-  {
-    public:
-
-    //! shortcut for set
-    typedef std::set<Word> Set;
-
-    //! constructor
-    Word( const QString& word = "", const int& position = 0 ):
-        QString( word ),
-        position_( position )
-    {}
-
-    //! equal to operator
-    bool operator == ( const Word& word ) const
-    { return position_ == word.position_; }
-
-    //! less than to operator
-    bool operator < ( const Word& word ) const
-    { return position_ < word.position_; }
-
-    //! position
-    const int& position( void ) const
-    { return position_; }
-
-    //! true if given position is in the selected word
-    bool has( const int& position ) const
+    //! keep track of misspelled words in text
+    class Word: public QString
     {
-      return
-        position >= position_ &&
-        position < position_+static_cast<int>(size());
-    }
+        public:
 
-    //! returns true if Word is find at position
-    class AtPositionFTor
-    {
+        //! shortcut for set
+        typedef QSet<Word> Set;
 
-      public:
+        //! constructor
+        Word( const QString& word = "", const int& position = 0 ):
+            QString( word ),
+            position_( position )
+        {}
 
-      //! constructor
-      AtPositionFTor( const int& position ):
-          position_( position )
-      {}
+        //! equal to operator
+        bool operator == ( const Word& word ) const
+        { return position_ == word.position_; }
 
-      //! predicate
-      bool operator() (const Word& word )
-      { return word.has( position_ ); }
+        //! less than to operator
+        bool operator < ( const Word& word ) const
+        { return position_ < word.position_; }
 
-      private:
+        //! position
+        const int& position( void ) const
+        { return position_; }
 
-      //! predicate position
-      const int position_;
+        //! true if given position is in the selected word
+        bool has( const int& position ) const
+        {
+            return
+                position >= position_ &&
+                position < position_+static_cast<int>(size());
+        }
+
+        //! returns true if Word is find at position
+        class AtPositionFTor
+        {
+
+            public:
+
+            //! constructor
+            AtPositionFTor( const int& position ):
+                position_( position )
+            {}
+
+            //! predicate
+            bool operator() (const Word& word )
+            { return word.has( position_ ); }
+
+            private:
+
+            //! predicate position
+            const int position_;
+
+        };
+
+        private:
+
+        //! position in text
+        const int position_;
 
     };
-
-    private:
-
-    //! position in text
-    const int position_;
-
-  };
 }
 
 #endif
