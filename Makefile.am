@@ -22,6 +22,7 @@ noinst_HEADERS = \
 	Key.h \
 	Option.h \
 	Options.h \
+	QOrderedSet.h \
 	Str.h \
 	Singleton.h \
 	TextFormat.h \
