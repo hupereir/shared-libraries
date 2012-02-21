@@ -53,7 +53,7 @@ namespace SERVER
     public:
 
     //! client list
-    typedef std::list< Client* > List;
+    typedef QList< Client* > List;
 
     //! constructor
     Client( QObject* parent, QTcpSocket* socket );
@@ -160,7 +160,7 @@ namespace SERVER
     QTcpSocket* socket_;
 
     //! messages
-    typedef std::list< ServerCommand > CommandList;
+    typedef QList< ServerCommand > CommandList;
 
     //! commands
     CommandList commands_;

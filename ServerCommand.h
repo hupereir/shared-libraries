@@ -78,7 +78,7 @@ namespace SERVER
     };
 
     //! list
-    typedef std::list<ServerCommand> List;
+    typedef QList<ServerCommand> List;
 
     //! constructor
     ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = NONE );
