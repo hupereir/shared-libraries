@@ -24,7 +24,6 @@
 #include "PrintPreviewDialog.h"
 #include "PrintPreviewDialog_p.h"
 
-#include "BasePrintHelper.h"
 #include "Debug.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
@@ -250,7 +249,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
 }
 
 //_________________________________________________________________
-void PrintPreviewDialog::setHelper( BasePrintHelper& helper )
+void PrintPreviewDialog::setHelper( QObject& helper )
 {
     Debug::Throw( "PrintPreviewDialog::setHelper.\n" );
     connect( previewWidget_, SIGNAL( paintRequested( QPrinter* ) ), &helper, SLOT( print( QPrinter* ) ) );

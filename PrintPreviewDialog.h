@@ -31,8 +31,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QIntValidator>
 
-class BasePrintHelper;
-
 namespace PRINT
 { class NavigationWidget; }
 
@@ -51,7 +49,7 @@ class PrintPreviewDialog: public BaseDialog
     {}
 
     // set print helper
-    void setHelper( BasePrintHelper& );
+    void setHelper( QObject& );
 
     protected slots:
 
