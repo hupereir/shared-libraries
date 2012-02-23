@@ -48,8 +48,12 @@ class PrintPreviewDialog: public BaseDialog
     virtual ~PrintPreviewDialog( void )
     {}
 
-    // set print helper
+    //! set print helper
     void setHelper( QObject& );
+
+    //! return preview widget
+    QPrintPreviewWidget& previewWidget( void ) const
+    { return *previewWidget_; }
 
     protected slots:
 
