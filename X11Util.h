@@ -34,6 +34,7 @@
 
 #include <QtGui/QWidget>
 #include <QtCore/QHash>
+#include <QtCore/QMap>
 
 #if defined(Q_WS_X11)
 #include <QtGui/QX11Info>
