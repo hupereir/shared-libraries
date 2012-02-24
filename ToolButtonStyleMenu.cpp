@@ -37,41 +37,44 @@ Counter( "ToolButtonStyleMenu" )
     connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
 
     // install values
-    typedef QList< QPair<QString, Qt::ToolButtonStyle > > List;
+    typedef QPair<QString, int > NamePair;
+    typedef QList< NamePair > List;
     List actionNames;
     actionNames
-        << QPair<QString, Qt::ToolButtonStyle >( "&Icons Only", Qt::ToolButtonIconOnly )
-        << QPair<QString, Qt::ToolButtonStyle >( "&Text Only", Qt::ToolButtonTextOnly )
-        << QPair<QString, Qt::ToolButtonStyle >( "Text &Alongside icons", Qt::ToolButtonTextBesideIcon )
-        << QPair<QString, Qt::ToolButtonStyle >( "Text &Under icons", Qt::ToolButtonTextUnderIcon );
+        << NamePair( "System Default", -1 )
+        << NamePair( "Icons Only", Qt::ToolButtonIconOnly )
+        << NamePair( "Text Only", Qt::ToolButtonTextOnly )
+        << NamePair( "Text Alongside icons", Qt::ToolButtonTextBesideIcon )
+        << NamePair( "Text Under icons", Qt::ToolButtonTextUnderIcon );
 
     // generic action
-    for( List::const_iterator iter = actionNames.begin(); iter != actionNames.end(); ++iter )
+    foreach( const NamePair& namePair, actionNames )
     {
-        QAction* action = new QAction( iter->first, this );
+        QAction* action = new QAction( namePair.first, this );
         addAction( action );
         action->setCheckable( true );
-        actions_.insert( action, iter->second );
+        actions_.insert( action, namePair.second );
         group->addAction( action );
     }
 
 }
 
 //_____________________________________________________________________________
-void ToolButtonStyleMenu::select( Qt::ToolButtonStyle size )
+void ToolButtonStyleMenu::select( int style )
 {
 
-    Debug::Throw( "ToolButtonStyleMenu::select.\n" );
+    Debug::Throw() << "ToolButtonStyleMenu::select - style: " << style << endl;
     for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
-        if( iter.value() == size )
+        if( iter.value() == style )
         {
             iter.key()->setChecked( true );
             return;
         }
     }
 
-    assert(0);
+    assert(false);
+
 }
 
 //_____________________________________________________________________________

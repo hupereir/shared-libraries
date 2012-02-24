@@ -69,11 +69,11 @@ IconSize::Map& IconSize::map( void )
     static Map sizeMap;
     if( sizeMap.empty() )
     {
-        sizeMap.insert( Default, "&Default" );
-        sizeMap.insert( Small, "&Small (16x16)" );
-        sizeMap.insert( Medium, "&Medium (22x22)" );
-        sizeMap.insert( Large, "&Large (32x32)" );
-        sizeMap.insert( Huge, "&Huge (48x48)" );
+        sizeMap.insert( Default, "System Default" );
+        sizeMap.insert( Small, "Small (16x16)" );
+        sizeMap.insert( Medium, "Medium (22x22)" );
+        sizeMap.insert( Large, "Large (32x32)" );
+        sizeMap.insert( Huge, "Huge (48x48)" );
     }
 
     return sizeMap;

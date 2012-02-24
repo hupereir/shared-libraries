@@ -42,12 +42,15 @@ class ToolButtonStyleMenu: public QMenu, public Counter
     ToolButtonStyleMenu( QWidget* parent = 0 );
 
     //! select size
-    void select( Qt::ToolButtonStyle );
+    void select( int );
 
     signals:
 
+    //! emmitted when default size is selected
+    void defaultStyleSelected( void );
+
     //! emmitted when a new size is selected
-    void styleSelected( Qt::ToolButtonStyle );
+    void styleSelected( int );
 
     private slots:
 
@@ -57,7 +60,7 @@ class ToolButtonStyleMenu: public QMenu, public Counter
     private:
 
     //! action map
-    typedef QMap< QAction*, Qt::ToolButtonStyle > ActionMap;
+    typedef QMap< QAction*, int > ActionMap;
 
     //! toolbar text action map
     ActionMap actions_;

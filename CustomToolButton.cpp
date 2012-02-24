@@ -21,20 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file CustomToolButton.cpp
-  \brief customized tool button to display tooltip in a dedicated label
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QIcon>
-#include <QPixmap>
-#include <QStylePainter>
-#include <QStyleOptionToolButton>
-
-
 
 #include "CustomToolButton.h"
 #include "IconEngine.h"
@@ -42,109 +28,117 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-
+#include <QtGui/QIcon>
+#include <QtGui/QPixmap>
+#include <QtGui/QStylePainter>
+#include <QtGui/QStyleOptionToolButton>
 
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( QWidget* parent ):
-    QToolButton( parent ),
-    Counter( "CustomToolButton" ),
-    update_from_options_( true ),
-    rotation_( NONE )
+QToolButton( parent ),
+Counter( "CustomToolButton" ),
+updateFromOptions_( true ),
+rotation_( NONE )
 {
 
-  Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
+    Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
 
-  // auto-raise
-  setAutoRaise( true );
+    // auto-raise
+    setAutoRaise( true );
 
-  // configuration
-  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-  _updateConfiguration();
+    // configuration
+    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    _updateConfiguration();
 
 }
 
 //______________________________________________________________________
 bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
 {
-  Debug::Throw( "CustomToolButton::rotate.\n" );
-  if( rotation_ == value ) return false;
+    Debug::Throw( "CustomToolButton::rotate.\n" );
+    if( rotation_ == value ) return false;
 
-  // rotate icon if any
-  CustomPixmap pixmap( icon().pixmap( IconSize::Large, QIcon::Normal ) );
-  if( !pixmap.isNull() )
-  {
+    // rotate icon if any
+    CustomPixmap pixmap( icon().pixmap( IconSize::Large, QIcon::Normal ) );
+    if( !pixmap.isNull() )
+    {
 
-    // clockwise rotations
-    if( ( rotation_ == NONE && value == COUNTERCLOCKWISE ) || ( rotation_ == CLOCKWISE && value == NONE ) )
-    { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::CLOCKWISE ) ) ); }
+        // clockwise rotations
+        if( ( rotation_ == NONE && value == COUNTERCLOCKWISE ) || ( rotation_ == CLOCKWISE && value == NONE ) )
+        { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::CLOCKWISE ) ) ); }
 
-    if( ( rotation_ == NONE && value == CLOCKWISE ) || ( rotation_ == COUNTERCLOCKWISE && value == NONE ) )
-    { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::COUNTERCLOCKWISE ) ) ); }
+        if( ( rotation_ == NONE && value == CLOCKWISE ) || ( rotation_ == COUNTERCLOCKWISE && value == NONE ) )
+        { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::COUNTERCLOCKWISE ) ) ); }
 
-  } else { Debug::Throw(0) << "CustomToolButton::rotate - null pixmap." << endl; }
+    } else { Debug::Throw(0) << "CustomToolButton::rotate - null pixmap." << endl; }
 
-  rotation_ = value;
-  return true;
+    rotation_ = value;
+    return true;
 }
 
 //______________________________________________________________________
 QSize CustomToolButton::sizeHint( void ) const
 {  QSize size( QToolButton::sizeHint() );
-  if( _rotation() != NONE ) size.transpose();
-  return size;
+if( _rotation() != NONE ) size.transpose();
+return size;
 }
 
 //______________________________________________________________________
 void CustomToolButton::paintEvent( QPaintEvent* event )
 {
 
-  // default implementation if not rotated
-  if( _rotation() == NONE ) return QToolButton::paintEvent( event );
+    // default implementation if not rotated
+    if( _rotation() == NONE ) return QToolButton::paintEvent( event );
 
-  // rotated paint
-  QStylePainter painter(this);
-  QStyleOptionToolButton option;
-  initStyleOption(&option);
+    // rotated paint
+    QStylePainter painter(this);
+    QStyleOptionToolButton option;
+    initStyleOption(&option);
 
-  // first draw normal frame and not text/icon
-  option.text = QString();
-  option.icon = QIcon();
-  painter.drawComplexControl(QStyle::CC_ToolButton, option);
+    // first draw normal frame and not text/icon
+    option.text = QString();
+    option.icon = QIcon();
+    painter.drawComplexControl(QStyle::CC_ToolButton, option);
 
-  // rotate the options
-  QSize size( option.rect.size() );
-  size.transpose();
-  option.rect.setSize( size );
+    // rotate the options
+    QSize size( option.rect.size() );
+    size.transpose();
+    option.rect.setSize( size );
 
-  // rotate the painter
-  if( _rotation() == COUNTERCLOCKWISE )
-  {
-    painter.translate( 0, height() );
-    painter.rotate( -90 );
-  } else {
-    painter.translate( width(), 0 );
-    painter.rotate( 90 );
-  }
+    // rotate the painter
+    if( _rotation() == COUNTERCLOCKWISE )
+    {
+        painter.translate( 0, height() );
+        painter.rotate( -90 );
+    } else {
+        painter.translate( width(), 0 );
+        painter.rotate( 90 );
+    }
 
-  // paint text and icon
-  option.text = text();
-  option.icon = icon();
-  painter.drawControl(QStyle::CE_ToolButtonLabel, option);
-  painter.end();
+    // paint text and icon
+    option.text = text();
+    option.icon = icon();
+    painter.drawControl(QStyle::CE_ToolButtonLabel, option);
+    painter.end();
 
-  return;
+    return;
 }
 
 //_________________________________________________________________
 void CustomToolButton::_updateConfiguration( void )
 {
-  Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
+    Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
 
-  if( !_updateFromOptions() ) return;
+    if( !_updateFromOptions() ) return;
 
-  setIconSize( IconSize( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
-  setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+    if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+    setIconSize( QSize( iconSize, iconSize ) );
 
-  adjustSize();
+    const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    if( toolButtonTextPosition < 0 ) setToolButtonStyle( (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
+    else setToolButtonStyle( (Qt::ToolButtonStyle) toolButtonTextPosition );
+
+    adjustSize();
 
 }

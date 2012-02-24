@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomToolBar.cpp
-\brief customized tool bar to handle position and visibility from Options
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "BaseMainWindow.h"
 #include "CustomToolBar.h"
 #include "CustomToolButton.h"
@@ -130,13 +122,15 @@ void CustomToolBar::_updateConfiguration( void )
     // pixmap size
     if( sizeFromOptions() )
     {
-        int icon_size( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-        if( icon_size <= 0 ) icon_size = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
-        QToolBar::setIconSize( QSize( icon_size, icon_size ) );
+        int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+        if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+        QToolBar::setIconSize( QSize( iconSize, iconSize ) );
     }
 
     // text label for toolbars
-    setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    if( toolButtonTextPosition < 0 ) setToolButtonStyle(  (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
+    else setToolButtonStyle(  (Qt::ToolButtonStyle) toolButtonTextPosition );
 
     // lock
     if( lockFromOptions() ) {

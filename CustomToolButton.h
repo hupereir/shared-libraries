@@ -33,66 +33,66 @@
 #include <QtGui/QToolButton>
 
 /*!
-  \class CustomToolButton
-  \brief customized tool button to display tooltip in a dedicated label
+\class CustomToolButton
+\brief customized tool button to display tooltip in a dedicated label
 */
 class CustomToolButton: public QToolButton, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! default creator
-  CustomToolButton( QWidget* parent = 0 );
+    //! default creator
+    CustomToolButton( QWidget* parent = 0 );
 
-  //! destructor
-  virtual ~CustomToolButton( void )
-  { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }
+    //! destructor
+    virtual ~CustomToolButton( void )
+    { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }
 
-  //! update configuration from options
-  void setUpdateFromOptions( const bool& value )
-  { update_from_options_ = value; }
+    //! update configuration from options
+    void setUpdateFromOptions( const bool& value )
+    { updateFromOptions_ = value; }
 
-  //! rotation
-  enum Rotation
-  {
-    NONE,
-    CLOCKWISE,
-    COUNTERCLOCKWISE
-  };
+    //! rotation
+    enum Rotation
+    {
+        NONE,
+        CLOCKWISE,
+        COUNTERCLOCKWISE
+    };
 
-  //! rotation
-  bool rotate( const Rotation& );
+    //! rotation
+    bool rotate( const Rotation& );
 
-  //! size hint
-  virtual QSize sizeHint( void ) const;
+    //! size hint
+    virtual QSize sizeHint( void ) const;
 
-  protected:
+    protected:
 
-  //! painting
-  virtual void paintEvent( QPaintEvent* );
+    //! painting
+    virtual void paintEvent( QPaintEvent* );
 
-  private slots:
+    private slots:
 
-  //! tool button configuration
-  void _updateConfiguration( void );
+    //! tool button configuration
+    void _updateConfiguration( void );
 
-  private:
+    private:
 
-  //! rotation
-  const Rotation& _rotation( void ) const
-  { return rotation_; }
+    //! rotation
+    const Rotation& _rotation( void ) const
+    { return rotation_; }
 
-  //! update configuration from options
-  const bool& _updateFromOptions( void ) const
-  { return update_from_options_; }
+    //! update configuration from options
+    const bool& _updateFromOptions( void ) const
+    { return updateFromOptions_; }
 
-  //! update configuration from options
-  bool update_from_options_;
+    //! update configuration from options
+    bool updateFromOptions_;
 
-  //! rotation
-  Rotation rotation_;
+    //! rotation
+    Rotation rotation_;
 
 };
 

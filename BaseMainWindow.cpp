@@ -185,9 +185,9 @@ QMenu* BaseMainWindow::createPopupMenu( void )
     } else {
 
         ToolBarMenu& menu = toolBarMenu( this );
-        menu.toolButtonStyleMenu().select( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+        menu.toolButtonStyleMenu().select( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
         menu.iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-        connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( Qt::ToolButtonStyle ) ), SLOT( _updateToolButtonStyle( Qt::ToolButtonStyle ) ) );
+        connect( &menu.toolButtonStyleMenu(), SIGNAL( styleSelected( int ) ), SLOT( _updateToolButtonStyle( int ) ) );
         connect( &menu.iconSizeMenu(), SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateToolButtonIconSize( IconSize::Size ) ) );
         return &menu;
 
@@ -355,10 +355,14 @@ void BaseMainWindow::_updateConfiguration( void )
     Debug::Throw( "BaseMainWindow::_updateConfiguration.\n" );
 
     // icon size
-    setIconSize( IconSize( this, (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) ) );
+    int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+    if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
+    setIconSize( QSize( iconSize, iconSize ) );
 
     // text label for toolbars
-    setToolButtonStyle( (Qt::ToolButtonStyle) XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    if( toolButtonTextPosition < 0 ) setToolButtonStyle(  (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
+    else setToolButtonStyle(  (Qt::ToolButtonStyle) toolButtonTextPosition );
 
     // toolbars locked
     if( hasOptionName() )
@@ -380,11 +384,11 @@ void BaseMainWindow::_updateConfiguration( void )
 }
 
 //____________________________________________________________
-void BaseMainWindow::_updateToolButtonStyle( Qt::ToolButtonStyle style )
+void BaseMainWindow::_updateToolButtonStyle( int style )
 {
 
     Debug::Throw( "BaseMainWindow::_updateToolButtonStyle.\n" );
-    XmlOptions::get().set<int>( "TOOLBUTTON_TEXT_POSITION", (int)style );
+    XmlOptions::get().set<int>( "TOOLBUTTON_TEXT_POSITION", style );
     emit toolbarConfigurationChanged();
 
 }

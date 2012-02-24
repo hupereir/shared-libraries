@@ -181,7 +181,7 @@ class BaseMainWindow: public QMainWindow
     void _updateConfiguration( void );
 
     //! toolbar text position
-    void _updateToolButtonStyle( Qt::ToolButtonStyle );
+    void _updateToolButtonStyle( int );
 
     //! toolbar text position
     void _updateToolButtonIconSize( IconSize::Size );
