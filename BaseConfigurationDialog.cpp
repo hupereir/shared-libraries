@@ -162,21 +162,6 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         }
         #endif
 
-        // base font
-        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-        gridLayout->addWidget( new QLabel( "Default font:", box ) );
-        OptionFontEditor *edit = new OptionFontEditor( box, "FONT_NAME" );
-        edit->setToolTip( "Default font name for all widgets" );
-        gridLayout->addWidget( edit );
-        addOptionWidget( edit );
-
-        // fixed font
-        gridLayout->addWidget( new QLabel( "Fixed font:", box ) );
-        edit = new OptionFontEditor( box, "FIXED_FONT_NAME" );
-        edit->setToolTip( "Default font name (fixed) for text widgets" );
-        gridLayout->addWidget( edit );
-        addOptionWidget( edit );
-
         // pixmap path
         gridLayout->addWidget( new QLabel( "Pixmaps:", box ) );
 
@@ -196,6 +181,43 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         spinbox->setToolTip( "Debug verbosity level" );
         gridLayout->addWidget( spinbox );
         addOptionWidget( spinbox );
+
+        // fonts
+        box = new QGroupBox( "Fonts", parent );
+        parent->layout()->addWidget( box );
+
+        // icon pixmap
+        vLayout = new QVBoxLayout();
+        box->setLayout( vLayout );
+
+        OptionCheckBox* checkbox( new OptionCheckBox( "Use system font", box, "USE_SYSTEM_FONT" ) );
+        vLayout->addWidget( checkbox );
+        addOptionWidget( checkbox );
+
+        gridLayout = new GridLayout();
+        gridLayout->setMargin(0);
+        gridLayout->setMaxCount(2);
+        vLayout->addLayout( gridLayout );
+
+        // base font
+        QLabel* label;
+        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+        gridLayout->addWidget( label = new QLabel( "Default font:", box ) );
+        OptionFontEditor *edit = new OptionFontEditor( box, "FONT_NAME" );
+        edit->setToolTip( "Default font name for all widgets" );
+        gridLayout->addWidget( edit );
+        addOptionWidget( edit );
+
+        connect( checkbox, SIGNAL( toggled( bool ) ), label, SLOT( setDisabled( bool ) ) );
+        connect( checkbox, SIGNAL( toggled( bool ) ), edit, SLOT( setDisabled( bool ) ) );
+
+        // fixed font
+        gridLayout->addWidget( new QLabel( "Fixed font:", box ) );
+        edit = new OptionFontEditor( box, "FIXED_FONT_NAME" );
+        edit->setToolTip( "Default font name (fixed) for text widgets" );
+        gridLayout->addWidget( edit );
+        addOptionWidget( edit );
+
 
     }
 
