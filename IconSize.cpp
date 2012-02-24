@@ -22,20 +22,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file IconSize.cpp
-\brief default icon sizes
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-#include <QStyle>
-
 #include "IconSize.h"
 
-
+#include <QtGui/QStyle>
+#include <cassert>
 
 //__________________________________________________________________
 IconSize::IconSize( IconSize::Size size )
