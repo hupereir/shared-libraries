@@ -52,6 +52,7 @@ Options::Options( bool install_default_options ):
         set( "USE_FLAT_THEME", Option( "0", "Use flat theme in replacement of plastique theme" ) );
 
         // fonts
+        set( "USE_SYSTEM_FONT", Option( "1", "Use default system font for widgets" ) );
         set( "FIXED_FONT_NAME", Option( "Sans" , "Fixed font (used for editors)" ) );
         set( "FONT_NAME", Option( "Sans" , "Main font (used for all widgets but editors)" ) );
 
