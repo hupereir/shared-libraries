@@ -56,8 +56,8 @@ Options::Options( bool install_default_options ):
         set( "FONT_NAME", Option( "Sans" , "Main font (used for all widgets but editors)" ) );
 
         // toolbars default configuration
-        set( "TOOLBUTTON_ICON_SIZE", Option( "32" , "Icon size used for tool buttons" ) );
-        set( "TOOLBUTTON_TEXT_POSITION", Option( "0" , "Text label position in tool buttons" ) );
+        set( "TOOLBUTTON_ICON_SIZE", Option( "0" , "Icon size used for tool buttons" ) );
+        set( "TOOLBUTTON_TEXT_POSITION", Option( "-1" , "Text label position in tool buttons" ) );
 
         // text editors default configuration
         set( "TAB_EMULATION", Option( "1" , "Emulate tabs with space characters in text editors" ) );
