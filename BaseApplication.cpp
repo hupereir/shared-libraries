@@ -226,13 +226,26 @@ void BaseApplication::_updateConfiguration( void )
     // application icon
     qApp->setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
 
-    // set fonts
-    QFont font;
-    font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
-    qApp->setFont( font );
+    // default widget font
+    if( XmlOptions::get().get<bool>( "USE_SYSTEM_FONT" ) ) qApp->setFont( QFont() );
+    else
+    {
 
-    font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
-    qApp->setFont( font, "QTextEdit" );
+        QFont font;
+        font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
+        qApp->setFont( font );
+    }
+
+    // text editors font
+    const QString fixedFontName( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
+    if( !fixedFontName.isEmpty() )
+    {
+
+        QFont font;
+        font.fromString( fixedFontName );
+        qApp->setFont( font, "QTextEdit" );
+
+    } else qApp->setFont( QFont(), "QTextEdit" );
 
     // reload IconEngine cache (in case of icon_path_list that changed)
     IconEngine::get().reload();
