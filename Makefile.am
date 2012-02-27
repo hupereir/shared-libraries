@@ -41,7 +41,7 @@ nodist_sources = \
 ################
 # shared library
 if ENABLE_SHARED
-AM_LDFLAGS = -L$(libdir) -L$(qt_libraries) -L$(aspell_libraries)
+AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
 
 lib_LTLIBRARIES = libbase-spellcheck.la
 libbase_spellcheck_la_LIBADD = -lbase -lbase-qt -laspell
