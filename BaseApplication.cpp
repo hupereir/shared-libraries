@@ -21,19 +21,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file Application.cc
-\brief application main object
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "BaseApplication.h"
 #include "BaseIcons.h"
+#include "File.h"
 #include "FlatStyle.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
+#include "Util.h"
 #include "XmlOptions.h"
 
 #include <QtGui/QApplication>
@@ -41,6 +35,8 @@
 #include <QtGui/QLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QMessageBox>
+
+#include <QtCore/QSettings>
 
 #ifndef QT_NO_DBUS
 #include <QtDBus/QDBusConnection>
@@ -107,13 +103,14 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
 
     Debug::Throw( "BaseApplication::BaseApplication.\n" );
     connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateFonts( void ) ) );
     if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) qApp->setStyle( new FlatStyle() );
 
     // use DBus connection to update on oxygen configuration change
     #ifndef QT_NO_DBUS
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.connect( QString(), "/OxygenStyle", "org.kde.Oxygen.Style", "reparseConfiguration", this, SIGNAL(configurationChanged( void ) ) );
-    dbus.connect( QString(), "/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange", this, SIGNAL(configurationChanged( void ) ) );
+    dbus.connect( QString(), "/OxygenStyle", "org.kde.Oxygen.Style", "reparseConfiguration", this, SLOT(_updateFonts( void ) ) );
+    dbus.connect( QString(), "/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange", this, SLOT(_updateFonts( void ) ) );
     #endif
 
 }
@@ -226,31 +223,69 @@ void BaseApplication::_updateConfiguration( void )
     // application icon
     qApp->setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
 
+    // reload IconEngine cache (in case of icon_path_list that changed)
+    IconEngine::get().reload();
+
+}
+
+//_______________________________________________
+void BaseApplication::_updateFonts( void )
+{
+
+    Debug::Throw( "BaseApplication::_updateFonts.\n" );
+
     // default widget font
-    if( XmlOptions::get().get<bool>( "USE_SYSTEM_FONT" ) ) qApp->setFont( QFont() );
-    else
+    if( !XmlOptions::get().get<bool>( "USE_SYSTEM_FONT" ) )
     {
 
         QFont font;
         font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
         qApp->setFont( font );
-    }
 
-    // text editors font
-    const QString fixedFontName( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
-    if( !fixedFontName.isEmpty() )
-    {
-
-        QFont font;
-        font.fromString( fixedFontName );
+        // text editors font
+        const QString fixedFontName( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
+        font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
         qApp->setFont( font, "QTextEdit" );
 
-    } else qApp->setFont( QFont(), "QTextEdit" );
+    } else {
 
-    // reload IconEngine cache (in case of icon_path_list that changed)
-    IconEngine::get().reload();
+        QStringList files;
+        files
+            << Util::home() + "/.kde4/share/config/kdeglobals"
+            << Util::home() + "/.kde/share/config/kdeglobals";
 
-    // emit signal to propagate changes to other widgets
-    Debug::Throw( "BaseApplication::_updateConfiguration - done.\n" );
+        bool found( false );
+        foreach( const QString& file, files )
+        {
+
+            // check file existence
+            if( !File( file ).exists() ) continue;
+            found = true;
+
+            // load settings
+            QSettings settings( file, QSettings::IniFormat );
+            settings.sync();
+
+            // debug
+            Debug::Throw() << "BaseApplication::_updateFonts - font: " << settings.value( "font" ).toStringList().join( "," ) << endl;
+            Debug::Throw() << "BaseApplication::_updateFonts - fixed: " << settings.value( "fixed" ).toStringList().join( "," ) << endl;
+
+            // get font name
+            QFont font;
+            font.fromString( settings.value( "font" ).toStringList().join( "," ) );
+            qApp->setFont( font );
+
+            font.fromString( settings.value( "fixed" ).toStringList().join( "," ) );
+            qApp->setFont( font, "QTextEdit" );
+
+        }
+
+        if( !found )
+        {
+            qApp->setFont( QFont() );
+            qApp->setFont( QFont(), "QTextEdit" );
+        }
+
+    }
 
 }

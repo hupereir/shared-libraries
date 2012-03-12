@@ -102,6 +102,9 @@ class BaseApplication: public BaseCoreApplication
 
     private slots:
 
+    //! fonts
+    void _updateFonts( void );
+
     //! configuration
     void _updateConfiguration( void );
 
