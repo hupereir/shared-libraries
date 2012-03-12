@@ -151,6 +151,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
         layout->addLayout( gridLayout );
+        layout->addStretch( 1 );
 
         // flat theme
         #if !defined(Q_WS_X11)
@@ -212,12 +213,14 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         connect( checkbox, SIGNAL( toggled( bool ) ), edit, SLOT( setDisabled( bool ) ) );
 
         // fixed font
-        gridLayout->addWidget( new QLabel( "Fixed font:", box ) );
+        gridLayout->addWidget( label = new QLabel( "Fixed font:", box ) );
         edit = new OptionFontEditor( box, "FIXED_FONT_NAME" );
         edit->setToolTip( "Default font name (fixed) for text widgets" );
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
+        connect( checkbox, SIGNAL( toggled( bool ) ), label, SLOT( setDisabled( bool ) ) );
+        connect( checkbox, SIGNAL( toggled( bool ) ), edit, SLOT( setDisabled( bool ) ) );
 
     }
 
