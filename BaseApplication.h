@@ -57,6 +57,18 @@ class BaseApplication: public BaseCoreApplication
     //! create all widgets
     virtual bool realizeWidget( void );
 
+    //! true if fixed fonts are used
+    virtual void setUseFixedFonts( bool value )
+    {
+        if( useFixedFonts_ == value ) return;
+        useFixedFonts_ = value;
+        _updateFonts();
+    }
+
+    //! true if fixed fonts are used
+    virtual bool useFixedFonts( void ) const
+    { return useFixedFonts_; }
+
     //!@name actions
     //@{
 
@@ -118,6 +130,9 @@ class BaseApplication: public BaseCoreApplication
     { _about( name, QString().setNum( version ), stamp ); }
 
     private:
+
+    //! true if fixed fonts are used
+    bool useFixedFonts_;
 
     //!@name actions
     //@{

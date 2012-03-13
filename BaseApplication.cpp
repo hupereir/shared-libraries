@@ -98,7 +98,8 @@ bool SERVER::AppEventFilter::eventFilter( QObject* object, QEvent* event )
 
 //____________________________________________
 BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :
-    BaseCoreApplication( parent, arguments )
+    BaseCoreApplication( parent, arguments ),
+    useFixedFonts_( false )
 {
 
     Debug::Throw( "BaseApplication::BaseApplication.\n" );
@@ -239,12 +240,13 @@ void BaseApplication::_updateFonts( void )
     {
 
         QFont font;
+
+        // generic font
         font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
         qApp->setFont( font );
 
-        // text editors font
-        const QString fixedFontName( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
-        font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
+        // generic font
+        if( useFixedFonts() ) font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
         qApp->setFont( font, "QTextEdit" );
 
     } else {
@@ -270,12 +272,13 @@ void BaseApplication::_updateFonts( void )
             Debug::Throw() << "BaseApplication::_updateFonts - font: " << settings.value( "font" ).toStringList().join( "," ) << endl;
             Debug::Throw() << "BaseApplication::_updateFonts - fixed: " << settings.value( "fixed" ).toStringList().join( "," ) << endl;
 
-            // get font name
+            // generic font
             QFont font;
             font.fromString( settings.value( "font" ).toStringList().join( "," ) );
             qApp->setFont( font );
 
-            font.fromString( settings.value( "fixed" ).toStringList().join( "," ) );
+            // fixed fonts
+            if( useFixedFonts() ) font.fromString( settings.value( "fixed" ).toStringList().join( "," ) );
             qApp->setFont( font, "QTextEdit" );
 
         }
