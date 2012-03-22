@@ -58,6 +58,7 @@ namespace SERVER
 bool SERVER::AppEventFilter::eventFilter( QObject* object, QEvent* event )
 {
     Q_UNUSED( object );
+
     switch( event->type() )
     {
 
