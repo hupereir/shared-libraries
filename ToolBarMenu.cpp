@@ -21,35 +21,26 @@
 *
 *******************************************************************************/
 
-/*!
-  \file ToolBarMenu.cpp
-  \brief provides toolbar manipulation menu
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
+#include "ToolBarMenu.h"
 
 #include "Debug.h"
 #include "IconSizeMenu.h"
-#include "ToolBarMenu.h"
 #include "ToolButtonStyleMenu.h"
-
-
 
 //____________________________________________________
 ToolBarMenu::ToolBarMenu( QWidget* parent ):
-  QMenu( parent ),
-  Counter( "ToolBarMenu" )
+QMenu( parent ),
+Counter( "ToolBarMenu" )
 {
 
-  Debug::Throw( "ToolBarMenu::ToolBarMenu.\n" );
+    Debug::Throw( "ToolBarMenu::ToolBarMenu.\n" );
 
-  // make sure object is deleted when closing
-  setAttribute( Qt::WA_DeleteOnClose, true );
+    // make sure object is deleted when closing
+    setAttribute( Qt::WA_DeleteOnClose, true );
 
-  // add tool buttons and icon size submenus
-  addMenu( toolbutton_style_menu_ = new ToolButtonStyleMenu( this ) );
-  addMenu( icon_size_menu_ = new IconSizeMenu( this ) );
+    // add tool buttons and icon size submenus
+    addMenu( toolButtonStyleMenu_ = new ToolButtonStyleMenu( this ) );
+    addMenu( iconSizeMenu_ = new IconSizeMenu( this ) );
 
 }
 

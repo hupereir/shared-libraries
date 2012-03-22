@@ -24,18 +24,10 @@
 *
 *******************************************************************************/
 
-/*!
-  \file ToolBarMenu.h
-  \brief provides toolbar manipulation menu
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <cassert>
-#include <QMenu>
-
 #include "Counter.h"
+
+#include <QtGui/QMenu>
+#include <cassert>
 
 class ToolButtonStyleMenu;
 class IconSizeMenu;
@@ -44,35 +36,35 @@ class IconSizeMenu;
 class ToolBarMenu: public QMenu, public Counter
 {
 
-  public:
+    public:
 
-  //! constructor
-  ToolBarMenu( QWidget* parent = 0 );
+    //! constructor
+    ToolBarMenu( QWidget* parent = 0 );
 
-  //! destructor
-  virtual ~ToolBarMenu( void );
+    //! destructor
+    virtual ~ToolBarMenu( void );
 
-  //! tool button style menu
-  ToolButtonStyleMenu &toolButtonStyleMenu( void ) const
-  {
-    assert( toolbutton_style_menu_ );
-    return *toolbutton_style_menu_;
-  }
+    //! tool button style menu
+    ToolButtonStyleMenu &toolButtonStyleMenu( void ) const
+    {
+        assert( toolButtonStyleMenu_ );
+        return *toolButtonStyleMenu_;
+    }
 
-  //! icon size menu
-  IconSizeMenu &iconSizeMenu( void ) const
-  {
-    assert( icon_size_menu_ );
-    return *icon_size_menu_;
-  }
+    //! icon size menu
+    IconSizeMenu &iconSizeMenu( void ) const
+    {
+        assert( iconSizeMenu_ );
+        return *iconSizeMenu_;
+    }
 
-  private:
+    private:
 
-  //! tool button style
-  ToolButtonStyleMenu* toolbutton_style_menu_;
+    //! tool button style
+    ToolButtonStyleMenu* toolButtonStyleMenu_;
 
-  //! icon size
-  IconSizeMenu* icon_size_menu_;
+    //! icon size
+    IconSizeMenu* iconSizeMenu_;
 
 };
 

@@ -188,7 +188,8 @@ void CustomToolBar::_updateConfiguration( void )
         << " optionName: " << optionName_
         << " visibility: " << visibility << endl;
 
-    visibilityAction().setChecked( visibility );
+    if( appearsInMenu() )
+    { visibilityAction().setChecked( visibility ); }
 
 }
 

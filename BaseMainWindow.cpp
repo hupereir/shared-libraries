@@ -220,12 +220,12 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
     Debug::Throw( "BaseMainWindow::installToolBarsActions.\n" );
 
     bool hasLockableToolbars( false );
-    QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
+    QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
     foreach( QToolBar* toolbar, toolbars )
     {
 
         // skip toolbars with no names
-        if( toolbar->windowTitle().isEmpty() ) continue;
+        // if( toolbar->windowTitle().isEmpty() ) continue;
 
         // try cast to custom
         CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
