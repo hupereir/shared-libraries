@@ -228,7 +228,7 @@ template<class T> class TreeItem: public TreeItemBase
     void set( ValueList& values )
     {
 
-        std::sort( values.begin(), values.end() );
+        // std::sort( values.begin(), values.end() );
 
         // check if there are remainig values
         if( values.isEmpty() )
