@@ -365,6 +365,10 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
+    //! sort values
+    void setSortValues( bool value )
+    { map_.setSortValues( value ); }
+
     protected:
 
     //! root item

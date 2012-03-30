@@ -56,7 +56,35 @@ template<class T> class TreeItem: public TreeItemBase
     typedef QList<TreeItem> List;
 
     //! list of vector
-    typedef QMap<int, TreeItem*> Map;
+    class Map: public QMap<int, TreeItem*>
+    {
+
+        public:
+
+        //! constructor
+        Map( void ):
+            QMap<int, TreeItem*>(),
+            sortValues_( true )
+        {}
+
+        //! destructor
+        virtual ~Map( void )
+        {}
+
+        //! sort values
+        void setSortValues( bool value )
+        { sortValues_ = value; }
+
+        //! sort values
+        bool sortValues( void ) const
+        { return sortValues_; }
+
+        private:
+
+        //! sort values
+        bool sortValues_;
+
+    };
 
     //! id type
     typedef unsigned int Id;
@@ -228,7 +256,8 @@ template<class T> class TreeItem: public TreeItemBase
     void set( ValueList& values )
     {
 
-        // std::sort( values.begin(), values.end() );
+        if( map_.sortValues() )
+        { std::sort( values.begin(), values.end() ); }
 
         // check if there are remainig values
         if( values.isEmpty() )
