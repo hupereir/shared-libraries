@@ -2190,14 +2190,14 @@ void TextEditor::_toggleOverwriteMode( void )
 }
 
 //________________________________________________
-bool TextEditor::_setTabSize( const int& tab_size )
+bool TextEditor::_setTabSize( const int& tabSize )
 {
 
-    Debug::Throw() << "TextEditor::_setTabSize - " << tab_size << endl;
-    assert( tab_size > 0 );
+    Debug::Throw() << "TextEditor::_setTabSize - " << tabSize << endl;
+    assert( tabSize > 0 );
 
-    int stop_width( tab_size * QFontMetrics( font() ).width( " " ) );
-    if( tab_size == emulatedTab_.size() && tabStopWidth() == stop_width )
+    int stop_width( tabSize * QFontMetrics( font() ).width( " " ) );
+    if( tabSize == emulatedTab_.size() && tabStopWidth() == stop_width )
     { return false; }
 
     // create strings and regular expressions
@@ -2207,7 +2207,7 @@ bool TextEditor::_setTabSize( const int& tab_size )
     setTabStopWidth( stop_width );
 
     // define emulated tabs
-    emulatedTab_ = QString( tab_size, ' ' );
+    emulatedTab_ = QString( tabSize, ' ' );
     QString buffer;
     QTextStream( &buffer ) << "^(" << emulatedTab_ << ")" << "+";
     emulatedTabRegexp_.setPattern( buffer );

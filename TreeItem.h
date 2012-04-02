@@ -255,7 +255,6 @@ template<class T> class TreeItem: public TreeItemBase
     */
     void set( ValueList& values )
     {
-
         if( map_.sortValues() )
         { std::sort( values.begin(), values.end() ); }
 
