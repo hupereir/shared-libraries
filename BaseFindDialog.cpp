@@ -62,14 +62,15 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
     layout()->setSpacing( 5 );
 
     // edition
-    layout()->addItem( editorLayout_ = new QVBoxLayout() );
+    layout()->addItem( editorLayout_ = new QGridLayout() );
     _editorLayout().setMargin( 0 );
     _editorLayout().setSpacing( 5 );
 
     // add editor
     QLabel *label = new QLabel( "&Text to find:", this );
-    _editorLayout().addWidget( label );
-    _editorLayout().addWidget( editor_ = new CustomComboBox( this ) );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
+    _editorLayout().addWidget( label, 0, 0, 1, 1 );
+    _editorLayout().addWidget( editor_ = new CustomComboBox( this ), 0, 1, 1, 1 );
     label->setBuddy( &editor() );
     editor().setEditable( true );
     editor().setAutoCompletion( true, Qt::CaseSensitive );

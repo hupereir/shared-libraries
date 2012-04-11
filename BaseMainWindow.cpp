@@ -92,15 +92,15 @@ void BaseMainWindow::setOptionName( const QString& name )
     } else {
 
         lockToolBarsOptionName_ = name+"_LOCK_TOOLBARS";
-        if( !XmlOptions::get().find( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
+        if( !XmlOptions::get().contains( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
         else { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
 
         showMenuBarOptionName_ = name+"_SHOW_MENU";
-        if( !XmlOptions::get().find( showMenuBarOptionName() ) ) XmlOptions::get().set<bool>( showMenuBarOptionName(), showMenuBarAction().isChecked() );
+        if( !XmlOptions::get().contains( showMenuBarOptionName() ) ) XmlOptions::get().set<bool>( showMenuBarOptionName(), showMenuBarAction().isChecked() );
         else showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) );
 
         showStatusBarOptionName_ = name+"_SHOW_STATUS";
-        if( !XmlOptions::get().find( showStatusBarOptionName() ) ) XmlOptions::get().set<bool>( showStatusBarOptionName(), showStatusBarAction().isChecked() );
+        if( !XmlOptions::get().contains( showStatusBarOptionName() ) ) XmlOptions::get().set<bool>( showStatusBarOptionName(), showStatusBarAction().isChecked() );
         else showStatusBarAction().setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName() ) );
 
     }
@@ -369,15 +369,15 @@ void BaseMainWindow::_updateConfiguration( void )
     {
 
         // toolbars locked
-        if( XmlOptions::get().find( lockToolBarsOptionName() ) )
+        if( XmlOptions::get().contains( lockToolBarsOptionName() ) )
         { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
 
         // menu visibility
-        if( XmlOptions::get().find( showMenuBarOptionName() ) )
+        if( XmlOptions::get().contains( showMenuBarOptionName() ) )
         { showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) ); }
 
         // menu visibility
-        if( XmlOptions::get().find( showStatusBarOptionName() ) )
+        if( XmlOptions::get().contains( showStatusBarOptionName() ) )
         { showStatusBarAction().setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName() ) ); }
 
     }

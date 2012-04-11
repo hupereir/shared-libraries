@@ -136,14 +136,14 @@ void CustomToolBar::_updateConfiguration( void )
     if( lockFromOptions() ) {
 
         BaseMainWindow* mainwindow( qobject_cast<BaseMainWindow*>( window() ) );
-        if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().find( mainwindow->lockToolBarsOptionName() ) )
+        if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().contains( mainwindow->lockToolBarsOptionName() ) )
         { setMovable( !XmlOptions::get().get<bool>( mainwindow->lockToolBarsOptionName() ) ); }
 
     }
 
     // visibility
     bool current_visibility( isVisible() );
-    bool visibility( (!optionName_.isEmpty() && XmlOptions::get().find( optionName_ ) ) ? XmlOptions::get().get<bool>( optionName_ ):current_visibility );
+    bool visibility( (!optionName_.isEmpty() && XmlOptions::get().contains( optionName_ ) ) ? XmlOptions::get().get<bool>( optionName_ ):current_visibility );
 
     // position
     // try cast parent to QMainWindow
@@ -153,7 +153,7 @@ void CustomToolBar::_updateConfiguration( void )
 
         QString locationName( optionName_ + "_LOCATION" );
 
-        Qt::ToolBarArea location = (XmlOptions::get().find( locationName )) ? (Qt::ToolBarArea) nameToArea( XmlOptions::get().raw( locationName ) ):Qt::TopToolBarArea;
+        Qt::ToolBarArea location = (XmlOptions::get().contains( locationName )) ? (Qt::ToolBarArea) nameToArea( XmlOptions::get().raw( locationName ) ):Qt::TopToolBarArea;
         Qt::ToolBarArea current_location = parent->toolBarArea( this );
 
         // some dump

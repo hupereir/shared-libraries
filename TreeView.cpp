@@ -128,7 +128,7 @@ bool TreeView::setOptionName( const QString& value )
     {
         maskOptionName_ = tmp;
         mask_changed = true;
-        if( !XmlOptions::get().find( maskOptionName() ) ) saveMask();
+        if( !XmlOptions::get().contains( maskOptionName() ) ) saveMask();
         else updateMask();
 
     }
@@ -155,7 +155,7 @@ bool TreeView::setOptionName( const QString& value )
     // reload sorting
     if( sort_changed )
     {
-        if( !( XmlOptions::get().find( sortOrderOptionName() ) && XmlOptions::get().find( sortColumnOptionName() ) ) ) saveSortOrder();
+        if( !( XmlOptions::get().contains( sortOrderOptionName() ) && XmlOptions::get().contains( sortColumnOptionName() ) ) ) saveSortOrder();
         else updateSortOrder();
     }
 
@@ -227,7 +227,7 @@ void TreeView::updateMask( void )
     // check model and option availability
     if( !model() ) return;
     if( !hasOptionName() ) return;
-    if( !XmlOptions::get().find( maskOptionName() ) ) return;
+    if( !XmlOptions::get().contains( maskOptionName() ) ) return;
 
     // assign mask from options
     setMask( XmlOptions::get().get<unsigned int>( maskOptionName() ) );
@@ -251,7 +251,7 @@ void TreeView::updateSortOrder( void )
 
     Debug::Throw( "TreeView::updateSortOrder.\n" );
     if( !hasOptionName() ) return;
-    if( XmlOptions::get().find( sortColumnOptionName() ) && XmlOptions::get().find( sortColumnOptionName() ) )
+    if( XmlOptions::get().contains( sortColumnOptionName() ) && XmlOptions::get().contains( sortColumnOptionName() ) )
     {
         bool changed(
             header()->sortIndicatorSection() != XmlOptions::get().get<int>( sortColumnOptionName() ) ||

@@ -22,24 +22,15 @@
 *
 *******************************************************************************/
 
-/*!
-\file PixmapCacheModel.cpp
-\brief model for object PixmapCaches
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "PixmapCacheModel.h"
 
 //_______________________________________________
-const QString PixmapCacheModel::column_titles_[ PixmapCacheModel::n_columns ] =
+const QString PixmapCacheModel::columnTitles_[ PixmapCacheModel::nColumns ] =
 { "Icon" };
 
 //__________________________________________________________________
 QVariant PixmapCacheModel::data( const QModelIndex& index, int role ) const
 {
-    Debug::Throw( "PixmapCacheModel::data.\n" );
 
     // check index, role and column
     if( !index.isValid() ) return QVariant();
@@ -48,8 +39,8 @@ QVariant PixmapCacheModel::data( const QModelIndex& index, int role ) const
     const PixmapEngine::Pair& icon_pair( get(index) );
 
     // return text associated to file and column
-    if( role == Qt::DisplayRole && index.column() == ICON ) return icon_pair.first;
-    if( role == Qt::DecorationRole && index.column() == ICON ) return icon_pair.second;
+    if( role == Qt::DisplayRole && index.column() == Icon ) return icon_pair.first;
+    if( role == Qt::DecorationRole && index.column() == Icon ) return icon_pair.second;
     return QVariant();
 
 }
@@ -62,8 +53,8 @@ QVariant PixmapCacheModel::headerData(int section, Qt::Orientation orientation, 
         orientation == Qt::Horizontal &&
         role == Qt::DisplayRole &&
         section >= 0 &&
-        section < n_columns )
-    { return column_titles_[section]; }
+        section < nColumns )
+    { return columnTitles_[section]; }
 
     // return empty
     return QVariant();
@@ -88,7 +79,7 @@ bool PixmapCacheModel::SortFTor::operator () ( PixmapEngine::Pair first, PixmapE
     switch( type_ )
     {
 
-        case ICON: return first.first < second.first;
+        case Icon: return first.first < second.first;
         default: return true;
     }
 

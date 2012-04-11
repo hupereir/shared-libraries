@@ -70,7 +70,7 @@ QSize WindowMonitor::sizeHint( void ) const
 {
 
     // resize
-    if( _hasOptionName() && ( _mode()&SIZE ) && XmlOptions::get().find( _widthOptionName() ) && XmlOptions::get().find( _heightOptionName() ) )
+    if( _hasOptionName() && ( _mode()&SIZE ) && XmlOptions::get().contains( _widthOptionName() ) && XmlOptions::get().contains( _heightOptionName() ) )
     {
 
         QSize size(
@@ -94,7 +94,7 @@ QPoint WindowMonitor::position( void ) const
 {
 
     // resize
-    if( _hasOptionName() && ( _mode()&POSITION ) && XmlOptions::get().find( _xOptionName() ) && XmlOptions::get().find( _yOptionName() ) )
+    if( _hasOptionName() && ( _mode()&POSITION ) && XmlOptions::get().contains( _xOptionName() ) && XmlOptions::get().contains( _yOptionName() ) )
     {
 
         QPoint position(

@@ -48,7 +48,7 @@ void LogWidget::setOptionName( const QString& value )
     optionName_ = value;
     if( _hasOptionName() )
     {
-        if( XmlOptions::get().find( _wrapOptionName() ) )
+        if( XmlOptions::get().contains( _wrapOptionName() ) )
         {
 
             wrapModeAction().setChecked( XmlOptions::get().get<bool>( _wrapOptionName() ) );

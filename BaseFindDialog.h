@@ -130,7 +130,7 @@ class BaseFindDialog: public BaseDialog, public Counter
     protected:
 
     //! edtion layout
-    QBoxLayout& _editorLayout() const
+    QGridLayout& _editorLayout() const
     { return *editorLayout_; }
 
     //! locations layout
@@ -171,7 +171,7 @@ class BaseFindDialog: public BaseDialog, public Counter
     private:
 
     //! editor layout
-    QBoxLayout* editorLayout_;
+    QGridLayout* editorLayout_;
 
     //! location layout
     QBoxLayout* locationLayout_;

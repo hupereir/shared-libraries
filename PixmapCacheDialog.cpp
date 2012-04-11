@@ -77,6 +77,6 @@ void PixmapCacheDialog::update( void )
 
     model_.set( modelList );
 
-    list_->resizeColumnToContents( PixmapCacheModel::ICON );
+    list_->resizeColumnToContents( PixmapCacheModel::Icon );
 
 }

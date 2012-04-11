@@ -21,13 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseConfigurationDialog.cpp
-\brief base configuration dialog
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 #include "BaseIcons.h"
 #include "BaseConfigurationDialog.h"
 #include "GridLayout.h"
@@ -561,9 +554,9 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
     dialog.layout()->setMargin(0);
     dialog.buttonLayout().setMargin(5);
 
-    //
     if( dialog.exec() ) listbox->write();
     else {
+
         // restore old values
         XmlOptions::get().clearSpecialOptions( "PIXMAP_PATH" );
         for( Options::List::iterator iter = backupOptions.begin(); iter != backupOptions.end(); ++iter )

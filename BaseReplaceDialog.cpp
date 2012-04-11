@@ -56,10 +56,11 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WFlags flags ):
     // create aditional widgets
     // insert text editor
     QLabel* label = new QLabel( "&Replace with:", this );
-    _editorLayout().addWidget( label );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
+    _editorLayout().addWidget( label, 1, 0, 1, 1 );
 
     // replacement editor
-    _editorLayout().addWidget( replaceEditor_ = new CustomComboBox( this ) );
+    _editorLayout().addWidget( replaceEditor_ = new CustomComboBox( this ), 1, 1, 1, 1 );
     label->setBuddy( &_replaceEditor() );
 
     // disable callbacks on find editor
