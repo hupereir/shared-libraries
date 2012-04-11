@@ -109,7 +109,7 @@ class Options: public Counter
     virtual void clearSpecialOptions( const QString& name );
 
     //! returns true if option with matching name is found
-    virtual bool find( const QString& name )
+    virtual bool contains( const QString& name )
     { return options_.find( name ) != options_.end(); }
 
     //! option matching given name
