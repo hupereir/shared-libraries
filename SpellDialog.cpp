@@ -1,6 +1,5 @@
 // $Id$
 
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -21,14 +20,6 @@
 *
 *
 *******************************************************************************/
-
-/*!
-\file SpellDialog.cpp
-\brief spell checker popup dialog
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 
 #include "BaseIcons.h"
 #include "GridLayout.h"
@@ -66,41 +57,41 @@ namespace SPELLCHECK
         setLayout( layout );
 
         // horizontal layout for suggestions and buttons
-        QHBoxLayout* h_layout = new QHBoxLayout();
-        h_layout->setMargin(0);
-        h_layout->setSpacing(10);
-        layout->addLayout( h_layout, 1 );
+        QHBoxLayout* hLayout = new QHBoxLayout();
+        hLayout->setMargin(0);
+        hLayout->setSpacing(10);
+        layout->addLayout( hLayout, 1 );
 
         // insert left vertical box
-        QVBoxLayout *v_layout = new QVBoxLayout();
-        v_layout->setMargin( 0 );
-        v_layout->setSpacing(5);
-        h_layout->addLayout( v_layout );
+        QVBoxLayout *vLayout = new QVBoxLayout();
+        vLayout->setMargin( 0 );
+        vLayout->setSpacing(5);
+        hLayout->addLayout( vLayout );
 
         // grid for text editors
-        GridLayout *grid_layout = new GridLayout();
-        grid_layout->setMargin( 0 );
-        grid_layout->setSpacing(5);
-        grid_layout->setMaxCount( 2 );
-        v_layout->addLayout( grid_layout, 0 );
+        GridLayout *gridLayout = new GridLayout();
+        gridLayout->setMargin( 0 );
+        gridLayout->setSpacing(5);
+        gridLayout->setMaxCount( 2 );
+        vLayout->addLayout( gridLayout, 0 );
 
         // misspelled word line editor
-        grid_layout->addWidget( new QLabel( "Misspelled word: ", this ) );
-        grid_layout->addWidget( sourceEditor_ = new AnimatedLineEditor( this ) );
+        gridLayout->addWidget( new QLabel( "Misspelled word: ", this ) );
+        gridLayout->addWidget( sourceEditor_ = new AnimatedLineEditor( this ) );
         sourceEditor_->setReadOnly( true );
 
         // replacement line editor
-        grid_layout->addWidget( new QLabel( "Replace with: ", this ) );
-        grid_layout->addWidget( replaceEditor_ = new AnimatedLineEditor( this ) );
+        gridLayout->addWidget( new QLabel( "Replace with: ", this ) );
+        gridLayout->addWidget( replaceEditor_ = new AnimatedLineEditor( this ) );
         if( read_only ) replaceEditor_->setEnabled( false );
 
-        grid_layout->setColumnStretch( 1, 1 );
+        gridLayout->setColumnStretch( 1, 1 );
 
         QLabel* label = new QLabel( "Suggestions: ", this );
-        v_layout->addWidget( label, 0 );
+        vLayout->addWidget( label, 0 );
 
         // suggestions
-        v_layout->addWidget(  list_ = new TreeView( this ) );
+        vLayout->addWidget(  list_ = new TreeView( this ) );
         _list().setModel( &_model() );
         _list().header()->hide();
 
@@ -108,15 +99,15 @@ namespace SPELLCHECK
         if( !read_only ) { connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _replace( const QModelIndex& ) ) ); }
 
         // grid layout for dictionary and filter
-        grid_layout = new GridLayout();
-        grid_layout->setMargin( 0 );
-        grid_layout->setSpacing(5);
-        grid_layout->setMaxCount( 2 );
-        v_layout->addLayout( grid_layout, 0 );
+        gridLayout = new GridLayout();
+        gridLayout->setMargin( 0 );
+        gridLayout->setSpacing(5);
+        gridLayout->setMaxCount( 2 );
+        vLayout->addLayout( gridLayout, 0 );
 
         // dictionaries combobox
-        grid_layout->addWidget( new QLabel( "Dictionary: ", this ) );
-        grid_layout->addWidget( dictionary_ = new QComboBox( this ) );
+        gridLayout->addWidget( new QLabel( "Dictionary: ", this ) );
+        gridLayout->addWidget( dictionary_ = new QComboBox( this ) );
 
         const QSet<QString>& dictionaries( interface().dictionaries() );
         for( QSet<QString>::const_iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
@@ -125,10 +116,10 @@ namespace SPELLCHECK
         connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
         // filter combobox
-        grid_layout->addWidget( filterLabel_ = new QLabel( "Filter: ", this ) );
-        grid_layout->addWidget( filter_ = new QComboBox( this ) );
+        gridLayout->addWidget( filterLabel_ = new QLabel( "Filter: ", this ) );
+        gridLayout->addWidget( filter_ = new QComboBox( this ) );
 
-        grid_layout->setColumnStretch( 1, 1 );
+        gridLayout->setColumnStretch( 1, 1 );
 
         QSet<QString> filters( interface().filters() );
         for( QSet<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
@@ -136,55 +127,55 @@ namespace SPELLCHECK
         connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
 
         // right vbox
-        v_layout = new QVBoxLayout();
-        v_layout->setMargin( 0 );
-        v_layout->setSpacing(5);
-        h_layout->addLayout( v_layout );
+        vLayout = new QVBoxLayout();
+        vLayout->setMargin( 0 );
+        vLayout->setSpacing(5);
+        hLayout->addLayout( vLayout );
 
         // add word button
         QPushButton* button;
-        v_layout->addWidget( button = new QPushButton( "&Add Word", this ) );
+        vLayout->addWidget( button = new QPushButton( "&Add Word", this ) );
         connect( button, SIGNAL(clicked()), SLOT( _addWord() ) );
 
         // check word button
-        v_layout->addWidget( button = new QPushButton( "&Check Word", this ) );
+        vLayout->addWidget( button = new QPushButton( "&Check Word", this ) );
         connect( button, SIGNAL(clicked()), SLOT( _checkWord() ) );
 
         // recheck button
-        v_layout->addWidget( button = new QPushButton( "Recheck &Page", this ) );
+        vLayout->addWidget( button = new QPushButton( "Recheck &Page", this ) );
         connect( button, SIGNAL(clicked()), SLOT( _restart() ) );
 
         QFrame* frame;
-        v_layout->addWidget( frame = new QFrame(this) );
+        vLayout->addWidget( frame = new QFrame(this) );
         frame->setFrameShape( QFrame::HLine );
 
         // replace button
-        v_layout->addWidget( button = new QPushButton( "&Replace", this ) );
+        vLayout->addWidget( button = new QPushButton( "&Replace", this ) );
         connect( button, SIGNAL(clicked()), SLOT( _replace() ) );
         if( read_only ) button->setEnabled( false );
 
         // replace button
-        v_layout->addWidget( button = new QPushButton( "R&eplace All", this ) );
+        vLayout->addWidget( button = new QPushButton( "R&eplace All", this ) );
         connect( button, SIGNAL(clicked()), SLOT( _replaceAll() ) );
         if( read_only ) button->setEnabled( false );
 
-        v_layout->addWidget( frame = new QFrame(this) );
+        vLayout->addWidget( frame = new QFrame(this) );
         frame->setFrameShape( QFrame::HLine );
 
         // ignore button
-        v_layout->addWidget( button = new QPushButton( "&Ignore", this ) );
+        vLayout->addWidget( button = new QPushButton( "&Ignore", this ) );
         connect( button, SIGNAL(clicked()), SLOT( _ignore() ) );
 
         // ignore button
-        v_layout->addWidget( button = new QPushButton( "I&gnore All", this ) );
+        vLayout->addWidget( button = new QPushButton( "I&gnore All", this ) );
         connect( button, SIGNAL(clicked()), SLOT( _ignoreAll() ) );
 
         // state label_
-        v_layout->addWidget( stateLabel_ = new QLabel( " ", this ), 1 );
+        vLayout->addWidget( stateLabel_ = new QLabel( " ", this ), 1 );
         stateLabel_->setAlignment( Qt::AlignCenter );
 
         // close button
-        v_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
+        vLayout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
         connect( button, SIGNAL(clicked()), SLOT( close() ) );
 
         // change font

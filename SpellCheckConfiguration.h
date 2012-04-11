@@ -25,26 +25,45 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    SpellCheckConfiguration.h
-   \brief   Speller common configuration
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
 #include <QtGui/QGroupBox>
 
-//! Spell common configuration
-class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+class OptionComboBox;
+
+namespace SPELLCHECK
 {
-  public:
+    //! Spell common configuration
+    class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+    {
 
-  //! constructor
-  SpellCheckConfiguration( QWidget* );
+        Q_OBJECT
 
-};
+            public:
+
+            //! constructor
+            SpellCheckConfiguration( QWidget* );
+
+        //! destructor
+        virtual ~SpellCheckConfiguration( void )
+        {}
+
+        protected slots:
+
+        //! edit dictionaries
+        void _editDictionaries( void );
+
+        //! edit filters
+        void _editFilters( void );
+
+        private:
+
+        OptionComboBox* dictionariesComboBox_;
+        OptionComboBox* filterComboBox_;
+
+    };
+
+}
 
 #endif

@@ -1,3 +1,6 @@
+#ifndef SpellDialog_h
+#define SpellDialog_h
+
 // $Id$
 
 /******************************************************************************
@@ -20,17 +23,6 @@
 *
 *
 *******************************************************************************/
-
-#ifndef SpellDialog_h
-#define SpellDialog_h
-
-/*!
-\file SpellDialog.h
-\brief spell checker popup dialog
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 
 #include "BaseDialog.h"
 #include "Counter.h"
@@ -61,7 +53,7 @@ namespace SPELLCHECK
         public:
 
         //! constructor
-        SpellDialog( QTextEdit* parent, const bool& read_only = false );
+        SpellDialog( QTextEdit*, const bool& read_only = false );
 
         //! destructor
         virtual ~SpellDialog();

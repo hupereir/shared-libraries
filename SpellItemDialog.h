@@ -1,5 +1,5 @@
-#ifndef _AutoSpellConfiguration_h_
-#define _AutoSpellConfiguration_h_
+#ifndef SpellItemDialog_h
+#define SpellItemDialog_h
 
 // $Id$
 
@@ -24,23 +24,59 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "OptionWidgetList.h"
+#include "CustomDialog.h"
+#include "SpellItemModel.h"
 
-#include <QtGui/QGroupBox>
+#include <QtCore/QStringList>
+
+class TreeView;
 
 namespace SPELLCHECK
 {
-
-    //! Spell common configuration
-    class AutoSpellConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+    //! spell checker popup dialog
+    class SpellItemDialog: public CustomDialog
     {
+
+        //! Qt meta object declaration
+        Q_OBJECT
+
         public:
 
         //! constructor
-        AutoSpellConfiguration( QWidget* parent );
+        SpellItemDialog( QWidget* );
+
+        //! destructor
+        virtual ~SpellItemDialog()
+        {}
+
+        //! set items
+        void setItems( const QSet<QString>& );
+
+        //! set disabled items
+        void setDisabledItems( const QString& );
+
+        //! disabled items
+        QString disabledItems( void ) const;
+
+        protected slots:
+
+        //! select item
+        virtual void _selectItem( const QModelIndex& );
+
+        private:
+
+        //! list
+        TreeView& _list( void ) const
+        { return *list_; }
+
+        //! model
+        SpellItemModel model_;
+
+        //! list
+        TreeView* list_;
 
     };
 
 }
+
 #endif

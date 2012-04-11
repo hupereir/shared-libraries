@@ -11,32 +11,38 @@ INCLUDES =  \
 	-I$(top_srcdir)/base
 
 noinst_HEADERS = \
-  AutoSpellConfiguration.h \
-  DictionaryMenu.h \
-  FilterMenu.h \
-  SpellCheckConfiguration.h \
-  SpellDialog.h \
-  SpellInterface.h \
-  SpellParser.h \
-  SuggestionMenu.h \
-  Word.h
+AutoSpellConfiguration.h \
+DictionaryMenu.h \
+FilterMenu.h \
+SpellCheckConfiguration.h \
+SpellDialog.h \
+SpellInterface.h \
+SpellItemDialog.h \
+SpellItemModel.h \
+SpellParser.h \
+SuggestionMenu.h \
+Word.h
 
 
 sources =  \
-  AutoSpellConfiguration.cpp \
-  DictionaryMenu.cpp \
-  FilterMenu.cpp \
-  SpellCheckConfiguration.cpp \
-  SpellDialog.cpp \
-  SpellInterface.cpp \
-  SpellParser.cpp \
-  SuggestionMenu.cpp
+AutoSpellConfiguration.cpp \
+DictionaryMenu.cpp \
+FilterMenu.cpp \
+SpellCheckConfiguration.cpp \
+SpellDialog.cpp \
+SpellInterface.cpp \
+SpellItemDialog.cpp \
+SpellItemModel.cpp \
+SpellParser.cpp \
+SuggestionMenu.cpp
 
 nodist_sources = \
-  moc_DictionaryMenu.cpp \
-  moc_FilterMenu.cpp \
-  moc_SpellDialog.cpp \
-  moc_SuggestionMenu.cpp
+moc_DictionaryMenu.cpp \
+moc_FilterMenu.cpp \
+moc_SpellCheckConfiguration.cpp \
+moc_SpellDialog.cpp \
+moc_SpellItemDialog.cpp \
+moc_SuggestionMenu.cpp
 
 ################
 # shared library
