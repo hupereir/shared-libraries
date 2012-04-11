@@ -24,15 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    ApplicationManager.h
-   \brief   ensures only one instance of an application is running
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-
 #include "Client.h"
 #include "CommandLineArguments.h"
 #include "CommandLineParser.h"
@@ -53,246 +44,246 @@
 
 namespace SERVER
 {
+    
+    //! ensures only one instance of an application is running
+    class ApplicationManager: public QObject, public Counter
+    {
+        
+        //! Qt meta object macro
+        Q_OBJECT
+            
+        public:
+            
+        //! constructor
+        ApplicationManager( QObject* parent );
+        
+        //! destructor
+        virtual ~ApplicationManager( void );
+        
+        //! application name
+        virtual void setApplicationName( const QString& name );
+        
+        //! commandLine parser
+        static CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignore_warnings = true );
+        
+        //! usage
+        static void usage( void );
+        
+        //! application state enumeration
+        enum State {
+            
+            //! application manager is uninitialized
+            UNKNOWN,
+            
+            //! application manager awaits signal from server
+            AWAITING_REPLY,
+            
+            //! application manager got no reply, is kept alive
+            ALIVE,
+            
+            //! application manager got a reply, must die
+            DEAD
+        };
+        
+        //! changes application state, emit signal if changed
+        virtual bool setState( const State& state )
+        {
+            if( state == state_ ) return false;
+            state_ = state;
+            return true;
+        }
+        
+        //! reference to "this" client
+        virtual Client& client( void ) const
+        {
+            assert( client_ );
+            return *client_;
+        }
+        
+        //! retrieve Application ID
+        virtual const ApplicationId& id( void ) const
+        { return id_; }
+        
+        public slots:
+        
+        //! (re)initialize server/client connections
+        virtual void initialize( CommandLineArguments args = CommandLineArguments() );
+        
+        signals:
+        
+        //! emitted when manager state is changed
+        // void stateChanged( SERVER::ApplicationManager::State state );
+        
+        //! emitted when manager is ALIVE and request is recieved
+        // void serverRequest( const CommandLineArguments& args );
+        
+        //! emitted when a given command is recieved
+        void commandRecieved( SERVER::ServerCommand );
+        
+        //! emitted when the server is (re)initialized
+        void initialized( void );
+        
+        protected:
+        
+        //! timer event
+        virtual void timerEvent( QTimerEvent* );
+        
+        //! reference to server
+        virtual QTcpServer& _server() const
+        {
+            assert( server_ );
+            return *server_;
+        }
+        
+        //! pair of application id and client
+        typedef QPair< ApplicationId, Client* > ClientPair;
+        
+        //! map of clients
+        typedef QMap< ApplicationId, Client* > ClientMap;
+        
+        //! list of clients
+        typedef QList< Client* > ClientList;
+        
+        //! used to retrieve clients for a given state
+        class SameStateFTor: public Client::SameStateFTor
+        {
+            public:
+            
+            //! constructor
+            SameStateFTor( QAbstractSocket::SocketState state ):
+                Client::SameStateFTor( state )
+            {}
+                
+            //! destructor
+            virtual ~SameStateFTor( void )
+            {}
 
-  //! ensures only one instance of an application is running
-  class ApplicationManager: public QObject, public Counter
-  {
+            //! predicate
+            bool operator() ( const ClientPair& pair ) const
+            { return Client::SameStateFTor::operator() (pair.second); }
 
-    //! Qt meta object macro
-    Q_OBJECT
+            //! predicate
+            bool operator() ( const Client* client ) const
+            { return Client::SameStateFTor::operator() (client); }
 
-    public:
+        };
 
-    //! constructor
-    ApplicationManager( QObject* parent );
+        //! map of accepted clients
+        ClientMap& _acceptedClients( void )
+        { return acceptedClients_; }
 
-    //! destructor
-    virtual ~ApplicationManager( void );
+        //! list of connected clients
+        ClientList& _connectedClients( void )
+        { return connectedClients_; }
 
-    //! application name
-    virtual void setApplicationName( const QString& name );
+        /*! \brief register a client, returns true if application is new.
+        if forced is set to true, the old cliend, if any, is replaced
+        */
+        virtual Client* _register( const ApplicationId& id, Client* client, bool forced = false );
 
-    //! commandLine parser
-    static CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignore_warnings = true );
+        //! redirect message
+        virtual void _redirect( ServerCommand, Client* );
 
-    //! usage
-    static void usage( void );
+        //! broadcast a message to all registered clients but the sender (if valid)
+        virtual void _broadcast( ServerCommand, Client* sender = 0 );
 
-    //! application state enumeration
-    enum State {
+        protected slots:
 
-      //! application manager is uninitialized
-      UNKNOWN,
+        //! a new connection is granted
+        virtual void _newConnection( void );
 
-      //! application manager awaits signal from server
-      AWAITING_REPLY,
+        //! a connection was closed
+        virtual void _serverConnectionClosed( void );
 
-      //! application manager got no reply, is kept alive
-      ALIVE,
+        //! a connection was closed
+        virtual void _clientConnectionClosed( void );
 
-      //! application manager got a reply, must die
-      DEAD
+        //! client recieves errors
+        virtual void _error( QAbstractSocket::SocketError );
+
+        //! redistribute message when a connected client sends one
+        virtual void _redirect( SERVER::ServerCommand );
+
+        //! reads signal from server
+        void _process( SERVER::ServerCommand );
+
+        //! start timeout
+        void _startTimer( void );
+
+        private:
+
+        //! host
+        const QHostAddress& _host( void ) const
+        { return host_; }
+
+        //! host
+        void _setHost( const QHostAddress& host )
+        { host_ = host; }
+
+        //! port
+        const unsigned int& _port( void ) const
+        { return port_; }
+
+        //! port
+        void _setPort( const unsigned int& port )
+        { port_ = port; }
+
+        //! arguments
+        const CommandLineArguments& _arguments( void ) const
+        { return arguments_; }
+
+        //! arguments
+        void _setArguments( const CommandLineArguments& arguments )
+        { arguments_ = arguments; }
+
+        // initialize client
+        bool _initializeClient( void );
+
+        //! initialize server
+        bool _initializeServer( void );
+
+        //! server initialization
+        bool _serverInitialized( void ) const
+        { return serverInitialized_; }
+
+        //! server initialization
+        void _setServerInitialized( bool value )
+        { serverInitialized_ = value; }
+
+        // host
+        QHostAddress host_;
+
+        // port
+        unsigned int port_;
+
+        // arguments
+        CommandLineArguments arguments_;
+
+        //! Server
+        QTcpServer* server_;
+
+        //! true if initializeServer was called
+        bool serverInitialized_;
+
+        //! Client
+        Client* client_;
+
+        //! list of connected clients
+        ClientList connectedClients_;
+
+        //! maps accepted clients and amount of request
+        ClientMap acceptedClients_;
+
+        //! application name
+        ApplicationId id_;
+
+        //! manager status
+        State state_;
+
+        //! reply timeout
+        QBasicTimer timer_;
+
     };
-
-    //! changes application state, emit signal if changed
-    virtual bool setState( const State& state )
-    {
-      if( state == state_ ) return false;
-      state_ = state;
-      return true;
-    }
-
-    //! reference to "this" client
-    virtual Client& client( void ) const
-    {
-      assert( client_ );
-      return *client_;
-    }
-
-    //! retrieve Application ID
-    virtual const ApplicationId& id( void ) const
-    { return id_; }
-
-    public slots:
-
-    //! (re)initialize server/client connections
-    virtual void initialize( CommandLineArguments args = CommandLineArguments() );
-
-    signals:
-
-    //! emitted when manager state is changed
-    // void stateChanged( SERVER::ApplicationManager::State state );
-
-    //! emitted when manager is ALIVE and request is recieved
-    // void serverRequest( const CommandLineArguments& args );
-
-    //! emitted when a given command is recieved
-    void commandRecieved( SERVER::ServerCommand );
-
-    //! emitted when the server is (re)initialized
-    void initialized( void );
-
-    protected:
-
-    //! timer event
-    virtual void timerEvent( QTimerEvent* );
-
-    //! reference to server
-    virtual QTcpServer& _server() const
-    {
-      assert( server_ );
-      return *server_;
-    }
-
-    //! pair of application id and client
-    typedef QPair< ApplicationId, Client* > ClientPair;
-
-    //! map of clients
-    typedef QMap< ApplicationId, Client* > ClientMap;
-
-    //! list of clients
-    typedef QList< Client* > ClientList;
-
-    //! used to retrieve clients for a given state
-    class SameStateFTor: public Client::SameStateFTor
-    {
-      public:
-
-      //! constructor
-      SameStateFTor( QAbstractSocket::SocketState state ):
-        Client::SameStateFTor( state )
-        {}
-
-      //! destructor
-      virtual ~SameStateFTor( void )
-      {}
-
-      //! predicate
-      bool operator() ( const ClientPair& pair ) const
-      { return Client::SameStateFTor::operator() (pair.second); }
-
-      //! predicate
-      bool operator() ( const Client* client ) const
-      { return Client::SameStateFTor::operator() (client); }
-
-    };
-
-    //! map of accepted clients
-    ClientMap& _acceptedClients( void )
-    { return accepted_clients_; }
-
-    //! list of connected clients
-    ClientList& _connectedClients( void )
-    { return connected_clients_; }
-
-    /*! \brief register a client, returns true if application is new.
-      if forced is set to true, the old cliend, if any, is replaced
-    */
-    virtual Client* _register( const ApplicationId& id, Client* client, bool forced = false );
-
-    //! redirect message
-    virtual void _redirect( ServerCommand, Client* );
-
-    //! broadcast a message to all registered clients but the sender (if valid)
-    virtual void _broadcast( ServerCommand, Client* sender = 0 );
-
-    protected slots:
-
-    //! a new connection is granted
-    virtual void _newConnection( void );
-
-    //! a connection was closed
-    virtual void _serverConnectionClosed( void );
-
-    //! a connection was closed
-    virtual void _clientConnectionClosed( void );
-
-    //! client recieves errors
-    virtual void _error( QAbstractSocket::SocketError );
-
-    //! redistribute message when a connected client sends one
-    virtual void _redirect( SERVER::ServerCommand );
-
-    //! reads signal from server
-    void _process( SERVER::ServerCommand );
-
-    //! start timeout
-    void _startTimer( void );
-
-    private:
-
-    //! host
-    const QHostAddress& _host( void ) const
-    { return host_; }
-
-    //! host
-    void _setHost( const QHostAddress& host )
-    { host_ = host; }
-
-    //! port
-    const unsigned int& _port( void ) const
-    { return port_; }
-
-    //! port
-    void _setPort( const unsigned int& port )
-    { port_ = port; }
-
-    //! arguments
-    const CommandLineArguments& _arguments( void ) const
-    { return arguments_; }
-
-    //! arguments
-    void _setArguments( const CommandLineArguments& arguments )
-    { arguments_ = arguments; }
-
-    // initialize client
-    bool _initializeClient( void );
-
-    //! initialize server
-    bool _initializeServer( void );
-
-    //! server initialization
-    bool _serverInitialized( void ) const
-    { return server_initialized_; }
-
-    //! server initialization
-    void _setServerInitialized( bool value )
-    { server_initialized_ = value; }
-
-    // host
-    QHostAddress host_;
-
-    // port
-    unsigned int port_;
-
-    // arguments
-    CommandLineArguments arguments_;
-
-    //! Server
-    QTcpServer* server_;
-
-    //! true if initializeServer was called
-    bool server_initialized_;
-
-    //! Client
-    Client* client_;
-
-    //! list of connected clients
-    ClientList connected_clients_;
-
-    //! maps accepted clients and amount of request
-    ClientMap accepted_clients_;
-
-    //! application name
-    ApplicationId id_;
-
-    //! manager status
-    State state_;
-
-    //! reply timeout
-    QBasicTimer timer_;
-
-  };
 };
 
 #endif

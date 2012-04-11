@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-   \file    ApplicationManager.cpp
-   \brief   ensures only one instance of an application is running
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
+\file    ApplicationManager.cpp
+\brief   ensures only one instance of an application is running
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
 */
 
 #include "ApplicationManager.h"
@@ -47,7 +47,7 @@ namespace SERVER
         host_( QHostAddress::LocalHost ),
         port_( 8082 ),
         server_( new QTcpServer( this ) ),
-        server_initialized_( false ),
+        serverInitialized_( false ),
         client_( new Client( this, new QTcpSocket( this ) ) ),
         state_( AWAITING_REPLY )
     {
@@ -63,10 +63,10 @@ namespace SERVER
         connect( &client().socket(), SIGNAL( disconnected() ), SLOT( _serverConnectionClosed() ) );
         connect( &client(), SIGNAL( commandAvailable( SERVER::ServerCommand ) ), SLOT( _process( SERVER::ServerCommand ) ) );
 
-        if( !XmlOptions::get().find( "SERVER_HOST" ) )
+        if( !XmlOptions::get().contains( "SERVER_HOST" ) )
         { XmlOptions::get().set( "SERVER_HOST", Option( QHostAddress( QHostAddress::LocalHost ).toString() ) ); }
 
-        if( !XmlOptions::get().find( "SERVER_PORT" ) )
+        if( !XmlOptions::get().contains( "SERVER_PORT" ) )
         { XmlOptions::get().set( "SERVER_PORT", Option( "8090" ), "default port" ); }
 
     }
@@ -186,17 +186,17 @@ namespace SERVER
 
         if( forced ) {
 
-            accepted_clients_[id] = client;
+            acceptedClients_[id] = client;
             return client;
 
-        } else if( accepted_clients_.find( id ) == accepted_clients_.end() ) {
+        } else if( acceptedClients_.find( id ) == acceptedClients_.end() ) {
 
-            accepted_clients_[id] = client;
+            acceptedClients_[id] = client;
             return client;
 
         } else {
 
-            return accepted_clients_[id];
+            return acceptedClients_[id];
 
         }
 
@@ -219,7 +219,7 @@ namespace SERVER
             {
 
                 // unlock request. Clear list of registered applications
-                accepted_clients_.clear();
+                acceptedClients_.clear();
                 return;
 
             }
@@ -287,7 +287,7 @@ namespace SERVER
                 send the associated Identity to the sender
                 */
 
-                for( ClientMap::iterator it=accepted_clients_.begin(); it!=accepted_clients_.end(); it++ )
+                for( ClientMap::iterator it=acceptedClients_.begin(); it!=acceptedClients_.end(); it++ )
                 { sender->sendCommand( ServerCommand( it.key(), ServerCommand::IDENTIFY ) ); }
 
                 // identify the server
@@ -535,7 +535,7 @@ namespace SERVER
     {
         // time out delay (for existing server to reply)
         // one should really start the timer only when the client is connected
-        int timeout_delay( XmlOptions::get().find( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 );
+        int timeout_delay( XmlOptions::get().contains( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 );
         timer_.start( timeout_delay, this );
     }
 
