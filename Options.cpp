@@ -28,14 +28,14 @@
 #include <algorithm>
 
 //________________________________________________
-Options::Options( bool install_default_options ):
+Options::Options( bool installDefaultOptions ):
     Counter( "Options" ),
     options_(),
     specialOptions_(),
     autoDefault_( false )
 {
 
-    if( install_default_options )
+    if( installDefaultOptions )
     {
 
         setAutoDefault( true );
@@ -117,16 +117,16 @@ void Options::clearSpecialOptions( const QString& name )
 }
 
 //________________________________________________
-void Options::set( const QString& name, Option option, const bool& is_default )
+void Options::set( const QString& name, Option option, const bool& isDefault )
 {
     Debug::Throw() << "Options::set - name: " << name << endl;
     assert( !isSpecialOption( name ) );
-    if( is_default || _autoDefault() ) option.setDefault();
+    if( isDefault || _autoDefault() ) option.setDefault();
     options_[name] = option;
 }
 
 //________________________________________________
-bool Options::add( const QString& name, Option option, const bool& is_default )
+bool Options::add( const QString& name, Option option, const bool& isDefault )
 {
 
     Debug::Throw() << "Options::add - name: " << name << endl;
@@ -139,7 +139,7 @@ bool Options::add( const QString& name, Option option, const bool& is_default )
     assert( iter != specialOptions_.end() );
 
     // set as default
-    if( is_default || _autoDefault() ) option.setDefault();
+    if( isDefault || _autoDefault() ) option.setDefault();
 
     // if option is first, set as current
     if( iter.value().empty() ) option.setCurrent( true );
