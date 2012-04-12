@@ -559,8 +559,9 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
 
         // restore old values
         XmlOptions::get().clearSpecialOptions( "PIXMAP_PATH" );
-        for( Options::List::iterator iter = backupOptions.begin(); iter != backupOptions.end(); ++iter )
-        { XmlOptions::get().add( "PIXMAP_PATH", *iter ); }
+        foreach( const Option& option, backupOptions )
+        { XmlOptions::get().add( "PIXMAP_PATH", option ); }
+
     }
     return;
 
