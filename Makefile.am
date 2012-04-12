@@ -13,7 +13,9 @@ INCLUDES =  \
 noinst_HEADERS = \
 AutoSpellConfiguration.h \
 DictionaryMenu.h \
+DictionarySelectionButton.h \
 FilterMenu.h \
+FilterSelectionButton.h \
 SpellCheckConfiguration.h \
 SpellDialog.h \
 SpellInterface.h \
@@ -27,7 +29,9 @@ Word.h
 sources =  \
 AutoSpellConfiguration.cpp \
 DictionaryMenu.cpp \
+DictionarySelectionButton.cpp \
 FilterMenu.cpp \
+FilterSelectionButton.cpp \
 SpellCheckConfiguration.cpp \
 SpellDialog.cpp \
 SpellInterface.cpp \
@@ -38,7 +42,9 @@ SuggestionMenu.cpp
 
 nodist_sources = \
 moc_DictionaryMenu.cpp \
+moc_DictionarySelectionButton.cpp \
 moc_FilterMenu.cpp \
+moc_FilterSelectionButton.cpp \
 moc_SpellCheckConfiguration.cpp \
 moc_SpellDialog.cpp \
 moc_SpellItemDialog.cpp \

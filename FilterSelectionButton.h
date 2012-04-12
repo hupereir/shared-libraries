@@ -1,6 +1,5 @@
-
-#ifndef _SpellCheckConfiguration_h_
-#define _SpellCheckConfiguration_h_
+#ifndef FilterSelectionButton_h
+#define FilterSelectionButton_h
 
 // $Id$
 
@@ -25,17 +24,15 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "OptionWidgetList.h"
+#include "OptionWidget.h"
+#include "XmlOptions.h"
 
-#include <QtGui/QGroupBox>
-
-class OptionComboBox;
+#include <QtGui/QToolButton>
 
 namespace SPELLCHECK
 {
-    //! Spell common configuration
-    class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+
+    class FilterSelectionButton: public QToolButton, public OptionWidget
     {
 
         Q_OBJECT
@@ -43,24 +40,38 @@ namespace SPELLCHECK
         public:
 
         //! constructor
-        SpellCheckConfiguration( QWidget* );
+        FilterSelectionButton( QWidget* );
 
         //! destructor
-        virtual ~SpellCheckConfiguration( void )
+        virtual ~FilterSelectionButton( void )
         {}
+
+        //! retrieve value
+        QString value( void ) const
+        { return value_; }
+
+        //! read value from option
+        virtual void read( void )
+        { value_ = XmlOptions::get().raw( optionName() ); }
+
+        //! write value to option
+        virtual void write( void ) const
+        { XmlOptions::get().set( optionName(), value_ ); }
+
+        signals:
+
+        //! emmitted when selection is modified
+        void modified( void );
 
         protected slots:
 
-        //! update dictionaries
-        void _updateDictionaries( void );
-
-        //! update filters
-        void _updateFilters( void );
+        //! edit filters
+        void _edit( void );
 
         private:
 
-        OptionComboBox* dictionariesComboBox_;
-        OptionComboBox* filtersComboBox_;
+        //! disabled filters
+        QString value_;
 
     };
 
