@@ -46,6 +46,8 @@ namespace SPELLCHECK
         setToolTip( "Configure dictionaries that should appear in the list" );
         connect( this, SIGNAL( clicked( void ) ), SLOT( _edit( void ) ) );
 
+        read();
+
     }
 
     //___________________________________________

@@ -21,15 +21,19 @@
 *
 *******************************************************************************/
 
+#include "SpellDialog.h"
+
 #include "BaseIcons.h"
-#include "GridLayout.h"
 #include "Debug.h"
+#include "DictionarySelectionButton.h"
+#include "FilterSelectionButton.h"
+#include "GridLayout.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
-#include "SpellDialog.h"
 #include "SpellInterface.h"
 #include "TreeView.h"
 #include "Util.h"
+#include "XmlOptions.h"
 
 #include <QtGui/QLayout>
 #include <QtGui/QHeaderView>
@@ -73,21 +77,22 @@ namespace SPELLCHECK
         gridLayout->setMargin( 0 );
         gridLayout->setSpacing(5);
         gridLayout->setMaxCount( 2 );
+        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         vLayout->addLayout( gridLayout, 0 );
 
         // misspelled word line editor
-        gridLayout->addWidget( new QLabel( "Misspelled word: ", this ) );
+        gridLayout->addWidget( new QLabel( "Misspelled word:", this ) );
         gridLayout->addWidget( sourceEditor_ = new AnimatedLineEditor( this ) );
         sourceEditor_->setReadOnly( true );
 
         // replacement line editor
-        gridLayout->addWidget( new QLabel( "Replace with: ", this ) );
+        gridLayout->addWidget( new QLabel( "Replace with:", this ) );
         gridLayout->addWidget( replaceEditor_ = new AnimatedLineEditor( this ) );
         if( read_only ) replaceEditor_->setEnabled( false );
 
         gridLayout->setColumnStretch( 1, 1 );
 
-        QLabel* label = new QLabel( "Suggestions: ", this );
+        QLabel* label = new QLabel( "Suggestions:", this );
         vLayout->addWidget( label, 0 );
 
         // suggestions
@@ -102,29 +107,37 @@ namespace SPELLCHECK
         gridLayout = new GridLayout();
         gridLayout->setMargin( 0 );
         gridLayout->setSpacing(5);
-        gridLayout->setMaxCount( 2 );
+        gridLayout->setMaxCount( 3 );
+        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+
         vLayout->addLayout( gridLayout, 0 );
 
         // dictionaries combobox
-        gridLayout->addWidget( new QLabel( "Dictionary: ", this ) );
-        gridLayout->addWidget( dictionary_ = new QComboBox( this ) );
+        gridLayout->addWidget( label = new QLabel( "Dictionary: ", this ) );
+        gridLayout->addWidget( dictionariesComboBox_ = new QComboBox( this ) );
+        _updateDictionaries();
 
-        const QSet<QString>& dictionaries( interface().dictionaries() );
-        for( QSet<QString>::const_iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
-        { dictionary_->addItem(*iter ); }
+        connect( dictionariesComboBox_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
 
-        connect( dictionary_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
+        // configuration
+        DictionarySelectionButton* dictionarySelectionButton;
+        gridLayout->addWidget( dictionarySelectionButton = new DictionarySelectionButton( this ) );
+        connect( dictionarySelectionButton, SIGNAL( modified() ), SLOT( _updateDictionaries() ) );
 
         // filter combobox
-        gridLayout->addWidget( filterLabel_ = new QLabel( "Filter: ", this ) );
-        gridLayout->addWidget( filter_ = new QComboBox( this ) );
+        gridLayout->addWidget( filterLabel_ = new QLabel( "Filter: ", this ), 1, 0, 1, 1 );
+        gridLayout->addWidget( filtersComboBox_ = new QComboBox( this ), 1, 1, 1, 1 );
+        _updateFilters();
 
+        connect( filtersComboBox_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
+
+        // configuration
+        FilterSelectionButton* filterSelectionButton;
+        gridLayout->addWidget( filterSelectionButton = new FilterSelectionButton( this ) );
+        connect( filterSelectionButton, SIGNAL( modified() ), SLOT( _updateFilters() ) );
+
+        // stretch
         gridLayout->setColumnStretch( 1, 1 );
-
-        QSet<QString> filters( interface().filters() );
-        for( QSet<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
-        { filter_->addItem( *iter ); }
-        connect( filter_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
 
         // right vbox
         vLayout = new QVBoxLayout();
@@ -221,10 +234,10 @@ namespace SPELLCHECK
         Debug::Throw( "SpellDialog::showFilter.\n" );
         if( value ){
             filterLabel_->show();
-            filter_->show();
+            filtersComboBox_->show();
         } else {
             filterLabel_->hide();
-            filter_->hide();
+            filtersComboBox_->hide();
         }
     }
 
@@ -234,7 +247,7 @@ namespace SPELLCHECK
         Debug::Throw( "SpellDialog::setDictionary.\n" );
 
         // find matching index
-        int index( dictionary_->findText( dictionary ) );
+        int index( dictionariesComboBox_->findText( dictionary ) );
         if( index < 0 )
         {
             QString buffer;
@@ -251,7 +264,7 @@ namespace SPELLCHECK
         }
 
         // select index
-        dictionary_->setCurrentIndex( index );
+        dictionariesComboBox_->setCurrentIndex( index );
 
         return true;
 
@@ -263,7 +276,7 @@ namespace SPELLCHECK
         Debug::Throw( "SpellDialog::setFilter.\n" );
 
         // find matching index
-        int index( filter_->findText( filter ) );
+        int index( filtersComboBox_->findText( filter ) );
         if( index < 0 )
         {
             QString buffer;
@@ -280,9 +293,56 @@ namespace SPELLCHECK
         }
 
         // select index
-        filter_->setCurrentIndex( index );
+        filtersComboBox_->setCurrentIndex( index );
 
         return true;
+
+    }
+
+
+    //___________________________________________
+    void SpellDialog::_updateDictionaries( void )
+    {
+        Debug::Throw( "SpellDialog::_updateDictionaries.\n" );
+
+        // store selection
+        const QString selection( dictionariesComboBox_->currentText() );
+
+        // read list of disabled dictionaries
+        const QStringList disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
+
+        // clear combobox
+        dictionariesComboBox_->clear();
+
+        // get dictionary list and populate combobox
+        foreach( const QString& dictionary, interface().dictionaries() )
+        { if( !disabledDictionaries.contains( dictionary ) ) dictionariesComboBox_->addItem( dictionary ); }
+
+        // restore default value
+        dictionariesComboBox_->setCurrentIndex( dictionariesComboBox_->findText( selection ) );
+
+    }
+
+    //___________________________________________
+    void SpellDialog::_updateFilters( void )
+    {
+        Debug::Throw( "SpellDialog::_updateFilters.\n" );
+
+        // store selection
+        const QString selection( filtersComboBox_->currentText() );
+
+        // read list of disabled filters
+        const QStringList disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );
+
+        // clear combobox
+        filtersComboBox_->clear();
+
+        // get dictionary list and populate combobox
+        foreach( const QString& filter, interface().filters() )
+        { if( !disabledFilters.contains( filter ) ) filtersComboBox_->addItem( filter ); }
+
+        // restore default value
+        filtersComboBox_->setCurrentIndex( filtersComboBox_->findText( selection ) );
 
     }
 

@@ -44,6 +44,7 @@ namespace SPELLCHECK
         gridLayout->setSpacing( 5 );
         gridLayout->setMargin( 5 );
         gridLayout->setMaxCount( 2 );
+        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         setLayout( gridLayout );
 
         // suggestions
@@ -67,6 +68,8 @@ namespace SPELLCHECK
         gridLayout->addWidget( fontinfo );
         fontinfo->setToolTip( "Font format for misspelled words" );
         addOptionWidget( fontinfo );
+
+        read();
 
     }
 }

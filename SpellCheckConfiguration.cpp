@@ -89,6 +89,8 @@ namespace SPELLCHECK
         connect( filterButton, SIGNAL( modified( void ) ), SLOT( _updateFilters( void ) ) );
         addOptionWidget( filterButton );
 
+        read();
+
         _updateDictionaries();
         _updateFilters();
 
@@ -100,7 +102,7 @@ namespace SPELLCHECK
         Debug::Throw( "SpellCheckConfiguration::_updateDictionaries.\n" );
 
         // read list of disabled dictionaries
-        QStringList disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
+        const QStringList disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
 
         // clear combobox
         dictionariesComboBox_->clear();
@@ -121,7 +123,7 @@ namespace SPELLCHECK
         Debug::Throw( "SpellCheckConfiguration::_updateFilters.\n" );
 
         // read list of disabled filters
-        QStringList disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );
+        const QStringList disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );
 
         // clear combobox
         filtersComboBox_->clear();

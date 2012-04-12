@@ -79,14 +79,14 @@ namespace SPELLCHECK
 
         //! dictionary
         QString dictionary( void ) const
-        { return dictionary_->itemText( dictionary_->currentIndex() ); }
+        { return dictionariesComboBox_->itemText( dictionariesComboBox_->currentIndex() ); }
 
         //! filter
         bool setFilter( const QString& filter );
 
         //! dictionary
         QString filter( void ) const
-        { return filter_->itemText( filter_->currentIndex() ); }
+        { return filtersComboBox_->itemText( filtersComboBox_->currentIndex() ); }
 
         //! go to next word to be checked
         void nextWord( void );
@@ -106,6 +106,12 @@ namespace SPELLCHECK
         void dictionaryChanged( QString );
 
         protected slots:
+
+        //! update dictionaries
+        void _updateDictionaries( void );
+
+        //! update filters
+        void _updateFilters( void );
 
         //! select suggestion, update replaceEditor_
         virtual void _selectSuggestion( const QModelIndex& );
@@ -221,13 +227,13 @@ namespace SPELLCHECK
         TreeView *list_;
 
         //! combo box for dictionary
-        QComboBox *dictionary_;
+        QComboBox *dictionariesComboBox_;
 
         //! filter label
         QLabel *filterLabel_;
 
         //! combo box for filter
-        QComboBox *filter_;
+        QComboBox *filtersComboBox_;
 
         //! state frame for message
         QLabel* stateLabel_;
