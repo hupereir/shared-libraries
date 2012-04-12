@@ -574,7 +574,7 @@ void BaseConfigurationDialog::_restore( void )
     if( XmlOptions::get() == backupOptions_ ) return;
     XmlOptions::get() = backupOptions_;
     modifiedOptions_ = backupOptions_;
-    _read();
+    read();
     emit configurationChanged();
 }
 
@@ -610,15 +610,8 @@ void BaseConfigurationDialog::_restoreDefaults( void )
     if( !dialog.centerOnWidget( this ).exec() ) return;
 
     XmlOptions::get().restoreDefaults();
-    _read();
+    read();
     emit configurationChanged();
-}
-
-//__________________________________________________
-void BaseConfigurationDialog::_read( void )
-{
-    Debug::Throw( "BaseConfigurationDialog::_read.\n" );
-    OptionWidgetList::read();
 }
 
 //__________________________________________________

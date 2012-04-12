@@ -25,50 +25,35 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    OptionWidget.h
-   \brief   base class for option manipulating widgets
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
+#include <QtCore/QString>
 
-#include <QString>
-
-//! base class for option manipulating widgets
-/*!
-  OptionWidgets are used as a base class to register widgets associated
-  to a given Option in a Configuration dialog. They have a string member, which
-  is the option name, and 2 pure virtual functions for reading and writting the
-  option. These must be reimplemented into specific widgets.
-*/
 class OptionWidget
 {
-  public:
+    public:
 
-  //! constructor
-  OptionWidget( const QString& name ):
-    option_name_( name )
-  {}
+    //! constructor
+    OptionWidget( const QString& name ):
+        optionName_( name )
+    {}
 
-  //! destructor
-  virtual ~OptionWidget()
-  {}
+    //! destructor
+    virtual ~OptionWidget()
+    {}
 
-  //! set widget value from option value
-  virtual void read( void ) = 0;
+    //! set widget value from option value
+    virtual void read( void ) = 0;
 
-  //! set option value from widget value
-  virtual void write( void ) const = 0;
+    //! set option value from widget value
+    virtual void write( void ) const = 0;
 
-  //! option name
-  const QString& optionName( void ) const
-  { return option_name_; }
+    //! option name
+    const QString& optionName( void ) const
+    { return optionName_; }
 
-  private:
+    private:
 
-  //! name of the option linked to the widget
-  QString option_name_;
+    //! name of the option linked to the widget
+    QString optionName_;
 
 };
 
