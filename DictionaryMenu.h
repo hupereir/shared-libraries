@@ -25,11 +25,11 @@
 *******************************************************************************/
 
 /*!
-   \file DictionaryMenu.h
-   \brief dictionary dictionary selection menu
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file DictionaryMenu.h
+\brief dictionary dictionary selection menu
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include "Counter.h"
@@ -42,42 +42,44 @@
 //! dictionary dictionary selection menu
 namespace SPELLCHECK
 {
-  class DictionaryMenu: public QMenu, public Counter
-  {
+    class DictionaryMenu: public QMenu, public Counter
+    {
 
-    Q_OBJECT
+        Q_OBJECT
 
-    public:
+        public:
 
-    //! constructor
-    DictionaryMenu( QWidget* parent );
+        //! constructor
+        DictionaryMenu( QWidget* );
 
-    //! select dictionary manualy
-    void select( const QString& dictionary );
+        //! select dictionary manualy
+        void select( const QString& );
 
-    signals:
+        signals:
 
-    //! dictionary changed
-    void selectionChanged( const QString& );
+        //! dictionary changed
+        void selectionChanged( const QString& );
 
-    protected slots:
+        public slots:
 
-    //! reset dictionary list
-    void _reset( void );
+        //! reset dictionary list
+        void reset( void );
 
-    //! dictionary selected from menu
-    void _selectDictionary( QAction* action );
+        protected slots:
 
-    private:
+        //! dictionary selected from menu
+        void _selectDictionary( QAction* action );
 
-    //! action group
-    QActionGroup* group_;
+        private:
 
-    //! map dictionaries and action
-    typedef QHash<QAction*, QString> ActionMap;
-    ActionMap actionMap_;
+        //! action group
+        QActionGroup* group_;
 
-  };
+        //! map dictionaries and action
+        typedef QHash<QAction*, QString> ActionMap;
+        ActionMap actionMap_;
+
+    };
 
 };
 

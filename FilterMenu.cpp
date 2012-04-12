@@ -21,18 +21,12 @@
 *
 *******************************************************************************/
 
-/*!
-   \file FilterMenu.cpp
-   \brief dictionary filter selection menu
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
+#include "FilterMenu.h"
 
 #include "BaseIcons.h"
-#include "FilterMenu.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"
+#include "XmlOptions.h"
 
 namespace SPELLCHECK
 {
@@ -49,7 +43,7 @@ namespace SPELLCHECK
         group_ = new QActionGroup( this );
         group_->setExclusive( true );
 
-        _reset();
+        reset();
         connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectFilter( QAction* ) ) );
     }
 
@@ -67,10 +61,15 @@ namespace SPELLCHECK
     }
 
     //____________________________________________________________________
-    void FilterMenu::_reset( void )
+    void FilterMenu::reset( void )
     {
 
-        Debug::Throw( "FilterMenu::_reset.\n" );
+        Debug::Throw( "FilterMenu::reset.\n" );
+
+        // store selected filter
+        QString selection;
+        for( ActionMap::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        { if( iter.key()->isChecked() ) selection = iter.value(); }
 
         // clear actions
         QMenu::clear();
@@ -79,16 +78,33 @@ namespace SPELLCHECK
         // add reset button
         QAction* action;
         addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
-        connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
+        connect( action, SIGNAL( triggered() ), SLOT( reset() ) );
 
-        // load filters from spell interface
-        QSet< QString > filters( SPELLCHECK::SpellInterface().filters() );
-        if( !filters.empty() ) addSeparator();
-        for( QSet<QString>::iterator iter = filters.begin(); iter != filters.end(); ++iter )
+        // load disabled filters from options
+        QStringList disabledFilters;
+        if( XmlOptions::get().contains( "SPELLCHECK_DISABLED_FILTERS" ) )
+        { disabledFilters = QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ); }
+
+        // populate list
+        bool first( true );
+        foreach( const QString& filter, SPELLCHECK::SpellInterface().filters() )
         {
-            QAction* action( new QAction( *iter, this ) );
+
+            // check against list of disabled filters
+            if( disabledFilters.contains( filter ) ) continue;
+
+            // insert separator
+            if( first )
+            {
+                first = false;
+                addSeparator();
+            }
+
+            // insert action
+            QAction* action( new QAction( filter, this ) );
             action->setCheckable( true );
-            actionMap_.insert( action, *iter );
+            action->setChecked( filter == selection );
+            actionMap_.insert( action, filter );
             addAction( action );
             group_->addAction( action );
         }

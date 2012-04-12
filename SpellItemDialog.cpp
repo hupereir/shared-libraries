@@ -47,7 +47,7 @@ namespace SPELLCHECK
         _list().header()->hide();
 
         // connections
-        connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _selectItem( const QModelIndex& ) ) );
+        connect( &_list(), SIGNAL( clicked( const QModelIndex& ) ), SLOT( _selectItem( const QModelIndex& ) ) );
 
     }
 
@@ -64,6 +64,23 @@ namespace SPELLCHECK
     { return QStringList( QList<QString>::fromSet( model_.disabledItems() ) ).join( " " ); }
 
     //_______________________________________________
-    void SpellItemDialog::_selectItem( const QModelIndex& )
-    { return; }
+    void SpellItemDialog::_selectItem( const QModelIndex& index )
+    {
+        Debug::Throw( "SpellItemDialog::_selectItem.\n" );
+
+        if( !index.isValid() ) return;
+
+        // get string and list of disabled items
+        SpellItemModel::ItemSet disabledItems( model_.disabledItems() );
+        const QString value( model_.get( index ) );
+
+        // toggle
+        if( disabledItems.contains( value ) ) disabledItems.remove( value );
+        else disabledItems.insert( value );
+
+        // replace in model
+        model_.setDisabledItems( disabledItems );
+
+        return;
+    }
 }

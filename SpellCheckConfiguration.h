@@ -57,10 +57,18 @@ namespace SPELLCHECK
         //! edit filters
         void _editFilters( void );
 
+        protected slots:
+
+        //! update dictionaries
+        void _updateDictionaries( void );
+
+        //! update filters
+        void _updateFilters( void );
+
         private:
 
         OptionComboBox* dictionariesComboBox_;
-        OptionComboBox* filterComboBox_;
+        OptionComboBox* filtersComboBox_;
 
     };
 

@@ -24,13 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file FilterMenu.h
-   \brief dictionary filter selection menu
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
 
 #include "Counter.h"
 
@@ -42,43 +35,45 @@
 namespace SPELLCHECK
 {
 
-  //! dictionary filter selection menu
-  class FilterMenu: public QMenu, public Counter
-  {
+    //! dictionary filter selection menu
+    class FilterMenu: public QMenu, public Counter
+    {
 
-    Q_OBJECT
+        Q_OBJECT
 
-    public:
+        public:
 
-    //! constructor
-    FilterMenu( QWidget* parent );
+        //! constructor
+        FilterMenu( QWidget* parent );
 
-    //! select filter manualy
-    void select( const QString& filter );
+        //! select filter manualy
+        void select( const QString& filter );
 
-    signals:
+        signals:
 
-    //! filter changed
-    void selectionChanged( const QString& );
+        //! filter changed
+        void selectionChanged( const QString& );
 
-    protected slots:
+        public slots:
 
-    //! reset filter list
-    void _reset( void );
+        //! reset filter list
+        void reset( void );
 
-    //! filter selected from menu
-    void _selectFilter( QAction* action );
+        protected slots:
 
-    private:
+        //! filter selected from menu
+        void _selectFilter( QAction* action );
 
-    //! action group
-    QActionGroup* group_;
+        private:
 
-    //! map filters and action
-    typedef QHash<QAction*, QString> ActionMap;
-    ActionMap actionMap_;
+        //! action group
+        QActionGroup* group_;
 
-  };
+        //! map filters and action
+        typedef QHash<QAction*, QString> ActionMap;
+        ActionMap actionMap_;
+
+    };
 
 };
 

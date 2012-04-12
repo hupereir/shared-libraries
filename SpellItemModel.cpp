@@ -43,9 +43,17 @@ namespace SPELLCHECK
         // retrieve associated file info
         const QString& text( get(index) );
 
-        if( role == Qt::DisplayRole && index.column() == Text ) return text;
-        else if( role == Qt::CheckStateRole && index.column() == Text )
-        { return !disabledItems_.contains( text ); }
+        switch( index.column() )
+        {
+
+            case Text:
+            if( role == Qt::DisplayRole ) return text;
+            else if( role == Qt::CheckStateRole ) return disabledItems_.contains( text ) ?  Qt::Unchecked : Qt::Checked;
+            else return QVariant();
+
+            default: break;
+
+        }
 
         return QVariant();
 

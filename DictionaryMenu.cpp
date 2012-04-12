@@ -21,18 +21,12 @@
 *
 *******************************************************************************/
 
-/*!
-   \file DictionaryMenu.cpp
-   \brief dictionary dictionary selection menu
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
+#include "DictionaryMenu.h"
 
 #include "BaseIcons.h"
-#include "DictionaryMenu.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"
+#include "XmlOptions.h"
 
 namespace SPELLCHECK
 {
@@ -49,7 +43,10 @@ namespace SPELLCHECK
         group_ = new QActionGroup( this );
         group_->setExclusive( true );
 
-        _reset();
+        // reset
+        reset();
+
+        // connections
         connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectDictionary( QAction* ) ) );
 
     }
@@ -67,15 +64,15 @@ namespace SPELLCHECK
     }
 
     //____________________________________________________________________
-    void DictionaryMenu::_reset( void )
+    void DictionaryMenu::reset( void )
     {
 
-        Debug::Throw( "DictionaryMenu::_reset.\n" );
+        Debug::Throw( "DictionaryMenu::reset.\n" );
 
         // store selected dictionary
-        QString dictionary;
+        QString selection;
         for( ActionMap::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
-        { if( iter.key()->isChecked() ) dictionary = iter.value(); }
+        { if( iter.key()->isChecked() ) selection = iter.value(); }
 
         // clear actions
         QMenu::clear();
@@ -84,20 +81,36 @@ namespace SPELLCHECK
         // add reset button
         QAction* action;
         addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
-        connect( action, SIGNAL( triggered() ), SLOT( _reset() ) );
+        connect( action, SIGNAL( triggered() ), SLOT( reset() ) );
 
-        // load dictionaries from spell interface
-        QSet< QString > dictionaries( SPELLCHECK::SpellInterface().dictionaries() );
-        if( !dictionaries.empty() ) addSeparator();
+        // load disabled dictionaries from options
+        QStringList disabledDictionaries;
+        if( XmlOptions::get().contains( "SPELLCHECK_DISABLED_DICTIONARIES" ) )
+        { disabledDictionaries = QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ); }
 
-        for( QSet<QString>::iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
+        // populate list
+        bool first( true );
+        foreach( const QString& dictionary, SPELLCHECK::SpellInterface().dictionaries() )
         {
-            QAction* action( new QAction( *iter, this ) );
+
+            // check against list of disabled dictionaries
+            if( disabledDictionaries.contains( dictionary ) ) continue;
+
+            // insert separator
+            if( first )
+            {
+                first = false;
+                addSeparator();
+            }
+
+            // insert action
+            QAction* action( new QAction( dictionary, this ) );
             action->setCheckable( true );
-            action->setChecked( *iter == dictionary );
-            actionMap_.insert( action, *iter );
+            action->setChecked( dictionary == selection );
+            actionMap_.insert( action, dictionary );
             addAction( action );
             group_->addAction( action );
+
         }
 
     }

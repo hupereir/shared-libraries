@@ -46,8 +46,6 @@ namespace SPELLCHECK
     {
         Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
 
-        SPELLCHECK::SpellInterface interface;
-
         GridLayout* gridLayout( new GridLayout() );
         gridLayout->setSpacing( 5 );
         gridLayout->setMargin( 5 );
@@ -70,33 +68,29 @@ namespace SPELLCHECK
             "Default dictionary used with files for which\n"
             "a dictionary has not been manually selected" );
         addOptionWidget( dictionariesComboBox_ );
-
-        const QSet<QString>& dictionaries( interface.dictionaries() );
-        for( QSet<QString>::const_iterator iter = dictionaries.begin(); iter != dictionaries.end(); ++iter )
-        { dictionariesComboBox_->addItem( *iter ); }
+        _updateDictionaries();
 
         QToolButton* toolButton;
         gridLayout->addWidget( toolButton = new QToolButton( this ), 1, 2, 1, 1 );
         toolButton->setIcon( IconEngine::get( ICONS::CONFIGURE ) );
         toolButton->setAutoRaise( true );
+        toolButton->setAutoRaise( "Configure dictionaries that should appear in the list" );
         connect( toolButton, SIGNAL( clicked( void ) ), SLOT( _editDictionaries( void ) ) );
 
         // filters
         gridLayout->addWidget( new QLabel( "Default Filter: ", this ), 2, 0, 1, 1 );
-        filterComboBox_ = new OptionComboBox( this, "DICTIONARY_FILTER" );
-        gridLayout->addWidget( filterComboBox_, 2, 1, 1, 1 );
-        filterComboBox_->setToolTip(
+        filtersComboBox_ = new OptionComboBox( this, "DICTIONARY_FILTER" );
+        gridLayout->addWidget( filtersComboBox_, 2, 1, 1, 1 );
+        filtersComboBox_->setToolTip(
             "Default filtering mode used with files for which\n"
             "a filtering mode has not been manually selected" );
-        addOptionWidget( filterComboBox_ );
-
-        const QSet<QString>& filters( interface.filters() );
-        for( QSet<QString>::const_iterator iter = filters.begin(); iter != filters.end(); ++iter )
-        { filterComboBox_->addItem(*iter ); }
+        addOptionWidget( filtersComboBox_ );
+        _updateFilters();
 
         gridLayout->addWidget( toolButton = new QToolButton( this ), 2, 2, 1, 1 );
         toolButton->setIcon( IconEngine::get( ICONS::CONFIGURE ) );
         toolButton->setAutoRaise( true );
+        toolButton->setAutoRaise( "Configure filters that should appear in the list" );
         connect( toolButton, SIGNAL( clicked( void ) ), SLOT( _editFilters( void ) ) );
 
     }
@@ -108,9 +102,7 @@ namespace SPELLCHECK
         Debug::Throw( "SpellCheckConfiguration::_editDictionaries.\n" );
 
         // get backup
-        QString backup(
-            XmlOptions::get().contains( "SPELLCHECK_DISABLED_DICTIONARIES" ) ?
-            XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) : "" );
+        QString backup( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) );
 
         // get list of dictionaries
         SPELLCHECK::SpellInterface interface;
@@ -121,7 +113,21 @@ namespace SPELLCHECK
         dialog.setItems( dictionaries );
         dialog.setDisabledItems( backup );
 
-        if( !dialog.centerOnWidget( this ).exec() ) return;
+        if( dialog.centerOnWidget( this ).exec() )
+        {
+
+            // get disabled dictionaries and assign to options
+            XmlOptions::get().set( "SPELLCHECK_DISABLED_DICTIONARIES", dialog.disabledItems() );
+
+        } else {
+
+            // restore backup
+            XmlOptions::get().set( "SPELLCHECK_DISABLED_DICTIONARIES", backup );
+
+        }
+
+        _updateDictionaries();
+        return;
 
     }
 
@@ -129,8 +135,85 @@ namespace SPELLCHECK
     void SpellCheckConfiguration::_editFilters( void )
     {
 
-            Debug::Throw( "SpellCheckConfiguration::_editFilters.\n" );
+        Debug::Throw( "SpellCheckConfiguration::_editFilters.\n" );
 
+        // get backup
+        QString backup( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) );
+
+        // get list of filters
+        SPELLCHECK::SpellInterface interface;
+        const QSet<QString>& filters( interface.filters() );
+
+        // create dialog
+        SpellItemDialog dialog( this );
+        dialog.setItems( filters );
+        dialog.setDisabledItems( backup );
+
+        if( dialog.centerOnWidget( this ).exec() )
+        {
+
+            // get disabled filters and assign to options
+            XmlOptions::get().set( "SPELLCHECK_DISABLED_FILTERS", dialog.disabledItems() );
+
+        } else {
+
+            // restore backup
+            XmlOptions::get().set( "SPELLCHECK_DISABLED_FILTERS", backup );
+
+        }
+
+        _updateFilters();
+        return;
+
+    }
+
+    //___________________________________________
+    void SpellCheckConfiguration::_updateDictionaries( void )
+    {
+        Debug::Throw( "SpellCheckConfiguration::_updateDictionaries.\n" );
+
+        // make sure disabled dictionaries option exists
+        if( !XmlOptions::get().contains( "SPELLCHECK_DISABLED_DICTIONARIES" ) )
+        { XmlOptions::get().set( "SPELLCHECK_DISABLED_DICTIONARIES", Option( " " ), true ); }
+
+        // read list of disabled dictionaries
+        QStringList disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
+
+        // clear combobox
+        dictionariesComboBox_->clear();
+
+        // get dictionary list and populate combobox
+        SPELLCHECK::SpellInterface interface;
+        foreach( const QString& dictionary, interface.dictionaries() )
+        { if( !disabledDictionaries.contains( dictionary ) ) dictionariesComboBox_->addItem( dictionary ); }
+
+        // read default value from options
+        dictionariesComboBox_->read();
+
+    }
+
+    //___________________________________________
+    void SpellCheckConfiguration::_updateFilters( void )
+    {
+        Debug::Throw( "SpellCheckConfiguration::_updateFilters.\n" );
+
+        // make sure disabled filters option exists
+        if( !XmlOptions::get().contains( "SPELLCHECK_DISABLED_FILTERS" ) )
+        { XmlOptions::get().set( "SPELLCHECK_DISABLED_FILTERS", Option( " " ), true ); }
+
+        // read list of disabled filters
+        QStringList disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );
+
+        // clear combobox
+        filtersComboBox_->clear();
+
+        // get dictionary list and populate combobox
+        SPELLCHECK::SpellInterface interface;
+        foreach( const QString& filter, interface.filters() )
+        { if( !disabledFilters.contains( filter ) ) filtersComboBox_->addItem( filter ); }
+
+        // read default value from options
+        filtersComboBox_->read();
 
     }
 
