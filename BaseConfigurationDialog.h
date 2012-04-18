@@ -85,16 +85,16 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     };
 
     //! adds configuration box for base options used in all appications
-    void baseConfiguration( QWidget* parent = 0, unsigned long flag = DEFAULT );
+    QWidget* baseConfiguration( QWidget* parent = 0, unsigned long flag = DEFAULT );
 
     //! list configuration box
-    void listConfiguration( QWidget* parent = 0 );
+    QWidget* listConfiguration( QWidget* parent = 0 );
 
     //! TextEdit configuration box
-    void textEditConfiguration( QWidget* parent = 0, unsigned long flag = ALL_TEXT_EDITION );
+    QWidget* textEditConfiguration( QWidget* parent = 0, unsigned long flag = ALL_TEXT_EDITION );
 
     //! animations
-    void animationConfiguration( QWidget* parent = 0 );
+    QWidget* animationConfiguration( QWidget* parent = 0 );
 
     signals:
 

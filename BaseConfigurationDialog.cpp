@@ -104,7 +104,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long flag )
+QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long flag )
 {
 
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
@@ -112,6 +112,7 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
     if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_GENERAL ), "General", "General application settings" );
 
     // base
+    QWidget* out(0);
     if( flag & BASE )
     {
 
@@ -157,7 +158,9 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         #endif
 
         // pixmap path
-        gridLayout->addWidget( new QLabel( "Pixmaps:", box ) );
+        QLabel* label;
+        gridLayout->addWidget( label = new QLabel( "Pixmaps:", box ) );
+        label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
         hLayout = new QHBoxLayout();
         hLayout->setMargin(0);
@@ -168,7 +171,9 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         hLayout->addStretch(1);
 
         // debug level
-        gridLayout->addWidget( new QLabel( "Debug level:", box ) );
+        gridLayout->addWidget( label = new QLabel( "Debug level:", box ) );
+        label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
+
         OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 5 );
@@ -194,7 +199,6 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         vLayout->addLayout( gridLayout );
 
         // base font
-        QLabel* label;
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         gridLayout->addWidget( label = new QLabel( "Default font:", box ) );
         OptionFontEditor *edit = new OptionFontEditor( box, "FONT_NAME" );
@@ -215,28 +219,32 @@ void BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long 
         connect( checkbox, SIGNAL( toggled( bool ) ), label, SLOT( setDisabled( bool ) ) );
         connect( checkbox, SIGNAL( toggled( bool ) ), edit, SLOT( setDisabled( bool ) ) );
 
+        out = box;
+
     }
 
     // list
-    if( flag & LIST ) { listConfiguration( parent ); }
+    if( flag & LIST ) { out = listConfiguration( parent ); }
 
     // edition
-    if( flag & TEXTEDIT ) { textEditConfiguration( parent ); }
+    if( flag & TEXTEDIT ) { out = textEditConfiguration( parent ); }
 
     // animation (go to a new page)
-    if( flag & ANIMATIONS ) { animationConfiguration(); }
+    if( flag & ANIMATIONS ) { out = animationConfiguration(); }
 
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration - done.\n" );
+    return out;
+
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::listConfiguration( QWidget* parent )
+QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 {
 
     Debug::Throw( "BaseConfigurationDialog::listConfiguration.\n" );
 
     // make sure parent is valid
-    QWidget* box;
+    QWidget* box(0);
     if( !parent )
     {
 
@@ -293,16 +301,20 @@ void BaseConfigurationDialog::listConfiguration( QWidget* parent )
     spinbox->setMaximum(96);
     addOptionWidget( spinbox );
 
+    return box;
+
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned long flag )
+QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned long flag )
 {
 
     Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
 
     // make sure parent is valid
     if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_EDITION ), "Text Edition", "Settings for text display and edition" );
+
+    QWidget* out(0);
 
     // tab emulation
     if( flag & TAB_EMULATION )
@@ -316,13 +328,12 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         hLayout->setMargin(0);
         layout->addLayout( hLayout );
 
-
         OptionCheckBox* checkbox = new OptionCheckBox( "Emulate tabs", box, "TAB_EMULATION" );
         checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
-        hLayout->addWidget(new QLabel( "Tab size: ", box ) );
+        hLayout->addWidget(new QLabel( "Tab size:", box ) );
         OptionSpinBox* spinbox = new OptionSpinBox( box, "TAB_SIZE" );
         spinbox->setMinimum( 2 );
         spinbox->setMaximum( 20 );
@@ -331,7 +342,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         hLayout->addStretch( 1 );
 
         addOptionWidget( spinbox );
-
+        out = box;
     }
 
     // paragraph highlighting
@@ -352,7 +363,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         gridLayout->setMaxCount(2);
         layout->addLayout( gridLayout );
 
-        gridLayout->addWidget( new QLabel( "Paragraph highlight color: " ) );
+        gridLayout->addWidget( new QLabel( "Paragraph highlight color:" ) );
         OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
         gridLayout->addWidget( color );
         addOptionWidget( color );
@@ -360,7 +371,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         checkbox->setChecked( false );
         color->setEnabled( false );
         connect( checkbox, SIGNAL( toggled( bool ) ), color, SLOT( setEnabled( bool ) ) );
-
+        out = box;
     }
 
     // box selection
@@ -386,7 +397,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
 
         // wrap
         label->setWordWrap( true );
-
+        out = box;
     }
 
     // margins
@@ -410,7 +421,7 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
         gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
         addOptionWidget( colorDisplay );
         colorDisplay->setToolTip( "Margins background color" );
-
+        out = box;
     }
 
     if( flag & TEXT_EDITION_FLAGS )
@@ -446,21 +457,22 @@ void BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned l
 
         spinbox->setEnabled( false );
         connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
-
+        out = box;
     }
 
     Debug::Throw( "BaseConfigurationDialog::textEditConfiguration - done.\n" );
+    return out;
 
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
+QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 {
 
     Debug::Throw( "BaseConfigurationDialog::animationConfiguration.\n" );
 
     // make sure parent is valid
-    QWidget* box;
+    QWidget* box(0);
 
     if( !parent )
     {
@@ -520,7 +532,7 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
 
     QLabel* label;
-    gridLayout->addWidget( label = new QLabel( "Frames: ", box ) );
+    gridLayout->addWidget( label = new QLabel( "Frames:", box ) );
     label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
     spinbox = new OptionSpinBox( box, "ANIMATION_FRAMES" );
     spinbox->setMinimum( 0 );
@@ -531,6 +543,7 @@ void BaseConfigurationDialog::animationConfiguration( QWidget* parent )
         "dropped whenever the system is too slow anyway." );
     gridLayout->addWidget( spinbox );
     addOptionWidget( spinbox );
+    return box;
 
 }
 
