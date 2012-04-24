@@ -215,7 +215,7 @@ void FileRecordModel::_updateColumns( const ValueType& value )
 bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord second ) const
 {
 
-    if( order_ == Qt::AscendingOrder ) std::swap( first, second );
+    if( order_ == Qt::DescendingOrder ) std::swap( first, second );
 
     switch( type_ )
     {

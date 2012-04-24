@@ -130,7 +130,7 @@ QVariant OptionModel::headerData(int section, Qt::Orientation orientation, int r
 bool OptionModel::SortFTor::operator () ( OptionPair first, OptionPair second ) const
 {
 
-    if( order_ == Qt::AscendingOrder ) std::swap( first, second );
+    if( order_ == Qt::DescendingOrder ) std::swap( first, second );
 
     switch( type_ )
     {

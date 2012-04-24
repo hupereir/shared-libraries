@@ -74,7 +74,7 @@ void PixmapCacheModel::_sort( int column, Qt::SortOrder order )
 bool PixmapCacheModel::SortFTor::operator () ( PixmapEngine::Pair first, PixmapEngine::Pair second ) const
 {
 
-    if( order_ == Qt::AscendingOrder ) std::swap( first, second );
+    if( order_ == Qt::DescendingOrder ) std::swap( first, second );
 
     switch( type_ )
     {

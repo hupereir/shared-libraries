@@ -124,7 +124,7 @@ void ColumnSortingMenu::_revertOrder( void )
     QHeaderView* header = _target().header();
     assert( header );
 
-    Qt::SortOrder order( header->sortIndicatorOrder() == Qt::AscendingOrder ? Qt::DescendingOrder:Qt::AscendingOrder );
+    Qt::SortOrder order( header->sortIndicatorOrder() == Qt::AscendingOrder ? Qt::DescendingOrder : Qt::AscendingOrder );
     header->setSortIndicator( header->sortIndicatorSection(), order );
 
 }

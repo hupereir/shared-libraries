@@ -53,7 +53,7 @@ CustomDialog( parent )
         (1<<FileRecordModel::PATH) );
 
     model_.add( files );
-    model_.sort( FileRecordModel::FILE, Qt::AscendingOrder );
+    model_.sort( FileRecordModel::FILE, Qt::DescendingOrder );
     _list().resizeColumns();
     _list().selectAll();
 

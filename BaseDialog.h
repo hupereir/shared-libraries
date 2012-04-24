@@ -24,22 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseDialog.h
-\brief customized QDialog
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 
 #include "WindowMonitor.h"
-
 #include <QtGui/QDialog>
 
-/*!
-\class BaseDialog
-\brief customized QDialog
-*/
+//! base dialog
 class BaseDialog: public QDialog
 {
 

@@ -88,7 +88,7 @@ void CounterModel::_sort( int column, Qt::SortOrder order )
 bool CounterModel::SortFTor::operator () ( CounterPair first, CounterPair second ) const
 {
 
-    if( order_ == Qt::AscendingOrder ) std::swap( first, second );
+    if( order_ == Qt::DescendingOrder ) std::swap( first, second );
 
     switch( type_ )
     {
