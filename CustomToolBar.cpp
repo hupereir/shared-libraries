@@ -47,6 +47,10 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     if( !optionName.isEmpty() ) setObjectName( optionName );
     _installActions();
 
+    // set default visibility option
+    if( !( optionName_.isEmpty() || XmlOptions::get().contains( optionName_ ) ) )
+    { XmlOptions::get().set<bool>( optionName_, true ); }
+
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
 }
@@ -142,8 +146,8 @@ void CustomToolBar::_updateConfiguration( void )
     }
 
     // visibility
-    bool current_visibility( isVisible() );
-    bool visibility( (!optionName_.isEmpty() && XmlOptions::get().contains( optionName_ ) ) ? XmlOptions::get().get<bool>( optionName_ ):current_visibility );
+    bool currentVisibility( isVisible() );
+    bool visibility( (!optionName_.isEmpty() && XmlOptions::get().contains( optionName_ ) ) ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility );
 
     // position
     // try cast parent to QMainWindow
@@ -157,7 +161,7 @@ void CustomToolBar::_updateConfiguration( void )
         Qt::ToolBarArea current_location = parent->toolBarArea( this );
 
         // some dump
-        Debug::Throw() << "CustomToolBar::_updateConfiguration - " << optionName_ << " current_visibility: " << current_visibility << " current_location: " << areaToName( current_location ) << endl;
+        Debug::Throw() << "CustomToolBar::_updateConfiguration - " << optionName_ << " currentVisibility: " << currentVisibility << " current_location: " << areaToName( current_location ) << endl;
         Debug::Throw() << "CustomToolBar::_updateConfiguration - " << optionName_ << " visibility: " << visibility << " location: " << areaToName( location ) << endl;
         Debug::Throw() << endl;
 
@@ -168,7 +172,7 @@ void CustomToolBar::_updateConfiguration( void )
         if( visibility )
         {
 
-            if( !( current_visibility && (location == current_location) ) ) { parent->addToolBar( location, this ); }
+            if( !( currentVisibility && (location == current_location) ) ) { parent->addToolBar( location, this ); }
 
         } else if( location != Qt::NoToolBarArea ) {
 
