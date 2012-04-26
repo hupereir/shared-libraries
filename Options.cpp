@@ -99,6 +99,10 @@ Options::Options( bool installDefaultOptions ):
         // box selection
         set( "BOX_SELECTION_ALPHA", Option( "20", "Alpha threshold for box selection - between 0 and 100" ) );
 
+        // dictionaries and filter
+        set( "SPELLCHECK_DISABLED_DICTIONARIES", " " );
+        set( "SPELLCHECK_DISABLED_FILTERS", " " );
+
         setAutoDefault( false );
 
     }
