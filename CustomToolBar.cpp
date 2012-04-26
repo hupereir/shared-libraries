@@ -205,7 +205,6 @@ void CustomToolBar::_installActions( void )
     QTextStream( &buffer) << "&" << windowTitle();
     visibilityAction_ = new QAction( buffer, this );
     visibilityAction_->setCheckable( true );
-    visibilityAction_->setChecked( true );
     connect( visibilityAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleVisibility( bool ) ) );
 }
 
