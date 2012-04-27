@@ -44,13 +44,13 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     appearsInMenu_( false )
 {
     Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
-    if( !optionName.isEmpty() ) setObjectName( optionName );
+
+    // assign option name to object
+    if( !optionName_.isEmpty() ) { setObjectName( optionName ); }
+
     _installActions();
 
-    // set default visibility option
-    if( !( optionName_.isEmpty() || XmlOptions::get().contains( optionName_ ) ) )
-    { XmlOptions::get().set<bool>( optionName_, true ); }
-
+    // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
 }
@@ -147,7 +147,7 @@ void CustomToolBar::_updateConfiguration( void )
 
     // visibility
     bool currentVisibility( isVisible() );
-    bool visibility( (!optionName_.isEmpty() && XmlOptions::get().contains( optionName_ ) ) ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility );
+    bool visibility( !optionName_.isEmpty() ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility );
 
     // position
     // try cast parent to QMainWindow
@@ -193,7 +193,10 @@ void CustomToolBar::_updateConfiguration( void )
         << " visibility: " << visibility << endl;
 
     if( appearsInMenu() )
-    { visibilityAction().setChecked( visibility ); }
+    {
+        visibilityAction().setChecked( visibility );
+        setVisible( visibility );
+    }
 
 }
 
@@ -204,7 +207,15 @@ void CustomToolBar::_installActions( void )
     QString buffer;
     QTextStream( &buffer) << "&" << windowTitle();
     visibilityAction_ = new QAction( buffer, this );
-    visibilityAction_->setCheckable( true );
+    visibilityAction().setCheckable( true );
+
+    // set default visibility option
+    if( !( optionName_.isEmpty() || XmlOptions::get().contains( optionName_ ) ) )
+    {
+        XmlOptions::get().set<bool>( optionName_, true );
+        visibilityAction().setChecked( true );
+    }
+
     connect( visibilityAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleVisibility( bool ) ) );
 }
 

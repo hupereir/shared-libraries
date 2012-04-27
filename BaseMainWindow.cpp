@@ -224,13 +224,11 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
     foreach( QToolBar* toolbar, toolbars )
     {
 
-        // skip toolbars with no names
-        // if( toolbar->windowTitle().isEmpty() ) continue;
-
         // try cast to custom
         CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
 
         // skip toolbars that are not direct children
+        // or should not appear in menu
         if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
         { continue; }
 
@@ -239,7 +237,7 @@ bool BaseMainWindow::installToolBarsActions( QMenu& menu )
             Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << toolbar->windowTitle() << endl;
             menu.addAction( &customToolbar->visibilityAction() );
 
-        } else {
+        } else if( !toolbar->windowTitle().isEmpty() ) {
 
             // add visibility action
             Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << toolbar->windowTitle() << endl;
