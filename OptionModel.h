@@ -24,17 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file OptionModel.h
-\brief model for options
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <string.h>
-
-
 #include "Counter.h"
 #include "Debug.h"
 #include "Options.h"

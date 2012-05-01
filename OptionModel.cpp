@@ -22,20 +22,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file OptionModel.cpp
-\brief model for object IconCaches
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QPalette>
-
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "OptionModel.h"
 #include "XmlOptions.h"
+
+#include <QtGui/QPalette>
 
 //_______________________________________________
 const QString OptionModel::columnTitles_[ OptionModel::nColumns ] =

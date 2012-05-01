@@ -24,26 +24,18 @@
 *
 *******************************************************************************/
 
-/*!
-   \file OptionListBox.h
-   \brief ListBox for Special options, and buttons to add/remove values
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <QAction>
-#include <QCheckBox>
-#include <QFileDialog>
-#include <QPushButton>
-
-#include <cmath>
-
 #include "BrowsedLineEditor.h"
 #include "CustomDialog.h"
 #include "OptionWidget.h"
 #include "OptionModel.h"
 #include "Options.h"
+
+#include <QtGui/QAction>
+#include <QtGui/QCheckBox>
+#include <QtGui/QFileDialog>
+#include <QtGui/QPushButton>
+
+#include <cmath>
 
 class TreeView;
 
@@ -51,119 +43,119 @@ class TreeView;
 class OptionListBox: public QWidget, public OptionWidget
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
-
-  //! constructor
-  OptionListBox( QWidget* parent, const QString& option_name );
-
-  //! read value from option
-  void read( void );
-
-  //! write value to option
-  void write( void ) const;
-
-  //! browsability
-  void setBrowsable( const bool& value )
-  { browsable_ = value; }
-
-  //! set file dialog mode
-  void setFileMode( const QFileDialog::FileMode& mode )
-  { file_mode_ = mode; }
-
-  private slots:
-
-  //! update buttons
-  void _updateButtons( void );
-
-  //! add a value
-  void _add( void );
-
-  //! add a value
-  void _edit( void );
-
-  //! remove a value
-  void _remove();
-
-  //! set value as default
-  void _setDefault();
-
-  private:
-
-  //! used to edit options
-  class EditDialog: public CustomDialog
-  {
     public:
 
     //! constructor
-    EditDialog( QWidget*, bool, QFileDialog::FileMode );
+    OptionListBox( QWidget* parent, const QString& option_name );
 
-    //! editor
-    BrowsedLineEditor::Editor& editor( void ) const
-    { return *editor_; }
+    //! read value from option
+    void read( void );
 
-    //! checkbox
-    QCheckBox& checkbox( void ) const
-    {
-      assert( checkbox_ );
-      return *checkbox_;
-    }
+    //! write value to option
+    void write( void ) const;
+
+    //! browsability
+    void setBrowsable( const bool& value )
+    { browsable_ = value; }
+
+    //! set file dialog mode
+    void setFileMode( const QFileDialog::FileMode& mode )
+    { file_mode_ = mode; }
+
+    private slots:
+
+    //! update buttons
+    void _updateButtons( void );
+
+    //! add a value
+    void _add( void );
+
+    //! add a value
+    void _edit( void );
+
+    //! remove a value
+    void _remove();
+
+    //! set value as default
+    void _setDefault();
 
     private:
 
-    //! editor
-    BrowsedLineEditor::Editor* editor_;
+    //! used to edit options
+    class EditDialog: public CustomDialog
+    {
+        public:
 
-    //! default checkbox
-    QCheckBox* checkbox_;
+        //! constructor
+        EditDialog( QWidget*, bool, QFileDialog::FileMode );
 
-  };
+        //! editor
+        BrowsedLineEditor::Editor& editor( void ) const
+        { return *editor_; }
 
-  //! list
-  TreeView& _list( void ) const
-  { return *list_; }
+        //! checkbox
+        QCheckBox& checkbox( void ) const
+        {
+            assert( checkbox_ );
+            return *checkbox_;
+        }
 
-  //! if true, use browsable line editor for Add
-  bool browsable_;
+        private:
 
-  //! browsable dialog mode
-  QFileDialog::FileMode file_mode_;
+        //! editor
+        BrowsedLineEditor::Editor* editor_;
 
-  //! model
-  OptionModel model_;
+        //! default checkbox
+        QCheckBox* checkbox_;
 
-  //! value list
-  TreeView* list_;
+    };
 
-  //!@name buttons
-  //@{
+    //! list
+    TreeView& _list( void ) const
+    { return *list_; }
 
-  //! edit button
-  QPushButton* edit_;
+    //! if true, use browsable line editor for Add
+    bool browsable_;
 
-  //! remove button
-  QPushButton* remove_;
+    //! browsable dialog mode
+    QFileDialog::FileMode file_mode_;
+
+    //! model
+    OptionModel model_;
+
+    //! value list
+    TreeView* list_;
+
+    //!@name buttons
+    //@{
+
+    //! edit button
+    QPushButton* edit_;
+
+    //! remove button
+    QPushButton* remove_;
 
     //! default button
-  QPushButton* default_;
+    QPushButton* default_;
 
-  //@}
+    //@}
 
-  //!@name actions
-  //@{
+    //!@name actions
+    //@{
 
-  //! remove action
-  QAction* edit_action_;
+    //! remove action
+    QAction* edit_action_;
 
-  //! remove action
-  QAction* remove_action_;
+    //! remove action
+    QAction* remove_action_;
 
-  //! remove action
-  QAction* default_action_;
+    //! remove action
+    QAction* default_action_;
 
-  //@}
+    //@}
 
 };
 #endif
