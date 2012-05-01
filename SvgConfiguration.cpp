@@ -69,15 +69,15 @@ namespace SVG
     svg_checkbox->setToolTip( "Use svg to paint background" );
     addOptionWidget( svg_checkbox );
 
-    QHBoxLayout *h_layout = new QHBoxLayout();
-    h_layout->setMargin(0);
-    h_layout->setSpacing(5);
-    box->layout()->addItem( h_layout );
+    QHBoxLayout *hLayout = new QHBoxLayout();
+    hLayout->setMargin(0);
+    hLayout->setSpacing(5);
+    box->layout()->addItem( hLayout );
 
     OptionSpinBox* spinbox;
-    h_layout->addWidget( new QLabel( "Offset: ", box ) );
-    h_layout->addWidget( spinbox = new OptionSpinBox( box, "SVG_OFFSET" ) );
-    h_layout->addStretch();
+    hLayout->addWidget( new QLabel( "Offset: ", box ) );
+    hLayout->addWidget( spinbox = new OptionSpinBox( box, "SVG_OFFSET" ) );
+    hLayout->addStretch();
     spinbox->setMinimum( -16 );
     spinbox->setMaximum( 16 );
     spinbox->setToolTip(
@@ -104,47 +104,47 @@ namespace SVG
     checkbox->setToolTip( "If checked, overlay pictures, if any, found in the SVG file, are drawn on top of the background" );
     addOptionWidget( checkbox );
 
-    h_layout = new QHBoxLayout();
-    h_layout->setMargin(0);
-    h_layout->setSpacing(5);
-    plasma_box->layout()->addItem(h_layout);
-    h_layout->addWidget( new QLabel( "Plasma background image path: ", plasma_box ) );
+    hLayout = new QHBoxLayout();
+    hLayout->setMargin(0);
+    hLayout->setSpacing(5);
+    plasma_box->layout()->addItem(hLayout);
+    hLayout->addWidget( new QLabel( "Plasma background image path: ", plasma_box ) );
 
-    OptionComboBox* plasma_image_path;
-    h_layout->addWidget( plasma_image_path = new OptionComboBox( plasma_box, "SVG_PLASMA_IMAGE_PATH" ) );
-    plasma_image_path->addItems( QStringList()
+    OptionComboBox* plasmaImagePath;
+    hLayout->addWidget( plasmaImagePath = new OptionComboBox( plasma_box, "SVG_PLASMA_IMAGE_PATH" ) );
+    plasmaImagePath->addItems( QStringList()
       << "dialogs/background"
       << "widgets/background"
       << "widgets/translucentbackground" );
-    plasma_image_path->setToolTip( "Relative path of the svg file used for the background" );
-    addOptionWidget( plasma_image_path );
+    plasmaImagePath->setToolTip( "Relative path of the svg file used for the background" );
+    addOptionWidget( plasmaImagePath );
     #endif
 
     // SVG file
-    QGroupBox* file_list_box;
-    layout()->addWidget( file_list_box = new QGroupBox( "Svg file", this ) );
-    file_list_box->setLayout( new QVBoxLayout() );
-    file_list_box->layout()->setSpacing(5);
-    file_list_box->layout()->setMargin(5);
+    QGroupBox* fileListBox;
+    layout()->addWidget( fileListBox = new QGroupBox( "Svg file", this ) );
+    fileListBox->setLayout( new QVBoxLayout() );
+    fileListBox->layout()->setSpacing(5);
+    fileListBox->layout()->setMargin(5);
 
-    OptionListBox *listbox = new OptionListBox( file_list_box, "SVG_BACKGROUND" );
+    OptionListBox *listbox = new OptionListBox( fileListBox, "SVG_BACKGROUND" );
     listbox->setBrowsable( true );
     listbox->setToolTip( "Pathname to load background svg" );
-    file_list_box->layout()->addWidget( listbox );
+    fileListBox->layout()->addWidget( listbox );
     addOptionWidget( listbox );
 
     // initiali setup and connections
     svg_checkbox->setChecked( false );
-    file_list_box->setEnabled( false );
+    fileListBox->setEnabled( false );
 
     #if !defined(Q_WS_WIN)
     plasma_checkbox->setChecked( false );
     plasma_box->setEnabled( false );
-    connect( plasma_checkbox, SIGNAL( toggled( bool ) ), file_list_box, SLOT( setDisabled( bool ) ) );
+    connect( plasma_checkbox, SIGNAL( toggled( bool ) ), fileListBox, SLOT( setDisabled( bool ) ) );
     connect( svg_checkbox, SIGNAL( toggled( bool ) ), plasma_box, SLOT( setEnabled( bool ) ) );
     #endif
 
-    connect( svg_checkbox, SIGNAL( toggled( bool ) ), file_list_box, SLOT( setEnabled( bool ) ) );
+    connect( svg_checkbox, SIGNAL( toggled( bool ) ), fileListBox, SLOT( setEnabled( bool ) ) );
 
 
   }
