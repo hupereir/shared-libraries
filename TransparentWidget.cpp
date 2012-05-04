@@ -266,6 +266,13 @@ namespace TRANSPARENCY
     }
 
     //____________________________________________________________________
+    void TransparentWidget::_toggleInverseColors( bool value )
+    {
+        XmlOptions::get().set<bool>( "TRANSPARENCY_INVERSE_COLORS", value );
+        update();
+    }
+
+    //____________________________________________________________________
     void TransparentWidget::_updateConfiguration( void )
     {
 
@@ -284,6 +291,9 @@ namespace TRANSPARENCY
 
         // shadow offset
         _setShadowOffset( XmlOptions::get().get<int>("TRANSPARENCY_SHADOW_OFFSET") );
+
+        // inverse colors
+        inverseColorsAction().setChecked( XmlOptions::get().get<bool>( "TRANSPARENCY_INVERSE_COLORS" ) );
 
         // tint
         QColor tintColor( XmlOptions::get().get<QString>( "TRANSPARENCY_TINT_COLOR" ) );
@@ -392,6 +402,11 @@ namespace TRANSPARENCY
 
         addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Blur Region", this ) );
         connect( reloadBlurRegionAction_, SIGNAL( triggered( void ) ), SLOT( _updateBlurRegion( void ) ) );
+
+        addAction( inverseColorsAction_ = new QAction( "Invert Colors", this ) );
+        inverseColorsAction_->setCheckable( true );
+        inverseColorsAction_->setChecked( false );
+        connect( inverseColorsAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleInverseColors( bool ) ) );
 
     }
 

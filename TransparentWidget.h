@@ -70,6 +70,10 @@ namespace TRANSPARENCY
         QAction& reloadBlurRegionAction( void ) const
         { return *reloadBlurRegionAction_; }
 
+        //! inverse colors
+        QAction& inverseColorsAction( void ) const
+        { return *inverseColorsAction_; }
+
         //@}
 
         //! window opacity
@@ -82,11 +86,11 @@ namespace TRANSPARENCY
 
         //! foreground
         virtual const QColor& foregroundColor( void ) const
-        { return foregroundColor_; }
+        { return inverseColorsAction().isChecked() ? shadowColor_ : foregroundColor_; }
 
         //! shadow
         virtual const QColor& shadowColor( void ) const
-        { return shadowColor_; }
+        { return inverseColorsAction().isChecked() ? foregroundColor_ : shadowColor_; }
 
         //! foreground intensity
         virtual int foregroundIntensity( void ) const
@@ -227,6 +231,9 @@ namespace TRANSPARENCY
             _updateBlurRegion( blurRegion_ );
         }
 
+        //! toggle inverse colors
+        virtual void _toggleInverseColors( bool );
+
         private slots:
 
         //! update configuration
@@ -248,6 +255,9 @@ namespace TRANSPARENCY
 
         //! reload blur region
         QAction* reloadBlurRegionAction_;
+
+        //! inverse colors
+        QAction* inverseColorsAction_;
 
         //@}
 
