@@ -54,7 +54,7 @@ namespace SVG
         XmlOptions::get().set( "USE_SVG", Option("1") );
         XmlOptions::get().set( "SVG_OFFSET", Option("0") );
         XmlOptions::get().set( "SVG_USE_PLASMA_INTERFACE", Option( "1" ) );
-        XmlOptions::get().set( "SVG_PLASMA_IMAGE_PATH", Option( "dialogs/background" ) );
+        XmlOptions::get().set( "SVG_PLASMA_IMAGE_PATH", Option( "widgets/background" ) );
         XmlOptions::get().set( "SVG_DRAW_OVERLAY", Option("0") );
         XmlOptions::get().setAutoDefault( false );
 
