@@ -80,6 +80,22 @@ namespace TRANSPARENCY
         void setBackgroundChanged( const bool& value )
         { backgroundChanged_ = value; }
 
+        //! foreground
+        virtual const QColor& foregroundColor( void ) const
+        { return foregroundColor_; }
+
+        //! shadow
+        virtual const QColor& shadowColor( void ) const
+        { return shadowColor_; }
+
+        //! foreground intensity
+        virtual int foregroundIntensity( void ) const
+        { return foregroundIntensity_; }
+
+        //! shadow offset
+        virtual int shadowOffset( void ) const
+        { return shadowOffset_; }
+
         public slots:
 
         //! force reloading of the background
@@ -107,6 +123,12 @@ namespace TRANSPARENCY
         virtual const bool& _transparent( void ) const
         { return transparent_; }
 
+        //! foreground
+        virtual void _setForegroundColor( const QColor& );
+
+        //! shadow
+        virtual void _setShadowColor( const QColor& );
+
         //! tint
         virtual void _setTintColor( const QColor& );
 
@@ -120,6 +142,13 @@ namespace TRANSPARENCY
         //! highlight color
         virtual const QColor& _highlightColor( void ) const
         { return highlightColor_; }
+
+        //! shadow offset
+        virtual void _setShadowOffset( int value )
+        { shadowOffset_ = value; }
+
+        //! foreground intensity
+        virtual void _setForegroundIntensity( int value );
 
         //! highlighted
         virtual void _setHighlighted( bool value )
@@ -173,7 +202,8 @@ namespace TRANSPARENCY
 
         //! paint main widget on devide
         /*! this must be re-implemented by derived classes */
-        virtual void _paint( QPaintDevice&, const QRect& ) = 0;
+        virtual void _paint( QPaintDevice&, const QRect& )
+        { return; }
 
         //! true if blur is enabled
         virtual bool _blurEnabled( void ) const
@@ -227,8 +257,20 @@ namespace TRANSPARENCY
         //! true when background needs to be reloaded
         bool backgroundChanged_;
 
+        //! foreground
+        QColor foregroundColor_;
+
+        //! shadow
+        QColor shadowColor_;
+
         //! tint color
         QColor tintColor_;
+
+        //! foreground intensity
+        int foregroundIntensity_;
+
+        //! shadow offset
+        int shadowOffset_;
 
         //! true when pointer is in window
         bool highlighted_;

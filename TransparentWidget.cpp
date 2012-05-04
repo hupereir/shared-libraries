@@ -53,6 +53,8 @@ namespace TRANSPARENCY
         Counter( "TransparentWidget" ),
         transparent_( false ),
         backgroundChanged_( true ),
+        foregroundIntensity_( 255 ),
+        shadowOffset_( 0 ),
         highlighted_( false ),
         blurEnabled_( false ),
         opacity_( 1 )
@@ -102,6 +104,31 @@ namespace TRANSPARENCY
         Debug::Throw( "TransparentWidget::setBackgroundChanged.\n"  );
         setBackgroundChanged( true );
         update();
+    }
+
+    //____________________________________________________________________
+    void TransparentWidget::_setForegroundColor( const QColor& color )
+    {
+        if( !color.isValid() ) return;
+        foregroundColor_ = color;
+        foregroundColor_.setAlpha( foregroundIntensity_ );
+    }
+
+    //____________________________________________________________________
+    void TransparentWidget::_setShadowColor( const QColor& color )
+    {
+        if( !color.isValid() ) return;
+        shadowColor_ = color;
+        shadowColor_.setAlpha( foregroundIntensity_ );
+    }
+
+
+    //____________________________________________________________________
+    void TransparentWidget::_setForegroundIntensity( int value )
+    {
+        foregroundIntensity_ = value;
+        if( foregroundColor_.isValid() )  foregroundColor_.setAlpha( foregroundIntensity_ );
+        if( shadowColor_.isValid() )  shadowColor_.setAlpha( foregroundIntensity_ );
     }
 
     //____________________________________________________________________
@@ -249,22 +276,33 @@ namespace TRANSPARENCY
         _setBlurEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_BLUR" ) );
         reloadBlurRegionAction_->setEnabled( _blurEnabled() );
 
+        // colors
+        QColor color;
+        _setForegroundColor( (color = QColor( XmlOptions::get().get<QString>("TRANSPARENCY_FOREGROUND_COLOR"))).isValid() ? color:palette().color( QPalette::WindowText ) );
+        _setShadowColor( QColor( XmlOptions::get().get<QString>("TRANSPARENCY_SHADOW_COLOR")) );
+        _setForegroundIntensity( XmlOptions::get().get<int>( "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
+
+        // shadow offset
+        _setShadowOffset( XmlOptions::get().get<int>("TRANSPARENCY_SHADOW_OFFSET") );
+
         // tint
-        QColor tint_color( XmlOptions::get().get<QString>( "TRANSPARENCY_TINT_COLOR" ) );
-        unsigned int tint_intensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_TINT_INTENSITY" ) );
-        if( tint_color.isValid() && tint_intensity )
+        QColor tintColor( XmlOptions::get().get<QString>( "TRANSPARENCY_TINT_COLOR" ) );
+        unsigned int tintIntensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_TINT_INTENSITY" ) );
+        if( tintColor.isValid() && tintIntensity )
         {
-            tint_color.setAlpha( tint_intensity );
-            _setTintColor( tint_color );
+
+            tintColor.setAlpha( tintIntensity );
+            _setTintColor( tintColor );
+
         } else _setTintColor( QColor() );
 
         // highlight
-        QColor highlight_color( XmlOptions::get().get<QString>( "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
-        unsigned int highlight_intensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
-        if( highlight_color.isValid() && highlight_intensity )
+        QColor highlightColor( XmlOptions::get().get<QString>( "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
+        unsigned int highlightIntensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
+        if( highlightColor.isValid() && highlightIntensity )
         {
-            highlight_color.setAlpha( highlight_intensity );
-            _setHighlightColor( highlight_color );
+            highlightColor.setAlpha( highlightIntensity );
+            _setHighlightColor( highlightColor );
         } else _setHighlightColor( QColor() );
 
         // composite

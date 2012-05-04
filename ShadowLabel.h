@@ -23,84 +23,76 @@
 *
 *******************************************************************************/
 
-/*!
-  \file    ShadowLabel.h
-  \brief   transparent widget
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
-*/
-
-#include <QColor>
-#include <QLabel>
-#include <QPaintDevice>
-
 #include "Counter.h"
+
+#include <QtGui/QColor>
+#include <QtGui/QLabel>
+#include <QtGui/QPaintDevice>
 
 namespace TRANSPARENCY
 {
-  class ShadowLabel: public QLabel, public Counter
-  {
-
-    public:
-
-    //! constructor
-    ShadowLabel( QWidget* parent ):
-      QLabel( parent ),
-      Counter( "ShadowLabel" ),
-      shadow_offset_( 0 )
-    {}
-
-    //! constructor
-    ShadowLabel( const QString& text, QWidget* parent ):
-      QLabel( text, parent ),
-      Counter( "ShadowLabel" ),
-      shadow_offset_( 0 )
-    {}
-
-    //! shadow
-    void setShadow( const QColor& color, int offset )
+    class ShadowLabel: public QLabel, public Counter
     {
-      setShadowColor( color );
-      setShadowOffset( offset );
-    }
 
-    //! shadow offset
-    void setShadowOffset( int value )
-    { shadow_offset_ = value; }
+        public:
 
-    //! shadow color
-    void setShadowColor( const QColor& color )
-    { shadow_color_ = color; }
+        //! constructor
+        ShadowLabel( QWidget* parent ):
+            QLabel( parent ),
+            Counter( "ShadowLabel" ),
+            shadowOffset_( 0 )
+        {}
 
-    protected:
+        //! constructor
+        ShadowLabel( const QString& text, QWidget* parent ):
+            QLabel( text, parent ),
+            Counter( "ShadowLabel" ),
+            shadowOffset_( 0 )
+        {}
 
-    virtual void paintEvent( QPaintEvent* );
+        //! shadow
+        void setShadow( const QColor& color, int offset )
+        {
+            setShadowColor( color );
+            setShadowOffset( offset );
+        }
 
-    private slots:
+        //! shadow offset
+        void setShadowOffset( int value )
+        { shadowOffset_ = value; }
 
-    //! configuration
-    void _updateConfiguration( void )
-    {}
+        //! shadow color
+        void setShadowColor( const QColor& color )
+        { shadowColor_ = color; }
 
-    private:
+        protected:
 
-    //! shadow offset
-    const int& _shadowOffset( void ) const
-    { return shadow_offset_; }
+        virtual void paintEvent( QPaintEvent* );
 
-    //! shadow color
-    const QColor& _shadowColor( void ) const
-    { return shadow_color_; }
+        private slots:
 
-    //! shadow offset
-    int shadow_offset_;
+        //! configuration
+        void _updateConfiguration( void )
+        {}
 
-    //! shadow color
-    QColor shadow_color_;
+        private:
+
+        //! shadow offset
+        const int& _shadowOffset( void ) const
+        { return shadowOffset_; }
+
+        //! shadow color
+        const QColor& _shadowColor( void ) const
+        { return shadowColor_; }
+
+        //! shadow offset
+        int shadowOffset_;
+
+        //! shadow color
+        QColor shadowColor_;
 
 
-  };
+    };
 
 };
 
