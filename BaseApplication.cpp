@@ -43,6 +43,58 @@
 #endif
 
 //____________________________________________
+namespace SERVER
+{
+    //! event filter used to change appearance of QMessageBox before show, to match KDE layout
+    class AppEventFilter: public QObject
+    {
+        public:
+        virtual bool eventFilter( QObject*, QEvent* );
+    };
+
+}
+
+//____________________________________________
+bool SERVER::AppEventFilter::eventFilter( QObject* object, QEvent* event )
+{
+    Q_UNUSED( object );
+
+    switch( event->type() )
+    {
+
+        case QEvent::Show:
+
+        if( QMessageBox* messageBox = qobject_cast<QMessageBox*>( object ) )
+        {
+
+            // try cast to message box and change buttons
+            messageBox->setStandardButtons( QMessageBox::Close );
+
+        } else if( QDialogButtonBox* buttonBox = qobject_cast<QDialogButtonBox*>( object ) ) {
+
+            // insert separator
+            if( QGridLayout* gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
+            {
+
+                // create separator
+                QFrame* frame( new QFrame( buttonBox->parentWidget() ) );
+                frame->setFrameStyle( QFrame::HLine );
+                gridLayout->addWidget( frame, 2, 0, 1, 2 );
+
+                gridLayout->addWidget( buttonBox, 3, 0, 1, 2 );
+            }
+
+        }
+        break;
+
+        default: break;
+
+    }
+
+    return false;
+}
+
+//____________________________________________
 BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :
     BaseCoreApplication( parent, arguments ),
     useFixedFonts_( false )
@@ -114,6 +166,8 @@ void BaseApplication::_aboutToQuit( void )
 void BaseApplication::_aboutQt( void )
 {
     Debug::Throw( "BaseApplication::aboutQt.\n" );
+    SERVER::AppEventFilter eventFilter;
+    qApp->installEventFilter( &eventFilter );
     QMessageBox::aboutQt(0);
 }
 
@@ -151,6 +205,9 @@ void BaseApplication::_about( QString name, QString version, QString stamp )
     dialog.setText( buffer );
     dialog.adjustSize();
     QtUtil::centerOnWidget( &dialog, qApp->activeWindow() );
+
+    SERVER::AppEventFilter eventFilter;
+    qApp->installEventFilter( &eventFilter );
 
     dialog.show();
     dialog.exec();
