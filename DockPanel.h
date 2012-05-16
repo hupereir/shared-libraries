@@ -138,10 +138,10 @@ class DockPanel: public QWidget, public Counter
         //! reset drag
         void _resetDrag( void );
 
+        private:
+
         //! actions
         void _installActions( void );
-
-        private:
 
         //! attach/detach action
         QAction* detachAction_;

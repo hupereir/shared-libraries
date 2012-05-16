@@ -502,7 +502,7 @@ void TextEditor::resetUndoRedoStack( void )
 }
 
 //______________________________________________________________________________
-void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions )
+void TextEditor::installContextMenuActions( QMenu& menu, const bool& allActions )
 {
 
     Debug::Throw( "TextEditor::installContextMenuActions.\n" );
@@ -512,7 +512,7 @@ void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions
     menu.addAction( &wrapModeAction() );
     menu.addSeparator();
 
-    if( all_actions )
+    if( allActions )
     {
         menu.addAction( undoAction_ );
         menu.addAction( redoAction_ );
@@ -531,7 +531,7 @@ void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions
     menu.addSeparator();
 
     menu.addAction( findAction_ );
-    if( all_actions )
+    if( allActions )
     {
         menu.addAction( findAgainAction_ );
         menu.addAction( findSelectionAction_);
@@ -540,7 +540,7 @@ void TextEditor::installContextMenuActions( QMenu& menu, const bool& all_actions
 
     menu.addAction( replaceAction_ );
 
-    if( all_actions )
+    if( allActions )
     {
         menu.addAction( replaceAgainAction_ );
         menu.addAction( gotoLineAction_);
@@ -1444,6 +1444,8 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 {
 
     Debug::Throw( "TextEditor::contextMenuEvent.\n" );
+    contextMenuPosition_ = event->pos();
+
     QMenu menu( this );
     installContextMenuActions( menu );
     menu.exec( event->globalPos() );
@@ -2339,11 +2341,11 @@ void TextEditor::_updateReadOnlyActions( bool readonly )
 {
 
     Debug::Throw( "TextEditor::_updateReadOnlyActions.\n" );
-    bool has_selection( textCursor().hasSelection() );
+    bool hasSelection( textCursor().hasSelection() );
 
-    cutAction_->setEnabled( has_selection && !readonly );
-    upperCaseAction_->setEnabled( has_selection && !readonly );
-    lowerCaseAction_->setEnabled( has_selection && !readonly );
+    cutAction_->setEnabled( hasSelection && !readonly );
+    upperCaseAction_->setEnabled( hasSelection && !readonly );
+    lowerCaseAction_->setEnabled( hasSelection && !readonly );
 
     replaceAction_->setEnabled( !readonly );
     replaceAgainAction_->setEnabled( !readonly );
@@ -2352,16 +2354,16 @@ void TextEditor::_updateReadOnlyActions( bool readonly )
 }
 
 //________________________________________________
-void TextEditor::_updateSelectionActions( bool has_selection )
+void TextEditor::_updateSelectionActions( bool hasSelection )
 {
 
-    Debug::Throw() << "TextEditor::_updateSelectionActions - has_selection: " << has_selection << endl;
+    Debug::Throw() << "TextEditor::_updateSelectionActions - hasSelection: " << hasSelection << endl;
 
     bool editable( !isReadOnly() );
-    cutAction_->setEnabled( has_selection && editable );
-    copyAction_->setEnabled( has_selection );
-    upperCaseAction_->setEnabled( has_selection && editable );
-    lowerCaseAction_->setEnabled( has_selection && editable );
+    cutAction_->setEnabled( hasSelection && editable );
+    copyAction_->setEnabled( hasSelection );
+    upperCaseAction_->setEnabled( hasSelection && editable );
+    lowerCaseAction_->setEnabled( hasSelection && editable );
 
     #if QT_VERSION < 0x040200
     // update clipboard actions, based on the clipboard content

@@ -134,10 +134,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     { return synchronize_; }
 
     //! clone (and synchronize) text editor
-    virtual void synchronize( TextEditor* editor );
+    virtual void synchronize( TextEditor* );
 
     //! activity
-    virtual bool setActive( const bool& value );
+    virtual bool setActive( const bool& );
 
     //! activity
     virtual const bool& isActive( void ) const
@@ -180,13 +180,13 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     //@}
 
     //! read-only
-    virtual void setReadOnly( bool readonly );
+    virtual void setReadOnly( bool );
 
     //! reset undo/redo history
     virtual void resetUndoRedoStack( void );
 
     //! put actions in context menu
-    virtual void installContextMenuActions( QMenu& menu, const bool& all_actions = true );
+    virtual void installContextMenuActions( QMenu& menu, const bool& = true );
 
     //!@name actions
     //@{
@@ -476,9 +476,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     //! scroll
     virtual void scrollContentsBy( int dx, int dy );
 
-    //! install default actions
-    virtual void _installActions( void );
-
+    //! context menu position
+    const QPoint& _contextMenuPosition( void ) const
+    { return contextMenuPosition_; }
+    
     //!@name find/replace selection
     //@{
 
@@ -633,11 +634,6 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
         return true;
     }
 
-    private slots:
-
-    //! update configuration
-    void _updateConfiguration( void );
-
     protected slots:
 
     //! synchronize selection
@@ -687,7 +683,15 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     //! select line from dialog
     virtual void _selectLineFromDialog( void );
 
+    private slots:
+
+    //! update configuration
+    void _updateConfiguration( void );
+
     private:
+
+    //! install default actions
+    void _installActions( void );
 
     //! margin widget
     TextEditorMarginWidget* marginWidget_;
@@ -695,6 +699,9 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     //! current block rect
     /*! needed for block highlighting in margin */
     QRect currentBlockRect_;
+
+    //! context menu event position
+    QPoint contextMenuPosition_;
 
     //!@name dialogs
     ///@{

@@ -123,9 +123,6 @@ class TabWidget: public QWidget, public Counter
     //! paint
     virtual void paintEvent( QPaintEvent* );
 
-    //! actions
-    void _installActions( void );
-
     //! has size grip
     bool _hasSizeGrip( void ) const
     { return (bool)sizeGrip_; }
@@ -160,6 +157,9 @@ class TabWidget: public QWidget, public Counter
     virtual void _toggleSticky( bool );
 
     private:
+
+    //! actions
+    void _installActions( void );
 
     //! flags
     unsigned int flags_;

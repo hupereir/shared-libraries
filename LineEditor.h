@@ -125,9 +125,6 @@ class LineEditor: public QLineEdit, public Counter
 
     //@}
 
-    //! install actions
-    virtual void _installActions( void );
-
     //! has clear button
     const bool& _hasClearButton( void )
     { return hasClearButton_; }
@@ -181,6 +178,9 @@ class LineEditor: public QLineEdit, public Counter
     virtual void _updateUndoRedoActions( void );
 
     private:
+
+    //! install actions
+    void _installActions( void );
 
     //! modification state
     bool modified_;
