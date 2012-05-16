@@ -1047,7 +1047,7 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent* event )
 void TextEditor::mouseMoveEvent( QMouseEvent* event )
 {
 
-    Debug::Throw( "TextEditor::mouseMoveEvent.\n" );
+    Debug::Throw( 2, "TextEditor::mouseMoveEvent.\n" );
 
     // see if there is a box selection in progress
     if( event->buttons() == Qt::LeftButton && _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::STARTED )
@@ -2073,13 +2073,13 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
         // replace everything in selected text
-        QString selected_text( cursor.selectedText() );
-        emit busy( selected_text.size() );
+        QString selectedText( cursor.selectedText() );
+        emit busy( selectedText.size() );
 
-        for( int position = 0; (position = regexp.indexIn( selected_text, position )) != -1; )
+        for( int position = 0; (position = regexp.indexIn( selectedText, position )) != -1; )
         {
             // replace in selected text
-            selected_text.replace( position, regexp.matchedLength(), selection.replaceText() );
+            selectedText.replace( position, regexp.matchedLength(), selection.replaceText() );
 
             // replace in cursor
             /* this is to allow for undoing the changes one by one */
@@ -2104,7 +2104,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         if( mode == EXPAND )
         {
             cursor.setPosition( saved_anchor );
-            cursor.setPosition( saved_anchor + selected_text.length(), QTextCursor::KeepAnchor );
+            cursor.setPosition( saved_anchor + selectedText.length(), QTextCursor::KeepAnchor );
 
         } else if( mode == MOVE ) cursor.setPosition( current_position );
 

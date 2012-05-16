@@ -38,15 +38,10 @@ namespace FORMAT
     const QString XmlTextFormatBlock::XML_TAG = "TextFormat";
     const QString XmlTextFormatBlock::XML_FORMAT = "format";
     const QString XmlTextFormatBlock::XML_COLOR = "color";
-
+    const QString XmlTextFormatBlock::XML_HREF = "href";
     const QString XmlTextFormatBlock::XML_BEGIN = "begin";
     const QString XmlTextFormatBlock::XML_END = "end";
 
-    // obsolete tag names
-    const QString XmlTextFormatBlock::XML_BEGIN_PAR = "begin_par";
-    const QString XmlTextFormatBlock::XML_BEGIN_INDEX = "begin_index";
-    const QString XmlTextFormatBlock::XML_END_PAR = "end_par";
-    const QString XmlTextFormatBlock::XML_END_INDEX = "end_index";
 
     //____________________________________
     XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
@@ -62,20 +57,13 @@ namespace FORMAT
             QString value( attribute.value() );
 
             // nominal tags
-            if( name == XML_BEGIN ) begin() = value.toInt();
-            else if( name == XML_END ) end() = value.toInt();
-
-            // obsolete paragraph tags
-            else if( name == XML_BEGIN_PAR ) _parBegin() = value.toInt();
-            else if( name == XML_END_PAR ) _parEnd() = value.toInt();
-
-            // obsolete index tags
-            else if( name == XML_BEGIN_INDEX ) begin() = value.toInt();
-            else if( name == XML_END_INDEX ) end() = value.toInt();
+            if( name == XML_BEGIN ) setBegin( value.toInt() );
+            else if( name == XML_END ) setEnd( value.toInt() );
 
             // format
-            else if( name == XML_FORMAT ) format() =value.toInt();
-            else if( name == XML_COLOR ) color() = value;
+            else if( name == XML_FORMAT ) setFormat( value.toInt() );
+            else if( name == XML_COLOR ) setColor( value );
+            else if( name == XML_HREF ) setHRef( value );
 
             else Debug::Throw(0) << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized text format attribute: \"" << name << "\"\n";
         }
@@ -89,7 +77,8 @@ namespace FORMAT
         out.setAttribute( XML_BEGIN, Str().assign<int>(begin()) );
         out.setAttribute( XML_END, Str().assign<int>(end()) );
         out.setAttribute( XML_FORMAT, Str().assign<unsigned int>(format()) );
-        out.setAttribute( XML_COLOR, color() );
+        if( !color().isEmpty() ) out.setAttribute( XML_COLOR, color() );
+        if( !href().isEmpty() ) out.setAttribute( XML_HREF, href() );
         return out;
     }
 

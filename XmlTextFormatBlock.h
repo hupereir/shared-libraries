@@ -62,16 +62,7 @@ namespace FORMAT
     static const QString XML_END;
     static const QString XML_FORMAT;
     static const QString XML_COLOR;
-
-    //@}
-
-    //!@name old tags, kept for backward compatibility
-    //@{
-
-    static const QString XML_BEGIN_PAR;
-    static const QString XML_BEGIN_INDEX;
-    static const QString XML_END_PAR;
-    static const QString XML_END_INDEX;
+    static const QString XML_HREF;
 
     //@}
 
