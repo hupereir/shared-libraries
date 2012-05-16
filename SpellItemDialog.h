@@ -26,6 +26,7 @@
 
 #include "CustomDialog.h"
 #include "SpellItemModel.h"
+#include "QOrderedSet.h"
 
 #include <QtCore/QStringList>
 
@@ -50,7 +51,7 @@ namespace SPELLCHECK
         {}
 
         //! set items
-        void setItems( const QSet<QString>& );
+        void setItems( const QOrderedSet<QString>& );
 
         //! set disabled items
         void setDisabledItems( const QString& );

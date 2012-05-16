@@ -60,6 +60,9 @@ namespace SPELLCHECK
         _loadFilters();
         _resetSpellChecker();
 
+        // set default dictionary
+        if( !dictionaries().empty() ) setDictionary( *dictionaries().begin() );
+
         // set default filter
         setFilter( NO_FILTER );
 
@@ -343,8 +346,10 @@ namespace SPELLCHECK
         const AspellDictInfo* dictionary( 0 );
 
         while( ( dictionary = aspell_dict_info_enumeration_next( elements ) ) )
-            if( dictionary->code ) dictionaries_.insert( dictionary->code );
+        { if( dictionary->code ) dictionaries_.insert( dictionary->code ); }
+
         delete_aspell_dict_info_enumeration( elements );
+
         return;
 
     }

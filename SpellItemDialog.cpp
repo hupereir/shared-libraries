@@ -52,7 +52,7 @@ namespace SPELLCHECK
     }
 
     //_______________________________________________
-    void SpellItemDialog::setItems( const QSet<QString>& items )
+    void SpellItemDialog::setItems( const QOrderedSet<QString>& items )
     { model_.set( items.toList() ); }
 
     //_______________________________________________

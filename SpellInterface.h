@@ -33,6 +33,7 @@
 */
 
 #include "Counter.h"
+#include "QOrderedSet.h"
 
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
@@ -60,7 +61,8 @@ namespace SPELLCHECK
         //@{
 
         //! get list of available dictionaries
-        const QSet< QString >& dictionaries( void ) const
+        typedef QOrderedSet<QString> DictionarySet;
+        const DictionarySet& dictionaries( void ) const
         { return dictionaries_; }
 
         //! current dictionary
@@ -81,7 +83,8 @@ namespace SPELLCHECK
         //@{
 
         //! get list of available filters
-        const QSet< QString >& filters( void ) const
+        typedef QOrderedSet<QString> FilterSet;
+        const FilterSet& filters( void ) const
         { return filters_; }
 
         //! current filter
@@ -197,7 +200,7 @@ namespace SPELLCHECK
         */
         bool reset( void );
 
-        private:
+        protected:
 
         //! load available dictionaries
         void _loadDictionaries( void );
@@ -213,13 +216,15 @@ namespace SPELLCHECK
         /*! returns false on error */
         virtual bool _resetSpellChecker( void );
 
+        private:
+
         //! set of available dictionaries
         /*! loaded in constructor */
-        QSet<QString> dictionaries_;
+        DictionarySet dictionaries_;
 
         //! set of available filters
         /*! loaded in constructor */
-        QSet<QString> filters_;
+        FilterSet filters_;
 
         //! ignored words
         QSet<QString> ignoredWords_;
