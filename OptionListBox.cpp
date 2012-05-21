@@ -124,6 +124,8 @@ file_mode_( QFileDialog::AnyFile )
     // update buttons
     _updateButtons();
 
+    _setBuddy( this );
+
 }
 
 //_______________________________________________________

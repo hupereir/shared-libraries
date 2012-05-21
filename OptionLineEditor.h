@@ -1,4 +1,5 @@
-// $Id$
+#ifndef OptionLineEditor_h
+#define OptionLineEditor_h
 
 /******************************************************************************
 *
@@ -21,17 +22,6 @@
 *
 *******************************************************************************/
 
-#ifndef OptionLineEditor_h
-#define OptionLineEditor_h
-
-/*!
-   \file    OptionLineEditor.h
-   \brief   QLineEdit associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "AnimatedLineEditor.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
@@ -40,21 +30,21 @@
 class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionLineEditor( QWidget* parent, const QString& option_name ):
-    AnimatedLineEditor( parent ),
-    OptionWidget( option_name )
-  {}
+    //! constructor
+    OptionLineEditor( QWidget* parent, const QString& optionName ):
+        AnimatedLineEditor( parent ),
+        OptionWidget( optionName )
+    { _setBuddy( this ); }
 
-  //! read value from option
-  void read( void )
-  { setText( XmlOptions::get().raw( optionName() ) ); }
+    //! read value from option
+    void read( void )
+    { setText( XmlOptions::get().raw( optionName() ) ); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), text() ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().setRaw( optionName(), text() ); }
 
 };
 #endif

@@ -1,3 +1,6 @@
+#ifndef OptionBrowsedLineEdit_h
+#define OptionBrowsedLineEdit_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,17 +24,6 @@
 *
 *******************************************************************************/
 
-#ifndef OptionBrowsedLineEdit_h
-#define OptionBrowsedLineEdit_h
-
-/*!
-   \file    OptionBrowsedLineEdit.h
-   \brief   QLineEdit associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "AnimatedLineEditor.h"
 #include "BrowsedLineEditor.h"
 #include "OptionWidget.h"
@@ -41,21 +33,21 @@
 class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionBrowsedLineEditor( QWidget* parent, const QString& option_name ):
-      BrowsedLineEditor( parent ),
-      OptionWidget( option_name )
-  {}
+    //! constructor
+    OptionBrowsedLineEditor( QWidget* parent, const QString& optionName ):
+        BrowsedLineEditor( parent ),
+        OptionWidget( optionName )
+    { _setBuddy( this ); }
 
-  //! read value from option
-  void read( void )
-  { setFile( XmlOptions::get().raw( optionName() ) ); }
+    //! read value from option
+    void read( void )
+    { setFile( XmlOptions::get().raw( optionName() ) ); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), editor().text() ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().setRaw( optionName(), editor().text() ); }
 
 };
 #endif

@@ -1,3 +1,6 @@
+#ifndef OptionColorDisplay_h
+#define OptionColorDisplay_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,17 +24,6 @@
 *
 *******************************************************************************/
 
-#ifndef OptionColorDisplay_h
-#define OptionColorDisplay_h
-
-/*!
-   \file    OptionColorDisplay.h
-   \brief   QColorDisplay associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "ColorDisplay.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
@@ -40,21 +32,21 @@
 class OptionColorDisplay: public ColorDisplay, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionColorDisplay( QWidget* parent, const QString& option_name ):
-      ColorDisplay( parent ),
-      OptionWidget( option_name )
-  {}
+    //! constructor
+    OptionColorDisplay( QWidget* parent, const QString& optionName ):
+        ColorDisplay( parent ),
+        OptionWidget( optionName )
+    { _setBuddy( this ); }
 
-  //! read value from option
-  void read( void )
-  { setColor( XmlOptions::get().raw( optionName() ) ); }
+    //! read value from option
+    void read( void )
+    { setColor( XmlOptions::get().raw( optionName() ) ); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), colorName() ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().setRaw( optionName(), colorName() ); }
 
 };
 #endif

@@ -1,3 +1,6 @@
+#ifndef OptionRadioButton_h
+#define OptionRadioButton_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,40 +24,30 @@
 *
 *******************************************************************************/
 
-#ifndef OptionRadioButton_h
-#define OptionRadioButton_h
-
-/*!
-   \file    OptionRadioButton.h
-   \brief   QRadioButton associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <QRadioButton>
 #include "OptionWidget.h"
 #include "XmlOptions.h"
+
+#include <QtGui/QRadioButton>
 
 //! QRadioButton associated to an option for configuration dialogs
 class OptionRadioButton: public QRadioButton, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionRadioButton( const QString& label, QWidget* parent, const QString& option_name ):
-      QRadioButton( label, parent ),
-      OptionWidget( option_name )
-  {}
+    //! constructor
+    OptionRadioButton( const QString& label, QWidget* parent, const QString& optionName ):
+        QRadioButton( label, parent ),
+        OptionWidget( optionName )
+    { _setBuddy( this ); }
 
-  //! read value from option
-  void read( void )
-  { setChecked( XmlOptions::get().get<bool>( optionName() ) ); }
+    //! read value from option
+    void read( void )
+    { setChecked( XmlOptions::get().get<bool>( optionName() ) ); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().set<bool>( optionName(), isChecked() ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().set<bool>( optionName(), isChecked() ); }
 
 };
 #endif

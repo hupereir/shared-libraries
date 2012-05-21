@@ -24,17 +24,6 @@
 *
 *******************************************************************************/
 
-
-/*!
-   \file OptionFontInfo.h
-   \brief font formatting options
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <QCheckBox>
-
 #include "OptionWidget.h"
 #include "Options.h"
 #include "FontInfo.h"
@@ -43,21 +32,21 @@
 class OptionFontInfo: public FontInfo, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionFontInfo( QWidget* parent, const QString& option_name ):
-    FontInfo( parent ),
-    OptionWidget( option_name )
-  {}
+    //! constructor
+    OptionFontInfo( QWidget* parent, const QString& optionName ):
+        FontInfo( parent ),
+        OptionWidget( optionName )
+    { _setBuddy( this ); }
 
-  //! read value from option
-  void read( void )
-  { setFormat( XmlOptions::get().get<unsigned int>( optionName() ) ); }
+    //! read value from option
+    void read( void )
+    { setFormat( XmlOptions::get().get<unsigned int>( optionName() ) ); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().set<unsigned int>( optionName(), format() ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().set<unsigned int>( optionName(), format() ); }
 
 };
 #endif

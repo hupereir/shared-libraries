@@ -1,3 +1,6 @@
+#ifndef OptionFontEditor_h
+#define OptionFontEditor_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,16 +24,6 @@
 *
 *******************************************************************************/
 
-#ifndef OptionFontEditor_h
-#define OptionFontEditor_h
-
-/*!
-   \file OptionFontEditor.h
-   \brief QLineEdit associated to an option for configuration dialogs
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
 #include "FontEditor.h"
 #include "Options.h"
 #include "OptionWidget.h"
@@ -39,20 +32,20 @@
 class OptionFontEditor: public FontEditor, public OptionWidget
 {
 
-  public:
-  //! constructor
-  OptionFontEditor( QWidget* parent, const QString& option_name ):
-      FontEditor( parent ),
-      OptionWidget( option_name )
-  {}
+    public:
+    //! constructor
+    OptionFontEditor( QWidget* parent, const QString& optionName ):
+        FontEditor( parent ),
+        OptionWidget( optionName )
+    { _setBuddy( this ); }
 
-  //! read value from option
-  void read( void )
-  { setFont( XmlOptions::get().raw( optionName() ) ); }
+    //! read value from option
+    void read( void )
+    { setFont( XmlOptions::get().raw( optionName() ) ); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), font().toString() ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().setRaw( optionName(), font().toString() ); }
 
 };
 

@@ -1,5 +1,5 @@
-#ifndef _OptionModel_h_
-#define _OptionModel_h_
+#ifndef OptionModel_h
+#define OptionModel_h
 
 // $Id$
 

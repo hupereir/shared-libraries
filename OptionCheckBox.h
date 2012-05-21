@@ -39,7 +39,7 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
     OptionCheckBox( const QString& label, QWidget* parent, const QString& optionName ):
         QCheckBox( label, parent ),
         OptionWidget( optionName )
-    {}
+    { _setBuddy( this ); }
 
     //! read value from option
     virtual void read( void )

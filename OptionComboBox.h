@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    OptionComboBox.h
-   \brief   QComboBox associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "CustomComboBox.h"
 #include "OptionWidget.h"
 #include "Options.h"
@@ -41,31 +33,31 @@
 class OptionComboBox: public CustomComboBox, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionComboBox( QWidget* parent, const QString& option_name ):
-      CustomComboBox( parent ),
-      OptionWidget( option_name )
-  {}
+    //! constructor
+    OptionComboBox( QWidget* parent, const QString& optionName ):
+        CustomComboBox( parent ),
+        OptionWidget( optionName )
+    { _setBuddy( this ); }
 
-  //! read value from option
-  void read( void )
-  {
-    QString value( XmlOptions::get().raw( optionName() ) );
-    int found( findText( value ) );
-    if( found < 0 )
+    //! read value from option
+    void read( void )
     {
-      addItem( value );
-      found = findText( value );
+        QString value( XmlOptions::get().raw( optionName() ) );
+        int found( findText( value ) );
+        if( found < 0 )
+        {
+            addItem( value );
+            found = findText( value );
+        }
+
+        setCurrentIndex( found );
     }
 
-    setCurrentIndex( found );
-  }
-
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), currentText() ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().setRaw( optionName(), currentText() ); }
 
 };
 #endif

@@ -38,9 +38,9 @@ class OptionSpinBox: public QWidget, public OptionWidget
     public:
 
     //! constructor
-    OptionSpinBox( QWidget* parent, const QString& option_name, bool addStretch = true ):
+    OptionSpinBox( QWidget* parent, const QString& optionName, bool addStretch = true ):
         QWidget( parent ),
-        OptionWidget( option_name ),
+        OptionWidget( optionName ),
         unitLabel_( 0 ),
         spinBox_( 0 ),
         scale_( 1 )
@@ -50,6 +50,7 @@ class OptionSpinBox: public QWidget, public OptionWidget
         setLayout( layout );
         layout->addWidget( spinBox_ = new QSpinBox( this ) );
         if( addStretch ) layout->addStretch( 1 );
+        _setBuddy( this );
     }
 
     //! scale (i.e. option = value()/scale)

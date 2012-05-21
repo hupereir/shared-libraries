@@ -1,4 +1,3 @@
-
 #ifndef OptionWidget_h
 #define OptionWidget_h
 
@@ -25,6 +24,7 @@
 *
 *******************************************************************************/
 
+#include <QtCore/QObject>
 #include <QtCore/QString>
 
 class OptionWidget
@@ -33,7 +33,8 @@ class OptionWidget
 
     //! constructor
     OptionWidget( const QString& name ):
-        optionName_( name )
+        optionName_( name ),
+        buddy_(0)
     {}
 
     //! destructor
@@ -50,10 +51,28 @@ class OptionWidget
     const QString& optionName( void ) const
     { return optionName_; }
 
+    //! true if has buddy
+    bool hasBuddy( void ) const
+    { return buddy_; }
+
+    //! buddy
+    QObject& buddy( void ) const
+    { return *buddy_; }
+
+    protected:
+
+    //! set buddy
+    virtual void _setBuddy( QObject* buddy )
+    { buddy_ = buddy; }
+
     private:
 
     //! name of the option linked to the widget
     QString optionName_;
+
+    //! buddy
+    /*! it is used for signal/slots connections in derived class implementations */
+    QObject* buddy_;
 
 };
 

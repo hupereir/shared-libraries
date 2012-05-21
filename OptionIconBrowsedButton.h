@@ -1,3 +1,6 @@
+#ifndef OptionIconBrowsedButton_h
+#define OptionIconBrowsedButton_h
+
 // $Id$
 
 /******************************************************************************
@@ -21,17 +24,6 @@
 *
 *******************************************************************************/
 
-#ifndef OptionIconBrowsedButton_h
-#define OptionIconBrowsedButton_h
-
-/*!
-   \file    OptionIconBrowsedButton.h
-   \brief   QLineEdit associated to an option for configuration dialogs
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "IconBrowsedButton.h"
 #include "OptionWidget.h"
 #include "Options.h"
@@ -40,21 +32,21 @@
 class OptionIconBrowsedButton: public IconBrowsedButton, public OptionWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  OptionIconBrowsedButton( QWidget* parent, const QString& option_name ):
-    IconBrowsedButton( parent ),
-    OptionWidget( option_name )
-  {}
+    //! constructor
+    OptionIconBrowsedButton( QWidget* parent, const QString& optionName ):
+        IconBrowsedButton( parent ),
+        OptionWidget( optionName )
+    { _setBuddy( this ); }
 
-  //! read value from option
-  void read( void )
-  { setFile( XmlOptions::get().raw( optionName() ), false ); }
+    //! read value from option
+    void read( void )
+    { setFile( XmlOptions::get().raw( optionName() ), false ); }
 
-  //! write value to option
-  void write( void ) const
-  { XmlOptions::get().setRaw( optionName(), file() ); }
+    //! write value to option
+    void write( void ) const
+    { XmlOptions::get().setRaw( optionName(), file() ); }
 
 };
 #endif
