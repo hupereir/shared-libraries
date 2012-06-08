@@ -22,12 +22,12 @@
 *******************************************************************************/
 
 /*!
-  \file ErrorHandler.cpp
-  \brief Customized Qt error handler. Messages in the disabledMessages_ list
-  are skipped.
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ErrorHandler.cpp
+\brief Customized Qt error handler. Messages in the disabledMessages_ list
+are skipped.
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QTextStream>
@@ -39,62 +39,64 @@
 //_____________________________________________________________
 ErrorHandler& ErrorHandler::get( void )
 {
-  static  ErrorHandler singleton;
-  return singleton;
+    static  ErrorHandler singleton;
+    return singleton;
 }
 
 //_____________________________________________________________
 void ErrorHandler::Throw( QtMsgType type, const char* message )
 {
-  Debug::Throw() << "ErrorHandler::Throw - " << message << endl;
+    Debug::Throw() << "ErrorHandler::Throw - " << message << endl;
 
-  QString local_message( message );
+    QString localMessage( message );
 
-  // check if message is to be disabled
-  bool disabled( false );
-  for( MessageList::const_iterator it=get()._disabledMessages().begin(); it != get()._disabledMessages().end(); it++ )
-  {
-    if( local_message.indexOf( *it ) >= 0 )
+    // check if message is to be disabled
+    bool disabled( false );
+    for( MessageList::const_iterator it=get()._disabledMessages().begin(); it != get()._disabledMessages().end(); it++ )
     {
-      disabled = true;
-      break;
+        if( localMessage.indexOf( *it ) >= 0 )
+        {
+            disabled = true;
+            break;
+        }
     }
-  }
 
-  // check message type
-  QTextStream what( stderr );
-  switch ( type ) {
+    // check message type
+    QTextStream what( stderr );
+    switch ( type ) {
 
-    case QtDebugMsg: break;
+        case QtDebugMsg: break;
 
-    case QtWarningMsg:
-    if( !disabled ) what << "ErrorHandler::Throw - warning: " << message << endl;
+        case QtWarningMsg:
+        if( !disabled ) what << "ErrorHandler::Throw - warning: " << message << endl;
+        break;
+
+        case QtFatalMsg:
+        what << "ErrorHandler::Throw - fatal: " << message << endl;
+        disabled = false;
+        abort();
+        break;
+
+        default:
+        if( !disabled )
+        what << "ErrorHandler::Throw - unknown: " << message << endl;
     break;
 
-    case QtFatalMsg:
-    what << "ErrorHandler::Throw - fatal: " << message << endl;
-    disabled = false;
-    abort();
-    break;
+}
 
-    default:
-    if( !disabled )
-    what << "ErrorHandler::Throw - unknown: " << message << endl;
-    break;
-
-  }
-
-  return;
+return;
 }
 
 //_______________________________________________________________
 ErrorHandler::ErrorHandler( void )
 {
 
-  // install 'default' disabled messages
-  disableMessage( "QSocketNotifier: invalid socket" );
-  disableMessage( "QServerSocket: failed to bind or listen to the socket" );
-  disableMessage( "QPixmap::resize: TODO: resize alpha data" );
-  disableMessage( "QPainterPath::arcTo: Adding arc where a parameter is NaN, results are undefined" );
-  disableMessage( "warning: Couldn't resolve property" );
+    // install 'default' disabled messages
+    disableMessage( "QSocketNotifier: invalid socket" );
+    disableMessage( "QServerSocket: failed to bind or listen to the socket" );
+    disableMessage( "QPixmap::resize: TODO: resize alpha data" );
+    disableMessage( "QPainterPath::arcTo: Adding arc where a parameter is NaN, results are undefined" );
+    disableMessage( "warning: Couldn't resolve property" );
+    disableMessage( "QProcess: Destroyed while process is still running" );
+
 }
