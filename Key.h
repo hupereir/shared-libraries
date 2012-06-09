@@ -263,7 +263,7 @@ namespace BASE
             for( typename Key::key_set::const_iterator iter = keys.begin(); iter !=  keys.end(); iter++)
             {
                 T* t( dynamic_cast<T*>( *iter ) );
-                if( t ) insert( t );
+                if( t ) this->insert( t );
             }
 
         }
