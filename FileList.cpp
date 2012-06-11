@@ -37,7 +37,7 @@
 #include <algorithm>
 
 //_______________________________________________
-bool FileList::has( const File& file ) const
+bool FileList::contains( const File& file ) const
 { return std::find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ) != _records().end(); }
 
 //_______________________________________________

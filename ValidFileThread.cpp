@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file ValidFileThread.cpp
-  \brief check validity of a set of files
-  \author  Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file ValidFileThread.cpp
+\brief check validity of a set of files
+\author  Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <algorithm>
@@ -40,13 +40,13 @@
 QEvent::Type ValidFileEvent::eventType( void )
 {
 
-  #if QT_VERSION >= 0x040400
-  static QEvent::Type event_type = (QEvent::Type) QEvent::registerEventType();
-  #else
-  static QEvent::Type event_type = QEvent::User;
-  #endif
+    #if QT_VERSION >= 0x040400
+    static QEvent::Type event_type = (QEvent::Type) QEvent::registerEventType();
+    #else
+    static QEvent::Type event_type = QEvent::User;
+    #endif
 
-  return event_type;
+    return event_type;
 
 }
 
@@ -54,41 +54,41 @@ QEvent::Type ValidFileEvent::eventType( void )
 void ValidFileThread::run( void )
 {
 
-  bool has_invalid_records( false );
+    bool hasInvalidRecords( false );
 
-  // loop over files, check if exists, set validity accordingly, and post event
-  for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); ++iter )
-  {
-    iter->setValid( File( iter->file() ).exists() );
-    has_invalid_records |= !iter->isValid();
-  }
-
-  // look for duplicated records
-  if( _checkDuplicates() )
-  {
-    for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); )
+    // loop over files, check if exists, set validity accordingly, and post event
+    for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); ++iter )
     {
+        iter->setValid( File( iter->file() ).exists() );
+        hasInvalidRecords |= !iter->isValid();
+    }
 
-      // check item validity
-      if( iter->isValid() )
-      {
-
-        // check for duplicates
-        FileRecord& current( *iter );
-        FileRecord::SameCanonicalFileFTor ftor( current.file() );
-        if( std::find_if( ++iter, records_.end(), ftor ) != records_.end() )
+    // look for duplicated records
+    if( _checkDuplicates() )
+    {
+        for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); )
         {
-          current.setValid( false );
-          has_invalid_records = true;
-        }
 
-      } else { ++iter; }
+            // check item validity
+            if( iter->isValid() )
+            {
+
+                // check for duplicates
+                FileRecord& current( *iter );
+                FileRecord::SameCanonicalFileFTor ftor( current.file() );
+                if( std::find_if( ++iter, records_.end(), ftor ) != records_.end() )
+                {
+                    current.setValid( false );
+                    hasInvalidRecords = true;
+                }
+
+            } else { ++iter; }
+
+        }
 
     }
 
-  }
-
-  qApp->postEvent( reciever_, new ValidFileEvent( records_, has_invalid_records ) );
-  return;
+    qApp->postEvent( reciever_, new ValidFileEvent( records_, hasInvalidRecords ) );
+    return;
 
 }
