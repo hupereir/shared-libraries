@@ -27,6 +27,7 @@
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
+#include "QOrderedSet.h"
 #include "TimeStamp.h"
 
 #include <QtCore/QMap>
@@ -40,9 +41,9 @@ class FileRecord: public Counter
     public:
 
     //! shortcut to list of records
+    typedef QOrderedSet<FileRecord> Set;
     typedef QVector<FileRecord> List;
     typedef QVectorIterator<FileRecord> ListIterator;
-
 
     //! constructor
     FileRecord( const File& file = File(""), const TimeStamp& time = TimeStamp::now() ):
