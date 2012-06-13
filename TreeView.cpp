@@ -638,12 +638,12 @@ void TreeView::_installActions( void )
     Debug::Throw( "TreeView::_installActions.\n" );
 
     addAction( selectAllAction_ = new QAction( "Select All", this ) );
-    selectAllAction_->setShortcut( Qt::CTRL+Qt::Key_A );
+    selectAllAction_->setShortcut( QKeySequence::SelectAll );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
     addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find", this ) );
-    findAction_->setShortcut( Qt::CTRL + Qt::Key_F );
+    findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 

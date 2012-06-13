@@ -230,7 +230,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
     connect( navigationWidget_, SIGNAL( pageChanged( int ) ), previewWidget_, SLOT( setCurrentPage( int ) ) );
 
     // close accelerator
-    new QShortcut( Qt::CTRL+Qt::Key_W, this, SLOT( close() ) );
+    new QShortcut( QKeySequence::Close, this, SLOT( close() ) );
 
     // connect scrollbars
     QList<QGraphicsView*> graphicsViews( previewWidget_->findChildren<QGraphicsView*>() );

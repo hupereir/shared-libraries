@@ -212,7 +212,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     // connections
     connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
     connect( &model_, SIGNAL( layoutChanged() ), this, SLOT( _updateWidth() ) );
-    connect( new QShortcut( Qt::CTRL+Qt::Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
+    connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL( activated() ), SLOT( close() ) );
 
     _updateWidth();
 

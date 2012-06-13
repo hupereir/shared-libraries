@@ -1324,21 +1324,21 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     */
     if( event->modifiers() == Qt::ControlModifier )
     {
-        if( event->key() == Qt::Key_X )
+        if( event->matches( QKeySequence::Cut ) )
         {
             cut();
             event->ignore();
             return;
         }
 
-        if( event->key() == Qt::Key_C )
+        if( event->matches( QKeySequence::Copy ) )
         {
             copy();
             event->ignore();
             return;
         }
 
-        if( event->key() == Qt::Key_V )
+        if( event->matches( QKeySequence::Paste ) )
         {
             paste();
             event->ignore();
@@ -1578,27 +1578,27 @@ void TextEditor::_installActions( void )
 
     // create actions
     addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), "Undo", this ) );
-    undoAction_->setShortcut( Qt::CTRL + Qt::Key_Z );
+    undoAction_->setShortcut( QKeySequence::Undo );
     undoAction_->setEnabled( document()->isUndoAvailable() );
     connect( undoAction_, SIGNAL( triggered() ), document(), SLOT( undo() ) );
     connect( this, SIGNAL( undoAvailable( bool ) ), undoAction_, SLOT( setEnabled( bool ) ) );
 
     addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), "Redo", this ) );
-    redoAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_Z );
+    redoAction_->setShortcut( QKeySequence::Redo );
     redoAction_->setEnabled( document()->isRedoAvailable() );
     connect( redoAction_, SIGNAL( triggered() ), document(), SLOT( redo() ) );
     connect( this, SIGNAL( redoAvailable( bool ) ), redoAction_, SLOT( setEnabled( bool ) ) );
 
     addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), "Cut", this ) );
-    cutAction_->setShortcut( Qt::CTRL + Qt::Key_X );
+    cutAction_->setShortcut( QKeySequence::Cut );
     connect( cutAction_, SIGNAL( triggered() ), SLOT( cut() ) );
 
     addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), "Copy", this ) );
-    copyAction_->setShortcut( Qt::CTRL + Qt::Key_C );
+    copyAction_->setShortcut( QKeySequence::Copy );
     connect( copyAction_, SIGNAL( triggered() ), SLOT( copy() ) );
 
     addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), "Paste", this ) );
-    pasteAction_->setShortcut( Qt::CTRL + Qt::Key_V );
+    pasteAction_->setShortcut( QKeySequence::Paste );
     connect( pasteAction_, SIGNAL( triggered() ), SLOT( paste() ) );
     connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
     _updatePasteAction();
@@ -1607,7 +1607,7 @@ void TextEditor::_installActions( void )
     connect( clearAction_, SIGNAL( triggered() ), SLOT( clear() ) );
 
     addAction( selectAllAction_ = new QAction( "Select All", this ) );
-    selectAllAction_->setShortcut( Qt::CTRL + Qt::Key_A );
+    selectAllAction_->setShortcut( QKeySequence::SelectAll );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
@@ -1622,7 +1622,7 @@ void TextEditor::_installActions( void )
     connect( lowerCaseAction_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
     addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find ...", this ) );
-    findAction_->setShortcut( Qt::CTRL + Qt::Key_F );
+    findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
@@ -1647,7 +1647,7 @@ void TextEditor::_installActions( void )
     connect( findSelectionBackwardAction_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
     addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Replace ...", this ) );
-    replaceAction_->setShortcut( Qt::CTRL + Qt::Key_R );
+    replaceAction_->setShortcut( QKeySequence::Replace );
     replaceAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAction_, SIGNAL( triggered() ), SLOT( _replaceFromDialog() ) );
 

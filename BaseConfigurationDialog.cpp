@@ -99,7 +99,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     button->setAutoDefault( false );
 
     // close accelerator
-    new QShortcut( Qt::CTRL+Qt::Key_W, this, SLOT( reject() ) );
+    new QShortcut( QKeySequence::Close, this, SLOT( reject() ) );
 
 }
 

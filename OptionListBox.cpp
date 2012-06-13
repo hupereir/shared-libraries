@@ -71,46 +71,46 @@ file_mode_( QFileDialog::AnyFile )
 
     // Add button
     QPushButton *button;
-    button_layout->addWidget( button = new QPushButton( "&Add", this ) );
+    button_layout->addWidget( button = new QPushButton( "Add", this ) );
     button->setIcon( IconEngine::get( ICONS::ADD ) );
     connect( button, SIGNAL( clicked() ), SLOT( _add() ) );
 
     // Add action
     QAction* action;
-    addAction( action = new QAction( IconEngine::get( ICONS::ADD ), "&Add", this ) );
+    addAction( action = new QAction( IconEngine::get( ICONS::ADD ), "Add", this ) );
     connect( action, SIGNAL( triggered() ), SLOT( _add() ) );
-    action->setShortcut( Qt::CTRL + Qt::Key_N );
+    action->setShortcut( QKeySequence::New );
     _list().menu().addAction( action );
 
     // remove button
-    button_layout->addWidget( remove_ = new QPushButton( "&Remove", this ) );
+    button_layout->addWidget( remove_ = new QPushButton( "Remove", this ) );
     connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
     remove_->setIcon( IconEngine::get( ICONS::REMOVE ) );
     remove_->setToolTip( "Remove selected value" );
 
-    addAction( remove_action_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remo&ve", this ) );
+    addAction( remove_action_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove", this ) );
     connect( remove_action_, SIGNAL( triggered() ), SLOT( _remove() ) );
-    remove_action_->setShortcut( Qt::Key_Delete );
+    remove_action_->setShortcut( QKeySequence::Delete );
     remove_action_->setToolTip( "Remove selected value" );
     _list().menu().addAction( remove_action_ );
 
     // Edit button
-    button_layout->addWidget( edit_ = new QPushButton( "&Edit", this ) );
+    button_layout->addWidget( edit_ = new QPushButton( "Edit", this ) );
     connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
     edit_->setIcon( IconEngine::get( ICONS::EDIT ) );
     edit_->setToolTip( "Edit selected value" );
 
-    addAction( edit_action_ = new QAction( IconEngine::get( ICONS::EDIT ),  "&Edit", this ) );
+    addAction( edit_action_ = new QAction( IconEngine::get( ICONS::EDIT ),  "Edit", this ) );
     connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
     _list().menu().addAction( edit_action_ );
 
     // set default button
-    button_layout->addWidget( default_ = new QPushButton( "&Default", this ) );
+    button_layout->addWidget( default_ = new QPushButton( "Default", this ) );
     connect( default_, SIGNAL( clicked() ), SLOT( _setDefault() ) );
     default_->setToolTip( "Set selected value as default\n(move it to the top of the list)" );
     default_->setIcon( IconEngine::get( ICONS::DIALOG_OK_APPLY ) );
 
-    addAction( default_action_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), "&Default", this ) );
+    addAction( default_action_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), "Default", this ) );
     connect( default_action_, SIGNAL( triggered() ), SLOT( _setDefault() ) );
     _list().menu().addAction( default_action_ );
 
