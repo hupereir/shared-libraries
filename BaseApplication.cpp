@@ -137,7 +137,7 @@ bool BaseApplication::realizeWidget( void )
     connect( aboutQtAction_, SIGNAL( triggered() ), this, SLOT( _aboutQt() ) );
 
     closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), "Exit", this );
-    closeAction_->setShortcut( Qt::CTRL + Qt::Key_Q );
+    closeAction_->setShortcut( QKeySequence::Quit );
     connect( closeAction_, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
 
     configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default Configuration", this );
