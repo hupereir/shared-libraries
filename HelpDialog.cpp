@@ -171,8 +171,8 @@ namespace BASE
         connect( &model_, SIGNAL( itemRenamed( QModelIndex, QString ) ), SLOT( _renameItem( QModelIndex, QString ) ) );
 
         // add close accelerator
-        connect( new QShortcut( Qt::CTRL+Qt::Key_Q, this ), SIGNAL( activated() ), SLOT( close() ) );
-        connect( new QShortcut( Qt::CTRL+Qt::Key_S, this ), SIGNAL( activated() ), SLOT( _updateItemFromEditor() ) );
+        connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL( activated() ), SLOT( close() ) );
+        connect( new QShortcut( QKeySequence::Save, this ), SIGNAL( activated() ), SLOT( _updateItemFromEditor() ) );
 
     }
 

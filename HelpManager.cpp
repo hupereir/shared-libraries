@@ -59,7 +59,7 @@ namespace BASE
 
         // actions
         displayAction_ = new QAction( IconEngine::get( ICONS::HELP ), "Reference Manual", this );
-        displayAction_->setShortcut( Qt::Key_F1 );
+        displayAction_->setShortcut( QKeySequence::HelpContents );
         connect( displayAction_, SIGNAL( triggered() ), SLOT( _display() ) );
 
         dumpAction_ = new QAction( "Dump Help", this );
