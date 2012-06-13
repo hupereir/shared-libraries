@@ -49,13 +49,13 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
     Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
 
     // lock toolbars action
-    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "&Lock Toolbars", this ) );
+    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "Lock Toolbars", this ) );
     lockToolBarsAction().setCheckable( true );
     lockToolBarsAction().setChecked( true );
     connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
 
     // show menu action
-    addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "&Show Menu Bar", this ) );
+    addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "Show Menu Bar", this ) );
     showMenuBarAction().setCheckable( true );
     showMenuBarAction().setChecked( true );
     showMenuBarAction().setShortcut( Qt::CTRL + Qt::Key_M );
@@ -63,7 +63,7 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
     connect( &showMenuBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleMenuBar( bool ) ) );
 
     // show statusbar
-    addAction( showStatusBarAction_ = new QAction( "&Show Status Bar", this ) );
+    addAction( showStatusBarAction_ = new QAction( "Show Status Bar", this ) );
     showStatusBarAction().setCheckable( true );
     showStatusBarAction().setChecked( true );
     showStatusBarAction().setEnabled( false );
@@ -202,7 +202,7 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
     ToolBarMenu* menu = new ToolBarMenu( parent );
 
-    const bool hasLockableToolbars( installToolBarsActions( *menu->addMenu( "&ToolBars" ) ) );
+    const bool hasLockableToolbars( installToolBarsActions( *menu->addMenu( "ToolBars" ) ) );
     bool needSeparator( hasLockableToolbars || _hasMenuBar() || _hasStatusBar() );
     if( needSeparator ) menu->addSeparator();
 
