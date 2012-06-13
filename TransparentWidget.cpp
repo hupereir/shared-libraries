@@ -397,7 +397,7 @@ namespace TRANSPARENCY
 
         reloadBackgroundAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Background", this );
         reloadBackgroundAction_->setToolTip( "Reinitialize transparent background" );
-        reloadBackgroundAction_->setShortcut( Qt::Key_F5 );
+        reloadBackgroundAction_->setShortcut( QKeySequence::Refresh );
         connect( reloadBackgroundAction_, SIGNAL( triggered( void ) ), SLOT( _reloadBackground( void ) ) );
 
         addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Blur Region", this ) );
