@@ -1621,7 +1621,7 @@ void TextEditor::_installActions( void )
     lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( lowerCaseAction_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
-    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find ...", this ) );
+    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find...", this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
@@ -1646,7 +1646,7 @@ void TextEditor::_installActions( void )
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionBackwardAction_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
-    addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Replace ...", this ) );
+    addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Replace...", this ) );
     replaceAction_->setShortcut( QKeySequence::Replace );
     replaceAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAction_, SIGNAL( triggered() ), SLOT( _replaceFromDialog() ) );
@@ -1661,7 +1661,7 @@ void TextEditor::_installActions( void )
     replaceAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAgainBackwardAction_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
 
-    addAction( gotoLineAction_ = new QAction( "Goto Line Number ...", this ) );
+    addAction( gotoLineAction_ = new QAction( "Goto Line Number...", this ) );
     gotoLineAction_->setShortcut( Qt::CTRL + Qt::Key_L );
     gotoLineAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( gotoLineAction_, SIGNAL( triggered() ), SLOT( _selectLineFromDialog() ) );
