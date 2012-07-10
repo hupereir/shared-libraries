@@ -30,8 +30,7 @@
 #include <QtCore/QObject>
 #include <QtGui/QPainter>
 #include <QtGui/QPrinter>
-
-class LogEntry;
+#include <QtGui/QWidget>
 
 //! printing utility
 class BasePrintHelper: public QObject
@@ -40,10 +39,11 @@ class BasePrintHelper: public QObject
     Q_OBJECT
 
     public:
-
     //! constructor
     BasePrintHelper( QObject* parent = 0 ):
         QObject( parent ),
+        orientation_( QPrinter::Portrait ),
+        pageMode_( SinglePage ),
         pageNumber_(0),
         now_( TimeStamp::now() )
     { Debug::Throw( "BasePrintHelper::BasePrintHelper.\n" ); };
@@ -62,6 +62,24 @@ class BasePrintHelper: public QObject
     //! set page number manually
     void setPageNumber( int value )
     { pageNumber_ = value; }
+
+    //! multipage mode
+    enum PageMode
+    {
+        SinglePage,
+        TwoPages,
+        FourPages
+    };
+
+    public slots:
+
+    //! orientation
+    void setOrientation( QPrinter::Orientation value )
+    { orientation_ = value; }
+
+    //! mode
+    void setPageMode( BasePrintHelper::PageMode value )
+    { pageMode_ = value; }
 
     signals:
 
@@ -83,10 +101,19 @@ class BasePrintHelper: public QObject
 
     private:
 
+    //! orientation
+    QPrinter::Orientation orientation_;
+
+    //! page mode
+    PageMode pageMode_;
+
     //! rects
     QRect pageRect_;
     QRect headerRect_;
     QRect footerRect_;
+
+    //! list of pages viewports
+    QList<QRect> pages_;
 
     //! page
     int pageNumber_;
@@ -98,5 +125,42 @@ class BasePrintHelper: public QObject
     File file_;
 
 };
+
+namespace PRINT
+{
+
+    class PrinterOptionWidget: public QWidget, public Counter
+    {
+
+        Q_OBJECT
+
+        public:
+
+        //! constructor
+        PrinterOptionWidget( QWidget* = 0 );
+
+        //! destructor
+        virtual ~PrinterOptionWidget( void )
+        {}
+
+        signals:
+
+        //! emmited when orientation is changed
+        void orientationChanged( QPrinter::Orientation );
+
+        //! emmited when pageMode is changed
+        void pageModeChanged( BasePrintHelper::PageMode );
+
+        protected slots:
+
+        //! orientation
+        void _setOrientation( int );
+
+        //! page mode
+        void _setPageMode( int );
+
+    };
+
+}
 
 #endif

@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "BaseDialog.h"
+#include "BasePrintHelper.h"
 
 #include <QtGui/QPrintPreviewWidget>
 #include <QtGui/QLineEdit>
@@ -32,7 +33,10 @@
 #include <QtGui/QIntValidator>
 
 namespace PRINT
-{ class NavigationWidget; }
+{
+    class OptionWidget;
+    class NavigationWidget;
+}
 
 class PrintPreviewDialog: public BaseDialog
 {
@@ -49,7 +53,7 @@ class PrintPreviewDialog: public BaseDialog
     {}
 
     //! set print helper
-    void setHelper( QObject& );
+    void setHelper( BasePrintHelper& );
 
     //! return preview widget
     QPrintPreviewWidget& previewWidget( void ) const
@@ -61,6 +65,9 @@ class PrintPreviewDialog: public BaseDialog
     void _updatePage( void );
 
     private:
+
+    //! option widget
+    PRINT::OptionWidget* optionWidget_;
 
     //! navigation widget
     PRINT::NavigationWidget* navigationWidget_;

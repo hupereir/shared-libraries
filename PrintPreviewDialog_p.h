@@ -23,6 +23,7 @@
 *
 ****************************************************************************/
 
+#include "BasePrintHelper.h"
 #include "CustomDialog.h"
 
 #include <QtGui/QPrintPreviewWidget>
@@ -34,6 +35,37 @@
 
 namespace PRINT
 {
+
+    //! handles page orientation and page mode
+    class OptionWidget: public QWidget, public Counter
+    {
+
+        Q_OBJECT
+
+        public:
+
+        //! constructor
+        OptionWidget( QWidget* );
+
+        //! destructor
+        virtual ~OptionWidget( void )
+        {}
+
+        signals:
+        void orientationChanged( QPrinter::Orientation );
+        void pageModeChanged( BasePrintHelper::PageMode );
+
+        protected slots:
+
+        //! orientation changed
+        void _setOrientation( int );
+
+        //! page mode
+        void _setPageMode( int );
+
+    };
+
+    //! handles page navigation
     class NavigationWidget: public QWidget, public Counter
     {
 
