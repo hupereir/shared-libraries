@@ -53,7 +53,7 @@ class PrintPreviewDialog: public BaseDialog
     {}
 
     //! set print helper
-    void setHelper( BasePrintHelper& );
+    void setHelper( QObject& );
 
     //! return preview widget
     QPrintPreviewWidget& previewWidget( void ) const

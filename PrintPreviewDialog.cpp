@@ -312,7 +312,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
 }
 
 //_________________________________________________________________
-void PrintPreviewDialog::setHelper( BasePrintHelper& helper )
+void PrintPreviewDialog::setHelper( QObject& helper )
 {
     Debug::Throw( "PrintPreviewDialog::setHelper.\n" );
     connect( previewWidget_, SIGNAL( paintRequested( QPrinter* ) ), &helper, SLOT( print( QPrinter* ) ) );
