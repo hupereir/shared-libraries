@@ -35,6 +35,7 @@ void BasePrintHelper::setupPage( QPrinter* printer )
 
     Debug::Throw( "BasePrintHelper::setupPage.\n" );
 
+    sheetNumber_ = 0;
     pageNumber_ = 0;
     now_ = TimeStamp::now();
 
@@ -116,15 +117,18 @@ void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
         default:
         case SinglePage:
         if( pageNumber_ > 0 ) printer->newPage();
+        sheetNumber_++;
         break;
 
         case TwoPages:
         if( pageNumber_ > 0 && pageNumber_%2 == 0 ) printer->newPage();
+        if( pageNumber_%2 == 0 ) sheetNumber_++;
         painter->setViewport( pages_[pageNumber_%2] );
         break;
 
         case FourPages:
         if( pageNumber_ > 0 && pageNumber_%4 == 0 ) printer->newPage();
+        if( pageNumber_%4 == 0 ) sheetNumber_++;
         painter->setViewport( pages_[pageNumber_%4] );
         break;
     }
@@ -153,7 +157,7 @@ void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
     // restore
     painter->restore();
 
-    emit pageCountChanged( pageNumber_ );
+    emit pageCountChanged( sheetNumber_ );
 
 }
 

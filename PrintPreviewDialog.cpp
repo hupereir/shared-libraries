@@ -29,61 +29,77 @@
 #include "IconEngine.h"
 #include "IconSize.h"
 
-#include <QtGui/QLayout>
+#include <QtGui/QComboBox>
 #include <QtGui/QGraphicsView>
+#include <QtGui/QLayout>
+#include <QtGui/QMenu>
 #include <QtGui/QScrollBar>
 #include <QtGui/QShortcut>
 #include <QtGui/QWheelEvent>
-#include <QtGui/QComboBox>
 
 namespace PRINT
 {
 
     //_________________________________________________________________
-    OptionWidget::OptionWidget( QWidget* parent ):
-        QWidget( parent ),
-        Counter( "PRINT::OptionWidget" )
+    OptionMenu::OptionMenu( QWidget* parent ):
+        QMenuBar( parent ),
+        Counter( "PRINT::OptionMenu" )
     {
 
-        QHBoxLayout* layout = new QHBoxLayout();
-        setLayout( layout );
-        QLabel* label;
-        QComboBox* combobox;
+        {
+            QMenu* menu = addMenu( "Orientation" );
+            QAction* action;
+            QActionGroup* actionGroup = new QActionGroup( this );
 
-        // orientation
-        layout->addWidget( label = new QLabel( "Orientation:", this ) );
-        layout->addWidget( combobox = new QComboBox( this ) );
-        label->setBuddy( combobox );
-        combobox->setEditable( false );
-        combobox->addItems( QStringList() << "Portrait" << "Landscape" );
-        connect( combobox, SIGNAL( currentIndexChanged( int ) ), this, SLOT( _setOrientation( int ) ) );
+            action = menu->addAction( "Portrait" );
+            action->setCheckable( true );
+            action->setChecked( true );
+            actionGroup->addAction( action );
+            orientationActions_.insert( action, QPrinter::Portrait );
 
-        // pages per sheet
-        layout->addWidget( label = new QLabel( "Pages per sheet:", this ) );
-        layout->addWidget( combobox = new QComboBox( this ) );
-        label->setBuddy( combobox );
-        combobox->setEditable( false );
-        combobox->addItems( QStringList() << "One Page" << "Two Pages" << "Four Pages" );
-        connect( combobox, SIGNAL( currentIndexChanged( int ) ), this, SLOT( _setPageMode( int ) ) );
+            action = menu->addAction( "Landscape" );
+            action->setCheckable( true );
+            actionGroup->addAction( action );
+            orientationActions_.insert( action, QPrinter::Landscape );
 
-        layout->addStretch( 1 );
+            connect( actionGroup, SIGNAL( triggered( QAction* ) ), SLOT( _setOrientation( QAction* ) ) );
+
+        }
+
+        {
+            QMenu* menu = addMenu( "Layout" );
+
+            QAction* action;
+            QActionGroup* actionGroup = new QActionGroup( this );
+
+            action = menu->addAction( "One Page Per Sheet" );
+            action->setCheckable( true );
+            action->setChecked( true );
+            actionGroup->addAction( action );
+            pageModeActions_.insert( action, BasePrintHelper::SinglePage );
+
+            action = menu->addAction( "Two Pages Per Sheet" );
+            action->setCheckable( true );
+            actionGroup->addAction( action );
+            pageModeActions_.insert( action, BasePrintHelper::TwoPages );
+
+            action = menu->addAction( "Four Pages Per Sheet" );
+            action->setCheckable( true );
+            actionGroup->addAction( action );
+            pageModeActions_.insert( action, BasePrintHelper::FourPages );
+
+            connect( actionGroup, SIGNAL( triggered( QAction* ) ), SLOT( _setPageMode( QAction* ) ) );
+       }
 
     }
 
     //_________________________________________________________________
-    void OptionWidget::_setOrientation( int value )
-    {
-        if( value == 0 ) emit orientationChanged( QPrinter::Portrait );
-        else if( value == 1 ) emit orientationChanged( QPrinter::Landscape );
-    }
+    void OptionMenu::_setOrientation( QAction* action )
+    { emit orientationChanged( orientationActions_[action] ); }
 
     //_________________________________________________________________
-    void OptionWidget::_setPageMode( int value )
-    {
-        if( value == 0 ) emit pageModeChanged( BasePrintHelper::SinglePage );
-        else if( value == 1 ) emit pageModeChanged( BasePrintHelper::TwoPages );
-        else if( value == 2 ) emit pageModeChanged( BasePrintHelper::FourPages );
-    }
+    void OptionMenu::_setPageMode( QAction* action )
+    { emit pageModeChanged( pageModeActions_[action] ); }
 
     //_________________________________________________________________
     NavigationWidget::NavigationWidget( QWidget* parent ):
@@ -269,7 +285,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
     layout->setMargin(0);
     setLayout( layout );
 
-    layout->addWidget( optionWidget_ = new PRINT::OptionWidget( this ) );
+    layout->addWidget( optionMenu_ = new PRINT::OptionMenu( this ) );
     layout->addWidget( previewWidget_ = new QPrintPreviewWidget( this ) );
     previewWidget_->setZoomMode( QPrintPreviewWidget::FitToWidth );
 
@@ -301,11 +317,11 @@ void PrintPreviewDialog::setHelper( BasePrintHelper& helper )
     Debug::Throw( "PrintPreviewDialog::setHelper.\n" );
     connect( previewWidget_, SIGNAL( paintRequested( QPrinter* ) ), &helper, SLOT( print( QPrinter* ) ) );
 
-    connect( optionWidget_, SIGNAL( orientationChanged( QPrinter::Orientation ) ), &helper, SLOT( setOrientation( QPrinter::Orientation ) ) );
-    connect( optionWidget_, SIGNAL( orientationChanged( QPrinter::Orientation ) ), previewWidget_, SLOT( updatePreview() ) );
+    connect( optionMenu_, SIGNAL( orientationChanged( QPrinter::Orientation ) ), &helper, SLOT( setOrientation( QPrinter::Orientation ) ) );
+    connect( optionMenu_, SIGNAL( orientationChanged( QPrinter::Orientation ) ), previewWidget_, SLOT( updatePreview() ) );
 
-    connect( optionWidget_, SIGNAL( pageModeChanged( BasePrintHelper::PageMode ) ), &helper, SLOT( setPageMode( BasePrintHelper::PageMode ) ) );
-    connect( optionWidget_, SIGNAL( pageModeChanged( BasePrintHelper::PageMode ) ), previewWidget_, SLOT( updatePreview() ) );
+    connect( optionMenu_, SIGNAL( pageModeChanged( BasePrintHelper::PageMode ) ), &helper, SLOT( setPageMode( BasePrintHelper::PageMode ) ) );
+    connect( optionMenu_, SIGNAL( pageModeChanged( BasePrintHelper::PageMode ) ), previewWidget_, SLOT( updatePreview() ) );
 
     connect( &helper, SIGNAL( pageCountChanged( int ) ), navigationWidget_, SLOT( setPages( int ) ) );
 }

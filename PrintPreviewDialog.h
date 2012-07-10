@@ -34,7 +34,7 @@
 
 namespace PRINT
 {
-    class OptionWidget;
+    class OptionMenu;
     class NavigationWidget;
 }
 
@@ -67,7 +67,7 @@ class PrintPreviewDialog: public BaseDialog
     private:
 
     //! option widget
-    PRINT::OptionWidget* optionWidget_;
+    PRINT::OptionMenu* optionMenu_;
 
     //! navigation widget
     PRINT::NavigationWidget* navigationWidget_;

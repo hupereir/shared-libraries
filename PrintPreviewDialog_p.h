@@ -26,18 +26,19 @@
 #include "BasePrintHelper.h"
 #include "CustomDialog.h"
 
-#include <QtGui/QPrintPreviewWidget>
-#include <QtGui/QLineEdit>
-#include <QtGui/QToolButton>
-#include <QtGui/QLabel>
+#include <QtCore/QMap>
 #include <QtGui/QIntValidator>
-
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QMenuBar>
+#include <QtGui/QPrintPreviewWidget>
+#include <QtGui/QToolButton>
 
 namespace PRINT
 {
 
     //! handles page orientation and page mode
-    class OptionWidget: public QWidget, public Counter
+    class OptionMenu: public QMenuBar, public Counter
     {
 
         Q_OBJECT
@@ -45,10 +46,10 @@ namespace PRINT
         public:
 
         //! constructor
-        OptionWidget( QWidget* );
+        OptionMenu( QWidget* );
 
         //! destructor
-        virtual ~OptionWidget( void )
+        virtual ~OptionMenu( void )
         {}
 
         signals:
@@ -58,10 +59,20 @@ namespace PRINT
         protected slots:
 
         //! orientation changed
-        void _setOrientation( int );
+        void _setOrientation( QAction* );
 
         //! page mode
-        void _setPageMode( int );
+        void _setPageMode( QAction* );
+
+        private:
+
+        //! actions maps
+        typedef QMap<QAction*, QPrinter::Orientation> OrientationActionMap;
+        OrientationActionMap orientationActions_;
+
+        //! actions map
+        typedef QMap<QAction*, BasePrintHelper::PageMode> PageModeActionMap;
+        PageModeActionMap pageModeActions_;
 
     };
 

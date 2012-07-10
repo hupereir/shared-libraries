@@ -45,6 +45,7 @@ class BasePrintHelper: public QObject
         orientation_( QPrinter::Portrait ),
         pageMode_( SinglePage ),
         pageNumber_(0),
+        sheetNumber_(0),
         now_( TimeStamp::now() )
     { Debug::Throw( "BasePrintHelper::BasePrintHelper.\n" ); };
 
@@ -117,6 +118,9 @@ class BasePrintHelper: public QObject
 
     //! page
     int pageNumber_;
+
+    //! sheet
+    int sheetNumber_;
 
     //! time stamp
     TimeStamp now_;
