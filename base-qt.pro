@@ -87,6 +87,7 @@ OptionWidgetList.h \
 PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
+PrinterOptionWidget.h \
 PrintPreviewDialog.h \
 PrintPreviewDialog_p.h \
 QuestionDialog.h \
@@ -199,6 +200,7 @@ OptionWidgetList.cpp \
 PixmapCacheDialog.cpp \
 PixmapCacheModel.cpp \
 PixmapEngine.cpp \
+PrinterOptionWidget.cpp \
 PrintPreviewDialog.cpp \
 QuestionDialog.cpp \
 QtUtil.cpp \

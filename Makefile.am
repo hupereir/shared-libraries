@@ -91,6 +91,7 @@ OptionWidgetList.h \
 PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
+PrinterOptionWidget.h \
 PrintPreviewDialog.h \
 PrintPreviewDialog_p.h \
 QuestionDialog.h \
@@ -203,6 +204,7 @@ OptionWidgetList.cpp \
 PixmapCacheDialog.cpp \
 PixmapCacheModel.cpp \
 PixmapEngine.cpp \
+PrinterOptionWidget.cpp \
 PrintPreviewDialog.cpp \
 QuestionDialog.cpp \
 QtUtil.cpp \
@@ -287,6 +289,7 @@ moc_OptionDialog.cpp \
 moc_OptionListBox.cpp \
 moc_OptionModel.cpp \
 moc_PixmapCacheDialog.cpp \
+moc_PrinterOptionWidget.cpp \
 moc_PrintPreviewDialog.cpp \
 moc_PrintPreviewDialog_p.cpp \
 moc_RecentFilesConfiguration.cpp \

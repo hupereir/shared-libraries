@@ -30,7 +30,6 @@
 #include <QtCore/QObject>
 #include <QtGui/QPainter>
 #include <QtGui/QPrinter>
-#include <QtGui/QWidget>
 
 //! printing utility
 class BasePrintHelper: public QObject
@@ -158,42 +157,5 @@ class BasePrintHelper: public QObject
     File file_;
 
 };
-
-namespace PRINT
-{
-
-    class PrinterOptionWidget: public QWidget, public Counter
-    {
-
-        Q_OBJECT
-
-        public:
-
-        //! constructor
-        PrinterOptionWidget( QWidget* = 0 );
-
-        //! destructor
-        virtual ~PrinterOptionWidget( void )
-        {}
-
-        signals:
-
-        //! emmited when orientation is changed
-        void orientationChanged( QPrinter::Orientation );
-
-        //! emmited when pageMode is changed
-        void pageModeChanged( BasePrintHelper::PageMode );
-
-        protected slots:
-
-        //! orientation
-        void _setOrientation( int );
-
-        //! page mode
-        void _setPageMode( int );
-
-    };
-
-}
 
 #endif

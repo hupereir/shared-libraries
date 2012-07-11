@@ -53,11 +53,19 @@ class PrintPreviewDialog: public BaseDialog
     {}
 
     //! set print helper
-    void setHelper( QObject& );
+    void setHelper( QObject* );
 
     //! return preview widget
     QPrintPreviewWidget& previewWidget( void ) const
     { return *previewWidget_; }
+
+    public slots:
+
+    //! show/hide menu
+    void showMenu( void );
+
+    //! show/hide menu
+    void hideMenu( void );
 
     protected slots:
 

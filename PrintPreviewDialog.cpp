@@ -312,19 +312,29 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
 }
 
 //_________________________________________________________________
-void PrintPreviewDialog::setHelper( QObject& helper )
+void PrintPreviewDialog::setHelper( QObject* helper )
 {
     Debug::Throw( "PrintPreviewDialog::setHelper.\n" );
-    connect( previewWidget_, SIGNAL( paintRequested( QPrinter* ) ), &helper, SLOT( print( QPrinter* ) ) );
 
-    connect( optionMenu_, SIGNAL( orientationChanged( QPrinter::Orientation ) ), &helper, SLOT( setOrientation( QPrinter::Orientation ) ) );
+    if( !helper ) return;
+
+    connect( previewWidget_, SIGNAL( paintRequested( QPrinter* ) ), helper, SLOT( print( QPrinter* ) ) );
+    connect( optionMenu_, SIGNAL( orientationChanged( QPrinter::Orientation ) ), helper, SLOT( setOrientation( QPrinter::Orientation ) ) );
     connect( optionMenu_, SIGNAL( orientationChanged( QPrinter::Orientation ) ), previewWidget_, SLOT( updatePreview() ) );
-
-    connect( optionMenu_, SIGNAL( pageModeChanged( BasePrintHelper::PageMode ) ), &helper, SLOT( setPageMode( BasePrintHelper::PageMode ) ) );
+    connect( optionMenu_, SIGNAL( pageModeChanged( BasePrintHelper::PageMode ) ), helper, SLOT( setPageMode( BasePrintHelper::PageMode ) ) );
     connect( optionMenu_, SIGNAL( pageModeChanged( BasePrintHelper::PageMode ) ), previewWidget_, SLOT( updatePreview() ) );
+    connect( helper, SIGNAL( pageCountChanged( int ) ), navigationWidget_, SLOT( setPages( int ) ) );
 
-    connect( &helper, SIGNAL( pageCountChanged( int ) ), navigationWidget_, SLOT( setPages( int ) ) );
 }
+
+//_________________________________________________________________
+void PrintPreviewDialog::showMenu( void )
+{ if( optionMenu_ ) optionMenu_->show(); }
+
+//_________________________________________________________________
+void PrintPreviewDialog::hideMenu( void )
+{ if( optionMenu_ ) optionMenu_->hide(); }
+
 //_________________________________________________________________
 void PrintPreviewDialog::_updatePage( void )
 { navigationWidget_->setPage( previewWidget_->currentPage() ); }
