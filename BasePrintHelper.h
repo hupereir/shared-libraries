@@ -53,8 +53,43 @@ class BasePrintHelper: public QObject
     virtual ~BasePrintHelper( void )
     {}
 
+    //! multipage mode
+    enum PageMode
+    {
+        SinglePage,
+        TwoPages,
+        FourPages
+    };
+
     //! setup pages
     void setupPage( QPrinter* );
+
+    //!@name accessors
+    //@{
+        //! orientation
+    QPrinter::Orientation orientation( void ) const
+    { return orientation_; }
+
+    //! page mode
+    PageMode pageMode( void ) const
+    { return pageMode_; }
+
+    //! page number
+    int pageNumber( void ) const
+    { return pageNumber_; }
+
+    //! page number
+    int sheetNumber( void ) const
+    { return sheetNumber_; }
+
+    //! file
+    const File& file( void ) const
+    { return file_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
 
     //! file
     void setFile( const File& file )
@@ -64,13 +99,11 @@ class BasePrintHelper: public QObject
     void setPageNumber( int value )
     { pageNumber_ = value; }
 
-    //! multipage mode
-    enum PageMode
-    {
-        SinglePage,
-        TwoPages,
-        FourPages
-    };
+    //! set sheet number manually
+    void setSheetNumber( int value )
+    { sheetNumber_ = value; }
+
+    //@}
 
     public slots:
 
@@ -92,10 +125,6 @@ class BasePrintHelper: public QObject
     //! return pageRect
     const QRect& _pageRect( void ) const
     { return pageRect_; }
-
-    //! page number
-    int _pageNumber( void ) const
-    { return pageNumber_; }
 
     //! increment page
     void _newPage( QPrinter*, QPainter* );
