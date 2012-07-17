@@ -305,6 +305,11 @@ template<class T> class TreeModel : public ItemModel
         if( values.empty() ) clear();
         else {
             emit layoutAboutToBeChanged();
+
+            // sort values if requested
+            if( map_.sortValues() )
+            { std::sort( values.begin(), values.end() ); }
+
             root_.set( values );
             _add( values );
             _sort();
