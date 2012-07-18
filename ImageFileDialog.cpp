@@ -115,19 +115,18 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
     if( !event->mimeData()->hasUrls() ) return;
 
     // loop over event URLs
-    QList<QUrl> urls( event->mimeData()->urls() );
-    for( QList<QUrl>::const_iterator iter = urls.begin(); iter != urls.end(); ++iter )
+    foreach( const QUrl& url, event->mimeData()->urls() )
     {
-        QFileInfo file_info( iter->toLocalFile() );
-        if( file_info.exists() )
+        QFileInfo fileInfo( url.toLocalFile() );
+        if( fileInfo.exists() )
         {
             ImageFileDialog& dialog( *static_cast<ImageFileDialog*>( window() ) );
-            if( file_info.isDir() ) dialog.setDirectory( file_info.filePath() );
+            if( fileInfo.isDir() ) dialog.setDirectory( fileInfo.filePath() );
             else {
 
-                dialog.setDirectory( file_info.path() );
-                dialog.selectFile( file_info.fileName() );
-                if( dialog._automaticPreviewCheckbox().isChecked() ) dialog._currentChanged( file_info.filePath() );
+                dialog.setDirectory( fileInfo.path() );
+                dialog.selectFile( fileInfo.fileName() );
+                if( dialog._automaticPreviewCheckbox().isChecked() ) dialog._currentChanged( fileInfo.filePath() );
 
             }
             event->acceptProposedAction();

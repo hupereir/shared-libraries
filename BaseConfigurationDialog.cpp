@@ -297,6 +297,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
     spinbox->setToolTip( "Default size of the icons displayed in lists" );
+    spinbox->setSuffix( "px" );
     spinbox->setMinimum(8);
     spinbox->setMaximum(96);
     addOptionWidget( spinbox );
@@ -449,7 +450,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
 
         OptionSpinBox* spinbox;
         hLayout->addWidget( spinbox = new OptionSpinBox( box, "AUTOHIDE_CURSOR_DELAY" ) );
-        spinbox->setUnit( "seconds" );
+        spinbox->setSuffix( "s" );
         addOptionWidget( spinbox );
 
         spinbox->setMinimum( 0 );
@@ -508,9 +509,10 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     addOptionWidget( checkbox );
 
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "SMOOTH_TRANSITION_DURATION" ) );
+    spinbox->setSuffix( "ms" );
     spinbox->setMinimum( 10 );
     spinbox->setMaximum( 5000 );
-    spinbox->setToolTip( "Smooth transitions duration (ms)." );
+    spinbox->setToolTip( "Smooth transitions duration" );
     addOptionWidget( spinbox );
 
     checkbox->setChecked( false );
@@ -522,9 +524,10 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     addOptionWidget( checkbox );
 
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "SMOOTH_SCROLLING_DURATION" ) );
+    spinbox->setSuffix( "ms" );
     spinbox->setMinimum( 10 );
     spinbox->setMaximum( 5000 );
-    spinbox->setToolTip( "Smooth scrolling duration (ms)." );
+    spinbox->setToolTip( "Smooth scrolling duration" );
     addOptionWidget( spinbox );
 
     checkbox->setChecked( false );

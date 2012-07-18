@@ -40,12 +40,11 @@ void ScratchFileMonitor::deleteScratchFiles( void )
 
     // create records
     FileRecordModel::List records;
-
-    for( FileSet::const_iterator iter = files_.begin(); iter != files_.end(); iter++ )
+    foreach( const File& file, files_ )
     {
 
-        if( iter->exists() && iter->isWritable() && (iter->isLink() || !iter->isDirectory() ) )
-        { records.push_back( FileRecord( *iter ) ); }
+        if( file.exists() && file.isWritable() && (file.isLink() || !file.isDirectory() ) )
+        { records.push_back( FileRecord( file ) ); }
 
     }
 
@@ -65,8 +64,8 @@ void ScratchFileMonitor::deleteScratchFiles( void )
     }
 
     // re-add directories
-    for( FileSet::const_iterator iter = files_.begin(); iter != files_.end(); iter++ )
-    { if( iter->isDirectory() && !iter->isLink() ) temp.insert( *iter ); }
+    foreach( const File& file, files_ )
+    { if( file.isDirectory() && !file.isLink() ) temp.insert( file ); }
 
     // remove
     {

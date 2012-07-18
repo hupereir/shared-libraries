@@ -39,7 +39,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 QWidget( parent ),
 OptionWidget( name ),
 browsable_( false ),
-file_mode_( QFileDialog::AnyFile )
+fileMode_( QFileDialog::AnyFile )
 {
 
     Debug::Throw( "OptionListBox::OptionListBox.\n" );
@@ -88,11 +88,11 @@ file_mode_( QFileDialog::AnyFile )
     remove_->setIcon( IconEngine::get( ICONS::REMOVE ) );
     remove_->setToolTip( "Remove selected value" );
 
-    addAction( remove_action_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove", this ) );
-    connect( remove_action_, SIGNAL( triggered() ), SLOT( _remove() ) );
-    remove_action_->setShortcut( QKeySequence::Delete );
-    remove_action_->setToolTip( "Remove selected value" );
-    _list().menu().addAction( remove_action_ );
+    addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove", this ) );
+    connect( removeAction_, SIGNAL( triggered() ), SLOT( _remove() ) );
+    removeAction_->setShortcut( QKeySequence::Delete );
+    removeAction_->setToolTip( "Remove selected value" );
+    _list().menu().addAction( removeAction_ );
 
     // Edit button
     button_layout->addWidget( edit_ = new QPushButton( "Edit", this ) );
@@ -100,9 +100,9 @@ file_mode_( QFileDialog::AnyFile )
     edit_->setIcon( IconEngine::get( ICONS::EDIT ) );
     edit_->setToolTip( "Edit selected value" );
 
-    addAction( edit_action_ = new QAction( IconEngine::get( ICONS::EDIT ),  "Edit", this ) );
-    connect( edit_action_, SIGNAL( triggered() ), SLOT( _edit() ) );
-    _list().menu().addAction( edit_action_ );
+    addAction( editAction_ = new QAction( IconEngine::get( ICONS::EDIT ),  "Edit", this ) );
+    connect( editAction_, SIGNAL( triggered() ), SLOT( _edit() ) );
+    _list().menu().addAction( editAction_ );
 
     // set default button
     button_layout->addWidget( default_ = new QPushButton( "Default", this ) );
@@ -110,9 +110,9 @@ file_mode_( QFileDialog::AnyFile )
     default_->setToolTip( "Set selected value as default\n(move it to the top of the list)" );
     default_->setIcon( IconEngine::get( ICONS::DIALOG_OK_APPLY ) );
 
-    addAction( default_action_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), "Default", this ) );
-    connect( default_action_, SIGNAL( triggered() ), SLOT( _setDefault() ) );
-    _list().menu().addAction( default_action_ );
+    addAction( defaultAction_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), "Default", this ) );
+    connect( defaultAction_, SIGNAL( triggered() ), SLOT( _setDefault() ) );
+    _list().menu().addAction( defaultAction_ );
 
     button_layout->addStretch(1);
 
@@ -142,8 +142,8 @@ void OptionListBox::read( void )
 
     // add to model.
     OptionModel::List options;
-    for( Options::List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
-    { options << OptionPair( optionName(), *iter ); }
+    foreach( const Option& option, values )
+    { options << OptionPair( optionName(), option ); }
 
     model_.set( options );
     _list().resizeColumns();
@@ -158,9 +158,8 @@ void OptionListBox::write( void ) const
     XmlOptions::get().clearSpecialOptions( optionName() );
     XmlOptions::get().keep( optionName() );
 
-    OptionModel::List values( model_.children() );
-    for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); ++iter )
-    { XmlOptions::get().add( iter->first, iter->second ); }
+    foreach( const OptionPair& optionPair, model_.children() )
+    { XmlOptions::get().add( optionPair.first, optionPair.second ); }
 
 }
 
@@ -171,24 +170,23 @@ void OptionListBox::_updateButtons( void )
 
     QModelIndex current( _list().selectionModel()->currentIndex() );
     edit_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );
-    edit_action_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );
+    editAction_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );
 
     default_->setEnabled( current.isValid() );
-    default_action_->setEnabled( current.isValid() );
+    defaultAction_->setEnabled( current.isValid() );
 
-    OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
-    bool remove_enabled( false );
-    for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); ++iter )
+    bool removeEnabled( false );
+    foreach( const OptionPair& optionPair, model_.get( _list().selectionModel()->selectedRows() ) )
     {
-        if( iter->second.hasFlag( Option::RECORDABLE ) )
+        if( optionPair.second.hasFlag( Option::RECORDABLE ) )
         {
-            remove_enabled = true;
+            removeEnabled = true;
             break;
         }
     }
 
-    remove_action_->setEnabled( remove_enabled );
-    remove_->setEnabled( remove_enabled );
+    removeAction_->setEnabled( removeEnabled );
+    remove_->setEnabled( removeEnabled );
 
 }
 
@@ -198,7 +196,7 @@ void OptionListBox::_add( void )
     Debug::Throw( "OptionListBox::_add.\n" );
 
     // map dialog
-    EditDialog dialog( this, browsable_, file_mode_ );
+    EditDialog dialog( this, browsable_, fileMode_ );
     dialog.checkbox().setChecked( true );
 
     if( dialog.centerOnParent().exec() == QDialog::Rejected ) return;
@@ -235,7 +233,7 @@ void OptionListBox::_edit( void )
     assert( option.second.hasFlag( Option::RECORDABLE ) );
 
     // create dialog
-    EditDialog dialog( this, browsable_, file_mode_ );
+    EditDialog dialog( this, browsable_, fileMode_ );
     dialog.editor().setText( option.second.raw() );
     if( option.second.isCurrent() )
     {
@@ -278,10 +276,9 @@ void OptionListBox::_remove( void )
     Debug::Throw( "OptionListBox::_remove.\n" );
 
     // retrieve selected items; retrieve only recordable options
-    OptionModel::List selection( model_.get( _list().selectionModel()->selectedRows() ) );
     OptionModel::List removed;
-    for( OptionModel::List::const_iterator iter = selection.begin(); iter != selection.end(); ++iter )
-    { if( iter->second.hasFlag( Option::RECORDABLE ) ) removed << *iter; }
+    foreach( const OptionPair& optionPair, model_.get( _list().selectionModel()->selectedRows() ) )
+    { if( optionPair.second.hasFlag( Option::RECORDABLE ) ) removed << optionPair; }
 
     // remove
     model_.remove( removed );

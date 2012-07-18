@@ -144,22 +144,22 @@ void RecentFilesMenu::_loadFiles( void )
     else { std::sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
 
     // retrieve stored file record
-    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); ++iter )
+    foreach( const FileRecord& record, records )
     {
 
-        QString label( iter->file() );
+        QString label( record.file() );
         QAction* action = addAction( label );
 
         // add icon
-        if( iter->hasProperty( FileRecordProperties::ICON ) ) { action->setIcon( IconEngine::get( iter->property( FileRecordProperties::ICON ) ) ); }
+        if( record.hasProperty( FileRecordProperties::ICON ) ) { action->setIcon( IconEngine::get( record.property( FileRecordProperties::ICON ) ) ); }
 
         // check action if match file
         action->setCheckable( true );
-        action->setChecked( iter->file() == currentFile().file() );
+        action->setChecked( record.file() == currentFile().file() );
         actionGroup_->addAction( action );
 
-        if( _fileList().check() ) action->setEnabled( iter->file().size() && iter->isValid() );
-        actions_.insert( action, *iter );
+        if( _fileList().check() ) action->setEnabled( record.file().size() && record.isValid() );
+        actions_.insert( action, record );
     }
 
 }

@@ -108,13 +108,13 @@ void OptionDialog::_reload( void )
     Debug::Throw( "OptionDialog::_reload.\n" );
 
     // retrieve all special options
-    const Options::SpecialMap special_options( backupOptions_.specialOptions() );
-    for( Options::SpecialMap::const_iterator iter = special_options.begin(); iter != special_options.end(); ++iter )
+    const Options::SpecialMap specialOptions( backupOptions_.specialOptions() );
+    for( Options::SpecialMap::const_iterator iter = specialOptions.begin(); iter != specialOptions.end(); ++iter )
     {
         model_.add( OptionPair( iter.key(), "" ) );
         OptionModel::List options;
-        for( Options::List::const_iterator listIter = iter.value().begin(); listIter != iter.value().end(); ++listIter )
-        { model_.add( OptionPair( iter.key(), *listIter ) ); }
+        foreach( const Option& option, iter.value() )
+        { model_.add( OptionPair( iter.key(), option ) ); }
 
     }
 
@@ -167,10 +167,10 @@ void OptionDialog::_specialOptionModified( OptionPair option )
     {
 
         XmlOptions::get().keep( option.first );
-        for( OptionModel::List::const_iterator iter  = values.begin(); iter != values.end(); ++iter )
+        foreach( const OptionPair& optionPair, values )
         {
-            if( !iter->second.raw().isEmpty() )
-            { XmlOptions::get().add( iter->first, iter->second ); }
+            if( !optionPair.second.raw().isEmpty() )
+            { XmlOptions::get().add( optionPair.first, optionPair.second ); }
         }
 
     }

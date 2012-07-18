@@ -39,6 +39,12 @@ template<class T> class TreeModel : public ItemModel
     //! value type
     typedef T ValueType;
 
+    //! reference
+    typedef T& Reference;
+
+    //! reference
+    typedef const T& ConstReference;
+
     //! pointer
     typedef T* Pointer;
 
@@ -98,13 +104,13 @@ template<class T> class TreeModel : public ItemModel
         if (!index.isValid()) return QModelIndex();
 
         // retrieve associated job item
-        const Item& child_item( _find(index.internalId() ) );
+        const Item& childItem( _find(index.internalId() ) );
 
         // if no parent return invalid index
-        if( !( child_item.hasParent() && child_item.parent().hasParent() ) ) return QModelIndex();
+        if( !( childItem.hasParent() && childItem.parent().hasParent() ) ) return QModelIndex();
 
         // if parent is root return invalid index
-        const Item& parentItem( child_item.parent() );
+        const Item& parentItem( childItem.parent() );
         const Item& grand_parentItem( parentItem.parent() );
 
         // find parent position in list of grand parent
@@ -136,7 +142,7 @@ template<class T> class TreeModel : public ItemModel
     //@{
 
     //! return index associated to a given value, starting from parent [recursive]
-    virtual QModelIndex index( const ValueType& value, const QModelIndex& parent = QModelIndex() ) const
+    virtual QModelIndex index( ConstReference value, const QModelIndex& parent = QModelIndex() ) const
     {
 
         // return parent index if job match
@@ -166,7 +172,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //! return all values [recursive]
-    virtual List children( const ValueType& value ) const
+    virtual List children( ConstReference value ) const
     {
 
         const QModelIndex& index( this->index( value ) );
@@ -184,8 +190,8 @@ template<class T> class TreeModel : public ItemModel
     List get( const QModelIndexList& indexes ) const
     {
         List out;
-        for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); ++iter )
-        { if( iter->isValid() ) out << get( *iter ); }
+        foreach( const QModelIndex& index, indexes )
+        { if( index.isValid() ) out << get( index ); }
         return out;
     }
 
@@ -268,12 +274,8 @@ template<class T> class TreeModel : public ItemModel
     //@}
 
     //! add values
-    void add( const ValueType& value )
-    {
-        List values;
-        values << value;
-        add( values );
-    }
+    void add( ConstReference value )
+    { add( List() << value ); }
 
     //! add values
     void add( List values )
@@ -285,7 +287,7 @@ template<class T> class TreeModel : public ItemModel
 
         emit layoutAboutToBeChanged();
         root_.update( values );
-        _add( values );
+        _add( root_, values );
         _sort();
         emit layoutChanged();
 
@@ -304,6 +306,7 @@ template<class T> class TreeModel : public ItemModel
         // check if not empty
         if( values.empty() ) clear();
         else {
+
             emit layoutAboutToBeChanged();
 
             // sort values if requested
@@ -311,7 +314,7 @@ template<class T> class TreeModel : public ItemModel
             { std::sort( values.begin(), values.end() ); }
 
             root_.set( values );
-            _add( values );
+            _add( root_, values );
             _sort();
             emit layoutChanged();
         }
@@ -320,19 +323,46 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
+    //! update values
+    /*!
+    items that are not found in list are removed
+    items that are found are updated
+    */
+    void set( ConstReference value, List values )
+    {
+
+        // find item matching value
+        Item* item( root_.find( value ) );
+        if( !item )
+        {
+            Debug::Throw(0) << "TreeModel::set - could not find value." << endl;
+            return;
+        }
+
+        emit layoutAboutToBeChanged();
+        if( values.empty() ) item->clear();
+        else {
+
+            // sort values if requested
+            if( map_.sortValues() )
+            { std::sort( values.begin(), values.end() ); }
+
+            item->set( values );
+            _add( *item, values );
+            _sort();
+
+        }
+
+        emit layoutChanged();
+    }
+
     //! root item
     const Item& root( void ) const
     { return root_; }
 
     //! remove
-    virtual void remove( const ValueType& value )
-    {
-        List values;
-        values << value;
-        remove( values );
-        return;
-
-    }
+    virtual void remove( ConstReference value )
+    { remove( List() << value ); }
 
     //! remove
     virtual void remove( List values )
@@ -381,14 +411,10 @@ template<class T> class TreeModel : public ItemModel
     { return root_; }
 
     //! add
-    void _add( List values )
+    void _add( Item& item, List values )
     {
-
-        Debug::Throw( "TreeModel::add.\n" );
-        for( typename List::iterator iter = values.begin(); iter != values.end(); ++iter )
-        { root_.add( *iter ); }
-        Debug::Throw( "TreeModel::add - done.\n" );
-
+        foreach( ConstReference value, values )
+        { item.add( value ); }
     }
 
     //! find item matching id
@@ -430,7 +456,7 @@ template<class T> class TreeModel : public ItemModel
         List children( TreeModel::children() );
         map_.clear();
         root_ = Item( map_ );
-        _add( children );
+        _add( root_, children );
         _sort();
     }
 

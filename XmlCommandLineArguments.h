@@ -24,47 +24,35 @@
 *
 *******************************************************************************/
 
-/*!
-   \file XmlCommandLineArguments.h
-   \brief Xml interface to time manipulation object
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <QDomDocument>
-#include <QDomElement>
-#include <QString>
-
 #include "CommandLineArguments.h"
 
-/*!
-   \class XmlCommandLineArguments
-   \brief Xml interface to time manipulation object
-*/
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
+#include <QtCore/QString>
 
+//! Xml interface to time manipulation object
 class XmlCommandLineArguments:public CommandLineArguments
 {
 
-  public:
+    public:
 
-  //! empty creator
-  XmlCommandLineArguments( void )
-  {}
+    //! empty creator
+    XmlCommandLineArguments( void )
+    {}
 
-  //! creator from DOM
-  XmlCommandLineArguments( const QDomElement& );
+    //! creator from DOM
+    XmlCommandLineArguments( const QDomElement& );
 
-  //! create from CommandLineArguments
-  XmlCommandLineArguments( const CommandLineArguments& stamp ):
-    CommandLineArguments( stamp )
-  {}
+    //! create from CommandLineArguments
+    XmlCommandLineArguments( const CommandLineArguments& stamp ):
+        CommandLineArguments( stamp )
+    {}
 
-  //! get DOM element
-  QDomElement domElement( const QString&, QDomDocument& ) const;
+    //! get DOM element
+    QDomElement domElement( const QString&, QDomDocument& ) const;
 
-  //! XML XmlCommandLineArguments keyword
-  static const QString XML_ARGUMENT;
+    //! XML XmlCommandLineArguments keyword
+    static const QString XML_ARGUMENT;
 
 };
 

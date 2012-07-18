@@ -63,7 +63,7 @@ class OptionListBox: public QWidget, public OptionWidget
 
     //! set file dialog mode
     void setFileMode( const QFileDialog::FileMode& mode )
-    { file_mode_ = mode; }
+    { fileMode_ = mode; }
 
     private slots:
 
@@ -121,7 +121,7 @@ class OptionListBox: public QWidget, public OptionWidget
     bool browsable_;
 
     //! browsable dialog mode
-    QFileDialog::FileMode file_mode_;
+    QFileDialog::FileMode fileMode_;
 
     //! model
     OptionModel model_;
@@ -147,13 +147,13 @@ class OptionListBox: public QWidget, public OptionWidget
     //@{
 
     //! remove action
-    QAction* edit_action_;
+    QAction* editAction_;
 
     //! remove action
-    QAction* remove_action_;
+    QAction* removeAction_;
 
     //! remove action
-    QAction* default_action_;
+    QAction* defaultAction_;
 
     //@}
 

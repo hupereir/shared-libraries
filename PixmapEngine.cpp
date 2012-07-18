@@ -77,23 +77,23 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
     else {
 
         if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-        for( QVector<QString>::const_iterator iter = _pixmapPath().begin(); iter != _pixmapPath().end(); ++iter )
+        foreach( const QString& path, _pixmapPath() )
         {
 
             // skip empty path
-            if( iter->isEmpty() ) continue;
+            if( path.isEmpty() ) continue;
 
             // prepare filename
-            File icon_file;
+            File iconFile;
 
             // see if path is internal resource path
-            if( iter->left( 1 ) == ":" ) icon_file = File( file ).addPath( *iter );
-            else icon_file = File( *iter ).find( file );
+            if( path.left( 1 ) == ":" ) iconFile = File( file ).addPath( path );
+            else iconFile = File( path ).find( file );
 
             // load pixmap
-            if( !icon_file.isEmpty() )
+            if( !iconFile.isEmpty() )
             {
-                out.load( icon_file );
+                out.load( iconFile );
                 if( !out.isNull() ) break;
             }
 

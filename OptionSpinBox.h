@@ -41,7 +41,6 @@ class OptionSpinBox: public QWidget, public OptionWidget
     OptionSpinBox( QWidget* parent, const QString& optionName, bool addStretch = true ):
         QWidget( parent ),
         OptionWidget( optionName ),
-        unitLabel_( 0 ),
         spinBox_( 0 ),
         scale_( 1 )
     {
@@ -66,13 +65,8 @@ class OptionSpinBox: public QWidget, public OptionWidget
     { XmlOptions::get().set<double>( optionName(), static_cast<double>(value())/scale_ ); }
 
     //! unit
-    void setUnit( const QString& value )
-    {
-        if( !unitLabel_ )
-        { qobject_cast<QBoxLayout*>( layout() )->insertWidget( 1, unitLabel_ = new QLabel( this ) ); }
-
-        unitLabel_->setText( value );
-    }
+    void setSuffix( const QString& value )
+    { spinBox_->setSuffix( value ); }
 
     //!@name wrappers
     //@{
@@ -95,9 +89,6 @@ class OptionSpinBox: public QWidget, public OptionWidget
     //@}
 
     private:
-
-    //! unit label
-    QLabel* unitLabel_;
 
     //! spinbox
     QSpinBox* spinBox_;

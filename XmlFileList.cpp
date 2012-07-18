@@ -139,17 +139,17 @@ bool XmlFileList::_write( void )
     QDomElement top = document.appendChild( document.createElement( XmlFileRecord::XML_FILE_LIST ) ).toElement();
 
     // loop over records
-    for( FileRecord::List::const_iterator iter = records.begin(); iter != records.end(); ++iter )
+    foreach( const FileRecord& record, records )
     {
 
-        Debug::Throw() << "XmlFileList::_write - " << *iter;
-        if( iter->file().isEmpty() )
+        Debug::Throw() << "XmlFileList::_write - " << record;
+        if( record.file().isEmpty() )
         {
             Debug::Throw(0, "XmlFileList::_write - attend to write empty record. Discarded.\n" );
             continue;
         }
 
-        top.appendChild( XmlFileRecord( *iter ).domElement( document ) );
+        top.appendChild( XmlFileRecord( record ).domElement( document ) );
     }
 
     out.write( document.toByteArray() );

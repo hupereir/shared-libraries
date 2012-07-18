@@ -338,12 +338,12 @@ bool BoxSelection::removeSelectedText( void ) const
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( CursorList::const_iterator iter = cursorList().begin(); iter != cursorList().end(); ++iter )
+    foreach( const QTextCursor& savedCursor, cursorList() )
     {
 
         // select line and remove
-        cursor.setPosition( iter->anchor() );
-        cursor.setPosition( iter->position(), QTextCursor::KeepAnchor );
+        cursor.setPosition( savedCursor.anchor() );
+        cursor.setPosition( savedCursor.position(), QTextCursor::KeepAnchor );
         cursor.removeSelectedText();
 
     }
@@ -373,12 +373,12 @@ bool BoxSelection::toUpper( void )
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( CursorList::const_iterator iter = cursorList().begin(); iter != cursorList().end(); ++iter )
+    foreach( const QTextCursor& savedCursor, cursorList() )
     {
 
         // select line and remove
-        cursor.setPosition( iter->anchor() );
-        cursor.setPosition( iter->position(), QTextCursor::KeepAnchor );
+        cursor.setPosition( savedCursor.anchor() );
+        cursor.setPosition( savedCursor.position(), QTextCursor::KeepAnchor );
         cursor.insertText( cursor.selectedText().toUpper() );
 
     }
@@ -411,12 +411,12 @@ bool BoxSelection::toLower( void )
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( CursorList::const_iterator iter = cursorList().begin(); iter != cursorList().end(); ++iter )
+    foreach( const QTextCursor& savedCursor, cursorList() )
     {
 
         // select line and remove
-        cursor.setPosition( iter->anchor() );
-        cursor.setPosition( iter->position(), QTextCursor::KeepAnchor );
+        cursor.setPosition( savedCursor.anchor() );
+        cursor.setPosition( savedCursor.position(), QTextCursor::KeepAnchor );
         cursor.insertText( cursor.selectedText().toLower() );
 
     }
@@ -452,12 +452,12 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( CursorList::const_iterator iter = cursorList().begin(); iter != cursorList().end(); ++iter )
+    foreach( const QTextCursor& savedCursor, cursorList() )
     {
 
         // select line and remove
-        cursor.setPosition( iter->anchor() );
-        cursor.setPosition( iter->position(), QTextCursor::KeepAnchor );
+        cursor.setPosition( savedCursor.anchor() );
+        cursor.setPosition( savedCursor.position(), QTextCursor::KeepAnchor );
 
         // get selection, look for trailing spaces
         QString text( cursor.selectedText() );

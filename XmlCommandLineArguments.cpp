@@ -21,19 +21,8 @@
 *
 *******************************************************************************/
 
-
-/*!
-   \file    XmlCommandLineArguments.cpp
-   \brief   Xml interface to time manipulation object
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "XmlCommandLineArguments.h"
 #include "XmlString.h"
-
-
 
 const QString XmlCommandLineArguments::XML_ARGUMENT( "c" );
 
@@ -41,30 +30,30 @@ const QString XmlCommandLineArguments::XML_ARGUMENT( "c" );
 XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
 {
 
-  Debug::Throw( "XmlCommandLineArguments::XmlCommandLineArguments" );
+    Debug::Throw( "XmlCommandLineArguments::XmlCommandLineArguments" );
 
-  // parse children elements
-  for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
-  {
-    QDomElement child_element = child_node.toElement();
-    if( child_element.isNull() ) continue;
+    // parse children elements
+    for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
+    {
+        QDomElement child_element = child_node.toElement();
+        if( child_element.isNull() ) continue;
 
-    if( child_element.tagName() == XML_ARGUMENT ) { push_back( XmlString( child_element.text() ).toText() ); }
-    else Debug::Throw() << "XmlCommandLineArguments::XmlCommandLineArguments - unrecognized child: " << child_element.tagName() << endl;
+        if( child_element.tagName() == XML_ARGUMENT ) { push_back( XmlString( child_element.text() ).toText() ); }
+        else Debug::Throw() << "XmlCommandLineArguments::XmlCommandLineArguments - unrecognized child: " << child_element.tagName() << endl;
 
-  }
+    }
 
 };
 
 //_______________________________________________________
 QDomElement XmlCommandLineArguments::domElement( const QString& name, QDomDocument& parent ) const
 {
-  QDomElement out( parent.createElement( name ) );
-  for( const_iterator iter = begin(); iter != end(); ++iter )
-  {
-    out.
-      appendChild( parent.createElement( XML_ARGUMENT ) ).
-      appendChild( parent.createTextNode( XmlString( *iter ).toXml() ) );
-  }
-  return out;
+    QDomElement out( parent.createElement( name ) );
+    foreach( const QString& argument, *this )
+    {
+        out.
+            appendChild( parent.createElement( XML_ARGUMENT ) ).
+            appendChild( parent.createTextNode( XmlString( argument ).toXml() ) );
+    }
+    return out;
 }

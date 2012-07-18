@@ -194,15 +194,35 @@ template<class T> class TreeItem: public TreeItemBase
         return children_[row];
     }
 
+    //! find item matching value
+    TreeItem* find( const ValueType& value )
+    {
+
+        // check against current value
+        if( value == get() ) return this;
+
+        // check against children
+        //foreach( const TreeItem& item, children_ )
+        for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+        {
+            TreeItem* out = iter->find( value );
+            if( out ) return out;
+        }
+
+        // not found. Returns zero
+        return 0;
+
+    }
+
     //! retrieve all children in list [recursive]
     ValueList childValues( void ) const
     {
 
         ValueList out;
-        for( typename List::const_iterator iter = children_.begin(); iter != children_.end(); iter++ )
+        foreach( const TreeItem& item, children_ )
         {
-            out << iter->get();
-            out << iter->childValues();
+            out << item.get();
+            out << item.childValues();
         }
 
         return out;

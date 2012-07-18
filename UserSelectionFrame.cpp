@@ -131,8 +131,8 @@ void UserSelectionFrame::updateUsers( QSet<QString> users )
         }
     }
 
-    for( QSet<QString>::const_iterator iter =  users.begin(); iter != users.end(); ++iter )
-    { if( !iter->isEmpty() ) editor().addItem( *iter ); }
+    foreach( const QString& user, users )
+    { if( !user.isEmpty() ) editor().addItem( user ); }
 
 }
 
