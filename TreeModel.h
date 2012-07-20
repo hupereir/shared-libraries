@@ -333,11 +333,7 @@ template<class T> class TreeModel : public ItemModel
 
         // find item matching value
         Item* item( root_.find( value ) );
-        if( !item )
-        {
-            Debug::Throw(0) << "TreeModel::set - could not find value." << endl;
-            return;
-        }
+        if( !item ) return;
 
         emit layoutAboutToBeChanged();
         if( values.empty() ) item->clear();
