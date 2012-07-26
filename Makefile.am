@@ -1,12 +1,12 @@
+# $Id$
+
 ACLOCAL_AMFLAGS = -I m4
+AM_CXXFLAGS = ${QT_CFLAGS}
+AM_LDFLAGS = ${QT_LIBS}
+
 EXTRA_DIST = base-qt.pro basePixmaps.qrc
 
 INCLUDES =  \
--I$(qt_includes) \
--I$(qt_includes)/Qt \
--I$(qt_includes)/QtCore  \
--I$(qt_includes)/QtXml \
--I$(qt_includes)/QtGui \
 -I$(top_srcdir)/base
 
 noinst_HEADERS = \
@@ -313,10 +313,8 @@ moc_XmlFileList.cpp
 
 # shared library
 if ENABLE_SHARED
-AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
-
 lib_LTLIBRARIES = libbase-qt.la
-libbase_qt_la_LIBADD = -l$(qt_lib) -lQtGui -lQtXml -lbase
+libbase_qt_la_LIBADD = -lbase
 libbase_qt_la_SOURCES = $(sources)
 nodist_libbase_qt_la_SOURCES = $(nodist_sources)
 libbase_qt_la_CXXFLAGS = $(AM_CXXFLAGS)
@@ -350,7 +348,7 @@ clean-local:
 
 ### rule to generate qt meta objects
 moc_%.cpp: %.h
-	$(qt_moc) $^ -o $@
+	moc $^ -o $@
 
 qrc_%.cpp: %.qrc
-	$(qt_rcc) -name $* $^ -o $@
+	rcc -name $* $^ -o $@
