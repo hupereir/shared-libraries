@@ -1,4 +1,8 @@
+# $Id$
+
 ACLOCAL_AMFLAGS = -I m4
+AM_CXXFLAGS = ${QT_CFLAGS}
+AM_LDFLAGS = ${QT_LIBS}
 
 EXTRA_DIST = \
 application-exit.png \
