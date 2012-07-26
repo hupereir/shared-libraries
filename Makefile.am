@@ -1,60 +1,55 @@
+# $Id$
+
+AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
+AM_CXXFLAGS = ${QT_CFLAGS}
+AM_LDFLAGS = ${QT_LIBS}
+
 EXTRA_DIST = base.pro
 
-INCLUDES =  \
- -I$(qt_includes) \
- -I$(qt_includes)/Qt \
- -I$(qt_includes)/QtCore  \
- -I$(qt_includes)/QtNetwork \
- -I$(qt_includes)/QtXml \
-	-I$(qt_includes)/QtGui
-
 noinst_HEADERS = \
-	Command.h \
-	CommandLineArguments.h \
-	CommandLineParser.h \
-	Counter.h \
-	CounterMap.h \
-	CustomProcess.h \
-	Debug.h \
-	File.h \
-	FileRecord.h \
-	Key.h \
-	Option.h \
-	Options.h \
-	QOrderedSet.h \
-	Str.h \
-	Singleton.h \
-	TextFormat.h \
-	TextFormatBlock.h \
-	TimeStamp.h \
-	Util.h
+Command.h \
+CommandLineArguments.h \
+CommandLineParser.h \
+Counter.h \
+CounterMap.h \
+CustomProcess.h \
+Debug.h \
+File.h \
+FileRecord.h \
+Key.h \
+Option.h \
+Options.h \
+QOrderedSet.h \
+Str.h \
+Singleton.h \
+TextFormat.h \
+TextFormatBlock.h \
+TimeStamp.h \
+Util.h
 
 sources = \
-	Command.cpp \
-	CommandLineArguments.cpp \
-	CommandLineParser.cpp \
-	Counter.cpp \
-	CounterMap.cpp \
-	CustomProcess.cpp \
-	Debug.cpp \
-	File.cpp \
-	FileRecord.cpp \
-	Key.cpp \
-	Option.cpp \
-	Options.cpp \
-	Singleton.cpp \
-	Str.cpp \
-	TimeStamp.cpp \
-	Util.cpp
+Command.cpp \
+CommandLineArguments.cpp \
+CommandLineParser.cpp \
+Counter.cpp \
+CounterMap.cpp \
+CustomProcess.cpp \
+Debug.cpp \
+File.cpp \
+FileRecord.cpp \
+Key.cpp \
+Option.cpp \
+Options.cpp \
+Singleton.cpp \
+Str.cpp \
+TimeStamp.cpp \
+Util.cpp
 
 ################
 # shared library
 if ENABLE_SHARED
-AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
-
 lib_LTLIBRARIES = libbase.la
-libbase_la_LIBADD = -l$(qt_lib) -lQtNetwork
 libbase_la_SOURCES =  $(sources)
 libbase_la_CXXFLAGS = $(AM_CXXFLAGS)
 
@@ -86,4 +81,4 @@ clean-local:
 
 ### rule to generate qt meta objects
 moc_%.cpp: %.h
-	$(qt_moc) $^ -o $@
+	moc $^ -o $@
