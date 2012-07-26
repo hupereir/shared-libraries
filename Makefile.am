@@ -1,41 +1,38 @@
+# $Id$
+
 ACLOCAL_AMFLAGS = -I m4
+AM_CXXFLAGS = ${QT_CFLAGS}
+AM_LDFLAGS = ${QT_LIBS}
+
 EXTRA_DIST = base-transparency.pro
 
 INCLUDES =  \
-  -I$(qt_includes) \
-  -I$(qt_includes)/Qt \
-  -I$(qt_includes)/QtCore  \
-  -I$(qt_includes)/QtGui \
-  -I$(qt_includes)/QtNetwork \
-  -I$(qt_includes)/QtXml \
-	-I$(top_srcdir)/base \
-	-I$(top_srcdir)/base-qt
+-I$(top_srcdir)/base \
+-I$(top_srcdir)/base-qt
 
 noinst_HEADERS = \
-  BackgroundPixmap.h \
-  CompositeEngine.h \
-  Effects.h \
-  ShadowLabel.h \
-  TransparencyConfiguration.h \
-  TransparencyHelpText.h \
-  TransparentWidget.h
+BackgroundPixmap.h \
+CompositeEngine.h \
+Effects.h \
+ShadowLabel.h \
+TransparencyConfiguration.h \
+TransparencyHelpText.h \
+TransparentWidget.h
 
 sources = \
-  BackgroundPixmap.cpp \
-  CompositeEngine.cpp \
-  ShadowLabel.cpp \
-  TransparencyConfiguration.cpp \
-  TransparentWidget.cpp
+BackgroundPixmap.cpp \
+CompositeEngine.cpp \
+ShadowLabel.cpp \
+TransparencyConfiguration.cpp \
+TransparentWidget.cpp
 
 nodist_sources = \
-  moc_BackgroundPixmap.cpp \
-  moc_TransparentWidget.cpp
+moc_BackgroundPixmap.cpp \
+moc_TransparentWidget.cpp
 
 ################
 # shared library
 if ENABLE_SHARED
-AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
-
 lib_LTLIBRARIES = libbase-transparency.la
 libbase_transparency_la_LIBADD = -lbase -lbase-qt
 libbase_transparency_la_SOURCES =  $(sources)
@@ -71,4 +68,4 @@ clean-local:
 
 ### rule to generate qt meta objects
 moc_%.cpp: %.h
-	$(qt_moc) $^ -o $@
+	moc $^ -o $@
