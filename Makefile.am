@@ -1,40 +1,38 @@
+# $Id$
+
 ACLOCAL_AMFLAGS = -I m4
+AM_CXXFLAGS = ${QT_CFLAGS}
+AM_LDFLAGS = ${QT_LIBS}
+
 EXTRA_DIST = base-help.pro
 
-INCLUDES =  \
-  -I$(qt_includes) \
-  -I$(qt_includes)/Qt \
-  -I$(qt_includes)/QtCore  \
-  -I$(qt_includes)/QtXml \
-  -I$(qt_includes)/QtGui \
-  -I$(top_srcdir)/base \
-  -I$(top_srcdir)/base-qt
+INCLUDES = \
+-I$(top_srcdir)/base \
+-I$(top_srcdir)/base-qt
 
 noinst_HEADERS = \
-	DefaultHelpText.h \
-  HelpDialog.h \
-  HelpItem.h \
-  HelpManager.h \
-  HelpModel.h \
-  NewItemDialog.h
+DefaultHelpText.h \
+HelpDialog.h \
+HelpItem.h \
+HelpManager.h \
+HelpModel.h \
+NewItemDialog.h
 
 sources = \
-  HelpDialog.cpp \
-  HelpItem.cpp \
-  HelpManager.cpp \
-  HelpModel.cpp \
-  NewItemDialog.cpp
+HelpDialog.cpp \
+HelpItem.cpp \
+HelpManager.cpp \
+HelpModel.cpp \
+NewItemDialog.cpp
 
 nodist_sources = \
-  moc_HelpDialog.cpp \
-  moc_HelpManager.cpp \
-  moc_HelpModel.cpp
+moc_HelpDialog.cpp \
+moc_HelpManager.cpp \
+moc_HelpModel.cpp
 
 ################
 # shared library
 if ENABLE_SHARED
-AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
-
 lib_LTLIBRARIES = libbase-help.la
 libbase_help_la_LIBADD = -lbase -lbase-qt
 libbase_help_la_SOURCES =  $(sources)
@@ -70,4 +68,4 @@ clean-local:
 
 ### rule to generate qt meta objects
 moc_%.cpp: %.h
-	$(qt_moc) $^ -o $@
+	moc $^ -o $@
