@@ -1,48 +1,44 @@
+# $Id$
+
 ACLOCAL_AMFLAGS = -I m4
+AM_CXXFLAGS = ${QT_CFLAGS}
+AM_LDFLAGS = ${QT_LIBS}
+
 EXTRA_DIST = base-server.pro
 
-INCLUDES =  \
-  -I$(qt_includes) \
-  -I$(qt_includes)/Qt \
-  -I$(qt_includes)/QtCore  \
-  -I$(qt_includes)/QtDBus  \
-  -I$(qt_includes)/QtGui \
-  -I$(qt_includes)/QtNetwork \
-  -I$(qt_includes)/QtXml \
-	-I$(top_srcdir)/base \
-	-I$(top_srcdir)/base-qt
+INCLUDES = \
+-I$(top_srcdir)/base \
+-I$(top_srcdir)/base-qt
 
 noinst_HEADERS = \
-  ApplicationId.h \
-  ApplicationManager.h \
-  BaseApplication.h \
-  BaseCoreApplication.h \
-  Client.h \
-  ServerCommand.h \
-  ServerConfiguration.h \
-  ServerXmlDef.h
+ApplicationId.h \
+ApplicationManager.h \
+BaseApplication.h \
+BaseCoreApplication.h \
+Client.h \
+ServerCommand.h \
+ServerConfiguration.h \
+ServerXmlDef.h
 
 sources = \
-  ApplicationId.cpp \
-  ApplicationManager.cpp \
-  BaseApplication.cpp \
-  BaseCoreApplication.cpp \
-  Client.cpp \
-  ServerCommand.cpp \
-  ServerConfiguration.cpp
+ApplicationId.cpp \
+ApplicationManager.cpp \
+BaseApplication.cpp \
+BaseCoreApplication.cpp \
+Client.cpp \
+ServerCommand.cpp \
+ServerConfiguration.cpp
 
 nodist_sources = \
-  moc_ApplicationManager.cpp \
-  moc_BaseApplication.cpp \
-  moc_BaseCoreApplication.cpp \
-  moc_Client.cpp
+moc_ApplicationManager.cpp \
+moc_BaseApplication.cpp \
+moc_BaseCoreApplication.cpp \
+moc_Client.cpp
 
 # shared library
 if ENABLE_SHARED
-AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
-
 lib_LTLIBRARIES = libbase-server.la
-libbase_server_la_LIBADD = -lbase -lbase-qt -l$(qt_lib) -lQtDBus
+libbase_server_la_LIBADD = -lbase -lbase-qt
 
 libbase_server_la_SOURCES =  $(sources)
 nodist_libbase_server_la_SOURCES = $(nodist_sources)
@@ -76,4 +72,4 @@ clean-local:
 
 ### rule to generate qt meta objects
 moc_%.cpp: %.h
-	$(qt_moc) $^ -o $@
+	moc $^ -o $@
