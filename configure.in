@@ -7,6 +7,13 @@ AC_PROG_LIBTOOL
 CXXFLAGS="-g -O2 -Wall -Werror -Wno-non-virtual-dtor"
 
 dnl *********************************************
+dnl x11
+dnl *********************************************
+AC_CHECK_LIB([X11], [XOpenDisplay], [],[
+         echo "X11 library is required for this program"
+         exit -1])
+
+dnl *********************************************
 dnl aspell
 dnl *********************************************
 AC_PATH_PROG(ASPELL,    aspell,    aspell)
