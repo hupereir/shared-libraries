@@ -1,14 +1,14 @@
+# $Id$
+
 ACLOCAL_AMFLAGS = -I m4
+AM_CXXFLAGS = ${QT_CFLAGS}
+AM_LDFLAGS = ${QT_LIBS}
+
 EXTRA_DIST = base-spellcheck.pro
 
 INCLUDES =  \
-  -I$(qt_includes) \
-  -I$(qt_includes)/Qt \
-  -I$(qt_includes)/QtCore  \
-  -I$(qt_includes)/QtXml \
-  -I$(qt_includes)/QtGui \
-	-I$(top_srcdir)/base-qt \
-	-I$(top_srcdir)/base
+-I$(top_srcdir)/base-qt \
+-I$(top_srcdir)/base
 
 noinst_HEADERS = \
 AutoSpellConfiguration.h \
@@ -24,7 +24,6 @@ SpellItemModel.h \
 SpellParser.h \
 SuggestionMenu.h \
 Word.h
-
 
 sources =  \
 AutoSpellConfiguration.cpp \
@@ -53,8 +52,6 @@ moc_SuggestionMenu.cpp
 ################
 # shared library
 if ENABLE_SHARED
-AM_LDFLAGS = -L$(libdir) -L$(qt_libraries)
-
 lib_LTLIBRARIES = libbase-spellcheck.la
 libbase_spellcheck_la_LIBADD = -lbase -lbase-qt -laspell
 libbase_spellcheck_la_SOURCES =  $(sources)
@@ -90,4 +87,4 @@ clean-local:
 
 ### rule to generate qt meta objects
 moc_%.cpp: %.h
-	$(qt_moc) $^ -o $@
+	moc $^ -o $@
