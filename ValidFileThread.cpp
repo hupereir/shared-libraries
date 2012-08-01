@@ -21,20 +21,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file ValidFileThread.cpp
-\brief check validity of a set of files
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <algorithm>
-#include <QApplication>
 #include "ValidFileThread.h"
 #include "File.h"
 
-
+#include <QtGui/QApplication>
+#include <algorithm>
 
 //______________________________________________________
 QEvent::Type ValidFileEvent::eventType( void )

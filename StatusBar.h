@@ -1,5 +1,5 @@
-#ifndef BaseStatusBar_h
-#define BaseStatusBar_h
+#ifndef StatusBar_h
+#define StatusBar_h
 
 // $Id$
 
@@ -35,14 +35,14 @@
 #include <cassert>
 
 //! local label for additional slots
-class BaseStatusBarLabel: public AnimatedLabel
+class StatusBarLabel: public AnimatedLabel
 {
 
     //! Qt meta object macro
     Q_OBJECT
 
     public:
-    BaseStatusBarLabel( QWidget* parent = 0 ):
+    StatusBarLabel( QWidget* parent = 0 ):
     AnimatedLabel( parent )
     {}
 
@@ -61,16 +61,16 @@ class BaseStatusBarLabel: public AnimatedLabel
 };
 
 //! custom status bar
-class BaseStatusBar: public QStatusBar, public Counter
+class StatusBar: public QStatusBar, public Counter
 {
 
     public:
 
     //! constructor
-    BaseStatusBar( QWidget* parent );
+    StatusBar( QWidget* parent );
 
     //! destructor
-    ~BaseStatusBar( void )
+    ~StatusBar( void )
     {}
 
     //! add clock
@@ -84,7 +84,7 @@ class BaseStatusBar: public QStatusBar, public Counter
     { for( unsigned int i=0; i<n; i++ ) addLabel( stretch, animated ); }
 
     //! retrieves label with given index
-    virtual BaseStatusBarLabel& label( int i = 0  ) const
+    virtual StatusBarLabel& label( int i = 0  ) const
     {
         assert( i < labels_.size() );
         return *labels_[i];
@@ -98,7 +98,7 @@ class BaseStatusBar: public QStatusBar, public Counter
     private:
 
     //! vector of output labels.
-    QList< BaseStatusBarLabel* > labels_;
+    QList< StatusBarLabel* > labels_;
 
 };
 

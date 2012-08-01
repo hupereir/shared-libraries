@@ -67,19 +67,19 @@ class RecentFilesMenu: public QMenu, public Counter
     const FileRecord& currentFile( void ) const
     { return currentFile_; }
 
-    //! set current file
-    void setCurrentFile( const File& file );
-
-    //! set current file
-    void setCurrentFile( const FileRecord& file )
-    { currentFile_ = file; }
-
     signals:
 
     //! signal emited when a file is selected
     void fileSelected( FileRecord );
 
     public slots:
+
+    //! set current file
+    void setCurrentFile( const File& file );
+
+    //! set current file
+    void setCurrentFile( const FileRecord& file )
+    { currentFile_ = file; }
 
     //! check if a file is in database, adds it if not
     virtual FileRecord& add( const QString& file )

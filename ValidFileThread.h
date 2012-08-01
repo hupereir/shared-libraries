@@ -24,20 +24,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file ValidFileThread.h
-\brief check validity of a set of files
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QEvent>
-#include <QThread>
-
 #include "Counter.h"
 #include "Debug.h"
 #include "FileRecord.h"
+
+#include <QtCore/QEvent>
+#include <QtCore/QThread>
 
 //! used to post a new grid when ready
 class ValidFileEvent: public QEvent, public Counter

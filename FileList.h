@@ -61,10 +61,6 @@ class FileList: public QObject, public Counter
     //! returns true if file is found in list
     virtual bool contains( const File& file ) const;
 
-    //! add file.
-    virtual FileRecord& add( const File& file )
-    { return _add( FileRecord( file ) ); }
-
     //! remove file from database
     virtual void remove( const File& file );
 
@@ -117,6 +113,10 @@ class FileList: public QObject, public Counter
     void contentsChanged( void );
 
     public slots:
+
+    //! add file.
+    virtual FileRecord& add( const File& file )
+    { return _add( FileRecord( file ) ); }
 
     //! run thread to check file validity
     void checkValidFiles( void );

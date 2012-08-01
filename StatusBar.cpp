@@ -21,7 +21,7 @@
 *
 *******************************************************************************/
 
-#include "BaseStatusBar.h"
+#include "StatusBar.h"
 #include "TransitionWidget.h"
 #include "ClockLabel.h"
 #include "Debug.h"
@@ -31,11 +31,11 @@
 #include <QtGui/QMenu>
 
 //___________________________________________
-BaseStatusBar::BaseStatusBar( QWidget* parent ):
+StatusBar::StatusBar( QWidget* parent ):
     QStatusBar( parent ),
-    Counter( "BaseStatusBar" )
+    Counter( "StatusBar" )
 {
-    Debug::Throw( "BaseStatusBar::BaseStatusBar.\n" );
+    Debug::Throw( "StatusBar::StatusBar.\n" );
     assert( qobject_cast<QMainWindow*>( parent ) );
     setSizeGripEnabled( false );
 
@@ -51,19 +51,19 @@ BaseStatusBar::BaseStatusBar( QWidget* parent ):
 
 
 //___________________________________________
-void BaseStatusBar::addClock( void )
+void StatusBar::addClock( void )
 {
-    Debug::Throw( "BaseStatusBar::addClock.\n" );
+    Debug::Throw( "StatusBar::addClock.\n" );
     ClockLabel* clock = new ClockLabel( this );
     addPermanentWidget( clock );
 }
 
 //____________________________________________
-void BaseStatusBar::addLabel( const int& stretch, bool animated )
+void StatusBar::addLabel( const int& stretch, bool animated )
 {
-    Debug::Throw( "BaseStatusBar::addLabel.\n" );
+    Debug::Throw( "StatusBar::addLabel.\n" );
 
-    BaseStatusBarLabel* label(new BaseStatusBarLabel( this ) );
+    StatusBarLabel* label(new StatusBarLabel( this ) );
     if( !animated )
     {
         label->transitionWidget().setEnableOnOptions( false );
@@ -76,9 +76,9 @@ void BaseStatusBar::addLabel( const int& stretch, bool animated )
 }
 
 //__________________________________________________________________
-void BaseStatusBar::contextMenuEvent( QContextMenuEvent *event )
+void StatusBar::contextMenuEvent( QContextMenuEvent *event )
 {
-    Debug::Throw( "BaseStatusBar::contextMenuEvent.\n" );
+    Debug::Throw( "StatusBar::contextMenuEvent.\n" );
     QMenu* menu( static_cast<QMainWindow*>(parent())->createPopupMenu() );
     if( !menu ) return;
     menu->exec( event->globalPos() );
@@ -86,7 +86,7 @@ void BaseStatusBar::contextMenuEvent( QContextMenuEvent *event )
 }
 
 //__________________________________________________________________
-void BaseStatusBarLabel::setTextAndUpdate( const QString& message )
+void StatusBarLabel::setTextAndUpdate( const QString& message )
 {
     AnimatedLabel::setText( message );
     qApp->processEvents();

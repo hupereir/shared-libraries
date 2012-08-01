@@ -48,7 +48,7 @@ template<class T> class TreeModel : public ItemModel
     //! pointer
     typedef T* Pointer;
 
-    //! list of vector
+    //! list of values
     typedef QList<ValueType> List;
 
     //! iterator
@@ -94,7 +94,6 @@ template<class T> class TreeModel : public ItemModel
             QModelIndex();
 
     }
-
 
     //! index of parent
     virtual QModelIndex parent(const QModelIndex &index) const
