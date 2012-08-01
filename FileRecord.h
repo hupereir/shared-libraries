@@ -31,7 +31,7 @@
 #include "TimeStamp.h"
 
 #include <QtCore/QMap>
-#include <QtCore/QVector>
+#include <QtCore/QList>
 #include <cassert>
 
 //! handles previously opened file and tags
@@ -42,8 +42,12 @@ class FileRecord: public Counter
 
     //! shortcut to list of records
     typedef QOrderedSet<FileRecord> Set;
-    typedef QVector<FileRecord> List;
-    typedef QVectorIterator<FileRecord> ListIterator;
+
+    // typedef QVector<FileRecord> List;
+    // typedef QVectorIterator<FileRecord> ListIterator;
+
+    typedef QList<FileRecord> List;
+    typedef QListIterator<FileRecord> ListIterator;
 
     //! constructor
     FileRecord( const File& file = File(""), const TimeStamp& time = TimeStamp::now() ):
