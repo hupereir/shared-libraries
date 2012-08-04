@@ -98,6 +98,10 @@ class TreeView: public QTreeView, public Counter
     virtual const QString& sortOrderOptionName( void ) const
     { return sortOrderOptionName_; }
 
+    //! sort order option name
+    virtual const QString& showHeaderOptionName( void ) const
+    { return showHeaderOptionName_; }
+
     //! get mask
     virtual unsigned int mask( void ) const;
 
@@ -152,6 +156,10 @@ class TreeView: public QTreeView, public Counter
     QAction& findAgainAction( void ) const
     { return *findAgainAction_; }
 
+    //! show header
+    QAction& showHeaderAction( void ) const
+    { return *showHeaderAction_; }
+
     //@}
 
     //! store scrollbar position
@@ -176,6 +184,9 @@ class TreeView: public QTreeView, public Counter
 
     //! resize all visible columns to match contents
     virtual void resizeColumns( const unsigned int& mask );
+
+    //! toggle show header
+    virtual void toggleShowHeader( bool value );
 
     //!@name column mask
     //@{
@@ -287,6 +298,9 @@ class TreeView: public QTreeView, public Counter
     //! find again backward
     QAction* findAgainBackwardAction_;
 
+    //! show/hide header action
+    QAction* showHeaderAction_;
+
     //@}
 
     //! popup menu for right click
@@ -300,6 +314,9 @@ class TreeView: public QTreeView, public Counter
 
     //! sort order option name
     QString sortOrderOptionName_;
+
+    //! header visibility
+    QString showHeaderOptionName_;
 
     //! true if icon size is to be set from options
     bool iconSizeFromOptions_;

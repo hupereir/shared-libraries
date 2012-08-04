@@ -70,6 +70,12 @@ TreeView::TreeView( QWidget* parent ):
     connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
     connect( header(), SIGNAL( sortIndicatorChanged( int, Qt::SortOrder ) ), SLOT( saveSortOrder() ) );
 
+    // show header action
+    showHeaderAction_ = new QAction( "Show List Header", this );
+    showHeaderAction_->setCheckable( true );
+    showHeaderAction_->setChecked( true );
+    connect( showHeaderAction_, SIGNAL( toggled( bool ) ), SLOT( toggleShowHeader( bool ) ) );
+
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
@@ -122,24 +128,24 @@ bool TreeView::setOptionName( const QString& value )
     QString tmp;
 
     // mask
-    bool mask_changed( false );
+    bool maskChanged( false );
     tmp = value + "_MASK";
     if( maskOptionName_ != tmp  )
     {
         maskOptionName_ = tmp;
-        mask_changed = true;
+        maskChanged = true;
         if( !XmlOptions::get().contains( maskOptionName() ) ) saveMask();
         else updateMask();
 
     }
 
     // sort order
-    bool sort_changed( false );
+    bool sortChanged( false );
     tmp = value + "_SORT_ORDER";
     if( sortOrderOptionName_ != tmp  )
     {
         sortOrderOptionName_ = tmp;
-        sort_changed = true;
+        sortChanged = true;
     }
 
     // sort column
@@ -148,18 +154,34 @@ bool TreeView::setOptionName( const QString& value )
     {
 
         sortColumnOptionName_ = tmp;
-        sort_changed = true;
+        sortChanged = true;
+
+    }
+
+    // show header
+    bool showHeaderChanged( false );
+    tmp = value + "_SHOW_HEADER";
+    if( showHeaderOptionName_ != tmp )
+    {
+        showHeaderOptionName_ = tmp;
+        showHeaderChanged = true;
+        if( !XmlOptions::get().contains( showHeaderOptionName() ) )
+        {
+
+            XmlOptions::get().set<bool>( showHeaderOptionName_, showHeaderAction().isChecked() );
+
+        } else showHeaderAction().setChecked( XmlOptions::get().get<bool>( showHeaderOptionName_ ) );
 
     }
 
     // reload sorting
-    if( sort_changed )
+    if( sortChanged )
     {
         if( !( XmlOptions::get().contains( sortOrderOptionName() ) && XmlOptions::get().contains( sortColumnOptionName() ) ) ) saveSortOrder();
         else updateSortOrder();
     }
 
-    return mask_changed || sort_changed;
+    return maskChanged || sortChanged || showHeaderChanged;
 
 }
 
@@ -216,6 +238,14 @@ void TreeView::resizeColumns( const unsigned int& mask )
     for( int i = 0; i < model()->columnCount(); i++ )
     { if( mask & (1<<i) ) resizeColumnToContents(i); }
 
+}
+
+//___________________________________
+void TreeView::toggleShowHeader( bool value )
+{
+    if( header() ) header()->setVisible( value );
+    showHeaderAction().setChecked( value );
+    if( hasOptionName() ) XmlOptions::get().set<bool>( showHeaderOptionName_, value );
 }
 
 //_______________________________________________
