@@ -280,6 +280,10 @@ class ListModel : public ItemModel
     const List& get( void ) const
     { return values_; }
 
+    //! return true if model contains given index
+    virtual bool contains( const QModelIndex& index ) const
+    { return (index.isValid() && index.row() < int(values_.size()) ); }
+
     //! return value for given index
     virtual ValueType get( const QModelIndex& index ) const
     { return (index.isValid() && index.row() < int(values_.size()) ) ? values_[index.row()]:ValueType(); }
