@@ -289,22 +289,22 @@ bool File::remove( void ) const
 bool File::removeRecursive( void ) const
 {
 
-    Debug::Throw() << "File::removeRecursive - " << *this << endl;
-
     if( !isDirectory() ) return remove();
 
     // list content of directory
     QDir dir( *this );
-    QStringList files( dir.entryList() );
-    for( QStringList::iterator iter = files.begin(); iter != files.end(); ++iter )
+    foreach( const QString& value, dir.entryList( QDir::AllEntries|QDir::Hidden|QDir::System ) )
     {
         // skip "." and ".."
-        if( (*iter) == "." || (*iter) == ".." ) continue;
-        File file = File(*iter).addPath( *this );
+        if( value == "." || value == ".." ) continue;
+        File file = File( value ).addPath( *this );
         if( file.isLink() || !file.isDirectory() )
         {
+
             if( !file.remove() ) return false;
+
         } else if( !file.removeRecursive() ) return false;
+
     }
     dir.cdUp();
     dir.rmdir( *this );
@@ -312,12 +312,12 @@ bool File::removeRecursive( void ) const
 }
 
 //_____________________________________________________________________
-bool File::rename( File new_file ) const
+bool File::rename( File newFile ) const
 {
 
     // check if file exists and rename
     // return false  otherwise
-    if( exists() ) return QFile( *this ).rename( new_file );
+    if( exists() ) return QFile( *this ).rename( newFile );
     else return false;
 
 }
@@ -426,14 +426,13 @@ File::List File::listFiles( const unsigned int& flags ) const
     if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
 
     QDir dir( fullName );
-    QStringList files( dir.entryList( filter ) );
-    for( QStringList::iterator iter = files.begin(); iter != files.end(); ++iter )
+    foreach( const QString& value, dir.entryList( filter ) )
     {
 
-        if( *iter == "." || *iter == ".." ) continue;
+        if( value == "." || value == ".." ) continue;
 
         QFileInfo fileInfo;
-        fileInfo.setFile( QDir( *this ), *iter );
+        fileInfo.setFile( QDir( *this ), value );
         File found( fileInfo.absoluteFilePath() );
         out.push_back( found );
 
@@ -465,15 +464,15 @@ File File::find( const File& file, bool case_sensitive ) const
     if( !( exists() && isDirectory() ) ) return File();
     List files( listFiles( RECURSIVE ) );
     List directories;
-    for( List::iterator iter = files.begin(); iter != files.end(); ++iter )
+    foreach( const File& file, files )
     {
 
         // check if file match
-        if( File( *iter ).localName().compare( file, case_sensitive ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
-        { return *iter; }
+        if( file.localName().compare( file, case_sensitive ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
+        { return file; }
 
         // check if file is directory
-        if( File(*iter).isDirectory() ) directories.push_back( *iter );
+        if( file.isDirectory() ) directories << file;
     }
 
     // loop over directories; search recursively
