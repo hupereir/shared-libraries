@@ -104,8 +104,8 @@ QString File::permissionsString( const QFile::Permissions& mode ) const
     QTextStream what( &out );
 
     // link, directory or regular file
-    if( QFileInfo( *this ).isDir() ) what << "l";
-    else if( QFileInfo( *this ).isSymLink() ) what << "d";
+    if( QFileInfo( *this ).isSymLink() ) what << "l";
+    else if( QFileInfo( *this ).isDir() ) what << "d";
     else what << "-";
 
     // user permissions
