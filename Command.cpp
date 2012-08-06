@@ -55,7 +55,7 @@ QStringList Command::_parse( const QString &in ) const
     Debug::Throw( "Command::parse.\n" );
     QStringList out;
 
-    // first split using '"' as separator to get "single sting" arguments that contain strings
+    // first split using '"' as separator to get "single string" arguments that contain strings
     QStringList local = in.split( "\"", QString::KeepEmptyParts );
 
     // split strings that are not enclosed into quotes using white spaces as separator
