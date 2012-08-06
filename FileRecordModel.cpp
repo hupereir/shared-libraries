@@ -51,6 +51,7 @@ FileRecordModel::FileRecordModel( QObject* parent ):
     ListModel<FileRecord>( parent ),
     Counter( "FileRecordModel" ),
     dragEnabled_( false ),
+    useLocalNames_( true ),
     showIcons_( true ),
     iconPropertyId_( FileRecord::PropertyId::get( FileRecordProperties::ICON ) )
 {
@@ -116,20 +117,23 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
             case FILE:
             {
                 // store local nmae
-                QString local_name( record.file().localName() );
+                const QString localName( useLocalNames_ ? record.file().localName(): record.file() );
 
                 // loop over previous rows to find a match and increment version number
                 unsigned int version( 0 );
                 for( int row = 0; row < index.row(); row++ )
                 {
-                    if( get( FileRecordModel::index( row, FILE ) ).file().localName() == local_name ) version++;
+                    const QString rowName( useLocalNames_ ?
+                        get( this->index( row, FILE ) ).file().localName() :
+                        get( this->index( row, FILE ) ).file() );
+                    if( localName == rowName ) version++;
                 }
 
                 // form output string.
                 QString buffer;
                 QTextStream what( &buffer );
-                if( local_name.isEmpty() ) what << "untitled";
-                else what << local_name;
+                if( localName.isEmpty() ) what << "untitled";
+                else what << localName;
                 if( version ) what << " (" << version+1 << ")";
                 return buffer;
             }
@@ -144,7 +148,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 
         }
 
-    } else if( _showIcons() && role == Qt::DecorationRole && index.column() == ICON ) {
+    } else if( showIcons_ && role == Qt::DecorationRole && index.column() == ICON ) {
 
         // icon
         if( record.hasProperty( iconPropertyId_ ) ) return _icon( record.property( iconPropertyId_ ) );

@@ -23,11 +23,11 @@
 *******************************************************************************/
 
 /*!
-  \file Questioncpp
-  \brief simple information dialog
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file Questioncpp
+\brief simple information dialog
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QLayout>
@@ -43,26 +43,15 @@ InformationDialog::InformationDialog( QWidget* parent, QString text ):
   CustomDialog( parent, OkButton| Separator )
 {
 
-  //! try load Question icon
-  QPixmap question_pixmap = PixmapEngine::get( ICONS::INFORMATION );
-
-  // insert main vertical box
-  if( question_pixmap.isNull() )
-  {
-
-    mainLayout().addWidget( label_ = new QLabel( text, this ) );
-
-  } else {
-
-    QHBoxLayout *h_layout( new QHBoxLayout() );
-    h_layout->setSpacing(10);
-    h_layout->setMargin(0);
-    mainLayout().addLayout( h_layout );
+    //! try load Question icon
+    QPixmap pixmap = PixmapEngine::get( ICONS::INFORMATION );
+    QHBoxLayout *hLayout( new QHBoxLayout() );
+    hLayout->setSpacing(10);
+    hLayout->setMargin(0);
+    mainLayout().addLayout( hLayout );
     QLabel* label = new QLabel( this );
-    label->setPixmap( question_pixmap );
-    h_layout->addWidget( label, 0, Qt::AlignHCenter );
-    h_layout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
-
-  }
-
+    label->setPixmap( pixmap );
+    hLayout->addWidget( label, 0, Qt::AlignHCenter );
+    hLayout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
+    label_->setWordWrap( true );
 }

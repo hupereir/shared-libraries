@@ -38,24 +38,17 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
     Debug::Throw( "QuestionDialog::QuestionDialog\n" );
 
     //! try load Question icon
-    QPixmap questionPixmap = PixmapEngine::get( ICONS::WARNING );
-    if( questionPixmap.isNull() )
-    {
+    QPixmap pixmap = PixmapEngine::get( ICONS::WARNING );
+    QHBoxLayout *hLayout( new QHBoxLayout() );
+    hLayout->setSpacing(10);
+    hLayout->setMargin(0);
+    mainLayout().addLayout( hLayout );
 
-        mainLayout().addWidget( label_ = new QLabel( text, this ) );
+    QLabel* label = new QLabel( this );
+    label->setPixmap( pixmap );
+    hLayout->addWidget( label, 0, Qt::AlignHCenter );
+    hLayout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
 
-    } else {
-
-        QHBoxLayout *hLayout( new QHBoxLayout() );
-        hLayout->setSpacing(10);
-        hLayout->setMargin(0);
-        mainLayout().addLayout( hLayout );
-
-        QLabel* label = new QLabel( this );
-        label->setPixmap( questionPixmap );
-        hLayout->addWidget( label, 0, Qt::AlignHCenter );
-        hLayout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
-
-    }
+    label_->setWordWrap( true );
 
 }

@@ -38,10 +38,21 @@ CustomDialog( parent )
     setOptionName( "SCRATCH_DIALOG" );
 
     // label
-    QLabel* label;
-    mainLayout().addWidget( label = new QLabel(
-        "Following temporary files have been created by the application.\n"
-        "Select the ones you want to remove:", this ) );
+    QLabel* textLabel = new QLabel(
+        "Following temporary files have been created by the application. "
+        "Select the ones you want to remove:", this );
+    textLabel->setWordWrap( true );
+
+    //! try load Question icon
+    QPixmap questionPixmap( PixmapEngine::get( ICONS::WARNING ) );
+    QHBoxLayout *hLayout( new QHBoxLayout() );
+    hLayout->setSpacing(10);
+    hLayout->setMargin(0);
+    mainLayout().addLayout( hLayout );
+    QLabel* label = new QLabel( this );
+    label->setPixmap( questionPixmap );
+    hLayout->addWidget( label, 0, Qt::AlignHCenter );
+    hLayout->addWidget( textLabel, 1, Qt::AlignLeft );
 
     // file list
     mainLayout().addWidget( list_ = new TreeView( this ), 1 );
@@ -74,6 +85,7 @@ CustomDialog( parent )
 
     // customize dialog buttons
     okButton().setText( "&Remove" );
+    okButton().setIcon( IconEngine::get( ICONS::DELETE ) );
     okButton().setToolTip( "Remove selected files from disk" );
     okButton().setFocus();
 

@@ -498,13 +498,13 @@ void LineEditor::_updateSelectionActions()
 
     Debug::Throw( "LineEditor::_updateSelectionActions.\n" );
 
-    bool has_selection( hasSelectedText() );
+    bool hasSelection( hasSelectedText() );
     bool editable( !isReadOnly() );
 
-    cutAction_->setEnabled( has_selection && editable );
-    copyAction_->setEnabled( has_selection );
-    upperCaseAction_->setEnabled( has_selection && editable );
-    lowerCaseAction_->setEnabled( has_selection && editable );
+    cutAction_->setEnabled( hasSelection && editable );
+    copyAction_->setEnabled( hasSelection );
+    upperCaseAction_->setEnabled( hasSelection && editable );
+    lowerCaseAction_->setEnabled( hasSelection && editable );
 
 }
 

@@ -63,11 +63,7 @@ void ScratchFileMonitor::deleteScratchFiles( void )
         { temp.insert( iter.previous().file() ); }
     }
 
-    // re-add directories
-    foreach( const File& file, files_ )
-    { if( file.isDirectory() && !file.isLink() ) temp.insert( file ); }
-
-    // remove
+    // remove all files
     {
         FileSetIterator iter( temp );
         iter.toBack();
@@ -77,6 +73,26 @@ void ScratchFileMonitor::deleteScratchFiles( void )
             file.remove();
             files_.remove( file );
         }
+    }
+
+    // try remove directories
+    // subdirectories are automatically removed unless non-empty
+    foreach( const File& file, files_ )
+    {
+        if( file.isLink() || !file.isDirectory() ) continue;
+
+        // get list of contained files
+        bool empty( true );
+        foreach( const File& child, file.listFiles( File::RECURSIVE ) )
+        {
+            if( child.isLink() || !child.isDirectory() )
+            {
+                empty = false;
+                break;
+            }
+        }
+
+        if( empty ) file.removeRecursive();
     }
 
 }

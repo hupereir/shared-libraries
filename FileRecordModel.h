@@ -57,9 +57,17 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     //! constructor
     FileRecordModel( QObject* parent = 0 );
 
+    //! destructor
+    virtual ~FileRecordModel()
+    {}
+
     //! show icons
     void setShowIcons( const bool& value )
     { showIcons_ = value; }
+
+    //! use local names
+    void setUseLocalNames( const bool& value )
+    { useLocalNames_ = value; }
 
     //!@name methods reimplemented from base class
     //@{
@@ -104,9 +112,6 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     { dragEnabled_ = value; }
 
     protected:
-
-    const bool& _showIcons( void ) const
-    { return showIcons_; }
 
     //! sort
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
@@ -167,6 +172,9 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
 
     //! drag flag
     bool dragEnabled_;
+
+    //! local names
+    bool useLocalNames_;
 
     //! true if icons are to be shown
     bool showIcons_;

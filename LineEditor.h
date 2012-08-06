@@ -43,10 +43,10 @@ class LineEditor: public QLineEdit, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        LineEditor( QWidget* parent );
+    //! constructor
+    LineEditor( QWidget* parent );
 
     //! read-only state
     void setReadOnly( bool );
@@ -131,11 +131,11 @@ class LineEditor: public QLineEdit, public Counter
 
     //! clear button rect
     const QRect& _clearButtonRect( void ) const
-    { return clear_button_rect_; }
+    { return clearButtonRect_; }
 
     //! clear button rect
     virtual void _setClearButtonRect( const QRect& rect )
-    { clear_button_rect_ = rect; }
+    { clearButtonRect_ = rect; }
 
     //! toggle clear button
     virtual bool _toggleClearButton( const bool& );
@@ -230,7 +230,7 @@ class LineEditor: public QLineEdit, public Counter
     bool clearButtonVisible_;
 
     //! clear button rect
-    QRect clear_button_rect_;
+    QRect clearButtonRect_;
 
     //! frame
     bool hasFrame_;
