@@ -46,9 +46,8 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
 
     QLabel* label = new QLabel( this );
     label->setPixmap( pixmap );
-    hLayout->addWidget( label, 0, Qt::AlignHCenter );
-    hLayout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
-
+    hLayout->addWidget( label, 0 );
+    hLayout->addWidget( label_ = new QLabel( text, this ), 1 );
     label_->setWordWrap( true );
 
 }

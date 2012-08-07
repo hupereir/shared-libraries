@@ -40,8 +40,10 @@
 
 //____________________________________________________________
 InformationDialog::InformationDialog( QWidget* parent, QString text ):
-  CustomDialog( parent, OkButton| Separator )
+    CustomDialog( parent, OkButton| Separator )
 {
+
+    Debug::Throw( "InformationDialog::InformationDialog\n" );
 
     //! try load Question icon
     QPixmap pixmap = PixmapEngine::get( ICONS::INFORMATION );
@@ -49,9 +51,11 @@ InformationDialog::InformationDialog( QWidget* parent, QString text ):
     hLayout->setSpacing(10);
     hLayout->setMargin(0);
     mainLayout().addLayout( hLayout );
+
     QLabel* label = new QLabel( this );
     label->setPixmap( pixmap );
-    hLayout->addWidget( label, 0, Qt::AlignHCenter );
-    hLayout->addWidget( label_ = new QLabel( text, this ), 1, Qt::AlignVCenter );
+    hLayout->addWidget( label, 0 );
+    hLayout->addWidget( label_ = new QLabel( text, this ), 1 );
     label_->setWordWrap( true );
+
 }
