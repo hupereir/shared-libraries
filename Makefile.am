@@ -79,7 +79,6 @@ OptionComboBox.h \
 OptionDialog.h \
 OptionFontEditor.h \
 OptionFontInfo.h \
-OptionIconBrowsedButton.h \
 OptionLineEditor.h \
 OptionListBox.h \
 OptionModel.h \

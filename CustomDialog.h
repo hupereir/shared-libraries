@@ -62,20 +62,25 @@ class CustomDialog: public BaseDialog, public Counter
 
     //! retrieve main vbox
     QBoxLayout& mainLayout( void ) const
+    { return *mainLayout_; }
+
+    //! returns true if OK button is valid
+    bool hasSeparator( void ) const
+    { return separator_; }
+
+    //! separator
+    QWidget& separator( void ) const
     {
-        assert( mainLayout_ );
-        return *mainLayout_;
+        assert( separator_ );
+        return *separator_;
     }
 
     //! retrieve button layout
     QBoxLayout& buttonLayout( void ) const
-    {
-        assert( buttonLayout_ );
-        return *buttonLayout_;
-    }
+    { return *buttonLayout_; }
 
     //! returns true if OK button is valid
-    bool hasOkButton( void )
+    bool hasOkButton( void ) const
     { return okButton_; }
 
     //! retrieve OK button
@@ -86,7 +91,7 @@ class CustomDialog: public BaseDialog, public Counter
     }
 
     //! returns true if Cancel button is valid
-    bool hasCancelButton( void )
+    bool hasCancelButton( void ) const
     { return cancelButton_; }
 
     //! retrieve CANCEL button
@@ -101,6 +106,9 @@ class CustomDialog: public BaseDialog, public Counter
 
     //! main layout
     QBoxLayout *mainLayout_;
+
+    //! separator if any
+    QWidget* separator_;
 
     //! button hbox
     QBoxLayout *buttonLayout_;

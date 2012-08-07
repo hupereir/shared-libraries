@@ -32,6 +32,7 @@
 CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFlags wflags):
 BaseDialog( parent, wflags ),
 Counter( "CustomDialog" ),
+separator_( 0 ),
 okButton_( 0 ),
 cancelButton_( 0 )
 {
@@ -55,6 +56,7 @@ cancelButton_( 0 )
         QFrame* frame( new QFrame( this ) );
         frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
         layout->addWidget( frame );
+        separator_ = frame;
     }
 
     // insert hbox layout for buttons

@@ -29,7 +29,6 @@
 #include "IconEngine.h"
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"
-#include "OptionIconBrowsedButton.h"
 #include "OptionFontEditor.h"
 #include "OptionLineEditor.h"
 #include "OptionListBox.h"
@@ -121,31 +120,9 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         box = new QGroupBox( "General", parent );
         parent->layout()->addWidget( box );
 
-        QHBoxLayout* hLayout = new QHBoxLayout();
-        box->setLayout( hLayout );
-
-        // icon pixmap
-        QVBoxLayout* vLayout( new QVBoxLayout() );
-        vLayout->setMargin(0);
-        hLayout->addLayout( vLayout );
-
-        OptionIconBrowsedButton* editor = new OptionIconBrowsedButton( parent, "ICON_PIXMAP" );
-        editor->setToolTip( "Application icon" );
-        addOptionWidget( editor );
-        vLayout->addWidget( editor );
-        vLayout->addStretch(1);
-        hLayout->addSpacing( 10 );
-
-        // base options
-        QVBoxLayout* layout = new QVBoxLayout();
-        layout->setMargin(0);
-        hLayout->addLayout( layout );
-
         GridLayout* gridLayout = new GridLayout();
-        gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
-        layout->addLayout( gridLayout );
-        layout->addStretch( 1 );
+        box->setLayout( gridLayout );
 
         // flat theme
         #if !defined(Q_WS_X11)
@@ -162,7 +139,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         gridLayout->addWidget( label = new QLabel( "Pixmaps:", box ) );
         label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
-        hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout();
         hLayout->setMargin(0);
         gridLayout->addLayout( hLayout );
         QPushButton *button = new QPushButton( IconEngine::get( ICONS::EDIT ), "Edit Pixmap Path List", box );
@@ -186,7 +163,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         parent->layout()->addWidget( box );
 
         // icon pixmap
-        vLayout = new QVBoxLayout();
+        QVBoxLayout* vLayout = new QVBoxLayout();
         box->setLayout( vLayout );
 
         OptionCheckBox* checkbox( new OptionCheckBox( "Use system font", box, "USE_SYSTEM_FONT" ) );

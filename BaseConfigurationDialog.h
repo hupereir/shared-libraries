@@ -43,10 +43,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     //! destructor
     virtual ~BaseConfigurationDialog()
-    {
-        Debug::Throw( "BaseConfigurationDialog::~BaseConfigurationDialog.\n" );
-        return;
-    }
+    {}
 
     //! flag bitset for the Base configuration
     enum ConfigurationFlags
