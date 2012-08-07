@@ -26,6 +26,7 @@ BaseReplaceDialog.h \
 BlockHighlight.h \
 BoxSelection.h \
 BrowsedLineEditor.h \
+BrowseIconButton.h \
 ClockLabel.h \
 Color.h \
 ColorDisplay.h \
@@ -57,7 +58,6 @@ FontInfo.h \
 GridLayout.h \
 HtmlDialog.h \
 HtmlTextNode.h \
-IconBrowsedButton.h \
 IconEngine.h \
 IconSize.h \
 IconSizeMenu.h \
@@ -156,6 +156,7 @@ BaseReplaceDialog.cpp \
 BlockHighlight.cpp \
 BoxSelection.cpp \
 BrowsedLineEditor.cpp \
+BrowseIconButton.cpp \
 ClockLabel.cpp \
 Color.cpp \
 ColorDisplay.cpp \
@@ -184,7 +185,6 @@ FontEditor.cpp \
 FontInfo.cpp \
 HtmlDialog.cpp \
 HtmlTextNode.cpp \
-IconBrowsedButton.cpp \
 IconEngine.cpp \
 IconSize.cpp \
 IconSizeMenu.cpp \
@@ -260,6 +260,7 @@ moc_BasePrintHelper.cpp \
 moc_BaseReplaceDialog.cpp \
 moc_BlockHighlight.cpp \
 moc_BrowsedLineEditor.cpp \
+moc_BrowseIconButton.cpp \
 moc_ColorDisplay.cpp \
 moc_ColorGrabButton.cpp \
 moc_ColorMenu.cpp \
@@ -278,7 +279,6 @@ moc_FileList.cpp \
 moc_FileRecordModel.cpp \
 moc_FontEditor.cpp \
 moc_HtmlDialog.cpp \
-moc_IconBrowsedButton.cpp \
 moc_IconSizeMenu.cpp \
 moc_ImageFileDialog.cpp \
 moc_LineEditor.cpp \

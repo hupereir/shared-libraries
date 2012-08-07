@@ -24,6 +24,7 @@ BaseReplaceDialog.h \
 BlockHighlight.h \
 BoxSelection.h \
 BrowsedLineEditor.h \
+BrowseIconButton.h \
 ClockLabel.h \
 Color.h \
 ColorDisplay.h \
@@ -55,7 +56,6 @@ FontInfo.h \
 GridLayout.h \
 HtmlDialog.h \
 HtmlTextNode.h \
-IconBrowsedButton.h \
 IconEngine.h \
 IconSize.h \
 IconSizeMenu.h \
@@ -154,6 +154,7 @@ BaseReplaceDialog.cpp \
 BlockHighlight.cpp \
 BoxSelection.cpp \
 BrowsedLineEditor.cpp \
+BrowseIconButton.cpp \
 ClockLabel.cpp \
 Color.cpp \
 ColorDisplay.cpp \
@@ -182,7 +183,6 @@ FontEditor.cpp \
 FontInfo.cpp \
 HtmlDialog.cpp \
 HtmlTextNode.cpp \
-IconBrowsedButton.cpp \
 IconEngine.cpp \
 IconSize.cpp \
 IconSizeMenu.cpp \
