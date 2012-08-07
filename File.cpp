@@ -289,7 +289,7 @@ bool File::remove( void ) const
 bool File::removeRecursive( void ) const
 {
 
-    if( !isDirectory() ) return remove();
+    if( isLink() || !isDirectory() ) return remove();
 
     // list content of directory
     QDir dir( *this );
