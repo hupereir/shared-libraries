@@ -30,7 +30,6 @@
 #include "HelpModel.h"
 
 #include <QtGui/QPushButton>
-#include <cassert>
 
 class AnimatedTextEditor;
 class TreeView;
@@ -50,6 +49,10 @@ namespace BASE
 
         //! constructor
         HelpDialog( HelpManager& manager, QWidget *parent = 0 );
+
+        //! destructor
+        virtual ~HelpDialog( void )
+        {}
 
         //! clear items
         void clear( void )
@@ -122,10 +125,7 @@ namespace BASE
 
         //! help manager
         HelpManager& _manager( void ) const
-        {
-            assert( manager_ );
-            return *manager_;
-        }
+        { return *manager_; }
 
         //! model
         HelpModel& _model( void )
