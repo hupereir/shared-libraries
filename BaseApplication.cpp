@@ -199,7 +199,7 @@ void BaseApplication::_about( QString name, QString version, QString stamp )
 
     QMessageBox dialog;
     dialog.setWindowTitle( QString( "About ")+name );
-    QPixmap pixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) );
+    QPixmap pixmap( XmlOptions::get().raw( XmlOptions::get().contains( "LARGE_ICON_PIXMAP" ) ? "LARGE_ICON_PIXMAP":"ICON_PIXMAP" ) );
     dialog.setWindowIcon( pixmap );
     dialog.setIconPixmap( pixmap );
     dialog.setText( buffer );
