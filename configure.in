@@ -6,7 +6,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_CXX(CC g++)
 AC_ENABLE_STATIC(no)
 AC_PROG_LIBTOOL
-CXXFLAGS="-g -O2 -Wall -Werror -Wno-non-virtual-dtor"
+CXXFLAGS="-g -O2 -Wall -Werror"
 
 dnl *********************************************
 dnl x11
