@@ -56,6 +56,8 @@ InformationDialog::InformationDialog( QWidget* parent, QString text ):
     label->setPixmap( pixmap );
     hLayout->addWidget( label, 0 );
     hLayout->addWidget( label_ = new QLabel( text, this ), 1 );
-    label_->setWordWrap( true );
+
+    if( pixmap.width() + label_->fontMetrics().width( text ) >350 )
+    { label_->setWordWrap( true ); }
 
 }

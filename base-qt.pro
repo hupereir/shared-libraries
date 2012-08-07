@@ -48,6 +48,7 @@ ErrorHandler.h \
 ElidedLabel.h \
 FileDialog.h \
 FileList.h \
+FilePermissionsWidget.h \
 FileRecordBaseProperties.h \
 FileRecordModel.h \
 FlatStyle.h \
@@ -177,6 +178,7 @@ ElidedLabel.cpp \
 ErrorHandler.cpp \
 FileDialog.cpp \
 FileList.cpp \
+FilePermissionsWidget.cpp \
 FileRecordModel.cpp \
 FlatStyle.cpp \
 FontEditor.cpp \

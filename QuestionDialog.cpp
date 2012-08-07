@@ -50,4 +50,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
     hLayout->addWidget( label_ = new QLabel( text, this ), 1 );
     label_->setWordWrap( true );
 
+    if( pixmap.width() + label_->fontMetrics().width( text ) >350 )
+    { label_->setWordWrap( true ); }
+
 }

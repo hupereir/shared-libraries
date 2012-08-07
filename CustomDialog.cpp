@@ -30,11 +30,11 @@
 
 //____________________________________________________________
 CustomDialog::CustomDialog( QWidget *parent, const unsigned int& flags, Qt::WFlags wflags):
-BaseDialog( parent, wflags ),
-Counter( "CustomDialog" ),
-separator_( 0 ),
-okButton_( 0 ),
-cancelButton_( 0 )
+    BaseDialog( parent, wflags ),
+    Counter( "CustomDialog" ),
+    separator_( 0 ),
+    okButton_( 0 ),
+    cancelButton_( 0 )
 {
 
     Debug::Throw( "CustomDialog::CustomDialog.\n" );
@@ -68,7 +68,8 @@ cancelButton_( 0 )
     buttonLayout_->addStretch( 1 );
 
     // insert OK and Cancel button
-    if( flags & OkButton ) {
+    if( flags & OkButton )
+    {
         QIcon icon( IconEngine::get( ( flags & CancelButton ) ? ICONS::DIALOG_OK : ICONS::DIALOG_CLOSE ) );
         QString text( ( flags & CancelButton ) ? "&Ok":"&Close" );
         buttonLayout_->addWidget( okButton_ = new QPushButton( icon, text, this ) );
@@ -76,8 +77,9 @@ cancelButton_( 0 )
         okButton_->setDefault( true );
     }
 
-    // insert OK and Cancel button
-    if( flags & CancelButton ) {
+    // insert Cancel button
+    if( flags & CancelButton )
+    {
         buttonLayout_->addWidget( cancelButton_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Cancel", this ) );
         connect( cancelButton_, SIGNAL( clicked() ), SLOT( reject() ) );
     }
