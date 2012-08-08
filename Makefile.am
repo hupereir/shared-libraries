@@ -34,6 +34,7 @@ ColorGrabButton.h \
 ColorMenu.h \
 ColumnSelectionMenu.h \
 ColumnSortingMenu.h \
+ContextMenu.h \
 CounterDialog.h \
 CounterModel.h \
 CursorMonitor.h \
@@ -165,6 +166,7 @@ ColorGrabButton.cpp \
 ColorMenu.cpp \
 ColumnSelectionMenu.cpp \
 ColumnSortingMenu.cpp \
+ContextMenu.cpp \
 CounterDialog.cpp \
 CounterModel.cpp \
 CursorMonitor.cpp \
@@ -269,6 +271,7 @@ moc_ColorMenu.cpp \
 moc_ColumnSelectionMenu.cpp \
 moc_ColumnSortingMenu.cpp \
 moc_ClockLabel.cpp \
+moc_ContextMenu.cpp \
 moc_CounterDialog.cpp \
 moc_CustomComboBox.cpp \
 moc_CustomSlider.cpp \

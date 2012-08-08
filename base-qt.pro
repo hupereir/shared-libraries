@@ -32,6 +32,7 @@ ColorGrabButton.h \
 ColorMenu.h \
 ColumnSelectionMenu.h \
 ColumnSortingMenu.h \
+ContextMenu.h \
 CounterDialog.h \
 CounterModel.h \
 CursorMonitor.h \
@@ -163,6 +164,7 @@ ColorGrabButton.cpp \
 ColorMenu.cpp \
 ColumnSelectionMenu.cpp \
 ColumnSortingMenu.cpp \
+ContextMenu.cpp \
 CounterDialog.cpp \
 CounterModel.cpp \
 CursorMonitor.cpp \
