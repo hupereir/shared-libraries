@@ -113,10 +113,10 @@ class ListModel : public ItemModel
     {
 
         QModelIndexList out;
-        for( typename List::const_iterator iter = selection_.begin(); iter != selection_.end(); ++iter )
+        foreach( const ValueType& value, selection_ )
         {
-            QModelIndex index( ListModel::index( *iter ) );
-            if( index.isValid() ) out.push_back( index );
+            QModelIndex index( ListModel::index( value ) );
+            if( index.isValid() ) out << index;
         }
         return out;
 
@@ -147,10 +147,7 @@ class ListModel : public ItemModel
         if( values.empty() ) return;
 
         emit layoutAboutToBeChanged();
-
-        for( typename List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
-        { _add( *iter ); }
-
+        foreach( const ValueType& value, values ) _add( value );
         _sort();
         emit layoutChanged();
 
@@ -211,8 +208,7 @@ class ListModel : public ItemModel
         if( values.empty() ) return;
 
         emit layoutAboutToBeChanged();
-        for( typename List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
-        { _remove( *iter ); }
+        foreach( const ValueType& value, values ) _remove( value );
         emit layoutChanged();
         return;
 
@@ -234,7 +230,7 @@ class ListModel : public ItemModel
         emit layoutAboutToBeChanged();
 
         // store values to be removed
-        List removed_values;
+        List removedValues;
 
         // update values that are common to both lists
         for( typename List::iterator iter = values_.begin(); iter != values_.end(); ++iter )
@@ -242,7 +238,7 @@ class ListModel : public ItemModel
 
             // see if iterator is in list
             typename List::iterator found_iter( std::find_if( values.begin(), values.end(), std::bind2nd( EqualTo(), *iter ) ) );
-            if( found_iter == values.end() ) removed_values.push_back( *iter );
+            if( found_iter == values.end() ) removedValues.push_back( *iter );
             else {
                 *iter = *found_iter;
                 values.erase( found_iter );
@@ -251,12 +247,10 @@ class ListModel : public ItemModel
         }
 
         // remove values that have not been found in new list
-        for( typename List::const_iterator iter = removed_values.begin(); iter != removed_values.end(); ++iter )
-        { _remove( *iter ); }
+        foreach( const ValueType& value, removedValues ) _remove( value );
 
         // add remaining values
-        for( typename List::const_iterator iter = values.begin(); iter != values.end(); ++iter )
-        { _add( *iter ); }
+        foreach( const ValueType& value, values ) _add( value );
 
         _sort();
         emit layoutChanged();
@@ -292,8 +286,8 @@ class ListModel : public ItemModel
     List get( const QModelIndexList& indexes ) const
     {
         List out;
-        for( QModelIndexList::const_iterator iter = indexes.begin(); iter != indexes.end(); ++iter )
-        { if( iter->isValid() && iter->row() < int(values_.size()) ) out.push_back( get( *iter ) ); }
+        foreach( const QModelIndex& index, indexes )
+        { if( index.isValid() && index.row() < int(values_.size()) ) out << get( index ); }
         return out;
     }
 
@@ -317,7 +311,7 @@ class ListModel : public ItemModel
     virtual void _add( const ValueType& value )
     {
         typename List::iterator iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
-        if( iter == values_.end() ) values_.push_back( value );
+        if( iter == values_.end() ) values_ << value;
         else *iter = value;
     }
 
