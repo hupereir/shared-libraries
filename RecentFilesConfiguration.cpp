@@ -23,6 +23,7 @@
 
 #include "RecentFilesConfiguration.h"
 #include "BaseIcons.h"
+#include "ContextMenu.h"
 #include "Debug.h"
 #include "FileList.h"
 #include "GridLayout.h"
@@ -64,7 +65,6 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     hLayout->setMargin(0);
     vLayout->addLayout( hLayout );
 
-
     // previous file history size
     OptionSpinBox *spinbox;
     hLayout->addWidget( new QLabel( "Recent files history size", box ) );
@@ -100,6 +100,9 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     vLayout->setMargin(0);
     box->layout()->addItem( vLayout );
 
+    // list context menu
+    QMenu* menu( new ContextMenu( &_list() ) );
+
     // clean
     vLayout->addWidget( cleanButton_ = new QPushButton( "Clean", box ) );
     cleanButton_->setToolTip( "Remove invalid files" );
@@ -108,7 +111,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), "Clean", this ) );
     connect( cleanAction_, SIGNAL( triggered() ), SLOT( _clean() ) );
-    _list().menu().addAction( cleanAction_ );
+    menu->addAction( cleanAction_ );
 
     // remove
     vLayout->addWidget( removeButton_ = new QPushButton( "Remove", box ) );
@@ -119,7 +122,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove", this ) );
     connect( removeAction_, SIGNAL( triggered() ), SLOT( _remove() ) );
     removeAction_->setShortcut( QKeySequence::Delete );
-    _list().menu().addAction( removeAction_ );
+    menu->addAction( removeAction_ );
     _list().addAction( removeAction_ );
 
     // reload
@@ -130,7 +133,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     addAction( reloadAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload", this ) );
     connect( reloadAction_, SIGNAL( triggered() ), SLOT( _reload() ) );
-    _list().menu().addAction( reloadAction_ );
+    menu->addAction( reloadAction_ );
 
     vLayout->addStretch( 1 );
 

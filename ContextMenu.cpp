@@ -21,8 +21,10 @@
 *
 *******************************************************************************/
 
-#include "ContextMenu.cpp"
+#include "ContextMenu.h"
 #include "Debug.h"
+
+#include <QtGui/QAbstractScrollArea>
 
 //___________________________________________________
 ContextMenu::ContextMenu( QWidget* parent ):
@@ -31,11 +33,17 @@ ContextMenu::ContextMenu( QWidget* parent ):
 {
 
     Debug::Throw( "ContextMenu::ContextMenu.\n" );
-    parent->setContextMenuPolicy( QWidget::CustomContextMenu );
+    parent->setContextMenuPolicy( Qt::CustomContextMenu );
     connect( parent, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raise( const QPoint& ) ) );
 
 }
 
 //___________________________________________________
 void ContextMenu::_raise( const QPoint& position )
-{  exec( widget->mapToGlobal( position ); }
+{
+
+    QAbstractScrollArea* view(  qobject_cast<QAbstractScrollArea*>( parentWidget() ) );
+    if( view )  exec( view->viewport()->mapToGlobal( position ) );
+    else exec( parentWidget()->mapToGlobal( position ) );
+
+}

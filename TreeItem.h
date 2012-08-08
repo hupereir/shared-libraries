@@ -202,7 +202,6 @@ template<class T> class TreeItem: public TreeItemBase
         if( value == get() ) return this;
 
         // check against children
-        //foreach( const TreeItem& item, children_ )
         for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
         {
             TreeItem* out = iter->find( value );

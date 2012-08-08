@@ -27,7 +27,6 @@
 #include "Counter.h"
 #include "TextSelection.h"
 
-#include <QtGui/QContextMenuEvent>
 #include <QtGui/QMenu>
 #include <QtGui/QTreeView>
 #include <QtGui/QAction>
@@ -57,18 +56,6 @@ class TreeView: public QTreeView, public Counter
 
     //! TextSelection object from this selection, or clipboard
     TextSelection selection( void ) const;
-
-    //!@name contextual menu
-    //@{
-
-    //! returns true if menu has been initialized
-    virtual bool hasMenu( void ) const
-    { return menu_; }
-
-    //! retrieve popup menu
-    virtual QMenu& menu( void );
-
-    //@}
 
     //! true if given index is visible
     bool isVisible( const QModelIndex& index ) const;
@@ -225,9 +212,6 @@ class TreeView: public QTreeView, public Counter
     //! paint event
     virtual void paintEvent( QPaintEvent* );
 
-    //! context menu
-    virtual void contextMenuEvent( QContextMenuEvent* );
-
     //! find dialog
     virtual BaseFindDialog& _findDialog( void )
     {
@@ -302,9 +286,6 @@ class TreeView: public QTreeView, public Counter
     QAction* showHeaderAction_;
 
     //@}
-
-    //! popup menu for right click
-    QMenu *menu_;
 
     //! mask option name
     QString maskOptionName_;

@@ -45,7 +45,6 @@ TreeView::TreeView( QWidget* parent ):
     QTreeView( parent ),
     Counter( "TreeView" ),
     findDialog_( 0 ),
-    menu_( 0 ),
     iconSizeFromOptions_( true ),
     vertical_( 0 ),
     horizontal_( 0 ),
@@ -90,15 +89,6 @@ void TreeView::setFindEnabled( bool value )
     findAgainAction_->setEnabled( value );
     findSelectionBackwardAction_->setEnabled( value );
     findAgainBackwardAction_->setEnabled( value );
-}
-
-//_______________________________________________
-QMenu& TreeView::menu( void )
-{
-
-    if( !hasMenu() ) menu_ = new QMenu( this );
-    return *menu_;
-
 }
 
 //_______________________________________________
@@ -372,28 +362,6 @@ void TreeView::paintEvent( QPaintEvent* event )
     }
 
     return QTreeView::paintEvent( event );
-
-}
-
-//__________________________________________________________
-void TreeView::contextMenuEvent( QContextMenuEvent* event )
-{
-
-    Debug::Throw( "TreeView::contextMenuEvent.\n" );
-
-    // apparently this signal is not called any more
-    emit customContextMenuRequested( event->pos() );
-
-    // check if menu was created
-    if( !hasMenu() ) return;
-
-    // move and show menu
-    menu().adjustSize();
-    menu().exec( event->globalPos() );
-
-    // save mask after menu execution,
-    // to keep visible columns in sync with option
-    saveMask();
 
 }
 
