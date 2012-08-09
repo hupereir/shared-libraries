@@ -21,20 +21,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColumnSelectionMenu.h
-\brief handels column visibility in TreeViews
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
-#include <QHeaderView>
+#include "ColumnSelectionMenu.h"
 
 #include "Debug.h"
-#include "ColumnSelectionMenu.h"
 #include "TreeView.h"
+
+#include <QHeaderView>
 
 //_____________________________________________________
 ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, const QString& title ):
@@ -117,5 +109,8 @@ void ColumnSelectionMenu::_updateSelectedColumns( QAction* action )
 
     // set column visibility
     _target().setColumnHidden( iter.value(), !iter.key()->isChecked() );
+
+    if( TreeView* treeView = qobject_cast<TreeView*>( &_target() ) )
+    { treeView->saveMask(); }
 
 }
