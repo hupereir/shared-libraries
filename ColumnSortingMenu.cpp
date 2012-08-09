@@ -37,10 +37,10 @@
 
 //_____________________________________________________
 ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const QString& title ):
-QMenu( parent ),
-Counter( "ColumnSortingMenu" ),
-target_( target ),
-group_( new QActionGroup( this ) )
+    QMenu( parent ),
+    Counter( "ColumnSortingMenu" ),
+    target_( target ),
+    group_( new QActionGroup( this ) )
 {
     Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
     setTitle( title );
