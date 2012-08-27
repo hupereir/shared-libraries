@@ -31,6 +31,7 @@
 #include <QtGui/QActionGroup>
 #include <QtGui/QMenu>
 #include <QtGui/QTreeView>
+#include <QtGui/QHeaderView>
 #include <QtCore/QHash>
 
 #include <cassert>
@@ -47,6 +48,9 @@ class ColumnSortingMenu:public QMenu, public Counter
     //! constructor
     ColumnSortingMenu( QWidget*, QTreeView*, const QString& title = "Sort By" );
 
+    //! constructor
+    ColumnSortingMenu( QWidget*, QHeaderView*, const QString& title = "Sort By" );
+
     private slots:
 
     //! update actions
@@ -61,14 +65,10 @@ class ColumnSortingMenu:public QMenu, public Counter
     private:
 
     //! target
-    QTreeView& _target( void )
-    {
-        assert( target_ );
-        return *target_;
-    }
-
-    //! target
     QTreeView* target_;
+
+    //! header
+    QHeaderView* header_;
 
     //! action group
     QActionGroup* group_;

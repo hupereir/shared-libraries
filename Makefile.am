@@ -63,6 +63,7 @@ HtmlTextNode.h \
 IconEngine.h \
 IconSize.h \
 IconSizeMenu.h \
+IconView.h \
 ImageFileDialog.h \
 InformationDialog.h \
 IOString.h \
@@ -192,6 +193,7 @@ HtmlTextNode.cpp \
 IconEngine.cpp \
 IconSize.cpp \
 IconSizeMenu.cpp \
+IconView.cpp \
 ImageFileDialog.cpp \
 InformationDialog.cpp \
 IOString.cpp \
@@ -285,6 +287,7 @@ moc_FileRecordModel.cpp \
 moc_FontEditor.cpp \
 moc_HtmlDialog.cpp \
 moc_IconSizeMenu.cpp \
+moc_IconView.cpp \
 moc_ImageFileDialog.cpp \
 moc_LineEditor.cpp \
 moc_LineNumberDisplay.cpp \

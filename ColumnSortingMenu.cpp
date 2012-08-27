@@ -40,6 +40,27 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const 
     QMenu( parent ),
     Counter( "ColumnSortingMenu" ),
     target_( target ),
+    header_( 0 ),
+    group_( new QActionGroup( this ) )
+{
+    Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
+    setTitle( title );
+    connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _updateActions( void ) ) );
+    connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _sort( QAction* ) ) );
+    group_->setExclusive( true );
+
+    addSeparator();
+
+    addAction( "&Reverse order", this, SLOT( _revertOrder( void ) ) );
+}
+
+
+//_____________________________________________________
+ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QHeaderView* header, const QString& title ):
+    QMenu( parent ),
+    Counter( "ColumnSortingMenu" ),
+    target_( 0 ),
+    header_( header ),
     group_( new QActionGroup( this ) )
 {
     Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
@@ -69,16 +90,16 @@ void ColumnSortingMenu::_updateActions( void )
     QAction *first_action( actions.isEmpty() ? 0:actions.front() );
 
     // retrieve parent header.
-    QHeaderView* header( _target().header() );
-    assert( header );
-    assert( header->isSortIndicatorShown() );
+    if( target_ ) header_ = target_->header();
+    assert( header_ );
+    assert( header_->isSortIndicatorShown() );
 
     // loop over columns in header
-    for( int index=0; index < header->count(); index++ )
+    for( int index=0; index < header_->count(); index++ )
     {
 
         // retrieve column name
-        QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
+        QString column_name( header_->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
         if( column_name.isNull() || column_name.isEmpty() )
         {
             QString buffer;
@@ -88,7 +109,7 @@ void ColumnSortingMenu::_updateActions( void )
 
         QAction* action = new QAction( column_name, this );
         action->setCheckable( true );
-        action->setChecked( index == header->sortIndicatorSection() );
+        action->setChecked( index == header_->sortIndicatorSection() );
 
         insertAction( first_action, action );
         group_->addAction( action );
@@ -108,10 +129,10 @@ void ColumnSortingMenu::_sort( QAction* action )
     if( iter == actions_.end() ) return;
 
     // retrieve parent tree_view
-    QHeaderView* header = _target().header();
-    assert( header );
+    if( target_ ) header_ = target_->header();
+    assert( header_ );
 
-    header->setSortIndicator( iter.value(), header->sortIndicatorOrder() );
+    header_->setSortIndicator( iter.value(), header_->sortIndicatorOrder() );
 
 }
 
@@ -121,10 +142,10 @@ void ColumnSortingMenu::_revertOrder( void )
     Debug::Throw( "ColumnSortingMenu::_sort.\n" );
 
     // retrieve parent tree_view
-    QHeaderView* header = _target().header();
-    assert( header );
+    if( target_ ) header_ = target_->header();
+    assert( header_ );
 
-    Qt::SortOrder order( header->sortIndicatorOrder() == Qt::AscendingOrder ? Qt::DescendingOrder : Qt::AscendingOrder );
-    header->setSortIndicator( header->sortIndicatorSection(), order );
+    Qt::SortOrder order( header_->sortIndicatorOrder() == Qt::AscendingOrder ? Qt::DescendingOrder : Qt::AscendingOrder );
+    header_->setSortIndicator( header_->sortIndicatorSection(), order );
 
 }

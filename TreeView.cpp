@@ -273,7 +273,7 @@ void TreeView::updateSortOrder( void )
     if( !hasOptionName() ) return;
     if( XmlOptions::get().contains( sortColumnOptionName() ) && XmlOptions::get().contains( sortColumnOptionName() ) )
     {
-        bool changed(
+        const bool changed(
             header()->sortIndicatorSection() != XmlOptions::get().get<int>( sortColumnOptionName() ) ||
             header()->sortIndicatorOrder() != XmlOptions::get().get<int>( sortOrderOptionName() ) );
 

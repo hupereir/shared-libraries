@@ -63,7 +63,7 @@ class TreeView: public QTreeView, public Counter
     //! number of visible columns
     virtual int visibleColumnCount( void ) const;
 
-    //!@name column mask
+    //!@name stored options
     //@{
 
     //! option name

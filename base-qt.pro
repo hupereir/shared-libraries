@@ -61,6 +61,7 @@ HtmlTextNode.h \
 IconEngine.h \
 IconSize.h \
 IconSizeMenu.h \
+IconView.h \
 ImageFileDialog.h \
 InformationDialog.h \
 IOString.h \
@@ -190,6 +191,7 @@ HtmlTextNode.cpp \
 IconEngine.cpp \
 IconSize.cpp \
 IconSizeMenu.cpp \
+IconView.cpp \
 ImageFileDialog.cpp \
 InformationDialog.cpp \
 IOString.cpp \
