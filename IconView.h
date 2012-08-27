@@ -26,7 +26,9 @@
 
 #include "Counter.h"
 
+#include <QtCore/QBasicTimer>
 #include <QtCore/QString>
+#include <QtCore/QTimerEvent>
 
 #include <QtGui/QAbstractItemView>
 #include <QtGui/QHeaderView>
@@ -147,6 +149,9 @@ class IconView: public QAbstractItemView, public Counter
     //! start drag
     virtual void startDrag( Qt::DropActions );
 
+    //! contents scroll
+    virtual void scrollContentsBy( int, int );
+
     //! horizontal offset
     virtual int horizontalOffset( void ) const;
 
@@ -163,16 +168,19 @@ class IconView: public QAbstractItemView, public Counter
     virtual void resizeEvent( QResizeEvent* );
 
     //! mouse press
-    void mousePressEvent( QMouseEvent* );
+    virtual void mousePressEvent( QMouseEvent* );
 
     //! mouse move
-    void mouseMoveEvent( QMouseEvent* );
+    virtual void mouseMoveEvent( QMouseEvent* );
 
     //! mouse release
-    void mouseReleaseEvent( QMouseEvent* );
+    virtual void mouseReleaseEvent( QMouseEvent* );
 
     //! drag move
-    void dragMoveEvent( QDragMoveEvent* );
+    virtual void dragMoveEvent( QDragMoveEvent* );
+
+    //! timer event
+    virtual void timerEvent( QTimerEvent* );
 
     //! graphics item
     class Item: public Counter
@@ -354,6 +362,9 @@ class IconView: public QAbstractItemView, public Counter
     //! column count
     int columnCount_;
 
+    //! row count
+    int rowCount_;
+
     //! total rect
     QRect boundingRect_;
 
@@ -365,6 +376,9 @@ class IconView: public QAbstractItemView, public Counter
 
     //! drag origin
     QPoint dragOrigin_;
+
+    //! autoscroll timer
+    QBasicTimer autoScrollTimer_;
 
     //! hovered index
     QModelIndex index_;

@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedTextEditor.h
-  \brief Animated text editor
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include "TextEditor.h"
 
 class TransitionWidget;
@@ -41,33 +33,33 @@ class TransitionWidget;
 class AnimatedTextEditor: public TextEditor
 {
 
-  public:
+    public:
 
-  //! constructor
-  AnimatedTextEditor( QWidget* parent = 0 );
+    //! constructor
+    AnimatedTextEditor( QWidget* parent = 0 );
 
-  //! destrutor
-  virtual ~AnimatedTextEditor( void );
+    //! destrutor
+    virtual ~AnimatedTextEditor( void );
 
-  //! set text
-  virtual void setPlainText( const QString& );
+    //! set text
+    virtual void setPlainText( const QString& );
 
-  //! set text
-  virtual void setHtml( const QString& );
+    //! set text
+    virtual void setHtml( const QString& );
 
-  //! clear
-  virtual void clear( void );
+    //! clear
+    virtual void clear( void );
 
-  protected:
+    protected:
 
-  //! transition widget
-  TransitionWidget& _transitionWidget( void ) const
-  { return *transition_widget_; }
+    //! transition widget
+    TransitionWidget& _transitionWidget( void ) const
+    { return *transitionWidget_; }
 
-  private:
+    private:
 
-  //! transition widget
-  TransitionWidget* transition_widget_;
+    //! transition widget
+    TransitionWidget* transitionWidget_;
 
 
 };

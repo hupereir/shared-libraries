@@ -25,6 +25,7 @@
 #include "CustomPixmap.h"
 #include "Debug.h"
 #include "Singleton.h"
+#include "ScrollObject.h"
 #include "XmlOptions.h"
 
 #include <QtGui/QApplication>
@@ -40,6 +41,7 @@ IconView::IconView( QWidget* parent ):
     margin_( 5 ),
     spacing_( 5 ),
     columnCount_( 1 ),
+    rowCount_( 1 ),
     rubberBand_(0),
     dragButton_( Qt::NoButton )
 {
@@ -54,6 +56,8 @@ IconView::IconView( QWidget* parent ):
     setSortingEnabled( true );
     verticalScrollBar()->adjustSize();
     setMouseTracking( true );
+
+    new ScrollObject( this );
 
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
@@ -229,15 +233,13 @@ void IconView::doItemsLayout( void )
 //____________________________________________________________________
 void IconView::updateGeometries( void )
 {
-    horizontalScrollBar()->setPageStep(viewport()->width());
-    verticalScrollBar()->setPageStep(viewport()->height());
 
-    horizontalScrollBar()->setSingleStep(viewport()->width()*0.2);
-    verticalScrollBar()->setSingleStep(viewport()->height()*0.2);
-
-    horizontalScrollBar()->setRange(0, qMax(0, boundingRect_.right() - viewport()->width()));
     verticalScrollBar()->setRange(0, qMax(0, boundingRect_.bottom() - viewport()->height()));
+    verticalScrollBar()->setPageStep(viewport()->height());
+    verticalScrollBar()->setSingleStep( rowCount_ > 0 ? boundingRect_.height()/rowCount_ : viewport()->height()*0.1 );
+
     QAbstractItemView::updateGeometries();
+
 }
 
 //____________________________________________________________________
@@ -252,9 +254,16 @@ void IconView::_updateConfiguration( void )
 {
     Debug::Throw( "IconView::_updateConfiguration.\n" );
 
-    // load mask from option, if any
+    // update sort order from options
     updateSortOrder();
 
+    // update pixmap size
+    int pixmapSize( 0 );
+    if( XmlOptions::get().contains( "ICON_VIEW_PIXMAP_SIZE" ) && (pixmapSize = XmlOptions::get().get<int>( "ICON_VIEW_PIXMAP_SIZE" )) != pixmapSize_.width() )
+    {
+        pixmapSize_ = QSize( pixmapSize, pixmapSize );
+        if( model() ) doItemsLayout();
+    }
 }
 
 //____________________________________________________________________
@@ -343,6 +352,13 @@ void IconView::startDrag( Qt::DropActions supportedActions )
     drag->setHotSpot( dragOrigin_ - rect.topLeft());
     drag->exec( supportedActions, defaultDropAction() );
 
+}
+
+//____________________________________________________________________
+void IconView::scrollContentsBy( int dx, int dy )
+{
+    dragOrigin_ += QPoint( dx, dy );
+    QAbstractItemView::scrollContentsBy( dx, dy );
 }
 
 //____________________________________________________________________
@@ -457,15 +473,28 @@ void IconView::mouseMoveEvent(QMouseEvent *event)
 
     // update rubber band
     if( dragButton_ == Qt::LeftButton && rubberBand_ )
-    { rubberBand_->setGeometry(QRect( dragOrigin_, event->pos() ).normalized() ); }
+    {
+        rubberBand_->setGeometry(QRect( dragOrigin_, event->pos() ).normalized() );
+        setSelection( rubberBand_->geometry(), QItemSelectionModel::ClearAndSelect );
+
+        if( autoScrollTimer_.isActive())
+        {
+            if( viewport()->rect().contains( event->pos() ) ) autoScrollTimer_.stop();
+        } else if (!viewport()->rect().contains( event->pos() )) autoScrollTimer_.start(100, this);
+
+    }
 
     QAbstractItemView::mouseMoveEvent(event);
+
+
 }
 
 //____________________________________________________________________
 void IconView::mouseReleaseEvent(QMouseEvent *event)
 {
     QAbstractItemView::mouseReleaseEvent(event);
+
+    autoScrollTimer_.stop();
 
     // check rubber band
     if( dragButton_ == Qt::LeftButton && rubberBand_ )
@@ -486,6 +515,23 @@ void IconView::dragMoveEvent(QDragMoveEvent *event)
 
     // parent class
     QAbstractItemView::dragMoveEvent(event);
+}
+
+//______________________________________________________________
+void IconView::timerEvent(QTimerEvent *event)
+{
+
+    if( event->timerId() == autoScrollTimer_.timerId() )
+    {
+        const QPoint globalPosition = QCursor::pos();
+        const QPoint position = viewport()->mapFromGlobal(globalPosition);
+        const QRect rect( viewport()->rect() );
+
+        if( position.y() < 0 ) verticalScrollBar()->setValue( verticalScrollBar()->value() - verticalScrollBar()->singleStep() );
+        else if( position.y() > rect.height() ) verticalScrollBar()->setValue( verticalScrollBar()->value() + verticalScrollBar()->singleStep() );
+
+    } else return QAbstractItemView::timerEvent( event );
+
 }
 
 //____________________________________________________________________
@@ -511,6 +557,7 @@ void IconView::_layoutItems( void )
     const int maxHeight( height() - 2*margin_ );
     int width( 0 );
     columnCount_ = 0;
+
     for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter, ++columnCount_ )
     {
         if( columnCount_ ) width += spacing_;
@@ -523,7 +570,7 @@ void IconView::_layoutItems( void )
     columnCount_ = qMax( columnCount_, 1 );
 
     // calculate column sizes
-    int rowCount = 0;
+    rowCount_ = 0;
     int totalHeight( 0 );
     int totalWidth( 0 );
     QVector<int> columnSizes;
@@ -532,7 +579,7 @@ void IconView::_layoutItems( void )
 
         int rowHeight( 0 );
         int column( 0 );
-        rowCount = 0;
+        rowCount_ = 0;
         totalHeight = 0;
         columnSizes = QVector<int>( columnCount_, 0 );
         for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter, ++column )
@@ -545,7 +592,7 @@ void IconView::_layoutItems( void )
                 totalHeight += rowHeight;
                 rowHeight = 0;
                 column = 0;
-                ++rowCount;
+                ++rowCount_;
             }
 
             rowHeight = qMax( rowHeight, item.boundingRect().height() );
@@ -567,7 +614,7 @@ void IconView::_layoutItems( void )
 
     // evenly distribute extra width if there is more than one row
     int extraWidth( 0 );
-    if( rowCount > 0 )
+    if( rowCount_ > 0 )
     {
         extraWidth = maxWidth - totalWidth;
         if( totalHeight < maxHeight ) extraWidth += verticalScrollBar()->width();

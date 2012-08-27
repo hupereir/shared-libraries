@@ -479,7 +479,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     //! context menu position
     const QPoint& _contextMenuPosition( void ) const
     { return contextMenuPosition_; }
-    
+
     //!@name find/replace selection
     //@{
 
@@ -858,9 +858,8 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     //! store possible mouse drag start position
     QPoint dragStart_;
 
-    //! box selection timer
-    /*! it mimics QTextEdit autoscroll timer to update box selection */
-    QBasicTimer boxSelectionTimer_;
+    //! mimics QTextEdit autoscroll timer to update box selection */
+    QBasicTimer autoScrollTimer_;
 
     //! keyboard modifiers
     /*! this is a bitwise or of the Modifiers enumeration */

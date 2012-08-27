@@ -19,15 +19,9 @@
 *
 *******************************************************************************/
 
-/*!
-  \file ScrollObject.cpp
-  \brief customized Tree View
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <cassert>
+#include "ScrollObject.h"
+#include "Singleton.h"
+#include "XmlOptions.h"
 
 #include <QApplication>
 #include <QEvent>
@@ -35,43 +29,34 @@
 #include <QScrollBar>
 #include <QWheelEvent>
 
-#include "ScrollObject.h"
-#include "Singleton.h"
-#include "XmlOptions.h"
-
-
-
-
 //_______________________________________________
 ScrollObject::ScrollObject( QAbstractScrollArea* parent ):
-  QObject( parent ),
-  Counter( "ScrollObject" ),
-  enabled_( true ),
-  mode_(0),
-  auto_repeat_( false ),
-  target_( parent )
+    QObject( parent ),
+    Counter( "ScrollObject" ),
+    enabled_( true ),
+    mode_(0),
+    autoRepeat_( false ),
+    target_( parent )
 {
-  Debug::Throw( "ScrollObject::ScrollObject.\n" );
+    Debug::Throw( "ScrollObject::ScrollObject.\n" );
 
-  assert( parent );
+    // configuration
+    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    _updateConfiguration();
 
-  // configuration
-  connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-  _updateConfiguration();
+    // connect time line
+    _timeLine().setCurveShape( QTimeLine::LinearCurve );
+    connect( &_timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( _scroll( int ) ) );
+    connect( &_timeLine(), SIGNAL( finished( void ) ), this, SLOT( _finished( void )) );
 
-  // connect time line
-  _timeLine().setCurveShape( QTimeLine::LinearCurve );
-  connect( &_timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( _scroll( int ) ) );
-  connect( &_timeLine(), SIGNAL( finished( void ) ), this, SLOT( _finished( void )) );
+    targets_.insert( &_target() );
+    targets_.insert( _target().viewport() );
+    targets_.insert( _target().verticalScrollBar() );
+    targets_.insert( _target().horizontalScrollBar() );
 
-  targets_.insert( &_target() );
-  targets_.insert( _target().viewport() );
-  targets_.insert( _target().verticalScrollBar() );
-  targets_.insert( _target().horizontalScrollBar() );
-
-  // install filters
-  for( ObjectSet::iterator iter = targets_.begin(); iter != targets_.end(); ++iter )
-  { (*iter)->installEventFilter(this); }
+    // install filters
+    for( ObjectSet::iterator iter = targets_.begin(); iter != targets_.end(); ++iter )
+    { (*iter)->installEventFilter(this); }
 
 }
 
@@ -84,31 +69,31 @@ ScrollObject::~ScrollObject( void )
 bool ScrollObject::eventFilter( QObject* object, QEvent* event)
 {
 
-  // check enability
-  if( !isEnabled() ) return false;
-  if( targets_.find( object ) == targets_.end() ) return false;
+    // check enability
+    if( !isEnabled() ) return false;
+    if( targets_.find( object ) == targets_.end() ) return false;
 
-  // check event type
-  switch( event->type() )
-  {
-
-    case QEvent::KeyPress:
-    return keyPressEvent( static_cast<QKeyEvent*>( event ) );
-
-    case QEvent::KeyRelease:
-    return keyReleaseEvent( static_cast<QKeyEvent*>( event ) );
-
-    case QEvent::Wheel:
+    // check event type
+    switch( event->type() )
     {
-      Qt::Orientation orientation( object == _target().horizontalScrollBar() ? Qt::Horizontal : Qt::Vertical );
-      return wheelEvent( static_cast<QWheelEvent*>( event), orientation );
+
+        case QEvent::KeyPress:
+        return keyPressEvent( static_cast<QKeyEvent*>( event ) );
+
+        case QEvent::KeyRelease:
+        return keyReleaseEvent( static_cast<QKeyEvent*>( event ) );
+
+        case QEvent::Wheel:
+        {
+            Qt::Orientation orientation( object == _target().horizontalScrollBar() ? Qt::Horizontal : Qt::Vertical );
+            return wheelEvent( static_cast<QWheelEvent*>( event), orientation );
+        }
+
+        case QEvent::MouseButtonPress:
+        return mousePressEvent( static_cast<QMouseEvent*>( event ) );
+
+        default: return false;
     }
-
-    case QEvent::MouseButtonPress:
-    return mousePressEvent( static_cast<QMouseEvent*>( event ) );
-
-    default: return false;
-  }
 
 }
 
@@ -116,29 +101,29 @@ bool ScrollObject::eventFilter( QObject* object, QEvent* event)
 bool ScrollObject::keyPressEvent( QKeyEvent* event )
 {
 
-  // check key against page up or page down
-  if( event->modifiers() != Qt::NoModifier ) return false;
-  if( event->key() == Qt::Key_PageUp ) { _setAutoRepeat( _timeLine().state() == QTimeLine::Running ); return _previousPage( Qt::Vertical ); }
-  if( event->key() == Qt::Key_PageDown ) { _setAutoRepeat( _timeLine().state() == QTimeLine::Running ); return _nextPage( Qt::Vertical ); }
-  return false;
+    // check key against page up or page down
+    if( event->modifiers() != Qt::NoModifier ) return false;
+    if( event->key() == Qt::Key_PageUp ) { _setAutoRepeat( _timeLine().state() == QTimeLine::Running ); return _previousPage( Qt::Vertical ); }
+    if( event->key() == Qt::Key_PageDown ) { _setAutoRepeat( _timeLine().state() == QTimeLine::Running ); return _nextPage( Qt::Vertical ); }
+    return false;
 
 }
 
 //_______________________________________________
 bool ScrollObject::keyReleaseEvent( QKeyEvent* event )
 {
-  _setAutoRepeat( false );
-  return false;
+    _setAutoRepeat( false );
+    return false;
 }
 
 //_______________________________________________
 bool ScrollObject::wheelEvent( QWheelEvent* event, Qt::Orientation orientation )
 {
 
-  // check key against page up or page down
-  if( event->modifiers() != Qt::NoModifier ) return false;
-  if( _timeLine().state() == QTimeLine::Running ) _setAutoRepeat( true );
-  return _singleStep( (QApplication::wheelScrollLines()*event->delta())/120, orientation );
+    // check key against page up or page down
+    if( event->modifiers() != Qt::NoModifier ) return false;
+    if( _timeLine().state() == QTimeLine::Running ) _setAutoRepeat( true );
+    return _singleStep( (QApplication::wheelScrollLines()*event->delta())/120, orientation );
 
 }
 
@@ -146,42 +131,42 @@ bool ScrollObject::wheelEvent( QWheelEvent* event, Qt::Orientation orientation )
 bool ScrollObject::mousePressEvent( QMouseEvent* )
 {
 
-  _timeLine().stop();
-  _setAutoRepeat( false );
-  return false;
+    _timeLine().stop();
+    _setAutoRepeat( false );
+    return false;
 
 }
 
 //_____________________________________________________
 QPoint ScrollObject::_current( void ) const
 {
-  return QPoint(
-    _target().horizontalScrollBar() ? _target().horizontalScrollBar()->value():0,
-    _target().verticalScrollBar() ? _target().verticalScrollBar()->value():0 );
+    return QPoint(
+        _target().horizontalScrollBar() ? _target().horizontalScrollBar()->value():0,
+        _target().verticalScrollBar() ? _target().verticalScrollBar()->value():0 );
 }
 
 //_____________________________________________________
 bool ScrollObject::_setCurrent( QPoint position ) const
 {
 
-  bool accepted( false );
-  if( (mode_&Qt::Horizontal) && _target().horizontalScrollBar() )
-  {
-    if( position.x() < _target().horizontalScrollBar()->minimum() ) position.setX( _target().horizontalScrollBar()->minimum() );
-    else if( position.x() > _target().verticalScrollBar()->maximum() ) position.setX( _target().horizontalScrollBar()->maximum() );
-    else accepted = true;
-    _target().horizontalScrollBar()->setValue( position.x() );
-  }
+    bool accepted( false );
+    if( (mode_&Qt::Horizontal) && _target().horizontalScrollBar() )
+    {
+        if( position.x() < _target().horizontalScrollBar()->minimum() ) position.setX( _target().horizontalScrollBar()->minimum() );
+        else if( position.x() > _target().verticalScrollBar()->maximum() ) position.setX( _target().horizontalScrollBar()->maximum() );
+        else accepted = true;
+        _target().horizontalScrollBar()->setValue( position.x() );
+    }
 
-  if( (mode_&Qt::Vertical) && _target().verticalScrollBar() )
-  {
-    if( position.y() < _target().verticalScrollBar()->minimum() ) position.setY( _target().verticalScrollBar()->minimum() );
-    else if( position.y() > _target().verticalScrollBar()->maximum() ) position.setY( _target().verticalScrollBar()->maximum() );
-    else accepted = true;
-    _target().verticalScrollBar()->setValue( position.y() );
-  }
+    if( (mode_&Qt::Vertical) && _target().verticalScrollBar() )
+    {
+        if( position.y() < _target().verticalScrollBar()->minimum() ) position.setY( _target().verticalScrollBar()->minimum() );
+        else if( position.y() > _target().verticalScrollBar()->maximum() ) position.setY( _target().verticalScrollBar()->maximum() );
+        else accepted = true;
+        _target().verticalScrollBar()->setValue( position.y() );
+    }
 
-  return accepted;
+    return accepted;
 
 }
 
@@ -189,36 +174,36 @@ bool ScrollObject::_setCurrent( QPoint position ) const
 void ScrollObject::_scroll( int frame )
 {
 
-  // calculate current point
-  if( !_setCurrent( QPoint(
-    int(_start().x() + _step().x()*frame),
-    int(_start().y() + _step().y()*frame ) ) ) )
-  { _timeLine().stop(); }
+    // calculate current point
+    if( !_setCurrent( QPoint(
+        int(_start().x() + _step().x()*frame),
+        int(_start().y() + _step().y()*frame ) ) ) )
+    { _timeLine().stop(); }
 
 }
 
 //_____________________________________________________________________
 void ScrollObject::_finished( void )
 {
-  Debug::Throw( "ScrollObject::_finished.\n" );
-  if( _autoRepeat() )
-  {
-    _setAutoRepeat( false );
-    _setStart( _current() );
-    _timeLine().start();
-  }
+    Debug::Throw( "ScrollObject::_finished.\n" );
+    if( _autoRepeat() )
+    {
+        _setAutoRepeat( false );
+        _setStart( _current() );
+        _timeLine().start();
+    }
 
 }
 
 //_____________________________________________________________________
 void ScrollObject::_updateConfiguration( void )
 {
-  Debug::Throw( "ScrollObject::_updateConfiguration.\n" );
+    Debug::Throw( "ScrollObject::_updateConfiguration.\n" );
 
-  // smooth scrolling
-  setEnabled(  XmlOptions::get().get<bool>( "SMOOTH_SCROLLING_ENABLED" ) );
-  _timeLine().setDuration( XmlOptions::get().get<int>( "SMOOTH_SCROLLING_DURATION" ) );
-  _timeLine().setFrameRange( 0, XmlOptions::get().get<int>( "ANIMATION_FRAMES" ) );
+    // smooth scrolling
+    setEnabled(  XmlOptions::get().get<bool>( "SMOOTH_SCROLLING_ENABLED" ) );
+    _timeLine().setDuration( XmlOptions::get().get<int>( "SMOOTH_SCROLLING_DURATION" ) );
+    _timeLine().setFrameRange( 0, XmlOptions::get().get<int>( "ANIMATION_FRAMES" ) );
 
 }
 
@@ -226,23 +211,23 @@ void ScrollObject::_updateConfiguration( void )
 bool ScrollObject::_singleStep( int delta, unsigned int orientation )
 {
 
-  if( !delta ) return false;
+    if( !delta ) return false;
 
-  QPoint offset(0,0);
-  bool accepted = false;
-  if( (orientation & Qt::Horizontal) && _target().horizontalScrollBar() )
-  {
-    accepted = true;
-    offset.setX( -delta*_target().horizontalScrollBar()->singleStep() );
-  }
+    QPoint offset(0,0);
+    bool accepted = false;
+    if( (orientation & Qt::Horizontal) && _target().horizontalScrollBar() )
+    {
+        accepted = true;
+        offset.setX( -delta*_target().horizontalScrollBar()->singleStep() );
+    }
 
-  if( (orientation & Qt::Vertical) && _target().verticalScrollBar() )
-  {
-    accepted = true;
-    offset.setY( -delta*_target().verticalScrollBar()->singleStep() );
-  }
+    if( (orientation & Qt::Vertical) && _target().verticalScrollBar() )
+    {
+        accepted = true;
+        offset.setY( -delta*_target().verticalScrollBar()->singleStep() );
+    }
 
-  return accepted && _scrollBy( offset );
+    return accepted && _scrollBy( offset );
 
 }
 
@@ -250,23 +235,23 @@ bool ScrollObject::_singleStep( int delta, unsigned int orientation )
 bool ScrollObject::_pageStep( int delta, unsigned int mode )
 {
 
-  if( !delta ) return false;
+    if( !delta ) return false;
 
-  QPoint offset(0,0);
-  bool accepted = false;
-  if( ( mode & Qt::Horizontal ) && _target().horizontalScrollBar() )
-  {
-    accepted = true;
-    offset.setX( -delta*_target().horizontalScrollBar()->pageStep() );
-  }
+    QPoint offset(0,0);
+    bool accepted = false;
+    if( ( mode & Qt::Horizontal ) && _target().horizontalScrollBar() )
+    {
+        accepted = true;
+        offset.setX( -delta*_target().horizontalScrollBar()->pageStep() );
+    }
 
-  if( ( mode & Qt::Vertical ) && _target().verticalScrollBar() )
-  {
-    accepted = true;
-    offset.setY( -delta*_target().verticalScrollBar()->pageStep() );
-  }
+    if( ( mode & Qt::Vertical ) && _target().verticalScrollBar() )
+    {
+        accepted = true;
+        offset.setY( -delta*_target().verticalScrollBar()->pageStep() );
+    }
 
-  return accepted && _scrollBy( offset );
+    return accepted && _scrollBy( offset );
 
 }
 
@@ -282,22 +267,22 @@ bool ScrollObject::_nextPage( unsigned int mode )
 bool ScrollObject::_scrollBy( QPoint value )
 {
 
-  // set mode based on offset values
-  mode_ = 0;
-  if( value.x() ) mode_ |= Qt::Horizontal;
-  if( value.y() ) mode_ |= Qt::Vertical;
+    // set mode based on offset values
+    mode_ = 0;
+    if( value.x() ) mode_ |= Qt::Horizontal;
+    if( value.y() ) mode_ |= Qt::Vertical;
 
-  _setStart( _current() );
-  _setStep( QPointF(
-    qreal( value.x() )/_timeLine().endFrame(),
-    qreal( value.y() )/_timeLine().endFrame()
-    ) );
+    _setStart( _current() );
+    _setStep( QPointF(
+        qreal( value.x() )/_timeLine().endFrame(),
+        qreal( value.y() )/_timeLine().endFrame()
+        ) );
 
-  if( _timeLine().state() == QTimeLine::NotRunning ) _timeLine().start();
-  else if( !_autoRepeat() ) {
-    _timeLine().stop();
-    _timeLine().start();
-  }
+    if( _timeLine().state() == QTimeLine::NotRunning ) _timeLine().start();
+    else if( !_autoRepeat() ) {
+        _timeLine().stop();
+        _timeLine().start();
+    }
 
-  return true;
+    return true;
 }

@@ -24,155 +24,154 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
+
 #include <QtGui/QAbstractScrollArea>
 #include <QtCore/QTimeLine>
 #include <QtCore/QSet>
-#include <cassert>
-
-#include "Counter.h"
 
 //! customized tree view
 class ScrollObject: public QObject, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! constructor
-  ScrollObject( QAbstractScrollArea* );
+    //! constructor
+    ScrollObject( QAbstractScrollArea* );
 
-  //! destructor
-  virtual ~ScrollObject( void );
+    //! destructor
+    virtual ~ScrollObject( void );
 
-  //! event filter
-  virtual bool eventFilter( QObject*, QEvent* );
+    //! event filter
+    virtual bool eventFilter( QObject*, QEvent* );
 
-  //! enability
-  void setEnabled( bool value )
-  { enabled_ = value; }
+    //! enability
+    void setEnabled( bool value )
+    { enabled_ = value; }
 
-  //! enability
-  const bool& isEnabled( void ) const
-  { return enabled_; }
+    //! enability
+    const bool& isEnabled( void ) const
+    { return enabled_; }
 
-  protected:
+    protected:
 
-  //! keypress event
-  bool keyPressEvent( QKeyEvent* );
+    //! keypress event
+    bool keyPressEvent( QKeyEvent* );
 
-  //! keypress event
-  bool keyReleaseEvent( QKeyEvent* );
+    //! keypress event
+    bool keyReleaseEvent( QKeyEvent* );
 
-  //! wheel event
-  bool wheelEvent( QWheelEvent*, Qt::Orientation );
+    //! wheel event
+    bool wheelEvent( QWheelEvent*, Qt::Orientation );
 
-  //! wheel event
-  bool mousePressEvent( QMouseEvent* );
+    //! wheel event
+    bool mousePressEvent( QMouseEvent* );
 
-  //! time line
-  QTimeLine& _timeLine( void )
-  { return time_line_; }
+    //! time line
+    QTimeLine& _timeLine( void )
+    { return timeLine_; }
 
-  //! target
-  QAbstractScrollArea& _target( void ) const
-  { return *target_; }
+    //! target
+    QAbstractScrollArea& _target( void ) const
+    { return *target_; }
 
-  //! starting point
-  void _setStart( const QPoint& value )
-  { start_ = value; }
+    //! starting point
+    void _setStart( const QPoint& value )
+    { start_ = value; }
 
-  //! starting point
-  const QPoint& _start( void ) const
-  { return start_; }
+    //! starting point
+    const QPoint& _start( void ) const
+    { return start_; }
 
-  //! current point
-  QPoint _current( void ) const;
+    //! current point
+    QPoint _current( void ) const;
 
-  //! set current point
-  bool _setCurrent( QPoint ) const;
+    //! set current point
+    bool _setCurrent( QPoint ) const;
 
-  //! end point
-  void _setStep( const QPointF& value )
-  { step_ = value; }
+    //! end point
+    void _setStep( const QPointF& value )
+    { step_ = value; }
 
-  //! end point
-  const QPointF& _step( void ) const
-  { return step_; }
+    //! end point
+    const QPointF& _step( void ) const
+    { return step_; }
 
-  //! auto_repeat
-  void _setAutoRepeat( bool value )
-  { auto_repeat_ = value; }
+    //! auto_repeat
+    void _setAutoRepeat( bool value )
+    { autoRepeat_ = value; }
 
-  //! auto_repeat
-  bool _autoRepeat( void ) const
-  { return auto_repeat_; }
+    //! auto_repeat
+    bool _autoRepeat( void ) const
+    { return autoRepeat_; }
 
-  protected slots:
+    protected slots:
 
-  //! animated scroll
-  void _scroll( int );
+    //! animated scroll
+    void _scroll( int );
 
-  //! finished
-  void _finished( void );
+    //! finished
+    void _finished( void );
 
-  private slots:
+    private slots:
 
-  void _updateConfiguration( void );
+    void _updateConfiguration( void );
 
-  private:
+    private:
 
-  //! single step
-  bool _singleStep( int, unsigned int );
+    //! single step
+    bool _singleStep( int, unsigned int );
 
-  //! page step
-  bool _pageStep( int, unsigned int );
+    //! page step
+    bool _pageStep( int, unsigned int );
 
-  //! previous page
-  bool _previousPage( unsigned int );
+    //! previous page
+    bool _previousPage( unsigned int );
 
-  //! next page
-  bool _nextPage( unsigned int );
+    //! next page
+    bool _nextPage( unsigned int );
 
-  //! scroll contents
-  bool _scrollBy( QPoint );
+    //! scroll contents
+    bool _scrollBy( QPoint );
 
-  //! enability
-  bool enabled_;
+    //! enability
+    bool enabled_;
 
-  //! scroll mode
-  enum Mode
-  {
-    NONE = 0,
-    HORIZONTAL = 1<<0,
-    VERTICAL = 1<<1,
-    BOTH = HORIZONTAL|VERTICAL
-  };
+    //! scroll mode
+    enum Mode
+    {
+        NONE = 0,
+        HORIZONTAL = 1<<0,
+        VERTICAL = 1<<1,
+        BOTH = HORIZONTAL|VERTICAL
+    };
 
-  //! scroll mode
-  unsigned int mode_;
+    //! scroll mode
+    unsigned int mode_;
 
-  //! auto repeat
-  bool auto_repeat_;
+    //! auto repeat
+    bool autoRepeat_;
 
-  // target
-  QAbstractScrollArea* target_;
+    // target
+    QAbstractScrollArea* target_;
 
-  //! set of captured objects
-  typedef QSet<QObject*> ObjectSet;
+    //! set of captured objects
+    typedef QSet<QObject*> ObjectSet;
 
-  //! set of captured objects
-  ObjectSet targets_;
+    //! set of captured objects
+    ObjectSet targets_;
 
-  // smooth scrolling
-  QTimeLine time_line_;
+    // smooth scrolling
+    QTimeLine timeLine_;
 
-  //! starting point
-  QPoint start_;
+    //! starting point
+    QPoint start_;
 
-  //! step
-  QPointF step_;
+    //! step
+    QPointF step_;
 
 };
 

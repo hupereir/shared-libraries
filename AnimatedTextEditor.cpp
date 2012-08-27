@@ -21,32 +21,23 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedTextEditor.cpp
-  \brief Customized QTextEdit object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
 
 #include "AnimatedTextEditor.h"
 #include "Debug.h"
 #include "ScrollObject.h"
 #include "TransitionWidget.h"
 
-
-
 //________________________________________________________
 AnimatedTextEditor::AnimatedTextEditor( QWidget* parent ):
-  TextEditor( parent ),
-  transition_widget_( new TransitionWidget(this) )
+TextEditor( parent ),
+transitionWidget_( new TransitionWidget(this) )
 {
-  Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
-  _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
-  _transitionWidget().hide();
-  connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
+    Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
+    _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
+    _transitionWidget().hide();
+    connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
 
-  new ScrollObject( this );
+    new ScrollObject( this );
 
 }
 
@@ -58,37 +49,37 @@ AnimatedTextEditor::~AnimatedTextEditor( void )
 void AnimatedTextEditor::setPlainText( const QString& text )
 {
 
-  // check enability
-  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setPlainText( text );
-  else {
-    _transitionWidget().initialize();
-    TextEditor::setPlainText( text );
-    _transitionWidget().start();
-  }
+    // check enability
+    if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setPlainText( text );
+    else {
+        _transitionWidget().initialize();
+        TextEditor::setPlainText( text );
+        _transitionWidget().start();
+    }
 
 }
 
 //________________________________________________________
 void AnimatedTextEditor::setHtml( const QString& text )
 {
-  // check enability
-  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setHtml( text );
-  else {
-    _transitionWidget().initialize( this );
-    TextEditor::setHtml( text );
-    _transitionWidget().start();
-  }
+    // check enability
+    if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::setHtml( text );
+    else {
+        _transitionWidget().initialize( this );
+        TextEditor::setHtml( text );
+        _transitionWidget().start();
+    }
 }
 
 //________________________________________________________
 void AnimatedTextEditor::clear( void )
 {
-  // check enability
-  if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::clear();
-  else {
-    _transitionWidget().initialize();
-    TextEditor::clear();
-    _transitionWidget().start();
-  }
+    // check enability
+    if( !( _transitionWidget().isEnabled() && isVisible() ) ) return TextEditor::clear();
+    else {
+        _transitionWidget().initialize();
+        TextEditor::clear();
+        _transitionWidget().start();
+    }
 
 }

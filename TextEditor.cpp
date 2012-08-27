@@ -1057,10 +1057,10 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
         _synchronizeBoxSelection();
         emit copyAvailable( true );
 
-        if( boxSelectionTimer_.isActive())
+        if( autoScrollTimer_.isActive())
         {
-            if( viewport()->rect().contains( event->pos() ) ) boxSelectionTimer_.stop();
-        } else if (!viewport()->rect().contains( event->pos() )) boxSelectionTimer_.start(100, this);
+            if( viewport()->rect().contains( event->pos() ) ) autoScrollTimer_.stop();
+        } else if (!viewport()->rect().contains( event->pos() )) autoScrollTimer_.start(100, this);
 
         return;
 
@@ -1104,7 +1104,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 
     Debug::Throw( "TextEditor::mouseReleaseEvent.\n" );
 
-    boxSelectionTimer_.stop();
+    autoScrollTimer_.stop();
 
     if( event->button() == Qt::MidButton )
     { Debug::Throw( "TextEditor::mouseReleaseEvent - middle mouse button.\n" ); }
@@ -1547,15 +1547,15 @@ void TextEditor::paintEvent( QPaintEvent* event )
 void TextEditor::timerEvent(QTimerEvent *event)
 {
 
-    if (event->timerId() == boxSelectionTimer_.timerId() )
+    if (event->timerId() == autoScrollTimer_.timerId() )
     {
-        const QPoint global_position = QCursor::pos();
-        const QPoint position = viewport()->mapFromGlobal(global_position);
-        QMouseEvent mouse_event(QEvent::MouseMove, position, global_position, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-        mouseMoveEvent(&mouse_event);
-    }
 
-    return QTextEdit::timerEvent( event );
+        const QPoint globalPosition = QCursor::pos();
+        const QPoint position = viewport()->mapFromGlobal(globalPosition);
+        QMouseEvent mouseEvent(QEvent::MouseMove, position, globalPosition, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+        mouseMoveEvent(&mouseEvent);
+
+    } else return QTextEdit::timerEvent( event );
 
 }
 
