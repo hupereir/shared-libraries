@@ -236,9 +236,15 @@ void IconView::doItemsLayout( void )
 void IconView::updateGeometries( void )
 {
 
+    // vertical scrollbar
     verticalScrollBar()->setRange(0, qMax(0, boundingRect_.bottom() - viewport()->height()));
     verticalScrollBar()->setPageStep(viewport()->height());
     verticalScrollBar()->setSingleStep( rowCount_ > 0 ? boundingRect_.height()/rowCount_ : viewport()->height()*0.1 );
+
+    // horizontal scrollbar
+    horizontalScrollBar()->setRange(0, qMax(0, boundingRect_.right() - viewport()->width()));
+    horizontalScrollBar()->setPageStep(viewport()->width());
+    horizontalScrollBar()->setSingleStep( viewport()->width()*0.1 );
 
     QAbstractItemView::updateGeometries();
 
@@ -477,8 +483,6 @@ void IconView::mouseMoveEvent(QMouseEvent *event)
     if( dragButton_ == Qt::LeftButton && rubberBand_ )
     {
         rubberBand_->setGeometry(QRect( dragOrigin_, event->pos() ).normalized() );
-        setSelection( rubberBand_->geometry(), QItemSelectionModel::ClearAndSelect );
-
         if( autoScrollTimer_.isActive())
         {
             if( viewport()->rect().contains( event->pos() ) ) autoScrollTimer_.stop();
