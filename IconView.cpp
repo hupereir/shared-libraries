@@ -28,6 +28,7 @@
 #include "XmlOptions.h"
 
 #include <QtGui/QApplication>
+#include <QtGui/QDrag>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QStyle>
 
@@ -315,6 +316,36 @@ void IconView::setSelection( const QRect& constRect, QItemSelectionModel::Select
 }
 
 //____________________________________________________________________
+void IconView::startDrag( Qt::DropActions supportedActions )
+{
+
+    Debug::Throw( "IconView::startDrag.\n" );
+
+    // get list of dragable indexes
+    QModelIndexList indexes;
+    foreach( const QModelIndex& index, selectionModel()->selectedIndexes() )
+    { if( model()->flags( index ) & Qt::ItemIsDragEnabled ) indexes << index; }
+    if( indexes.isEmpty() ) return;
+
+    // get mime data
+    QMimeData* data = model()->mimeData( indexes );
+    if( !data ) return;
+
+    // create drag pixmap
+    QRect rect;
+    const QPixmap pixmap( _pixmap( indexes, rect ) );
+
+    // create drag
+    QDrag *drag = new QDrag(this);
+    drag->setMimeData(data);
+    drag->setPixmap( pixmap );
+
+    drag->setHotSpot( dragOrigin_ - rect.topLeft());
+    drag->exec( supportedActions, defaultDropAction() );
+
+}
+
+//____________________________________________________________________
 int IconView::horizontalOffset( void ) const
 { return horizontalScrollBar()->value(); }
 
@@ -398,15 +429,17 @@ void IconView::mousePressEvent( QMouseEvent* event )
     // clear hover index
     index_ = QModelIndex();
 
+    // store button and position
+    dragButton_ = event->button();
+    dragOrigin_ = event->pos();
+
     // nothing if on item
     if( indexAt( event->pos() ).isValid() ) return;
 
     // prepare rubberband
-    dragButton_ = event->button();
     if( dragButton_ == Qt::LeftButton )
     {
         selectionModel()->clear();
-        dragOrigin_ = event->pos();
         if( !rubberBand_ ) rubberBand_ = new QRubberBand(QRubberBand::Rectangle, viewport());
         rubberBand_->setGeometry( QRect( dragOrigin_, QSize() ) );
         rubberBand_->show();
@@ -572,6 +605,46 @@ void IconView::_layoutItems( void )
     }
 
 }
+
+//____________________________________________________________________
+QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
+{
+    if( indexes.isEmpty() ) return QPixmap();
+
+    Item::List items;
+    foreach( const QModelIndex& index, indexes )
+    {
+        if( !items_.contains( index.row() ) ) continue;
+        items << items_[index.row()];
+        boundingRect |= items.back().boundingRect().translated( items.back().position() );
+    }
+
+    // create pixmap
+    QPixmap pixmap( boundingRect.size() );
+    pixmap.fill( Qt::transparent );
+
+    QPainter painter( &pixmap );
+    painter.translate( -boundingRect.topLeft() );
+    foreach( const Item& item, items )
+    {
+
+        QStyleOptionViewItemV4 option = viewOptions();
+        option.rect = item.boundingRect();
+
+        // assume all indexes are selected
+        option.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+        option.state |= QStyle::State_Selected;
+
+        painter.translate( item.position() );
+        item.paint( &painter, &option, this );
+        painter.translate( -item.position() );
+
+    }
+
+    return pixmap;
+
+}
+
 
 //____________________________________________________________________
 QRect IconView::Item::boundingRect( void ) const

@@ -144,6 +144,9 @@ class IconView: public QAbstractItemView, public Counter
     //! selection
     virtual void setSelection( const QRect&, QItemSelectionModel::SelectionFlags );
 
+    //! start drag
+    virtual void startDrag( Qt::DropActions );
+
     //! horizontal offset
     virtual int horizontalOffset( void ) const;
 
@@ -270,6 +273,9 @@ class IconView: public QAbstractItemView, public Counter
         //! item map
         typedef QMap<int, Item> Map;
 
+        //! item list
+        typedef QList<Item> List;
+
         //! paint
         virtual void paint( QPainter*, const QStyleOption*, QWidget* ) const;
 
@@ -318,6 +324,9 @@ class IconView: public QAbstractItemView, public Counter
     //! scrollbar position
     QPoint _scrollBarPosition( void ) const
     { return QPoint( horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
+
+    //! get pixmap for a given index selection
+    QPixmap _pixmap( const QModelIndexList&, QRect& );
 
     private:
 
