@@ -247,8 +247,6 @@ DockPanel::LocalWidget::LocalWidget( QWidget* parent ):
     QFrame( parent ),
     Counter( "LocalWidget" ),
     button_( Qt::NoButton ),
-    dragDistance_(6),
-    dragDelay_( QApplication::doubleClickInterval() ),
     isDragging_( false )
 {
     _installActions();
@@ -299,7 +297,7 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
         event->accept();
         isDragging_ = false;
         dragPosition_ = event->pos();
-        timer_.start( dragDelay_, this );
+        timer_.start( QApplication::doubleClickInterval(), this );
     }
     return;
 }
@@ -324,7 +322,7 @@ void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
     timer_.stop();
 
     // check against drag distance
-    if( QPoint( event->pos() - dragPosition_ ).manhattanLength() < dragDistance_ )
+    if( QPoint( event->pos() - dragPosition_ ).manhattanLength() < QApplication::startDragDistance() )
     { return QFrame::mouseMoveEvent( event ); }
 
     event->accept();

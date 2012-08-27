@@ -161,12 +161,6 @@ class DockPanel: public QWidget, public Counter
         //! click position
         QPoint dragPosition_;
 
-        //! drag distance
-        int dragDistance_;
-
-        //! drag delay
-        int dragDelay_;
-
         //! dragging
         bool isDragging_;
 

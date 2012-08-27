@@ -215,12 +215,6 @@ class TabWidget: public QWidget, public Counter
     //! click position
     QPoint dragPosition_;
 
-    //! drag distance
-    int dragDistance_;
-
-    //! drag delay
-    int dragDelay_;
-
     //! true when move is enabled
     bool isDragging_;
 

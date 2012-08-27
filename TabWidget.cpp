@@ -46,8 +46,6 @@ TabWidget::TabWidget( QTabWidget* parent ):
     sizeGrip_( 0 ),
     index_( 0 ),
     button_( Qt::NoButton ),
-    dragDistance_(6),
-    dragDelay_( QApplication::doubleClickInterval() ),
     isDragging_( false )
 {
 
@@ -230,7 +228,7 @@ void TabWidget::mousePressEvent( QMouseEvent* event )
         event->accept();
         isDragging_ = false;
         dragPosition_ = event->pos();
-        timer_.start( dragDelay_, this );
+        timer_.start( QApplication::doubleClickInterval(), this );
     }
 
     return;
@@ -257,7 +255,7 @@ void TabWidget::mouseMoveEvent( QMouseEvent* event )
     timer_.stop();
 
     // check against drag distance
-    if( QPoint( event->pos() - dragPosition_ ).manhattanLength() < dragDistance_ )
+    if( QPoint( event->pos() - dragPosition_ ).manhattanLength() < QApplication::startDragDistance() )
     { return QWidget::mouseMoveEvent( event ); }
 
     event->accept();
