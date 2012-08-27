@@ -203,8 +203,9 @@ void IconView::doItemsLayout( void )
     const int rowCount( model()->rowCount() );
 
     // first remove invalid items
-    for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
-    { if( iter.key() >= rowCount ) items_.remove( iter.key() ); }
+    const QList<int> keys( items_.keys() );
+    foreach( const int& key, keys )
+    { if( key >= rowCount ) items_.remove( key ); }
 
     // update existing items and insert new ones
     for( int row = 0; row < model()->rowCount(); ++row )
