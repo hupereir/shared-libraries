@@ -32,6 +32,7 @@
 #include <QtGui/QDrag>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QStyle>
+#include <QtGui/QTextLayout>
 
 //____________________________________________________________________
 IconView::IconView( QWidget* parent ):
@@ -716,7 +717,32 @@ void IconView::Item::paint( QPainter* painter, const QStyleOption* option, QWidg
         textRect.adjust( 0, pixmap_.height() + spacing_, 0, 0 );
     }
 
-    if( !text_.isEmpty() ) painter->drawText( textRect, Qt::AlignCenter, text_ );
+    if( !text_.isEmpty() )
+    {
+
+        const int maxWidth( qMax( maxTextWidth_, pixmap_.width() ) );
+        QTextOption textOption(Qt::AlignHCenter);
+        textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+
+        qreal height(0);
+        QTextLine line;
+        QTextLayout layout( text_, QApplication::font() );
+        layout.setTextOption(textOption);
+        layout.beginLayout();
+        while( ( line = layout.createLine() ).isValid())
+        {
+
+            line.setLineWidth(maxWidth);
+            line.naturalTextWidth();
+            line.setPosition(QPointF(0, height));
+            height += line.height();
+
+        }
+
+        layout.endLayout();
+        layout.draw( painter, textRect.topLeft() + QPointF( 0.5*(textRect.width()-layout.boundingRect().width()), 0 ), QVector<QTextLayout::FormatRange>(), textRect );
+
+    }
 
 }
 
@@ -724,8 +750,39 @@ void IconView::Item::paint( QPainter* painter, const QStyleOption* option, QWidg
 void IconView::Item::_updateBoundingRect( void )
 {
     boundingRect_ = QRect( 0, 0, 2*margin_, 2*margin_ );
+
+    // calculate pixmap size
     QSize pixmapSize( pixmap_.size() );
-    QSize textSize( QApplication::fontMetrics().boundingRect( text_ ).size() );
+    // calculate text size
+    QSize textSize;
+    if( !text_.isEmpty() )
+    {
+
+        const int maxWidth( qMax( maxTextWidth_, pixmapSize.width() ) );
+
+        QTextOption textOption(Qt::AlignHCenter);
+        textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        qreal height(0);
+
+        QTextLine line;
+        QTextLayout layout( text_, QApplication::font() );
+        layout.setTextOption(textOption);
+        layout.beginLayout();
+        while( ( line = layout.createLine() ).isValid())
+        {
+
+            line.setLineWidth(maxWidth);
+            line.naturalTextWidth();
+            line.setPosition( QPointF( 0, height ) );
+            height += line.height();
+
+        }
+
+        layout.endLayout();
+        textSize = layout.boundingRect().size().toSize();
+
+    }
+
     if( !( pixmap_.isNull() || text_.isEmpty() ) )
     {
 

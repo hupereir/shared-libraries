@@ -194,6 +194,7 @@ class IconView: public QAbstractItemView, public Counter
             dirty_( true ),
             margin_( 5 ),
             spacing_( 5 ),
+            maxTextWidth_( 100 ),
             row_( -1 ),
             column_( -1 )
         {}
@@ -302,6 +303,9 @@ class IconView: public QAbstractItemView, public Counter
 
         //! spacing
         int spacing_;
+
+        //! max text width
+        int maxTextWidth_;
 
         //! pixmap
         QPixmap pixmap_;
