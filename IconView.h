@@ -182,6 +182,14 @@ class IconView: public QAbstractItemView, public Counter
     //! timer event
     virtual void timerEvent( QTimerEvent* );
 
+    //! hover index
+    virtual const QModelIndex& _hoverIndex( void ) const
+    { return hoverIndex_; }
+
+    //! hover index
+    virtual void _setHoverIndex( const QModelIndex& index )
+    { hoverIndex_ = index; }
+
     //! graphics item
     class Item: public Counter
     {
@@ -381,11 +389,14 @@ class IconView: public QAbstractItemView, public Counter
     //! drag origin
     QPoint dragOrigin_;
 
+    //! true if drag is in progress
+    bool dragInProgress_;
+
     //! autoscroll timer
     QBasicTimer autoScrollTimer_;
 
     //! hovered index
-    QModelIndex index_;
+    QModelIndex hoverIndex_;
 
 };
 

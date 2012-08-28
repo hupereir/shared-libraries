@@ -21,39 +21,27 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedTreeView.cpp
-  \brief animated Tree View
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-//#include "AnimatedScrollBar.h"
 #include "AnimatedTreeView.h"
 #include "Debug.h"
-
 #include "ScrollObject.h"
 #include "TransitionWidget.h"
 
-
-
 //________________________________________________________________________
 AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
-  TreeView( parent ),
-  transition_widget_( new TransitionWidget( this ) )
+TreeView( parent ),
+transitionWidget_( new TransitionWidget( this ) )
 {
-  Debug::Throw( "AnimatedTreeView::AnimatedTreeView.\n" );
+    Debug::Throw( "AnimatedTreeView::AnimatedTreeView.\n" );
 
-  // transition widget
-  transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
-  transitionWidget().hide();
-  connect( &transitionWidget().timeLine(), SIGNAL( finished() ), &transitionWidget(), SLOT( hide() ) );
+    // transition widget
+    transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
+    transitionWidget().hide();
+    connect( &transitionWidget().timeLine(), SIGNAL( finished() ), &transitionWidget(), SLOT( hide() ) );
 
-  setVerticalScrollMode( QAbstractItemView::ScrollPerPixel );
-  setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
+    setVerticalScrollMode( QAbstractItemView::ScrollPerPixel );
+    setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
 
-  new ScrollObject( this );
+    new ScrollObject( this );
 
 }
 
@@ -61,23 +49,23 @@ AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
 bool AnimatedTreeView::initializeAnimation( void )
 {
 
-  // transition
-  if( transitionWidget().isEnabled() && QTreeView::isVisible() )
-  {
-    transitionWidget().initialize();
-    return true;
-  } else return false;
+    // transition
+    if( transitionWidget().isEnabled() && QTreeView::isVisible() )
+    {
+        transitionWidget().initialize();
+        return true;
+    } else return false;
 
 }
 
 //________________________________________________________________________
 bool AnimatedTreeView::startAnimation( void )
 {
-  // transition
-  if( transitionWidget().isEnabled() && QTreeView::isVisible() )
-  {
-    transitionWidget().start();
-    return true;
-  } else return false;
+    // transition
+    if( transitionWidget().isEnabled() && QTreeView::isVisible() )
+    {
+        transitionWidget().start();
+        return true;
+    } else return false;
 
 }

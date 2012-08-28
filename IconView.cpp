@@ -357,7 +357,7 @@ void IconView::startDrag( Qt::DropActions supportedActions )
     drag->setMimeData(data);
     drag->setPixmap( pixmap );
 
-    drag->setHotSpot( dragOrigin_ - rect.topLeft());
+    drag->setHotSpot( dragOrigin_-rect.topLeft()+_scrollBarPosition());
     drag->exec( supportedActions, defaultDropAction() );
 
 }
@@ -426,7 +426,7 @@ void IconView::paintEvent( QPaintEvent* event )
             option.state |= QStyle::State_Selected;
         }
 
-        if( index == index_ ) option.state |= QStyle::State_MouseOver;
+        if( index == hoverIndex_ ) option.state |= QStyle::State_MouseOver;
 
         painter.translate( item.position() );
         item.paint( &painter, &option, this );
@@ -451,7 +451,7 @@ void IconView::mousePressEvent( QMouseEvent* event )
     QAbstractItemView::mousePressEvent( event );
 
     // clear hover index
-    index_ = QModelIndex();
+    _setHoverIndex( QModelIndex() );
 
     // store button and position
     dragButton_ = event->button();
@@ -475,18 +475,21 @@ void IconView::mousePressEvent( QMouseEvent* event )
 void IconView::mouseMoveEvent(QMouseEvent *event)
 {
 
-    // update hover item
-    if( dragButton_ == Qt::NoButton )
-    { index_ = indexAt( event->pos() ); }
-
     // update rubber band
-    if( dragButton_ == Qt::LeftButton && rubberBand_ )
+    if( dragButton_ == Qt::LeftButton && rubberBand_ && rubberBand_->isVisible() )
     {
+
+        _setHoverIndex( QModelIndex() );
+
         rubberBand_->setGeometry(QRect( dragOrigin_, event->pos() ).normalized() );
         if( autoScrollTimer_.isActive())
         {
             if( viewport()->rect().contains( event->pos() ) ) autoScrollTimer_.stop();
         } else if (!viewport()->rect().contains( event->pos() )) autoScrollTimer_.start(100, this);
+
+    } else {
+
+        _setHoverIndex( indexAt( event->pos() ) );
 
     }
 
@@ -517,7 +520,8 @@ void IconView::dragMoveEvent(QDragMoveEvent *event)
 {
 
     // update hover item
-    index_ = indexAt( event->pos() );
+    if( showDropIndicator() ) _setHoverIndex( indexAt( event->pos() ) );
+    else _setHoverIndex( QModelIndex() );
 
     // parent class
     QAbstractItemView::dragMoveEvent(event);

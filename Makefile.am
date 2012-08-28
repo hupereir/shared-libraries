@@ -258,6 +258,7 @@ moc_AnimatedLabel.cpp \
 moc_AnimatedLineEditor.cpp \
 moc_AnimatedStackedWidget.cpp \
 moc_AnimatedTabWidget.cpp \
+moc_AnimatedTreeView.cpp \
 moc_BaseConfigurationDialog.cpp \
 moc_BaseDialog.cpp \
 moc_BaseFindDialog.cpp \

@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedTreeView.h
-  \brief animated Tree View
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include "TreeView.h"
 
 class TransitionWidget;
@@ -40,29 +32,31 @@ class TransitionWidget;
 class AnimatedTreeView: public TreeView
 {
 
-  public:
+    Q_OBJECT
 
-  //! constructor
-  AnimatedTreeView( QWidget* parent );
+    public:
 
-  //! destructor
-  virtual ~AnimatedTreeView( void )
-  {}
+    //! constructor
+    AnimatedTreeView( QWidget* parent );
 
-  //! initialize animation
-  bool initializeAnimation( void );
+    //! destructor
+    virtual ~AnimatedTreeView( void )
+    {}
 
-  //! start animation
-  bool startAnimation( void );
+    //! initialize animation
+    bool initializeAnimation( void );
 
-  //! transition widget
-  TransitionWidget& transitionWidget( void ) const
-  { return *transition_widget_; }
+    //! start animation
+    bool startAnimation( void );
 
-  private:
+    //! transition widget
+    TransitionWidget& transitionWidget( void ) const
+    { return *transitionWidget_; }
 
-  //! transition widget
-  TransitionWidget* transition_widget_;
+    private:
+
+    //! transition widget
+    TransitionWidget* transitionWidget_;
 
 };
 
