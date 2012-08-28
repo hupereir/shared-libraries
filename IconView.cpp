@@ -35,6 +35,49 @@
 #include <QtGui/QTextLayout>
 
 //____________________________________________________________________
+/*!
+   copied from kdelibs/kdecore/text/kstringhandler.cpp
+   Copyright (C) 1999 Ian Zepp (icszepp@islc.net)
+   Copyright (C) 2006 by Dominic Battre <dominic@battre.de>
+   Copyright (C) 2006 by Martin Pool <mbp@canonical.com>
+*/
+QString preProcessWrap(const QString &text)
+{
+    const QChar zwsp(0x200b);
+
+    QString result;
+    result.reserve(text.length());
+
+    for (int i = 0; i < text.length(); i++)
+    {
+
+        const QChar c = text[i];
+        const bool openingParens = (c == QLatin1Char('(') || c == QLatin1Char('{') || c == QLatin1Char('['));
+        const bool singleQuote = (c == QLatin1Char('\'') );
+        const bool closingParens = (c == QLatin1Char(')') || c == QLatin1Char('}') || c == QLatin1Char(']'));
+        const bool breakAfter = (closingParens || c.isPunct() || c.isSymbol());
+        vbool nextIsSpace = (i == (text.length() - 1) || text[i + 1].isSpace());
+        bconst ool prevIsSpace = (i == 0 || text[i - 1].isSpace() || result[result.length() - 1] == zwsp);
+
+        // Provide a breaking opportunity before opening parenthesis
+        if (openingParens && !prevIsSpace)
+        { result += zwsp; }
+
+        // Provide a word joiner before the single quote
+        if (singleQuote && !prevIsSpace)
+        { result += QChar(0x2060); }
+
+        result += c;
+
+        if (breakAfter && !openingParens && !nextIsSpace && !singleQuote)
+        { result += zwsp; }
+
+    }
+
+    return result;
+}
+
+//____________________________________________________________________
 IconView::IconView( QWidget* parent ):
     QAbstractItemView( parent ),
     Counter( "IconView" ),
@@ -729,13 +772,15 @@ void IconView::Item::paint( QPainter* painter, const QStyleOption* option, QWidg
     if( !text_.isEmpty() )
     {
 
+        const QString text( preProcessWrap( text_ ) );
+
         const int maxWidth( qMax( maxTextWidth_, pixmap_.width() ) );
         QTextOption textOption(Qt::AlignHCenter);
         textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
 
         qreal height(0);
         QTextLine line;
-        QTextLayout layout( text_, QApplication::font() );
+        QTextLayout layout( text, QApplication::font() );
         layout.setTextOption(textOption);
         layout.beginLayout();
         while( ( line = layout.createLine() ).isValid())
@@ -762,11 +807,13 @@ void IconView::Item::_updateBoundingRect( void )
 
     // calculate pixmap size
     QSize pixmapSize( pixmap_.size() );
+
     // calculate text size
     QSize textSize;
     if( !text_.isEmpty() )
     {
 
+        const QString text( preProcessWrap( text_ ) );
         const int maxWidth( qMax( maxTextWidth_, pixmapSize.width() ) );
 
         QTextOption textOption(Qt::AlignHCenter);
@@ -774,7 +821,7 @@ void IconView::Item::_updateBoundingRect( void )
         qreal height(0);
 
         QTextLine line;
-        QTextLayout layout( text_, QApplication::font() );
+        QTextLayout layout( text, QApplication::font() );
         layout.setTextOption(textOption);
         layout.beginLayout();
         while( ( line = layout.createLine() ).isValid())
