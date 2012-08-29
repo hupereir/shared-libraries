@@ -91,6 +91,7 @@ OptionWidgetList.h \
 PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
+PathEditor.h \
 PrinterOptionWidget.h \
 PrintPreviewDialog.h \
 PrintPreviewDialog_p.h \
@@ -204,6 +205,7 @@ OptionDialog.cpp \
 OptionListBox.cpp \
 OptionModel.cpp \
 OptionWidgetList.cpp \
+PathEditor.cpp \
 PixmapCacheDialog.cpp \
 PixmapCacheModel.cpp \
 PixmapEngine.cpp \

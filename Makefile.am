@@ -90,6 +90,7 @@ OptionSlider.h \
 OptionSpinBox.h \
 OptionWidget.h \
 OptionWidgetList.h \
+PathEditor.h \
 PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
@@ -206,6 +207,7 @@ OptionDialog.cpp \
 OptionListBox.cpp \
 OptionModel.cpp \
 OptionWidgetList.cpp \
+PathEditor.cpp \
 PixmapCacheDialog.cpp \
 PixmapCacheModel.cpp \
 PixmapEngine.cpp \
@@ -296,6 +298,7 @@ moc_LogWidget.cpp \
 moc_OptionDialog.cpp \
 moc_OptionListBox.cpp \
 moc_OptionModel.cpp \
+moc_PathEditor.cpp \
 moc_PixmapCacheDialog.cpp \
 moc_PrinterOptionWidget.cpp \
 moc_PrintPreviewDialog.cpp \

@@ -114,18 +114,8 @@ void ElidedLabel::updateElidedText( void )
 
 //___________________________________________________
 QSize ElidedLabel::minimumSizeHint() const
-{
-  QSize sh = QLabel::minimumSizeHint();
-  sh.setWidth(-1);
-  return sh;
-}
+{ return QSize( -1, QLabel::minimumSizeHint().height() ); }
 
 //___________________________________________________
 QSize ElidedLabel::sizeHint() const
-{
-
-  QFontMetrics fm(fontMetrics());
-  int textWidth = fm.width(fullText_);
-  return QSize(textWidth, QLabel::sizeHint().height());
-
-}
+{ return QSize( fontMetrics().width(fullText_), QLabel::sizeHint().height() ); }

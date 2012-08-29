@@ -73,8 +73,10 @@ class ElidedLabel: public QLabel, public Counter
     //! set text
     void setText( const QString& );
 
-    //! size hing
+    //! minimum size hint
     virtual QSize minimumSizeHint( void ) const;
+
+    //! size hint
     virtual QSize sizeHint( void ) const;
 
     protected:

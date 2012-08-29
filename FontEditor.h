@@ -23,14 +23,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file FontEditor.h
-\brief readonly font name display and font dialog
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Counter.h"
 #include "Debug.h"
 
@@ -45,10 +37,10 @@ class FontEditor: public QWidget, public Counter
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        FontEditor( QWidget *parent );
+    //! constructor
+    FontEditor( QWidget *parent );
 
     //! display font
     virtual void setFont( const QFont& font )
