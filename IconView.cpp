@@ -56,8 +56,8 @@ QString preProcessWrap(const QString &text)
         const bool singleQuote = (c == QLatin1Char('\'') );
         const bool closingParens = (c == QLatin1Char(')') || c == QLatin1Char('}') || c == QLatin1Char(']'));
         const bool breakAfter = (closingParens || c.isPunct() || c.isSymbol());
-        vbool nextIsSpace = (i == (text.length() - 1) || text[i + 1].isSpace());
-        bconst ool prevIsSpace = (i == 0 || text[i - 1].isSpace() || result[result.length() - 1] == zwsp);
+        const bool nextIsSpace = (i == (text.length() - 1) || text[i + 1].isSpace());
+        const bool prevIsSpace = (i == 0 || text[i - 1].isSpace() || result[result.length() - 1] == zwsp);
 
         // Provide a breaking opportunity before opening parenthesis
         if (openingParens && !prevIsSpace)
