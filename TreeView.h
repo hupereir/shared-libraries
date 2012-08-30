@@ -1,5 +1,5 @@
-#ifndef _TreeView_h_
-#define _TreeView_h_
+#ifndef TreeView_h
+#define TreeView_h
 
 // $Id$
 
@@ -20,7 +20,6 @@
 * You should have received a copy of the GNU General Public License along with
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
-*
 *
 *******************************************************************************/
 
@@ -45,7 +44,7 @@ class TreeView: public QTreeView, public Counter
     public:
 
     //! constructor
-    TreeView( QWidget* parent );
+    TreeView( QWidget* = 0 );
 
     //! destructor
     virtual ~TreeView( void )

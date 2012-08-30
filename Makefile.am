@@ -110,6 +110,7 @@ ScratchFileMonitor.h \
 ScratchFileRemoveDialog.h \
 ScrollObject.h \
 SelectLineDialog.h \
+SimpleListView.h \
 StatusBar.h \
 SystemEnvironmentDialog.h \
 TabbedDialog.h \
@@ -227,6 +228,7 @@ ScratchFileMonitor.cpp \
 ScratchFileRemoveDialog.cpp \
 ScrollObject.cpp \
 SelectLineDialog.cpp \
+SimpleListView.cpp \
 StatusBar.cpp \
 SystemEnvironmentDialog.cpp \
 TabbedDialog.cpp \
@@ -314,6 +316,7 @@ moc_ScratchFileMonitor.cpp \
 moc_ScratchFileRemoveDialog.cpp \
 moc_ScrollObject.cpp \
 moc_SelectLineDialog.cpp \
+moc_SimpleListView.cpp \
 moc_StatusBar.cpp \
 moc_TabbedDialog.cpp \
 moc_TabWidget.cpp \

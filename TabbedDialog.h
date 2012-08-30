@@ -1,5 +1,5 @@
-#ifndef _TabbedDialog_h_
-#define _TabbedDialog_h_
+#ifndef TabbedDialog_h
+#define TabbedDialog_h
 
 // $Id$
 /******************************************************************************
@@ -20,22 +20,21 @@
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
-*
 *******************************************************************************/
 
-#include "XmlOptions.h"
 #include "BaseDialog.h"
-#include "OptionWidget.h"
+#include "Counter.h"
 #include "ListModel.h"
-#include "TreeView.h"
+#include "OptionWidget.h"
+#include "XmlOptions.h"
 
 #include <QtGui/QCloseEvent>
 #include <QtGui/QDialog>
 #include <QtGui/QIcon>
 #include <QtGui/QLayout>
-#include <QtGui/QTextLayout>
 
 class AnimatedStackedWidget;
+class TreeView;
 
 //! tabbed dialog
 /*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
@@ -63,9 +62,6 @@ class TabbedDialog: public BaseDialog, public Counter
 
     //! display item page
     virtual void _display( const QModelIndex& );
-
-    //! update width
-    virtual void _updateWidth( void );
 
     protected:
 
@@ -199,47 +195,12 @@ class TabbedDialog: public BaseDialog, public Counter
 
     };
 
-    //! item delegate
-    class Delegate : public QAbstractItemDelegate, public Counter
-    {
-
-        public:
-
-        //! constructor
-        Delegate( QObject* = 0 );
-
-        //! destructor
-        virtual ~Delegate( void )
-        {}
-
-        //! paint
-        virtual void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
-
-        //! size
-        virtual QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const;
-
-        private:
-
-        //! layout text
-        int _layoutText(QTextLayout*, int) const;
-
-        //! focus
-        void _drawFocus( QPainter*, const QStyleOptionViewItem&, const QRect& ) const;
-
-        //! icon size
-        int iconSize_;
-
-    };
-
     //! model
     Model& _model( void )
     { return model_; }
 
     //! model
     Model model_;
-
-    //! delegate
-    Delegate delegate_;
 
     //! Configuration list
     TreeView* list_;

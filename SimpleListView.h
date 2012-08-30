@@ -1,7 +1,8 @@
-#ifndef ListDelegate_h
-#define ListDelegate_h
+#ifndef SimpleListView_h
+#define SimpleListView_h
 
 // $Id$
+
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -21,5 +22,32 @@
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
 *******************************************************************************/
+
+#include "TreeView.h"
+
+//! single column list view
+class SimpleListView: public TreeView
+{
+
+    Q_OBJECT
+
+    public:
+
+    //! constructor
+    SimpleListView( QWidget* = 0 );
+
+    //! destructor
+    virtual ~SimpleListView( void )
+    {}
+
+    //! model
+    virtual void setModel( QAbstractItemModel* );
+
+    protected slots:
+
+    //! adjust width
+    void _adjustWidth( void );
+
+};
 
 #endif
