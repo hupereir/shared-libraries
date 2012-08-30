@@ -32,6 +32,7 @@
 
 #include <QtGui/QAbstractButton>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QLabel>
 #include <QtGui/QLayout>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QStackedWidget>
@@ -52,6 +53,9 @@ class PathEditor: public QStackedWidget, public Counter
     virtual ~PathEditor( void )
     {}
 
+    //! prefix
+    void setPrefix( const QString& );
+
     //! set path
     void setPath( const File& );
 
@@ -63,6 +67,16 @@ class PathEditor: public QStackedWidget, public Counter
     //! path changed
     void pathChanged( const File& );
 
+    public slots:
+
+    //! prefix
+    void setUsePrefix( bool value )
+    {
+        if( usePrefix_ == value ) return;
+        usePrefix_ = value;
+        _updatePrefix();
+    }
+
     protected:
 
     //! resize events
@@ -70,6 +84,9 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! resize events
     virtual void timerEvent( QTimerEvent* );
+
+    //! update prefix
+    void _updatePrefix( void );
 
     protected slots:
 
@@ -83,6 +100,12 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! return pressed in editor
     void _returnPressed( void );
+
+    //! menu button clicked
+    void _menuButtonClicked( void );
+
+    //! update path from menu action
+    void _updatePath( QAction* );
 
     //! button clicked
     void _buttonClicked( QAbstractButton* );
@@ -109,6 +132,18 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! resize timer
     QBasicTimer resizeTimer_;
+
+    //! prefix
+    QString prefix_;
+
+    //! prefix
+    QLabel* prefixLabel_;
+
+    //! menu button
+    QAbstractButton* menuButton_;
+
+    //! use prefix
+    bool usePrefix_;
 
 };
 

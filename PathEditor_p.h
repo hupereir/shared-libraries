@@ -33,8 +33,54 @@
 #include <QtGui/QAbstractButton>
 #include <QtGui/QPaintEvent>
 
+//! path editor button
+class PathEditorButton: public QAbstractButton
+{
+
+    Q_OBJECT
+
+    public:
+
+    //! constructor
+    PathEditorButton( QWidget* parent ):
+        QAbstractButton( parent ),
+        mouseOver_( false )
+    {
+        Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
+        setAttribute( Qt::WA_Hover );
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        setMinimumHeight(parent->minimumHeight());
+    }
+
+    //! destructor
+    virtual ~PathEditorButton( void )
+    {}
+
+    //! set mouse over manualy
+    void setMouseOver( bool value )
+    { mouseOver_ = value; }
+
+    //! border width
+    enum { BorderWidth = 2 };
+
+    protected:
+
+    //! event
+    virtual bool event( QEvent* );
+
+    //! true if mouse over
+    bool _mouseOver( void ) const
+    { return mouseOver_; }
+
+    private:
+
+    //! mouse over
+    bool mouseOver_;
+
+};
+
 //! path item
-class PathEditorItem: public QAbstractButton, public Counter
+class PathEditorItem: public PathEditorButton, public Counter
 {
 
     Q_OBJECT
@@ -43,15 +89,10 @@ class PathEditorItem: public QAbstractButton, public Counter
 
     //! constructor
     PathEditorItem( QWidget* parent ):
-        QAbstractButton( parent ),
+        PathEditorButton( parent ),
         Counter( "PathEditorItem" ),
-        isRoot_( false ),
-        isLast_( false ),
-        mouseOver_( false )
-    {
-        Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
-        setAttribute( Qt::WA_Hover );
-    }
+        isLast_( false )
+    { Debug::Throw( "PathEditorItem::PathEditorItem.\n" ); }
 
     //! destructor
     virtual ~PathEditorItem( void )
@@ -84,13 +125,7 @@ class PathEditorItem: public QAbstractButton, public Counter
     typedef QList<PathEditorItem*> List;
     typedef QListIterator<PathEditorItem*> ListIterator;
 
-    //! border width
-    enum { BorderWidth = 2 };
-
     protected:
-
-    //! event
-    virtual bool event( QEvent* );
 
     //! paint event
     virtual void paintEvent( QPaintEvent* );
@@ -107,19 +142,45 @@ class PathEditorItem: public QAbstractButton, public Counter
     //! path
     File path_;
 
-    //! true if is root
-    bool isRoot_;
-
     //! true if last
     bool isLast_;
 
-    //! true if hover
-    bool mouseOver_;
+};
+
+//! path editor menu button
+class PathEditorMenuButton: public PathEditorButton, public Counter
+{
+
+    Q_OBJECT
+
+    public:
+
+    //! constructor
+    PathEditorMenuButton( QWidget* parent ):
+        PathEditorButton( parent ),
+        Counter( "PathEditorMenuButton" )
+    {
+        Debug::Throw( "PathEditorMenuButton::PathEditorMenuButton.\n" );
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        _updateMinimumSize();
+    }
+
+    //! destructor
+    virtual ~PathEditorMenuButton( void )
+    {}
+
+    protected:
+
+    //! paint event
+    virtual void paintEvent( QPaintEvent* );
+
+    // minimum size
+    void _updateMinimumSize( void );
 
 };
 
 //! path editor switch. Toggle path editor to combobox
-class PathEditorSwitch: public QAbstractButton, public Counter
+class PathEditorSwitch: public PathEditorButton, public Counter
 {
 
     Q_OBJECT
@@ -128,13 +189,11 @@ class PathEditorSwitch: public QAbstractButton, public Counter
 
     //! constructor
     PathEditorSwitch( QWidget* parent ):
-        QAbstractButton( parent ),
-        Counter( "PathEditorSwitch" ),
-        mouseOver_( false )
+        PathEditorButton( parent ),
+        Counter( "PathEditorSwitch" )
     {
         Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
         setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-        setAttribute( Qt::WA_Hover );
     }
 
     //! destructor
@@ -143,16 +202,8 @@ class PathEditorSwitch: public QAbstractButton, public Counter
 
     protected:
 
-    //! event
-    virtual bool event( QEvent* );
-
     //! paint event
     virtual void paintEvent( QPaintEvent* );
-
-    private:
-
-    //! true if hover
-    bool mouseOver_;
 
 };
 
