@@ -88,11 +88,12 @@ OptionSlider.h \
 OptionSpinBox.h \
 OptionWidget.h \
 OptionWidgetList.h \
+PathEditor.h \
+PathEditor_p.h \
+PathHistory.h \
 PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
-PathEditor.h \
-PathEditor_p.h \
 PrinterOptionWidget.h \
 PrintPreviewDialog.h \
 PrintPreviewDialog_p.h \
@@ -207,6 +208,7 @@ OptionListBox.cpp \
 OptionModel.cpp \
 OptionWidgetList.cpp \
 PathEditor.cpp \
+PathHistory.cpp \
 PixmapCacheDialog.cpp \
 PixmapCacheModel.cpp \
 PixmapEngine.cpp \

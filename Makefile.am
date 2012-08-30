@@ -92,6 +92,7 @@ OptionWidget.h \
 OptionWidgetList.h \
 PathEditor.h \
 PathEditor_p.h \
+PathHistory.h \
 PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
@@ -209,6 +210,7 @@ OptionListBox.cpp \
 OptionModel.cpp \
 OptionWidgetList.cpp \
 PathEditor.cpp \
+PathHistory.cpp \
 PixmapCacheDialog.cpp \
 PixmapCacheModel.cpp \
 PixmapEngine.cpp \

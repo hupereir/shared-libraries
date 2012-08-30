@@ -1,0 +1,56 @@
+// $Id$
+
+/******************************************************************************
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*
+*******************************************************************************/
+
+/*!
+\file    PathHistory.cpp
+\brief   Handles directory navigation history
+\author  Hugo Pereira
+\version $Revision$
+\date    $Date$
+*/
+
+#include "Debug.h"
+#include "PathHistory.h"
+
+
+
+//__________________________________________________________________
+void PathHistory::add( File path )
+{
+    Debug::Throw() << "PathHistory::add - " << path << endl;
+
+    // make sure path is valid
+    if( path.isEmpty() ) return;
+
+    // make sure path is different from current
+    if( !pathList_.empty() && pathList_[index_] == path ) return;
+
+    // remove everything that is after index_ from pathList_
+    while( pathList_.size() > index_+1 ) pathList_.pop_back();
+
+    // insert new path
+    pathList_.push_back( path );
+    index_ = pathList_.size()-1;
+    return;
+
+}
