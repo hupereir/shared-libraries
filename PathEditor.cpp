@@ -32,6 +32,7 @@
 #include <QtCore/QEvent>
 #include <QtCore/QTimer>
 
+#include <QtGui/QApplication>
 #include <QtGui/QLayout>
 #include <QtGui/QMenu>
 #include <QtGui/QPainter>
@@ -114,9 +115,16 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
     QPainter painter( this );
     painter.setClipRegion( event->region() );
 
+    // save layout direction
+    const bool isRightToLeft( qApp->isRightToLeft() );
+
     // render text
     QRect textRect( rect().adjusted( 0, 2*BorderWidth, 0, -2*BorderWidth ) );
-    if( !isLast_ ) textRect.adjust( 0, 0, -_arrowWidth()-2*BorderWidth, 0 );
+    if( !isLast_ )
+    {
+        if( isRightToLeft ) textRect.adjust(_arrowWidth()-2*BorderWidth, 0, 0, 0 );
+        else textRect.adjust( 0, 0, -_arrowWidth()-2*BorderWidth, 0 );
+    }
 
     QFont adjustedFont(font());
     adjustedFont.setBold( isLast_ );
@@ -128,9 +136,12 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
     {
         QStyleOption option;
         option.initFrom(this);
-        option.rect = QRect( textRect.width(), 0, rect().width()-textRect.width()-BorderWidth, rect().height() );
+
+        if( isRightToLeft ) option.rect = QRect( 0, 0, textRect.left()+BorderWidth, rect().height() );
+        else option.rect = QRect( textRect.width(), 0, rect().width()-textRect.width()-BorderWidth, rect().height() );
+
         option.palette = palette();
-        style()->drawPrimitive(QStyle::PE_IndicatorArrowRight, &option, &painter, this);
+        style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this);
     }
 
     // render mouse over
@@ -159,7 +170,8 @@ void PathEditorMenuButton::paintEvent( QPaintEvent* event )
     option.initFrom(this);
     option.rect = rect();
     option.palette = palette();
-    style()->drawPrimitive(QStyle::PE_IndicatorArrowLeft, &option, &painter, this);
+    const bool isRightToLeft( qApp->isRightToLeft() );
+    style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowRight:QStyle::PE_IndicatorArrowLeft, &option, &painter, this);
 
     // render mouse over
     if( _mouseOver() )
