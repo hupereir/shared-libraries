@@ -24,79 +24,21 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "CustomComboBox.h"
 #include "File.h"
 
-#include <QtCore/QEvent>
-#include <QtCore/QList>
+#include <QtCore/QBasicTimer>
+#include <QtCore/QTimerEvent>
 
-#include <QtGui/QButtonGroup>
-#include <QtGui/QPaintEvent>
 #include <QtGui/QAbstractButton>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QLayout>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QStackedWidget>
 #include <QtGui/QWidget>
 
-//! path item
-class PathEditorItem: public QAbstractButton, public Counter
-{
-
-    public:
-
-    //! constructor
-    PathEditorItem( QWidget* );
-
-    //! destructor
-    virtual ~PathEditorItem( void )
-    {}
-
-    //! set is last
-    void setIsLast( bool value );
-
-    //! set path
-    void setPath( const File& );
-
-    //! path
-    const File& path( void ) const
-    { return path_; }
-
-    //! minimum size hint
-    virtual QSize minimumSizeHint( void ) const;
-
-    //! size hint
-    virtual QSize sizeHint( void ) const;
-
-    typedef QList<PathEditorItem*> List;
-
-    protected:
-
-    //! event
-    virtual bool event( QEvent* );
-
-    //! paint event
-    virtual void paintEvent( QPaintEvent* );
-
-    //! arrow width
-    int _arrowWidth( void ) const;
-
-    private:
-
-    //! border width
-    enum { BorderWidth = 2 };
-
-    //! path
-    File path_;
-
-    //! true if is root
-    bool isRoot_;
-
-    //! true if last
-    bool isLast_;
-
-    //! true if hover
-    bool mouseOver_;
-
-};
-
 //! path editor
-class PathEditor: public QWidget, public Counter
+class PathEditor: public QStackedWidget, public Counter
 {
 
     Q_OBJECT
@@ -113,20 +55,60 @@ class PathEditor: public QWidget, public Counter
     //! set path
     void setPath( const File& );
 
+    //! path
+    File path( void ) const;
+
     signals:
 
     //! path changed
     void pathChanged( const File& );
 
+    protected:
+
+    //! resize events
+    virtual void resizeEvent( QResizeEvent* );
+
+    //! resize events
+    virtual void timerEvent( QTimerEvent* );
+
     protected slots:
+
+    //! show browser
+    void _showBrowser( void )
+    { setCurrentWidget( browserContainer_ ); }
+
+    //! show editor
+    void _showEditor( void )
+    { setCurrentWidget( editorContainer_ ); }
+
+    //! return pressed in editor
+    void _returnPressed( void );
 
     //! button clicked
     void _buttonClicked( QAbstractButton* );
 
+    //! update button visibility
+    void _updateButtonVisibility( void );
+
     private:
+
+    //! path browser container
+    QWidget* browserContainer_;
+
+    //! editor container
+    QWidget* editorContainer_;
+
+    //! editor
+    CustomComboBox* editor_;
+
+    //! button layout
+    QBoxLayout* buttonLayout_;
 
     //! button group
     QButtonGroup* group_;
+
+    //! resize timer
+    QBasicTimer resizeTimer_;
 
 };
 

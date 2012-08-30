@@ -21,45 +21,34 @@
 *******************************************************************************/
 
 #include "PathEditor.h"
+#include "PathEditor_p.h"
+
+#include "BaseIcons.h"
 #include "Debug.h"
+#include "IconEngine.h"
+#include "IconSize.h"
 
 #include <QtCore/QDir>
+#include <QtCore/QEvent>
+
 #include <QtGui/QLayout>
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOption>
 #include <QtGui/QStyleOptionViewItemV4>
 #include <QtGui/QTextOption>
+#include <QtGui/QToolButton>
 
 #include <cassert>
-
-//____________________________________________________________________________
-PathEditorItem::PathEditorItem( QWidget* parent ):
-    QAbstractButton( parent ),
-    Counter( "PathEditorItem" ),
-    isRoot_( false ),
-    isLast_( false ),
-    mouseOver_( false )
-{
-    Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
-    setAttribute( Qt::WA_Hover );
-}
-
-//____________________________________________________________________________
-void PathEditorItem::setIsLast( bool value )
-{
-    if( isLast_ == value ) return;
-    isLast_ = value;
-    adjustSize();
-    update();
-}
 
 //____________________________________________________________________________
 void PathEditorItem::setPath( const File& path )
 {
 
+    Debug::Throw( "PathEditorItem::setPath.\n" );
+
     path_ = path;
-    if( QDir( path ).isRoot() )
+    if( QDir( path_ ).isRoot() )
     {
 
         isRoot_ = true;
@@ -76,11 +65,14 @@ void PathEditorItem::setPath( const File& path )
 
     }
 
+    _updateMinimumSize();
+
 }
 
 //____________________________________________________________________________
-QSize PathEditorItem::minimumSizeHint( void ) const
+void PathEditorItem::_updateMinimumSize( void )
 {
+    Debug::Throw( "PathEditor::_updateMinimumSize.\n" );
     QFont adjustedFont(font());
     adjustedFont.setBold( isLast_ );
 
@@ -95,13 +87,9 @@ QSize PathEditorItem::minimumSizeHint( void ) const
     const int arrowWidth( _arrowWidth() );
     if( arrowWidth > 0 ) size.rwidth() += arrowWidth + 2*BorderWidth;
 
-    return size;
-
+    // update
+    setMinimumSize( size );
 }
-
-//____________________________________________________________________________
-QSize PathEditorItem::sizeHint( void ) const
-{ return minimumSizeHint() + QSize( 4*BorderWidth, 0 ); }
 
 //____________________________________________________________________________
 bool PathEditorItem::event( QEvent* event )
@@ -122,7 +110,6 @@ bool PathEditorItem::event( QEvent* event )
 //____________________________________________________________________________
 void PathEditorItem::paintEvent( QPaintEvent* event )
 {
-
     QPainter painter( this );
     painter.setClipRegion( event->region() );
 
@@ -162,23 +149,107 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
 }
 
 //____________________________________________________________________________
-int PathEditorItem::_arrowWidth( void ) const
-{ return isLast_ ? 0:qMax( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
+bool PathEditorSwitch::event( QEvent* event )
+{
+
+    switch( event->type() )
+    {
+
+        case QEvent::HoverEnter: mouseOver_ = true; break;
+        case QEvent::HoverLeave: mouseOver_ = false; break;
+        default: break;
+    }
+
+    return QAbstractButton::event( event );
+
+}
+
+//____________________________________________________________________________
+void PathEditorSwitch::paintEvent( QPaintEvent* event )
+{
+
+    if( mouseOver_ )
+    {
+        QPainter painter( this );
+        painter.setClipRegion( event->region() );
+
+        painter.setPen( QPen( palette().color( foregroundRole() ), 2 ) );
+        painter.setBrush( Qt::NoBrush );
+        painter.drawLine( rect().topLeft() + QPoint( 1, 2*PathEditorItem::BorderWidth ), rect().bottomLeft() + QPoint( 1, -2*PathEditorItem::BorderWidth ) );
+    }
+
+}
 
 //____________________________________________________________________________
 PathEditor::PathEditor( QWidget* parent ):
-    QWidget( parent ),
+    QStackedWidget( parent ),
     Counter( "PathEditor" )
 {
+    Debug::Throw( "PathEditor::PathEditor.\n" );
 
-    QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setSpacing(0);
-    hLayout->setMargin(0);
-    setLayout( hLayout );
+    // size policy
+    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 
-    group_ = new QButtonGroup( this );
-    group_->setExclusive( false );
-    connect( group_, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
+    // browser
+    {
+        browserContainer_ = new QWidget();
+        browserContainer_->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+
+        QHBoxLayout* hLayout = new QHBoxLayout();
+        hLayout->setSpacing(0);
+        hLayout->setMargin(0);
+        browserContainer_->setLayout( hLayout );
+
+        // button layout
+        hLayout->addLayout( buttonLayout_ = new QHBoxLayout() );
+        buttonLayout_->setSpacing(0);
+        buttonLayout_->setMargin(0);
+
+        // switch
+        PathEditorSwitch* editorSwitch = new PathEditorSwitch( browserContainer_ );
+        hLayout->addWidget( editorSwitch, 1 );
+        connect( editorSwitch, SIGNAL( clicked( void ) ), SLOT( _showEditor( void ) ) );
+
+        // button group
+        group_ = new QButtonGroup( browserContainer_ );
+        group_->setExclusive( false );
+        connect( group_, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
+
+        addWidget( browserContainer_ );
+    }
+
+    // editor
+    {
+        editorContainer_ = new QWidget();
+        editorContainer_->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+
+        QHBoxLayout* hLayout = new QHBoxLayout();
+        hLayout->setSpacing(0);
+        hLayout->setMargin(0);
+        editorContainer_->setLayout( hLayout );
+
+        editor_ = new CustomComboBox( editorContainer_ );
+        editor_->setEditable( true );
+        hLayout->addWidget( editor_ );
+
+        // ok button
+        QToolButton* button = new QToolButton( editorContainer_ );
+        button->setIcon( IconEngine::get( ICONS::DIALOG_OK ) );
+        button->setAutoRaise( true );
+        button->setToolButtonStyle( Qt::ToolButtonIconOnly );
+        button->setIconSize( IconSize( IconSize::Small ) );
+        button->setFixedSize( QSize( editor_->height(), editor_->height() ) );
+        hLayout->addWidget( button );
+
+        connect( editor_->lineEdit(), SIGNAL( returnPressed( void ) ), SLOT( _returnPressed( void ) ) );
+        connect( editor_, SIGNAL( activated( int ) ), SLOT( _returnPressed( void ) ) );
+        connect( button, SIGNAL( clicked( void ) ), SLOT( _showBrowser( void ) ) );
+
+        addWidget( editorContainer_ );
+    }
+
+    // current widget
+    setCurrentWidget( browserContainer_ );
 
 }
 
@@ -186,41 +257,136 @@ PathEditor::PathEditor( QWidget* parent ):
 void PathEditor::setPath( const File& path )
 {
 
-    setUpdatesEnabled( false );
+    Debug::Throw( "PathEditor::setPath.\n" );
 
-    // first remove all existing PathEditorItems
-    foreach( PathEditorItem* item, findChildren<PathEditorItem*>() )
+
+    // upbate browser
     {
-        group_->removeButton( item );
-        item->hide();
-        item->deleteLater();
+
+        browserContainer_->setUpdatesEnabled( false );
+        PathEditorItem::List items( browserContainer_->findChildren<PathEditorItem*>() );
+
+        int index = 0;
+        PathEditorItem* item(0);
+        if( index < items.size() ) item = items[index];
+        else {
+            item = new PathEditorItem( browserContainer_ );
+            group_->addButton( item );
+            buttonLayout_->addWidget( item );
+        }
+
+        item->setPath( File("/") );
+        index++;
+
+        const int sectionCount( path.split( '/', QString::SkipEmptyParts ).size() );
+        for( int i=0; i < sectionCount; i++ )
+        {
+
+            // setup section
+            QString section = QString( "/" ) + path.section( '/', 0, i, QString::SectionSkipEmpty );
+
+            if( index < items.size() ) item = items[index];
+            else {
+                item = new PathEditorItem( browserContainer_ );
+                group_->addButton( item );
+                buttonLayout_->addWidget( item );
+            }
+
+            item->setPath( section );
+            item->setIsLast( i == sectionCount - 1 );
+            index++;
+        }
+
+        // delete remaining index
+        while( items.size() > index )
+        {
+            item = items.back();
+            item->hide();
+            group_->removeButton( item );
+            item->deleteLater();
+            items.removeLast();
+        }
+
+        // update buttons visibility
+        _updateButtonVisibility();
+        browserContainer_->setUpdatesEnabled( true );
+
     }
 
-    // get layout
-    QHBoxLayout* layout( static_cast<QHBoxLayout*>( this->layout() ) );
-
-    // create 'last' item
-    PathEditorItem* item = new PathEditorItem( this );
-    item->setPath( path );
-    item->setIsLast( true );
-    group_->addButton( item );
-    layout->insertWidget( 0, item );
-
-    QDir dir( path );
-    while( dir.cdUp() )
+    // update editor
+    if( editor_->currentText() != path )
     {
-        PathEditorItem* item = new PathEditorItem( this );
-        item->setPath( dir.path() );
-        group_->addButton( item );
-        layout->insertWidget( 0, item );
+        int id( editor_->findText( path ) );
+        if( id < 0 )
+        {
+            editor_->addItem( path );
+            id = editor_->findText( path );
+        }
+
+        editor_->setCurrentIndex( id );
+
     }
-
-    layout->addStretch( 1 );
-
-    setUpdatesEnabled( true );
 
 }
 
 //____________________________________________________________________________
+File PathEditor::path( void ) const
+{
+    Debug::Throw( "PathEditor::path.\n" );
+    return editor_->currentText();
+}
+
+//____________________________________________________________________________
+void PathEditor::resizeEvent( QResizeEvent* event )
+{
+    resizeTimer_.start( 0, this );
+    QWidget::resizeEvent( event );
+}
+
+//____________________________________________________________________________
+void PathEditor::timerEvent( QTimerEvent* event )
+{
+    if( event->timerId() == resizeTimer_.timerId() )
+    {
+        resizeTimer_.stop();
+        _updateButtonVisibility();
+    } else return QWidget::timerEvent( event );
+}
+
+//____________________________________________________________________________
+void PathEditor::_returnPressed( void )
+{
+    const File path( editor_->currentText() );
+    setPath( path );
+    emit pathChanged( path );
+}
+
+//____________________________________________________________________________
 void PathEditor::_buttonClicked( QAbstractButton* button )
-{ emit pathChanged( static_cast<PathEditorItem*>( button )->path() ); }
+{
+    const File path( static_cast<PathEditorItem*>( button )->path() );
+    setPath( path );
+    emit pathChanged( path );
+}
+
+//____________________________________________________________________________
+void PathEditor::_updateButtonVisibility( void )
+{
+    Debug::Throw( "PathEditor::_updateButtonVisibility.\n" );
+
+    // get widget width
+    int maxWidth( this->width() );
+    int width( 0 );
+
+    // loop over items backward
+    PathEditorItem::ListIterator iterator( browserContainer_->findChildren<PathEditorItem*>() );
+    iterator.toBack();
+    while( iterator.hasPrevious() )
+    {
+        PathEditorItem* item( iterator.previous() );
+        width += item->sizeHint().width();
+        if( width >= maxWidth ) item->hide();
+        else item->show();
+    }
+
+}

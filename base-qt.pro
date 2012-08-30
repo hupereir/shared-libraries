@@ -92,6 +92,7 @@ PixmapCacheDialog.h \
 PixmapCacheModel.h \
 PixmapEngine.h \
 PathEditor.h \
+PathEditor_p.h \
 PrinterOptionWidget.h \
 PrintPreviewDialog.h \
 PrintPreviewDialog_p.h \

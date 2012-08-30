@@ -36,10 +36,10 @@
 
 //___________________________________________________
 ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
-QLabel( parent ),
-Counter( "ElidedLabel" ),
-elideMode_( Qt::ElideLeft ),
-fullText_( text )
+    QLabel( parent ),
+    Counter( "ElidedLabel" ),
+    elideMode_( Qt::ElideLeft ),
+    fullText_( text )
 {
 
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );

@@ -71,7 +71,7 @@ class CustomComboBox: public QComboBox, public Counter
     public:
 
     //! constructor
-    CustomComboBox( QWidget* parent );
+    CustomComboBox( QWidget* = 0 );
 
     //! editability
     void setEditable( bool value );
