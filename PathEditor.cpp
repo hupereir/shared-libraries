@@ -316,7 +316,6 @@ void PathEditor::setPath( const File& constPath )
     // upbate browser
     {
 
-        //browserContainer_->setUpdatesEnabled( false );
         PathEditorItem::List items( browserContainer_->findChildren<PathEditorItem*>() );
 
         // need to keep focus
@@ -384,7 +383,6 @@ void PathEditor::setPath( const File& constPath )
 
         // update buttons visibility
         resizeTimer_.start( 0, this );
-        //browserContainer_->setUpdatesEnabled( true );
 
     }
 
@@ -408,6 +406,9 @@ void PathEditor::setPath( const File& constPath )
 
     }
 
+    // add to history
+    history_.add( constPath );
+
 }
 
 //____________________________________________________________________________
@@ -423,6 +424,40 @@ File PathEditor::path( void ) const
     }
 
     return path;
+}
+
+//____________________________________________________________________________
+bool PathEditor::hasParent( void ) const
+{ return browserContainer_->findChildren<PathEditorItem*>().size() >= 2; }
+
+//____________________________________________________________________________
+void PathEditor::selectParent( void )
+{
+    PathEditorItem::List items( browserContainer_->findChildren<PathEditorItem*>() );
+    if( items.size() < 2 ) return;
+    const File path( items[items.size()-2]->path() );
+    setPath( path );
+    emit pathChanged( path );
+}
+
+//____________________________________________________________________________
+void PathEditor::selectPrevious( void )
+{
+    Debug::Throw( "PathEditor::selectPrevious.\n" );
+    if( !hasPrevious() ) return;
+    const File path( history_.previous() );
+    setPath( path );
+    emit pathChanged( path );
+}
+
+//____________________________________________________________________________
+void PathEditor::selectNext( void )
+{
+    Debug::Throw( "PathEditor::selectNext.\n" );
+    if( !hasNext() ) return;
+    const File path( history_.next() );
+    setPath( path );
+    emit pathChanged( path );
 }
 
 //____________________________________________________________________________

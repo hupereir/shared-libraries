@@ -26,6 +26,7 @@
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "File.h"
+#include "PathHistory.h"
 
 #include <QtCore/QBasicTimer>
 #include <QtCore/QTimerEvent>
@@ -62,6 +63,17 @@ class PathEditor: public QStackedWidget, public Counter
     //! path
     File path( void ) const;
 
+    //! true if parent directory is available
+    bool hasParent( void ) const;
+
+    //! true if previous path is available in history
+    bool hasPrevious( void ) const
+    { return history_.previousAvailable(); }
+
+    //! true if next path available in history
+    bool hasNext( void ) const
+    { return history_.nextAvailable(); }
+
     signals:
 
     //! path changed
@@ -76,6 +88,15 @@ class PathEditor: public QStackedWidget, public Counter
         usePrefix_ = value;
         _updatePrefix();
     }
+
+    //! select parent path
+    void selectParent( void );
+
+    //! select previous path in history
+    void selectPrevious( void );
+
+    //! select next path in history
+    void selectNext( void );
 
     protected:
 
@@ -141,6 +162,9 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! menu button
     QAbstractButton* menuButton_;
+
+    //! path history
+    PathHistory history_;
 
     //! use prefix
     bool usePrefix_;
