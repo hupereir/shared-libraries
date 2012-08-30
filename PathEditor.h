@@ -37,6 +37,8 @@
 #include <QtGui/QWidget>
 
 //! path editor
+class PathEditorItem;
+class PathEditorMenuButton;
 class PathEditor: public QStackedWidget, public Counter
 {
 
@@ -152,7 +154,10 @@ class PathEditor: public QStackedWidget, public Counter
     QLabel* prefixLabel_;
 
     //! menu button
-    QAbstractButton* menuButton_;
+    PathEditorMenuButton* menuButton_;
+
+    //! item buttons
+    QList<PathEditorItem*> items_;
 
     //! path history
     PathHistory history_;

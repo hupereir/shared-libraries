@@ -317,16 +317,14 @@ void PathEditor::setPath( const File& constPath )
     // upbate browser
     {
 
-        PathEditorItem::List items( browserContainer_->findChildren<PathEditorItem*>() );
-
         // need to keep focus
-        const bool hasFocus( !items.isEmpty() && items.back()->hasFocus() );
+        const bool hasFocus( !items_.isEmpty() && items_.back()->hasFocus() );
 
         int index = 0;
         PathEditorItem* item(0);
-        if( index < items.size() ) {
+        if( index < items_.size() ) {
 
-            item = items[index];
+            item = items_[index];
             item->setIsLast( false );
 
         } else {
@@ -334,6 +332,7 @@ void PathEditor::setPath( const File& constPath )
             item = new PathEditorItem( browserContainer_ );
             group_->addButton( item );
             buttonLayout_->addWidget( item );
+            items_ << item;
 
         }
 
@@ -347,10 +346,10 @@ void PathEditor::setPath( const File& constPath )
             // setup section
             QString section = QString( "/" ) + constPath.section( '/', 0, i, QString::SectionSkipEmpty );
 
-            if( index < items.size() )
+            if( index < items_.size() )
             {
 
-                item = items[index];
+                item = items_[index];
                 item->setIsLast( false );
 
             } else {
@@ -358,6 +357,7 @@ void PathEditor::setPath( const File& constPath )
                 item = new PathEditorItem( browserContainer_ );
                 group_->addButton( item );
                 buttonLayout_->addWidget( item );
+                items_ << item;
 
             }
 
@@ -373,13 +373,13 @@ void PathEditor::setPath( const File& constPath )
         }
 
         // delete remaining index
-        while( items.size() > index )
+        while( items_.size() > index )
         {
-            item = items.back();
+            item = items_.back();
             item->hide();
             group_->removeButton( item );
             item->deleteLater();
-            items.removeLast();
+            items_.removeLast();
         }
 
         // update buttons visibility
@@ -429,14 +429,13 @@ File PathEditor::path( void ) const
 
 //____________________________________________________________________________
 bool PathEditor::hasParent( void ) const
-{ return browserContainer_->findChildren<PathEditorItem*>().size() >= 2; }
+{ return items_.size() >= 2; }
 
 //____________________________________________________________________________
 void PathEditor::selectParent( void )
 {
-    PathEditorItem::List items( browserContainer_->findChildren<PathEditorItem*>() );
-    if( items.size() < 2 ) return;
-    const File path( items[items.size()-2]->path() );
+    if( items_.size() < 2 ) return;
+    const File path( items_[items_.size()-2]->path() );
     setPath( path );
     emit pathChanged( path );
 }
@@ -523,7 +522,7 @@ void PathEditor::_menuButtonClicked( void )
     QStringList pathList;
 
     // get list of hidden buttons
-    foreach( PathEditorItem* item, browserContainer_->findChildren<PathEditorItem*>() )
+    foreach( PathEditorItem* item, items_ )
     { if( item->isHidden() ) pathList << item->path(); }
 
     // check list
@@ -570,7 +569,7 @@ void PathEditor::_updateButtonVisibility( void )
     { maxWidth -= prefixLabel_->width(); }
 
     // loop over items backward
-    PathEditorItem::ListIterator iterator( browserContainer_->findChildren<PathEditorItem*>() );
+    PathEditorItem::ListIterator iterator( items_ );
 
     // see if some buttons needs hiding
     bool hasHiddenButton( false );
