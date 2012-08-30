@@ -30,6 +30,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QEvent>
+#include <QtCore/QTimer>
 
 #include <QtGui/QLayout>
 #include <QtGui/QMenu>
@@ -382,7 +383,7 @@ void PathEditor::setPath( const File& constPath )
         }
 
         // update buttons visibility
-        resizeTimer_.start( 0, this );
+        QTimer::singleShot( 0, this, SLOT( _updateButtonVisibility() ) );
 
     }
 
@@ -463,18 +464,8 @@ void PathEditor::selectNext( void )
 //____________________________________________________________________________
 void PathEditor::resizeEvent( QResizeEvent* event )
 {
-    resizeTimer_.start( 0, this );
+    QTimer::singleShot( 0, this, SLOT( _updateButtonVisibility() ) );
     QWidget::resizeEvent( event );
-}
-
-//____________________________________________________________________________
-void PathEditor::timerEvent( QTimerEvent* event )
-{
-    if( event->timerId() == resizeTimer_.timerId() )
-    {
-        resizeTimer_.stop();
-        _updateButtonVisibility();
-    } else return QWidget::timerEvent( event );
 }
 
 //____________________________________________________________________________

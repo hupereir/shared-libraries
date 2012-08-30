@@ -28,9 +28,6 @@
 #include "File.h"
 #include "PathHistory.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QTimerEvent>
-
 #include <QtGui/QAbstractButton>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QLabel>
@@ -103,9 +100,6 @@ class PathEditor: public QStackedWidget, public Counter
     //! resize events
     virtual void resizeEvent( QResizeEvent* );
 
-    //! resize events
-    virtual void timerEvent( QTimerEvent* );
-
     //! update prefix
     void _updatePrefix( void );
 
@@ -150,9 +144,6 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! button group
     QButtonGroup* group_;
-
-    //! resize timer
-    QBasicTimer resizeTimer_;
 
     //! prefix
     QString prefix_;
