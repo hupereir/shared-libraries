@@ -422,7 +422,7 @@ File::List File::listFiles( const unsigned int& flags ) const
     if( !fullName.isDirectory() || (fullName.isLink() && !flags&FOLLOW_LINKS ) ) return out;
 
     // open directory
-    QDir::Filters filter = QDir::AllEntries;
+    QDir::Filters filter = QDir::AllEntries|QDir::System;
     if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
 
     QDir dir( fullName );
@@ -433,21 +433,20 @@ File::List File::listFiles( const unsigned int& flags ) const
 
         QFileInfo fileInfo;
         fileInfo.setFile( QDir( *this ), value );
-        File found( fileInfo.absoluteFilePath() );
-        out.push_back( found );
+        const File file( fileInfo.absoluteFilePath() );
+        out << file;
 
         // list subdirectory if recursive
-        if( flags & RECURSIVE && found.isDirectory() )
+        if( flags & RECURSIVE && file.isDirectory() )
         {
 
             // in case directory is a link
             // make sure it is not already in the list
             // to avoid recursivity
-            if( found.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( found ) ) != out.end() ) continue;
+            if( file.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( file ) ) != out.end() ) continue;
 
             // list subdirectory
-            foreach( const File& file, found.listFiles( flags ) )
-            { out.push_back( file ); }
+            out << file.listFiles( flags );
         }
 
     }
