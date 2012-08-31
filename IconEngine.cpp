@@ -92,11 +92,6 @@ QIcon IconEngine::_get( const QPixmap& pixmap )
     out.addPixmap( disabled, QIcon::Disabled, QIcon::Off );
     #endif
 
-    //   // better looking disabled icons are generated only for versions prior to qt 4.3
-    //   QPixmap active( CustomPixmap( pixmap ).active() );
-    //   out.addPixmap( active, QIcon::Active, QIcon::On );
-    //   out.addPixmap( active, QIcon::Active, QIcon::Off );
-
     return out;
 
 }

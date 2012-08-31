@@ -78,7 +78,7 @@ void CustomComboBox::setEditable( bool value )
 }
 
 //____________________________________________________
-void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity case_sensitivity )
+void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSensitivity )
 {
     Debug::Throw( "CustomComboBox::setAutoCompletion.\n" );
 
@@ -88,7 +88,7 @@ void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity case_sen
 
         if( !completer() ) setCompleter( new QCompleter( this ) );
 
-        completer()->setCaseSensitivity( case_sensitivity );
+        completer()->setCaseSensitivity( caseSensitivity );
 
     } else {
 

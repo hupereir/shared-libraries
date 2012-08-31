@@ -51,17 +51,17 @@ class CustomPixmap: public QPixmap, public Counter
     CustomPixmap( void ):
         Counter( "CustomPixmap" )
     {}
-    
+
     //! constructor
     CustomPixmap( const QString& file );
-    
+
     //! destructor
     virtual ~CustomPixmap()
     {}
-    
+
     //! find first file matching name in list of path
     virtual CustomPixmap find( const QString& file );
-    
+
     //! rotation
     enum Rotation
     {
@@ -69,13 +69,13 @@ class CustomPixmap: public QPixmap, public Counter
         CLOCKWISE,
         COUNTERCLOCKWISE
     };
-    
+
     //! rotation
     CustomPixmap rotate( const Rotation& value );
-    
+
     //! returns a tinted pixmap
     virtual CustomPixmap tint( const QColor& color, const double& intensity ) const;
-    
+
     //! corner enumeration for merging pixmap
     enum Corner
     {

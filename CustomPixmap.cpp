@@ -120,7 +120,6 @@ CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensi
   painter.end();
 
   out.setAlphaChannel( alphaChannel() );
-  painter.end();
   return out;
 }
 
@@ -184,16 +183,16 @@ CustomPixmap CustomPixmap::disabled( void ) const
   int width( image.width() );
   int height( image.height() );
 
-  QColor merged_color;
+  QColor mergedColor;
   for( int x = 0; x < width; x++ )
   {
     for( int y = 0; y < height; y++ )
     {
       QColor color( image.pixel( x, y ) );
       int gray( 128 + qGray( color.rgb() )/2 );
-      merged_color.setRgb( gray, gray, gray );
+      mergedColor.setRgb( gray, gray, gray );
 
-      image.setPixel( x, y, merged_color.rgb() );
+      image.setPixel( x, y, mergedColor.rgb() );
     }
   }
 
@@ -213,7 +212,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 
   // apply highlight
   QPixmap out( *this );
-  QPixmap alpha_channel( out.alphaChannel() );
+  QPixmap alphaChannel( out.alphaChannel() );
   QPainter painter( &out );
 
   painter.setRenderHints(QPainter::SmoothPixmapTransform);
@@ -226,7 +225,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
   painter.drawRect( out.rect() );
   painter.end();
 
-  out.setAlphaChannel( alpha_channel );
+  out.setAlphaChannel( alphaChannel );
   return out;
 
 }
