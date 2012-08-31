@@ -38,16 +38,32 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
     //! constructor
     OptionCheckBox( const QString& label, QWidget* parent, const QString& optionName ):
         QCheckBox( label, parent ),
-        OptionWidget( optionName )
+        OptionWidget( optionName ),
+        negative_( false )
     { _setBuddy( this ); }
+
+    //! negative
+    void setNegative( bool value )
+    { negative_ = value; }
 
     //! read value from option
     virtual void read( void )
-    { setChecked( XmlOptions::get().get<bool>( optionName() ) ); }
+    {
+        if( negative_ ) setChecked( !XmlOptions::get().get<bool>( optionName() ) );
+        else setChecked( XmlOptions::get().get<bool>( optionName() ) );
+    }
 
     //! write value to option
     virtual void write( void ) const
-    { XmlOptions::get().set<bool>( optionName(), isChecked() ); }
+    {
+        if( negative_ ) XmlOptions::get().set<bool>( optionName(), !isChecked() );
+        else XmlOptions::get().set<bool>( optionName(), isChecked() );
+    }
+
+    private:
+
+    //! negative
+    bool negative_;
 
 };
 #endif

@@ -27,6 +27,8 @@
 #include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "Singleton.h"
+#include "XmlOptions.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QEvent>
@@ -61,18 +63,15 @@ bool PathEditorButton::event( QEvent* event )
 }
 
 //____________________________________________________________________________
-void PathEditorItem::setPath( const File& path )
+void PathEditorItem::setPath( const File& path, const QString& name )
 {
 
     Debug::Throw( "PathEditorItem::setPath.\n" );
 
     path_ = path;
-    if( QDir( path_ ).isRoot() )
+
+    if( name.isEmpty() )
     {
-
-        setText( "Root" );
-
-    } else {
 
         // get local name
         File localName( path.localName() );
@@ -81,16 +80,16 @@ void PathEditorItem::setPath( const File& path )
 
         setText( localName );
 
-    }
+    } else setText( name );
 
-    _updateMinimumSize();
+    updateMinimumSize();
 
 }
 
 //____________________________________________________________________________
-void PathEditorItem::_updateMinimumSize( void )
+void PathEditorItem::updateMinimumSize( void )
 {
-    Debug::Throw( "PathEditor::_updateMinimumSize.\n" );
+    Debug::Throw( "PathEditor::updateMinimumSize.\n" );
     QFont adjustedFont(font());
     adjustedFont.setBold( isLast_ );
 
@@ -171,7 +170,7 @@ void PathEditorMenuButton::paintEvent( QPaintEvent* event )
     option.rect = rect();
     option.palette = palette();
     const bool isRightToLeft( qApp->isRightToLeft() );
-    style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowRight:QStyle::PE_IndicatorArrowLeft, &option, &painter, this);
+    style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this);
 
     // render mouse over
     if( _mouseOver() )
@@ -190,9 +189,9 @@ void PathEditorMenuButton::paintEvent( QPaintEvent* event )
 }
 
 //____________________________________________________________________________
-void PathEditorMenuButton::_updateMinimumSize( void )
+void PathEditorMenuButton::updateMinimumSize( void )
 {
-    Debug::Throw( "PathEditorMenuButton::_updateMinimumSize.\n" );
+    Debug::Throw( "PathEditorMenuButton::updateMinimumSize.\n" );
     QFont adjustedFont(font());
     adjustedFont.setBold( true );
 
@@ -225,7 +224,8 @@ void PathEditorSwitch::paintEvent( QPaintEvent* event )
 PathEditor::PathEditor( QWidget* parent ):
     QStackedWidget( parent ),
     Counter( "PathEditor" ),
-    usePrefix_( true )
+    usePrefix_( true ),
+    truncate_( true )
 {
     Debug::Throw( "PathEditor::PathEditor.\n" );
 
@@ -307,16 +307,30 @@ PathEditor::PathEditor( QWidget* parent ):
     // current widget
     setCurrentWidget( browserContainer_ );
 
+    // configuration
+    connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    _updateConfiguration();
+
 }
 
 //____________________________________________________________________________
-void PathEditor::setPrefix( const QString& prefix )
+void PathEditor::setPrefix( const QString& value )
 {
-    if( prefix_ == prefix ) return;
-    prefix_ = prefix;
+    if( prefix_ == value ) return;
+    prefix_ = value;
     prefixLabel_->setText( prefix_ );
 
     _updatePrefix();
+
+}
+
+//____________________________________________________________________________
+void PathEditor::setHome( const QString& value )
+{
+
+    if( home_ == value ) return;
+    home_ = value;
+    _reload();
 
 }
 
@@ -348,9 +362,10 @@ void PathEditor::setPath( const File& constPath )
 
         }
 
-        item->setPath( File("/") );
+        item->setPath( File("/"), "Root" );
         index++;
 
+        const bool hasHome( truncate_ && !home_.isEmpty() );
         const int sectionCount( constPath.split( '/', QString::SkipEmptyParts ).size() );
         for( int i=0; i < sectionCount; i++ )
         {
@@ -373,7 +388,8 @@ void PathEditor::setPath( const File& constPath )
 
             }
 
-            item->setPath( section );
+            if( hasHome && section == home_ ) item->setPath( section, "Home" );
+            else item->setPath( section );
             index++;
         }
 
@@ -394,7 +410,8 @@ void PathEditor::setPath( const File& constPath )
             items_.removeLast();
         }
 
-        // update buttons visibility
+        // update buttons visibilityThere are issues with notification placement when screen gets resized.
+
         QTimer::singleShot( 0, this, SLOT( _updateButtonVisibility() ) );
 
     }
@@ -483,6 +500,8 @@ void PathEditor::resizeEvent( QResizeEvent* event )
 void PathEditor::_updatePrefix( void )
 {
 
+    Debug::Throw( "PathEditor::_updatePrefix.\n" );
+
     // use prefix
     const bool usePrefix( usePrefix_ && !prefix_.isEmpty() );
 
@@ -516,6 +535,15 @@ void PathEditor::_updatePrefix( void )
         setPath( path );
     }
 
+}
+
+//____________________________________________________________________________
+void PathEditor::_setUseTruncation( bool value )
+{
+    Debug::Throw( "PathEditor::_setUseTruncation.\n" );
+    if( truncate_ == value ) return;
+    truncate_ = value;
+    _reload();
 }
 
 //____________________________________________________________________________
@@ -580,35 +608,75 @@ void PathEditor::_updateButtonVisibility( void )
     if( usePrefix_ && !prefix_.isEmpty() )
     { maxWidth -= prefixLabel_->width(); }
 
-    // loop over items backward
-    PathEditorItem::ListIterator iterator( items_ );
-
     // see if some buttons needs hiding
-    bool hasHiddenButton( false );
-    int width( 0 );
-    while( iterator.hasNext() )
+    bool hasHiddenButtons( false );
+    bool hasHomePath( false );
+    if( truncate_ && !home_.isEmpty() )
     {
-        width += iterator.next()->sizeHint().width();
-        if( width > maxWidth )
+        foreach( PathEditorItem* item, items_ )
         {
-            hasHiddenButton = true;
-            maxWidth -= menuButton_->width();
-            break;
+            if( item->path() == home_ )
+            {
+                hasHomePath = true;
+                hasHiddenButtons = (item != items_.front());
+                break;
+            }
+        }
+
+    }
+
+    // check item width
+    if( !hasHiddenButtons )
+    {
+        int width( 0 );
+        foreach( PathEditorItem* item, items_ )
+        {
+            width += item->sizeHint().width();
+            if( width > maxWidth )
+            {
+                hasHiddenButtons = true;
+                break;
+            }
         }
     }
 
     // toggle menu button visibility
-    menuButton_->setVisible( hasHiddenButton );
+    if( hasHiddenButtons ) maxWidth -= menuButton_->width();
+    menuButton_->setVisible( hasHiddenButtons );
 
     // effectively hide buttons
-    width = 0;
-    iterator.toBack();
-    while( iterator.hasPrevious() )
     {
-        PathEditorItem* item( iterator.previous() );
-        width += item->sizeHint().width();
-        if( width >= maxWidth ) item->hide();
-        else item->show();
+        int width = 0;
+        bool homeFound( false );
+        PathEditorItem::ListIterator iterator( items_ );
+        iterator.toBack();
+        while( iterator.hasPrevious() )
+        {
+            // get item
+            PathEditorItem* item( iterator.previous() );
+
+            // update width
+            width += item->sizeHint().width();
+            if( ( width >= maxWidth || homeFound ) && !item->isLast() ) item->hide();
+            else item->show();
+
+            // check against home path
+            if( hasHomePath && item->path() == home_ ) homeFound = true;
+
+        }
     }
+
+}
+
+//____________________________________________________________________________
+void PathEditor::_updateConfiguration( void )
+{
+    Debug::Throw( "PathEditor::_updateConfiguration.\n" );
+
+    if( XmlOptions::get().contains( "USE_PREFIX" ) )
+    { _setUsePrefix( XmlOptions::get().get<bool>( "USE_PREFIX" ) ); }
+
+    if( XmlOptions::get().contains( "USE_TRUNCATION" ) )
+    { _setUseTruncation( XmlOptions::get().get<bool>( "USE_TRUNCATION" ) ); }
 
 }

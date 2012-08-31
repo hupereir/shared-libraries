@@ -56,6 +56,9 @@ class PathEditor: public QStackedWidget, public Counter
     //! prefix
     void setPrefix( const QString& );
 
+    //! home
+    void setHome( const QString& );
+
     //! set path
     void setPath( const File& );
 
@@ -80,14 +83,6 @@ class PathEditor: public QStackedWidget, public Counter
 
     public slots:
 
-    //! prefix
-    void setUsePrefix( bool value )
-    {
-        if( usePrefix_ == value ) return;
-        usePrefix_ = value;
-        _updatePrefix();
-    }
-
     //! select parent path
     void selectParent( void );
 
@@ -102,8 +97,23 @@ class PathEditor: public QStackedWidget, public Counter
     //! resize events
     virtual void resizeEvent( QResizeEvent* );
 
+    //! prefix
+    void _setUsePrefix( bool value )
+    {
+        if( usePrefix_ == value ) return;
+        usePrefix_ = value;
+        _updatePrefix();
+    }
+
     //! update prefix
     void _updatePrefix( void );
+
+    //! truncation
+    void _setUseTruncation( bool );
+
+    //! reload
+    void _reload( void )
+    { setPath( path() ); }
 
     protected slots:
 
@@ -130,6 +140,11 @@ class PathEditor: public QStackedWidget, public Counter
     //! update button visibility
     void _updateButtonVisibility( void );
 
+    private slots:
+
+    //! configuration
+    void _updateConfiguration( void );
+
     private:
 
     //! path browser container
@@ -147,11 +162,28 @@ class PathEditor: public QStackedWidget, public Counter
     //! button group
     QButtonGroup* group_;
 
+    //!@name prefix
+    //@{
+
+    //! use prefix
+    bool usePrefix_;
+
     //! prefix
     QString prefix_;
 
     //! prefix
     QLabel* prefixLabel_;
+
+    //@}
+
+    //!@name home directory
+    //@{
+
+    //! truncation
+    bool truncate_;
+
+    //! home directory
+    QString home_;
 
     //! menu button
     PathEditorMenuButton* menuButton_;
@@ -161,9 +193,6 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! path history
     PathHistory history_;
-
-    //! use prefix
-    bool usePrefix_;
 
 };
 

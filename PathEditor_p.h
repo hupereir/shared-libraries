@@ -103,7 +103,7 @@ class PathEditorItem: public PathEditorButton, public Counter
     {
         if( isLast_ == value ) return;
         isLast_ = value;
-        _updateMinimumSize();
+        updateMinimumSize();
         update();
     }
 
@@ -112,7 +112,7 @@ class PathEditorItem: public PathEditorButton, public Counter
     { return isLast_; }
 
     //! set path
-    void setPath( const File& );
+    void setPath( const File&, const QString& = QString() );
 
     //! path
     const File& path( void ) const
@@ -122,6 +122,10 @@ class PathEditorItem: public PathEditorButton, public Counter
     virtual QSize sizeHint( void ) const
     { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
 
+    //! update minimum width
+    void updateMinimumSize( void );
+
+    //! shortcuts
     typedef QList<PathEditorItem*> List;
     typedef QListIterator<PathEditorItem*> ListIterator;
 
@@ -129,9 +133,6 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     //! paint event
     virtual void paintEvent( QPaintEvent* );
-
-    //! update minimum width
-    void _updateMinimumSize( void );
 
     //! arrow width
     int _arrowWidth( void ) const
@@ -162,20 +163,20 @@ class PathEditorMenuButton: public PathEditorButton, public Counter
     {
         Debug::Throw( "PathEditorMenuButton::PathEditorMenuButton.\n" );
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-        _updateMinimumSize();
+        updateMinimumSize();
     }
 
     //! destructor
     virtual ~PathEditorMenuButton( void )
     {}
 
+    // minimum size
+    void updateMinimumSize( void );
+
     protected:
 
     //! paint event
     virtual void paintEvent( QPaintEvent* );
-
-    // minimum size
-    void _updateMinimumSize( void );
 
 };
 
