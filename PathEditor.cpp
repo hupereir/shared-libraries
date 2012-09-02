@@ -324,6 +324,7 @@ PathEditor::PathEditor( QWidget* parent ):
 //____________________________________________________________________________
 void PathEditor::setPrefix( const QString& value )
 {
+    Debug::Throw( "PathEditor::setPrefix.\n" );
     if( prefix_ == value ) return;
     prefix_ = value;
     prefixLabel_->setText( prefix_ );
@@ -335,11 +336,19 @@ void PathEditor::setPrefix( const QString& value )
 //____________________________________________________________________________
 void PathEditor::setHomePath( const File& value )
 {
-
+    Debug::Throw( "PathEditor::setHomePath.\n" );
     if( home_ == value ) return;
     home_ = value;
     _reload();
+}
 
+//____________________________________________________________________________
+void PathEditor::setRootPathList( const File::List& value )
+{
+    Debug::Throw( "PathEditor::setRootPathList.\n" );
+    if( rootPathList_ == value ) return;
+    rootPathList_ = value;
+    _reload();
 }
 
 //____________________________________________________________________________
@@ -351,9 +360,25 @@ void PathEditor::setPath( const File& constPath )
     // upbate browser
     {
 
+        // search proper root path
+        File root( "/" );
+        File path( constPath );
+
+        foreach( const File& file, rootPathList_ )
+        {
+            if( path.startsWith( file ) )
+            {
+                // store root file and truncate
+                root = file;
+                path = path.mid( root.size() );
+                break;
+            }
+        }
+
         // need to keep focus
         const bool hasFocus( !items_.isEmpty() && items_.back()->hasFocus() );
 
+        // create root item
         int index = 0;
         PathEditorItem* item(0);
         if( index < items_.size() ) {
@@ -371,16 +396,17 @@ void PathEditor::setPath( const File& constPath )
 
         }
 
-        item->setPath( File("/"), "Root" );
+        item->setPath( root, "Root" );
         index++;
 
+        // create path items
         const bool hasHome( truncate_ && !home_.isEmpty() );
-        const int sectionCount( constPath.split( '/', QString::SkipEmptyParts ).size() );
+        const int sectionCount( path.split( '/', QString::SkipEmptyParts ).size() );
         for( int i=0; i < sectionCount; i++ )
         {
 
             // setup section
-            QString section = QString( "/" ) + constPath.section( '/', 0, i, QString::SectionSkipEmpty );
+            QString section = root + path.section( '/', 0, i, QString::SectionSkipEmpty );
 
             if( index < items_.size() )
             {

@@ -60,6 +60,9 @@ class PathEditor: public QStackedWidget, public Counter
     //! home
     void setHomePath( const File& );
 
+    //! root
+    void setRootPathList( const File::List& );
+
     //! set path
     void setPath( const File& );
 
@@ -188,6 +191,9 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! home directory
     File home_;
+
+    //! root directories
+    File::List rootPathList_;
 
     //! menu button
     PathEditorMenuButton* menuButton_;
