@@ -30,8 +30,9 @@
 #include "QOrderedSet.h"
 #include "TimeStamp.h"
 
-#include <QtCore/QMap>
 #include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QStringList>
 #include <cassert>
 
 //! handles previously opened file and tags
@@ -42,9 +43,6 @@ class FileRecord: public Counter
 
     //! shortcut to list of records
     typedef QOrderedSet<FileRecord> Set;
-
-    // typedef QVector<FileRecord> List;
-    // typedef QVectorIterator<FileRecord> ListIterator;
 
     typedef QList<FileRecord> List;
     typedef QListIterator<FileRecord> ListIterator;
@@ -183,7 +181,7 @@ class FileRecord: public Counter
         static IdMap& _idMap();
 
         //! id map
-        typedef QVector< QString > NameMap;
+        typedef QStringList NameMap;
 
         //! name map
         static NameMap& _nameMap();

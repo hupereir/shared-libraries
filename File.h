@@ -27,8 +27,8 @@
 #include "Counter.h"
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QList>
 #include <QtCore/QString>
-#include <QtCore/QVector>
 
 //! file manipulation utility
 class File: public QString
@@ -37,7 +37,7 @@ class File: public QString
     public:
 
     //! shortcut to list of files
-    typedef QVector<File> List;
+    typedef QList<File> List;
 
     //! constructor
     File( void )
