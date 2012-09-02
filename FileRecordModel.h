@@ -38,6 +38,8 @@
 #include "FileRecord.h"
 #include "ListModel.h"
 
+#include <QtCore/QStringList>
+
 //! qlistview for object counters
 class FileRecordModel: public ListModel<FileRecord>, public Counter
 {
@@ -133,9 +135,9 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
         public:
 
         //! constructor
-        SortFTor( const int& type, Qt::SortOrder order, const QVector<QString>& column_titles ):
+        SortFTor( const int& type, Qt::SortOrder order, const QStringList& columnTitles ):
             ItemModel::SortFTor( type, order ),
-            columnTitles_( column_titles )
+            columnTitles_( columnTitles )
         {}
 
         //! prediction
@@ -144,7 +146,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
         private:
 
         // column titles
-        QVector<QString> columnTitles_;
+        QStringList columnTitles_;
 
     };
 
@@ -183,7 +185,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     FileRecord::PropertyId::Id iconPropertyId_;
 
     //! column titles
-    QVector<QString> columnTitles_;
+    QStringList columnTitles_;
 
 };
 
