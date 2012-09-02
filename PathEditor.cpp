@@ -36,6 +36,7 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QLayout>
+#include <QtGui/QListView>
 #include <QtGui/QMenu>
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
@@ -114,6 +115,18 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
     QPainter painter( this );
     painter.setClipRegion( event->region() );
 
+    // render mouse over
+    if( _mouseOver() )
+    {
+
+        QStyleOptionViewItemV4 option;
+        option.initFrom( this );
+        option.rect = rect();
+        option.state |= QStyle::State_MouseOver;
+        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
+
+    }
+
     // save layout direction
     const bool isRightToLeft( qApp->isRightToLeft() );
 
@@ -140,19 +153,7 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
         else option.rect = QRect( textRect.width(), 0, rect().width()-textRect.width()-BorderWidth, rect().height() );
 
         option.palette = palette();
-        style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this);
-    }
-
-    // render mouse over
-    if( _mouseOver() )
-    {
-
-        QStyleOptionViewItemV4 option;
-        option.initFrom( this );
-        option.rect = rect();
-        option.state |= QStyle::State_MouseOver;
-        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, this );
-
+        style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this );
     }
 
     painter.end();
@@ -165,23 +166,25 @@ void PathEditorMenuButton::paintEvent( QPaintEvent* event )
     QPainter painter( this );
     painter.setClipRegion( event->region() );
 
-    QStyleOption option;
-    option.initFrom(this);
-    option.rect = rect();
-    option.palette = palette();
-    const bool isRightToLeft( qApp->isRightToLeft() );
-    style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this);
-
-    // render mouse over
     if( _mouseOver() )
     {
-
+        // mouse over
         QStyleOptionViewItemV4 option;
         option.initFrom( this );
         option.rect = rect();
         option.state |= QStyle::State_MouseOver;
-        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, this );
+        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
 
+    }
+
+    {
+        // arrow
+        QStyleOption option;
+        option.initFrom(this);
+        option.rect = rect();
+        option.palette = palette();
+        const bool isRightToLeft( qApp->isRightToLeft() );
+        style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this);
     }
 
     painter.end();
@@ -234,6 +237,11 @@ PathEditor::PathEditor( QWidget* parent ):
 
     // browser
     {
+
+        // some styles require an item view passed to painting method to have proper selection rendered in items
+        itemView_ = new QListView( this );
+        itemView_->hide();
+
         browserContainer_ = new QWidget();
         browserContainer_->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 
@@ -249,8 +257,8 @@ PathEditor::PathEditor( QWidget* parent ):
         prefixLabel_->hide();
 
         // menu button
-        menuButton_ = new PathEditorMenuButton( browserContainer_ );
-        hLayout->addWidget( menuButton_ );
+        hLayout->addWidget( menuButton_ = new PathEditorMenuButton( browserContainer_ ) );
+        menuButton_->setItemView( itemView_ );
         menuButton_->hide();
         connect( menuButton_, SIGNAL( clicked( void ) ), SLOT( _menuButtonClicked( void ) ) );
 
@@ -325,7 +333,7 @@ void PathEditor::setPrefix( const QString& value )
 }
 
 //____________________________________________________________________________
-void PathEditor::setHome( const QString& value )
+void PathEditor::setHomePath( const File& value )
 {
 
     if( home_ == value ) return;
@@ -356,6 +364,7 @@ void PathEditor::setPath( const File& constPath )
         } else {
 
             item = new PathEditorItem( browserContainer_ );
+            item->setItemView( itemView_ );
             group_->addButton( item );
             buttonLayout_->addWidget( item );
             items_ << item;
@@ -382,6 +391,7 @@ void PathEditor::setPath( const File& constPath )
             } else {
 
                 item = new PathEditorItem( browserContainer_ );
+                item->setItemView( itemView_ );
                 group_->addButton( item );
                 buttonLayout_->addWidget( item );
                 items_ << item;

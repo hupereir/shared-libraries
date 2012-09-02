@@ -44,6 +44,7 @@ class PathEditorButton: public QAbstractButton
     //! constructor
     PathEditorButton( QWidget* parent ):
         QAbstractButton( parent ),
+        itemView_( 0x0 ),
         mouseOver_( false )
     {
         Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
@@ -55,6 +56,10 @@ class PathEditorButton: public QAbstractButton
     //! destructor
     virtual ~PathEditorButton( void )
     {}
+
+    //! some styles require an item view passed to painting method to have proper selection rendered in items
+    void setItemView( QWidget* widget )
+    { itemView_ = widget; }
 
     //! set mouse over manualy
     void setMouseOver( bool value )
@@ -68,11 +73,18 @@ class PathEditorButton: public QAbstractButton
     //! event
     virtual bool event( QEvent* );
 
+    //! item view
+    QWidget* _itemView( void ) const
+    { return itemView_; }
+
     //! true if mouse over
     bool _mouseOver( void ) const
     { return mouseOver_; }
 
     private:
+
+    //! some styles require an item view passed to painting method to have proper selection rendered in items
+    QWidget* itemView_;
 
     //! mouse over
     bool mouseOver_;

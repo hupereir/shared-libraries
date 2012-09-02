@@ -34,6 +34,7 @@
 #include <QtGui/QLayout>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QStackedWidget>
+#include <QtGui/QAbstractItemView>
 #include <QtGui/QWidget>
 
 //! path editor
@@ -57,7 +58,7 @@ class PathEditor: public QStackedWidget, public Counter
     void setPrefix( const QString& );
 
     //! home
-    void setHome( const QString& );
+    void setHomePath( const File& );
 
     //! set path
     void setPath( const File& );
@@ -147,6 +148,9 @@ class PathEditor: public QStackedWidget, public Counter
 
     private:
 
+    //! dummy treeview, needed for rendering items
+    QAbstractItemView* itemView_;
+
     //! path browser container
     QWidget* browserContainer_;
 
@@ -183,7 +187,7 @@ class PathEditor: public QStackedWidget, public Counter
     bool truncate_;
 
     //! home directory
-    QString home_;
+    File home_;
 
     //! menu button
     PathEditorMenuButton* menuButton_;
