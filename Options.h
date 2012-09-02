@@ -29,9 +29,9 @@
 #include "Option.h"
 
 #include <QtCore/QString>
-#include <QtCore/QTextStream>
-#include <QtCore/QVector>
+#include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QTextStream>
 
 #include <cassert>
 
@@ -48,7 +48,7 @@ class Options: public Counter
     typedef QMap< QString, Option > Map;
 
     //! shortCut for option list
-    typedef QVector< Option > List;
+    typedef QList< Option > List;
 
     //! shortCut for option map
     typedef QMap< QString, List > SpecialMap;
@@ -94,11 +94,11 @@ class Options: public Counter
 
     //! retrieve list of special (i.e. kept) options matching a given name
     template < typename T >
-        QVector<T> specialOptions( const QString& name )
+        QList<T> specialOptions( const QString& name )
     {
 
         List option_list( specialOptions( name ) );
-        QVector<T> out;
+        QList<T> out;
         for( List::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
         { out.push_back( iter->get<T>() ); }
         return out;

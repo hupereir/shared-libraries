@@ -25,9 +25,9 @@
 
 #include "Counter.h"
 
+#include <QtCore/QList>
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
-#include <QtCore/QVector>
 
 namespace FORMAT
 {
@@ -180,7 +180,7 @@ namespace FORMAT
 
 
         //! format list
-        typedef QVector<FORMAT::TextFormatBlock> List;
+        typedef QList<FORMAT::TextFormatBlock> List;
 
         private:
 
