@@ -594,19 +594,29 @@ void PathEditor::_returnPressed( void )
 void PathEditor::_menuButtonClicked( void )
 {
 
-    // list of path
-    QStringList pathList;
-
     // get list of hidden buttons
+    File::List pathList;
     foreach( PathEditorItem* item, items_ )
     { if( item->isHidden() ) pathList << item->path(); }
 
     // check list
-    if( pathList.empty() ) return;
+    if( pathList.empty() && rootPathList_.size() <= 1 ) return;
 
     // create menu and fill
     QMenu* menu = new QMenu(browserContainer_);
-    foreach( const QString& path, pathList )
+
+    if( rootPathList_.size() > 1 )
+    {
+        // add root path list
+        foreach( const File& path, rootPathList_ )
+        { menu->addAction( path ); }
+
+        // add separator
+        if( !pathList.isEmpty() ) menu->addSeparator();
+    }
+
+    // add path
+    foreach( const File& path, pathList )
     { menu->addAction( path ); }
 
     connect( menu, SIGNAL( triggered( QAction* ) ), SLOT( _updatePath( QAction* ) ) );
@@ -641,8 +651,17 @@ void PathEditor::_updateButtonVisibility( void )
     // int maxWidth( this->width() );
     int maxWidth( browserContainer_->width() );
 
+    // check if prefix must be shown
     if( usePrefix_ && !prefix_.isEmpty() )
     { maxWidth -= prefixLabel_->width(); }
+
+    // check if menu button must be shown for root path list
+    bool menuButtonVisible( false );
+    if( rootPathList_.size() > 1 )
+    {
+        menuButtonVisible = true;
+        maxWidth -= menuButton_->width();
+    }
 
     // see if some buttons needs hiding
     bool hasHiddenButtons( false );
@@ -677,8 +696,14 @@ void PathEditor::_updateButtonVisibility( void )
     }
 
     // toggle menu button visibility
-    if( hasHiddenButtons ) maxWidth -= menuButton_->width();
-    menuButton_->setVisible( hasHiddenButtons );
+    if( hasHiddenButtons && !menuButtonVisible )
+    {
+        maxWidth -= menuButton_->width();
+        menuButtonVisible = true;
+    }
+
+    // show menu button if required
+    menuButton_->setVisible( menuButtonVisible );
 
     // effectively hide buttons
     {
