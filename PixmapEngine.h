@@ -28,7 +28,7 @@
 
 #include <QtGui/QPixmap>
 #include <QtCore/QMap>
-#include <QtCore/QVector>
+#include <QtCore/QStringList>
 
 #include <cassert>
 
@@ -92,11 +92,11 @@ class PixmapEngine: public Counter
     protected:
 
     //! pixmap path
-    void _setPixmapPath( const QVector< QString >& pathList )
+    void _setPixmapPath( const QStringList& pathList )
     { pixmapPath_ = pathList; }
 
     //! pixmap path
-    const QVector< QString >& _pixmapPath( void ) const
+    const QStringList& _pixmapPath( void ) const
     { return pixmapPath_; }
 
     private:
@@ -114,7 +114,7 @@ class PixmapEngine: public Counter
     //@}
 
     //! pixmap path
-    QVector< QString > pixmapPath_;
+    QStringList pixmapPath_;
 
     //! map files and QPixmap
     Cache cache_;

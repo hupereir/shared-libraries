@@ -27,7 +27,7 @@
 #include "Counter.h"
 
 #include <QtGui/QGridLayout>
-#include <QtCore/QVector>
+#include <QtCore/QList>
 #include <cassert>
 
 class GridLayout: public QGridLayout, public Counter
@@ -46,13 +46,18 @@ class GridLayout: public QGridLayout, public Counter
     {}
 
     //! column alignments
-    typedef QVector<Qt::Alignment> AlignmentList;
+    typedef QList<Qt::Alignment> AlignmentList;
 
     //! set columns
-    void setMaxCount( const int& max_count )
+    void setMaxCount( const int& maxCount )
     {
-        maxCount_ = max_count;
-        columnAlignments_ = AlignmentList( max_count, (Qt::Alignment)0 );
+        maxCount_ = maxCount;
+        columnAlignments_.clear();
+
+        // initialize columnAlignments
+        for( int index = 0; index < maxCount; ++index )
+        { columnAlignments_ << 0; }
+
     }
 
     //! set column alignment

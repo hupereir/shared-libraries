@@ -49,7 +49,7 @@ bool PixmapEngine::reload( void )
     Debug::Throw( "PixmapEngine::reload.\n" );
 
     // load path from options
-    QVector<QString> pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
+    QStringList pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
     if( pathList == _pixmapPath() ) return false;
 
     _setPixmapPath( pathList );

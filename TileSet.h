@@ -1,3 +1,6 @@
+#ifndef TileSet_h
+#define TileSet_h
+
 /*
  * Copyright 2007 Matthew Woehlke <mw_triad@users.sourceforge.net>
  *
@@ -16,11 +19,9 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef TILESET_H
-#define TILESET_H
-
-#include <QtGui/QPixmap>
 #include <QtCore/QRect>
+#include <QtCore/QVector>
+#include <QtGui/QPixmap>
 
 class TileSet
 {
@@ -92,7 +93,7 @@ public:
      */
     void render(const QRect&, QPainter*, Tiles = Ring) const;
 
-protected:
+    protected:
 
     // initialize pixmap
     QPixmap initPixmap(const QPixmap&, int w, int h, const QRect &region);

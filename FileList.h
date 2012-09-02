@@ -33,7 +33,6 @@
 
 #include <cassert>
 #include <QtCore/QObject>
-#include <QtCore/QVector>
 
 //! handles list of files saved into resource file for later reopening
 class FileList: public QObject, public Counter

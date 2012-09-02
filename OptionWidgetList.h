@@ -27,7 +27,7 @@
 #include "Debug.h"
 #include "OptionWidget.h"
 
-#include <QtCore/QVector>
+#include <QtCore/QList>
 
 //! abstract container for OptionWidgets
 class OptionWidgetList: public OptionWidget
@@ -63,7 +63,7 @@ class OptionWidgetList: public OptionWidget
     private:
 
     //! contained options
-    QVector< OptionWidget* > optionWidgets_;
+    QList< OptionWidget* > optionWidgets_;
 
 };
 
