@@ -460,6 +460,7 @@ void IconView::paintEvent( QPaintEvent* event )
 
         // setup option
         QStyleOptionViewItemV4 option = viewOptions();
+        option.showDecorationSelected = true;
         option.rect = item.boundingRect();
 
         const QModelIndex index( model()->index( iter.key(), 0 ) );

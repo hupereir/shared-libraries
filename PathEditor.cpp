@@ -121,6 +121,7 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
 
         QStyleOptionViewItemV4 option;
         option.initFrom( this );
+        option.showDecorationSelected = true;
         option.rect = rect();
         option.state |= QStyle::State_MouseOver;
         style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
@@ -171,6 +172,7 @@ void PathEditorMenuButton::paintEvent( QPaintEvent* event )
         // mouse over
         QStyleOptionViewItemV4 option;
         option.initFrom( this );
+        option.showDecorationSelected = true;
         option.rect = rect();
         option.state |= QStyle::State_MouseOver;
         style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
