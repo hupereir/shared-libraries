@@ -375,8 +375,8 @@ File File::localName( void ) const
 File File::canonicalName( void ) const
 {
     if( isEmpty() ) return File();
-    QString canonical_name( QFileInfo(*this).canonicalFilePath() );
-    return canonical_name.isEmpty() ? File():File( canonical_name );
+    QString canonicalName( QFileInfo(*this).canonicalFilePath() );
+    return canonicalName.isEmpty() ? File():File( canonicalName );
 }
 
 //_____________________________________________________________________
@@ -420,13 +420,13 @@ File::List File::listFiles( const unsigned int& flags ) const
     List out;
     File fullName( expand() );
     if( !fullName.isDirectory() || (fullName.isLink() && !flags&FOLLOW_LINKS ) ) return out;
+    if( !fullName.endsWith( "/" ) ) fullName += "/";
 
     // open directory
-    QDir::Filters filter = QDir::AllEntries|QDir::System;
+    QDir::Filters filter = QDir::AllEntries|QDir::NoDotDot;
     if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
 
-    QDir dir( fullName );
-    foreach( const QString& value, dir.entryList( filter ) )
+    foreach( const QString& value, QDir( fullName ).entryList( filter ) )
     {
 
         if( value == "." || value == ".." ) continue;
