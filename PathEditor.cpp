@@ -116,7 +116,7 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
     painter.setClipRegion( event->region() );
 
     // render mouse over
-    if( _mouseOver() )
+    if( _mouseOver() && isSelectable() )
     {
 
         QStyleOptionViewItemV4 option;
@@ -354,7 +354,7 @@ void PathEditor::setRootPathList( const File::List& value )
 }
 
 //____________________________________________________________________________
-void PathEditor::setPath( const File& constPath )
+void PathEditor::setPath( const File& constPath, const File& file )
 {
 
     Debug::Throw() << "PathEditor::setPath - " << constPath << endl;
@@ -429,6 +429,32 @@ void PathEditor::setPath( const File& constPath )
             if( hasHome && section == home_ ) item->setPath( section, "Home" );
             else item->setPath( section );
             index++;
+        }
+
+        // add file as last item
+        if( !file.isEmpty() )
+        {
+
+            if( index < items_.size() )
+            {
+
+                item = items_[index];
+                item->setIsLast( false );
+
+            } else {
+
+                item = new PathEditorItem( browserContainer_ );
+                item->setItemView( itemView_ );
+                group_->addButton( item );
+                buttonLayout_->addWidget( item );
+                items_ << item;
+
+            }
+
+            item->setPath( file.addPath( path ) );
+            item->setIsSelectable( false );
+            index++;
+
         }
 
         // set last item and restore focus
@@ -638,7 +664,15 @@ void PathEditor::_updatePath( QAction* action )
 //____________________________________________________________________________
 void PathEditor::_buttonClicked( QAbstractButton* button )
 {
-    const File path( static_cast<PathEditorItem*>( button )->path() );
+
+    // cast button
+    PathEditorItem* item( static_cast<PathEditorItem*>( button ) );
+
+    // check selectable test
+    if( !item->isSelectable() ) return;
+
+    // retrieve path and emit signal
+    const File path( item->path() );
     setPath( path );
     emit pathChanged( path );
 }

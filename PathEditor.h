@@ -64,7 +64,7 @@ class PathEditor: public QStackedWidget, public Counter
     void setRootPathList( const File::List& );
 
     //! set path
-    void setPath( const File& );
+    void setPath( const File&, const File& = File() );
 
     //! path
     File path( void ) const;

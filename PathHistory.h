@@ -28,7 +28,6 @@
 #include "File.h"
 
 #include <QtCore/QList>
-#include <cassert>
 
 class PathHistory: public Counter
 {
@@ -46,11 +45,7 @@ class PathHistory: public Counter
 
     //! retrieve next path in history
     File next( void )
-    {
-        assert( nextAvailable() );
-        index_++;
-        return pathList_[index_];
-    }
+    { return pathList_[++index_]; }
 
     //! true if previous path in history is valid
     bool previousAvailable( void ) const
@@ -58,12 +53,7 @@ class PathHistory: public Counter
 
     //! retrieve previous path in history
     File previous( void )
-    {
-        assert( previousAvailable()
-            );
-        index_--;
-        return pathList_[index_];
-    }
+    { return pathList_[--index_]; }
 
     //! add path to history
     /*!

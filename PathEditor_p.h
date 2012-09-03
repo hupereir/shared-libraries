@@ -103,12 +103,45 @@ class PathEditorItem: public PathEditorButton, public Counter
     PathEditorItem( QWidget* parent ):
         PathEditorButton( parent ),
         Counter( "PathEditorItem" ),
+        isSelectable_( true ),
         isLast_( false )
     { Debug::Throw( "PathEditorItem::PathEditorItem.\n" ); }
 
     //! destructor
     virtual ~PathEditorItem( void )
     {}
+
+    //!@name accessors
+    //@{
+
+    //! is selectable
+    bool isSelectable( void ) const
+    { return isSelectable_; }
+
+    //! is last
+    bool isLast( void ) const
+    { return isLast_; }
+
+    //! path
+    const File& path( void ) const
+    { return path_; }
+
+    //! size hint
+    virtual QSize sizeHint( void ) const
+    { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! set is selectable
+    void setIsSelectable( bool value )
+    {
+        if( isSelectable_ == value ) return;
+        isSelectable_ = value;
+        update();
+    }
 
     //! set is last
     void setIsLast( bool value )
@@ -119,20 +152,10 @@ class PathEditorItem: public PathEditorButton, public Counter
         update();
     }
 
-    //! is last
-    bool isLast( void ) const
-    { return isLast_; }
-
     //! set path
     void setPath( const File&, const QString& = QString() );
 
-    //! path
-    const File& path( void ) const
-    { return path_; }
-
-    //! size hint
-    virtual QSize sizeHint( void ) const
-    { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
+    //@}
 
     //! update minimum width
     void updateMinimumSize( void );
@@ -154,6 +177,9 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     //! path
     File path_;
+
+    //! true if selectable
+    bool isSelectable_;
 
     //! true if last
     bool isLast_;
