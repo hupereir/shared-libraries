@@ -445,19 +445,13 @@ bool IconView::event( QEvent* event )
     switch( event->type() )
     {
 
+        case QEvent::Leave:
         case QEvent::HoverLeave:
         {
             _setHoverIndex( QModelIndex() );
             break;
         }
 
-//         case QEvent::HoverMove:
-//         {
-//
-//             _setHoverIndex( indexAt( static_cast<QHoverEvent*>( event )->pos() ) );
-//             break;
-//         }
-//
         default: break;
     }
 

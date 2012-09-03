@@ -191,7 +191,11 @@ class IconView: public QAbstractItemView, public Counter
 
     //! hover index
     virtual void _setHoverIndex( const QModelIndex& index )
-    { hoverIndex_ = index; }
+    {
+        // emit entered signal for invalid index
+        if( hoverIndex_.isValid() && !index.isValid() ) emit entered( QModelIndex() );
+        hoverIndex_ = index;
+    }
 
     //! graphics item
     class Item: public Counter
