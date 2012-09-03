@@ -522,13 +522,17 @@ File PathEditor::path( void ) const
 
 //____________________________________________________________________________
 bool PathEditor::hasParent( void ) const
-{ return items_.size() >= 2; }
+{
+    if( items_.isEmpty() ) return false;
+    else if( items_.back()->isSelectable() ) return items_.size() >= 2;
+    else return items_.size() >= 3;
+}
 
 //____________________________________________________________________________
 void PathEditor::selectParent( void )
 {
-    if( items_.size() < 2 ) return;
-    const File path( items_[items_.size()-2]->path() );
+    if( !hasParent() ) return;
+    const File path( (items_.back()->isSelectable() ? items_[items_.size()-2]:items_[items_.size()-3])->path() );
     setPath( path );
     emit pathChanged( path );
 }
