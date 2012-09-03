@@ -481,22 +481,25 @@ void PathEditor::setPath( const File& constPath, const File& file )
     }
 
     // update editor
-    if( editor_->currentText() != constPath )
     {
-
-        File path( constPath );
-        const bool usePrefix( usePrefix_ && !prefix_.isEmpty() );
-        const QString prefix( prefix_+"//" );
-        if( usePrefix && !path.startsWith( prefix ) ) path.prepend( prefix );
-
-        int id( editor_->findText( path ) );
-        if( id < 0 )
+        File path( file.isEmpty() ? constPath:file.addPath( constPath ) );
+        if( editor_->currentText() != path )
         {
-            editor_->addItem( path );
-            id = editor_->findText( path );
-        }
 
-        editor_->setCurrentIndex( id );
+            const bool usePrefix( usePrefix_ && !prefix_.isEmpty() );
+            const QString prefix( prefix_+"//" );
+            if( usePrefix && !path.startsWith( prefix ) ) path.prepend( prefix );
+
+            int id( editor_->findText( path ) );
+            if( id < 0 )
+            {
+                editor_->addItem( path );
+                id = editor_->findText( path );
+            }
+
+            editor_->setCurrentIndex( id );
+
+        }
 
     }
 
