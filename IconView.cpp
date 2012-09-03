@@ -865,8 +865,7 @@ void IconView::Item::_updateBoundingRect( void )
         }
 
         layout.endLayout();
-        textSize = layout.boundingRect().size().toSize();
-        Debug::Throw(0) << "IconView::Item::_updateBoundingRect - textWidth: " << textSize.width() << " - " << maxLineWidth << endl;
+        textSize = QSize( maxLineWidth, layout.boundingRect().size().toSize().height() );
 
     }
 
