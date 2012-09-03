@@ -30,6 +30,7 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QDrag>
+#include <QtGui/QHoverEvent>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QStyle>
 #include <QtGui/QTextLayout>
@@ -437,6 +438,33 @@ QRegion IconView::visualRegionForSelection( const QItemSelection& selection ) co
 
 }
 
+//____________________________________________________________________________
+bool IconView::event( QEvent* event )
+{
+
+    switch( event->type() )
+    {
+
+        case QEvent::HoverLeave:
+        {
+            _setHoverIndex( QModelIndex() );
+            break;
+        }
+
+//         case QEvent::HoverMove:
+//         {
+//
+//             _setHoverIndex( indexAt( static_cast<QHoverEvent*>( event )->pos() ) );
+//             break;
+//         }
+//
+        default: break;
+    }
+
+    return QAbstractItemView::event( event );
+
+}
+
 //____________________________________________________________________
 void IconView::paintEvent( QPaintEvent* event )
 {
@@ -837,6 +865,7 @@ void IconView::Item::_updateBoundingRect( void )
 
         layout.endLayout();
         textSize = layout.boundingRect().size().toSize();
+        Debug::Throw(0) << "IconView::Item::_updateBoundingRect - textWidth: " << textSize.width() << endl;
 
     }
 
