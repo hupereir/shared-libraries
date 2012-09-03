@@ -844,6 +844,7 @@ void IconView::Item::_updateBoundingRect( void )
 
         const QString text( preProcessWrap( text_ ) );
         const int maxWidth( qMax( maxTextWidth_, pixmapSize.width() ) );
+        int maxLineWidth( 0 );
 
         QTextOption textOption(Qt::AlignHCenter);
         textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
@@ -857,7 +858,7 @@ void IconView::Item::_updateBoundingRect( void )
         {
 
             line.setLineWidth(maxWidth);
-            line.naturalTextWidth();
+            maxLineWidth = qMax( maxLineWidth, (int) line.naturalTextWidth() );
             line.setPosition( QPointF( 0, height ) );
             height += line.height();
 
@@ -865,7 +866,7 @@ void IconView::Item::_updateBoundingRect( void )
 
         layout.endLayout();
         textSize = layout.boundingRect().size().toSize();
-        Debug::Throw(0) << "IconView::Item::_updateBoundingRect - textWidth: " << textSize.width() << endl;
+        Debug::Throw(0) << "IconView::Item::_updateBoundingRect - textWidth: " << textSize.width() << " - " << maxLineWidth << endl;
 
     }
 

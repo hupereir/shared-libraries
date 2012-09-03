@@ -161,6 +161,9 @@ class IconView: public QAbstractItemView, public Counter
     //! region for given selection
     virtual QRegion visualRegionForSelection( const QItemSelection& ) const;
 
+    //! event
+    virtual bool event( QEvent* );
+
     //! paint event
     virtual void paintEvent( QPaintEvent* );
 
