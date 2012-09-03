@@ -134,16 +134,16 @@ unsigned int File::fileSize( void ) const
 }
 
 //_____________________________________________________________________
-QString File::sizeString( const unsigned int& size_int )
+QString File::sizeString( const unsigned int& sizeInt )
 {
-    double size = (double) size_int;
+    double size = (double) sizeInt;
     if( size < 0 ) return "-";
 
     static const QString unit[] = {
-        "",
-        "k",
-        "M",
-        "G"
+        "B",
+        "KiB",
+        "MiB",
+        "GiB"
     };
 
     if( size == 0 ) return "0";
@@ -160,7 +160,7 @@ QString File::sizeString( const unsigned int& size_int )
 
     }
 
-    return out.trimmed() + unit[power];
+    return out.trimmed() + " " + unit[power];
 
 }
 
