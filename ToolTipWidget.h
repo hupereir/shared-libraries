@@ -118,6 +118,8 @@ class ToolTipWidget: public QWidget, public Counter
     Item* typeItem_;
     Item* sizeItem_;
     Item* lastModifiedItem_;
+    Item* userItem_;
+    Item* groupItem_;
 
     //@}
 

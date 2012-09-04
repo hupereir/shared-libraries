@@ -111,6 +111,10 @@ class IconView: public QAbstractItemView, public Counter
     //! visual rect for given index
     virtual QRect visualRect( const QModelIndex& ) const;
 
+    signals:
+
+    void hovered( const QModelIndex& );
+
     public slots:
 
     //! sort order
@@ -185,6 +189,9 @@ class IconView: public QAbstractItemView, public Counter
     //! timer event
     virtual void timerEvent( QTimerEvent* );
 
+    //! selection
+    QModelIndexList _selectedIndexes( const QRect& ) const;
+
     //! hover index
     virtual const QModelIndex& _hoverIndex( void ) const
     { return hoverIndex_; }
@@ -192,9 +199,9 @@ class IconView: public QAbstractItemView, public Counter
     //! hover index
     virtual void _setHoverIndex( const QModelIndex& index )
     {
-        // emit entered signal for invalid index
-        if( hoverIndex_.isValid() && !index.isValid() ) emit entered( QModelIndex() );
+        if( hoverIndex_ == index ) return;
         hoverIndex_ = index;
+        emit hovered( index );
     }
 
     //! graphics item

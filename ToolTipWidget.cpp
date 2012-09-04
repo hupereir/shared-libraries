@@ -86,6 +86,8 @@ ToolTipWidget::ToolTipWidget( QWidget* parent ):
     ( typeItem_ = new Item( this, gridLayout ) )->setKey( "Type:" );
     ( sizeItem_ = new Item( this, gridLayout ) )->setKey( "Size:" );
     ( lastModifiedItem_ = new Item( this, gridLayout ) )->setKey( "Modified:" );
+    ( userItem_ = new Item( this, gridLayout ) )->setKey( "User:" );
+    ( groupItem_ = new Item( this, gridLayout ) )->setKey( "Group:" );
 
     // add stretch
     vLayout->addStretch( 1 );
@@ -129,6 +131,14 @@ void ToolTipWidget::setBaseFileInfo( const BaseFileInfo& fileInfo, const QIcon& 
 
         } else lastModifiedItem_->hide();
 
+        // user
+        if( !fileInfo.user().isEmpty() ) userItem_->setText( fileInfo.user() );
+        else userItem_->hide();
+        
+        // group
+        if( !fileInfo.group().isEmpty() ) groupItem_->setText( fileInfo.group() );
+        else groupItem_->hide();
+        
     } else {
 
         // file and separator

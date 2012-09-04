@@ -107,7 +107,6 @@ IconView::IconView( QWidget* parent ):
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
-
 }
 
 //_______________________________________________
@@ -352,19 +351,7 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 void IconView::setSelection( const QRect& constRect, QItemSelectionModel::SelectionFlags flags )
 {
 
-    // translate
-    const QRect rect( constRect.translated( _scrollBarPosition() ) );
-
-    QModelIndexList indexes;
-    for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
-    {
-
-        const Item& item( iter.value() );
-        if( rect.intersects( item.boundingRect().translated( item.position() ) ) )
-        { indexes << model()->index( iter.key(), 0 ); }
-
-    }
-
+    QModelIndexList indexes( _selectedIndexes( constRect ) );
     if( indexes.empty() ) selectionModel()->select( QItemSelection(), flags );
     else {
 
@@ -538,34 +525,42 @@ void IconView::mousePressEvent( QMouseEvent* event )
 }
 
 //____________________________________________________________________
-void IconView::mouseMoveEvent(QMouseEvent *event)
+void IconView::mouseMoveEvent( QMouseEvent *event )
 {
 
     // update rubber band
     if( dragButton_ == Qt::LeftButton && rubberBand_ && rubberBand_->isVisible() )
     {
 
+        // disable hover index
         _setHoverIndex( QModelIndex() );
 
         rubberBand_->setGeometry(QRect( dragOrigin_, event->pos() ).normalized() );
+
         if( autoScrollTimer_.isActive())
         {
             if( viewport()->rect().contains( event->pos() ) ) autoScrollTimer_.stop();
         } else if (!viewport()->rect().contains( event->pos() )) autoScrollTimer_.start(100, this);
 
+
+        QAbstractItemView::mouseMoveEvent(event);
+
+        if( _selectedIndexes( rubberBand_->rect() ).isEmpty() )
+        { selectionModel()->clear(); }
+
+
     } else {
 
         _setHoverIndex( indexAt( event->pos() ) );
+        QAbstractItemView::mouseMoveEvent(event);
 
     }
-
-    QAbstractItemView::mouseMoveEvent(event);
 
 
 }
 
 //____________________________________________________________________
-void IconView::mouseReleaseEvent(QMouseEvent *event)
+void IconView::mouseReleaseEvent( QMouseEvent *event )
 {
     QAbstractItemView::mouseReleaseEvent(event);
 
@@ -582,7 +577,7 @@ void IconView::mouseReleaseEvent(QMouseEvent *event)
 }
 
 //____________________________________________________________________
-void IconView::dragMoveEvent(QDragMoveEvent *event)
+void IconView::dragMoveEvent( QDragMoveEvent *event )
 {
 
     // update hover item
@@ -608,6 +603,24 @@ void IconView::timerEvent(QTimerEvent *event)
 
     } else return QAbstractItemView::timerEvent( event );
 
+}
+
+//____________________________________________________________________
+QModelIndexList IconView::_selectedIndexes( const QRect& constRect ) const
+{
+
+    QModelIndexList indexes;
+    const QRect rect( constRect.translated( _scrollBarPosition() ) );
+    for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+    {
+
+        const Item& item( iter.value() );
+        if( rect.intersects( item.boundingRect().translated( item.position() ) ) )
+        { indexes << model()->index( iter.key(), 0 ); }
+
+    }
+
+    return indexes;
 }
 
 //____________________________________________________________________

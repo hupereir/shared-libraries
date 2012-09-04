@@ -233,6 +233,7 @@ class PathEditorSwitch: public PathEditorButton, public Counter
     {
         Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
         setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+        setCursor( Qt::IBeamCursor );
     }
 
     //! destructor
