@@ -32,6 +32,7 @@
 
 #include <QtGui/QAbstractItemView>
 #include <QtGui/QHeaderView>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
 #include <QtGui/QRubberBand>
@@ -134,12 +135,10 @@ class IconView: public QAbstractItemView, public Counter
     //! sort order
     void sortByColumn( int, Qt::SortOrder );
 
-    private slots:
-
-    //! update alternate item color
-    void _updateConfiguration( void );
-
     protected:
+
+    //! keypress event
+    virtual void keyPressEvent( QKeyEvent* );
 
     // true if index is hidden
     virtual bool isIndexHidden( const QModelIndex& ) const;
@@ -362,6 +361,11 @@ class IconView: public QAbstractItemView, public Counter
     //! get pixmap for a given index selection
     QPixmap _pixmap( const QModelIndexList&, QRect& );
 
+    private slots:
+
+    //! update alternate item color
+    void _updateConfiguration( void );
+
     private:
 
     //! headerView
@@ -408,6 +412,9 @@ class IconView: public QAbstractItemView, public Counter
 
     //! autoscroll timer
     QBasicTimer autoScrollTimer_;
+
+    //! anchor index (for mouse selection)
+    QModelIndex anchorIndex_;
 
     //! hovered index
     QModelIndex hoverIndex_;

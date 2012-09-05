@@ -17,6 +17,7 @@ AnimatedTreeView.h \
 BaseConfigurationDialog.h \
 BaseDialog.h \
 BaseFileInfo.h \
+BaseFileInfoModel.h \
 BaseFindDialog.h \
 BaseIcons.h \
 BaseMainWindow.h \

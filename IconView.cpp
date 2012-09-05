@@ -44,7 +44,12 @@
 */
 QString preProcessWrap(const QString &text)
 {
-    const QChar zwsp(0x200b);
+
+    // break
+    const QChar brk(0x200b);
+
+    // word join
+    const QChar join(0x2060);
 
     QString result;
     result.reserve(text.length());
@@ -53,25 +58,23 @@ QString preProcessWrap(const QString &text)
     {
 
         const QChar c = text[i];
-        const bool openingParens = (c == QLatin1Char('(') || c == QLatin1Char('{') || c == QLatin1Char('['));
-        const bool singleQuote = (c == QLatin1Char('\'') );
-        const bool closingParens = (c == QLatin1Char(')') || c == QLatin1Char('}') || c == QLatin1Char(']'));
-        const bool breakAfter = (closingParens || c.isPunct() || c.isSymbol());
-        const bool nextIsSpace = (i == (text.length() - 1) || text[i + 1].isSpace());
-        const bool prevIsSpace = (i == 0 || text[i - 1].isSpace() || result[result.length() - 1] == zwsp);
+        const bool openingParenthesis( (c == QLatin1Char('(') || c == QLatin1Char('{') || c == QLatin1Char('[')) );
+        const bool closingParenthesis( (c == QLatin1Char(')') || c == QLatin1Char('}') || c == QLatin1Char(']')) );
+        const bool singleQuote( (c == QLatin1Char('\'') ) );
+        const bool breakAfter( (closingParenthesis || c.isPunct() || c.isSymbol()) );
+        const bool nextIsSpace( (i == (text.length() - 1) || text[i + 1].isSpace()) );
+        const bool prevIsSpace( (i == 0 || text[i - 1].isSpace() || result[result.length() - 1] == brk) );
 
         // Provide a breaking opportunity before opening parenthesis
-        if (openingParens && !prevIsSpace)
-        { result += zwsp; }
+        if( openingParenthesis && !prevIsSpace ) result += brk;
 
         // Provide a word joiner before the single quote
-        if (singleQuote && !prevIsSpace)
-        { result += QChar(0x2060); }
+        if( singleQuote && !prevIsSpace ) result += join;
 
         result += c;
 
-        if (breakAfter && !openingParens && !nextIsSpace && !singleQuote)
-        { result += zwsp; }
+        if( breakAfter && !openingParenthesis && !nextIsSpace && !singleQuote )
+        { result += brk; }
 
     }
 
@@ -227,6 +230,39 @@ void IconView::updateSortOrder( void )
 }
 
 //_____________________________________________________________________
+void IconView::keyPressEvent( QKeyEvent* event )
+{
+
+    // get current index
+    QModelIndex currentIndex( this->currentIndex() );
+
+    // get modifiers
+    const bool shiftPressed = event->modifiers() & Qt::ShiftModifier;
+
+    // update anchor index if not set
+    if( shiftPressed && !anchorIndex_.isValid() && currentIndex.isValid() && selectionModel()->isSelected( currentIndex ) )
+    { anchorIndex_ = currentIndex; }
+
+    switch( event->key() )
+    {
+
+        case Qt::Key_Home: currentIndex = moveCursor( MoveHome, event->modifiers() ); break;
+        case Qt::Key_End: currentIndex = moveCursor( MoveHome, event->modifiers() ); break;
+
+        case Qt::Key_Up: currentIndex = moveCursor( MoveUp, event->modifiers() ); break;
+        case Qt::Key_Down: currentIndex = moveCursor( MoveDown, event->modifiers() ); break;
+        case Qt::Key_Left: currentIndex = moveCursor( MoveLeft, event->modifiers() ); break;
+        case Qt::Key_Right: currentIndex = moveCursor( MoveRight, event->modifiers() ); break;
+
+        default: return QAbstractItemView::keyPressEvent( event );
+
+    }
+
+    return QAbstractItemView::keyPressEvent( event );
+
+}
+
+//_____________________________________________________________________
 void IconView::saveSortOrder( void )
 {
 
@@ -300,23 +336,6 @@ void IconView::sortByColumn( int column, Qt::SortOrder order)
     if( model() ) model()->sort( column, order );
 }
 
-//_____________________________________________________________________
-void IconView::_updateConfiguration( void )
-{
-    Debug::Throw( "IconView::_updateConfiguration.\n" );
-
-    // update sort order from options
-    updateSortOrder();
-
-    // update pixmap size
-    int pixmapSize( 0 );
-    if( XmlOptions::get().contains( "ICON_VIEW_PIXMAP_SIZE" ) && (pixmapSize = XmlOptions::get().get<int>( "ICON_VIEW_PIXMAP_SIZE" )) != pixmapSize_.width() )
-    {
-        pixmapSize_ = QSize( pixmapSize, pixmapSize );
-        if( model() ) doItemsLayout();
-    }
-}
-
 //____________________________________________________________________
 bool IconView::isIndexHidden( const QModelIndex& ) const
 { return false; }
@@ -325,13 +344,30 @@ bool IconView::isIndexHidden( const QModelIndex& ) const
 QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 {
     const QModelIndex index = currentIndex();
-    if( !( index.isValid() && items_.contains( index.row() ) ) ) return QModelIndex();
+
+    if( !( index.isValid() && items_.contains( index.row() ) ) )
+    { return QModelIndex(); }
+
+    // save layout direction
+    const bool isRightToLeft( qApp->isRightToLeft() );
 
     // get current item
     const Item& item( items_[index.row()] );
 
     switch( action )
     {
+
+        case MoveNext: return  model()->index( isRightToLeft ?
+            item.row()*columnCount_ + item.column() - 1:
+            item.row()*columnCount_ + item.column() + 1, 0 );
+
+        case MovePrevious: return  model()->index( isRightToLeft ?
+            item.row()*columnCount_ + item.column() + 1:
+            item.row()*columnCount_ + item.column() - 1, 0 );
+
+        case MoveHome: return model()->index( 0, 0 );
+        case MoveEnd: return model()->index( items_.size()-1, 0 );
+
         case MoveLeft: return model()->index( item.row()*columnCount_ + item.column() - 1, 0 );
         case MoveRight: return model()->index( item.row()*columnCount_ + item.column() + 1, 0 );
         case MoveUp: return model()->index( (item.row()-1)*columnCount_ + item.column(), 0 );
@@ -342,8 +378,30 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
             else if( items_.values().back().row() > item.row() ) return model()->index( items_.size()-1, 0 );
             else return QModelIndex();
         }
-        default: return QModelIndex();
+
+        case MovePageUp:
+        {
+            const qreal target( item.position().y() - height() );
+            QModelIndex targetIndex;
+            for( int i = 0; i < index.row(); i++ )
+            {
+                const Item& local( items_[i] );
+                if( local.column() != item.column() ) continue;
+                if( local.position().y() <= target ) targetIndex = model()->index( i, 0 );
+                else break;
+            }
+            return targetIndex;
+        }
+
+        case MovePageDown:
+        Debug::Throw(0) << "IconView::moveCursor - pageDown request" << endl;
+        break;
+
+        default: break;
     }
+
+    // fallback
+    return QModelIndex();
 
 }
 
@@ -378,6 +436,9 @@ void IconView::startDrag( Qt::DropActions supportedActions )
     // get mime data
     QMimeData* data = model()->mimeData( indexes );
     if( !data ) return;
+
+    // reset hover index
+    _setHoverIndex( QModelIndex() );
 
     // create drag pixmap
     QRect rect;
@@ -779,6 +840,23 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 
     return pixmap;
 
+}
+
+//_____________________________________________________________________
+void IconView::_updateConfiguration( void )
+{
+    Debug::Throw( "IconView::_updateConfiguration.\n" );
+
+    // update sort order from options
+    updateSortOrder();
+
+    // update pixmap size
+    int pixmapSize( 0 );
+    if( XmlOptions::get().contains( "ICON_VIEW_PIXMAP_SIZE" ) && (pixmapSize = XmlOptions::get().get<int>( "ICON_VIEW_PIXMAP_SIZE" )) != pixmapSize_.width() )
+    {
+        pixmapSize_ = QSize( pixmapSize, pixmapSize );
+        if( model() ) doItemsLayout();
+    }
 }
 
 
