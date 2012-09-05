@@ -74,66 +74,10 @@ class BaseFileInfoModel : public ListModel<T>
     //@{
 
     // return data for a given index
-    virtual QVariant data(const QModelIndex& index, int role) const
-    {
-        // check index, role and column
-        if( !index.isValid() ) return QVariant();
-
-        // retrieve associated file info
-        const T& fileInfo( ListModel<T>::get()[index.row()] );
-
-        // return text associated to file and column
-        if( role == Qt::DisplayRole ) {
-
-            if( fileInfo.type() & BaseFileInfo::NAVIGATOR ) return (index.column() == FILE) ? fileInfo.file() : QVariant();
-
-            switch( index.column() )
-            {
-                case FILE: return fileInfo.file().localName();
-                case PATH: return fileInfo.file().path();
-                case SIZE: return (fileInfo.type() & BaseFileInfo::FOLDER || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
-                case USER: return fileInfo.user();
-                case GROUP: return fileInfo.group();
-                case PERMISSIONS: return (fileInfo.type() & BaseFileInfo::NAVIGATOR) ? QString():fileInfo.permissionsString();
-                case MODIFIED: return QString( fileInfo.lastModified() ? TimeStamp( fileInfo.lastModified() ).toString() : "" );
-
-                default:
-                return QVariant();
-            }
-        }
-
-        // return icon associated to file
-        if( showIcons() && role == Qt::DecorationRole && index.column() == 0 )
-        {
-            if( fileInfo.isNavigator() ) return _constIcons()[ BaseFileInfo::NAVIGATOR ];
-            else return _constIcons()[fileInfo.type()&(BaseFileInfo::FOLDER|BaseFileInfo::DOCUMENT|BaseFileInfo::LINK)];
-        }
-
-        return QVariant();
-
-    }
+    virtual QVariant data( const QModelIndex&, int ) const;
 
     //! header data
-    virtual QVariant headerData(int column, Qt::Orientation orientation, int role = Qt::DisplayRole) const
-    {
-        if( orientation == Qt::Horizontal && role == Qt::DisplayRole )
-        {
-            switch( column )
-            {
-                case FILE: return "File";
-                case PATH: return "Path";
-                case SIZE: return "Size";
-                case USER: return "User";
-                case GROUP: return "Group";
-                case PERMISSIONS: return "Permissions";
-                case MODIFIED: return "Last Modified";
-                default: return QVariant();
-            }
-        }
-
-        return QVariant();
-
-    }
+    virtual QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole) const;
 
     //! number of columns for a given index
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
@@ -157,44 +101,7 @@ class BaseFileInfoModel : public ListModel<T>
         {}
 
         //! prediction
-        virtual bool operator() ( const T& constFirst, const T& constSecond ) const
-        {
-
-            T first( constFirst );
-            T second( constSecond );
-            if( order_ == Qt::DescendingOrder ) std::swap( first, second );
-
-            switch( type_ )
-            {
-
-                case SIZE:
-                { return first.size() < second.size(); }
-                break;
-
-                case USER:
-                { return first.user() < second.user(); }
-
-                case GROUP:
-                { return first.group() < second.group(); }
-
-                case MODIFIED:
-                { return first.lastModified() < second.lastModified(); }
-                break;
-
-                default:
-                case FILE:
-                {
-                    if( first.type() & BaseFileInfo::NAVIGATOR ) return true;
-                    else if( second.type() & BaseFileInfo::NAVIGATOR ) return false;
-                    else if( first.type() &  BaseFileInfo::FOLDER ) return (second.type() & BaseFileInfo::FOLDER) ? first.file() < second.file() : true;
-                    else return (second.type() & BaseFileInfo::FOLDER) ? false : first.file().localName() < second.file().localName();
-                }
-                break;
-
-
-            }
-
-        }
+        virtual bool operator() ( const T&, const T& ) const;
 
     };
 
@@ -203,7 +110,6 @@ class BaseFileInfoModel : public ListModel<T>
     //! sort
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
     { std::sort( ListModel<T>::_get().begin(), ListModel<T>::_get().end(), SortFTor( (ColumnType) column, order ) ); }
-
 
     //! icon cache
     typedef QHash<int, QIcon> IconCache;
@@ -229,5 +135,110 @@ class BaseFileInfoModel : public ListModel<T>
     bool showIcons_;
 
 };
+
+//__________________________________________________________________
+template<typename T>
+QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
+{
+    // check index, role and column
+    if( !index.isValid() ) return QVariant();
+
+    // retrieve associated file info
+    const T& fileInfo( ListModel<T>::get()[index.row()] );
+
+    // return text associated to file and column
+    if( role == Qt::DisplayRole ) {
+
+        if( fileInfo.type() & BaseFileInfo::NAVIGATOR ) return (index.column() == FILE) ? fileInfo.file() : QVariant();
+
+        switch( index.column() )
+        {
+            case FILE: return fileInfo.file().localName();
+            case PATH: return fileInfo.file().path();
+            case SIZE: return (fileInfo.type() & BaseFileInfo::FOLDER || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
+            case USER: return fileInfo.user();
+            case GROUP: return fileInfo.group();
+            case PERMISSIONS: return (fileInfo.type() & BaseFileInfo::NAVIGATOR) ? QString():fileInfo.permissionsString();
+            case MODIFIED: return QString( fileInfo.lastModified() ? TimeStamp( fileInfo.lastModified() ).toString() : "" );
+
+            default:
+            return QVariant();
+        }
+    }
+
+    // return icon associated to file
+    if( showIcons() && role == Qt::DecorationRole && index.column() == 0 )
+    {
+        if( fileInfo.isNavigator() ) return _constIcons()[ BaseFileInfo::NAVIGATOR ];
+        else return _constIcons()[fileInfo.type()&(BaseFileInfo::FOLDER|BaseFileInfo::DOCUMENT|BaseFileInfo::LINK)];
+    }
+
+    return QVariant();
+
+}
+
+//__________________________________________________________________
+template<typename T>
+QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientation, int role ) const
+{
+    if( orientation == Qt::Horizontal && role == Qt::DisplayRole )
+    {
+        switch( column )
+        {
+            case FILE: return "File";
+            case PATH: return "Path";
+            case SIZE: return "Size";
+            case USER: return "User";
+            case GROUP: return "Group";
+            case PERMISSIONS: return "Permissions";
+            case MODIFIED: return "Last Modified";
+            default: return QVariant();
+        }
+    }
+
+    return QVariant();
+
+}
+
+//__________________________________________________________________
+template<typename T>
+bool BaseFileInfoModel<T>::SortFTor::operator() ( const T& constFirst, const T& constSecond ) const
+{
+
+    T first( constFirst );
+    T second( constSecond );
+    if( order_ == Qt::DescendingOrder ) std::swap( first, second );
+
+    switch( type_ )
+    {
+
+        case SIZE:
+        { return first.size() < second.size(); }
+        break;
+
+        case USER:
+        { return first.user() < second.user(); }
+
+        case GROUP:
+        { return first.group() < second.group(); }
+
+        case MODIFIED:
+        { return first.lastModified() < second.lastModified(); }
+        break;
+
+        default:
+        case FILE:
+        {
+            if( first.type() & BaseFileInfo::NAVIGATOR ) return true;
+            else if( second.type() & BaseFileInfo::NAVIGATOR ) return false;
+            else if( first.type() &  BaseFileInfo::FOLDER ) return (second.type() & BaseFileInfo::FOLDER) ? first.file().compare( second.file(), Qt::CaseInsensitive ) < 0 : true;
+            else return (second.type() & BaseFileInfo::FOLDER) ? false : first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
+        }
+        break;
+
+
+    }
+
+}
 
 #endif

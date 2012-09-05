@@ -137,9 +137,6 @@ class IconView: public QAbstractItemView, public Counter
 
     protected:
 
-    //! keypress event
-    virtual void keyPressEvent( QKeyEvent* );
-
     // true if index is hidden
     virtual bool isIndexHidden( const QModelIndex& ) const;
 
@@ -172,6 +169,9 @@ class IconView: public QAbstractItemView, public Counter
 
     //! resize event
     virtual void resizeEvent( QResizeEvent* );
+
+    //! keypress event
+    virtual void keyPressEvent( QKeyEvent* );
 
     //! mouse press
     virtual void mousePressEvent( QMouseEvent* );

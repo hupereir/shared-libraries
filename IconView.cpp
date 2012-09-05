@@ -230,39 +230,6 @@ void IconView::updateSortOrder( void )
 }
 
 //_____________________________________________________________________
-void IconView::keyPressEvent( QKeyEvent* event )
-{
-
-    // get current index
-    QModelIndex currentIndex( this->currentIndex() );
-
-    // get modifiers
-    const bool shiftPressed = event->modifiers() & Qt::ShiftModifier;
-
-    // update anchor index if not set
-    if( shiftPressed && !anchorIndex_.isValid() && currentIndex.isValid() && selectionModel()->isSelected( currentIndex ) )
-    { anchorIndex_ = currentIndex; }
-
-    switch( event->key() )
-    {
-
-        case Qt::Key_Home: currentIndex = moveCursor( MoveHome, event->modifiers() ); break;
-        case Qt::Key_End: currentIndex = moveCursor( MoveHome, event->modifiers() ); break;
-
-        case Qt::Key_Up: currentIndex = moveCursor( MoveUp, event->modifiers() ); break;
-        case Qt::Key_Down: currentIndex = moveCursor( MoveDown, event->modifiers() ); break;
-        case Qt::Key_Left: currentIndex = moveCursor( MoveLeft, event->modifiers() ); break;
-        case Qt::Key_Right: currentIndex = moveCursor( MoveRight, event->modifiers() ); break;
-
-        default: return QAbstractItemView::keyPressEvent( event );
-
-    }
-
-    return QAbstractItemView::keyPressEvent( event );
-
-}
-
-//_____________________________________________________________________
 void IconView::saveSortOrder( void )
 {
 
@@ -381,21 +348,48 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 
         case MovePageUp:
         {
-            const qreal target( item.position().y() - height() );
+            const qreal target( item.position().y() + item.boundingRect().height() - viewport()->height() );
             QModelIndex targetIndex;
-            for( int i = 0; i < index.row(); i++ )
+            for( int i = 0; i <= index.row(); ++i )
             {
                 const Item& local( items_[i] );
                 if( local.column() != item.column() ) continue;
-                if( local.position().y() <= target ) targetIndex = model()->index( i, 0 );
-                else break;
+                if( local.position().y() <= target )
+                {
+
+                    continue;
+
+                } else {
+
+                    targetIndex = model()->index( i, 0 );
+                    break;
+
+                }
+
             }
+
             return targetIndex;
         }
 
         case MovePageDown:
-        Debug::Throw(0) << "IconView::moveCursor - pageDown request" << endl;
-        break;
+        {
+            const qreal target( item.position().y() + viewport()->height() );
+            QModelIndex targetIndex;
+            for( int i = index.row()+1; i < items_.size(); ++i )
+            {
+                const Item& local( items_[i] );
+                if( local.column() != item.column() ) continue;
+                if( !targetIndex.isValid() || local.position().y() + local.boundingRect().height() < target )
+                {
+
+                    targetIndex = model()->index( i, 0 );
+
+                } else break;
+            }
+
+            return targetIndex;
+
+        }
 
         default: break;
     }
@@ -558,11 +552,71 @@ void IconView::resizeEvent( QResizeEvent* event )
 
 }
 
+//_____________________________________________________________________
+void IconView::keyPressEvent( QKeyEvent* event )
+{
+
+    // get current index
+    QModelIndex index;
+    switch( event->key() )
+    {
+
+        case Qt::Key_Home: index = moveCursor( MoveHome, event->modifiers() ); break;
+        case Qt::Key_End: index = moveCursor( MoveEnd, event->modifiers() ); break;
+        case Qt::Key_Up: index = moveCursor( MoveUp, event->modifiers() ); break;
+        case Qt::Key_Down: index = moveCursor( MoveDown, event->modifiers() ); break;
+        case Qt::Key_Left: index = moveCursor( MoveLeft, event->modifiers() ); break;
+        case Qt::Key_Right: index = moveCursor( MoveRight, event->modifiers() ); break;
+        case Qt::Key_PageUp: index = moveCursor( MovePageUp, event->modifiers() ); break;
+        case Qt::Key_PageDown: index = moveCursor( MovePageDown, event->modifiers() ); break;
+
+        default: return QAbstractItemView::keyPressEvent( event );
+
+    }
+
+
+    // update anchor index if not set
+    const QModelIndex oldIndex( this->currentIndex() );
+    if( !( anchorIndex_.isValid() && selectionModel()->isSelected( anchorIndex_ ) ) && oldIndex.isValid() && selectionModel()->isSelected( oldIndex ) )
+    { anchorIndex_ = oldIndex; }
+
+    // get modifier
+    const bool shiftPressed( event->modifiers() & Qt::ShiftModifier );
+    if( !index.isValid() )
+    {
+
+        if( !shiftPressed )
+        {
+            anchorIndex_ = index;
+            selectionModel()->clear();
+        }
+
+    } else if( !( shiftPressed && oldIndex.isValid() && anchorIndex_.isValid() ) ) {
+
+        // update anchor index
+        anchorIndex_ = index;
+
+        // update selection
+        selectionModel()->clear();
+        selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
+        selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows );
+
+    } else {
+
+        // update selection
+        selectionModel()->clear();
+        selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
+        selectionModel()->select( QItemSelection( anchorIndex_, index ), QItemSelectionModel::Select|QItemSelectionModel::Rows );
+
+    }
+
+    return;
+
+}
+
 //____________________________________________________________________
 void IconView::mousePressEvent( QMouseEvent* event )
 {
-
-    QAbstractItemView::mousePressEvent( event );
 
     // clear hover index
     _setHoverIndex( QModelIndex() );
@@ -571,17 +625,47 @@ void IconView::mousePressEvent( QMouseEvent* event )
     dragButton_ = event->button();
     dragOrigin_ = event->pos();
 
-    // nothing if on item
-    if( indexAt( event->pos() ).isValid() ) return;
+    // process non left button
+    if( dragButton_ != Qt::LeftButton )
+    { return QAbstractItemView::mousePressEvent( event ); }
 
-    // prepare rubberband
-    if( dragButton_ == Qt::LeftButton )
+    QModelIndex index = indexAt( event->pos() );
+    if( index.isValid() )
     {
-        selectionModel()->clear();
+
+        const bool shiftPressed( event->modifiers() & Qt::ShiftModifier );
+        if( shiftPressed && anchorIndex_.isValid() && selectionModel()->isSelected( anchorIndex_ ) )
+        {
+
+            selectionModel()->clear();
+            selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
+            selectionModel()->select( QItemSelection( anchorIndex_, index ), QItemSelectionModel::Select|QItemSelectionModel::Rows );
+
+
+        } else {
+
+            anchorIndex_ = index;
+            selectionModel()->clear();
+            selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
+            selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows );
+
+        }
+
+
+    } else {
+
+        if( !( event->modifiers() & Qt::ShiftModifier ) )
+        {
+            selectionModel()->clear();
+            anchorIndex_ = QModelIndex();
+        }
+
         if( !rubberBand_ ) rubberBand_ = new QRubberBand(QRubberBand::Rectangle, viewport());
         rubberBand_->setGeometry( QRect( dragOrigin_, QSize() ) );
         rubberBand_->show();
+        return QAbstractItemView::mousePressEvent( event );
     }
+
 
 }
 
