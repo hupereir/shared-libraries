@@ -102,6 +102,7 @@ IconView::IconView( QWidget* parent ):
 
     // enable sorting by default
     setSortingEnabled( true );
+    setSelectionBehavior( SelectRows );
     verticalScrollBar()->adjustSize();
     setMouseTracking( true );
 
