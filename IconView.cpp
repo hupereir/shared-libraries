@@ -310,56 +310,50 @@ bool IconView::isIndexHidden( const QModelIndex& ) const
 //____________________________________________________________________
 QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 {
-    const QModelIndex index = currentIndex();
 
+    // current index
+    const QModelIndex index = currentIndex();
     if( !( index.isValid() && items_.contains( index.row() ) ) )
     { return QModelIndex(); }
 
-    // save layout direction
+    // convert next/previous action depending on layout direction
     const bool isRightToLeft( qApp->isRightToLeft() );
+    switch( action )
+    {
+        case MoveNext: action = isRightToLeft ? MoveRight:MoveLeft; break;
+        case MovePrevious: action = isRightToLeft ? MoveLeft:MoveRight; break;
+        default: break;
+    }
 
     // get current item
+    QModelIndex targetIndex;
     const Item& item( items_[index.row()] );
-
     switch( action )
     {
 
-        case MoveNext: return  model()->index( isRightToLeft ?
-            item.row()*columnCount_ + item.column() - 1:
-            item.row()*columnCount_ + item.column() + 1, 0 );
+        case MoveHome: targetIndex = model()->index( 0, 0 ); break;
+        case MoveEnd: targetIndex = model()->index( items_.size()-1, 0 ); break;
 
-        case MovePrevious: return  model()->index( isRightToLeft ?
-            item.row()*columnCount_ + item.column() + 1:
-            item.row()*columnCount_ + item.column() - 1, 0 );
-
-        case MoveHome: return model()->index( 0, 0 );
-        case MoveEnd: return model()->index( items_.size()-1, 0 );
-
-        case MoveLeft: return model()->index( item.row()*columnCount_ + item.column() - 1, 0 );
-        case MoveRight: return model()->index( item.row()*columnCount_ + item.column() + 1, 0 );
-        case MoveUp: return model()->index( (item.row()-1)*columnCount_ + item.column(), 0 );
+        case MoveLeft: targetIndex = model()->index( item.row()*columnCount_ + item.column() - 1, 0 ); break;
+        case MoveRight: targetIndex = model()->index( item.row()*columnCount_ + item.column() + 1, 0 ); break;
+        case MoveUp: targetIndex = model()->index( (item.row()-1)*columnCount_ + item.column(), 0 ); break;
         case MoveDown:
         {
             int row( (item.row()+1)*columnCount_ + item.column() );
-            if( row < items_.size() ) return model()->index( row, 0 );
-            else if( items_.values().back().row() > item.row() ) return model()->index( items_.size()-1, 0 );
-            else return QModelIndex();
+            if( row < items_.size() ) targetIndex = model()->index( row, 0 );
+            else if( items_.values().back().row() > item.row() ) targetIndex = model()->index( items_.size()-1, 0 );
+            else targetIndex = QModelIndex();
+            break;
         }
 
         case MovePageUp:
         {
             const qreal target( item.position().y() + item.boundingRect().height() - viewport()->height() );
-            QModelIndex targetIndex;
             for( int i = 0; i <= index.row(); ++i )
             {
                 const Item& local( items_[i] );
                 if( local.column() != item.column() ) continue;
-                if( local.position().y() <= target )
-                {
-
-                    continue;
-
-                } else {
+                if( local.position().y() > target ) {
 
                     targetIndex = model()->index( i, 0 );
                     break;
@@ -368,13 +362,12 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 
             }
 
-            return targetIndex;
+            break;
         }
 
         case MovePageDown:
         {
             const qreal target( item.position().y() + viewport()->height() );
-            QModelIndex targetIndex;
             for( int i = index.row()+1; i < items_.size(); ++i )
             {
                 const Item& local( items_[i] );
@@ -387,15 +380,15 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
                 } else break;
             }
 
-            return targetIndex;
+            break;
 
         }
 
         default: break;
     }
 
-    // fallback
-    return QModelIndex();
+    // return result
+    return targetIndex.isValid() ? targetIndex:index;
 
 }
 
@@ -629,34 +622,14 @@ void IconView::mousePressEvent( QMouseEvent* event )
     if( dragButton_ != Qt::LeftButton )
     { return QAbstractItemView::mousePressEvent( event ); }
 
-    QModelIndex index = indexAt( event->pos() );
-    if( index.isValid() )
+    const bool shiftPressed( event->modifiers() & Qt::ShiftModifier );
+    const QModelIndex index = indexAt( event->pos() );
+    if( !index.isValid() )
     {
 
-        if( selectionModel()->isSelected( index ) )
-        { return QAbstractItemView::mousePressEvent( event ); }
+        Debug::Throw( "IconView::mousePressEvent - single selection - rubberband mode.\n" );
 
-        const bool shiftPressed( event->modifiers() & Qt::ShiftModifier );
-        if( shiftPressed && anchorIndex_.isValid() && selectionModel()->isSelected( anchorIndex_ ) )
-        {
-
-            selectionModel()->clear();
-            selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
-            selectionModel()->select( QItemSelection( anchorIndex_, index ), QItemSelectionModel::Select|QItemSelectionModel::Rows );
-
-
-        } else {
-
-            anchorIndex_ = index;
-            selectionModel()->clear();
-            selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
-            selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows );
-
-        }
-
-    } else {
-
-        if( !( event->modifiers() & Qt::ShiftModifier ) )
+        if( !shiftPressed )
         {
             selectionModel()->clear();
             anchorIndex_ = QModelIndex();
@@ -665,7 +638,53 @@ void IconView::mousePressEvent( QMouseEvent* event )
         if( !rubberBand_ ) rubberBand_ = new QRubberBand(QRubberBand::Rectangle, viewport());
         rubberBand_->setGeometry( QRect( dragOrigin_, QSize() ) );
         rubberBand_->show();
-        return QAbstractItemView::mousePressEvent( event );
+
+        QAbstractItemView::mousePressEvent( event );
+        setState( DragSelectingState );
+
+
+    } else {
+
+        // drag
+        if( selectionModel()->isSelected( index ) && dragEnabled() && !shiftPressed )
+        {
+            Debug::Throw( "IconView::mousePressEvent - single selection - drag mode.\n" );
+            anchorIndex_ = index;
+            return QAbstractItemView::mousePressEvent( event );
+        }
+
+        if( shiftPressed && anchorIndex_.isValid() && selectionModel()->isSelected( anchorIndex_ ) )
+        {
+
+            Debug::Throw( "IconView::mousePressEvent - using anchor widget.\n" );
+            selectionModel()->clear();
+            selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
+            selectionModel()->select( QItemSelection( anchorIndex_, index ), QItemSelectionModel::Select|QItemSelectionModel::Rows );
+            setState( DragSelectingState );
+
+        } else {
+
+            Debug::Throw( "IconView::mousePressEvent - single selection.\n" );
+
+            anchorIndex_ = index;
+            selectionModel()->clear();
+            selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
+            selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows );
+
+            if( !dragEnabled() )
+            {
+                if( !rubberBand_ ) rubberBand_ = new QRubberBand(QRubberBand::Rectangle, viewport());
+                rubberBand_->setGeometry( QRect( dragOrigin_, QSize() ) );
+                rubberBand_->show();
+            }
+
+            // ensure proper state is set
+            QAbstractItemView::mousePressEvent( event );
+            setState( dragEnabled() ? DraggingState : DragSelectingState );
+            return;
+
+        }
+
     }
 
 
@@ -675,29 +694,29 @@ void IconView::mousePressEvent( QMouseEvent* event )
 void IconView::mouseMoveEvent( QMouseEvent *event )
 {
 
-    // update rubber band
     if( dragButton_ == Qt::LeftButton && rubberBand_ && rubberBand_->isVisible() )
     {
 
         // disable hover index
         _setHoverIndex( QModelIndex() );
 
+        // update rubber band
         rubberBand_->setGeometry(QRect( dragOrigin_, event->pos() ).normalized() );
 
+        // autoscroll
         if( autoScrollTimer_.isActive())
         {
             if( viewport()->rect().contains( event->pos() ) ) autoScrollTimer_.stop();
+
         } else if (!viewport()->rect().contains( event->pos() )) autoScrollTimer_.start(100, this);
 
-
-        QAbstractItemView::mouseMoveEvent(event);
-
-        if( _selectedIndexes( rubberBand_->rect() ).isEmpty() )
-        { selectionModel()->clear(); }
+        selectionModel()->clear();
+        setSelection( rubberBand_->geometry(), QItemSelectionModel::Select|QItemSelectionModel::Rows );
 
 
     } else {
 
+        // default implementation
         _setHoverIndex( indexAt( event->pos() ) );
         QAbstractItemView::mouseMoveEvent(event);
 

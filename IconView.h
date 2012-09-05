@@ -1,5 +1,5 @@
-#ifndef _IconView_h_
-#define _IconView_h_
+#ifndef IconView_h
+#define IconView_h
 
 // $Id$
 
