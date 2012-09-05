@@ -633,6 +633,9 @@ void IconView::mousePressEvent( QMouseEvent* event )
     if( index.isValid() )
     {
 
+        if( selectionModel()->isSelected( index ) )
+        { return QAbstractItemView::mousePressEvent( event ); }
+
         const bool shiftPressed( event->modifiers() & Qt::ShiftModifier );
         if( shiftPressed && anchorIndex_.isValid() && selectionModel()->isSelected( anchorIndex_ ) )
         {
@@ -650,7 +653,6 @@ void IconView::mousePressEvent( QMouseEvent* event )
             selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows );
 
         }
-
 
     } else {
 
