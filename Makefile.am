@@ -20,6 +20,7 @@ BaseConfigurationDialog.h \
 BaseDialog.h \
 BaseFileInfo.h \
 BaseFileInfoModel.h \
+BaseFileInfoToolTipWidget.h \
 BaseFindDialog.h \
 BaseIcons.h \
 BaseMainWindow.h \
@@ -134,8 +135,6 @@ TreeItemBase.h \
 TreeModel.h \
 TreeView.h \
 TreeViewConfiguration.h \
-ToolTipManager.h \
-ToolTipWidget.h \
 UserSelectionFrame.h \
 ValidFileThread.h \
 WindowMonitor.h \
@@ -159,6 +158,7 @@ AnimatedTabWidget.cpp \
 AnimatedTextEditor.cpp \
 AnimatedTreeView.cpp \
 BaseFileInfo.cpp \
+BaseFileInfoToolTipWidget.cpp \
 BaseFindDialog.cpp \
 BaseMainWindow.cpp \
 BaseConfigurationDialog.cpp \
@@ -250,8 +250,6 @@ TransitionWidget.cpp \
 TreeItemBase.cpp \
 TreeView.cpp \
 TreeViewConfiguration.cpp \
-ToolTipManager.cpp \
-ToolTipWidget.cpp \
 UserSelectionFrame.cpp \
 ValidFileThread.cpp \
 WinUtil.cpp \
@@ -276,6 +274,7 @@ moc_AnimatedTreeView.cpp \
 moc_BaseConfigurationDialog.cpp \
 moc_BaseDialog.cpp \
 moc_BaseFindDialog.cpp \
+moc_BaseFileInfoToolTipWidget.cpp \
 moc_BaseMainWindow.cpp \
 moc_BasePrintHelper.cpp \
 moc_BaseReplaceDialog.cpp \
@@ -333,7 +332,6 @@ moc_ToolButtonStyleMenu.cpp \
 moc_TransitionWidget.cpp \
 moc_TreeView.cpp \
 moc_TreeViewConfiguration.cpp \
-moc_ToolTipManager.cpp \
 moc_UserSelectionFrame.cpp \
 moc_XmlFileList.cpp
 

@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file XmlOption.h
-\brief Xml implementation of the Option object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include <QDomDocument>
 #include <QDomElement>
 #include <QString>

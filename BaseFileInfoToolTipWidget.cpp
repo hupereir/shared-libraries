@@ -20,11 +20,15 @@
 *
 *******************************************************************************/
 
-#include "ToolTipWidget.h"
+#include "BaseFileInfoToolTipWidget.h"
 #include "Debug.h"
 #include "GridLayout.h"
+#include "Singleton.h"
 #include "TimeStamp.h"
+#include "XmlOptions.h"
 
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
 #include <QtGui/QFrame>
 #include <QtGui/QLayout>
 #include <QtGui/QPainter>
@@ -32,14 +36,65 @@
 #include <QtGui/QStyleOptionFrame>
 #include <QtGui/QToolTip>
 
+class Item: public QObject, public Counter
+{
+    public:
+
+    //! constructor
+    Item( QWidget* parent, GridLayout* layout ):
+        QObject( parent ),
+        Counter( "BaseFileInfoToolTipWidget::Item" )
+    {
+        layout->addWidget( key_ = new QLabel( parent ) );
+        layout->addWidget( value_ = new QLabel( parent ) );
+    }
+
+    //! destructor
+    virtual ~Item( void )
+    {}
+
+    //! show
+    void show( void )
+    {
+        key_->show();
+        value_->show();
+    }
+
+    //! hide
+    void hide( void )
+    {
+        key_->hide();
+        value_->hide();
+    }
+
+    //! set key
+    void setKey( const QString& value )
+    { key_->setText( value ); }
+
+    //! set text
+    void setText( const QString& value )
+    {
+        value_->setText( value );
+        if( value.isEmpty() ) hide();
+        else show();
+    }
+
+    private:
+
+    QLabel* key_;
+    QLabel* value_;
+
+};
+
 //_______________________________________________________
-ToolTipWidget::ToolTipWidget( QWidget* parent ):
+BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     QWidget( parent, Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint ),
-    Counter( "ToolTipWidget" ),
+    Counter( "BaseFileInfoToolTipWidget" ),
+    enabled_( false ),
     pixmapSize_( 96 )
 {
 
-    Debug::Throw( "ToolTipWidget::ToolTipWidget.\n" );
+    Debug::Throw( "BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n" );
     setAttribute( Qt::WA_TranslucentBackground, true );
 
     // change palete
@@ -86,17 +141,37 @@ ToolTipWidget::ToolTipWidget( QWidget* parent ):
     ( typeItem_ = new Item( this, gridLayout ) )->setKey( "Type:" );
     ( sizeItem_ = new Item( this, gridLayout ) )->setKey( "Size:" );
     ( lastModifiedItem_ = new Item( this, gridLayout ) )->setKey( "Modified:" );
-    ( userItem_ = new Item( this, gridLayout ) )->setKey( "User:" );
+    ( userItem_ = new Item( this, gridLayout ) )->setKey( "Owner:" );
     ( groupItem_ = new Item( this, gridLayout ) )->setKey( "Group:" );
+    ( permissionsItem_ = new Item( this, gridLayout ) )->setKey( "Permissions:" );
 
     // add stretch
     vLayout->addStretch( 1 );
+
+    // configuration
+    connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    _updateConfiguration();
+
+}
+
+//_____________________________________________
+void BaseFileInfoToolTipWidget::setEnabled( bool value )
+{
+    Debug::Throw( "BaseFileInfoToolTipWidget::setEnabled.\n" );
+    if( enabled_ == value ) return;
+    enabled_ = value;
+    if( !enabled_ )
+    {
+        if( isVisible() ) hide();
+        timer_.stop();
+    }
+
 }
 
 //_______________________________________________________
-void ToolTipWidget::setBaseFileInfo( const BaseFileInfo& fileInfo, const QIcon& icon )
+void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const QIcon& icon )
 {
-    Debug::Throw( "ToolTipWidget::setBaseFileInfo.\n" );
+    Debug::Throw( "BaseFileInfoToolTipWidget::setFileInfo.\n" );
     if( !icon.isNull() )
     {
 
@@ -134,11 +209,16 @@ void ToolTipWidget::setBaseFileInfo( const BaseFileInfo& fileInfo, const QIcon& 
         // user
         if( !fileInfo.user().isEmpty() ) userItem_->setText( fileInfo.user() );
         else userItem_->hide();
-        
+
         // group
         if( !fileInfo.group().isEmpty() ) groupItem_->setText( fileInfo.group() );
         else groupItem_->hide();
-        
+
+        // permissions
+        const QString permissions( fileInfo.permissionsString() );
+        if( !permissions.isEmpty() ) permissionsItem_->setText( permissions );
+        else permissionsItem_->hide();
+
     } else {
 
         // file and separator
@@ -149,7 +229,7 @@ void ToolTipWidget::setBaseFileInfo( const BaseFileInfo& fileInfo, const QIcon& 
         typeItem_->hide();
         sizeItem_->hide();
         lastModifiedItem_->hide();
-
+        permissionsItem_->hide();
     }
 
     adjustSize();
@@ -157,7 +237,32 @@ void ToolTipWidget::setBaseFileInfo( const BaseFileInfo& fileInfo, const QIcon& 
 }
 
 //_______________________________________________________
-void ToolTipWidget::paintEvent( QPaintEvent* event )
+void BaseFileInfoToolTipWidget::adjustPosition( const QRect& rect )
+{
+
+    // get tooltip size
+    const QSize size( sizeHint() );
+
+    // desktop size
+    QDesktopWidget* desktop( qApp->desktop() );
+    QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( this ) ) );
+
+    // set geometry
+    int left = rect.left() + ( rect.width() - size.width() )/2;
+    left = qMax( left, desktopGeometry.left() );
+    left = qMin( left, desktopGeometry.right() - size.width() );
+
+    // first try placing widget below item
+    const int margin = 5;
+    int top = rect.bottom() + margin;
+    if( top > desktopGeometry.bottom() - size.height() ) top = rect.top() - margin - size.height();
+
+    move( QPoint( left, top ) );
+
+}
+
+//_______________________________________________________
+void BaseFileInfoToolTipWidget::paintEvent( QPaintEvent* event )
 {
     QPainter painter( this );
     painter.setClipRegion( event->region() );
@@ -168,11 +273,23 @@ void ToolTipWidget::paintEvent( QPaintEvent* event )
     return QWidget::paintEvent( event );
 }
 
-//_______________________________________________________
-ToolTipWidget::Item::Item( QWidget* parent, GridLayout* layout ):
-    QObject( parent ),
-    Counter( "ToolTipWidget::Item" )
+
+//_____________________________________________
+void BaseFileInfoToolTipWidget::timerEvent( QTimerEvent* event )
 {
-    layout->addWidget( key_ = new QLabel( parent ) );
-    layout->addWidget( value_ = new QLabel( parent ) );
+    if( event->timerId() == timer_.timerId() )
+    {
+
+        timer_.stop();
+        show();
+        return;
+
+    } else return QWidget::timerEvent( event );
+}
+
+//_____________________________________________
+void BaseFileInfoToolTipWidget::_updateConfiguration( void )
+{
+    Debug::Throw( "BaseFileInfoToolTipWidget::_updateConfiguration.\n" );
+    setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );
 }

@@ -18,6 +18,7 @@ BaseConfigurationDialog.h \
 BaseDialog.h \
 BaseFileInfo.h \
 BaseFileInfoModel.h \
+BaseFileInfoToolTipWidget.h \
 BaseFindDialog.h \
 BaseIcons.h \
 BaseMainWindow.h \
@@ -126,8 +127,6 @@ TextSeparator.h \
 TileSet.h \
 ToolBarMenu.h \
 ToolButtonStyleMenu.h \
-ToolTipManager.h \
-ToolTipWidget.h \
 TransitionWidget.h \
 TreeItem.h \
 TreeItemBase.h \
@@ -159,6 +158,7 @@ AnimatedTreeView.cpp \
 BaseConfigurationDialog.cpp \
 BaseDialog.cpp \
 BaseFileInfo.cpp \
+BaseFileInfoToolTipWidget.cpp \
 BaseFindDialog.cpp \
 BaseMainWindow.cpp \
 BasePrintHelper.cpp \
@@ -244,8 +244,6 @@ TextSeparator.cpp \
 TileSet.cpp \
 ToolBarMenu.cpp \
 ToolButtonStyleMenu.cpp \
-ToolTipManager.cpp \
-ToolTipWidget.cpp \
 TransitionWidget.cpp \
 TreeItemBase.cpp \
 TreeView.cpp \

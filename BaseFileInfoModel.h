@@ -188,7 +188,7 @@ QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientati
             case FILE: return "File";
             case PATH: return "Path";
             case SIZE: return "Size";
-            case USER: return "User";
+            case USER: return "Owner";
             case GROUP: return "Group";
             case PERMISSIONS: return "Permissions";
             case MODIFIED: return "Last Modified";
