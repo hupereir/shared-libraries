@@ -49,6 +49,17 @@ moc_SpellDialog.cpp \
 moc_SpellItemDialog.cpp \
 moc_SuggestionMenu.cpp
 
+# executable
+BUILT_SOURCES = testexternals.c
+noinst_PROGRAMS = testexternals
+
+testexternals.c:
+	echo "//*** this is a generated file. Do not commit, do not edit" > $@
+	echo "int main()" >> $@
+	echo "{" >> $@
+	echo "  return 0;" >> $@
+	echo "}" >> $@
+
 ################
 # shared library
 if ENABLE_SHARED
@@ -58,17 +69,7 @@ libbase_spellcheck_la_SOURCES =  $(sources)
 nodist_libbase_spellcheck_la_SOURCES = $(nodist_sources)
 libbase_spellcheck_la_CXXFLAGS = $(AM_CXXFLAGS)
 
-# executable
-BUILT_SOURCES = testexternals.c
-noinst_PROGRAMS = testexternals
 testexternals_LDADD = libbase-spellcheck.la
-
-testexternals.c:
-	echo "//*** this is a generated file. Do not commit, do not edit" > $@
-	echo "int main()" >> $@
-	echo "{" >> $@
-	echo "  return 0;" >> $@
-	echo "}" >> $@
 
 else
 
@@ -78,6 +79,12 @@ noinst_LIBRARIES = libbase-spellcheck.a
 libbase_spellcheck_a_SOURCES = $(sources)
 nodist_libbase_spellcheck_a_SOURCES = $(nodist_sources)
 libbase_spellcheck_a_XXCFLAGS = $(AM_CXXFLAGS)
+
+testexternals_LDADD = \
+  libbase-spellcheck.a \
+  ../base-qt/libbase.a \
+  ../base/libbase.a \
+  -laspell
 
 endif
 
