@@ -335,18 +335,9 @@ moc_TreeViewConfiguration.cpp \
 moc_UserSelectionFrame.cpp \
 moc_XmlFileList.cpp
 
-# shared library
-if ENABLE_SHARED
-lib_LTLIBRARIES = libbase-qt.la
-libbase_qt_la_LIBADD = -lbase
-libbase_qt_la_SOURCES = $(sources)
-nodist_libbase_qt_la_SOURCES = $(nodist_sources)
-libbase_qt_la_CXXFLAGS = $(AM_CXXFLAGS)
-
 # executable
 BUILT_SOURCES = testexternals.c
 noinst_PROGRAMS = testexternals
-testexternals_LDADD = libbase-qt.la
 
 testexternals.c:
 	echo "//*** this is a generated file. Do not commit, do not edit" > $@
@@ -355,6 +346,16 @@ testexternals.c:
 	echo "  return 0;" >> $@
 	echo "}" >> $@
 
+# shared library
+if ENABLE_SHARED
+lib_LTLIBRARIES = libbase-qt.la
+libbase_qt_la_LIBADD = -lbase
+libbase_qt_la_SOURCES = $(sources)
+nodist_libbase_qt_la_SOURCES = $(nodist_sources)
+libbase_qt_la_CXXFLAGS = $(AM_CXXFLAGS)
+
+testexternals_LDADD = libbase-qt.la
+
 else
 
 # static library
@@ -362,6 +363,10 @@ noinst_LIBRARIES = libbase-qt.a
 libbase_qt_a_SOURCES = $(sources)
 nodist_libbase_qt_a_SOURCES = $(nodist_sources)
 libbase_qt_a_XXCFLAGS = $(AM_CXXFLAGS)
+
+testexternals_LDADD = \
+  libbase-qt.a \
+  ../base/libbase.a
 
 endif
 
