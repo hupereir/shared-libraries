@@ -112,6 +112,9 @@ class File: public QString
     //! tells if a file exists and is a directory
     virtual bool isDirectory( void ) const;
 
+    //! tells if a file is a broken symbolic link
+    virtual bool isBrokenLink( void ) const;
+
     //! tells if a file is a symbolic link
     virtual bool isLink( void ) const;
 

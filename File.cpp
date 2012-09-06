@@ -177,6 +177,10 @@ bool File::isDirectory( void ) const
 { return !isEmpty() && QFileInfo( *this ).isDir(); }
 
 //_____________________________________________________________________
+bool File::isBrokenLink( void ) const
+{ return isLink() && !File( QFileInfo( *this ).symLinkTarget() ).exists(); }
+
+//_____________________________________________________________________
 bool File::isLink( void ) const
 { return !isEmpty() && QFileInfo( *this ).isSymLink(); }
 
@@ -272,7 +276,7 @@ bool File::remove( void ) const
     if( isLink() || !isDirectory() )
     {
 
-        if( exists() ) return QFile( *this ).remove();
+        if( isBrokenLink() || exists() ) return QFile( *this ).remove();
         else return true;
 
     } else {
@@ -423,7 +427,7 @@ File::List File::listFiles( const unsigned int& flags ) const
     if( !fullName.endsWith( "/" ) ) fullName += "/";
 
     // open directory
-    QDir::Filters filter = QDir::AllEntries|QDir::NoDotDot;
+    QDir::Filters filter = QDir::AllEntries|QDir::System|QDir::NoDotDot;
     if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
 
     foreach( const QString& value, QDir( fullName ).entryList( filter ) )
