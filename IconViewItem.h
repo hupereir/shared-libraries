@@ -1,0 +1,179 @@
+#ifndef IconViewItem_h
+#define IconViewItem_h
+
+// $Id$
+
+/******************************************************************************
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*******************************************************************************/
+
+#include "Counter.h"
+
+#include <QtCore/QRect>
+
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QStyleOption>
+
+//! graphics item
+class IconViewItem: public Counter
+{
+
+    public:
+
+    //! constructor
+    IconViewItem( void ):
+        Counter( "IconView::Item" ),
+        dirty_( true ),
+        margin_( 5 ),
+        spacing_( 5 ),
+        maxTextWidth_( 100 ),
+        row_( -1 ),
+        column_( -1 )
+    {}
+
+    //! destructor
+    virtual ~IconViewItem( void )
+    {}
+
+    //!@name accessors
+    //@{
+
+    //! icon
+    const QPixmap& pixmap( void ) const
+    { return pixmap_; }
+
+    //! text
+    const QString& text( void ) const
+    { return text_; }
+
+    //! position
+    QPoint position( void ) const
+    { return position_; }
+
+    //! row
+    int row( void ) const
+    { return row_; }
+
+    //! column
+    int column( void ) const
+    { return column_; }
+
+    //! bounding rect
+    virtual QRect boundingRect( void ) const;
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! set spacing
+    void setMargin( int value )
+    {
+        if( margin_ == value ) return;
+        margin_ = value;
+        dirty_ = true;
+    }
+
+    //! set spacing
+    void setSpacing( int value )
+    {
+        if( spacing_ == value ) return;
+        spacing_ = value;
+        dirty_ = true;
+    }
+
+    //! set icon
+    void setPixmap( const QPixmap& pixmap )
+    {
+        const bool changed( pixmap_.size() != pixmap.size() );
+        pixmap_ = pixmap;
+        if( changed ) dirty_ = true;
+    }
+
+    //! set text
+    void setText( const QString& text )
+    {
+        if( text_ == text ) return;
+        text_ = text;
+        dirty_ = true;
+    }
+
+    //! set position
+    void setPosition( const QPoint& position )
+    { position_ = position; }
+
+    //! set location
+    void setLocation( int row, int column )
+    {
+        row_ = row;
+        column_ = column;
+    }
+
+    //@}
+
+    //! item map
+    typedef QMap<int, IconViewItem> Map;
+
+    //! item list
+    typedef QList<IconViewItem> List;
+
+    //! paint
+    virtual void paint( QPainter*, const QStyleOption*, QWidget* ) const;
+
+    protected:
+
+    //! update bounding rect
+    void _updateBoundingRect( void );
+
+    private:
+
+    //! dirty
+    bool dirty_;
+
+    //! margin
+    int margin_;
+
+    //! spacing
+    int spacing_;
+
+    //! max text width
+    int maxTextWidth_;
+
+    //! pixmap
+    QPixmap pixmap_;
+
+    //! text
+    QString text_;
+
+    //! bounding rect
+    QRect boundingRect_;
+
+    //! position
+    QPoint position_;
+
+    //! row and column index
+    int row_;
+
+    //! column
+    int column_;
+
+};
+
+#endif

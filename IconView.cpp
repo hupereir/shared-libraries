@@ -18,14 +18,19 @@
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
-*
 *******************************************************************************/
 
 #include "IconView.h"
+
+#include "BaseFindDialog.h"
+#include "BaseIcons.h"
 #include "CustomPixmap.h"
 #include "Debug.h"
+#include "IconEngine.h"
+#include "InformationDialog.h"
 #include "Singleton.h"
 #include "ScrollObject.h"
+#include "TextEditor.h"
 #include "XmlOptions.h"
 
 #include <QtGui/QApplication>
@@ -33,58 +38,12 @@
 #include <QtGui/QHoverEvent>
 #include <QtGui/QPaintEvent>
 #include <QtGui/QStyle>
-#include <QtGui/QTextLayout>
-
-//____________________________________________________________________
-/*!
-   copied from kdelibs/kdecore/text/kstringhandler.cpp
-   Copyright (C) 1999 Ian Zepp (icszepp@islc.net)
-   Copyright (C) 2006 by Dominic Battre <dominic@battre.de>
-   Copyright (C) 2006 by Martin Pool <mbp@canonical.com>
-*/
-QString preProcessWrap(const QString &text)
-{
-
-    // break
-    const QChar brk(0x200b);
-
-    // word join
-    const QChar join(0x2060);
-
-    QString result;
-    result.reserve(text.length());
-
-    for (int i = 0; i < text.length(); i++)
-    {
-
-        const QChar c = text[i];
-        const bool openingParenthesis( (c == QLatin1Char('(') || c == QLatin1Char('{') || c == QLatin1Char('[')) );
-        const bool closingParenthesis( (c == QLatin1Char(')') || c == QLatin1Char('}') || c == QLatin1Char(']')) );
-        const bool singleQuote( (c == QLatin1Char('\'') ) );
-        const bool breakAfter( (closingParenthesis || c.isPunct() || c.isSymbol()) );
-        const bool nextIsSpace( (i == (text.length() - 1) || text[i + 1].isSpace()) );
-        const bool prevIsSpace( (i == 0 || text[i - 1].isSpace() || result[result.length() - 1] == brk) );
-
-        // Provide a breaking opportunity before opening parenthesis
-        if( openingParenthesis && !prevIsSpace ) result += brk;
-
-        // Provide a word joiner before the single quote
-        if( singleQuote && !prevIsSpace ) result += join;
-
-        result += c;
-
-        if( breakAfter && !openingParenthesis && !nextIsSpace && !singleQuote )
-        { result += brk; }
-
-    }
-
-    return result;
-}
 
 //____________________________________________________________________
 IconView::IconView( QWidget* parent ):
     QAbstractItemView( parent ),
     Counter( "IconView" ),
+    findDialog_( 0x0 ),
     pixmapSize_( 48, 48 ),
     margin_( 5 ),
     spacing_( 5 ),
@@ -94,6 +53,11 @@ IconView::IconView( QWidget* parent ):
     dragButton_( Qt::NoButton )
 {
     Debug::Throw( "IconView::IconView.\n" );
+
+    // actions
+    _installActions();
+
+    // header (needed for sorting, even though always hidden)
     header_ = new QHeaderView( Qt::Horizontal, this );
     header_->hide();
 
@@ -111,6 +75,43 @@ IconView::IconView( QWidget* parent ):
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
+}
+
+//_______________________________________________
+void IconView::setFindEnabled( bool value )
+{
+    Debug::Throw( "IconView::setFindEnabled.\n" );
+    findAction_->setEnabled( value );
+    findSelectionAction_->setEnabled( value );
+    findAgainAction_->setEnabled( value );
+    findSelectionBackwardAction_->setEnabled( value );
+    findAgainBackwardAction_->setEnabled( value );
+}
+
+//______________________________________________________________________
+TextSelection IconView::selection( void ) const
+{
+
+    Debug::Throw( "IconView::selection.\n" );
+
+    // copy last selection
+    TextSelection out( "" );
+    out.setFlag( TextSelection::CASE_SENSITIVE, TextEditor::lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
+    out.setFlag( TextSelection::ENTIRE_WORD, TextEditor::lastSelection().flag( TextSelection::ENTIRE_WORD ) );
+
+    QString text;
+    if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
+    else if( selectionModel() && model() && selectionModel()->currentIndex().isValid() )
+    {
+        const QModelIndex current( selectionModel()->currentIndex() );
+        if( !(text =  model()->data( current ).toString()).isEmpty() ) out.setText( text );
+    }
+
+    // if everything else failed, retrieve last selection
+    if( text.isEmpty() ) out.setText( TextEditor::lastSelection().text() );
+
+    return out;
+
 }
 
 //_______________________________________________
@@ -159,7 +160,7 @@ QModelIndex IconView::indexAt( const QPoint& constPosition ) const
     QPoint position( constPosition + _scrollBarPosition() );
 
     // find matching item
-    for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+    for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
     {
         if( iter.value().boundingRect().translated( iter.value().position() ).contains( position ) )
         { return model()->index( iter.key(), 0 ); }
@@ -206,7 +207,7 @@ QRect IconView::visualRect( const QModelIndex&  index ) const
 
     if( items_.contains( index.row() ) )
     {
-        const Item& item( items_[index.row()] );
+        const IconViewItem& item( items_[index.row()] );
         return item.boundingRect().translated( item.position() ).translated( -_scrollBarPosition() );
     } else return QRect();
 }
@@ -265,7 +266,7 @@ void IconView::doItemsLayout( void )
         if( items_.contains( row ) ) _updateItem( items_[row], index );
         else {
 
-            Item item;
+            IconViewItem item;
              _updateItem( item, index );
             items_.insert( row, item );
 
@@ -279,30 +280,22 @@ void IconView::doItemsLayout( void )
 
 }
 
-//____________________________________________________________________
-void IconView::updateGeometries( void )
+//______________________________________________________________________
+void IconView::find( TextSelection selection )
 {
-
-    // vertical scrollbar
-    verticalScrollBar()->setRange(0, qMax(0, boundingRect_.bottom() - viewport()->height()));
-    verticalScrollBar()->setPageStep(viewport()->height());
-    verticalScrollBar()->setSingleStep( rowCount_ > 0 ? boundingRect_.height()/rowCount_ : viewport()->height()*0.1 );
-
-    // horizontal scrollbar
-    horizontalScrollBar()->setRange(0, qMax(0, boundingRect_.right() - viewport()->width()));
-    horizontalScrollBar()->setPageStep(viewport()->width());
-    horizontalScrollBar()->setSingleStep( viewport()->width()*0.1 );
-
-    QAbstractItemView::updateGeometries();
-
+    Debug::Throw( "IconView::find.\n" );
+    bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) );
+    if( found ) emit matchFound();
+    else emit noMatchFound();
 }
 
-//____________________________________________________________________
-void IconView::sortByColumn( int column, Qt::SortOrder order)
-{
-    Debug::Throw() << "IconView::sortByColumn - column: " << column << " order: " << order << endl;
-    if( model() ) model()->sort( column, order );
-}
+//______________________________________________________________________
+void IconView::findAgainForward( void )
+{ _findForward( TextEditor::lastSelection(), true ); }
+
+//______________________________________________________________________
+void IconView::findAgainBackward( void )
+{ _findBackward( TextEditor::lastSelection(), true ); }
 
 //____________________________________________________________________
 bool IconView::isIndexHidden( const QModelIndex& ) const
@@ -328,7 +321,7 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 
     // get current item
     QModelIndex targetIndex;
-    const Item& item( items_[index.row()] );
+    const IconViewItem& item( items_[index.row()] );
     switch( action )
     {
 
@@ -352,7 +345,7 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
             const qreal target( item.position().y() + item.boundingRect().height() - viewport()->height() );
             for( int i = 0; i <= index.row(); ++i )
             {
-                const Item& local( items_[i] );
+                const IconViewItem& local( items_[i] );
                 if( local.column() != item.column() ) continue;
                 if( local.position().y() > target ) {
 
@@ -371,7 +364,7 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
             const qreal target( item.position().y() + viewport()->height() );
             for( int i = index.row()+1; i < items_.size(); ++i )
             {
-                const Item& local( items_[i] );
+                const IconViewItem& local( items_[i] );
                 if( local.column() != item.column() ) continue;
                 if( !targetIndex.isValid() || local.position().y() + local.boundingRect().height() < target )
                 {
@@ -508,10 +501,10 @@ void IconView::paintEvent( QPaintEvent* event )
     painter.setRenderHint( QPainter::TextAntialiasing, true );
 
     // loop over events
-    for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+    for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
     {
         // check intersection with clipRect
-        const Item& item( iter.value() );
+        const IconViewItem& item( iter.value() );
 
         // todo: try understand offsets properly
         if( !item.boundingRect().translated( item.position() ).intersects( clipRect ) ) continue;
@@ -778,10 +771,10 @@ QModelIndexList IconView::_selectedIndexes( const QRect& constRect ) const
 
     QModelIndexList indexes;
     const QRect rect( constRect.translated( _scrollBarPosition() ) );
-    for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+    for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
     {
 
-        const Item& item( iter.value() );
+        const IconViewItem& item( iter.value() );
         if( rect.intersects( item.boundingRect().translated( item.position() ) ) )
         { indexes << model()->index( iter.key(), 0 ); }
 
@@ -791,7 +784,7 @@ QModelIndexList IconView::_selectedIndexes( const QRect& constRect ) const
 }
 
 //____________________________________________________________________
-void IconView::_updateItem( Item& item, const QModelIndex& index ) const
+void IconView::_updateItem( IconViewItem& item, const QModelIndex& index ) const
 {
 
     // update text
@@ -814,10 +807,10 @@ void IconView::_layoutItems( void )
     int width( 0 );
     columnCount_ = 0;
 
-    for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter, ++columnCount_ )
+    for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter, ++columnCount_ )
     {
         if( columnCount_ ) width += spacing_;
-        const Item& item( iter.value() );
+        const IconViewItem& item( iter.value() );
         width += item.boundingRect().width();
         if( width > maxWidth ) break;
     }
@@ -838,10 +831,10 @@ void IconView::_layoutItems( void )
         rowCount_ = 0;
         totalHeight = 0;
         columnSizes = QVector<int>( columnCount_, 0 );
-        for( Item::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter, ++column )
+        for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter, ++column )
         {
             // reset column
-            const Item& item( iter.value() );
+            const IconViewItem& item( iter.value() );
             if( column >= columnCount_ )
             {
                 if( totalHeight ) totalHeight += spacing_;
@@ -886,10 +879,10 @@ void IconView::_layoutItems( void )
     int row = 0;
     boundingRect_ = QRect();
     QPoint position( margin, margin_ );
-    for( Item::Map::iterator iter = items_.begin(); iter != items_.end(); ++iter, ++column )
+    for( IconViewItem::Map::iterator iter = items_.begin(); iter != items_.end(); ++iter, ++column )
     {
 
-        Item& item( iter.value() );
+        IconViewItem& item( iter.value() );
 
         // reset column
         if( column >= columnCount_ )
@@ -914,7 +907,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 {
     if( indexes.isEmpty() ) return QPixmap();
 
-    Item::List items;
+    IconViewItem::List items;
     foreach( const QModelIndex& index, indexes )
     {
         if( !items_.contains( index.row() ) ) continue;
@@ -928,7 +921,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 
     QPainter painter( &pixmap );
     painter.translate( -boundingRect.topLeft() );
-    foreach( const Item& item, items )
+    foreach( const IconViewItem& item, items )
     {
 
         QStyleOptionViewItemV4 option = viewOptions();
@@ -948,6 +941,281 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 
 }
 
+
+//______________________________________________________________________
+void IconView::_createBaseFindDialog( void )
+{
+
+    Debug::Throw( "IconView::_createBaseFindDialog.\n" );
+    if( !findDialog_ )
+    {
+
+        // create dialog
+        findDialog_ = new BaseFindDialog( this );
+        findDialog_->setWindowTitle( "Find in List" );
+
+        // for now entire word is disabled, because it is unclear how to handle it
+        findDialog_->enableEntireWord( false );
+
+        // connections
+        connect( findDialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
+        connect( this, SIGNAL( noMatchFound() ), findDialog_, SLOT( noMatchFound() ) );
+        connect( this, SIGNAL( matchFound() ), findDialog_, SLOT( clearLabel() ) );
+
+    }
+
+    return;
+
+}
+
+//______________________________________________________________________
+bool IconView::_findForward( const TextSelection& selection, bool rewind )
+{
+    Debug::Throw( "IconView::_findForward.\n" );
+    if( selection.text().isEmpty() ) return false;
+
+    // store selection
+    TextEditor::setLastSelection( selection );
+
+    // check model and selection model
+    if( !( model() && selectionModel() ) ) return false;
+
+    QRegExp regexp;
+    if( selection.flag( TextSelection::REGEXP ) )
+    {
+
+        // construct regexp and check
+        regexp.setPattern( selection.text() );
+        if( !regexp.isValid() )
+        {
+            InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+            return false;
+        }
+
+        // case sensitivity
+        regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+
+    }
+
+    // set first index
+    QModelIndex current( selectionModel()->currentIndex() );
+    QModelIndex index( ( selection.flag( TextSelection::NO_INCREMENT ) ) ? current:_indexAfter( current ) );
+
+    // if index index is invalid and rewind, set index index of the model
+    if( (!index.isValid()) && rewind )
+    {
+        rewind = false;
+        index = _firstIndex();
+    }
+
+    // no starting index found. Return
+    if( !index.isValid() ) return false;
+
+    // loop over indexes
+    while( index.isValid() )
+    {
+
+        QString text;
+        bool accepted( false );
+
+        // check if column is visible
+        if( !(text = model()->data( index ).toString() ).isEmpty() )
+        {
+
+            // check if text match
+            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.indexIn( text ) >= 0 ) accepted = true; }
+            else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
+            { accepted = true; }
+
+        }
+
+        if( accepted )
+        {
+
+            QItemSelectionModel::SelectionFlags command( QItemSelectionModel::Clear|QItemSelectionModel::Select );
+            if( selectionBehavior() == SelectRows ) command |= QItemSelectionModel::Rows;
+            selectionModel()->select( index, command );
+
+            // update current index
+            command = QItemSelectionModel::Current;
+            if( selectionBehavior() == SelectRows ) command |= QItemSelectionModel::Rows;
+            selectionModel()->setCurrentIndex( index,  command );
+
+            // quit loop
+            return true;
+
+        } else {
+
+            QModelIndex previous( index );
+            index = _indexAfter( index );
+
+            if( rewind && !index.isValid() )
+            {
+                rewind = false;
+                index = _firstIndex();
+
+            }
+
+        }
+
+    }
+
+    // no match found
+    return false;
+
+}
+
+//______________________________________________________________________
+bool IconView::_findBackward( const TextSelection& selection, bool rewind )
+{
+
+    Debug::Throw( "IconView::_findBackward.\n" );
+    if( selection.text().isEmpty() ) return false;
+
+    // store selection
+    TextEditor::setLastSelection( selection );
+
+    // check model and selection model
+    if( !( model() && selectionModel() ) ) return false;
+
+    QRegExp regexp;
+    if( selection.flag( TextSelection::REGEXP ) )
+    {
+
+        // construct regexp and check
+        regexp.setPattern( selection.text() );
+        if( !regexp.isValid() )
+        {
+            InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+            return false;
+        }
+
+        // case sensitivity
+        regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+
+    }
+
+    // set first index
+    QModelIndex current( selectionModel()->currentIndex() );
+    QModelIndex index( ( selection.flag( TextSelection::NO_INCREMENT ) ) ? current:_indexBefore( current ) );
+
+    // if index index is invalid and rewind, set index index of the model
+    if( (!index.isValid()) && rewind ) {
+        rewind = false;
+        index = _lastIndex();
+    }
+
+
+    // no starting index found. Return
+    if( !index.isValid() ) return false;
+
+    // loop over indexes
+    while( index.isValid() )
+    {
+
+        QString text;
+        bool accepted( false );
+
+        // check if column is visible
+        if( !(text = model()->data( index ).toString() ).isEmpty() )
+        {
+
+            // check if text match
+            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.indexIn( text ) >= 0 ) accepted = true; }
+            else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
+            { accepted = true; }
+
+        }
+
+        if( accepted )
+        {
+
+            QItemSelectionModel::SelectionFlags command( QItemSelectionModel::Clear|QItemSelectionModel::Select );
+            if( selectionBehavior() == SelectRows ) command |= QItemSelectionModel::Rows;
+            selectionModel()->select( index, command );
+
+            // update current index
+            command = QItemSelectionModel::Current;
+            if( selectionBehavior() == SelectRows ) command |= QItemSelectionModel::Rows;
+            selectionModel()->setCurrentIndex( index,  command );
+
+            // quit loop
+            return true;
+
+        } else {
+
+            index = _indexBefore( index );
+            if( rewind && !index.isValid() )
+            {
+                rewind = false;
+                index = _lastIndex();
+            }
+
+        }
+
+    }
+
+    return false;
+
+}
+
+//____________________________________________________________________
+void IconView::updateGeometries( void )
+{
+
+    // vertical scrollbar
+    verticalScrollBar()->setRange(0, qMax(0, boundingRect_.bottom() - viewport()->height()));
+    verticalScrollBar()->setPageStep(viewport()->height());
+    verticalScrollBar()->setSingleStep( rowCount_ > 0 ? boundingRect_.height()/rowCount_ : viewport()->height()*0.1 );
+
+    // horizontal scrollbar
+    horizontalScrollBar()->setRange(0, qMax(0, boundingRect_.right() - viewport()->width()));
+    horizontalScrollBar()->setPageStep(viewport()->width());
+    horizontalScrollBar()->setSingleStep( viewport()->width()*0.1 );
+
+    QAbstractItemView::updateGeometries();
+
+}
+
+//____________________________________________________________________
+void IconView::sortByColumn( int column, Qt::SortOrder order)
+{
+    Debug::Throw() << "IconView::sortByColumn - column: " << column << " order: " << order << endl;
+    if( model() ) model()->sort( column, order );
+}
+
+
+//_____________________________________________________________________
+void IconView::_findFromDialog( void )
+{
+    Debug::Throw( "IconView::_findFromDialog.\n" );
+
+    // set default text
+    // update find text
+    QString text( selection().text() );
+    if( !text.isEmpty() )
+    {
+        const int max_length( 1024 );
+        text = text.left( max_length );
+    }
+
+    // create
+    if( !findDialog_ ) _createBaseFindDialog();
+    _findDialog().enableRegExp( true );
+    _findDialog().centerOnParent();
+    _findDialog().show();
+
+    _findDialog().synchronize();
+    _findDialog().clearLabel();
+    _findDialog().setText( text );
+
+    // changes focus
+    _findDialog().activateWindow();
+    _findDialog().editor().setFocus();
+
+    return;
+}
+
 //_____________________________________________________________________
 void IconView::_updateConfiguration( void )
 {
@@ -965,115 +1233,56 @@ void IconView::_updateConfiguration( void )
     }
 }
 
-
-//____________________________________________________________________
-QRect IconView::Item::boundingRect( void ) const
+//__________________________________________________________
+void IconView::_installActions( void )
 {
-    if( dirty_ ) const_cast<IconView::Item*>( this )->_updateBoundingRect();
-    return boundingRect_;
-}
+    Debug::Throw( "IconView::_installActions.\n" );
 
-//____________________________________________________________________
-void IconView::Item::paint( QPainter* painter, const QStyleOption* option, QWidget* widget ) const
-{
+    addAction( selectAllAction_ = new QAction( "Select All", this ) );
+    selectAllAction_->setShortcut( QKeySequence::SelectAll );
+    selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-    QRectF boundingRect( this->boundingRect() );
-    QRectF textRect( boundingRect.adjusted( 0, margin_, 0, -margin_ ) );
+    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find", this ) );
+    findAction_->setShortcut( QKeySequence::Find );
+    findAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
-    // draw selection
-    widget->style()->drawPrimitive( QStyle::PE_PanelItemViewItem, option, painter, widget );
+    addAction( findAgainAction_ = new QAction( "Find Again", this ) );
+    findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
+    findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( findAgainAction_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
 
-    if( !pixmap_.isNull() )
-    {
-        painter->drawPixmap( QPointF( (boundingRect.width() - pixmap_.width())/2, margin_ ), pixmap_ );
-        textRect.adjust( 0, pixmap_.height() + spacing_, 0, 0 );
-    }
+    addAction( findAgainBackwardAction_ = new QAction( this ) );
+    findAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
+    findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( findAgainBackwardAction_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
-    if( !text_.isEmpty() )
-    {
+    addAction( findSelectionAction_ = new QAction( "Find Selection", this ) );
+    findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
+    findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( findSelectionAction_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
 
-        const QString text( preProcessWrap( text_ ) );
-
-        const int maxWidth( qMax( maxTextWidth_, pixmap_.width() ) );
-        QTextOption textOption(Qt::AlignHCenter);
-        textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-
-        qreal height(0);
-        QTextLine line;
-        QTextLayout layout( text, QApplication::font() );
-        layout.setTextOption(textOption);
-        layout.beginLayout();
-        while( ( line = layout.createLine() ).isValid())
-        {
-
-            line.setLineWidth(maxWidth);
-            line.naturalTextWidth();
-            line.setPosition(QPointF(0, height));
-            height += line.height();
-
-        }
-
-        layout.endLayout();
-        layout.draw( painter, textRect.topLeft() + QPointF( 0.5*(textRect.width()-layout.boundingRect().width()), 0 ), QVector<QTextLayout::FormatRange>(), textRect );
-
-    }
+    addAction( findSelectionBackwardAction_ = new QAction( this ) );
+    findSelectionBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
+    findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( findSelectionBackwardAction_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
 }
 
-//____________________________________________________________________
-void IconView::Item::_updateBoundingRect( void )
-{
-    boundingRect_ = QRect( 0, 0, 2*margin_, 2*margin_ );
 
-    // calculate pixmap size
-    QSize pixmapSize( pixmap_.size() );
+//_________________________________________________________
+QModelIndex IconView::_firstIndex( void ) const
+{ return items_.empty() ? QModelIndex():model()->index( 0, 0 ); }
 
-    // calculate text size
-    QSize textSize;
-    if( !text_.isEmpty() )
-    {
+//_________________________________________________________
+QModelIndex IconView::_lastIndex( void ) const
+{ return items_.empty() ? QModelIndex():model()->index( 0, items_.size()-1 ); }
 
-        const QString text( preProcessWrap( text_ ) );
-        const int maxWidth( qMax( maxTextWidth_, pixmapSize.width() ) );
-        int maxLineWidth( 0 );
+//_________________________________________________________
+QModelIndex IconView::_indexAfter( const QModelIndex& current ) const
+{ return (current.row() >= items_.size()) ? QModelIndex():model()->index( current.row()+1, 0 ); }
 
-        QTextOption textOption(Qt::AlignHCenter);
-        textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        qreal height(0);
-
-        QTextLine line;
-        QTextLayout layout( text, QApplication::font() );
-        layout.setTextOption(textOption);
-        layout.beginLayout();
-        while( ( line = layout.createLine() ).isValid())
-        {
-
-            line.setLineWidth(maxWidth);
-            maxLineWidth = qMax( maxLineWidth, (int) line.naturalTextWidth() );
-            line.setPosition( QPointF( 0, height ) );
-            height += line.height();
-
-        }
-
-        layout.endLayout();
-        textSize = QSize( maxLineWidth, layout.boundingRect().size().toSize().height() );
-
-    }
-
-    if( !( pixmap_.isNull() || text_.isEmpty() ) )
-    {
-
-        boundingRect_.adjust( 0, 0, qMax( pixmapSize.width(), textSize.width() ), spacing_ + pixmapSize.height() + textSize.height() );
-
-    } else if( !pixmap_.isNull() ) {
-
-        boundingRect_.adjust( 0, 0, pixmapSize.width(), pixmapSize.height() );
-
-    } else if( !text_.isEmpty() ) {
-
-        boundingRect_.adjust( 0, 0, textSize.width(), textSize.height() );
-
-    }
-
-    dirty_ = false;
-}
+//_________________________________________________________
+QModelIndex IconView::_indexBefore( const QModelIndex& current ) const
+{ return (items_.empty() || current.row() == 0 || current.row() > items_.size() ) ? QModelIndex():model()->index( current.row()-1, 0 ); }

@@ -37,13 +37,11 @@
 #include <QtGui/QPainter>
 #include <QtGui/QScrollBar>
 
-#include <cassert>
-
 //_______________________________________________
 TreeView::TreeView( QWidget* parent ):
     QTreeView( parent ),
     Counter( "TreeView" ),
-    findDialog_( 0 ),
+    findDialog_( 0x0 ),
     iconSizeFromOptions_( true ),
     vertical_( 0 ),
     horizontal_( 0 ),
@@ -68,12 +66,6 @@ TreeView::TreeView( QWidget* parent ):
     connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
     connect( header(), SIGNAL( sortIndicatorChanged( int, Qt::SortOrder ) ), SLOT( saveSortOrder() ) );
 
-    // show header action
-    showHeaderAction_ = new QAction( "Show List Header", this );
-    showHeaderAction_->setCheckable( true );
-    showHeaderAction_->setChecked( true );
-    connect( showHeaderAction_, SIGNAL( toggled( bool ) ), SLOT( toggleShowHeader( bool ) ) );
-
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
@@ -83,11 +75,58 @@ TreeView::TreeView( QWidget* parent ):
 //_______________________________________________
 void TreeView::setFindEnabled( bool value )
 {
+    Debug::Throw( "IconView::setFindEnabled.\n" );
     findAction_->setEnabled( value );
     findSelectionAction_->setEnabled( value );
     findAgainAction_->setEnabled( value );
     findSelectionBackwardAction_->setEnabled( value );
     findAgainBackwardAction_->setEnabled( value );
+}
+
+//______________________________________________________________________
+TextSelection TreeView::selection( void ) const
+{
+
+    Debug::Throw( "TreeView::selection.\n" );
+
+    // copy last selection
+    TextSelection out( "" );
+    out.setFlag( TextSelection::CASE_SENSITIVE, TextEditor::lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
+    out.setFlag( TextSelection::ENTIRE_WORD, TextEditor::lastSelection().flag( TextSelection::ENTIRE_WORD ) );
+
+    QString text;
+    if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
+    else if( selectionModel() && model() && selectionModel()->currentIndex().isValid() )
+    {
+
+        const QModelIndex current( selectionModel()->currentIndex() );
+        if( !(text =  model()->data( current ).toString()).isEmpty() ) out.setText( text );
+        else if( allColumnsShowFocus() )
+        {
+
+            QModelIndex parent( model()->parent( current ) );
+
+            // loop over all columns, retrieve
+            for( int column = 0; column < model()->columnCount( parent ); column++ )
+            {
+                // get index from column
+                const QModelIndex index( model()->index( current.row(), column, parent ) );
+                if( index.isValid() && !(text =  model()->data( index ).toString()).isEmpty() )
+                {
+                    out.setText( text );
+                    break;
+                }
+
+            }
+
+        }
+    }
+
+    // if everything else failed, retrieve last selection
+    if( text.isEmpty() ) out.setText( TextEditor::lastSelection().text() );
+
+    return out;
+
 }
 
 //_______________________________________________
@@ -178,7 +217,6 @@ bool TreeView::setOptionName( const QString& value )
 unsigned int TreeView::mask( void ) const
 {
     Debug::Throw( "TreeView::mask.\n" );
-    assert( model() );
     unsigned int mask = 0;
     for( int index=0; model() && index < model()->columnCount(); index++ )
         if( !isColumnHidden( index ) ) mask |= (1<<index);
@@ -306,32 +344,12 @@ void TreeView::find( TextSelection selection )
 }
 
 //______________________________________________________________________
-void TreeView::findSelectionForward( void )
-{
-    Debug::Throw( "TreeView::findSelectionForward.\n" );
-    _findForward( selection(), true );
-}
-
-//______________________________________________________________________
-void TreeView::findSelectionBackward( void )
-{
-    Debug::Throw( "TreeView::findSelectionBackward.\n" );
-    _findBackward( selection(), true );
-}
-
-//______________________________________________________________________
 void TreeView::findAgainForward( void )
-{
-    Debug::Throw( "TreeView::findAgainForward.\n" );
-    _findForward( TextEditor::lastSelection(), true );
-}
+{ _findForward( TextEditor::lastSelection(), true ); }
 
 //______________________________________________________________________
 void TreeView::findAgainBackward( void )
-{
-    Debug::Throw( "TreeView::findAgainBackward.\n" );
-    _findBackward( TextEditor::lastSelection(), true );
-}
+{ _findBackward( TextEditor::lastSelection(), true ); }
 
 //__________________________________________________________
 void TreeView::paintEvent( QPaintEvent* event )
@@ -365,54 +383,6 @@ void TreeView::paintEvent( QPaintEvent* event )
 }
 
 //______________________________________________________________________
-TextSelection TreeView::selection( void ) const
-{
-
-    Debug::Throw( "TreeView::_selection.\n" );
-
-    // copy last selection
-    TextSelection out( "" );
-    out.setFlag( TextSelection::CASE_SENSITIVE, TextEditor::lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
-    out.setFlag( TextSelection::ENTIRE_WORD, TextEditor::lastSelection().flag( TextSelection::ENTIRE_WORD ) );
-
-    QString text;
-    if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
-    else if( selectionModel() && model() && selectionModel()->currentIndex().isValid() )
-    {
-
-        Debug::Throw( "TreeView::_selection - checking current.\n" );
-
-        QModelIndex current( selectionModel()->currentIndex() );
-        if( !(text =  model()->data( current ).toString()).isEmpty() ) out.setText( text );
-        else if( allColumnsShowFocus() )
-        {
-
-            QModelIndex parent( model()->parent( current ) );
-
-            // loop over all columns, retrieve
-            for( int column = 0; column < model()->columnCount( parent ); column++ )
-            {
-                // get index from column
-                QModelIndex index( model()->index( current.row(), column, parent ) );
-                if( index.isValid() && !(text =  model()->data( index ).toString()).isEmpty() )
-                {
-                    out.setText( text );
-                    break;
-                }
-
-            }
-
-        }
-    }
-
-    // if everything else failed, retrieve last selection
-    if( text.isEmpty() ) out.setText( TextEditor::lastSelection().text() );
-
-    return out;
-
-
-}
-//______________________________________________________________________
 void TreeView::_createBaseFindDialog( void )
 {
 
@@ -437,7 +407,6 @@ void TreeView::_createBaseFindDialog( void )
     return;
 
 }
-
 
 //______________________________________________________________________
 bool TreeView::_findForward( const TextSelection& selection, bool rewind )
@@ -629,6 +598,7 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
     return false;
 
 }
+
 //__________________________________________________________
 void TreeView::_installActions( void )
 {
@@ -663,6 +633,13 @@ void TreeView::_installActions( void )
     findSelectionBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionBackwardAction_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
+
+
+    // show header action
+    showHeaderAction_ = new QAction( "Show List Header", this );
+    showHeaderAction_->setCheckable( true );
+    showHeaderAction_->setChecked( true );
+    connect( showHeaderAction_, SIGNAL( toggled( bool ) ), SLOT( toggleShowHeader( bool ) ) );
 
 }
 
@@ -762,8 +739,6 @@ QModelIndex TreeView::_firstIndex( void ) const
 QModelIndex TreeView::_lastIndex( void ) const
 {
 
-    Debug::Throw( "TreeView::_lastIndex.\n" );
-
     if( !model()->rowCount() ) return QModelIndex();
 
     QModelIndex out( model()->index( model()->rowCount()-1, 0 ) );
@@ -782,7 +757,6 @@ QModelIndex TreeView::_lastIndex( void ) const
 QModelIndex TreeView::_indexAfter( const QModelIndex& current ) const
 {
 
-    assert( model() );
     QModelIndex out;
     if( !current.isValid() ) return out;
 
@@ -816,7 +790,6 @@ QModelIndex TreeView::_indexAfter( const QModelIndex& current ) const
 QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
 {
     Debug::Throw() << "TreeView::_indexBefore - " << current.row() << "," << current.column() << "," << current.isValid() << endl;
-    assert( model() );
     QModelIndex out;
     if( !current.isValid() ) return out;
 

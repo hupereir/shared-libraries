@@ -67,6 +67,7 @@ IconEngine.h \
 IconSize.h \
 IconSizeMenu.h \
 IconView.h \
+IconViewItem.h \
 ImageFileDialog.h \
 InformationDialog.h \
 IOString.h \
@@ -203,6 +204,7 @@ IconEngine.cpp \
 IconSize.cpp \
 IconSizeMenu.cpp \
 IconView.cpp \
+IconViewItem.cpp \
 ImageFileDialog.cpp \
 InformationDialog.cpp \
 IOString.cpp \

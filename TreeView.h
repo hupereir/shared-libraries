@@ -30,8 +30,7 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QAction>
 
-#include <cassert>
-
+// forward declaration
 class BaseFindDialog;
 
 //! customized tree view
@@ -195,10 +194,12 @@ class TreeView: public QTreeView, public Counter
     virtual void find( TextSelection selection );
 
     //! find current selection forward
-    virtual void findSelectionForward( void );
+    virtual void findSelectionForward( void )
+    { _findForward( selection(), true ); }
 
     //! find current selection backward
-    virtual void findSelectionBackward( void );
+    virtual void findSelectionBackward( void )
+    { _findBackward( selection(), true ); }
 
     //! find last search forward
     virtual void findAgainForward( void );
@@ -213,10 +214,7 @@ class TreeView: public QTreeView, public Counter
 
     //! find dialog
     virtual BaseFindDialog& _findDialog( void )
-    {
-        assert( findDialog_ );
-        return *findDialog_;
-    }
+    { return *findDialog_; }
 
     //! find dialog
     virtual void _createBaseFindDialog( void );
@@ -252,10 +250,10 @@ class TreeView: public QTreeView, public Counter
     QModelIndex _lastIndex() const;
 
     //! return next index of current
-    QModelIndex _indexAfter( const QModelIndex& index ) const;
+    QModelIndex _indexAfter( const QModelIndex& ) const;
 
     //! return previous index
-    QModelIndex _indexBefore( const QModelIndex& index ) const;
+    QModelIndex _indexBefore( const QModelIndex& ) const;
 
     //! find dialog
     BaseFindDialog* findDialog_;
@@ -263,7 +261,7 @@ class TreeView: public QTreeView, public Counter
     //!@name actions
     //@{
 
-    //! select all document
+    //! select all items
     QAction* selectAllAction_;
 
     //! find from dialog

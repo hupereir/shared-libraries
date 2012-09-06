@@ -21,10 +21,11 @@
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
-*
 *******************************************************************************/
 
 #include "Counter.h"
+#include "IconViewItem.h"
+#include "TextSelection.h"
 
 #include <QtCore/QBasicTimer>
 #include <QtCore/QString>
@@ -37,7 +38,9 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QRubberBand>
 #include <QtGui/QScrollBar>
-#include <QtGui/QStyleOption>
+
+// forward declaration
+class BaseFindDialog;
 
 //! icon view
 class IconView: public QAbstractItemView, public Counter
@@ -53,6 +56,12 @@ class IconView: public QAbstractItemView, public Counter
     //! destructor
     virtual ~IconView( void )
     {}
+
+    //! enable list finding
+    void setFindEnabled( bool value );
+
+    //! TextSelection object from this selection, or clipboard
+    TextSelection selection( void ) const;
 
     //! header
     QHeaderView* header( void ) const
@@ -103,6 +112,27 @@ class IconView: public QAbstractItemView, public Counter
 
     //@}
 
+    //!@name actions
+    //@{
+
+    //! select all
+    QAction& selectAllAction( void ) const
+    { return *selectAllAction_; }
+
+    //! find from dialog
+    QAction& findAction( void ) const
+    { return *findAction_; }
+
+    //! find selection again
+    QAction& findSelectionAction( void ) const
+    { return *findSelectionAction_; }
+
+    //! find again
+    QAction& findAgainAction( void ) const
+    { return *findAgainAction_; }
+
+    //@}
+
     //! return index at a given position
     virtual QModelIndex indexAt( const QPoint& ) const;
 
@@ -114,7 +144,14 @@ class IconView: public QAbstractItemView, public Counter
 
     signals:
 
+    //! emmited when item is hovered. Invalid index means no hovered index
     void hovered( const QModelIndex& );
+
+    //! emmitted when selection could not be found
+    void noMatchFound( void );
+
+    //! emmitted when selection could be found
+    void matchFound( void );
 
     public slots:
 
@@ -127,13 +164,22 @@ class IconView: public QAbstractItemView, public Counter
     // items layout
     virtual void doItemsLayout();
 
-    protected slots:
+    //! find next occurence of TextSelection
+    virtual void find( TextSelection selection );
 
-    //! update geometries
-    virtual void updateGeometries( void );
+    //! find current selection forward
+    virtual void findSelectionForward( void )
+    { _findForward( selection(), true ); }
 
-    //! sort order
-    void sortByColumn( int, Qt::SortOrder );
+    //! find current selection backward
+    virtual void findSelectionBackward( void )
+    { _findBackward( selection(), true ); }
+
+    //! find last search forward
+    virtual void findAgainForward( void );
+
+    //! find last search forward
+    virtual void findAgainBackward( void );
 
     protected:
 
@@ -203,153 +249,8 @@ class IconView: public QAbstractItemView, public Counter
         emit hovered( index );
     }
 
-    //! graphics item
-    class Item: public Counter
-    {
-
-        public:
-
-        //! constructor
-        Item( void ):
-            Counter( "IconView::Item" ),
-            dirty_( true ),
-            margin_( 5 ),
-            spacing_( 5 ),
-            maxTextWidth_( 100 ),
-            row_( -1 ),
-            column_( -1 )
-        {}
-
-        //! destructor
-        virtual ~Item( void )
-        {}
-
-        //!@name accessors
-        //@{
-
-        //! icon
-        const QPixmap& pixmap( void ) const
-        { return pixmap_; }
-
-        //! text
-        const QString& text( void ) const
-        { return text_; }
-
-        //! position
-        QPoint position( void ) const
-        { return position_; }
-
-        //! row
-        int row( void ) const
-        { return row_; }
-
-        //! column
-        int column( void ) const
-        { return column_; }
-
-        //! bounding rect
-        virtual QRect boundingRect( void ) const;
-
-        //@}
-
-        //!@name modifiers
-        //@{
-
-        //! set spacing
-        void setMargin( int value )
-        {
-            if( margin_ == value ) return;
-            margin_ = value;
-            dirty_ = true;
-        }
-
-        //! set spacing
-        void setSpacing( int value )
-        {
-            if( spacing_ == value ) return;
-            spacing_ = value;
-            dirty_ = true;
-        }
-
-        //! set icon
-        void setPixmap( const QPixmap& pixmap )
-        {
-            const bool changed( pixmap_.size() != pixmap.size() );
-            pixmap_ = pixmap;
-            if( changed ) dirty_ = true;
-        }
-
-        //! set text
-        void setText( const QString& text )
-        {
-            if( text_ == text ) return;
-            text_ = text;
-            dirty_ = true;
-        }
-
-        //! set position
-        void setPosition( const QPoint& position )
-        { position_ = position; }
-
-        //! set location
-        void setLocation( int row, int column )
-        {
-            row_ = row;
-            column_ = column;
-        }
-
-        //@}
-
-        //! item map
-        typedef QMap<int, Item> Map;
-
-        //! item list
-        typedef QList<Item> List;
-
-        //! paint
-        virtual void paint( QPainter*, const QStyleOption*, QWidget* ) const;
-
-        protected:
-
-        //! update bounding rect
-        void _updateBoundingRect( void );
-
-        private:
-
-        //! dirty
-        bool dirty_;
-
-        //! margin
-        int margin_;
-
-        //! spacing
-        int spacing_;
-
-        //! max text width
-        int maxTextWidth_;
-
-        //! pixmap
-        QPixmap pixmap_;
-
-        //! text
-        QString text_;
-
-        //! bounding rect
-        QRect boundingRect_;
-
-        //! position
-        QPoint position_;
-
-        //! row and column index
-        int row_;
-
-        //! column
-        int column_;
-
-    };
-
     //! update item from index
-    void _updateItem( Item& item, const QModelIndex& index ) const;
+    void _updateItem( IconViewItem& item, const QModelIndex& index ) const;
 
     //! layout existing items
     void _layoutItems( void );
@@ -361,6 +262,30 @@ class IconView: public QAbstractItemView, public Counter
     //! get pixmap for a given index selection
     QPixmap _pixmap( const QModelIndexList&, QRect& );
 
+    //! find dialog
+    virtual BaseFindDialog& _findDialog( void )
+    { return *findDialog_; }
+
+    //! find dialog
+    virtual void _createBaseFindDialog( void );
+
+    //! find selection in forward direction
+    virtual bool _findForward( const TextSelection& selection, bool rewind );
+
+    //! find selection in backward direction
+    virtual bool _findBackward( const TextSelection& selection, bool rewind );
+
+    protected slots:
+
+    //! update geometries
+    virtual void updateGeometries( void );
+
+    //! sort order
+    void sortByColumn( int, Qt::SortOrder );
+
+    //! find text from dialog
+    virtual void _findFromDialog( void );
+
     private slots:
 
     //! update alternate item color
@@ -368,11 +293,52 @@ class IconView: public QAbstractItemView, public Counter
 
     private:
 
+    //! install actions
+    virtual void _installActions( void );
+
+    //! return first index
+    QModelIndex _firstIndex() const;
+
+    //! return last index
+    QModelIndex _lastIndex() const;
+
+    //! return next index of current
+    QModelIndex _indexAfter( const QModelIndex& ) const;
+
+    //! return previous index
+    QModelIndex _indexBefore( const QModelIndex& ) const;
+
     //! headerView
     QHeaderView* header_;
 
     //! items
-    Item::Map items_;
+    IconViewItem::Map items_;
+
+    //! find dialog
+    BaseFindDialog* findDialog_;
+
+    //!@name actions
+    //@{
+
+    //! select all items
+    QAction* selectAllAction_;
+
+    //! find from dialog
+    QAction* findAction_;
+
+    //! find selection again
+    QAction* findSelectionAction_;
+
+    //! find selection backward
+    QAction* findSelectionBackwardAction_;
+
+    //! find again
+    QAction* findAgainAction_;
+
+    //! find again backward
+    QAction* findAgainBackwardAction_;
+
+    //@}
 
     //! icon size
     QSize pixmapSize_;
