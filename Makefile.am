@@ -46,17 +46,9 @@ Str.cpp \
 TimeStamp.cpp \
 Util.cpp
 
-################
-# shared library
-if ENABLE_SHARED
-lib_LTLIBRARIES = libbase.la
-libbase_la_SOURCES =  $(sources)
-libbase_la_CXXFLAGS = $(AM_CXXFLAGS)
-
 # executable
 BUILT_SOURCES = testexternals.c
 noinst_PROGRAMS = testexternals
-testexternals_LDADD = libbase.la
 
 testexternals.c:
 	echo "//*** this is a generated file. Do not commit, do not edit" > $@
@@ -65,6 +57,15 @@ testexternals.c:
 	echo "  return 0;" >> $@
 	echo "}" >> $@
 
+################
+# shared library
+if ENABLE_SHARED
+lib_LTLIBRARIES = libbase.la
+libbase_la_SOURCES =  $(sources)
+libbase_la_CXXFLAGS = $(AM_CXXFLAGS)
+
+testexternals_LDADD = libbase.la
+
 else
 
 ################
@@ -72,6 +73,8 @@ else
 noinst_LIBRARIES = libbase.a
 libbase_a_SOURCES = $(sources)
 libbase_a_XXCFLAGS = $(AM_CXXFLAGS)
+
+testexternals_LDADD = libbase.a
 
 endif
 
