@@ -35,6 +35,17 @@ moc_BaseApplication.cpp \
 moc_BaseCoreApplication.cpp \
 moc_Client.cpp
 
+# executable
+BUILT_SOURCES = testexternals.c
+noinst_PROGRAMS = testexternals
+
+testexternals.c:
+	echo "//*** this is a generated file. Do not commit, do not edit" > $@
+	echo "int main()" >> $@
+	echo "{" >> $@
+	echo "  return 0;" >> $@
+	echo "}" >> $@
+
 # shared library
 if ENABLE_SHARED
 lib_LTLIBRARIES = libbase-server.la
@@ -44,17 +55,7 @@ libbase_server_la_SOURCES =  $(sources)
 nodist_libbase_server_la_SOURCES = $(nodist_sources)
 libbase_server_la_CXXFLAGS = $(AM_CXXFLAGS)
 
-# executable
-BUILT_SOURCES = testexternals.c
-noinst_PROGRAMS = testexternals
 testexternals_LDADD = libbase-server.la
-
-testexternals.c:
-	echo "//*** this is a generated file. Do not commit, do not edit" > $@
-	echo "int main()" >> $@
-	echo "{" >> $@
-	echo "  return 0;" >> $@
-	echo "}" >> $@
 
 else
 
@@ -63,6 +64,11 @@ noinst_LIBRARIES = libbase-server.a
 libbase_server_a_SOURCES = $(sources)
 nodist_libbase_server_a_SOURCES = $(nodist_sources)
 libbase_server_a_XXCFLAGS = $(AM_CXXFLAGS)
+
+testexternals_LDADD = \
+  libbase-server.a \
+  ../base-qt/libbase-qt.a \
+  ../base/libbase.a
 
 endif
 
