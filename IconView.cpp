@@ -50,7 +50,8 @@ IconView::IconView( QWidget* parent ):
     columnCount_( 1 ),
     rowCount_( 1 ),
     rubberBand_(0),
-    dragButton_( Qt::NoButton )
+    dragButton_( Qt::NoButton ),
+    dragInProgress_( false )
 {
     Debug::Throw( "IconView::IconView.\n" );
 
@@ -737,8 +738,22 @@ void IconView::mouseReleaseEvent( QMouseEvent *event )
 }
 
 //____________________________________________________________________
+void IconView::dragEnterEvent( QDragEnterEvent *event )
+{
+    if( acceptDrops() && event->isAccepted() )
+    { dragInProgress_ = true; }
+
+    // parent class
+    QAbstractItemView::dragEnterEvent(event);
+
+}
+
+//____________________________________________________________________
 void IconView::dragMoveEvent( QDragMoveEvent *event )
 {
+
+    if( acceptDrops() && event->isAccepted() )
+    { dragInProgress_ = true; }
 
     // update hover item
     if( showDropIndicator() ) _setHoverIndex( indexAt( event->pos() ) );
@@ -746,6 +761,20 @@ void IconView::dragMoveEvent( QDragMoveEvent *event )
 
     // parent class
     QAbstractItemView::dragMoveEvent(event);
+}
+
+//____________________________________________________________________
+void IconView::dragLeaveEvent( QDragLeaveEvent *event )
+{
+    dragInProgress_ = false;
+    QAbstractItemView::dragLeaveEvent(event);
+}
+
+//____________________________________________________________________
+void IconView::dropEvent( QDropEvent *event )
+{
+    dragInProgress_ = false;
+    QAbstractItemView::dropEvent(event);
 }
 
 //______________________________________________________________
@@ -781,6 +810,18 @@ QModelIndexList IconView::_selectedIndexes( const QRect& constRect ) const
     }
 
     return indexes;
+}
+
+//____________________________________________________________________
+void IconView::_setHoverIndex( const QModelIndex& index )
+{
+    if( hoverIndex_ == index ) return;
+    hoverIndex_ = index;
+
+    // emit signal
+    if( !( index.isValid() && dragInProgress_ ) )
+    { emit hovered( index ); }
+
 }
 
 //____________________________________________________________________

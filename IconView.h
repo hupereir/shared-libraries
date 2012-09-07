@@ -228,8 +228,17 @@ class IconView: public QAbstractItemView, public Counter
     //! mouse release
     virtual void mouseReleaseEvent( QMouseEvent* );
 
+    //! drag enter
+    virtual void dragEnterEvent( QDragEnterEvent* );
+
     //! drag move
     virtual void dragMoveEvent( QDragMoveEvent* );
+
+    //! drag leave
+    virtual void dragLeaveEvent( QDragLeaveEvent* );
+
+    //! drag enter
+    virtual void dropEvent( QDropEvent* );
 
     //! timer event
     virtual void timerEvent( QTimerEvent* );
@@ -242,12 +251,7 @@ class IconView: public QAbstractItemView, public Counter
     { return hoverIndex_; }
 
     //! hover index
-    virtual void _setHoverIndex( const QModelIndex& index )
-    {
-        if( hoverIndex_ == index ) return;
-        hoverIndex_ = index;
-        emit hovered( index );
-    }
+    virtual void _setHoverIndex( const QModelIndex& );
 
     //! update item from index
     void _updateItem( IconViewItem& item, const QModelIndex& index ) const;
