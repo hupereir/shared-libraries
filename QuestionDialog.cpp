@@ -25,14 +25,11 @@
 #include "QuestionDialog.h"
 
 #include "BaseIcons.h"
-#include "IconEngine.h"
 #include "PixmapEngine.h"
-
-#include <QtGui/QPushButton>
 
 //____________________________________________________________
 QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
-    CustomDialog( parent, OkButton | CancelButton| Separator )
+    DetailsDialog( parent, OkButton | CancelButton| Separator )
 {
 
     Debug::Throw( "QuestionDialog::QuestionDialog\n" );

@@ -25,14 +25,14 @@
 *
 *******************************************************************************/
 
-#include "CustomDialog.h"
+#include "DetailsDialog.h"
 #include "Counter.h"
 
 #include <QtCore/QString>
 #include <QtGui/QLabel>
 
 //! simplified question dialog
-class QuestionDialog: public CustomDialog
+class QuestionDialog: public DetailsDialog
 {
 
     public:

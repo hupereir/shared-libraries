@@ -21,7 +21,6 @@
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
-*
 *******************************************************************************/
 
 #include "BaseDialog.h"
@@ -52,9 +51,9 @@ class CustomDialog: public BaseDialog, public Counter
 
     //! constructor
     CustomDialog(
-        QWidget *parent,
-        const unsigned int& flags = OkButton | CancelButton,
-        Qt::WFlags wflags = 0);
+        QWidget*,
+        const unsigned int& = OkButton | CancelButton,
+        Qt::WFlags = 0);
 
     //! destructor
     virtual ~CustomDialog( void )

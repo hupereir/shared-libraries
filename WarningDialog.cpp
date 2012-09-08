@@ -21,20 +21,20 @@
 *******************************************************************************/
 
 #include "BaseIcons.h"
-#include "InformationDialog.h"
+#include "WarningDialog.h"
 #include "PixmapEngine.h"
 
 #include <QtGui/QLayout>
 
 //____________________________________________________________
-InformationDialog::InformationDialog( QWidget* parent, QString text ):
+WarningDialog::WarningDialog( QWidget* parent, QString text ):
     DetailsDialog( parent, OkButton| Separator )
 {
 
-    Debug::Throw( "InformationDialog::InformationDialog\n" );
+    Debug::Throw( "WarningDialog::WarningDialog\n" );
 
     //! try load Question icon
-    QPixmap pixmap = PixmapEngine::get( ICONS::INFORMATION );
+    QPixmap pixmap = PixmapEngine::get( ICONS::WARNING );
     QHBoxLayout *hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);

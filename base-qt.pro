@@ -47,6 +47,7 @@ CustomTextDocument.h \
 CustomToolBar.h \
 CustomToolButton.h \
 DebugMenu.h \
+DetailsDialog.h \
 DockPanel.h \
 ErrorHandler.h \
 ElidedLabel.h \
@@ -136,6 +137,7 @@ TreeView.h \
 TreeViewConfiguration.h \
 UserSelectionFrame.h \
 ValidFileThread.h \
+WarningDialog.h \
 WindowMonitor.h \
 WinUtil.h \
 X11Util.h \
@@ -186,6 +188,7 @@ CustomSlider.cpp \
 CustomToolBar.cpp \
 CustomToolButton.cpp \
 DebugMenu.cpp \
+DetailsDialog.cpp \
 DockPanel.cpp \
 ElidedLabel.cpp \
 ErrorHandler.cpp \
@@ -252,6 +255,7 @@ TreeView.cpp \
 TreeViewConfiguration.cpp \
 UserSelectionFrame.cpp \
 ValidFileThread.cpp \
+WarningDialog.cpp \
 WinUtil.cpp \
 WindowMonitor.cpp \
 X11Util.cpp \

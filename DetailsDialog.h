@@ -1,8 +1,7 @@
-#ifndef InformationDialog_h
-#define InformationDialog_h
+#ifndef DetailsDialog_h
+#define DetailsDialog_h
 
 // $Id$
-
 
 /******************************************************************************
 *
@@ -24,39 +23,55 @@
 *
 *******************************************************************************/
 
-#include "DetailsDialog.h"
+#include "CustomDialog.h"
 
-#include <QtCore/QString>
 #include <QtGui/QLabel>
 #include <QtGui/QWidget>
 
-//! simple information dialog
-class InformationDialog: public DetailsDialog
+//! customized QDialog
+class DetailsDialog: public CustomDialog
 {
+
+    Q_OBJECT
 
     public:
 
     //! constructor
-    InformationDialog( QWidget* parent, QString text );
-
-    //! destructor
-    virtual ~InformationDialog( void )
+    DetailsDialog( QWidget* parent,
+        const unsigned int& flags = OkButton | CancelButton,
+        Qt::WFlags wflags = 0 ):
+        CustomDialog( parent, flags, wflags ),
+        detailsLabel_( 0x0 ),
+        detailsWidget_( 0x0 )
     {}
 
-    //! set text
-    void setText( const QString& text ) const
-    { _label().setText( text ); }
+    //! destructor
+    virtual ~DetailsDialog( void )
+    {}
 
-    protected:
+    //! set details widget
+    virtual void setDetails( QWidget* );
 
-    //! label
-    QLabel& _label( void ) const
-    { return *label_; }
+    public slots:
+
+    //! show details
+    void showDetails( void )
+    { toggleDetails( true ); }
+
+    //! hide details
+    void hideDetails( void )
+    { toggleDetails( false ); }
+
+    //! toggle details
+    void toggleDetails( bool );
 
     private:
 
-    //! label
-    QLabel* label_;
+    //! details label
+    QLabel* detailsLabel_;
+
+    //! details widget
+    QWidget* detailsWidget_;
 
 };
 

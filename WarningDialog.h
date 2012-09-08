@@ -1,4 +1,8 @@
+#ifndef WarningDialog_h
+#define WarningDialog_h
+
 // $Id$
+
 
 /******************************************************************************
 *
@@ -20,32 +24,40 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
-#include "InformationDialog.h"
-#include "PixmapEngine.h"
+#include "DetailsDialog.h"
 
-#include <QtGui/QLayout>
+#include <QtCore/QString>
+#include <QtGui/QLabel>
+#include <QtGui/QWidget>
 
-//____________________________________________________________
-InformationDialog::InformationDialog( QWidget* parent, QString text ):
-    DetailsDialog( parent, OkButton| Separator )
+//! simple information dialog
+class WarningDialog: public DetailsDialog
 {
 
-    Debug::Throw( "InformationDialog::InformationDialog\n" );
+    public:
 
-    //! try load Question icon
-    QPixmap pixmap = PixmapEngine::get( ICONS::INFORMATION );
-    QHBoxLayout *hLayout( new QHBoxLayout() );
-    hLayout->setSpacing(10);
-    hLayout->setMargin(0);
-    mainLayout().addLayout( hLayout );
+    //! constructor
+    WarningDialog( QWidget* parent, QString text );
 
-    QLabel* label = new QLabel( this );
-    label->setPixmap( pixmap );
-    hLayout->addWidget( label, 0 );
-    hLayout->addWidget( label_ = new QLabel( text, this ), 1 );
+    //! destructor
+    virtual ~WarningDialog( void )
+    {}
 
-    if( pixmap.width() + label_->fontMetrics().width( text ) >350 )
-    { label_->setWordWrap( true ); }
+    //! set text
+    virtual void setText( const QString& text ) const
+    { _label().setText( text ); }
 
-}
+    protected:
+
+    //! label
+    QLabel& _label( void ) const
+    { return *label_; }
+
+    private:
+
+    //! label
+    QLabel* label_;
+
+};
+
+#endif
