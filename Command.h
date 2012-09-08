@@ -60,7 +60,7 @@ class Command: public QStringList, public Counter
   {}
 
   // run
-  bool run( const QString& working_directory = QString() ) const;
+  bool run( const QString& = QString() ) const;
 
   // streamers
   Command & operator<< ( const QString & str )
