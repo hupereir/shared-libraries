@@ -380,6 +380,9 @@ void PathEditor::setPath( const File& constPath, const File& file )
         // need to keep focus
         const bool hasFocus( !items_.isEmpty() && items_.back()->hasFocus() );
 
+        // check if home directory is to be used
+        const bool hasHome( truncate_ && !home_.isEmpty() );
+
         // create root item
         int index = 0;
         PathEditorItem* item(0);
@@ -398,11 +401,11 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
         }
 
-        item->setPath( root, "Root" );
+        if( hasHome && root == home_ ) item->setPath( root, "Home" );
+        else item->setPath( root, "Root" );
         index++;
 
         // create path items
-        const bool hasHome( truncate_ && !home_.isEmpty() );
         const int sectionCount( path.split( '/', QString::SkipEmptyParts ).size() );
         for( int i=0; i < sectionCount; i++ )
         {
