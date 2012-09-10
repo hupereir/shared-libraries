@@ -91,7 +91,8 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     QWidget( parent, Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint ),
     Counter( "BaseFileInfoToolTipWidget" ),
     enabled_( false ),
-    pixmapSize_( 96 )
+    pixmapSize_( 96 ),
+    mask_( ALL )
 {
 
     Debug::Throw( "BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n" );
@@ -172,6 +173,12 @@ void BaseFileInfoToolTipWidget::setEnabled( bool value )
 void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const QIcon& icon )
 {
     Debug::Throw( "BaseFileInfoToolTipWidget::setFileInfo.\n" );
+
+    // local storage
+    icon_ = icon;
+    fileInfo_ = fileInfo;
+
+    // update icon
     if( !icon.isNull() )
     {
 
@@ -191,7 +198,7 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         typeItem_->setText( fileInfo.typeString() );
 
         // size
-        if( fileInfo.size() > 0 && !( fileInfo.type() & (BaseFileInfo::FOLDER|BaseFileInfo::LINK|BaseFileInfo::NAVIGATOR) ) )
+        if( (mask_&SIZE) && fileInfo.size() > 0 && !( fileInfo.type() & (BaseFileInfo::FOLDER|BaseFileInfo::LINK|BaseFileInfo::NAVIGATOR) ) )
         {
 
             sizeItem_->setText( File::sizeString( fileInfo.size() ) );
@@ -199,7 +206,7 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         } else sizeItem_->hide();
 
         // last modified
-        if( TimeStamp( fileInfo.lastModified() ).isValid() )
+        if( (mask_&MODIFIED) && TimeStamp( fileInfo.lastModified() ).isValid() )
         {
 
             lastModifiedItem_->setText( TimeStamp( fileInfo.lastModified() ).toString() );
@@ -207,16 +214,16 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         } else lastModifiedItem_->hide();
 
         // user
-        if( !fileInfo.user().isEmpty() ) userItem_->setText( fileInfo.user() );
+        if( (mask_&USER) && !fileInfo.user().isEmpty() ) userItem_->setText( fileInfo.user() );
         else userItem_->hide();
 
         // group
-        if( !fileInfo.group().isEmpty() ) groupItem_->setText( fileInfo.group() );
+        if( (mask_&GROUP) && !fileInfo.group().isEmpty() ) groupItem_->setText( fileInfo.group() );
         else groupItem_->hide();
 
         // permissions
         const QString permissions( fileInfo.permissionsString() );
-        if( !permissions.isEmpty() ) permissionsItem_->setText( permissions );
+        if( (mask_&PERMISSIONS) && !permissions.isEmpty() ) permissionsItem_->setText( permissions );
         else permissionsItem_->hide();
 
     } else {
@@ -291,5 +298,7 @@ void BaseFileInfoToolTipWidget::timerEvent( QTimerEvent* event )
 void BaseFileInfoToolTipWidget::_updateConfiguration( void )
 {
     Debug::Throw( "BaseFileInfoToolTipWidget::_updateConfiguration.\n" );
-    setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );
+    if( XmlOptions::get().contains( "SHOW_TOOLTIPS" ) ) setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );
+    if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<unsigned int>( "TOOLTIPS_PIXMAP_SIZE" ) );
+    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( XmlOptions::get().get<unsigned int>( "TOOLTIPS_MASK" ) );
 }

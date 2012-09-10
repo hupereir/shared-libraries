@@ -60,6 +60,35 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     //! adjust position
     void adjustPosition( const QRect& );
 
+    //! mask
+    void setPixmapSize( int value )
+    {
+        if( pixmapSize_ == value ) return;
+        pixmapSize_ = value;
+        _reload();
+    }
+
+    //! information mask
+    enum Type
+    {
+        NONE = 0,
+        SIZE = 1<<0,
+        MODIFIED = 1<<1,
+        USER = 1<<2,
+        GROUP = 1<<3,
+        PERMISSIONS = 1<<4,
+        ALL = SIZE|MODIFIED|USER|GROUP|PERMISSIONS
+    };
+
+    //! mask
+    void setMask( unsigned int value )
+    {
+        if( mask_ == value ) return;
+        mask_ = value;
+        _reload();
+    }
+
+
     public slots:
 
     //! hide
@@ -92,6 +121,10 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     //! timer event
     virtual void timerEvent( QTimerEvent* );
 
+    //! reload
+    virtual void _reload( void )
+    { setFileInfo( fileInfo_, icon_ ); }
+
     private slots:
 
     //! update configuration
@@ -105,6 +138,15 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     //! pixmap size
     int pixmapSize_;
 
+    //! information mask
+    unsigned int mask_;
+
+    //! local icon copy
+    QIcon icon_;
+
+    //! local fileInfo copy
+    BaseFileInfo fileInfo_;
+
     //! icon label
     QLabel* iconLabel_;
 
@@ -116,14 +158,12 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
 
     //!@name items
     //@{
-
     Item* typeItem_;
     Item* sizeItem_;
     Item* lastModifiedItem_;
     Item* userItem_;
     Item* groupItem_;
     Item* permissionsItem_;
-
     //@}
 
     //! timer
