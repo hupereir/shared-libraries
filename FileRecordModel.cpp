@@ -224,7 +224,7 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
     switch( type_ )
     {
 
-        case FILE: return first.file().localName() < second.file().localName();
+        case FILE: return first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
         case PATH: return first.file().path() < second.file().path();
         case TIME: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
         default:

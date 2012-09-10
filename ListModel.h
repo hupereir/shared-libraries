@@ -264,7 +264,6 @@ class ListModel : public ItemModel
 
         emit layoutAboutToBeChanged();
         values_ = values;
-        selection_.clear();
         _sort();
         emit layoutChanged();
 

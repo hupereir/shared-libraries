@@ -69,7 +69,11 @@ IconView::IconView( QWidget* parent ):
     setSortingEnabled( true );
     setSelectionBehavior( SelectRows );
     verticalScrollBar()->adjustSize();
+    horizontalScrollBar()->adjustSize();
     setMouseTracking( true );
+
+    connect( verticalScrollBar(), SIGNAL( valueChanged( int ) ), SLOT( _updateHoverIndex( void ) ) );
+    connect( horizontalScrollBar(), SIGNAL( valueChanged( int ) ), SLOT( _updateHoverIndex( void ) ) );
 
     new ScrollObject( this );
 
@@ -1225,7 +1229,6 @@ void IconView::sortByColumn( int column, Qt::SortOrder order)
     if( model() ) model()->sort( column, order );
 }
 
-
 //_____________________________________________________________________
 void IconView::_findFromDialog( void )
 {
@@ -1255,6 +1258,13 @@ void IconView::_findFromDialog( void )
     _findDialog().editor().setFocus();
 
     return;
+}
+
+//_____________________________________________________________________
+void IconView::_updateHoverIndex( void )
+{
+    Debug::Throw( "IconView::_updateHoverIndex.\n" );
+    _setHoverIndex(  indexAt( viewport()->mapFromGlobal( QCursor::pos() ) ) );
 }
 
 //_____________________________________________________________________

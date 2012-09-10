@@ -290,6 +290,9 @@ class IconView: public QAbstractItemView, public Counter
     //! find text from dialog
     virtual void _findFromDialog( void );
 
+    //! update hover index
+    virtual void _updateHoverIndex( void );
+
     private slots:
 
     //! update alternate item color
