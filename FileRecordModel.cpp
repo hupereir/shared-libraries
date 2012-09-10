@@ -150,9 +150,9 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 
     } else if( showIcons_ && role == Qt::DecorationRole && index.column() == ICON ) {
 
+
         // icon
-        if( record.hasProperty( iconPropertyId_ ) ) return _icon( record.property( iconPropertyId_ ) );
-        else return _icon( "" );
+        return record.hasProperty( iconPropertyId_ ) ? _icon( record.property( iconPropertyId_ ) ):_icon();
 
     } else if( role == Qt::ToolTipRole ) return record.file();
 
@@ -249,8 +249,8 @@ QIcon FileRecordModel::_icon( const QString& name )
     if( iter != _icons().end() ) return iter.value();
 
     // pixmap size
-    unsigned int pixmap_size = XmlOptions::get().get<unsigned int>( "LIST_ICON_SIZE" );
-    QSize size( pixmap_size, pixmap_size );
+    unsigned int pixmapSize = XmlOptions::get().get<unsigned int>( "LIST_ICON_SIZE" );
+    QSize size( pixmapSize, pixmapSize );
     QSize scale(size*0.9);
 
     QIcon icon;
@@ -259,8 +259,8 @@ QIcon FileRecordModel::_icon( const QString& name )
         icon = CustomPixmap().empty( size );
 
     } else {
-        CustomPixmap base( CustomPixmap().find( name )  );
 
+        CustomPixmap base( CustomPixmap().find( name )  );
         if( base.isNull() ) { icon = CustomPixmap().empty( size ); }
         else { icon = CustomPixmap().empty( size ).merge( base.scaled( scale, Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::CENTER ); }
 

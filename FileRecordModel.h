@@ -164,7 +164,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     void _updateColumns( const ValueType& value );
 
     //! icon
-    static QIcon _icon( const QString& );
+    static QIcon _icon( const QString& = QString() );
 
     //! icon cache
     typedef QMap<QString, QIcon> IconCache;
