@@ -105,9 +105,6 @@ template<class T> class TreeItem: public TreeItemBase
         children_( item.children_ )
     {
 
-        // flags
-        setFlags( item.flags() );
-
         // store id in map
         map_[id()] = this;
 
@@ -120,9 +117,6 @@ template<class T> class TreeItem: public TreeItemBase
     //! assignment
     TreeItem& operator = ( const TreeItem& item )
     {
-
-        // flags
-        setFlags( item.flags() );
 
         parent_ = item.parent_;
         value_ = item.value_;

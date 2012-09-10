@@ -104,6 +104,7 @@ class ListModel : public ItemModel
     //! store index internal selection state
     virtual void setIndexSelected( const QModelIndex& index, bool value )
     {
+        if( !index.isValid() ) return;
         if( value ) selection_ << get(index);
         else selection_.erase( std::remove_if( selection_.begin(), selection_.end(), std::bind2nd( EqualTo(), get(index) ) ), selection_.end() );
     }

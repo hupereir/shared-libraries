@@ -31,49 +31,15 @@
 //! used to wrap object T into tree structure
 class TreeItemBase: public Counter
 {
-    
+
     public:
-    
+
     //! unique id
     typedef unsigned int Id;
-    
+
     //! unique id
     const Id& id( void ) const
     { return id_; }
-    
-    //!@name flags
-    //@{
-    
-    //! status in list
-    enum Flag
-    {
-        NONE = 0,
-        SELECTED = 1<<0,
-        EXPANDED = 1<<1
-        
-    };
-        
-    //! flags
-    const unsigned int& flags( void ) const
-    { return flags_; }
-
-    //! flags
-    void setFlags( const unsigned int& flags )
-    { flags_ = flags; }
-
-    //! flags
-    bool flag( const Flag& flag ) const
-    { return flags_ & flag; }
-
-    //! flags
-    void setFlag( const Flag& flag, const bool& value )
-    {
-        if( value ) flags_ |= flag;
-        else flags_ &= (~flag);
-    }
-
-    //@}
-
 
     protected:
 
@@ -81,8 +47,7 @@ class TreeItemBase: public Counter
     /*! used to insert T in the tree structure */
     TreeItemBase( const Id& id ):
         Counter( "TreeItemBase" ),
-        id_( id ),
-        flags_( NONE )
+        id_( id )
     {}
 
     //! id
@@ -96,9 +61,6 @@ class TreeItemBase: public Counter
 
     //! unique id
     Id id_;
-
-    //! flags
-    unsigned int flags_;
 
 };
 

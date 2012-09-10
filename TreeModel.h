@@ -201,34 +201,25 @@ template<class T> class TreeModel : public ItemModel
 
     //! clear internal list selected items
     void clearSelectedIndexes( void )
-    {
-        for( typename Item::Map::iterator iter = map_.begin(); iter != map_.end(); ++iter )
-        { iter.value()->setFlag( Item::SELECTED, false ); }
-    }
+    { selectedIndexes_.clear(); }
 
     //! store index internal selection state
     void setIndexSelected( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
-        typename Item::Map::iterator iter( map_.find( index.internalId() ) );
-        if( iter != map_.end() ) iter.value()->setFlag( Item::SELECTED, value );
+        if( value ) selectedIndexes_ << get( index );
+        else { selectedIndexes_.removeAll( get( index ) ); }
     }
 
     //! get list of internal selected items
     QModelIndexList selectedIndexes( void ) const
     {
         QModelIndexList out;
-        for( typename Item::Map::const_iterator iter = map_.begin(); iter != map_.end(); ++iter )
+        foreach( const ValueType& value, selectedIndexes_ )
         {
-
-            if( !iter.value()->flag( Item::SELECTED ) ) continue;
-
-            // retrieve and check index associated to job
-            QModelIndex index( TreeModel::index( iter.value()->get() ) );
+            QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
-
         }
-
         return out;
     }
 
@@ -239,34 +230,25 @@ template<class T> class TreeModel : public ItemModel
 
     //! clear internal list of expanded items
     void clearExpandedIndexes( void )
-    {
-        for( typename Item::Map::iterator iter = map_.begin(); iter != map_.end(); ++iter )
-        { iter.value()->setFlag( Item::EXPANDED, false ); }
-    }
+    { expandedIndexes_.clear(); }
 
     //! store index internal selection state
     void setIndexExpanded( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
-        typename Item::Map::iterator iter( map_.find( index.internalId() ) );
-        if( iter != map_.end() ) iter.value()->setFlag( Item::EXPANDED, value );
+        if( value ) expandedIndexes_ << get( index );
+        else { expandedIndexes_.removeAll( get( index ) ); }
     }
 
     //! get list of internal selected items
     QModelIndexList expandedIndexes( void ) const
     {
         QModelIndexList out;
-        for( typename Item::Map::const_iterator iter = map_.begin(); iter != map_.end(); ++iter )
+        foreach( const ValueType& value, expandedIndexes_ )
         {
-
-            if( !iter.value()->flag( Item::EXPANDED ) ) continue;
-
-            // retrieve and check index associated to job
-            QModelIndex index( TreeModel::index( iter.value()->get() ) );
+            QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
-
         }
-
         return out;
     }
 
@@ -423,6 +405,10 @@ template<class T> class TreeModel : public ItemModel
     void _remove( Item& parent, List& values )
     {
 
+        // remove all values from selection
+        foreach( const ValueType& value, values )
+        { selectedIndexes_.removeAll( value ); }
+
         // remove children that are found in list, and remove from list
         for( unsigned int row = 0; row < parent.childCount(); )
         {
@@ -463,6 +449,13 @@ template<class T> class TreeModel : public ItemModel
 
     //! root item
     Item root_;
+
+    //! selection
+    List selectedIndexes_;
+
+    //! expanded indexes
+    List expandedIndexes_;
+
 
 };
 
