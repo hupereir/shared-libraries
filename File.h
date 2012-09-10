@@ -178,7 +178,7 @@ class File: public QString
     virtual File truncatedName( void ) const;
 
     //! return first file with matching short name, or empty string if not found
-    virtual File find( const File& file, bool case_sensitive = true ) const;
+    virtual File find( const File& file, bool = true ) const;
 
     //! return list of files in a directory
     enum ListFlags

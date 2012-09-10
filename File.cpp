@@ -460,29 +460,29 @@ File::List File::listFiles( const unsigned int& flags ) const
 }
 
 //_____________________________________________________________________
-File File::find( const File& file, bool case_sensitive ) const
+File File::find( const File& file, bool caseSensitive ) const
 {
 
     Debug::Throw() << "File::find - this: " << *this << endl;
     if( !( exists() && isDirectory() ) ) return File();
     List files( listFiles( RECURSIVE ) );
     List directories;
-    foreach( const File& file, files )
+    foreach( const File& local, files )
     {
 
         // check if file match
-        if( file.localName().compare( file, case_sensitive ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
-        { return file; }
+        if( local.localName().compare( file, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
+        { return local; }
 
         // check if file is directory
-        if( file.isDirectory() ) directories << file;
+        if( local.isDirectory() ) directories << local;
     }
 
     // loop over directories; search recursively
-    foreach( const File& file, directories )
+    foreach( const File& local, directories )
     {
-        File found( file.find( file, case_sensitive ) );
-        if( found != File() ) return found;
+        File found( local.find( file, caseSensitive ) );
+        if( found.isEmpty() ) return found;
     }
 
     return File();
