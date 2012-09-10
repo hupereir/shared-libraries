@@ -92,7 +92,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     Counter( "BaseFileInfoToolTipWidget" ),
     enabled_( false ),
     pixmapSize_( 96 ),
-    mask_( ALL )
+    mask_( SIZE|MODIFIED )
 {
 
     Debug::Throw( "BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n" );
