@@ -58,6 +58,7 @@ FileList.h \
 FilePermissionsWidget.h \
 FileRecordBaseProperties.h \
 FileRecordModel.h \
+FileSystemWatcher.h \
 FlatStyle.h \
 FontEditor.h \
 FontInfo.h \
@@ -198,6 +199,7 @@ FileDialog.cpp \
 FileList.cpp \
 FilePermissionsWidget.cpp \
 FileRecordModel.cpp \
+FileSystemWatcher.cpp \
 FlatStyle.cpp \
 FontEditor.cpp \
 FontInfo.cpp \
@@ -305,6 +307,7 @@ moc_DetailsDialog.cpp \
 moc_DockPanel.cpp \
 moc_FileList.cpp \
 moc_FileRecordModel.cpp \
+moc_FileSystemWatcher.cpp \
 moc_FontEditor.cpp \
 moc_HtmlDialog.cpp \
 moc_IconSizeMenu.cpp \

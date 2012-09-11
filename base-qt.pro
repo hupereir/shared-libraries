@@ -56,6 +56,7 @@ FileList.h \
 FilePermissionsWidget.h \
 FileRecordBaseProperties.h \
 FileRecordModel.h \
+FileSystemWatcher.h \
 FlatStyle.h \
 FontEditor.h \
 FontInfo.h \
@@ -196,6 +197,7 @@ FileDialog.cpp \
 FileList.cpp \
 FilePermissionsWidget.cpp \
 FileRecordModel.cpp \
+FileSystemWatcher.cpp \
 FlatStyle.cpp \
 FontEditor.cpp \
 FontInfo.cpp \

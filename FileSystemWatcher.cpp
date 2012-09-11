@@ -28,7 +28,7 @@ void FileSystemWatcher::timerEvent( QTimerEvent* event )
     if( event->timerId() == timer_.timerId() )
     {
 
-        Debug::Throw(0, "FileSystemWatcher::timerEvent.\n" );
+        Debug::Throw("FileSystemWatcher::timerEvent.\n" );
 
         timer_.stop();
         foreach( const QString& directory, directories_ )
@@ -47,7 +47,7 @@ void FileSystemWatcher::_addModifiedDirectory( const QString& directory )
     if( directories_.contains( directory ) ) return;
 
     // append to directory list
-    Debug::Throw(0) << "FileSystemWatcher::_addModifiedDirectory - " << directory << endl;
+    Debug::Throw() << "FileSystemWatcher::_addModifiedDirectory - " << directory << endl;
     directories_ << directory;
 
     // restart timer
