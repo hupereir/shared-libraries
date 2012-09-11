@@ -252,7 +252,7 @@ void BaseFileInfoToolTipWidget::adjustPosition( const QRect& rect )
 
     // desktop size
     QDesktopWidget* desktop( qApp->desktop() );
-    QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( this ) ) );
+    QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( parentWidget() ) ) );
 
     // set geometry
     int left = rect.left() + ( rect.width() - size.width() )/2;
