@@ -25,6 +25,7 @@
 #include "Debug.h"
 #include "GridLayout.h"
 
+#include <QtCore/QHash>
 #include <QtGui/QCheckBox>
 #include <QtGui/QLabel>
 #include <QtGui/QLayout>

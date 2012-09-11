@@ -34,6 +34,8 @@
 #include <QtXml/QDomElement>
 #include <QtXml/QDomDocument>
 
+#include <algorithm>
+
 //! store a file and needed informations for Ftp transfer
 class BaseFileInfo
 {
