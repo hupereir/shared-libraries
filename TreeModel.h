@@ -201,21 +201,29 @@ template<class T> class TreeModel : public ItemModel
 
     //! clear internal list selected items
     void clearSelectedIndexes( void )
-    { selectedIndexes_.clear(); }
+    { selectedItems_.clear(); }
+
+    //! set selected indexes
+    virtual void setSelectedIndexes( const QModelIndexList& indexes )
+    {
+        selectedItems_.clear();
+        foreach( const QModelIndex& index, indexes )
+        { if( index.isValid() ) selectedItems_ << get( index ); }
+    }
 
     //! store index internal selection state
     void setIndexSelected( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
-        if( value ) selectedIndexes_ << get( index );
-        else { selectedIndexes_.removeAll( get( index ) ); }
+        if( value ) selectedItems_ << get( index );
+        else { selectedItems_.removeAll( get( index ) ); }
     }
 
     //! get list of internal selected items
     QModelIndexList selectedIndexes( void ) const
     {
         QModelIndexList out;
-        foreach( const ValueType& value, selectedIndexes_ )
+        foreach( const ValueType& value, selectedItems_ )
         {
             QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
@@ -230,21 +238,29 @@ template<class T> class TreeModel : public ItemModel
 
     //! clear internal list of expanded items
     void clearExpandedIndexes( void )
-    { expandedIndexes_.clear(); }
+    { expandedItems_.clear(); }
+
+    //! set selected indexes
+    virtual void setExpandedIndexes( const QModelIndexList& indexes )
+    {
+        expandedItems_.clear();
+        foreach( const QModelIndex& index, indexes )
+        { if( index.isValid() ) expandedItems_ << get( index ); }
+    }
 
     //! store index internal selection state
     void setIndexExpanded( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
-        if( value ) expandedIndexes_ << get( index );
-        else { expandedIndexes_.removeAll( get( index ) ); }
+        if( value ) expandedItems_ << get( index );
+        else { expandedItems_.removeAll( get( index ) ); }
     }
 
     //! get list of internal selected items
     QModelIndexList expandedIndexes( void ) const
     {
         QModelIndexList out;
-        foreach( const ValueType& value, expandedIndexes_ )
+        foreach( const ValueType& value, expandedItems_ )
         {
             QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
@@ -407,7 +423,7 @@ template<class T> class TreeModel : public ItemModel
 
         // remove all values from selection
         foreach( const ValueType& value, values )
-        { selectedIndexes_.removeAll( value ); }
+        { selectedItems_.removeAll( value ); }
 
         // remove children that are found in list, and remove from list
         for( unsigned int row = 0; row < parent.childCount(); )
@@ -451,10 +467,10 @@ template<class T> class TreeModel : public ItemModel
     Item root_;
 
     //! selection
-    List selectedIndexes_;
+    List selectedItems_;
 
     //! expanded indexes
-    List expandedIndexes_;
+    List expandedItems_;
 
 
 };

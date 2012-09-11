@@ -99,14 +99,22 @@ class ListModel : public ItemModel
 
     //! clear internal list selected items
     virtual void clearSelectedIndexes( void )
-    { selection_.clear(); }
+    { selectedItems_.clear(); }
+
+    //! set selected indexes
+    virtual void setSelectedIndexes( const QModelIndexList& indexes )
+    {
+        selectedItems_.clear();
+        foreach( const QModelIndex& index, indexes )
+        { if( index.isValid() ) selectedItems_ << get( index ); }
+    }
 
     //! store index internal selection state
     virtual void setIndexSelected( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
-        if( value ) selection_ << get(index);
-        else selection_.erase( std::remove_if( selection_.begin(), selection_.end(), std::bind2nd( EqualTo(), get(index) ) ), selection_.end() );
+        if( value ) selectedItems_ << get(index);
+        else selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), get(index) ) ), selectedItems_.end() );
     }
 
     //! get list of internal selected items
@@ -114,7 +122,7 @@ class ListModel : public ItemModel
     {
 
         QModelIndexList out;
-        foreach( const ValueType& value, selection_ )
+        foreach( const ValueType& value, selectedItems_ )
         {
             QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
@@ -329,7 +337,7 @@ class ListModel : public ItemModel
     virtual void _remove( const ValueType& value )
     {
         values_.erase( std::remove_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value )), values_.end() );
-        selection_.erase( std::remove_if( selection_.begin(), selection_.end(), std::bind2nd( EqualTo(), value ) ), selection_.end() );
+        selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), value ) ), selectedItems_.end() );
     }
 
     private:
@@ -338,7 +346,7 @@ class ListModel : public ItemModel
     List values_;
 
     //! selection
-    List selection_;
+    List selectedItems_;
 
 };
 
