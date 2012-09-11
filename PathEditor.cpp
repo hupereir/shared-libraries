@@ -213,7 +213,7 @@ void PathEditorMenuButton::updateMinimumSize( void )
 void PathEditorSwitch::paintEvent( QPaintEvent* event )
 {
 
-    if( _mouseOver() )
+    if( _mouseOver() && isEnabled() )
     {
         QPainter painter( this );
         painter.setClipRegion( event->region() );
