@@ -284,18 +284,18 @@ class ListModel : public ItemModel
 
     //! return true if model contains given index
     virtual bool contains( const QModelIndex& index ) const
-    { return (index.isValid() && index.row() < int(values_.size()) ); }
+    { return index.isValid() && index.row() < values_.size(); }
 
     //! return value for given index
     virtual ValueType get( const QModelIndex& index ) const
-    { return (index.isValid() && index.row() < int(values_.size()) ) ? values_[index.row()]:ValueType(); }
+    { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:ValueType(); }
 
     //! return all values
     List get( const QModelIndexList& indexes ) const
     {
         List out;
         foreach( const QModelIndex& index, indexes )
-        { if( index.isValid() && index.row() < int(values_.size()) ) out << get( index ); }
+        { if( index.isValid() && index.row() < values_.size() ) out << get( index ); }
         return out;
     }
 

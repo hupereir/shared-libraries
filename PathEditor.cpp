@@ -47,6 +47,8 @@
 
 #include <cassert>
 
+const double PathEditorButton::BorderWidth = 2;
+
 //____________________________________________________________________________
 bool PathEditorButton::event( QEvent* event )
 {

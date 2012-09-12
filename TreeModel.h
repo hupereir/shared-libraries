@@ -110,12 +110,12 @@ template<class T> class TreeModel : public ItemModel
 
         // if parent is root return invalid index
         const Item& parentItem( childItem.parent() );
-        const Item& grand_parentItem( parentItem.parent() );
+        const Item& grandParentItem( parentItem.parent() );
 
         // find parent position in list of grand parent
         int row(0);
-        for( ; row < int( grand_parentItem.childCount() ); row++ )
-        { if( &parentItem == &grand_parentItem.child(row) ) return createIndex( row, 0, parentItem.id() ); }
+        for( ; row < grandParentItem.childCount(); row++ )
+        { if( &parentItem == &grandParentItem.child(row) ) return createIndex( row, 0, parentItem.id() ); }
 
         // not found
         return QModelIndex();
@@ -426,21 +426,21 @@ template<class T> class TreeModel : public ItemModel
         { selectedItems_.removeAll( value ); }
 
         // remove children that are found in list, and remove from list
-        for( unsigned int row = 0; row < parent.childCount(); )
+        for( int row = 0; row < parent.childCount(); )
         {
             int found( values.indexOf( parent.child(row).get() ) );
             if( found >= 0 )
             {
                 parent.remove( row );
                 values.removeAt( found );
-            } else row++;
+            } else ++row;
 
         }
 
         // do the same starting from children, if there are remaining items to remove
         if( !values.isEmpty() )
         {
-            for( unsigned int row = 0; row < parent.childCount(); row++ )
+            for( int row = 0; row < parent.childCount(); ++row )
             { _remove( parent.child(row), values ); }
         }
 

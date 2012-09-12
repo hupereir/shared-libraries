@@ -66,7 +66,9 @@ class PathEditorButton: public QAbstractButton
     { mouseOver_ = value; }
 
     //! border width
-    enum { BorderWidth = 2 };
+    // enum { BorderWidth = 2 };
+
+    static const qreal BorderWidth;
 
     protected:
 
@@ -132,7 +134,7 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     //@}
 
-    //!@name modifiers
+    //!@name modifiers#ifndef PathEditor_p_h
     //@{
 
     //! set is selectable
@@ -171,7 +173,7 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     //! arrow width
     int _arrowWidth( void ) const
-    { return isLast_ ? 0:qMax( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
+    { return isLast_ ? 0:qMax<int>( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
 
     private:
 

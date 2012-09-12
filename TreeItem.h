@@ -171,18 +171,18 @@ template<class T> class TreeItem: public TreeItemBase
     }
 
     //! child count
-    unsigned int childCount( void ) const
+    int childCount( void ) const
     { return children_.size(); }
 
     //! get child at given row
-    TreeItem& child( unsigned int row )
+    TreeItem& child( int row )
     {
         assert( row < childCount() );
         return children_[row];
     }
 
     //! get child at given row
-    const TreeItem& child( unsigned int row ) const
+    const TreeItem& child( int row ) const
     {
         assert( row < childCount() );
         return children_[row];
@@ -223,10 +223,10 @@ template<class T> class TreeItem: public TreeItemBase
     }
 
     //! remove child at given row
-    bool remove( unsigned int row )
+    bool remove( int row )
     {
         if( row >= childCount() ) return false;
-        unsigned int local(0);
+        int local(0);
         typename List::iterator iter = children_.begin();
         for( ; iter != children_.end() && local < row; iter++, local++ ) {}
         children_.erase( iter );
@@ -282,7 +282,7 @@ template<class T> class TreeItem: public TreeItemBase
 
         // update children that are found in set
         // remove children that are not found
-        for( unsigned int row = 0; row < childCount(); )
+        for( int row = 0; row < childCount(); )
         {
             int found( values.indexOf( child(row).get() ) );
             if( found < 0 ) remove( row );
@@ -322,7 +322,7 @@ template<class T> class TreeItem: public TreeItemBase
         if( values.isEmpty() ) return;
 
         // first update children that are found in set
-        for( unsigned int row = 0; row < childCount();)
+        for( int row = 0; row < childCount();)
         {
 
             int found( values.indexOf( child(row).get() ) );
@@ -440,7 +440,7 @@ template<class T> class TreeItem: public TreeItemBase
         out << item.id() << " " << item.get() << endl;
 
         // print job children
-        for( unsigned int i=0; i<item.childCount(); i++ )
+        for( int i=0; i<item.childCount(); ++i )
         { out << item.child(i); }
 
         return out;
