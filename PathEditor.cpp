@@ -642,6 +642,9 @@ void PathEditor::_menuButtonClicked( void )
     // check list
     if( pathList.empty() && rootPathList_.size() <= 1 ) return;
 
+    // get copy of current path
+    const File currentPath( path() );
+
     // create menu and fill
     QMenu* menu = new QMenu(browserContainer_);
 
@@ -649,7 +652,19 @@ void PathEditor::_menuButtonClicked( void )
     {
         // add root path list
         foreach( const File& path, rootPathList_ )
-        { menu->addAction( path ); }
+        {
+
+            QAction* action = menu->addAction( path );
+
+            // mark current disk as bold, in case there is no other item hidden
+            if( pathList.isEmpty() && currentPath.startsWith( path ) )
+            {
+                QFont font( action->font() );
+                font.setBold( true );
+                action->setFont( font );
+            }
+
+        }
 
         // add separator
         if( !pathList.isEmpty() ) menu->addSeparator();
