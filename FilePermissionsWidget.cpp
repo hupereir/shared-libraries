@@ -29,6 +29,7 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QLabel>
 #include <QtGui/QLayout>
+#include <QtCore/QHash>
 
 //_____________________________________________________________________
 FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permissions permissions):
