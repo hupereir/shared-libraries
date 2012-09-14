@@ -73,6 +73,11 @@ QString preProcessWrap(const QString &text)
 }
 
 //____________________________________________________________________
+int IconViewItem::margin( 5 );
+int IconViewItem::spacing( 5 );
+int IconViewItem::maxTextWidth( 100 );
+
+//____________________________________________________________________
 QRect IconViewItem::boundingRect( void ) const
 {
     if( dirty_ ) const_cast<IconViewItem*>( this )->_updateBoundingRect();
@@ -84,15 +89,15 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
 {
 
     QRectF boundingRect( this->boundingRect() );
-    QRectF textRect( boundingRect.adjusted( 0, margin_, 0, -margin_ ) );
+    QRectF textRect( boundingRect.adjusted( 0, margin, 0, -margin ) );
 
     // draw selection
     widget->style()->drawPrimitive( QStyle::PE_PanelItemViewItem, option, painter, widget );
 
     if( !pixmap_.isNull() )
     {
-        painter->drawPixmap( QPointF( (boundingRect.width() - pixmap_.width())/2, margin_ ), pixmap_ );
-        textRect.adjust( 0, pixmap_.height() + spacing_, 0, 0 );
+        painter->drawPixmap( QPointF( (boundingRect.width() - pixmap_.width())/2, margin ), pixmap_ );
+        textRect.adjust( 0, pixmap_.height() + spacing, 0, 0 );
     }
 
     if( !text_.isEmpty() )
@@ -100,7 +105,7 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
 
         const QString text( preProcessWrap( text_ ) );
 
-        const int maxWidth( qMax( maxTextWidth_, pixmap_.width() ) );
+        const int maxWidth( qMax( maxTextWidth, pixmap_.width() ) );
         QTextOption textOption(Qt::AlignHCenter);
         textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
 
@@ -129,7 +134,7 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
 //____________________________________________________________________
 void IconViewItem::_updateBoundingRect( void )
 {
-    boundingRect_ = QRect( 0, 0, 2*margin_, 2*margin_ );
+    boundingRect_ = QRect( 0, 0, 2*margin, 2*margin );
 
     // calculate pixmap size
     QSize pixmapSize( pixmap_.size() );
@@ -140,7 +145,7 @@ void IconViewItem::_updateBoundingRect( void )
     {
 
         const QString text( preProcessWrap( text_ ) );
-        const int maxWidth( qMax( maxTextWidth_, pixmapSize.width() ) );
+        const int maxWidth( qMax( maxTextWidth, pixmapSize.width() ) );
         int maxLineWidth( 0 );
 
         QTextOption textOption(Qt::AlignHCenter);
@@ -169,7 +174,7 @@ void IconViewItem::_updateBoundingRect( void )
     if( !( pixmap_.isNull() || text_.isEmpty() ) )
     {
 
-        boundingRect_.adjust( 0, 0, qMax( pixmapSize.width(), textSize.width() ), spacing_ + pixmapSize.height() + textSize.height() );
+        boundingRect_.adjust( 0, 0, qMax( pixmapSize.width(), textSize.width() ), spacing + pixmapSize.height() + textSize.height() );
 
     } else if( !pixmap_.isNull() ) {
 

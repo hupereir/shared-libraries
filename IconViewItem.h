@@ -41,9 +41,6 @@ class IconViewItem: public Counter
     IconViewItem( void ):
         Counter( "IconView::Item" ),
         dirty_( true ),
-        margin_( 5 ),
-        spacing_( 5 ),
-        maxTextWidth_( 100 ),
         row_( -1 ),
         column_( -1 )
     {}
@@ -83,22 +80,6 @@ class IconViewItem: public Counter
     //!@name modifiers
     //@{
 
-    //! set spacing
-    void setMargin( int value )
-    {
-        if( margin_ == value ) return;
-        margin_ = value;
-        dirty_ = true;
-    }
-
-    //! set spacing
-    void setSpacing( int value )
-    {
-        if( spacing_ == value ) return;
-        spacing_ = value;
-        dirty_ = true;
-    }
-
     //! set icon
     void setPixmap( const QPixmap& pixmap )
     {
@@ -137,6 +118,16 @@ class IconViewItem: public Counter
     //! paint
     virtual void paint( QPainter*, const QStyleOption*, QWidget* ) const;
 
+    //! margin
+    static int margin;
+
+    //! spacing
+    static int spacing;
+
+    //! max text width
+    static int maxTextWidth;
+
+
     protected:
 
     //! update bounding rect
@@ -146,15 +137,6 @@ class IconViewItem: public Counter
 
     //! dirty
     bool dirty_;
-
-    //! margin
-    int margin_;
-
-    //! spacing
-    int spacing_;
-
-    //! max text width
-    int maxTextWidth_;
 
     //! pixmap
     QPixmap pixmap_;

@@ -74,6 +74,7 @@ IconView::IconView( QWidget* parent ):
 
     connect( verticalScrollBar(), SIGNAL( valueChanged( int ) ), SLOT( _updateHoverIndex( void ) ) );
     connect( horizontalScrollBar(), SIGNAL( valueChanged( int ) ), SLOT( _updateHoverIndex( void ) ) );
+    setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
     new ScrollObject( this );
 
@@ -215,6 +216,14 @@ QRect IconView::visualRect( const QModelIndex&  index ) const
         const IconViewItem& item( items_[index.row()] );
         return item.boundingRect().translated( item.position() ).translated( -_scrollBarPosition() );
     } else return QRect();
+}
+
+//_____________________________________________________________________
+QSize IconView::minimumSizeHint( void ) const
+{
+    return QSize(
+        2*margin_ + 2*IconViewItem::margin + qMax( IconViewItem::maxTextWidth, pixmapSize_.width() ) + verticalScrollBar()->width(),
+        QAbstractItemView::minimumSize().height() );
 }
 
 //_____________________________________________________________________

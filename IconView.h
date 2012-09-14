@@ -142,6 +142,9 @@ class IconView: public QAbstractItemView, public Counter
     //! visual rect for given index
     virtual QRect visualRect( const QModelIndex& ) const;
 
+    //! minimum size hind
+    virtual QSize minimumSizeHint( void ) const;
+
     signals:
 
     //! emmited when item is hovered. Invalid index means no hovered index
@@ -261,7 +264,11 @@ class IconView: public QAbstractItemView, public Counter
 
     //! scrollbar position
     QPoint _scrollBarPosition( void ) const
-    { return QPoint( horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
+    {
+        return QPoint(
+            horizontalScrollBar()->isVisible() ? horizontalScrollBar()->value():0,
+            verticalScrollBar()->isVisible() ? verticalScrollBar()->value():0 );
+    }
 
     //! get pixmap for a given index selection
     QPixmap _pixmap( const QModelIndexList&, QRect& );
