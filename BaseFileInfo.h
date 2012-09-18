@@ -81,8 +81,9 @@ class BaseFileInfo
         FOLDER = 1<<3,
         NAVIGATOR = 1<<4,
         LINK = 1<<5,
-        HIDDEN = 1<<6,
-        ANY = (1<<7)-1
+        BROKEN = 1<<6,
+        HIDDEN = 1<<7,
+        ANY = (1<<8)-1
     };
 
     enum {SHIFT = 7};
@@ -122,9 +123,13 @@ class BaseFileInfo
     virtual bool isNavigator( void ) const
     { return type_&NAVIGATOR; }
 
-    //! file is local
+    //! file is link
     virtual bool isLink( void ) const
     { return type_&LINK; }
+
+    //! file is broken link
+    virtual bool isBrokenLink( void ) const
+    { return (type_&BROKEN); }
 
     //! file is hidden
     virtual bool isHidden( void ) const
@@ -210,9 +215,13 @@ class BaseFileInfo
         type_ |= NAVIGATOR;
     }
 
-    //! set file as local
+    //! set file as link
     virtual void setIsLink( void )
     { type_ |= LINK; }
+
+    //! set file as broken link
+    virtual void setIsBrokenLink( void )
+    { type_ |= LINK|BROKEN; }
 
     //! set file as local
     virtual void setIsHidden( void )
@@ -388,6 +397,7 @@ class BaseFileInfo
         else if( file.isDocument() ) out << "document";
         else out << "unknown type";
 
+        if( file.isBrokenLink() ) out << " broken";
         if( file.isLink() ) out << " link";
         if( file.isHidden() ) out << " hidden";
 
