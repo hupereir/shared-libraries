@@ -124,16 +124,6 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         gridLayout->setMaxCount(2);
         box->setLayout( gridLayout );
 
-        // flat theme
-        #if !defined(Q_WS_X11)
-        {
-            OptionCheckBox* checkbox( new OptionCheckBox( "Use flat plastique theme", box, "USE_FLAT_THEME" ) );
-            gridLayout->addWidget( checkbox, 0, 0, 1, 2 );
-            checkbox->setToolTip( "Use customized flat plastique theme for widget appearance and layout.\nThe application must be restarted to take changes to this option into account." );
-            addOptionWidget( checkbox );
-        }
-        #endif
-
         // pixmap path
         QLabel* label;
         gridLayout->addWidget( label = new QLabel( "Pixmaps:", box ) );

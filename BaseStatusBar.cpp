@@ -21,7 +21,7 @@
 *
 *******************************************************************************/
 
-#include "StatusBar.h"
+#include "BaseStatusBar.h"
 #include "TransitionWidget.h"
 #include "ClockLabel.h"
 #include "Debug.h"
@@ -31,11 +31,11 @@
 #include <QtGui/QMenu>
 
 //___________________________________________
-StatusBar::StatusBar( QWidget* parent ):
+BaseStatusBar::BaseStatusBar( QWidget* parent ):
     QStatusBar( parent ),
-    Counter( "StatusBar" )
+    Counter( "BaseStatusBar" )
 {
-    Debug::Throw( "StatusBar::StatusBar.\n" );
+    Debug::Throw( "BaseStatusBar::BaseStatusBar.\n" );
     assert( qobject_cast<QMainWindow*>( parent ) );
     setSizeGripEnabled( false );
 
@@ -51,17 +51,17 @@ StatusBar::StatusBar( QWidget* parent ):
 
 
 //___________________________________________
-void StatusBar::addClock( void )
+void BaseStatusBar::addClock( void )
 {
-    Debug::Throw( "StatusBar::addClock.\n" );
+    Debug::Throw( "BaseStatusBar::addClock.\n" );
     ClockLabel* clock = new ClockLabel( this );
     addPermanentWidget( clock );
 }
 
 //____________________________________________
-void StatusBar::addLabel( const int& stretch, bool animated )
+void BaseStatusBar::addLabel( const int& stretch, bool animated )
 {
-    Debug::Throw( "StatusBar::addLabel.\n" );
+    Debug::Throw( "BaseStatusBar::addLabel.\n" );
 
     StatusBarLabel* label(new StatusBarLabel( this ) );
     if( !animated )
@@ -76,9 +76,9 @@ void StatusBar::addLabel( const int& stretch, bool animated )
 }
 
 //__________________________________________________________________
-void StatusBar::contextMenuEvent( QContextMenuEvent *event )
+void BaseStatusBar::contextMenuEvent( QContextMenuEvent *event )
 {
-    Debug::Throw( "StatusBar::contextMenuEvent.\n" );
+    Debug::Throw( "BaseStatusBar::contextMenuEvent.\n" );
     QMenu* menu( static_cast<QMainWindow*>(parent())->createPopupMenu() );
     if( !menu ) return;
     menu->exec( event->globalPos() );

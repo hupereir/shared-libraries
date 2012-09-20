@@ -23,7 +23,9 @@ BaseFindDialog.h \
 BaseIcons.h \
 BaseMainWindow.h \
 BasePrintHelper.h \
+BaseProgressBar.h \
 BaseReplaceDialog.h \
+BaseStatusBar.h \
 BlockHighlight.h \
 BoxSelection.h \
 BrowsedLineEditor.h \
@@ -57,7 +59,6 @@ FilePermissionsWidget.h \
 FileRecordBaseProperties.h \
 FileRecordModel.h \
 FileSystemWatcher.h \
-FlatStyle.h \
 FontEditor.h \
 FontInfo.h \
 GridLayout.h \
@@ -115,7 +116,6 @@ ScratchFileRemoveDialog.h \
 ScrollObject.h \
 SelectLineDialog.h \
 SimpleListView.h \
-StatusBar.h \
 SystemEnvironmentDialog.h \
 TabbedDialog.h \
 TabWidget.h \
@@ -166,7 +166,9 @@ BaseFileInfoToolTipWidget.cpp \
 BaseFindDialog.cpp \
 BaseMainWindow.cpp \
 BasePrintHelper.cpp \
+BaseProgressBar.cpp \
 BaseReplaceDialog.cpp \
+BaseStatusBar.cpp \
 BlockHighlight.cpp \
 BoxSelection.cpp \
 BrowsedLineEditor.cpp \
@@ -198,7 +200,6 @@ FileList.cpp \
 FilePermissionsWidget.cpp \
 FileRecordModel.cpp \
 FileSystemWatcher.cpp \
-FlatStyle.cpp \
 FontEditor.cpp \
 FontInfo.cpp \
 HtmlDialog.cpp \
@@ -239,7 +240,6 @@ ScratchFileRemoveDialog.cpp \
 ScrollObject.cpp \
 SelectLineDialog.cpp \
 SimpleListView.cpp \
-StatusBar.cpp \
 SystemEnvironmentDialog.cpp \
 TabbedDialog.cpp \
 TabWidget.cpp \

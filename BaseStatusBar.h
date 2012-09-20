@@ -1,5 +1,5 @@
-#ifndef StatusBar_h
-#define StatusBar_h
+#ifndef BaseStatusBar_h
+#define BaseStatusBar_h
 
 // $Id$
 
@@ -61,16 +61,16 @@ class StatusBarLabel: public AnimatedLabel
 };
 
 //! custom status bar
-class StatusBar: public QStatusBar, public Counter
+class BaseStatusBar: public QStatusBar, public Counter
 {
 
     public:
 
     //! constructor
-    StatusBar( QWidget* parent );
+    BaseStatusBar( QWidget* );
 
     //! destructor
-    ~StatusBar( void )
+    ~BaseStatusBar( void )
     {}
 
     //! add clock
