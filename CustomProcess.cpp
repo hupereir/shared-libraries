@@ -50,11 +50,11 @@ void CustomProcess::start( QStringList arguments, OpenMode mode )
     if( arguments.empty() ) return;
 
     QString program( arguments.front() );
-    QStringList local_args( arguments );
-    local_args.pop_front();
+    QStringList localArgs( arguments );
+    localArgs.pop_front();
 
-    if( local_args.empty() ) return QProcess::start( program, mode );
-    else return QProcess::start( program, local_args,  mode );
+    if( localArgs.empty() ) return QProcess::start( program, mode );
+    else return QProcess::start( program, localArgs,  mode );
 
 }
 

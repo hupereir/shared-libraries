@@ -17,6 +17,7 @@ CustomProcess.h \
 Debug.h \
 File.h \
 FileRecord.h \
+IOString.h \
 Key.h \
 Option.h \
 Options.h \
@@ -38,6 +39,7 @@ CustomProcess.cpp \
 Debug.cpp \
 File.cpp \
 FileRecord.cpp \
+IOString.cpp \
 Key.cpp \
 Option.cpp \
 Options.cpp \
