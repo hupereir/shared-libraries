@@ -104,6 +104,7 @@ PixmapEngine.h \
 PrinterOptionWidget.h \
 PrintPreviewDialog.h \
 PrintPreviewDialog_p.h \
+ProgressStatusBar.h \
 QuestionDialog.h \
 QtUtil.h \
 RecentFilesConfiguration.h \
@@ -228,6 +229,7 @@ PixmapCacheModel.cpp \
 PixmapEngine.cpp \
 PrinterOptionWidget.cpp \
 PrintPreviewDialog.cpp \
+ProgressStatusBar.cpp \
 QuestionDialog.cpp \
 QtUtil.cpp \
 RecentFilesConfiguration.cpp \
