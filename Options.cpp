@@ -49,7 +49,6 @@ Options::Options( bool installDefaultOptions ):
 
         set( "DEBUG_LEVEL", Option( "0" , "Debug verbosity level" ) );
         set( "SORT_FILES_BY_DATE", Option( "0" , "Sort files by access date in open previous menu" ) );
-        set( "USE_FLAT_THEME", Option( "0", "Use flat theme in replacement of plastique theme" ) );
 
         // fonts
         set( "USE_SYSTEM_FONT", Option( "1", "Use default system font for widgets" ) );
