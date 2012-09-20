@@ -51,13 +51,7 @@ void BaseProgressBar::paintEvent( QPaintEvent* event )
         opt.text = "";
         painter.drawControl(QStyle::CE_ProgressBar, opt);
 
-        // need to draw the label separately
-        // because the "BASE" color is used by default, which might be too light,
-        // when the selection color (used for the bar) is light
-        // one use HighlightedText instead
         opt.text = text_;
-
-        // one should use a different color whether the bar is enabled or disabled
         opt.palette.setColor( QPalette::Base, palette().color( QPalette::HighlightedText ) );
         painter.drawControl(QStyle::CE_ProgressBarLabel, opt);
 
