@@ -216,16 +216,25 @@ class BaseFileInfo
     }
 
     //! set file as link
-    virtual void setIsLink( void )
-    { type_ |= LINK; }
+    virtual void setIsLink( bool value = true )
+    {
+        if( value ) type_ |= LINK;
+        else type_ &= ~LINK;
+    }
 
     //! set file as broken link
-    virtual void setIsBrokenLink( void )
-    { type_ |= LINK|BROKEN; }
+    virtual void setIsBrokenLink( bool value = true )
+    {
+        if( value ) type_ |= LINK|BROKEN;
+        else type_ &= ~BROKEN;
+    }
 
     //! set file as local
-    virtual void setIsHidden( void )
-    { type_ |= HIDDEN; }
+    virtual void setIsHidden( bool value = true )
+    {
+        if( value ) type_ |= HIDDEN;
+        else type_ &= ~HIDDEN;
+    }
 
     //! file size
     virtual void setSize( const unsigned int& size )

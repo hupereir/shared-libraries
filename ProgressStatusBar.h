@@ -61,6 +61,10 @@ class ProgressStatusBar: public BaseStatusBar
     //! show progress bar as visible widget
     void showProgressBar( void );
 
+    //! hide progress bar
+    void hideProgressBar( void )
+    { showLabel(); }
+
     //! show label as visible widget
     void showLabel( void );
 

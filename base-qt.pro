@@ -71,7 +71,6 @@ IconView.h \
 IconViewItem.h \
 ImageFileDialog.h \
 InformationDialog.h \
-IOString.h \
 ItemModel.h \
 KeyModifier.h \
 LineEditor.h \
@@ -212,7 +211,6 @@ IconView.cpp \
 IconViewItem.cpp \
 ImageFileDialog.cpp \
 InformationDialog.cpp \
-IOString.cpp \
 ItemModel.cpp \
 KeyModifier.cpp \
 LineEditor.cpp \
