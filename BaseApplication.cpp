@@ -24,7 +24,6 @@
 #include "BaseApplication.h"
 #include "BaseIcons.h"
 #include "File.h"
-#include "FlatStyle.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
 #include "Util.h"
@@ -103,7 +102,6 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
     Debug::Throw( "BaseApplication::BaseApplication.\n" );
     connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
     connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateFonts( void ) ) );
-    if( XmlOptions::get().get<bool>( "USE_FLAT_THEME" ) ) qApp->setStyle( new FlatStyle() );
 
     // use DBus connection to update on oxygen configuration change
     #ifndef QT_NO_DBUS
