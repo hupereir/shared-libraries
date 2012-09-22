@@ -5,28 +5,32 @@ CONFIG = staticlib
 CONFIG += qt
 QT += xml network
 
-unix {
-  QT += dbus
+mac {
+	DEFINES += QT_NO_DBUS
+}
+
+unix:!mac {
+	QT += dbus
 }
 
 INCLUDEPATH += ../base ../base-qt
 DEPENDPATH += . ../base ../base-qt
 
 HEADERS = \
-  ApplicationId.h \
-  ApplicationManager.h \
-  BaseApplication.h \
-  BaseCoreApplication.h \
-  Client.h \
-  ServerCommand.h \
-  ServerConfiguration.h \
-  ServerXmlDef.h
+	ApplicationId.h \
+	ApplicationManager.h \
+	BaseApplication.h \
+	BaseCoreApplication.h \
+	Client.h \
+	ServerCommand.h \
+	ServerConfiguration.h \
+	ServerXmlDef.h
 
 SOURCES = \
-  ApplicationId.cpp \
-  ApplicationManager.cpp \
-  BaseApplication.cpp \
-  BaseCoreApplication.cpp \
-  Client.cpp \
-  ServerCommand.cpp \
-  ServerConfiguration.cpp
+	ApplicationId.cpp \
+	ApplicationManager.cpp \
+	BaseApplication.cpp \
+	BaseCoreApplication.cpp \
+	Client.cpp \
+	ServerCommand.cpp \
+	ServerConfiguration.cpp
