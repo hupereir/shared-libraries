@@ -48,16 +48,16 @@ class Option:public Counter
     Option();
 
     //! constructor
-    Option( const char*, const unsigned int& = RECORDABLE );
+    Option( const char*, const unsigned int& = Recordable );
 
     //! constructor
-    Option( const QByteArray&, const unsigned int& = RECORDABLE );
+    Option( const QByteArray&, const unsigned int& = Recordable );
 
     //! constructor
-    Option( const QByteArray&, const QString&, const unsigned int& = RECORDABLE );
+    Option( const QByteArray&, const QString&, const unsigned int& = Recordable );
 
     //! constructor
-    Option( const QString&, const unsigned int& = RECORDABLE );
+    Option( const QString&, const unsigned int& = Recordable );
 
     //! less than operator
     bool operator < (const Option& option ) const
@@ -84,9 +84,9 @@ class Option:public Counter
     //! flags
     enum Flag
     {
-        NONE = 0,
-        CURRENT = 1 << 0,
-        RECORDABLE = 1<<1
+        None = 0,
+        Current = 1 << 0,
+        Recordable = 1<<1
     };
 
     //! flags
@@ -141,11 +141,11 @@ class Option:public Counter
 
     //! current
     bool isCurrent( void ) const
-    { return hasFlag( CURRENT ); }
+    { return hasFlag( Current ); }
 
     //! current
     Option& setCurrent( const bool& value )
-    { return setFlag( CURRENT, value ); }
+    { return setFlag( Current, value ); }
 
     //@}
 

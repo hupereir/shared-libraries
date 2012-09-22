@@ -419,16 +419,16 @@ File File::truncatedName( void ) const
 File::List File::listFiles( const unsigned int& flags ) const
 {
 
-    Debug::Throw() << "File::listFiles - this: " << *this << " - hidden: " << (flags&SHOW_HIDDEN) << endl;
+    Debug::Throw() << "File::listFiles - this: " << *this << " - hidden: " << (flags&ShowHiddenFiles) << endl;
 
     List out;
     File fullName( expand() );
-    if( !fullName.isDirectory() || (fullName.isLink() && !flags&FOLLOW_LINKS ) ) return out;
+    if( !fullName.isDirectory() || (fullName.isLink() && !flags&FollowLinks ) ) return out;
     if( !fullName.endsWith( "/" ) ) fullName += "/";
 
     // open directory
     QDir::Filters filter = QDir::AllEntries|QDir::System|QDir::NoDotDot;
-    if( flags & SHOW_HIDDEN ) filter |= QDir::Hidden;
+    if( flags & ShowHiddenFiles ) filter |= QDir::Hidden;
 
     foreach( const QString& value, QDir( fullName ).entryList( filter ) )
     {
@@ -441,7 +441,7 @@ File::List File::listFiles( const unsigned int& flags ) const
         out << file;
 
         // list subdirectory if recursive
-        if( flags & RECURSIVE && file.isDirectory() )
+        if( flags & Recursive && file.isDirectory() )
         {
 
             // in case directory is a link
@@ -465,7 +465,7 @@ File File::find( const File& file, bool caseSensitive ) const
 
     Debug::Throw() << "File::find - this: " << *this << endl;
     if( !( exists() && isDirectory() ) ) return File();
-    List files( listFiles( RECURSIVE ) );
+    List files( listFiles( Recursive ) );
     List directories;
     foreach( const File& local, files )
     {

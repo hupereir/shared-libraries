@@ -183,10 +183,10 @@ class File: public QString
     //! return list of files in a directory
     enum ListFlags
     {
-        NONE = 0,
-        RECURSIVE = 1<<0,
-        FOLLOW_LINKS = 1<<1,
-        SHOW_HIDDEN = 1<<2
+        None = 0,
+        Recursive = 1<<0,
+        FollowLinks = 1<<1,
+        ShowHiddenFiles = 1<<2
     };
 
     //! return list of files in a directory

@@ -45,7 +45,7 @@ Options::Options( bool installDefaultOptions ):
         common to all applications
         */
         keep( "PIXMAP_PATH" );
-        add( "PIXMAP_PATH", Option( ":/pixmaps", Option::RECORDABLE|Option::CURRENT ) );
+        add( "PIXMAP_PATH", Option( ":/pixmaps", Option::Recordable|Option::Current ) );
 
         set( "DEBUG_LEVEL", Option( "0" , "Debug verbosity level" ) );
         set( "SORT_FILES_BY_DATE", Option( "0" , "Sort files by access date in open previous menu" ) );
@@ -166,7 +166,7 @@ bool Options::add( const QString& name, Option option, const bool& isDefault )
 
             // update flags otherwise and return true
             same_option_iter->setFlags( option.flags() );
-            std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::CURRENT ) );
+            std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Current ) );
             return true;
 
         }
@@ -174,7 +174,7 @@ bool Options::add( const QString& name, Option option, const bool& isDefault )
     } else {
 
         iter.value().push_back( option );
-        std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::CURRENT ) );
+        std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Current ) );
         return true;
 
     }
@@ -221,7 +221,7 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
         const Options::List& optionList( iter.value() );
         for( Options::List::const_iterator listIter = optionList.begin(); listIter != optionList.end(); ++listIter )
         {
-            if( listIter->hasFlag( Option::RECORDABLE ) && listIter->set() && listIter->raw().size() )
+            if( listIter->hasFlag( Option::Recordable ) && listIter->set() && listIter->raw().size() )
             { out << "  " << iter.key() << ":" << *listIter << endl; }
         }
     }
