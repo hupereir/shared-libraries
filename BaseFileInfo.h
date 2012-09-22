@@ -13,7 +13,7 @@
 * version.
 *
 * This software is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* Any WARRANTY; without even the implied warranty of MERCHANTABILITY or
 * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 * for more details.
 *
@@ -43,7 +43,7 @@ class BaseFileInfo
     public:
 
     //! constructor
-    BaseFileInfo( const QString& file = "", const unsigned int& type = NONE ):
+    BaseFileInfo( const QString& file = "", const unsigned int& type = None ):
         file_( file ),
         type_( type ),
         size_( 0 ),
@@ -74,19 +74,19 @@ class BaseFileInfo
     //! file properties
     enum Type
     {
-        NONE = 0,
-        LOCAL = 1<<0,
-        REMOTE = 1<<1,
-        DOCUMENT = 1<<2,
-        FOLDER = 1<<3,
-        NAVIGATOR = 1<<4,
-        LINK = 1<<5,
-        BROKEN = 1<<6,
-        HIDDEN = 1<<7,
-        ANY = (1<<8)-1
+        None = 0,
+        Local = 1<<0,
+        Remote = 1<<1,
+        Document = 1<<2,
+        Folder = 1<<3,
+        Navigator = 1<<4,
+        Link = 1<<5,
+        Broken = 1<<6,
+        Hidden = 1<<7,
+        Any = (1<<8)-1
     };
 
-    enum {SHIFT = 7};
+    enum {Shift = 7};
 
     //!@name accessors
     //@{
@@ -101,39 +101,39 @@ class BaseFileInfo
 
     //! location
     virtual unsigned int location( void ) const
-    { return type_ & (LOCAL|REMOTE); }
+    { return type_ & (Local|Remote); }
 
     //! file is local
     virtual bool isLocal( void ) const
-    { return type_&LOCAL; }
+    { return type_&Local; }
 
     //! file is remote
     virtual bool isRemote( void ) const
-    { return type_&REMOTE; }
+    { return type_&Remote; }
 
     //! file is document
     virtual bool isDocument( void ) const
-    { return type_&DOCUMENT; }
+    { return type_&Document; }
 
     //! file is directory
     virtual bool isFolder( void ) const
-    { return type_&FOLDER; }
+    { return type_&Folder; }
 
     //! file is navigator (.|..)
     virtual bool isNavigator( void ) const
-    { return type_&NAVIGATOR; }
+    { return type_&Navigator; }
 
     //! file is link
     virtual bool isLink( void ) const
-    { return type_&LINK; }
+    { return type_&Link; }
 
     //! file is broken link
     virtual bool isBrokenLink( void ) const
-    { return (type_&BROKEN); }
+    { return (type_&Broken); }
 
     //! file is hidden
     virtual bool isHidden( void ) const
-    { return type_&HIDDEN; }
+    { return type_&Hidden; }
 
     //! file size
     virtual unsigned int size( void ) const
@@ -181,59 +181,59 @@ class BaseFileInfo
     //! set file as local
     virtual void setLocal( void )
     {
-        type_ &= (~REMOTE);
-        type_ |= LOCAL;
+        type_ &= (~Remote);
+        type_ |= Local;
     }
 
     //! set file as remote
     virtual void setRemote( void )
     {
-        type_ &= (~LOCAL);
-        type_ |= REMOTE;
+        type_ &= (~Local);
+        type_ |= Remote;
     }
 
     //! set file as file
     virtual void setIsDocument( void )
     {
-        type_ &= (~FOLDER);
-        type_ &= (~NAVIGATOR);
-        type_ |= DOCUMENT;
+        type_ &= (~Folder);
+        type_ &= (~Navigator);
+        type_ |= Document;
     }
 
     //! set file as directory
     virtual void setIsFolder( void )
     {
-        type_ &= (~DOCUMENT);
-        type_ |= FOLDER;
+        type_ &= (~Document);
+        type_ |= Folder;
     }
 
     //! set file as file
     virtual void setIsNavigator( void )
     {
-        type_ &= (~DOCUMENT);
-        type_ |= FOLDER;
-        type_ |= NAVIGATOR;
+        type_ &= (~Document);
+        type_ |= Folder;
+        type_ |= Navigator;
     }
 
     //! set file as link
     virtual void setIsLink( bool value = true )
     {
-        if( value ) type_ |= LINK;
-        else type_ &= ~LINK;
+        if( value ) type_ |= Link;
+        else type_ &= ~Link;
     }
 
     //! set file as broken link
     virtual void setIsBrokenLink( bool value = true )
     {
-        if( value ) type_ |= LINK|BROKEN;
-        else type_ &= ~BROKEN;
+        if( value ) type_ |= Link|Broken;
+        else type_ &= ~Broken;
     }
 
     //! set file as local
     virtual void setIsHidden( bool value = true )
     {
-        if( value ) type_ |= HIDDEN;
-        else type_ &= ~HIDDEN;
+        if( value ) type_ |= Hidden;
+        else type_ &= ~Hidden;
     }
 
     //! file size

@@ -76,7 +76,7 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
     enum ColumnType
     {
         NAME,
-        CURRENT,
+        Current,
         VALUE,
         DEFAULT_VALUE,
         FLAGS

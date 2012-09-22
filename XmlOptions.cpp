@@ -180,10 +180,10 @@ bool XmlOptions::write( QString file )
         for( Options::List::iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
         {
 
-            if( !listIter->hasFlag( Option::RECORDABLE ) )
+            if( !listIter->hasFlag( Option::Recordable ) )
             { Debug::Throw(0) << "XmlOptions::write - option " << iter.key() << " is not recordable" << endl; }
 
-            if( listIter->hasFlag( Option::RECORDABLE ) && listIter->set() && listIter->raw().size() )
+            if( listIter->hasFlag( Option::Recordable ) && listIter->set() && listIter->raw().size() )
             {
 
                 top.appendChild( XmlOption( iter.key(), *listIter ).domElement( document ) );
@@ -198,7 +198,7 @@ bool XmlOptions::write( QString file )
     for( Options::Map::const_iterator iter = get().options().begin(); iter != get().options().end(); ++iter )
     {
 
-        if( iter.value().hasFlag( Option::RECORDABLE ) &&
+        if( iter.value().hasFlag( Option::Recordable ) &&
             iter.value().set() &&
             iter.value().raw().size() &&
             iter.value().raw() != iter.value().defaultValue() )

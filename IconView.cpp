@@ -535,6 +535,10 @@ void IconView::paintEvent( QPaintEvent* event )
             option.state |= QStyle::State_Selected;
         }
 
+        QVariant variant( model()->data( index, Qt::ForegroundRole ) );
+        if( variant.canConvert( QVariant::Color ) )
+        { option.palette.setColor( QPalette::Text, variant.value<QColor>() ); }
+
         if( index == hoverIndex_ ) option.state |= QStyle::State_MouseOver;
 
         painter.translate( item.position() );

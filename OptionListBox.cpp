@@ -60,7 +60,7 @@ fileMode_( QFileDialog::AnyFile )
     _list().setSelectionMode( QAbstractItemView::ExtendedSelection );
     _list().setModel( &model_ );
     _list().setRootIsDecorated( false );
-    _list().setMask( 1<<OptionModel::CURRENT|1<<OptionModel::VALUE );
+    _list().setMask( 1<<OptionModel::Current|1<<OptionModel::VALUE );
     _list().setItemDelegate( new TextEditionDelegate( this ) );
     _list().setIconSize( IconSize( IconSize::Small ) );
     layout->addWidget( &_list(), 1 );
@@ -141,7 +141,7 @@ void OptionListBox::read( void )
     Options::List values( XmlOptions::get().specialOptions( optionName() ) );
 
     // check if one option is default, set first otherwise
-    if( !values.empty() && std::find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::CURRENT ) ) == values.end() )
+    if( !values.empty() && std::find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::Current ) ) == values.end() )
     { values.front().setCurrent( true ); }
 
     // add to model.
@@ -173,8 +173,8 @@ void OptionListBox::_updateButtons( void )
     Debug::Throw( "OptionListBox::_updateButtons.\n" );
 
     QModelIndex current( _list().selectionModel()->currentIndex() );
-    edit_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );
-    editAction_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::RECORDABLE ) );
+    edit_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::Recordable ) );
+    editAction_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::Recordable ) );
 
     default_->setEnabled( current.isValid() );
     defaultAction_->setEnabled( current.isValid() );
@@ -182,7 +182,7 @@ void OptionListBox::_updateButtons( void )
     bool removeEnabled( false );
     foreach( const OptionPair& optionPair, model_.get( _list().selectionModel()->selectedRows() ) )
     {
-        if( optionPair.second.hasFlag( Option::RECORDABLE ) )
+        if( optionPair.second.hasFlag( Option::Recordable ) )
         {
             removeEnabled = true;
             break;
@@ -234,7 +234,7 @@ void OptionListBox::_edit( void )
     assert( current.isValid() );
 
     Options::Pair option( model_.get( current ) );
-    assert( option.second.hasFlag( Option::RECORDABLE ) );
+    assert( option.second.hasFlag( Option::Recordable ) );
 
     // create dialog
     EditDialog dialog( this, browsable_, fileMode_ );
@@ -282,7 +282,7 @@ void OptionListBox::_remove( void )
     // retrieve selected items; retrieve only recordable options
     OptionModel::List removed;
     foreach( const OptionPair& optionPair, model_.get( _list().selectionModel()->selectedRows() ) )
-    { if( optionPair.second.hasFlag( Option::RECORDABLE ) ) removed << optionPair; }
+    { if( optionPair.second.hasFlag( Option::Recordable ) ) removed << optionPair; }
 
     // remove
     model_.remove( removed );

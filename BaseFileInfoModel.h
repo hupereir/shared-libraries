@@ -13,7 +13,7 @@
 * version.
 *
 * This software is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* Any WARRANTY; without even the implied warranty of MERCHANTABILITY or
 * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 * for more details.
 *
@@ -31,6 +31,7 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QHash>
 #include <QtGui/QIcon>
+#include <QtGui/QPalette>
 
 //! FileInfo model. Stores file information for display in lists
 template<typename T>
@@ -43,7 +44,7 @@ class BaseFileInfoModel : public ListModel<T>
     BaseFileInfoModel( QObject* parent = 0 ):
         ListModel<T>( parent ),
         showIcons_( true )
-    { _installIcons(); }
+    {}
 
     //! destructor
     virtual ~BaseFileInfoModel()
@@ -111,25 +112,11 @@ class BaseFileInfoModel : public ListModel<T>
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
     { std::sort( ListModel<T>::_get().begin(), ListModel<T>::_get().end(), SortFTor( (ColumnType) column, order ) ); }
 
-    //! icon cache
-    typedef QHash<int, QIcon> IconCache;
-
-    //! type icon cache
-    IconCache& _icons( void )
-    { return icons_; }
-
-    //! type icon cache
-    const IconCache& _constIcons( void ) const
-    { return icons_; }
-
-    //! install pixmaps
-    virtual void _installIcons( void )
-    { return; }
+    //! icon matching given id
+    virtual QIcon _icon( int ) const
+    { return QIcon(); }
 
     private:
-
-    //! icon cache
-    IconCache icons_;
 
     //! true if icons are to be shown
     bool showIcons_;
@@ -143,34 +130,65 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
     // check index, role and column
     if( !index.isValid() ) return QVariant();
 
-    // retrieve associated file info
-    const T& fileInfo( ListModel<T>::get()[index.row()] );
-
     // return text associated to file and column
-    if( role == Qt::DisplayRole ) {
-
-        if( fileInfo.type() & BaseFileInfo::NAVIGATOR ) return (index.column() == FILE) ? fileInfo.file() : QVariant();
-
-        switch( index.column() )
-        {
-            case FILE: return fileInfo.file().localName();
-            case PATH: return fileInfo.file().path();
-            case SIZE: return (fileInfo.type() & BaseFileInfo::FOLDER || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
-            case USER: return fileInfo.user();
-            case GROUP: return fileInfo.group();
-            case PERMISSIONS: return (fileInfo.type() & BaseFileInfo::NAVIGATOR) ? QString():fileInfo.permissionsString();
-            case MODIFIED: return QString( fileInfo.lastModified() ? TimeStamp( fileInfo.lastModified() ).toString() : "" );
-
-            default:
-            return QVariant();
-        }
-    }
-
-    // return icon associated to file
-    if( showIcons() && role == Qt::DecorationRole && index.column() == 0 )
+    switch( role )
     {
-        if( fileInfo.isNavigator() ) return _constIcons()[ BaseFileInfo::NAVIGATOR ];
-        else return _constIcons()[fileInfo.type()&(BaseFileInfo::FOLDER|BaseFileInfo::DOCUMENT|BaseFileInfo::LINK)];
+
+        case Qt::DisplayRole:
+        {
+
+            // retrieve associated file info
+            const T& fileInfo( ListModel<T>::get()[index.row()] );
+
+            if( fileInfo.type() & BaseFileInfo::Navigator ) return (index.column() == FILE) ? fileInfo.file() : QVariant();
+
+            switch( index.column() )
+            {
+                case FILE: return fileInfo.file().localName();
+                case PATH: return fileInfo.file().path();
+                case SIZE: return (fileInfo.type() & BaseFileInfo::Folder || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
+                case USER: return fileInfo.user();
+                case GROUP: return fileInfo.group();
+                case PERMISSIONS: return (fileInfo.type() & BaseFileInfo::Navigator) ? QString():fileInfo.permissionsString();
+                case MODIFIED: return QString( fileInfo.lastModified() ? TimeStamp( fileInfo.lastModified() ).toString() : "" );
+
+                default:
+                return QVariant();
+            }
+
+            break;
+        }
+
+        case Qt::DecorationRole:
+        {
+            if( showIcons() && index.column() == 0 )
+            {
+
+                // retrieve associated file info
+                const T& fileInfo( ListModel<T>::get()[index.row()] );
+                return _icon( fileInfo.type() );
+
+            }
+
+            break;
+        }
+
+        case Qt::ForegroundRole:
+        {
+            const T& fileInfo( ListModel<T>::get()[index.row()] );
+            if( fileInfo.isHidden() && ( this->flags( index )&Qt::ItemIsEnabled ) )
+            {
+                QColor color( QPalette().color( QPalette::Text ) );
+                color.setAlphaF( 0.7 );
+                return color;
+            }
+
+            break;
+
+        }
+
+        default: break;
+
     }
 
     return QVariant();
@@ -229,10 +247,10 @@ bool BaseFileInfoModel<T>::SortFTor::operator() ( const T& constFirst, const T& 
         default:
         case FILE:
         {
-            if( first.type() & BaseFileInfo::NAVIGATOR ) return true;
-            else if( second.type() & BaseFileInfo::NAVIGATOR ) return false;
-            else if( first.type() &  BaseFileInfo::FOLDER ) return (second.type() & BaseFileInfo::FOLDER) ? first.file().compare( second.file(), Qt::CaseInsensitive ) < 0 : true;
-            else return (second.type() & BaseFileInfo::FOLDER) ? false : first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
+            if( first.type() & BaseFileInfo::Navigator ) return true;
+            else if( second.type() & BaseFileInfo::Navigator ) return false;
+            else if( first.type() &  BaseFileInfo::Folder ) return (second.type() & BaseFileInfo::Folder) ? first.file().compare( second.file(), Qt::CaseInsensitive ) < 0 : true;
+            else return (second.type() & BaseFileInfo::Folder) ? false : first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
         }
         break;
 

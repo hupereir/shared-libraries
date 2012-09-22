@@ -129,5 +129,5 @@ void HtmlDialog::_browseCommand( void )
 void HtmlDialog::_saveCommands( void )
 {
     Debug::Throw( "HtmlDialog::_saveCommands.\n" );
-    XmlOptions::get().add( "HTML_COMMAND", Option( command(), Option::RECORDABLE|Option::CURRENT ) );
+    XmlOptions::get().add( "HTML_COMMAND", Option( command(), Option::Recordable|Option::Current ) );
 }

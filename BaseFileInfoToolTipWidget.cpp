@@ -198,7 +198,7 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         typeItem_->setText( fileInfo.typeString() );
 
         // size
-        if( (mask_&SIZE) && fileInfo.size() > 0 && !( fileInfo.type() & (BaseFileInfo::FOLDER|BaseFileInfo::LINK|BaseFileInfo::NAVIGATOR) ) )
+        if( (mask_&SIZE) && fileInfo.size() > 0 && !( fileInfo.type() & (BaseFileInfo::Folder|BaseFileInfo::Link|BaseFileInfo::Navigator) ) )
         {
 
             sizeItem_->setText( File::sizeString( fileInfo.size() ) );

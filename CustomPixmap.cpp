@@ -22,11 +22,11 @@
 *******************************************************************************/
 
 /*!
-  \file CustomPixmap.cpp
-  \brief customized QPixmap to look for icon of given name in list of directory
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
+\file CustomPixmap.cpp
+\brief customized QPixmap to look for icon of given name in list of directory
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <cassert>
@@ -46,28 +46,28 @@
 
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QString& file ):
-  QPixmap( file ),
-  Counter( "CustomPixmap" )
+QPixmap( file ),
+Counter( "CustomPixmap" )
 {
-  Debug::Throw( "CustomPixmap::CustomPixmap.\n" );
+    Debug::Throw( "CustomPixmap::CustomPixmap.\n" );
 
-  /*
-  under windows, if pixmap is null, and file is an executable of a link
-  try load the icon using FileIncoProvider
-  */
-  #if defined(Q_WS_WIN)
-  if( !isNull() ) return;
-  QFileInfo info( file );
-  if( info.isExecutable() || info.isSymLink() )
-  {
+    /*
+    under windows, if pixmap is null, and file is an executable of a link
+    try load the icon using FileIncoProvider
+    */
+    #if defined(Q_WS_WIN)
+    if( !isNull() ) return;
+    QFileInfo info( file );
+    if( info.isExecutable() || info.isSymLink() )
+    {
 
-    QIcon icon( QFileIconProvider().icon( file ) );
-    if( icon.isNull() ) return;
-    QPixmap out( icon.pixmap( IconSize( IconSize::Maximum ) ) );
-    *this = out;
+        QIcon icon( QFileIconProvider().icon( file ) );
+        if( icon.isNull() ) return;
+        QPixmap out( icon.pixmap( IconSize( IconSize::Maximum ) ) );
+        *this = out;
 
-  }
-  #endif
+    }
+    #endif
 
 }
 
@@ -75,100 +75,120 @@ CustomPixmap::CustomPixmap( const QString& file ):
 CustomPixmap CustomPixmap::find( const QString& file )
 {
 
-  Debug::Throw( "CustomPixmap::find.\n" );
-  *this = CustomPixmap( PixmapEngine::get( file ) );
-  return *this;
+    Debug::Throw( "CustomPixmap::find.\n" );
+    *this = CustomPixmap( PixmapEngine::get( file ) );
+    return *this;
 
 }
 
 //_________________________________________________
 CustomPixmap CustomPixmap::rotate( const CustomPixmap::Rotation& rotation )
 {
-  if( rotation == NONE ) return *this;
+    if( rotation == NONE ) return *this;
 
-  CustomPixmap out = CustomPixmap().empty( QSize( height(), width() ) );
-  QPainter painter( &out );
+    CustomPixmap out = CustomPixmap().empty( QSize( height(), width() ) );
+    QPainter painter( &out );
 
-  // rotate the painter
-  if( rotation == COUNTERCLOCKWISE )
-  {
-    painter.translate( 0, out.height() );
-    painter.rotate( -90 );
-  } else {
-    painter.translate( out.width(), 0 );
-    painter.rotate( 90 );
-  }
+    // rotate the painter
+    if( rotation == COUNTERCLOCKWISE )
+    {
+        painter.translate( 0, out.height() );
+        painter.rotate( -90 );
+    } else {
+        painter.translate( out.width(), 0 );
+        painter.rotate( 90 );
+    }
 
-  painter.drawPixmap( QPoint(0,0), *this );
-  painter.end();
-  return out;
+    painter.drawPixmap( QPoint(0,0), *this );
+    painter.end();
+    return out;
 }
 
 //_________________________________________________
 CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensity ) const
 {
-  if( isNull() ) return *this;
+    if( isNull() ) return *this;
 
-  QPixmap out( *this );
-  QPainter painter( &out );
-  QColor color( base_color );
-  color.setAlphaF( intensity );
+    QPixmap out( *this );
+    QPainter painter( &out );
+    QColor color( base_color );
+    color.setAlphaF( intensity );
 
-  painter.setPen( Qt::NoPen );
-  painter.setBrush( color );
-  painter.drawRect( out.rect() );
-  painter.end();
+    painter.setPen( Qt::NoPen );
+    painter.setBrush( color );
+    painter.drawRect( out.rect() );
+    painter.end();
 
-  out.setAlphaChannel( alphaChannel() );
-  return out;
+    out.setAlphaChannel( alphaChannel() );
+    return out;
+}
+
+//_________________________________________________
+CustomPixmap CustomPixmap::transparent( const double& intensity ) const
+{
+    if( isNull() ) return *this;
+
+    QPixmap out( *this );
+    QPainter painter( &out );
+
+    QColor color( Qt::black );
+    color.setAlphaF( intensity );
+
+    painter.setCompositionMode( QPainter::CompositionMode_DestinationIn );
+    painter.setPen( Qt::NoPen );
+    painter.setBrush( color );
+    painter.drawRect( out.rect() );
+    painter.end();
+
+    return out;
 }
 
 //_________________________________________________
 CustomPixmap CustomPixmap::merge( const QPixmap& pixmap, Corner corner ) const
 {
-  if( isNull() ) return *this;
+    if( isNull() ) return *this;
 
-  QImage source_image( toImage() );
-  QPainter painter( &source_image );
-  switch( corner )
-  {
+    QImage source_image( toImage() );
+    QPainter painter( &source_image );
+    switch( corner )
+    {
 
-    case TOP_RIGHT:
-    painter.drawPixmap( QPoint( width()-pixmap.width(), 0 ), pixmap );
-    break;
+        case TOP_RIGHT:
+        painter.drawPixmap( QPoint( width()-pixmap.width(), 0 ), pixmap );
+        break;
 
-    case BOTTOM_LEFT:
-    painter.drawPixmap( QPoint( 0, height()-pixmap.height() ), pixmap );
-    break;
+        case BOTTOM_LEFT:
+        painter.drawPixmap( QPoint( 0, height()-pixmap.height() ), pixmap );
+        break;
 
-    case BOTTOM_RIGHT:
-    painter.drawPixmap( QPoint( width()-pixmap.width(), height()-pixmap.height() ), pixmap );
-    break;
+        case BOTTOM_RIGHT:
+        painter.drawPixmap( QPoint( width()-pixmap.width(), height()-pixmap.height() ), pixmap );
+        break;
 
-    case CENTER:
-    painter.drawPixmap(  QPoint( (width()-pixmap.width())/2, (height()-pixmap.height())/2 ), pixmap );
-    break;
+        case CENTER:
+        painter.drawPixmap(  QPoint( (width()-pixmap.width())/2, (height()-pixmap.height())/2 ), pixmap );
+        break;
 
-    default:
-    case TOP_LEFT:
-    painter.drawPixmap( QPoint( 0, 0 ), pixmap );
-    break;
+        default:
+        case TOP_LEFT:
+        painter.drawPixmap( QPoint( 0, 0 ), pixmap );
+        break;
 
-  }
+    }
 
-  painter.end();
-  return CustomPixmap().fromImage( source_image );
+    painter.end();
+    return CustomPixmap().fromImage( source_image );
 }
 
 //_________________________________________________
 CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color ) const
 {
 
-  Debug::Throw( "CustomPixmap::empty.\n" );
-  CustomPixmap out( size );
-  if( color.isValid() ) out.fill( color );
-  else out.fill( Qt::transparent );
-  return out;
+    Debug::Throw( "CustomPixmap::empty.\n" );
+    CustomPixmap out( size );
+    if( color.isValid() ) out.fill( color );
+    else out.fill( Qt::transparent );
+    return out;
 
 }
 
@@ -176,29 +196,29 @@ CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color ) const
 CustomPixmap CustomPixmap::disabled( void ) const
 {
 
-  Debug::Throw( "CustomPixmap::disabled.\n" );
-  QImage image( toImage() );
+    Debug::Throw( "CustomPixmap::disabled.\n" );
+    QImage image( toImage() );
 
-  // retrieve dimensions
-  int width( image.width() );
-  int height( image.height() );
+    // retrieve dimensions
+    int width( image.width() );
+    int height( image.height() );
 
-  QColor mergedColor;
-  for( int x = 0; x < width; x++ )
-  {
-    for( int y = 0; y < height; y++ )
+    QColor mergedColor;
+    for( int x = 0; x < width; x++ )
     {
-      QColor color( image.pixel( x, y ) );
-      int gray( 128 + qGray( color.rgb() )/2 );
-      mergedColor.setRgb( gray, gray, gray );
+        for( int y = 0; y < height; y++ )
+        {
+            QColor color( image.pixel( x, y ) );
+            int gray( 128 + qGray( color.rgb() )/2 );
+            mergedColor.setRgb( gray, gray, gray );
 
-      image.setPixel( x, y, mergedColor.rgb() );
+            image.setPixel( x, y, mergedColor.rgb() );
+        }
     }
-  }
 
-  CustomPixmap out( image );
-  out.setAlphaChannel( alphaChannel() );
-  return out;
+    CustomPixmap out( image );
+    out.setAlphaChannel( alphaChannel() );
+    return out;
 
 }
 
@@ -206,26 +226,26 @@ CustomPixmap CustomPixmap::disabled( void ) const
 CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 {
 
-  Debug::Throw( "CustomPixmap::highlighted.\n" );
-  if( opacity <= 0 ) return *this;
-  opacity = qMin( opacity, 1.0 );
+    Debug::Throw( "CustomPixmap::highlighted.\n" );
+    if( opacity <= 0 ) return *this;
+    opacity = qMin( opacity, 1.0 );
 
-  // apply highlight
-  QPixmap out( *this );
-  QPixmap alphaChannel( out.alphaChannel() );
-  QPainter painter( &out );
+    // apply highlight
+    QPixmap out( *this );
+    QPixmap alphaChannel( out.alphaChannel() );
+    QPainter painter( &out );
 
-  painter.setRenderHints(QPainter::SmoothPixmapTransform);
-  painter.setPen( Qt::NoPen );
+    painter.setRenderHints(QPainter::SmoothPixmapTransform);
+    painter.setPen( Qt::NoPen );
 
-  QColor color( Qt::white );
-  color.setAlphaF( opacity );
-  painter.setBrush( color );
+    QColor color( Qt::white );
+    color.setAlphaF( opacity );
+    painter.setBrush( color );
 
-  painter.drawRect( out.rect() );
-  painter.end();
+    painter.drawRect( out.rect() );
+    painter.end();
 
-  out.setAlphaChannel( alphaChannel );
-  return out;
+    out.setAlphaChannel( alphaChannel );
+    return out;
 
 }

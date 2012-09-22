@@ -10,7 +10,7 @@
 * version.
 *
 * This software is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* Any WARRANTY; without even the implied warranty of MERCHANTABILITY or
 * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 * for more details.
 *
@@ -45,7 +45,7 @@ namespace XML
 
 //________________________________________________________________
 BaseFileInfo::BaseFileInfo( const QDomElement& element ):
-    type_( NONE ),
+    type_( None ),
     size_(0),
     lastModified_(-1)
 {

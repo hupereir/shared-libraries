@@ -37,7 +37,7 @@ const QString OptionModel::columnTitles_[ OptionModel::nColumns ] =
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid()) return 0;
-    else if( !get( index ).second.hasFlag( Option::RECORDABLE ) ) return Qt::ItemIsSelectable;
+    else if( !get( index ).second.hasFlag( Option::Recordable ) ) return Qt::ItemIsSelectable;
     else if( !( isReadOnly() || rowCount( index ) ) && index.column() == VALUE ) return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
     else return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
@@ -64,7 +64,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
         }
     }
 
-    if( role == Qt::DecorationRole && index.column() == CURRENT )
+    if( role == Qt::DecorationRole && index.column() == Current )
     { return option.second.isCurrent() ? IconEngine::get( ICONS::DIALOG_ACCEPT ):QVariant(); }
 
     if( role == Qt::ToolTipRole && index.column() == NAME )

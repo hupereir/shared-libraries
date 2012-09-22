@@ -125,7 +125,11 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
         }
 
         layout.endLayout();
+        const QPen oldPen( painter->pen() );
+        painter->setPen( option->palette.color( (option->state&QStyle::State_Selected) ?
+            QPalette::HighlightedText:QPalette::Text ) );
         layout.draw( painter, textRect.topLeft() + QPointF( 0.5*(textRect.width()-layout.boundingRect().width()), 0 ), QVector<QTextLayout::FormatRange>(), textRect );
+        painter->setPen( oldPen );
 
     }
 
