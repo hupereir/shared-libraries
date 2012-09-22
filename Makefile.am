@@ -82,7 +82,7 @@ libbase_spellcheck_a_XXCFLAGS = $(AM_CXXFLAGS)
 
 testexternals_LDADD = \
   libbase-spellcheck.a \
-  ../base-qt/libbase.a \
+  ../base-qt/libbase-qt.a \
   ../base/libbase.a \
   -laspell
 
