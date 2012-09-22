@@ -47,7 +47,7 @@ namespace SVG
 
         XmlOptions::get().setAutoDefault( true );
         XmlOptions::get().keep( "SVG_BACKGROUND" );
-        XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg", Option::RECORDABLE|Option::CURRENT ) );
+        XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg", Option::Recordable|Option::Current ) );
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-white.svg" ) );
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-simple.svg" ) );
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-translucent.svg" ) );
