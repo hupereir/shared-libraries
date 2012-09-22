@@ -31,8 +31,9 @@
 #include "Debug.h"
 
 #include "BackgroundPixmap.h"
-#include "CompositeEngine.h"
 #include "XmlOptions.h"
+
+#include "CompositeEngine.h"
 
 #if defined(Q_WS_X11)
 #include <QX11Info>
