@@ -86,7 +86,7 @@ class BaseFileInfo
         Any = (1<<8)-1
     };
 
-    enum {Shift = 7};
+    enum {Shift = 8};
 
     //!@name accessors
     //@{
