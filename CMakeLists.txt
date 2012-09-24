@@ -1,0 +1,51 @@
+PROJECT( BASE )
+CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
+
+set(BASE_VERSION_MAJOR 1)
+set(BASE_VERSION_MINOR 0)
+set(BASE_VERSION_PATCH 0)
+set(BASE_VERSION ${BASE_VERSION_MAJOR}.${BASE_VERSION_MINOR}.${BASE_VERSION_PATCH} )
+set(BASE_SOVERSION ${BASE_VERSION_MAJOR}.${BASE_VERSION_MINOR} )
+
+########### Qt4 configuration #########
+FIND_PACKAGE( Qt4 REQUIRED )
+SET( QT_USE_QTNETWORK TRUE )
+
+INCLUDE( ${QT_USE_FILE} )
+ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+
+########### includes ###############
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+########### next target ###############
+SET( base_SOURCES
+  Command.cpp
+  CommandLineArguments.cpp
+  CommandLineParser.cpp
+  Counter.cpp
+  CounterMap.cpp
+  CustomProcess.cpp
+  Debug.cpp
+  File.cpp
+  FileRecord.cpp
+  IOString.cpp
+  Key.cpp
+  Option.cpp
+  Options.cpp
+  Singleton.cpp
+  Str.cpp
+  TimeStamp.cpp
+  Util.cpp
+)
+
+ADD_LIBRARY( base SHARED ${base_SOURCES} )
+SET_TARGET_PROPERTIES( base PROPERTIES VERSION ${BASE_VERSION} SOVERSION ${BASE_SOVERSION} )
+TARGET_LINK_LIBRARIES( base ${QT_LIBRARIES} )
+INSTALL( TARGETS base DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+
+########### next target ###############
+ADD_CUSTOM_COMMAND( OUTPUT "testexternals.cpp" COMMAND echo \"int main() {} \" > testexternals.cpp )
+SET( testexternals_SOURCES testexternals.cpp )
+
+ADD_EXECUTABLE( testexternals-base ${testexternals_SOURCES} )
+TARGET_LINK_LIBRARIES( testexternals-base ${QT_LIBRARIES} base )
