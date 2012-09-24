@@ -98,11 +98,11 @@ class FileDialog: public QObject, public Counter
     static QString& _workingDirectory();
 
     //! accept mode
-    virtual const QFileDialog::AcceptMode& _acceptMode( void ) const
+    virtual QFileDialog::AcceptMode _acceptMode( void ) const
     { return acceptMode_; }
 
     //! file mode
-    virtual const QFileDialog::FileMode& _fileMode( void ) const
+    virtual QFileDialog::FileMode _fileMode( void ) const
     { return fileMode_; }
 
     //! caption
@@ -119,11 +119,7 @@ class FileDialog: public QObject, public Counter
     { return filter_; }
 
     //! options
-    virtual const QFileDialog::Options& _options( void ) const
-    { return options_; }
-
-    //! options
-    virtual QFileDialog::Options& _options( void )
+    virtual QFileDialog::Options _options( void ) const
     { return options_; }
 
     private:

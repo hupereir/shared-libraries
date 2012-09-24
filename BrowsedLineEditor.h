@@ -24,24 +24,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file BrowsedLineEditor.h
-\brief combined QLineEdit + associated browse button
-line edit is also customized to have faster popup menu
-result of the file dialog associated to the button is stored into the
-LineEditor object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
-#include <cassert>
-#include <QFileDialog>
-#include <QWidget>
-
-
 #include "Counter.h"
+
+#include <QtGui/QFileDialog>
+#include <QtGui/QWidget>
 
 class AnimatedLineEditor;
 
@@ -67,10 +53,7 @@ class BrowsedLineEditor: public QWidget, public Counter
 
     //! retrieve line editor
     virtual Editor& editor( void ) const
-    {
-        assert( lineEditor_ );
-        return *lineEditor_;
-    }
+    { return *lineEditor_; }
 
     //! open mode
     virtual void setAcceptMode( const QFileDialog::AcceptMode mode )
@@ -88,11 +71,11 @@ class BrowsedLineEditor: public QWidget, public Counter
     protected:
 
     //! accept mode
-    virtual const QFileDialog::AcceptMode& _acceptMode( void ) const
+    virtual QFileDialog::AcceptMode _acceptMode( void ) const
     { return acceptMode_; }
 
     //! file mode
-    virtual const QFileDialog::FileMode& _fileMode( void ) const
+    virtual QFileDialog::FileMode _fileMode( void ) const
     { return fileMode_; }
 
     protected slots:
