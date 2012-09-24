@@ -120,7 +120,7 @@ namespace SERVER
     signals:
 
     //! emitted when a message is available
-    virtual void commandAvailable( SERVER::ServerCommand );
+    void commandAvailable( SERVER::ServerCommand );
 
     protected:
 
