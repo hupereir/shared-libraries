@@ -40,7 +40,7 @@ class ScratchFileMonitor: public QObject, public Counter
 
     //! constructor
     ScratchFileMonitor( QObject* parent = 0 ):
-        QObject( 0 ),
+        QObject( parent ),
         Counter( "ScratchFileMonitor" )
     {}
 

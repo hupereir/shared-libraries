@@ -179,7 +179,7 @@ class TabbedDialog: public BaseDialog, public Counter
         }
 
         //! number of columns for a given index
-        virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+        virtual int columnCount(const QModelIndex& = QModelIndex()) const
         { return nColumns; }
 
         //@}
@@ -187,7 +187,7 @@ class TabbedDialog: public BaseDialog, public Counter
         protected:
 
         //! sort
-        virtual void _sort( int, Qt::SortOrder order = Qt::AscendingOrder )
+        virtual void _sort( int, Qt::SortOrder = Qt::AscendingOrder )
         {}
 
         //! list column names

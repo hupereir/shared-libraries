@@ -101,19 +101,19 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
     //@{
 
     //! flags
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    virtual Qt::ItemFlags flags( const QModelIndex& ) const;
 
     // return data for a given index
-    virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QVariant data( const QModelIndex&, int ) const;
 
     // modify data
-    virtual bool setData(const QModelIndex &index, const QVariant& value, int role = Qt::EditRole );
+    virtual bool setData( const QModelIndex&, const QVariant&, int = Qt::EditRole );
 
     //! header data
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    virtual QVariant headerData( int, Qt::Orientation, int role = Qt::DisplayRole ) const;
 
     //! number of columns for a given index
-    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+    virtual int columnCount( const QModelIndex& = QModelIndex() ) const
     { return nColumns; }
 
     //@}
