@@ -1,0 +1,68 @@
+PROJECT( BASE_HELP )
+CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
+
+set(BASE_HELP_VERSION_MAJOR 1)
+set(BASE_HELP_VERSION_MINOR 0)
+set(BASE_HELP_VERSION_PATCH 0)
+set(BASE_HELP_VERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR}.${BASE_HELP_VERSION_PATCH} )
+set(BASE_HELP_SOVERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR} )
+
+########### Qt4 configuration #########
+FIND_PACKAGE( Qt4 REQUIRED )
+
+INCLUDE( ${QT_USE_FILE} )
+ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+
+########### includes ###############
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
+
+########### links #########
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+
+########### next target ###############
+SET( base_help_SOURCES
+  HelpDialog.cpp
+  HelpItem.cpp
+  HelpManager.cpp
+  HelpModel.cpp
+  NewItemDialog.cpp
+  )
+
+SET( base_help_HEADERS
+  HelpDialog.h
+  HelpManager.h
+  HelpModel.h
+  )
+
+QT4_WRAP_CPP( base_help_HEADERS_MOC ${base_help_HEADERS} )
+
+IF( ENABLE_SHARED )
+
+  ADD_LIBRARY( base-help SHARED
+    ${base_help_SOURCES}
+    ${base_help_HEADERS_MOC}
+  )
+
+  SET_TARGET_PROPERTIES( base-help PROPERTIES VERSION ${BASE_HELP_VERSION} SOVERSION ${BASE_HELP_SOVERSION} )
+  TARGET_LINK_LIBRARIES( base-help ${QT_LIBRARIES} base base-qt )
+  INSTALL( TARGETS base-help DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+
+ELSE()
+
+  ADD_LIBRARY( base-help STATIC
+    ${base_help_SOURCES}
+    ${base_help_HEADERS_MOC}
+  )
+  TARGET_LINK_LIBRARIES( base-help ${QT_LIBRARIES} base base-qt )
+
+ENDIF()
+
+########### next target ###############
+ADD_CUSTOM_COMMAND( OUTPUT "testexternals.cpp" COMMAND echo \"int main() {} \" > testexternals.cpp )
+SET( testexternals_SOURCES testexternals.cpp )
+
+ADD_EXECUTABLE( testexternals-base-help ${testexternals_SOURCES} )
+TARGET_LINK_LIBRARIES( testexternals-base-help ${QT_LIBRARIES} base-help )
