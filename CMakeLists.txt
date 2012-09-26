@@ -13,11 +13,16 @@ SET( QT_USE_QTXML TRUE )
 SET( QT_USE_QTDBUS TRUE )
 
 INCLUDE( ${QT_USE_FILE} )
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 ADD_DEFINITIONS( ${QT_DEFINITIONS} )
 
+########### includes ###############
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
+
+########### links #########
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
 
 ########### next target ###############
 SET( base_server_SOURCES
@@ -39,14 +44,27 @@ SET( base_server_HEADERS
 
 QT4_WRAP_CPP( base_server_HEADERS_MOC ${base_server_HEADERS} )
 
-ADD_LIBRARY( base-server SHARED
-  ${base_server_SOURCES}
-  ${base_server_HEADERS_MOC}
-)
+IF( ENABLE_SHARED )
 
-SET_TARGET_PROPERTIES( base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION} )
-TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
-INSTALL( TARGETS base-server DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  ADD_LIBRARY( base-server SHARED
+    ${base_server_SOURCES}
+    ${base_server_HEADERS_MOC}
+  )
+
+  SET_TARGET_PROPERTIES( base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION} )
+  TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
+  INSTALL( TARGETS base-server DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+
+ELSE()
+
+  ADD_LIBRARY( base-server STATIC
+    ${base_server_SOURCES}
+    ${base_server_HEADERS_MOC}
+  )
+  TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
+
+ENDIF()
+
 
 ########### next target ###############
 ADD_CUSTOM_COMMAND( OUTPUT "testexternals.cpp" COMMAND echo \"int main() {} \" > testexternals.cpp )
