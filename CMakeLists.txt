@@ -18,6 +18,10 @@ ADD_DEFINITIONS( ${QT_DEFINITIONS} )
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
 
+########### links #########
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+
 ########### next target ###############
 SET( base_qt_SOURCES
   AnimatedLabel.cpp
@@ -217,15 +221,28 @@ SET( base_qt_RESOURCES basePixmaps.qrc)
 QT4_WRAP_CPP( base_qt_HEADERS_MOC ${base_qt_HEADERS} )
 QT4_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
 
-ADD_LIBRARY( base-qt SHARED
-  ${base_qt_SOURCES}
-  ${base_qt_HEADERS_MOC}
-  ${base_qt_RESOURCES_RCC}
-)
+IF( ENABLE_SHARED )
 
-SET_TARGET_PROPERTIES( base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION} )
-TARGET_LINK_LIBRARIES( base-qt ${QT_LIBRARIES} base )
-INSTALL( TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  ADD_LIBRARY( base-qt SHARED
+    ${base_qt_SOURCES}
+    ${base_qt_HEADERS_MOC}
+    ${base_qt_RESOURCES_RCC}
+  )
+
+  SET_TARGET_PROPERTIES( base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION} )
+  TARGET_LINK_LIBRARIES( base-qt ${QT_LIBRARIES} base )
+  INSTALL( TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+
+ELSE()
+
+  ADD_LIBRARY( base-qt STATIC
+    ${base_qt_SOURCES}
+    ${base_qt_HEADERS_MOC}
+    ${base_qt_RESOURCES_RCC}
+  )
+  TARGET_LINK_LIBRARIES( base-qt ${QT_LIBRARIES} base )
+
+ENDIF()
 
 ########### next target ###############
 ADD_CUSTOM_COMMAND( OUTPUT "testexternals.cpp" COMMAND echo \"int main() {} \" > testexternals.cpp )
