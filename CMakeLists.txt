@@ -1,0 +1,74 @@
+PROJECT( BASE_SVG )
+CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
+
+set(BASE_SVG_VERSION_MAJOR 1)
+set(BASE_SVG_VERSION_MINOR 0)
+set(BASE_SVG_VERSION_PATCH 0)
+set(BASE_SVG_VERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR}.${BASE_SVG_VERSION_PATCH} )
+set(BASE_SVG_SOVERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR} )
+
+########### Qt4 configuration #########
+FIND_PACKAGE( Qt4 REQUIRED )
+SET( QT_USE_QTSVG TRUE )
+
+INCLUDE( ${QT_USE_FILE} )
+ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+
+########### links #########
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+
+########### includes ###############
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
+
+########### next target ###############
+SET( base_svg_SOURCES
+  SvgConfiguration.cpp
+  SvgEngine.cpp
+  SvgPlasmaInterface.cpp
+  SvgRenderer.cpp
+  SvgThread.cpp
+)
+
+SET( base_svg_HEADERS
+  SvgEngine.h
+  SvgPlasmaInterface.h
+)
+
+SET( base_svg_RESOURCES baseSvg.qrc)
+
+QT4_WRAP_CPP( base_svg_HEADERS_MOC ${base_svg_HEADERS} )
+QT4_ADD_RESOURCES( base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
+
+IF( ENABLE_SHARED )
+
+  ADD_LIBRARY( base-svg SHARED
+    ${base_svg_SOURCES}
+    ${base_svg_HEADERS_MOC}
+    ${base_svg_RESOURCES_RCC}
+  )
+
+  SET_TARGET_PROPERTIES( base-svg PROPERTIES VERSION ${BASE_SVG_VERSION} SOVERSION ${BASE_SVG_SOVERSION} )
+  TARGET_LINK_LIBRARIES( base-svg ${QT_LIBRARIES} base-qt)
+  INSTALL( TARGETS base-svg DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+
+ELSE()
+
+  ADD_LIBRARY( base-svg STATIC
+    ${base_svg_SOURCES}
+    ${base_svg_HEADERS_MOC}
+    ${base_svg_RESOURCES_RCC}
+  )
+
+  TARGET_LINK_LIBRARIES( base-svg ${QT_LIBRARIES} base-qt)
+
+ENDIF()
+
+########### next target ###############
+ADD_CUSTOM_COMMAND( OUTPUT "testexternals.cpp" COMMAND echo \"int main() {} \" > testexternals.cpp )
+SET( testexternals_SOURCES testexternals.cpp )
+
+ADD_EXECUTABLE( testexternals-base-svg ${testexternals_SOURCES} )
+TARGET_LINK_LIBRARIES( testexternals-base-svg ${QT_LIBRARIES} base-svg )
