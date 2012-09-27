@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file LineEditor.cpp
-\brief customized QLineEdit object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "LineEditor.h"
 #include "BaseIcons.h"
 #include "Debug.h"
@@ -176,7 +168,6 @@ void LineEditor::setFrame( const bool& value )
 //_____________________________________________________________________
 void LineEditor::lowerCase( void )
 {
-    Debug::Throw( "LineEditor::lowerCase.\n" );
 
     // do nothing if object is read only
     if( isReadOnly() ) return;
@@ -193,7 +184,6 @@ void LineEditor::lowerCase( void )
 //_____________________________________________________________________
 void LineEditor::upperCase( void )
 {
-    Debug::Throw( "LineEditor::upperCase.\n" );
 
     // do nothing if object is read only
     if( isReadOnly() ) return;
@@ -437,12 +427,12 @@ void LineEditor::_installActions( void )
 
     addAction( upperCaseAction_ = new QAction( "Upper Case", this ) );
     upperCaseAction_->setShortcut( Qt::CTRL+Qt::Key_U );
-    upperCaseAction_->setShortcutContext( Qt::WidgetShortcut );
+    // upperCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( upperCaseAction_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
     addAction( lowerCaseAction_ = new QAction( "Lower Case", this ) );
     lowerCaseAction_->setShortcut( Qt::SHIFT+Qt::CTRL+Qt::Key_U );
-    lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
+    // lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( lowerCaseAction_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
     // update actions that depend on the presence of a selection
