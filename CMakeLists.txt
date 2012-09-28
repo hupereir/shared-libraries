@@ -24,7 +24,9 @@ ADD_SUBDIRECTORY( base-server )
 ADD_SUBDIRECTORY( base-help )
 
 IF( ASPELL_FOUND )
+
   ADD_SUBDIRECTORY( base-spellcheck )
+
 ENDIF()
 
 ADD_SUBDIRECTORY( base-transparency )
