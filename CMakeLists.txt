@@ -65,10 +65,3 @@ ELSE()
   TARGET_LINK_LIBRARIES( base-svg ${QT_LIBRARIES} base-qt)
 
 ENDIF()
-
-########### next target ###############
-ADD_CUSTOM_COMMAND( OUTPUT "testexternals.cpp" COMMAND echo \"int main() {} \" > testexternals.cpp )
-SET( testexternals_SOURCES testexternals.cpp )
-
-ADD_EXECUTABLE( testexternals-base-svg ${testexternals_SOURCES} )
-TARGET_LINK_LIBRARIES( testexternals-base-svg ${QT_LIBRARIES} base-svg )
