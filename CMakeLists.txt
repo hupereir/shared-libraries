@@ -64,11 +64,3 @@ ELSE()
   TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
 
 ENDIF()
-
-
-########### next target ###############
-ADD_CUSTOM_COMMAND( OUTPUT "testexternals.cpp" COMMAND echo \"int main() {} \" > testexternals.cpp )
-SET( testexternals_SOURCES testexternals.cpp )
-
-ADD_EXECUTABLE( testexternals-base-server ${testexternals_SOURCES} )
-TARGET_LINK_LIBRARIES( testexternals-base-server ${QT_LIBRARIES} base-server )
