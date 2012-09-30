@@ -224,7 +224,7 @@ namespace SPELLCHECK
 
         //! set of available filters
         /*! loaded in constructor */
-        FilterSet filters_;
+        static FilterSet filters_;
 
         //! ignored words
         QSet<QString> ignoredWords_;

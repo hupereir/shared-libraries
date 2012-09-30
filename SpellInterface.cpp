@@ -37,6 +37,8 @@
 namespace SPELLCHECK
 {
 
+    SpellInterface::FilterSet SpellInterface::filters_;
+
     //_______________________________________________
     const QString SpellInterface::NO_FILTER = "none";
 
@@ -357,11 +359,11 @@ namespace SPELLCHECK
     //____________________________________________________
     void SpellInterface::_loadFilters( void )
     {
-        Debug::Throw( "SpellInterface::_loadFilters.\n" );
+        if( !filters_.isEmpty() ) return;
 
-        filters_.clear();
+        Debug::Throw() << "SpellInterface::_loadFilters- this: " << this << endl;
+
         filters_.insert( NO_FILTER );
-
         QString command( XmlOptions::get().raw("ASPELL") + " dump modes" );
         FILE *tmp = popen( command.toAscii().constData(), "r" );
         static const int linesize( 128 );
