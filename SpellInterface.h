@@ -99,6 +99,10 @@ namespace SPELLCHECK
         /*! returns false in case of error */
         bool setFilter( const QString& filter );
 
+        //! clear filters
+        void clearFilters( void )
+        { filters_.clear(); }
+
         //@}
 
         //!@name ignored words
