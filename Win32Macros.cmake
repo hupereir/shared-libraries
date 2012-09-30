@@ -1,0 +1,27 @@
+MACRO( ADD_WIN32_EXECUTABLE target version )
+
+  MESSAGE( "ADD_WIN32_EXECUTABLE - Target: ${target}" )
+  MESSAGE( "ADD_WIN32_EXECUTABLE - Version: ${version}" )
+  ADD_EXECUTABLE( ${target} WIN32 ${ARGN} ${target}_win32.rc )
+
+  ### Compress target
+  FIND_PROGRAM( UPX upx )
+  IF( UPX )
+
+    GET_TARGET_PROPERTY( TARGET_PATH ${target} LOCATION )
+    ADD_CUSTOM_COMMAND( TARGET qedit POST_BUILD COMMAND upx ${TARGET_PATH} )
+
+  ENDIF()
+
+  ### copy to version release
+  SET( TARGET_RELEASE ${target}-${version} )
+  ADD_CUSTOM_COMMAND(
+    TARGET ${target} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${TARGET_PATH} ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
+  )
+
+  INSTALL(
+    PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/release )
+
+ENDMACRO( ADD_WIN32_EXECUTABLE )
