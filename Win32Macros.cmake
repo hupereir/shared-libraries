@@ -1,15 +1,14 @@
 MACRO( ADD_WIN32_EXECUTABLE target version )
 
-  MESSAGE( "ADD_WIN32_EXECUTABLE - Target: ${target}" )
-  MESSAGE( "ADD_WIN32_EXECUTABLE - Version: ${version}" )
-  ADD_EXECUTABLE( ${target} WIN32 ${ARGN} ${target}_win32.rc )
+  ### executable
+  ADD_EXECUTABLE( ${target} WIN32 ${ARGN} ${target}_win32.rc )  
+  GET_TARGET_PROPERTY( TARGET_PATH ${target} LOCATION )
 
   ### Compress target
   FIND_PROGRAM( UPX upx )
   IF( UPX )
 
-    GET_TARGET_PROPERTY( TARGET_PATH ${target} LOCATION )
-    ADD_CUSTOM_COMMAND( TARGET qedit POST_BUILD COMMAND upx ${TARGET_PATH} )
+    ADD_CUSTOM_COMMAND( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
 
   ENDIF()
 
