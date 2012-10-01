@@ -1,26 +1,29 @@
 MACRO( ADD_WIN32_EXECUTABLE target version )
 
-  ### executable
-  ADD_EXECUTABLE( ${target} WIN32 ${ARGN} ${target}_win32.rc )  
-  GET_TARGET_PROPERTY( TARGET_PATH ${target} LOCATION )
+	### executable
+	ADD_EXECUTABLE( ${target} WIN32 ${ARGN} ${target}_win32.rc )
+	GET_TARGET_PROPERTY( TARGET_PATH ${target} LOCATION )
 
-  ### Compress target
-  FIND_PROGRAM( UPX upx )
-  IF( UPX )
+	### Compress target
+	FIND_PROGRAM( UPX upx )
+	IF( UPX )
 
-    ADD_CUSTOM_COMMAND( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
+		ADD_CUSTOM_COMMAND( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
 
-  ENDIF()
+	ENDIF()
 
-  ### copy to version release
-  SET( TARGET_RELEASE ${target}-${version} )
-  ADD_CUSTOM_COMMAND(
-    TARGET ${target} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${TARGET_PATH} ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
-  )
+	### copy to version release
+	IF( RELEASE )
 
-  INSTALL(
-    PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/release )
+	  SET( TARGET_RELEASE ${target}-${version} )
+	  ADD_CUSTOM_COMMAND(
+	    TARGET ${target} POST_BUILD
+	    COMMAND ${CMAKE_COMMAND} -E copy ${TARGET_PATH} ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
+	  )
+
+	  INSTALL(
+	    PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
+	    DESTINATION ${CMAKE_INSTALL_PREFIX}/release )
+	ENDIF()
 
 ENDMACRO( ADD_WIN32_EXECUTABLE )
