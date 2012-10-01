@@ -71,13 +71,13 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     //! information mask
     enum Type
     {
-        NONE = 0,
-        SIZE = 1<<0,
-        MODIFIED = 1<<1,
-        USER = 1<<2,
-        GROUP = 1<<3,
-        PERMISSIONS = 1<<4,
-        ALL = SIZE|MODIFIED|USER|GROUP|PERMISSIONS
+        None = 0,
+        Size = 1<<0,
+        Modified = 1<<1,
+        User = 1<<2,
+        Group = 1<<3,
+        Permissions = 1<<4,
+        Default = Size|Modified
     };
 
     //! mask

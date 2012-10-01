@@ -33,6 +33,7 @@ SET( base_qt_SOURCES
   AnimatedTextEditor.cpp
   AnimatedTreeView.cpp
   BaseFileInfo.cpp
+  BaseFileInfoConfigurationWidget.cpp
   BaseFileInfoToolTipWidget.cpp
   BaseFindDialog.cpp
   BaseMainWindow.cpp

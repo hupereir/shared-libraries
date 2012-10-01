@@ -17,6 +17,7 @@ AnimatedTreeView.h \
 BaseConfigurationDialog.h \
 BaseDialog.h \
 BaseFileInfo.h \
+BaseFileInfoConfigurationWidget.h \
 BaseFileInfoModel.h \
 BaseFileInfoToolTipWidget.h \
 BaseFindDialog.h \
@@ -162,6 +163,7 @@ AnimatedTreeView.cpp \
 BaseConfigurationDialog.cpp \
 BaseDialog.cpp \
 BaseFileInfo.cpp \
+BaseFileInfoConfigurationWidget.cpp \
 BaseFileInfoToolTipWidget.cpp \
 BaseFindDialog.cpp \
 BaseMainWindow.cpp \

@@ -92,7 +92,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     Counter( "BaseFileInfoToolTipWidget" ),
     enabled_( false ),
     pixmapSize_( 96 ),
-    mask_( SIZE|MODIFIED )
+    mask_( Default )
 {
 
     Debug::Throw( "BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n" );
@@ -198,7 +198,7 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         typeItem_->setText( fileInfo.typeString() );
 
         // size
-        if( (mask_&SIZE) && fileInfo.size() > 0 && !( fileInfo.type() & (BaseFileInfo::Folder|BaseFileInfo::Link|BaseFileInfo::Navigator) ) )
+        if( (mask_&Size) && fileInfo.size() > 0 && !( fileInfo.type() & (BaseFileInfo::Folder|BaseFileInfo::Link|BaseFileInfo::Navigator) ) )
         {
 
             sizeItem_->setText( File::sizeString( fileInfo.size() ) );
@@ -206,7 +206,7 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         } else sizeItem_->hide();
 
         // last modified
-        if( (mask_&MODIFIED) && TimeStamp( fileInfo.lastModified() ).isValid() )
+        if( (mask_&Modified) && TimeStamp( fileInfo.lastModified() ).isValid() )
         {
 
             lastModifiedItem_->setText( TimeStamp( fileInfo.lastModified() ).toString() );
@@ -214,16 +214,16 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         } else lastModifiedItem_->hide();
 
         // user
-        if( (mask_&USER) && !fileInfo.user().isEmpty() ) userItem_->setText( fileInfo.user() );
+        if( (mask_&User) && !fileInfo.user().isEmpty() ) userItem_->setText( fileInfo.user() );
         else userItem_->hide();
 
         // group
-        if( (mask_&GROUP) && !fileInfo.group().isEmpty() ) groupItem_->setText( fileInfo.group() );
+        if( (mask_&Group) && !fileInfo.group().isEmpty() ) groupItem_->setText( fileInfo.group() );
         else groupItem_->hide();
 
         // permissions
         const QString permissions( fileInfo.permissionsString() );
-        if( (mask_&PERMISSIONS) && !permissions.isEmpty() ) permissionsItem_->setText( permissions );
+        if( (mask_&Permissions) && !permissions.isEmpty() ) permissionsItem_->setText( permissions );
         else permissionsItem_->hide();
 
     } else {
