@@ -1,3 +1,4 @@
+# $Id$
 MACRO( ADD_WIN32_EXECUTABLE target version )
 
 	### executable
