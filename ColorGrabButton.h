@@ -23,18 +23,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColorGrabButton.h
-\brief used to pick color from screen
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QMouseEvent>
-#include <QToolButton>
-
 #include "Counter.h"
+
+#include <QtCore/QEvent>
+#include <QtGui/QToolButton>
+#include <QtGui/QDialog>
 
 //! used to pick color from screen
 class ColorGrabButton : public QToolButton, public Counter
@@ -42,10 +35,10 @@ class ColorGrabButton : public QToolButton, public Counter
 
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constructor
-        ColorGrabButton( QWidget* );
+    //! constructor
+    ColorGrabButton( QWidget* );
 
     //! destructor
     virtual ~ColorGrabButton( void )
@@ -61,14 +54,17 @@ class ColorGrabButton : public QToolButton, public Counter
 
     protected:
 
-    //! mouse press event [overloaded]
-    virtual void mousePressEvent( QMouseEvent* );
+    //! event filter
+    virtual bool eventFilter( QObject*, QEvent* );
 
-    //! mouse release event [overloaded]
-    virtual void mouseReleaseEvent( QMouseEvent* );
+        //! mouse press event
+    virtual void filterMouseButtonPressEvent( QMouseEvent* );
 
-    //! mouse move event [overloaded]
-    virtual void mouseMoveEvent( QMouseEvent* );
+    //! mouse release event
+    virtual void filterMouseButtonReleaseEvent( QMouseEvent* );
+
+    //! mouse move event
+    virtual void filterMouseMoveEvent( QMouseEvent* );
 
     private:
 
@@ -79,6 +75,9 @@ class ColorGrabButton : public QToolButton, public Counter
 
     //! is true when the mouse is down
     bool mouseDown_;
+
+    //! invisible dialog used to grab mouse
+    QDialog* grabber_;
 
 };
 
