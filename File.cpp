@@ -30,6 +30,10 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
+#if defined(Q_WS_WIN)
+#include <windows.h>
+#endif
+
 #include <algorithm>
 #include <cmath>
 
@@ -187,6 +191,14 @@ bool File::isLink( void ) const
 //_____________________________________________________________________
 bool File::isHidden( void ) const
 { return !isEmpty() && QFileInfo( *this ).isHidden(); }
+
+//_____________________________________________________________________
+void File::setHidden( void ) const
+{
+    #if defined(Q_WS_WIN)
+    if( !isEmpty() ) SetFileAttributes( toAscii(), FILE_ATTRIBUTE_HIDDEN );
+    #endif
+}
 
 //_____________________________________________________________________
 File File::version( void ) const
