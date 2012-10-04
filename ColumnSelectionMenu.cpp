@@ -56,10 +56,11 @@ void ColumnSelectionMenu::_updateActions( void )
     QAction *firstAction( actions.isEmpty() ? 0:actions.front() );
 
     // retrieve parent header.
-    QHeaderView* header( _target().header() );
+    QHeaderView* header( target_->header() );
     assert( header );
 
-    TreeView* treeView( qobject_cast<TreeView*>( &_target() ) );
+    // try cast to treeview
+    TreeView* treeView( qobject_cast<TreeView*>( target_ ) );
 
     // loop over columns in header
     unsigned int visibleColumns(0);
@@ -77,12 +78,16 @@ void ColumnSelectionMenu::_updateActions( void )
 
         QAction* action = new QAction( column_name, this );
         action->setCheckable( true );
-        action->setChecked( !_target().isColumnHidden( index ) );
+        action->setChecked( !target_->isColumnHidden( index ) );
 
+        // disable/hide action for locked columns
         if( treeView && treeView->isColumnVisibilityLocked( index ) )
-        { action->setEnabled( false ); }
+        {
+            if( action->isChecked() ) action->setEnabled( false );
+            else action->setVisible( false );
+        }
 
-        if( !_target().isColumnHidden( index ) ) visibleColumns++;
+        if( !target_->isColumnHidden( index ) ) visibleColumns++;
 
         insertAction( firstAction, action );
         actions_.insert( action, index );
@@ -108,9 +113,9 @@ void ColumnSelectionMenu::_updateSelectedColumns( QAction* action )
     if( iter == actions_.end() ) return;
 
     // set column visibility
-    _target().setColumnHidden( iter.value(), !iter.key()->isChecked() );
+    target_->setColumnHidden( iter.value(), !iter.key()->isChecked() );
 
-    if( TreeView* treeView = qobject_cast<TreeView*>( &_target() ) )
+    if( TreeView* treeView = qobject_cast<TreeView*>( target_ ) )
     { treeView->saveMask(); }
 
 }

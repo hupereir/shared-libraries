@@ -56,13 +56,6 @@ class ColumnSelectionMenu:public QMenu, public Counter
     private:
 
     //! target
-    QTreeView& _target( void )
-    {
-        assert( target_ );
-        return *target_;
-    }
-
-    //! target
     QTreeView* target_;
 
     //! map action to column index

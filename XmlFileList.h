@@ -24,18 +24,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file XmlFileList.h
-\brief Xml interface to FileList
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QString>
-#include <qdom.h>
-
 #include "FileList.h"
+#include "File.h"
+
+#include <QtCore/QString>
 
 //! Xml interface to FileList
 class XmlFileList: public FileList
@@ -44,10 +36,10 @@ class XmlFileList: public FileList
     //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! constuctor
-        XmlFileList( QObject* parent = 0 );
+    //! constuctor
+    XmlFileList( QObject* parent = 0 );
 
     //! destructor
     virtual ~XmlFileList( void )
@@ -62,7 +54,7 @@ class XmlFileList: public FileList
     virtual bool _write( void );
 
     //! set db file
-    virtual bool _setDBFile( const QString& file );
+    virtual bool _setDBFile( const File& );
 
     private slots:
 
@@ -78,7 +70,7 @@ class XmlFileList: public FileList
     bool _deprecatedRead( void );
 
     //! file from/to wich the files are saved
-    QString dbFile_;
+    File dbFile_;
 
 };
 #endif

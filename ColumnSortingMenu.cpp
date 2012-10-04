@@ -21,19 +21,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColumnSortingMenu.h
-\brief handels column visibility in TreeViews
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
-#include <QHeaderView>
-
-#include "Debug.h"
 #include "ColumnSortingMenu.h"
+#include "Debug.h"
+#include "TreeView.h"
+
+#include <QtGui/QHeaderView>
 
 //_____________________________________________________
 ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const QString& title ):
@@ -87,31 +79,41 @@ void ColumnSortingMenu::_updateActions( void )
 
     // check if the menu already has actions.
     QList<QAction*> actions( ColumnSortingMenu::actions() );
-    QAction *first_action( actions.isEmpty() ? 0:actions.front() );
+    QAction *firstAction( actions.isEmpty() ? 0:actions.front() );
 
     // retrieve parent header.
     if( target_ ) header_ = target_->header();
     assert( header_ );
     assert( header_->isSortIndicatorShown() );
 
+    // try cast to treeview
+    TreeView* treeView( qobject_cast<TreeView*>( header_->parentWidget() ) );
+
     // loop over columns in header
     for( int index=0; index < header_->count(); index++ )
     {
 
         // retrieve column name
-        QString column_name( header_->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
-        if( column_name.isNull() || column_name.isEmpty() )
+        QString columnName( header_->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
+        if( columnName.isNull() || columnName.isEmpty() )
         {
             QString buffer;
             QTextStream( &buffer ) << "column " << index+1;
-            column_name = buffer;
+            columnName = buffer;
         }
 
-        QAction* action = new QAction( column_name, this );
+        QAction* action = new QAction( columnName, this );
         action->setCheckable( true );
         action->setChecked( index == header_->sortIndicatorSection() );
 
-        insertAction( first_action, action );
+        // disable/hide action for locked columns
+        if( treeView && treeView->isColumnVisibilityLocked( index ) )
+        {
+            if( treeView->isColumnHidden( index ) && !action->isChecked() )
+            { action->setVisible( false ); }
+        }
+
+        insertAction( firstAction, action );
         group_->addAction( action );
         actions_.insert( action, index );
 

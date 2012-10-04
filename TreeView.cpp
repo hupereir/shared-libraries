@@ -231,6 +231,9 @@ void TreeView::setMask( const unsigned int& mask )
     for( int index=0; index < model()->columnCount(); index++ )
     {
 
+        // check mask
+        if( lockedColumns_ & (1<<index ) ) continue;
+
         // see if there is a change between new and old mask
         if( isColumnHidden( index ) == !(mask & (1<<index) ) ) continue;
         setColumnHidden( index, !(mask & (1<<index) ) );

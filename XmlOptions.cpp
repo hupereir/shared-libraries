@@ -21,38 +21,30 @@
 *
 *******************************************************************************/
 
+#include "XmlOptions.h"
 
-/*!
-\file XmlOptions.cpp
-\brief Option file parser based on xml
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
-#include "File.h"
 #include "Options.h"
 #include "XmlError.h"
 #include "XmlOption.h"
-#include "XmlOptions.h"
 
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 #include <QtCore/QFile>
 
 //____________________________________________________________________
-QString& XmlOptions::file( void )
-{
-    static QString file;
-    return file;
-}
+File XmlOptions::file_;
+XmlError XmlOptions::error_;
 
 //____________________________________________________________________
-XmlError& XmlOptions::error( void )
+void XmlOptions::setFile( const File& file )
 {
-    static XmlError error;
-    return error;
+    if( file_ == file ) return;
+    file_ = file;
+
+    // make sure file is hidden (windows only)
+    if( file_.localName().startsWith( '.' ) )
+    { file_.setHidden(); }
+
 }
 
 //____________________________________________________________________
@@ -63,7 +55,7 @@ Options& XmlOptions::get( void )
 }
 
 //____________________________________________________________________
-bool XmlOptions::read( QString file )
+bool XmlOptions::read( File file )
 {
 
     Debug::Throw() << "XmlOptions::read - file=\"" << file << "\"\n";
@@ -73,7 +65,7 @@ bool XmlOptions::read( QString file )
     if( file.isEmpty() ) return false;
 
     // store requested file
-    XmlOptions::file() = file;
+    setFile( file );
 
     // parse the file
     QFile qtfile( file );
@@ -85,9 +77,10 @@ bool XmlOptions::read( QString file )
 
     // dom document
     QDomDocument document;
-    error() = XmlError( file );
-    if ( !document.setContent( &qtfile, &error().error(), &error().line(), &error().column() ) )
+    XmlError error( file );
+    if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
     {
+        setError( error );
         qtfile.close();
         return false;
     }
@@ -133,7 +126,7 @@ bool XmlOptions::read( QString file )
 }
 
 //________________________________________________
-bool XmlOptions::write( QString file )
+bool XmlOptions::write( File file )
 {
 
     Debug::Throw() << "XmlOptions::write - " << file << endl;

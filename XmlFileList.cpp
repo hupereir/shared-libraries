@@ -21,25 +21,16 @@
 *
 *******************************************************************************/
 
-/*!
-\file XmlFileList.cpp
-\brief Xml interface to FileList
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QApplication>
-#include <QFile>
+#include "XmlFileList.h"
 
 #include "Debug.h"
 #include "Singleton.h"
-#include "XmlFileList.h"
 #include "XmlFileRecord.h"
 #include "XmlOptions.h"
 #include "XmlError.h"
 
-
+#include <QtGui/QApplication>
+#include <QtCore/QFile>
 
 //_______________________________________________
 XmlFileList::XmlFileList( QObject* parent ):
@@ -54,7 +45,7 @@ XmlFileList::XmlFileList( QObject* parent ):
 }
 
 //_______________________________________________
-bool XmlFileList::_setDBFile( const QString& file )
+bool XmlFileList::_setDBFile( const File& file )
 {
     Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
 
@@ -63,6 +54,11 @@ bool XmlFileList::_setDBFile( const QString& file )
 
     // store file and read
     dbFile_ = file;
+
+    // make sure file is hidden (windows only)
+    if( dbFile_.localName().startsWith( '.' ) )
+    { dbFile_.setHidden(); }
+
     _read();
 
     return true;
@@ -165,7 +161,7 @@ void XmlFileList::_updateConfiguration( void )
     Debug::Throw( "XmlFileList::_updateConfiguration.\n" );
 
     // DB file
-    _setDBFile( XmlOptions::get().raw("DB_FILE") );
+    _setDBFile( File( XmlOptions::get().raw("DB_FILE") ) );
     _setMaxSize( XmlOptions::get().get<int>( "DB_SIZE" ) );
     return;
 

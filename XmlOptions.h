@@ -24,18 +24,9 @@
 *
 *******************************************************************************/
 
-
-/*!
-\file XmlOptions.h
-\brief Option file parser based on xml
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
+#include "File.h"
 #include "Options.h"
-
-class XmlError;
+#include "XmlError.h"
 
 //! Option file parser based on xml
 class XmlOptions
@@ -47,16 +38,45 @@ class XmlOptions
     static Options& get( void );
 
     //! read from file
-    static bool read( QString file = QString() );
+    static bool read( const QByteArray& array )
+    { return read( File( array ) ); }
+
+    //! read from file
+    static bool read( File = File() );
 
     //! write options to file
-    static bool write( QString file = QString() );
+    static bool write( File = File() );
+
+    //!@name accessors
+    //@{
 
     //! file
-    static QString& file();
+    static const File& file()
+    { return file_; }
 
-    //! xml error
-    static XmlError& error();
+    //! error
+    static const XmlError& error()
+    { return error_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! file
+    static void setFile( const File& );
+
+    //! error
+    static void setError( const XmlError& error )
+    { error_ = error; }
+
+    private:
+
+    //! file
+    static File file_;
+
+    //! error
+    static XmlError error_;
 
 };
 
