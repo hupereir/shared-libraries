@@ -170,19 +170,28 @@ void BaseApplication::_aboutQt( void )
 }
 
 //_______________________________________________
-void BaseApplication::_about( QString name, QString version, QString stamp )
+void BaseApplication::_about( const QString& constName, const QString& constVersion, const QString& stamp )
 {
 
     Debug::Throw( "BaseApplication::about.\n" );
 
+    // make sure name is all lower case and starts with upper case.
+    QString name( constName );
+    if( !name.isEmpty() )
+    {
+        name = name.toLower();
+        name[0] = name[0].toUpper();
+    }
+
     // modify version to remvoe qt4 for version
+    QString version( constVersion );
     if( version.indexOf( "qt4_" ) >= 0 )
     { version = version.replace( "qt4_", "" ) + " (qt4)"; }
 
     QString buffer;
     QTextStream in( &buffer, QIODevice::WriteOnly );
     if( !name.isEmpty() ) { in << "<h3>" << name << "</h3>"; }
-    if( !version.isEmpty() ) { in << "version " << version; }
+    if( !version.isEmpty() ) { in << "Version " << version; }
     if( !stamp.isEmpty() ) { in << " (" << stamp << ")"; }
 
     in

@@ -123,7 +123,7 @@ class BaseApplication: public BaseCoreApplication
     protected:
 
     //! application 'about' dialog
-    virtual void _about( QString, QString version = "", QString stamp = "" );
+    virtual void _about( const QString&, const QString& = QString(), const QString& = QString() );
 
     //! application 'about' dialog
     virtual void _about( QString name, double version, QString stamp = "" )
