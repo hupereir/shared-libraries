@@ -31,6 +31,8 @@
 class ItemModel : public QAbstractItemModel
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
@@ -60,6 +62,48 @@ class ItemModel : public QAbstractItemModel
     //! current sort order
     const Qt::SortOrder& sortOrder( void ) const
     { return sortOrder_; }
+
+    //@}
+
+    //!@name selected indexes
+    //@{
+
+    //! clear internal list selected items
+    virtual void clearSelectedIndexes( void ) = 0;
+
+    //! set selected indexes
+    virtual void setSelectedIndexes( const QModelIndexList& ) = 0;
+
+    //! store index internal selection state
+    virtual void setIndexSelected( const QModelIndex&, bool ) = 0;
+
+    //! get list of internal selected items
+    virtual QModelIndexList selectedIndexes( void ) const = 0;
+
+    //@}
+
+    //!@name expanded indexes
+    //@{
+
+    //! true if expended indexes are supported
+    virtual bool supportsExpandedIndexes( void ) const
+    { return false; }
+
+    //! clear internal list of expanded items
+    virtual void clearExpandedIndexes( void )
+    {}
+
+    //! set selected indexes
+    virtual void setExpandedIndexes( const QModelIndexList& )
+    {}
+
+    //! store index internal selection state
+    virtual void setIndexExpanded( const QModelIndex&, bool )
+    {}
+
+    //! get list of internal selected items
+    virtual QModelIndexList expandedIndexes( void ) const
+    { return QModelIndexList(); }
 
     //@}
 

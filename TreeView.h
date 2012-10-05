@@ -32,6 +32,7 @@
 
 // forward declaration
 class BaseFindDialog;
+class ItemModel;
 
 //! customized tree view
 class TreeView: public QTreeView, public Counter
@@ -48,6 +49,9 @@ class TreeView: public QTreeView, public Counter
     //! destructor
     virtual ~TreeView( void )
     {}
+
+    //! set model
+    virtual void setModel( QAbstractItemModel* );
 
     //! enable list finding
     void setFindEnabled( bool value );
@@ -207,6 +211,18 @@ class TreeView: public QTreeView, public Counter
     //! find last search forward
     virtual void findAgainBackward( void );
 
+    //! store selected indexes in model
+    void storeSelectedIndexes( void );
+
+    //! restore selected indexes from model
+    void restoreSelectedIndexes( void );
+
+    //! store expanded indexes in model
+    void storeExpandedIndexes( void );
+
+    //! restore expanded indexes from model
+    void restoreExpandedIndexes( void );
+
     protected:
 
     //! paint event
@@ -257,6 +273,9 @@ class TreeView: public QTreeView, public Counter
 
     //! find dialog
     BaseFindDialog* findDialog_;
+
+    //! model
+    ItemModel* model_;
 
     //!@name actions
     //@{

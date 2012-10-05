@@ -200,7 +200,7 @@ template<class T> class TreeModel : public ItemModel
     //@{
 
     //! clear internal list selected items
-    void clearSelectedIndexes( void )
+    virtual void clearSelectedIndexes( void )
     { selectedItems_.clear(); }
 
     //! set selected indexes
@@ -212,7 +212,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //! store index internal selection state
-    void setIndexSelected( const QModelIndex& index, bool value )
+    virtual void setIndexSelected( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
         if( value ) selectedItems_ << get( index );
@@ -220,7 +220,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //! get list of internal selected items
-    QModelIndexList selectedIndexes( void ) const
+    virtual QModelIndexList selectedIndexes( void ) const
     {
         QModelIndexList out;
         foreach( const ValueType& value, selectedItems_ )
@@ -236,8 +236,12 @@ template<class T> class TreeModel : public ItemModel
     //!@name expansion
     //@{
 
+    //! true if expended indexes are supported
+    virtual bool supportsExpandedIndexes( void ) const
+    { return true; }
+
     //! clear internal list of expanded items
-    void clearExpandedIndexes( void )
+    virtual void clearExpandedIndexes( void )
     { expandedItems_.clear(); }
 
     //! set selected indexes
@@ -249,7 +253,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //! store index internal selection state
-    void setIndexExpanded( const QModelIndex& index, bool value )
+    virtual void setIndexExpanded( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
         if( value ) expandedItems_ << get( index );
@@ -257,7 +261,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //! get list of internal selected items
-    QModelIndexList expandedIndexes( void ) const
+    virtual QModelIndexList expandedIndexes( void ) const
     {
         QModelIndexList out;
         foreach( const ValueType& value, expandedItems_ )

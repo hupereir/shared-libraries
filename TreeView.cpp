@@ -24,6 +24,7 @@
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
+#include "ItemModel.h"
 #include "ColorDisplay.h"
 #include "ColumnSelectionMenu.h"
 #include "ColumnSortingMenu.h"
@@ -42,6 +43,7 @@ TreeView::TreeView( QWidget* parent ):
     QTreeView( parent ),
     Counter( "TreeView" ),
     findDialog_( 0x0 ),
+    model_( 0x0 ),
     iconSizeFromOptions_( true ),
     vertical_( 0 ),
     horizontal_( 0 ),
@@ -69,6 +71,30 @@ TreeView::TreeView( QWidget* parent ):
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
+
+}
+
+//_______________________________________________
+void TreeView::setModel( QAbstractItemModel* model )
+{
+
+    Debug::Throw( "TreeView::setModel.\n" );
+    QTreeView::setModel( model );
+    model_ = qobject_cast<ItemModel*>( model );
+
+    // selected indexes
+    if( model_ )
+    {
+        connect( model_, SIGNAL( layoutAboutToBeChanged() ), SLOT( storeSelectedIndexes() ) );
+        connect( model_, SIGNAL( layoutChanged() ), SLOT( restoreSelectedIndexes() ) );
+    }
+
+    // expanded indexes
+    if( model_ && model_->supportsExpandedIndexes() )
+    {
+        connect( model_, SIGNAL( layoutAboutToBeChanged() ), SLOT( storeExpandedIndexes() ) );
+        connect( model_, SIGNAL( layoutChanged() ), SLOT( restoreExpandedIndexes() ) );
+    }
 
 }
 
@@ -353,6 +379,58 @@ void TreeView::findAgainForward( void )
 //______________________________________________________________________
 void TreeView::findAgainBackward( void )
 { _findBackward( TextEditor::lastSelection(), true ); }
+
+//__________________________________________________________
+void TreeView::storeSelectedIndexes( void )
+{
+    if( selectionModel() )
+    { model_->setSelectedIndexes( selectionModel()->selectedRows() ); }
+}
+
+//__________________________________________________________
+void TreeView::restoreSelectedIndexes( void )
+{
+
+    if( selectionModel() )
+    {
+        const QModelIndexList selection( model_->selectedIndexes() );
+        selectionModel()->clear();
+        foreach( const QModelIndex& index, selection )
+        { selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
+    }
+
+    return;
+}
+
+
+//__________________________________________________________
+void TreeView::storeExpandedIndexes( void )
+{
+
+    // clear
+    model_->clearExpandedIndexes();
+
+    // retrieve selected indexes in list
+    foreach( const QModelIndex& index, model_->indexes() )
+    { if( isExpanded( index ) ) model_->setIndexExpanded( index, true ); }
+
+    storeScrollBarPosition();
+
+}
+
+//________________________________________
+void TreeView::restoreExpandedIndexes( void )
+{
+
+    QModelIndexList indexes( model_->expandedIndexes() );
+
+    collapseAll();
+    foreach( const QModelIndex& index, indexes )
+    { setExpanded( index, true ); }
+
+    restoreScrollBarPosition();
+
+}
 
 //__________________________________________________________
 void TreeView::paintEvent( QPaintEvent* event )

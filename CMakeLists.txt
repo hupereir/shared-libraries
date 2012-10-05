@@ -184,6 +184,7 @@ SET( base_qt_HEADERS
   IconSizeMenu.h
   IconView.h
   ImageFileDialog.h
+  ItemModel.h
   LineEditor.h
   LineNumberDisplay.h
   LogWidget.h
