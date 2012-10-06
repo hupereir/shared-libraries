@@ -268,10 +268,8 @@ bool File::diff(const File& file ) const
 }
 
 //_____________________________________________________________________
-bool File::isEqual( const File& file ) const
-{
-    return expand() == file.expand();
-}
+bool File::isEqual( const File& other ) const
+{ return expand() == other.expand(); }
 
 //_____________________________________________________________________
 File File::readLink( void ) const
@@ -280,8 +278,6 @@ File File::readLink( void ) const
 //_____________________________________________________________________
 bool File::remove( void ) const
 {
-
-    Debug::Throw() << "File::remove - " << *this << endl;
 
     // check if file exists and remove
     // if it does not exists, do nothing and returns true (file was removed already)
@@ -431,24 +427,23 @@ File File::truncatedName( void ) const
 File::List File::listFiles( const unsigned int& flags ) const
 {
 
-    Debug::Throw() << "File::listFiles - this: " << *this << " - hidden: " << (flags&ShowHiddenFiles) << endl;
-
     List out;
-    File fullName( expand() );
-    if( !fullName.isDirectory() || (fullName.isLink() && !flags&FollowLinks ) ) return out;
-    if( !fullName.endsWith( "/" ) ) fullName += "/";
+    File fullname( expand() );
+    if( !fullname.isDirectory() || (fullname.isLink() && !flags&FollowLinks ) ) return out;
+    if( !fullname.endsWith( "/" ) ) fullname += "/";
 
     // open directory
     QDir::Filters filter = QDir::AllEntries|QDir::System|QDir::NoDotDot;
     if( flags & ShowHiddenFiles ) filter |= QDir::Hidden;
 
-    foreach( const QString& value, QDir( fullName ).entryList( filter ) )
+    const QDir dir( fullname );
+    foreach( const QString& value, dir.entryList( filter ) )
     {
 
         if( value == "." || value == ".." ) continue;
 
         QFileInfo fileInfo;
-        fileInfo.setFile( QDir( *this ), value );
+        fileInfo.setFile( dir, value );
         const File file( fileInfo.absoluteFilePath() );
         out << file;
 
@@ -475,26 +470,26 @@ File::List File::listFiles( const unsigned int& flags ) const
 File File::find( const File& file, bool caseSensitive ) const
 {
 
-    Debug::Throw() << "File::find - this: " << *this << endl;
     if( !( exists() && isDirectory() ) ) return File();
-    List files( listFiles( Recursive ) );
-    List directories;
-    foreach( const File& local, files )
+
+    // check local files
+    File local;
+    if( ( local = File( file ).addPath( *this ) ).exists() ) return local;
+
+    // get subdirectories
+    File fullname( *this );
+    if( !fullname.endsWith( "/" ) ) fullname += "/";
+    const QDir dir( fullname );
+    foreach( const QString& value, dir.entryList( QDir::NoDotDot|QDir::Dirs ) )
     {
+        if( value == "." || value == ".." ) continue;
 
-        // check if file match
-        if( local.localName().compare( file, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
-        { return local; }
-
-        // check if file is directory
-        if( local.isDirectory() ) directories << local;
-    }
-
-    // loop over directories; search recursively
-    foreach( const File& local, directories )
-    {
+        QFileInfo fileInfo;
+        fileInfo.setFile( dir, value );
+        const File local( fileInfo.absoluteFilePath() );
         File found( local.find( file, caseSensitive ) );
-        if( found.isEmpty() ) return found;
+        if( !found.isEmpty() ) return found;
+
     }
 
     return File();
