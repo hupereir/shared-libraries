@@ -22,17 +22,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file IconEngine.cpp
-\brief customized Icon factory to provide better looking disabled icons
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include "CustomPixmap.h"
-#include "PixmapEngine.h"
 #include "IconEngine.h"
+#include "XmlOptions.h"
+
+#include <QtCore/QFileInfo>
 
 //__________________________________________________________
 IconEngine& IconEngine::get( void )
@@ -52,65 +45,73 @@ bool IconEngine::reload( void )
 {
     Debug::Throw( "IconEngine::reload.\n" );
 
-    if( !PixmapEngine::get().reload() ) return false;
-    for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+    // load path from options
+    QStringList pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
+    if( pathList == pixmapPath_ ) return false;
+
+    pixmapPath_ = pathList;
+
+    for( BASE::IconCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
     { cache_[iter.key()] = _get( iter.key(), false ); }
 
     return true;
 }
 
 //__________________________________________________________
-const QIcon& IconEngine::_get( const QString& file, bool from_cache )
+const BASE::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache )
 {
     Debug::Throw( "IconEngine::_get (file).\n" );
 
     // try find file in cache
-    if( from_cache )
+    if( fromCache )
     {
-        Cache::iterator iter( cache_.find( file ) );
+        BASE::IconCache::iterator iter( cache_.find( file ) );
         if( iter != cache_.end() ) return iter.value();
     }
 
-    QIcon out( _get( PixmapEngine::get( file, from_cache ) ) );
+    BASE::IconCacheItem out;
+    if( QFileInfo( file ).isAbsolute() )
+    {
+
+        out.addPixmap( QPixmap( file ) );
+        out.addFile( file );
+
+    } else {
+
+        // make sure pixmap path is initialized
+        if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" );
+
+        // store list of loaded sizes
+        QList<QSize> sizes;
+        foreach( const QString& path, pixmapPath_ )
+        {
+
+            // skip empty path
+            if( path.isEmpty() ) continue;
+
+            // prepare filename
+            File pixmapFile;
+
+            // see if path is internal resource path
+            if( path.startsWith( ':' ) ) pixmapFile = File( file ).addPath( path );
+            else pixmapFile = File( path ).find( file );
+
+            // load pixmap
+            if( pixmapFile.isEmpty() ) continue;
+
+            QPixmap pixmap( pixmapFile );
+            if( pixmap.isNull() ) continue;
+
+            // check size
+            if( sizes.contains( pixmap.size() ) ) continue;
+            out.addPixmap( pixmap );
+            out.addFile( pixmapFile );
+            sizes << pixmap.size();
+
+        }
+
+    }
+
     return cache_.insert( file, out ).value();
-
-}
-
-//__________________________________________________________
-QIcon IconEngine::_get( const QPixmap& pixmap )
-{
-
-    Debug::Throw( "IconEngine::get (QPixmap).\n" );
-    if( pixmap.isNull() ) return QIcon( pixmap );
-
-    QIcon out( pixmap );
-
-    #if QT_VERSION < 0x040300
-    // better looking disabled icons are generated only for versions prior to qt 4.3
-    QPixmap disabled( CustomPixmap( pixmap ).disabled() );
-    out.addPixmap( disabled, QIcon::Disabled, QIcon::On );
-    out.addPixmap( disabled, QIcon::Disabled, QIcon::Off );
-    #endif
-
-    return out;
-
-}
-
-//__________________________________________________________
-QIcon IconEngine::_get( const QIcon& icon )
-{
-
-    Debug::Throw( "IconEngine::get (QIcon).\n" );
-
-    QIcon out( icon );
-
-    #if QT_VERSION < 0x040300
-    // better looking disabled icons are generated only for versions prior to qt 4.3
-    QPixmap pixmap;
-    if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::On )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::On );
-    if( !(pixmap = icon.pixmap( QIcon::Normal, QIcon::Off )).isNull() ) out.addPixmap( CustomPixmap( pixmap ).disabled(), QIcon::Disabled, QIcon::Off );
-    #endif
-
-    return out;
 
 }

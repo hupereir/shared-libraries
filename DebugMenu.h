@@ -1,3 +1,6 @@
+#ifndef _DebugMenu_h_
+#define _DebugMenu_h_
+
 // $Id$
 
 /******************************************************************************
@@ -21,76 +24,61 @@
 *
 *******************************************************************************/
 
-/*!
-  \file DebugMenu.h
-  \brief some basic runtime debuging
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#ifndef _DebugMenu_h_
-#define _DebugMenu_h_
-
-#include <QMenu>
-#include <QDialog>
-
 #include "Counter.h"
 
+#include <QtGui/QMenu>
+#include <QtGui/QDialog>
+
 class CounterDialog;
-class PixmapCacheDialog;
+class IconCacheDialog;
 
-/*!
-  \class DebugMenu
-  \brief some basic runtime debuging
-*/
-
+//! some basic runtime debuging
 class DebugMenu: public QMenu, public Counter
 {
 
-  //! Qt meta object declaration
-  Q_OBJECT
+    //! Qt meta object declaration
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! flags
-  enum Flag
-  {
-    COUNTERS = 1<<0,
-    ICONS = 1<<2,
-    SYSTEM = 1<<3,
-    OPTIONS = 1<<4,
-    DEFAULT = COUNTERS | ICONS | SYSTEM | OPTIONS
-  };
+    //! flags
+    enum Flag
+    {
+        COUNTERS = 1<<0,
+        ICONS = 1<<2,
+        SYSTEM = 1<<3,
+        OPTIONS = 1<<4,
+        DEFAULT = COUNTERS | ICONS | SYSTEM | OPTIONS
+    };
 
-  //! constructor
-  DebugMenu( QWidget* parent, unsigned int flags = DEFAULT );
+    //! constructor
+    DebugMenu( QWidget* parent, unsigned int flags = DEFAULT );
 
-  //! destructor
-  ~DebugMenu( void )
-  {}
+    //! destructor
+    ~DebugMenu( void )
+    {}
 
-  private slots:
+    private slots:
 
-  //! print object counters
-  void _showCounterDialog( void );
+    //! print object counters
+    void _showCounterDialog( void );
 
-  //! icon cache dialog
-  void _showPixmapCacheDialog( void );
+    //! icon cache dialog
+    void _showIconCacheDialog( void );
 
-  //! show system environment
-  void _showSystemEnvironment( void );
+    //! show system environment
+    void _showSystemEnvironment( void );
 
-  //! show options
-  void _showOptions( void );
+    //! show options
+    void _showOptions( void );
 
-  private:
+    private:
 
-  //! non modal Counter dialog
-  CounterDialog* counter_dialog_;
+    //! non modal Counter dialog
+    CounterDialog* counterDialog_;
 
-  //! non modal icon cache dialog
-  PixmapCacheDialog* pixmap_cache_dialog_;
+    //! non modal icon cache dialog
+    IconCacheDialog* iconCacheDialog_;
 
 };
 #endif

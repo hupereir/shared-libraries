@@ -23,7 +23,7 @@
 
 
 #include "CustomToolButton.h"
-#include "IconEngine.h"
+
 #include "IconSize.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
@@ -65,10 +65,10 @@ bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
 
         // clockwise rotations
         if( ( rotation_ == NONE && value == COUNTERCLOCKWISE ) || ( rotation_ == CLOCKWISE && value == NONE ) )
-        { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::CLOCKWISE ) ) ); }
+        { setIcon( pixmap.rotate( CustomPixmap::CLOCKWISE ) ); }
 
         if( ( rotation_ == NONE && value == CLOCKWISE ) || ( rotation_ == COUNTERCLOCKWISE && value == NONE ) )
-        { setIcon( IconEngine::get( pixmap.rotate( CustomPixmap::COUNTERCLOCKWISE ) ) ); }
+        { setIcon( pixmap.rotate( CustomPixmap::COUNTERCLOCKWISE ) ); }
 
     } else { Debug::Throw(0) << "CustomToolButton::rotate - null pixmap." << endl; }
 

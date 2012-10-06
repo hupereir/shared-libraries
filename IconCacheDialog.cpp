@@ -20,18 +20,12 @@
 *
 *
 *******************************************************************************/
-/*!
-\file PixmapCacheDialog.cpp
-\brief displays PixmapCache names and counts
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+
+#include "IconCacheDialog.h"
 
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
-#include "PixmapCacheDialog.h"
-#include "PixmapEngine.h"
+#include "IconEngine.h"
 #include "IconSize.h"
 #include "AnimatedTreeView.h"
 
@@ -39,12 +33,12 @@
 #include <QtGui/QLayout>
 
 //__________________________________________________________________________
-PixmapCacheDialog::PixmapCacheDialog( QWidget* parent ):
-CustomDialog( parent, OkButton, Qt::Window )
+IconCacheDialog::IconCacheDialog( QWidget* parent ):
+    CustomDialog( parent, OkButton, Qt::Window )
 {
 
-    Debug::Throw( "PixmapCacheDialog::PixmapCacheDialog.\n" );
-    setWindowTitle( "Pixmap Cache" );
+    Debug::Throw( "IconCacheDialog::IconCacheDialog.\n" );
+    setWindowTitle( "Icon Cache" );
     setOptionName( "ICON_CACHE_DIALOG" );
 
     layout()->setMargin(0);
@@ -57,26 +51,26 @@ CustomDialog( parent, OkButton, Qt::Window )
     list_->setIconSize( IconSize( IconSize::Large ) );
 
     QPushButton *button;
-    buttonLayout().insertWidget( 1, button = new QPushButton( PixmapEngine::get( ICONS::RELOAD ),"&Update", this ) );
+    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ),"&Update", this ) );
     connect( button, SIGNAL( clicked() ), SLOT( update() ) );
     button->setAutoDefault( false );
 
 }
 
 //__________________________________________________________________________
-void PixmapCacheDialog::update( void )
+void IconCacheDialog::update( void )
 {
 
-    Debug::Throw( "PixmapCacheDialog::update.\n" );
+    Debug::Throw( "IconCacheDialog::update.\n" );
 
     // retrieve cache
-    const PixmapEngine::Cache& cache( PixmapEngine::cache() );
-    PixmapCacheModel::List modelList;
-    for( PixmapEngine::Cache::const_iterator iter = cache.begin(); iter != cache.end(); ++iter )
-    { modelList.push_back( PixmapEngine::Pair( iter.key(), iter.value() ) ); }
+    const BASE::IconCache& cache( IconEngine::cache() );
+    IconCacheModel::List modelList;
+    for( BASE::IconCache::const_iterator iter = cache.begin(); iter != cache.end(); ++iter )
+    { modelList << BASE::IconCache::Pair( iter.key(), iter.value() ); }
 
     model_.set( modelList );
 
-    list_->resizeColumnToContents( PixmapCacheModel::Icon );
+    list_->resizeColumnToContents( IconCacheModel::Icon );
 
 }

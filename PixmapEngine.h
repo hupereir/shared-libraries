@@ -25,12 +25,9 @@
 *******************************************************************************/
 #include "Counter.h"
 #include "Debug.h"
+#include "PixmapCache.h"
 
-#include <QtGui/QPixmap>
-#include <QtCore/QMap>
 #include <QtCore/QStringList>
-
-#include <cassert>
 
 //! customized Icon factory to provide better looking disabled icons
 class PixmapEngine: public Counter
@@ -43,61 +40,15 @@ class PixmapEngine: public Counter
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    static const QPixmap& get( const QString& file, bool from_cache = true )
-    { return get()._get( file, from_cache ); }
-
-    //! map files and QPixmap
-    typedef QMap< QString, QPixmap > Cache;
-
-    //! map files and QPixmap
-    class Pair: public QPair<QString, QPixmap >, public Counter
-    {
-
-        public:
-
-        //! constructor
-        Pair( void ):
-            Counter( "PixmapEngine::Pair" )
-        {}
-
-        //! constructor
-        Pair( const QString& key, const QPixmap& value ):
-            QPair<QString, QPixmap>( key, value ),
-            Counter( "PixmapEngine::Pair" )
-        {}
-
-        //! constructor
-        Pair( const QPair<QString, QPixmap >& pair ):
-            QPair<QString, QPixmap >( pair ),
-            Counter( "PixmapEngine::Pair" )
-        {}
-
-        //! equal to operator
-        bool operator == ( const Pair& pair ) const
-        { return first == pair.first; }
-
-        //! less than operator
-        bool operator < ( const Pair& pair ) const
-        { return first < pair.first; }
-
-    };
+    static const QPixmap& get( const QString& file, bool fromCache = true )
+    { return get()._get( file, fromCache ); }
 
     //! return cache
-    static const Cache& cache( void )
+    static const BASE::PixmapCache& cache( void )
     { return get().cache_; }
 
     //! reload all icons set in cache from new path list
     bool reload( void );
-
-    protected:
-
-    //! pixmap path
-    void _setPixmapPath( const QStringList& pathList )
-    { pixmapPath_ = pathList; }
-
-    //! pixmap path
-    const QStringList& _pixmapPath( void ) const
-    { return pixmapPath_; }
 
     private:
 
@@ -109,7 +60,7 @@ class PixmapEngine: public Counter
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    const QPixmap& _get( const QString& file, bool from_cache );
+    const QPixmap& _get( const QString& file, bool fromCache );
 
     //@}
 
@@ -117,7 +68,7 @@ class PixmapEngine: public Counter
     QStringList pixmapPath_;
 
     //! map files and QPixmap
-    Cache cache_;
+    BASE::PixmapCache cache_;
 
 };
 

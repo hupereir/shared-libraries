@@ -1,5 +1,5 @@
-#ifndef PixmapCacheDialog_h
-#define PixmapCacheDialog_h
+#ifndef IconCacheDialog_h
+#define IconCacheDialog_h
 
 // $Id$
 
@@ -26,12 +26,12 @@
 
 #include "CustomDialog.h"
 #include "Counter.h"
-#include "PixmapCacheModel.h"
+#include "IconCacheModel.h"
 
 class TreeView;
 
-//! displays PixmapCache names and counts
-class PixmapCacheDialog: public CustomDialog
+//! displays IconCache names and counts
+class IconCacheDialog: public CustomDialog
 {
 
     //! Qt meta object declaration
@@ -40,21 +40,21 @@ class PixmapCacheDialog: public CustomDialog
     public:
 
     // constructor
-    PixmapCacheDialog( QWidget* );
+    IconCacheDialog( QWidget* );
 
     //! destructor
-    virtual ~PixmapCacheDialog( void )
+    virtual ~IconCacheDialog( void )
     {}
 
     public slots:
 
-    //! update PixmapCache list
+    //! update IconCache list
     void update();
 
     private:
 
     //! model
-    PixmapCacheModel model_;
+    IconCacheModel model_;
 
     //! list
     TreeView* list_;

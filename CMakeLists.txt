@@ -75,6 +75,8 @@ SET( base_qt_SOURCES
   FontInfo.cpp
   HtmlDialog.cpp
   HtmlTextNode.cpp
+  IconCacheDialog.cpp
+  IconCacheModel.cpp
   IconEngine.cpp
   IconSize.cpp
   IconSizeMenu.cpp
@@ -93,8 +95,6 @@ SET( base_qt_SOURCES
   OptionWidgetList.cpp
   PathEditor.cpp
   PathHistory.cpp
-  PixmapCacheDialog.cpp
-  PixmapCacheModel.cpp
   PixmapEngine.cpp
   PrinterOptionWidget.cpp
   PrintPreviewDialog.cpp
@@ -181,6 +181,7 @@ SET( base_qt_HEADERS
   FileSystemWatcher.h
   FontEditor.h
   HtmlDialog.h
+  IconCacheDialog.h
   IconSizeMenu.h
   IconView.h
   ImageFileDialog.h
@@ -193,7 +194,6 @@ SET( base_qt_HEADERS
   OptionModel.h
   PathEditor.h
   PathEditor_p.h
-  PixmapCacheDialog.h
   PrinterOptionWidget.h
   PrintPreviewDialog.h
   PrintPreviewDialog_p.h

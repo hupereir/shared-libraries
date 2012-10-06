@@ -25,10 +25,10 @@
 #include "OptionDialog.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "PixmapEngine.h"
 #include "Singleton.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
-#include "Str.h"
 #include "XmlOptions.h"
 
 #include <QtGui/QPushButton>

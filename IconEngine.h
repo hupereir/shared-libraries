@@ -24,23 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file IconEngine.h
-\brief customized Icon factory to provide better looking disabled icons
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Counter.h"
 #include "Debug.h"
-#include "PixmapEngine.h"
+#include "IconCache.h"
 
-#include <QtGui/QIcon>
-#include <QtCore/QHash>
-#include <QtCore/QPair>
-
-#include <cassert>
+#include <QtCore/QStringList>
 
 //! customized Icon factory to provide better looking disabled icons
 class IconEngine: public Counter
@@ -56,46 +44,8 @@ class IconEngine: public Counter
     static const QIcon& get( const QString& file )
     { return get()._get( file ); }
 
-    //! create icon
-    static QIcon get( const QPixmap& pixmap )
-    { return get()._get( pixmap ); }
-
-    //! create icon
-    static QIcon get( const QIcon& icon )
-    { return get()._get( icon ); }
-
-    //! map files and QIcon
-    typedef QHash< QString, QIcon > Cache;
-
-    //! map files and QIcon
-    class Pair: public QPair<QString, QIcon >, public Counter
-    {
-
-        public:
-
-        //! constructor
-        Pair( void ):
-            Counter( "IconEngine::Pair" )
-        {}
-
-        //! constructor
-        Pair( const QPair<QString, QIcon >& pair ):
-            QPair<QString, QIcon >( pair ),
-            Counter( "IconEngine::Pair" )
-        {}
-
-        //! equal to operator
-        bool operator == ( const Pair& pair ) const
-        { return first == pair.first; }
-
-        //! less than operator
-        bool operator < ( const Pair& pair ) const
-        { return first < pair.first; }
-
-    };
-
     //! return cache
-    static const Cache& cache( void )
+    static const BASE::IconCache& cache( void )
     { return get().cache_; }
 
     //! reload all icons set in cache from new path list
@@ -111,18 +61,15 @@ class IconEngine: public Counter
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    const QIcon& _get( const QString&, bool from_cache = true );
-
-    //! create icon
-    QIcon _get( const QPixmap& );
-
-    //! create icon
-    QIcon _get( const QIcon& );
+    const BASE::IconCacheItem& _get( const QString&, bool fromCache = true );
 
     //@}
 
+    //! pixmap path
+    QStringList pixmapPath_;
+
     //! map files and QIcon
-    Cache cache_;
+    BASE::IconCache cache_;
 
 };
 

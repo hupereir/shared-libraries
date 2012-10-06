@@ -22,31 +22,45 @@
 *
 *******************************************************************************/
 
-#include "PixmapCacheModel.h"
+#include "IconCacheModel.h"
 
 //_______________________________________________
-const QString PixmapCacheModel::columnTitles_[ PixmapCacheModel::nColumns ] =
-{ "Icon" };
+const QString IconCacheModel::columnTitles_[ IconCacheModel::nColumns ] =
+{ "Icon", "Files" };
 
 //__________________________________________________________________
-QVariant PixmapCacheModel::data( const QModelIndex& index, int role ) const
+QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
 {
 
     // check index, role and column
     if( !index.isValid() ) return QVariant();
 
-    // retrieve associated file info
-    const PixmapEngine::Pair& icon_pair( get(index) );
+    // associated icon pair
+    const BASE::IconCache::Pair& iconPair( get(index) );
 
-    // return text associated to file and column
-    if( role == Qt::DisplayRole && index.column() == Icon ) return icon_pair.first;
-    if( role == Qt::DecorationRole && index.column() == Icon ) return icon_pair.second;
+    switch( index.column() )
+    {
+
+        case Icon:
+        // return text associated to file and column
+        if( role == Qt::DisplayRole ) return iconPair.first;
+        else if( role == Qt::DecorationRole ) return iconPair.second;
+        break;
+
+        case Files:
+        if( role == Qt::DisplayRole ) return iconPair.second.files().join( "\n" );
+        break;
+
+        default: break;
+
+    }
+
     return QVariant();
 
 }
 
 //__________________________________________________________________
-QVariant PixmapCacheModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant IconCacheModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 
     if(
@@ -61,17 +75,8 @@ QVariant PixmapCacheModel::headerData(int section, Qt::Orientation orientation, 
 
 }
 
-//____________________________________________________________
-void PixmapCacheModel::_sort( int column, Qt::SortOrder order )
-{
-
-    Debug::Throw() << "PixmapCacheModel::sort - column: " << column << " order: " << order << endl;
-    std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) );
-
-}
-
 //________________________________________________________
-bool PixmapCacheModel::SortFTor::operator () ( PixmapEngine::Pair first, PixmapEngine::Pair second ) const
+bool IconCacheModel::SortFTor::operator () ( BASE::IconCache::Pair first, BASE::IconCache::Pair second ) const
 {
 
     if( order_ == Qt::DescendingOrder ) std::swap( first, second );
@@ -80,6 +85,7 @@ bool PixmapCacheModel::SortFTor::operator () ( PixmapEngine::Pair first, PixmapE
     {
 
         case Icon: return first.first < second.first;
+        case Files: return first.second.files().join( "" ) < second.second.files().join( "" );
         default: return true;
     }
 

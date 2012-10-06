@@ -28,6 +28,7 @@
 #include "Debug.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
+#include "ItemModel.h"
 #include "Singleton.h"
 #include "ScrollObject.h"
 #include "TextEditor.h"
@@ -44,6 +45,7 @@ IconView::IconView( QWidget* parent ):
     QAbstractItemView( parent ),
     Counter( "IconView" ),
     findDialog_( 0x0 ),
+    model_( 0x0 ),
     pixmapSize_( 48, 48 ),
     margin_( 5 ),
     spacing_( 5 ),
@@ -81,6 +83,21 @@ IconView::IconView( QWidget* parent ):
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
+}
+
+//_______________________________________________
+void IconView::setModel( QAbstractItemModel* model )
+{
+    Debug::Throw( "IconView::setModel.\n" );
+    QAbstractItemView::setModel( model );
+    header_->setModel( model );
+
+    if( model_ = qobject_cast<ItemModel*>( model ) )
+    {
+        connect( model_, SIGNAL( layoutAboutToBeChanged() ), SLOT( storeSelectedIndexes() ) );
+        connect( model_, SIGNAL( layoutChanged() ), SLOT( restoreSelectedIndexes() ) );
+    }
+
 }
 
 //_______________________________________________
@@ -310,6 +327,28 @@ void IconView::findAgainForward( void )
 //______________________________________________________________________
 void IconView::findAgainBackward( void )
 { _findBackward( TextEditor::lastSelection(), true ); }
+
+//__________________________________________________________
+void IconView::storeSelectedIndexes( void )
+{
+    if( selectionModel() )
+    { model_->setSelectedIndexes( selectionModel()->selectedRows() ); }
+}
+
+//__________________________________________________________
+void IconView::restoreSelectedIndexes( void )
+{
+
+    if( selectionModel() )
+    {
+        const QModelIndexList selection( model_->selectedIndexes() );
+        selectionModel()->clear();
+        foreach( const QModelIndex& index, selection )
+        { selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
+    }
+
+    return;
+}
 
 //____________________________________________________________________
 bool IconView::isIndexHidden( const QModelIndex& ) const

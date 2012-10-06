@@ -26,9 +26,6 @@
 #include "XmlOptions.h"
 
 #include <QtCore/QFileInfo>
-#include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionButton>
 
 //__________________________________________________________
 PixmapEngine& PixmapEngine::get( void )
@@ -50,24 +47,24 @@ bool PixmapEngine::reload( void )
 
     // load path from options
     QStringList pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-    if( pathList == _pixmapPath() ) return false;
+    if( pathList == pixmapPath_ ) return false;
 
-    _setPixmapPath( pathList );
-    for( Cache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+    pixmapPath_ = pathList;
+    for( BASE::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
     { cache_[iter.key()] = _get( iter.key(), false ); }
 
     return true;
 }
 
 //__________________________________________________________
-const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
+const QPixmap& PixmapEngine::_get( const QString& file, bool fromCache )
 {
     Debug::Throw( "PixmapEngine::_get (file).\n" );
 
     // try find file in cache
-    if( from_cache )
+    if( fromCache )
     {
-        Cache::iterator iter( cache_.find( file ) );
+        BASE::PixmapCache::iterator iter( cache_.find( file ) );
         if( iter != cache_.end() ) return iter.value();
     }
 
@@ -76,24 +73,24 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
     if( QFileInfo( file ).isAbsolute() ) { out = QPixmap( file ); }
     else {
 
-        if( _pixmapPath().empty() ) _setPixmapPath( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
-        foreach( const QString& path, _pixmapPath() )
+        if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" );
+        foreach( const QString& path, pixmapPath_ )
         {
 
             // skip empty path
             if( path.isEmpty() ) continue;
 
             // prepare filename
-            File iconFile;
+            File pixmapFile;
 
             // see if path is internal resource path
-            if( path.left( 1 ) == ":" ) iconFile = File( file ).addPath( path );
-            else iconFile = File( path ).find( file );
+            if( path.startsWith( ':' ) ) pixmapFile = File( file ).addPath( path );
+            else pixmapFile = File( path ).find( file );
 
             // load pixmap
-            if( !iconFile.isEmpty() )
+            if( !pixmapFile.isEmpty() )
             {
-                out.load( iconFile );
+                out.load( pixmapFile );
                 if( !out.isNull() ) break;
             }
 
@@ -101,7 +98,6 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool from_cache )
 
     }
 
-    Cache::iterator iter = cache_.insert( file, out );
-    return iter.value();
+    return cache_.insert( file, out ).value();
 
 }

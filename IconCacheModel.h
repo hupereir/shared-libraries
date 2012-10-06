@@ -1,5 +1,5 @@
-#ifndef _PixmapCacheModel_h_
-#define _PixmapCacheModel_h_
+#ifndef _IconCacheModel_h_
+#define _IconCacheModel_h_
 
 // $Id$
 
@@ -26,25 +26,25 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "PixmapEngine.h"
+#include "IconCache.h"
 #include "ListModel.h"
 
-//! qlistview for object PixmapCaches
-class PixmapCacheModel: public ListModel<PixmapEngine::Pair>, public Counter
+//! qlistview for object IconCaches
+class IconCacheModel: public ListModel<BASE::IconCache::Pair>, public Counter
 {
 
     public:
 
     //! number of columns
-    enum { nColumns = 1 };
+    enum { nColumns = 2 };
 
     //! column type enumeration
-    enum ColumnType { Icon };
+    enum ColumnType { Icon, Files };
 
     //! constructor
-    PixmapCacheModel( QObject* parent = 0 ):
-        ListModel<PixmapEngine::Pair>( parent ),
-        Counter( "PixmapCacheModel" )
+    IconCacheModel( QObject* parent = 0 ):
+        ListModel<BASE::IconCache::Pair>( parent ),
+        Counter( "IconCacheModel" )
     {}
 
     //!@name methods reimplemented from base class
@@ -65,11 +65,12 @@ class PixmapCacheModel: public ListModel<PixmapEngine::Pair>, public Counter
     protected:
 
     //! sort
-    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
+    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
+    { std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
     private:
 
-    //! used to sort PixmapCaches
+    //! used to sort IconCaches
     class SortFTor: public ItemModel::SortFTor
     {
 
@@ -81,7 +82,7 @@ class PixmapCacheModel: public ListModel<PixmapEngine::Pair>, public Counter
         {}
 
         //! prediction
-        bool operator() ( PixmapEngine::Pair, PixmapEngine::Pair ) const;
+        bool operator() ( BASE::IconCache::Pair, BASE::IconCache::Pair ) const;
 
     };
 

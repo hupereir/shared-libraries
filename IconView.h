@@ -41,6 +41,7 @@
 
 // forward declaration
 class BaseFindDialog;
+class ItemModel;
 
 //! icon view
 class IconView: public QAbstractItemView, public Counter
@@ -57,6 +58,9 @@ class IconView: public QAbstractItemView, public Counter
     virtual ~IconView( void )
     {}
 
+    //! set model
+    virtual void 	setModel( QAbstractItemModel* );
+
     //! enable list finding
     void setFindEnabled( bool value );
 
@@ -70,13 +74,6 @@ class IconView: public QAbstractItemView, public Counter
     //! sorting
     void setSortingEnabled( bool value )
     { header_->setSortIndicatorShown( value ); }
-
-    //! set model
-    virtual void 	setModel( QAbstractItemModel* model )
-    {
-        QAbstractItemView::setModel( model );
-        header_->setModel( model );
-    }
 
     //! set spacing
     void setMargin( int value )
@@ -183,6 +180,12 @@ class IconView: public QAbstractItemView, public Counter
 
     //! find last search forward
     virtual void findAgainBackward( void );
+
+    //! store selected indexes in model
+    void storeSelectedIndexes( void );
+
+    //! restore selected indexes from model
+    void restoreSelectedIndexes( void );
 
     protected:
 
@@ -330,6 +333,9 @@ class IconView: public QAbstractItemView, public Counter
 
     //! find dialog
     BaseFindDialog* findDialog_;
+
+    //! model
+    ItemModel* model_;
 
     //!@name actions
     //@{
