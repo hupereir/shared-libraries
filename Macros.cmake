@@ -15,3 +15,84 @@ MACRO( GET_BUILD_TIMESTAMP RESULT )
   ENDIF()
 
 ENDMACRO()
+
+###################### Install Win32 application #########################
+MACRO( ADD_WIN32_EXECUTABLE target version )
+
+  ### executable
+  ADD_EXECUTABLE( ${target} WIN32 ${ARGN} ${target}_win32.rc )
+  SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" )
+
+  ### use static gcc linking
+  IF( ${CMAKE_COMPILER_IS_GNUCXX} )
+    SET_TARGET_PROPERTIES( ${target} PROPERTIES LINK_FLAGS " -static-libgcc -s" )
+  ENDIF()
+
+  ### get target location
+  GET_TARGET_PROPERTY( TARGET_PATH ${target} LOCATION )
+
+  ### Compress target
+  FIND_PROGRAM( UPX upx )
+  IF( UPX )
+
+    ADD_CUSTOM_COMMAND( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
+
+  ENDIF()
+
+  ### copy to version release
+  IF( RELEASE )
+
+    SET( TARGET_RELEASE ${target}-${version} )
+    ADD_CUSTOM_COMMAND(
+      TARGET ${target} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy ${TARGET_PATH} ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
+    )
+
+    INSTALL(
+      PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
+      DESTINATION ${CMAKE_INSTALL_PREFIX}/release )
+
+  ENDIF()
+
+ENDMACRO( ADD_WIN32_EXECUTABLE )
+
+###################### Install Apple application #########################
+MACRO( ADD_APPLE_EXECUTABLE target )
+
+  ### executable
+  ADD_EXECUTABLE( ${target} MACOSX_BUNDLE ${ARGN} )
+  SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}" )
+
+ENDMACRO( ADD_APPLE_EXECUTABLE )
+
+
+###################### Install Apple application #########################
+MACRO( ADD_UNIX_EXECUTABLE target )
+
+  ### executable
+  ADD_EXECUTABLE( ${target} ${ARGN} )
+  SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" )
+
+  ### unix specific links
+  TARGET_LINK_LIBRARIES( ${target} ${X11_X11_LIB} )
+
+ENDMACRO( ADD_UNIX_EXECUTABLE )
+
+###################### Install application #########################
+MACRO( ADD_PLATFORM_EXECUTABLE target version )
+
+  IF( WIN32 )
+
+    ADD_WIN32_EXECUTABLE( ${target} ${version} ${ARGN} )
+
+  ELSEIF( APPLE )
+
+    ADD_APPLE_EXECUTABLE( ${target} ${ARGN} )
+
+  ELSE()
+
+    ADD_UNIX_EXECUTABLE( ${target} ${ARGN} )
+
+  ENDIF()
+
+ENDMACRO( ADD_PLATFORM_EXECUTABLE )
