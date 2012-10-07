@@ -1,21 +1,24 @@
 # $Id$
 MACRO( GET_BUILD_TIMESTAMP RESULT )
 
-  IF( WIN32 )
+  # find date
+  FIND_PROGRAM(DATE_PROGRAM date)
+  IF( DATE_PROGRAM )
 
-    EXECUTE_PROCESS( COMMAND "cmd" " /C date /T" OUTPUT_VARIABLE DATE )
-    STRING( REGEX REPLACE "(..)[/.](..)[/.](....).*" "\\3/\\2/\\1" DATE ${DATE} )
-    SET( ${RESULT} "${DATE}" )
+    IF( WIN32 )
 
-  ELSEIF(UNIX)
+      EXECUTE_PROCESS( COMMAND "cmd" " /C ${DATE_PROGRAM} /T" OUTPUT_VARIABLE DATE )
+      STRING( REGEX REPLACE "(..)[/.](..)[/.](....).*" "\\3/\\2/\\1" DATE ${DATE} )
+      SET( ${RESULT} "${DATE}" )
+      MESSAGE( "-- Build timeStamp: ${${RESULT}}" )
 
-    EXECUTE_PROCESS( COMMAND "date" "+%Y/%m/%d" OUTPUT_VARIABLE DATE )
-    STRING( REGEX REPLACE "\n+$" "" ${RESULT} ${DATE} )
+    ELSEIF(UNIX)
 
-  ELSE()
+      EXECUTE_PROCESS( COMMAND "${DATE_PROGRAM}" "+%Y/%m/%d" OUTPUT_VARIABLE DATE )
+      STRING( REGEX REPLACE "\n+$" "" ${RESULT} ${DATE} )
+      MESSAGE( "-- Build timeStamp: ${${RESULT}}" )
 
-    MESSAGE( SEND_ERROR "date not implemented" )
-    SET( ${RESULT} 000000000000 )
+    ENDIF()
 
   ENDIF()
 
