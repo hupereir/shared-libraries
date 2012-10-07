@@ -279,7 +279,7 @@ namespace BASE
             for( typename Key::key_set::const_iterator iter = keys.begin(); iter !=  keys.end(); iter++)
             {
                 T* t( dynamic_cast<T*>( *iter ) );
-                if( t ) insert( t );
+                if( t ) this->insert( t );
             }
 
         }
@@ -288,7 +288,7 @@ namespace BASE
         void merge( const KeySet<T>& key_set )
         {
             for( typename KeySet<T>::const_iterator iter = key_set.begin(); iter != key_set.end(); iter++ )
-            { insert( *iter ); }
+            { this->insert( *iter ); }
         }
 
     };
