@@ -1,5 +1,5 @@
-#ifndef TextEditionDelegate_h
-#define TextEditionDelegate_h
+#ifndef TreeViewDelegate_h
+#define TreeViewDelegate_h
 
 // $Id$
 
@@ -21,39 +21,42 @@
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
-*
 *******************************************************************************/
 
-/*!
-\file    TextEditionDelegate.h
-\brief   treeView item delegate for edition
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
+#include <QtGui/QStyledItemDelegate>
 
-#include "Counter.h"
-#include "TreeViewItemDelegate.h"
-
-class TextEditionDelegate : public TreeViewItemDelegate, public Counter
+class TreeViewItemDelegate: public QStyledItemDelegate
 {
+
+    Q_OBJECT
 
     public:
 
     //! constructor
-    TextEditionDelegate(QObject *parent = 0);
+    TreeViewItemDelegate( QObject* parent = 0x0 ):
+        QStyledItemDelegate( parent ),
+        itemMargin_(0)
+    {}
 
-    //! create editor
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    //! set item margin
+    virtual void setItemMargin( int value )
+    { itemMargin_ = value; }
 
-    //! set editor data
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    //! size hint for index
+    virtual QSize sizeHint( const QStyleOptionViewItem& option, const QModelIndex& index ) const
+    {
+        QSize size( QStyledItemDelegate::sizeHint( option, index ) );
+        if( size.isValid() && itemMargin_ > 0 )
+        { size.rheight() += itemMargin_*2; }
 
-    //! set model data from editor
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+        return size;
+    }
 
-    //! editor geometry
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    private:
+
+    //! margin
+    int itemMargin_;
+
 
 };
 

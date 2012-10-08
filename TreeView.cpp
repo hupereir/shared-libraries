@@ -33,10 +33,13 @@
 #include "TextEditor.h"
 #include "XmlOptions.h"
 
+#include "TreeViewItemDelegate.h"
+
 #include <QtGui/QCursor>
 #include <QtGui/QHeaderView>
 #include <QtGui/QPainter>
 #include <QtGui/QScrollBar>
+#include <QtGui/QStyledItemDelegate>
 
 //_______________________________________________
 TreeView::TreeView( QWidget* parent ):
@@ -44,12 +47,18 @@ TreeView::TreeView( QWidget* parent ):
     Counter( "TreeView" ),
     findDialog_( 0x0 ),
     model_( 0x0 ),
+    itemMarginFromOptions_( true ),
     iconSizeFromOptions_( true ),
     vertical_( 0 ),
     horizontal_( 0 ),
     lockedColumns_( 0 )
 {
     Debug::Throw( "TreeView::TreeView.\n" );
+
+    // delegate
+    if( itemDelegate() ) itemDelegate()->deleteLater();
+    TreeViewItemDelegate* delegate = new TreeViewItemDelegate( this );
+    setItemDelegate( delegate );
 
     // actions
     _installActions();
@@ -72,6 +81,14 @@ TreeView::TreeView( QWidget* parent ):
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
 
+}
+
+//_______________________________________________
+void TreeView::setItemMargin( int value )
+{
+    itemMarginFromOptions_ = false;
+    TreeViewItemDelegate* delegate = qobject_cast<TreeViewItemDelegate*>( itemDelegate() );
+    if( delegate ) delegate->setItemMargin( value );
 }
 
 //_______________________________________________
@@ -803,11 +820,18 @@ void TreeView::_updateConfiguration( void )
     // reset
     selectedColumnColor_ = color;
 
-    // icon size
-    if( iconSizeFromOptions_ )
+    // item margin
+    if( itemMarginFromOptions_ && XmlOptions::get().contains( "LIST_ITEM_MARGIN" ) )
     {
-        int icon_size( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
-        QTreeView::setIconSize( QSize( icon_size, icon_size )  );
+        TreeViewItemDelegate* delegate = qobject_cast<TreeViewItemDelegate*>( itemDelegate() );
+        if( delegate ) delegate->setItemMargin( XmlOptions::get().get<int>( "LIST_ITEM_MARGIN" ) );
+    }
+
+    // icon size
+    if( iconSizeFromOptions_ && XmlOptions::get().contains( "LIST_ICON_SIZE" )  )
+    {
+        int iconSize( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
+        QTreeView::setIconSize( QSize( iconSize, iconSize )  );
     }
 
 }

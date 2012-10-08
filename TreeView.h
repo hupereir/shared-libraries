@@ -50,6 +50,9 @@ class TreeView: public QTreeView, public Counter
     virtual ~TreeView( void )
     {}
 
+    //! set item margins
+    virtual void setItemMargin( int );
+
     //! set model
     virtual void setModel( QAbstractItemModel* );
 
@@ -314,6 +317,9 @@ class TreeView: public QTreeView, public Counter
 
     //! header visibility
     QString showHeaderOptionName_;
+
+    //! true if item margins are to be set from options
+    bool itemMarginFromOptions_;
 
     //! true if icon size is to be set from options
     bool iconSizeFromOptions_;

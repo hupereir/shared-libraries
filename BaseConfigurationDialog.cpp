@@ -260,6 +260,8 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 
     QLabel* label;
     OptionSpinBox* spinbox;
+
+    // icon size in lists
     gridLayout->addWidget( label = new QLabel( "List items icon size:", box ) );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
@@ -268,6 +270,20 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     spinbox->setMinimum(8);
     spinbox->setMaximum(96);
     addOptionWidget( spinbox );
+
+    label->setBuddy( spinbox );
+
+    // item margins in list
+    gridLayout->addWidget( label = new QLabel( "List items margin:", box ) );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
+    gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ITEM_MARGIN" ) );
+    spinbox->setToolTip( "Default margins between items in lists" );
+    spinbox->setSuffix( "px" );
+    spinbox->setMinimum(0);
+    spinbox->setMaximum(96);
+    addOptionWidget( spinbox );
+
+    label->setBuddy( spinbox );
 
     return box;
 

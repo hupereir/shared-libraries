@@ -213,6 +213,7 @@ SET( base_qt_HEADERS
   ToolButtonStyleMenu.h
   TransitionWidget.h
   TreeView.h
+  TreeViewItemDelegate.h
   UserSelectionFrame.h
   XmlFileList.h
 )

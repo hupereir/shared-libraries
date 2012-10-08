@@ -22,24 +22,16 @@
 *
 *******************************************************************************/
 
-/*!
-\file    TextEditionDelegate.cpp
-\brief   treeView item delegate for edition
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-#include <QAbstractItemModel>
-
 #include "TextEditionDelegate.h"
 #include "AnimatedLineEditor.h"
 #include "Debug.h"
 
+#include <QtCore/QAbstractItemModel>
+
 //______________________________________________________________
 TextEditionDelegate::TextEditionDelegate( QObject *parent ):
-QStyledItemDelegate( parent ),
-Counter( "TextEditionDelegate" )
+    TreeViewItemDelegate( parent ),
+    Counter( "TextEditionDelegate" )
 { Debug::Throw( "TextEditionDelegate::TextEditionDelegate.\n" ); }
 
 //______________________________________________________________
