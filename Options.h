@@ -97,10 +97,11 @@ class Options: public Counter
         QList<T> specialOptions( const QString& name )
     {
 
-        List option_list( specialOptions( name ) );
+        List optionList( specialOptions( name ) );
         QList<T> out;
-        for( List::iterator iter = option_list.begin(); iter != option_list.end(); iter++ )
-        { out.push_back( iter->get<T>() ); }
+
+        foreach( const Option& option, optionList )
+        { out << option.get<T>(); }
         return out;
 
     }

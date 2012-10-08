@@ -55,7 +55,7 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
 
     // insert otherwise, increment counter and return proper value
     _idMap().insert( name, _counter() );
-    _nameMap().push_back( name );
+    _nameMap() << name;
     _counter()++;
 
     return _counter()-1;

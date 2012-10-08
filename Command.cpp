@@ -43,7 +43,7 @@ bool Command::run( const QString& path ) const
 
     QString program( front() );
     QStringList arguments( *this );
-    arguments.pop_front();
+    arguments.removeFirst();
     return QProcess::startDetached( program, arguments, path );
 
 }

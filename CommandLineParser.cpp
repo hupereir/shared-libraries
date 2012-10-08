@@ -52,7 +52,7 @@ void CommandLineParser::usage( void ) const
     const QList<QString> flagKeys( flags_.keys() );
     const QList<QString> optionKeys( options_.keys() );
 
-    int max_length = 1+ std::max(
+    int max_length = 1+ qMax(
         std::max_element( flagKeys.begin(), flagKeys.end(), MinLengthFTor() )->size(),
         std::max_element( optionKeys.begin(), optionKeys.end(), MinLengthFTor() )->size() );
 
@@ -206,7 +206,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
         }
 
         // add to orphans
-        orphans_.push_back( tagName );
+        orphans_ << tagName;
 
     }
 

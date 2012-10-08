@@ -217,8 +217,8 @@ namespace FORMAT
         friend QTextStream& operator << ( QTextStream& out, const TextFormatBlock::List& formats )
         {
             out << "TextFormatList: " << endl;
-            for( TextFormatBlock::List::const_iterator iter = formats.begin(); iter != formats.end(); iter++ )
-            { out << *iter; }
+            foreach( const TextFormatBlock& block, formats )
+            { out << block; }
             out << endl;
             return out;
         }

@@ -73,8 +73,8 @@ namespace BASE
             key_( _counter()++ ),
             associatedKeys_( key.associatedKeys_ )
         {
-            for( key_set::iterator iter = associatedKeys_.begin(); iter != associatedKeys_.end(); iter++ )
-            { (*iter)->_associate( this ); }
+            foreach( Key* associate, associatedKeys_ )
+            { associate->_associate( this ); }
         }
 
         //! destructor
@@ -90,24 +90,23 @@ namespace BASE
         { return this->key() < key.key(); }
 
         //! shortcut for key unique id
-        typedef unsigned long int key_type;
+        typedef unsigned long int Type;
 
         //! retrieve key
-        virtual const key_type& key( void ) const
+        virtual const Type& key( void ) const
         { return key_; }
 
         //! shortcut for set of Key
-        typedef QSet< Key* > key_set;
+        typedef QSet< Key* > Set;
 
         //! retrieve all associated keys
-        const key_set& getAssociated( void ) const
+        const Set& getAssociated( void ) const
         { return associatedKeys_; }
 
         //! clear associations for this key
         void clearAssociations( void )
         {
-            for( key_set::iterator iter = associatedKeys_.begin(); iter != associatedKeys_.end(); iter++ )
-            { (*iter)->_disassociate( this ); }
+            foreach( Key* key, associatedKeys_ ) key->_disassociate( this );
             associatedKeys_.clear();
         }
 
@@ -137,7 +136,7 @@ namespace BASE
             public:
 
             //! constructor
-            SameKeyFTor( const key_type& key ):
+            SameKeyFTor( const Type& key ):
                 key_( key )
             {}
 
@@ -148,7 +147,7 @@ namespace BASE
             private:
 
             //! predicted key
-            key_type key_;
+            Type key_;
 
         };
 
@@ -209,13 +208,13 @@ namespace BASE
         { associatedKeys_.remove( key ); }
 
         //! unique id
-        key_type key_;
+        Type key_;
 
         //! associated keys
-        key_set associatedKeys_;
+        Set associatedKeys_;
 
         //! unique id counter
-        static key_type& _counter( void );
+        static Type& _counter( void );
 
         //! to dump Key and associations
         friend QTextStream &operator << (QTextStream &out,const Key &key)
@@ -225,10 +224,13 @@ namespace BASE
             out << "key=" << key.key();
 
             // dump associated key uid
-            if( key.associatedKeys_.size() ) {
+            if( key.associatedKeys_.size() )
+            {
                 out << " associations:";
-                for( key_set::const_iterator iter = key.associatedKeys_.begin(); iter != key.associatedKeys_.end(); iter++ )
-                { out << " " << (*iter)->key(); }
+
+                foreach( Key* associate, key.associatedKeys_ )
+                { out << " " << associate->key(); }
+
             }
 
             out << endl;
@@ -259,10 +261,9 @@ namespace BASE
         KeySet( const Key* key )
         {
 
-            const Key::key_set& keys( key->getAssociated() );
-            for( typename Key::key_set::const_iterator iter = keys.begin(); iter !=  keys.end(); iter++)
+            foreach( Key* associate, key->getAssociated() )
             {
-                T* t( dynamic_cast<T*>( *iter ) );
+                T* t( dynamic_cast<T*>( associate ) );
                 if( t ) this->insert( t );
             }
 
@@ -275,20 +276,19 @@ namespace BASE
         KeySet( const Key& key )
         {
 
-            const Key::key_set& keys( key.getAssociated() );
-            for( typename Key::key_set::const_iterator iter = keys.begin(); iter !=  keys.end(); iter++)
+            foreach( Key* associate, key.getAssociated() )
             {
-                T* t( dynamic_cast<T*>( *iter ) );
+                T* t( dynamic_cast<T*>( associate ) );
                 if( t ) this->insert( t );
             }
 
         }
 
         //! Merge argument KeySet with this one
-        void merge( const KeySet<T>& key_set )
+        void merge( const KeySet<T>& keySet )
         {
-            for( typename KeySet<T>::const_iterator iter = key_set.begin(); iter != key_set.end(); iter++ )
-            { this->insert( *iter ); }
+            foreach( T* key, keySet )
+            { this->insert( key ); }
         }
 
     };
@@ -315,10 +315,10 @@ namespace BASE
 template<typename T> void BASE::Key::clearAssociations( void )
 {
     KeySet<T> tmp( this );
-    for( typename KeySet<T>::iterator iter = tmp.begin(); iter != tmp.end(); iter++ )
+    foreach( T* key, tmp )
     {
-        (*iter)->_disassociate( this );
-        _disassociate( *iter );
+        key->_disassociate( this );
+        _disassociate( key );
     }
 }
 

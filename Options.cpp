@@ -173,7 +173,7 @@ bool Options::add( const QString& name, Option option, const bool& isDefault )
 
     } else {
 
-        iter.value().push_back( option );
+        iter.value() << option;
         std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Current ) );
         return true;
 

@@ -30,7 +30,7 @@ Counter( "CommandLineArguments" )
 {
     Debug::Throw( "CommandLineArguments::CommandLineArguments.\n" );
     for( int i=0; i<argc; i++ )
-    { if( argv[i] && strlen( argv[i] ) ) push_back( argv[i] ); }
+    { if( argv[i] && strlen( argv[i] ) ) append( argv[i] ); }
 
 }
 
