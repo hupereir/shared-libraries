@@ -42,7 +42,6 @@ QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
     {
 
         case Icon:
-        // return text associated to file and column
         if( role == Qt::DisplayRole ) return iconPair.first;
         else if( role == Qt::DecorationRole ) return iconPair.second;
         break;

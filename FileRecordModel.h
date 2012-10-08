@@ -24,21 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file FileRecordModel.h
-\brief model for object counters
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
 #include "Counter.h"
 #include "Debug.h"
 #include "FileRecord.h"
 #include "ListModel.h"
 
 #include <QtCore/QStringList>
+#include <QtCore/QHash>
 
 //! qlistview for object counters
 class FileRecordModel: public ListModel<FileRecord>, public Counter
@@ -164,10 +156,10 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     void _updateColumns( const ValueType& value );
 
     //! icon
-    static QIcon _icon( const QString& = QString() );
+    static const QIcon& _icon( const QString& = QString() );
 
     //! icon cache
-    typedef QMap<QString, QIcon> IconCache;
+    typedef QHash<QString, QIcon> IconCache;
 
     //! type icon cache
     static IconCache& _icons( void );

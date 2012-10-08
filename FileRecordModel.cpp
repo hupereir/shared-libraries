@@ -21,23 +21,16 @@
 *
 *******************************************************************************/
 
-/*!
-\file FileRecordModel.cpp
-\brief model for object records
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "FileRecordModel.h"
 
 #include "CustomPixmap.h"
 #include "FileRecordBaseProperties.h"
-#include "FileRecordModel.h"
+#include "IconEngine.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 
 #include <algorithm>
 #include <cassert>
-#include <QIcon>
 
 //__________________________________________________________________
 FileRecordModel::IconCache& FileRecordModel::_icons( void )
@@ -240,34 +233,13 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
 }
 
 //________________________________________________________
-QIcon FileRecordModel::_icon( const QString& name )
+const QIcon& FileRecordModel::_icon( const QString& name )
 {
 
     Debug::Throw( "FileRecordModel::_icon.\n" );
 
     IconCache::const_iterator iter( _icons().find( name ) );
     if( iter != _icons().end() ) return iter.value();
-
-    // pixmap size
-    unsigned int pixmapSize = XmlOptions::get().get<unsigned int>( "LIST_ICON_SIZE" );
-    QSize size( pixmapSize, pixmapSize );
-    QSize scale(size*0.9);
-
-    QIcon icon;
-    if( name.isEmpty() )
-    {
-        icon = CustomPixmap().empty( size );
-
-    } else {
-
-        CustomPixmap base( CustomPixmap().find( name )  );
-        if( base.isNull() ) { icon = CustomPixmap().empty( size ); }
-        else { icon = CustomPixmap().empty( size ).merge( base.scaled( scale, Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::CENTER ); }
-
-    }
-
-    // insert in map
-    _icons().insert( name, icon );
-    return icon;
+    else return _icons().insert( name, IconEngine::get( name ) ).value();
 
 }
