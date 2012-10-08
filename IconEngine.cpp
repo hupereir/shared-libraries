@@ -60,7 +60,6 @@ bool IconEngine::reload( void )
 //__________________________________________________________
 const BASE::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache )
 {
-    Debug::Throw( "IconEngine::_get (file).\n" );
 
     // try find file in cache
     if( fromCache )
@@ -78,35 +77,49 @@ const BASE::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache
 
     } else {
 
-        // make sure pixmap path is initialized
-        if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" );
-
-        // store list of loaded sizes
-        QList<QSize> sizes;
-        foreach( const QString& path, pixmapPath_ )
+        #if QT_VERSION >= 0x040600
+        QString truncatedName( File( file ).truncatedName() );
+        if( QIcon::hasThemeIcon( truncatedName ) )
         {
 
-            // skip empty path
-            if( path.isEmpty() ) continue;
+            out = QIcon::fromTheme( truncatedName );
+            out.addFile( "from theme" );
 
-            // prepare filename
-            File pixmapFile;
+        } else
+        #endif
+        {
 
-            // see if path is internal resource path
-            if( path.startsWith( ':' ) ) pixmapFile = File( file ).addPath( path );
-            else pixmapFile = File( path ).find( file );
+            // make sure pixmap path is initialized
+            if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" );
 
-            // load pixmap
-            if( pixmapFile.isEmpty() ) continue;
+            // store list of loaded sizes
+            QList<QSize> sizes;
+            foreach( const QString& path, pixmapPath_ )
+            {
 
-            QPixmap pixmap( pixmapFile );
-            if( pixmap.isNull() ) continue;
+                // skip empty path
+                if( path.isEmpty() ) continue;
 
-            // check size
-            if( sizes.contains( pixmap.size() ) ) continue;
-            out.addPixmap( pixmap );
-            out.addFile( pixmapFile );
-            sizes << pixmap.size();
+                // prepare filename
+                File pixmapFile;
+
+                // see if path is internal resource path
+                if( path.startsWith( ':' ) ) pixmapFile = File( file ).addPath( path );
+                else pixmapFile = File( path ).find( file );
+
+                // load pixmap
+                if( pixmapFile.isEmpty() ) continue;
+
+                QPixmap pixmap( pixmapFile );
+                if( pixmap.isNull() ) continue;
+
+                // check size
+                if( sizes.contains( pixmap.size() ) ) continue;
+                out.addPixmap( pixmap );
+                out.addFile( pixmapFile );
+                sizes << pixmap.size();
+
+            }
 
         }
 
