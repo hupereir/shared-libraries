@@ -113,8 +113,7 @@ class BaseFileInfoModel : public ListModel<T>
     { std::sort( ListModel<T>::_get().begin(), ListModel<T>::_get().end(), SortFTor( (ColumnType) column, order ) ); }
 
     //! icon matching given id
-    virtual QIcon _icon( int ) const
-    { return QIcon(); }
+    virtual QIcon _icon( const QModelIndex& ) const = 0;
 
     private:
 
@@ -161,14 +160,9 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
 
         case Qt::DecorationRole:
         {
+
             if( showIcons() && index.column() == 0 )
-            {
-
-                // retrieve associated file info
-                const T& fileInfo( ListModel<T>::get()[index.row()] );
-                return _icon( fileInfo.type() );
-
-            }
+            { return _icon( index ); }
 
             break;
         }
@@ -223,6 +217,10 @@ template<typename T>
 bool BaseFileInfoModel<T>::SortFTor::operator() ( const T& constFirst, const T& constSecond ) const
 {
 
+    if( constFirst.isNavigator() ) return true;
+    else if( constSecond.isNavigator() ) return false;
+    else if( constFirst.type() != constSecond.type() ) return constFirst.isFolder();
+
     T first( constFirst );
     T second( constSecond );
     if( order_ == Qt::DescendingOrder ) std::swap( first, second );
@@ -246,12 +244,7 @@ bool BaseFileInfoModel<T>::SortFTor::operator() ( const T& constFirst, const T& 
 
         default:
         case FILE:
-        {
-            if( first.type() & BaseFileInfo::Navigator ) return true;
-            else if( second.type() & BaseFileInfo::Navigator ) return false;
-            else if( first.type() &  BaseFileInfo::Folder ) return (second.type() & BaseFileInfo::Folder) ? first.file().compare( second.file(), Qt::CaseInsensitive ) < 0 : true;
-            else return (second.type() & BaseFileInfo::Folder) ? false : first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
-        }
+        { return first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0; }
         break;
 
 
