@@ -87,7 +87,7 @@ namespace SVG
             svgOffset_ = svg_offset;
             SvgId::List svg_id_list;
             for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
-            { svg_id_list.push_back( iter.key() ); }
+            { svg_id_list << iter.key(); }
 
             cache_.clear();
             preload( svg_id_list );
