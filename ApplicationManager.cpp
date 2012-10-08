@@ -328,7 +328,7 @@ namespace SERVER
         Client *client( new Client( this, _server().nextPendingConnection() ) );
         connect( client, SIGNAL( commandAvailable( SERVER::ServerCommand ) ), SLOT( _redirect( SERVER::ServerCommand ) ) );
         connect( &client->socket(), SIGNAL( disconnected() ), SLOT( _clientConnectionClosed() ) );
-        _connectedClients().push_back( client );
+        _connectedClients() << client;
 
     }
 

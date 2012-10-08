@@ -68,7 +68,7 @@ namespace SERVER
     bool Client::sendCommand( const ServerCommand& command )
     {
 
-        commands_.push_back( command );
+        commands_ << command;
         if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
         return true;
 
@@ -85,7 +85,7 @@ namespace SERVER
         while( commands_.size() && socket().state() == QAbstractSocket::ConnectedState )
         {
             top.appendChild( commands_.front().domElement( document ) );
-            commands_.pop_front();
+            commands_.removeFirst();
         }
 
         QTextStream os( &socket() );
