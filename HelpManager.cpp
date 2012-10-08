@@ -84,7 +84,7 @@ namespace BASE
             QString label( text[i] );
             i++;
             if( text[i].isNull() ) break;
-            items_.push_back( HelpItem( label, text[i] ) );
+            items_ << HelpItem( label, text[i] );
         }
 
         return;
@@ -129,7 +129,7 @@ namespace BASE
             if( element.isNull() ) continue;
 
             // special options
-            if( element.tagName() == XML_ITEM ) items_.push_back( HelpItem( element ) );
+            if( element.tagName() == XML_ITEM ) items_ << HelpItem( element );
 
         }
 
