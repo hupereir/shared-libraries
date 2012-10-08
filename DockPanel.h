@@ -24,17 +24,8 @@
 *
 *******************************************************************************/
 
-/*!
-\file DockPanel.h
-\brief detachable generic panel
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Counter.h"
 #include "Debug.h"
-#include "TileSet.h"
 
 #include <QtCore/QBasicTimer>
 #include <QtCore/QTimerEvent>

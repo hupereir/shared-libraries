@@ -413,9 +413,9 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
         {
 
             found = true;
-            if( state ) atoms.push_back( states[i] );
+            if( state ) atoms << states[i];
 
-        } else atoms.push_back( states[i] );
+        } else atoms << states[i];
 
     }
 
@@ -425,7 +425,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
         return true;
     }
 
-    if( state && !found ) atoms.push_back( searched );
+    if( state && !found ) atoms << searched;
     XChangeProperty( display, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeReplace, reinterpret_cast<const unsigned char*>(atoms.constData()), atoms.size() );
 
     if ( data ) XFree( data );

@@ -70,8 +70,8 @@ void BasePrintHelper::setupPage( QPrinter* printer )
             printer->setOrientation( orientation_ == QPrinter::Portrait ? QPrinter::Landscape:QPrinter::Portrait );
             const QRect viewport = QRect( 0, 0, scale*printer->pageRect().width(), scale*printer->pageRect().height() );
             pages_.clear();
-            pages_.push_back( viewport );
-            pages_.push_back( viewport.translated( scale*fullPageRect.width() + margin, 0 ) );
+            pages_ << viewport;
+            pages_ << viewport.translated( scale*fullPageRect.width() + margin, 0 );
             break;
         }
 
@@ -83,10 +83,10 @@ void BasePrintHelper::setupPage( QPrinter* printer )
             // define viewports
             const QRect viewport = QRect( 0, 0, scale*printer->pageRect().width(), scale*printer->pageRect().height() );
             pages_.clear();
-            pages_.push_back( viewport );
-            pages_.push_back( viewport.translated( scale*fullPageRect.width() + margin, 0 ) );
-            pages_.push_back( viewport.translated( 0, scale*fullPageRect.height() + margin ) );
-            pages_.push_back( viewport.translated( scale*fullPageRect.width() + margin, scale*fullPageRect.height() + margin ) );
+            pages_ << viewport;
+            pages_ << viewport.translated( scale*fullPageRect.width() + margin, 0 );
+            pages_ << viewport.translated( 0, scale*fullPageRect.height() + margin );
+            pages_ << viewport.translated( scale*fullPageRect.width() + margin, scale*fullPageRect.height() + margin );
             break;
         }
 

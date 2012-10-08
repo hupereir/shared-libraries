@@ -182,7 +182,7 @@ void LineNumberDisplay::_updateLineNumberData( void )
     {
 
         // insert new data
-        lineNumberData_.push_back( LineNumberData( id, block_count, block.position() ) );
+        lineNumberData_ << LineNumberData( id, block_count, block.position() );
 
         // update block count
         block_count += _editor().blockCount( block );

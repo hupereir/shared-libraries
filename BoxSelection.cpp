@@ -229,16 +229,16 @@ bool BoxSelection::fromString( QString input )
     // retrieve maximum length
     int columns(0);
     for( int i=0; i < inputList.size(); i++ )
-    { columns = std::max( columns, inputList[i].length() ); }
+    { columns = qMax( columns, inputList[i].length() ); }
 
     // if there are more lines in current box than in the selection, fill with blank lines
     for( int i = inputList.size(); i < cursors_.size(); i++ )
-    { inputList.push_back( QString( columns, ' ' ) ); }
+    { inputList << QString( columns, ' ' ); }
 
     // loop over items and cursors, replace strings
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( int i=0; i < std::min( inputList.size(), cursors_.size() ); i++ )
+    for( int i=0; i < qMin( inputList.size(), cursors_.size() ); i++ )
     {
 
         cursor.setPosition( cursors_[i].anchor() );
@@ -486,11 +486,11 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
 void BoxSelection::_updateRect( void )
 {
     Debug::Throw( debug_level, "BoxSelection::_updateRect.\n" );
-    int x_min( std::min( begin_.x(), end_.x() ) );
-    int x_max( std::max( begin_.x(), end_.x() ) );
+    int x_min( qMin( begin_.x(), end_.x() ) );
+    int x_max( qMax( begin_.x(), end_.x() ) );
 
-    int y_min( std::min( begin_.y(), end_.y() ) );
-    int y_max( std::max( begin_.y(), end_.y() ) );
+    int y_min( qMin( begin_.y(), end_.y() ) );
+    int y_max( qMax( begin_.y(), end_.y() ) );
 
     QPoint begin( x_min - (x_min%fontWidth_) + 2, y_min - (y_min%fontHeight_) + 2 );
     QPoint end( x_max - (x_max%fontWidth_) + 1, y_max + fontHeight_ - (y_max%fontHeight_) );
@@ -547,7 +547,7 @@ void BoxSelection::_store( void )
         { cursor.setPosition( parent_->cursorForPosition( end ).position(), QTextCursor::KeepAnchor ); }
 
         // store in list
-        cursors_.push_back( cursor );
+        cursors_ << cursor;
 
     }
 

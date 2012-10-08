@@ -57,10 +57,10 @@ FileRecordModel::FileRecordModel( QObject* parent ):
 {
     Debug::Throw("FileRecordModel::FileRecordModel.\n" );
 
-    columnTitles_.push_back( "" );
-    columnTitles_.push_back( "File" );
-    columnTitles_.push_back( "Path" );
-    columnTitles_.push_back( "Last Accessed" );
+    columnTitles_ << "";
+    columnTitles_ << "File";
+    columnTitles_ << "Path";
+    columnTitles_ << "Last Accessed";
 
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
@@ -209,7 +209,7 @@ void FileRecordModel::_updateColumns( const ValueType& value )
     {
         // look for property name in list of columns
         if( std::find( columnTitles_.begin(), columnTitles_.end(), FileRecord::PropertyId::get( iter.key() ) ) == columnTitles_.end() )
-        { columnTitles_.push_back( FileRecord::PropertyId::get( iter.key() ) ); }
+        { columnTitles_ << FileRecord::PropertyId::get( iter.key() ); }
 
     }
 

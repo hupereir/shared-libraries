@@ -45,25 +45,25 @@ XmlString::ConversionList& XmlString::_conversions( void )
 void XmlString::_initConversions() const
 {
 
-    _conversions().push_back( Conversion( "<", "XML_LT" ) );
-    _conversions().push_back( Conversion( ">", "XML_GT" ) );
-    _conversions().push_back( Conversion( "&", "XML_AND" ) );
-    _conversions().push_back( Conversion( "\"", "XML_QUOTE" ) );
-    _conversions().push_back( Conversion( "à", "XML_AGRAVE" ) );
-    _conversions().push_back( Conversion( "â", "XML_AHAT" ) );
-    _conversions().push_back( Conversion( "é", "XML_ECUTE" ) );
-    _conversions().push_back( Conversion( "è", "XML_EGRAVE" ) );
-    _conversions().push_back( Conversion( "ê", "XML_EHAT" ) );
-    _conversions().push_back( Conversion( "î", "XML_IHAT" ) );
-    _conversions().push_back( Conversion( "ô", "XML_OHAT" ) );
-    _conversions().push_back( Conversion( "ù", "XML_UGRAVE" ) );
-    _conversions().push_back( Conversion( "ç", "XML_CCED" ) );
-    _conversions().push_back( Conversion( "\t", "XML_TAB" ) );
-    _conversions().push_back( Conversion( "\n", "XML_ENDL" ) );
+    _conversions() << Conversion( "<", "XML_LT" );
+    _conversions() << Conversion( ">", "XML_GT" );
+    _conversions() << Conversion( "&", "XML_AND" );
+    _conversions() << Conversion( "\"", "XML_QUOTE" );
+    _conversions() << Conversion( "à", "XML_AGRAVE" );
+    _conversions() << Conversion( "â", "XML_AHAT" );
+    _conversions() << Conversion( "é", "XML_ECUTE" );
+    _conversions() << Conversion( "è", "XML_EGRAVE" );
+    _conversions() << Conversion( "ê", "XML_EHAT" );
+    _conversions() << Conversion( "î", "XML_IHAT" );
+    _conversions() << Conversion( "ô", "XML_OHAT" );
+    _conversions() << Conversion( "ù", "XML_UGRAVE" );
+    _conversions() << Conversion( "ç", "XML_CCED" );
+    _conversions() << Conversion( "\t", "XML_TAB" );
+    _conversions() << Conversion( "\n", "XML_ENDL" );
 
     // this conversion is needed for XML not to remove entries that consist of empty spaces only
     // it is used in xmlToText but not in textToXml
-    _conversions().push_back( Conversion( "", "XML_NONE" ) );
+    _conversions() << Conversion( "", "XML_NONE" );
 
     return;
 

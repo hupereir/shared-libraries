@@ -151,7 +151,7 @@ class BaseFindDialog: public BaseDialog, public Counter
 
     //! add button to disabled button list
     virtual void _addDisabledButton( QAbstractButton* button )
-    { buttons_.push_back( button ); }
+    { buttons_ << button; }
 
     //! add string to both combo box and static set
     virtual void _addSearchedString( const QString& text  )

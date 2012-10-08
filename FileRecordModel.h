@@ -155,8 +155,8 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     {
 
         // update columns
-        for( List::const_iterator iter = values.begin(); iter != values.end(); iter++ )
-        { _updateColumns( *iter ); }
+        foreach( const FileRecord& record, values )
+        { _updateColumns( record ); }
 
     }
 

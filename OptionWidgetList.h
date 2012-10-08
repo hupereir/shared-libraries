@@ -44,7 +44,7 @@ class OptionWidgetList: public OptionWidget
     virtual void addOptionWidget( OptionWidget* widget )
     {
         Debug::Throw( "OptionWidgetList::addOptionWidget.\n" );
-        optionWidgets_.push_back( widget );
+        optionWidgets_ << widget;
     }
 
     //! clear option widgets

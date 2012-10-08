@@ -66,7 +66,7 @@ OptionWidget( option_name )
         // add checkbox
         checkbox = new QCheckBox( column_name, this );
         layout()->addWidget( checkbox );
-        checkbox_.push_back( checkbox );
+        checkbox_ << checkbox;
 
         // add tooltip
         QString buffer;

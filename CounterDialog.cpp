@@ -64,7 +64,7 @@ void CounterDialog::update( void )
 
     CounterModel::List counterList;
     for( CounterMap::const_iterator iter = counters.begin(); iter != counters.end(); ++iter )
-    { counterList.push_back( qMakePair( iter.key(), iter.value() ) ); }
+    { counterList << qMakePair( iter.key(), iter.value() ); }
 
     model_.add( counterList );
 

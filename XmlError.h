@@ -34,82 +34,82 @@
 class XmlError: public Counter
 {
 
-  public:
+    public:
 
-  //! constructor
-  XmlError( const QString& file = QString() ):
-    Counter( "XmlError" ),
-    file_ ( file ),
-    error_( "" ),
-    line_(0),
-    column_(0)
-  {}
+    //! constructor
+    XmlError( const QString& file = QString() ):
+        Counter( "XmlError" ),
+        file_ ( file ),
+        error_( "" ),
+        line_(0),
+        column_(0)
+    {}
 
-  //! shortcut to list of errors
-  typedef QList< XmlError > List;
+    //! shortcut to list of errors
+    typedef QList< XmlError > List;
 
-  //! cast to boolean
-  operator bool(void) const
-  { return error_.length() != 0; }
+    //! cast to boolean
+    operator bool(void) const
+    { return error_.length() != 0; }
 
-  //! File
-  const QString& file( void ) const
-  { return file_; }
+    //! File
+    const QString& file( void ) const
+    { return file_; }
 
-  //! error
-  QString& error( void )
-  { return error_; }
+    //! error
+    QString& error( void )
+    { return error_; }
 
-  //! error
-  const QString& error( void ) const
-  { return error_; }
+    //! error
+    const QString& error( void ) const
+    { return error_; }
 
-  //! line
-  int& line( void )
-  { return line_; }
+    //! line
+    int& line( void )
+    { return line_; }
 
-  //! line
-  const int& line( void ) const
-  { return line_; }
+    //! line
+    const int& line( void ) const
+    { return line_; }
 
-  //! column
-  int& column( void )
-  { return column_; }
+    //! column
+    int& column( void )
+    { return column_; }
 
-  //! column
-  const int& column( void ) const
-  { return column_; }
+    //! column
+    const int& column( void ) const
+    { return column_; }
 
-  private:
+    private:
 
-  //! file
-  QString file_;
+    //! file
+    QString file_;
 
-  //! error
-  QString error_;
+    //! error
+    QString error_;
 
-  //! line
-  int line_;
+    //! line
+    int line_;
 
-  //! column
-  int column_;
+    //! column
+    int column_;
 
-  //! dumper
-  friend QTextStream& operator << ( QTextStream &out, const XmlError& error )
-  {
-    if( !error.file().isEmpty() ) out << error.file() << ": ";
-    else out << "message: ";
-    out << error.error() << " at line " << error.line() << ", column " << error.column();
-    return out;
-  }
+    //! dumper
+    friend QTextStream& operator << ( QTextStream &out, const XmlError& error )
+    {
+        if( !error.file().isEmpty() ) out << error.file() << ": ";
+        else out << "message: ";
+        out << error.error() << " at line " << error.line() << ", column " << error.column();
+        return out;
+    }
 
-  //! dumper
-  friend QTextStream& operator << ( QTextStream &out, const List& errors )
-  {
-    for( List::const_iterator iter = errors.begin(); iter != errors.end(); iter++ )
-    out << *iter << endl;
-    return out;
-  }
+    //! dumper
+    friend QTextStream& operator << ( QTextStream &out, const List& errors )
+    {
+        foreach( const XmlError& error, errors )
+        { out << error << endl; }
+        return out;
+    }
 
 };
 

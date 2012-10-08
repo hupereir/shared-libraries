@@ -72,7 +72,7 @@ void BaseStatusBar::addLabel( const int& stretch, bool animated )
 
     label->setMargin(2);
     addPermanentWidget( label, stretch );
-    labels_.push_back( label );
+    labels_ << label;
 }
 
 //__________________________________________________________________

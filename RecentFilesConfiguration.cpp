@@ -162,7 +162,7 @@ void RecentFilesConfiguration::write( void ) const
     // put model contents into file list
     FileRecord::List records;
     foreach( const FileRecord& record, _model().get() )
-    { records.push_back( record ); }
+    { records << record; }
 
     _recentFiles().set( records );
 
@@ -226,7 +226,7 @@ void RecentFilesConfiguration::_reload( void )
     Debug::Throw( "RecentFilesConfiguration::_reload.\n" );
     FileRecordModel::List recordModelList;
     foreach( const FileRecord& record, _recentFiles().records() )
-    { recordModelList.push_back( record ); }
+    { recordModelList << record; }
     _model().set( recordModelList );
 
     _list().selectionModel()->clear();

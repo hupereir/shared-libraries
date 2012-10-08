@@ -120,7 +120,6 @@ SET( base_qt_SOURCES
   TextEditionDelegate.cpp
   TextPosition.cpp
   TextSeparator.cpp
-  TileSet.cpp
   ToolBarMenu.cpp
   ToolButtonStyleMenu.cpp
   TransitionWidget.cpp

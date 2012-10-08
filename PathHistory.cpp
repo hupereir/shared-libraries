@@ -46,10 +46,10 @@ void PathHistory::add( File path )
     if( !pathList_.empty() && pathList_[index_] == path ) return;
 
     // remove everything that is after index_ from pathList_
-    while( pathList_.size() > index_+1 ) pathList_.pop_back();
+    while( pathList_.size() > index_+1 ) pathList_.removeLast();
 
     // insert new path
-    pathList_.push_back( path );
+    pathList_ << path;
     index_ = pathList_.size()-1;
     return;
 

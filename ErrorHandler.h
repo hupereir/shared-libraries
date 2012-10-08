@@ -46,7 +46,7 @@ class ErrorHandler
 
     //! adds a disabled message in the list
     void disableMessage( const QString& message )
-    { disabledMessages_.push_back( message ); }
+    { disabledMessages_ << message; }
 
     //! adds a disabled message in the list
     void clearDisabledMessages( void )

@@ -57,7 +57,7 @@ QModelIndexList ItemModel::indexes( int column, const QModelIndex& parent ) cons
     {
         QModelIndex index( this->index( row, column, parent ) );
         if( !index.isValid() ) continue;
-        out.push_back( index );
+        out << index;
         out += indexes( column, index );
     }
 

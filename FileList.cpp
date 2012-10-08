@@ -66,7 +66,7 @@ File::List FileList::files( void ) const
     FileRecord::List records( _truncatedList( _records() ) );
     File::List out;
     foreach( const FileRecord& record, records )
-    { out.push_back( record.file() ); }
+    { out << record.file(); }
 
     return out;
 }
@@ -183,7 +183,7 @@ FileRecord& FileList::_add(
 
         if( update_timestamp && iter->time() != record.time() )
         {
-            iter->setTime( std::max( iter->time(), record.time() ) );
+            iter->setTime( qMax( iter->time(), record.time() ) );
             if( emit_signal ) emit contentsChanged();
         }
 
@@ -193,7 +193,7 @@ FileRecord& FileList::_add(
 
         Debug::Throw() << "FileList::_add - record: " << record.file() << endl;
 
-        _records().push_back( record );
+        _records() << record;
 
         if( emit_signal ) emit contentsChanged();
         return _records().back();
