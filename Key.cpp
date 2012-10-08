@@ -26,9 +26,9 @@
 namespace BASE
 {
     //______________________________________________
-    Key::key_type& Key::_counter( void )
+    Key::Type& Key::_counter( void )
     {
-        static key_type counter(0);
+        static Type counter(0);
         return counter;
     }
 }
