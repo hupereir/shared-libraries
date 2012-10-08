@@ -217,9 +217,14 @@ template<typename T>
 bool BaseFileInfoModel<T>::SortFTor::operator() ( const T& constFirst, const T& constSecond ) const
 {
 
+    // Navigator come first
+    // Folders come next
     if( constFirst.isNavigator() ) return true;
     else if( constSecond.isNavigator() ) return false;
-    else if( constFirst.type() != constSecond.type() ) return constFirst.isFolder();
+    else if(
+        (constFirst.type()&(BaseFileInfo::Folder|BaseFileInfo::Document)) !=
+        (constSecond.type()&(BaseFileInfo::Folder|BaseFileInfo::Document)) )
+    { return constFirst.isFolder(); }
 
     T first( constFirst );
     T second( constSecond );

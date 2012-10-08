@@ -89,6 +89,7 @@ SET( base_qt_SOURCES
   LineEditor.cpp
   LineNumberDisplay.cpp
   LogWidget.cpp
+  MimeTypeIconProvider.cpp
   OptionDialog.cpp
   OptionListBox.cpp
   OptionModel.cpp

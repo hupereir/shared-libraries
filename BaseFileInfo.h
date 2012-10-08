@@ -75,18 +75,17 @@ class BaseFileInfo
     enum Type
     {
         None = 0,
-        Local = 1<<0,
-        Remote = 1<<1,
-        Document = 1<<2,
-        Folder = 1<<3,
-        Navigator = 1<<4,
-        Link = 1<<5,
-        Broken = 1<<6,
-        Hidden = 1<<7,
-        Any = (1<<8)-1
+        Document = 1<<0,
+        Folder = 1<<1,
+        Navigator = 1<<2,
+        Link = 1<<3,
+        Broken = 1<<4,
+        Hidden = 1<<5,
+        Remote = 1<<6,
+        Any = (1<<7)-1
     };
 
-    enum {Shift = 8};
+    enum {Shift = 7};
 
     //!@name accessors
     //@{
@@ -101,11 +100,11 @@ class BaseFileInfo
 
     //! location
     virtual unsigned int location( void ) const
-    { return type_ & (Local|Remote); }
+    { return type_ & Remote; }
 
     //! file is local
     virtual bool isLocal( void ) const
-    { return type_&Local; }
+    { return !(type_&Remote); }
 
     //! file is remote
     virtual bool isRemote( void ) const
@@ -180,17 +179,11 @@ class BaseFileInfo
 
     //! set file as local
     virtual void setLocal( void )
-    {
-        type_ &= (~Remote);
-        type_ |= Local;
-    }
+    { type_ &= (~Remote); }
 
     //! set file as remote
     virtual void setRemote( void )
-    {
-        type_ &= (~Local);
-        type_ |= Remote;
-    }
+    { type_ |= Remote; }
 
     //! set file as file
     virtual void setIsDocument( void )
@@ -229,7 +222,7 @@ class BaseFileInfo
         else type_ &= ~Broken;
     }
 
-    //! set file as local
+    //! set file as hidden
     virtual void setIsHidden( bool value = true )
     {
         if( value ) type_ |= Hidden;
