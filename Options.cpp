@@ -75,6 +75,7 @@ Options::Options( bool installDefaultOptions ):
         set( "USE_SELECTED_COLUMN_COLOR", "1" );
         set( "SELECTED_COLUMN_COLOR", Option( "#fffdd4", "Background color for selected column in list" ) );
         set( "LIST_ICON_SIZE", Option( "24", "Default icon size in lists" ) );
+        set( "LIST_ITEM_MARGIN", Option( "2", "Default margin between items in lists" ) );
 
         // textEditor margins
         set( "MARGIN_FOREGROUND", "#136872" );
