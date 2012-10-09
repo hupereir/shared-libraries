@@ -26,7 +26,7 @@
 
 //_______________________________________________
 const QString IconCacheModel::columnTitles_[ IconCacheModel::nColumns ] =
-{ "Icon", "Files" };
+{ "Icon", "Files", "Sizes" };
 
 //__________________________________________________________________
 QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
@@ -38,19 +38,36 @@ QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
     // associated icon pair
     const BASE::IconCache::Pair& iconPair( get(index) );
 
-    switch( index.column() )
+    if( role == Qt::DisplayRole )
     {
+        switch( index.column() )
+        {
 
-        case Icon:
-        if( role == Qt::DisplayRole ) return iconPair.first;
-        else if( role == Qt::DecorationRole ) return iconPair.second;
-        break;
+            case Icon: return iconPair.first;
+            case Files: return iconPair.second.files().join( "\n" );
+            case Sizes:
+            if( !iconPair.second.isNull() )
+            {
+                QString buffer;
+                QTextStream what( &buffer );
+                bool first( true );
+                foreach( const QSize& size, iconPair.second.availableSizes() )
+                {
+                    if( first ) first = false;
+                    else what << ", ";
+                    what << size.width() << "x" << size.height();
+                }
 
-        case Files:
-        if( role == Qt::DisplayRole ) return iconPair.second.files().join( "\n" );
-        break;
+                return buffer;
 
-        default: break;
+            }
+
+            default: break;
+        }
+
+    } else if( role == Qt::DecorationRole && index.column() == Icon ) {
+
+        return iconPair.second;
 
     }
 
