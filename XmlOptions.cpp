@@ -173,15 +173,8 @@ bool XmlOptions::write( File file )
         for( Options::List::iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
         {
 
-            if( !listIter->hasFlag( Option::Recordable ) )
-            { Debug::Throw(0) << "XmlOptions::write - option " << iter.key() << " is not recordable" << endl; }
-
             if( listIter->hasFlag( Option::Recordable ) && listIter->set() && listIter->raw().size() )
-            {
-
-                top.appendChild( XmlOption( iter.key(), *listIter ).domElement( document ) );
-
-            } else Debug::Throw(0) << "XmlOptions::write - skipping option " << iter.key() << endl;
+            { top.appendChild( XmlOption( iter.key(), *listIter ).domElement( document ) ); }
 
         }
 

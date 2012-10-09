@@ -135,7 +135,7 @@ class BaseFileInfo
     { return type_&Hidden; }
 
     //! file size
-    virtual unsigned int size( void ) const
+    virtual qint64 size( void ) const
     { return size_; }
 
     //! return true if lastModified_ is valid and smaller than argument
@@ -230,7 +230,7 @@ class BaseFileInfo
     }
 
     //! file size
-    virtual void setSize( const unsigned int& size )
+    virtual void setSize( qint64 size )
     { size_ = size; }
 
     //! file last modification
@@ -375,7 +375,7 @@ class BaseFileInfo
     unsigned int type_;
 
     //! file size
-    unsigned int size_;
+    qint64 size_;
 
     //! last modification
     time_t lastModified_;

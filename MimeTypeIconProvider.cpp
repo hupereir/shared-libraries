@@ -79,6 +79,9 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     iconNames_.insert( "tgz", "application-x-archive.png" );
     iconNames_.insert( "zip", "application-x-archive.png" );
 
+    // misc
+    iconNames_.insert( "root", "application-x-object.png" );
+
 }
 
 //__________________________________________________________________
