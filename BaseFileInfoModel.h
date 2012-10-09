@@ -145,7 +145,7 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
             {
                 case FILE: return fileInfo.file().localName();
                 case PATH: return fileInfo.file().path();
-                case SIZE: return (fileInfo.type() & BaseFileInfo::Folder || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
+                case SIZE: return (fileInfo.isFolder() || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
                 case USER: return fileInfo.user();
                 case GROUP: return fileInfo.group();
                 case PERMISSIONS: return (fileInfo.type() & BaseFileInfo::Navigator) ? QString():fileInfo.permissionsString();
