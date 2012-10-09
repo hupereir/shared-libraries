@@ -55,6 +55,7 @@ TreeView::TreeView( QWidget* parent ):
 {
     Debug::Throw( "TreeView::TreeView.\n" );
 
+
     // delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
     TreeViewItemDelegate* delegate = new TreeViewItemDelegate( this );
