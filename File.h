@@ -90,14 +90,14 @@ class File: public QString
     QString permissionsString( const QFile::Permissions& ) const;
 
     //! file size
-    virtual unsigned int fileSize( void ) const;
+    virtual qint64 fileSize( void ) const;
 
     //! file size (string version)
     virtual QString sizeString( void ) const
     { return sizeString( fileSize() ); }
 
     //! file size (string version)
-    static QString sizeString( const unsigned int& );
+    static QString sizeString( qint64 );
 
     //! tells if a file exists
     virtual bool exists( void ) const;

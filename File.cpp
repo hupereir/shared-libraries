@@ -131,16 +131,16 @@ QString File::permissionsString( const QFile::Permissions& mode ) const
 
 }
 //_____________________________________________________________________
-unsigned int File::fileSize( void ) const
+qint64 File::fileSize( void ) const
 {
     if( !exists() ) return 0;
     return QFileInfo( *this ).size();
 }
 
 //_____________________________________________________________________
-QString File::sizeString( const unsigned int& sizeInt )
+QString File::sizeString( qint64 sizeInt )
 {
-    double size = (double) sizeInt;
+    qreal size = sizeInt;
     if( size < 0 ) return "-";
 
     static const QString unit[] = {
@@ -152,7 +152,7 @@ QString File::sizeString( const unsigned int& sizeInt )
 
     if( size == 0 ) return "0";
 
-    int power = static_cast<int>( log( size )/log( static_cast<double>(1024) ) );
+    int power = log( size )/log( 1024 );
     QString out;
 
     if( !power ) out.sprintf( "%7.0f", size );
