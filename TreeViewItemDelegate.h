@@ -35,7 +35,7 @@ class TreeViewItemDelegate: public QStyledItemDelegate
     //! constructor
     TreeViewItemDelegate( QObject* parent = 0x0 ):
         QStyledItemDelegate( parent ),
-        itemMargin_(0)
+        itemMargin_(1)
     {}
 
     //! set item margin

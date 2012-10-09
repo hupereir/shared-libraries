@@ -50,14 +50,8 @@ class TreeView: public QTreeView, public Counter
     virtual ~TreeView( void )
     {}
 
-    //! set item margins
-    virtual void setItemMargin( int );
-
-    //! set model
-    virtual void setModel( QAbstractItemModel* );
-
-    //! enable list finding
-    void setFindEnabled( bool value );
+    //!@name accessors
+    //@{
 
     //! TextSelection object from this selection, or clipboard
     TextSelection selection( void ) const;
@@ -67,12 +61,6 @@ class TreeView: public QTreeView, public Counter
 
     //! number of visible columns
     virtual int visibleColumnCount( void ) const;
-
-    //!@name stored options
-    //@{
-
-    //! option name
-    virtual bool setOptionName( const QString& );
 
     //! option name
     virtual bool hasOptionName( void ) const
@@ -102,8 +90,17 @@ class TreeView: public QTreeView, public Counter
 
     //@}
 
-    //!@name column visibility lock
+    //!@name modifiers
     //@{
+
+    //! set model
+    virtual void setModel( QAbstractItemModel* );
+
+    //! enable list finding
+    void setFindEnabled( bool value );
+
+    //! option name
+    virtual bool setOptionName( const QString& );
 
     //! lock column
     void lockColumnVisibility( int index )
@@ -120,7 +117,16 @@ class TreeView: public QTreeView, public Counter
     bool isColumnVisibilityLocked( int index ) const
     { return lockedColumns_&(1<<index); }
 
-    //@}
+    //! load item margin from option
+    void setItemMarginFromOptions( bool value )
+    { itemMarginFromOptions_ = value; }
+
+    //! load icon size from option
+    void setIconSizeFromOptions( bool value )
+    { iconSizeFromOptions_ = value; }
+
+    //! set item margins
+    virtual void setItemMargin( int );
 
     //! set icon size manually and disable option
     void setIconSize( const QSize& size )
@@ -128,6 +134,15 @@ class TreeView: public QTreeView, public Counter
         QTreeView::setIconSize( size );
         iconSizeFromOptions_ = false;
     }
+
+    //! store scrollbar position
+    void storeScrollBarPosition( void );
+
+    //! restore scrollbar position
+    void restoreScrollBarPosition( void );
+
+    //@}
+
 
     //!@name actions
     //@{
@@ -153,12 +168,6 @@ class TreeView: public QTreeView, public Counter
     { return *showHeaderAction_; }
 
     //@}
-
-    //! store scrollbar position
-    void storeScrollBarPosition( void );
-
-    //! restore scrollbar position
-    void restoreScrollBarPosition( void );
 
     signals:
 

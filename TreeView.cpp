@@ -47,7 +47,7 @@ TreeView::TreeView( QWidget* parent ):
     Counter( "TreeView" ),
     findDialog_( 0x0 ),
     model_( 0x0 ),
-    itemMarginFromOptions_( true ),
+    itemMarginFromOptions_( false ),
     iconSizeFromOptions_( true ),
     vertical_( 0 ),
     horizontal_( 0 ),
