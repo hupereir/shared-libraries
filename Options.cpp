@@ -46,6 +46,7 @@ Options::Options( bool installDefaultOptions ):
         */
         keep( "PIXMAP_PATH" );
         add( "PIXMAP_PATH", Option( ":/pixmaps", Option::Recordable|Option::Current ) );
+        add( "PIXMAP_PATH", Option( ":/pixmaps/128x128", Option::Recordable ) );
 
         set( "DEBUG_LEVEL", Option( "0" , "Debug verbosity level" ) );
         set( "SORT_FILES_BY_DATE", Option( "0" , "Sort files by access date in open previous menu" ) );
