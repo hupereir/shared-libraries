@@ -30,7 +30,9 @@
 
 #include <QtCore/QMimeData>
 #include <QtCore/QHash>
+#include <QtGui/QApplication>
 #include <QtGui/QIcon>
+#include <QtGui/QFont>
 #include <QtGui/QPalette>
 
 //! FileInfo model. Stores file information for display in lists
@@ -179,6 +181,17 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
 
             break;
 
+        }
+
+        case Qt::FontRole:
+        {
+            const T& fileInfo( ListModel<T>::get()[index.row()] );
+            if( fileInfo.isLink() )
+            {
+                QFont font( QApplication::font() );
+                font.setItalic( true );
+                return font;
+            }
         }
 
         default: break;
