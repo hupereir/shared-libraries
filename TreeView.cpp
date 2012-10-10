@@ -402,7 +402,10 @@ void TreeView::findAgainBackward( void )
 void TreeView::storeSelectedIndexes( void )
 {
     if( selectionModel() )
-    { model_->setSelectedIndexes( selectionModel()->selectedRows() ); }
+    {
+        model_->setSelectedIndexes( selectionModel()->selectedRows() );
+        model_->setCurrentIndex( selectionModel()->currentIndex() );
+    }
 }
 
 //__________________________________________________________
@@ -411,10 +414,14 @@ void TreeView::restoreSelectedIndexes( void )
 
     if( selectionModel() )
     {
+
         const QModelIndexList selection( model_->selectedIndexes() );
         selectionModel()->clear();
         foreach( const QModelIndex& index, selection )
         { selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
+
+        selectionModel()->setCurrentIndex( model_->currentIndex(), QItemSelectionModel::Current );
+
     }
 
     return;

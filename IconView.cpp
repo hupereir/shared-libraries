@@ -331,7 +331,10 @@ void IconView::findAgainBackward( void )
 void IconView::storeSelectedIndexes( void )
 {
     if( selectionModel() )
-    { model_->setSelectedIndexes( selectionModel()->selectedRows() ); }
+    {
+        model_->setSelectedIndexes( selectionModel()->selectedRows() );
+        model_->setCurrentIndex( selectionModel()->currentIndex() );
+    }
 }
 
 //__________________________________________________________
@@ -340,10 +343,14 @@ void IconView::restoreSelectedIndexes( void )
 
     if( selectionModel() )
     {
+
         const QModelIndexList selection( model_->selectedIndexes() );
         selectionModel()->clear();
         foreach( const QModelIndex& index, selection )
         { selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
+
+        selectionModel()->setCurrentIndex( model_->currentIndex(), QItemSelectionModel::Current );
+
     }
 
     return;
