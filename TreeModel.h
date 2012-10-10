@@ -61,7 +61,8 @@ template<class T> class TreeModel : public ItemModel
     TreeModel(QObject *parent = 0):
         ItemModel( parent ),
         map_( typename Item::Map() ),
-        root_( map_ )
+        root_( map_ ),
+        hasCurrentItem_( false )
     {}
 
     //! destructor
@@ -230,6 +231,31 @@ template<class T> class TreeModel : public ItemModel
         }
         return out;
     }
+
+    //@}
+
+    //!@name current index
+    //@{
+
+    //! current index;
+    virtual void clearCurrentIndex( void )
+    { hasCurrentItem_ = false; }
+
+    //! store current index
+    virtual void setCurrentIndex( const QModelIndex& index )
+    {
+        if( index.isValid() )
+        {
+
+            hasCurrentItem_ = true;
+            currentItem_ = get( index );
+
+        } else hasCurrentItem_ = false;
+    }
+
+    //! restore currentIndex
+    virtual QModelIndex currentIndex( void ) const
+    { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
 
     //@}
 
@@ -475,6 +501,12 @@ template<class T> class TreeModel : public ItemModel
 
     //! expanded indexes
     List expandedItems_;
+
+    //! true if current item is valid
+    bool hasCurrentItem_;
+
+    //! current item
+    ValueType currentItem_;
 
 
 };

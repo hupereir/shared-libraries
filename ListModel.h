@@ -52,7 +52,8 @@ class ListModel : public ItemModel
 
     //! constructor
     ListModel(QObject *parent = 0):
-        ItemModel( parent )
+        ItemModel( parent ),
+        hasCurrentItem_( false )
     {}
 
     //! destructor
@@ -130,6 +131,31 @@ class ListModel : public ItemModel
         return out;
 
     }
+
+    //@}
+
+    //!@name current index
+    //@{
+
+    //! current index;
+    virtual void clearCurrentIndex( void )
+    { hasCurrentItem_ = false; }
+
+    //! store current index
+    virtual void setCurrentIndex( const QModelIndex& index )
+    {
+        if( index.isValid() )
+        {
+
+            hasCurrentItem_ = true;
+            currentItem_ = get( index );
+
+        } else hasCurrentItem_ = false;
+    }
+
+    //! restore currentIndex
+    virtual QModelIndex currentIndex( void ) const
+    { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
 
     //@}
 
@@ -347,6 +373,12 @@ class ListModel : public ItemModel
 
     //! selection
     List selectedItems_;
+
+    //! true if current item is valid
+    bool hasCurrentItem_;
+
+    //! current item
+    ValueType currentItem_;
 
 };
 

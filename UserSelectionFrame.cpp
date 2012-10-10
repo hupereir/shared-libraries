@@ -154,3 +154,14 @@ void UserSelectionFrame::_userChanged( void )
     emit userChanged( user_ );
 }
 
+//____________________________________________________________
+void UserSelectionFrame::timerEvent( QTimerEvent* event )
+{
+
+    if( event->timerId() == timer_.timerId() )
+    {
+        timer_.stop();
+        _userChanged();
+    } else return QWidget::timerEvent( event );
+
+}

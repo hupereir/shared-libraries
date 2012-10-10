@@ -82,6 +82,20 @@ class ItemModel : public QAbstractItemModel
 
     //@}
 
+    //!@name current index
+    //@{
+
+    //! current index;
+    virtual void clearCurrentIndex( void ) = 0;
+
+    //! store current index
+    virtual void setCurrentIndex( const QModelIndex& ) = 0;
+
+    //! restore currentIndex
+    virtual QModelIndex currentIndex( void ) const = 0;
+
+    //@}
+
     //!@name expanded indexes
     //@{
 

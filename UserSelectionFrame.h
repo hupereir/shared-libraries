@@ -60,10 +60,7 @@ class UserSelectionFrame: public QWidget, public Counter
 
     //! editor
     CustomComboBox& editor( void ) const
-    {
-        assert( editor_ );
-        return *editor_;
-    }
+    { return *editor_; }
 
     signals:
 
@@ -77,16 +74,8 @@ class UserSelectionFrame: public QWidget, public Counter
 
     protected:
 
-    virtual void timerEvent( QTimerEvent* e )
-    {
-
-        if( e->timerId() == timer_.timerId() )
-        {
-            timer_.stop();
-            _userChanged();
-        } else return QWidget::timerEvent( e );
-
-    }
+    //! timer event
+    virtual void timerEvent( QTimerEvent* );
 
     private slots:
 
