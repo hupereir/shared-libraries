@@ -24,6 +24,7 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QStyle>
+#include <QtGui/QStyleOptionViewItem>
 #include <QtGui/QTextLayout>
 
 //____________________________________________________________________
@@ -111,7 +112,9 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
 
         qreal height(0);
         QTextLine line;
-        QTextLayout layout( text, QApplication::font() );
+        QTextLayout layout( text, static_cast<const QStyleOptionViewItem*>(option)->font );
+        //QTextLayout layout( text, QApplication::font() );
+        //layout.setFont( static_cast<const QStyleOptionViewItem*>(option)->font );
         layout.setTextOption(textOption);
         layout.beginLayout();
         while( ( line = layout.createLine() ).isValid())

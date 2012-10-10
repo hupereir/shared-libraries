@@ -97,7 +97,6 @@ void IconView::setModel( QAbstractItemModel* model )
         connect( model_, SIGNAL( layoutAboutToBeChanged() ), SLOT( storeSelectedIndexes() ) );
         connect( model_, SIGNAL( layoutChanged() ), SLOT( restoreSelectedIndexes() ) );
     }
-
 }
 
 //_______________________________________________
@@ -563,26 +562,15 @@ void IconView::paintEvent( QPaintEvent* event )
         if( !item.boundingRect().translated( item.position() ).intersects( clipRect ) ) continue;
 
         // setup option
-        QStyleOptionViewItemV4 option = viewOptions();
-        option.showDecorationSelected = true;
+        const QModelIndex index( model()->index( iter.key(), 0 ) );
+        QStyleOptionViewItemV4 option = _viewOptions( index );
         option.rect = item.boundingRect();
 
-        const QModelIndex index( model()->index( iter.key(), 0 ) );
-        if( selectionModel()->isSelected( index ) )
-        {
-            option.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
-            option.state |= QStyle::State_Selected;
-        }
-
-        QVariant variant( model()->data( index, Qt::ForegroundRole ) );
-        if( variant.canConvert( QVariant::Color ) )
-        { option.palette.setColor( QPalette::Text, variant.value<QColor>() ); }
-
-        if( index == hoverIndex_ ) option.state |= QStyle::State_MouseOver;
-
+        // paint
         painter.translate( item.position() );
         item.paint( &painter, &option, this );
         painter.translate( -item.position() );
+
     }
 
 }
@@ -1004,12 +992,16 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 {
     if( indexes.isEmpty() ) return QPixmap();
 
-    IconViewItem::List items;
+    IconViewItem::Map items;
     foreach( const QModelIndex& index, indexes )
     {
-        if( !items_.contains( index.row() ) ) continue;
-        items << items_[index.row()];
-        boundingRect |= items.back().boundingRect().translated( items.back().position() );
+        // find item
+        IconViewItem::Map::const_iterator iter( items_.find( index.row() ) );
+        if( iter == items_.end() ) continue;
+
+        // insert in map and update bounding rect
+        items.insert( iter.key(), iter.value() );
+        boundingRect |= iter.value().boundingRect().translated( iter.value().position() );
     }
 
     // create pixmap
@@ -1018,19 +1010,18 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 
     QPainter painter( &pixmap );
     painter.translate( -boundingRect.topLeft() );
-    foreach( const IconViewItem& item, items )
+    for( IconViewItem::Map::const_iterator iter = items.constBegin(); iter != items.constEnd(); ++iter )
     {
 
-        QStyleOptionViewItemV4 option = viewOptions();
-        option.rect = item.boundingRect();
+        // setup option
+        const QModelIndex index( model()->index( iter.key(), 0 ) );
+        QStyleOptionViewItemV4 option = _viewOptions( index );
+        option.rect = iter.value().boundingRect();
 
-        // assume all indexes are selected
-        option.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
-        option.state |= QStyle::State_Selected;
-
-        painter.translate( item.position() );
-        item.paint( &painter, &option, this );
-        painter.translate( -item.position() );
+        // paint
+        painter.translate( iter.value().position() );
+        iter.value().paint( &painter, &option, this );
+        painter.translate( -iter.value().position() );
 
     }
 
@@ -1253,6 +1244,41 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
     }
 
     return false;
+
+}
+
+//____________________________________________________________________
+QStyleOptionViewItemV4 IconView::_viewOptions( const QModelIndex& index ) const
+{
+
+    // setup option
+    QStyleOptionViewItemV4 option = viewOptions();
+    option.showDecorationSelected = true;
+
+    // state
+    if( selectionModel()->isSelected( index ) )
+    {
+        option.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+        option.state |= QStyle::State_Selected;
+    }
+
+    if( index == hoverIndex_ ) option.state |= QStyle::State_MouseOver;
+
+    // color
+    {
+        QVariant variant( model()->data( index, Qt::ForegroundRole ) );
+        if( variant.canConvert( QVariant::Color ) )
+        { option.palette.setColor( QPalette::Text, variant.value<QColor>() ); }
+    }
+
+    // font
+    {
+        QVariant variant( model()->data( index, Qt::FontRole ) );
+        if( variant.canConvert( QVariant::Font ) )
+        { option.font = variant.value<QFont>(); }
+    }
+
+    return option;
 
 }
 

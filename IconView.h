@@ -38,6 +38,7 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QRubberBand>
 #include <QtGui/QScrollBar>
+#include <QtGui/QStyleOptionViewItemV4>
 
 // forward declaration
 class BaseFindDialog;
@@ -288,6 +289,9 @@ class IconView: public QAbstractItemView, public Counter
 
     //! find selection in backward direction
     virtual bool _findBackward( const TextSelection& selection, bool rewind );
+
+    //! get view options matching a given index
+    virtual QStyleOptionViewItemV4 _viewOptions( const QModelIndex& ) const;
 
     protected slots:
 
