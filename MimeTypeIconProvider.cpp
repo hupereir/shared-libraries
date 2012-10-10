@@ -45,6 +45,7 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     iconNames_.insert( "bash", "application-x-shellscript.png" );
     iconNames_.insert( "zsh", "application-x-shellscript.png" );
     iconNames_.insert( "pl", "application-x-perl.png" );
+    iconNames_.insert( "la", "application-x-perl.png" );
 
     // latex
     iconNames_.insert( "tex", "text-x-tex.png" );
@@ -78,9 +79,13 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     iconNames_.insert( "bz2", "application-x-archive.png" );
     iconNames_.insert( "tgz", "application-x-archive.png" );
     iconNames_.insert( "zip", "application-x-archive.png" );
+    iconNames_.insert( "a", "application-x-archive.png" );
 
     // misc
     iconNames_.insert( "root", "application-x-object.png" );
+    iconNames_.insert( "o", "application-x-object.png" );
+    iconNames_.insert( "obj", "application-x-object.png" );
+    iconNames_.insert( "so", "application-x-object.png" );
 
 }
 
