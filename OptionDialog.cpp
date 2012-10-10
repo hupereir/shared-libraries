@@ -21,11 +21,11 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
 #include "OptionDialog.h"
+
+#include "BaseIcons.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "PixmapEngine.h"
 #include "Singleton.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
@@ -59,17 +59,11 @@ CustomDialog( parent, CloseButton )
     mainLayout().addLayout( layout );
 
     //! try load Question icon
-    QPixmap questionPixmap( PixmapEngine::get( ICONS::WARNING ) );
+    const QPixmap pixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
+    QLabel* label = new QLabel( this );
+    label->setPixmap( pixmap );
+    layout->addWidget( label );
 
-    // insert main vertical box
-    if( !questionPixmap.isNull() )
-    {
-        QLabel* label = new QLabel( this );
-        label->setPixmap( questionPixmap );
-        layout->addWidget( label );
-    }
-
-    QLabel* label;
     layout->addWidget( label = new QLabel(
         "This dialog allows one to modify options manually by editting them in the list. "
         "The modifications are directly applied to the application. The reload button allows "

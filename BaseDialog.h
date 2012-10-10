@@ -40,13 +40,13 @@ class BaseDialog: public QDialog
     enum Centering {
 
         //! center widget on mouse pointer
-        CENTER_ON_POINTER,
+        CenterOnPointer,
 
         //! center widget on parent widget
-        CENTER_ON_PARENT,
+        CenterOnParent,
 
         //! center widget on desktop
-        CENTER_ON_DESKTOP
+        CenterOnDesktop
 
     };
 
@@ -81,6 +81,10 @@ class BaseDialog: public QDialog
     //! size option name
     virtual void setOptionName( const QString& name )
     { monitor_.setOptionName( name ); }
+
+    //! iconsize
+    virtual QSize iconSize( void ) const
+    { return QSize( 64, 64 ); }
 
     public slots:
 

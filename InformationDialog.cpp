@@ -20,11 +20,10 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
 #include "InformationDialog.h"
-#include "PixmapEngine.h"
-
-#include <QtGui/QLayout>
+#include "BaseIcons.h"
+#include "IconEngine.h"
+#include "IconSize.h"
 
 //____________________________________________________________
 InformationDialog::InformationDialog( QWidget* parent, QString text ):
@@ -34,7 +33,7 @@ InformationDialog::InformationDialog( QWidget* parent, QString text ):
     Debug::Throw( "InformationDialog::InformationDialog\n" );
 
     //! try load Question icon
-    QPixmap pixmap = PixmapEngine::get( ICONS::INFORMATION );
+    const QPixmap pixmap( IconEngine::get( ICONS::INFORMATION ).pixmap( iconSize() ) );
     QHBoxLayout *hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);

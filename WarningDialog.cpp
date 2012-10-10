@@ -20,9 +20,11 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
 #include "WarningDialog.h"
-#include "PixmapEngine.h"
+
+#include "BaseIcons.h"
+#include "IconEngine.h"
+#include "IconSize.h"
 
 #include <QtGui/QLayout>
 
@@ -34,7 +36,7 @@ WarningDialog::WarningDialog( QWidget* parent, QString text ):
     Debug::Throw( "WarningDialog::WarningDialog\n" );
 
     //! try load Question icon
-    QPixmap pixmap = PixmapEngine::get( ICONS::WARNING );
+    const QPixmap pixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
     QHBoxLayout *hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);

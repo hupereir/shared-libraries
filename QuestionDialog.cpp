@@ -25,7 +25,8 @@
 #include "QuestionDialog.h"
 
 #include "BaseIcons.h"
-#include "PixmapEngine.h"
+#include "IconEngine.h"
+#include "IconSize.h"
 
 //____________________________________________________________
 QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
@@ -35,7 +36,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
     Debug::Throw( "QuestionDialog::QuestionDialog\n" );
 
     //! try load Question icon
-    QPixmap pixmap = PixmapEngine::get( ICONS::WARNING );
+    const QPixmap pixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
     QHBoxLayout *hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);

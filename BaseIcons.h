@@ -57,7 +57,6 @@ namespace ICONS
     static const QString FIND = "zoom-in.png";
     static const QString FIND_LARGE = "zoom-in-large.png";
     static const QString HELP = "help-contents.png";
-    static const QString INFORMATION = "dialog-information.png";
     static const QString LOCK = "document-encrypt.png";
     static const QString OPEN = "document-open.png";
     static const QString OPEN_FOLDER = "document-open-folder.png";
@@ -72,7 +71,9 @@ namespace ICONS
     static const QString RUN="system-run.png";
     static const QString SHOW_MENU = "show-menu.png";
     static const QString UNDO= "edit-undo.png";
-    static const QString WARNING = "messagebox_warning.png";
+
+    static const QString INFORMATION = "dialog-information.png";
+    static const QString WARNING = "dialog-warning.png";
 
     static const QString PREVIOUS = "arrow-left.png";
     static const QString NEXT = "arrow-right.png";

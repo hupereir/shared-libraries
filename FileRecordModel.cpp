@@ -23,7 +23,6 @@
 
 #include "FileRecordModel.h"
 
-#include "CustomPixmap.h"
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
 #include "Singleton.h"

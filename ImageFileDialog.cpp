@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file ImageFileDialog.cpp
-\brief customized file selection dialog, to store last selected directory
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "ImageFileDialog.h"
 #include "CustomPixmap.h"
 #include "FileDialog.h"

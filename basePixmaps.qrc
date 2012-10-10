@@ -8,7 +8,6 @@
     <file alias="pixmaps/configure.png">../base-pixmaps/configure.png</file>
     <file alias="pixmaps/dialog-cancel.png">../base-pixmaps/dialog-cancel.png</file>
     <file alias="pixmaps/dialog-close.png">../base-pixmaps/dialog-close.png</file>
-    <file alias="pixmaps/dialog-information.png">../base-pixmaps/dialog-information.png</file>
     <file alias="pixmaps/dialog-ok-apply.png">../base-pixmaps/dialog-ok-apply.png</file>
     <file alias="pixmaps/dialog-ok.png">../base-pixmaps/dialog-ok.png</file>
     <file alias="pixmaps/document-encrypt.png">../base-pixmaps/document-encrypt.png</file>
@@ -28,7 +27,6 @@
     <file alias="pixmaps/help-contents.png">../base-pixmaps/help-contents.png</file>
     <file alias="pixmaps/list-add.png">../base-pixmaps/list-add.png</file>
     <file alias="pixmaps/list-remove.png">../base-pixmaps/list-remove.png</file>
-    <file alias="pixmaps/messagebox_warning.png">../base-pixmaps/messagebox_warning.png</file>
     <file alias="pixmaps/qt-logo.png">../base-pixmaps/qt-logo.png</file>
     <file alias="pixmaps/show-menu.png">../base-pixmaps/show-menu.png</file>
     <file alias="pixmaps/text-html.png">../base-pixmaps/text-html.png</file>
@@ -36,6 +34,12 @@
     <file alias="pixmaps/view-refresh.png">../base-pixmaps/view-refresh.png</file>
     <file alias="pixmaps/zoom-in-large.png">../base-pixmaps/zoom-in-large.png</file>
     <file alias="pixmaps/zoom-in.png">../base-pixmaps/zoom-in.png</file>
+
+    <!-- dialog icons -->
+    <file alias="pixmaps/dialog-information.png">../base-pixmaps/dialog-information.png</file>
+    <file alias="pixmaps/dialog-warning.png">../base-pixmaps/dialog-warning.png</file>
+    <file alias="pixmaps/128x128/dialog-information.png">../base-pixmaps/dialog-information-large.png</file>
+    <file alias="pixmaps/128x128/dialog-warning.png">../base-pixmaps/dialog-warning-large.png</file>
 
     <!-- configuration icons -->
     <file alias="pixmaps/im-user.png">../base-pixmaps/im-user.png</file>

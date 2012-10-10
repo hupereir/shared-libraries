@@ -24,7 +24,6 @@
 
 #include "BaseFindDialog.h"
 #include "BaseIcons.h"
-#include "CustomPixmap.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"

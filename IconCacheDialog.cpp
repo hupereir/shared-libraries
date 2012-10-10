@@ -24,7 +24,6 @@
 #include "IconCacheDialog.h"
 
 #include "BaseIcons.h"
-#include "CustomPixmap.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "AnimatedTreeView.h"

@@ -63,7 +63,7 @@ Counter( "CustomPixmap" )
 
         QIcon icon( QFileIconProvider().icon( file ) );
         if( icon.isNull() ) return;
-        QPixmap out( icon.pixmap( IconSize( IconSize::Maximum ) ) );
+        QPixmap out( icon.pixmap( iconSize() ) );
         *this = out;
 
     }
