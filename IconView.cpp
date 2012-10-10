@@ -544,8 +544,8 @@ bool IconView::event( QEvent* event )
 void IconView::paintEvent( QPaintEvent* event )
 {
 
-
     QPainter painter( viewport() );
+    painter.setRenderHint( QPainter::TextAntialiasing, true );
     painter.setClipRegion( event->region() );
     painter.translate( -_scrollBarPosition() );
     const QRect clipRect( event->rect().translated( _scrollBarPosition() ) );
@@ -1009,6 +1009,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
     pixmap.fill( Qt::transparent );
 
     QPainter painter( &pixmap );
+    painter.setRenderHint( QPainter::TextAntialiasing, true );
     painter.translate( -boundingRect.topLeft() );
     for( IconViewItem::Map::const_iterator iter = items.constBegin(); iter != items.constEnd(); ++iter )
     {
