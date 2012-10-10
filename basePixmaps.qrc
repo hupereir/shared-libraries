@@ -32,8 +32,10 @@
     <file alias="pixmaps/text-html.png">../base-pixmaps/text-html.png</file>
     <file alias="pixmaps/user-trash.png">../base-pixmaps/user-trash.png</file>
     <file alias="pixmaps/view-refresh.png">../base-pixmaps/view-refresh.png</file>
-    <file alias="pixmaps/zoom-in-large.png">../base-pixmaps/zoom-in-large.png</file>
-    <file alias="pixmaps/zoom-in.png">../base-pixmaps/zoom-in.png</file>
+
+    <!-- find icons -->
+    <file alias="pixmaps/128x128/edit-find.png">../base-pixmaps/edit-find-large.png</file>
+    <file alias="pixmaps/edit-find.png">../base-pixmaps/edit-find.png</file>
 
     <!-- dialog icons -->
     <file alias="pixmaps/dialog-information.png">../base-pixmaps/dialog-information.png</file>

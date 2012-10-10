@@ -45,13 +45,12 @@ CustomDialog( parent )
     textLabel->setWordWrap( true );
 
     //! try load Question icon
-    const QPixmap pixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
     QHBoxLayout *hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);
     mainLayout().addLayout( hLayout );
     QLabel* label = new QLabel( this );
-    label->setPixmap( pixmap );
+    label->setPixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
     hLayout->addWidget( label, 0, Qt::AlignHCenter );
     hLayout->addWidget( textLabel, 1, Qt::AlignLeft );
 

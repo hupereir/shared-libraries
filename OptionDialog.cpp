@@ -59,9 +59,8 @@ CustomDialog( parent, CloseButton )
     mainLayout().addLayout( layout );
 
     //! try load Question icon
-    const QPixmap pixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
     QLabel* label = new QLabel( this );
-    label->setPixmap( pixmap );
+    label->setPixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
     layout->addWidget( label );
 
     layout->addWidget( label = new QLabel(

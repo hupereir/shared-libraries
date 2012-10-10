@@ -54,8 +54,7 @@ namespace ICONS
     static const QString EDIT = "edit.png";
     static const QString EDIT_CLEAR = "edit-clear-locationbar-rtl.png";
     static const QString EXIT = "application-exit.png";
-    static const QString FIND = "zoom-in.png";
-    static const QString FIND_LARGE = "zoom-in-large.png";
+    static const QString FIND = "edit-find.png";
     static const QString HELP = "help-contents.png";
     static const QString LOCK = "document-encrypt.png";
     static const QString OPEN = "document-open.png";

@@ -36,19 +36,18 @@ QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
     Debug::Throw( "QuestionDialog::QuestionDialog\n" );
 
     //! try load Question icon
-    const QPixmap pixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
     QHBoxLayout *hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);
     mainLayout().addLayout( hLayout );
 
     QLabel* label = new QLabel( this );
-    label->setPixmap( pixmap );
+    label->setPixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
     hLayout->addWidget( label, 0 );
     hLayout->addWidget( label_ = new QLabel( text, this ), 1 );
     label_->setWordWrap( true );
 
-    if( pixmap.width() + label_->fontMetrics().width( text ) >350 )
+    if( label->pixmap()->width() + label_->fontMetrics().width( text ) >350 )
     { label_->setWordWrap( true ); }
 
 }
