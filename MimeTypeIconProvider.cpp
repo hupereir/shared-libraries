@@ -61,6 +61,17 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     iconNames_.insert( "jpg", "image-x-generic.png" );
     iconNames_.insert( "gif", "image-x-generic.png" );
 
+    // videos
+    iconNames_.insert( "avi", "video-x-generic.png" );
+    iconNames_.insert( "mp4", "video-x-generic.png" );
+    iconNames_.insert( "mkv", "video-x-generic.png" );
+
+    // music
+    iconNames_.insert( "mp3", "audio-x-generic.png" );
+    iconNames_.insert( "flac", "audio-x-generic.png" );
+    iconNames_.insert( "wav", "audio-x-generic.png" );
+    iconNames_.insert( "ogg", "audio-x-generic.png" );
+
     // text formats
     iconNames_.insert( "txt", "text-plain.png" );
     iconNames_.insert( "cmake", "text-plain.png" );
