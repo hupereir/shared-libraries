@@ -21,30 +21,17 @@
 *
 *******************************************************************************/
 
-/*!
-\file    Debug.cpp
-\brief   Thread-safe option driven debugging class
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "Debug.h"
-
-/*!
-\class   Debug
-\brief   Thread-safe debugging class
-*/
 
 //______________________________________
 Debug::LockedStream::LockedStream( QTextStream& stream, QMutex& mutex ):
-mutex_lock_( &mutex ),
-stream_( stream )
+    mutexLock( &mutex ),
+    stream_( stream )
 {}
 
 //______________________________________
 Debug::LockedStream::LockedStream( const LockedStream& ref ):
-    mutex_lock_( ref.mutex_lock_.mutex() ),
+    mutexLock( ref.mutexLock.mutex() ),
     stream_( ref.stream_ )
 {}
 

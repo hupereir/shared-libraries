@@ -24,24 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file    Debug.h
-\brief   Thread-safe option driven debugging class
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include <QtCore/QTextStream>
 #include <QtCore/QIODevice>
 #include <QtCore/QString>
 #include <QtCore/QMutex>
 #include <QtCore/QMutexLocker>
-
-/*!
-\class   Debug
-\brief   Thread-safe debugging class
-*/
 
 class Debug
 {
@@ -74,7 +61,7 @@ class Debug
         private:
 
         //! locker
-        QMutexLocker mutex_lock_;
+        QMutexLocker mutexLock;
 
         //! stream
         QTextStream& stream_;
