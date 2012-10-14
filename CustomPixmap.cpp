@@ -46,8 +46,8 @@
 
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QString& file ):
-QPixmap( file ),
-Counter( "CustomPixmap" )
+    QPixmap( file ),
+    Counter( "CustomPixmap" )
 {
     Debug::Throw( "CustomPixmap::CustomPixmap.\n" );
 
@@ -63,7 +63,9 @@ Counter( "CustomPixmap" )
 
         QIcon icon( QFileIconProvider().icon( file ) );
         if( icon.isNull() ) return;
-        QPixmap out( icon.pixmap( iconSize() ) );
+
+        const QSize iconSize( IconSize( IconSize::Maximum ) );
+        QPixmap out( icon.pixmap( iconSize ) );
         *this = out;
 
     }
