@@ -40,7 +40,7 @@ class Debug
         public:
 
         //! constructor
-        LockedStream( QTextStream&, QMutex& );
+        LockedStream( QTextStream&, QMutex* = 0x0 );
 
         //! constructor
         LockedStream( const LockedStream& ref );

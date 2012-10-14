@@ -24,8 +24,8 @@
 #include "Debug.h"
 
 //______________________________________
-Debug::LockedStream::LockedStream( QTextStream& stream, QMutex& mutex ):
-    mutexLock( &mutex ),
+Debug::LockedStream::LockedStream( QTextStream& stream, QMutex* mutex ):
+    mutexLock( mutex ),
     stream_( stream )
 {}
 
@@ -46,13 +46,11 @@ Debug::LockedStream::operator QTextStream& () const
 //______________________________________
 void Debug::Throw( int level, QString str )
 {
-    // lock
-    QMutexLocker lock( &_get()._mutex() );
-
     // check level
     if( _get().level_ < level ) return;
 
     // print string to stream
+    QMutexLocker lock( &_get()._mutex() );
     _get()._stdStream() << str << flush;
 
     return;
@@ -68,8 +66,8 @@ Debug::LockedStream Debug::Throw( int level )
 {
     // return proper stream depending on debugging level
     return ( _get().level_ < level ) ?
-        LockedStream( _get()._nullStream(), _get()._mutex() ) :
-        LockedStream( _get()._stdStream(), _get()._mutex() );
+        LockedStream( _get()._nullStream(), 0x0 ) :
+        LockedStream( _get()._stdStream(), &_get()._mutex() );
 }
 
 //______________________________________
