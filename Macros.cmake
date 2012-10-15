@@ -57,10 +57,22 @@ MACRO( ADD_WIN32_EXECUTABLE target version )
 ENDMACRO( ADD_WIN32_EXECUTABLE )
 
 ###################### Install Apple application #########################
-MACRO( ADD_APPLE_EXECUTABLE target )
+MACRO( ADD_APPLE_EXECUTABLE target version )
+
+  ### version
+  SET( MACOSX_BUNDLE_SHORT_VERSION_STRING ${version} )
+  SET( MACOSX_BUNDLE_VERSION ${version})
+  SET( MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${version}" )
+
+  ### icon
+  IF(EXISTS "icon.icns" )
+    SET( MACOSX_BUNDLE_ICON_FILE icon.icns )
+  ENDIF()
 
   ### executable
   ADD_EXECUTABLE( ${target} MACOSX_BUNDLE ${ARGN} )
+
+  ### installation directory
   SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}" )
 
 ENDMACRO( ADD_APPLE_EXECUTABLE )
@@ -87,7 +99,7 @@ MACRO( ADD_PLATFORM_EXECUTABLE target version )
 
   ELSEIF( APPLE )
 
-    ADD_APPLE_EXECUTABLE( ${target} ${ARGN} )
+    ADD_APPLE_EXECUTABLE( ${target} ${version} ${ARGN} )
 
   ELSE()
 
