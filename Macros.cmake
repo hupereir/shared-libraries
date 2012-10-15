@@ -65,8 +65,8 @@ MACRO( ADD_APPLE_EXECUTABLE target version )
   SET( MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${version}" )
 
   ### icon
-  IF(EXISTS "icon.icns" )
-    SET( MACOSX_BUNDLE_ICON_FILE icon.icns )
+  IF(EXISTS "${CMAKE_SOURCE_DIR}/icon.icns" )
+    SET( MACOSX_BUNDLE_ICON_FILE ${CMAKE_SOURCE_DIR}/icon.icns )
   ENDIF()
 
   ### executable
