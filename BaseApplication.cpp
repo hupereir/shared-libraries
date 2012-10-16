@@ -212,7 +212,7 @@ void BaseApplication::_about( const QString& constName, const QString& constVers
     const QIcon icon( _applicationIcon() );
     dialog.setWindowIcon( icon );
 
-    QSize size( IconSize( IconSize::Maximum ) );
+    QSize size = IconSize( IconSize::Maximum );
     dialog.setIconPixmap( icon.pixmap( size ) );
     dialog.setText( buffer );
     dialog.adjustSize();
