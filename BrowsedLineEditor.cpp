@@ -21,20 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file BrowsedLineEditor.cpp
-\brief combined QLineEdit + associated browse button
-line edit is also customized to have faster popup menu
-result of the file dialog associated to the button is stored into the
-LineEditor object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QHBoxLayout>
-#include <QToolButton>
-
 #include "AnimatedLineEditor.h"
 #include "BaseIcons.h"
 #include "BrowsedLineEditor.h"
@@ -45,7 +31,8 @@ LineEditor object
 #include "Util.h"
 #include "Debug.h"
 
-
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QToolButton>
 
 //____________________________________________________________
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
