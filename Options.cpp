@@ -104,6 +104,11 @@ Options::Options( bool installDefaultOptions ):
         set( "SPELLCHECK_DISABLED_DICTIONARIES", " " );
         set( "SPELLCHECK_DISABLED_FILTERS", " " );
 
+        // icon theme
+        set( "USE_ICON_THEME", "0" );
+        set( "ICON_THEME", "oxygen" );
+        set( "ICON_THEME_PATH", "/usr/share/icons" );
+
         setAutoDefault( false );
 
     }
