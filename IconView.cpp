@@ -91,7 +91,7 @@ void IconView::setModel( QAbstractItemModel* model )
     QAbstractItemView::setModel( model );
     header_->setModel( model );
 
-    if( model_ = qobject_cast<ItemModel*>( model ) )
+    if( (model_ = qobject_cast<ItemModel*>(model)) )
     {
         connect( model_, SIGNAL( layoutAboutToBeChanged() ), SLOT( storeSelectedIndexes() ) );
         connect( model_, SIGNAL( layoutChanged() ), SLOT( restoreSelectedIndexes() ) );
