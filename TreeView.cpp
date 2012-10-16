@@ -75,6 +75,7 @@ TreeView::TreeView( QWidget* parent ):
 
     // header menu
     header()->setContextMenuPolicy( Qt::CustomContextMenu );
+    header()->setSortIndicator( 0, Qt::AscendingOrder );
     connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
     connect( header(), SIGNAL( sortIndicatorChanged( int, Qt::SortOrder ) ), SLOT( saveSortOrder() ) );
 
@@ -98,9 +99,9 @@ void TreeView::setModel( QAbstractItemModel* model )
 
     Debug::Throw( "TreeView::setModel.\n" );
     QTreeView::setModel( model );
-    model_ = qobject_cast<ItemModel*>( model );
 
     // selected indexes
+    model_ = qobject_cast<ItemModel*>( model );
     if( model_ )
     {
         connect( model_, SIGNAL( layoutAboutToBeChanged() ), SLOT( storeSelectedIndexes() ) );
