@@ -119,11 +119,14 @@ class BaseApplication: public BaseCoreApplication
 
     private slots:
 
+    //! configuration
+    void _updateConfiguration( void );
+
     //! fonts
     void _updateFonts( void );
 
-    //! configuration
-    void _updateConfiguration( void );
+    //! update icon path
+    void _updateIconTheme( void );
 
     protected:
 

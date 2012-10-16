@@ -45,6 +45,7 @@
 //____________________________________________
 namespace SERVER
 {
+
     //! event filter used to change appearance of QMessageBox before show, to match KDE layout
     class AppEventFilter: public QObject
     {
@@ -103,6 +104,7 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
     Debug::Throw( "BaseApplication::BaseApplication.\n" );
     connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
     connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateFonts( void ) ) );
+    connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateIconTheme( void ) ) );
 
     // use DBus connection to update on oxygen configuration change
     #ifndef QT_NO_DBUS
@@ -239,27 +241,6 @@ void BaseApplication::_updateConfiguration( void )
 }
 
 //_______________________________________________
-QIcon BaseApplication::_applicationIcon( void ) const
-{
-
-    QIcon out;
-    if( XmlOptions::get().isSpecialOption( "ICON_PIXMAP" ) )
-    {
-
-        foreach( const QString& path, XmlOptions::get().specialOptions<QString>( "ICON_PIXMAP" ) )
-        { out.addPixmap( QPixmap( path ) ); }
-
-    } else if( XmlOptions::get().contains( "ICON_PIXMAP" ) ) {
-
-        out.addPixmap( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
-
-    }
-
-    return out;
-
-}
-
-//_______________________________________________
 void BaseApplication::_updateFonts( void )
 {
 
@@ -320,5 +301,40 @@ void BaseApplication::_updateFonts( void )
         }
 
     }
+
+}
+
+//_______________________________________________
+void BaseApplication::_updateIconTheme( void )
+{
+
+    Debug::Throw( "BaseApplication::_updateIconTheme.\n" );
+    #if QT_VERSION >= 0x040600
+    if( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) )
+    {
+        QIcon::setThemeSearchPaths( QStringList() << XmlOptions::get().raw( "ICON_THEME_PATH" ) );
+        QIcon::setThemeName( XmlOptions::get().raw( "ICON_THEME" ) );
+    }
+    #endif
+}
+
+//_______________________________________________
+QIcon BaseApplication::_applicationIcon( void ) const
+{
+
+    QIcon out;
+    if( XmlOptions::get().isSpecialOption( "ICON_PIXMAP" ) )
+    {
+
+        foreach( const QString& path, XmlOptions::get().specialOptions<QString>( "ICON_PIXMAP" ) )
+        { out.addPixmap( QPixmap( path ) ); }
+
+    } else if( XmlOptions::get().contains( "ICON_PIXMAP" ) ) {
+
+        out.addPixmap( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
+
+    }
+
+    return out;
 
 }
