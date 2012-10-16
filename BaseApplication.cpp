@@ -25,6 +25,7 @@
 #include "BaseIcons.h"
 #include "File.h"
 #include "IconEngine.h"
+#include "IconSize.h"
 #include "QtUtil.h"
 #include "Util.h"
 #include "XmlOptions.h"
@@ -128,7 +129,7 @@ bool BaseApplication::realizeWidget( void )
     connect( qApp, SIGNAL( aboutToQuit( void ) ), SLOT( _aboutToQuit() ) );
 
     // actions
-    aboutAction_ = new QAction( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ), "About this &Application", this );
+    aboutAction_ = new QAction( _applicationIcon(), "About this &Application", this );
     connect( aboutAction_, SIGNAL( triggered() ), SLOT( _about() ) );
 
     aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About Qt", this );
@@ -206,9 +207,11 @@ void BaseApplication::_about( const QString& constName, const QString& constVers
 
     QMessageBox dialog;
     dialog.setWindowTitle( QString( "About ")+name );
-    QPixmap pixmap( XmlOptions::get().raw( XmlOptions::get().contains( "LARGE_ICON_PIXMAP" ) ? "LARGE_ICON_PIXMAP":"ICON_PIXMAP" ) );
-    dialog.setWindowIcon( pixmap );
-    dialog.setIconPixmap( pixmap );
+    const QIcon icon( _applicationIcon() );
+    dialog.setWindowIcon( icon );
+
+    QSize size( IconSize( IconSize::Maximum ) );
+    dialog.setIconPixmap( icon.pixmap( size ) );
     dialog.setText( buffer );
     dialog.adjustSize();
     QtUtil::centerOnWidget( &dialog, qApp->activeWindow() );
@@ -227,10 +230,32 @@ void BaseApplication::_updateConfiguration( void )
     Debug::Throw( "BaseApplication::_updateConfiguration.\n" );
 
     // application icon
-    qApp->setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
+    // would rather use mechanism to load multiple pixmap in a single icon
+    qApp->setWindowIcon( _applicationIcon() );
 
     // reload IconEngine cache (in case of icon_path_list that changed)
     IconEngine::get().reload();
+
+}
+
+//_______________________________________________
+QIcon BaseApplication::_applicationIcon( void ) const
+{
+
+    QIcon out;
+    if( XmlOptions::get().isSpecialOption( "ICON_PIXMAP" ) )
+    {
+
+        foreach( const QString& path, XmlOptions::get().specialOptions<QString>( "ICON_PIXMAP" ) )
+        { out.addPixmap( QPixmap( path ) ); }
+
+    } else if( XmlOptions::get().contains( "ICON_PIXMAP" ) ) {
+
+        out.addPixmap( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
+
+    }
+
+    return out;
 
 }
 

@@ -112,6 +112,11 @@ class BaseApplication: public BaseCoreApplication
     //! about to quit
     virtual void _aboutToQuit( void );
 
+    protected:
+
+    // application icon
+    QIcon _applicationIcon( void ) const;
+
     private slots:
 
     //! fonts
