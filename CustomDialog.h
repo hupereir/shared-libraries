@@ -51,7 +51,7 @@ class CustomDialog: public BaseDialog, public Counter
 
     //! constructor
     CustomDialog(
-        QWidget*,
+        QWidget* = 0x0,
         const unsigned int& = OkButton | CancelButton,
         Qt::WFlags = 0);
 
