@@ -55,15 +55,15 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 
     // create list
     list_ = new TreeView( this );
-    _list().setSortingEnabled( false );
-    _list().header()->hide();
-    _list().setSelectionMode( QAbstractItemView::ExtendedSelection );
-    _list().setModel( &model_ );
-    _list().setRootIsDecorated( false );
-    _list().setMask( 1<<OptionModel::Current|1<<OptionModel::VALUE );
-    _list().setItemDelegate( new TextEditionDelegate( this ) );
-    _list().setIconSize( IconSize( IconSize::Small ) );
-    layout->addWidget( &_list(), 1 );
+    list_->setSortingEnabled( false );
+    list_->header()->hide();
+    list_->setSelectionMode( QAbstractItemView::ExtendedSelection );
+    list_->setModel( &model_ );
+    list_->setRootIsDecorated( false );
+    list_->setMask( 1<<OptionModel::Current|1<<OptionModel::VALUE );
+    list_->setItemDelegate( new TextEditionDelegate( this ) );
+    list_->setIconSize( IconSize( IconSize::Small ) );
+    layout->addWidget( list_, 1 );
 
     QVBoxLayout* buttonLayout = new QVBoxLayout();
     buttonLayout->setMargin(0);
@@ -71,59 +71,59 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     layout->addLayout( buttonLayout, 0 );
 
     // list context menu
-    QMenu* menu( new ContextMenu( &_list() ) );
+    QMenu* menu( new ContextMenu( list_ ) );
 
     // Add button
     QPushButton *button;
     buttonLayout->addWidget( button = new QPushButton( "Add", this ) );
     button->setIcon( IconEngine::get( ICONS::ADD ) );
-    connect( button, SIGNAL( clicked() ), SLOT( _add() ) );
+    connect( button, SIGNAL( clicked( void ) ), SLOT( _add( void ) ) );
 
     // Add action
     QAction* action;
     addAction( action = new QAction( IconEngine::get( ICONS::ADD ), "Add", this ) );
-    connect( action, SIGNAL( triggered() ), SLOT( _add() ) );
+    connect( action, SIGNAL( triggered( void ) ), SLOT( _add( void ) ) );
     action->setShortcut( QKeySequence::New );
     menu->addAction( action );
 
     // remove button
     buttonLayout->addWidget( remove_ = new QPushButton( "Remove", this ) );
-    connect( remove_, SIGNAL( clicked() ), SLOT( _remove() ) );
+    connect( remove_, SIGNAL( clicked( void ) ), SLOT( _remove( void ) ) );
     remove_->setIcon( IconEngine::get( ICONS::REMOVE ) );
     remove_->setToolTip( "Remove selected value" );
 
     addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove", this ) );
-    connect( removeAction_, SIGNAL( triggered() ), SLOT( _remove() ) );
+    connect( removeAction_, SIGNAL( triggered( void ) ), SLOT( _remove( void ) ) );
     removeAction_->setShortcut( QKeySequence::Delete );
     removeAction_->setToolTip( "Remove selected value" );
     menu->addAction( action );
 
     // Edit button
     buttonLayout->addWidget( edit_ = new QPushButton( "Edit", this ) );
-    connect( edit_, SIGNAL( clicked() ), SLOT( _edit() ) );
+    connect( edit_, SIGNAL( clicked( void ) ), SLOT( _edit( void ) ) );
     edit_->setIcon( IconEngine::get( ICONS::EDIT ) );
     edit_->setToolTip( "Edit selected value" );
 
     addAction( editAction_ = new QAction( IconEngine::get( ICONS::EDIT ),  "Edit", this ) );
-    connect( editAction_, SIGNAL( triggered() ), SLOT( _edit() ) );
+    connect( editAction_, SIGNAL( triggered( void ) ), SLOT( _edit( void ) ) );
     menu->addAction( action );
 
     // set default button
     buttonLayout->addWidget( default_ = new QPushButton( "Default", this ) );
-    connect( default_, SIGNAL( clicked() ), SLOT( _setDefault() ) );
+    connect( default_, SIGNAL( clicked( void ) ), SLOT( _setDefault( void ) ) );
     default_->setToolTip( "Set selected value as default\n(move it to the top of the list)" );
     default_->setIcon( IconEngine::get( ICONS::DIALOG_OK_APPLY ) );
 
     addAction( defaultAction_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), "Default", this ) );
-    connect( defaultAction_, SIGNAL( triggered() ), SLOT( _setDefault() ) );
+    connect( defaultAction_, SIGNAL( triggered( void ) ), SLOT( _setDefault( void ) ) );
     menu->addAction( action );
 
     buttonLayout->addStretch(1);
 
     // set connections
-    connect( _list().selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
-    connect( _list().selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
-    connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _setDefault() ) );
+    connect( list_->selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
+    connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
+    connect( list_, SIGNAL( activated( const QModelIndex& ) ), SLOT( _setDefault() ) );
 
     // update buttons
     _updateButtons();
@@ -150,7 +150,7 @@ void OptionListBox::read( void )
     { options << OptionPair( optionName(), option ); }
 
     model_.set( options );
-    _list().resizeColumns();
+    list_->resizeColumns();
 
 }
 
@@ -172,7 +172,7 @@ void OptionListBox::_updateButtons( void )
 {
     Debug::Throw( "OptionListBox::_updateButtons.\n" );
 
-    QModelIndex current( _list().selectionModel()->currentIndex() );
+    QModelIndex current( list_->selectionModel()->currentIndex() );
     edit_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::Recordable ) );
     editAction_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::Recordable ) );
 
@@ -180,7 +180,7 @@ void OptionListBox::_updateButtons( void )
     defaultAction_->setEnabled( current.isValid() );
 
     bool removeEnabled( false );
-    foreach( const OptionPair& optionPair, model_.get( _list().selectionModel()->selectedRows() ) )
+    foreach( const OptionPair& optionPair, model_.get( list_->selectionModel()->selectedRows() ) )
     {
         if( optionPair.second.hasFlag( Option::Recordable ) )
         {
@@ -212,10 +212,10 @@ void OptionListBox::_add( void )
 
     // make sure item is selected
     QModelIndex index( model_.index( option ) );
-    if( index != _list().selectionModel()->currentIndex() )
+    if( index != list_->selectionModel()->currentIndex() )
     {
-        _list().selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
-        _list().selectionModel()->setCurrentIndex( index,  QItemSelectionModel::Current|QItemSelectionModel::Rows );
+        list_->selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
+        list_->selectionModel()->setCurrentIndex( index,  QItemSelectionModel::Current|QItemSelectionModel::Rows );
     }
 
     // update default state
@@ -230,7 +230,7 @@ void OptionListBox::_edit( void )
     Debug::Throw( "OptionListBox::_edit.\n" );
 
     // retrieve selection
-    QModelIndex current( _list().selectionModel()->currentIndex() );
+    QModelIndex current( list_->selectionModel()->currentIndex() );
     assert( current.isValid() );
 
     Options::Pair option( model_.get( current ) );
@@ -260,10 +260,10 @@ void OptionListBox::_edit( void )
 
     // make sure item is selected
     QModelIndex index( model_.index( option ) );
-    if( index != _list().selectionModel()->currentIndex() )
+    if( index != list_->selectionModel()->currentIndex() )
     {
-        _list().selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
-        _list().selectionModel()->setCurrentIndex( index,  QItemSelectionModel::Current|QItemSelectionModel::Rows );
+        list_->selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
+        list_->selectionModel()->setCurrentIndex( index,  QItemSelectionModel::Current|QItemSelectionModel::Rows );
     }
 
     // update default state
@@ -281,7 +281,7 @@ void OptionListBox::_remove( void )
 
     // retrieve selected items; retrieve only recordable options
     OptionModel::List removed;
-    foreach( const OptionPair& optionPair, model_.get( _list().selectionModel()->selectedRows() ) )
+    foreach( const OptionPair& optionPair, model_.get( list_->selectionModel()->selectedRows() ) )
     { if( optionPair.second.hasFlag( Option::Recordable ) ) removed << optionPair; }
 
     // remove
@@ -297,7 +297,7 @@ void OptionListBox::_setDefault( void )
     Debug::Throw( "OptionListBox::_setDefault.\n" );
 
     // retrieve selection
-    QModelIndex current( _list().selectionModel()->currentIndex() );
+    QModelIndex current( list_->selectionModel()->currentIndex() );
     assert( current.isValid() );
 
     // get matching option
@@ -313,7 +313,7 @@ void OptionListBox::_setDefault( void )
     currentOption.second.setCurrent( true );
     model_.add( currentOption );
 
-    _list().resizeColumns();
+    list_->resizeColumns();
 
 }
 
@@ -323,27 +323,27 @@ OptionListBox::EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDia
 {
 
     setOptionName( "OPTIONLISTBOX_EDIT" );
-    QVBoxLayout* v_layout = new QVBoxLayout();
-    v_layout->setMargin(0);
-    v_layout->setSpacing(5);
-    mainLayout().addLayout( v_layout );
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin(0);
+    vLayout->setSpacing(5);
+    mainLayout().addLayout( vLayout );
 
     if( browsable )
     {
 
         BrowsedLineEditor* browseEditor = new BrowsedLineEditor( this );
-        v_layout->addWidget( browseEditor );
+        vLayout->addWidget( browseEditor );
         browseEditor->setFileMode( mode );
         editor_ = &browseEditor->editor();
 
     } else {
 
         editor_ = new BrowsedLineEditor::Editor( this );
-        v_layout->addWidget( &editor() );
+        vLayout->addWidget( &editor() );
 
     }
 
-    v_layout->addWidget( checkbox_ = new QCheckBox( "Set as default", this ) );
+    vLayout->addWidget( checkbox_ = new QCheckBox( "Set as default", this ) );
 
     setMinimumSize( QSize( 320, 0 ) );
 

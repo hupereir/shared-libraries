@@ -27,6 +27,7 @@
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "IconEngine.h"
+#include "OptionBrowsedLineEditor.h"
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"
 #include "OptionFontEditor.h"
@@ -47,6 +48,64 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QLayout>
 #include <QtGui/QLabel>
+
+//_________________________________________________________
+class IconThemeDialog: public CustomDialog, public OptionWidgetList
+{
+
+    public:
+
+    //! constructor
+    IconThemeDialog( QWidget* parent = 0x0 ):
+        CustomDialog( parent, OkButton|CancelButton )
+    {
+
+        OptionCheckBox* checkBox;
+        mainLayout().addWidget( checkBox = new OptionCheckBox( "Use custom icon theme", this, "USE_ICON_THEME" ) );
+        addOptionWidget( checkBox );
+
+        QWidget* box = new QWidget( this );
+        mainLayout().addWidget( box );
+
+        GridLayout* gridLayout = new GridLayout();
+        gridLayout->setMaxCount(2);
+        gridLayout->setMargin(0);
+        gridLayout->setSpacing(5);
+        box->setLayout( gridLayout );
+
+        QLabel* label;
+        gridLayout->addWidget( label = new QLabel( "Theme name:", box ) );
+
+        {
+            OptionLineEditor* editor;
+            gridLayout->addWidget( editor = new OptionLineEditor( box, "ICON_THEME" ) );
+            addOptionWidget( editor );
+            label->setBuddy( editor );
+            label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
+        }
+
+        gridLayout->addWidget( label = new QLabel( "Path:", box ) );
+        {
+            OptionBrowsedLineEditor* editor;
+            gridLayout->addWidget( editor = new OptionBrowsedLineEditor( box, "ICON_THEME_PATH" ) );
+            addOptionWidget( editor );
+            label->setBuddy( editor );
+            label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
+
+            editor->setFileMode( QFileDialog::Directory );
+            editor->setAcceptMode( QFileDialog::AcceptOpen );
+        }
+
+        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignCenter );
+
+        box->setEnabled( false );
+        connect( checkBox, SIGNAL( toggled( bool ) ), box, SLOT( setEnabled( bool ) ) );
+
+        read();
+
+    }
+
+};
 
 //_________________________________________________________
 BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
@@ -120,33 +179,43 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         box = new QGroupBox( "General", parent );
         parent->layout()->addWidget( box );
 
-        GridLayout* gridLayout = new GridLayout();
-        gridLayout->setMaxCount(2);
-        box->setLayout( gridLayout );
+        {
+            QGridLayout* gridLayout = new QGridLayout();
+            box->setLayout( gridLayout );
 
-        // pixmap path
-        QLabel* label;
-        gridLayout->addWidget( label = new QLabel( "Pixmaps:", box ) );
-        label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
+            // pixmap path
+            QLabel* label;
+            gridLayout->addWidget( label = new QLabel( "Pixmaps:", box ), 0, 0, 1, 1 );
+            label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
-        QHBoxLayout* hLayout = new QHBoxLayout();
-        hLayout->setMargin(0);
-        gridLayout->addLayout( hLayout );
-        QPushButton *button = new QPushButton( IconEngine::get( ICONS::EDIT ), "Edit Pixmap Path List", box );
-        connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
-        hLayout->addWidget( button );
-        hLayout->addStretch(1);
+            QPushButton *button = new QPushButton( IconEngine::get( ICONS::EDIT ), "Edit Pixmap Path", box );
+            connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
+            gridLayout->addWidget( button, 0, 1, 1, 1 );
 
-        // debug level
-        gridLayout->addWidget( label = new QLabel( "Debug level:", box ) );
-        label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
+            // icon path
+            #if QT_VERSION >= 0x040600
+            gridLayout->addWidget( label = new QLabel( "Icons:", box ), 1, 0, 1, 1 );
+            label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
-        OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
-        spinbox->setMinimum( 0 );
-        spinbox->setMaximum( 5 );
-        spinbox->setToolTip( "Debug verbosity level" );
-        gridLayout->addWidget( spinbox );
-        addOptionWidget( spinbox );
+            button = new QPushButton( IconEngine::get( ICONS::EDIT ), "Edit Icon Theme", box );
+            connect( button, SIGNAL( clicked() ), SLOT( _editIconTheme() ) );
+            gridLayout->addWidget( button, 1, 1, 1, 1 );
+            #endif
+
+            // debug level
+            gridLayout->addWidget( label = new QLabel( "Debug level:", box ), 2, 0, 1, 1 );
+            label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
+
+            OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
+            spinbox->setMinimum( 0 );
+            spinbox->setMaximum( 5 );
+            spinbox->setToolTip( "Debug verbosity level" );
+            gridLayout->addWidget( spinbox, 2, 1, 1, 2 );
+            addOptionWidget( spinbox );
+
+            gridLayout->setColumnStretch( 2, 1 );
+
+        }
 
         // fonts
         box = new QGroupBox( "Fonts", parent );
@@ -160,12 +229,13 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         vLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
-        gridLayout = new GridLayout();
+        GridLayout* gridLayout = new GridLayout();
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
         vLayout->addLayout( gridLayout );
 
         // base font
+        QLabel* label;
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         gridLayout->addWidget( label = new QLabel( "Default font:", box ) );
         OptionFontEditor *edit = new OptionFontEditor( box, "FONT_NAME" );
@@ -272,18 +342,6 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     addOptionWidget( spinbox );
 
     label->setBuddy( spinbox );
-
-//     // item margins in list
-//     gridLayout->addWidget( label = new QLabel( "List items margin:", box ) );
-//     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
-//     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ITEM_MARGIN" ) );
-//     spinbox->setToolTip( "Default margins between items in lists" );
-//     spinbox->setSuffix( "px" );
-//     spinbox->setMinimum(0);
-//     spinbox->setMaximum(96);
-//     addOptionWidget( spinbox );
-//
-//     label->setBuddy( spinbox );
 
     return box;
 
@@ -537,6 +595,8 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 void BaseConfigurationDialog::_editPixmapPathList( void )
 {
 
+    Debug::Throw( "BaseConfigurationDialog::_editPixmapPathList.\n" );
+
     CustomDialog dialog( this );
 
     // store backup
@@ -545,7 +605,6 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
     OptionListBox *listbox = new OptionListBox( &dialog, "PIXMAP_PATH" );
     listbox->setBrowsable( true );
     listbox->setFileMode( QFileDialog::Directory );
-    listbox->setToolTip( "Pathname to load toolbar pixmaps" );
     listbox->read();
     dialog.mainLayout().addWidget( listbox );
 
@@ -564,6 +623,34 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
     }
     return;
 
+}
+
+//__________________________________________________
+void BaseConfigurationDialog::_editIconTheme( void )
+{
+    Debug::Throw( "BaseConfigurationDialog::_editIconTheme.\n" );
+    const bool useIconTheme( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) );
+    const QString iconTheme( XmlOptions::get().raw( "ICON_THEME" ) );
+    const QString iconThemePath( XmlOptions::get().raw( "ICON_THEME_PATH" ) );
+
+    IconThemeDialog dialog( this );
+    if( dialog.exec() ) dialog.write();
+    else {
+
+        XmlOptions::get().set<bool>( "USE_ICON_THEME", useIconTheme );
+        XmlOptions::get().setRaw( "ICON_THEME", iconTheme );
+        XmlOptions::get().setRaw( "ICON_THEME_PATH", iconThemePath );
+
+    }
+
+}
+
+//__________________________________________________
+void BaseConfigurationDialog::_update( void )
+{
+    Debug::Throw( "BaseConfigurationDialog::_update.\n" );
+    OptionWidgetList::write();
+    _checkModified();
 }
 
 //__________________________________________________

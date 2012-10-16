@@ -49,10 +49,10 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     };
 
     //! constructor
-    FileRecordModel( QObject* parent = 0 );
+    FileRecordModel( QObject* = 0 );
 
     //! destructor
-    virtual ~FileRecordModel()
+    virtual ~FileRecordModel( void )
     {}
 
     //! show icons
@@ -67,16 +67,16 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     //@{
 
     //! flags
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    virtual Qt::ItemFlags flags( const QModelIndex& ) const;
 
     // return data for a given index
-    virtual QVariant data(const QModelIndex &, int ) const;
+    virtual QVariant data( const QModelIndex &, int ) const;
 
     //! header data
-    virtual QVariant headerData(int, Qt::Orientation, int role = Qt::DisplayRole) const;
+    virtual QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const;
 
     //! number of columns for a given index
-    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int columnCount( const QModelIndex& = QModelIndex() ) const;
 
     //! column matching given name, if any
     virtual int findColumn( const QString& ) const;

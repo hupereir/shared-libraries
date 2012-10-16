@@ -112,13 +112,11 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //! show pixmap path dialog
     virtual void _editPixmapPathList( void );
 
+    //! show icon path dialog
+    virtual void _editIconTheme( void );
+
     //! update configuration
-    virtual void _update()
-    {
-        Debug::Throw( "BaseConfigurationDialog::_update.\n" );
-        OptionWidgetList::write();
-        _checkModified();
-    }
+    virtual void _update();
 
     //! restore configuration
     virtual void _restore();

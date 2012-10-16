@@ -71,12 +71,12 @@ int FileRecordModel::findColumn( const QString& value ) const
 }
 
 //__________________________________________________________________
-Qt::ItemFlags FileRecordModel::flags(const QModelIndex &index) const
+Qt::ItemFlags FileRecordModel::flags( const QModelIndex& index ) const
 {
 
     // default flags
     Qt::ItemFlags flags;
-    if( !index.isValid() ) return flags;
+    if( !( index.isValid() && contains( index ) ) ) return flags;
 
     // check associated record validity
     const FileRecord& record( get(index) );

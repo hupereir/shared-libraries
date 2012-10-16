@@ -113,10 +113,6 @@ class OptionListBox: public QWidget, public OptionWidget
 
     };
 
-    //! list
-    TreeView& _list( void ) const
-    { return *list_; }
-
     //! if true, use browsable line editor for Add
     bool browsable_;
 
