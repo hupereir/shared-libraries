@@ -237,6 +237,9 @@ class TreeView: public QTreeView, public Counter
 
     protected:
 
+    //! mouse press event
+    virtual void mousePressEvent( QMouseEvent* );
+
     //! paint event
     virtual void paintEvent( QPaintEvent* );
 

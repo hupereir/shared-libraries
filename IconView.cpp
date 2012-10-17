@@ -659,6 +659,10 @@ void IconView::mousePressEvent( QMouseEvent* event )
     // clear hover index
     _setHoverIndex( QModelIndex() );
 
+    // clear selection for right button click on invalid index
+    if( (event->button() == Qt::RightButton) && selectionModel() && !indexAt( event->pos() ).isValid() )
+    { selectionModel()->clear(); }
+
     // store button and position
     dragButton_ = event->button();
     dragOrigin_ = event->pos();

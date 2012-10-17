@@ -459,6 +459,15 @@ void TreeView::restoreExpandedIndexes( void )
 }
 
 //__________________________________________________________
+void TreeView::mousePressEvent( QMouseEvent* event )
+{
+    if( (event->button() == Qt::RightButton) && selectionModel() && !indexAt( event->pos() ).isValid() )
+    { selectionModel()->clear(); }
+
+    return QTreeView::mousePressEvent( event );
+}
+
+//__________________________________________________________
 void TreeView::paintEvent( QPaintEvent* event )
 {
 
