@@ -44,6 +44,7 @@ SET( base_qt_SOURCES
   BoxSelection.cpp
   BrowsedLineEditor.cpp
   BrowseIconButton.cpp
+  BusyWidget.cpp
   ClockLabel.cpp
   Color.cpp
   ColorDisplay.cpp
@@ -160,6 +161,7 @@ SET( base_qt_HEADERS
   BlockHighlight.h
   BrowsedLineEditor.h
   BrowseIconButton.h
+  BusyWidget.h
   ColorDisplay.h
   ColorGrabButton.h
   ColorMenu.h

@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file DockPanel.cpp
-\brief detachable generic panel
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "DockPanel.h"
 #include "Debug.h"
 #include "File.h"
