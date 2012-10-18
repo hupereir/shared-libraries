@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    ApplicationManager.cpp
-\brief   ensures only one instance of an application is running
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "ApplicationManager.h"
 #include "Client.h"
 #include "Debug.h"
