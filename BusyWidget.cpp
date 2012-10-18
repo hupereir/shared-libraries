@@ -46,7 +46,7 @@ BusyWidget::BusyWidget( QWidget* parent, Location location ):
     setAttribute(Qt::WA_TransparentForMouseEvents, true);
     setContextMenuPolicy(Qt::NoContextMenu);
     setFixedSize( sizeHint() );
-    setOpacity( 100 );
+    setOpacity( 150 );
 
     // setup animation
     animation_ = new QPropertyAnimation( this );

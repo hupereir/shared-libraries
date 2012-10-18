@@ -66,7 +66,7 @@ class ListModel : public ItemModel
     //! flags
     virtual Qt::ItemFlags flags(const QModelIndex &index) const
     {
-        if (!index.isValid()) return 0;
+        if (!index.isValid()) Qt::ItemFlags();
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
@@ -107,15 +107,15 @@ class ListModel : public ItemModel
     {
         selectedItems_.clear();
         foreach( const QModelIndex& index, indexes )
-        { if( index.isValid() ) selectedItems_ << get( index ); }
+        { if( contains( index ) ) selectedItems_ << values_[index.row()]; }
     }
 
     //! store index internal selection state
     virtual void setIndexSelected( const QModelIndex& index, bool value )
     {
-        if( !index.isValid() ) return;
-        if( value ) selectedItems_ << get(index);
-        else selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), get(index) ) ), selectedItems_.end() );
+        if( !contains( index ) ) return;
+        if( value ) selectedItems_ << values_[index.row()];
+        else selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), values_[index.row()] ) ), selectedItems_.end() );
     }
 
     //! get list of internal selected items
@@ -144,11 +144,11 @@ class ListModel : public ItemModel
     //! store current index
     virtual void setCurrentIndex( const QModelIndex& index )
     {
-        if( index.isValid() )
+        if( contains( index ) )
         {
 
             hasCurrentItem_ = true;
-            currentItem_ = get( index );
+            currentItem_ = values_[index.row()];
 
         } else hasCurrentItem_ = false;
     }
@@ -213,12 +213,25 @@ class ListModel : public ItemModel
     //! insert values
     virtual void replace( const QModelIndex& index, const ValueType& value )
     {
-        if( !index.isValid() ) add( value );
+        if( !contains( index ) ) add( value );
         else {
+
             emit layoutAboutToBeChanged();
-            setIndexSelected( index, false );
-            values_[index.row()] = value;
-            setIndexSelected( index, true );
+
+            const ValueType& oldValue( values_[index.row()] );
+            if( selectedItems_.contains( oldValue ) )
+            {
+
+                selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), oldValue ) ), selectedItems_.end() );
+                values_[index.row()] = value;
+                selectedItems_ << value;
+
+            } else {
+
+                values_[index.row()] = value;
+
+            }
+
             emit layoutChanged();
         }
     }
