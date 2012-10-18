@@ -26,6 +26,8 @@
 
 #include "Counter.h"
 
+#include <QtCore/QBasicTimer>
+#include <QtCore/QTimerEvent>
 #include <QtCore/QPropertyAnimation>
 #include <QtGui/QWidget>
 #include <QtGui/QPaintEvent>
@@ -110,6 +112,9 @@ class BusyWidget: public QWidget, public Counter
     //! paint event
     virtual void paintEvent( QPaintEvent* );
 
+    //! timer event
+    virtual void timerEvent( QTimerEvent* );
+
     //! adjust position based on parent
     void _adjustPosition( void );
 
@@ -118,11 +123,17 @@ class BusyWidget: public QWidget, public Counter
     //! animation
     QPropertyAnimation* animation_;
 
+    //! basic time
+    QBasicTimer timer_;
+
     //! painter path
     QPainterPath path_;
 
     //! location
     Location location_;
+
+    //! delay
+    int delay_;
 
     //! radius
     int radius_;

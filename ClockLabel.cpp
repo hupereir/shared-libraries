@@ -22,19 +22,9 @@
 *
 *******************************************************************************/
 
-/*!
-\file ClockLabel.cpp
-\brief a self-updated label displaying current date and time
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "ClockLabel.h"
 #include "Debug.h"
 #include "TransitionWidget.h"
-
-
 
 //__________________________________________________________
 //! timestamp string format

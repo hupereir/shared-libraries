@@ -90,8 +90,10 @@ void CursorMonitor::timerEvent( QTimerEvent* e )
 
     if( e->timerId() == autoHideTimer_.timerId() )
     {
+
         autoHideTimer_.stop();
         _setCursorState( CursorHidden );
+
     } else QObject::timerEvent( e );
 
 }

@@ -22,28 +22,17 @@
 *
 *******************************************************************************/
 
-/*!
-\file UserSelectionFrame.cc
-\brief current user
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QLayout>
-#include <QLabel>
-
 #include "Util.h"
 #include "UserSelectionFrame.h"
 
-
-
+#include <QtGui/QLayout>
+#include <QtGui/QLabel>
 
 //____________________________________________________________
 UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
-QWidget( parent ),
-Counter( "UserSelectionFrame" ),
-delay_( 500 )
+    QWidget( parent ),
+    Counter( "UserSelectionFrame" ),
+    delay_( 500 )
 {
 
     Debug::Throw( "UserSelectionFrame::UserSelectionFrame\n" );

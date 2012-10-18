@@ -32,8 +32,9 @@ BusyWidget::BusyWidget( QWidget* parent, Location location ):
     QWidget( parent ),
     Counter( "BusyWidget" ),
     location_( location ),
+    delay_( 200 ),
     radius_( 18 ),
-    thickness_( 5.5 ),
+    thickness_( 5 ),
     margin_( 10 ),
     angle_( 0 )
 {
@@ -44,9 +45,8 @@ BusyWidget::BusyWidget( QWidget* parent, Location location ):
     setFocusPolicy(Qt::NoFocus);
     setAttribute(Qt::WA_TransparentForMouseEvents, true);
     setContextMenuPolicy(Qt::NoContextMenu);
-    setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
     setFixedSize( sizeHint() );
-    setOpacity( 200 );
+    setOpacity( 100 );
 
     // setup animation
     animation_ = new QPropertyAnimation( this );
@@ -115,15 +115,24 @@ bool BusyWidget::eventFilter( QObject* object, QEvent* event )
 void BusyWidget::start( void )
 {
     Debug::Throw( "BusyWidget::start.\n" );
-    if( animation_->state() == QAbstractAnimation::Stopped )
-    { animation_->start(); }
+    if( timer_.isActive() ) return;
+    if( delay_ >= 0 ) timer_.start( delay_, this );
+    else {
+
+        if( animation_->state() == QAbstractAnimation::Stopped ) animation_->start();
+        if( !isVisible() ) show();
+
+    }
+
 }
 
 //__________________________________________________________________________
 void BusyWidget::stop( void )
 {
     Debug::Throw( "BusyWidget::stop.\n" );
-    animation_->stop();
+    if( timer_.isActive() ) timer_.stop();
+    if( animation_->state() != QAbstractAnimation::Stopped ) animation_->stop();
+    if( isVisible() ) hide();
 }
 
 //__________________________________________________________________________
@@ -147,6 +156,20 @@ void BusyWidget::paintEvent( QPaintEvent* event )
 
     painter.rotate( 180 );
     painter.drawPath( path_ );
+
+}
+
+//__________________________________________________________________________
+void BusyWidget::timerEvent( QTimerEvent* event )
+{
+    if( event->timerId() == timer_.timerId() )
+    {
+
+        timer_.stop();
+        if( animation_->state() == QAbstractAnimation::Stopped ) animation_->start();
+        if( !isVisible() ) show();
+
+    } else return QWidget::timerEvent( event );
 
 }
 

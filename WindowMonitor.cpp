@@ -21,20 +21,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file WindowMonitor.cpp
-\brief used to automatically save size of top level widgets
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-
 #include "XmlOptions.h"
 #include "WindowMonitor.h"
 
-
+#include <cassert>
 
 //_________________________________________________________
 WindowMonitor::WindowMonitor( QWidget* parent ):

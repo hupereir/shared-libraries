@@ -94,11 +94,7 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
 {
 
   if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event );
-
-  // stop timer
-  // (all BasicTimers restart automatically by default)
   timer_.stop();
-
   _highlight();
 
 }

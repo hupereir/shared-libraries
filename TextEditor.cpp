@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file TextEditor.cpp
-\brief Customized QTextEdit object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "BaseIcons.h"
 #include "BaseReplaceDialog.h"
 #include "InformationDialog.h"
