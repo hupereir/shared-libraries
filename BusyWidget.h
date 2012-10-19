@@ -83,6 +83,10 @@ class BusyWidget: public QWidget, public Counter
     //!@name modifiers
     //@{
 
+    //! delay
+    virtual void setDelay( int value )
+    { delay_ = value; }
+
     //! angle
     virtual void setAngle( qreal value )
     {
