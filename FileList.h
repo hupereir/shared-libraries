@@ -31,7 +31,6 @@
 #include "TimeStamp.h"
 #include "ValidFileThread.h"
 
-#include <cassert>
 #include <QtCore/QObject>
 
 //! handles list of files saved into resource file for later reopening
@@ -44,18 +43,11 @@ class FileList: public QObject, public Counter
     public:
 
     //! constructor
-    FileList( QObject* parent ):
-        QObject( parent ),
-        Counter( "FileList" ),
-        maxSize_( -1 ),
-        check_( true ),
-        cleanEnabled_( false ),
-        thread_( this )
-    {}
+    FileList( QObject* parent );
 
     //! destructor
     virtual ~FileList( void )
-    { Debug::Throw( "FileList::~FileList.\n" ); }
+    {}
 
     //! returns true if file is found in list
     virtual bool contains( const File& file ) const;
@@ -122,9 +114,6 @@ class FileList: public QObject, public Counter
 
     protected:
 
-    //! custom event, used to retrieve file validity check event
-    void customEvent( QEvent* );
-
     //! maximum Size
     virtual void _setMaxSize( const int& value );
 
@@ -149,6 +138,10 @@ class FileList: public QObject, public Counter
     virtual FileRecord::List& _records( void )
     { return records_; }
 
+    protected slots:
+
+    //! process records from threads
+    void _processRecords( const FileRecord::List&, bool );
 
     private:
 

@@ -28,79 +28,47 @@
 #include "Debug.h"
 #include "FileRecord.h"
 
-#include <QtCore/QEvent>
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
 #include <QtCore/QThread>
-
-//! used to post a new grid when ready
-class ValidFileEvent: public QEvent, public Counter
-{
-
-    public:
-
-    //! constructor
-    ValidFileEvent( const FileRecord::List& records, const bool& has_invalid_records ):
-        QEvent( eventType() ),
-        Counter( "ValidFileEvent" ),
-        records_( records ),
-        hasInvalidRecords_( has_invalid_records )
-    {}
-
-    //! destructor
-    ~ValidFileEvent( void )
-    {}
-
-    //! static event type
-    static QEvent::Type eventType( void );
-
-    //! records
-    const FileRecord::List& records()
-    { return records_; }
-
-    //! clean enabled
-    const bool& hasInvalidRecords( void )
-    { return hasInvalidRecords_; }
-
-    private:
-
-    //! ValidFile success flag
-    FileRecord::List records_;
-
-    //! true if some invalid files are present
-    bool hasInvalidRecords_;
-
-};
 
 //! independent thread used to automatically save file
 class ValidFileThread: public QThread, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
-    ValidFileThread( QObject* reciever ):
-        Counter( "ValidFileThread" ),
-        reciever_( reciever ),
-        checkDuplicates_( true )
-    {}
+    ValidFileThread( QObject* = 0 );
 
     //! check duplicates
     void setCheckDuplicates( bool value )
-    { checkDuplicates_ = value; }
+    {
+        QMutexLocker lock( &mutex_ );
+        checkDuplicates_ = value;
+    }
 
     //! set file
     void setRecords( const FileRecord::List& records )
-    { records_ = records; }
+    {
+        QMutexLocker lock( &mutex_ );
+        records_ = records;
+    }
 
     //! Check files validity. Post a ValidFileEvent when finished
     void run( void );
 
+    signals:
+
+    //! records are available
+    void recordsAvailable( const FileRecord::List&, bool );
+
     private:
 
-    const bool& _checkDuplicates( void ) const
-    { return checkDuplicates_; }
-
-    //! reciever object for posted events
-    QObject* reciever_;
+    //! mutex
+    QMutex mutex_;
 
     //! check duplicates
     bool checkDuplicates_;

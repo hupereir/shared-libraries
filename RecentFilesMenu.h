@@ -51,13 +51,13 @@ class RecentFilesMenu: public QMenu, public Counter
 
     //! check if a file is in database, removes it if yes
     virtual void remove( const QString& file )
-    { _fileList().remove( File( file ).expand() ); }
+    { fileList_->remove( File( file ).expand() ); }
 
     //! check if a file is in database, adds it if not, select the file
     virtual void select( const QString& file )
     {
-        File new_file( File( file ).expand() );
-        emit fileSelected( _fileList().add( new_file ) );
+        File newFile( File( file ).expand() );
+        emit fileSelected( fileList_->add( newFile ) );
     }
 
     //! open last valid file, returns true if any
@@ -83,11 +83,11 @@ class RecentFilesMenu: public QMenu, public Counter
 
     //! check if a file is in database, adds it if not
     virtual FileRecord& add( const QString& file )
-    { return _fileList().add( File( file ) ); }
+    { return fileList_->add( File( file ) ); }
 
     //! check if a file is in database, adds it if not
     virtual FileRecord& add( File file )
-    { return _fileList().add( file.expand() ); }
+    { return fileList_->add( file.expand() ); }
 
     private slots:
 
@@ -105,17 +105,6 @@ class RecentFilesMenu: public QMenu, public Counter
     void _loadFiles( void );
 
     private:
-
-    //! file list
-    FileList& _fileList( void ) const
-    {
-        assert( fileList_ );
-        return *fileList_;
-    }
-
-    //! clean action
-    QAction& _cleanAction( void ) const
-    { return *cleanAction_; }
 
     //! associated file list
     FileList* fileList_;

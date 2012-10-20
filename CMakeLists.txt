@@ -217,6 +217,7 @@ SET( base_qt_HEADERS
   TreeView.h
   TreeViewItemDelegate.h
   UserSelectionFrame.h
+  ValidFileThread.h
   XmlFileList.h
 )
 

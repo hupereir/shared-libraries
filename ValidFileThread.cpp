@@ -24,21 +24,17 @@
 #include "ValidFileThread.h"
 #include "File.h"
 
-#include <QtGui/QApplication>
+#include <QtCore/QMetaType>
 #include <algorithm>
 
 //______________________________________________________
-QEvent::Type ValidFileEvent::eventType( void )
+ValidFileThread::ValidFileThread( QObject* parent ):
+    QThread( parent ),
+    Counter( "ValidFileThread" ),
+    checkDuplicates_( true )
 {
-
-    #if QT_VERSION >= 0x040400
-    static QEvent::Type event_type = (QEvent::Type) QEvent::registerEventType();
-    #else
-    static QEvent::Type event_type = QEvent::User;
-    #endif
-
-    return event_type;
-
+    // register FileRecord::List as meta type so that it can be used in SIGNAL
+    qRegisterMetaType<FileRecord::List>( "FileRecord::List" );
 }
 
 //______________________________________________________
@@ -55,7 +51,7 @@ void ValidFileThread::run( void )
     }
 
     // look for duplicated records
-    if( _checkDuplicates() )
+    if( checkDuplicates_ )
     {
         for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); )
         {
@@ -79,7 +75,8 @@ void ValidFileThread::run( void )
 
     }
 
-    qApp->postEvent( reciever_, new ValidFileEvent( records_, hasInvalidRecords ) );
+    emit recordsAvailable( records_, hasInvalidRecords );
+
     return;
 
 }

@@ -21,20 +21,26 @@
 *
 *******************************************************************************/
 
-/*!
-\file FileList.cpp
-\brief   handles list of files saved into resource file for later reopening
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Debug.h"
 #include "FileList.h"
 #include "File.h"
 #include "Str.h"
 
 #include <algorithm>
+#include <cassert>
+
+//_______________________________________________
+FileList::FileList( QObject* parent ):
+    QObject( parent ),
+    Counter( "FileList" ),
+    maxSize_( -1 ),
+    check_( true ),
+    cleanEnabled_( false ),
+    thread_( this )
+{
+    // thread connection
+    connect( &thread_, SIGNAL( recordsAvailable( const FileRecord::List&, bool ) ), this, SLOT( _processRecords( const FileRecord::List&, bool ) ) );
+}
 
 //_______________________________________________
 bool FileList::contains( const File& file ) const
@@ -102,31 +108,21 @@ void FileList::checkValidFiles( void )
 }
 
 //_______________________________________________
-void FileList::customEvent( QEvent* event )
+void FileList::_processRecords( const FileRecord::List& records, bool hasInvalidRecords)
 {
 
-    if( event->type() != ValidFileEvent::eventType() ) return QObject::customEvent( event );
-
-    ValidFileEvent* valid_file_event( static_cast<ValidFileEvent*>(event) );
-    if( !valid_file_event ) return QObject::customEvent( event );
-
     // set file records validity
-    FileRecord::List& current_records( _records() );
-    const FileRecord::List& records( valid_file_event->records() );
-    for( FileRecord::List::iterator iter = current_records.begin(); iter != current_records.end(); ++iter )
+    FileRecord::List& currentRecords( _records() );
+    for( FileRecord::List::iterator iter = currentRecords.begin(); iter != currentRecords.end(); ++iter )
     {
-        FileRecord::List::const_iterator found = std::find_if(
-            records.begin(),
-            records.end(),
-            FileRecord::SameFileFTor( iter->file() ) );
+        FileRecord::List::const_iterator found = std::find_if( records.begin(), records.end(), FileRecord::SameFileFTor( iter->file() ) );
         if( found == records.end() ) continue;
         iter->setValid( found->isValid() );
     }
 
-    _setCleanEnabled( valid_file_event->hasInvalidRecords() );
+    _setCleanEnabled( hasInvalidRecords );
 
     emit validFilesChecked();
-    return QObject::customEvent( event );
 
 }
 

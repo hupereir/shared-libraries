@@ -41,9 +41,9 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
 
     setTitle( "Open &Recent" );
     connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
-    connect( this, SIGNAL( aboutToShow( void ) ), &_fileList(), SLOT( checkValidFiles( void ) ) );
+    connect( this, SIGNAL( aboutToShow( void ) ), fileList_, SLOT( checkValidFiles( void ) ) );
     connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _loadFiles( void ) ) );
-    connect( &_fileList(), SIGNAL( validFilesChecked( void ) ), SLOT( _updateActions( void ) ) );
+    connect( fileList_, SIGNAL( validFilesChecked( void ) ), SLOT( _updateActions( void ) ) );
 
     // icons
     setIcon( IconEngine::get( ICONS::OPEN ) );
@@ -52,8 +52,8 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
     actionGroup_->setExclusive( true );
 
     addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), "&Clean", this ) );
-    connect( &_cleanAction(), SIGNAL( triggered() ), SLOT( _clean() ) );
-    _cleanAction().setEnabled( false );
+    connect( cleanAction_, SIGNAL( triggered() ), SLOT( _clean() ) );
+    cleanAction_->setEnabled( false );
     addSeparator();
 
 }
@@ -67,7 +67,7 @@ bool RecentFilesMenu::openLastValidFile( void )
 {
 
     Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );
-    FileRecord record( _fileList().lastValidFile() );
+    FileRecord record( fileList_->lastValidFile() );
     if( record.file().isEmpty() ) return false;
 
     emit fileSelected( record );
@@ -77,7 +77,7 @@ bool RecentFilesMenu::openLastValidFile( void )
 
 //______________________________________
 void RecentFilesMenu::setCurrentFile( const File& file )
-{ if( !file.isEmpty() ) setCurrentFile( _fileList().add( file.expand() ) ); }
+{ if( !file.isEmpty() ) setCurrentFile( fileList_->add( file.expand() ) ); }
 
 //______________________________________
 void RecentFilesMenu::_updateActions( void )
@@ -86,7 +86,7 @@ void RecentFilesMenu::_updateActions( void )
     Debug::Throw( "RecentFilesMenu::_updateActions.\n" );
 
     // set actions enability
-    FileRecord::List records( _fileList().records() );
+    FileRecord::List records( fileList_->records() );
     for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
 
@@ -100,16 +100,16 @@ void RecentFilesMenu::_updateActions( void )
 
     }
 
-    _cleanAction().setEnabled( _fileList().cleanEnabled() );
+    cleanAction_->setEnabled( fileList_->cleanEnabled() );
 
 }
 
 //______________________________________
 void RecentFilesMenu::_clean( void )
 {
-    if( !_fileList().check() && !QuestionDialog( this,"clear list ?" ).exec() ) return;
-    else if( _fileList().check() && !QuestionDialog( this,"Remove invalid or duplicated files from list ?" ).exec() ) return;
-    _fileList().clean();
+    if( !fileList_->check() && !QuestionDialog( this,"clear list ?" ).exec() ) return;
+    else if( fileList_->check() && !QuestionDialog( this,"Remove invalid or duplicated files from list ?" ).exec() ) return;
+    fileList_->clean();
 }
 
 //_______________________________________________
@@ -131,7 +131,7 @@ void RecentFilesMenu::_loadFiles( void )
     Debug::Throw( "RecentFilesMenu::_loadFiles.\n" );
 
     // run thread to check file validity
-    _cleanAction().setEnabled( _fileList().cleanEnabled() );
+    cleanAction_->setEnabled( fileList_->cleanEnabled() );
 
     // clear menu an actions map
     for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
@@ -139,7 +139,7 @@ void RecentFilesMenu::_loadFiles( void )
     actions_.clear();
 
     // redo all actions
-    FileRecord::List records( _fileList().records() );
+    FileRecord::List records( fileList_->records() );
     if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") ) { std::sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
     else { std::sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
 
@@ -158,7 +158,7 @@ void RecentFilesMenu::_loadFiles( void )
         action->setChecked( record.file() == currentFile().file() );
         actionGroup_->addAction( action );
 
-        if( _fileList().check() ) action->setEnabled( record.file().size() && record.isValid() );
+        if( fileList_->check() ) action->setEnabled( record.file().size() && record.isValid() );
         actions_.insert( action, record );
     }
 
