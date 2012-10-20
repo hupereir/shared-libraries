@@ -21,36 +21,22 @@
 *
 *******************************************************************************/
 
-/*!
-\file SvgThread.cpp
-\brief check validity of a set of files
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <algorithm>
-#include <QApplication>
 #include "SvgThread.h"
 #include "File.h"
 
-
+#include <QtCore/QMetaType>
+#include <algorithm>
 
 namespace SVG
 {
 
     //______________________________________________________
-    QEvent::Type SvgEvent::eventType( void )
+    SvgThread::SvgThread( QObject* parent ):
+        QThread( parent ),
+        svgOffset_( 0 )
     {
-
-        #if QT_VERSION >= 0x040400
-        static QEvent::Type event_type = (QEvent::Type) QEvent::registerEventType();
-        #else
-        static QEvent::Type event_type = QEvent::User;
-        #endif
-
-        return event_type;
-
+        // register FileRecord::List as meta type so that it can be used in SIGNAL
+        qRegisterMetaType<SVG::ImageCache>( "Svg::ImageCache" );
     }
 
     //______________________________________________________
@@ -61,19 +47,20 @@ namespace SVG
         if( svgIds_.empty() ) return;
 
         svg_.updateConfiguration();
+        cache_.clear();
 
-        ImageCache cache;
         for( SvgId::List::const_iterator iter = svgIds_.begin(); iter != svgIds_.end(); ++iter )
         {
 
             QImage image( iter->size(), QImage::Format_ARGB32_Premultiplied );
             image.fill( Qt::transparent );
             svg_.render( image, svgOffset_, iter->id() );
-            cache.insert( *iter, image );
+            cache_.insert( *iter, image );
 
         }
 
-        qApp->postEvent( reciever_, new SvgEvent( cache ) );
+        emit imageCacheAvailable( cache_ );
+
         return;
 
     }

@@ -29,7 +29,6 @@
 
 #include <QtCore/QSize>
 #include <QtCore/QObject>
-#include <cassert>
 
 //! svg namespace
 namespace SVG
@@ -75,10 +74,10 @@ namespace SVG
         /*! return true if changed */
         bool reload( const bool& forced = false );
 
-        protected:
+        protected slots:
 
-        //! custom event, used for preloading
-        void customEvent( QEvent* );
+        //! process image cache generated from thread
+        void _processImageCache( const ImageCache& );
 
         private:
 

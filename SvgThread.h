@@ -24,77 +24,62 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "SvgRenderer.h"
 #include "Svg.h"
 
 #include <QtCore/QEvent>
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
 #include <QtCore/QThread>
 
 //! used to post a new grid when ready
 namespace SVG
 {
 
-    class SvgEvent: public QEvent
-    {
-
-        public:
-
-        //! constructor
-        SvgEvent( const ImageCache& cache ):
-            QEvent( eventType() ),
-            cache_( cache )
-        {}
-
-        //! destructor
-        ~SvgEvent( void )
-        {}
-
-        //! static event type
-        static QEvent::Type eventType( void );
-
-        //! records
-        const ImageCache& cache() const
-        { return cache_; }
-
-        private:
-
-        //! Svg cache
-        ImageCache cache_;
-
-    };
-
     //! independent thread used to automatically save file
     class SvgThread: public QThread
     {
 
+        Q_OBJECT
+
         public:
 
         //! constructor
-        SvgThread( QObject* reciever ):
-            reciever_( reciever ),
-            svgOffset_( 0 )
-        {}
+        SvgThread( QObject* );
 
         //! svg file
         void setSvgFile( const QString& file )
-        { svg_.load( file ); }
+        {
+            QMutexLocker lock( &mutex_ );
+            svg_.load( file );
+        }
 
         //! offset
         void setSvgOffset( const double& value )
-        { svgOffset_ = value; }
+        {
+            QMutexLocker lock( &mutex_ );
+            svgOffset_ = value;
+        }
 
         //! set file
-        void setSvgIdList( const SvgId::List& svg_ids )
-        { svgIds_ = svg_ids; }
+        void setSvgIdList( const SvgId::List& svgIds )
+        {
+            QMutexLocker lock( &mutex_ );
+            svgIds_ = svgIds;
+        }
 
         //! Check files validity. Post a SvgEvent when finished
         void run( void );
 
+        signals:
+
+        //! image cache available
+        void imageCacheAvailable( const ImageCache& );
+
         private:
 
-        //! reciever object for posted events
-        QObject* reciever_;
+        //! mutex
+        QMutex mutex_;
 
         //! svg renderer
         SvgRenderer svg_;
@@ -104,6 +89,9 @@ namespace SVG
 
         //! requested sizes
         SvgId::List svgIds_;
+
+        //! image cache
+        ImageCache cache_;
 
     };
 

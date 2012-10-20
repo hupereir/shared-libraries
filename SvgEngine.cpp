@@ -45,6 +45,9 @@ namespace SVG
         thread_( this )
     {
 
+        // connect thread
+        connect( &thread_, SIGNAL( imageCacheAvailable( const ImageCache& ) ), this, SLOT( _processImageCache( const ImageCache& ) ) );
+
         XmlOptions::get().setAutoDefault( true );
         XmlOptions::get().keep( "SVG_BACKGROUND" );
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background.svg", Option::Recordable|Option::Current ) );
@@ -116,15 +119,10 @@ namespace SVG
     }
 
     //_______________________________________________
-    void SvgEngine::customEvent( QEvent* event )
+    void SvgEngine::_processImageCache( const ImageCache& cache )
     {
 
-        if( event->type() != SvgEvent::eventType() ) return QObject::customEvent( event );
-
-        SvgEvent* svg_event( static_cast<SvgEvent*>(event) );
-        if( !svg_event ) return QObject::customEvent( event );
-
-        for( ImageCache::const_iterator iter = svg_event->cache().begin(); iter != svg_event->cache().end(); ++iter )
+        for( ImageCache::const_iterator iter = cache.begin(); iter != cache.end(); ++iter )
         { cache_.insert( iter.key(), QPixmap::fromImage( iter.value() ) ); }
 
     }

@@ -34,6 +34,7 @@ SET( base_svg_SOURCES
 SET( base_svg_HEADERS
   SvgEngine.h
   SvgPlasmaInterface.h
+  SvgThread.h
 )
 
 SET( base_svg_RESOURCES baseSvg.qrc)
