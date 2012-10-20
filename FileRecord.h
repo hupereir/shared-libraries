@@ -33,7 +33,6 @@
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
-#include <cassert>
 
 //! handles previously opened file and tags
 class FileRecord: public Counter

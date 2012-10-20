@@ -23,6 +23,8 @@
 
 #include "FileRecord.h"
 
+#include <cassert>
+
 //_______________________________________________
 FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap( void )
 {
