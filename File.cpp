@@ -429,7 +429,7 @@ File::List File::listFiles( const unsigned int& flags ) const
 
     List out;
     File fullname( expand() );
-    if( !fullname.isDirectory() || (fullname.isLink() && !flags&FollowLinks ) ) return out;
+    if( !fullname.isDirectory() || (fullname.isLink() && !(flags&FollowLinks) ) ) return out;
     if( !fullname.endsWith( "/" ) ) fullname += "/";
 
     // open directory
