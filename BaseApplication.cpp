@@ -130,6 +130,9 @@ bool BaseApplication::realizeWidget( void )
     // connections
     connect( qApp, SIGNAL( aboutToQuit( void ) ), SLOT( _aboutToQuit() ) );
 
+    // need to update icon theme upfront to make sure themed icons are loaded
+    _updateIconTheme();
+    
     // actions
     aboutAction_ = new QAction( _applicationIcon(), "About this &Application", this );
     connect( aboutAction_, SIGNAL( triggered() ), SLOT( _about() ) );
