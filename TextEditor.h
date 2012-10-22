@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file TextEditor.h
-\brief Customized QTextEdit object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "BlockHighlight.h"
 #include "BoxSelection.h"
 #include "Counter.h"
@@ -73,6 +65,18 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
     public:
 
+    //! modifiers
+    enum Modifier
+    {
+        ModifierNone = 0,
+        ModifierCapsLock = 1<<0,
+        ModifierNumLock = 1<<1,
+        ModifierInsert = 1<<2,
+        ModifierWrap = 1<<3
+    };
+
+    Q_DECLARE_FLAGS( Modifiers, Modifier );
+
     //! constructor
     TextEditor( QWidget* parent = 0 );
 
@@ -113,7 +117,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     this overloads the base class method (although the later is not virtual)
     in order to properly handle box selection, if any
     */
-    void mergeCurrentCharFormat( const QTextCharFormat & modifier );
+    void mergeCurrentCharFormat( const QTextCharFormat& );
 
     //! clear box selection
     virtual void clearBoxSelection( void )
@@ -320,17 +324,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     //@}
 
     //! modifiers
-    enum Modifier
-    {
-        MODIFIER_NONE = 0,
-        MODIFIER_CAPS_LOCK = 1<<0,
-        MODIFIER_NUM_LOCK = 1<<1,
-        MODIFIER_INSERT = 1<<2,
-        MODIFIER_WRAP = 1<<3
-    };
-
-    //! modifiers
-    const unsigned int& modifiers( void ) const
+    Modifiers modifiers( void ) const
     { return modifiers_; }
 
     //! modifiers
@@ -366,7 +360,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     void hasFocus( TextEditor* );
 
     //! overwrite mode changed
-    void modifiersChanged( unsigned int );
+    void modifiersChanged( TextEditor::Modifiers );
 
     public slots:
 
@@ -863,8 +857,10 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
     //! keyboard modifiers
     /*! this is a bitwise or of the Modifiers enumeration */
-    unsigned int modifiers_;
+    Modifiers modifiers_;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( TextEditor::Modifiers )
 
 #endif

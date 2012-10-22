@@ -76,7 +76,7 @@ TextEditor::TextEditor( QWidget *parent ):
     cursorMonitor_( viewport() ),
     removeLineBuffer_( this ),
     clickCounter_( this ),
-    modifiers_( MODIFIER_NONE )
+    modifiers_( ModifierNone )
 {
 
     Debug::Throw( "TextEditor::TextEditor.\n" );
@@ -1410,8 +1410,8 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     // check NumLock and CapsLock
     /*! right now this works only on X11 */
     bool changed( false );
-    if( event->key() == Qt::Key_CapsLock ) changed = _setModifier( MODIFIER_CAPS_LOCK, !modifier( MODIFIER_CAPS_LOCK ) );
-    else if( event->key() == Qt::Key_NumLock ) changed = _setModifier( MODIFIER_NUM_LOCK, !modifier( MODIFIER_NUM_LOCK ) );
+    if( event->key() == Qt::Key_CapsLock ) changed = _setModifier( ModifierCapsLock, !modifier( ModifierCapsLock ) );
+    else if( event->key() == Qt::Key_NumLock ) changed = _setModifier( ModifierNumLock, !modifier( ModifierNumLock ) );
     if( changed ) { emit modifiersChanged( modifiers() ); }
 
     return;
@@ -1423,8 +1423,8 @@ void TextEditor::focusInEvent( QFocusEvent* event )
     Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
 
     if(
-        _setModifier( MODIFIER_CAPS_LOCK, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::ON ) ||
-        _setModifier( MODIFIER_NUM_LOCK, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::ON ) )
+        _setModifier( ModifierCapsLock, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::ON ) ||
+        _setModifier( ModifierNumLock, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::ON ) )
     { emit modifiersChanged( modifiers() );}
 
     emit hasFocus( this );
@@ -1677,7 +1677,7 @@ void TextEditor::_installActions( void )
     addAction( wrapModeAction_ = new QAction( "Wrap Text", this ) );
     wrapModeAction_->setCheckable( true );
     wrapModeAction_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
-    _setModifier( MODIFIER_WRAP, lineWrapMode() == QTextEdit::WidgetWidth );
+    _setModifier( ModifierWrap, lineWrapMode() == QTextEdit::WidgetWidth );
     wrapModeAction_->setShortcut( Qt::Key_F10 );
     wrapModeAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( wrapModeAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
@@ -2178,7 +2178,7 @@ void TextEditor::_toggleOverwriteMode( void )
 
     Debug::Throw( "TextEditor::_toggleOverwriteMode.\n" );
     setOverwriteMode( !overwriteMode() );
-    if( _setModifier( MODIFIER_INSERT, overwriteMode() ) ) emit modifiersChanged( modifiers() );
+    if( _setModifier( ModifierInsert, overwriteMode() ) ) emit modifiersChanged( modifiers() );
     return;
 
 }
@@ -2449,7 +2449,7 @@ bool TextEditor::_toggleWrapMode( bool state )
     if( mode == lineWrapMode() ) return false;
 
     setLineWrapMode( mode );
-    if( _setModifier( MODIFIER_WRAP, state ) ) emit modifiersChanged( modifiers() );
+    if( _setModifier( ModifierWrap, state ) ) emit modifiersChanged( modifiers() );
 
     // propagate to associated display
     if( isSynchronized() )
