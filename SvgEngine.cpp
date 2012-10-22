@@ -46,7 +46,7 @@ namespace SVG
     {
 
         // connect thread
-        connect( &thread_, SIGNAL( imageCacheAvailable( const ImageCache& ) ), this, SLOT( _processImageCache( const ImageCache& ) ) );
+        connect( &thread_, SIGNAL( imageCacheAvailable( const SVG::ImageCache& ) ), this, SLOT( _processImageCache( const SVG::ImageCache& ) ) );
 
         XmlOptions::get().setAutoDefault( true );
         XmlOptions::get().keep( "SVG_BACKGROUND" );

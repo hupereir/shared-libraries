@@ -36,7 +36,7 @@ namespace SVG
         svgOffset_( 0 )
     {
         // register FileRecord::List as meta type so that it can be used in SIGNAL
-        qRegisterMetaType<SVG::ImageCache>( "Svg::ImageCache" );
+        qRegisterMetaType<SVG::ImageCache>( "SVG::ImageCache" );
     }
 
     //______________________________________________________

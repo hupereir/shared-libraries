@@ -77,7 +77,7 @@ namespace SVG
         protected slots:
 
         //! process image cache generated from thread
-        void _processImageCache( const ImageCache& );
+        void _processImageCache( const SVG::ImageCache& );
 
         private:
 

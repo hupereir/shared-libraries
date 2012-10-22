@@ -74,7 +74,7 @@ namespace SVG
         signals:
 
         //! image cache available
-        void imageCacheAvailable( const ImageCache& );
+        void imageCacheAvailable( const SVG::ImageCache& );
 
         private:
 
