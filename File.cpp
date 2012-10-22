@@ -46,6 +46,14 @@ bool File::create( void ) const
 { return QFile( *this ).open( QIODevice::WriteOnly ); }
 
 //_____________________________________________________________________
+bool File::createDirectory( const QString& constPath ) const
+{
+    if( exists() && !isDirectory() ) return false;
+    if( !QDir( *this ).mkpath( constPath ) ) return false;
+    return true;
+}
+
+//_____________________________________________________________________
 time_t File::created( void ) const
 {
     if( !exists() ) return -1;

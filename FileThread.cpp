@@ -124,7 +124,7 @@ bool FileThread::_updateTotalSize( void )
 
     qint64 size(0);
     foreach( const File& file, files_ )
-    {   size += file.fileSize(); }
+    { if( !file.isLink() ) size += file.fileSize(); }
 
     if( size >= 0 )
     {
@@ -142,7 +142,7 @@ void FileThread::_computeTotalSize( void )
 
     totalSize_ = 0;
     foreach( const File& file, filesRecursive_ )
-    { totalSize_ += file.fileSize(); }
+    {  if( !file.isLink() ) totalSize_ += file.fileSize(); }
     return;
 
 }

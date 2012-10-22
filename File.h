@@ -58,6 +58,9 @@ class File: public QString
     //! try create
     bool create( void ) const;
 
+    //! try create directory
+    bool createDirectory( const QString& ) const;
+
     //! time of file creation
     virtual time_t created( void ) const;
 

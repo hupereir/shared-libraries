@@ -50,6 +50,26 @@ class FileThread: public QThread, public Counter
         SizeRecursive
     };
 
+    //!@name accessors
+    //@{
+
+    //! command
+    Command command( void ) const
+    { return command_; }
+
+    //! file
+    File file( void ) const
+    { return file_; }
+
+    //!flags
+    File::ListFlags flags( void )
+    { return flags_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
     //! command
     void setCommand( Command command )
     {
@@ -67,6 +87,8 @@ class FileThread: public QThread, public Counter
         QMutexLocker lock( &mutex_ );
         file_ = file;
     }
+
+    //@}
 
     //! Check files validity. Post a ValidFileEvent when finished
     void run( void );
