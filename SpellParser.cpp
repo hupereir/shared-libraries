@@ -41,7 +41,7 @@ namespace SPELLCHECK
     SpellParser::SpellParser( void ):
         Counter( "SpellParser" ),
         enabled_( false ),
-        font_format_( FORMAT::DEFAULT )
+        fontFormat_( FORMAT::Default )
     {  Debug::Throw( "SpellParser::SpellParser.\n" ); }
 
     //____________________________________________________________________________
@@ -84,13 +84,13 @@ namespace SPELLCHECK
     }
 
     //___________________________________________________________
-    bool SpellParser::setFontFormat( const unsigned int& format )
+    bool SpellParser::setFontFormat( FORMAT::TextFormatFlags format )
     {
 
         Debug::Throw( "SpellParser::setFontFormat.\n" );
-        if( font_format_ == format ) return false;
+        if( fontFormat_ == format ) return false;
         else {
-            font_format_ = format;
+            fontFormat_ = format;
             return true;
         }
 

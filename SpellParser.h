@@ -64,11 +64,11 @@ namespace SPELLCHECK
 
     //! font format
     /* returns true if changed */
-    virtual bool setFontFormat( const unsigned int& format );
+    virtual bool setFontFormat( FORMAT::TextFormatFlags );
 
     //! font format
-    virtual const unsigned int& fontFormat( void ) const
-    { return font_format_; }
+    virtual FORMAT::TextFormatFlags fontFormat( void ) const
+    { return fontFormat_; }
 
     //! enabled. Returns true if changed.
     bool setEnabled( const bool& value )
@@ -98,7 +98,7 @@ namespace SPELLCHECK
     QColor color_;
 
     //! font format (is a bitwise or of TextFormatInfo bits)
-    unsigned int font_format_;
+    FORMAT::TextFormatFlags fontFormat_;
 
   };
 
