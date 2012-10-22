@@ -424,7 +424,7 @@ File File::truncatedName( void ) const
 }
 
 //_____________________________________________________________________
-File::List File::listFiles( const unsigned int& flags ) const
+File::List File::listFiles( ListFlags flags ) const
 {
 
     List out;

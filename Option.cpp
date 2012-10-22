@@ -40,7 +40,7 @@ Option::Option():
 {}
 
 //________________________________________________________
-Option::Option( const char* value, const unsigned int& flags ):
+Option::Option( const char* value, Flags flags ):
     Counter( "Option" ),
     flags_( flags ),
     defaultFlags_( Recordable )
@@ -50,7 +50,7 @@ Option::Option( const char* value, const unsigned int& flags ):
 }
 
 //________________________________________________________
-Option::Option( const QByteArray& value, const unsigned int& flags ):
+Option::Option( const QByteArray& value, Flags flags ):
     Counter( "Option" ),
     value_( value ),
     flags_( flags ),
@@ -58,7 +58,7 @@ Option::Option( const QByteArray& value, const unsigned int& flags ):
 {}
 
 //________________________________________________________
-Option::Option( const QString& value, const unsigned int& flags ):
+Option::Option( const QString& value, Flags flags ):
     Counter( "Option" ),
     value_( value.toUtf8() ),
     flags_( flags ),
@@ -66,7 +66,7 @@ Option::Option( const QString& value, const unsigned int& flags ):
 {}
 
 //________________________________________________________
-Option::Option( const QByteArray& value, const QString& comments, const unsigned int& flags ):
+Option::Option( const QByteArray& value, const QString& comments, Flags flags ):
     Counter( "Option" ),
     value_( value ),
     comments_( comments ),

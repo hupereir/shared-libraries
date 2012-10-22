@@ -30,6 +30,7 @@ SET( base_SOURCES
   CustomProcess.cpp
   Debug.cpp
   File.cpp
+  FileThread.cpp
   FileRecord.cpp
   IOString.cpp
   Key.cpp
@@ -41,16 +42,19 @@ SET( base_SOURCES
   Util.cpp
 )
 
+SET( base_HEADERS FileThread.h )
+QT4_WRAP_CPP( base_HEADERS_MOC ${base_HEADERS} )
+
 IF( ENABLE_SHARED )
 
-  ADD_LIBRARY( base SHARED ${base_SOURCES} )
+  ADD_LIBRARY( base SHARED ${base_SOURCES} ${base_HEADERS_MOC} )
   SET_TARGET_PROPERTIES( base PROPERTIES VERSION ${BASE_VERSION} SOVERSION ${BASE_SOVERSION} )
   TARGET_LINK_LIBRARIES( base ${QT_LIBRARIES} )
   INSTALL( TARGETS base DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 ELSE()
 
-  ADD_LIBRARY( base STATIC ${base_SOURCES} )
+  ADD_LIBRARY( base STATIC ${base_SOURCES} ${base_HEADERS_MOC} )
   TARGET_LINK_LIBRARIES( base ${QT_LIBRARIES} )
 
 ENDIF()

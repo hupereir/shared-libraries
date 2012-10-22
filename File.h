@@ -184,7 +184,7 @@ class File: public QString
     virtual File find( const File& file, bool = true ) const;
 
     //! return list of files in a directory
-    enum ListFlags
+    enum ListFlag
     {
         None = 0,
         Recursive = 1<<0,
@@ -192,8 +192,10 @@ class File: public QString
         ShowHiddenFiles = 1<<2
     };
 
+    Q_DECLARE_FLAGS(ListFlags, ListFlag)
+
     //! return list of files in a directory
-    virtual List listFiles( const unsigned int& flags ) const;
+    virtual List listFiles( ListFlags flags ) const;
 
     //! used to find files pointing to the same link
     class SameLinkFTor
@@ -218,5 +220,7 @@ class File: public QString
     };
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( File::ListFlags )
 
 #endif

@@ -44,20 +44,30 @@ class Option:public Counter
 
     public:
 
+    //! flags
+    enum Flag
+    {
+        None = 0,
+        Current = 1 << 0,
+        Recordable = 1<<1
+    };
+
+    Q_DECLARE_FLAGS(Flags, Flag)
+
     //! constructor
     Option();
 
     //! constructor
-    Option( const char*, const unsigned int& = Recordable );
+    Option( const char*, Flags = Recordable );
 
     //! constructor
-    Option( const QByteArray&, const unsigned int& = Recordable );
+    Option( const QByteArray&, Flags = Recordable );
 
     //! constructor
-    Option( const QByteArray&, const QString&, const unsigned int& = Recordable );
+    Option( const QByteArray&, const QString&, Flags = Recordable );
 
     //! constructor
-    Option( const QString&, const unsigned int& = Recordable );
+    Option( const QString&, Flags = Recordable );
 
     //! less than operator
     bool operator < (const Option& option ) const
@@ -82,15 +92,7 @@ class Option:public Counter
     //@{
 
     //! flags
-    enum Flag
-    {
-        None = 0,
-        Current = 1 << 0,
-        Recordable = 1<<1
-    };
-
-    //! flags
-    Option& setFlags( unsigned int value )
+    Option& setFlags( Flags value )
     {
         flags_ = value;
         return *this;
@@ -105,7 +107,7 @@ class Option:public Counter
     }
 
     //! flags
-    const unsigned int& flags( void ) const
+    Flags flags( void ) const
     { return flags_; }
 
     //! flags
@@ -119,23 +121,23 @@ class Option:public Counter
         public:
 
         //! constructor
-        HasFlagFTor( const unsigned int& flag ):
-            flag_( flag )
+        HasFlagFTor( Option::Flags flags ):
+            flags_( flags )
         {}
 
         //! predicate
         bool operator() ( const Option& option ) const
-        { return option.flags() & flag_; }
+        { return option.flags() & flags_; }
 
         //! sorting predicate
         /*! it is used to ensure that options that have a given flag appear first in a list */
         bool operator() (const Option& first, const Option& second ) const
-        { return ( (first.flags() & flag_) && !(second.flags()&flag_) ); }
+        { return ( (first.flags() & flags_) && !(second.flags()&flags_) ); }
 
         private:
 
         // predicted flag
-        unsigned int flag_;
+        Option::Flags flags_;
 
     };
 
@@ -234,10 +236,10 @@ class Option:public Counter
     QString comments_;
 
     //! flags
-    unsigned int flags_;
+    Flags flags_;
 
     //! default flags
-    unsigned int defaultFlags_;
+    Flags defaultFlags_;
 
     //! streamer
     friend QTextStream &operator << ( QTextStream &out, const Option &option )
@@ -248,5 +250,7 @@ class Option:public Counter
     }
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( Option::Flags )
 
 #endif
