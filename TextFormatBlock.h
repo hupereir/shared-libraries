@@ -24,6 +24,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "TextFormat.h"
 
 #include <QtCore/QList>
 #include <QtCore/QString>
@@ -46,7 +47,7 @@ namespace FORMAT
         //! constructor
         TextFormatBlock(
             const int& begin = 0, const int& end = 0,
-            const unsigned int format = 0, const QString& color = "" ):
+            const TextFormatFlags format = 0, const QString& color = "" ):
             Counter( "TextFormatBlock" ),
             begin_( begin ),
             end_( end ),
@@ -74,7 +75,7 @@ namespace FORMAT
         { return end_; }
 
         //! format
-        const unsigned int& format() const
+        const TextFormatFlags& format() const
         { return format_; }
 
         //! color
@@ -99,7 +100,7 @@ namespace FORMAT
         { end_ = value; }
 
         //! format
-        void setFormat( unsigned int value )
+        void setFormat( TextFormatFlags value )
         { format_ = value; }
 
         //! color
@@ -191,7 +192,7 @@ namespace FORMAT
         int end_;
 
         //! format (a bitwise or of the format bits above)
-        unsigned int format_;
+        TextFormatFlags format_;
 
         //! color
         QString color_;

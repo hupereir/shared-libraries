@@ -1,6 +1,6 @@
 // $Id$
-#ifndef _TextFormatInfo_h_
-#define _TextFormatInfo_h_
+#ifndef TextFormat_h
+#define TextFormat_h
 
 /******************************************************************************
 *
@@ -25,29 +25,24 @@
 
 namespace FORMAT
 {
-  //! format bit enumaration
-  enum
-  {
-    //! default
-    DEFAULT = 0,
 
-    //! bold bit
-    BOLD = 1<<0,
+    //! format bit enumaration
+    enum TextFormat
+    {
+        Default = 0,
+        Bold = 1<<0,
+        Italic = 1<<1,
+        Underline = 1<<2,
+        Strike = 1<<3,
+        Overline = 1<<4
 
-    //! italic bit
-    ITALIC = 1<<1,
+    };
 
-    //! underline bit
-    UNDERLINE = 1<<2,
+    Q_DECLARE_FLAGS( TextFormatFlags, TextFormat )
 
-    //! strike bit
-    STRIKE = 1<<3,
+}
 
-    //! underline bit
-    OVERLINE = 1<<4
+Q_DECLARE_OPERATORS_FOR_FLAGS( FORMAT::TextFormatFlags )
 
-  };
-
-};
 
 #endif

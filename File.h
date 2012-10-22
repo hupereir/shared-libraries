@@ -39,6 +39,17 @@ class File: public QString
     //! shortcut to list of files
     typedef QList<File> List;
 
+    //! return list of files in a directory
+    enum ListFlag
+    {
+        None = 0,
+        Recursive = 1<<0,
+        FollowLinks = 1<<1,
+        ShowHiddenFiles = 1<<2
+    };
+
+    Q_DECLARE_FLAGS(ListFlags, ListFlag)
+
     //! constructor
     File( void )
     {}
@@ -185,17 +196,6 @@ class File: public QString
 
     //! return first file with matching short name, or empty string if not found
     virtual File find( const File& file, bool = true ) const;
-
-    //! return list of files in a directory
-    enum ListFlag
-    {
-        None = 0,
-        Recursive = 1<<0,
-        FollowLinks = 1<<1,
-        ShowHiddenFiles = 1<<2
-    };
-
-    Q_DECLARE_FLAGS(ListFlags, ListFlag)
 
     //! return list of files in a directory
     virtual List listFiles( ListFlags flags ) const;
