@@ -21,54 +21,46 @@
 *
 *******************************************************************************/
 
-/*!
-   \file FontInfo.cpp
-   \brief font formatting options
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <QHBoxLayout>
-
 #include "Debug.h"
 #include "FontInfo.h"
-#include "TextFormat.h"
 
-
+#include <QtGui/QLayout>
 
 //_____________________________________________
 FontInfo::FontInfo( QWidget* parent ):
-  QWidget( parent )
+QWidget( parent )
 {
-  Debug::Throw( "FontInfo::FontInfo.\n" );
-  setLayout( new QHBoxLayout() );
-  layout()->setMargin(2);
-  layout()->setSpacing(2);
-  layout()->addWidget( bold_ = new QCheckBox( "&Bold", this ) );
-  layout()->addWidget( italic_ = new QCheckBox( "&Italic", this ) );
-  layout()->addWidget( underline_ = new QCheckBox( "&Underline", this ) );
-  layout()->addWidget( strike_ = new QCheckBox( "&Strike", this ) );
+    Debug::Throw( "FontInfo::FontInfo.\n" );
+    setLayout( new QHBoxLayout() );
+    layout()->setMargin(2);
+    layout()->setSpacing(2);
+    layout()->addWidget( bold_ = new QCheckBox( "Bold", this ) );
+    layout()->addWidget( italic_ = new QCheckBox( "Italic", this ) );
+    layout()->addWidget( underline_ = new QCheckBox( "Underline", this ) );
+    layout()->addWidget( strike_ = new QCheckBox( "Strike", this ) );
+    layout()->addWidget( overline_ = new QCheckBox( "Overline", this ) );
 }
 
 //__________________________________________________
-void FontInfo::setFormat( const unsigned int& format )
+void FontInfo::setFormat( FORMAT::TextFormatFlags format )
 {
-  Debug::Throw( "FontInfo::setFormat.\n" );
-  bold_->setChecked( format & FORMAT::BOLD );
-  italic_->setChecked( format & FORMAT::ITALIC );
-  underline_->setChecked( format & FORMAT::UNDERLINE );
-  strike_->setChecked( format & FORMAT::STRIKE );
+    Debug::Throw( "FontInfo::setFormat.\n" );
+    bold_->setChecked( format & FORMAT::Bold );
+    italic_->setChecked( format & FORMAT::Italic );
+    underline_->setChecked( format & FORMAT::Underline );
+    strike_->setChecked( format & FORMAT::Strike );
+    overline_->setChecked( format & FORMAT::Overline );
 }
 
 //__________________________________________________
 unsigned int FontInfo::format( void ) const
 {
-  Debug::Throw( "FontInfo::format.\n" );
-  unsigned int out = FORMAT::DEFAULT;
-  if( bold_->isChecked() ) out |= FORMAT::BOLD;
-  if( italic_->isChecked() ) out |= FORMAT::ITALIC;
-  if( underline_->isChecked() ) out |= FORMAT::UNDERLINE;
-  if( strike_->isChecked() ) out |= FORMAT::STRIKE;
-  return out;
+    Debug::Throw( "FontInfo::format.\n" );
+    unsigned int out = FORMAT::Default;
+    if( bold_->isChecked() ) out |= FORMAT::Bold;
+    if( italic_->isChecked() ) out |= FORMAT::Italic;
+    if( underline_->isChecked() ) out |= FORMAT::Underline;
+    if( strike_->isChecked() ) out |= FORMAT::Strike;
+    if( overline_->isChecked() ) out |= FORMAT::Overline;
+    return out;
 }

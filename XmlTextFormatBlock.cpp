@@ -61,7 +61,7 @@ namespace FORMAT
             else if( name == XML_END ) setEnd( value.toInt() );
 
             // format
-            else if( name == XML_FORMAT ) setFormat( value.toInt() );
+            else if( name == XML_FORMAT ) setFormat( (TextFormatFlags) value.toInt() );
             else if( name == XML_COLOR ) setColor( value );
             else if( name == XML_HREF ) setHRef( value );
 

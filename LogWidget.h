@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "TextEditor.h"
+#include "TextFormat.h"
 
 #include <QtCore/QString>
 #include <QtGui/QColor>
@@ -53,7 +54,7 @@ class LogWidget: public TextEditor
     public slots:
 
     //! append text
-    virtual void append( const QString&, unsigned int = 0, const QColor& = QColor(), int = 0 );
+    virtual void append( const QString&, FORMAT::TextFormatFlags = FORMAT::Default, const QColor& = QColor(), int = 0 );
 
     //! clear
     virtual void clear( void )

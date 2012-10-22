@@ -24,45 +24,42 @@
 *
 *******************************************************************************/
 
+#include "TextFormat.h"
 
-/*!
-   \file FontInfo.h
-   \brief font formatting
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
-#include <QCheckBox>
+#include <QtGui/QCheckBox>
 
 //! font formating
 class FontInfo: public QWidget
 {
 
-  public:
+    public:
 
-  //! constructor
-  FontInfo( QWidget* parent );
+    //! constructor
+    FontInfo( QWidget* parent );
 
-  //! set checkboxes from from
-  void setFormat( const unsigned int& format );
+    //! set checkboxes from from
+    void setFormat( FORMAT::TextFormatFlags format );
 
-  //! get format
-  unsigned int format( void ) const;
+    //! get format
+    unsigned int format( void ) const;
 
-  private:
+    private:
 
-  //! bold
-  QCheckBox* bold_;
+    //! bold
+    QCheckBox* bold_;
 
-  //! italic
-  QCheckBox* italic_;
+    //! italic
+    QCheckBox* italic_;
 
-  //! underline
-  QCheckBox* underline_;
+    //! underline
+    QCheckBox* underline_;
 
-  //! strike
-  QCheckBox* strike_;
+    //! strike
+    QCheckBox* strike_;
+
+    //! overline
+    QCheckBox* overline_;
+
 
 };
 #endif
