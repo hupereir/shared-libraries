@@ -54,7 +54,7 @@ XmlOption::XmlOption( const QDomElement& element )
         else if( attribute.name() == OPTIONS::COMMENTS ) setComments( XmlString( attribute.value() ).toText() );
         else if( attribute.name() == OPTIONS::FLAGS ) {
 
-            setFlags( (unsigned int) attribute.value().toInt() );
+            setFlags( (Option::Flags) attribute.value().toInt() );
 
         } else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized attribute " << attribute.name() << ".\n";
 
@@ -67,7 +67,7 @@ XmlOption::XmlOption( const QDomElement& element )
         if( childElement.tagName() == OPTIONS::NAME ) setName( childElement.text() );
         else if( childElement.tagName() == OPTIONS::VALUE ) setRaw( XmlString( childElement.text() ).toText() );
         else if( childElement.tagName() == OPTIONS::COMMENTS ) setComments( XmlString( childElement.text() ).toText() );
-        else if( childElement.tagName() == OPTIONS::FLAGS ) setFlags( (unsigned int) childElement.text().toInt() );
+        else if( childElement.tagName() == OPTIONS::FLAGS ) setFlags( (Option::Flags) childElement.text().toInt() );
         else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized child " << childElement.tagName() << ".\n";
 
     }

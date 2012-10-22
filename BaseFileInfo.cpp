@@ -60,7 +60,7 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
         if( attribute.name() == XML::FILE ) setFile( File( XmlString( attribute.value() ).toText() ) );
-        else if( attribute.name() == XML::TYPE ) setType( attribute.value().toInt() );
+        else if( attribute.name() == XML::TYPE ) setType( TypeFlags( attribute.value().toInt() ) );
         else if( attribute.name() == XML::SIZE ) setSize( attribute.value().toInt() );
         else if( attribute.name() == XML::LAST_MODIFIED ) setLastModified( attribute.value().toInt() );
         else if( attribute.name() == XML::USER ) setUser( attribute.value() );

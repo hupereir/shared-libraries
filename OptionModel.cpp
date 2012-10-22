@@ -59,7 +59,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
             case NAME: return option.first;
             case VALUE: return option.second.raw();
             case DEFAULT_VALUE: return option.second.defaultValue();
-            case FLAGS: return option.second.flags();
+            case FLAGS: return (unsigned int)option.second.flags();
             default: return QVariant();
         }
     }

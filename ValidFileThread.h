@@ -25,7 +25,6 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "Debug.h"
 #include "FileRecord.h"
 
 #include <QtCore/QMutex>

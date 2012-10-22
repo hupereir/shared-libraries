@@ -42,8 +42,26 @@ class BaseFileInfo
 
     public:
 
+    //! file properties
+    enum Type
+    {
+        None = 0,
+        Document = 1<<0,
+        Folder = 1<<1,
+        Navigator = 1<<2,
+        Link = 1<<3,
+        Broken = 1<<4,
+        Hidden = 1<<5,
+        Remote = 1<<6,
+        Any = (1<<7)-1
+    };
+
+    enum {Shift = 7};
+
+    Q_DECLARE_FLAGS( TypeFlags, Type )
+
     //! constructor
-    BaseFileInfo( const QString& file = "", const unsigned int& type = None ):
+    BaseFileInfo( const QString& file = "", TypeFlags type = None ):
         file_( file ),
         type_( type ),
         size_( 0 ),
@@ -71,22 +89,6 @@ class BaseFileInfo
         return type() < other.type();
     }
 
-    //! file properties
-    enum Type
-    {
-        None = 0,
-        Document = 1<<0,
-        Folder = 1<<1,
-        Navigator = 1<<2,
-        Link = 1<<3,
-        Broken = 1<<4,
-        Hidden = 1<<5,
-        Remote = 1<<6,
-        Any = (1<<7)-1
-    };
-
-    enum {Shift = 7};
-
     //!@name accessors
     //@{
 
@@ -95,11 +97,11 @@ class BaseFileInfo
     { return file_; }
 
     //! file type
-    virtual unsigned int type( void ) const
+    virtual TypeFlags type( void ) const
     { return type_; }
 
     //! location
-    virtual unsigned int location( void ) const
+    virtual TypeFlags location( void ) const
     { return type_ & Remote; }
 
     //! file is local
@@ -174,7 +176,7 @@ class BaseFileInfo
     { file_ = file; }
 
     //! file type
-    virtual void setType( unsigned int type )
+    virtual void setType( TypeFlags type )
     { type_ = type; }
 
     //! set file as local
@@ -204,8 +206,7 @@ class BaseFileInfo
     virtual void setIsNavigator( void )
     {
         type_ &= (~Document);
-        type_ |= Folder;
-        type_ |= Navigator;
+        type_ |= TypeFlags( Folder|Navigator );
     }
 
     //! set file as link
@@ -218,7 +219,7 @@ class BaseFileInfo
     //! set file as broken link
     virtual void setIsBrokenLink( bool value = true )
     {
-        if( value ) type_ |= Link|Broken;
+        if( value ) type_ |= TypeFlags( Link | Broken );
         else type_ &= ~Broken;
     }
 
@@ -260,7 +261,7 @@ class BaseFileInfo
         public:
 
         //! constructor
-        SameTypeFTor( const unsigned int& type ):
+        SameTypeFTor( TypeFlags type ):
             type_( type )
         {}
 
@@ -271,7 +272,7 @@ class BaseFileInfo
         private:
 
         //! predicted type
-        unsigned int type_;
+        TypeFlags type_;
 
     };
 
@@ -372,7 +373,7 @@ class BaseFileInfo
     File file_;
 
     //! file type
-    unsigned int type_;
+    TypeFlags type_;
 
     //! file size
     qint64 size_;
@@ -443,5 +444,7 @@ QString BaseFileInfo::BaseList<T>::description( unsigned int flags ) const
 
     return (flags&LowerCase) ? buffer.toLower() : buffer;
 }
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( BaseFileInfo::TypeFlags)
 
 #endif
