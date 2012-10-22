@@ -24,20 +24,12 @@
 *
 *******************************************************************************/
 
-/*!
-  \file SvgPlasmaInterface.h
-  \brief kde specific interface to plasma to load matching Svg background
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
+#include "File.h"
 
-#include <cassert>
-#include <QObject>
-#include <QString>
-#include <QFileSystemWatcher>
+#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <QtCore/QFileSystemWatcher>
 
-//! svg namespace
 namespace SVG
 {
 
@@ -58,8 +50,8 @@ namespace SVG
     // image path
     bool setImagePath( QString value )
     {
-      if( image_path_ == value ) return false;
-      image_path_ = value;
+      if( imagePath_ == value ) return false;
+      imagePath_ = value;
       return true;
     }
 
@@ -103,7 +95,7 @@ namespace SVG
     bool _setTheme( const QString& );
 
     //! set path matching theme
-    bool _setPath( const QString& path )
+    bool _setPath( const File& path )
     {
       if( path_ == path ) return false;
       path_ = path;
@@ -111,16 +103,16 @@ namespace SVG
     }
 
     //! get path matching theme
-    const QString& _path( void ) const
+    const File& _path( void ) const
     { return path_; }
 
     //! image path
-    const QString& _imagePath( void ) const
-    { return image_path_; }
+    const File& _imagePath( void ) const
+    { return imagePath_; }
 
     //! set filename
     /*! returns true when changed */
-    bool _setFileName( const QString& file )
+    bool _setFileName( const File& file )
     {
       if( filename_ == file ) return false;
       filename_ = file;
@@ -129,37 +121,34 @@ namespace SVG
 
     //! file system watcher
     bool _hasFileSystemWatcher( void ) const
-    { return file_system_watcher_; }
+    { return fileSystemWatcher_; }
 
     //! initialize file system watcher
     void _initializeFileSystemWatcher( void );
 
     //! file system watcher
     QFileSystemWatcher& _fileSystemWatcher( void )
-    {
-      assert( file_system_watcher_ );
-      return *file_system_watcher_;
-    }
+    { return *fileSystemWatcher_; }
 
     //! validity
     bool valid_;
 
     //! configuration file
-    QString configuration_file_;
+    File configurationFile_;
 
     //! path to file name
     /*! loaded from plasma configuration */
-    QString path_;
+    File path_;
 
     //! path to image (relative to path_)
-    QString image_path_;
+    File imagePath_;
 
     //! filename
-    QString filename_;
+    File filename_;
 
     //! file system watcher
     /*! needed to track modifications of kde configuration file */
-    QFileSystemWatcher* file_system_watcher_;
+    QFileSystemWatcher* fileSystemWatcher_;
 
   };
 };
