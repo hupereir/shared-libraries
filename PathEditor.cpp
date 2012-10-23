@@ -30,7 +30,6 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QEvent>
 #include <QtCore/QTimer>
 
