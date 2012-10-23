@@ -236,7 +236,7 @@ PathEditor::PathEditor( QWidget* parent ):
     Debug::Throw( "PathEditor::PathEditor.\n" );
 
     // size policy
-    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
 
     // browser
     {
@@ -539,10 +539,10 @@ QSize PathEditor::minimumSizeHint( void ) const
 {
     int minWidth( 0 );
 
-    if( usePrefix_ && !prefix_.isEmpty() && prefixLabel_ )
+    if( usePrefix_ && !prefix_.isEmpty() )
     { minWidth += prefixLabel_->width(); }
 
-    if( (rootPathList_.size() > 1 || items_.size() > 1 ) && menuButton_ )
+    if( rootPathList_.size() > 1 || items_.size() > 1 || truncate_ && !home_.isEmpty() )
     { minWidth += menuButton_->width(); }
 
     if( !items_.empty() )
