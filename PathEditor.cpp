@@ -542,7 +542,7 @@ QSize PathEditor::minimumSizeHint( void ) const
     if( usePrefix_ && !prefix_.isEmpty() )
     { minWidth += prefixLabel_->width(); }
 
-    if( rootPathList_.size() > 1 || items_.size() > 1 || truncate_ && !home_.isEmpty() )
+    if( rootPathList_.size() > 1 || items_.size() > 1 || ( truncate_ && !home_.isEmpty() ) )
     { minWidth += menuButton_->width(); }
 
     if( !items_.empty() )
