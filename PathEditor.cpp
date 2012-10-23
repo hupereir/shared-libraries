@@ -236,7 +236,7 @@ PathEditor::PathEditor( QWidget* parent ):
     Debug::Throw( "PathEditor::PathEditor.\n" );
 
     // size policy
-    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
     // browser
     {
@@ -246,7 +246,7 @@ PathEditor::PathEditor( QWidget* parent ):
         itemView_->hide();
 
         browserContainer_ = new QWidget();
-        browserContainer_->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+        browserContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
         QHBoxLayout* hLayout = new QHBoxLayout();
         hLayout->setSpacing(0);
@@ -286,7 +286,7 @@ PathEditor::PathEditor( QWidget* parent ):
     // editor
     {
         editorContainer_ = new QWidget();
-        editorContainer_->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+        editorContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
         QHBoxLayout* hLayout = new QHBoxLayout();
         hLayout->setSpacing(0);

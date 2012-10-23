@@ -58,7 +58,7 @@ LineEditor::LineEditor( QWidget* parent ):
 
     // set clear button visible
     setHasClearButton( true );
-    setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ) );
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
 }
 

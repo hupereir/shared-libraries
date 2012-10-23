@@ -45,7 +45,7 @@ ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
 
     // set size policy
-    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
     updateElidedText();
 
@@ -61,7 +61,7 @@ elideMode_( Qt::ElideLeft )
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
 
     // set size policy
-    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
 }
 

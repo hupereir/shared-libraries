@@ -49,7 +49,7 @@ class PathEditorButton: public QAbstractButton
     {
         Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
         setAttribute( Qt::WA_Hover );
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
         setMinimumHeight(parent->minimumHeight());
     }
 
@@ -202,7 +202,7 @@ class PathEditorMenuButton: public PathEditorButton, public Counter
         Counter( "PathEditorMenuButton" )
     {
         Debug::Throw( "PathEditorMenuButton::PathEditorMenuButton.\n" );
-        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
         updateMinimumSize();
     }
 
@@ -234,7 +234,7 @@ class PathEditorSwitch: public PathEditorButton, public Counter
         Counter( "PathEditorSwitch" )
     {
         Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
-        setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+        setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
         setCursor( Qt::IBeamCursor );
     }
 

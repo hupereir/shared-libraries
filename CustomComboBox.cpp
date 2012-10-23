@@ -50,7 +50,7 @@ CustomComboBox::CustomComboBox( QWidget* parent ):
     setAutoCompletion( false );
 
     // size policy
-    setSizePolicy( QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ) );
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
 }
 
