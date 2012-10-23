@@ -359,6 +359,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 {
 
     Debug::Throw() << "PathEditor::setPath - " << constPath << endl;
+    setUpdatesEnabled( false );
 
     // upbate browser
     {
@@ -515,6 +516,8 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
     // add to history
     history_.add( constPath );
+
+    setUpdatesEnabled( true );
 
 }
 
