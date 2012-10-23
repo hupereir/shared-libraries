@@ -384,6 +384,9 @@ void PathEditor::setPath( const File& constPath, const File& file )
         // check if home directory is to be used
         const bool hasHome( truncate_ && !home_.isEmpty() );
 
+        // keep track of new items
+        QList<PathEditorItem*> newItems;
+
         // create root item
         int index = 0;
         PathEditorItem* item(0);
@@ -425,7 +428,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
                 item = new PathEditorItem( browserContainer_ );
                 item->setItemView( itemView_ );
                 group_->addButton( item );
-                buttonLayout_->addWidget( item );
+                newItems << item;
                 items_ << item;
 
             }
@@ -450,7 +453,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
                 item = new PathEditorItem( browserContainer_ );
                 item->setItemView( itemView_ );
                 group_->addButton( item );
-                buttonLayout_->addWidget( item );
+                newItems << item;
                 items_ << item;
 
             }
@@ -478,9 +481,12 @@ void PathEditor::setPath( const File& constPath, const File& file )
             items_.removeLast();
         }
 
-        // update buttons visibilityThere are issues with notification placement when screen gets resized.
+        // update buttons visibility
+        _updateButtonVisibility();
 
-        QTimer::singleShot( 0, this, SLOT( _updateButtonVisibility() ) );
+        // add new items to layout
+        foreach( PathEditorItem* item, newItems )
+        { buttonLayout_->addWidget( item ); }
 
     }
 
