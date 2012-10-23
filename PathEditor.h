@@ -54,6 +54,9 @@ class PathEditor: public QStackedWidget, public Counter
     virtual ~PathEditor( void )
     {}
 
+    //!@name modifiers
+    //@{
+
     //! prefix
     void setPrefix( const QString& );
 
@@ -65,6 +68,11 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! set path
     void setPath( const File&, const File& = File() );
+
+    //@}
+
+    //!@name accessors
+    //@{
 
     //! path
     File path( void ) const;
@@ -79,6 +87,15 @@ class PathEditor: public QStackedWidget, public Counter
     //! true if next path available in history
     bool hasNext( void ) const
     { return history_.nextAvailable(); }
+
+    //! minimum size hint
+    virtual QSize minimumSizeHint( void ) const;
+
+    //! size hint
+    virtual QSize sizeHint( void ) const
+    { return minimumSizeHint(); }
+
+    //@}
 
     signals:
 

@@ -359,7 +359,6 @@ void PathEditor::setPath( const File& constPath, const File& file )
 {
 
     Debug::Throw() << "PathEditor::setPath - " << constPath << endl;
-    setUpdatesEnabled( false );
 
     // upbate browser
     {
@@ -384,9 +383,6 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
         // check if home directory is to be used
         const bool hasHome( truncate_ && !home_.isEmpty() );
-
-        // keep track of new items
-        QList<PathEditorItem*> newItems;
 
         // create root item
         int index = 0;
@@ -429,7 +425,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
                 item = new PathEditorItem( browserContainer_ );
                 item->setItemView( itemView_ );
                 group_->addButton( item );
-                newItems << item;
+                buttonLayout_->addWidget( item );
                 items_ << item;
 
             }
@@ -454,7 +450,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
                 item = new PathEditorItem( browserContainer_ );
                 item->setItemView( itemView_ );
                 group_->addButton( item );
-                newItems << item;
+                buttonLayout_->addWidget( item );
                 items_ << item;
 
             }
@@ -485,10 +481,6 @@ void PathEditor::setPath( const File& constPath, const File& file )
         // update buttons visibility
         _updateButtonVisibility();
 
-        // add new items to layout
-        foreach( PathEditorItem* item, newItems )
-        { buttonLayout_->addWidget( item ); }
-
     }
 
     // update editor
@@ -517,8 +509,6 @@ void PathEditor::setPath( const File& constPath, const File& file )
     // add to history
     history_.add( constPath );
 
-    setUpdatesEnabled( true );
-
 }
 
 //____________________________________________________________________________
@@ -542,6 +532,23 @@ bool PathEditor::hasParent( void ) const
     if( items_.isEmpty() ) return false;
     else if( items_.back()->isSelectable() ) return items_.size() >= 2;
     else return items_.size() >= 3;
+}
+
+//____________________________________________________________________________
+QSize PathEditor::minimumSizeHint( void ) const
+{
+    int minWidth( 0 );
+
+    if( usePrefix_ && !prefix_.isEmpty() && prefixLabel_ )
+    { minWidth += prefixLabel_->width(); }
+
+    if( (rootPathList_.size() > 1 || items_.size() > 1 ) && menuButton_ )
+    { minWidth += menuButton_->width(); }
+
+    if( !items_.empty() )
+    { minWidth += items_.back()->width(); }
+
+    return QSize( minWidth, QStackedWidget::minimumSizeHint().height() );
 }
 
 //____________________________________________________________________________
@@ -719,8 +726,7 @@ void PathEditor::_updateButtonVisibility( void )
     Debug::Throw() << "PathEditor::_updateButtonVisibility - path: " << path() << endl;
 
     // get widget width
-    // int maxWidth( this->width() );
-    int maxWidth( browserContainer_->width() );
+    int maxWidth( this->width() );
 
     // check if prefix must be shown
     if( usePrefix_ && !prefix_.isEmpty() )
