@@ -123,17 +123,12 @@ QString Util::windowTitle( const QString& title )
 
 //______________________________________________________________________
 QString Util::home( void )
-{
-    Debug::Throw( "Util::home.\n" );
-    return QDir::homePath();
-}
+{ return QDir::homePath(); }
 
 //______________________________________________________________________
 QString Util::tmp( void )
-{
-    Debug::Throw( "Util::tmp.\n" );
-    return QDir::tempPath();
-}
+{ return QDir::tempPath(); }
+
 //______________________________________________________________________
 QString Util::host( bool short_name )
 {
