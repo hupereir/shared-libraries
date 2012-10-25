@@ -27,7 +27,6 @@
 #include "SvgRenderer.h"
 #include "Svg.h"
 
-#include <QtCore/QEvent>
 #include <QtCore/QMutex>
 #include <QtCore/QMutexLocker>
 #include <QtCore/QThread>
@@ -68,13 +67,15 @@ namespace SVG
             svgIds_ = svgIds;
         }
 
-        //! Check files validity. Post a SvgEvent when finished
-        void run( void );
-
         signals:
 
         //! image cache available
         void imageCacheAvailable( const SVG::ImageCache& );
+
+        protected:
+
+        //! Check files validity. Post a SvgEvent when finished
+        virtual void run( void );
 
         private:
 
