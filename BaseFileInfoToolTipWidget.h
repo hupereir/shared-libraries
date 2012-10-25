@@ -35,8 +35,8 @@
 #include <QtGui/QPaintEvent>
 #include <QtGui/QWidget>
 
-class GridLayout;
-class Item;
+class ToolTipWidgetItem;
+
 class BaseFileInfoToolTipWidget: public QWidget, public Counter
 {
 
@@ -158,12 +158,12 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
 
     //!@name items
     //@{
-    Item* typeItem_;
-    Item* sizeItem_;
-    Item* lastModifiedItem_;
-    Item* userItem_;
-    Item* groupItem_;
-    Item* permissionsItem_;
+    ToolTipWidgetItem* typeItem_;
+    ToolTipWidgetItem* sizeItem_;
+    ToolTipWidgetItem* lastModifiedItem_;
+    ToolTipWidgetItem* userItem_;
+    ToolTipWidgetItem* groupItem_;
+    ToolTipWidgetItem* permissionsItem_;
     //@}
 
     //! timer

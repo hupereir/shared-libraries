@@ -36,21 +36,22 @@
 #include <QtGui/QStyleOptionFrame>
 #include <QtGui/QToolTip>
 
-class Item: public QObject, public Counter
+//_______________________________________________________
+class ToolTipWidgetItem: public QObject, public Counter
 {
     public:
 
     //! constructor
-    Item( QWidget* parent, GridLayout* layout ):
+    ToolTipWidgetItem( QWidget* parent, GridLayout* layout ):
         QObject( parent ),
-        Counter( "BaseFileInfoToolTipWidget::Item" )
+        Counter( "ToolTipWidgetItem" )
     {
         layout->addWidget( key_ = new QLabel( parent ) );
         layout->addWidget( value_ = new QLabel( parent ) );
     }
 
     //! destructor
-    virtual ~Item( void )
+    virtual ~ToolTipWidgetItem( void )
     {}
 
     //! show
@@ -139,12 +140,12 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     vLayout->addLayout( gridLayout );
 
     // items
-    ( typeItem_ = new Item( this, gridLayout ) )->setKey( "Type:" );
-    ( sizeItem_ = new Item( this, gridLayout ) )->setKey( "Size:" );
-    ( lastModifiedItem_ = new Item( this, gridLayout ) )->setKey( "Modified:" );
-    ( userItem_ = new Item( this, gridLayout ) )->setKey( "Owner:" );
-    ( groupItem_ = new Item( this, gridLayout ) )->setKey( "Group:" );
-    ( permissionsItem_ = new Item( this, gridLayout ) )->setKey( "Permissions:" );
+    ( typeItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( "Type:" );
+    ( sizeItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( "Size:" );
+    ( lastModifiedItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( "Modified:" );
+    ( userItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( "Owner:" );
+    ( groupItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( "Group:" );
+    ( permissionsItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( "Permissions:" );
 
     // add stretch
     vLayout->addStretch( 1 );

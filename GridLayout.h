@@ -48,6 +48,22 @@ class GridLayout: public QGridLayout, public Counter
     //! column alignments
     typedef QList<Qt::Alignment> AlignmentList;
 
+    //!@name accessors
+    //@{
+
+    //! current row
+    int currentRow( void ) const
+    { return row_; }
+
+    //! current column
+    int currentColumn( void ) const
+    { return column_; }
+
+    //@}
+
+    //!@names modifiers
+    //@{
+
     //! set columns
     void setMaxCount( const int& maxCount )
     {
@@ -107,6 +123,8 @@ class GridLayout: public QGridLayout, public Counter
     //! set current position in grid
     void setLocation( const int& row, const int& column )
     { row_ = row; column_ = column; }
+
+    //@}
 
     private:
 
