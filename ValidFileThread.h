@@ -56,8 +56,10 @@ class ValidFileThread: public QThread, public Counter
         records_ = records;
     }
 
+    protected:
+
     //! Check files validity. Post a ValidFileEvent when finished
-    void run( void );
+    virtual void run( void );
 
     signals:
 

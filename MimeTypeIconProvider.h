@@ -43,12 +43,26 @@ class MimeTypeIconProvider : public QObject, public Counter
     virtual ~MimeTypeIconProvider()
     {}
 
+    //!@name accessors
+    //@{
+
     //! icon matching given model index
     virtual const QIcon& icon( const QString& );
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! insert item in map
+    virtual void insert( const QString& key, const QString& value )
+    { iconNames_.insert( key, value ); }
 
     //! clear
     virtual void clear( void )
     { icons_.clear(); }
+
+    //@}
 
     private:
 

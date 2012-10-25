@@ -2370,15 +2370,18 @@ void TextEditor::_updateSelectionActions( bool hasSelection )
 void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
 {
     Debug::Throw( "TextEditor::_updateClipboardActions.\n" );
-
     if( mode == QClipboard::Clipboard )
-    { pasteAction_->setEnabled( !qApp->clipboard()->text( QClipboard::Clipboard ).isEmpty() ); }
-
-    if( mode == QClipboard::Selection )
     {
-        Debug::Throw() << "TextEditor::_updateClipboardActions - clipboard: " << qApp->clipboard()->text( QClipboard::Selection ) << endl;
-        findSelectionAction_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
-        findSelectionBackwardAction_->setEnabled( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
+
+        const bool hasClipboard( !qApp->clipboard()->text( QClipboard::Clipboard ).isEmpty() );
+        pasteAction_->setEnabled( hasClipboard );
+
+    } else if( mode == QClipboard::Selection ) {
+
+        const bool hasSelection( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
+        findSelectionAction_->setEnabled( hasSelection );
+        findSelectionBackwardAction_->setEnabled( hasSelection );
+
     }
 
 }
