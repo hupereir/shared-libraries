@@ -90,9 +90,6 @@ class FileThread: public QThread, public Counter
 
     //@}
 
-    //! Check files validity. Post a ValidFileEvent when finished
-    void run( void );
-
     signals:
 
     //! files are available
@@ -102,6 +99,9 @@ class FileThread: public QThread, public Counter
     void sizeAvailable( qint64 );
 
     protected:
+
+    //! Check files validity. Post a ValidFileEvent when finished
+    virtual void run( void );
 
     //! list files
     void _listFiles( const File& );

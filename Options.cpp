@@ -71,6 +71,10 @@ Options::Options( bool installDefaultOptions ):
         set( "HIGHLIGHT_PARAGRAPH", Option( "1", "Enable current paragraph highlighting" ) );
         set( "HIGHLIGHT_COLOR", Option( "#fffdd4", "Current paragraph highlight color" ) );
 
+        // help dialog
+        set( "HELP_DIALOG_WIDTH", "750" );
+        set( "HELP_DIALOG_HEIGHT", "500" );
+
         // list configuration
         set( "USE_ALTERNATE_COLOR", "0" );
         set( "USE_SELECTED_COLUMN_COLOR", "1" );
