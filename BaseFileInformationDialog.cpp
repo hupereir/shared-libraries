@@ -27,99 +27,79 @@
 #include "BaseIcons.h"
 #include "Debug.h"
 #include "ElidedLabel.h"
+#include "File.h"
 #include "FilePermissionsWidget.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 
 #include <QtGui/QShortcut>
 
-//_____________________________________________________________
-class BaseInformationDialogItem: public QObject, public Counter
+//____________________________________________________________________________
+BaseFileInformationDialog::Item::Item( QWidget* parent, GridLayout* layout, BaseFileInformationDialog::ItemFlags flags ):
+    QObject( parent ),
+    Counter( "BaseFileInformationDialog::Item" ),
+    flags_( flags )
 {
-    public:
+    layout->addWidget( key_ = new QLabel( parent ), layout->currentRow(), layout->currentColumn(), Qt::AlignRight|Qt::AlignTop );
 
-    //! flags
-    enum Flag
+    // create correct value label
+    if( flags & BaseFileInformationDialog::Elide ) value_ = new ElidedLabel( parent );
+    else value_ = new QLabel( parent );
+
+    // adjust font
+    if( flags & BaseFileInformationDialog::Bold )
     {
-        None = 0,
-        Elide = 1<<0,
-        Bold = 1<<1,
-        Selectable = 1<<2,
-        All = Elide|Bold|Selectable
-    };
-
-    Q_DECLARE_FLAGS( Flags, Flag );
-
-    //! constructor
-    BaseInformationDialogItem( QWidget* parent, GridLayout* layout, Flags flags = None ):
-        QObject( parent ),
-        Counter( "BaseInformationDialogItem" )
-    {
-        layout->addWidget( key_ = new QLabel( parent ), layout->currentRow(), layout->currentColumn(), Qt::AlignRight|Qt::AlignTop );
-
-        // create correct value label
-        if( flags & Elide ) value_ = new ElidedLabel( parent );
-        else value_ = new QLabel( parent );
-
-        // adjust font
-        if( flags & Bold )
-        {
-            QFont font( value_->font() );
-            font.setWeight( QFont::Bold );
-            value_->setFont( font );
-        }
-
-        if( flags & Selectable )
-        { label->setTextInteractionFlags( Qt::TextSelectableByMouse|Qt::TextSelectableByKeyboard ); }
-
-        // add to layout
-        layout->addWidget( value_, layout->currentRow(), layout->currentColumn(), Qt::AlignLeft|Qt::AlignTop );
-
+        QFont font( value_->font() );
+        font.setWeight( QFont::Bold );
+        value_->setFont( font );
     }
 
-    //! destructor
-    virtual ~BaseInformationDialogItem( void )
-    {}
+    if( flags & BaseFileInformationDialog::Selectable )
+    { value_->setTextInteractionFlags( Qt::TextSelectableByMouse|Qt::TextSelectableByKeyboard ); }
 
-    //! set visible
-    void setVisible( bool value )
-    {
-        if( value ) show();
-        else hide();
-    }
+    // add to layout
+    layout->addWidget( value_, layout->currentRow(), layout->currentColumn(), Qt::AlignLeft|Qt::AlignTop );
 
-    //! show
-    void show( void )
-    {
-        key_->show();
-        value_->show();
-    }
+}
 
-    //! hide
-    void hide( void )
-    {
-        key_->hide();
-        value_->hide();
-    }
+//____________________________________________________________________________
+void BaseFileInformationDialog::Item::setKey( const QString& value )
+{ key_->setText( value ); }
 
-    //! set key
-    void setKey( const QString& value )
-    { key_->setText( value ); }
+//____________________________________________________________________________
+void BaseFileInformationDialog::Item::setText( const QString& value )
+{
 
-    //! set text
-    void setText( const QString& value )
-    {
-        value_->setText( value );
-        if( value.isEmpty() ) hide();
-        else show();
-    }
+    // assign text
+    ElidedLabel* label( qobject_cast<ElidedLabel*>( value_ ) );
+    if( label ) label->ElidedLabel::setText( value );
+    else value_->setText( value );
 
-    private:
+    // update visibility
+    setVisible( !value.isEmpty() );
 
-    QLabel* key_;
-    QLabel* value_;
+}
 
-};
+//____________________________________________________________________________
+void BaseFileInformationDialog::Item::setVisible( bool value )
+{
+    if( value ) show();
+    else hide();
+}
+
+//____________________________________________________________________________
+void BaseFileInformationDialog::Item::show( void )
+{
+    key_->show();
+    value_->show();
+}
+
+//____________________________________________________________________________
+void BaseFileInformationDialog::Item::hide( void )
+{
+    key_->hide();
+    value_->hide();
+}
 
 //_________________________________________________________
 BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
@@ -138,73 +118,103 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     mainLayout().addWidget( tabWidget_ );
 
     // general information
-    QWidget *box;
-    tabWidget_->addTab( box = new QWidget(), "General" );
+    tabWidget_->addTab( mainPage_ = new QWidget(), "General" );
+    pageLayout_ = new QVBoxLayout();
+    pageLayout_->setMargin(5);
+    pageLayout_->setSpacing(5);
+    mainPage_->setLayout( pageLayout_ );
 
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setMargin(5);
+    hLayout->setMargin(0);
     hLayout->setSpacing(5);
-    box->setLayout( hLayout );
+    pageLayout_->addLayout( hLayout );
+    pageLayout_->addStretch();
 
     // try load Question icon
-    iconLabel_ = new QLabel(box);
+    iconLabel_ = new QLabel(mainPage_);
     iconLabel_->setPixmap( IconEngine::get( ICONS::INFORMATION ).pixmap( iconSize() ) );
     hLayout->addWidget( iconLabel_, 0, Qt::AlignTop );
 
     QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(0);
     layout->setSpacing( 5 );
-    hLayout->addLayout( layout, 1 );
+    hLayout->addLayout( layout, 0 );
+    hLayout->addStretch( 1 );
 
-    GridLayout* gridLayout = new GridLayout();
-    gridLayout->setSpacing( 5 );
-    gridLayout->setMaxCount( 2 );
-    gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-    layout->addLayout( gridLayout );
+    gridLayout_ = new GridLayout();
+    gridLayout_->setSpacing( 5 );
+    gridLayout_->setMaxCount( 2 );
+    gridLayout_->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+    layout->addLayout( gridLayout_ );
 
     // store all items in array, for visibility
-    QList<BaseInformationDialogItem*> items;
+    QList<Item*> items;
 
-    items << (fileItem_ = new BaseInformationDialogItem( box, gridLayout, BaseInformationDialogItem::All ) );
-    items << (pathItem_ = new BaseInformationDialogItem( box, gridLayout, BaseInformationDialogItem::Elide|BaseInformationDialogItem::Selectable ) );
-    items << (typeItem_ = new BaseInformationDialogItem( box, gridLayout ) );
-    items << (sizeItem_ = new BaseInformationDialogItem( box, gridLayout ) );
-    items << (createdItem_ = new BaseInformationDialogItem( box, gridLayout ) );
-    items << (accessedItem_ = new BaseInformationDialogItem( box, gridLayout ) );
-    items << (modifiedItem_ = new BaseInformationDialogItem( box, gridLayout ) );
+    items << (fileItem_ = new Item( mainPage_, gridLayout_, Bold|Selectable|Elide ) );
+    items << (pathItem_ = new Item( mainPage_, gridLayout_, Selectable|Elide ) );
+    items << (typeItem_ = new Item( mainPage_, gridLayout_ ) );
+    items << (sizeItem_ = new Item( mainPage_, gridLayout_ ) );
+    items << (createdItem_ = new Item( mainPage_, gridLayout_ ) );
+    items << (modifiedItem_ = new Item( mainPage_, gridLayout_ ) );
+    items << (accessedItem_ = new Item( mainPage_, gridLayout_ ) );
+
+    fileItem_->setKey( "File name:" );
+    pathItem_->setKey( "Path:" );
+    typeItem_->setKey( "Type:" );
+    sizeItem_->setKey( "Size:" );
+    createdItem_->setKey( "Created:" );
+    accessedItem_->setKey( "Accessed:" );
+    modifiedItem_->setKey( "Modified:" );
 
     // permissions tab
+    QWidget* box;
     tabWidget_->addTab( box = new QWidget(), "Permissions" );
     layout = new QVBoxLayout();
     layout->setMargin(5);
     layout->setSpacing( 5 );
     box->setLayout( layout );
 
-    layout->addWidget( permissionsWidget_ = new FilePermissionsWidget( box, fileInfo.permissions() ) );
+    layout->addWidget( permissionsWidget_ = new FilePermissionsWidget( box ) );
 
-    layout->addWidget( new QLabel( "<b>Ownership: </b>", box ) );
+    // user and group
+    QLabel* label;
+    layout->addWidget( label = new QLabel( "Ownership:", box ) );
+    {
+        QFont font( label->font() );
+        font.setWeight( QFont::Bold );
+        label->setFont( font );
+    }
 
-    gridLayout = new GridLayout();
+    GridLayout* gridLayout = new GridLayout();
     gridLayout->setMargin(0);
     gridLayout->setSpacing( 5 );
     gridLayout->setMaxCount( 2 );
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     layout->addItem( gridLayout );
 
-    items << (userItem_ = new BaseInformationDialogItem( box, gridLayout ) );
-    items << (groupItem_ = new BaseInformationDialogItem( box, gridLayout ) );
+    items << (userItem_ = new Item( box, gridLayout ) );
+    items << (groupItem_ = new Item( box, gridLayout ) );
+    userItem_->setKey( "User:" );
+    groupItem_->setKey( "Group:" );
+
+    gridLayout->setColumnStretch( 1, 1 );
+    layout->addStretch();
 
     // hide everything, they are shown when proper values are set
-    foreach( BaseInformationDialogItem* item, items )
+    foreach( Item* item, items )
     { item->hide(); }
 
     permissionsWidget_->hide();
+
+    // connections
+    connect( &closeButton(), SIGNAL( pressed( void ) ), SLOT( close( void ) ) );
+    new QShortcut( QKeySequence::Close, this, SLOT( close() ) );
 
 }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setIcon( const QIcon& icon)
-{ if( !icon.isNull() ) iconLabel_->setPixmap( icon.pixmap( iconSize() ) )
+{ if( !icon.isNull() ) iconLabel_->setPixmap( icon.pixmap( iconSize() ) ); }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setFile( const QString& value )
@@ -223,25 +233,65 @@ void BaseFileInformationDialog::setSize( qint64 size )
 {
     if( size > 0 )
     {
+        // format size to have space characters every three digits
+        QString sizeString = QString().setNum( size );
+        int length( sizeString.length() );
+        for( int i = 1; i < length; i++ )
+        { if( !(i%3) ) sizeString.insert( sizeString.size() - (i + i/3 - 1), ' ' ); }
 
+        QString buffer;
+        QTextStream( &buffer ) << File::sizeString( size ) << " (" << sizeString << ")";
+        sizeItem_->setText( buffer );
 
     } else sizeItem_->setText( QString() );
 }
 
 //_________________________________________________________
-void BaseFileInformationDialog::setCreated( TimeStamp );
+void BaseFileInformationDialog::setCreated( TimeStamp timeStamp )
+{ createdItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________
-void BaseFileInformationDialog::setAccessed( TimeStamp );
+void BaseFileInformationDialog::setAccessed( TimeStamp timeStamp )
+{ accessedItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________
-void BaseFileInformationDialog::setModified( TimeStamp );
+void BaseFileInformationDialog::setModified( TimeStamp timeStamp )
+{ modifiedItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________
-void BaseFileInformationDialog::setPermissions( const QString& );
+void BaseFileInformationDialog::setPermissions( QFile::Permissions permissions )
+{
+    permissionsWidget_->show();
+    permissionsWidget_->setPermissions( permissions );
+}
 
 //_________________________________________________________
-void BaseFileInformationDialog::setUser( const QString& );
+void BaseFileInformationDialog::setUser( const QString& value )
+{ userItem_->setText( value ); }
 
 //_________________________________________________________
-void BaseFileInformationDialog::setGroup( const QString& );
+void BaseFileInformationDialog::setGroup( const QString& value )
+{ groupItem_->setText( value ); }
+
+//_________________________________________________________
+int BaseFileInformationDialog::addRow( const QString& key, const QString& value, ItemFlags flags )
+{
+
+    // setup new item
+    Item* item = new Item( mainPage_, gridLayout_, flags );
+    item->setKey( key );
+    item->setText( value );
+
+    // append to list
+    extraItems_ << item;
+
+    // return id
+    return extraItems_.size() - 1;
+}
+
+//_________________________________________________________
+void BaseFileInformationDialog::setCustomValue( int index, const QString& value )
+{
+    if( index >= 0 && index < extraItems_.size() )
+    { extraItems_[index]->setText( value ); }
+}

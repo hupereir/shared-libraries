@@ -51,42 +51,47 @@ FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permission
     gridLayout->addWidget( new QLabel( "Write", this ), Qt::AlignHCenter );
     gridLayout->addWidget( new QLabel( "Execute", this ), Qt::AlignHCenter );
 
-    typedef QHash< QFile::Permission, QCheckBox* > CheckBoxMap;
-    CheckBoxMap checkboxes;
-
     gridLayout->addWidget( new QLabel( "Owner:", this ) );
-    gridLayout->addWidget( checkboxes[QFile::ReadOwner ]  = new QCheckBox( this ), Qt::AlignHCenter );
-    gridLayout->addWidget( checkboxes[QFile::WriteOwner ]  = new QCheckBox( this ), Qt::AlignHCenter );
-    gridLayout->addWidget( checkboxes[QFile::ExeOwner  ]  = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::ReadOwner]  = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::WriteOwner]  = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::ExeOwner]  = new QCheckBox( this ), Qt::AlignHCenter );
 
     // on unix, right now, Qt does not return the current user permissions. Disable them from the dialog
     #if !defined(Q_WS_X11)
     gridLayout->addWidget( new QLabel( "User:", this ) );
-    gridLayout->addWidget( checkboxes[QFile::ReadUser ]  = new QCheckBox( this ), Qt::AlignHCenter );
-    gridLayout->addWidget( checkboxes[QFile::WriteUser]  = new QCheckBox( this ), Qt::AlignHCenter );
-    gridLayout->addWidget( checkboxes[QFile::ExeUser  ]  = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::ReadUser]  = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::WriteUser]  = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::ExeUser]  = new QCheckBox( this ), Qt::AlignHCenter );
     #endif
 
     gridLayout->addWidget( new QLabel( "Group:", this ) );
-    gridLayout->addWidget( checkboxes[QFile::ReadGroup  ] = new QCheckBox( this ), Qt::AlignHCenter );
-    gridLayout->addWidget( checkboxes[QFile::WriteGroup ] = new QCheckBox( this ), Qt::AlignHCenter );
-    gridLayout->addWidget( checkboxes[QFile::ExeGroup   ] = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::ReadGroup] = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::WriteGroup] = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::ExeGroup] = new QCheckBox( this ), Qt::AlignHCenter );
 
     gridLayout->addWidget( new QLabel( "Others:", this ) );
-    gridLayout->addWidget( checkboxes[QFile::ReadOther  ] = new QCheckBox( this ), Qt::AlignHCenter );
-    gridLayout->addWidget( checkboxes[QFile::WriteOther ] = new QCheckBox( this ), Qt::AlignHCenter );
-    gridLayout->addWidget( checkboxes[QFile::ExeOther   ] = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::ReadOther] = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::WriteOther] = new QCheckBox( this ), Qt::AlignHCenter );
+    gridLayout->addWidget( checkboxes_[QFile::ExeOther] = new QCheckBox( this ), Qt::AlignHCenter );
 
-    // set checkboxes
-    for( CheckBoxMap::iterator iter = checkboxes.begin(); iter != checkboxes.end(); ++iter )
-    {
-        iter.value()->setChecked( permissions & iter.key() );
-        iter.value()->setEnabled( false );
-    }
-
+    setPermissions( permissions );
 
     gridLayout->setColumnStretch( 0, 0 );
     gridLayout->setColumnStretch( 1, 1 );
     gridLayout->setColumnStretch( 2, 1 );
     gridLayout->setColumnStretch( 3, 1 );
+}
+//_____________________________________________________________________
+void FilePermissionsWidget::setPermissions( QFile::Permissions permissions )
+{
+
+    Debug::Throw( "FilePermissionsWidget::setPermissions\n" );
+
+    // set checkboxes
+    for( CheckBoxMap::iterator iter = checkboxes_.begin(); iter != checkboxes_.end(); ++iter )
+    {
+        iter.value()->setChecked( permissions & iter.key() );
+        iter.value()->setEnabled( false );
+    }
+
 }

@@ -26,26 +26,57 @@
 #include "CustomDialog.h"
 #include "TimeStamp.h"
 
+#include <QtCore/QFile>
+#include <QtCore/QList>
 #include <QtGui/QLabel>
+#include <QtGui/QLayout>
 
 class AnimatedTabWidget;
-class BaseInformationDialogItem;
+class Item;
 class FilePermissionsWidget;
+class GridLayout;
 
 //! file informations
 class BaseFileInformationDialog: public CustomDialog
 {
 
-    Q_OBJECT
-
     public:
+    //! flags
+
+    enum ItemFlag
+    {
+        None = 0,
+        Elide = 1<<0,
+        Bold = 1<<1,
+        Selectable = 1<<2,
+        All = Elide|Bold|Selectable
+    };
+
+    Q_DECLARE_FLAGS( ItemFlags, ItemFlag );
 
     //! constructor
     BaseFileInformationDialog( QWidget* );
 
     //! destructor
-    virtual ~FileInformationDialog( void )
+    virtual ~BaseFileInformationDialog( void )
     {}
+
+    //!@name accessors
+    //@{
+
+    //! tab widget
+    AnimatedTabWidget& tabWidget( void ) const
+    { return *tabWidget_; }
+
+    //! main widget
+    QWidget& mainPage( void ) const
+    { return *mainPage_; }
+
+    //! main layout
+    QVBoxLayout& pageLayout( void ) const
+    { return *pageLayout_; }
+
+    //@}
 
     //!@name modifiers
     //@{
@@ -75,7 +106,7 @@ class BaseFileInformationDialog: public CustomDialog
     void setModified( TimeStamp );
 
     //! permissions
-    void setPermissions( const QString& );
+    void setPermissions( QFile::Permissions );
 
     //! user
     void setUser( const QString& );
@@ -83,26 +114,96 @@ class BaseFileInformationDialog: public CustomDialog
     //! group
     void setGroup( const QString& );
 
+    //! add a row
+    int addRow( const QString&, const QString& = QString(), ItemFlags = None );
+
+    //! set custom value
+    void setCustomValue( int, const QString& );
+
     //@}
 
+    //! item
+    class Item: public QObject, public Counter
+    {
+
+        public:
+
+        //! constructor
+        Item( QWidget*, GridLayout*, ItemFlags = None );
+
+        //! destructor
+        virtual ~Item( void )
+        {}
+
+        //!@name modifiers
+        //@{
+
+        //! set key
+        void setKey( const QString& );
+
+        //! set text
+        void setText( const QString& );
+
+        //@}
+
+        //!@name visibility
+        //@{
+
+        //! set visible
+        void setVisible( bool value );
+
+        //! show
+        void show( void );
+
+        //! hide
+        void hide( void );
+
+        //@}
+
+        private:
+
+        ItemFlags flags_;
+        QLabel* key_;
+        QLabel* value_;
+
+    };
+
     private:
+
+    //! tab widget
+    AnimatedTabWidget* tabWidget_;
+
+    //! main tab widget
+    QWidget* mainPage_;
+
+    //! main tab layout
+    QVBoxLayout* pageLayout_;
+
+    //! grid layout
+    GridLayout* gridLayout_;
 
     //! icon
     QLabel* iconLabel_;
 
     //! items
-    BaseInformationDialogItem* fileItem_;
-    BaseInformationDialogItem* pathItem_;
-    BaseInformationDialogItem* typeItem_;
-    BaseInformationDialogItem* sizeItem_;
-    BaseInformationDialogItem* createdItem_;
-    BaseInformationDialogItem* accessedItem_;
-    BaseInformationDialogItem* modifiedItem_;
-    BaseInformationDialogItem* userItem_;
-    BaseInformationDialogItem* groupItem_;
+    Item* fileItem_;
+    Item* pathItem_;
+    Item* typeItem_;
+    Item* sizeItem_;
+    Item* createdItem_;
+    Item* accessedItem_;
+    Item* modifiedItem_;
+    Item* userItem_;
+    Item* groupItem_;
 
     //! permissions
     FilePermissionsWidget* permissionsWidget_;
 
-}
+    //! extra rows
+    QList<Item*> extraItems_;
 
+};
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( BaseFileInformationDialog::ItemFlags )
+
+#endif

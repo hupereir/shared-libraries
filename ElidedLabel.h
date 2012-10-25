@@ -40,6 +40,8 @@
 class ElidedLabel: public QLabel, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

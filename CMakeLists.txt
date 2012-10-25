@@ -32,6 +32,7 @@ SET( base_qt_SOURCES
   BaseFileInfo.cpp
   BaseFileInfoConfigurationWidget.cpp
   BaseFileInfoToolTipWidget.cpp
+  BaseFileInformationDialog.cpp
   BaseFindDialog.cpp
   BaseMainWindow.cpp
   BaseConfigurationDialog.cpp
@@ -178,6 +179,7 @@ SET( base_qt_HEADERS
   DebugMenu.h
   DetailsDialog.h
   DockPanel.h
+  ElidedLabel.h
   FileList.h
   FileRecordModel.h
   FileSystemWatcher.h

@@ -27,7 +27,6 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <cassert>
 #include <QtGui/QPushButton>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QLayout>
@@ -69,10 +68,7 @@ class CustomDialog: public BaseDialog, public Counter
 
     //! separator
     QWidget& separator( void ) const
-    {
-        assert( separator_ );
-        return *separator_;
-    }
+    { return *separator_; }
 
     //! retrieve button layout
     QBoxLayout& buttonLayout( void ) const
@@ -84,10 +80,15 @@ class CustomDialog: public BaseDialog, public Counter
 
     //! retrieve OK button
     QPushButton& okButton( void ) const
-    {
-        assert( okButton_ );
-        return *okButton_;
-    }
+    { return *okButton_; }
+
+    //! returns true if close button is valid
+    bool hasCloseButton( void ) const
+    { return okButton_; }
+
+    //! retrieve close button
+    QPushButton& closeButton( void ) const
+    { return *okButton_; }
 
     //! returns true if Cancel button is valid
     bool hasCancelButton( void ) const
@@ -95,11 +96,7 @@ class CustomDialog: public BaseDialog, public Counter
 
     //! retrieve CANCEL button
     QPushButton& cancelButton( void ) const
-    {
-        assert( cancelButton_ );
-        return *cancelButton_;
-    }
-
+    { return *cancelButton_; }
 
     private:
 

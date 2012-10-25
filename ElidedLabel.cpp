@@ -38,8 +38,7 @@
 ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
     QLabel( parent ),
     Counter( "ElidedLabel" ),
-    elideMode_( Qt::ElideLeft ),
-    fullText_( text )
+    elideMode_( Qt::ElideLeft )
 {
 
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
@@ -47,15 +46,16 @@ ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
     // set size policy
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
-    updateElidedText();
+    // set text
+    setText( text );
 
 }
 
 //___________________________________________________
 ElidedLabel::ElidedLabel(  QWidget* parent ):
-QLabel( parent ),
-Counter( "ElidedLabel" ),
-elideMode_( Qt::ElideLeft )
+    QLabel( parent ),
+    Counter( "ElidedLabel" ),
+    elideMode_( Qt::ElideLeft )
 {
 
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
@@ -64,6 +64,21 @@ elideMode_( Qt::ElideLeft )
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
 }
+
+//___________________________________________________
+void ElidedLabel::setText( const QString& text )
+{
+    fullText_ = text;
+    updateElidedText();
+}
+
+//___________________________________________________
+QSize ElidedLabel::minimumSizeHint() const
+{ return QSize( -1, QLabel::minimumSizeHint().height() ); }
+
+//___________________________________________________
+QSize ElidedLabel::sizeHint() const
+{ return QSize( fontMetrics().width(fullText_), QLabel::sizeHint().height() ); }
 
 //___________________________________________________
 void ElidedLabel::resizeEvent( QResizeEvent* e )
@@ -111,11 +126,3 @@ void ElidedLabel::updateElidedText( void )
     }
 
 }
-
-//___________________________________________________
-QSize ElidedLabel::minimumSizeHint() const
-{ return QSize( -1, QLabel::minimumSizeHint().height() ); }
-
-//___________________________________________________
-QSize ElidedLabel::sizeHint() const
-{ return QSize( fontMetrics().width(fullText_), QLabel::sizeHint().height() ); }

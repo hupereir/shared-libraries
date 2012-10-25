@@ -26,7 +26,9 @@
 #include "Counter.h"
 
 #include <QtCore/QFile>
+#include <QtCore/QHash>
 #include <QtGui/QWidget>
+#include <QtGui/QCheckBox>
 
 class FilePermissionsWidget: public QWidget, public Counter
 {
@@ -34,11 +36,24 @@ class FilePermissionsWidget: public QWidget, public Counter
     public:
 
     //! constructor
-    FilePermissionsWidget( QWidget*, QFile::Permissions );
+    FilePermissionsWidget( QWidget*, QFile::Permissions = QFile::Permissions() );
 
     //! destructor
     virtual ~FilePermissionsWidget( void )
     {}
+
+    //! set permissions
+    virtual void setPermissions( QFile::Permissions );
+
+    private:
+
+    //! checkbox map
+    typedef QHash< QFile::Permission, QCheckBox* > CheckBoxMap;
+
+    //! checkbox map
+    CheckBoxMap checkboxes_;
+
+
 
 };
 
