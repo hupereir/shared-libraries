@@ -135,17 +135,14 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     iconLabel_->setPixmap( IconEngine::get( ICONS::INFORMATION ).pixmap( iconSize() ) );
     hLayout->addWidget( iconLabel_, 0, Qt::AlignTop );
 
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setMargin(0);
-    layout->setSpacing( 5 );
-    hLayout->addLayout( layout, 0 );
-    hLayout->addStretch( 1 );
-
     gridLayout_ = new GridLayout();
     gridLayout_->setSpacing( 5 );
     gridLayout_->setMaxCount( 2 );
     gridLayout_->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-    layout->addLayout( gridLayout_ );
+
+    hLayout->addStretch( 1 );
+    hLayout->addLayout( gridLayout_, 0 );
+    hLayout->addStretch( 1 );
 
     // store all items in array, for visibility
     QList<Item*> items;
@@ -168,6 +165,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     // permissions tab
     QWidget* box;
+    QVBoxLayout* layout;
     tabWidget_->addTab( box = new QWidget(), "Permissions" );
     layout = new QVBoxLayout();
     layout->setMargin(5);
