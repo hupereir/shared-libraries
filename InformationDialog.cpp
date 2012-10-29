@@ -32,7 +32,7 @@ InformationDialog::InformationDialog( QWidget* parent, QString text ):
 
     Debug::Throw( "InformationDialog::InformationDialog\n" );
 
-    //! try load Question icon
+    // icon
     QHBoxLayout *hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);

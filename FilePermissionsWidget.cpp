@@ -80,7 +80,9 @@ FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permission
     gridLayout->setColumnStretch( 1, 1 );
     gridLayout->setColumnStretch( 2, 1 );
     gridLayout->setColumnStretch( 3, 1 );
+
 }
+
 //_____________________________________________________________________
 void FilePermissionsWidget::setPermissions( QFile::Permissions permissions )
 {

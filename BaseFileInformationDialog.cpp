@@ -67,7 +67,7 @@ void BaseFileInformationDialog::Item::setKey( const QString& value )
 { key_->setText( value ); }
 
 //____________________________________________________________________________
-void BaseFileInformationDialog::Item::setText( const QString& value )
+void BaseFileInformationDialog::Item::setValue( const QString& value )
 {
 
     // assign text
@@ -134,30 +134,29 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     iconLabel_ = new QLabel(mainPage_);
     iconLabel_->setPixmap( IconEngine::get( ICONS::INFORMATION ).pixmap( iconSize() ) );
     hLayout->addWidget( iconLabel_, 0, Qt::AlignTop );
+    hLayout->addStretch();
 
     gridLayout_ = new GridLayout();
     gridLayout_->setSpacing( 5 );
     gridLayout_->setMaxCount( 2 );
     gridLayout_->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-
-    hLayout->addStretch( 1 );
-    hLayout->addLayout( gridLayout_, 0 );
-    hLayout->addStretch( 1 );
+    hLayout->addLayout( gridLayout_ );
+    hLayout->addStretch();
 
     // store all items in array, for visibility
     QList<Item*> items;
 
     items << (fileItem_ = new Item( mainPage_, gridLayout_, Bold|Selectable|Elide ) );
-    items << (pathItem_ = new Item( mainPage_, gridLayout_, Selectable|Elide ) );
     items << (typeItem_ = new Item( mainPage_, gridLayout_ ) );
+    items << (pathItem_ = new Item( mainPage_, gridLayout_, Selectable|Elide ) );
     items << (sizeItem_ = new Item( mainPage_, gridLayout_ ) );
     items << (createdItem_ = new Item( mainPage_, gridLayout_ ) );
     items << (modifiedItem_ = new Item( mainPage_, gridLayout_ ) );
     items << (accessedItem_ = new Item( mainPage_, gridLayout_ ) );
 
     fileItem_->setKey( "File name:" );
-    pathItem_->setKey( "Path:" );
     typeItem_->setKey( "Type:" );
+    pathItem_->setKey( "Location:" );
     sizeItem_->setKey( "Size:" );
     createdItem_->setKey( "Created:" );
     accessedItem_->setKey( "Accessed:" );
@@ -216,15 +215,15 @@ void BaseFileInformationDialog::setIcon( const QIcon& icon)
 
 //_________________________________________________________
 void BaseFileInformationDialog::setFile( const QString& value )
-{ fileItem_->setText( value ); }
+{ fileItem_->setValue( value ); }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setPath( const QString& value )
-{ pathItem_->setText( value ); }
+{ pathItem_->setValue( value ); }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setType( const QString& value )
-{ typeItem_->setText( value ); }
+{ typeItem_->setValue( value ); }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setSize( qint64 size )
@@ -239,22 +238,22 @@ void BaseFileInformationDialog::setSize( qint64 size )
 
         QString buffer;
         QTextStream( &buffer ) << File::sizeString( size ) << " (" << sizeString << ")";
-        sizeItem_->setText( buffer );
+        sizeItem_->setValue( buffer );
 
-    } else sizeItem_->setText( QString() );
+    } else sizeItem_->setValue( QString() );
 }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setCreated( TimeStamp timeStamp )
-{ createdItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
+{ createdItem_->setValue( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setAccessed( TimeStamp timeStamp )
-{ accessedItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
+{ accessedItem_->setValue( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setModified( TimeStamp timeStamp )
-{ modifiedItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
+{ modifiedItem_->setValue( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setPermissions( QFile::Permissions permissions )
@@ -265,11 +264,11 @@ void BaseFileInformationDialog::setPermissions( QFile::Permissions permissions )
 
 //_________________________________________________________
 void BaseFileInformationDialog::setUser( const QString& value )
-{ userItem_->setText( value ); }
+{ userItem_->setValue( value ); }
 
 //_________________________________________________________
 void BaseFileInformationDialog::setGroup( const QString& value )
-{ groupItem_->setText( value ); }
+{ groupItem_->setValue( value ); }
 
 //_________________________________________________________
 int BaseFileInformationDialog::addRow( const QString& key, const QString& value, ItemFlags flags )
@@ -278,7 +277,7 @@ int BaseFileInformationDialog::addRow( const QString& key, const QString& value,
     // setup new item
     Item* item = new Item( mainPage_, gridLayout_, flags );
     item->setKey( key );
-    item->setText( value );
+    item->setValue( value );
 
     // append to list
     extraItems_ << item;
@@ -288,8 +287,15 @@ int BaseFileInformationDialog::addRow( const QString& key, const QString& value,
 }
 
 //_________________________________________________________
+void BaseFileInformationDialog::setCustomKey( int index, const QString& value )
+{
+    if( index >= 0 && index < extraItems_.size() )
+    { extraItems_[index]->setKey( value ); }
+}
+
+//_________________________________________________________
 void BaseFileInformationDialog::setCustomValue( int index, const QString& value )
 {
     if( index >= 0 && index < extraItems_.size() )
-    { extraItems_[index]->setText( value ); }
+    { extraItems_[index]->setValue( value ); }
 }

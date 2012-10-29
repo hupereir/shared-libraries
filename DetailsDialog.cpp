@@ -21,6 +21,26 @@
 *******************************************************************************/
 
 #include "DetailsDialog.h"
+#include "TextEditor.h"
+
+//____________________________________________________________
+void DetailsDialog::setDetails( const QString& details )
+{
+
+    Debug::Throw( "DetailsDialog::setDetails.\n" );
+
+    // do nothing if detail string is invalid
+    if( details.isEmpty() ) return;
+
+    // create text editor assign text and set as details
+    TextEditor* editor = new TextEditor();
+    editor->setReadOnly( true );
+    editor->setWrapFromOptions( false );
+    editor->setLineWrapMode( QTextEdit::WidgetWidth );
+    editor->setText( details );
+    setDetails( editor );
+
+}
 
 //____________________________________________________________
 void DetailsDialog::setDetails( QWidget* widget )

@@ -118,6 +118,9 @@ class BaseFileInformationDialog: public CustomDialog
     int addRow( const QString&, const QString& = QString(), ItemFlags = None );
 
     //! set custom value
+    void setCustomKey( int, const QString& );
+
+    //! set custom value
     void setCustomValue( int, const QString& );
 
     //@}
@@ -142,7 +145,7 @@ class BaseFileInformationDialog: public CustomDialog
         void setKey( const QString& );
 
         //! set text
-        void setText( const QString& );
+        void setValue( const QString& );
 
         //@}
 

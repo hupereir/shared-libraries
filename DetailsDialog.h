@@ -49,6 +49,9 @@ class DetailsDialog: public CustomDialog
     virtual ~DetailsDialog( void )
     {}
 
+    //! set text details
+    virtual void setDetails( const QString& );
+
     //! set details widget
     virtual void setDetails( QWidget* );
 
