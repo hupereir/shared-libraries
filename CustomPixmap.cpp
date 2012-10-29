@@ -21,28 +21,17 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomPixmap.cpp
-\brief customized QPixmap to look for icon of given name in list of directory
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-#include <QBitmap>
-#include <QImage>
-#include <QIcon>
-#include <QPainter>
-#include <QFileIconProvider>
-
 #include "CustomPixmap.h"
 #include "Debug.h"
 #include "IconSize.h"
 #include "File.h"
 #include "PixmapEngine.h"
 
-
+#include <QtCore/QBitmap>
+#include <QtGui/QImage>
+#include <QtGui/QIcon>
+#include <QtGui/QPainter>
+#include <QtCore/QFileIconProvider>
 
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QString& file ):
