@@ -37,7 +37,6 @@ SET( base_SOURCES
   Option.cpp
   Options.cpp
   Singleton.cpp
-  Str.cpp
   TimeStamp.cpp
   Util.cpp
 )

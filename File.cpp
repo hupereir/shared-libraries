@@ -237,15 +237,7 @@ File File::backup( void ) const
 
     // open this file
     QFile in( expand );
-    if( !in.open( QIODevice::ReadOnly ) ) return File();
-
-    // open backup
-    QFile out( backup );
-    if( !out.open( QIODevice::WriteOnly ) ) return File();
-
-    out.write( in.readAll() );
-    out.close();
-    in.close();
+    in.copy( backup );
     return backup;
 
 }
