@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    TransparentWidget.cpp
-\brief   transparent widget
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include <cassert>
 #include <QPainter>
 
