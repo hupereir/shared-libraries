@@ -31,7 +31,8 @@ FileThread::FileThread( QObject* parent ):
     QThread( parent ),
     Counter( "FileThread" ),
     flags_( File::None ),
-    totalSize_( 0 )
+    totalSize_( 0 ),
+    error_( false )
 { qRegisterMetaType<File::List>( "File::List" ); }
 
 //______________________________________________________
@@ -41,9 +42,33 @@ void FileThread::run( void )
     totalSize_ = 0;
     files_.clear();
     filesRecursive_.clear();
+    error_ = false;
 
-    // list files
-    _listFiles( file_ );
+    // process command
+    switch( command_ )
+    {
+
+        case List:
+        case ListRecursive:
+        case SizeRecursive:
+        {
+            _listFiles( file_ );
+            break;
+        }
+
+        case Copy:
+        {
+            if( !file_.copy( destination_ ) )
+            {
+                error_ = true;
+                QTextStream what( &errorString_ );
+                what << "Failed to copy " << file_ << " to " << destination_;
+            }
+            break;
+        }
+
+        default: break;
+    }
 
     // emit (recomputed) total size
     switch( command_ )

@@ -47,7 +47,9 @@ class FileThread: public QThread, public Counter
     {
         List,
         ListRecursive,
-        SizeRecursive
+        SizeRecursive,
+        Remove,
+        Copy
     };
 
     //!@name accessors
@@ -61,9 +63,21 @@ class FileThread: public QThread, public Counter
     File file( void ) const
     { return file_; }
 
+    //! destination
+    File destination( void ) const
+    { return destination_; }
+
     //!flags
     File::ListFlags flags( void )
     { return flags_; }
+
+    //! error state
+    bool hasError( void ) const
+    { return error_; }
+
+    //! error string
+    QString errorString( void )
+    { return errorString_; }
 
     //@}
 
@@ -86,6 +100,13 @@ class FileThread: public QThread, public Counter
     {
         QMutexLocker lock( &mutex_ );
         file_ = file;
+    }
+
+    //! destination
+    void setDestination( const File& destination )
+    {
+        QMutexLocker lock( &mutex_ );
+        destination_ = destination;
     }
 
     //@}
@@ -126,6 +147,9 @@ class FileThread: public QThread, public Counter
     //! file
     File file_;
 
+    //! destination
+    File destination_;
+
     //! current list of files
     File::List files_;
 
@@ -134,6 +158,12 @@ class FileThread: public QThread, public Counter
 
     //! total size
     qint64 totalSize_;
+
+    //! error
+    bool error_;
+
+    //! error string
+    QString errorString_;
 
 };
 

@@ -46,7 +46,7 @@ bool File::create( void ) const
 { return QFile( *this ).open( QIODevice::WriteOnly ); }
 
 //_____________________________________________________________________
-bool File::createDirectory( const QString& constPath ) const
+bool File::createDirectory( const File& constPath ) const
 {
     if( exists() && !isDirectory() ) return false;
     if( !QDir( *this ).mkpath( constPath ) ) return false;
@@ -324,7 +324,7 @@ bool File::removeRecursive( void ) const
 }
 
 //_____________________________________________________________________
-bool File::rename( File newFile ) const
+bool File::rename( const File& newFile ) const
 {
 
     // check if file exists and rename
@@ -334,8 +334,45 @@ bool File::rename( File newFile ) const
 
 }
 
+//_____________________________________________________________________
+bool File::copy( const File& newFile, bool force ) const
+{
+    // check existence
+    if( !exists() ) return false;
+
+    // check destination existance
+    if( newFile.exists() && !( force && newFile.removeRecursive() ) ) return false;
+
+    // check file type
+    if( isLink() )
+    {
+
+        // get source and make a new link
+        return QFile( QFile( *this ).symLinkTarget() ).link( newFile );
+
+    } else if( isDirectory() ) {
+
+        // create directory
+        if( !newFile.createDirectory() ) return false;
+
+        // list files, and copy, recursively
+        const File::List files( listFiles( ShowHiddenFiles ) );
+        foreach( const File& file, files )
+        { if( !file.copy( file.localName().addPath( newFile ) ) ) return false; }
+
+        return true;
+
+    } else {
+
+        // copy plain file
+        return QFile( *this ).copy( newFile );
+
+    }
+
+}
+
 //____________________________________________
-File File::addPath( const QString& path, bool use_absolute ) const
+File File::addPath( const File& path, bool use_absolute ) const
 {
 
     // returns 0 if either path nor file are given

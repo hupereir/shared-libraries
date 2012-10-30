@@ -70,7 +70,7 @@ class File: public QString
     bool create( void ) const;
 
     //! try create directory
-    bool createDirectory( const QString& ) const;
+    bool createDirectory( const File& = File(".") ) const;
 
     //! time of file creation
     virtual time_t created( void ) const;
@@ -170,11 +170,14 @@ class File: public QString
 
     //! rename file
     /*! returns true if the file exists and was renamed */
-    virtual bool rename( File ) const;
+    virtual bool rename( const File& ) const;
+
+    //! copy
+    virtual bool copy( const File&, bool = false ) const;
 
     //! adds path to a file
     /*! note: the file is taken raw. No truncation/expension performed.*/
-    virtual File addPath( const QString&, bool absolute = false ) const;
+    virtual File addPath( const File&, bool absolute = false ) const;
 
     //! expand a file name replacing .. or ~ to full path
     virtual File expand( void ) const;
