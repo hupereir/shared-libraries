@@ -183,7 +183,7 @@ namespace SVG
         }
 
         // try use global path
-        File themePath = File( theme ).addPath( "/usr/share/apps/desktoptheme/");
+        File themePath = File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) );
         if( themePath.exists() ) return _setPath( themePath );
 
         // try use default theme
