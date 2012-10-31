@@ -23,6 +23,7 @@
 
 #include "BaseFileInfo.h"
 #include "Debug.h"
+#include "TimeStamp.h"
 #include "XmlString.h"
 
 #include <cassert>
@@ -134,3 +135,39 @@ void BaseFileInfo::setPermissions( const QString& value )
 
 }
 
+//________________________________________________________________
+void BaseFileInfo::update( void )
+{
+
+    if( file().isEmpty() )
+    {
+
+        setUser( QString() );
+        setGroup( QString() );
+        setSize( 0 );
+        setLastModified( TimeStamp() );
+        setPermissions( QFile::Permissions() );
+
+    } else {
+
+        setSize( file().fileSize() );
+        setUser( file().userName() );
+        setGroup( file().groupName() );
+        setLastModified( file().lastModified() );
+        setPermissions( file().permissions() );
+
+    }
+
+}
+
+//________________________________________________________________
+void BaseFileInfo::updateFrom( const BaseFileInfo& info )
+{
+
+    setUser( info.user() );
+    setGroup( info.group() );
+    setSize( info.size() );
+    setLastModified( info.lastModified() );
+    setPermissions( info.permissions() );
+
+}

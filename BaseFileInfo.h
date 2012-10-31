@@ -253,6 +253,12 @@ class BaseFileInfo
     //! permissions (from string)
     virtual void setPermissions( const QString& );
 
+    //! update internal storage from file
+    virtual void update( void );
+
+    //! update internal storage from existing file info
+    virtual void updateFrom( const BaseFileInfo& );
+
     //@}
 
     //! used to count files of a given type
