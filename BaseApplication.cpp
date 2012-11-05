@@ -132,7 +132,7 @@ bool BaseApplication::realizeWidget( void )
 
     // need to update icon theme upfront to make sure themed icons are loaded
     _updateIconTheme();
-    
+
     // actions
     aboutAction_ = new QAction( _applicationIcon(), "About this &Application", this );
     connect( aboutAction_, SIGNAL( triggered() ), SLOT( _about() ) );
@@ -235,8 +235,12 @@ void BaseApplication::_updateConfiguration( void )
     Debug::Throw( "BaseApplication::_updateConfiguration.\n" );
 
     // application icon
-    // would rather use mechanism to load multiple pixmap in a single icon
-    qApp->setWindowIcon( _applicationIcon() );
+    const QIcon icon( _applicationIcon() );
+    qApp->setWindowIcon( icon );
+
+    // also assign to all existing top level widgets
+    foreach( QWidget* widget, qApp->topLevelWidgets() )
+    { widget->setWindowIcon( icon ); }
 
     // reload IconEngine cache (in case of icon_path_list that changed)
     IconEngine::get().reload();
