@@ -794,6 +794,9 @@ void IconView::mouseReleaseEvent( QMouseEvent *event )
 //____________________________________________________________________
 void IconView::dragEnterEvent( QDragEnterEvent *event )
 {
+
+    // Debug::Throw(0) << "IconView::dragEnterEvent" << endl;
+
     if( acceptDrops() && event->isAccepted() )
     { dragInProgress_ = true; }
 
@@ -808,6 +811,8 @@ void IconView::dragMoveEvent( QDragMoveEvent *event )
 
     if( acceptDrops() && event->isAccepted() )
     { dragInProgress_ = true; }
+
+    // Debug::Throw(0) << "IconView::dragMoveEvent" << endl;
 
     // update hover item
     if( showDropIndicator() ) _setHoverIndex( indexAt( event->pos() ) );
