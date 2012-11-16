@@ -149,7 +149,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     items << (fileItem_ = new Item( mainPage_, gridLayout_, Bold|Selectable|Elide ) );
     items << (typeItem_ = new Item( mainPage_, gridLayout_ ) );
     items << (pathItem_ = new Item( mainPage_, gridLayout_, Selectable|Elide ) );
-    items << (sizeItem_ = new Item( mainPage_, gridLayout_ ) );
+    items << (sizeItem_ = new Item( mainPage_, gridLayout_, Selectable ) );
     items << (createdItem_ = new Item( mainPage_, gridLayout_ ) );
     items << (modifiedItem_ = new Item( mainPage_, gridLayout_ ) );
     items << (accessedItem_ = new Item( mainPage_, gridLayout_ ) );
