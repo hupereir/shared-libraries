@@ -99,6 +99,9 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     Debug::Throw( "BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n" );
     setAttribute( Qt::WA_TranslucentBackground, true );
 
+    // event filter on parent
+    if( parent ) parent->installEventFilter( this );
+
     // change palete
     setPalette( QToolTip::palette() );
     setBackgroundRole( QPalette::ToolTipBase );
@@ -270,6 +273,24 @@ void BaseFileInfoToolTipWidget::adjustPosition( const QRect& rect )
 }
 
 //_______________________________________________________
+bool BaseFileInfoToolTipWidget::eventFilter( QObject* object, QEvent* event )
+{
+
+    if( object != parent() ) return QWidget::eventFilter( object, event );
+    switch( event->type() )
+    {
+        case QEvent::Leave:
+        case QEvent::HoverLeave:
+        hide();
+        break;
+
+        default: break;
+    }
+
+    return QWidget::eventFilter( object, event );
+}
+
+//_______________________________________________________
 void BaseFileInfoToolTipWidget::paintEvent( QPaintEvent* event )
 {
     QPainter painter( this );
@@ -281,6 +302,14 @@ void BaseFileInfoToolTipWidget::paintEvent( QPaintEvent* event )
     return QWidget::paintEvent( event );
 }
 
+//_______________________________________________________
+void BaseFileInfoToolTipWidget::mousePressEvent( QMouseEvent* event )
+{
+
+    hide();
+    return QWidget::mousePressEvent( event );
+
+}
 
 //_____________________________________________
 void BaseFileInfoToolTipWidget::timerEvent( QTimerEvent* event )

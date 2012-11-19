@@ -88,6 +88,8 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
         _reload();
     }
 
+    // event filter
+    virtual bool eventFilter( QObject*, QEvent* );
 
     public slots:
 
@@ -117,6 +119,9 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
 
     //! paint
     virtual void paintEvent( QPaintEvent* );
+
+    //! mouse press
+    virtual void mousePressEvent( QMouseEvent* );
 
     //! timer event
     virtual void timerEvent( QTimerEvent* );
