@@ -42,7 +42,6 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
 
     //! column type enumeration
     enum ColumnType {
-        ICON,
         FILE,
         PATH,
         TIME

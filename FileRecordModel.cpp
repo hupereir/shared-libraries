@@ -49,7 +49,6 @@ FileRecordModel::FileRecordModel( QObject* parent ):
 {
     Debug::Throw("FileRecordModel::FileRecordModel.\n" );
 
-    columnTitles_ << "";
     columnTitles_ << "File";
     columnTitles_ << "Path";
     columnTitles_ << "Last Accessed";
@@ -132,7 +131,6 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 
             case PATH: return record.file().path();
             case TIME: return TimeStamp( record.time() ).toString();
-            case ICON: return QVariant();
             default:
             if( index.column() < (int) columnTitles_.size() && record.hasProperty( columnTitles_[index.column()] ) )
             { return record.property( columnTitles_[index.column()] ); }
@@ -140,8 +138,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 
         }
 
-    } else if( showIcons_ && role == Qt::DecorationRole && index.column() == ICON ) {
-
+    } else if( showIcons_ && role == Qt::DecorationRole && index.column() == FILE ) {
 
         // icon
         return record.hasProperty( iconPropertyId_ ) ? _icon( record.property( iconPropertyId_ ) ):_icon();
@@ -149,7 +146,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
     } else if( role == Qt::ToolTipRole ) return record.file();
 
     // alignment
-    else if( role == Qt::TextAlignmentRole && index.column() == ICON ) return Qt::AlignCenter;
+    // else if( role == Qt::TextAlignmentRole && index.column() == ICON ) return Qt::AlignCenter;
 
     return QVariant();
 
@@ -221,10 +218,14 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
         case TIME: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
         default:
         {
-            QString name( columnTitles_[type_] );
-            QString first_property( first.property( name ) );
-            QString second_property( second.property( name ) );
-            return ( first_property != second_property ) ? first_property < second_property :  first.file().localName() < second.file().localName();
+            if( type_ < columnTitles_.size() )
+            {
+                QString name( columnTitles_[type_] );
+                QString firstProperty( first.property( name ) );
+                QString secondProperty( second.property( name ) );
+                return ( firstProperty != secondProperty ) ? firstProperty < secondProperty :  first.file().localName() < second.file().localName();
+            } else return false;
+
         }
 
     }
