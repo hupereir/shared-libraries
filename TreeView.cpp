@@ -55,7 +55,6 @@ TreeView::TreeView( QWidget* parent ):
 {
     Debug::Throw( "TreeView::TreeView.\n" );
 
-
     // delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
     TreeViewItemDelegate* delegate = new TreeViewItemDelegate( this );
@@ -78,6 +77,9 @@ TreeView::TreeView( QWidget* parent ):
     header()->setSortIndicator( 0, Qt::AscendingOrder );
     connect( header(), SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raiseHeaderMenu( const QPoint& ) ) );
     connect( header(), SIGNAL( sortIndicatorChanged( int, Qt::SortOrder ) ), SLOT( saveSortOrder() ) );
+
+    // hover
+    connect( this, SIGNAL( entered( const QModelIndex& ) ), SLOT( _setHoverIndex( const QModelIndex& ) ) );
 
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
@@ -459,9 +461,43 @@ void TreeView::restoreExpandedIndexes( void )
 
 }
 
+//____________________________________________________________________________
+bool TreeView::event( QEvent* event )
+{
+
+    switch( event->type() )
+    {
+
+        case QEvent::Leave:
+        case QEvent::HoverLeave:
+        {
+            _setHoverIndex( QModelIndex() );
+            break;
+        }
+
+        default: break;
+    }
+
+    return QTreeView::event( event );
+
+}
+
+//____________________________________________________________________
+void TreeView::mouseMoveEvent( QMouseEvent *event )
+{
+
+    if( !indexAt( event->pos() ).isValid() )
+    { _setHoverIndex( QModelIndex() ); }
+
+    return QTreeView::mouseMoveEvent( event );
+}
+
 //__________________________________________________________
 void TreeView::mousePressEvent( QMouseEvent* event )
 {
+    // clear hover index
+    _setHoverIndex( QModelIndex() );
+
     if( (event->button() == Qt::RightButton) && selectionModel() && !indexAt( event->pos() ).isValid() )
     { selectionModel()->clear(); }
 
@@ -814,6 +850,17 @@ void TreeView::_findFromDialog( void )
     _findDialog().editor().setFocus();
 
     return;
+}
+
+//____________________________________________________________________
+void TreeView::_setHoverIndex( const QModelIndex& index )
+{
+    if( hoverIndex_ == index ) return;
+    hoverIndex_ = index;
+
+    // emit signal
+    emit hovered( index );
+
 }
 
 //_____________________________________________________________________

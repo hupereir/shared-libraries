@@ -171,6 +171,14 @@ class TreeView: public QTreeView, public Counter
 
     signals:
 
+    //! emmitted when index is hovered
+    /*!
+    this is similar to the 'entered' signal,
+    except that it is also sent when no index is selected,
+    for instance, to hide tooltips
+    */
+    void hovered( const QModelIndex& );
+
     //! emmitted when selection could not be found
     void noMatchFound( void );
 
@@ -237,6 +245,12 @@ class TreeView: public QTreeView, public Counter
 
     protected:
 
+    //! generic event
+    virtual bool event( QEvent* );
+
+    //! mouse move event
+    virtual void mouseMoveEvent( QMouseEvent* );
+
     //! mouse press event
     virtual void mousePressEvent( QMouseEvent* );
 
@@ -263,6 +277,9 @@ class TreeView: public QTreeView, public Counter
 
     //! find text from dialog
     virtual void _findFromDialog( void );
+
+    //! hover index
+    virtual void _setHoverIndex( const QModelIndex& );
 
     private slots:
 
@@ -291,6 +308,9 @@ class TreeView: public QTreeView, public Counter
 
     //! model
     ItemModel* model_;
+
+    //! hover index
+    QModelIndex hoverIndex_;
 
     //!@name actions
     //@{
