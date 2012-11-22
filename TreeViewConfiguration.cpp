@@ -31,7 +31,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QToolTip>
 #include <QtCore/QTextStream>
-#include <cassert>
 
 //____________________________________________________________________________
 TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& option_name ):
@@ -42,7 +41,7 @@ OptionWidget( option_name )
     Debug::Throw( "TreeViewConfiguration::TreeViewConfiguration.\n" );
 
     // check target
-    assert( target );
+    Q_CHECK_PTR( target );
 
     // create vbox layout
     setLayout( new QVBoxLayout() );
@@ -54,7 +53,7 @@ OptionWidget( option_name )
 
     // retrieve columns
     QHeaderView* header( target->header() );
-    assert( header );
+    Q_CHECK_PTR( header );
     for( int index=0; index < header->count(); index++ )
     {
 

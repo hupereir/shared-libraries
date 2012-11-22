@@ -72,10 +72,10 @@ CustomDialog( parent, CloseButton )
 
     // insert list
     mainLayout().addWidget( list_ = new TreeView( this ) );
-    _list().setModel( &model_ );
-    _list().setRootIsDecorated( true );
-    _list().setItemDelegate( new TextEditionDelegate( this ) );
-    _list().setIconSize( QSize( 16, 16 ) );
+    list_->setModel( &model_ );
+    list_->setRootIsDecorated( true );
+    list_->setItemDelegate( new TextEditionDelegate( this ) );
+    list_->setIconSize( QSize( 16, 16 ) );
 
     // store current option state as backup and update model
     backupOptions_ = XmlOptions::get();
@@ -118,8 +118,8 @@ void OptionDialog::_reload( void )
     { optionList << OptionPair( iter.key(), iter.value() ); }
     model_.add( optionList );
 
-    _list().resizeColumns();
-    _list().setColumnWidth( OptionModel::Current, IconSize::Small+4 );
+    list_->resizeColumns();
+    list_->setColumnWidth( OptionModel::Current, IconSize::Small+4 );
 
     // check signal
     if( !( XmlOptions::get() == backupOptions_ ) )
@@ -151,7 +151,7 @@ void OptionDialog::_specialOptionModified( OptionPair option )
 
     // find all matching options from model
     QModelIndex index( model_.index( OptionPair( option.first, "" ) ) );
-    assert( index.isValid() );
+    Q_ASSERT( index.isValid() );
 
     OptionModel::List values( model_.children( index ) );
     XmlOptions::get().clearSpecialOptions( option.first );

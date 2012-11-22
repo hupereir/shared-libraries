@@ -2188,7 +2188,7 @@ bool TextEditor::_setTabSize( const int& tabSize )
 {
 
     Debug::Throw() << "TextEditor::_setTabSize - " << tabSize << endl;
-    assert( tabSize > 0 );
+    Q_ASSERT( tabSize > 0 );
 
     int stop_width( tabSize * QFontMetrics( font() ).width( " " ) );
     if( tabSize == emulatedTab_.size() && tabStopWidth() == stop_width )

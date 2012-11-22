@@ -27,7 +27,6 @@
 #include "Counter.h"
 
 #include <QtGui/QMenu>
-#include <cassert>
 
 class ToolButtonStyleMenu;
 class IconSizeMenu;
@@ -46,17 +45,11 @@ class ToolBarMenu: public QMenu, public Counter
 
     //! tool button style menu
     ToolButtonStyleMenu &toolButtonStyleMenu( void ) const
-    {
-        assert( toolButtonStyleMenu_ );
-        return *toolButtonStyleMenu_;
-    }
+    { return *toolButtonStyleMenu_; }
 
     //! icon size menu
     IconSizeMenu &iconSizeMenu( void ) const
-    {
-        assert( iconSizeMenu_ );
-        return *iconSizeMenu_;
-    }
+    { return *iconSizeMenu_; }
 
     private:
 

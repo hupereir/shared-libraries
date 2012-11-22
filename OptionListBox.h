@@ -98,10 +98,7 @@ class OptionListBox: public QWidget, public OptionWidget
 
         //! checkbox
         QCheckBox& checkbox( void ) const
-        {
-            assert( checkbox_ );
-            return *checkbox_;
-        }
+        { return *checkbox_; }
 
         private:
 

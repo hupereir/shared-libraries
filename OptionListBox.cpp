@@ -231,10 +231,10 @@ void OptionListBox::_edit( void )
 
     // retrieve selection
     QModelIndex current( list_->selectionModel()->currentIndex() );
-    assert( current.isValid() );
+    Q_ASSERT( current.isValid() );
 
     Options::Pair option( model_.get( current ) );
-    assert( option.second.hasFlag( Option::Recordable ) );
+    Q_ASSERT( option.second.hasFlag( Option::Recordable ) );
 
     // create dialog
     EditDialog dialog( this, browsable_, fileMode_ );
@@ -298,7 +298,7 @@ void OptionListBox::_setDefault( void )
 
     // retrieve selection
     QModelIndex current( list_->selectionModel()->currentIndex() );
-    assert( current.isValid() );
+    Q_ASSERT( current.isValid() );
 
     // get matching option
     Options::Pair currentOption( model_.get( current ) );

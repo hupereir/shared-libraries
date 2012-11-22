@@ -36,7 +36,7 @@ BaseStatusBar::BaseStatusBar( QWidget* parent ):
     Counter( "BaseStatusBar" )
 {
     Debug::Throw( "BaseStatusBar::BaseStatusBar.\n" );
-    assert( qobject_cast<QMainWindow*>( parent ) );
+    Q_CHECK_PTR( qobject_cast<QMainWindow*>( parent ) );
     setSizeGripEnabled( false );
 
     // if no size grip, still leaves some space to the right of the widget

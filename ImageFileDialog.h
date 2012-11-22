@@ -23,14 +23,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file ImageFileDialog.h
-\brief file dialog with preview
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "File.h"
 
 #include <QtGui/QCheckBox>
@@ -39,7 +31,6 @@
 #include <QtGui/QFileDialog>
 #include <QLabel>
 
-#include <cassert>
 class ImageFileDialog: public QFileDialog
 {
 
@@ -83,10 +74,7 @@ class ImageFileDialog: public QFileDialog
 
     //! automatic preview checkbox
     QCheckBox& _automaticPreviewCheckbox( void ) const
-    {
-        assert( automaticPreview_ );
-        return *automaticPreview_;
-    }
+    { return *automaticPreview_; }
 
     //! automatic preview checkbox
     QCheckBox* automaticPreview_;

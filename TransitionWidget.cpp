@@ -62,7 +62,7 @@ void TransitionWidget::initialize( QWidget* widget, QRect rect )
 
   // check widget
   if( !widget ) widget = parentWidget();
-  assert( widget );
+  Q_CHECK_PTR( widget );
 
   // change rect
   if( rect.isNull() ) rect = widget->rect();

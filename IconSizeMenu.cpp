@@ -21,18 +21,8 @@
 *
 *******************************************************************************/
 
-/*!
-\file IconSizeMenu.cpp
-\brief provides icon size selection menu
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Debug.h"
 #include "IconSizeMenu.h"
-
-#include <cassert>
 
 //_____________________________________________________________________________
 IconSizeMenu::IconSizeMenu( QWidget* parent ):
@@ -72,7 +62,6 @@ void IconSizeMenu::select( IconSize::Size size )
         }
     }
 
-    assert(0);
 }
 
 //_____________________________________________________________________________
@@ -83,7 +72,7 @@ void IconSizeMenu::_selected( QAction* action )
 
     // find matching actions
     ActionMap::const_iterator iter = actions_.find( action );
-    assert( iter != actions_.end() );
+    Q_ASSERT( iter != actions_.end() );
     emit iconSizeSelected( iter.value() );
 
 }

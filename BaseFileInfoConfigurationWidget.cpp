@@ -45,7 +45,7 @@ BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* paren
 
     _addCheckBox( BaseFileInfoToolTipWidget::Size, "Size" );
     _addCheckBox( BaseFileInfoToolTipWidget::Modified, "Modified" );
-    _addCheckBox( BaseFileInfoToolTipWidget::User, "User" );
+    _addCheckBox( BaseFileInfoToolTipWidget::User, "Owner" );
     _addCheckBox( BaseFileInfoToolTipWidget::Group, "Group" );
     _addCheckBox( BaseFileInfoToolTipWidget::Permissions, "Permissions" );
 

@@ -32,7 +32,6 @@
 #include <QtGui/QStatusBar>
 
 #include <QtCore/QList>
-#include <cassert>
 
 //! local label for additional slots
 class StatusBarLabel: public AnimatedLabel
@@ -85,10 +84,7 @@ class BaseStatusBar: public QStatusBar, public Counter
 
     //! retrieves label with given index
     virtual StatusBarLabel& label( int i = 0  ) const
-    {
-        assert( i < labels_.size() );
-        return *labels_[i];
-    }
+    { return *labels_[i]; }
 
     protected:
 

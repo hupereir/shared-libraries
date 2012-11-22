@@ -98,7 +98,7 @@ void HtmlDialog::setOptionWidgets( QList<QWidget*> widgets )
     Debug::Throw( "HtmlDialog::setOptionWidgets\n" );
     if( widgets.isEmpty() ) return;
 
-    assert( !tabWidget_ );
+    Q_ASSERT( !tabWidget_ );
     tabWidget_ = new QTabWidget( this );
     mainLayout().addWidget( tabWidget_ );
 

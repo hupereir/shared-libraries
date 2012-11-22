@@ -26,8 +26,6 @@
 #include "TimeStamp.h"
 #include "XmlString.h"
 
-#include <cassert>
-
 //! Some Xml definitions
 namespace XML
 {
@@ -112,7 +110,7 @@ QString BaseFileInfo::permissionsString( void ) const
 //________________________________________________________________
 void BaseFileInfo::setPermissions( const QString& value )
 {
-    assert( value.size() == 10 );
+    Q_ASSERT( value.size() == 10 );
 
     // first bit
     if( value[0] == 'l' ) setIsLink();

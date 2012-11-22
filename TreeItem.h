@@ -29,7 +29,6 @@
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <algorithm>
-#include <cassert>
 
 //! used to wrap object T into tree structure
 template<class T> class TreeItem: public TreeItemBase
@@ -165,10 +164,7 @@ template<class T> class TreeItem: public TreeItemBase
 
     //! parent
     const TreeItem& parent( void ) const
-    {
-        assert( parent_ );
-        return *parent_;
-    }
+    { return *parent_; }
 
     //! child count
     int childCount( void ) const
@@ -176,17 +172,11 @@ template<class T> class TreeItem: public TreeItemBase
 
     //! get child at given row
     TreeItem& child( int row )
-    {
-        assert( row < childCount() );
-        return children_[row];
-    }
+    { return children_[row]; }
 
     //! get child at given row
     const TreeItem& child( int row ) const
-    {
-        assert( row < childCount() );
-        return children_[row];
-    }
+    { return children_[row]; }
 
     //! find item matching value
     TreeItem* find( const ValueType& value )

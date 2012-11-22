@@ -34,11 +34,10 @@
 #include "ToolButtonStyleMenu.h"
 #include "Util.h"
 
-#include <cassert>
-#include <QMenuBar>
-#include <QTextStream>
-#include <QToolBar>
-#include <QWindowStateChangeEvent>
+#include <QtGui/QMenuBar>
+#include <QtCore/QTextStream>
+#include <QtGui/QToolBar>
+#include <QtGui/QWindowStateChangeEvent>
 
 //____________________________________________________________
 BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):

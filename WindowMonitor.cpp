@@ -24,8 +24,6 @@
 #include "XmlOptions.h"
 #include "WindowMonitor.h"
 
-#include <cassert>
-
 //_________________________________________________________
 WindowMonitor::WindowMonitor( QWidget* parent ):
     QObject( parent ),
@@ -125,7 +123,7 @@ void WindowMonitor::timerEvent( QTimerEvent* event )
     {
 
         // stop timer
-        assert( _hasOptionName() );
+        Q_ASSERT( _hasOptionName() );
         timer_.stop();
 
         // save size

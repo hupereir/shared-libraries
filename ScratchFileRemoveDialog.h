@@ -30,7 +30,6 @@
 
 #include <QtGui/QLayout>
 #include <QtGui/QPushButton>
-#include <cassert>
 
 class TreeView;
 
@@ -53,10 +52,7 @@ class ScratchFileRemoveDialog: public CustomDialog
 
     //! list
     TreeView& _list() const
-    {
-        assert( list_ );
-        return *list_;
-    }
+    { return *list_; }
 
     //! model
     const FileRecordModel& _model() const

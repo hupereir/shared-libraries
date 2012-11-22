@@ -44,8 +44,6 @@
 #include <QtGui/QTextOption>
 #include <QtGui/QToolButton>
 
-#include <cassert>
-
 const double PathEditorButton::BorderWidth = 1.5;
 
 //____________________________________________________________________________
@@ -78,7 +76,7 @@ void PathEditorItem::setPath( const File& path, const QString& name )
         // get local name
         File localName( path.localName() );
         if( localName.endsWith( "/" ) ) localName = localName.left( localName.size()-1 );
-        assert( !localName.isEmpty() );
+        Q_ASSERT( !localName.isEmpty() );
 
         setText( localName );
 

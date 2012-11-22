@@ -24,17 +24,8 @@
 *
 *******************************************************************************/
 
-/*!
-\file    WinUtil.h
-\brief   some Win32 specific utilities
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-#include <cassert>
-#include <QWidget>
-#include <QPixmap>
+#include <QtGui/QWidget>
+#include <QtGui/QPixmap>
 
 class WinUtil
 {
@@ -44,7 +35,7 @@ class WinUtil
     //! constructor
     WinUtil( QWidget* target ):
         target_( target )
-    { assert( target_ ); }
+    { Q_ASSERT( target_ ); }
 
     //! update layered widget using pixmap
     void update( QPixmap&, double ) const;

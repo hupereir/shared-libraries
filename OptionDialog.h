@@ -64,13 +64,6 @@ class OptionDialog: public CustomDialog
 
     private:
 
-    //! list
-    TreeView& _list( void ) const
-    {
-        assert( list_ );
-        return *list_;
-    }
-
     //! option model
     OptionModel model_;
 

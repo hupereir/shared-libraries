@@ -28,8 +28,6 @@
 #include "CustomComboBox.h"
 #include "BaseFindDialog.h"
 
-#include <cassert>
-
 //! replace_text dialogs
 class BaseReplaceDialog: public BaseFindDialog
 {

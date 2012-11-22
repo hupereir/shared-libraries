@@ -34,8 +34,6 @@
 #include <QtGui/QHeaderView>
 #include <QtCore/QHash>
 
-#include <cassert>
-
 //_______________________________________________________________
 class ColumnSortingMenu:public QMenu, public Counter
 {

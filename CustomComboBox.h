@@ -24,21 +24,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomComboBox.h
-\brief Customized QCombobox to handle case sensitive auto completion
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-#include <QComboBox>
-#include <QKeyEvent>
-
 #include "AnimatedLineEditor.h"
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QtGui/QComboBox>
+#include <QtGui/QKeyEvent>
 
 //! local line editor to handle autocompletion
 class ComboLineEdit: public AnimatedLineEditor

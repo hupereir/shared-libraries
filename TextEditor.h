@@ -37,7 +37,6 @@
 #include "TextPosition.h"
 #include "TextSelection.h"
 
-#include <cassert>
 #include <QtGui/QAction>
 #include <QtGui/QClipboard>
 #include <QtGui/QContextMenuEvent>
@@ -479,10 +478,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
     //! find dialog
     virtual BaseFindDialog& _findDialog( void )
-    {
-        assert( findDialog_ );
-        return *findDialog_;
-    }
+    { return *findDialog_; }
 
     //! find dialog
     virtual void _createBaseFindDialog( void );
@@ -495,10 +491,7 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
     //! replace dialog
     virtual BaseReplaceDialog& _replaceDialog( void )
-    {
-        assert( replaceDialog_ );
-        return *replaceDialog_;
-    }
+    { return *replaceDialog_; }
 
     //! find dialog
     virtual void _createBaseReplaceDialog( void );

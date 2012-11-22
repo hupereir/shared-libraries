@@ -21,21 +21,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file    Roundedcpp
-\brief   rounded QPainterPath based on polygon
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-#include <cassert>
-#include <cmath>
-
 #include "RoundedPath.h"
 #include "Debug.h"
 
-
+#include <cmath>
 
 //______________________________________________________
 RoundedPath::RoundedPath( QPolygonF polygon, const int& border )
@@ -45,8 +34,8 @@ RoundedPath::RoundedPath( QPolygonF polygon, const int& border )
     Direction direction( HORIZONTAL );
 
     // check polygon size
-    assert( polygon.size() >= 5 );
-    assert( border > 0 );
+    Q_ASSERT( polygon.size() >= 5 );
+    Q_ASSERT( border > 0 );
 
     QPointF first( polygon[0] + QPointF( border, 0 ) );
     QPointF current( first );

@@ -37,8 +37,6 @@
 #include <QtGui/QLayout>
 #include <QtGui/QPixmap>
 
-#include <cassert>
-
 //! detachable generic panel
 class DockPanel: public QWidget, public Counter
 {
@@ -64,10 +62,7 @@ class DockPanel: public QWidget, public Counter
 
     //! get panel (to add contents)
     virtual QWidget& panel( void )
-    {
-        assert( panel_ );
-        return *panel_;
-    }
+    { return *panel_; }
 
     //! set detachable group panel title
     void setTitle( const QString& title )

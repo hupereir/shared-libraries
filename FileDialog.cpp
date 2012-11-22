@@ -26,8 +26,6 @@
 #include "FileDialog.h"
 #include "Util.h"
 
-#include <cassert>
-
 //_______________________________________________________
 QString& FileDialog::_workingDirectory( void )
 {
@@ -98,8 +96,8 @@ QStringList FileDialog::getFiles( void )
 {
 
     Debug::Throw( "FileDialog::getFiles.\n" );
-    assert( acceptMode_ == QFileDialog::AcceptOpen );
-    assert( fileMode_ == QFileDialog::ExistingFiles );
+    Q_ASSERT( acceptMode_ == QFileDialog::AcceptOpen );
+    Q_ASSERT( fileMode_ == QFileDialog::ExistingFiles );
     QStringList out( QFileDialog::getOpenFileNames( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, options_ ) );
     if( !(out.empty() || out.front().isNull() ) ) _workingDirectory() = QFileInfo( out.front() ).path();
     return out;

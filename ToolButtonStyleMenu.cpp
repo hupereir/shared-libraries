@@ -24,8 +24,6 @@
 #include "Debug.h"
 #include "ToolButtonStyleMenu.h"
 
-#include <cassert>
-
 //_____________________________________________________________________________
 ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
 QMenu( "&Text position", parent ),
@@ -73,8 +71,6 @@ void ToolButtonStyleMenu::select( int style )
         }
     }
 
-    assert(false);
-
 }
 
 //_____________________________________________________________________________
@@ -85,7 +81,7 @@ void ToolButtonStyleMenu::_selected( QAction* action )
 
     // find matching actions
     ActionMap::const_iterator iter = actions_.find( action );
-    assert( iter != actions_.end() );
+    Q_ASSERT( iter != actions_.end() );
     emit styleSelected( iter.value() );
 
 }

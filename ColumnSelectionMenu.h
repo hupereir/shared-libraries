@@ -1,5 +1,5 @@
-#ifndef _ColumnSelectionMenu_h_
-#define _ColumnSelectionMenu_h_
+#ifndef ColumnSelectionMenu_h
+#define ColumnSelectionMenu_h
 
 // $Id$
 
@@ -31,7 +31,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QTreeView>
 #include <QtCore/QHash>
-#include <cassert>
 
 //_______________________________________________________________
 class ColumnSelectionMenu:public QMenu, public Counter

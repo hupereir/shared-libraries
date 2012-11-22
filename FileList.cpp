@@ -27,7 +27,6 @@
 #include "Str.h"
 
 #include <algorithm>
-#include <cassert>
 
 //_______________________________________________
 FileList::FileList( QObject* parent ):
@@ -171,7 +170,7 @@ FileRecord& FileList::_add(
 {
 
     // do not add empty files
-    assert( !record.file().isEmpty() );
+    Q_ASSERT( !record.file().isEmpty() );
 
     FileRecord::List::iterator iter = std::find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( record.file() ) );
     if( iter != _records().end() )

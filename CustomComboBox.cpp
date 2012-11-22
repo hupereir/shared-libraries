@@ -21,23 +21,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomComboBox.cpp
-\brief Customized QCombobox to handle case sensitive auto completion
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-#include <QAbstractItemView>
-#include <QCompleter>
-
 #include "CustomComboBox.h"
 #include "TransitionWidget.h"
 
-
-
+#include <QtGui/QAbstractItemView>
+#include <QtGui/QCompleter>
 
 //___________________________________________________
 CustomComboBox::CustomComboBox( QWidget* parent ):
@@ -84,7 +72,7 @@ void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSens
 
     if( value )
     {
-        assert( isEditable() );
+        Q_ASSERT( isEditable() );
 
         if( !completer() ) setCompleter( new QCompleter( this ) );
 

@@ -29,7 +29,6 @@
 #include "XmlOptions.h"
 
 #include <algorithm>
-#include <cassert>
 
 //__________________________________________________________________
 FileRecordModel::IconCache& FileRecordModel::_icons( void )

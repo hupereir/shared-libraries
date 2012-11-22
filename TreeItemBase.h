@@ -26,8 +26,6 @@
 
 #include "Counter.h"
 
-#include <cassert>
-
 //! used to wrap object T into tree structure
 class TreeItemBase: public Counter
 {

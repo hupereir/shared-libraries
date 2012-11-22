@@ -196,12 +196,12 @@ void LineNumberDisplay::_updateLineNumberData( void )
 //________________________________________________________
 void LineNumberDisplay::_updateLineNumberData( QTextBlock& block, unsigned int& id, LineNumberDisplay::LineNumberData& data ) const
 {
-    assert( !data.isValid() );
+    Q_ASSERT( !data.isValid() );
 
     // find block matching data id
     if( data.id() < id ) { for( ; data.id() < id && block.isValid(); block = block.previous(), id-- ) {} }
     else if( data.id() > id ) { for( ; data.id() > id && block.isValid(); block = block.next(), id++ ) {} }
-    assert( block.isValid() );
+    Q_ASSERT( block.isValid() );
 
     QRectF rect( _editor().document()->documentLayout()->blockBoundingRect( block ) );
     data.setPosition( (int)block.layout()->position().y() );

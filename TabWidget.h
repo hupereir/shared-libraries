@@ -35,8 +35,6 @@
 #include <QtGui/QSizeGrip>
 #include <QtGui/QTabWidget>
 
-#include <cassert>
-
 // forward declaration
 class TabWidget;
 
@@ -62,17 +60,11 @@ class TabWidget: public QWidget, public Counter
 
     //! get parent TabWidget
     QTabWidget& parentTabWidget( void )
-    {
-        assert( parent_ );
-        return *parent_;
-    }
+    { return *parent_; }
 
     //! get box
     QWidget& box( void )
-    {
-        assert( box_ );
-        return *box_;
-    }
+    { return *box_; }
 
     //! update actions
     void updateActions( bool );

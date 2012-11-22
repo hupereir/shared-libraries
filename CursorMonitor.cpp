@@ -21,20 +21,8 @@
 *
 *******************************************************************************/
 
-/*!
-\file CursorMonitor.cpp
-\brief used to automatically save size of top level widgets
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <cassert>
-
 #include "XmlOptions.h"
 #include "CursorMonitor.h"
-
-
 
 //_________________________________________________________
 CursorMonitor::CursorMonitor( QWidget* parent ):

@@ -24,24 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomSlider.h
-\brief customized QSlider associated to a QSpinBox
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "Counter.h"
+#include "Debug.h"
 
-#include <cassert>
 #include <QtGui/QSlider>
 #include <QtGui/QSpinBox>
 
-#include "Counter.h"
-#include "Debug.h"
-/*!
-\class CustomSlider
-\brief customized QSlider associated to a QSpinBox
-*/
+//! customized QSlider associated to a QSpinBox
 class CustomSlider: public QWidget, public Counter
 {
 
@@ -89,24 +78,15 @@ class CustomSlider: public QWidget, public Counter
 
     //! retrieve QSlider
     QSlider& slider( void )
-    {
-        assert( slider_ );
-        return *slider_;
-    }
+    { return *slider_; }
 
     //! retrieve QSlider
     const QSlider& slider( void ) const
-    {
-        assert( slider_ );
-        return *slider_;
-    }
+    { return *slider_; }
 
     //! retrieve QSpinBox
     QSpinBox& spinBox( void )
-    {
-        assert( spinBox_ );
-        return *spinBox_;
-    }
+    { return *spinBox_; }
 
     private slots:
 

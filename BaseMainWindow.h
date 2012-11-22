@@ -24,22 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseMainWindow.h
-\brief customized QMainWindow
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
 #include "CustomToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
 #include "WindowMonitor.h"
 #include "XmlOptions.h"
-
-#include <cassert>
 
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
@@ -95,24 +84,15 @@ class BaseMainWindow: public QMainWindow
 
     //! lock toolbars
     QAction& lockToolBarsAction( void ) const
-    {
-        assert( lockToolBarsAction_ );
-        return *lockToolBarsAction_;
-    }
+    { return *lockToolBarsAction_; }
 
     //! show menubar
     QAction& showMenuBarAction( void ) const
-    {
-        assert( showMenuBarAction_ );
-        return *showMenuBarAction_;
-    }
+    { return *showMenuBarAction_; }
 
     //! show status bar
     QAction& showStatusBarAction( void ) const
-    {
-        assert( showStatusBarAction_ );
-        return *showStatusBarAction_;
-    }
+    { return *showStatusBarAction_; }
 
     //! create context menu (overloaded)
     virtual QMenu* createPopupMenu( void );

@@ -83,8 +83,8 @@ void ColumnSortingMenu::_updateActions( void )
 
     // retrieve parent header.
     if( target_ ) header_ = target_->header();
-    assert( header_ );
-    assert( header_->isSortIndicatorShown() );
+    Q_ASSERT( header_ );
+    Q_ASSERT( header_->isSortIndicatorShown() );
 
     // try cast to treeview
     TreeView* treeView( qobject_cast<TreeView*>( header_->parentWidget() ) );
@@ -132,7 +132,7 @@ void ColumnSortingMenu::_sort( QAction* action )
 
     // retrieve parent tree_view
     if( target_ ) header_ = target_->header();
-    assert( header_ );
+    Q_ASSERT( header_ );
 
     header_->setSortIndicator( iter.value(), header_->sortIndicatorOrder() );
 
@@ -145,7 +145,7 @@ void ColumnSortingMenu::_revertOrder( void )
 
     // retrieve parent tree_view
     if( target_ ) header_ = target_->header();
-    assert( header_ );
+    Q_ASSERT( header_ );
 
     Qt::SortOrder order( header_->sortIndicatorOrder() == Qt::AscendingOrder ? Qt::DescendingOrder : Qt::AscendingOrder );
     header_->setSortIndicator( header_->sortIndicatorSection(), order );

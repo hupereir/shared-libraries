@@ -57,7 +57,7 @@ void ColumnSelectionMenu::_updateActions( void )
 
     // retrieve parent header.
     QHeaderView* header( target_->header() );
-    assert( header );
+    Q_ASSERT( header );
 
     // try cast to treeview
     TreeView* treeView( qobject_cast<TreeView*>( target_ ) );

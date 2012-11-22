@@ -25,13 +25,12 @@
 #include "IconSize.h"
 
 #include <QtGui/QStyle>
-#include <cassert>
 
 //__________________________________________________________________
 IconSize::IconSize( IconSize::Size size )
 {
 
-    assert( size != Default );
+    Q_ASSERT( size != Default );
     setWidth( size );
     setHeight( size );
 
@@ -44,7 +43,7 @@ IconSize::IconSize( QWidget* parent, IconSize::Size size )
     int iconSize( size );
     if( size == Default )
     {
-        assert( parent );
+        Q_CHECK_PTR( parent );
         iconSize =  parent->style()->pixelMetric( QStyle::PM_ToolBarIconSize );
     }
 
