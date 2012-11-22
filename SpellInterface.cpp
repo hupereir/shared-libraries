@@ -168,7 +168,7 @@ namespace SPELLCHECK
         end_ = end;
 
         // check limits
-        assert( begin_ <= text_.size() && end_ <= text_.size() );
+        Q_ASSERT( begin_ <= text_.size() && end_ <= text_.size() );
 
         end_ += offset_;
         position_ = 0;

@@ -36,8 +36,6 @@
 #include <QtGui/QTextEdit>
 #include <QtCore/QHash>
 
-#include <cassert>
-
 class TreeView;
 
 namespace SPELLCHECK
@@ -69,10 +67,7 @@ namespace SPELLCHECK
 
         //! editor
         QTextEdit &editor( void )
-        {
-            assert( editor_ );
-            return *editor_;
-        }
+        { return *editor_; }
 
         //! dictionary
         bool setDictionary( const QString& dict );
