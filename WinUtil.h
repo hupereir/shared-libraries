@@ -35,7 +35,7 @@ class WinUtil
     //! constructor
     WinUtil( QWidget* target ):
         target_( target )
-    { Q_ASSERT( target_ ); }
+    { Q_CHECK_PTR( target_ ); }
 
     //! update layered widget using pixmap
     void update( QPixmap&, double ) const;

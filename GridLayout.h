@@ -77,10 +77,7 @@ class GridLayout: public QGridLayout, public Counter
 
     //! set column alignment
     void setColumnAlignment( const int& column, const Qt::Alignment alignment )
-    {
-        Q_ASSERT( _boundCheck( column ) );
-        columnAlignments_[column] = alignment;
-    }
+    { columnAlignments_[column] = alignment; }
 
     //! set orientation
     void setOrientation( const Qt::Orientation& orientation )
