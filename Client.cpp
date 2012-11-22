@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    Client.cpp
-   \brief   Interprocess communication client
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "Client.h"
 #include "Debug.h"
 #include "IOString.h"
@@ -36,7 +28,6 @@
 #include "XmlError.h"
 
 #include <QtCore/QTextStream>
-#include <cassert>
 
 namespace SERVER
 {
@@ -55,7 +46,7 @@ namespace SERVER
         socket_( socket )
     {
         Debug::Throw( "Client::Client.\n" );
-        assert( socket );
+        Q_CHECK_PTR( socket );
         connect( socket_, SIGNAL( connected() ), SLOT( _sendCommands() ) );
         connect( socket_, SIGNAL( readyRead() ), SLOT( _readMessage() ) );
     }
@@ -130,7 +121,7 @@ namespace SERVER
 
                 // parse document
                 QDomElement doc_element = document.documentElement();
-                assert( doc_element.tagName() == SERVER_XML::TRANSMISSION );
+                Q_ASSERT( doc_element.tagName() == SERVER_XML::TRANSMISSION );
 
                 for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
                 {

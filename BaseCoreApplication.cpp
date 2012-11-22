@@ -21,15 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file Application.cc
-\brief application main object
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
 #include "ErrorHandler.h"
 #include "BaseCoreApplication.h"
 #include "Debug.h"
@@ -38,7 +29,7 @@
 //____________________________________________
 BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments arguments ) :
     QObject( parent ),
-    application_manager_( 0 ),
+    applicationManager_( 0 ),
     arguments_( arguments ),
     realized_( false )
 {
@@ -58,8 +49,8 @@ BaseCoreApplication::~BaseCoreApplication( void )
 
     if( _hasApplicationManager() )
     {
-        delete application_manager_;
-        application_manager_ = 0;
+        delete applicationManager_;
+        applicationManager_ = 0;
     }
 
     ErrorHandler::get().exit();
@@ -81,14 +72,14 @@ void BaseCoreApplication::initApplicationManager( void )
     }
 
     // create application manager
-    application_manager_ = new SERVER::ApplicationManager( this );
-    application_manager_->setApplicationName( XmlOptions::get().raw( "APP_NAME" ) );
+    applicationManager_ = new SERVER::ApplicationManager( this );
+    applicationManager_->setApplicationName( XmlOptions::get().raw( "APP_NAME" ) );
 
     // connections
-    connect( application_manager_, SIGNAL( commandRecieved( SERVER::ServerCommand ) ), SLOT( _processCommand( SERVER::ServerCommand ) ) );
+    connect( applicationManager_, SIGNAL( commandRecieved( SERVER::ServerCommand ) ), SLOT( _processCommand( SERVER::ServerCommand ) ) );
 
     // initialization
-    application_manager_->initialize( arguments_ );
+    applicationManager_->initialize( arguments_ );
     Debug::Throw( "BaseCoreApplication::initApplicationManager - done.\n" );
 
 }

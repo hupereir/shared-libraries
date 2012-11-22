@@ -108,7 +108,7 @@ namespace SERVER
             else if( tag_name == SERVER_XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
             else if( tag_name == OPTIONS::OPTION )
             {
-                assert( command() == ServerCommand::OPTION );
+                Q_ASSERT( command() == ServerCommand::OPTION );
                 setXmlOption( XmlOption( child_element ) );
             }
         }

@@ -24,20 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseCoreApplication.h
-\brief application main object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QObject>
-
 #include "ApplicationManager.h"
 #include "CommandLineArguments.h"
 #include "Counter.h"
 
+#include <QtCore/QObject>
 
 //! Main Window singleton object
 class BaseCoreApplication: public QObject
@@ -100,19 +91,16 @@ class BaseCoreApplication: public QObject
 
     //! application manager
     bool _hasApplicationManager( void ) const
-    { return (bool) application_manager_; }
+    { return (bool) applicationManager_; }
 
     //! application manager
     SERVER::ApplicationManager& _applicationManager( void ) const
-    {
-        assert( application_manager_ );
-        return *application_manager_;
-    }
+    { return *applicationManager_; }
 
     private:
 
     //! pointer to application manager
-    SERVER::ApplicationManager* application_manager_;
+    SERVER::ApplicationManager* applicationManager_;
 
     //! command line arguments
     CommandLineArguments arguments_;

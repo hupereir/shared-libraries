@@ -40,51 +40,49 @@
 #include <QtNetwork/QTcpServer>
 #include <QtNetwork/QHostAddress>
 
-#include <cassert>
-
 namespace SERVER
 {
-    
+
     //! ensures only one instance of an application is running
     class ApplicationManager: public QObject, public Counter
     {
-        
+
         //! Qt meta object macro
         Q_OBJECT
-            
+
         public:
-            
+
         //! constructor
         ApplicationManager( QObject* parent );
-        
+
         //! destructor
         virtual ~ApplicationManager( void );
-        
+
         //! application name
         virtual void setApplicationName( const QString& name );
-        
+
         //! commandLine parser
         static CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignore_warnings = true );
-        
+
         //! usage
         static void usage( void );
-        
+
         //! application state enumeration
         enum State {
-            
+
             //! application manager is uninitialized
             UNKNOWN,
-            
+
             //! application manager awaits signal from server
             AWAITING_REPLY,
-            
+
             //! application manager got no reply, is kept alive
             ALIVE,
-            
+
             //! application manager got a reply, must die
             DEAD
         };
-        
+
         //! changes application state, emit signal if changed
         virtual bool setState( const State& state )
         {
@@ -92,68 +90,62 @@ namespace SERVER
             state_ = state;
             return true;
         }
-        
+
         //! reference to "this" client
         virtual Client& client( void ) const
-        {
-            assert( client_ );
-            return *client_;
-        }
-        
+        { return *client_; }
+
         //! retrieve Application ID
         virtual const ApplicationId& id( void ) const
         { return id_; }
-        
+
         public slots:
-        
+
         //! (re)initialize server/client connections
         virtual void initialize( CommandLineArguments args = CommandLineArguments() );
-        
+
         signals:
-        
+
         //! emitted when manager state is changed
         // void stateChanged( SERVER::ApplicationManager::State state );
-        
+
         //! emitted when manager is ALIVE and request is recieved
         // void serverRequest( const CommandLineArguments& args );
-        
+
         //! emitted when a given command is recieved
         void commandRecieved( SERVER::ServerCommand );
-        
+
         //! emitted when the server is (re)initialized
         void initialized( void );
-        
+
         protected:
-        
+
         //! timer event
         virtual void timerEvent( QTimerEvent* );
-        
+
         //! reference to server
         virtual QTcpServer& _server() const
-        {
-            assert( server_ );
-            return *server_;
-        }
-        
+        { return *server_; }
+
         //! pair of application id and client
         typedef QPair< ApplicationId, Client* > ClientPair;
-        
+
         //! map of clients
         typedef QMap< ApplicationId, Client* > ClientMap;
-        
+
         //! list of clients
         typedef QList< Client* > ClientList;
-        
+
         //! used to retrieve clients for a given state
         class SameStateFTor: public Client::SameStateFTor
         {
             public:
-            
+
             //! constructor
             SameStateFTor( QAbstractSocket::SocketState state ):
                 Client::SameStateFTor( state )
             {}
-                
+
             //! destructor
             virtual ~SameStateFTor( void )
             {}

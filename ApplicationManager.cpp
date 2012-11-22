@@ -408,7 +408,7 @@ namespace SERVER
         Debug::Throw( "Application::_redirect.\n" );
 
         ClientList::iterator iter( std::find_if(  _connectedClients().begin(), _connectedClients().end(), Client::SameIdFTor( command.clientId() ) ) );
-        assert( iter != _connectedClients().end() );
+        Q_ASSERT( iter != _connectedClients().end() );
         _redirect( command, *iter );
 
         return;
@@ -424,7 +424,7 @@ namespace SERVER
             << " command: " << command.commandName()
             << endl;
 
-        assert( client().id() == command.clientId() );
+        Q_ASSERT( client().id() == command.clientId() );
 
         // check command id is valid
         if( !command.id().isValid() ) return;
