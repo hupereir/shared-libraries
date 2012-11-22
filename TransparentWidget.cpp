@@ -21,9 +21,6 @@
 *
 *******************************************************************************/
 
-#include <cassert>
-#include <QPainter>
-
 #include "BackgroundPixmap.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
@@ -35,6 +32,7 @@
 
 #include "CompositeEngine.h"
 
+#include <QtGui/QPainter>
 
 namespace TRANSPARENCY
 {
