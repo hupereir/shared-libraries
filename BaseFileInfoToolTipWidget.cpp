@@ -25,6 +25,7 @@
 #include "GridLayout.h"
 #include "Singleton.h"
 #include "TimeStamp.h"
+#include "ToolTipWidgetItem.h"
 #include "XmlOptions.h"
 
 #include <QtGui/QApplication>
@@ -37,61 +38,11 @@
 #include <QtGui/QToolTip>
 
 //_______________________________________________________
-class ToolTipWidgetItem: public QObject, public Counter
-{
-    public:
-
-    //! constructor
-    ToolTipWidgetItem( QWidget* parent, GridLayout* layout ):
-        QObject( parent ),
-        Counter( "ToolTipWidgetItem" )
-    {
-        layout->addWidget( key_ = new QLabel( parent ) );
-        layout->addWidget( value_ = new QLabel( parent ) );
-    }
-
-    //! destructor
-    virtual ~ToolTipWidgetItem( void )
-    {}
-
-    //! show
-    void show( void )
-    {
-        key_->show();
-        value_->show();
-    }
-
-    //! hide
-    void hide( void )
-    {
-        key_->hide();
-        value_->hide();
-    }
-
-    //! set key
-    void setKey( const QString& value )
-    { key_->setText( value ); }
-
-    //! set text
-    void setText( const QString& value )
-    {
-        value_->setText( value );
-        if( value.isEmpty() ) hide();
-        else show();
-    }
-
-    private:
-
-    QLabel* key_;
-    QLabel* value_;
-
-};
-
-//_______________________________________________________
 BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     QWidget( parent, Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint ),
     Counter( "BaseFileInfoToolTipWidget" ),
     enabled_( false ),
+    followMouse_( false ),
     pixmapSize_( 96 ),
     mask_( Default )
 {
@@ -226,8 +177,8 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         else groupItem_->hide();
 
         // permissions
-        const QString permissions( fileInfo.permissionsString() );
-        if( (mask_&Permissions) && !permissions.isEmpty() ) permissionsItem_->setText( permissions );
+        QString permissions;
+        if( (mask_&Permissions) && !( permissions = fileInfo.permissionsString() ).isEmpty() ) permissionsItem_->setText( permissions );
         else permissionsItem_->hide();
 
     } else {
@@ -243,12 +194,10 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         permissionsItem_->hide();
     }
 
-    // adjustSize();
-
 }
 
 //_______________________________________________________
-void BaseFileInfoToolTipWidget::adjustPosition( const QRect& rect )
+void BaseFileInfoToolTipWidget::_adjustPosition( void )
 {
 
     // get tooltip size
@@ -259,14 +208,17 @@ void BaseFileInfoToolTipWidget::adjustPosition( const QRect& rect )
     QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( parentWidget() ) ) );
 
     // set geometry
-    int left = rect.left() + ( rect.width() - size.width() )/2;
+    int left = followMouse_ ?
+        QCursor::pos().x():
+        rect_.left() + ( rect_.width() - size.width() )/2;
+
     left = qMax( left, desktopGeometry.left() );
     left = qMin( left, desktopGeometry.right() - size.width() );
 
     // first try placing widget below item
     const int margin = 5;
-    int top = rect.bottom() + margin;
-    if( top > desktopGeometry.bottom() - size.height() ) top = rect.top() - margin - size.height();
+    int top = rect_.bottom() + margin;
+    if( top > desktopGeometry.bottom() - size.height() ) top = rect_.top() - margin - size.height();
 
     move( QPoint( left, top ) );
 
@@ -330,5 +282,5 @@ void BaseFileInfoToolTipWidget::_updateConfiguration( void )
     Debug::Throw( "BaseFileInfoToolTipWidget::_updateConfiguration.\n" );
     if( XmlOptions::get().contains( "SHOW_TOOLTIPS" ) ) setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );
     if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<unsigned int>( "TOOLTIPS_PIXMAP_SIZE" ) );
-    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( XmlOptions::get().get<unsigned int>( "TOOLTIPS_MASK" ) );
+    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( Types(XmlOptions::get().get<unsigned int>( "TOOLTIPS_MASK" )) );
 }

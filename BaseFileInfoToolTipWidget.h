@@ -54,11 +54,16 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     //! enable state
     void setEnabled( bool );
 
-    //! set data
-    void setFileInfo( const BaseFileInfo&, const QIcon& );
+    //! follow mouse
+    void setFollowMouse( bool value )
+    { followMouse_ = value; }
 
-    //! adjust position
-    void adjustPosition( const QRect& );
+    //! set data
+    void setFileInfo( const BaseFileInfo&, const QIcon& = QIcon() );
+
+    //! set index rect
+    void setIndexRect( const QRect& rect )
+    { rect_ = rect; }
 
     //! mask
     void setPixmapSize( int value )
@@ -80,8 +85,10 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
         Default = Size|Modified
     };
 
+    Q_DECLARE_FLAGS(Types, Type)
+
     //! mask
-    void setMask( unsigned int value )
+    void setMask( Types value )
     {
         if( mask_ == value ) return;
         mask_ = value;
@@ -104,6 +111,7 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     virtual void show( void )
     {
         timer_.stop();
+        _adjustPosition();
         QWidget::show();
     }
 
@@ -126,6 +134,9 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     //! timer event
     virtual void timerEvent( QTimerEvent* );
 
+    //! adjust position
+    void _adjustPosition( void );
+
     //! reload
     virtual void _reload( void )
     { setFileInfo( fileInfo_, icon_ ); }
@@ -140,11 +151,17 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     //! enable state
     bool enabled_;
 
+    //! follow mouse
+    bool followMouse_;
+
     //! pixmap size
     int pixmapSize_;
 
+    //! index rect
+    QRect rect_;
+
     //! information mask
-    unsigned int mask_;
+    Types mask_;
 
     //! local icon copy
     QIcon icon_;
@@ -175,5 +192,7 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     QBasicTimer timer_;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( BaseFileInfoToolTipWidget::Types )
 
 #endif

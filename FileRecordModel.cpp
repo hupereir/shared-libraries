@@ -143,10 +143,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         // icon
         return record.hasProperty( iconPropertyId_ ) ? _icon( record.property( iconPropertyId_ ) ):_icon();
 
-    } else if( role == Qt::ToolTipRole ) return record.file();
-
-    // alignment
-    // else if( role == Qt::TextAlignmentRole && index.column() == ICON ) return Qt::AlignCenter;
+    }
 
     return QVariant();
 
