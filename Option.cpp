@@ -45,7 +45,7 @@ Option::Option( const char* value, Flags flags ):
     flags_( flags ),
     defaultFlags_( Recordable )
 {
-    assert( value );
+    Q_CHECK_PTR( value );
     value_ = value;
 }
 

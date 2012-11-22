@@ -30,7 +30,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
-#include <cassert>
 
 //! stream boolean
 QTextStream& operator >> ( QTextStream& in, bool& value );
@@ -188,7 +187,7 @@ class Option:public Counter
     {
 
         // check if option is set
-        assert( !value_.isEmpty() );
+        Q_ASSERT( !value_.isEmpty() );
 
         // cast value
         // the const-cast here is because the string should not be affected
@@ -196,7 +195,7 @@ class Option:public Counter
         QTextStream s( const_cast<QByteArray*>(&value_), QIODevice::ReadOnly );
         T out;
         s >> out;
-        assert( s.status() == QTextStream::Ok );
+        Q_ASSERT( s.status() == QTextStream::Ok );
         return out;
     }
 

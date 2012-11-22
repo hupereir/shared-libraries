@@ -25,7 +25,6 @@
 *******************************************************************************/
 
 #include <QtCore/QObject>
-#include <cassert>
 
 //! a class singleton used to centralize all objects that need static creation
 class Singleton
@@ -39,14 +38,14 @@ class Singleton
     //! set application
     void setApplication( QObject* application )
     {
-        assert( !application_ );
+        Q_ASSERT( !application_ );
         application_ = application;
     }
 
     //! application
     QObject* application()
     {
-        assert( application_ );
+        Q_ASSERT( application_ );
         return application_;
     }
 
@@ -54,7 +53,7 @@ class Singleton
     template< typename T >
         T* application( void )
     {
-        assert( application_ );
+        Q_ASSERT( application_ );
         return static_cast<T*>( application_ );
     }
 

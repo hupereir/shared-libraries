@@ -126,7 +126,7 @@ bool Options::isSpecialOption( const QString& name ) const
 //________________________________________________
 void Options::clearSpecialOptions( const QString& name )
 {
-    assert( isSpecialOption( name ) );
+    Q_ASSERT( isSpecialOption( name ) );
     specialOptions_[name].clear();
 }
 
@@ -134,7 +134,7 @@ void Options::clearSpecialOptions( const QString& name )
 void Options::set( const QString& name, Option option, const bool& isDefault )
 {
     Debug::Throw() << "Options::set - name: " << name << endl;
-    assert( !isSpecialOption( name ) );
+    Q_ASSERT( !isSpecialOption( name ) );
     if( isDefault || _autoDefault() ) option.setDefault();
     options_[name] = option;
 }
@@ -150,7 +150,7 @@ bool Options::add( const QString& name, Option option, const bool& isDefault )
 
     // check option
     if( iter == specialOptions_.end() ) { QTextStream( stdout ) << "Options::add - invalid option: " << name << endl; }
-    assert( iter != specialOptions_.end() );
+    Q_ASSERT( iter != specialOptions_.end() );
 
     // set as default
     if( isDefault || _autoDefault() ) option.setDefault();
@@ -246,6 +246,6 @@ Options::Map::const_iterator Options::_find( const QString& name ) const
 {
     Map::const_iterator out( options_.find( name ) );
     if( out == options_.end() ) { QTextStream( stdout ) << "Options::_find - invalid option: " << name << endl; }
-    assert( out != options_.end() );
+    Q_ASSERT( out != options_.end() );
     return out;
 }

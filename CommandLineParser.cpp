@@ -25,7 +25,6 @@
 
 #include <QtCore/QTextStream>
 #include <algorithm>
-#include <cassert>
 
 //________________________________________________________
 CommandLineParser::CommandLineParser( void ):
@@ -278,7 +277,7 @@ bool CommandLineParser::hasOption( QString tag ) const
 QString CommandLineParser::option( QString tag ) const
 {
     OptionMap::const_iterator iter( options_.find( tag ) );
-    assert( iter != options_.end() && iter.value().set_ && !iter.value().value_.isEmpty() );
+    Q_ASSERT( iter != options_.end() && iter.value().set_ && !iter.value().value_.isEmpty() );
     return iter.value().value_;
 }
 

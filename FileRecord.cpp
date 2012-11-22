@@ -23,13 +23,11 @@
 
 #include "FileRecord.h"
 
-#include <cassert>
-
 //_______________________________________________
 FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap( void )
 {
-    static FileRecord::PropertyId::IdMap id_map;
-    return id_map;
+    static FileRecord::PropertyId::IdMap idMap;
+    return idMap;
 }
 
 //_______________________________________________
@@ -66,10 +64,7 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
 
 //_______________________________________________
 QString FileRecord::PropertyId::get( FileRecord::PropertyId::Id id )
-{
-    assert( id < _nameMap().size() );
-    return _nameMap()[id];
-}
+{ return _nameMap()[id]; }
 
 //_______________________________________________
 bool FileRecord::operator < (const FileRecord& record ) const

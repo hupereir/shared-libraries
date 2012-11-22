@@ -33,8 +33,6 @@
 #include <QtCore/QMap>
 #include <QtCore/QTextStream>
 
-#include <cassert>
-
 //! Option file parser based on Xml
 class Options: public Counter
 {
@@ -85,7 +83,7 @@ class Options: public Counter
     virtual List& specialOptions( const QString& name )
     {
         SpecialMap::iterator iter( specialOptions_.find( name ) );
-        assert( iter != specialOptions_.end() );
+        Q_ASSERT( iter != specialOptions_.end() );
         return iter.value();
     }
 
@@ -133,7 +131,7 @@ class Options: public Counter
     template < typename T >
         void set( const QString& name, const T& value, const bool& is_default = false )
     {
-        assert( !isSpecialOption( name ) );
+        Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
         option.set<T>( value );
         if( is_default || _autoDefault() ) option.setDefault();
@@ -143,7 +141,7 @@ class Options: public Counter
     //! option raw value modifier
     virtual void setRaw( const QString& name, const QByteArray& value, const bool& is_default = false )
     {
-        assert( !isSpecialOption( name ) );
+        Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
         option.setRaw( value );
         if( is_default || _autoDefault() ) option.setDefault();
@@ -152,7 +150,7 @@ class Options: public Counter
     //! option raw value modifier
     virtual void setRaw( const QString& name, const QString& value, const bool& is_default = false )
     {
-        assert( !isSpecialOption( name ) );
+        Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
         option.setRaw( value.toUtf8() );
         if( is_default || _autoDefault() ) option.setDefault();

@@ -27,7 +27,6 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QSet>
 #include <algorithm>
-#include <cassert>
 
 //! base namespace
 namespace BASE
@@ -116,7 +115,7 @@ namespace BASE
         //! associated two Keys
         static void associate( Key* first, Key* second )
         {
-            assert( first->key() != second->key() );
+            Q_ASSERT( first->key() != second->key() );
             first->_associate( second );
             second->_associate( first );
         }
@@ -124,7 +123,7 @@ namespace BASE
         //! associated two Keys
         static void associate( Key& first, Key& second )
         {
-            assert( first.key() != second.key() );
+            Q_ASSERT( first.key() != second.key() );
             first._associate( &second );
             second._associate( &first );
         }
