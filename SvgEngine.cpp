@@ -201,7 +201,7 @@ namespace SVG
     void SvgEngine::_initializePlasmaInterface( void )
     {
 
-        assert( !_hasPlasmaInterface() );
+        Q_ASSERT( !_hasPlasmaInterface() );
         plasmaInterface_ = new SvgPlasmaInterface( this );
         _plasmaInterface().loadTheme();
         connect( &_plasmaInterface(), SIGNAL( themeChanged() ), SLOT( reload() ) );
