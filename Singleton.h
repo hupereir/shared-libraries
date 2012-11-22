@@ -45,7 +45,7 @@ class Singleton
     //! application
     QObject* application()
     {
-        Q_ASSERT( application_ );
+        Q_CHECK_PTR( application_ );
         return application_;
     }
 
@@ -53,7 +53,7 @@ class Singleton
     template< typename T >
         T* application( void )
     {
-        Q_ASSERT( application_ );
+        Q_CHECK_PTR( application_ );
         return static_cast<T*>( application_ );
     }
 
