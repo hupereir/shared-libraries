@@ -22,19 +22,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file HelpModel.h
-\brief model for help items
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "HelpModel.h"
 
 #include <QtCore/QMimeData>
 #include <QtCore/QStringList>
-#include <cassert>
 
 namespace BASE
 {
@@ -87,7 +78,7 @@ namespace BASE
     QMimeData* HelpModel::mimeData(const QModelIndexList &indexes) const
     {
 
-        assert( indexes.size() == 1 );
+        Q_ASSERT( indexes.size() == 1 );
 
         // create mime data
         QMimeData *mime = new QMimeData();
@@ -111,7 +102,7 @@ namespace BASE
         // Drag from Keyword model
         if( data->hasFormat( DRAG ) )
         {
-            assert( !parent.isValid() );
+            Q_ASSERT( !parent.isValid() );
             emit itemMoved( row );
             return true;
         }
