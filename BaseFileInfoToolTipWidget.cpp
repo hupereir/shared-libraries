@@ -197,34 +197,6 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
 }
 
 //_______________________________________________________
-void BaseFileInfoToolTipWidget::_adjustPosition( void )
-{
-
-    // get tooltip size
-    const QSize size( sizeHint() );
-
-    // desktop size
-    QDesktopWidget* desktop( qApp->desktop() );
-    QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( parentWidget() ) ) );
-
-    // set geometry
-    int left = followMouse_ ?
-        QCursor::pos().x():
-        rect_.left() + ( rect_.width() - size.width() )/2;
-
-    left = qMax( left, desktopGeometry.left() );
-    left = qMin( left, desktopGeometry.right() - size.width() );
-
-    // first try placing widget below item
-    const int margin = 5;
-    int top = rect_.bottom() + margin;
-    if( top > desktopGeometry.bottom() - size.height() ) top = rect_.top() - margin - size.height();
-
-    move( QPoint( left, top ) );
-
-}
-
-//_______________________________________________________
 bool BaseFileInfoToolTipWidget::eventFilter( QObject* object, QEvent* event )
 {
 
@@ -240,6 +212,35 @@ bool BaseFileInfoToolTipWidget::eventFilter( QObject* object, QEvent* event )
     }
 
     return QWidget::eventFilter( object, event );
+}
+
+//_______________________________________________________
+void BaseFileInfoToolTipWidget::hide( void )
+{
+    timer_.stop();
+    QWidget::hide();
+}
+
+//_______________________________________________________
+void BaseFileInfoToolTipWidget::show( void )
+{
+    // stop timer
+    timer_.stop();
+
+    // check mouse is still in relevant rect
+    if( !_checkMousePosition() ) return;
+
+    // adjust position and show
+    _adjustPosition();
+    QWidget::show();
+}
+
+//_______________________________________________________
+void BaseFileInfoToolTipWidget::showDelayed( int delay )
+{
+    if( !enabled_ ) return;
+    if( isVisible() ) hide();
+    timer_.start( delay, this );
 }
 
 //_______________________________________________________
@@ -274,6 +275,38 @@ void BaseFileInfoToolTipWidget::timerEvent( QTimerEvent* event )
         return;
 
     } else return QWidget::timerEvent( event );
+}
+
+//_______________________________________________________
+bool BaseFileInfoToolTipWidget::_checkMousePosition( void ) const
+{ return rect_.contains( QCursor::pos() ); }
+
+//_______________________________________________________
+void BaseFileInfoToolTipWidget::_adjustPosition( void )
+{
+
+    // get tooltip size
+    const QSize size( sizeHint() );
+
+    // desktop size
+    QDesktopWidget* desktop( qApp->desktop() );
+    QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( parentWidget() ) ) );
+
+    // set geometry
+    int left = followMouse_ ?
+        QCursor::pos().x():
+        rect_.left() + ( rect_.width() - size.width() )/2;
+
+    left = qMax( left, desktopGeometry.left() );
+    left = qMin( left, desktopGeometry.right() - size.width() );
+
+    // first try placing widget below item
+    const int margin = 5;
+    int top = rect_.bottom() + margin;
+    if( top > desktopGeometry.bottom() - size.height() ) top = rect_.top() - margin - size.height();
+
+    move( QPoint( left, top ) );
+
 }
 
 //_____________________________________________

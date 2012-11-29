@@ -38,7 +38,7 @@ class QuestionDialog: public DetailsDialog
     public:
 
     //! constructor
-    QuestionDialog( QWidget* parent, QString text = QString() );
+    QuestionDialog( QWidget* parent, const QString& = QString() );
 
     //! set text
     void setText( const QString& text )

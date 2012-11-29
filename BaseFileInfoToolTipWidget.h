@@ -101,27 +101,13 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     public slots:
 
     //! hide
-    virtual void hide( void )
-    {
-        timer_.stop();
-        QWidget::hide();
-    }
+    virtual void hide( void );
 
     //! show
-    virtual void show( void )
-    {
-        timer_.stop();
-        _adjustPosition();
-        QWidget::show();
-    }
+    virtual void show( void );
 
     //! show delayed
-    void showDelayed( unsigned int delay = 500 )
-    {
-        if( !enabled_ ) return;
-        if( isVisible() ) hide();
-        timer_.start( delay, this );
-    }
+    void showDelayed( int = 500 );
 
     protected:
 
@@ -133,6 +119,9 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
 
     //! timer event
     virtual void timerEvent( QTimerEvent* );
+
+    //! check mouse position
+    bool _checkMousePosition( void ) const;
 
     //! adjust position
     void _adjustPosition( void );

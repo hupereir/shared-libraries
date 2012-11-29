@@ -29,7 +29,7 @@
 #include <QtGui/QLayout>
 
 //____________________________________________________________
-WarningDialog::WarningDialog( QWidget* parent, QString text ):
+WarningDialog::WarningDialog( QWidget* parent, const QString& text ):
     DetailsDialog( parent, OkButton| Separator )
 {
 

@@ -26,7 +26,7 @@
 #include "IconSize.h"
 
 //____________________________________________________________
-InformationDialog::InformationDialog( QWidget* parent, QString text ):
+InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
     DetailsDialog( parent, OkButton| Separator )
 {
 

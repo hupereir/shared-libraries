@@ -29,7 +29,7 @@
 #include "IconSize.h"
 
 //____________________________________________________________
-QuestionDialog::QuestionDialog( QWidget* parent, QString text ):
+QuestionDialog::QuestionDialog( QWidget* parent, const QString& text ):
     DetailsDialog( parent, OkButton | CancelButton| Separator )
 {
 

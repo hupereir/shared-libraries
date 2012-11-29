@@ -37,7 +37,7 @@ class WarningDialog: public DetailsDialog
     public:
 
     //! constructor
-    WarningDialog( QWidget* parent, QString text );
+    WarningDialog( QWidget* parent, const QString& = QString() );
 
     //! destructor
     virtual ~WarningDialog( void )
