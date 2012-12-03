@@ -39,6 +39,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     QToolBar( title, parent ),
     Counter( "CustomToolBar" ),
     optionName_( optionName ),
+    transparent_( false ),
     sizeFromOptions_( true ),
     lockFromOptions_( true ),
     appearsInMenu_( false )
@@ -58,6 +59,10 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
 //_______________________________________________________________
 CustomToolBar::~CustomToolBar( void )
 { Debug::Throw( "~CustomToolBar::CustomToolBar.\n" ); }
+
+//_______________________________________________________________
+void CustomToolBar::paintEvent( QPaintEvent* event )
+{ if( !transparent_ ) return QToolBar::paintEvent( event ); }
 
 //_______________________________________________________________
 void CustomToolBar::showEvent( QShowEvent* event )

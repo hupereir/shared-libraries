@@ -29,6 +29,7 @@
 #include "OptionComboBox.h"
 
 #include <QtGui/QHideEvent>
+#include <QtGui/QPaintEvent>
 #include <QtGui/QShowEvent>
 #include <QtGui/QToolBar>
 #include <QtCore/QMap>
@@ -51,6 +52,8 @@ class CustomToolBar: public QToolBar, public Counter
     // map toolbar area and name
     typedef QMap< QString, Qt::ToolBarArea> AreaMap;
 
+    //!@name convenience
+    //@{
     //! get area from name
     static Qt::ToolBarArea nameToArea( const QString& name )
     {
@@ -68,10 +71,36 @@ class CustomToolBar: public QToolBar, public Counter
         return "";
 
     }
+    //@}
+
+    //!@name accessors
+    //@{
 
     //! lock from options
-    const bool& lockFromOptions( void ) const
+    bool lockFromOptions( void ) const
     { return lockFromOptions_; }
+
+    //! lock from options
+    bool sizeFromOptions( void ) const
+    { return sizeFromOptions_; }
+
+    //! true if visible in menu
+    /*! the flag is ignored if parent is MainWindow */
+    bool appearsInMenu( void ) const
+    { return appearsInMenu_; }
+
+    //! visibility action
+    QAction& visibilityAction( void ) const
+    { return *visibilityAction_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! set transparent
+    void setTransparent( bool value )
+    { transparent_ = value; }
 
     //! set movable
     /* when called directly from the application, the lockFromOptions_ flag is set to false */
@@ -81,21 +110,21 @@ class CustomToolBar: public QToolBar, public Counter
         return QToolBar::setMovable( value );
     }
 
-    //! lock from options
-    const bool& sizeFromOptions( void ) const
-    { return sizeFromOptions_; }
-
-    //! set movable
-    /* when called directly from the application, the lockFromOptions_ flag is set to false */
-    void setIconSize( const QSize& size )
+    //! icon size
+    /* when called directly from the application, the sizeFromOptions_ flag is set to false */
+    void setIconSize( QSize size )
     {
         sizeFromOptions_ = false;
         return QToolBar::setIconSize( size );
     }
 
-    //! visibility action
-    QAction& visibilityAction( void ) const
-    { return *visibilityAction_; }
+    //! true if visible in menu
+    /*! the flag is ignored if parent is MainWindow */
+    void setAppearsInMenu( bool value )
+    { appearsInMenu_ = value; }
+
+    //@}
+
 
     //! location option combo box
     class LocationComboBox: public OptionComboBox
@@ -115,17 +144,10 @@ class CustomToolBar: public QToolBar, public Counter
 
     };
 
-    //! true if visible in menu
-    /*! the flag is ignored if parent is MainWindow */
-    bool appearsInMenu( void ) const
-    { return appearsInMenu_; }
-
-    //! true if visible in menu
-    /*! the flag is ignored if parent is MainWindow */
-    void setAppearsInMenu( bool value )
-    { appearsInMenu_ = value; }
-
     protected:
+
+    //! paint events
+    virtual void paintEvent( QPaintEvent* );
 
     //! show event
     virtual void showEvent( QShowEvent* );
@@ -156,6 +178,9 @@ class CustomToolBar: public QToolBar, public Counter
 
     //! visibility action
     QAction* visibilityAction_;
+
+    //! true if toolbar should be transparent (no frame; no extra background)
+    bool transparent_;
 
     //! use icon size from options
     bool sizeFromOptions_;
