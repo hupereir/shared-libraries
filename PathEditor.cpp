@@ -650,7 +650,16 @@ void PathEditor::_menuButtonClicked( void )
     // get list of hidden buttons
     File::List pathList;
     foreach( PathEditorItem* item, items_ )
-    { if( item->isHidden() ) pathList << item->path(); }
+    {
+        if( item->isHidden() ) pathList << item->path();
+        else {
+
+            // also add first non visible path
+            pathList << item->path();
+            break;
+
+        }
+    }
 
     // check list
     if( pathList.empty() && rootPathList_.size() <= 1 ) return;
