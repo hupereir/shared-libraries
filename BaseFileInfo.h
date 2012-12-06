@@ -97,7 +97,7 @@ class BaseFileInfo
     { return file_; }
 
     //! file type
-    virtual TypeFlags type( void ) const
+    virtual int type( void ) const
     { return type_; }
 
     //! location
