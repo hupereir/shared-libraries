@@ -24,6 +24,7 @@
 #include "BaseMainWindow.h"
 
 #include "BaseIcons.h"
+#include "DockWidget.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
 #include "CustomToolBar.h"
@@ -52,6 +53,12 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
     lockToolBarsAction().setCheckable( true );
     lockToolBarsAction().setChecked( true );
     connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
+
+    // lock panels action
+    addAction( lockPanelsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "Lock Panels", this ) );
+    lockPanelsAction().setCheckable( true );
+    lockPanelsAction().setChecked( true );
+    connect( &lockPanelsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockPanels( bool ) ) );
 
     // show menu action
     addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "Show Menu Bar", this ) );
@@ -85,6 +92,7 @@ void BaseMainWindow::setOptionName( const QString& name )
     if( name.isEmpty() ) {
 
         lockToolBarsOptionName_.clear();
+        lockPanelsOptionName_.clear();
         showMenuBarOptionName_.clear();
         showStatusBarOptionName_.clear();
 
@@ -93,6 +101,10 @@ void BaseMainWindow::setOptionName( const QString& name )
         lockToolBarsOptionName_ = name+"_LOCK_TOOLBARS";
         if( !XmlOptions::get().contains( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
         else { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
+
+        lockPanelsOptionName_ = name+"_LOCK_PANELS";
+        if( !XmlOptions::get().contains( lockPanelsOptionName() ) ) XmlOptions::get().set<bool>( lockPanelsOptionName(), lockPanelsAction().isChecked() );
+        else { lockPanelsAction().setChecked( XmlOptions::get().get<bool>( lockPanelsOptionName() ) ); }
 
         showMenuBarOptionName_ = name+"_SHOW_MENU";
         if( !XmlOptions::get().contains( showMenuBarOptionName() ) ) XmlOptions::get().set<bool>( showMenuBarOptionName(), showMenuBarAction().isChecked() );
@@ -177,6 +189,7 @@ QMenu* BaseMainWindow::createPopupMenu( void )
     {
 
         QMenu* menu = new QMenu( this );
+        if( _hasPanels() ) menu->addAction( &lockPanelsAction() );
         if( _hasMenuBar() ) menu->addAction(&showMenuBarAction() );
         if( _hasStatusBar() ) menu->addAction(&showStatusBarAction() );
         return menu;
@@ -202,10 +215,11 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     ToolBarMenu* menu = new ToolBarMenu( parent );
 
     const bool hasLockableToolbars( installToolBarsActions( *menu->addMenu( "ToolBars" ) ) );
-    bool needSeparator( hasLockableToolbars || _hasMenuBar() || _hasStatusBar() );
+    bool needSeparator( hasLockableToolbars || _hasPanels() || _hasMenuBar() || _hasStatusBar() );
     if( needSeparator ) menu->addSeparator();
 
     if( hasLockableToolbars ) menu->addAction( &lockToolBarsAction() );
+    if( _hasPanels() ) menu->addAction( &lockPanelsAction() );
     if( _hasMenuBar() ) menu->addAction( &showMenuBarAction() );
     if( _hasStatusBar() ) menu->addAction( &showStatusBarAction() );
 
@@ -345,6 +359,10 @@ bool BaseMainWindow::_hasToolBars( void ) const
 
 }
 
+//________________________________________________________________
+bool BaseMainWindow::_hasPanels( void ) const
+{ return !qFindChildren<DockWidget*>( this ).isEmpty(); }
+
 //____________________________________________________________
 void BaseMainWindow::_updateConfiguration( void )
 {
@@ -368,6 +386,10 @@ void BaseMainWindow::_updateConfiguration( void )
         // toolbars locked
         if( XmlOptions::get().contains( lockToolBarsOptionName() ) )
         { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
+
+        // toolbars locked
+        if( XmlOptions::get().contains( lockPanelsOptionName() ) )
+        { lockPanelsAction().setChecked( XmlOptions::get().get<bool>( lockPanelsOptionName() ) ); }
 
         // menu visibility
         if( XmlOptions::get().contains( showMenuBarOptionName() ) )
@@ -420,6 +442,17 @@ void BaseMainWindow::_lockToolBars( bool value )
     }
 
     if( hasOptionName() ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), value );
+    return;
+}
+
+//____________________________________________________________
+void BaseMainWindow::_lockPanels( bool value )
+{
+    Debug::Throw( "BaseMainWindow::_lockPanels.\n" );
+    foreach( DockWidget* panel, qFindChildren<DockWidget*>( this ) )
+    { panel->setLocked( value ); }
+
+    if( hasOptionName() ) XmlOptions::get().set<bool>( lockPanelsOptionName(), value );
     return;
 }
 

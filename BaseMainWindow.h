@@ -86,6 +86,10 @@ class BaseMainWindow: public QMainWindow
     QAction& lockToolBarsAction( void ) const
     { return *lockToolBarsAction_; }
 
+    //! lock panels
+    QAction& lockPanelsAction( void ) const
+    { return *lockPanelsAction_; }
+
     //! show menubar
     QAction& showMenuBarAction( void ) const
     { return *showMenuBarAction_; }
@@ -111,9 +115,13 @@ class BaseMainWindow: public QMainWindow
     bool hasOptionName( void ) const
     { return !lockToolBarsOptionName().isEmpty(); }
 
-    //! toolbar option name
+    //! lock toolbar option name
     const QString& lockToolBarsOptionName( void ) const
     { return lockToolBarsOptionName_; }
+
+    //! lock panels option name
+    const QString& lockPanelsOptionName( void ) const
+    { return lockPanelsOptionName_; }
 
     //! menu option name
     const QString& showMenuBarOptionName( void ) const
@@ -147,6 +155,9 @@ class BaseMainWindow: public QMainWindow
     //! true if main window has toolbars
     virtual bool _hasToolBars( void ) const;
 
+    //! true if main window has dock widgets
+    virtual bool _hasPanels( void ) const;
+
     //! maximize state prior to minimization
     bool _wasMaximized( void ) const
     { return wasMaximized_; }
@@ -169,6 +180,9 @@ class BaseMainWindow: public QMainWindow
     //! lock toolbars
     void _lockToolBars( bool );
 
+    //! lock panels
+    void _lockPanels( bool );
+
     //! toggle menu
     void _toggleMenuBar( bool );
 
@@ -181,6 +195,9 @@ class BaseMainWindow: public QMainWindow
     QString lockToolBarsOptionName_;
 
     //! option name
+    QString lockPanelsOptionName_;
+
+    //! option name
     QString showMenuBarOptionName_;
 
     //! option name
@@ -191,6 +208,9 @@ class BaseMainWindow: public QMainWindow
 
     //! lock toolbars
     QAction* lockToolBarsAction_;
+
+    //! lock docks
+    QAction* lockPanelsAction_;
 
     //! toggle menu
     QAction* showMenuBarAction_;

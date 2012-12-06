@@ -66,6 +66,7 @@ SET( base_qt_SOURCES
   DebugMenu.cpp
   DetailsDialog.cpp
   DockPanel.cpp
+  DockWidget.cpp
   ElidedLabel.cpp
   ErrorHandler.cpp
   FavoritesWidget.cpp
