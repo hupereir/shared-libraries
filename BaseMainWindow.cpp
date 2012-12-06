@@ -50,30 +50,30 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
 
     // lock toolbars action
     addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "Lock Toolbars", this ) );
-    lockToolBarsAction().setCheckable( true );
-    lockToolBarsAction().setChecked( true );
-    connect( &lockToolBarsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
+    lockToolBarsAction_->setCheckable( true );
+    lockToolBarsAction_->setChecked( true );
+    connect( lockToolBarsAction_, SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
 
     // lock panels action
     addAction( lockPanelsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "Lock Panels", this ) );
-    lockPanelsAction().setCheckable( true );
-    lockPanelsAction().setChecked( true );
-    connect( &lockPanelsAction(), SIGNAL( toggled( bool ) ), SLOT( _lockPanels( bool ) ) );
+    lockPanelsAction_->setCheckable( true );
+    lockPanelsAction_->setChecked( true );
+    connect( lockPanelsAction_, SIGNAL( toggled( bool ) ), SLOT( _lockPanels( bool ) ) );
 
     // show menu action
     addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "Show Menu Bar", this ) );
-    showMenuBarAction().setCheckable( true );
-    showMenuBarAction().setChecked( true );
-    showMenuBarAction().setShortcut( Qt::CTRL + Qt::Key_M );
-    showMenuBarAction().setEnabled( false );
-    connect( &showMenuBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleMenuBar( bool ) ) );
+    showMenuBarAction_->setCheckable( true );
+    showMenuBarAction_->setChecked( true );
+    showMenuBarAction_->setShortcut( Qt::CTRL + Qt::Key_M );
+    showMenuBarAction_->setEnabled( false );
+    connect( showMenuBarAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleMenuBar( bool ) ) );
 
     // show statusbar
     addAction( showStatusBarAction_ = new QAction( "Show Status Bar", this ) );
-    showStatusBarAction().setCheckable( true );
-    showStatusBarAction().setChecked( true );
-    showStatusBarAction().setEnabled( false );
-    connect( &showStatusBarAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStatusBar( bool ) ) );
+    showStatusBarAction_->setCheckable( true );
+    showStatusBarAction_->setChecked( true );
+    showStatusBarAction_->setEnabled( false );
+    connect( showStatusBarAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleStatusBar( bool ) ) );
 
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     connect( this, SIGNAL( toolbarConfigurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
@@ -99,20 +99,20 @@ void BaseMainWindow::setOptionName( const QString& name )
     } else {
 
         lockToolBarsOptionName_ = name+"_LOCK_TOOLBARS";
-        if( !XmlOptions::get().contains( lockToolBarsOptionName() ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), lockToolBarsAction().isChecked() );
-        else { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
+        if( !XmlOptions::get().contains( lockToolBarsOptionName_ ) ) XmlOptions::get().set<bool>( lockToolBarsOptionName_, lockToolBarsAction_->isChecked() );
+        else { lockToolBarsAction_->setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName_ ) ); }
 
         lockPanelsOptionName_ = name+"_LOCK_PANELS";
-        if( !XmlOptions::get().contains( lockPanelsOptionName() ) ) XmlOptions::get().set<bool>( lockPanelsOptionName(), lockPanelsAction().isChecked() );
-        else { lockPanelsAction().setChecked( XmlOptions::get().get<bool>( lockPanelsOptionName() ) ); }
+        if( !XmlOptions::get().contains( lockPanelsOptionName_ ) ) XmlOptions::get().set<bool>( lockPanelsOptionName_, lockPanelsAction_->isChecked() );
+        else { lockPanelsAction_->setChecked( XmlOptions::get().get<bool>( lockPanelsOptionName_ ) ); }
 
         showMenuBarOptionName_ = name+"_SHOW_MENU";
-        if( !XmlOptions::get().contains( showMenuBarOptionName() ) ) XmlOptions::get().set<bool>( showMenuBarOptionName(), showMenuBarAction().isChecked() );
-        else showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) );
+        if( !XmlOptions::get().contains( showMenuBarOptionName_ ) ) XmlOptions::get().set<bool>( showMenuBarOptionName_, showMenuBarAction_->isChecked() );
+        else showMenuBarAction_->setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName_ ) );
 
         showStatusBarOptionName_ = name+"_SHOW_STATUS";
-        if( !XmlOptions::get().contains( showStatusBarOptionName() ) ) XmlOptions::get().set<bool>( showStatusBarOptionName(), showStatusBarAction().isChecked() );
-        else showStatusBarAction().setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName() ) );
+        if( !XmlOptions::get().contains( showStatusBarOptionName_ ) ) XmlOptions::get().set<bool>( showStatusBarOptionName_, showStatusBarAction_->isChecked() );
+        else showStatusBarAction_->setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName_ ) );
 
     }
 
@@ -134,8 +134,8 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
     Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
     QMainWindow::setMenuBar( menu );
     if( !menuBar() ) return;
-    menuBar()->setVisible( showMenuBarAction().isChecked() );
-    showMenuBarAction().setEnabled( true );
+    menuBar()->setVisible( showMenuBarAction_->isChecked() );
+    showMenuBarAction_->setEnabled( true );
 }
 
 //__________________________________________________
@@ -145,8 +145,8 @@ void BaseMainWindow::setStatusBar( QStatusBar* widget )
     Debug::Throw( "BaseMainWindow::setStatusBar.\n" );
     QMainWindow::setStatusBar( widget );
     if( !statusBar() ) return;
-    statusBar()->setVisible( showStatusBarAction().isChecked() );
-    showStatusBarAction().setEnabled( true );
+    statusBar()->setVisible( showStatusBarAction_->isChecked() );
+    showStatusBarAction_->setEnabled( true );
 }
 
 //__________________________________________________
@@ -384,20 +384,20 @@ void BaseMainWindow::_updateConfiguration( void )
     {
 
         // toolbars locked
-        if( XmlOptions::get().contains( lockToolBarsOptionName() ) )
-        { lockToolBarsAction().setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName() ) ); }
+        if( XmlOptions::get().contains( lockToolBarsOptionName_ ) )
+        { lockToolBarsAction_->setChecked( XmlOptions::get().get<bool>( lockToolBarsOptionName_ ) ); }
 
         // toolbars locked
-        if( XmlOptions::get().contains( lockPanelsOptionName() ) )
-        { lockPanelsAction().setChecked( XmlOptions::get().get<bool>( lockPanelsOptionName() ) ); }
+        if( XmlOptions::get().contains( lockPanelsOptionName_ ) )
+        { lockPanelsAction_->setChecked( XmlOptions::get().get<bool>( lockPanelsOptionName_ ) ); }
 
         // menu visibility
-        if( XmlOptions::get().contains( showMenuBarOptionName() ) )
-        { showMenuBarAction().setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName() ) ); }
+        if( XmlOptions::get().contains( showMenuBarOptionName_ ) )
+        { showMenuBarAction_->setChecked( XmlOptions::get().get<bool>( showMenuBarOptionName_ ) ); }
 
         // menu visibility
-        if( XmlOptions::get().contains( showStatusBarOptionName() ) )
-        { showStatusBarAction().setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName() ) ); }
+        if( XmlOptions::get().contains( showStatusBarOptionName_ ) )
+        { showStatusBarAction_->setChecked( XmlOptions::get().get<bool>( showStatusBarOptionName_ ) ); }
 
     }
 }
@@ -441,7 +441,7 @@ void BaseMainWindow::_lockToolBars( bool value )
 
     }
 
-    if( hasOptionName() ) XmlOptions::get().set<bool>( lockToolBarsOptionName(), value );
+    if( hasOptionName() ) XmlOptions::get().set<bool>( lockToolBarsOptionName_, value );
     return;
 }
 
@@ -452,7 +452,7 @@ void BaseMainWindow::_lockPanels( bool value )
     foreach( DockWidget* panel, qFindChildren<DockWidget*>( this ) )
     { panel->setLocked( value ); }
 
-    if( hasOptionName() ) XmlOptions::get().set<bool>( lockPanelsOptionName(), value );
+    if( hasOptionName() ) XmlOptions::get().set<bool>( lockPanelsOptionName_, value );
     return;
 }
 
@@ -465,7 +465,7 @@ void BaseMainWindow::_toggleMenuBar( bool value )
     menuWidget()->setVisible( value );
 
     // save option
-    if( hasOptionName() ) XmlOptions::get().set<bool>( showMenuBarOptionName(), value );
+    if( hasOptionName() ) XmlOptions::get().set<bool>( showMenuBarOptionName_, value );
 
 }
 
@@ -478,6 +478,6 @@ void BaseMainWindow::_toggleStatusBar( bool value )
     statusBar()->setVisible( value );
 
     // save option
-    if( hasOptionName() ) XmlOptions::get().set<bool>( showStatusBarOptionName(), value );
+    if( hasOptionName() ) XmlOptions::get().set<bool>( showStatusBarOptionName_, value );
 
 }

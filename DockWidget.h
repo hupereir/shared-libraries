@@ -32,6 +32,8 @@
 class DockWidget: public QDockWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
@@ -47,6 +49,11 @@ class DockWidget: public QDockWidget
     //! lock
     bool isLocked( void ) const
     { return locked_; }
+
+    private slots:
+
+    //! update configuration
+    void _updateConfiguration( void );
 
     private:
 

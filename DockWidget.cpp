@@ -22,6 +22,9 @@
 *******************************************************************************/
 
 #include "DockWidget.h"
+#include "BaseMainWindow.h"
+#include "Singleton.h"
+#include "XmlOptions.h"
 
 #include <QtGui/QStyle>
 
@@ -43,7 +46,7 @@ class TitleBar: public QWidget
     //! size hint
     virtual QSize minimumSizeHint() const
     {
-        const int border = style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin);
+        const int border = style()->pixelMetric( QStyle::PM_DockWidgetTitleBarButtonMargin );
         return QSize(border, border);
     }
 
@@ -58,7 +61,11 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, Qt::WindowFlags fl
     QDockWidget(title, parent, flags),
     locked_(false),
     titleBar_(0)
-{ setLocked( true ); }
+{
+    // configuration
+    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    _updateConfiguration();
+}
 
 //_________________________________________________________
 void DockWidget::setLocked(bool locked)
@@ -80,5 +87,18 @@ void DockWidget::setLocked(bool locked)
             QDockWidget::DockWidgetFloatable |
             QDockWidget::DockWidgetClosable);
     }
+
+}
+
+
+//_______________________________________________________________
+void DockWidget::_updateConfiguration( void )
+{
+    Debug::Throw( "DockWidget::_updateConfiguration.\n" );
+
+    // lock
+    BaseMainWindow* mainwindow( qobject_cast<BaseMainWindow*>( window() ) );
+    if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().contains( mainwindow->lockPanelsOptionName() ) )
+    { setLocked( XmlOptions::get().get<bool>( mainwindow->lockPanelsOptionName() ) ); }
 
 }
