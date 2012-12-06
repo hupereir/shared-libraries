@@ -1,5 +1,5 @@
-#ifndef _DockPanel_h_
-#define _DockPanel_h_
+#ifndef DockPanel_h
+#define DockPanel_h
 
 // $Id$
 
