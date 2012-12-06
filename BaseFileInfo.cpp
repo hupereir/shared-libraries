@@ -26,22 +26,6 @@
 #include "TimeStamp.h"
 #include "XmlString.h"
 
-//! Some Xml definitions
-namespace XML
-{
-
-    static const QString FILEINFO_LIST( "FileInfoList" );
-    static const QString FILEINFO( "FileInfo" );
-    static const QString FILE( "File" );
-    static const QString TYPE( "Type" );
-    static const QString SIZE( "Size" );
-    static const QString LAST_MODIFIED( "LastModified" );
-    static const QString USER( "user" );
-    static const QString GROUP( "group" );
-    static const QString PERMISSIONS( "permissions" );
-
-}
-
 //________________________________________________________________
 BaseFileInfo::BaseFileInfo( const QDomElement& element ):
     type_( None ),

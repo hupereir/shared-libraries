@@ -36,6 +36,22 @@
 
 #include <algorithm>
 
+//! Some Xml definitions
+namespace XML
+{
+
+    static const QString FILEINFO_LIST( "FileInfoList" );
+    static const QString FILEINFO( "FileInfo" );
+    static const QString FILE( "File" );
+    static const QString TYPE( "Type" );
+    static const QString SIZE( "Size" );
+    static const QString LAST_MODIFIED( "LastModified" );
+    static const QString USER( "user" );
+    static const QString GROUP( "group" );
+    static const QString PERMISSIONS( "permissions" );
+
+}
+
 //! store a file and needed informations for Ftp transfer
 class BaseFileInfo
 {
@@ -76,7 +92,7 @@ class BaseFileInfo
     {}
 
     //! dump to dom element
-    virtual QDomElement domElement( QDomDocument& parent ) const;
+    virtual QDomElement domElement( QDomDocument& ) const;
 
     //! equal to operator
     virtual bool operator == (const BaseFileInfo& other) const
