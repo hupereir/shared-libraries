@@ -24,6 +24,9 @@
 #include "FileRecord.h"
 
 //_______________________________________________
+const QString FileRecord::MimeType( "internal/file-record-list" );
+
+//_______________________________________________
 FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap( void )
 {
     static FileRecord::PropertyId::IdMap idMap;

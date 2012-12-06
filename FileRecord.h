@@ -42,9 +42,11 @@ class FileRecord: public Counter
 
     //! shortcut to list of records
     typedef QOrderedSet<FileRecord> Set;
-
     typedef QList<FileRecord> List;
     typedef QListIterator<FileRecord> ListIterator;
+
+    //! mimetype for drag and drop operations
+    static const QString MimeType;
 
     //! constructor
     FileRecord( const File& file = File(""), const TimeStamp& time = TimeStamp::now() ):
