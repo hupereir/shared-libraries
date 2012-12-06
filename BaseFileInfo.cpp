@@ -27,6 +27,9 @@
 #include "XmlString.h"
 
 //________________________________________________________________
+const QString BaseFileInfo::MimeType( "internal/file-info-list" );
+
+//________________________________________________________________
 BaseFileInfo::BaseFileInfo( const QDomElement& element ):
     type_( None ),
     size_(0),

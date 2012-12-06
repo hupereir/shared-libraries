@@ -76,6 +76,9 @@ class BaseFileInfo
 
     Q_DECLARE_FLAGS( TypeFlags, Type )
 
+    //! drag string
+    static const QString MimeType;
+
     //! constructor
     BaseFileInfo( const QString& file = "", TypeFlags type = None ):
         file_( file ),
