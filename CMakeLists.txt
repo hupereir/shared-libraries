@@ -181,6 +181,7 @@ SET( base_qt_HEADERS
   DebugMenu.h
   DetailsDialog.h
   DockPanel.h
+  DockWidget.h
   ElidedLabel.h
   FavoritesWidget.h
   FavoritesWidget_p.h
