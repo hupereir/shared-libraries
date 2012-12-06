@@ -76,13 +76,15 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
 
     // text formats
     iconNames_.insert( "txt", "text-plain.png" );
-    iconNames_.insert( "cmake", "text-plain.png" );
     iconNames_.insert( "qrc", "text-plain.png" );
     iconNames_.insert( "log", "text-plain.png" );
     iconNames_.insert( "xml", "text-xml.png" );
     iconNames_.insert( "html", "text-html.png" );
     iconNames_.insert( "css", "text-css.png" );
     iconNames_.insert( "php", "application-x-php.png" );
+
+    // cmake
+    iconNames_.insert( "cmake", "text-x-cmake.png" );
 
     // archives
     iconNames_.insert( "gz", "application-x-archive.png" );
