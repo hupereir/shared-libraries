@@ -23,11 +23,21 @@
 #include "FavoritesWidget_p.h"
 
 #include "BaseFileIconProvider.h"
+#include "Singleton.h"
+#include "XmlError.h"
+#include "XmlOptions.h"
 
 #include <QtGui/QApplication>
 #include <QtGui/QPainter>
 
 const double FavoritesWidgetItem::BorderWidth = 2;
+
+namespace XML
+{
+
+    static const QString NAME = "name";
+
+};
 
 //___________________________________________________________________
 void FavoritesWidgetItem::updateMinimumSize( void )
@@ -108,11 +118,11 @@ void FavoritesWidgetItem::paintEvent( QPaintEvent* event )
             if( isRightToLeft ) textRect.setRight( textRect.right() - iconSize().width() - 2*BorderWidth );
             else textRect.setLeft( textRect.left() + iconSize().width() + 2*BorderWidth );
 
-            // draw text
-            painter.setFont( font() );
-            painter.drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) ) );
-
         }
+
+        // draw text
+        painter.setFont( font() );
+        painter.drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) ) );
 
     }
 
@@ -138,6 +148,34 @@ void FavoritesWidgetItem::paintEvent( QPaintEvent* event )
 
     painter.end();
 
+}
+
+//___________________________________________________________________
+LocalFileInfo::LocalFileInfo( const QDomElement& element ):
+    BaseFileInfo( element )
+{
+    Debug::Throw( "LocalFileInfo::LocalFileInfo (dom).\n" );
+
+    // parse attributes
+    QDomNamedNodeMap attributes( element.attributes() );
+    for( unsigned int i=0; i<attributes.length(); i++ )
+    {
+
+        QDomAttr attribute( attributes.item( i ).toAttr() );
+        if( attribute.isNull() ) continue;
+        if( attribute.name() == XML::NAME ) name_ = attribute.value();
+    }
+
+}
+
+//________________________________________________________________
+QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
+{
+
+    Debug::Throw( "BaseFileInfo::DomElement.\n" );
+    QDomElement out( BaseFileInfo::domElement( document ) );
+    out.setAttribute( XML::NAME, name_ );
+    return out;
 }
 
 //___________________________________________________________________
@@ -167,6 +205,39 @@ FavoritesWidget::FavoritesWidget( QWidget* parent ):
     group_->setExclusive( false );
     connect( group_, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
 
+    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
+    _updateConfiguration();
+
+}
+
+//______________________________________________________________________
+void FavoritesWidget::setIconProvider( BaseFileIconProvider* provider )
+{
+
+    // set provider
+    iconProvider_ = provider;
+
+    // update icons for existing items
+    foreach( FavoritesWidgetItem* item, _items() )
+    {
+        if( item->icon().isNull() )
+        { item->setIcon( iconProvider_->icon( item->fileInfo() ) ); }
+    }
+
+}
+
+//______________________________________________________________________
+void FavoritesWidget::clear( void )
+{
+    // delete all items
+    foreach( QAbstractButton* item, group_->buttons() )
+    {
+        // remove from group and delete later
+        group_->removeButton( item );
+        item->hide();
+        item->deleteLater();
+    }
 }
 
 //______________________________________________________________________
@@ -192,8 +263,9 @@ void FavoritesWidget::add( const QIcon& icon, const QString& name, const BaseFil
 
     // add to button group, list of items and layout
     group_->addButton( item );
-    items_.append( item );
     buttonLayout_->addWidget( item );
+
+    emit contentsChanged();
 
 }
 
@@ -209,4 +281,148 @@ void FavoritesWidget::_buttonClicked( QAbstractButton* button )
 
     emit itemSelected( item->fileInfo() );
 
+}
+
+//_______________________________________________
+QList<FavoritesWidgetItem*> FavoritesWidget::_items( void ) const
+{
+    Debug::Throw( "FavoritesWidget::_items.\n" );
+    QList<FavoritesWidgetItem*> out;
+    foreach( QAbstractButton* child, group_->buttons() )
+    { out.append( static_cast<FavoritesWidgetItem*>( child ) ); }
+
+    return out;
+}
+
+//_______________________________________________
+bool FavoritesWidget::_setDBFile( const File& file )
+{
+
+    Debug::Throw() << "FavoritesWidget::_setDBFile - file: " << file << endl;
+
+    // check file
+    if( dbFile_ == file && !_items().isEmpty() ) return false;
+
+    // store file and read
+    dbFile_ = file;
+
+    // make sure file is hidden (windows only)
+    if( dbFile_.localName().startsWith( '.' ) )
+    { dbFile_.setHidden(); }
+
+    _read();
+
+    return true;
+
+}
+
+//_______________________________________________
+bool FavoritesWidget::_read( void )
+{
+    Debug::Throw( "FavoritesWidget::_read.\n" );
+    if( dbFile_.isEmpty() || !dbFile_.exists() ) return false;
+
+    // parse the file
+    QFile in( dbFile_ );
+    if ( !in.open( QIODevice::ReadOnly ) )
+    {
+        Debug::Throw( "FavoritesWidget::_read - cannot open file.\n" );
+        return false;
+    }
+
+    // dom document
+    QDomDocument document;
+    XmlError error( dbFile_ );
+    if ( !document.setContent( &in, &error.error(), &error.line(), &error.column() ) )
+    {
+        in.close();
+        Debug::Throw() << error << endl;
+        return false;
+    }
+
+    QDomElement docElement = document.documentElement();
+    QDomNode node = docElement.firstChild();
+    for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
+    {
+        QDomElement element = node.toElement();
+        if( element.isNull() ) continue;
+
+        // special options
+        if( element.tagName() == XML::FILEINFO )
+        {
+
+            LocalFileInfo fileInfo( element );
+            if( !fileInfo.file().isEmpty() ) add( fileInfo.name(), fileInfo );
+            else Debug::Throw(0, "FavoritesWidget::_read - attend to add empty file info. Discarded.\n" );
+
+        } else Debug::Throw() << "FavoritesWidget::_read - unrecognized tag " << element.tagName() << endl;
+    }
+
+    emit contentsChanged();
+
+    return true;
+}
+
+//_______________________________________________
+bool FavoritesWidget::_write( void )
+{
+    Debug::Throw( "FavoritesWidget::_write.\n" );
+    if( dbFile_.isEmpty() )
+    {
+        Debug::Throw( "FavoritesWidget::_write - no file.\n" );
+        return false;
+    }
+
+    // output file
+    QFile out( dbFile_ );
+    if( !out.open( QIODevice::WriteOnly ) ) return false;
+
+    // get records truncated list
+    QList<FavoritesWidgetItem*> items( _items() );
+
+    // create document
+    QDomDocument document;
+
+    // create main element
+    QDomElement top = document.appendChild( document.createElement( XML::FILEINFO_LIST ) ).toElement();
+
+    // loop over records
+    foreach( FavoritesWidgetItem* item, items )
+    {
+
+        const BaseFileInfo& fileInfo( item->fileInfo() );
+        Debug::Throw() << "FavoritesWidget::_write - " << fileInfo << endl;
+
+        if( fileInfo.file().isEmpty() )
+        {
+            Debug::Throw(0, "FavoritesWidget::_write - attend to write empty file info. Discarded.\n" );
+            continue;
+        }
+
+        top.appendChild( LocalFileInfo( fileInfo, item->text() ).domElement( document ) );
+    }
+
+    out.write( document.toByteArray() );
+    out.close();
+
+    return true;
+}
+
+
+//______________________________________
+void FavoritesWidget::_updateConfiguration( void )
+{
+    Debug::Throw( "FavoritesWidget::_updateConfiguration.\n" );
+
+    // DB file
+    _setDBFile( File( XmlOptions::get().raw("DB_FILE") ) );
+    return;
+
+}
+
+//______________________________________
+void FavoritesWidget::_saveConfiguration( void )
+{
+    Debug::Throw( "FavoritesWidget::_saveConfiguration.\n" );
+    _write();
 }

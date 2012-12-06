@@ -53,10 +53,16 @@ class FavoritesWidget: public QWidget, public Counter
     {}
 
     //! set icon provider
-    void setIconProvider( BaseFileIconProvider* value )
-    { iconProvider_ = value; }
+    void setIconProvider( BaseFileIconProvider* );
+
+    //! true if empty
+    bool isEmpty( void ) const
+    { return group_->buttons().isEmpty(); }
 
     public slots:
+
+    //! clear all items
+    void clear( void );
 
     //! add item
     void add( const BaseFileInfo& fileInfo )
@@ -73,10 +79,35 @@ class FavoritesWidget: public QWidget, public Counter
     //! item selected
     void itemSelected( const BaseFileInfo& );
 
+    //! emmited when contents is changed
+    void contentsChanged( void );
+
     protected slots:
 
     //! button clicked
     void _buttonClicked( QAbstractButton* );
+
+    protected:
+
+    //! Read fileList from file
+    virtual bool _read( void );
+
+    //! write fileList to file
+    virtual bool _write( void );
+
+    //! set db file
+    virtual bool _setDBFile( const File& );
+
+    //! list of items
+    QList<FavoritesWidgetItem*> _items( void ) const;
+
+    private slots:
+
+    //! update configuration
+    void _updateConfiguration( void );
+
+    //! save configuration
+    void _saveConfiguration( void );
 
     private:
 
@@ -89,11 +120,11 @@ class FavoritesWidget: public QWidget, public Counter
     //! button group
     QButtonGroup* group_;
 
-    //! list of items
-    QList<FavoritesWidgetItem*> items_;
-
     //! icon provider
     BaseFileIconProvider* iconProvider_;
+
+    //! file from/to wich the files are saved
+    File dbFile_;
 
 };
 

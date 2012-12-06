@@ -118,4 +118,37 @@ class FavoritesWidgetItem: public QAbstractButton
 
 };
 
+//! local file info
+class LocalFileInfo: public BaseFileInfo
+{
+
+    public:
+
+    //! constructor
+    LocalFileInfo( const BaseFileInfo& other, const QString& name ):
+        BaseFileInfo( other ),
+        name_( name )
+    {}
+
+    //! constructor from DOM element
+    LocalFileInfo( const QDomElement& );
+
+    //! destructor
+    virtual ~LocalFileInfo( void )
+    {}
+
+    //! dump to dom element
+    virtual QDomElement domElement( QDomDocument& ) const;
+
+    //! name
+    const QString& name( void ) const
+    { return name_; }
+
+    private:
+
+    //! name
+    QString name_;
+
+};
+
 #endif
