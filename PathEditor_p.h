@@ -66,8 +66,6 @@ class PathEditorButton: public QAbstractButton
     { mouseOver_ = value; }
 
     //! border width
-    // enum { BorderWidth = 2 };
-
     static const qreal BorderWidth;
 
     protected:
@@ -134,7 +132,7 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     //@}
 
-    //!@name modifiers#ifndef PathEditor_p_h
+    //!@name modifiers
     //@{
 
     //! set is selectable

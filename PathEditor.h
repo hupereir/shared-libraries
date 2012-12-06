@@ -28,6 +28,8 @@
 #include "File.h"
 #include "PathHistory.h"
 
+#include <QtCore/QList>
+
 #include <QtGui/QAbstractButton>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QLabel>
@@ -37,9 +39,11 @@
 #include <QtGui/QAbstractItemView>
 #include <QtGui/QWidget>
 
-//! path editor
+// forward declaration
 class PathEditorItem;
 class PathEditorMenuButton;
+
+//! path editor
 class PathEditor: public QStackedWidget, public Counter
 {
 

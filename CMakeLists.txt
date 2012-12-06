@@ -68,6 +68,7 @@ SET( base_qt_SOURCES
   DockPanel.cpp
   ElidedLabel.cpp
   ErrorHandler.cpp
+  FavoritesWidget.cpp
   FileDialog.cpp
   FileList.cpp
   FilePermissionsWidget.cpp
@@ -180,6 +181,8 @@ SET( base_qt_HEADERS
   DetailsDialog.h
   DockPanel.h
   ElidedLabel.h
+  FavoritesWidget.h
+  FavoritesWidget_p.h
   FileList.h
   FileRecordModel.h
   FileSystemWatcher.h
