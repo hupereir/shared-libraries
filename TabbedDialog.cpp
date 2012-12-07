@@ -128,18 +128,18 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     }
 
     // create scroll area
-    QScrollArea* scroll = new QScrollArea();
-    scroll->setWidgetResizable ( true );
-    scroll->setFrameStyle( QFrame::NoFrame );
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setWidgetResizable ( true );
+    scrollArea->setFrameStyle( QFrame::NoFrame );
 
-    base->layout()->addWidget( scroll );
+    base->layout()->addWidget( scrollArea );
 
     // add smooth scrolling object
-    new ScrollObject( scroll );
+    new ScrollObject( scrollArea );
 
     // create main widget
     QWidget* main( new QWidget() );
-    scroll->setWidget( main );
+    scrollArea->setWidget( main );
 
     // add to stack
     _stack().addWidget( base );
