@@ -50,7 +50,7 @@ bool XmlFileList::_setDBFile( const File& file )
     Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
 
     // check file
-    if( dbFile_ == file && !_records().empty() ) return false;
+    if( dbFile_ == file && !_records().isEmpty() ) return false;
 
     // store file and read
     dbFile_ = file;
@@ -69,7 +69,7 @@ bool XmlFileList::_setDBFile( const File& file )
 bool XmlFileList::_read( void )
 {
     Debug::Throw( "XmlFileList::_read.\n" );
-    if( dbFile_.isEmpty() || !QFileInfo(dbFile_).exists() ) return false;
+    if( dbFile_.isEmpty() || !dbFile_.exists() ) return false;
 
     // parse the file
     QFile in( dbFile_ );
@@ -88,9 +88,9 @@ bool XmlFileList::_read( void )
         return _deprecatedRead();
     }
 
-    QDomElement doc_element = document.documentElement();
-    QDomNode node = doc_element.firstChild();
-    for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
+    QDomElement docElement = document.documentElement();
+    QDomNode node = docElement.firstChild();
+    for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement();
         if( element.isNull() ) continue;
