@@ -51,13 +51,15 @@ class WindowMonitor: public QObject, public Counter
     //! mode
     enum Mode
     {
-        NONE = 0,
-        SIZE = 1<<0,
-        POSITION = 1<<1
+        None = 0,
+        Size = 1<<0,
+        Position = 1<<1
     };
 
+    Q_DECLARE_FLAGS( Modes, Mode );
+
     //! mode
-    void setMode( const unsigned int value )
+    void setMode( Modes value )
     { mode_ = value; }
 
     //! size option name
@@ -81,29 +83,9 @@ class WindowMonitor: public QObject, public Counter
 
     private:
 
-    //! mode
-    const unsigned int& _mode( void ) const
-    { return mode_; }
-
     //! true when option name was set
     bool _hasOptionName( void ) const
     { return !widthOptionName_.isEmpty(); }
-
-    //! size option name
-    virtual const QString& _heightOptionName( void ) const
-    { return heightOptionName_; }
-
-    //! size option name
-    virtual const QString& _widthOptionName( void ) const
-    { return widthOptionName_; }
-
-    //! x option name
-    virtual const QString& _xOptionName( void ) const
-    { return xOptionName_; }
-
-    //! y option name
-    virtual const QString& _yOptionName( void ) const
-    { return yOptionName_; }
 
     //! save window size
     void _saveWindowSize( void ) const;
@@ -115,7 +97,7 @@ class WindowMonitor: public QObject, public Counter
     QBasicTimer timer_;
 
     //! mode
-    unsigned int mode_;
+    Modes mode_;
 
     //! window size option name
     QString widthOptionName_;
@@ -130,5 +112,7 @@ class WindowMonitor: public QObject, public Counter
     QString yOptionName_;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( WindowMonitor::Modes )
 
 #endif

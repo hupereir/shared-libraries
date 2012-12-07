@@ -28,7 +28,7 @@
 WindowMonitor::WindowMonitor( QWidget* parent ):
     QObject( parent ),
     Counter( "WindowMonitor" ),
-    mode_( SIZE )
+    mode_( Size )
 { parent->installEventFilter(this); }
 
 //_________________________________________________________
@@ -58,12 +58,12 @@ QSize WindowMonitor::sizeHint( void ) const
 {
 
     // resize
-    if( _hasOptionName() && ( _mode()&SIZE ) && XmlOptions::get().contains( _widthOptionName() ) && XmlOptions::get().contains( _heightOptionName() ) )
+    if( _hasOptionName() && ( mode_&Size ) && XmlOptions::get().contains( widthOptionName_ ) && XmlOptions::get().contains( heightOptionName_ ) )
     {
 
         QSize size(
-            XmlOptions::get().get<int>( _widthOptionName() ),
-            XmlOptions::get().get<int>( _heightOptionName() ) );
+            XmlOptions::get().get<int>( widthOptionName_ ),
+            XmlOptions::get().get<int>( heightOptionName_ ) );
 
         Debug::Throw()
             << "WindowMonitor::sizeHint - ("
@@ -82,12 +82,12 @@ QPoint WindowMonitor::position( void ) const
 {
 
     // resize
-    if( _hasOptionName() && ( _mode()&POSITION ) && XmlOptions::get().contains( _xOptionName() ) && XmlOptions::get().contains( _yOptionName() ) )
+    if( _hasOptionName() && ( mode_&Position ) && XmlOptions::get().contains( xOptionName_ ) && XmlOptions::get().contains( yOptionName_ ) )
     {
 
         QPoint position(
-            XmlOptions::get().get<int>( _xOptionName() ),
-            XmlOptions::get().get<int>( _yOptionName() ) );
+            XmlOptions::get().get<int>( xOptionName_ ),
+            XmlOptions::get().get<int>( yOptionName_ ) );
 
         Debug::Throw()
             << "WindowMonitor::position - ("
@@ -108,8 +108,8 @@ bool WindowMonitor::eventFilter( QObject* target, QEvent* event )
     if( target != parent()  ) return false;
     if( !_hasOptionName() ) return false;
     if(
-        (event->type() == QEvent::Resize && ( _mode()&SIZE )) ||
-        (event->type() == QEvent::Move && ( _mode()&POSITION ) ) )
+        (event->type() == QEvent::Resize && ( mode_&Size )) ||
+        (event->type() == QEvent::Move && ( mode_&Position ) ) )
     { timer_.start( 200, this ); }
 
     return false;
@@ -127,8 +127,8 @@ void WindowMonitor::timerEvent( QTimerEvent* event )
         timer_.stop();
 
         // save size
-        if( _mode()&SIZE ) _saveWindowSize();
-        if( _mode()&POSITION ) _saveWindowPosition();
+        if( mode_&Size ) _saveWindowSize();
+        if( mode_&Position ) _saveWindowPosition();
 
     } else return QObject::timerEvent( event );
 
@@ -146,8 +146,8 @@ void WindowMonitor::_saveWindowSize( void ) const
         << size.height() << ")"
         << endl;
 
-    XmlOptions::get().set<int>( _widthOptionName(), size.width() );
-    XmlOptions::get().set<int>( _heightOptionName(), size.height() );
+    XmlOptions::get().set<int>( widthOptionName_, size.width() );
+    XmlOptions::get().set<int>( heightOptionName_, size.height() );
 }
 
 //____________________________________________________________
@@ -162,6 +162,6 @@ void WindowMonitor::_saveWindowPosition( void ) const
         << position.y() << ")"
         << endl;
 
-    XmlOptions::get().set<int>( _xOptionName(), position.x() );
-    XmlOptions::get().set<int>( _yOptionName(), position.y() );
+    XmlOptions::get().set<int>( xOptionName_, position.x() );
+    XmlOptions::get().set<int>( yOptionName_, position.y() );
 }
