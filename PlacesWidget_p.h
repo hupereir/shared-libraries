@@ -1,5 +1,5 @@
-#ifndef FavoritesWidget_p_h
-#define FavoritesWidget_p_h
+#ifndef PlacesWidget_p_h
+#define PlacesWidget_p_h
 
 // $Id$
 
@@ -23,16 +23,20 @@
 *******************************************************************************/
 
 #include "BaseFileInfo.h"
+#include "BrowsedLineEditor.h"
 #include "Counter.h"
+#include "CustomDialog.h"
+#include "AnimatedLineEditor.h"
 
 #include <QtCore/QEvent>
 #include <QtCore/QList>
 
 #include <QtGui/QAbstractButton>
+#include <QtGui/QCheckBox>
 #include <QtGui/QPaintEvent>
 
-//! favorites widget item
-class FavoritesWidgetItem: public QAbstractButton
+//! places widget item
+class PlacesWidgetItem: public QAbstractButton
 {
 
     Q_OBJECT
@@ -40,17 +44,10 @@ class FavoritesWidgetItem: public QAbstractButton
     public:
 
     //! constructor
-    FavoritesWidgetItem( QWidget* parent ):
-        QAbstractButton( parent ),
-        itemView_( 0x0 ),
-        mouseOver_( false )
-    {
-        Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
-        setAttribute( Qt::WA_Hover );
-    }
+    PlacesWidgetItem( QWidget* = 0x0 );
 
     //! destructor
-    virtual ~FavoritesWidgetItem( void )
+    virtual ~PlacesWidgetItem( void )
     {}
 
     //!@name accessors
@@ -59,6 +56,10 @@ class FavoritesWidgetItem: public QAbstractButton
     //! file info
     const BaseFileInfo& fileInfo( void ) const
     { return fileInfo_; }
+
+    //! focus
+    bool hasFocus( void ) const
+    { return hasFocus_; }
 
     //! size hint
     virtual QSize sizeHint( void ) const
@@ -92,6 +93,14 @@ class FavoritesWidgetItem: public QAbstractButton
     //! update minimum width
     void updateMinimumSize( void );
 
+    //! focus
+    void setFocus( bool value )
+    {
+        if( hasFocus_ == value ) return;
+        hasFocus_ = value;
+        update();
+    }
+
     //@}
 
     //! border width
@@ -105,6 +114,11 @@ class FavoritesWidgetItem: public QAbstractButton
     //! paint event
     virtual void paintEvent( QPaintEvent* );
 
+    private slots:
+
+    //! update configuration
+    void _updateConfiguration( void );
+
     private:
 
     //! some styles require an item view passed to painting method to have proper selection rendered in items
@@ -115,6 +129,68 @@ class FavoritesWidgetItem: public QAbstractButton
 
     //! mouse over
     bool mouseOver_;
+
+    //! focus
+    bool hasFocus_;
+
+};
+
+//! edit item dialog
+class PlacesWidgetItemDialog: public CustomDialog
+{
+
+    public:
+
+    //! constructor
+    PlacesWidgetItemDialog( QWidget* = 0x0 );
+
+    //! destructor
+    virtual ~PlacesWidgetItemDialog( void )
+    {}
+
+    //! accessors
+    //@{
+
+    //! name
+    QString name( void ) const
+    { return nameEditor_->text(); }
+
+    //! file
+    QString file( void ) const
+    { return fileEditor_->editor().text(); }
+
+    //! remote
+    bool isRemote( void ) const
+    { return remoteCheckBox_->isChecked(); }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! name
+    void setName( const QString& value )
+    { nameEditor_->setText( value ); }
+
+    //! file
+    void setFile( const BaseFileInfo& value )
+    {
+        fileEditor_->setFile( value.file() );
+        remoteCheckBox_->setChecked( value.isRemote() );
+    }
+
+    //@}
+
+    private:
+
+    //! name
+    AnimatedLineEditor* nameEditor_;
+
+    //! file
+    BrowsedLineEditor* fileEditor_;
+
+    //! remote checkbox
+    QCheckBox* remoteCheckBox_;
 
 };
 

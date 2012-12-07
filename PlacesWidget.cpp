@@ -1,0 +1,882 @@
+// $Id$
+
+/*******************************************************************************
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* software; if not, write to the Free Software Foundation, Inc., 59 Temple
+* Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*******************************************************************************/
+
+#include "PlacesWidget.h"
+#include "PlacesWidget_p.h"
+
+#include "BaseFileIconProvider.h"
+#include "BaseIcons.h"
+#include "ContextMenu.h"
+#include "GridLayout.h"
+#include "IconEngine.h"
+#include "IconSizeMenu.h"
+#include "Singleton.h"
+#include "Util.h"
+#include "XmlError.h"
+#include "XmlOptions.h"
+
+#include <QtCore/QUrl>
+#include <QtGui/QApplication>
+#include <QtGui/QPainter>
+
+const double PlacesWidgetItem::BorderWidth = 2;
+
+namespace XML
+{
+
+    static const QString NAME = "name";
+
+};
+
+//___________________________________________________________________
+PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
+    QAbstractButton( parent ),
+    itemView_( 0x0 ),
+    mouseOver_( false ),
+    hasFocus_( false )
+{
+    Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
+    setAttribute( Qt::WA_Hover );
+
+    // configuration
+    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    _updateConfiguration();
+
+}
+
+//___________________________________________________________________
+void PlacesWidgetItem::updateMinimumSize( void )
+{
+
+    // get icon size
+    QSize size( 2*BorderWidth, 2*BorderWidth );
+
+    // icon
+    if( !icon().isNull() )
+    {
+        size.rwidth() += iconSize().width();
+        size.rheight() = qMax<int>( size.height(), iconSize().height() + 2*BorderWidth );
+    }
+
+    // text
+    if( !text().isEmpty() )
+    {
+        QSize textSize = fontMetrics().boundingRect( text() ).size();
+        size.rwidth() += textSize.width();
+        size.rheight() = qMax<int>( size.height(), textSize.height() + 2*BorderWidth );
+
+        if( !icon().isNull() ) size.rwidth() += 2*BorderWidth;
+
+    }
+
+    // store
+    setMinimumSize( size );
+
+}
+
+//___________________________________________________________________
+bool PlacesWidgetItem::event( QEvent* event )
+{
+
+    switch( event->type() )
+    {
+
+        case QEvent::HoverEnter: mouseOver_ = true; break;
+        case QEvent::HoverLeave: mouseOver_ = false; break;
+        default: break;
+    }
+
+    return QAbstractButton::event( event );
+
+}
+
+//___________________________________________________________________
+void PlacesWidgetItem::paintEvent( QPaintEvent* event )
+{
+    QPainter painter( this );
+    painter.setClipRegion( event->region() );
+
+    // render mouse over
+    if( mouseOver_ || hasFocus() )
+    {
+
+        QStyleOptionViewItemV4 option;
+        option.initFrom( this );
+        option.showDecorationSelected = true;
+        option.rect = rect();
+        if( mouseOver_ ) option.state |= QStyle::State_MouseOver;
+        if( hasFocus() ) option.state |= QStyle::State_Selected;
+        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, itemView_ );
+
+    }
+
+    // save layout direction
+    const bool isRightToLeft( qApp->isRightToLeft() );
+
+    // render text
+    if( !text().isEmpty() )
+    {
+
+        QRect textRect( rect().adjusted( BorderWidth, BorderWidth, -BorderWidth, -BorderWidth ) );
+        if( !icon().isNull() )
+        {
+
+            if( isRightToLeft ) textRect.setRight( textRect.right() - iconSize().width() - 2*BorderWidth );
+            else textRect.setLeft( textRect.left() + iconSize().width() + 2*BorderWidth );
+
+        }
+
+        // draw text
+        painter.setFont( font() );
+
+        // change text color if focus
+        if( hasFocus() ) painter.setPen( palette().color( QPalette::HighlightedText ) );
+
+        painter.drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) ) );
+
+    }
+
+    // render icon
+    if( !icon().isNull() )
+    {
+        QRect iconRect( rect().adjusted( BorderWidth, BorderWidth, -BorderWidth, -BorderWidth ) );
+        if( !text().isEmpty() )
+        {
+            if( isRightToLeft ) iconRect.setLeft( iconRect.right() - iconSize().width() );
+            else iconRect.setRight( iconRect.left() + iconSize().width() );
+        }
+
+        // get pixmap
+        const QPixmap pixmap( icon().pixmap( iconSize() ) );
+        const QPoint position(
+            iconRect.x() + 0.5*(iconRect.width() - pixmap.width()),
+            iconRect.y() + 0.5*(iconRect.height() - pixmap.height()) );
+
+        painter.drawPixmap( position, pixmap );
+
+    }
+
+    painter.end();
+
+}
+
+//___________________________________________________________________
+void PlacesWidgetItem::_updateConfiguration( void )
+{
+
+    // icon size
+    if( XmlOptions::get().contains( "PLACES_ICON_SIZE" ) )
+    {
+        int iconSize( XmlOptions::get().get<int>( "PLACES_ICON_SIZE" ) );
+        if( iconSize > 0 )
+        {
+            setIconSize( QSize( iconSize, iconSize ) );
+            updateMinimumSize();
+        }
+    }
+
+}
+
+//___________________________________________________________________
+PlacesWidgetItemDialog::PlacesWidgetItemDialog( QWidget* parent ):
+    CustomDialog( parent, OkButton|CancelButton|Separator )
+{
+    // layout
+    GridLayout *layout = new GridLayout();
+    layout->setMargin(0);
+    layout->setMaxCount(2);
+    layout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
+
+    mainLayout().addLayout( layout );
+
+    QLabel* label;
+    layout->addWidget( label = new QLabel( "Label:", this ) );
+    layout->addWidget( nameEditor_ = new AnimatedLineEditor( this ) );
+    label->setBuddy( nameEditor_ );
+
+    layout->addWidget( label = new QLabel( "Location:", this ) );
+    layout->addWidget( fileEditor_ = new BrowsedLineEditor( this ) );
+    label->setBuddy( fileEditor_ );
+    fileEditor_->setAcceptMode( QFileDialog::AcceptOpen );
+    fileEditor_->setFileMode( QFileDialog::Directory );
+
+    layout->addWidget( remoteCheckBox_ = new QCheckBox( "Remote location", this ), 2, 1, 1, 1 );
+
+}
+
+//___________________________________________________________________
+LocalFileInfo::LocalFileInfo( const QDomElement& element ):
+    BaseFileInfo( element )
+{
+    Debug::Throw( "LocalFileInfo::LocalFileInfo (dom).\n" );
+
+    // parse attributes
+    QDomNamedNodeMap attributes( element.attributes() );
+    for( unsigned int i=0; i<attributes.length(); i++ )
+    {
+
+        QDomAttr attribute( attributes.item( i ).toAttr() );
+        if( attribute.isNull() ) continue;
+        if( attribute.name() == XML::NAME ) name_ = attribute.value();
+    }
+
+}
+
+//________________________________________________________________
+QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
+{
+
+    Debug::Throw( "BaseFileInfo::DomElement.\n" );
+    QDomElement out( BaseFileInfo::domElement( document ) );
+    out.setAttribute( XML::NAME, name_ );
+    return out;
+}
+
+//___________________________________________________________________
+PlacesWidget::PlacesWidget( QWidget* parent ):
+    QWidget( parent ),
+    Counter( "PlacesWidget::PlacesWidget" ),
+    iconProvider_( 0x0 ),
+    dragInProgress_( false )
+{
+
+    Debug::Throw( "PlacesWidget::PlacesWidget.\n" );
+
+    // accept drops
+    setAcceptDrops( true );
+
+    // actions
+    _installActions();
+
+    // main layout
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin(2);
+    vLayout->setSpacing(0);
+    setLayout( vLayout );
+
+    // button layout
+    buttonLayout_ = new QVBoxLayout();
+    buttonLayout_->setMargin(0);
+    buttonLayout_->setSpacing(0);
+
+    vLayout->addLayout( buttonLayout_ );
+    vLayout->addStretch( 1 );
+
+    // button group
+    group_ = new QButtonGroup( this );
+    group_->setExclusive( false );
+    connect( group_, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
+
+    // context menu
+    contextMenu_ = new ContextMenu( this );
+    connect( contextMenu_, SIGNAL( aboutToShow( void ) ), SLOT( _updateMenu( void ) ) );
+
+    // icon sizes
+    iconSizeMenu_ = new IconSizeMenu( this );
+    connect( iconSizeMenu_, SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateIconSize( IconSize::Size ) ) );
+
+    // configuration
+    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
+    _updateConfiguration();
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
+{
+
+    // set provider
+    iconProvider_ = provider;
+
+    // update icons for existing items
+    foreach( PlacesWidgetItem* item, items_ )
+    {
+        if( item->icon().isNull() )
+        { item->setIcon( iconProvider_->icon( item->fileInfo() ) ); }
+    }
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::clear( void )
+{
+    // delete all items
+    foreach( PlacesWidgetItem* item, items_ )
+    {
+        // remove from group and delete later
+        group_->removeButton( item );
+        item->hide();
+        item->deleteLater();
+    }
+
+    // clear items
+    items_.clear();
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::add( const BaseFileInfo& fileInfo )
+{ add( iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), fileInfo.file().localName(), fileInfo ); }
+
+//______________________________________________________________________
+void PlacesWidget::add( const QString& name, const BaseFileInfo& fileInfo )
+{ add( iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), name, fileInfo ); }
+
+//___________________________________________________________________
+void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileInfo& fileInfo )
+{
+
+    Debug::Throw( "PlacesWidget::add.\n" );
+
+    // create new item
+    PlacesWidgetItem* item = new PlacesWidgetItem( this );
+    item->setIcon( icon );
+    item->setText( name );
+    item->setFileInfo( fileInfo );
+
+    // add to button group, list of items and layout
+    group_->addButton( item );
+    buttonLayout_->addWidget( item );
+    items_.append( item );
+    emit contentsChanged();
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::insert( int position, const BaseFileInfo& fileInfo )
+{ insert( position, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), fileInfo.file().localName(), fileInfo ); }
+
+//______________________________________________________________________
+void PlacesWidget::insert( int position, const QString& name, const BaseFileInfo& fileInfo )
+{ insert( position, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), name, fileInfo ); }
+
+//___________________________________________________________________
+void PlacesWidget::insert( int position, const QIcon& icon, const QString& name, const BaseFileInfo& fileInfo )
+{
+
+    Debug::Throw( "PlacesWidget::insert.\n" );
+
+    if( position >= items_.size() )
+    {
+        add( icon, name, fileInfo );
+        return;
+    }
+
+    if( position < 0 ) position = 0;
+
+    // create new item
+    PlacesWidgetItem* item = new PlacesWidgetItem( this );
+    item->setIcon( icon );
+    item->setText( name );
+    item->setFileInfo( fileInfo );
+
+    // add to button group, list of items and layout
+    group_->addButton( item );
+    buttonLayout_->insertWidget( position, item );
+    items_.insert( position, item );
+    emit contentsChanged();
+
+}
+
+//___________________________________________________________________
+void PlacesWidget::_buttonClicked( QAbstractButton* button )
+{
+
+    Debug::Throw( "PlacesWidget::_buttonClicked.\n" );
+
+    PlacesWidgetItem* currentItem( qobject_cast<PlacesWidgetItem*>( button ) );
+    if( !currentItem ) return;
+
+    // update focus
+    if( !currentItem->hasFocus() )
+    {
+        foreach( PlacesWidgetItem* item, items_ )
+        { if( item != currentItem ) item->setFocus( false ); }
+
+        currentItem->setFocus( true );
+    }
+
+    emit itemSelected( currentItem->fileInfo() );
+
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::_updateMenu( void )
+{
+
+    Debug::Throw( "PlacesWidget::_updateMenu.\n" );
+    contextMenu_->clear();
+
+    // add entry
+    contextMenu_->addAction( addItemAction_ );
+    contextMenu_->addSeparator();
+
+    if( ( focusItem_ = _focusItem() ) )
+    {
+        {
+            QString buffer;
+            QTextStream( &buffer ) << "Edit '" << focusItem_->text() << "'";
+            editItemAction_->setText( buffer );
+            contextMenu_->addAction( editItemAction_ );
+        }
+
+        {
+            QString buffer;
+            QTextStream( &buffer ) << "Remove '" << focusItem_->text() << "'";
+            removeItemAction_->setText( buffer );
+            contextMenu_->addAction( removeItemAction_ );
+        }
+
+        contextMenu_->addSeparator();
+
+    }
+
+    // icon sizes
+    contextMenu_->addMenu( iconSizeMenu_ );
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::_updateIconSize( IconSize::Size size )
+{
+    Debug::Throw() << "PlacesWidget::_updateIconSize - size: " << size << endl;
+
+    // save in options
+    XmlOptions::get().set<int>( "PLACES_ICON_SIZE", size );
+
+    // update button sizes
+    QSize iconSize = size==IconSize::Default ? PlacesWidgetItem().iconSize() : IconSize( size );
+    foreach( PlacesWidgetItem* item, items_ )
+    {
+        item->setIconSize( iconSize );
+        item->updateMinimumSize();
+    }
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::_addItem( void )
+{
+    Debug::Throw( "PlacesWidget::_addItem.\n" );
+}
+
+//______________________________________________________________________
+void PlacesWidget::_editItem( void )
+{
+    Debug::Throw( "PlacesWidget::_editItem.\n" );
+    if( !focusItem_ ) return;
+
+    PlacesWidgetItemDialog dialog( this );
+    dialog.setWindowTitle( QString( "Edit Places Entry - " ) + qApp->applicationName() );
+    dialog.setOptionName( "EDIT_PLACES_ITEM_DIALOG" );
+    dialog.setName( focusItem_->text() );
+    dialog.setFile( focusItem_->fileInfo() );
+
+    if( !dialog.exec() ) return;
+
+    bool changed( false );
+
+    if( focusItem_->text() != dialog.name() )
+    {
+        focusItem_->setText( dialog.name() );
+        changed = true;
+    }
+
+    BaseFileInfo fileInfo( focusItem_->fileInfo() );
+    if( fileInfo.file() != dialog.file() )
+    {
+        fileInfo.setFile( dialog.file() );
+        focusItem_->setFileInfo( fileInfo );
+        changed = true;
+    }
+
+    if( changed ) emit contentsChanged();
+
+    return;
+}
+
+//______________________________________________________________________
+void PlacesWidget::_removeItem( void )
+{
+    Debug::Throw( "PlacesWidget::_removeItem.\n" );
+    if( !focusItem_ ) return;
+
+    // remove from button group
+    group_->removeButton( focusItem_ );
+    items_.removeOne( focusItem_ );
+    focusItem_->hide();
+    focusItem_->deleteLater();
+    focusItem_ = 0x0;
+
+}
+
+//_______________________________________________
+void PlacesWidget::dragEnterEvent( QDragEnterEvent* event )
+{
+    Debug::Throw( "PlacesWidget::dragEnterEvent.\n" );
+    if( _canDecode( event->mimeData() ) )
+    {
+        event->accept();
+        dragInProgress_ = true;
+        dragTarget_ = _dragTarget( event->pos() );
+        update();
+    }
+
+}
+
+//_______________________________________________
+void PlacesWidget::dragMoveEvent( QDragMoveEvent* event )
+{
+    Debug::Throw( "PlacesWidget::dragMoveEvent.\n" );
+    QPoint dragTarget( _dragTarget( event->pos() ) );
+    if( dragTarget != dragTarget_ )
+    {
+        dragTarget_ = dragTarget;
+        update();
+    }
+}
+
+//_______________________________________________
+void PlacesWidget::dragLeaveEvent( QDragLeaveEvent* )
+{
+    Debug::Throw( "PlacesWidget::dragLeaveEvent.\n" );
+    dragInProgress_ = false;
+    update();
+}
+
+//_______________________________________________
+void PlacesWidget::dropEvent( QDropEvent* event )
+{
+    Debug::Throw( "PlacesWidget::dropEvent.\n" );
+
+    // check format
+    QList<BaseFileInfo> fileInfoList( _decode( event->mimeData() ) );
+    if( !fileInfoList.isEmpty() )
+    {
+
+        // find insertion index based on target
+        int position = 0;
+        foreach( PlacesWidgetItem* item, items_ )
+        {
+            if( dragTarget_.y() >= item->rect().translated( item->pos() ).bottom() ) ++position;
+            else break;
+        }
+
+        foreach( const BaseFileInfo& fileInfo, fileInfoList )
+        {
+            insert( position, fileInfo );
+            ++position;
+        }
+
+    }
+
+    dragInProgress_ = false;
+    update();
+}
+
+//_______________________________________________
+void PlacesWidget::mousePressEvent( QMouseEvent* event )
+{
+
+    Debug::Throw( "PlacesWidget::mousePressEvent.\n" );
+
+    const QPoint position( event->pos() );
+    foreach( PlacesWidgetItem* item, items_ )
+    { item->setFocus( item->rect().translated( item->pos() ).contains( position ) ); }
+
+}
+
+//_______________________________________________
+QPoint PlacesWidget::_dragTarget( const QPoint& position ) const
+{
+    int y(0);
+    foreach( PlacesWidgetItem* item, items_ )
+    {
+        const QRect rect( item->rect().translated( item->pos() ) );
+        if( rect.center().y() < position.y() ) y = rect.bottom();
+        else  break;
+    }
+
+    return QPoint( 0, y );
+}
+
+//_______________________________________________
+bool PlacesWidget::_canDecode( const QMimeData* data ) const
+{ return !_decode( data ).isEmpty(); }
+
+//_______________________________________________
+QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
+{
+    QList<BaseFileInfo> fileInfoList;
+    if( !mimeData ) return fileInfoList;
+
+    if( mimeData->hasFormat( BaseFileInfo::MimeType ) )
+    {
+
+        // get dropped file info (use XML)
+        // dom document
+        QDomDocument document;
+        if( !document.setContent( mimeData->data( BaseFileInfo::MimeType ), false ) ) return fileInfoList;
+
+        QDomElement docElement = document.documentElement();
+        QDomNode node = docElement.firstChild();
+        for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
+        {
+            QDomElement element = node.toElement();
+            if( element.isNull() ) continue;
+
+            // special options
+            if( element.tagName() == XML::FILEINFO )
+            {
+
+                BaseFileInfo fileInfo( element );
+                if( fileInfo.file().isEmpty() || fileInfo.isNavigator() || !fileInfo.isFolder() ) continue;
+                fileInfoList << fileInfo;
+
+            }
+        }
+
+    } else if( mimeData->hasUrls() ) {
+
+        const QList<QUrl> urls( mimeData->urls() );
+        foreach( const QUrl& url, urls )
+        {
+
+            #if QT_VERSION >= 0x040800
+            // check that local file
+            if( !url.isLocalFile() ) continue;
+            #endif
+
+            // get file and check existence
+            const File file( url.path() );
+            if( !( file.exists() && file.isDirectory() ) ) continue;
+
+            BaseFileInfo fileInfo( file );
+            fileInfo.setLocal();
+            if( file.isDirectory() ) fileInfo.setIsFolder();
+            else fileInfo.setIsDocument();
+
+            if( file.isLink() ) fileInfo.setIsLink();
+            if( file.isBrokenLink() ) fileInfo.setIsBrokenLink();
+            if( file.isHidden() ) fileInfo.setIsHidden();
+
+            fileInfo.setSize( file.fileSize() );
+            fileInfo.setLastModified( file.lastModified() );
+            fileInfo.setUser( file.userName() );
+            fileInfo.setGroup( file.groupName() );
+            fileInfo.setPermissions( file.permissions() );
+
+            fileInfoList << fileInfo;
+
+        }
+
+    }
+
+    return fileInfoList;
+
+}
+
+//_______________________________________________
+PlacesWidgetItem* PlacesWidget::_focusItem( void ) const
+{
+    foreach( PlacesWidgetItem* item, items_ )
+    { if( item->hasFocus() ) return item; }
+
+    return 0x0;
+}
+
+//_______________________________________________
+void PlacesWidget::paintEvent( QPaintEvent* event )
+{
+    QWidget::paintEvent( event );
+    if( !dragInProgress_ ) return;
+
+    // paint line
+    QPainter painter( this );
+    painter.setClipRegion( event->region() );
+    painter.setPen( QPen( palette().color( foregroundRole() ), 1 ) );
+    painter.drawLine( dragTarget_ + QPoint( 0, 1 ), dragTarget_ + QPoint( width(), 1 ) );
+    painter.end();
+
+}
+
+//_______________________________________________
+bool PlacesWidget::_read( void )
+{
+    Debug::Throw( "PlacesWidget::_read.\n" );
+
+    // clear existing entries
+    clear();
+
+    if( dbFile_.isEmpty() || !dbFile_.exists() ) return false;
+
+    // parse the file
+    QFile in( dbFile_ );
+    if ( !in.open( QIODevice::ReadOnly ) )
+    {
+        Debug::Throw( "PlacesWidget::_read - cannot open file.\n" );
+        return false;
+    }
+
+    // dom document
+    QDomDocument document;
+    XmlError error( dbFile_ );
+    if ( !document.setContent( &in, &error.error(), &error.line(), &error.column() ) )
+    {
+        in.close();
+        Debug::Throw() << error << endl;
+        return false;
+    }
+
+    QDomElement docElement = document.documentElement();
+    QDomNode node = docElement.firstChild();
+    for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
+    {
+        QDomElement element = node.toElement();
+        if( element.isNull() ) continue;
+
+        // special options
+        if( element.tagName() == XML::FILEINFO )
+        {
+
+            LocalFileInfo fileInfo( element );
+            if( !fileInfo.file().isEmpty() ) add( fileInfo.name(), fileInfo );
+            else Debug::Throw(0, "PlacesWidget::_read - attend to add empty file info. Discarded.\n" );
+
+        } else Debug::Throw() << "PlacesWidget::_read - unrecognized tag " << element.tagName() << endl;
+    }
+
+    emit contentsChanged();
+
+    return true;
+}
+
+//_______________________________________________
+bool PlacesWidget::_write( void )
+{
+    Debug::Throw( "PlacesWidget::_write.\n" );
+    if( dbFile_.isEmpty() )
+    {
+        Debug::Throw( "PlacesWidget::_write - no file.\n" );
+        return false;
+    }
+
+    // output file
+    QFile out( dbFile_ );
+    if( !out.open( QIODevice::WriteOnly ) ) return false;
+
+    // get records truncated list
+    QList<PlacesWidgetItem*> items( items_ );
+
+    // create document
+    QDomDocument document;
+
+    // create main element
+    QDomElement top = document.appendChild( document.createElement( XML::FILEINFO_LIST ) ).toElement();
+
+    // loop over records
+    foreach( PlacesWidgetItem* item, items )
+    {
+
+        const BaseFileInfo& fileInfo( item->fileInfo() );
+        Debug::Throw() << "PlacesWidget::_write - " << fileInfo << endl;
+
+        if( fileInfo.file().isEmpty() )
+        {
+            Debug::Throw(0, "PlacesWidget::_write - attend to write empty file info. Discarded.\n" );
+            continue;
+        }
+
+        top.appendChild( LocalFileInfo( fileInfo, item->text() ).domElement( document ) );
+    }
+
+    out.write( document.toByteArray() );
+    out.close();
+
+    return true;
+}
+
+//_______________________________________________
+bool PlacesWidget::_setDBFile( const File& file )
+{
+
+    Debug::Throw() << "PlacesWidget::_setDBFile - file: " << file << endl;
+
+    // check file
+    if( dbFile_ == file && !items_.isEmpty() ) return false;
+
+    // store file and read
+    dbFile_ = file;
+
+    // make sure file is hidden (windows only)
+    if( dbFile_.localName().startsWith( '.' ) )
+    { dbFile_.setHidden(); }
+
+    _read();
+
+    return true;
+
+}
+
+//______________________________________
+void PlacesWidget::_updateConfiguration( void )
+{
+    Debug::Throw( "PlacesWidget::_updateConfiguration.\n" );
+
+    // DB file
+    _setDBFile( File( XmlOptions::get().raw("DB_FILE") ) );
+
+    // icon size
+    if( XmlOptions::get().contains( "PLACES_ICON_SIZE" ) )
+    {
+
+        iconSizeMenu_->select( (IconSize::Size) XmlOptions::get().get<int>( "PLACES_ICON_SIZE" ) );
+
+    } else iconSizeMenu_->select( IconSize::Default );
+
+    return;
+
+}
+
+//______________________________________
+void PlacesWidget::_saveConfiguration( void )
+{
+    Debug::Throw( "PlacesWidget::_saveConfiguration.\n" );
+    _write();
+}
+
+//______________________________________
+void PlacesWidget::_installActions( void )
+{
+    Debug::Throw( "PlacesWidget::_installActions.\n" );
+
+    addAction( addItemAction_ = new QAction( IconEngine::get( ICONS::ADD ), "Add Entry...", this ) );
+    connect( addItemAction_, SIGNAL( triggered( void ) ), SLOT( _addItem( void ) ) );
+
+    addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), "Edit Entry...", this ) );
+    connect( editItemAction_, SIGNAL( triggered( void ) ), SLOT( _editItem( void ) ) );
+
+    addAction( removeItemAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove Entry", this ) );
+    connect( removeItemAction_, SIGNAL( triggered( void ) ), SLOT( _removeItem( void ) ) );
+
+}

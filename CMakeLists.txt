@@ -69,7 +69,6 @@ SET( base_qt_SOURCES
   DockWidget.cpp
   ElidedLabel.cpp
   ErrorHandler.cpp
-  FavoritesWidget.cpp
   FileDialog.cpp
   FileList.cpp
   FilePermissionsWidget.cpp
@@ -101,6 +100,8 @@ SET( base_qt_SOURCES
   PathEditor.cpp
   PathHistory.cpp
   PixmapEngine.cpp
+  PlacesDockWidget.cpp
+  PlacesWidget.cpp
   PrinterOptionWidget.cpp
   PrintPreviewDialog.cpp
   ProgressStatusBar.cpp
@@ -183,8 +184,6 @@ SET( base_qt_HEADERS
   DockPanel.h
   DockWidget.h
   ElidedLabel.h
-  FavoritesWidget.h
-  FavoritesWidget_p.h
   FileList.h
   FileRecordModel.h
   FileSystemWatcher.h
@@ -203,6 +202,8 @@ SET( base_qt_HEADERS
   OptionModel.h
   PathEditor.h
   PathEditor_p.h
+  PlacesWidget.h
+  PlacesWidget_p.h
   PrinterOptionWidget.h
   PrintPreviewDialog.h
   PrintPreviewDialog_p.h

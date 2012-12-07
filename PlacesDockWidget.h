@@ -1,5 +1,5 @@
-#ifndef DockWidget_h
-#define DockWidget_h
+#ifndef PlacesDockWidget_h
+#define PlacesDockWidget_h
 
 // $Id$
 
@@ -24,44 +24,40 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "Debug.h"
+#include "DockWidget.h"
 
-#include <QtGui/QDockWidget>
+#include <QtGui/QLabel>
 
-class DockWidget: public QDockWidget
+// forward declaration
+class PlacesWidget;
+
+//! places dock widget
+class PlacesDockWidget: public DockWidget
 {
-
-    Q_OBJECT
 
     public:
 
     //! constructor
-    DockWidget( const QString&, QWidget* = 0x0, Qt::WindowFlags = 0 );
+    PlacesDockWidget( QWidget* = 0x0 );
 
     //! destructor
-    virtual ~DockWidget( void )
+    virtual ~PlacesDockWidget( void )
     {}
 
     //! lock
     virtual void setLocked( bool );
 
-    //! lock
-    virtual bool isLocked( void ) const
-    { return locked_; }
-
-    private slots:
-
-    //! update configuration
-    void _updateConfiguration( void );
+    //! places widget
+    PlacesWidget& placesWidget( void ) const
+    { return *placesWidget_; }
 
     private:
 
-    //! lock
-    bool locked_;
+    //! title label
+    QLabel* title_;
 
-    //! title bar widget
-    QWidget* titleBar_;
+    //! places
+    PlacesWidget* placesWidget_;
 
 };
 
