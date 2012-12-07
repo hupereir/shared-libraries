@@ -23,65 +23,142 @@
 
 #include "DockWidget.h"
 #include "BaseMainWindow.h"
+#include "ScrollObject.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 
+#include <QtGui/QLayout>
+#include <QtGui/QScrollArea>
 #include <QtGui/QStyle>
 
-//! titlebar
-class TitleBar: public QWidget
+//! container widget
+class ContainerWidget: public QWidget
 {
 
     public:
 
-    //! constructor
-    TitleBar(QWidget* parent = 0 ):
-        QWidget(parent)
-    {}
-
-    //! destructor
-    virtual ~TitleBar()
-    {}
-
-    //! size hint
-    virtual QSize minimumSizeHint() const
+    ContainerWidget( QWidget* parent = 0x0 ):
+        QWidget( parent )
     {
-        const int border = style()->pixelMetric( QStyle::PM_DockWidgetTitleBarButtonMargin );
-        return QSize(border, border);
+        setLayout( new QVBoxLayout() );
+        layout()->setSpacing(0);
+        layout()->setMargin(0);
     }
 
-    //! size hint
-    virtual QSize sizeHint() const
-    { return minimumSizeHint(); }
+};
+
+//! container scroll area
+class ContainerScrollArea: public QScrollArea
+{
+
+    public:
+
+    ContainerScrollArea( QWidget* parent ):
+        QScrollArea( parent )
+    {
+        setWidgetResizable ( true );
+        setFrameStyle( QFrame::NoFrame );
+    }
 
 };
 
 //_________________________________________________________
-DockWidget::DockWidget(const QString& title, QWidget* parent, Qt::WindowFlags flags) :
-    QDockWidget(title, parent, flags),
-    locked_(false),
-    titleBar_(0)
+DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& optionName ):
+    QDockWidget(title, parent ),
+    optionName_( optionName ),
+    useScrollArea_( false ),
+    locked_( false ),
+    container_( 0x0 ),
+    mainWidget_( 0x0 )
 {
+
+    Debug::Throw( "DockWidget::DockWidget.\n" );
+
+    // assign option name to object
+    if( !optionName_.isEmpty() )
+    { setObjectName( optionName ); }
+
+    _installActions();
+
+    // setup container
+    QWidget* main = new QWidget();
+    main->setLayout( new QVBoxLayout() );
+    main->layout()->setMargin(0);
+    main->layout()->setSpacing(0);
+    setWidget( main );
+
+    // no scroll area by default
+    setUseScrollArea( false );
+
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
+
 }
 
 //_________________________________________________________
-void DockWidget::setLocked(bool locked)
+void DockWidget::setUseScrollArea( bool value )
 {
+
+    // do nothing if unchanged
+    if( container_ && value == useScrollArea_ ) return;
+
+    Debug::Throw() << "DockWidget::setUseScrollArea - value: " << value << endl;
+
+    useScrollArea_ = value;
+    if( useScrollArea_ )
+    {
+
+        ContainerScrollArea* container = new ContainerScrollArea( widget() );
+        new ScrollObject( container );
+
+        if( mainWidget_ ) container->setWidget( mainWidget_ );
+        if( container_ )
+        {
+            container_->hide();
+            container_->deleteLater();
+        }
+
+        container_ = container;
+        widget()->layout()->addWidget( container_ );
+
+    } else {
+
+        ContainerWidget* container = new ContainerWidget( widget() );
+        if( mainWidget_ )
+        {
+            mainWidget_->setParent( container );
+            container->layout()->addWidget( mainWidget_ );
+        }
+
+        if( container_ )
+        {
+            container_->hide();
+            container_->deleteLater();
+        }
+
+        container_ = container;
+        widget()->layout()->addWidget( container_ );
+
+    }
+
+}
+
+//_________________________________________________________
+void DockWidget::setLocked( bool locked )
+{
+
     if( locked == locked_ ) return;
+
+    Debug::Throw() << "DockWidget::setLocked - value: " << locked << endl;
 
     locked_ = locked;
     if( locked )
     {
-        if( !titleBar_ ) titleBar_ = new TitleBar( this );
-        setTitleBarWidget( titleBar_ );
         setFeatures(QDockWidget::NoDockWidgetFeatures);
 
     } else {
 
-        setTitleBarWidget(0);
         setFeatures(
             QDockWidget::DockWidgetMovable |
             QDockWidget::DockWidgetFloatable |
@@ -90,6 +167,46 @@ void DockWidget::setLocked(bool locked)
 
 }
 
+//_______________________________________________________________
+void DockWidget::setMainWidget( QWidget* mainWidget )
+{
+
+    Debug::Throw( "DockWidget::setMainWidget.\n" );
+
+    // delete old mainWidget
+    if( mainWidget_ )
+    {
+        mainWidget_->hide();
+        mainWidget_->deleteLater();
+    }
+
+    // assign
+    mainWidget_ = mainWidget;
+    if( container_ )
+    {
+
+        if( useScrollArea_ ) static_cast<ContainerScrollArea*>( container_ )->setWidget( mainWidget_ );
+        else {
+
+            mainWidget_->setParent( container_ );
+            container_->layout()->addWidget( mainWidget_ );
+        }
+
+    }
+
+}
+
+//_______________________________________________________________
+void DockWidget::_toggleVisibility( bool state )
+{
+
+    Debug::Throw() << "DockWidget::_toggleVisibility - name: " << optionName_ << " state: " << state << endl;
+    if( !optionName_.isEmpty() ) XmlOptions::get().set<bool>( optionName_, state );
+
+    if( parentWidget()->isVisible() || !state )
+    { setVisible( state ); }
+
+}
 
 //_______________________________________________________________
 void DockWidget::_updateConfiguration( void )
@@ -101,4 +218,26 @@ void DockWidget::_updateConfiguration( void )
     if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().contains( mainwindow->lockPanelsOptionName() ) )
     { setLocked( XmlOptions::get().get<bool>( mainwindow->lockPanelsOptionName() ) ); }
 
+    if( !optionName_.isEmpty() && XmlOptions::get().contains( optionName_ ) )
+    { visibilityAction_->setChecked( XmlOptions::get().get<bool>( optionName_ ) ); }
+
+}
+
+//_______________________________________________________________
+void DockWidget::_installActions( void )
+{
+    Debug::Throw( "DockWidget::_installActions.\n" );
+    QString buffer;
+    QTextStream( &buffer) << "&" << windowTitle();
+    visibilityAction_ = new QAction( buffer, this );
+    visibilityAction().setCheckable( true );
+
+    // set default visibility option
+    if( !( optionName_.isEmpty() || XmlOptions::get().contains( optionName_ ) ) )
+    {
+        XmlOptions::get().set<bool>( optionName_, true );
+        visibilityAction().setChecked( true );
+    }
+
+    connect( visibilityAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleVisibility( bool ) ) );
 }

@@ -25,6 +25,7 @@
 #include "BaseFileIconProvider.h"
 #include "BaseIcons.h"
 #include "ContextMenu.h"
+#include "WarningDialog.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
@@ -40,18 +41,18 @@
 const double PlacesWidgetItem::BorderWidth = 2;
 
 namespace XML
-{
+{ static const QString NAME = "name"; };
 
-    static const QString NAME = "name";
-
-};
+//___________________________________________________________________
+const QString PlacesWidgetItem::MimeType( "internal/places-widget-item" );
 
 //___________________________________________________________________
 PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
     QAbstractButton( parent ),
     itemView_( 0x0 ),
     mouseOver_( false ),
-    hasFocus_( false )
+    hasFocus_( false ),
+    dragInProgress_( false )
 {
     Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
     setAttribute( Qt::WA_Hover );
@@ -108,11 +109,78 @@ bool PlacesWidgetItem::event( QEvent* event )
 
 }
 
+//_______________________________________________
+void PlacesWidgetItem::mousePressEvent( QMouseEvent* event )
+{
+
+    Debug::Throw( "PlacesWidgetItem::mousePressEvent.\n" );
+
+    // update focusItem
+    if( event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier)
+    {
+        dragInProgress_ = true;
+        dragOrigin_ = event->pos();
+    }
+
+    QAbstractButton::mousePressEvent( event );
+
+}
+
+//_______________________________________________
+void PlacesWidgetItem::mouseMoveEvent( QMouseEvent* event )
+{
+
+    Debug::Throw( "PlacesWidget::mouseMoveEvent.\n" );
+    if( (event->buttons() & Qt::LeftButton) && dragInProgress_ &&
+        ( event->pos() - dragOrigin_ ).manhattanLength() >= QApplication::startDragDistance() )
+    {
+
+        // start drag
+        QDrag *drag = new QDrag(this);
+        QMimeData *mimeData = new QMimeData;
+
+        mimeData->setData( PlacesWidgetItem::MimeType, 0x0 );
+        drag->setMimeData( mimeData );
+
+        // create drag pixmap
+        QPixmap pixmap( size() );
+        pixmap.fill( Qt::transparent );
+        QPainter painter( &pixmap );
+        _paint( &painter );
+
+        drag->setPixmap( pixmap );
+        drag->setHotSpot( dragOrigin_-rect().topLeft() );
+
+        drag->exec( Qt::MoveAction );
+        dragInProgress_ = false;
+
+    } else {
+
+        QAbstractButton::mouseMoveEvent( event );
+
+    }
+
+}
+
+//_______________________________________________
+void PlacesWidgetItem::mouseReleaseEvent( QMouseEvent* event )
+{
+    dragInProgress_ = false;
+    QAbstractButton::mouseReleaseEvent( event );
+}
+
 //___________________________________________________________________
 void PlacesWidgetItem::paintEvent( QPaintEvent* event )
 {
     QPainter painter( this );
     painter.setClipRegion( event->region() );
+    _paint( &painter );
+    painter.end();
+}
+
+//___________________________________________________________________
+void PlacesWidgetItem::_paint( QPainter* painter )
+{
 
     // render mouse over
     if( mouseOver_ || hasFocus() )
@@ -124,7 +192,7 @@ void PlacesWidgetItem::paintEvent( QPaintEvent* event )
         option.rect = rect();
         if( mouseOver_ ) option.state |= QStyle::State_MouseOver;
         if( hasFocus() ) option.state |= QStyle::State_Selected;
-        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, itemView_ );
+        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, itemView_ );
 
     }
 
@@ -145,12 +213,12 @@ void PlacesWidgetItem::paintEvent( QPaintEvent* event )
         }
 
         // draw text
-        painter.setFont( font() );
+        painter->setFont( font() );
 
         // change text color if focus
-        if( hasFocus() ) painter.setPen( palette().color( QPalette::HighlightedText ) );
+        if( hasFocus() || isDragged() ) painter->setPen( palette().color( QPalette::HighlightedText ) );
 
-        painter.drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) ) );
+        painter->drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) ) );
 
     }
 
@@ -170,11 +238,9 @@ void PlacesWidgetItem::paintEvent( QPaintEvent* event )
             iconRect.x() + 0.5*(iconRect.width() - pixmap.width()),
             iconRect.y() + 0.5*(iconRect.height() - pixmap.height()) );
 
-        painter.drawPixmap( position, pixmap );
+        painter->drawPixmap( position, pixmap );
 
     }
-
-    painter.end();
 
 }
 
@@ -211,6 +277,8 @@ PlacesWidgetItemDialog::PlacesWidgetItemDialog( QWidget* parent ):
     layout->addWidget( label = new QLabel( "Label:", this ) );
     layout->addWidget( nameEditor_ = new AnimatedLineEditor( this ) );
     label->setBuddy( nameEditor_ );
+
+    nameEditor_->setPlaceholderText( "Enter descriptive label here" );
 
     layout->addWidget( label = new QLabel( "Location:", this ) );
     layout->addWidget( fileEditor_ = new BrowsedLineEditor( this ) );
@@ -255,7 +323,10 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     QWidget( parent ),
     Counter( "PlacesWidget::PlacesWidget" ),
     iconProvider_( 0x0 ),
+    focusItem_( 0x0 ),
+    dragItem_( 0x0 ),
     dragInProgress_( false )
+
 {
 
     Debug::Throw( "PlacesWidget::PlacesWidget.\n" );
@@ -478,6 +549,63 @@ void PlacesWidget::_updateIconSize( IconSize::Size size )
 void PlacesWidget::_addItem( void )
 {
     Debug::Throw( "PlacesWidget::_addItem.\n" );
+
+    PlacesWidgetItemDialog dialog( this );
+    dialog.setWindowTitle( QString( "Add Places Entry - " ) + qApp->applicationName() );
+    dialog.setOptionName( "EDIT_PLACES_ITEM_DIALOG" );
+
+    // assign starting point
+    BaseFileInfo currentFileInfo;
+    if( focusItem_ ) currentFileInfo = focusItem_->fileInfo();
+    else {
+
+        currentFileInfo = BaseFileInfo( Util::home(), BaseFileInfo::Folder );
+        currentFileInfo.update();
+
+    }
+
+    dialog.setFile( currentFileInfo );
+
+    if( !dialog.exec() ) return;
+
+    // create new item
+    const File file( dialog.file() );
+    BaseFileInfo fileInfo( file );
+    if( dialog.isRemote() )
+    {
+        fileInfo.setRemote();
+        fileInfo.setIsFolder();
+
+    } else {
+
+        fileInfo.update();
+        fileInfo.setLocal();
+
+        if( file.isDirectory() ) fileInfo.setIsFolder();
+        else fileInfo.setIsDocument();
+        if( file.isLink() ) fileInfo.setIsLink();
+        if( file.isBrokenLink() ) fileInfo.setIsBrokenLink();
+        if( file.isHidden() ) fileInfo.setIsHidden();
+
+    }
+
+    // check file info
+    if( fileInfo.isDocument() || fileInfo.isBrokenLink() || (fileInfo.isLocal() && !fileInfo.file().exists() ) )
+    {
+        WarningDialog( this, "Places item is invalid. <Add Entry> canceled" ).exec();
+        return;
+    }
+
+    // item name
+    QString name( dialog.name() );
+    if( name.isEmpty() ) name = fileInfo.file().localName();
+
+    // add new item
+    add( name, fileInfo );
+
+
+    return;
+
 }
 
 //______________________________________________________________________
@@ -494,25 +622,53 @@ void PlacesWidget::_editItem( void )
 
     if( !dialog.exec() ) return;
 
-    bool changed( false );
-
-    if( focusItem_->text() != dialog.name() )
-    {
-        focusItem_->setText( dialog.name() );
-        changed = true;
-    }
-
+    // remote flag
     BaseFileInfo fileInfo( focusItem_->fileInfo() );
-    if( fileInfo.file() != dialog.file() )
+    const bool locationChanged( fileInfo.isRemote() != dialog.isRemote() );
+    if( locationChanged )
     {
-        fileInfo.setFile( dialog.file() );
-        focusItem_->setFileInfo( fileInfo );
-        changed = true;
+        if( dialog.isRemote() ) fileInfo.setRemote();
+        else fileInfo.setLocal();
     }
 
-    if( changed ) emit contentsChanged();
+    // file
+    const File file( dialog.file() );
+    const bool fileChanged( fileInfo.file() != file );
+    if( fileChanged ) fileInfo.setFile( dialog.file() );
 
-    return;
+    // check
+    if( locationChanged || fileChanged )
+    {
+
+        if( fileInfo.isLocal() )
+        {
+            fileInfo.update();
+            if( file.isDirectory() ) fileInfo.setIsFolder();
+            else fileInfo.setIsDocument();
+            if( file.isLink() ) fileInfo.setIsLink();
+            if( file.isBrokenLink() ) fileInfo.setIsBrokenLink();
+            if( file.isHidden() ) fileInfo.setIsHidden();
+
+            // check file info
+            if( fileInfo.isDocument() || fileInfo.isBrokenLink() || (fileInfo.isLocal() && !fileInfo.file().exists() ) )
+            {
+                WarningDialog( this, "Places item is invalid. <Edit Entry> canceled" ).exec();
+                return;
+            }
+
+        }
+
+        // update fileInfo
+        focusItem_->setFileInfo( fileInfo );
+
+    }
+
+    // name
+    const bool nameChanged( focusItem_->text() != dialog.name() );
+    if( nameChanged ) focusItem_->setText( dialog.name() );
+
+    if( nameChanged || locationChanged || fileChanged ) emit contentsChanged();
+
 }
 
 //______________________________________________________________________
@@ -569,29 +725,66 @@ void PlacesWidget::dropEvent( QDropEvent* event )
 {
     Debug::Throw( "PlacesWidget::dropEvent.\n" );
 
-    // check format
-    QList<BaseFileInfo> fileInfoList( _decode( event->mimeData() ) );
-    if( !fileInfoList.isEmpty() )
+    // reset dragInProgress flag
+    dragInProgress_ = false;
+    update();
+
+    if( event->mimeData()->hasFormat( PlacesWidgetItem::MimeType ) )
     {
 
-        // find insertion index based on target
-        int position = 0;
+        // internal dragging. Try re-order items
+        PlacesWidgetItem* dragItem( 0x0 );
         foreach( PlacesWidgetItem* item, items_ )
         {
-            if( dragTarget_.y() >= item->rect().translated( item->pos() ).bottom() ) ++position;
+            if( item->isDragged() )
+            { dragItem = item; break; }
+
+        }
+        if( !dragItem ) return;
+        int sourceIndex = items_.indexOf( dragItem );
+
+        // find insertion index based on target
+        int insertionIndex = 0;
+        foreach( PlacesWidgetItem* item, items_ )
+        {
+            if( dragTarget_.y() >= item->rect().translated( item->pos() ).bottom() ) ++insertionIndex;
+            else break;
+        }
+
+        // compare
+        if( insertionIndex == sourceIndex || insertionIndex == sourceIndex+1 ) return;
+
+        // remove from list and layout
+        items_.takeAt( sourceIndex );
+        buttonLayout_->takeAt( sourceIndex );
+
+        // re-insert at the correct position
+        if( sourceIndex < insertionIndex ) --insertionIndex;
+        items_.insert( insertionIndex, dragItem );
+        buttonLayout_->insertWidget( insertionIndex, dragItem );
+
+    } else {
+
+        // external source. Try copy items to list of favorites
+        QList<BaseFileInfo> fileInfoList( _decode( event->mimeData() ) );
+        if( fileInfoList.isEmpty() ) return;
+
+        // find insertion index based on target
+        int insertionIndex = 0;
+        foreach( PlacesWidgetItem* item, items_ )
+        {
+            if( dragTarget_.y() >= item->rect().translated( item->pos() ).bottom() ) ++insertionIndex;
             else break;
         }
 
         foreach( const BaseFileInfo& fileInfo, fileInfoList )
         {
-            insert( position, fileInfo );
-            ++position;
+            insert( insertionIndex, fileInfo );
+            ++insertionIndex;
         }
 
     }
 
-    dragInProgress_ = false;
-    update();
 }
 
 //_______________________________________________
@@ -602,7 +795,9 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
 
     const QPoint position( event->pos() );
     foreach( PlacesWidgetItem* item, items_ )
-    { item->setFocus( item->rect().translated( item->pos() ).contains( position ) ); }
+    {  item->setFocus( item->rect().translated( item->pos() ).contains( position ) ); }
+
+    QWidget::mousePressEvent( event );
 
 }
 
@@ -622,7 +817,7 @@ QPoint PlacesWidget::_dragTarget( const QPoint& position ) const
 
 //_______________________________________________
 bool PlacesWidget::_canDecode( const QMimeData* data ) const
-{ return !_decode( data ).isEmpty(); }
+{ return data->hasFormat( PlacesWidgetItem::MimeType ) || !_decode( data ).isEmpty(); }
 
 //_______________________________________________
 QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
@@ -672,19 +867,14 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
             if( !( file.exists() && file.isDirectory() ) ) continue;
 
             BaseFileInfo fileInfo( file );
+            fileInfo.update();
+
             fileInfo.setLocal();
             if( file.isDirectory() ) fileInfo.setIsFolder();
             else fileInfo.setIsDocument();
-
             if( file.isLink() ) fileInfo.setIsLink();
             if( file.isBrokenLink() ) fileInfo.setIsBrokenLink();
             if( file.isHidden() ) fileInfo.setIsHidden();
-
-            fileInfo.setSize( file.fileSize() );
-            fileInfo.setLastModified( file.lastModified() );
-            fileInfo.setUser( file.userName() );
-            fileInfo.setGroup( file.groupName() );
-            fileInfo.setPermissions( file.permissions() );
 
             fileInfoList << fileInfo;
 

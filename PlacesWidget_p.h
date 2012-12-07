@@ -43,6 +43,9 @@ class PlacesWidgetItem: public QAbstractButton
 
     public:
 
+    //! dragging
+    static const QString MimeType;
+
     //! constructor
     PlacesWidgetItem( QWidget* = 0x0 );
 
@@ -60,6 +63,10 @@ class PlacesWidgetItem: public QAbstractButton
     //! focus
     bool hasFocus( void ) const
     { return hasFocus_; }
+
+    //! drag in progress
+    bool isDragged( void ) const
+    { return dragInProgress_; }
 
     //! size hint
     virtual QSize sizeHint( void ) const
@@ -111,8 +118,20 @@ class PlacesWidgetItem: public QAbstractButton
     //! event
     virtual bool event( QEvent* );
 
+    //! mouse press
+    virtual void mousePressEvent( QMouseEvent* );
+
+    //! mouse press
+    virtual void mouseMoveEvent( QMouseEvent* );
+
+    //! mouse press
+    virtual void mouseReleaseEvent( QMouseEvent* );
+
     //! paint event
     virtual void paintEvent( QPaintEvent* );
+
+    //! paint
+    virtual void _paint( QPainter* );
 
     private slots:
 
@@ -132,6 +151,12 @@ class PlacesWidgetItem: public QAbstractButton
 
     //! focus
     bool hasFocus_;
+
+    //! drag
+    bool dragInProgress_;
+
+    //! drag position
+    QPoint dragOrigin_;
 
 };
 

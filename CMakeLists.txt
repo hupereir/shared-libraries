@@ -100,7 +100,6 @@ SET( base_qt_SOURCES
   PathEditor.cpp
   PathHistory.cpp
   PixmapEngine.cpp
-  PlacesDockWidget.cpp
   PlacesWidget.cpp
   PrinterOptionWidget.cpp
   PrintPreviewDialog.cpp

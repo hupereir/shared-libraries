@@ -194,6 +194,9 @@ class PlacesWidget: public QWidget, public Counter
     //! focus item (for context menu actions)
     PlacesWidgetItem* focusItem_;
 
+    //! drag item
+    PlacesWidgetItem* dragItem_;
+
     //! icon provider
     BaseFileIconProvider* iconProvider_;
 
@@ -202,6 +205,9 @@ class PlacesWidget: public QWidget, public Counter
 
     //! true if drag is in progress
     bool dragInProgress_;
+
+    //! drag point (for internal dragging)
+    QPoint dragPoint_;
 
     //! drag point
     QPoint dragTarget_;

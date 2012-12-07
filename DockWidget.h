@@ -37,18 +37,43 @@ class DockWidget: public QDockWidget
     public:
 
     //! constructor
-    DockWidget( const QString&, QWidget* = 0x0, Qt::WindowFlags = 0 );
+    DockWidget( const QString&, QWidget* = 0x0, const QString& = QString() );
 
     //! destructor
     virtual ~DockWidget( void )
     {}
 
+    //!@name modifiers
+    //@{
+
+    //! use scroll area
+    void setUseScrollArea( bool );
+
     //! lock
     virtual void setLocked( bool );
+
+    //! set main widget
+    void setMainWidget( QWidget* );
+
+    //@}
+
+    //!@name accessors
+    //@{
 
     //! lock
     virtual bool isLocked( void ) const
     { return locked_; }
+
+    //! visibility action
+    QAction& visibilityAction( void ) const
+    { return *visibilityAction_; }
+
+    //@}
+
+    protected slots:
+
+    //! toggle visibility
+    virtual void _toggleVisibility( bool );
 
     private slots:
 
@@ -57,11 +82,26 @@ class DockWidget: public QDockWidget
 
     private:
 
+    //! install actions
+    void _installActions( void );
+
+    //! assocated option name
+    QString optionName_;
+
+    //! visibility action
+    QAction* visibilityAction_;
+
+    //! use scroll area
+    bool useScrollArea_;
+
     //! lock
     bool locked_;
 
-    //! title bar widget
-    QWidget* titleBar_;
+    //! container
+    QWidget* container_;
+
+    //! main widget
+    QWidget* mainWidget_;
 
 };
 
