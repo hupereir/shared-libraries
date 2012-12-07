@@ -127,9 +127,9 @@ void BaseFileInfo::update( void )
     if( file().isEmpty() )
     {
 
+        setSize( 0 );
         setUser( QString() );
         setGroup( QString() );
-        setSize( 0 );
         setLastModified( TimeStamp() );
         setPermissions( QFile::Permissions() );
 
