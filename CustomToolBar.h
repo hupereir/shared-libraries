@@ -44,7 +44,7 @@ class CustomToolBar: public QToolBar, public Counter
     public:
 
     //! constructor
-    CustomToolBar( const QString& title = QString(), QWidget* parent = 0, const QString& = "" );
+    CustomToolBar( const QString& = QString(), QWidget* = 0, const QString& = QString() );
 
     //! destructor
     virtual ~CustomToolBar( void );
