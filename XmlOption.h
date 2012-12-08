@@ -31,36 +31,41 @@
 #include "Option.h"
 
 //! some XML definitions specific to Option management
-namespace OPTIONS {
+namespace BASE
+{
+    namespace XML
+    {
 
-    /*!
-    \brief Xml special options tag.
-    special meaning that option name do not have to be unique
-    */
-    static const QString SPECIAL_OPTION = "SPECIAL_OPTION";
+        /*!
+        \brief Xml special options tag.
+        special meaning that option name do not have to be unique
+        */
+        static const QString SPECIAL_OPTION = "SpecialOption";
 
-    //! Xml option tag
-    static const QString OPTION = "Option";
+        //! Xml option tag
+        static const QString OPTION = "Option";
 
-    //! Xml option tag
-    static const QString OPTIONS = "Options";
+        //! Xml option tag
+        static const QString OPTIONS = "Options";
 
-    //! option name tag
-    static const QString NAME = "Name";
+        //! option name tag
+        static const QString NAME = "Name";
 
-    //! Xml string for value field
-    static const QString VALUE = "Value";
+        //! Xml string for value field
+        static const QString VALUE = "Value";
 
-    //! Xml string for FRONT added special options
-    static const QString FLAGS = "flags";
+        //! Xml string for FRONT added special options
+        static const QString FLAGS = "flags";
 
-    //! Xml string for comments field
-    static const QString COMMENTS = "Comments";
+        //! Xml string for comments field
+        static const QString COMMENTS = "Comments";
 
-    //! Xml string for FRONT added special options
-    static const QString FRONT = "FRONT";
+        //! Xml string for FRONT added special options
+        static const QString FRONT = "Front";
 
-};
+    }
+
+}
 
 //! Xml implementation of the Option object
 class XmlOption:public Option

@@ -66,9 +66,6 @@ class XmlFileList: public FileList
 
     private:
 
-    //! read flat list (for backward compatibility)
-    bool _deprecatedRead( void );
-
     //! file from/to wich the files are saved
     File dbFile_;
 

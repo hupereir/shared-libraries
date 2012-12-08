@@ -85,7 +85,7 @@ bool XmlFileList::_read( void )
     if ( !document.setContent( &in, &error.error(), &error.line(), &error.column() ) ) {
         in.close();
         Debug::Throw() << error << endl;
-        return _deprecatedRead();
+        return false;
     }
 
     QDomElement docElement = document.documentElement();
@@ -172,29 +172,4 @@ void XmlFileList::_saveConfiguration( void )
 {
     Debug::Throw( "XmlFileList::_saveConfiguration.\n" );
     _write();
-}
-
-//_______________________________________________
-bool XmlFileList::_deprecatedRead( void )
-{
-    Debug::Throw( "FileList::_deprecatedRead.\n" );
-
-    // check file
-    if( dbFile_.isEmpty() || !QFileInfo(dbFile_).exists() ) return false;
-
-    // open stream
-    QFile in( dbFile_ );
-    if( !in.open( QIODevice::ReadOnly ) ) return false;
-
-    while( in.canReadLine() )
-    {
-        QString line( in.readLine( 1024 ) );
-        _add( FileRecord( File( line ) ), true, false );
-    }
-
-    in.close();
-
-    emit contentsChanged();
-
-    return true;
 }

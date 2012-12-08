@@ -41,7 +41,7 @@ XmlOption::XmlOption( const QDomElement& element )
 
     // old implementation (kept for backward compatibility
     // element name is option name
-    if( element.nodeName() != OPTIONS::OPTION ) setName( element.nodeName() );
+    if( element.nodeName() != BASE::XML::OPTION ) setName( element.nodeName() );
 
     // parse attributes
     QDomNamedNodeMap attributes( element.attributes() );
@@ -49,10 +49,10 @@ XmlOption::XmlOption( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == OPTIONS::NAME ) setName( attribute.value() );
-        else if( attribute.name() == OPTIONS::VALUE ) setRaw( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == OPTIONS::COMMENTS ) setComments( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == OPTIONS::FLAGS ) {
+        if( attribute.name() == BASE::XML::NAME ) setName( attribute.value() );
+        else if( attribute.name() == BASE::XML::VALUE ) setRaw( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == BASE::XML::COMMENTS ) setComments( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == BASE::XML::FLAGS ) {
 
             setFlags( (Option::Flags) attribute.value().toInt() );
 
@@ -64,10 +64,10 @@ XmlOption::XmlOption( const QDomElement& element )
     for(QDomNode childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
     {
         QDomElement childElement = childNode.toElement();
-        if( childElement.tagName() == OPTIONS::NAME ) setName( childElement.text() );
-        else if( childElement.tagName() == OPTIONS::VALUE ) setRaw( XmlString( childElement.text() ).toText() );
-        else if( childElement.tagName() == OPTIONS::COMMENTS ) setComments( XmlString( childElement.text() ).toText() );
-        else if( childElement.tagName() == OPTIONS::FLAGS ) setFlags( (Option::Flags) childElement.text().toInt() );
+        if( childElement.tagName() == BASE::XML::NAME ) setName( childElement.text() );
+        else if( childElement.tagName() == BASE::XML::VALUE ) setRaw( XmlString( childElement.text() ).toText() );
+        else if( childElement.tagName() == BASE::XML::COMMENTS ) setComments( XmlString( childElement.text() ).toText() );
+        else if( childElement.tagName() == BASE::XML::FLAGS ) setFlags( (Option::Flags) childElement.text().toInt() );
         else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized child " << childElement.tagName() << ".\n";
 
     }
@@ -80,24 +80,24 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
 
     Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
 
-    QDomElement out = document.createElement( OPTIONS::OPTION );
+    QDomElement out = document.createElement( BASE::XML::OPTION );
 
     out.
-        appendChild( document.createElement( OPTIONS::NAME ) ).
+        appendChild( document.createElement( BASE::XML::NAME ) ).
         appendChild( document.createTextNode( name() ) );
 
     out.
-        appendChild( document.createElement( OPTIONS::VALUE ) ).
+        appendChild( document.createElement( BASE::XML::VALUE ) ).
         appendChild( document.createTextNode( XmlString( QString::fromUtf8( raw(), raw().size() ) ).toXml() ) );
 
     out.
-        appendChild( document.createElement( OPTIONS::FLAGS ) ).
+        appendChild( document.createElement( BASE::XML::FLAGS ) ).
         appendChild( document.createTextNode( QString().setNum( flags() ) ) );
 
     if( comments().size() )
     {
         out.
-            appendChild( document.createElement( OPTIONS::COMMENTS ) ).
+            appendChild( document.createElement( BASE::XML::COMMENTS ) ).
             appendChild( document.createTextNode( XmlString( comments() ).toXml() ) );
     }
 

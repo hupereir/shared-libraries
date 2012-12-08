@@ -68,41 +68,39 @@ bool XmlOptions::read( File file )
     setFile( file );
 
     // parse the file
-    QFile qtfile( file );
-    if ( !qtfile.open( QIODevice::ReadOnly ) )
-    {
-        Debug::Throw( "XmlOptions::read - cannot open file.\n" );
-        return false;
-    }
-
-    // dom document
     QDomDocument document;
-    XmlError error( file );
-    if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
     {
-        setError( error );
-        qtfile.close();
+        QFile qtfile( file );
+        XmlError error( file );
+        if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
+        {
+            setError( error );
+            return false;
+        }
+    }
+
+    // look for relevant element
+    QDomNodeList topNodes = document.elementsByTagName( BASE::XML::OPTIONS );
+    if( topNodes.isEmpty() )
+    {
+        Debug::Throw( "XmlOptions::read - no valid top node found.\n" );
         return false;
     }
 
-    QDomElement doc_element = document.documentElement();
-    QDomNode node = doc_element.firstChild();
-    for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
+    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement();
         if( element.isNull() ) continue;
 
         // special options
-        if( element.tagName() == OPTIONS::SPECIAL_OPTION )
+        if( element.tagName() == BASE::XML::SPECIAL_OPTION )
         {
 
-            Debug::Throw( "XmlOptions::read - special options" );
-
             // retrieve Value attribute
-            QString value( element.attribute( OPTIONS::VALUE ) );
+            QString value( element.attribute( BASE::XML::VALUE ) );
             if( value.size() ) get().keep( value );
 
-        } else if( element.tagName() == OPTIONS::OPTION ) {
+        } else if( element.tagName() == BASE::XML::OPTION ) {
 
             XmlOption option( element );
             if( get().isSpecialOption( option.name() ) ) get().add( option.name(), option );
@@ -139,19 +137,18 @@ bool XmlOptions::write( File file )
         return false;
     }
 
-    // output file
-    QFile out( file );
-    if( !out.open( QIODevice::WriteOnly ) )
-    {
-        Debug::Throw() << "XmlOptions::write - cannot write to file " << file << endl;
-        return false;
-    }
-
     // create document
     QDomDocument document;
+    {
+        QFile qtfile( file );
+        document.setContent( &qtfile );
+    }
+
+    // find previous options element
+    QDomNodeList oldChildren( document.elementsByTagName( BASE::XML::OPTIONS ) );
 
     // create main element
-    QDomElement top = document.appendChild( document.createElement( OPTIONS::OPTIONS ) ).toElement();
+    QDomElement top = document.createElement( BASE::XML::OPTIONS ).toElement();
 
     // write list of special option names
     for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); ++iter )
@@ -160,8 +157,8 @@ bool XmlOptions::write( File file )
         if( iter.value().empty() ) continue;
 
         // dump option name
-        QDomElement element = document.createElement( OPTIONS::SPECIAL_OPTION );
-        element.setAttribute( OPTIONS::VALUE, iter.key() );
+        QDomElement element = document.createElement( BASE::XML::SPECIAL_OPTION );
+        element.setAttribute( BASE::XML::VALUE, iter.key() );
         top.appendChild( element );
     }
 
@@ -192,8 +189,21 @@ bool XmlOptions::write( File file )
 
     }
 
-    out.write( document.toByteArray() );
-    out.close();
+    // append top node to document
+    if( !oldChildren.isEmpty() ) document.replaceChild( top, oldChildren.at(0) );
+    else document.appendChild( top );
+
+    // write
+    {
+        QFile qfile( file );
+        if( !qfile.open( QIODevice::WriteOnly ) )
+        {
+            Debug::Throw() << "XmlOptions::write - cannot write to file " << file << endl;
+            return false;
+        }
+        qfile.write( document.toByteArray() );
+        qfile.close();
+    }
 
     Debug::Throw( "XmlOptions::write - done.\n" );
     return true;
