@@ -68,6 +68,12 @@ class PlacesWidget: public QWidget, public Counter
     bool isEmpty( void ) const
     { return group_->buttons().isEmpty(); }
 
+    //! Read fileList from file
+    bool read( File = File() );
+
+    //! write fileList to file
+    bool write( File = File() );
+
     signals:
 
     //! item selected
@@ -138,12 +144,6 @@ class PlacesWidget: public QWidget, public Counter
 
     //! paint event
     virtual void paintEvent( QPaintEvent* );
-
-    //! Read fileList from file
-    bool _read( void );
-
-    //! write fileList to file
-    bool _write( void );
 
     //! set db file
     bool _setDBFile( const File& );

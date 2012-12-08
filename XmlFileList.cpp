@@ -68,8 +68,6 @@ bool XmlFileList::read( File file )
     // look for relevant element
     QDomNodeList topNodes = document.elementsByTagName( BASE::XML::FILE_LIST );
     if( topNodes.isEmpty() ) return false;
-
-    // read records
     for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement();

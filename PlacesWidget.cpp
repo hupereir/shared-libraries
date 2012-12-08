@@ -388,6 +388,107 @@ void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
 
 }
 
+
+//_______________________________________________
+bool PlacesWidget::read( File file )
+{
+    Debug::Throw( "PlacesWidget::read.\n" );
+
+    // clear existing entries
+    clear();
+
+    if( file.isEmpty() ) file = dbFile_;
+    if( file.isEmpty() || !file.exists() ) return false;
+
+    // dom document
+    XmlDocument document;
+    {
+
+        QFile qfile( file );
+        XmlError error( file );
+        if ( !document.setContent( &qfile, &error.error(), &error.line(), &error.column() ) )
+        {
+            Debug::Throw() << error << endl;
+            return false;
+        }
+    }
+    // look for relevant element
+    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
+    if( topNodes.isEmpty() ) return false;
+
+    // read records
+    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
+    {
+        QDomElement element = node.toElement();
+        if( element.isNull() ) continue;
+
+        // special options
+        if( element.tagName() == XML::FILEINFO )
+        {
+
+            LocalFileInfo fileInfo( element );
+            if( !fileInfo.file().isEmpty() ) add( fileInfo.name(), fileInfo );
+
+        }
+    }
+
+    emit contentsChanged();
+
+    return true;
+}
+
+//_______________________________________________
+bool PlacesWidget::write( File file )
+{
+    Debug::Throw( "PlacesWidget::write.\n" );
+    if( file.isEmpty() ) file = dbFile_;
+    if( file.isEmpty() )
+    {
+        Debug::Throw( "PlacesWidget::write - no file.\n" );
+        return false;
+    }
+
+    // create document
+    XmlDocument document;
+    {
+        QFile qtfile( file );
+        document.setContent( &qtfile );
+    }
+
+    // get list of items
+    QList<PlacesWidgetItem*> items( items_ );
+
+    // create main element
+    QDomElement top = document.createElement( XML::FILEINFO_LIST );
+
+    // loop over records
+    foreach( PlacesWidgetItem* item, items )
+    {
+
+        const BaseFileInfo& fileInfo( item->fileInfo() );
+        Debug::Throw() << "PlacesWidget::write - " << fileInfo << endl;
+
+        if( fileInfo.file().isEmpty() )
+        {
+            Debug::Throw(0, "PlacesWidget::write - attend to write empty file info. Discarded.\n" );
+            continue;
+        }
+
+        top.appendChild( LocalFileInfo( fileInfo, item->text() ).domElement( document ) );
+    }
+
+
+    // append top node to document and write
+    document.replaceChild( top );
+    {
+        QFile qfile( file );
+        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
+        qfile.write( document.toByteArray() );
+    }
+
+    return true;
+}
+
 //______________________________________________________________________
 void PlacesWidget::clear( void )
 {
@@ -912,104 +1013,6 @@ void PlacesWidget::paintEvent( QPaintEvent* event )
 }
 
 //_______________________________________________
-bool PlacesWidget::_read( void )
-{
-    Debug::Throw( "PlacesWidget::_read.\n" );
-
-    // clear existing entries
-    clear();
-
-    if( dbFile_.isEmpty() || !dbFile_.exists() ) return false;
-
-    // dom document
-    XmlDocument document;
-    {
-
-        QFile qfile( dbFile_ );
-        XmlError error( dbFile_ );
-        if ( !document.setContent( &qfile, &error.error(), &error.line(), &error.column() ) )
-        {
-            Debug::Throw() << error << endl;
-            return false;
-        }
-    }
-    // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
-    if( topNodes.isEmpty() ) return false;
-
-    // read records
-    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
-    {
-        QDomElement element = node.toElement();
-        if( element.isNull() ) continue;
-
-        // special options
-        if( element.tagName() == XML::FILEINFO )
-        {
-
-            LocalFileInfo fileInfo( element );
-            if( !fileInfo.file().isEmpty() ) add( fileInfo.name(), fileInfo );
-
-        }
-    }
-
-    emit contentsChanged();
-
-    return true;
-}
-
-//_______________________________________________
-bool PlacesWidget::_write( void )
-{
-    Debug::Throw( "PlacesWidget::_write.\n" );
-    if( dbFile_.isEmpty() )
-    {
-        Debug::Throw( "PlacesWidget::_write - no file.\n" );
-        return false;
-    }
-
-    // create document
-    XmlDocument document;
-    {
-        QFile qtfile( dbFile_ );
-        document.setContent( &qtfile );
-    }
-
-    // get list of items
-    QList<PlacesWidgetItem*> items( items_ );
-
-    // create main element
-    QDomElement top = document.createElement( XML::FILEINFO_LIST );
-
-    // loop over records
-    foreach( PlacesWidgetItem* item, items )
-    {
-
-        const BaseFileInfo& fileInfo( item->fileInfo() );
-        Debug::Throw() << "PlacesWidget::_write - " << fileInfo << endl;
-
-        if( fileInfo.file().isEmpty() )
-        {
-            Debug::Throw(0, "PlacesWidget::_write - attend to write empty file info. Discarded.\n" );
-            continue;
-        }
-
-        top.appendChild( LocalFileInfo( fileInfo, item->text() ).domElement( document ) );
-    }
-
-
-    // append top node to document and write
-    document.replaceChild( top );
-    {
-        QFile qfile( dbFile_ );
-        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
-        qfile.write( document.toByteArray() );
-    }
-
-    return true;
-}
-
-//_______________________________________________
 bool PlacesWidget::_setDBFile( const File& file )
 {
 
@@ -1025,7 +1028,7 @@ bool PlacesWidget::_setDBFile( const File& file )
     if( dbFile_.localName().startsWith( '.' ) )
     { dbFile_.setHidden(); }
 
-    _read();
+    read();
 
     return true;
 
@@ -1055,7 +1058,7 @@ void PlacesWidget::_updateConfiguration( void )
 void PlacesWidget::_saveConfiguration( void )
 {
     Debug::Throw( "PlacesWidget::_saveConfiguration.\n" );
-    _write();
+    write();
 }
 
 //______________________________________
