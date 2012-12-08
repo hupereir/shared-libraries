@@ -35,14 +35,14 @@
 
 namespace SERVER
 {
-    
+
     //____________________________________________________
     ApplicationId::ApplicationId( const QString& name, const QString& user, const QString& display ):
         Counter( "ApplicationId" ),
         name_( name ),
         user_( user + QString("@")+display )
     { Debug::Throw( "ApplicationId::ApplicationId.\n" ); }
-    
+
     //____________________________________________________
     ApplicationId::ApplicationId( const QDomElement& element ):
         Counter( "ApplicationId" )
@@ -55,8 +55,8 @@ namespace SERVER
         {
             QDomAttr attribute( attributes.item( i ).toAttr() );
             if( attribute.isNull() ) continue;
-            if( attribute.name() == SERVER_XML::USER ) setUser( attribute.value() );
-            else if( attribute.name() == SERVER_XML::NAME ) setName( attribute.value() );
+            if( attribute.name() == XML::USER ) setUser( attribute.value() );
+            else if( attribute.name() == XML::NAME ) setName( attribute.value() );
             else Debug::Throw() << "ApplicationId::ApplicationId - unrecognized attribute " << attribute.name() << endl;
         }
 
@@ -67,9 +67,9 @@ namespace SERVER
     {
 
         Debug::Throw( "ApplicationId::domElement" );
-        QDomElement out( document.createElement( SERVER_XML::ID ) );
-        out.setAttribute( SERVER_XML::NAME, name() );
-        out.setAttribute( SERVER_XML::USER, user() );
+        QDomElement out( document.createElement( XML::ID ) );
+        out.setAttribute( XML::NAME, name() );
+        out.setAttribute( XML::USER, user() );
         return out;
 
     }

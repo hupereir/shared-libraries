@@ -72,7 +72,7 @@ namespace SERVER
         if( commands_.empty() ) return;
 
         QDomDocument document;
-        QDomElement top = document.appendChild( document.createElement( SERVER_XML::TRANSMISSION ) ).toElement();
+        QDomElement top = document.appendChild( document.createElement( XML::TRANSMISSION ) ).toElement();
         while( commands_.size() && socket().state() == QAbstractSocket::ConnectedState )
         {
             top.appendChild( commands_.front().domElement( document ) );
@@ -96,8 +96,8 @@ namespace SERVER
         buffer_.append( message );
 
         // parse buffer
-        static const QString begin_tag = (QStringList() << "<" << SERVER_XML::TRANSMISSION << ">" ).join("");
-        static const QString end_tag = (QStringList() << "</" << SERVER_XML::TRANSMISSION << ">" ).join("");
+        static const QString begin_tag = (QStringList() << "<" << XML::TRANSMISSION << ">" ).join("");
+        static const QString end_tag = (QStringList() << "</" << XML::TRANSMISSION << ">" ).join("");
 
         while(1)
         {
@@ -121,13 +121,13 @@ namespace SERVER
 
                 // parse document
                 QDomElement doc_element = document.documentElement();
-                Q_ASSERT( doc_element.tagName() == SERVER_XML::TRANSMISSION );
+                Q_ASSERT( doc_element.tagName() == XML::TRANSMISSION );
 
                 for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
                 {
                     QDomElement element = node.toElement();
                     if( element.isNull() ) continue;
-                    if( element.tagName() == SERVER_XML::COMMAND ) {
+                    if( element.tagName() == XML::COMMAND ) {
 
                         ServerCommand command( element );
                         emit commandAvailable( command.setClientId( id() ) );

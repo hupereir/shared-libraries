@@ -24,40 +24,43 @@
 *
 *******************************************************************************/
 /*!
-   \file XmlDef.h
-   \brief some Xml definitions
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
+\file XmlDef.h
+\brief some Xml definitions
+\author Hugo Pereira
+\version $Revision$
+\date $Date$
 */
 
 #include <QString>
 
 //! Some Xml definitions
-namespace SERVER_XML
+namespace SERVER
 {
 
-  //! transmission
-  const QString TRANSMISSION( "_t" );
+    namespace XML
+    {
+        //! transmission
+        const QString TRANSMISSION( "_t" );
 
-  //! command
-  const QString COMMAND( "c" );
+        //! command
+        const QString COMMAND( "c" );
 
-  //! command
-  const QString ID( "i" );
+        //! command
+        const QString ID( "i" );
 
-  //! user
-  const QString USER( "u" );
+        //! user
+        const QString USER( "u" );
 
-  //! name
-  const QString NAME( "n" );
+        //! name
+        const QString NAME( "n" );
 
-  //! type
-  const QString TYPE( "t" );
+        //! type
+        const QString TYPE( "t" );
 
-  //! arguments
-  const QString ARGUMENTS( "a" );
+        //! arguments
+        const QString ARGUMENTS( "a" );
 
-};
+    }
 
+}
 #endif

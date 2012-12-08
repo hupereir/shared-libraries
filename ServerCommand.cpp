@@ -93,7 +93,7 @@ namespace SERVER
         {
             QDomAttr attribute( attributes.item( i ).toAttr() );
             if( attribute.isNull() ) continue;
-            if( attribute.name() == SERVER_XML::TYPE ) setCommand( (CommandType) attribute.value().toUInt() );
+            if( attribute.name() == XML::TYPE ) setCommand( (CommandType) attribute.value().toUInt() );
             else Debug::Throw(0) << "ServerCommand::ServerCommand - unrecognized attribute: " << attribute.name() << endl;
         }
 
@@ -103,10 +103,10 @@ namespace SERVER
         {
             QDomElement child_element = child_node.toElement();
             if( child_element.isNull() ) continue;
-            QString tag_name( child_element.tagName() );
-            if( tag_name == SERVER_XML::ID ) setId( ApplicationId( child_element ) );
-            else if( tag_name == SERVER_XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
-            else if( tag_name == OPTIONS::OPTION )
+            QString tagName( child_element.tagName() );
+            if( tagName == XML::ID ) setId( ApplicationId( child_element ) );
+            else if( tagName == XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
+            else if( tagName == BASE::XML::OPTION )
             {
                 Q_ASSERT( command() == ServerCommand::OPTION );
                 setXmlOption( XmlOption( child_element ) );
@@ -120,16 +120,16 @@ namespace SERVER
     {
 
         Debug::Throw( "ServerCommand::domElement.\n" );
-        QDomElement out( document.createElement( SERVER_XML::COMMAND ) );
+        QDomElement out( document.createElement( XML::COMMAND ) );
 
         // type
-        out.setAttribute( SERVER_XML::TYPE, QString().setNum( command() ) );
+        out.setAttribute( XML::TYPE, QString().setNum( command() ) );
 
         // id
         out.appendChild( id().domElement( document ) );
 
         // arguments
-        if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( SERVER_XML::ARGUMENTS, document ) );
+        if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( XML::ARGUMENTS, document ) );
         if( command() == ServerCommand::OPTION && !option_.name().isEmpty() )
         { out.appendChild( option_.domElement( document ) ); }
 
