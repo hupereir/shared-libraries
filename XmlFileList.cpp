@@ -25,6 +25,7 @@
 
 #include "Debug.h"
 #include "Singleton.h"
+#include "XmlDocument.h"
 #include "XmlFileRecord.h"
 #include "XmlOptions.h"
 #include "XmlError.h"
@@ -45,6 +46,95 @@ XmlFileList::XmlFileList( QObject* parent ):
 }
 
 //_______________________________________________
+bool XmlFileList::read( File file )
+{
+    Debug::Throw( "XmlFileList::read.\n" );
+
+    if( file.isEmpty() ) file = dbFile_;
+    if( file.isEmpty() || !file.exists() ) return false;
+
+    // parse the file
+    XmlDocument document;
+    {
+        QFile qfile( file );
+        XmlError error( file );
+        if ( !document.setContent( &qfile, &error.error(), &error.line(), &error.column() ) )
+        {
+            Debug::Throw() << error << endl;
+            return false;
+        }
+    }
+
+    // look for relevant element
+    QDomNodeList topNodes = document.elementsByTagName( BASE::XML::FILE_LIST );
+    if( topNodes.isEmpty() ) return false;
+
+    // read records
+    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
+    {
+        QDomElement element = node.toElement();
+        if( element.isNull() ) continue;
+
+        // special options
+        if( element.tagName() == BASE::XML::RECORD )
+        {
+
+            XmlFileRecord record( element );
+            if( !record.file().isEmpty() ) _add( record, true, false );
+
+        }
+    }
+
+    emit contentsChanged();
+
+    return true;
+}
+
+//_______________________________________________
+bool XmlFileList::write( File file )
+{
+    Debug::Throw( "XmlFileList::write.\n" );
+    if( file.isEmpty() ) file = dbFile_;
+    if( file.isEmpty() ) return false;
+
+    // create document and read
+    XmlDocument document;
+    {
+        QFile qtfile( file );
+        document.setContent( &qtfile );
+    }
+
+    // get records truncated list
+    FileRecord::List records( _truncatedList( _records() ) );
+
+    // create main element and insert records
+    QDomElement top = document.createElement( BASE::XML::FILE_LIST );
+    foreach( const FileRecord& record, records )
+    {
+
+        Debug::Throw() << "XmlFileList::write - " << record;
+        if( record.file().isEmpty() )
+        {
+            Debug::Throw(0, "XmlFileList::write - attend to write empty record. Discarded.\n" );
+            continue;
+        }
+
+        top.appendChild( XmlFileRecord( record ).domElement( document ) );
+
+    }
+
+    // append top node to document and write
+    document.replaceChild( top );
+    {
+        QFile qfile( file );
+        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
+        qfile.write( document.toByteArray() );
+    }
+
+    return true;
+}
+
+//_______________________________________________
 bool XmlFileList::_setDBFile( const File& file )
 {
     Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
@@ -59,116 +149,11 @@ bool XmlFileList::_setDBFile( const File& file )
     if( dbFile_.localName().startsWith( '.' ) )
     { dbFile_.setHidden(); }
 
-    _read();
+    read();
 
     return true;
 
 }
-
-//_______________________________________________
-bool XmlFileList::_read( void )
-{
-    Debug::Throw( "XmlFileList::_read.\n" );
-    if( dbFile_.isEmpty() || !dbFile_.exists() ) return false;
-
-    // parse the file
-    QDomDocument document;
-    {
-        QFile qfile( dbFile_ );
-        XmlError error( dbFile_ );
-        if ( !document.setContent( &qfile, &error.error(), &error.line(), &error.column() ) )
-        {
-            Debug::Throw() << error << endl;
-            return false;
-        }
-    }
-
-    // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( XML::FILE_LIST );
-    if( topNodes.isEmpty() )
-    {
-        Debug::Throw( "XmlOptions::read - no valid top node found.\n" );
-        return false;
-    }
-
-    // read records
-    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
-    {
-        QDomElement element = node.toElement();
-        if( element.isNull() ) continue;
-
-        // special options
-        if( element.tagName() == XML::RECORD )
-        {
-
-            XmlFileRecord record( element );
-            if( !record.file().isEmpty() ) _add( record, true, false );
-            else Debug::Throw(0, "XmlFileList::_read - attend to add empty record. Discarded.\n" );
-
-        } else Debug::Throw() << "XmlFileList::_read - unrecognized tag " << element.tagName() << endl;
-    }
-
-    emit contentsChanged();
-
-    return true;
-}
-
-//_______________________________________________
-bool XmlFileList::_write( void )
-{
-    Debug::Throw( "XmlFileList::_write.\n" );
-    if( dbFile_.isEmpty() )
-    {
-        Debug::Throw( "XmlFileList::_write - no file.\n" );
-        return false;
-    }
-
-    // create document and read
-    QDomDocument document;
-    {
-        QFile qtfile( dbFile_ );
-        document.setContent( &qtfile );
-    }
-
-    // find previous options element
-    QDomNodeList oldChildren( document.elementsByTagName( XML::FILE_LIST ) );
-
-    // get records truncated list
-    FileRecord::List records( _truncatedList( _records() ) );
-
-    // create main element and insert records
-    QDomElement top = document.createElement( XML::FILE_LIST );
-    foreach( const FileRecord& record, records )
-    {
-
-        Debug::Throw() << "XmlFileList::_write - " << record;
-        if( record.file().isEmpty() )
-        {
-            Debug::Throw(0, "XmlFileList::_write - attend to write empty record. Discarded.\n" );
-            continue;
-        }
-
-        top.appendChild( XmlFileRecord( record ).domElement( document ) );
-    }
-
-    // append top node to document
-    if( !oldChildren.isEmpty() ) document.replaceChild( top, oldChildren.at(0) );
-    else document.appendChild( top );
-
-    // write
-    {
-        QFile qfile( dbFile_ );
-        if( !qfile.open( QIODevice::WriteOnly ) )
-        {
-            Debug::Throw() << "XmlOptions::write - cannot write to file " << dbFile_ << endl;
-            return false;
-        }
-        qfile.write( document.toByteArray() );
-    }
-
-    return true;
-}
-
 
 //______________________________________
 void XmlFileList::_updateConfiguration( void )
@@ -176,7 +161,8 @@ void XmlFileList::_updateConfiguration( void )
     Debug::Throw( "XmlFileList::_updateConfiguration.\n" );
 
     // DB file
-    _setDBFile( File( XmlOptions::get().raw("DB_FILE") ) );
+    _setDBFile( File( XmlOptions::get().raw("RC_FILE") ) );
+    // _setDBFile( File( XmlOptions::get().raw("DB_FILE") ) );
     _setMaxSize( XmlOptions::get().get<int>( "DB_SIZE" ) );
     return;
 
@@ -186,5 +172,5 @@ void XmlFileList::_updateConfiguration( void )
 void XmlFileList::_saveConfiguration( void )
 {
     Debug::Throw( "XmlFileList::_saveConfiguration.\n" );
-    _write();
+    write();
 }

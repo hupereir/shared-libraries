@@ -45,13 +45,13 @@ class XmlFileList: public FileList
     virtual ~XmlFileList( void )
     {}
 
-    protected:
-
     //! Read fileList from file
-    virtual bool _read( void );
+    virtual bool read( File = File() );
 
     //! write fileList to file
-    virtual bool _write( void );
+    virtual bool write( File = File() );
+
+    protected:
 
     //! set db file
     virtual bool _setDBFile( const File& );

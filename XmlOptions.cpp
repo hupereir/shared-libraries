@@ -24,11 +24,10 @@
 #include "XmlOptions.h"
 
 #include "Options.h"
+#include "XmlDocument.h"
 #include "XmlError.h"
 #include "XmlOption.h"
 
-#include <QtXml/QDomDocument>
-#include <QtXml/QDomElement>
 #include <QtCore/QFile>
 
 //____________________________________________________________________
@@ -58,7 +57,7 @@ Options& XmlOptions::get( void )
 bool XmlOptions::read( File file )
 {
 
-    Debug::Throw() << "XmlOptions::read - file=\"" << file << "\"\n";
+    Debug::Throw( "XmlOptions::read.\n" );
 
     // check filename is valid
     if( file.isEmpty() ) file = XmlOptions::file();
@@ -68,7 +67,7 @@ bool XmlOptions::read( File file )
     setFile( file );
 
     // parse the file
-    QDomDocument document;
+    XmlDocument document;
     {
         QFile qtfile( file );
         XmlError error( file );
@@ -81,11 +80,7 @@ bool XmlOptions::read( File file )
 
     // look for relevant element
     QDomNodeList topNodes = document.elementsByTagName( BASE::XML::OPTIONS );
-    if( topNodes.isEmpty() )
-    {
-        Debug::Throw( "XmlOptions::read - no valid top node found.\n" );
-        return false;
-    }
+    if( topNodes.isEmpty() ) return false;
 
     for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
@@ -106,14 +101,6 @@ bool XmlOptions::read( File file )
             if( get().isSpecialOption( option.name() ) ) get().add( option.name(), option );
             else get().set( option.name(), option );
 
-        } else {
-
-            // old implementation, kept for backward compatibility
-            // element name is the option name
-            XmlOption option( element );
-            if( get().isSpecialOption( option.name() ) ) get().add( option.name(), option );
-            else get().set( option.name(), option );
-
         }
 
     }
@@ -127,25 +114,18 @@ bool XmlOptions::read( File file )
 bool XmlOptions::write( File file )
 {
 
-    Debug::Throw() << "XmlOptions::write - " << file << endl;
+    Debug::Throw( "XmlOptions::write.\n" );
 
     // check filename is valid
     if( file.isEmpty() ) file = XmlOptions::file();
-    if( file.isEmpty() )
-    {
-        Debug::Throw( "XmlOptions::write - file is empty.\n" );
-        return false;
-    }
+    if( file.isEmpty() ) return false;
 
     // create document and read
-    QDomDocument document;
+    XmlDocument document;
     {
         QFile qtfile( file );
         document.setContent( &qtfile );
     }
-
-    // find previous options element
-    QDomNodeList oldChildren( document.elementsByTagName( BASE::XML::OPTIONS ) );
 
     // create main element
     QDomElement top = document.createElement( BASE::XML::OPTIONS ).toElement();
@@ -189,18 +169,13 @@ bool XmlOptions::write( File file )
 
     }
 
-    // append top node to document
-    if( !oldChildren.isEmpty() ) document.replaceChild( top, oldChildren.at(0) );
-    else document.appendChild( top );
+    // append topNode to document and write
+    document.replaceChild( top );
 
     // write
     {
         QFile qfile( file );
-        if( !qfile.open( QIODevice::WriteOnly ) )
-        {
-            Debug::Throw() << "XmlOptions::write - cannot write to file " << file << endl;
-            return false;
-        }
+        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
         qfile.write( document.toByteArray() );
     }
 

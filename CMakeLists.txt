@@ -137,6 +137,7 @@ SET( base_qt_SOURCES
   WindowMonitor.cpp
   X11Util.cpp
   XmlCommandLineArguments.cpp
+  XmlDocument.cpp
   XmlFileList.cpp
   XmlFileRecord.cpp
   XmlOption.cpp

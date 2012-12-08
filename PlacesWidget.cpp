@@ -31,6 +31,7 @@
 #include "IconSizeMenu.h"
 #include "Singleton.h"
 #include "Util.h"
+#include "XmlDocument.h"
 #include "XmlError.h"
 #include "XmlOptions.h"
 
@@ -920,27 +921,24 @@ bool PlacesWidget::_read( void )
 
     if( dbFile_.isEmpty() || !dbFile_.exists() ) return false;
 
-    // parse the file
-    QFile in( dbFile_ );
-    if ( !in.open( QIODevice::ReadOnly ) )
-    {
-        Debug::Throw( "PlacesWidget::_read - cannot open file.\n" );
-        return false;
-    }
-
     // dom document
-    QDomDocument document;
-    XmlError error( dbFile_ );
-    if ( !document.setContent( &in, &error.error(), &error.line(), &error.column() ) )
+    XmlDocument document;
     {
-        in.close();
-        Debug::Throw() << error << endl;
-        return false;
-    }
 
-    QDomElement docElement = document.documentElement();
-    QDomNode node = docElement.firstChild();
-    for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
+        QFile qfile( dbFile_ );
+        XmlError error( dbFile_ );
+        if ( !document.setContent( &qfile, &error.error(), &error.line(), &error.column() ) )
+        {
+            Debug::Throw() << error << endl;
+            return false;
+        }
+    }
+    // look for relevant element
+    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
+    if( topNodes.isEmpty() ) return false;
+
+    // read records
+    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement();
         if( element.isNull() ) continue;
@@ -951,9 +949,8 @@ bool PlacesWidget::_read( void )
 
             LocalFileInfo fileInfo( element );
             if( !fileInfo.file().isEmpty() ) add( fileInfo.name(), fileInfo );
-            else Debug::Throw(0, "PlacesWidget::_read - attend to add empty file info. Discarded.\n" );
 
-        } else Debug::Throw() << "PlacesWidget::_read - unrecognized tag " << element.tagName() << endl;
+        }
     }
 
     emit contentsChanged();
@@ -971,18 +968,18 @@ bool PlacesWidget::_write( void )
         return false;
     }
 
-    // output file
-    QFile out( dbFile_ );
-    if( !out.open( QIODevice::WriteOnly ) ) return false;
+    // create document
+    XmlDocument document;
+    {
+        QFile qtfile( dbFile_ );
+        document.setContent( &qtfile );
+    }
 
-    // get records truncated list
+    // get list of items
     QList<PlacesWidgetItem*> items( items_ );
 
-    // create document
-    QDomDocument document;
-
     // create main element
-    QDomElement top = document.appendChild( document.createElement( XML::FILEINFO_LIST ) ).toElement();
+    QDomElement top = document.createElement( XML::FILEINFO_LIST );
 
     // loop over records
     foreach( PlacesWidgetItem* item, items )
@@ -1000,8 +997,14 @@ bool PlacesWidget::_write( void )
         top.appendChild( LocalFileInfo( fileInfo, item->text() ).domElement( document ) );
     }
 
-    out.write( document.toByteArray() );
-    out.close();
+
+    // append top node to document and write
+    document.replaceChild( top );
+    {
+        QFile qfile( dbFile_ );
+        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
+        qfile.write( document.toByteArray() );
+    }
 
     return true;
 }
@@ -1034,7 +1037,7 @@ void PlacesWidget::_updateConfiguration( void )
     Debug::Throw( "PlacesWidget::_updateConfiguration.\n" );
 
     // DB file
-    _setDBFile( File( XmlOptions::get().raw("DB_FILE") ) );
+    _setDBFile( File( XmlOptions::get().raw("RC_FILE") ) );
 
     // icon size
     if( XmlOptions::get().contains( "PLACES_ICON_SIZE" ) )
