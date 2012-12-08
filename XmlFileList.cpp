@@ -72,31 +72,33 @@ bool XmlFileList::_read( void )
     if( dbFile_.isEmpty() || !dbFile_.exists() ) return false;
 
     // parse the file
-    QFile in( dbFile_ );
-    if ( !in.open( QIODevice::ReadOnly ) )
-    {
-        Debug::Throw( "XmlFileList::_read - cannot open file.\n" );
-        return false;
-    }
-
-    // dom document
     QDomDocument document;
-    XmlError error( dbFile_ );
-    if ( !document.setContent( &in, &error.error(), &error.line(), &error.column() ) ) {
-        in.close();
-        Debug::Throw() << error << endl;
+    {
+        QFile qfile( dbFile_ );
+        XmlError error( dbFile_ );
+        if ( !document.setContent( &qfile, &error.error(), &error.line(), &error.column() ) )
+        {
+            Debug::Throw() << error << endl;
+            return false;
+        }
+    }
+
+    // look for relevant element
+    QDomNodeList topNodes = document.elementsByTagName( XML::FILE_LIST );
+    if( topNodes.isEmpty() )
+    {
+        Debug::Throw( "XmlOptions::read - no valid top node found.\n" );
         return false;
     }
 
-    QDomElement docElement = document.documentElement();
-    QDomNode node = docElement.firstChild();
-    for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
+    // read records
+    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement();
         if( element.isNull() ) continue;
 
         // special options
-        if( element.tagName() == XmlFileRecord::XML_RECORD )
+        if( element.tagName() == XML::RECORD )
         {
 
             XmlFileRecord record( element );
@@ -121,20 +123,21 @@ bool XmlFileList::_write( void )
         return false;
     }
 
-    // output file
-    QFile out( dbFile_ );
-    if( !out.open( QIODevice::WriteOnly ) ) return false;
+    // create document and read
+    QDomDocument document;
+    {
+        QFile qtfile( dbFile_ );
+        document.setContent( &qtfile );
+    }
+
+    // find previous options element
+    QDomNodeList oldChildren( document.elementsByTagName( XML::FILE_LIST ) );
 
     // get records truncated list
     FileRecord::List records( _truncatedList( _records() ) );
 
-    // create document
-    QDomDocument document;
-
-    // create main element
-    QDomElement top = document.appendChild( document.createElement( XmlFileRecord::XML_FILE_LIST ) ).toElement();
-
-    // loop over records
+    // create main element and insert records
+    QDomElement top = document.createElement( XML::FILE_LIST );
     foreach( const FileRecord& record, records )
     {
 
@@ -148,8 +151,20 @@ bool XmlFileList::_write( void )
         top.appendChild( XmlFileRecord( record ).domElement( document ) );
     }
 
-    out.write( document.toByteArray() );
-    out.close();
+    // append top node to document
+    if( !oldChildren.isEmpty() ) document.replaceChild( top, oldChildren.at(0) );
+    else document.appendChild( top );
+
+    // write
+    {
+        QFile qfile( dbFile_ );
+        if( !qfile.open( QIODevice::WriteOnly ) )
+        {
+            Debug::Throw() << "XmlOptions::write - cannot write to file " << dbFile_ << endl;
+            return false;
+        }
+        qfile.write( document.toByteArray() );
+    }
 
     return true;
 }

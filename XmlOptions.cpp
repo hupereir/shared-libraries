@@ -137,7 +137,7 @@ bool XmlOptions::write( File file )
         return false;
     }
 
-    // create document
+    // create document and read
     QDomDocument document;
     {
         QFile qtfile( file );
@@ -202,10 +202,8 @@ bool XmlOptions::write( File file )
             return false;
         }
         qfile.write( document.toByteArray() );
-        qfile.close();
     }
 
-    Debug::Throw( "XmlOptions::write - done.\n" );
     return true;
 
 }

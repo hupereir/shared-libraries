@@ -30,24 +30,24 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QString>
 
+namespace XML
+{
+    static const QString FILE_LIST = "file_list";
+    static const QString RECORD = "record";
+    static const QString FILE = "file";
+    static const QString TIME = "time";
+    static const QString FLAGS = "flags";
+    static const QString VALID= "valid";
+    static const QString PROPERTY= "property";
+    static const QString NAME= "name";
+    static const QString VALUE= "value";
+}
+
 //! xml interface to FileRecord
 class XmlFileRecord: public FileRecord
 {
 
     public:
-
-    //!@name XML names
-    //@{
-    static const QString XML_FILE_LIST;
-    static const QString XML_RECORD;
-    static const QString XML_FILE;
-    static const QString XML_TIME;
-    static const QString XML_FLAGS;
-    static const QString XML_VALID;
-    static const QString XML_PROPERTY;
-    static const QString XML_NAME;
-    static const QString XML_VALUE;
-    //@}
 
     //! constructor
     XmlFileRecord( const FileRecord& file ):
