@@ -38,14 +38,14 @@ bool XmlMigration::run( void )
     // check xml name
     if( xmlName_.isEmpty() )
     {
-        Debug::Throw(0) << "XmlMigration::run - invalid option" << endl;
+        Debug::Throw() << "XmlMigration::run - invalid option" << endl;
         return false;
     }
 
     // check whether there is already a node with requested name inside RC file
     if( _findXmlName() )
     {
-        Debug::Throw(0) << "XmlMigration::run - found tag " << xmlName_ << " in resource file. Aborted." << endl;
+        Debug::Throw() << "XmlMigration::run - found tag " << xmlName_ << " in resource file. Aborted." << endl;
         return false;
     }
 
@@ -61,6 +61,8 @@ bool XmlMigration::run( void )
         Debug::Throw(0) << "XmlMigration::run - could not find old file " << oldFile << ". Aborted." << endl;
         return false;
     }
+
+    Debug::Throw(0) << "XmlMigration::run - reading " << oldFile << endl;
 
     // read old element
     QDomElement oldElement;

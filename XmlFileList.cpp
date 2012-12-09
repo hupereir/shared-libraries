@@ -66,7 +66,7 @@ bool XmlFileList::read( File file )
     }
 
     // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( BASE::XML::FILE_LIST );
+    QDomNodeList topNodes = document.elementsByTagName( FILERECORD::XML::FILE_LIST );
     if( topNodes.isEmpty() ) return false;
     for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
@@ -74,7 +74,7 @@ bool XmlFileList::read( File file )
         if( element.isNull() ) continue;
 
         // special options
-        if( element.tagName() == BASE::XML::RECORD )
+        if( element.tagName() == FILERECORD::XML::RECORD )
         {
 
             XmlFileRecord record( element );
@@ -106,7 +106,7 @@ bool XmlFileList::write( File file )
     FileRecord::List records( _truncatedList( _records() ) );
 
     // create main element and insert records
-    QDomElement top = document.createElement( BASE::XML::FILE_LIST );
+    QDomElement top = document.createElement( FILERECORD::XML::FILE_LIST );
     foreach( const FileRecord& record, records )
     {
 

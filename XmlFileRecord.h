@@ -30,7 +30,7 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QString>
 
-namespace BASE
+namespace FILERECORD
 {
     namespace XML
     {
