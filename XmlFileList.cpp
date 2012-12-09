@@ -160,7 +160,6 @@ void XmlFileList::_updateConfiguration( void )
 
     // DB file
     _setDBFile( File( XmlOptions::get().raw("RC_FILE") ) );
-    // _setDBFile( File( XmlOptions::get().raw("DB_FILE") ) );
     _setMaxSize( XmlOptions::get().get<int>( "DB_SIZE" ) );
     return;
 
