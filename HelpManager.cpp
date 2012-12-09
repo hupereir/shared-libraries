@@ -121,9 +121,9 @@ namespace BASE
         clear();
 
         // loop over dom elements
-        QDomElement doc_element = document.documentElement();
-        QDomNode node = doc_element.firstChild();
-        for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
+        QDomElement docElement = document.documentElement();
+        QDomNode node = docElement.firstChild();
+        for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
         {
             QDomElement element = node.toElement();
             if( element.isNull() ) continue;
