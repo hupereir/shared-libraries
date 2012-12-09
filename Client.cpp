@@ -120,10 +120,10 @@ namespace SERVER
             else {
 
                 // parse document
-                QDomElement doc_element = document.documentElement();
-                Q_ASSERT( doc_element.tagName() == XML::TRANSMISSION );
+                QDomElement docElement = document.documentElement();
+                Q_ASSERT( docElement.tagName() == XML::TRANSMISSION );
 
-                for(QDomNode node = doc_element.firstChild(); !node.isNull(); node = node.nextSibling() )
+                for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
                 {
                     QDomElement element = node.toElement();
                     if( element.isNull() ) continue;
