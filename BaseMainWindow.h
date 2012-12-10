@@ -27,7 +27,7 @@
 #include "CustomToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
-#include "WindowMonitor.h"
+#include "WidgetMonitor.h"
 #include "XmlOptions.h"
 
 #include <QtGui/QAction>
@@ -204,7 +204,7 @@ class BaseMainWindow: public QMainWindow
     QString showStatusBarOptionName_;
 
     //! size watcher
-    WindowMonitor monitor_;
+    WidgetMonitor monitor_;
 
     //! lock toolbars
     QAction* lockToolBarsAction_;

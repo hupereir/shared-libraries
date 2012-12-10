@@ -134,8 +134,8 @@ SET( base_qt_SOURCES
   UserSelectionFrame.cpp
   ValidFileThread.cpp
   WarningDialog.cpp
+  WidgetMonitor.cpp
   WinUtil.cpp
-  WindowMonitor.cpp
   X11Util.cpp
   XmlCommandLineArguments.cpp
   XmlDocument.cpp

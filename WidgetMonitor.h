@@ -1,5 +1,5 @@
-#ifndef WindowMonitor_h
-#define WindowMonitor_h
+#ifndef WidgetMonitor_h
+#define WidgetMonitor_h
 
 // $Id$
 
@@ -32,13 +32,13 @@
 #include <QtGui/QWidget>
 
 //! used to automatically save size of top level widgets
-class WindowMonitor: public QObject, public Counter
+class WidgetMonitor: public QObject, public Counter
 {
 
     public:
 
     //! constructor
-    WindowMonitor( QWidget* );
+    WidgetMonitor( QWidget* );
 
     //! mode
     enum Mode
@@ -105,6 +105,6 @@ class WindowMonitor: public QObject, public Counter
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( WindowMonitor::Modes )
+Q_DECLARE_OPERATORS_FOR_FLAGS( WidgetMonitor::Modes )
 
 #endif

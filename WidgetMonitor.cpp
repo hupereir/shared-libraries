@@ -22,19 +22,19 @@
 *******************************************************************************/
 
 #include "XmlOptions.h"
-#include "WindowMonitor.h"
+#include "WidgetMonitor.h"
 
 //_________________________________________________________
-WindowMonitor::WindowMonitor( QWidget* parent ):
+WidgetMonitor::WidgetMonitor( QWidget* parent ):
     QObject( parent ),
-    Counter( "WindowMonitor" ),
+    Counter( "WidgetMonitor" ),
     mode_( Size )
 { parent->installEventFilter(this); }
 
 //_________________________________________________________
-void WindowMonitor::setOptionName( const QString& name )
+void WidgetMonitor::setOptionName( const QString& name )
 {
-    Debug::Throw( "WindowMonitor::setOptionName.\n" );
+    Debug::Throw( "WidgetMonitor::setOptionName.\n" );
     if( name.isEmpty() )
     {
 
@@ -54,7 +54,7 @@ void WindowMonitor::setOptionName( const QString& name )
 }
 
 //_________________________________________________________
-QSize WindowMonitor::sizeHint( void ) const
+QSize WidgetMonitor::sizeHint( void ) const
 {
 
     // resize
@@ -66,7 +66,7 @@ QSize WindowMonitor::sizeHint( void ) const
             XmlOptions::get().get<int>( heightOptionName_ ) );
 
         Debug::Throw()
-            << "WindowMonitor::sizeHint - ("
+            << "WidgetMonitor::sizeHint - ("
             << size.width() << ","
             << size.height() << ")"
             << endl;
@@ -78,7 +78,7 @@ QSize WindowMonitor::sizeHint( void ) const
 }
 
 //_______________________________________________________
-QPoint WindowMonitor::position( void ) const
+QPoint WidgetMonitor::position( void ) const
 {
 
     // resize
@@ -90,7 +90,7 @@ QPoint WindowMonitor::position( void ) const
             XmlOptions::get().get<int>( yOptionName_ ) );
 
         Debug::Throw()
-            << "WindowMonitor::position - ("
+            << "WidgetMonitor::position - ("
             << position.x() << ","
             << position.y() << ")"
             << endl;
@@ -102,7 +102,7 @@ QPoint WindowMonitor::position( void ) const
 }
 
 //_______________________________________________________
-bool WindowMonitor::eventFilter( QObject* target, QEvent* event )
+bool WidgetMonitor::eventFilter( QObject* target, QEvent* event )
 {
 
     if( target != parent()  ) return false;
@@ -116,7 +116,7 @@ bool WindowMonitor::eventFilter( QObject* target, QEvent* event )
 }
 
 //_______________________________________________________
-void WindowMonitor::timerEvent( QTimerEvent* event )
+void WidgetMonitor::timerEvent( QTimerEvent* event )
 {
 
     if( event->timerId() == timer_.timerId() )
@@ -135,13 +135,13 @@ void WindowMonitor::timerEvent( QTimerEvent* event )
 }
 
 //____________________________________________________________
-void WindowMonitor::_saveWindowSize( void ) const
+void WidgetMonitor::_saveWindowSize( void ) const
 {
 
     QSize size( static_cast<QWidget*>(parent())->size() );
 
     Debug::Throw()
-        << "WindowMonitor::_saveWindowSize - ("
+        << "WidgetMonitor::_saveWindowSize - ("
         << size.width() << ","
         << size.height() << ")"
         << endl;
@@ -151,13 +151,13 @@ void WindowMonitor::_saveWindowSize( void ) const
 }
 
 //____________________________________________________________
-void WindowMonitor::_saveWindowPosition( void ) const
+void WidgetMonitor::_saveWindowPosition( void ) const
 {
 
     QPoint position( static_cast<QWidget*>(parent())->pos() );
 
     Debug::Throw()
-        << "WindowMonitor::_saveWindowPosition - ("
+        << "WidgetMonitor::_saveWindowPosition - ("
         << position.x() << ","
         << position.y() << ")"
         << endl;

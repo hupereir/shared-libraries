@@ -26,7 +26,7 @@
 #include "ScrollObject.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
-#include "WindowMonitor.h"
+#include "WidgetMonitor.h"
 
 #include <QtGui/QLayout>
 #include <QtGui/QScrollArea>
@@ -44,7 +44,7 @@ class MainWidget: public QWidget
     {}
 
     // monitor
-    WindowMonitor& windowMonitor( void )
+    WidgetMonitor& windowMonitor( void )
     { return monitor_; }
 
     //! size hint
@@ -57,7 +57,7 @@ class MainWidget: public QWidget
     private:
 
     //! window monitor
-    WindowMonitor monitor_;
+    WidgetMonitor monitor_;
 
 };
 
@@ -112,7 +112,7 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
 
     // setup container
     MainWidget* main = new MainWidget();
-    main->windowMonitor().setMode( WindowMonitor::Size );
+    main->windowMonitor().setMode( WidgetMonitor::Size );
     main->windowMonitor().setOptionName( optionName );
     main->setLayout( new QVBoxLayout() );
     main->layout()->setMargin(0);

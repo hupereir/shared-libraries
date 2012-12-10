@@ -25,7 +25,7 @@
 *******************************************************************************/
 
 
-#include "WindowMonitor.h"
+#include "WidgetMonitor.h"
 #include <QtGui/QDialog>
 
 //! base dialog
@@ -110,7 +110,7 @@ class BaseDialog: public QDialog
     private:
 
     //! size watch
-    WindowMonitor monitor_;
+    WidgetMonitor monitor_;
 
     //! window state prior to minimization
     bool wasMaximized_;
