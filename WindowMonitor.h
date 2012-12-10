@@ -24,20 +24,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file WindowMonitor.h
-\brief used to automatically save size of top level widgets
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QBasicTimer>
-#include <QWidget>
-#include <QSize>
-#include <QTimerEvent>
-
 #include "Counter.h"
+
+#include <QtCore/QBasicTimer>
+#include <QtCore/QSize>
+#include <QtCore/QTimerEvent>
+#include <QtGui/QWidget>
 
 //! used to automatically save size of top level widgets
 class WindowMonitor: public QObject, public Counter

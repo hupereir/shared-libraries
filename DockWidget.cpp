@@ -26,10 +26,40 @@
 #include "ScrollObject.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
+#include "WindowMonitor.h"
 
 #include <QtGui/QLayout>
 #include <QtGui/QScrollArea>
 #include <QtGui/QStyle>
+
+//! container widget
+class MainWidget: public QWidget
+{
+    public:
+
+    //! constructor
+    MainWidget( QWidget* parent = 0x0 ):
+        QWidget( parent ),
+        monitor_( this )
+    {}
+
+    // monitor
+    WindowMonitor& windowMonitor( void )
+    { return monitor_; }
+
+    //! size hint
+    virtual QSize sizeHint( void ) const
+    {
+        const QSize size( monitor_.sizeHint() );
+        return size.isValid() ? size:QWidget::sizeHint();
+    }
+
+    private:
+
+    //! window monitor
+    WindowMonitor monitor_;
+
+};
 
 //! container widget
 class ContainerWidget: public QWidget
@@ -81,7 +111,9 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     _installActions();
 
     // setup container
-    QWidget* main = new QWidget();
+    MainWidget* main = new MainWidget();
+    main->windowMonitor().setMode( WindowMonitor::Size );
+    main->windowMonitor().setOptionName( optionName );
     main->setLayout( new QVBoxLayout() );
     main->layout()->setMargin(0);
     main->layout()->setSpacing(0);
