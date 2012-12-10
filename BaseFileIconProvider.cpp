@@ -1,6 +1,3 @@
-#ifndef BaseFileIconProvider_h
-#define BaseFileIconProvider_h
-
 // $Id$
 
 /******************************************************************************
@@ -24,30 +21,23 @@
 *
 *******************************************************************************/
 
-#include "BaseFileInfo.h"
-#include "Counter.h"
+#include "BaseFileIconProvider.h"
+#include "IconEngine.h"
+#include "Util.h"
 
-#include <QtCore/QObject>
-
-//! returns icon for a given FileInfo
-class BaseFileIconProvider: public QObject, public Counter
+//__________________________________________________________________________
+const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo )
 {
 
-    public:
+    // get type
+    int type( fileInfo.type() );
 
-    //! constructor
-    BaseFileIconProvider( QObject* parent = 0x0 ):
-        QObject( parent ),
-        Counter( "BaseFileIconProvider" )
-    {}
+    // special case for home directory
+    if( type & BaseFileInfo::Folder && fileInfo.file() == Util::home() )
+    {
 
-    //! destructor
-    virtual ~BaseFileIconProvider( void )
-    {}
+        return IconEngine::get( "user-home.png" );
 
-    //! icon matching given file info
-    virtual const QIcon& icon( const BaseFileInfo& );
+    } else return IconEngine::get( QString() );
 
-};
-
-#endif
+}

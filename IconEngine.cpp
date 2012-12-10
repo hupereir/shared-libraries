@@ -69,8 +69,14 @@ const BASE::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache
     }
 
     BASE::IconCacheItem out;
-    if( QFileInfo( file ).isAbsolute() )
+
+    // insert null icon for empty filename
+    if( file.isEmpty() )
     {
+
+        out.addFile( file );
+
+    } else if( QFileInfo( file ).isAbsolute() ) {
 
         out.addPixmap( QPixmap( file ) );
         out.addFile( file );
