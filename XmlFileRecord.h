@@ -34,7 +34,7 @@ namespace FILERECORD
 {
     namespace XML
     {
-        static const QString FILE_LIST = "fileList";
+        static const QString FILE_LIST = "FileList";
         static const QString RECORD = "record";
         static const QString FILE = "file";
         static const QString TIME = "time";

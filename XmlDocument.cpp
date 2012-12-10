@@ -32,6 +32,8 @@ void XmlDocument::replaceChild( QDomElement& element )
     if( documentElement().tagName() != topNodeTagName )
     {
 
+        Debug::Throw( "XmlDocument - creating relevant topNode.\n" );
+
         clear();
         appendChild( createElement( topNodeTagName ) );
         documentElement().appendChild( element );
@@ -41,8 +43,19 @@ void XmlDocument::replaceChild( QDomElement& element )
 
     // find previous options element
     QDomNodeList children( elementsByTagName( element.tagName() ) );
-    if( !children.isEmpty() ) documentElement().replaceChild( element, children.at(0) );
-    else documentElement().appendChild( element );
+    if( !children.isEmpty() )
+    {
+
+        Debug::Throw() << "XmlDocument - replacing node " << element.tagName() << endl;
+        documentElement().replaceChild( element, children.at(0) );
+
+    } else {
+
+        Debug::Throw() << "XmlDocument - creating node " << element.tagName() << endl;
+        documentElement().appendChild( element );
+
+    }
+
     return;
 
 }

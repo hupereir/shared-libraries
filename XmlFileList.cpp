@@ -110,14 +110,8 @@ bool XmlFileList::write( File file )
     foreach( const FileRecord& record, records )
     {
 
-        Debug::Throw() << "XmlFileList::write - " << record;
-        if( record.file().isEmpty() )
-        {
-            Debug::Throw(0, "XmlFileList::write - attend to write empty record. Discarded.\n" );
-            continue;
-        }
-
-        top.appendChild( XmlFileRecord( record ).domElement( document ) );
+        if( !record.file().isEmpty() )
+        { top.appendChild( XmlFileRecord( record ).domElement( document ) ); }
 
     }
 
