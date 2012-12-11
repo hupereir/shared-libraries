@@ -619,7 +619,7 @@ void PlacesWidget::_updateFocus( QAbstractButton* button )
 
     // cas button to item
     PlacesWidgetItem* currentItem( qobject_cast<PlacesWidgetItem*>( button ) );
-    if( currentItem ) currentItem->setFocus( true );
+    if( currentItem ) currentItem->setFocus( currentItem->isEnabled() );
 
     // disable focus for all other buttons
     foreach( PlacesWidgetItem* item, items_ )
