@@ -68,6 +68,12 @@ class PlacesWidget: public QWidget, public Counter
     bool isEmpty( void ) const
     { return group_->buttons().isEmpty(); }
 
+    //! list of items
+    QList<BaseFileInfo> items( void ) const;
+
+    //! set item enabled
+    void setItemEnabled( const BaseFileInfo&, bool );
+
     //! Read fileList from file
     bool read( File = File() );
 
@@ -110,6 +116,9 @@ class PlacesWidget: public QWidget, public Counter
     //! button clicked
     void _buttonClicked( QAbstractButton* );
 
+    //! update focus
+    void _updateFocus( QAbstractButton* );
+
     //! update context menu
     void _updateMenu( void );
 
@@ -149,7 +158,7 @@ class PlacesWidget: public QWidget, public Counter
     bool _setDBFile( const File& );
 
     //! drag target
-    QPoint _dragTarget( const QPoint& ) const;
+    QPoint _updateDragTarget( const QPoint& ) const;
 
     //! true if mime data can be decoded
     bool _canDecode( const QMimeData* ) const;

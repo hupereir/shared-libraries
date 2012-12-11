@@ -31,6 +31,7 @@
 #include "IconSizeMenu.h"
 #include "Singleton.h"
 #include "Util.h"
+
 #include "XmlDocument.h"
 #include "XmlError.h"
 #include "XmlOptions.h"
@@ -184,7 +185,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
 {
 
     // render mouse over
-    if( mouseOver_ || hasFocus() )
+    if( mouseOver_ || hasFocus_ || dragInProgress_ )
     {
 
         QStyleOptionViewItemV4 option;
@@ -192,7 +193,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         option.showDecorationSelected = true;
         option.rect = rect();
         if( mouseOver_ ) option.state |= QStyle::State_MouseOver;
-        if( hasFocus() ) option.state |= QStyle::State_Selected;
+        if( hasFocus_ || dragInProgress_ ) option.state |= QStyle::State_Selected;
         style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, itemView_ );
 
     }
@@ -217,9 +218,11 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         painter->setFont( font() );
 
         // change text color if focus
-        if( hasFocus() || isDragged() ) painter->setPen( palette().color( QPalette::HighlightedText ) );
+        if( hasFocus_ || dragInProgress_ ) painter->setPen( palette().color( QPalette::HighlightedText ) );
 
-        painter->drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) ) );
+        QTextOption textOptions( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) );
+        textOptions.setWrapMode( QTextOption::NoWrap );
+        painter->drawText( QRectF( textRect ), text(), textOptions );
 
     }
 
@@ -234,7 +237,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         }
 
         // get pixmap
-        const QPixmap pixmap( icon().pixmap( iconSize() ) );
+        const QPixmap pixmap( icon().pixmap( iconSize(), isEnabled() ? QIcon::Normal:QIcon::Disabled ) );
         const QPoint position(
             iconRect.x() + 0.5*(iconRect.width() - pixmap.width()),
             iconRect.y() + 0.5*(iconRect.height() - pixmap.height()) );
@@ -356,6 +359,7 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     group_ = new QButtonGroup( this );
     group_->setExclusive( false );
     connect( group_, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
+    connect( group_, SIGNAL( buttonPressed( QAbstractButton* ) ), SLOT( _updateFocus( QAbstractButton* ) ) );
 
     // context menu
     contextMenu_ = new ContextMenu( this );
@@ -376,6 +380,8 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
 void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
 {
 
+    Debug::Throw( "PlacesWidget::setIconProvider.\n" );
+
     // set provider
     iconProvider_ = provider;
 
@@ -388,8 +394,31 @@ void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
 
 }
 
+//______________________________________________________________________
+QList<BaseFileInfo> PlacesWidget::items( void ) const
+{
+    Debug::Throw( "PlacesWidget::items.\n" );
+    QList<BaseFileInfo> out;
+    foreach( PlacesWidgetItem* item, items_ )
+    { out.append( item->fileInfo() );  }
 
-//_______________________________________________
+    return out;
+}
+
+//______________________________________________________________________
+void PlacesWidget::setItemEnabled( const BaseFileInfo& fileInfo, bool value )
+{
+    Debug::Throw() << "PlacesWidget::setItemEnabled - fileInfo: " << fileInfo << " value: " << value << endl;
+    foreach( PlacesWidgetItem* item, items_ )
+    {
+
+        if( item->fileInfo().file() == fileInfo.file() && item->fileInfo().location() == fileInfo.location() )
+        { item->setEnabled( value ); }
+
+    }
+}
+
+//______________________________________________________________________
 bool PlacesWidget::read( File file )
 {
     Debug::Throw( "PlacesWidget::read.\n" );
@@ -437,7 +466,7 @@ bool PlacesWidget::read( File file )
     return true;
 }
 
-//_______________________________________________
+//______________________________________________________________________
 bool PlacesWidget::write( File file )
 {
     Debug::Throw( "PlacesWidget::write.\n" );
@@ -577,19 +606,24 @@ void PlacesWidget::_buttonClicked( QAbstractButton* button )
     Debug::Throw( "PlacesWidget::_buttonClicked.\n" );
 
     PlacesWidgetItem* currentItem( qobject_cast<PlacesWidgetItem*>( button ) );
-    if( !currentItem ) return;
+    if( currentItem ) emit itemSelected( currentItem->fileInfo() );
 
-    // update focus
-    if( !currentItem->hasFocus() )
-    {
-        foreach( PlacesWidgetItem* item, items_ )
-        { if( item != currentItem ) item->setFocus( false ); }
 
-        currentItem->setFocus( true );
-    }
+}
 
-    emit itemSelected( currentItem->fileInfo() );
+//___________________________________________________________________
+void PlacesWidget::_updateFocus( QAbstractButton* button )
+{
 
+    Debug::Throw( "PlacesWidget::_updateFocus.\n" );
+
+    // cas button to item
+    PlacesWidgetItem* currentItem( qobject_cast<PlacesWidgetItem*>( button ) );
+    if( currentItem ) currentItem->setFocus( true );
+
+    // disable focus for all other buttons
+    foreach( PlacesWidgetItem* item, items_ )
+    { if( item != currentItem ) item->setFocus( false ); }
 
 }
 
@@ -796,7 +830,7 @@ void PlacesWidget::dragEnterEvent( QDragEnterEvent* event )
     {
         event->accept();
         dragInProgress_ = true;
-        dragTarget_ = _dragTarget( event->pos() );
+        dragTarget_ = _updateDragTarget( event->pos() );
         update();
     }
 
@@ -806,7 +840,7 @@ void PlacesWidget::dragEnterEvent( QDragEnterEvent* event )
 void PlacesWidget::dragMoveEvent( QDragMoveEvent* event )
 {
     Debug::Throw( "PlacesWidget::dragMoveEvent.\n" );
-    QPoint dragTarget( _dragTarget( event->pos() ) );
+    QPoint dragTarget( _updateDragTarget( event->pos() ) );
     if( dragTarget != dragTarget_ )
     {
         dragTarget_ = dragTarget;
@@ -849,7 +883,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
         int insertionIndex = 0;
         foreach( PlacesWidgetItem* item, items_ )
         {
-            if( dragTarget_.y() >= item->rect().translated( item->pos() ).bottom() ) ++insertionIndex;
+            if( dragTarget_.y()+1 >= item->rect().translated( item->pos() ).bottom() ) ++insertionIndex;
             else break;
         }
 
@@ -875,7 +909,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
         int insertionIndex = 0;
         foreach( PlacesWidgetItem* item, items_ )
         {
-            if( dragTarget_.y() >= item->rect().translated( item->pos() ).bottom() ) ++insertionIndex;
+            if( dragTarget_.y()+1 >= item->rect().translated( item->pos() ).bottom() ) ++insertionIndex;
             else break;
         }
 
@@ -892,7 +926,6 @@ void PlacesWidget::dropEvent( QDropEvent* event )
 //_______________________________________________
 void PlacesWidget::mousePressEvent( QMouseEvent* event )
 {
-
     Debug::Throw( "PlacesWidget::mousePressEvent.\n" );
 
     const QPoint position( event->pos() );
@@ -900,18 +933,22 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
     {  item->setFocus( item->rect().translated( item->pos() ).contains( position ) ); }
 
     QWidget::mousePressEvent( event );
-
 }
 
 //_______________________________________________
-QPoint PlacesWidget::_dragTarget( const QPoint& position ) const
+QPoint PlacesWidget::_updateDragTarget( const QPoint& position ) const
 {
     int y(0);
     foreach( PlacesWidgetItem* item, items_ )
     {
         const QRect rect( item->rect().translated( item->pos() ) );
         if( rect.center().y() < position.y() ) y = rect.bottom();
-        else  break;
+        else {
+
+            if( item->hasFocus() ) --y;
+            break;
+
+        }
     }
 
     return QPoint( 0, y );
