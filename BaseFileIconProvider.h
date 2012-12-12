@@ -28,6 +28,7 @@
 #include "Counter.h"
 
 #include <QtCore/QObject>
+#include <QtGui/QIcon>
 
 //! returns icon for a given FileInfo
 class BaseFileIconProvider: public QObject, public Counter
