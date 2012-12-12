@@ -60,6 +60,10 @@ class PlacesWidgetItem: public QAbstractButton
     const BaseFileInfo& fileInfo( void ) const
     { return fileInfo_; }
 
+    //! true if valid
+    bool isValid( void ) const
+    { return valid_; }
+
     //! focus
     bool hasFocus( void ) const
     { return hasFocus_; }
@@ -92,6 +96,10 @@ class PlacesWidgetItem: public QAbstractButton
     //! some styles require an item view passed to painting method to have proper selection rendered in items
     void setItemView( QWidget* widget )
     { itemView_ = widget; }
+
+    //! set validity
+    void setIsValid( bool value )
+    { valid_ = value; }
 
     //! set mouse over manualy
     void setMouseOver( bool value )
@@ -145,6 +153,9 @@ class PlacesWidgetItem: public QAbstractButton
 
     //! file info
     BaseFileInfo fileInfo_;
+
+    //! true if valid (true by default)
+    bool valid_;
 
     //! mouse over
     bool mouseOver_;

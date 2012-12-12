@@ -72,7 +72,7 @@ class PlacesWidget: public QWidget, public Counter
     QList<BaseFileInfo> items( void ) const;
 
     //! set item enabled
-    void setItemEnabled( const BaseFileInfo&, bool );
+    void setItemIsValid( const BaseFileInfo&, bool );
 
     //! Read fileList from file
     bool read( File = File() );

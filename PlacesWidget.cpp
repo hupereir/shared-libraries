@@ -38,6 +38,7 @@
 
 #include <QtCore/QUrl>
 #include <QtGui/QApplication>
+#include <QtGui/QListView>
 #include <QtGui/QPainter>
 
 const double PlacesWidgetItem::BorderWidth = 2;
@@ -52,6 +53,7 @@ const QString PlacesWidgetItem::MimeType( "internal/places-widget-item" );
 PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
     QAbstractButton( parent ),
     itemView_( 0x0 ),
+    valid_( true ),
     mouseOver_( false ),
     hasFocus_( false ),
     dragInProgress_( false )
@@ -185,7 +187,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
 {
 
     // render mouse over
-    if( mouseOver_ || hasFocus_ || dragInProgress_ )
+    if( valid_ && ( mouseOver_ || hasFocus_ || dragInProgress_ ) )
     {
 
         QStyleOptionViewItemV4 option;
@@ -218,7 +220,8 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         painter->setFont( font() );
 
         // change text color if focus
-        if( hasFocus_ || dragInProgress_ ) painter->setPen( palette().color( QPalette::HighlightedText ) );
+        if( valid_ && ( hasFocus_ || dragInProgress_ ) ) painter->setPen( palette().color( QPalette::HighlightedText ) );
+        else painter->setPen( palette().color( valid_ ? QPalette::Normal:QPalette::Disabled, QPalette::WindowText  ) );
 
         QTextOption textOptions( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) );
         textOptions.setWrapMode( QTextOption::NoWrap );
@@ -237,7 +240,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         }
 
         // get pixmap
-        const QPixmap pixmap( icon().pixmap( iconSize(), isEnabled() ? QIcon::Normal:QIcon::Disabled ) );
+        const QPixmap pixmap( icon().pixmap( iconSize(), isValid() ? QIcon::Normal:QIcon::Disabled ) );
         const QPoint position(
             iconRect.x() + 0.5*(iconRect.width() - pixmap.width()),
             iconRect.y() + 0.5*(iconRect.height() - pixmap.height()) );
@@ -335,6 +338,10 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
 
     Debug::Throw( "PlacesWidget::PlacesWidget.\n" );
 
+    // some styles require an item view passed to painting method to have proper selection rendered in items
+    itemView_ = new QListView( this );
+    itemView_->hide();
+
     // accept drops
     setAcceptDrops( true );
 
@@ -406,14 +413,14 @@ QList<BaseFileInfo> PlacesWidget::items( void ) const
 }
 
 //______________________________________________________________________
-void PlacesWidget::setItemEnabled( const BaseFileInfo& fileInfo, bool value )
+void PlacesWidget::setItemIsValid( const BaseFileInfo& fileInfo, bool value )
 {
-    Debug::Throw() << "PlacesWidget::setItemEnabled - fileInfo: " << fileInfo << " value: " << value << endl;
+    Debug::Throw() << "PlacesWidget::setItemIsValid - fileInfo: " << fileInfo << " value: " << value << endl;
     foreach( PlacesWidgetItem* item, items_ )
     {
 
         if( item->fileInfo().file() == fileInfo.file() && item->fileInfo().location() == fileInfo.location() )
-        { item->setEnabled( value ); }
+        { item->setIsValid( value ); }
 
     }
 }
@@ -533,6 +540,9 @@ void PlacesWidget::clear( void )
     // clear items
     items_.clear();
 
+    // emit signal
+    emit contentsChanged();
+
 }
 
 //______________________________________________________________________
@@ -554,11 +564,14 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
     item->setIcon( icon );
     item->setText( name );
     item->setFileInfo( fileInfo );
+    item->setItemView( itemView_ );
 
     // add to button group, list of items and layout
     group_->addButton( item );
     buttonLayout_->addWidget( item );
     items_.append( item );
+
+    // emit signal
     emit contentsChanged();
 
 }
@@ -590,11 +603,14 @@ void PlacesWidget::insert( int position, const QIcon& icon, const QString& name,
     item->setIcon( icon );
     item->setText( name );
     item->setFileInfo( fileInfo );
+    item->setItemView( itemView_ );
 
     // add to button group, list of items and layout
     group_->addButton( item );
     buttonLayout_->insertWidget( position, item );
     items_.insert( position, item );
+
+    // emit signal
     emit contentsChanged();
 
 }
@@ -619,7 +635,7 @@ void PlacesWidget::_updateFocus( QAbstractButton* button )
 
     // cas button to item
     PlacesWidgetItem* currentItem( qobject_cast<PlacesWidgetItem*>( button ) );
-    if( currentItem ) currentItem->setFocus( currentItem->isEnabled() );
+    if( currentItem ) currentItem->setFocus( true );
 
     // disable focus for all other buttons
     foreach( PlacesWidgetItem* item, items_ )
@@ -803,7 +819,9 @@ void PlacesWidget::_editItem( void )
     const bool nameChanged( focusItem_->text() != dialog.name() );
     if( nameChanged ) focusItem_->setText( dialog.name() );
 
-    if( nameChanged || locationChanged || fileChanged ) emit contentsChanged();
+    // emit signal
+    if( nameChanged || locationChanged || fileChanged )
+    { emit contentsChanged(); }
 
 }
 
@@ -819,6 +837,9 @@ void PlacesWidget::_removeItem( void )
     focusItem_->hide();
     focusItem_->deleteLater();
     focusItem_ = 0x0;
+
+    // emit signal
+    emit contentsChanged();
 
 }
 

@@ -22,75 +22,14 @@
 *******************************************************************************/
 
 #include "DockWidget.h"
+#include "DockWidget_p.h"
 #include "BaseMainWindow.h"
 #include "ScrollObject.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
-#include "WidgetMonitor.h"
 
 #include <QtGui/QLayout>
-#include <QtGui/QScrollArea>
 #include <QtGui/QStyle>
-
-//! container widget
-class MainWidget: public QWidget
-{
-    public:
-
-    //! constructor
-    MainWidget( QWidget* parent = 0x0 ):
-        QWidget( parent ),
-        monitor_( this )
-    {}
-
-    // monitor
-    WidgetMonitor& windowMonitor( void )
-    { return monitor_; }
-
-    //! size hint
-    virtual QSize sizeHint( void ) const
-    {
-        const QSize size( monitor_.sizeHint() );
-        return size.isValid() ? size:QWidget::sizeHint();
-    }
-
-    private:
-
-    //! window monitor
-    WidgetMonitor monitor_;
-
-};
-
-//! container widget
-class ContainerWidget: public QWidget
-{
-
-    public:
-
-    ContainerWidget( QWidget* parent = 0x0 ):
-        QWidget( parent )
-    {
-        setLayout( new QVBoxLayout() );
-        layout()->setSpacing(0);
-        layout()->setMargin(0);
-    }
-
-};
-
-//! container scroll area
-class ContainerScrollArea: public QScrollArea
-{
-
-    public:
-
-    ContainerScrollArea( QWidget* parent ):
-        QScrollArea( parent )
-    {
-        setWidgetResizable ( true );
-        setFrameStyle( QFrame::NoFrame );
-    }
-
-};
 
 //_________________________________________________________
 DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& optionName ):
