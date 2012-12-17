@@ -686,7 +686,7 @@ void TextEditor::lowerCase( void )
 void TextEditor::find( TextSelection selection )
 {
     Debug::Throw( "TextEditor::find.\n" );
-    bool found( selection.flag( TextSelection::BACKWARD ) ? _findBackward( selection, true ):_findForward( selection, true ) );
+    bool found( selection.flag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
     if( found ) emit matchFound();
     else emit noMatchFound();
 }
@@ -734,14 +734,14 @@ void TextEditor::replace( TextSelection selection )
     QTextCursor cursor( textCursor() );
     bool accepted( true );
     accepted &= cursor.hasSelection();
-    if( selection.flag( TextSelection::REGEXP ) )
+    if( selection.flag( TextSelection::RegExp ) )
     {
         accepted &= QRegExp( selection.text() ).exactMatch( cursor.selectedText() );
     } else {
 
         accepted &= ( !cursor.selectedText().compare(
             selection.text(),
-            selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) );
+            selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) );
 
     }
 
@@ -762,7 +762,7 @@ void TextEditor::replaceAgainForward( void )
 {
     Debug::Throw( "TextEditor::replaceAgainForward.\n" );
     TextSelection selection( lastSelection() );
-    selection.setFlag( TextSelection::BACKWARD, false );
+    selection.setFlag( TextSelection::Backward, false );
     replace( selection );
 }
 
@@ -771,7 +771,7 @@ void TextEditor::replaceAgainBackward( void )
 {
     Debug::Throw( "TextEditor::replaceAgainBackward.\n" );
     TextSelection selection( lastSelection() );
-    selection.setFlag( TextSelection::BACKWARD, true );
+    selection.setFlag( TextSelection::Backward, true );
     replace( selection );
 }
 
@@ -1716,8 +1716,8 @@ TextSelection TextEditor::selection( void ) const
     TextSelection out( "" );
 
     // copy attributes from last selection
-    out.setFlag( TextSelection::CASE_SENSITIVE, lastSelection().flag( TextSelection::CASE_SENSITIVE ) );
-    out.setFlag( TextSelection::ENTIRE_WORD, lastSelection().flag( TextSelection::ENTIRE_WORD ) );
+    out.setFlag( TextSelection::CaseSensitive, lastSelection().flag( TextSelection::CaseSensitive ) );
+    out.setFlag( TextSelection::EntireWord, lastSelection().flag( TextSelection::EntireWord ) );
 
     // try set from current selection
     QString text;
@@ -1775,10 +1775,10 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
     QTextCursor cursor( textCursor() );
 
     // if no_increment, start from the beginning of the possible current selection
-    if( cursor.hasSelection() && selection.flag( TextSelection::NO_INCREMENT ) )
+    if( cursor.hasSelection() && selection.flag( TextSelection::NoIncrement ) )
     { cursor.setPosition( cursor.anchor() ); }
 
-    if( selection.flag( TextSelection::REGEXP ) )
+    if( selection.flag( TextSelection::RegExp ) )
     {
 
         // construct regexp and check
@@ -1790,7 +1790,7 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
         // make a copy of current cursor
         QTextCursor found( cursor );
@@ -1840,8 +1840,8 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
 
         // search flags
         QTextDocument::FindFlags flags( 0 );
-        if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
-        if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
+        if( selection.flag( TextSelection::CaseSensitive ) )  flags |= QTextDocument::FindCaseSensitively;
+        if( selection.flag( TextSelection::EntireWord ) ) flags |= QTextDocument::FindWholeWords;
 
         QTextCursor found( document()->find( selection.text(), cursor, flags ) );
 
@@ -1883,9 +1883,9 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
     QTextCursor cursor( textCursor() );
 
     // if no_increment, start from the beginning of the possible current selection
-    if( cursor.hasSelection() && selection.flag( TextSelection::NO_INCREMENT ) )
+    if( cursor.hasSelection() && selection.flag( TextSelection::NoIncrement ) )
     { cursor.setPosition( cursor.anchor()+selection.text().size()+1 ); }
-    if( selection.flag( TextSelection::REGEXP ) )
+    if( selection.flag( TextSelection::RegExp ) )
     {
 
         // construct regexp and check
@@ -1897,7 +1897,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
         // make a copy of current cursor
         QTextCursor found( cursor );
@@ -1946,8 +1946,8 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
 
         // search flags
         QTextDocument::FindFlags flags( QTextDocument::FindBackward );
-        if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
-        if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
+        if( selection.flag( TextSelection::CaseSensitive ) )  flags |= QTextDocument::FindCaseSensitively;
+        if( selection.flag( TextSelection::EntireWord ) ) flags |= QTextDocument::FindWholeWords;
 
         QTextCursor found( document()->find( selection.text(), cursor, flags ) );
 
@@ -2050,7 +2050,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     int current_position( saved_anchor );
 
     // check if regexp should be used or not
-    if( selection.flag( TextSelection::REGEXP ) )
+    if( selection.flag( TextSelection::RegExp ) )
     {
 
         Debug::Throw( "TextEditor::_replaceInRange - regexp.\n" );
@@ -2064,7 +2064,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CASE_SENSITIVE ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
         // replace everything in selected text
         QString selectedText( cursor.selectedText() );
@@ -2113,8 +2113,8 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
         // define search flags
         QTextDocument::FindFlags flags(0);
-        if( selection.flag( TextSelection::CASE_SENSITIVE ) )  flags |= QTextDocument::FindCaseSensitively;
-        if( selection.flag( TextSelection::ENTIRE_WORD ) ) flags |= QTextDocument::FindWholeWords;
+        if( selection.flag( TextSelection::CaseSensitive ) )  flags |= QTextDocument::FindCaseSensitively;
+        if( selection.flag( TextSelection::EntireWord ) ) flags |= QTextDocument::FindWholeWords;
 
         while( !( cursor = document()->find( selection.text(), cursor, flags ) ).isNull() && cursor.position() <= saved_position )
         {

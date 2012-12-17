@@ -38,7 +38,7 @@ class DetailsDialog: public CustomDialog
 
     //! constructor
     DetailsDialog( QWidget* parent,
-        const unsigned int& flags = OkButton | CancelButton,
+        CustomDialog::Flags flags = CustomDialog::Flags( OkButton | CancelButton ),
         Qt::WFlags wflags = 0 ):
         CustomDialog( parent, flags, wflags ),
         detailsLabel_( 0x0 ),

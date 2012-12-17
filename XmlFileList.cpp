@@ -39,8 +39,8 @@ XmlFileList::XmlFileList( QObject* parent ):
 {
 
     Debug::Throw( "XmlFileList::XmlFileList.\n" );
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-    connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    connect( qApp, SIGNAL( aboutToQuit( void ) ), SLOT( _saveConfiguration( void ) ) );
     _updateConfiguration();
 
 }

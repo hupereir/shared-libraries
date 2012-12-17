@@ -116,6 +116,10 @@ class PlacesWidgetItem: public QAbstractButton
         update();
     }
 
+    //! enable drag
+    void setDragEnabled( bool value )
+    { dragEnabled_ = value; }
+
     //@}
 
     //! border width
@@ -162,6 +166,9 @@ class PlacesWidgetItem: public QAbstractButton
 
     //! focus
     bool hasFocus_;
+
+    //! true if drag is enabled (false by default)
+    bool dragEnabled_;
 
     //! drag
     bool dragInProgress_;

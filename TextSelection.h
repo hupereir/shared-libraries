@@ -24,118 +24,101 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TextSelection.h
-  \brief find_text dialog for text editor widgets
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QString>
-
-
-
 #include "Debug.h"
+
+#include <QtCore/QString>
 
 //! string to be found and options
 class TextSelection
 {
-  public:
+    public:
 
-  //! default constructor
-  TextSelection(
-    const QString& text = "",
-    const QString& replace_text = "",
-    const unsigned int& flags = NONE ):
-    text_( text ),
-    replace_text_( replace_text ),
-    flags_( flags )
-  {}
+    //! text selection flags
+    enum Flag
+    {
+        None = 0,
+        Backward = 1<<0,
+        CaseSensitive = 1<<1,
+        EntireWord = 1<<2,
+        RegExp = 1<<3,
+        NoIncrement = 1<<4
+    };
 
-  //! text selection flags
-  enum Flag
-  {
-    //! no flags
-    NONE = 0,
+    Q_DECLARE_FLAGS( Flags, Flag );
 
-    //! search backward
-    BACKWARD = 1<<0,
+    //! default constructor
+    TextSelection(
+        const QString& text = "",
+        const QString& replaceText = "",
+        Flags flags = None ):
+        text_( text ),
+        replaceText_( replaceText ),
+        flags_( flags )
+    {}
 
-    //! case sensitive search
-    CASE_SENSITIVE = 1<<1,
+    //! text
+    const QString& text( void ) const
+    { return text_; }
 
-    //! entire word search
-    ENTIRE_WORD = 1<<2,
+    //! test
+    void setText( const QString& text )
+    { text_ = text; }
 
-    //! regular expressions search
-    REGEXP = 1<<3,
+    //! replace text
+    const QString& replaceText( void ) const
+    { return replaceText_; }
 
-    //! incremental search
-    NO_INCREMENT = 1<<4
-  };
+    //! replace text
+    void setReplaceText( const QString& text )
+    { replaceText_ = text; }
 
-  //! text
-  const QString& text( void ) const
-  { return text_; }
+    //! flags
+    Flags flags( void ) const
+    { return flags_; }
 
-  //! test
-  void setText( const QString& text )
-  { text_ = text; }
+    //! flags
+    void setFlags( Flags flags )
+    { flags_ = flags; }
 
-  //! replace text
-  const QString& replaceText( void ) const
-  { return replace_text_; }
+    //! flags
+    bool flag( const Flag& flag ) const
+    { return flags_ & flag; }
 
-  //! replace text
-  void setReplaceText( const QString& text )
-  { replace_text_ = text; }
+    //! flags
+    void setFlag( const Flag& flag, const bool& value )
+    {
+        if( value ) flags_ |= flag;
+        else flags_ &= (~flag);
+    }
 
-  //! flags
-  const unsigned int& flags( void ) const
-  { return flags_; }
+    private:
 
-  //! flags
-  void setFlags( const unsigned int& flags )
-  { flags_ = flags; }
+    //! string to be found
+    QString text_;
 
-  //! flags
-  bool flag( const Flag& flag ) const
-  { return flags_ & flag; }
+    //! string to replace
+    QString replaceText_;
 
-  //! flags
-  void setFlag( const Flag& flag, const bool& value )
-  {
-    if( value ) flags_ |= flag;
-    else flags_ &= (~flag);
-  }
+    //! flags
+    Flags flags_;
 
-  private:
-
-  //! string to be found
-  QString text_;
-
-  //! string to replace
-  QString replace_text_;
-
-  //! flags
-  unsigned int flags_;
-
-  //! streamer
-  friend QTextStream &operator << (QTextStream &out,const TextSelection &selection)
-  {
-    out
-        << "TextSelection -"
-        << " text: " << selection.text()
-        << " replacement: " << selection.replaceText()
-        << " backward: " << (selection.flag(BACKWARD) ? "true":"false")
-        << " case_sensitive: " << (selection.flag(CASE_SENSITIVE) ? "true":"false")
-        << " entire_word: " << (selection.flag(ENTIRE_WORD) ? "true":"false")
-        << " regex: " << (selection.flag(REGEXP) ? "true":"false")
-        << " no_increment: " << (selection.flag(NO_INCREMENT) ? "true":"false");
-    return out;
-  }
+    //! streamer
+    friend QTextStream &operator << (QTextStream &out,const TextSelection &selection)
+    {
+        out
+            << "TextSelection -"
+            << " text: " << selection.text()
+            << " replacement: " << selection.replaceText()
+            << " backward: " << (selection.flag(Backward) ? "true":"false")
+            << " case sensitive: " << (selection.flag(CaseSensitive) ? "true":"false")
+            << " entire word: " << (selection.flag(EntireWord) ? "true":"false")
+            << " regex: " << (selection.flag(RegExp) ? "true":"false")
+            << " no increment: " << (selection.flag(NoIncrement) ? "true":"false");
+        return out;
+    }
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( TextSelection::Flags )
 
 #endif

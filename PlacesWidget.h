@@ -157,6 +157,9 @@ class PlacesWidget: public QWidget, public Counter
     //! set db file
     bool _setDBFile( const File& );
 
+    //! update drag state
+    void _updateDragState( void ) const;
+
     //! drag target
     QPoint _updateDragTarget( const QPoint& ) const;
 

@@ -40,7 +40,6 @@ class CustomDialog: public BaseDialog, public Counter
     //! mask used to define number of buttons in customized dialogs
     enum Flag
     {
-        //! no flags
         None = 0,
         OkButton = 1<<0,
         CloseButton = 1<<0,
@@ -48,10 +47,12 @@ class CustomDialog: public BaseDialog, public Counter
         Separator = 1<<2
     };
 
+    Q_DECLARE_FLAGS( Flags, Flag );
+
     //! constructor
     CustomDialog(
         QWidget* = 0x0,
-        const unsigned int& = OkButton | CancelButton,
+        Flags = Flags( OkButton | CancelButton ),
         Qt::WFlags = 0);
 
     //! destructor
@@ -116,6 +117,8 @@ class CustomDialog: public BaseDialog, public Counter
     QPushButton *cancelButton_;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( CustomDialog::Flags );
 
 #endif
 

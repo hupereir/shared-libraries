@@ -31,7 +31,7 @@
 #include <QtGui/QApplication>
 
 //_______________________________________________________
-DebugMenu::DebugMenu( QWidget* parent, unsigned int flags ):
+DebugMenu::DebugMenu( QWidget* parent, Flags flags ):
     QMenu( parent ),
     Counter( "DebugMenu" ),
     counterDialog_( 0 ),
@@ -39,10 +39,10 @@ DebugMenu::DebugMenu( QWidget* parent, unsigned int flags ):
 {
 
     Debug::Throw( "DebugMenu::DebugMenu.\n" );
-    if( flags&COUNTERS ) addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
-    if( flags&ICONS ) addAction( "&Icon Cache ", this, SLOT( _showIconCacheDialog() ) );
-    if( flags&SYSTEM ) addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
-    if( flags&OPTIONS ) addAction( "&Run-time options", this, SLOT( _showOptions() ) );
+    if( flags&Counters ) addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
+    if( flags&Icons ) addAction( "&Icon Cache ", this, SLOT( _showIconCacheDialog() ) );
+    if( flags&System ) addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
+    if( flags&Options ) addAction( "&Run-time options", this, SLOT( _showOptions() ) );
 }
 
 //_______________________________________________

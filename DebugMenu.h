@@ -44,15 +44,17 @@ class DebugMenu: public QMenu, public Counter
     //! flags
     enum Flag
     {
-        COUNTERS = 1<<0,
-        ICONS = 1<<2,
-        SYSTEM = 1<<3,
-        OPTIONS = 1<<4,
-        DEFAULT = COUNTERS | ICONS | SYSTEM | OPTIONS
+        Counters = 1<<0,
+        Icons = 1<<2,
+        System = 1<<3,
+        Options = 1<<4,
+        Default = Counters|Icons|System|Options
     };
 
+    Q_DECLARE_FLAGS( Flags, Flag );
+
     //! constructor
-    DebugMenu( QWidget* parent, unsigned int flags = DEFAULT );
+    DebugMenu( QWidget* parent, Flags flags = Default );
 
     //! destructor
     ~DebugMenu( void )
@@ -81,4 +83,7 @@ class DebugMenu: public QMenu, public Counter
     IconCacheDialog* iconCacheDialog_;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( DebugMenu::Flags )
+
 #endif

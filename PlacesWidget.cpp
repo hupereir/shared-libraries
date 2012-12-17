@@ -56,6 +56,7 @@ PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
     valid_( true ),
     mouseOver_( false ),
     hasFocus_( false ),
+    dragEnabled_( false ),
     dragInProgress_( false )
 {
     Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
@@ -120,7 +121,7 @@ void PlacesWidgetItem::mousePressEvent( QMouseEvent* event )
     Debug::Throw( "PlacesWidgetItem::mousePressEvent.\n" );
 
     // update focusItem
-    if( event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier)
+    if( dragEnabled_ && event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier)
     {
         dragInProgress_ = true;
         dragOrigin_ = event->pos();
@@ -135,7 +136,7 @@ void PlacesWidgetItem::mouseMoveEvent( QMouseEvent* event )
 {
 
     Debug::Throw( "PlacesWidget::mouseMoveEvent.\n" );
-    if( (event->buttons() & Qt::LeftButton) && dragInProgress_ &&
+    if( dragEnabled_ && ((event->buttons() & Qt::LeftButton) && dragInProgress_ ) &&
         ( event->pos() - dragOrigin_ ).manhattanLength() >= QApplication::startDragDistance() )
     {
 
@@ -468,8 +469,6 @@ bool PlacesWidget::read( File file )
         }
     }
 
-    emit contentsChanged();
-
     return true;
 }
 
@@ -572,6 +571,7 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
     items_.append( item );
 
     // emit signal
+    _updateDragState();
     emit contentsChanged();
 
 }
@@ -611,6 +611,7 @@ void PlacesWidget::insert( int position, const QIcon& icon, const QString& name,
     items_.insert( position, item );
 
     // emit signal
+    _updateDragState();
     emit contentsChanged();
 
 }
@@ -839,6 +840,7 @@ void PlacesWidget::_removeItem( void )
     focusItem_ = 0x0;
 
     // emit signal
+    _updateDragState();
     emit contentsChanged();
 
 }
@@ -954,6 +956,13 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
     {  item->setFocus( item->rect().translated( item->pos() ).contains( position ) ); }
 
     QWidget::mousePressEvent( event );
+}
+
+//_______________________________________________
+void PlacesWidget::_updateDragState( void ) const
+{
+    foreach( PlacesWidgetItem* item, items_ )
+    { item->setDragEnabled( items_.size()>1 ); }
 }
 
 //_______________________________________________

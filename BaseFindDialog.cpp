@@ -20,23 +20,15 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseFindDialog.cpp
-\brief find_text dialog for text editor widgets
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QFrame>
-#include <QPushButton>
-
 #include "BaseIcons.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "LineEditor.h"
 #include "Debug.h"
 #include "BaseFindDialog.h"
+
+#include <QtGui/QFrame>
+#include <QtGui/QPushButton>
 
 //________________________________________________________________________
 QOrderedSet<QString>& BaseFindDialog::_searchedStrings( void )

@@ -82,15 +82,15 @@ class BaseFindDialog: public BaseDialog, public Counter
     }
 
     //! get selection
-    virtual TextSelection selection( const bool& no_increment ) const
+    virtual TextSelection selection( const bool& noIncrement ) const
     {
 
         TextSelection out( editor().currentText() );
-        out.setFlag( TextSelection::BACKWARD, backwardCheckbox_->isChecked() );
-        out.setFlag( TextSelection::CASE_SENSITIVE, caseSensitiveCheckbox_->isChecked() );
-        out.setFlag( TextSelection::ENTIRE_WORD, entireWordCheckbox_->isChecked() );
-        out.setFlag( TextSelection::REGEXP, regexpCheckbox_->isChecked() );
-        out.setFlag( TextSelection::NO_INCREMENT, no_increment );
+        out.setFlag( TextSelection::Backward, backwardCheckbox_->isChecked() );
+        out.setFlag( TextSelection::CaseSensitive, caseSensitiveCheckbox_->isChecked() );
+        out.setFlag( TextSelection::EntireWord, entireWordCheckbox_->isChecked() );
+        out.setFlag( TextSelection::RegExp, regexpCheckbox_->isChecked() );
+        out.setFlag( TextSelection::NoIncrement, noIncrement );
         return out;
     }
 
