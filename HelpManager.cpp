@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file HelpManager.cpp
-\brief reference manual help system
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "BaseIcons.h"
 #include "CustomDialog.h"
 #include "Debug.h"
@@ -51,8 +43,7 @@ namespace BASE
     HelpManager::HelpManager( QObject* parent ):
         QObject( parent ),
         Counter( "HelpManager" ),
-        windowTitle_( "Reference Manual" ),
-        modified_( false )
+        windowTitle_( "Reference Manual" )
     {
 
         Debug::Throw( "HelpManager::HelpManager.\n" );
@@ -61,11 +52,6 @@ namespace BASE
         displayAction_ = new QAction( IconEngine::get( ICONS::HELP ), "Reference Manual", this );
         displayAction_->setShortcut( QKeySequence::HelpContents );
         connect( displayAction_, SIGNAL( triggered() ), SLOT( _display() ) );
-
-        dumpAction_ = new QAction( "Dump Help", this );
-        connect( dumpAction_, SIGNAL( triggered() ), SLOT( _dumpHelpString() ) );
-
-        connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _save() ) );
 
     }
 
@@ -91,52 +77,6 @@ namespace BASE
 
     }
 
-    //_________________________________________________________
-    void HelpManager::install( const QString& file )
-    {
-
-        Debug::Throw( "HelpManager::Install.\n" );
-
-        // set file and check
-        file_ = file;
-        if( !QFileInfo( file_ ).exists() ) return;
-
-        // parse the file
-        QFile qtfile( file );
-        if ( !qtfile.open( QIODevice::ReadOnly ) )
-        {
-            Debug::Throw( "HelpManager::install - cannot open file.\n" );
-            return;
-        }
-
-        // dom document
-        QDomDocument document;
-        XmlError error( file );
-        if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) ) {
-            qtfile.close();
-            return;
-        }
-
-        // clear existing help
-        clear();
-
-        // loop over dom elements
-        QDomElement docElement = document.documentElement();
-        QDomNode node = docElement.firstChild();
-        for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
-        {
-            QDomElement element = node.toElement();
-            if( element.isNull() ) continue;
-
-            // special options
-            if( element.tagName() == XML_ITEM ) items_ << HelpItem( element );
-
-        }
-
-        return;
-
-    }
-
     //_____________________________________________________
     void HelpManager::setWindowTitle( const QString& value )
     {
@@ -156,83 +96,10 @@ namespace BASE
         dialog->setWindowTitle( windowTitle_ );
         dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
         dialog->setItems( items_ );
-        dialog->setEditEnabled( file_.size() );
         dialog->centerOnWidget( qApp->activeWindow() );
         dialog->show();
         return;
 
     }
 
-    //_________________________________________________________
-    void HelpManager::_dumpHelpString( void )
-    {
-
-        Debug::Throw( "HelpManager::_dumpHelpString.\n" );
-
-        // write output to stream
-        QString buffer;
-        QTextStream out( &buffer );
-
-        // retrieve all items from dialog
-        out << "static const char* helpText[] = {\n";
-        for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
-        {
-
-            // dump label
-            out << "  //_________________________________________________________\n";
-            out << "  \"" << iter->label() << "\",\n";
-
-            // dump text
-            QString text( iter->text() );
-            text = text.replace( "\"", "\\\"" );
-            text = text.replace( "\n", "\\n\"\n  \"" );
-            out << "  \"" << text << "\"";
-            out << ",\n";
-            out << "\n";
-        }
-        out << "  0\n";
-        out << "};\n";
-
-        CustomDialog* dialog = new CustomDialog( 0, CustomDialog::OkButton );
-        TextEditor *editor = new TextEditor( dialog );
-        dialog->layout()->setMargin(0);
-        dialog->buttonLayout().setMargin(5);
-        dialog->mainLayout().addWidget( editor );
-
-        editor->setWrapFromOptions( false );
-        editor->wrapModeAction().setChecked( false );
-        editor->setPlainText( buffer );
-        dialog->resize( 600, 500 );
-        dialog->setOptionName( "DUMP_HELP_DIALOG" );
-        dialog->centerOnWidget( qApp->activeWindow() );
-        dialog->show();
-
-    }
-
-    //_____________________________________________________
-    void HelpManager::_save( void )
-    {
-
-        Debug::Throw() << "HelpManager::_save - file: " << file_ << endl;
-
-        if( file_.isEmpty() ) return;
-        if( !modified() ) return;
-
-        // output file
-        QFile out( file_ );
-        if( !out.open( QIODevice::WriteOnly ) ) return;
-
-        // create document
-        QDomDocument document;
-
-        // top element
-        QDomElement top = document.appendChild( document.createElement( XML_HELP ) ).toElement();
-        for( HelpItem::List::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
-        { top.appendChild( iter->domElement( document ) ); }
-
-        out.write( document.toByteArray() );
-        out.close();
-        setModified( false );
-        return;
-    }
 }

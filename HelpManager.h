@@ -24,13 +24,13 @@
 *
 *******************************************************************************/
 
-#include <QObject>
-
 #include "Counter.h"
-#include "TextEditor.h"
 #include "Debug.h"
 #include "File.h"
 #include "HelpItem.h"
+
+#include <QtCore/QObject>
+#include <QtGui/QAction>
 
 //! help manager class
 namespace BASE
@@ -53,27 +53,12 @@ namespace BASE
         //!@name accessors
         //@{
 
-        //! input file
-        void setFile( const QString& file )
-        { file_ = file; }
-
         //! install help. Put items in the menu, create associated objects
         void install( const HelpItem::List& items )
         { items_ = items; }
 
         //! install help. Put items in the menu, create associated objects
         void install( const QString text[], bool clear = true );
-
-        //! install help, from file
-        void install( const QString& file );
-
-        //! copy current items to backup
-        void backup( void )
-        { backupItems_ = items_; }
-
-        //! restore backup
-        void restoreBackup( void )
-        { items_ = backupItems_; }
 
         //! list of items
         const HelpItem::List& items( void )
@@ -82,14 +67,6 @@ namespace BASE
         //! clear help
         void clear( void )
         { items_.clear(); }
-
-        //! modifiaction
-        void setModified( const bool& value )
-        { modified_ = value; }
-
-        //! modification
-        bool& modified( void )
-        { return modified_; }
 
         //! set dialog caption
         void setWindowTitle( const QString& value );
@@ -100,48 +77,21 @@ namespace BASE
         QAction& displayAction( void )
         { return *displayAction_; }
 
-        //! dump action
-        QAction& dumpAction( void )
-        { return *dumpAction_; }
-
         protected slots:
 
         //! opens help dialog
         void _display( void );
 
-        //! dump help string in a TextEditor
-        void _dumpHelpString( void );
-
-        //! save help to file
-        void _save( void );
-
         private:
-
-        //!@name actions
-        //@{
 
         //! dialog display action
         QAction* displayAction_;
 
-        //! dump help string
-        QAction* dumpAction_;
-
-        //@}
-
         //! window title
         QString windowTitle_;
 
-        //! help filename
-        QString file_;
-
-        //! modification state
-        bool modified_;
-
         //! complete set of help items
         HelpItem::List items_;
-
-        //! complete set of help items
-        HelpItem::List backupItems_;
 
     };
 

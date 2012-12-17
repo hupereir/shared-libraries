@@ -25,8 +25,8 @@
 *******************************************************************************/
 
 #include "AnimatedStackedWidget.h"
-#include "BaseDialog.h"
 #include "Counter.h"
+#include "CustomDialog.h"
 #include "HelpModel.h"
 
 #include <QtGui/QPushButton>
@@ -40,7 +40,7 @@ namespace BASE
     class HelpManager;
 
     //! reference manual display dialog
-    class HelpDialog:public BaseDialog, public Counter
+    class HelpDialog:public CustomDialog
     {
 
         Q_OBJECT
@@ -61,67 +61,12 @@ namespace BASE
         //! set items
         void setItems( const HelpItem::List& items );
 
-        //! adds Help item to the dialog
-        void addItem( const HelpItem& item );
-
-        //! enable/disable edition
-        void setEditEnabled( const bool& value )
-        { editButton_->setEnabled( value ); }
-
-        public slots:
-
-        //! close
-        virtual void close( void )
-        {
-
-            Debug::Throw( "HelpDialog::close.\n" );
-            if( model_.editionEnabled() ) _askForSave();
-            QDialog::close();
-
-        }
-
-        protected:
-
-        //! close event (overloaded)
-        virtual void closeEvent( QCloseEvent* );
-
         private slots:
 
         //! display selected help text
         void _display( const QModelIndex&, const QModelIndex& );
 
-        //! save modifications to current item
-        void _updateItemFromEditor( QModelIndex index = QModelIndex(), bool forced = false );
-
-        //! reload items from list and update Help manager
-        void _updateHelpManager( void );
-
-        //! toggle help edition
-        void _toggleEdition( void );
-
-        //! mode item
-        void _moveItem( int row );
-
-        //! rename item
-        void _renameItem( QModelIndex index, QString value );
-
-        //! new item
-        void _newItem( void );
-
-        //! delete current item
-        void _deleteItem( void );
-
-        //! show text
-        void _showHelpString( void );
-
         private:
-
-        //! if help manager is modified, ask for save
-        void _askForSave( void );
-
-        //! list
-        TreeView& _list( void ) const
-        { return *list_; }
 
         //! help manager
         HelpManager& _manager( void ) const
@@ -140,23 +85,11 @@ namespace BASE
         //! list of help items
         TreeView *list_;
 
-        //! stack layout to switch between editors
-        AnimatedStackedWidget* stack_;
-
         //! html edition frame
         QWidget* htmlFrame_;
 
-        //! plain edition frame
-        QWidget* plainFrame_;
-
         //! read-only text editor
         AnimatedTextEditor *htmlEditor_;
-
-        //! plain text editor
-        AnimatedTextEditor *plainEditor_;
-
-        //! edition button
-        QPushButton *editButton_;
 
     };
 
