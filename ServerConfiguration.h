@@ -24,13 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    ServerConfiguration.h
-   \brief   transparency common configuration
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include <QWidget>
 #include "Counter.h"
 #include "OptionWidgetList.h"

@@ -56,10 +56,10 @@ namespace SERVER
         connect( &client(), SIGNAL( commandAvailable( SERVER::ServerCommand ) ), SLOT( _process( SERVER::ServerCommand ) ) );
 
         if( !XmlOptions::get().contains( "SERVER_HOST" ) )
-        { XmlOptions::get().set( "SERVER_HOST", Option( QHostAddress( QHostAddress::LocalHost ).toString() ) ); }
+        { XmlOptions::get().setRaw( "SERVER_HOST", QHostAddress( QHostAddress::LocalHost ).toString(), true ); }
 
         if( !XmlOptions::get().contains( "SERVER_PORT" ) )
-        { XmlOptions::get().set( "SERVER_PORT", Option( "8090" ), "default port" ); }
+        { XmlOptions::get().set<int>( "SERVER_PORT", 8090, true ); }
 
     }
 

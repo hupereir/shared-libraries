@@ -21,22 +21,15 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    ServerConfiguration.cpp
-   \brief   transparency common configuration
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "GridLayout.h"
 #include "Debug.h"
 #include "OptionLineEditor.h"
 #include "OptionSpinBox.h"
 #include "ServerConfiguration.h"
 
-#include <QGroupBox>
-#include <QLabel>
-#include <QLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
 
 namespace SERVER
 {
@@ -54,36 +47,36 @@ namespace SERVER
         // generic objects
         QWidget *box;
         OptionLineEditor* line_editor;
-        OptionSpinBox* spin_box;
+        OptionSpinBox* spinBox;
 
         // general
         if( title.isEmpty() ) layout()->addWidget( box = new QWidget( this ) );
         else layout()->addWidget( box = new QGroupBox( title, this ) );
 
-        GridLayout* grid_layout = new GridLayout();
-        grid_layout->setSpacing(5);
-        grid_layout->setMargin(5);
-        grid_layout->setMaxCount( 2 );
-        grid_layout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-        box->setLayout( grid_layout );
+        GridLayout* gridLayout = new GridLayout();
+        gridLayout->setSpacing(5);
+        gridLayout->setMargin(5);
+        gridLayout->setMaxCount( 2 );
+        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
+        box->setLayout( gridLayout );
 
         QString tooltip( "The application server configuration refers to the host name\n"
             "and port used for inter-process communication. It notably ensures\n"
             "that only one instance of each application runs at a time." );
 
         // host
-        grid_layout->addWidget( new QLabel( "Host:", box ) );
-        grid_layout->addWidget( line_editor = new OptionLineEditor( box, "SERVER_HOST" ) );
+        gridLayout->addWidget( new QLabel( "Host:", box ) );
+        gridLayout->addWidget( line_editor = new OptionLineEditor( box, "SERVER_HOST" ) );
         line_editor->setToolTip( tooltip );
         addOptionWidget( line_editor );
 
         // shadow color
-        grid_layout->addWidget( new QLabel( "Port:", box ) );
-        grid_layout->addWidget( spin_box = new OptionSpinBox( box, "SERVER_PORT" ) );
-        spin_box->setMinimum(0);
-        spin_box->setMaximum(10000);
-        spin_box->setToolTip( tooltip );
-        addOptionWidget( spin_box );
+        gridLayout->addWidget( new QLabel( "Port:", box ) );
+        gridLayout->addWidget( spinBox = new OptionSpinBox( box, "SERVER_PORT" ) );
+        spinBox->setMinimum(0);
+        spinBox->setMaximum(10000);
+        spinBox->setToolTip( tooltip );
+        addOptionWidget( spinBox );
 
         return;
     }
