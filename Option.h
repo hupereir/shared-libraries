@@ -68,16 +68,81 @@ class Option:public Counter
     Option( const QString&, Flags = Recordable );
 
     //! less than operator
-    bool operator < (const Option& option ) const
-    { return value_ < option.value_; }
+    bool operator < (const Option& other ) const
+    {
+        if( value_ != other.value_ ) return value_ < other.value_;
+        else return flags_ != other.flags_;
+    }
 
     //! equal operator
-    bool operator == (const Option& option ) const
-    { return value_ == option.value_; }
+    bool operator == (const Option& other ) const
+    {
+        return
+            value_ == other.value_ &&
+            flags_ == other.flags_;
+    }
+
+    //! different operator
+    bool operator != (const Option& other ) const
+    { return !( *this == other ); }
+
+    //!@name accessors
+    //@{
 
     //! option comments
     const QString& comments( void ) const
     { return comments_; }
+
+    //! flags
+    Flags flags( void ) const
+    { return flags_; }
+
+    //! flags
+    bool hasFlag( const Flag& flag ) const
+    { return flags_ & flag; }
+
+    //! current
+    bool isCurrent( void ) const
+    { return hasFlag( Current ); }
+
+    //! default
+    bool isDefault( void ) const
+    { return defaultValue_ == value_ && defaultFlags_ == flags_; }
+
+    //! raw accessor
+    const QByteArray& raw( void ) const
+    { return value_; }
+
+    //! default value
+    const QByteArray& defaultValue( void ) const
+    { return defaultValue_; }
+
+    //! generic accessor
+    template < typename T >
+        T get( void ) const
+    {
+
+        // check if option is set
+        Q_ASSERT( !value_.isEmpty() );
+
+        // cast value
+        // the const-cast here is because the string should not be affected
+        // (hence the ReadOnly) but Qt does not allow to pass a const pointer
+        QTextStream s( const_cast<QByteArray*>(&value_), QIODevice::ReadOnly );
+        T out;
+        s >> out;
+        Q_ASSERT( s.status() == QTextStream::Ok );
+        return out;
+    }
+
+    //! check status
+    bool isSet( void ) const
+    {return !value_.isEmpty();}
+
+    //@}
+
+    //!@name modifiers
+    //@{
 
     //! option comments
     Option& setComments( const QString& comments )
@@ -85,9 +150,6 @@ class Option:public Counter
         comments_ = comments;
         return *this;
     }
-
-    //!@name flags
-    //@{
 
     //! flags
     Option& setFlags( Flags value )
@@ -104,13 +166,53 @@ class Option:public Counter
         return *this;
     }
 
-    //! flags
-    Flags flags( void ) const
-    { return flags_; }
+    //! current
+    Option& setCurrent( const bool& value )
+    { return setFlag( Current, value ); }
 
-    //! flags
-    bool hasFlag( const Flag& flag ) const
-    { return flags_ & flag; }
+    //! default
+    Option& setDefault( void )
+    {
+        defaultValue_ = value_;
+        defaultFlags_ = flags_;
+        return *this;
+    }
+
+    //! raw modifier
+    Option& setRaw( const QByteArray& value )
+    {
+        value_ = value;
+        return *this;
+    }
+
+    //! raw modifier
+    Option& setRaw( const QString& value )
+    {
+        value_ = value.toUtf8();
+        return *this;
+    }
+
+    //! generic modifier
+    template < typename T >
+        Option& set( const T& value )
+    {
+
+        value_.clear();
+        QTextStream s( &value_, QIODevice::WriteOnly );
+        s << value;
+        return *this;
+
+    }
+
+    //! restore default value
+    Option& restoreDefault()
+    {
+        value_ = defaultValue_;
+        flags_ = defaultFlags_;
+        return *this;
+    }
+
+    //@}
 
     //! used to retrieve file records that match a given flag
     class HasFlagFTor
@@ -139,89 +241,6 @@ class Option:public Counter
 
     };
 
-    //! current
-    bool isCurrent( void ) const
-    { return hasFlag( Current ); }
-
-    //! current
-    Option& setCurrent( const bool& value )
-    { return setFlag( Current, value ); }
-
-    //@}
-
-    //! default
-    Option& setDefault( void )
-    {
-        defaultValue_ = value_;
-        defaultFlags_ = flags_;
-        return *this;
-    }
-
-
-    //! raw accessor
-    const QByteArray& raw( void ) const
-    { return value_; }
-
-    //! raw modifier
-    Option& setRaw( const QByteArray& value )
-    {
-        value_ = value;
-        return *this;
-    }
-
-    //! raw modifier
-    Option& setRaw( const QString& value )
-    {
-        value_ = value.toUtf8();
-        return *this;
-    }
-
-    //! default value
-    const QByteArray& defaultValue( void ) const
-    { return defaultValue_; }
-
-    //! accessor
-    template < typename T >
-        T get( void ) const
-    {
-
-        // check if option is set
-        Q_ASSERT( !value_.isEmpty() );
-
-        // cast value
-        // the const-cast here is because the string should not be affected
-        // (hence the ReadOnly) but Qt does not allow to pass a const pointer
-        QTextStream s( const_cast<QByteArray*>(&value_), QIODevice::ReadOnly );
-        T out;
-        s >> out;
-        Q_ASSERT( s.status() == QTextStream::Ok );
-        return out;
-    }
-
-    //! modifier
-    template < typename T >
-        Option& set( const T& value )
-    {
-
-        value_.clear();
-        QTextStream s( &value_, QIODevice::WriteOnly );
-        s << value;
-        return *this;
-
-    }
-
-    //! check status
-    bool set( void ) const
-    {return !value_.isEmpty();}
-
-    //! restore default value
-    Option& restoreDefault()
-    {
-        value_ = defaultValue_;
-        flags_ = defaultFlags_;
-        return *this;
-    }
-
     private:
 
     //! option value
@@ -242,7 +261,7 @@ class Option:public Counter
     //! streamer
     friend QTextStream &operator << ( QTextStream &out, const Option &option )
     {
-        if( !option.set() ) out << "not set";
+        if( !option.isSet() ) out << "not set";
         else out << option.raw();
         return out;
     }

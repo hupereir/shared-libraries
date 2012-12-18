@@ -28,9 +28,10 @@
 #include "Debug.h"
 #include "Option.h"
 
-#include <QtCore/QString>
 #include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
 //! Option file parser based on Xml
@@ -59,14 +60,18 @@ class Options: public Counter
     {}
 
     //! equality operator
-    bool operator == (const Options& options ) const
+    bool operator == ( const Options& other ) const
     {
         Debug::Throw( "Options::operator ==.\n" );
         bool out(
-            ( options_ == options.options_ ) &&
-            ( specialOptions_ == options.specialOptions_ ) );
+            ( options_ == other.options_ ) &&
+            ( specialOptions_ == other.specialOptions_ ) );
         return out;
     }
+
+    //! different operator
+    bool operator != ( const Options& other ) const
+    { return !( *this == other ); }
 
     //! install defaults
     virtual void installDefaultOptions( void );
@@ -121,6 +126,9 @@ class Options: public Counter
     //! option raw value accessor
     virtual QByteArray raw( const QString& name ) const
     { return _find( name ).value().raw(); }
+
+    //! get the list of modified options with respect to other option set
+    QStringList modifications( const Options& ) const;
 
     //@}
 
@@ -186,13 +194,6 @@ class Options: public Counter
     void restoreDefaults( void );
 
     //@}
-
-    //! print
-    void print( void ) const
-    {
-        QTextStream what( stdout );
-        what << *this;
-    }
 
     protected:
 
