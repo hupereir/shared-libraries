@@ -71,7 +71,10 @@ class Option:public Counter
     bool operator < (const Option& other ) const
     {
         if( value_ != other.value_ ) return value_ < other.value_;
-        else return flags_ != other.flags_;
+        else if( flags_ != other.flags_ ) return flags_ < other.flags_;
+        else if( defaultValue_ != other.defaultValue_ ) return defaultValue_ < other.defaultValue_;
+        else if( defaultFlags_ != other.defaultFlags_ ) return defaultFlags_ < other.defaultFlags_;
+        else return comments_ < other.comments_;
     }
 
     //! equal operator
@@ -79,7 +82,10 @@ class Option:public Counter
     {
         return
             value_ == other.value_ &&
-            flags_ == other.flags_;
+            flags_ == other.flags_ &&
+            defaultValue_ == other.defaultValue_ &&
+            defaultFlags_ == other.defaultFlags_ &&
+            comments_ == other.comments_;
     }
 
     //! different operator

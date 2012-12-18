@@ -127,9 +127,6 @@ class Options: public Counter
     virtual QByteArray raw( const QString& name ) const
     { return _find( name ).value().raw(); }
 
-    //! get the list of modified options with respect to other option set
-    QStringList modifications( const Options& ) const;
-
     //@}
 
     //!@name modifiers

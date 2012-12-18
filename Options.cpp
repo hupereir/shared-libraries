@@ -121,25 +121,6 @@ bool Options::isSpecialOption( const QString& name ) const
 { return specialOptions_.find( name ) != specialOptions_.end(); }
 
 //________________________________________________
-QStringList Options::modifications( const Options& other ) const
-{
-    QStringList out;
-    for( Map::const_iterator iter = options_.begin(); iter != options_.end(); iter++ )
-    {
-        Map::const_iterator otherIter( other.options_.constFind( iter.key() ) );
-        if( otherIter == other.options_.constEnd() )
-        {
-
-            if( !iter.value().isDefault() ) out.append( iter.key() );
-
-        } else if( otherIter.value() != iter.value() ) out.append( iter.key() );
-
-    }
-
-    return out;
-}
-
-//________________________________________________
 void Options::clearSpecialOptions( const QString& name )
 {
     Q_ASSERT( isSpecialOption( name ) );
