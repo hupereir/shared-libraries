@@ -22,6 +22,7 @@
 *******************************************************************************/
 
 #include "XmlOptions.h"
+#include "XmlOptions_p.h"
 
 #include "Options.h"
 #include "XmlDocument.h"
@@ -31,34 +32,11 @@
 #include <QtCore/QFile>
 
 //____________________________________________________________________
-class XmlOptionsSingleton
-{
-    public:
-
-    //! constructor
-    XmlOptionsSingleton( void )
-    { options_.installDefaultOptions(); }
-
-    //! options
-    Options options_;
-
-    //! backup
-    Options backup_;
-
-    //! file
-    File file_;
-
-    //! error
-    XmlError error_;
-
-};
-
-//____________________________________________________________________
 XmlOptionsSingleton XmlOptions::singleton_;
 
 //____________________________________________________________________
 const File& XmlOptions::file()
-{ return singleton_.file_; }
+{ return singleton_.file(); }
 
 //____________________________________________________________________
 const XmlError& XmlOptions::error()
@@ -71,12 +49,12 @@ void XmlOptions::setError( const XmlError& error )
 //____________________________________________________________________
 void XmlOptions::setFile( const File& file )
 {
-    if( singleton_.file_ == file ) return;
-    singleton_.file_ = file;
 
     // make sure file is hidden (windows only)
-    if( singleton_.file_.localName().startsWith( '.' ) )
-    { singleton_.file_.setHidden(); }
+    if( !singleton_.setFile( file ) ) return;
+
+    if( singleton_.file().localName().startsWith( '.' ) )
+    { singleton_.file().setHidden(); }
 
 }
 
@@ -88,16 +66,16 @@ Options& XmlOptions::get( void )
 bool XmlOptions::read( void )
 {
 
-    Debug::Throw() << "XmlOptions::read - file: " << singleton_.file_ << endl;
+    Debug::Throw() << "XmlOptions::read - file: " << singleton_.file() << endl;
 
     // check filename is valid
-    if( singleton_.file_.isEmpty() ) return false;
+    if( singleton_.file().isEmpty() ) return false;
 
     // parse the file
     XmlDocument document;
     {
-        QFile qtfile( singleton_.file_ );
-        XmlError error( singleton_.file_ );
+        QFile qtfile( singleton_.file() );
+        XmlError error( singleton_.file() );
         if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
         {
             setError( error );
@@ -120,17 +98,20 @@ bool XmlOptions::read( void )
 
             // retrieve Value attribute
             QString value( element.attribute( BASE::XML::VALUE ) );
-            if( value.size() ) get().keep( value );
+            if( value.size() ) singleton_.options_.keep( value );
 
         } else if( element.tagName() == BASE::XML::OPTION ) {
 
             XmlOption option( element );
-            if( get().isSpecialOption( option.name() ) ) get().add( option.name(), option );
-            else get().set( option.name(), option );
+            if( singleton_.options_.isSpecialOption( option.name() ) ) singleton_.options_.add( option.name(), option );
+            else singleton_.options_.set( option.name(), option );
 
         }
 
     }
+
+    // save backup
+    singleton_.backup();
 
     return true;
 
@@ -140,15 +121,27 @@ bool XmlOptions::read( void )
 bool XmlOptions::write( void )
 {
 
-    Debug::Throw() << "XmlOptions::write - file: " << singleton_.file_ << endl;
+    if( !singleton_.modified() )
+    {
+
+        Debug::Throw(0) << "XmlOptions::write - no option change to save." << endl;
+        return false;
+
+    } else {
+
+        Debug::Throw(0) << "XmlOptions::write - differences: " << endl;
+        Debug::Throw(0) << singleton_.options_.modifications( singleton_.backup_ ).join( "\n" ) << endl;
+        Debug::Throw(0) << "XmlOptions::write - file: " << singleton_.file() << endl;
+
+    }
 
     // check filename is valid
-    if( singleton_.file_.isEmpty() ) return false;
+    if( singleton_.file().isEmpty() ) return false;
 
     // create document and read
     XmlDocument document;
     {
-        QFile qtfile( singleton_.file_ );
+        QFile qtfile( singleton_.file() );
         document.setContent( &qtfile );
     }
 
@@ -156,7 +149,7 @@ bool XmlOptions::write( void )
     QDomElement top = document.createElement( BASE::XML::OPTIONS ).toElement();
 
     // write list of special option names
-    for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); ++iter )
+    for( Options::SpecialMap::const_iterator iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
     {
         // check size of options
         if( iter.value().empty() ) continue;
@@ -168,14 +161,14 @@ bool XmlOptions::write( void )
     }
 
     // write options
-    for( Options::SpecialMap::const_iterator iter = get().specialOptions().begin(); iter != get().specialOptions().end(); ++iter )
+    for( Options::SpecialMap::const_iterator iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
     {
 
         Options::List option_list( iter.value() );
         for( Options::List::iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
         {
 
-            if( listIter->hasFlag( Option::Recordable ) && listIter->set() && listIter->raw().size() )
+            if( listIter->hasFlag( Option::Recordable ) && listIter->isSet() )
             { top.appendChild( XmlOption( iter.key(), *listIter ).domElement( document ) ); }
 
         }
@@ -183,13 +176,10 @@ bool XmlOptions::write( void )
     }
 
     // write standard options
-    for( Options::Map::const_iterator iter = get().options().begin(); iter != get().options().end(); ++iter )
+    for( Options::Map::const_iterator iter = singleton_.options_.options().begin(); iter != singleton_.options_.options().end(); ++iter )
     {
 
-        if( iter.value().hasFlag( Option::Recordable ) &&
-            iter.value().set() &&
-            iter.value().raw().size() &&
-            iter.value().raw() != iter.value().defaultValue() )
+        if( iter.value().hasFlag( Option::Recordable ) && iter.value().isSet() && !iter.value().isDefault() )
         { top.appendChild( XmlOption( iter.key(), iter.value() ).domElement( document ) ); }
 
     }
@@ -199,10 +189,13 @@ bool XmlOptions::write( void )
 
     // write
     {
-        QFile qfile( singleton_.file_ );
+        QFile qfile( singleton_.file() );
         if( !qfile.open( QIODevice::WriteOnly ) ) return false;
         qfile.write( document.toByteArray() );
     }
+
+    // save backup
+    singleton_.backup();
 
     return true;
 
