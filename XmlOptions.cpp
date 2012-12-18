@@ -35,6 +35,41 @@
 XmlOptionsSingleton XmlOptions::singleton_;
 
 //____________________________________________________________________
+bool XmlOptionsSingleton::modified( void ) const
+{
+
+    // check file changed
+    return
+        fileChanged_ ||
+        options_.specialOptions() != backup_.specialOptions() ||
+        _differs( options_, backup_ ) ||
+        _differs( backup_, options_ );
+
+}
+
+//____________________________________________________________________
+bool XmlOptionsSingleton::_differs( const Options& first, const Options& second ) const
+{
+
+    // loop over options and check existence in other map
+    for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); firstIter++ )
+    {
+
+        const Options::Map::const_iterator secondIter( second.options().constFind( firstIter.key() ) );
+        if( secondIter == second.options().constEnd() )
+        {
+
+            if( !firstIter.value().isDefault() ) return true;
+
+        } else if( firstIter.value() != secondIter.value() ) return true;
+
+    }
+
+    return false;
+
+}
+
+//____________________________________________________________________
 const File& XmlOptions::file()
 { return singleton_.file(); }
 
@@ -52,7 +87,6 @@ void XmlOptions::setFile( const File& file )
 
     // make sure file is hidden (windows only)
     if( !singleton_.setFile( file ) ) return;
-
     if( singleton_.file().localName().startsWith( '.' ) )
     { singleton_.file().setHidden(); }
 
@@ -121,19 +155,10 @@ bool XmlOptions::read( void )
 bool XmlOptions::write( void )
 {
 
-    if( !singleton_.modified() )
-    {
+    Debug::Throw() << "XmlOptions::write - file: " << singleton_.file() << endl;
 
-        Debug::Throw(0) << "XmlOptions::write - no option change to save." << endl;
-        return false;
-
-    } else {
-
-        Debug::Throw(0) << "XmlOptions::write - differences: " << endl;
-        Debug::Throw(0) << singleton_.options_.modifications( singleton_.backup_ ).join( "\n" ) << endl;
-        Debug::Throw(0) << "XmlOptions::write - file: " << singleton_.file() << endl;
-
-    }
+    // check modifications
+    if( !singleton_.modified() ) return false;
 
     // check filename is valid
     if( singleton_.file().isEmpty() ) return false;

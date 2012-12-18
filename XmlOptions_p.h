@@ -59,8 +59,7 @@ class XmlOptionsSingleton
     }
 
     //! true if options (or file) have been modified since last read/write
-    bool modified( void ) const
-    { return fileChanged_ || options_ != backup_; }
+    bool modified( void ) const;
 
     //! options
     Options options_;
@@ -72,6 +71,9 @@ class XmlOptionsSingleton
     XmlError error_;
 
     private:
+
+    //! return true if two sets of options differ
+    bool _differs( const Options&, const Options& ) const;
 
     //! file
     File file_;
