@@ -31,46 +31,73 @@
 #include <QtCore/QFile>
 
 //____________________________________________________________________
-File XmlOptions::file_;
-XmlError XmlOptions::error_;
+class XmlOptionsSingleton
+{
+    public:
+
+    //! constructor
+    XmlOptionsSingleton( void )
+    { options_.installDefaultOptions(); }
+
+    //! options
+    Options options_;
+
+    //! backup
+    Options backup_;
+
+    //! file
+    File file_;
+
+    //! error
+    XmlError error_;
+
+};
+
+//____________________________________________________________________
+XmlOptionsSingleton XmlOptions::singleton_;
+
+//____________________________________________________________________
+const File& XmlOptions::file()
+{ return singleton_.file_; }
+
+//____________________________________________________________________
+const XmlError& XmlOptions::error()
+{ return singleton_.error_; }
+
+//____________________________________________________________________
+void XmlOptions::setError( const XmlError& error )
+{ singleton_.error_ = error; }
 
 //____________________________________________________________________
 void XmlOptions::setFile( const File& file )
 {
-    if( file_ == file ) return;
-    file_ = file;
+    if( singleton_.file_ == file ) return;
+    singleton_.file_ = file;
 
     // make sure file is hidden (windows only)
-    if( file_.localName().startsWith( '.' ) )
-    { file_.setHidden(); }
+    if( singleton_.file_.localName().startsWith( '.' ) )
+    { singleton_.file_.setHidden(); }
 
 }
 
 //____________________________________________________________________
 Options& XmlOptions::get( void )
-{
-    static Options singleton( true );
-    return singleton;
-}
+{ return singleton_.options_; }
 
 //____________________________________________________________________
-bool XmlOptions::read( File file )
+bool XmlOptions::read( void )
 {
 
-    Debug::Throw( "XmlOptions::read.\n" );
+    Debug::Throw() << "XmlOptions::read - file: " << singleton_.file_ << endl;
 
     // check filename is valid
-    if( file.isEmpty() ) file = XmlOptions::file();
-    if( file.isEmpty() ) return false;
-
-    // store requested file
-    setFile( file );
+    if( singleton_.file_.isEmpty() ) return false;
 
     // parse the file
     XmlDocument document;
     {
-        QFile qtfile( file );
-        XmlError error( file );
+        QFile qtfile( singleton_.file_ );
+        XmlError error( singleton_.file_ );
         if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
         {
             setError( error );
@@ -105,25 +132,23 @@ bool XmlOptions::read( File file )
 
     }
 
-
     return true;
 
 }
 
 //________________________________________________
-bool XmlOptions::write( File file )
+bool XmlOptions::write( void )
 {
 
-    Debug::Throw( "XmlOptions::write.\n" );
+    Debug::Throw() << "XmlOptions::write - file: " << singleton_.file_ << endl;
 
     // check filename is valid
-    if( file.isEmpty() ) file = XmlOptions::file();
-    if( file.isEmpty() ) return false;
+    if( singleton_.file_.isEmpty() ) return false;
 
     // create document and read
     XmlDocument document;
     {
-        QFile qtfile( file );
+        QFile qtfile( singleton_.file_ );
         document.setContent( &qtfile );
     }
 
@@ -174,7 +199,7 @@ bool XmlOptions::write( File file )
 
     // write
     {
-        QFile qfile( file );
+        QFile qfile( singleton_.file_ );
         if( !qfile.open( QIODevice::WriteOnly ) ) return false;
         qfile.write( document.toByteArray() );
     }

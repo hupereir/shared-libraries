@@ -28,35 +28,26 @@
 #include "Options.h"
 #include "XmlError.h"
 
+//! forward declaration
+class XmlOptionsSingleton;
+
 //! Option file parser based on xml
 class XmlOptions
 {
 
     public:
 
-    //! retrieve singleton
-    static Options& get( void );
-
-    //! read from file
-    static bool read( const QByteArray& array )
-    { return read( File( array ) ); }
-
-    //! read from file
-    static bool read( File = File() );
-
-    //! write options to file
-    static bool write( File = File() );
-
     //!@name accessors
     //@{
 
+    //! options
+    static Options& get( void );
+
     //! file
-    static const File& file()
-    { return file_; }
+    static const File& file();
 
     //! error
-    static const XmlError& error()
-    { return error_; }
+    static const XmlError& error();
 
     //@}
 
@@ -64,19 +55,27 @@ class XmlOptions
     //@{
 
     //! file
+    static void setFile( const QByteArray& array )
+    { setFile( File( array ) ); }
+
+    //! file
     static void setFile( const File& );
 
     //! error
-    static void setError( const XmlError& error )
-    { error_ = error; }
+    static void setError( const XmlError& );
+
+    //! read options
+    static bool read( void );
+
+    //! write options
+    static bool write( void );
+
+    //@}
 
     private:
 
-    //! file
-    static File file_;
-
-    //! error
-    static XmlError error_;
+    //! singleton
+    static XmlOptionsSingleton singleton_;
 
 };
 
