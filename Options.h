@@ -52,7 +52,7 @@ class Options: public Counter
     typedef QMap< QString, List > SpecialMap;
 
     //! constructor
-    Options( bool install_default_options = false );
+    Options( void );
 
     //! destructor
     virtual ~Options( void )
@@ -68,34 +68,28 @@ class Options: public Counter
         return out;
     }
 
+    //! install defaults
+    virtual void installDefaultOptions( void );
+
+    //!@name accessors
+    //@{
+
     //! retrieve Option map
-    const virtual Map& options( void ) const
+    virtual const Map& options( void ) const
     { return options_; }
 
     //! retrieve special Option map
-    const virtual SpecialMap& specialOptions( void ) const
+    virtual const SpecialMap& specialOptions( void ) const
     { return specialOptions_; }
-
-    //! adds a new option. Return true if option is added
-    virtual bool add( const QString&, Option, const bool& is_default = false );
-
-    //! retrieve list of special (i.e. kept) options matching a given name
-    virtual List& specialOptions( const QString& name )
-    {
-        SpecialMap::iterator iter( specialOptions_.find( name ) );
-        Q_ASSERT( iter != specialOptions_.end() );
-        return iter.value();
-    }
 
     //! returns true if option name is special
     virtual bool isSpecialOption( const QString& name ) const;
 
     //! retrieve list of special (i.e. kept) options matching a given name
-    template < typename T >
-        QList<T> specialOptions( const QString& name )
+    template <typename T> QList<T> specialOptions( const QString& name ) const
     {
 
-        List optionList( specialOptions( name ) );
+        const List& optionList( specialOptions( name ) );
         QList<T> out;
 
         foreach( const Option& option, optionList )
@@ -104,8 +98,13 @@ class Options: public Counter
 
     }
 
-    //! clear list of special (i.e. kept) options matching a given name
-    virtual void clearSpecialOptions( const QString& name );
+    //! retrieve list of special (i.e. kept) options matching a given name
+    virtual const List& specialOptions( const QString& name ) const
+    {
+        SpecialMap::const_iterator iter( specialOptions_.find( name ) );
+        Q_ASSERT( iter != specialOptions_.end() );
+        return iter.value();
+    }
 
     //! returns true if option with matching name is found
     virtual bool contains( const QString& name )
@@ -116,44 +115,54 @@ class Options: public Counter
     { return options_.find( name ).value(); }
 
     //! option value accessor
-    template < typename T >
-        T get( const QString& name ) const
+    template <typename T> T get( const QString& name ) const
     { return _find( name ).value().get<T>(); }
 
     //! option raw value accessor
     virtual QByteArray raw( const QString& name ) const
     { return _find( name ).value().raw(); }
 
-    //! option value modifier
-    void set( const QString& name, Option option, const bool& is_default = false );
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! adds a new option. Return true if option is added
+    virtual bool add( const QString&, Option, const bool& isDefault = false );
+
+    //! clear list of special (i.e. kept) options matching a given name
+    virtual void clearSpecialOptions( const QString& name );
 
     //! option value modifier
-    template < typename T >
-        void set( const QString& name, const T& value, const bool& is_default = false )
+    void set( const QString& name, Option option, const bool& isDefault = false );
+
+    //! option value modifier
+    template <typename T>
+    void set( const QString& name, const T& value, const bool& isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
         option.set<T>( value );
-        if( is_default || _autoDefault() ) option.setDefault();
+        if( isDefault || _autoDefault() ) option.setDefault();
 
     }
 
     //! option raw value modifier
-    virtual void setRaw( const QString& name, const QByteArray& value, const bool& is_default = false )
+    virtual void setRaw( const QString& name, const QByteArray& value, const bool& isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
         option.setRaw( value );
-        if( is_default || _autoDefault() ) option.setDefault();
+        if( isDefault || _autoDefault() ) option.setDefault();
     }
 
     //! option raw value modifier
-    virtual void setRaw( const QString& name, const QString& value, const bool& is_default = false )
+    virtual void setRaw( const QString& name, const QString& value, const bool& isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
         option.setRaw( value.toUtf8() );
-        if( is_default || _autoDefault() ) option.setDefault();
+        if( isDefault || _autoDefault() ) option.setDefault();
     }
 
     /*! \brief
@@ -175,6 +184,8 @@ class Options: public Counter
 
     //! restore defaults
     void restoreDefaults( void );
+
+    //@}
 
     //! print
     void print( void ) const

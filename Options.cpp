@@ -28,17 +28,16 @@
 #include <algorithm>
 
 //________________________________________________
-Options::Options( bool installDefaultOptions ):
+Options::Options( void ):
     Counter( "Options" ),
-    options_(),
-    specialOptions_(),
     autoDefault_( false )
+{}
+
+//________________________________________________
+void Options::installDefaultOptions( void )
 {
 
-    if( installDefaultOptions )
-    {
-
-        setAutoDefault( true );
+      setAutoDefault( true );
 
         /*
         generic options (default values)
@@ -114,8 +113,6 @@ Options::Options( bool installDefaultOptions ):
         set( "ICON_THEME_PATH", "/usr/share/icons" );
 
         setAutoDefault( false );
-
-    }
 
 }
 
