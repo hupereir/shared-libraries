@@ -41,8 +41,7 @@ class QuestionDialog: public DetailsDialog
     QuestionDialog( QWidget* parent, const QString& = QString() );
 
     //! set text
-    void setText( const QString& text )
-    { _label().setText( text ); }
+    void setText( const QString& );
 
     protected:
 

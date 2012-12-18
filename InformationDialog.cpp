@@ -41,9 +41,17 @@ InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
     QLabel* label = new QLabel( this );
     label->setPixmap( IconEngine::get( ICONS::INFORMATION ).pixmap( iconSize() ) );
     hLayout->addWidget( label, 0 );
-    hLayout->addWidget( label_ = new QLabel( text, this ), 1 );
+    hLayout->addWidget( label_ = new QLabel( this ), 1 );
 
-    if( label->pixmap()->width() + label_->fontMetrics().width( text ) >350 )
-    { label_->setWordWrap( true ); }
+    // assign text
+    setText( text );
 
+}
+
+//____________________________________________________________
+void InformationDialog::setText( const QString& text )
+{
+    Debug::Throw( "InformationDialog::setText\n" );
+    label_->setText( text );
+    label_->setWordWrap( label_->fontMetrics().width( text ) >300 );
 }

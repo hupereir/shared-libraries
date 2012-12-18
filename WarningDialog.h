@@ -44,8 +44,7 @@ class WarningDialog: public DetailsDialog
     {}
 
     //! set text
-    virtual void setText( const QString& text ) const
-    { _label().setText( text ); }
+    virtual void setText( const QString& );
 
     protected:
 

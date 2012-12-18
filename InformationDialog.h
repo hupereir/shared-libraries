@@ -44,8 +44,7 @@ class InformationDialog: public DetailsDialog
     {}
 
     //! set text
-    void setText( const QString& text ) const
-    { _label().setText( text ); }
+    void setText( const QString& );
 
     protected:
 
