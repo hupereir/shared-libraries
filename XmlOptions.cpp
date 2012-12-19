@@ -40,7 +40,6 @@ bool XmlOptionsSingleton::modified( void ) const
 
     // check file changed
     return
-        fileChanged_ ||
         options_.specialOptions() != backup_.specialOptions() ||
         _differs( options_, backup_ ) ||
         _differs( backup_, options_ );
@@ -101,13 +100,13 @@ bool XmlOptions::read( void )
 {
 
     Debug::Throw() << "XmlOptions::read - file: " << singleton_.file() << endl;
-    if( _read( singleton_.options_ ) )
-    {
 
-        singleton_.backup();
-        return true;
-
-    } else return false;
+    /*
+    need to perform backup before reading to
+    install programatically set options, and default values
+    */
+    singleton_.backup();
+    return _read( singleton_.options_ );
 
 }
 
@@ -117,8 +116,15 @@ bool XmlOptions::write( void )
 
     Debug::Throw() << "XmlOptions::write - file: " << singleton_.file() << endl;
 
+    // read backup from file
+    _read( singleton_.backup_ );
+
     // check modifications
-    if( !singleton_.modified() ) return false;
+    if( !singleton_.modified() )
+    {
+        Debug::Throw( 0, "XmlOptions::write - no changes to write.\n" );
+        return false;
+    }
 
     // check filename is valid
     if( singleton_.file().isEmpty() ) return false;
@@ -179,9 +185,6 @@ bool XmlOptions::write( void )
         qfile.write( document.toByteArray() );
     }
 
-    // save backup
-    singleton_.backup();
-
     return true;
 
 }
@@ -195,14 +198,12 @@ bool XmlOptions::_read( Options& options )
 
     // parse the file
     XmlDocument document;
+    QFile qtfile( singleton_.file() );
+    XmlError error( singleton_.file() );
+    if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
     {
-        QFile qtfile( singleton_.file() );
-        XmlError error( singleton_.file() );
-        if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
-        {
-            setError( error );
-            return false;
-        }
+        setError( error );
+        return false;
     }
 
     // look for relevant element

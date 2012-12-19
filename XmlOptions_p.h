@@ -34,8 +34,7 @@ class XmlOptionsSingleton
     public:
 
     //! constructor
-    XmlOptionsSingleton( void ):
-        fileChanged_( false )
+    XmlOptionsSingleton( void )
     { options_.installDefaultOptions(); }
 
     //! file
@@ -47,16 +46,12 @@ class XmlOptionsSingleton
     {
         if( file_ == file ) return false;
         file_ = file;
-        fileChanged_ = true;
         return true;
     }
 
     //! create backup
     void backup( void )
-    {
-        backup_ = options_;
-        fileChanged_ = false;
-    }
+    { backup_ = options_; }
 
     //! true if options (or file) have been modified since last read/write
     bool modified( void ) const;
@@ -77,9 +72,6 @@ class XmlOptionsSingleton
 
     //! file
     File file_;
-
-    //! file changed
-    bool fileChanged_;
 
 };
 
