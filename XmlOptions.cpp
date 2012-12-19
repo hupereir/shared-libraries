@@ -106,7 +106,21 @@ bool XmlOptions::read( void )
     install programatically set options, and default values
     */
     singleton_.backup();
-    return _read( singleton_.options_ );
+
+    // check filename is valid
+    if( singleton_.file().isEmpty() ) return false;
+
+    // parse the file
+    XmlDocument document;
+    QFile qtfile( singleton_.file() );
+    XmlError error( singleton_.file() );
+    if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
+    {
+
+        setError( error );
+        return false;
+
+    } else return _read( document, singleton_.options_ );
 
 }
 
@@ -115,16 +129,6 @@ bool XmlOptions::write( void )
 {
 
     Debug::Throw() << "XmlOptions::write - file: " << singleton_.file() << endl;
-
-    // read backup from file
-    _read( singleton_.backup_ );
-
-    // check modifications
-    if( !singleton_.modified() )
-    {
-        Debug::Throw( 0, "XmlOptions::write - no changes to write.\n" );
-        return false;
-    }
 
     // check filename is valid
     if( singleton_.file().isEmpty() ) return false;
@@ -135,6 +139,12 @@ bool XmlOptions::write( void )
         QFile qtfile( singleton_.file() );
         document.setContent( &qtfile );
     }
+
+    // read backup from xml document
+    _read( document, singleton_.backup_ );
+
+    // check modifications
+    if( !singleton_.modified() ) return false;
 
     // create main element
     QDomElement top = document.createElement( BASE::XML::OPTIONS ).toElement();
@@ -190,21 +200,8 @@ bool XmlOptions::write( void )
 }
 
 //________________________________________________
-bool XmlOptions::_read( Options& options )
+bool XmlOptions::_read( const XmlDocument& document, Options& options )
 {
-
-    // check filename is valid
-    if( singleton_.file().isEmpty() ) return false;
-
-    // parse the file
-    XmlDocument document;
-    QFile qtfile( singleton_.file() );
-    XmlError error( singleton_.file() );
-    if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
-    {
-        setError( error );
-        return false;
-    }
 
     // look for relevant element
     QDomNodeList topNodes = document.elementsByTagName( BASE::XML::OPTIONS );
@@ -230,7 +227,6 @@ bool XmlOptions::_read( Options& options )
             else options.set( option.name(), option );
 
         }
-
     }
 
     return true;

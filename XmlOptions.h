@@ -30,6 +30,7 @@
 
 //! forward declaration
 class XmlOptionsSingleton;
+class XmlDocument;
 
 //! Option file parser based on xml
 class XmlOptions
@@ -75,7 +76,7 @@ class XmlOptions
     protected:
 
     //! read
-    static bool _read( Options& );
+    static bool _read( const XmlDocument&, Options& );
 
     private:
 
