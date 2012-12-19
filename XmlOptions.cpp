@@ -101,53 +101,13 @@ bool XmlOptions::read( void )
 {
 
     Debug::Throw() << "XmlOptions::read - file: " << singleton_.file() << endl;
-
-    // check filename is valid
-    if( singleton_.file().isEmpty() ) return false;
-
-    // parse the file
-    XmlDocument document;
+    if( _read( singleton_.options_ ) )
     {
-        QFile qtfile( singleton_.file() );
-        XmlError error( singleton_.file() );
-        if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
-        {
-            setError( error );
-            return false;
-        }
-    }
 
-    // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( BASE::XML::OPTIONS );
-    if( topNodes.isEmpty() ) return false;
+        singleton_.backup();
+        return true;
 
-    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
-    {
-        QDomElement element = node.toElement();
-        if( element.isNull() ) continue;
-
-        // special options
-        if( element.tagName() == BASE::XML::SPECIAL_OPTION )
-        {
-
-            // retrieve Value attribute
-            QString value( element.attribute( BASE::XML::VALUE ) );
-            if( value.size() ) singleton_.options_.keep( value );
-
-        } else if( element.tagName() == BASE::XML::OPTION ) {
-
-            XmlOption option( element );
-            if( singleton_.options_.isSpecialOption( option.name() ) ) singleton_.options_.add( option.name(), option );
-            else singleton_.options_.set( option.name(), option );
-
-        }
-
-    }
-
-    // save backup
-    singleton_.backup();
-
-    return true;
+    } else return false;
 
 }
 
@@ -221,6 +181,56 @@ bool XmlOptions::write( void )
 
     // save backup
     singleton_.backup();
+
+    return true;
+
+}
+
+//________________________________________________
+bool XmlOptions::_read( Options& options )
+{
+
+    // check filename is valid
+    if( singleton_.file().isEmpty() ) return false;
+
+    // parse the file
+    XmlDocument document;
+    {
+        QFile qtfile( singleton_.file() );
+        XmlError error( singleton_.file() );
+        if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
+        {
+            setError( error );
+            return false;
+        }
+    }
+
+    // look for relevant element
+    QDomNodeList topNodes = document.elementsByTagName( BASE::XML::OPTIONS );
+    if( topNodes.isEmpty() ) return false;
+
+    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
+    {
+        QDomElement element = node.toElement();
+        if( element.isNull() ) continue;
+
+        // special options
+        if( element.tagName() == BASE::XML::SPECIAL_OPTION )
+        {
+
+            // retrieve Value attribute
+            QString value( element.attribute( BASE::XML::VALUE ) );
+            if( value.size() ) options.keep( value );
+
+        } else if( element.tagName() == BASE::XML::OPTION ) {
+
+            XmlOption option( element );
+            if( options.isSpecialOption( option.name() ) ) options.add( option.name(), option );
+            else options.set( option.name(), option );
+
+        }
+
+    }
 
     return true;
 

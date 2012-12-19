@@ -72,6 +72,11 @@ class XmlOptions
 
     //@}
 
+    protected:
+
+    //! read
+    static bool _read( Options& );
+
     private:
 
     //! singleton
