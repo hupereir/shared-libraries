@@ -25,7 +25,7 @@
 #include "Debug.h"
 #include "IOString.h"
 #include "ServerXmlDef.h"
-#include "XmlError.h"
+#include "XmlDocument.h"
 
 #include <QtCore/QTextStream>
 
@@ -114,10 +114,13 @@ namespace SERVER
             QString local( _messageBuffer().text().mid( begin_position, end_position+end_tag.size()-begin_position ) );
 
             // create document
-            QDomDocument document;
-            XmlError error;
-            if ( !document.setContent( local, &error.error(), &error.line(), &error.column() ) ) { Debug::Throw() << error << endl; }
-            else {
+            XmlDocument document;
+            if( !document.setContent( local ) )
+            {
+
+                Debug::Throw() << document.error() << endl;
+
+            } else {
 
                 // parse document
                 QDomElement docElement = document.documentElement();
