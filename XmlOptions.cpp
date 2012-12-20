@@ -144,7 +144,7 @@ bool XmlOptions::write( void )
     _read( document, singleton_.backup_ );
 
     // check modifications
-    if( !singleton_.modified() ) return false;
+    if( !singleton_.modified() ) return true;
 
     // create main element
     QDomElement top = document.createElement( BASE::XML::OPTIONS ).toElement();

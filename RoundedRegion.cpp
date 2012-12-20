@@ -33,12 +33,12 @@
 #include "RoundedRegion.h"
 
 //_________________________________________________________
-RoundedRegion::RoundedRegion( QRect rect, unsigned int corners ):
+RoundedRegion::RoundedRegion( QRect rect, Corners corners ):
   QRegion( rect )
 {
 
   // top left
-  if( corners & TOP_LEFT )
+  if( corners & TopLeft )
   {
     const QPoint& point( rect.topLeft() );
     *this -= QRegion(point.x(), point.y()+0, 5, 1);
@@ -48,7 +48,7 @@ RoundedRegion::RoundedRegion( QRect rect, unsigned int corners ):
   }
 
   // top right
-  if( corners & TOP_RIGHT )
+  if( corners & TopRight )
   {
     const QPoint& point( rect.topRight() );
     *this -= QRegion(point.x()-4, point.y()+0, 5, 1);
@@ -58,7 +58,7 @@ RoundedRegion::RoundedRegion( QRect rect, unsigned int corners ):
   }
 
   // bottom left
-  if( corners & BOTTOM_LEFT )
+  if( corners & BottomLeft )
   {
     const QPoint& point( rect.bottomLeft() );
     *this -= QRegion(point.x(), point.y()-0, 5, 1);
@@ -69,7 +69,7 @@ RoundedRegion::RoundedRegion( QRect rect, unsigned int corners ):
 
 
   // bottom right
-  if( corners & BOTTOM_RIGHT )
+  if( corners & BottomRight )
   {
     const QPoint& point( rect.bottomRight() );
     *this -= QRegion(point.x()-4, point.y()-0, 5, 1);

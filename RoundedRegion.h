@@ -24,41 +24,37 @@
 *
 *******************************************************************************/
 
-/*!
-  \file    RoundedRegion.h
-  \brief   rounded QRegion based on a rect
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
-*/
-
-#include <QRegion>
-#include <QRect>
+#include <QtGui/QRegion>
+#include <QtCore/QRect>
 
 //! rounded QRegion based on a rect
 class RoundedRegion: public QRegion
 {
 
-  public:
+    public:
 
-  //! corners
-  enum Corner
-  {
-    NONE = 0,
-    TOP_LEFT = 1<<0,
-    TOP_RIGHT = 1<<1,
-    BOTTOM_LEFT  = 1<<2,
-    BOTTOM_RIGHT = 1<<3,
-    TOP = TOP_LEFT | TOP_RIGHT,
-    BOTTOM = BOTTOM_LEFT | BOTTOM_RIGHT,
-    LEFT = TOP_LEFT | BOTTOM_LEFT,
-    RIGHT = TOP_RIGHT | BOTTOM_RIGHT,
-    ALL = TOP | BOTTOM
-  };
+    //! corners
+    enum Corner
+    {
+        None = 0,
+            TopLeft = 1<<0,
+            TopRight = 1<<1,
+            BottomLeft  = 1<<2,
+            BottomRight = 1<<3,
+            Top = TopLeft | TopRight,
+            Bottom = BottomLeft | BottomRight,
+            Left = TopLeft | BottomLeft,
+            Right = TopRight | BottomRight,
+            All = Top | Bottom
+    };
 
-  //! constructor
-  RoundedRegion( QRect, unsigned int corners );
+    Q_DECLARE_FLAGS( Corners, Corner );
+
+    //! constructor
+    RoundedRegion( QRect, Corners corners );
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( RoundedRegion::Corners )
 
 #endif
