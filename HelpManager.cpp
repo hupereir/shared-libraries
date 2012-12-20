@@ -28,7 +28,6 @@
 #include "HelpManager.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
-#include "XmlError.h"
 #include "XmlOptions.h"
 
 #include <QtGui/QApplication>
