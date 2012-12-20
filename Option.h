@@ -79,14 +79,7 @@ class Option:public Counter
 
     //! equal operator
     bool operator == (const Option& other ) const
-    {
-        return
-            value_ == other.value_ &&
-            flags_ == other.flags_ &&
-            defaultValue_ == other.defaultValue_ &&
-            defaultFlags_ == other.defaultFlags_ &&
-            comments_ == other.comments_;
-    }
+    { return value_ == other.value_ && flags_ == other.flags_; }
 
     //! different operator
     bool operator != (const Option& other ) const
@@ -114,6 +107,10 @@ class Option:public Counter
     //! default
     bool isDefault( void ) const
     { return defaultValue_ == value_ && defaultFlags_ == flags_; }
+
+    //! recordable
+    bool isRecordable( void ) const
+    { return hasFlag( Recordable ); }
 
     //! raw accessor
     const QByteArray& raw( void ) const
