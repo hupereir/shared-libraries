@@ -82,22 +82,18 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
 
     QDomElement out = document.createElement( BASE::XML::OPTION );
 
-    out.
-        appendChild( document.createElement( BASE::XML::NAME ) ).
+    out.appendChild( document.createElement( BASE::XML::NAME ) ).
         appendChild( document.createTextNode( name() ) );
 
-    out.
-        appendChild( document.createElement( BASE::XML::VALUE ) ).
+    out.appendChild( document.createElement( BASE::XML::VALUE ) ).
         appendChild( document.createTextNode( XmlString( QString::fromUtf8( raw(), raw().size() ) ).toXml() ) );
 
-    out.
-        appendChild( document.createElement( BASE::XML::FLAGS ) ).
+    out.appendChild( document.createElement( BASE::XML::FLAGS ) ).
         appendChild( document.createTextNode( QString().setNum( flags() ) ) );
 
     if( comments().size() )
     {
-        out.
-            appendChild( document.createElement( BASE::XML::COMMENTS ) ).
+        out.appendChild( document.createElement( BASE::XML::COMMENTS ) ).
             appendChild( document.createTextNode( XmlString( comments() ).toXml() ) );
     }
 

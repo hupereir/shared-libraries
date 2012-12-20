@@ -53,6 +53,9 @@ bool XmlOptionsSingleton::_differs( const Options& first, const Options& second 
     for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); firstIter++ )
     {
 
+        // skip non recordable options
+        if( !firstIter.value().isRecordable() ) continue;
+
         const Options::Map::const_iterator secondIter( second.options().constFind( firstIter.key() ) );
         if( secondIter == second.options().constEnd() )
         {
@@ -98,7 +101,9 @@ bool XmlOptions::read( void )
 
     /*
     need to perform backup before reading to
-    install programatically set options, and default values
+    install programatically set options, and default values.
+    in fact, this should not be necessary, provided that the comparison is robust enough.
+    Right now there are issues when comparing special options (probably due to the non recordable ones)
     */
     singleton_.backup();
 
@@ -133,7 +138,11 @@ bool XmlOptions::write( void )
     _read( document, singleton_.backup_ );
 
     // check modifications
-    if( !singleton_.modified() ) return true;
+    if( !singleton_.modified() )
+    {
+        Debug::Throw( 0, "XmlOptions::write - no change.\n" );
+        return true;
+    }
 
     // create main element
     QDomElement top = document.createElement( BASE::XML::OPTIONS ).toElement();
