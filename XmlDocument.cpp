@@ -22,7 +22,34 @@
 *******************************************************************************/
 
 #include "XmlDocument.h"
+
 #include "Debug.h"
+#include "XmlError.h"
+
+//___________________________________________________________________
+bool XmlDocument::setContent( QFile* file, XmlError& error )
+{
+    Q_ASSERT( file );
+    error.clear();
+    error.setFile( file->fileName() );
+    return QDomDocument::setContent( file, &error.error(), &error.line(), &error.column() );
+}
+
+//___________________________________________________________________
+bool XmlDocument::setContent( QIODevice* device, XmlError& error )
+{
+    Q_ASSERT( device );
+    error.clear();
+    return QDomDocument::setContent( device, &error.error(), &error.line(), &error.column() );
+}
+
+//___________________________________________________________________
+bool XmlDocument::setContent( const QString& content, XmlError& error )
+{
+    Q_ASSERT( file );
+    error.clear();
+    return QDomDocument::setContent( content, &error.error(), &error.line(), &error.column() );
+}
 
 //___________________________________________________________________
 void XmlDocument::replaceChild( QDomElement& element )

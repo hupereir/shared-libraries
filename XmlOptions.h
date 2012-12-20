@@ -26,11 +26,11 @@
 
 #include "File.h"
 #include "Options.h"
-#include "XmlError.h"
 
 //! forward declaration
-class XmlOptionsSingleton;
 class XmlDocument;
+class XmlError;
+class XmlOptionsSingleton;
 
 //! Option file parser based on xml
 class XmlOptions
@@ -61,9 +61,6 @@ class XmlOptions
 
     //! file
     static void setFile( const File& );
-
-    //! error
-    static void setError( const XmlError& );
 
     //! read options
     static bool read( void );

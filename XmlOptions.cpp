@@ -26,7 +26,6 @@
 
 #include "Options.h"
 #include "XmlDocument.h"
-#include "XmlError.h"
 #include "XmlOption.h"
 
 #include <QtCore/QFile>
@@ -77,10 +76,6 @@ const XmlError& XmlOptions::error()
 { return singleton_.error_; }
 
 //____________________________________________________________________
-void XmlOptions::setError( const XmlError& error )
-{ singleton_.error_ = error; }
-
-//____________________________________________________________________
 void XmlOptions::setFile( const File& file )
 {
 
@@ -113,14 +108,8 @@ bool XmlOptions::read( void )
     // parse the file
     XmlDocument document;
     QFile qtfile( singleton_.file() );
-    XmlError error( singleton_.file() );
-    if ( !document.setContent( &qtfile, &error.error(), &error.line(), &error.column() ) )
-    {
-
-        setError( error );
-        return false;
-
-    } else return _read( document, singleton_.options_ );
+    if ( !document.setContent( &qtfile, singleton_.error_ ) ) return false;
+    else return _read( document, singleton_.options_ );
 
 }
 

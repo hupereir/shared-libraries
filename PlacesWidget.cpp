@@ -33,7 +33,6 @@
 #include "Util.h"
 
 #include "XmlDocument.h"
-#include "XmlError.h"
 #include "XmlOptions.h"
 
 #include <QtCore/QUrl>
@@ -442,10 +441,9 @@ bool PlacesWidget::read( File file )
     {
 
         QFile qfile( file );
-        XmlError error( file );
-        if ( !document.setContent( &qfile, &error.error(), &error.line(), &error.column() ) )
+        if( !document.setContent( &qfile ) )
         {
-            Debug::Throw() << error << endl;
+            Debug::Throw() << document.error() << endl;
             return false;
         }
     }

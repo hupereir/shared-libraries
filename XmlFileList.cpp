@@ -28,7 +28,6 @@
 #include "XmlDocument.h"
 #include "XmlFileRecord.h"
 #include "XmlOptions.h"
-#include "XmlError.h"
 
 #include <QtGui/QApplication>
 #include <QtCore/QFile>
@@ -55,15 +54,25 @@ bool XmlFileList::read( File file )
 
     // parse the file
     XmlDocument document;
+    QFile qfile( file );
+    if ( !document.setContent( &qfile ) )
     {
-        QFile qfile( file );
-        XmlError error( file );
-        if ( !document.setContent( &qfile, &error.error(), &error.line(), &error.column() ) )
-        {
-            Debug::Throw() << error << endl;
-            return false;
-        }
-    }
+
+        Debug::Throw() << document.error() << endl;
+        return false;
+
+    } else if( _read( document ) ) {
+
+        emit contentsChanged();
+        return true;
+
+    } else return false;
+
+}
+
+//_______________________________________________
+bool XmlFileList::_read( const XmlDocument& document )
+{
 
     // look for relevant element
     QDomNodeList topNodes = document.elementsByTagName( FILERECORD::XML::FILE_LIST );
@@ -83,15 +92,15 @@ bool XmlFileList::read( File file )
         }
     }
 
-    emit contentsChanged();
-
     return true;
+
 }
 
 //_______________________________________________
 bool XmlFileList::write( File file )
 {
     Debug::Throw( "XmlFileList::write.\n" );
+
     if( file.isEmpty() ) file = dbFile_;
     if( file.isEmpty() ) return false;
 
@@ -104,6 +113,11 @@ bool XmlFileList::write( File file )
 
     // get records truncated list
     FileRecord::List records( _truncatedList( _records() ) );
+
+    // read old list and compare to current
+    XmlFileList oldList;
+    if( oldList._read( document ) && oldList._records() == records )
+    { return true; }
 
     // create main element and insert records
     QDomElement top = document.createElement( FILERECORD::XML::FILE_LIST );

@@ -29,6 +29,9 @@
 
 #include <QtCore/QString>
 
+// forward declaration
+class XmlDocument;
+
 //! Xml interface to FileList
 class XmlFileList: public FileList
 {
@@ -55,6 +58,9 @@ class XmlFileList: public FileList
 
     //! set db file
     virtual bool _setDBFile( const File& );
+
+    //! read
+    virtual bool _read( const XmlDocument& );
 
     private slots:
 

@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "File.h"
 
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
@@ -36,8 +37,11 @@ class XmlError: public Counter
 
     public:
 
+    //! shortcut to list of errors
+    typedef QList<XmlError> List;
+
     //! constructor
-    XmlError( const QString& file = QString() ):
+    XmlError( const File& file = File() ):
         Counter( "XmlError" ),
         file_ ( file ),
         error_( "" ),
@@ -45,8 +49,8 @@ class XmlError: public Counter
         column_(0)
     {}
 
-    //! shortcut to list of errors
-    typedef QList< XmlError > List;
+    //!@name accessors
+    //@{
 
     //! cast to boolean
     operator bool(void) const
@@ -57,33 +61,53 @@ class XmlError: public Counter
     { return file_; }
 
     //! error
-    QString& error( void )
-    { return error_; }
-
-    //! error
     const QString& error( void ) const
     { return error_; }
-
-    //! line
-    int& line( void )
-    { return line_; }
 
     //! line
     const int& line( void ) const
     { return line_; }
 
     //! column
+    const int& column( void ) const
+    { return column_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! clear
+    void clear( void )
+    {
+        file_.clear();
+        error_.clear();
+        line_ = -1;
+        column_ = -1;
+    }
+
+    //! set file
+    void setFile( const File& file )
+    { file_ = file; }
+
+        //! error
+    QString& error( void )
+    { return error_; }
+
+    //! line
+    int& line( void )
+    { return line_; }
+
+    //! column
     int& column( void )
     { return column_; }
 
-    //! column
-    const int& column( void ) const
-    { return column_; }
+    //@}
 
     private:
 
     //! file
-    QString file_;
+    File file_;
 
     //! error
     QString error_;

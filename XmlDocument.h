@@ -25,7 +25,9 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "XmlError.h"
 
+#include <QtCore/QFile>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
 
@@ -43,8 +45,44 @@ class XmlDocument: public QDomDocument, public Counter
     virtual ~XmlDocument( void )
     {}
 
+    //!@name accessors
+    //@{
+
+    //! xml error
+    const XmlError& error( void ) const
+    { return error_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! set content
+    virtual bool setContent( QFile* file )
+    { return setContent( file, error_ ); }
+
+    //! set content
+    virtual bool setContent( const QString& content )
+    { return setContent( content, error_ ); }
+
+    //! set content
+    virtual bool setContent( QFile*, XmlError& );
+
+    //! set content
+    virtual bool setContent( QIODevice*, XmlError& );
+
+    //! set content
+    virtual bool setContent( const QString&, XmlError& );
+
     //! replace child
     void replaceChild( QDomElement& );
+
+    //@}
+
+    private:
+
+    //! error
+    XmlError error_;
 
 };
 
