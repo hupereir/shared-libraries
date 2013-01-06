@@ -146,8 +146,11 @@ bool Options::add( const QString& name, Option option, const bool& isDefault )
     SpecialMap::iterator iter( specialOptions_.find( name ) );
 
     // check option
-    if( iter == specialOptions_.end() ) { QTextStream( stdout ) << "Options::add - invalid option: " << name << endl; }
-    Q_ASSERT( iter != specialOptions_.end() );
+    if( iter == specialOptions_.end() )
+    {
+        QTextStream( stdout ) << "Options::add - invalid option: " << name << endl;
+        return false;
+    }
 
     // set as default
     if( isDefault || _autoDefault() ) option.setDefault();
