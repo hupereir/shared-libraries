@@ -49,18 +49,13 @@ class XmlOptionsSingleton
         return true;
     }
 
-    //! create backup
-    void backup( void )
-    { backup_ = options_; }
-
-    //! true if options (or file) have been modified since last read/write
-    bool modified( void ) const;
+    //! true if options have changed with respect to current
+    /*! read-only options are ignored, as well as default values and default flags */
+    bool differs( const Options& other ) const
+    { return _differs( options_, other ) || _differs( other, options_ ); }
 
     //! options
     Options options_;
-
-    //! backup
-    Options backup_;
 
     //! error
     XmlError error_;

@@ -34,23 +34,35 @@
 XmlOptionsSingleton XmlOptions::singleton_;
 
 //____________________________________________________________________
-bool XmlOptionsSingleton::modified( void ) const
-{
-
-    // check file changed
-    return
-        options_.specialOptions() != backup_.specialOptions() ||
-        _differs( options_, backup_ ) ||
-        _differs( backup_, options_ );
-
-}
-
-//____________________________________________________________________
 bool XmlOptionsSingleton::_differs( const Options& first, const Options& second ) const
 {
 
+    // check special options
+    for( Options::SpecialMap::const_iterator firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
+    {
+
+        // skip empty special options
+        if( firstIter.value().isEmpty() ) continue;
+
+        // get matching options in the second set
+        if( !second.isSpecialOption( firstIter.key() ) ) return true;
+        Options::List options( second.specialOptions( firstIter.key() ) );
+
+        // loop over options in first list
+        foreach( const Option& option, firstIter.value() )
+        {
+            // skip non recordable options
+            if( !option.isRecordable() ) continue;
+
+            // find in second list
+            if( options.indexOf( option ) < 0 ) return true;
+
+        }
+
+    }
+
     // loop over options and check existence in other map
-    for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); firstIter++ )
+    for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); ++firstIter )
     {
 
         // skip non recordable options
@@ -97,16 +109,6 @@ Options& XmlOptions::get( void )
 bool XmlOptions::read( void )
 {
 
-    Debug::Throw() << "XmlOptions::read - file: " << singleton_.file() << endl;
-
-    /*
-    need to perform backup before reading to
-    install programatically set options, and default values.
-    in fact, this should not be necessary, provided that the comparison is robust enough.
-    Right now there are issues when comparing special options (probably due to the non recordable ones)
-    */
-    singleton_.backup();
-
     // check filename is valid
     if( singleton_.file().isEmpty() ) return false;
 
@@ -122,8 +124,6 @@ bool XmlOptions::read( void )
 bool XmlOptions::write( void )
 {
 
-    Debug::Throw() << "XmlOptions::write - file: " << singleton_.file() << endl;
-
     // check filename is valid
     if( singleton_.file().isEmpty() ) return false;
 
@@ -134,15 +134,10 @@ bool XmlOptions::write( void )
         document.setContent( &qtfile );
     }
 
-    // read backup from xml document
-    _read( document, singleton_.backup_ );
-
-    // check modifications
-    if( !singleton_.modified() )
-    {
-        Debug::Throw( 0, "XmlOptions::write - no change.\n" );
-        return true;
-    }
+    // read old options from xml document
+    Options options;
+    _read( document, options );
+    if( !singleton_.differs( options ) ) return true;
 
     // create main element
     QDomElement top = document.createElement( BASE::XML::OPTIONS ).toElement();
