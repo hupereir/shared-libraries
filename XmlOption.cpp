@@ -19,20 +19,10 @@
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
-*
 *******************************************************************************/
-
-/*!
-\file XmlOption.cpp
-\brief Xml implementation of the Option object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 
 #include "XmlOption.h"
 #include "XmlString.h"
-
 
 //________________________________________________
 XmlOption::XmlOption( const QDomElement& element )
