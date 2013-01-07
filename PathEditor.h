@@ -51,6 +51,9 @@ class PathEditor: public QStackedWidget, public Counter
 
     public:
 
+    //! dragging
+    static const QString MimeType;
+
     //! constructor
     PathEditor( QWidget* );
 
@@ -69,6 +72,12 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! root
     void setRootPathList( const File::List& );
+
+    //! true if filesystem is local
+    void setIsLocal( bool );
+
+    //! set dragEnabled
+    void setDragEnabled( bool );
 
     //! set path
     void setPath( const File&, const File& = File() );
@@ -204,11 +213,14 @@ class PathEditor: public QStackedWidget, public Counter
 
     //@}
 
-    //!@name home directory
-    //@{
+    //! true if editor corresponds to local file system
+    bool isLocal_;
 
     //! truncation
     bool truncate_;
+
+    //! true if drag and drop is enabled (false by default)
+    bool dragEnabled_;
 
     //! home directory
     File home_;

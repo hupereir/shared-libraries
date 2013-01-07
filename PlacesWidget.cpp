@@ -25,12 +25,13 @@
 #include "BaseFileIconProvider.h"
 #include "BaseIcons.h"
 #include "ContextMenu.h"
-#include "WarningDialog.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
+#include "PathEditor.h"
 #include "Singleton.h"
 #include "Util.h"
+#include "WarningDialog.h"
 
 #include "XmlDocument.h"
 #include "XmlOptions.h"
@@ -62,7 +63,7 @@ PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
     setAttribute( Qt::WA_Hover );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged() ), SLOT( _updateConfiguration() ) );
     _updateConfiguration();
 
 }
@@ -134,7 +135,7 @@ void PlacesWidgetItem::mousePressEvent( QMouseEvent* event )
 void PlacesWidgetItem::mouseMoveEvent( QMouseEvent* event )
 {
 
-    Debug::Throw( "PlacesWidget::mouseMoveEvent.\n" );
+    Debug::Throw( "PlacesWidgetItem::mouseMoveEvent.\n" );
     if( dragEnabled_ && ((event->buttons() & Qt::LeftButton) && dragInProgress_ ) &&
         ( event->pos() - dragOrigin_ ).manhattanLength() >= QApplication::startDragDistance() )
     {
@@ -365,20 +366,20 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     // button group
     group_ = new QButtonGroup( this );
     group_->setExclusive( false );
-    connect( group_, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
-    connect( group_, SIGNAL( buttonPressed( QAbstractButton* ) ), SLOT( _updateFocus( QAbstractButton* ) ) );
+    connect( group_, SIGNAL(buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
+    connect( group_, SIGNAL(buttonPressed( QAbstractButton* ) ), SLOT( _updateFocus( QAbstractButton* ) ) );
 
     // context menu
     contextMenu_ = new ContextMenu( this );
-    connect( contextMenu_, SIGNAL( aboutToShow( void ) ), SLOT( _updateMenu( void ) ) );
+    connect( contextMenu_, SIGNAL(aboutToShow( void ) ), SLOT( _updateMenu( void ) ) );
 
     // icon sizes
     iconSizeMenu_ = new IconSizeMenu( this );
-    connect( iconSizeMenu_, SIGNAL( iconSizeSelected( IconSize::Size ) ), SLOT( _updateIconSize( IconSize::Size ) ) );
+    connect( iconSizeMenu_, SIGNAL(iconSizeSelected( IconSize::Size ) ), SLOT( _updateIconSize( IconSize::Size ) ) );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-    connect( qApp, SIGNAL( aboutToQuit() ), SLOT( _saveConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( qApp, SIGNAL(aboutToQuit() ), SLOT( _saveConfiguration() ) );
     _updateConfiguration();
 
 }
@@ -583,10 +584,13 @@ void PlacesWidget::insert( int position, const QString& name, const BaseFileInfo
 { insert( position, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), name, fileInfo ); }
 
 //___________________________________________________________________
-void PlacesWidget::insert( int position, const QIcon& icon, const QString& name, const BaseFileInfo& fileInfo )
+void PlacesWidget::insert( int position, const QIcon& icon, const QString& constName, const BaseFileInfo& fileInfo )
 {
 
     Debug::Throw( "PlacesWidget::insert.\n" );
+
+    QString name( constName );
+    if( name.isEmpty() ) name = "Root";
 
     if( position >= items_.size() )
     {
@@ -984,7 +988,12 @@ QPoint PlacesWidget::_updateDragTarget( const QPoint& position ) const
 
 //_______________________________________________
 bool PlacesWidget::_canDecode( const QMimeData* data ) const
-{ return data->hasFormat( PlacesWidgetItem::MimeType ) || !_decode( data ).isEmpty(); }
+{
+    return
+        data->hasFormat( PlacesWidgetItem::MimeType ) ||
+        data->hasFormat( PathEditor::MimeType ) ||
+        !_decode( data ).isEmpty();
+}
 
 //_______________________________________________
 QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
@@ -992,13 +1001,16 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
     QList<BaseFileInfo> fileInfoList;
     if( !mimeData ) return fileInfoList;
 
-    if( mimeData->hasFormat( BaseFileInfo::MimeType ) )
+    QString format;
+    if( mimeData->hasFormat( BaseFileInfo::MimeType ) ) format = BaseFileInfo::MimeType;
+    else if( mimeData->hasFormat( PathEditor::MimeType ) ) format = PathEditor::MimeType;
+    if( !format.isEmpty() )
     {
 
         // get dropped file info (use XML)
         // dom document
         QDomDocument document;
-        if( !document.setContent( mimeData->data( BaseFileInfo::MimeType ), false ) ) return fileInfoList;
+        if( !document.setContent( mimeData->data( format ), false ) ) return fileInfoList;
 
         QDomElement docElement = document.documentElement();
         QDomNode node = docElement.firstChild();
@@ -1132,12 +1144,12 @@ void PlacesWidget::_installActions( void )
     Debug::Throw( "PlacesWidget::_installActions.\n" );
 
     addAction( addItemAction_ = new QAction( IconEngine::get( ICONS::ADD ), "Add Entry...", this ) );
-    connect( addItemAction_, SIGNAL( triggered( void ) ), SLOT( _addItem( void ) ) );
+    connect( addItemAction_, SIGNAL(triggered( void ) ), SLOT( _addItem( void ) ) );
 
     addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), "Edit Entry...", this ) );
-    connect( editItemAction_, SIGNAL( triggered( void ) ), SLOT( _editItem( void ) ) );
+    connect( editItemAction_, SIGNAL(triggered( void ) ), SLOT( _editItem( void ) ) );
 
     addAction( removeItemAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove Entry", this ) );
-    connect( removeItemAction_, SIGNAL( triggered( void ) ), SLOT( _removeItem( void ) ) );
+    connect( removeItemAction_, SIGNAL(triggered( void ) ), SLOT( _removeItem( void ) ) );
 
 }

@@ -32,6 +32,7 @@
 
 #include <QtGui/QAbstractButton>
 #include <QtGui/QPaintEvent>
+#include <QtGui/QPainter>
 
 //! path editor button
 class PathEditorButton: public QAbstractButton
@@ -103,8 +104,11 @@ class PathEditorItem: public PathEditorButton, public Counter
     PathEditorItem( QWidget* parent ):
         PathEditorButton( parent ),
         Counter( "PathEditorItem" ),
+        isLocal_( true ),
         isSelectable_( true ),
-        isLast_( false )
+        isLast_( false ),
+        dragEnabled_( false ),
+        dragInProgress_( false )
     { Debug::Throw( "PathEditorItem::PathEditorItem.\n" ); }
 
     //! destructor
@@ -135,7 +139,11 @@ class PathEditorItem: public PathEditorButton, public Counter
     //!@name modifiers
     //@{
 
-    //! set is selectable
+    //! set local flag
+    void setIsLocal( bool value )
+    { isLocal_ = value; }
+
+    //! set selectable flag
     void setIsSelectable( bool value )
     {
         if( isSelectable_ == value ) return;
@@ -155,6 +163,10 @@ class PathEditorItem: public PathEditorButton, public Counter
     //! set path
     void setPath( const File&, const QString& = QString() );
 
+    //! enable drag
+    void setDragEnabled( bool value )
+    { dragEnabled_ = value; }
+
     //@}
 
     //! update minimum width
@@ -166,8 +178,20 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     protected:
 
+    //! mouse press
+    virtual void mousePressEvent( QMouseEvent* );
+
+    //! mouse press
+    virtual void mouseMoveEvent( QMouseEvent* );
+
+    //! mouse press
+    virtual void mouseReleaseEvent( QMouseEvent* );
+
     //! paint event
     virtual void paintEvent( QPaintEvent* );
+
+    //! paint
+    void _paint( QPainter* );
 
     //! arrow width
     int _arrowWidth( void ) const
@@ -178,11 +202,23 @@ class PathEditorItem: public PathEditorButton, public Counter
     //! path
     File path_;
 
+    //! true if path is in local file system
+    bool isLocal_;
+
     //! true if selectable
     bool isSelectable_;
 
     //! true if last
     bool isLast_;
+
+    //! true if drag is enabled (false by default)
+    bool dragEnabled_;
+
+    //! drag
+    bool dragInProgress_;
+
+    //! drag position
+    QPoint dragOrigin_;
 
 };
 

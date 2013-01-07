@@ -24,6 +24,7 @@
 #include "PathEditor_p.h"
 
 #include "BaseIcons.h"
+#include "BaseFileInfo.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
@@ -44,7 +45,9 @@
 #include <QtGui/QTextOption>
 #include <QtGui/QToolButton>
 
+//___________________________________________________________________
 const double PathEditorButton::BorderWidth = 1.5;
+const QString PathEditor::MimeType( "internal/path-editor-item" );
 
 //____________________________________________________________________________
 bool PathEditorButton::event( QEvent* event )
@@ -108,11 +111,100 @@ void PathEditorItem::updateMinimumSize( void )
     setMinimumSize( size );
 }
 
+
+//_______________________________________________
+void PathEditorItem::mousePressEvent( QMouseEvent* event )
+{
+
+    Debug::Throw( "PathEditorItem::mousePressEvent.\n" );
+
+    // update focusItem
+    if( dragEnabled_ && event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier)
+    {
+        dragInProgress_ = true;
+        dragOrigin_ = event->pos();
+    }
+
+    PathEditorButton::mousePressEvent( event );
+
+}
+
+//_______________________________________________
+void PathEditorItem::mouseMoveEvent( QMouseEvent* event )
+{
+
+    Debug::Throw( "PathEditorItem::mouseMoveEvent.\n" );
+    if( dragEnabled_ && ((event->buttons() & Qt::LeftButton) && dragInProgress_ ) &&
+        ( event->pos() - dragOrigin_ ).manhattanLength() >= QApplication::startDragDistance() )
+    {
+
+        // start drag
+        QDrag *drag = new QDrag(this);
+        QMimeData *mimeData = new QMimeData;
+
+        // fill Drag data. Use XML
+        QDomDocument document;
+        QDomElement top = document.appendChild( document.createElement( XML::FILEINFO_LIST ) ).toElement();
+
+        BaseFileInfo fileInfo( path_ );
+        fileInfo.setIsFolder();
+        if( isLocal_ )
+        {
+
+            fileInfo.setLocal();
+            fileInfo.update();
+            if( path_.isLink() ) fileInfo.setIsLink();
+            if( path_.isBrokenLink() ) fileInfo.setIsBrokenLink();
+            if( path_.isHidden() ) fileInfo.setIsHidden();
+
+        } else fileInfo.setRemote();
+
+        top.appendChild( fileInfo.domElement( document ) );
+
+        mimeData->setText( path_ );
+        mimeData->setData( PathEditor::MimeType, document.toByteArray() );
+        drag->setMimeData( mimeData );
+
+        // create drag pixmap
+        QPixmap pixmap( size() );
+        pixmap.fill( Qt::transparent );
+        QPainter painter( &pixmap );
+        _paint( &painter );
+
+        drag->setPixmap( pixmap );
+        drag->setHotSpot( dragOrigin_-rect().topLeft() );
+
+        drag->exec( Qt::MoveAction );
+        dragInProgress_ = false;
+
+    } else {
+
+        PathEditorButton::mouseMoveEvent( event );
+
+    }
+
+}
+
+//_______________________________________________
+void PathEditorItem::mouseReleaseEvent( QMouseEvent* event )
+{
+    dragInProgress_ = false;
+    PathEditorButton::mouseReleaseEvent( event );
+}
+
 //____________________________________________________________________________
 void PathEditorItem::paintEvent( QPaintEvent* event )
 {
     QPainter painter( this );
     painter.setClipRegion( event->region() );
+
+    _paint( &painter );
+    painter.end();
+}
+
+//____________________________________________________________________________
+void PathEditorItem::_paint( QPainter* painter )
+{
 
     // render mouse over
     if( _mouseOver() && isSelectable() )
@@ -123,7 +215,7 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
         option.showDecorationSelected = true;
         option.rect = rect();
         option.state |= QStyle::State_MouseOver;
-        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
+        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, _itemView() );
 
     }
 
@@ -140,8 +232,8 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
 
     QFont adjustedFont(font());
     adjustedFont.setBold( isLast_ );
-    painter.setFont( adjustedFont );
-    painter.drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignHCenter|Qt::AlignBottom ) );
+    painter->setFont( adjustedFont );
+    painter->drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignHCenter|Qt::AlignBottom ) );
 
     // render arrow
     if( !isLast_ )
@@ -153,10 +245,8 @@ void PathEditorItem::paintEvent( QPaintEvent* event )
         else option.rect = QRect( textRect.width(), 0, rect().width()-textRect.width()-BorderWidth, rect().height() );
 
         option.palette = palette();
-        style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this );
+        style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, painter, this );
     }
-
-    painter.end();
 
 }
 
@@ -229,7 +319,9 @@ PathEditor::PathEditor( QWidget* parent ):
     QStackedWidget( parent ),
     Counter( "PathEditor" ),
     usePrefix_( true ),
-    truncate_( true )
+    isLocal_( true ),
+    truncate_( true ),
+    dragEnabled_( false )
 {
     Debug::Throw( "PathEditor::PathEditor.\n" );
 
@@ -261,7 +353,7 @@ PathEditor::PathEditor( QWidget* parent ):
         hLayout->addWidget( menuButton_ = new PathEditorMenuButton( browserContainer_ ) );
         menuButton_->setItemView( itemView_ );
         menuButton_->hide();
-        connect( menuButton_, SIGNAL( clicked( void ) ), SLOT( _menuButtonClicked( void ) ) );
+        connect( menuButton_, SIGNAL(clicked( void ) ), SLOT( _menuButtonClicked( void ) ) );
 
         // button layout
         hLayout->addLayout( buttonLayout_ = new QHBoxLayout() );
@@ -271,12 +363,12 @@ PathEditor::PathEditor( QWidget* parent ):
         // switch
         PathEditorSwitch* editorSwitch = new PathEditorSwitch( browserContainer_ );
         hLayout->addWidget( editorSwitch, 1 );
-        connect( editorSwitch, SIGNAL( clicked( void ) ), SLOT( _showEditor( void ) ) );
+        connect( editorSwitch, SIGNAL(clicked( void ) ), SLOT( _showEditor( void ) ) );
 
         // button group
         group_ = new QButtonGroup( browserContainer_ );
         group_->setExclusive( false );
-        connect( group_, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
+        connect( group_, SIGNAL(buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
 
         addWidget( browserContainer_ );
     }
@@ -306,9 +398,9 @@ PathEditor::PathEditor( QWidget* parent ):
 
         button->setFocusPolicy( Qt::StrongFocus );
 
-        connect( editor_->lineEdit(), SIGNAL( returnPressed( void ) ), SLOT( _returnPressed( void ) ) );
-        connect( editor_, SIGNAL( activated( int ) ), SLOT( _returnPressed( void ) ) );
-        connect( button, SIGNAL( clicked( void ) ), SLOT( _showBrowser( void ) ) );
+        connect( editor_->lineEdit(), SIGNAL(returnPressed( void ) ), SLOT( _returnPressed( void ) ) );
+        connect( editor_, SIGNAL(activated( int ) ), SLOT( _returnPressed( void ) ) );
+        connect( button, SIGNAL(clicked( void ) ), SLOT( _showBrowser( void ) ) );
 
         addWidget( editorContainer_ );
     }
@@ -317,7 +409,7 @@ PathEditor::PathEditor( QWidget* parent ):
     setCurrentWidget( browserContainer_ );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
     _updateConfiguration();
 
 }
@@ -350,6 +442,30 @@ void PathEditor::setRootPathList( const File::List& value )
     if( rootPathList_ == value ) return;
     rootPathList_ = value;
     _reload();
+}
+
+//____________________________________________________________________________
+void PathEditor::setIsLocal( bool value )
+{
+    if( value == isLocal_ ) return;
+
+    // assign to this widget, and children
+    isLocal_ = value;
+    foreach( PathEditorItem* item, items_ )
+    { item->setIsLocal( value ); }
+
+}
+
+//____________________________________________________________________________
+void PathEditor::setDragEnabled( bool value )
+{
+    if( value == dragEnabled_ ) return;
+
+    // assign to this widget, and children
+    dragEnabled_ = value;
+    foreach( PathEditorItem* item, items_ )
+    { item->setDragEnabled( value ); }
+
 }
 
 //____________________________________________________________________________
@@ -393,7 +509,9 @@ void PathEditor::setPath( const File& constPath, const File& file )
         } else {
 
             item = new PathEditorItem( browserContainer_ );
+            item->setIsLocal( isLocal_ );
             item->setItemView( itemView_ );
+            item->setDragEnabled( dragEnabled_ );
             group_->addButton( item );
             buttonLayout_->addWidget( item );
             items_ << item;
@@ -421,7 +539,9 @@ void PathEditor::setPath( const File& constPath, const File& file )
             } else {
 
                 item = new PathEditorItem( browserContainer_ );
+                item->setIsLocal( isLocal_ );
                 item->setItemView( itemView_ );
+                item->setDragEnabled( dragEnabled_ );
                 group_->addButton( item );
                 buttonLayout_->addWidget( item );
                 items_ << item;
@@ -446,7 +566,9 @@ void PathEditor::setPath( const File& constPath, const File& file )
             } else {
 
                 item = new PathEditorItem( browserContainer_ );
+                item->setIsLocal( isLocal_ );
                 item->setItemView( itemView_ );
+                item->setDragEnabled( dragEnabled_ );
                 group_->addButton( item );
                 buttonLayout_->addWidget( item );
                 items_ << item;
@@ -696,7 +818,7 @@ void PathEditor::_menuButtonClicked( void )
     foreach( const File& path, pathList )
     { menu->addAction( path ); }
 
-    connect( menu, SIGNAL( triggered( QAction* ) ), SLOT( _updatePath( QAction* ) ) );
+    connect( menu, SIGNAL(triggered( QAction* ) ), SLOT( _updatePath( QAction* ) ) );
     menu->exec( menuButton_->mapToGlobal( menuButton_->rect().bottomLeft() ) );
     static_cast<PathEditorButton*>(menuButton_)->setMouseOver( false );
 
