@@ -45,6 +45,7 @@ namespace XML
     static const QString FILE( "File" );
     static const QString TYPE( "Type" );
     static const QString SIZE( "Size" );
+    static const QString ALIAS( "Alias" );
     static const QString LAST_MODIFIED( "LastModified" );
     static const QString USER( "user" );
     static const QString GROUP( "group" );
@@ -114,6 +115,14 @@ class BaseFileInfo
     //! file
     virtual const File& file( void ) const
     { return file_; }
+
+    //! alias
+    virtual bool hasAlias( void ) const
+    { return !alias_.isEmpty(); }
+
+    //! alias
+    virtual const QString& alias( void ) const
+    { return alias_; }
 
     //! file type
     virtual int type( void ) const
@@ -193,6 +202,10 @@ class BaseFileInfo
     //! file
     virtual void setFile( const File& file )
     { file_ = file; }
+
+    //! alias
+    virtual void setAlias( const QString& value )
+    { alias_ = value; }
 
     //! file type
     virtual void setType( TypeFlags type )
@@ -396,6 +409,9 @@ class BaseFileInfo
 
     //! file
     File file_;
+
+    //! alias
+    QString alias_;
 
     //! file type
     TypeFlags type_;

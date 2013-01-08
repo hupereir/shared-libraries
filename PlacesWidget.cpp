@@ -577,7 +577,10 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
 
 //______________________________________________________________________
 void PlacesWidget::insert( int position, const BaseFileInfo& fileInfo )
-{ insert( position, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), fileInfo.file().localName(), fileInfo ); }
+{
+    const QString alias( fileInfo.hasAlias() ? fileInfo.alias():fileInfo.file().localName() );
+    insert( position, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), alias, fileInfo );
+}
 
 //______________________________________________________________________
 void PlacesWidget::insert( int position, const QString& name, const BaseFileInfo& fileInfo )

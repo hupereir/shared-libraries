@@ -147,6 +147,7 @@ void PathEditorItem::mouseMoveEvent( QMouseEvent* event )
         QDomElement top = document.appendChild( document.createElement( XML::FILEINFO_LIST ) ).toElement();
 
         BaseFileInfo fileInfo( path_ );
+        fileInfo.setAlias( text() );
         fileInfo.setIsFolder();
         if( isLocal_ )
         {
