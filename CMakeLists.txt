@@ -38,6 +38,7 @@ SET( base_spellcheck_SOURCES
   SpellItemModel.cpp
   SpellParser.cpp
   SuggestionMenu.cpp
+  TexString.cpp
   )
 
 SET( base_spellcheck_HEADERS

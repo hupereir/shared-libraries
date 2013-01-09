@@ -21,22 +21,38 @@
 *
 *******************************************************************************/
 
-/*!
-  \file SpellParser.cpp
-  \brief highlight text based on misspelled words
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-
-
 #include "SpellInterface.h"
 #include "SpellParser.h"
+#include "TexString.h"
 #include "Word.h"
 
 namespace SPELLCHECK
 {
+
+    //! latex conversion
+    class Position
+    {
+
+        public:
+
+        //! constructor
+        Position( int position, const TexString::Conversion conversion ):
+            position_(position),
+            conversion_(conversion)
+        {}
+
+        int position_;
+        TexString::Conversion conversion_;
+
+        //! less than operator
+        bool operator < (const Position& other ) const
+        { return position_ < other.position_; }
+
+        //! list
+        typedef QList<Position> List;
+
+    };
+
     //____________________________________________________________________________
     SpellParser::SpellParser( void ):
         Counter( "SpellParser" ),
@@ -45,13 +61,39 @@ namespace SPELLCHECK
     {  Debug::Throw( "SpellParser::SpellParser.\n" ); }
 
     //____________________________________________________________________________
-    Word::Set SpellParser::parse( const QString& text )
+    Word::Set SpellParser::parse( const QString& constText )
     {
 
         Debug::Throw( "SpellParser::Parse.\n" );
 
+        // local copy
+        QString text( constText );
+
         // check if enabled
         if( !enabled_ ) return ( Word::Set() );
+
+        Position::List positions;
+        if( interface().filter() == "tex" )
+        {
+
+            // apply conversions
+            text = TexString( text ).toTextAccents();
+
+            // build positions list
+            foreach( const TexString::Conversion& conversion, TexString::conversions() )
+            {
+                int position(0);
+                while( (position = constText.indexOf( conversion.second, position )) >= 0 )
+                {
+                    positions.append( Position( position, conversion ) );
+                    position+= conversion.second.size();
+                }
+            }
+
+            // sort positions
+            std::sort( positions.begin(), positions.end() );
+
+        }
 
         // retrieve misspelled words
         interface().setText( text );
@@ -60,12 +102,37 @@ namespace SPELLCHECK
         {
             interface().nextWord();
             QString word( interface().word() );
-            int position( interface().position() );
+            int wordPosition( interface().position() );
             if( word.isEmpty() ) break;
             if( interface().isWordIgnored( word ) ) continue;
 
-            Debug::Throw() << "SpellParser::highlightParagraph - new word: " << word << " position: " << position << endl;
-            words.insert( Word( word, position ) );
+            // apply offset
+            if( interface().filter() == "tex" && !positions.empty() )
+            {
+
+                // update position
+                int offset = 0;
+                foreach( const Position& position, positions )
+                {
+                    if( position.position_ - offset <= wordPosition ) offset += (position.conversion_.second.size() - position.conversion_.first.size() );
+                    else break;
+                }
+
+                wordPosition += offset;
+
+                // update word
+                foreach( const Position& position, positions )
+                {
+                    if( position.position_ < wordPosition ) continue;
+                    else if( position.position_ - wordPosition > word.size() ) break;
+                    else word.replace( position.position_ - wordPosition, position.conversion_.first.size(), position.conversion_.second );
+
+                }
+
+            }
+
+            Debug::Throw() << "SpellParser::highlightParagraph - new word: " << word << " position: " << wordPosition << endl;
+            words.insert( Word( word, wordPosition ) );
 
         }
 

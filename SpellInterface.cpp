@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file SpellInterface.cpp
-  \brief spell checker interface
-  \author  Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include "Debug.h"
 #include "SpellInterface.h"
 #include "Util.h"
