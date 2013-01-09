@@ -59,8 +59,8 @@ namespace SPELLCHECK
             conversions_ << Conversion( "è", "\\`e" );
             conversions_ << Conversion( "ê", "\\^e" );
             conversions_ << Conversion( "ë", "\\\"e" );
-            conversions_ << Conversion( "î", "\\^\\i" );
-            conversions_ << Conversion( "ï", "\\\"\\i" );
+            conversions_ << Conversion( "î", "\\^\\i " );
+            conversions_ << Conversion( "ï", "\\\"\\i " );
             conversions_ << Conversion( "ô", "\\^o" );
             conversions_ << Conversion( "ö", "\\\"o" );
             conversions_ << Conversion( "ù", "\\`u" );

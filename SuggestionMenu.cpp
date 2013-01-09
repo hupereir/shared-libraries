@@ -21,16 +21,10 @@
 *
 *******************************************************************************/
 
-/*!
-   \file SuggestionMenu.cpp
-   \brief customized popup menu to display spell checker suggestions
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
+#include "SuggestionMenu.h"
 
 #include "Debug.h"
-#include "SuggestionMenu.h"
+#include "TexString.h"
 #include "XmlOptions.h"
 
 namespace SPELLCHECK
@@ -60,8 +54,13 @@ namespace SPELLCHECK
 
         Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
 
+        QString word( word_ );
+
+        // convert accents
+        if( interface().filter() == "tex" ) word = TexString( word ).toTextAccents();
+
         // retrieve list of suggestions
-        QStringList suggestions( interface_.suggestions( word_ ) );
+        QStringList suggestions( interface_.suggestions( word ) );
         Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
 
         // add words
@@ -70,8 +69,11 @@ namespace SPELLCHECK
         for( int i=0; i < max; ++i )
         {
 
-            Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestions[i] << endl;
-            suggestions_.insert( addAction( suggestions[i] ), suggestions[i] );
+            QString suggestion( suggestions[i] );
+            if( interface().filter() == "tex" ) suggestion = TexString( suggestion ).toLatexAccents();
+
+            Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestion << endl;
+            suggestions_.insert( addAction( suggestions[i] ), suggestion );
         }
         addSeparator();
 

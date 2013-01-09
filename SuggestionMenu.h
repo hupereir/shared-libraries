@@ -42,7 +42,7 @@ namespace SPELLCHECK {
         public:
 
         //! constructor
-        SuggestionMenu( QWidget *parent, const QString& word, const bool& read_only = false );
+        SuggestionMenu( QWidget *parent, const QString& word, const bool& = false );
 
         //! spell interface
         SpellInterface& interface( void )
