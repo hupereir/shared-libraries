@@ -36,8 +36,8 @@ FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap( void )
 //_______________________________________________
 FileRecord::PropertyId::NameMap& FileRecord::PropertyId::_nameMap( void )
 {
-    static FileRecord::PropertyId::NameMap name_map;
-    return name_map;
+    static FileRecord::PropertyId::NameMap nameMap;
+    return nameMap;
 }
 
 //_______________________________________________
@@ -58,7 +58,7 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
 
     // insert otherwise, increment counter and return proper value
     _idMap().insert( name, _counter() );
-    _nameMap() << name;
+    _nameMap().append(name);
     _counter()++;
 
     return _counter()-1;

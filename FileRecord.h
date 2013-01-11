@@ -367,7 +367,7 @@ class FileRecord: public Counter
     {
         out << record.file() << endl;
         for( PropertyMap::const_iterator iter = record.properties().begin(); iter != record.properties().end(); iter++ )
-        { out << "  " << iter.key() << ": " << iter.value() << endl; }
+        { out << "  " << iter.key() << " (" << PropertyId::get( iter.key() ) << "): " << iter.value() << endl; }
         return out;
     }
 
