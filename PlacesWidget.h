@@ -128,6 +128,9 @@ class PlacesWidget: public QWidget, public Counter
     //! add item
     void _addItem( void );
 
+    //! add separator
+    void _addSeparator( void );
+
     //! edit item
     void _editItem( void );
 
@@ -229,6 +232,9 @@ class PlacesWidget: public QWidget, public Counter
 
     //! add item
     QAction* addItemAction_;
+
+    //! add separator
+    QAction* addSeparatorAction_;
 
     //! edit item
     QAction* editItemAction_;

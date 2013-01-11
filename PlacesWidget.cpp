@@ -53,6 +53,7 @@ const QString PlacesWidgetItem::MimeType( "internal/places-widget-item" );
 PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
     QAbstractButton( parent ),
     itemView_( 0x0 ),
+    isSeparator_( false ),
     valid_( true ),
     mouseOver_( false ),
     hasFocus_( false ),
@@ -71,6 +72,13 @@ PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
 //___________________________________________________________________
 void PlacesWidgetItem::updateMinimumSize( void )
 {
+
+    // separators
+    if( isSeparator_ )
+    {
+        setMinimumSize( QSize( 0, 3 ) );
+        return;
+    }
 
     // get icon size
     QSize size( 2*BorderWidth, 2*BorderWidth );
@@ -186,6 +194,18 @@ void PlacesWidgetItem::paintEvent( QPaintEvent* event )
 //___________________________________________________________________
 void PlacesWidgetItem::_paint( QPainter* painter )
 {
+
+    // render separators
+    if( isSeparator_ )
+    {
+
+        QStyleOptionFrameV3 option;
+        option.initFrom( this );
+        option.frameShape = QFrame::HLine;
+        style()->drawControl( QStyle::CE_ShapedFrame, &option, painter, this );
+        return;
+
+    }
 
     // render mouse over
     if( valid_ && ( mouseOver_ || hasFocus_ || dragInProgress_ ) )
@@ -448,6 +468,7 @@ bool PlacesWidget::read( File file )
             return false;
         }
     }
+
     // look for relevant element
     QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
     if( topNodes.isEmpty() ) return false;
@@ -464,6 +485,7 @@ bool PlacesWidget::read( File file )
 
             LocalFileInfo fileInfo( element );
             if( !fileInfo.file().isEmpty() ) add( fileInfo.name(), fileInfo );
+            else _addSeparator();
 
         }
     }
@@ -502,11 +524,11 @@ bool PlacesWidget::write( File file )
         const BaseFileInfo& fileInfo( item->fileInfo() );
         Debug::Throw() << "PlacesWidget::write - " << fileInfo << endl;
 
-        if( fileInfo.file().isEmpty() )
-        {
-            Debug::Throw(0, "PlacesWidget::write - attend to write empty file info. Discarded.\n" );
-            continue;
-        }
+//         if( fileInfo.file().isEmpty() )
+//         {
+//             Debug::Throw(0, "PlacesWidget::write - attend to write empty file info. Discarded.\n" );
+//             continue;
+//         }
 
         top.appendChild( LocalFileInfo( fileInfo, item->text() ).domElement( document ) );
     }
@@ -628,8 +650,7 @@ void PlacesWidget::_buttonClicked( QAbstractButton* button )
     Debug::Throw( "PlacesWidget::_buttonClicked.\n" );
 
     PlacesWidgetItem* currentItem( qobject_cast<PlacesWidgetItem*>( button ) );
-    if( currentItem ) emit itemSelected( currentItem->fileInfo() );
-
+    if( currentItem && !currentItem->isSeparator() ) emit itemSelected( currentItem->fileInfo() );
 
 }
 
@@ -658,6 +679,7 @@ void PlacesWidget::_updateMenu( void )
 
     // add entry
     contextMenu_->addAction( addItemAction_ );
+    contextMenu_->addAction( addSeparatorAction_ );
     contextMenu_->addSeparator();
 
     if( ( focusItem_ = _focusItem() ) )
@@ -671,7 +693,8 @@ void PlacesWidget::_updateMenu( void )
 
         {
             QString buffer;
-            QTextStream( &buffer ) << "Remove '" << focusItem_->text() << "'";
+            if( focusItem_->isSeparator() ) QTextStream( &buffer ) << "Remove Separator";
+            else QTextStream( &buffer ) << "Remove '" << focusItem_->text() << "'";
             removeItemAction_->setText( buffer );
             contextMenu_->addAction( removeItemAction_ );
         }
@@ -763,6 +786,26 @@ void PlacesWidget::_addItem( void )
 
 
     return;
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::_addSeparator( void )
+{
+    Debug::Throw( "PlacesWidget::_addSeparator.\n" );
+
+    // add new item
+    PlacesWidgetItem* item = new PlacesWidgetItem( this );
+    item->setIsSeparator( true );
+
+    // add to button group, list of items and layout
+    group_->addButton( item );
+    buttonLayout_->addWidget( item );
+    items_.append( item );
+
+    // emit signal
+    _updateDragState();
+    emit contentsChanged();
 
 }
 
@@ -1148,6 +1191,9 @@ void PlacesWidget::_installActions( void )
 
     addAction( addItemAction_ = new QAction( IconEngine::get( ICONS::ADD ), "Add Entry...", this ) );
     connect( addItemAction_, SIGNAL(triggered( void ) ), SLOT( _addItem( void ) ) );
+
+    addAction( addSeparatorAction_ = new QAction( IconEngine::get( ICONS::ADD ), "Add Separator", this ) );
+    connect( addSeparatorAction_, SIGNAL(triggered( void ) ), SLOT( _addSeparator( void ) ) );
 
     addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), "Edit Entry...", this ) );
     connect( editItemAction_, SIGNAL(triggered( void ) ), SLOT( _editItem( void ) ) );

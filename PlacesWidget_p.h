@@ -60,6 +60,10 @@ class PlacesWidgetItem: public QAbstractButton
     const BaseFileInfo& fileInfo( void ) const
     { return fileInfo_; }
 
+    //! true if is separator
+    bool isSeparator( void ) const
+    { return isSeparator_; }
+
     //! true if valid
     bool isValid( void ) const
     { return valid_; }
@@ -80,6 +84,10 @@ class PlacesWidgetItem: public QAbstractButton
 
     //!@name modifiers
     //@{
+
+    //! set is separator
+    void setIsSeparator( bool value )
+    { isSeparator_ = value; updateMinimumSize(); update(); }
 
     //! icon
     void setIcon( const QIcon& icon )
@@ -157,6 +165,9 @@ class PlacesWidgetItem: public QAbstractButton
 
     //! file info
     BaseFileInfo fileInfo_;
+
+    //! true if is separator
+    bool isSeparator_;
 
     //! true if valid (true by default)
     bool valid_;
