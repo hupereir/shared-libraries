@@ -70,6 +70,9 @@ class XmlFileList: public FileList
     //! save configuration
     void _saveConfiguration( void );
 
+    //! compare two record lists
+    bool _differs( const FileRecord::List&, const FileRecord::List& ) const;
+
     private:
 
     //! file from/to wich the files are saved

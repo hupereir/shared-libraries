@@ -116,7 +116,7 @@ bool XmlFileList::write( File file )
 
     // read old list and compare to current
     XmlFileList oldList;
-    if( oldList._read( document ) && oldList._records() == records )
+    if( oldList._read( document ) && !_differs( oldList._records(), records ) )
     { return true; }
 
     // create main element and insert records
@@ -178,4 +178,29 @@ void XmlFileList::_saveConfiguration( void )
 {
     Debug::Throw( "XmlFileList::_saveConfiguration.\n" );
     write();
+}
+
+//______________________________________
+bool XmlFileList::_differs( const FileRecord::List& first, const FileRecord::List& second ) const
+{
+
+    // check sizes
+    if( first.size() != second.size() ) return true;
+
+    // check records one by one
+    for( int i = 0; i < first.size(); ++i )
+    {
+
+        // records
+        const FileRecord& firstRecord = first[i];
+        const FileRecord& secondRecord = second[i];
+
+        if( !( firstRecord == secondRecord ) ) return true;
+        else if( firstRecord.flags() != secondRecord.flags() ) return true;
+        else if( !( firstRecord.properties() == secondRecord.properties() ) ) return true;
+
+    }
+
+    return false;
+
 }
