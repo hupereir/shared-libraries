@@ -33,6 +33,8 @@ namespace SPELLCHECK
 
     //_______________________________________________
     const QString SpellInterface::NO_FILTER = "none";
+    const QString SpellInterface::FILTER_TEX = "tex";
+    const QString SpellInterface::FILTER_TEX_NO_ACCENTS = "tex (no accents)";
 
     //_______________________________________________
     SpellInterface::SpellInterface( void ):
@@ -115,7 +117,8 @@ namespace SPELLCHECK
     {
 
         Debug::Throw( "SpellInterface::setFilter.\n" );
-        if( !spellConfig_ ) {
+        if( !spellConfig_ )
+        {
             error_ = "invalid aspell configuration";
             return false;
         }
@@ -128,8 +131,10 @@ namespace SPELLCHECK
         }
 
         // update filter
-        aspell_config_replace(spellConfig_, "mode", filter.toAscii().constData() );
         filter_ = filter;
+
+        // update aspell
+        aspell_config_replace(spellConfig_, "mode", (filter == FILTER_TEX_NO_ACCENTS ? FILTER_TEX:filter).toAscii().constData() );
 
         // reset SpellChecker
         return _reset() || filter == NO_FILTER;
@@ -368,7 +373,10 @@ namespace SPELLCHECK
             QString mode;
             in >> mode;
             if( in.status() == QTextStream::Ok && !mode.isEmpty() )
-            { filters_.insert( mode ); }
+            {
+                filters_.insert( mode );
+                if( mode == FILTER_TEX ) filters_.insert( FILTER_TEX_NO_ACCENTS );
+            }
         }
 
         pclose( tmp );

@@ -73,7 +73,7 @@ namespace SPELLCHECK
         if( !enabled_ ) return ( Word::Set() );
 
         Position::List positions;
-        if( interface().filter() == "tex" )
+        if( interface().filter() == SpellInterface::FILTER_TEX_NO_ACCENTS )
         {
 
             // apply conversions
@@ -107,7 +107,7 @@ namespace SPELLCHECK
             if( interface().isWordIgnored( word ) ) continue;
 
             // apply offset
-            if( interface().filter() == "tex" && !positions.empty() )
+            if( interface().filter() == SpellInterface::FILTER_TEX_NO_ACCENTS && !positions.empty() )
             {
 
                 // update position

@@ -57,6 +57,12 @@ namespace SPELLCHECK
         //! no filter
         static const QString NO_FILTER;
 
+        //! latex
+        static const QString FILTER_TEX;
+
+        //! latex no accents
+        static const QString FILTER_TEX_NO_ACCENTS;
+
         //!@name dictionary
         //@{
 
