@@ -72,7 +72,7 @@ class BusyWidget: public QWidget, public Counter
 
     //! size
     virtual QSize minimumSizeHint( void ) const
-    { return QSize( 2*radius_+2, 2*radius_+2 ); }
+    { return QSize( 2*radius_+border_, 2*radius_+border_ ); }
 
     //! size
     virtual QSize sizeHint( void ) const
@@ -144,6 +144,9 @@ class BusyWidget: public QWidget, public Counter
 
     //! thickness
     int thickness_;
+
+    //! border
+    int border_;
 
     //! margin
     int margin_;
