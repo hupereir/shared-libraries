@@ -172,6 +172,8 @@ FileRecord& FileList::_add(
     // do not add empty files
     Q_ASSERT( !record.file().isEmpty() );
 
+    Debug::Throw() << "FileList::_add - file: " << record.file() << endl;
+
     FileRecord::List::iterator iter = std::find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( record.file() ) );
     if( iter != _records().end() )
     {
