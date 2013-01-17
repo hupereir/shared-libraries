@@ -21,22 +21,14 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColorMenu.cpp
-\brief color picker
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QColorDialog>
-#include <QLabel>
-#include <QPainter>
-#include <QWidgetAction>
-
 #include "ColorMenu.h"
+
+#include "BaseIcons.h"
+#include "IconEngine.h"
 #include "IconSize.h"
-#include "Str.h"
+
+#include <QtGui/QColorDialog>
+#include <QtGui/QPainter>
 
 //________________________________________________
 const QString ColorMenu::NONE = "None";
@@ -107,7 +99,7 @@ void ColorMenu::_display( void )
     clear();
 
     // new color action
-    addAction( "&New", this, SLOT( _new() ) );
+    addAction( IconEngine::get( ICONS::ADD ), "&New", this, SLOT( _new() ) );
 
     // default color action
     addAction( "&Default", this, SLOT( _default() ) );
