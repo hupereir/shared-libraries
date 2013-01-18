@@ -46,7 +46,6 @@ bool XmlDocument::setContent( QIODevice* device, XmlError& error )
 //___________________________________________________________________
 bool XmlDocument::setContent( const QString& content, XmlError& error )
 {
-    Q_ASSERT( file );
     error.clear();
     return QDomDocument::setContent( content, &error.error(), &error.line(), &error.column() );
 }
