@@ -24,31 +24,24 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    SvgConfiguration.h
-   \brief   Svg common configuration
-   \version $Revision$
-   \date    $Date$
-*/
-
-#include <QWidget>
-
 #include "Counter.h"
 #include "OptionWidgetList.h"
+
+#include <QtGui/QWidget>
 
 namespace SVG
 {
 
-  //! SVG common configuration
-  class SvgConfiguration: public QWidget, public OptionWidgetList, public Counter
-  {
+    //! SVG common configuration
+    class SvgConfiguration: public QWidget, public OptionWidgetList, public Counter
+    {
 
-    public:
+        public:
 
-    //! constructor
-    SvgConfiguration( QWidget* parent );
+        //! constructor
+        SvgConfiguration( QWidget* parent );
 
-  };
+    };
 
 };
 
