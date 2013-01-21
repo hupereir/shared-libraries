@@ -48,9 +48,13 @@ class OptionPair: public Options::Pair
         Options::Pair( name, option )
     {}
 
+    //! equal to operator
+    bool operator == ( const OptionPair& other ) const
+    { return first == other.first && second.raw() == other.second.raw(); }
+
     //! returns true if this record is a child of argument
-    bool isChild( const OptionPair& option ) const
-    { return option.first == first && option.second.raw().isEmpty(); }
+    bool isChild( const OptionPair& other ) const
+    { return other.first == first && other.second.raw().isEmpty(); }
 
     //! write to stream
     friend QTextStream& operator << (QTextStream& out, const OptionPair& pair )
