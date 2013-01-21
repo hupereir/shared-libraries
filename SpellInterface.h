@@ -1,3 +1,6 @@
+#ifndef SpellInterface_h
+#define SpellInterface_h
+
 // $Id$
 
 /******************************************************************************
@@ -20,17 +23,6 @@
 *
 *
 *******************************************************************************/
-
-#ifndef SpellInterface_h
-#define SpellInterface_h
-
-/*!
-\file SpellInterface.h
-\brief spell checker interface
-\author  Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 
 #include "Counter.h"
 #include "QOrderedSet.h"
