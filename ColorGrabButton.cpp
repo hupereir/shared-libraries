@@ -35,8 +35,7 @@ ColorGrabButton::ColorGrabButton( QWidget* parent ):
     QToolButton( parent ),
     Counter( "ColorGrabButton" ),
     locked_( false ),
-    mouseDown_( false ),
-    grabber_( 0x0 )
+    mouseDown_( false )
 {
     Debug::Throw( "ColorGrabButton::ColorGrabButton.\n" );
     connect( this, SIGNAL( clicked( void ) ), SLOT( _grabColor( void ) ) );
@@ -48,75 +47,60 @@ void ColorGrabButton::_grabColor( void )
 {
 
     Debug::Throw( "ColorGrabButton::_grabColor.\n" );
-    grabber_ = new QDialog( 0, Qt::X11BypassWindowManagerHint );
-    grabber_->move( -1000, -1000 );
-    grabber_->setModal( true );
-    grabber_->show();
-    grabber_->grabMouse( Qt::CrossCursor );
-    grabber_->installEventFilter( this );
-
+    grabMouse(Qt::CrossCursor);
     locked_ = true;
 
 }
 
 //_____________________________________________________________
-bool ColorGrabButton::eventFilter( QObject* object, QEvent* event )
+void ColorGrabButton::mousePressEvent( QMouseEvent *event )
 {
-    if( object != grabber_ ) return false;
-    switch( event->type() )
-    {
+    Debug::Throw( "ColorGrabButton::mousePressEvent.\n" );
 
-        case QEvent::MouseButtonPress:
-        filterMouseButtonPressEvent( static_cast<QMouseEvent*>( event ) );
-        return true;
-
-        case QEvent::MouseButtonRelease:
-        filterMouseButtonReleaseEvent( static_cast<QMouseEvent*>( event ) );
-        return true;
-
-        case QEvent::MouseMove:
-        filterMouseMoveEvent( static_cast<QMouseEvent*>( event ) );
-        return true;
-
-        default: return false;
-
-    }
-
-}
-
-//_____________________________________________________________
-void ColorGrabButton::filterMouseButtonPressEvent( QMouseEvent *event )
-{
-    Debug::Throw( "ColorGrabButton::filterMouseButtonPressEvent.\n" );
-    if( event->button() == Qt::LeftButton && locked_ && !mouseDown_ )
-    { mouseDown_ = true; }
-}
-
-//_____________________________________________________________
-void ColorGrabButton::filterMouseButtonReleaseEvent( QMouseEvent *event )
-{
-
-    Debug::Throw( "ColorGrabButton::filterMouseButtonReleaseEvent.\n" );
+    // check button
+    if( event->button() != Qt::LeftButton ) return QToolButton::mousePressEvent( event );
 
     // do nothing if mouse is not locked
-    if( !locked_ ) return;
+    if( !locked_ ) return QToolButton::mousePressEvent( event );
+
+    // do nothing if mouse is already down
+    if( mouseDown_ ) return;
+    mouseDown_ = true;
+
+}
+
+//_____________________________________________________________
+void ColorGrabButton::mouseReleaseEvent( QMouseEvent *event )
+{
+
+    Debug::Throw( "ColorGrabButton::mouseReleaseEvent.\n" );
+
+    // do nothing if mouse is not locked
+    if( !locked_ ) return QToolButton::mouseReleaseEvent( event );
 
     // check button
     if( event->button() == Qt::LeftButton && mouseDown_ )
-    { _selectColorFromMouseEvent( event ); }
+    {
+        // get color under mouse
+        _selectColorFromMouseEvent( event );
+    }
 
     mouseDown_ = false;
     locked_ = false;
-    grabber_->deleteLater();
-    grabber_ = 0;
+    releaseMouse();
 
 }
 
 //_____________________________________________________________
-void ColorGrabButton::filterMouseMoveEvent( QMouseEvent *event )
+void ColorGrabButton::mouseMoveEvent( QMouseEvent *event )
 {
-    Debug::Throw( "ColorGrabButton::filterMouseMoveEvent.\n" );
-    if( locked_ && mouseDown_ ) { _selectColorFromMouseEvent( event ); }
+
+    Debug::Throw( "ColorGrabButton::mouseMoveEvent.\n" );
+
+    // do nothing if mouse is not locked
+    if( !( locked_ && mouseDown_ ) ) return QToolButton::mouseMoveEvent( event );
+    _selectColorFromMouseEvent( event );
+
 }
 
 //_____________________________________________________________

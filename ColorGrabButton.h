@@ -26,8 +26,8 @@
 #include "Counter.h"
 
 #include <QtCore/QEvent>
+#include <QtGui/QMouseEvent>
 #include <QtGui/QToolButton>
-#include <QtGui/QDialog>
 
 //! used to pick color from screen
 class ColorGrabButton : public QToolButton, public Counter
@@ -54,17 +54,14 @@ class ColorGrabButton : public QToolButton, public Counter
 
     protected:
 
-    //! event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    //! mouse press event [overloaded]
+    virtual void mousePressEvent( QMouseEvent* );
 
-        //! mouse press event
-    virtual void filterMouseButtonPressEvent( QMouseEvent* );
+    //! mouse release event [overloaded]
+    virtual void mouseReleaseEvent( QMouseEvent* );
 
-    //! mouse release event
-    virtual void filterMouseButtonReleaseEvent( QMouseEvent* );
-
-    //! mouse move event
-    virtual void filterMouseMoveEvent( QMouseEvent* );
+    //! mouse move event [overloaded]
+    virtual void mouseMoveEvent( QMouseEvent* );
 
     private:
 
@@ -75,9 +72,6 @@ class ColorGrabButton : public QToolButton, public Counter
 
     //! is true when the mouse is down
     bool mouseDown_;
-
-    //! invisible dialog used to grab mouse
-    QDialog* grabber_;
 
 };
 
