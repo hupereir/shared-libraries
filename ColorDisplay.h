@@ -23,18 +23,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColorDisplay.h
-\brief used to display colors and a choose button
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QColorDialog>
-
 #include "Counter.h"
 #include "AnimatedLineEditor.h"
+
+#include <QtGui/QColorDialog>
 
 class ColorGrabButton;
 

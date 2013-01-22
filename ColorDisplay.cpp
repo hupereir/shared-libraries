@@ -21,31 +21,20 @@
 *
 *******************************************************************************/
 
-/*!
-\file ColorDisplay.cpp
-\brief used to display colors and a choose button
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-
-
-#include <QApplication>
-#include <QCursor>
-#include <QDesktopWidget>
-#include <QHBoxLayout>
-#include <QPainter>
-#include <QToolButton>
+#include "ColorDisplay.h"
 
 #include "BaseIcons.h"
 #include "ColorGrabButton.h"
-#include "ColorDisplay.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
 
-
+#include <QtGui/QApplication>
+#include <QtGui/QCursor>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QPainter>
+#include <QtGui/QToolButton>
 
 //______________________________________________
 const QString ColorDisplay::NONE = "None";
