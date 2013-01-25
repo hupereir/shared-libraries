@@ -43,10 +43,48 @@ class ContextMenu: public QMenu, public Counter
     virtual ~ContextMenu( void )
     {}
 
+    //!@name modifiers
+    //@{
+
+    //! ignore disabled action
+    void setIgnoreDisabledActions( bool value )
+    { ignoreDisabledActions_ = value; }
+
+    //! clear
+    void clear( void )
+    {
+        QMenu::clear();
+        needSeparator_ = false;
+    }
+
+    //! set need separator
+    /*! separator is added next time an action is added */
+    void setNeedSeparator( bool value )
+    { needSeparator_ = value; }
+
+    //! add separator
+    QAction* addSeparator( void );
+
+    //! add menu
+    QAction* addMenu( QMenu* );
+
+    //! add action
+    void addAction( QAction* );
+
+    //@}
+
     protected slots:
 
     //! raise request
     void _raise( const QPoint& );
+
+    private:
+
+    //! ignore disabled actions
+    bool ignoreDisabledActions_;
+
+    //! need separator
+    bool needSeparator_;
 
 };
 

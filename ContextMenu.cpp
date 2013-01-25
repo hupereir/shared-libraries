@@ -29,13 +29,39 @@
 //___________________________________________________
 ContextMenu::ContextMenu( QWidget* parent ):
     QMenu( parent ),
-    Counter( "ContextMenu" )
+    Counter( "ContextMenu" ),
+    ignoreDisabledActions_( false ),
+    needSeparator_( false )
 {
 
     Debug::Throw( "ContextMenu::ContextMenu.\n" );
     parent->setContextMenuPolicy( Qt::CustomContextMenu );
     connect( parent, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raise( const QPoint& ) ) );
 
+}
+
+//___________________________________________________
+QAction* ContextMenu::addSeparator( void )
+{
+    needSeparator_ = false;
+    return QMenu::addSeparator();
+}
+
+//___________________________________________________
+QAction* ContextMenu::addMenu( QMenu* menu )
+{
+    if( needSeparator_ ) addSeparator();
+    needSeparator_ = false;
+    QMenu::addMenu( menu );
+}
+
+//___________________________________________________
+void ContextMenu::addAction( QAction* action )
+{
+    if( ignoreDisabledActions_ && !action->isEnabled() ) return;
+    if( needSeparator_ ) addSeparator();
+    needSeparator_ = false;
+    QMenu::addAction( action );
 }
 
 //___________________________________________________
