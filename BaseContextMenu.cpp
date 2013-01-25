@@ -21,28 +21,39 @@
 *
 *******************************************************************************/
 
-#include "ContextMenu.h"
+#include "BaseContextMenu.h"
 #include "Debug.h"
 
 #include <QtGui/QAbstractScrollArea>
 
 //___________________________________________________
-ContextMenu::ContextMenu( QWidget* parent ):
-    BaseContextMenu( parent )
+BaseContextMenu::BaseContextMenu( QWidget* parent ):
+    QMenu( parent ),
+    Counter( "BaseContextMenu" ),
+    ignoreDisabledActions_( false ),
+    needSeparator_( false )
+{}
+
+//___________________________________________________
+QAction* BaseContextMenu::addSeparator( void )
 {
-
-    Debug::Throw( "ContextMenu::ContextMenu.\n" );
-    parent->setContextMenuPolicy( Qt::CustomContextMenu );
-    connect( parent, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raise( const QPoint& ) ) );
-
+    needSeparator_ = false;
+    return QMenu::addSeparator();
 }
 
 //___________________________________________________
-void ContextMenu::_raise( const QPoint& position )
+QAction* BaseContextMenu::addMenu( QMenu* menu )
 {
+    if( needSeparator_ ) addSeparator();
+    needSeparator_ = false;
+    return QMenu::addMenu( menu );
+}
 
-    QAbstractScrollArea* view(  qobject_cast<QAbstractScrollArea*>( parentWidget() ) );
-    if( view )  exec( view->viewport()->mapToGlobal( position ) );
-    else exec( parentWidget()->mapToGlobal( position ) );
-
+//___________________________________________________
+void BaseContextMenu::addAction( QAction* action )
+{
+    if( ignoreDisabledActions_ && !action->isEnabled() ) return;
+    if( needSeparator_ ) addSeparator();
+    needSeparator_ = false;
+    QMenu::addAction( action );
 }

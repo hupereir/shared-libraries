@@ -29,6 +29,7 @@ SET( base_qt_SOURCES
   AnimatedTabWidget.cpp
   AnimatedTextEditor.cpp
   AnimatedTreeView.cpp
+  BaseContextMenu.cpp
   BaseFileIconProvider.cpp
   BaseFileInfo.cpp
   BaseFileInfoConfigurationWidget.cpp

@@ -1,5 +1,5 @@
-#ifndef _ContextMenu_h_
-#define _ContextMenu_h_
+#ifndef _BaseContextMenu_h_
+#define _BaseContextMenu_h_
 
 // $Id$
 
@@ -24,27 +24,60 @@
 *
 *******************************************************************************/
 
-#include "BaseContextMenu.h"
+#include "Counter.h"
+
+#include <QtGui/QMenu>
 
 // implements context menu, installable on widgets
-class ContextMenu: public BaseContextMenu
+class BaseContextMenu: public QMenu, public Counter
 {
-
-    Q_OBJECT
 
     public:
 
     //! contructor
-    ContextMenu( QWidget* );
+    BaseContextMenu( QWidget* );
 
     //!destructor
-    virtual ~ContextMenu( void )
+    virtual ~BaseContextMenu( void )
     {}
 
-    protected slots:
+    //!@name modifiers
+    //@{
 
-    //! raise request
-    void _raise( const QPoint& );
+    //! ignore disabled action
+    void setIgnoreDisabledActions( bool value )
+    { ignoreDisabledActions_ = value; }
+
+    //! clear
+    void clear( void )
+    {
+        QMenu::clear();
+        needSeparator_ = false;
+    }
+
+    //! set need separator
+    /*! separator is added next time an action is added */
+    void setNeedSeparator( bool value )
+    { needSeparator_ = value; }
+
+    //! add separator
+    QAction* addSeparator( void );
+
+    //! add menu
+    QAction* addMenu( QMenu* );
+
+    //! add action
+    void addAction( QAction* );
+
+    //@}
+
+    private:
+
+    //! ignore disabled actions
+    bool ignoreDisabledActions_;
+
+    //! need separator
+    bool needSeparator_;
 
 };
 
