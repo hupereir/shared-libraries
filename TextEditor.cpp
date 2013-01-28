@@ -21,11 +21,13 @@
 *
 *******************************************************************************/
 
+#include "TextEditor.h"
+
 #include "BaseIcons.h"
+#include "BaseContextMenu.h"
 #include "BaseReplaceDialog.h"
 #include "InformationDialog.h"
 #include "Color.h"
-#include "TextEditor.h"
 #include "CustomTextDocument.h"
 #include "BaseFindDialog.h"
 #include "IconEngine.h"
@@ -494,48 +496,48 @@ void TextEditor::resetUndoRedoStack( void )
 }
 
 //______________________________________________________________________________
-void TextEditor::installContextMenuActions( QMenu& menu, const bool& allActions )
+void TextEditor::installContextMenuActions( BaseContextMenu* menu, const bool& allActions )
 {
 
     Debug::Throw( "TextEditor::installContextMenuActions.\n" );
 
     // wrapping
-    menu.addAction( &showLineNumberAction() );
-    menu.addAction( &wrapModeAction() );
-    menu.addSeparator();
+    menu->addAction( &showLineNumberAction() );
+    menu->addAction( &wrapModeAction() );
+    menu->setNeedSeparator( true );
 
     if( allActions )
     {
-        menu.addAction( undoAction_ );
-        menu.addAction( redoAction_ );
-        menu.addSeparator();
+        menu->addAction( undoAction_ );
+        menu->addAction( redoAction_ );
+        menu->addSeparator();
     }
 
-    menu.addAction( cutAction_ );
-    menu.addAction( copyAction_ );
-    menu.addAction( pasteAction_ );
-    menu.addAction( clearAction_ );
-    menu.addSeparator();
+    menu->addAction( cutAction_ );
+    menu->addAction( copyAction_ );
+    menu->addAction( pasteAction_ );
+    menu->addAction( clearAction_ );
+    menu->setNeedSeparator( true );
 
-    menu.addAction( selectAllAction_ );
-    menu.addAction( upperCaseAction_ );
-    menu.addAction( lowerCaseAction_ );
-    menu.addSeparator();
+    menu->addAction( selectAllAction_ );
+    menu->addAction( upperCaseAction_ );
+    menu->addAction( lowerCaseAction_ );
+    menu->setNeedSeparator( true );
 
-    menu.addAction( findAction_ );
+    menu->addAction( findAction_ );
     if( allActions )
     {
-        menu.addAction( findAgainAction_ );
-        menu.addAction( findSelectionAction_);
-        menu.addSeparator();
+        menu->addAction( findAgainAction_ );
+        menu->addAction( findSelectionAction_);
+        menu->setNeedSeparator( true );
     }
 
-    menu.addAction( replaceAction_ );
+    menu->addAction( replaceAction_ );
 
     if( allActions )
     {
-        menu.addAction( replaceAgainAction_ );
-        menu.addAction( gotoLineAction_);
+        menu->addAction( replaceAgainAction_ );
+        menu->addAction( gotoLineAction_);
     }
 
     return;
@@ -1438,8 +1440,9 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
     Debug::Throw( "TextEditor::contextMenuEvent.\n" );
     contextMenuPosition_ = event->pos();
 
-    QMenu menu( this );
-    installContextMenuActions( menu );
+    BaseContextMenu menu( this );
+    menu.setIgnoreDisabledActions( true );
+    installContextMenuActions( &menu );
     menu.exec( event->globalPos() );
 
 }

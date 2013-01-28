@@ -50,6 +50,7 @@
 #include <QtCore/QBasicTimer>
 #include <QtCore/QTimerEvent>
 
+class BaseContextMenu;
 class BaseFindDialog;
 class BaseReplaceDialog;
 class SelectLineDialog;
@@ -188,8 +189,8 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
     //! reset undo/redo history
     virtual void resetUndoRedoStack( void );
 
-    //! put actions in context menu
-    virtual void installContextMenuActions( QMenu& menu, const bool& = true );
+    //! install actions in context menu
+    virtual void installContextMenuActions( BaseContextMenu*, const bool& = true );
 
     //!@name actions
     //@{
