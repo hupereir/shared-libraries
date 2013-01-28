@@ -26,6 +26,7 @@
 
 #include "Counter.h"
 
+#include <QtCore/QWeakPointer>
 #include <QtGui/QMenu>
 
 // implements context menu, installable on widgets
@@ -45,8 +46,8 @@ class BaseContextMenu: public QMenu, public Counter
     //@{
 
     //! ignore disabled action
-    void setIgnoreDisabledActions( bool value )
-    { ignoreDisabledActions_ = value; }
+    void setHideDisabledActions( bool value )
+    { hideDisabledActions_ = value; }
 
     //! clear
     void clear( void )
@@ -54,11 +55,6 @@ class BaseContextMenu: public QMenu, public Counter
         QMenu::clear();
         needSeparator_ = false;
     }
-
-    //! set need separator
-    /*! separator is added next time an action is added */
-    void setNeedSeparator( bool value )
-    { needSeparator_ = value; }
 
     //! add separator
     QAction* addSeparator( void );
@@ -69,12 +65,18 @@ class BaseContextMenu: public QMenu, public Counter
     //! add action
     void addAction( QAction* );
 
+    //! add action
+    void insertAction( QAction*, QAction* );
+
     //@}
 
     private:
 
+    //! separator
+    QWeakPointer<QAction> separator_;
+
     //! ignore disabled actions
-    bool ignoreDisabledActions_;
+    bool hideDisabledActions_;
 
     //! need separator
     bool needSeparator_;

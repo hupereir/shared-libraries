@@ -504,7 +504,7 @@ void TextEditor::installContextMenuActions( BaseContextMenu* menu, const bool& a
     // wrapping
     menu->addAction( &showLineNumberAction() );
     menu->addAction( &wrapModeAction() );
-    menu->setNeedSeparator( true );
+    menu->addSeparator();
 
     if( allActions )
     {
@@ -517,19 +517,19 @@ void TextEditor::installContextMenuActions( BaseContextMenu* menu, const bool& a
     menu->addAction( copyAction_ );
     menu->addAction( pasteAction_ );
     menu->addAction( clearAction_ );
-    menu->setNeedSeparator( true );
+    menu->addSeparator();
 
     menu->addAction( selectAllAction_ );
     menu->addAction( upperCaseAction_ );
     menu->addAction( lowerCaseAction_ );
-    menu->setNeedSeparator( true );
+    menu->addSeparator();
 
     menu->addAction( findAction_ );
     if( allActions )
     {
         menu->addAction( findAgainAction_ );
         menu->addAction( findSelectionAction_);
-        menu->setNeedSeparator( true );
+        menu->addSeparator();
     }
 
     menu->addAction( replaceAction_ );
@@ -1441,7 +1441,7 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
     contextMenuPosition_ = event->pos();
 
     BaseContextMenu menu( this );
-    menu.setIgnoreDisabledActions( true );
+    menu.setHideDisabledActions( true );
     installContextMenuActions( &menu );
     menu.exec( event->globalPos() );
 

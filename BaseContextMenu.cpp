@@ -30,30 +30,60 @@
 BaseContextMenu::BaseContextMenu( QWidget* parent ):
     QMenu( parent ),
     Counter( "BaseContextMenu" ),
-    ignoreDisabledActions_( false ),
+    hideDisabledActions_( false ),
     needSeparator_( false )
 {}
 
 //___________________________________________________
 QAction* BaseContextMenu::addSeparator( void )
 {
-    needSeparator_ = false;
-    return QMenu::addSeparator();
+    separator_ = QMenu::addSeparator();
+    if( hideDisabledActions_ )
+    {
+        needSeparator_ = true;
+        separator_.data()->setVisible( false );
+    }
+
+    return separator_.data();
 }
 
 //___________________________________________________
 QAction* BaseContextMenu::addMenu( QMenu* menu )
 {
-    if( needSeparator_ ) addSeparator();
-    needSeparator_ = false;
+    if( hideDisabledActions_ && needSeparator_ && separator_ )
+    {
+        separator_.data()->setVisible( true );
+        needSeparator_ = false;
+    }
+
     return QMenu::addMenu( menu );
+
 }
 
 //___________________________________________________
 void BaseContextMenu::addAction( QAction* action )
 {
-    if( ignoreDisabledActions_ && !action->isEnabled() ) return;
-    if( needSeparator_ ) addSeparator();
-    needSeparator_ = false;
-    QMenu::addAction( action );
+    if( hideDisabledActions_ )
+    {
+
+        if( !action->isEnabled() ) return;
+        else if( needSeparator_ && separator_ )
+        {
+            separator_.data()->setVisible( true );
+            needSeparator_ = false;
+        }
+
+        QMenu::addAction( action );
+    }
+
+}
+
+//___________________________________________________
+void BaseContextMenu::insertAction( QAction* before, QAction* action )
+{
+
+    // TODO: see if one needs to check pending separators
+    if( action->isEnabled() || !hideDisabledActions_ )
+    { QMenu::insertAction( before, action ); }
+
 }
