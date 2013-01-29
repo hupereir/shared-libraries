@@ -73,8 +73,9 @@ void BaseContextMenu::addAction( QAction* action )
             needSeparator_ = false;
         }
 
-        QMenu::addAction( action );
     }
+
+    QMenu::addAction( action );
 
 }
 
