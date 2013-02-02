@@ -84,6 +84,33 @@ MACRO( ADD_APPLE_EXECUTABLE target version )
 
 ENDMACRO( ADD_APPLE_EXECUTABLE )
 
+###################### Install Apple application #########################
+MACRO( ADD_APPLE_EXECUTABLE_WITH_ICON target version icon)
+
+  ### version
+  SET( MACOSX_BUNDLE_SHORT_VERSION_STRING ${version} )
+  SET( MACOSX_BUNDLE_VERSION ${version})
+  SET( MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${version}" )
+
+  ### installation directory
+  SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}" )
+
+  ### icon
+  IF(EXISTS "${CMAKE_SOURCE_DIR}/${icon}" )
+
+    MESSAGE( "-- Using application icon: ${CMAKE_SOURCE_DIR}/${icon}" )
+    SET( MACOSX_BUNDLE_ICON_FILE ${icon} )
+    ADD_EXECUTABLE( ${target} MACOSX_BUNDLE ${ARGN} ${CMAKE_SOURCE_DIR}/${icon} )
+    SET_SOURCE_FILES_PROPERTIES( ${CMAKE_SOURCE_DIR}/${icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
+
+  ELSE()
+
+    MESSAGE( "-- Unable to find application icon" )
+    ADD_EXECUTABLE( ${target} MACOSX_BUNDLE ${ARGN} )
+
+  ENDIF()
+
+ENDMACRO( ADD_APPLE_EXECUTABLE_WITH_ICON )
 
 ###################### Install unix application #########################
 MACRO( ADD_UNIX_EXECUTABLE target )
