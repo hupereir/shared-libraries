@@ -20,7 +20,7 @@ ENDMACRO()
 MACRO( ADD_WIN32_EXECUTABLE target version )
 
   ### executable
-  ADD_EXECUTABLE( ${target} WIN32 ${ARGN} ${target}_win32.rc )
+  ADD_EXECUTABLE( ${target} WIN32 ${ARGN} )
   SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" )
 
   ### use static gcc linking
@@ -111,9 +111,10 @@ MACRO( ADD_APPLICATION_ICON  sources icon )
     IF( EXISTS "${_icon}" )
 
       MESSAGE( "-- Using application icon: ${_icon}" )
-      STRING(REPLACE _SOURCES "" appname ${sources})
-      FILE(WRITE ${appname}.rc "IDI_ICON1        ICON        DISCARDABLE    \"${_icon}\"\n")
-      LIST(APPEND ${sources} ${CMAKE_CURRENT_BINARY_DIR}/${appname}.rc)
+      STRING( REPLACE _SOURCES "" appname ${sources} )
+      SET( _resource ${CMAKE_CURRENT_BINARY_DIR}/${appname}_win32.rc )
+      FILE( WRITE ${_resource} "IDI_ICON1        ICON        DISCARDABLE    \"${_icon}\"\n")
+      LIST( APPEND ${sources} ${_resource} )
 
     ELSE()
 
