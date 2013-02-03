@@ -66,21 +66,7 @@ MACRO( ADD_APPLE_EXECUTABLE target version )
 
   ### installation directory
   SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}" )
-
-  ### icon
-  IF(EXISTS "${CMAKE_SOURCE_DIR}/icon.icns" )
-
-    MESSAGE( "-- Using application icon: ${CMAKE_SOURCE_DIR}/icon.icns" )
-    SET( MACOSX_BUNDLE_ICON_FILE icon.icns )
-    ADD_EXECUTABLE( ${target} MACOSX_BUNDLE ${ARGN} ${CMAKE_SOURCE_DIR}/icon.icns )
-    SET_SOURCE_FILES_PROPERTIES( ${CMAKE_SOURCE_DIR}/icon.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
-
-  ELSE()
-
-    MESSAGE( "-- Unable to find application icon" )
-    ADD_EXECUTABLE( ${target} MACOSX_BUNDLE ${ARGN} )
-
-  ENDIF()
+  ADD_EXECUTABLE( ${target} MACOSX_BUNDLE ${ARGN} )
 
 ENDMACRO( ADD_APPLE_EXECUTABLE )
 
@@ -114,3 +100,16 @@ MACRO( ADD_PLATFORM_EXECUTABLE target version )
   ENDIF()
 
 ENDMACRO( ADD_PLATFORM_EXECUTABLE )
+
+
+###################### add application icon (for mac OsX and Windows #########################
+MACRO( ADD_APPLICATION_ICON  sources icon )
+
+  IF( APPLE )
+    MESSAGE( "-- Using application icon: ${icon}" )
+    SET( MACOSX_BUNDLE_ICON_FILE icon.icns )
+    SET_SOURCE_FILES_PROPERTIES( ${icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
+    LIST( APPEND ${sources} ${icon} )
+  ENDIF()
+
+ENDMACRO( ADD_APPLICATION_ICON )
