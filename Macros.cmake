@@ -105,11 +105,40 @@ ENDMACRO( ADD_PLATFORM_EXECUTABLE )
 ###################### add application icon (for mac OsX and Windows #########################
 MACRO( ADD_APPLICATION_ICON  sources icon )
 
+  IF( WIN32 )
+
+    SET( _icon ${icon}.ico )
+    IF( EXISTS "${_icon}" )
+
+      MESSAGE( "-- Using application icon: ${_icon}" )
+      STRING(REPLACE _SOURCES "" appname ${sources})
+      FILE(WRITE ${appname}.rc "IDI_ICON1        ICON        DISCARDABLE    \"${_icon}\"\n")
+      LIST(APPEND ${sources} ${CMAKE_CURRENT_BINARY_DIR}/${appname}.rc)
+
+    ELSE()
+
+      MESSAGE("-- Unable to find icon ${_icon}" )
+
+    ENDIF()
+
+  ENDIF()
+
   IF( APPLE )
-    MESSAGE( "-- Using application icon: ${icon}" )
-    SET( MACOSX_BUNDLE_ICON_FILE icon.icns )
-    SET_SOURCE_FILES_PROPERTIES( ${icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
-    LIST( APPEND ${sources} ${icon} )
+
+    SET( _icon ${icon}.icns )
+    IF( EXISTS "${_icon}" )
+
+      MESSAGE( "-- Using application icon: ${_icon}" )
+      SET( MACOSX_BUNDLE_ICON_FILE icon.icns )
+      SET_SOURCE_FILES_PROPERTIES( ${_icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
+      LIST( APPEND ${sources} ${_icon} )
+
+    ELSE()
+
+      MESSAGE("-- Unable to find icon ${_icon}" )
+
+    ENDIF()
+
   ENDIF()
 
 ENDMACRO( ADD_APPLICATION_ICON )
