@@ -51,19 +51,19 @@ namespace SERVER
     {
         if( !_commandNames().empty() ) return;
         _commandNames().insert( NONE, "" );
-        _commandNames().insert( ACCEPTED, "ACCEPTED" );
-        _commandNames().insert( DENIED, "DENIED" );
-        _commandNames().insert( ABORT, "ABORT" );
-        _commandNames().insert( IDENTIFY, "IDENTIFY" );
-        _commandNames().insert( IDENTIFY_SERVER, "SERVER" );
-        _commandNames().insert( KILLED, "KILLED" );
-        _commandNames().insert( RAISE, "RAISE" );
-        _commandNames().insert( ALIVE, "ALIVE" );
-        _commandNames().insert( REQUEST, "REQUEST" );
-        _commandNames().insert( UNLOCK, "UNLOCK" );
-        _commandNames().insert( GEOMETRY_REQUEST, "GEOMETRY_REQUEST" );
-        _commandNames().insert( GEOMETRY, "GEOMETRY" );
-        _commandNames().insert( OPTION, "OPTION" );
+        _commandNames().insert( ACCEPTED, "Accepted" );
+        _commandNames().insert( DENIED, "Denied" );
+        _commandNames().insert( ABORT, "Abort" );
+        _commandNames().insert( IDENTIFY, "Identify" );
+        _commandNames().insert( IDENTIFY_SERVER, "Server" );
+        _commandNames().insert( KILLED, "Killed" );
+        _commandNames().insert( RAISE, "Raise" );
+        _commandNames().insert( ALIVE, "Alive" );
+        _commandNames().insert( REQUEST, "Request" );
+        _commandNames().insert( UNLOCK, "Unlock" );
+        _commandNames().insert( GEOMETRY_REQUEST, "Request geometry" );
+        _commandNames().insert( GEOMETRY, "Send geometry" );
+        _commandNames().insert( OPTION, "Option" );
     }
 
     //___________________________________________
