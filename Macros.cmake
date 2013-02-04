@@ -4,7 +4,7 @@ MACRO( GET_BUILD_TIMESTAMP RESULT )
   IF( WIN32 )
 
     EXECUTE_PROCESS( COMMAND "cmd" " /C date /T" OUTPUT_VARIABLE DATE )
-    STRING( REGEX REPLACE "(..)[/.](..)[/.](....).*" "\\3/\\2/\\1" DATE ${DATE} )
+    STRING( REGEX REPLACE ".*(..)[/.](..)[/.](....).*" "\\3/\\2/\\1" DATE ${DATE} )
     SET( ${RESULT} "${DATE}" )
 
   ELSEIF( UNIX )
@@ -36,6 +36,10 @@ MACRO( ADD_WIN32_EXECUTABLE target version )
   IF( UPX )
 
     ADD_CUSTOM_COMMAND( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
+
+  ELSE()
+
+    MESSAGE( "-- Program 'upx' not found" )
 
   ENDIF()
 
