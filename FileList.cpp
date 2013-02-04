@@ -165,8 +165,8 @@ void FileList::_setMaxSize( const int& value )
 //_______________________________________________
 FileRecord& FileList::_add(
     const FileRecord& record,
-    const bool& update_timestamp,
-    const bool& emit_signal )
+    const bool& updateTimeStamp,
+    const bool& emitSignal )
 {
 
     // do not add empty files
@@ -178,10 +178,10 @@ FileRecord& FileList::_add(
     if( iter != _records().end() )
     {
 
-        if( update_timestamp && iter->time() != record.time() )
+        if( updateTimeStamp && iter->time() != record.time() )
         {
             iter->setTime( qMax( iter->time(), record.time() ) );
-            if( emit_signal ) emit contentsChanged();
+            if( emitSignal ) emit contentsChanged();
         }
 
         return *iter;
@@ -192,7 +192,7 @@ FileRecord& FileList::_add(
 
         _records() << record;
 
-        if( emit_signal ) emit contentsChanged();
+        if( emitSignal ) emit contentsChanged();
         return _records().back();
 
     }

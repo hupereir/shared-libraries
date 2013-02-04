@@ -196,6 +196,7 @@ bool XmlFileList::_differs( const FileRecord::List& first, const FileRecord::Lis
         const FileRecord& secondRecord = second[i];
 
         if( !( firstRecord == secondRecord ) ) return true;
+        else if( firstRecord.time() != secondRecord.time() ) return true;
         else if( firstRecord.flags() != secondRecord.flags() ) return true;
         else if( !( firstRecord.properties() == secondRecord.properties() ) ) return true;
 

@@ -123,9 +123,9 @@ class FileList: public QObject, public Counter
 
     //! add record to current list
     virtual FileRecord& _add(
-        const FileRecord& record,
-        const bool& update_timestamp = true,
-        const bool& emit_signal = true );
+        const FileRecord&,
+        const bool& = true,
+        const bool& = true );
 
     //! truncate list if larger than maxSize_
     virtual FileRecord::List _truncatedList( FileRecord::List ) const;
