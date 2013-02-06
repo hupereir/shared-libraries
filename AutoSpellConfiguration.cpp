@@ -35,7 +35,7 @@ namespace SPELLCHECK
 {
     //___________________________________________
     AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
-        QGroupBox( "Automatic spell check", parent ),
+        QGroupBox( "Automatic Spell Check", parent ),
         Counter( "AutoSpellConfiguration" )
     {
         Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );

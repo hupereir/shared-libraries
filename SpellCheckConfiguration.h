@@ -1,6 +1,5 @@
-
-#ifndef _SpellCheckConfiguration_h_
-#define _SpellCheckConfiguration_h_
+#ifndef SpellCheckConfiguration_h
+#define SpellCheckConfiguration_h
 
 // $Id$
 

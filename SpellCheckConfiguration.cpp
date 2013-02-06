@@ -42,7 +42,7 @@ namespace SPELLCHECK
 
     //___________________________________________
     SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
-        QGroupBox( "Spell check", parent ),
+        QGroupBox( "Spell Check", parent ),
         Counter( "SpellCheckConfiguration" )
     {
         Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
