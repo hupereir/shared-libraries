@@ -130,6 +130,9 @@ class PlacesWidget: public QWidget, public Counter
     //! add separator
     void _addSeparator( void );
 
+    //! add separator
+    void _insertSeparator( void );
+
     //! edit item
     void _editItem( void );
 

@@ -802,6 +802,26 @@ void PlacesWidget::_addSeparator( void )
 
     // add to button group, list of items and layout
     group_->addButton( item );
+    buttonLayout_->addWidget( item );
+    items_.append( item );
+
+    // emit signal
+    _updateDragState();
+    emit contentsChanged();
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::_insertSeparator( void )
+{
+    Debug::Throw( "PlacesWidget::_insertSeparator.\n" );
+
+    // add new item
+    PlacesWidgetItem* item = new PlacesWidgetItem( this );
+    item->setIsSeparator( true );
+
+    // add to button group, list of items and layout
+    group_->addButton( item );
 
     int position( _index( dragTarget_ ) );
     if( position > items_.size() )
@@ -1212,7 +1232,7 @@ void PlacesWidget::_installActions( void )
     connect( addItemAction_, SIGNAL(triggered( void ) ), SLOT( _addItem( void ) ) );
 
     addAction( addSeparatorAction_ = new QAction( IconEngine::get( ICONS::ADD ), "Add Separator", this ) );
-    connect( addSeparatorAction_, SIGNAL(triggered( void ) ), SLOT( _addSeparator( void ) ) );
+    connect( addSeparatorAction_, SIGNAL(triggered( void ) ), SLOT( _insertSeparator( void ) ) );
 
     addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), "Edit Entry...", this ) );
     connect( editItemAction_, SIGNAL(triggered( void ) ), SLOT( _editItem( void ) ) );
