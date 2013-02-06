@@ -26,6 +26,10 @@
 
 #include "BaseContextMenu.h"
 
+#include <QtGui/QAction>
+#include <QtCore/QList>
+#include <QtCore/QWeakPointer>
+
 // implements context menu, installable on widgets
 class ContextMenu: public BaseContextMenu
 {
@@ -43,8 +47,20 @@ class ContextMenu: public BaseContextMenu
 
     protected slots:
 
+    //! add actions
+    void _hideActions( void );
+
+    //! show actions
+    void _showActions( void );
+
     //! raise request
     void _raise( const QPoint& );
+
+    private:
+
+    typedef QWeakPointer<QAction> ActionPointer;
+    typedef QList<ActionPointer> ActionList;
+    ActionList hiddenActions_;
 
 };
 

@@ -43,7 +43,6 @@
 // forward declaration
 class PlacesWidgetItem;
 class BaseFileIconProvider;
-class ContextMenu;
 class IconSizeMenu;
 
 //! places widget
@@ -120,7 +119,7 @@ class PlacesWidget: public QWidget, public Counter
     void _updateFocus( QAbstractButton* );
 
     //! update context menu
-    void _updateMenu( void );
+    void _updateContextMenu( const QPoint& );
 
     //! icon size
     void _updateIconSize( IconSize::Size );
@@ -196,9 +195,6 @@ class PlacesWidget: public QWidget, public Counter
 
     //! button group
     QButtonGroup* group_;
-
-    //! context menu
-    ContextMenu* contextMenu_;
 
     //! icon size menu
     IconSizeMenu* iconSizeMenu_;

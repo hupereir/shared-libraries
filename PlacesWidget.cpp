@@ -23,8 +23,8 @@
 #include "PlacesWidget_p.h"
 
 #include "BaseFileIconProvider.h"
+#include "BaseContextMenu.h"
 #include "BaseIcons.h"
-#include "ContextMenu.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
@@ -390,8 +390,8 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     connect( group_, SIGNAL(buttonPressed( QAbstractButton* ) ), SLOT( _updateFocus( QAbstractButton* ) ) );
 
     // context menu
-    contextMenu_ = new ContextMenu( this );
-    connect( contextMenu_, SIGNAL(aboutToShow( void ) ), SLOT( _updateMenu( void ) ) );
+    setContextMenuPolicy( Qt::CustomContextMenu );
+    connect( this, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _updateContextMenu( const QPoint& ) ) );
 
     // icon sizes
     iconSizeMenu_ = new IconSizeMenu( this );
@@ -523,12 +523,6 @@ bool PlacesWidget::write( File file )
 
         const BaseFileInfo& fileInfo( item->fileInfo() );
         Debug::Throw() << "PlacesWidget::write - " << fileInfo << endl;
-
-//         if( fileInfo.file().isEmpty() )
-//         {
-//             Debug::Throw(0, "PlacesWidget::write - attend to write empty file info. Discarded.\n" );
-//             continue;
-//         }
 
         top.appendChild( LocalFileInfo( fileInfo, item->text() ).domElement( document ) );
     }
@@ -671,24 +665,27 @@ void PlacesWidget::_updateFocus( QAbstractButton* button )
 }
 
 //______________________________________________________________________
-void PlacesWidget::_updateMenu( void )
+void PlacesWidget::_updateContextMenu( const QPoint& position )
 {
 
-    Debug::Throw( "PlacesWidget::_updateMenu.\n" );
-    contextMenu_->clear();
+    Debug::Throw( "PlacesWidget::_updateContextMenu.\n" );
+
+    BaseContextMenu menu( this );
+    menu.setHideDisabledActions( true );
 
     // add entry
-    contextMenu_->addAction( addItemAction_ );
-    contextMenu_->addAction( addSeparatorAction_ );
-    contextMenu_->addSeparator();
+    menu.addAction( addItemAction_ );
+    menu.addAction( addSeparatorAction_ );
+    menu.addSeparator();
 
     if( ( focusItem_ = _focusItem() ) )
     {
+        if( !focusItem_->isSeparator() )
         {
             QString buffer;
             QTextStream( &buffer ) << "Edit '" << focusItem_->text() << "'";
             editItemAction_->setText( buffer );
-            contextMenu_->addAction( editItemAction_ );
+            menu.addAction( editItemAction_ );
         }
 
         {
@@ -696,16 +693,18 @@ void PlacesWidget::_updateMenu( void )
             if( focusItem_->isSeparator() ) QTextStream( &buffer ) << "Remove Separator";
             else QTextStream( &buffer ) << "Remove '" << focusItem_->text() << "'";
             removeItemAction_->setText( buffer );
-            contextMenu_->addAction( removeItemAction_ );
+            menu.addAction( removeItemAction_ );
         }
 
-        contextMenu_->addSeparator();
+        menu.addSeparator();
 
     }
 
     // icon sizes
-    contextMenu_->addMenu( iconSizeMenu_ );
+    menu.addMenu( iconSizeMenu_ );
 
+    // execute
+    menu.exec( mapToGlobal( position ) );
 }
 
 //______________________________________________________________________

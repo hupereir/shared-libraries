@@ -70,6 +70,11 @@ class BaseContextMenu: public QMenu, public Counter
 
     //@}
 
+    protected:
+
+    bool _hideDisabledActions( void ) const
+    { return hideDisabledActions_; }
+
     private:
 
     //! separator

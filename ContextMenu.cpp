@@ -34,7 +34,8 @@ ContextMenu::ContextMenu( QWidget* parent ):
     Debug::Throw( "ContextMenu::ContextMenu.\n" );
     parent->setContextMenuPolicy( Qt::CustomContextMenu );
     connect( parent, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raise( const QPoint& ) ) );
-
+    connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _hideActions( void ) ) );
+    connect( this, SIGNAL( aboutToHide( void ) ), SLOT( _showActions( void ) ) );
 }
 
 //___________________________________________________
@@ -44,5 +45,52 @@ void ContextMenu::_raise( const QPoint& position )
     QAbstractScrollArea* view(  qobject_cast<QAbstractScrollArea*>( parentWidget() ) );
     if( view )  exec( view->viewport()->mapToGlobal( position ) );
     else exec( parentWidget()->mapToGlobal( position ) );
+
+}
+
+//___________________________________________________
+void ContextMenu::_hideActions( void )
+{
+
+    Debug::Throw() << "ContextMenu::_hideActions" << endl;
+
+    // hidden actions
+    hiddenActions_.clear();
+    if( _hideDisabledActions() )
+    {
+
+        foreach( QAction* action, actions() )
+        {
+            if( !action->isEnabled() && action->isVisible() )
+            {
+                Debug::Throw() << "ContextMenu::_hideActions - hiding: " << action->text() << endl;
+                hiddenActions_.append( action );
+                action->setVisible( false );
+            }
+        }
+    }
+
+}
+
+//___________________________________________________
+void ContextMenu::_showActions( void )
+{
+    Debug::Throw() << "ContextMenu::_showActions" << endl;
+    if( _hideDisabledActions() )
+    {
+
+        foreach( ActionPointer action, hiddenActions_ )
+        {
+            if( action )
+            {
+                Debug::Throw() << "ContextMenu::_hideActions - showing: " << action.data()->text() << endl;
+                action.data()->setVisible( true );
+            }
+
+        }
+
+    }
+
+    hiddenActions_.clear();
 
 }
