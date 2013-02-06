@@ -670,6 +670,10 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
 
     Debug::Throw( "PlacesWidget::_updateContextMenu.\n" );
 
+    // store drag target, for new item insertion
+    dragTarget_ = _updateDragTarget( position );
+
+    // create menu
     BaseContextMenu menu( this );
     menu.setHideDisabledActions( true );
 
@@ -780,9 +784,8 @@ void PlacesWidget::_addItem( void )
     QString name( dialog.name() );
     if( name.isEmpty() ) name = fileInfo.file().localName();
 
-    // add new item
-    add( name, fileInfo );
-
+    // add
+    insert( _index( dragTarget_ ), name, fileInfo );
 
     return;
 
@@ -799,8 +802,21 @@ void PlacesWidget::_addSeparator( void )
 
     // add to button group, list of items and layout
     group_->addButton( item );
-    buttonLayout_->addWidget( item );
-    items_.append( item );
+
+    int position( _index( dragTarget_ ) );
+    if( position > items_.size() )
+    {
+
+        buttonLayout_->addWidget( item );
+        items_.append( item );
+
+    } else {
+
+        if( position < 0 ) position = 0;
+        buttonLayout_->insertWidget( position, item );
+        items_.insert( position, item );
+
+    }
 
     // emit signal
     _updateDragState();
@@ -950,12 +966,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
         int sourceIndex = items_.indexOf( dragItem );
 
         // find insertion index based on target
-        int insertionIndex = 0;
-        foreach( PlacesWidgetItem* item, items_ )
-        {
-            if( dragTarget_.y()+1 >= item->rect().translated( item->pos() ).bottom() ) ++insertionIndex;
-            else break;
-        }
+        int insertionIndex( _index( dragTarget_ ) );
 
         // compare
         if( insertionIndex == sourceIndex || insertionIndex == sourceIndex+1 ) return;
@@ -976,13 +987,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
         if( fileInfoList.isEmpty() ) return;
 
         // find insertion index based on target
-        int insertionIndex = 0;
-        foreach( PlacesWidgetItem* item, items_ )
-        {
-            if( dragTarget_.y()+1 >= item->rect().translated( item->pos() ).bottom() ) ++insertionIndex;
-            else break;
-        }
-
+        int insertionIndex( _index( dragTarget_ ) );
         foreach( const BaseFileInfo& fileInfo, fileInfoList )
         {
             insert( insertionIndex, fileInfo );
@@ -993,7 +998,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
 
 }
 
-//_______________________________________________
+//_________________________________________________________________________________
 void PlacesWidget::mousePressEvent( QMouseEvent* event )
 {
     Debug::Throw( "PlacesWidget::mousePressEvent.\n" );
@@ -1005,14 +1010,14 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
     QWidget::mousePressEvent( event );
 }
 
-//_______________________________________________
+//_________________________________________________________________________________
 void PlacesWidget::_updateDragState( void ) const
 {
     foreach( PlacesWidgetItem* item, items_ )
     { item->setDragEnabled( items_.size()>1 ); }
 }
 
-//_______________________________________________
+//_________________________________________________________________________________
 QPoint PlacesWidget::_updateDragTarget( const QPoint& position ) const
 {
     int y(0);
@@ -1031,7 +1036,22 @@ QPoint PlacesWidget::_updateDragTarget( const QPoint& position ) const
     return QPoint( 0, y );
 }
 
-//_______________________________________________
+//_________________________________________________________________________________
+int PlacesWidget::_index( const QPoint& position ) const
+{
+
+    int index = 0;
+    foreach( PlacesWidgetItem* item, items_ )
+    {
+        if( position.y()+1 >= item->rect().translated( item->pos() ).bottom() ) ++index;
+        else break;
+    }
+
+    return index;
+
+}
+
+//_________________________________________________________________________________
 bool PlacesWidget::_canDecode( const QMimeData* data ) const
 {
     return
@@ -1040,7 +1060,7 @@ bool PlacesWidget::_canDecode( const QMimeData* data ) const
         !_decode( data ).isEmpty();
 }
 
-//_______________________________________________
+//_________________________________________________________________________________
 QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
 {
     QList<BaseFileInfo> fileInfoList;
@@ -1110,7 +1130,7 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
 
 }
 
-//_______________________________________________
+//_________________________________________________________________________________
 PlacesWidgetItem* PlacesWidget::_focusItem( void ) const
 {
     foreach( PlacesWidgetItem* item, items_ )
@@ -1119,7 +1139,7 @@ PlacesWidgetItem* PlacesWidget::_focusItem( void ) const
     return 0x0;
 }
 
-//_______________________________________________
+//_________________________________________________________________________________
 void PlacesWidget::paintEvent( QPaintEvent* event )
 {
     QWidget::paintEvent( event );
@@ -1134,7 +1154,7 @@ void PlacesWidget::paintEvent( QPaintEvent* event )
 
 }
 
-//_______________________________________________
+//_________________________________________________________________________________
 bool PlacesWidget::_setDBFile( const File& file )
 {
 
@@ -1156,7 +1176,7 @@ bool PlacesWidget::_setDBFile( const File& file )
 
 }
 
-//______________________________________
+//_________________________________________________________________________________
 void PlacesWidget::_updateConfiguration( void )
 {
     Debug::Throw( "PlacesWidget::_updateConfiguration.\n" );
@@ -1176,14 +1196,14 @@ void PlacesWidget::_updateConfiguration( void )
 
 }
 
-//______________________________________
+//_________________________________________________________________________________
 void PlacesWidget::_saveConfiguration( void )
 {
     Debug::Throw( "PlacesWidget::_saveConfiguration.\n" );
     write();
 }
 
-//______________________________________
+//_________________________________________________________________________________
 void PlacesWidget::_installActions( void )
 {
     Debug::Throw( "PlacesWidget::_installActions.\n" );

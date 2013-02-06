@@ -165,6 +165,9 @@ class PlacesWidget: public QWidget, public Counter
     //! drag target
     QPoint _updateDragTarget( const QPoint& ) const;
 
+    //! return item index based on position
+    int _index( const QPoint& ) const;
+
     //! true if mime data can be decoded
     bool _canDecode( const QMimeData* ) const;
 
