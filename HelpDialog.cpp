@@ -75,6 +75,7 @@ namespace BASE
         layout->addWidget( list_ );
         list_->setModel( &model_ );
         list_->setItemDelegate( new TextEditionDelegate( this ) );
+        list_->setItemMargin(2);
         list_->setSortingEnabled( false );
         list_->header()->hide();
 
