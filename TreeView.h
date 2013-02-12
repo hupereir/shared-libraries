@@ -125,6 +125,13 @@ class TreeView: public QTreeView, public Counter
     void setIconSizeFromOptions( bool value )
     { iconSizeFromOptions_ = value; }
 
+    //! force alternating row color
+    void forceAlternatingRowColors( void )
+    {
+        forceAlternatingRowColors_ = true;
+        setAlternatingRowColors( true );
+    }
+
     //! set item margins
     virtual void setItemMargin( int );
 
@@ -355,6 +362,9 @@ class TreeView: public QTreeView, public Counter
 
     //! true if icon size is to be set from options
     bool iconSizeFromOptions_;
+
+    //! force alternating row colors
+    bool forceAlternatingRowColors_;
 
     //! selected column background color
     QColor selectedColumnColor_;

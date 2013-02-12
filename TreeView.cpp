@@ -49,6 +49,7 @@ TreeView::TreeView( QWidget* parent ):
     model_( 0x0 ),
     itemMarginFromOptions_( false ),
     iconSizeFromOptions_( true ),
+    forceAlternatingRowColors_( false ),
     vertical_( 0 ),
     horizontal_( 0 ),
     lockedColumns_( 0 )
@@ -875,7 +876,7 @@ void TreeView::_updateConfiguration( void )
     // alternate color
     const QPalette palette( this->palette() );
     setAlternatingRowColors(
-        XmlOptions::get().get<bool>( "USE_ALTERNATE_COLOR" ) &&
+        ( XmlOptions::get().get<bool>( "USE_ALTERNATE_COLOR" ) || forceAlternatingRowColors_ ) &&
         palette.color( QPalette::AlternateBase ) != palette.color( QPalette::Base ) );
 
     // try load selected column color from option
