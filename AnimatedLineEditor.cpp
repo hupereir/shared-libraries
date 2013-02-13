@@ -21,23 +21,13 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedLineEditor.cpp
-  \brief Customized QTextEdit object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QPainter>
-
 #include "AnimatedLineEditor.h"
 #include "Debug.h"
 #include "Singleton.h"
 #include "TransitionWidget.h"
 #include "XmlOptions.h"
 
-
+#include <QtGui/QPainter>
 
 //________________________________________________________
 AnimatedLineEditor::AnimatedLineEditor( QWidget* parent ):
