@@ -54,9 +54,6 @@ namespace TRANSPARENCY
 
         #if defined(Q_WS_X11)
 
-        //! display
-        Display* display( void ) const
-        { return display_; }
         //! visual
         Qt::HANDLE visual( void ) const
         { return Qt::HANDLE( visual_ ); }
@@ -78,9 +75,6 @@ namespace TRANSPARENCY
         #if defined(Q_WS_X11)
         //! returns true if composition is enabled
         bool _compositingEnabled( Display* ) const;
-
-        //! display
-        Display* display_;
 
         //! visual
         Visual* visual_;

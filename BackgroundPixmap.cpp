@@ -193,7 +193,7 @@ namespace TRANSPARENCY
         }
 
         // display
-        Display* display = (Display*) X11Util::get().display();
+        Display* display = X11Util::get().display();
 
         int format( 0 );
         unsigned long length( 0 ), after( 0 );
@@ -263,7 +263,7 @@ namespace TRANSPARENCY
         Debug::Throw( "BackgroundPixmap::_loadDesktopWindow.\n" );
 
         // get the display
-        Display* display = (Display*) X11Util::get().display();
+        Display* display = X11Util::get().display();
 
         // if desktop was already loaded and isn't root remove XEvent forwarding
         if( desktop_ ) XSelectInput( display, desktop_, 0 );

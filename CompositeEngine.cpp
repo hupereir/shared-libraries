@@ -49,7 +49,6 @@ namespace TRANSPARENCY
     CompositeEngine::CompositeEngine( void ):
 
         #if defined(Q_WS_X11)
-        display_( 0 ),
         visual_( 0 ),
         colormap_( 0 ),
         #endif
@@ -82,37 +81,30 @@ namespace TRANSPARENCY
 
         #if defined(Q_WS_X11)
         // display
-        display_ = XOpenDisplay(0);
+        Display* display = X11Util::get().display();
 
-        int screen = DefaultScreen(display_);
-        int n_visuals;
+        int screen = DefaultScreen( display );
+        int nVisuals;
 
         XVisualInfo templ;
         templ.screen  = screen;
         templ.depth   = 32;
         templ.c_class = TrueColor;
-        XVisualInfo *visual_info = XGetVisualInfo(display_, VisualScreenMask | VisualDepthMask | VisualClassMask, &templ, &n_visuals);
+        XVisualInfo *visualInfo = XGetVisualInfo(  display, VisualScreenMask | VisualDepthMask | VisualClassMask, &templ, &nVisuals );
 
-        for (int i = 0; i < n_visuals; ++i)
+        for (int i = 0; i < nVisuals; ++i)
         {
-            XRenderPictFormat *format = XRenderFindVisualFormat(display_, visual_info[i].visual);
+            XRenderPictFormat *format = XRenderFindVisualFormat( display, visualInfo[i].visual );
             if (format->type == PictTypeDirect && format->direct.alphaMask)
             {
-                visual_ = visual_info[i].visual;
-                colormap_ = XCreateColormap(display_, RootWindow(display_, screen), visual_, AllocNone);
+                visual_ = visualInfo[i].visual;
+                colormap_ = XCreateColormap( display, X11Util::get().appRootWindow(), visual_, AllocNone );
                 available_ = true;
                 break;
             }
 
         }
 
-        // need to close the display if not available
-        // to let Qt use its own.
-        if( !available_ )
-        {
-            XCloseDisplay( display_ );
-            display_ = 0;
-        }
         #endif
 
         #if defined(Q_OS_WIN)
@@ -142,7 +134,7 @@ namespace TRANSPARENCY
         Debug::Throw( "CompositeEngine::_compositingEnabled\n" );
 
         #if defined(Q_WS_X11)
-        if( X11Util::get().display()) return _compositingEnabled( (Display*) X11Util::get().display() );
+        if( X11Util::get().display()) return _compositingEnabled( X11Util::get().display() );
         else {
             Debug::Throw( "CompositeEngine::_compositingEnabled - creating dummy display\n" );
             Display* display = XOpenDisplay( 0 );
