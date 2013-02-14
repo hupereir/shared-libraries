@@ -32,9 +32,9 @@
 \date $Date$
 */
 
-#include <QtCore/QSize>
-#include <QtCore/QString>
-#include <QtCore/QList>
+#include <QSize>
+#include <QString>
+#include <QList>
 
 //! svg namespace
 namespace SVG
@@ -90,4 +90,3 @@ namespace SVG
 };
 
 #endif
-

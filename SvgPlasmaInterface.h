@@ -26,9 +26,9 @@
 
 #include "File.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QFileSystemWatcher>
+#include <QObject>
+#include <QString>
+#include <QFileSystemWatcher>
 
 namespace SVG
 {

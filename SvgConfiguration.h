@@ -27,7 +27,7 @@
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 namespace SVG
 {

@@ -27,9 +27,9 @@
 #include "SvgRenderer.h"
 #include "Svg.h"
 
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QThread>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QThread>
 
 //! used to post a new grid when ready
 namespace SVG

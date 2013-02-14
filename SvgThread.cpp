@@ -24,7 +24,7 @@
 #include "SvgThread.h"
 #include "File.h"
 
-#include <QtCore/QMetaType>
+#include <QMetaType>
 #include <algorithm>
 
 namespace SVG

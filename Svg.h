@@ -26,10 +26,10 @@
 
 #include "SvgId.h"
 
-#include <QtCore/QString>
-#include <QtCore/QMap>
-#include <QtGui/QPixmap>
-#include <QtGui/QImage>
+#include <QString>
+#include <QMap>
+#include <QPixmap>
+#include <QImage>
 
 //! namespace for icon static name wrappers
 namespace SVG

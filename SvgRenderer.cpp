@@ -33,7 +33,7 @@
 #include "Svg.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QPainter>
+#include <QPainter>
 
 namespace SVG
 {

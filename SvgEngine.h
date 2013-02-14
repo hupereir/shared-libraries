@@ -27,8 +27,8 @@
 #include "SvgRenderer.h"
 #include "SvgThread.h"
 
-#include <QtCore/QSize>
-#include <QtCore/QObject>
+#include <QSize>
+#include <QObject>
 
 //! svg namespace
 namespace SVG

@@ -32,9 +32,9 @@
 #include "OptionSpinBox.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QGroupBox>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
+#include <QGroupBox>
+#include <QLabel>
+#include <QPushButton>
 
 namespace SVG
 {

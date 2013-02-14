@@ -24,7 +24,7 @@
 #include "SvgPlasmaInterface.h"
 #include "Util.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace SVG
 {
