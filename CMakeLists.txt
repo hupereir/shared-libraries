@@ -9,8 +9,6 @@ SET( BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR} )
 ########### Qt4 configuration #########
 IF( USE_QT5 )
 
-  SET( CMAKE_AUTOMOC ON )
-  SET( CMAKE_INCLUDE_CURRENT_DIR ON )
   FIND_PACKAGE( Qt5Widgets )
 
 ELSE()
@@ -72,7 +70,6 @@ SET( base_qt_SOURCES
   CustomDialog.cpp
   CustomPixmap.cpp
   CustomSlider.cpp
-  CustomTextDocument.cpp
   CustomToolBar.cpp
   CustomToolButton.cpp
   DebugMenu.cpp
@@ -142,7 +139,6 @@ SET( base_qt_SOURCES
   TreeItemBase.cpp
   TreeView.cpp
   TreeViewConfiguration.cpp
-  TreeViewItemDelegate.cpp
   UserSelectionFrame.cpp
   ValidFileThread.cpp
   WarningDialog.cpp
@@ -247,6 +243,7 @@ SET( base_qt_RESOURCES basePixmaps.qrc)
 
 IF( USE_QT5 )
 
+  QT5_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
   QT5_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
 
 ELSE()
