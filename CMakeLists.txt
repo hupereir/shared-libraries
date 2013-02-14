@@ -9,8 +9,6 @@ SET( BASE_SERVER_SOVERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MI
 ########### Qt4 configuration #########
 IF( USE_QT5 )
 
-  SET( CMAKE_AUTOMOC ON )
-  SET( CMAKE_INCLUDE_CURRENT_DIR ON )
   FIND_PACKAGE( Qt5Widgets )
 
 ELSE()
@@ -63,7 +61,11 @@ SET( base_server_HEADERS
   Client.h
 )
 
-IF( NOT USE_QT5 )
+IF( USE_QT5 )
+
+  QT5_WRAP_CPP( base_server_HEADERS_MOC ${base_server_HEADERS} )
+
+ELSE()
 
   QT4_WRAP_CPP( base_server_HEADERS_MOC ${base_server_HEADERS} )
 
