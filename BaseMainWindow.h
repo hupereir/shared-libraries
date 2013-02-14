@@ -30,12 +30,12 @@
 #include "WidgetMonitor.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QActionGroup>
-#include <QtGui/QMainWindow>
-#include <QtGui/QMenu>
-#include <QtGui/QStatusBar>
-#include <QtGui/QStyle>
+#include <QAction>
+#include <QActionGroup>
+#include <QMainWindow>
+#include <QMenu>
+#include <QStatusBar>
+#include <QStyle>
 
 class ToolBarMenu;
 
@@ -224,4 +224,3 @@ class BaseMainWindow: public QMainWindow
 };
 
 #endif
-

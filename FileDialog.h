@@ -25,10 +25,10 @@
 
 #include "Counter.h"
 
-#include <QtGui/QFileDialog>
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
+#include <QFileDialog>
+#include <QObject>
+#include <QString>
+#include <QStringList>
 
 //! customized file selection dialog, to store last selected directory
 class FileDialog: public QObject, public Counter

@@ -27,7 +27,7 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QDockWidget>
+#include <QDockWidget>
 
 class DockWidget: public QDockWidget
 {

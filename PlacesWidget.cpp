@@ -36,10 +36,10 @@
 #include "XmlDocument.h"
 #include "XmlOptions.h"
 
-#include <QtCore/QUrl>
-#include <QtGui/QApplication>
-#include <QtGui/QListView>
-#include <QtGui/QPainter>
+#include <QUrl>
+#include <QApplication>
+#include <QListView>
+#include <QPainter>
 
 const double PlacesWidgetItem::BorderWidth = 2;
 

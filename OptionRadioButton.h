@@ -27,7 +27,7 @@
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QRadioButton>
+#include <QRadioButton>
 
 //! QRadioButton associated to an option for configuration dialogs
 class OptionRadioButton: public QRadioButton, public OptionWidget

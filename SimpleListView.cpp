@@ -22,11 +22,11 @@
 
 #include "SimpleListView.h"
 
-#include <QtGui/QAbstractItemDelegate>
-#include <QtGui/QHeaderView>
-#include <QtGui/QPainter>
-#include <QtGui/QStyleOptionViewItem>
-#include <QtGui/QTextLayout>
+#include <QAbstractItemDelegate>
+#include <QHeaderView>
+#include <QPainter>
+#include <QStyleOptionViewItem>
+#include <QTextLayout>
 
 //! item delegate
 class Delegate : public QAbstractItemDelegate, public Counter
@@ -61,7 +61,7 @@ class Delegate : public QAbstractItemDelegate, public Counter
 };
 
 
-#include <QtGui/QApplication>
+#include <QApplication>
 
 //_________________________________________________________
 Delegate::Delegate( QObject *parent ):

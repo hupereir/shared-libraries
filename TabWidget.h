@@ -27,13 +27,13 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QAction>
-#include <QtCore/QBasicTimer>
-#include <QtGui/QCloseEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtGui/QSizeGrip>
-#include <QtGui/QTabWidget>
+#include <QAction>
+#include <QBasicTimer>
+#include <QCloseEvent>
+#include <QLabel>
+#include <QLayout>
+#include <QSizeGrip>
+#include <QTabWidget>
 
 // forward declaration
 class TabWidget;

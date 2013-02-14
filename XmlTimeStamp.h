@@ -26,9 +26,9 @@
 
 #include "TimeStamp.h"
 
-#include <QtXml/QDomDocument>
-#include <QtXml/QDomElement>
-#include <QtCore/QString>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QString>
 
 //! Xml interface to time manipulation object
 class XmlTimeStamp:public TimeStamp

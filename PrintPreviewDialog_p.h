@@ -26,13 +26,13 @@
 #include "BasePrintHelper.h"
 #include "CustomDialog.h"
 
-#include <QtCore/QMap>
-#include <QtGui/QIntValidator>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QMenuBar>
-#include <QtGui/QPrintPreviewWidget>
-#include <QtGui/QToolButton>
+#include <QMap>
+#include <QIntValidator>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMenuBar>
+#include <QPrintPreviewWidget>
+#include <QToolButton>
 
 namespace PRINT
 {

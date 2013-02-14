@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QHash>
-#include <QtGui/QPixmap>
+#include <QHash>
+#include <QPixmap>
 
 //! cache
 namespace BASE

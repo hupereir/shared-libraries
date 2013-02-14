@@ -27,13 +27,13 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QColor>
-#include <QtGui/QFont>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QTextBlock>
-#include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QColor>
+#include <QFont>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QTextBlock>
+#include <QObject>
+#include <QList>
 
 class TextEditor;
 

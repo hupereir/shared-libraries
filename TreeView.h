@@ -26,9 +26,9 @@
 #include "Counter.h"
 #include "TextSelection.h"
 
-#include <QtGui/QMenu>
-#include <QtGui/QTreeView>
-#include <QtGui/QAction>
+#include <QMenu>
+#include <QTreeView>
+#include <QAction>
 
 // forward declaration
 class BaseFindDialog;

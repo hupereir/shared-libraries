@@ -26,7 +26,7 @@
 
 #include "Counter.h"
 
-#include <QtGui/QPixmap>
+#include <QPixmap>
 
 //! customized QPixmap to look for icon of given name in list of directory
 class CustomPixmap: public QPixmap, public Counter

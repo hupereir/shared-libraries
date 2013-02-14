@@ -27,9 +27,9 @@
 
 #include "Counter.h"
 
-#include <QtCore/QEvent>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QWidget>
+#include <QEvent>
+#include <QPaintEvent>
+#include <QWidget>
 
 class TextEditor;
 

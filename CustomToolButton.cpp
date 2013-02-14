@@ -28,10 +28,10 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QIcon>
-#include <QtGui/QPixmap>
-#include <QtGui/QStylePainter>
-#include <QtGui/QStyleOptionToolButton>
+#include <QIcon>
+#include <QPixmap>
+#include <QStylePainter>
+#include <QStyleOptionToolButton>
 
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( QWidget* parent ):

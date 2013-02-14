@@ -27,8 +27,8 @@
 #include "IconEngine.h"
 #include "IconSize.h"
 
-#include <QtGui/QColorDialog>
-#include <QtGui/QPainter>
+#include <QColorDialog>
+#include <QPainter>
 
 //________________________________________________
 const QString ColorMenu::NONE = "None";

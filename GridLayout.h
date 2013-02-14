@@ -26,8 +26,8 @@
 
 #include "Counter.h"
 
-#include <QtGui/QGridLayout>
-#include <QtCore/QList>
+#include <QGridLayout>
+#include <QList>
 
 class GridLayout: public QGridLayout, public Counter
 {

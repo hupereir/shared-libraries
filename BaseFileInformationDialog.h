@@ -26,10 +26,10 @@
 #include "CustomDialog.h"
 #include "TimeStamp.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QList>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
+#include <QFile>
+#include <QList>
+#include <QLabel>
+#include <QLayout>
 
 class AnimatedTabWidget;
 class Item;

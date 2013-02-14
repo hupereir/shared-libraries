@@ -26,9 +26,9 @@
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QSpinBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
+#include <QSpinBox>
+#include <QLabel>
+#include <QLayout>
 #include <cmath>
 
 //! QSpinBox associated to an option for configuration dialogs

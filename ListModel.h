@@ -26,7 +26,7 @@
 
 #include "ItemModel.h"
 
-#include <QtCore/QList>
+#include <QList>
 #include <algorithm>
 
 //! Job model. Stores job information for display in lists

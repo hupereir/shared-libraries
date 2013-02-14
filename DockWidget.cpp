@@ -28,8 +28,8 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QStyle>
+#include <QLayout>
+#include <QStyle>
 
 //_________________________________________________________
 DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& optionName ):

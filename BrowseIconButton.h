@@ -29,8 +29,8 @@
 #include "Debug.h"
 
 
-#include <QtGui/QIconSet>
-#include <QtCore/QString>
+#include <QIconSet>
+#include <QString>
 
 //! customized tool button to display tooltip in a dedicated label
 class BrowseIconButton: public CustomToolButton

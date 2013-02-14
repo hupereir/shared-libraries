@@ -27,8 +27,8 @@
 #include "Debug.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QMainWindow>
-#include <QtGui/QMenu>
+#include <QMainWindow>
+#include <QMenu>
 
 //___________________________________________
 BaseStatusBar::BaseStatusBar( QWidget* parent ):

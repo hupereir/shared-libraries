@@ -25,7 +25,7 @@
 #include "TextEditor.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QApplication>
+#include <QApplication>
 
 static const unsigned int debug_level = 1;
 

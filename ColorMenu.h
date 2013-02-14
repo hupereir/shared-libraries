@@ -27,12 +27,12 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QMenu>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QPixmap>
-#include <QtCore/QSet>
-#include <QtCore/QHash>
-#include <QtCore/QMap>
+#include <QMenu>
+#include <QPaintEvent>
+#include <QPixmap>
+#include <QSet>
+#include <QHash>
+#include <QMap>
 
 //! Color selection menu
 class ColorMenu: public QMenu, public Counter

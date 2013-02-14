@@ -24,8 +24,8 @@
 #include "Debug.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
+#include <QLabel>
+#include <QLayout>
 
 //_______________________________________________________
 BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* parent ):

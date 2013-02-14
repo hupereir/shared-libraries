@@ -23,7 +23,7 @@
 *
 *******************************************************************************/
 
-#include <QtGui/QStyledItemDelegate>
+#include <QStyledItemDelegate>
 
 class TreeViewItemDelegate: public QStyledItemDelegate
 {

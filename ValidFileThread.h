@@ -27,9 +27,9 @@
 #include "Counter.h"
 #include "FileRecord.h"
 
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QThread>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QThread>
 
 //! independent thread used to automatically save file
 class ValidFileThread: public QThread, public Counter

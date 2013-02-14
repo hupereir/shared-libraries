@@ -28,7 +28,7 @@
 #include "ItemModel.h"
 #include "TreeItem.h"
 
-#include <QtCore/QList>
+#include <QList>
 
 //! generic class to store structure in a model
 template<class T> class TreeModel : public ItemModel

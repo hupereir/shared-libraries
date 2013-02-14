@@ -26,8 +26,8 @@
 
 #include "Counter.h"
 
-#include <QtGui/QFileDialog>
-#include <QtGui/QWidget>
+#include <QFileDialog>
+#include <QWidget>
 
 class AnimatedLineEditor;
 

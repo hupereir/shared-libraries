@@ -26,19 +26,19 @@
 #include "BaseFileInfo.h"
 #include "IconSize.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMimeData>
+#include <QList>
+#include <QMimeData>
 
-#include <QtGui/QAbstractButton>
-#include <QtGui/QAbstractItemView>
-#include <QtGui/QAction>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QDragEnterEvent>
-#include <QtGui/QDragMoveEvent>
-#include <QtGui/QDragLeaveEvent>
-#include <QtGui/QLayout>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QWidget>
+#include <QAbstractButton>
+#include <QAbstractItemView>
+#include <QAction>
+#include <QButtonGroup>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDragLeaveEvent>
+#include <QLayout>
+#include <QPaintEvent>
+#include <QWidget>
 
 // forward declaration
 class PlacesWidgetItem;

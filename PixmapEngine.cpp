@@ -25,7 +25,7 @@
 #include "PixmapEngine.h"
 #include "XmlOptions.h"
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 //__________________________________________________________
 PixmapEngine& PixmapEngine::get( void )

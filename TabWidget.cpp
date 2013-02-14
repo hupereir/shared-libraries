@@ -26,13 +26,13 @@
 #include "File.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QGridLayout>
-#include <QtGui/QPainter>
-#include <QtGui/QStyleHintReturnMask>
-#include <QtGui/QStyleOption>
-#include <QtGui/QStyleOptionMenuItem>
-#include <QtGui/QStyleOptionFrame>
+#include <QApplication>
+#include <QGridLayout>
+#include <QPainter>
+#include <QStyleHintReturnMask>
+#include <QStyleOption>
+#include <QStyleOptionMenuItem>
+#include <QStyleOptionFrame>
 
 #include "X11Util.h"
 

@@ -27,11 +27,11 @@
 #include "AnimatedLabel.h"
 #include "Counter.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QContextMenuEvent>
-#include <QtGui/QStatusBar>
+#include <QApplication>
+#include <QContextMenuEvent>
+#include <QStatusBar>
 
-#include <QtCore/QList>
+#include <QList>
 
 //! local label for additional slots
 class StatusBarLabel: public AnimatedLabel

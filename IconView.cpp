@@ -33,11 +33,11 @@
 #include "TextEditor.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QDrag>
-#include <QtGui/QHoverEvent>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QStyle>
+#include <QApplication>
+#include <QDrag>
+#include <QHoverEvent>
+#include <QPaintEvent>
+#include <QStyle>
 
 //____________________________________________________________________
 IconView::IconView( QWidget* parent ):

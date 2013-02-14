@@ -24,9 +24,9 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QString>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QProgressBar>
+#include <QString>
+#include <QPaintEvent>
+#include <QProgressBar>
 
 //! display command progress and remaining time
 class BaseProgressBar:public QProgressBar

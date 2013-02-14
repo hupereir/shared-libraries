@@ -26,7 +26,7 @@
 
 #include "TextFormat.h"
 
-#include <QtGui/QCheckBox>
+#include <QCheckBox>
 
 //! font formating
 class FontInfo: public QWidget

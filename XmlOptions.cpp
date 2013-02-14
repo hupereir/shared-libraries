@@ -28,7 +28,7 @@
 #include "XmlDocument.h"
 #include "XmlOption.h"
 
-#include <QtCore/QFile>
+#include <QFile>
 
 //____________________________________________________________________
 XmlOptionsSingleton XmlOptions::singleton_;

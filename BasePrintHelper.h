@@ -27,9 +27,9 @@
 #include "Debug.h"
 #include "File.h"
 
-#include <QtCore/QObject>
-#include <QtGui/QPainter>
-#include <QtGui/QPrinter>
+#include <QObject>
+#include <QPainter>
+#include <QPrinter>
 
 //! printing utility
 class BasePrintHelper: public QObject

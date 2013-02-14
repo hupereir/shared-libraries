@@ -24,8 +24,8 @@
 #include "CustomComboBox.h"
 #include "TransitionWidget.h"
 
-#include <QtGui/QAbstractItemView>
-#include <QtGui/QCompleter>
+#include <QAbstractItemView>
+#include <QCompleter>
 
 //___________________________________________________
 CustomComboBox::CustomComboBox( QWidget* parent ):

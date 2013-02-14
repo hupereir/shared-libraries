@@ -28,12 +28,12 @@
 #include "CustomDialog.h"
 #include "AnimatedLineEditor.h"
 
-#include <QtCore/QEvent>
-#include <QtCore/QList>
+#include <QEvent>
+#include <QList>
 
-#include <QtGui/QAbstractButton>
-#include <QtGui/QCheckBox>
-#include <QtGui/QPaintEvent>
+#include <QAbstractButton>
+#include <QCheckBox>
+#include <QPaintEvent>
 
 //! places widget item
 class PlacesWidgetItem: public QAbstractButton

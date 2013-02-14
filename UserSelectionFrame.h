@@ -35,8 +35,8 @@
 #include "Counter.h"
 #include "CustomComboBox.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QSet>
+#include <QBasicTimer>
+#include <QSet>
 
 class UserSelectionFrame: public QWidget, public Counter
 {

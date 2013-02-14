@@ -27,13 +27,13 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QPainter>
-#include <QtGui/QStyleHintReturnMask>
-#include <QtGui/QStyleOption>
-#include <QtGui/QStyleOptionMenuItem>
-#include <QtGui/QStyleOptionDockWidget>
-#include <QtGui/QStyleOptionFrame>
+#include <QApplication>
+#include <QPainter>
+#include <QStyleHintReturnMask>
+#include <QStyleOption>
+#include <QStyleOptionMenuItem>
+#include <QStyleOptionDockWidget>
+#include <QStyleOptionFrame>
 
 #include "X11Util.h"
 

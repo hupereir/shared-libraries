@@ -26,10 +26,10 @@
 #include "IconEngine.h"
 #include "PrintPreviewDialog.h"
 
-#include <QtGui/QButtonGroup>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLayout>
-#include <QtGui/QRadioButton>
+#include <QButtonGroup>
+#include <QGroupBox>
+#include <QLayout>
+#include <QRadioButton>
 
 //________________________________________________________________
 PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):

@@ -31,19 +31,19 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-#include <QtCore/QEvent>
-#include <QtCore/QTimer>
+#include <QEvent>
+#include <QTimer>
 
-#include <QtGui/QApplication>
-#include <QtGui/QLayout>
-#include <QtGui/QListView>
-#include <QtGui/QMenu>
-#include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOption>
-#include <QtGui/QStyleOptionViewItemV4>
-#include <QtGui/QTextOption>
-#include <QtGui/QToolButton>
+#include <QApplication>
+#include <QLayout>
+#include <QListView>
+#include <QMenu>
+#include <QPainter>
+#include <QStyle>
+#include <QStyleOption>
+#include <QStyleOptionViewItemV4>
+#include <QTextOption>
+#include <QToolButton>
 
 //___________________________________________________________________
 const double PathEditorButton::BorderWidth = 1.5;

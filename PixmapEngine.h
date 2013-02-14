@@ -27,7 +27,7 @@
 #include "Debug.h"
 #include "PixmapCache.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 //! customized Icon factory to provide better looking disabled icons
 class PixmapEngine: public Counter

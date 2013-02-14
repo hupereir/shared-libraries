@@ -28,8 +28,8 @@
 #include "DetailsDialog.h"
 #include "Counter.h"
 
-#include <QtCore/QString>
-#include <QtGui/QLabel>
+#include <QString>
+#include <QLabel>
 
 //! simplified question dialog
 class QuestionDialog: public DetailsDialog

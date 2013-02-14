@@ -26,8 +26,8 @@
 
 #include "Counter.h"
 
-#include <QtCore/QWeakPointer>
-#include <QtGui/QMenu>
+#include <QWeakPointer>
+#include <QMenu>
 
 // implements context menu, installable on widgets
 class BaseContextMenu: public QMenu, public Counter

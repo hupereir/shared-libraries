@@ -33,9 +33,9 @@
 */
 
 #include "Counter.h"
-#include <QtCore/QString>
-#include <QtGui/QLabel>
-#include <QtGui/QResizeEvent>
+#include <QString>
+#include <QLabel>
+#include <QResizeEvent>
 
 class ElidedLabel: public QLabel, public Counter
 {

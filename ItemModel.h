@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QAbstractItemModel>
-#include <QtGui/QColor>
+#include <QAbstractItemModel>
+#include <QColor>
 
 //! Job model. Stores job information for display in lists
 class ItemModel : public QAbstractItemModel

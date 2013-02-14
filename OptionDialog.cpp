@@ -31,9 +31,9 @@
 #include "TreeView.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QPushButton>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
+#include <QPushButton>
+#include <QLabel>
+#include <QLayout>
 
 //__________________________________________________________________________
 OptionDialog::OptionDialog( QWidget* parent ):

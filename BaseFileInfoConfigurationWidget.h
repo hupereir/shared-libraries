@@ -26,9 +26,9 @@
 #include "BaseFileInfoToolTipWidget.h"
 #include "OptionWidget.h"
 
-#include <QtGui/QWidget>
-#include <QtGui/QCheckBox>
-#include <QtCore/QMap>
+#include <QWidget>
+#include <QCheckBox>
+#include <QMap>
 
 class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
 {

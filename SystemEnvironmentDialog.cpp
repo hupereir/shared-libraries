@@ -32,9 +32,9 @@
 #include "AnimatedTreeView.h"
 #include "Str.h"
 
-#include <QtCore/QProcess>
-#include <QtGui/QPushButton>
-#include <QtGui/QLayout>
+#include <QProcess>
+#include <QPushButton>
+#include <QLayout>
 
 //__________________________________________________________________________
 SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):

@@ -27,9 +27,9 @@
 #include "Counter.h"
 #include "File.h"
 
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
-#include <QtCore/QList>
+#include <QString>
+#include <QTextStream>
+#include <QList>
 
 //! Xml parsing error container
 class XmlError: public Counter

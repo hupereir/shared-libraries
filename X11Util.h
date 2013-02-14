@@ -32,12 +32,12 @@
 \date    $Date$
 */
 
-#include <QtGui/QWidget>
-#include <QtCore/QHash>
-#include <QtCore/QMap>
+#include <QWidget>
+#include <QHash>
+#include <QMap>
 
 #if defined(Q_WS_X11)
-#include <QtGui/QX11Info>
+#include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>

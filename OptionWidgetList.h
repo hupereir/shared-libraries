@@ -27,7 +27,7 @@
 #include "Debug.h"
 #include "OptionWidget.h"
 
-#include <QtCore/QList>
+#include <QList>
 
 //! abstract container for OptionWidgets
 class OptionWidgetList: public OptionWidget

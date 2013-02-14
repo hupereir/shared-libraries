@@ -27,8 +27,8 @@
 #include "BaseStatusBar.h"
 #include "Debug.h"
 
-#include <QtGui/QProgressBar>
-#include <QtGui/QStackedWidget>
+#include <QProgressBar>
+#include <QStackedWidget>
 
 //! customized status bar for selection frame
 class ProgressStatusBar: public BaseStatusBar

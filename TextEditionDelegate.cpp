@@ -26,7 +26,7 @@
 #include "AnimatedLineEditor.h"
 #include "Debug.h"
 
-#include <QtCore/QAbstractItemModel>
+#include <QAbstractItemModel>
 
 //______________________________________________________________
 TextEditionDelegate::TextEditionDelegate( QObject *parent ):

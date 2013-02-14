@@ -29,8 +29,8 @@
 #include "Debug.h"
 #include "IconSize.h"
 
-#include <QtGui/QMenu>
-#include <QtCore/QHash>
+#include <QMenu>
+#include <QHash>
 
 //! provides icon size selection menu
 class IconSizeMenu: public QMenu, public Counter

@@ -26,9 +26,9 @@
 
 #include "BaseContextMenu.h"
 
-#include <QtGui/QAction>
-#include <QtCore/QList>
-#include <QtCore/QWeakPointer>
+#include <QAction>
+#include <QList>
+#include <QWeakPointer>
 
 // implements context menu, installable on widgets
 class ContextMenu: public BaseContextMenu

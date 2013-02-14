@@ -30,13 +30,13 @@
 #include "QtUtil.h"
 #include "Util.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QCursor>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QFontMetrics>
-#include <QtGui/QLayout>
-#include <QtGui/QMessageBox>
-#include <QtGui/QPushButton>
+#include <QApplication>
+#include <QCursor>
+#include <QDesktopWidget>
+#include <QFontMetrics>
+#include <QLayout>
+#include <QMessageBox>
+#include <QPushButton>
 
 //____________________________________________________________
 void QtUtil::moveWidget( QWidget* widget, QPoint position )

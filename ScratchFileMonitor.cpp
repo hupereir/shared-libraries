@@ -24,7 +24,7 @@
 #include "ScratchFileMonitor.h"
 #include "ScratchFileRemoveDialog.h"
 
-#include <QtGui/QApplication>
+#include <QApplication>
 
 //_______________________________________________________________________________________
 void ScratchFileMonitor::add( const File& file )

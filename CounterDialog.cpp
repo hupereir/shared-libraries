@@ -28,8 +28,8 @@
 #include "Singleton.h"
 #include "AnimatedTreeView.h"
 
-#include <QtGui/QPushButton>
-#include <QtGui/QLayout>
+#include <QPushButton>
+#include <QLayout>
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):

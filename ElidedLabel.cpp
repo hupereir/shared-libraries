@@ -32,7 +32,7 @@
 #include "Debug.h"
 #include "ElidedLabel.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 //___________________________________________________
 ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):

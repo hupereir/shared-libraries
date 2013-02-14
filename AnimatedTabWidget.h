@@ -33,8 +33,8 @@
 
 #include "Counter.h"
 
-#include <QtGui/QTabBar>
-#include <QtGui/QTabWidget>
+#include <QTabBar>
+#include <QTabWidget>
 
 class TransitionWidget;
 

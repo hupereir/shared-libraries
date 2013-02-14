@@ -27,7 +27,7 @@
 #include "TransitionWidget.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QPainter>
+#include <QPainter>
 
 //________________________________________________________
 AnimatedLineEditor::AnimatedLineEditor( QWidget* parent ):

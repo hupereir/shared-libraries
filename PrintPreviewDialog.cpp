@@ -29,13 +29,13 @@
 #include "IconEngine.h"
 #include "IconSize.h"
 
-#include <QtGui/QComboBox>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QLayout>
-#include <QtGui/QMenu>
-#include <QtGui/QScrollBar>
-#include <QtGui/QShortcut>
-#include <QtGui/QWheelEvent>
+#include <QComboBox>
+#include <QGraphicsView>
+#include <QLayout>
+#include <QMenu>
+#include <QScrollBar>
+#include <QShortcut>
+#include <QWheelEvent>
 
 namespace PRINT
 {

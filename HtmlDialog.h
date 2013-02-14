@@ -30,9 +30,9 @@
 #include "LineEditor.h"
 #include "File.h"
 
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtGui/QTabWidget>
+#include <QString>
+#include <QList>
+#include <QTabWidget>
 
 //! new attachment popup dialog
 class HtmlDialog: public CustomDialog

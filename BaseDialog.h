@@ -26,7 +26,7 @@
 
 
 #include "WidgetMonitor.h"
-#include <QtGui/QDialog>
+#include <QDialog>
 
 //! base dialog
 class BaseDialog: public QDialog
@@ -118,4 +118,3 @@ class BaseDialog: public QDialog
 };
 
 #endif
-

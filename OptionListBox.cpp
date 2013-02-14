@@ -31,9 +31,9 @@
 #include "TreeView.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
+#include <QHBoxLayout>
+#include <QHeaderView>
+#include <QLabel>
 #include <algorithm>
 
 //_______________________________________________________

@@ -24,11 +24,11 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QHash>
-#include <QtCore/QPair>
-#include <QtGui/QIcon>
+#include <QString>
+#include <QStringList>
+#include <QHash>
+#include <QPair>
+#include <QIcon>
 
 namespace BASE
 {

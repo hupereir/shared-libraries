@@ -26,9 +26,9 @@
 
 #include "FileRecord.h"
 
-#include <QtXml/QDomElement>
-#include <QtXml/QDomDocument>
-#include <QtCore/QString>
+#include <QDomElement>
+#include <QDomDocument>
+#include <QString>
 
 namespace FILERECORD
 {

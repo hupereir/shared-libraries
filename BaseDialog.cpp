@@ -35,8 +35,8 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-#include <QtCore/QTextStream>
-#include <QtGui/QWindowStateChangeEvent>
+#include <QTextStream>
+#include <QWindowStateChangeEvent>
 
 #include "X11Util.h"
 
@@ -176,4 +176,3 @@ bool BaseDialog::event( QEvent* event )
     return QDialog::event( event );
 
 }
-

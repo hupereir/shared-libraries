@@ -32,9 +32,9 @@
 \date $Date$
 */
 
-#include <QtCore/QString>
-#include <QtCore/QPair>
-#include <QtCore/QList>
+#include <QString>
+#include <QPair>
+#include <QList>
 
 /*!
 \class XmlString

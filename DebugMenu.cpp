@@ -28,7 +28,7 @@
 #include "OptionDialog.h"
 #include "SystemEnvironmentDialog.h"
 
-#include <QtGui/QApplication>
+#include <QApplication>
 
 //_______________________________________________________
 DebugMenu::DebugMenu( QWidget* parent, Flags flags ):

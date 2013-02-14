@@ -31,7 +31,7 @@
 #include "XmlOptions.h"
 #include "QtUtil.h"
 
-#include <QtCore/QUrl>
+#include <QUrl>
 
 //_____________________________________________
 const QString BrowseIconButton::NO_ICON = "none";

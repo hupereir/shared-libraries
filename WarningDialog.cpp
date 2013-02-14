@@ -26,7 +26,7 @@
 #include "IconEngine.h"
 #include "IconSize.h"
 
-#include <QtGui/QLayout>
+#include <QLayout>
 
 //____________________________________________________________
 WarningDialog::WarningDialog( QWidget* parent, const QString& text ):

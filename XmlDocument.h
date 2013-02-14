@@ -27,9 +27,9 @@
 #include "Counter.h"
 #include "XmlError.h"
 
-#include <QtCore/QFile>
-#include <QtXml/QDomDocument>
-#include <QtXml/QDomElement>
+#include <QFile>
+#include <QDomDocument>
+#include <QDomElement>
 
 class XmlDocument: public QDomDocument, public Counter
 {

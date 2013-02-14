@@ -28,7 +28,7 @@
 #include "TextEditorMarginWidget.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QPainter>
+#include <QPainter>
 
 //_____________________________________________________________
 TextEditorMarginWidget::TextEditorMarginWidget( TextEditor* parent ):

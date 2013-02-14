@@ -35,11 +35,11 @@
 
 #include "TreeViewItemDelegate.h"
 
-#include <QtGui/QCursor>
-#include <QtGui/QHeaderView>
-#include <QtGui/QPainter>
-#include <QtGui/QScrollBar>
-#include <QtGui/QStyledItemDelegate>
+#include <QCursor>
+#include <QHeaderView>
+#include <QPainter>
+#include <QScrollBar>
+#include <QStyledItemDelegate>
 
 //_______________________________________________
 TreeView::TreeView( QWidget* parent ):

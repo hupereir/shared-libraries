@@ -40,14 +40,14 @@
 #include "Str.h"
 #include "TreeView.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QScrollArea>
-#include <QtGui/QShortcut>
-#include <QtGui/QToolTip>
-#include <QtGui/QGroupBox>
-#include <QtGui/QHeaderView>
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
+#include <QApplication>
+#include <QScrollArea>
+#include <QShortcut>
+#include <QToolTip>
+#include <QGroupBox>
+#include <QHeaderView>
+#include <QLayout>
+#include <QLabel>
 
 //_________________________________________________________
 class IconThemeDialog: public CustomDialog, public OptionWidgetList

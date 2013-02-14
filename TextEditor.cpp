@@ -42,14 +42,14 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QAbstractTextDocumentLayout>
-#include <QtGui/QMenu>
-#include <QtGui/QPainter>
-#include <QtGui/QProgressDialog>
-#include <QtCore/QRegExp>
-#include <QtGui/QTextBlock>
-#include <QtCore/QTextStream>
+#include <QApplication>
+#include <QAbstractTextDocumentLayout>
+#include <QMenu>
+#include <QPainter>
+#include <QProgressDialog>
+#include <QRegExp>
+#include <QTextBlock>
+#include <QTextStream>
 
 //______________________________________________
 TextSelection& TextEditor::lastSelection( void )

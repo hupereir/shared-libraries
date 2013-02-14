@@ -28,8 +28,8 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QComboBox>
-#include <QtGui/QKeyEvent>
+#include <QComboBox>
+#include <QKeyEvent>
 
 //! local line editor to handle autocompletion
 class ComboLineEdit: public AnimatedLineEditor

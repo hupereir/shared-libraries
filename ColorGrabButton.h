@@ -25,9 +25,9 @@
 
 #include "Counter.h"
 
-#include <QtCore/QEvent>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QToolButton>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QToolButton>
 
 //! used to pick color from screen
 class ColorGrabButton : public QToolButton, public Counter

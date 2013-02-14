@@ -29,8 +29,8 @@
 #include "XmlFileRecord.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QApplication>
-#include <QtCore/QFile>
+#include <QApplication>
+#include <QFile>
 
 //_______________________________________________
 XmlFileList::XmlFileList( QObject* parent ):

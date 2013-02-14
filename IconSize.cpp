@@ -24,7 +24,7 @@
 
 #include "IconSize.h"
 
-#include <QtGui/QStyle>
+#include <QStyle>
 
 //__________________________________________________________________
 IconSize::IconSize( IconSize::Size size )

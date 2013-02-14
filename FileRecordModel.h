@@ -29,8 +29,8 @@
 #include "FileRecord.h"
 #include "ListModel.h"
 
-#include <QtCore/QStringList>
-#include <QtCore/QHash>
+#include <QStringList>
+#include <QHash>
 
 //! qlistview for object counters
 class FileRecordModel: public ListModel<FileRecord>, public Counter

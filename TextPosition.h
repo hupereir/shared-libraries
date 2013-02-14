@@ -26,8 +26,8 @@
 
 #include "Counter.h"
 
-#include <QtCore/QTextStream>
-#include <QtGui/QTextDocument>
+#include <QTextStream>
+#include <QTextDocument>
 
 //! stores paragraph and index (in paragraph) into unique structure
 class TextPosition: public Counter

@@ -30,10 +30,10 @@
 #include "OptionModel.h"
 #include "Options.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QCheckBox>
-#include <QtGui/QFileDialog>
-#include <QtGui/QPushButton>
+#include <QAction>
+#include <QCheckBox>
+#include <QFileDialog>
+#include <QPushButton>
 
 #include <cmath>
 

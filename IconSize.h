@@ -24,9 +24,9 @@
 *
 *******************************************************************************/
 
-#include <QtGui/QWidget>
-#include <QtCore/QSize>
-#include <QtCore/QMap>
+#include <QWidget>
+#include <QSize>
+#include <QMap>
 
 //! default icon sizes
 class IconSize: public QSize

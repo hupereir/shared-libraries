@@ -28,9 +28,9 @@
 #include "CustomPixmap.h"
 #include "Debug.h"
 
-#include <QtGui/QIconSet>
-#include <QtGui/QLabel>
-#include <QtGui/QToolButton>
+#include <QIconSet>
+#include <QLabel>
+#include <QToolButton>
 
 /*!
 \class CustomToolButton

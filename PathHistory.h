@@ -27,7 +27,7 @@
 #include "Counter.h"
 #include "File.h"
 
-#include <QtCore/QList>
+#include <QList>
 
 class PathHistory: public Counter
 {

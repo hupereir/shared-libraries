@@ -26,10 +26,10 @@
 
 #include "WidgetMonitor.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QWidget>
-#include <QtGui/QScrollArea>
-#include <QtCore/QSize>
+#include <QLayout>
+#include <QWidget>
+#include <QScrollArea>
+#include <QSize>
 
 //! container widget
 class MainWidget: public QWidget

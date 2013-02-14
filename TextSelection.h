@@ -26,7 +26,7 @@
 
 #include "Debug.h"
 
-#include <QtCore/QString>
+#include <QString>
 
 //! string to be found and options
 class TextSelection

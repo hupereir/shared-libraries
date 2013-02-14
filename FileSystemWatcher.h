@@ -26,10 +26,10 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QFileSystemWatcher>
-#include <QtCore/QStringList>
-#include <QtCore/QTimerEvent>
+#include <QBasicTimer>
+#include <QFileSystemWatcher>
+#include <QStringList>
+#include <QTimerEvent>
 
 class FileSystemWatcher: public QFileSystemWatcher, public Counter
 {

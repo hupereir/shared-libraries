@@ -22,8 +22,8 @@
 
 #include "Counter.h"
 
-#include <QtGui/QLabel>
-#include <QtCore/QObject>
+#include <QLabel>
+#include <QObject>
 
 //_______________________________________________________
 class ToolTipWidgetItem: public QObject, public Counter

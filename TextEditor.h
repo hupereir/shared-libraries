@@ -37,18 +37,18 @@
 #include "TextPosition.h"
 #include "TextSelection.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QClipboard>
-#include <QtGui/QContextMenuEvent>
-#include <QtGui/QFocusEvent>
-#include <QtGui/QResizeEvent>
-#include <QtGui/QScrollBar>
-#include <QtGui/QTextBlockFormat>
-#include <QtGui/QTextCursor>
-#include <QtGui/QTextEdit>
+#include <QAction>
+#include <QClipboard>
+#include <QContextMenuEvent>
+#include <QFocusEvent>
+#include <QResizeEvent>
+#include <QScrollBar>
+#include <QTextBlockFormat>
+#include <QTextCursor>
+#include <QTextEdit>
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QTimerEvent>
+#include <QBasicTimer>
+#include <QTimerEvent>
 
 class BaseContextMenu;
 class BaseFindDialog;

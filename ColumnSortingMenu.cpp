@@ -25,7 +25,7 @@
 #include "Debug.h"
 #include "TreeView.h"
 
-#include <QtGui/QHeaderView>
+#include <QHeaderView>
 
 //_____________________________________________________
 ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const QString& title ):

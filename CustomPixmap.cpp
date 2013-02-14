@@ -27,10 +27,10 @@
 #include "File.h"
 #include "PixmapEngine.h"
 
-#include <QtGui/QImage>
-#include <QtGui/QIcon>
-#include <QtGui/QPainter>
-#include <QtGui/QFileIconProvider>
+#include <QImage>
+#include <QIcon>
+#include <QPainter>
+#include <QFileIconProvider>
 
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QString& file ):

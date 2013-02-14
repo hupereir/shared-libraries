@@ -26,10 +26,10 @@
 
 #include "Counter.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QSize>
-#include <QtCore/QTimerEvent>
-#include <QtGui/QWidget>
+#include <QBasicTimer>
+#include <QSize>
+#include <QTimerEvent>
+#include <QWidget>
 
 //! used to automatically save size of top level widgets
 class WidgetMonitor: public QObject, public Counter

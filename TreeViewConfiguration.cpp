@@ -26,11 +26,11 @@
 #include "Debug.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QHeaderView>
-#include <QtGui/QLayout>
-#include <QtGui/QPushButton>
-#include <QtGui/QToolTip>
-#include <QtCore/QTextStream>
+#include <QHeaderView>
+#include <QLayout>
+#include <QPushButton>
+#include <QToolTip>
+#include <QTextStream>
 
 //____________________________________________________________________________
 TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& option_name ):

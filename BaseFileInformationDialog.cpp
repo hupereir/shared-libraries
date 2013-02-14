@@ -32,7 +32,7 @@
 #include "GridLayout.h"
 #include "IconEngine.h"
 
-#include <QtGui/QShortcut>
+#include <QShortcut>
 
 //____________________________________________________________________________
 BaseFileInformationDialog::Item::Item( QWidget* parent, GridLayout* layout, BaseFileInformationDialog::ItemFlags flags ):

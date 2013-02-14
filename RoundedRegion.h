@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#include <QtGui/QRegion>
-#include <QtCore/QRect>
+#include <QRegion>
+#include <QRect>
 
 //! rounded QRegion based on a rect
 class RoundedRegion: public QRegion

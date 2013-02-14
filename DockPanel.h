@@ -27,15 +27,15 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QTimerEvent>
+#include <QBasicTimer>
+#include <QTimerEvent>
 
-#include <QtGui/QAction>
-#include <QtGui/QCloseEvent>
-#include <QtGui/QFrame>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtGui/QPixmap>
+#include <QAction>
+#include <QCloseEvent>
+#include <QFrame>
+#include <QLabel>
+#include <QLayout>
+#include <QPixmap>
 
 //! detachable generic panel
 class DockPanel: public QWidget, public Counter

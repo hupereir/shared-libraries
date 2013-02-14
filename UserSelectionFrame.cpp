@@ -25,8 +25,8 @@
 #include "Util.h"
 #include "UserSelectionFrame.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
+#include <QLayout>
+#include <QLabel>
 
 //____________________________________________________________
 UserSelectionFrame::UserSelectionFrame( QWidget* parent ):

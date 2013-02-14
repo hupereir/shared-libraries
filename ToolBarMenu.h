@@ -26,7 +26,7 @@
 
 #include "Counter.h"
 
-#include <QtGui/QMenu>
+#include <QMenu>
 
 class ToolButtonStyleMenu;
 class IconSizeMenu;

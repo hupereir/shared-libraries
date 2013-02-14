@@ -28,7 +28,7 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtCore/QPair>
+#include <QPair>
 
 //! counter pair
 class CounterPair: public QPair<QString, int>

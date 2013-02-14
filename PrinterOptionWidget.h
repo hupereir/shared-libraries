@@ -26,11 +26,11 @@
 #include "Counter.h"
 #include "BasePrintHelper.h"
 
-#include <QtCore/QMap>
-#include <QtGui/QAbstractButton>
-#include <QtGui/QPrinter>
-#include <QtGui/QPushButton>
-#include <QtGui/QWidget>
+#include <QMap>
+#include <QAbstractButton>
+#include <QPrinter>
+#include <QPushButton>
+#include <QWidget>
 
 class PrinterOptionWidget: public QWidget, public Counter
 {

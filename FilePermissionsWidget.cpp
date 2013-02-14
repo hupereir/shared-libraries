@@ -25,11 +25,11 @@
 #include "Debug.h"
 #include "GridLayout.h"
 
-#include <QtCore/QHash>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtCore/QHash>
+#include <QHash>
+#include <QCheckBox>
+#include <QLabel>
+#include <QLayout>
+#include <QHash>
 
 //_____________________________________________________________________
 FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permissions permissions):

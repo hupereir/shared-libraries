@@ -26,12 +26,12 @@
 
 #include "Counter.h"
 
-#include <QtGui/QContextMenuEvent>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QLineEdit>
-#include <QtGui/QMenu>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QPaintEvent>
+#include <QContextMenuEvent>
+#include <QKeyEvent>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMouseEvent>
+#include <QPaintEvent>
 
 /*!
 \class LineEditor

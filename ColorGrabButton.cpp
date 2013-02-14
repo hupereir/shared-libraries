@@ -25,10 +25,10 @@
 #include "ColorGrabButton.h"
 #include "Debug.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QCursor>
-#include <QtGui/QMouseEvent>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QCursor>
+#include <QMouseEvent>
 
 //______________________________________________
 ColorGrabButton::ColorGrabButton( QWidget* parent ):

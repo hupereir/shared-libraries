@@ -33,10 +33,10 @@
 #include "QuestionDialog.h"
 #include "TreeView.h"
 
-#include <QtGui/QGroupBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtGui/QShortcut>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLayout>
+#include <QShortcut>
 
 //___________________________________________
 RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& recent_files ):

@@ -27,8 +27,8 @@
 #include "TextEditor.h"
 #include "TextFormat.h"
 
-#include <QtCore/QString>
-#include <QtGui/QColor>
+#include <QString>
+#include <QColor>
 
 class LogWidget: public TextEditor
 {

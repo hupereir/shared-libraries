@@ -26,9 +26,9 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QFont>
-#include <QtGui/QFontDialog>
-#include <QtGui/QLabel>
+#include <QFont>
+#include <QFontDialog>
+#include <QLabel>
 
 //! readonly font name display and font dialog
 class FontEditor: public QWidget, public Counter

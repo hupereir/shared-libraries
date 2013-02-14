@@ -33,8 +33,8 @@
 #include "FontEditor.h"
 #include "IconEngine.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QToolButton>
+#include <QLayout>
+#include <QToolButton>
 
 
 

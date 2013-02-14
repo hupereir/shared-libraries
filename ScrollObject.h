@@ -26,9 +26,9 @@
 
 #include "Counter.h"
 
-#include <QtGui/QAbstractScrollArea>
-#include <QtCore/QTimeLine>
-#include <QtCore/QSet>
+#include <QAbstractScrollArea>
+#include <QTimeLine>
+#include <QSet>
 
 //! customized tree view
 class ScrollObject: public QObject, public Counter

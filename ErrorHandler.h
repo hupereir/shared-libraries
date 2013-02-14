@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#include <QtGui/QApplication>
-#include <QtCore/QStringList>
+#include <QApplication>
+#include <QStringList>
 
 /*!
 \class ErrorHandler

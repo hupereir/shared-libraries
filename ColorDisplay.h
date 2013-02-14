@@ -26,7 +26,7 @@
 #include "Counter.h"
 #include "AnimatedLineEditor.h"
 
-#include <QtGui/QColorDialog>
+#include <QColorDialog>
 
 class ColorGrabButton;
 

@@ -27,7 +27,7 @@
 #include "OptionModel.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QPalette>
+#include <QPalette>
 
 //_______________________________________________
 const QString OptionModel::columnTitles_[ OptionModel::nColumns ] =

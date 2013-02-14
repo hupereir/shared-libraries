@@ -31,7 +31,7 @@
 #include "TimeStamp.h"
 #include "ValidFileThread.h"
 
-#include <QtCore/QObject>
+#include <QObject>
 
 //! handles list of files saved into resource file for later reopening
 class FileList: public QObject, public Counter

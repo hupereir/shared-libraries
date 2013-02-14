@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QSet>
-#include <QtCore/QString>
+#include <QSet>
+#include <QString>
 
 //! text separator between words
 class TextSeparator

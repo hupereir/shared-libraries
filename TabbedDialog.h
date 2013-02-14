@@ -28,10 +28,10 @@
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QCloseEvent>
-#include <QtGui/QDialog>
-#include <QtGui/QIcon>
-#include <QtGui/QLayout>
+#include <QCloseEvent>
+#include <QDialog>
+#include <QIcon>
+#include <QLayout>
 
 class AnimatedStackedWidget;
 class TreeView;

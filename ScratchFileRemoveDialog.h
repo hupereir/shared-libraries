@@ -28,8 +28,8 @@
 #include "FileRecord.h"
 #include "FileRecordModel.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QPushButton>
+#include <QLayout>
+#include <QPushButton>
 
 class TreeView;
 
@@ -81,4 +81,3 @@ class ScratchFileRemoveDialog: public CustomDialog
 };
 
 #endif
-

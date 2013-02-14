@@ -27,12 +27,12 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QActionGroup>
-#include <QtGui/QMenu>
-#include <QtGui/QTreeView>
-#include <QtGui/QHeaderView>
-#include <QtCore/QHash>
+#include <QAction>
+#include <QActionGroup>
+#include <QMenu>
+#include <QTreeView>
+#include <QHeaderView>
+#include <QHash>
 
 //_______________________________________________________________
 class ColumnSortingMenu:public QMenu, public Counter

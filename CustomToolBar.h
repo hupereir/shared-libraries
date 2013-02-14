@@ -28,11 +28,11 @@
 #include "Debug.h"
 #include "OptionComboBox.h"
 
-#include <QtGui/QHideEvent>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QShowEvent>
-#include <QtGui/QToolBar>
-#include <QtCore/QMap>
+#include <QHideEvent>
+#include <QPaintEvent>
+#include <QShowEvent>
+#include <QToolBar>
+#include <QMap>
 
 
 //! customized tool bar to handle position and visibility from Options

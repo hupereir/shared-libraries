@@ -25,7 +25,7 @@
 #include "IconEngine.h"
 #include "XmlOptions.h"
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
 //__________________________________________________________
 IconEngine& IconEngine::get( void )

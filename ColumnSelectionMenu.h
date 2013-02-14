@@ -27,10 +27,10 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
-#include <QtGui/QTreeView>
-#include <QtCore/QHash>
+#include <QAction>
+#include <QMenu>
+#include <QTreeView>
+#include <QHash>
 
 //_______________________________________________________________
 class ColumnSelectionMenu:public QMenu, public Counter

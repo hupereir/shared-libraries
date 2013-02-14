@@ -24,8 +24,8 @@
 #include "BusyWidget.h"
 #include "Debug.h"
 
-#include <QtGui/QPainter>
-#include <QtGui/QPainterPath>
+#include <QPainter>
+#include <QPainterPath>
 
 //__________________________________________________________________________
 BusyWidget::BusyWidget( QWidget* parent, Location location ):

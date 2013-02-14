@@ -27,12 +27,12 @@
 #include "Debug.h"
 #include "File.h"
 
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
-#include <QtCore/QList>
-#include <QtCore/QPair>
-#include <QtXml/QDomElement>
-#include <QtXml/QDomDocument>
+#include <QString>
+#include <QTextStream>
+#include <QList>
+#include <QPair>
+#include <QDomElement>
+#include <QDomDocument>
 
 #include <algorithm>
 

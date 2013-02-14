@@ -27,8 +27,8 @@
 #include "Debug.h"
 #include "BaseFindDialog.h"
 
-#include <QtGui/QFrame>
-#include <QtGui/QPushButton>
+#include <QFrame>
+#include <QPushButton>
 
 //________________________________________________________________________
 QOrderedSet<QString>& BaseFindDialog::_searchedStrings( void )

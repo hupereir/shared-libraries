@@ -29,12 +29,12 @@
 #include "IconEngine.h"
 #include "InformationDialog.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QCursor>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QPainter>
-#include <QtGui/QToolButton>
+#include <QApplication>
+#include <QCursor>
+#include <QDesktopWidget>
+#include <QHBoxLayout>
+#include <QPainter>
+#include <QToolButton>
 
 //______________________________________________
 const QString ColorDisplay::NONE = "None";

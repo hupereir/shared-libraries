@@ -30,11 +30,11 @@
 #include "TextSelection.h"
 #include "QOrderedSet.h"
 
-#include <QtGui/QAbstractButton>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtCore/QList>
+#include <QAbstractButton>
+#include <QCheckBox>
+#include <QLabel>
+#include <QLayout>
+#include <QList>
 
 //! find_text dialog for text editor widgets
 class BaseFindDialog: public BaseDialog, public Counter

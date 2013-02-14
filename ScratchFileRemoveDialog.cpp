@@ -27,7 +27,7 @@
 #include "TreeView.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QLabel>
+#include <QLabel>
 
 //____________________________________________________________________________
 ScratchFileRemoveDialog::ScratchFileRemoveDialog( QWidget* parent, const FileRecordModel::List& files ):

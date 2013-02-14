@@ -28,8 +28,8 @@
 #include "Debug.h"
 #include "FileList.h"
 
-#include <QtGui/QMenu>
-#include <QtCore/QHash>
+#include <QMenu>
+#include <QHash>
 
 /*!
 \class   RecentFilesMenu

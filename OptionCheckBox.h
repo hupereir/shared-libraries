@@ -27,7 +27,7 @@
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QCheckBox>
+#include <QCheckBox>
 
 //! QCheckBox associated to an option for configuration dialogs
 class OptionCheckBox: public QCheckBox, public OptionWidget

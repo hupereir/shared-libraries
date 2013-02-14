@@ -28,12 +28,12 @@
 #include "ListModel.h"
 #include "TimeStamp.h"
 
-#include <QtCore/QMimeData>
-#include <QtCore/QHash>
-#include <QtGui/QApplication>
-#include <QtGui/QIcon>
-#include <QtGui/QFont>
-#include <QtGui/QPalette>
+#include <QMimeData>
+#include <QHash>
+#include <QApplication>
+#include <QIcon>
+#include <QFont>
+#include <QPalette>
 
 //! FileInfo model. Stores file information for display in lists
 template<typename T>

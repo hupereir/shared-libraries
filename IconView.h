@@ -27,18 +27,18 @@
 #include "IconViewItem.h"
 #include "TextSelection.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QString>
-#include <QtCore/QTimerEvent>
+#include <QBasicTimer>
+#include <QString>
+#include <QTimerEvent>
 
-#include <QtGui/QAbstractItemView>
-#include <QtGui/QHeaderView>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QPainter>
-#include <QtGui/QPixmap>
-#include <QtGui/QRubberBand>
-#include <QtGui/QScrollBar>
-#include <QtGui/QStyleOptionViewItemV4>
+#include <QAbstractItemView>
+#include <QHeaderView>
+#include <QKeyEvent>
+#include <QPainter>
+#include <QPixmap>
+#include <QRubberBand>
+#include <QScrollBar>
+#include <QStyleOptionViewItemV4>
 
 // forward declaration
 class BaseFindDialog;

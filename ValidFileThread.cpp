@@ -24,7 +24,7 @@
 #include "ValidFileThread.h"
 #include "File.h"
 
-#include <QtCore/QMetaType>
+#include <QMetaType>
 #include <algorithm>
 
 //______________________________________________________

@@ -26,10 +26,10 @@
 
 #include "OptionWidget.h"
 
-#include <QtGui/QGroupBox>
-#include <QtGui/QCheckBox>
-#include <QtGui/QTreeView>
-#include <QtCore/QList>
+#include <QGroupBox>
+#include <QCheckBox>
+#include <QTreeView>
+#include <QList>
 
 //! Configuration vbox for TreeView columns
 class TreeViewConfiguration: public QGroupBox, public OptionWidget

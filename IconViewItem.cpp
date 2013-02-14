@@ -22,10 +22,10 @@
 
 #include "IconViewItem.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionViewItem>
-#include <QtGui/QTextLayout>
+#include <QApplication>
+#include <QStyle>
+#include <QStyleOptionViewItem>
+#include <QTextLayout>
 
 //____________________________________________________________________
 /*!

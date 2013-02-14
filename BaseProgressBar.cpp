@@ -24,8 +24,8 @@
 #include "BaseProgressBar.h"
 #include "Debug.h"
 
-#include <QtGui/QStyleOptionProgressBarV2>
-#include <QtGui/QStylePainter>
+#include <QStyleOptionProgressBarV2>
+#include <QStylePainter>
 
 //___________________________________________________________
 void BaseProgressBar::setText( const QString& text )

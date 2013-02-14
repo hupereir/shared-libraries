@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#include <QtGui/QWidget>
-#include <QtGui/QPixmap>
+#include <QWidget>
+#include <QPixmap>
 
 class WinUtil
 {

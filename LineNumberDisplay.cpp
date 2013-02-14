@@ -26,12 +26,12 @@
 #include "LineNumberDisplay.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QAbstractTextDocumentLayout>
-#include <QtGui/QPainter>
-#include <QtGui/QScrollBar>
-#include <QtGui/QTextDocument>
-#include <QtGui/QTextBlock>
-#include <QtGui/QTextLayout>
+#include <QAbstractTextDocumentLayout>
+#include <QPainter>
+#include <QScrollBar>
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QTextLayout>
 
 //____________________________________________________________________________
 LineNumberDisplay::LineNumberDisplay(TextEditor* editor):

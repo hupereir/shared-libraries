@@ -24,7 +24,7 @@
 #include "Debug.h"
 #include "FontInfo.h"
 
-#include <QtGui/QLayout>
+#include <QLayout>
 
 //_____________________________________________
 FontInfo::FontInfo( QWidget* parent ):

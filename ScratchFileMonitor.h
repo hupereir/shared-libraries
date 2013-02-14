@@ -28,7 +28,7 @@
 #include "File.h"
 #include "QOrderedSet.h"
 
-#include <QtCore/QObject>
+#include <QObject>
 
 //! used to automatically
 class ScratchFileMonitor: public QObject, public Counter

@@ -25,7 +25,7 @@
 #include "CustomDialog.h"
 #include "IconEngine.h"
 
-#include <QtGui/QFrame>
+#include <QFrame>
 
 //____________________________________________________________
 CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WFlags wflags):

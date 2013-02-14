@@ -28,7 +28,7 @@
 #include "Debug.h"
 #include "IconCache.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 //! customized Icon factory to provide better looking disabled icons
 class IconEngine: public Counter

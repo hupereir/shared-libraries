@@ -27,9 +27,9 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QPushButton>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QLayout>
+#include <QPushButton>
+#include <QBoxLayout>
+#include <QLayout>
 
 //! customized QDialog
 class CustomDialog: public BaseDialog, public Counter
@@ -121,4 +121,3 @@ class CustomDialog: public BaseDialog, public Counter
 Q_DECLARE_OPERATORS_FOR_FLAGS( CustomDialog::Flags );
 
 #endif
-

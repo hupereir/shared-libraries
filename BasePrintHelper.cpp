@@ -22,12 +22,12 @@
 
 #include "BasePrintHelper.h"
 
-#include <QtCore/QTextStream>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QTextDocument>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLayout>
-#include <QtGui/QRadioButton>
+#include <QTextStream>
+#include <QButtonGroup>
+#include <QTextDocument>
+#include <QGroupBox>
+#include <QLayout>
+#include <QRadioButton>
 
 //__________________________________________________________________________
 void BasePrintHelper::setupPage( QPrinter* printer )

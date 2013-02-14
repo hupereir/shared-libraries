@@ -27,12 +27,12 @@
 #include "Debug.h"
 #include "File.h"
 
-#include <QtCore/QEvent>
-#include <QtCore/QList>
+#include <QEvent>
+#include <QList>
 
-#include <QtGui/QAbstractButton>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QPainter>
+#include <QAbstractButton>
+#include <QPaintEvent>
+#include <QPainter>
 
 //! path editor button
 class PathEditorButton: public QAbstractButton

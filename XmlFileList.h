@@ -27,7 +27,7 @@
 #include "FileList.h"
 #include "File.h"
 
-#include <QtCore/QString>
+#include <QString>
 
 // forward declaration
 class XmlDocument;

@@ -25,10 +25,10 @@
 
 #include "Counter.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QHash>
-#include <QtGui/QWidget>
-#include <QtGui/QCheckBox>
+#include <QFile>
+#include <QHash>
+#include <QWidget>
+#include <QCheckBox>
 
 class FilePermissionsWidget: public QWidget, public Counter
 {

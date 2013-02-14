@@ -26,9 +26,9 @@
 
 #include "Counter.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QHash>
-#include <QtGui/QIcon>
+#include <QObject>
+#include <QHash>
+#include <QIcon>
 
 //! FileInfo model. Stores file information for display in lists
 class MimeTypeIconProvider : public QObject, public Counter

@@ -24,7 +24,7 @@
 #include "ContextMenu.h"
 #include "Debug.h"
 
-#include <QtGui/QAbstractScrollArea>
+#include <QAbstractScrollArea>
 
 //___________________________________________________
 ContextMenu::ContextMenu( QWidget* parent ):

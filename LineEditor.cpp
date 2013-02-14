@@ -27,14 +27,14 @@
 #include "IconEngine.h"
 #include "Str.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QClipboard>
-#include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionFrameV2>
-#include <QtGui/QToolTip>
+#include <QApplication>
+#include <QClipboard>
+#include <QPainter>
+#include <QStyle>
+#include <QStyleOptionFrameV2>
+#include <QToolTip>
 
-#include <QtCore/QEvent>
+#include <QEvent>
 
 //____________________________________________________________
 LineEditor::LineEditor( QWidget* parent ):

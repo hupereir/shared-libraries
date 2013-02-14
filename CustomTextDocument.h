@@ -31,7 +31,7 @@
 \date $Date$
 */
 
-#include <QtGui/QTextDocument>
+#include <QTextDocument>
 
 #include "Counter.h"
 #include "Debug.h"

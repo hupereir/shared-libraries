@@ -27,8 +27,8 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QSlider>
-#include <QtGui/QSpinBox>
+#include <QSlider>
+#include <QSpinBox>
 
 //! customized QSlider associated to a QSpinBox
 class CustomSlider: public QWidget, public Counter

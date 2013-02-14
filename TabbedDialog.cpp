@@ -27,14 +27,14 @@
 #include "SimpleListView.h"
 #include "TabbedDialog.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QScrollArea>
-#include <QtGui/QShortcut>
-#include <QtGui/QToolTip>
-#include <QtGui/QGroupBox>
-#include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
-#include <QtGui/QPainter>
+#include <QApplication>
+#include <QScrollArea>
+#include <QShortcut>
+#include <QToolTip>
+#include <QGroupBox>
+#include <QHeaderView>
+#include <QLabel>
+#include <QPainter>
 
 
 //_________________________________________________________

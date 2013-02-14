@@ -25,10 +25,10 @@
 
 #include "File.h"
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QDragEnterEvent>
-#include <QtGui/QDropEvent>
-#include <QtGui/QFileDialog>
+#include <QCheckBox>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QFileDialog>
 #include <QLabel>
 
 class ImageFileDialog: public QFileDialog

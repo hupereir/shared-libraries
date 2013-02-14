@@ -31,9 +31,9 @@
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtGui/QToolButton>
+#include <QLabel>
+#include <QLayout>
+#include <QToolButton>
 
 //___________________________________________________
 HtmlDialog::HtmlDialog( QWidget* parent ):

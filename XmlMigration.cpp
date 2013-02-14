@@ -27,7 +27,7 @@
 #include "XmlDocument.h"
 #include "XmlOptions.h"
 
-#include <QtCore/QFile>
+#include <QFile>
 
 //_________________________________________________________________________
 bool XmlMigration::run( void )
@@ -124,7 +124,3 @@ bool XmlMigration::_findXmlName( void ) const
     if( !document.setContent( &qfile ) ) return false;
     else return !document.elementsByTagName( xmlName_).isEmpty();
 }
-
-
-
-

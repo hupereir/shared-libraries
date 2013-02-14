@@ -26,11 +26,11 @@
 
 #include "Counter.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QObject>
-#include <QtCore/QTimerEvent>
-#include <QtGui/QCursor>
-#include <QtGui/QWidget>
+#include <QBasicTimer>
+#include <QObject>
+#include <QTimerEvent>
+#include <QCursor>
+#include <QWidget>
 
 //! used to automatically hide mouse cursor over a certain widget
 class CursorMonitor: public QObject, public Counter

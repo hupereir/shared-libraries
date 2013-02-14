@@ -29,13 +29,13 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QUrl>
-#include <QtGui/QImage>
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QSplitter>
+#include <QFileInfo>
+#include <QUrl>
+#include <QImage>
+#include <QLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QSplitter>
 
 //______________________________________________________________________
 ImageFileDialog::ImageFileDialog( QWidget* parent ):

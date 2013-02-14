@@ -26,12 +26,12 @@
 
 #include "Counter.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QTimerEvent>
-#include <QtCore/QPropertyAnimation>
-#include <QtGui/QWidget>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QPainterPath>
+#include <QBasicTimer>
+#include <QTimerEvent>
+#include <QPropertyAnimation>
+#include <QWidget>
+#include <QPaintEvent>
+#include <QPainterPath>
 
 class BusyWidget: public QWidget, public Counter
 {

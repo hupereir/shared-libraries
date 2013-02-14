@@ -27,8 +27,8 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtGui/QMenu>
-#include <QtCore/QMap>
+#include <QMenu>
+#include <QMap>
 
 //! provides tool button style selection menu
 class ToolButtonStyleMenu: public QMenu, public Counter

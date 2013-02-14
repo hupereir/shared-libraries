@@ -23,7 +23,7 @@
 
 #include "TextPosition.h"
 
-#include <QtGui/QTextBlock>
+#include <QTextBlock>
 
 //______________________________________________________________
 TextPosition::TextPosition( QTextDocument* document, int index ):

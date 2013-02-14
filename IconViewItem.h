@@ -25,11 +25,11 @@
 
 #include "Counter.h"
 
-#include <QtCore/QRect>
+#include <QRect>
 
-#include <QtGui/QPainter>
-#include <QtGui/QPixmap>
-#include <QtGui/QStyleOption>
+#include <QPainter>
+#include <QPixmap>
+#include <QStyleOption>
 
 //! graphics item
 class IconViewItem: public Counter

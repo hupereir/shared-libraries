@@ -26,9 +26,9 @@
 
 #include "DetailsDialog.h"
 
-#include <QtCore/QString>
-#include <QtGui/QLabel>
-#include <QtGui/QWidget>
+#include <QString>
+#include <QLabel>
+#include <QWidget>
 
 //! simple information dialog
 class WarningDialog: public DetailsDialog

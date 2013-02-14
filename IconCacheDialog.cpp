@@ -28,8 +28,8 @@
 #include "IconSize.h"
 #include "AnimatedTreeView.h"
 
-#include <QtGui/QPushButton>
-#include <QtGui/QLayout>
+#include <QPushButton>
+#include <QLayout>
 
 //__________________________________________________________________________
 IconCacheDialog::IconCacheDialog( QWidget* parent ):

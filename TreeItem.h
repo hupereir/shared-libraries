@@ -26,8 +26,8 @@
 
 #include "TreeItemBase.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
+#include <QList>
+#include <QMap>
 #include <algorithm>
 
 //! used to wrap object T into tree structure

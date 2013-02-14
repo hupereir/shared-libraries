@@ -28,7 +28,7 @@
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"
 
-#include <QtGui/QLayout>
+#include <QLayout>
 
 //! configuration dialog
 class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList

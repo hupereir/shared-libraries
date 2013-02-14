@@ -28,16 +28,16 @@
 #include "File.h"
 #include "PathHistory.h"
 
-#include <QtCore/QList>
+#include <QList>
 
-#include <QtGui/QAbstractButton>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtGui/QResizeEvent>
-#include <QtGui/QStackedWidget>
-#include <QtGui/QAbstractItemView>
-#include <QtGui/QWidget>
+#include <QAbstractButton>
+#include <QButtonGroup>
+#include <QLabel>
+#include <QLayout>
+#include <QResizeEvent>
+#include <QStackedWidget>
+#include <QAbstractItemView>
+#include <QWidget>
 
 // forward declaration
 class PathEditorItem;

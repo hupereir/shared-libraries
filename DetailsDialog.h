@@ -25,8 +25,8 @@
 
 #include "CustomDialog.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QWidget>
+#include <QLabel>
+#include <QWidget>
 
 //! customized QDialog
 class DetailsDialog: public CustomDialog

@@ -28,9 +28,9 @@
 #include "FileRecordModel.h"
 #include "OptionWidgetList.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QPushButton>
-#include <QtGui/QWidget>
+#include <QAction>
+#include <QPushButton>
+#include <QWidget>
 
 class FileList;
 class TreeView;

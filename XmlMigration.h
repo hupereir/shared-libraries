@@ -27,7 +27,7 @@
 #include "Counter.h"
 #include "File.h"
 
-#include <QtCore/QString>
+#include <QString>
 
 class XmlMigration: public Counter
 {
