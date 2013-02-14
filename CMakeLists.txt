@@ -7,10 +7,19 @@ SET( BASE_SPELLCHECK_VERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK_
 SET( BASE_SPELLCHECK_SOVERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK_VERSION_MINOR} )
 
 ########### Qt4 configuration #########
-FIND_PACKAGE( Qt4 REQUIRED )
+IF( USE_QT5 )
 
-INCLUDE( ${QT_USE_FILE} )
-ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  SET( CMAKE_AUTOMOC ON )
+  SET( CMAKE_INCLUDE_CURRENT_DIR ON )
+  FIND_PACKAGE( Qt5Widgets )
+
+ELSE()
+
+  FIND_PACKAGE( Qt4 REQUIRED )
+  INCLUDE( ${QT_USE_FILE} )
+  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+
+ENDIF()
 
 ########### aspell ###############
 FIND_PACKAGE( ASPELL REQUIRED )
@@ -53,7 +62,11 @@ SET( base_spellcheck_HEADERS
   SuggestionMenu.h
 )
 
-QT4_WRAP_CPP( base_spellcheck_HEADERS_MOC ${base_spellcheck_HEADERS} )
+IF( NOT USE_QT5 )
+
+  QT4_WRAP_CPP( base_spellcheck_HEADERS_MOC ${base_spellcheck_HEADERS} )
+
+ENDIF()
 
 IF( ENABLE_SHARED )
 
@@ -74,5 +87,11 @@ ELSE()
   )
 
   TARGET_LINK_LIBRARIES( base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt )
+
+ENDIF()
+
+IF( USE_QT5 )
+
+  QT5_USE_MODULES( base-spellcheck Widgets Network )
 
 ENDIF()

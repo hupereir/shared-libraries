@@ -100,12 +100,12 @@ namespace SPELLCHECK
         if( spellChecker_ ) aspell_speller_save_all_word_lists( spellChecker_ );
 
         // update main dictionary
-        aspell_config_replace(spellConfig_, "lang", dictionary.toAscii().constData() );
+        aspell_config_replace(spellConfig_, "lang", dictionary.toLatin1().constData() );
         dictionary_ = dictionary;
 
         // update personal dictionary
         QString personal_dictionary = Util::env( "HOME" ) + "/.aspell." + dictionary + ".pws";
-        aspell_config_replace(spellConfig_, "personal", personal_dictionary.toAscii().constData() );
+        aspell_config_replace(spellConfig_, "personal", personal_dictionary.toLatin1().constData() );
 
         // reset
         return _reset();
@@ -134,7 +134,7 @@ namespace SPELLCHECK
         filter_ = filter;
 
         // update aspell
-        aspell_config_replace(spellConfig_, "mode", (filter == FILTER_TEX_NO_ACCENTS ? FILTER_TEX:filter).toAscii().constData() );
+        aspell_config_replace(spellConfig_, "mode", (filter == FILTER_TEX_NO_ACCENTS ? FILTER_TEX:filter).toLatin1().constData() );
 
         // reset SpellChecker
         return _reset() || filter == NO_FILTER;
@@ -171,7 +171,7 @@ namespace SPELLCHECK
         position_ = 0;
         offset_ = 0;
         aspell_document_checker_reset( documentChecker_ );
-        aspell_document_checker_process(documentChecker_, text_.mid( begin_, end_-begin_).toAscii().constData(), -1);
+        aspell_document_checker_process(documentChecker_, text_.mid( begin_, end_-begin_).toLatin1().constData(), -1);
 
         return true;
 
@@ -193,7 +193,7 @@ namespace SPELLCHECK
         }
 
         // retrieve word from editor
-        aspell_speller_add_to_personal(spellChecker_, word.toAscii().constData(), -1);
+        aspell_speller_add_to_personal(spellChecker_, word.toLatin1().constData(), -1);
         return true;
 
     }
@@ -221,8 +221,8 @@ namespace SPELLCHECK
         // inform spellchecker of the replacement
         aspell_speller_store_replacement(
             spellChecker_,
-            word_.toAscii().constData(), -1,
-            word.toAscii().constData(), -1 );
+            word_.toLatin1().constData(), -1,
+            word.toLatin1().constData(), -1 );
 
         // update checked text
         checkedText_.replace( begin_+position_+offset_, word_.size(), word );
@@ -296,7 +296,7 @@ namespace SPELLCHECK
             return out;
         }
 
-        const AspellWordList * suggestions( aspell_speller_suggest( spellChecker_, word.toAscii().constData(), -1 ) );
+        const AspellWordList * suggestions( aspell_speller_suggest( spellChecker_, word.toLatin1().constData(), -1 ) );
         AspellStringEnumeration * elements( aspell_word_list_elements( suggestions ) );
 
         const char * suggestion( 0 );
@@ -362,7 +362,7 @@ namespace SPELLCHECK
 
         filters_.insert( NO_FILTER );
         QString command( XmlOptions::get().raw("ASPELL") + " dump modes" );
-        FILE *tmp = popen( command.toAscii().constData(), "r" );
+        FILE *tmp = popen( command.toLatin1().constData(), "r" );
         static const int linesize( 128 );
         char buf[linesize];
         while( fgets( buf, linesize, tmp ) )
@@ -425,7 +425,7 @@ namespace SPELLCHECK
             position_ = 0;
             offset_ = 0;
             aspell_document_checker_reset( documentChecker_ );
-            aspell_document_checker_process(documentChecker_, text_.mid( begin_, end_-begin_).toAscii().constData(), -1);
+            aspell_document_checker_process(documentChecker_, text_.mid( begin_, end_-begin_).toLatin1().constData(), -1);
             Debug::Throw( "SpellInterface::_reset - assigning text, done.\n" );
         }
 
