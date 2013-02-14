@@ -15,10 +15,19 @@ IF( UNIX  AND NOT APPLE )
 ENDIF()
 
 ########### Qt4 configuration #########
-FIND_PACKAGE( Qt4 REQUIRED )
+IF( USE_QT5 )
 
-INCLUDE( ${QT_USE_FILE} )
-ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  SET( CMAKE_AUTOMOC ON )
+  SET( CMAKE_INCLUDE_CURRENT_DIR ON )
+  FIND_PACKAGE( Qt5Widgets )
+
+ELSE()
+
+  FIND_PACKAGE( Qt4 REQUIRED )
+  INCLUDE( ${QT_USE_FILE} )
+  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+
+ENDIF()
 
 ########### links #########
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
@@ -43,7 +52,11 @@ SET( base_transparency_HEADERS
   TransparentWidget.h
 )
 
-QT4_WRAP_CPP( base_transparency_HEADERS_MOC ${base_transparency_HEADERS} )
+IF( NOT USE_QT5 )
+
+  QT4_WRAP_CPP( base_transparency_HEADERS_MOC ${base_transparency_HEADERS} )
+
+ENDIF()
 
 IF( ENABLE_SHARED )
 
@@ -64,5 +77,11 @@ ELSE()
   )
 
   TARGET_LINK_LIBRARIES( base-transparency ${XRENDER_LIBRARIES} ${QT_LIBRARIES} base-qt)
+
+ENDIF()
+
+IF( USE_QT5 )
+
+  QT5_USE_MODULES( base-transparency Widgets Network )
 
 ENDIF()
