@@ -30,7 +30,7 @@
 #include <QFileInfo>
 #include <QStringList>
 
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
 
@@ -203,7 +203,7 @@ bool File::isHidden( void ) const
 //_____________________________________________________________________
 void File::setHidden( void ) const
 {
-    #if defined(Q_WS_WIN)
+    #if defined(Q_OS_WIN)
     if( !isEmpty() ) SetFileAttributes( toAscii(), FILE_ATTRIBUTE_HIDDEN );
     #endif
 }

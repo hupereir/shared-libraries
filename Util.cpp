@@ -33,11 +33,6 @@
 
 #include <unistd.h>
 
-/*! \brief
-static 'long' QString size
-for c_like system QString access
-*/
-
 static const int LONGSTR = 256;
 
 //______________________________________________________________________
@@ -62,7 +57,7 @@ QString Util::env( const QString& val, const QString& default_value )
 QString Util::user( void )
 {
     Debug::Throw( "Util::user.\n" );
-    #if defined(Q_WS_WIN)
+    #if defined(Q_OS_WIN)
     return env( "USERNAME", "unknown user" );
     #else
     // first try look for USERNAME environment variable
