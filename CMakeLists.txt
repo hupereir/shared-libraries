@@ -9,8 +9,6 @@ SET( BASE_SVG_SOVERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR} )
 ########### Qt4 configuration #########
 IF( USE_QT5 )
 
-  SET( CMAKE_AUTOMOC ON )
-  SET( CMAKE_INCLUDE_CURRENT_DIR ON )
   FIND_PACKAGE( Qt5Widgets )
 
 ELSE()
@@ -50,6 +48,7 @@ SET( base_svg_RESOURCES baseSvg.qrc)
 
 IF( USE_QT5 )
 
+  QT5_WRAP_CPP( base_svg_HEADERS_MOC ${base_svg_HEADERS} )
   QT5_ADD_RESOURCES( base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
 
 ELSE()
