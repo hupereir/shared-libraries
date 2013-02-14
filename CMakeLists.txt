@@ -7,11 +7,20 @@ SET( BASE_QT_VERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR}.${BASE_QT
 SET( BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR} )
 
 ########### Qt4 configuration #########
-FIND_PACKAGE( Qt4 REQUIRED )
-SET( QT_USE_QTXML TRUE )
+IF( USE_QT5 )
 
-INCLUDE( ${QT_USE_FILE} )
-ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  SET( CMAKE_AUTOMOC ON )
+  SET( CMAKE_INCLUDE_CURRENT_DIR ON )
+  FIND_PACKAGE( Qt5Widgets )
+
+ELSE()
+
+  FIND_PACKAGE( Qt4 REQUIRED )
+  SET( QT_USE_QTXML TRUE )
+  INCLUDE( ${QT_USE_FILE} )
+  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+
+ENDIF()
 
 ########### includes ###############
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
@@ -63,6 +72,7 @@ SET( base_qt_SOURCES
   CustomDialog.cpp
   CustomPixmap.cpp
   CustomSlider.cpp
+  CustomTextDocument.cpp
   CustomToolBar.cpp
   CustomToolButton.cpp
   DebugMenu.cpp
@@ -132,6 +142,7 @@ SET( base_qt_SOURCES
   TreeItemBase.cpp
   TreeView.cpp
   TreeViewConfiguration.cpp
+  TreeViewItemDelegate.cpp
   UserSelectionFrame.cpp
   ValidFileThread.cpp
   WarningDialog.cpp
@@ -234,8 +245,17 @@ SET( base_qt_HEADERS
 
 SET( base_qt_RESOURCES basePixmaps.qrc)
 
-QT4_WRAP_CPP( base_qt_HEADERS_MOC ${base_qt_HEADERS} )
-QT4_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
+IF( USE_QT5 )
+
+  QT5_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
+
+ELSE()
+
+  QT4_WRAP_CPP( base_qt_HEADERS_MOC ${base_qt_HEADERS} )
+  QT4_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
+
+ENDIF()
+
 
 IF( ENABLE_SHARED )
 
@@ -257,5 +277,11 @@ ELSE()
     ${base_qt_RESOURCES_RCC}
   )
   TARGET_LINK_LIBRARIES( base-qt ${QT_LIBRARIES} base )
+
+ENDIF()
+
+IF( USE_QT5 )
+
+  QT5_USE_MODULES( base-qt Widgets Xml PrintSupport )
 
 ENDIF()

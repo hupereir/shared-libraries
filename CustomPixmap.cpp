@@ -95,25 +95,6 @@ CustomPixmap CustomPixmap::rotate( const CustomPixmap::Rotation& rotation )
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::tint( const QColor& base_color, const double& intensity ) const
-{
-    if( isNull() ) return *this;
-
-    QPixmap out( *this );
-    QPainter painter( &out );
-    QColor color( base_color );
-    color.setAlphaF( intensity );
-
-    painter.setPen( Qt::NoPen );
-    painter.setBrush( color );
-    painter.drawRect( out.rect() );
-    painter.end();
-
-    out.setAlphaChannel( alphaChannel() );
-    return out;
-}
-
-//_________________________________________________
 CustomPixmap CustomPixmap::transparent( const double& intensity ) const
 {
     if( isNull() ) return *this;
@@ -183,36 +164,6 @@ CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::disabled( void ) const
-{
-
-    Debug::Throw( "CustomPixmap::disabled.\n" );
-    QImage image( toImage() );
-
-    // retrieve dimensions
-    int width( image.width() );
-    int height( image.height() );
-
-    QColor mergedColor;
-    for( int x = 0; x < width; x++ )
-    {
-        for( int y = 0; y < height; y++ )
-        {
-            QColor color( image.pixel( x, y ) );
-            int gray( 128 + qGray( color.rgb() )/2 );
-            mergedColor.setRgb( gray, gray, gray );
-
-            image.setPixel( x, y, mergedColor.rgb() );
-        }
-    }
-
-    CustomPixmap out( image );
-    out.setAlphaChannel( alphaChannel() );
-    return out;
-
-}
-
-//_________________________________________________
 CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 {
 
@@ -222,7 +173,6 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 
     // apply highlight
     QPixmap out( *this );
-    QPixmap alphaChannel( out.alphaChannel() );
     QPainter painter( &out );
 
     painter.setRenderHints(QPainter::SmoothPixmapTransform);
@@ -235,7 +185,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
     painter.drawRect( out.rect() );
     painter.end();
 
-    out.setAlphaChannel( alphaChannel );
+    out.setAlphaChannel( alphaChannel() );
     return out;
 
 }

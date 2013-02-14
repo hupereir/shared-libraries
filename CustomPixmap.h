@@ -35,6 +35,12 @@ class CustomPixmap: public QPixmap, public Counter
     public:
 
     //! constructor
+    CustomPixmap( const QSize& size ):
+        QPixmap( size ),
+        Counter( "CustomPixmap" )
+    {}
+
+    //! constructor
     CustomPixmap( const QPixmap& pixmap ):
         QPixmap( pixmap ),
         Counter( "CustomPixmap" )
@@ -71,9 +77,6 @@ class CustomPixmap: public QPixmap, public Counter
     //! rotation
     CustomPixmap rotate( const Rotation& value );
 
-    //! returns a tinted pixmap
-    virtual CustomPixmap tint( const QColor&, const double& ) const;
-
     //! returns a transparent pixmap
     virtual CustomPixmap transparent( const double& ) const;
 
@@ -94,9 +97,6 @@ class CustomPixmap: public QPixmap, public Counter
     virtual CustomPixmap empty(
         const QSize& size,
         const QColor& color = Qt::transparent ) const;
-
-    //! return greyed (inactive) pixmap, build from the current
-    virtual CustomPixmap disabled( void ) const;
 
     //! return highlighted pixmap
     virtual CustomPixmap highlighted( qreal opacity ) const;

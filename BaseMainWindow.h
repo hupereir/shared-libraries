@@ -51,7 +51,7 @@ class BaseMainWindow: public QMainWindow
     public:
 
     //! constructor
-    BaseMainWindow( QWidget *parent, Qt::WFlags wflags = 0);
+    BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags = 0);
 
     //! destructor
     virtual ~BaseMainWindow( void )

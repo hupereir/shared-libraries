@@ -52,7 +52,7 @@ class BaseDialog: public QDialog
     };
 
     //! constructor
-    BaseDialog( QWidget *parent = 0, Qt::WFlags flags = 0);
+    BaseDialog( QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
     //! destructor
     virtual ~BaseDialog( void );

@@ -28,7 +28,7 @@
 
 #include <QAction>
 #include <QList>
-#include <QWeakPointer>
+#include <QPointer>
 
 // implements context menu, installable on widgets
 class ContextMenu: public BaseContextMenu
@@ -58,7 +58,7 @@ class ContextMenu: public BaseContextMenu
 
     private:
 
-    typedef QWeakPointer<QAction> ActionPointer;
+    typedef QPointer<QAction> ActionPointer;
     typedef QList<ActionPointer> ActionList;
     ActionList hiddenActions_;
 

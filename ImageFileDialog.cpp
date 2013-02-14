@@ -34,6 +34,7 @@
 #include <QImage>
 #include <QLayout>
 #include <QLabel>
+#include <QMimeData>
 #include <QPushButton>
 #include <QSplitter>
 

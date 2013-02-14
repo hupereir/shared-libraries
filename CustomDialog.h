@@ -53,7 +53,7 @@ class CustomDialog: public BaseDialog, public Counter
     CustomDialog(
         QWidget* = 0x0,
         Flags = Flags( OkButton | CancelButton ),
-        Qt::WFlags = 0);
+        Qt::WindowFlags = 0);
 
     //! destructor
     virtual ~CustomDialog( void )

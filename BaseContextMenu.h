@@ -26,7 +26,7 @@
 
 #include "Counter.h"
 
-#include <QWeakPointer>
+#include <QPointer>
 #include <QMenu>
 
 // implements context menu, installable on widgets
@@ -78,7 +78,7 @@ class BaseContextMenu: public QMenu, public Counter
     private:
 
     //! separator
-    QWeakPointer<QAction> separator_;
+    QPointer<QAction> separator_;
 
     //! ignore disabled actions
     bool hideDisabledActions_;

@@ -49,7 +49,7 @@ class SelectLineDialog: public BaseDialog, public Counter
   public:
 
   //! constructor
-  SelectLineDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
+  SelectLineDialog( QWidget* parent = 0, Qt::WindowFlags WindowFlags = 0 );
 
   //! retrieve editor
   AnimatedLineEditor& editor( void ) const

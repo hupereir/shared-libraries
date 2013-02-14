@@ -28,7 +28,7 @@
 #include <QFrame>
 
 //____________________________________________________________
-CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WFlags wflags):
+CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags):
     BaseDialog( parent, wflags ),
     Counter( "CustomDialog" ),
     separator_( 0 ),

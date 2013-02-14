@@ -41,7 +41,7 @@
 
 
 //_______________________________________________________
-SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WFlags flags ):
+SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
     BaseDialog( parent, flags ),
     Counter( "SelectLineDialog" )
 {

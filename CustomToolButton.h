@@ -28,7 +28,6 @@
 #include "CustomPixmap.h"
 #include "Debug.h"
 
-#include <QIconSet>
 #include <QLabel>
 #include <QToolButton>
 

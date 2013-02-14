@@ -38,7 +38,7 @@ QOrderedSet<QString>& BaseFindDialog::_searchedStrings( void )
 }
 
 //________________________________________________________________________
-BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WFlags flags ):
+BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     BaseDialog( parent, flags ),
     Counter( "BaseFindDialog" )
 {

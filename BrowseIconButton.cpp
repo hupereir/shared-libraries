@@ -31,6 +31,7 @@
 #include "XmlOptions.h"
 #include "QtUtil.h"
 
+#include <QMimeData>
 #include <QUrl>
 
 //_____________________________________________

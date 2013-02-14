@@ -41,8 +41,8 @@
 #include <QWindowStateChangeEvent>
 
 //____________________________________________________________
-BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WFlags wflags):
-    QMainWindow( parent, wflags ),
+BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
+    QMainWindow( parent, WindowFlags ),
     monitor_( this ),
     wasMaximized_( false )
 {
@@ -324,21 +324,21 @@ bool BaseMainWindow::event( QEvent* event )
 bool BaseMainWindow::_hasMenuBar( void ) const
 {
     Debug::Throw( "BaseMainWindow::_hasMenuBar.\n" );
-    return (bool) qFindChild<QMenuBar*>( this );
+    return (bool) findChild<QMenuBar*>();
 }
 
 //________________________________________________________________
 bool BaseMainWindow::_hasStatusBar( void ) const
 {
     Debug::Throw( "BaseMainWindow::_hasStatusBar.\n" );
-    return (bool) qFindChild<QStatusBar*>( this );
+    return (bool) findChild<QStatusBar*>();
 }
 
 //________________________________________________________________
 bool BaseMainWindow::_hasToolBars( void ) const
 {
     Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
-    QList<QToolBar*> toolbars( qFindChildren<QToolBar*>( this ) );
+    QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
     foreach( QToolBar* toolbar, toolbars )
     {
 
@@ -361,7 +361,7 @@ bool BaseMainWindow::_hasToolBars( void ) const
 
 //________________________________________________________________
 bool BaseMainWindow::_hasPanels( void ) const
-{ return !qFindChildren<DockWidget*>( this ).isEmpty(); }
+{ return (bool) findChild<DockWidget*>(); }
 
 //____________________________________________________________
 void BaseMainWindow::_updateConfiguration( void )
@@ -426,7 +426,7 @@ void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 void BaseMainWindow::_lockToolBars( bool value )
 {
     Debug::Throw( "BaseMainWindow::_lockToolBars.\n" );
-    foreach( QToolBar* toolbar, qFindChildren<QToolBar*>( this ) )
+    foreach( QToolBar* toolbar, findChildren<QToolBar*>() )
     {
 
         // skip if parent is not this
@@ -449,7 +449,7 @@ void BaseMainWindow::_lockToolBars( bool value )
 void BaseMainWindow::_lockPanels( bool value )
 {
     Debug::Throw( "BaseMainWindow::_lockPanels.\n" );
-    foreach( DockWidget* panel, qFindChildren<DockWidget*>( this ) )
+    foreach( DockWidget* panel, findChildren<DockWidget*>() )
     { panel->setLocked( value ); }
 
     if( hasOptionName() ) XmlOptions::get().set<bool>( lockPanelsOptionName_, value );

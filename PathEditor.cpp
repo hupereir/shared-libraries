@@ -35,9 +35,11 @@
 #include <QTimer>
 
 #include <QApplication>
+#include <QDrag>
 #include <QLayout>
 #include <QListView>
 #include <QMenu>
+#include <QMimeData>
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOption>

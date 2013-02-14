@@ -32,7 +32,7 @@
 #include <QWindowStateChangeEvent>
 
 //__________________________________________________
-BaseDialog::BaseDialog( QWidget* parent, Qt::WFlags flags ):
+BaseDialog::BaseDialog( QWidget* parent, Qt::WindowFlags flags ):
     QDialog( parent, flags ),
     monitor_( this ),
     wasMaximized_( false )

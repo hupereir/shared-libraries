@@ -44,7 +44,9 @@
 
 #include <QApplication>
 #include <QAbstractTextDocumentLayout>
+#include <QDrag>
 #include <QMenu>
+#include <QMimeData>
 #include <QPainter>
 #include <QProgressDialog>
 #include <QRegExp>
@@ -1081,7 +1083,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
 
         QMimeData *data = new QMimeData();
         data->setText( text );
-        data->setData( BoxSelection::mimeType, text.toAscii() );
+        data->setData( BoxSelection::mimeType, text.toLatin1() );
         drag->setMimeData( data );
         drag->start(Qt::CopyAction);
 

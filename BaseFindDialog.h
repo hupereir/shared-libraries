@@ -46,7 +46,7 @@ class BaseFindDialog: public BaseDialog, public Counter
     public:
 
     //! constructor
-    BaseFindDialog( QWidget* parent = 0, Qt::WFlags wflags = 0 );
+    BaseFindDialog( QWidget* parent = 0, Qt::WindowFlags WindowFlags = 0 );
 
     //! retrieve editor
     virtual CustomComboBox& editor( void ) const

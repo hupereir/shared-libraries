@@ -29,7 +29,6 @@
 #include "Debug.h"
 
 
-#include <QIconSet>
 #include <QString>
 
 //! customized tool button to display tooltip in a dedicated label
