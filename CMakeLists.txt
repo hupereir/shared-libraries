@@ -9,7 +9,7 @@ SET( BASE_SVG_SOVERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR} )
 ########### Qt4 configuration #########
 IF( USE_QT5 )
 
-  FIND_PACKAGE( Qt5Widgets )
+  FIND_PACKAGE( Qt5Widgets REQUIRED )
 
 ELSE()
 
