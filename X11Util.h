@@ -97,11 +97,15 @@ class X11Util
     //! print window state
     void printWindowState( const QWidget& );
 
+    #if defined(Q_WS_X11)
+
     //! display
-    Qt::HANDLE display( void ) const;
+    Display* display( void ) const;
 
     //! visual
-    Qt::HANDLE appVisual( void ) const;
+    Visual* appVisual( void ) const;
+
+    #endif
 
     //! application root window
     WId appRootWindow( void ) const;
@@ -180,9 +184,6 @@ class X11Util
     SupportedAtomMap supportedAtoms_;
 
     #if defined(Q_WS_X11)
-
-    //! display
-    Display* _display( void ) const;
 
     //! display
     Display* display_;

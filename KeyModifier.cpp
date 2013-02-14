@@ -65,7 +65,7 @@ KeyModifier::State KeyModifier::state( void ) const
   }
 
   // get matching key code
-  Display* display = (Display*) X11Util::get().display();
+  Display* display = X11Util::get().display();
   KeyCode key_code = XKeysymToKeycode( display, key_symbol );
 
   // convert key code to bit mask
