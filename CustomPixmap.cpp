@@ -43,7 +43,7 @@ CustomPixmap::CustomPixmap( const QString& file ):
     under windows, if pixmap is null, and file is an executable of a link
     try load the icon using FileIncoProvider
     */
-    #if defined(Q_WS_WIN)
+    #if defined(Q_OS_WIN)
     if( !isNull() ) return;
     QFileInfo info( file );
     if( info.isExecutable() || info.isSymLink() )

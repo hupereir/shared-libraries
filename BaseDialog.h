@@ -26,6 +26,7 @@
 
 
 #include "WidgetMonitor.h"
+
 #include <QDialog>
 
 //! base dialog

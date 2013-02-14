@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    X11Util.h
-\brief   some X11 specific utilities
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include <QWidget>
 #include <QHash>
 #include <QMap>

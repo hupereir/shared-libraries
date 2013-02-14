@@ -36,8 +36,6 @@
 
 #include "X11Util.h"
 
-
-
 //________________________________________________________
 TabWidget::TabWidget( QTabWidget* parent ):
     QWidget(),

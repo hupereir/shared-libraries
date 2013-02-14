@@ -21,18 +21,10 @@
 *
 *******************************************************************************/
 
-/*!
-  \file    KeyModifier.cpp
-  \brief   key state of given modifier
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
-*/
-
 #include "Debug.h"
 #include "KeyModifier.h"
 
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
 
@@ -60,7 +52,7 @@ KeyModifier::State KeyModifier::state( void ) const
 
   Debug::Throw( "KeyModifier::state.\n" );
 
-  #if defined(Q_WS_WIN)
+  #if defined(Q_OS_WIN)
   if( key_ == Qt::Key_CapsLock ) return ( GetKeyState(VK_CAPITAL) ) ? ON:OFF;
   else if( key_ == Qt::Key_NumLock ) return ( GetKeyState(VK_NUMLOCK) ) ? ON:OFF;
   else return UNKNOWN;

@@ -22,20 +22,10 @@
 *
 *******************************************************************************/
 
-/*!
-\file    X11Util.h
-\brief   some X11 specific utilities
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "Debug.h"
 #include "X11Util.h"
 
 #include <QDesktopWidget>
-
-
 
 //_______________________
 int debug_level = 1;
