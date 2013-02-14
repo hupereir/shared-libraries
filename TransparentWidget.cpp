@@ -21,11 +21,12 @@
 *
 *******************************************************************************/
 
+#include "TransparentWidget.h"
+
 #include "BackgroundPixmap.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "Singleton.h"
-#include "TransparentWidget.h"
 #include "WinUtil.h"
 #include "XmlOptions.h"
 #include "X11Util.h"
@@ -74,7 +75,7 @@ namespace TRANSPARENCY
         // store
         opacity_ = value;
 
-        #if defined(Q_WS_WIN)
+        #if defined(Q_OS_WIN)
 
         // on windows, update opacity only if CompositeEngine is disabled
         // otherwise, it is handled via WinUtil
@@ -161,7 +162,7 @@ namespace TRANSPARENCY
     {
         setBackgroundChanged( true );
 
-        #if defined(Q_WS_WIN)
+        #if defined(Q_OS_WIN)
         if( CompositeEngine::get().isEnabled() )
         {
             widgetPixmap_ = QPixmap( size() );
@@ -208,7 +209,7 @@ namespace TRANSPARENCY
 
         Debug::Throw( "TransparentWidget::paintEvent.\n" );
 
-        #if defined(Q_WS_WIN)
+        #if defined(Q_OS_WIN)
         // handle painting on windows with compositing enabled
         // using a pixmap buffer, to allow true transparency
         if( CompositeEngine::get().isEnabled() )
@@ -309,7 +310,7 @@ namespace TRANSPARENCY
         if( CompositeEngine::get().setEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_COMPOSITE" ) ) )
         { setWindowOpacity( _opacity() ); }
 
-        #if defined(Q_WS_WIN)
+        #if defined(Q_OS_WIN)
         // create widget pixmap when compositing is enabled
         if( CompositeEngine::get().isEnabled() ) {
             widgetPixmap_ = QPixmap( size() );

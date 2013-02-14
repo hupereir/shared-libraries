@@ -23,14 +23,6 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-/*!
-\file    CompositeEngine.h
-\brief   initialize compositing, if available
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #if defined(Q_WS_X11)
 #include <X11/Xlib.h>
 #endif

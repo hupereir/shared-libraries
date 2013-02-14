@@ -23,14 +23,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    TransparentWidget.h
-\brief   transparent widget
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "Counter.h"
 
 #include <QAction>
@@ -297,7 +289,7 @@ namespace TRANSPARENCY
         //! tint color
         QColor highlightColor_;
 
-        #if defined(Q_WS_WIN)
+        #if defined(Q_OS_WIN)
         //! widget pixmap
         /*! it is used as widget storage when using full translucency */
         QPixmap widgetPixmap_;

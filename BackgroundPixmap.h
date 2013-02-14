@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    BackgroundPixmap.h
-   \brief   stores/manipulates the X11 background Pixmap
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include <QObject>
 #include <QPixmap>
 

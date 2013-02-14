@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    BackgroundPixmap.cpp
-\brief   stores/manipulates the X11 background Pixmap
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "Debug.h"
 
 #include <QApplication>

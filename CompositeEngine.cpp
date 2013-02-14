@@ -20,17 +20,8 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-/*!
-\file    CompositeEngine.h
-\brief   initialize compositing, if available
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
-#include "Debug.h"
-
 #include "BackgroundPixmap.h"
+#include "Debug.h"
 #include "XmlOptions.h"
 
 #include "CompositeEngine.h"
@@ -124,7 +115,7 @@ namespace TRANSPARENCY
         }
         #endif
 
-        #if defined(Q_WS_WIN)
+        #if defined(Q_OS_WIN)
         // on windows,
         // composition mode is available by default
         // TODO: check version to make sure this is true
@@ -161,7 +152,7 @@ namespace TRANSPARENCY
         }
         #endif
 
-        #if defined(Q_WS_WIN)
+        #if defined(Q_OS_WIN)
         // on windows,
         // composition mode is available by default
         // TODO: check version to make sure this is true
