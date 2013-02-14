@@ -204,7 +204,7 @@ bool File::isHidden( void ) const
 void File::setHidden( void ) const
 {
     #if defined(Q_OS_WIN)
-    if( !isEmpty() ) SetFileAttributes( toAscii(), FILE_ATTRIBUTE_HIDDEN );
+    if( !isEmpty() ) SetFileAttributes( toLatin1(), FILE_ATTRIBUTE_HIDDEN );
     #endif
 }
 
