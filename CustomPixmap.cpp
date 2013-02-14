@@ -171,21 +171,34 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
     if( opacity <= 0 ) return *this;
     opacity = qMin( opacity, 1.0 );
 
+    // compute mask
+    QPixmap mask( *this );
+    {
+        QPainter painter( &mask );
+
+        painter.setRenderHints(QPainter::SmoothPixmapTransform);
+        painter.setPen( Qt::NoPen );
+
+        QColor color( Qt::white );
+        color.setAlphaF( opacity );
+        painter.setBrush( color );
+
+        painter.setCompositionMode( QPainter::CompositionMode_SourceIn );
+
+        painter.drawRect( mask.rect() );
+        painter.end();
+    }
+
+    if( opacity == 1.0 ) return mask;
+
     // apply highlight
     QPixmap out( *this );
-    QPainter painter( &out );
+    {
+        QPainter painter( &out );
+        painter.drawPixmap( QPoint(0,0), mask );
+        painter.end();
+    }
 
-    painter.setRenderHints(QPainter::SmoothPixmapTransform);
-    painter.setPen( Qt::NoPen );
-
-    QColor color( Qt::white );
-    color.setAlphaF( opacity );
-    painter.setBrush( color );
-
-    painter.drawRect( out.rect() );
-    painter.end();
-
-    out.setAlphaChannel( alphaChannel() );
     return out;
 
 }
