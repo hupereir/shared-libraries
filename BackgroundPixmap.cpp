@@ -27,8 +27,9 @@
 #include <QDesktopWidget>
 #include <QPainter>
 
+#include "X11Util.h"
+
 #if defined(Q_WS_X11)
-#include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
@@ -191,8 +192,8 @@ namespace TRANSPARENCY
             return;
         }
 
-        // load display
-        Display* display( QX11Info::display() );
+        // display
+        Display* display = (Display*) X11Util::get().display();
 
         int format( 0 );
         unsigned long length( 0 ), after( 0 );
@@ -262,7 +263,7 @@ namespace TRANSPARENCY
         Debug::Throw( "BackgroundPixmap::_loadDesktopWindow.\n" );
 
         // get the display
-        Display* display( QX11Info::display() );
+        Display* display = (Display*) X11Util::get().display();
 
         // if desktop was already loaded and isn't root remove XEvent forwarding
         if( desktop_ ) XSelectInput( display, desktop_, 0 );
@@ -330,7 +331,7 @@ namespace TRANSPARENCY
         int blue_shift(0);
         if( !(image->red_mask && image->green_mask && image->blue_mask) )
         {
-            Visual *visual = (Visual*) QX11Info::appVisual();
+            Visual *visual = (Visual*) X11Util::get().appVisual();
 
             red_shift = _lowestBit( visual->red_mask);
             green_shift = _lowestBit( visual->green_mask);

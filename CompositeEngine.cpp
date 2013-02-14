@@ -24,10 +24,10 @@
 #include "Debug.h"
 #include "XmlOptions.h"
 
+#include "X11Util.h"
 #include "CompositeEngine.h"
 
 #if defined(Q_WS_X11)
-#include <QX11Info>
 #include <X11/extensions/Xrender.h>
 #endif
 
@@ -142,7 +142,7 @@ namespace TRANSPARENCY
         Debug::Throw( "CompositeEngine::_compositingEnabled\n" );
 
         #if defined(Q_WS_X11)
-        if( QX11Info::display()) return _compositingEnabled( QX11Info::display() );
+        if( X11Util::get().display()) return _compositingEnabled( (Display*) X11Util::get().display() );
         else {
             Debug::Throw( "CompositeEngine::_compositingEnabled - creating dummy display\n" );
             Display* display = XOpenDisplay( 0 );
