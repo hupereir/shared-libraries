@@ -9,8 +9,6 @@ SET( BASE_HELP_SOVERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR} )
 ########### Qt4 configuration #########
 IF( USE_QT5 )
 
-  SET( CMAKE_AUTOMOC ON )
-  SET( CMAKE_INCLUDE_CURRENT_DIR ON )
   FIND_PACKAGE( Qt5Widgets )
 
 ELSE()
@@ -46,7 +44,11 @@ SET( base_help_HEADERS
   HelpModel.h
   )
 
-IF( NOT USE_QT5 )
+IF( USE_QT5 )
+
+  QT5_WRAP_CPP( base_help_HEADERS_MOC ${base_help_HEADERS} )
+
+ELSE()
 
   QT4_WRAP_CPP( base_help_HEADERS_MOC ${base_help_HEADERS} )
 
