@@ -170,9 +170,9 @@ namespace TRANSPARENCY
     {
         Debug::Throw( "CompositeEngine::_compositingEnabled (display)\n" );
 
-        char atom_name[ 100 ];
-        sprintf( atom_name, "_NET_WM_CM_S%d", DefaultScreen( display ));
-        Atom atom( XInternAtom( display, atom_name, false ) );
+        char atomName[ 100 ];
+        sprintf( atomName, "_NET_WM_CM_S%d", DefaultScreen( display ));
+        Atom atom( XInternAtom( display, atomName, false ) );
         return XGetSelectionOwner( display, atom ) != None;
 
     }
