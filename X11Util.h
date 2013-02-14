@@ -182,6 +182,9 @@ class X11Util
     #if defined(Q_WS_X11)
 
     //! display
+    Display* _display( void ) const;
+
+    //! display
     Display* display_;
 
     //! atom map

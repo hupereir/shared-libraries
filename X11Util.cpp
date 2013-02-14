@@ -26,6 +26,7 @@
 #include "X11Util.h"
 
 #include <QDesktopWidget>
+#include <QX11Info>
 
 //_______________________
 int debugLevel = 1;
@@ -49,8 +50,7 @@ X11Util::X11Util( void )
     Debug::Throw( "X11Util::X11Util" );
 
     #if defined(Q_WS_X11)
-    // store display
-    display_ = XOpenDisplay(0);
+    display_ = 0;
     #endif
 
     _initializeAtomNames();
@@ -86,7 +86,7 @@ bool X11Util::isSupported( const Atoms& atom )
 
         // get window property
         const bool success( XGetWindowProperty(
-            display_, appRootWindow(),
+            _display(), appRootWindow(),
             net_supported, 0l, length,
             false, XA_ATOM, &type,
             &format, &count, &after, &data) == Success );
@@ -121,7 +121,7 @@ bool X11Util::isSupported( const Atoms& atom )
 
         if( first && Debug::level() >= debugLevel )
         {
-            char* data = XGetAtomName( display_, (Atom) states[i]);
+            char* data = XGetAtomName( _display(), (Atom) states[i]);
             Debug::Throw(debugLevel) << "X11Util::isSupported - supported: " << data << endl;
             if ( data ) XFree( data );
         }
@@ -174,7 +174,7 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 
         // get window property
         bool success( XGetWindowProperty(
-            display_, widget.winId(), net_wm_state,
+            _display(), widget.winId(), net_wm_state,
             0L, length, false,
             XA_ATOM, &type,
             &format, &count, &after,
@@ -222,7 +222,7 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 
         if( Debug::level() >= debugLevel )
         {
-            char* data = XGetAtomName( display_, (Atom) states[i] );
+            char* data = XGetAtomName( _display(), (Atom) states[i] );
             Debug::Throw(debugLevel) << "X11Util::hasProperty - found: " << data << endl;
             if ( data ) XFree( data );
         }
@@ -249,7 +249,7 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 Qt::HANDLE X11Util::display( void ) const
 {
     #if defined(Q_WS_X11)
-    return (Qt::HANDLE) display_;
+    return (Qt::HANDLE) _display();
     #else
     return 0;
     #endif
@@ -260,7 +260,7 @@ Qt::HANDLE X11Util::display( void ) const
 Qt::HANDLE X11Util::appVisual( void ) const
 {
     #if defined(Q_WS_X11)
-    return (Qt::HANDLE) DefaultVisual( display_, DefaultScreen( display_ ) );
+    return (Qt::HANDLE) DefaultVisual( _display(), DefaultScreen( _display() ) );
     #else
     return 0;
     #endif
@@ -270,7 +270,7 @@ Qt::HANDLE X11Util::appVisual( void ) const
 WId X11Util::appRootWindow( void ) const
 {
     #if defined(Q_WS_X11)
-    return DefaultRootWindow( display_ );
+    return DefaultRootWindow( _display() );
     #else
     return 0;
     #endif
@@ -294,7 +294,7 @@ unsigned long X11Util::cardinal( const WId& wid, const Atoms& atom )
 
     unsigned long n, left;
     XGetWindowProperty(
-        display_, wid, searched,
+        _display(), wid, searched,
         0, 1L, false,
         XA_CARDINAL, &type,
         &format, &n, &left,
@@ -335,7 +335,7 @@ bool X11Util::moveResizeWidget(
     XEvent event;
     event.xclient.type = ClientMessage;
     event.xclient.message_type = net_wm_moveresize;
-    event.xclient.display = display_;
+    event.xclient.display = _display();
     event.xclient.window = widget.winId();
     event.xclient.format = 32;
     event.xclient.data.l[0] = position.x();
@@ -343,8 +343,8 @@ bool X11Util::moveResizeWidget(
     event.xclient.data.l[2] = direction;
     event.xclient.data.l[3] = button;
     event.xclient.data.l[4] = 0;
-    XUngrabPointer( display_, CurrentTime );
-    XSendEvent( display_, appRootWindow(), false, netwm_sendevent_mask, &event);
+    XUngrabPointer( _display(), CurrentTime );
+    XSendEvent( _display(), appRootWindow(), false, netwm_sendevent_mask, &event);
     return true;
 
     #else
@@ -357,7 +357,7 @@ bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const un
 {
     #if defined(Q_WS_X11)
     Atom searched( findAtom( atom ) );
-    XChangeProperty( display_, widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, data, size );
+    XChangeProperty( _display(), widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, data, size );
 
     return true;
     #endif
@@ -393,7 +393,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
 
         // get window property
         bool success( XGetWindowProperty(
-            display_, widget.winId(), net_wm_state,
+            _display(), widget.winId(), net_wm_state,
             0L, length, false,
             XA_ATOM, &type,
             &format, &count, &after,
@@ -424,7 +424,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
 
         if( Debug::level() >= debugLevel )
         {
-            char* data = XGetAtomName( display_, states[i] );
+            char* data = XGetAtomName( _display(), states[i] );
             Debug::Throw(debugLevel) << "X11Util::_changeProperty - found: " << data << endl;
             if ( data ) XFree( data );
         }
@@ -446,7 +446,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
     }
 
     if( state && !found ) atoms << searched;
-    XChangeProperty( display_, widget.winId(), net_wm_state, XA_ATOM, 32, PropModeReplace, reinterpret_cast<const unsigned char*>(atoms.constData()), atoms.size() );
+    XChangeProperty( _display(), widget.winId(), net_wm_state, XA_ATOM, 32, PropModeReplace, reinterpret_cast<const unsigned char*>(atoms.constData()), atoms.size() );
 
     if ( data ) XFree( data );
     return true;
@@ -472,7 +472,7 @@ bool X11Util::_requestPropertyChange( const QWidget& widget, const Atoms& atom, 
     XEvent event;
     event.xclient.type = ClientMessage;
     event.xclient.message_type = net_wm_state;
-    event.xclient.display = display_;
+    event.xclient.display = _display();
     event.xclient.window = widget.winId();
     event.xclient.format = 32;
     event.xclient.data.l[0] = (value) ? 1 : 0;
@@ -481,7 +481,7 @@ bool X11Util::_requestPropertyChange( const QWidget& widget, const Atoms& atom, 
     event.xclient.data.l[3] = 0l;
     event.xclient.data.l[4] = 0l;
 
-    XSendEvent( display_, appRootWindow(), false, netwm_sendevent_mask, &event);
+    XSendEvent( _display(), appRootWindow(), false, netwm_sendevent_mask, &event);
 
     return true;
 
@@ -503,7 +503,7 @@ bool X11Util::_changeCardinal( const QWidget& widget, const Atoms& atom, const u
 
     Atom searched( findAtom( atom ) );
 
-    XChangeProperty( display_, widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, reinterpret_cast<const unsigned char *>(&value), 1 );
+    XChangeProperty( _display(), widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, reinterpret_cast<const unsigned char *>(&value), 1 );
     return true;
     #endif
 
@@ -523,19 +523,19 @@ bool X11Util::_requestCardinalChange( const QWidget& widget, const Atoms& atom, 
 
     Atom requested( findAtom( atom ) );
 
-    XEvent e;
-    e.xclient.type = ClientMessage;
-    e.xclient.message_type = requested;
-    e.xclient.display = display_;
-    e.xclient.window = widget.winId();
-    e.xclient.format = 32;
-    e.xclient.data.l[0] = value;
-    e.xclient.data.l[1] = 0l;
-    e.xclient.data.l[2] = 0l;
-    e.xclient.data.l[3] = 0l;
-    e.xclient.data.l[4] = 0l;
+    XEvent event;
+    event.xclient.type = ClientMessage;
+    event.xclient.message_type = requested;
+    event.xclient.display = _display();
+    event.xclient.window = widget.winId();
+    event.xclient.format = 32;
+    event.xclient.data.l[0] = value;
+    event.xclient.data.l[1] = 0l;
+    event.xclient.data.l[2] = 0l;
+    event.xclient.data.l[3] = 0l;
+    event.xclient.data.l[4] = 0l;
 
-    XSendEvent( display_, appRootWindow(), false, netwm_sendevent_mask, &e);
+    XSendEvent( _display(), appRootWindow(), false, netwm_sendevent_mask, &event);
 
     return true;
     #endif
@@ -580,7 +580,7 @@ void X11Util::printWindowState( const QWidget& widget )
 
     // get window property
     if( XGetWindowProperty(
-        display_, widget.winId(), net_wm_state,
+        _display(), widget.winId(), net_wm_state,
         0L, 2048L, false,
         XA_ATOM, &type,
         &format, &count, &unused,
@@ -600,7 +600,7 @@ void X11Util::printWindowState( const QWidget& widget )
     for( unsigned long i = 0; i<count; i++ )
     {
 
-        char* data = XGetAtomName( display_, states[i] );
+        char* data = XGetAtomName( _display(), states[i] );
         Debug::Throw(0) << " " << data;
         if ( data ) XFree( data );
 
@@ -614,6 +614,14 @@ void X11Util::printWindowState( const QWidget& widget )
 #if defined(Q_WS_X11)
 
 //________________________________________________________________________
+Display* X11Util::_display( void ) const
+{
+    // if( !display_ ) const_cast<X11Util*>( this )->display_ = XOpenDisplay(0);
+    if( !display_ ) const_cast<X11Util*>( this )->display_ = QX11Info::display();
+    return display_;
+}
+
+//________________________________________________________________________
 Atom X11Util::findAtom( const Atoms& atom )
 {
 
@@ -624,7 +632,7 @@ Atom X11Util::findAtom( const Atoms& atom )
     if( iter != _atoms().end() ) return iter.value();
 
     // create atom if not found
-    Atom out( XInternAtom( display_, qPrintable( atomNames_[atom] ), false ) );
+    Atom out( XInternAtom( _display(), qPrintable( atomNames_[atom] ), false ) );
     atoms_[atom] = out;
     return out;
 
