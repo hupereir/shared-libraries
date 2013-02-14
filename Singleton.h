@@ -24,7 +24,7 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QObject>
+#include <QObject>
 
 //! a class singleton used to centralize all objects that need static creation
 class Singleton

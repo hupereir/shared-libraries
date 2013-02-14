@@ -42,7 +42,7 @@
 #ifndef QORDEREDSET_H
 #define QORDEREDSET_H
 
-#include <QtCore/QMap>
+#include <QMap>
 
 QT_BEGIN_HEADER
 

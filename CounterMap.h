@@ -24,10 +24,10 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QString>
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
-#include <QtCore/QMap>
+#include <QString>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QMap>
 
 //! thread-safe Object counter storage map
 class CounterMap: public QMap<QString, int>

@@ -26,10 +26,10 @@
 #include "Str.h"
 #include "Debug.h"
 
-#include <QtCore/QDir>
-#include <QtCore/QProcess>
-#include <QtCore/QStringList>
-#include <QtNetwork/QHostInfo>
+#include <QDir>
+#include <QProcess>
+#include <QStringList>
+#include <QHostInfo>
 
 #include <unistd.h>
 

@@ -30,9 +30,9 @@
 #include "QOrderedSet.h"
 #include "TimeStamp.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QStringList>
+#include <QList>
+#include <QMap>
+#include <QStringList>
 
 //! handles previously opened file and tags
 class FileRecord: public Counter

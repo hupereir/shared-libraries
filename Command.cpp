@@ -32,7 +32,7 @@
 #include "Command.h"
 #include "Debug.h"
 
-#include <QtCore/QProcess>
+#include <QProcess>
 
 //____________________________________________
 bool Command::run( const QString& path ) const

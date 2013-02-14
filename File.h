@@ -26,9 +26,9 @@
 
 #include "Counter.h"
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QList>
-#include <QtCore/QString>
+#include <QFileInfo>
+#include <QList>
+#include <QString>
 
 //! file manipulation utility
 class File: public QString

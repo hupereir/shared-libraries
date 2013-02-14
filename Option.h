@@ -27,8 +27,8 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
+#include <QString>
+#include <QTextStream>
 
 //! stream boolean
 QTextStream& operator >> ( QTextStream& in, bool& value );

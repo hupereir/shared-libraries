@@ -24,11 +24,11 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QTextStream>
-#include <QtCore/QIODevice>
-#include <QtCore/QString>
-#include <QtCore/QMutex>
-#include <QtCore/QMutexLocker>
+#include <QTextStream>
+#include <QIODevice>
+#include <QString>
+#include <QMutex>
+#include <QMutexLocker>
 
 class Debug
 {

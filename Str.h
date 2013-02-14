@@ -27,8 +27,8 @@
 #include "Debug.h"
 #include "Counter.h"
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
+#include <QString>
+#include <QStringList>
 
 //! Enhanced stl string
 class Str: public QString, public Counter

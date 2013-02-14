@@ -27,8 +27,8 @@
 
 #include "Counter.h"
 
-#include <QtCore/QProcess>
-#include <QtCore/QObject>
+#include <QProcess>
+#include <QObject>
 
 //! customized process to store stdout/stderr in full/flushed streams
 class CustomProcess: public QProcess, public Counter

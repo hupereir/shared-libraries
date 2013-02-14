@@ -23,7 +23,7 @@
 
 #include "CommandLineParser.h"
 
-#include <QtCore/QTextStream>
+#include <QTextStream>
 #include <algorithm>
 
 //________________________________________________________

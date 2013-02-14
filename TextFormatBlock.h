@@ -26,9 +26,9 @@
 #include "Counter.h"
 #include "TextFormat.h"
 
-#include <QtCore/QList>
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
+#include <QList>
+#include <QString>
+#include <QTextStream>
 
 namespace FORMAT
 {

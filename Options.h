@@ -28,11 +28,11 @@
 #include "Debug.h"
 #include "Option.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QTextStream>
+#include <QList>
+#include <QMap>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
 
 //! Option file parser based on Xml
 class Options: public Counter

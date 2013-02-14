@@ -27,7 +27,7 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 /*! \brief
 parse command line argument.

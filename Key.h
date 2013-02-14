@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QTextStream>
-#include <QtCore/QSet>
+#include <QTextStream>
+#include <QSet>
 #include <algorithm>
 
 //! base namespace

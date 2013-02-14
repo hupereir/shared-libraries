@@ -24,8 +24,8 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QString>
-#include <QtCore/QPair>
+#include <QString>
+#include <QPair>
 
 //! Object counter
 class Counter {

@@ -28,8 +28,8 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtCore/QStringList>
-#include <QtCore/QMap>
+#include <QStringList>
+#include <QMap>
 
 //! parse command line argument.
 class CommandLineParser: public Counter

@@ -24,11 +24,11 @@
 #include "File.h"
 #include "Debug.h"
 
-#include <QtCore/QDateTime>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QStringList>
+#include <QDateTime>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QStringList>
 
 #if defined(Q_WS_WIN)
 #include <windows.h>

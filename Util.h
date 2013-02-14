@@ -24,7 +24,7 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 /*!
 \class   Util

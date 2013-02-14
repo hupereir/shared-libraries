@@ -24,7 +24,7 @@
 #include "FileThread.h"
 #include "Debug.h"
 
-#include <QtCore/QMetaType>
+#include <QMetaType>
 
 //______________________________________________________
 FileThread::FileThread( QObject* parent ):
