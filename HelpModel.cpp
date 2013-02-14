@@ -24,8 +24,8 @@
 
 #include "HelpModel.h"
 
-#include <QtCore/QMimeData>
-#include <QtCore/QStringList>
+#include <QMimeData>
+#include <QStringList>
 
 namespace BASE
 {

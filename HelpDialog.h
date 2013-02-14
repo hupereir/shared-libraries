@@ -29,7 +29,7 @@
 #include "CustomDialog.h"
 #include "HelpModel.h"
 
-#include <QtGui/QPushButton>
+#include <QPushButton>
 
 class AnimatedTextEditor;
 class TreeView;

@@ -34,13 +34,13 @@
 #include "QuestionDialog.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QHeaderView>
-#include <QtGui/QLayout>
-#include <QtGui/QPushButton>
-#include <QtGui/QToolButton>
-#include <QtGui/QShortcut>
-#include <QtCore/QTextStream>
+#include <QAction>
+#include <QHeaderView>
+#include <QLayout>
+#include <QPushButton>
+#include <QToolButton>
+#include <QShortcut>
+#include <QTextStream>
 
 namespace BASE
 {

@@ -28,9 +28,9 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QtXml/QDomElement>
-#include <QtXml/QDomDocument>
-#include <QtCore/QList>
+#include <QDomElement>
+#include <QDomDocument>
+#include <QList>
 
 //! Help system namespace
 namespace BASE

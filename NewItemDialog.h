@@ -27,7 +27,7 @@
 #include "CustomDialog.h"
 #include "AnimatedLineEditor.h"
 
-#include <QtCore/QString>
+#include <QString>
 
 //! Edit/create keyword popup dialog
 class NewItemDialog: public CustomDialog

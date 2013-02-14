@@ -30,11 +30,11 @@
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QAction>
-#include <QtGui/QVBoxLayout>
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
+#include <QApplication>
+#include <QAction>
+#include <QVBoxLayout>
+#include <QFile>
+#include <QTextStream>
 
 namespace BASE
 {

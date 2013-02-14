@@ -29,8 +29,8 @@
 #include "File.h"
 #include "HelpItem.h"
 
-#include <QtCore/QObject>
-#include <QtGui/QAction>
+#include <QObject>
+#include <QAction>
 
 //! help manager class
 namespace BASE
@@ -98,4 +98,3 @@ namespace BASE
 };
 
 #endif
-
