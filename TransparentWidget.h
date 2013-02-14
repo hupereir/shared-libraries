@@ -33,12 +33,12 @@
 
 #include "Counter.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QMoveEvent>
-#include <QtGui/QPaintEvent>
-#include <QtGui/QResizeEvent>
-#include <QtGui/QShowEvent>
-#include <QtGui/QWidget>
+#include <QAction>
+#include <QMoveEvent>
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QShowEvent>
+#include <QWidget>
 
 namespace TRANSPARENCY
 {

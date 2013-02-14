@@ -25,9 +25,9 @@
 
 #include "Counter.h"
 
-#include <QtGui/QColor>
-#include <QtGui/QLabel>
-#include <QtGui/QPaintDevice>
+#include <QColor>
+#include <QLabel>
+#include <QPaintDevice>
 
 namespace TRANSPARENCY
 {

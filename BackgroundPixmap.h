@@ -100,4 +100,3 @@ namespace TRANSPARENCY
 
 };
 #endif
-

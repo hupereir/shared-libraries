@@ -36,9 +36,9 @@
 #include "OptionSpinBox.h"
 #include "TransparencyConfiguration.h"
 
-#include <QtGui/QGroupBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLayout>
 
 #include "CompositeEngine.h"
 

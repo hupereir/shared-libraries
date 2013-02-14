@@ -32,7 +32,7 @@
 
 #include "CompositeEngine.h"
 
-#include <QtGui/QPainter>
+#include <QPainter>
 
 namespace TRANSPARENCY
 {

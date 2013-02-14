@@ -179,4 +179,3 @@ namespace TRANSPARENCY
 };
 
 #endif
-

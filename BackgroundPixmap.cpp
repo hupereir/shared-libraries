@@ -31,9 +31,9 @@
 
 #include "Debug.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QPainter>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QPainter>
 
 #if defined(Q_WS_X11)
 #include <QX11Info>
