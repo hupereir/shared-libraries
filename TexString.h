@@ -24,10 +24,10 @@
 *
 *******************************************************************************/
 
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QPair>
-#include <QtCore/QSet>
+#include <QString>
+#include <QList>
+#include <QPair>
+#include <QSet>
 
 //! some tex related utilities
 namespace SPELLCHECK

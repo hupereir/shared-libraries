@@ -27,7 +27,7 @@
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
-#include <QtGui/QGroupBox>
+#include <QGroupBox>
 
 class OptionComboBox;
 

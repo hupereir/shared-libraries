@@ -24,7 +24,7 @@
 *******************************************************************************/
 
 #include "TextPosition.h"
-#include <QtCore/QSet>
+#include <QSet>
 
 namespace SPELLCHECK
 {

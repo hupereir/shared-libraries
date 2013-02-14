@@ -27,8 +27,8 @@
 #include "Counter.h"
 #include "SpellInterface.h"
 
-#include <QtGui/QMenu>
-#include <QtCore/QHash>
+#include <QMenu>
+#include <QHash>
 
 namespace SPELLCHECK {
 

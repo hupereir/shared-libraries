@@ -31,10 +31,10 @@
 #include "SpellInterface.h"
 #include "TextPosition.h"
 
-#include <QtGui/QComboBox>
-#include <QtGui/QLabel>
-#include <QtGui/QTextEdit>
-#include <QtCore/QHash>
+#include <QComboBox>
+#include <QLabel>
+#include <QTextEdit>
+#include <QHash>
 
 class TreeView;
 

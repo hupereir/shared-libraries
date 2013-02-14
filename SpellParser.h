@@ -31,9 +31,9 @@
 #include "Word.h"
 
 
-#include <QtGui/QColor>
-#include <QtGui/QFont>
-#include <QtCore/QString>
+#include <QColor>
+#include <QFont>
+#include <QString>
 
 namespace SPELLCHECK
 {

@@ -27,7 +27,7 @@
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QToolButton>
+#include <QToolButton>
 
 namespace SPELLCHECK
 {

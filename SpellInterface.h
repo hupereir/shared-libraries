@@ -27,8 +27,8 @@
 #include "Counter.h"
 #include "QOrderedSet.h"
 
-#include <QtCore/QSet>
-#include <QtCore/QStringList>
+#include <QSet>
+#include <QStringList>
 
 #include <aspell.h>
 

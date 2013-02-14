@@ -26,8 +26,8 @@
 #include "Counter.h"
 #include "ListModel.h"
 
-#include <QtCore/QSet>
-#include <QtCore/QString>
+#include <QSet>
+#include <QString>
 
 namespace SPELLCHECK
 {

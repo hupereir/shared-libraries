@@ -34,8 +34,8 @@
 #include "SpellInterface.h"
 #include "SpellItemDialog.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QToolButton>
+#include <QLabel>
+#include <QToolButton>
 
 namespace SPELLCHECK
 {

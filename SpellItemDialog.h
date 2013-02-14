@@ -28,7 +28,7 @@
 #include "SpellItemModel.h"
 #include "QOrderedSet.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 class TreeView;
 

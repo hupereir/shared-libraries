@@ -34,10 +34,10 @@
 
 #include "Counter.h"
 
-#include <QtGui/QAction>
-#include <QtGui/QActionGroup>
-#include <QtGui/QMenu>
-#include <QtCore/QHash>
+#include <QAction>
+#include <QActionGroup>
+#include <QMenu>
+#include <QHash>
 
 //! dictionary dictionary selection menu
 namespace SPELLCHECK

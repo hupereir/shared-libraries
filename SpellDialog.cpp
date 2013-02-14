@@ -35,10 +35,10 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QPushButton>
-#include <QtGui/QTextCursor>
+#include <QLayout>
+#include <QHeaderView>
+#include <QPushButton>
+#include <QTextCursor>
 
 namespace SPELLCHECK
 {

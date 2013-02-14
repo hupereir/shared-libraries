@@ -24,8 +24,8 @@
 #include "SpellItemDialog.h"
 #include "TreeView.h"
 
-#include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
+#include <QHeaderView>
+#include <QLabel>
 
 namespace SPELLCHECK
 {
