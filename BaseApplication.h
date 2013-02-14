@@ -36,8 +36,8 @@
 #include "BaseCoreApplication.h"
 #include "CommandLineArguments.h"
 
-#include <QtGui/QAction>
-#include <QtCore/QObject>
+#include <QAction>
+#include <QObject>
 
 //! Main Window singleton object
 class BaseApplication: public BaseCoreApplication

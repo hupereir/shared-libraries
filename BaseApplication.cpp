@@ -30,16 +30,16 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QMessageBox>
+#include <QApplication>
+#include <QDialogButtonBox>
+#include <QLayout>
+#include <QLabel>
+#include <QMessageBox>
 
-#include <QtCore/QSettings>
+#include <QSettings>
 
 #ifndef QT_NO_DBUS
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 #endif
 
 //____________________________________________

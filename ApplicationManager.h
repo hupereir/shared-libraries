@@ -30,15 +30,15 @@
 #include "Counter.h"
 #include "ServerCommand.h"
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtCore/QPair>
-#include <QtCore/QTimerEvent>
+#include <QBasicTimer>
+#include <QList>
+#include <QMap>
+#include <QObject>
+#include <QPair>
+#include <QTimerEvent>
 
-#include <QtNetwork/QTcpServer>
-#include <QtNetwork/QHostAddress>
+#include <QTcpServer>
+#include <QHostAddress>
 
 namespace SERVER
 {

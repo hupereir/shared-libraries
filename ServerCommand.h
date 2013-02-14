@@ -31,11 +31,11 @@
 #include "TimeStamp.h"
 #include "XmlOption.h"
 
-#include <QtXml/QDomElement>
-#include <QtXml/QDomDocument>
-#include <QtCore/QString>
-#include <QtCore/QHash>
-#include <QtCore/QTextStream>
+#include <QDomElement>
+#include <QDomDocument>
+#include <QString>
+#include <QHash>
+#include <QTextStream>
 
 namespace SERVER
 {

@@ -28,7 +28,7 @@
 #include "CommandLineArguments.h"
 #include "Counter.h"
 
-#include <QtCore/QObject>
+#include <QObject>
 
 //! Main Window singleton object
 class BaseCoreApplication: public QObject

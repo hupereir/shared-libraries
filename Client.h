@@ -28,7 +28,7 @@
 #include "MessageBuffer.h"
 #include "ServerCommand.h"
 
-#include <QtNetwork/QTcpSocket>
+#include <QTcpSocket>
 
 namespace SERVER
 {

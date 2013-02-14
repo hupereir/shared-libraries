@@ -34,7 +34,7 @@
 #include "ServerXmlDef.h"
 #include "XmlCommandLineArguments.h"
 
-#include <QtCore/QStringList>
+#include <QStringList>
 
 namespace SERVER
 {

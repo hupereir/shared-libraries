@@ -27,9 +27,9 @@
 #include "OptionSpinBox.h"
 #include "ServerConfiguration.h"
 
-#include <QtGui/QGroupBox>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLayout>
 
 namespace SERVER
 {

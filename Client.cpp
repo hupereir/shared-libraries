@@ -27,7 +27,7 @@
 #include "ServerXmlDef.h"
 #include "XmlDocument.h"
 
-#include <QtCore/QTextStream>
+#include <QTextStream>
 
 namespace SERVER
 {
