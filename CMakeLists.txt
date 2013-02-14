@@ -9,8 +9,6 @@ SET( BASE_SPELLCHECK_SOVERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHEC
 ########### Qt4 configuration #########
 IF( USE_QT5 )
 
-  SET( CMAKE_AUTOMOC ON )
-  SET( CMAKE_INCLUDE_CURRENT_DIR ON )
   FIND_PACKAGE( Qt5Widgets )
 
 ELSE()
@@ -62,7 +60,11 @@ SET( base_spellcheck_HEADERS
   SuggestionMenu.h
 )
 
-IF( NOT USE_QT5 )
+IF( USE_QT5 )
+
+  QT5_WRAP_CPP( base_spellcheck_HEADERS_MOC ${base_spellcheck_HEADERS} )
+
+ELSE()
 
   QT4_WRAP_CPP( base_spellcheck_HEADERS_MOC ${base_spellcheck_HEADERS} )
 
