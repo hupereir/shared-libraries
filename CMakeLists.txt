@@ -9,7 +9,7 @@ SET( BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR} )
 ########### Qt4 configuration #########
 IF( USE_QT5 )
 
-  FIND_PACKAGE( Qt5Widgets )
+  FIND_PACKAGE( Qt5Widgets REQUIRED )
 
 ELSE()
 
@@ -243,7 +243,7 @@ SET( base_qt_RESOURCES basePixmaps.qrc)
 
 IF( USE_QT5 )
 
-  QT5_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
+  QT5_WRAP_CPP( base_qt_HEADERS_MOC ${base_qt_HEADERS} )
   QT5_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
 
 ELSE()

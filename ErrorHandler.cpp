@@ -53,7 +53,7 @@ void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, co
 
     QString fullMessage;
     QTextStream( &fullMessage ) << message << " file: " << context.file << " line: " << context.line << " function: " << context.function;
-    _throw( type, fullMessage.constData() );
+    _throw( type, fullMessage.toLatin1() );
 }
 #endif
 
