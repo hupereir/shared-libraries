@@ -21,20 +21,23 @@
 *
 *******************************************************************************/
 
-/*!
-\file ErrorHandler.cpp
-\brief Customized Qt error handler. Messages in the disabledMessages_ list
-are skipped.
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "ErrorHandler.h"
+#include "Debug.h"
 
 #include <QTextStream>
 #include <cstdlib>
 
-#include "ErrorHandler.h"
-#include "Debug.h"
+//_____________________________________________________________
+void ErrorHandler::initialize( void )
+{
+
+    #if QT_VERSION >= 0x050000
+    qInstallMessageHandler( _throw );
+    #else
+    qInstallMsgHandler( _throw );
+    #endif
+}
+
 
 //_____________________________________________________________
 ErrorHandler& ErrorHandler::get( void )
@@ -44,7 +47,18 @@ ErrorHandler& ErrorHandler::get( void )
 }
 
 //_____________________________________________________________
-void ErrorHandler::Throw( QtMsgType type, const char* message )
+#if QT_VERSION >= 0x050000
+void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, const QString& message )
+{
+
+    QString fullMessage;
+    QTextStream( &fullMessage ) << message << " file: " << context.file << " line: " << context.line << " function: " << context.function;
+    _throw( type, fullMessage.constData() );
+}
+#endif
+
+//_____________________________________________________________
+void ErrorHandler::_throw( QtMsgType type, const char* message )
 {
     Debug::Throw() << "ErrorHandler::Throw - " << message << endl;
 
@@ -78,13 +92,12 @@ void ErrorHandler::Throw( QtMsgType type, const char* message )
         break;
 
         default:
-        if( !disabled )
-        what << "ErrorHandler::Throw - unknown: " << message << endl;
-    break;
+        if( !disabled ) what << "ErrorHandler::Throw - unknown: " << message << endl;
+        break;
 
-}
+    }
 
-return;
+    return;
 }
 
 //_______________________________________________________________

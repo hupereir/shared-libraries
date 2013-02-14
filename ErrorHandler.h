@@ -38,11 +38,11 @@ class ErrorHandler
 
     public:
 
-    //! check/display Qt error messages
-    static void Throw( QtMsgType type, const char* message );
-
     //! singleton
     static ErrorHandler& get( void );
+
+    //! install context
+    static void initialize( void );
 
     //! adds a disabled message in the list
     void disableMessage( const QString& message )
@@ -66,6 +66,15 @@ class ErrorHandler
     //! disabled message
     const MessageList& _disabledMessages( void ) const
     { return disabledMessages_; }
+
+    //! check/display Qt error messages
+    #if QT_VERSION >= 0x050000
+    static void _throw( QtMsgType, const QMessageLogContext&, const QString& );
+    #endif
+
+    //! check/display Qt error messages
+    /*! qt4 version */
+    static void _throw( QtMsgType, const char* );
 
     private:
 
