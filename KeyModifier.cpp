@@ -23,22 +23,10 @@
 
 #include "Debug.h"
 #include "KeyModifier.h"
+#include "X11Util.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
-#endif
-
-#if defined(Q_WS_X11)
-#include <QX11Info>
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#include <X11/Xutil.h>
-
-// this is a hack to allow compilation at BNL
-// not sure whether this is armless or not
-#define XK_MISCELLANY
-#include <X11/keysymdef.h>
-
 #endif
 
 //______________________________________
@@ -77,7 +65,7 @@ KeyModifier::State KeyModifier::state( void ) const
   }
 
   // get matching key code
-  Display* display( QX11Info::display() );
+  Display* display = (Display*) X11Util::get().display();
   KeyCode key_code = XKeysymToKeycode( display, key_symbol );
 
   // convert key code to bit mask

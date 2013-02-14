@@ -29,7 +29,6 @@
 #include <QMap>
 
 #if defined(Q_WS_X11)
-#include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
@@ -97,6 +96,15 @@ class X11Util
 
     //! print window state
     void printWindowState( const QWidget& );
+
+    //! display
+    Qt::HANDLE display( void ) const;
+
+    //! visual
+    Qt::HANDLE appVisual( void ) const;
+
+    //! application root window
+    WId appRootWindow( void ) const;
 
     //! get atom carninal value
     unsigned long cardinal( const QWidget& widget, const Atoms& atom )
@@ -172,6 +180,9 @@ class X11Util
     SupportedAtomMap supportedAtoms_;
 
     #if defined(Q_WS_X11)
+
+    //! display
+    Display* display_;
 
     //! atom map
     typedef QHash<Atoms, Atom> AtomMap;

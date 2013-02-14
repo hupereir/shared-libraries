@@ -131,7 +131,7 @@ void BaseDialog::toggleSticky( bool state )
 
     } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
 
-        unsigned long desktop = X11Util::get().cardinal( QX11Info::appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
+        unsigned long desktop = X11Util::get().cardinal( X11Util::get().appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
         X11Util::get().changeCardinal( *this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
 
     }
