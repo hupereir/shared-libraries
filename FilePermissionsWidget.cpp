@@ -57,7 +57,7 @@ FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permission
     gridLayout->addWidget( checkboxes_[QFile::ExeOwner]  = new QCheckBox( this ), Qt::AlignHCenter );
 
     // on unix, right now, Qt does not return the current user permissions. Disable them from the dialog
-    #if !defined(Q_WS_X11)
+    #if !defined(Q_OS_UNIX)
     gridLayout->addWidget( new QLabel( "User:", this ) );
     gridLayout->addWidget( checkboxes_[QFile::ReadUser]  = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::WriteUser]  = new QCheckBox( this ), Qt::AlignHCenter );
