@@ -47,12 +47,6 @@ namespace TRANSPARENCY
 
     //_______________________________________________________________
     CompositeEngine::CompositeEngine( void ):
-
-        #if defined(Q_WS_X11)
-        visual_( 0 ),
-        colormap_( 0 ),
-        #endif
-
         available_( false ),
         enabled_( true ),
         initialized_( false )
@@ -60,59 +54,6 @@ namespace TRANSPARENCY
         Debug::Throw( "CompositeEngine::CompositeEngine.\n" );
         XmlOptions::get().set( "TRANSPARENCY_USE_COMPOSITE", Option("1"), true );
         XmlOptions::get().set( "TRANSPARENCY_USE_BLUR", Option("1"), true );
-
-    }
-
-
-    //_______________________________________________________________
-    void CompositeEngine::initialize( void )
-    {
-
-        Debug::Throw( "CompositeEngine::initialize\n" );
-
-        if( initialized_ ) return;
-        initialized_ = true;
-
-        // reset
-        available_ = false;
-
-        // do nothing if compositing is not enabled
-        if( !_compositingEnabled() ) return;
-
-        #if defined(Q_WS_X11)
-        // display
-        Display* display = X11Util::get().display();
-
-        int screen = DefaultScreen( display );
-        int nVisuals;
-
-        XVisualInfo templ;
-        templ.screen  = screen;
-        templ.depth   = 32;
-        templ.c_class = TrueColor;
-        XVisualInfo *visualInfo = XGetVisualInfo(  display, VisualScreenMask | VisualDepthMask | VisualClassMask, &templ, &nVisuals );
-
-        for (int i = 0; i < nVisuals; ++i)
-        {
-            XRenderPictFormat *format = XRenderFindVisualFormat( display, visualInfo[i].visual );
-            if (format->type == PictTypeDirect && format->direct.alphaMask)
-            {
-                visual_ = visualInfo[i].visual;
-                colormap_ = XCreateColormap( display, X11Util::get().appRootWindow(), visual_, AllocNone );
-                available_ = true;
-                break;
-            }
-
-        }
-
-        #endif
-
-        #if defined(Q_OS_WIN)
-        // on windows,
-        // composition mode is available by default
-        // TODO: check version to make sure this is true
-        available_ = true;
-        #endif
 
     }
 
@@ -129,45 +70,37 @@ namespace TRANSPARENCY
     }
 
     //_______________________________________________________________
+    void CompositeEngine::_initialize( void )
+    {
+
+        Debug::Throw( "CompositeEngine::initialize\n" );
+        if( !initialized_ )
+        {
+            initialized_ = true;
+            available_ = _compositingEnabled();
+        }
+    }
+
+    //_______________________________________________________________
     bool CompositeEngine::_compositingEnabled( void ) const
     {
         Debug::Throw( "CompositeEngine::_compositingEnabled\n" );
 
-        #if defined(Q_WS_X11)
-        if( X11Util::get().display()) return _compositingEnabled( X11Util::get().display() );
-        else {
-            Debug::Throw( "CompositeEngine::_compositingEnabled - creating dummy display\n" );
-            Display* display = XOpenDisplay( 0 );
-            bool valid( _compositingEnabled( display ) );
-            XCloseDisplay( display );
-            return valid;
-        }
+        #if defined(Q_OS_WIN)
+        return true;
         #endif
 
-        #if defined(Q_OS_WIN)
-        // on windows,
-        // composition mode is available by default
-        // TODO: check version to make sure this is true
-        return true;
+        #if defined(Q_WS_X11)
+        Display* display = X11Util::get().display();
+        QByteArray buffer;
+        QTextStream( &buffer ) << "_NET_WM_CM_S" << DefaultScreen( display );
+        Atom atom( XInternAtom( display, buffer.constData(), False) );
+        return XGetSelectionOwner( display, atom ) != None;
         #endif
 
         // on all other systems, return false
         return false;
 
     }
-
-    //_______________________________________________________________
-    #if defined(Q_WS_X11)
-    bool CompositeEngine::_compositingEnabled( Display* display ) const
-    {
-        Debug::Throw( "CompositeEngine::_compositingEnabled (display)\n" );
-
-        char atomName[ 100 ];
-        sprintf( atomName, "_NET_WM_CM_S%d", DefaultScreen( display ));
-        Atom atom( XInternAtom( display, atomName, false ) );
-        return XGetSelectionOwner( display, atom ) != None;
-
-    }
-    #endif
 
 }

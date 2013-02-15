@@ -53,8 +53,15 @@ namespace TRANSPARENCY
 
         Debug::Throw( "TransparentWidget::TransparentWidget.\n" );
 
-        // opaque background
+        /*
+        disable all automatic background filling
+        to optimize painting.
+        */
         setAttribute( Qt::WA_OpaquePaintEvent, true );
+        setAttribute( Qt::WA_StyledBackground, false );
+
+        if( TRANSPARENCY::CompositeEngine::get().isAvailable() )
+        { setAttribute( Qt::WA_TranslucentBackground, true ); }
 
         // actions
         _installActions();

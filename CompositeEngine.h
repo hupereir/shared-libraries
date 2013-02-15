@@ -23,10 +23,6 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#if defined(Q_WS_X11)
-#include <X11/Xlib.h>
-#endif
-
 namespace TRANSPARENCY
 {
 
@@ -39,49 +35,31 @@ namespace TRANSPARENCY
         static CompositeEngine& get( void );
 
         //! availability
-        bool isAvailable( void ) const
-        { return available_; }
+        bool isAvailable( void )
+        {
+            _initialize();
+            return available_;
+        }
 
         //! enability
-        bool isEnabled( void ) const
-        { return available_ && enabled_; }
+        bool isEnabled( void )
+        { return isAvailable() && enabled_; }
 
         //! enability
         bool setEnabled( bool value );
 
+        protected:
+
         //! initialize
-        void initialize( void );
+        void _initialize( void );
 
-        #if defined(Q_WS_X11)
-
-        //! visual
-        Qt::HANDLE visual( void ) const
-        { return Qt::HANDLE( visual_ ); }
-
-        //! colormar
-        Qt::HANDLE colormap( void ) const
-        { return Qt::HANDLE( colormap_ ); }
-
-        #endif
+        //! returns true if composition is enabled
+        bool _compositingEnabled( void ) const;
 
         private:
 
         //! constructor
         CompositeEngine( void );
-
-        //! returns true if composition is enabled
-        bool _compositingEnabled( void ) const;
-
-        #if defined(Q_WS_X11)
-        //! returns true if composition is enabled
-        bool _compositingEnabled( Display* ) const;
-
-        //! visual
-        Visual* visual_;
-
-        //! colormap
-        Colormap colormap_;
-        #endif
 
         //! validity
         bool available_;
