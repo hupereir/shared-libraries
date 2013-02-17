@@ -27,7 +27,7 @@
 #include "X11Util.h"
 #include "CompositeEngine.h"
 
-#if defined(Q_WS_X11)
+#if defined(Q_WS_X11) || defined(Q5_WS_X11)
 #include <X11/extensions/Xrender.h>
 #endif
 
@@ -90,7 +90,7 @@ namespace TRANSPARENCY
         return true;
         #endif
 
-        #if defined(Q_WS_X11)
+        #if defined(Q_WS_X11) || defined(Q5_WS_X11)
         Display* display = X11Util::get().display();
         QByteArray buffer;
         QTextStream( &buffer ) << "_NET_WM_CM_S" << DefaultScreen( display );

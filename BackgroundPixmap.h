@@ -80,13 +80,8 @@ namespace TRANSPARENCY
     //! full background image
     QPixmap backgroundPixmap_;
 
-    #if defined(Q_WS_X11)
-
     //! desktop window id
     WId desktop_;
-
-    #endif
-
 
   };
 

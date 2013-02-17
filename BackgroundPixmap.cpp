@@ -29,7 +29,7 @@
 
 #include "X11Util.h"
 
-#if defined(Q_WS_X11)
+#if defined(Q_WS_X11) || defined(Q5_WS_X11)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
@@ -43,7 +43,7 @@
 namespace TRANSPARENCY
 {
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined(Q5_WS_X11)
 
     //! get lowest bit (shift) from integer value (little/big endianness)
     int _lowestBit( const unsigned int& val );
@@ -86,10 +86,7 @@ namespace TRANSPARENCY
     {
         Debug::Throw( "BackgroundPixmap::BackgroundPixmap.\n" );
 
-        #if defined(Q_WS_X11)
         desktop_ = 0;
-        #endif
-
         reload();
     }
 
@@ -178,7 +175,7 @@ namespace TRANSPARENCY
         // do nothing if compositing is enabled
         if( CompositeEngine::get().isEnabled() ) return;
 
-        #if defined(Q_WS_X11)
+        #if defined(Q_WS_X11) || defined(Q5_WS_X11)
         // try load desktop windows ID
         if( !_loadDesktopWindow() )
         {
@@ -259,7 +256,7 @@ namespace TRANSPARENCY
     bool BackgroundPixmap::_loadDesktopWindow( void )
     {
 
-        #if defined(Q_WS_X11)
+        #if defined(Q_WS_X11) || defined(Q5_WS_X11)
         Debug::Throw( "BackgroundPixmap::_loadDesktopWindow.\n" );
 
         // get the display
@@ -308,7 +305,7 @@ namespace TRANSPARENCY
 
     }
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined(Q5_WS_X11)
 
     //_____________________________________________________
     int _lowestBit( const unsigned int& val)

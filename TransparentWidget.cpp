@@ -413,6 +413,7 @@ namespace TRANSPARENCY
     void TransparentWidget::_updateBlurRegion( const QRegion& region )
     {
 
+        Debug::Throw() << "TransparentWidget::_updateBlurRegion" << endl;
         blurRegion_ = region;
         QVector<QRect> rects( region.rects() );
         QVector<unsigned long> data;
