@@ -51,12 +51,7 @@ class X11Util: public X11Defines
     bool hasProperty( const QWidget&, const Atoms& );
 
     //! change property
-    bool changeProperty( const QWidget& widget, const Atoms& atom, bool value )
-    {
-        return widget.isHidden()  ?
-            _changeProperty( widget, atom, value ):
-            _requestPropertyChange( widget, atom, value );
-    }
+    bool changeProperty( const QWidget&, const Atoms&, bool);
 
     //! change property
     bool changeProperty( const QWidget&, const Atoms&, const unsigned char*, int size );

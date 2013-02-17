@@ -362,6 +362,14 @@ bool X11Util::moveResizeWidget(
 }
 
 //________________________________________________________________________
+bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, bool value )
+{
+    return widget.isHidden()  ?
+        _changeProperty( widget, atom, value ):
+        _requestPropertyChange( widget, atom, value );
+}
+
+//________________________________________________________________________
 bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const unsigned char* data, int size )
 {
     #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
@@ -379,7 +387,12 @@ bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const un
 bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool state )
 {
 
-    Debug::Throw(debugLevel) << "X11Util::_changeProperty - atom: " << atomNames_[atom] << " state: " << state << endl;
+    Debug::Throw(debugLevel)
+        << "X11Util::_changeProperty -"
+        << " winId: " << widget.winId()
+        << " atom: " << atomNames_[atom]
+        << " state: " << state
+        << endl;
 
     #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
@@ -468,7 +481,11 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
 bool X11Util::_requestPropertyChange( const QWidget& widget, const Atoms& atom, bool value )
 {
 
-    Debug::Throw(debugLevel) << "X11Util::_requestPropertyChange - atom: " << atomNames_[atom] << " state: " << value << endl;
+    Debug::Throw(debugLevel) << "X11Util::_requestPropertyChange - "
+        << " winId: " << widget.winId()
+        << " atom: " << atomNames_[atom]
+        << " state: " << value
+        << endl;
 
     #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
