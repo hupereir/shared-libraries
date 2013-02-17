@@ -290,6 +290,6 @@ ENDIF()
 
 IF( USE_QT5 )
 
-  QT5_USE_MODULES( base-qt Widgets Xml PrintSupport )
+  QT5_USE_MODULES( base-qt Gui Widgets Xml PrintSupport )
 
 ENDIF()

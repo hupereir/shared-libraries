@@ -23,13 +23,16 @@
 *******************************************************************************/
 
 #include "Debug.h"
-#include "X11Util.h"
-
 #include <QDesktopWidget>
 
-#if QT_VERSION < 0x050000
+#if QT_VERSION >= 0x050000
+#include <QGuiApplication>
+#include <5.0.0/QtGui/qpa/qplatformnativeinterface.h>
+#else
 #include <QX11Info>
 #endif
+
+#include "X11Util.h"
 
 //_______________________
 int debugLevel = 1;
@@ -254,7 +257,12 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 Display* X11Util::display( void ) const
 {
     #if QT_VERSION >= 0x050000
-    if( !display_ ) const_cast<X11Util*>( this )->display_ = XOpenDisplay( ":0" );
+    if( !display_ )
+    {
+        QPlatformNativeInterface *native = qApp->platformNativeInterface();
+        void *display = native->nativeResourceForScreen(QByteArray("display"), QGuiApplication::primaryScreen());
+        const_cast<X11Util*>(this)->display_ = reinterpret_cast<Display*>(display);
+    }
     #else
     if( !display_ ) const_cast<X11Util*>( this )->display_ = QX11Info::display();
     #endif
