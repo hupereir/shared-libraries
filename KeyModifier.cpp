@@ -46,7 +46,7 @@ KeyModifier::State KeyModifier::state( void ) const
   else return UNKNOWN;
   #endif
 
-  #if defined(Q_WS_X11)
+  #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
   // map Qt Key to X11
   int key_symbol(0);
   switch( key_ )

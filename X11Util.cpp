@@ -27,11 +27,15 @@
 
 #include <QDesktopWidget>
 
+#if QT_VERSION < 0x050000
+#include <QX11Info>
+#endif
+
 //_______________________
 int debugLevel = 1;
 
-#if defined(Q_WS_X11)
-const unsigned long netwm_sendevent_mask = (
+#if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+const unsigned long netWMSendEventMask = (
     SubstructureRedirectMask|
     SubstructureNotifyMask);
 #endif
@@ -48,7 +52,7 @@ X11Util::X11Util( void )
 {
     Debug::Throw( "X11Util::X11Util" );
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
     display_ = 0;
     #endif
 
@@ -59,7 +63,7 @@ X11Util::X11Util( void )
 bool X11Util::isSupported( const Atoms& atom )
 {
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     Debug::Throw( debugLevel ) << "X11Util::isSupported - " << atomNames_[atom] << endl;
 
@@ -153,7 +157,7 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 
     Debug::Throw(debugLevel) << "X11Util::hasProperty - " << atomNames_[atom] << endl;
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -244,12 +248,16 @@ bool X11Util::hasProperty( const QWidget& widget, const Atoms& atom )
 
 }
 
-#if defined(Q_WS_X11)
+#if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
 //_______________________________________________________
 Display* X11Util::display( void ) const
 {
+    #if QT_VERSION >= 0x050000
     if( !display_ ) const_cast<X11Util*>( this )->display_ = XOpenDisplay( ":0" );
+    #else
+    if( !display_ ) const_cast<X11Util*>( this )->display_ = QX11Info::display();
+    #endif
     return display_;
 }
 
@@ -262,7 +270,7 @@ Visual* X11Util::appVisual( void ) const
 //_______________________________________________________
 WId X11Util::appRootWindow( void ) const
 {
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
     return DefaultRootWindow( display() );
     #else
     return 0;
@@ -275,7 +283,7 @@ unsigned long X11Util::cardinal( const WId& wid, const Atoms& atom )
 
     Debug::Throw( "X11Util::cardinal" );
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -318,7 +326,7 @@ bool X11Util::moveResizeWidget(
 
     if( !widget.isWindow() ) return false;
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     // check
     if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
@@ -337,7 +345,7 @@ bool X11Util::moveResizeWidget(
     event.xclient.data.l[3] = button;
     event.xclient.data.l[4] = 0;
     XUngrabPointer( display(), CurrentTime );
-    XSendEvent( display(), appRootWindow(), false, netwm_sendevent_mask, &event);
+    XSendEvent( display(), appRootWindow(), false, netWMSendEventMask, &event);
     return true;
 
     #else
@@ -348,7 +356,7 @@ bool X11Util::moveResizeWidget(
 //________________________________________________________________________
 bool X11Util::changeProperty( const QWidget& widget, const Atoms& atom, const unsigned char* data, int size )
 {
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
     Atom searched( findAtom( atom ) );
     XChangeProperty( display(), widget.winId(), searched, XA_CARDINAL, 32, PropModeReplace, data, size );
 
@@ -365,7 +373,7 @@ bool X11Util::_changeProperty( const QWidget& widget, const Atoms& atom, bool st
 
     Debug::Throw(debugLevel) << "X11Util::_changeProperty - atom: " << atomNames_[atom] << " state: " << state << endl;
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -454,7 +462,7 @@ bool X11Util::_requestPropertyChange( const QWidget& widget, const Atoms& atom, 
 
     Debug::Throw(debugLevel) << "X11Util::_requestPropertyChange - atom: " << atomNames_[atom] << " state: " << value << endl;
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -474,7 +482,7 @@ bool X11Util::_requestPropertyChange( const QWidget& widget, const Atoms& atom, 
     event.xclient.data.l[3] = 0l;
     event.xclient.data.l[4] = 0l;
 
-    XSendEvent( display(), appRootWindow(), false, netwm_sendevent_mask, &event);
+    XSendEvent( display(), appRootWindow(), false, netWMSendEventMask, &event);
 
     return true;
 
@@ -489,7 +497,7 @@ bool X11Util::_changeCardinal( const QWidget& widget, const Atoms& atom, const u
 
     Debug::Throw( "X11Util::_changeCardinal.\n" );
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -509,7 +517,7 @@ bool X11Util::_requestCardinalChange( const QWidget& widget, const Atoms& atom, 
 
     Debug::Throw( "X11Util::_requestChangeCardinal.\n" );
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -528,7 +536,7 @@ bool X11Util::_requestCardinalChange( const QWidget& widget, const Atoms& atom, 
     event.xclient.data.l[3] = 0l;
     event.xclient.data.l[4] = 0l;
 
-    XSendEvent( display(), appRootWindow(), false, netwm_sendevent_mask, &event);
+    XSendEvent( display(), appRootWindow(), false, netWMSendEventMask, &event);
 
     return true;
     #endif
@@ -562,7 +570,7 @@ void X11Util::_initializeAtomNames( void )
 void X11Util::printWindowState( const QWidget& widget )
 {
 
-    #if defined(Q_WS_X11)
+    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
     Atom net_wm_state( findAtom(_NET_WM_STATE) );
 
     Atom type;
@@ -604,7 +612,7 @@ void X11Util::printWindowState( const QWidget& widget )
 
 }
 
-#if defined(Q_WS_X11)
+#if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
 //________________________________________________________________________
 Atom X11Util::findAtom( const Atoms& atom )
