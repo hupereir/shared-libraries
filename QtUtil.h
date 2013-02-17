@@ -24,51 +24,38 @@
 *
 *******************************************************************************/
 
-/*!
-  \file QtUtil.h
-  \brief Qt utility static methods
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
 #include <QDialog>
 
-
-
-/*!
-   \class QtUtil
-   \brief Qt utility static methods
-*/
-
+//! some convernience methods
 class QtUtil {
-  public:
+    public:
 
-  //! move menu to position taking proper care of the screen borders
-  static void moveWidget( QWidget* widget, QPoint position );
+    //! move menu to position taking proper care of the screen borders
+    static void moveWidget( QWidget* widget, QPoint position );
 
-  //! center widget on pointer
-  static QPoint centerOnPointer( const QSize& size );
+    //! center widget on pointer
+    static QPoint centerOnPointer( const QSize& size );
 
-  //! return topleft point so that size is centered on widget
-  static QPoint centerOnWidget( const QSize& size, QWidget* parent );
+    //! return topleft point so that size is centered on widget
+    static QPoint centerOnWidget( const QSize& size, QWidget* parent );
 
-  //! return topleft point so that size is centered on pointer
-  static QPoint centerOnDesktop( const QSize& size );
+    //! return topleft point so that size is centered on pointer
+    static QPoint centerOnDesktop( const QSize& size );
 
-  //! center widget on pointer
-  static QWidget* centerOnPointer( QWidget* widget );
+    //! center widget on pointer
+    static QWidget* centerOnPointer( QWidget* widget );
 
-  //! center widget on parent top level widget
-  static QWidget* centerOnParent( QWidget* widget );
+    //! center widget on parent top level widget
+    static QWidget* centerOnParent( QWidget* widget );
 
-  //! center widget on parent top level widget
-  static QWidget* centerOnWidget( QWidget* widget, QWidget* parent );
+    //! center widget on parent top level widget
+    static QWidget* centerOnWidget( QWidget* widget, QWidget* parent );
 
-  //! center widget on desktop widget
-  static QWidget* centerOnDesktop( QWidget* widget );
+    //! center widget on desktop widget
+    static QWidget* centerOnDesktop( QWidget* widget );
 
-  //! uniconify a top level widget
-  static QWidget* uniconify( QWidget* widget );
+    //! uniconify a top level widget
+    static QWidget* uniconify( QWidget* widget );
 
 };
 

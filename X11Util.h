@@ -24,6 +24,8 @@
 *
 *******************************************************************************/
 
+#include "X11Defines.h"
+
 #include <QWidget>
 #include <QHash>
 #include <QMap>
@@ -34,48 +36,13 @@
 #include <X11/Xutil.h>
 #endif
 
-class X11Util
+class X11Util: public X11Defines
 {
 
     public:
 
     //! singleton
     static X11Util& get( void );
-
-    //! used for stickyness
-    static const unsigned long ALL_DESKTOPS = ~0;
-
-    //! Atoms enumeration
-    enum Atoms {
-        _NET_SUPPORTED,
-        _NET_CURRENT_DESKTOP,
-        _NET_WM_DESKTOP,
-        _NET_WM_STATE,
-        _NET_WM_STATE_STICKY,
-        _NET_WM_STATE_STAYS_ON_TOP,
-        _NET_WM_STATE_ABOVE,
-        _NET_WM_STATE_SKIP_TASKBAR,
-        _NET_WM_STATE_SKIP_PAGER,
-        _NET_WM_MOVERESIZE,
-        _NET_WM_CM,
-
-        // kde specific atoms
-        _KDE_NET_WM_BLUR_BEHIND_REGION
-    };
-
-    enum Direction {
-        _NET_WM_MOVERESIZE_SIZE_TOPLEFT=0,
-        _NET_WM_MOVERESIZE_SIZE_TOP=1,
-        _NET_WM_MOVERESIZE_SIZE_TOPRIGHT=2,
-        _NET_WM_MOVERESIZE_SIZE_RIGHT=3,
-        _NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT=4,
-        _NET_WM_MOVERESIZE_SIZE_BOTTOM=5,
-        _NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT=6,
-        _NET_WM_MOVERESIZE_SIZE_LEFT=7,
-        _NET_WM_MOVERESIZE_MOVE=8,
-        _NET_WM_MOVERESIZE_SIZE_KEYBOARD=9,
-        _NET_WM_MOVERESIZE_MOVE_KEYBOARD=10,
-    };
 
     //! supported atoms
     bool isSupported( const Atoms& atom );
