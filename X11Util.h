@@ -64,9 +64,6 @@ class X11Util: public X11Defines
     //! display
     Display* display( void ) const;
 
-    //! visual
-    Visual* appVisual( void ) const;
-
     #endif
 
     //! application root window

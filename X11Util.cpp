@@ -269,10 +269,6 @@ Display* X11Util::display( void ) const
     return display_;
 }
 
-//_______________________________________________________
-Visual* X11Util::appVisual( void ) const
-{ return DefaultVisual( display(), DefaultScreen( display() ) ); }
-
 #endif
 
 //_______________________________________________________
