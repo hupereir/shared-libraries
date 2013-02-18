@@ -20,11 +20,11 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include "CompositeEngine.h"
+
 #include "Debug.h"
 #include "XmlOptions.h"
-
 #include "X11Util.h"
-#include "CompositeEngine.h"
 
 #if defined(Q_WS_X11) || defined(Q5_WS_X11)
 #include <X11/extensions/Xrender.h>
@@ -53,7 +53,6 @@ namespace TRANSPARENCY
         Debug::Throw( "CompositeEngine::CompositeEngine.\n" );
         XmlOptions::get().set( "TRANSPARENCY_USE_COMPOSITE", Option("1"), true );
         XmlOptions::get().set( "TRANSPARENCY_USE_BLUR", Option("1"), true );
-
     }
 
     //_______________________________________________________________
@@ -86,7 +85,7 @@ namespace TRANSPARENCY
         #endif
 
         #if defined(Q_WS_X11) || defined(Q5_WS_X11)
-        Display* display = X11Util::get().display();
+        Display* display = reinterpret_cast<Display*>(X11Util::get().display());
         QByteArray buffer;
         QTextStream( &buffer ) << "_NET_WM_CM_S" << DefaultScreen( display );
         Atom atom( XInternAtom( display, buffer.constData(), False) );

@@ -24,13 +24,12 @@
 #include "TransparentWidget.h"
 
 #include "BaseIcons.h"
+#include "CompositeEngine.h"
 #include "IconEngine.h"
 #include "Singleton.h"
 #include "WinUtil.h"
 #include "XmlOptions.h"
 #include "X11Util.h"
-
-#include "CompositeEngine.h"
 
 #include <QPainter>
 
@@ -386,7 +385,6 @@ namespace TRANSPARENCY
         connect( inverseColorsAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleInverseColors( bool ) ) );
 
     }
-
 
     //__________________________________________________________
     void TransparentWidget::_updateBlurRegion( const QRegion& region )

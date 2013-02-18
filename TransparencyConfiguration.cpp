@@ -21,26 +21,19 @@
 *
 *******************************************************************************/
 
-/*!
-\file    TransparencyConfiguration.cpp
-\brief   transparency common configuration
-\version $Revision$
-\date    $Date$
-*/
+#include "TransparencyConfiguration.h"
 
-#include "GridLayout.h"
+#include "CompositeEngine.h"
 #include "Debug.h"
+#include "GridLayout.h"
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"
 #include "OptionSlider.h"
 #include "OptionSpinBox.h"
-#include "TransparencyConfiguration.h"
 
 #include <QGroupBox>
 #include <QLabel>
 #include <QLayout>
-
-#include "CompositeEngine.h"
 
 namespace TRANSPARENCY
 {
