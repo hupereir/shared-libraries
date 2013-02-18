@@ -81,13 +81,13 @@ namespace SVG
         }
 
         // check offset
-        int svg_offset( XmlOptions::get().get<int>( "SVG_OFFSET" ) );
+        int svgOffset( XmlOptions::get().get<int>( "SVG_OFFSET" ) );
 
         // reload cache
-        if( configurationChanged || fileChanged || svg_offset != svgOffset_ )
+        if( configurationChanged || fileChanged || svgOffset != svgOffset_ )
         {
 
-            svgOffset_ = svg_offset;
+            svgOffset_ = svgOffset;
             SvgId::List svg_id_list;
             for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
             { svg_id_list << iter.key(); }
