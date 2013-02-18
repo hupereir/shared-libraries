@@ -54,10 +54,6 @@ namespace TRANSPARENCY
         QAction& updateBackgroundAction( void ) const
         { return *updateBackgroundAction_; }
 
-        //! reload background action
-        QAction& reloadBackgroundAction( void ) const
-        { return *reloadBackgroundAction_; }
-
         //! reload blur region action
         QAction& reloadBlurRegionAction( void ) const
         { return *reloadBlurRegionAction_; }
@@ -210,9 +206,6 @@ namespace TRANSPARENCY
 
         protected slots:
 
-        //! reload background
-        virtual void _reloadBackground( void );
-
         //! update background pixmap
         virtual void _updateBackgroundPixmap( void );
 
@@ -241,9 +234,6 @@ namespace TRANSPARENCY
 
         //! update background
         QAction *updateBackgroundAction_;
-
-        //! reload background
-        QAction* reloadBackgroundAction_;
 
         //! reload blur region
         QAction* reloadBlurRegionAction_;

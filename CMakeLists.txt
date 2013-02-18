@@ -39,7 +39,6 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### next target ###############
 SET( base_transparency_SOURCES
-  BackgroundPixmap.cpp
   CompositeEngine.cpp
   ShadowLabel.cpp
   TransparencyConfiguration.cpp
@@ -47,7 +46,6 @@ SET( base_transparency_SOURCES
 )
 
 SET( base_transparency_HEADERS
-  BackgroundPixmap.h
   TransparentWidget.h
 )
 

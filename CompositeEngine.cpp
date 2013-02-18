@@ -20,7 +20,6 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#include "BackgroundPixmap.h"
 #include "Debug.h"
 #include "XmlOptions.h"
 
@@ -62,10 +61,6 @@ namespace TRANSPARENCY
     {
         if( enabled_ == value ) return false;
         enabled_ = value;
-
-        // if disabled, reload background pixmap for fake transparency
-        if( !value ) { BackgroundPixmap::get().reload(); }
-
         return true;
     }
 

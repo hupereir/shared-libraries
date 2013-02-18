@@ -23,7 +23,6 @@
 
 #include "TransparentWidget.h"
 
-#include "BackgroundPixmap.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "Singleton.h"
@@ -69,9 +68,6 @@ namespace TRANSPARENCY
         // configuration
         _updateConfiguration();
         connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
-
-        // connections
-        connect( &BackgroundPixmap::get(), SIGNAL( backgroundChanged() ), SLOT( setBackgroundChanged() ) );
 
     }
 
@@ -249,8 +245,8 @@ namespace TRANSPARENCY
         }
 
         if( _backgroundChanged() ) _updateBackgroundPixmap();
-        if( !_backgroundPixmap().isNull() )
-        { painter.drawPixmap( TransparentWidget::rect(), _backgroundPixmap(), TransparentWidget::rect() ); }
+        if( !backgroundPixmap_.isNull() )
+        { painter.drawPixmap( TransparentWidget::rect(), backgroundPixmap_, TransparentWidget::rect() ); }
 
         if( _highlighted() && _highlightColor().isValid() )
         {
@@ -328,13 +324,6 @@ namespace TRANSPARENCY
     }
 
     //____________________________________________________________________
-    void TransparentWidget::_reloadBackground( void )
-    {
-        Debug::Throw( "TransparentWidget::_reloadBackground.\n" );
-        BackgroundPixmap::get().reload();
-    }
-
-    //____________________________________________________________________
     void TransparentWidget::_updateBackgroundPixmap( void )
     {
 
@@ -344,26 +333,21 @@ namespace TRANSPARENCY
         {
 
             // solid background
-            _backgroundPixmap() = QPixmap( size() );
-            _backgroundPixmap().fill( palette().color( backgroundRole() ) );
+            backgroundPixmap_ = QPixmap( size() );
+            backgroundPixmap_.fill( palette().color( backgroundRole() ) );
 
         } else if( CompositeEngine::get().isEnabled() ) {
 
-            _backgroundPixmap() = QPixmap( size() );
-            QPainter painter( &_backgroundPixmap() );
+            backgroundPixmap_ = QPixmap( size() );
+            QPainter painter( &backgroundPixmap_ );
             painter.setRenderHints(QPainter::SmoothPixmapTransform);
             painter.setCompositionMode(QPainter::CompositionMode_Source );
-            painter.fillRect( _backgroundPixmap().rect(), Qt::transparent);
+            painter.fillRect( backgroundPixmap_.rect(), Qt::transparent);
 
         } else {
 
-            // transparent background
-            _backgroundPixmap() = BackgroundPixmap::get().pixmap( QRect( mapToGlobal( QPoint(0,0) ), size() ) );
-            if( _backgroundPixmap().isNull() )
-            {
-                _backgroundPixmap() = QPixmap( size() );
-                _backgroundPixmap().fill( palette().color( backgroundRole() ) );
-            }
+            backgroundPixmap_ = QPixmap( size() );
+            backgroundPixmap_.fill( palette().color( backgroundRole() ) );
 
         }
 
@@ -371,10 +355,10 @@ namespace TRANSPARENCY
         if( _tintColor().isValid() )
         {
 
-            QPainter painter( &_backgroundPixmap() );
+            QPainter painter( &backgroundPixmap_ );
             painter.setPen( Qt::NoPen );
             painter.setBrush( _tintColor() );
-            painter.drawRect( _backgroundPixmap().rect() );
+            painter.drawRect( backgroundPixmap_.rect() );
             painter.end();
         }
 
@@ -392,11 +376,6 @@ namespace TRANSPARENCY
 
         addAction( updateBackgroundAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Update Background", this ) );
         connect( updateBackgroundAction_, SIGNAL( triggered() ), SLOT( _updateBackgroundPixmap() ) );
-
-        reloadBackgroundAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Background", this );
-        reloadBackgroundAction_->setToolTip( "Reinitialize transparent background" );
-        reloadBackgroundAction_->setShortcut( QKeySequence::Refresh );
-        connect( reloadBackgroundAction_, SIGNAL( triggered( void ) ), SLOT( _reloadBackground( void ) ) );
 
         addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Blur Region", this ) );
         connect( reloadBlurRegionAction_, SIGNAL( triggered( void ) ), SLOT( _updateBlurRegion( void ) ) );
