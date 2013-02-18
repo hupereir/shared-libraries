@@ -28,7 +28,8 @@
 
 #if QT_VERSION >= 0x050000
 #include <QGuiApplication>
-#include <5.0.0/QtGui/qpa/qplatformnativeinterface.h>
+// #include <5.0.0/QtGui/qpa/qplatformnativeinterface.h>
+#include <5.0.1/QtGui/qpa/qplatformnativeinterface.h>
 #else
 #include <QX11Info>
 #endif
