@@ -26,11 +26,10 @@
 #include "QtUtil.h"
 #include "Util.h"
 #include "XmlOptions.h"
+#include "X11Util.h"
 
 #include <QTextStream>
 #include <QWindowStateChangeEvent>
-
-#include "X11Util.h"
 
 //__________________________________________________
 BaseDialog::BaseDialog( QWidget* parent, Qt::WindowFlags flags ):

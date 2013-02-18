@@ -22,10 +22,12 @@
 *******************************************************************************/
 
 #include "DockPanel.h"
+
 #include "Debug.h"
 #include "File.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
+#include "X11Util.h"
 
 #include <QApplication>
 #include <QPainter>
@@ -34,8 +36,6 @@
 #include <QStyleOptionMenuItem>
 #include <QStyleOptionDockWidget>
 #include <QStyleOptionFrame>
-
-#include "X11Util.h"
 
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent ):

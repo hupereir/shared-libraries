@@ -30,12 +30,6 @@
 #include <QHash>
 #include <QMap>
 
-#if defined(Q_WS_X11) || defined( Q5_WS_X11 )
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#include <X11/Xutil.h>
-#endif
-
 class X11Util: public X11Defines
 {
 
@@ -43,6 +37,9 @@ class X11Util: public X11Defines
 
     //! singleton
     static X11Util& get( void );
+
+    //! destructor
+    virtual ~X11Util( void );
 
     //! supported atoms
     bool isSupported( const Atoms& atom );
@@ -59,12 +56,11 @@ class X11Util: public X11Defines
     //! print window state
     void printWindowState( const QWidget& );
 
-    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
-
     //! display
-    Display* display( void ) const;
+    Qt::HANDLE display( void ) const;
 
-    #endif
+    //! atom
+    Qt::HANDLE findAtom( const Atoms& ) const;
 
     //! application root window
     WId appRootWindow( void ) const;
@@ -97,13 +93,6 @@ class X11Util: public X11Defines
         const Direction&,
         Qt::MouseButton button = Qt::LeftButton );
 
-    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
-
-    //! find atom
-    Atom findAtom( const Atoms& atom );
-
-    #endif
-
     private:
 
     //! constructor
@@ -124,41 +113,14 @@ class X11Util: public X11Defines
     //! atom names
     typedef QMap<Atoms, QString> AtomNameMap;
 
-    //! atom names
-    void _initializeAtomNames( void );
-
-    //! atom names
-    const AtomNameMap& _atomNames( void ) const
-    { return atomNames_; }
-
-    AtomNameMap atomNames_;
-
     //! supported atoms
     typedef QHash<Atoms, bool > SupportedAtomMap;
 
-    //! supported atoms
-    const SupportedAtomMap& _supportedAtoms( void ) const
-    { return supportedAtoms_; }
-
     SupportedAtomMap supportedAtoms_;
 
-    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
-
-    //! display
-    Display* display_;
-
-    //! atom map
-    typedef QHash<Atoms, Atom> AtomMap;
-
-    //! atoms
-    // const AtomMap& _atoms( void ) const
-    AtomMap& _atoms( void )
-    { return atoms_; }
-
-    //! atoms
-    AtomMap atoms_;
-
-    #endif
+    //! private pointer
+    class Private;
+    Private* d;
 
 };
 

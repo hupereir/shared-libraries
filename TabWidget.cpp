@@ -25,6 +25,7 @@
 #include "TabWidget.h"
 #include "File.h"
 #include "XmlOptions.h"
+#include "X11Util.h"
 
 #include <QApplication>
 #include <QGridLayout>
@@ -33,8 +34,6 @@
 #include <QStyleOption>
 #include <QStyleOptionMenuItem>
 #include <QStyleOptionFrame>
-
-#include "X11Util.h"
 
 //________________________________________________________
 TabWidget::TabWidget( QTabWidget* parent ):
