@@ -30,6 +30,10 @@
 #include <QCursor>
 #include <QMouseEvent>
 
+#if QT_VERSION >= 0x050000
+#include <QScreen>
+#endif
+
 //______________________________________________
 ColorGrabButton::ColorGrabButton( QWidget* parent ):
     QToolButton( parent ),
@@ -47,6 +51,12 @@ void ColorGrabButton::_grabColor( void )
 {
 
     Debug::Throw( "ColorGrabButton::_grabColor.\n" );
+
+    #if QT_VERSION >= 0x050000
+    // need to explicitely override cursor for Qt5
+    qApp->setOverrideCursor( Qt::CrossCursor );
+    #endif
+
     grabMouse(Qt::CrossCursor);
     locked_ = true;
 
@@ -89,6 +99,12 @@ void ColorGrabButton::mouseReleaseEvent( QMouseEvent *event )
     locked_ = false;
     releaseMouse();
 
+    #if QT_VERSION >= 0x050000
+    // need to explicitely release cursor for Qt5
+    qApp->restoreOverrideCursor();
+    #endif
+
+
 }
 
 //_____________________________________________________________
@@ -110,7 +126,11 @@ void ColorGrabButton::_selectColorFromMouseEvent( QMouseEvent *event )
 
     // grab desktop window under cursor
     // convert to image.
+    #if QT_VERSION >= 0x050000
+    QImage image( QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
+    #else
     QImage image( QPixmap::grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
+    #endif
 
     // ensure image is deep enough
     if (image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
