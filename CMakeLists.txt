@@ -21,6 +21,10 @@ ENDIF()
 IF( USE_QT5 )
 
   FIND_PACKAGE( Qt5Widgets REQUIRED )
+  FIND_PACKAGE( Qt5Gui REQUIRED )
+
+  # needed to access QPA classes
+  INCLUDE_DIRECTORIES(${Qt5Widgets_PRIVATE_INCLUDE_DIRS})
 
 ELSE()
 
