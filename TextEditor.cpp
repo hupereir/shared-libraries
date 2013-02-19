@@ -939,61 +939,63 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
 
     Debug::Throw( "TextEditor::mousePressEvent.\n" );
 
-    if( event->button() == Qt::MidButton )
-    { Debug::Throw( "TextEditor::mousePressEvent - middle mouse button.\n" ); }
-
     // check button
     if( event->button() == Qt::LeftButton )
     {
 
         // increment multiple clicks
         QTextCursor cursor( textCursor() );
-        switch( clickCounter_.increment( cursorForPosition( event->pos() ).position() ) )
+
+        // increment counter
+        clickCounter_.increment( cursorForPosition( event->pos() ).position() );
+        switch( clickCounter_.counts() )
         {
 
             case 1:
-
-            // if single click in existing box selection, store drag position
-            if(
-            event->modifiers() == Qt::NoModifier &&
-            _boxSelection().state() == BoxSelection::FINISHED &&
-            _boxSelection().rect().contains( fromViewport( event->pos() ) )
-            )
             {
-                // store position for drag
-                dragStart_ = event->pos();
-                return QTextEdit::mousePressEvent( event );
-            }
-
-            // if single click outside of existing box selection, clear the selection
-            if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
-            {
-
-                _boxSelection().clear();
-                _synchronizeBoxSelection();
-                emit copyAvailable( false );
-
-            }
-
-            // if single click and Control key pressed, start a new box selection
-            if( event->modifiers() == Qt::ControlModifier  )
-            {
-
-                // try re-enable box selection in case font has changed
-                if( _boxSelection().checkEnabled() )
+                // if single click in existing box selection, store drag position
+                if(
+                    event->modifiers() == Qt::NoModifier &&
+                    _boxSelection().state() == BoxSelection::FINISHED &&
+                    _boxSelection().rect().contains( fromViewport( event->pos() ) )
+                    )
                 {
-
-                    _boxSelection().start( event->pos() );
-
-                    // synchronize with other editors
-                    _synchronizeBoxSelection();
-                    return;
+                    // store position for drag
+                    dragStart_ = event->pos();
+                    return QTextEdit::mousePressEvent( event );
                 }
 
-            }
+                // if single click outside of existing box selection, clear the selection
+                if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
+                {
 
-            return QTextEdit::mousePressEvent( event );
-            break;
+                    _boxSelection().clear();
+                    _synchronizeBoxSelection();
+                    emit copyAvailable( false );
+
+                }
+
+                // if single click and Control key pressed, start a new box selection
+                if( event->modifiers() == Qt::ControlModifier  )
+                {
+
+                    // try re-enable box selection in case font has changed
+                    if( _boxSelection().checkEnabled() )
+                    {
+
+                        _boxSelection().start( event->pos() );
+
+                        // synchronize with other editors
+                        _synchronizeBoxSelection();
+                        return;
+                    }
+
+                }
+
+                return QTextEdit::mousePressEvent( event );
+                break;
+
+            }
 
             case 2:
             selectWord();
@@ -1016,9 +1018,12 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
 
         return;
 
-    }
+    } else {
 
-    QTextEdit::mousePressEvent( event );
+        // call base class implementation
+        QTextEdit::mousePressEvent( event );
+
+    }
 
     // for mid button, locate cursor at new position
     if(  event->button() == Qt::MidButton )
@@ -1032,9 +1037,14 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent* event )
 
     Debug::Throw( "TextEditor::mouseDoubleClickEvent.\n" );
 
-    // check button
-    if( event->button() == Qt::LeftButton ) mousePressEvent( event );
-    else QTextEdit::mouseDoubleClickEvent( event );
+    if( event->button() != Qt::LeftButton ) QTextEdit::mouseDoubleClickEvent( event );
+    #if QT_VERSION < 0x050000
+    /*
+    Prior to Qt5, mousePressEvent is not sent in case of double-click.
+    we have to send one manually, in order to increment the selection mode
+    */
+    else mousePressEvent( event );
+    #endif
     return;
 
 }
