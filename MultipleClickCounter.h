@@ -60,7 +60,7 @@ class MultipleClickCounter: public QObject, public Counter
     { Debug::Throw( "MultipleClickCounter::~MultipleClickCounter.\n" ); }
 
     //! increment counter and return current value
-    const unsigned int& increment( const int& position  = 0 )
+    void increment( const int& position  = 0 )
     {
         Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << endl;
 
@@ -85,7 +85,7 @@ class MultipleClickCounter: public QObject, public Counter
 
         }
 
-        return count_;
+        return;
 
     }
 
