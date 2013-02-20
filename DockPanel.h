@@ -68,96 +68,9 @@ class DockPanel: public QWidget, public Counter
     void setTitle( const QString& title )
     { title_ = title; }
 
-    //! local widget to implement close_event of the content
-    class LocalWidget: public QFrame, public Counter
-    {
-
-        public:
-
-        //! constructor
-        LocalWidget( QWidget* parent );
-
-        //! update actions
-        void updateActions( bool );
-
-        //! detach action
-        QAction& detachAction( void ) const
-        { return *detachAction_; }
-
-        //! stay on top
-        QAction& staysOnTopAction( void ) const
-        { return *staysOnTopAction_; }
-
-        //! widget is hidden from taskbar
-        QAction& stickyAction( void ) const
-        { return *stickyAction_; }
-
-        protected:
-
-        //! closeEvent
-        virtual void closeEvent( QCloseEvent* event );
-
-        //! mouse press event [overloaded]
-        virtual void mousePressEvent( QMouseEvent* );
-
-        //! mouse move event [overloaded]
-        virtual void mouseMoveEvent( QMouseEvent* );
-
-        //! mouse move event [overloaded]
-        virtual void mouseReleaseEvent( QMouseEvent* );
-
-        //! mouse move event [overloaded]
-        virtual void mouseDoubleClickEvent( QMouseEvent* );
-
-        //! timer event [overloaded]
-        virtual void timerEvent( QTimerEvent* );
-
-        //! paint event
-        virtual void resizeEvent( QResizeEvent* );
-
-        //! paint event
-        virtual void paintEvent( QPaintEvent* );
-
-        //! start drag
-        bool _startDrag( void );
-
-        //! reset drag
-        void _resetDrag( void );
-
-        private:
-
-        //! actions
-        void _installActions( void );
-
-        //! attach/detach action
-        QAction* detachAction_;
-
-        //! stay on top
-        QAction* staysOnTopAction_;
-
-        //! make window sticky
-        QAction* stickyAction_;
-
-        //! button state
-        Qt::MouseButton button_;
-
-        //! move timer
-        QBasicTimer timer_;
-
-        //! click position
-        QPoint dragPosition_;
-
-        //! dragging
-        bool isDragging_;
-
-    };
-
     //! main widget
-    LocalWidget& main( void ) const
+    QWidget& main( void ) const
     { return *main_; }
-
-    //! minimum size hint
-    // QSize minimumSizeHint( void ) const;
 
     signals:
 
@@ -223,15 +136,13 @@ class DockPanel: public QWidget, public Counter
     QVBoxLayout* mainLayout_;
 
     //! detachable main widget
-    LocalWidget* main_;
+    QWidget* main_;
 
     //! contents panel
     QWidget* panel_;
 
     //! icon pixmap
     QPixmap pixmap_;
-
-    friend class LocalWidget;
 
 };
 

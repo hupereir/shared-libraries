@@ -37,6 +37,90 @@
 #include <QStyleOptionDockWidget>
 #include <QStyleOptionFrame>
 
+//! local widget to implement close_event of the content
+class LocalWidget: public QFrame, public Counter
+{
+
+    public:
+
+    //! constructor
+    LocalWidget( QWidget* parent );
+
+    //! update actions
+    void updateActions( bool );
+
+    //! detach action
+    QAction& detachAction( void ) const
+    { return *detachAction_; }
+
+    //! stay on top
+    QAction& staysOnTopAction( void ) const
+    { return *staysOnTopAction_; }
+
+    //! widget is hidden from taskbar
+    QAction& stickyAction( void ) const
+    { return *stickyAction_; }
+
+    protected:
+
+    //! closeEvent
+    virtual void closeEvent( QCloseEvent* event );
+
+    //! mouse press event [overloaded]
+    virtual void mousePressEvent( QMouseEvent* );
+
+    //! mouse move event [overloaded]
+    virtual void mouseMoveEvent( QMouseEvent* );
+
+    //! mouse move event [overloaded]
+    virtual void mouseReleaseEvent( QMouseEvent* );
+
+    //! mouse move event [overloaded]
+    virtual void mouseDoubleClickEvent( QMouseEvent* );
+
+    //! timer event [overloaded]
+    virtual void timerEvent( QTimerEvent* );
+
+    //! paint event
+    virtual void resizeEvent( QResizeEvent* );
+
+    //! paint event
+    virtual void paintEvent( QPaintEvent* );
+
+    //! start drag
+    bool _startDrag( void );
+
+    //! reset drag
+    void _resetDrag( void );
+
+    private:
+
+    //! actions
+    void _installActions( void );
+
+    //! attach/detach action
+    QAction* detachAction_;
+
+    //! stay on top
+    QAction* staysOnTopAction_;
+
+    //! make window sticky
+    QAction* stickyAction_;
+
+    //! button state
+    Qt::MouseButton button_;
+
+    //! move timer
+    QBasicTimer timer_;
+
+    //! click position
+    QPoint dragPosition_;
+
+    //! dragging
+    bool isDragging_;
+
+};
+
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent ):
     QWidget( parent ),
@@ -53,24 +137,21 @@ DockPanel::DockPanel( QWidget* parent ):
     layout()->addWidget( main_ = new LocalWidget( this ) );
     main_->setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
 
-    main().setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
-    connect( &main().detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
+    reinterpret_cast<LocalWidget*>(main_)->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
+    connect( &reinterpret_cast<LocalWidget*>(main_)->detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
 
     // connections
-    main().updateActions( false );
-    connect( &main().stickyAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleSticky( bool ) ) );
-    connect( &main().staysOnTopAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStaysOnTop( bool ) ) );
-
-    Debug::Throw( "DocPanel::DockPanel - main_layout.\n" );
+    reinterpret_cast<LocalWidget*>(main_)->updateActions( false );
+    connect( &reinterpret_cast<LocalWidget*>(main_)->stickyAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleSticky( bool ) ) );
+    connect( &reinterpret_cast<LocalWidget*>(main_)->staysOnTopAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStaysOnTop( bool ) ) );
 
     // vertical layout for children
     mainLayout_ = new QVBoxLayout();
     mainLayout_->setMargin( 5 );
     mainLayout_->setSpacing( 2 );
-    main().setLayout( mainLayout_ );
+    main_->setLayout( mainLayout_ );
 
     // vertical panel
-    Debug::Throw( "DocPanel::DockPanel - panel.\n" );
     panel_ = new QWidget( main_ );
     panel_->setLayout( new QVBoxLayout() );
     panel_->layout()->setMargin(0);
@@ -91,13 +172,9 @@ DockPanel::~DockPanel( void )
 
     // in detached mode, the panel must be explicitely deleted,
     // because it does not have the right parent
-    if( !main().parent() ) { main().deleteLater(); }
+    if( !main_->parent() ) { main_->deleteLater(); }
 
 }
-
-//___________________________________________________________
-// QSize DockPanel::minimumSizeHint( void ) const
-// { return QSize(0,0); }
 
 //___________________________________________________________
 void DockPanel::_toggleDock( void )
@@ -105,17 +182,17 @@ void DockPanel::_toggleDock( void )
 
     Debug::Throw( "DockPanel::_toggleDock.\n" );
 
-    if( !main().parent() )
+    if( !main_->parent() )
     {
 
         // change parent
-        main().setParent( this );
+        main_->setParent( this );
         layout()->addWidget( main_ );
-        main().show();
+        main_->show();
 
         // change action text
-        main().setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
-        main().updateActions( false );
+        reinterpret_cast<LocalWidget*>(main_)->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
+        reinterpret_cast<LocalWidget*>(main_)->updateActions( false );
 
         // signals
         emit attached( true );
@@ -124,26 +201,26 @@ void DockPanel::_toggleDock( void )
     } else {
 
         // change parent
-        main().setParent( 0 );
+        main_->setParent( 0 );
 
         // window flags
-        main().setFrameStyle( QFrame::NoFrame );
-        main().setWindowFlags( Qt::FramelessWindowHint|Qt::Window );
+        reinterpret_cast<LocalWidget*>(main_)->setFrameStyle( QFrame::NoFrame );
+        main_->setWindowFlags( Qt::FramelessWindowHint|Qt::Window );
 
         // move and resize
-        main().move( mapToGlobal( QPoint(0,0) ) );
+        main_->move( mapToGlobal( QPoint(0,0) ) );
 
         // pixmap and title
-        if( !pixmap_.isNull() ) main().setWindowIcon( pixmap_ );
-        if( !title_.isEmpty() ) main().setWindowTitle( title_ );
+        if( !pixmap_.isNull() ) main_->setWindowIcon( pixmap_ );
+        if( !title_.isEmpty() ) main_->setWindowTitle( title_ );
 
         // change action text
-        main().updateActions( true );
+        reinterpret_cast<LocalWidget*>(main_)->updateActions( true );
 
-        _toggleStaysOnTop( main().staysOnTopAction().isChecked() );
-        _toggleSticky( main().stickyAction().isChecked() );
+        _toggleStaysOnTop( reinterpret_cast<LocalWidget*>(main_)->staysOnTopAction().isChecked() );
+        _toggleSticky( reinterpret_cast<LocalWidget*>(main_)->stickyAction().isChecked() );
 
-        main().show();
+        main_->show();
 
         // signals
         emit attached( false );
@@ -160,23 +237,23 @@ void DockPanel::_toggleStaysOnTop( bool state )
     Debug::Throw( "DockPanel::_toggleStaysOnTop.\n" );
 
     // check that widget is top level
-    if( main().parentWidget() ) return;
+    if( main_->parentWidget() ) return;
 
     #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
-    X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
-    X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_ABOVE, state );
+    X11Util::get().changeProperty( *main_, X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
+    X11Util::get().changeProperty( *main_, X11Util::_NET_WM_STATE_ABOVE, state );
 
     #else
 
-    bool visible( !main().isHidden() );
-    if( visible ) main().hide();
+    bool visible( !main_->isHidden() );
+    if( visible ) main_->hide();
 
     // Qt implementation
-    if( state ) main().setWindowFlags( main().windowFlags() | Qt::WindowStaysOnTopHint );
-    else main().setWindowFlags( main().windowFlags() & ~Qt::WindowStaysOnTopHint );
+    if( state ) main_->setWindowFlags( main_->windowFlags() | Qt::WindowStaysOnTopHint );
+    else main_->setWindowFlags( main_->windowFlags() & ~Qt::WindowStaysOnTopHint );
 
-    if( visible ) main().show();
+    if( visible ) main_->show();
 
     #endif
 
@@ -192,18 +269,18 @@ void DockPanel::_toggleSticky( bool state )
     Debug::Throw( "DockPanel::_toggleSticky.\n" );
 
     // check that widget is top level
-    if( main().parentWidget() ) return;
+    if( main_->parentWidget() ) return;
 
     #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
     if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
     {
 
-        X11Util::get().changeProperty( main(), X11Util::_NET_WM_STATE_STICKY, state );
+        X11Util::get().changeProperty( *main_, X11Util::_NET_WM_STATE_STICKY, state );
 
     } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
 
         unsigned long desktop = X11Util::get().cardinal( X11Util::get().appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
-        X11Util::get().changeCardinal( main(), X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
+        X11Util::get().changeCardinal( *main_, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
 
     }
 
@@ -228,14 +305,14 @@ void DockPanel::_updateConfiguration( void )
     // sticky and stay on top options
     if( _hasOptionName() )
     {
-        if( XmlOptions::get().contains( _staysOnTopOptionName() ) ) main().staysOnTopAction().setChecked( XmlOptions::get().get<bool>( _staysOnTopOptionName() ) );
-        if( XmlOptions::get().contains( _stickyOptionName() ) ) main().stickyAction().setChecked( XmlOptions::get().get<bool>( _stickyOptionName() ) );
+        if( XmlOptions::get().contains( _staysOnTopOptionName() ) ) reinterpret_cast<LocalWidget*>(main_)->staysOnTopAction().setChecked( XmlOptions::get().get<bool>( _staysOnTopOptionName() ) );
+        if( XmlOptions::get().contains( _stickyOptionName() ) ) reinterpret_cast<LocalWidget*>(main_)->stickyAction().setChecked( XmlOptions::get().get<bool>( _stickyOptionName() ) );
     }
 
 }
 
 //___________________________________________________________
-DockPanel::LocalWidget::LocalWidget( QWidget* parent ):
+LocalWidget::LocalWidget( QWidget* parent ):
     QFrame( parent ),
     Counter( "LocalWidget" ),
     button_( Qt::NoButton ),
@@ -244,14 +321,15 @@ DockPanel::LocalWidget::LocalWidget( QWidget* parent ):
     _installActions();
     setContextMenuPolicy( Qt::ActionsContextMenu );
 
-    // should move to "polish"
+    #if QT_VERSION < 0x050000
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_StyledBackground);
+    #endif
 
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::updateActions( bool detached )
+void LocalWidget::updateActions( bool detached )
 {
 
     detachAction().setText( detached ? "&attach":"&detach" );
@@ -269,9 +347,9 @@ void DockPanel::hideEvent( QHideEvent* event )
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::closeEvent( QCloseEvent* event )
+void LocalWidget::closeEvent( QCloseEvent* event )
 {
-    Debug::Throw( "DockPanel::LocalWidget::closeEvent.\n" );
+    Debug::Throw( "LocalWidget::closeEvent.\n" );
     if( !parent() )
     {
         detachAction().trigger();
@@ -280,7 +358,7 @@ void DockPanel::LocalWidget::closeEvent( QCloseEvent* event )
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
+void LocalWidget::mousePressEvent( QMouseEvent* event )
 {
     button_ = event->button();
 
@@ -295,16 +373,16 @@ void DockPanel::LocalWidget::mousePressEvent( QMouseEvent* event )
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::mouseReleaseEvent( QMouseEvent* event )
+void LocalWidget::mouseReleaseEvent( QMouseEvent* event )
 {
-    Debug::Throw( "DockPanel::LocalWidget::mouseReleaseEvent.\n" );
+    Debug::Throw( "LocalWidget::mouseReleaseEvent.\n" );
     event->accept();
     _resetDrag();
     return;
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
+void LocalWidget::mouseMoveEvent( QMouseEvent* event )
 {
 
     // check button
@@ -324,18 +402,18 @@ void DockPanel::LocalWidget::mouseMoveEvent( QMouseEvent* event )
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::mouseDoubleClickEvent( QMouseEvent* event )
+void LocalWidget::mouseDoubleClickEvent( QMouseEvent* event )
 {
-    Debug::Throw( "DockPanel::LocalWidget::mouseDoubleClickEvent.\n" );
+    Debug::Throw( "LocalWidget::mouseDoubleClickEvent.\n" );
     detachAction().trigger();
     timer_.stop();
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
+void LocalWidget::timerEvent( QTimerEvent *event )
 {
 
-    Debug::Throw( "DockPanel::LocalWidget::timerEvent.\n" );
+    Debug::Throw( "LocalWidget::timerEvent.\n" );
     if( event->timerId() != timer_.timerId() ) return QFrame::timerEvent( event );
 
     timer_.stop();
@@ -346,7 +424,7 @@ void DockPanel::LocalWidget::timerEvent( QTimerEvent *event )
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::resizeEvent( QResizeEvent *event )
+void LocalWidget::resizeEvent( QResizeEvent *event )
 {
 
     QStyleHintReturnMask menuMask;
@@ -358,7 +436,7 @@ void DockPanel::LocalWidget::resizeEvent( QResizeEvent *event )
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::paintEvent( QPaintEvent *event )
+void LocalWidget::paintEvent( QPaintEvent *event )
 {
     if( parentWidget() ) return QFrame::paintEvent( event );
     else {
@@ -396,10 +474,10 @@ void DockPanel::LocalWidget::paintEvent( QPaintEvent *event )
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::_installActions( void )
+void LocalWidget::_installActions( void )
 {
 
-    Debug::Throw( "DockPanel::LocalWidget::_installActions.\n" );
+    Debug::Throw( "LocalWidget::_installActions.\n" );
 
     // detach
     addAction( detachAction_ = new QAction( "&Detach", this ) );
@@ -418,7 +496,7 @@ void DockPanel::LocalWidget::_installActions( void )
 }
 
 //___________________________________________________________
-bool DockPanel::LocalWidget::_startDrag( void )
+bool LocalWidget::_startDrag( void )
 {
 
     if( parentWidget() ) {
@@ -436,7 +514,7 @@ bool DockPanel::LocalWidget::_startDrag( void )
 }
 
 //___________________________________________________________
-void DockPanel::LocalWidget::_resetDrag( void )
+void LocalWidget::_resetDrag( void )
 {
     unsetCursor();
     button_ = Qt::NoButton;
