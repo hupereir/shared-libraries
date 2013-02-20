@@ -112,4 +112,8 @@ ErrorHandler::ErrorHandler( void )
     disableMessage( "warning: Couldn't resolve property" );
     disableMessage( "QProcess: Destroyed while process is still running" );
 
+    // QT5 specific messages
+    disableMessage( "QBackingStore::flush() called with non-exposed window" );
+    disableMessage( "QXcbClipboard: SelectionRequest too old" );
+
 }
