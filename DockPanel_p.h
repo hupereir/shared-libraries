@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "MultipleClickCounter.h"
 
 #include <QBasicTimer>
 #include <QEvent>
@@ -68,9 +69,6 @@ class LocalWidget: public QFrame, public Counter
     //! mouse move event [overloaded]
     virtual void mouseMoveEvent( QMouseEvent* );
 
-    //! mouse move event [overloaded]
-    virtual void 	mouseDoubleClickEvent(QMouseEvent* );
-
     //! timer event [overloaded]
     virtual void timerEvent( QTimerEvent* );
 
@@ -91,6 +89,9 @@ class LocalWidget: public QFrame, public Counter
     //! actions
     void _installActions( void );
 
+    //!@name actions
+    //@{
+
     //! attach/detach action
     QAction* detachAction_;
 
@@ -99,6 +100,11 @@ class LocalWidget: public QFrame, public Counter
 
     //! make window sticky
     QAction* stickyAction_;
+
+    //@}
+
+    //! multiple click counter
+    MultipleClickCounter clickCounter_;
 
     //! button state
     Qt::MouseButton button_;

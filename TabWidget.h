@@ -26,6 +26,7 @@
 
 #include "Counter.h"
 #include "Debug.h"
+#include "MultipleClickCounter.h"
 
 #include <QAction>
 #include <QBasicTimer>
@@ -102,9 +103,6 @@ class TabWidget: public QWidget, public Counter
 
     //! mouse move event [overloaded]
     virtual void mouseReleaseEvent( QMouseEvent* );
-
-    //! mouse move event [overloaded]
-    virtual void mouseDoubleClickEvent( QMouseEvent* );
 
     //! timer event [overloaded]
     virtual void timerEvent( QTimerEvent* );
@@ -189,6 +187,9 @@ class TabWidget: public QWidget, public Counter
     //! index in parent tab
     int index_;
 
+    //!@name actions
+    //@{
+
     //! attach/detach action
     QAction* detachAction_;
 
@@ -197,6 +198,10 @@ class TabWidget: public QWidget, public Counter
 
     //! make window sticky
     QAction* stickyAction_;
+
+    //@}
+
+    MultipleClickCounter clickCounter_;
 
     //! button state
     Qt::MouseButton button_;

@@ -79,7 +79,7 @@ TextEditor::TextEditor( QWidget *parent ):
     boxSelection_( this ),
     cursorMonitor_( viewport() ),
     removeLineBuffer_( this ),
-    clickCounter_( this ),
+    clickCounter_( this, 4 ),
     modifiers_( ModifierNone )
 {
 

@@ -229,9 +229,18 @@ void DockPanel::_updateConfiguration( void )
 }
 
 //___________________________________________________________
+void DockPanel::hideEvent( QHideEvent* event )
+{
+    Debug::Throw( "DockPanel::hideEvent.\n" );
+    emit visibilityChanged( false );
+    QWidget::hideEvent( event );
+}
+
+//___________________________________________________________
 LocalWidget::LocalWidget( QWidget* parent ):
     QFrame( parent ),
     Counter( "LocalWidget" ),
+    clickCounter_( this, 2 ),
     button_( Qt::NoButton ),
     isDragging_( false )
 {
@@ -255,14 +264,6 @@ void LocalWidget::updateActions( bool detached )
 }
 
 //___________________________________________________________
-void DockPanel::hideEvent( QHideEvent* event )
-{
-    Debug::Throw( "DockPanel::hideEvent.\n" );
-    emit visibilityChanged( false );
-    QWidget::hideEvent( event );
-}
-
-//___________________________________________________________
 void LocalWidget::closeEvent( QCloseEvent* event )
 {
     Debug::Throw( "LocalWidget::closeEvent.\n" );
@@ -276,7 +277,7 @@ void LocalWidget::closeEvent( QCloseEvent* event )
 //___________________________________________________________
 void LocalWidget::mousePressEvent( QMouseEvent* event )
 {
-    Debug::Throw( 0, "LocalWidget::mousePressEvent.\n" );
+    Debug::Throw( "LocalWidget::mousePressEvent.\n" );
     button_ = event->button();
 
     if( button_ == Qt::LeftButton )
@@ -285,6 +286,15 @@ void LocalWidget::mousePressEvent( QMouseEvent* event )
         isDragging_ = false;
         dragPosition_ = event->pos();
         timer_.start( QApplication::doubleClickInterval(), this );
+
+        // handle multiple clicks
+        clickCounter_.increment();
+        if( clickCounter_.counts() == 2 )
+        {
+            detachAction().trigger();
+            timer_.stop();
+        }
+
     }
     return;
 }
@@ -316,14 +326,6 @@ void LocalWidget::mouseMoveEvent( QMouseEvent* event )
     if( !_startDrag() )
     { move( event->globalPos() - dragPosition_ ); }
 
-}
-
-//___________________________________________________________
-void LocalWidget::mouseDoubleClickEvent( QMouseEvent* event )
-{
-    Debug::Throw( "LocalWidget::mouseDoubleClickEvent.\n" );
-    detachAction().trigger();
-    timer_.stop();
 }
 
 //___________________________________________________________
@@ -424,6 +426,8 @@ bool LocalWidget::_startDrag( void )
     } else if( !isDragging_ ) {
 
         isDragging_ = true;
+
+        #if QT_VERSION < 0x050000
         if( X11Util::get().moveWidget( *this, mapToGlobal( dragPosition_ ) ) )
         {
 
@@ -431,6 +435,15 @@ bool LocalWidget::_startDrag( void )
             return true;
 
         } else return false;
+        #else
+        /*
+        moving via XEvents is broken in Qt5.0,
+        because one does not recieve a mouseRelease event at the end,
+        and the next mousePress is therefore ignored.
+        Trying to send a dummy mouseReleaseEvent does not cure the issue
+        */
+        return false;
+        #endif
 
     } else return false;
 

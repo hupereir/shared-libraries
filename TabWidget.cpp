@@ -42,14 +42,18 @@ TabWidget::TabWidget( QTabWidget* parent ):
     parent_( parent ),
     sizeGrip_( 0 ),
     index_( 0 ),
+    clickCounter_( this, 2 ),
     button_( Qt::NoButton ),
     isDragging_( false )
 {
 
     Debug::Throw( "TabWidget::TabWidget.\n" );
 
+    #if QT_VERSION < 0x050000
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_StyledBackground);
+    #endif
+
     setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
 
     // grid layout to overlay main layout and invisible grip
@@ -226,6 +230,15 @@ void TabWidget::mousePressEvent( QMouseEvent* event )
         isDragging_ = false;
         dragPosition_ = event->pos();
         timer_.start( QApplication::doubleClickInterval(), this );
+
+        // handle multiple clicks
+        clickCounter_.increment();
+        if( clickCounter_.counts() == 2 )
+        {
+            detachAction().trigger();
+            timer_.stop();
+        }
+
     }
 
     return;
@@ -259,14 +272,6 @@ void TabWidget::mouseMoveEvent( QMouseEvent* event )
     if( !_startDrag() )
     { move( event->globalPos() - dragPosition_ ); }
 
-}
-
-//___________________________________________________________
-void TabWidget::mouseDoubleClickEvent( QMouseEvent* event )
-{
-    Debug::Throw( "TabWidget::mouseDoubleClickEvent.\n" );
-    detachAction().trigger();
-    timer_.stop();
 }
 
 //___________________________________________________________
@@ -368,7 +373,24 @@ bool TabWidget::_startDrag( void )
     } else if( !isDragging_ ) {
 
         isDragging_ = true;
-        return X11Util::get().moveWidget( *this, mapToGlobal( dragPosition_ ) );
+
+        #if QT_VERSION < 0x050000
+        if( X11Util::get().moveWidget( *this, mapToGlobal( dragPosition_ ) ) )
+        {
+
+            _resetDrag();
+            return true;
+
+        } else return false;
+        #else
+        /*
+        moving via XEvents is broken in Qt5.0,
+        because one does not recieve a mouseRelease event at the end,
+        and the next mousePress is therefore ignored.
+        Trying to send a dummy mouseReleaseEvent does not cure the issue
+        */
+        return false;
+        #endif
 
     } else return false;
 

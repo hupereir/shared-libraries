@@ -45,11 +45,12 @@ class MultipleClickCounter: public QObject, public Counter
     public:
 
     //! constructor
-    MultipleClickCounter( QObject* parent ):
+    MultipleClickCounter( QObject* parent, int maxCount ):
         QObject( parent ),
         Counter( "MultipleClickCounter" ),
         toReset_( true ),
         position_( 0 ),
+        maxCount_( maxCount ),
         count_( 0 )
     {
         Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" );
@@ -81,7 +82,7 @@ class MultipleClickCounter: public QObject, public Counter
             // same position in text
             // increment, check against maximum
             count_++;
-            if( count_ > MAX_COUNT ) count_ = 1;
+            if( count_ > maxCount_ ) count_ = 1;
 
         }
 
@@ -107,9 +108,6 @@ class MultipleClickCounter: public QObject, public Counter
 
     private:
 
-    //! max number of clicks
-    enum {MAX_COUNT = 4};
-
     //! timer
     QBasicTimer timer_;
 
@@ -118,6 +116,9 @@ class MultipleClickCounter: public QObject, public Counter
 
     //! last click position in text
     int position_;
+
+    //! max count
+    unsigned int maxCount_;
 
     //! current number of clicks
     unsigned int count_;
