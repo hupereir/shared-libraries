@@ -22,6 +22,7 @@
 *******************************************************************************/
 
 #include "DockPanel.h"
+#include "DockPanel_p.h"
 
 #include "Debug.h"
 #include "File.h"
@@ -36,90 +37,6 @@
 #include <QStyleOptionMenuItem>
 #include <QStyleOptionDockWidget>
 #include <QStyleOptionFrame>
-
-//! local widget to implement close_event of the content
-class LocalWidget: public QFrame, public Counter
-{
-
-    public:
-
-    //! constructor
-    LocalWidget( QWidget* parent );
-
-    //! update actions
-    void updateActions( bool );
-
-    //! detach action
-    QAction& detachAction( void ) const
-    { return *detachAction_; }
-
-    //! stay on top
-    QAction& staysOnTopAction( void ) const
-    { return *staysOnTopAction_; }
-
-    //! widget is hidden from taskbar
-    QAction& stickyAction( void ) const
-    { return *stickyAction_; }
-
-    protected:
-
-    //! closeEvent
-    virtual void closeEvent( QCloseEvent* event );
-
-    //! mouse press event [overloaded]
-    virtual void mousePressEvent( QMouseEvent* );
-
-    //! mouse move event [overloaded]
-    virtual void mouseMoveEvent( QMouseEvent* );
-
-    //! mouse move event [overloaded]
-    virtual void mouseReleaseEvent( QMouseEvent* );
-
-    //! mouse move event [overloaded]
-    virtual void mouseDoubleClickEvent( QMouseEvent* );
-
-    //! timer event [overloaded]
-    virtual void timerEvent( QTimerEvent* );
-
-    //! paint event
-    virtual void resizeEvent( QResizeEvent* );
-
-    //! paint event
-    virtual void paintEvent( QPaintEvent* );
-
-    //! start drag
-    bool _startDrag( void );
-
-    //! reset drag
-    void _resetDrag( void );
-
-    private:
-
-    //! actions
-    void _installActions( void );
-
-    //! attach/detach action
-    QAction* detachAction_;
-
-    //! stay on top
-    QAction* staysOnTopAction_;
-
-    //! make window sticky
-    QAction* stickyAction_;
-
-    //! button state
-    Qt::MouseButton button_;
-
-    //! move timer
-    QBasicTimer timer_;
-
-    //! click position
-    QPoint dragPosition_;
-
-    //! dragging
-    bool isDragging_;
-
-};
 
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent ):
@@ -320,7 +237,6 @@ LocalWidget::LocalWidget( QWidget* parent ):
 {
     _installActions();
     setContextMenuPolicy( Qt::ActionsContextMenu );
-
     #if QT_VERSION < 0x050000
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_StyledBackground);
@@ -360,6 +276,7 @@ void LocalWidget::closeEvent( QCloseEvent* event )
 //___________________________________________________________
 void LocalWidget::mousePressEvent( QMouseEvent* event )
 {
+    Debug::Throw( 0, "LocalWidget::mousePressEvent.\n" );
     button_ = event->button();
 
     if( button_ == Qt::LeftButton )
@@ -507,7 +424,13 @@ bool LocalWidget::_startDrag( void )
     } else if( !isDragging_ ) {
 
         isDragging_ = true;
-        return X11Util::get().moveWidget( *this, mapToGlobal( dragPosition_ ) );
+        if( X11Util::get().moveWidget( *this, mapToGlobal( dragPosition_ ) ) )
+        {
+
+            _resetDrag();
+            return true;
+
+        } else return false;
 
     } else return false;
 
