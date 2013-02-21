@@ -56,31 +56,32 @@ CustomDialog( parent )
 
     // file list
     mainLayout().addWidget( list_ = new TreeView( this ), 1 );
-    _list().setModel( &model_ );
-    _list().sortByColumn( FileRecordModel::FILE );
-    _list().setSelectionMode( QAbstractItemView::MultiSelection );
-    _list().setMask(
+    list_->setModel( &model_ );
+    list_->sortByColumn( FileRecordModel::FILE );
+    list_->setSelectionMode( QAbstractItemView::MultiSelection );
+    list_->setMask(
         (1<<FileRecordModel::FILE)|
         (1<<FileRecordModel::PATH) );
+    list_->setItemMargin( 2 );
 
     model_.add( files );
     model_.sort( FileRecordModel::FILE, Qt::DescendingOrder );
-    _list().resizeColumns();
-    _list().selectAll();
+    list_->resizeColumns();
+    list_->selectAll();
 
     // deselect all
     buttonLayout().insertWidget( 0, clearSelectionButton_ = new QPushButton( "&Clear Selection", this ) );
     clearSelectionButton_->setToolTip( "Deselect all files in list" );
-    connect( clearSelectionButton_, SIGNAL( clicked() ), _list().selectionModel(), SLOT( clear() ) );
+    connect( clearSelectionButton_, SIGNAL( clicked() ), list_->selectionModel(), SLOT( clear() ) );
 
     // select all
     QPushButton* button;
     buttonLayout().insertWidget( 0, button = new QPushButton( "&Select All", this ) );
     button->setToolTip( "Select all files in list" );
-    connect( button, SIGNAL( clicked() ), &_list(), SLOT( selectAll() ) );
+    connect( button, SIGNAL( clicked() ), list_, SLOT( selectAll() ) );
 
     // connection
-    connect( _list().selectionModel(), SIGNAL( selectionChanged(const QItemSelection &, const QItemSelection &) ), SLOT( _updateButtons() ) );
+    connect( list_->selectionModel(), SIGNAL( selectionChanged(const QItemSelection &, const QItemSelection &) ), SLOT( _updateButtons() ) );
     _updateButtons();
 
     // customize dialog buttons
@@ -96,13 +97,13 @@ CustomDialog( parent )
 
 //____________________________________________________________________________
 FileRecordModel::List ScratchFileRemoveDialog::selectedFiles( void ) const
-{ return _model().get( _list().selectionModel()->selectedRows() ); }
+{ return model_.get( list_->selectionModel()->selectedRows() ); }
 
 //____________________________________________________________________
 void ScratchFileRemoveDialog::_updateButtons( void )
 {
     Debug::Throw( "ScratchFileRemoveDialog::_updateButtons.\n" );
-    bool has_selection( !_list().selectionModel()->selectedRows().empty() );
+    bool has_selection( !list_->selectionModel()->selectedRows().empty() );
     clearSelectionButton_->setEnabled( has_selection );
     okButton().setEnabled( has_selection );
 }

@@ -48,20 +48,6 @@ class ScratchFileRemoveDialog: public CustomDialog
     // return selected files
     FileRecordModel::List selectedFiles( void ) const;
 
-    protected:
-
-    //! list
-    TreeView& _list() const
-    { return *list_; }
-
-    //! model
-    const FileRecordModel& _model() const
-    { return model_; }
-
-    //! model
-    FileRecordModel& _model()
-    { return model_; }
-
     protected slots:
 
     //! update button states
