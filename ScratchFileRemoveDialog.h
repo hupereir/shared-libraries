@@ -51,9 +51,15 @@ class ScratchFileRemoveDialog: public CustomDialog
     protected slots:
 
     //! update button states
-    virtual void _updateButtons( void );
+    virtual void _updateActions( void );
+
+    //! context menu
+    virtual void _updateContextMenu( const QPoint& );
 
     private:
+
+    //! install actions
+    void _installActions( void );
 
     //! list of files
     TreeView* list_;
@@ -61,8 +67,11 @@ class ScratchFileRemoveDialog: public CustomDialog
     //! model
     FileRecordModel model_;
 
-    //! clear selection button
-    QPushButton* clearSelectionButton_;
+    //!@name actions
+    //@{
+    QAction* selectAllAction_;
+    QAction* clearSelectionAction_;
+    //@}
 
 };
 

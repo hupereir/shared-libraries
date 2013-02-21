@@ -21,13 +21,17 @@
 
 #include "ScratchFileRemoveDialog.h"
 
+#include "BaseContextMenu.h"
 #include "BaseIcons.h"
+#include "ColumnSelectionMenu.h"
+#include "ColumnSortingMenu.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 
 #include <QLabel>
+#include <QHeaderView>
 
 //____________________________________________________________________________
 ScratchFileRemoveDialog::ScratchFileRemoveDialog( QWidget* parent, const FileRecordModel::List& files ):
@@ -59,9 +63,12 @@ CustomDialog( parent )
     list_->setModel( &model_ );
     list_->sortByColumn( FileRecordModel::FILE );
     list_->setSelectionMode( QAbstractItemView::MultiSelection );
+    list_->setContextMenuPolicy( Qt::CustomContextMenu );
     list_->setMask(
         (1<<FileRecordModel::FILE)|
         (1<<FileRecordModel::PATH) );
+    list_->showHeaderAction().setChecked( false );
+    list_->setOptionName( "SCRATCH_FILE_LIST" );
     list_->setItemMargin( 2 );
 
     model_.add( files );
@@ -69,20 +76,13 @@ CustomDialog( parent )
     list_->resizeColumns();
     list_->selectAll();
 
-    // deselect all
-    buttonLayout().insertWidget( 0, clearSelectionButton_ = new QPushButton( "&Clear Selection", this ) );
-    clearSelectionButton_->setToolTip( "Deselect all files in list" );
-    connect( clearSelectionButton_, SIGNAL( clicked() ), list_->selectionModel(), SLOT( clear() ) );
+    // actions
+    _installActions();
 
-    // select all
-    QPushButton* button;
-    buttonLayout().insertWidget( 0, button = new QPushButton( "&Select All", this ) );
-    button->setToolTip( "Select all files in list" );
-    connect( button, SIGNAL( clicked() ), list_, SLOT( selectAll() ) );
-
-    // connection
-    connect( list_->selectionModel(), SIGNAL( selectionChanged(const QItemSelection &, const QItemSelection &) ), SLOT( _updateButtons() ) );
-    _updateButtons();
+    // connections
+    connect( list_, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _updateContextMenu( const QPoint& ) ) );
+    connect( list_->selectionModel(), SIGNAL( selectionChanged(const QItemSelection &, const QItemSelection &) ), SLOT( _updateActions() ) );
+    _updateActions();
 
     // customize dialog buttons
     okButton().setText( "&Remove" );
@@ -100,10 +100,49 @@ FileRecordModel::List ScratchFileRemoveDialog::selectedFiles( void ) const
 { return model_.get( list_->selectionModel()->selectedRows() ); }
 
 //____________________________________________________________________
-void ScratchFileRemoveDialog::_updateButtons( void )
+void ScratchFileRemoveDialog::_updateActions( void )
 {
-    Debug::Throw( "ScratchFileRemoveDialog::_updateButtons.\n" );
-    bool has_selection( !list_->selectionModel()->selectedRows().empty() );
-    clearSelectionButton_->setEnabled( has_selection );
-    okButton().setEnabled( has_selection );
+    Debug::Throw( "ScratchFileRemoveDialog::_updateActions.\n" );
+    bool hasSelection( !list_->selectionModel()->selectedRows().empty() );
+    clearSelectionAction_->setEnabled( hasSelection );
+    okButton().setEnabled( hasSelection );
+}
+
+//____________________________________________________________________
+void ScratchFileRemoveDialog::_updateContextMenu( const QPoint& position )
+{
+
+    Debug::Throw( "ScratchFileRemoveDialog::_updateContextMenu.\n" );
+
+    BaseContextMenu menu( list_ );
+    menu.setHideDisabledActions( true );
+
+    menu.addAction( &list_->showHeaderAction() );
+    if( !list_->showHeaderAction().isChecked() )
+    {
+        menu.addMenu( new ColumnSelectionMenu( &menu, list_ ) );
+        menu.addMenu( new ColumnSortingMenu( &menu, list_ ) );
+    }
+
+    // new folder
+    menu.addSeparator();
+    menu.addAction( selectAllAction_ );
+    menu.addAction( clearSelectionAction_ );
+
+    // execute
+    menu.exec( list_->viewport()->mapToGlobal( position ) );
+
+}
+
+//____________________________________________________________________
+void ScratchFileRemoveDialog::_installActions( void )
+{
+    // deselect all
+    addAction( clearSelectionAction_ = new QAction( "Clear Selection", this ) );
+    connect( clearSelectionAction_, SIGNAL( triggered( void ) ), list_->selectionModel(), SLOT( clear( void ) ) );
+
+    // select all
+    addAction( selectAllAction_ = new QAction( "&Select All", this ) );
+    connect( selectAllAction_, SIGNAL( triggered( void ) ), list_, SLOT( selectAll( void ) ) );
+
 }
