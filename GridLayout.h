@@ -107,6 +107,21 @@ class GridLayout: public QGridLayout, public Counter
         _increment();
     }
 
+    //! add layout
+    void addLayout( QLayout* layout, int row, int column, Qt::Alignment alignment = 0 )
+    { GridLayout::addLayout( layout, row, column, 1, 1, alignment ); }
+
+    //! add layout
+    void addLayout( QLayout* layout, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
+    {
+        Q_ASSERT( rowSpan > 0 );
+        Q_ASSERT( columnSpan > 0 );
+        if( alignment == 0 && _boundCheck( column ) && columnSpan == 1 ) alignment = columnAlignments_[column];
+        QGridLayout::addLayout( layout, row, column, rowSpan, columnSpan, alignment );
+        setLocation( row+rowSpan-1, column+columnSpan-1 );
+        _increment();
+    }
+
     //! add widget
     void addLayout( QLayout* layout, Qt::Alignment alignment = 0 )
     {
