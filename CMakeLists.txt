@@ -74,6 +74,7 @@ SET( base_qt_SOURCES
   Color.cpp
   ColorDisplay.cpp
   ColorGrabButton.cpp
+  ColorGrabObject.cpp
   ColorMenu.cpp
   ColumnSelectionMenu.cpp
   ColumnSortingMenu.cpp
@@ -193,6 +194,7 @@ SET( base_qt_HEADERS
   BusyWidget.h
   ColorDisplay.h
   ColorGrabButton.h
+  ColorGrabObject.h
   ColorMenu.h
   ColumnSelectionMenu.h
   ColumnSortingMenu.h
