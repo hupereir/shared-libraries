@@ -23,120 +23,14 @@
 
 
 #include "ColorGrabButton.h"
+#include "ColorGrabObject.h"
 #include "Debug.h"
-
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QCursor>
-#include <QMouseEvent>
-
-#if QT_VERSION >= 0x050000
-#include <QScreen>
-#endif
 
 //______________________________________________
 ColorGrabButton::ColorGrabButton( QWidget* parent ):
     QToolButton( parent ),
-    Counter( "ColorGrabButton" ),
-    locked_( false ),
-    mouseDown_( false )
+    Counter( "ColorGrabButton" )
 {
-    Debug::Throw( "ColorGrabButton::ColorGrabButton.\n" );
-    connect( this, SIGNAL( clicked( void ) ), SLOT( _grabColor( void ) ) );
-}
-
-
-//________________________________________________________
-void ColorGrabButton::_grabColor( void )
-{
-
-    Debug::Throw( "ColorGrabButton::_grabColor.\n" );
-
-    #if QT_VERSION >= 0x050000
-    // need to explicitely override cursor for Qt5
-    qApp->setOverrideCursor( Qt::CrossCursor );
-    #endif
-
-    grabMouse(Qt::CrossCursor);
-    locked_ = true;
-
-}
-
-//_____________________________________________________________
-void ColorGrabButton::mousePressEvent( QMouseEvent *event )
-{
-    Debug::Throw( "ColorGrabButton::mousePressEvent.\n" );
-
-    // check button
-    if( event->button() != Qt::LeftButton ) return QToolButton::mousePressEvent( event );
-
-    // do nothing if mouse is not locked
-    if( !locked_ ) return QToolButton::mousePressEvent( event );
-
-    // do nothing if mouse is already down
-    if( mouseDown_ ) return;
-    mouseDown_ = true;
-
-}
-
-//_____________________________________________________________
-void ColorGrabButton::mouseReleaseEvent( QMouseEvent *event )
-{
-
-    Debug::Throw( "ColorGrabButton::mouseReleaseEvent.\n" );
-
-    // do nothing if mouse is not locked
-    if( !locked_ ) return QToolButton::mouseReleaseEvent( event );
-
-    // check button
-    if( event->button() == Qt::LeftButton && mouseDown_ )
-    {
-        // get color under mouse
-        _selectColorFromMouseEvent( event );
-    }
-
-    mouseDown_ = false;
-    locked_ = false;
-    releaseMouse();
-
-    #if QT_VERSION >= 0x050000
-    // need to explicitely release cursor for Qt5
-    qApp->restoreOverrideCursor();
-    #endif
-
-
-}
-
-//_____________________________________________________________
-void ColorGrabButton::mouseMoveEvent( QMouseEvent *event )
-{
-
-    Debug::Throw( "ColorGrabButton::mouseMoveEvent.\n" );
-
-    // do nothing if mouse is not locked
-    if( !( locked_ && mouseDown_ ) ) return QToolButton::mouseMoveEvent( event );
-    _selectColorFromMouseEvent( event );
-
-}
-
-//_____________________________________________________________
-void ColorGrabButton::_selectColorFromMouseEvent( QMouseEvent *event )
-{
-    Debug::Throw() << "ColorGrabButton::_selectColorFromMouseEvent - (" << event->globalX() << "," << event->globalY() << ")" << endl;
-
-    // grab desktop window under cursor
-    // convert to image.
-    #if QT_VERSION >= 0x050000
-    QImage image( QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
-    #else
-    QImage image( QPixmap::grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
-    #endif
-
-    // ensure image is deep enough
-    if (image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
-
-    // assign color to the selection frame
-    emit colorSelected( QColor( image.pixel( 1, 1 ) ).name() );
-
-    return;
+    ColorGrabObject* object = new ColorGrabObject( this );
+    connect( object, SIGNAL( colorSelected( QString ) ), this, SIGNAL( colorSelected( QString ) ) );
 }

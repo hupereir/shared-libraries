@@ -1,5 +1,5 @@
-#ifndef ColorGrabButton_h
-#define ColorGrabButton_h
+#ifndef ColorGrabObject_h
+#define ColorGrabObject_h
 
 // $Id$
 /******************************************************************************
@@ -25,10 +25,10 @@
 
 #include "Counter.h"
 
-#include <QToolButton>
+#include <QWidget>
+#include <QEvent>
 
-//! used to pick color from screen
-class ColorGrabButton : public QToolButton, public Counter
+class ColorGrabObject: public QObject, public Counter
 {
 
     Q_OBJECT
@@ -36,15 +36,43 @@ class ColorGrabButton : public QToolButton, public Counter
     public:
 
     //! constructor
-    ColorGrabButton( QWidget* );
+    ColorGrabObject( QWidget* );
 
     //! destructor
-    virtual ~ColorGrabButton( void )
+    virtual ~ColorGrabObject( void )
     {}
+
+    //! event filter
+    virtual bool eventFilter( QObject*, QEvent* );
 
     signals:
 
     void colorSelected( QString );
+
+    protected slots:
+
+    void _grabColor( void );
+
+    protected:
+
+    //! mouse press event [overloaded]
+    virtual bool _mousePressEvent( QMouseEvent* );
+
+    //! mouse release event [overloaded]
+    virtual bool _mouseReleaseEvent( QMouseEvent* );
+
+    //! mouse move event [overloaded]
+    virtual bool _mouseMoveEvent( QMouseEvent* );
+
+    private:
+
+    void _selectColorFromMouseEvent( QMouseEvent* );
+
+    //! is set to true when colorgrab is activated
+    bool locked_;
+
+    //! is true when the mouse is down
+    bool mouseDown_;
 
 };
 
