@@ -158,7 +158,7 @@ void ColorDisplay::LocalLineEdit::setColor( QColor color )
     }
 
     // retrieve palette, change background/foreground
-    QPalette palette( ColorDisplay::LocalLineEdit::palette() );
+    QPalette palette( this->palette() );
     palette.setColor( QPalette::Active, QPalette::Base, color );
     palette.setColor( QPalette::Active, QPalette::Text, (color.value() >= 175) ? Qt::black:Qt::white );
 
