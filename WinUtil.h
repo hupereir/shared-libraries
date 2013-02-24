@@ -40,8 +40,8 @@ class WinUtil
     //! update layered widget using pixmap
     void update( QPixmap&, double ) const;
 
-    //! toggle hide from taskbar for Windows
-    bool toggleHideFromTaskbar( bool ) const;
+    //! toggle hide from taskBar for Windows
+    bool toggleHideFromTaskBar( bool ) const;
 
     //! set flag
     void setFlag( long int, bool value = true ) const;

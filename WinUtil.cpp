@@ -72,7 +72,7 @@ void WinUtil::update( QPixmap& pixmap, double opacity ) const
 }
 
 //_______________________________________
-bool WinUtil::toggleHideFromTaskbar( bool state ) const
+bool WinUtil::toggleHideFromTaskBar( bool state ) const
 {
 
     #if defined(Q_OS_WIN)

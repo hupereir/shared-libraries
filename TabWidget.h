@@ -78,7 +78,7 @@ class TabWidget: public QWidget, public Counter
     QAction& staysOnTopAction( void ) const
     { return *staysOnTopAction_; }
 
-    //! widget is hidden from taskbar
+    //! widget is hidden from taskBar
     QAction& stickyAction( void ) const
     { return *stickyAction_; }
 
