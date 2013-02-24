@@ -51,7 +51,7 @@ class LocalWidget: public QFrame, public Counter
     QAction& staysOnTopAction( void ) const
     { return *staysOnTopAction_; }
 
-    //! widget is hidden from taskBar
+    //! widget is hidden from taskbar
     QAction& stickyAction( void ) const
     { return *stickyAction_; }
 
