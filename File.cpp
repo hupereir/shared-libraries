@@ -148,17 +148,17 @@ qint64 File::fileSize( void ) const
 //_____________________________________________________________________
 QString File::sizeString( qint64 sizeInt )
 {
-    qreal size = sizeInt;
-    if( size < 0 ) return "-";
+    if( sizeInt < 0 ) return QString();
+    if( sizeInt == 0 ) return "0";
 
-    static const QString unit[] = {
+    qreal size = sizeInt;
+    static const QString unit[] =
+    {
         "B",
         "KiB",
         "MiB",
         "GiB"
     };
-
-    if( size == 0 ) return "0";
 
     int power = log( size )/log( 1024 );
     QString out;
@@ -174,6 +174,21 @@ QString File::sizeString( qint64 sizeInt )
 
     return out.trimmed() + " " + unit[power];
 
+}
+
+//_____________________________________________________________________
+QString File::rawSizeString( qint64 sizeInt )
+{
+    if( sizeInt < 0 ) return QString();
+    if( sizeInt == 0 ) return "0";
+
+    // format size to have space characters every three digits
+    QString out = QString().setNum( sizeInt );
+    int length( out.length() );
+    for( int i = 1; i < length; i++ )
+    { if( !(i%3) ) out.insert( out.size() - (i + i/3 - 1), ' ' ); }
+
+    return out;
 }
 
 //_____________________________________________________________________

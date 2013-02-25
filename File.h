@@ -113,6 +113,9 @@ class File: public QString
     //! file size (string version)
     static QString sizeString( qint64 );
 
+    //! raw file size
+    static QString rawSizeString( qint64 );
+
     //! tells if a file exists
     virtual bool exists( void ) const;
 
