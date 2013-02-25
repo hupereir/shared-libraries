@@ -56,7 +56,27 @@ class BaseToolTipWidget: public QWidget, public Counter
 
     //! set index rect
     void setIndexRect( const QRect& rect )
-    { rect_ = rect; }
+    {
+        rect_ = rect;
+        if( isVisible() ) _adjustPosition();
+    }
+
+    //! preferred position
+    enum Position
+    {
+        Left,
+        Right,
+        Top,
+        Bottom
+    };
+
+    //! preferred position
+    void setPreferredPosition( Position value )
+    {
+        if( preferredPosition_ == value ) return;
+        preferredPosition_ = value;
+        if( isVisible() ) _adjustPosition();
+    }
 
     // event filter
     virtual bool eventFilter( QObject*, QEvent* );
@@ -101,6 +121,9 @@ class BaseToolTipWidget: public QWidget, public Counter
 
     //! follow mouse
     bool followMouse_;
+
+    //! prefered tooltip position with respect to index rect
+    Position preferredPosition_;
 
     //! index rect
     QRect rect_;

@@ -42,7 +42,8 @@ BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
     QWidget( parent, Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint ),
     Counter( "BaseToolTipWidget" ),
     enabled_( false ),
-    followMouse_( false )
+    followMouse_( false ),
+    preferredPosition_( Bottom )
 {
 
     Debug::Throw( "BaseToolTipWidget::BaseToolTipWidget.\n" );
@@ -166,6 +167,7 @@ void BaseToolTipWidget::_adjustPosition( void )
 {
 
     // get tooltip size
+    adjustSize();
     const QSize size( sizeHint() );
 
     // desktop size
@@ -173,17 +175,48 @@ void BaseToolTipWidget::_adjustPosition( void )
     QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( parentWidget() ) ) );
 
     // set geometry
-    int left = followMouse_ ?
-        QCursor::pos().x():
-        rect_.left() + ( rect_.width() - size.width() )/2;
-
-    left = qMax( left, desktopGeometry.left() );
-    left = qMin( left, desktopGeometry.right() - size.width() );
-
-    // first try placing widget below item
+    int top(0);
+    int left(0);
     const int margin = 5;
-    int top = rect_.bottom() + margin;
-    if( top > desktopGeometry.bottom() - size.height() ) top = rect_.top() - margin - size.height();
+    if( preferredPosition_ == Top || preferredPosition_ == Bottom )
+    {
+        left = followMouse_ ? QCursor::pos().x():rect_.left() + ( rect_.width() - size.width() )/2;
+        left = qMax( left, desktopGeometry.left() );
+        left = qMin( left, desktopGeometry.right() - size.width() );
+
+        if( preferredPosition_ == Bottom )
+        {
+
+            top = rect_.bottom() + margin;
+            if( top > desktopGeometry.bottom() - size.height() ) top = rect_.top() - margin - size.height();
+
+        } else {
+
+            top = rect_.top() - margin - size.height();
+            if( top < desktopGeometry.top() ) top = rect_.bottom() + margin;
+
+        }
+
+    } else {
+
+        top = followMouse_ ? QCursor::pos().y():rect_.top() + ( rect_.height() - size.height() )/2;
+        top = qMax( top, desktopGeometry.top() );
+        top = qMin( top, desktopGeometry.bottom() - size.height() );
+
+        if( preferredPosition_ == Right )
+        {
+
+            left = rect_.right()+margin;
+            if( left > desktopGeometry.right() - size.width() ) left = rect_.left() - margin - size.width();
+
+        } else {
+
+            left = rect_.left() - margin - size.width();
+            if( left < desktopGeometry.left() ) left = rect_.right()+margin;
+
+        }
+
+    }
 
     move( QPoint( left, top ) );
 
