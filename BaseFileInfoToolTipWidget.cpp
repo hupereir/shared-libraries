@@ -39,24 +39,12 @@
 
 //_______________________________________________________
 BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
-    QWidget( parent, Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint ),
-    Counter( "BaseFileInfoToolTipWidget" ),
-    enabled_( false ),
-    followMouse_( false ),
+    BaseToolTipWidget( parent ),
     pixmapSize_( 96 ),
     mask_( Default )
 {
 
     Debug::Throw( "BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n" );
-    setAttribute( Qt::WA_TranslucentBackground, true );
-
-    // event filter on parent
-    if( parent ) parent->installEventFilter( this );
-
-    // change palete
-    setPalette( QToolTip::palette() );
-    setBackgroundRole( QPalette::ToolTipBase );
-    setForegroundRole( QPalette::ToolTipText );
 
     // layout
     QHBoxLayout* hLayout = new QHBoxLayout();
@@ -107,20 +95,6 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
     _updateConfiguration();
-
-}
-
-//_____________________________________________
-void BaseFileInfoToolTipWidget::setEnabled( bool value )
-{
-    Debug::Throw( "BaseFileInfoToolTipWidget::setEnabled.\n" );
-    if( enabled_ == value ) return;
-    enabled_ = value;
-    if( !enabled_ )
-    {
-        if( isVisible() ) hide();
-        timer_.stop();
-    }
 
 }
 
@@ -196,124 +170,10 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
 
 }
 
-//_______________________________________________________
-bool BaseFileInfoToolTipWidget::eventFilter( QObject* object, QEvent* event )
-{
-
-    if( object != parent() ) return QWidget::eventFilter( object, event );
-    switch( event->type() )
-    {
-        case QEvent::Leave:
-        case QEvent::HoverLeave:
-        hide();
-        break;
-
-        default: break;
-    }
-
-    return QWidget::eventFilter( object, event );
-}
-
-//_______________________________________________________
-void BaseFileInfoToolTipWidget::hide( void )
-{
-    timer_.stop();
-    QWidget::hide();
-}
-
-//_______________________________________________________
-void BaseFileInfoToolTipWidget::show( void )
-{
-    // stop timer
-    timer_.stop();
-
-    // check mouse is still in relevant rect
-    if( !_checkMousePosition() ) return;
-
-    // adjust position and show
-    _adjustPosition();
-    QWidget::show();
-}
-
-//_______________________________________________________
-void BaseFileInfoToolTipWidget::showDelayed( int delay )
-{
-    if( !enabled_ ) return;
-    if( isVisible() ) hide();
-    timer_.start( delay, this );
-}
-
-//_______________________________________________________
-void BaseFileInfoToolTipWidget::paintEvent( QPaintEvent* event )
-{
-    QPainter painter( this );
-    painter.setClipRegion( event->region() );
-
-    QStyleOptionFrame opt;
-    opt.init(this);
-    style()->drawPrimitive(QStyle::PE_PanelTipLabel, &opt, &painter, this );
-    return QWidget::paintEvent( event );
-}
-
-//_______________________________________________________
-void BaseFileInfoToolTipWidget::mousePressEvent( QMouseEvent* event )
-{
-
-    hide();
-    return QWidget::mousePressEvent( event );
-
-}
-
-//_____________________________________________
-void BaseFileInfoToolTipWidget::timerEvent( QTimerEvent* event )
-{
-    if( event->timerId() == timer_.timerId() )
-    {
-
-        timer_.stop();
-        show();
-        return;
-
-    } else return QWidget::timerEvent( event );
-}
-
-//_______________________________________________________
-bool BaseFileInfoToolTipWidget::_checkMousePosition( void ) const
-{ return rect_.contains( QCursor::pos() ); }
-
-//_______________________________________________________
-void BaseFileInfoToolTipWidget::_adjustPosition( void )
-{
-
-    // get tooltip size
-    const QSize size( sizeHint() );
-
-    // desktop size
-    QDesktopWidget* desktop( qApp->desktop() );
-    QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( parentWidget() ) ) );
-
-    // set geometry
-    int left = followMouse_ ?
-        QCursor::pos().x():
-        rect_.left() + ( rect_.width() - size.width() )/2;
-
-    left = qMax( left, desktopGeometry.left() );
-    left = qMin( left, desktopGeometry.right() - size.width() );
-
-    // first try placing widget below item
-    const int margin = 5;
-    int top = rect_.bottom() + margin;
-    if( top > desktopGeometry.bottom() - size.height() ) top = rect_.top() - margin - size.height();
-
-    move( QPoint( left, top ) );
-
-}
-
 //_____________________________________________
 void BaseFileInfoToolTipWidget::_updateConfiguration( void )
 {
     Debug::Throw( "BaseFileInfoToolTipWidget::_updateConfiguration.\n" );
-    if( XmlOptions::get().contains( "SHOW_TOOLTIPS" ) ) setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );
     if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<unsigned int>( "TOOLTIPS_PIXMAP_SIZE" ) );
     if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( Types(XmlOptions::get().get<unsigned int>( "TOOLTIPS_MASK" )) );
 }

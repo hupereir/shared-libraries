@@ -230,14 +230,9 @@ void BaseFileInformationDialog::setSize( qint64 size )
 {
     if( size > 0 )
     {
-        // format size to have space characters every three digits
-        QString sizeString = QString().setNum( size );
-        int length( sizeString.length() );
-        for( int i = 1; i < length; i++ )
-        { if( !(i%3) ) sizeString.insert( sizeString.size() - (i + i/3 - 1), ' ' ); }
 
         QString buffer;
-        QTextStream( &buffer ) << File::sizeString( size ) << " (" << sizeString << ")";
+        QTextStream( &buffer ) << File::sizeString( size ) << " (" << File::rawSizeString( size ) << ")";
         sizeItem_->setValue( buffer );
 
     } else sizeItem_->setValue( QString() );

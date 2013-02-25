@@ -24,20 +24,15 @@
 *******************************************************************************/
 
 #include "BaseFileInfo.h"
-#include "Counter.h"
-
-#include <QBasicTimer>
-#include <QTimerEvent>
+#include "BaseToolTipWidget.h"
 
 #include <QIcon>
 #include <QFrame>
 #include <QLabel>
-#include <QPaintEvent>
-#include <QWidget>
 
 class ToolTipWidgetItem;
 
-class BaseFileInfoToolTipWidget: public QWidget, public Counter
+class BaseFileInfoToolTipWidget: public BaseToolTipWidget
 {
 
     Q_OBJECT
@@ -51,19 +46,8 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     virtual ~BaseFileInfoToolTipWidget( void )
     {}
 
-    //! enable state
-    void setEnabled( bool );
-
-    //! follow mouse
-    void setFollowMouse( bool value )
-    { followMouse_ = value; }
-
     //! set data
     void setFileInfo( const BaseFileInfo&, const QIcon& = QIcon() );
-
-    //! set index rect
-    void setIndexRect( const QRect& rect )
-    { rect_ = rect; }
 
     //! mask
     void setPixmapSize( int value )
@@ -95,36 +79,7 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
         _reload();
     }
 
-    // event filter
-    virtual bool eventFilter( QObject*, QEvent* );
-
-    public slots:
-
-    //! hide
-    virtual void hide( void );
-
-    //! show
-    virtual void show( void );
-
-    //! show delayed
-    void showDelayed( int = 500 );
-
     protected:
-
-    //! paint
-    virtual void paintEvent( QPaintEvent* );
-
-    //! mouse press
-    virtual void mousePressEvent( QMouseEvent* );
-
-    //! timer event
-    virtual void timerEvent( QTimerEvent* );
-
-    //! check mouse position
-    bool _checkMousePosition( void ) const;
-
-    //! adjust position
-    void _adjustPosition( void );
 
     //! reload
     virtual void _reload( void )
@@ -137,17 +92,8 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
 
     private:
 
-    //! enable state
-    bool enabled_;
-
-    //! follow mouse
-    bool followMouse_;
-
     //! pixmap size
     int pixmapSize_;
-
-    //! index rect
-    QRect rect_;
 
     //! information mask
     Types mask_;
@@ -176,9 +122,6 @@ class BaseFileInfoToolTipWidget: public QWidget, public Counter
     ToolTipWidgetItem* groupItem_;
     ToolTipWidgetItem* permissionsItem_;
     //@}
-
-    //! timer
-    QBasicTimer timer_;
 
 };
 

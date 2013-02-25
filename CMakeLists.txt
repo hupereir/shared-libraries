@@ -65,6 +65,7 @@ SET( base_qt_SOURCES
   BaseProgressBar.cpp
   BaseReplaceDialog.cpp
   BaseStatusBar.cpp
+  BaseToolTipWidget.cpp
   BlockHighlight.cpp
   BoxSelection.cpp
   BrowsedLineEditor.cpp
@@ -188,6 +189,7 @@ SET( base_qt_HEADERS
   BaseProgressBar.h
   BaseReplaceDialog.h
   BaseStatusBar.h
+  BaseToolTipWidget.h
   BlockHighlight.h
   BrowsedLineEditor.h
   BrowseIconButton.h
