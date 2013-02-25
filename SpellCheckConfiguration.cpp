@@ -55,14 +55,14 @@ namespace SPELLCHECK
         setLayout( gridLayout );
 
         // aspell command
-        gridLayout->addWidget( new QLabel( "Aspell Command: ", this ), 0, 0, 1, 1 );
+        gridLayout->addWidget( new QLabel( "Aspell command: ", this ), 0, 0, 1, 1 );
         OptionBrowsedLineEditor* editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
         gridLayout->addWidget( editor, 0, 1, 1, 2 );
         editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
         addOptionWidget( editor );
 
         // dictionaries
-        gridLayout->addWidget( new QLabel( "Default Dictionary: ", this ), 1, 0, 1, 1 );
+        gridLayout->addWidget( new QLabel( "Default dictionary: ", this ), 1, 0, 1, 1 );
         dictionariesComboBox_ =  new OptionComboBox( this, "DICTIONARY" );
         gridLayout->addWidget( dictionariesComboBox_, 1, 1, 1, 1 );
         dictionariesComboBox_->setToolTip(
@@ -76,7 +76,7 @@ namespace SPELLCHECK
         addOptionWidget( dictionaryButton );
 
         // filters
-        gridLayout->addWidget( new QLabel( "Default Filter: ", this ), 2, 0, 1, 1 );
+        gridLayout->addWidget( new QLabel( "Default filter: ", this ), 2, 0, 1, 1 );
         filtersComboBox_ = new OptionComboBox( this, "DICTIONARY_FILTER" );
         gridLayout->addWidget( filtersComboBox_, 2, 1, 1, 1 );
         filtersComboBox_->setToolTip(
