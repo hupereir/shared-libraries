@@ -243,7 +243,7 @@ namespace TRANSPARENCY
             painter.setCompositionMode(QPainter::CompositionMode_Source );
         }
 
-        if( _backgroundChanged() ) _updateBackgroundPixmap();
+        if( backgroundChanged_ ) _updateBackgroundPixmap();
         if( !backgroundPixmap_.isNull() )
         { painter.drawPixmap( TransparentWidget::rect(), backgroundPixmap_, TransparentWidget::rect() ); }
 
@@ -372,9 +372,6 @@ namespace TRANSPARENCY
     void TransparentWidget::_installActions( void )
     {
         Debug::Throw( "TransparentWidget::_installAction.\n" );
-
-        addAction( updateBackgroundAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Update Background", this ) );
-        connect( updateBackgroundAction_, SIGNAL( triggered() ), SLOT( _updateBackgroundPixmap() ) );
 
         addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Blur Region", this ) );
         connect( reloadBlurRegionAction_, SIGNAL( triggered( void ) ), SLOT( _updateBlurRegion( void ) ) );

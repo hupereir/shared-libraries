@@ -50,10 +50,6 @@ namespace TRANSPARENCY
         //!@name actions
         //@{
 
-        //! update background
-        QAction& updateBackgroundAction( void ) const
-        { return *updateBackgroundAction_; }
-
         //! reload blur region action
         QAction& reloadBlurRegionAction( void ) const
         { return *reloadBlurRegionAction_; }
@@ -231,9 +227,6 @@ namespace TRANSPARENCY
 
         //!@name actions
         //@{
-
-        //! update background
-        QAction *updateBackgroundAction_;
 
         //! reload blur region
         QAction* reloadBlurRegionAction_;
