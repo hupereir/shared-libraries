@@ -105,6 +105,9 @@ void BaseToolTipWidget::hide( void )
 //_______________________________________________________
 void BaseToolTipWidget::show( void )
 {
+
+    Debug::Throw( "BaseToolTipWidget::show.\n" );
+
     // stop timer
     timer_.stop();
 
