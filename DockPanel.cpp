@@ -399,16 +399,16 @@ void LocalWidget::_installActions( void )
     Debug::Throw( "LocalWidget::_installActions.\n" );
 
     // detach
-    addAction( detachAction_ = new QAction( "&Detach", this ) );
+    addAction( detachAction_ = new QAction( "Detach", this ) );
     detachAction_->setToolTip( "Dock/undock panel" );
 
     // stays on top
-    addAction( staysOnTopAction_ = new QAction( "&Stays on Top", this ) );
+    addAction( staysOnTopAction_ = new QAction( "Keep Above", this ) );
     staysOnTopAction_->setToolTip( "Keep window on top of all others" );
     staysOnTopAction_->setCheckable( true );
 
     // sticky
-    addAction( stickyAction_ = new QAction( "&Sticky", this ) );
+    addAction( stickyAction_ = new QAction( "Sticky", this ) );
     stickyAction_->setToolTip( "Make window appear on all desktops" );
     stickyAction_->setCheckable( true );
 
