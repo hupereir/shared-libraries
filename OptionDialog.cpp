@@ -37,7 +37,7 @@
 
 //__________________________________________________________________________
 OptionDialog::OptionDialog( QWidget* parent ):
-CustomDialog( parent, CloseButton )
+    CustomDialog( parent, CloseButton )
 {
 
     Debug::Throw( "OptionDialog::OptionDialog.\n" );
@@ -76,6 +76,7 @@ CustomDialog( parent, CloseButton )
     list_->setRootIsDecorated( true );
     list_->setItemDelegate( new TextEditionDelegate( this ) );
     list_->setIconSize( QSize( 16, 16 ) );
+    list_->setItemMargin( 2 );
 
     // store current option state as backup and update model
     backupOptions_ = XmlOptions::get();

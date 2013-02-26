@@ -44,6 +44,7 @@ CustomDialog( parent, OkButton, Qt::Window )
     buttonLayout().setMargin(10);
     mainLayout().addWidget( list_ = new AnimatedTreeView( this ) );
     list_->setModel( &model_ );
+    list_->setItemMargin( 2 );
 
     QPushButton *button;
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
