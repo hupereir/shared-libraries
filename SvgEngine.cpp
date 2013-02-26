@@ -88,12 +88,12 @@ namespace SVG
         {
 
             svgOffset_ = svgOffset;
-            SvgId::List svg_id_list;
+            SvgId::List svgIdList;
             for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
-            { svg_id_list << iter.key(); }
+            { svgIdList << iter.key(); }
 
             cache_.clear();
-            preload( svg_id_list );
+            preload( svgIdList );
 
             emit SvgEngine::changed();
             return true;

@@ -70,6 +70,11 @@ namespace SVG
 
         public slots:
 
+       //! reload all icons set in cache from new path list
+        /*! return true if changed */
+        bool forceReload( void )
+        { return reload( true ); }
+
         //! reload all icons set in cache from new path list
         /*! return true if changed */
         bool reload( const bool& forced = false );
