@@ -47,19 +47,24 @@ class BaseToolTipWidget: public QWidget, public Counter
     virtual ~BaseToolTipWidget( void )
     {}
 
-    //! enable state
-    void setEnabled( bool );
+    //!@name accessors
+    //@{
+
+    //! enabled
+    bool isEnabled( void ) const
+    { return enabled_; }
 
     //! follow mouse
-    void setFollowMouse( bool value )
-    { followMouse_ = value; }
+    bool followMouse( void ) const
+    { return followMouse_; }
 
-    //! set index rect
-    void setIndexRect( const QRect& rect )
-    {
-        rect_ = rect;
-        if( isVisible() ) _adjustPosition();
-    }
+    //! default delay
+    int defaultDelay( void ) const
+    { return defaultDelay_; }
+
+    //! index rect
+    const QRect& indexRect( void ) const
+    { return rect_; }
 
     //! preferred position
     enum Position
@@ -71,12 +76,41 @@ class BaseToolTipWidget: public QWidget, public Counter
     };
 
     //! preferred position
+    Position preferredPosition( void ) const
+    { return preferredPosition_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! enable state
+    void setEnabled( bool );
+
+    //! follow mouse
+    void setFollowMouse( bool value )
+    { followMouse_ = value; }
+
+    //! default delay
+    void setDefaultDelay( int value )
+    { if( value >= 0 ) defaultDelay_ = value; }
+
+    //! set index rect
+    void setIndexRect( const QRect& rect )
+    {
+        rect_ = rect;
+        if( isVisible() ) _adjustPosition();
+    }
+
+    //! preferred position
     void setPreferredPosition( Position value )
     {
         if( preferredPosition_ == value ) return;
         preferredPosition_ = value;
         if( isVisible() ) _adjustPosition();
     }
+
+    //@}
 
     // event filter
     virtual bool eventFilter( QObject*, QEvent* );
@@ -90,7 +124,7 @@ class BaseToolTipWidget: public QWidget, public Counter
     virtual void show( void );
 
     //! show delayed
-    void showDelayed( int = 500 );
+    void showDelayed( int = -1 );
 
     protected:
 
@@ -122,6 +156,9 @@ class BaseToolTipWidget: public QWidget, public Counter
     //! follow mouse
     bool followMouse_;
 
+    //! default tooltip delay
+    int defaultDelay_;
+
     //! prefered tooltip position with respect to index rect
     Position preferredPosition_;
 
@@ -130,6 +167,10 @@ class BaseToolTipWidget: public QWidget, public Counter
 
     //! timer
     QBasicTimer timer_;
+
+    //! hidden timer
+    /*! if running, showing again the tooltip is immediate, even when calling "showDelayed" */
+    QBasicTimer hiddenTimer_;
 
 };
 

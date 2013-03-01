@@ -43,6 +43,7 @@ BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
     Counter( "BaseToolTipWidget" ),
     enabled_( false ),
     followMouse_( false ),
+    defaultDelay_( 500 ),
     preferredPosition_( Bottom )
 {
 
@@ -99,6 +100,7 @@ bool BaseToolTipWidget::eventFilter( QObject* object, QEvent* event )
 void BaseToolTipWidget::hide( void )
 {
     timer_.stop();
+    hiddenTimer_.start( 500, this );
     QWidget::hide();
 }
 
@@ -123,8 +125,23 @@ void BaseToolTipWidget::show( void )
 void BaseToolTipWidget::showDelayed( int delay )
 {
     if( !enabled_ ) return;
-    if( isVisible() ) hide();
-    timer_.start( delay, this );
+
+    if( hiddenTimer_.isActive() )
+    {
+
+        timer_.stop();
+        _adjustPosition();
+        QWidget::show();
+
+    } else {
+
+        if( isVisible() ) hide();
+        timer_.start( delay >= 0 ? delay:defaultDelay_, this );
+
+    }
+
+    return;
+
 }
 
 //_______________________________________________________
@@ -156,6 +173,11 @@ void BaseToolTipWidget::timerEvent( QTimerEvent* event )
 
         timer_.stop();
         show();
+        return;
+
+    } else if( event->timerId() == hiddenTimer_.timerId() ) {
+
+        hiddenTimer_.stop();
         return;
 
     } else return QWidget::timerEvent( event );
@@ -230,4 +252,5 @@ void BaseToolTipWidget::_updateConfiguration( void )
 {
     Debug::Throw( "BaseToolTipWidget::_updateConfiguration.\n" );
     if( XmlOptions::get().contains( "SHOW_TOOLTIPS" ) ) setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );
+    if( XmlOptions::get().contains( "TOOLTIP_DELAY" ) ) setDefaultDelay( XmlOptions::get().get<int>( "TOOLTIP_DELAY" ) );
 }
