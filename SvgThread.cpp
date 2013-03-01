@@ -33,7 +33,7 @@ namespace SVG
     //______________________________________________________
     SvgThread::SvgThread( QObject* parent ):
         QThread( parent ),
-        svgOffset_( 0 )
+        Counter( "SVG::SvgThread" )
     {
         // register FileRecord::List as meta type so that it can be used in SIGNAL
         qRegisterMetaType<SVG::ImageCache>( "SVG::ImageCache" );
@@ -54,7 +54,7 @@ namespace SVG
 
             QImage image( iter->size(), QImage::Format_ARGB32_Premultiplied );
             image.fill( Qt::transparent );
-            svg_.render( image, svgOffset_, iter->id() );
+            svg_.render( image, iter->id() );
             cache_.insert( *iter, image );
 
         }

@@ -41,7 +41,7 @@ namespace SVG
     //___________________________________________
     SvgConfiguration::SvgConfiguration( QWidget* parent ):
         QWidget( parent ),
-        Counter( "SvgConfiguration" )
+        Counter( "SVG::SvgConfiguration" )
     {
 
         Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
@@ -65,18 +65,6 @@ namespace SVG
         hLayout->setMargin(0);
         hLayout->setSpacing(5);
         box->layout()->addItem( hLayout );
-
-        OptionSpinBox* spinbox;
-        hLayout->addWidget( new QLabel( "Offset: ", box ) );
-        hLayout->addWidget( spinbox = new OptionSpinBox( box, "SVG_OFFSET" ) );
-        hLayout->addStretch();
-        spinbox->setMinimum( -16 );
-        spinbox->setMaximum( 16 );
-        spinbox->setToolTip(
-            "Offset used to draw svg.\n"
-            "Positive offset will make the SVG larger than the\n"
-            "actual window size, thus shinking its edges\n" );
-        addOptionWidget( spinbox );
 
         // plasma interface
         #if !defined(Q_OS_WIN)

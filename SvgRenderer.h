@@ -24,23 +24,16 @@
 *
 *******************************************************************************/
 
-/*!
-\file SvgRenderer.h
-\brief construct pixmap of given size using Svg renderer
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "Counter.h"
+#include "Margins.h"
 
 #include <QSvgRenderer>
 #include <QPaintDevice>
 
-#include "Counter.h"
-
 //! construct pixmap of given size using Svg renderer
 namespace SVG
 {
-    class SvgRenderer: public QSvgRenderer
+    class SvgRenderer: public QSvgRenderer, public Counter
     {
 
         public:
@@ -53,7 +46,7 @@ namespace SVG
         {}
 
         //! render
-        void render( QPaintDevice&, double offset = 0, const QString& id = QString() );
+        void render( QPaintDevice&, const QString& id = QString() );
 
         //! validity
         virtual bool isValid( void ) const
@@ -65,25 +58,13 @@ namespace SVG
         //! load file
         virtual bool load( const QString& );
 
+        //! margins
+        TRANSPARENCY::Margins margins( void ) const;
+
+        //! shadows
+        TRANSPARENCY::Margins shadows( void ) const;
+
         protected:
-
-        class Margins
-        {
-            public:
-
-            //! constructor
-            Margins( void ):
-                left(0),
-                right(0),
-                top(0),
-                bottom(0)
-            {}
-
-            double left;
-            double right;
-            double top;
-            double bottom;
-        };
 
         enum SvgElement
         {
@@ -100,14 +81,11 @@ namespace SVG
             All = Ring|Center
         };
 
-        //! load margins
-        Margins _margins( void ) const;
-
         //! true if svg has all elements matching prefix
         virtual bool _hasPrefix( QString prefix = "" ) const;
 
         //! render prefix to image
-        virtual void _render( QImage& target, double offset = 0, QString prefix = "", int elements = All, bool padding = true );
+        virtual void _render( QImage& target, QString prefix = "", int elements = All, bool padding = true );
 
         private:
 

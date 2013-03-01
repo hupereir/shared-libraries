@@ -41,7 +41,6 @@ namespace SVG
     //__________________________________________________________
     SvgEngine::SvgEngine( void ):
         plasmaInterface_( 0 ),
-        svgOffset_( 0 ),
         thread_( this )
     {
 
@@ -55,7 +54,6 @@ namespace SVG
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-simple.svg" ) );
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-translucent.svg" ) );
         XmlOptions::get().set( "USE_SVG", Option("1") );
-        XmlOptions::get().set( "SVG_OFFSET", Option("0") );
         XmlOptions::get().set( "SVG_USE_PLASMA_INTERFACE", Option( "1" ) );
         XmlOptions::get().set( "SVG_PLASMA_IMAGE_PATH", Option( "widgets/background" ) );
         XmlOptions::get().set( "SVG_DRAW_OVERLAY", Option("0") );
@@ -80,14 +78,10 @@ namespace SVG
             return true;
         }
 
-        // check offset
-        int svgOffset( XmlOptions::get().get<int>( "SVG_OFFSET" ) );
-
         // reload cache
-        if( configurationChanged || fileChanged || svgOffset != svgOffset_ )
+        if( configurationChanged || fileChanged )
         {
 
-            svgOffset_ = svgOffset;
             SvgId::List svgIdList;
             for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
             { svgIdList << iter.key(); }
@@ -112,7 +106,6 @@ namespace SVG
         if( thread_.isRunning() ) return;
 
         thread_.setSvgFile( svgFile_ );
-        thread_.setSvgOffset( svgOffset_ );
         thread_.setSvgIdList( svg_ids );
         thread_.start();
 
@@ -137,7 +130,7 @@ namespace SVG
         // add to map
         QPixmap pixmap( id.size() );
         pixmap.fill( Qt::transparent );
-        svg_.render( pixmap, svgOffset_, id.id() );
+        svg_.render( pixmap, id.id() );
 
         return cache_.insert( id, pixmap ).value();
 

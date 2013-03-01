@@ -52,6 +52,12 @@ namespace SVG
     static const QString MarginTop="hint-top-margin";
     static const QString MarginBottom="hint-bottom-margin";
 
+    static const QString ShadowLeft="hint-left-shadow";
+    static const QString ShadowRight="hint-right-shadow";
+    static const QString ShadowTop="hint-top-shadow";
+    static const QString ShadowBottom="hint-bottom-shadow";
+
+
     //! map size and pixmap
     typedef QMap< SvgId, QPixmap > PixmapCache;
     typedef QMap< SvgId, QImage > ImageCache;

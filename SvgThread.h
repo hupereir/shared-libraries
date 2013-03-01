@@ -24,6 +24,7 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
 #include "SvgRenderer.h"
 #include "Svg.h"
 
@@ -36,7 +37,7 @@ namespace SVG
 {
 
     //! independent thread used to automatically save file
-    class SvgThread: public QThread
+    class SvgThread: public QThread, public Counter
     {
 
         Q_OBJECT
@@ -51,13 +52,6 @@ namespace SVG
         {
             QMutexLocker lock( &mutex_ );
             svg_.load( file );
-        }
-
-        //! offset
-        void setSvgOffset( const double& value )
-        {
-            QMutexLocker lock( &mutex_ );
-            svgOffset_ = value;
         }
 
         //! set file
@@ -84,9 +78,6 @@ namespace SVG
 
         //! svg renderer
         SvgRenderer svg_;
-
-        //! svg offset
-        double svgOffset_;
 
         //! requested sizes
         SvgId::List svgIds_;

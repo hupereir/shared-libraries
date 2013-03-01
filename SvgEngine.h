@@ -121,9 +121,6 @@ namespace SVG
         //! svg renderer
         SvgRenderer svg_;
 
-        //! svg offest
-        int svgOffset_;
-
         //! map size and pixmap
         PixmapCache cache_;
 
