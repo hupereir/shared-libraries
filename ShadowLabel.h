@@ -39,14 +39,14 @@ namespace TRANSPARENCY
         //! constructor
         ShadowLabel( QWidget* parent ):
             QLabel( parent ),
-            Counter( "ShadowLabel" ),
+            Counter( "TRANSPARENCY::ShadowLabel" ),
             shadowOffset_( 0 )
         {}
 
         //! constructor
         ShadowLabel( const QString& text, QWidget* parent ):
             QLabel( text, parent ),
-            Counter( "ShadowLabel" ),
+            Counter( "TRANSPARENCY::ShadowLabel" ),
             shadowOffset_( 0 )
         {}
 

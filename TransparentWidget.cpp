@@ -39,7 +39,7 @@ namespace TRANSPARENCY
     //____________________________________________________________________
     TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
         QWidget( parent, flags ),
-        Counter( "TransparentWidget" ),
+        Counter( "TRANSPARENCY::TransparentWidget" ),
         transparent_( false ),
         backgroundChanged_( true ),
         foregroundIntensity_( 255 ),
