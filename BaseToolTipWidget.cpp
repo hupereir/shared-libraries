@@ -43,7 +43,7 @@ BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
     Counter( "BaseToolTipWidget" ),
     enabled_( false ),
     followMouse_( false ),
-    defaultDelay_( 500 ),
+    defaultDelay_( 1000 ),
     preferredPosition_( Bottom )
 {
 
@@ -100,7 +100,7 @@ bool BaseToolTipWidget::eventFilter( QObject* object, QEvent* event )
 void BaseToolTipWidget::hide( void )
 {
     timer_.stop();
-    hiddenTimer_.start( 500, this );
+    hiddenTimer_.start( 200, this );
     QWidget::hide();
 }
 
