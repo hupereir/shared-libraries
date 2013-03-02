@@ -25,6 +25,10 @@
 
 #include "Counter.h"
 
+#include <QTextStream>
+#include <QPoint>
+#include <QRect>
+
 namespace TRANSPARENCY
 {
     class Margins: public Counter
@@ -35,16 +39,112 @@ namespace TRANSPARENCY
         //! constructor
         Margins( int margin = 0 ):
             Counter( "TRANSPARENCY::Margins" ),
-            left(margin),
-            right(margin),
-            top(margin),
-            bottom(margin)
+            left_(margin),
+            top_(margin),
+            right_(margin),
+            bottom_(margin)
         {}
 
-        int left;
-        int right;
-        int top;
-        int bottom;
+        //! addTo operator
+        Margins& operator += (const Margins& other )
+        {
+            left_ += other.left_;
+            top_ += other.top_;
+            right_ += other.right_;
+            bottom_ += other.bottom_;
+            return *this;
+        }
+
+        //!@name accessors
+        //@{
+
+        //! dimensions
+        int left( void ) const
+        { return left_; }
+
+        //! dimensions
+        int top( void ) const
+        { return top_; }
+
+        //! dimensions
+        int right( void ) const
+        { return right_; }
+
+        //! dimensions
+        int bottom( void ) const
+        { return bottom_; }
+
+        //! true if null
+        bool isNull( void ) const
+        {
+            return
+                left_ == 0 &&
+                top_ == 0  &&
+                right_ == 0 &&
+                bottom_ == 0;
+        }
+
+        //! width
+        int width( void ) const
+        { return left_+right_; }
+
+        //! height
+        int height( void ) const
+        { return top_+bottom_; }
+
+        //! return adjusted rect
+        QRect adjustedRect( const QRect& source ) const
+        { return source.adjusted( left_, top_, -right_, -bottom_ ); }
+
+        //! top left point
+        QPoint topLeft( void ) const
+        { return QPoint( left_, top_ ); }
+
+        //@}
+
+        //!@name modifiers
+        //@{
+
+        //! clear
+        void clear( void )
+        {
+            left_ = 0;
+            top_ = 0;
+            right_ = 0;
+            bottom_ = 0;
+        }
+
+        //! dimensions
+        void setLeft( int value )
+        { left_ = value; }
+
+        //! dimensions
+        void setTop( int value )
+        { top_ = value; }
+
+        //! dimensions
+        void setRight( int value )
+        { right_ = value; }
+
+        //! dimensions
+        void setBottom( int value )
+        { bottom_ = value; }
+
+        //@}
+
+        private:
+
+        int left_;
+        int top_;
+        int right_;
+        int bottom_;
+
+        //! streamer
+        friend QTextStream& operator << ( QTextStream& out, const Margins& margins )
+        {
+            out << "(" << margins.left_ << "," << margins.top_ << "," << margins.right_ << "," << margins.bottom_ << ")";
+            return out;
+        }
     };
 
 };
