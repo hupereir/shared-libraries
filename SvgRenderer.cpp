@@ -218,23 +218,21 @@ namespace SVG
     TRANSPARENCY::Margins SvgRenderer::margins( void ) const
     {
         TRANSPARENCY::Margins out;
-        if( elementExists( SVG::MarginLeft ) ) out.left = boundsOnElement( SVG::MarginLeft ).size().width();
-        if( elementExists( SVG::MarginRight ) ) out.right = boundsOnElement( SVG::MarginRight ).size().width();
-        if( elementExists( SVG::MarginTop ) ) out.top = boundsOnElement( SVG::MarginTop ).size().height();
-        if( elementExists( SVG::MarginBottom ) ) out.bottom = boundsOnElement( SVG::MarginBottom ).size().height();
-
+        if( elementExists( SVG::MarginLeft ) ) out.setLeft( boundsOnElement( SVG::MarginLeft ).size().width() );
+        if( elementExists( SVG::MarginRight ) ) out.setRight( boundsOnElement( SVG::MarginRight ).size().width() );
+        if( elementExists( SVG::MarginTop ) ) out.setTop( boundsOnElement( SVG::MarginTop ).size().height() );
+        if( elementExists( SVG::MarginBottom ) ) out.setBottom( boundsOnElement( SVG::MarginBottom ).size().height() );
         return out;
     }
 
     //________________________________________________
     TRANSPARENCY::Margins SvgRenderer::shadows( void ) const
     {
-        TRANSPARENCY::Margins out( margins() );
-        if( elementExists( SVG::ShadowLeft ) ) out.left = boundsOnElement( SVG::ShadowLeft ).size().width();
-        if( elementExists( SVG::ShadowRight ) ) out.right = boundsOnElement( SVG::ShadowRight ).size().width();
-        if( elementExists( SVG::ShadowTop ) ) out.top = boundsOnElement( SVG::ShadowTop ).size().height();
-        if( elementExists( SVG::ShadowBottom ) ) out.bottom = boundsOnElement( SVG::ShadowBottom ).size().height();
-
+        TRANSPARENCY::Margins out;
+        if( elementExists( SVG::ShadowLeft ) ) out.setLeft( boundsOnElement( SVG::ShadowLeft ).size().width() );
+        if( elementExists( SVG::ShadowRight ) ) out.setRight( boundsOnElement( SVG::ShadowRight ).size().width() );
+        if( elementExists( SVG::ShadowTop ) ) out.setTop( boundsOnElement( SVG::ShadowTop ).size().height() );
+        if( elementExists( SVG::ShadowBottom ) ) out.setBottom( boundsOnElement( SVG::ShadowBottom ).size().height() );
         return out;
     }
 
