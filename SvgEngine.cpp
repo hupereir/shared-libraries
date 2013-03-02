@@ -40,6 +40,7 @@ namespace SVG
 
     //__________________________________________________________
     SvgEngine::SvgEngine( void ):
+        Counter( "SVG::SvgEngine" ),
         plasmaInterface_( 0 ),
         thread_( this )
     {
@@ -88,6 +89,10 @@ namespace SVG
 
             cache_.clear();
             preload( svgIdList );
+
+            // update margins and shadows
+            margins_ = svg_.margins();
+            shadows_ = svg_.shadows();
 
             emit SvgEngine::changed();
             return true;
@@ -171,8 +176,8 @@ namespace SVG
         #endif
 
         bool found( false );
-        Options::List file_list( XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) );
-        for( Options::List::const_iterator iter = file_list.begin(); iter != file_list.end(); ++iter )
+        Options::List fileList( XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) );
+        for( Options::List::const_iterator iter = fileList.begin(); iter != fileList.end(); ++iter )
         {
             QString file( iter->raw() );
             svg_.load( QString( file ) );
@@ -186,6 +191,7 @@ namespace SVG
         }
 
         if( !found )  svg_.load( QString() );
+
         return changed || forced;
 
     }

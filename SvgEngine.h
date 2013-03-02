@@ -24,6 +24,8 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
+#include "Margins.h"
 #include "SvgRenderer.h"
 #include "SvgThread.h"
 
@@ -37,7 +39,7 @@ namespace SVG
     class SvgPlasmaInterface;
 
     //! customized Icon factory to provide better looking disabled icons
-    class SvgEngine: public QObject
+    class SvgEngine: public QObject, public Counter
     {
 
         Q_OBJECT;
@@ -62,6 +64,15 @@ namespace SVG
         //! preload sizes
         /*! uses a separate thread, in order not to slow down application */
         void preload( const SvgId::List& );
+
+        //! margins
+        TRANSPARENCY::Margins margins( void ) const
+        { return margins_; }
+
+        //! shadows
+        TRANSPARENCY::Margins shadows( void ) const
+        { return shadows_; }
+
 
         signals:
 
@@ -126,6 +137,9 @@ namespace SVG
 
         //! thread preload sizes
         SvgThread thread_;
+
+        TRANSPARENCY::Margins margins_;
+        TRANSPARENCY::Margins shadows_;
 
     };
 };
