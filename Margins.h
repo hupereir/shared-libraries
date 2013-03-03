@@ -45,13 +45,23 @@ namespace TRANSPARENCY
             bottom_(margin)
         {}
 
-        //! addTo operator
+        //! add to operator
         Margins& operator += (const Margins& other )
         {
             left_ += other.left_;
             top_ += other.top_;
             right_ += other.right_;
             bottom_ += other.bottom_;
+            return *this;
+        }
+
+        //! remove from operator
+        Margins& operator -= (const Margins& other )
+        {
+            left_ -= other.left_;
+            top_ -= other.top_;
+            right_ -= other.right_;
+            bottom_ -= other.bottom_;
             return *this;
         }
 
