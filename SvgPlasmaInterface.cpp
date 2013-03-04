@@ -32,6 +32,7 @@ namespace SVG
     //_________________________________________________
     SvgPlasmaInterface::SvgPlasmaInterface( QObject* parent ):
         QObject( parent ),
+        Counter( "SVG::SvgPlasmaInterface" ),
         valid_( false ),
         imagePath_( "widgets/background" ),
         fileSystemWatcher_(0)

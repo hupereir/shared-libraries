@@ -69,9 +69,9 @@ namespace SVG
         TRANSPARENCY::Margins margins( void ) const
         { return margins_; }
 
-        //! shadows
-        TRANSPARENCY::Margins shadows( void ) const
-        { return shadows_; }
+        //! outer padding
+        TRANSPARENCY::Margins outerPadding( void ) const
+        { return outerPadding_; }
 
 
         signals:
@@ -139,7 +139,7 @@ namespace SVG
         SvgThread thread_;
 
         TRANSPARENCY::Margins margins_;
-        TRANSPARENCY::Margins shadows_;
+        TRANSPARENCY::Margins outerPadding_;
 
     };
 };

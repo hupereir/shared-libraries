@@ -90,9 +90,9 @@ namespace SVG
             cache_.clear();
             preload( svgIdList );
 
-            // update margins and shadows
+            // update margins and outer padding
             margins_ = svg_.margins();
-            shadows_ = svg_.shadows();
+            outerPadding_ = svg_.outerPadding();
 
             emit SvgEngine::changed();
             return true;
@@ -126,7 +126,7 @@ namespace SVG
     }
 
     //__________________________________________________________
-    const QPixmap& SvgEngine::_get( const SvgId& id, bool from_cache )
+    const QPixmap& SvgEngine::_get( const SvgId& id, bool fromCache )
     {
 
         PixmapCache::iterator iter( cache_.find( id ) );

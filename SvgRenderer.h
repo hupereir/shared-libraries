@@ -61,8 +61,8 @@ namespace SVG
         //! margins
         TRANSPARENCY::Margins margins( void ) const;
 
-        //! shadows
-        TRANSPARENCY::Margins shadows( void ) const;
+        //! outer padding
+        TRANSPARENCY::Margins outerPadding( void ) const;
 
         protected:
 

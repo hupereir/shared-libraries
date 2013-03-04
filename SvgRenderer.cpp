@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file SvgRenderer.cpp
-\brief construct pixmap of given size using Svg renderer
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "SvgRenderer.h"
 #include "Svg.h"
 #include "XmlOptions.h"
@@ -226,7 +218,7 @@ namespace SVG
     }
 
     //________________________________________________
-    TRANSPARENCY::Margins SvgRenderer::shadows( void ) const
+    TRANSPARENCY::Margins SvgRenderer::outerPadding( void ) const
     {
         TRANSPARENCY::Margins out;
         if( elementExists( SVG::ShadowLeft ) ) out.setLeft( boundsOnElement( SVG::ShadowLeft ).size().width() );
