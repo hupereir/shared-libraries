@@ -23,22 +23,19 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-
 #include <QTextStream>
 #include <QPoint>
 #include <QRect>
 
 namespace TRANSPARENCY
 {
-    class Margins: public Counter
+    class Margins
     {
 
         public:
 
         //! constructor
         Margins( int margin = 0 ):
-            Counter( "TRANSPARENCY::Margins" ),
             left_(margin),
             top_(margin),
             right_(margin),
