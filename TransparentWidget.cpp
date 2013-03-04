@@ -40,7 +40,6 @@ namespace TRANSPARENCY
     TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
         QWidget( parent, flags ),
         Counter( "TRANSPARENCY::TransparentWidget" ),
-        transparent_( false ),
         backgroundChanged_( true ),
         foregroundIntensity_( 255 ),
         shadowOffset_( 0 ),
@@ -116,24 +115,6 @@ namespace TRANSPARENCY
         Debug::Throw( "TransparentWidget::highlight.\n" );
         if( highlightColor_ == color ) return;
         highlightColor_ = color;
-    }
-
-
-    //____________________________________________________________________
-    void TransparentWidget::moveEvent( QMoveEvent* event )
-    {
-        Debug::Throw() << "TransparentWidget::moveEvent - " << event->pos().x() << "," << event->pos().y() << endl;
-
-        // check cases where background does not need update
-        if( !_transparent() ) return QWidget::moveEvent( event );
-        if( CompositeEngine::get().isAvailable() ) return QWidget::moveEvent( event );
-        if( tintColor_.isValid() && tintColor_.alpha() == 255 ) return QWidget::moveEvent( event );
-
-        // update background
-        setBackgroundChanged( true );
-        update();
-        QWidget::moveEvent( event );
-
     }
 
     //____________________________________________________________________
@@ -240,9 +221,6 @@ namespace TRANSPARENCY
 
         Debug::Throw( "TransparentWidget::_updateConfiguration.\n" );
 
-        // use transparency
-        _setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
-
         // colors
         QColor color;
         _setForegroundColor( (color = QColor( XmlOptions::get().get<QString>("TRANSPARENCY_FOREGROUND_COLOR"))).isValid() ? color:palette().color( QPalette::WindowText ) );
@@ -291,37 +269,12 @@ namespace TRANSPARENCY
 
         Debug::Throw( "TransparentWidget::_updateBackgroundPixmap.\n" );
 
-        if( ( !_transparent() ) ||  ( tintColor_.isValid() && tintColor_.alpha() == 255 ) )
-        {
-
-            // solid background
-            backgroundPixmap_ = QPixmap( size() );
-            backgroundPixmap_.fill( palette().color( backgroundRole() ) );
-
-        } else if( CompositeEngine::get().isAvailable() ) {
-
-            backgroundPixmap_ = QPixmap( size() );
-            QPainter painter( &backgroundPixmap_ );
-            painter.setRenderHints(QPainter::SmoothPixmapTransform);
-            painter.setCompositionMode(QPainter::CompositionMode_Source );
-            painter.fillRect( backgroundPixmap_.rect(), Qt::transparent);
-
-        } else {
-
-            backgroundPixmap_ = QPixmap( size() );
-            backgroundPixmap_.fill( palette().color( backgroundRole() ) );
-
-        }
+        backgroundPixmap_ = QPixmap( size() );
+        if( CompositeEngine::get().isAvailable() ) backgroundPixmap_.fill( Qt::transparent );
+        else if( !( tintColor_.isValid() && tintColor_.alpha() == 255 ) ) backgroundPixmap_.fill( palette().color( backgroundRole() ) );
 
         // tint
-        if( tintColor_.isValid() )
-        {
-            QPainter painter( &backgroundPixmap_ );
-            painter.setPen( Qt::NoPen );
-            painter.setBrush( tintColor_ );
-            painter.drawRect( backgroundPixmap_.rect() );
-            painter.end();
-        }
+        if( tintColor_.isValid() ) backgroundPixmap_.fill( tintColor_ );
 
         setBackgroundChanged( false );
 

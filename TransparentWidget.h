@@ -26,7 +26,6 @@
 #include "Counter.h"
 
 #include <QAction>
-#include <QMoveEvent>
 #include <QPaintEvent>
 #include <QResizeEvent>
 #include <QShowEvent>
@@ -87,18 +86,6 @@ namespace TRANSPARENCY
 
         protected:
 
-        //! enable/disable transparency
-        virtual void _setTransparent( const bool& value )
-        {
-            if( value == transparent_ ) return;
-            transparent_ = value;
-            setBackgroundChanged( true );
-        }
-
-        //! transparency
-        virtual const bool& _transparent( void ) const
-        { return transparent_; }
-
         //! foreground
         virtual void _setForegroundColor( const QColor& );
 
@@ -144,9 +131,6 @@ namespace TRANSPARENCY
 
         //!@name event handlers
         //@{
-
-        //! move
-        virtual void moveEvent( QMoveEvent* );
 
         //! resize
         virtual void resizeEvent( QResizeEvent* );
@@ -215,9 +199,6 @@ namespace TRANSPARENCY
         QAction* inverseColorsAction_;
 
         //@}
-
-        //! transparency enabled
-        bool transparent_;
 
         //! true when background needs to be reloaded
         bool backgroundChanged_;
