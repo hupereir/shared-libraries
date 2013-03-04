@@ -26,6 +26,7 @@
 
 #include "Counter.h"
 #include "OptionWidgetList.h"
+#include "OptionCheckBox.h"
 
 #include <QWidget>
 
@@ -36,10 +37,24 @@ namespace SVG
     class SvgConfiguration: public QWidget, public OptionWidgetList, public Counter
     {
 
+        Q_OBJECT
+
         public:
 
         //! constructor
         SvgConfiguration( QWidget* parent );
+
+        protected slots:
+
+        //! enable svg file list
+        void _enableSvgFileList( void );
+
+        private:
+
+        QWidget* fileListBox_;
+        OptionCheckBox* svgCheckBox_;
+        OptionCheckBox* plasmaCheckBox_;
+
 
     };
 

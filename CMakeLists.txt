@@ -40,6 +40,7 @@ SET( base_svg_SOURCES
 )
 
 SET( base_svg_HEADERS
+  SvgConfiguration.h
   SvgEngine.h
   SvgPlasmaInterface.h
   SvgThread.h
