@@ -44,9 +44,7 @@ namespace TRANSPARENCY
         backgroundChanged_( true ),
         foregroundIntensity_( 255 ),
         shadowOffset_( 0 ),
-        highlighted_( false ),
-        blurEnabled_( false ),
-        opacity_( 1 )
+        highlighted_( false )
     {
 
         Debug::Throw( "TransparentWidget::TransparentWidget.\n" );
@@ -69,27 +67,6 @@ namespace TRANSPARENCY
         connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
 
     }
-
-    //____________________________________________________________________
-    void TransparentWidget::setWindowOpacity( double value )
-    {
-
-        // store
-        opacity_ = value;
-
-        #if defined(Q_OS_WIN)
-
-        // on windows, update opacity only if CompositeEngine is disabled
-        // otherwise, it is handled via WinUtil
-        if( !TRANSPARENCY::CompositeEngine::get().isEnabled() )
-        { QWidget::setWindowOpacity( value ); }
-
-        #else
-        QWidget::setWindowOpacity( value );
-        #endif
-
-    }
-
 
     //____________________________________________________________________
     void TransparentWidget::setBackgroundChanged( void )
@@ -149,8 +126,8 @@ namespace TRANSPARENCY
 
         // check cases where background does not need update
         if( !_transparent() ) return QWidget::moveEvent( event );
-        if( CompositeEngine::get().isEnabled() ) return QWidget::moveEvent( event );
-        if( _tintColor().isValid() && _tintColor().alpha() == 255 ) return QWidget::moveEvent( event );
+        if( CompositeEngine::get().isAvailable() ) return QWidget::moveEvent( event );
+        if( tintColor_.isValid() && tintColor_.alpha() == 255 ) return QWidget::moveEvent( event );
 
         // update background
         setBackgroundChanged( true );
@@ -165,7 +142,7 @@ namespace TRANSPARENCY
         setBackgroundChanged( true );
 
         #if defined(Q_OS_WIN)
-        if( CompositeEngine::get().isEnabled() )
+        if( CompositeEngine::get().isAvailable() )
         {
             widgetPixmap_ = QPixmap( size() );
             widgetPixmap_.fill( Qt::transparent );
@@ -212,20 +189,12 @@ namespace TRANSPARENCY
         Debug::Throw( "TransparentWidget::paintEvent.\n" );
 
         #if defined(Q_OS_WIN)
-        // handle painting on windows with compositing enabled
-        // using a pixmap buffer, to allow true transparency
-        if( CompositeEngine::get().isEnabled() )
-        {
-            _paintBackground( widgetPixmap_, event->rect() );
-            _paint( widgetPixmap_, event->rect() );
-            WinUtil( this ).update( widgetPixmap_, _opacity() );
-        } else
-            #endif
-
-        {
-            _paintBackground( *this, event->rect() );
-            _paint( *this, event->rect() );
-        }
+        _paintBackground( widgetPixmap_, event->rect() );
+        _paint( widgetPixmap_, event->rect() );
+        #else
+        _paintBackground( *this, event->rect() );
+        _paint( *this, event->rect() );
+        #endif
 
         Debug::Throw( "TransparentWidget::paintEvent - done.\n" );
     }
@@ -237,7 +206,7 @@ namespace TRANSPARENCY
         QPainter painter( &device );
         painter.setClipRect( rect );
 
-        if( CompositeEngine::get().isEnabled() )
+        if( CompositeEngine::get().isAvailable() )
         {
             painter.setRenderHints(QPainter::SmoothPixmapTransform);
             painter.setCompositionMode(QPainter::CompositionMode_Source );
@@ -273,8 +242,6 @@ namespace TRANSPARENCY
 
         // use transparency
         _setTransparent( XmlOptions::get().get<bool>( "TRANSPARENT" ) );
-        _setBlurEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_BLUR" ) );
-        reloadBlurRegionAction_->setEnabled( _blurEnabled() );
 
         // colors
         QColor color;
@@ -308,13 +275,9 @@ namespace TRANSPARENCY
             _setHighlightColor( highlightColor );
         } else _setHighlightColor( QColor() );
 
-        // composite
-        if( CompositeEngine::get().setEnabled( XmlOptions::get().get<bool>( "TRANSPARENCY_USE_COMPOSITE" ) ) )
-        { setWindowOpacity( _opacity() ); }
-
         #if defined(Q_OS_WIN)
         // create widget pixmap when compositing is enabled
-        if( CompositeEngine::get().isEnabled() ) {
+        if( CompositeEngine::get().isAvailable() ) {
             widgetPixmap_ = QPixmap( size() );
             widgetPixmap_.fill( Qt::transparent );
         } else widgetPixmap_ = QPixmap();
@@ -328,14 +291,14 @@ namespace TRANSPARENCY
 
         Debug::Throw( "TransparentWidget::_updateBackgroundPixmap.\n" );
 
-        if( ( !_transparent() ) ||  ( _tintColor().isValid() && _tintColor().alpha() == 255 ) )
+        if( ( !_transparent() ) ||  ( tintColor_.isValid() && tintColor_.alpha() == 255 ) )
         {
 
             // solid background
             backgroundPixmap_ = QPixmap( size() );
             backgroundPixmap_.fill( palette().color( backgroundRole() ) );
 
-        } else if( CompositeEngine::get().isEnabled() ) {
+        } else if( CompositeEngine::get().isAvailable() ) {
 
             backgroundPixmap_ = QPixmap( size() );
             QPainter painter( &backgroundPixmap_ );
@@ -351,12 +314,11 @@ namespace TRANSPARENCY
         }
 
         // tint
-        if( _tintColor().isValid() )
+        if( tintColor_.isValid() )
         {
-
             QPainter painter( &backgroundPixmap_ );
             painter.setPen( Qt::NoPen );
-            painter.setBrush( _tintColor() );
+            painter.setBrush( tintColor_ );
             painter.drawRect( backgroundPixmap_.rect() );
             painter.end();
         }

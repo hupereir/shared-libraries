@@ -41,20 +41,13 @@ namespace TRANSPARENCY
             return available_;
         }
 
-        //! enability
-        bool isEnabled( void )
-        { return isAvailable() && enabled_; }
-
-        //! enability
-        bool setEnabled( bool value );
-
         protected:
 
         //! initialize
         void _initialize( void );
 
         //! returns true if composition is enabled
-        bool _compositingEnabled( void ) const;
+        bool _compositingAvailable( void ) const;
 
         private:
 
@@ -63,9 +56,6 @@ namespace TRANSPARENCY
 
         //! validity
         bool available_;
-
-        //! enability
-        bool enabled_;
 
         //! initialized
         bool initialized_;

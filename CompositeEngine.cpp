@@ -23,7 +23,6 @@
 #include "CompositeEngine.h"
 
 #include "Debug.h"
-#include "XmlOptions.h"
 #include "X11Util.h"
 
 #if defined(Q_WS_X11) || defined(Q5_WS_X11)
@@ -47,21 +46,8 @@ namespace TRANSPARENCY
     //_______________________________________________________________
     CompositeEngine::CompositeEngine( void ):
         available_( false ),
-        enabled_( true ),
         initialized_( false )
-    {
-        Debug::Throw( "CompositeEngine::CompositeEngine.\n" );
-        XmlOptions::get().set( "TRANSPARENCY_USE_COMPOSITE", Option("1"), true );
-        XmlOptions::get().set( "TRANSPARENCY_USE_BLUR", Option("1"), true );
-    }
-
-    //_______________________________________________________________
-    bool CompositeEngine::setEnabled( bool value )
-    {
-        if( enabled_ == value ) return false;
-        enabled_ = value;
-        return true;
-    }
+    { Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); }
 
     //_______________________________________________________________
     void CompositeEngine::_initialize( void )
@@ -71,14 +57,14 @@ namespace TRANSPARENCY
         if( !initialized_ )
         {
             initialized_ = true;
-            available_ = _compositingEnabled();
+            available_ = _compositingAvailable();
         }
     }
 
     //_______________________________________________________________
-    bool CompositeEngine::_compositingEnabled( void ) const
+    bool CompositeEngine::_compositingAvailable( void ) const
     {
-        Debug::Throw( "CompositeEngine::_compositingEnabled\n" );
+        Debug::Throw( "CompositeEngine::_compositingAvailable\n" );
 
         #if defined(Q_OS_WIN)
         return true;

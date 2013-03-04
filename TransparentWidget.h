@@ -60,10 +60,6 @@ namespace TRANSPARENCY
 
         //@}
 
-        //! window opacity
-        /*! this overloads the QWidget method to hack for WIN system */
-        void setWindowOpacity( double );
-
         //! background changed
         void setBackgroundChanged( const bool& value )
         { backgroundChanged_ = value; }
@@ -96,14 +92,6 @@ namespace TRANSPARENCY
         {
             if( value == transparent_ ) return;
             transparent_ = value;
-            setBackgroundChanged( true );
-        }
-
-        //! enable/disable transparency
-        virtual void _setBlurEnabled( const bool& value )
-        {
-            if( value == blurEnabled_ ) return;
-            blurEnabled_ = value;
             setBackgroundChanged( true );
         }
 
@@ -154,10 +142,6 @@ namespace TRANSPARENCY
         virtual const QPixmap& _backgroundPixmap( void ) const
         { return backgroundPixmap_; }
 
-        //! opacity
-        const double& _opacity( void ) const
-        { return opacity_; }
-
         //!@name event handlers
         //@{
 
@@ -192,10 +176,6 @@ namespace TRANSPARENCY
         /*! this must be re-implemented by derived classes */
         virtual void _paint( QPaintDevice&, const QRect& )
         { return; }
-
-        //! true if blur is enabled
-        virtual bool _blurEnabled( void ) const
-        { return blurEnabled_; }
 
         //! update blur region
         virtual void _updateBlurRegion( const QRegion& );
@@ -260,14 +240,8 @@ namespace TRANSPARENCY
         //! true when pointer is in window
         bool highlighted_;
 
-        //! true when blur is enabled
-        bool blurEnabled_;
-
         //! store last blur region
         QRegion blurRegion_;
-
-        //! window opacity
-        double opacity_;
 
         //! tint color
         QColor highlightColor_;

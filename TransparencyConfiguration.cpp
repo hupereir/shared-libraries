@@ -67,36 +67,10 @@ namespace TRANSPARENCY
         checkbox->setToolTip( "Enable/disable transparent background" );
         addOptionWidget( checkbox );
 
-        // enable/disable compositing
-        if( CompositeEngine::get().isAvailable() )
-        {
-
-            box->layout()->addWidget( checkbox = new OptionCheckBox( "Use compositing", box, "TRANSPARENCY_USE_COMPOSITE" ) );
-            checkbox->setToolTip( "Enable/disable compositing" );
-            addOptionWidget( checkbox );
-            QCheckBox* compositingCheckBox( checkbox );
-
-            box->layout()->addWidget( checkbox = new OptionCheckBox( "Enable blur behind transparent regions", box, "TRANSPARENCY_USE_BLUR" ) );
-            checkbox->setToolTip( "Enable/disable blur behind transparent regions" );
-            addOptionWidget( checkbox );
-            checkbox->setEnabled( false );
-
-            connect( compositingCheckBox, SIGNAL( toggled( bool ) ), checkbox, SLOT( setEnabled( bool ) ) );
-
-        }
-
         QHBoxLayout* hLayout = new QHBoxLayout();
         hLayout->setSpacing(5);
         hLayout->setMargin(0);
         box->layout()->addItem( hLayout );
-
-        // opacity
-        hLayout->addWidget( new QLabel( "Opacity (composite):", box ) );
-        hLayout->addWidget( slider = new OptionSlider( this, "TRANSPARENCY_OPACITY" ) );
-        slider->setScale( 1.0/2.55 );
-        slider->setRange( 0, 100 );
-        slider->setToolTip( "Widget opacity" );
-        addOptionWidget( slider );
 
         box->layout()->addWidget( checkbox = new OptionCheckBox( "Inverse colors", box, "TRANSPARENCY_INVERSE_COLORS" ) );
         addOptionWidget( checkbox );
