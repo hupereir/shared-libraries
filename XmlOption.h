@@ -30,20 +30,16 @@
 
 #include "Option.h"
 
-//! some XML definitions specific to Option management
 namespace BASE
 {
+    //! some XML definitions specific to Option management
     namespace XML
     {
 
         static const QString SPECIAL_OPTION = "SpecialOption";
         static const QString OPTION = "Option";
         static const QString OPTIONS = "Options";
-        static const QString NAME = "Name";
         static const QString VALUE = "Value";
-        static const QString FLAGS = "flags";
-        static const QString COMMENTS = "Comments";
-        static const QString FRONT = "Front";
 
     }
 
@@ -61,10 +57,10 @@ class XmlOption:public Option
         name_( name )
     {}
 
-    //! creator from DOM node
+    //! constructor from DOM node
     XmlOption( const QDomElement& element );
 
-    //! retrieve DomElement from option
+    //! create dom element
     QDomElement domElement( QDomDocument& parent ) const;
 
     //! name

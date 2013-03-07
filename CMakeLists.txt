@@ -162,6 +162,7 @@ SET( base_qt_SOURCES
   WidgetMonitor.cpp
   WinUtil.cpp
   X11Util.cpp
+  XmlColor.cpp
   XmlCommandLineArguments.cpp
   XmlDocument.cpp
   XmlFileList.cpp

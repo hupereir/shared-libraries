@@ -24,6 +24,21 @@
 #include "XmlOption.h"
 #include "XmlString.h"
 
+namespace BASE
+{
+    //! some XML definitions specific to Option management
+    namespace XML
+    {
+
+        static const QString NAME = "Name";
+        static const QString FLAGS = "flags";
+        static const QString COMMENTS = "Comments";
+        static const QString FRONT = "Front";
+
+    }
+
+}
+
 //________________________________________________
 XmlOption::XmlOption( const QDomElement& element )
 {

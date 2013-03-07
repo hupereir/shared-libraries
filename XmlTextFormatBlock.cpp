@@ -21,27 +21,23 @@
 *
 *******************************************************************************/
 
-/*!
-\file XmlTextFormatBlock.cpp
-\brief tracks text format in given text range
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include "Str.h"
 #include "XmlTextFormatBlock.h"
+
+#include "Debug.h"
 
 namespace FORMAT
 {
-    //____________________________________
-    const QString XmlTextFormatBlock::XML_TAG = "TextFormat";
-    const QString XmlTextFormatBlock::XML_FORMAT = "format";
-    const QString XmlTextFormatBlock::XML_COLOR = "color";
-    const QString XmlTextFormatBlock::XML_HREF = "href";
-    const QString XmlTextFormatBlock::XML_BEGIN = "begin";
-    const QString XmlTextFormatBlock::XML_END = "end";
 
+    namespace XML
+    {
+
+        static const QString FORMAT = "format";
+        static const QString COLOR = "color";
+        static const QString HREF = "href";
+        static const QString BEGIN = "begin";
+        static const QString END = "end";
+
+    }
 
     //____________________________________
     XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
@@ -57,13 +53,13 @@ namespace FORMAT
             QString value( attribute.value() );
 
             // nominal tags
-            if( name == XML_BEGIN ) setBegin( value.toInt() );
-            else if( name == XML_END ) setEnd( value.toInt() );
+            if( name == XML::BEGIN ) setBegin( value.toInt() );
+            else if( name == XML::END ) setEnd( value.toInt() );
 
             // format
-            else if( name == XML_FORMAT ) setFormat( (TextFormatFlags) value.toInt() );
-            else if( name == XML_COLOR ) setColor( value );
-            else if( name == XML_HREF ) setHRef( value );
+            else if( name == XML::FORMAT ) setFormat( (TextFormatFlags) value.toInt() );
+            else if( name == XML::COLOR ) setColor( value );
+            else if( name == XML::HREF ) setHRef( value );
 
             else Debug::Throw(0) << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized text format attribute: \"" << name << "\"\n";
         }
@@ -73,12 +69,12 @@ namespace FORMAT
     //__________________________________________________________
     QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
     {
-        QDomElement out( parent.createElement( XML_TAG ) );
-        out.setAttribute( XML_BEGIN, Str().assign<int>(begin()) );
-        out.setAttribute( XML_END, Str().assign<int>(end()) );
-        out.setAttribute( XML_FORMAT, Str().assign<unsigned int>(format()) );
-        if( !color().isEmpty() ) out.setAttribute( XML_COLOR, color() );
-        if( !href().isEmpty() ) out.setAttribute( XML_HREF, href() );
+        QDomElement out( parent.createElement( XML::TAG ) );
+        out.setAttribute( XML::BEGIN, QString().setNum(begin()) );
+        out.setAttribute( XML::END, QString().setNum(end()) );
+        out.setAttribute( XML::FORMAT, QString().setNum(format()) );
+        if( !color().isEmpty() ) out.setAttribute( XML::COLOR, color() );
+        if( !href().isEmpty() ) out.setAttribute( XML::HREF, href() );
         return out;
     }
 

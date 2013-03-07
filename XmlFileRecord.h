@@ -30,19 +30,13 @@
 #include <QDomDocument>
 #include <QString>
 
+
 namespace FILERECORD
 {
     namespace XML
     {
         static const QString FILE_LIST = "FileList";
         static const QString RECORD = "record";
-        static const QString FILE = "file";
-        static const QString TIME = "time";
-        static const QString FLAGS = "flags";
-        static const QString VALID= "valid";
-        static const QString PROPERTY= "property";
-        static const QString NAME= "name";
-        static const QString VALUE= "value";
     }
 }
 

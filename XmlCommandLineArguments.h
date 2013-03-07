@@ -51,9 +51,6 @@ class XmlCommandLineArguments:public CommandLineArguments
     //! get DOM element
     QDomElement domElement( const QString&, QDomDocument& ) const;
 
-    //! XML XmlCommandLineArguments keyword
-    static const QString XML_ARGUMENT;
-
 };
 
 #endif

@@ -23,50 +23,42 @@
 *
 *******************************************************************************/
 
-/*!
-  \file XmlTextFormatBlock.h
-  \brief text format with Xml abilities
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
+#include "TextFormatBlock.h"
 #include <QDomElement>
 #include <QDomDocument>
-#include "TextFormatBlock.h"
 
-//! text format with Xml abilities
 namespace FORMAT
 {
-  class XmlTextFormatBlock:public TextFormatBlock
-  {
+    namespace XML
+    {
 
-    public:
+        static const QString TAG = "TextFormat";
+//         static const QString FORMAT = "format";
+//         static const QString COLOR = "color";
+//         static const QString HREF = "href";
+//         static const QString BEGIN = "begin";
+//         static const QString END = "end";
 
-    //! constructor
-    XmlTextFormatBlock( const QDomElement& element );
+    }
 
-    //! constructor
-    XmlTextFormatBlock( const TextFormatBlock& format ):
-      TextFormatBlock( format )
-      {}
+    //! text format with Xml abilities
+    class XmlTextFormatBlock:public TextFormatBlock
+    {
 
-    //! get dom element
-    QDomElement domElement( QDomDocument& parent ) const;
+        public:
 
-    //!@name XML_tag names
-    //@{
+        //! constructor
+        XmlTextFormatBlock( const QDomElement& element );
 
-    static const QString XML_TAG;
-    static const QString XML_BEGIN;
-    static const QString XML_END;
-    static const QString XML_FORMAT;
-    static const QString XML_COLOR;
-    static const QString XML_HREF;
+        //! constructor
+        XmlTextFormatBlock( const TextFormatBlock& format ):
+            TextFormatBlock( format )
+        {}
 
-    //@}
+        //! get dom element
+        QDomElement domElement( QDomDocument& parent ) const;
 
-  };
+    };
 
 };
 

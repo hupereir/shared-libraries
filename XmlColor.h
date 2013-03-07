@@ -1,5 +1,5 @@
-#ifndef BASE_Color_h
-#define BASE_Color_h
+#ifndef XmlColor_h
+#define XmlColor_h
 
 // $Id$
 
@@ -14,7 +14,7 @@
 *
 * This software is distributed in the hope that it will be useful, but WITHOUT
 * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License along with
@@ -24,40 +24,38 @@
 *
 *******************************************************************************/
 
-#include <QColor>
+#include "Color.h"
 
+#include <QDomDocument>
+#include <QDomElement>
+#include <QString>
+
+//! some specific Xml definitions
 namespace BASE
 {
-
-    // color utility
-    class Color: public QColor
+    namespace XML
     {
+        static const QString COLOR_LIST( "Colors" );
+        static const QString COLOR = "Color";
+    }
+}
 
-        public:
+//! xml implementation of the color object
+class XmlColor: public BASE::Color
+{
 
-        //! constructor
-        Color( void )
-        {}
+    public:
 
-        //! constructor
-        Color( const QString& value )
-        { if( value.toUpper() != "NONE" ) setNamedColor( value ); }
+    //! copy constructor
+    XmlColor( const BASE::Color& other ):
+        BASE::Color( other )
+    {}
 
-        //! constructor
-        Color( const QColor& color ):
-            QColor( color )
-        {}
+    //! constructor from DOM
+    XmlColor( const QDomElement& );
 
-        //! merge argument color with intensity to this one
-        QColor merge( const QColor& , qreal = 0.5 ) const;
-
-        //! add alpha
-        QColor addAlpha( qreal = 0.5 ) const;
-
-        //! less than operator
-        bool operator < (const Color& ) const;
-
-    };
+    //! create dom element
+    QDomElement domElement( QDomDocument& parent ) const;
 
 };
 

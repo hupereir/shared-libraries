@@ -19,14 +19,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file Color.h
-  \brief color utilities
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include "Color.h"
 
 namespace BASE
@@ -53,6 +45,16 @@ namespace BASE
         QColor out( *this );
         out.setAlpha( intensity*alpha() );
         return out;
+    }
+
+    //__________________________________________________________
+    bool Color::operator < (const Color& other ) const
+    {
+        if( red() != other.red() ) return red() < other.red();
+        else if( green() != other.green() ) return green() < other.green();
+        else if( blue() != other.blue() ) return blue() < other.blue();
+        else if( alpha() != other.alpha() ) return alpha() < other.alpha();
+        else return false;
     }
 
 }

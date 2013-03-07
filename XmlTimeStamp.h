@@ -51,9 +51,6 @@ class XmlTimeStamp:public TimeStamp
     //! get DOM element
     QDomElement domElement( const QString&, QDomDocument& ) const;
 
-    //! XML XmlTimeStamp keyword
-    static const QString XML_TIME;
-
 };
 
 #endif
