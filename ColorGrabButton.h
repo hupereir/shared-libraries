@@ -44,7 +44,7 @@ class ColorGrabButton : public QToolButton, public Counter
 
     signals:
 
-    void colorSelected( QString );
+    void colorSelected( QColor );
 
 };
 

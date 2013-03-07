@@ -47,7 +47,7 @@ class ColorGrabObject: public QObject, public Counter
 
     signals:
 
-    void colorSelected( QString );
+    void colorSelected( QColor );
 
     protected slots:
 

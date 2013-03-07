@@ -162,7 +162,7 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
     if (image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
 
     // assign color to the selection frame
-    emit colorSelected( QColor( image.pixel( 1, 1 ) ).name() );
+    emit colorSelected( QColor( image.pixel( 1, 1 ) ) );
 
     return;
 }

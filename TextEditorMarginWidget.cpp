@@ -21,11 +21,12 @@
 *
 *******************************************************************************/
 
+#include "TextEditorMarginWidget.h"
 
+#include "Color.h"
 #include "Debug.h"
 #include "Singleton.h"
 #include "TextEditor.h"
-#include "TextEditorMarginWidget.h"
 #include "XmlOptions.h"
 
 #include <QPainter>
@@ -68,10 +69,10 @@ void TextEditorMarginWidget::_updateConfiguration( void )
     QPalette palette( TextEditorMarginWidget::palette() );
     QColor color;
 
-    if( ( color = QColor( XmlOptions::get().get<QString>("MARGIN_FOREGROUND") ) ).isValid() )
+    if( ( color = QColor( XmlOptions::get().get<BASE::Color>("MARGIN_FOREGROUND") ) ).isValid() )
     { palette.setColor( QPalette::WindowText, color ); }
 
-    if( ( color = QColor( XmlOptions::get().get<QString>("MARGIN_BACKGROUND") ) ).isValid() )
+    if( ( color = QColor( XmlOptions::get().get<BASE::Color>("MARGIN_BACKGROUND") ) ).isValid() )
     { palette.setColor( QPalette::Window, color ); }
 
     setPalette( palette );

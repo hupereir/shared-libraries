@@ -880,12 +880,9 @@ void TreeView::_updateConfiguration( void )
         palette.color( QPalette::AlternateBase ) != palette.color( QPalette::Base ) );
 
     // try load selected column color from option
-    QColor color;
-    if( XmlOptions::get().get<bool>( "USE_SELECTED_COLUMN_COLOR" ) )
-    { color = BASE::Color( XmlOptions::get().raw("SELECTED_COLUMN_COLOR") ); }
-
-    // reset
-    selectedColumnColor_ = color;
+    selectedColumnColor_ = XmlOptions::get().get<bool>( "USE_SELECTED_COLUMN_COLOR" ) ?
+        XmlOptions::get().get<BASE::Color>("SELECTED_COLUMN_COLOR"):
+        QColor();
 
     // item margin
     if( itemMarginFromOptions_ && XmlOptions::get().contains( "LIST_ITEM_MARGIN" ) )

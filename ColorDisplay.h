@@ -26,10 +26,6 @@
 #include "Counter.h"
 #include "AnimatedLineEditor.h"
 
-#include <QColorDialog>
-
-class ColorGrabButton;
-
 //! used to display colors and a choose button
 class ColorDisplay: public QWidget, public Counter
 {
@@ -39,23 +35,18 @@ class ColorDisplay: public QWidget, public Counter
 
     public:
 
-    //! default name for no color
-    static const QString NONE;
-
     //! constructor
     ColorDisplay( QWidget* parent );
 
-    //! retrieve color name
-    QString colorName( void ) const
-    {
-        QString out( editor_.text() );
-        return out.isEmpty() ? NONE:out;
-    }
+    //! color
+    QColor color( void ) const
+    { return editor_->color(); }
 
     public slots:
 
     //! set color
-    void setColor( QString );
+    void setColor( QColor color )
+    { editor_->setColor( color ); }
 
     private slots:
 
@@ -68,13 +59,13 @@ class ColorDisplay: public QWidget, public Counter
     private:
 
     //! internal customized label to have correct background color
-    class LocalLineEdit : public AnimatedLineEditor
+    class Editor : public AnimatedLineEditor
     {
 
         public:
 
         //! constructor
-        LocalLineEdit( QWidget *parent ):
+        Editor( QWidget *parent ):
             AnimatedLineEditor( parent )
         {}
 
@@ -82,15 +73,12 @@ class ColorDisplay: public QWidget, public Counter
         QColor color( void ) const;
 
         //! set color
-        void setColor( QColor color );
+        void setColor( QColor );
 
     };
 
     //! label used to display the color
-    LocalLineEdit editor_;
-
-    //! grab button
-    ColorGrabButton* grabButton_;
+    Editor* editor_;
 
 };
 #endif

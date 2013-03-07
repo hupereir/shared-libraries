@@ -21,6 +21,8 @@
 
 #include "Color.h"
 
+#include <QStringList>
+
 namespace BASE
 {
 
@@ -58,3 +60,36 @@ namespace BASE
     }
 
 }
+
+//__________________________________________________________
+QTextStream& operator << (QTextStream& out, const BASE::Color& color )
+{
+    // out << color.red() << "," << color.green() << "," << color.blue() << "," << color.alpha();
+    out << color.name();
+    return out;
+}
+
+//__________________________________________________________
+QTextStream& operator >> (QTextStream& in, BASE::Color& color )
+{
+    QString colorString;
+    in >> colorString;
+    const QStringList stringList( colorString.split( "," ) );
+    if( stringList.size() >= 3 )
+    {
+        color.setRed( stringList[0].toInt() );
+        color.setGreen( stringList[1].toInt() );
+        color.setBlue( stringList[2].toInt() );
+
+        if( stringList.size() >= 4 )  color.setAlpha( stringList[3].toInt() );
+        else color.setAlpha( 255 );
+
+    } else {
+
+        color.setNamedColor( colorString );
+
+    }
+
+    return in;
+}
+

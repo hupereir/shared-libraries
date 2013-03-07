@@ -2282,7 +2282,7 @@ void TextEditor::_updateConfiguration( void )
     tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
 
     // paragraph highlighting
-    highlightColor_ = QColor( XmlOptions::get().get<QString>( "HIGHLIGHT_COLOR" ) );
+    highlightColor_ = QColor( XmlOptions::get().get<BASE::Color>( "HIGHLIGHT_COLOR" ) );
     blockHighlight().setEnabled( highlightColor_.isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
     blockHighlightAction().setEnabled( highlightColor_.isValid() );
     blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );

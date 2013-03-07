@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include "ColorDisplay.h"
+#include "Color.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
@@ -42,11 +43,11 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
 
     //! read value from option
     void read( void )
-    { setColor( XmlOptions::get().raw( optionName() ) ); }
+    { setColor( XmlOptions::get().get<BASE::Color>( optionName() ) ); }
 
     //! write value to option
     void write( void ) const
-    { XmlOptions::get().setRaw( optionName(), colorName() ); }
+    { XmlOptions::get().set<BASE::Color>( optionName(), color() ); }
 
 };
 #endif
