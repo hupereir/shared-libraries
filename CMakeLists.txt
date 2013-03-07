@@ -292,6 +292,13 @@ ELSE()
     ${base_qt_HEADERS_MOC}
     ${base_qt_RESOURCES_RCC}
   )
+
+  IF( X11_FOUND )
+
+    TARGET_LINK_LIBRARIES( base-qt ${X11_X11_LIB} )
+
+  ENDIF()
+
   TARGET_LINK_LIBRARIES( base-qt ${QT_LIBRARIES} base )
 
 ENDIF()
