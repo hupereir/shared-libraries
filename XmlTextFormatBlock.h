@@ -33,11 +33,6 @@ namespace FORMAT
     {
 
         static const QString TAG = "TextFormat";
-//         static const QString FORMAT = "format";
-//         static const QString COLOR = "color";
-//         static const QString HREF = "href";
-//         static const QString BEGIN = "begin";
-//         static const QString END = "end";
 
     }
 

@@ -24,13 +24,14 @@
 *
 *******************************************************************************/
 
+#include "Color.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "QOrderedSet.h"
 
 #include <QMenu>
 #include <QPaintEvent>
 #include <QPixmap>
-#include <QSet>
 #include <QHash>
 #include <QMap>
 
@@ -43,11 +44,8 @@ class ColorMenu: public QMenu, public Counter
 
     public:
 
-    //! default name for no-color
-    static const QString NONE;
-
     //! sorted set of colors
-    typedef QSet<QString> ColorSet;
+    typedef QOrderedSet<BASE::Color> ColorSet;
 
     //! constructor
     ColorMenu( QWidget* parent );
@@ -56,14 +54,14 @@ class ColorMenu: public QMenu, public Counter
     virtual ~ColorMenu( void )
     { Debug::Throw( "ColorMenu::~ColorMenu.\n" ); }
 
-    //! add a color
-    void add( const QString& );
-
     //! retrieve colors
     ColorSet colors() const;
 
+    //! add
+    void add( QColor );
+
     //! retrieves last selected color
-    const QColor& lastColor( void ) const
+    QColor lastColor( void ) const
     { return lastColor_; }
 
     signals:
@@ -94,10 +92,10 @@ class ColorMenu: public QMenu, public Counter
     private:
 
     //! add a color
-    void _add( const QColor& );
+    void add( QString );
 
     //! map colors to display pixmap
-    typedef QMap<QString, QBrush> ColorMap;
+    typedef QMap<BASE::Color, QBrush> ColorMap;
 
     //! list of loaded colors
     ColorMap colors_;

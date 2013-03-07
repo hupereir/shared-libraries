@@ -30,9 +30,6 @@
 #include <QColorDialog>
 #include <QPainter>
 
-//________________________________________________
-const QString ColorMenu::NONE = "None";
-
 //_______________________________________________
 ColorMenu::ColorMenu( QWidget* parent ):
     QMenu( parent ),
@@ -44,13 +41,6 @@ ColorMenu::ColorMenu( QWidget* parent ):
 }
 
 //_______________________________________________
-void ColorMenu::add( const QString& colorname )
-{
-    Debug::Throw() << "ColorMenu::add - name: " << colorname << endl;
-    if( colorname.compare( NONE, Qt::CaseInsensitive ) != 0 ) _add( QColor( colorname ) );
-}
-
-//_______________________________________________
 ColorMenu::ColorSet ColorMenu::colors( void ) const
 {
 
@@ -59,6 +49,16 @@ ColorMenu::ColorSet ColorMenu::colors( void ) const
     { out.insert( iter.key() ); }
 
     return out;
+}
+
+//_______________________________________________
+void ColorMenu::add( QColor color )
+{
+
+    if( color.isValid() && !colors_.contains( color ) )
+    { colors_.insert( color, QBrush() ); }
+
+    return;
 }
 
 //_______________________________________________
@@ -132,7 +132,7 @@ void ColorMenu::_new( void )
     QColor color( QColorDialog::getColor( Qt::white, this ) );
     if( color.isValid() )
     {
-        _add( color );
+        add( color );
         lastColor_ = color;
         emit selected( color );
     }
@@ -159,14 +159,4 @@ void ColorMenu::_selected( QAction* action )
         lastColor_ = iter.value();
         emit selected( iter.value() );
     }
-}
-
-//_______________________________________________
-void ColorMenu::_add( const QColor& color )
-{
-
-    if( color.isValid() && !colors_.contains( color.name() ) )
-    { colors_.insert( color.name(), QBrush() ); }
-
-    return;
 }

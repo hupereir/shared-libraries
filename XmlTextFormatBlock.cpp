@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 #include "XmlTextFormatBlock.h"
-
+#include "XmlColor.h"
 #include "Debug.h"
 
 namespace FORMAT
@@ -73,7 +73,7 @@ namespace FORMAT
         out.setAttribute( XML::BEGIN, QString().setNum(begin()) );
         out.setAttribute( XML::END, QString().setNum(end()) );
         out.setAttribute( XML::FORMAT, QString().setNum(format()) );
-        if( !color().isEmpty() ) out.setAttribute( XML::COLOR, color() );
+        if( color().isValid() ) out.setAttribute( XML::COLOR, color().name() );
         if( !href().isEmpty() ) out.setAttribute( XML::HREF, href() );
         return out;
     }
