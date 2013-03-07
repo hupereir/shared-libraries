@@ -24,6 +24,7 @@
 #include "TransparentWidget.h"
 
 #include "BaseIcons.h"
+#include "Color.h"
 #include "CompositeEngine.h"
 #include "IconEngine.h"
 #include "Singleton.h"
@@ -223,8 +224,8 @@ namespace TRANSPARENCY
 
         // colors
         QColor color;
-        _setForegroundColor( (color = QColor( XmlOptions::get().get<QString>("TRANSPARENCY_FOREGROUND_COLOR"))).isValid() ? color:palette().color( QPalette::WindowText ) );
-        _setShadowColor( QColor( XmlOptions::get().get<QString>("TRANSPARENCY_SHADOW_COLOR")) );
+        _setForegroundColor( (color = QColor( XmlOptions::get().get<BASE::Color>("TRANSPARENCY_FOREGROUND_COLOR"))).isValid() ? color:palette().color( QPalette::WindowText ) );
+        _setShadowColor( QColor( XmlOptions::get().get<BASE::Color>("TRANSPARENCY_SHADOW_COLOR")) );
         _setForegroundIntensity( XmlOptions::get().get<int>( "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
 
         // shadow offset
@@ -234,7 +235,7 @@ namespace TRANSPARENCY
         inverseColorsAction().setChecked( XmlOptions::get().get<bool>( "TRANSPARENCY_INVERSE_COLORS" ) );
 
         // tint
-        QColor tintColor( XmlOptions::get().get<QString>( "TRANSPARENCY_TINT_COLOR" ) );
+        QColor tintColor( XmlOptions::get().get<BASE::Color>( "TRANSPARENCY_TINT_COLOR" ) );
         unsigned int tintIntensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_TINT_INTENSITY" ) );
         if( tintColor.isValid() && tintIntensity )
         {
@@ -245,7 +246,7 @@ namespace TRANSPARENCY
         } else _setTintColor( QColor() );
 
         // highlight
-        QColor highlightColor( XmlOptions::get().get<QString>( "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
+        QColor highlightColor( XmlOptions::get().get<BASE::Color>( "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
         unsigned int highlightIntensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
         if( highlightColor.isValid() && highlightIntensity )
         {
