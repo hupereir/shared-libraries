@@ -54,36 +54,8 @@ template<class T> class TreeItem: public TreeItemBase
     //! list of vector
     typedef QList<TreeItem> List;
 
-    //! list of vector
-    class Map: public QMap<int, TreeItem*>
-    {
-
-        public:
-
-        //! constructor
-        Map( void ):
-            QMap<int, TreeItem*>(),
-            sortValues_( true )
-        {}
-
-        //! destructor
-        virtual ~Map( void )
-        {}
-
-        //! sort values
-        void setSortValues( bool value )
-        { sortValues_ = value; }
-
-        //! sort values
-        bool sortValues( void ) const
-        { return sortValues_; }
-
-        private:
-
-        //! sort values
-        bool sortValues_;
-
-    };
+    //! map items to internal id
+    typedef QMap<int, TreeItem*> Map;
 
     //! id type
     typedef unsigned int Id;
@@ -387,10 +359,6 @@ template<class T> class TreeItem: public TreeItemBase
     //! value
     Reference _get( void )
     { return value_; }
-
-    //! value
-    void _set( ConstReference value )
-    { value_ = value; }
 
     //! erase from map
     void _eraseFromMap( void )

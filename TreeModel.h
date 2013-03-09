@@ -62,6 +62,7 @@ template<class T> class TreeModel : public ItemModel
         ItemModel( parent ),
         map_( typename Item::Map() ),
         root_( map_ ),
+        sortValues_( true ),
         hasCurrentItem_( false )
     {}
 
@@ -322,6 +323,20 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
+    //! replace
+    bool replace( ConstReference first, ConstReference second )
+    {
+        Item* item( root_.find( first ) );
+        if( item )
+        {
+
+            item->set( second );
+            return true;
+
+        } else return false;
+
+    };
+
     //! update values
     /*!
     items that are not found in list are removed
@@ -337,7 +352,7 @@ template<class T> class TreeModel : public ItemModel
             emit layoutAboutToBeChanged();
 
             // sort values if requested
-            if( map_.sortValues() )
+            if( sortValues_ )
             { std::sort( values.begin(), values.end() ); }
 
             root_.set( values );
@@ -367,7 +382,7 @@ template<class T> class TreeModel : public ItemModel
         else {
 
             // sort values if requested
-            if( map_.sortValues() )
+            if( sortValues_ )
             { std::sort( values.begin(), values.end() ); }
 
             item->set( values );
@@ -425,7 +440,7 @@ template<class T> class TreeModel : public ItemModel
 
     //! sort values
     void setSortValues( bool value )
-    { map_.setSortValues( value ); }
+    { sortValues_ = value; }
 
     protected:
 
@@ -501,6 +516,9 @@ template<class T> class TreeModel : public ItemModel
 
     //! expanded indexes
     List expandedItems_;
+
+    //! true if values should be sorted when retrieved
+    bool sortValues_;
 
     //! true if current item is valid
     bool hasCurrentItem_;
