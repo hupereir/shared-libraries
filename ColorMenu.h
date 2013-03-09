@@ -54,15 +54,29 @@ class ColorMenu: public QMenu, public Counter
     virtual ~ColorMenu( void )
     { Debug::Throw( "ColorMenu::~ColorMenu.\n" ); }
 
+    //!@name accessors
+    //@{
+
     //! retrieve colors
     ColorSet colors() const;
-
-    //! add
-    void add( QColor );
 
     //! retrieves last selected color
     QColor lastColor( void ) const
     { return lastColor_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! clear
+    void reset( void )
+    { colors_.clear(); }
+
+    //! add
+    void add( QColor );
+
+    //@}
 
     signals:
 
