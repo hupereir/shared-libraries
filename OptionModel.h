@@ -80,7 +80,7 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
     enum ColumnType
     {
         NAME,
-        Current,
+        CURRENT,
         VALUE,
         DEFAULT_VALUE,
         FLAGS
@@ -91,6 +91,10 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
         TreeModel<OptionPair>( parent ),
         Counter( "OptionModel" ),
         readOnly_( true )
+    {}
+
+    //! destructor
+    virtual ~OptionModel( void )
     {}
 
     //! set model read only

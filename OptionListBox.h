@@ -27,7 +27,6 @@
 #include "BrowsedLineEditor.h"
 #include "CustomDialog.h"
 #include "OptionWidget.h"
-#include "OptionModel.h"
 #include "Options.h"
 
 #include <QAction>
@@ -37,6 +36,7 @@
 
 #include <cmath>
 
+class OptionModel;
 class TreeView;
 
 //! ListBox for Special options, and buttons to add/remove values
@@ -50,6 +50,13 @@ class OptionListBox: public QWidget, public OptionWidget
 
     //! constructor
     OptionListBox( QWidget* parent, const QString& optionName );
+
+    //! destructor
+    virtual ~OptionListBox( void )
+    {}
+
+    //! set model
+    void setModel( OptionModel* );
 
     //! read value from option
     void read( void );
@@ -117,7 +124,7 @@ class OptionListBox: public QWidget, public OptionWidget
     QFileDialog::FileMode fileMode_;
 
     //! model
-    OptionModel model_;
+    OptionModel* model_;
 
     //! value list
     TreeView* list_;

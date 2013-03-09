@@ -64,7 +64,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
         }
     }
 
-    if( role == Qt::DecorationRole && index.column() == Current )
+    if( role == Qt::DecorationRole && index.column() == CURRENT )
     { return option.second.isCurrent() ? IconEngine::get( ICONS::DIALOG_ACCEPT ):QVariant(); }
 
     if( role == Qt::ToolTipRole && index.column() == NAME )
@@ -81,20 +81,19 @@ bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int r
     if( !(index.isValid() && index.column() == VALUE && role == Qt::EditRole ) ) return false;
 
     // retrieve option
-    OptionPair option( get( index ) );
-
-    if( !( value.toString().isNull() || value.toString() == option.second.raw() ) )
+    const OptionPair source( get( index ) );
+    const QString newString( value.toString() );
+    if( !( newString.isNull() || newString == source.second.raw() ) )
     {
 
-        // remove old value
-        remove( option );
+        OptionPair destination( source );
+        destination.second.setRaw( newString );
+        replace( source, destination );
 
-        // add new one
-        option.second.setRaw( value.toString() );
-        add( option );
+        emit dataChanged( index, index );
 
-        if( XmlOptions::get().isSpecialOption( option.first ) ) emit specialOptionModified( option );
-        else emit optionModified( option );
+        if( XmlOptions::get().isSpecialOption( source.first ) ) emit specialOptionModified( source );
+        else emit optionModified( source );
 
     }
 

@@ -27,6 +27,7 @@
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "OptionModel.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
@@ -52,16 +53,17 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     setLayout( layout );
 
     // set model editable
-    model_.setReadOnly( false );
+    model_ = new OptionModel( this );
+    model_->setReadOnly( false );
 
     // create list
     list_ = new TreeView( this );
     list_->setSortingEnabled( false );
     list_->header()->hide();
     list_->setSelectionMode( QAbstractItemView::ExtendedSelection );
-    list_->setModel( &model_ );
+    list_->setModel( model_ );
     list_->setRootIsDecorated( false );
-    list_->setMask( 1<<OptionModel::Current|1<<OptionModel::VALUE );
+    list_->setMask( 1<<OptionModel::CURRENT|1<<OptionModel::VALUE );
     list_->setItemDelegate( new TextEditionDelegate( this ) );
     list_->setIconSize( IconSize( IconSize::Small ) );
     layout->addWidget( list_, 1 );
@@ -134,6 +136,24 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 }
 
 //_______________________________________________________
+void OptionListBox::setModel( OptionModel* model )
+{
+    Debug::Throw( "OptionListBox::setModel.\n" );
+    if( list_ )
+    {
+        list_->setModel( model );
+        connect( list_->selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
+        connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
+    }
+
+    if( model_ ) model_->deleteLater();
+    list_->setModel( model );
+    model_ = model;
+    model_->setReadOnly( false );
+
+}
+
+//_______________________________________________________
 void OptionListBox::read( void )
 {
     Debug::Throw( "OptionListBox::read.\n" );
@@ -150,7 +170,7 @@ void OptionListBox::read( void )
     foreach( const Option& option, values )
     { options << OptionPair( optionName(), option ); }
 
-    model_.set( options );
+    model_->set( options );
     list_->resizeColumns();
 
 }
@@ -163,7 +183,7 @@ void OptionListBox::write( void ) const
     XmlOptions::get().clearSpecialOptions( optionName() );
     XmlOptions::get().keep( optionName() );
 
-    foreach( const OptionPair& optionPair, model_.children() )
+    foreach( const OptionPair& optionPair, model_->children() )
     { XmlOptions::get().add( optionPair.first, optionPair.second ); }
 
 }
@@ -174,14 +194,14 @@ void OptionListBox::_updateButtons( void )
     Debug::Throw( "OptionListBox::_updateButtons.\n" );
 
     QModelIndex current( list_->selectionModel()->currentIndex() );
-    edit_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::Recordable ) );
-    editAction_->setEnabled( current.isValid() && model_.get( current ).second.hasFlag( Option::Recordable ) );
+    edit_->setEnabled( current.isValid() && model_->get( current ).second.hasFlag( Option::Recordable ) );
+    editAction_->setEnabled( current.isValid() && model_->get( current ).second.hasFlag( Option::Recordable ) );
 
     default_->setEnabled( current.isValid() );
     defaultAction_->setEnabled( current.isValid() );
 
     bool removeEnabled( false );
-    foreach( const OptionPair& optionPair, model_.get( list_->selectionModel()->selectedRows() ) )
+    foreach( const OptionPair& optionPair, model_->get( list_->selectionModel()->selectedRows() ) )
     {
         if( optionPair.second.hasFlag( Option::Recordable ) )
         {
@@ -209,10 +229,10 @@ void OptionListBox::_add( void )
 
     // create new item
     Options::Pair option( optionName(), dialog.editor().text() );
-    model_.add( option );
+    model_->add( option );
 
     // make sure item is selected
-    QModelIndex index( model_.index( option ) );
+    QModelIndex index( model_->index( option ) );
     if( index != list_->selectionModel()->currentIndex() )
     {
         list_->selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
@@ -234,13 +254,13 @@ void OptionListBox::_edit( void )
     QModelIndex current( list_->selectionModel()->currentIndex() );
     Q_ASSERT( current.isValid() );
 
-    Options::Pair option( model_.get( current ) );
-    Q_ASSERT( option.second.hasFlag( Option::Recordable ) );
+    Options::Pair source( model_->get( current ) );
+    Q_ASSERT( source.second.hasFlag( Option::Recordable ) );
 
     // create dialog
     EditDialog dialog( this, browsable_, fileMode_ );
-    dialog.editor().setText( option.second.raw() );
-    if( option.second.isCurrent() )
+    dialog.editor().setText( source.second.raw() );
+    if( source.second.isCurrent() )
     {
         dialog.checkbox().setChecked( true );
         dialog.checkbox().setEnabled( false );
@@ -250,17 +270,15 @@ void OptionListBox::_edit( void )
     if( dialog.centerOnParent().exec() == QDialog::Rejected ) return;
     if( dialog.editor().text().isEmpty() ) return;
 
-    // first remove old option
-    model_.remove( option );
-
     // modify value
-    option.second.setRaw( dialog.editor().text() );
+    Options::Pair destination( source );
+    destination.second.setRaw( dialog.editor().text() );
 
     // re-add to model
-    model_.add( option );
+    model_->replace( source, destination );
 
     // make sure item is selected
-    QModelIndex index( model_.index( option ) );
+    QModelIndex index( model_->index( destination ) );
     if( index != list_->selectionModel()->currentIndex() )
     {
         list_->selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
@@ -282,11 +300,11 @@ void OptionListBox::_remove( void )
 
     // retrieve selected items; retrieve only recordable options
     OptionModel::List removed;
-    foreach( const OptionPair& optionPair, model_.get( list_->selectionModel()->selectedRows() ) )
+    foreach( const OptionPair& optionPair, model_->get( list_->selectionModel()->selectedRows() ) )
     { if( optionPair.second.hasFlag( Option::Recordable ) ) removed << optionPair; }
 
     // remove
-    model_.remove( removed );
+    model_->remove( removed );
 
     return;
 
@@ -302,17 +320,17 @@ void OptionListBox::_setDefault( void )
     Q_ASSERT( current.isValid() );
 
     // get matching option
-    Options::Pair currentOption( model_.get( current ) );
+    Options::Pair currentOption( model_->get( current ) );
 
-    OptionModel::List options( model_.children() );
+    OptionModel::List options( model_->children() );
     for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); ++iter )
     { iter->second.setCurrent( false ); }
 
-    model_.set( options );
+    model_->set( options );
 
-    // model_.remove( currentOption );
+    // model_->remove( currentOption );
     currentOption.second.setCurrent( true );
-    model_.add( currentOption );
+    model_->add( currentOption );
 
     list_->resizeColumns();
 
