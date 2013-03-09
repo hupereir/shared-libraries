@@ -172,16 +172,16 @@ bool Options::add( const QString& name, Option option, const bool& isDefault )
     }
 
     // see if option is already in list
-    List::iterator same_option_iter = std::find( iter.value().begin(), iter.value().end(), option );
-    if( same_option_iter != iter.value().end() )
+    List::iterator sameOptionIter = std::find_if( iter.value().begin(), iter.value().end(), Option::SameValueFTor( option ) );
+    if( sameOptionIter != iter.value().end() )
     {
 
-        // if flags are identical, do nothing and return false
-        if( same_option_iter->flags() == option.flags() ) return false;
+        // if options are identical, do nothing and return false
+        if( *sameOptionIter == option ) return false;
         else {
 
             // update flags otherwise and return true
-            same_option_iter->setFlags( option.flags() );
+            sameOptionIter->setFlags( option.flags() );
             std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Current ) );
             return true;
 
@@ -194,8 +194,6 @@ bool Options::add( const QString& name, Option option, const bool& isDefault )
         return true;
 
     }
-
-
 }
 
 //________________________________________________

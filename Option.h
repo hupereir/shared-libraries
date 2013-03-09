@@ -244,6 +244,31 @@ class Option:public Counter
 
     };
 
+    //! used to get options with matching values
+    class SameValueFTor
+    {
+        public:
+
+        //! constructor
+        SameValueFTor( const Option& option ):
+            value_( option.value_ )
+            {}
+
+        //! destructor
+        virtual ~SameValueFTor( void )
+        {}
+
+        //! predicate
+        bool operator() (const Option& other ) const
+        { return value_ == other.value_; }
+
+        private:
+
+        //! prediction
+        QByteArray value_;
+
+    };
+
     private:
 
     //! option value
