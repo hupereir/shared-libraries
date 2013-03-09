@@ -64,8 +64,7 @@ namespace BASE
 //__________________________________________________________
 QTextStream& operator << (QTextStream& out, const BASE::Color& color )
 {
-    // out << color.red() << "," << color.green() << "," << color.blue() << "," << color.alpha();
-    out << color.name();
+    out << color.red() << "," << color.green() << "," << color.blue() << "," << color.alpha();
     return out;
 }
 

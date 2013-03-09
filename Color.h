@@ -42,7 +42,7 @@ namespace BASE
 
         //! constructor
         Color( const QString& value )
-        { if( value.toUpper() != "NONE" ) setNamedColor( value ); }
+        { setNamedColor( value ); }
 
         //! constructor
         Color( const QColor& color ):
