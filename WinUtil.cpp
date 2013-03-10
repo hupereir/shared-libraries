@@ -30,7 +30,7 @@
 #endif
 
 //_______________________________________
-void WinUtil::update( QPixmap& pixmap, double opacity ) const
+void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 {
 
     #if defined(Q_OS_WIN)

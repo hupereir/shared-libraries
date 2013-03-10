@@ -38,7 +38,7 @@ class WinUtil
     { Q_CHECK_PTR( target_ ); }
 
     //! update layered widget using pixmap
-    void update( QPixmap&, double ) const;
+    void update( const QPixmap&, double = 1.0 ) const;
 
     //! toggle hide from taskbar for Windows
     bool toggleHideFromTaskBar( bool ) const;
