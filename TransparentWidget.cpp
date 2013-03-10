@@ -173,6 +173,7 @@ namespace TRANSPARENCY
         #if defined(Q_OS_WIN)
         _paintBackground( widgetPixmap_, event->rect() );
         _paint( widgetPixmap_, event->rect() );
+        WinUtil( this ).update( widgetPixmap_ );
         #else
         _paintBackground( *this, event->rect() );
         _paint( *this, event->rect() );
@@ -256,9 +257,12 @@ namespace TRANSPARENCY
 
         #if defined(Q_OS_WIN)
         // create widget pixmap when compositing is enabled
-        if( CompositeEngine::get().isAvailable() ) {
+        if( CompositeEngine::get().isAvailable() )
+        {
+
             widgetPixmap_ = QPixmap( size() );
             widgetPixmap_.fill( Qt::transparent );
+
         } else widgetPixmap_ = QPixmap();
         #endif
 
