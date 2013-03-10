@@ -29,6 +29,7 @@
 #include "SystemEnvironmentDialog.h"
 
 #include <QApplication>
+#include <QKeyEvent>
 
 //_______________________________________________________
 DebugMenu::DebugMenu( QWidget* parent, Flags flags ):
@@ -38,11 +39,47 @@ DebugMenu::DebugMenu( QWidget* parent, Flags flags ):
     iconCacheDialog_( 0 )
 {
 
+    setTitle( "Debug" );
+
     Debug::Throw( "DebugMenu::DebugMenu.\n" );
     if( flags&Counters ) addAction( "Object &Counters ", this, SLOT( _showCounterDialog() ) );
     if( flags&Icons ) addAction( "&Icon Cache ", this, SLOT( _showIconCacheDialog() ) );
     if( flags&System ) addAction( "&System environment ", this, SLOT( _showSystemEnvironment() ) );
     if( flags&Options ) addAction( "&Run-time options", this, SLOT( _showOptions() ) );
+
+    if( qobject_cast<QMenu*>( parent ) ) parent->installEventFilter( this );
+
+}
+
+//_______________________________________________
+bool DebugMenu::eventFilter( QObject* object, QEvent* event )
+{
+
+    // check object
+    if( object == parentWidget() )
+    {
+        switch( event->type() )
+        {
+            case QEvent::KeyPress:
+            if( static_cast<QKeyEvent*>( event )->key() == Qt::Key_Shift )
+            { menuAction()->setVisible( true ); }
+            break;
+
+            case QEvent::KeyRelease:
+            if( static_cast<QKeyEvent*>( event )->key() == Qt::Key_Shift )
+            { menuAction()->setVisible( false ); }
+            break;
+
+            case QEvent::Show:
+            menuAction()->setVisible( false );
+
+            default: break;
+        }
+
+    }
+
+    return QMenu::eventFilter( object, event );
+
 }
 
 //_______________________________________________
@@ -77,7 +114,7 @@ void DebugMenu::_showIconCacheDialog( void )
     // check IconCache dialog has been build
     if( !iconCacheDialog_ ) {
 
-        iconCacheDialog_ = new IconCacheDialog( qApp->activeWindow() );
+        iconCacheDialog_ = new IconCacheDialog( this );
         iconCacheDialog_->centerOnWidget( qApp->activeWindow() );
         iconCacheDialog_->update();
         iconCacheDialog_->show();
