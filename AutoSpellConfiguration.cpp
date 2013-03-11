@@ -48,25 +48,25 @@ namespace SPELLCHECK
         setLayout( gridLayout );
 
         // suggestions
-        gridLayout->addWidget( new QLabel( "Max number of suggestions: ", this ) );
+        gridLayout->addWidget( new QLabel( tr( "Maximum number of suggestions:" ), this ) );
         OptionSpinBox* spinbox = new OptionSpinBox( this, "MAX_SUGGESTIONS" ) ;
         gridLayout->addWidget( spinbox);
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 50 );
-        spinbox->setToolTip( "Maximum number of suggestions in suggestion menu.\n 0 means no limit." );
+        spinbox->setToolTip( tr( "Maximum number of suggestions in suggestion menu.\n 0 means no limit." ) );
         addOptionWidget( spinbox );
 
         // options
-        gridLayout->addWidget( new QLabel( "Highlight color: ", this ), 1, 0 );
+        gridLayout->addWidget( new QLabel( tr( "Highlight color:" ), this ), 1, 0 );
         OptionColorDisplay *colordisplay = new OptionColorDisplay( this, "AUTOSPELL_COLOR" );
         gridLayout->addWidget( colordisplay  );
-        colordisplay->setToolTip( "Highlight color for misspelled words" );
+        colordisplay->setToolTip( tr( "Highlight color for misspelled words" ) );
         addOptionWidget( colordisplay );
 
-        gridLayout->addWidget( new QLabel( "Highlight font format: ", this ), 2, 0 );
+        gridLayout->addWidget( new QLabel( tr( "Highlight font format:" ), this ), 2, 0 );
         OptionFontInfo* fontinfo =  new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" );
         gridLayout->addWidget( fontinfo );
-        fontinfo->setToolTip( "Font format for misspelled words" );
+        fontinfo->setToolTip( tr( "Font format for misspelled words" ) );
         addOptionWidget( fontinfo );
 
         read();

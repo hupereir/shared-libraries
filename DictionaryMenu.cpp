@@ -37,7 +37,7 @@ namespace SPELLCHECK
     {
 
         Debug::Throw( "DictionaryMenu::DictionaryMenu.\n" );
-        setTitle( "&Dictionary" );
+        setTitle( tr( "Dictionary" ) );
 
         // action group
         group_ = new QActionGroup( this );
@@ -80,7 +80,7 @@ namespace SPELLCHECK
 
         // add reset button
         QAction* action;
-        addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+        addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload" ), this ) );
         connect( action, SIGNAL( triggered() ), SLOT( reset() ) );
 
         // load disabled dictionaries from options

@@ -35,8 +35,9 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-#include <QLayout>
+#include <QApplication>
 #include <QHeaderView>
+#include <QLayout>
 #include <QPushButton>
 #include <QTextCursor>
 
@@ -51,7 +52,7 @@ namespace SPELLCHECK
         Debug::Throw( "SpellDialog::SpellDialog.\n" );
 
         // window title
-        setWindowTitle( read_only ? "Spell Check (read-only)" : "Spell Check" );
+        setWindowTitle( QString( read_only ? tr( "Spell Check (read-only) - %1" ) : tr( "Spell Check - %1" ) ).arg( qApp->applicationName() ) );
         setOptionName( "SPELL_DIALOG" );
 
         // create vbox layout
@@ -81,18 +82,18 @@ namespace SPELLCHECK
         vLayout->addLayout( gridLayout, 0 );
 
         // misspelled word line editor
-        gridLayout->addWidget( new QLabel( "Misspelled word:", this ) );
+        gridLayout->addWidget( new QLabel( tr( "Misspelled word:" ), this ) );
         gridLayout->addWidget( sourceEditor_ = new AnimatedLineEditor( this ) );
         sourceEditor_->setReadOnly( true );
 
         // replacement line editor
-        gridLayout->addWidget( new QLabel( "Replace with:", this ) );
+        gridLayout->addWidget( new QLabel( tr( "Replace with:" ), this ) );
         gridLayout->addWidget( replaceEditor_ = new AnimatedLineEditor( this ) );
         if( read_only ) replaceEditor_->setEnabled( false );
 
         gridLayout->setColumnStretch( 1, 1 );
 
-        QLabel* label = new QLabel( "Suggestions:", this );
+        QLabel* label = new QLabel( tr( "Suggestions:" ), this );
         vLayout->addWidget( label, 0 );
 
         // suggestions
@@ -113,7 +114,7 @@ namespace SPELLCHECK
         vLayout->addLayout( gridLayout, 0 );
 
         // dictionaries combobox
-        gridLayout->addWidget( label = new QLabel( "Dictionary: ", this ) );
+        gridLayout->addWidget( label = new QLabel( tr( "Dictionary:" ), this ) );
         gridLayout->addWidget( dictionariesComboBox_ = new QComboBox( this ) );
         _updateDictionaries();
 
@@ -125,7 +126,7 @@ namespace SPELLCHECK
         connect( dictionarySelectionButton, SIGNAL( modified() ), SLOT( _updateDictionaries() ) );
 
         // filter combobox
-        gridLayout->addWidget( filterLabel_ = new QLabel( "Filter: ", this ), 1, 0, 1, 1 );
+        gridLayout->addWidget( filterLabel_ = new QLabel( tr( "Filter:" ), this ), 1, 0, 1, 1 );
         gridLayout->addWidget( filtersComboBox_ = new QComboBox( this ), 1, 1, 1, 1 );
         _updateFilters();
 
@@ -147,15 +148,15 @@ namespace SPELLCHECK
 
         // add word button
         QPushButton* button;
-        vLayout->addWidget( button = new QPushButton( "&Add Word", this ) );
+        vLayout->addWidget( button = new QPushButton( tr( "Add Word" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT( _addWord() ) );
 
         // check word button
-        vLayout->addWidget( button = new QPushButton( "&Check Word", this ) );
+        vLayout->addWidget( button = new QPushButton( tr( "Check Word" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT( _checkWord() ) );
 
         // recheck button
-        vLayout->addWidget( button = new QPushButton( "Recheck &Page", this ) );
+        vLayout->addWidget( button = new QPushButton( tr( "Recheck Page" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT( _restart() ) );
 
         QFrame* frame;
@@ -163,12 +164,12 @@ namespace SPELLCHECK
         frame->setFrameShape( QFrame::HLine );
 
         // replace button
-        vLayout->addWidget( button = new QPushButton( "&Replace", this ) );
+        vLayout->addWidget( button = new QPushButton( tr( "Replace" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT( _replace() ) );
         if( read_only ) button->setEnabled( false );
 
         // replace button
-        vLayout->addWidget( button = new QPushButton( "R&eplace All", this ) );
+        vLayout->addWidget( button = new QPushButton( tr( "Replace All" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT( _replaceAll() ) );
         if( read_only ) button->setEnabled( false );
 
@@ -176,11 +177,11 @@ namespace SPELLCHECK
         frame->setFrameShape( QFrame::HLine );
 
         // ignore button
-        vLayout->addWidget( button = new QPushButton( "&Ignore", this ) );
+        vLayout->addWidget( button = new QPushButton( tr( "Ignore" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT( _ignore() ) );
 
         // ignore button
-        vLayout->addWidget( button = new QPushButton( "I&gnore All", this ) );
+        vLayout->addWidget( button = new QPushButton( tr( "Ignore All" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT( _ignoreAll() ) );
 
         // state label_
@@ -188,7 +189,7 @@ namespace SPELLCHECK
         stateLabel_->setAlignment( Qt::AlignCenter );
 
         // close button
-        vLayout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
+        vLayout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), tr( "Close" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT( close() ) );
 
         // change font
@@ -250,9 +251,7 @@ namespace SPELLCHECK
         int index( dictionariesComboBox_->findText( dictionary ) );
         if( index < 0 )
         {
-            QString buffer;
-            QTextStream( &buffer ) << "invalid dictionary: " << dictionary;
-            InformationDialog( this, buffer ).exec();
+            InformationDialog( this, QString( tr( "Invalid dictionary: %1" ) ).arg( dictionary ) ).exec();
             return false;
         }
 
@@ -279,9 +278,7 @@ namespace SPELLCHECK
         int index( filtersComboBox_->findText( filter ) );
         if( index < 0 )
         {
-            QString buffer;
-            QTextStream( &buffer ) << "invalid dictionary: " << filter;
-            InformationDialog( this, buffer ).exec();
+            InformationDialog( this, QString( tr( "Invalid filter: %1" ) ).arg( filter ) ).exec();
             return false;
         }
 
@@ -555,7 +552,7 @@ namespace SPELLCHECK
             sourceEditor_->clear();
             replaceEditor_->clear();
             _model().clear();
-            stateLabel_->setText( "Spelling\n completed" );
+            stateLabel_->setText( tr( "Spelling completed" ) );
 
         }
 
@@ -580,7 +577,6 @@ namespace SPELLCHECK
         cursor.setPosition( index, QTextCursor::MoveAnchor );
         cursor.setPosition( index+length, QTextCursor::KeepAnchor );
         editor().setTextCursor( cursor );
-        Debug::Throw( "SpellChecker::_UpdateSelection. done.\n" );
 
     }
 
@@ -609,8 +605,6 @@ namespace SPELLCHECK
         _model().clear();
         Model::List suggestions( interface().suggestions( word ) );
         _model().add( suggestions );
-
-        // would need to select first item
 
     }
 

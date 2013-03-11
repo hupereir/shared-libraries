@@ -34,7 +34,7 @@ namespace SPELLCHECK
     //_______________________________________________
     const QString SpellInterface::NO_FILTER = "none";
     const QString SpellInterface::FILTER_TEX = "tex";
-    const QString SpellInterface::FILTER_TEX_NO_ACCENTS = "tex (no accents)";
+    const QString SpellInterface::FILTER_TEX_NO_ACCENTS = QObject::tr( "tex (no accents)" );
 
     //_______________________________________________
     SpellInterface::SpellInterface( void ):
@@ -85,14 +85,14 @@ namespace SPELLCHECK
         Debug::Throw( "SpellInterface::setDictionary.\n" );
         if( !spellConfig_ )
         {
-            error_ = "invalid aspell configuration";
+            error_ = QObject::tr( "invalid aspell configuration" );
             return false;
         }
 
         // check dictionary
         if( !hasDictionary( dictionary ) )
         {
-            error_ = "invalid dictionary";
+            error_ = QObject::tr( "invalid dictionary" );
             return false;
         }
 
@@ -119,14 +119,14 @@ namespace SPELLCHECK
         Debug::Throw( "SpellInterface::setFilter.\n" );
         if( !spellConfig_ )
         {
-            error_ = "invalid aspell configuration";
+            error_ = QObject::tr( "invalid aspell configuration" );
             return false;
         }
 
         // check dictionary
         if( !hasFilter( filter ) )
         {
-            error_ = "invalid filter";
+            error_ = QObject::tr( "invalid filter" );
             return false;
         }
 
@@ -188,7 +188,7 @@ namespace SPELLCHECK
 
         // check spellchecker
         if( !spellChecker_ ) {
-            error_ = "invalid aspell checker";
+            error_ = QObject::tr( "invalid aspell checker" );
             return false;
         }
 
@@ -207,13 +207,14 @@ namespace SPELLCHECK
         // check current word
         if( !word_.size() )
         {
-            error_ = "invalid word to be replaced";
+            error_ = QObject::tr( "invalid word to be replaced" );
             return false;
         }
 
         // check spell checker
-        if( !spellChecker_ ) {
-            error_ = "invalid aspell checker";
+        if( !spellChecker_ )
+        {
+            error_ = QObject::tr( "invalid aspell checker" );
             return false;
         }
 
@@ -238,14 +239,14 @@ namespace SPELLCHECK
         // check filter
         if( filter_.isEmpty() )
         {
-            error_ = "no filter set";
+            error_ = QObject::tr( "no filter set" );
             return false;
         }
 
         // check filter
         if( dictionary_.isEmpty() )
         {
-            error_ = "no dictionary set";
+            error_ = QObject::tr( "no dictionary set" );
             return false;
         }
 
@@ -253,13 +254,13 @@ namespace SPELLCHECK
         if( !text_.size() )
         {
             word_ = "";
-            error_ = "no text to check";
+            error_ = QObject::tr( "no text to check" );
             return false;
         }
 
         // check document checker
         if( !documentChecker_ ) {
-            error_ = "invalid aspell document checker";
+            error_ = QObject::tr( "invalid aspell document checker" );
             return false;
         }
 
@@ -392,7 +393,7 @@ namespace SPELLCHECK
 
         // check config
         if( !spellConfig_ ) {
-            error_ = "invalid aspell configuration";
+            error_ = QObject::tr( "invalid aspell configuration" );
             return false;
         }
 
@@ -429,7 +430,6 @@ namespace SPELLCHECK
             Debug::Throw( "SpellInterface::_reset - assigning text, done.\n" );
         }
 
-        Debug::Throw( "SpellInterface::_reset - done.\n" );
         return true;
 
     }
@@ -443,7 +443,7 @@ namespace SPELLCHECK
         // check config
         if( !spellConfig_ ) {
             Debug::Throw( "SpellInterface::_resetSpellChecker - invalid aspell configuration.\n" );
-            error_ = "invalid aspell configuration";
+            error_ = QObject::tr( "invalid aspell configuration" );
             return false;
         }
 

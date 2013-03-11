@@ -78,10 +78,10 @@ namespace SPELLCHECK
         addSeparator();
 
         // add word action
-        addAction( "&add word to dictionary", this, SLOT( _addWord() ) );
+        addAction( tr( "Add Word to Dictionary" ), this, SLOT( _addWord() ) );
 
         // ignore word action
-        addAction( "&ignore word", this, SLOT( _ignoreWord() ) );
+        addAction( tr( "Ignore Word" ), this, SLOT( _ignoreWord() ) );
 
     }
 

@@ -29,7 +29,7 @@ namespace SPELLCHECK
 
     //_______________________________________________
     const QString SpellItemModel::columnTitles_[ SpellItemModel::nColumns ] =
-    { "Item" };
+    { tr( "Item" ) };
 
     //__________________________________________________________________
     QVariant SpellItemModel::data( const QModelIndex& index, int role ) const

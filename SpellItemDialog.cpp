@@ -36,7 +36,7 @@ namespace SPELLCHECK
     {
 
         // add label
-        QLabel* label = new QLabel( "Select the items that should appear in the menu:", this );
+        QLabel* label = new QLabel( tr( "Select the items that should appear in the menu:" ), this );
         label->setWordWrap( true );
         mainLayout().addWidget( label );
 
