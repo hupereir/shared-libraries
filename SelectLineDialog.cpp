@@ -21,78 +21,49 @@
 *
 *******************************************************************************/
 
-/*!
-  \file SelectLineDialog.cpp
-  \brief goto_line_number_dialog dialog for text editor widgets
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
+#include "SelectLineDialog.h"
+
+#include "BaseIcons.h"
+#include "IconEngine.h"
 
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
 #include <QValidator>
 
-#include "BaseIcons.h"
-#include "IconEngine.h"
-#include "SelectLineDialog.h"
-
-
-
 //_______________________________________________________
 SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
-    BaseDialog( parent, flags ),
-    Counter( "SelectLineDialog" )
+    CustomDialog( parent, OkButton|CancelButton, flags )
 {
 
-  Debug::Throw( "SelectLineDialog::SelectLineDialog.\n" );
+    Debug::Throw( "SelectLineDialog::SelectLineDialog.\n" );
 
-  // set dialog title
-  setWindowTitle( "Goto Line Number" );
+    // set dialog title
+    setWindowTitle( tr( "Goto Line Number" ) );
 
-  // create vbox layout
-  QVBoxLayout *vlayout;
-  setLayout( vlayout = new QVBoxLayout() );
-  layout()->setSpacing(5);
-  layout()->setMargin(10);
+    // insert text editor
+    QLabel *label( new QLabel( tr( "Goto line number:" ), this ) );
+    mainLayout().addWidget( label, 0 );
 
-  // insert text editor
-  QLabel *label( new QLabel( "&Goto line number: ", this ) );
-  vlayout->addWidget( label, 0 );
+    mainLayout().addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
+    label->setBuddy( editor_ );
 
-  vlayout->addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
-  label->setBuddy( editor_ );
+    //connect( editor(), SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
+    connect( editor_, SIGNAL(returnPressed( void ) ), SLOT( _selectLine( void ) ) );
+    connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( void ) ) );
 
-  //connect( editor(), SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
-  connect( &editor(), SIGNAL(returnPressed( void ) ), SLOT( _selectLine( void ) ) );
-  connect( &editor(), SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( void ) ) );
+    QIntValidator *validator = new QIntValidator( this );
+    validator->setBottom(0);
+    editor_->setValidator( validator );
 
-  QIntValidator *validator = new QIntValidator( this );
-  validator->setBottom(0);
-  editor().setValidator( validator );
+    // connections
+    connect( &okButton(), SIGNAL( clicked( void ) ), SLOT( _selectLine( void ) ) );
 
-  QHBoxLayout* h_layout( new QHBoxLayout() );
-  h_layout->setMargin(0);
-  h_layout->setSpacing( 5 );
-  vlayout->addLayout( h_layout, 0 );
-  h_layout->addStretch(1);
-
-  // insert Find button
-  QPushButton *button;
-  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_ACCEPT ), "&Ok", this ) );
-  button->setAutoDefault( false );
-  connect( button, SIGNAL( clicked( void ) ), SLOT( _selectLine( void ) ) );
-  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-
-  // insert Cancel button
-  h_layout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Cancel", this ) );
-  button->setAutoDefault( false );
-  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-  setMinimumSize( QSize( 250, 100 ) );
+    // minimum size
+    setMinimumSize( QSize( 250, 100 ) );
 
 }
 
 //_______________________________________________________
 void SelectLineDialog::_selectLine( void )
-{ emit lineSelected( Str( editor().text() ).get<int>()-1 ); }
+{ emit lineSelected( Str( editor_->text() ).get<int>()-1 ); }

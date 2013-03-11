@@ -24,23 +24,13 @@
 *
 *******************************************************************************/
 
-/*!
-  \file SelectLineDialog.h
-  \brief goto_line_number_dialog dialog for text editor widgets
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-
-
-#include "BaseDialog.h"
+#include "CustomDialog.h"
 #include "Counter.h"
 #include "AnimatedLineEditor.h"
 #include "Str.h"
 
 //! find_text dialog for text editor widgets
-class SelectLineDialog: public BaseDialog, public Counter
+class SelectLineDialog: public CustomDialog
 {
 
   //! Qt meta object declaration
