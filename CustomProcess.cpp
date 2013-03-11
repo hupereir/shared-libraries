@@ -68,12 +68,12 @@ QString CustomProcess::errorMessage( ProcessError error )
     switch( error )
     {
 
-        case FailedToStart: return "Process failed to start";
-        case Crashed: return "Process crashed";
-        case Timedout: return "Process timed out";
-        case WriteError: return "Process ended due to write error";
-        case ReadError: return "Process ended du to read error";
-        default: return "Process ended with unknown error";
+        case FailedToStart: return tr("Process failed to start");
+        case Crashed: return tr("Process crashed");
+        case Timedout: return tr("Process timed out");
+        case WriteError: return tr("Process ended due to write error");
+        case ReadError: return tr("Process ended du to read error");
+        default: return tr("Process ended with unknown error");
     }
 
 }

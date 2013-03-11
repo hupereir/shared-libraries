@@ -28,10 +28,10 @@
 
 //________________________________________________________
 CommandLineParser::CommandLineParser( void ):
-Counter( "CommandLineParser" )
+    Counter( "CommandLineParser" )
 {
     Debug::Throw( "CommandLineParser::CommandLineParser.\n" );
-    registerFlag( "--help", "print this help and exit" );
+    registerFlag( "--help", QObject::tr( "print this help and exit" ) );
 }
 
 //________________________________________________________
@@ -78,8 +78,7 @@ void CommandLineParser::usage( void ) const
     }
 
     stream
-        << "Note: special tag \"-\" can be added to separate options from the last list of arguments "
-        << "(e.g. list of files to be opened)"
+        << QObject::tr( "Note: special tag \"-\" can be added to separate options from the last list of arguments\n (e.g. list of files to be opened)" )
         << endl;
 
     return;

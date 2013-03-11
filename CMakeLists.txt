@@ -29,6 +29,7 @@ LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
 
 ########### next target ###############
 SET( base_SOURCES
+  Color.cpp
   Command.cpp
   CommandLineArguments.cpp
   CommandLineParser.cpp

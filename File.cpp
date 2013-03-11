@@ -172,7 +172,7 @@ QString File::sizeString( qint64 sizeInt )
 
     }
 
-    return out.trimmed() + " " + unit[power];
+    return QString( QObject::tr("%1 %2") ).arg( size ).arg( unit[power] );
 
 }
 

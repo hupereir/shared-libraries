@@ -26,6 +26,7 @@
 
 #include "Counter.h"
 
+#include <QDateTime>
 #include <time.h>
 
 //! time manipulation object
@@ -116,8 +117,16 @@ class TimeStamp:public Counter
         JOB_TAG
     };
 
+    //! if timestamp is valid returns formated string
+    virtual QString toString( Format = SHORT ) const;
+
     //! if timestamp is valid, returns formated string
-    virtual QString toString( Format format = SHORT ) const;
+    virtual QString toString( Qt::DateFormat format ) const
+    { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : STAMP_UNKNOWN; }
+
+    //! if timestamp is valid, returns formated string
+    virtual QString toString( const QString& format ) const
+    { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : STAMP_UNKNOWN; }
 
     //! returns time in second
     virtual time_t unixTime( void ) const
@@ -151,56 +160,45 @@ class TimeStamp:public Counter
     { return (valid_) ? tm_.tm_year+1900:0; }
 
     //! seconds (between 0 and 59)
-    virtual TimeStamp& setSeconds( const int& value )
+    virtual TimeStamp& setSeconds( int value )
     {
         tm_.tm_sec = value;
         return *this;
     }
 
     //! minutes (between 0 and 59)
-    virtual TimeStamp& setMinutes( const int& value )
+    virtual TimeStamp& setMinutes( int value )
     {
         tm_.tm_min = value;
         return *this;
     }
 
     //! hour (between 0 and 23)
-    virtual TimeStamp& setHours( const int& value )
+    virtual TimeStamp& setHours( int value )
     {
         tm_.tm_hour = value;
         return *this;
     }
 
     //! retrieves day (between 1 and 31)
-    virtual TimeStamp& setDay( const int& value )
+    virtual TimeStamp& setDay( int value )
     {
         tm_.tm_mday = value;
         return *this;
     }
 
     //! retrieves month (between 1 and 12)
-    virtual TimeStamp& setMonth( const int& value )
+    virtual TimeStamp& setMonth( int value )
     {
         tm_.tm_mon = value - 1;
         return *this;
     }
 
     //! retrieves month (from string)
-    virtual TimeStamp& setMonth( const QString& value )
-    {
-        for( int index = 0; index < 12; index++ )
-        {
-            if( months_[index] == value )
-            {
-                tm_.tm_mon = index;
-                break;
-            }
-        }
-        return *this;
-    }
+    virtual TimeStamp& setMonth( const QString& );
 
     //! retrieves year (between 1 and 12)
-    virtual TimeStamp& setYear( const int& value )
+    virtual TimeStamp& setYear( int value )
     {
         tm_.tm_year = value - 1900;
         return *this;
@@ -227,12 +225,6 @@ class TimeStamp:public Counter
 
     //! time structure from localtime()
     struct tm tm_;
-
-    //! day names
-    static const QString days_[];
-
-    //! month names
-    static const QString months_[];
 
 };
 

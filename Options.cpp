@@ -22,15 +22,17 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "Options.h"
+
+#include "Color.h"
+#include "Debug.h"
 
 #include <algorithm>
 
 //________________________________________________
 Options::Options( void ):
-Counter( "Options" ),
-autoDefault_( false )
+    Counter( "Options" ),
+    autoDefault_( false )
 {}
 
 //________________________________________________
@@ -47,73 +49,74 @@ void Options::installDefaultOptions( void )
     add( "PIXMAP_PATH", Option( ":/pixmaps", Option::Recordable|Option::Current ) );
     add( "PIXMAP_PATH", Option( ":/pixmaps/128x128", Option::Recordable ) );
 
-    set( "DEBUG_LEVEL", Option( "0" , "Debug verbosity level" ) );
-    set( "SORT_FILES_BY_DATE", Option( "0" , "Sort files by access date in open previous menu" ) );
+    set<int>( "DEBUG_LEVEL", 0 );
+    set<bool>( "SORT_FILES_BY_DATE", false );
 
     // fonts
-    set( "USE_SYSTEM_FONT", Option( "1", "Use default system font for widgets" ) );
-    set( "FIXED_FONT_NAME", Option( "Sans" , "Fixed font (used for editors)" ) );
-    set( "FONT_NAME", Option( "Sans" , "Main font (used for all widgets but editors)" ) );
+    set<bool>( "USE_SYSTEM_FONT", true );
+    set( "FIXED_FONT_NAME", "Sans" );
+    set( "FONT_NAME", "Sans" );
 
     // toolbars default configuration
-    set( "TOOLBUTTON_ICON_SIZE", Option( "0" , "Icon size used for tool buttons" ) );
-    set( "TOOLBUTTON_TEXT_POSITION", Option( "-1" , "Text label position in tool buttons" ) );
+    set<int>( "TOOLBUTTON_ICON_SIZE", 0 );
+    set<int>( "TOOLBUTTON_TEXT_POSITION", -1 );
 
     // text editors default configuration
-    set( "TAB_EMULATION", Option( "1" , "Emulate tabs with space characters in text editors" ) );
-    set( "TAB_SIZE", Option( "2" , "Emulated tab size" ) );
-    set( "WRAP_TEXT", Option( "0" , "Text wrapping" ) );
-    set( "SHOW_LINE_NUMBERS", Option( "0" , "Display line numbers on the side of text editors" ) );
-    set( "AUTOHIDE_CURSOR", "1" );
-    set( "AUTOHIDE_CURSOR_DELAY", "5" );
+    set<bool>( "TAB_EMULATION", true );
+    set<int>( "TAB_SIZE", 2 );
+    set<bool>( "WRAP_TEXT", false );
+    set<bool>( "SHOW_LINE_NUMBERS", false );
+    set<bool>( "AUTOHIDE_CURSOR", true );
+    set<int>( "AUTOHIDE_CURSOR_DELAY", 5 );
 
-    set( "HIGHLIGHT_PARAGRAPH", Option( "1", "Enable current paragraph highlighting" ) );
-    set( "HIGHLIGHT_COLOR", Option( "#fffdd4", "Current paragraph highlight color" ) );
+    set<bool>( "HIGHLIGHT_PARAGRAPH", true );
+    set<BASE::Color>( "HIGHLIGHT_COLOR", QColor( "#fffdd4" ) );
 
     // help dialog
-    set( "HELP_DIALOG_WIDTH", "750" );
-    set( "HELP_DIALOG_HEIGHT", "500" );
+    set<int>( "HELP_DIALOG_WIDTH", 750 );
+    set<int>( "HELP_DIALOG_HEIGHT", 500 );
 
     // list configuration
-    set( "USE_ALTERNATE_COLOR", "0" );
-    set( "USE_SELECTED_COLUMN_COLOR", "1" );
-    set( "SELECTED_COLUMN_COLOR", Option( "#fffdd4", "Background color for selected column in list" ) );
-    set( "LIST_ICON_SIZE", Option( "24", "Default icon size in lists" ) );
-    set( "LIST_ITEM_MARGIN", Option( "2", "Default margin between items in lists" ) );
+    set<bool>( "USE_ALTERNATE_COLOR", false );
+    set<bool>( "USE_SELECTED_COLUMN_COLOR", true );
+
+    set<BASE::Color>( "SELECTED_COLUMN_COLOR", QColor( "#fffdd4" ) );
+    set<int>( "LIST_ICON_SIZE", 24 );
+    set<int>( "LIST_ITEM_MARGIN", 2 );
 
     // textEditor margins
-    set( "MARGIN_FOREGROUND", "#136872" );
-    set( "MARGIN_BACKGROUND", "#ecffec" );
+    set<BASE::Color>( "MARGIN_FOREGROUND", QColor("#136872") );
+    set<BASE::Color>( "MARGIN_BACKGROUND", QColor("#ecffec") );
 
     set( "ANIMATION_FRAMES", "1000" );
 
     // smooth transitions (disabled under X11 as they usually are handled by the widget style)
     #if defined(Q_OS_UNIX)
-    set( "SMOOTH_TRANSITION_ENABLED", "0" );
-    set( "SMOOTH_TRANSITION_DURATION", "300" );
+    set<bool>( "SMOOTH_TRANSITION_ENABLED", false );
     #else
-    set( "SMOOTH_TRANSITION_ENABLED", "1" );
-    set( "SMOOTH_TRANSITION_DURATION", "300" );
+    set<bool>( "SMOOTH_TRANSITION_ENABLED", true );
     #endif
+
+    set<int>( "SMOOTH_TRANSITION_DURATION", 300 );
 
     // smooth scrolling
     #if defined( Q_OS_MAC )
-    set( "SMOOTH_SCROLLING_ENABLED", "0" );
-    set( "SMOOTH_SCROLLING_DURATION", "100" );
+    set<bool>( "SMOOTH_SCROLLING_ENABLED", false );
     #else
-    set( "SMOOTH_SCROLLING_ENABLED", "1" );
-    set( "SMOOTH_SCROLLING_DURATION", "100" );
+    set<bool>( "SMOOTH_SCROLLING_ENABLED", true );
     #endif
 
+    set<int>( "SMOOTH_SCROLLING_DURATION", 100 );
+
     // box selection
-    set( "BOX_SELECTION_ALPHA", Option( "20", "Alpha threshold for box selection - between 0 and 100" ) );
+    set<int>( "BOX_SELECTION_ALPHA", 20 );
 
     // dictionaries and filter
     set( "SPELLCHECK_DISABLED_DICTIONARIES", " " );
     set( "SPELLCHECK_DISABLED_FILTERS", " " );
 
     // icon theme
-    set( "USE_ICON_THEME", "0" );
+    set<bool>( "USE_ICON_THEME", false );
     set( "ICON_THEME", "oxygen" );
     set( "ICON_THEME_PATH", "/usr/share/icons" );
 
@@ -248,7 +251,7 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
 Options::Map::const_iterator Options::_find( const QString& name ) const
 {
     Map::const_iterator out( options_.find( name ) );
-    if( out == options_.end() ) { QTextStream( stdout ) << "Options::_find - invalid option: " << name << endl; }
+    if( out == options_.end() ) { Debug::Throw(0) << "Options::_find - invalid option: " << name << endl; }
     Q_ASSERT( out != options_.end() );
     return out;
 }

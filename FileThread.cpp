@@ -61,8 +61,7 @@ void FileThread::run( void )
             if( !file_.copy( destination_ ) )
             {
                 error_ = true;
-                QTextStream what( &errorString_ );
-                what << "Failed to copy " << file_ << " to " << destination_;
+                errorString_ = QString( tr("Failed to copy %1 to %2") ).arg( file_ ).arg( destination_ );
             }
             break;
         }

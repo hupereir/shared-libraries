@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    Command.cpp
-\brief   retrieve commands from Options and format so that they match QProcess
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "Command.h"
 #include "Debug.h"
 

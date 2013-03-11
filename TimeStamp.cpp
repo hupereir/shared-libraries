@@ -26,38 +26,12 @@
 #include "TimeStamp.h"
 #include "Util.h"
 
-#include <time.h>
+#include <QObject>
 
-const QString TimeStamp::days_[] =
-{
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat"
-};
+//________________________________________________________________________________
+const QString TimeStamp::STAMP_UNKNOWN( QObject::tr("unknown") );
 
-const QString TimeStamp::months_[] = {
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-};
-
-//_______________________________
-const QString TimeStamp::STAMP_UNKNOWN( "unknown" );
-
-//_____________________________________
+//________________________________________________________________________________
 TimeStamp TimeStamp::now( void )
 {
     //Debug::Throw( "TimeStamp::now.\n" );
@@ -68,93 +42,59 @@ TimeStamp TimeStamp::now( void )
     return out;
 }
 
-//___________________________________
+//________________________________________________________________________________
 QString TimeStamp::toString( TimeStamp::Format format ) const
 {
-    if( !(valid_ ) ) return STAMP_UNKNOWN;
 
-    QString out;
-    QTextStream o( &out );
     switch (format)
     {
 
         case DATE:
-        if( tm_.tm_mday < 10 ) o << "0";
-        o << tm_.tm_mday << "/";
-        if( tm_.tm_mon+1 < 10 ) o << "0";
-        o << tm_.tm_mon+1 << "/";
-        o << tm_.tm_year+1900;
-        break;
+        return toString( "dd/MM/yyyy" );
 
         case DATE_US:
-        o << tm_.tm_year+1900 << "/";
-        if( tm_.tm_mon+1 < 10 ) o << "0";
-        o << tm_.tm_mon+1 << "/";
-        if( tm_.tm_mday < 10 ) o << "0";
-        o << tm_.tm_mday;
-        break;
+        return toString( "yyyy/MM/dd" );
 
         case TIME:
-        if( tm_.tm_hour < 10 ) o << "0";
-        o << tm_.tm_hour << ":";
-        if( tm_.tm_min < 10 ) o << "0";
-        o << tm_.tm_min;
-        break;
+        return toString( "hh:mm" );
 
         case TIME_LONG:
-        if( tm_.tm_hour < 10 ) o << "0";
-        o << tm_.tm_hour << ":";
-        if( tm_.tm_min < 10 ) o << "0";
-        o << tm_.tm_min << ":";
-        if( tm_.tm_sec < 10 ) o << "0";
-        o << tm_.tm_sec;
-        break;
+        return toString( "hh:mm:ss" );
 
         case SHORT:
-        o << toString( DATE ) << " " << toString( TIME );
-        break;
+        return toString( "dd/MM/yyyy hh:mm" );
 
         case SHORT_US:
-        o << toString( DATE_US ) << " " << toString( TIME );
-        break;
-
+        return toString( "yyyy/MM/dd hh:mm" );
 
         case LONG:
-        if( tm_.tm_mday < 10 ) o << "0";
-        o << tm_.tm_mday << " ";
-        o << months_[tm_.tm_mon] << " ";
-        o << tm_.tm_year+1900 << " ";
-
-        o << toString( TIME );
-        o << ":";
-        if( tm_.tm_sec < 10 ) o << "0";
-        o << tm_.tm_sec << " ";
-
-        o << "(" << days_[tm_.tm_wday] << ")";
-        break;
+        return toString( "dd MMM yyyy hh::mm::ss (ddd)" );
 
         case DATE_TAG:
-        if( tm_.tm_mday < 10 ) o << "0";
-        o << tm_.tm_mday << "_";
-        if( tm_.tm_mon+1 < 10 ) o << "0";
-        o << tm_.tm_mon+1 << "_";
-        if( (tm_.tm_year%100)<10) o << "0";
-        o << tm_.tm_year%100;
-        break;
+        return toString( "dd_MM_yy" );
 
         case JOB_TAG:
-        o << months_[tm_.tm_mon] << " ";
-        if( tm_.tm_mday < 10 ) o << " ";
-        o << tm_.tm_mday << " ";
-        if( tm_.tm_hour < 10 ) o << "0";
-        o << tm_.tm_hour << ":";
-        if( tm_.tm_min < 10 ) o << "0";
-        o << tm_.tm_min;
-        break;
+        return toString( "MMM dd hh:mm" );
 
-        default: break;
+        default: return STAMP_UNKNOWN;
 
     }
 
-    return out;
 }
+
+//________________________________________________________________________________
+TimeStamp& TimeStamp::setMonth( const QString& value )
+{
+    for( int index = 0; index < 12; ++index )
+    {
+        if( !value.compare( QDate::shortMonthName( index+1 ), Qt::CaseInsensitive ) )
+        {
+            tm_.tm_mon = index;
+            break;
+        }
+    }
+
+    return *this;
+
+}
+

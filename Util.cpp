@@ -58,12 +58,12 @@ QString Util::user( void )
 {
     Debug::Throw( "Util::user.\n" );
     #if defined(Q_OS_WIN)
-    return env( "USERNAME", "unknown user" );
+    return env( "USERNAME", QObject::tr( "unknown user" ) );
     #else
     // first try look for USERNAME environment variable
     // if failed, try USER
     // if failed, return unknown.
-    return env( "USERNAME", env( "USER", "unknown user" ) );
+    return env( "USERNAME", env( "USER", QObject::tr( "unknown user" ) ) );
     #endif
 }
 
@@ -91,7 +91,7 @@ QString Util::domain( void )
 
     // use system environment.
     // should work for windows
-    return env( "USERDOMAIN","localdomain");
+    return env( "USERDOMAIN", "localdomain" );
     #endif
     #endif
 }
@@ -105,11 +105,7 @@ QString Util::windowTitle( const QString& title )
     #if defined(Q_WS_X11)
     QString host( Util::host() );
     if( host == "localhost" ) return title;
-    else {
-        QString buffer;
-        QTextStream( &buffer ) << title << " [" << Util::host() << "]";
-        return buffer;
-    }
+    else return QString( "%1 [%2]" ).arg( title ).arg( host );
     #endif
 
     return title;

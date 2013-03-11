@@ -26,10 +26,7 @@
 
 #include <QStringList>
 
-/*!
-\class   Util
-\brief   some utilities used everywhere
-*/
+//! some utilities used everywhere
 class Util
 {
     public:
@@ -57,7 +54,7 @@ class Util
     /*! returns the host name.
     \par short_name if true returns only the string located before the first '.'
     */
-    static QString host( bool short_name = false );
+    static QString host( bool shortName = false );
 
     //! append host to input string to form window title
     static QString windowTitle( const QString& );
