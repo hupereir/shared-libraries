@@ -54,7 +54,6 @@ BaseCoreApplication::~BaseCoreApplication( void )
     }
 
     ErrorHandler::get().exit();
-    Debug::Throw( "BaseCoreApplication::~BaseCoreApplication - done.\n" );
 
 }
 

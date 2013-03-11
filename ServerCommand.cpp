@@ -51,19 +51,19 @@ namespace SERVER
     {
         if( !_commandNames().empty() ) return;
         _commandNames().insert( NONE, "" );
-        _commandNames().insert( ACCEPTED, "Accepted" );
-        _commandNames().insert( DENIED, "Denied" );
-        _commandNames().insert( ABORT, "Abort" );
-        _commandNames().insert( IDENTIFY, "Identify" );
-        _commandNames().insert( IDENTIFY_SERVER, "Server" );
-        _commandNames().insert( KILLED, "Killed" );
-        _commandNames().insert( RAISE, "Raise" );
-        _commandNames().insert( ALIVE, "Alive" );
-        _commandNames().insert( REQUEST, "Request" );
-        _commandNames().insert( UNLOCK, "Unlock" );
-        _commandNames().insert( GEOMETRY_REQUEST, "Request geometry" );
-        _commandNames().insert( GEOMETRY, "Send geometry" );
-        _commandNames().insert( OPTION, "Option" );
+        _commandNames().insert( ACCEPTED, QObject::tr( "Accepted" ) );
+        _commandNames().insert( DENIED, QObject::tr( "Denied" ) );
+        _commandNames().insert( ABORT, QObject::tr( "Abort" ) );
+        _commandNames().insert( IDENTIFY, QObject::tr( "Identify" ) );
+        _commandNames().insert( IDENTIFY_SERVER, QObject::tr( "Server" ) );
+        _commandNames().insert( KILLED, QObject::tr( "Killed" ) );
+        _commandNames().insert( RAISE, QObject::tr( "Raise" ) );
+        _commandNames().insert( ALIVE, QObject::tr( "Alive" ) );
+        _commandNames().insert( REQUEST, QObject::tr( "Request" ) );
+        _commandNames().insert( UNLOCK, QObject::tr( "Unlock" ) );
+        _commandNames().insert( GEOMETRY_REQUEST, QObject::tr(  "Request geometry" ) );
+        _commandNames().insert( GEOMETRY, QObject::tr( "Send geometry" ) );
+        _commandNames().insert( OPTION, QObject::tr( "Option" ) );
     }
 
     //___________________________________________

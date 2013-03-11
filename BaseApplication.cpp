@@ -134,17 +134,17 @@ bool BaseApplication::realizeWidget( void )
     _updateIconTheme();
 
     // actions
-    aboutAction_ = new QAction( _applicationIcon(), "About this &Application", this );
+    aboutAction_ = new QAction( _applicationIcon(), tr( "About this Application" ), this );
     connect( aboutAction_, SIGNAL( triggered() ), SLOT( _about() ) );
 
-    aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), "About Qt", this );
+    aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), tr( "About Qt" ), this );
     connect( aboutQtAction_, SIGNAL( triggered() ), this, SLOT( _aboutQt() ) );
 
-    closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), "Exit", this );
+    closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), tr( "Exit" ), this );
     closeAction_->setShortcut( QKeySequence::Quit );
     connect( closeAction_, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
 
-    configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), "Default Configuration", this );
+    configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), tr( "Configure this Application" ), this );
     connect( configurationAction_, SIGNAL( triggered() ), SLOT( _configuration() ) );
 
     return true;
@@ -200,18 +200,16 @@ void BaseApplication::_about( const QString& constName, const QString& constVers
     if( !version.isEmpty() ) { in << "Version " << version; }
     if( !stamp.isEmpty() ) { in << " (" << stamp << ")"; }
 
-    in
-        << "<p>This application was written for personal use only. "
-        << "It is not meant to be bug free, although all efforts "
-        << "are made so that it remains/becomes so. "
-
-        << "<p>Suggestions, comments and bug reports are welcome. "
-        << "Please use the following e-mail address:"
-
-        << "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>";
+    in <<
+        tr( "<p>This application was written for personal use only. "
+        "It is not meant to be bug free, although all efforts "
+        "are made so that it remains/becomes so. "
+        "<p>Suggestions, comments and bug reports are welcome. "
+        "Please use the following e-mail address:"
+        "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>" );
 
     QMessageBox dialog;
-    dialog.setWindowTitle( QString( "About ")+name );
+    dialog.setWindowTitle( QString( tr( "About %1" ).arg( name ) ) );
     const QIcon icon( _applicationIcon() );
     dialog.setWindowIcon( icon );
 

@@ -76,17 +76,17 @@ namespace SERVER
     {
 
         CommandLineParser out;
-        out.registerFlag( "--replace", "replace existing application instance with new one" );
-        out.registerFlag( "--no-server", "ignore server mode. Run new application instance" );
-        out.registerFlag( "--abort", "exit existing instance" );
-        out.registerOption( "--server-host", "string", "use specified host for server communication" );
-        out.registerOption( "--server-port", "interger", "use specified port for server communication" );
+        out.registerFlag( "--replace", tr( "replace existing application instance with new one" ) );
+        out.registerFlag( "--no-server", tr( "ignore server mode. Run new application instance" ) );
+        out.registerFlag( "--abort", tr( "exit existing instance" ) );
+        out.registerOption( "--server-host", tr( "string" ), tr( "use specified host for server communication" ) );
+        out.registerOption( "--server-port", tr( "integer" ), tr( "use specified port for server communication" ) );
 
         // these are additional flags recognized by Qt.
         // this may be system dependent, and vary from one Qt version to the other,
         // but is not very important. They are listed here only to avoid warnings from the application.
-        out.registerOption( "-style", "string", "Qt widget style" );
-        out.registerOption( "-graphicssystem", "string", "Qt drawing backend (raster|opengl)" );
+        out.registerOption( "-style", "string", tr( "Qt widget style" ) );
+        out.registerOption( "-graphicssystem", tr( "string" ), tr( "Qt drawing backend (raster|opengl)" ) );
 
         if( !arguments.isEmpty() )
         { out.parse( arguments, ignore_warnings ); }

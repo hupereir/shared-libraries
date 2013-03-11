@@ -96,22 +96,22 @@ namespace SERVER
         buffer_.append( message );
 
         // parse buffer
-        static const QString begin_tag = (QStringList() << "<" << XML::TRANSMISSION << ">" ).join("");
-        static const QString end_tag = (QStringList() << "</" << XML::TRANSMISSION << ">" ).join("");
+        static const QString beginTag = (QStringList() << "<" << XML::TRANSMISSION << ">" ).join("");
+        static const QString endTag = (QStringList() << "</" << XML::TRANSMISSION << ">" ).join("");
 
         while(1)
         {
 
             // get first tag
-            int begin_position( _messageBuffer().text().indexOf( begin_tag, _messageBuffer().position() ) );
+            int begin_position( _messageBuffer().text().indexOf( beginTag, _messageBuffer().position() ) );
             if( begin_position < 0 ) break;
 
             // get end tag
-            int end_position( _messageBuffer().text().indexOf( end_tag, begin_position+begin_tag.size() ) );
+            int end_position( _messageBuffer().text().indexOf( endTag, begin_position+beginTag.size() ) );
             if( end_position < 0 ) break;
 
             // create QDomDocument
-            QString local( _messageBuffer().text().mid( begin_position, end_position+end_tag.size()-begin_position ) );
+            QString local( _messageBuffer().text().mid( begin_position, end_position+endTag.size()-begin_position ) );
 
             // create document
             XmlDocument document;
@@ -142,7 +142,7 @@ namespace SERVER
             }
 
             // flush buffer
-            _messageBuffer().flush( end_position+end_tag.size() );
+            _messageBuffer().flush( end_position+endTag.size() );
 
         }
 

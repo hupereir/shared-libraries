@@ -60,18 +60,19 @@ namespace SERVER
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         box->setLayout( gridLayout );
 
-        QString tooltip( "The application server configuration refers to the host name\n"
+        QString tooltip(
+            tr( "The application server configuration refers to the host name\n"
             "and port used for inter-process communication. It notably ensures\n"
-            "that only one instance of each application runs at a time." );
+            "that only one instance of each application runs at a time." ) );
 
         // host
-        gridLayout->addWidget( new QLabel( "Host:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Host:" ), box ) );
         gridLayout->addWidget( line_editor = new OptionLineEditor( box, "SERVER_HOST" ) );
         line_editor->setToolTip( tooltip );
         addOptionWidget( line_editor );
 
         // shadow color
-        gridLayout->addWidget( new QLabel( "Port:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Port:" ), box ) );
         gridLayout->addWidget( spinBox = new OptionSpinBox( box, "SERVER_PORT" ) );
         spinBox->setMinimum(0);
         spinBox->setMaximum(10000);
