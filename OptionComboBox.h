@@ -38,26 +38,43 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
     //! constructor
     OptionComboBox( QWidget* parent, const QString& optionName ):
         CustomComboBox( parent ),
-        OptionWidget( optionName )
+        OptionWidget( optionName ),
+        useValue_( true )
     { _setBuddy( this ); }
+
+    //! use value for option
+    void setUseValue( bool value )
+    { useValue_ = value; }
 
     //! read value from option
     void read( void )
     {
-        QString value( XmlOptions::get().raw( optionName() ) );
-        int found( findText( value ) );
-        if( found < 0 )
+        if( useValue_ )
         {
-            addItem( value );
-            found = findText( value );
-        }
+            const QString value( XmlOptions::get().raw( optionName() ) );
+            int found( findText( value ) );
+            if( found < 0 )
+            {
+                addItem( value );
+                found = findText( value );
+            }
 
-        setCurrentIndex( found );
+            setCurrentIndex( found );
+
+        } else setCurrentIndex( XmlOptions::get().get<int>( optionName() ) );
     }
 
     //! write value to option
     void write( void ) const
-    { XmlOptions::get().setRaw( optionName(), currentText() ); }
+    {
+        if( useValue_ ) XmlOptions::get().setRaw( optionName(), currentText() );
+        else XmlOptions::get().set<int>( optionName(), currentIndex() );
+    }
+
+    private:
+
+    //! use value for option
+    bool useValue_;
 
 };
 #endif
