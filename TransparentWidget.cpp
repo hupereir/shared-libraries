@@ -179,7 +179,6 @@ namespace TRANSPARENCY
         _paint( *this, event->rect() );
         #endif
 
-        Debug::Throw( "TransparentWidget::paintEvent - done.\n" );
     }
 
     //________________________________________________________________________
@@ -293,10 +292,10 @@ namespace TRANSPARENCY
     {
         Debug::Throw( "TransparentWidget::_installAction.\n" );
 
-        addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload Blur Region", this ) );
+        addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload Blur Region" ), this ) );
         connect( reloadBlurRegionAction_, SIGNAL( triggered( void ) ), SLOT( _updateBlurRegion( void ) ) );
 
-        addAction( inverseColorsAction_ = new QAction( "Invert Colors", this ) );
+        addAction( inverseColorsAction_ = new QAction( tr( "Inverse Colors" ), this ) );
         inverseColorsAction_->setCheckable( true );
         inverseColorsAction_->setChecked( false );
         connect( inverseColorsAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleInverseColors( bool ) ) );

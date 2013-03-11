@@ -67,65 +67,65 @@ namespace TRANSPARENCY
         box->setLayout( gridLayout );
 
         // foreground color
-        gridLayout->addWidget( new QLabel("Foreground color:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Foreground color:" ), box ) );
         gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "TRANSPARENCY_FOREGROUND_COLOR" ) );
-        colorDisplay->setToolTip( "Text/display foreground color" );
+        colorDisplay->setToolTip( tr( "Text/display foreground color" ) );
         addOptionWidget( colorDisplay );
 
         // shadow color
-        gridLayout->addWidget( new QLabel( "Shadow color:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Shadow color:" ), box ) );
         gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "TRANSPARENCY_SHADOW_COLOR" ) );
-        colorDisplay->setToolTip( "Text/display shadow color" );
+        colorDisplay->setToolTip( tr( "Text/display shadow color" ) );
         addOptionWidget( colorDisplay );
 
         // tint color
-        gridLayout->addWidget( new QLabel( "Tint color:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Tint color:" ), box ) );
         gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "TRANSPARENCY_TINT_COLOR" ) );
-        colorDisplay->setToolTip( "Transparent background tint color" );
+        colorDisplay->setToolTip( tr( "Transparent background tint color" ) );
         addOptionWidget( colorDisplay );
 
         // highlight color
-        gridLayout->addWidget( new QLabel( "Highlight color:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Highlight color:" ), box ) );
         gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
-        colorDisplay->setToolTip( "Highlight color when entering widget" );
+        colorDisplay->setToolTip( tr( "Highlight color when entering widget" ) );
         addOptionWidget( colorDisplay );
 
         // foreground intensity
-        gridLayout->addWidget( new QLabel("Foreground intensity:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Foreground intensity:" ), box ) );
         gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
-        slider->setToolTip("Foreground color intensity" );
+        slider->setToolTip( tr( "Foreground color intensity" ) );
         addOptionWidget( slider );
 
         // tint intensity
-        gridLayout->addWidget( new QLabel( "Tint intensity:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Tint intensity:" ), box ) );
         gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_TINT_INTENSITY" ) );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
-        slider->setToolTip( "Transparent background tint intensity" );
+        slider->setToolTip( tr( "Transparent background tint intensity" ) );
         addOptionWidget( slider );
 
         // tint intensity
-        gridLayout->addWidget( new QLabel( "Highlight intensity:", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Highlight intensity:" ), box ) );
         gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
-        slider->setToolTip( "Transparent background highlight intensity" );
+        slider->setToolTip( tr( "Transparent background highlight intensity" ) );
         addOptionWidget( slider );
 
         // shadow offset
-        gridLayout->addWidget( new QLabel( "Shadow offset: ", box ) );
+        gridLayout->addWidget( new QLabel( tr( "Shadow offset: " ), box ) );
         gridLayout->addWidget( spinbox = new OptionSpinBox( box, "TRANSPARENCY_SHADOW_OFFSET" ) );
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 10 );
         spinbox->setToolTip(
-            "Offset between text shadow and text.\n"
-            "0 means no shadow." );
+            tr( "Offset between text shadow and text.\n"
+            "0 means no shadow." ) );
         addOptionWidget( spinbox );
 
         // inverse colors
-        gridLayout->addWidget( checkbox = new OptionCheckBox( "Inverse colors", box, "TRANSPARENCY_INVERSE_COLORS" ) );
+        gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Inverse colors" ), box, "TRANSPARENCY_INVERSE_COLORS" ) );
         addOptionWidget( checkbox );
 
         return;
