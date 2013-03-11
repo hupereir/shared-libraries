@@ -55,8 +55,8 @@ namespace SVG
         box->layout()->setSpacing(5);
         box->layout()->setMargin(0);
 
-        box->layout()->addWidget( svgCheckBox_ = new OptionCheckBox( "Use svg background", box, "USE_SVG" ));
-        svgCheckBox_->setToolTip( "Use svg to paint background" );
+        box->layout()->addWidget( svgCheckBox_ = new OptionCheckBox( tr( "Use svg background" ), box, "USE_SVG" ));
+        svgCheckBox_->setToolTip( tr( "Use svg to paint background" ) );
         addOptionWidget( svgCheckBox_ );
 
         QHBoxLayout *hLayout = new QHBoxLayout();
@@ -72,8 +72,8 @@ namespace SVG
         plasmaBox->layout()->setSpacing(5);
         plasmaBox->layout()->setMargin(0);
 
-        plasmaBox->layout()->addWidget( plasmaCheckBox_ = new OptionCheckBox( "Use plasma interface (KDE only)", plasmaBox, "SVG_USE_PLASMA_INTERFACE" ) );
-        plasmaCheckBox_->setToolTip( "If checked, the KDE plasma theme is used for this application theme" );
+        plasmaBox->layout()->addWidget( plasmaCheckBox_ = new OptionCheckBox( tr( "Use plasma interface (KDE only)" ), plasmaBox, "SVG_USE_PLASMA_INTERFACE" ) );
+        plasmaCheckBox_->setToolTip( tr( "If checked, the KDE plasma theme is used for this application theme" ) );
         addOptionWidget( plasmaCheckBox_ );
 
         QWidget* plasmaOptionBox;
@@ -83,15 +83,15 @@ namespace SVG
         plasmaOptionBox->layout()->setMargin(0);
 
         OptionCheckBox* checkbox;
-        plasmaOptionBox->layout()->addWidget( checkbox = new OptionCheckBox( "Draw overlay", plasmaOptionBox, "SVG_DRAW_OVERLAY" ) );
-        checkbox->setToolTip( "If checked, overlay pictures, if any, found in the SVG file, are drawn on top of the background" );
+        plasmaOptionBox->layout()->addWidget( checkbox = new OptionCheckBox( tr( "Draw overlay" ), plasmaOptionBox, "SVG_DRAW_OVERLAY" ) );
+        checkbox->setToolTip( tr( "If checked, overlay pictures, if any, found in the SVG file, are drawn on top of the background" ) );
         addOptionWidget( checkbox );
 
         hLayout = new QHBoxLayout();
         hLayout->setMargin(0);
         hLayout->setSpacing(5);
         plasmaOptionBox->layout()->addItem(hLayout);
-        hLayout->addWidget( new QLabel( "Plasma background image path: ", plasmaOptionBox ) );
+        hLayout->addWidget( new QLabel( tr( "Plasma background image path:" ), plasmaOptionBox ) );
 
         OptionComboBox* plasmaImagePath;
         hLayout->addWidget( plasmaImagePath = new OptionComboBox( plasmaOptionBox, "SVG_PLASMA_IMAGE_PATH" ) );
@@ -99,7 +99,7 @@ namespace SVG
             << "dialogs/background"
             << "widgets/background"
             << "widgets/translucentbackground" );
-        plasmaImagePath->setToolTip( "Relative path of the svg file used for the background" );
+        plasmaImagePath->setToolTip( tr( "Relative path of the svg file used for the background" ) );
         addOptionWidget( plasmaImagePath );
         hLayout->addStretch(1);
         #endif
@@ -110,11 +110,11 @@ namespace SVG
         fileListBox_->layout()->setSpacing(5);
         fileListBox_->layout()->setMargin(0);
 
-        fileListBox_->layout()->addWidget( new QLabel( "SVG Files: ", fileListBox_ ) );
+        fileListBox_->layout()->addWidget( new QLabel( tr( "SVG Files:" ), fileListBox_ ) );
 
         OptionListBox *listbox = new OptionListBox( fileListBox_, "SVG_BACKGROUND" );
         listbox->setBrowsable( true );
-        listbox->setToolTip( "Pathname to load background svg" );
+        listbox->setToolTip( tr( "Pathname to load background svg" ) );
         fileListBox_->layout()->addWidget( listbox );
         addOptionWidget( listbox );
 
