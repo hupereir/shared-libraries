@@ -42,13 +42,13 @@ namespace BASE
     HelpManager::HelpManager( QObject* parent ):
         QObject( parent ),
         Counter( "HelpManager" ),
-        windowTitle_( "Reference Manual" )
+        windowTitle_( tr( "Reference Manual" ) )
     {
 
         Debug::Throw( "HelpManager::HelpManager.\n" );
 
         // actions
-        displayAction_ = new QAction( IconEngine::get( ICONS::HELP ), "Reference Manual", this );
+        displayAction_ = new QAction( IconEngine::get( ICONS::HELP ), QString( tr( "%1 Handbook" ) ).arg( qApp->applicationName() ), this );
         displayAction_->setShortcut( QKeySequence::HelpContents );
         connect( displayAction_, SIGNAL( triggered() ), SLOT( _display() ) );
 

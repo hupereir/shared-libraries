@@ -35,7 +35,6 @@ SET( base_help_SOURCES
   HelpItem.cpp
   HelpManager.cpp
   HelpModel.cpp
-  NewItemDialog.cpp
   )
 
 SET( base_help_HEADERS

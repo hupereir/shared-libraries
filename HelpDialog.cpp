@@ -30,7 +30,6 @@
 #include "TextEditionDelegate.h"
 #include "HelpManager.h"
 #include "HelpModel.h"
-#include "NewItemDialog.h"
 #include "QuestionDialog.h"
 #include "XmlOptions.h"
 
