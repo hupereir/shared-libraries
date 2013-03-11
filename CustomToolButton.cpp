@@ -18,7 +18,6 @@
 * software; if not, write to the Free Software Foundation, Inc., 59 Temple
 * Place, Suite 330, Boston, MA  02111-1307 USA
 *
-*
 *******************************************************************************/
 
 
@@ -35,10 +34,10 @@
 
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( QWidget* parent ):
-QToolButton( parent ),
-Counter( "CustomToolButton" ),
-updateFromOptions_( true ),
-rotation_( NONE )
+    QToolButton( parent ),
+    Counter( "CustomToolButton" ),
+    updateFromOptions_( true ),
+    rotation_( NONE )
 {
 
     Debug::Throw( "CustomToolButton::CustomToolButton.\n" );

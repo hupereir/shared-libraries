@@ -50,7 +50,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
     list_->setIconSize( IconSize( IconSize::Large ) );
 
     QPushButton *button;
-    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ),"&Update", this ) );
+    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), tr( "Update" ), this ) );
     connect( button, SIGNAL( clicked() ), SLOT( update() ) );
     button->setAutoDefault( false );
 

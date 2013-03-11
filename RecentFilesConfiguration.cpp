@@ -53,7 +53,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     QGroupBox* box;
     // group box for additional options
-    layout->addWidget( box = new QGroupBox( "Options", this ) );
+    layout->addWidget( box = new QGroupBox( tr( "Options" ), this ) );
 
     QVBoxLayout* vLayout = new QVBoxLayout();
     vLayout->setMargin(5);
@@ -67,22 +67,22 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     // previous file history size
     OptionSpinBox *spinbox;
-    hLayout->addWidget( new QLabel( "Recent files history size", box ) );
+    hLayout->addWidget( new QLabel( tr( "Recent files history size" ), box ) );
     hLayout->addWidget( spinbox = new OptionSpinBox( box, "DB_SIZE" ) );
     hLayout->addStretch(1);
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 100 );
     addOptionWidget( spinbox );
-    spinbox->setToolTip( "Number of previously opened files to appear in the Open Previous menu" );
+    spinbox->setToolTip( tr( "Number of previously opened files to appear in the Open Previous menu" ) );
 
     // sort previous files by date
     OptionCheckBox* checkbox;
-    vLayout->addWidget( checkbox = new OptionCheckBox( "Sort recent files by date", box, "SORT_FILES_BY_DATE" ) );
-    checkbox->setToolTip( "Sort files by date rather than name in Open Previous menu." );
+    vLayout->addWidget( checkbox = new OptionCheckBox( tr( "Sort recent files by date" ), box, "SORT_FILES_BY_DATE" ) );
+    checkbox->setToolTip( tr( "Sort files by date rather than name in Open Previous menu." ) );
     addOptionWidget( checkbox );
 
     // group box for file list
-    layout->addWidget( box = new QGroupBox( "Files", this ), 1 );
+    layout->addWidget( box = new QGroupBox( tr( "Files" ), this ), 1 );
     box->setLayout( new QHBoxLayout() );
     box->layout()->setSpacing(5);
     box->layout()->setMargin(5);
@@ -104,34 +104,34 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     QMenu* menu( new ContextMenu( &_list() ) );
 
     // clean
-    vLayout->addWidget( cleanButton_ = new QPushButton( "Clean", box ) );
-    cleanButton_->setToolTip( "Remove invalid files" );
+    vLayout->addWidget( cleanButton_ = new QPushButton( tr( "Clean" ), box ) );
+    cleanButton_->setToolTip( tr( "Remove invalid files" ) );
     cleanButton_->setIcon( IconEngine::get( ICONS::DELETE ) );
     connect( cleanButton_, SIGNAL( clicked() ), SLOT( _clean() ) );
 
-    addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), "Clean", this ) );
+    addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), tr( "Clean" ), this ) );
     connect( cleanAction_, SIGNAL( triggered() ), SLOT( _clean() ) );
     menu->addAction( cleanAction_ );
 
     // remove
-    vLayout->addWidget( removeButton_ = new QPushButton( "Remove", box ) );
+    vLayout->addWidget( removeButton_ = new QPushButton( tr( "Remove" ), box ) );
     removeButton_->setIcon( IconEngine::get( ICONS::REMOVE ) );
-    removeButton_->setToolTip( "Remove selected files" );
+    removeButton_->setToolTip( tr( "Remove selected files" ) );
     connect( removeButton_, SIGNAL( clicked() ), SLOT( _remove() ) );
 
-    addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove", this ) );
+    addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), tr( "Remove" ), this ) );
     connect( removeAction_, SIGNAL( triggered() ), SLOT( _remove() ) );
     removeAction_->setShortcut( QKeySequence::Delete );
     menu->addAction( removeAction_ );
     _list().addAction( removeAction_ );
 
     // reload
-    vLayout->addWidget( reloadButton_ = new QPushButton( "Reload", box ) );
-    reloadButton_->setToolTip( "Reload file list" );
+    vLayout->addWidget( reloadButton_ = new QPushButton( tr( "Reload" ), box ) );
+    reloadButton_->setToolTip( tr( "Reload file list" ) );
     reloadButton_->setIcon( IconEngine::get( ICONS::RELOAD ) );
     connect( reloadButton_, SIGNAL( clicked() ), SLOT( _reload() ) );
 
-    addAction( reloadAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), "Reload", this ) );
+    addAction( reloadAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload" ), this ) );
     connect( reloadAction_, SIGNAL( triggered() ), SLOT( _reload() ) );
     menu->addAction( reloadAction_ );
 
@@ -187,7 +187,7 @@ void RecentFilesConfiguration::_remove( void )
     if( selection.isEmpty() ) return;
 
     // ask confirmation
-    if( !QuestionDialog( this, "Remove selected files from list ?" ).centerOnParent().exec() ) return;
+    if( !QuestionDialog( this, tr( "Remove selected files from list ?" ) ).centerOnParent().exec() ) return;
 
     _model().remove( _model().get( selection ) );
     _list().selectionModel()->clear();

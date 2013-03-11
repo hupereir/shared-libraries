@@ -26,6 +26,7 @@
 #include "IconEngine.h"
 #include "PrintPreviewDialog.h"
 
+#include <QApplication>
 #include <QButtonGroup>
 #include <QGroupBox>
 #include <QLayout>
@@ -40,7 +41,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     pageMode_( BasePrintHelper::SinglePage )
 {
 
-    setWindowTitle( "Pages" );
+    setWindowTitle( tr( "Pages" ) );
     QVBoxLayout* layout = new QVBoxLayout();
     setLayout( layout );
 
@@ -50,19 +51,19 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
 
     QGroupBox* groupBox;
     {
-        hLayout->addWidget( groupBox = new QGroupBox( "Orientation", this ) );
+        hLayout->addWidget( groupBox = new QGroupBox( tr( "Orientation" ), this ) );
         QVBoxLayout* vLayout = new QVBoxLayout();
         groupBox->setLayout( vLayout );
 
         QRadioButton* radioButton;
         QButtonGroup* buttonGroup = new QButtonGroup( this );
-        vLayout->addWidget( radioButton = new QRadioButton( "Portrait", groupBox ) );
+        vLayout->addWidget( radioButton = new QRadioButton( tr( "Portrait" ), groupBox ) );
         orientationButtons_.insert( radioButton, QPrinter::Portrait );
         buttonGroup->addButton( radioButton );
 
         radioButton->setChecked( true );
 
-        vLayout->addWidget( radioButton = new QRadioButton( "Landscape", groupBox ) );
+        vLayout->addWidget( radioButton = new QRadioButton( tr( "Landscape" ), groupBox ) );
         orientationButtons_.insert( radioButton, QPrinter::Landscape );
         buttonGroup->addButton( radioButton );
 
@@ -72,22 +73,22 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     }
 
     {
-        hLayout->addWidget( groupBox = new QGroupBox( "Pages Per Sheet", this ) );
+        hLayout->addWidget( groupBox = new QGroupBox( tr( "Pages Per Sheet" ), this ) );
         QVBoxLayout* vLayout = new QVBoxLayout();
         groupBox->setLayout( vLayout );
 
         QRadioButton* radioButton;
         QButtonGroup* buttonGroup = new QButtonGroup( this );
-        vLayout->addWidget( radioButton = new QRadioButton( "One page per sheet", groupBox ) );
+        vLayout->addWidget( radioButton = new QRadioButton( tr( "One page per sheet" ), groupBox ) );
         pageModeButtons_.insert( radioButton, BasePrintHelper::SinglePage );
         buttonGroup->addButton( radioButton );
         radioButton->setChecked( true );
 
-        vLayout->addWidget( radioButton = new QRadioButton( "Two pages per sheet", groupBox ) );
+        vLayout->addWidget( radioButton = new QRadioButton( tr( "Two pages per sheet" ), groupBox ) );
         pageModeButtons_.insert( radioButton, BasePrintHelper::TwoPages );
         buttonGroup->addButton( radioButton );
 
-        vLayout->addWidget( radioButton = new QRadioButton( "Four pages per sheet", groupBox ) );
+        vLayout->addWidget( radioButton = new QRadioButton( tr( "Four pages per sheet" ), groupBox ) );
         pageModeButtons_.insert( radioButton, BasePrintHelper::FourPages );
         buttonGroup->addButton( radioButton );
 
@@ -100,7 +101,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     hLayout->setMargin(0);
     layout->addLayout( hLayout );
     hLayout->addStretch( 1 );
-    hLayout->addWidget( previewButton_ = new QPushButton( IconEngine::get( ICONS::PRINT_PREVIEW ), "Preview", this ) );
+    hLayout->addWidget( previewButton_ = new QPushButton( IconEngine::get( ICONS::PRINT_PREVIEW ), tr( "Preview" ), this ) );
     connect( previewButton_, SIGNAL( clicked( void ) ), SLOT( _preview( void ) ) );
 
     previewButton_->setEnabled( false );
@@ -130,7 +131,7 @@ void PrinterOptionWidget::_preview( void )
 
     // create dialog, connect and execute
     PrintPreviewDialog dialog( this );
-    dialog.setWindowTitle( "Print Preview - elogbook" );
+    dialog.setWindowTitle( QString( tr( "Print Preview - %s" ) ).arg( qApp->applicationName() ) );
     dialog.setHelper( helper_ );
     dialog.hideMenu();
     dialog.exec();

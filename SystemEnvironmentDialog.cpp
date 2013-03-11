@@ -20,13 +20,6 @@
 *
 *
 *******************************************************************************/
-/*!
-\file SystemEnvironmentDialog.cpp
-\brief displays system environment
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 
 #include "SystemEnvironmentDialog.h"
 #include "AnimatedTreeView.h"
@@ -42,7 +35,7 @@ CustomDialog( parent, CloseButton )
 {
 
     Debug::Throw( "SystemEnvironmentDialog::SystemEnvironmentDialog.\n" );
-    setWindowTitle( "System Environment Variables" );
+    setWindowTitle( tr( "System Environment Variables" ) );
     setOptionName( "SYSTEM_ENVIRONMENT_DIALOG" );
 
     layout()->setMargin(0);

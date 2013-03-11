@@ -59,7 +59,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     button->setAutoRaise( true );
 
     button->setIcon( IconEngine::get( ICONS::OPEN ) );
-    button->setToolTip( "Browse file system" );
+    button->setToolTip( tr( "Browse file system" ) );
     layout->addWidget( button, 0 );
 
     // connect push_button

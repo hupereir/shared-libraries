@@ -26,7 +26,11 @@
 
 //_______________________________________________
 const QString IconCacheModel::columnTitles_[ IconCacheModel::nColumns ] =
-{ "Icon", "Files", "Sizes" };
+{
+    tr( "Icon" ),
+    tr( "Files" ),
+    tr( "Sizes" )
+};
 
 //__________________________________________________________________
 QVariant IconCacheModel::data( const QModelIndex& index, int role ) const

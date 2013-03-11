@@ -54,11 +54,11 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
 
     mainLayout().addItem( gridLayout );
 
-    gridLayout->addWidget( new QLabel( "File:", this ) );
+    gridLayout->addWidget( new QLabel( tr( "File:" ), this ) );
     gridLayout->addWidget( destinationEditor_ = new BrowsedLineEditor( this ) );
     destinationEditor_->setFileMode( QFileDialog::AnyFile );
 
-    gridLayout->addWidget( new QLabel( "Command:", this ) );
+    gridLayout->addWidget( new QLabel( tr( "Command:" ), this ) );
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setSpacing(2);
@@ -77,7 +77,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
     connect( button, SIGNAL( clicked() ), SLOT( _browseCommand() ) );
 
     // change button text
-    okButton().setText( "&Export" );
+    okButton().setText( tr( "Export" ) );
     okButton().setIcon( IconEngine::get( ICONS::HTML ));
 
     // make sure HTML command is saved

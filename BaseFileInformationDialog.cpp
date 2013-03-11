@@ -118,7 +118,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     mainLayout().addWidget( tabWidget_ );
 
     // general information
-    tabWidget_->addTab( mainPage_ = new QWidget(), "General" );
+    tabWidget_->addTab( mainPage_ = new QWidget(), tr( "General" ) );
     pageLayout_ = new QVBoxLayout();
     pageLayout_->setMargin(5);
     pageLayout_->setSpacing(5);
@@ -154,18 +154,18 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     items << (modifiedItem_ = new Item( mainPage_, gridLayout_ ) );
     items << (accessedItem_ = new Item( mainPage_, gridLayout_ ) );
 
-    fileItem_->setKey( "File name:" );
-    typeItem_->setKey( "Type:" );
-    pathItem_->setKey( "Location:" );
-    sizeItem_->setKey( "Size:" );
-    createdItem_->setKey( "Created:" );
-    accessedItem_->setKey( "Accessed:" );
-    modifiedItem_->setKey( "Modified:" );
+    fileItem_->setKey( tr( "File name:" ) );
+    typeItem_->setKey( tr( "Type:" ) );
+    pathItem_->setKey( tr( "Location:" ) );
+    sizeItem_->setKey( tr( "Size:" ) );
+    createdItem_->setKey( tr( "Created:" ) );
+    accessedItem_->setKey( tr( "Accessed:" ) );
+    modifiedItem_->setKey( tr( "Modified:" ) );
 
     // permissions tab
     QWidget* box;
     QVBoxLayout* layout;
-    tabWidget_->addTab( box = new QWidget(), "Permissions" );
+    tabWidget_->addTab( box = new QWidget(), tr( "Permissions" ) );
     layout = new QVBoxLayout();
     layout->setMargin(5);
     layout->setSpacing( 5 );
@@ -175,7 +175,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     // user and group
     QLabel* label;
-    layout->addWidget( label = new QLabel( "Ownership:", box ) );
+    layout->addWidget( label = new QLabel( tr( "Ownership:" ), box ) );
     {
         QFont font( label->font() );
         font.setWeight( QFont::Bold );
@@ -191,8 +191,8 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     items << (userItem_ = new Item( box, gridLayout ) );
     items << (groupItem_ = new Item( box, gridLayout ) );
-    userItem_->setKey( "User:" );
-    groupItem_->setKey( "Group:" );
+    userItem_->setKey( tr( "User:" ) );
+    groupItem_->setKey( tr( "Group:" ) );
 
     gridLayout->setColumnStretch( 1, 1 );
     layout->addStretch();
@@ -228,14 +228,8 @@ void BaseFileInformationDialog::setType( const QString& value )
 //_________________________________________________________
 void BaseFileInformationDialog::setSize( qint64 size )
 {
-    if( size > 0 )
-    {
-
-        QString buffer;
-        QTextStream( &buffer ) << File::sizeString( size ) << " (" << File::rawSizeString( size ) << ")";
-        sizeItem_->setValue( buffer );
-
-    } else sizeItem_->setValue( QString() );
+    if( size > 0 ) sizeItem_->setValue( QString( "%1 (%2)" ).arg( File::sizeString( size ) ).arg( File::rawSizeString( size ) ) );
+    else sizeItem_->setValue( QString() );
 }
 
 //_________________________________________________________

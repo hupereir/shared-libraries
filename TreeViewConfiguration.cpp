@@ -30,7 +30,6 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QToolTip>
-#include <QTextStream>
 
 //____________________________________________________________________________
 TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& option_name ):
@@ -58,19 +57,17 @@ OptionWidget( option_name )
     {
 
         // retrieve column name
-        QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
-        if( column_name.isNull() || column_name.isEmpty() )
-        { QTextStream( &column_name ) << "column " << index+1; }
+        QString columnName( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
+        if( columnName.isNull() || columnName.isEmpty() )
+        { columnName = QString( tr( "Column %1" ) ).arg( index+1 ); }
 
         // add checkbox
-        checkbox = new QCheckBox( column_name, this );
+        checkbox = new QCheckBox( columnName, this );
         layout()->addWidget( checkbox );
         checkbox_ << checkbox;
 
         // add tooltip
-        QString buffer;
-        QTextStream( &buffer ) << "Show/hide column \"" << column_name << "\"";
-        checkbox->setToolTip( buffer );
+        checkbox->setToolTip( QString( tr( "Show/hide column '%1'" ) ).arg( columnName )  );
 
     }
 

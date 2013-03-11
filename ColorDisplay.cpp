@@ -61,7 +61,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
         layout->addWidget( button = new QToolButton( this ), 0 );
         button->setAutoRaise( true );
         button->setIcon( IconEngine::get( ICONS::OPEN ) );
-        button->setToolTip( "Select color from dialog" );
+        button->setToolTip( tr( "Select color from dialog" ) );
         connect( button, SIGNAL( clicked( void ) ), SLOT( _selectColorFromDialog( void ) ) );
     }
 
@@ -71,7 +71,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
         layout->addWidget( button = new ColorGrabButton( this ), 0 );
         button->setAutoRaise( true );
         button->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
-        button->setToolTip( "Grap color from screen" );
+        button->setToolTip( tr( "Grab color from screen" ) );
         connect( button, SIGNAL( colorSelected( QColor ) ), SLOT( setColor( QColor ) ) );
     }
 }
@@ -109,9 +109,8 @@ void ColorDisplay::Editor::setColor( QColor color )
     else {
 
         QString buffer;
-        QTextStream what( &buffer );
-        if( !text().isEmpty() ) what << "Invalid color: " << text();
-        else what << "Invalid color";
+        if( !text().isEmpty() ) buffer = QString( tr( "Invalid color: %1" ) ).arg( text() );
+        else buffer = QString( tr( "Invalid color" ) );
 
         InformationDialog( this, buffer ).exec();
 

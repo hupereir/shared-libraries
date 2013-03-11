@@ -78,46 +78,46 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 
     // Add button
     QPushButton *button;
-    buttonLayout->addWidget( button = new QPushButton( "Add", this ) );
+    buttonLayout->addWidget( button = new QPushButton( tr( "Add" ), this ) );
     button->setIcon( IconEngine::get( ICONS::ADD ) );
     connect( button, SIGNAL( clicked( void ) ), SLOT( _add( void ) ) );
 
     // Add action
     QAction* action;
-    addAction( action = new QAction( IconEngine::get( ICONS::ADD ), "Add", this ) );
+    addAction( action = new QAction( IconEngine::get( ICONS::ADD ), tr( "Add" ), this ) );
     connect( action, SIGNAL( triggered( void ) ), SLOT( _add( void ) ) );
     action->setShortcut( QKeySequence::New );
     menu->addAction( action );
 
     // remove button
-    buttonLayout->addWidget( remove_ = new QPushButton( "Remove", this ) );
+    buttonLayout->addWidget( remove_ = new QPushButton( tr( "Remove" ), this ) );
     connect( remove_, SIGNAL( clicked( void ) ), SLOT( _remove( void ) ) );
     remove_->setIcon( IconEngine::get( ICONS::REMOVE ) );
-    remove_->setToolTip( "Remove selected value" );
+    remove_->setToolTip( tr( "Remove selected value" ) );
 
-    addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove", this ) );
+    addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), tr( "Remove" ), this ) );
     connect( removeAction_, SIGNAL( triggered( void ) ), SLOT( _remove( void ) ) );
     removeAction_->setShortcut( QKeySequence::Delete );
-    removeAction_->setToolTip( "Remove selected value" );
+    removeAction_->setToolTip( tr( "Remove selected value" ) );
     menu->addAction( action );
 
     // Edit button
-    buttonLayout->addWidget( edit_ = new QPushButton( "Edit", this ) );
+    buttonLayout->addWidget( edit_ = new QPushButton( tr( "Edit" ), this ) );
     connect( edit_, SIGNAL( clicked( void ) ), SLOT( _edit( void ) ) );
     edit_->setIcon( IconEngine::get( ICONS::EDIT ) );
-    edit_->setToolTip( "Edit selected value" );
+    edit_->setToolTip( tr( "Edit selected value" ) );
 
-    addAction( editAction_ = new QAction( IconEngine::get( ICONS::EDIT ),  "Edit", this ) );
+    addAction( editAction_ = new QAction( IconEngine::get( ICONS::EDIT ),  tr( "Edit" ), this ) );
     connect( editAction_, SIGNAL( triggered( void ) ), SLOT( _edit( void ) ) );
     menu->addAction( action );
 
     // set default button
-    buttonLayout->addWidget( default_ = new QPushButton( "Default", this ) );
+    buttonLayout->addWidget( default_ = new QPushButton( tr( "Default" ), this ) );
     connect( default_, SIGNAL( clicked( void ) ), SLOT( _setDefault( void ) ) );
-    default_->setToolTip( "Set selected value as default\n(move it to the top of the list)" );
+    default_->setToolTip( tr( "Set selected value as default\n(move it to the top of the list)" ) );
     default_->setIcon( IconEngine::get( ICONS::DIALOG_OK_APPLY ) );
 
-    addAction( defaultAction_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), "Default", this ) );
+    addAction( defaultAction_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), tr( "Default" ), this ) );
     connect( defaultAction_, SIGNAL( triggered( void ) ), SLOT( _setDefault( void ) ) );
     menu->addAction( action );
 
@@ -362,7 +362,7 @@ OptionListBox::EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDia
 
     }
 
-    vLayout->addWidget( checkbox_ = new QCheckBox( "Set as default", this ) );
+    vLayout->addWidget( checkbox_ = new QCheckBox( tr( "Set as default" ), this ) );
 
     setMinimumSize( QSize( 320, 0 ) );
 

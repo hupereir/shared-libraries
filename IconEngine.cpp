@@ -89,7 +89,7 @@ const BASE::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache
         {
 
             out = QIcon::fromTheme( truncatedName );
-            out.addFile( "from theme" );
+            out.addFile( QObject::tr( "from theme" ) );
 
         } else
         #endif

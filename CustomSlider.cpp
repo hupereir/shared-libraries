@@ -21,23 +21,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomSlider.cpp
-\brief customized QSlider associated to a LineEditor
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QHBoxLayout>
-
-
 #include "CustomSlider.h"
 #include "Debug.h"
 #include "InformationDialog.h"
 #include "Str.h"
 
 
+#include <QHBoxLayout>
 
 //_________________________________________________________
 CustomSlider::CustomSlider( QWidget* parent ):
@@ -58,17 +48,13 @@ CustomSlider::CustomSlider( QWidget* parent ):
     connect( spinBox_, SIGNAL( valueChanged( int ) ),   SLOT( _updateSlider( int ) ) );
     connect( slider_, SIGNAL( valueChanged( int ) ),  SLOT( _updateSpinBox( int ) ) );
 
-//     spinBox_->setMaximumSize( QSize(
-//         spinBox_->fontMetrics().width("  -100  "),
-//         spinBox_->height()) );
-
 }
 
 //_________________________________________________________
 void CustomSlider::setValue( int value )
 {
     if( value < slider_->minimum() || value > slider_->maximum() ) {
-        InformationDialog( this, "invalid value" ).exec();
+        InformationDialog( this, tr( "Invalid value" ) ).exec();
         return;
     }
 
@@ -89,7 +75,7 @@ void CustomSlider::_updateSlider( int value )
 
     if( value < slider_->minimum() || value > slider_->maximum() )
     {
-        InformationDialog( this, "invalid value" ).exec();
+        InformationDialog( this, tr( "Invalid value" ) ).exec();
         return;
     }
 

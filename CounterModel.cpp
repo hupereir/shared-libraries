@@ -22,21 +22,13 @@
 *
 *******************************************************************************/
 
-/*!
-\file CounterModel.cpp
-\brief model for object counters
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "CounterModel.h"
 
 //_______________________________________________
 const QString CounterModel::columnTitles_[ CounterModel::nColumns ] =
 {
-    "Name",
-    "Counts"
+    tr( "Name" ),
+    tr( "Counts" )
 };
 
 //__________________________________________________________________

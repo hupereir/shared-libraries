@@ -44,7 +44,7 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     editor().setMinimumSize( QSize( 100, 0 ) );
     editor().setEditable( true );
     editor().setAutoCompletion( true );
-    editor().setToolTip( "User selection" );
+    editor().setToolTip( tr( "User selection" ) );
 
     // send appropriate signal directly
     connect( &editor(), SIGNAL( activated( const QString & ) ), SLOT( _userChanged() ) );

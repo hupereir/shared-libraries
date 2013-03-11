@@ -43,7 +43,7 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const 
 
     addSeparator();
 
-    addAction( "&Reverse order", this, SLOT( _revertOrder( void ) ) );
+    addAction( tr( "Reverse Order" ), this, SLOT( _revertOrder( void ) ) );
 }
 
 

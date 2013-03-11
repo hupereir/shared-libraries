@@ -91,7 +91,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
 void TabWidget::updateActions( bool detached )
 {
 
-    detachAction().setText( detached ? "&Attach":"&Detach" );
+    detachAction().setText( detached ? tr( "Attach" ): tr( "Detach" ) );
     stickyAction().setEnabled( detached );
     staysOnTopAction().setEnabled( detached );
 
@@ -340,20 +340,20 @@ void TabWidget::_installActions( void )
     Debug::Throw( "TabWidget::_installActions.\n" );
 
     // detach action
-    addAction( detachAction_ = new QAction( "Detach", this ) );
-    detachAction_->setToolTip( "Dock/undock panel" );
+    addAction( detachAction_ = new QAction( tr( "Detach" ), this ) );
+    detachAction_->setToolTip( tr( "Dock/undock panel" ) );
     connect( detachAction_, SIGNAL( triggered() ), SLOT( _toggleDock() ) );
 
     // stays on top
-    addAction( staysOnTopAction_ = new QAction( "Keep Above", this ) );
-    staysOnTopAction_->setToolTip( "Keep window above all others" );
+    addAction( staysOnTopAction_ = new QAction( tr( "Keep Above" ), this ) );
+    staysOnTopAction_->setToolTip( tr( "Keep window above all others" ) );
     staysOnTopAction_->setCheckable( true );
     staysOnTopAction_->setChecked( false );
     connect( staysOnTopAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleStaysOnTop( bool ) ) );
 
     // sticky
-    addAction( stickyAction_ = new QAction( "Sticky", this ) );
-    stickyAction_->setToolTip( "Make window appear on all desktops" );
+    addAction( stickyAction_ = new QAction( tr( "Sticky" ), this ) );
+    stickyAction_->setToolTip( tr( "Make window appear on all desktops" ) );
     stickyAction_->setCheckable( true );
     stickyAction_->setChecked( false );
     connect( stickyAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleSticky( bool ) ) );

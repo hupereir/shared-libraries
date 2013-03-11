@@ -41,13 +41,13 @@ BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* paren
     vLayout->setSpacing(5);
     setLayout( vLayout );
 
-    vLayout->addWidget( new QLabel( "Select the information to be displayed: ", this ) );
+    vLayout->addWidget( new QLabel( tr( "Select the information to be displayed:" ), this ) );
 
-    _addCheckBox( BaseFileInfoToolTipWidget::Size, "Size" );
-    _addCheckBox( BaseFileInfoToolTipWidget::Modified, "Modified" );
-    _addCheckBox( BaseFileInfoToolTipWidget::User, "Owner" );
-    _addCheckBox( BaseFileInfoToolTipWidget::Group, "Group" );
-    _addCheckBox( BaseFileInfoToolTipWidget::Permissions, "Permissions" );
+    _addCheckBox( BaseFileInfoToolTipWidget::Size, tr( "Size" ) );
+    _addCheckBox( BaseFileInfoToolTipWidget::Modified, tr( "Modified" ) );
+    _addCheckBox( BaseFileInfoToolTipWidget::User, tr( "Owner" ) );
+    _addCheckBox( BaseFileInfoToolTipWidget::Group, tr( "Group" ) );
+    _addCheckBox( BaseFileInfoToolTipWidget::Permissions, tr( "Permissions" ) );
 
 }
 

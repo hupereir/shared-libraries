@@ -39,7 +39,7 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
 {
     Debug::Throw( "RecentFilesMenu::RecentFilesMenu.\n" );
 
-    setTitle( "Open &Recent" );
+    setTitle( tr( "Open Recent" ) );
     connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _open( QAction* ) ) );
     connect( this, SIGNAL( aboutToShow( void ) ), fileList_, SLOT( checkValidFiles( void ) ) );
     connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _loadFiles( void ) ) );
@@ -51,7 +51,7 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
     actionGroup_ = new QActionGroup( this );
     actionGroup_->setExclusive( true );
 
-    addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), "&Clean", this ) );
+    addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), tr( "Clean" ), this ) );
     connect( cleanAction_, SIGNAL( triggered() ), SLOT( _clean() ) );
     cleanAction_->setEnabled( false );
     addSeparator();
@@ -107,8 +107,8 @@ void RecentFilesMenu::_updateActions( void )
 //______________________________________
 void RecentFilesMenu::_clean( void )
 {
-    if( !fileList_->check() && !QuestionDialog( this,"clear list ?" ).exec() ) return;
-    else if( fileList_->check() && !QuestionDialog( this,"Remove invalid or duplicated files from list ?" ).exec() ) return;
+    if( !fileList_->check() && !QuestionDialog( this, tr( "Clear list ?" ) ).exec() ) return;
+    else if( fileList_->check() && !QuestionDialog( this, tr( "Remove invalid or duplicated files from list ?" ) ).exec() ) return;
     fileList_->clean();
 }
 

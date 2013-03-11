@@ -198,9 +198,8 @@ void DockWidget::_updateConfiguration( void )
 void DockWidget::_installActions( void )
 {
     Debug::Throw( "DockWidget::_installActions.\n" );
-    QString buffer;
-    QTextStream( &buffer) << "&" << windowTitle();
-    visibilityAction_ = new QAction( buffer, this );
+
+    visibilityAction_ = new QAction( windowTitle(), this );
     visibilityAction().setCheckable( true );
 
     // set default visibility option

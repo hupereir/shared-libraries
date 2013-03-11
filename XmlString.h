@@ -24,23 +24,11 @@
 *
 *******************************************************************************/
 
-/*!
-\file XmlString.h
-\brief Some Xml utilities
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include <QString>
 #include <QPair>
 #include <QList>
 
-/*!
-\class XmlString
-\brief Some Xml utilities
-*/
-
+//! some Xml utilities
 class XmlString: public QString
 {
 

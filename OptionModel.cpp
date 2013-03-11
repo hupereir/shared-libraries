@@ -27,11 +27,19 @@
 #include "OptionModel.h"
 #include "XmlOptions.h"
 
+#include <QObject>
 #include <QPalette>
 
 //_______________________________________________
 const QString OptionModel::columnTitles_[ OptionModel::nColumns ] =
-{ "Name", "", "Current Value", "Default Value", "Flags" };
+{
+    tr( "Name" ),
+    "",
+    tr( "Current Value" ),
+    tr( "Default Value" ),
+    tr( "Flags" )
+};
+
 
 //_______________________________________________
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const

@@ -426,7 +426,6 @@ void PathEditor::setPrefix( const QString& value )
     prefixLabel_->setText( prefix_ );
 
     _updatePrefix();
-
 }
 
 //____________________________________________________________________________

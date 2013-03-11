@@ -73,9 +73,6 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
 
     public:
 
-    //! number of columns
-    enum { nColumns = 5 };
-
     //! column type enumeration
     enum ColumnType
     {
@@ -164,6 +161,9 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
 
     //! true if read only
     bool readOnly_;
+
+    //! number of columns
+    enum { nColumns = 5 };
 
     //! column titles
     static const QString columnTitles_[ nColumns ];

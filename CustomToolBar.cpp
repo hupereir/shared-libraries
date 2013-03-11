@@ -113,7 +113,7 @@ void CustomToolBar::_toggleVisibility( bool state )
         if( parent )
         {
             QString locationName( optionName_ + "_LOCATION" );
-            XmlOptions::get().setRaw( locationName, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+            XmlOptions::get().set<int>( locationName, parent->toolBarArea( this ) );
         }
 
     }
@@ -162,11 +162,14 @@ void CustomToolBar::_updateConfiguration( void )
 
         QString locationName( optionName_ + "_LOCATION" );
 
-        Qt::ToolBarArea location = (XmlOptions::get().contains( locationName )) ? (Qt::ToolBarArea) nameToArea( XmlOptions::get().raw( locationName ) ):Qt::TopToolBarArea;
-        Qt::ToolBarArea current_location = parent->toolBarArea( this );
+        // get location from option
+        Qt::ToolBarArea location = (XmlOptions::get().contains( locationName )) ? ((Qt::ToolBarArea)XmlOptions::get().get<int>( locationName )) : Qt::TopToolBarArea;
+        if( location == Qt::NoToolBarArea ) location = Qt::TopToolBarArea;
+
+        Qt::ToolBarArea currentLocation = parent->toolBarArea( this );
 
         // some dump
-        Debug::Throw() << "CustomToolBar::_updateConfiguration - " << optionName_ << " currentVisibility: " << currentVisibility << " current_location: " << areaToName( current_location ) << endl;
+        Debug::Throw() << "CustomToolBar::_updateConfiguration - " << optionName_ << " currentVisibility: " << currentVisibility << " currentLocation: " << areaToName( currentLocation ) << endl;
         Debug::Throw() << "CustomToolBar::_updateConfiguration - " << optionName_ << " visibility: " << visibility << " location: " << areaToName( location ) << endl;
         Debug::Throw() << endl;
 
@@ -177,7 +180,7 @@ void CustomToolBar::_updateConfiguration( void )
         if( visibility )
         {
 
-            if( !( currentVisibility && (location == current_location) ) ) { parent->addToolBar( location, this ); }
+            if( !( currentVisibility && (location == currentLocation) ) ) { parent->addToolBar( location, this ); }
 
         } else if( location != Qt::NoToolBarArea ) {
 
@@ -228,10 +231,10 @@ void CustomToolBar::_installActions( void )
 CustomToolBar::AreaMap CustomToolBar::_initializeAreas( void )
 {
     AreaMap out;
-    out.insert( "none", Qt::NoToolBarArea );
-    out.insert( "left", Qt::LeftToolBarArea );
-    out.insert( "right", Qt::RightToolBarArea );
-    out.insert( "top", Qt::TopToolBarArea );
-    out.insert( "bottom", Qt::BottomToolBarArea );
+    out.insert( tr( "None" ), Qt::NoToolBarArea );
+    out.insert( tr( "Left" ), Qt::LeftToolBarArea );
+    out.insert( tr( "Right" ), Qt::RightToolBarArea );
+    out.insert( tr( "Top" ), Qt::TopToolBarArea );
+    out.insert( tr( "Bottom" ), Qt::BottomToolBarArea );
     return out;
 }

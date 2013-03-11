@@ -49,19 +49,19 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
 
     // lock toolbars action
-    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "Lock Toolbars", this ) );
+    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), tr( "Lock Toolbars" ), this ) );
     lockToolBarsAction_->setCheckable( true );
     lockToolBarsAction_->setChecked( true );
     connect( lockToolBarsAction_, SIGNAL( toggled( bool ) ), SLOT( _lockToolBars( bool ) ) );
 
     // lock panels action
-    addAction( lockPanelsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), "Lock Panels", this ) );
+    addAction( lockPanelsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), tr( "Lock Panels" ), this ) );
     lockPanelsAction_->setCheckable( true );
     lockPanelsAction_->setChecked( true );
     connect( lockPanelsAction_, SIGNAL( toggled( bool ) ), SLOT( _lockPanels( bool ) ) );
 
     // show menu action
-    addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), "Show Menu Bar", this ) );
+    addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), tr( "Show Menu Bar" ), this ) );
     showMenuBarAction_->setCheckable( true );
     showMenuBarAction_->setChecked( true );
     showMenuBarAction_->setShortcut( Qt::CTRL + Qt::Key_M );
@@ -69,7 +69,7 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     connect( showMenuBarAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleMenuBar( bool ) ) );
 
     // show statusbar
-    addAction( showStatusBarAction_ = new QAction( "Show Status Bar", this ) );
+    addAction( showStatusBarAction_ = new QAction( tr( "Show Status Bar" ), this ) );
     showStatusBarAction_->setCheckable( true );
     showStatusBarAction_->setChecked( true );
     showStatusBarAction_->setEnabled( false );
@@ -214,7 +214,7 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
     ToolBarMenu* menu = new ToolBarMenu( parent );
 
-    const bool hasLockableToolbars( installToolBarsActions( *menu->addMenu( "ToolBars" ) ) );
+    const bool hasLockableToolbars( installToolBarsActions( *menu->addMenu( tr( "ToolBars" ) ) ) );
     bool needSeparator( hasLockableToolbars || _hasPanels() || _hasMenuBar() || _hasStatusBar() );
     if( needSeparator ) menu->addSeparator();
 

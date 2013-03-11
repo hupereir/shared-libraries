@@ -58,11 +58,11 @@ IconSize::Map& IconSize::map( void )
     static Map sizeMap;
     if( sizeMap.empty() )
     {
-        sizeMap.insert( Default, "System Default" );
-        sizeMap.insert( Small, "Small (16x16)" );
-        sizeMap.insert( Medium, "Medium (22x22)" );
-        sizeMap.insert( Large, "Large (32x32)" );
-        sizeMap.insert( Huge, "Huge (48x48)" );
+        sizeMap.insert( Default, QObject::tr( "System Default" ) );
+        sizeMap.insert( Small, QObject::tr( "Small (16x16)" ) );
+        sizeMap.insert( Medium, QObject::tr( "Medium (22x22)" ) );
+        sizeMap.insert( Large, QObject::tr( "Large (32x32)" ) );
+        sizeMap.insert( Huge, QObject::tr( "Huge (48x48)" ) );
     }
 
     return sizeMap;

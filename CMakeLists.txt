@@ -72,7 +72,6 @@ SET( base_qt_SOURCES
   BrowseIconButton.cpp
   BusyWidget.cpp
   ClockLabel.cpp
-  Color.cpp
   ColorDisplay.cpp
   ColorGrabButton.cpp
   ColorGrabObject.cpp

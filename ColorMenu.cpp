@@ -99,10 +99,10 @@ void ColorMenu::_display( void )
     clear();
 
     // new color action
-    addAction( IconEngine::get( ICONS::ADD ), "&New", this, SLOT( _new() ) );
+    addAction( IconEngine::get( ICONS::ADD ), tr( "New" ), this, SLOT( _new() ) );
 
     // default color action
-    addAction( "&Default", this, SLOT( _default() ) );
+    addAction( tr( "Default" ), this, SLOT( _default() ) );
 
     // clear actions
     actions_.clear();

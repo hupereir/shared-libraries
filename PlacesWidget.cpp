@@ -304,19 +304,19 @@ PlacesWidgetItemDialog::PlacesWidgetItemDialog( QWidget* parent ):
     mainLayout().addLayout( layout );
 
     QLabel* label;
-    layout->addWidget( label = new QLabel( "Label:", this ) );
+    layout->addWidget( label = new QLabel( tr("Label:"), this ) );
     layout->addWidget( nameEditor_ = new AnimatedLineEditor( this ) );
     label->setBuddy( nameEditor_ );
 
-    nameEditor_->setPlaceholderText( "Enter descriptive label here" );
+    nameEditor_->setPlaceholderText( tr("Enter descriptive label here") );
 
-    layout->addWidget( label = new QLabel( "Location:", this ) );
+    layout->addWidget( label = new QLabel( tr("Location:"), this ) );
     layout->addWidget( fileEditor_ = new BrowsedLineEditor( this ) );
     label->setBuddy( fileEditor_ );
     fileEditor_->setAcceptMode( QFileDialog::AcceptOpen );
     fileEditor_->setFileMode( QFileDialog::Directory );
 
-    layout->addWidget( remoteCheckBox_ = new QCheckBox( "Remote location", this ), 2, 1, 1, 1 );
+    layout->addWidget( remoteCheckBox_ = new QCheckBox( tr("Remote location"), this ), 2, 1, 1, 1 );
 
 }
 
@@ -688,17 +688,13 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
     {
         if( !focusItem_->isSeparator() )
         {
-            QString buffer;
-            QTextStream( &buffer ) << "Edit '" << focusItem_->text() << "'";
-            editItemAction_->setText( buffer );
+            editItemAction_->setText( QString( tr( "Edit '%1'" ) ).arg( focusItem_->text() ) );
             menu.addAction( editItemAction_ );
         }
 
         {
-            QString buffer;
-            if( focusItem_->isSeparator() ) QTextStream( &buffer ) << "Remove Separator";
-            else QTextStream( &buffer ) << "Remove '" << focusItem_->text() << "'";
-            removeItemAction_->setText( buffer );
+            if( focusItem_->isSeparator() ) removeItemAction_->setText( tr( "Remove Separator" ) );
+            else removeItemAction_->setText( QString( tr( "Remove '%1'" ) ).arg( focusItem_->text() ) );
             menu.addAction( removeItemAction_ );
         }
 
@@ -737,7 +733,7 @@ void PlacesWidget::_addItem( void )
     Debug::Throw( "PlacesWidget::_addItem.\n" );
 
     PlacesWidgetItemDialog dialog( this );
-    dialog.setWindowTitle( QString( "Add Places Entry - " ) + qApp->applicationName() );
+    dialog.setWindowTitle( QString( tr( "Add Places Entry - %1" ) ).arg( qApp->applicationName() ) );
     dialog.setOptionName( "EDIT_PLACES_ITEM_DIALOG" );
 
     // assign starting point
@@ -778,7 +774,7 @@ void PlacesWidget::_addItem( void )
     // check file info
     if( fileInfo.isDocument() || fileInfo.isBrokenLink() || (fileInfo.isLocal() && !fileInfo.file().exists() ) )
     {
-        WarningDialog( this, "Places item is invalid. <Add Entry> canceled" ).exec();
+        WarningDialog( this, tr( "Places item is invalid. <Add Entry> canceled" ) ).exec();
         return;
     }
 
@@ -853,7 +849,7 @@ void PlacesWidget::_editItem( void )
     if( !focusItem_ ) return;
 
     PlacesWidgetItemDialog dialog( this );
-    dialog.setWindowTitle( QString( "Edit Places Entry - " ) + qApp->applicationName() );
+    dialog.setWindowTitle( QString( tr( "Edit Places Entry - %1" ) ).arg( qApp->applicationName() ) );
     dialog.setOptionName( "EDIT_PLACES_ITEM_DIALOG" );
     dialog.setName( focusItem_->text() );
     dialog.setFile( focusItem_->fileInfo() );
@@ -890,7 +886,7 @@ void PlacesWidget::_editItem( void )
             // check file info
             if( fileInfo.isDocument() || fileInfo.isBrokenLink() || (fileInfo.isLocal() && !fileInfo.file().exists() ) )
             {
-                WarningDialog( this, "Places item is invalid. <Edit Entry> canceled" ).exec();
+                WarningDialog( this, tr( "Places item is invalid. <Edit Entry> canceled" ) ).exec();
                 return;
             }
 
@@ -1230,16 +1226,17 @@ void PlacesWidget::_installActions( void )
 {
     Debug::Throw( "PlacesWidget::_installActions.\n" );
 
-    addAction( addItemAction_ = new QAction( IconEngine::get( ICONS::ADD ), "Add Entry...", this ) );
+    addAction( addItemAction_ = new QAction( IconEngine::get( ICONS::ADD ), tr( "Add Entry..." ), this ) );
     connect( addItemAction_, SIGNAL(triggered( void ) ), SLOT( _addItem( void ) ) );
 
-    addAction( addSeparatorAction_ = new QAction( IconEngine::get( ICONS::ADD ), "Add Separator", this ) );
+    addAction( addSeparatorAction_ = new QAction( IconEngine::get( ICONS::ADD ), tr( "Add Separator" ), this ) );
     connect( addSeparatorAction_, SIGNAL(triggered( void ) ), SLOT( _insertSeparator( void ) ) );
 
-    addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), "Edit Entry...", this ) );
+    addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), tr( "Edit Entry..." ), this ) );
+    editItemAction_->setShortcut( Qt::Key_F2 );
     connect( editItemAction_, SIGNAL(triggered( void ) ), SLOT( _editItem( void ) ) );
 
-    addAction( removeItemAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), "Remove Entry", this ) );
+    addAction( removeItemAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), tr( "Remove Entry" ), this ) );
     connect( removeItemAction_, SIGNAL(triggered( void ) ), SLOT( _removeItem( void ) ) );
 
 }

@@ -34,11 +34,11 @@ QWidget( parent )
     setLayout( new QHBoxLayout() );
     layout()->setMargin(2);
     layout()->setSpacing(2);
-    layout()->addWidget( bold_ = new QCheckBox( "Bold", this ) );
-    layout()->addWidget( italic_ = new QCheckBox( "Italic", this ) );
-    layout()->addWidget( underline_ = new QCheckBox( "Underline", this ) );
-    layout()->addWidget( strike_ = new QCheckBox( "Strike", this ) );
-    layout()->addWidget( overline_ = new QCheckBox( "Overline", this ) );
+    layout()->addWidget( bold_ = new QCheckBox( tr( "Bold" ), this ) );
+    layout()->addWidget( italic_ = new QCheckBox( tr( "Italic" ), this ) );
+    layout()->addWidget( underline_ = new QCheckBox( tr( "Underline" ), this ) );
+    layout()->addWidget( strike_ = new QCheckBox( tr( "Strike" ), this ) );
+    layout()->addWidget( overline_ = new QCheckBox( tr( "Overline" ), this ) );
 }
 
 //__________________________________________________

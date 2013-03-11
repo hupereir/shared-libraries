@@ -48,7 +48,7 @@ void BaseProgressBar::paintEvent( QPaintEvent* event )
         QStyleOptionProgressBarV2 opt;
         initStyleOption(&opt);
 
-        opt.text = "";
+        opt.text = QString();
         painter.drawControl(QStyle::CE_ProgressBar, opt);
 
         opt.text = text_;

@@ -21,18 +21,7 @@
 *
 *******************************************************************************/
 
-/*!
-\file XmlString.cpp
-\brief   Some Xml utilities
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include "Debug.h"
 #include "XmlString.h"
-#include "Str.h"
-#include "iostream"
 
 //__________________________________
 XmlString::ConversionList& XmlString::_conversions( void )

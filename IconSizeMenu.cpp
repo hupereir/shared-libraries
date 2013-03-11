@@ -26,7 +26,7 @@
 
 //_____________________________________________________________________________
 IconSizeMenu::IconSizeMenu( QWidget* parent ):
-    QMenu( "&Icon size", parent ),
+    QMenu( tr( "Icon size" ), parent ),
     Counter( "IconSizeMenu" )
 {
     Debug::Throw( "IconSizeMenu::IconSizeMenu.\n" );

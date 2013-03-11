@@ -56,7 +56,7 @@ void DetailsDialog::setDetails( QWidget* widget )
     // details label
     if( !detailsLabel_ )
     {
-        detailsLabel_ = new QLabel( "<a href='details'>details...</a>", this );
+        detailsLabel_ = new QLabel( tr( "<a href='details'>details...</a>" ), this );
         detailsLabel_->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
         mainLayout().addWidget( detailsLabel_ );
 

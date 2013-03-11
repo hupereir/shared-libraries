@@ -81,11 +81,11 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 //________________________________________________________________
 QString BaseFileInfo::typeString( void ) const
 {
-    if( isNavigator() ) return "Navigator";
-    else if( isLink() ) return "Symbolic Link";
-    else if( isFolder() ) return "Folder";
-    else if( isDocument() ) return "Document";
-    else return "Item";
+    if( isNavigator() ) return QObject::tr( "Navigator" );
+    else if( isLink() ) return QObject::tr( "Symbolic Link" );
+    else if( isFolder() ) return QObject::tr( "Folder" );
+    else if( isDocument() ) return QObject::tr( "Document" );
+    else return QObject::tr( "Item" );
 }
 
 //________________________________________________________________

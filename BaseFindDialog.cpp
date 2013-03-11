@@ -46,7 +46,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     setOptionName( "FIND_DIALOG" );
 
     // set dialog title
-    setWindowTitle( "Find" );
+    setWindowTitle( tr( "Find" ) );
 
     // create vbox layout
     setLayout( new QVBoxLayout() );
@@ -59,7 +59,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     _editorLayout().setSpacing( 5 );
 
     // add editor
-    QLabel *label = new QLabel( "&Text to find:", this );
+    QLabel *label = new QLabel( tr( "Text to find:" ), this );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     _editorLayout().addWidget( label, 0, 0, 1, 1 );
     _editorLayout().addWidget( editor_ = new CustomComboBox( this ), 0, 1, 1, 1 );
@@ -81,16 +81,16 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     layout()->addItem( gridLayout );
 
     // insert checkboxes
-    gridLayout->addWidget( backwardCheckbox_ = new QCheckBox( "&Search backward", this ) );
-    gridLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( "&Case sensitive", this ) );
-    gridLayout->addWidget( regexpCheckbox_ = new QCheckBox( "&Regular expresion", this ) );
-    gridLayout->addWidget( entireWordCheckbox_ = new QCheckBox( "&Entire word", this ) );
+    gridLayout->addWidget( backwardCheckbox_ = new QCheckBox( tr( "Search backward" ), this ) );
+    gridLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
+    gridLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
+    gridLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
     connect( regexpCheckbox_, SIGNAL( toggled( bool ) ), SLOT( _regExpChecked( bool ) ) );
 
     // tooltips
-    backwardCheckbox_->setToolTip( "Perform search backward" );
-    caseSensitiveCheckbox_->setToolTip( "Case sensitive search" );
-    regexpCheckbox_->setToolTip( "Search text using regular expression" );
+    backwardCheckbox_->setToolTip( tr( "Perform search backward" ) );
+    caseSensitiveCheckbox_->setToolTip( tr( "Case sensitive search" ) );
+    regexpCheckbox_->setToolTip( tr( "Search text using regular expression" ) );
 
     // notification label
     layout()->addWidget( label_ = new QLabel( this ) );
@@ -114,7 +114,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // insert Find button
     QPushButton *button;
-    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), "&Find", this ) );
+    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), tr( "Find" ), this ) );
     connect( button, SIGNAL( clicked( void ) ), SLOT( _find( void ) ) );
     connect( button, SIGNAL( clicked( void ) ), SLOT( _updateFindComboBox( void ) ) );
     _addDisabledButton( button );
@@ -122,7 +122,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     findButton_ = button;
 
     // insert Cancel button
-    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), "&Close", this ) );
+    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), tr( "Close" ), this ) );
     connect( button, SIGNAL( clicked() ), SLOT( close() ) );
     button->setAutoDefault( false );
 
@@ -143,7 +143,7 @@ void BaseFindDialog::synchronize( void )
 
 //________________________________________________________________________
 void BaseFindDialog::noMatchFound( void )
-{ if( !editor().currentText().isEmpty() ) label_->setText( "Not found" ); }
+{ if( !editor().currentText().isEmpty() ) label_->setText( tr( "Not found" ) ); }
 
 //________________________________________________________________________
 void BaseFindDialog::clearLabel( void )

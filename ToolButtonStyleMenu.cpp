@@ -26,8 +26,8 @@
 
 //_____________________________________________________________________________
 ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
-QMenu( "&Text position", parent ),
-Counter( "ToolButtonStyleMenu" )
+    QMenu( tr( "Text position" ), parent ),
+    Counter( "ToolButtonStyleMenu" )
 {
     Debug::Throw( "ToolButtonStyleMenu::ToolButtonStyleMenu.\n" );
 
@@ -39,11 +39,11 @@ Counter( "ToolButtonStyleMenu" )
     typedef QList< NamePair > List;
     List actionNames;
     actionNames
-        << NamePair( "System Default", -1 )
-        << NamePair( "Icons Only", Qt::ToolButtonIconOnly )
-        << NamePair( "Text Only", Qt::ToolButtonTextOnly )
-        << NamePair( "Text Alongside icons", Qt::ToolButtonTextBesideIcon )
-        << NamePair( "Text Under icons", Qt::ToolButtonTextUnderIcon );
+        << NamePair( tr( "System Default" ), -1 )
+        << NamePair( tr( "Icons Only" ), Qt::ToolButtonIconOnly )
+        << NamePair( tr( "Text Only" ), Qt::ToolButtonTextOnly )
+        << NamePair( tr( "Text Alongside icons" ), Qt::ToolButtonTextBesideIcon )
+        << NamePair( tr( "Text Under icons" ), Qt::ToolButtonTextUnderIcon );
 
     // generic action
     foreach( const NamePair& namePair, actionNames )

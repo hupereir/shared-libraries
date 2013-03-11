@@ -154,7 +154,6 @@ TextEditor::~TextEditor( void )
 
     // turn off synchronization
     if( editors.size() == 1 ) editor.setSynchronized( false );
-    Debug::Throw() << "TextEditor::~TextEditor - done." << endl;
 
 }
 
@@ -440,8 +439,6 @@ void TextEditor::synchronize( TextEditor* editor )
     // margin
     _setLeftMargin( editor->_leftMargin() );
 
-    Debug::Throw( "TextEditor::synchronize - done.\n" );
-
     return;
 
 }
@@ -466,11 +463,10 @@ void TextEditor::showReplacements( const unsigned int& counts )
     Debug::Throw( "TextEditor::showReplacements.\n" );
 
     QString buffer;
-    QTextStream stream( &buffer );
-    if( !counts ) stream << "String not found.";
-    else if( counts == 1 ) stream << "1 replacement performed";
-    else stream << counts << " replacements performed";
-    InformationDialog( this, buffer ).setWindowTitle( "Replace in Text" ).centerOnWidget( qApp->activeWindow() ).exec();
+    if( !counts ) buffer = QString( tr( "String not found." ) );
+    else if( counts == 1 ) buffer = QString( tr( "1 replacement performed" ) );
+    else buffer = QString( tr( "%1 replacements performed" ) ).arg( counts );
+    InformationDialog( this, buffer ).setWindowTitle( QString( tr( "Replace in Text - %1" ) ).arg( qApp->applicationName() ) ).centerOnWidget( qApp->activeWindow() ).exec();
 
     return;
 
@@ -624,8 +620,10 @@ void TextEditor::paste( void )
 
     if( _boxSelection().state() == BoxSelection::FINISHED )
     {
+
         _boxSelection().fromClipboard( QClipboard::Clipboard );
         _boxSelection().clear();
+
     } else QTextEdit::paste();
 
 }
@@ -1584,56 +1582,56 @@ void TextEditor::_installActions( void )
     Debug::Throw( "TextEditor::_installActions.\n" );
 
     // create actions
-    addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), "Undo", this ) );
+    addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), tr( "Undo" ), this ) );
     undoAction_->setShortcut( QKeySequence::Undo );
     undoAction_->setEnabled( document()->isUndoAvailable() );
     connect( undoAction_, SIGNAL( triggered() ), document(), SLOT( undo() ) );
     connect( this, SIGNAL( undoAvailable( bool ) ), undoAction_, SLOT( setEnabled( bool ) ) );
 
-    addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), "Redo", this ) );
+    addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), tr( "Redo" ), this ) );
     redoAction_->setShortcut( QKeySequence::Redo );
     redoAction_->setEnabled( document()->isRedoAvailable() );
     connect( redoAction_, SIGNAL( triggered() ), document(), SLOT( redo() ) );
     connect( this, SIGNAL( redoAvailable( bool ) ), redoAction_, SLOT( setEnabled( bool ) ) );
 
-    addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), "Cut", this ) );
+    addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), tr( "Cut" ), this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
     connect( cutAction_, SIGNAL( triggered() ), SLOT( cut() ) );
 
-    addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), "Copy", this ) );
+    addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), tr( "Copy" ), this ) );
     copyAction_->setShortcut( QKeySequence::Copy );
     connect( copyAction_, SIGNAL( triggered() ), SLOT( copy() ) );
 
-    addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), "Paste", this ) );
+    addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), tr( "Paste" ), this ) );
     pasteAction_->setShortcut( QKeySequence::Paste );
     connect( pasteAction_, SIGNAL( triggered() ), SLOT( paste() ) );
     connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
     _updatePasteAction();
 
-    addAction( clearAction_ = new QAction( "Clear", this ) );
+    addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
     connect( clearAction_, SIGNAL( triggered() ), SLOT( clear() ) );
 
-    addAction( selectAllAction_ = new QAction( "Select All", this ) );
+    addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-    addAction( upperCaseAction_ = new QAction( "Upper Case", this ) );
+    addAction( upperCaseAction_ = new QAction( tr( "Upper Case" ), this ) );
     upperCaseAction_->setShortcut( Qt::CTRL + Qt::Key_U );
     upperCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( upperCaseAction_, SIGNAL( triggered() ), SLOT( upperCase() ) );
 
-    addAction( lowerCaseAction_ = new QAction( "Lower Case", this ) );
+    addAction( lowerCaseAction_ = new QAction( tr( "Lower Case" ), this ) );
     lowerCaseAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_U );
     lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( lowerCaseAction_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
 
-    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find...", this ) );
+    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), tr( "Find..." ), this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
-    addAction( findAgainAction_ = new QAction( "Find Again", this ) );
+    addAction( findAgainAction_ = new QAction( tr( "Find Again" ), this ) );
     findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainAction_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
@@ -1643,7 +1641,7 @@ void TextEditor::_installActions( void )
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainBackwardAction_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
-    addAction( findSelectionAction_ = new QAction( "Find Selection", this ) );
+    addAction( findSelectionAction_ = new QAction( tr( "Find Selection" ), this ) );
     findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionAction_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
@@ -1653,12 +1651,12 @@ void TextEditor::_installActions( void )
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionBackwardAction_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
 
-    addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Replace...", this ) );
+    addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), tr( "Replace..." ), this ) );
     replaceAction_->setShortcut( QKeySequence::Replace );
     replaceAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAction_, SIGNAL( triggered() ), SLOT( _replaceFromDialog() ) );
 
-    addAction( replaceAgainAction_ = new QAction( "Replace Again", this ) );
+    addAction( replaceAgainAction_ = new QAction( tr( "Replace Again" ), this ) );
     replaceAgainAction_->setShortcut( Qt::CTRL + Qt::Key_T );
     replaceAgainAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAgainAction_, SIGNAL( triggered() ), SLOT( replaceAgainForward() ) );
@@ -1668,20 +1666,20 @@ void TextEditor::_installActions( void )
     replaceAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAgainBackwardAction_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
 
-    addAction( gotoLineAction_ = new QAction( "Goto Line Number...", this ) );
+    addAction( gotoLineAction_ = new QAction( tr( "Goto Line Number..." ), this ) );
     gotoLineAction_->setShortcut( Qt::CTRL + Qt::Key_L );
     gotoLineAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( gotoLineAction_, SIGNAL( triggered() ), SLOT( _selectLineFromDialog() ) );
 
     // remove line action
-    QAction* remove_line_action( new QAction( "Remove Current Line", this ) );
+    QAction* remove_line_action( new QAction( tr( "Remove Current Line" ), this ) );
     addAction( remove_line_action );
     remove_line_action->setShortcut( Qt::CTRL + Qt::Key_K );
     remove_line_action->setShortcutContext( Qt::WidgetShortcut );
     connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
 
     // current block highlight
-    addAction( blockHighlightAction_ = new QAction( "Highlight Current Paragraph", this ) );
+    addAction( blockHighlightAction_ = new QAction( tr( "Highlight Current Paragraph" ), this ) );
     blockHighlightAction_->setCheckable( true );
     blockHighlightAction_->setChecked( blockHighlight().isEnabled() );
     blockHighlightAction_->setShortcut( Qt::Key_F12 );
@@ -1689,7 +1687,7 @@ void TextEditor::_installActions( void )
     connect( blockHighlightAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleBlockHighlight( bool ) ) );
 
     // wrap mode
-    addAction( wrapModeAction_ = new QAction( "Wrap Text", this ) );
+    addAction( wrapModeAction_ = new QAction( tr( "Wrap Text" ), this ) );
     wrapModeAction_->setCheckable( true );
     wrapModeAction_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
     _setModifier( ModifierWrap, lineWrapMode() == QTextEdit::WidgetWidth );
@@ -1698,14 +1696,14 @@ void TextEditor::_installActions( void )
     connect( wrapModeAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
 
     // tab emulation action
-    addAction( tabEmulationAction_ = new QAction( "Emulate Tabs", this ) );
+    addAction( tabEmulationAction_ = new QAction( tr( "Emulate Tabs" ), this ) );
     tabEmulationAction_->setCheckable( true );
     tabEmulationAction_->setChecked( hasTabEmulation_ );
     connect( tabEmulationAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );
 
     // line number action
-    addAction( showLineNumberAction_ =new QAction( "Show Line Numbers", this ) );
-    showLineNumberAction_->setToolTip( "Show/hide line numbers" );
+    addAction( showLineNumberAction_ =new QAction( tr( "Show Line Numbers" ), this ) );
+    showLineNumberAction_->setToolTip( tr( "Show/hide line numbers" ) );
     showLineNumberAction_->setCheckable( true );
     showLineNumberAction_->setShortcut( Qt::Key_F11 );
     showLineNumberAction_->setShortcutContext( Qt::WidgetShortcut );
@@ -1766,7 +1764,7 @@ void TextEditor::_createBaseFindDialog( void )
     {
 
         findDialog_ = new BaseFindDialog( this );
-        findDialog_->setWindowTitle( "Find in Text" );
+        findDialog_->setWindowTitle( tr( "Find in Text" ) );
         connect( findDialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
         connect( this, SIGNAL( noMatchFound() ), findDialog_, SLOT( noMatchFound() ) );
         connect( this, SIGNAL( matchFound() ), findDialog_, SLOT( clearLabel() ) );
@@ -1800,7 +1798,7 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
         QRegExp regexp( selection.text() );
         if( !regexp.isValid() )
         {
-            InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+            InformationDialog( this, tr( "Invalid regular expression. Find canceled" ) ).exec();
             return false;
         }
 
@@ -1907,7 +1905,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
         QRegExp regexp( selection.text() );
         if( !regexp.isValid() )
         {
-            InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+            InformationDialog( this, tr( "Invalid regular expression. Find canceled" ) ).exec();
             return false;
         }
 
@@ -1994,7 +1992,7 @@ void TextEditor::_createBaseReplaceDialog( void )
     {
 
         replaceDialog_ = new BaseReplaceDialog( this );
-        replaceDialog_->setWindowTitle( "Replace in Text" );
+        replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
         connect( replaceDialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
         connect( replaceDialog_, SIGNAL( replace( TextSelection ) ), SLOT( replace( TextSelection ) ) );
         connect( replaceDialog_, SIGNAL( replaceInWindow( TextSelection ) ), SLOT( replaceInWindow( TextSelection ) ) );
@@ -2004,7 +2002,6 @@ void TextEditor::_createBaseReplaceDialog( void )
 
     }
 
-    Debug::Throw( "TextEditor::_createBaseReplaceDialog - done.\n" );
     return;
 
 }
@@ -2019,8 +2016,8 @@ void TextEditor::_createProgressDialog( void )
     // create dialog
     QProgressDialog* dialog = new QProgressDialog(0);
     dialog->setAttribute( Qt::WA_DeleteOnClose, true );
-    dialog->setLabelText( "Replace text in selection" );
-    dialog->setWindowTitle( Util::windowTitle( "Replace in Text" ) );
+    dialog->setLabelText( tr( "Replace text in selection" ) );
+    dialog->setWindowTitle( tr( "Replace in Text" ) );
 
     // connections
     connect( this, SIGNAL( busy( int ) ), dialog, SLOT( setMaximum( int ) ) );
@@ -2060,9 +2057,9 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     // and make local copy of cursor
     unsigned int found = 0;
 
-    int saved_anchor( qMin( cursor.position(), cursor.anchor() ) );
+    int savedAnchor( qMin( cursor.position(), cursor.anchor() ) );
     int saved_position( qMax( cursor.position(), cursor.anchor() ) );
-    int current_position( saved_anchor );
+    int current_position( savedAnchor );
 
     // check if regexp should be used or not
     if( selection.flag( TextSelection::RegExp ) )
@@ -2074,7 +2071,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         QRegExp regexp( selection.text() );
         if( !regexp.isValid() )
         {
-            InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+            InformationDialog( this, tr( "Invalid regular expression. Find canceled" ) ).exec();
             return false;
         }
 
@@ -2092,14 +2089,14 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
             // replace in cursor
             /* this is to allow for undoing the changes one by one */
-            cursor.setPosition( saved_anchor + position );
-            cursor.setPosition( saved_anchor + position + regexp.matchedLength(), QTextCursor::KeepAnchor );
+            cursor.setPosition( savedAnchor + position );
+            cursor.setPosition( savedAnchor + position + regexp.matchedLength(), QTextCursor::KeepAnchor );
             cursor.insertText( selection.replaceText() );
             current_position = cursor.position();
 
             // increment position
             position += selection.replaceText().size();
-            current_position = saved_anchor + position;
+            current_position = savedAnchor + position;
 
             found++;
 
@@ -2112,8 +2109,8 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         // update cursor
         if( mode == EXPAND )
         {
-            cursor.setPosition( saved_anchor );
-            cursor.setPosition( saved_anchor + selectedText.length(), QTextCursor::KeepAnchor );
+            cursor.setPosition( savedAnchor );
+            cursor.setPosition( savedAnchor + selectedText.length(), QTextCursor::KeepAnchor );
 
         } else if( mode == MOVE ) cursor.setPosition( current_position );
 
@@ -2124,7 +2121,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         emit busy( cursor.selectedText().size() );
 
         // changes local cursor to beginning of the selection
-        cursor.setPosition( saved_anchor );
+        cursor.setPosition( savedAnchor );
 
         // define search flags
         QTextDocument::FindFlags flags(0);
@@ -2149,13 +2146,12 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
         if( mode == EXPAND )
         {
-            cursor.setPosition( saved_anchor );
+            cursor.setPosition( savedAnchor );
             cursor.setPosition( saved_position, QTextCursor::KeepAnchor );
         } else if( mode == MOVE ) cursor.setPosition( current_position );
 
     }
 
-    Debug::Throw( "TextEditor::_replaceInRange - done.\n" );
     return found;
 
 }
@@ -2217,9 +2213,7 @@ bool TextEditor::_setTabSize( const int& tabSize )
 
     // define emulated tabs
     emulatedTab_ = QString( tabSize, ' ' );
-    QString buffer;
-    QTextStream( &buffer ) << "^(" << emulatedTab_ << ")" << "+";
-    emulatedTabRegexp_.setPattern( buffer );
+    emulatedTabRegexp_.setPattern( QString( "^(%1)+" ).arg( emulatedTab_ ) );
 
     // update tab string according to tab emulation state
     if( _hasTabEmulation() ) tab_ = emulatedTab_;
@@ -2626,7 +2620,6 @@ void TextEditor::_replaceFromDialog( void )
     _replaceDialog().activateWindow();
     _replaceDialog().editor().setFocus();
 
-    Debug::Throw( "TextEditor::_replaceFromDialog - done.\n" );
     return;
 }
 

@@ -46,30 +46,30 @@ FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permission
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     setLayout( gridLayout );
 
-    gridLayout->addWidget( new QLabel( "<b>Permissions: </b>", this ) );
-    gridLayout->addWidget( new QLabel( "Read", this ), Qt::AlignHCenter );
-    gridLayout->addWidget( new QLabel( "Write", this ), Qt::AlignHCenter );
-    gridLayout->addWidget( new QLabel( "Execute", this ), Qt::AlignHCenter );
+    gridLayout->addWidget( new QLabel( tr( "<b>Permissions: </b>" ), this ) );
+    gridLayout->addWidget( new QLabel( tr( "Read" ), this ), Qt::AlignHCenter );
+    gridLayout->addWidget( new QLabel( tr( "Write" ), this ), Qt::AlignHCenter );
+    gridLayout->addWidget( new QLabel( tr( "Execute" ), this ), Qt::AlignHCenter );
 
-    gridLayout->addWidget( new QLabel( "Owner:", this ) );
+    gridLayout->addWidget( new QLabel( tr( "Owner:" ), this ) );
     gridLayout->addWidget( checkboxes_[QFile::ReadOwner]  = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::WriteOwner]  = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::ExeOwner]  = new QCheckBox( this ), Qt::AlignHCenter );
 
     // on unix, right now, Qt does not return the current user permissions. Disable them from the dialog
     #if !defined(Q_OS_UNIX)
-    gridLayout->addWidget( new QLabel( "User:", this ) );
+    gridLayout->addWidget( new QLabel( tr( "User:" ), this ) );
     gridLayout->addWidget( checkboxes_[QFile::ReadUser]  = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::WriteUser]  = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::ExeUser]  = new QCheckBox( this ), Qt::AlignHCenter );
     #endif
 
-    gridLayout->addWidget( new QLabel( "Group:", this ) );
+    gridLayout->addWidget( new QLabel( tr( "Group:" ), this ) );
     gridLayout->addWidget( checkboxes_[QFile::ReadGroup] = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::WriteGroup] = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::ExeGroup] = new QCheckBox( this ), Qt::AlignHCenter );
 
-    gridLayout->addWidget( new QLabel( "Others:", this ) );
+    gridLayout->addWidget( new QLabel( tr( "Others:" ), this ) );
     gridLayout->addWidget( checkboxes_[QFile::ReadOther] = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::WriteOther] = new QCheckBox( this ), Qt::AlignHCenter );
     gridLayout->addWidget( checkboxes_[QFile::ExeOther] = new QCheckBox( this ), Qt::AlignHCenter );

@@ -44,8 +44,9 @@ CustomDialog( parent )
 
     // label
     QLabel* textLabel = new QLabel(
-        "Following temporary files have been created by the application. "
-        "Select the ones you want to remove:", this );
+        tr( "Following temporary files have been created by the application. Select the ones you want to remove:"),
+        this );
+
     textLabel->setWordWrap( true );
 
     //! try load Question icon
@@ -85,13 +86,13 @@ CustomDialog( parent )
     _updateActions();
 
     // customize dialog buttons
-    okButton().setText( "&Remove" );
+    okButton().setText( tr( "Remove" ) );
     okButton().setIcon( IconEngine::get( ICONS::DELETE ) );
-    okButton().setToolTip( "Remove selected files from disk" );
+    okButton().setToolTip( tr( "Remove selected files from disk" ) );
     okButton().setFocus();
 
-    cancelButton().setText( "&Ignore" );
-    cancelButton().setToolTip( "Leave files on disk and proceed" );
+    cancelButton().setText( tr( "Ignore" ) );
+    cancelButton().setToolTip( tr( "Leave files on disk and proceed" ) );
 
 }
 
@@ -138,11 +139,11 @@ void ScratchFileRemoveDialog::_updateContextMenu( const QPoint& position )
 void ScratchFileRemoveDialog::_installActions( void )
 {
     // deselect all
-    addAction( clearSelectionAction_ = new QAction( "Clear Selection", this ) );
+    addAction( clearSelectionAction_ = new QAction( tr( "Clear Selection" ), this ) );
     connect( clearSelectionAction_, SIGNAL( triggered( void ) ), list_->selectionModel(), SLOT( clear( void ) ) );
 
     // select all
-    addAction( selectAllAction_ = new QAction( "&Select All", this ) );
+    addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     connect( selectAllAction_, SIGNAL( triggered( void ) ), list_, SLOT( selectAll( void ) ) );
 
 }

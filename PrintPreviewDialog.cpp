@@ -47,17 +47,17 @@ namespace PRINT
     {
 
         {
-            QMenu* menu = addMenu( "Orientation" );
+            QMenu* menu = addMenu( tr( "Orientation" ) );
             QAction* action;
             QActionGroup* actionGroup = new QActionGroup( this );
 
-            action = menu->addAction( "Portrait" );
+            action = menu->addAction( tr( "Portrait" ) );
             action->setCheckable( true );
             action->setChecked( true );
             actionGroup->addAction( action );
             orientationActions_.insert( action, QPrinter::Portrait );
 
-            action = menu->addAction( "Landscape" );
+            action = menu->addAction( tr( "Landscape" ) );
             action->setCheckable( true );
             actionGroup->addAction( action );
             orientationActions_.insert( action, QPrinter::Landscape );
@@ -67,23 +67,23 @@ namespace PRINT
         }
 
         {
-            QMenu* menu = addMenu( "Layout" );
+            QMenu* menu = addMenu( tr( "Layout" ) );
 
             QAction* action;
             QActionGroup* actionGroup = new QActionGroup( this );
 
-            action = menu->addAction( "One Page Per Sheet" );
+            action = menu->addAction( tr( "One Page Per Sheet" ) );
             action->setCheckable( true );
             action->setChecked( true );
             actionGroup->addAction( action );
             pageModeActions_.insert( action, BasePrintHelper::SinglePage );
 
-            action = menu->addAction( "Two Pages Per Sheet" );
+            action = menu->addAction( tr( "Two Pages Per Sheet" ) );
             action->setCheckable( true );
             actionGroup->addAction( action );
             pageModeActions_.insert( action, BasePrintHelper::TwoPages );
 
-            action = menu->addAction( "Four Pages Per Sheet" );
+            action = menu->addAction( tr( "Four Pages Per Sheet" ) );
             action->setCheckable( true );
             actionGroup->addAction( action );
             pageModeActions_.insert( action, BasePrintHelper::FourPages );
@@ -174,7 +174,7 @@ namespace PRINT
         // update label
         QString buffer;
         QTextStream( &buffer ) << " of " << pages;
-        label_->setText( buffer );
+        label_->setText( QString( tr( " of %1" ) ).arg( pages ) );
 
         // update validator
         validator_.setTop( pages );

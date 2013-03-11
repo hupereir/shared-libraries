@@ -61,7 +61,7 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
     {
 
         OptionCheckBox* checkBox;
-        mainLayout().addWidget( checkBox = new OptionCheckBox( "Use custom icon theme", this, "USE_ICON_THEME" ) );
+        mainLayout().addWidget( checkBox = new OptionCheckBox( tr( "Use custom icon theme" ), this, "USE_ICON_THEME" ) );
         addOptionWidget( checkBox );
 
         QWidget* box = new QWidget( this );
@@ -74,7 +74,7 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
         box->setLayout( gridLayout );
 
         QLabel* label;
-        gridLayout->addWidget( label = new QLabel( "Theme name:", box ) );
+        gridLayout->addWidget( label = new QLabel( tr( "Theme name:" ), box ) );
 
         {
             OptionLineEditor* editor;
@@ -84,7 +84,7 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
         }
 
-        gridLayout->addWidget( label = new QLabel( "Path:", box ) );
+        gridLayout->addWidget( label = new QLabel( tr( "Path:" ), box ) );
         {
             OptionBrowsedLineEditor* editor;
             gridLayout->addWidget( editor = new OptionBrowsedLineEditor( box, "ICON_THEME_PATH" ) );
@@ -120,8 +120,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 
     // add restore default button to layout
     QPushButton* button;
-    button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "Restore &Defaults", this );
-    button->setToolTip( "Restore default value for all options.");
+    button = new QPushButton( IconEngine::get( ICONS::RELOAD ), tr( "Restore Defaults" ), this );
+    button->setToolTip( tr( "Restore default value for all options." ) );
     button->setAutoDefault( false );
 
     connect( button, SIGNAL( clicked() ), SLOT( _restoreDefaults() ) );
@@ -129,31 +129,31 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     _buttonLayout().addStretch( 1 );
 
     // apply button
-    _buttonLayout().addWidget( button = new QPushButton(IconEngine::get( ICONS::DIALOG_OK_APPLY ), "&Apply", this ) );
+    _buttonLayout().addWidget( button = new QPushButton(IconEngine::get( ICONS::DIALOG_OK_APPLY ), tr( "Apply" ), this ) );
     connect( button, SIGNAL( clicked() ), SLOT( _update() ) );
     connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );
     button->setToolTip(
-        "Apply changes to options.\n"
+        tr( "Apply changes to options.\n"
         "Note: the application may have to be restarted so that\n"
-        "all changes are taken into account." );
+        "all changes are taken into account." ) );
 
     // ok button
-    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), "&Ok", this ) );
+    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), tr( "Ok" ), this ) );
     connect( button, SIGNAL( clicked() ), SLOT( _save() ) );
     connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );
     connect( button, SIGNAL( clicked() ), SLOT( accept() ) );
     button->setToolTip(
-        "Apply changes to options and close window.\n"
+        tr( "Apply changes to options and close window.\n"
         "Note: the application may have to be restarted so that\n"
-        "all changes are taken into account." );
+        "all changes are taken into account." ) );
     button->setAutoDefault( false );
 
     // cancel button
-    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), "&Cancel", this ) );
+    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), tr( "Cancel" ), this ) );
     connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
     connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );
     connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
-    button->setToolTip( "Discard changes to options and close window" );
+    button->setToolTip( tr( "Discard changes to options and close window" ) );
     button->setAutoDefault( false );
 
     // close accelerator
@@ -167,7 +167,10 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
 
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
 
-    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_GENERAL ), "General", "General application settings" );
+    if( !parent ) parent = &addPage(
+        IconEngine::get( ICONS::PREFERENCE_GENERAL ),
+        tr( "General" ),
+        tr( "General application settings" ) );
 
     // base
     QWidget* out(0);
@@ -176,7 +179,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
 
         // base
         QGroupBox* box;
-        box = new QGroupBox( "General", parent );
+        box = new QGroupBox( tr( "General" ), parent );
         parent->layout()->addWidget( box );
 
         {
@@ -185,31 +188,31 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
 
             // pixmap path
             QLabel* label;
-            gridLayout->addWidget( label = new QLabel( "Pixmaps:", box ), 0, 0, 1, 1 );
+            gridLayout->addWidget( label = new QLabel( tr( "Pixmaps:" ), box ), 0, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
-            QPushButton *button = new QPushButton( IconEngine::get( ICONS::EDIT ), "Edit Pixmap Path", box );
+            QPushButton *button = new QPushButton( IconEngine::get( ICONS::EDIT ), tr( "Edit Pixmap Path" ), box );
             connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
             gridLayout->addWidget( button, 0, 1, 1, 1 );
 
             // icon path
             #if QT_VERSION >= 0x040600
-            gridLayout->addWidget( label = new QLabel( "Icons:", box ), 1, 0, 1, 1 );
+            gridLayout->addWidget( label = new QLabel( tr( "Icons:" ), box ), 1, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
-            button = new QPushButton( IconEngine::get( ICONS::EDIT ), "Edit Icon Theme", box );
+            button = new QPushButton( IconEngine::get( ICONS::EDIT ), tr( "Edit Icon Theme" ), box );
             connect( button, SIGNAL( clicked() ), SLOT( _editIconTheme() ) );
             gridLayout->addWidget( button, 1, 1, 1, 1 );
             #endif
 
             // debug level
-            gridLayout->addWidget( label = new QLabel( "Debug level:", box ), 2, 0, 1, 1 );
+            gridLayout->addWidget( label = new QLabel( tr( "Debug level:" ), box ), 2, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
             spinbox->setMinimum( 0 );
             spinbox->setMaximum( 5 );
-            spinbox->setToolTip( "Debug verbosity level" );
+            spinbox->setToolTip( tr( "Debug verbosity level" ) );
             gridLayout->addWidget( spinbox, 2, 1, 1, 2 );
             addOptionWidget( spinbox );
 
@@ -218,14 +221,14 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         }
 
         // fonts
-        box = new QGroupBox( "Fonts", parent );
+        box = new QGroupBox( tr( "Fonts" ), parent );
         parent->layout()->addWidget( box );
 
         // icon pixmap
         QVBoxLayout* vLayout = new QVBoxLayout();
         box->setLayout( vLayout );
 
-        OptionCheckBox* checkbox( new OptionCheckBox( "Use system font", box, "USE_SYSTEM_FONT" ) );
+        OptionCheckBox* checkbox( new OptionCheckBox( tr( "Use system font" ), box, "USE_SYSTEM_FONT" ) );
         vLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
@@ -237,9 +240,9 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         // base font
         QLabel* label;
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-        gridLayout->addWidget( label = new QLabel( "Default font:", box ) );
+        gridLayout->addWidget( label = new QLabel( tr( "Default font:" ), box ) );
         OptionFontEditor *edit = new OptionFontEditor( box, "FONT_NAME" );
-        edit->setToolTip( "Default font name for all widgets" );
+        edit->setToolTip( tr( "Default font name for all widgets" ) );
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
@@ -247,9 +250,9 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         connect( checkbox, SIGNAL( toggled( bool ) ), edit, SLOT( setDisabled( bool ) ) );
 
         // fixed font
-        gridLayout->addWidget( label = new QLabel( "Fixed font:", box ) );
+        gridLayout->addWidget( label = new QLabel( tr( "Fixed font:" ), box ) );
         edit = new OptionFontEditor( box, "FIXED_FONT_NAME" );
-        edit->setToolTip( "Default font name (fixed) for text widgets" );
+        edit->setToolTip( tr( "Default font name (fixed) for text widgets" ) );
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
@@ -269,7 +272,6 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
     // animation (go to a new page)
     if( flag & ANIMATIONS ) { out = animationConfiguration(); }
 
-    Debug::Throw( "BaseConfigurationDialog::baseConfiguration - done.\n" );
     return out;
 
 }
@@ -285,12 +287,14 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     if( !parent )
     {
 
-        parent = &addPage( IconEngine::get( ICONS::PREFERENCE_LISTS ), "Lists", "Configure the appearance of item lists" );
+        parent = &addPage(
+            IconEngine::get( ICONS::PREFERENCE_LISTS ),
+            tr( "Lists" ), tr( "Configure the appearance of item lists" ) );
         box = new QWidget( parent );
 
     } else {
 
-        box = new QGroupBox( "Lists", parent );
+        box = new QGroupBox( tr( "Lists" ), parent );
     }
 
     QVBoxLayout* vLayout = new QVBoxLayout();
@@ -299,7 +303,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 
     {
         OptionCheckBox* checkbox;
-        checkbox = new OptionCheckBox( "Use alternate color for items in list", box, "USE_ALTERNATE_COLOR" );
+        checkbox = new OptionCheckBox( tr( "Use alternate color for items in list" ), box, "USE_ALTERNATE_COLOR" );
         vLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
@@ -316,7 +320,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 
     {
         OptionCheckBox* checkbox;
-        checkbox = new OptionCheckBox( "Use different backround for selected column:", box, "USE_SELECTED_COLUMN_COLOR" );
+        checkbox = new OptionCheckBox( tr( "Use different backround for selected column:" ), box, "USE_SELECTED_COLUMN_COLOR" );
         gridLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
@@ -332,11 +336,11 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     OptionSpinBox* spinbox;
 
     // icon size in lists
-    gridLayout->addWidget( label = new QLabel( "List items icon size:", box ) );
+    gridLayout->addWidget( label = new QLabel( tr( "List items icon size:" ), box ) );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
-    spinbox->setToolTip( "Default size of the icons displayed in lists" );
-    spinbox->setSuffix( "px" );
+    spinbox->setToolTip( tr( "Default size of the icons displayed in lists" ) );
+    spinbox->setSuffix( tr( "px" ) );
     spinbox->setMinimum(8);
     spinbox->setMaximum(96);
     addOptionWidget( spinbox );
@@ -354,14 +358,17 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
     Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
 
     // make sure parent is valid
-    if( !parent ) parent = &addPage( IconEngine::get( ICONS::PREFERENCE_EDITION ), "Text Edition", "Settings for text display and edition" );
+    if( !parent ) parent = &addPage(
+        IconEngine::get( ICONS::PREFERENCE_EDITION ),
+        tr( "Text Edition" ),
+        tr( "Settings for text display and edition" ) );
 
     QWidget* out(0);
 
     // tab emulation
     if( flag & TAB_EMULATION )
     {
-        QGroupBox* box = new QGroupBox( "Tab Emulation", parent );
+        QGroupBox* box = new QGroupBox( tr( "Tab Emulation" ), parent );
         QVBoxLayout* layout = new QVBoxLayout();
         box->setLayout( layout );
         parent->layout()->addWidget( box );
@@ -370,16 +377,16 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
         hLayout->setMargin(0);
         layout->addLayout( hLayout );
 
-        OptionCheckBox* checkbox = new OptionCheckBox( "Emulate tabs", box, "TAB_EMULATION" );
-        checkbox->setToolTip( "Turn on/off tab emulation using space characters" );
+        OptionCheckBox* checkbox = new OptionCheckBox( tr( "Emulate tabs" ), box, "TAB_EMULATION" );
+        checkbox->setToolTip( tr( "Turn on/off tab emulation using space characters" ) );
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
-        hLayout->addWidget(new QLabel( "Tab size:", box ) );
+        hLayout->addWidget(new QLabel( tr( "Tab size:" ), box ) );
         OptionSpinBox* spinbox = new OptionSpinBox( box, "TAB_SIZE" );
         spinbox->setMinimum( 2 );
         spinbox->setMaximum( 20 );
-        spinbox->setToolTip( "Tab size (in unit of space characters)." );
+        spinbox->setToolTip( tr( "Tab size (in unit of space characters)." ) );
         hLayout->addWidget( spinbox );
         hLayout->addStretch( 1 );
 
@@ -390,13 +397,13 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
     // paragraph highlighting
     if( flag & PARAGRAPH_HIGHLIGHT )
     {
-        QGroupBox* box = new QGroupBox( "Paragrap Highlighting", parent );
+        QGroupBox* box = new QGroupBox( tr( "Paragraph Highlighting" ), parent );
         QVBoxLayout* layout = new QVBoxLayout();
         box->setLayout( layout );
         parent->layout()->addWidget( box );
 
-        OptionCheckBox* checkbox = new OptionCheckBox( "Highlight current paragraph", box, "HIGHLIGHT_PARAGRAPH" );
-        checkbox->setToolTip( "Turn on/off current paragraph highlighting" );
+        OptionCheckBox* checkbox = new OptionCheckBox( tr( "Highlight current paragraph" ), box, "HIGHLIGHT_PARAGRAPH" );
+        checkbox->setToolTip( tr( "Turn on/off current paragraph highlighting" ) );
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
@@ -405,7 +412,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
         gridLayout->setMaxCount(2);
         layout->addLayout( gridLayout );
 
-        gridLayout->addWidget( new QLabel( "Paragraph highlight color:" ) );
+        gridLayout->addWidget( new QLabel( tr( "Paragraph highlight color:" ) ) );
         OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
         gridLayout->addWidget( color );
         addOptionWidget( color );
@@ -419,23 +426,23 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
     // box selection
     if( false )
     {
-        QGroupBox* box = new QGroupBox( "Box Selection", parent );
+        QGroupBox* box = new QGroupBox( tr( "Box Selection" ), parent );
         GridLayout* gridLayout = new GridLayout();
         gridLayout->setMaxCount(2);
         box->setLayout( gridLayout );
         parent->layout()->addWidget( box );
 
-        gridLayout->addWidget( new QLabel( "Opacity" ) );
+        gridLayout->addWidget( new QLabel( tr( "Opacity" ) ) );
         OptionSlider *slider = new OptionSlider( box, "BOX_SELECTION_ALPHA" );
         slider->setRange( 0, 100 );
-        slider->setToolTip( "Alpha channel (i.e. opacity) of the box selection highlight color" );
+        slider->setToolTip( tr( "Alpha channel (i.e. opacity) of the box selection highlight color" ) );
         gridLayout->addWidget( slider );
         addOptionWidget( slider );
 
         QLabel* label;
         gridLayout->addWidget( label = new QLabel(
-            "Note: box selection is enabled in text editors "
-            "only if the corresponding font has fixed pitch."), 2, 0, 1, 2 );
+            tr( "Note: box selection is enabled in text editors "
+            "only if the corresponding font has fixed pitch." ) ), 2, 0, 1, 2 );
 
         // wrap
         label->setWordWrap( true );
@@ -446,23 +453,26 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
     if( flag & MARGINS )
     {
         QGroupBox* box;
-        parent->layout()->addWidget( box = new QGroupBox( "Margin", parent ) );
+        parent->layout()->addWidget( box = new QGroupBox( tr( "Margin" ), parent ) );
 
         GridLayout* gridLayout = new GridLayout();
         gridLayout->setMaxCount(2);
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         box->setLayout( gridLayout );
 
+        QLabel* label;
         OptionColorDisplay* colorDisplay;
-        gridLayout->addWidget( new QLabel( "Foreground:", box ) );
+        gridLayout->addWidget( label = new QLabel( tr( "Foreground:" ), box ) );
         gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
         addOptionWidget( colorDisplay );
-        colorDisplay->setToolTip( "Margins foreground color" );
+        colorDisplay->setToolTip( tr( "Margins foreground color" ) );
+        label->setBuddy( colorDisplay );
 
-        gridLayout->addWidget( new QLabel( "Background:", box ) );
+        gridLayout->addWidget( label = new QLabel( tr( "Background:" ), box ) );
         gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
         addOptionWidget( colorDisplay );
-        colorDisplay->setToolTip( "Margins background color" );
+        colorDisplay->setToolTip( tr( "Margins background color" ) );
+        label->setBuddy( colorDisplay );
         out = box;
     }
 
@@ -471,27 +481,27 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
 
         // misc
         QGroupBox* box;
-        parent->layout()->addWidget( box = new QGroupBox( "Options", parent ) );
+        parent->layout()->addWidget( box = new QGroupBox( tr( "Options" ), parent ) );
         QVBoxLayout* layout = new QVBoxLayout();
         box->setLayout( layout );
 
-        OptionCheckBox* checkbox = new OptionCheckBox( "Wrap text", box, "WRAP_TEXT" );
-        checkbox->setToolTip( "Turn on/off line wrapping at editor border" );
+        OptionCheckBox* checkbox = new OptionCheckBox( tr( "Wrap text " ), box, "WRAP_TEXT" );
+        checkbox->setToolTip( tr( "Turn on/off line wrapping at editor border" ) );
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
-        layout->addWidget( checkbox = new OptionCheckBox( "Show line numbers", box, "SHOW_LINE_NUMBERS" ) );
-        checkbox->setToolTip( "Turn on/off line numbers" );
+        layout->addWidget( checkbox = new OptionCheckBox( tr( "Show line numbers" ), box, "SHOW_LINE_NUMBERS" ) );
+        checkbox->setToolTip( tr( "Turn on/off display of line numbers" ) );
         addOptionWidget( checkbox );
 
         QHBoxLayout* hLayout = new QHBoxLayout();
         layout->addLayout( hLayout );
         hLayout->setMargin(0);
-        hLayout->addWidget( checkbox = new OptionCheckBox( "Auto-hide mouse cursor after ", box, "AUTOHIDE_CURSOR" ) );
+        hLayout->addWidget( checkbox = new OptionCheckBox( tr( "Auto hide mouse cursor after " ), box, "AUTOHIDE_CURSOR" ) );
         addOptionWidget( checkbox );
 
         OptionSpinBox* spinbox;
         hLayout->addWidget( spinbox = new OptionSpinBox( box, "AUTOHIDE_CURSOR_DELAY" ) );
-        spinbox->setSuffix( "s" );
+        spinbox->setSuffix( tr( "s" ) );
         addOptionWidget( spinbox );
 
         spinbox->setMinimum( 0 );
@@ -519,14 +529,17 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     if( !parent )
     {
 
-        parent = &addPage( IconEngine::get( ICONS::PREFERENCE_ANIMATIONS ), "Animations", "Animations configuration" );
+        parent = &addPage(
+            IconEngine::get( ICONS::PREFERENCE_ANIMATIONS ),
+            tr( "Animations" ),
+            tr( "Animations configuration" ) );
         box = new QWidget( parent );
         box->setLayout( new QVBoxLayout() );
         box->layout()->setMargin(0);
 
     } else {
 
-        box = new QGroupBox( "Animations", parent );
+        box = new QGroupBox( tr( "Animations" ), parent );
         box->setLayout( new QVBoxLayout() );
         box->layout()->setMargin(5);
 
@@ -540,35 +553,35 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     gridLayout->setMargin(0);
     box->layout()->addItem( gridLayout );
 
-    gridLayout->addWidget( new QLabel( "type", box ), 0, 0, Qt::AlignCenter );
-    gridLayout->addWidget( new QLabel( "duration (ms)", box ), 0, 1, Qt::AlignLeft|Qt::AlignVCenter );
+    gridLayout->addWidget( new QLabel( tr( "Type" ), box ), 0, 0, Qt::AlignCenter );
+    gridLayout->addWidget( new QLabel( tr( "Duration" ), box ), 0, 1, Qt::AlignLeft|Qt::AlignVCenter );
 
     OptionCheckBox* checkbox;
     OptionSpinBox* spinbox;
-    gridLayout->addWidget( checkbox = new OptionCheckBox( "Smooth Transitions ", box, "SMOOTH_TRANSITION_ENABLED" ) );
-    checkbox->setToolTip( "Enables fading transition when changing display contents." );
+    gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Smooth transitions" ), box, "SMOOTH_TRANSITION_ENABLED" ) );
+    checkbox->setToolTip( tr( "Enables fading transition when changing display contents." ) );
     addOptionWidget( checkbox );
 
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "SMOOTH_TRANSITION_DURATION" ) );
-    spinbox->setSuffix( "ms" );
+    spinbox->setSuffix( tr( "ms" ) );
     spinbox->setMinimum( 10 );
     spinbox->setMaximum( 5000 );
-    spinbox->setToolTip( "Smooth transitions duration" );
+    spinbox->setToolTip( tr( "Smooth transitions duration" ) );
     addOptionWidget( spinbox );
 
     checkbox->setChecked( false );
     spinbox->setEnabled( false );
     connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
 
-    gridLayout->addWidget( checkbox = new OptionCheckBox( "Smooth Scrolling ", box, "SMOOTH_SCROLLING_ENABLED" ) );
-    checkbox->setToolTip( "Enables smooth scrolling when using page-up/page-down buttons, or mouse wheel." );
+    gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Smooth scrolling" ), box, "SMOOTH_SCROLLING_ENABLED" ) );
+    checkbox->setToolTip( tr( "Enables smooth scrolling when using page-up/page-down buttons, or mouse wheel." ) );
     addOptionWidget( checkbox );
 
     gridLayout->addWidget( spinbox = new OptionSpinBox( box, "SMOOTH_SCROLLING_DURATION" ) );
-    spinbox->setSuffix( "ms" );
+    spinbox->setSuffix( tr( "ms" ) );
     spinbox->setMinimum( 10 );
     spinbox->setMaximum( 5000 );
-    spinbox->setToolTip( "Smooth scrolling duration" );
+    spinbox->setToolTip( tr( "Smooth scrolling duration" ) );
     addOptionWidget( spinbox );
 
     checkbox->setChecked( false );
@@ -576,17 +589,19 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
 
     QLabel* label;
-    gridLayout->addWidget( label = new QLabel( "Frames:", box ) );
+    gridLayout->addWidget( label = new QLabel( tr( "Frames:" ), box ) );
     label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
     spinbox = new OptionSpinBox( box, "ANIMATION_FRAMES" );
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 1000 );
     spinbox->setToolTip(
-        "Maximum number of frames shown for one animation.\n"
+        tr( "Maximum number of frames shown for one animation.\n"
         "A large number is recomanded, since frames are \n"
-        "dropped whenever the system is too slow anyway." );
+        "dropped whenever the system is too slow anyway." ) );
     gridLayout->addWidget( spinbox );
     addOptionWidget( spinbox );
+    label->setBuddy( spinbox );
+
     return box;
 
 }
@@ -680,7 +695,7 @@ void BaseConfigurationDialog::_restoreDefaults( void )
     if( !local.empty() )
     {
 
-        dialog.setText( "Following options have no default values. Restore default anyway ? " );
+        dialog.setText( tr( "Following options have no default values. Restore default anyway ? " ) );
         TreeView* view = new TreeView( &dialog );
         OptionModel* model = new OptionModel( &dialog );
         model->add( local );
@@ -690,7 +705,7 @@ void BaseConfigurationDialog::_restoreDefaults( void )
         dialog.mainLayout().addWidget( view );
         dialog.resize( 450, 300 );
 
-    } else { dialog.setText( "Restore all options to their default values ?" ); }
+    } else { dialog.setText( tr( "Restore all options to their default values ?" ) ); }
 
     // ask confirmation
     if( !dialog.centerOnWidget( this ).exec() ) return;

@@ -79,11 +79,7 @@ bool BrowseIconButton::setFile( const QString& file, const bool& check )
 
     // popup dialog if invalid
     if( check )
-    {
-        QString buffer;
-        QTextStream( &buffer ) << "invalid icon file " << file;
-        InformationDialog( this, buffer ).exec();
-    }
+    { InformationDialog( this, QString( tr( "Invalid icon file %1" ) ).arg( file ) ).exec(); }
 
     // if file, set pixmap to empty
     if( noIconPixmap_.isNull() ) {
@@ -103,7 +99,7 @@ void BrowseIconButton::_browse( void )
     ImageFileDialog dialog( this );
     dialog.setFileMode( QFileDialog::AnyFile );
     dialog.setAcceptMode( QFileDialog::AcceptOpen );
-    dialog.setWindowTitle( "Open" );
+    dialog.setWindowTitle( tr( "Open" ) );
     QtUtil::centerOnParent( &dialog );
 
     if( file_ != NO_ICON ) {
@@ -124,13 +120,13 @@ void BrowseIconButton::_browse( void )
     // check file size
     if( files.size() > 1 )
     {
-        InformationDialog( this, "Too many files selected." ).exec();
+        InformationDialog( this, tr( "Too many files selected." ) ).exec();
         return;
     }
 
     if( files.size() < 1 )
     {
-        InformationDialog( this, "No file selected." ).exec();
+        InformationDialog( this, tr( "No file selected." ) ).exec();
         return;
     }
 

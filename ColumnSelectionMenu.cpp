@@ -30,9 +30,9 @@
 
 //_____________________________________________________
 ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, const QString& title ):
-QMenu( parent ),
-Counter( "ColumnSelectionMenu" ),
-target_( target )
+    QMenu( parent ),
+    Counter( "ColumnSelectionMenu" ),
+    target_( target )
 {
     Debug::Throw( "ColumnSelectionMenu::ColumnSelectionMenu.\n" );
     setTitle( title );
@@ -68,15 +68,10 @@ void ColumnSelectionMenu::_updateActions( void )
     {
 
         // retrieve column name
-        QString column_name( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
-        if( column_name.isNull() || column_name.isEmpty() )
-        {
-            QString buffer;
-            QTextStream( &buffer ) << "column " << index+1;
-            column_name = buffer;
-        }
+        QString columnName( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
+        if( columnName.isNull() || columnName.isEmpty() ) columnName = QString( tr("column %1") ).arg( index+1 );
 
-        QAction* action = new QAction( column_name, this );
+        QAction* action = new QAction( columnName, this );
         action->setCheckable( true );
         action->setChecked( !target_->isColumnHidden( index ) );
 

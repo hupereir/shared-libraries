@@ -72,10 +72,10 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
         h_layout->setMargin(0);
         v_layout->addLayout( h_layout );
 
-        h_layout->addWidget( automaticPreview_ = new QCheckBox( "&Automatic preview", main ) );
+        h_layout->addWidget( automaticPreview_ = new QCheckBox( tr( "Automatic preview" ), main ) );
         _automaticPreviewCheckbox().setChecked( true );
 
-        QPushButton* button = new QPushButton( "&Preview", main );
+        QPushButton* button = new QPushButton( tr( "Preview" ), main );
         h_layout->addWidget( button );
         connect( button, SIGNAL( clicked() ), SLOT( _preview() ) );
 
@@ -159,7 +159,5 @@ void ImageFileDialog::_preview( void )
         preview_->setPixmap( pixmap );
 
     }
-
-    Debug::Throw( "ImageFileDialog::_preview - done.\n" );
 
 }

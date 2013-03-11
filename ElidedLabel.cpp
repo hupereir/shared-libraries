@@ -21,14 +21,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file ElidedLabel.cpp
-   \brief handles text elision in QLabel
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
 #include "Debug.h"
 #include "ElidedLabel.h"
 

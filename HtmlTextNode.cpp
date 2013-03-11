@@ -21,38 +21,30 @@
 *
 **********************************************************************************/
 
-/*!
-    \file HtmlUtil.cpp
-    \brief Some Html utilities
-    \author Hugo Pereira
-    \version $Revision$
-    \date $Date$
-*/
+#include "HtmlTextNode.h"
+#include "Debug.h"
 
 #include <QStringList>
-
-#include "Debug.h"
-#include "HtmlTextNode.h"
 
 //_________________________________________
 HtmlTextNode::HtmlTextNode( const QString& text, QDomElement& parent, QDomDocument& document )
 {
 
-  Debug::Throw( "HtmlTextNode::HtmlTextNode.\n" );
-  QStringList lines( text.split( '\n' ) );
-  if( lines.empty() ) return;
+    Debug::Throw( "HtmlTextNode::HtmlTextNode.\n" );
+    QStringList lines( text.split( '\n' ) );
+    if( lines.empty() ) return;
 
-  // first append the first line
-  QStringList::iterator iter = lines.begin();
-  parent.appendChild( document.createTextNode( *iter ) );
-  ++iter;
-
-  // append remaining lines, after end of line tag
-  for( ;iter != lines.end(); ++iter )
-  {
-    parent.appendChild( document.createElement( "br" ) );
+    // first append the first line
+    QStringList::iterator iter = lines.begin();
     parent.appendChild( document.createTextNode( *iter ) );
-  }
+    ++iter;
 
-  return;
+    // append remaining lines, after end of line tag
+    for( ;iter != lines.end(); ++iter )
+    {
+        parent.appendChild( document.createElement( "br" ) );
+        parent.appendChild( document.createTextNode( *iter ) );
+    }
+
+    return;
 }

@@ -30,11 +30,11 @@
 
 //___________________________________________________________________
 TransitionWidget::TransitionWidget( QWidget *parent ):
-QWidget( parent ),
-Counter( "TransitionWidget" ),
-enable_on_options_( true ),
-enabled_( true ),
-flags_( FROM_PARENT | SHOW )
+    QWidget( parent ),
+    Counter( "TransitionWidget" ),
+    enable_on_options_( true ),
+    enabled_( true ),
+    flags_( FROM_PARENT | SHOW )
 {
     Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
     connect( &timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( update( void )) );

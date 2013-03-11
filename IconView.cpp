@@ -1057,7 +1057,7 @@ void IconView::_createBaseFindDialog( void )
 
         // create dialog
         findDialog_ = new BaseFindDialog( this );
-        findDialog_->setWindowTitle( "Find in List" );
+        findDialog_->setWindowTitle( tr( "Find in List" ) );
 
         // for now entire word is disabled, because it is unclear how to handle it
         findDialog_->enableEntireWord( false );
@@ -1093,7 +1093,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
         regexp.setPattern( selection.text() );
         if( !regexp.isValid() )
         {
-            InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+            InformationDialog( this, tr( "Invalid regular expression. Find canceled" ) ).exec();
             return false;
         }
 
@@ -1191,7 +1191,7 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
         regexp.setPattern( selection.text() );
         if( !regexp.isValid() )
         {
-            InformationDialog( this, "Invalid regular expression. Find canceled" ).exec();
+            InformationDialog( this, tr( "Invalid regular expression. Find canceled" ) ).exec();
             return false;
         }
 
@@ -1384,17 +1384,17 @@ void IconView::_installActions( void )
 {
     Debug::Throw( "IconView::_installActions.\n" );
 
-    addAction( selectAllAction_ = new QAction( "Select All", this ) );
+    addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
 
-    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), "Find", this ) );
+    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), tr( "Find" ), this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
 
-    addAction( findAgainAction_ = new QAction( "Find Again", this ) );
+    addAction( findAgainAction_ = new QAction( tr( "Find Again" ), this ) );
     findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainAction_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
@@ -1404,7 +1404,7 @@ void IconView::_installActions( void )
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainBackwardAction_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
 
-    addAction( findSelectionAction_ = new QAction( "Find Selection", this ) );
+    addAction( findSelectionAction_ = new QAction( tr( "Find Selection" ), this ) );
     findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionAction_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );

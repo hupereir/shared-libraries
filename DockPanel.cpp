@@ -257,7 +257,7 @@ LocalWidget::LocalWidget( QWidget* parent ):
 void LocalWidget::updateActions( bool detached )
 {
 
-    detachAction().setText( detached ? "&attach":"&detach" );
+    detachAction().setText( detached ? tr( "Attach" ): tr( "Detach" ) );
     stickyAction().setEnabled( detached );
     staysOnTopAction().setEnabled( detached );
 
@@ -399,17 +399,17 @@ void LocalWidget::_installActions( void )
     Debug::Throw( "LocalWidget::_installActions.\n" );
 
     // detach
-    addAction( detachAction_ = new QAction( "Detach", this ) );
-    detachAction_->setToolTip( "Dock/undock panel" );
+    addAction( detachAction_ = new QAction( tr( "Detach" ), this ) );
+    detachAction_->setToolTip( tr( "Dock/undock panel" ) );
 
     // stays on top
-    addAction( staysOnTopAction_ = new QAction( "Keep Above", this ) );
-    staysOnTopAction_->setToolTip( "Keep window on top of all others" );
+    addAction( staysOnTopAction_ = new QAction( tr( "Keep Above" ), this ) );
+    staysOnTopAction_->setToolTip( tr( "Keep window on top of all others" ) );
     staysOnTopAction_->setCheckable( true );
 
     // sticky
-    addAction( stickyAction_ = new QAction( "Sticky", this ) );
-    stickyAction_->setToolTip( "Make window appear on all desktops" );
+    addAction( stickyAction_ = new QAction( tr( "Sticky" ), this ) );
+    stickyAction_->setToolTip( tr( "Make window appear on all desktops" ) );
     stickyAction_->setCheckable( true );
 
 }
@@ -418,7 +418,8 @@ void LocalWidget::_installActions( void )
 bool LocalWidget::_startDrag( void )
 {
 
-    if( parentWidget() ) {
+    if( parentWidget() )
+    {
 
         detachAction().trigger();
         return true;

@@ -21,20 +21,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseReplaceDialog.cpp
-\brief replace_text dialog for text editor widgets
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "BaseReplaceDialog.h"
+#include "Debug.h"
 
 #include <QLabel>
 #include <QPushButton>
 #include <QApplication>
-
-#include "Debug.h"
-#include "BaseReplaceDialog.h"
 
 //________________________________________________________________________
 QOrderedSet<QString>& BaseReplaceDialog::_replacedStrings()
@@ -50,12 +42,12 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     Debug::Throw( "BaseReplaceDialog::BaseReplaceDialog.\n" );
 
     // set dialog title
-    setWindowTitle( "Replace" );
+    setWindowTitle( tr( "Replace" ) );
     setOptionName( "REPLACE_DIALOG" );
 
     // create aditional widgets
     // insert text editor
-    QLabel* label = new QLabel( "&Replace with:", this );
+    QLabel* label = new QLabel( tr( "Replace with:" ), this );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     _editorLayout().addWidget( label, 1, 0, 1, 1 );
 
@@ -81,13 +73,13 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     QPushButton *previous( 0 );
 
     // insert selection button
-    _locationLayout().addWidget( new QLabel( "Replace in: ", this ) );
-    _locationLayout().addWidget( button = new QPushButton( "&Selection", this ) );
+    _locationLayout().addWidget( new QLabel( tr( "Replace in:" ), this ) );
+    _locationLayout().addWidget( button = new QPushButton( tr( "Selection" ), this ) );
     button->setAutoDefault( false );
     connect( button, SIGNAL( clicked( void ) ), SLOT( _replaceInSelection( void ) ) );
     connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
     connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
-    button->setToolTip( "Replace all occurence of the search string in selected text" );
+    button->setToolTip( tr( "Replace all occurence of the search string in selected text" ) );
     _addDisabledButton( button );
     button->setAutoDefault( false );
 
@@ -96,12 +88,12 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     previous = button;
 
     // insert window button
-    _locationLayout().addWidget( button = new QPushButton( "&Window", this ) );
+    _locationLayout().addWidget( button = new QPushButton( tr( "Window" ), this ) );
     button->setAutoDefault( false );
     connect( button, SIGNAL( clicked( void ) ), SLOT( _replaceInWindow( void ) ) );
     connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
     connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
-    button->setToolTip( "Replace all occurence of the search string in the entire window" );
+    button->setToolTip( tr( "Replace all occurence of the search string in the entire window" ) );
     _addDisabledButton( button );
     button->setAutoDefault( false );
     replaceWindowButton_ = button;
@@ -109,7 +101,7 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     setTabOrder( previous, button );
 
     // replace buttons
-    button = new QPushButton( "&Replace", this );
+    button = new QPushButton( tr( "Replace" ), this );
     connect( button, SIGNAL( clicked( void ) ), SLOT( _replace( void ) ) );
     connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
     connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
@@ -121,8 +113,6 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // disable buttons
     _updateButtons();
-
-    Debug::Throw( "BaseReplaceDialog::BaseReplaceDialog. Done.\n" );
 
 }
 

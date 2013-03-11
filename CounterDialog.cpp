@@ -28,8 +28,9 @@
 #include "Singleton.h"
 #include "AnimatedTreeView.h"
 
-#include <QPushButton>
+#include <QApplication>
 #include <QLayout>
+#include <QPushButton>
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):
@@ -37,7 +38,7 @@ CustomDialog( parent, OkButton, Qt::Window )
 {
 
     Debug::Throw( "CounterDialog::CounterDialog.\n" );
-    setWindowTitle( "Object Counters" );
+    setWindowTitle( QString( tr( "Object Counters - %1" ) ).arg( qApp->applicationName() ) );
     setOptionName( "COUNTER_DIALOG" );
 
     layout()->setMargin(0);
@@ -47,7 +48,7 @@ CustomDialog( parent, OkButton, Qt::Window )
     list_->setItemMargin( 2 );
 
     QPushButton *button;
-    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), tr( "Reload" ), this ) );
     connect( button, SIGNAL( clicked() ), SLOT( update() ) );
     button->setAutoDefault( false );
 
