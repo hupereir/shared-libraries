@@ -22,6 +22,8 @@
 *******************************************************************************/
 
 #include "SvgPlasmaInterface.h"
+
+#include "Debug.h"
 #include "Util.h"
 
 #include <QStringList>
@@ -39,8 +41,31 @@ namespace SVG
     {}
 
     //_________________________________________________
-    SvgPlasmaInterface::~SvgPlasmaInterface( void )
-    {}
+    bool SvgPlasmaInterface::setImagePath( ImagePath id )
+    {
+        QString value;
+        switch( id )
+        {
+            case DialogBackground:
+            value = "dialogs/background";
+            break;
+
+            default:
+            case WidgetBackground:
+            value = "widgets/background";
+            break;
+
+            case WidgetTranslucentBackground:
+            value = "widgets/translucentbackground";
+            break;
+
+        }
+
+        if( imagePath_ == value ) return false;
+        imagePath_ = value;
+        return true;
+
+    }
 
     //_________________________________________________
     bool SvgPlasmaInterface::loadTheme( void )
@@ -116,21 +141,21 @@ namespace SVG
     {
 
         // check path
-        if( !_path().exists() ) return _setValid( false );
+        if( !path_.exists() ) return _setValid( false );
 
         // generate possible file names
         QStringList files;
         files
-            << _imagePath()
-            << _imagePath() + ".svg"
-            << _imagePath() + ".svgz";
+            << imagePath_
+            << imagePath_ + ".svg"
+            << imagePath_ + ".svgz";
 
         bool found( false );
         File filename;
         foreach( const QString& imageFilename, files )
         {
 
-            filename = File( imageFilename ).addPath( _path() );
+            filename = File( imageFilename ).addPath( path_ );
             if( filename.exists() )
             {
                 found = true;
@@ -138,6 +163,8 @@ namespace SVG
             }
 
         }
+
+        Debug::Throw() << "SvgPlasmaInterface::loadFile - filename: " << filename << endl;
 
         // construct full filename base on theme and transparency setting
         bool changed( false );

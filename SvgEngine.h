@@ -73,7 +73,6 @@ namespace SVG
         TRANSPARENCY::Margins outerPadding( void ) const
         { return outerPadding_; }
 
-
         signals:
 
         //! emmitted when svg files are changed

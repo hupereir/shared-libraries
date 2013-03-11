@@ -46,15 +46,19 @@ namespace SVG
     SvgPlasmaInterface( QObject* parent = 0 );
 
     //! destructor
-    virtual ~SvgPlasmaInterface( void );
+    virtual ~SvgPlasmaInterface( void )
+    {}
 
-    // image path
-    bool setImagePath( QString value )
+    //! image path
+    enum ImagePath
     {
-      if( imagePath_ == value ) return false;
-      imagePath_ = value;
-      return true;
-    }
+        DialogBackground,
+        WidgetBackground,
+        WidgetTranslucentBackground
+    };
+
+    //! image path
+    bool setImagePath( ImagePath );
 
     //! validity
     const bool& isValid( void ) const
@@ -103,21 +107,13 @@ namespace SVG
       return true;
     }
 
-    //! get path matching theme
-    const File& _path( void ) const
-    { return path_; }
-
-    //! image path
-    const File& _imagePath( void ) const
-    { return imagePath_; }
-
     //! set filename
     /*! returns true when changed */
     bool _setFileName( const File& file )
     {
       if( filename_ == file ) return false;
       filename_ = file;
-      return false;
+      return true;
     }
 
     //! file system watcher

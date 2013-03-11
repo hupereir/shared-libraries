@@ -54,10 +54,10 @@ namespace SVG
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-white.svg" ) );
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-simple.svg" ) );
         XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-translucent.svg" ) );
-        XmlOptions::get().set( "USE_SVG", Option("1") );
-        XmlOptions::get().set( "SVG_USE_PLASMA_INTERFACE", Option( "1" ) );
-        XmlOptions::get().set( "SVG_PLASMA_IMAGE_PATH", Option( "widgets/background" ) );
-        XmlOptions::get().set( "SVG_DRAW_OVERLAY", Option("0") );
+        XmlOptions::get().set<bool>( "USE_SVG", true );
+        XmlOptions::get().set<bool>( "SVG_USE_PLASMA_INTERFACE", true );
+        XmlOptions::get().set<bool>( "SVG_DRAW_OVERLAY", false );
+        XmlOptions::get().set<int>( "SVG_PLASMA_IMAGE_PATH", SvgPlasmaInterface::WidgetBackground );
         XmlOptions::get().setAutoDefault( false );
 
         return;
@@ -156,7 +156,7 @@ namespace SVG
             if( first ) _initializePlasmaInterface();
             else if( forced ) changed |= _plasmaInterface().loadTheme();
 
-            changed |= _plasmaInterface().setImagePath( XmlOptions::get().raw( "SVG_PLASMA_IMAGE_PATH" ) );
+            changed |= _plasmaInterface().setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( "SVG_PLASMA_IMAGE_PATH" ) );
             if( changed || first || forced )  _plasmaInterface().loadFile();
 
             if( _plasmaInterface().isValid() )

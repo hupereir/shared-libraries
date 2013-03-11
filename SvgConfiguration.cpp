@@ -95,6 +95,7 @@ namespace SVG
 
         OptionComboBox* plasmaImagePath;
         hLayout->addWidget( plasmaImagePath = new OptionComboBox( plasmaOptionBox, "SVG_PLASMA_IMAGE_PATH" ) );
+        plasmaImagePath->setUseValue( false );
         plasmaImagePath->addItems( QStringList()
             << "dialogs/background"
             << "widgets/background"
