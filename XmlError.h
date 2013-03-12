@@ -27,18 +27,16 @@
 #include "Counter.h"
 #include "File.h"
 
-#include <QString>
-#include <QTextStream>
 #include <QList>
+#include <QString>
+#include <QStringList>
+#include <QTextStream>
 
 //! Xml parsing error container
 class XmlError: public Counter
 {
 
     public:
-
-    //! shortcut to list of errors
-    typedef QList<XmlError> List;
 
     //! constructor
     XmlError( const File& file = File() ):
@@ -72,6 +70,17 @@ class XmlError: public Counter
     const int& column( void ) const
     { return column_; }
 
+    //! error
+    QString toString( void ) const
+    {
+
+        QString out;
+        if( !file_.isEmpty() ) out = QString( "%1: " ).arg( file_ );
+        out += QString( QObject::tr( "message: %1 at line %2, column %3" ) ).arg( error_ ).arg( line_ ).arg( column_ );
+        return out;
+
+    }
+
     //@}
 
     //!@name modifiers
@@ -104,6 +113,36 @@ class XmlError: public Counter
 
     //@}
 
+
+    class List: public QList<XmlError>
+    {
+
+        public:
+
+        //! constructor
+        List( void )
+        {}
+
+        //! constructor
+        List( const QList<XmlError>& other ):
+            QList<XmlError>( other )
+        {}
+
+        //! destructor
+        virtual ~List( void )
+        {}
+
+        //! convert to string
+        QString toString( void ) const
+        {
+            QStringList out;
+            foreach( const XmlError& error, *this )
+            { out << error.toString(); }
+            return out.join( "\n" );
+        }
+
+    };
+
     private:
 
     //! file
@@ -121,17 +160,14 @@ class XmlError: public Counter
     //! dumper
     friend QTextStream& operator << ( QTextStream &out, const XmlError& error )
     {
-        if( !error.file().isEmpty() ) out << error.file() << ": ";
-        else out << "message: ";
-        out << error.error() << " at line " << error.line() << ", column " << error.column();
+        out << error.toString();
         return out;
     }
 
     //! dumper
     friend QTextStream& operator << ( QTextStream &out, const List& errors )
     {
-        foreach( const XmlError& error, errors )
-        { out << error << endl; }
+        out << errors.toString() << endl;
         return out;
     }
 
