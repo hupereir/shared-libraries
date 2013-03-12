@@ -774,7 +774,7 @@ void PlacesWidget::_addItem( void )
     // check file info
     if( fileInfo.isDocument() || fileInfo.isBrokenLink() || (fileInfo.isLocal() && !fileInfo.file().exists() ) )
     {
-        WarningDialog( this, tr( "Places item is invalid. <Add Entry> canceled" ) ).exec();
+        WarningDialog( this, tr( "Places item is invalid. <Add Entry> canceled." ) ).exec();
         return;
     }
 
@@ -886,7 +886,7 @@ void PlacesWidget::_editItem( void )
             // check file info
             if( fileInfo.isDocument() || fileInfo.isBrokenLink() || (fileInfo.isLocal() && !fileInfo.file().exists() ) )
             {
-                WarningDialog( this, tr( "Places item is invalid. <Edit Entry> canceled" ) ).exec();
+                WarningDialog( this, tr( "Places item is invalid. <Edit Entry> canceled." ) ).exec();
                 return;
             }
 
