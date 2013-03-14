@@ -20,6 +20,12 @@ ELSE()
 
 ENDIF()
 
+########### aspell ###############
+FIND_PROGRAM( KDE4_CONFIG kde4-config )
+
+########### configuration files ###############
+CONFIGURE_FILE( SvgSystemOptions.h.cmake SvgSystemOptions.h )
+
 ########### links #########
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )

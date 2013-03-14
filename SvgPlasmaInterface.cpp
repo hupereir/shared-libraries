@@ -23,7 +23,10 @@
 
 #include "SvgPlasmaInterface.h"
 
+#include "Command.h"
+#include "CustomProcess.h"
 #include "Debug.h"
+#include "SvgSystemOptions.h"
 #include "Util.h"
 
 #include <QStringList>
@@ -38,7 +41,7 @@ namespace SVG
         valid_( false ),
         imagePath_( "widgets/background" ),
         fileSystemWatcher_(0)
-    {}
+    { installSvgOptions(); }
 
     //_________________________________________________
     bool SvgPlasmaInterface::setImagePath( ImagePath id )
@@ -71,16 +74,40 @@ namespace SVG
     bool SvgPlasmaInterface::loadTheme( void )
     {
 
-        QStringList configurationFiles;
-        configurationFiles
-            << ".kde/share/config/plasmarc"
-            << ".kde4/share/config/plasmarc";
+        File::List configurationFiles;
+
+        // TODO: use kde4-config to get the path of all config files
+        if( XmlOptions::get().contains( "KDE4_CONFIG" ) )
+        {
+            // get kde4 config command and retrieve output
+            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE4_CONFIG" ) );
+
+            CustomProcess* process = new CustomProcess( this );
+            process->start( Command( kde4ConfigCommand ) << "--path" << "config" );
+            if( process->waitForFinished() && process->exitStatus() == QProcess::NormalExit )
+            {
+                const QStringList configurationPath = QString( process->readAllStandardOutput() ).trimmed().split( QRegExp(":") );
+                foreach( const QString& path, configurationPath )
+                { configurationFiles << File( "plasmarc" ).addPath( path ); }
+
+            }
+
+        }
+
+        if( configurationFiles.isEmpty() )
+        {
+            configurationFiles
+                << File( ".kde/share/config/plasmarc" ).addPath( Util::home() )
+                << File( ".kde4/share/config/plasmarc" ).addPath( Util::home() );
+        }
 
         // open file
-        foreach( const QString& filename, configurationFiles )
-        {
+        // todo use QSettings to parse file
+        foreach( const File& file, configurationFiles )
+        { Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - checking: " << file << endl; }
 
-            File file = File( filename ).addPath( Util::home() );
+        foreach( const File& file, configurationFiles )
+        {
             if( !file.exists() ) continue;
 
             configurationFile_ = file;
@@ -97,7 +124,7 @@ namespace SVG
             // get all lines inside QStringList
             QStringList lines = QString( in.readAll() ).split( '\n' );
 
-            bool found_theme( false );
+            bool foundTheme( false );
             QRegExp themeTag( "^\\s*\\[Theme\\]\\s*$" );
             QRegExp sectionTag( "^\\[\\S*\\]\\s*$" );
             QRegExp emptyList( "^\\s*$" );
@@ -106,10 +133,10 @@ namespace SVG
             QString theme;
             for( QStringList::const_iterator iter = lines.begin(); iter != lines.end(); ++iter )
             {
-                if( !found_theme )
+                if( !foundTheme )
                 {
 
-                    if( iter->indexOf( themeTag ) >= 0 ) found_theme = true;
+                    if( iter->indexOf( themeTag ) >= 0 ) foundTheme = true;
                     continue;
 
                 } else if( iter->indexOf( sectionTag ) >= 0 ) break;
@@ -194,14 +221,14 @@ namespace SVG
     bool SvgPlasmaInterface::_setTheme( const QString& theme )
     {
 
-        // try use user-scoped path
-        QStringList localPath;
-        localPath
-            << ".kde/share/apps/desktoptheme/"
-            << ".kde4/share/apps/desktoptheme/";
-
         if( theme != "default" )
         {
+            // try use local path
+            QStringList localPath;
+            localPath
+                << ".kde/share/apps/desktoptheme/"
+                << ".kde4/share/apps/desktoptheme/";
+
             foreach( const QString& pathName, localPath )
             {
 
@@ -225,4 +252,4 @@ namespace SVG
 
     }
 
-};
+}
