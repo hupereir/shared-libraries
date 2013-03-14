@@ -157,7 +157,7 @@ class CustomToolBar: public QToolBar, public Counter
 
     //! move event
     virtual void moveEvent( QMoveEvent* );
-
+    
     protected slots:
 
     //! toggle visibility
@@ -175,7 +175,8 @@ class CustomToolBar: public QToolBar, public Counter
 
     //! assocated option name
     QString optionName_;
-
+    QString locationOptionName_;
+    
     //! visibility action
     QAction* visibilityAction_;
 

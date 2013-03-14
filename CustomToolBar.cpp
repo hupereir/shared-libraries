@@ -39,6 +39,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     QToolBar( title, parent ),
     Counter( "CustomToolBar" ),
     optionName_( optionName ),
+    locationOptionName_( optionName + "_LOCATION" ),
     transparent_( false ),
     sizeFromOptions_( true ),
     lockFromOptions_( true ),
@@ -89,10 +90,7 @@ void CustomToolBar::moveEvent( QMoveEvent* event )
 
     QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
     if( parent )
-    {
-        QString locationName( optionName_ + "_LOCATION" );
-        XmlOptions::get().setRaw( locationName, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
-    }
+    { XmlOptions::get().set<int>( locationOptionName_, parent->toolBarArea( this ) ); }
 
 }
 
@@ -111,10 +109,7 @@ void CustomToolBar::_toggleVisibility( bool state )
         // try cast parent to QMainWindow
         QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
         if( parent )
-        {
-            QString locationName( optionName_ + "_LOCATION" );
-            XmlOptions::get().set<int>( locationName, parent->toolBarArea( this ) );
-        }
+        { XmlOptions::get().set<int>( locationOptionName_, parent->toolBarArea( this ) ); }
 
     }
 
@@ -160,10 +155,11 @@ void CustomToolBar::_updateConfiguration( void )
     if( parent && !optionName_.isEmpty() )
     {
 
-        QString locationName( optionName_ + "_LOCATION" );
-
         // get location from option
-        Qt::ToolBarArea location = (XmlOptions::get().contains( locationName )) ? ((Qt::ToolBarArea)XmlOptions::get().get<int>( locationName )) : Qt::TopToolBarArea;
+        Qt::ToolBarArea location = (XmlOptions::get().contains( locationOptionName_ )) ?
+            (Qt::ToolBarArea)XmlOptions::get().get<int>( locationOptionName_ ) :
+            Qt::TopToolBarArea;
+
         if( location == Qt::NoToolBarArea ) location = Qt::TopToolBarArea;
 
         Qt::ToolBarArea currentLocation = parent->toolBarArea( this );
@@ -191,7 +187,7 @@ void CustomToolBar::_updateConfiguration( void )
 
         // set options according to values
         XmlOptions::get().set<bool>( optionName_, !isHidden() );
-        XmlOptions::get().setRaw( locationName, CustomToolBar::areaToName( parent->toolBarArea( this ) ) );
+        XmlOptions::get().set<int>( locationOptionName_, parent->toolBarArea( this ) );
 
     }
 
