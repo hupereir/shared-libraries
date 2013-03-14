@@ -129,9 +129,9 @@ namespace SVG
         if( !path_.exists() ) return _setValid( false );
 
         File filename;
-        const bool found = !( filename = _findImage( path_, imagePath_ ) ).isEmpty();
-
-        Debug::Throw() << "SvgPlasmaInterface::loadFile - filename: " << filename << endl;
+        const bool found =
+            !( filename = _findImage( path_, imagePath_ ) ).isEmpty() ||
+            !( filename = _findImage( path_, WidgetBackground ) ).isEmpty();
 
         // construct full filename base on theme and transparency setting
         bool changed( false );
