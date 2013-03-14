@@ -54,7 +54,7 @@ class CustomProcess: public QProcess, public Counter
     add arguments.
     every space separated argument is added separately
     */
-    void start( QStringList arguments, OpenMode mode = ReadWrite );
+    void start( const QStringList&, OpenMode = ReadWrite );
 
     //! \brief ensure object is deleted at job completion
     void setAutoDelete();

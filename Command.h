@@ -24,67 +24,59 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    Command.h
-   \brief   retrieve commands from Options and format so that they match QProcess
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
+#include "Counter.h"
 
 #include <QString>
 #include <QStringList>
 
-#include "Counter.h"
-
 class Command: public QStringList, public Counter
 {
 
-  public:
+    public:
 
-  //! constructor
-  Command():
-    Counter( "Command" )
+    //! constructor
+    Command():
+        Counter( "Command" )
+     {}
+
+    //! constructor
+    Command( const QStringList& other ):
+        QStringList( other ),
+        Counter( "Command" )
     {}
 
-  //! constructor
-  Command( const QStringList& other ):
-    QStringList( other ),
-    Counter( "Command" )
-  {}
+    //! constructor
+    Command( const QString& in ):
+        QStringList( _parse( in ) ),
+        Counter( "Command" )
+    {}
 
-  //! constructor
-  Command( const QString& in ):
-    QStringList( _parse( in ) ),
-    Counter( "Command" )
-  {}
+    // run
+    bool run( const QString& = QString() ) const;
 
-  // run
-  bool run( const QString& = QString() ) const;
+    // streamers
+    Command & operator<< ( const QString & str )
+    {
+        QStringList::operator << ( str );
+        return *this;
+    }
 
-  // streamers
-  Command & operator<< ( const QString & str )
-  {
-    QStringList::operator << ( str );
-    return *this;
-  }
+    // streamers
+    Command & operator<< ( const QStringList & other )
+    {
+        QStringList::operator << ( other );
+        return *this;
+    }
 
-  // streamers
-  Command & operator<< ( const QStringList & other )
-  {
-    QStringList::operator << ( other );
-    return *this;
-  }
+    private:
 
-  private:
-
-  //! parse command
-  /*!
+    //! parse command
+    /*!
     parse command so that first string in the list
     is the command name and following strings are all arguments
     first argument must start with a "-"
-  */
-  QStringList _parse( const QString& ) const;
+    */
+    QStringList _parse( const QString& ) const;
 
 };
 

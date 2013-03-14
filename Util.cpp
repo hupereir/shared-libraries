@@ -21,7 +21,6 @@
 *
 *******************************************************************************/
 
-#include "CustomProcess.h"
 #include "Util.h"
 #include "Str.h"
 #include "Debug.h"
@@ -36,20 +35,21 @@
 static const int LONGSTR = 256;
 
 //______________________________________________________________________
-QString Util::env( const QString& val, const QString& default_value )
+QString Util::env( const QString& val, const QString& defaultValue )
 {
 
-    QStringList environment( QProcess::systemEnvironment() );
-    for( QStringList::iterator iter = environment.begin(); iter != environment.end(); ++iter )
+    foreach( const QString& entry, QProcess::systemEnvironment() )
     {
-        int position( iter->indexOf( "=" ) );
+
+        // TODO: should use regular expression
+        int position( entry.indexOf( "=" ) );
         if( position <= 0 ) continue;
 
-        QString var( iter->left( position ) );
-        if( var == QString( val ) ) return iter->mid( position+1 );
+        QString var( entry.left( position ) );
+        if( var == QString( val ) ) return entry.mid( position+1 );
     }
 
-    return default_value;
+    return defaultValue;
 
 }
 
@@ -121,14 +121,14 @@ QString Util::tmp( void )
 { return QDir::tempPath(); }
 
 //______________________________________________________________________
-QString Util::host( bool short_name )
+QString Util::host( bool shortName )
 {
 
     // use system environment
     // it does not work for windows
     Debug::Throw( "Util::host.\n" );
     QString out( QHostInfo::localHostName() );
-    if( ! short_name ) return out;
+    if( ! shortName ) return out;
     else {
 
         int pos( out.indexOf( "." ) );

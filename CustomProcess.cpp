@@ -44,7 +44,7 @@ void CustomProcess::start( QString arguments, OpenMode mode )
 { return start( arguments.split( QRegExp("\\s"), QString::SkipEmptyParts ), mode ); }
 
 //____________________________________________________
-void CustomProcess::start( QStringList arguments, OpenMode mode )
+void CustomProcess::start( const QStringList& arguments, OpenMode mode )
 {
 
     if( arguments.empty() ) return;
