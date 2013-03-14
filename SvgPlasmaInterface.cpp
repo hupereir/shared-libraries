@@ -30,6 +30,7 @@
 #include "Util.h"
 
 #include <QStringList>
+#include <QSettings>
 
 namespace SVG
 {
@@ -79,14 +80,15 @@ namespace SVG
         // TODO: use kde4-config to get the path of all config files
         if( XmlOptions::get().contains( "KDE4_CONFIG" ) )
         {
+
             // get kde4 config command and retrieve output
             const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE4_CONFIG" ) );
 
-            CustomProcess* process = new CustomProcess( this );
-            process->start( Command( kde4ConfigCommand ) << "--path" << "config" );
-            if( process->waitForFinished() && process->exitStatus() == QProcess::NormalExit )
+            CustomProcess process( this );
+            process.start( Command( kde4ConfigCommand ) << "--path" << "config" );
+            if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
-                const QStringList configurationPath = QString( process->readAllStandardOutput() ).trimmed().split( QRegExp(":") );
+                const QStringList configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
                 foreach( const QString& path, configurationPath )
                 { configurationFiles << File( "plasmarc" ).addPath( path ); }
 
@@ -101,65 +103,40 @@ namespace SVG
                 << File( ".kde4/share/config/plasmarc" ).addPath( Util::home() );
         }
 
-        // open file
-        // todo use QSettings to parse file
-        foreach( const File& file, configurationFiles )
-        { Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - checking: " << file << endl; }
-
+        QString theme;
         foreach( const File& file, configurationFiles )
         {
             if( !file.exists() ) continue;
 
+            Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - checking: " << file << endl;
+
             configurationFile_ = file;
-            QFile in( configurationFile_ );
-            if ( !in.open( QIODevice::ReadOnly ) ) continue;
 
-            // add file to file system watcher
-            if( !_hasFileSystemWatcher() )
+            // read group
+            QSettings settings( configurationFile_, QSettings::IniFormat );
+            settings.sync();
+            Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - keys: " << settings.allKeys().join( "\n" ) << endl;
+            if( settings.contains( "Theme/name" ) )
             {
-                _initializeFileSystemWatcher();
-                _fileSystemWatcher().addPath( configurationFile_ );
+                theme = settings.value( "Theme/name" ).toString();
+                Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - theme: " << theme << endl;
+                break;
             }
-
-            // get all lines inside QStringList
-            QStringList lines = QString( in.readAll() ).split( '\n' );
-
-            bool foundTheme( false );
-            QRegExp themeTag( "^\\s*\\[Theme\\]\\s*$" );
-            QRegExp sectionTag( "^\\[\\S*\\]\\s*$" );
-            QRegExp emptyList( "^\\s*$" );
-            QRegExp nameTag( "^\\s*name\\s*=\\s*(\\S*)\\s*$" );
-
-            QString theme;
-            for( QStringList::const_iterator iter = lines.begin(); iter != lines.end(); ++iter )
-            {
-                if( !foundTheme )
-                {
-
-                    if( iter->indexOf( themeTag ) >= 0 ) foundTheme = true;
-                    continue;
-
-                } else if( iter->indexOf( sectionTag ) >= 0 ) break;
-                else if( iter->indexOf( emptyList ) >= 0 ) continue;
-                else if( iter->indexOf( nameTag ) >= 0 ) {
-
-                    theme = nameTag.cap(1);
-                    break;
-
-                } else continue;
-
-            }
-
-            if( theme.isNull() || theme.isEmpty() ) theme = "default";
-            return _setTheme( theme );
 
         }
 
-        // configuration file not found.
-        bool changed( false );
-        changed |= _setValid( false );
-        changed |= _setPath( QString() );
-        return changed;
+        // try use default theme if none found
+        if( theme.isEmpty() ) theme = "default";
+        if( !_setTheme( theme ) )
+        {
+
+            // configuration file not found.
+            bool changed( false );
+            changed |= _setValid( false );
+            changed |= _setPath( QString() );
+            return changed;
+
+        } else return true;
 
     }
 
