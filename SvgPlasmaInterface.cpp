@@ -40,35 +40,16 @@ namespace SVG
         QObject( parent ),
         Counter( "SVG::SvgPlasmaInterface" ),
         valid_( false ),
-        imagePath_( "widgets/background" ),
+        imagePath_( WidgetBackground ),
         fileSystemWatcher_(0)
     { installSvgOptions(); }
 
     //_________________________________________________
     bool SvgPlasmaInterface::setImagePath( ImagePath id )
     {
-        QString value;
-        switch( id )
-        {
-            case DialogBackground:
-            value = "dialogs/background";
-            break;
-
-            default:
-            case WidgetBackground:
-            value = "widgets/background";
-            break;
-
-            case WidgetTranslucentBackground:
-            value = "widgets/translucentbackground";
-            break;
-
-        }
-
-        if( imagePath_ == value ) return false;
-        imagePath_ = value;
+        if( imagePath_ == id ) return false;
+        imagePath_ = id;
         return true;
-
     }
 
     //_________________________________________________
@@ -98,6 +79,7 @@ namespace SVG
 
         if( configurationFiles.isEmpty() )
         {
+            // add some files manually in case the above failed
             configurationFiles
                 << File( ".kde/share/config/plasmarc" ).addPath( Util::home() )
                 << File( ".kde4/share/config/plasmarc" ).addPath( Util::home() );
@@ -108,18 +90,17 @@ namespace SVG
         {
             if( !file.exists() ) continue;
 
-            Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - checking: " << file << endl;
+            Debug::Throw() << "SvgPlasmaInterface::loadTheme - checking: " << file << endl;
 
             configurationFile_ = file;
 
             // read group
             QSettings settings( configurationFile_, QSettings::IniFormat );
             settings.sync();
-            Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - keys: " << settings.allKeys().join( "\n" ) << endl;
             if( settings.contains( "Theme/name" ) )
             {
                 theme = settings.value( "Theme/name" ).toString();
-                Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - theme: " << theme << endl;
+                Debug::Throw() << "SvgPlasmaInterface::loadTheme - theme: " << theme << endl;
                 break;
             }
 
@@ -147,26 +128,8 @@ namespace SVG
         // check path
         if( !path_.exists() ) return _setValid( false );
 
-        // generate possible file names
-        QStringList files;
-        files
-            << imagePath_
-            << imagePath_ + ".svg"
-            << imagePath_ + ".svgz";
-
-        bool found( false );
         File filename;
-        foreach( const QString& imageFilename, files )
-        {
-
-            filename = File( imageFilename ).addPath( path_ );
-            if( filename.exists() )
-            {
-                found = true;
-                break;
-            }
-
-        }
+        const bool found = !( filename = _findImage( path_, imagePath_ ) ).isEmpty();
 
         Debug::Throw() << "SvgPlasmaInterface::loadFile - filename: " << filename << endl;
 
@@ -181,7 +144,8 @@ namespace SVG
     //_________________________________________________
     void SvgPlasmaInterface::_configurationFileChanged( const QString& file )
     {
-        if( loadTheme() ) {
+        if( loadTheme() )
+        {
             loadFile();
             emit themeChanged();
         }
@@ -198,35 +162,72 @@ namespace SVG
     bool SvgPlasmaInterface::_setTheme( const QString& theme )
     {
 
+        File::List themePathList;
+
         if( theme != "default" )
         {
-            // try use local path
+            // add local path
             QStringList localPath;
             localPath
                 << ".kde/share/apps/desktoptheme/"
                 << ".kde4/share/apps/desktoptheme/";
 
             foreach( const QString& pathName, localPath )
-            {
+            { themePathList << File( theme ).addPath( File( pathName ).addPath( Util::home() ) ); }
 
-                File path = File( theme ).addPath( File( pathName ).addPath( Util::home() ) );
-                if( path.exists() ) return _setPath( path );
-            }
         }
 
-        // try use global path
-        File themePath = File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) );
-        if( themePath.exists() ) return _setPath( themePath );
+        // add local path
+        themePathList << File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) );
+        foreach( const File& themePath, themePathList )
+        {
+            if( themePath.exists() && !_findImage( themePath, WidgetBackground ).isEmpty() )
+            { return _setPath( themePath ); }
+        }
 
         // try use default theme
         if( theme == "default" )
         {
+
             bool changed( false );
             changed |= _setPath( QString() );
             changed |= _setValid( false );
             return changed;
+
         } else return _setTheme( "default" );
 
+    }
+
+    //_________________________________________________
+    File SvgPlasmaInterface::_imagePath( SvgPlasmaInterface::ImagePath id ) const
+    {
+        switch( id )
+        {
+            default:
+            case WidgetBackground: return File( "widgets/background" );
+            case DialogBackground: return File( "dialogs/background" );
+            case WidgetTranslucentBackground: return  File( "widgets/translucentbackground" );
+        }
+
+    }
+
+    //_________________________________________________
+    File SvgPlasmaInterface::_findImage( const File& path, SvgPlasmaInterface::ImagePath id ) const
+    {
+
+        // check path existence
+        if( !path.exists() ) return File();
+
+        // build list of candidates
+        const File imagePath( _imagePath( id ) );
+        const File::List files = File::List()
+            << imagePath
+            << File( imagePath + ".svg" )
+            << File( imagePath + ".svgz" );
+        foreach( File file, files )
+        { if( (file = file.addPath( path ) ).exists() ) return file; }
+
+        return File();
     }
 
 }

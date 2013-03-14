@@ -127,6 +127,12 @@ namespace SVG
     QFileSystemWatcher& _fileSystemWatcher( void )
     { return *fileSystemWatcher_; }
 
+    //! return image path matching id
+    File _imagePath( ImagePath ) const;
+
+    //! return image path matching id
+    File _findImage( const File&, ImagePath ) const;
+
     //! validity
     bool valid_;
 
@@ -138,7 +144,7 @@ namespace SVG
     File path_;
 
     //! path to image (relative to path_)
-    File imagePath_;
+    ImagePath imagePath_;
 
     //! filename
     File filename_;
