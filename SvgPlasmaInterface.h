@@ -116,17 +116,6 @@ namespace SVG
       return true;
     }
 
-    //! file system watcher
-    bool _hasFileSystemWatcher( void ) const
-    { return fileSystemWatcher_; }
-
-    //! initialize file system watcher
-    void _initializeFileSystemWatcher( void );
-
-    //! file system watcher
-    QFileSystemWatcher& _fileSystemWatcher( void )
-    { return *fileSystemWatcher_; }
-
     //! return image path matching id
     File _imagePath( ImagePath ) const;
 
@@ -135,9 +124,6 @@ namespace SVG
 
     //! validity
     bool valid_;
-
-    //! configuration file
-    File configurationFile_;
 
     //! path to file name
     /*! loaded from plasma configuration */

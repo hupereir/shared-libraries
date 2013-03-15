@@ -85,39 +85,38 @@ namespace SVG
                 << File( ".kde4/share/config/plasmarc" ).addPath( Util::home() );
         }
 
-        QString theme;
+        // make sure fileSystemWatcher is valid
+        if( !fileSystemWatcher_ )
+        {
+            fileSystemWatcher_ = new QFileSystemWatcher( this );
+            connect( fileSystemWatcher_, SIGNAL( fileChanged( const QString& ) ), SLOT( _configurationFileChanged( const QString& ) ) );
+        }
+
+        // add valid configuration files to watcher
+        QStringList oldFiles( fileSystemWatcher_->files() );
+        foreach( const File& file, configurationFiles )
+        { if( file.exists() && !oldFiles.contains( file ) ) fileSystemWatcher_->addPath( file ); }
+
+        // look for theme in selected configuration files
+        QString theme( "default" );
         foreach( const File& file, configurationFiles )
         {
             if( !file.exists() ) continue;
 
             Debug::Throw() << "SvgPlasmaInterface::loadTheme - checking: " << file << endl;
 
-            configurationFile_ = file;
-
             // read group
-            QSettings settings( configurationFile_, QSettings::IniFormat );
+            QSettings settings( file, QSettings::IniFormat );
             settings.sync();
             if( settings.contains( "Theme/name" ) )
             {
                 theme = settings.value( "Theme/name" ).toString();
-                Debug::Throw() << "SvgPlasmaInterface::loadTheme - theme: " << theme << endl;
                 break;
             }
 
         }
 
-        // try use default theme if none found
-        if( theme.isEmpty() ) theme = "default";
-        if( !_setTheme( theme ) )
-        {
-
-            // configuration file not found.
-            bool changed( false );
-            changed |= _setValid( false );
-            changed |= _setPath( QString() );
-            return changed;
-
-        } else return true;
+        return _setTheme( theme );
 
     }
 
@@ -144,6 +143,8 @@ namespace SVG
     //_________________________________________________
     void SvgPlasmaInterface::_configurationFileChanged( const QString& file )
     {
+
+        Debug::Throw() << "SvgPlasmaInterface::_configurationFileChanged - file: " << file << endl;
         if( loadTheme() )
         {
             loadFile();
@@ -151,17 +152,11 @@ namespace SVG
         }
     }
 
-    //_____________________________________________________________
-    void SvgPlasmaInterface::_initializeFileSystemWatcher( void )
-    {
-        fileSystemWatcher_ = new QFileSystemWatcher();
-        connect( &_fileSystemWatcher(), SIGNAL( fileChanged( const QString& ) ), SLOT( _configurationFileChanged( const QString& ) ) );
-    }
-
     //_________________________________________________
     bool SvgPlasmaInterface::_setTheme( const QString& theme )
     {
 
+        Debug::Throw() << "SvgPlasmaInterface::_setTheme - theme:" << theme << endl;
         File::List themePathList;
 
         if( theme != "default" )
