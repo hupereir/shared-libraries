@@ -33,6 +33,9 @@ namespace TRANSPARENCY
     //! transparency common configuration
     class TransparencyConfiguration: public QWidget, public OptionWidgetList, public Counter
     {
+
+        Q_OBJECT
+
         public:
 
         //! constructor

@@ -46,6 +46,7 @@ SET( base_transparency_SOURCES
 )
 
 SET( base_transparency_HEADERS
+  TransparencyConfiguration.h
   TransparentWidget.h
 )
 
