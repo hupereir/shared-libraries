@@ -50,6 +50,7 @@ SET( base_spellcheck_SOURCES
   )
 
 SET( base_spellcheck_HEADERS
+  AutoSpellConfiguration.h
   DictionaryMenu.h
   DictionarySelectionButton.h
   FilterMenu.h
@@ -57,6 +58,7 @@ SET( base_spellcheck_HEADERS
   SpellCheckConfiguration.h
   SpellDialog.h
   SpellItemDialog.h
+  SpellItemModel.h
   SuggestionMenu.h
 )
 

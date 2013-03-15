@@ -35,6 +35,9 @@ namespace SPELLCHECK
     //! Spell common configuration
     class AutoSpellConfiguration: public QGroupBox, public OptionWidgetList, public Counter
     {
+
+        Q_OBJECT
+
         public:
 
         //! constructor

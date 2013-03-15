@@ -35,6 +35,7 @@ namespace SPELLCHECK
     class SpellItemModel: public ListModel<QString>, public Counter
     {
 
+        Q_OBJECT
 
         public:
 
