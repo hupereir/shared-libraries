@@ -34,6 +34,8 @@
 class CustomProcess: public QProcess, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //! creator

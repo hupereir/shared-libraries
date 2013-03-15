@@ -49,7 +49,11 @@ SET( base_SOURCES
   Util.cpp
 )
 
-SET( base_HEADERS FileThread.h )
+SET(
+  base_HEADERS
+  CustomProcess.h
+  FileThread.h
+ )
 
 IF( USE_QT5 )
 
