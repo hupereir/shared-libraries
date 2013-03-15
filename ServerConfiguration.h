@@ -30,9 +30,13 @@
 
 namespace SERVER
 {
+
   //! transparency common configuration
   class ServerConfiguration: public QWidget, public OptionWidgetList, public Counter
   {
+
+    Q_OBJECT
+
     public:
 
     //! constructor

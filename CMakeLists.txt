@@ -59,6 +59,7 @@ SET( base_server_HEADERS
   BaseApplication.h
   BaseCoreApplication.h
   Client.h
+  ServerConfiguration.h
 )
 
 IF( USE_QT5 )
