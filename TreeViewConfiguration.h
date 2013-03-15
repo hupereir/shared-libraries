@@ -35,6 +35,8 @@
 class TreeViewConfiguration: public QGroupBox, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

@@ -35,6 +35,8 @@
 class LocalWidget: public QFrame, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

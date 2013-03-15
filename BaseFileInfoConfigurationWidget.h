@@ -33,6 +33,8 @@
 class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

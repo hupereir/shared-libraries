@@ -33,6 +33,8 @@
 class FilePermissionsWidget: public QWidget, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

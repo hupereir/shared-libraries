@@ -181,8 +181,11 @@ SET( base_qt_HEADERS
   AnimatedTabWidget.h
   AnimatedTreeView.h
   BaseConfigurationDialog.h
+  BaseConfigurationDialog_p.h
   BaseDialog.h
   BaseFindDialog.h
+  BaseFileInfoConfigurationWidget.h
+  BaseFileInformationDialog.h
   BaseFileInfoToolTipWidget.h
   BaseMainWindow.h
   BasePrintHelper.h
@@ -203,6 +206,8 @@ SET( base_qt_HEADERS
   ClockLabel.h
   ContextMenu.h
   CounterDialog.h
+  CounterModel.h
+  CustomDialog.h
   CustomComboBox.h
   CustomSlider.h
   CustomTextDocument.h
@@ -211,14 +216,18 @@ SET( base_qt_HEADERS
   DebugMenu.h
   DetailsDialog.h
   DockPanel.h
+  DockPanel_p.h
   DockWidget.h
   ElidedLabel.h
   FileList.h
+  FilePermissionsWidget.h
   FileRecordModel.h
   FileSystemWatcher.h
   FontEditor.h
+  FontInfo.h
   HtmlDialog.h
   IconCacheDialog.h
+  IconCacheModel.h
   IconSizeMenu.h
   IconView.h
   ImageFileDialog.h
@@ -245,6 +254,7 @@ SET( base_qt_HEADERS
   ScrollObject.h
   SelectLineDialog.h
   SimpleListView.h
+  SystemEnvironmentDialog.h
   TabbedDialog.h
   TabWidget.h
   TextEditor.h
@@ -252,6 +262,7 @@ SET( base_qt_HEADERS
   ToolButtonStyleMenu.h
   TransitionWidget.h
   TreeView.h
+  TreeViewConfiguration.h
   TreeViewItemDelegate.h
   UserSelectionFrame.h
   ValidFileThread.h

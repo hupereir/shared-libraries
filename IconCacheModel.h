@@ -33,6 +33,8 @@
 class IconCacheModel: public ListModel<BASE::IconCache::Pair>, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //! number of columns

@@ -35,6 +35,8 @@
 class CustomDialog: public BaseDialog, public Counter
 {
 
+    Q_OBJECT
+        
     public:
 
     //! mask used to define number of buttons in customized dialogs

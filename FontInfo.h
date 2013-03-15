@@ -32,6 +32,8 @@
 class FontInfo: public QWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

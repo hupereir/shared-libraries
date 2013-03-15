@@ -193,6 +193,8 @@ class PlacesWidgetItem: public QAbstractButton
 class PlacesWidgetItemDialog: public CustomDialog
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

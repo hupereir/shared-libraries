@@ -40,9 +40,11 @@ class GridLayout;
 class BaseFileInformationDialog: public CustomDialog
 {
 
-    public:
-    //! flags
+    Q_OBJECT
 
+    public:
+
+    //! flags
     enum ItemFlag
     {
         None = 0,

@@ -31,6 +31,8 @@
 class SystemEnvironmentDialog: public CustomDialog
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

@@ -33,6 +33,7 @@
 //! counter pair
 class CounterPair: public QPair<QString, int>
 {
+
     public:
 
     //! constructor
@@ -59,6 +60,8 @@ class CounterPair: public QPair<QString, int>
 //! qlistview for object counters
 class CounterModel: public ListModel<CounterPair>
 {
+
+    Q_OBJECT
 
     public:
 
