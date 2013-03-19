@@ -111,10 +111,13 @@ MACRO( ADD_APPLICATION_ICON  sources icon )
 
   IF( WIN32 )
 
+    # check icon exists
     SET( _icon ${icon}.ico )
     IF( EXISTS "${_icon}" )
 
       MESSAGE( "-- Using application icon: ${_icon}" )
+
+      # generate resource file and add to sources
       STRING( REPLACE _SOURCES "" appname ${sources} )
       SET( _resource ${CMAKE_CURRENT_BINARY_DIR}/${appname}_win32.rc )
       FILE( WRITE ${_resource} "IDI_ICON1        ICON        DISCARDABLE    \"${_icon}\"\n")
@@ -126,15 +129,15 @@ MACRO( ADD_APPLICATION_ICON  sources icon )
 
     ENDIF()
 
-  ENDIF()
+  ELSEIF( APPLE )
 
-  IF( APPLE )
-
+    # check icon exists
     SET( _icon ${icon}.icns )
     IF( EXISTS "${_icon}" )
 
+      GET_FILENAME_COMPONENT( _localIcon ${_icon} NAME )
       MESSAGE( "-- Using application icon: ${_icon}" )
-      SET( MACOSX_BUNDLE_ICON_FILE icon.icns )
+      SET( MACOSX_BUNDLE_ICON_FILE  ${_localIcon} )
       SET_SOURCE_FILES_PROPERTIES( ${_icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
       LIST( APPEND ${sources} ${_icon} )
 
@@ -144,6 +147,79 @@ MACRO( ADD_APPLICATION_ICON  sources icon )
 
     ENDIF()
 
+  ELSE()
+
+    # check xdg-icon-resource program
+    FIND_PROGRAM( XDG_ICON_RESOURCE_EXECUTABLE xdg-icon-resource )
+    IF( XDG_ICON_RESOURCE_EXECUTABLE )
+
+      MESSAGE( "-- Found xdg-icon-resource" )
+
+    ELSE()
+
+        MESSAGE( "-- Could not find xdg-icon-resource" )
+
+    ENDIF()
+
+    SET( _icon ${icon}.png )
+    IF( EXISTS "${_icon}" )
+
+      MESSAGE( "-- Using application icon: ${_icon}" )
+
+    ELSE()
+
+      MESSAGE("-- Unable to find icon ${_icon}" )
+
+    ENDIF()
+
+    # add relevant INSTALL command
+    IF( XDG_ICON_RESOURCE_EXECUTABLE AND EXISTS ${_icon} )
+
+      INSTALL( CODE "MESSAGE( \"-- Install ${_icon}\" )" )
+      INSTALL( CODE "EXECUTE_PROCESS( COMMAND ${XDG_ICON_RESOURCE_EXECUTABLE} install --novendor --size 128 ${_icon} )" )
+
+    ENDIF()
+
   ENDIF()
 
 ENDMACRO( ADD_APPLICATION_ICON )
+
+###################### add desktop file #########################
+MACRO( ADD_DESKTOP_FILE  desktopFile )
+
+  IF( UNIX AND NOT APPLE )
+
+    # check desktop-file-install program
+    FIND_PROGRAM( XDG_DESKTOP_MENU_EXECUTABLE xdg-desktop-menu )
+    IF( XDG_DESKTOP_MENU_EXECUTABLE )
+
+      MESSAGE( "-- Found desktop-file-install" )
+
+    ELSE()
+
+        MESSAGE( "-- Could not find desktop-file-install" )
+
+    ENDIF()
+
+    # check desktop file existence
+    IF( EXISTS "${desktopFile}" )
+
+      MESSAGE( "-- Using desktop file: ${desktopFile}" )
+
+    ELSE()
+
+      MESSAGE("-- Unable to find desktop file ${desktopFile}" )
+
+    ENDIF()
+
+    # add relevant INSTALL command
+    IF( XDG_DESKTOP_MENU_EXECUTABLE AND EXISTS ${desktopFile} )
+
+      INSTALL( CODE "MESSAGE( \"-- Install ${desktopFile}\" )" )
+      INSTALL( CODE "EXECUTE_PROCESS( COMMAND ${XDG_DESKTOP_MENU_EXECUTABLE} install --novendor ${desktopFile} )" )
+
+    ENDIF()
+
+  ENDIF()
+
+ENDMACRO( ADD_DESKTOP_FILE )
