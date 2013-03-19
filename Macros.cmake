@@ -175,7 +175,7 @@ MACRO( ADD_APPLICATION_ICON  sources icon )
     # add relevant INSTALL command
     IF( XDG_ICON_RESOURCE_EXECUTABLE AND EXISTS ${_icon} )
 
-      INSTALL( CODE "MESSAGE( \"-- Install ${_icon}\" )" )
+      INSTALL( CODE "MESSAGE( \"-- Installing ${_icon}\" )" )
       INSTALL( CODE "EXECUTE_PROCESS( COMMAND ${XDG_ICON_RESOURCE_EXECUTABLE} install --novendor --size 128 ${_icon} )" )
 
     ENDIF()
@@ -215,7 +215,7 @@ MACRO( ADD_DESKTOP_FILE  desktopFile )
     # add relevant INSTALL command
     IF( XDG_DESKTOP_MENU_EXECUTABLE AND EXISTS ${desktopFile} )
 
-      INSTALL( CODE "MESSAGE( \"-- Install ${desktopFile}\" )" )
+      INSTALL( CODE "MESSAGE( \"-- Installing ${desktopFile}\" )" )
       INSTALL( CODE "EXECUTE_PROCESS( COMMAND ${XDG_DESKTOP_MENU_EXECUTABLE} install --novendor ${desktopFile} )" )
 
     ENDIF()
