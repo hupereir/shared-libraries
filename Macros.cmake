@@ -106,7 +106,7 @@ MACRO( ADD_PLATFORM_EXECUTABLE target version )
 ENDMACRO( ADD_PLATFORM_EXECUTABLE )
 
 
-###################### add application icon for Apple and Windows #########################
+###################### add application icons #########################
 MACRO( ADD_APPLICATION_ICON  sources icon )
 
   IF( WIN32 )
