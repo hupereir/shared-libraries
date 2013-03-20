@@ -115,7 +115,7 @@ namespace SVG
 
                 // shadow image
                 QSize size( device.width(), device.height() );
-                QImage shadowImage( size, QImage::Format_ARGB32 );
+                QImage shadowImage( size, QImage::Format_ARGB32_Premultiplied );
                 shadowImage.fill( Qt::transparent );
 
                 _render( shadowImage, "shadow", Ring );
@@ -126,7 +126,7 @@ namespace SVG
                 const TRANSPARENCY::Margins outerPadding( this->outerPadding() );
                 size.rwidth() -= outerPadding.width();
                 size.rheight() -= outerPadding.height();
-                QImage mainImage( size, QImage::Format_ARGB32 );
+                QImage mainImage( size, QImage::Format_ARGB32_Premultiplied );
                 mainImage.fill( Qt::transparent );
 
                 _renderPanel( mainImage );
@@ -248,7 +248,7 @@ namespace SVG
             QRectF overlayRect( QPointF(0,0), overlaySize );
 
             // create image and paint
-            QImage overlayImage( QSize( device.width(), device.height() ),  QImage::Format_ARGB32 );
+            QImage overlayImage( QSize( device.width(), device.height() ),  QImage::Format_ARGB32_Premultiplied );
 
             overlayImage.fill( Qt::transparent );
             QPainter overlayPainter( &overlayImage );
@@ -268,7 +268,7 @@ namespace SVG
         // center
         if( hints_ & HintComposeOverBorder )
         {
-            QImage centerImage( size, QImage::Format_ARGB32 );
+            QImage centerImage( size, QImage::Format_ARGB32_Premultiplied );
             centerImage.fill( Qt::transparent );
             _render( centerImage, "", Center, false );
             painter.drawImage( QPoint(0,0), centerImage );
@@ -278,7 +278,7 @@ namespace SVG
         if( !maskPrefix_.isEmpty() && ((hints_ & HintComposeOverBorder) || (drawOverlay_ && hasOverlay_ )) )
         {
             // create mask
-            QImage maskImage( size, QImage::Format_ARGB32 );
+            QImage maskImage( size, QImage::Format_ARGB32_Premultiplied );
             maskImage.fill( Qt::transparent );
             _render( maskImage, maskPrefix_ );
 
@@ -290,7 +290,7 @@ namespace SVG
         }
 
         // main image
-        QImage mainImage( size, QImage::Format_ARGB32 );
+        QImage mainImage( size, QImage::Format_ARGB32_Premultiplied );
         mainImage.fill( Qt::transparent );
 
         //

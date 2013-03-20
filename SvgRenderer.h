@@ -94,7 +94,8 @@ namespace SVG
         void _renderPanel( QPaintDevice& );
 
         //! render prefix to image
-        void _render( QImage& target, QString prefix = QString(), SvgElements = All, bool padding = true );
+        /*! need to use images in order to be able to run in separate thread */
+        void _render( QImage&, QString prefix = QString(), SvgElements = All, bool padding = true );
 
         private:
 
