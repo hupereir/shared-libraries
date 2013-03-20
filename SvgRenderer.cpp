@@ -106,76 +106,33 @@ namespace SVG
 
         } else {
 
-            // create painter
-            QPainter painter( &device );
 
-            // size
-            QSize size( device.width(), device.height() );
-
-            //Overlays
-            if( drawOverlay_ && hasOverlay_ )
+            if( hasShadow_ )
             {
 
-                // compute painting rect
-                QSizeF overlaySize = boundsOnElement(SVG::Overlay).size();
+                // create painter
+                QPainter painter( &device );
 
-                // size hints
-                if( overlayHints_ & OverlayStretch ) overlaySize = size;
-                else if( overlayHints_ & OverlayTileHorizontal ) overlaySize.setWidth( size.width() );
-                else if( overlayHints_ & OverlayTileVertical ) overlaySize.setHeight( size.height() );
-                QRectF overlayRect( QPointF(0,0), overlaySize );
+                // shadow image
+                QSize size( device.width(), device.height() );
+                QImage shadowImage( size, QImage::Format_ARGB32 );
+                shadowImage.fill( Qt::transparent );
 
-                // create image and paint
-                QImage overlayImage( QSize( device.width(), device.height() ),  QImage::Format_ARGB32 );
+                _render( shadowImage, "shadow", Ring );
 
-                overlayImage.fill( Qt::transparent );
-                QPainter overlayPainter( &overlayImage );
+                painter.drawImage( QPoint(0,0), shadowImage );
 
-                // centering hints
-                if( overlayHints_ & OverlayPosRight ) overlayPainter.translate( device.width() - overlayRect.width(), 0 );
-                if( overlayHints_ & OverlayPosBottom ) overlayPainter.translate( 0, device.height() - overlayRect.height() );
+                // main image
+                const TRANSPARENCY::Margins outerPadding( this->outerPadding() );
+                size.rwidth() -= outerPadding.width();
+                size.rheight() -= outerPadding.height();
+                QImage mainImage( size, QImage::Format_ARGB32 );
+                mainImage.fill( Qt::transparent );
 
-                QSvgRenderer::render( &overlayPainter, SVG::Overlay, overlayRect );
-                overlayPainter.end();
+                _renderPanel( mainImage );
+                painter.drawImage( outerPadding.topLeft(), mainImage );
 
-                // draw on main painter
-                painter.drawImage( QPointF(0,0), overlayImage );
-
-            }
-
-            // center
-            if( hints_ & HintComposeOverBorder )
-            {
-                QImage centerImage( size, QImage::Format_ARGB32 );
-                centerImage.fill( Qt::transparent );
-                _render( centerImage, "", Center, false );
-                painter.drawImage( QPoint(0,0), centerImage );
-            }
-
-            // set mask
-            if( !maskPrefix_.isEmpty() && ((hints_ & HintComposeOverBorder) || (drawOverlay_ && hasOverlay_ )) )
-            {
-                // create mask
-                QImage maskImage( size, QImage::Format_ARGB32 );
-                maskImage.fill( Qt::transparent );
-                _render( maskImage, maskPrefix_ );
-
-                painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-                painter.drawImage( QPointF(0,0), maskImage );
-
-                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-
-            }
-
-            // main image
-            QImage mainImage( size, QImage::Format_ARGB32 );
-            mainImage.fill( Qt::transparent );
-
-            //
-            if( hints_ & HintComposeOverBorder ) _render( mainImage, "", Ring );
-            else  _render( mainImage );
-
-            painter.drawImage( QPoint(0,0), mainImage );
+            } else _renderPanel( device );
 
         }
 
@@ -231,10 +188,14 @@ namespace SVG
     TRANSPARENCY::Margins SvgRenderer::margins( void ) const
     {
         TRANSPARENCY::Margins out;
-        if( elementExists( SVG::MarginLeft ) ) out.setLeft( boundsOnElement( SVG::MarginLeft ).size().width() );
-        if( elementExists( SVG::MarginRight ) ) out.setRight( boundsOnElement( SVG::MarginRight ).size().width() );
-        if( elementExists( SVG::MarginTop ) ) out.setTop( boundsOnElement( SVG::MarginTop ).size().height() );
-        if( elementExists( SVG::MarginBottom ) ) out.setBottom( boundsOnElement( SVG::MarginBottom ).size().height() );
+        if( elementExists( SVG::MarginLeft ) ) out.setLeft( boundsOnElement( SVG::MarginLeft ).width() );
+        if( elementExists( SVG::MarginRight ) ) out.setRight( boundsOnElement( SVG::MarginRight ).width() );
+        if( elementExists( SVG::MarginTop ) ) out.setTop( boundsOnElement( SVG::MarginTop ).height() );
+        if( elementExists( SVG::MarginBottom ) ) out.setBottom( boundsOnElement( SVG::MarginBottom ).height() );
+
+        // add shadow size if available
+        if( hasShadow_ ) out += outerPadding();
+
         return out;
     }
 
@@ -242,17 +203,106 @@ namespace SVG
     TRANSPARENCY::Margins SvgRenderer::outerPadding( void ) const
     {
         TRANSPARENCY::Margins out;
-        if( elementExists( SVG::ShadowLeft ) ) out.setLeft( boundsOnElement( SVG::ShadowLeft ).size().width() );
-        if( elementExists( SVG::ShadowRight ) ) out.setRight( boundsOnElement( SVG::ShadowRight ).size().width() );
-        if( elementExists( SVG::ShadowTop ) ) out.setTop( boundsOnElement( SVG::ShadowTop ).size().height() );
-        if( elementExists( SVG::ShadowBottom ) ) out.setBottom( boundsOnElement( SVG::ShadowBottom ).size().height() );
+        if( hasShadow_ )
+        {
+
+            out.setLeft( boundsOnElement( "shadow-"+SVG::MarginLeft ).width() );
+            out.setRight( boundsOnElement( "shadow-"+SVG::MarginRight ).width() );
+            out.setTop( boundsOnElement( "shadow-"+SVG::MarginTop ).height() );
+            out.setBottom( boundsOnElement( "shadow-"+SVG::MarginBottom ).height() );
+
+        } else {
+
+            if( elementExists( SVG::ShadowLeft ) ) out.setLeft( boundsOnElement( SVG::ShadowLeft ).size().width() );
+            if( elementExists( SVG::ShadowRight ) ) out.setRight( boundsOnElement( SVG::ShadowRight ).size().width() );
+            if( elementExists( SVG::ShadowTop ) ) out.setTop( boundsOnElement( SVG::ShadowTop ).size().height() );
+            if( elementExists( SVG::ShadowBottom ) ) out.setBottom( boundsOnElement( SVG::ShadowBottom ).size().height() );
+
+        }
 
         return out;
 
     }
 
     //________________________________________________
-    void SvgRenderer::_render( QImage& target, QString prefix, int elements, bool padding  )
+    void SvgRenderer::_renderPanel( QPaintDevice& device )
+    {
+
+        // create painter
+        QPainter painter( &device );
+
+        // size
+        QSize size( device.width(), device.height() );
+
+        //Overlays
+        if( drawOverlay_ && hasOverlay_ )
+        {
+
+            // compute painting rect
+            QSizeF overlaySize = boundsOnElement(SVG::Overlay).size();
+
+            // size hints
+            if( overlayHints_ & OverlayStretch ) overlaySize = size;
+            else if( overlayHints_ & OverlayTileHorizontal ) overlaySize.setWidth( size.width() );
+            else if( overlayHints_ & OverlayTileVertical ) overlaySize.setHeight( size.height() );
+            QRectF overlayRect( QPointF(0,0), overlaySize );
+
+            // create image and paint
+            QImage overlayImage( QSize( device.width(), device.height() ),  QImage::Format_ARGB32 );
+
+            overlayImage.fill( Qt::transparent );
+            QPainter overlayPainter( &overlayImage );
+
+            // centering hints
+            if( overlayHints_ & OverlayPosRight ) overlayPainter.translate( device.width() - overlayRect.width(), 0 );
+            if( overlayHints_ & OverlayPosBottom ) overlayPainter.translate( 0, device.height() - overlayRect.height() );
+
+            QSvgRenderer::render( &overlayPainter, SVG::Overlay, overlayRect );
+            overlayPainter.end();
+
+            // draw on main painter
+            painter.drawImage( QPointF(0,0), overlayImage );
+
+        }
+
+        // center
+        if( hints_ & HintComposeOverBorder )
+        {
+            QImage centerImage( size, QImage::Format_ARGB32 );
+            centerImage.fill( Qt::transparent );
+            _render( centerImage, "", Center, false );
+            painter.drawImage( QPoint(0,0), centerImage );
+        }
+
+        // set mask
+        if( !maskPrefix_.isEmpty() && ((hints_ & HintComposeOverBorder) || (drawOverlay_ && hasOverlay_ )) )
+        {
+            // create mask
+            QImage maskImage( size, QImage::Format_ARGB32 );
+            maskImage.fill( Qt::transparent );
+            _render( maskImage, maskPrefix_ );
+
+            painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+            painter.drawImage( QPointF(0,0), maskImage );
+
+            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+        }
+
+        // main image
+        QImage mainImage( size, QImage::Format_ARGB32 );
+        mainImage.fill( Qt::transparent );
+
+        //
+        if( hints_ & HintComposeOverBorder ) _render( mainImage, "", Ring );
+        else  _render( mainImage );
+
+        painter.drawImage( QPoint(0,0), mainImage );
+
+    }
+
+    //________________________________________________
+    void SvgRenderer::_render( QImage& target, QString prefix, SvgElements elements, bool padding  )
     {
 
         if( !prefix.isEmpty() ) prefix += "-";

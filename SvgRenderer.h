@@ -85,13 +85,16 @@ namespace SVG
         protected:
 
         //! true if svg has all elements matching prefix
-        virtual bool _hasPrefix( QString prefix = "", SvgElements = All ) const;
+        bool _hasPrefix( QString prefix = "", SvgElements = All ) const;
 
         //! true if svg has all margin elements matching prefix
-        virtual bool _hasMargins( QString prefix = "", SvgElements = (SvgElements)Top|Left|Right|Bottom ) const;
+        bool _hasMargins( QString prefix = "", SvgElements = (SvgElements)Top|Left|Right|Bottom ) const;
+
+        //! render
+        void _renderPanel( QPaintDevice& );
 
         //! render prefix to image
-        virtual void _render( QImage& target, QString prefix = "", int elements = All, bool padding = true );
+        void _render( QImage& target, QString prefix = QString(), SvgElements = All, bool padding = true );
 
         private:
 
