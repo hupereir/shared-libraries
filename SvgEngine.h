@@ -24,7 +24,6 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
 #include "Margins.h"
 #include "SvgRenderer.h"
 #include "SvgThread.h"
@@ -39,7 +38,7 @@ namespace SVG
     class SvgPlasmaInterface;
 
     //! customized Icon factory to provide better looking disabled icons
-    class SvgEngine: public QObject, public Counter
+    class SvgEngine: public QObject
     {
 
         Q_OBJECT;

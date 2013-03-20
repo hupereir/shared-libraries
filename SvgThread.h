@@ -24,7 +24,6 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
 #include "SvgRenderer.h"
 #include "Svg.h"
 
@@ -37,7 +36,7 @@ namespace SVG
 {
 
     //! independent thread used to automatically save file
-    class SvgThread: public QThread, public Counter
+    class SvgThread: public QThread
     {
 
         Q_OBJECT

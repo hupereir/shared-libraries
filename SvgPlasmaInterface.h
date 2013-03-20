@@ -24,7 +24,6 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
 #include "File.h"
 
 #include <QObject>
@@ -35,7 +34,7 @@ namespace SVG
 {
 
   //! kde specific interface to plasma to load matching Svg background
-  class SvgPlasmaInterface: public QObject, public Counter
+  class SvgPlasmaInterface: public QObject
   {
 
     Q_OBJECT

@@ -1,5 +1,5 @@
-#ifndef SvgSystemOptions_h
-#define SvgSystemOptions_h
+#ifndef SvgDefaultOptions_h
+#define SvgDefaultOptions_h
 
 // $Id$
 
@@ -25,18 +25,22 @@
 *******************************************************************************/
 
 #include "XmlOptions.h"
+#include "SvgPlasmaInterface.h"
 
 //_____________________________________________________
 //! default options installer
-void installSvgSystemOptions( void )
+void installSvgOptions( void )
 {
-
-    // print commands
     XmlOptions::get().setAutoDefault( true );
-    XmlOptions::get().set( "KDE4_CONFIG", Option( "@KDE4_CONFIG@" ) );
+    XmlOptions::get().keep( "SVG_BACKGROUND" );
+    XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-air.svgz" ) );
+    XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-dark.svgz", Option::Recordable|Option::Current ) );
+    XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-light.svgz" ) );
+    XmlOptions::get().set<bool>( "USE_SVG", true );
+    XmlOptions::get().set<bool>( "SVG_USE_PLASMA_INTERFACE", true );
+    XmlOptions::get().set<bool>( "SVG_DRAW_OVERLAY", false );
+    XmlOptions::get().set<int>( "SVG_PLASMA_IMAGE_PATH", SVG::SvgPlasmaInterface::WidgetBackground );
     XmlOptions::get().setAutoDefault( false );
-
-
 }
 
 #endif

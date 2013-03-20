@@ -40,27 +40,9 @@ namespace SVG
 
     //__________________________________________________________
     SvgEngine::SvgEngine( void ):
-        Counter( "SVG::SvgEngine" ),
         plasmaInterface_( 0 ),
         thread_( this )
-    {
-
-        // connect thread
-        connect( &thread_, SIGNAL( imageCacheAvailable( const SVG::ImageCache& ) ), this, SLOT( _processImageCache( const SVG::ImageCache& ) ) );
-
-        XmlOptions::get().setAutoDefault( true );
-        XmlOptions::get().keep( "SVG_BACKGROUND" );
-        XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-air.svgz" ) );
-        XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-dark.svgz", Option::Recordable|Option::Current ) );
-        XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-light.svgz" ) );
-        XmlOptions::get().set<bool>( "USE_SVG", true );
-        XmlOptions::get().set<bool>( "SVG_USE_PLASMA_INTERFACE", true );
-        XmlOptions::get().set<bool>( "SVG_DRAW_OVERLAY", false );
-        XmlOptions::get().set<int>( "SVG_PLASMA_IMAGE_PATH", SvgPlasmaInterface::WidgetBackground );
-        XmlOptions::get().setAutoDefault( false );
-
-        return;
-    }
+    { connect( &thread_, SIGNAL( imageCacheAvailable( const SVG::ImageCache& ) ), this, SLOT( _processImageCache( const SVG::ImageCache& ) ) ); }
 
     //__________________________________________________________
     SvgEngine::~SvgEngine( void )
