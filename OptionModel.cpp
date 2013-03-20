@@ -139,11 +139,31 @@ bool OptionModel::SortFTor::operator () ( OptionPair first, OptionPair second ) 
             if( first.first != second.first ) return first.first < second.first;
             else return first.second.raw() < second.second.raw();
         }
-        case VALUE:
+
+        case CURRENT:
         {
-            if( first.first != second.first ) return first.second.raw() < second.second.raw();
+            if( first.second.isCurrent() != second.second.isCurrent() ) return first.second.isCurrent() < second.second.isCurrent();
             else return false;
         }
+
+        case VALUE:
+        {
+            if( first.second.raw() != second.second.raw() ) return first.second.raw() < second.second.raw();
+            else return false;
+        }
+
+        case DEFAULT_VALUE:
+        {
+            if( first.second.defaultValue() != second.second.defaultValue() ) return first.second.defaultValue() < second.second.defaultValue();
+            else return false;
+        }
+
+        case FLAGS:
+        {
+            if( first.second.flags() != second.second.flags() ) return first.second.flags() < second.second.flags();
+            else return false;
+        }
+
         default: return true;
     }
 

@@ -34,7 +34,7 @@ BusyWidget::BusyWidget( QWidget* parent, Location location ):
     location_( location ),
     delay_( 200 ),
     radius_( 18 ),
-    thickness_( 5 ),
+    thickness_( 4 ),
     border_( 2 ),
     margin_( 10 ),
     angle_( 0 )
@@ -146,13 +146,10 @@ void BusyWidget::paintEvent( QPaintEvent* event )
 
     // indicator
     painter.translate( 0.5+width()/2, 0.5+height()/2 );
-    QColor foreground( palette().color( foregroundRole() ) );
-    painter.setPen( foreground );
+    painter.setPen( palette().color( foregroundRole() ) );
+    painter.setBrush( palette().color( backgroundRole() ) );
 
-    foreground.setAlpha( foreground.alphaF() * 220 );
-    painter.setBrush( foreground );
-
-    painter.rotate( -angle_ );
+    painter.rotate( angle_ );
     painter.drawPath( path_ );
 
     painter.rotate( 180 );
