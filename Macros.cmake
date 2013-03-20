@@ -106,10 +106,8 @@ MACRO( ADD_PLATFORM_EXECUTABLE target version )
 ENDMACRO( ADD_PLATFORM_EXECUTABLE )
 
 
-###################### add application icons #########################
-MACRO( ADD_APPLICATION_ICON  sources icon )
-
-  IF( WIN32 )
+###################### add win32 application icons #########################
+MACRO( ADD_WIN32_APPLICATION_ICON  sources icon )
 
     # check icon exists
     SET( _icon ${icon}.ico )
@@ -129,15 +127,17 @@ MACRO( ADD_APPLICATION_ICON  sources icon )
 
     ENDIF()
 
-  ELSEIF( APPLE )
+ENDMACRO( ADD_WIN32_APPLICATION_ICON )
+
+###################### add apple application icons #########################
+MACRO( ADD_APPLE_APPLICATION_ICON  sources icon )
 
     # check icon exists
     SET( _icon ${icon}.icns )
     IF( EXISTS "${_icon}" )
 
-      GET_FILENAME_COMPONENT( _localIcon ${_icon} NAME )
-      MESSAGE( "-- Using application icon: ${_icon}" )
-      SET( MACOSX_BUNDLE_ICON_FILE  ${_localIcon} )
+      GET_FILENAME_COMPONENT( _iconName ${_icon} NAME )
+      SET( MACOSX_BUNDLE_ICON_FILE  ${_iconName} )
       SET_SOURCE_FILES_PROPERTIES( ${_icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
       LIST( APPEND ${sources} ${_icon} )
 
@@ -147,26 +147,21 @@ MACRO( ADD_APPLICATION_ICON  sources icon )
 
     ENDIF()
 
-  ELSE()
+ENDMACRO( ADD_APPLE_APPLICATION_ICON )
+
+###################### add unix application icons #########################
+MACRO( ADD_UNIX_APPLICATION_ICON  icon name size )
 
     # check xdg-icon-resource program
     FIND_PROGRAM( XDG_ICON_RESOURCE_EXECUTABLE xdg-icon-resource )
-    IF( XDG_ICON_RESOURCE_EXECUTABLE )
-
-      MESSAGE( "-- Found xdg-icon-resource" )
-
-    ELSE()
+    IF( NOT XDG_ICON_RESOURCE_EXECUTABLE )
 
         MESSAGE( "-- Could not find xdg-icon-resource" )
 
     ENDIF()
 
     SET( _icon ${icon}.png )
-    IF( EXISTS "${_icon}" )
-
-      MESSAGE( "-- Using application icon: ${_icon}" )
-
-    ELSE()
+    IF( NOT EXISTS "${_icon}" )
 
       MESSAGE("-- Unable to find icon ${_icon}" )
 
@@ -177,10 +172,28 @@ MACRO( ADD_APPLICATION_ICON  sources icon )
 
       INSTALL(
         CODE "MESSAGE( \"-- Installing: ${_icon}\" )"
-        CODE "EXECUTE_PROCESS( COMMAND ${XDG_ICON_RESOURCE_EXECUTABLE} install --novendor --size 128 ${_icon} )"
+        CODE "EXECUTE_PROCESS( COMMAND ${XDG_ICON_RESOURCE_EXECUTABLE} install --novendor --size ${size} ${_icon} ${name} )"
       )
 
     ENDIF()
+
+ENDMACRO( ADD_UNIX_APPLICATION_ICON )
+
+###################### add application icons #########################
+MACRO( ADD_APPLICATION_ICON  sources icon )
+
+  IF( WIN32 )
+
+    ADD_WIN32_APPLICATION_ICON( ${sources} ${icon} ${ARGN} )
+
+  ELSEIF( APPLE )
+
+    ADD_APPLE_APPLICATION_ICON( ${sources} ${icon} ${ARGN} )
+
+  ELSE()
+
+    GET_FILENAME_COMPONENT( _iconName ${icon} NAME )
+    ADD_UNIX_APPLICATION_ICON( ${icon} ${_iconName} 128 ${ARGN} )
 
   ENDIF()
 
@@ -193,11 +206,7 @@ MACRO( ADD_DESKTOP_FILE  desktopFile )
 
     # check desktop-file-install program
     FIND_PROGRAM( XDG_DESKTOP_MENU_EXECUTABLE xdg-desktop-menu )
-    IF( XDG_DESKTOP_MENU_EXECUTABLE )
-
-      MESSAGE( "-- Found xdg-desktop-menu" )
-
-    ELSE()
+    IF( NOT XDG_DESKTOP_MENU_EXECUTABLE )
 
         MESSAGE( "-- Could not find xdg-desktop-menu" )
 
@@ -205,11 +214,7 @@ MACRO( ADD_DESKTOP_FILE  desktopFile )
 
     # check desktop file existence
     SET( _desktopFile ${desktopFile}.desktop )
-    IF( EXISTS "${_desktopFile}" )
-
-      MESSAGE( "-- Using desktop file: ${_desktopFile}" )
-
-    ELSE()
+    IF( NOT EXISTS "${_desktopFile}" )
 
       MESSAGE("-- Unable to find desktop file ${_desktopFile}" )
 
