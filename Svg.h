@@ -35,6 +35,8 @@
 namespace SVG
 {
 
+    //!@name main panel
+    //@{
     static const QString TopLeft="topleft";
     static const QString Top="top";
     static const QString TopRight="topright";
@@ -44,19 +46,26 @@ namespace SVG
     static const QString BottomRight="bottomright";
     static const QString Bottom="bottom";
     static const QString BottomLeft="bottomleft";
+    //@}
 
+    //! overlay
     static const QString Overlay="overlay";
 
+    //!@name main panel margin hints
+    //@{
     static const QString MarginLeft="hint-left-margin";
     static const QString MarginRight="hint-right-margin";
     static const QString MarginTop="hint-top-margin";
     static const QString MarginBottom="hint-bottom-margin";
+    //@}
 
+    //!@name main panel shadow hints
+    //@{
     static const QString ShadowLeft="hint-left-shadow";
     static const QString ShadowRight="hint-right-shadow";
     static const QString ShadowTop="hint-top-shadow";
     static const QString ShadowBottom="hint-bottom-shadow";
-
+    //@}
 
     //! map size and pixmap
     typedef QMap< SvgId, QPixmap > PixmapCache;

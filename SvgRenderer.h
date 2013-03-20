@@ -64,8 +64,7 @@ namespace SVG
         //! outer padding
         TRANSPARENCY::Margins outerPadding( void ) const;
 
-        protected:
-
+        // svg element enumeration
         enum SvgElement
         {
             TopLeft = 1<<0,
@@ -81,8 +80,15 @@ namespace SVG
             All = Ring|Center
         };
 
+        Q_DECLARE_FLAGS( SvgElements, SvgElement );
+
+        protected:
+
         //! true if svg has all elements matching prefix
-        virtual bool _hasPrefix( QString prefix = "" ) const;
+        virtual bool _hasPrefix( QString prefix = "", SvgElements = All ) const;
+
+        //! true if svg has all margin elements matching prefix
+        virtual bool _hasMargins( QString prefix = "", SvgElements = (SvgElements)Top|Left|Right|Bottom ) const;
 
         //! render prefix to image
         virtual void _render( QImage& target, QString prefix = "", int elements = All, bool padding = true );
@@ -94,6 +100,9 @@ namespace SVG
 
         //! validity
         bool isValid_;
+
+        //! true if shadows are present
+        bool hasShadow_;
 
         //! true if overlay is present
         bool hasOverlay_;
@@ -126,4 +135,7 @@ namespace SVG
     };
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( SVG::SvgRenderer::SvgElements )
+
 #endif

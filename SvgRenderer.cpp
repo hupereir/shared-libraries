@@ -36,6 +36,7 @@ namespace SVG
         Counter( "SVG::SvgRendered" ),
         drawOverlay_( true ),
         isValid_( false ),
+        hasShadow_( false ),
         hasOverlay_( false ),
         overlayHints_( OverlayNone ),
         hints_( HintNone )
@@ -48,6 +49,7 @@ namespace SVG
       if( loaded )
       {
         isValid_ = _hasPrefix();
+        hasShadow_ = _hasPrefix( "shadow", Ring ) && _hasMargins( "shadow" );
         hasOverlay_ = elementExists( SVG::Overlay );
 
         // centering hints
@@ -182,7 +184,7 @@ namespace SVG
     }
 
     //________________________________________________
-    bool SvgRenderer::_hasPrefix( QString prefix ) const
+    bool SvgRenderer::_hasPrefix( QString prefix, SvgElements mask ) const
     {
 
         if( !prefix.isEmpty() ) prefix+="-";
@@ -191,17 +193,36 @@ namespace SVG
         if( !QSvgRenderer::isValid() ) return false;
 
         // make sure needed elements are present
-        if( !elementExists( prefix+SVG::TopLeft ) ) return false;
-        if( !elementExists( prefix+SVG::Top ) ) return false;
-        if( !elementExists( prefix+SVG::TopRight ) ) return false;
+        if( (mask & TopLeft) && !elementExists( prefix+SVG::TopLeft ) ) return false;
+        if( (mask & Top) && !elementExists( prefix+SVG::Top ) ) return false;
+        if( (mask & TopRight) && !elementExists( prefix+SVG::TopRight ) ) return false;
 
-        if( !elementExists( prefix+SVG::BottomLeft ) ) return false;
-        if( !elementExists( prefix+SVG::Bottom ) ) return false;
-        if( !elementExists( prefix+SVG::BottomRight ) ) return false;
+        if( (mask & BottomLeft) && !elementExists( prefix+SVG::BottomLeft ) ) return false;
+        if( (mask & Bottom) && !elementExists( prefix+SVG::Bottom ) ) return false;
+        if( (mask & BottomRight) && !elementExists( prefix+SVG::BottomRight ) ) return false;
 
-        if( !elementExists( prefix+SVG::Left ) ) return false;
-        if( !elementExists( prefix+SVG::Center ) ) return false;
-        if( !elementExists( prefix+SVG::Right ) ) return false;
+        if( (mask & Left) && !elementExists( prefix+SVG::Left ) ) return false;
+        if( (mask & Center) && !elementExists( prefix+SVG::Center ) ) return false;
+        if( (mask & Right) && !elementExists( prefix+SVG::Right ) ) return false;
+        return true;
+
+    }
+
+
+    //________________________________________________
+    bool SvgRenderer::_hasMargins( QString prefix, SvgElements mask ) const
+    {
+
+        if( !prefix.isEmpty() ) prefix+="-";
+
+        // check base class
+        if( !QSvgRenderer::isValid() ) return false;
+
+        // make sure needed elements are present
+        if( (mask & Top) && !elementExists( prefix+SVG::MarginTop ) ) return false;
+        if( (mask & Left) && !elementExists( prefix+SVG::MarginLeft ) ) return false;
+        if( (mask & Right) && !elementExists( prefix+SVG::MarginRight ) ) return false;
+        if( (mask & Bottom) && !elementExists( prefix+SVG::MarginBottom ) ) return false;
         return true;
 
     }
@@ -225,7 +246,9 @@ namespace SVG
         if( elementExists( SVG::ShadowRight ) ) out.setRight( boundsOnElement( SVG::ShadowRight ).size().width() );
         if( elementExists( SVG::ShadowTop ) ) out.setTop( boundsOnElement( SVG::ShadowTop ).size().height() );
         if( elementExists( SVG::ShadowBottom ) ) out.setBottom( boundsOnElement( SVG::ShadowBottom ).size().height() );
+
         return out;
+
     }
 
     //________________________________________________
@@ -241,20 +264,38 @@ namespace SVG
         // paint svg onto image
         QPainter painter( &target );
 
+        const QRect targetRect( QPoint(0,0), target.size() );
+        QRectF centerRect( targetRect );
+        if( padding )
+        {
+            centerRect.adjust(
+                boundsOnElement( prefix+SVG::Left ).width(),
+                boundsOnElement( prefix+SVG::Top ).height(),
+                -boundsOnElement( prefix+SVG::Right ).width(),
+                -boundsOnElement( prefix+SVG::Bottom ).height() );
+        }
+
         // center
-        if( elements & Center ) QSvgRenderer::render( &painter, prefix+SVG::Center, QRectF( QPointF( cornerSize.width(), cornerSize.height() ), QSizeF( width, height ) ) );
+        if( elements & Center )
+        { QSvgRenderer::render( &painter, prefix+SVG::Center, centerRect ); }
 
-        // corners
-        if( elements & TopLeft ) QSvgRenderer::render( &painter, prefix+SVG::TopLeft, QRectF( QPointF( 0, 0 ), cornerSize ) );
-        if( elements & TopRight ) QSvgRenderer::render( &painter, prefix+SVG::TopRight, QRectF( QPointF( width + cornerSize.width(), 0 ), cornerSize ) );
-        if( elements & BottomLeft ) QSvgRenderer::render( &painter, prefix+SVG::BottomLeft, QRectF( QPointF( 0, height+cornerSize.height() ), cornerSize ) );
-        if( elements & BottomRight ) QSvgRenderer::render( &painter, prefix+SVG::BottomRight, QRectF( QPointF( width + cornerSize.width(), height+cornerSize.height() ), cornerSize ) );
+        if( padding )
+        {
 
-        // sides
-        if( elements & Top ) QSvgRenderer::render( &painter, prefix+SVG::Top, QRectF( QPointF( cornerSize.width(), 0 ), QSizeF( width, cornerSize.height() ) ) );
-        if( elements & Bottom ) QSvgRenderer::render( &painter, prefix+SVG::Bottom, QRectF( QPointF( cornerSize.width(), height+cornerSize.height() ), QSizeF( width, cornerSize.height() ) ) );
-        if( elements & Left ) QSvgRenderer::render( &painter, prefix+SVG::Left, QRectF( QPointF( 0, cornerSize.height() ), QSizeF( cornerSize.width(), height ) ) );
-        if( elements & Right ) QSvgRenderer::render( &painter, prefix+SVG::Right, QRectF( QPointF( width + cornerSize.width(), cornerSize.height() ), QSizeF( cornerSize.width(), height ) ) );
+            // corners
+            if( elements & TopLeft ) QSvgRenderer::render( &painter, prefix+SVG::TopLeft, QRectF( QPointF( 0, 0 ), boundsOnElement( prefix+SVG::TopLeft ).size() ) );
+            if( elements & TopRight ) QSvgRenderer::render( &painter, prefix+SVG::TopRight, QRectF( QPointF( centerRect.right(), 0 ), boundsOnElement( prefix+SVG::TopRight ).size() ) );
+            if( elements & BottomLeft ) QSvgRenderer::render( &painter, prefix+SVG::BottomLeft, QRectF( QPointF( 0, centerRect.bottom() ), boundsOnElement( prefix+SVG::BottomRight ).size() ) );
+            if( elements & BottomRight ) QSvgRenderer::render( &painter, prefix+SVG::BottomRight, QRectF( centerRect.bottomRight(), boundsOnElement( prefix+SVG::BottomRight ).size() ) );
+
+            // sides
+            if( elements & Top ) QSvgRenderer::render( &painter, prefix+SVG::Top, QRectF( QPointF( centerRect.left(), 0 ), QSizeF( centerRect.width(), boundsOnElement( prefix+SVG::Top ).height() ) ) );
+            if( elements & Bottom ) QSvgRenderer::render( &painter, prefix+SVG::Bottom, QRectF( centerRect.bottomLeft(), QSizeF( centerRect.width(), boundsOnElement( prefix+SVG::Bottom ).height() ) ) );
+            if( elements & Left ) QSvgRenderer::render( &painter, prefix+SVG::Left, QRectF( QPointF( 0, centerRect.top() ), QSizeF( boundsOnElement( prefix+SVG::Left ).width(), centerRect.height() ) ) );
+            if( elements & Right ) QSvgRenderer::render( &painter, prefix+SVG::Right, QRectF( centerRect.topRight(), QSizeF( boundsOnElement( prefix+SVG::Right ).width(), centerRect.height() ) ) );
+
+        }
+
         painter.end();
         return;
     }

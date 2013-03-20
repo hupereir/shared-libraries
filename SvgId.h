@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file SvgId.h
-\brief
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include <QSize>
 #include <QString>
 #include <QList>
