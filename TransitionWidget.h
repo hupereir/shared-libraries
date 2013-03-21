@@ -69,7 +69,7 @@ class TransitionWidget: public QWidget, public Counter
     }
 
     //! flags
-    const unsigned int& flags( void ) const
+    Flags flags( void ) const
     { return flags_; }
 
     //! set starting widget
