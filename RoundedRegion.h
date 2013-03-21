@@ -37,15 +37,15 @@ class RoundedRegion: public QRegion
     enum Corner
     {
         None = 0,
-            TopLeft = 1<<0,
-            TopRight = 1<<1,
-            BottomLeft  = 1<<2,
-            BottomRight = 1<<3,
-            Top = TopLeft | TopRight,
-            Bottom = BottomLeft | BottomRight,
-            Left = TopLeft | BottomLeft,
-            Right = TopRight | BottomRight,
-            All = Top | Bottom
+        TopLeft = 1<<0,
+        TopRight = 1<<1,
+        BottomLeft  = 1<<2,
+        BottomRight = 1<<3,
+        Top = TopLeft | TopRight,
+        Bottom = BottomLeft | BottomRight,
+        Left = TopLeft | BottomLeft,
+        Right = TopRight | BottomRight,
+        All = Top | Bottom
     };
 
     Q_DECLARE_FLAGS( Corners, Corner );
