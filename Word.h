@@ -37,7 +37,7 @@ namespace SPELLCHECK
         typedef QSet<Word> Set;
 
         //! constructor
-        Word( const QString& word = "", const int& position = 0 ):
+        Word( const QString& word = QString(), const int& position = 0 ):
             QString( word ),
             position_( position )
         {}
