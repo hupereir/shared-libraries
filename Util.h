@@ -37,7 +37,7 @@ class Util
     { return t*t; }
 
     //! returns environment variable or empty string
-    static QString env( const QString&, const QString& default_value = "" );
+    static QString env( const QString&, const QString& = QString() );
 
     //!  user name
     static QString user( void );
