@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file BaseIcons.h
-  \brief namespace for base icons name wrapper
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include <QString>
 
 //! namespace for base icons static name wrapper

@@ -30,7 +30,6 @@
 #include <QDomDocument>
 #include <QString>
 
-
 namespace FILERECORD
 {
     namespace XML

@@ -32,7 +32,7 @@
 TransitionWidget::TransitionWidget( QWidget *parent ):
     QWidget( parent ),
     Counter( "TransitionWidget" ),
-    enable_on_options_( true ),
+    enableOnOptions_( true ),
     enabled_( true ),
     flags_( FROM_PARENT | SHOW )
 {
@@ -126,7 +126,7 @@ void TransitionWidget::_updateConfiguration( void )
 {
     Debug::Throw( "TransitionWidget::_updateConfiguration.\n" );
 
-    if( enable_on_options_ ) setEnabled(  XmlOptions::get().get<bool>( "SMOOTH_TRANSITION_ENABLED" ) );
+    if( enableOnOptions_ ) setEnabled(  XmlOptions::get().get<bool>( "SMOOTH_TRANSITION_ENABLED" ) );
     timeLine().setDuration( XmlOptions::get().get<int>( "SMOOTH_TRANSITION_DURATION" ) );
     timeLine().setFrameRange( 0, XmlOptions::get().get<int>( "ANIMATION_FRAMES" ) );
 

@@ -169,7 +169,7 @@ class BaseToolTipWidget: public QWidget, public Counter
     QBasicTimer timer_;
 
     //! hidden timer
-    /*! if running, showing again the tooltip is immediate, even when calling "showDelayed" */
+    /*! if running, showing again the tooltip is immediate, even when calling showDelayed */
     QBasicTimer hiddenTimer_;
 
 };

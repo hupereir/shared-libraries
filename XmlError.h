@@ -42,7 +42,6 @@ class XmlError: public Counter
     XmlError( const File& file = File() ):
         Counter( "XmlError" ),
         file_ ( file ),
-        error_( "" ),
         line_(0),
         column_(0)
     {}

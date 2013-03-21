@@ -44,10 +44,10 @@ class ColumnSortingMenu:public QMenu, public Counter
     public:
 
     //! constructor
-    ColumnSortingMenu( QWidget*, QTreeView*, const QString& title = "Sort By" );
+    ColumnSortingMenu( QWidget*, QTreeView*, const QString& = tr( "Sort By" ) );
 
     //! constructor
-    ColumnSortingMenu( QWidget*, QHeaderView*, const QString& title = "Sort By" );
+    ColumnSortingMenu( QWidget*, QHeaderView*, const QString&  = tr( "Sort By" ) );
 
     private slots:
 

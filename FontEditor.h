@@ -75,11 +75,7 @@ class FontEditor: public QWidget, public Counter
 
     //! update label
     virtual void _updateLabel( void )
-    {
-        QString buffer;
-        QTextStream( &buffer ) << font().family() << ", " << font().pointSize() << "pt";
-        label_->setText( buffer );
-    }
+    { label_->setText( QString( tr( "%1, %2pt" ) ).arg( font().family() ).arg( font().pointSize() ) ); }
 
     private:
 

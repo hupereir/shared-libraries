@@ -42,7 +42,7 @@ class ColumnSelectionMenu:public QMenu, public Counter
     public:
 
     //! constructor
-    ColumnSelectionMenu( QWidget*, QTreeView*, const QString& title = "Select Columns" );
+    ColumnSelectionMenu( QWidget*, QTreeView*, const QString& = tr( "Select Columns" ) );
 
     private slots:
 

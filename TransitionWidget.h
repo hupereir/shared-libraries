@@ -23,117 +23,113 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TransitionWidget.cpp
-  \brief widget used for smooth transition between two widgets
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
+#include "Counter.h"
 
 #include <QPaintEvent>
 #include <QPixmap>
 #include <QTimeLine>
 #include <QWidget>
 
-#include "Counter.h"
-
 class TransitionWidget: public QWidget, public Counter
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+    public:
 
-  //! constructor
-  TransitionWidget( QWidget* parent = 0 );
+    //! constructor
+    TransitionWidget( QWidget* parent = 0 );
 
-  //! destructor
-  virtual ~TransitionWidget();
+    //! destructor
+    virtual ~TransitionWidget();
 
-  //! flags
-  enum Flag
-  {
-    NONE = 0,
-    FROM_PARENT = 1<<0,
-    SHOW = 1<<1
-  };
+    //! flags
+    enum Flag
+    {
+        NONE = 0,
+        FROM_PARENT = 1<<0,
+        SHOW = 1<<1
+    };
 
-  //! flags
-  TransitionWidget& setFlags( unsigned int value )
-  {
-    flags_ = value;
-    return *this;
-  }
+    Q_DECLARE_FLAGS( Flags, Flag );
 
-  //! flags
-  TransitionWidget& setFlag( Flag flag, const bool& value = true )
-  {
-    if( value ) { flags_ |= flag; }
-    else { flags_ &= (~flag); }
-    return *this;
-  }
+    //! flags
+    TransitionWidget& setFlags( Flags value )
+    {
+        flags_ = value;
+        return *this;
+    }
 
-  //! flags
-  const unsigned int& flags( void ) const
-  { return flags_; }
+    //! flags
+    TransitionWidget& setFlag( Flag flag, const bool& value = true )
+    {
+        if( value ) { flags_ |= flag; }
+        else { flags_ &= (~flag); }
+        return *this;
+    }
 
-  //! set starting widget
-  void initialize( QWidget* widget = 0, QRect rect = QRect() );
+    //! flags
+    const unsigned int& flags( void ) const
+    { return flags_; }
 
-  //! start
-  void start( void );
+    //! set starting widget
+    void initialize( QWidget* widget = 0, QRect rect = QRect() );
 
-  //! timeline
-  QTimeLine& timeLine( void )
-  { return time_line_; }
+    //! start
+    void start( void );
 
-  //! enable on options
-  void setEnableOnOptions( bool value )
-  { enable_on_options_ = value; }
+    //! timeline
+    QTimeLine& timeLine( void )
+    { return timeLine_; }
 
-  //! enability
-  void setEnabled( bool value )
-  { enabled_ = value; }
+    //! enable on options
+    void setEnableOnOptions( bool value )
+    { enableOnOptions_ = value; }
 
-  //! enability
-  const bool& isEnabled( void ) const
-  { return enabled_; }
+    //! enability
+    void setEnabled( bool value )
+    { enabled_ = value; }
 
-  protected:
+    //! enability
+    const bool& isEnabled( void ) const
+    { return enabled_; }
 
-  //! mouse press event
-  /*!
-  on mouse press, widget is automatically hidden. This prevents cases where "normal"
-  hiding (at end of animation) fails for whatever reason
-  */
-  virtual void mousePressEvent( QMouseEvent* );
+    protected:
 
-  //! paint event
-  virtual void paintEvent( QPaintEvent* );
+    //! mouse press event
+    /*!
+    on mouse press, widget is automatically hidden. This prevents cases where "normal"
+    hiding (at end of animation) fails for whatever reason
+    */
+    virtual void mousePressEvent( QMouseEvent* );
 
-  private slots:
+    //! paint event
+    virtual void paintEvent( QPaintEvent* );
 
-  //! configuration
-  void _updateConfiguration( void );
+    private slots:
 
-  private:
+    //! configuration
+    void _updateConfiguration( void );
 
-  //! use options to enable
-  bool enable_on_options_;
+    private:
 
-  //! enability
-  bool enabled_;
+    //! use options to enable
+    bool enableOnOptions_;
 
-  //! flags
-  unsigned int flags_;
+    //! enability
+    bool enabled_;
 
-  //! timeline
-  QTimeLine time_line_;
+    //! flags
+    Flags flags_;
 
-  //! current widget pixmap
-  QPixmap pixmap_;
+    //! timeline
+    QTimeLine timeLine_;
+
+    //! current widget pixmap
+    QPixmap pixmap_;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( TransitionWidget::Flags );
 
 #endif

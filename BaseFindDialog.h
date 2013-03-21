@@ -198,10 +198,10 @@ class BaseFindDialog: public BaseDialog, public Counter
     QPushButton* findButton_;
 
     //! list of buttons to enable/disable depending of the editor text
-    QList< QAbstractButton* > buttons_;
+    QList<QAbstractButton*> buttons_;
 
     //! set of previously searched strings
-    static QOrderedSet< QString >& _searchedStrings( void );
+    static QOrderedSet<QString>& _searchedStrings( void );
 
     //! notification label
     QLabel* label_;

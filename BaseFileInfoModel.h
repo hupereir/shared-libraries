@@ -210,13 +210,13 @@ QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientati
     {
         switch( column )
         {
-            case FILE: return "File";
-            case PATH: return "Path";
-            case SIZE: return "Size";
-            case USER: return "Owner";
-            case GROUP: return "Group";
-            case PERMISSIONS: return "Permissions";
-            case MODIFIED: return "Last Modified";
+            case FILE: return ItemModel::tr( "File" );
+            case PATH: return ItemModel::tr( "Path" );
+            case SIZE: return ItemModel::tr( "Size" );
+            case USER: return ItemModel::tr( "Owner" );
+            case GROUP: return ItemModel::tr( "Group" );
+            case PERMISSIONS: return ItemModel::tr( "Permissions" );
+            case MODIFIED: return ItemModel::tr( "Modified" );
             default: return QVariant();
         }
     }
