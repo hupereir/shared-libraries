@@ -77,6 +77,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     list_->setItemDelegate( new TextEditionDelegate( this ) );
     list_->setIconSize( QSize( 16, 16 ) );
     list_->setItemMargin( 2 );
+    list_->setOptionName( "OPTION_LIST" );
 
     // store current option state as backup and update model
     backupOptions_ = XmlOptions::get();
