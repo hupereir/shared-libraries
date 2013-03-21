@@ -64,7 +64,9 @@ namespace TRANSPARENCY
 
         // configuration
         _updateConfiguration();
-        connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+
+        if( Singleton::get().hasApplication() )
+        { connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) ); }
 
     }
 
