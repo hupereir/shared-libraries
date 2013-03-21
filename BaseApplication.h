@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file BaseApplication.h
-\brief application main object
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "ApplicationManager.h"
 #include "BaseCoreApplication.h"
 #include "CommandLineArguments.h"
@@ -132,10 +124,6 @@ class BaseApplication: public BaseCoreApplication
 
     //! application 'about' dialog
     virtual void _about( const QString&, const QString& = QString(), const QString& = QString() );
-
-    //! application 'about' dialog
-    virtual void _about( QString name, double version, QString stamp = "" )
-    { _about( name, QString().setNum( version ), stamp ); }
 
     private:
 

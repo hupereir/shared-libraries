@@ -23,13 +23,6 @@
 *
 *
 *******************************************************************************/
-/*!
-\file XmlDef.h
-\brief some Xml definitions
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
 
 #include <QString>
 

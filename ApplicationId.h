@@ -24,97 +24,89 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    ApplicationId.h
-   \brief   application unique Identifier
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
+#include "Counter.h"
 
 #include <QDomDocument>
 #include <QDomElement>
 #include <QString>
 
-#include "Counter.h"
-
 namespace SERVER
 {
 
 
-  /*! \brief
+    /*! \brief
     application identifier.
     Stores application name and user
     to uniquely identify an application.
-  */
-  class ApplicationId:public Counter
-  {
-    public:
-
-    //! constructor
-    ApplicationId( const QString& name = "", const QString& user = "", const QString& display = "" );
-
-    //! constructor
-    ApplicationId( const QDomElement& );
-
-    //! dom element
-    QDomElement domElement( QDomDocument& ) const;
-
-    //! name
-    const QString& name( void ) const
-    { return name_; }
-
-    //! name
-    void setName( const QString& value )
-    { name_ = value; }
-
-    //! short name
-    QString userName( void ) const;
-
-    //! short name
-    QString display( void ) const;
-
-    //! user
-    const QString& user( void ) const
-    { return user_; }
-
-    //! user
-    void setUser( const QString& value )
-    { user_ = value; }
-
-    //! equal to operator
-    bool operator == (const ApplicationId& app ) const
+    */
+    class ApplicationId:public Counter
     {
-      return (
-        name() == app.name() &&
-        user() == app.user() );
-    }
+        public:
 
-    //! equal to operator
-    bool operator != (const ApplicationId& app ) const
-    { return !( app == *this ); }
+        //! constructor
+        ApplicationId( const QString& = QString(), const QString& = QString(), const QString& = QString() );
 
-    //! lower than to operator
-    bool operator < (const ApplicationId& app ) const
-    {
-      if ( name() != app.name() ) return name() < app.name();
-      else if( user() != app.user() ) return user() < app.user();
-      return false;
-    }
+        //! constructor
+        ApplicationId( const QDomElement& );
 
-    //! returns true if user and name makes sense
-    bool isValid( void ) const
-    { return !(name().isEmpty() || user().isEmpty() ); }
+        //! dom element
+        QDomElement domElement( QDomDocument& ) const;
 
-    private:
+        //! name
+        const QString& name( void ) const
+        { return name_; }
 
-    //! application name
-    QString name_;
+        //! name
+        void setName( const QString& value )
+        { name_ = value; }
 
-    //! application user
-    QString user_;
+        //! short name
+        QString userName( void ) const;
 
-  };
+        //! short name
+        QString display( void ) const;
+
+        //! user
+        const QString& user( void ) const
+        { return user_; }
+
+        //! user
+        void setUser( const QString& value )
+        { user_ = value; }
+
+        //! equal to operator
+        bool operator == (const ApplicationId& app ) const
+        {
+            return (
+                name() == app.name() &&
+                user() == app.user() );
+        }
+
+        //! equal to operator
+        bool operator != (const ApplicationId& app ) const
+        { return !( app == *this ); }
+
+        //! lower than to operator
+        bool operator < (const ApplicationId& app ) const
+        {
+            if ( name() != app.name() ) return name() < app.name();
+            else if( user() != app.user() ) return user() < app.user();
+            return false;
+        }
+
+        //! returns true if user and name makes sense
+        bool isValid( void ) const
+        { return !(name().isEmpty() || user().isEmpty() ); }
+
+        private:
+
+        //! application name
+        QString name_;
+
+        //! application user
+        QString user_;
+
+    };
 };
 
 #endif
