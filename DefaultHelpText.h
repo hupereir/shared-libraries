@@ -24,34 +24,24 @@
 *
 *******************************************************************************/
 
-/*!
-  \file    DefaultHelpText.h
-  \brief   default help text
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
-*/
+#include <QObject>
 
 namespace BASE
 {
-  //! default help text
-  static const QString helpText[] =
-  {
+    //! default help text
+    static const QString helpText[] =
+    {
 
-    //_________________________________________________________
-    "Contact",
-    "<h2>Contact</h2>\n"
-    "<p>Latest software versions can be downloaded at:</p>"
-    "<p><a href=\"http://www.phenix.bnl.gov/WWW/publish/hpereira/software/index.php?page=introduction\">http://www.phenix.bnl.gov/WWW/publish/hpereira/software/index.php?page=introduction</a></p>"
-    "<p>For suggestions and bug reports, please contact the author directly at:</p>"
-    "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a></p>",
+        //_________________________________________________________
+        QObject::tr( "Contact" ),
+        QObject::tr( "<h2>Contact</h2>\n"
+        "<p>Latest software versions can be downloaded at:</p>"
+        "<p><a href=\"http://www.phenix.bnl.gov/WWW/publish/hpereira/software/index.php?page=introduction\">http://www.phenix.bnl.gov/WWW/publish/hpereira/software/index.php?page=introduction</a></p>"
+        "<p>For suggestions and bug reports, please contact the author directly at:</p>"
+        "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a></p>" ),
+        0
 
-    //_________________________________________________________
-    "Notes",
-    "<h2>Notes</h2>\n"
-    "<p>This section is left empty for the user to add his own comments on QEdit.",  0
-
-  };
+    };
 };
 
 #endif

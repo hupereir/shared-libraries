@@ -24,7 +24,6 @@
 *
 *******************************************************************************/
 
-
 #include "Counter.h"
 #include "Debug.h"
 
@@ -37,69 +36,69 @@ namespace BASE
 {
 
 
-  //!@name xml tags
-  //@{
-  const QString XML_HELP = "help";
-  const QString XML_ITEM = "item";
-  const QString XML_LABEL = "label";
-  const QString XML_TEXT = "text";
-  //@}
+    //!@name xml tags
+    //@{
+    const QString XML_HELP = "help";
+    const QString XML_ITEM = "item";
+    const QString XML_LABEL = "label";
+    const QString XML_TEXT = "text";
+    //@}
 
-  //! reference manual single entry
-  class HelpItem : public Counter
-  {
+    //! reference manual single entry
+    class HelpItem : public Counter
+    {
 
-    public:
+        public:
 
-    //! constructor
-    HelpItem( const QString& label = "", const QString& text = "" ):
-      Counter( "HelpItem" ),
-      label_( label ),
-      text_( text )
-    { Debug::Throw( "HelpItem::HelpItem.\n" ); }
+        //! constructor
+        HelpItem( const QString& label = QString(), const QString& text = QString() ):
+            Counter( "HelpItem" ),
+            label_( label ),
+            text_( text )
+        { Debug::Throw( "HelpItem::HelpItem.\n" ); }
 
-    //! constructor from Dom
-    HelpItem( const QDomElement& dom );
+        //! constructor from Dom
+        HelpItem( const QDomElement& dom );
 
-    //! write to dom elelement
-    QDomElement domElement( QDomDocument& parent ) const;
+        //! write to dom elelement
+        QDomElement domElement( QDomDocument& parent ) const;
 
-    //! equal-to operator
-    bool operator == (const HelpItem& item ) const
-    { return label() == item.label() && text() == item.text(); }
+        //! equal-to operator
+        bool operator == (const HelpItem& item ) const
+        { return label() == item.label() && text() == item.text(); }
 
-    //! equal-to operator
-    bool operator < (const HelpItem& item ) const
-    { return label() < item.label() || (label() == item.label() && text() < item.text() ); }
+        //! equal-to operator
+        bool operator < (const HelpItem& item ) const
+        { return label() < item.label() || (label() == item.label() && text() < item.text() ); }
 
-    //! item label
-    void setLabel( const QString& label )
-    { label_ = label; }
+        //! item label
+        void setLabel( const QString& label )
+        { label_ = label; }
 
-    //! label
-    const QString& label( void ) const
-    { return label_; }
+        //! label
+        const QString& label( void ) const
+        { return label_; }
 
-    //! item text
-    void setText( const QString& text )
-    { text_ = text; }
+        //! item text
+        void setText( const QString& text )
+        { text_ = text; }
 
-    //! item text
-    const QString& text( void ) const
-    { return text_; }
+        //! item text
+        const QString& text( void ) const
+        { return text_; }
 
-    //! shortcut to help item list
-    typedef QList< HelpItem > List;
+        //! shortcut to help item list
+        typedef QList< HelpItem > List;
 
-    private:
+        private:
 
-    //! help label
-    QString label_;
+        //! help label
+        QString label_;
 
-    //! help text
-    QString text_;
+        //! help text
+        QString text_;
 
-  };
+    };
 
 };
 
