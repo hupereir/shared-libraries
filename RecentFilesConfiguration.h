@@ -66,48 +66,6 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
     //! reload
     void _reload( void );
 
-    protected:
-
-    //! file list
-    FileList& _recentFiles( void ) const
-    { return *recentFiles_; }
-
-    //! model
-    FileRecordModel& _model( void )
-    { return model_; }
-
-    //! model
-    const FileRecordModel& _model( void ) const
-    { return model_; }
-
-    //! list
-    TreeView& _list( void ) const
-    { return *list_; }
-
-    //! clean
-    QPushButton& _cleanButton( void ) const
-    { return *cleanButton_; }
-
-    //! remove
-    QPushButton& _removeButton( void ) const
-    { return *removeButton_; }
-
-    //! reload
-    QPushButton& _reloadButton( void ) const
-    { return *reloadButton_; }
-
-    //! clean
-    QAction& _cleanAction( void ) const
-    { return *cleanAction_; }
-
-    //! remove
-    QAction& _removeAction( void ) const
-    { return *removeAction_; }
-
-    //! reload
-    QAction& _reloadAction( void ) const
-    { return *reloadAction_; }
-
     private:
 
     //! file list
