@@ -37,6 +37,7 @@ void installTransparencyOptions( void )
     XmlOptions::get().set( "TRANSPARENCY_SHADOW_COLOR", Option( "black", "text shadow color" ) );
     XmlOptions::get().set<int>( "TRANSPARENCY_SHADOW_OFFSET", 1 );
     XmlOptions::get().set<bool>( "TRANSPARENCY_INVERSE_COLORS", false );
+    XmlOptions::get().set<bool>( "TRANSPARENCY_USE_GRADIENT", false );
 
     XmlOptions::get().set( "TRANSPARENCY_TINT_COLOR", Option( "white", "tint color") );
     XmlOptions::get().set<double>( "TRANSPARENCY_TINT_INTENSITY", 0.3 );
