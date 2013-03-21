@@ -35,12 +35,16 @@ class Singleton
     //! return singleton
     static Singleton& get( void );
 
-    //! set application
-    void setApplication( QObject* application )
-    {
-        Q_ASSERT( !application_ );
-        application_ = application;
-    }
+    //! destructor
+    ~Singleton( void )
+    {}
+
+    //!@name accessors
+    //@{
+
+    //! true if has application
+    bool hasApplication( void ) const
+    { return (bool) application_; }
 
     //! application
     QObject* application()
@@ -57,9 +61,19 @@ class Singleton
         return static_cast<T*>( application_ );
     }
 
-    //! destructor
-    ~Singleton( void )
-    {}
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! set application
+    void setApplication( QObject* application )
+    {
+        Q_ASSERT( !application_ );
+        application_ = application;
+    }
+
+    //@}
 
     private:
 
