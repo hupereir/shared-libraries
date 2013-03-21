@@ -24,6 +24,7 @@
 *
 *******************************************************************************/
 
+#include "Color.h"
 #include "XmlOptions.h"
 
 //_____________________________________________________
@@ -31,20 +32,20 @@
 void installTransparencyOptions( void )
 {
 
-    XmlOptions::get().set( "TRANSPARENCY_FOREGROUND_COLOR", Option( "white", "foreground color" ) );
-    XmlOptions::get().set<double>( "TRANSPARENCY_FOREGROUND_INTENSITY", 0.3 );
+    XmlOptions::get().set<BASE::Color>( "TRANSPARENCY_FOREGROUND_COLOR", QColor( Qt::white ) );
+    XmlOptions::get().set<int>( "TRANSPARENCY_FOREGROUND_INTENSITY", 255 );
 
-    XmlOptions::get().set( "TRANSPARENCY_SHADOW_COLOR", Option( "black", "text shadow color" ) );
+    XmlOptions::get().set<BASE::Color>( "TRANSPARENCY_SHADOW_COLOR", QColor( Qt::black ) );
     XmlOptions::get().set<int>( "TRANSPARENCY_SHADOW_OFFSET", 1 );
     XmlOptions::get().set<bool>( "TRANSPARENCY_INVERSE_COLORS", false );
-    XmlOptions::get().set<bool>( "TRANSPARENCY_USE_GRADIENT", false );
+    XmlOptions::get().set<bool>( "TRANSPARENCY_USE_GRADIENT", true );
 
-    XmlOptions::get().set( "TRANSPARENCY_TINT_COLOR", Option( "white", "tint color") );
-    XmlOptions::get().set<double>( "TRANSPARENCY_TINT_INTENSITY", 0.3 );
+    XmlOptions::get().set<BASE::Color>( "TRANSPARENCY_TINT_COLOR", QColor( Qt::white ) );
+    XmlOptions::get().set<double>( "TRANSPARENCY_TINT_INTENSITY", 0 );
     XmlOptions::get().set<int>( "TRANSPARENCY_OPACITY", 255 );
 
-    XmlOptions::get().set( "TRANSPARENCY_HIGHLIGHT_COLOR", Option( "white", "highlight color") );
-    XmlOptions::get().set<double>( "TRANSPARENCY_HIGHLIGHT_INTENSITY", 0.3 );
+    XmlOptions::get().set<BASE::Color>( "TRANSPARENCY_HIGHLIGHT_COLOR", QColor( Qt::white ) );
+    XmlOptions::get().set<int>( "TRANSPARENCY_HIGHLIGHT_INTENSITY", 0 );
 
 }
 

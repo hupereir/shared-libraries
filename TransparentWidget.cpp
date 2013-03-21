@@ -236,7 +236,7 @@ namespace TRANSPARENCY
 
         // tint
         QColor tintColor( XmlOptions::get().get<BASE::Color>( "TRANSPARENCY_TINT_COLOR" ) );
-        unsigned int tintIntensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_TINT_INTENSITY" ) );
+        unsigned int tintIntensity(  XmlOptions::get().get<int>( "TRANSPARENCY_TINT_INTENSITY" ) );
         if( tintColor.isValid() && tintIntensity )
         {
 
