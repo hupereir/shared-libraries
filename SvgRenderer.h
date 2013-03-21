@@ -85,10 +85,10 @@ namespace SVG
         protected:
 
         //! true if svg has all elements matching prefix
-        bool _hasPrefix( QString prefix = "", SvgElements = All ) const;
+        bool _hasPrefix( QString prefix = QString(), SvgElements = All ) const;
 
         //! true if svg has all margin elements matching prefix
-        bool _hasMargins( QString prefix = "", SvgElements = (SvgElements)Top|Left|Right|Bottom ) const;
+        bool _hasMargins( QString prefix = QString(), SvgElements = (SvgElements)Top|Left|Right|Bottom ) const;
 
         //! render
         void _renderPanel( QPaintDevice& );
