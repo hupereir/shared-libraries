@@ -305,16 +305,18 @@ namespace SVG
     void SvgRenderer::_render( QImage& target, QString prefix, SvgElements elements, bool padding  )
     {
 
-        if( !prefix.isEmpty() ) prefix += "-";
+        // check target
+        if( target.isNull() ) return;
 
-        QSizeF cornerSize( padding ? boundsOnElement( prefix+SVG::TopLeft ).size(): QSize(0,0) );
-        double width = target.width() - 2.0*cornerSize.width();
-        double height = target.height() - 2.0*cornerSize.height();
+        const QRect targetRect( target.rect() );
+        if( !targetRect.isValid() ) return;
+
+        // check prefix
+        if( !prefix.isEmpty() ) prefix += "-";
 
         // paint svg onto image
         QPainter painter( &target );
 
-        const QRect targetRect( QPoint(0,0), target.size() );
         QRectF centerRect( targetRect );
         if( padding )
         {
@@ -326,23 +328,77 @@ namespace SVG
         }
 
         // center
-        if( elements & Center )
+        if( centerRect.isValid() && elements & Center )
         { QSvgRenderer::render( &painter, prefix+SVG::Center, centerRect ); }
 
         if( padding )
         {
 
-            // corners
-            if( elements & TopLeft ) QSvgRenderer::render( &painter, prefix+SVG::TopLeft, QRectF( QPointF( 0, 0 ), boundsOnElement( prefix+SVG::TopLeft ).size() ) );
-            if( elements & TopRight ) QSvgRenderer::render( &painter, prefix+SVG::TopRight, QRectF( QPointF( centerRect.right(), 0 ), boundsOnElement( prefix+SVG::TopRight ).size() ) );
-            if( elements & BottomLeft ) QSvgRenderer::render( &painter, prefix+SVG::BottomLeft, QRectF( QPointF( 0, centerRect.bottom() ), boundsOnElement( prefix+SVG::BottomRight ).size() ) );
-            if( elements & BottomRight ) QSvgRenderer::render( &painter, prefix+SVG::BottomRight, QRectF( centerRect.bottomRight(), boundsOnElement( prefix+SVG::BottomRight ).size() ) );
+            if( elements & TopLeft )
+            {
+                // topLeft corner
+                painter.setClipRect( QRect( targetRect.topLeft(), targetRect.center() ) );
+                QSvgRenderer::render( &painter, prefix+SVG::TopLeft, QRectF( QPointF( 0, 0 ), boundsOnElement( prefix+SVG::TopLeft ).size() ) );
+            }
 
-            // sides
-            if( elements & Top ) QSvgRenderer::render( &painter, prefix+SVG::Top, QRectF( QPointF( centerRect.left(), 0 ), QSizeF( centerRect.width(), boundsOnElement( prefix+SVG::Top ).height() ) ) );
-            if( elements & Bottom ) QSvgRenderer::render( &painter, prefix+SVG::Bottom, QRectF( centerRect.bottomLeft(), QSizeF( centerRect.width(), boundsOnElement( prefix+SVG::Bottom ).height() ) ) );
-            if( elements & Left ) QSvgRenderer::render( &painter, prefix+SVG::Left, QRectF( QPointF( 0, centerRect.top() ), QSizeF( boundsOnElement( prefix+SVG::Left ).width(), centerRect.height() ) ) );
-            if( elements & Right ) QSvgRenderer::render( &painter, prefix+SVG::Right, QRectF( centerRect.topRight(), QSizeF( boundsOnElement( prefix+SVG::Right ).width(), centerRect.height() ) ) );
+            if( elements & TopRight )
+            {
+                // topRight corner
+                painter.setClipRect( QRect( QPoint(  targetRect.center().x()+1, targetRect.top() ), QPoint( targetRect.right(), targetRect.center().y() ) ) );
+                QSvgRenderer::render( &painter, prefix+SVG::TopRight, QRectF( QPointF( centerRect.right(), 0 ), boundsOnElement( prefix+SVG::TopRight ).size() ) );
+            }
+
+            if( elements & BottomLeft )
+            {
+
+                // topRight corner
+                painter.setClipRect( QRect( QPoint(  targetRect.left(), targetRect.center().y()+1 ), QPoint( targetRect.center().x(), targetRect.bottom() ) ) );
+                QSvgRenderer::render( &painter, prefix+SVG::BottomLeft, QRectF( QPointF( 0, centerRect.bottom() ), boundsOnElement( prefix+SVG::BottomRight ).size() ) );
+            }
+
+            if( elements & BottomRight )
+            {
+                // bottomRight corner
+                painter.setClipRect( QRect( targetRect.center()+QPoint( 1, 1 ), targetRect.bottomRight() ) );
+                QSvgRenderer::render( &painter, prefix+SVG::BottomRight, QRectF( centerRect.bottomRight(), boundsOnElement( prefix+SVG::BottomRight ).size() ) );
+            }
+
+            if( centerRect.width() > 0 )
+            {
+
+                if( elements & Top )
+                {
+                    // top size
+                    painter.setClipRect( QRect( targetRect.topLeft(), QPoint( targetRect.right(), targetRect.center().y() ) ) );
+                    QSvgRenderer::render( &painter, prefix+SVG::Top, QRectF( QPointF( centerRect.left(), 0 ), QSizeF( centerRect.width(), boundsOnElement( prefix+SVG::Top ).height() ) ) );
+                }
+
+                if( elements & Bottom )
+                {
+                    // bottom size
+                    painter.setClipRect( QRect( QPoint( targetRect.left(), targetRect.center().y()+1 ), targetRect.bottomRight() ) );
+                    QSvgRenderer::render( &painter, prefix+SVG::Bottom, QRectF( centerRect.bottomLeft(), QSizeF( centerRect.width(), boundsOnElement( prefix+SVG::Bottom ).height() ) ) );
+                }
+
+            }
+
+            if( centerRect.height() > 0 )
+            {
+
+                if( elements & Left )
+                {
+                    // left side
+                    painter.setClipRect( QRect( targetRect.topLeft(), QPoint( targetRect.center().x(), targetRect.bottom() ) ) );
+                    QSvgRenderer::render( &painter, prefix+SVG::Left, QRectF( QPointF( 0, centerRect.top() ), QSizeF( boundsOnElement( prefix+SVG::Left ).width(), centerRect.height() ) ) );
+                }
+
+                if( elements & Right )
+                {
+                    painter.setClipRect( QRect( QPoint( targetRect.center().x()+1, targetRect.top() ), targetRect.bottomRight() ) );
+                    QSvgRenderer::render( &painter, prefix+SVG::Right, QRectF( centerRect.topRight(), QSizeF( boundsOnElement( prefix+SVG::Right ).width(), centerRect.height() ) ) );
+                }
+
+            }
 
         }
 
