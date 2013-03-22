@@ -24,6 +24,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "Margins.h"
 
 #include <QAction>
 #include <QPaintEvent>
@@ -149,6 +150,43 @@ namespace TRANSPARENCY
 
         //@}
 
+        //!@name margins
+        //@{
+
+        //! margins
+        const Margins& _margins( void ) const
+        { return margins_; }
+
+        //! clear margins
+        void _clearMargins( void )
+        { margins_.clear(); }
+
+        //! margins
+        void _setMargins( const Margins& margins )
+        { margins_ = margins; }
+
+        //! margins
+        void _setMargins( int margins )
+        { margins_ = Margins( margins ); }
+
+        //! outer padding
+        Margins _outerPadding( void ) const
+        { return outerPadding_; }
+
+        //! clear outer padding
+        void _clearOuterPadding( void )
+        { outerPadding_.clear(); }
+
+        //! outer padding
+        void _setOuterPadding( const Margins& margins )
+        { outerPadding_ = margins; }
+
+        //! outer padding
+        void _setOuterPadding( int margins )
+        { outerPadding_ = Margins( margins ); }
+
+        //@}
+
         //! background changed
         const bool& _backgroundChanged( void ) const
         { return backgroundChanged_; }
@@ -160,6 +198,9 @@ namespace TRANSPARENCY
         /*! this must be re-implemented by derived classes */
         virtual void _paint( QPaintDevice&, const QRect& )
         { return; }
+
+        //! update input shape (to prevent input events in outerPadding region)
+        virtual void _updateInputShape( void );
 
         //! update blur region
         virtual void _updateBlurRegion( const QRegion& );
@@ -200,6 +241,9 @@ namespace TRANSPARENCY
 
         //@}
 
+        //! true if input shape is set
+        bool hasInputShape_;
+
         //! true when background needs to be reloaded
         bool backgroundChanged_;
 
@@ -220,6 +264,12 @@ namespace TRANSPARENCY
 
         //! true when pointer is in window
         bool highlighted_;
+
+        //! margins
+        Margins margins_;
+
+        //! margins
+        Margins outerPadding_;
 
         //! store last blur region
         QRegion blurRegion_;

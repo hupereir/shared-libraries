@@ -34,6 +34,11 @@
 
 #include <QPainter>
 
+#if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+#include <X11/Xlib.h>
+#include <X11/extensions/shape.h>
+#endif
+
 namespace TRANSPARENCY
 {
 
@@ -41,6 +46,7 @@ namespace TRANSPARENCY
     TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
         QWidget( parent, flags ),
         Counter( "TRANSPARENCY::TransparentWidget" ),
+        hasInputShape_( false ),
         backgroundChanged_( true ),
         foregroundIntensity_( 255 ),
         shadowOffset_( 0 ),
@@ -134,6 +140,8 @@ namespace TRANSPARENCY
         #endif
 
         QWidget::resizeEvent( event );
+        _updateInputShape();
+
     }
 
     //____________________________________________________________________
@@ -142,6 +150,7 @@ namespace TRANSPARENCY
         setBackgroundChanged( true );
         update();
         QWidget::showEvent( event );
+        _updateInputShape();
     }
 
     //____________________________________________________________________
@@ -267,6 +276,10 @@ namespace TRANSPARENCY
         } else widgetPixmap_ = QPixmap();
         #endif
 
+        // update input shape
+        if( testAttribute(Qt::WA_WState_Created) || internalWinId() )
+        { _updateInputShape(); }
+
     }
 
     //____________________________________________________________________
@@ -301,6 +314,56 @@ namespace TRANSPARENCY
         inverseColorsAction_->setCheckable( true );
         inverseColorsAction_->setChecked( false );
         connect( inverseColorsAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleInverseColors( bool ) ) );
+
+    }
+
+    //________________________________________________
+    void TransparentWidget::_updateInputShape( void )
+    {
+
+        #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+
+        // check outer padding
+        // TODO: should remove existing shape if any
+        // TODO: should check shape extension version
+        if( _outerPadding().isNull() )
+        {
+
+            if( hasInputShape_ )
+            {
+                // reset shape
+                XShapeCombineMask (
+                    (Display*) X11Util::get().display(),
+                    winId(),
+                    ShapeInput,
+                    0, 0,
+                    None,
+                    ShapeSet);
+                hasInputShape_ = false;
+
+            }
+
+        } else {
+
+            // update shape
+            const QRect rect( _outerPadding().adjustedRect( this->rect() ) );
+            XRectangle rectangles[] =
+            { { rect.x(), rect.y(), rect.width(), rect.height() } };
+
+            XShapeCombineRectangles(
+                (Display*) X11Util::get().display(),
+                winId(),
+                ShapeInput,
+                0, 0,
+                rectangles, 1,
+                ShapeSet,
+                YXBanded );
+
+            hasInputShape_ = true;
+
+        }
+
+        #endif
 
     }
 
