@@ -34,7 +34,7 @@ BusyWidget::BusyWidget( QWidget* parent, Location location ):
     location_( location ),
     delay_( 200 ),
     radius_( 18 ),
-    thickness_( 4 ),
+    thickness_( 5 ),
     border_( 2 ),
     margin_( 10 ),
     angle_( 0 )
