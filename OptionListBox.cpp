@@ -64,7 +64,11 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     list_->setModel( model_ );
     list_->setRootIsDecorated( false );
     list_->setMask( 1<<OptionModel::CURRENT|1<<OptionModel::VALUE );
+
+    // replace item delegate
+    if( list_->itemDelegate() ) list_->itemDelegate()->deleteLater();
     list_->setItemDelegate( new TextEditionDelegate( this ) );
+
     list_->setIconSize( IconSize( IconSize::Small ) );
     layout->addWidget( list_, 1 );
 

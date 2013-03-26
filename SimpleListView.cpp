@@ -202,6 +202,9 @@ SimpleListView::SimpleListView( QWidget* parent ):
     TreeView( parent )
 {
     setSortingEnabled( false );
+
+    // replace item delegate
+    if( itemDelegate() ) itemDelegate()->deleteLater();
     setItemDelegate( new Delegate( this ) );
 
     // change font

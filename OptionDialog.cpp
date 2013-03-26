@@ -74,9 +74,12 @@ OptionDialog::OptionDialog( QWidget* parent ):
     mainLayout().addWidget( list_ = new TreeView( this ) );
     list_->setModel( &model_ );
     list_->setRootIsDecorated( true );
+
+    // replace delegate
+    if( list_->itemDelegate() ) list_->itemDelegate()->deleteLater();
     list_->setItemDelegate( new TextEditionDelegate( this ) );
+
     list_->setIconSize( QSize( 16, 16 ) );
-    list_->setItemMargin( 2 );
     list_->setOptionName( "OPTION_LIST" );
 
     // store current option state as backup and update model

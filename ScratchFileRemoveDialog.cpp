@@ -70,7 +70,6 @@ CustomDialog( parent )
         (1<<FileRecordModel::PATH) );
     list_->showHeaderAction().setChecked( false );
     list_->setOptionName( "SCRATCH_FILE_LIST" );
-    list_->setItemMargin( 2 );
 
     model_.add( files );
     model_.sort( FileRecordModel::FILE, Qt::DescendingOrder );

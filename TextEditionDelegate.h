@@ -24,14 +24,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file    TextEditionDelegate.h
-\brief   treeView item delegate for edition
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
-
 #include "Counter.h"
 #include "TreeViewItemDelegate.h"
 
