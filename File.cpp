@@ -154,10 +154,10 @@ QString File::sizeString( qint64 sizeInt )
     qreal size = sizeInt;
     static const QString unit[] =
     {
-        "B",
-        "KiB",
-        "MiB",
-        "GiB"
+        QObject::tr( "B" ),
+        QObject::tr( "KiB" ),
+        QObject::tr( "MiB" ),
+        QObject::tr( "GiB" )
     };
 
     int power = log( size )/log( 1024 );
@@ -172,7 +172,7 @@ QString File::sizeString( qint64 sizeInt )
 
     }
 
-    return QString( QObject::tr("%1 %2") ).arg( size ).arg( unit[power] );
+    return QString( "%1 %2").arg( out ).arg( unit[power] );
 
 }
 
