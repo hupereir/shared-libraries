@@ -26,6 +26,7 @@
 #include "Counter.h"
 #include "TextSelection.h"
 
+#include <QAbstractItemDelegate>
 #include <QMenu>
 #include <QTreeView>
 #include <QAction>
@@ -93,8 +94,11 @@ class TreeView: public QTreeView, public Counter
     //!@name modifiers
     //@{
 
-    //! set model
+    //! model
     virtual void setModel( QAbstractItemModel* );
+
+    //! delegate
+    virtual void setItemDelegate( QAbstractItemDelegate* );
 
     //! enable list finding
     void setFindEnabled( bool value );
@@ -277,6 +281,9 @@ class TreeView: public QTreeView, public Counter
     //! find selection in backward direction
     virtual bool _findBackward( const TextSelection& selection, bool rewind );
 
+    //! set item margin
+    virtual void _setItemMargin( int );
+
     protected slots:
 
     //! header menu
@@ -365,6 +372,9 @@ class TreeView: public QTreeView, public Counter
 
     //! force alternating row colors
     bool forceAlternatingRowColors_;
+
+    //! item margin
+    int itemMargin_;
 
     //! selected column background color
     QColor selectedColumnColor_;

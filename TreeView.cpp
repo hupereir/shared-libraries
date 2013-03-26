@@ -47,16 +47,17 @@ TreeView::TreeView( QWidget* parent ):
     Counter( "TreeView" ),
     findDialog_( 0x0 ),
     model_( 0x0 ),
-    itemMarginFromOptions_( false ),
+    itemMarginFromOptions_( true ),
     iconSizeFromOptions_( true ),
     forceAlternatingRowColors_( false ),
+    itemMargin_( 2 ),
     vertical_( 0 ),
     horizontal_( 0 ),
     lockedColumns_( 0 )
 {
     Debug::Throw( "TreeView::TreeView.\n" );
 
-    // delegate
+    // replace item delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
     TreeViewItemDelegate* delegate = new TreeViewItemDelegate( this );
     setItemDelegate( delegate );
@@ -92,8 +93,7 @@ TreeView::TreeView( QWidget* parent ):
 void TreeView::setItemMargin( int value )
 {
     itemMarginFromOptions_ = false;
-    TreeViewItemDelegate* delegate = qobject_cast<TreeViewItemDelegate*>( itemDelegate() );
-    if( delegate ) delegate->setItemMargin( value );
+    _setItemMargin( value );
 }
 
 //_______________________________________________
@@ -117,6 +117,18 @@ void TreeView::setModel( QAbstractItemModel* model )
         connect( model_, SIGNAL( layoutAboutToBeChanged() ), SLOT( storeExpandedIndexes() ) );
         connect( model_, SIGNAL( layoutChanged() ), SLOT( restoreExpandedIndexes() ) );
     }
+
+}
+
+//_______________________________________________
+void TreeView::setItemDelegate( QAbstractItemDelegate* delegate )
+{
+
+    // assign new
+    QTreeView::setItemDelegate( delegate );
+
+    // update margin to store value
+    _setItemMargin( itemMargin_ );
 
 }
 
@@ -401,6 +413,18 @@ void TreeView::findAgainForward( void )
 //______________________________________________________________________
 void TreeView::findAgainBackward( void )
 { _findBackward( TextEditor::lastSelection(), true ); }
+
+//__________________________________________________________
+void TreeView::_setItemMargin( int value )
+{
+
+    Debug::Throw() << "TreeView::_setItemMargin - value: " << value << endl;
+    itemMargin_ = value;
+
+    if( TreeViewItemDelegate* delegate = qobject_cast<TreeViewItemDelegate*>( itemDelegate() ) )
+    { delegate->setItemMargin( itemMargin_ ); }
+
+}
 
 //__________________________________________________________
 void TreeView::storeSelectedIndexes( void )
@@ -887,10 +911,7 @@ void TreeView::_updateConfiguration( void )
 
     // item margin
     if( itemMarginFromOptions_ && XmlOptions::get().contains( "LIST_ITEM_MARGIN" ) )
-    {
-        TreeViewItemDelegate* delegate = qobject_cast<TreeViewItemDelegate*>( itemDelegate() );
-        if( delegate ) delegate->setItemMargin( XmlOptions::get().get<int>( "LIST_ITEM_MARGIN" ) );
-    }
+    { _setItemMargin( XmlOptions::get().get<int>( "LIST_ITEM_MARGIN" ) ); }
 
     // icon size
     if( iconSizeFromOptions_ && XmlOptions::get().contains( "LIST_ICON_SIZE" )  )
