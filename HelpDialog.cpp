@@ -73,8 +73,11 @@ namespace BASE
         list_->setMaximumWidth(150);
         layout->addWidget( list_ );
         list_->setModel( &model_ );
+
+        // replace item delegateg
+        if( list_->itemDelegate() ) list_->itemDelegate()->deleteLater();
         list_->setItemDelegate( new TextEditionDelegate( this ) );
-        list_->setItemMargin(2);
+
         list_->setSortingEnabled( false );
         list_->header()->hide();
 
