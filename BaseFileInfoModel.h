@@ -160,6 +160,20 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
             break;
         }
 
+        case Qt::TextAlignmentRole:
+        {
+
+            switch( index.column() )
+            {
+                case SIZE: return (int)(Qt::AlignRight|Qt::AlignVCenter);
+                case MODIFIED: return (int)(Qt::AlignCenter);
+
+                default:
+                return QVariant();
+            }
+
+        }
+
         case Qt::DecorationRole:
         {
 
@@ -206,19 +220,30 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
 template<typename T>
 QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientation, int role ) const
 {
-    if( orientation == Qt::Horizontal && role == Qt::DisplayRole )
+    if( role == Qt::DisplayRole )
     {
         switch( column )
         {
             case FILE: return ItemModel::tr( "File" );
             case PATH: return ItemModel::tr( "Path" );
-            case SIZE: return ItemModel::tr( "Size" );
+            case SIZE: return ItemModel::tr( "Size " );
             case USER: return ItemModel::tr( "Owner" );
             case GROUP: return ItemModel::tr( "Group" );
             case PERMISSIONS: return ItemModel::tr( "Permissions" );
             case MODIFIED: return ItemModel::tr( "Modified" );
             default: return QVariant();
         }
+    } else if( role = Qt::TextAlignmentRole ) {
+
+        switch( column )
+        {
+            case SIZE: return (int)(Qt::AlignRight|Qt::AlignVCenter);
+            case MODIFIED: return (int)(Qt::AlignCenter);
+
+            default:
+            return QVariant();
+        }
+
     }
 
     return QVariant();
