@@ -49,8 +49,7 @@ class XmlFileList: public FileList
     {}
 
     // set tag name
-    void setTagName( const QString& value )
-    { tagName_ = value; }
+    void setTagName( const QString& );
 
     //! Read fileList from file
     virtual bool read( File = File() );

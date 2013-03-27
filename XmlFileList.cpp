@@ -46,6 +46,19 @@ XmlFileList::XmlFileList( QObject* parent ):
 }
 
 //_______________________________________________
+void XmlFileList::setTagName( const QString& value )
+{
+
+    // do nothing if tagName is unchanged
+    if( value == tagName_ ) return;
+
+    // update tag name and read
+    tagName_ = value;
+    read();
+
+}
+
+//_______________________________________________
 bool XmlFileList::read( File file )
 {
     Debug::Throw( "XmlFileList::read.\n" );
