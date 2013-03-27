@@ -83,6 +83,10 @@ namespace SPELLCHECK
     { return enabled_; }
 
     //! spell interface
+    virtual const SpellInterface& interface( void ) const
+    { return interface_; }
+
+    //! spell interface
     virtual SpellInterface& interface( void )
     { return interface_; }
 
