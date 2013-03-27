@@ -54,6 +54,7 @@ void XmlFileList::setTagName( const QString& value )
 
     // update tag name and read
     tagName_ = value;
+    clear();
     read();
 
 }
