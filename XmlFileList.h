@@ -48,6 +48,10 @@ class XmlFileList: public FileList
     virtual ~XmlFileList( void )
     {}
 
+    // set tag name
+    void setTagName( const QString& value )
+    { tagName_ = value; }
+
     //! Read fileList from file
     virtual bool read( File = File() );
 
@@ -74,6 +78,9 @@ class XmlFileList: public FileList
     bool _differs( const FileRecord::List&, const FileRecord::List& ) const;
 
     private:
+
+    //! tag name
+    QString tagName_;
 
     //! file from/to wich the files are saved
     File dbFile_;

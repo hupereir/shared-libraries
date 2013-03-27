@@ -34,7 +34,8 @@
 
 //_______________________________________________
 XmlFileList::XmlFileList( QObject* parent ):
-    FileList( parent )
+    FileList( parent ),
+    tagName_( FILERECORD::XML::FILE_LIST )
 {
 
     Debug::Throw( "XmlFileList::XmlFileList.\n" );
@@ -75,7 +76,7 @@ bool XmlFileList::_read( const XmlDocument& document )
 {
 
     // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( FILERECORD::XML::FILE_LIST );
+    QDomNodeList topNodes = document.elementsByTagName( tagName_ );
     if( topNodes.isEmpty() ) return false;
     for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
@@ -120,7 +121,7 @@ bool XmlFileList::write( File file )
     { return true; }
 
     // create main element and insert records
-    QDomElement top = document.createElement( FILERECORD::XML::FILE_LIST );
+    QDomElement top = document.createElement( tagName_ );
     foreach( const FileRecord& record, records )
     {
 
