@@ -21,57 +21,25 @@
 *******************************************************************************/
 
 #include "SimpleListView.h"
+#include "SimpleListView_p.h"
 
 #include <QAbstractItemDelegate>
+#include <QApplication>
 #include <QHeaderView>
 #include <QPainter>
+#include <QScrollBar>
 #include <QStyleOptionViewItem>
 #include <QTextLayout>
 
-//! item delegate
-class Delegate : public QAbstractItemDelegate, public Counter
-{
-
-    public:
-
-    //! constructor
-    Delegate( QObject* = 0 );
-
-    //! destructor
-    virtual ~Delegate( void )
-    {}
-
-    //! paint
-    virtual void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
-
-    //! size
-    virtual QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const;
-
-    private:
-
-    //! layout text
-    int _layoutText(QTextLayout*, int) const;
-
-    //! focus
-    void _drawFocus( QPainter*, const QStyleOptionViewItem&, const QRect& ) const;
-
-    //! icon size
-    int iconSize_;
-
-};
-
-
-#include <QApplication>
-
 //_________________________________________________________
-Delegate::Delegate( QObject *parent ):
+SimpleListViewDelegate::SimpleListViewDelegate( QObject *parent ):
     QAbstractItemDelegate( parent ),
-    Counter( "Delegate" ),
+    Counter( "SimpleListViewDelegate" ),
     iconSize_( 32 )
-{ Debug::Throw( "Delegate::Delegate.\n" ); }
+{ Debug::Throw( "SimpleListViewDelegate::SimpleListViewDelegate.\n" ); }
 
 //_________________________________________________________
-void Delegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const
+void SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const
 {
 
     // check index
@@ -86,11 +54,11 @@ void Delegate::paint( QPainter *painter, const QStyleOptionViewItem &option, con
     int pixmapWidth = pixmap.width();
     int pixmapHeight = pixmap.height();
 
-    QTextLayout iconTextLayout( text, option.font );
+    QTextLayout textLayout( text, option.font );
     QTextOption textOption( Qt::AlignHCenter );
-    iconTextLayout.setTextOption( textOption );
-    int maxWidth = qMax( 3 * pixmapWidth, 8 * fontMetrics.height() );
-    _layoutText( &iconTextLayout, maxWidth );
+    textLayout.setTextOption( textOption );
+    const int maxWidth = qMax( 3 * pixmapWidth, 8 * fontMetrics.height() );
+    _layoutText( &textLayout, maxWidth );
 
     QPalette::ColorGroup colorGroup = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
 
@@ -116,7 +84,7 @@ void Delegate::paint( QPainter *painter, const QStyleOptionViewItem &option, con
     { painter->drawPixmap( option.rect.x() + (option.rect.width()/2)-(pixmapWidth/2), option.rect.y() + 5, pixmap ); }
 
     if ( !text.isEmpty() )
-    { iconTextLayout.draw( painter, QPoint( option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + pixmapHeight + 7 ) ); }
+    { textLayout.draw( painter, QPoint( option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + pixmapHeight + 7 ) ); }
 
     // restore pen
     painter->setPen( oldPen );
@@ -125,7 +93,7 @@ void Delegate::paint( QPainter *painter, const QStyleOptionViewItem &option, con
 }
 
 //_________________________________________________________
-QSize Delegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const
+QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const
 {
 
     if ( !index.isValid() ) return QSize();
@@ -145,9 +113,11 @@ QSize Delegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex 
         pixmapWidth = pixmap.width();
     }
 
-    QTextLayout iconTextLayout( text, option.font );
-    int textWidth = _layoutText( &iconTextLayout, qMax( 3 * pixmapWidth, 8 * fontMetrics.height() ) );
-    int textHeight = iconTextLayout.boundingRect().height();
+
+    QTextLayout textLayout( text, option.font );
+    const int maxWidth = qMax( 3 * pixmapWidth, 8 * fontMetrics.height() );
+    const int textWidth =     _layoutText( &textLayout, maxWidth );
+    int textHeight = textLayout.boundingRect().height();
 
     int width, height;
     if ( text.isEmpty() ) height = pixmapHeight;
@@ -159,7 +129,7 @@ QSize Delegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex 
 }
 
 //_________________________________________________________
-int Delegate::_layoutText(QTextLayout *layout, int maxWidth) const
+int SimpleListViewDelegate::_layoutText(QTextLayout *layout, int maxWidth) const
 {
     qreal height = 0;
     int textWidth = 0;
@@ -179,7 +149,7 @@ int Delegate::_layoutText(QTextLayout *layout, int maxWidth) const
 }
 
 //_________________________________________________________
-void Delegate::_drawFocus( QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect ) const
+void SimpleListViewDelegate::_drawFocus( QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect ) const
 {
     if (option.state & QStyle::State_HasFocus)
     {
@@ -205,7 +175,7 @@ SimpleListView::SimpleListView( QWidget* parent ):
 
     // replace item delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
-    setItemDelegate( new Delegate( this ) );
+    setItemDelegate( new SimpleListViewDelegate( this ) );
 
     // change font
     QFont boldFont( font() );
@@ -232,11 +202,6 @@ void SimpleListView::setModel( QAbstractItemModel* model )
 //_______________________________________________
 void SimpleListView::_adjustWidth()
 {
-    if( !model() ) return;
-
-    int width = 0;
-    for( int i = 0; i < model()->rowCount(); ++i )
-    { width = qMax( width, sizeHintForIndex( model()->index( i, 0 ) ).width() ); }
-    setFixedWidth( width + 25 );
-
+    if( model() )
+    { setFixedWidth( sizeHintForColumn(0) + verticalScrollBar()->width() + 10 ); }
 }
