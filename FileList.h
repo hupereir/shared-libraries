@@ -60,6 +60,10 @@ class FileList: public QObject, public Counter
     virtual FileRecord& get( const File& file )
     { return _add( FileRecord( file ), false ); }
 
+    //! empty
+    virtual bool isEmpty( void ) const
+    { return _records().isEmpty(); }
+
     //! gets file list size
     virtual int size( void ) const
     { return _records().size(); }
@@ -79,7 +83,7 @@ class FileList: public QObject, public Counter
 
     //! returns true if file list can be cleaned
     virtual bool cleanEnabled( void ) const
-    { return (check()) ? cleanEnabled_ : !_records().empty(); }
+    { return (check()) ? cleanEnabled_ : !isEmpty(); }
 
     //! clean files. Remove either invalid or all files, depending on check_
     virtual void clean( void );
