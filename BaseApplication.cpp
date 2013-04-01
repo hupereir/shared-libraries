@@ -202,8 +202,8 @@ void BaseApplication::_about( const QString& constName, const QString& constVers
 
     in <<
         tr( "<p>This application was written for personal use only. "
-        "It is not meant to be bug free, although all efforts "
-        "are made so that it remains/becomes so. "
+        "It is not guaranteed to be bug free, although all efforts "
+        "are made so that it becomes and remains so. "
         "<p>Suggestions, comments and bug reports are welcome. "
         "Please use the following e-mail address:"
         "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>" );
