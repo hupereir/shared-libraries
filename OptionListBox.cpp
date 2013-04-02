@@ -23,6 +23,7 @@
 
 #include "AnimatedLineEditor.h"
 #include "ContextMenu.h"
+#include "CustomDialog.h"
 #include "Debug.h"
 #include "BaseIcons.h"
 #include "IconEngine.h"
@@ -36,6 +37,65 @@
 #include <QHeaderView>
 #include <QLabel>
 #include <algorithm>
+
+//_______________________________________________________
+class EditDialog: public CustomDialog
+{
+    public:
+
+    //! constructor
+    EditDialog( QWidget*, bool, QFileDialog::FileMode );
+
+    //! editor
+    BrowsedLineEditor::Editor& editor( void ) const
+    { return *editor_; }
+
+    //! checkbox
+    QCheckBox& checkbox( void ) const
+    { return *checkbox_; }
+
+    private:
+
+    //! editor
+    BrowsedLineEditor::Editor* editor_;
+
+    //! default checkbox
+    QCheckBox* checkbox_;
+
+};
+
+//_______________________________________________________
+EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode mode ):
+    CustomDialog( parent )
+{
+
+    setOptionName( "OPTIONLISTBOX_EDIT" );
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin(0);
+    vLayout->setSpacing(5);
+    mainLayout().addLayout( vLayout );
+
+    if( browsable )
+    {
+
+        BrowsedLineEditor* browseEditor = new BrowsedLineEditor( this );
+        vLayout->addWidget( browseEditor );
+        browseEditor->setFileMode( mode );
+        editor_ = &browseEditor->editor();
+
+    } else {
+
+        editor_ = new BrowsedLineEditor::Editor( this );
+        vLayout->addWidget( editor_ );
+
+    }
+
+    vLayout->addWidget( checkbox_ = new QCheckBox( tr( "Set as default" ), this ) );
+
+    setMinimumSize( QSize( 320, 0 ) );
+
+    return;
+}
 
 //_______________________________________________________
 OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
@@ -140,9 +200,9 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 }
 
 //_______________________________________________________
-void OptionListBox::setModel( OptionModel* model )
+void OptionListBox::_setModel( OptionModel* model )
 {
-    Debug::Throw( "OptionListBox::setModel.\n" );
+    Debug::Throw( "OptionListBox::_setModel.\n" );
     if( list_ )
     {
         list_->setModel( model );
@@ -151,7 +211,6 @@ void OptionListBox::setModel( OptionModel* model )
     }
 
     if( model_ ) model_->deleteLater();
-    list_->setModel( model );
     model_ = model;
     model_->setReadOnly( false );
 
@@ -232,7 +291,7 @@ void OptionListBox::_add( void )
     if( dialog.editor().text().isEmpty() ) return;
 
     // create new item
-    Options::Pair option( optionName(), dialog.editor().text() );
+    const Options::Pair option( optionName(), dialog.editor().text() );
     model_->add( option );
 
     // make sure item is selected
@@ -338,37 +397,4 @@ void OptionListBox::_setDefault( void )
 
     list_->resizeColumns();
 
-}
-
-//_______________________________________________________
-OptionListBox::EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode mode ):
-    CustomDialog( parent )
-{
-
-    setOptionName( "OPTIONLISTBOX_EDIT" );
-    QVBoxLayout* vLayout = new QVBoxLayout();
-    vLayout->setMargin(0);
-    vLayout->setSpacing(5);
-    mainLayout().addLayout( vLayout );
-
-    if( browsable )
-    {
-
-        BrowsedLineEditor* browseEditor = new BrowsedLineEditor( this );
-        vLayout->addWidget( browseEditor );
-        browseEditor->setFileMode( mode );
-        editor_ = &browseEditor->editor();
-
-    } else {
-
-        editor_ = new BrowsedLineEditor::Editor( this );
-        vLayout->addWidget( &editor() );
-
-    }
-
-    vLayout->addWidget( checkbox_ = new QCheckBox( tr( "Set as default" ), this ) );
-
-    setMinimumSize( QSize( 320, 0 ) );
-
-    return;
 }

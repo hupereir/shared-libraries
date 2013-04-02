@@ -25,7 +25,6 @@
 *******************************************************************************/
 
 #include "BrowsedLineEditor.h"
-#include "CustomDialog.h"
 #include "OptionWidget.h"
 #include "Options.h"
 
@@ -49,14 +48,11 @@ class OptionListBox: public QWidget, public OptionWidget
     public:
 
     //! constructor
-    OptionListBox( QWidget* parent, const QString& optionName );
+    OptionListBox( QWidget*, const QString& );
 
     //! destructor
     virtual ~OptionListBox( void )
     {}
-
-    //! set model
-    void setModel( OptionModel* );
 
     //! read value from option
     void read( void );
@@ -72,50 +68,37 @@ class OptionListBox: public QWidget, public OptionWidget
     void setFileMode( const QFileDialog::FileMode& mode )
     { fileMode_ = mode; }
 
-    private slots:
+    protected slots:
 
     //! update buttons
-    void _updateButtons( void );
+    virtual void _updateButtons( void );
 
     //! add a value
-    void _add( void );
+    virtual void _add( void );
 
     //! add a value
-    void _edit( void );
+    virtual void _edit( void );
 
     //! remove a value
-    void _remove();
+    virtual void _remove();
 
     //! set value as default
-    void _setDefault();
+    virtual void _setDefault();
+
+    protected:
+
+    //! model
+    OptionModel& _model( void ) const
+    { return *model_; }
+
+    //! set model
+    void _setModel( OptionModel* );
+
+    //! list
+    TreeView& _list( void ) const
+    { return *list_; }
 
     private:
-
-    //! used to edit options
-    class EditDialog: public CustomDialog
-    {
-        public:
-
-        //! constructor
-        EditDialog( QWidget*, bool, QFileDialog::FileMode );
-
-        //! editor
-        BrowsedLineEditor::Editor& editor( void ) const
-        { return *editor_; }
-
-        //! checkbox
-        QCheckBox& checkbox( void ) const
-        { return *checkbox_; }
-
-        private:
-
-        //! editor
-        BrowsedLineEditor::Editor* editor_;
-
-        //! default checkbox
-        QCheckBox* checkbox_;
-
-    };
 
     //! if true, use browsable line editor for Add
     bool browsable_;
