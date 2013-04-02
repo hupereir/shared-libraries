@@ -94,6 +94,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 
     // cancel button
     _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), tr( "Cancel" ), this ) );
+    button->setShortcut( Qt::Key_Escape );
     connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
     connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );
     connect( button, SIGNAL( clicked() ), SLOT( reject() ) );

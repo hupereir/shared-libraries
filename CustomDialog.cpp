@@ -80,6 +80,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     if( flags & CancelButton )
     {
         buttonLayout_->addWidget( cancelButton_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), tr( "Cancel" ), this ) );
+        cancelButton_->setShortcut( Qt::Key_Escape );
         connect( cancelButton_, SIGNAL( clicked() ), SLOT( reject() ) );
     }
 

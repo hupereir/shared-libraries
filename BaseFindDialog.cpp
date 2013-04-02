@@ -124,6 +124,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     // insert Cancel button
     _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), tr( "Close" ), this ) );
     connect( button, SIGNAL( clicked() ), SLOT( close() ) );
+    button->setShortcut( Qt::Key_Escape );
     button->setAutoDefault( false );
 
     // disable buttons

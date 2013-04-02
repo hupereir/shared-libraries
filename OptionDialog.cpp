@@ -91,7 +91,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     connect( &model_, SIGNAL( specialOptionModified( OptionPair ) ), SLOT( _specialOptionModified( OptionPair ) ) );
     connect( this, SIGNAL( configurationChanged() ), Singleton::get().application(), SIGNAL( configurationChanged() ) );
 
-    // insert OK and Cancel button
+    // insert reload
     QPushButton *button;
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
     connect( button, SIGNAL( clicked() ), SLOT( _reload() ) );
