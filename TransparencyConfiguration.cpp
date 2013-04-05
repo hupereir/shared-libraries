@@ -119,7 +119,7 @@ namespace TRANSPARENCY
         colorDisplay->setToolTip( tr( "Background highlight color when entering widget" ) );
         addOptionWidget( colorDisplay );
 
-        // tint intensity
+        // background intensity
         gridLayout->addWidget( new QLabel( tr( "Background intensity:" ), box ), 2, 0, 1, 1 );
         gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_TINT_INTENSITY" ), 2, 1, 1, 1 );
         slider->setScale( 1.0/2.55 );
@@ -127,7 +127,7 @@ namespace TRANSPARENCY
         slider->setToolTip( tr( "Transparent background tint intensity" ) );
         addOptionWidget( slider );
 
-        // tint intensity
+        // highlight intensity
         gridLayout->addWidget( new QLabel( tr( "Highlight intensity:" ), box ), 3, 0, 1, 1 );
         gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_HIGHLIGHT_INTENSITY" ), 3, 1, 1, 1 );
         slider->setScale( 1.0/2.55 );
