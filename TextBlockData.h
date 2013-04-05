@@ -24,79 +24,72 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TextBlockData.h
-  \brief TextBlock data
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QTextBlockUserData>
 #include "TextBlockFlags.h"
 #include "Counter.h"
 #include "Debug.h"
+
+#include <QTextBlockUserData>
 
 //! TextBlock data
 class TextBlockData: public QTextBlockUserData, public Counter
 {
 
-  public:
+    public:
 
-  //! constructor
-  TextBlockData():
-    QTextBlockUserData(),
-    Counter( "TextBlockData" ),
-    flags_( TextBlock::NONE )
-  { Debug::Throw( 2, "TextBlockData::TextBlockData.\n" ); }
+    //! constructor
+    TextBlockData():
+        QTextBlockUserData(),
+        Counter( "TextBlockData" ),
+        flags_( TextBlock::NONE )
+    { Debug::Throw( 2, "TextBlockData::TextBlockData.\n" ); }
 
-  //! destructor
-  virtual ~TextBlockData( void )
-  { Debug::Throw( 2, "TextBlockData::~TextBlockData.\n" ); }
+    //! destructor
+    virtual ~TextBlockData( void )
+    { Debug::Throw( 2, "TextBlockData::~TextBlockData.\n" ); }
 
-   //! flags
-  const unsigned int& flags( void ) const
-  { return flags_; }
+    //! flags
+    const unsigned int& flags( void ) const
+    { return flags_; }
 
-  //! flags
-  void setFlags( const unsigned int& flags )
-  { flags_ = flags; }
+    //! flags
+    void setFlags( const unsigned int& flags )
+    { flags_ = flags; }
 
-  //! flags
-  bool hasFlag( const unsigned int& flag ) const
-  { return flags_ & flag; }
+    //! flags
+    bool hasFlag( const unsigned int& flag ) const
+    { return flags_ & flag; }
 
-  //! flags
-  void setFlag( const unsigned int& flag, const bool& value )
-  {
-    if( value ) flags_ |= flag;
-    else flags_ &= (~flag);
-  }
-
-  //! block background
-  /*! returns true if changed */
-  bool setBackground( const QColor& color )
-  {
-    if( (background_.isValid() || color.isValid() ) && color != background_ )
+    //! flags
+    void setFlag( const unsigned int& flag, const bool& value )
     {
-      background_ = color;
-      setFlag( TextBlock::HAS_BACKGROUND, color.isValid() );
-      return true;
-    } else return false;
-  }
+        if( value ) flags_ |= flag;
+        else flags_ &= (~flag);
+    }
 
-  //! block background
-  const QColor& background( void ) const
-  { return background_; }
+    //! block background
+    /*! returns true if changed */
+    bool setBackground( const QColor& color )
+    {
+        if( (background_.isValid() || color.isValid() ) && color != background_ )
+        {
+            background_ = color;
+            setFlag( TextBlock::HAS_BACKGROUND, color.isValid() );
+            return true;
+        } else return false;
+    }
 
-  private:
+    //! block background
+    const QColor& background( void ) const
+    { return background_; }
 
-  //! flags
-  /* is a bit pattern */
-  unsigned int flags_;
+    private:
 
-  //! block background color (overridden by active)
-  QColor background_;
+    //! flags
+    /* is a bit pattern */
+    unsigned int flags_;
+
+    //! block background color (overridden by active)
+    QColor background_;
 
 };
 

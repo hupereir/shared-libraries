@@ -24,31 +24,18 @@
 *
 *******************************************************************************/
 
-/*!
-  \file TextBlockFlags.h
-  \brief handles block tags
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 //! text block properties
 namespace TextBlock
 {
 
-  enum
-  {
+    enum
+    {
 
-    //! no tag
-    NONE = 0,
+        NONE = 0,
+        HAS_BACKGROUND = 1<<0,
+        CURRENT_BLOCK = 1<<1
 
-    //! block has background color
-    HAS_BACKGROUND = 1<<0,
-
-    //! block is current
-    CURRENT_BLOCK = 1<<1
-
-  };
+    };
 
 };
 
