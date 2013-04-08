@@ -264,6 +264,7 @@ void BaseApplication::_updateFonts( void )
         // generic font
         if( useFixedFonts() ) font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
         qApp->setFont( font, "QTextEdit" );
+        qApp->setFont( font, "QPlainTextEdit" );
 
     } else {
 
@@ -296,6 +297,7 @@ void BaseApplication::_updateFonts( void )
             // fixed fonts
             if( useFixedFonts() ) font.fromString( settings.value( "fixed" ).toStringList().join( "," ) );
             qApp->setFont( font, "QTextEdit" );
+            qApp->setFont( font, "QPlainTextEdit" );
 
         }
 
