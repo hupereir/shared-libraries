@@ -29,11 +29,11 @@
 #include "ListModel.h"
 #include "AnimatedLineEditor.h"
 #include "SpellInterface.h"
+#include "TextEditor.h"
 #include "TextPosition.h"
 
 #include <QComboBox>
 #include <QLabel>
-#include <QTextEdit>
 #include <QHash>
 
 class TreeView;
@@ -51,7 +51,7 @@ namespace SPELLCHECK
         public:
 
         //! constructor
-        SpellDialog( QTextEdit*, const bool& read_only = false );
+        SpellDialog( TextEditor*, const bool& read_only = false );
 
         //! destructor
         virtual ~SpellDialog();
@@ -66,7 +66,7 @@ namespace SPELLCHECK
         { return interface_; }
 
         //! editor
-        QTextEdit &editor( void )
+        TextEditor &editor( void )
         { return *editor_; }
 
         //! dictionary
@@ -204,7 +204,7 @@ namespace SPELLCHECK
         SpellInterface interface_;
 
         //! text editor
-        QTextEdit* editor_;
+        TextEditor* editor_;
 
         //! initial readonly state
         bool readOnlyEditor_;

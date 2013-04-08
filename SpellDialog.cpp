@@ -44,7 +44,7 @@
 namespace SPELLCHECK
 {
     //_______________________________________________
-    SpellDialog::SpellDialog( QTextEdit* parent, const bool& read_only ):
+    SpellDialog::SpellDialog( TextEditor* parent, const bool& read_only ):
         BaseDialog( parent ),
         Counter( "SpellDialog" ),
         editor_( parent )
