@@ -84,10 +84,6 @@ class LineNumberDisplay: public QObject, public Counter
 
     private:
 
-    //! editor
-    TextEditor& _editor( void ) const
-    { return *editor_; }
-
     //! map block number and position
     class LineNumberData
     {

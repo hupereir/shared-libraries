@@ -28,7 +28,6 @@
 #include "ListModel.h"
 #include "TimeStamp.h"
 
-#include <QMimeData>
 #include <QHash>
 #include <QApplication>
 #include <QIcon>

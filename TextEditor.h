@@ -38,6 +38,7 @@
 #include "TextSelection.h"
 
 #include <QAction>
+#include <QBasicTimer>
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QFocusEvent>
@@ -45,9 +46,6 @@
 #include <QScrollBar>
 #include <QTextBlockFormat>
 #include <QTextCursor>
-#include <QTextEdit>
-
-#include <QBasicTimer>
 #include <QTimerEvent>
 
 class BaseContextMenu;
@@ -57,8 +55,16 @@ class SelectLineDialog;
 class TextEditorMarginWidget;
 class LineNumberDisplay;
 
+#ifdef QT_USE_PLAIN_TEXT_EDIT
+#include <QPlainTextEdit>
+typedef QPlainTextEdit BaseEditor;
+#else
+#include <QTextEdit>
+typedef QTextEdit BaseEditor;
+#endif
+
 //! Customized QTextEdit object
-class TextEditor: public QTextEdit, public BASE::Key, public Counter
+class TextEditor: public BaseEditor, public BASE::Key, public Counter
 {
 
     Q_OBJECT
@@ -96,6 +102,12 @@ class TextEditor: public QTextEdit, public BASE::Key, public Counter
 
     //! return true if current textCursor is visible
     virtual bool isCursorVisible( void ) const;
+
+    #ifdef QT_USE_PLAIN_TEXT_EDIT
+    //! set text
+    virtual void setText( const QString& value )
+    { setPlainText( value ); }
+    #endif
 
     //! set text
     virtual void setPlainText( const QString& );

@@ -36,7 +36,7 @@ void DetailsDialog::setDetails( const QString& details )
     TextEditor* editor = new TextEditor();
     editor->setReadOnly( true );
     editor->setWrapFromOptions( false );
-    editor->setLineWrapMode( QTextEdit::WidgetWidth );
+    editor->setLineWrapMode( TextEditor::WidgetWidth );
     editor->setText( details );
     setDetails( editor );
 

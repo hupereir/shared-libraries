@@ -62,7 +62,7 @@ TextSelection& TextEditor::lastSelection( void )
 
 //______________________________________________
 TextEditor::TextEditor( QWidget *parent ):
-    QTextEdit( parent ),
+    BaseEditor( parent ),
     Counter( "TextEditor" ),
     marginWidget_( new TextEditorMarginWidget( this ) ),
     findDialog_( 0 ),
@@ -88,6 +88,13 @@ TextEditor::TextEditor( QWidget *parent ):
     // set customized document
     CustomTextDocument* document( new CustomTextDocument(0) );
     BASE::Key::associate( this, document );
+
+    #ifdef QT_USE_PLAIN_TEXT_EDIT
+    // set document layout
+    document->setDocumentLayout( new QPlainTextDocumentLayout( document ) );
+    #endif
+
+    // assign
     setDocument( document );
 
     // paragraph highlight
@@ -222,7 +229,7 @@ void TextEditor::setPlainText( const QString& text )
 
     bool enabled( blockHighlight().isEnabled() );
     blockHighlight().setEnabled( false );
-    QTextEdit::setPlainText( text );
+    BaseEditor::setPlainText( text );
     blockHighlight().setEnabled( enabled );
 
 }
@@ -234,7 +241,13 @@ void TextEditor::setHtml( const QString& text )
 
     bool enabled( blockHighlight().isEnabled() );
     blockHighlight().setEnabled( false );
-    QTextEdit::setHtml( text );
+
+    #ifdef QT_USE_PLAIN_TEXT_EDIT
+    BaseEditor::setPlainText( text );
+    #else
+    BaseEditor::setHtml( text );
+    #endif
+
     blockHighlight().setEnabled( enabled );
 
 }
@@ -393,7 +406,7 @@ void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
 
     }
 
-    QTextEdit::mergeCurrentCharFormat( format );
+    BaseEditor::mergeCurrentCharFormat( format );
     return;
 
 }
@@ -404,7 +417,7 @@ void TextEditor::synchronize( TextEditor* editor )
     Debug::Throw( "TextEditor::synchronize.\n" );
 
     // retrieve and cast old document
-    CustomTextDocument* document( qobject_cast<CustomTextDocument*>( QTextEdit::document() ) );
+    CustomTextDocument* document( qobject_cast<CustomTextDocument*>( BaseEditor::document() ) );
 
     // assign new document and associate
     setDocument( editor->document() );
@@ -477,7 +490,7 @@ void TextEditor::showReplacements( const unsigned int& counts )
 void TextEditor::setReadOnly( bool readonly )
 {
     Debug::Throw( "TextEditor::setReadOnly.\n" );
-    QTextEdit::setReadOnly( readonly );
+    BaseEditor::setReadOnly( readonly );
     _updateReadOnlyActions( readonly );
     if( readonly ) document()->setModified( false );
 }
@@ -595,7 +608,7 @@ void TextEditor::cut( void )
         _boxSelection().removeSelectedText();
         _boxSelection().clear();
         emit copyAvailable( false );
-    } else QTextEdit::cut();
+    } else BaseEditor::cut();
 
     return;
 }
@@ -605,7 +618,7 @@ void TextEditor::copy( void )
 {
     Debug::Throw( "TextEditor::copy.\n" );
     if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().toClipboard( QClipboard::Clipboard );
-    else QTextEdit::copy();
+    else BaseEditor::copy();
 }
 
 //________________________________________________
@@ -624,7 +637,7 @@ void TextEditor::paste( void )
         _boxSelection().fromClipboard( QClipboard::Clipboard );
         _boxSelection().clear();
 
-    } else QTextEdit::paste();
+    } else BaseEditor::paste();
 
 }
 
@@ -927,7 +940,7 @@ void TextEditor::enterEvent( QEvent* event )
     _updateClipboardActions( QClipboard::Selection );
     #endif
 
-    QTextEdit::enterEvent( event );
+    BaseEditor::enterEvent( event );
 
 }
 
@@ -960,7 +973,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
                 {
                     // store position for drag
                     dragStart_ = event->pos();
-                    return QTextEdit::mousePressEvent( event );
+                    return BaseEditor::mousePressEvent( event );
                 }
 
                 // if single click outside of existing box selection, clear the selection
@@ -990,7 +1003,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
 
                 }
 
-                return QTextEdit::mousePressEvent( event );
+                return BaseEditor::mousePressEvent( event );
                 break;
 
             }
@@ -1019,7 +1032,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
     } else {
 
         // call base class implementation
-        QTextEdit::mousePressEvent( event );
+        BaseEditor::mousePressEvent( event );
 
     }
 
@@ -1035,7 +1048,7 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent* event )
 
     Debug::Throw( "TextEditor::mouseDoubleClickEvent.\n" );
 
-    if( event->button() != Qt::LeftButton ) QTextEdit::mouseDoubleClickEvent( event );
+    if( event->button() != Qt::LeftButton ) BaseEditor::mouseDoubleClickEvent( event );
     #if QT_VERSION < 0x050000
     /*
     Prior to Qt5, mousePressEvent is not sent in case of double-click.
@@ -1098,7 +1111,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
         return;
     }
 
-    return QTextEdit::mouseMoveEvent( event );
+    return BaseEditor::mouseMoveEvent( event );
 
 }
 
@@ -1119,7 +1132,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 
         _boxSelection().finish( event->pos() );
         _synchronizeBoxSelection();
-        return QTextEdit::mouseReleaseEvent( event );
+        return BaseEditor::mouseReleaseEvent( event );
 
     }
 
@@ -1129,7 +1142,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
         _boxSelection().clear();
         _synchronizeBoxSelection();
         emit copyAvailable( false );
-        return QTextEdit::mouseReleaseEvent( event );
+        return BaseEditor::mouseReleaseEvent( event );
 
     }
 
@@ -1148,7 +1161,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
     }
 
     // process event
-    QTextEdit::mouseReleaseEvent( event );
+    BaseEditor::mouseReleaseEvent( event );
 
 }
 
@@ -1186,7 +1199,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         _boxSelection().clear();
 
         event->acceptProposedAction();
-        QTextEdit::dropEvent( &empty_event );
+        BaseEditor::dropEvent( &empty_event );
         return;
 
     }
@@ -1229,7 +1242,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         new_cursor.endEditBlock();
 
         event->acceptProposedAction();
-        QTextEdit::dropEvent( &empty_event );
+        BaseEditor::dropEvent( &empty_event );
         return;
 
 
@@ -1249,7 +1262,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             // current selection is inserted in itself. Doing nothing
             Debug::Throw( "TextEditor::dropEvent - [box] doing nothing.\n" );
             event->acceptProposedAction();
-            QTextEdit::dropEvent( &empty_event );
+            BaseEditor::dropEvent( &empty_event );
             return;
 
         } else {
@@ -1260,7 +1273,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             setTextCursor( _boxSelection().cursorList().back() );
             _boxSelection().clear();
             event->acceptProposedAction();
-            QTextEdit::dropEvent( &empty_event );
+            BaseEditor::dropEvent( &empty_event );
             return;
 
         }
@@ -1283,7 +1296,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             Debug::Throw( "TextEditor::dropEvent - inserting selection.\n" );
             cursor.insertText( event->mimeData()->text() );
             event->acceptProposedAction();
-            QTextEdit::dropEvent( &empty_event );
+            BaseEditor::dropEvent( &empty_event );
             return;
 
         }
@@ -1302,7 +1315,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             setTextCursor( cursor );
 
             event->acceptProposedAction();
-            QTextEdit::dropEvent( &empty_event );
+            BaseEditor::dropEvent( &empty_event );
             return;
 
         }
@@ -1310,7 +1323,7 @@ void TextEditor::dropEvent( QDropEvent* event )
     }
 
     // for all other cases, use default
-    return QTextEdit::dropEvent( event );
+    return BaseEditor::dropEvent( event );
 
 }
 
@@ -1359,13 +1372,13 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
             (event->key() >= Qt::Key_F1 &&  event->key() <= Qt::Key_F25) ||
             (event->key() >= Qt::Key_Super_L && event->key() <= Qt::Key_Direction_R ) ||
             (event->modifiers() != Qt::NoModifier && event->modifiers() != Qt::ShiftModifier ) )
-        { return QTextEdit::keyPressEvent( event ); }
+        { return BaseEditor::keyPressEvent( event ); }
 
         // if cursor move clear selection
         if( event->key() >= Qt::Key_Home && event->key() <= Qt::Key_Down )
         {
             _boxSelection().clear();
-            return QTextEdit::keyPressEvent( event );
+            return BaseEditor::keyPressEvent( event );
         }
 
         // if delete or backspace remove selection
@@ -1417,7 +1430,7 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     }
 
     // default event handling
-    QTextEdit::keyPressEvent( event );
+    BaseEditor::keyPressEvent( event );
 
     // check NumLock and CapsLock
     /*! right now this works only on X11 */
@@ -1440,7 +1453,7 @@ void TextEditor::focusInEvent( QFocusEvent* event )
     { emit modifiersChanged( modifiers() );}
 
     emit hasFocus( this );
-    QTextEdit::focusInEvent( event );
+    BaseEditor::focusInEvent( event );
 }
 
 //________________________________________________
@@ -1460,13 +1473,13 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 //______________________________________________________________
 void TextEditor::resizeEvent( QResizeEvent* event )
 {
-    QTextEdit::resizeEvent( event );
+    BaseEditor::resizeEvent( event );
 
     // update margin widget geometry
     QRect rect( contentsRect() );
     _marginWidget().setGeometry( QRect( rect.topLeft(), QSize( _marginWidget().width(), rect.height() ) ) );
 
-    if( lineWrapMode() == QTextEdit::NoWrap ) return;
+    if( lineWrapMode() == BaseEditor::NoWrap ) return;
     if( event->oldSize().width() == event->size().width() ) return;
     if( !_hasLineNumberDisplay() ) return;
 
@@ -1542,7 +1555,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
     painter.end();
 
     // base class painting
-    QTextEdit::paintEvent( event );
+    BaseEditor::paintEvent( event );
 
     return;
 
@@ -1560,7 +1573,7 @@ void TextEditor::timerEvent(QTimerEvent *event)
         QMouseEvent mouseEvent(QEvent::MouseMove, position, globalPosition, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
         mouseMoveEvent(&mouseEvent);
 
-    } else return QTextEdit::timerEvent( event );
+    } else return BaseEditor::timerEvent( event );
 
 }
 
@@ -1572,7 +1585,7 @@ void TextEditor::scrollContentsBy( int dx, int dy )
     if( dy != 0 ) _marginWidget().setDirty();
 
     // base class call
-    QTextEdit::scrollContentsBy( dx, dy );
+    BaseEditor::scrollContentsBy( dx, dy );
 
 }
 
@@ -1689,8 +1702,8 @@ void TextEditor::_installActions( void )
     // wrap mode
     addAction( wrapModeAction_ = new QAction( tr( "Wrap Text" ), this ) );
     wrapModeAction_->setCheckable( true );
-    wrapModeAction_->setChecked( lineWrapMode() == QTextEdit::WidgetWidth );
-    _setModifier( ModifierWrap, lineWrapMode() == QTextEdit::WidgetWidth );
+    wrapModeAction_->setChecked( lineWrapMode() == BaseEditor::WidgetWidth );
+    _setModifier( ModifierWrap, lineWrapMode() == BaseEditor::WidgetWidth );
     wrapModeAction_->setShortcut( Qt::Key_F10 );
     wrapModeAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( wrapModeAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
@@ -2457,7 +2470,7 @@ void TextEditor::_toggleBlockHighlight( bool state )
 bool TextEditor::_toggleWrapMode( bool state )
 {
     Debug::Throw() << "TextEditor::_toggleWrapMode - " << (state ? "True":"false") << endl;
-    LineWrapMode mode( state ? QTextEdit::WidgetWidth : QTextEdit::NoWrap );
+    LineWrapMode mode( state ? BaseEditor::WidgetWidth : BaseEditor::NoWrap );
     if( mode == lineWrapMode() ) return false;
 
     setLineWrapMode( mode );

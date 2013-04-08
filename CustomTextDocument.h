@@ -23,19 +23,12 @@
 *
 *******************************************************************************/
 
-/*!
-\file CustomTextDocument.h
-\brief customized TextDocument to derive from BASE::Key
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <QTextDocument>
-
 #include "Counter.h"
 #include "Debug.h"
 #include "Key.h"
+
+#include <QPlainTextDocumentLayout>
+#include <QTextDocument>
 
 //! customized TextDocument to derive from BASE::Key
 /*! this is needed to easily handled multiple text editors that share the same document */

@@ -35,20 +35,20 @@
 
 //____________________________________________________________________________
 LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
-QObject( editor ),
-Counter( "LineNumberDisplay" ),
-editor_( editor ),
-needsUpdate_( true ),
-width_( 0 )
+    QObject( editor ),
+    Counter( "LineNumberDisplay" ),
+    editor_( editor ),
+    needsUpdate_( true ),
+    width_( 0 )
 {
 
     Debug::Throw( "LineNumberDisplay::LineNumberDisplay.\n" );
 
-    connect( &_editor().wrapModeAction(), SIGNAL( toggled( bool ) ), SLOT( needUpdate() ) );
+    connect( &editor_->wrapModeAction(), SIGNAL( toggled( bool ) ), SLOT( needUpdate() ) );
 
     // document connections
-    connect( _editor().document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged() ) );
-    connect( _editor().document(), SIGNAL( contentsChanged() ), SLOT( _contentsChanged() ) );
+    connect( editor_->document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged() ) );
+    connect( editor_->document(), SIGNAL( contentsChanged() ), SLOT( _contentsChanged() ) );
 
 }
 
@@ -68,8 +68,8 @@ void LineNumberDisplay::synchronize( LineNumberDisplay* display )
     width_ = display->width_;
 
     // re-initialize connections
-    connect( _editor().document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged() ) );
-    connect( _editor().document(), SIGNAL( contentsChanged() ), SLOT( _contentsChanged() ) );
+    connect( editor_->document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged() ) );
+    connect( editor_->document(), SIGNAL( contentsChanged() ), SLOT( _contentsChanged() ) );
 
 }
 
@@ -78,7 +78,7 @@ bool LineNumberDisplay::updateWidth( const int& count )
 {
     Debug::Throw( "LineNumberDisplay::updateWidth.\n" );
 
-    int new_width( _editor().fontMetrics().width( QString::number( count ) ) + 14 );
+    int new_width( editor_->fontMetrics().width( QString::number( count ) ) + 14 );
     if( width() == new_width ) return false;
     width_ = new_width;
 
@@ -103,31 +103,31 @@ void LineNumberDisplay::paint( QPainter& painter )
     needsUpdate_ = false;
 
     // font metric and offset
-    const QFontMetrics metric( _editor().fontMetrics() );
+    const QFontMetrics metric( editor_->fontMetrics() );
 
     // calculate dimensions
-    int y_offset = _editor().verticalScrollBar()->value() - _editor().frameWidth();
-    int height( _editor().contentsRect().height() );
+    int yOffset = editor_->verticalScrollBar()->value() - editor_->frameWidth();
+    int height( editor_->contentsRect().height() );
 
     // translate
-    height += y_offset;
+    height += yOffset;
 
     // get begin and end cursor positions
-    int first_index = _editor().cursorForPosition( QPoint( 0, 0 ) ).position();
-    int last_index = _editor().cursorForPosition( QPoint( 0, _editor().height() ) ).position();
+    int firstIndex = editor_->cursorForPosition( QPoint( 0, 0 ) ).position();
+    int lastIndex = editor_->cursorForPosition( QPoint( 0, editor_->height() ) ).position();
 
     // loop over data
-    QTextBlock block( _editor().document()->begin() );
+    QTextBlock block( editor_->document()->begin() );
     unsigned int id( 0 );
 
     for( LineNumberData::List::iterator iter = lineNumberData_.begin(); iter != lineNumberData_.end(); ++iter )
     {
 
         // skip if block is not (yet) in window
-        if( iter->cursor() < first_index ) continue;
+        if( iter->cursor() < firstIndex ) continue;
 
         // stop if block is outside (below) window
-        if( iter->cursor() > last_index ) break;
+        if( iter->cursor() > lastIndex ) break;
 
         // check validity
         if( !iter->isValid() ) _updateLineNumberData( block, id, *iter );
@@ -152,7 +152,7 @@ void LineNumberDisplay::_contentsChanged( void )
 
     // if text is wrapped, line number data needs update at next update
     /* note: this could be further optimized if one retrieve the position at which the contents changed occured */
-    if( _editor().lineWrapMode() != QTextEdit::NoWrap )
+    if( editor_->lineWrapMode() != TextEditor::NoWrap )
     { needUpdate(); }
 
 }
@@ -163,7 +163,7 @@ void LineNumberDisplay::_blockCountChanged( void )
 
     // nothing to be done if wrap mode is not NoWrap, because
     // it is handled in the _contentsChanged slot.
-    if( _editor().lineWrapMode() == QTextEdit::NoWrap )
+    if( editor_->lineWrapMode() == TextEditor::NoWrap )
     { needUpdate(); }
 
 }
@@ -177,7 +177,7 @@ void LineNumberDisplay::_updateLineNumberData( void )
     // get document
     unsigned int id( 0 );
     unsigned int block_count( 1 );
-    QTextDocument &document( *_editor().document() );
+    QTextDocument &document( *editor_->document() );
     for( QTextBlock block = document.begin(); block.isValid(); block = block.next(), id++ )
     {
 
@@ -185,7 +185,7 @@ void LineNumberDisplay::_updateLineNumberData( void )
         lineNumberData_ << LineNumberData( id, block_count, block.position() );
 
         // update block count
-        block_count += _editor().blockCount( block );
+        block_count += editor_->blockCount( block );
 
     }
 
@@ -203,7 +203,7 @@ void LineNumberDisplay::_updateLineNumberData( QTextBlock& block, unsigned int& 
     else if( data.id() > id ) { for( ; data.id() > id && block.isValid(); block = block.next(), id++ ) {} }
     Q_ASSERT( block.isValid() );
 
-    QRectF rect( _editor().document()->documentLayout()->blockBoundingRect( block ) );
+    QRectF rect( editor_->document()->documentLayout()->blockBoundingRect( block ) );
     data.setPosition( (int)block.layout()->position().y() );
 
 }

@@ -63,7 +63,7 @@ class LogWidget: public TextEditor
         need to bypass TextEditor::clear,
         which is disabled in read-only mode
         */
-        QTextEdit::clear();
+        BaseEditor::clear();
     }
 
     protected slots:

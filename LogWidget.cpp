@@ -55,7 +55,7 @@ void LogWidget::setOptionName( const QString& value )
 
         } else {
 
-            XmlOptions::get().set<bool>( _wrapOptionName(), lineWrapMode() == QTextEdit::WidgetWidth );
+            XmlOptions::get().set<bool>( _wrapOptionName(), lineWrapMode() == TextEditor::WidgetWidth );
 
         }
     }
