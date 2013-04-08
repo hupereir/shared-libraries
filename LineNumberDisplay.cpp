@@ -98,8 +98,7 @@ void LineNumberDisplay::clear( void )
 void LineNumberDisplay::paint( QPainter& painter )
 {
     // update line number data if needed
-    if( needsUpdate_ )
-    { _updateLineNumberData(); }
+    if( needsUpdate_ ) _updateLineNumberData();
     needsUpdate_ = false;
 
     // font metric and offset
