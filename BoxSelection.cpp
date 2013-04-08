@@ -62,7 +62,7 @@ void BoxSelection::synchronize( const BoxSelection& box )
     QRect old( rect() );
     _updateRect();
 
-    parent_->viewport()->update( parent_->toViewport( old.united( rect() ) ).adjusted( 0, 0, 1, 1 ) );
+    parent_->viewport()->update( parent_->toViewport( old.united( rect() ) ).adjusted( -2, -2, 3, 3 ) );
 
     return;
 
@@ -147,7 +147,7 @@ bool BoxSelection::update( QPoint point )
 
     // update parent
     // the adjustment is to account for the pen width
-    parent_->viewport()->update( parent_->toViewport( old.united( rect() ).adjusted( 0, 0, 1, 1 ) ) );
+    parent_->viewport()->update( parent_->toViewport( old.united( rect() ).adjusted( -2, -2, 3, 3 ) ) );
     parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
     return true;
@@ -179,7 +179,7 @@ bool BoxSelection::clear( void )
     state_ = EMPTY;
 
     // update parent
-    parent_->viewport()->update( parent_->toViewport( rect() ).adjusted( 0, 0, 1, 1 ) );
+    parent_->viewport()->update( parent_->toViewport( rect() ).adjusted( -2, -2, 3, 3 ) );
 
     // clear cursors points and rect
     cursors_.clear();
@@ -487,14 +487,14 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
 void BoxSelection::_updateRect( void )
 {
     Debug::Throw( debugLevel, "BoxSelection::_updateRect.\n" );
-    int x_min( qMin( begin_.x(), end_.x() ) );
-    int x_max( qMax( begin_.x(), end_.x() ) );
+    int xMin( qMin( begin_.x(), end_.x() ) );
+    int xMax( qMax( begin_.x(), end_.x() ) );
 
-    int y_min( qMin( begin_.y(), end_.y() ) );
-    int y_max( qMax( begin_.y(), end_.y() ) );
+    int yMin( qMin( begin_.y(), end_.y() ) );
+    int yMax( qMax( begin_.y(), end_.y() ) );
 
-    QPoint begin( x_min - (x_min%fontWidth_) + 2, y_min - (y_min%fontHeight_) + 2 );
-    QPoint end( x_max - (x_max%fontWidth_) + 1, y_max + fontHeight_ - (y_max%fontHeight_) );
+    QPoint begin( xMin - (xMin%fontWidth_) + 2, yMin - (yMin%fontHeight_) + 2 );
+    QPoint end( xMax - (xMax%fontWidth_) + 1, yMax + fontHeight_ - (yMax%fontHeight_) );
 
     // decide location of cursor point
     cursor_.setX( begin_.x() < end_.x() ? end.x() : begin.x() );

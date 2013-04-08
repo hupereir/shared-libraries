@@ -1542,14 +1542,9 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
     if( _boxSelection().state() == BoxSelection::STARTED || _boxSelection().state() == BoxSelection::FINISHED )
     {
-        painter.setPen( Qt::NoPen );
-        painter.setBrush( _boxSelection().brush() );
-        painter.drawRect( _boxSelection().rect() );
-
         painter.setPen( _boxSelection().color() );
-        painter.setBrush( Qt::NoBrush );
-        painter.drawRect( _boxSelection().rect() );
-
+        painter.setBrush( _boxSelection().brush() );
+        painter.drawRect( _boxSelection().rect().translated( 2, 2 ) );
     }
 
     painter.end();
