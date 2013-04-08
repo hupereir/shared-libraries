@@ -203,7 +203,6 @@ void LineNumberDisplay::_updateLineNumberData( QTextBlock& block, unsigned int& 
     else if( data.id() > id ) { for( ; data.id() > id && block.isValid(); block = block.next(), id++ ) {} }
     Q_ASSERT( block.isValid() );
 
-    QRectF rect( editor_->document()->documentLayout()->blockBoundingRect( block ) );
     data.setPosition( (int)block.layout()->position().y() );
 
 }

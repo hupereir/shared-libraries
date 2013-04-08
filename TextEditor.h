@@ -104,9 +104,13 @@ class TextEditor: public BaseEditor, public BASE::Key, public Counter
     virtual bool isCursorVisible( void ) const;
 
     #ifdef QT_USE_PLAIN_TEXT_EDIT
-    //! set text
+    //! set text always fall back to plain text
     virtual void setText( const QString& value )
     { setPlainText( value ); }
+
+    //! rich text is always disabled
+    virtual void setAcceptRichText( bool )
+    {}
     #endif
 
     //! set text
