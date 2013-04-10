@@ -25,6 +25,7 @@
 #include "Counter.h"
 #include "BaseFileInfo.h"
 #include "IconSize.h"
+#include "FileSystemWatcher.h"
 
 #include <QList>
 #include <QMimeData>
@@ -71,7 +72,7 @@ class PlacesWidget: public QWidget, public Counter
     QList<BaseFileInfo> items( void ) const;
 
     //! set item enabled
-    void setItemIsValid( const BaseFileInfo&, bool );
+    bool setItemIsValid( const BaseFileInfo&, bool );
 
     //! Read fileList from file
     bool read( File = File() );
@@ -83,9 +84,6 @@ class PlacesWidget: public QWidget, public Counter
 
     //! item selected
     void itemSelected( const BaseFileInfo& );
-
-    //! emmited when contents is changed
-    void contentsChanged( void );
 
     public slots:
 
@@ -138,6 +136,9 @@ class PlacesWidget: public QWidget, public Counter
 
     //! remove item
     void _removeItem( void );
+
+    //! update item state
+    void _updateItems( void );
 
     protected:
 
@@ -216,6 +217,9 @@ class PlacesWidget: public QWidget, public Counter
 
     //! icon provider
     BaseFileIconProvider* iconProvider_;
+
+    //! file system watcher, for local selection frame
+    FileSystemWatcher fileSystemWatcher_;
 
     //! file from/to wich the files are saved
     File dbFile_;

@@ -210,7 +210,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
     }
 
     // render mouse over
-    if( valid_ && ( mouseOver_ || hasFocus_ || dragInProgress_ ) )
+    if( mouseOver_ || (valid_ && hasFocus_ || dragInProgress_ ) )
     {
 
         QStyleOptionViewItemV4 option;
@@ -218,7 +218,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         option.showDecorationSelected = true;
         option.rect = rect();
         if( mouseOver_ ) option.state |= QStyle::State_MouseOver;
-        if( hasFocus_ || dragInProgress_ ) option.state |= QStyle::State_Selected;
+        if( valid_ && ( hasFocus_ || dragInProgress_ ) ) option.state |= QStyle::State_Selected;
         style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, itemView_ );
 
     }
@@ -399,8 +399,11 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     iconSizeMenu_ = new IconSizeMenu( this );
     connect( iconSizeMenu_, SIGNAL(iconSizeSelected( IconSize::Size ) ), SLOT( _updateIconSize( IconSize::Size ) ) );
 
+    // file system watcher
+    connect( &fileSystemWatcher_, SIGNAL( directoryChangedDelayed( const QString& ) ), SLOT( _updateItems( void ) ) );
+
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged() ), SLOT( _updateConfiguration( void ) ) );
     connect( qApp, SIGNAL(aboutToQuit() ), SLOT( _saveConfiguration() ) );
     _updateConfiguration();
 
@@ -436,16 +439,19 @@ QList<BaseFileInfo> PlacesWidget::items( void ) const
 }
 
 //______________________________________________________________________
-void PlacesWidget::setItemIsValid( const BaseFileInfo& fileInfo, bool value )
+bool PlacesWidget::setItemIsValid( const BaseFileInfo& fileInfo, bool value )
 {
     Debug::Throw() << "PlacesWidget::setItemIsValid - fileInfo: " << fileInfo << " value: " << value << endl;
+    bool changed( false );
     foreach( PlacesWidgetItem* item, items_ )
     {
 
         if( item->fileInfo().file() == fileInfo.file() && item->fileInfo().location() == fileInfo.location() )
-        { item->setIsValid( value ); }
+        { changed |= item->setIsValid( value ); }
 
     }
+
+    return changed;
 }
 
 //______________________________________________________________________
@@ -553,11 +559,12 @@ void PlacesWidget::clear( void )
         item->deleteLater();
     }
 
+    // clear file system watcher
+    if( !fileSystemWatcher_.directories().isEmpty() )
+    { fileSystemWatcher_.removePaths( fileSystemWatcher_.directories() ); }
+
     // clear items
     items_.clear();
-
-    // emit signal
-    emit contentsChanged();
 
 }
 
@@ -582,14 +589,21 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
     item->setFileInfo( fileInfo );
     item->setItemView( itemView_ );
 
+    // set item validity
+    if( fileInfo.isLocal() && !fileInfo.file().isEmpty() )
+    {
+        item->setIsValid( fileInfo.file().exists() );
+        if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+        { fileSystemWatcher_.addPath( fileInfo.file() ); }
+    }
+
     // add to button group, list of items and layout
     group_->addButton( item );
     buttonLayout_->addWidget( item );
     items_.append( item );
 
-    // emit signal
+    // drag state
     _updateDragState();
-    emit contentsChanged();
 
 }
 
@@ -628,14 +642,21 @@ void PlacesWidget::insert( int position, const QIcon& icon, const QString& const
     item->setFileInfo( fileInfo );
     item->setItemView( itemView_ );
 
+    // set item validity
+    if( fileInfo.isLocal() && !fileInfo.file().isEmpty() )
+    {
+        item->setIsValid( fileInfo.file().exists() );
+        if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+        { fileSystemWatcher_.addPath( fileInfo.file() ); }
+    }
+
     // add to button group, list of items and layout
     group_->addButton( item );
     buttonLayout_->insertWidget( position, item );
     items_.insert( position, item );
 
-    // emit signal
+    // drag state
     _updateDragState();
-    emit contentsChanged();
 
 }
 
@@ -646,7 +667,7 @@ void PlacesWidget::_buttonClicked( QAbstractButton* button )
     Debug::Throw( "PlacesWidget::_buttonClicked.\n" );
 
     PlacesWidgetItem* currentItem( qobject_cast<PlacesWidgetItem*>( button ) );
-    if( currentItem && !currentItem->isSeparator() ) emit itemSelected( currentItem->fileInfo() );
+    if( currentItem && !currentItem->isSeparator() && currentItem->isValid() ) emit itemSelected( currentItem->fileInfo() );
 
 }
 
@@ -805,7 +826,6 @@ void PlacesWidget::_addSeparator( void )
 
     // emit signal
     _updateDragState();
-    emit contentsChanged();
 
 }
 
@@ -838,7 +858,6 @@ void PlacesWidget::_insertSeparator( void )
 
     // emit signal
     _updateDragState();
-    emit contentsChanged();
 
 }
 
@@ -857,7 +876,8 @@ void PlacesWidget::_editItem( void )
     if( !dialog.exec() ) return;
 
     // remote flag
-    BaseFileInfo fileInfo( focusItem_->fileInfo() );
+    const BaseFileInfo oldFileInfo( focusItem_->fileInfo() );
+    BaseFileInfo fileInfo( oldFileInfo );
     const bool locationChanged( fileInfo.isRemote() != dialog.isRemote() );
     if( locationChanged )
     {
@@ -895,15 +915,22 @@ void PlacesWidget::_editItem( void )
         // update fileInfo
         focusItem_->setFileInfo( fileInfo );
 
+        // update fileSystemWatcher
+        if( oldFileInfo.isLocal() && !oldFileInfo.file().isEmpty() && fileSystemWatcher_.directories().contains( oldFileInfo.file() ) )
+        { fileSystemWatcher_.removePath( oldFileInfo.file() ); }
+
+        if( fileInfo.isLocal() && !fileInfo.file().isEmpty() )
+        {
+            focusItem_->setIsValid( fileInfo.file().exists() );
+            if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+            { fileSystemWatcher_.addPath( fileInfo.file() ); }
+        }
+
     }
 
     // name
     const bool nameChanged( focusItem_->text() != dialog.name() );
     if( nameChanged ) focusItem_->setText( dialog.name() );
-
-    // emit signal
-    if( nameChanged || locationChanged || fileChanged )
-    { emit contentsChanged(); }
 
 }
 
@@ -912,6 +939,11 @@ void PlacesWidget::_removeItem( void )
 {
     Debug::Throw( "PlacesWidget::_removeItem.\n" );
     if( !focusItem_ ) return;
+
+    // remove from fileSystem watcher
+    const BaseFileInfo fileInfo( focusItem_->fileInfo() );
+    if( fileInfo.isLocal() && !fileInfo.file().isEmpty() && fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+    { fileSystemWatcher_.removePath( fileInfo.file() ); }
 
     // remove from button group
     group_->removeButton( focusItem_ );
@@ -922,7 +954,25 @@ void PlacesWidget::_removeItem( void )
 
     // emit signal
     _updateDragState();
-    emit contentsChanged();
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::_updateItems( void )
+{
+    Debug::Throw( "PlacesWidget::_updateItems.\n" );
+    bool changed( false );
+    foreach( PlacesWidgetItem* item, items_ )
+    {
+
+        const BaseFileInfo fileInfo( item->fileInfo() );
+        if( fileInfo.isLocal() && !fileInfo.file().isEmpty())
+        { changed |= item->setIsValid( fileInfo.file().exists() ); }
+
+    }
+
+    // redisplay if changed
+    if( changed ) update();
 
 }
 
@@ -1234,9 +1284,12 @@ void PlacesWidget::_installActions( void )
 
     addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), tr( "Edit Entry..." ), this ) );
     editItemAction_->setShortcut( Qt::Key_F2 );
+    editItemAction_->setShortcutContext(Qt::WidgetShortcut);
     connect( editItemAction_, SIGNAL(triggered( void ) ), SLOT( _editItem( void ) ) );
 
     addAction( removeItemAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), tr( "Remove Entry" ), this ) );
+    removeItemAction_->setShortcut( QKeySequence::Delete );
+    removeItemAction_->setShortcutContext(Qt::WidgetShortcut);
     connect( removeItemAction_, SIGNAL(triggered( void ) ), SLOT( _removeItem( void ) ) );
 
 }

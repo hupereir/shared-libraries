@@ -106,8 +106,12 @@ class PlacesWidgetItem: public QAbstractButton
     { itemView_ = widget; }
 
     //! set validity
-    void setIsValid( bool value )
-    { valid_ = value; }
+    bool setIsValid( bool value )
+    {
+        if( valid_ == value ) return false;
+        valid_ = value;
+        return true;
+    }
 
     //! set mouse over manualy
     void setMouseOver( bool value )
