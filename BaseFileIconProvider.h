@@ -37,10 +37,7 @@ class BaseFileIconProvider: public QObject, public Counter
     public:
 
     //! constructor
-    BaseFileIconProvider( QObject* parent = 0x0 ):
-        QObject( parent ),
-        Counter( "BaseFileIconProvider" )
-    {}
+    BaseFileIconProvider( QObject* = 0x0 );
 
     //! destructor
     virtual ~BaseFileIconProvider( void )
@@ -51,8 +48,32 @@ class BaseFileIconProvider: public QObject, public Counter
 
     private:
 
-    //! home icon
-    QIcon home_;
+    class Icon
+    {
+
+        public:
+
+        //! constructor
+        Icon( const QString& name ):
+            name_( name )
+        {}
+
+        //! icon
+        const QIcon& icon( bool );
+
+        private:
+
+        //! icon name
+        QString name_;
+
+        //! icon
+        QIcon icon_;
+
+    };
+
+
+    typedef QMap<QString, Icon> IconMap;
+    IconMap icons_;
 
 };
 

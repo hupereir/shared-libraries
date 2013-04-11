@@ -22,30 +22,77 @@
 *******************************************************************************/
 
 #include "BaseFileIconProvider.h"
+#include "BaseIcons.h"
+#include "CustomPixmap.h"
 #include "IconEngine.h"
 #include "Util.h"
+
+#include <QSettings>
+
+//__________________________________________________________________________
+BaseFileIconProvider::BaseFileIconProvider( QObject* parent ):
+    QObject( parent ),
+    Counter( "BaseFileIconProvider" )
+{
+
+    // initialize default icons
+    // home
+    icons_.insert( Util::home(), Icon("user-home.png") );
+
+    // use QSettings to get standard directories from XDG
+    QSettings settings( QString( "%1/.config/user-dirs.dirs" ).arg( Util::home() ), QSettings::IniFormat );
+    settings.sync();
+    icons_.insert( settings.value( "XDG_DESKTOP_DIR", "$HOME/Desktop" ).value<QString>().replace( "$HOME", Util::home() ), Icon("user-desktop") );
+    icons_.insert( settings.value( "XDG_DOCUMENTS_DIR", "$HOME/Documents" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-documents") );
+    icons_.insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-downloads") );
+    icons_.insert( settings.value( "XDG_MUSIC_DIR", "$HOME/Music" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-sound") );
+    icons_.insert( settings.value( "XDG_PICTURES_DIR", "$HOME/Pictures" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-image") );
+    icons_.insert( settings.value( "XDG_VIDEOS_DIR", "$HOME/Videos" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-video") );
+
+}
 
 //__________________________________________________________________________
 const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo )
 {
 
     // get type
-    int type( fileInfo.type() );
+    const int type( fileInfo.type() );
+    if( !( type&BaseFileInfo::Folder ) ) return IconEngine::get( QString() );
 
-    // special case for home directory
-    // note that I could add more (documents, music, etc.)
-    if( type & BaseFileInfo::Folder && fileInfo.file() == Util::home() )
+    // find in predefined icons
+    const IconMap::iterator iter( icons_.find( fileInfo.file() ) );
+    return iter == icons_.end() ? IconEngine::get( QString() ) : iter->icon( type&BaseFileInfo::Link );
+
+}
+
+//__________________________________________________________________________
+const QIcon& BaseFileIconProvider::Icon::icon( bool isLink )
+{
+
+    // initialize icon if null
+    if( icon_.isNull() )
     {
-
-        if( !home_.isNull() ) return home_;
-
-        // normal icon. Only copy relevant pixmaps
-        QIcon copy( IconEngine::get( "user-home.png" ) );
+        QIcon linkOverlay( IconEngine::get( ICONS::LINK ) );
+        QIcon copy( IconEngine::get( name_ ) );
         foreach( const QSize& size, copy.availableSizes() )
-        { home_.addPixmap( copy.pixmap( size ) ); }
+        {
+            if( isLink )
+            {
 
-        return home_;
+                QSize overlaySize;
+                if( size.width() <= 16 ) overlaySize = QSize( 10, 10 );
+                else if( size.width() <= 22 ) overlaySize = QSize( 12, 12 );
+                else if( size.width() <= 32 ) overlaySize = QSize( 16, 16 );
+                else if( size.width() <= 48 ) overlaySize = QSize( 16, 16 );
+                else if( size.width() <= 64 ) overlaySize = QSize( 22, 22 );
+                else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
+                else overlaySize = QSize( 64, 64 );
 
-    } else return IconEngine::get( QString() );
+                icon_.addPixmap( CustomPixmap( copy.pixmap( size ) ).merge( linkOverlay.pixmap( overlaySize ).scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT ) );
 
+            } else icon_.addPixmap( copy.pixmap( size ) );
+        }
+    }
+
+    return icon_;
 }

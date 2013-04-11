@@ -69,6 +69,7 @@ namespace ICONS
     static const QString PREVIOUS = "arrow-left.png";
     static const QString NEXT = "arrow-right.png";
     static const QString HTML = "text-html.png";
+    static const QString LINK = "emblem-symbolic-link.png";
 
     // configuration icons
     static const QString PREFERENCE_GENERAL="system-run.png";
