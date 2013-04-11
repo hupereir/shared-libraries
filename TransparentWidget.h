@@ -154,7 +154,7 @@ namespace TRANSPARENCY
         //@{
 
         //! margins
-        const Margins& _margins( void ) const
+        const BASE::Margins& _margins( void ) const
         { return margins_; }
 
         //! clear margins
@@ -162,15 +162,15 @@ namespace TRANSPARENCY
         { margins_.clear(); }
 
         //! margins
-        void _setMargins( const Margins& margins )
+        void _setMargins( const BASE::Margins& margins )
         { margins_ = margins; }
 
         //! margins
         void _setMargins( int margins )
-        { margins_ = Margins( margins ); }
+        { margins_ = BASE::Margins( margins ); }
 
         //! outer padding
-        Margins _outerPadding( void ) const
+        BASE::Margins _outerPadding( void ) const
         { return outerPadding_; }
 
         //! clear outer padding
@@ -178,12 +178,12 @@ namespace TRANSPARENCY
         { outerPadding_.clear(); }
 
         //! outer padding
-        void _setOuterPadding( const Margins& margins )
+        void _setOuterPadding( const BASE::Margins& margins )
         { outerPadding_ = margins; }
 
         //! outer padding
         void _setOuterPadding( int margins )
-        { outerPadding_ = Margins( margins ); }
+        { outerPadding_ = BASE::Margins( margins ); }
 
         //@}
 
@@ -266,10 +266,10 @@ namespace TRANSPARENCY
         bool highlighted_;
 
         //! margins
-        Margins margins_;
+        BASE::Margins margins_;
 
         //! margins
-        Margins outerPadding_;
+        BASE::Margins outerPadding_;
 
         //! store last blur region
         QRegion blurRegion_;
