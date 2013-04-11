@@ -768,11 +768,17 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
     item->setItemView( itemView_ );
 
     // set item validity
-    if( fileInfo.isLocal() && !fileInfo.file().isEmpty() )
+    if( !fileInfo.file().isEmpty() )
     {
-        item->setIsValid( fileInfo.file().exists() );
-        if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
-        { fileSystemWatcher_.addPath( fileInfo.file() ); }
+        if( fileInfo.isLocal() )
+        {
+
+            item->setIsValid( fileInfo.file().exists() );
+            if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+            { fileSystemWatcher_.addPath( fileInfo.file() ); }
+
+        } else emit remoteItemAdded( fileInfo );
+
     }
 
     // add to button group, list of items and layout
@@ -822,11 +828,17 @@ void PlacesWidget::insert( int position, const QIcon& icon, const QString& const
     item->setItemView( itemView_ );
 
     // set item validity
-    if( fileInfo.isLocal() && !fileInfo.file().isEmpty() )
+    if( !fileInfo.file().isEmpty() )
     {
-        item->setIsValid( fileInfo.file().exists() );
-        if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
-        { fileSystemWatcher_.addPath( fileInfo.file() ); }
+        if( fileInfo.isLocal() )
+        {
+
+            item->setIsValid( fileInfo.file().exists() );
+            if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+            { fileSystemWatcher_.addPath( fileInfo.file() ); }
+
+        } else emit remoteItemAdded( fileInfo );
+
     }
 
     // add to button group, list of items and layout
@@ -1098,11 +1110,18 @@ void PlacesWidget::_editItem( void )
         if( oldFileInfo.isLocal() && !oldFileInfo.file().isEmpty() && fileSystemWatcher_.directories().contains( oldFileInfo.file() ) )
         { fileSystemWatcher_.removePath( oldFileInfo.file() ); }
 
-        if( fileInfo.isLocal() && !fileInfo.file().isEmpty() )
+        if( !fileInfo.file().isEmpty() )
         {
-            focusItem_->setIsValid( fileInfo.file().exists() );
-            if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
-            { fileSystemWatcher_.addPath( fileInfo.file() ); }
+
+            if( fileInfo.isLocal() )
+            {
+
+                focusItem_->setIsValid( fileInfo.file().exists() );
+                if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+                { fileSystemWatcher_.addPath( fileInfo.file() ); }
+
+            } else emit remoteItemAdded( fileInfo );
+
         }
 
     }

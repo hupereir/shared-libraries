@@ -24,8 +24,12 @@
 *
 *******************************************************************************/
 
+#include "Margins.h"
+
 #include <QWidget>
 #include <QPixmap>
+
+class WinUtilPrivate;
 
 class WinUtil
 {
@@ -33,12 +37,16 @@ class WinUtil
     public:
 
     //! constructor
-    WinUtil( QWidget* target ):
-        target_( target )
-    { Q_CHECK_PTR( target_ ); }
+    WinUtil( QWidget* );
+
+    //! destructor
+    virtual ~WinUtil( void );
 
     //! update layered widget using pixmap
     void update( const QPixmap&, double = 1.0 ) const;
+
+    //! enable blur behind
+    void enableBlurBehind( const BASE::Margins& = BASE::Margins() ) const;
 
     //! toggle hide from taskbar for Windows
     bool toggleHideFromTaskBar( bool ) const;
@@ -49,17 +57,18 @@ class WinUtil
     //! has flag
     bool hasFlag( long int ) const;
 
-    private:
-
-    // target widget
-    QWidget& _target( void ) const
-    { return *target_; }
+    protected:
 
     // returns true if widget is of type layered window
     bool _isLayered() const;
 
     //! set widget a layered window
     void _setLayered() const;
+
+    private:
+
+    //! private
+    WinUtilPrivate* private_;
 
     //! target widget
     QWidget *target_;

@@ -86,6 +86,9 @@ class PlacesWidget: public QWidget, public Counter
 
     signals:
 
+    //! item added
+    void remoteItemAdded( const BaseFileInfo& );
+
     //! item selected
     void itemSelected( const BaseFileInfo& );
 

@@ -22,6 +22,9 @@
 *******************************************************************************/
 
 #include "WinUtil.h"
+#include "Debug.h"
+
+#include <QLibrary>
 
 #if defined(Q_OS_WIN)
 #define _WIN32_WINNT 0x0500
@@ -30,10 +33,79 @@
 #endif
 
 //_______________________________________
+class WinUtilPrivate
+{
+
+    public:
+
+    //! constructor
+    WinUtilPrivate( void )
+    {
+        #if defined(Q_OS_WIN)
+
+        // define function pointer and try resolve from library
+        dwmapi_ = QLibrary("dwmapi");
+        blurBehindFunction_ =  (PtrDwmEnableBlurBehindWindow) dwmapi.resolve( "DwmEnableBlurBehindWindow" );
+        #endif
+
+    }
+
+    //! destructor
+    virtual ~WinUtilPrivate( void )
+    {
+
+        #if defined(Q_OS_WIN)
+        // unlooad library
+        dwmapi.unload();
+        #endif
+
+    }
+
+    #if defined(Q_OS_WIN)
+
+    //! blur behind structure
+    typedef struct _DWM_BLURBEHIND {
+        DWORD dwFlags;
+        BOOL  fEnable;
+        HRGN  hRgnBlur;
+        BOOL  fTransitionOnMaximized;
+    } DWM_BLURBEHIND;
+
+    //! blur behind function
+    typedef HRESULT (WINAPI *PtrDwmEnableBlurBehindWindow)(HWND, const DWM_BLURBEHIND* );
+    PtrDwmEnableBlurBehindWindow blurBehindFunction_;
+
+    private:
+
+    //! library
+    QLibrary dwmapi_;
+    #endif
+
+};
+
+//_______________________________________
+WinUtil::WinUtil( QWidget* target ):
+    private_( new WinUtilPrivate() ),
+    target_( target )
+{ Q_CHECK_PTR( target_ ); }
+
+//_______________________________________
+WinUtil::~WinUtil( void )
+{ delete private_; }
+
+//_______________________________________
 void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 {
 
     #if defined(Q_OS_WIN)
+
+    static bool first = true;
+    if( first )
+    {
+        first = false;
+        enableBlurBehind();
+    }
+
     if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
 
     HBITMAP oldBitmap;
@@ -46,8 +118,8 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
     pointSource.x = 0;
     pointSource.y = 0;
     POINT topPos;
-    topPos.x = _target().x();
-    topPos.y = _target().y();
+    topPos.x = target_->x();
+    topPos.y = target_->y();
     HDC memDc = CreateCompatibleDC(screenDc);
     BLENDFUNCTION blend;
     blend.BlendOp             = AC_SRC_OVER;
@@ -57,7 +129,7 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
     hBitmap = pixmap.toWinHBITMAP(QPixmap::PremultipliedAlpha);
     oldBitmap = (HBITMAP)SelectObject(memDc, hBitmap);
 
-    UpdateLayeredWindow( _target().winId(), screenDc,  &topPos,  &size, memDc,  &pointSource, 0, &blend, ULW_ALPHA);
+    UpdateLayeredWindow( target_->winId(), screenDc,  &topPos,  &size, memDc,  &pointSource, 0, &blend, ULW_ALPHA);
 
     ReleaseDC( NULL, screenDc);
     if (hBitmap != NULL)
@@ -69,6 +141,32 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
     DeleteDC(memDc);
 
     #endif
+}
+
+//_______________________________________
+void WinUtil::enableBlurBehind( const BASE::Margins& ) const
+{
+
+    #if defined(Q_OS_WIN)
+
+    // do nothing if windows version is too old
+    if(QSysInfo::WindowsVersion < QSysInfo::WV_6_0) return;
+
+    Debug::Throw(0) << "WinUtil::enableBlurBehind" << endl;
+    if( !private_->blurBehindFunction_ ) return;
+
+    // Create and populate the blur-behind structure.
+    enum {DWM_BB_ENABLE=1};
+    WinUtilPrivate::DWM_BLURBEHIND bb = {0};
+
+    // Specify blur-behind and blur region.
+    bb.dwFlags = DWM_BB_ENABLE;
+    bb.fEnable = true;
+    bb.hRgnBlur = NULL;
+    private_->blurBehindFunction(target_->winId(), &bb);
+
+    #endif
+
 }
 
 //_______________________________________
@@ -104,7 +202,7 @@ bool WinUtil::hasFlag( long int flag ) const
 {
 
     #if defined(Q_OS_WIN)
-    return GetWindowLong( _target().winId(), GWL_EXSTYLE) & flag;
+    return GetWindowLong( target_->winId(), GWL_EXSTYLE) & flag;
     #else
     return false;
     #endif
@@ -116,8 +214,8 @@ void WinUtil::setFlag( long int flag, bool value ) const
 {
 
     #if defined(Q_OS_WIN)
-    if( value ) SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) | flag);
-    else SetWindowLong( _target().winId(), GWL_EXSTYLE, GetWindowLong( _target().winId(), GWL_EXSTYLE) & (~flag));
+    if( value ) SetWindowLong( target_->winId(), GWL_EXSTYLE, GetWindowLong( target_->winId(), GWL_EXSTYLE) | flag);
+    else SetWindowLong( target_->winId(), GWL_EXSTYLE, GetWindowLong( target_->winId(), GWL_EXSTYLE) & (~flag));
     #endif
 
 
