@@ -157,18 +157,19 @@ QString File::sizeString( qint64 sizeInt )
         QObject::tr( "B" ),
         QObject::tr( "KiB" ),
         QObject::tr( "MiB" ),
-        QObject::tr( "GiB" )
+        QObject::tr( "GiB" ),
+        QObject::tr( "TiB" )
     };
 
     int power = log( size )/log( 1024 );
     QString out;
 
-    if( !power ) out.sprintf( "%7.0f", size );
+    if( !power ) out.sprintf( "%.0f", size );
     else {
 
-        if( power > 3 ) power = 3;
+        if( power > 4 ) power = 4;
         size /= pow( static_cast<double>(1024), static_cast<double>(power) );
-        out.sprintf( "%7.1f", size );
+        out.sprintf( "%.1f", size );
 
     }
 
