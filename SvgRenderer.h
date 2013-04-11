@@ -59,10 +59,10 @@ namespace SVG
         virtual bool load( const QString& );
 
         //! margins
-        TRANSPARENCY::Margins margins( void ) const;
+        BASE::Margins margins( void ) const;
 
         //! outer padding
-        TRANSPARENCY::Margins outerPadding( void ) const;
+        BASE::Margins outerPadding( void ) const;
 
         // svg element enumeration
         enum SvgElement

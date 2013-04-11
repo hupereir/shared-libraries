@@ -65,11 +65,11 @@ namespace SVG
         void preload( const SvgId::List& );
 
         //! margins
-        TRANSPARENCY::Margins margins( void ) const
+        BASE::Margins margins( void ) const
         { return margins_; }
 
         //! outer padding
-        TRANSPARENCY::Margins outerPadding( void ) const
+        BASE::Margins outerPadding( void ) const
         { return outerPadding_; }
 
         signals:
@@ -136,8 +136,8 @@ namespace SVG
         //! thread preload sizes
         SvgThread thread_;
 
-        TRANSPARENCY::Margins margins_;
-        TRANSPARENCY::Margins outerPadding_;
+        BASE::Margins margins_;
+        BASE::Margins outerPadding_;
 
     };
 };

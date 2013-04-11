@@ -123,7 +123,7 @@ namespace SVG
                 painter.drawImage( QPoint(0,0), shadowImage );
 
                 // main image
-                const TRANSPARENCY::Margins outerPadding( this->outerPadding() );
+                const BASE::Margins outerPadding( this->outerPadding() );
                 size.rwidth() -= outerPadding.width();
                 size.rheight() -= outerPadding.height();
                 QImage mainImage( size, QImage::Format_ARGB32_Premultiplied );
@@ -185,9 +185,9 @@ namespace SVG
     }
 
     //________________________________________________
-    TRANSPARENCY::Margins SvgRenderer::margins( void ) const
+    BASE::Margins SvgRenderer::margins( void ) const
     {
-        TRANSPARENCY::Margins out;
+        BASE::Margins out;
         if( elementExists( SVG::MarginLeft ) ) out.setLeft( boundsOnElement( SVG::MarginLeft ).width() );
         if( elementExists( SVG::MarginRight ) ) out.setRight( boundsOnElement( SVG::MarginRight ).width() );
         if( elementExists( SVG::MarginTop ) ) out.setTop( boundsOnElement( SVG::MarginTop ).height() );
@@ -200,9 +200,9 @@ namespace SVG
     }
 
     //________________________________________________
-    TRANSPARENCY::Margins SvgRenderer::outerPadding( void ) const
+    BASE::Margins SvgRenderer::outerPadding( void ) const
     {
-        TRANSPARENCY::Margins out;
+        BASE::Margins out;
         if( hasShadow_ )
         {
 
