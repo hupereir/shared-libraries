@@ -49,6 +49,11 @@ class BaseFileIconProvider: public QObject, public Counter
     //! icon matching given file info
     virtual const QIcon& icon( const BaseFileInfo& );
 
+    private:
+
+    //! home icon
+    QIcon home_;
+
 };
 
 #endif

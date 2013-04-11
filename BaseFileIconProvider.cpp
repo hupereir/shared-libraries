@@ -33,10 +33,18 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo )
     int type( fileInfo.type() );
 
     // special case for home directory
+    // note that I could add more (documents, music, etc.)
     if( type & BaseFileInfo::Folder && fileInfo.file() == Util::home() )
     {
 
-        return IconEngine::get( "user-home.png" );
+        if( !home_.isNull() ) return home_;
+
+        // normal icon. Only copy relevant pixmaps
+        QIcon copy( IconEngine::get( "user-home.png" ) );
+        foreach( const QSize& size, copy.availableSizes() )
+        { home_.addPixmap( copy.pixmap( size ) ); }
+
+        return home_;
 
     } else return IconEngine::get( QString() );
 
