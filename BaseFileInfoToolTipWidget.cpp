@@ -158,6 +158,8 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         typeItem_->hide();
         sizeItem_->hide();
         lastModifiedItem_->hide();
+        userItem_->hide();
+        groupItem_->hide();
         permissionsItem_->hide();
     }
 

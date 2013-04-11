@@ -30,9 +30,10 @@
 #include "IconSizeMenu.h"
 #include "PathEditor.h"
 #include "Singleton.h"
+#include "TimeStamp.h"
+#include "ToolTipWidgetItem.h"
 #include "Util.h"
 #include "WarningDialog.h"
-
 #include "XmlDocument.h"
 #include "XmlOptions.h"
 
@@ -349,6 +350,139 @@ QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
 }
 
 //___________________________________________________________________
+PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
+    BaseToolTipWidget( parent ),
+    pixmapSize_( 96 ),
+    mask_( Default )
+{
+
+    Debug::Throw( "PlacesToolTipWidget::PlacesToolTipWidget.\n" );
+
+    // layout
+    QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setMargin( 10 );
+    hLayout->setSpacing( 10 );
+    setLayout( hLayout );
+
+    hLayout->addWidget( iconLabel_ = new QLabel( this ) );
+    iconLabel_->setAlignment( Qt::AlignHCenter|Qt::AlignTop );
+
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin( 0 );
+    vLayout->setSpacing( 5 );
+    hLayout->addLayout( vLayout );
+
+    // file
+    vLayout->addWidget( nameLabel_ = new QLabel( this ) );
+    nameLabel_->setAlignment( Qt::AlignCenter );
+    QFont font( nameLabel_->font() );
+    font.setBold( true );
+    nameLabel_->setFont( font );
+    nameLabel_->setMargin( 1 );
+
+    // separator
+    vLayout->addWidget( separator_ = new QFrame( this ) );
+    separator_->setFrameStyle( QFrame::HLine );
+
+    // grid layout
+    GridLayout* gridLayout = new GridLayout();
+    gridLayout->setMaxCount( 2 );
+    gridLayout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
+    gridLayout->setColumnAlignment( 1, Qt::AlignVCenter|Qt::AlignLeft );
+    gridLayout->setMargin( 0 );
+    gridLayout->setSpacing( 5 );
+    vLayout->addLayout( gridLayout );
+
+    // items
+    ( pathItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Path:" ) );
+    ( lastModifiedItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Modified:" ) );
+    ( userItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Owner:" ) );
+    ( groupItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Group:" ) );
+    ( permissionsItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Permissions:" ) );
+
+    // add stretch
+    vLayout->addStretch( 1 );
+
+    // configuration
+    connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    _updateConfiguration();
+
+}
+
+//_______________________________________________________
+void PlacesToolTipWidget::setFileInfo( const QString& name, const BaseFileInfo& fileInfo, const QIcon& icon )
+{
+    Debug::Throw( "PlacesToolTipWidget::setFileInfo.\n" );
+
+    // local storage
+    name_ = name;
+    icon_ = icon;
+    fileInfo_ = fileInfo;
+
+    // update icon
+    if( !icon.isNull() )
+    {
+
+        iconLabel_->setPixmap( icon.pixmap( QSize( pixmapSize_, pixmapSize_ ) ) );
+        iconLabel_->show();
+
+    } else iconLabel_->hide();
+
+    nameLabel_->show();
+    nameLabel_->setText( name );
+    separator_->show();
+
+    if( !fileInfo.file().isEmpty() )
+    {
+
+        // type
+        if( fileInfo.isRemote() ) pathItem_->setText( QString( tr( "%1 (remote)" ) ).arg( fileInfo.file() ) );
+        else pathItem_->setText( fileInfo.file() );
+
+        // last modified
+        if( (mask_&Modified) && TimeStamp( fileInfo.lastModified() ).isValid() )
+        {
+
+            lastModifiedItem_->setText( TimeStamp( fileInfo.lastModified() ).toString() );
+
+        } else lastModifiedItem_->hide();
+
+        // user
+        if( (mask_&User) && !fileInfo.user().isEmpty() ) userItem_->setText( fileInfo.user() );
+        else userItem_->hide();
+
+        // group
+        if( (mask_&Group) && !fileInfo.group().isEmpty() ) groupItem_->setText( fileInfo.group() );
+        else groupItem_->hide();
+
+        // permissions
+        QString permissions;
+        if( (mask_&Permissions) && !( permissions = fileInfo.permissionsString() ).isEmpty() ) permissionsItem_->setText( permissions );
+        else permissionsItem_->hide();
+
+    } else {
+
+        // items
+        pathItem_->hide();
+        lastModifiedItem_->hide();
+        userItem_->hide();
+        groupItem_->hide();
+        permissionsItem_->hide();
+    }
+
+    adjustSize();
+
+}
+
+//_____________________________________________
+void PlacesToolTipWidget::_updateConfiguration( void )
+{
+    Debug::Throw( "PlacesToolTipWidget::_updateConfiguration.\n" );
+    if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<unsigned int>( "TOOLTIPS_PIXMAP_SIZE" ) );
+    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( Types(XmlOptions::get().get<unsigned int>( "TOOLTIPS_MASK" )) );
+}
+
+//___________________________________________________________________
 PlacesWidget::PlacesWidget( QWidget* parent ):
     QWidget( parent ),
     Counter( "PlacesWidget::PlacesWidget" ),
@@ -384,6 +518,9 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
 
     vLayout->addLayout( buttonLayout_ );
     vLayout->addStretch( 1 );
+
+    // tooltip widget
+    toolTipWidget_ = new PlacesToolTipWidget( this );
 
     // button group
     group_ = new QButtonGroup( this );
@@ -547,6 +684,46 @@ bool PlacesWidget::write( File file )
     return true;
 }
 
+//_______________________________________________________
+bool PlacesWidget::eventFilter( QObject* object, QEvent* event )
+{
+
+    // this is not really working
+    switch( event->type() )
+    {
+
+        case QEvent::HoverEnter:
+        {
+            //if( !toolTipWidget_->isVisible() ) return false;
+
+            PlacesWidgetItem* item( static_cast<PlacesWidgetItem*>( object ) );
+            const QString name( item->text() );
+            const BaseFileInfo fileInfo( item->fileInfo() );
+            const QIcon icon( item->icon() );
+
+            toolTipWidget_->setFileInfo( name, fileInfo, icon );
+
+            // show
+            const QRect rect( item->geometry().translated( mapToGlobal( QPoint(0,0) ) ) );
+            toolTipWidget_->setIndexRect( rect );
+            toolTipWidget_->showDelayed();
+            break;
+
+        }
+
+        case QEvent::HoverLeave:
+        {
+            toolTipWidget_->hide();
+            break;
+        }
+
+        default: break;
+
+    }
+
+    return false;
+}
+
 //______________________________________________________________________
 void PlacesWidget::clear( void )
 {
@@ -584,6 +761,7 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
 
     // create new item
     PlacesWidgetItem* item = new PlacesWidgetItem( this );
+    item->installEventFilter( this );
     item->setIcon( icon );
     item->setText( name );
     item->setFileInfo( fileInfo );
@@ -637,6 +815,7 @@ void PlacesWidget::insert( int position, const QIcon& icon, const QString& const
 
     // create new item
     PlacesWidgetItem* item = new PlacesWidgetItem( this );
+    item->installEventFilter( this );
     item->setIcon( icon );
     item->setText( name );
     item->setFileInfo( fileInfo );

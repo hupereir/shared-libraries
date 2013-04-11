@@ -42,6 +42,7 @@
 #include <QWidget>
 
 // forward declaration
+class PlacesToolTipWidget;
 class PlacesWidgetItem;
 class BaseFileIconProvider;
 class IconSizeMenu;
@@ -79,6 +80,9 @@ class PlacesWidget: public QWidget, public Counter
 
     //! write fileList to file
     bool write( File = File() );
+
+    //! event filter
+    virtual bool eventFilter( QObject*, QEvent* );
 
     signals:
 
@@ -205,6 +209,9 @@ class PlacesWidget: public QWidget, public Counter
 
     //! icon size menu
     IconSizeMenu* iconSizeMenu_;
+
+    //! tooltip widget
+    PlacesToolTipWidget* toolTipWidget_;
 
     //! list of items
     QList<PlacesWidgetItem*> items_;
