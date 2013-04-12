@@ -99,8 +99,10 @@ bool BaseToolTipWidget::eventFilter( QObject* object, QEvent* event )
 //_______________________________________________________
 void BaseToolTipWidget::hide( void )
 {
+    Debug::Throw( "BaseToolTipWidget::hide.\n" );
     timer_.stop();
-    hiddenTimer_.start( 200, this );
+    if( isVisible() )
+    { hiddenTimer_.start( 200, this ); }
     QWidget::hide();
 }
 
