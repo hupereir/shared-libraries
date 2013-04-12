@@ -102,6 +102,10 @@ class BaseFileInfo
     virtual bool operator == (const BaseFileInfo& other) const
     { return file() == other.file() && type() == other.type(); }
 
+    //! equal to operator
+    virtual bool operator != (const BaseFileInfo& other) const
+    { return !( *this == other ); }
+
     //! less than operator
     virtual bool operator < (const BaseFileInfo& other) const
     {
