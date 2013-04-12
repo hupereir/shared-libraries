@@ -59,6 +59,7 @@ class DefaultFolders: public QObject
 
     //! folders
     typedef QMap<File, Type> FolderMap;
+    typedef QMapIterator<File, Type> FolderMapIterator;
     const FolderMap& folders( void ) const
     { return folders_; }
 

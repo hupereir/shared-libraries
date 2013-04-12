@@ -1422,12 +1422,6 @@ bool PlacesWidget::_read( void )
     // clear existing entries
     clear();
 
-    if( !( XmlOptions::get().contains( "PLACES_HAS_DEFAULTS" ) && XmlOptions::get().get<bool>( "PLACES_HAS_DEFAULTS" ) ) )
-    {
-        _addDefaultPlaces();
-        XmlOptions::get().set<bool>( "PLACES_HAS_DEFAULTS", true );
-    }
-
     const File file( dbFile_ );
     if( file.isEmpty() || !file.exists() ) return false;
 
@@ -1466,6 +1460,13 @@ bool PlacesWidget::_read( void )
         if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( LocalFileInfo::Hidden ) )
         { items_.back()->hide(); }
 
+    }
+
+    // default places
+    if( !( XmlOptions::get().contains( "PLACES_HAS_DEFAULTS" ) && XmlOptions::get().get<bool>( "PLACES_HAS_DEFAULTS" ) ) )
+    {
+        _addDefaultPlaces();
+        XmlOptions::get().set<bool>( "PLACES_HAS_DEFAULTS", true );
     }
 
 }
@@ -1525,15 +1526,33 @@ bool PlacesWidget::_write( void )
 //_________________________________________________________________________________
 void PlacesWidget::_addDefaultPlaces( void )
 {
+
     Debug::Throw( "PlacesWidget::_addDefaultPlaces.\n" );
+
+    // get list of existing files
+    File::List currentFiles;
+    foreach( PlacesWidgetItem* item, items_ )
+    { currentFiles.append( item->fileInfo().file() ); }
+
+    // loop over default folders, backward and insert front
     const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
-    for( DefaultFolders::FolderMap::const_iterator iter = folders.begin(); iter != folders.end(); ++iter )
+    DefaultFolders::FolderMapIterator iterator( folders );
+    iterator.toBack();
+    while( iterator.hasPrevious() )
     {
-        if( iter.key().isEmpty() ) continue;
-        BaseFileInfo fileInfo( iter.key() );
+        iterator.previous();
+
+        // skip if file is not set
+        if( iterator.key().isEmpty() ) continue;
+
+        // skip if file is already included
+        if( currentFiles.contains( iterator.key() ) ) continue;
+
+        BaseFileInfo fileInfo( iterator.key() );
         fileInfo.setIsFolder();
-        add( iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), DefaultFolders::get().name( iter.value() ), fileInfo );
-        items_.back()->setFlag( LocalFileInfo::ReadOnly, true );
+        insert( 0, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), DefaultFolders::get().name( iterator.value() ), fileInfo );
+        items_.front()->setFlag( LocalFileInfo::ReadOnly, true );
+
     }
 
 }
