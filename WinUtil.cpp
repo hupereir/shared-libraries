@@ -42,12 +42,11 @@ class WinUtilPrivate
     WinUtilPrivate( void )
     {
         #if defined(Q_OS_WIN)
-
         // define function pointer and try resolve from library
-        dwmapi_ = QLibrary("dwmapi");
-        blurBehindFunction_ =  (PtrDwmEnableBlurBehindWindow) dwmapi.resolve( "DwmEnableBlurBehindWindow" );
+        dwmapi_ .setFileName("dwmapi");
+        dwmapi_.load();
+        blurBehindFunction_ =  (PtrDwmEnableBlurBehindWindow) dwmapi_.resolve( "DwmEnableBlurBehindWindow" );
         #endif
-
     }
 
     //! destructor
@@ -56,20 +55,29 @@ class WinUtilPrivate
 
         #if defined(Q_OS_WIN)
         // unlooad library
-        dwmapi.unload();
+        dwmapi_.unload();
         #endif
 
     }
 
     #if defined(Q_OS_WIN)
 
+    //! blur flags
+    enum
+    {
+        DWM_BB_ENABLE = 1<<0,
+        DWM_BB_BLURREGION = 1<<1,
+        DWM_BB_TRANSITIONONMAXIMIZED = 1<<2
+    };
+
     //! blur behind structure
-    typedef struct _DWM_BLURBEHIND {
+    struct DWM_BLURBEHIND
+    {
         DWORD dwFlags;
         BOOL  fEnable;
         HRGN  hRgnBlur;
         BOOL  fTransitionOnMaximized;
-    } DWM_BLURBEHIND;
+    };
 
     //! blur behind function
     typedef HRESULT (WINAPI *PtrDwmEnableBlurBehindWindow)(HWND, const DWM_BLURBEHIND* );
@@ -85,7 +93,7 @@ class WinUtilPrivate
 
 //_______________________________________
 WinUtil::WinUtil( QWidget* target ):
-    private_( new WinUtilPrivate() ),
+    private_(0),
     target_( target )
 { Q_CHECK_PTR( target_ ); }
 
@@ -98,14 +106,6 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 {
 
     #if defined(Q_OS_WIN)
-
-    static bool first = true;
-    if( first )
-    {
-        first = false;
-        enableBlurBehind();
-    }
-
     if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
 
     HBITMAP oldBitmap;
@@ -144,7 +144,7 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 }
 
 //_______________________________________
-void WinUtil::enableBlurBehind( const BASE::Margins& ) const
+void WinUtil::enableBlurBehind( const BASE::Margins& margins )
 {
 
     #if defined(Q_OS_WIN)
@@ -152,18 +152,26 @@ void WinUtil::enableBlurBehind( const BASE::Margins& ) const
     // do nothing if windows version is too old
     if(QSysInfo::WindowsVersion < QSysInfo::WV_6_0) return;
 
-    Debug::Throw(0) << "WinUtil::enableBlurBehind" << endl;
+    // initialize private
+    if( !private_ ) private_ = new WinUtilPrivate();
+
+    // check function pointer
     if( !private_->blurBehindFunction_ ) return;
 
-    // Create and populate the blur-behind structure.
-    enum {DWM_BB_ENABLE=1};
-    WinUtilPrivate::DWM_BLURBEHIND bb = {0};
+    // create structure
+    WinUtilPrivate::DWM_BLURBEHIND blurBehind;
 
-    // Specify blur-behind and blur region.
-    bb.dwFlags = DWM_BB_ENABLE;
-    bb.fEnable = true;
-    bb.hRgnBlur = NULL;
-    private_->blurBehindFunction(target_->winId(), &bb);
+    // create blur region
+    const QRect rect( margins.adjustedRect( target_->rect() ) );
+    HRGN region = CreateRectRgn( rect.left(), rect.top(), rect.right(), rect.bottom() );
+
+    // create flags
+    blurBehind.dwFlags = WinUtilPrivate::DWM_BB_ENABLE|WinUtilPrivate::DWM_BB_BLURREGION;
+    blurBehind.fEnable = true;
+    blurBehind.hRgnBlur = region;
+
+    // assign blur to window
+    private_->blurBehindFunction_(target_->winId(), &blurBehind);
 
     #endif
 
@@ -217,6 +225,5 @@ void WinUtil::setFlag( long int flag, bool value ) const
     if( value ) SetWindowLong( target_->winId(), GWL_EXSTYLE, GetWindowLong( target_->winId(), GWL_EXSTYLE) | flag);
     else SetWindowLong( target_->winId(), GWL_EXSTYLE, GetWindowLong( target_->winId(), GWL_EXSTYLE) & (~flag));
     #endif
-
 
 }
