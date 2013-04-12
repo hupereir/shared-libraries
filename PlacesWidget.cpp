@@ -75,6 +75,40 @@ QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
 }
 
 //___________________________________________________________________
+LocalFileInfo::List::List( const QDomElement& element )
+{
+
+    // read records
+    for(QDomNode node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
+    {
+        QDomElement element = node.toElement();
+        if( element.isNull() ) continue;
+
+        // children
+        if( element.tagName() == XML::FILEINFO )
+        {
+
+            LocalFileInfo fileInfo( element );
+            if( fileInfo.file().isEmpty() ) fileInfo.setFlag( LocalFileInfo::Separator, true );
+            append( fileInfo );
+        }
+    }
+
+}
+
+//___________________________________________________________________
+QDomElement LocalFileInfo::List::domElement( QDomDocument& document ) const
+{
+
+    // create main element
+    QDomElement top = document.createElement( XML::FILEINFO_LIST );
+    foreach( const LocalFileInfo& fileInfo, *this )
+    { top.appendChild( fileInfo.domElement( document ) );  }
+    return top;
+
+}
+
+//___________________________________________________________________
 const double PlacesWidgetItem::BorderWidth = 2;
 const QString PlacesWidgetItem::MimeType( "internal/places-widget-item" );
 
@@ -632,37 +666,27 @@ bool PlacesWidget::read( File file )
     QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
     if( topNodes.isEmpty() ) return false;
 
-    // read records
-    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
+    const LocalFileInfo::List fileInfoList( topNodes.at(0).toElement() );
+    foreach( const LocalFileInfo& fileInfo, fileInfoList )
     {
-        QDomElement element = node.toElement();
-        if( element.isNull() ) continue;
 
-        // children
-        if( element.tagName() == XML::FILEINFO )
-        {
+        if( fileInfo.hasFlag( LocalFileInfo::Separator ) ) _addSeparator();
+        else {
 
-            LocalFileInfo fileInfo( element );
-            if( fileInfo.file().isEmpty() ) fileInfo.setFlag( LocalFileInfo::Separator, true );
-            if( fileInfo.hasFlag( LocalFileInfo::Separator ) ) _addSeparator();
-            else {
-
-                const QString name( fileInfo.hasAlias() ? fileInfo.alias() : fileInfo.file().localName() );
-                add( name, fileInfo );
-
-            }
-
-            // assign flags to last item
-            items_.back()->setFlags( fileInfo.flags() );
-
-            // hide item if needed
-            if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( LocalFileInfo::Hidden ) )
-            { items_.back()->hide(); }
+            const QString name( fileInfo.hasAlias() ? fileInfo.alias() : fileInfo.file().localName() );
+            add( name, fileInfo );
 
         }
+
+        // assign flags to last item
+        items_.back()->setFlags( fileInfo.flags() );
+
+        // hide item if needed
+        if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( LocalFileInfo::Hidden ) )
+        { items_.back()->hide(); }
+
     }
 
-    return true;
 }
 
 //______________________________________________________________________
@@ -676,6 +700,17 @@ bool PlacesWidget::write( File file )
         return false;
     }
 
+    // get list of items and create file info list
+    QList<PlacesWidgetItem*> items( items_ );
+    LocalFileInfo::List fileInfoList;
+    foreach( PlacesWidgetItem* item, items )
+    {
+        LocalFileInfo fileInfo( item->fileInfo() );
+        fileInfo.setFlags( item->flags() );
+        fileInfo.setAlias( item->text() );
+        fileInfoList.append( fileInfo );
+    }
+
     // create document
     XmlDocument document;
     {
@@ -683,23 +718,16 @@ bool PlacesWidget::write( File file )
         document.setContent( &qtfile );
     }
 
-    // get list of items
-    QList<PlacesWidgetItem*> items( items_ );
-
-    // create main element
-    QDomElement top = document.createElement( XML::FILEINFO_LIST );
-
-    // loop over records
-    foreach( PlacesWidgetItem* item, items )
+    // read old list of files
+    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
+    if( !topNodes.isEmpty() )
     {
-
-        LocalFileInfo fileInfo( item->fileInfo() );
-        fileInfo.setFlags( item->flags() );
-        fileInfo.setAlias( item->text() );
-        Debug::Throw() << "PlacesWidget::write - " << fileInfo << endl;
-        top.appendChild( fileInfo.domElement( document ) );
+        const LocalFileInfo::List oldFileInfoList( topNodes.at(0).toElement() );
+        if( oldFileInfoList == fileInfoList ) return true;
     }
 
+    // create main element
+    QDomElement top = fileInfoList.domElement( document );
 
     // append top node to document and write
     document.replaceChild( top );

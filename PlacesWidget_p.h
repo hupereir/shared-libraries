@@ -69,6 +69,15 @@ class LocalFileInfo: public BaseFileInfo
     virtual ~LocalFileInfo( void )
     {}
 
+    //! equal to operator
+    bool operator == (const LocalFileInfo& other ) const
+    {
+        return
+            (BaseFileInfo::operator == (other)) &&
+            alias() == other.alias() &&
+            flags_ == other.flags_;
+    }
+
     //!@name accessors
     //@{
 
@@ -100,6 +109,26 @@ class LocalFileInfo: public BaseFileInfo
     }
 
     //@}
+
+    class List: public QList<LocalFileInfo>
+    {
+        public:
+
+        //! constructor
+        List( void )
+        {}
+
+        //! constructor from DOM element
+        List( const QDomElement& );
+
+        //! destructor
+        virtual ~List( void )
+        {}
+
+        //! dump to dom element
+        virtual QDomElement domElement( QDomDocument& ) const;
+
+    };
 
     private:
 
