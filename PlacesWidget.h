@@ -65,9 +65,6 @@ class PlacesWidget: public QWidget, public Counter
     //! set icon provider
     void setIconProvider( BaseFileIconProvider* );
 
-    //! install default folders
-    void installDefaultFolders( void );
-
     //! true if empty
     bool isEmpty( void ) const
     { return group_->buttons().isEmpty(); }
@@ -77,12 +74,6 @@ class PlacesWidget: public QWidget, public Counter
 
     //! set item enabled
     bool setItemIsValid( const BaseFileInfo&, bool );
-
-    //! Read fileList from file
-    bool read( File = File() );
-
-    //! write fileList to file
-    bool write( File = File() );
 
     //! event filter
     virtual bool eventFilter( QObject*, QEvent* );
@@ -180,6 +171,15 @@ class PlacesWidget: public QWidget, public Counter
     virtual void paintEvent( QPaintEvent* );
 
     //@}
+
+    //! Read fileList from file
+    bool _read( void );
+
+    //! write fileList to file
+    bool _write( void );
+
+    //! install default folders
+    void _addDefaultPlaces( void );
 
     //! set db file
     bool _setDBFile( const File& );

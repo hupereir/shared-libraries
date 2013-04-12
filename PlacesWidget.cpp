@@ -596,22 +596,6 @@ void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
 
 }
 
-//_________________________________________________________________________________
-void PlacesWidget::installDefaultFolders( void )
-{
-    Debug::Throw( "PlacesWidget::installDefaultFolders.\n" );
-    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
-    for( DefaultFolders::FolderMap::const_iterator iter = folders.begin(); iter != folders.end(); ++iter )
-    {
-        if( iter.key().isEmpty() ) continue;
-        BaseFileInfo fileInfo( iter.key() );
-        fileInfo.setIsFolder();
-        add( iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), DefaultFolders::get().name( iter.value() ), fileInfo );
-        items_.back()->setFlag( LocalFileInfo::ReadOnly, true );
-    }
-
-}
-
 //______________________________________________________________________
 QList<BaseFileInfo> PlacesWidget::items( void ) const
 {
@@ -637,107 +621,6 @@ bool PlacesWidget::setItemIsValid( const BaseFileInfo& fileInfo, bool value )
     }
 
     return changed;
-}
-
-//______________________________________________________________________
-bool PlacesWidget::read( File file )
-{
-    Debug::Throw( "PlacesWidget::read.\n" );
-
-    // clear existing entries
-    clear();
-
-    if( file.isEmpty() ) file = dbFile_;
-    if( file.isEmpty() || !file.exists() ) return false;
-
-    // dom document
-    XmlDocument document;
-    {
-
-        QFile qfile( file );
-        if( !document.setContent( &qfile ) )
-        {
-            Debug::Throw() << document.error() << endl;
-            return false;
-        }
-    }
-
-    // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
-    if( topNodes.isEmpty() ) return false;
-
-    const LocalFileInfo::List fileInfoList( topNodes.at(0).toElement() );
-    foreach( const LocalFileInfo& fileInfo, fileInfoList )
-    {
-
-        if( fileInfo.hasFlag( LocalFileInfo::Separator ) ) _addSeparator();
-        else {
-
-            const QString name( fileInfo.hasAlias() ? fileInfo.alias() : fileInfo.file().localName() );
-            add( name, fileInfo );
-
-        }
-
-        // assign flags to last item
-        items_.back()->setFlags( fileInfo.flags() );
-
-        // hide item if needed
-        if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( LocalFileInfo::Hidden ) )
-        { items_.back()->hide(); }
-
-    }
-
-}
-
-//______________________________________________________________________
-bool PlacesWidget::write( File file )
-{
-    Debug::Throw( "PlacesWidget::write.\n" );
-    if( file.isEmpty() ) file = dbFile_;
-    if( file.isEmpty() )
-    {
-        Debug::Throw( "PlacesWidget::write - no file.\n" );
-        return false;
-    }
-
-    // get list of items and create file info list
-    QList<PlacesWidgetItem*> items( items_ );
-    LocalFileInfo::List fileInfoList;
-    foreach( PlacesWidgetItem* item, items )
-    {
-        LocalFileInfo fileInfo( item->fileInfo() );
-        fileInfo.setFlags( item->flags() );
-        fileInfo.setAlias( item->text() );
-        fileInfoList.append( fileInfo );
-    }
-
-    // create document
-    XmlDocument document;
-    {
-        QFile qtfile( file );
-        document.setContent( &qtfile );
-    }
-
-    // read old list of files
-    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
-    if( !topNodes.isEmpty() )
-    {
-        const LocalFileInfo::List oldFileInfoList( topNodes.at(0).toElement() );
-        if( oldFileInfoList == fileInfoList ) return true;
-    }
-
-    // create main element
-    QDomElement top = fileInfoList.domElement( document );
-
-    // append top node to document and write
-    document.replaceChild( top );
-    {
-        QFile qfile( file );
-        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
-        qfile.write( document.toByteArray() );
-    }
-
-    return true;
 }
 
 //_______________________________________________________
@@ -1256,8 +1139,12 @@ void PlacesWidget::_toggleHideItem( bool value )
     if( !focusItem_ ) return;
     if( value == focusItem_->hasFlag( LocalFileInfo::Hidden ) ) return;
     focusItem_->setFlag( LocalFileInfo::Hidden, value );
-    if( value && !showAllEntriesAction_->isChecked() ) focusItem_->hide();
-
+    if( value && !showAllEntriesAction_->isChecked() )
+    {
+        focusItem_->hide();
+        focusItem_->setFocus( false );
+        focusItem_->setMouseOver( false );
+    }
 }
 
 //______________________________________________________________________
@@ -1378,7 +1265,7 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
 
     const QPoint position( event->pos() );
     foreach( PlacesWidgetItem* item, items_ )
-    {  item->setFocus( item->rect().translated( item->pos() ).contains( position ) ); }
+    {  item->setFocus( item->isVisible() && item->rect().translated( item->pos() ).contains( position ) ); }
 
     QWidget::mousePressEvent( event );
 }
@@ -1416,7 +1303,7 @@ int PlacesWidget::_index( const QPoint& position ) const
     int index = 0;
     foreach( PlacesWidgetItem* item, items_ )
     {
-        if( position.y()+1 >= item->rect().translated( item->pos() ).bottom() ) ++index;
+        if( item->isHidden() || position.y()+1 >= item->rect().translated( item->pos() ).bottom() ) ++index;
         else break;
     }
 
@@ -1527,6 +1414,130 @@ void PlacesWidget::paintEvent( QPaintEvent* event )
 
 }
 
+//______________________________________________________________________
+bool PlacesWidget::_read( void )
+{
+    Debug::Throw( "PlacesWidget::_read.\n" );
+
+    // clear existing entries
+    clear();
+
+    if( !( XmlOptions::get().contains( "PLACES_HAS_DEFAULTS" ) && XmlOptions::get().get<bool>( "PLACES_HAS_DEFAULTS" ) ) )
+    {
+        _addDefaultPlaces();
+        XmlOptions::get().set<bool>( "PLACES_HAS_DEFAULTS", true );
+    }
+
+    const File file( dbFile_ );
+    if( file.isEmpty() || !file.exists() ) return false;
+
+    // dom document
+    XmlDocument document;
+    {
+
+        QFile qfile( file );
+        if( !document.setContent( &qfile ) )
+        {
+            Debug::Throw() << document.error() << endl;
+            return false;
+        }
+    }
+
+    // look for relevant element
+    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
+    if( topNodes.isEmpty() ) return false;
+
+    const LocalFileInfo::List fileInfoList( topNodes.at(0).toElement() );
+    foreach( const LocalFileInfo& fileInfo, fileInfoList )
+    {
+
+        if( fileInfo.hasFlag( LocalFileInfo::Separator ) ) _addSeparator();
+        else {
+
+            const QString name( fileInfo.hasAlias() ? fileInfo.alias() : fileInfo.file().localName() );
+            add( name, fileInfo );
+
+        }
+
+        // assign flags to last item
+        items_.back()->setFlags( fileInfo.flags() );
+
+        // hide item if needed
+        if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( LocalFileInfo::Hidden ) )
+        { items_.back()->hide(); }
+
+    }
+
+}
+
+//______________________________________________________________________
+bool PlacesWidget::_write( void )
+{
+    Debug::Throw( "PlacesWidget::_write.\n" );
+
+    const File file( dbFile_ );
+    if( file.isEmpty() )
+    {
+        Debug::Throw( "PlacesWidget::write - no file.\n" );
+        return false;
+    }
+
+    // get list of items and create file info list
+    QList<PlacesWidgetItem*> items( items_ );
+    LocalFileInfo::List fileInfoList;
+    foreach( PlacesWidgetItem* item, items )
+    {
+        LocalFileInfo fileInfo( item->fileInfo() );
+        fileInfo.setFlags( item->flags() );
+        fileInfo.setAlias( item->text() );
+        fileInfoList.append( fileInfo );
+    }
+
+    // create document
+    XmlDocument document;
+    {
+        QFile qtfile( file );
+        document.setContent( &qtfile );
+    }
+
+    // read old list of files
+    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
+    if( !topNodes.isEmpty() )
+    {
+        const LocalFileInfo::List oldFileInfoList( topNodes.at(0).toElement() );
+        if( oldFileInfoList == fileInfoList ) return true;
+    }
+
+    // create main element
+    QDomElement top = fileInfoList.domElement( document );
+
+    // append top node to document and write
+    document.replaceChild( top );
+    {
+        QFile qfile( file );
+        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
+        qfile.write( document.toByteArray() );
+    }
+
+    return true;
+}
+
+//_________________________________________________________________________________
+void PlacesWidget::_addDefaultPlaces( void )
+{
+    Debug::Throw( "PlacesWidget::_addDefaultPlaces.\n" );
+    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
+    for( DefaultFolders::FolderMap::const_iterator iter = folders.begin(); iter != folders.end(); ++iter )
+    {
+        if( iter.key().isEmpty() ) continue;
+        BaseFileInfo fileInfo( iter.key() );
+        fileInfo.setIsFolder();
+        add( iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), DefaultFolders::get().name( iter.value() ), fileInfo );
+        items_.back()->setFlag( LocalFileInfo::ReadOnly, true );
+    }
+
+}
+
 //_________________________________________________________________________________
 bool PlacesWidget::_setDBFile( const File& file )
 {
@@ -1543,7 +1554,7 @@ bool PlacesWidget::_setDBFile( const File& file )
     if( dbFile_.localName().startsWith( '.' ) )
     { dbFile_.setHidden(); }
 
-    read();
+    _read();
 
     return true;
 
@@ -1553,6 +1564,12 @@ bool PlacesWidget::_setDBFile( const File& file )
 void PlacesWidget::_updateConfiguration( void )
 {
     Debug::Throw( "PlacesWidget::_updateConfiguration.\n" );
+
+//     if( !( XmlOptions::get().contains( "PLACES_HAS_DEFAULT" ) && XmlOptions::get().get<bool>( "PLACES_HAS_DEFAULT" ) ) )
+//     {
+//         _addDefaultPlaces();
+//         XmlOptions::get().set<bool>( "PLACES_HAS_DEFAULT", true );
+//     }
 
     // DB file
     _setDBFile( File( XmlOptions::get().raw("RC_FILE") ) );
@@ -1576,7 +1593,7 @@ void PlacesWidget::_updateConfiguration( void )
 void PlacesWidget::_saveConfiguration( void )
 {
     Debug::Throw( "PlacesWidget::_saveConfiguration.\n" );
-    write();
+    _write();
 }
 
 //_________________________________________________________________________________
