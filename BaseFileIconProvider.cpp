@@ -24,6 +24,7 @@
 #include "BaseFileIconProvider.h"
 #include "BaseIcons.h"
 #include "CustomPixmap.h"
+#include "DefaultFolders.h"
 #include "IconEngine.h"
 #include "Util.h"
 
@@ -35,19 +36,13 @@ BaseFileIconProvider::BaseFileIconProvider( QObject* parent ):
     Counter( "BaseFileIconProvider" )
 {
 
-    // initialize default icons
-    // home
-    icons_.insert( Util::home(), Icon("user-home.png") );
+    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
 
-    // use QSettings to get standard directories from XDG
-    QSettings settings( QString( "%1/.config/user-dirs.dirs" ).arg( Util::home() ), QSettings::IniFormat );
-    settings.sync();
-    icons_.insert( settings.value( "XDG_DESKTOP_DIR", "$HOME/Desktop" ).value<QString>().replace( "$HOME", Util::home() ), Icon("user-desktop") );
-    icons_.insert( settings.value( "XDG_DOCUMENTS_DIR", "$HOME/Documents" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-documents") );
-    icons_.insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-downloads") );
-    icons_.insert( settings.value( "XDG_MUSIC_DIR", "$HOME/Music" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-sound") );
-    icons_.insert( settings.value( "XDG_PICTURES_DIR", "$HOME/Pictures" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-image") );
-    icons_.insert( settings.value( "XDG_VIDEOS_DIR", "$HOME/Videos" ).value<QString>().replace( "$HOME", Util::home() ), Icon("folder-video") );
+    for( DefaultFolders::FolderMap::const_iterator iter = folders.begin(); iter != folders.end(); ++iter )
+    {
+        const QString iconName( DefaultFolders::get().iconName( iter.value() ) );
+        if( !iconName.isEmpty() ) icons_.insert( iter.key(), Icon( iconName ) );
+    }
 
 }
 
@@ -69,8 +64,10 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo )
 const QIcon& BaseFileIconProvider::Icon::icon( bool isLink )
 {
 
+    QIcon& icon = isLink ? linkIcon_:icon_;
+
     // initialize icon if null
-    if( icon_.isNull() )
+    if( icon.isNull() )
     {
         QIcon linkOverlay( IconEngine::get( ICONS::LINK ) );
         QIcon copy( IconEngine::get( name_ ) );
@@ -88,11 +85,11 @@ const QIcon& BaseFileIconProvider::Icon::icon( bool isLink )
                 else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
                 else overlaySize = QSize( 64, 64 );
 
-                icon_.addPixmap( CustomPixmap( copy.pixmap( size ) ).merge( linkOverlay.pixmap( overlaySize ).scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT ) );
+                icon.addPixmap( CustomPixmap( copy.pixmap( size ) ).merge( linkOverlay.pixmap( overlaySize ).scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT ) );
 
-            } else icon_.addPixmap( copy.pixmap( size ) );
+            } else icon.addPixmap( copy.pixmap( size ) );
         }
     }
 
-    return icon_;
+    return icon;
 }

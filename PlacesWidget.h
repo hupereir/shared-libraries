@@ -65,6 +65,9 @@ class PlacesWidget: public QWidget, public Counter
     //! set icon provider
     void setIconProvider( BaseFileIconProvider* );
 
+    //! install default folders
+    void installDefaultFolders( void );
+
     //! true if empty
     bool isEmpty( void ) const
     { return group_->buttons().isEmpty(); }
@@ -147,7 +150,16 @@ class PlacesWidget: public QWidget, public Counter
     //! update item state
     void _updateItems( void );
 
+    //! hide item
+    void _toggleHideItem( bool );
+
+    //! show all entries
+    void _toggleShowAllEntries( bool );
+
     protected:
+
+    //!@name event handlers
+    //@{
 
     //! drag enter event
     virtual void dragEnterEvent( QDragEnterEvent* );
@@ -166,6 +178,8 @@ class PlacesWidget: public QWidget, public Counter
 
     //! paint event
     virtual void paintEvent( QPaintEvent* );
+
+    //@}
 
     //! set db file
     bool _setDBFile( const File& );
@@ -257,6 +271,12 @@ class PlacesWidget: public QWidget, public Counter
 
     //! delete item
     QAction* removeItemAction_;
+
+    //! hide item
+    QAction* hideItemAction_;
+
+    //! show all entries action
+    QAction* showAllEntriesAction_;
 
     //@}
 

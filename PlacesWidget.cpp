@@ -25,6 +25,7 @@
 #include "BaseFileIconProvider.h"
 #include "BaseContextMenu.h"
 #include "BaseIcons.h"
+#include "DefaultFolders.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
@@ -44,19 +45,44 @@
 #include <QPainter>
 #include <QUrl>
 
-const double PlacesWidgetItem::BorderWidth = 2;
-
 namespace XML
-{ static const QString NAME = "name"; };
+{ static const QString FLAGS = "flags"; };
 
 //___________________________________________________________________
+LocalFileInfo::LocalFileInfo( const QDomElement& element ):
+    BaseFileInfo( element )
+{
+    Debug::Throw( "LocalFileInfo::LocalFileInfo (dom).\n" );
+
+    // parse attributes
+    QDomNamedNodeMap attributes( element.attributes() );
+    for( unsigned int i=0; i<attributes.length(); i++ )
+    {
+        QDomAttr attribute( attributes.item( i ).toAttr() );
+        if( attribute.isNull() ) continue;
+        if( attribute.name() == XML::FLAGS ) setFlags( (Flags) attribute.value().toInt() );
+    }
+
+}
+
+//________________________________________________________________
+QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
+{
+    Debug::Throw( "BaseFileInfo::DomElement.\n" );
+    QDomElement out( BaseFileInfo::domElement( document ) );
+    if( flags_ ) out.setAttribute( XML::FLAGS, flags_ );
+    return out;
+}
+
+//___________________________________________________________________
+const double PlacesWidgetItem::BorderWidth = 2;
 const QString PlacesWidgetItem::MimeType( "internal/places-widget-item" );
 
 //___________________________________________________________________
 PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
     QAbstractButton( parent ),
     itemView_( 0x0 ),
-    isSeparator_( false ),
+    flags_( 0 ),
     valid_( true ),
     mouseOver_( false ),
     hasFocus_( false ),
@@ -77,7 +103,7 @@ void PlacesWidgetItem::updateMinimumSize( void )
 {
 
     // separators
-    if( isSeparator_ )
+    if( isSeparator() )
     {
         setMinimumSize( QSize( 0, 3 ) );
         return;
@@ -199,7 +225,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
 {
 
     // render separators
-    if( isSeparator_ )
+    if( isSeparator() )
     {
 
         QStyleOptionFrameV3 option;
@@ -245,7 +271,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
 
         // change text color if focus
         if( valid_ && ( hasFocus_ || dragInProgress_ ) ) painter->setPen( palette().color( QPalette::HighlightedText ) );
-        else painter->setPen( palette().color( valid_ ? QPalette::Normal:QPalette::Disabled, QPalette::WindowText  ) );
+        else painter->setPen( palette().color( ( valid_ && !hasFlag( LocalFileInfo::Hidden ) ) ? QPalette::Normal:QPalette::Disabled, QPalette::WindowText  ) );
 
         QTextOption textOptions( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) );
         textOptions.setWrapMode( QTextOption::NoWrap );
@@ -264,7 +290,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         }
 
         // get pixmap
-        const QPixmap pixmap( icon().pixmap( iconSize(), isValid() ? QIcon::Normal:QIcon::Disabled ) );
+        const QPixmap pixmap( icon().pixmap( iconSize(), ( valid_ && !hasFlag( LocalFileInfo::Hidden ) ) ? QIcon::Normal:QIcon::Disabled ) );
         const QPoint position(
             iconRect.x() + 0.5*(iconRect.width() - pixmap.width()),
             iconRect.y() + 0.5*(iconRect.height() - pixmap.height()) );
@@ -319,34 +345,6 @@ PlacesWidgetItemDialog::PlacesWidgetItemDialog( QWidget* parent ):
 
     layout->addWidget( remoteCheckBox_ = new QCheckBox( tr("Remote location"), this ), 2, 1, 1, 1 );
 
-}
-
-//___________________________________________________________________
-LocalFileInfo::LocalFileInfo( const QDomElement& element ):
-    BaseFileInfo( element )
-{
-    Debug::Throw( "LocalFileInfo::LocalFileInfo (dom).\n" );
-
-    // parse attributes
-    QDomNamedNodeMap attributes( element.attributes() );
-    for( unsigned int i=0; i<attributes.length(); i++ )
-    {
-
-        QDomAttr attribute( attributes.item( i ).toAttr() );
-        if( attribute.isNull() ) continue;
-        if( attribute.name() == XML::NAME ) name_ = attribute.value();
-    }
-
-}
-
-//________________________________________________________________
-QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
-{
-
-    Debug::Throw( "BaseFileInfo::DomElement.\n" );
-    QDomElement out( BaseFileInfo::domElement( document ) );
-    out.setAttribute( XML::NAME, name_ );
-    return out;
 }
 
 //___________________________________________________________________
@@ -564,6 +562,22 @@ void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
 
 }
 
+//_________________________________________________________________________________
+void PlacesWidget::installDefaultFolders( void )
+{
+    Debug::Throw( "PlacesWidget::installDefaultFolders.\n" );
+    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
+    for( DefaultFolders::FolderMap::const_iterator iter = folders.begin(); iter != folders.end(); ++iter )
+    {
+        if( iter.key().isEmpty() ) continue;
+        BaseFileInfo fileInfo( iter.key() );
+        fileInfo.setIsFolder();
+        add( iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), DefaultFolders::get().name( iter.value() ), fileInfo );
+        items_.back()->setFlag( LocalFileInfo::ReadOnly, true );
+    }
+
+}
+
 //______________________________________________________________________
 QList<BaseFileInfo> PlacesWidget::items( void ) const
 {
@@ -624,13 +638,26 @@ bool PlacesWidget::read( File file )
         QDomElement element = node.toElement();
         if( element.isNull() ) continue;
 
-        // special options
+        // children
         if( element.tagName() == XML::FILEINFO )
         {
 
             LocalFileInfo fileInfo( element );
-            if( !fileInfo.file().isEmpty() ) add( fileInfo.name(), fileInfo );
-            else _addSeparator();
+            if( fileInfo.file().isEmpty() ) fileInfo.setFlag( LocalFileInfo::Separator, true );
+            if( fileInfo.hasFlag( LocalFileInfo::Separator ) ) _addSeparator();
+            else {
+
+                const QString name( fileInfo.hasAlias() ? fileInfo.alias() : fileInfo.file().localName() );
+                add( name, fileInfo );
+
+            }
+
+            // assign flags to last item
+            items_.back()->setFlags( fileInfo.flags() );
+
+            // hide item if needed
+            if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( LocalFileInfo::Hidden ) )
+            { items_.back()->hide(); }
 
         }
     }
@@ -666,10 +693,11 @@ bool PlacesWidget::write( File file )
     foreach( PlacesWidgetItem* item, items )
     {
 
-        const BaseFileInfo& fileInfo( item->fileInfo() );
+        LocalFileInfo fileInfo( item->fileInfo() );
+        fileInfo.setFlags( item->flags() );
+        fileInfo.setAlias( item->text() );
         Debug::Throw() << "PlacesWidget::write - " << fileInfo << endl;
-
-        top.appendChild( LocalFileInfo( fileInfo, item->text() ).domElement( document ) );
+        top.appendChild( fileInfo.domElement( document ) );
     }
 
 
@@ -694,7 +722,6 @@ bool PlacesWidget::eventFilter( QObject* object, QEvent* event )
 
         case QEvent::HoverEnter:
         {
-            //if( !toolTipWidget_->isVisible() ) return false;
 
             PlacesWidgetItem* item( static_cast<PlacesWidgetItem*>( object ) );
             const QString name( item->text() );
@@ -894,25 +921,44 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
     // add entry
     menu.addAction( addItemAction_ );
     menu.addAction( addSeparatorAction_ );
-    menu.addSeparator();
 
     if( ( focusItem_ = _focusItem() ) )
     {
-        if( !focusItem_->isSeparator() )
+        menu.addSeparator();
+        if( !focusItem_->isSeparator() && !focusItem_->hasFlag( LocalFileInfo::ReadOnly ) )
         {
             editItemAction_->setText( QString( tr( "Edit '%1'" ) ).arg( focusItem_->text() ) );
             menu.addAction( editItemAction_ );
         }
 
+        if( !focusItem_->hasFlag( LocalFileInfo::ReadOnly ) )
         {
             if( focusItem_->isSeparator() ) removeItemAction_->setText( tr( "Remove Separator" ) );
             else removeItemAction_->setText( QString( tr( "Remove '%1'" ) ).arg( focusItem_->text() ) );
             menu.addAction( removeItemAction_ );
         }
 
-        menu.addSeparator();
+        {
+            if( focusItem_->isSeparator() ) hideItemAction_->setText( tr( "Hide Separator" ) );
+            else hideItemAction_->setText( QString( tr( "Hide '%1'" ) ).arg( focusItem_->text() ) );
+            hideItemAction_->setChecked( focusItem_->hasFlag( LocalFileInfo::Hidden ) );
+            menu.addAction( hideItemAction_ );
+        }
 
     }
+
+    bool hasHiddenItems( false );
+    foreach( PlacesWidgetItem* item, items_ )
+    {
+        if( item->hasFlag( LocalFileInfo::Hidden ) )
+        { hasHiddenItems = true; break; }
+    }
+
+    if( hasHiddenItems ) menu.addAction( showAllEntriesAction_ );
+    else showAllEntriesAction_->setChecked( false );
+
+    // separator
+    menu.addSeparator();
 
     // icon sizes
     menu.addMenu( iconSizeMenu_ );
@@ -1174,6 +1220,39 @@ void PlacesWidget::_updateItems( void )
 
 }
 
+//______________________________________________________________________
+void PlacesWidget::_toggleHideItem( bool value )
+{
+
+    Debug::Throw( "PlacesWidget::_toggleHideItem.\n" );
+    if( !focusItem_ ) return;
+    if( value == focusItem_->hasFlag( LocalFileInfo::Hidden ) ) return;
+    focusItem_->setFlag( LocalFileInfo::Hidden, value );
+    if( value && !showAllEntriesAction_->isChecked() ) focusItem_->hide();
+
+}
+
+//______________________________________________________________________
+void PlacesWidget::_toggleShowAllEntries( bool value )
+{
+
+    Debug::Throw( "PlacesWidget::_toggleShowAllEntries.\n" );
+    XmlOptions::get().set<bool>( "PLACES_SHOW_ALL_ENTRIES", value );
+    if( value )
+    {
+
+        foreach( PlacesWidgetItem* item, items_ )
+        { item->show(); }
+
+    } else {
+
+        foreach( PlacesWidgetItem* item, items_ )
+        { if( item->hasFlag( LocalFileInfo::Hidden ) ) item->hide(); }
+
+    }
+
+}
+
 //_______________________________________________
 void PlacesWidget::dragEnterEvent( QDragEnterEvent* event )
 {
@@ -1279,7 +1358,7 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
 //_________________________________________________________________________________
 void PlacesWidget::_updateDragState( void ) const
 {
-    foreach( PlacesWidgetItem* item, items_ )
+   foreach( PlacesWidgetItem* item, items_ )
     { item->setDragEnabled( items_.size()>1 ); }
 }
 
@@ -1458,6 +1537,9 @@ void PlacesWidget::_updateConfiguration( void )
 
     } else iconSizeMenu_->select( IconSize::Default );
 
+    // show all entries
+    if( XmlOptions::get().contains( "PLACES_SHOW_ALL_ENTRIES" ) )  showAllEntriesAction_->setChecked( XmlOptions::get().get<bool>( "PLACES_SHOW_ALL_ENTRIES" ) );
+
     return;
 
 }
@@ -1489,5 +1571,13 @@ void PlacesWidget::_installActions( void )
     removeItemAction_->setShortcut( QKeySequence::Delete );
     removeItemAction_->setShortcutContext(Qt::WidgetShortcut);
     connect( removeItemAction_, SIGNAL(triggered( void ) ), SLOT( _removeItem( void ) ) );
+
+    addAction( hideItemAction_ = new QAction( tr( "Hide Entry" ), this ) );
+    hideItemAction_->setCheckable( true );
+    connect( hideItemAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleHideItem( bool ) ) );
+
+    addAction( showAllEntriesAction_ = new QAction( tr( "Show All Entries" ), this ) );
+    showAllEntriesAction_->setCheckable( true );
+    connect( showAllEntriesAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleShowAllEntries( bool ) ) );
 
 }

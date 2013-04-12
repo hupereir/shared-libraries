@@ -36,6 +36,79 @@
 #include <QLabel>
 #include <QPaintEvent>
 
+//! local file info, needed to store flags
+class LocalFileInfo: public BaseFileInfo
+{
+
+    public:
+
+    enum Flag
+    {
+        ReadOnly = 1<<0,
+        Hidden = 1<<1,
+        Separator = 1<<2
+    };
+
+    Q_DECLARE_FLAGS( Flags, Flag );
+
+    //! default constructor
+    LocalFileInfo( void ):
+        flags_( 0 )
+        {}
+
+    //! copy constructor
+    LocalFileInfo( const BaseFileInfo& other ):
+        BaseFileInfo( other ),
+        flags_( 0 )
+    {}
+
+    //! constructor from DOM element
+    LocalFileInfo( const QDomElement& );
+
+    //! destructor
+    virtual ~LocalFileInfo( void )
+    {}
+
+    //!@name accessors
+    //@{
+
+    //! dump to dom element
+    virtual QDomElement domElement( QDomDocument& ) const;
+
+    //! flags
+    Flags flags( void ) const
+    { return flags_; }
+
+    //! has flag
+    bool hasFlag( LocalFileInfo::Flag flag ) const
+    { return flags_&flag; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! set flags
+    void setFlags( Flags flags )
+    { flags_ = flags; }
+
+    //! set flag
+    void setFlag( LocalFileInfo::Flag flag, bool value )
+    {
+        if( value ) flags_ |= flag;
+        else flags_ &= ~flag;
+    }
+
+    //@}
+
+    private:
+
+    //! flags
+    Flags flags_;
+
+
+};
+
 //! places widget item
 class PlacesWidgetItem: public QAbstractButton
 {
@@ -63,7 +136,7 @@ class PlacesWidgetItem: public QAbstractButton
 
     //! true if is separator
     bool isSeparator( void ) const
-    { return isSeparator_; }
+    { return hasFlag( LocalFileInfo::Separator ); }
 
     //! true if valid
     bool isValid( void ) const
@@ -81,6 +154,14 @@ class PlacesWidgetItem: public QAbstractButton
     virtual QSize sizeHint( void ) const
     { return minimumSize(); }
 
+    //! flags
+    LocalFileInfo::Flags flags( void ) const
+    { return flags_; }
+
+    //! has flag
+    bool hasFlag( LocalFileInfo::Flag flag ) const
+    { return flags_&flag; }
+
     //@}
 
     //!@name modifiers
@@ -88,7 +169,7 @@ class PlacesWidgetItem: public QAbstractButton
 
     //! set is separator
     void setIsSeparator( bool value )
-    { isSeparator_ = value; updateMinimumSize(); update(); }
+    { setFlag( LocalFileInfo::Separator, true ); updateMinimumSize(); update(); }
 
     //! icon
     void setIcon( const QIcon& icon )
@@ -133,6 +214,17 @@ class PlacesWidgetItem: public QAbstractButton
     void setDragEnabled( bool value )
     { dragEnabled_ = value; }
 
+    //! set flags
+    void setFlags( LocalFileInfo::Flags flags )
+    { flags_ = flags; }
+
+    //! set flag
+    void setFlag( LocalFileInfo::Flag flag, bool value )
+    {
+        if( value ) flags_ |= flag;
+        else flags_ &= ~flag;
+    }
+
     //@}
 
     //! border width
@@ -171,8 +263,8 @@ class PlacesWidgetItem: public QAbstractButton
     //! file info
     BaseFileInfo fileInfo_;
 
-    //! true if is separator
-    bool isSeparator_;
+    //! flags
+    LocalFileInfo::Flags flags_;
 
     //! true if valid (true by default)
     bool valid_;
@@ -252,39 +344,6 @@ class PlacesWidgetItemDialog: public CustomDialog
 
     //! remote checkbox
     QCheckBox* remoteCheckBox_;
-
-};
-
-//! local file info
-class LocalFileInfo: public BaseFileInfo
-{
-
-    public:
-
-    //! constructor
-    LocalFileInfo( const BaseFileInfo& other, const QString& name ):
-        BaseFileInfo( other ),
-        name_( name )
-    {}
-
-    //! constructor from DOM element
-    LocalFileInfo( const QDomElement& );
-
-    //! destructor
-    virtual ~LocalFileInfo( void )
-    {}
-
-    //! dump to dom element
-    virtual QDomElement domElement( QDomDocument& ) const;
-
-    //! name
-    const QString& name( void ) const
-    { return name_; }
-
-    private:
-
-    //! name
-    QString name_;
 
 };
 
@@ -384,6 +443,7 @@ class PlacesToolTipWidget: public BaseToolTipWidget
 
 };
 
+Q_DECLARE_OPERATORS_FOR_FLAGS( LocalFileInfo::Flags )
 Q_DECLARE_OPERATORS_FOR_FLAGS( PlacesToolTipWidget::Types )
 
 #endif

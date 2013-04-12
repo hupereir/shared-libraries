@@ -89,6 +89,7 @@ SET( base_qt_SOURCES
   CustomToolBar.cpp
   CustomToolButton.cpp
   DebugMenu.cpp
+  DefaultFolders.cpp
   DetailsDialog.cpp
   DockPanel.cpp
   DockWidget.cpp
@@ -214,6 +215,7 @@ SET( base_qt_HEADERS
   CustomToolBar.h
   CustomToolButton.h
   DebugMenu.h
+  DefaultFolders.h
   DetailsDialog.h
   DockPanel.h
   DockPanel_p.h

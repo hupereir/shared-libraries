@@ -26,6 +26,7 @@
 
 #include "BaseFileInfo.h"
 #include "Counter.h"
+#include "File.h"
 
 #include <QObject>
 #include <QIcon>
@@ -69,10 +70,13 @@ class BaseFileIconProvider: public QObject, public Counter
         //! icon
         QIcon icon_;
 
+        //! link icon
+        QIcon linkIcon_;
+
     };
 
 
-    typedef QMap<QString, Icon> IconMap;
+    typedef QMap<File, Icon> IconMap;
     IconMap icons_;
 
 };

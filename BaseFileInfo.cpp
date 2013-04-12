@@ -26,6 +26,12 @@
 #include "TimeStamp.h"
 #include "XmlString.h"
 
+namespace XML
+{
+    // this one is kept for backward compatibility
+    static const QString NAME = "name";
+};
+
 //________________________________________________________________
 const QString BaseFileInfo::MimeType( "internal/file-info-list" );
 
@@ -46,7 +52,7 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
         if( attribute.name() == XML::FILE ) setFile( File( XmlString( attribute.value() ).toText() ) );
-        else if( attribute.name() == XML::ALIAS ) setAlias( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == XML::ALIAS || attribute.name() == XML::NAME ) setAlias( XmlString( attribute.value() ).toText() );
         else if( attribute.name() == XML::TYPE ) setType( TypeFlags( attribute.value().toInt() ) );
         else if( attribute.name() == XML::SIZE ) setSize( attribute.value().toInt() );
         else if( attribute.name() == XML::LAST_MODIFIED ) setLastModified( attribute.value().toInt() );
