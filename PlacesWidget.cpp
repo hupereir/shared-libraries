@@ -636,8 +636,9 @@ bool PlacesWidget::eventFilter( QObject* object, QEvent* event )
 
             PlacesWidgetItem* item( static_cast<PlacesWidgetItem*>( object ) );
             const QString name( item->text() );
-            const BaseFileInfo fileInfo( item->fileInfo() );
             const QIcon icon( item->icon() );
+            BaseFileInfo fileInfo( item->fileInfo() );
+            if( fileInfo.isLocal() ) fileInfo.update();
 
             toolTipWidget_->setFileInfo( name, fileInfo, icon );
 
@@ -1283,6 +1284,7 @@ QPoint PlacesWidget::_updateDragTarget( const QPoint& position ) const
     int y(0);
     foreach( PlacesWidgetItem* item, items_ )
     {
+        if( item->isHidden() ) continue;
         const QRect rect( item->rect().translated( item->pos() ) );
         if( rect.center().y() < position.y() ) y = rect.bottom();
         else {
@@ -1462,13 +1464,6 @@ bool PlacesWidget::_read( void )
 
     }
 
-    // default places
-    if( !( XmlOptions::get().contains( "PLACES_HAS_DEFAULTS" ) && XmlOptions::get().get<bool>( "PLACES_HAS_DEFAULTS" ) ) )
-    {
-        _addDefaultPlaces();
-        XmlOptions::get().set<bool>( "PLACES_HAS_DEFAULTS", true );
-    }
-
 }
 
 //______________________________________________________________________
@@ -1584,12 +1579,6 @@ void PlacesWidget::_updateConfiguration( void )
 {
     Debug::Throw( "PlacesWidget::_updateConfiguration.\n" );
 
-//     if( !( XmlOptions::get().contains( "PLACES_HAS_DEFAULT" ) && XmlOptions::get().get<bool>( "PLACES_HAS_DEFAULT" ) ) )
-//     {
-//         _addDefaultPlaces();
-//         XmlOptions::get().set<bool>( "PLACES_HAS_DEFAULT", true );
-//     }
-
     // DB file
     _setDBFile( File( XmlOptions::get().raw("RC_FILE") ) );
 
@@ -1603,6 +1592,13 @@ void PlacesWidget::_updateConfiguration( void )
 
     // show all entries
     if( XmlOptions::get().contains( "PLACES_SHOW_ALL_ENTRIES" ) )  showAllEntriesAction_->setChecked( XmlOptions::get().get<bool>( "PLACES_SHOW_ALL_ENTRIES" ) );
+
+    // default places
+    if( !( XmlOptions::get().contains( "PLACES_HAS_DEFAULTS" ) && XmlOptions::get().get<bool>( "PLACES_HAS_DEFAULTS" ) ) )
+    {
+        _addDefaultPlaces();
+        XmlOptions::get().set<bool>( "PLACES_HAS_DEFAULTS", true );
+    }
 
     return;
 
