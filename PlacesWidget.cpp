@@ -1541,7 +1541,29 @@ void PlacesWidget::_addDefaultPlaces( void )
         if( iterator.key().isEmpty() ) continue;
 
         // skip if file is already included
-        if( currentFiles.contains( iterator.key() ) ) continue;
+        if( currentFiles.contains( iterator.key() ) )
+        {
+
+            // move existing item to the correct position
+            for( int index = 0; index< items_.size(); ++index )
+            {
+                if( items_[index]->fileInfo().file() == iterator.key() )
+                {
+                    PlacesWidgetItem* item( items_[index] );
+                    items_.takeAt( index );
+                    buttonLayout_->takeAt( index );
+
+                    items_.insert(0, item );
+                    buttonLayout_->insertWidget( 0, item );
+                    break;
+                }
+
+            }
+
+            // pass to next item
+            continue;
+
+        }
 
         BaseFileInfo fileInfo( iterator.key() );
         fileInfo.setIsFolder();
