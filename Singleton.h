@@ -36,7 +36,7 @@ class Singleton
     static Singleton& get( void );
 
     //! destructor
-    ~Singleton( void )
+    virtual ~Singleton( void )
     {}
 
     //!@name accessors
