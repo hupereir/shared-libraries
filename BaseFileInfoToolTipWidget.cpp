@@ -163,6 +163,8 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
         permissionsItem_->hide();
     }
 
+    adjustSize();
+
 }
 
 //_____________________________________________
