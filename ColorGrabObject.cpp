@@ -29,6 +29,9 @@
 #include <QCursor>
 #include <QMouseEvent>
 
+#if QT_VERSION >= 0x050000
+#include <QScreen>
+#endif
 
 //______________________________________________
 ColorGrabObject::ColorGrabObject( QWidget* parent ):
