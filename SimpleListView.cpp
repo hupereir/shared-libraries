@@ -116,7 +116,7 @@ QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, cons
 
     QTextLayout textLayout( text, option.font );
     const int maxWidth = qMax( 3 * pixmapWidth, 8 * fontMetrics.height() );
-    const int textWidth =     _layoutText( &textLayout, maxWidth );
+    const int textWidth = _layoutText( &textLayout, maxWidth );
     int textHeight = textLayout.boundingRect().height();
 
     int width, height;
@@ -203,5 +203,5 @@ void SimpleListView::setModel( QAbstractItemModel* model )
 void SimpleListView::_adjustWidth()
 {
     if( model() )
-    { setFixedWidth( sizeHintForColumn(0) + verticalScrollBar()->width() + 10 ); }
+    { setFixedWidth( sizeHintForColumn(0) + 25 ); }
 }
