@@ -379,7 +379,7 @@ namespace TRANSPARENCY
         { data << r.x() << r.y() << r.width() << r.height(); }
 
         X11Util::get().changeProperty(
-            *this,
+            this,
             X11Util::_KDE_NET_WM_BLUR_BEHIND_REGION,
             reinterpret_cast<const unsigned char *>(data.constData()),
             data.size());
