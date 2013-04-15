@@ -167,8 +167,8 @@ void TabWidget::_toggleStaysOnTop( bool state )
     #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
 
     // change property
-    X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
-    X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_ABOVE, state );
+    X11Util::get().changeProperty( this, X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
+    X11Util::get().changeProperty( this, X11Util::_NET_WM_STATE_ABOVE, state );
 
     #else
 
@@ -198,12 +198,12 @@ void TabWidget::_toggleSticky( bool state )
     if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
     {
 
-        X11Util::get().changeProperty( *this, X11Util::_NET_WM_STATE_STICKY, state );
+        X11Util::get().changeProperty( this, X11Util::_NET_WM_STATE_STICKY, state );
 
     } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
 
         unsigned long desktop = X11Util::get().cardinal( X11Util::get().appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
-        X11Util::get().changeCardinal( *this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
+        X11Util::get().changeCardinal( this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
 
     }
 
@@ -375,7 +375,7 @@ bool TabWidget::_startDrag( void )
         isDragging_ = true;
 
         #if QT_VERSION < 0x050000
-        if( X11Util::get().moveWidget( *this, mapToGlobal( dragPosition_ ) ) )
+        if( X11Util::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
         {
 
             _resetDrag();

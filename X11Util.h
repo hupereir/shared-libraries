@@ -42,53 +42,53 @@ class X11Util: public X11Defines
     virtual ~X11Util( void );
 
     //! supported atoms
-    bool isSupported( const Atoms& atom );
+    bool isSupported( Atoms atom );
 
     //! return true if property is found in NET_WM_STATE
-    bool hasProperty( const QWidget&, const Atoms& );
+    bool hasProperty( QWidget*, Atoms );
 
     //! change property
-    bool changeProperty( const QWidget&, const Atoms&, bool);
+    bool changeProperty( QWidget*, Atoms, bool);
 
     //! change property
-    bool changeProperty( const QWidget&, const Atoms&, const unsigned char*, int size );
+    bool changeProperty( QWidget*, Atoms, const unsigned char*, int size );
 
     //! print window state
-    void printWindowState( const QWidget& );
+    void printWindowState( QWidget* );
 
     //! display
     Qt::HANDLE display( void ) const;
 
     //! atom
-    Qt::HANDLE findAtom( const Atoms& ) const;
+    Qt::HANDLE findAtom( Atoms ) const;
 
     //! application root window
     WId appRootWindow( void ) const;
 
     //! get atom carninal value
-    unsigned long cardinal( const QWidget& widget, const Atoms& atom )
-    { return cardinal( widget.winId(), atom ); }
+    unsigned long cardinal( QWidget* widget, Atoms atom )
+    { return cardinal( widget->winId(), atom ); }
 
     //! get atom carninal value
-    unsigned long cardinal( const WId&, const Atoms& );
+    unsigned long cardinal( WId, Atoms );
 
     //! get atom carninal value
-    bool changeCardinal( const QWidget& widget, const Atoms& atom, const unsigned long& value )
+    bool changeCardinal( QWidget* widget, Atoms atom, unsigned long value )
     {
-        return widget.isHidden() ?
+        return widget->isHidden() ?
             _changeCardinal( widget, atom, value ):
             _requestCardinalChange( widget, atom, value );
     }
 
     //! move widget using X11 window manager
     /*! returns true on success */
-    bool moveWidget( const QWidget& widget, const QPoint& position )
+    bool moveWidget( QWidget* widget, const QPoint& position )
     { return moveResizeWidget( widget, position, X11Util::_NET_WM_MOVERESIZE_MOVE ); }
 
     //! move/resize widget using X11 window manager
     /*! returns true on success */
     bool moveResizeWidget(
-        const QWidget&,
+        QWidget*,
         const QPoint&,
         const Direction&,
         Qt::MouseButton button = Qt::LeftButton );
@@ -99,16 +99,16 @@ class X11Util: public X11Defines
     X11Util( void );
 
     //! change property
-    bool _changeProperty( const QWidget&, const Atoms&, bool value );
+    bool _changeProperty( QWidget*, Atoms, bool value );
 
     //! change property
-    bool _requestPropertyChange( const QWidget&, const Atoms&, bool value );
+    bool _requestPropertyChange( QWidget*, Atoms, bool value );
 
     //! cardinal
-    bool _changeCardinal( const QWidget&, const Atoms&, const unsigned long& value );
+    bool _changeCardinal( QWidget*, Atoms, unsigned long value );
 
     //! cardinal
-    bool _requestCardinalChange( const QWidget&, const Atoms&, const unsigned long& value );
+    bool _requestCardinalChange( QWidget*, Atoms, unsigned long value );
 
     //! atom names
     typedef QMap<Atoms, QString> AtomNameMap;
