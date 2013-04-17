@@ -139,6 +139,10 @@ class PathEditorItem: public PathEditorButton, public Counter
     //!@name modifiers
     //@{
 
+    //! set prefix
+    void setPrefix( const QString& value )
+    { prefix_ = value; }
+
     //! set local flag
     void setIsLocal( bool value )
     { isLocal_ = value; }
@@ -201,6 +205,9 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     //! path
     File path_;
+
+    //! prefix
+    QString prefix_;
 
     //! true if path is in local file system
     bool isLocal_;

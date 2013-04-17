@@ -164,7 +164,8 @@ void PathEditorItem::mouseMoveEvent( QMouseEvent* event )
 
         top.appendChild( fileInfo.domElement( document ) );
 
-        mimeData->setText( path_ );
+        const QString value( prefix_.isEmpty() ? path_ : prefix_ + "://" + path_ );
+        mimeData->setText( value );
         mimeData->setData( PathEditor::MimeType, document.toByteArray() );
         drag->setMimeData( mimeData );
 
@@ -511,6 +512,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
         } else {
 
             item = new PathEditorItem( browserContainer_ );
+            item->setPrefix( prefix_ );
             item->setIsLocal( isLocal_ );
             item->setItemView( itemView_ );
             item->setDragEnabled( dragEnabled_ );
@@ -541,6 +543,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
             } else {
 
                 item = new PathEditorItem( browserContainer_ );
+                item->setPrefix( prefix_ );
                 item->setIsLocal( isLocal_ );
                 item->setItemView( itemView_ );
                 item->setDragEnabled( dragEnabled_ );
@@ -568,6 +571,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
             } else {
 
                 item = new PathEditorItem( browserContainer_ );
+                item->setPrefix( prefix_ );
                 item->setIsLocal( isLocal_ );
                 item->setItemView( itemView_ );
                 item->setDragEnabled( dragEnabled_ );
