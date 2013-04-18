@@ -284,6 +284,9 @@ class TreeView: public QTreeView, public Counter
     //! set item margin
     virtual void _setItemMargin( int );
 
+    //! hover index
+    virtual void _setHoverIndex( const QModelIndex& );
+
     protected slots:
 
     //! header menu
@@ -293,7 +296,7 @@ class TreeView: public QTreeView, public Counter
     virtual void _findFromDialog( void );
 
     //! hover index
-    virtual void _setHoverIndex( const QModelIndex& );
+    virtual void _indexEntered( const QModelIndex& );
 
     private slots:
 

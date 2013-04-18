@@ -41,7 +41,7 @@
 #include <QScrollBar>
 #include <QStyledItemDelegate>
 
-//_______________________________________________
+//______________________________________________________________________
 TreeView::TreeView( QWidget* parent ):
     QTreeView( parent ),
     Counter( "TreeView" ),
@@ -81,7 +81,7 @@ TreeView::TreeView( QWidget* parent ):
     connect( header(), SIGNAL( sortIndicatorChanged( int, Qt::SortOrder ) ), SLOT( saveSortOrder() ) );
 
     // hover
-    connect( this, SIGNAL( entered( const QModelIndex& ) ), SLOT( _setHoverIndex( const QModelIndex& ) ) );
+    connect( this, SIGNAL( entered( const QModelIndex& ) ), SLOT( _indexEntered( const QModelIndex& ) ) );
 
     // configuration
     connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
@@ -89,14 +89,14 @@ TreeView::TreeView( QWidget* parent ):
 
 }
 
-//_______________________________________________
+//______________________________________________________________________
 void TreeView::setItemMargin( int value )
 {
     itemMarginFromOptions_ = false;
     _setItemMargin( value );
 }
 
-//_______________________________________________
+//______________________________________________________________________
 void TreeView::setModel( QAbstractItemModel* model )
 {
 
@@ -120,7 +120,7 @@ void TreeView::setModel( QAbstractItemModel* model )
 
 }
 
-//_______________________________________________
+//______________________________________________________________________
 void TreeView::setItemDelegate( QAbstractItemDelegate* delegate )
 {
 
@@ -132,7 +132,7 @@ void TreeView::setItemDelegate( QAbstractItemDelegate* delegate )
 
 }
 
-//_______________________________________________
+//______________________________________________________________________
 void TreeView::setFindEnabled( bool value )
 {
     Debug::Throw( "IconView::setFindEnabled.\n" );
@@ -876,6 +876,16 @@ void TreeView::_findFromDialog( void )
     _findDialog().editor().setFocus();
 
     return;
+}
+
+//____________________________________________________________________
+void TreeView::_indexEntered( const QModelIndex& index )
+{
+
+    // if( index.isValid() ) Debug::Throw(0) << "TreeView::_indexEntered - (" << index.row() << "," << index.column() << ")" << endl;
+    // else Debug::Throw(0) << "TreeView::_indexEntered - invalid" << endl;
+    _setHoverIndex( index );
+
 }
 
 //____________________________________________________________________
