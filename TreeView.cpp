@@ -880,13 +880,7 @@ void TreeView::_findFromDialog( void )
 
 //____________________________________________________________________
 void TreeView::_indexEntered( const QModelIndex& index )
-{
-
-    // if( index.isValid() ) Debug::Throw(0) << "TreeView::_indexEntered - (" << index.row() << "," << index.column() << ")" << endl;
-    // else Debug::Throw(0) << "TreeView::_indexEntered - invalid" << endl;
-    _setHoverIndex( index );
-
-}
+{ if( updatesEnabled() ) _setHoverIndex( index ); }
 
 //____________________________________________________________________
 void TreeView::_setHoverIndex( const QModelIndex& index )
