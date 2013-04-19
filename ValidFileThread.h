@@ -42,6 +42,10 @@ class ValidFileThread: public QThread, public Counter
     //! constructor
     ValidFileThread( QObject* = 0 );
 
+    //! destructor
+    virtual ~ValidFileThread( void )
+    {}
+
     //! check duplicates
     void setCheckDuplicates( bool value )
     {
