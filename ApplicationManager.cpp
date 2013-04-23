@@ -232,7 +232,7 @@ namespace SERVER
 
                     // tell existing client to die
                     ServerCommand abort_command( command.id(), ServerCommand::ABORT );
-                    existing_client->sendCommand( abort_command );
+                    existingClient->sendCommand( abort_command );
                     _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
 
                     // tell new client it is accepted
@@ -244,7 +244,7 @@ namespace SERVER
 
                     // tell existing client to die
                     ServerCommand abort_command( command.id(), ServerCommand::ABORT );
-                    existing_client->sendCommand( abort_command );
+                    existingClient->sendCommand( abort_command );
                     _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
 
                     // tell new client it is denied too
@@ -255,9 +255,9 @@ namespace SERVER
                 } else {
 
                     // tell existing client to raise itself
-                    ServerCommand raise_command( command.id(), ServerCommand::RAISE );
-                    raise_command.setArguments( command.arguments() );
-                    existing_client->sendCommand( raise_command );
+                    ServerCommand raiseCommand( command.id(), ServerCommand::RAISE );
+                    raiseCommand.setArguments( command.arguments() );
+                    existingClient->sendCommand( raiseCommand );
 
                 }
 
