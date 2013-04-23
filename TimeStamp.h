@@ -35,6 +35,9 @@ class TimeStamp:public Counter
 
     public:
 
+    //! default string for invalid timestamps
+    static const QString STAMP_UNKNOWN;
+
     //! empty creator
     TimeStamp( void ):
         Counter( "TimeStamp" ),
@@ -79,12 +82,16 @@ class TimeStamp:public Counter
     virtual bool operator == (const TimeStamp& stamp ) const
     { return( time_ == stamp.time_ ); }
 
+    //!@name accessors
+    //@{
+
+    //! checks if timestamp is valid or not
+    virtual bool isValid( void ) const
+    { return valid_; }
+
     //! used to have fast access to the integer value
     virtual operator int (void) const
     { return int( time_ ); }
-
-    //! default string for invalid timestamps
-    static const QString STAMP_UNKNOWN;
 
     //! timestamp format enumeration
     enum Format {
@@ -159,6 +166,20 @@ class TimeStamp:public Counter
     virtual int year( void ) const
     { return (valid_) ? tm_.tm_year+1900:0; }
 
+    //! true if same day
+    bool isSameDay( const TimeStamp& other ) const
+    {
+        return
+            tm_.tm_mday == other.tm_.tm_mday &&
+            tm_.tm_mon == other.tm_.tm_mon &&
+            tm_.tm_year == other.tm_.tm_year;
+    }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
     //! seconds (between 0 and 59)
     virtual TimeStamp& setSeconds( int value )
     {
@@ -211,9 +232,7 @@ class TimeStamp:public Counter
         return *this;
     }
 
-    //! checks if timestamp is valid or not
-    virtual bool isValid( void ) const
-    { return valid_; }
+    //@}
 
     private:
 
