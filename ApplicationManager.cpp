@@ -199,7 +199,7 @@ namespace SERVER
     {
 
         Debug::Throw() << "ApplicationManager::_redirect -"
-            << "  app:" << command.id().name()
+            << " application:" << command.id().name()
             << " command: " << command.commandName()
             << endl;
 
@@ -220,9 +220,9 @@ namespace SERVER
             {
 
                 // server request
-                Client *existing_client = _register( command.id(), sender );
+                Client *existingClient = _register( command.id(), sender );
 
-                if( sender == existing_client ) {
+                if( sender == existingClient ) {
 
                     // tell client it is accepted
                     sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
@@ -233,7 +233,7 @@ namespace SERVER
                     // tell existing client to die
                     ServerCommand abort_command( command.id(), ServerCommand::ABORT );
                     existingClient->sendCommand( abort_command );
-                    _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
+                    _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existingClient );
 
                     // tell new client it is accepted
                     sender->sendCommand( ServerCommand( command.id(), ServerCommand::ACCEPTED ) );
@@ -245,7 +245,7 @@ namespace SERVER
                     // tell existing client to die
                     ServerCommand abort_command( command.id(), ServerCommand::ABORT );
                     existingClient->sendCommand( abort_command );
-                    _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existing_client );
+                    _broadcast( ServerCommand( command.id(), ServerCommand::KILLED ), existingClient );
 
                     // tell new client it is denied too
                     sender->sendCommand( ServerCommand( command.id(), ServerCommand::DENIED ) );
