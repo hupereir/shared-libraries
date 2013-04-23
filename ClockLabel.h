@@ -1,3 +1,6 @@
+#ifndef ClockLabel_h
+#define ClockLabel_h
+
 // $Id$
 
 /******************************************************************************
@@ -20,17 +23,6 @@
 *
 *
 *******************************************************************************/
-
-/*!
-\file ClockLabel.h
-\brief self-updated label displaying current date and time
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#ifndef _ClockLabel_h_
-#define _ClockLabel_h_
 
 #include <QDateTime>
 #include <QBasicTimer>

@@ -39,7 +39,7 @@ DebugMenu::DebugMenu( QWidget* parent, Flags flags ):
     iconCacheDialog_( 0 )
 {
 
-    setTitle( "Debug" );
+    setTitle( tr( "Debug" ) );
 
     Debug::Throw( "DebugMenu::DebugMenu.\n" );
     if( flags&Counters ) addAction( tr("Object Counters"), this, SLOT( _showCounterDialog() ) );

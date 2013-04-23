@@ -44,28 +44,13 @@ void ClockTimer::timerEvent( QTimerEvent* event )
 {
 
     Debug::Throw( "ClockTimer::timerEvent.\n" );
-    TimeStamp new_time( TimeStamp::now() );
+    TimeStamp newTime( TimeStamp::now() );
 
     if( event->timerId() == timer_.timerId() )
     {
 
-        timer_.stop();
-
-        // check time hour and/or minute differ
-        if(
-            time_.isValid() &&
-            new_time.hours() == time_.hours() &&
-            new_time.minutes() == time_.minutes() &&
-            new_time.seconds() == time_.seconds() )
-        {
-            time_ = new_time;
-            return;
-        }
-
-        time_ = new_time;
+        time_ = TimeStamp::now();
         timer_.start( 1000 * interval(), this );
-
-        // emit time changed signal
         emit timeChanged( time_.toString( format ) );
 
     } else return QObject::timerEvent( event );
@@ -86,6 +71,7 @@ ClockLabel::ClockLabel( QWidget* parent ):
     // create static clock timer, updated every 10 seconds
     connect( &timer_, SIGNAL( timeChanged( const QString& ) ), SLOT( setText( const QString& ) ) );
 
+    // initialize
     setText( TimeStamp::now().toString( format ) );
 
 }
