@@ -70,7 +70,7 @@ class BaseFileInfo
         Broken = 1<<4,
         Hidden = 1<<5,
         Remote = 1<<6,
-        Any = (1<<7)-1
+        Last = 1<<7
     };
 
     enum {Shift = 7};
