@@ -47,11 +47,10 @@ BaseFileIconProvider::BaseFileIconProvider( QObject* parent ):
 }
 
 //__________________________________________________________________________
-const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo )
+const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type )
 {
 
     // get type
-    const int type( fileInfo.type() );
     if( !( type&BaseFileInfo::Folder ) ) return IconEngine::get( QString() );
 
     // find in predefined icons
