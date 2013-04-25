@@ -78,7 +78,10 @@ class CustomPixmap: public QPixmap, public Counter
     CustomPixmap rotate( const Rotation& value );
 
     //! returns a transparent pixmap
-    virtual CustomPixmap transparent( const double& ) const;
+    virtual CustomPixmap transparent( qreal ) const;
+
+    //! returns a desaturated pixmap
+    virtual CustomPixmap desaturate( void ) const;
 
     //! corner enumeration for merging pixmap
     enum Corner

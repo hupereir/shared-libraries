@@ -95,7 +95,7 @@ CustomPixmap CustomPixmap::rotate( const CustomPixmap::Rotation& rotation )
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::transparent( const double& intensity ) const
+CustomPixmap CustomPixmap::transparent( qreal intensity ) const
 {
     if( isNull() ) return *this;
 
@@ -112,6 +112,34 @@ CustomPixmap CustomPixmap::transparent( const double& intensity ) const
     painter.end();
 
     return out;
+}
+
+//_________________________________________________
+CustomPixmap CustomPixmap::desaturate( void ) const
+{
+    if( isNull() ) return *this;
+
+    QImage image( toImage() );
+    if( image.format() != QImage::Format_ARGB32_Premultiplied )
+    {
+        Debug::Throw(0) << "CustomPixmap::desaturate - wrong format." << endl;
+        return *this;
+    }
+
+    for( int row = 0; row < image.height(); ++row )
+    {
+
+        // alter pixmaps
+        QRgb* pixels = reinterpret_cast<QRgb*>( image.scanLine( row ) );
+
+        for( int column = 0; column < image.width(); ++column )
+        {
+            const int gray( qGray( pixels[column] ) );
+            pixels[column] = qRgba( gray, gray, gray, qAlpha(pixels[column]) );
+        }
+    }
+
+    return CustomPixmap( image );
 }
 
 //_________________________________________________
