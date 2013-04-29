@@ -3,26 +3,24 @@
 
 // $Id$
 
-/******************************************************************************
+/***********************************************************************
 *
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+* Copyright 2013 Hugo PEREIRA DA COSTA <hugo.pereira@free.fr>
 *
-* This is free software; you can redistribute it and/or modify it under the
-* terms of the GNU General Public License as published by the Free Software
-* Foundation; either version 2 of the License, or (at your option) any later
-* version.
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License as
+* published by the Free Software Foundation; either version 2 of
+* the License, or (at your option) any later version.
 *
-* This software is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-* for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 *
-* You should have received a copy of the GNU General Public License along with
-* software; if not, write to the Free Software Foundation, Inc., 59 Temple
-* Place, Suite 330, Boston, MA  02111-1307 USA
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
-*
-*******************************************************************************/
+***********************************************************************/
 
 #include <QTextStream>
 #include <QSet>
@@ -32,25 +30,6 @@
 namespace BASE
 {
 
-    // temporary forward declaration
-    class Key;
-
-    //! \brief is used to sort pointer to keys according to their unique ID
-    //! \brief generic key object to handle object associations
-    /*!
-    Generic Key object to handle objects associations. Each Key
-    has a unique integer for identification and sorting, and a set
-    of associated Keys. Keys are reflexively associated two by two.
-    When a key is deleted, it get removed from the set of all its associated
-    keys first, to avoid keeping pointers to deleted objects.
-    Either the full set or a typename driven set of associated keys can
-    be retrieved, provided the template typename inherits from Key.
-    Keys provide easy handling of object reflexives associations
-    without explicit care of object deletions. Following diagram shows the current object
-    association scheme.
-    <p><img src="associations.gif" border="0" >
-
-    */
     class Key
     {
 
