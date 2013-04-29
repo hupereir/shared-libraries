@@ -128,8 +128,8 @@ class FileList: public QObject, public Counter
     //! add record to current list
     virtual FileRecord& _add(
         const FileRecord&,
-        const bool& = true,
-        const bool& = true );
+        bool = true,
+        bool = true );
 
     //! truncate list if larger than maxSize_
     virtual FileRecord::List _truncatedList( FileRecord::List ) const;

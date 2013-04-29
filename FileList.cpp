@@ -165,19 +165,18 @@ void FileList::_setMaxSize( const int& value )
 //_______________________________________________
 FileRecord& FileList::_add(
     const FileRecord& record,
-    const bool& updateTimeStamp,
-    const bool& emitSignal )
+    bool updateTimeStamp,
+    bool emitSignal )
 {
 
     // do not add empty files
     Q_ASSERT( !record.file().isEmpty() );
 
-    Debug::Throw() << "FileList::_add - file: " << record.file() << endl;
-
     FileRecord::List::iterator iter = std::find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( record.file() ) );
     if( iter != _records().end() )
     {
 
+        Debug::Throw() << "FileList::_add - updating: " << record.file() << endl;
         if( updateTimeStamp && iter->time() != record.time() )
         {
             iter->setTime( qMax( iter->time(), record.time() ) );
@@ -188,8 +187,7 @@ FileRecord& FileList::_add(
 
     } else {
 
-        Debug::Throw() << "FileList::_add - record: " << record.file() << endl;
-
+        Debug::Throw() << "FileList::_add - adding: " << record.file() << endl;
         _records() << record;
 
         if( emitSignal ) emit contentsChanged();
