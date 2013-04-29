@@ -65,19 +65,18 @@ RecentFilesMenu::~RecentFilesMenu( void )
 //______________________________________
 bool RecentFilesMenu::openLastValidFile( void )
 {
-
     Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );
-    FileRecord record( fileList_->lastValidFile() );
+    const FileRecord record( fileList_->lastValidFile() );
     if( record.file().isEmpty() ) return false;
-
-    emit fileSelected( record );
-    return true;
-
+    else {
+        emit fileSelected( record );
+        return true;
+    }
 }
 
 //______________________________________
 void RecentFilesMenu::setCurrentFile( const File& file )
-{ if( !file.isEmpty() ) setCurrentFile( fileList_->add( file.expand() ) ); }
+{ if( !file.isEmpty() )  setCurrentFile( fileList_->add( file.expand() ) ); }
 
 //______________________________________
 void RecentFilesMenu::_updateActions( void )
