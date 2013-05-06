@@ -131,17 +131,17 @@ class Options: public Counter
     //@{
 
     //! adds a new option. Return true if option is added
-    virtual bool add( const QString&, Option, const bool& isDefault = false );
+    virtual bool add( const QString&, Option, bool isDefault = false );
 
     //! clear list of special (i.e. kept) options matching a given name
     virtual void clearSpecialOptions( const QString& name );
 
     //! option value modifier
-    void set( const QString& name, Option option, const bool& isDefault = false );
+    void set( const QString& name, Option option, bool isDefault = false );
 
     //! option value modifier
     template <typename T>
-    void set( const QString& name, const T& value, const bool& isDefault = false )
+    void set( const QString& name, const T& value, bool isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
@@ -151,7 +151,7 @@ class Options: public Counter
     }
 
     //! option raw value modifier
-    virtual void setRaw( const QString& name, const QByteArray& value, const bool& isDefault = false )
+    virtual void setRaw( const QString& name, const QByteArray& value, bool isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
@@ -160,7 +160,7 @@ class Options: public Counter
     }
 
     //! option raw value modifier
-    virtual void setRaw( const QString& name, const QString& value, const bool& isDefault = false )
+    virtual void setRaw( const QString& name, const QString& value, bool isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
@@ -182,7 +182,7 @@ class Options: public Counter
     }
 
     //! auto-default
-    void setAutoDefault( const bool& value )
+    void setAutoDefault( bool value )
     { autoDefault_ = value; }
 
     //! restore defaults
@@ -196,7 +196,7 @@ class Options: public Counter
     Map::const_iterator _find( const QString& name ) const;
 
     //! auto-default
-    const bool& _autoDefault( void ) const
+    bool _autoDefault( void ) const
     { return autoDefault_; }
 
     private:
