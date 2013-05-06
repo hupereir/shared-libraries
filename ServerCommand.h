@@ -51,27 +51,27 @@ namespace SERVER
         //! command type
         enum CommandType
         {
-            NONE,
-            ACCEPTED,
-            ALIVE,
-            DENIED,
-            ABORT,
-            IDENTIFY,
-            IDENTIFY_SERVER,
-            KILLED,
-            RAISE,
-            REQUEST,
-            UNLOCK,
-            GEOMETRY_REQUEST,
-            GEOMETRY,
-            OPTION
+            None,
+            Accepted,
+            Alive,
+            Denied,
+            Abort,
+            Identify,
+            IdentifyServer,
+            Killed,
+            Raise,
+            Request,
+            Unlock,
+            GeometryRequest,
+            Geometry,
+            Option
         };
 
         //! list
         typedef QList<ServerCommand> List;
 
         //! constructor
-        ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = NONE );
+        ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = None );
 
         //! constructor
         ServerCommand( const QDomElement& );
@@ -94,8 +94,7 @@ namespace SERVER
             if( id() != command.id() ) return id() < command.id();
 
             // to order command, place IDENTIFY_SERVER first
-            if( ServerCommand::command() != command.command() ) return
-                ( ServerCommand::command() == IDENTIFY_SERVER || ServerCommand::command() < command.command() );
+            if( ServerCommand::command() != command.command() ) return ( ServerCommand::command() == IdentifyServer || ServerCommand::command() < command.command() );
             return false;
         }
 
@@ -153,14 +152,14 @@ namespace SERVER
         //! option
         void setXmlOption( const XmlOption& option )
         {
-            Q_ASSERT( command() == ServerCommand::OPTION );
+            Q_ASSERT( command() == ServerCommand::Option );
             option_ = option;
         }
 
         //! option
         const XmlOption& option( void ) const
         {
-            Q_ASSERT( command() == ServerCommand::OPTION );
+            Q_ASSERT( command() == ServerCommand::Option );
             return option_;
         }
 

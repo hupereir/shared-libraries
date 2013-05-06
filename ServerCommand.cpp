@@ -48,20 +48,20 @@ namespace SERVER
     void ServerCommand::_initializeCommandNames( void ) const
     {
         if( !_commandNames().empty() ) return;
-        _commandNames().insert( NONE, "" );
-        _commandNames().insert( ACCEPTED, QObject::tr( "Accepted" ) );
-        _commandNames().insert( DENIED, QObject::tr( "Denied" ) );
-        _commandNames().insert( ABORT, QObject::tr( "Abort" ) );
-        _commandNames().insert( IDENTIFY, QObject::tr( "Identify" ) );
-        _commandNames().insert( IDENTIFY_SERVER, QObject::tr( "Server" ) );
-        _commandNames().insert( KILLED, QObject::tr( "Killed" ) );
-        _commandNames().insert( RAISE, QObject::tr( "Raise" ) );
-        _commandNames().insert( ALIVE, QObject::tr( "Alive" ) );
-        _commandNames().insert( REQUEST, QObject::tr( "Request" ) );
-        _commandNames().insert( UNLOCK, QObject::tr( "Unlock" ) );
-        _commandNames().insert( GEOMETRY_REQUEST, QObject::tr(  "Request geometry" ) );
-        _commandNames().insert( GEOMETRY, QObject::tr( "Send geometry" ) );
-        _commandNames().insert( OPTION, QObject::tr( "Option" ) );
+        _commandNames().insert( None, "" );
+        _commandNames().insert( Accepted, QObject::tr( "Accepted" ) );
+        _commandNames().insert( Denied, QObject::tr( "Denied" ) );
+        _commandNames().insert( Abort, QObject::tr( "Abort" ) );
+        _commandNames().insert( Identify, QObject::tr( "Identify" ) );
+        _commandNames().insert( IdentifyServer, QObject::tr( "Server" ) );
+        _commandNames().insert( Killed, QObject::tr( "Killed" ) );
+        _commandNames().insert( Raise, QObject::tr( "Raise" ) );
+        _commandNames().insert( Alive, QObject::tr( "Alive" ) );
+        _commandNames().insert( Request, QObject::tr( "Request" ) );
+        _commandNames().insert( Unlock, QObject::tr( "Unlock" ) );
+        _commandNames().insert( GeometryRequest, QObject::tr(  "Request geometry" ) );
+        _commandNames().insert( Geometry, QObject::tr( "Send geometry" ) );
+        _commandNames().insert( Option, QObject::tr( "Option" ) );
     }
 
     //___________________________________________
@@ -71,7 +71,7 @@ namespace SERVER
         clientId_( 0 ),
         id_( id ),
         command_( command ),
-        option_( "", Option() )
+        option_( "", ::Option() )
     { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
 
     //___________________________________________
@@ -79,8 +79,8 @@ namespace SERVER
         Counter( "ServerCommand" ),
         timestamp_( TimeStamp::now() ),
         clientId_( 0 ),
-        command_( NONE ),
-        option_( "", Option() )
+        command_( None ),
+        option_( "", ::Option() )
     {
 
         Debug::Throw( "ServerCommand::ServerCommand (dom).\n" );
@@ -106,7 +106,7 @@ namespace SERVER
             else if( tagName == XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
             else if( tagName == BASE::XML::OPTION )
             {
-                Q_ASSERT( command() == ServerCommand::OPTION );
+                Q_ASSERT( command() == ServerCommand::Option );
                 setXmlOption( XmlOption( child_element ) );
             }
         }
@@ -128,7 +128,7 @@ namespace SERVER
 
         // arguments
         if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( XML::ARGUMENTS, document ) );
-        if( command() == ServerCommand::OPTION && !option_.name().isEmpty() )
+        if( command() == ServerCommand::Option && !option_.name().isEmpty() )
         { out.appendChild( option_.domElement( document ) ); }
 
         return out;

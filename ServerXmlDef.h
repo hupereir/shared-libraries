@@ -48,6 +48,9 @@ namespace SERVER
         //! type
         const QString TYPE( "t" );
 
+        //! pid
+        const QString PID( "p" );
+
         //! arguments
         const QString ARGUMENTS( "a" );
 

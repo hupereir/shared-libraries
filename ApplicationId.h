@@ -31,12 +31,7 @@
 namespace SERVER
 {
 
-
-    /*! \brief
-    application identifier.
-    Stores application name and user
-    to uniquely identify an application.
-    */
+    //! Stores application name and user to uniquely identify an application.
     class ApplicationId:public Counter
     {
         public:
@@ -47,38 +42,9 @@ namespace SERVER
         //! constructor
         ApplicationId( const QDomElement& );
 
-        //! dom element
-        QDomElement domElement( QDomDocument& ) const;
-
-        //! name
-        const QString& name( void ) const
-        { return name_; }
-
-        //! name
-        void setName( const QString& value )
-        { name_ = value; }
-
-        //! short name
-        QString userName( void ) const;
-
-        //! short name
-        QString display( void ) const;
-
-        //! user
-        const QString& user( void ) const
-        { return user_; }
-
-        //! user
-        void setUser( const QString& value )
-        { user_ = value; }
-
         //! equal to operator
         bool operator == (const ApplicationId& app ) const
-        {
-            return (
-                name() == app.name() &&
-                user() == app.user() );
-        }
+        { return name() == app.name() && user() == app.user(); }
 
         //! equal to operator
         bool operator != (const ApplicationId& app ) const
@@ -92,10 +58,53 @@ namespace SERVER
             return false;
         }
 
+        //!@name accessors
+        //@{
+        
+        //! dom element
+        QDomElement domElement( QDomDocument& ) const;
+
+        //! name
+        const QString& name( void ) const
+        { return name_; }
+
+        //! short name
+        QString userName( void ) const;
+
+        //! short name
+        QString display( void ) const;
+
+        //! user
+        const QString& user( void ) const
+        { return user_; }
+
+        //! pid
+        qint64 processId( void ) const
+        { return pid_; }
+        
         //! returns true if user and name makes sense
         bool isValid( void ) const
         { return !(name().isEmpty() || user().isEmpty() ); }
 
+        //@}
+        
+        //!@name modifiers
+        //@{
+        
+        //! name
+        void setName( const QString& value )
+        { name_ = value; }
+
+        //! user
+        void setUser( const QString& value )
+        { user_ = value; }
+
+        //! pid
+        void setProcessId( qint64 value )
+        { pid_ = value; }
+        
+        //@}
+        
         private:
 
         //! application name
@@ -104,6 +113,9 @@ namespace SERVER
         //! application user
         QString user_;
 
+        //! process id
+        qint64 pid_;
+        
     };
 };
 
