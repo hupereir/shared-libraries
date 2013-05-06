@@ -26,6 +26,7 @@
 #include "Counter.h"
 #include "File.h"
 
+#include <QMap>
 #include <QObject>
 #include <QIcon>
 
