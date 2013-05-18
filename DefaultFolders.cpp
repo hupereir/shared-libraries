@@ -22,7 +22,13 @@
 #include "DefaultFolders.h"
 #include "Util.h"
 
+#include <QFileInfo>
 #include <QSettings>
+
+#if defined( Q_OS_WIN )
+#include <windows.h>
+#include <shlobj.h>
+#endif
 
 //__________________________________________________________________________
 DefaultFolders& DefaultFolders::get( void )
@@ -38,17 +44,28 @@ DefaultFolders::DefaultFolders( void )
     // fill folder map
     folders_.insert( Util::home(), Home );
 
-    #if defined(Q_OS_UNIX)
+    #if defined( Q_OS_LINUX )
+
     // use QSettings to get standard directories from XDG
     QSettings settings( QString( "%1/.config/user-dirs.dirs" ).arg( Util::home() ), QSettings::IniFormat );
     settings.sync();
-    folders_.insert( settings.value( "XDG_DESKTOP_DIR", "$HOME/Desktop" ).value<QString>().replace( "$HOME", Util::home() ), Desktop );
-    folders_.insert( settings.value( "XDG_DOCUMENTS_DIR", "$HOME/Documents" ).value<QString>().replace( "$HOME", Util::home() ), Documents );
-    folders_.insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Downloads );
-    folders_.insert( settings.value( "XDG_MUSIC_DIR", "$HOME/Music" ).value<QString>().replace( "$HOME", Util::home() ), Music );
-    folders_.insert( settings.value( "XDG_PICTURES_DIR", "$HOME/Pictures" ).value<QString>().replace( "$HOME", Util::home() ), Pictures );
-    folders_.insert( settings.value( "XDG_TEMPLATES_DIR", "$HOME/Templates" ).value<QString>().replace( "$HOME", Util::home() ), Templates );
-    folders_.insert( settings.value( "XDG_VIDEOS_DIR", "$HOME/Videos" ).value<QString>().replace( "$HOME", Util::home() ), Videos );
+    _insert( settings.value( "XDG_DESKTOP_DIR", "$HOME/Desktop" ).value<QString>().replace( "$HOME", Util::home() ), Desktop );
+    _insert( settings.value( "XDG_DOCUMENTS_DIR", "$HOME/Documents" ).value<QString>().replace( "$HOME", Util::home() ), Documents );
+    _insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Downloads );
+    _insert( settings.value( "XDG_MUSIC_DIR", "$HOME/Music" ).value<QString>().replace( "$HOME", Util::home() ), Music );
+    _insert( settings.value( "XDG_PICTURES_DIR", "$HOME/Pictures" ).value<QString>().replace( "$HOME", Util::home() ), Pictures );
+    _insert( settings.value( "XDG_TEMPLATES_DIR", "$HOME/Templates" ).value<QString>().replace( "$HOME", Util::home() ), Templates );
+    _insert( settings.value( "XDG_VIDEOS_DIR", "$HOME/Videos" ).value<QString>().replace( "$HOME", Util::home() ), Videos );
+
+    #elif defined( Q_OS_WIN )
+
+    // use windows API to get standard directories
+    _insert( _defaultFolderName( CSIDL_DESKTOPDIRECTORY ), Desktop );
+    _insert( _defaultFolderName( CSIDL_PERSONAL ), Documents );
+    _insert( _defaultFolderName( CSIDL_MYMUSIC ), Music );
+    _insert( _defaultFolderName( CSIDL_MYPICTURES ), Pictures );
+    _insert( _defaultFolderName( CSIDL_MYVIDEO ), Videos );
+
     #endif
 
     // fill icons map
@@ -91,4 +108,16 @@ QString DefaultFolders::iconName( Type type ) const
 {
     IconMap::const_iterator iter = iconNames_.find( type );
     return iter == iconNames_.end() ? QString():iter.value();
+}
+
+//__________________________________________________________________________
+QString DefaultFolders::_defaultFolderName( qint64 key )
+{
+    #if defined( Q_OS_WIN )
+    TCHAR returnPath[MAX_PATH];
+    if( SUCCEEDED( SHGetFolderPath( 0, key, 0, 0, returnPath ) ) ) return QFileInfo( returnPath ).canonicalFilePath();
+    else return QString();
+    #else
+    return QString();
+    #endif
 }

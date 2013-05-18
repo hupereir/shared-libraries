@@ -70,6 +70,15 @@ class DefaultFolders: public QObject
     //! return icon name for a given type
     QString iconName( Type ) const;
 
+    protected:
+
+    //! insert folder in map
+    void _insert( const QString& key, Type value )
+    { if( !key.isEmpty() ) folders_.insert( key, value ); }
+
+    //! return default folder name under windows (vista and above)
+    QString _defaultFolderName( qint64 );
+
     private:
 
     //! constructor
