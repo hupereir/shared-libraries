@@ -38,6 +38,7 @@ DefaultFolders::DefaultFolders( void )
     // fill folder map
     folders_.insert( Util::home(), Home );
 
+    #if defined(Q_OS_UNIX)
     // use QSettings to get standard directories from XDG
     QSettings settings( QString( "%1/.config/user-dirs.dirs" ).arg( Util::home() ), QSettings::IniFormat );
     settings.sync();
@@ -48,6 +49,7 @@ DefaultFolders::DefaultFolders( void )
     folders_.insert( settings.value( "XDG_PICTURES_DIR", "$HOME/Pictures" ).value<QString>().replace( "$HOME", Util::home() ), Pictures );
     folders_.insert( settings.value( "XDG_TEMPLATES_DIR", "$HOME/Templates" ).value<QString>().replace( "$HOME", Util::home() ), Templates );
     folders_.insert( settings.value( "XDG_VIDEOS_DIR", "$HOME/Videos" ).value<QString>().replace( "$HOME", Util::home() ), Videos );
+    #endif
 
     // fill icons map
     names_.insert( Home, tr( "Home" ) );
