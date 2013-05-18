@@ -217,7 +217,6 @@ void IconView::scrollTo( const QModelIndex& index, ScrollHint )
     }
 
     update();
-
 }
 
 
@@ -362,8 +361,11 @@ bool IconView::isIndexHidden( const QModelIndex& ) const
 QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 {
 
+    Debug::Throw() << "IconView::moveCursor - action: " << action << endl;
+
     // current index
-    const QModelIndex index = currentIndex();
+    QModelIndex index = currentIndex();
+    if( !index.isValid() ) index = model()->index( 0, 0 );
     if( !( index.isValid() && items_.contains( index.row() ) ) )
     { return QModelIndex(); }
 
