@@ -712,8 +712,9 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
         if( fileInfo.isLocal() )
         {
 
-            item->setIsValid( fileInfo.file().exists() );
-            if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+            const bool exists( fileInfo.file().exists() );
+            item->setIsValid( exists );
+            if( exists && !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
             { fileSystemWatcher_.addPath( fileInfo.file() ); }
 
         } else emit remoteItemAdded( fileInfo );
@@ -772,8 +773,9 @@ void PlacesWidget::insert( int position, const QIcon& icon, const QString& const
         if( fileInfo.isLocal() )
         {
 
-            item->setIsValid( fileInfo.file().exists() );
-            if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+            const bool exists( fileInfo.file().exists() );
+            item->setIsValid( exists );
+            if( exists && !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
             { fileSystemWatcher_.addPath( fileInfo.file() ); }
 
         } else emit remoteItemAdded( fileInfo );
@@ -1073,9 +1075,10 @@ void PlacesWidget::_editItem( void )
 
             if( fileInfo.isLocal() )
             {
-
-                focusItem_->setIsValid( fileInfo.file().exists() );
-                if( !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+                
+                const bool exists( fileInfo.file().exists() );
+                focusItem_->setIsValid( exists );
+                if( exists && !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
                 { fileSystemWatcher_.addPath( fileInfo.file() ); }
 
             } else emit remoteItemAdded( fileInfo );
