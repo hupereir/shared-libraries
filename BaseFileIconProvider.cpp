@@ -63,26 +63,10 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
     foreach( const QSize& size, base.availableSizes() )
     {
 
-        CustomPixmap pixmap;
-        if( type&BaseFileInfo::Link )
-        {
+        CustomPixmap pixmap = type&BaseFileInfo::Link ? _linked( base.pixmap( size ) ):base.pixmap( size );
 
-            QSize overlaySize;
-            if( size.width() <= 16 ) overlaySize = QSize( 10, 10 );
-            else if( size.width() <= 22 ) overlaySize = QSize( 12, 12 );
-            else if( size.width() <= 32 ) overlaySize = QSize( 16, 16 );
-            else if( size.width() <= 48 ) overlaySize = QSize( 16, 16 );
-            else if( size.width() <= 64 ) overlaySize = QSize( 22, 22 );
-            else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
-            else overlaySize = QSize( 64, 64 );
-
-            pixmap = CustomPixmap( base.pixmap( size ) ).merge( linkOverlay.pixmap( overlaySize ).scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
-
-        } else pixmap = base.pixmap( size );
-
-        // disable icon, for clipped
-        if( type & BaseFileInfo::Clipped )
-        { pixmap = pixmap.desaturate().transparent( 0.6 ); }
+        // add clipped effect
+        if( type & BaseFileInfo::Clipped ) pixmap = _clipped( pixmap );
 
         // add to icon
         copy.addPixmap( pixmap );
@@ -91,4 +75,73 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
     // insert in map and return
     return icons_.insert( Key( fileInfo.file(), type ), copy ).value();
 
+}
+
+//____________________________________________________
+QPixmap BaseFileIconProvider::_linked( const QPixmap& source ) const
+{
+    if( source.isNull() ) return source;
+    QIcon linkOverlay( IconEngine::get( ICONS::LINK ) );
+    if( linkOverlay.isNull() ) return source;
+
+    // get source size
+    const QSize size( source.size() );
+
+    // decide overlay size
+    QSize overlaySize;
+    if( size.width() <= 16 ) overlaySize = QSize( 10, 10 );
+    else if( size.width() <= 22 ) overlaySize = QSize( 12, 12 );
+    else if( size.width() <= 32 ) overlaySize = QSize( 16, 16 );
+    else if( size.width() <= 48 ) overlaySize = QSize( 16, 16 );
+    else if( size.width() <= 64 ) overlaySize = QSize( 22, 22 );
+    else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
+    else overlaySize = QSize( 64, 64 );
+
+    return CustomPixmap( source )
+        .merge( linkOverlay.pixmap( overlaySize )
+        .scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
+}
+
+//____________________________________________________
+QPixmap BaseFileIconProvider::_hidden( const QPixmap& source ) const
+{ return CustomPixmap( source ).transparent( 0.6 ); }
+
+//____________________________________________________
+QPixmap BaseFileIconProvider::_clipped( const QPixmap& source ) const
+{ return CustomPixmap( source ).desaturate().transparent( 0.6 ); }
+
+//____________________________________________________
+QIcon BaseFileIconProvider::_copy( const QIcon& source ) const
+{
+    QIcon destination;
+    foreach( const QSize& size, source.availableSizes() )
+    { destination.addPixmap( source.pixmap( size ) ); }
+    return destination;
+}
+
+//____________________________________________________
+QIcon BaseFileIconProvider::_linked( const QIcon& source ) const
+{
+    QIcon destination;
+    foreach( const QSize& size, source.availableSizes() )
+    { destination.addPixmap( _linked( source.pixmap( size ) ) ); }
+    return destination;
+}
+
+//____________________________________________________
+QIcon BaseFileIconProvider::_hidden( const QIcon& source ) const
+{
+    QIcon destination;
+    foreach( const QSize& size, source.availableSizes() )
+    { destination.addPixmap( _hidden( source.pixmap( size ) ) ); }
+    return destination;
+}
+
+//____________________________________________________
+QIcon BaseFileIconProvider::_clipped( const QIcon& source ) const
+{
+    QIcon destination;
+    foreach( const QSize& size, source.availableSizes() )
+    { destination.addPixmap( _clipped( source.pixmap( size ) ) ); }
+    return destination;
 }

@@ -27,8 +27,9 @@
 #include "File.h"
 
 #include <QHash>
-#include <QObject>
 #include <QIcon>
+#include <QObject>
+#include <QPixmap>
 
 //! returns icon for a given FileInfo
 class BaseFileIconProvider: public QObject, public Counter
@@ -74,6 +75,29 @@ class BaseFileIconProvider: public QObject, public Counter
         int type_;
 
     };
+
+    protected:
+
+    //! add link overlay icon
+    QPixmap _linked( const QPixmap& ) const;
+
+    //! add hidden effect
+    QPixmap _hidden( const QPixmap& ) const;
+
+    //! add clipped effect
+    QPixmap _clipped( const QPixmap& ) const;
+
+    //! copy
+    QIcon _copy( const QIcon& ) const;
+
+    //! add link overlay icon
+    QIcon _linked( const QIcon& ) const;
+
+    //! add hidden effect
+    QIcon _hidden( const QIcon& ) const;
+
+    //! add clipped effect
+    QIcon _clipped( const QIcon& ) const;
 
     private:
 
