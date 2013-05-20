@@ -26,7 +26,7 @@
 #include "Counter.h"
 #include "File.h"
 
-#include <QMap>
+#include <QHash>
 #include <QObject>
 #include <QIcon>
 
@@ -50,38 +50,44 @@ class BaseFileIconProvider: public QObject, public Counter
     //! icon matching given file info
     virtual const QIcon& icon( const BaseFileInfo&, int );
 
-    private:
-
-    class Icon
+    //! key, used for hash
+    class Key
     {
-
         public:
 
         //! constructor
-        Icon( const QString& name ):
-            name_( name )
+        Key( void ):
+            type_(0)
         {}
 
-        //! icon
-        const QIcon& icon( bool );
+        //! constructor
+        Key( const QString& file, int type ):
+            file_( file ),
+            type_( type )
+        {}
 
-        private:
+        //! equal-to operator
+        bool operator == (const Key& other ) const
+        { return file_ == other.file_ && type_ == other.type_; }
 
-        //! icon name
-        QString name_;
-
-        //! icon
-        QIcon icon_;
-
-        //! link icon
-        QIcon linkIcon_;
+        QString file_;
+        int type_;
 
     };
 
+    private:
 
-    typedef QMap<File, Icon> IconMap;
+    //! icon map
+    typedef QHash<Key, QIcon> IconMap;
     IconMap icons_;
 
+    //! invalid icon
+    QIcon invalid_;
+
 };
+
+//! hash
+inline unsigned int qHash( const BaseFileIconProvider::Key& key )
+{ return qHash( key.file_ )|key.type_; }
 
 #endif

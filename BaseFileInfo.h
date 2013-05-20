@@ -68,10 +68,11 @@ class BaseFileInfo
         Broken = 1<<4,
         Hidden = 1<<5,
         Remote = 1<<6,
-        Last = 1<<7
+        Clipped = 1<<7,
+        Last = 1<<8
     };
 
-    enum {Shift = 7};
+    enum {Shift = 8};
 
     Q_DECLARE_FLAGS( TypeFlags, Type )
 

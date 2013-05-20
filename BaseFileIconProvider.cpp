@@ -32,61 +32,63 @@
 BaseFileIconProvider::BaseFileIconProvider( QObject* parent ):
     QObject( parent ),
     Counter( "BaseFileIconProvider" )
-{
-
-    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
-
-    for( DefaultFolders::FolderMap::const_iterator iter = folders.begin(); iter != folders.end(); ++iter )
-    {
-        const QString iconName( DefaultFolders::get().iconName( iter.value() ) );
-        if( !iconName.isEmpty() ) icons_.insert( iter.key(), Icon( iconName ) );
-    }
-
-}
+{}
 
 //__________________________________________________________________________
 const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type )
 {
 
     // get type
-    if( !( type&BaseFileInfo::Folder ) ) return IconEngine::get( QString() );
+    if( !( type&BaseFileInfo::Folder ) ) return invalid_;
 
-    // find in predefined icons
-    const IconMap::iterator iter( icons_.find( fileInfo.file() ) );
-    return iter == icons_.end() ? IconEngine::get( QString() ) : iter->icon( type&BaseFileInfo::Link );
+    // check whether current map contains key
+    IconMap::const_iterator iter( icons_.find( Key( fileInfo.file(), type ) ) );
+    if( iter != icons_.end() ) return iter.value();
 
-}
+    // insert new entry in map
+    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
+    DefaultFolders::FolderMap::const_iterator nameIter( folders.find( fileInfo.file() ) );
+    if( nameIter == folders.end() ) return invalid_;
 
-//__________________________________________________________________________
-const QIcon& BaseFileIconProvider::Icon::icon( bool isLink )
-{
+    // get icon name and corresponding icon from engine
+    const QString iconName( DefaultFolders::get().iconName( nameIter.value() ) );
+    const QIcon& base( IconEngine::get( iconName ) );
+    if( base.isNull() ) return invalid_;
 
-    QIcon& icon = isLink ? linkIcon_:icon_;
+    // link overlay
+    QIcon copy;
+    QIcon linkOverlay( IconEngine::get( ICONS::LINK ) );
 
-    // initialize icon if null
-    if( icon.isNull() )
+    // add relevant sizes
+    foreach( const QSize& size, base.availableSizes() )
     {
-        QIcon linkOverlay( IconEngine::get( ICONS::LINK ) );
-        QIcon copy( IconEngine::get( name_ ) );
-        foreach( const QSize& size, copy.availableSizes() )
+
+        CustomPixmap pixmap;
+        if( type&BaseFileInfo::Link )
         {
-            if( isLink )
-            {
 
-                QSize overlaySize;
-                if( size.width() <= 16 ) overlaySize = QSize( 10, 10 );
-                else if( size.width() <= 22 ) overlaySize = QSize( 12, 12 );
-                else if( size.width() <= 32 ) overlaySize = QSize( 16, 16 );
-                else if( size.width() <= 48 ) overlaySize = QSize( 16, 16 );
-                else if( size.width() <= 64 ) overlaySize = QSize( 22, 22 );
-                else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
-                else overlaySize = QSize( 64, 64 );
+            QSize overlaySize;
+            if( size.width() <= 16 ) overlaySize = QSize( 10, 10 );
+            else if( size.width() <= 22 ) overlaySize = QSize( 12, 12 );
+            else if( size.width() <= 32 ) overlaySize = QSize( 16, 16 );
+            else if( size.width() <= 48 ) overlaySize = QSize( 16, 16 );
+            else if( size.width() <= 64 ) overlaySize = QSize( 22, 22 );
+            else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
+            else overlaySize = QSize( 64, 64 );
 
-                icon.addPixmap( CustomPixmap( copy.pixmap( size ) ).merge( linkOverlay.pixmap( overlaySize ).scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT ) );
+            pixmap = CustomPixmap( base.pixmap( size ) ).merge( linkOverlay.pixmap( overlaySize ).scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
 
-            } else icon.addPixmap( copy.pixmap( size ) );
-        }
+        } else pixmap = base.pixmap( size );
+
+        // disable icon, for clipped
+        if( type & BaseFileInfo::Clipped )
+        { pixmap = pixmap.desaturate().transparent( 0.6 ); }
+
+        // add to icon
+        copy.addPixmap( pixmap );
     }
 
-    return icon;
+    // insert in map and return
+    return icons_.insert( Key( fileInfo.file(), type ), copy ).value();
+
 }
