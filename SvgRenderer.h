@@ -103,6 +103,12 @@ namespace SVG
         //! validity
         bool isValid_;
 
+        //! true if shadow margins are present
+        bool hasShadowMargins_;
+
+        //! true if shadow prefix are present
+        bool hasShadowPrefix_;
+
         //! true if shadows are present
         bool hasShadow_;
 

@@ -34,6 +34,8 @@ namespace SVG
         Counter( "SVG::SvgRendered" ),
         drawOverlay_( true ),
         isValid_( false ),
+        hasShadowMargins_( false ),
+        hasShadowPrefix_( false ),
         hasShadow_( false ),
         hasOverlay_( false ),
         overlayHints_( OverlayNone ),
@@ -47,8 +49,11 @@ namespace SVG
       if( loaded )
       {
         isValid_ = _hasPrefix();
-        hasShadow_ = _hasPrefix( "shadow", Ring ) && _hasMargins( "shadow" );
+        hasShadowMargins_ = _hasMargins( "shadow" );
+        hasShadowPrefix_ = _hasPrefix( "shadow", Ring );
+        hasShadow_ = hasShadowMargins_ && hasShadowPrefix_;
         hasOverlay_ = elementExists( SVG::Overlay );
+
 
         // centering hints
         overlayHints_ = OverlayNone;
@@ -201,9 +206,8 @@ namespace SVG
     BASE::Margins SvgRenderer::outerPadding( void ) const
     {
         BASE::Margins out;
-        if( hasShadow_ )
+        if( hasShadowMargins_ )
         {
-
             out.setLeft( boundsOnElement( "shadow-"+SVG::MarginLeft ).width() );
             out.setRight( boundsOnElement( "shadow-"+SVG::MarginRight ).width() );
             out.setTop( boundsOnElement( "shadow-"+SVG::MarginTop ).height() );
