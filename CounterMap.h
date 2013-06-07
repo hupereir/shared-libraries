@@ -25,10 +25,10 @@
 #include <QString>
 #include <QMutex>
 #include <QMutexLocker>
-#include <QMap>
+#include <QHash>
 
 //! thread-safe Object counter storage map
-class CounterMap: public QMap<QString, int>
+class CounterMap: public QHash<QString, int>
 {
 
     public:
