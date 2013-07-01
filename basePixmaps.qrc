@@ -15,6 +15,7 @@
     <file alias="pixmaps/document-open.png">../base-pixmaps/document-open.png</file>
     <file alias="pixmaps/document-print.png">../base-pixmaps/document-print.png</file>
     <file alias="pixmaps/document-print-preview.png">../base-pixmaps/document-print-preview.png</file> 
+    <file alias="pixmaps/document-revert.png">../base-pixmaps/document-revert.png</file> 
     <file alias="pixmaps/edit-clear-locationbar-rtl.png">../base-pixmaps/edit-clear-locationbar-rtl.png</file>
     <file alias="pixmaps/edit-copy.png">../base-pixmaps/edit-copy.png</file>
     <file alias="pixmaps/edit-cut.png">../base-pixmaps/edit-cut.png</file>

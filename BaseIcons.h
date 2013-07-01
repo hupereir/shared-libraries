@@ -57,6 +57,7 @@ namespace ICONS
     static const QString RELOAD = "view-refresh.png";
     static const QString REMOVE="list-remove.png";
     static const QString RENAME="edit-rename.png";
+    static const QString REVERT="document-revert.png";
     static const QString RUN="system-run.png";
     static const QString SHOW_MENU = "show-menu.png";
     static const QString UNDO= "edit-undo.png";

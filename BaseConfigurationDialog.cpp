@@ -62,22 +62,13 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 
     // add restore default button to layout
     QPushButton* button;
-    button = new QPushButton( IconEngine::get( ICONS::RELOAD ), tr( "Restore Defaults" ), this );
+    button = new QPushButton( IconEngine::get( ICONS::REVERT ), tr( "Restore Defaults" ), this );
     button->setToolTip( tr( "Restore default value for all options." ) );
     button->setAutoDefault( false );
 
     connect( button, SIGNAL( clicked() ), SLOT( _restoreDefaults() ) );
     _buttonLayout().addWidget( button );
     _buttonLayout().addStretch( 1 );
-
-    // apply button
-    _buttonLayout().addWidget( button = new QPushButton(IconEngine::get( ICONS::DIALOG_OK_APPLY ), tr( "Apply" ), this ) );
-    connect( button, SIGNAL( clicked() ), SLOT( _update() ) );
-    connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );
-    button->setToolTip(
-        tr( "Apply changes to options.\n"
-        "Note: the application may have to be restarted so that\n"
-        "all changes are taken into account." ) );
 
     // ok button
     _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), tr( "Ok" ), this ) );
@@ -89,6 +80,15 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
         "Note: the application may have to be restarted so that\n"
         "all changes are taken into account." ) );
     button->setAutoDefault( false );
+
+    // apply button
+    _buttonLayout().addWidget( button = new QPushButton(IconEngine::get( ICONS::DIALOG_OK_APPLY ), tr( "Apply" ), this ) );
+    connect( button, SIGNAL( clicked() ), SLOT( _update() ) );
+    connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );
+    button->setToolTip(
+        tr( "Apply changes to options.\n"
+        "Note: the application may have to be restarted so that\n"
+        "all changes are taken into account." ) );
 
     // cancel button
     _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), tr( "Cancel" ), this ) );
