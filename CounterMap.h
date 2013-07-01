@@ -51,14 +51,14 @@ class CounterMap: public QHash<QString, int>
     //! increment
     void increment( int& counter )
     {
-        QMutexLocker locker( &mutex() );
+        QMutexLocker locker( &mutex_ );
         counter++;
     }
 
     //! increment
     void decrement( int& counter )
     {
-        QMutexLocker locker( &mutex() );
+        QMutexLocker locker( &mutex_ );
         counter--;
     }
 
