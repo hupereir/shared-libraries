@@ -26,8 +26,6 @@
 #include "IconEngine.h"
 #include "Util.h"
 
-#include <QSettings>
-
 //__________________________________________________________________________
 BaseFileIconProvider::BaseFileIconProvider( QObject* parent ):
     QObject( parent ),
