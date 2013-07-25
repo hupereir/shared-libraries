@@ -30,7 +30,7 @@ BaseContextMenu::BaseContextMenu( QWidget* parent ):
     Counter( "BaseContextMenu" ),
     hideDisabledActions_( false ),
     needSeparator_( false )
-{}
+{ ensurePolished(); }
 
 //___________________________________________________
 QAction* BaseContextMenu::addSeparator( void )
