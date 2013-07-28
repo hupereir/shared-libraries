@@ -40,6 +40,8 @@ Counter( "ToolBarMenu" )
     addMenu( toolButtonStyleMenu_ = new ToolButtonStyleMenu( this ) );
     addMenu( iconSizeMenu_ = new IconSizeMenu( this ) );
 
+    ensurePolished();
+
 }
 
 //____________________________________________________
