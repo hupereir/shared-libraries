@@ -44,8 +44,10 @@ void Options::installDefaultOptions( void )
     common to all applications
     */
     keep( "PIXMAP_PATH" );
-    add( "PIXMAP_PATH", Option( ":/pixmaps", Option::Recordable|Option::Current ) );
-    add( "PIXMAP_PATH", Option( ":/pixmaps/128x128", Option::Recordable ) );
+    add( "PIXMAP_PATH", Option( ":/icons/32x32", Option::Recordable|Option::Current ) );
+    add( "PIXMAP_PATH", Option( ":/icons/48x48", Option::Recordable ) );
+    add( "PIXMAP_PATH", Option( ":/icons/64x64", Option::Recordable ) );
+    add( "PIXMAP_PATH", Option( ":/icons/128x128", Option::Recordable ) );
 
     set<int>( "DEBUG_LEVEL", 0 );
     set<bool>( "SORT_FILES_BY_DATE", false );
