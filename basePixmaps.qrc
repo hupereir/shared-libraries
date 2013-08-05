@@ -1,68 +1,70 @@
 <!DOCTYPE RCC><RCC version="1.0">
   <qresource>
 
-    <file alias="pixmaps/application-exit.png">../base-pixmaps/application-exit.png</file>
-    <file alias="pixmaps/arrow-left.png">../base-pixmaps/arrow-left.png</file>
-    <file alias="pixmaps/arrow-right.png">../base-pixmaps/arrow-right.png</file>
-    <file alias="pixmaps/color-picker.png">../base-pixmaps/color-picker.png</file>
-    <file alias="pixmaps/configure.png">../base-pixmaps/configure.png</file>
-    <file alias="pixmaps/dialog-cancel.png">../base-pixmaps/dialog-cancel.png</file>
-    <file alias="pixmaps/dialog-close.png">../base-pixmaps/dialog-close.png</file>
-    <file alias="pixmaps/dialog-ok-apply.png">../base-pixmaps/dialog-ok-apply.png</file>
-    <file alias="pixmaps/dialog-ok.png">../base-pixmaps/dialog-ok.png</file>
-    <file alias="pixmaps/document-encrypt.png">../base-pixmaps/document-encrypt.png</file>
-    <file alias="pixmaps/document-open-folder.png">../base-pixmaps/document-open-folder.png</file>
-    <file alias="pixmaps/document-open.png">../base-pixmaps/document-open.png</file>
-    <file alias="pixmaps/document-print.png">../base-pixmaps/document-print.png</file>
-    <file alias="pixmaps/document-print-preview.png">../base-pixmaps/document-print-preview.png</file> 
-    <file alias="pixmaps/document-revert.png">../base-pixmaps/document-revert.png</file> 
-    <file alias="pixmaps/edit-clear-locationbar-rtl.png">../base-pixmaps/edit-clear-locationbar-rtl.png</file>
-    <file alias="pixmaps/edit-copy.png">../base-pixmaps/edit-copy.png</file>
-    <file alias="pixmaps/edit-cut.png">../base-pixmaps/edit-cut.png</file>
-    <file alias="pixmaps/edit-paste.png">../base-pixmaps/edit-paste.png</file>
-    <file alias="pixmaps/edit.png">../base-pixmaps/edit.png</file>
-    <file alias="pixmaps/edit-redo.png">../base-pixmaps/edit-redo.png</file>
-    <file alias="pixmaps/edit-rename.png">../base-pixmaps/edit-rename.png</file>
-    <file alias="pixmaps/edit-undo.png">../base-pixmaps/edit-undo.png</file>
-    <file alias="pixmaps/format-fill-color.png">../base-pixmaps/format-fill-color.png</file>
-    <file alias="pixmaps/help-contents.png">../base-pixmaps/help-contents.png</file>
-    <file alias="pixmaps/list-add.png">../base-pixmaps/list-add.png</file>
-    <file alias="pixmaps/list-remove.png">../base-pixmaps/list-remove.png</file>
-    <file alias="pixmaps/qt-logo.png">../base-pixmaps/qt-logo.png</file>
-    <file alias="pixmaps/show-menu.png">../base-pixmaps/show-menu.png</file>
-    <file alias="pixmaps/text-html.png">../base-pixmaps/text-html.png</file>
-    <file alias="pixmaps/user-trash.png">../base-pixmaps/user-trash.png</file>
-    <file alias="pixmaps/view-refresh.png">../base-pixmaps/view-refresh.png</file>
+    <file alias="icons/32x32/application-exit.png">../base-pixmaps/application-exit.png</file>
+    <file alias="icons/32x32/arrow-left.png">../base-pixmaps/arrow-left.png</file>
+    <file alias="icons/32x32/arrow-right.png">../base-pixmaps/arrow-right.png</file>
+    <file alias="icons/32x32/color-picker.png">../base-pixmaps/color-picker.png</file>
+    <file alias="icons/32x32/configure.png">../base-pixmaps/configure.png</file>
+    <file alias="icons/32x32/dialog-cancel.png">../base-pixmaps/dialog-cancel.png</file>
+    <file alias="icons/32x32/dialog-close.png">../base-pixmaps/dialog-close.png</file>
+    <file alias="icons/32x32/dialog-ok-apply.png">../base-pixmaps/dialog-ok-apply.png</file>
+    <file alias="icons/32x32/dialog-ok.png">../base-pixmaps/dialog-ok.png</file>
+    <file alias="icons/32x32/document-edit.png">../base-pixmaps/document-edit.png</file>
+    <file alias="icons/32x32/document-encrypt.png">../base-pixmaps/document-encrypt.png</file>
+    <file alias="icons/32x32/document-open-folder.png">../base-pixmaps/document-open-folder.png</file>
+    <file alias="icons/32x32/document-open.png">../base-pixmaps/document-open.png</file>
+    <file alias="icons/32x32/document-print.png">../base-pixmaps/document-print.png</file>
+    <file alias="icons/32x32/document-print-preview.png">../base-pixmaps/document-print-preview.png</file> 
+    <file alias="icons/32x32/document-revert.png">../base-pixmaps/document-revert.png</file> 
+    <file alias="icons/32x32/edit-clear-locationbar-rtl.png">../base-pixmaps/edit-clear-locationbar-rtl.png</file>
+    <file alias="icons/32x32/edit-copy.png">../base-pixmaps/edit-copy.png</file>
+    <file alias="icons/32x32/edit-cut.png">../base-pixmaps/edit-cut.png</file>
+    <file alias="icons/32x32/edit-paste.png">../base-pixmaps/edit-paste.png</file>
+    <file alias="icons/32x32/edit-redo.png">../base-pixmaps/edit-redo.png</file>
+    <file alias="icons/32x32/edit-rename.png">../base-pixmaps/edit-rename.png</file>
+    <file alias="icons/32x32/edit-undo.png">../base-pixmaps/edit-undo.png</file>
+    <file alias="icons/32x32/format-fill-color.png">../base-pixmaps/format-fill-color.png</file>
+    <file alias="icons/32x32/help-contents.png">../base-pixmaps/help-contents.png</file>
+    <file alias="icons/32x32/list-add.png">../base-pixmaps/list-add.png</file>
+    <file alias="icons/32x32/list-remove.png">../base-pixmaps/list-remove.png</file>
+    <file alias="icons/32x32/show-menu.png">../base-pixmaps/show-menu.png</file>
+    <file alias="icons/32x32/text-html.png">../base-pixmaps/text-html.png</file>
+    <file alias="icons/32x32/user-trash.png">../base-pixmaps/user-trash.png</file>
+    <file alias="icons/32x32/view-refresh.png">../base-pixmaps/view-refresh.png</file>
 
     <!-- find icons -->
-    <file alias="pixmaps/128x128/edit-find.png">../base-pixmaps/edit-find-large.png</file>
-    <file alias="pixmaps/edit-find.png">../base-pixmaps/edit-find.png</file>
+    <file alias="icons/128x128/edit-find.png">../base-pixmaps/edit-find-large.png</file>
+    <file alias="icons/32x32/edit-find.png">../base-pixmaps/edit-find.png</file>
 
     <!-- dialog icons -->
-    <file alias="pixmaps/dialog-information.png">../base-pixmaps/dialog-information.png</file>
-    <file alias="pixmaps/dialog-warning.png">../base-pixmaps/dialog-warning.png</file>
-    <file alias="pixmaps/128x128/dialog-information.png">../base-pixmaps/dialog-information-large.png</file>
-    <file alias="pixmaps/128x128/dialog-warning.png">../base-pixmaps/dialog-warning-large.png</file>
+    <file alias="icons/32x32/dialog-information.png">../base-pixmaps/dialog-information.png</file>
+    <file alias="icons/32x32/dialog-warning.png">../base-pixmaps/dialog-warning.png</file>
+    <file alias="icons/128x128/dialog-information.png">../base-pixmaps/dialog-information-large.png</file>
+    <file alias="icons/128x128/dialog-warning.png">../base-pixmaps/dialog-warning-large.png</file>
 
     <!-- configuration icons -->
-    <file alias="pixmaps/im-user.png">../base-pixmaps/im-user.png</file>
-    <file alias="pixmaps/system-run.png">../base-pixmaps/system-run.png</file>
-    <file alias="pixmaps/input-mouse.png">../base-pixmaps/input-mouse.png</file>
-    <file alias="pixmaps/preferences-desktop-color.png">../base-pixmaps/preferences-desktop-color.png</file>
-    <file alias="pixmaps/view-list-tree.png">../base-pixmaps/view-list-tree.png</file>
-    <file alias="pixmaps/view-split-left-right.png">../base-pixmaps/view-split-left-right.png</file>
-    <file alias="pixmaps/configure-toolbars.png">../base-pixmaps/configure-toolbars.png</file>
-    <file alias="pixmaps/document-open-recent.png">../base-pixmaps/document-open-recent.png</file>
-    <file alias="pixmaps/preferences-desktop-filetype-association.png">../base-pixmaps/preferences-desktop-filetype-association.png</file>
-    <file alias="pixmaps/preferences-desktop-theme.png">../base-pixmaps/preferences-desktop-theme.png</file>
-    <file alias="pixmaps/preferences-other.png">../base-pixmaps/preferences-other.png</file>
-    <file alias="pixmaps/preferences-desktop-notification.png">../base-pixmaps/preferences-desktop-notification.png</file>
-    <file alias="pixmaps/preferences-system-windows-actions.png">../base-pixmaps/preferences-system-windows-actions.png</file>
-    <file alias="pixmaps/preferences-desktop-wallpaper.png">../base-pixmaps/preferences-desktop-wallpaper.png</file>
-    <file alias="pixmaps/tool-animator.png">../base-pixmaps/tool-animator.png</file>
-    <file alias="pixmaps/bookmarks.png">../base-pixmaps/bookmarks.png</file>
-    <file alias="pixmaps/network-server.png">../base-pixmaps/network-server.png</file>
-    <file alias="pixmaps/preferences-web-browser-cache.png">../base-pixmaps/preferences-web-browser-cache.png</file>
+    <file alias="icons/32x32/im-user.png">../base-pixmaps/im-user.png</file>
+    <file alias="icons/32x32/system-run.png">../base-pixmaps/system-run.png</file>
+    <file alias="icons/32x32/input-mouse.png">../base-pixmaps/input-mouse.png</file>
+    <file alias="icons/32x32/preferences-desktop-color.png">../base-pixmaps/preferences-desktop-color.png</file>
+    <file alias="icons/32x32/view-list-tree.png">../base-pixmaps/view-list-tree.png</file>
+    <file alias="icons/32x32/view-split-left-right.png">../base-pixmaps/view-split-left-right.png</file>
+    <file alias="icons/32x32/configure-toolbars.png">../base-pixmaps/configure-toolbars.png</file>
+    <file alias="icons/32x32/document-open-recent.png">../base-pixmaps/document-open-recent.png</file>
+    <file alias="icons/32x32/preferences-desktop-filetype-association.png">../base-pixmaps/preferences-desktop-filetype-association.png</file>
+    <file alias="icons/32x32/preferences-desktop-theme.png">../base-pixmaps/preferences-desktop-theme.png</file>
+    <file alias="icons/32x32/preferences-other.png">../base-pixmaps/preferences-other.png</file>
+    <file alias="icons/32x32/preferences-desktop-notification.png">../base-pixmaps/preferences-desktop-notification.png</file>
+    <file alias="icons/32x32/preferences-system-windows-actions.png">../base-pixmaps/preferences-system-windows-actions.png</file>
+    <file alias="icons/32x32/preferences-desktop-wallpaper.png">../base-pixmaps/preferences-desktop-wallpaper.png</file>
+    <file alias="icons/32x32/tool-animator.png">../base-pixmaps/tool-animator.png</file>
+    <file alias="icons/32x32/bookmarks.png">../base-pixmaps/bookmarks.png</file>
+    <file alias="icons/32x32/network-server.png">../base-pixmaps/network-server.png</file>
+    <file alias="icons/32x32/preferences-web-browser-cache.png">../base-pixmaps/preferences-web-browser-cache.png</file>
+
+    <!-- Qt logo-->
+    <file alias="icons/64x64/qt-logo.png">../base-pixmaps/qt-logo.png</file>
 
   </qresource>
 </RCC>
