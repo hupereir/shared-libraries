@@ -41,7 +41,7 @@ namespace ICONS
     static const QString DIALOG_OK = "dialog-ok.png";
     static const QString DIALOG_OK_APPLY = "dialog-ok-apply.png";
     static const QString DIALOG_ACCEPT = DIALOG_OK_APPLY;
-    static const QString EDIT = "edit.png";
+    static const QString EDIT = "document-edit.png";
     static const QString EDIT_CLEAR = "edit-clear-locationbar-rtl.png";
     static const QString EXIT = "application-exit.png";
     static const QString FIND = "edit-find.png";
