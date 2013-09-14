@@ -300,7 +300,7 @@ namespace SPELLCHECK
 
         const char * suggestion( 0 );
         while( ( suggestion = aspell_string_enumeration_next( elements ) ) )
-        { out << suggestion; }
+        { out << QString::fromUtf8( suggestion ); }
 
         delete_aspell_string_enumeration( elements );
         return out;
