@@ -49,7 +49,7 @@ namespace SPELLCHECK
     {
         Debug::Throw( "SpellInterface::SpellInterface.\n" );
 
-        // set encoding
+        // set encoding. Forced to latin1
         aspell_config_replace(spellConfig_, "encoding", "iso8859-1" );
 
         // load dictionaries and filters
@@ -273,10 +273,6 @@ namespace SPELLCHECK
 
             // retrieve word
             word_ = QString::fromLatin1( text_.toLatin1().mid( begin_+position_, token.len ) );
-
-//             Debug::Throw() << "SpellInterface::nextWord - text: " << text_ << endl;
-//             Debug::Throw() << "SpellInterface::nextWord - offsets: " << token.offset << "," << token.len << endl;
-//             Debug::Throw() << "SpellInterface::nextWord - word: " << word_ << endl << endl;
 
             return true;
         }
