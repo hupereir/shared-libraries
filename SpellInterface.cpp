@@ -49,6 +49,9 @@ namespace SPELLCHECK
     {
         Debug::Throw( "SpellInterface::SpellInterface.\n" );
 
+        // set encoding
+        aspell_config_replace(spellConfig_, "encoding", "iso8859-1" );
+
         // load dictionaries and filters
         _loadDictionaries();
         _loadFilters();
@@ -104,7 +107,6 @@ namespace SPELLCHECK
         // update personal dictionary
         QString personal_dictionary = Util::env( "HOME" ) + "/.aspell." + dictionary + ".pws";
         aspell_config_replace(spellConfig_, "personal", personal_dictionary.toLatin1().constData() );
-
         // reset
         return _reset();
 
@@ -270,7 +272,12 @@ namespace SPELLCHECK
             position_ = token.offset;
 
             // retrieve word
-            word_ = text_.mid( begin_+position_, token.len );
+            word_ = QString::fromLatin1( text_.toLatin1().mid( begin_+position_, token.len ) );
+
+//             Debug::Throw() << "SpellInterface::nextWord - text: " << text_ << endl;
+//             Debug::Throw() << "SpellInterface::nextWord - offsets: " << token.offset << "," << token.len << endl;
+//             Debug::Throw() << "SpellInterface::nextWord - word: " << word_ << endl << endl;
+
             return true;
         }
 
@@ -300,7 +307,7 @@ namespace SPELLCHECK
 
         const char * suggestion( 0 );
         while( ( suggestion = aspell_string_enumeration_next( elements ) ) )
-        { out << QString::fromUtf8( suggestion ); }
+        { out << QString::fromLatin1( suggestion ); }
 
         delete_aspell_string_enumeration( elements );
         return out;
