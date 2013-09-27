@@ -1904,6 +1904,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
     // if no_increment, start from the beginning of the possible current selection
     if( cursor.hasSelection() && selection.flag( TextSelection::NoIncrement ) )
     { cursor.setPosition( cursor.anchor()+selection.text().size()+1 ); }
+
     if( selection.flag( TextSelection::RegExp ) )
     {
 
