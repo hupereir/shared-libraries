@@ -1772,8 +1772,8 @@ void TextEditor::_createBaseFindDialog( void )
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in Text" ) );
         connect( findDialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
+        connect( this, SIGNAL( matchFound() ), findDialog_, SLOT( matchFound() ) );
         connect( this, SIGNAL( noMatchFound() ), findDialog_, SLOT( noMatchFound() ) );
-        connect( this, SIGNAL( matchFound() ), findDialog_, SLOT( clearLabel() ) );
 
     }
 
@@ -2004,8 +2004,8 @@ void TextEditor::_createBaseReplaceDialog( void )
         connect( replaceDialog_, SIGNAL( replace( TextSelection ) ), SLOT( replace( TextSelection ) ) );
         connect( replaceDialog_, SIGNAL( replaceInWindow( TextSelection ) ), SLOT( replaceInWindow( TextSelection ) ) );
         connect( replaceDialog_, SIGNAL( replaceInSelection( TextSelection ) ), SLOT( replaceInSelection( TextSelection ) ) );
+        connect( this, SIGNAL( matchFound() ), replaceDialog_, SLOT( matchFound() ) );
         connect( this, SIGNAL( noMatchFound() ), replaceDialog_, SLOT( noMatchFound() ) );
-        connect( this, SIGNAL( matchFound() ), replaceDialog_, SLOT( clearLabel() ) );
 
     }
 
@@ -2578,7 +2578,7 @@ void TextEditor::_findFromDialog( void )
     _findDialog().centerOnParent();
     _findDialog().show();
     _findDialog().synchronize();
-    _findDialog().clearLabel();
+    _findDialog().matchFound();
     _findDialog().setText( text );
 
     // changes focus
@@ -2612,7 +2612,7 @@ void TextEditor::_replaceFromDialog( void )
 
     // synchronize combo-boxes
     _replaceDialog().synchronize();
-    _replaceDialog().clearLabel();
+    _replaceDialog().matchFound();
 
     // update find text
     QString text;

@@ -106,6 +106,7 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     _addDisabledButton( button );
     _buttonLayout().insertWidget( 1, button );
     button->setAutoDefault( false );
+    replaceButton_ = button;
 
     setTabOrder( &_findButton(), button );
 
@@ -147,6 +148,22 @@ void BaseReplaceDialog::synchronize( void )
     // set focus to find editor
     editor().setFocus();
 
+}
+
+//________________________________________________________________________
+void BaseReplaceDialog::matchFound( void )
+{
+    BaseFindDialog::matchFound();
+    replaceButton_->setEnabled( true );
+    replaceWindowButton_->setEnabled( true );
+}
+
+//________________________________________________________________________
+void BaseReplaceDialog::noMatchFound( void )
+{
+    BaseFindDialog::noMatchFound();
+    replaceButton_->setEnabled( false );
+    replaceWindowButton_->setEnabled( false );
 }
 
 //__________________________________________________

@@ -99,11 +99,11 @@ class BaseFindDialog: public BaseDialog, public Counter
 
     public slots:
 
-    //! set notification label to "no match found"
-    virtual void noMatchFound( void );
+    //! take action when at least one match is found
+    virtual void matchFound( void );
 
-    //! clear notification label
-    virtual void clearLabel( void );
+    //! take action when no match is found
+    virtual void noMatchFound( void );
 
     protected slots:
 

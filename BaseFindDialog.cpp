@@ -142,12 +142,18 @@ void BaseFindDialog::synchronize( void )
 }
 
 //________________________________________________________________________
-void BaseFindDialog::noMatchFound( void )
-{ if( !editor().currentText().isEmpty() ) label_->setText( tr( "Not found" ) ); }
+void BaseFindDialog::matchFound( void )
+{
+    label_->setText( "" );
+    findButton_->setEnabled( true );
+}
 
 //________________________________________________________________________
-void BaseFindDialog::clearLabel( void )
-{ label_->setText( "" ); }
+void BaseFindDialog::noMatchFound( void )
+{
+    if( !editor().currentText().isEmpty() ) label_->setText( tr( "Not found" ) );
+    findButton_->setEnabled( false );
+}
 
 //________________________________________________________________________
 void BaseFindDialog::_regExpChecked( bool value )

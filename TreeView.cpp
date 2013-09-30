@@ -576,8 +576,8 @@ void TreeView::_createBaseFindDialog( void )
 
         // connections
         connect( findDialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
+        connect( this, SIGNAL( matchFound() ), findDialog_, SLOT( matchFound() ) );
         connect( this, SIGNAL( noMatchFound() ), findDialog_, SLOT( noMatchFound() ) );
-        connect( this, SIGNAL( matchFound() ), findDialog_, SLOT( clearLabel() ) );
 
     }
 
@@ -867,7 +867,7 @@ void TreeView::_findFromDialog( void )
     _findDialog().show();
 
     _findDialog().synchronize();
-    _findDialog().clearLabel();
+    _findDialog().matchFound();
     _findDialog().setText( text );
 
     // changes focus
