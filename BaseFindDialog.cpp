@@ -143,17 +143,11 @@ void BaseFindDialog::synchronize( void )
 
 //________________________________________________________________________
 void BaseFindDialog::matchFound( void )
-{
-    label_->setText( "" );
-    findButton_->setEnabled( true );
-}
+{ label_->setText( "" ); }
 
 //________________________________________________________________________
 void BaseFindDialog::noMatchFound( void )
-{
-    if( !editor().currentText().isEmpty() ) label_->setText( tr( "Not found" ) );
-    findButton_->setEnabled( false );
-}
+{ if( !editor().currentText().isEmpty() ) label_->setText( tr( "Not found" ) ); }
 
 //________________________________________________________________________
 void BaseFindDialog::_regExpChecked( bool value )

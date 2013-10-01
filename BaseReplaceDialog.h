@@ -69,14 +69,6 @@ class BaseReplaceDialog: public BaseFindDialog
     //! emmited when text replacement is changed
     void replaceTextChanged( QString text_replace );
 
-    public slots:
-
-    //! take action when at least one match is found
-    virtual void matchFound( void );
-
-    //! take action when no match is found
-    virtual void noMatchFound( void );
-
     protected slots:
 
     //! update combo box with current text

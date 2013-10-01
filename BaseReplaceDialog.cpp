@@ -150,22 +150,6 @@ void BaseReplaceDialog::synchronize( void )
 
 }
 
-//________________________________________________________________________
-void BaseReplaceDialog::matchFound( void )
-{
-    BaseFindDialog::matchFound();
-    replaceButton_->setEnabled( true );
-    replaceWindowButton_->setEnabled( true );
-}
-
-//________________________________________________________________________
-void BaseReplaceDialog::noMatchFound( void )
-{
-    BaseFindDialog::noMatchFound();
-    replaceButton_->setEnabled( false );
-    replaceWindowButton_->setEnabled( false );
-}
-
 //__________________________________________________
 void BaseReplaceDialog::_replaceInWindow( void )
 { emit replaceInWindow( selection( false ) ); }
