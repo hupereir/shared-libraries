@@ -35,7 +35,7 @@ class AnimatedTreeView: public TreeView
     public:
 
     //! constructor
-    AnimatedTreeView( QWidget* parent );
+    AnimatedTreeView( QWidget* = 0 );
 
     //! destructor
     virtual ~AnimatedTreeView( void )
