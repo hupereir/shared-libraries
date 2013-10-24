@@ -35,9 +35,7 @@ class XmlDocument: public QDomDocument, public Counter
     public:
 
     //! constructor
-    XmlDocument( void ):
-        Counter( "XmlDocument" )
-    {}
+    XmlDocument( void );
 
     //! destructor
     virtual ~XmlDocument( void )
@@ -78,6 +76,9 @@ class XmlDocument: public QDomDocument, public Counter
     //@}
 
     private:
+
+    //! document node name
+    const QString topNodeTagName_;
 
     //! error
     XmlError error_;

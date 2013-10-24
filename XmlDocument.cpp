@@ -25,6 +25,12 @@
 #include "XmlError.h"
 
 //___________________________________________________________________
+XmlDocument::XmlDocument( void ):
+    Counter( "XmlDocument" ),
+    topNodeTagName_( "Resources" )
+{}
+
+//___________________________________________________________________
 bool XmlDocument::setContent( QFile* file, XmlError& error )
 {
     Q_ASSERT( file );
@@ -52,14 +58,12 @@ bool XmlDocument::setContent( const QString& content, XmlError& error )
 void XmlDocument::replaceChild( QDomElement& element )
 {
 
-    static const QString topNodeTagName = "Resources";
-    if( documentElement().tagName() != topNodeTagName )
+    if( documentElement().tagName() != topNodeTagName_ )
     {
 
-        Debug::Throw( "XmlDocument - creating relevant topNode.\n" );
-
         clear();
-        appendChild( createElement( topNodeTagName ) );
+        Debug::Throw() << "XmlDocument - creating document element named " << topNodeTagName_ << endl;
+        appendChild( createElement( topNodeTagName_ ) );
         documentElement().appendChild( element );
         return;
 
@@ -70,12 +74,18 @@ void XmlDocument::replaceChild( QDomElement& element )
     if( !children.isEmpty() )
     {
 
-        Debug::Throw() << "XmlDocument - replacing node " << element.tagName() << endl;
+        Debug::Throw() << "XmlDocument -"
+            << " replacing node " << element.tagName()
+            << " inside " << documentElement().tagName()
+            << endl;
         documentElement().replaceChild( element, children.at(0) );
 
     } else {
 
-        Debug::Throw() << "XmlDocument - creating node " << element.tagName() << endl;
+        Debug::Throw() << "XmlDocument -"
+            << " creating node " << element.tagName()
+            << " inside " << documentElement().tagName()
+            << endl;
         documentElement().appendChild( element );
 
     }
