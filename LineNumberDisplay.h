@@ -66,13 +66,13 @@ class LineNumberDisplay: public QObject, public Counter
     //! paint
     virtual void paint( QPainter& );
 
-    public slots:
+    public Q_SLOTS:
 
     //! need update
     void needUpdate( void )
     { needsUpdate_ = true; }
 
-    private slots:
+    private Q_SLOTS:
 
     //! contents changed
     void _contentsChanged( void );

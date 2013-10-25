@@ -54,7 +54,7 @@ class DetailsDialog: public CustomDialog
     //! set details widget
     virtual void setDetails( QWidget* );
 
-    public slots:
+    public Q_SLOTS:
 
     //! show details
     void showDetails( void )

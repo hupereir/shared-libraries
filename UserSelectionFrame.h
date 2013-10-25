@@ -60,12 +60,12 @@ class UserSelectionFrame: public QWidget, public Counter
     CustomComboBox& editor( void ) const
     { return *editor_; }
 
-    signals:
+    Q_SIGNALS:
 
     //! emitted when user is changed
     void userChanged( QString );
 
-    public slots:
+    public Q_SLOTS:
 
     //! update user list
     void updateUsers( QSet<QString> );
@@ -75,7 +75,7 @@ class UserSelectionFrame: public QWidget, public Counter
     //! timer event
     virtual void timerEvent( QTimerEvent* );
 
-    private slots:
+    private Q_SLOTS:
 
     //! selected user changed
     void _userChanged( void );

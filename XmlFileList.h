@@ -63,7 +63,7 @@ class XmlFileList: public FileList
     //! read
     virtual bool _read( const XmlDocument& );
 
-    private slots:
+    private Q_SLOTS:
 
     //! update configuration
     void _updateConfiguration( void );

@@ -53,7 +53,7 @@ class RemoveLineBuffer: public QObject, public Counter
   //! append string to buffer
   void append( const QString& value );
 
-  public slots:
+  public Q_SLOTS:
 
   //! clear buffer to clipboard
   void clear( void );

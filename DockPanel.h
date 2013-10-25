@@ -70,7 +70,7 @@ class DockPanel: public QWidget, public Counter
     QWidget& main( void ) const
     { return *main_; }
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when state is changed
     void attached( bool state );
@@ -85,7 +85,7 @@ class DockPanel: public QWidget, public Counter
     void visibilityChanged( bool );
 
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! toggle dock
     virtual void _toggleDock( void );
@@ -101,7 +101,7 @@ class DockPanel: public QWidget, public Counter
     //! hide event
     virtual void hideEvent( QHideEvent* );
 
-    private slots:
+    private Q_SLOTS:
 
     //! configuration
     void _updateConfiguration( void );

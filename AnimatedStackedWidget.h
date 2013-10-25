@@ -53,7 +53,7 @@ class AnimatedStackedWidget: public QStackedWidget, public Counter
   TransitionWidget& transitionWidget( void ) const
   { return *transition_widget_; }
 
-  public slots:
+  public Q_SLOTS:
 
   //! current index
   void setCurrentIndex( int );
@@ -61,7 +61,7 @@ class AnimatedStackedWidget: public QStackedWidget, public Counter
   //! current widget
   void setCurrentWidget( QWidget* );
 
-  protected slots:
+  protected Q_SLOTS:
 
   //! animation finished
   void _animationFinished( void );

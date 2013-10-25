@@ -43,12 +43,12 @@ class SelectLineDialog: public CustomDialog
   AnimatedLineEditor& editor( void ) const
   { return *editor_; }
 
-  signals:
+  Q_SIGNALS:
 
   //! emmited when pressing the Ok button
   void lineSelected( int line );
 
-  private slots:
+  private Q_SLOTS:
 
   //! retrieve line number and emit signal
   void _selectLine( void );

@@ -179,7 +179,7 @@ class TreeView: public QTreeView, public Counter
 
     //@}
 
-    signals:
+    Q_SIGNALS:
 
     //! emmitted when index is hovered
     /*!
@@ -195,7 +195,7 @@ class TreeView: public QTreeView, public Counter
     //! emmitted when selection could be found
     void matchFound( void );
 
-    public slots:
+    public Q_SLOTS:
 
     //! resize all visible columns to match contents
     virtual void resizeColumns()
@@ -286,7 +286,7 @@ class TreeView: public QTreeView, public Counter
     //! hover index
     virtual void _setHoverIndex( const QModelIndex& );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! header menu
     virtual void _raiseHeaderMenu( const QPoint& );
@@ -297,7 +297,7 @@ class TreeView: public QTreeView, public Counter
     //! hover index
     virtual void _indexEntered( const QModelIndex& );
 
-    private slots:
+    private Q_SLOTS:
 
     //! update alternate item color
     void _updateConfiguration( void );

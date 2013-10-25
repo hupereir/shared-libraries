@@ -91,7 +91,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //! animations
     QWidget* animationConfiguration( QWidget* parent = 0 );
 
-    signals:
+    Q_SIGNALS:
 
     //! apply button pressed
     void apply( void );
@@ -105,7 +105,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //! emmited when configuration is changed
     void configurationChanged();
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! show pixmap path dialog
     virtual void _editPixmapPathList( void );

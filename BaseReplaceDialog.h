@@ -55,7 +55,7 @@ class BaseReplaceDialog: public BaseFindDialog
     //! synchronize searched strings and ComboBox
     virtual void synchronize( void );
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when Replace is pressed
     void replace( TextSelection );
@@ -69,7 +69,7 @@ class BaseReplaceDialog: public BaseFindDialog
     //! emmited when text replacement is changed
     void replaceTextChanged( QString text_replace );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! update combo box with current text
     void _updateReplaceComboBox( void )

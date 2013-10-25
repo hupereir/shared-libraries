@@ -43,7 +43,7 @@ class ComboLineEdit: public AnimatedLineEditor
     AnimatedLineEditor( parent )
     { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
 
-    public slots:
+    public Q_SLOTS:
 
     //! start animation
     void startAnimation( void );

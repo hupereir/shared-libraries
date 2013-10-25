@@ -55,7 +55,7 @@ class AnimatedLineEditor: public LineEditor
   QTimeLine& timeLine( void )
   { return time_line_; }
 
-  public slots:
+  public Q_SLOTS:
 
   //! clear
   virtual void clear( void );
@@ -75,7 +75,7 @@ class AnimatedLineEditor: public LineEditor
   //! paint clear button
   virtual void _paintClearButton( QPainter& );
 
-  private slots:
+  private Q_SLOTS:
 
   //! configuration
   virtual void _updateConfiguration( void );

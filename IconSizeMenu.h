@@ -44,12 +44,12 @@ class IconSizeMenu: public QMenu, public Counter
     //! select size
     void select( IconSize::Size );
 
-    signals:
+    Q_SIGNALS:
 
     //! emmitted when a new size is selected
     void iconSizeSelected( IconSize::Size );
 
-    private slots:
+    private Q_SLOTS:
 
     //! size selected from action
     void _selected( QAction* );

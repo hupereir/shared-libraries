@@ -70,7 +70,7 @@ class HtmlDialog: public CustomDialog
     // options
     void setOptionWidgets( QList<QWidget*> );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! browse print command
     void _browseCommand( void );

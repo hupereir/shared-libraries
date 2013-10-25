@@ -50,7 +50,7 @@ class AnimatedTabBar: public QTabBar, public Counter
         Counter( "AnimatedTabBar" )
     {}
 
-    signals:
+    Q_SIGNALS:
 
     //! clicked
     void clicked( void );
@@ -77,7 +77,7 @@ class AnimatedTabWidget: public QTabWidget, public Counter
     //! destructor
     virtual ~AnimatedTabWidget();
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! update current widget
     void _updateCurrentWidget( void );

@@ -50,12 +50,12 @@ class TextEditorMarginWidget: public QWidget, public Counter
     bool drawVerticalLine( void ) const
     { return true; }
 
-    public slots:
+    public Q_SLOTS:
 
     //! dirty
     void setDirty( void );
 
-    private slots:
+    private Q_SLOTS:
 
     //! configuration
     void _updateConfiguration( void );

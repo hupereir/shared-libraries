@@ -101,7 +101,7 @@ class BusyWidget: public QWidget, public Counter
     //! event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
-    public slots:
+    public Q_SLOTS:
 
     //! start
     virtual void start( void );

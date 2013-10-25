@@ -66,7 +66,7 @@ class BrowseIconButton: public CustomToolButton
     //! drop event
     virtual void dropEvent( QDropEvent* );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! opens file dialog to browse icon file
     virtual void _browse( void );

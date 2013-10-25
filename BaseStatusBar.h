@@ -43,7 +43,7 @@ class StatusBarLabel: public AnimatedLabel
     AnimatedLabel( parent )
     {}
 
-    public slots:
+    public Q_SLOTS:
 
     //! set text
     virtual void setText( const QString& message, const bool& alsoUpdate = true )

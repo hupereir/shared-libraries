@@ -70,7 +70,7 @@ class CustomToolButton: public QToolButton, public Counter
     //! painting
     virtual void paintEvent( QPaintEvent* );
 
-    private slots:
+    private Q_SLOTS:
 
     //! tool button configuration
     void _updateConfiguration( void );

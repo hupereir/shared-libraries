@@ -61,7 +61,7 @@ class BrowsedLineEditor: public QWidget, public Counter
     virtual void setFileMode( const QFileDialog::FileMode& mode )
     { fileMode_ = mode; }
 
-    public slots:
+    public Q_SLOTS:
 
     //! set lineEditor_file
     virtual void setFile( const QString& file );
@@ -76,7 +76,7 @@ class BrowsedLineEditor: public QWidget, public Counter
     virtual QFileDialog::FileMode _fileMode( void ) const
     { return fileMode_; }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! opens a file dialog, stores result in line edit
     virtual void _browse( void );

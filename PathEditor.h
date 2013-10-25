@@ -109,12 +109,12 @@ class PathEditor: public QStackedWidget, public Counter
 
     //@}
 
-    signals:
+    Q_SIGNALS:
 
     //! path changed
     void pathChanged( const File& );
 
-    public slots:
+    public Q_SLOTS:
 
     //! select parent path
     void selectParent( void );
@@ -148,7 +148,7 @@ class PathEditor: public QStackedWidget, public Counter
     void _reload( void )
     { setPath( path() ); }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! show browser
     void _showBrowser( void )
@@ -173,7 +173,7 @@ class PathEditor: public QStackedWidget, public Counter
     //! update button visibility
     void _updateButtonVisibility( void );
 
-    private slots:
+    private Q_SLOTS:
 
     //! configuration
     void _updateConfiguration( void );

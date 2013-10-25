@@ -43,7 +43,7 @@ class ContextMenu: public BaseContextMenu
     virtual ~ContextMenu( void )
     {}
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! add actions
     void _hideActions( void );

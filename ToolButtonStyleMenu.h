@@ -42,7 +42,7 @@ class ToolButtonStyleMenu: public QMenu, public Counter
     //! select size
     void select( int );
 
-    signals:
+    Q_SIGNALS:
 
     //! emmitted when default size is selected
     void defaultStyleSelected( void );
@@ -50,7 +50,7 @@ class ToolButtonStyleMenu: public QMenu, public Counter
     //! emmitted when a new size is selected
     void styleSelected( int );
 
-    private slots:
+    private Q_SLOTS:
 
     //! size selected from action
     void _selected( QAction* );

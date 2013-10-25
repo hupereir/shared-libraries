@@ -80,7 +80,7 @@ class TabWidget: public QWidget, public Counter
     QAction& stickyAction( void ) const
     { return *stickyAction_; }
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when box is detached
     void detached( void );
@@ -133,7 +133,7 @@ class TabWidget: public QWidget, public Counter
     //! reset drag
     void _resetDrag( void );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! toggle dock
     virtual void _toggleDock( void );

@@ -49,7 +49,7 @@ class LogWidget: public TextEditor
     void setVerbosity( int value )
     { verbosity_ = value; }
 
-    public slots:
+    public Q_SLOTS:
 
     //! append text
     virtual void append( const QString&, FORMAT::TextFormatFlags = FORMAT::Default, const QColor& = QColor(), int = 0 );
@@ -64,7 +64,7 @@ class LogWidget: public TextEditor
         BaseEditor::clear();
     }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! toggle wrap mode
     virtual bool _toggleWrapMode( bool );

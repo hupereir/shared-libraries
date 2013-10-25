@@ -61,7 +61,7 @@ class DebugMenu: public QMenu, public Counter
     //! needed to toggle visibility
     virtual bool eventFilter( QObject*, QEvent* );
 
-    private slots:
+    private Q_SLOTS:
 
     //! print object counters
     void _showCounterDialog( void );

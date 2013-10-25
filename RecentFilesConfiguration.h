@@ -50,7 +50,7 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
     //! read options
     virtual void write( void ) const;
 
-    private slots:
+    private Q_SLOTS:
 
     //! update actions
     void _updateButtons( void );

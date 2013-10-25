@@ -46,7 +46,7 @@ class ScratchFileMonitor: public QObject, public Counter
     virtual ~ScratchFileMonitor( void )
     {}
 
-    public slots:
+    public Q_SLOTS:
 
     //! add
     void add( const File& file );

@@ -50,7 +50,7 @@ class BaseProgressBar:public QProgressBar
         QProgressBar::reset();
     }
 
-    public slots:
+    public Q_SLOTS:
 
     //! set maximum
     virtual void setMaximum( int value )

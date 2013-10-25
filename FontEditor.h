@@ -59,7 +59,7 @@ class FontEditor: public QWidget, public Counter
     virtual const QFont& font( void ) const
     { return font_; }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! select font from dialog
     virtual void _selectFont( void )

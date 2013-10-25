@@ -43,11 +43,11 @@ class ColorGrabObject: public QObject, public Counter
     //! event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
-    signals:
+    Q_SIGNALS:
 
     void colorSelected( QColor );
 
-    protected slots:
+    protected Q_SLOTS:
 
     void _grabColor( void );
 

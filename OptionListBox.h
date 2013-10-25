@@ -66,7 +66,7 @@ class OptionListBox: public QWidget, public OptionWidget
     void setFileMode( const QFileDialog::FileMode& mode )
     { fileMode_ = mode; }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! update buttons
     virtual void _updateButtons( void );

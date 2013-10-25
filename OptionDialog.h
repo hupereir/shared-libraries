@@ -44,12 +44,12 @@ class OptionDialog: public CustomDialog
     virtual ~OptionDialog( void )
     {}
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when options are modified
     void configurationChanged( void );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! reload options from backup
     void _reload( void );

@@ -110,7 +110,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     //! add, without update
     virtual void _add( const ValueType& );
 
-    private slots:
+    private Q_SLOTS:
 
     //! configuration
     void _updateConfiguration( void );

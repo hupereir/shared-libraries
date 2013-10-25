@@ -57,7 +57,7 @@ class PrintPreviewDialog: public BaseDialog
     QPrintPreviewWidget& previewWidget( void ) const
     { return *previewWidget_; }
 
-    public slots:
+    public Q_SLOTS:
 
     //! show/hide menu
     void showMenu( void );
@@ -65,7 +65,7 @@ class PrintPreviewDialog: public BaseDialog
     //! show/hide menu
     void hideMenu( void );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! update page
     void _updatePage( void );

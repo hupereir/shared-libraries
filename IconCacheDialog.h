@@ -44,7 +44,7 @@ class IconCacheDialog: public CustomDialog
     virtual ~IconCacheDialog( void )
     {}
 
-    public slots:
+    public Q_SLOTS:
 
     //! update IconCache list
     void update();

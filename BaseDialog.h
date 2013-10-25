@@ -85,7 +85,7 @@ class BaseDialog: public QDialog
     virtual QSize iconSize( void ) const
     { return QSize( 64, 64 ); }
 
-    public slots:
+    public Q_SLOTS:
 
     //! uniconify
     BaseDialog& uniconify( void );

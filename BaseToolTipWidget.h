@@ -114,7 +114,7 @@ class BaseToolTipWidget: public QWidget, public Counter
     // event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
-    public slots:
+    public Q_SLOTS:
 
     //! hide
     virtual void hide( void );
@@ -142,7 +142,7 @@ class BaseToolTipWidget: public QWidget, public Counter
     //! adjust position
     void _adjustPosition( void );
 
-    private slots:
+    private Q_SLOTS:
 
     //! update configuration
     void _updateConfiguration( void );

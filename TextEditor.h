@@ -353,7 +353,7 @@ class TextEditor: public BaseEditor, public BASE::Key, public Counter
     virtual bool ignoreBlock( const QTextBlock& ) const
     { return false; }
 
-    signals:
+    Q_SIGNALS:
 
     //! busy signal
     void busy( int );
@@ -376,7 +376,7 @@ class TextEditor: public BaseEditor, public BASE::Key, public Counter
     //! overwrite mode changed
     void modifiersChanged( TextEditor::Modifiers );
 
-    public slots:
+    public Q_SLOTS:
 
     //! cut
     virtual void cut( void );
@@ -636,7 +636,7 @@ class TextEditor: public BaseEditor, public BASE::Key, public Counter
         return true;
     }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! synchronize selection
     virtual void _synchronizeSelection( void );
@@ -685,7 +685,7 @@ class TextEditor: public BaseEditor, public BASE::Key, public Counter
     //! select line from dialog
     virtual void _selectLineFromDialog( void );
 
-    private slots:
+    private Q_SLOTS:
 
     //! update configuration
     void _updateConfiguration( void );

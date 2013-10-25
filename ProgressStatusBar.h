@@ -54,7 +54,7 @@ class ProgressStatusBar: public BaseStatusBar
     virtual StatusBarLabel& label( const unsigned int& i = 0  ) const
     { return (i==0) ? *label_:BaseStatusBar::label(i); }
 
-    public slots:
+    public Q_SLOTS:
 
     //! show progress bar as visible widget
     void showProgressBar( void );

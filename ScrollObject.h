@@ -106,7 +106,7 @@ class ScrollObject: public QObject, public Counter
     bool _autoRepeat( void ) const
     { return autoRepeat_; }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! animated scroll
     void _scroll( int );
@@ -114,7 +114,7 @@ class ScrollObject: public QObject, public Counter
     //! finished
     void _finished( void );
 
-    private slots:
+    private Q_SLOTS:
 
     void _updateConfiguration( void );
 

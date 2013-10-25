@@ -102,7 +102,7 @@ class BasePrintHelper: public QObject
 
     //@}
 
-    public slots:
+    public Q_SLOTS:
 
     //! orientation
     void setOrientation( QPrinter::Orientation value )
@@ -112,7 +112,7 @@ class BasePrintHelper: public QObject
     void setPageMode( BasePrintHelper::PageMode value )
     { pageMode_ = value; }
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when number of pages has changed
     void pageCountChanged( int );

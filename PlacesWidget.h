@@ -78,7 +78,7 @@ class PlacesWidget: public QWidget, public Counter
     //! event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
-    signals:
+    Q_SIGNALS:
 
     //! item added
     void remoteItemAdded( const BaseFileInfo& );
@@ -86,7 +86,7 @@ class PlacesWidget: public QWidget, public Counter
     //! item selected
     void itemSelected( const BaseFileInfo& );
 
-    public slots:
+    public Q_SLOTS:
 
     //! clear all items
     void clear( void );
@@ -109,7 +109,7 @@ class PlacesWidget: public QWidget, public Counter
     //! insert item
     void insert( int, const QIcon&, const QString&, const BaseFileInfo& );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! button clicked
     void _buttonClicked( QAbstractButton* );
@@ -202,7 +202,7 @@ class PlacesWidget: public QWidget, public Counter
     //! return item that have focus or none
     PlacesWidgetItem* _focusItem( void ) const;
 
-    private slots:
+    private Q_SLOTS:
 
     //! update configuration
     void _updateConfiguration( void );

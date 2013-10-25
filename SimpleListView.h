@@ -42,7 +42,7 @@ class SimpleListView: public TreeView
     //! model
     virtual void setModel( QAbstractItemModel* );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! adjust width
     void _adjustWidth( void );

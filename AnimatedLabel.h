@@ -53,7 +53,7 @@ class AnimatedLabel: public QLabel, public Counter
   TransitionWidget& transitionWidget( void ) const
   { return *transition_widget_; }
 
-  public slots:
+  public Q_SLOTS:
 
   //! set text
   virtual void setText( const QString & );

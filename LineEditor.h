@@ -66,7 +66,7 @@ class LineEditor: public QLineEdit, public Counter
     bool hasFrame( void ) const
     { return hasFrame_; }
 
-    signals:
+    Q_SIGNALS:
 
     //! signal emmited when the cursor changes position
     void cursorPositionChanged( int position );
@@ -77,7 +77,7 @@ class LineEditor: public QLineEdit, public Counter
     //! emmited when clear button is pressed
     void cleared( void );
 
-    public slots:
+    public Q_SLOTS:
 
     //! set text
     /*! copy base class method to make it virtual */
@@ -160,7 +160,7 @@ class LineEditor: public QLineEdit, public Counter
     virtual const QIcon& _clearIcon( void ) const
     { return clearIcon_; }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! update modification state
     virtual void _modified( const QString& text );

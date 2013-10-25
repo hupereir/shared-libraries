@@ -59,7 +59,7 @@ class PrinterOptionWidget: public QWidget, public Counter
         previewButton_->setEnabled( helper_ );
     }
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when orientation is changed
     void orientationChanged( QPrinter::Orientation );
@@ -67,7 +67,7 @@ class PrinterOptionWidget: public QWidget, public Counter
     //! emmited when pageMode is changed
     void pageModeChanged( BasePrintHelper::PageMode );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! orientation
     void _setOrientation( QAbstractButton* );

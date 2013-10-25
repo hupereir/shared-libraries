@@ -279,7 +279,7 @@ class PlacesWidgetItem: public QAbstractButton
     //! paint
     virtual void _paint( QPainter* );
 
-    private slots:
+    private Q_SLOTS:
 
     //! update configuration
     void _updateConfiguration( void );
@@ -430,7 +430,7 @@ class PlacesToolTipWidget: public BaseToolTipWidget
     virtual void _reload( void )
     { setFileInfo( name_, fileInfo_, icon_ ); }
 
-    private slots:
+    private Q_SLOTS:
 
     //! update configuration
     void _updateConfiguration( void );

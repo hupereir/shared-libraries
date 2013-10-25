@@ -54,7 +54,7 @@ class FileSystemWatcher: public QFileSystemWatcher, public Counter
     void setDelay( int value )
     { delay_ = value; }
 
-    signals:
+    Q_SIGNALS:
 
     //! delayed directory changed signal
     void directoryChangedDelayed( const QString& );
@@ -64,7 +64,7 @@ class FileSystemWatcher: public QFileSystemWatcher, public Counter
     //! timer event
     virtual void timerEvent( QTimerEvent* );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! add modified directory
     void _addModifiedDirectory( const QString& );

@@ -76,7 +76,7 @@ class ColorMenu: public QMenu, public Counter
 
     //@}
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when a color is selected
     void selected( QColor );
@@ -86,7 +86,7 @@ class ColorMenu: public QMenu, public Counter
     //! paint event (overloaded)
     void paintEvent( QPaintEvent* event );
 
-    private slots:
+    private Q_SLOTS:
 
     //! display colors when about to show
     void _display( void );

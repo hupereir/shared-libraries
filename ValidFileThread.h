@@ -63,7 +63,7 @@ class ValidFileThread: public QThread, public Counter
     //! Check files validity. Post a ValidFileEvent when finished
     virtual void run( void );
 
-    signals:
+    Q_SIGNALS:
 
     //! records are available
     void recordsAvailable( const FileRecord::List&, bool );

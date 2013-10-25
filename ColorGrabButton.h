@@ -40,7 +40,7 @@ class ColorGrabButton : public QToolButton, public Counter
     virtual ~ColorGrabButton( void )
     {}
 
-    signals:
+    Q_SIGNALS:
 
     void colorSelected( QColor );
 

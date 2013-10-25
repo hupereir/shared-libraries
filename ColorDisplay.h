@@ -40,13 +40,13 @@ class ColorDisplay: public QWidget, public Counter
     QColor color( void ) const
     { return editor_->color(); }
 
-    public slots:
+    public Q_SLOTS:
 
     //! set color
     void setColor( QColor color )
     { editor_->setColor( color ); }
 
-    private slots:
+    private Q_SLOTS:
 
     //! change color (from button)
     void _selectColorFromDialog( void );

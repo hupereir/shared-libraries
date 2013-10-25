@@ -43,7 +43,7 @@ class CounterDialog: public CustomDialog
     virtual ~CounterDialog( void )
     {}
 
-    public slots:
+    public Q_SLOTS:
 
     //! update Counter list
     void update();

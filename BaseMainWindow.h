@@ -129,12 +129,12 @@ class BaseMainWindow: public QMainWindow
     const QString& showStatusBarOptionName( void ) const
     { return showStatusBarOptionName_; }
 
-    signals:
+    Q_SIGNALS:
 
     //! toolbar configuration changed
     void toolbarConfigurationChanged( void );
 
-    public slots:
+    public Q_SLOTS:
 
     //! uniconify
     void uniconify( void );
@@ -164,7 +164,7 @@ class BaseMainWindow: public QMainWindow
     void _setWasMaximized( bool value )
     { wasMaximized_ = value; }
 
-    private slots:
+    private Q_SLOTS:
 
     //! update configuration
     void _updateConfiguration( void );

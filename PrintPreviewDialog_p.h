@@ -50,11 +50,11 @@ namespace PRINT
         virtual ~OptionMenu( void )
         {}
 
-        signals:
+        Q_SIGNALS:
         void orientationChanged( QPrinter::Orientation );
         void pageModeChanged( BasePrintHelper::PageMode );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! orientation changed
         void _setOrientation( QAction* );
@@ -98,17 +98,17 @@ namespace PRINT
         //! event filter
         bool eventFilter( QObject*, QEvent* );
 
-        public slots:
+        public Q_SLOTS:
 
         //! set pages
         void setPages( int );
 
-        signals:
+        Q_SIGNALS:
 
         //! new page selected
         void pageChanged( int );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! previous page
         void _previousPage( void );

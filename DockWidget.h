@@ -68,12 +68,12 @@ class DockWidget: public QDockWidget
 
     //@}
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! toggle visibility
     virtual void _toggleVisibility( bool );
 
-    private slots:
+    private Q_SLOTS:
 
     //! update configuration
     void _updateConfiguration( void );

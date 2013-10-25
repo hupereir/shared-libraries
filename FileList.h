@@ -97,7 +97,7 @@ class FileList: public QObject, public Counter
     virtual void setCheck( const bool& value )
     { check_ = value; }
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when thread has completed validity check
     void validFilesChecked( void );
@@ -105,7 +105,7 @@ class FileList: public QObject, public Counter
     //! emmited when contents is changed
     void contentsChanged( void );
 
-    public slots:
+    public Q_SLOTS:
 
     //! add file.
     virtual FileRecord& add( const File& file )
@@ -140,7 +140,7 @@ class FileList: public QObject, public Counter
     virtual FileRecord::List& _records( void )
     { return records_; }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! process records from threads
     void _processRecords( const FileRecord::List&, bool );

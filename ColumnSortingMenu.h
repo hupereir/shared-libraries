@@ -47,7 +47,7 @@ class ColumnSortingMenu:public QMenu, public Counter
     //! constructor
     ColumnSortingMenu( QWidget*, QHeaderView*, const QString&  = tr( "Sort By" ) );
 
-    private slots:
+    private Q_SLOTS:
 
     //! update actions
     void _updateActions( void );

@@ -41,7 +41,7 @@ class ClockTimer: public QObject, public Counter
     //! constructor
     ClockTimer( QWidget *parent );
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited every time current time is changed
     void timeChanged( const QString& );

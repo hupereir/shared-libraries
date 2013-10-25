@@ -92,12 +92,12 @@ class BaseFindDialog: public BaseDialog, public Counter
         return out;
     }
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when Find is pressed
     void find( TextSelection );
 
-    public slots:
+    public Q_SLOTS:
 
     //! take action when at least one match is found
     virtual void matchFound( void );
@@ -105,7 +105,7 @@ class BaseFindDialog: public BaseDialog, public Counter
     //! take action when no match is found
     virtual void noMatchFound( void );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! update combo box with current text
     virtual void _updateFindComboBox( void )

@@ -65,7 +65,7 @@ class BlockHighlight: public QObject, public Counter
   //! clear highlighted block
   void clear( void );
 
-  public slots:
+  public Q_SLOTS:
 
   //! highlight
   void highlight( void );

@@ -47,7 +47,7 @@ class ImageFileDialog: public QFileDialog
         QFileDialog::selectFile( filename );
     }
 
-    private slots:
+    private Q_SLOTS:
 
     //! update current
     void _currentChanged( const QString& path );
@@ -63,7 +63,7 @@ class ImageFileDialog: public QFileDialog
         _preview();
     }
 
-    private slots:
+    private Q_SLOTS:
 
     //! stores working directory when changed
     void _saveWorkingDirectory( const QString& directory );

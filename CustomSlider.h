@@ -86,7 +86,7 @@ class CustomSlider: public QWidget, public Counter
     QSpinBox& spinBox( void )
     { return *spinBox_; }
 
-    private slots:
+    private Q_SLOTS:
 
     //! changes QSlider value according to QSpinBox
     void _updateSlider( int );

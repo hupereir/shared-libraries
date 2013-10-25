@@ -104,7 +104,7 @@ class TransitionWidget: public QWidget, public Counter
     //! paint event
     virtual void paintEvent( QPaintEvent* );
 
-    private slots:
+    private Q_SLOTS:
 
     //! configuration
     void _updateConfiguration( void );

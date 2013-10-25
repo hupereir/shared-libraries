@@ -142,7 +142,7 @@ class IconView: public QAbstractItemView, public Counter
     //! minimum size hind
     virtual QSize minimumSizeHint( void ) const;
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when item is hovered. Invalid index means no hovered index
     void hovered( const QModelIndex& );
@@ -153,7 +153,7 @@ class IconView: public QAbstractItemView, public Counter
     //! emmitted when selection could be found
     void matchFound( void );
 
-    public slots:
+    public Q_SLOTS:
 
     //! sort order
     virtual void updateSortOrder( void );
@@ -292,7 +292,7 @@ class IconView: public QAbstractItemView, public Counter
     //! get view options matching a given index
     virtual QStyleOptionViewItemV4 _viewOptions( const QModelIndex& ) const;
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! update geometries
     virtual void updateGeometries( void );
@@ -306,7 +306,7 @@ class IconView: public QAbstractItemView, public Counter
     //! update hover index
     virtual void _updateHoverIndex( void );
 
-    private slots:
+    private Q_SLOTS:
 
     //! update alternate item color
     void _updateConfiguration( void );
