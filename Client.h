@@ -115,7 +115,7 @@ namespace SERVER
 
     };
 
-    signals:
+    Q_SIGNALS:
 
     //! emitted when a message is available
     void commandAvailable( SERVER::ServerCommand );
@@ -126,12 +126,12 @@ namespace SERVER
     MessageBuffer& _messageBuffer( void )
     { return buffer_; }
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! reads messages
     virtual bool _readMessage( void );
 
-    private slots:
+    private Q_SLOTS:
 
     //! send all commands
     virtual void _sendCommands( void );

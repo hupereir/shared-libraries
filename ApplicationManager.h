@@ -97,12 +97,12 @@ namespace SERVER
         virtual const ApplicationId& id( void ) const
         { return id_; }
 
-        public slots:
+        public Q_SLOTS:
 
         //! (re)initialize server/client connections
         virtual void initialize( CommandLineArguments args = CommandLineArguments() );
 
-        signals:
+        Q_SIGNALS:
 
         //! emitted when manager state is changed
         // void stateChanged( SERVER::ApplicationManager::State state );
@@ -177,7 +177,7 @@ namespace SERVER
         //! broadcast a message to all registered clients but the sender (if valid)
         virtual void _broadcast( ServerCommand, Client* sender = 0 );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! a new connection is granted
         virtual void _newConnection( void );

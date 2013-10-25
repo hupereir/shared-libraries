@@ -80,7 +80,7 @@ class BaseApplication: public BaseCoreApplication
 
     //@}
 
-    public slots:
+    public Q_SLOTS:
 
     //! set application busy
     virtual void busy( void );
@@ -88,7 +88,7 @@ class BaseApplication: public BaseCoreApplication
     //! set application idle
     virtual void idle( void );
 
-    protected slots:
+    protected Q_SLOTS:
 
     //! process request from application manager
     virtual void _about( void ) = 0;
@@ -107,7 +107,7 @@ class BaseApplication: public BaseCoreApplication
     // application icon
     QIcon _applicationIcon( void ) const;
 
-    private slots:
+    private Q_SLOTS:
 
     //! configuration
     void _updateConfiguration( void );

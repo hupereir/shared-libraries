@@ -49,7 +49,7 @@ class BaseCoreApplication: public QObject
     //! create all widgets
     virtual bool realizeWidget( void );
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when configuration needs to be saved
     void saveConfiguration( void );
@@ -57,14 +57,14 @@ class BaseCoreApplication: public QObject
     //! emmited when configuration is changed
     void configurationChanged( void );
 
-    protected slots:
+    protected Q_SLOTS:
 
 
     //! process command from server
     /*! returns true if command has been accepted */
     virtual bool _processCommand( SERVER::ServerCommand );
 
-    private slots:
+    private Q_SLOTS:
 
     //! configuration
     void _updateConfiguration( void );
