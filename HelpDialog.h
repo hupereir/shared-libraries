@@ -59,7 +59,7 @@ namespace BASE
         //! set items
         void setItems( const HelpItem::List& items );
 
-        private slots:
+        private Q_SLOTS:
 
         //! display selected help text
         void _display( const QModelIndex&, const QModelIndex& );

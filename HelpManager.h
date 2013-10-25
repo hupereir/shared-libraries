@@ -75,7 +75,7 @@ namespace BASE
         QAction& displayAction( void )
         { return *displayAction_; }
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! opens help dialog
         void _display( void );
