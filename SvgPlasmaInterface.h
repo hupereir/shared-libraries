@@ -73,12 +73,12 @@ namespace SVG
     /*! returns true if changed */
     bool loadFile( void );
 
-    signals:
+    Q_SIGNALS:
 
     //! emmited when svg file changed
     void themeChanged();
 
-    private slots:
+    private Q_SLOTS:
 
     //! connected to kde configuration file changed
     void _configurationFileChanged( const QString& );

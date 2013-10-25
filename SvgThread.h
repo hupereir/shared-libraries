@@ -58,7 +58,7 @@ namespace SVG
             svgIds_ = svgIds;
         }
 
-        signals:
+        Q_SIGNALS:
 
         //! image cache available
         void imageCacheAvailable( const SVG::ImageCache& );

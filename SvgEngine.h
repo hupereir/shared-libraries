@@ -70,12 +70,12 @@ namespace SVG
         BASE::Margins outerPadding( void ) const
         { return outerPadding_; }
 
-        signals:
+        Q_SIGNALS:
 
         //! emmitted when svg files are changed
         void changed( void );
 
-        public slots:
+        public Q_SLOTS:
 
        //! reload all icons set in cache from new path list
         /*! return true if changed */
@@ -86,7 +86,7 @@ namespace SVG
         /*! return true if changed */
         bool reload( const bool& forced = false );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! process image cache generated from thread
         void _processImageCache( const SVG::ImageCache& );

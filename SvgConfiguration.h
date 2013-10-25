@@ -42,7 +42,7 @@ namespace SVG
         //! constructor
         SvgConfiguration( QWidget* parent );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! enable svg file list
         void _enableSvgFileList( void );
