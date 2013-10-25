@@ -109,7 +109,7 @@ class FileThread: public QThread, public Counter
 
     //@}
 
-    signals:
+    Q_SIGNALS:
 
     //! files are available
     void filesAvailable( const File::List& );
