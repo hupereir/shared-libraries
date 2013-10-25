@@ -78,7 +78,7 @@ namespace TRANSPARENCY
         virtual int shadowOffset( void ) const
         { return shadowOffset_; }
 
-        public slots:
+        public Q_SLOTS:
 
         //! force reloading of the background
         virtual void setBackgroundChanged( void );
@@ -203,7 +203,7 @@ namespace TRANSPARENCY
         //! update blur region
         virtual void _updateBlurRegion( const QRegion& );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! update background pixmap
         virtual void _updateBackgroundPixmap( void );
@@ -218,7 +218,7 @@ namespace TRANSPARENCY
         //! toggle inverse colors
         virtual void _toggleInverseColors( bool );
 
-        private slots:
+        private Q_SLOTS:
 
         //! update configuration
         void _updateConfiguration( void );

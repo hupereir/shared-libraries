@@ -67,7 +67,7 @@ namespace TRANSPARENCY
 
         virtual void paintEvent( QPaintEvent* );
 
-        private slots:
+        private Q_SLOTS:
 
         //! configuration
         void _updateConfiguration( void )
