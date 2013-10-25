@@ -46,7 +46,7 @@ namespace SPELLCHECK
         virtual ~SpellCheckConfiguration( void )
         {}
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! update dictionaries
         void _updateDictionaries( void );

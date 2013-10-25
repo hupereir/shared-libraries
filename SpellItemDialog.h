@@ -57,7 +57,7 @@ namespace SPELLCHECK
         //! disabled items
         QString disabledItems( void ) const;
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! select item
         virtual void _selectItem( const QModelIndex& );

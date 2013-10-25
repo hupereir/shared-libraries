@@ -56,12 +56,12 @@ namespace SPELLCHECK
         virtual void write( void ) const
         { XmlOptions::get().set( optionName(), value_ ); }
 
-        signals:
+        Q_SIGNALS:
 
         //! emmitted when selection is modified
         void modified( void );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! edit dictionaries
         void _edit( void );

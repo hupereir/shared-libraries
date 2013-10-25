@@ -84,7 +84,7 @@ namespace SPELLCHECK
         //! go to next word to be checked
         void nextWord( void );
 
-        signals:
+        Q_SIGNALS:
 
         //! ignore word
         void ignoreWord( const QString& );
@@ -98,7 +98,7 @@ namespace SPELLCHECK
         //! dictionary has changed
         void dictionaryChanged( QString );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! update dictionaries
         void _updateDictionaries( void );

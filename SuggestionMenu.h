@@ -46,7 +46,7 @@ namespace SPELLCHECK {
         SpellInterface& interface( void )
         { return interface_; }
 
-        signals:
+        Q_SIGNALS:
 
         //! signal emited when a file is selected
         void suggestionSelected( QString );
@@ -54,7 +54,7 @@ namespace SPELLCHECK {
         //! ignore word
         void ignoreWord( QString );
 
-        private slots:
+        private Q_SLOTS:
 
         //! load suggestions before showing the menu
         void _aboutToShow( void );

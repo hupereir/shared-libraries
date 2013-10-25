@@ -47,17 +47,17 @@ namespace SPELLCHECK
         //! select filter manualy
         void select( const QString& filter );
 
-        signals:
+        Q_SIGNALS:
 
         //! filter changed
         void selectionChanged( const QString& );
 
-        public slots:
+        public Q_SLOTS:
 
         //! reset filter list
         void reset( void );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! filter selected from menu
         void _selectFilter( QAction* action );

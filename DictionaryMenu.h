@@ -53,17 +53,17 @@ namespace SPELLCHECK
         //! select dictionary manualy
         void select( const QString& );
 
-        signals:
+        Q_SIGNALS:
 
         //! dictionary changed
         void selectionChanged( const QString& );
 
-        public slots:
+        public Q_SLOTS:
 
         //! reset dictionary list
         void reset( void );
 
-        protected slots:
+        protected Q_SLOTS:
 
         //! dictionary selected from menu
         void _selectDictionary( QAction* action );
