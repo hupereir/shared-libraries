@@ -33,3 +33,4 @@ ENDIF()
 
 ADD_SUBDIRECTORY( base-transparency )
 ADD_SUBDIRECTORY( base-svg )
+ADD_SUBDIRECTORY( base-notifications )
