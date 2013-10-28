@@ -36,20 +36,42 @@ SystemNotificationsP::SystemNotificationsP( const QString& appName ):
     notify_init( appName.toLatin1());
     #endif
 
-    // try get pixmap from options
+    // try get pixmap from options and convert to icon
     if( XmlOptions::get().contains( "ICON_PIXMAP" ) )
     {
 
         QImage image( QString( XmlOptions::get().raw("ICON_PIXMAP" ) ) );
-        image = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
+        image = image.convertToFormat( QImage::Format_ARGB32 );
+        if( !image.isNull() )
+        {
+            GdkPixbuf* pixbuf = gdk_pixbuf_new( GDK_COLORSPACE_RGB, true, 8, image.width(), image.height() );
+            uchar* destBits = gdk_pixbuf_get_pixels( pixbuf );
+            const int rowStride = gdk_pixbuf_get_rowstride( pixbuf );
+            const int nChannels = gdk_pixbuf_get_n_channels( pixbuf );
+            for( int column = 0; column < image.width(); ++column )
+            {
+                for( int row = 0; row < image.height(); ++row )
+                {
+                    QRgb pixel( image.pixel( column, row ) );
+                    int index = row * rowStride + column * nChannels;
+                    destBits[index+0] = qRed( pixel );
+                    destBits[index+1] = qGreen( pixel );
+                    destBits[index+2] = qBlue( pixel );
+                    destBits[index+3] = qAlpha( pixel );
+                }
+            }
 
-        const uchar* bits = image.bits();
-        icon_ = gdk_pixbuf_new_from_data( bits, GDK_COLORSPACE_RGB, true, 8, image.width(), image.height(), image.	bytesPerLine(), 0L, 0L );
+            icon_ = pixbuf;
+
+        }
 
     }
 
 }
 
+//_________________________________________
+SystemNotificationsP::~SystemNotificationsP( void )
+{ if( icon_ ) g_object_unref( icon_ ); }
 
 //_________________________________________
 void SystemNotificationsP::send( const QString& summary, const QString& message, const QString& icon ) const

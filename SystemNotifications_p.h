@@ -32,8 +32,7 @@ class SystemNotificationsP
     SystemNotificationsP( const QString& );
 
     //! destructor
-    virtual ~SystemNotificationsP( void )
-    {}
+    virtual ~SystemNotificationsP( void );
 
     // initialize
     void send( const QString&, const QString& = QString(), const QString& = QString() ) const;
