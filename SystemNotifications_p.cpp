@@ -1,0 +1,71 @@
+// $Id$
+
+/******************************************************************************
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* Any WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*******************************************************************************/
+
+#include "SystemNotifications_p.h"
+
+#if WITH_LIBNOTIFY
+#include <libnotify/notify.h>
+#endif
+
+#include "XmlOptions.h"
+#include <QImage>
+
+//_________________________________________
+SystemNotificationsP::SystemNotificationsP( const QString& appName ):
+  icon_( 0x0 )
+{
+    #if WITH_LIBNOTIFY
+    notify_init( appName.toLatin1());
+    #endif
+
+    // try get pixmap from options
+    if( XmlOptions::get().contains( "ICON_PIXMAP" ) )
+    {
+
+        QImage image( QString( XmlOptions::get().raw("ICON_PIXMAP" ) ) );
+        image = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
+
+        const uchar* bits = image.bits();
+        icon_ = gdk_pixbuf_new_from_data( bits, GDK_COLORSPACE_RGB, true, 8, image.width(), image.height(), image.	bytesPerLine(), 0L, 0L );
+
+    }
+
+}
+
+
+//_________________________________________
+void SystemNotificationsP::send( const QString& summary, const QString& message, const QString& icon ) const
+{
+
+    #if WITH_LIBNOTIFY
+    NotifyNotification* notification( 0x0 );
+    if( !icon.isEmpty() ) notification = notify_notification_new( summary.toLatin1(), message.toLatin1(), icon.toLatin1() );
+    else if( icon_ )
+    {
+
+        notification = notify_notification_new( summary.toLatin1(), message.toLatin1(), 0x0 );
+        if( icon_ ) notify_notification_set_image_from_pixbuf( notification, static_cast<GdkPixbuf*>( icon_ ) );
+
+    } else notification = notify_notification_new( summary.toLatin1(), message.toLatin1(), "dialog-information" );
+
+    notify_notification_show( notification, 0x0 );
+    #endif
+}
