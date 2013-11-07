@@ -38,20 +38,11 @@ class CommandLineParser: public Counter
     //! constructor
     CommandLineParser();
 
-    //! register option
-    void registerOption( QString tag, QString type, QString helpText );
-
-    //! register flag
-    void registerFlag( QString tag, QString helpText );
+    //! accessors
+    //@{
 
     //! print help
     void usage( void ) const;
-
-    //! parse
-    CommandLineParser& parse( const CommandLineArguments&, bool ignore_warnings = true );
-
-    //! clear
-    void clear( void );
 
     //! return 'rectified' arguments
     CommandLineArguments arguments( void ) const;
@@ -71,13 +62,37 @@ class CommandLineParser: public Counter
 
     //! orphans
     /*! list of command line arguments located at the end of the list and that do not match any option */
+    const QStringList& orphans( void ) const
+    { return orphans_; }
+
+    //@}
+
+    //! modifiers
+    //@{
+
+    //! register option
+    void registerOption( QString tag, QString type, QString helpText );
+
+    //! register flag
+    void registerFlag( QString tag, QString helpText );
+
+    //! parse
+    CommandLineParser& parse( const CommandLineArguments&, bool ignoreWarnings = true );
+
+    //! clear
+    void clear( void );
+
+    //! orphans
+    /*! list of command line arguments located at the end of the list and that do not match any option */
     QStringList& orphans( void )
     { return orphans_; }
+
+    //@}
 
     private:
 
     //! discard orphans
-    void _discardOrphans( bool ignore_warnings );
+    void _discardOrphans( bool ignoreWarnings );
 
     //! returns true if string is a tag
     bool _isTag( QString ) const;

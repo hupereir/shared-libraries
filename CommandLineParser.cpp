@@ -33,14 +33,6 @@ CommandLineParser::CommandLineParser( void ):
 }
 
 //________________________________________________________
-void CommandLineParser::registerFlag( QString tagName, QString helpText )
-{ flags_.insert( tagName, Flag( helpText ) ); }
-
-//________________________________________________________
-void CommandLineParser::registerOption( QString tagName, QString type, QString helpText )
-{ options_.insert( tagName, Option( type, helpText ) ); }
-
-//________________________________________________________
 void CommandLineParser::usage( void ) const
 {
 
@@ -80,156 +72,6 @@ void CommandLineParser::usage( void ) const
         << endl;
 
     return;
-}
-
-//________________________________________________________
-CommandLineParser& CommandLineParser::parse( const CommandLineArguments& arguments, bool ignore_warnings )
-{
-    Debug::Throw( "CommandLineParser::parse.\n" );
-
-    // clear all
-    clear();
-
-    // check size
-    if( arguments.isEmpty() ) return *this;
-
-    // first argument is application name
-    applicationName_ = arguments[0];
-
-    // check if all options should be orphans
-    // this should be triggered by adding "-" in the command line
-    bool auto_orphan( false );
-
-    for( int index = 1; index < arguments.size(); index++ )
-    {
-
-        QString tagName( arguments[index] );
-        if( tagName.isEmpty() ) continue;
-
-        if( tagName == "-" )
-        {
-            if( auto_orphan && !ignore_warnings )
-            {
-                QTextStream(stdout) << "CommandLineParser::parse -"
-                    << " option delimiter \"-\" appears multiple times "
-                    << endl;
-            }
-
-            auto_orphan = true;
-            continue;
-        }
-
-        // see if tag is in flag list
-        {
-            FlagMap::iterator iter( flags_.find( tagName ) );
-            if( iter != flags_.end() )
-            {
-                if( auto_orphan )
-                {
-                    if( !ignore_warnings )
-                    {
-                        QTextStream(stdout) << "CommandLineParser::parse -"
-                            << " tag " << tagName << " appears after option delimiter \"-\". It is ignored."
-                            << endl;
-                    }
-
-                    continue;
-
-                }
-
-                _discardOrphans( ignore_warnings );
-                iter.value().set_ = true;
-                continue;
-            }
-        }
-
-        // see if tag is in option list
-        {
-            OptionMap::iterator iter( options_.find( tagName ) );
-            if( iter != options_.end() )
-            {
-
-                if( auto_orphan )
-                {
-
-                    if( !ignore_warnings )
-                    {
-                        QTextStream(stdout) << "CommandLineParser::parse -"
-                            << " tag " << tagName << " appears after option delimiter \"-\". It is ignored."
-                            << endl;
-                    }
-
-                    // also skip next entry
-                    if( index+1 < arguments.size() ) index++;
-
-                    continue;
-
-                }
-
-                if( index+1 < arguments.size() )
-                {
-
-                    QString value( arguments[index+1] );
-                    if( !( value.isEmpty() || _isTag(value) ) )
-                    {
-                        _discardOrphans( ignore_warnings );
-                        iter.value().set_ = true;
-                        iter.value().value_ = value;
-                        index++;
-                        continue;
-                    }
-
-                } else if( !ignore_warnings ) {
-
-                    Debug::Throw(0) << "CommandLineParser::parse -"
-                        << " expected argument of type " << iter.value().type_
-                        << " after option " << iter.key() << endl;
-                }
-
-                continue;
-            }
-        }
-
-        // see if tag is an option
-        if( _isTag( tagName ) )
-        {
-
-            if( !ignore_warnings )
-            { Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << tagName << endl; }
-
-            continue;
-
-        }
-
-        // add to orphans
-        orphans_ << tagName;
-
-    }
-
-    return *this;
-
-}
-
-//________________________________________________
-void CommandLineParser::clear( void )
-{
-
-    Debug::Throw( "CommandLineParser::clear.\n" );
-
-    applicationName_.clear();
-    orphans_.clear();
-
-    // clear flags
-    for( FlagMap::iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
-    { iter.value().set_ = false; }
-
-    // clear options
-    for( OptionMap::iterator iter = options_.begin(); iter != options_.end(); ++iter )
-    {
-        iter.value().set_ = false;
-        iter.value().value_.clear();
-    }
-
 }
 
 //_______________________________________________________
@@ -278,13 +120,171 @@ QString CommandLineParser::option( QString tag ) const
     return iter.value().value_;
 }
 
+//________________________________________________________
+void CommandLineParser::registerFlag( QString tagName, QString helpText )
+{ flags_.insert( tagName, Flag( helpText ) ); }
+
+//________________________________________________________
+void CommandLineParser::registerOption( QString tagName, QString type, QString helpText )
+{ options_.insert( tagName, Option( type, helpText ) ); }
+
+//________________________________________________________
+CommandLineParser& CommandLineParser::parse( const CommandLineArguments& arguments, bool ignoreWarnings )
+{
+    Debug::Throw( "CommandLineParser::parse.\n" );
+
+    // clear all
+    clear();
+
+    // check size
+    if( arguments.isEmpty() ) return *this;
+
+    // first argument is application name
+    applicationName_ = arguments[0];
+
+    // check if all options should be orphans
+    // this should be triggered by adding "-" in the command line
+    bool auto_orphan( false );
+
+    for( int index = 1; index < arguments.size(); index++ )
+    {
+
+        QString tagName( arguments[index] );
+        if( tagName.isEmpty() ) continue;
+
+        if( tagName == "-" )
+        {
+            if( auto_orphan && !ignoreWarnings )
+            {
+                QTextStream(stdout) << "CommandLineParser::parse -"
+                    << " option delimiter \"-\" appears multiple times "
+                    << endl;
+            }
+
+            auto_orphan = true;
+            continue;
+        }
+
+        // see if tag is in flag list
+        {
+            FlagMap::iterator iter( flags_.find( tagName ) );
+            if( iter != flags_.end() )
+            {
+                if( auto_orphan )
+                {
+                    if( !ignoreWarnings )
+                    {
+                        QTextStream(stdout) << "CommandLineParser::parse -"
+                            << " tag " << tagName << " appears after option delimiter \"-\". It is ignored."
+                            << endl;
+                    }
+
+                    continue;
+
+                }
+
+                _discardOrphans( ignoreWarnings );
+                iter.value().set_ = true;
+                continue;
+            }
+        }
+
+        // see if tag is in option list
+        {
+            OptionMap::iterator iter( options_.find( tagName ) );
+            if( iter != options_.end() )
+            {
+
+                if( auto_orphan )
+                {
+
+                    if( !ignoreWarnings )
+                    {
+                        QTextStream(stdout) << "CommandLineParser::parse -"
+                            << " tag " << tagName << " appears after option delimiter \"-\". It is ignored."
+                            << endl;
+                    }
+
+                    // also skip next entry
+                    if( index+1 < arguments.size() ) index++;
+
+                    continue;
+
+                }
+
+                if( index+1 < arguments.size() )
+                {
+
+                    QString value( arguments[index+1] );
+                    if( !( value.isEmpty() || _isTag(value) ) )
+                    {
+                        _discardOrphans( ignoreWarnings );
+                        iter.value().set_ = true;
+                        iter.value().value_ = value;
+                        index++;
+                        continue;
+                    }
+
+                } else if( !ignoreWarnings ) {
+
+                    Debug::Throw(0) << "CommandLineParser::parse -"
+                        << " expected argument of type " << iter.value().type_
+                        << " after option " << iter.key() << endl;
+                }
+
+                continue;
+            }
+        }
+
+        // see if tag is an option
+        if( _isTag( tagName ) )
+        {
+
+            if( !ignoreWarnings )
+            { Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << tagName << endl; }
+
+            continue;
+
+        }
+
+        // add to orphans
+        orphans_ << tagName;
+
+    }
+
+    return *this;
+
+}
+
+//________________________________________________
+void CommandLineParser::clear( void )
+{
+
+    Debug::Throw( "CommandLineParser::clear.\n" );
+
+    applicationName_.clear();
+    orphans_.clear();
+
+    // clear flags
+    for( FlagMap::iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
+    { iter.value().set_ = false; }
+
+    // clear options
+    for( OptionMap::iterator iter = options_.begin(); iter != options_.end(); ++iter )
+    {
+        iter.value().set_ = false;
+        iter.value().value_.clear();
+    }
+
+}
+
 //_______________________________________________________
-void CommandLineParser::_discardOrphans( bool ignore_warnings )
+void CommandLineParser::_discardOrphans( bool ignoreWarnings )
 {
     // print discarded orphans
     if( orphans_.isEmpty() ) return;
 
-    if( !ignore_warnings )
+    if( !ignoreWarnings )
     {
         Debug::Throw(0) << "CommandLineParser::parse - following orphans are discarded: " << endl;
         for( QStringList::const_iterator iter = orphans_.begin(); iter != orphans_.end(); ++iter )
