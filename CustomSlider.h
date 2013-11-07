@@ -44,12 +44,24 @@ class CustomSlider: public QWidget, public Counter
     ~CustomSlider( void )
     {}
 
-    //! changes value
-    void setValue( int value );
+    //!@name accessors
+    //@{
 
     //! retrieves value
     int value( void ) const
     { return slider_->value(); }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! suffix
+    void setSuffix( const QString& value )
+    { spinBox_->setSuffix( value ); }
+
+    //! changes value
+    void setValue( int value );
 
     //! range
     void setRange( int minimum, int maximum )
@@ -71,6 +83,8 @@ class CustomSlider: public QWidget, public Counter
         slider().setMaximum( value );
         spinBox().setMaximum( value );
     }
+
+    //@}
 
     protected:
 
