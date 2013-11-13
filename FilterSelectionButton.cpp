@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "FilterSelectionButton.h"
+#include "FilterSelectionButton.moc"
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"

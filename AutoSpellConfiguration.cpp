@@ -23,6 +23,7 @@
 #include <QLabel>
 
 #include "AutoSpellConfiguration.h"
+#include "AutoSpellConfiguration.moc"
 #include "GridLayout.h"
 #include "Debug.h"
 #include "OptionColorDisplay.h"

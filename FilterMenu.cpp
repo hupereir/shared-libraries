@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "FilterMenu.h"
+#include "FilterMenu.moc"
 
 #include "BaseIcons.h"
 #include "IconEngine.h"

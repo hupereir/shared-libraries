@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "SpellItemDialog.h"
+#include "SpellItemDialog.moc"
 #include "TreeView.h"
 
 #include <QHeaderView>

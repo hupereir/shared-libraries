@@ -49,47 +49,16 @@ SET( base_spellcheck_SOURCES
   TexString.cpp
   )
 
-SET( base_spellcheck_HEADERS
-  AutoSpellConfiguration.h
-  DictionaryMenu.h
-  DictionarySelectionButton.h
-  FilterMenu.h
-  FilterSelectionButton.h
-  SpellCheckConfiguration.h
-  SpellDialog.h
-  SpellItemDialog.h
-  SpellItemModel.h
-  SuggestionMenu.h
-)
-
-IF( USE_QT5 )
-
-  QT5_WRAP_CPP( base_spellcheck_HEADERS_MOC ${base_spellcheck_HEADERS} )
-
-ELSE()
-
-  QT4_WRAP_CPP( base_spellcheck_HEADERS_MOC ${base_spellcheck_HEADERS} )
-
-ENDIF()
-
 IF( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-spellcheck SHARED
-    ${base_spellcheck_SOURCES}
-    ${base_spellcheck_HEADERS_MOC}
-  )
-
+  ADD_LIBRARY( base-spellcheck SHARED ${base_spellcheck_SOURCES} )
   SET_TARGET_PROPERTIES( base-spellcheck PROPERTIES VERSION ${BASE_SPELLCHECK_VERSION} SOVERSION ${BASE_SPELLCHECK_SOVERSION} )
   TARGET_LINK_LIBRARIES( base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt )
   INSTALL( TARGETS base-spellcheck DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 ELSE()
 
- ADD_LIBRARY( base-spellcheck STATIC
-    ${base_spellcheck_SOURCES}
-    ${base_spellcheck_HEADERS_MOC}
-  )
-
+  ADD_LIBRARY( base-spellcheck STATIC ${base_spellcheck_SOURCES} )
   TARGET_LINK_LIBRARIES( base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt )
 
 ENDIF()

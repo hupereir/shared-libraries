@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "DictionaryMenu.h"
+#include "DictionaryMenu.moc"
 
 #include "BaseIcons.h"
 #include "IconEngine.h"

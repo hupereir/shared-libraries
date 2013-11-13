@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "SpellCheckConfiguration.h"
+#include "SpellCheckConfiguration.moc"
 
 #include "BaseIcons.h"
 #include "Debug.h"
