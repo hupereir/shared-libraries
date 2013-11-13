@@ -74,15 +74,6 @@ class Debug
 
     };
 
-    //! null device
-    NullIODevice& _nullDevice( void );
-
-    //! null device
-    QTextStream& _nullStream( void );
-
-    //! null device
-    QTextStream& _stdStream( void );
-
     //! debug level
     int level_;
 

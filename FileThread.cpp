@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "FileThread.h"
+#include "FileThread.moc"
 #include "Debug.h"
 
 #include <QMetaType>

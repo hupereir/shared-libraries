@@ -28,7 +28,7 @@ void Debug::Throw( int level, QString str )
     if( _get().level_ < level ) return;
 
     // print string to stream
-    _get()._stdStream() << str << flush;
+    _get().stdStream_ << str << flush;
 
     return;
 
@@ -40,7 +40,7 @@ void Debug::Throw( QString str )
 
 //______________________________________
 QTextStream& Debug::Throw( int level )
-{ return ( _get().level_ < level ) ? _get()._nullStream() : _get()._stdStream(); }
+{ return ( _get().level_ < level ) ? _get().nullStream_ : _get().stdStream_; }
 
 //______________________________________
 void Debug::setLevel( const int& level )
@@ -59,7 +59,7 @@ Debug::Debug( void ):
 
 //______________________________________
 Debug::NullIODevice::NullIODevice()
-{}
+{ setOpenMode( WriteOnly ); }
 
 //______________________________________
 qint64 Debug::NullIODevice::readData( char*, qint64 )
@@ -68,18 +68,6 @@ qint64 Debug::NullIODevice::readData( char*, qint64 )
 //______________________________________
 qint64 Debug::NullIODevice::writeData( const char*, qint64 )
 { return 0; }
-
-//______________________________________
-Debug::NullIODevice& Debug::_nullDevice( void )
-{ return nullDevice_; }
-
-//______________________________________
-QTextStream& Debug::_nullStream( void )
-{ return nullStream_; }
-
-//______________________________________
-QTextStream& Debug::_stdStream( void )
-{ return stdStream_; }
 
 //_______________________________________________
 Debug& Debug::_get( void )
