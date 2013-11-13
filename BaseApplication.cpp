@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "BaseApplication.h"
+#include "BaseApplication.moc"
 #include "BaseIcons.h"
 #include "File.h"
 #include "IconEngine.h"
@@ -56,7 +57,6 @@ namespace SERVER
 //____________________________________________
 bool SERVER::AppEventFilter::eventFilter( QObject* object, QEvent* event )
 {
-    Q_UNUSED( object );
 
     switch( event->type() )
     {
@@ -75,12 +75,14 @@ bool SERVER::AppEventFilter::eventFilter( QObject* object, QEvent* event )
             if( QGridLayout* gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
             {
 
+                gridLayout->setVerticalSpacing( 5 );
+
                 // create separator
                 QFrame* frame( new QFrame( buttonBox->parentWidget() ) );
                 frame->setFrameStyle( QFrame::HLine );
-                gridLayout->addWidget( frame, 2, 0, 1, 2 );
-
-                gridLayout->addWidget( buttonBox, 3, 0, 1, 2 );
+                const int columnCount( gridLayout->columnCount() );
+                gridLayout->addWidget( frame, 2, 0, 1, columnCount );
+                gridLayout->addWidget( buttonBox, 3, 0, 1, columnCount );
             }
 
         }

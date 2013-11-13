@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "Client.h"
+#include "Client.moc"
 #include "Debug.h"
 #include "IOString.h"
 #include "ServerXmlDef.h"

@@ -21,6 +21,7 @@
 
 #include "ErrorHandler.h"
 #include "BaseCoreApplication.h"
+#include "BaseCoreApplication.moc"
 #include "Debug.h"
 #include "XmlOptions.h"
 

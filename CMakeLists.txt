@@ -54,41 +54,16 @@ SET( base_server_SOURCES
   ServerConfiguration.cpp
 )
 
-SET( base_server_HEADERS
-  ApplicationManager.h
-  BaseApplication.h
-  BaseCoreApplication.h
-  Client.h
-  ServerConfiguration.h
-)
-
-IF( USE_QT5 )
-
-  QT5_WRAP_CPP( base_server_HEADERS_MOC ${base_server_HEADERS} )
-
-ELSE()
-
-  QT4_WRAP_CPP( base_server_HEADERS_MOC ${base_server_HEADERS} )
-
-ENDIF()
-
 IF( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-server SHARED
-    ${base_server_SOURCES}
-    ${base_server_HEADERS_MOC}
-  )
-
+  ADD_LIBRARY( base-server SHARED ${base_server_SOURCES} )
   SET_TARGET_PROPERTIES( base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION} )
   TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
   INSTALL( TARGETS base-server DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 ELSE()
 
-  ADD_LIBRARY( base-server STATIC
-    ${base_server_SOURCES}
-    ${base_server_HEADERS_MOC}
-  )
+  ADD_LIBRARY( base-server STATIC ${base_server_SOURCES} )
   TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
 
 ENDIF()
