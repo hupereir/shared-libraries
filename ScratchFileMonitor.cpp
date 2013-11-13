@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "ScratchFileMonitor.h"
+#include "ScratchFileMonitor.moc"
 #include "ScratchFileRemoveDialog.h"
 
 #include <QApplication>

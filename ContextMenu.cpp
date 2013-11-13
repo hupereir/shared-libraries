@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "ContextMenu.h"
+#include "ContextMenu.moc"
 #include "Debug.h"
 
 #include <QAbstractScrollArea>

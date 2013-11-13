@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "TabWidget.h"
+#include "TabWidget.moc"
 #include "File.h"
 #include "XmlOptions.h"
 #include "X11Util.h"

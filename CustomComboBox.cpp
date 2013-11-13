@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "CustomComboBox.h"
+#include "CustomComboBox.moc"
 #include "TransitionWidget.h"
 
 #include <QAbstractItemView>

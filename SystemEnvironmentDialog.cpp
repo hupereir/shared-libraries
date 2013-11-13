@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "SystemEnvironmentDialog.h"
+#include "SystemEnvironmentDialog.moc"
 #include "AnimatedTreeView.h"
 #include "Str.h"
 

@@ -22,6 +22,7 @@
 
 #include "Util.h"
 #include "UserSelectionFrame.h"
+#include "UserSelectionFrame.moc"
 
 #include <QLayout>
 #include <QLabel>

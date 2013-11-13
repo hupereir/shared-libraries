@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "OptionDialog.h"
+#include "OptionDialog.moc"
 
 #include "BaseIcons.h"
 #include "IconEngine.h"

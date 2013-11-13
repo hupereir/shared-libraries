@@ -25,6 +25,7 @@
 #include "ScrollObject.h"
 #include "SimpleListView.h"
 #include "TabbedDialog.h"
+#include "TabbedDialog.moc"
 
 #include <QApplication>
 #include <QScrollArea>

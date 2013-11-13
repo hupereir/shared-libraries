@@ -21,6 +21,7 @@
 
 #include "Debug.h"
 #include "FileList.h"
+#include "FileList.moc"
 #include "File.h"
 #include "Str.h"
 

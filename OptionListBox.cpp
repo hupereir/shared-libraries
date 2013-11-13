@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "OptionListBox.h"
+#include "OptionListBox.moc"
 
 #include "AnimatedLineEditor.h"
 #include "ContextMenu.h"

@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "HtmlDialog.h"
+#include "HtmlDialog.moc"
 
 #include "FileDialog.h"
 #include "GridLayout.h"

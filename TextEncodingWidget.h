@@ -1,3 +1,5 @@
+#ifndef TextEncodingWidget_h
+#define TextEncodingWidget_h
 
 // $Id$
 
@@ -20,39 +22,39 @@
 *
 *******************************************************************************/
 
-/*!
-  \file RemoveLineBuffer.cpp
-  \brief handles consecutive calls to remove line in a single Clipboard block
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
+#include "CustomComboBox.h"
+#include "Counter.h"
 
-#include <QApplication>
-#include <QClipboard>
+#include <QWidget>
 
-#include "RemoveLineBuffer.h"
-#include "RemoveLineBuffer.moc"
-
-//______________________________________________________________
-void RemoveLineBuffer::append( const QString& value )
+//! allows to change default and current file encoding
+class TextEncodingWidget: public QWidget, public Counter
 {
 
-  Debug::Throw( "RemoveLineBuffer::append.\n" );
-  buffer_ += value;
+    Q_OBJECT
 
-}
+    public:
 
-//________________________________________________________________
-void RemoveLineBuffer::clear( void )
-{
+    //! constructor
+    TextEncodingWidget( QWidget* = 0 );
 
-  if( buffer_.isEmpty() ) return;
-  Debug::Throw( "RemoveLineBuffer::clear.\n" );
+    //! destructor
+    virtual ~TextEncodingWidget( void )
+    {}
 
-  qApp->clipboard()->setText( buffer_, QClipboard::Clipboard );
-  buffer_.clear();
+    Q_SIGNALS:
 
-  return;
+    //! default encoding changed
+    void defaultEncodingChanged( const QString& );
 
-}
+    //! current encoding changed
+    void currentEncodingChanged( const QString& );
+
+    protected Q_SLOTS:
+
+    //! update default encoding
+    void _updateDefaultEncoding( const QString& );
+
+};
+
+#endif

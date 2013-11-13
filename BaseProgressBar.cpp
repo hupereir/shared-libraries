@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "BaseProgressBar.h"
+#include "BaseProgressBar.moc"
 #include "Debug.h"
 
 #include <QStyleOptionProgressBarV2>

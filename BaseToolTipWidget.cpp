@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "BaseToolTipWidget.h"
+#include "BaseToolTipWidget.moc"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "Singleton.h"

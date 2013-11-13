@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "ProgressStatusBar.h"
+#include "ProgressStatusBar.moc"
 
 #include "AnimatedStackedWidget.h"
 #include "Debug.h"

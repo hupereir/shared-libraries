@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "BusyWidget.h"
+#include "BusyWidget.moc"
 #include "Debug.h"
 
 #include <QPainter>

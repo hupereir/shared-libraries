@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "LineEditor.h"
+#include "LineEditor.moc"
 #include "BaseIcons.h"
 #include "Debug.h"
 #include "IconEngine.h"

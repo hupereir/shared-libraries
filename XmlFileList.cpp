@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "XmlFileList.h"
+#include "XmlFileList.moc"
 
 #include "Debug.h"
 #include "Singleton.h"

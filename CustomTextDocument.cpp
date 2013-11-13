@@ -1,8 +1,7 @@
-// $Id$
-
+// : TreeViewItemDelegate.h,v 1.4 2013/04/29 07:18:58 hupereir Exp n
 /******************************************************************************
 *
-* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira.fr>
 *
 * This is free software; you can redistribute it and/or modify it under the
 * terms of the GNU General Public License as published by the Free Software
@@ -19,17 +18,5 @@
 *
 *******************************************************************************/
 
-
-#include "ColorGrabButton.h"
-#include "ColorGrabButton.moc"
-#include "ColorGrabObject.h"
-#include "Debug.h"
-
-//______________________________________________
-ColorGrabButton::ColorGrabButton( QWidget* parent ):
-    QToolButton( parent ),
-    Counter( "ColorGrabButton" )
-{
-    ColorGrabObject* object = new ColorGrabObject( this );
-    connect( object, SIGNAL( colorSelected( QColor ) ), this, SIGNAL( colorSelected( QColor ) ) );
-}
+#include "CustomTextDocument.h"
+#include "CustomTextDocument.moc"

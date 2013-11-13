@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "PlacesWidget.h"
+#include "PlacesWidget.moc"
 #include "PlacesWidget_p.h"
 
 #include "BaseFileIconProvider.h"

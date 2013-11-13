@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "AnimatedLineEditor.h"
+#include "AnimatedLineEditor.moc"
 #include "Debug.h"
 #include "Singleton.h"
 #include "TransitionWidget.h"

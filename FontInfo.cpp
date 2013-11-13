@@ -21,6 +21,7 @@
 
 #include "Debug.h"
 #include "FontInfo.h"
+#include "FontInfo.moc"
 
 #include <QLayout>
 

@@ -19,6 +19,7 @@
 *******************************************************************************/
 
 #include "BasePrintHelper.h"
+#include "BasePrintHelper.moc"
 
 #include <QTextStream>
 #include <QButtonGroup>

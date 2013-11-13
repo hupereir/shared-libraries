@@ -24,6 +24,7 @@
 #include "File.h"
 #include "IconSize.h"
 #include "BrowseIconButton.h"
+#include "BrowseIconButton.moc"
 #include "ImageFileDialog.h"
 #include "InformationDialog.h"
 #include "XmlOptions.h"

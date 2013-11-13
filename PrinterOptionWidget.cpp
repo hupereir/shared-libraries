@@ -19,6 +19,7 @@
 *******************************************************************************/
 
 #include "PrinterOptionWidget.h"
+#include "PrinterOptionWidget.moc"
 
 #include "BaseIcons.h"
 #include "IconEngine.h"
@@ -129,7 +130,7 @@ void PrinterOptionWidget::_preview( void )
 
     // create dialog, connect and execute
     PrintPreviewDialog dialog( this );
-    dialog.setWindowTitle( QString( tr( "Print Preview - %s" ) ).arg( qApp->applicationName() ) );
+    dialog.setWindowTitle( QString( tr( "Print Preview - %1" ) ).arg( qApp->applicationName() ) );
     dialog.setHelper( helper_ );
     dialog.hideMenu();
     dialog.exec();

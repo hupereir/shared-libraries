@@ -22,6 +22,7 @@
 
 #include "BaseIcons.h"
 #include "CustomDialog.h"
+#include "CustomDialog.moc"
 #include "IconEngine.h"
 
 #include <QFrame>

@@ -22,6 +22,7 @@
 #include "TextEditor.h"
 #include "Debug.h"
 #include "LineNumberDisplay.h"
+#include "LineNumberDisplay.moc"
 #include "XmlOptions.h"
 
 #include <QAbstractTextDocumentLayout>

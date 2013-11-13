@@ -1,4 +1,3 @@
-
 // $Id$
 
 /******************************************************************************
@@ -20,39 +19,5 @@
 *
 *******************************************************************************/
 
-/*!
-  \file RemoveLineBuffer.cpp
-  \brief handles consecutive calls to remove line in a single Clipboard block
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QApplication>
-#include <QClipboard>
-
-#include "RemoveLineBuffer.h"
-#include "RemoveLineBuffer.moc"
-
-//______________________________________________________________
-void RemoveLineBuffer::append( const QString& value )
-{
-
-  Debug::Throw( "RemoveLineBuffer::append.\n" );
-  buffer_ += value;
-
-}
-
-//________________________________________________________________
-void RemoveLineBuffer::clear( void )
-{
-
-  if( buffer_.isEmpty() ) return;
-  Debug::Throw( "RemoveLineBuffer::clear.\n" );
-
-  qApp->clipboard()->setText( buffer_, QClipboard::Clipboard );
-  buffer_.clear();
-
-  return;
-
-}
+#include "TreeViewItemDelegate.h"
+#include "TreeViewItemDelegate.moc"

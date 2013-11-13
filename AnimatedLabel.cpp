@@ -30,6 +30,7 @@
 #include <QApplication>
 
 #include "AnimatedLabel.h"
+#include "AnimatedLabel.moc"
 #include "Debug.h"
 #include "TransitionWidget.h"
 

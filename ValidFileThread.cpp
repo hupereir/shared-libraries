@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "ValidFileThread.h"
+#include "ValidFileThread.moc"
 #include "File.h"
 
 #include <QMetaType>

@@ -32,6 +32,7 @@
 #include <QTextBlock>
 
 #include "BlockHighlight.h"
+#include "BlockHighlight.moc"
 #include "TextEditor.h"
 #include "TextBlockData.h"
 

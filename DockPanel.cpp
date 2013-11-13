@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "DockPanel.h"
+#include "DockPanel.moc"
 #include "DockPanel_p.h"
 
 #include "Debug.h"

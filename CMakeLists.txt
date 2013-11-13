@@ -86,6 +86,7 @@ SET( base_qt_SOURCES
   CustomDialog.cpp
   CustomPixmap.cpp
   CustomSlider.cpp
+  CustomTextDocument.cpp
   CustomToolBar.cpp
   CustomToolButton.cpp
   DebugMenu.cpp
@@ -148,6 +149,7 @@ SET( base_qt_SOURCES
   TextEditor.cpp
   TextEditorMarginWidget.cpp
   TextEditionDelegate.cpp
+  TextEncodingWidget.cpp
   TextPosition.cpp
   TextSeparator.cpp
   ToolBarMenu.cpp
@@ -156,6 +158,7 @@ SET( base_qt_SOURCES
   TreeItemBase.cpp
   TreeView.cpp
   TreeViewConfiguration.cpp
+  TreeViewItemDelegate.cpp
   UserSelectionFrame.cpp
   ValidFileThread.cpp
   WarningDialog.cpp
@@ -175,112 +178,14 @@ SET( base_qt_SOURCES
   XmlString.cpp
 )
 
-SET( base_qt_HEADERS
-  AnimatedLabel.h
-  AnimatedLineEditor.h
-  AnimatedStackedWidget.h
-  AnimatedTabWidget.h
-  AnimatedTreeView.h
-  BaseConfigurationDialog.h
-  BaseConfigurationDialog_p.h
-  BaseDialog.h
-  BaseFindDialog.h
-  BaseFileInfoConfigurationWidget.h
-  BaseFileInformationDialog.h
-  BaseFileInfoToolTipWidget.h
-  BaseMainWindow.h
-  BasePrintHelper.h
-  BaseProgressBar.h
-  BaseReplaceDialog.h
-  BaseStatusBar.h
-  BaseToolTipWidget.h
-  BlockHighlight.h
-  BrowsedLineEditor.h
-  BrowseIconButton.h
-  BusyWidget.h
-  ColorDisplay.h
-  ColorGrabButton.h
-  ColorGrabObject.h
-  ColorMenu.h
-  ColumnSelectionMenu.h
-  ColumnSortingMenu.h
-  ClockLabel.h
-  ContextMenu.h
-  CounterDialog.h
-  CounterModel.h
-  CustomDialog.h
-  CustomComboBox.h
-  CustomSlider.h
-  CustomTextDocument.h
-  CustomToolBar.h
-  CustomToolButton.h
-  DebugMenu.h
-  DefaultFolders.h
-  DetailsDialog.h
-  DockPanel.h
-  DockPanel_p.h
-  DockWidget.h
-  ElidedLabel.h
-  FileList.h
-  FilePermissionsWidget.h
-  FileRecordModel.h
-  FileSystemWatcher.h
-  FontEditor.h
-  FontInfo.h
-  HtmlDialog.h
-  IconCacheDialog.h
-  IconCacheModel.h
-  IconSizeMenu.h
-  IconView.h
-  ImageFileDialog.h
-  ItemModel.h
-  LineEditor.h
-  LineNumberDisplay.h
-  LogWidget.h
-  OptionDialog.h
-  OptionListBox.h
-  OptionModel.h
-  PathEditor.h
-  PathEditor_p.h
-  PlacesWidget.h
-  PlacesWidget_p.h
-  PrinterOptionWidget.h
-  PrintPreviewDialog.h
-  PrintPreviewDialog_p.h
-  ProgressStatusBar.h
-  RecentFilesConfiguration.h
-  RecentFilesMenu.h
-  RemoveLineBuffer.h
-  ScratchFileMonitor.h
-  ScratchFileRemoveDialog.h
-  ScrollObject.h
-  SelectLineDialog.h
-  SimpleListView.h
-  SystemEnvironmentDialog.h
-  TabbedDialog.h
-  TabWidget.h
-  TextEditor.h
-  TextEditorMarginWidget.h
-  ToolButtonStyleMenu.h
-  TransitionWidget.h
-  TreeView.h
-  TreeViewConfiguration.h
-  TreeViewItemDelegate.h
-  UserSelectionFrame.h
-  ValidFileThread.h
-  XmlFileList.h
-)
-
 SET( base_qt_RESOURCES basePixmaps.qrc)
 
 IF( USE_QT5 )
 
-  QT5_WRAP_CPP( base_qt_HEADERS_MOC ${base_qt_HEADERS} )
   QT5_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
 
 ELSE()
 
-  QT4_WRAP_CPP( base_qt_HEADERS_MOC ${base_qt_HEADERS} )
   QT4_ADD_RESOURCES( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
 
 ENDIF()
@@ -290,7 +195,6 @@ IF( ENABLE_SHARED )
 
   ADD_LIBRARY( base-qt SHARED
     ${base_qt_SOURCES}
-    ${base_qt_HEADERS_MOC}
     ${base_qt_RESOURCES_RCC}
   )
 
@@ -302,7 +206,6 @@ ELSE()
 
   ADD_LIBRARY( base-qt STATIC
     ${base_qt_SOURCES}
-    ${base_qt_HEADERS_MOC}
     ${base_qt_RESOURCES_RCC}
   )
 

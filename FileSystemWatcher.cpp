@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "FileSystemWatcher.h"
+#include "FileSystemWatcher.moc"
 
 //___________________________________________________
 void FileSystemWatcher::timerEvent( QTimerEvent* event )

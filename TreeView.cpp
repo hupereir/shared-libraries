@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "TreeView.h"
+#include "TreeView.moc"
 
 #include "BaseFindDialog.h"
 #include "BaseIcons.h"

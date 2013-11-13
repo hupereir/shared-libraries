@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "LogWidget.h"
+#include "LogWidget.moc"
 #include "TextFormat.h"
 #include "XmlOptions.h"
 

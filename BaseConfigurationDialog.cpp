@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "BaseConfigurationDialog.h"
+#include "BaseConfigurationDialog.moc"
 #include "BaseConfigurationDialog_p.h"
 
 #include "BaseIcons.h"

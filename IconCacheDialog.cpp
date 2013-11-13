@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "IconCacheDialog.h"
+#include "IconCacheDialog.moc"
 
 #include "BaseIcons.h"
 #include "IconEngine.h"

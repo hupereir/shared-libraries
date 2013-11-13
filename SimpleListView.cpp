@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "SimpleListView.h"
+#include "SimpleListView.moc"
 #include "SimpleListView_p.h"
 
 #include <QAbstractItemDelegate>

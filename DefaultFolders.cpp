@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "DefaultFolders.h"
+#include "DefaultFolders.moc"
 #include "Util.h"
 
 #include <QFileInfo>

@@ -21,6 +21,7 @@
 
 #include "Debug.h"
 #include "ToolButtonStyleMenu.h"
+#include "ToolButtonStyleMenu.moc"
 
 //_____________________________________________________________________________
 ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):

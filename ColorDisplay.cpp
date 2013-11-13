@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "ColorDisplay.h"
+#include "ColorDisplay.moc"
 
 #include "BaseIcons.h"
 #include "ColorGrabButton.h"

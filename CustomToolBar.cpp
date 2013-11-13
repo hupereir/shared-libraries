@@ -21,6 +21,7 @@
 
 #include "BaseMainWindow.h"
 #include "CustomToolBar.h"
+#include "CustomToolBar.moc"
 #include "CustomToolButton.h"
 #include "Singleton.h"
 #include "XmlOptions.h"

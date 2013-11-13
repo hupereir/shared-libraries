@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "PathEditor.h"
+#include "PathEditor.moc"
 #include "PathEditor_p.h"
 
 #include "BaseIcons.h"
