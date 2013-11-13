@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "TransparencyConfiguration.h"
+#include "TransparencyConfiguration.moc"
 
 #include "CompositeEngine.h"
 #include "Debug.h"
@@ -82,6 +83,7 @@ namespace TRANSPARENCY
         gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_FOREGROUND_INTENSITY" ), 2, 1, 1, 1 );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
+        slider->setSuffix( tr( "%" ) );
         slider->setToolTip( tr( "Foreground color intensity" ) );
         addOptionWidget( slider );
 
@@ -90,6 +92,7 @@ namespace TRANSPARENCY
         gridLayout->addWidget( spinbox = new OptionSpinBox( box, "TRANSPARENCY_SHADOW_OFFSET" ), 3, 1, 1, 1 );
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 10 );
+        spinbox->setSuffix( tr( "px" ) );
         spinbox->setToolTip(
             tr( "Offset between text shadow and text.\n"
             "0 means no shadow." ) );
@@ -122,6 +125,7 @@ namespace TRANSPARENCY
         gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_TINT_INTENSITY" ), 2, 1, 1, 1 );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
+        slider->setSuffix( tr( "%" ) );
         slider->setToolTip( tr( "Transparent background tint intensity" ) );
         addOptionWidget( slider );
 
@@ -130,6 +134,7 @@ namespace TRANSPARENCY
         gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_HIGHLIGHT_INTENSITY" ), 3, 1, 1, 1 );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
+        slider->setSuffix( tr( "%" ) );
         slider->setToolTip( tr( "Background highlight intensity when entering widget" ) );
         addOptionWidget( slider );
 
