@@ -24,6 +24,7 @@
 #include "BaseIcons.h"
 #include "IconEngine.h"
 #include "HelpDialog.h"
+#include "HelpDialog.moc"
 #include "HelpManager.h"
 #include "TextEditionDelegate.h"
 #include "HelpManager.h"

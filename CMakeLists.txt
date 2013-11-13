@@ -37,28 +37,9 @@ SET( base_help_SOURCES
   HelpModel.cpp
   )
 
-SET( base_help_HEADERS
-  HelpDialog.h
-  HelpManager.h
-  HelpModel.h
-  )
-
-IF( USE_QT5 )
-
-  QT5_WRAP_CPP( base_help_HEADERS_MOC ${base_help_HEADERS} )
-
-ELSE()
-
-  QT4_WRAP_CPP( base_help_HEADERS_MOC ${base_help_HEADERS} )
-
-ENDIF()
-
 IF( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-help SHARED
-    ${base_help_SOURCES}
-    ${base_help_HEADERS_MOC}
-  )
+  ADD_LIBRARY( base-help SHARED ${base_help_SOURCES} )
 
   SET_TARGET_PROPERTIES( base-help PROPERTIES VERSION ${BASE_HELP_VERSION} SOVERSION ${BASE_HELP_SOVERSION} )
   TARGET_LINK_LIBRARIES( base-help ${QT_LIBRARIES} base base-qt )
@@ -66,10 +47,7 @@ IF( ENABLE_SHARED )
 
 ELSE()
 
-  ADD_LIBRARY( base-help STATIC
-    ${base_help_SOURCES}
-    ${base_help_HEADERS_MOC}
-  )
+  ADD_LIBRARY( base-help STATIC ${base_help_SOURCES} )
   TARGET_LINK_LIBRARIES( base-help ${QT_LIBRARIES} base base-qt )
 
 ENDIF()
