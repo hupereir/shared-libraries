@@ -206,9 +206,6 @@ class TextEditor: public BaseEditor, public BASE::Key, public Counter
     //! install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu*, const bool& = true );
 
-    //! set text encoding
-    virtual void setTextEncoding( const QString& );
-
     //!@name actions
     //@{
 

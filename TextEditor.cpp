@@ -50,7 +50,6 @@
 #include <QProgressDialog>
 #include <QRegExp>
 #include <QTextBlock>
-#include <QTextCodec>
 #include <QTextStream>
 
 //______________________________________________
@@ -503,17 +502,6 @@ void TextEditor::resetUndoRedoStack( void )
     Debug::Throw(" TextEditor::resetUndoRedoStack.\n");
     document()->setUndoRedoEnabled( false );
     document()->setUndoRedoEnabled( true );
-
-}
-
-//______________________________________________________________________________
-void TextEditor::setTextEncoding( const QString& textEncoding )
-{
-    Debug::Throw( "TextEditor::setTextEncoding" );
-
-    // get codec
-    QTextCodec* codec( QTextCodec::codecForName( qPrintable( textEncoding ) ) );
-    if( codec ) setPlainText( codec->toUnicode( qPrintable( toPlainText() ) ) );
 
 }
 
