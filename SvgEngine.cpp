@@ -21,6 +21,7 @@
 
 #include "SvgPlasmaInterface.h"
 #include "SvgEngine.h"
+#include "SvgEngine.moc"
 #include "Svg.h"
 #include "XmlOptions.h"
 

@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "SvgThread.h"
+#include "SvgThread.moc"
 #include "File.h"
 
 #include <QMetaType>

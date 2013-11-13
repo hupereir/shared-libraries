@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "SvgConfiguration.h"
+#include "SvgConfiguration.moc"
 
 #include "CustomDialog.h"
 #include "Debug.h"

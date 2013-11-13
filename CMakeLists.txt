@@ -45,23 +45,14 @@ SET( base_svg_SOURCES
   SvgThread.cpp
 )
 
-SET( base_svg_HEADERS
-  SvgConfiguration.h
-  SvgEngine.h
-  SvgPlasmaInterface.h
-  SvgThread.h
-)
-
 SET( base_svg_RESOURCES baseSvg.qrc)
 
 IF( USE_QT5 )
 
-  QT5_WRAP_CPP( base_svg_HEADERS_MOC ${base_svg_HEADERS} )
   QT5_ADD_RESOURCES( base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
 
 ELSE()
 
-  QT4_WRAP_CPP( base_svg_HEADERS_MOC ${base_svg_HEADERS} )
   QT4_ADD_RESOURCES( base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
 
 ENDIF()
@@ -70,7 +61,6 @@ IF( ENABLE_SHARED )
 
   ADD_LIBRARY( base-svg SHARED
     ${base_svg_SOURCES}
-    ${base_svg_HEADERS_MOC}
     ${base_svg_RESOURCES_RCC}
   )
 
@@ -82,7 +72,6 @@ ELSE()
 
   ADD_LIBRARY( base-svg STATIC
     ${base_svg_SOURCES}
-    ${base_svg_HEADERS_MOC}
     ${base_svg_RESOURCES_RCC}
   )
 
