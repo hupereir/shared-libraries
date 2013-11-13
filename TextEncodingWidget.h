@@ -22,8 +22,8 @@
 *
 *******************************************************************************/
 
-#include "CustomComboBox.h"
 #include "Counter.h"
+#include "CustomComboBox.h"
 
 #include <QWidget>
 
@@ -42,6 +42,14 @@ class TextEncodingWidget: public QWidget, public Counter
     virtual ~TextEncodingWidget( void )
     {}
 
+    //! default encoding
+    QString defaultTextEncoding( void ) const
+    { return defaultComboBox_->currentText(); }
+
+    //! current encoding
+    QString currentTextEncoding( void ) const
+    { return currentComboBox_->currentText(); }
+
     Q_SIGNALS:
 
     //! default encoding changed
@@ -54,6 +62,14 @@ class TextEncodingWidget: public QWidget, public Counter
 
     //! update default encoding
     void _updateDefaultEncoding( const QString& );
+
+    private:
+
+    //! default encoding combobox
+    CustomComboBox* defaultComboBox_;
+
+    //! current encoding combobox
+    CustomComboBox* currentComboBox_;
 
 };
 

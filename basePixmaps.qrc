@@ -28,6 +28,7 @@
     <file alias="icons/32x32/help-contents.png">../base-pixmaps/help-contents.png</file>
     <file alias="icons/32x32/list-add.png">../base-pixmaps/list-add.png</file>
     <file alias="icons/32x32/list-remove.png">../base-pixmaps/list-remove.png</file>
+    <file alias="icons/32x32/preferences-desktop-font.png">../base-pixmaps/preferences-desktop-font.png</file>
     <file alias="icons/32x32/show-menu.png">../base-pixmaps/show-menu.png</file>
     <file alias="icons/32x32/text-html.png">../base-pixmaps/text-html.png</file>
     <file alias="icons/32x32/user-trash.png">../base-pixmaps/user-trash.png</file>

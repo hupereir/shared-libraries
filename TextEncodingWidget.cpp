@@ -49,21 +49,19 @@ TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
 
     QLabel* label;
     layout->addWidget( label = new QLabel( tr( "Default text encoding:" ), this ) );
-    CustomComboBox* defaultComboBox = new CustomComboBox( this );
-    layout->addWidget( defaultComboBox );
-    label->setBuddy( defaultComboBox );
+    layout->addWidget( defaultComboBox_ = new CustomComboBox( this ) );
+    label->setBuddy( defaultComboBox_ );
 
     layout->addWidget( label = new QLabel( tr( "Current text encoding:" ) ) );
-    CustomComboBox* currentComboBox = new CustomComboBox( this );
-    layout->addWidget( currentComboBox );
-    label->setBuddy( currentComboBox );
+    layout->addWidget( currentComboBox_ = new CustomComboBox( this ) );
+    label->setBuddy( currentComboBox_ );
 
     // get list of available codecs and assign to comboboxes
     QList<QByteArray> codecs( QTextCodec::availableCodecs() );
     foreach( const QByteArray& value, codecs )
     {
-        defaultComboBox->addItem( value );
-        currentComboBox->addItem( value );
+        defaultComboBox_->addItem( value );
+        currentComboBox_->addItem( value );
     }
 
     QString defaultCodec( "ISO-8859-1" );
@@ -86,13 +84,13 @@ TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
     }
 
     // assign to comboboxes
-    defaultComboBox->setCurrentIndex( defaultComboBox->findText( defaultCodec ) );
-    currentComboBox->setCurrentIndex( currentComboBox->findText( defaultCodec ) );
+    defaultComboBox_->setCurrentIndex( defaultComboBox_->findText( defaultCodec ) );
+    currentComboBox_->setCurrentIndex( currentComboBox_->findText( defaultCodec ) );
 
     // connections
-    connect( defaultComboBox, SIGNAL(currentTextChanged(const QString&)), this, SIGNAL(defaultEncodingChanged(const QString&)));
-    connect( defaultComboBox, SIGNAL(currentTextChanged(const QString&)), this, SLOT(_updateDefaultEncoding(const QString&)));
-    connect( currentComboBox, SIGNAL(currentTextChanged(const QString&)), this, SIGNAL(currentEncodingChanged(const QString&)));
+    connect( defaultComboBox_, SIGNAL(currentIndexChanged(const QString&)), this, SIGNAL(defaultEncodingChanged(const QString&)));
+    connect( defaultComboBox_, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(_updateDefaultEncoding(const QString&)));
+    connect( currentComboBox_, SIGNAL(currentIndexChanged(const QString&)), this, SIGNAL(currentEncodingChanged(const QString&)));
 
 }
 
