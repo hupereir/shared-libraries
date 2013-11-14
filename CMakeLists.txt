@@ -47,14 +47,14 @@ SET( base_transparency_SOURCES
 
 IF( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-transparency SHARED ${base_transparency_SOURCES} )
+  ADD_SHARED_LIBRARY( base-transparency ${base_transparency_SOURCES} )
   SET_TARGET_PROPERTIES( base-transparency PROPERTIES VERSION ${BASE_TRANSPARENCY_VERSION} SOVERSION ${BASE_TRANSPARENCY_SOVERSION} )
   TARGET_LINK_LIBRARIES( base-transparency ${X11_Xext_LIB} ${XRENDER_LIBRARIES} ${QT_LIBRARIES} base-qt)
   INSTALL( TARGETS base-transparency DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 ELSE()
 
-  ADD_LIBRARY( base-transparency STATIC ${base_transparency_SOURCES} )
+  ADD_STATIC_LIBRARY( base-transparency ${base_transparency_SOURCES} )
   TARGET_LINK_LIBRARIES( base-transparency ${X11_Xext_LIB} ${XRENDER_LIBRARIES} ${QT_LIBRARIES} base-qt)
 
 ENDIF()
