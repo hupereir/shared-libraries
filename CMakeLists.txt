@@ -39,7 +39,7 @@ SET( base_help_SOURCES
 
 IF( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-help SHARED ${base_help_SOURCES} )
+  ADD_SHARED_LIBRARY( base-help ${base_help_SOURCES} )
 
   SET_TARGET_PROPERTIES( base-help PROPERTIES VERSION ${BASE_HELP_VERSION} SOVERSION ${BASE_HELP_SOVERSION} )
   TARGET_LINK_LIBRARIES( base-help ${QT_LIBRARIES} base base-qt )
@@ -47,7 +47,7 @@ IF( ENABLE_SHARED )
 
 ELSE()
 
-  ADD_LIBRARY( base-help STATIC ${base_help_SOURCES} )
+  ADD_STATIC_LIBRARY( base-help ${base_help_SOURCES} )
   TARGET_LINK_LIBRARIES( base-help ${QT_LIBRARIES} base base-qt )
 
 ENDIF()
