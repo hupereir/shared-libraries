@@ -245,11 +245,11 @@ MACRO( ADD_SHARED_LIBRARY target )
   SET_TARGET_PROPERTIES( ${target} PROPERTIES DEFINESYMBOL ${symbol} )
   MESSAGE( "Symbol: ${symbol}" )
 
-ENDMACRO( ADD_PLATFORM_EXECUTABLE )
+ENDMACRO( ADD_SHARED_LIBRARY )
 
 ###################### create static library #########################
 MACRO( ADD_STATIC_LIBRARY target )
 
   ADD_LIBRARY( ${target} STATIC ${ARGN} )
 
-ENDMACRO( ADD_PLATFORM_EXECUTABLE )
+ENDMACRO( ADD_STATIC_LIBRARY )
