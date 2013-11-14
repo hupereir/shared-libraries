@@ -32,14 +32,15 @@ MACRO( ADD_WIN32_EXECUTABLE target version )
   GET_TARGET_PROPERTY( TARGET_PATH ${target} LOCATION )
 
   ### Compress target
-  FIND_PROGRAM( UPX upx )
-  IF( UPX )
+  IF( NOT ENABLE_SHARED )
+    FIND_PROGRAM( UPX upx )
+    IF( UPX )
+      ADD_CUSTOM_COMMAND( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
+    ELSE()
 
-    ADD_CUSTOM_COMMAND( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
+      MESSAGE( "-- Program 'upx' not found" )
 
-  ELSE()
-
-    MESSAGE( "-- Program 'upx' not found" )
+    ENDIF()
 
   ENDIF()
 
@@ -55,6 +56,13 @@ MACRO( ADD_WIN32_EXECUTABLE target version )
     INSTALL(
       PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
       DESTINATION ${CMAKE_INSTALL_PREFIX}/release )
+
+  ENDIF()
+
+  IF( ENABLE_SHARED )
+
+    SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import" )
+    SET( CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import " )
 
   ENDIF()
 
@@ -239,10 +247,17 @@ MACRO( ADD_SHARED_LIBRARY target )
 
   ADD_LIBRARY( ${target} SHARED ${ARGN} )
 
-  STRING( TOUPPER ${target} symbol)
-  STRING( REGEX REPLACE "[^_A-Za-z0-9]" "_" symbol ${symbol} )
-  SET( symbol "MAKE_${symbol}_LIB" )
-  SET_TARGET_PROPERTIES( ${target} PROPERTIES DEFINE_SYMBOL ${symbol} )
+  IF( WIN32 )
+
+    STRING( TOUPPER ${target} symbol)
+    STRING( REGEX REPLACE "[^_A-Za-z0-9]" "_" symbol ${symbol} )
+    SET( symbol "MAKE_${symbol}_LIB" )
+    SET_TARGET_PROPERTIES( ${target} PROPERTIES DEFINE_SYMBOL ${symbol} )
+
+    SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import" )
+    SET( CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import " )
+
+  ENDIF()
 
 ENDMACRO( ADD_SHARED_LIBRARY )
 
