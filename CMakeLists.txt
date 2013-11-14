@@ -59,17 +59,17 @@ ENDIF()
 
 IF( ENABLE_SHARED )
 
-  ADD_SHARED_LIBRARY( base-svg ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
+  ADD_LIBRARY( base-svg SHARED ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
   SET_TARGET_PROPERTIES( base-svg PROPERTIES VERSION ${BASE_SVG_VERSION} SOVERSION ${BASE_SVG_SOVERSION} )
-  TARGET_LINK_LIBRARIES( base-svg ${QT_LIBRARIES} base-transparency)
   INSTALL( TARGETS base-svg DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 ELSE()
 
-  ADD_STATIC_LIBRARY( base-svg ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
-  TARGET_LINK_LIBRARIES( base-svg ${QT_LIBRARIES} base-transparency)
+  ADD_LIBRARY( base-svg STATIC ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
 
 ENDIF()
+
+TARGET_LINK_LIBRARIES( base-svg ${QT_LIBRARIES} base-transparency)
 
 IF( USE_QT5 )
 
