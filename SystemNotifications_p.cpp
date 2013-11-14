@@ -34,7 +34,6 @@ SystemNotificationsP::SystemNotificationsP( const QString& appName ):
 {
     #if WITH_LIBNOTIFY
     notify_init( appName.toLatin1());
-    #endif
 
     // try get pixmap from options and convert to icon
     if( XmlOptions::get().contains( "ICON_PIXMAP" ) )
@@ -67,11 +66,17 @@ SystemNotificationsP::SystemNotificationsP( const QString& appName ):
 
     }
 
+    #endif
+
 }
 
 //_________________________________________
 SystemNotificationsP::~SystemNotificationsP( void )
-{ if( icon_ ) g_object_unref( icon_ ); }
+{
+    #if WITH_LIBNOTIFY
+    if( icon_ ) g_object_unref( icon_ );
+    #endif
+}
 
 //_________________________________________
 void SystemNotificationsP::send( const QString& summary, const QString& message, const QString& icon ) const
