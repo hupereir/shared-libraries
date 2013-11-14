@@ -242,8 +242,7 @@ MACRO( ADD_SHARED_LIBRARY target )
   STRING( TOUPPER ${target} symbol)
   STRING( REGEX REPLACE "[^_A-Za-z0-9]" "_" symbol ${symbol} )
   SET( symbol "MAKE_${symbol}_LIB" )
-  SET_TARGET_PROPERTIES( ${target} PROPERTIES DEFINESYMBOL ${symbol} )
-  MESSAGE( "Symbol: ${symbol}" )
+  SET_TARGET_PROPERTIES( ${target} PROPERTIES DEFINE_SYMBOL ${symbol} )
 
 ENDMACRO( ADD_SHARED_LIBRARY )
 
