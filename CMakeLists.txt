@@ -51,17 +51,17 @@ SET( base_spellcheck_SOURCES
 
 IF( ENABLE_SHARED )
 
-  ADD_SHARED_LIBRARY( base-spellcheck ${base_spellcheck_SOURCES} )
+  ADD_LIBRARY( base-spellcheck SHARED ${base_spellcheck_SOURCES} )
   SET_TARGET_PROPERTIES( base-spellcheck PROPERTIES VERSION ${BASE_SPELLCHECK_VERSION} SOVERSION ${BASE_SPELLCHECK_SOVERSION} )
-  TARGET_LINK_LIBRARIES( base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt )
   INSTALL( TARGETS base-spellcheck DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 ELSE()
 
-  ADD_STATIC_LIBRARY( base-spellcheck ${base_spellcheck_SOURCES} )
-  TARGET_LINK_LIBRARIES( base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt )
+  ADD_LIBRARY( base-spellcheck STATIC ${base_spellcheck_SOURCES} )
 
 ENDIF()
+
+TARGET_LINK_LIBRARIES( base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt )
 
 IF( USE_QT5 )
 
