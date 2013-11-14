@@ -56,14 +56,14 @@ SET( base_server_SOURCES
 
 IF( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-server SHARED ${base_server_SOURCES} )
+  ADD_SHARED_LIBRARY( base-server ${base_server_SOURCES} )
   SET_TARGET_PROPERTIES( base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION} )
   TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
   INSTALL( TARGETS base-server DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 ELSE()
 
-  ADD_LIBRARY( base-server STATIC ${base_server_SOURCES} )
+  ADD_STATIC_LIBRARY( base-server ${base_server_SOURCES} )
   TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
 
 ENDIF()
