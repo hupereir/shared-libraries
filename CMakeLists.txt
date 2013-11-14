@@ -69,13 +69,13 @@ SET( base_notifications_SOURCES
 
 IF( ENABLE_SHARED )
 
-  ADD_SHARED_LIBRARY( base-notifications ${base_notifications_SOURCES} )
+  ADD_LIBRARY( base-notifications SHARED ${base_notifications_SOURCES} )
   SET_TARGET_PROPERTIES( base-notifications PROPERTIES VERSION ${BASE_NOTIFICATIONS_VERSION} SOVERSION ${BASE_NOTIFICATIONS_VERSION} )
   INSTALL( TARGETS base-notifications DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 ELSE()
 
-  ADD_STATIC_LIBRARY( base-notifications ${base_notifications_SOURCES} )
+  ADD_LIBRARY( base-notifications STATIC ${base_notifications_SOURCES} )
 
 ENDIF()
 
