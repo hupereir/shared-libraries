@@ -79,8 +79,8 @@ CustomDialog( parent )
     _installActions();
 
     // connections
-    connect( list_, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _updateContextMenu( const QPoint& ) ) );
-    connect( list_->selectionModel(), SIGNAL( selectionChanged(const QItemSelection &, const QItemSelection &) ), SLOT( _updateActions() ) );
+    connect( list_, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
+    connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateActions()) );
     _updateActions();
 
     // customize dialog buttons
@@ -138,10 +138,10 @@ void ScratchFileRemoveDialog::_installActions( void )
 {
     // deselect all
     addAction( clearSelectionAction_ = new QAction( tr( "Clear Selection" ), this ) );
-    connect( clearSelectionAction_, SIGNAL( triggered( void ) ), list_->selectionModel(), SLOT( clear( void ) ) );
+    connect( clearSelectionAction_, SIGNAL(triggered()), list_->selectionModel(), SLOT(clear()) );
 
     // select all
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
-    connect( selectAllAction_, SIGNAL( triggered( void ) ), list_, SLOT( selectAll( void ) ) );
+    connect( selectAllAction_, SIGNAL(triggered()), list_, SLOT(selectAll()) );
 
 }

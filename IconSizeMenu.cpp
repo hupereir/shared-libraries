@@ -31,7 +31,7 @@ IconSizeMenu::IconSizeMenu( QWidget* parent ):
     Debug::Throw( "IconSizeMenu::IconSizeMenu.\n" );
 
     QActionGroup *group = new QActionGroup( this );
-    connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
+    connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     const IconSize::Map& sizes( IconSize::map() );
 

@@ -50,7 +50,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     if( !FileDialog::_workingDirectory().isEmpty() && QFileInfo( FileDialog::_workingDirectory() ).isDir() )
     { setDirectory( QDir( FileDialog::_workingDirectory() ) ); }
 
-    connect( this, SIGNAL( currentChanged( const QString& ) ), SLOT( _saveWorkingDirectory( const QString& ) ) );
+    connect( this, SIGNAL(currentChanged(QString)), SLOT(_saveWorkingDirectory(QString)) );
 
     // add image display
     QSplitter* splitter = findChild<QSplitter*>( "splitter" );
@@ -76,11 +76,11 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
 
         QPushButton* button = new QPushButton( tr( "Preview" ), main );
         h_layout->addWidget( button );
-        connect( button, SIGNAL( clicked() ), SLOT( _preview() ) );
+        connect( button, SIGNAL(clicked()), SLOT(_preview()) );
 
     } else Debug::Throw(0) << "QFileDialog::QFileDialog - unable to find splitter." << endl;
 
-    connect( this, SIGNAL( currentChanged ( const QString& ) ), SLOT( _currentChanged( const QString& ) ) );
+    connect( this, SIGNAL(currentChanged (QString)), SLOT(_currentChanged(QString)) );
 
 }
 

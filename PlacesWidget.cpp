@@ -128,7 +128,7 @@ PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
     setAttribute( Qt::WA_Hover );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -437,7 +437,7 @@ PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
     vLayout->addStretch( 1 );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -558,23 +558,23 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     // button group
     group_ = new QButtonGroup( this );
     group_->setExclusive( false );
-    connect( group_, SIGNAL(buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
-    connect( group_, SIGNAL(buttonPressed( QAbstractButton* ) ), SLOT( _updateFocus( QAbstractButton* ) ) );
+    connect( group_, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_buttonClicked(QAbstractButton*)) );
+    connect( group_, SIGNAL(buttonPressed(QAbstractButton*)), SLOT(_updateFocus(QAbstractButton*)) );
 
     // context menu
     setContextMenuPolicy( Qt::CustomContextMenu );
-    connect( this, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _updateContextMenu( const QPoint& ) ) );
+    connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
 
     // icon sizes
     iconSizeMenu_ = new IconSizeMenu( this );
-    connect( iconSizeMenu_, SIGNAL(iconSizeSelected( IconSize::Size ) ), SLOT( _updateIconSize( IconSize::Size ) ) );
+    connect( iconSizeMenu_, SIGNAL(iconSizeSelected(IconSize::Size)), SLOT(_updateIconSize(IconSize::Size)) );
 
     // file system watcher
-    connect( &fileSystemWatcher_, SIGNAL( directoryChangedDelayed( const QString& ) ), SLOT( _updateItems( void ) ) );
+    connect( &fileSystemWatcher_, SIGNAL(directoryChangedDelayed(QString)), SLOT(_updateItems()) );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged() ), SLOT( _updateConfiguration( void ) ) );
-    connect( qApp, SIGNAL(aboutToQuit() ), SLOT( _saveConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( qApp, SIGNAL(aboutToQuit()), SLOT(_saveConfiguration()) );
     _updateConfiguration();
 
 }
@@ -1643,27 +1643,27 @@ void PlacesWidget::_installActions( void )
     Debug::Throw( "PlacesWidget::_installActions.\n" );
 
     addAction( addItemAction_ = new QAction( IconEngine::get( ICONS::ADD ), tr( "Add Entry..." ), this ) );
-    connect( addItemAction_, SIGNAL(triggered( void ) ), SLOT( _addItem( void ) ) );
+    connect( addItemAction_, SIGNAL(triggered()), SLOT(_addItem()) );
 
     addAction( addSeparatorAction_ = new QAction( IconEngine::get( ICONS::ADD ), tr( "Add Separator" ), this ) );
-    connect( addSeparatorAction_, SIGNAL(triggered( void ) ), SLOT( _insertSeparator( void ) ) );
+    connect( addSeparatorAction_, SIGNAL(triggered()), SLOT(_insertSeparator()) );
 
     addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), tr( "Edit Entry..." ), this ) );
     editItemAction_->setShortcut( Qt::Key_F2 );
     editItemAction_->setShortcutContext(Qt::WidgetShortcut);
-    connect( editItemAction_, SIGNAL(triggered( void ) ), SLOT( _editItem( void ) ) );
+    connect( editItemAction_, SIGNAL(triggered()), SLOT(_editItem()) );
 
     addAction( removeItemAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), tr( "Remove Entry" ), this ) );
     removeItemAction_->setShortcut( QKeySequence::Delete );
     removeItemAction_->setShortcutContext(Qt::WidgetShortcut);
-    connect( removeItemAction_, SIGNAL(triggered( void ) ), SLOT( _removeItem( void ) ) );
+    connect( removeItemAction_, SIGNAL(triggered()), SLOT(_removeItem()) );
 
     addAction( hideItemAction_ = new QAction( tr( "Hide Entry" ), this ) );
     hideItemAction_->setCheckable( true );
-    connect( hideItemAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleHideItem( bool ) ) );
+    connect( hideItemAction_, SIGNAL(toggled(bool)), SLOT(_toggleHideItem(bool)) );
 
     addAction( showAllEntriesAction_ = new QAction( tr( "Show All Entries" ), this ) );
     showAllEntriesAction_->setCheckable( true );
-    connect( showAllEntriesAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleShowAllEntries( bool ) ) );
+    connect( showAllEntriesAction_, SIGNAL(toggled(bool)), SLOT(_toggleShowAllEntries(bool)) );
 
 }

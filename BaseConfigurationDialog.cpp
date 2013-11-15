@@ -67,15 +67,15 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     button->setToolTip( tr( "Restore default value for all options." ) );
     button->setAutoDefault( false );
 
-    connect( button, SIGNAL( clicked() ), SLOT( _restoreDefaults() ) );
+    connect( button, SIGNAL(clicked()), SLOT(_restoreDefaults()) );
     _buttonLayout().addWidget( button );
     _buttonLayout().addStretch( 1 );
 
     // ok button
     _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), tr( "Ok" ), this ) );
-    connect( button, SIGNAL( clicked() ), SLOT( _save() ) );
-    connect( button, SIGNAL( clicked() ), SIGNAL( ok() ) );
-    connect( button, SIGNAL( clicked() ), SLOT( accept() ) );
+    connect( button, SIGNAL(clicked()), SLOT(_save()) );
+    connect( button, SIGNAL(clicked()), SIGNAL(ok()) );
+    connect( button, SIGNAL(clicked()), SLOT(accept()) );
     button->setToolTip(
         tr( "Apply changes to options and close window.\n"
         "Note: the application may have to be restarted so that\n"
@@ -84,8 +84,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
 
     // apply button
     _buttonLayout().addWidget( button = new QPushButton(IconEngine::get( ICONS::DIALOG_OK_APPLY ), tr( "Apply" ), this ) );
-    connect( button, SIGNAL( clicked() ), SLOT( _update() ) );
-    connect( button, SIGNAL( clicked() ), SIGNAL( apply() ) );
+    connect( button, SIGNAL(clicked()), SLOT(_update()) );
+    connect( button, SIGNAL(clicked()), SIGNAL(apply()) );
     button->setToolTip(
         tr( "Apply changes to options.\n"
         "Note: the application may have to be restarted so that\n"
@@ -94,14 +94,14 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     // cancel button
     _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), tr( "Cancel" ), this ) );
     button->setShortcut( Qt::Key_Escape );
-    connect( button, SIGNAL( clicked() ), SLOT( _restore() ) );
-    connect( button, SIGNAL( clicked() ), SIGNAL( cancel() ) );
-    connect( button, SIGNAL( clicked() ), SLOT( reject() ) );
+    connect( button, SIGNAL(clicked()), SLOT(_restore()) );
+    connect( button, SIGNAL(clicked()), SIGNAL(cancel()) );
+    connect( button, SIGNAL(clicked()), SLOT(reject()) );
     button->setToolTip( tr( "Discard changes to options and close window" ) );
     button->setAutoDefault( false );
 
     // close accelerator
-    new QShortcut( QKeySequence::Close, this, SLOT( reject() ) );
+    new QShortcut( QKeySequence::Close, this, SLOT(reject()) );
 
 }
 
@@ -136,7 +136,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             QPushButton *button = new QPushButton( IconEngine::get( ICONS::EDIT ), tr( "Edit Pixmap Path" ), box );
-            connect( button, SIGNAL( clicked() ), SLOT( _editPixmapPathList() ) );
+            connect( button, SIGNAL(clicked()), SLOT(_editPixmapPathList()) );
             gridLayout->addWidget( button, 0, 1, 1, 1 );
 
             // icon path
@@ -145,7 +145,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             button = new QPushButton( IconEngine::get( ICONS::EDIT ), tr( "Edit Icon Theme" ), box );
-            connect( button, SIGNAL( clicked() ), SLOT( _editIconTheme() ) );
+            connect( button, SIGNAL(clicked()), SLOT(_editIconTheme()) );
             gridLayout->addWidget( button, 1, 1, 1, 1 );
             #endif
 
@@ -190,8 +190,8 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
-        connect( checkbox, SIGNAL( toggled( bool ) ), label, SLOT( setDisabled( bool ) ) );
-        connect( checkbox, SIGNAL( toggled( bool ) ), edit, SLOT( setDisabled( bool ) ) );
+        connect( checkbox, SIGNAL(toggled(bool)), label, SLOT(setDisabled(bool)) );
+        connect( checkbox, SIGNAL(toggled(bool)), edit, SLOT(setDisabled(bool)) );
 
         // fixed font
         gridLayout->addWidget( label = new QLabel( tr( "Fixed font:" ), box ) );
@@ -200,8 +200,8 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
-        connect( checkbox, SIGNAL( toggled( bool ) ), label, SLOT( setDisabled( bool ) ) );
-        connect( checkbox, SIGNAL( toggled( bool ) ), edit, SLOT( setDisabled( bool ) ) );
+        connect( checkbox, SIGNAL(toggled(bool)), label, SLOT(setDisabled(bool)) );
+        connect( checkbox, SIGNAL(toggled(bool)), edit, SLOT(setDisabled(bool)) );
 
         out = box;
 
@@ -272,7 +272,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
         gridLayout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
         addOptionWidget( color );
 
-        connect( checkbox, SIGNAL( toggled( bool ) ), color, SLOT( setEnabled( bool ) ) );
+        connect( checkbox, SIGNAL(toggled(bool)), color, SLOT(setEnabled(bool)) );
 
     }
 
@@ -363,7 +363,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
 
         checkbox->setChecked( false );
         color->setEnabled( false );
-        connect( checkbox, SIGNAL( toggled( bool ) ), color, SLOT( setEnabled( bool ) ) );
+        connect( checkbox, SIGNAL(toggled(bool)), color, SLOT(setEnabled(bool)) );
         out = box;
     }
 
@@ -452,7 +452,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
         spinbox->setMaximum( 10 );
 
         spinbox->setEnabled( false );
-        connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
+        connect( checkbox, SIGNAL(toggled(bool)), spinbox, SLOT(setEnabled(bool)) );
         out = box;
     }
 
@@ -515,7 +515,7 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 
     checkbox->setChecked( false );
     spinbox->setEnabled( false );
-    connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
+    connect( checkbox, SIGNAL(toggled(bool)), spinbox, SLOT(setEnabled(bool)) );
 
     gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Smooth scrolling" ), box, "SMOOTH_SCROLLING_ENABLED" ) );
     checkbox->setToolTip( tr( "Enables smooth scrolling when using page-up/page-down buttons, or mouse wheel." ) );
@@ -530,7 +530,7 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 
     checkbox->setChecked( false );
     spinbox->setEnabled( false );
-    connect( checkbox, SIGNAL( toggled( bool ) ), spinbox, SLOT( setEnabled( bool ) ) );
+    connect( checkbox, SIGNAL(toggled(bool)), spinbox, SLOT(setEnabled(bool)) );
 
     QLabel* label;
     gridLayout->addWidget( label = new QLabel( tr( "Frames:" ), box ) );

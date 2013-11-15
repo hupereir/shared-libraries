@@ -43,7 +43,7 @@ TextEditorMarginWidget::TextEditorMarginWidget( TextEditor* parent ):
     setBackgroundRole( QPalette::Window );
     setAutoFillBackground( true );
 
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }

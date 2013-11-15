@@ -105,16 +105,16 @@ TextEditor::TextEditor( QWidget *parent ):
     // line number
     lineNumberDisplay_ = new LineNumberDisplay( this );
 
-    connect( this, SIGNAL( cursorPositionChanged() ), &blockHighlight(), SLOT( highlight() ) );
-    connect( this, SIGNAL( copyAvailable( bool ) ), SLOT( _updateSelectionActions( bool ) ) );
-    connect( this, SIGNAL( selectionChanged() ), SLOT( _synchronizeSelection() ) );
-    connect( this, SIGNAL( selectionChanged() ), SLOT( _updateClipboard() ) );
-    connect( this, SIGNAL( cursorPositionChanged() ), SLOT( _synchronizeSelection() ) );
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( this, SIGNAL(cursorPositionChanged()), &blockHighlight(), SLOT(highlight()) );
+    connect( this, SIGNAL(copyAvailable(bool)), SLOT(_updateSelectionActions(bool)) );
+    connect( this, SIGNAL(selectionChanged()), SLOT(_synchronizeSelection()) );
+    connect( this, SIGNAL(selectionChanged()), SLOT(_updateClipboard()) );
+    connect( this, SIGNAL(cursorPositionChanged()), SLOT(_synchronizeSelection()) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
 
     // track changes of block counts
-    connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
-    connect( TextEditor::document(), SIGNAL( contentsChanged() ), &_marginWidget(), SLOT( setDirty() ) );
+    connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
+    connect( TextEditor::document(), SIGNAL(contentsChanged()), &_marginWidget(), SLOT(setDirty()) );
 
     // update configuration
     _updateConfiguration();
@@ -445,8 +445,8 @@ void TextEditor::synchronize( TextEditor* editor )
 
     // track changes of block counts
     _lineNumberDisplay().synchronize( &editor->_lineNumberDisplay() );
-    connect( TextEditor::document(), SIGNAL( blockCountChanged( int ) ), SLOT( _blockCountChanged( int ) ) );
-    connect( TextEditor::document(), SIGNAL( contentsChanged() ), &_marginWidget(), SLOT( setDirty() ) );
+    connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
+    connect( TextEditor::document(), SIGNAL(contentsChanged()), &_marginWidget(), SLOT(setDirty()) );
 
     // margin
     _setLeftMargin( editor->_leftMargin() );
@@ -1592,98 +1592,98 @@ void TextEditor::_installActions( void )
     addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), tr( "Undo" ), this ) );
     undoAction_->setShortcut( QKeySequence::Undo );
     undoAction_->setEnabled( document()->isUndoAvailable() );
-    connect( undoAction_, SIGNAL( triggered() ), document(), SLOT( undo() ) );
-    connect( this, SIGNAL( undoAvailable( bool ) ), undoAction_, SLOT( setEnabled( bool ) ) );
+    connect( undoAction_, SIGNAL(triggered()), document(), SLOT(undo()) );
+    connect( this, SIGNAL(undoAvailable(bool)), undoAction_, SLOT(setEnabled(bool)) );
 
     addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), tr( "Redo" ), this ) );
     redoAction_->setShortcut( QKeySequence::Redo );
     redoAction_->setEnabled( document()->isRedoAvailable() );
-    connect( redoAction_, SIGNAL( triggered() ), document(), SLOT( redo() ) );
-    connect( this, SIGNAL( redoAvailable( bool ) ), redoAction_, SLOT( setEnabled( bool ) ) );
+    connect( redoAction_, SIGNAL(triggered()), document(), SLOT(redo()) );
+    connect( this, SIGNAL(redoAvailable(bool)), redoAction_, SLOT(setEnabled(bool)) );
 
     addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), tr( "Cut" ), this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
-    connect( cutAction_, SIGNAL( triggered() ), SLOT( cut() ) );
+    connect( cutAction_, SIGNAL(triggered()), SLOT(cut()) );
 
     addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), tr( "Copy" ), this ) );
     copyAction_->setShortcut( QKeySequence::Copy );
-    connect( copyAction_, SIGNAL( triggered() ), SLOT( copy() ) );
+    connect( copyAction_, SIGNAL(triggered()), SLOT(copy()) );
 
     addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), tr( "Paste" ), this ) );
     pasteAction_->setShortcut( QKeySequence::Paste );
-    connect( pasteAction_, SIGNAL( triggered() ), SLOT( paste() ) );
-    connect( qApp->clipboard(), SIGNAL( dataChanged() ), SLOT( _updatePasteAction() ) );
+    connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
+    connect( qApp->clipboard(), SIGNAL(dataChanged()), SLOT(_updatePasteAction()) );
     _updatePasteAction();
 
     addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
-    connect( clearAction_, SIGNAL( triggered() ), SLOT( clear() ) );
+    connect( clearAction_, SIGNAL(triggered()), SLOT(clear()) );
 
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( selectAllAction_, SIGNAL( triggered() ), SLOT( selectAll() ) );
+    connect( selectAllAction_, SIGNAL(triggered()), SLOT(selectAll()) );
 
     addAction( upperCaseAction_ = new QAction( tr( "Upper Case" ), this ) );
     upperCaseAction_->setShortcut( Qt::CTRL + Qt::Key_U );
     upperCaseAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( upperCaseAction_, SIGNAL( triggered() ), SLOT( upperCase() ) );
+    connect( upperCaseAction_, SIGNAL(triggered()), SLOT(upperCase()) );
 
     addAction( lowerCaseAction_ = new QAction( tr( "Lower Case" ), this ) );
     lowerCaseAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_U );
     lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( lowerCaseAction_, SIGNAL( triggered() ), SLOT( lowerCase() ) );
+    connect( lowerCaseAction_, SIGNAL(triggered()), SLOT(lowerCase()) );
 
     addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), tr( "Find..." ), this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAction_, SIGNAL( triggered() ), SLOT( _findFromDialog() ) );
+    connect( findAction_, SIGNAL(triggered()), SLOT(_findFromDialog()) );
 
     addAction( findAgainAction_ = new QAction( tr( "Find Again" ), this ) );
     findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAgainAction_, SIGNAL( triggered() ), SLOT( findAgainForward() ) );
+    connect( findAgainAction_, SIGNAL(triggered()), SLOT(findAgainForward()) );
 
     addAction( findAgainBackwardAction_ = new QAction( this ) );
     findAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAgainBackwardAction_, SIGNAL( triggered() ), SLOT( findAgainBackward() ) );
+    connect( findAgainBackwardAction_, SIGNAL(triggered()), SLOT(findAgainBackward()) );
 
     addAction( findSelectionAction_ = new QAction( tr( "Find Selection" ), this ) );
     findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findSelectionAction_, SIGNAL( triggered() ), SLOT( findSelectionForward() ) );
+    connect( findSelectionAction_, SIGNAL(triggered()), SLOT(findSelectionForward()) );
 
     addAction( findSelectionBackwardAction_ = new QAction( this ) );
     findSelectionBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findSelectionBackwardAction_, SIGNAL( triggered() ), SLOT( findSelectionBackward() ) );
+    connect( findSelectionBackwardAction_, SIGNAL(triggered()), SLOT(findSelectionBackward()) );
 
     addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), tr( "Replace..." ), this ) );
     replaceAction_->setShortcut( QKeySequence::Replace );
     replaceAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( replaceAction_, SIGNAL( triggered() ), SLOT( _replaceFromDialog() ) );
+    connect( replaceAction_, SIGNAL(triggered()), SLOT(_replaceFromDialog()) );
 
     addAction( replaceAgainAction_ = new QAction( tr( "Replace Again" ), this ) );
     replaceAgainAction_->setShortcut( Qt::CTRL + Qt::Key_T );
     replaceAgainAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( replaceAgainAction_, SIGNAL( triggered() ), SLOT( replaceAgainForward() ) );
+    connect( replaceAgainAction_, SIGNAL(triggered()), SLOT(replaceAgainForward()) );
 
     addAction( replaceAgainBackwardAction_ = new QAction( this ) );
     replaceAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_T );
     replaceAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( replaceAgainBackwardAction_, SIGNAL( triggered() ), SLOT( replaceAgainBackward() ) );
+    connect( replaceAgainBackwardAction_, SIGNAL(triggered()), SLOT(replaceAgainBackward()) );
 
     addAction( gotoLineAction_ = new QAction( tr( "Goto Line Number..." ), this ) );
     gotoLineAction_->setShortcut( Qt::CTRL + Qt::Key_L );
     gotoLineAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( gotoLineAction_, SIGNAL( triggered() ), SLOT( _selectLineFromDialog() ) );
+    connect( gotoLineAction_, SIGNAL(triggered()), SLOT(_selectLineFromDialog()) );
 
     // remove line action
     QAction* remove_line_action( new QAction( tr( "Remove Current Line" ), this ) );
     addAction( remove_line_action );
     remove_line_action->setShortcut( Qt::CTRL + Qt::Key_K );
     remove_line_action->setShortcutContext( Qt::WidgetShortcut );
-    connect( remove_line_action, SIGNAL( triggered() ), SLOT( removeLine() ) );
+    connect( remove_line_action, SIGNAL(triggered()), SLOT(removeLine()) );
 
     // current block highlight
     addAction( blockHighlightAction_ = new QAction( tr( "Highlight Current Paragraph" ), this ) );
@@ -1691,7 +1691,7 @@ void TextEditor::_installActions( void )
     blockHighlightAction_->setChecked( blockHighlight().isEnabled() );
     blockHighlightAction_->setShortcut( Qt::Key_F12 );
     blockHighlightAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( blockHighlightAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleBlockHighlight( bool ) ) );
+    connect( blockHighlightAction_, SIGNAL(toggled(bool)), SLOT(_toggleBlockHighlight(bool)) );
 
     // wrap mode
     addAction( wrapModeAction_ = new QAction( tr( "Wrap Text" ), this ) );
@@ -1700,13 +1700,13 @@ void TextEditor::_installActions( void )
     _setModifier( ModifierWrap, lineWrapMode() == BaseEditor::WidgetWidth );
     wrapModeAction_->setShortcut( Qt::Key_F10 );
     wrapModeAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( wrapModeAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleWrapMode( bool ) ) );
+    connect( wrapModeAction_, SIGNAL(toggled(bool)), SLOT(_toggleWrapMode(bool)) );
 
     // tab emulation action
     addAction( tabEmulationAction_ = new QAction( tr( "Emulate Tabs" ), this ) );
     tabEmulationAction_->setCheckable( true );
     tabEmulationAction_->setChecked( hasTabEmulation_ );
-    connect( tabEmulationAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleTabEmulation( bool ) ) );
+    connect( tabEmulationAction_, SIGNAL(toggled(bool)), SLOT(_toggleTabEmulation(bool)) );
 
     // line number action
     addAction( showLineNumberAction_ =new QAction( tr( "Show Line Numbers" ), this ) );
@@ -1714,7 +1714,7 @@ void TextEditor::_installActions( void )
     showLineNumberAction_->setCheckable( true );
     showLineNumberAction_->setShortcut( Qt::Key_F11 );
     showLineNumberAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( showLineNumberAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleShowLineNumbers( bool ) ) );
+    connect( showLineNumberAction_, SIGNAL(toggled(bool)), SLOT(_toggleShowLineNumbers(bool)) );
 
     // update actions that depend on the presence of a selection
     _updateSelectionActions( textCursor().hasSelection() );
@@ -1722,7 +1722,7 @@ void TextEditor::_installActions( void )
     #if QT_VERSION >= 0x040200
     // update actions that depend on the content of the clipboard
     // this is available only starting from Qt 4.2
-    connect( qApp->clipboard(), SIGNAL( changed( QClipboard::Mode ) ), SLOT( _updateClipboardActions( QClipboard::Mode ) ) );
+    connect( qApp->clipboard(), SIGNAL(changed(QClipboard::Mode)), SLOT(_updateClipboardActions(QClipboard::Mode)) );
     #endif
 
 }
@@ -1772,9 +1772,9 @@ void TextEditor::_createBaseFindDialog( void )
 
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in Text" ) );
-        connect( findDialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
-        connect( this, SIGNAL( matchFound() ), findDialog_, SLOT( matchFound() ) );
-        connect( this, SIGNAL( noMatchFound() ), findDialog_, SLOT( noMatchFound() ) );
+        connect( findDialog_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( this, SIGNAL(matchFound()), findDialog_, SLOT(matchFound()) );
+        connect( this, SIGNAL(noMatchFound()), findDialog_, SLOT(noMatchFound()) );
 
     }
 
@@ -2001,12 +2001,12 @@ void TextEditor::_createBaseReplaceDialog( void )
 
         replaceDialog_ = new BaseReplaceDialog( this );
         replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
-        connect( replaceDialog_, SIGNAL( find( TextSelection ) ), SLOT( find( TextSelection ) ) );
-        connect( replaceDialog_, SIGNAL( replace( TextSelection ) ), SLOT( replace( TextSelection ) ) );
-        connect( replaceDialog_, SIGNAL( replaceInWindow( TextSelection ) ), SLOT( replaceInWindow( TextSelection ) ) );
-        connect( replaceDialog_, SIGNAL( replaceInSelection( TextSelection ) ), SLOT( replaceInSelection( TextSelection ) ) );
-        connect( this, SIGNAL( matchFound() ), replaceDialog_, SLOT( matchFound() ) );
-        connect( this, SIGNAL( noMatchFound() ), replaceDialog_, SLOT( noMatchFound() ) );
+        connect( replaceDialog_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( replaceDialog_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
+        connect( replaceDialog_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
+        connect( replaceDialog_, SIGNAL(replaceInSelection(TextSelection)), SLOT(replaceInSelection(TextSelection)) );
+        connect( this, SIGNAL(matchFound()), replaceDialog_, SLOT(matchFound()) );
+        connect( this, SIGNAL(noMatchFound()), replaceDialog_, SLOT(noMatchFound()) );
 
     }
 
@@ -2028,9 +2028,9 @@ void TextEditor::_createProgressDialog( void )
     dialog->setWindowTitle( tr( "Replace in Text" ) );
 
     // connections
-    connect( this, SIGNAL( busy( int ) ), dialog, SLOT( setMaximum( int ) ) );
-    connect( this, SIGNAL( progressAvailable( int ) ), dialog, SLOT( setValue( int ) ) );
-    connect( this, SIGNAL( idle( void ) ), dialog, SLOT( close( void ) ) );
+    connect( this, SIGNAL(busy(int)), dialog, SLOT(setMaximum(int)) );
+    connect( this, SIGNAL(progressAvailable(int)), dialog, SLOT(setValue(int)) );
+    connect( this, SIGNAL(idle()), dialog, SLOT(close()) );
 
     QtUtil::centerOnWidget( dialog, this );
     dialog->show();
@@ -2639,7 +2639,7 @@ void TextEditor::_selectLineFromDialog( void )
     if( !selectLineDialog_ )
     {
         selectLineDialog_ = new SelectLineDialog( this );
-        connect( selectLineDialog_, SIGNAL( lineSelected( int ) ), SLOT( selectLine( int ) ) );
+        connect( selectLineDialog_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
     }
 
     selectLineDialog_->editor().clear();

@@ -75,8 +75,8 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     layout->addLayout( buttonLayout_, 0 );
 
     // connections
-    connect( _list().selectionModel(), SIGNAL( currentRowChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex& ) ) );
-    connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL( activated() ), SLOT( close() ) );
+    connect( _list().selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex)) );
+    connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL(activated()), SLOT(close()) );
 
 
 }

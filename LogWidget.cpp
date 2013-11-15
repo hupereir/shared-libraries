@@ -34,7 +34,7 @@ LogWidget::LogWidget( QWidget* parent ):
     setReadOnly( true );
     setWrapFromOptions( false );
 
-    connect( verticalScrollBar(), SIGNAL( sliderMoved( int ) ), SLOT( _verticalScrollBarMoved( int ) ) );
+    connect( verticalScrollBar(), SIGNAL(sliderMoved(int)), SLOT(_verticalScrollBarMoved(int)) );
 
 }
 

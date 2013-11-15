@@ -46,11 +46,11 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     editor().setToolTip( tr( "User selection" ) );
 
     // send appropriate signal directly
-    connect( &editor(), SIGNAL( activated( const QString & ) ), SLOT( _userChanged() ) );
+    connect( &editor(), SIGNAL(activated(QString)), SLOT(_userChanged()) );
 
     // one must add a timer here so that the signal gets
     // emmitted only after some delay, to avoid to many signals are sent when typing
-    connect( &editor(), SIGNAL( editTextChanged( const QString & ) ),  SLOT( _delayedUserChanged() ) );
+    connect( &editor(), SIGNAL(editTextChanged(QString)),  SLOT(_delayedUserChanged()) );
 
 }
 

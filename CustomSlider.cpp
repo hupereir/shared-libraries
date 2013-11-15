@@ -44,8 +44,8 @@ CustomSlider::CustomSlider( QWidget* parent ):
     layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
     layout()->addWidget( spinBox_ = new QSpinBox( this ) );
 
-    connect( spinBox_, SIGNAL( valueChanged( int ) ),   SLOT( _updateSlider( int ) ) );
-    connect( slider_, SIGNAL( valueChanged( int ) ),  SLOT( _updateSpinBox( int ) ) );
+    connect( spinBox_, SIGNAL(valueChanged(int)),   SLOT(_updateSlider(int)) );
+    connect( slider_, SIGNAL(valueChanged(int)),  SLOT(_updateSpinBox(int)) );
 
 }
 

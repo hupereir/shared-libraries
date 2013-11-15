@@ -194,7 +194,7 @@ void SimpleListView::setModel( QAbstractItemModel* model )
         header()->hide();
 
         // connect model modification to resize
-        connect( model, SIGNAL( layoutChanged() ), this, SLOT( _adjustWidth() ) );
+        connect( model, SIGNAL(layoutChanged()), this, SLOT(_adjustWidth()) );
         _adjustWidth();
     }
 }

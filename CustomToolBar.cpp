@@ -52,7 +52,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     _installActions();
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 }
 
@@ -219,7 +219,7 @@ void CustomToolBar::_installActions( void )
         visibilityAction().setChecked( true );
     }
 
-    connect( visibilityAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleVisibility( bool ) ) );
+    connect( visibilityAction_, SIGNAL(toggled(bool)), SLOT(_toggleVisibility(bool)) );
 }
 
 //_______________________________________________________________

@@ -37,11 +37,11 @@ transition_widget_( new TransitionWidget(this) )
     _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
     _transitionWidget().hide();
 
-    connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
-    connect( &timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( update( void )) );
+    connect( &_transitionWidget().timeLine(), SIGNAL(finished()),  &_transitionWidget(), SLOT(hide()) );
+    connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT(update()) );
 
     if( Singleton::get().hasApplication() )
-    { connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) ); }
+    { connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
 
     _updateConfiguration();
 

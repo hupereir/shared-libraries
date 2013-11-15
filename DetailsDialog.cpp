@@ -60,7 +60,7 @@ void DetailsDialog::setDetails( QWidget* widget )
         detailsLabel_->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
         mainLayout().addWidget( detailsLabel_ );
 
-        connect( detailsLabel_, SIGNAL( linkActivated( const QString& ) ), SLOT( showDetails( void ) ) );
+        connect( detailsLabel_, SIGNAL(linkActivated(QString)), SLOT(showDetails()) );
 
     }
 

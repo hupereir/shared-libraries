@@ -143,53 +143,53 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     QPushButton *button;
     buttonLayout->addWidget( button = new QPushButton( tr( "Add" ), this ) );
     button->setIcon( IconEngine::get( ICONS::ADD ) );
-    connect( button, SIGNAL( clicked( void ) ), SLOT( _add( void ) ) );
+    connect( button, SIGNAL(clicked()), SLOT(_add()) );
 
     // Add action
     QAction* action;
     addAction( action = new QAction( IconEngine::get( ICONS::ADD ), tr( "Add" ), this ) );
-    connect( action, SIGNAL( triggered( void ) ), SLOT( _add( void ) ) );
+    connect( action, SIGNAL(triggered()), SLOT(_add()) );
     action->setShortcut( QKeySequence::New );
     menu->addAction( action );
 
     // remove button
     buttonLayout->addWidget( remove_ = new QPushButton( tr( "Remove" ), this ) );
-    connect( remove_, SIGNAL( clicked( void ) ), SLOT( _remove( void ) ) );
+    connect( remove_, SIGNAL(clicked()), SLOT(_remove()) );
     remove_->setIcon( IconEngine::get( ICONS::REMOVE ) );
     remove_->setToolTip( tr( "Remove selected value" ) );
 
     addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), tr( "Remove" ), this ) );
-    connect( removeAction_, SIGNAL( triggered( void ) ), SLOT( _remove( void ) ) );
+    connect( removeAction_, SIGNAL(triggered()), SLOT(_remove()) );
     removeAction_->setShortcut( QKeySequence::Delete );
     removeAction_->setToolTip( tr( "Remove selected value" ) );
     menu->addAction( action );
 
     // Edit button
     buttonLayout->addWidget( edit_ = new QPushButton( tr( "Edit" ), this ) );
-    connect( edit_, SIGNAL( clicked( void ) ), SLOT( _edit( void ) ) );
+    connect( edit_, SIGNAL(clicked()), SLOT(_edit()) );
     edit_->setIcon( IconEngine::get( ICONS::EDIT ) );
     edit_->setToolTip( tr( "Edit selected value" ) );
 
     addAction( editAction_ = new QAction( IconEngine::get( ICONS::EDIT ),  tr( "Edit" ), this ) );
-    connect( editAction_, SIGNAL( triggered( void ) ), SLOT( _edit( void ) ) );
+    connect( editAction_, SIGNAL(triggered()), SLOT(_edit()) );
     menu->addAction( action );
 
     // set default button
     buttonLayout->addWidget( default_ = new QPushButton( tr( "Default" ), this ) );
-    connect( default_, SIGNAL( clicked( void ) ), SLOT( _setDefault( void ) ) );
+    connect( default_, SIGNAL(clicked()), SLOT(_setDefault()) );
     default_->setToolTip( tr( "Set selected value as default\n(move it to the top of the list)" ) );
     default_->setIcon( IconEngine::get( ICONS::DIALOG_OK_APPLY ) );
 
     addAction( defaultAction_ = new QAction( IconEngine::get( ICONS::DIALOG_OK_APPLY ), tr( "Default" ), this ) );
-    connect( defaultAction_, SIGNAL( triggered( void ) ), SLOT( _setDefault( void ) ) );
+    connect( defaultAction_, SIGNAL(triggered()), SLOT(_setDefault()) );
     menu->addAction( action );
 
     buttonLayout->addStretch(1);
 
     // set connections
-    connect( list_->selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
-    connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
-    connect( list_, SIGNAL( activated( const QModelIndex& ) ), SLOT( _setDefault() ) );
+    connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
+    connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_updateButtons()) );
+    connect( list_, SIGNAL(activated(QModelIndex)), SLOT(_setDefault()) );
 
     // update buttons
     _updateButtons();
@@ -205,8 +205,8 @@ void OptionListBox::_setModel( OptionModel* model )
     if( list_ )
     {
         list_->setModel( model );
-        connect( list_->selectionModel(), SIGNAL( selectionChanged( const QItemSelection& , const QItemSelection& ) ), SLOT( _updateButtons() ) );
-        connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex& , const QModelIndex& ) ), SLOT( _updateButtons() ) );
+        connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
+        connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_updateButtons()) );
     }
 
     if( model_ ) model_->deleteLater();

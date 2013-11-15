@@ -66,7 +66,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
         orientationButtons_.insert( radioButton, QPrinter::Landscape );
         buttonGroup->addButton( radioButton );
 
-        connect( buttonGroup, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _setOrientation( QAbstractButton* ) ) );
+        connect( buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_setOrientation(QAbstractButton*)) );
 
         vLayout->addStretch();
     }
@@ -91,7 +91,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
         pageModeButtons_.insert( radioButton, BasePrintHelper::FourPages );
         buttonGroup->addButton( radioButton );
 
-        connect( buttonGroup, SIGNAL( buttonClicked( QAbstractButton* ) ), SLOT( _setPageMode( QAbstractButton* ) ) );
+        connect( buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_setPageMode(QAbstractButton*)) );
 
         vLayout->addStretch();
     }
@@ -101,7 +101,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     layout->addLayout( hLayout );
     hLayout->addStretch( 1 );
     hLayout->addWidget( previewButton_ = new QPushButton( IconEngine::get( ICONS::PRINT_PREVIEW ), tr( "Preview" ), this ) );
-    connect( previewButton_, SIGNAL( clicked( void ) ), SLOT( _preview( void ) ) );
+    connect( previewButton_, SIGNAL(clicked()), SLOT(_preview()) );
 
     previewButton_->setEnabled( false );
 

@@ -88,9 +88,9 @@ TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
     currentComboBox_->setCurrentIndex( currentComboBox_->findText( defaultCodec ) );
 
     // connections
-    connect( defaultComboBox_, SIGNAL(currentIndexChanged(const QString&)), this, SIGNAL(defaultEncodingChanged(const QString&)));
-    connect( defaultComboBox_, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(_updateDefaultEncoding(const QString&)));
-    connect( currentComboBox_, SIGNAL(currentIndexChanged(const QString&)), this, SIGNAL(currentEncodingChanged(const QString&)));
+    connect( defaultComboBox_, SIGNAL(currentIndexChanged(QString)), this, SIGNAL(defaultEncodingChanged(QString)));
+    connect( defaultComboBox_, SIGNAL(currentIndexChanged(QString)), this, SLOT(_updateDefaultEncoding(QString)));
+    connect( currentComboBox_, SIGNAL(currentIndexChanged(QString)), this, SIGNAL(currentEncodingChanged(QString)));
 
 }
 

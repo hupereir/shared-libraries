@@ -72,7 +72,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
         QIcon icon( IconEngine::get( ( flags & CancelButton ) ? ICONS::DIALOG_OK : ICONS::DIALOG_CLOSE ) );
         QString text( ( flags & CancelButton ) ? tr( "Ok" ):tr( "Close" ) );
         buttonLayout_->addWidget( okButton_ = new QPushButton( icon, text, this ) );
-        connect( okButton_, SIGNAL( clicked() ), SLOT( accept() ) );
+        connect( okButton_, SIGNAL(clicked()), SLOT(accept()) );
         okButton_->setDefault( true );
     }
 
@@ -81,7 +81,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     {
         buttonLayout_->addWidget( cancelButton_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), tr( "Cancel" ), this ) );
         cancelButton_->setShortcut( Qt::Key_Escape );
-        connect( cancelButton_, SIGNAL( clicked() ), SLOT( reject() ) );
+        connect( cancelButton_, SIGNAL(clicked()), SLOT(reject()) );
     }
 
 }

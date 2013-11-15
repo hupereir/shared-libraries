@@ -47,16 +47,16 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
     mainLayout().addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
     label->setBuddy( editor_ );
 
-    //connect( editor(), SIGNAL(returnPressed()), SLOT( _selectLine( void ) ) );
-    connect( editor_, SIGNAL(returnPressed( void ) ), SLOT( _selectLine( void ) ) );
-    connect( editor_, SIGNAL(textChanged( const QString& ) ), SLOT( _selectLine( void ) ) );
+    //connect( editor(), SIGNAL(returnPressed()), SLOT(_selectLine()) );
+    connect( editor_, SIGNAL(returnPressed()), SLOT(_selectLine()) );
+    connect( editor_, SIGNAL(textChanged(QString)), SLOT(_selectLine()) );
 
     QIntValidator *validator = new QIntValidator( this );
     validator->setBottom(0);
     editor_->setValidator( validator );
 
     // connections
-    connect( &okButton(), SIGNAL( clicked( void ) ), SLOT( _selectLine( void ) ) );
+    connect( &okButton(), SIGNAL(clicked()), SLOT(_selectLine()) );
 
     // minimum size
     setMinimumSize( QSize( 250, 100 ) );

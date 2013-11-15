@@ -36,13 +36,13 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const 
 {
     Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
     setTitle( title );
-    connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _updateActions( void ) ) );
-    connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _sort( QAction* ) ) );
+    connect( this, SIGNAL(aboutToShow()), SLOT(_updateActions()) );
+    connect( this, SIGNAL(triggered(QAction*)), SLOT(_sort(QAction*)) );
     group_->setExclusive( true );
 
     addSeparator();
 
-    addAction( tr( "Reverse Order" ), this, SLOT( _revertOrder( void ) ) );
+    addAction( tr( "Reverse Order" ), this, SLOT(_revertOrder()) );
 }
 
 
@@ -56,13 +56,13 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QHeaderView* header, cons
 {
     Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
     setTitle( title );
-    connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _updateActions( void ) ) );
-    connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _sort( QAction* ) ) );
+    connect( this, SIGNAL(aboutToShow()), SLOT(_updateActions()) );
+    connect( this, SIGNAL(triggered(QAction*)), SLOT(_sort(QAction*)) );
     group_->setExclusive( true );
 
     addSeparator();
 
-    addAction( "&Reverse order", this, SLOT( _revertOrder( void ) ) );
+    addAction( "&Reverse order", this, SLOT(_revertOrder()) );
 }
 
 //_____________________________________________________

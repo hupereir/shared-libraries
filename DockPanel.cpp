@@ -54,12 +54,12 @@ DockPanel::DockPanel( QWidget* parent ):
     main_->setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
 
     reinterpret_cast<LocalWidget*>(main_)->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
-    connect( &reinterpret_cast<LocalWidget*>(main_)->detachAction(), SIGNAL( triggered() ), SLOT( _toggleDock() ) );
+    connect( &reinterpret_cast<LocalWidget*>(main_)->detachAction(), SIGNAL(triggered()), SLOT(_toggleDock()) );
 
     // connections
     reinterpret_cast<LocalWidget*>(main_)->updateActions( false );
-    connect( &reinterpret_cast<LocalWidget*>(main_)->stickyAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleSticky( bool ) ) );
-    connect( &reinterpret_cast<LocalWidget*>(main_)->staysOnTopAction(), SIGNAL( toggled( bool ) ), SLOT( _toggleStaysOnTop( bool ) ) );
+    connect( &reinterpret_cast<LocalWidget*>(main_)->stickyAction(), SIGNAL(toggled(bool)), SLOT(_toggleSticky(bool)) );
+    connect( &reinterpret_cast<LocalWidget*>(main_)->staysOnTopAction(), SIGNAL(toggled(bool)), SLOT(_toggleStaysOnTop(bool)) );
 
     // vertical layout for children
     mainLayout_ = new QVBoxLayout();
@@ -76,7 +76,7 @@ DockPanel::DockPanel( QWidget* parent ):
     mainLayout_->addWidget( panel_, 1 );
 
     // connections
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
 
 }
 

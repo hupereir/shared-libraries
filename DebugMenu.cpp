@@ -41,10 +41,10 @@ DebugMenu::DebugMenu( QWidget* parent, Flags flags ):
     setTitle( tr( "Debug" ) );
 
     Debug::Throw( "DebugMenu::DebugMenu.\n" );
-    if( flags&Counters ) addAction( tr("Object Counters"), this, SLOT( _showCounterDialog() ) );
-    if( flags&Icons ) addAction( tr("Icon Cache"), this, SLOT( _showIconCacheDialog() ) );
-    if( flags&System ) addAction( tr("System environment"), this, SLOT( _showSystemEnvironment() ) );
-    if( flags&Options ) addAction( tr("Run-time options"), this, SLOT( _showOptions() ) );
+    if( flags&Counters ) addAction( tr("Object Counters"), this, SLOT(_showCounterDialog()) );
+    if( flags&Icons ) addAction( tr("Icon Cache"), this, SLOT(_showIconCacheDialog()) );
+    if( flags&System ) addAction( tr("System environment"), this, SLOT(_showSystemEnvironment()) );
+    if( flags&Options ) addAction( tr("Run-time options"), this, SLOT(_showOptions()) );
 
     if( qobject_cast<QMenu*>( parent ) ) parent->installEventFilter( this );
 

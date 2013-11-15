@@ -61,7 +61,7 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     setUseScrollArea( false );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -208,5 +208,5 @@ void DockWidget::_installActions( void )
         visibilityAction().setChecked( true );
     }
 
-    connect( visibilityAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleVisibility( bool ) ) );
+    connect( visibilityAction_, SIGNAL(toggled(bool)), SLOT(_toggleVisibility(bool)) );
 }

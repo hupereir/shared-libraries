@@ -40,13 +40,13 @@ ScrollObject::ScrollObject( QAbstractScrollArea* parent ):
     Debug::Throw( "ScrollObject::ScrollObject.\n" );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
     // connect time line
     _timeLine().setCurveShape( QTimeLine::LinearCurve );
-    connect( &_timeLine(), SIGNAL( frameChanged( int ) ), this, SLOT( _scroll( int ) ) );
-    connect( &_timeLine(), SIGNAL( finished( void ) ), this, SLOT( _finished( void )) );
+    connect( &_timeLine(), SIGNAL(frameChanged(int)), this, SLOT(_scroll(int)) );
+    connect( &_timeLine(), SIGNAL(finished()), this, SLOT(_finished()) );
 
     targets_.insert( &_target() );
     targets_.insert( _target().viewport() );

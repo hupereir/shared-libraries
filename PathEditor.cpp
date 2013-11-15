@@ -357,7 +357,7 @@ PathEditor::PathEditor( QWidget* parent ):
         hLayout->addWidget( menuButton_ = new PathEditorMenuButton( browserContainer_ ) );
         menuButton_->setItemView( itemView_ );
         menuButton_->hide();
-        connect( menuButton_, SIGNAL(clicked( void ) ), SLOT( _menuButtonClicked( void ) ) );
+        connect( menuButton_, SIGNAL(clicked()), SLOT(_menuButtonClicked()) );
 
         // button layout
         hLayout->addLayout( buttonLayout_ = new QHBoxLayout() );
@@ -367,12 +367,12 @@ PathEditor::PathEditor( QWidget* parent ):
         // switch
         PathEditorSwitch* editorSwitch = new PathEditorSwitch( browserContainer_ );
         hLayout->addWidget( editorSwitch, 1 );
-        connect( editorSwitch, SIGNAL(clicked( void ) ), SLOT( _showEditor( void ) ) );
+        connect( editorSwitch, SIGNAL(clicked()), SLOT(_showEditor()) );
 
         // button group
         group_ = new QButtonGroup( browserContainer_ );
         group_->setExclusive( false );
-        connect( group_, SIGNAL(buttonClicked( QAbstractButton* ) ), SLOT( _buttonClicked( QAbstractButton* ) ) );
+        connect( group_, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_buttonClicked(QAbstractButton*)) );
 
         addWidget( browserContainer_ );
     }
@@ -402,9 +402,9 @@ PathEditor::PathEditor( QWidget* parent ):
 
         button->setFocusPolicy( Qt::StrongFocus );
 
-        connect( editor_->lineEdit(), SIGNAL(returnPressed( void ) ), SLOT( _returnPressed( void ) ) );
-        connect( editor_, SIGNAL(activated( int ) ), SLOT( _returnPressed( void ) ) );
-        connect( button, SIGNAL(clicked( void ) ), SLOT( _showBrowser( void ) ) );
+        connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_returnPressed()) );
+        connect( editor_, SIGNAL(activated(int)), SLOT(_returnPressed()) );
+        connect( button, SIGNAL(clicked()), SLOT(_showBrowser()) );
 
         addWidget( editorContainer_ );
     }
@@ -413,7 +413,7 @@ PathEditor::PathEditor( QWidget* parent ):
     setCurrentWidget( browserContainer_ );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -709,7 +709,7 @@ void PathEditor::selectNext( void )
 //____________________________________________________________________________
 void PathEditor::resizeEvent( QResizeEvent* event )
 {
-    QTimer::singleShot( 0, this, SLOT( _updateButtonVisibility() ) );
+    QTimer::singleShot( 0, this, SLOT(_updateButtonVisibility()) );
     QWidget::resizeEvent( event );
 }
 
@@ -824,7 +824,7 @@ void PathEditor::_menuButtonClicked( void )
     foreach( const File& path, pathList )
     { menu->addAction( path ); }
 
-    connect( menu, SIGNAL(triggered( QAction* ) ), SLOT( _updatePath( QAction* ) ) );
+    connect( menu, SIGNAL(triggered(QAction*)), SLOT(_updatePath(QAction*)) );
     menu->exec( menuButton_->mapToGlobal( menuButton_->rect().bottomLeft() ) );
     static_cast<PathEditorButton*>(menuButton_)->setMouseOver( false );
 

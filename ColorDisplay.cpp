@@ -52,7 +52,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
     editor_->setHasClearButton( false );
     editor_->setAlignment( Qt::AlignCenter );
     layout->addWidget( editor_, 1 );
-    connect( editor_, SIGNAL( returnPressed() ), SLOT( _selectColorFromText() ) );
+    connect( editor_, SIGNAL(returnPressed()), SLOT(_selectColorFromText()) );
 
     // browse button
     {
@@ -61,7 +61,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
         button->setAutoRaise( true );
         button->setIcon( IconEngine::get( ICONS::OPEN ) );
         button->setToolTip( tr( "Select color from dialog" ) );
-        connect( button, SIGNAL( clicked( void ) ), SLOT( _selectColorFromDialog( void ) ) );
+        connect( button, SIGNAL(clicked()), SLOT(_selectColorFromDialog()) );
     }
 
     // grab button
@@ -71,7 +71,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
         button->setAutoRaise( true );
         button->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
         button->setToolTip( tr( "Grab color from screen" ) );
-        connect( button, SIGNAL( colorSelected( QColor ) ), SLOT( setColor( QColor ) ) );
+        connect( button, SIGNAL(colorSelected(QColor)), SLOT(setColor(QColor)) );
     }
 }
 

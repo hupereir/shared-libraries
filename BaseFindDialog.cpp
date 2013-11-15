@@ -67,10 +67,10 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     editor().setEditable( true );
     editor().setAutoCompletion( true, Qt::CaseSensitive );
 
-    connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _find( void ) ) );
-    connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
-    connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _updateButtons( const QString& ) ) );
-    connect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), SLOT( _findNoIncrement( void ) ) );
+    connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT(_find()) );
+    connect( editor().lineEdit(), SIGNAL(returnPressed()), SLOT(_updateFindComboBox()) );
+    connect( editor().lineEdit(), SIGNAL(textChanged(QString)), SLOT(_updateButtons(QString)) );
+    connect( editor().lineEdit(), SIGNAL(textChanged(QString)), SLOT(_findNoIncrement()) );
 
     // locations
     GridLayout* gridLayout( new GridLayout() );
@@ -85,7 +85,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     gridLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
     gridLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
     gridLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
-    connect( regexpCheckbox_, SIGNAL( toggled( bool ) ), SLOT( _regExpChecked( bool ) ) );
+    connect( regexpCheckbox_, SIGNAL(toggled(bool)), SLOT(_regExpChecked(bool)) );
 
     // tooltips
     backwardCheckbox_->setToolTip( tr( "Perform search backward" ) );
@@ -115,15 +115,15 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     // insert Find button
     QPushButton *button;
     _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), tr( "Find" ), this ) );
-    connect( button, SIGNAL( clicked( void ) ), SLOT( _find( void ) ) );
-    connect( button, SIGNAL( clicked( void ) ), SLOT( _updateFindComboBox( void ) ) );
+    connect( button, SIGNAL(clicked()), SLOT(_find()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
     _addDisabledButton( button );
     button->setAutoDefault( false );
     findButton_ = button;
 
     // insert Cancel button
     _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), tr( "Close" ), this ) );
-    connect( button, SIGNAL( clicked() ), SLOT( close() ) );
+    connect( button, SIGNAL(clicked()), SLOT(close()) );
     button->setShortcut( Qt::Key_Escape );
     button->setAutoDefault( false );
 

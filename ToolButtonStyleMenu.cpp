@@ -31,7 +31,7 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     Debug::Throw( "ToolButtonStyleMenu::ToolButtonStyleMenu.\n" );
 
     QActionGroup *group = new QActionGroup( this );
-    connect( group, SIGNAL( triggered( QAction* ) ), SLOT( _selected( QAction* ) ) );
+    connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     // install values
     typedef QPair<QString, int > NamePair;

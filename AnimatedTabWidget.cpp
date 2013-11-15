@@ -57,9 +57,9 @@ AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
 
   _transitionWidget().setFlag( TransitionWidget::SHOW, false );
   _transitionWidget().hide();
-  connect( tabBar(), SIGNAL( clicked() ), SLOT( _updateCurrentWidget() ) );
-  connect( tabBar(), SIGNAL( currentChanged( int ) ), SLOT( _startAnimation() ) );
-  connect( &_transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
+  connect( tabBar(), SIGNAL(clicked()), SLOT(_updateCurrentWidget()) );
+  connect( tabBar(), SIGNAL(currentChanged(int)), SLOT(_startAnimation()) );
+  connect( &_transitionWidget().timeLine(), SIGNAL(finished()), SLOT(_animationFinished()) );
 
 }
 

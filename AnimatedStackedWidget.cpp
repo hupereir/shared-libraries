@@ -45,7 +45,7 @@ AnimatedStackedWidget::AnimatedStackedWidget( QWidget* parent ):
 {
   Debug::Throw( "AnimatedStackedWidget::AnimatedStackedWidget.\n" );
   transitionWidget().hide();
-  connect( &transitionWidget().timeLine(), SIGNAL( finished() ), SLOT( _animationFinished() ) );
+  connect( &transitionWidget().timeLine(), SIGNAL(finished()), SLOT(_animationFinished()) );
 }
 
 //______________________________________________________________

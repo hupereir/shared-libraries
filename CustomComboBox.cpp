@@ -58,8 +58,8 @@ void CustomComboBox::setEditable( bool value )
         editor_ = new ComboLineEdit( this );
         editor_->setFrame( false );
         setLineEdit( editor_ );
-        connect( view(), SIGNAL( pressed( QModelIndex ) ), editor_, SLOT( startAnimation( void ) ) );
-        connect( view(), SIGNAL( activated( QModelIndex ) ), editor_, SLOT( startAnimation( void ) ) );
+        connect( view(), SIGNAL(pressed(QModelIndex)), editor_, SLOT(startAnimation()) );
+        connect( view(), SIGNAL(activated(QModelIndex)), editor_, SLOT(startAnimation()) );
     }
 
 }

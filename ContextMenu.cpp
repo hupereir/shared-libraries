@@ -32,9 +32,9 @@ ContextMenu::ContextMenu( QWidget* parent ):
 
     Debug::Throw( "ContextMenu::ContextMenu.\n" );
     parent->setContextMenuPolicy( Qt::CustomContextMenu );
-    connect( parent, SIGNAL( customContextMenuRequested( const QPoint& ) ), SLOT( _raise( const QPoint& ) ) );
-    connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _hideActions( void ) ) );
-    connect( this, SIGNAL( aboutToHide( void ) ), SLOT( _showActions( void ) ) );
+    connect( parent, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_raise(QPoint)) );
+    connect( this, SIGNAL(aboutToShow()), SLOT(_hideActions()) );
+    connect( this, SIGNAL(aboutToHide()), SLOT(_showActions()) );
 }
 
 //___________________________________________________

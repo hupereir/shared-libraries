@@ -35,8 +35,8 @@ ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, co
 {
     Debug::Throw( "ColumnSelectionMenu::ColumnSelectionMenu.\n" );
     setTitle( title );
-    connect( this, SIGNAL( aboutToShow( void ) ), SLOT( _updateActions( void ) ) );
-    connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _updateSelectedColumns( QAction* ) ) );
+    connect( this, SIGNAL(aboutToShow()), SLOT(_updateActions()) );
+    connect( this, SIGNAL(triggered(QAction*)), SLOT(_updateSelectedColumns(QAction*)) );
 }
 
 //_____________________________________________________

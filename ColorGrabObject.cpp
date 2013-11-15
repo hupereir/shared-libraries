@@ -42,7 +42,7 @@ ColorGrabObject::ColorGrabObject( QWidget* parent ):
     Debug::Throw( "ColorGrabObject::ColorGrabObject.\n" );
     Q_CHECK_PTR( parent );
 
-    connect( parent, SIGNAL( clicked( void ) ), SLOT( _grabColor( void ) ) );
+    connect( parent, SIGNAL(clicked()), SLOT(_grabColor()) );
     parent->installEventFilter( this );
 
 }

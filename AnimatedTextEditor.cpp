@@ -33,7 +33,7 @@ transitionWidget_( new TransitionWidget(this) )
     Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
     _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
     _transitionWidget().hide();
-    connect( &_transitionWidget().timeLine(), SIGNAL( finished() ),  &_transitionWidget(), SLOT( hide() ) );
+    connect( &_transitionWidget().timeLine(), SIGNAL(finished()),  &_transitionWidget(), SLOT(hide()) );
 
     new ScrollObject( this );
 

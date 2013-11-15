@@ -55,14 +55,14 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     label->setBuddy( &_replaceEditor() );
 
     // disable callbacks on find editor
-    disconnect( editor().lineEdit(), SIGNAL(textChanged( const QString& ) ), this, SLOT( _findNoIncrement() ) );
+    disconnect( editor().lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(_findNoIncrement()) );
 
     _replaceEditor().setEditable( true );
     _replaceEditor().setAutoCompletion( true, Qt::CaseSensitive );
-    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _replace( void ) ) );
-    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateFindComboBox( void ) ) );
-    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT( _updateReplaceComboBox( void ) ) );
-    connect( _replaceEditor().lineEdit(), SIGNAL(textChanged( const QString& )), SLOT( _replaceTextChanged( const QString& ) ) );
+    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT(_replace()) );
+    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT(_updateFindComboBox()) );
+    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT(_updateReplaceComboBox()) );
+    connect( _replaceEditor().lineEdit(), SIGNAL(textChanged(QString)), SLOT(_replaceTextChanged(QString)) );
 
     // change tab order
     setTabOrder( &editor(), &_replaceEditor() );
@@ -75,9 +75,9 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     _locationLayout().addWidget( new QLabel( tr( "Replace in:" ), this ) );
     _locationLayout().addWidget( button = new QPushButton( tr( "Selection" ), this ) );
     button->setAutoDefault( false );
-    connect( button, SIGNAL( clicked( void ) ), SLOT( _replaceInSelection( void ) ) );
-    connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
-    connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
+    connect( button, SIGNAL(clicked()), SLOT(_replaceInSelection()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateReplaceComboBox()) );
     button->setToolTip( tr( "Replace all occurence of the search string in selected text" ) );
     _addDisabledButton( button );
     button->setAutoDefault( false );
@@ -89,9 +89,9 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     // insert window button
     _locationLayout().addWidget( button = new QPushButton( tr( "Window" ), this ) );
     button->setAutoDefault( false );
-    connect( button, SIGNAL( clicked( void ) ), SLOT( _replaceInWindow( void ) ) );
-    connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
-    connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
+    connect( button, SIGNAL(clicked()), SLOT(_replaceInWindow()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateReplaceComboBox()) );
     button->setToolTip( tr( "Replace all occurence of the search string in the entire window" ) );
     _addDisabledButton( button );
     button->setAutoDefault( false );
@@ -101,9 +101,9 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // replace buttons
     button = new QPushButton( tr( "Replace" ), this );
-    connect( button, SIGNAL( clicked( void ) ), SLOT( _replace( void ) ) );
-    connect( button, SIGNAL( clicked( void )), SLOT( _updateFindComboBox( void ) ) );
-    connect( button, SIGNAL( clicked( void )), SLOT( _updateReplaceComboBox( void ) ) );
+    connect( button, SIGNAL(clicked()), SLOT(_replace()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateReplaceComboBox()) );
     _addDisabledButton( button );
     _buttonLayout().insertWidget( 1, button );
     button->setAutoDefault( false );

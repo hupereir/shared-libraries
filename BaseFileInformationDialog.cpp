@@ -203,8 +203,8 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     permissionsWidget_->hide();
 
     // connections
-    connect( &closeButton(), SIGNAL( pressed( void ) ), SLOT( close( void ) ) );
-    new QShortcut( QKeySequence::Close, this, SLOT( close() ) );
+    connect( &closeButton(), SIGNAL(pressed()), SLOT(close()) );
+    new QShortcut( QKeySequence::Close, this, SLOT(close()) );
 
 }
 

@@ -45,7 +45,7 @@ BrowseIconButton::BrowseIconButton( QWidget* parent, const QString& file):
     setIconSize( IconSize( IconSize::Huge ) );
     setAutoRaise( false );
     setFile( file, false );
-    connect( this, SIGNAL( clicked() ), SLOT( _browse() ) );
+    connect( this, SIGNAL(clicked()), SLOT(_browse()) );
     setAcceptDrops( true );
 
 }

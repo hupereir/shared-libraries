@@ -73,7 +73,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
     button->setIcon( IconEngine::get( ICONS::OPEN ) );
     button->setAutoRaise( true );
     hLayout->addWidget( button );
-    connect( button, SIGNAL( clicked() ), SLOT( _browseCommand() ) );
+    connect( button, SIGNAL(clicked()), SLOT(_browseCommand()) );
 
     // change button text
     okButton().setText( tr( "Export" ) );
@@ -86,7 +86,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
     for( Options::List::iterator iter = commands.begin(); iter != commands.end(); ++iter )
     { addCommand( iter->raw() ); }
 
-    connect( &okButton(), SIGNAL( clicked() ), SLOT( _saveCommands( void ) ) );
+    connect( &okButton(), SIGNAL(clicked()), SLOT(_saveCommands()) );
 
 }
 

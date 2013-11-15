@@ -53,7 +53,7 @@ LineEditor::LineEditor( QWidget* parent ):
     _installActions();
 
     // modification state call-back
-    connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _modified( const QString& ) ) );
+    connect( this, SIGNAL(textChanged(QString)), SLOT(_modified(QString)) );
 
     // set clear button visible
     setHasClearButton( true );
@@ -391,50 +391,50 @@ void LineEditor::_installActions( void )
     undoAction_->setShortcut( QKeySequence::Undo );
     undoAction_->setShortcutContext( Qt::WidgetShortcut );
     undoAction_->setEnabled( isUndoAvailable() );
-    connect( undoAction_, SIGNAL( triggered( void ) ), SLOT( undo( void ) ) );
+    connect( undoAction_, SIGNAL(triggered()), SLOT(undo()) );
 
     addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), tr( "Redo" ), this ) );
     redoAction_->setShortcut( QKeySequence::Redo );
     redoAction_->setEnabled( isRedoAvailable() );
     redoAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( redoAction_, SIGNAL( triggered( void ) ), SLOT( redo( void ) ) );
+    connect( redoAction_, SIGNAL(triggered()), SLOT(redo()) );
 
     addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), tr( "Cut" ), this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
     cutAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( cutAction_, SIGNAL( triggered( void ) ), SLOT( cut( void ) ) );
+    connect( cutAction_, SIGNAL(triggered()), SLOT(cut()) );
 
     addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), tr( "Copy" ), this ) );
     copyAction_->setShortcut( QKeySequence::Copy );
     copyAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( copyAction_, SIGNAL( triggered( void ) ), SLOT( copy( void ) ) );
+    connect( copyAction_, SIGNAL(triggered()), SLOT(copy()) );
 
     addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), tr( "Paste" ), this ) );
     pasteAction_->setShortcut( QKeySequence::Paste );
     pasteAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( pasteAction_, SIGNAL( triggered( void ) ), SLOT( paste( void ) ) );
-    connect( qApp->clipboard(), SIGNAL( dataChanged( void ) ), SLOT( _updatePasteAction( void ) ) );
+    connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
+    connect( qApp->clipboard(), SIGNAL(dataChanged()), SLOT(_updatePasteAction()) );
     _updatePasteAction();
 
     addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
-    connect( clearAction_, SIGNAL( triggered( void ) ), SLOT( clear( void ) ) );
+    connect( clearAction_, SIGNAL(triggered()), SLOT(clear()) );
 
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( selectAllAction_, SIGNAL( triggered( void ) ), SLOT( selectAll( void ) ) );
+    connect( selectAllAction_, SIGNAL(triggered()), SLOT(selectAll()) );
 
     addAction( upperCaseAction_ = new QAction( tr( "Upper Case" ), this ) );
     upperCaseAction_->setShortcut( Qt::CTRL+Qt::Key_U );
-    connect( upperCaseAction_, SIGNAL( triggered( void ) ), SLOT( upperCase( void ) ) );
+    connect( upperCaseAction_, SIGNAL(triggered()), SLOT(upperCase()) );
 
     addAction( lowerCaseAction_ = new QAction( tr( "Lower Case" ), this ) );
     lowerCaseAction_->setShortcut( Qt::SHIFT+Qt::CTRL+Qt::Key_U );
-    connect( lowerCaseAction_, SIGNAL( triggered( void ) ), SLOT( lowerCase( void ) ) );
+    connect( lowerCaseAction_, SIGNAL(triggered()), SLOT(lowerCase()) );
 
     // update actions that depend on the presence of a selection
-    connect( this, SIGNAL( textChanged( const QString& ) ), SLOT( _updateUndoRedoActions( void ) ) );
-    connect( this, SIGNAL( selectionChanged( void ) ), SLOT( _updateSelectionActions( void ) ) );
+    connect( this, SIGNAL(textChanged(QString)), SLOT(_updateUndoRedoActions()) );
+    connect( this, SIGNAL(selectionChanged()), SLOT(_updateSelectionActions()) );
     _updateUndoRedoActions();
     _updateSelectionActions();
 

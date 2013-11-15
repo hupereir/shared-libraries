@@ -35,7 +35,7 @@ transitionWidget_( new TransitionWidget( this ) )
     // transition widget
     transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
     transitionWidget().hide();
-    connect( &transitionWidget().timeLine(), SIGNAL( finished() ), &transitionWidget(), SLOT( hide() ) );
+    connect( &transitionWidget().timeLine(), SIGNAL(finished()), &transitionWidget(), SLOT(hide()) );
 
     setVerticalScrollMode( QAbstractItemView::ScrollPerPixel );
     setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );

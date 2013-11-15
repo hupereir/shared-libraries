@@ -59,7 +59,7 @@ BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
     setForegroundRole( QPalette::ToolTipText );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
+    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
