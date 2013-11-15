@@ -87,7 +87,7 @@ namespace SVG
         if( !fileSystemWatcher_ )
         {
             fileSystemWatcher_ = new QFileSystemWatcher( this );
-            connect( fileSystemWatcher_, SIGNAL( fileChanged( const QString& ) ), SLOT( _configurationFileChanged( const QString& ) ) );
+            connect( fileSystemWatcher_, SIGNAL(fileChanged(QString)), SLOT(_configurationFileChanged(QString)) );
         }
 
         // add valid configuration files to watcher

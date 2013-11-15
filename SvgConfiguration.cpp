@@ -126,12 +126,12 @@ namespace SVG
         plasmaCheckBox_->setChecked( false );
         plasmaOptionBox->setEnabled( false );
         plasmaBox->setEnabled( false );
-        connect( plasmaCheckBox_, SIGNAL( toggled( bool ) ), SLOT( _enableSvgFileList( void ) ) );
-        connect( plasmaCheckBox_, SIGNAL( toggled( bool ) ), plasmaOptionBox, SLOT( setEnabled( bool ) ) );
-        connect( svgCheckBox_, SIGNAL( toggled( bool ) ), plasmaBox, SLOT( setEnabled( bool ) ) );
+        connect( plasmaCheckBox_, SIGNAL(toggled(bool)), SLOT(_enableSvgFileList()) );
+        connect( plasmaCheckBox_, SIGNAL(toggled(bool)), plasmaOptionBox, SLOT(setEnabled(bool)) );
+        connect( svgCheckBox_, SIGNAL(toggled(bool)), plasmaBox, SLOT(setEnabled(bool)) );
         #endif
 
-        connect( svgCheckBox_, SIGNAL( toggled( bool ) ), SLOT( _enableSvgFileList( void ) ) );
+        connect( svgCheckBox_, SIGNAL(toggled(bool)), SLOT(_enableSvgFileList()) );
 
 
     }

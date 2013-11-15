@@ -41,7 +41,7 @@ namespace SVG
     SvgEngine::SvgEngine( void ):
         plasmaInterface_( 0 ),
         thread_( this )
-    { connect( &thread_, SIGNAL( imageCacheAvailable( const SVG::ImageCache& ) ), this, SLOT( _processImageCache( const SVG::ImageCache& ) ) ); }
+    { connect( &thread_, SIGNAL(imageCacheAvailable(const SVG::ImageCache&)), this, SLOT(_processImageCache(const SVG::ImageCache&)) ); }
 
     //__________________________________________________________
     SvgEngine::~SvgEngine( void )
@@ -183,7 +183,7 @@ namespace SVG
         Q_ASSERT( !_hasPlasmaInterface() );
         plasmaInterface_ = new SvgPlasmaInterface( this );
         _plasmaInterface().loadTheme();
-        connect( &_plasmaInterface(), SIGNAL( themeChanged() ), SLOT( reload() ) );
+        connect( &_plasmaInterface(), SIGNAL(themeChanged()), SLOT(reload()) );
 
     }
 
