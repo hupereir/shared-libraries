@@ -102,15 +102,15 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
 {
 
     Debug::Throw( "BaseApplication::BaseApplication.\n" );
-    connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateConfiguration( void ) ) );
-    connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateFonts( void ) ) );
-    connect( this, SIGNAL( configurationChanged( void ) ), SLOT( _updateIconTheme( void ) ) );
+    connect( this, SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( this, SIGNAL(configurationChanged()), SLOT(_updateFonts()) );
+    connect( this, SIGNAL(configurationChanged()), SLOT(_updateIconTheme()) );
 
     // use DBus connection to update on oxygen configuration change
     #ifndef QT_NO_DBUS
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.connect( QString(), "/OxygenStyle", "org.kde.Oxygen.Style", "reparseConfiguration", this, SLOT(_updateFonts( void ) ) );
-    dbus.connect( QString(), "/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange", this, SLOT(_updateFonts( void ) ) );
+    dbus.connect( QString(), "/OxygenStyle", "org.kde.Oxygen.Style", "reparseConfiguration", this, SLOT(_updateFonts()) );
+    dbus.connect( QString(), "/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange", this, SLOT(_updateFonts()) );
     #endif
 
 }
@@ -128,24 +128,24 @@ bool BaseApplication::realizeWidget( void )
     if( !BaseCoreApplication::realizeWidget() ) return false;
 
     // connections
-    connect( qApp, SIGNAL( aboutToQuit( void ) ), SLOT( _aboutToQuit() ) );
+    connect( qApp, SIGNAL(aboutToQuit()), SLOT(_aboutToQuit()) );
 
     // need to update icon theme upfront to make sure themed icons are loaded
     _updateIconTheme();
 
     // actions
     aboutAction_ = new QAction( _applicationIcon(), tr( "About this Application" ), this );
-    connect( aboutAction_, SIGNAL( triggered() ), SLOT( _about() ) );
+    connect( aboutAction_, SIGNAL(triggered()), SLOT(_about()) );
 
     aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), tr( "About Qt" ), this );
-    connect( aboutQtAction_, SIGNAL( triggered() ), this, SLOT( _aboutQt() ) );
+    connect( aboutQtAction_, SIGNAL(triggered()), this, SLOT(_aboutQt()) );
 
     closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), tr( "Exit" ), this );
     closeAction_->setShortcut( QKeySequence::Quit );
-    connect( closeAction_, SIGNAL( triggered() ), qApp, SLOT( quit() ) );
+    connect( closeAction_, SIGNAL(triggered()), qApp, SLOT(quit()) );
 
     configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), tr( "Configure this Application" ), this );
-    connect( configurationAction_, SIGNAL( triggered() ), SLOT( _configuration() ) );
+    connect( configurationAction_, SIGNAL(triggered()), SLOT(_configuration()) );
 
     return true;
 }

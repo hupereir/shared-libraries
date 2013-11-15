@@ -34,7 +34,7 @@ BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments 
 {
 
     Debug::Throw( "BaseCoreApplication::BaseCoreApplication.\n" );
-    connect( this, SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) );
+    connect( this, SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
 
 }
 
@@ -74,7 +74,7 @@ void BaseCoreApplication::initApplicationManager( void )
     applicationManager_->setApplicationName( XmlOptions::get().raw( "APP_NAME" ) );
 
     // connections
-    connect( applicationManager_, SIGNAL( commandRecieved( SERVER::ServerCommand ) ), SLOT( _processCommand( SERVER::ServerCommand ) ) );
+    connect( applicationManager_, SIGNAL(commandRecieved(SERVER::ServerCommand)), SLOT(_processCommand(SERVER::ServerCommand)) );
 
     // initialization
     applicationManager_->initialize( arguments_ );

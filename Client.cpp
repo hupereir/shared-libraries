@@ -46,8 +46,8 @@ namespace SERVER
     {
         Debug::Throw( "Client::Client.\n" );
         Q_CHECK_PTR( socket );
-        connect( socket_, SIGNAL( connected() ), SLOT( _sendCommands() ) );
-        connect( socket_, SIGNAL( readyRead() ), SLOT( _readMessage() ) );
+        connect( socket_, SIGNAL(connected()), SLOT(_sendCommands()) );
+        connect( socket_, SIGNAL(readyRead()), SLOT(_readMessage()) );
     }
 
     //_______________________________________________________
