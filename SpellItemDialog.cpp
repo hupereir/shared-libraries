@@ -46,7 +46,7 @@ namespace SPELLCHECK
         _list().header()->hide();
 
         // connections
-        connect( &_list(), SIGNAL( clicked( const QModelIndex& ) ), SLOT( _selectItem( const QModelIndex& ) ) );
+        connect( &_list(), SIGNAL(clicked(QModelIndex)), SLOT(_selectItem(QModelIndex)) );
 
     }
 

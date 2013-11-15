@@ -42,8 +42,8 @@ namespace SPELLCHECK
         interface_.reset();
 
         // connections
-        if( !read_only ) connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _select( QAction* ) ) );
-        connect( this, SIGNAL( aboutToShow() ), SLOT( _aboutToShow() ) );
+        if( !read_only ) connect( this, SIGNAL(triggered(QAction*)), SLOT(_select(QAction*)) );
+        connect( this, SIGNAL(aboutToShow()), SLOT(_aboutToShow()) );
 
     }
 
@@ -77,10 +77,10 @@ namespace SPELLCHECK
         addSeparator();
 
         // add word action
-        addAction( tr( "Add Word to Dictionary" ), this, SLOT( _addWord() ) );
+        addAction( tr( "Add Word to Dictionary" ), this, SLOT(_addWord()) );
 
         // ignore word action
-        addAction( tr( "Ignore Word" ), this, SLOT( _ignoreWord() ) );
+        addAction( tr( "Ignore Word" ), this, SLOT(_ignoreWord()) );
 
     }
 

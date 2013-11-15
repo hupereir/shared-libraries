@@ -71,7 +71,7 @@ namespace SPELLCHECK
 
         DictionarySelectionButton* dictionaryButton;
         gridLayout->addWidget( dictionaryButton = new DictionarySelectionButton( this ), 1, 2, 1, 1 );
-        connect( dictionaryButton, SIGNAL( modified( void ) ), SLOT( _updateDictionaries( void ) ) );
+        connect( dictionaryButton, SIGNAL(modified()), SLOT(_updateDictionaries()) );
         addOptionWidget( dictionaryButton );
 
         // filters
@@ -85,7 +85,7 @@ namespace SPELLCHECK
 
         FilterSelectionButton* filterButton;
         gridLayout->addWidget( filterButton = new FilterSelectionButton( this ), 2, 2, 1, 1 );
-        connect( filterButton, SIGNAL( modified( void ) ), SLOT( _updateFilters( void ) ) );
+        connect( filterButton, SIGNAL(modified()), SLOT(_updateFilters()) );
         addOptionWidget( filterButton );
 
         read();

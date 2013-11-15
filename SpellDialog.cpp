@@ -100,8 +100,8 @@ namespace SPELLCHECK
         _list().setModel( &_model() );
         _list().header()->hide();
 
-        connect( _list().selectionModel(), SIGNAL( currentChanged(const QModelIndex &, const QModelIndex &) ), SLOT( _selectSuggestion( const QModelIndex& ) ) );
-        if( !read_only ) { connect( &_list(), SIGNAL( activated( const QModelIndex& ) ), SLOT( _replace( const QModelIndex& ) ) ); }
+        connect( _list().selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_selectSuggestion(QModelIndex)) );
+        if( !read_only ) { connect( &_list(), SIGNAL(activated(QModelIndex)), SLOT(_replace(QModelIndex)) ); }
 
         // grid layout for dictionary and filter
         gridLayout = new GridLayout();
@@ -117,24 +117,24 @@ namespace SPELLCHECK
         gridLayout->addWidget( dictionariesComboBox_ = new QComboBox( this ) );
         _updateDictionaries();
 
-        connect( dictionariesComboBox_, SIGNAL( activated( const QString& ) ), SLOT( _selectDictionary( const QString& ) ) );
+        connect( dictionariesComboBox_, SIGNAL(activated(QString)), SLOT(_selectDictionary(QString)) );
 
         // configuration
         DictionarySelectionButton* dictionarySelectionButton;
         gridLayout->addWidget( dictionarySelectionButton = new DictionarySelectionButton( this ) );
-        connect( dictionarySelectionButton, SIGNAL( modified() ), SLOT( _updateDictionaries() ) );
+        connect( dictionarySelectionButton, SIGNAL(modified()), SLOT(_updateDictionaries()) );
 
         // filter combobox
         gridLayout->addWidget( filterLabel_ = new QLabel( tr( "Filter:" ), this ), 1, 0, 1, 1 );
         gridLayout->addWidget( filtersComboBox_ = new QComboBox( this ), 1, 1, 1, 1 );
         _updateFilters();
 
-        connect( filtersComboBox_, SIGNAL( activated( const QString& ) ), SLOT( _selectFilter( const QString& ) ) );
+        connect( filtersComboBox_, SIGNAL(activated(QString)), SLOT(_selectFilter(QString)) );
 
         // configuration
         FilterSelectionButton* filterSelectionButton;
         gridLayout->addWidget( filterSelectionButton = new FilterSelectionButton( this ) );
-        connect( filterSelectionButton, SIGNAL( modified() ), SLOT( _updateFilters() ) );
+        connect( filterSelectionButton, SIGNAL(modified()), SLOT(_updateFilters()) );
 
         // stretch
         gridLayout->setColumnStretch( 1, 1 );
@@ -148,15 +148,15 @@ namespace SPELLCHECK
         // add word button
         QPushButton* button;
         vLayout->addWidget( button = new QPushButton( tr( "Add Word" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT( _addWord() ) );
+        connect( button, SIGNAL(clicked()), SLOT(_addWord()) );
 
         // check word button
         vLayout->addWidget( button = new QPushButton( tr( "Check Word" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT( _checkWord() ) );
+        connect( button, SIGNAL(clicked()), SLOT(_checkWord()) );
 
         // recheck button
         vLayout->addWidget( button = new QPushButton( tr( "Recheck Page" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT( _restart() ) );
+        connect( button, SIGNAL(clicked()), SLOT(_restart()) );
 
         QFrame* frame;
         vLayout->addWidget( frame = new QFrame(this) );
@@ -164,12 +164,12 @@ namespace SPELLCHECK
 
         // replace button
         vLayout->addWidget( button = new QPushButton( tr( "Replace" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT( _replace() ) );
+        connect( button, SIGNAL(clicked()), SLOT(_replace()) );
         if( read_only ) button->setEnabled( false );
 
         // replace button
         vLayout->addWidget( button = new QPushButton( tr( "Replace All" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT( _replaceAll() ) );
+        connect( button, SIGNAL(clicked()), SLOT(_replaceAll()) );
         if( read_only ) button->setEnabled( false );
 
         vLayout->addWidget( frame = new QFrame(this) );
@@ -177,11 +177,11 @@ namespace SPELLCHECK
 
         // ignore button
         vLayout->addWidget( button = new QPushButton( tr( "Ignore" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT( _ignore() ) );
+        connect( button, SIGNAL(clicked()), SLOT(_ignore()) );
 
         // ignore button
         vLayout->addWidget( button = new QPushButton( tr( "Ignore All" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT( _ignoreAll() ) );
+        connect( button, SIGNAL(clicked()), SLOT(_ignoreAll()) );
 
         // state label_
         vLayout->addWidget( stateLabel_ = new QLabel( " ", this ), 1 );
@@ -189,7 +189,7 @@ namespace SPELLCHECK
 
         // close button
         vLayout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), tr( "Close" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT( close() ) );
+        connect( button, SIGNAL(clicked()), SLOT(close()) );
 
         // change font
         QFont font( stateLabel_->font() );

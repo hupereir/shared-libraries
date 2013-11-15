@@ -43,7 +43,7 @@ namespace SPELLCHECK
         group_->setExclusive( true );
 
         reset();
-        connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectFilter( QAction* ) ) );
+        connect( this, SIGNAL(triggered(QAction*)), SLOT(_selectFilter(QAction*)) );
     }
 
     //____________________________________________________________________
@@ -77,7 +77,7 @@ namespace SPELLCHECK
         // add reset button
         QAction* action;
         addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload" ), this ) );
-        connect( action, SIGNAL( triggered() ), SLOT( reset() ) );
+        connect( action, SIGNAL(triggered()), SLOT(reset()) );
 
         // load disabled filters from options
         QStringList disabledFilters;

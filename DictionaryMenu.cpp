@@ -46,7 +46,7 @@ namespace SPELLCHECK
         reset();
 
         // connections
-        connect( this, SIGNAL( triggered( QAction* ) ), SLOT( _selectDictionary( QAction* ) ) );
+        connect( this, SIGNAL(triggered(QAction*)), SLOT(_selectDictionary(QAction*)) );
 
     }
 
@@ -80,7 +80,7 @@ namespace SPELLCHECK
         // add reset button
         QAction* action;
         addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload" ), this ) );
-        connect( action, SIGNAL( triggered() ), SLOT( reset() ) );
+        connect( action, SIGNAL(triggered()), SLOT(reset()) );
 
         // load disabled dictionaries from options
         QStringList disabledDictionaries;

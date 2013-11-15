@@ -43,7 +43,7 @@ namespace SPELLCHECK
         setIcon( IconEngine::get( ICONS::CONFIGURE ) );
         setAutoRaise( true );
         setToolTip( tr( "Configure dictionaries that should appear in the list" ) );
-        connect( this, SIGNAL( clicked( void ) ), SLOT( _edit( void ) ) );
+        connect( this, SIGNAL(clicked()), SLOT(_edit()) );
 
         read();
 
