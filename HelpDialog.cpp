@@ -98,10 +98,10 @@ namespace BASE
         htmlEditor_->setFont( font );
 
         // connect list to text edit
-        connect( list_->selectionModel(), SIGNAL( currentChanged( const QModelIndex&, const QModelIndex& ) ), SLOT( _display( const QModelIndex&, const QModelIndex& ) ) );
+        connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex,QModelIndex)) );
 
         // add close accelerator
-        connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL( activated() ), SLOT( close() ) );
+        connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL(activated()), SLOT(close()) );
 
     }
 
