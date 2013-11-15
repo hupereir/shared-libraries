@@ -71,7 +71,7 @@ namespace TRANSPARENCY
         _updateConfiguration();
 
         if( Singleton::get().hasApplication() )
-        { connect( Singleton::get().application(), SIGNAL( configurationChanged() ), SLOT( _updateConfiguration() ) ); }
+        { connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
 
     }
 
@@ -307,12 +307,12 @@ namespace TRANSPARENCY
         Debug::Throw( "TransparentWidget::_installAction.\n" );
 
         addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload Blur Region" ), this ) );
-        connect( reloadBlurRegionAction_, SIGNAL( triggered( void ) ), SLOT( _updateBlurRegion( void ) ) );
+        connect( reloadBlurRegionAction_, SIGNAL(triggered()), SLOT(_updateBlurRegion()) );
 
         addAction( inverseColorsAction_ = new QAction( tr( "Inverse Colors" ), this ) );
         inverseColorsAction_->setCheckable( true );
         inverseColorsAction_->setChecked( false );
-        connect( inverseColorsAction_, SIGNAL( toggled( bool ) ), SLOT( _toggleInverseColors( bool ) ) );
+        connect( inverseColorsAction_, SIGNAL(toggled(bool)), SLOT(_toggleInverseColors(bool)) );
 
     }
 
