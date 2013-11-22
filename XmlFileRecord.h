@@ -50,10 +50,31 @@ class XmlFileRecord: public FileRecord
     {}
 
     //! constructor
-    XmlFileRecord( const QDomElement& dom );
+    XmlFileRecord( const QDomElement& );
 
     //! write to dom
-    QDomElement domElement( QDomDocument& parent ) const;
+    QDomElement domElement( QDomDocument& ) const;
+
+    class List: public QList<XmlFileRecord>
+    {
+        public:
+
+        //! constructor
+        List( void ):
+            QList<XmlFileRecord>()
+        {}
+
+        //! constructor
+        List( const QDomElement& );
+
+        //!destructor
+        virtual ~List( void )
+        {}
+
+        //! write to dom
+        QDomElement domElement( QDomDocument& ) const;
+
+    };
 
 };
 

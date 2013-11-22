@@ -112,3 +112,37 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 
     return out;
 }
+
+//_______________________________________________
+XmlFileRecord::List::List( const QDomElement& element )
+{
+    Debug::Throw( "XmlFileRecord::List::List.\n" );
+
+    for(QDomNode node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
+    {
+
+        QDomElement childElement = node.toElement();
+        if( childElement.isNull() ) continue;
+
+        // special options
+        if( childElement.tagName() == FILERECORD::XML::RECORD )
+        {
+            XmlFileRecord record( childElement );
+            if( !record.file().isEmpty() ) append( record );
+        }
+    }
+
+}
+
+//_______________________________________________
+QDomElement XmlFileRecord::List::domElement( QDomDocument& document ) const
+{
+    Debug::Throw( "XmlFileRecord::List::domElement.\n" );
+    QDomElement top = document.appendChild( document.createElement( FILERECORD::XML::FILE_LIST ) ).toElement();
+    foreach( const XmlFileRecord& record, *this )
+    {
+        if( !record.file().isEmpty() )
+        { top.appendChild( XmlFileRecord( record ).domElement( document ) ); }
+    }
+    return top;
+}
