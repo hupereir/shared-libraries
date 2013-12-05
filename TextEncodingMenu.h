@@ -23,12 +23,12 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "CustomComboBox.h"
 
-#include <QWidget>
+#include <QAction>
+#include <QMap>
+#include <QMenu>
 
-//! allows to change default and current file encoding
-class TextEncodingWidget: public QWidget, public Counter
+class TextEncodingMenu: public QMenu, public Counter
 {
 
     Q_OBJECT
@@ -36,40 +36,26 @@ class TextEncodingWidget: public QWidget, public Counter
     public:
 
     //! constructor
-    TextEncodingWidget( QWidget* = 0 );
+    TextEncodingMenu( QWidget* = 0 );
 
-    //! destructor
-    virtual ~TextEncodingWidget( void )
-    {}
-
-    //! default encoding
-    QString defaultTextEncoding( void ) const
-    { return defaultComboBox_->currentText(); }
-
-    //! current encoding
-    QString currentTextEncoding( void ) const
-    { return currentComboBox_->currentText(); }
+    //! select
+    void select( const QByteArray& );
 
     Q_SIGNALS:
 
-    //! default encoding changed
-    void defaultEncodingChanged( const QString& );
+    //! emitted when encoding is changed
+    void encodingChanged( const QByteArray& );
 
-    //! current encoding changed
-    void currentEncodingChanged( const QString& );
+    private Q_SLOTS:
 
-    protected Q_SLOTS:
-
-    //! update default encoding
-    void _updateDefaultEncoding( const QString& );
+    //! size selected from action
+    void _selected( QAction* );
 
     private:
 
-    //! default encoding combobox
-    CustomComboBox* defaultComboBox_;
-
-    //! current encoding combobox
-    CustomComboBox* currentComboBox_;
+    //! map action to encoding
+    typedef QMap<QAction*, QByteArray> ActionMap;
+    ActionMap actions_;
 
 };
 

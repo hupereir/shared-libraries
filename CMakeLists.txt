@@ -149,7 +149,7 @@ SET( base_qt_SOURCES
   TextEditor.cpp
   TextEditorMarginWidget.cpp
   TextEditionDelegate.cpp
-  TextEncodingWidget.cpp
+  TextEncodingMenu.cpp
   TextPosition.cpp
   TextSeparator.cpp
   ToolBarMenu.cpp
