@@ -23,6 +23,8 @@
 #include "ToolButtonStyleMenu.h"
 #include "ToolButtonStyleMenu.moc"
 
+#include <QActionGroup>
+
 //_____________________________________________________________________________
 ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     QMenu( tr( "Text position" ), parent ),
