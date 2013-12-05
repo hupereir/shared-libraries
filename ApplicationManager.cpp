@@ -189,7 +189,11 @@ namespace SERVER
 
         } else {
 
-            return acceptedClients_[id];
+            // need to update pid on key
+            Client* client( acceptedClients_[id] );
+            acceptedClients_.remove( id );
+            acceptedClients_.insert( id, client );
+            return client;
 
         }
 
