@@ -80,7 +80,6 @@ void Options::installDefaultOptions( void )
     set<bool>( "USE_ALTERNATE_COLOR", false );
     set<bool>( "USE_SELECTED_COLUMN_COLOR", true );
 
-    set<BASE::Color>( "SELECTED_COLUMN_COLOR", QColor( "#fffdd4" ) );
     set<int>( "LIST_ICON_SIZE", 24 );
     set<int>( "LIST_ITEM_MARGIN", 2 );
 
