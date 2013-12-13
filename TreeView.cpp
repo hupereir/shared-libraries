@@ -51,6 +51,7 @@ TreeView::TreeView( QWidget* parent ):
     iconSizeFromOptions_( true ),
     forceAlternatingRowColors_( false ),
     itemMargin_( 2 ),
+    useSelectedColumnColor_( false ),
     vertical_( 0 ),
     horizontal_( 0 ),
     lockedColumns_( 0 )
@@ -533,12 +534,10 @@ void TreeView::mousePressEvent( QMouseEvent* event )
 void TreeView::paintEvent( QPaintEvent* event )
 {
 
-    // check selected column background color
-    if( !selectedColumnColor_.isValid() ) return QTreeView::paintEvent( event );
-
-    // check number of columns
-    if( visibleColumnCount() < 2 ) return QTreeView::paintEvent( event );
-    if( header() && header()->isVisible() && header()->isSortIndicatorShown() )
+    if(
+        useSelectedColumnColor_ && visibleColumnCount() >= 2 &&
+        header() && header()->isVisible() &&
+        header()->isSortIndicatorShown() )
     {
 
         // get selected column
@@ -549,7 +548,7 @@ void TreeView::paintEvent( QPaintEvent* event )
         painter.setClipRect( event->rect() );
         rect.setTop(0);
         rect.setHeight( height() );
-        painter.setBrush( selectedColumnColor_ );
+        painter.setBrush( palette().color( QPalette::AlternateBase ) );
         painter.setPen( Qt::NoPen );
         painter.drawRect( rect );
         painter.end();
@@ -909,9 +908,7 @@ void TreeView::_updateConfiguration( void )
         palette.color( QPalette::AlternateBase ) != palette.color( QPalette::Base ) );
 
     // try load selected column color from option
-    selectedColumnColor_ = XmlOptions::get().get<bool>( "USE_SELECTED_COLUMN_COLOR" ) ?
-        XmlOptions::get().get<BASE::Color>("SELECTED_COLUMN_COLOR"):
-        QColor();
+    useSelectedColumnColor_ = XmlOptions::get().get<bool>( "USE_SELECTED_COLUMN_COLOR" );
 
     // item margin
     if( itemMarginFromOptions_ && XmlOptions::get().contains( "LIST_ITEM_MARGIN" ) )

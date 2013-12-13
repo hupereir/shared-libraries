@@ -257,22 +257,11 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 
     }
 
-    GridLayout* gridLayout = new GridLayout();
-    gridLayout->setMargin(0);
-    gridLayout->setMaxCount(2);
-    vLayout->addLayout( gridLayout );
-
     {
         OptionCheckBox* checkbox;
-        checkbox = new OptionCheckBox( tr( "Use different backround for selected column:" ), box, "USE_SELECTED_COLUMN_COLOR" );
-        gridLayout->addWidget( checkbox );
+        checkbox = new OptionCheckBox( tr( "Use different backround for selected column" ), box, "USE_SELECTED_COLUMN_COLOR" );
+        vLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
-
-        OptionColorDisplay* color;
-        gridLayout->addWidget( color = new OptionColorDisplay( box, "SELECTED_COLUMN_COLOR" ) );
-        addOptionWidget( color );
-
-        connect( checkbox, SIGNAL(toggled(bool)), color, SLOT(setEnabled(bool)) );
 
     }
 
@@ -280,9 +269,12 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     OptionSpinBox* spinbox;
 
     // icon size in lists
-    gridLayout->addWidget( label = new QLabel( tr( "List items icon size:" ), box ) );
+    QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout->setMargin(0);
+    vLayout->addLayout( hLayout );
+    hLayout->addWidget( label = new QLabel( tr( "List items icon size:" ), box ) );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
-    gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
+    hLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
     spinbox->setToolTip( tr( "Default size of the icons displayed in lists" ) );
     spinbox->setSuffix( tr( "px" ) );
     spinbox->setMinimum(8);
@@ -351,19 +343,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
-        GridLayout* gridLayout = new GridLayout();
-        gridLayout->setMargin(0);
-        gridLayout->setMaxCount(2);
-        layout->addLayout( gridLayout );
-
-        gridLayout->addWidget( new QLabel( tr( "Paragraph highlight color:" ) ) );
-        OptionColorDisplay* color = new OptionColorDisplay( box, "HIGHLIGHT_COLOR" );
-        gridLayout->addWidget( color );
-        addOptionWidget( color );
-
         checkbox->setChecked( false );
-        color->setEnabled( false );
-        connect( checkbox, SIGNAL(toggled(bool)), color, SLOT(setEnabled(bool)) );
         out = box;
     }
 

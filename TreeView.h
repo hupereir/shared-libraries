@@ -379,7 +379,7 @@ class TreeView: public QTreeView, public Counter
     int itemMargin_;
 
     //! selected column background color
-    QColor selectedColumnColor_;
+    bool useSelectedColumnColor_;
 
     //! vertical scrollbar position
     int vertical_;

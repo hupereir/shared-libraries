@@ -268,7 +268,7 @@ void TextEditor::paintMargin( QPainter& painter )
     if( blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() && _currentBlockRect().isValid() )
     {
 
-        painter.setBrush( highlightColor_ );
+        painter.setBrush( palette().color( QPalette::AlternateBase ) );
         painter.drawRect( _currentBlockRect() );
 
     }
@@ -1519,7 +1519,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
         QColor color;
         if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
         {
-            color = highlightColor_;
+            color = palette().color( QPalette::AlternateBase );
 
             // update current block rect
             // and redraw margin if changed
@@ -2284,9 +2284,8 @@ void TextEditor::_updateConfiguration( void )
     tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
 
     // paragraph highlighting
-    highlightColor_ = QColor( XmlOptions::get().get<BASE::Color>( "HIGHLIGHT_COLOR" ) );
-    blockHighlight().setEnabled( highlightColor_.isValid() && XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-    blockHighlightAction().setEnabled( highlightColor_.isValid() );
+    blockHighlight().setEnabled( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+    blockHighlightAction().setEnabled( true );
     blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
 
     // update margins
@@ -2432,7 +2431,7 @@ void TextEditor::_toggleBlockHighlight( bool state )
     Debug::Throw( "TextEditor::_toggleBlockHighlight.\n" );
 
     // enable
-    blockHighlight().setEnabled( highlightColor_.isValid() && state );
+    blockHighlight().setEnabled( state );
 
     // update options
     XmlOptions::get().set<bool>( "HIGHLIGHT_PARAGRAPH", state );
