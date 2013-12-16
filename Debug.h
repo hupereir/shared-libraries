@@ -22,15 +22,33 @@
 *
 *******************************************************************************/
 
-#include <QTextStream>
+#include <QFile>
 #include <QIODevice>
 #include <QString>
+#include <QTextStream>
 #include <QMutex>
 #include <QMutexLocker>
 
 class Debug
 {
     public:
+
+    //!@name static accessors
+    //@{
+
+    //! retrieves the debug level
+    static const int& level( void );
+
+    //@}
+
+    //!@name static modifiers
+    //@{
+
+    //! sets the debug level. Everything thrown of bigger level is not discarded
+    static void setLevel( const int& level );
+
+    //! set file name
+    static void setFileName( const QString& );
 
     //! writes string to clog if level is lower than level_
     static void Throw( int level, QString str );
@@ -41,50 +59,14 @@ class Debug
     //! returns either clog or dummy stream depending of the level
     static QTextStream& Throw( int level = 1 );
 
-    //! sets the debug level. Everything thrown of bigger level is not discarded
-    static void setLevel( const int& level );
-
-    //! retrieves the debug level
-    static const int& level( void );
+    //@}
 
     private:
 
-    //! private constructor
-    Debug( void );
+    class Private;
 
     //! return singleton
-    static Debug& _get( void );
-
-    //! null device.
-    /*! Used to throw everything if the level is not high enough */
-    class NullIODevice : public QIODevice
-    {
-        public:
-
-        //! constructor
-        NullIODevice();
-
-        protected:
-
-        // read
-        virtual qint64 readData ( char*, qint64 );
-
-        // read
-        virtual qint64 writeData( const char*, qint64 );
-
-    };
-
-    //! debug level
-    int level_;
-
-    //! null device
-    NullIODevice nullDevice_;
-
-    //! null stream
-    QTextStream nullStream_;
-
-    //! default stream
-    QTextStream stdStream_;
+    static Private& _get( void );
 
 };
 
