@@ -22,12 +22,8 @@
 *
 *******************************************************************************/
 
-#include <QFile>
-#include <QIODevice>
 #include <QString>
 #include <QTextStream>
-#include <QMutex>
-#include <QMutexLocker>
 
 class Debug
 {

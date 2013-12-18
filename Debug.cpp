@@ -21,6 +21,11 @@
 
 #include "Debug.h"
 
+#include <QFile>
+#include <QIODevice>
+#include <QMutex>
+#include <QMutexLocker>
+
 //! null device.
 /*! Used to throw everything if the level is not high enough */
 class NullIODevice : public QIODevice
@@ -110,14 +115,10 @@ void Debug::setFileName( const QString& filename )
 //______________________________________
 void Debug::Throw( int level, QString str )
 {
-    // check level
-    if( _get().level_ < level ) return;
-
-    // print string to stream
-    _get().stdStream_ << str << flush;
-
+    // check level and print
+    if( _get().level_ >= level )
+    { _get().stdStream_ << str << flush; }
     return;
-
 }
 
 //______________________________________
