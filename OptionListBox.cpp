@@ -99,7 +99,7 @@ EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode m
 //_______________________________________________________
 OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     QWidget( parent ),
-    OptionWidget( name ),
+    OptionWidget( name, this ),
     browsable_( false ),
     fileMode_( QFileDialog::AnyFile )
 {
@@ -194,7 +194,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     // update buttons
     _updateButtons();
 
-    _setBuddy( this );
+
 
 }
 
@@ -303,7 +303,15 @@ void OptionListBox::_add( void )
 
     // update default state
     if( dialog.checkbox().isEnabled() && dialog.checkbox().isChecked() )
-    { _setDefault(); }
+    {
+
+        _setDefault();
+
+    } else {
+
+        emit modified();
+
+    }
 
 }
 
@@ -349,7 +357,15 @@ void OptionListBox::_edit( void )
 
     // update default state
     if( dialog.checkbox().isEnabled() && dialog.checkbox().isChecked() )
-    { _setDefault(); }
+    {
+
+        _setDefault();
+
+    } else {
+
+        emit modified();
+
+    }
 
     return;
 
@@ -367,6 +383,7 @@ void OptionListBox::_remove( void )
 
     // remove
     model_->remove( removed );
+    emit modified();
 
     return;
 
@@ -395,5 +412,6 @@ void OptionListBox::_setDefault( void )
     model_->add( currentOption );
 
     list_->resizeColumns();
+    emit modified();
 
 }

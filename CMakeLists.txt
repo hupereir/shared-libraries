@@ -120,9 +120,17 @@ SET( base_qt_SOURCES
   LineNumberDisplay.cpp
   LogWidget.cpp
   MimeTypeIconProvider.cpp
+  OptionBrowsedLineEditor.cpp
+  OptionCheckBox.cpp
+  OptionColorDisplay.cpp
+  OptionComboBox.cpp
   OptionDialog.cpp
+  OptionFontEditor.cpp
   OptionListBox.cpp
   OptionModel.cpp
+  OptionRadioButton.cpp
+  OptionSlider.cpp
+  OptionSpinBox.cpp
   OptionWidgetList.cpp
   PathEditor.cpp
   PathHistory.cpp

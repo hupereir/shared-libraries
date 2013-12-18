@@ -31,13 +31,15 @@
 class OptionColorDisplay: public ColorDisplay, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
     OptionColorDisplay( QWidget* parent, const QString& optionName ):
         ColorDisplay( parent ),
-        OptionWidget( optionName )
-    { _setBuddy( this ); }
+        OptionWidget( optionName, this )
+    { connect( &_editor(), SIGNAL(textChanged(QString)), SIGNAL(modified())); }
 
     //! read value from option
     void read( void )
@@ -46,6 +48,11 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
     //! write value to option
     void write( void ) const
     { XmlOptions::get().set<BASE::Color>( optionName(), color() ); }
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
 };
 #endif

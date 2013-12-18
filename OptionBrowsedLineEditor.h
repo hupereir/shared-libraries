@@ -31,13 +31,15 @@
 class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
     OptionBrowsedLineEditor( QWidget* parent, const QString& optionName ):
         BrowsedLineEditor( parent ),
-        OptionWidget( optionName )
-    { _setBuddy( this ); }
+        OptionWidget( optionName, this )
+    { connect( this, SIGNAL(textChanged(QString)), SIGNAL(modified())); }
 
     //! read value from option
     void read( void )
@@ -47,5 +49,9 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
     void write( void ) const
     { XmlOptions::get().setRaw( optionName(), editor().text() ); }
 
+    Q_SIGNALS:
+
+    //! modified signal
+    void modified( void );
 };
 #endif

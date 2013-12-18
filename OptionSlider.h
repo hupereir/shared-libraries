@@ -25,6 +25,7 @@
 #include "CustomSlider.h"
 #include "OptionWidget.h"
 #include "Options.h"
+#include "XmlOptions.h"
 
 #include <cmath>
 
@@ -32,14 +33,16 @@
 class OptionSlider: public CustomSlider, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
     OptionSlider( QWidget* parent, const QString& optionName ):
         CustomSlider( parent ),
-        OptionWidget( optionName ),
+        OptionWidget( optionName, this ),
         scale_( 1 )
-    { _setBuddy( this ); }
+    { connect( this, SIGNAL(valueChanged(int)), SIGNAL(modified())); }
 
     //! scale (i.e. option = value()/scale)
     void setScale( const double& scale )
@@ -52,6 +55,11 @@ class OptionSlider: public CustomSlider, public OptionWidget
     //! write value to option
     void write( void ) const
     { XmlOptions::get().set<double>( optionName(), static_cast<double>(slider().value())/scale_ ); }
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
     private:
 

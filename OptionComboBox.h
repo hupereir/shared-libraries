@@ -31,14 +31,16 @@
 class OptionComboBox: public CustomComboBox, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
     OptionComboBox( QWidget* parent, const QString& optionName ):
         CustomComboBox( parent ),
-        OptionWidget( optionName ),
+        OptionWidget( optionName, this ),
         useValue_( true )
-    { _setBuddy( this ); }
+    { connect( this, SIGNAL(editTextChanged(QString)), SIGNAL(modified())); }
 
     //! use value for option
     void setUseValue( bool value )
@@ -68,6 +70,11 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
         if( useValue_ ) XmlOptions::get().setRaw( optionName(), currentText() );
         else XmlOptions::get().set<int>( optionName(), currentIndex() );
     }
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
     private:
 

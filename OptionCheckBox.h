@@ -31,14 +31,16 @@
 class OptionCheckBox: public QCheckBox, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
     OptionCheckBox( const QString& label, QWidget* parent, const QString& optionName ):
         QCheckBox( label, parent ),
-        OptionWidget( optionName ),
+        OptionWidget( optionName, this ),
         negative_( false )
-    { _setBuddy( this ); }
+    { connect( this, SIGNAL(toggled(bool)), SIGNAL(modified())); }
 
     //! negative
     void setNegative( bool value )
@@ -57,6 +59,10 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
         if( negative_ ) XmlOptions::get().set<bool>( optionName(), !isChecked() );
         else XmlOptions::get().set<bool>( optionName(), isChecked() );
     }
+
+    Q_SIGNALS:
+
+    void modified( void );
 
     private:
 

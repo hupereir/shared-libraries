@@ -59,6 +59,11 @@ class FontEditor: public QWidget, public Counter
     virtual const QFont& font( void ) const
     { return font_; }
 
+    Q_SIGNALS:
+
+    //! font changed
+    void fontChanged( const QFont& );
+
     protected Q_SLOTS:
 
     //! select font from dialog
@@ -66,7 +71,11 @@ class FontEditor: public QWidget, public Counter
     {
         bool ok( false );
         QFont font = QFontDialog::getFont( &ok, this->font(), this );
-        if( ok ) setFont( font );
+        if( ok )
+        {
+            setFont( font );
+            emit fontChanged( font_ );
+        }
         return;
     }
 

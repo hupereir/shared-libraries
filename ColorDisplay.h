@@ -54,7 +54,7 @@ class ColorDisplay: public QWidget, public Counter
     //! change color (from line editor)
     void _selectColorFromText( void );
 
-    private:
+    protected:
 
     //! internal customized label to have correct background color
     class Editor : public AnimatedLineEditor
@@ -74,6 +74,12 @@ class ColorDisplay: public QWidget, public Counter
         void setColor( QColor );
 
     };
+
+    //! editor
+    Editor& _editor( void ) const
+    { return *editor_; }
+
+    private:
 
     //! label used to display the color
     Editor* editor_;

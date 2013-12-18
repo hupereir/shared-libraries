@@ -1,6 +1,3 @@
-#ifndef OptionFontEditor_h
-#define OptionFontEditor_h
-
 // $Id$
 
 /******************************************************************************
@@ -22,38 +19,5 @@
 *
 *******************************************************************************/
 
-#include "FontEditor.h"
-#include "Options.h"
-#include "OptionWidget.h"
-#include "XmlOptions.h"
-
-//! QLineEdit associated to an option for configuration dialogs
-class OptionFontEditor: public FontEditor, public OptionWidget
-{
-
-    Q_OBJECT
-
-    public:
-
-        //! constructor
-    OptionFontEditor( QWidget* parent, const QString& optionName ):
-        FontEditor( parent ),
-        OptionWidget( optionName, this )
-    { connect( this, SIGNAL(fontChanged(QFont)), SIGNAL(modified())); }
-
-    //! read value from option
-    void read( void )
-    { setFont( XmlOptions::get().raw( optionName() ) ); }
-
-    //! write value to option
-    void write( void ) const
-    { XmlOptions::get().setRaw( optionName(), font().toString() ); }
-
-    Q_SIGNALS:
-
-    //! modified
-    void modified( void );
-
-};
-
-#endif
+#include "OptionRadioButton.h"
+#include "OptionRadioButton.moc"

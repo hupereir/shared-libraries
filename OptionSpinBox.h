@@ -21,6 +21,7 @@
 * this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 *******************************************************************************/
+
 #include "OptionWidget.h"
 #include "XmlOptions.h"
 
@@ -38,7 +39,7 @@ class OptionSpinBox: public QWidget, public OptionWidget
     //! constructor
     OptionSpinBox( QWidget* parent, const QString& optionName, bool addStretch = true ):
         QWidget( parent ),
-        OptionWidget( optionName ),
+        OptionWidget( optionName, this ),
         spinBox_( 0 ),
         scale_( 1 )
     {
@@ -47,7 +48,7 @@ class OptionSpinBox: public QWidget, public OptionWidget
         setLayout( layout );
         layout->addWidget( spinBox_ = new QSpinBox( this ) );
         if( addStretch ) layout->addStretch( 1 );
-        _setBuddy( this );
+        connect(spinBox_, SIGNAL(valueChanged(int)), SIGNAL(modified()));
     }
 
     //! scale (i.e. option = value()/scale)
@@ -85,6 +86,11 @@ class OptionSpinBox: public QWidget, public OptionWidget
     { spinBox_->setToolTip( value ); }
 
     //@}
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
     private:
 

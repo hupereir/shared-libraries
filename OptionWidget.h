@@ -30,9 +30,9 @@ class OptionWidget
     public:
 
     //! constructor
-    OptionWidget( const QString& name ):
+    OptionWidget( const QString& name, QObject* budy = 0 ):
         optionName_( name ),
-        buddy_(0)
+        buddy_( budy )
     {}
 
     //! destructor

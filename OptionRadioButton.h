@@ -31,13 +31,15 @@
 class OptionRadioButton: public QRadioButton, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
     OptionRadioButton( const QString& label, QWidget* parent, const QString& optionName ):
         QRadioButton( label, parent ),
-        OptionWidget( optionName )
-    { _setBuddy( this ); }
+        OptionWidget( optionName, this )
+    { connect( this, SIGNAL(toggled(bool)), SIGNAL(modified())); }
 
     //! read value from option
     void read( void )
@@ -46,6 +48,11 @@ class OptionRadioButton: public QRadioButton, public OptionWidget
     //! write value to option
     void write( void ) const
     { XmlOptions::get().set<bool>( optionName(), isChecked() ); }
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
 };
 #endif
