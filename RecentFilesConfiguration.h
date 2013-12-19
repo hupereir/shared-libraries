@@ -44,18 +44,25 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
     //! constructor
     RecentFilesConfiguration( QWidget*, FileList& );
 
-    //! read options
+    // parent class implementation
     using OptionWidgetList::read;
-    virtual void read( void );
-
-    //! read options
     using OptionWidgetList::write;
-    virtual void write( void ) const;
+
+    //! read files
+    virtual void read( void );
 
     Q_SIGNALS:
 
     //! modified
     void modified( void );
+
+    public Q_SLOTS:
+
+    // write files
+    void write( void );
+
+    //! reload
+    void reload( void );
 
     private Q_SLOTS:
 
@@ -67,9 +74,6 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
 
     //! remove
     void _remove( void );
-
-    //! reload
-    void _reload( void );
 
     private:
 

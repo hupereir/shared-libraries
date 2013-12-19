@@ -69,6 +69,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     restoreDefaultsButton_->setAutoDefault( false );
 
     connect( restoreDefaultsButton_, SIGNAL(clicked()), SLOT(_restoreDefaults()) );
+    connect( restoreDefaultsButton_, SIGNAL(clicked()), SIGNAL(restoreDefaults()) );
     _buttonLayout().addWidget( restoreDefaultsButton_ );
 
     // reset
@@ -77,6 +78,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     resetButton_->setAutoDefault( false );
 
     connect( resetButton_, SIGNAL(clicked()), SLOT(_reset()) );
+    connect( resetButton_, SIGNAL(clicked()), SIGNAL(reset()) );
     _buttonLayout().addWidget( resetButton_ );
     _buttonLayout().addStretch( 1 );
 

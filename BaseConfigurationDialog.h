@@ -113,6 +113,12 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //! canceled button pressed
     void cancel( void );
 
+    //! reset button pressed
+    void reset( void );
+
+    //! restore defaults button pressed
+    void restoreDefaults( void );
+
     //! emmited when configuration is changed
     void configurationChanged();
 

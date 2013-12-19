@@ -30,7 +30,6 @@
 #include "OptionModel.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
-#include "XmlOptions.h"
 
 #include <QHBoxLayout>
 #include <QHeaderView>
