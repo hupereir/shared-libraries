@@ -39,6 +39,7 @@ namespace SVG
     //______________________________________________________________________
     SvgConfiguration::SvgConfiguration( QWidget* parent ):
         QWidget( parent ),
+        OptionWidgetList( this ),
         Counter( "SVG::SvgConfiguration" )
     {
 
