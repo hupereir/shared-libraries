@@ -41,6 +41,11 @@ namespace SPELLCHECK
         //! constructor
         AutoSpellConfiguration( QWidget* parent );
 
+        Q_SIGNALS:
+
+        //! modified
+        void modified( void );
+
     };
 
 }
