@@ -32,6 +32,7 @@
 #include "OptionComboBox.h"
 #include "SpellInterface.h"
 #include "SpellItemDialog.h"
+#include "XmlOptions.h"
 
 #include <QLabel>
 #include <QToolButton>
@@ -42,6 +43,7 @@ namespace SPELLCHECK
     //___________________________________________
     SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
         QGroupBox( "Spell Check", parent ),
+        OptionWidgetList( this ),
         Counter( "SpellCheckConfiguration" )
     {
         Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
@@ -88,7 +90,7 @@ namespace SPELLCHECK
         connect( filterButton, SIGNAL(modified()), SLOT(_updateFilters()) );
         addOptionWidget( filterButton );
 
-        read();
+        read( XmlOptions::get() );
 
         _updateDictionaries();
         _updateFilters();
@@ -112,7 +114,7 @@ namespace SPELLCHECK
         { if( !disabledDictionaries.contains( dictionary ) ) dictionariesComboBox_->addItem( dictionary ); }
 
         // read default value from options
-        dictionariesComboBox_->read();
+        dictionariesComboBox_->read( XmlOptions::get() );
 
     }
 
@@ -133,7 +135,7 @@ namespace SPELLCHECK
         { if( !disabledFilters.contains( filter ) ) filtersComboBox_->addItem( filter ); }
 
         // read default value from options
-        filtersComboBox_->read();
+        filtersComboBox_->read( XmlOptions::get() );
 
     }
 

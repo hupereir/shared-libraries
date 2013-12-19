@@ -23,7 +23,6 @@
 *******************************************************************************/
 
 #include "OptionWidget.h"
-#include "XmlOptions.h"
 
 #include <QToolButton>
 
@@ -49,12 +48,12 @@ namespace SPELLCHECK
         { return value_; }
 
         //! read value from option
-        virtual void read( void )
-        { value_ = XmlOptions::get().raw( optionName() ); }
+        virtual void read( const Options& options )
+        { value_ = options.raw( optionName() ); }
 
         //! write value to option
-        virtual void write( void ) const
-        { XmlOptions::get().set( optionName(), value_ ); }
+        virtual void write( Options& options ) const
+        { options.set( optionName(), value_ ); }
 
         Q_SIGNALS:
 

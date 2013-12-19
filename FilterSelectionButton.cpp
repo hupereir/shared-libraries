@@ -25,6 +25,7 @@
 #include "IconEngine.h"
 #include "SpellInterface.h"
 #include "SpellItemDialog.h"
+#include "XmlOptions.h"
 
 namespace SPELLCHECK
 {
@@ -32,7 +33,7 @@ namespace SPELLCHECK
     //________________________________________________________________
     FilterSelectionButton::FilterSelectionButton( QWidget* parent ):
         QToolButton( parent ),
-        OptionWidget( "SPELLCHECK_DISABLED_FILTERS" )
+        OptionWidget( "SPELLCHECK_DISABLED_FILTERS", this )
     {
 
         // make sure disabled filters option exists
@@ -45,8 +46,8 @@ namespace SPELLCHECK
         setToolTip( "Configure filters that should appear in the list" );
         connect( this, SIGNAL(clicked()), SLOT(_edit()) );
 
-        read();
-        
+        read( XmlOptions::get() );
+
     }
 
     //___________________________________________
@@ -69,7 +70,7 @@ namespace SPELLCHECK
         // check modification
         if( value_ != backup )
         {
-            write();
+            write( XmlOptions::get() );
             emit modified();
         }
 

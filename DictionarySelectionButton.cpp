@@ -25,6 +25,7 @@
 #include "IconEngine.h"
 #include "SpellInterface.h"
 #include "SpellItemDialog.h"
+#include "XmlOptions.h"
 
 namespace SPELLCHECK
 {
@@ -32,7 +33,7 @@ namespace SPELLCHECK
     //________________________________________________________________
     DictionarySelectionButton::DictionarySelectionButton( QWidget* parent ):
         QToolButton( parent ),
-        OptionWidget( "SPELLCHECK_DISABLED_DICTIONARIES" )
+        OptionWidget( "SPELLCHECK_DISABLED_DICTIONARIES", this )
     {
 
         // make sure disabled dictionaries option exists
@@ -45,7 +46,7 @@ namespace SPELLCHECK
         setToolTip( tr( "Configure dictionaries that should appear in the list" ) );
         connect( this, SIGNAL(clicked()), SLOT(_edit()) );
 
-        read();
+        read( XmlOptions::get() );
 
     }
 
@@ -69,7 +70,7 @@ namespace SPELLCHECK
         // check modification
         if( value_ != backup )
         {
-            write();
+            write( XmlOptions::get() );
             emit modified();
         }
 

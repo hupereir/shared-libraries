@@ -19,9 +19,6 @@
 *
 *******************************************************************************/
 
-#include <QGridLayout>
-#include <QLabel>
-
 #include "AutoSpellConfiguration.h"
 #include "AutoSpellConfiguration.moc"
 #include "GridLayout.h"
@@ -29,12 +26,17 @@
 #include "OptionColorDisplay.h"
 #include "OptionSpinBox.h"
 #include "OptionFontInfo.h"
+#include "XmlOptions.h"
+
+#include <QGridLayout>
+#include <QLabel>
 
 namespace SPELLCHECK
 {
     //___________________________________________
     AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
         QGroupBox( "Automatic Spell Check", parent ),
+        OptionWidgetList( this ),
         Counter( "AutoSpellConfiguration" )
     {
         Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
@@ -68,7 +70,7 @@ namespace SPELLCHECK
         fontinfo->setToolTip( tr( "Font format for misspelled words" ) );
         addOptionWidget( fontinfo );
 
-        read();
+        read( XmlOptions::get() );
 
     }
 }
