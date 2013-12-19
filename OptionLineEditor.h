@@ -27,13 +27,15 @@
 class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
     OptionLineEditor( QWidget* parent, const QString& optionName ):
         AnimatedLineEditor( parent ),
-        OptionWidget( optionName )
-    { _setBuddy( this ); }
+        OptionWidget( optionName, this )
+    { connect( this, SIGNAL(textChanged(QString)), SIGNAL(modified())); }
 
     //! read value from option
     void read( const Options& options )
@@ -42,6 +44,11 @@ class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
     //! write value to option
     void write( Options& options ) const
     { options.setRaw( optionName(), text() ); }
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
 };
 #endif

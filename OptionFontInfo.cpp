@@ -1,6 +1,3 @@
-#ifndef OptionWidgetList_h
-#define OptionWidgetList_h
-
 // $Id$
 
 /******************************************************************************
@@ -22,43 +19,5 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
-#include "OptionWidget.h"
-
-#include <QList>
-
-//! abstract container for OptionWidgets
-class OptionWidgetList: public OptionWidget
-{
-
-    public:
-
-    //! constructor
-    OptionWidgetList( QObject* buddy = 0 ):
-        OptionWidget( "generic", buddy )
-    {}
-
-    //! add option widget
-    virtual void addOptionWidget( OptionWidget* );
-
-    //! clear option widgets
-    virtual void clearOptionWidgets( void )
-    {
-        Debug::Throw( "OptionWidgetList::clearOptionWidgets.\n" );
-        optionWidgets_.clear();
-    }
-
-    //! read options
-    virtual void read( const Options& );
-
-    //! read options
-    virtual void write( Options& ) const;
-
-    private:
-
-    //! contained options
-    QList< OptionWidget* > optionWidgets_;
-
-};
-
-#endif
+#include "OptionFontInfo.h"
+#include "OptionFontInfo.moc"

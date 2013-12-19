@@ -33,6 +33,8 @@
 class OptionSpinBox: public QWidget, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

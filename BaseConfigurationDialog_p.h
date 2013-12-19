@@ -90,6 +90,11 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
 
     }
 
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
+
 };
 
 #endif

@@ -19,9 +19,9 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "FontInfo.h"
 #include "FontInfo.moc"
+#include "Debug.h"
 
 #include <QLayout>
 
@@ -30,36 +30,39 @@ FontInfo::FontInfo( QWidget* parent ):
 QWidget( parent )
 {
     Debug::Throw( "FontInfo::FontInfo.\n" );
+
+    // create checkboxes
+
     setLayout( new QHBoxLayout() );
     layout()->setMargin(2);
     layout()->setSpacing(2);
-    layout()->addWidget( bold_ = new QCheckBox( tr( "Bold" ), this ) );
-    layout()->addWidget( italic_ = new QCheckBox( tr( "Italic" ), this ) );
-    layout()->addWidget( underline_ = new QCheckBox( tr( "Underline" ), this ) );
-    layout()->addWidget( strike_ = new QCheckBox( tr( "Strike" ), this ) );
-    layout()->addWidget( overline_ = new QCheckBox( tr( "Overline" ), this ) );
+
+    layout()->addWidget( checkBoxes_.insert( FORMAT::Bold, new QCheckBox( tr( "Bold" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( FORMAT::Italic, new QCheckBox( tr( "Italic" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( FORMAT::Underline, new QCheckBox( tr( "Underline" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( FORMAT::Strike, new QCheckBox( tr( "Strike" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( FORMAT::Overline, new QCheckBox( tr( "Overline" ), this ) ).value() );
+
+    for( CheckBoxMap::iterator iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
+    { connect( iter.value(), SIGNAL(toggled(bool)), SIGNAL(modified())); }
 }
 
 //__________________________________________________
 void FontInfo::setFormat( FORMAT::TextFormatFlags format )
 {
     Debug::Throw( "FontInfo::setFormat.\n" );
-    bold_->setChecked( format & FORMAT::Bold );
-    italic_->setChecked( format & FORMAT::Italic );
-    underline_->setChecked( format & FORMAT::Underline );
-    strike_->setChecked( format & FORMAT::Strike );
-    overline_->setChecked( format & FORMAT::Overline );
+    for( CheckBoxMap::iterator iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
+    { iter.value()->setChecked( format&iter.key() ); }
 }
 
 //__________________________________________________
-unsigned int FontInfo::format( void ) const
+FORMAT::TextFormatFlags FontInfo::format( void ) const
 {
     Debug::Throw( "FontInfo::format.\n" );
-    unsigned int out = FORMAT::Default;
-    if( bold_->isChecked() ) out |= FORMAT::Bold;
-    if( italic_->isChecked() ) out |= FORMAT::Italic;
-    if( underline_->isChecked() ) out |= FORMAT::Underline;
-    if( strike_->isChecked() ) out |= FORMAT::Strike;
-    if( overline_->isChecked() ) out |= FORMAT::Overline;
+
+    FORMAT::TextFormatFlags out = FORMAT::Default;
+    for( CheckBoxMap::const_iterator iter = checkBoxes_.constBegin(); iter != checkBoxes_.constEnd(); ++iter )
+    { if( iter.value()->isChecked() ) out |= iter.key(); }
+
     return out;
 }

@@ -126,6 +126,8 @@ SET( base_qt_SOURCES
   OptionComboBox.cpp
   OptionDialog.cpp
   OptionFontEditor.cpp
+  OptionFontInfo.cpp
+  OptionLineEditor.cpp
   OptionListBox.cpp
   OptionModel.cpp
   OptionRadioButton.cpp

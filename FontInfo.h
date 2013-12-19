@@ -25,6 +25,7 @@
 #include "TextFormat.h"
 
 #include <QCheckBox>
+#include <QHash>
 
 //! font formating
 class FontInfo: public QWidget
@@ -41,25 +42,20 @@ class FontInfo: public QWidget
     void setFormat( FORMAT::TextFormatFlags format );
 
     //! get format
-    unsigned int format( void ) const;
+    FORMAT::TextFormatFlags format( void ) const;
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
     private:
 
-    //! bold
-    QCheckBox* bold_;
+    //! checkbox map
+    typedef QHash<FORMAT::TextFormat, QCheckBox*> CheckBoxMap;
 
-    //! italic
-    QCheckBox* italic_;
-
-    //! underline
-    QCheckBox* underline_;
-
-    //! strike
-    QCheckBox* strike_;
-
-    //! overline
-    QCheckBox* overline_;
-
+    //! checkboxes
+    CheckBoxMap checkBoxes_;
 
 };
 #endif

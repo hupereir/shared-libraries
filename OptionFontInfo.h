@@ -30,13 +30,15 @@
 class OptionFontInfo: public FontInfo, public OptionWidget
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
     OptionFontInfo( QWidget* parent, const QString& optionName ):
         FontInfo( parent ),
-        OptionWidget( optionName )
-    { _setBuddy( this ); }
+        OptionWidget( optionName, this )
+    {}
 
     //! read value from option
     void read( const Options& options )
@@ -45,6 +47,11 @@ class OptionFontInfo: public FontInfo, public OptionWidget
     //! write value to option
     void write( Options& options ) const
     { options.set<unsigned int>( optionName(), format() ); }
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
 };
 #endif

@@ -22,6 +22,23 @@
 #include "OptionWidgetList.h"
 
 //______________________________________________________________________
+void OptionWidgetList::addOptionWidget( OptionWidget* widget )
+{
+
+    Debug::Throw()
+        << "OptionWidgetList::addOptionWidget -"
+        << " buddy: " << ( widget->hasBuddy() ? widget->buddy().metaObject()->className():"none" )
+        << endl;
+
+    optionWidgets_ << widget;
+
+    //! connect signals
+    if( hasBuddy() && widget->hasBuddy() )
+    { QObject::connect( &widget->buddy(), SIGNAL(modified()), &buddy(), SIGNAL(modified())); }
+
+}
+
+//______________________________________________________________________
 void OptionWidgetList::read( const Options& options )
 {
 

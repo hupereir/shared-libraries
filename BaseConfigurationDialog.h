@@ -115,53 +115,47 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     protected Q_SLOTS:
 
-    //! check options changed
-    void _checkOptionsModified( void );
-
     //! show pixmap path dialog
     virtual void _editPixmapPathList( void );
 
     //! show icon path dialog
     virtual void _editIconTheme( void );
 
+    //! check options changed
+    bool _checkModified( void );
+
     //! update configuration
-    virtual void _update();
-
-    //! restore configuration
-    virtual void _restore();
-
-    //! restore default options
-    virtual void _restoreDefaults( void );
+    virtual void _apply();
 
     //! save configuration from options
     virtual void _save();
 
-    //! see if options have been modified. Emit signal if yes
-    virtual void _checkModified( void )
-    {
-        Debug::Throw( "BaseConfigurationDialog::_checkModified.\n" );
-        if( modifiedOptions_ == XmlOptions::get() ) return;
-        emit configurationChanged();
-        modifiedOptions_ = XmlOptions::get();
-    }
+    //! restore configuration
+    virtual void _cancel();
+
+    //! reset
+    virtual void _reset( void );
+
+    //! restore default options
+    virtual void _restoreDefaults( void );
 
     private:
-
-    //! pointer to modified options
-    /*!
-    it is needed to keep track of the changes
-    so that the ConfigChanged signal is sent only
-    when required
-    */
-    Options modifiedOptions_;
 
     //! pointer to original options set
     /*!
     it is needed to keep track of the changes
     so that initial set is restored when pressing the cancel button
     */
-    Options backupOptions_;
+    const Options backupOptions_;
 
+    //!@name buttons
+    //@{
+    QPushButton* okButton_;
+    QPushButton* applyButton_;
+    QPushButton* cancelButton_;
+    QPushButton* resetButton_;
+    QPushButton* restoreDefaultsButton_;
+    //@}
 };
 
 
