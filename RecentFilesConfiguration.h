@@ -45,10 +45,17 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public 
     RecentFilesConfiguration( QWidget*, FileList& );
 
     //! read options
+    using OptionWidgetList::read;
     virtual void read( void );
 
     //! read options
+    using OptionWidgetList::write;
     virtual void write( void ) const;
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
     private Q_SLOTS:
 

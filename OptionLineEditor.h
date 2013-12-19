@@ -22,7 +22,6 @@
 
 #include "AnimatedLineEditor.h"
 #include "OptionWidget.h"
-#include "XmlOptions.h"
 
 //! QLineEdit associated to an option for configuration dialogs
 class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
@@ -37,12 +36,12 @@ class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
     { _setBuddy( this ); }
 
     //! read value from option
-    void read( void )
-    { setText( XmlOptions::get().raw( optionName() ) ); }
+    void read( const Options& options )
+    { setText( options.raw( optionName() ) ); }
 
     //! write value to option
-    void write( void ) const
-    { XmlOptions::get().setRaw( optionName(), text() ); }
+    void write( Options& options ) const
+    { options.setRaw( optionName(), text() ); }
 
 };
 #endif

@@ -23,7 +23,6 @@
 *******************************************************************************/
 
 #include "OptionWidget.h"
-#include "XmlOptions.h"
 
 #include <QCheckBox>
 
@@ -47,17 +46,17 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
     { negative_ = value; }
 
     //! read value from option
-    virtual void read( void )
+    virtual void read( const Options& options )
     {
-        if( negative_ ) setChecked( !XmlOptions::get().get<bool>( optionName() ) );
-        else setChecked( XmlOptions::get().get<bool>( optionName() ) );
+        if( negative_ ) setChecked( !options.get<bool>( optionName() ) );
+        else setChecked( options.get<bool>( optionName() ) );
     }
 
     //! write value to option
-    virtual void write( void ) const
+    virtual void write( Options& options ) const
     {
-        if( negative_ ) XmlOptions::get().set<bool>( optionName(), !isChecked() );
-        else XmlOptions::get().set<bool>( optionName(), isChecked() );
+        if( negative_ ) options.set<bool>( optionName(), !isChecked() );
+        else options.set<bool>( optionName(), isChecked() );
     }
 
     Q_SIGNALS:

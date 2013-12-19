@@ -23,7 +23,6 @@
 *******************************************************************************/
 
 #include "OptionWidget.h"
-#include "XmlOptions.h"
 
 #include <QRadioButton>
 
@@ -42,12 +41,12 @@ class OptionRadioButton: public QRadioButton, public OptionWidget
     { connect( this, SIGNAL(toggled(bool)), SIGNAL(modified())); }
 
     //! read value from option
-    void read( void )
-    { setChecked( XmlOptions::get().get<bool>( optionName() ) ); }
+    void read( const Options& options )
+    { setChecked( options.get<bool>( optionName() ) ); }
 
     //! write value to option
-    void write( void ) const
-    { XmlOptions::get().set<bool>( optionName(), isChecked() ); }
+    void write( Options& options ) const
+    { options.set<bool>( optionName(), isChecked() ); }
 
     Q_SIGNALS:
 

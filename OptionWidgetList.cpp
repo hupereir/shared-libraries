@@ -22,19 +22,19 @@
 #include "OptionWidgetList.h"
 
 //______________________________________________________________________
-void OptionWidgetList::read( void )
+void OptionWidgetList::read( const Options& options )
 {
 
     Debug::Throw( "OptionWidgetList::read.\n" );
     foreach( OptionWidget* widget, optionWidgets_ )
-    { widget->read(); }
+    { widget->read( options ); }
 
 }
 
 //______________________________________________________________________
-void OptionWidgetList::write( void ) const
+void OptionWidgetList::write( Options& options ) const
 {
     Debug::Throw( "OptionWidgetList::write\n" );
     foreach( OptionWidget* widget, optionWidgets_ )
-    { widget->write(); }
+    { widget->write( options ); }
 }

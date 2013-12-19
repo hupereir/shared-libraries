@@ -34,8 +34,8 @@ class OptionWidgetList: public OptionWidget
     public:
 
     //! constructor
-    OptionWidgetList( void ):
-        OptionWidget( "generic" )
+    OptionWidgetList( QObject* buddy = 0 ):
+        OptionWidget( "generic", buddy )
     {}
 
     //! add option widget
@@ -43,6 +43,10 @@ class OptionWidgetList: public OptionWidget
     {
         Debug::Throw( "OptionWidgetList::addOptionWidget.\n" );
         optionWidgets_ << widget;
+
+        //! connect signals
+        if( hasBuddy() && widget->hasBuddy() )
+        { QObject::connect( &widget->buddy(), SIGNAL(modified()), &buddy(), SIGNAL(modified())); }
     }
 
     //! clear option widgets
@@ -53,10 +57,10 @@ class OptionWidgetList: public OptionWidget
     }
 
     //! read options
-    virtual void read( void );
+    virtual void read( const Options& );
 
     //! read options
-    virtual void write( void ) const;
+    virtual void write( Options& ) const;
 
     private:
 

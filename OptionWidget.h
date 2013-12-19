@@ -22,6 +22,8 @@
 *
 *******************************************************************************/
 
+#include "Options.h"
+
 #include <QObject>
 #include <QString>
 
@@ -40,10 +42,10 @@ class OptionWidget
     {}
 
     //! set widget value from option value
-    virtual void read( void ) = 0;
+    virtual void read( const Options& ) = 0;
 
     //! set option value from widget value
-    virtual void write( void ) const = 0;
+    virtual void write( Options& ) const = 0;
 
     //! option name
     const QString& optionName( void ) const

@@ -25,7 +25,6 @@
 #include "AnimatedLineEditor.h"
 #include "BrowsedLineEditor.h"
 #include "OptionWidget.h"
-#include "XmlOptions.h"
 
 //! QLineEdit associated to an option for configuration dialogs
 class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
@@ -39,15 +38,15 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
     OptionBrowsedLineEditor( QWidget* parent, const QString& optionName ):
         BrowsedLineEditor( parent ),
         OptionWidget( optionName, this )
-    { connect( this, SIGNAL(textChanged(QString)), SIGNAL(modified())); }
+    { connect( &editor(), SIGNAL(textChanged(QString)), SIGNAL(modified())); }
 
     //! read value from option
-    void read( void )
-    { setFile( XmlOptions::get().raw( optionName() ) ); }
+    void read( const Options& options )
+    { setFile( options.raw( optionName() ) ); }
 
     //! write value to option
-    void write( void ) const
-    { XmlOptions::get().setRaw( optionName(), editor().text() ); }
+    void write( Options& options ) const
+    { options.setRaw( optionName(), editor().text() ); }
 
     Q_SIGNALS:
 

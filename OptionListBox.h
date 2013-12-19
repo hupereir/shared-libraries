@@ -24,7 +24,6 @@
 
 #include "BrowsedLineEditor.h"
 #include "OptionWidget.h"
-#include "Options.h"
 
 #include <QAction>
 #include <QCheckBox>
@@ -53,10 +52,10 @@ class OptionListBox: public QWidget, public OptionWidget
     {}
 
     //! read value from option
-    void read( void );
+    void read( const Options& options );
 
     //! write value to option
-    void write( void ) const;
+    void write( Options& options ) const;
 
     //! browsability
     void setBrowsable( const bool& value )

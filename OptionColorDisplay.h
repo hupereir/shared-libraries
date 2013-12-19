@@ -25,7 +25,6 @@
 #include "ColorDisplay.h"
 #include "Color.h"
 #include "OptionWidget.h"
-#include "XmlOptions.h"
 
 //! QColorDisplay associated to an option for configuration dialogs
 class OptionColorDisplay: public ColorDisplay, public OptionWidget
@@ -42,12 +41,12 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
     { connect( &_editor(), SIGNAL(textChanged(QString)), SIGNAL(modified())); }
 
     //! read value from option
-    void read( void )
-    { setColor( XmlOptions::get().get<BASE::Color>( optionName() ) ); }
+    void read( const Options& options )
+    { setColor( options.get<BASE::Color>( optionName() ) ); }
 
     //! write value to option
-    void write( void ) const
-    { XmlOptions::get().set<BASE::Color>( optionName(), color() ); }
+    void write( Options& options ) const
+    { options.set<BASE::Color>( optionName(), color() ); }
 
     Q_SIGNALS:
 

@@ -216,37 +216,37 @@ void OptionListBox::_setModel( OptionModel* model )
 }
 
 //_______________________________________________________
-void OptionListBox::read( void )
+void OptionListBox::read( const Options& options )
 {
     Debug::Throw( "OptionListBox::read.\n" );
 
     // retrieve all values from Options, insert in list
-    Options::List values( XmlOptions::get().specialOptions( optionName() ) );
+    Options::List values( options.specialOptions( optionName() ) );
 
     // check if one option is default, set first otherwise
     if( !values.empty() && std::find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::Current ) ) == values.end() )
     { values.front().setCurrent( true ); }
 
     // add to model.
-    OptionModel::List options;
+    OptionModel::List optionList;
     foreach( const Option& option, values )
-    { options << OptionPair( optionName(), option ); }
+    { optionList << OptionPair( optionName(), option ); }
 
-    model_->set( options );
+    model_->set( optionList );
     list_->resizeColumns();
 
 }
 
 //_______________________________________________________
-void OptionListBox::write( void ) const
+void OptionListBox::write( Options& options ) const
 {
     Debug::Throw( "OptionListBox::write.\n" );
 
-    XmlOptions::get().clearSpecialOptions( optionName() );
-    XmlOptions::get().keep( optionName() );
+    options.clearSpecialOptions( optionName() );
+    options.keep( optionName() );
 
     foreach( const OptionPair& optionPair, model_->children() )
-    { XmlOptions::get().add( optionPair.first, optionPair.second ); }
+    { options.add( optionPair.first, optionPair.second ); }
 
 }
 

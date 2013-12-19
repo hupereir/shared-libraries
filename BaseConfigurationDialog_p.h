@@ -41,7 +41,8 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
 
     //! constructor
     IconThemeDialog( QWidget* parent = 0x0 ):
-        CustomDialog( parent, OkButton|CancelButton )
+        CustomDialog( parent, OkButton|CancelButton ),
+        OptionWidgetList( this )
     {
 
         OptionCheckBox* checkBox;
@@ -85,7 +86,7 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
         box->setEnabled( false );
         connect( checkBox, SIGNAL( toggled( bool ) ), box, SLOT( setEnabled( bool ) ) );
 
-        read();
+        read( XmlOptions::get() );
 
     }
 

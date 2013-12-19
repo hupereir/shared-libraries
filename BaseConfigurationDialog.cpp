@@ -53,6 +53,7 @@
 //_________________________________________________________
 BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     TabbedDialog( parent ),
+    OptionWidgetList(this),
     modifiedOptions_( XmlOptions::get() ),
     backupOptions_( XmlOptions::get() )
 {
@@ -99,6 +100,9 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     connect( button, SIGNAL(clicked()), SLOT(reject()) );
     button->setToolTip( tr( "Discard changes to options and close window" ) );
     button->setAutoDefault( false );
+
+    // connection
+    connect( this, SIGNAL(modified()), SLOT(_checkOptionsModified()));
 
     // close accelerator
     new QShortcut( QKeySequence::Close, this, SLOT(reject()) );
@@ -531,6 +535,10 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
+void BaseConfigurationDialog::_checkOptionsModified( void )
+{}
+
+//__________________________________________________
 void BaseConfigurationDialog::_editPixmapPathList( void )
 {
 
@@ -544,14 +552,14 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
     OptionListBox *listbox = new OptionListBox( &dialog, "PIXMAP_PATH" );
     listbox->setBrowsable( true );
     listbox->setFileMode( QFileDialog::Directory );
-    listbox->read();
+    listbox->read( XmlOptions::get() );
     dialog.mainLayout().addWidget( listbox );
 
     // customize layout
     dialog.layout()->setMargin(0);
     dialog.buttonLayout().setMargin(5);
 
-    if( dialog.exec() ) listbox->write();
+    if( dialog.exec() ) listbox->write( XmlOptions::get() );
     else {
 
         // restore old values
@@ -573,7 +581,7 @@ void BaseConfigurationDialog::_editIconTheme( void )
     const QString iconThemePath( XmlOptions::get().raw( "ICON_THEME_PATH" ) );
 
     IconThemeDialog dialog( this );
-    if( dialog.exec() ) dialog.write();
+    if( dialog.exec() ) dialog.write( XmlOptions::get() );
     else {
 
         XmlOptions::get().set<bool>( "USE_ICON_THEME", useIconTheme );
@@ -588,7 +596,7 @@ void BaseConfigurationDialog::_editIconTheme( void )
 void BaseConfigurationDialog::_update( void )
 {
     Debug::Throw( "BaseConfigurationDialog::_update.\n" );
-    OptionWidgetList::write();
+    OptionWidgetList::write( XmlOptions::get() );
     _checkModified();
 }
 

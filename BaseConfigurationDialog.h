@@ -43,6 +43,11 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     virtual ~BaseConfigurationDialog()
     {}
 
+    // read
+    using OptionWidgetList::read;
+    virtual void read( void )
+    { OptionWidgetList::read( XmlOptions::get() ); }
+
     //! flag bitset for the Base configuration
     enum ConfigurationFlags
     {
@@ -93,6 +98,9 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     Q_SIGNALS:
 
+    //! modified
+    void modified( void );
+
     //! apply button pressed
     void apply( void );
 
@@ -106,6 +114,9 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     void configurationChanged();
 
     protected Q_SLOTS:
+
+    //! check options changed
+    void _checkOptionsModified( void );
 
     //! show pixmap path dialog
     virtual void _editPixmapPathList( void );

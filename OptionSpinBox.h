@@ -23,7 +23,6 @@
 *******************************************************************************/
 
 #include "OptionWidget.h"
-#include "XmlOptions.h"
 
 #include <QSpinBox>
 #include <QLabel>
@@ -56,12 +55,12 @@ class OptionSpinBox: public QWidget, public OptionWidget
     { scale_ = scale; }
 
     //! read value from option
-    void read( void )
-    { setValue( static_cast<int>(round(scale_*XmlOptions::get().get<double>( optionName() )))); }
+    void read( const Options& options )
+    { setValue( static_cast<int>(round(scale_*options.get<double>( optionName() )))); }
 
     //! write value to option
-    void write( void ) const
-    { XmlOptions::get().set<double>( optionName(), static_cast<double>(value())/scale_ ); }
+    void write( Options& options ) const
+    { options.set<double>( optionName(), static_cast<double>(value())/scale_ ); }
 
     //! unit
     void setSuffix( const QString& value )

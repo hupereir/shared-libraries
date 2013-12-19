@@ -44,10 +44,15 @@ class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
     {}
 
     //! set widget value from option value
-    virtual void read( void );
+    virtual void read( const Options& );
 
     //! set option value from widget value
-    virtual void write( void ) const;
+    virtual void write( Options& ) const;
+
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
 
     protected:
 

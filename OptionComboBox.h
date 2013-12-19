@@ -24,8 +24,6 @@
 
 #include "CustomComboBox.h"
 #include "OptionWidget.h"
-#include "Options.h"
-#include "XmlOptions.h"
 
 //! QComboBox associated to an option for configuration dialogs
 class OptionComboBox: public CustomComboBox, public OptionWidget
@@ -47,11 +45,11 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
     { useValue_ = value; }
 
     //! read value from option
-    void read( void )
+    void read( const Options& options )
     {
         if( useValue_ )
         {
-            const QString value( XmlOptions::get().raw( optionName() ) );
+            const QString value( options.raw( optionName() ) );
             int found( findText( value ) );
             if( found < 0 )
             {
@@ -61,14 +59,14 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
 
             setCurrentIndex( found );
 
-        } else setCurrentIndex( XmlOptions::get().get<int>( optionName() ) );
+        } else setCurrentIndex( options.get<int>( optionName() ) );
     }
 
     //! write value to option
-    void write( void ) const
+    void write( Options& options ) const
     {
-        if( useValue_ ) XmlOptions::get().setRaw( optionName(), currentText() );
-        else XmlOptions::get().set<int>( optionName(), currentIndex() );
+        if( useValue_ ) options.setRaw( optionName(), currentText() );
+        else options.set<int>( optionName(), currentIndex() );
     }
 
     Q_SIGNALS:

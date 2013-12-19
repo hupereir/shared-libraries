@@ -23,7 +23,6 @@
 *******************************************************************************/
 
 #include "OptionWidget.h"
-#include "Options.h"
 #include "FontInfo.h"
 #include "TextFormat.h"
 
@@ -40,12 +39,12 @@ class OptionFontInfo: public FontInfo, public OptionWidget
     { _setBuddy( this ); }
 
     //! read value from option
-    void read( void )
-    { setFormat( (FORMAT::TextFormatFlags) XmlOptions::get().get<unsigned int>( optionName() ) ); }
+    void read( const Options& options )
+    { setFormat( (FORMAT::TextFormatFlags) options.get<unsigned int>( optionName() ) ); }
 
     //! write value to option
-    void write( void ) const
-    { XmlOptions::get().set<unsigned int>( optionName(), format() ); }
+    void write( Options& options ) const
+    { options.set<unsigned int>( optionName(), format() ); }
 
 };
 #endif

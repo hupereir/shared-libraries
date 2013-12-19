@@ -30,11 +30,10 @@
 //_______________________________________________________
 BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* parent ):
     QWidget( parent ),
-    OptionWidget( "TOOLTIPS_MASK" )
+    OptionWidget( "TOOLTIPS_MASK", this )
 {
 
     Debug::Throw( "BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget.\n" );
-    _setBuddy( this );
 
     QVBoxLayout* vLayout = new QVBoxLayout();
     vLayout->setMargin(0);
@@ -52,21 +51,21 @@ BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* paren
 }
 
 //_______________________________________________________
-void BaseFileInfoConfigurationWidget::read( void )
+void BaseFileInfoConfigurationWidget::read( const Options& options )
 {
-    const unsigned int mask( XmlOptions::get().contains( optionName() ) ? XmlOptions::get().get<unsigned int>( optionName() ) : BaseFileInfoToolTipWidget::Default );
+    const unsigned int mask( options.contains( optionName() ) ? options.get<unsigned int>( optionName() ) : BaseFileInfoToolTipWidget::Default );
     for( CheckBoxMap::const_iterator iter = checkboxes_.constBegin(); iter != checkboxes_.constEnd(); ++iter )
     { iter.value()->setChecked( mask&iter.key() ); }
 }
 
 //_______________________________________________________
-void BaseFileInfoConfigurationWidget::write( void ) const
+void BaseFileInfoConfigurationWidget::write( Options& options ) const
 {
     unsigned int mask(0);
     for( CheckBoxMap::const_iterator iter = checkboxes_.constBegin(); iter != checkboxes_.constEnd(); ++iter )
     { if( iter.value()->isChecked() ) mask |= iter.key(); }
 
-    XmlOptions::get().set<unsigned int>( optionName(), mask );
+    options.set<unsigned int>( optionName(), mask );
 }
 
 //_______________________________________________________
@@ -76,4 +75,5 @@ void BaseFileInfoConfigurationWidget::_addCheckBox( BaseFileInfoToolTipWidget::T
     QCheckBox* checkbox;
     layout()->addWidget( checkbox = new QCheckBox( value, this ) );
     checkboxes_.insert( type, checkbox );
+    connect( checkbox, SIGNAL(toggled(bool)), SIGNAL(modified()) );
 }

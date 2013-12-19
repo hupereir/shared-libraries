@@ -23,9 +23,7 @@
 *******************************************************************************/
 
 #include "FontEditor.h"
-#include "Options.h"
 #include "OptionWidget.h"
-#include "XmlOptions.h"
 
 //! QLineEdit associated to an option for configuration dialogs
 class OptionFontEditor: public FontEditor, public OptionWidget
@@ -42,12 +40,12 @@ class OptionFontEditor: public FontEditor, public OptionWidget
     { connect( this, SIGNAL(fontChanged(QFont)), SIGNAL(modified())); }
 
     //! read value from option
-    void read( void )
-    { setFont( XmlOptions::get().raw( optionName() ) ); }
+    void read( const Options& options )
+    { setFont( options.raw( optionName() ) ); }
 
     //! write value to option
-    void write( void ) const
-    { XmlOptions::get().setRaw( optionName(), font().toString() ); }
+    void write( Options& options ) const
+    { options.setRaw( optionName(), font().toString() ); }
 
     Q_SIGNALS:
 

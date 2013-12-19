@@ -31,6 +31,7 @@
 #include "OptionSpinBox.h"
 #include "QuestionDialog.h"
 #include "TreeView.h"
+#include "XmlOptions.h"
 
 #include <QGroupBox>
 #include <QLabel>
@@ -38,10 +39,11 @@
 #include <QShortcut>
 
 //___________________________________________
-RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& recent_files ):
+RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& recentFiles ):
     QWidget( parent ),
+    OptionWidgetList( this ),
     Counter( "RecentFilesConfiguration" ),
-    recentFiles_( &recent_files )
+    recentFiles_( &recentFiles )
 {
     Debug::Throw( "RecentFilesConfiguration::RecentFilesConfiguration.\n" );
 
@@ -90,7 +92,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     list_->setModel( &model_ );
     list_->sortByColumn( XmlOptions::get().get<bool>( "SORT_FILES_BY_DATE" ) ? FileRecordModel::TIME:FileRecordModel::FILE );
     list_->setSelectionMode( QAbstractItemView::ContiguousSelection );
-    list_->setOptionName( "RECENT_FILES_CONFIGURATION_LIST" );
+    list_->setOptionName( "recentFiles_CONFIGURATION_LIST" );
 
     connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
 
@@ -145,7 +147,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 void RecentFilesConfiguration::read( void )
 {
     Debug::Throw( "RecentFilesConfiguration::read.\n" );
-    OptionWidgetList::read();
+    OptionWidgetList::read( XmlOptions::get() );
 
     _reload();
     list_->resizeColumns();
@@ -156,7 +158,7 @@ void RecentFilesConfiguration::read( void )
 void RecentFilesConfiguration::write( void ) const
 {
     Debug::Throw( "RecentFilesConfiguration::write.\n" );
-    OptionWidgetList::write();
+    OptionWidgetList::write( XmlOptions::get() );
 
     // put model contents into file list
     FileRecord::List records;
