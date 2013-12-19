@@ -41,7 +41,7 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
 
     //! constructor
     IconThemeDialog( QWidget* parent = 0x0 ):
-        CustomDialog( parent, OkButton|CancelButton ),
+        CustomDialog( parent, OkButton ),
         OptionWidgetList( this )
     {
 

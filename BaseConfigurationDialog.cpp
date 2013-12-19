@@ -54,7 +54,9 @@
 BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     TabbedDialog( parent ),
     OptionWidgetList(this),
-    backupOptions_( XmlOptions::get() )
+    backupOptions_( XmlOptions::get() ),
+    pixmapPathDialog_( 0L ),
+    iconThemeDialog_( 0L )
 {
 
     Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
@@ -546,30 +548,24 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
 
     Debug::Throw( "BaseConfigurationDialog::_editPixmapPathList.\n" );
 
-    CustomDialog dialog( this );
+    if( !pixmapPathDialog_ )
+    {
+        pixmapPathDialog_ = new CustomDialog( this, CustomDialog::CloseButton );
+        OptionListBox *listbox = new OptionListBox( pixmapPathDialog_, "PIXMAP_PATH" );
+        listbox->setBrowsable( true );
+        listbox->setFileMode( QFileDialog::Directory );
+        pixmapPathDialog_->mainLayout().addWidget( listbox );
 
-    // store backup
-    Options::List backupOptions = XmlOptions::get().specialOptions( "PIXMAP_PATH" );
+        addOptionWidget( listbox );
+        listbox->read( XmlOptions::get() );
 
-    OptionListBox *listbox = new OptionListBox( &dialog, "PIXMAP_PATH" );
-    listbox->setBrowsable( true );
-    listbox->setFileMode( QFileDialog::Directory );
-    listbox->read( XmlOptions::get() );
-    dialog.mainLayout().addWidget( listbox );
-
-    // customize layout
-    dialog.layout()->setMargin(0);
-    dialog.buttonLayout().setMargin(5);
-
-    if( dialog.exec() ) listbox->write( XmlOptions::get() );
-    else {
-
-        // restore old values
-        XmlOptions::get().clearSpecialOptions( "PIXMAP_PATH" );
-        foreach( const Option& option, backupOptions )
-        { XmlOptions::get().add( "PIXMAP_PATH", option ); }
+        // customize layout
+        pixmapPathDialog_->layout()->setMargin(0);
+        pixmapPathDialog_->buttonLayout().setMargin(5);
 
     }
+
+    pixmapPathDialog_->exec();
     return;
 
 }
@@ -578,20 +574,15 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
 void BaseConfigurationDialog::_editIconTheme( void )
 {
     Debug::Throw( "BaseConfigurationDialog::_editIconTheme.\n" );
-    const bool useIconTheme( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) );
-    const QString iconTheme( XmlOptions::get().raw( "ICON_THEME" ) );
-    const QString iconThemePath( XmlOptions::get().raw( "ICON_THEME_PATH" ) );
-
-    IconThemeDialog dialog( this );
-    if( dialog.exec() ) dialog.write( XmlOptions::get() );
-    else {
-
-        XmlOptions::get().set<bool>( "USE_ICON_THEME", useIconTheme );
-        XmlOptions::get().setRaw( "ICON_THEME", iconTheme );
-        XmlOptions::get().setRaw( "ICON_THEME_PATH", iconThemePath );
-
+    if( !iconThemeDialog_ )
+    {
+        iconThemeDialog_ = new IconThemeDialog( this );
+        iconThemeDialog_->read( XmlOptions::get() );
+        addOptionWidget( iconThemeDialog_ );
     }
 
+    iconThemeDialog_->exec();
+    return;
 }
 
 //__________________________________________________

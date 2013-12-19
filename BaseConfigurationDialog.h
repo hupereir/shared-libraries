@@ -21,12 +21,15 @@
 *
 *******************************************************************************/
 
-#include "TabbedDialog.h"
-#include "XmlOptions.h"
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"
+#include "TabbedDialog.h"
+#include "XmlOptions.h"
 
 #include <QLayout>
+
+class CustomDialog;
+class IconThemeDialog;
 
 //! configuration dialog
 class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
@@ -147,6 +150,12 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     so that initial set is restored when pressing the cancel button
     */
     const Options backupOptions_;
+
+    //! pixmap path dialog
+    CustomDialog* pixmapPathDialog_;
+
+    //! icon theme dialog
+    IconThemeDialog* iconThemeDialog_;
 
     //!@name buttons
     //@{
