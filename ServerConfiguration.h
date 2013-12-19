@@ -40,6 +40,11 @@ namespace SERVER
     //! constructor
     ServerConfiguration( QWidget*, QString title = QString() );
 
+    Q_SIGNALS:
+
+    //! modified
+    void modified( void );
+
   };
 };
 
