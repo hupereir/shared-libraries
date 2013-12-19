@@ -39,6 +39,11 @@ namespace TRANSPARENCY
         //! constructor
         TransparencyConfiguration( QWidget* parent );
 
+        Q_SIGNALS:
+
+        //! modified
+        void modified( void );
+
     };
 };
 
