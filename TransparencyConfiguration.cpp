@@ -40,6 +40,7 @@ namespace TRANSPARENCY
     //________________________________________________________________________
     TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
         QWidget( parent ),
+        OptionWidgetList( this ),
         Counter( "TRANSPARENCY::TransparencyConfiguration" )
     {
         Debug::Throw( "TransparencyConfiguration::TransparencyConfiguration.\n" );
