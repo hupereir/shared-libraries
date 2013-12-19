@@ -35,6 +35,7 @@ namespace SERVER
     //________________________________________________________________________
     ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):
         QWidget( parent ),
+        OptionWidgetList( this ),
         Counter( "ServerConfiguration" )
     {
         Debug::Throw( "ServerConfiguration::ServerConfiguration.\n" );
