@@ -110,7 +110,7 @@ class Options: public Counter
     }
 
     //! returns true if option with matching name is found
-    virtual bool contains( const QString& name )
+    virtual bool contains( const QString& name ) const
     { return options_.find( name ) != options_.end(); }
 
     //! option matching given name
