@@ -86,6 +86,11 @@ class CustomSlider: public QWidget, public Counter
 
     //@}
 
+    Q_SIGNALS:
+
+    //! value changed
+    void valueChanged( int );
+
     protected:
 
     //! retrieve QSlider
