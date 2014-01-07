@@ -50,7 +50,7 @@ namespace TRANSPARENCY
       painter.setClipRect( event->rect() );
       painter.setPen( palette().color( QPalette::WindowText ) );
       painter.setFont( font() );
-      painter.drawText( rect(), alignment(), text() );
+      painter.drawText( contentsRect(), alignment(), text() );
       painter.end();
     }
 
