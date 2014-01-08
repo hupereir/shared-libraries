@@ -104,6 +104,8 @@ void OptionDialog::_reload( void )
 
     Debug::Throw( "OptionDialog::_reload.\n" );
 
+    model_.clear();
+
     // retrieve all special options
     const Options::SpecialMap specialOptions( backupOptions_.specialOptions() );
     for( Options::SpecialMap::const_iterator iter = specialOptions.begin(); iter != specialOptions.end(); ++iter )

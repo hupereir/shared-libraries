@@ -99,8 +99,8 @@ bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int r
 
         emit dataChanged( index, index );
 
-        if( XmlOptions::get().isSpecialOption( source.first ) ) emit specialOptionModified( source );
-        else emit optionModified( source );
+        if( XmlOptions::get().isSpecialOption( source.first ) ) emit specialOptionModified( destination );
+        else emit optionModified( destination );
 
     }
 
