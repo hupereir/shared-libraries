@@ -66,9 +66,11 @@ const BASE::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache
         if( iter != cache_.end() ) return iter.value();
     }
 
-    BASE::IconCacheItem out;
+    // debug
+    Debug::Throw() << "IconEngine::_get - file: " << file << endl;
 
     // insert null icon for empty filename
+    BASE::IconCacheItem out;
     if( file.isEmpty() )
     {
 

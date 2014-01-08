@@ -48,8 +48,11 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
     DefaultFolders::FolderMap::const_iterator nameIter( folders.find( fileInfo.file() ) );
     if( nameIter == folders.end() ) return invalid_;
 
-    // get icon name and corresponding icon from engine
+    // get icon name
     const QString iconName( DefaultFolders::get().iconName( nameIter.value() ) );
+    if( iconName.isEmpty() ) return invalid_;
+
+    // get corresponding icon from icon engine
     const QIcon& base( IconEngine::get( iconName ) );
     if( base.isNull() ) return invalid_;
 
