@@ -68,6 +68,9 @@ class IconCacheModel: public ListModel<BASE::IconCache::Pair>, public Counter
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
     { std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
+    //! get sizes from icon pair
+    static QString _availableSizes( const BASE::IconCache::Pair& );
+
     private:
 
     //! used to sort IconCaches

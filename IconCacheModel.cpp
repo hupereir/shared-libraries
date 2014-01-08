@@ -48,22 +48,7 @@ QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
 
             case Icon: return iconPair.first;
             case Files: return iconPair.second.files().join( "\n" );
-            case Sizes:
-            if( !iconPair.second.isNull() )
-            {
-                QString buffer;
-                QTextStream what( &buffer );
-                bool first( true );
-                foreach( const QSize& size, iconPair.second.availableSizes() )
-                {
-                    if( first ) first = false;
-                    else what << ", ";
-                    what << size.width() << "x" << size.height();
-                }
-
-                return buffer;
-
-            }
+            case Sizes: return _availableSizes( iconPair );
 
             default: break;
         }
@@ -95,6 +80,23 @@ QVariant IconCacheModel::headerData(int section, Qt::Orientation orientation, in
 }
 
 //________________________________________________________
+QString IconCacheModel::_availableSizes( const BASE::IconCache::Pair& iconPair )
+{
+
+    QString buffer;
+    QTextStream what( &buffer );
+    bool first( true );
+    foreach( const QSize& size, iconPair.second.availableSizes() )
+    {
+        if( first ) first = false;
+        else what << ", ";
+        what << size.width() << "x" << size.height();
+    }
+
+    return buffer;
+}
+
+//________________________________________________________
 bool IconCacheModel::SortFTor::operator () ( BASE::IconCache::Pair first, BASE::IconCache::Pair second ) const
 {
 
@@ -105,6 +107,7 @@ bool IconCacheModel::SortFTor::operator () ( BASE::IconCache::Pair first, BASE::
 
         case Icon: return first.first < second.first;
         case Files: return first.second.files().join( "" ) < second.second.files().join( "" );
+        case Sizes: return _availableSizes( first ) < _availableSizes( second );
         default: return true;
     }
 
