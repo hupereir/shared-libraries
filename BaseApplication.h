@@ -87,7 +87,7 @@ class BaseApplication: public BaseCoreApplication
     virtual QString applicationName( void ) const = 0;
 
     // application icon
-    virtual QIcon applicationIcon( void ) const = 0;
+    virtual QIcon applicationIcon( void ) const;
 
     // application version
     virtual QString applicationVersion( void ) const = 0;

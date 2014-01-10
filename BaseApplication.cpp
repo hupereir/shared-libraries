@@ -153,6 +153,26 @@ bool BaseApplication::realizeWidget( void )
     return true;
 }
 
+//____________________________________________
+QIcon BaseApplication::applicationIcon( void ) const
+{
+
+    if( XmlOptions::get().isSpecialOption( "ICON_PIXMAP" ) )
+    {
+
+        QIcon out;
+        foreach( const QString& path, XmlOptions::get().specialOptions<QString>( "ICON_PIXMAP" ) )
+        { out.addPixmap( QPixmap( path ) ); }
+
+        return out;
+
+    } else if( XmlOptions::get().contains( "ICON_PIXMAP" ) ) {
+
+        return IconEngine::get( XmlOptions::get().raw( "ICON_PIXMAP" ) );
+
+    } else return QIcon();
+
+}
 
 //____________________________________________
 void BaseApplication::busy( void )
