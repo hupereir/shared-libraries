@@ -139,9 +139,6 @@ class DockPanel: public QWidget, public Counter
     //! contents panel
     QWidget* panel_;
 
-    //! icon pixmap
-    QPixmap pixmap_;
-
 };
 
 #endif

@@ -133,10 +133,6 @@ void TabWidget::_toggleDock( void )
 
         // move and resize
         move( parent->mapToGlobal( QPoint(0,0) ) );
-
-        // warning: innefficient
-        setWindowIcon( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
-
         if( !title_.isEmpty() ) { setWindowTitle( title_ ); }
 
         // change action text

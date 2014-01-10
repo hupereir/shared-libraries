@@ -22,28 +22,16 @@
 
 #include "IconSize.h"
 
+#include <QApplication>
 #include <QStyle>
 
 //__________________________________________________________________
 IconSize::IconSize( IconSize::Size size )
 {
 
-    Q_ASSERT( size != Default );
-    setWidth( size );
-    setHeight( size );
-
-}
-
-//__________________________________________________________________
-IconSize::IconSize( QWidget* parent, IconSize::Size size )
-{
-
     int iconSize( size );
     if( size == Default )
-    {
-        Q_CHECK_PTR( parent );
-        iconSize =  parent->style()->pixelMetric( QStyle::PM_ToolBarIconSize );
-    }
+    { iconSize =  qApp->style()->pixelMetric( QStyle::PM_ToolBarIconSize ); }
 
     setWidth( iconSize );
     setHeight( iconSize );

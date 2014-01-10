@@ -45,9 +45,6 @@ class IconSize: public QSize
     };
 
     //! constructor
-    IconSize( QWidget* parent, Size size );
-
-    //! constructor
     IconSize( Size size );
 
     //! map text to icon size

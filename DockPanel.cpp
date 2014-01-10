@@ -127,7 +127,6 @@ void DockPanel::_toggleDock( void )
         main_->move( mapToGlobal( QPoint(0,0) ) );
 
         // pixmap and title
-        if( !pixmap_.isNull() ) main_->setWindowIcon( pixmap_ );
         if( !title_.isEmpty() ) main_->setWindowTitle( title_ );
 
         // change action text
@@ -214,9 +213,6 @@ void DockPanel::_updateConfiguration( void )
 {
 
     Debug::Throw( "DockPanel::_updateConfiguration.\n" );
-
-    // pixmap
-    pixmap_ = QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() );
 
     // sticky and stay on top options
     if( _hasOptionName() )
