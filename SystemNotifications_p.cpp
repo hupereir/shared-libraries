@@ -25,6 +25,7 @@
 #include <libnotify/notify.h>
 #endif
 
+#include "Debug.h"
 #include "XmlOptions.h"
 
 #include <QApplication>
@@ -39,11 +40,10 @@ SystemNotificationsP::SystemNotificationsP( const QString& appName ):
     notify_init( appName.toLatin1());
 
     // try get pixmap from options and convert to icon
-    QIcon icon( qApp->windowIcon() );
-    if( !icon.isNull() )
+    if( XmlOptions::get().contains( "ICON_PIXMAP" ) )
     {
 
-        QImage image( icon.pixmap( QSize( 32, 32 ) ).toImage() );
+        QImage image( QString( XmlOptions::get().raw("ICON_PIXMAP" ) ) );
         image = image.convertToFormat( QImage::Format_ARGB32 );
         if( !image.isNull() )
         {
@@ -68,7 +68,7 @@ SystemNotificationsP::SystemNotificationsP( const QString& appName ):
 
         }
 
-    }
+    } else { Debug::Throw(0) << "SystemNotificationsP::SystemNotificationsP - invalid icon" << endl; }
 
     #endif
 
