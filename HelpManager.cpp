@@ -92,7 +92,6 @@ namespace BASE
         // create dialog
         HelpDialog* dialog( new HelpDialog( *this ) );
         dialog->setWindowTitle( windowTitle_ );
-        dialog->setWindowIcon( QPixmap( File( XmlOptions::get().raw( "ICON_PIXMAP" ) ).expand() ) );
         dialog->setItems( items_ );
         dialog->centerOnWidget( qApp->activeWindow() );
         dialog->show();
