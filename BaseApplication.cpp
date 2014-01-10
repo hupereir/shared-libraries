@@ -133,8 +133,11 @@ bool BaseApplication::realizeWidget( void )
     // need to update icon theme upfront to make sure themed icons are loaded
     _updateIconTheme();
 
+    // set application icon to qapplication
+    qApp->setWindowIcon( applicationIcon() );
+
     // actions
-    aboutAction_ = new QAction( _applicationIcon(), tr( "About this Application" ), this );
+    aboutAction_ = new QAction( applicationIcon(), tr( "About this Application" ), this );
     connect( aboutAction_, SIGNAL(triggered()), SLOT(_about()) );
 
     aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), tr( "About Qt" ), this );
@@ -176,23 +179,26 @@ void BaseApplication::_aboutQt( void )
 }
 
 //_______________________________________________
-void BaseApplication::_about( const QString& constName, const QString& constVersion, const QString& stamp )
+void BaseApplication::_about( void )
 {
 
-    Debug::Throw( "BaseApplication::about.\n" );
+    Debug::Throw( "BaseApplication::_about.\n" );
 
     // make sure name is all lower case and starts with upper case.
-    QString name( constName );
+    QString name( applicationName() );
     if( !name.isEmpty() )
     {
         name = name.toLower();
         name[0] = name[0].toUpper();
     }
 
-    // modify version to remvoe qt4 for version
-    QString version( constVersion );
+    // modify version to remove qt4 for version
+    QString version( applicationVersion() );
     if( version.indexOf( "qt4_" ) >= 0 )
     { version = version.replace( "qt4_", "" ) + " (qt4)"; }
+
+    // timestamp
+    const QString stamp( buildTimeStamp() );
 
     QString buffer;
     QTextStream in( &buffer, QIODevice::WriteOnly );
@@ -210,7 +216,7 @@ void BaseApplication::_about( const QString& constName, const QString& constVers
 
     QMessageBox dialog;
     dialog.setWindowTitle( QString( tr( "About %1" ).arg( name ) ) );
-    const QIcon icon( _applicationIcon() );
+    const QIcon icon( applicationIcon() );
     dialog.setWindowIcon( icon );
 
     QSize size = IconSize( IconSize::Maximum );
@@ -233,7 +239,7 @@ void BaseApplication::_updateConfiguration( void )
     Debug::Throw( "BaseApplication::_updateConfiguration.\n" );
 
     // application icon
-    const QIcon icon( _applicationIcon() );
+    const QIcon icon( applicationIcon() );
     qApp->setWindowIcon( icon );
 
     // also assign to all existing top level widgets
@@ -323,25 +329,4 @@ void BaseApplication::_updateIconTheme( void )
         QIcon::setThemeName( XmlOptions::get().raw( "ICON_THEME" ) );
     }
     #endif
-}
-
-//_______________________________________________
-QIcon BaseApplication::_applicationIcon( void ) const
-{
-
-    QIcon out;
-    if( XmlOptions::get().isSpecialOption( "ICON_PIXMAP" ) )
-    {
-
-        foreach( const QString& path, XmlOptions::get().specialOptions<QString>( "ICON_PIXMAP" ) )
-        { out.addPixmap( QPixmap( path ) ); }
-
-    } else if( XmlOptions::get().contains( "ICON_PIXMAP" ) ) {
-
-        out.addPixmap( QPixmap( XmlOptions::get().raw( "ICON_PIXMAP" ) ) );
-
-    }
-
-    return out;
-
 }

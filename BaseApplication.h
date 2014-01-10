@@ -80,6 +80,23 @@ class BaseApplication: public BaseCoreApplication
 
     //@}
 
+    //!@name application information
+    //@{
+
+    //! application name
+    virtual QString applicationName( void ) const = 0;
+
+    // application icon
+    virtual QIcon applicationIcon( void ) const = 0;
+
+    // application version
+    virtual QString applicationVersion( void ) const = 0;
+
+    // build time stamp
+    virtual QString buildTimeStamp( void ) const = 0;
+
+    //@}
+
     public Q_SLOTS:
 
     //! set application busy
@@ -91,9 +108,6 @@ class BaseApplication: public BaseCoreApplication
     protected Q_SLOTS:
 
     //! process request from application manager
-    virtual void _about( void ) = 0;
-
-    //! process request from application manager
     virtual void _aboutQt( void );
 
     //! configuration
@@ -101,11 +115,6 @@ class BaseApplication: public BaseCoreApplication
 
     //! about to quit
     virtual void _aboutToQuit( void );
-
-    protected:
-
-    // application icon
-    QIcon _applicationIcon( void ) const;
 
     private Q_SLOTS:
 
@@ -118,10 +127,10 @@ class BaseApplication: public BaseCoreApplication
     //! update icon path
     void _updateIconTheme( void );
 
-    protected:
+    private Q_SLOTS:
 
     //! application 'about' dialog
-    virtual void _about( const QString&, const QString& = QString(), const QString& = QString() );
+    virtual void _about( void );
 
     private:
 
