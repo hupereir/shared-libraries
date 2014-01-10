@@ -51,7 +51,7 @@
 #include <QLabel>
 
 //_________________________________________________________
-BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
+BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, ConfigurationFlags flags ):
     TabbedDialog( parent ),
     OptionWidgetList(this),
     backupOptions_( XmlOptions::get() ),
@@ -117,10 +117,18 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent ):
     // close accelerator
     new QShortcut( QKeySequence::Close, this, SLOT(reject()) );
 
+    // default configuration, as set by flags
+    if( flags )
+    {
+        baseConfiguration( 0, flags );
+        read();
+
+    }
+
 }
 
 //__________________________________________________
-QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned long flag )
+QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, ConfigurationFlags flags )
 {
 
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
@@ -132,7 +140,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
 
     // base
     QWidget* out(0);
-    if( flag & BASE )
+    if( flags&Base )
     {
 
         // base
@@ -222,13 +230,13 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, unsigned l
     }
 
     // list
-    if( flag & LIST ) { out = listConfiguration( parent ); }
+    if( flags&List ) { out = listConfiguration( parent ); }
 
     // edition
-    if( flag & TEXTEDIT ) { out = textEditConfiguration( parent ); }
+    if( flags&TextEdition ) { out = textEditConfiguration( parent ); }
 
     // animation (go to a new page)
-    if( flag & ANIMATIONS ) { out = animationConfiguration(); }
+    if( flags&Animations ) { out = animationConfiguration(); }
 
     return out;
 
@@ -302,7 +310,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsigned long flag )
+QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, ConfigurationFlags flags )
 {
 
     Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
@@ -316,7 +324,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
     QWidget* out(0);
 
     // tab emulation
-    if( flag & TAB_EMULATION )
+    if( flags&TabEmulation )
     {
         QGroupBox* box = new QGroupBox( tr( "Tab Emulation" ), parent );
         QVBoxLayout* layout = new QVBoxLayout();
@@ -345,7 +353,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
     }
 
     // paragraph highlighting
-    if( flag & PARAGRAPH_HIGHLIGHT )
+    if( flags&ParagraphHighlight )
     {
         QGroupBox* box = new QGroupBox( tr( "Paragraph Highlighting" ), parent );
         QVBoxLayout* layout = new QVBoxLayout();
@@ -388,7 +396,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
     }
 
     // margins
-    if( flag & MARGINS )
+    if( flags&Margins )
     {
         QGroupBox* box;
         parent->layout()->addWidget( box = new QGroupBox( tr( "Margin" ), parent ) );
@@ -414,7 +422,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, unsign
         out = box;
     }
 
-    if( flag & TEXT_EDITION_FLAGS )
+    if( flags&TextEditionFlags )
     {
 
         // misc

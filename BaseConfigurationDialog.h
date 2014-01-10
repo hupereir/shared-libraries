@@ -39,8 +39,48 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     public:
 
-    //! creator
-    BaseConfigurationDialog( QWidget *parent = 0 );
+    //! flag bitset for the Base configuration
+    enum ConfigurationFlag
+    {
+
+        None = 0,
+
+        //! base (font, icons and debug level
+        Base = 1<<0,
+
+        //! lists
+        List = 1<<2,
+
+        //! textEdit emulations
+        TextEdition = 1<<3,
+
+        //! animations
+        Animations = 1<<4,
+
+        //! tab emulation
+        TabEmulation = 1<<5,
+
+        //! paragraph highlight
+        ParagraphHighlight = 1<<6,
+
+        //! margins
+        Margins = 1<<7,
+
+        //! misc
+        TextEditionFlags = 1<<8,
+
+        //! default
+        Default = Base|List|Animations,
+
+        //! all text edition
+        AllTextEdition = TabEmulation|ParagraphHighlight|Margins|TextEditionFlags
+
+    };
+
+    Q_DECLARE_FLAGS( ConfigurationFlags, ConfigurationFlag );
+
+    //! constructor
+    BaseConfigurationDialog( QWidget *parent = 0, ConfigurationFlags = None );
 
     //! destructor
     virtual ~BaseConfigurationDialog()
@@ -51,50 +91,14 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     virtual void read( void )
     { OptionWidgetList::read( XmlOptions::get() ); }
 
-    //! flag bitset for the Base configuration
-    enum ConfigurationFlags
-    {
-
-        //! base (font, icons and debug level
-        BASE = 1<<0,
-
-        //! lists
-        LIST = 1<<2,
-
-        //! textEdit emulations
-        TEXTEDIT = 1<<3,
-
-        //! animations
-        ANIMATIONS = 1<<4,
-
-        //! tab emulation
-        TAB_EMULATION = 1<<5,
-
-        //! paragraph highlight
-        PARAGRAPH_HIGHLIGHT = 1<<6,
-
-        //! margins
-        MARGINS = 1<<7,
-
-        //! misc
-        TEXT_EDITION_FLAGS = 1<<8,
-
-        //! default
-        DEFAULT = BASE|LIST|ANIMATIONS,
-
-        //! all text edition
-        ALL_TEXT_EDITION = TAB_EMULATION|PARAGRAPH_HIGHLIGHT|MARGINS|TEXT_EDITION_FLAGS
-
-    };
-
     //! adds configuration box for base options used in all appications
-    QWidget* baseConfiguration( QWidget* parent = 0, unsigned long flag = DEFAULT );
+    QWidget* baseConfiguration( QWidget* parent = 0, ConfigurationFlags = Default );
 
     //! list configuration box
     QWidget* listConfiguration( QWidget* parent = 0 );
 
     //! TextEdit configuration box
-    QWidget* textEditConfiguration( QWidget* parent = 0, unsigned long flag = ALL_TEXT_EDITION );
+    QWidget* textEditConfiguration( QWidget* parent = 0, ConfigurationFlags = AllTextEdition );
 
     //! animations
     QWidget* animationConfiguration( QWidget* parent = 0 );
@@ -173,5 +177,6 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //@}
 };
 
+Q_DECLARE_OPERATORS_FOR_FLAGS( BaseConfigurationDialog::ConfigurationFlags )
 
 #endif
