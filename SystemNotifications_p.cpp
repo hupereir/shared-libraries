@@ -26,6 +26,9 @@
 #endif
 
 #include "XmlOptions.h"
+
+#include <QApplication>
+#include <QIcon>
 #include <QImage>
 
 //_________________________________________
@@ -36,10 +39,11 @@ SystemNotificationsP::SystemNotificationsP( const QString& appName ):
     notify_init( appName.toLatin1());
 
     // try get pixmap from options and convert to icon
-    if( XmlOptions::get().contains( "ICON_PIXMAP" ) )
+    QIcon icon( qApp->windowIcon() );
+    if( !icon.isNull() )
     {
 
-        QImage image( QString( XmlOptions::get().raw("ICON_PIXMAP" ) ) );
+        QImage image( icon.pixmap( QSize( 32, 32 ) ).toImage() );
         image = image.convertToFormat( QImage::Format_ARGB32 );
         if( !image.isNull() )
         {
