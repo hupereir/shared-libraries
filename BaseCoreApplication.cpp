@@ -77,6 +77,15 @@ bool BaseCoreApplication::initApplicationManager( void )
         usage();
         return false;
 
+    } else if( parser.hasFlag( "--version" ) ) {
+
+        Debug::Throw(0) << "Qt: " << qVersion() << endl;
+        Debug::Throw(0) <<  applicationName() << ": " << applicationVersion();
+        const QString timeStamp( buildTimeStamp() );
+        if( !timeStamp.isEmpty() ) Debug::Throw(0) << " (" << timeStamp << ")";
+        Debug::Throw(0) << "" << endl;
+        return false;
+
     } else if( parser.hasFlag( "--no-server" ) ) {
 
         realizeWidget();
