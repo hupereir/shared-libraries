@@ -127,13 +127,6 @@ CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments a
     out.registerFlag( "--help", QObject::tr( "print this help and exit" ) );
     out.registerFlag( "--version", QObject::tr( "print application version and exits" ) );
 
-    // server options
-    out.registerFlag( "--replace", tr( "replace existing application instance with new one" ) );
-    out.registerFlag( "--no-server", tr( "ignore server mode. Run new application instance" ) );
-    out.registerFlag( "--abort", tr( "exit existing instance" ) );
-    out.registerOption( "--server-host", tr( "string" ), tr( "use specified host for server communication" ) );
-    out.registerOption( "--server-port", tr( "integer" ), tr( "use specified port for server communication" ) );
-
     // these are additional flags recognized by Qt.
     // this may be system dependent, and vary from one Qt version to the other,
     // but is not very important. They are listed here only to avoid warnings from the application.
@@ -164,6 +157,7 @@ void BaseCoreApplication::_updateConfiguration( void )
 bool BaseCoreApplication::_processCommand( SERVER::ServerCommand command )
 {
 
+    Debug::Throw() << "BaseCoreApplication::_processCommand: " << command.commandName() << endl;
     switch( command.command() )
     {
 

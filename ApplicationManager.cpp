@@ -214,15 +214,27 @@ namespace SERVER
 
                 if( sender == existingClient ) {
 
-                    // tell client it is accepted
-                    sender->sendCommand( ServerCommand( command.id(), ServerCommand::Accepted ) );
-                    _broadcast( ServerCommand( command.id(), ServerCommand::Identify ), sender );
+                    if( parser.hasFlag( "--abort" ) )
+                    {
+
+                        // abort existing client
+                        sender->sendCommand( ServerCommand( command.id(), ServerCommand::Denied ) );
+                        _broadcast( ServerCommand( command.id(), ServerCommand::Identify ), sender );
+                        _register( command.id(), sender, true );
+
+                    } else {
+
+                        // tell client it is accepted
+                        sender->sendCommand( ServerCommand( command.id(), ServerCommand::Accepted ) );
+                        _broadcast( ServerCommand( command.id(), ServerCommand::Identify ), sender );
+
+                    }
 
                 } else if( parser.hasFlag( "--replace" ) ) {
 
                     // tell existing client to die
-                    ServerCommand abort_command( command.id(), ServerCommand::Abort );
-                    existingClient->sendCommand( abort_command );
+                    ServerCommand abortCommand( command.id(), ServerCommand::Abort );
+                    existingClient->sendCommand( abortCommand );
                     _broadcast( ServerCommand( command.id(), ServerCommand::Killed ), existingClient );
 
                     // tell new client it is accepted
@@ -233,8 +245,8 @@ namespace SERVER
                 } else if( parser.hasFlag( "--abort" ) ) {
 
                     // tell existing client to die
-                    ServerCommand abort_command( command.id(), ServerCommand::Abort );
-                    existingClient->sendCommand( abort_command );
+                    ServerCommand abortCommand( command.id(), ServerCommand::Abort );
+                    existingClient->sendCommand( abortCommand );
                     _broadcast( ServerCommand( command.id(), ServerCommand::Killed ), existingClient );
 
                     // tell new client it is denied too
