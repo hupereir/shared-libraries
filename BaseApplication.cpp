@@ -120,6 +120,16 @@ BaseApplication::~BaseApplication( void )
 { Debug::Throw( "BaseApplication::~BaseApplication.\n" ); }
 
 //____________________________________________
+bool BaseApplication::initApplicationManager( void )
+{
+    Debug::Throw( "BaseApplication::initApplicationManager.\n" );
+
+    // assign application name to qapplication
+    qApp->setWindowIcon( applicationIcon() );
+    return BaseCoreApplication::initApplicationManager();
+}
+
+//____________________________________________
 bool BaseApplication::realizeWidget( void )
 {
     Debug::Throw( "BaseApplication::realizeWidget.\n" );
@@ -132,9 +142,6 @@ bool BaseApplication::realizeWidget( void )
 
     // need to update icon theme upfront to make sure themed icons are loaded
     _updateIconTheme();
-
-    // set application icon to qapplication
-    qApp->setWindowIcon( applicationIcon() );
 
     // actions
     aboutAction_ = new QAction( applicationIcon(), tr( "About this Application" ), this );
@@ -153,24 +160,22 @@ bool BaseApplication::realizeWidget( void )
     return true;
 }
 
-//____________________________________________
-QIcon BaseApplication::applicationIcon( void ) const
+//_______________________________________________
+CommandLineParser BaseApplication::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings ) const
 {
 
-    if( XmlOptions::get().isSpecialOption( "ICON_PIXMAP" ) )
-    {
+    CommandLineParser out( BaseCoreApplication::commandLineParser() );
 
-        QIcon out;
-        foreach( const QString& path, XmlOptions::get().specialOptions<QString>( "ICON_PIXMAP" ) )
-        { out.addPixmap( QPixmap( path ) ); }
+    // these are additional flags recognized by Qt.
+    // this may be system dependent, and vary from one Qt version to the other,
+    // but is not very important. They are listed here only to avoid warnings from the application.
+    out.registerOption( "-style", "string", QObject::tr( "Qt widget style" ) );
+    out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (raster|opengl)" ) );
 
-        return out;
+    if( !arguments.isEmpty() )
+    { out.parse( arguments, ignoreWarnings ); }
 
-    } else if( XmlOptions::get().contains( "ICON_PIXMAP" ) ) {
-
-        return IconEngine::get( XmlOptions::get().raw( "ICON_PIXMAP" ) );
-
-    } else return QIcon();
+    return out;
 
 }
 

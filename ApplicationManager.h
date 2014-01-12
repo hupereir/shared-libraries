@@ -60,10 +60,10 @@ namespace SERVER
         virtual void setApplicationName( const QString& name );
 
         //! commandLine parser
-        static CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignore_warnings = true );
+        static CommandLineParser commandLineParser( CommandLineArguments = CommandLineArguments(), bool ignoreWarnings = true );
 
-        //! usage
-        static void usage( void );
+//         //! usage
+//         static void usage( void );
 
         //! application state enumeration
         enum State {

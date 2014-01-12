@@ -45,7 +45,7 @@ namespace SERVER
     {
 
         Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
-        setApplicationName( "GENERIC_APPLICATION" );
+        setApplicationName( "Generic Application" );
 
         connect( &_server(), SIGNAL(newConnection()), SLOT(_newConnection()) );
 
@@ -72,7 +72,7 @@ namespace SERVER
     }
 
     //_________________________________________
-    CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments arguments, bool ignore_warnings )
+    CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings )
     {
 
         CommandLineParser out;
@@ -82,26 +82,11 @@ namespace SERVER
         out.registerOption( "--server-host", tr( "string" ), tr( "use specified host for server communication" ) );
         out.registerOption( "--server-port", tr( "integer" ), tr( "use specified port for server communication" ) );
 
-        // these are additional flags recognized by Qt.
-        // this may be system dependent, and vary from one Qt version to the other,
-        // but is not very important. They are listed here only to avoid warnings from the application.
-        out.registerOption( "-style", "string", tr( "Qt widget style" ) );
-        out.registerOption( "-graphicssystem", tr( "string" ), tr( "Qt drawing backend (raster|opengl)" ) );
-
         if( !arguments.isEmpty() )
-        { out.parse( arguments, ignore_warnings ); }
+        { out.parse( arguments, ignoreWarnings ); }
 
         return out;
 
-    }
-
-    //_________________________________________
-    void ApplicationManager::usage( void )
-    {
-        Debug::Throw(0) << "server mode options: " << endl;
-        Debug::Throw(0) << "Server mode is used to avoid that multiple instances of the same application run at the same time. " << endl;
-        Debug::Throw(0) << "Following options are used to control the running instance, or ignore this mode." << endl;
-        commandLineParser().usage();
     }
 
     //_____________________________________________________

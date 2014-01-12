@@ -19,9 +19,10 @@
 *
 *******************************************************************************/
 
-#include "ErrorHandler.h"
 #include "BaseCoreApplication.h"
 #include "BaseCoreApplication.moc"
+
+#include "ErrorHandler.h"
 #include "Debug.h"
 #include "XmlOptions.h"
 
@@ -57,28 +58,42 @@ BaseCoreApplication::~BaseCoreApplication( void )
 }
 
 //____________________________________________
-void BaseCoreApplication::initApplicationManager( void )
+bool BaseCoreApplication::initApplicationManager( void )
 {
-    Debug::Throw( "BaseCoreApplication::initApplicationManager.\n" );
 
-    if( _hasApplicationManager() ) return;
+    Debug::Throw() << "BaseCoreApplication::initApplicationManager - arguments: " << arguments_.join( " " ) << endl;
 
-    if( SERVER::ApplicationManager::commandLineParser( _arguments() ).hasFlag( "--no-server" ) )
+    // check if already initialized
+    if( _hasApplicationManager() ) return true;
+
+    // assign application name to qapplication
+    qApp->setApplicationName( applicationName() );
+
+    // parse arguments
+    const CommandLineParser parser( commandLineParser( arguments_ ) );
+    if( parser.hasFlag( "--help" ) )
     {
+
+        usage();
+        return false;
+
+    } else if( parser.hasFlag( "--no-server" ) ) {
+
         realizeWidget();
-        return;
+        return true;
+
     }
 
     // create application manager
     applicationManager_ = new SERVER::ApplicationManager( this );
-    applicationManager_->setApplicationName( XmlOptions::get().raw( "APP_NAME" ) );
+    applicationManager_->setApplicationName( applicationName() );
 
     // connections
     connect( applicationManager_, SIGNAL(commandRecieved(SERVER::ServerCommand)), SLOT(_processCommand(SERVER::ServerCommand)) );
 
     // initialization
     applicationManager_->initialize( arguments_ );
-    Debug::Throw( "BaseCoreApplication::initApplicationManager - done.\n" );
+    return true;
 
 }
 
@@ -94,6 +109,34 @@ bool BaseCoreApplication::realizeWidget( void )
 
 }
 
+//_______________________________________________
+CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings ) const
+{
+
+    CommandLineParser out( SERVER::ApplicationManager::commandLineParser() );
+
+    out.registerFlag( "--help", QObject::tr( "print this help and exit" ) );
+    out.registerFlag( "--version", QObject::tr( "print application version and exits" ) );
+
+    // server options
+    out.registerFlag( "--replace", tr( "replace existing application instance with new one" ) );
+    out.registerFlag( "--no-server", tr( "ignore server mode. Run new application instance" ) );
+    out.registerFlag( "--abort", tr( "exit existing instance" ) );
+    out.registerOption( "--server-host", tr( "string" ), tr( "use specified host for server communication" ) );
+    out.registerOption( "--server-port", tr( "integer" ), tr( "use specified port for server communication" ) );
+
+    // these are additional flags recognized by Qt.
+    // this may be system dependent, and vary from one Qt version to the other,
+    // but is not very important. They are listed here only to avoid warnings from the application.
+    out.registerOption( "-style", "string", QObject::tr( "Qt widget style" ) );
+    out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (raster|opengl)" ) );
+
+    if( !arguments.isEmpty() )
+    { out.parse( arguments, ignoreWarnings ); }
+
+    return out;
+
+}
 
 //_______________________________________________
 void BaseCoreApplication::_updateConfiguration( void )

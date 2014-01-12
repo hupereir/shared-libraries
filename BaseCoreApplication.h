@@ -44,10 +44,30 @@ class BaseCoreApplication: public QObject
     virtual ~BaseCoreApplication( void );
 
     //! initialize application manager
-    virtual void initApplicationManager( void );
+    virtual bool initApplicationManager( void );
 
     //! create all widgets
     virtual bool realizeWidget( void );
+
+    //!@name application information
+    //@{
+
+    //! usage
+    virtual void usage( void ) const = 0;
+
+    //! command line parser
+    virtual CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const;
+
+    //! application name
+    virtual QString applicationName( void ) const = 0;
+
+    // application version
+    virtual QString applicationVersion( void ) const = 0;
+
+    // build time stamp
+    virtual QString buildTimeStamp( void ) const = 0;
+
+    //@}
 
     Q_SIGNALS:
 
