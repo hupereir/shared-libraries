@@ -24,12 +24,15 @@
 
 #include <QString>
 
+class QIcon;
+
 class SystemNotificationsP
 {
+
     public:
 
     // constructor
-    SystemNotificationsP( const QString& );
+    SystemNotificationsP( const QString&, const QIcon& );
 
     //! destructor
     virtual ~SystemNotificationsP( void );

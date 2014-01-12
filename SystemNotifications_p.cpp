@@ -26,24 +26,24 @@
 #endif
 
 #include "Debug.h"
-#include "XmlOptions.h"
+#include "IconSize.h"
 
 #include <QApplication>
 #include <QIcon>
 #include <QImage>
 
 //_________________________________________
-SystemNotificationsP::SystemNotificationsP( const QString& appName ):
+SystemNotificationsP::SystemNotificationsP( const QString& applicationName, const QIcon& icon ):
   icon_( 0x0 )
 {
     #if WITH_LIBNOTIFY
-    notify_init( appName.toLatin1());
+    notify_init( applicationName.toLatin1());
 
     // try get pixmap from options and convert to icon
-    if( XmlOptions::get().contains( "ICON_PIXMAP" ) )
+    if( !icon.isNull() )
     {
 
-        QImage image( QString( XmlOptions::get().raw("ICON_PIXMAP" ) ) );
+        QImage image( icon.pixmap( IconSize( IconSize::Maximum ) ).toImage() );
         image = image.convertToFormat( QImage::Format_ARGB32 );
         if( !image.isNull() )
         {

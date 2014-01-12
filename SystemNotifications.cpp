@@ -24,13 +24,12 @@
 #include "SystemNotifications_p.h"
 
 #include "Debug.h"
-#include "XmlOptions.h"
 
 //____________________________________________
-SystemNotifications::SystemNotifications( QObject* parent ):
+SystemNotifications::SystemNotifications( QObject* parent, const QString& applicationName, const QIcon& icon ):
     QObject( parent ),
     Counter( "SystemNotifications" ),
-    notify_( new SystemNotificationsP( XmlOptions::get().raw( "APP_NAME" ) ) )
+    notify_( new SystemNotificationsP( applicationName, icon ) )
 { Debug::Throw() << "SystemNotifications::SystemNotifications" << endl; }
 
 //____________________________________________

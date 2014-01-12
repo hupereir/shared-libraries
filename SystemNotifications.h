@@ -24,6 +24,7 @@
 
 #include "Counter.h"
 
+#include <QIcon>
 #include <QBasicTimer>
 #include <QObject>
 #include <QStringList>
@@ -36,7 +37,7 @@ class SystemNotifications: public QObject, public Counter
     public:
 
     //! constructor
-    SystemNotifications( QObject* );
+    SystemNotifications( QObject*, const QString&, const QIcon& = QIcon() );
 
     //! destructor
     virtual ~SystemNotifications( void );
