@@ -27,10 +27,7 @@
 //________________________________________________________
 CommandLineParser::CommandLineParser( void ):
     Counter( "CommandLineParser" )
-{
-    Debug::Throw( "CommandLineParser::CommandLineParser.\n" );
-    registerFlag( "--help", QObject::tr( "print this help and exit" ) );
-}
+{}
 
 //________________________________________________________
 void CommandLineParser::usage( void ) const
