@@ -45,8 +45,8 @@ QVariant CounterModel::data( const QModelIndex& index, int role ) const
 
         switch( index.column() )
         {
-            case NAME: return counter.first;
-            case COUNT: return counter.second;
+            case Name: return counter.first;
+            case Count: return counter.second;
             default: return QVariant();
         }
     }
@@ -84,8 +84,8 @@ bool CounterModel::SortFTor::operator () ( CounterPair first, CounterPair second
     switch( type_ )
     {
 
-        case NAME: return first.first < second.first;
-        case COUNT: return first.second < second.second;
+        case Name: return first.first < second.first;
+        case Count: return first.second < second.second;
         default: return true;
 
     }

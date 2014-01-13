@@ -463,11 +463,11 @@ class PlacesToolTipWidget: public BaseToolTipWidget
 
     //!@name items
     //@{
-    ToolTipWidgetItem* pathItem_;
-    ToolTipWidgetItem* lastModifiedItem_;
-    ToolTipWidgetItem* userItem_;
-    ToolTipWidgetItem* groupItem_;
-    ToolTipWidgetItem* permissionsItem_;
+    GridLayoutItem* pathItem_;
+    GridLayoutItem* lastModifiedItem_;
+    GridLayoutItem* userItem_;
+    GridLayoutItem* groupItem_;
+    GridLayoutItem* permissionsItem_;
     //@}
 
 };

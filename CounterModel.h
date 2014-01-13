@@ -68,8 +68,8 @@ class CounterModel: public ListModel<CounterPair>
 
     //! column type enumeration
     enum ColumnType {
-        NAME,
-        COUNT
+        Name,
+        Count
     };
 
     //!@name methods reimplemented from base class

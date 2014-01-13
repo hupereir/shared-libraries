@@ -25,7 +25,7 @@
 #include "GridLayout.h"
 #include "Singleton.h"
 #include "TimeStamp.h"
-#include "ToolTipWidgetItem.h"
+#include "GridLayoutItem.h"
 #include "XmlOptions.h"
 
 #include <QApplication>

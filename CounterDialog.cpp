@@ -69,6 +69,6 @@ void CounterDialog::update( void )
     model_.add( counterList );
 
     // resize list
-    list_->resizeColumnToContents( CounterModel::NAME );
+    list_->resizeColumnToContents( CounterModel::Name );
 
 }

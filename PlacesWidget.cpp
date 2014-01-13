@@ -33,7 +33,7 @@
 #include "PathEditor.h"
 #include "Singleton.h"
 #include "TimeStamp.h"
-#include "ToolTipWidgetItem.h"
+#include "GridLayoutItem.h"
 #include "Util.h"
 #include "WarningDialog.h"
 #include "XmlDocument.h"
@@ -427,11 +427,11 @@ PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
     vLayout->addLayout( gridLayout );
 
     // items
-    ( pathItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Path:" ) );
-    ( lastModifiedItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Modified:" ) );
-    ( userItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Owner:" ) );
-    ( groupItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Group:" ) );
-    ( permissionsItem_ = new ToolTipWidgetItem( this, gridLayout ) )->setKey( tr( "Permissions:" ) );
+    ( pathItem_ = new GridLayoutItem( this, gridLayout ) )->setKey( tr( "Path:" ) );
+    ( lastModifiedItem_ = new GridLayoutItem( this, gridLayout ) )->setKey( tr( "Modified:" ) );
+    ( userItem_ = new GridLayoutItem( this, gridLayout ) )->setKey( tr( "Owner:" ) );
+    ( groupItem_ = new GridLayoutItem( this, gridLayout ) )->setKey( tr( "Group:" ) );
+    ( permissionsItem_ = new GridLayoutItem( this, gridLayout ) )->setKey( tr( "Permissions:" ) );
 
     // add stretch
     vLayout->addStretch( 1 );
@@ -1076,7 +1076,7 @@ void PlacesWidget::_editItem( void )
 
             if( fileInfo.isLocal() )
             {
-                
+
                 const bool exists( fileInfo.file().exists() );
                 focusItem_->setIsValid( exists );
                 if( exists && !fileSystemWatcher_.directories().contains( fileInfo.file() ) )

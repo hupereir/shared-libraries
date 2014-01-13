@@ -19,16 +19,16 @@
 *
 *******************************************************************************/
 
-#include "ToolTipWidgetItem.h"
-#include "ToolTipWidgetItem.moc"
+#include "GridLayoutItem.h"
+#include "GridLayoutItem.moc"
 
 #include "ElidedLabel.h"
 #include "GridLayout.h"
 
 //____________________________________________________________________________
-ToolTipWidgetItem::ToolTipWidgetItem( QWidget* parent, GridLayout* layout, ItemFlags flags ):
+GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, ItemFlags flags ):
     QObject( parent ),
-    Counter( "ToolTipWidgetItem" ),
+    Counter( "GridLayoutItem" ),
     flags_( flags )
 {
     layout->addWidget( key_ = new QLabel( parent ), layout->currentRow(), layout->currentColumn(), Qt::AlignRight|Qt::AlignTop );
@@ -54,11 +54,11 @@ ToolTipWidgetItem::ToolTipWidgetItem( QWidget* parent, GridLayout* layout, ItemF
 }
 
 //____________________________________________________________________________
-void ToolTipWidgetItem::setKey( const QString& value )
+void GridLayoutItem::setKey( const QString& value )
 { key_->setText( value ); }
 
 //____________________________________________________________________________
-void ToolTipWidgetItem::setText( const QString& value )
+void GridLayoutItem::setText( const QString& value )
 {
 
     // assign text
@@ -72,21 +72,21 @@ void ToolTipWidgetItem::setText( const QString& value )
 }
 
 //____________________________________________________________________________
-void ToolTipWidgetItem::setVisible( bool value )
+void GridLayoutItem::setVisible( bool value )
 {
     if( value ) show();
     else hide();
 }
 
 //____________________________________________________________________________
-void ToolTipWidgetItem::show( void )
+void GridLayoutItem::show( void )
 {
     key_->show();
     value_->show();
 }
 
 //____________________________________________________________________________
-void ToolTipWidgetItem::hide( void )
+void GridLayoutItem::hide( void )
 {
     key_->hide();
     value_->hide();

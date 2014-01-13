@@ -30,7 +30,7 @@
 #include <QPaintEvent>
 #include <QWidget>
 
-class ToolTipWidgetItem;
+class GridLayoutItem;
 
 class BaseToolTipWidget: public QWidget, public Counter
 {

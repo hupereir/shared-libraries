@@ -103,6 +103,7 @@ SET( base_qt_SOURCES
   FileSystemWatcher.cpp
   FontEditor.cpp
   FontInfo.cpp
+  GridLayoutItem.cpp
   HtmlDialog.cpp
   HtmlTextNode.cpp
   IconCacheDialog.cpp
@@ -164,7 +165,6 @@ SET( base_qt_SOURCES
   TextSeparator.cpp
   ToolBarMenu.cpp
   ToolButtonStyleMenu.cpp
-  ToolTipWidgetItem.cpp
   TransitionWidget.cpp
   TreeItemBase.cpp
   TreeView.cpp

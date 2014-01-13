@@ -1,5 +1,5 @@
-#ifndef ToolTipWidgetItem_h
-#define ToolTipWidgetItem_h
+#ifndef GridLayoutItem_h
+#define GridLayoutItem_h
 
 // $Id$
 
@@ -30,7 +30,7 @@
 class GridLayout;
 
 //_______________________________________________________
-class ToolTipWidgetItem: public QObject, public Counter
+class GridLayoutItem: public QObject, public Counter
 {
 
     Q_OBJECT
@@ -50,10 +50,10 @@ class ToolTipWidgetItem: public QObject, public Counter
     Q_DECLARE_FLAGS( ItemFlags, ItemFlag );
 
     //! constructor
-    ToolTipWidgetItem( QWidget*, GridLayout*, ItemFlags = None );
+    GridLayoutItem( QWidget*, GridLayout*, ItemFlags = None );
 
     //! destructor
-    virtual ~ToolTipWidgetItem( void )
+    virtual ~GridLayoutItem( void )
     {}
 
     //!@name modifiers
@@ -89,6 +89,6 @@ class ToolTipWidgetItem: public QObject, public Counter
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( ToolTipWidgetItem::ItemFlags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( GridLayoutItem::ItemFlags )
 
 #endif

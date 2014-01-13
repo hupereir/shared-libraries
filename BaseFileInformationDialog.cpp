@@ -76,15 +76,15 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     hLayout->addStretch();
 
     // store all items in array, for visibility
-    QList<ToolTipWidgetItem*> items;
+    QList<GridLayoutItem*> items;
 
-    items.append(fileItem_ = new ToolTipWidgetItem( mainPage_, gridLayout_, ToolTipWidgetItem::Bold|ToolTipWidgetItem::Selectable|ToolTipWidgetItem::Elide ) );
-    items.append(typeItem_ = new ToolTipWidgetItem( mainPage_, gridLayout_ ) );
-    items.append(pathItem_ = new ToolTipWidgetItem( mainPage_, gridLayout_, ToolTipWidgetItem::Selectable|ToolTipWidgetItem::Elide ) );
-    items.append(sizeItem_ = new ToolTipWidgetItem( mainPage_, gridLayout_, ToolTipWidgetItem::Selectable ) );
-    items.append(createdItem_ = new ToolTipWidgetItem( mainPage_, gridLayout_ ) );
-    items.append(modifiedItem_ = new ToolTipWidgetItem( mainPage_, gridLayout_ ) );
-    items.append(accessedItem_ = new ToolTipWidgetItem( mainPage_, gridLayout_ ) );
+    items.append(fileItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Bold|GridLayoutItem::Selectable|GridLayoutItem::Elide ) );
+    items.append(typeItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
+    items.append(pathItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Selectable|GridLayoutItem::Elide ) );
+    items.append(sizeItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Selectable ) );
+    items.append(createdItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
+    items.append(modifiedItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
+    items.append(accessedItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
 
     fileItem_->setKey( tr( "File name:" ) );
     typeItem_->setKey( tr( "Type:" ) );
@@ -121,8 +121,8 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     layout->addItem( gridLayout );
 
-    items << (userItem_ = new ToolTipWidgetItem( box, gridLayout ) );
-    items << (groupItem_ = new ToolTipWidgetItem( box, gridLayout ) );
+    items << (userItem_ = new GridLayoutItem( box, gridLayout ) );
+    items << (groupItem_ = new GridLayoutItem( box, gridLayout ) );
     userItem_->setKey( tr( "User:" ) );
     groupItem_->setKey( tr( "Group:" ) );
 
@@ -130,7 +130,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     layout->addStretch();
 
     // hide everything, they are shown when proper values are set
-    foreach( ToolTipWidgetItem* item, items )
+    foreach( GridLayoutItem* item, items )
     { item->hide(); }
 
     permissionsWidget_->hide();
@@ -192,11 +192,11 @@ void BaseFileInformationDialog::setGroup( const QString& value )
 { groupItem_->setText( value ); }
 
 //_________________________________________________________
-int BaseFileInformationDialog::addRow( const QString& key, const QString& value, ToolTipWidgetItem::ItemFlags flags )
+int BaseFileInformationDialog::addRow( const QString& key, const QString& value, GridLayoutItem::ItemFlags flags )
 {
 
     // setup new item
-    ToolTipWidgetItem* item = new ToolTipWidgetItem( mainPage_, gridLayout_, flags );
+    GridLayoutItem* item = new GridLayoutItem( mainPage_, gridLayout_, flags );
     item->setKey( key );
     item->setText( value );
 

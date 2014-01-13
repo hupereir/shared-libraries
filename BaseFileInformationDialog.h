@@ -22,7 +22,7 @@
 *******************************************************************************/
 
 #include "CustomDialog.h"
-#include "ToolTipWidgetItem.h"
+#include "GridLayoutItem.h"
 #include "TimeStamp.h"
 
 #include <QFile>
@@ -103,7 +103,7 @@ class BaseFileInformationDialog: public CustomDialog
     void setGroup( const QString& );
 
     //! add a row
-    int addRow( const QString&, const QString& = QString(), ToolTipWidgetItem::ItemFlags = ToolTipWidgetItem::None );
+    int addRow( const QString&, const QString& = QString(), GridLayoutItem::ItemFlags = GridLayoutItem::None );
 
     //! set custom value
     void setCustomKey( int, const QString& );
@@ -131,21 +131,21 @@ class BaseFileInformationDialog: public CustomDialog
     QLabel* iconLabel_;
 
     //! items
-    ToolTipWidgetItem* fileItem_;
-    ToolTipWidgetItem* pathItem_;
-    ToolTipWidgetItem* typeItem_;
-    ToolTipWidgetItem* sizeItem_;
-    ToolTipWidgetItem* createdItem_;
-    ToolTipWidgetItem* accessedItem_;
-    ToolTipWidgetItem* modifiedItem_;
-    ToolTipWidgetItem* userItem_;
-    ToolTipWidgetItem* groupItem_;
+    GridLayoutItem* fileItem_;
+    GridLayoutItem* pathItem_;
+    GridLayoutItem* typeItem_;
+    GridLayoutItem* sizeItem_;
+    GridLayoutItem* createdItem_;
+    GridLayoutItem* accessedItem_;
+    GridLayoutItem* modifiedItem_;
+    GridLayoutItem* userItem_;
+    GridLayoutItem* groupItem_;
 
     //! permissions
     FilePermissionsWidget* permissionsWidget_;
 
     //! extra rows
-    QList<ToolTipWidgetItem*> extraItems_;
+    QList<GridLayoutItem*> extraItems_;
 
 };
 
