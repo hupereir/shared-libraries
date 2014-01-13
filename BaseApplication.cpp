@@ -144,7 +144,7 @@ bool BaseApplication::realizeWidget( void )
     _updateIconTheme();
 
     // actions
-    aboutAction_ = new QAction( applicationIcon(), tr( "About this Application" ), this );
+    aboutAction_ = new QAction( applicationIcon(), QString( tr( "About %1" ) ).arg( applicationName() ), this );
     connect( aboutAction_, SIGNAL(triggered()), SLOT(_about()) );
 
     aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), tr( "About Qt" ), this );
@@ -154,7 +154,7 @@ bool BaseApplication::realizeWidget( void )
     closeAction_->setShortcut( QKeySequence::Quit );
     connect( closeAction_, SIGNAL(triggered()), qApp, SLOT(quit()) );
 
-    configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), tr( "Configure this Application" ), this );
+    configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), QString( tr( "Configure %1..." ) ).arg( applicationName() ), this );
     connect( configurationAction_, SIGNAL(triggered()), SLOT(_configuration()) );
 
     return true;
