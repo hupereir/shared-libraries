@@ -57,8 +57,8 @@ class UserSelectionFrame: public QWidget, public Counter
     QString user( void ) const;
 
     //! editor
-    CustomComboBox& editor( void ) const
-    { return *editor_; }
+    CustomComboBox& comboBox( void ) const
+    { return *comboBox_; }
 
     Q_SIGNALS:
 
@@ -93,7 +93,7 @@ class UserSelectionFrame: public QWidget, public Counter
     QBasicTimer timer_;
 
     //! user line_edit
-    CustomComboBox* editor_;
+    CustomComboBox* comboBox_;
 
     //! current user
     /*! it is used to avoid emmitting signal when user was changed but fall back to the current one*/

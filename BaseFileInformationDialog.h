@@ -22,6 +22,7 @@
 *******************************************************************************/
 
 #include "CustomDialog.h"
+#include "ToolTipWidgetItem.h"
 #include "TimeStamp.h"
 
 #include <QFile>
@@ -30,7 +31,6 @@
 #include <QLayout>
 
 class AnimatedTabWidget;
-class Item;
 class FilePermissionsWidget;
 class GridLayout;
 
@@ -41,18 +41,6 @@ class BaseFileInformationDialog: public CustomDialog
     Q_OBJECT
 
     public:
-
-    //! flags
-    enum ItemFlag
-    {
-        None = 0,
-        Elide = 1<<0,
-        Bold = 1<<1,
-        Selectable = 1<<2,
-        All = Elide|Bold|Selectable
-    };
-
-    Q_DECLARE_FLAGS( ItemFlags, ItemFlag );
 
     //! constructor
     BaseFileInformationDialog( QWidget* );
@@ -115,7 +103,7 @@ class BaseFileInformationDialog: public CustomDialog
     void setGroup( const QString& );
 
     //! add a row
-    int addRow( const QString&, const QString& = QString(), ItemFlags = None );
+    int addRow( const QString&, const QString& = QString(), ToolTipWidgetItem::ItemFlags = ToolTipWidgetItem::None );
 
     //! set custom value
     void setCustomKey( int, const QString& );
@@ -124,52 +112,6 @@ class BaseFileInformationDialog: public CustomDialog
     void setCustomValue( int, const QString& );
 
     //@}
-
-    //! item
-    class Item: public QObject, public Counter
-    {
-
-        public:
-
-        //! constructor
-        Item( QWidget*, GridLayout*, ItemFlags = None );
-
-        //! destructor
-        virtual ~Item( void )
-        {}
-
-        //!@name modifiers
-        //@{
-
-        //! set key
-        void setKey( const QString& );
-
-        //! set text
-        void setValue( const QString& );
-
-        //@}
-
-        //!@name visibility
-        //@{
-
-        //! set visible
-        void setVisible( bool value );
-
-        //! show
-        void show( void );
-
-        //! hide
-        void hide( void );
-
-        //@}
-
-        private:
-
-        ItemFlags flags_;
-        QLabel* key_;
-        QLabel* value_;
-
-    };
 
     private:
 
@@ -189,24 +131,22 @@ class BaseFileInformationDialog: public CustomDialog
     QLabel* iconLabel_;
 
     //! items
-    Item* fileItem_;
-    Item* pathItem_;
-    Item* typeItem_;
-    Item* sizeItem_;
-    Item* createdItem_;
-    Item* accessedItem_;
-    Item* modifiedItem_;
-    Item* userItem_;
-    Item* groupItem_;
+    ToolTipWidgetItem* fileItem_;
+    ToolTipWidgetItem* pathItem_;
+    ToolTipWidgetItem* typeItem_;
+    ToolTipWidgetItem* sizeItem_;
+    ToolTipWidgetItem* createdItem_;
+    ToolTipWidgetItem* accessedItem_;
+    ToolTipWidgetItem* modifiedItem_;
+    ToolTipWidgetItem* userItem_;
+    ToolTipWidgetItem* groupItem_;
 
     //! permissions
     FilePermissionsWidget* permissionsWidget_;
 
     //! extra rows
-    QList<Item*> extraItems_;
+    QList<ToolTipWidgetItem*> extraItems_;
 
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS( BaseFileInformationDialog::ItemFlags )
 
 #endif

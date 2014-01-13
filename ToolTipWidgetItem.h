@@ -1,3 +1,6 @@
+#ifndef ToolTipWidgetItem_h
+#define ToolTipWidgetItem_h
+
 // $Id$
 
 /******************************************************************************
@@ -24,53 +27,68 @@
 #include <QLabel>
 #include <QObject>
 
+class GridLayout;
+
 //_______________________________________________________
 class ToolTipWidgetItem: public QObject, public Counter
 {
+
+    Q_OBJECT
+
     public:
 
-    //! constructor
-    ToolTipWidgetItem( QWidget* parent, GridLayout* layout ):
-        QObject( parent ),
-        Counter( "ToolTipWidgetItem" )
+    //! flags
+    enum ItemFlag
     {
-        layout->addWidget( key_ = new QLabel( parent ) );
-        layout->addWidget( value_ = new QLabel( parent ) );
-    }
+        None = 0,
+        Elide = 1<<0,
+        Bold = 1<<1,
+        Selectable = 1<<2,
+        All = Elide|Bold|Selectable
+    };
+
+    Q_DECLARE_FLAGS( ItemFlags, ItemFlag );
+
+    //! constructor
+    ToolTipWidgetItem( QWidget*, GridLayout*, ItemFlags = None );
 
     //! destructor
     virtual ~ToolTipWidgetItem( void )
     {}
 
-    //! show
-    void show( void )
-    {
-        key_->show();
-        value_->show();
-    }
-
-    //! hide
-    void hide( void )
-    {
-        key_->hide();
-        value_->hide();
-    }
+    //!@name modifiers
+    //@{
 
     //! set key
-    void setKey( const QString& value )
-    { key_->setText( value ); }
+    void setKey( const QString& );
 
     //! set text
-    void setText( const QString& value )
-    {
-        value_->setText( value );
-        if( value.isEmpty() ) hide();
-        else show();
-    }
+    void setText( const QString& );
+
+    //@}
+
+    //!@name visibility
+    //@{
+
+    //! set visible
+    void setVisible( bool value );
+
+    //! show
+    void show( void );
+
+    //! hide
+    void hide( void );
+
+    //@}
 
     private:
 
+    ItemFlags flags_;
     QLabel* key_;
     QLabel* value_;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( ToolTipWidgetItem::ItemFlags )
+
+#endif

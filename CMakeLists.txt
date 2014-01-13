@@ -164,6 +164,7 @@ SET( base_qt_SOURCES
   TextSeparator.cpp
   ToolBarMenu.cpp
   ToolButtonStyleMenu.cpp
+  ToolTipWidgetItem.cpp
   TransitionWidget.cpp
   TreeItemBase.cpp
   TreeView.cpp
