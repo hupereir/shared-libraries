@@ -56,6 +56,13 @@ class GridLayoutItem: public QObject, public Counter
     virtual ~GridLayoutItem( void )
     {}
 
+    //!@name accessors
+    //@{
+
+    //! visibility
+    bool isVisible( void ) const
+    { return visible_; }
+
     //!@name modifiers
     //@{
 
@@ -81,11 +88,18 @@ class GridLayoutItem: public QObject, public Counter
 
     //@}
 
+    Q_SIGNALS:
+
+    //! visibility changed
+    void visibilityChanged( bool );
+
     private:
 
     ItemFlags flags_;
     QLabel* key_;
     QLabel* value_;
+
+    bool visible_;
 
 };
 

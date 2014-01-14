@@ -29,7 +29,8 @@
 GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, ItemFlags flags ):
     QObject( parent ),
     Counter( "GridLayoutItem" ),
-    flags_( flags )
+    flags_( flags ),
+    visible_( true )
 {
     layout->addWidget( key_ = new QLabel( parent ), layout->currentRow(), layout->currentColumn(), Qt::AlignRight|Qt::AlignTop );
 
@@ -83,6 +84,11 @@ void GridLayoutItem::show( void )
 {
     key_->show();
     value_->show();
+    if( !visible_ )
+    {
+        visible_ = true;
+        emit visibilityChanged( visible_ );
+    }
 }
 
 //____________________________________________________________________________
@@ -90,4 +96,9 @@ void GridLayoutItem::hide( void )
 {
     key_->hide();
     value_->hide();
+    if( visible_ )
+    {
+        visible_ = false;
+        emit visibilityChanged( visible_ );
+    }
 }
