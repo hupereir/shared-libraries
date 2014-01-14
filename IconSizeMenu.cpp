@@ -24,7 +24,7 @@
 #include "IconSizeMenu.moc"
 
 //_____________________________________________________________________________
-IconSizeMenu::IconSizeMenu( QWidget* parent ):
+IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
     QMenu( tr( "Icon size" ), parent ),
     Counter( "IconSizeMenu" )
 {
@@ -39,6 +39,11 @@ IconSizeMenu::IconSizeMenu( QWidget* parent ):
     QAction* action;
     for( IconSize::Map::const_iterator iter = sizes.begin(); iter != sizes.end(); ++iter )
     {
+
+        // skip some items depending on custom flags
+        if( custom && iter.key() == IconSize::Default ) continue;
+        if( !custom && iter.key() == IconSize::Maximum ) continue;
+
         addAction( action = new QAction( iter.value(), this ) );
         action->setCheckable( true );
         actions_.insert( action, iter.key() );
