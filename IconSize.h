@@ -41,6 +41,7 @@ class IconSize: public QSize
         Medium = 22,
         Large = 32,
         Huge = 48,
+        Oversized = 128,
         Maximum = 256
     };
 

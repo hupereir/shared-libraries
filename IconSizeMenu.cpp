@@ -42,7 +42,7 @@ IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
 
         // skip some items depending on custom flags
         if( custom && iter.key() == IconSize::Default ) continue;
-        if( !custom && iter.key() == IconSize::Maximum ) continue;
+        if( !custom && ( iter.key() == IconSize::Maximum || iter.key() == IconSize::Oversized ) ) continue;
 
         addAction( action = new QAction( iter.value(), this ) );
         action->setCheckable( true );

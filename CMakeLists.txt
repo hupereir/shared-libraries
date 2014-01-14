@@ -12,9 +12,12 @@ IF( UNIX AND NOT APPLE )
   FIND_PACKAGE( X11 )
   IF( X11_FOUND )
     INCLUDE_DIRECTORIES( ${X11_X11_INCLUDE_PATH} )
-    ADD_DEFINITIONS( -DQ5_WS_X11 )
-  ENDIF()
 
+    IF( USE_QT5 )
+      ADD_DEFINITIONS( -DQ5_WS_X11 )
+    ENDIF()
+  
+  ENDIF()
 ENDIF()
 
 ########### Qt4 configuration #########

@@ -63,6 +63,16 @@ class GridLayoutItem: public QObject, public Counter
     bool isVisible( void ) const
     { return visible_; }
 
+    //! key
+    QString key( void ) const
+    { return key_->text(); }
+
+    //! key
+    QString text( void ) const
+    { return value_->text(); }
+
+    //!@}
+
     //!@name modifiers
     //@{
 

@@ -95,13 +95,13 @@ class MultipleClickCounter: public QObject, public Counter
     protected:
 
     //! timerEvent
-    virtual void timerEvent( QTimerEvent* e )
+    virtual void timerEvent( QTimerEvent* event )
     {
-        if( e->timerId() == timer_.timerId() )
+        if( event->timerId() == timer_.timerId() )
         {
             timer_.stop();
             toReset_ = true;
-        } else return QObject::timerEvent( e );
+        } else return QObject::timerEvent( event );
     }
 
     private:

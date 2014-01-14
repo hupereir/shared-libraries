@@ -49,7 +49,8 @@ IconSize::Map& IconSize::map( void )
         sizeMap.insert( Medium, QObject::tr( "Medium (22x22)" ) );
         sizeMap.insert( Large, QObject::tr( "Large (32x32)" ) );
         sizeMap.insert( Huge, QObject::tr( "Huge (48x48)" ) );
-        sizeMap.insert( Maximum, QObject::tr( "Maximum (128x128)" ) );
+        sizeMap.insert( Oversized, QObject::tr( "Oversized (128x128)" ) );
+        sizeMap.insert( Maximum, QObject::tr( "Maximum (256x256)" ) );
     }
 
     return sizeMap;
