@@ -238,7 +238,9 @@ void BaseApplication::_about( void )
         "are made so that it becomes and remains so. "
         "<p>Suggestions, comments and bug reports are welcome. "
         "Please use the following e-mail address:"
-        "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>" );
+        "<p><a href=\"mailto:hugo.pereira@free.fr\">hugo.pereira@free.fr</a>"
+        "<p>"
+        "<p>License: <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License Version 2</a>");
 
     QMessageBox dialog;
     dialog.setWindowTitle( QString( tr( "About %1" ).arg( name ) ) );
