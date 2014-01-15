@@ -27,7 +27,7 @@
 #include "Debug.h"
 
 #include <QStringList>
-#include <QMap>
+#include <QHash>
 
 //! parse command line argument.
 class CommandLineParser: public Counter
