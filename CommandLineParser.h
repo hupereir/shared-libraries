@@ -38,6 +38,13 @@ class CommandLineParser: public Counter
     //! constructor
     CommandLineParser();
 
+    //!@name default group names
+    //@{
+    static const QString applicationGroupName;
+    static const QString serverGroupName;
+    static const QString qtGroupName;
+    //@}
+
     //! accessors
     //@{
 
@@ -69,6 +76,14 @@ class CommandLineParser: public Counter
 
     //! modifiers
     //@{
+
+    //! register group
+    void setGroup( QString groupName )
+    {
+        currentGroup_ = groupName;
+        if( !groupNames_.contains( currentGroup_ ) )
+        { groupNames_.append( currentGroup_ ); }
+    }
 
     //! register option
     void registerOption( QString tag, QString type, QString helpText );
@@ -142,15 +157,6 @@ class CommandLineParser: public Counter
 
     };
 
-    //! flags
-    typedef QMap<QString, Flag> FlagMap;
-
-    //! flags
-    FlagMap flags_;
-
-    //! options
-    typedef QMap<QString, Option> OptionMap;
-
     //! used to select tag of maximum length
     class MinLengthFTor
     {
@@ -175,8 +181,44 @@ class CommandLineParser: public Counter
 
     };
 
-    //! options
-    OptionMap options_;
+    class Group
+    {
+
+        public:
+
+        //! clear
+        void clear( void );
+
+        typedef QHash< QString, Group> Map;
+
+        //! flags
+        typedef QMap<QString, Flag> FlagMap;
+
+        //! flags
+        FlagMap flags_;
+
+        //! options
+        typedef QMap<QString, Option> OptionMap;
+
+        //! options
+        OptionMap options_;
+
+    };
+
+    //! return all flags
+    Group::FlagMap _allFlags( void ) const;
+
+    //! return all options
+    Group::OptionMap _allOptions( void ) const;
+
+    //! group list
+    Group::Map groups_;
+
+    //! group list
+    QStringList groupNames_;
+
+    //! current group
+    QString currentGroup_;
 
     //! application name
     QString applicationName_;

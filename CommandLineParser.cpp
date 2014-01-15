@@ -22,50 +22,87 @@
 #include "CommandLineParser.h"
 
 #include <QTextStream>
+#include <QObject>
 #include <algorithm>
+
+//________________________________________________________
+const QString CommandLineParser::applicationGroupName( QObject::tr( "Application Options:" ) );
+const QString CommandLineParser::serverGroupName( QObject::tr( "Server Options:" ) );
+const QString CommandLineParser::qtGroupName( QObject::tr( "Qt Options:" ) );
 
 //________________________________________________________
 CommandLineParser::CommandLineParser( void ):
     Counter( "CommandLineParser" )
-{}
+{
+    // insert default groups
+    groupNames_.append( applicationGroupName );
+    groupNames_.append( serverGroupName );
+    groupNames_.append( qtGroupName );
+
+}
 
 //________________________________________________________
 void CommandLineParser::usage( void ) const
 {
 
     Debug::Throw( "CommandLineParser::usage.\n" );
-
-    const QList<QString> flagKeys( flags_.keys() );
-    const QList<QString> optionKeys( options_.keys() );
-
-    int max_length = 1+ qMax(
-        std::max_element( flagKeys.begin(), flagKeys.end(), MinLengthFTor() )->size(),
-        std::max_element( optionKeys.begin(), optionKeys.end(), MinLengthFTor() )->size() );
-
-    const QList<Option> optionValues( options_.values() );
-    int max_type_length = 1+ std::max_element( optionValues.begin(), optionValues.end(), MinTypeLengthFTor() )->type_.size();
+    bool first( true );
 
     QTextStream stream( stdout );
-
-    // print flags
-    for( FlagMap::const_iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
+    foreach( const QString& groupName, groupNames_ )
     {
-        stream << "  ";
-        stream << iter.key().leftJustified( max_length + max_type_length + 1 );
-        stream << iter.value().helpText_ << endl;
-    }
+        if( !groups_.contains( groupName ) ) continue;
 
-    // print options
-    for( OptionMap::const_iterator iter = options_.begin(); iter != options_.end(); ++iter )
-    {
-        stream << "  ";
-        stream << iter.key().leftJustified( max_length );
-        stream << iter.value().type_.leftJustified( max_type_length + 1 );
-        stream << iter.value().helpText_ << endl;
+        stream << endl;
+
+        // header
+        if( groups_.size() == 1 || groupName.isEmpty() ) stream << QObject::tr( "Options:" ) << endl;
+        else stream << groupName << endl;
+
+        // retrieve group
+        const Group& group( groups_[groupName] );
+
+        int maxFlagLength(0);
+        if( !group.flags_.isEmpty() )
+        {
+            const QList<QString> flagKeys( group.flags_.keys() );
+            maxFlagLength = std::max_element( flagKeys.constBegin(), flagKeys.constEnd(), MinLengthFTor() )->size();
+        }
+
+        int maxOptionLength(0);
+        int maxTypeLength(0);
+        if( !group.options_.isEmpty() )
+        {
+            const QList<QString> optionKeys( group.options_.keys() );
+            const QList<Option> optionValues( group.options_.values() );
+            maxOptionLength = std::max_element( optionKeys.constBegin(), optionKeys.constEnd(), MinLengthFTor() )->size();
+            maxTypeLength = 1+ std::max_element( optionValues.constBegin(), optionValues.constEnd(), MinTypeLengthFTor() )->type_.size();
+        }
+
+        int maxLength = 1+ qMax( maxFlagLength, maxOptionLength );
+
+        // print flags
+        for( Group::FlagMap::const_iterator iter = group.flags_.constBegin(); iter != group.flags_.constEnd(); ++iter )
+        {
+            stream << "  ";
+            stream << iter.key().leftJustified( maxLength + maxTypeLength + 1 );
+            stream << iter.value().helpText_ << endl;
+        }
+
+        // print options
+        for( Group::OptionMap::const_iterator iter = group.options_.constBegin(); iter != group.options_.constEnd(); ++iter )
+        {
+            stream << "  ";
+            stream << iter.key().leftJustified( maxLength );
+            stream << iter.value().type_.leftJustified( maxTypeLength + 1 );
+            stream << iter.value().helpText_ << endl;
+        }
+
     }
 
     stream
-        << QObject::tr( "Note: special tag \"-\" can be added to separate options from the last list of arguments\n (e.g. list of files to be opened)" )
+        << endl
+        << QObject::tr( "Special tag \"-\" can be added to separate options from the last list of arguments\n (e.g. list of files to be opened)" )
         << endl;
 
     return;
@@ -80,12 +117,18 @@ CommandLineArguments CommandLineParser::arguments( void ) const
     out << applicationName_;
 
     // add flags
-    for( FlagMap::const_iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
-    { if( iter.value().set_ ) out << iter.key(); }
+    for( Group::Map::const_iterator iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
+    {
+        const Group& group = iter.value();
 
-    // add options
-    for( OptionMap::const_iterator iter = options_.begin(); iter != options_.end(); ++iter )
-    { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out << iter.key() << iter.value().value_; }
+        for( Group::FlagMap::const_iterator iter = group.flags_.constBegin(); iter != group.flags_.constEnd(); ++iter )
+        { if( iter.value().set_ ) out << iter.key(); }
+
+        // add options
+        for( Group::OptionMap::const_iterator iter = group.options_.constBegin(); iter != group.options_.constEnd(); ++iter )
+        { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out << iter.key() << iter.value().value_; }
+
+    }
 
     // add orphans
     for( QStringList::const_iterator iter = orphans_.begin(); iter != orphans_.end(); ++iter )
@@ -98,32 +141,41 @@ CommandLineArguments CommandLineParser::arguments( void ) const
 //_______________________________________________________
 bool CommandLineParser::hasFlag( QString tag ) const
 {
-    FlagMap::const_iterator iter( flags_.find( tag ) );
-    return iter != flags_.end() && iter.value().set_;
+    const Group::FlagMap flags( _allFlags() );
+    Group::FlagMap::const_iterator iter( flags.find( tag ) );
+    return iter != flags.end() && iter.value().set_;
 }
 
 //_______________________________________________________
 bool CommandLineParser::hasOption( QString tag ) const
 {
-    OptionMap::const_iterator iter( options_.find( tag ) );
-    return iter != options_.end() && iter.value().set_ && !iter.value().value_.isEmpty();
+    const Group::OptionMap options( _allOptions() );
+    Group::OptionMap::const_iterator iter( options.find( tag ) );
+    return iter != options.end() && iter.value().set_ && !iter.value().value_.isEmpty();
 }
 
 //_______________________________________________________
 QString CommandLineParser::option( QString tag ) const
 {
-    OptionMap::const_iterator iter( options_.find( tag ) );
-    Q_ASSERT( iter != options_.end() && iter.value().set_ && !iter.value().value_.isEmpty() );
+    const Group::OptionMap options( _allOptions() );
+    Group::OptionMap::const_iterator iter( options.find( tag ) );
+    Q_ASSERT( iter != options.end() && iter.value().set_ && !iter.value().value_.isEmpty() );
     return iter.value().value_;
 }
 
 //________________________________________________________
 void CommandLineParser::registerFlag( QString tagName, QString helpText )
-{ flags_.insert( tagName, Flag( helpText ) ); }
+{
+    if( !_allFlags().contains( tagName ) )
+    { groups_[currentGroup_].flags_.insert( tagName, Flag( helpText ) ); }
+}
 
 //________________________________________________________
 void CommandLineParser::registerOption( QString tagName, QString type, QString helpText )
-{ options_.insert( tagName, Option( type, helpText ) ); }
+{
+    if( !_allOptions().contains( tagName ) )
+    { groups_[currentGroup_].options_.insert( tagName, Option( type, helpText ) ); }
+}
 
 //________________________________________________________
 CommandLineParser& CommandLineParser::parse( const CommandLineArguments& arguments, bool ignoreWarnings )
@@ -141,7 +193,11 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
     // check if all options should be orphans
     // this should be triggered by adding "-" in the command line
-    bool auto_orphan( false );
+    bool autoOrphan( false );
+
+    // get all flags and all options
+    const Group::FlagMap flags( _allFlags() );
+    const Group::OptionMap options( _allOptions() );
 
     for( int index = 1; index < arguments.size(); index++ )
     {
@@ -151,23 +207,45 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
         if( tagName == "-" )
         {
-            if( auto_orphan && !ignoreWarnings )
+            if( autoOrphan && !ignoreWarnings )
             {
                 QTextStream(stdout) << "CommandLineParser::parse -"
                     << " option delimiter \"-\" appears multiple times "
                     << endl;
             }
 
-            auto_orphan = true;
+            autoOrphan = true;
             continue;
         }
 
-        // see if tag is in flag list
+        // see if tag contains "=" string
+        QString value;
+        QStringList values( tagName.split( "=" ) );
+        if( values.size() == 2 )
         {
-            FlagMap::iterator iter( flags_.find( tagName ) );
-            if( iter != flags_.end() )
+
+            tagName = values[0];
+            value = values[1];
+
+        } else if( values.size() > 2 ) {
+
+            if( !ignoreWarnings )
             {
-                if( auto_orphan )
+                QTextStream(stdout) << "CommandLineParser::parse -"
+                    << " tag " << tagName << " is ill-formed. It is ignored."
+                    << endl;
+            }
+            continue;
+
+        }
+
+        // see if tag is in flag list. Only check if no value is found.
+        if( value.isEmpty() )
+        {
+            Group::FlagMap::iterator iter( flags.find( tagName ) );
+            if( iter != flags.end() )
+            {
+                if( autoOrphan )
                 {
                     if( !ignoreWarnings )
                     {
@@ -182,17 +260,26 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
                 _discardOrphans( ignoreWarnings );
                 iter.value().set_ = true;
+
+                // also find true option in group lists and set flag
+                for( Group::Map::iterator groupIter = groups_.begin(); groupIter != groups_.end(); ++groupIter )
+                {
+                    Group::FlagMap::iterator iter( groupIter.value().flags_.find( tagName ) );
+                    if( iter != groupIter.value().flags_.end() )
+                    { iter.value().set_ = true; }
+                }
+
                 continue;
             }
         }
 
         // see if tag is in option list
         {
-            OptionMap::iterator iter( options_.find( tagName ) );
-            if( iter != options_.end() )
+            Group::OptionMap::iterator iter( options.find( tagName ) );
+            if( iter != options.end() )
             {
 
-                if( auto_orphan )
+                if( autoOrphan )
                 {
 
                     if( !ignoreWarnings )
@@ -203,33 +290,48 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                     }
 
                     // also skip next entry
-                    if( index+1 < arguments.size() ) index++;
+                    if( value.isEmpty() && index+1 < arguments.size() ) index++;
 
                     continue;
 
                 }
 
-                if( index+1 < arguments.size() )
+                if( value.isEmpty() && index+1 < arguments.size() )
                 {
 
-                    QString value( arguments[index+1] );
+                    value = arguments[index+1];
                     if( !( value.isEmpty() || _isTag(value) ) )
+                    { index++; }
+
+                }
+
+                if( !( value.isEmpty() || _isTag(value) ) )
+                {
+                    _discardOrphans( ignoreWarnings );
+                    iter.value().set_ = true;
+                    iter.value().value_ = value;
+
+                    // also find true option in group lists and set flag
+                    for( Group::Map::iterator groupIter = groups_.begin(); groupIter != groups_.end(); ++groupIter )
                     {
-                        _discardOrphans( ignoreWarnings );
-                        iter.value().set_ = true;
-                        iter.value().value_ = value;
-                        index++;
-                        continue;
+                        Group::OptionMap::iterator iter( groupIter.value().options_.find( tagName ) );
+                        if( iter != groupIter.value().options_.end() )
+                        {
+                            iter.value().set_ = true;
+                            iter.value().value_ = value;
+                        }
                     }
 
-                } else if( !ignoreWarnings ) {
+                }  else if( !ignoreWarnings ) {
 
                     Debug::Throw(0) << "CommandLineParser::parse -"
                         << " expected argument of type " << iter.value().type_
                         << " after option " << iter.key() << endl;
+
                 }
 
                 continue;
+
             }
         }
 
@@ -262,16 +364,8 @@ void CommandLineParser::clear( void )
     applicationName_.clear();
     orphans_.clear();
 
-    // clear flags
-    for( FlagMap::iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
-    { iter.value().set_ = false; }
-
-    // clear options
-    for( OptionMap::iterator iter = options_.begin(); iter != options_.end(); ++iter )
-    {
-        iter.value().set_ = false;
-        iter.value().value_.clear();
-    }
+    for( Group::Map::iterator iter = groups_.begin(); iter != groups_.end(); ++iter )
+    { iter.value().clear(); }
 
 }
 
@@ -284,7 +378,7 @@ void CommandLineParser::_discardOrphans( bool ignoreWarnings )
     if( !ignoreWarnings )
     {
         Debug::Throw(0) << "CommandLineParser::parse - following orphans are discarded: " << endl;
-        for( QStringList::const_iterator iter = orphans_.begin(); iter != orphans_.end(); ++iter )
+        for( QStringList::const_iterator iter = orphans_.constBegin(); iter != orphans_.constEnd(); ++iter )
         { QTextStream( stdout ) << "  " << *iter << endl; }
     }
 
@@ -294,3 +388,38 @@ void CommandLineParser::_discardOrphans( bool ignoreWarnings )
 //_______________________________________________________
 bool CommandLineParser::_isTag( QString tag ) const
 { return (!tag.isEmpty()) && tag.left(1) == "-"; }
+
+//_______________________________________________________
+CommandLineParser::Group::FlagMap CommandLineParser::_allFlags( void ) const
+{
+    Group::FlagMap out;
+    for( Group::Map::const_iterator iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
+    { out.unite( iter.value().flags_ ); }
+
+    return out;
+}
+
+//_______________________________________________________
+CommandLineParser::Group::OptionMap CommandLineParser::_allOptions( void ) const
+{
+    Group::OptionMap out;
+    for( Group::Map::const_iterator iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
+    { out.unite( iter.value().options_ ); }
+
+    return out;
+}
+
+//_______________________________________________________
+void CommandLineParser::Group::clear( void )
+{
+    // clear flags
+    for( FlagMap::iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
+    { iter.value().set_ = false; }
+
+    // clear options
+    for( OptionMap::iterator iter = options_.begin(); iter != options_.end(); ++iter )
+    {
+        iter.value().set_ = false;
+        iter.value().value_.clear();
+    }
+}
