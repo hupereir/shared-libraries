@@ -76,6 +76,7 @@ namespace SERVER
     {
 
         CommandLineParser out;
+        out.setGroup( CommandLineParser::serverGroupName );
         out.registerFlag( "--replace", tr( "replace existing application instance with new one" ) );
         out.registerFlag( "--no-server", tr( "ignore server mode. Run new application instance" ) );
         out.registerFlag( "--abort", tr( "exit existing instance" ) );

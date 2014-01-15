@@ -91,6 +91,9 @@ class BaseCoreApplication: public QObject
 
     protected:
 
+    //! formated usage
+    void _usage( QString applicationName, QString options = tr("[options]") ) const;
+
     //! argument list
     void _setArguments( CommandLineArguments arguments )
     { arguments_ = arguments; }

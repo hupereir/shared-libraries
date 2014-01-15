@@ -169,8 +169,9 @@ CommandLineParser BaseApplication::commandLineParser( CommandLineArguments argum
     // these are additional flags recognized by Qt.
     // this may be system dependent, and vary from one Qt version to the other,
     // but is not very important. They are listed here only to avoid warnings from the application.
+    out.setGroup( CommandLineParser::qtGroupName );
     out.registerOption( "-style", "string", QObject::tr( "Qt widget style" ) );
-    out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (raster|opengl)" ) );
+    out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (native|raster)" ) );
 
     if( !arguments.isEmpty() )
     { out.parse( arguments, ignoreWarnings ); }

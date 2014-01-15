@@ -124,32 +124,14 @@ CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments a
 
     CommandLineParser out( SERVER::ApplicationManager::commandLineParser() );
 
+    out.setGroup( CommandLineParser::applicationGroupName );
     out.registerFlag( "--help", QObject::tr( "print this help and exit" ) );
     out.registerFlag( "--version", QObject::tr( "print application version and exits" ) );
-
-    // these are additional flags recognized by Qt.
-    // this may be system dependent, and vary from one Qt version to the other,
-    // but is not very important. They are listed here only to avoid warnings from the application.
-    out.registerOption( "-style", "string", QObject::tr( "Qt widget style" ) );
-    out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (raster|opengl)" ) );
 
     if( !arguments.isEmpty() )
     { out.parse( arguments, ignoreWarnings ); }
 
     return out;
-
-}
-
-//_______________________________________________
-void BaseCoreApplication::_updateConfiguration( void )
-{
-    Debug::Throw( "BaseCoreApplication::_updateConfiguration.\n" );
-
-    // debug
-    Debug::setLevel( XmlOptions::get().get<int>( "DEBUG_LEVEL" ) );
-
-    // emit signal to propagate changes to other widgets
-    Debug::Throw( "BaseCoreApplication::_updateConfiguration - done.\n" );
 
 }
 
@@ -177,4 +159,24 @@ bool BaseCoreApplication::_processCommand( SERVER::ServerCommand command )
 
     return false;
 
+}
+
+//_______________________________________________
+void BaseCoreApplication::_updateConfiguration( void )
+{
+    Debug::Throw( "BaseCoreApplication::_updateConfiguration.\n" );
+
+    // debug
+    Debug::setLevel( XmlOptions::get().get<int>( "DEBUG_LEVEL" ) );
+
+    // emit signal to propagate changes to other widgets
+    Debug::Throw( "BaseCoreApplication::_updateConfiguration - done.\n" );
+
+}
+
+//_______________________________________________
+void BaseCoreApplication::_usage( QString application, QString options ) const
+{
+    QTextStream( stdout ) << tr( "Usage: " ) << endl;
+    QTextStream( stdout ) << "  " << application << " " << options << endl;
 }
