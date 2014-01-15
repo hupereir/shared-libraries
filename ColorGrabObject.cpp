@@ -36,14 +36,13 @@
 ColorGrabObject::ColorGrabObject( QWidget* parent ):
     QObject( parent ),
     Counter( "ColorGrabObject" ),
-    locked_( false ),
+    grabber_( 0x0 ),
     mouseDown_( false )
 {
     Debug::Throw( "ColorGrabObject::ColorGrabObject.\n" );
     Q_CHECK_PTR( parent );
 
     connect( parent, SIGNAL(clicked()), SLOT(_grabColor()) );
-    parent->installEventFilter( this );
 
 }
 
@@ -53,13 +52,17 @@ void ColorGrabObject::_grabColor( void )
 
     Debug::Throw( "ColorGrabObject::_grabColor.\n" );
 
+    grabber_ = new QDialog( 0, Qt::X11BypassWindowManagerHint );
+    grabber_->move( -1000, -1000 );
+    grabber_->setModal( true );
+    grabber_->show();
+    grabber_->grabMouse( Qt::CrossCursor );
+    grabber_->installEventFilter( this );
+
     #if QT_VERSION >= 0x050000
     // need to explicitely override cursor for Qt5
     qApp->setOverrideCursor( Qt::CrossCursor );
     #endif
-
-    static_cast<QWidget*>(parent())->grabMouse(Qt::CrossCursor);
-    locked_ = true;
 
 }
 
@@ -68,82 +71,47 @@ bool ColorGrabObject::eventFilter( QObject* object, QEvent* event )
 {
 
     // check object
-    if( object != parent() ) return false;
+    if( object != grabber_ ) return false;
 
     switch( event->type() )
     {
 
         case QEvent::MouseButtonPress:
-        return _mousePressEvent( static_cast<QMouseEvent*>( event ) );
-
-        case QEvent::MouseButtonRelease:
-        return _mouseReleaseEvent( static_cast<QMouseEvent*>( event ) );
+        {
+            QMouseEvent* mouseEvent( static_cast<QMouseEvent*>( event ) );
+            if( mouseEvent->button() == Qt::LeftButton ) mouseDown_ = true;
+            return true;
+        }
 
         case QEvent::MouseMove:
-        return _mouseMoveEvent( static_cast<QMouseEvent*>( event ) );
+        {
+            QMouseEvent* mouseEvent( static_cast<QMouseEvent*>( event ) );
+            if( mouseDown_ ) _selectColorFromMouseEvent( mouseEvent );
+            return true;
+        }
 
-        default: break;
+        case QEvent::MouseButtonRelease:
+        {
+            // delete grabber
+            delete grabber_;
+            grabber_ = 0;
+            mouseDown_ = false;
+
+            #if QT_VERSION >= 0x050000
+            // need to explicitely release cursor for Qt5
+            qApp->restoreOverrideCursor();
+            #endif
+
+            QMouseEvent* mouseEvent( static_cast<QMouseEvent*>( event ) );
+            if( mouseEvent->button() == Qt::LeftButton )
+            { _selectColorFromMouseEvent( mouseEvent ); }
+
+            return true;
+
+        }
+
+        default: return false;
     }
-
-    return false;
-}
-
-//_____________________________________________________________
-bool ColorGrabObject::_mousePressEvent( QMouseEvent *event )
-{
-    Debug::Throw( "ColorGrabObject::_mousePressEvent.\n" );
-
-    // check button
-    if( event->button() != Qt::LeftButton ) return false;
-
-    // do nothing if mouse is not locked
-    if( !locked_ ) return false;
-
-    // do nothing if mouse is already down
-    if( !mouseDown_ ) mouseDown_ = true;
-    return true;
-
-}
-
-//_____________________________________________________________
-bool ColorGrabObject::_mouseReleaseEvent( QMouseEvent *event )
-{
-
-    Debug::Throw( "ColorGrabObject::mouseReleaseEvent.\n" );
-
-    // do nothing if mouse is not locked
-    if( !locked_ ) return false;
-
-    // check button
-    if( event->button() == Qt::LeftButton && mouseDown_ )
-    {
-        // get color under mouse
-        _selectColorFromMouseEvent( event );
-    }
-
-    mouseDown_ = false;
-    locked_ = false;
-    static_cast<QWidget*>(parent())->releaseMouse();
-
-    #if QT_VERSION >= 0x050000
-    // need to explicitely release cursor for Qt5
-    qApp->restoreOverrideCursor();
-    #endif
-
-    return true;
-
-}
-
-//_____________________________________________________________
-bool ColorGrabObject::_mouseMoveEvent( QMouseEvent *event )
-{
-
-    Debug::Throw( "ColorGrabObject::_mouseMoveEvent.\n" );
-
-    // do nothing if mouse is not locked
-    if( !( locked_ && mouseDown_ ) ) return false;
-    _selectColorFromMouseEvent( event );
-    return true;
 
 }
 

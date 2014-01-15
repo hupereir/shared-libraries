@@ -23,8 +23,9 @@
 
 #include "Counter.h"
 
-#include <QWidget>
+#include <QDialog>
 #include <QEvent>
+#include <QWidget>
 
 class ColorGrabObject: public QObject, public Counter
 {
@@ -51,23 +52,12 @@ class ColorGrabObject: public QObject, public Counter
 
     void _grabColor( void );
 
-    protected:
-
-    //! mouse press event [overloaded]
-    virtual bool _mousePressEvent( QMouseEvent* );
-
-    //! mouse release event [overloaded]
-    virtual bool _mouseReleaseEvent( QMouseEvent* );
-
-    //! mouse move event [overloaded]
-    virtual bool _mouseMoveEvent( QMouseEvent* );
-
     private:
 
     void _selectColorFromMouseEvent( QMouseEvent* );
 
-    //! is set to true when colorgrab is activated
-    bool locked_;
+    //! window grabber
+    QDialog* grabber_;
 
     //! is true when the mouse is down
     bool mouseDown_;
