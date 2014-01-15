@@ -119,6 +119,10 @@ void Options::installDefaultOptions( void )
     set( "ICON_THEME", "oxygen" );
     set( "ICON_THEME_PATH", "/usr/share/icons" );
 
+    // default preferences dialog size
+    set<int>( "PREFERENCE_DIALOG_WIDTH", 600 );
+    set<int>( "PREFERENCE_DIALOG_HEIGHT", 500 );
+
     setAutoDefault( false );
 
 }
