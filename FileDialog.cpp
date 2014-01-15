@@ -27,8 +27,8 @@
 //_______________________________________________________
 QString& FileDialog::_workingDirectory( void )
 {
-    static QString working_directory = Util::workingDirectory();
-    return working_directory;
+    static QString workingDirectory = Util::workingDirectory();
+    return workingDirectory;
 }
 
 //_______________________________________________________
