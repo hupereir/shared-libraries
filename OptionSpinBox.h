@@ -64,6 +64,10 @@ class OptionSpinBox: public QWidget, public OptionWidget
     void write( Options& options ) const
     { options.set<double>( optionName(), static_cast<double>(value())/scale_ ); }
 
+    //! special value text
+    void setSpecialValueText( const QString& value )
+    { spinBox_->setSpecialValueText( value ); }
+
     //! unit
     void setSuffix( const QString& value )
     { spinBox_->setSuffix( value ); }

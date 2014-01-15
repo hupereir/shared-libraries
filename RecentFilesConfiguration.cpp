@@ -71,6 +71,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     hLayout->addWidget( new QLabel( tr( "Recent files history size" ), box ) );
     hLayout->addWidget( spinbox = new OptionSpinBox( box, "DB_SIZE" ) );
     hLayout->addStretch(1);
+    spinbox->setSpecialValueText( tr( " Unlimited" ) );
     spinbox->setMinimum( 0 );
     spinbox->setMaximum( 100 );
     addOptionWidget( spinbox );
