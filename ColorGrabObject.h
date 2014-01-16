@@ -54,10 +54,14 @@ class ColorGrabObject: public QObject, public Counter
 
     private:
 
+    //! select color
     void _selectColorFromMouseEvent( QMouseEvent* );
 
+    //! clear capture
+    void _clearCapture( void );
+
     //! window grabber
-    QDialog* grabber_;
+    QDialog* captureWidget_;
 
     //! is true when the mouse is down
     bool mouseDown_;

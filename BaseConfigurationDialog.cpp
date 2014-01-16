@@ -172,10 +172,11 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
             #endif
 
             // debug level
-            gridLayout->addWidget( label = new QLabel( tr( "Debug level:" ), box ), 2, 0, 1, 1 );
+            gridLayout->addWidget( label = new QLabel( tr( "Verbosity:" ), box ), 2, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
+            spinbox->setSpecialValueText( tr( " Silent" ) );
             spinbox->setMinimum( 0 );
             spinbox->setMaximum( 5 );
             spinbox->setToolTip( tr( "Debug verbosity level" ) );

@@ -36,7 +36,7 @@
 ColorGrabObject::ColorGrabObject( QWidget* parent ):
     QObject( parent ),
     Counter( "ColorGrabObject" ),
-    grabber_( 0x0 ),
+    captureWidget_( 0x0 ),
     mouseDown_( false )
 {
     Debug::Throw( "ColorGrabObject::ColorGrabObject.\n" );
@@ -52,12 +52,13 @@ void ColorGrabObject::_grabColor( void )
 
     Debug::Throw( "ColorGrabObject::_grabColor.\n" );
 
-    grabber_ = new QDialog( 0, Qt::X11BypassWindowManagerHint );
-    grabber_->move( -1000, -1000 );
-    grabber_->setModal( true );
-    grabber_->show();
-    grabber_->grabMouse( Qt::CrossCursor );
-    grabber_->installEventFilter( this );
+    _clearCapture();
+    captureWidget_ = new QDialog( 0, Qt::X11BypassWindowManagerHint );
+    captureWidget_->installEventFilter( this );
+    captureWidget_->move( -1000, -1000 );
+    captureWidget_->setModal( true );
+    captureWidget_->show();
+    captureWidget_->grabMouse( Qt::CrossCursor );
 
     #if QT_VERSION >= 0x050000
     // need to explicitely override cursor for Qt5
@@ -71,7 +72,7 @@ bool ColorGrabObject::eventFilter( QObject* object, QEvent* event )
 {
 
     // check object
-    if( object != grabber_ ) return false;
+    if( object != captureWidget_ ) return false;
 
     switch( event->type() )
     {
@@ -93,9 +94,7 @@ bool ColorGrabObject::eventFilter( QObject* object, QEvent* event )
         case QEvent::MouseButtonRelease:
         {
             // delete grabber
-            delete grabber_;
-            grabber_ = 0;
-            mouseDown_ = false;
+            _clearCapture();
 
             #if QT_VERSION >= 0x050000
             // need to explicitely release cursor for Qt5
@@ -135,4 +134,21 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
     emit colorSelected( QColor( image.pixel( 1, 1 ) ) );
 
     return;
+}
+
+//_________________________________________________________
+void ColorGrabObject::_clearCapture( void )
+{
+    if( captureWidget_ )
+    {
+
+        Debug::Throw( "ColorGrabObject::_clearCapture.\n" );
+
+        // release mouse and delete widget
+        captureWidget_->releaseMouse();
+        captureWidget_->deleteLater();
+        captureWidget_ = 0;
+    }
+
+    mouseDown_ = false;
 }
