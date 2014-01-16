@@ -28,6 +28,7 @@
 
 #include <QStringList>
 #include <QHash>
+#include <QMap>
 
 //! parse command line argument.
 class CommandLineParser: public Counter
