@@ -24,6 +24,8 @@
 #include "TexString.h"
 #include "Word.h"
 
+#include <algorithm>
+
 namespace SPELLCHECK
 {
 
