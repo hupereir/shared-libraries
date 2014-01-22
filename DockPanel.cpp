@@ -129,6 +129,9 @@ void DockPanel::_toggleDock( void )
         // pixmap and title
         if( !title_.isEmpty() ) main_->setWindowTitle( title_ );
 
+        // pass icon from application
+        main_->setWindowIcon( qApp->windowIcon() );
+
         // change action text
         reinterpret_cast<LocalWidget*>(main_)->updateActions( true );
 
