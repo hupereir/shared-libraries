@@ -55,14 +55,14 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
 }
 
 //____________________________________________________________
-QSet<QString> UserSelectionFrame::users( void ) const
+QStringList UserSelectionFrame::users( void ) const
 {
 
-    QSet<QString> out;
+    QStringList out;
     for( int i=0; i< comboBox_->QComboBox::count(); i++ )
     {
         const QString& user( comboBox_->itemText( i ) );
-        if( !user.isNull() ) out.insert( user );
+        if( !user.isNull() ) out << user;
     }
 
     return out;
@@ -91,36 +91,26 @@ void UserSelectionFrame::setUser( const QString& user )
 }
 
 //________________________________________________________________
-void UserSelectionFrame::updateUsers( QSet<QString> users )
+void UserSelectionFrame::updateUsers( QStringList users )
 {
     Debug::Throw( "UserSelectionFrame::updateUsers.\n" );
 
     // make sure default user and current user are in the list
-    users.insert( user() );
+    const QString currentUser( user() );
+    if( !( currentUser.isEmpty() || users.contains( currentUser ) ) )
+    { users.prepend( currentUser ); }
 
-    // remove items which are not in the set of users
-    for( int i=0; i< comboBox_->QComboBox::count(); )
+    // take all items except current
+    for( int index = 0; index < comboBox_->QComboBox::count(); )
     {
-
-        const QString& user( comboBox_->itemText( i ) );
-        if( user.isNull() )
-        {
-            comboBox_->removeItem( i );
-            continue;
-        }
-
-        QSet<QString>::iterator iter( users.find( user ) );
-        if( iter == users.end() ) comboBox_->removeItem( i );
-        else {
-
-            users.erase( iter );
-            i++;
-
-        }
+        if( !currentUser.isEmpty() && comboBox_->itemText( index ) == currentUser ) index++;
+        else comboBox_->removeItem( index );
     }
 
-    foreach( const QString& user, users )
-    { if( !user.isEmpty() ) comboBox_->addItem( user ); }
+    // insert items, respecting order
+    bool before( true );
+    for( int index = 0; index < users.size(); ++index )
+    { if( users[index] != currentUser ) comboBox_->insertItem( index, users[index] ); }
 
 }
 

@@ -22,14 +22,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file UserSelectionFrame.h
-\brief current user
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include "Counter.h"
 #include "CustomComboBox.h"
 
@@ -51,7 +43,7 @@ class UserSelectionFrame: public QWidget, public Counter
     void setUser( const QString& user );
 
     //! users
-    QSet<QString> users( void ) const;
+    QStringList users( void ) const;
 
     //! selected user
     QString user( void ) const;
@@ -68,7 +60,7 @@ class UserSelectionFrame: public QWidget, public Counter
     public Q_SLOTS:
 
     //! update user list
-    void updateUsers( QSet<QString> );
+    void updateUsers( QStringList );
 
     protected:
 
