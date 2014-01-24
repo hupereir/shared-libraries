@@ -130,7 +130,7 @@ void DockPanel::_toggleDock( void )
         if( !title_.isEmpty() ) main_->setWindowTitle( title_ );
 
         // pass icon from application
-        main_->setWindowIcon( qApp->windowIcon() );
+        main_->setWindowIcon( windowIcon() );
 
         // change action text
         reinterpret_cast<LocalWidget*>(main_)->updateActions( true );
