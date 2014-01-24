@@ -88,6 +88,10 @@ class TreeView: public QTreeView, public Counter
     //! set mask manually
     virtual void setMask( const unsigned int& );
 
+    //! item margin
+    virtual int itemMargin( void ) const
+    { return itemMargin_; }
+
     //@}
 
     //!@name modifiers
