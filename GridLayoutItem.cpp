@@ -64,8 +64,13 @@ void GridLayoutItem::setText( const QString& value )
 
     // assign text
     ElidedLabel* label( qobject_cast<ElidedLabel*>( value_ ) );
-    if( label ) label->ElidedLabel::setText( value );
-    else value_->setText( value );
+    if( label )
+    {
+
+        label->ElidedLabel::setText( value );
+        label->adjustSize();
+
+    } else value_->setText( value );
 
     // update visibility
     setVisible( !value.isEmpty() );
