@@ -62,7 +62,7 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QHeaderView* header, cons
 
     addSeparator();
 
-    addAction( "&Reverse order", this, SLOT(_revertOrder()) );
+    addAction( tr( "Reverse order" ), this, SLOT(_revertOrder()) );
 }
 
 //_____________________________________________________
@@ -95,11 +95,7 @@ void ColumnSortingMenu::_updateActions( void )
         // retrieve column name
         QString columnName( header_->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
         if( columnName.isNull() || columnName.isEmpty() )
-        {
-            QString buffer;
-            QTextStream( &buffer ) << "column " << index+1;
-            columnName = buffer;
-        }
+        { columnName = QString( tr( "Column %1" ) ).arg( index+1 ); }
 
         QAction* action = new QAction( columnName, this );
         action->setCheckable( true );
