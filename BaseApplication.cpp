@@ -21,7 +21,7 @@
 
 #include "BaseApplication.h"
 #include "BaseApplication.moc"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "File.h"
 #include "IconEngine.h"
 #include "IconSize.h"
@@ -147,14 +147,14 @@ bool BaseApplication::realizeWidget( void )
     aboutAction_ = new QAction( applicationIcon(), QString( tr( "About %1" ) ).arg( applicationName() ), this );
     connect( aboutAction_, SIGNAL(triggered()), SLOT(_about()) );
 
-    aboutQtAction_ = new QAction( IconEngine::get( ICONS::ABOUT_QT ), tr( "About Qt" ), this );
+    aboutQtAction_ = new QAction( IconEngine::get( IconNames::AboutQt ), tr( "About Qt" ), this );
     connect( aboutQtAction_, SIGNAL(triggered()), this, SLOT(_aboutQt()) );
 
-    closeAction_ = new QAction( IconEngine::get( ICONS::EXIT ), tr( "Exit" ), this );
+    closeAction_ = new QAction( IconEngine::get( IconNames::Exit ), tr( "Exit" ), this );
     closeAction_->setShortcut( QKeySequence::Quit );
     connect( closeAction_, SIGNAL(triggered()), qApp, SLOT(quit()) );
 
-    configurationAction_ = new QAction( IconEngine::get( ICONS::CONFIGURE ), QString( tr( "Configure %1..." ) ).arg( applicationName() ), this );
+    configurationAction_ = new QAction( IconEngine::get( IconNames::Configure ), QString( tr( "Configure %1..." ) ).arg( applicationName() ), this );
     connect( configurationAction_, SIGNAL(triggered()), SLOT(_configuration()) );
 
     return true;
