@@ -81,9 +81,13 @@ class BaseDialog: public QDialog
     virtual void setOptionName( const QString& name )
     { monitor_.setOptionName( name ); }
 
+    //! set icon size
+    virtual void setIconSize( const QSize& size )
+    { iconSize_ = size; }
+
     //! iconsize
     virtual QSize iconSize( void ) const
-    { return QSize( 64, 64 ); }
+    { return iconSize_; }
 
     public Q_SLOTS:
 
@@ -110,6 +114,9 @@ class BaseDialog: public QDialog
 
     //! size watch
     WidgetMonitor monitor_;
+
+    //! icon size
+    QSize iconSize_;
 
     //! window state prior to minimization
     bool wasMaximized_;

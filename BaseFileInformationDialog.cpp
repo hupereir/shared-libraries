@@ -30,6 +30,7 @@
 #include "FilePermissionsWidget.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
+#include "IconSize.h"
 
 #include <QShortcut>
 
@@ -40,6 +41,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     Debug::Throw( "BaseFileInformationDialog::BaseFileInformationDialog.\n" );
     setOptionName( "FILE_INFORMATION_DIALOG" );
+    setIconSize( IconSize( IconSize::Oversized ) );
 
     // customize layout
     layout()->setMargin(0);
