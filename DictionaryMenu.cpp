@@ -22,7 +22,7 @@
 #include "DictionaryMenu.h"
 #include "DictionaryMenu.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"
 #include "XmlOptions.h"
@@ -79,7 +79,7 @@ namespace SPELLCHECK
 
         // add reset button
         QAction* action;
-        addAction( action = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload" ), this ) );
+        addAction( action = new QAction( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
         connect( action, SIGNAL(triggered()), SLOT(reset()) );
 
         // load disabled dictionaries from options

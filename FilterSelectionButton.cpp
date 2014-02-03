@@ -21,7 +21,7 @@
 
 #include "FilterSelectionButton.h"
 #include "FilterSelectionButton.moc"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"
 #include "SpellItemDialog.h"
@@ -41,7 +41,7 @@ namespace SPELLCHECK
         { XmlOptions::get().set( optionName(), Option( " " ), true ); }
 
         // setup button
-        setIcon( IconEngine::get( ICONS::CONFIGURE ) );
+        setIcon( IconEngine::get( IconNames::Configure ) );
         setAutoRaise( true );
         setToolTip( "Configure filters that should appear in the list" );
         connect( this, SIGNAL(clicked()), SLOT(_edit()) );

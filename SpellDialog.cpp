@@ -22,7 +22,7 @@
 #include "SpellDialog.h"
 #include "SpellDialog.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "Debug.h"
 #include "DictionarySelectionButton.h"
 #include "FilterSelectionButton.h"
@@ -188,7 +188,7 @@ namespace SPELLCHECK
         stateLabel_->setAlignment( Qt::AlignCenter );
 
         // close button
-        vLayout->addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), tr( "Close" ), this ) );
+        vLayout->addWidget( button = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
         connect( button, SIGNAL(clicked()), SLOT(close()) );
 
         // change font

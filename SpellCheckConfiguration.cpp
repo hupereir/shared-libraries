@@ -22,12 +22,10 @@
 #include "SpellCheckConfiguration.h"
 #include "SpellCheckConfiguration.moc"
 
-#include "BaseIcons.h"
 #include "Debug.h"
 #include "DictionarySelectionButton.h"
 #include "FilterSelectionButton.h"
 #include "GridLayout.h"
-#include "IconEngine.h"
 #include "OptionBrowsedLineEditor.h"
 #include "OptionComboBox.h"
 #include "SpellInterface.h"
