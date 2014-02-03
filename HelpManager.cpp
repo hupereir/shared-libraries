@@ -19,7 +19,7 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "HelpDialog.h"
@@ -47,7 +47,7 @@ namespace BASE
         Debug::Throw( "HelpManager::HelpManager.\n" );
 
         // actions
-        displayAction_ = new QAction( IconEngine::get( ICONS::HELP ), QString( tr( "%1 Handbook" ) ).arg( qApp->applicationName() ), this );
+        displayAction_ = new QAction( IconEngine::get( IconNames::Help ), QString( tr( "%1 Handbook" ) ).arg( qApp->applicationName() ), this );
         displayAction_->setShortcut( QKeySequence::HelpContents );
         connect( displayAction_, SIGNAL(triggered()), SLOT(_display()) );
 
