@@ -22,7 +22,7 @@
 #include "TransparentWidget.h"
 #include "TransparentWidget.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "Color.h"
 #include "CompositeEngine.h"
 #include "IconEngine.h"
@@ -306,7 +306,7 @@ namespace TRANSPARENCY
     {
         Debug::Throw( "TransparentWidget::_installAction.\n" );
 
-        addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload Blur Region" ), this ) );
+        addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( IconNames::Reload ), tr( "Reload Blur Region" ), this ) );
         connect( reloadBlurRegionAction_, SIGNAL(triggered()), SLOT(_updateBlurRegion()) );
 
         addAction( inverseColorsAction_ = new QAction( tr( "Inverse Colors" ), this ) );
