@@ -23,7 +23,7 @@
 #include "BaseFileInformationDialog.moc"
 
 #include "AnimatedTabWidget.h"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "Debug.h"
 #include "ElidedLabel.h"
 #include "File.h"
@@ -64,7 +64,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     // try load Question icon
     iconLabel_ = new QLabel(mainPage_);
-    iconLabel_->setPixmap( IconEngine::get( ICONS::INFORMATION ).pixmap( iconSize() ) );
+    iconLabel_->setPixmap( IconEngine::get( IconNames::Information ).pixmap( iconSize() ) );
     hLayout->addWidget( iconLabel_, 0, Qt::AlignTop );
     hLayout->addStretch();
 

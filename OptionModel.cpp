@@ -20,7 +20,7 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "OptionModel.h"
 #include "OptionModel.moc"
@@ -72,7 +72,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
     }
 
     if( role == Qt::DecorationRole && index.column() == CURRENT )
-    { return option.second.isCurrent() ? IconEngine::get( ICONS::DIALOG_ACCEPT ):QVariant(); }
+    { return option.second.isCurrent() ? IconEngine::get( IconNames::DialogAccept ):QVariant(); }
 
     if( role == Qt::ToolTipRole && index.column() == NAME )
     { return option.second.comments(); }

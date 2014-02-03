@@ -21,7 +21,7 @@
 
 #include "RecentFilesConfiguration.h"
 #include "RecentFilesConfiguration.moc"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "ContextMenu.h"
 #include "Debug.h"
 #include "FileList.h"
@@ -108,20 +108,20 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     // clean
     vLayout->addWidget( cleanButton_ = new QPushButton( tr( "Clean" ), box ) );
     cleanButton_->setToolTip( tr( "Remove invalid files" ) );
-    cleanButton_->setIcon( IconEngine::get( ICONS::DELETE ) );
+    cleanButton_->setIcon( IconEngine::get( IconNames::Delete ) );
     connect( cleanButton_, SIGNAL(clicked()), SLOT(_clean()) );
 
-    addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), tr( "Clean" ), this ) );
+    addAction( cleanAction_ = new QAction( IconEngine::get( IconNames::Delete ), tr( "Clean" ), this ) );
     connect( cleanAction_, SIGNAL(triggered()), SLOT(_clean()) );
     menu->addAction( cleanAction_ );
 
     // remove
     vLayout->addWidget( removeButton_ = new QPushButton( tr( "Remove" ), box ) );
-    removeButton_->setIcon( IconEngine::get( ICONS::REMOVE ) );
+    removeButton_->setIcon( IconEngine::get( IconNames::Remove ) );
     removeButton_->setToolTip( tr( "Remove selected files" ) );
     connect( removeButton_, SIGNAL(clicked()), SLOT(_remove()) );
 
-    addAction( removeAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), tr( "Remove" ), this ) );
+    addAction( removeAction_ = new QAction( IconEngine::get( IconNames::Remove ), tr( "Remove" ), this ) );
     connect( removeAction_, SIGNAL(triggered()), SLOT(_remove()) );
     removeAction_->setShortcut( QKeySequence::Delete );
     menu->addAction( removeAction_ );
@@ -130,10 +130,10 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     // reload
     vLayout->addWidget( reloadButton_ = new QPushButton( tr( "Reload" ), box ) );
     reloadButton_->setToolTip( tr( "Reload file list" ) );
-    reloadButton_->setIcon( IconEngine::get( ICONS::RELOAD ) );
+    reloadButton_->setIcon( IconEngine::get( IconNames::Reload ) );
     connect( reloadButton_, SIGNAL(clicked()), SLOT(reload()) );
 
-    addAction( reloadAction_ = new QAction( IconEngine::get( ICONS::RELOAD ), tr( "Reload" ), this ) );
+    addAction( reloadAction_ = new QAction( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
     connect( reloadAction_, SIGNAL(triggered()), SLOT(reload()) );
     menu->addAction( reloadAction_ );
 

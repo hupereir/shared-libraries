@@ -22,7 +22,7 @@
 #include "RecentFilesMenu.h"
 #include "RecentFilesMenu.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
 #include "QuestionDialog.h"
@@ -45,12 +45,12 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
     connect( fileList_, SIGNAL(validFilesChecked()), SLOT(_updateActions()) );
 
     // icons
-    setIcon( IconEngine::get( ICONS::OPEN ) );
+    setIcon( IconEngine::get( IconNames::Open ) );
 
     actionGroup_ = new QActionGroup( this );
     actionGroup_->setExclusive( true );
 
-    addAction( cleanAction_ = new QAction( IconEngine::get( ICONS::DELETE ), tr( "Clean" ), this ) );
+    addAction( cleanAction_ = new QAction( IconEngine::get( IconNames::Delete ), tr( "Clean" ), this ) );
     connect( cleanAction_, SIGNAL(triggered()), SLOT(_clean()) );
     cleanAction_->setEnabled( false );
     addSeparator();

@@ -27,7 +27,7 @@
 \date $Date$
 */
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "FontEditor.h"
 #include "FontEditor.moc"
 #include "IconEngine.h"
@@ -62,7 +62,7 @@ FontEditor::FontEditor( QWidget *parent ):
     // create push_button
     QToolButton *button( new QToolButton( this ) );
     button->setAutoRaise( true );
-    button->setIcon( IconEngine::get( ICONS::OPEN ) );
+    button->setIcon( IconEngine::get( IconNames::Open ) );
     layout->addWidget( button, 0 );
 
     // connect push_button

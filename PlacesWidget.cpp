@@ -25,7 +25,7 @@
 
 #include "BaseFileIconProvider.h"
 #include "BaseContextMenu.h"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "DefaultFolders.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
@@ -1642,18 +1642,18 @@ void PlacesWidget::_installActions( void )
 {
     Debug::Throw( "PlacesWidget::_installActions.\n" );
 
-    addAction( addItemAction_ = new QAction( IconEngine::get( ICONS::ADD ), tr( "Add Entry..." ), this ) );
+    addAction( addItemAction_ = new QAction( IconEngine::get( IconNames::Add ), tr( "Add Entry..." ), this ) );
     connect( addItemAction_, SIGNAL(triggered()), SLOT(_addItem()) );
 
-    addAction( addSeparatorAction_ = new QAction( IconEngine::get( ICONS::ADD ), tr( "Add Separator" ), this ) );
+    addAction( addSeparatorAction_ = new QAction( IconEngine::get( IconNames::Add ), tr( "Add Separator" ), this ) );
     connect( addSeparatorAction_, SIGNAL(triggered()), SLOT(_insertSeparator()) );
 
-    addAction( editItemAction_ = new QAction( IconEngine::get( ICONS::EDIT ), tr( "Edit Entry..." ), this ) );
+    addAction( editItemAction_ = new QAction( IconEngine::get( IconNames::Edit ), tr( "Edit Entry..." ), this ) );
     editItemAction_->setShortcut( Qt::Key_F2 );
     editItemAction_->setShortcutContext(Qt::WidgetShortcut);
     connect( editItemAction_, SIGNAL(triggered()), SLOT(_editItem()) );
 
-    addAction( removeItemAction_ = new QAction( IconEngine::get( ICONS::REMOVE ), tr( "Remove Entry" ), this ) );
+    addAction( removeItemAction_ = new QAction( IconEngine::get( IconNames::Remove ), tr( "Remove Entry" ), this ) );
     removeItemAction_->setShortcut( QKeySequence::Delete );
     removeItemAction_->setShortcutContext(Qt::WidgetShortcut);
     connect( removeItemAction_, SIGNAL(triggered()), SLOT(_removeItem()) );

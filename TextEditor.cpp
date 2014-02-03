@@ -22,7 +22,7 @@
 #include "TextEditor.h"
 #include "TextEditor.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "BaseContextMenu.h"
 #include "BaseReplaceDialog.h"
 #include "InformationDialog.h"
@@ -1589,27 +1589,27 @@ void TextEditor::_installActions( void )
     Debug::Throw( "TextEditor::_installActions.\n" );
 
     // create actions
-    addAction( undoAction_ = new QAction( IconEngine::get( ICONS::UNDO ), tr( "Undo" ), this ) );
+    addAction( undoAction_ = new QAction( IconEngine::get( IconNames::Undo ), tr( "Undo" ), this ) );
     undoAction_->setShortcut( QKeySequence::Undo );
     undoAction_->setEnabled( document()->isUndoAvailable() );
     connect( undoAction_, SIGNAL(triggered()), document(), SLOT(undo()) );
     connect( this, SIGNAL(undoAvailable(bool)), undoAction_, SLOT(setEnabled(bool)) );
 
-    addAction( redoAction_ = new QAction( IconEngine::get( ICONS::REDO ), tr( "Redo" ), this ) );
+    addAction( redoAction_ = new QAction( IconEngine::get( IconNames::Redo ), tr( "Redo" ), this ) );
     redoAction_->setShortcut( QKeySequence::Redo );
     redoAction_->setEnabled( document()->isRedoAvailable() );
     connect( redoAction_, SIGNAL(triggered()), document(), SLOT(redo()) );
     connect( this, SIGNAL(redoAvailable(bool)), redoAction_, SLOT(setEnabled(bool)) );
 
-    addAction( cutAction_ = new QAction( IconEngine::get( ICONS::CUT ), tr( "Cut" ), this ) );
+    addAction( cutAction_ = new QAction( IconEngine::get( IconNames::Cut ), tr( "Cut" ), this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
     connect( cutAction_, SIGNAL(triggered()), SLOT(cut()) );
 
-    addAction( copyAction_ = new QAction( IconEngine::get( ICONS::COPY ), tr( "Copy" ), this ) );
+    addAction( copyAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy" ), this ) );
     copyAction_->setShortcut( QKeySequence::Copy );
     connect( copyAction_, SIGNAL(triggered()), SLOT(copy()) );
 
-    addAction( pasteAction_ = new QAction( IconEngine::get( ICONS::PASTE ), tr( "Paste" ), this ) );
+    addAction( pasteAction_ = new QAction( IconEngine::get( IconNames::Paste ), tr( "Paste" ), this ) );
     pasteAction_->setShortcut( QKeySequence::Paste );
     connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
     connect( qApp->clipboard(), SIGNAL(dataChanged()), SLOT(_updatePasteAction()) );
@@ -1633,7 +1633,7 @@ void TextEditor::_installActions( void )
     lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( lowerCaseAction_, SIGNAL(triggered()), SLOT(lowerCase()) );
 
-    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), tr( "Find..." ), this ) );
+    addAction( findAction_ = new QAction( IconEngine::get( IconNames::Find ), tr( "Find..." ), this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL(triggered()), SLOT(_findFromDialog()) );
@@ -1658,7 +1658,7 @@ void TextEditor::_installActions( void )
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionBackwardAction_, SIGNAL(triggered()), SLOT(findSelectionBackward()) );
 
-    addAction( replaceAction_ = new QAction( IconEngine::get( ICONS::FIND ), tr( "Replace..." ), this ) );
+    addAction( replaceAction_ = new QAction( IconEngine::get( IconNames::Find ), tr( "Replace..." ), this ) );
     replaceAction_->setShortcut( QKeySequence::Replace );
     replaceAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAction_, SIGNAL(triggered()), SLOT(_replaceFromDialog()) );

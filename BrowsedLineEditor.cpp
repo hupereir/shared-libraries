@@ -20,7 +20,7 @@
 *******************************************************************************/
 
 #include "AnimatedLineEditor.h"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "BrowsedLineEditor.h"
 #include "BrowsedLineEditor.moc"
 #include "File.h"
@@ -57,7 +57,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     QToolButton *button = new QToolButton( this );
     button->setAutoRaise( true );
 
-    button->setIcon( IconEngine::get( ICONS::OPEN ) );
+    button->setIcon( IconEngine::get( IconNames::Open ) );
     button->setToolTip( tr( "Browse file system" ) );
     layout->addWidget( button, 0 );
 

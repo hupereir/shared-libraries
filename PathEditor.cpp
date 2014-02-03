@@ -23,7 +23,7 @@
 #include "PathEditor.moc"
 #include "PathEditor_p.h"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "BaseFileInfo.h"
 #include "Debug.h"
 #include "IconEngine.h"
@@ -393,7 +393,7 @@ PathEditor::PathEditor( QWidget* parent ):
 
         // ok button
         QToolButton* button = new QToolButton( editorContainer_ );
-        button->setIcon( IconEngine::get( ICONS::DIALOG_OK ) );
+        button->setIcon( IconEngine::get( IconNames::DialogOk ) );
         button->setAutoRaise( true );
         button->setToolButtonStyle( Qt::ToolButtonIconOnly );
         button->setIconSize( IconSize( IconSize::Small ) );

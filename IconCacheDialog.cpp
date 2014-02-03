@@ -22,7 +22,7 @@
 #include "IconCacheDialog.h"
 #include "IconCacheDialog.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "AnimatedTreeView.h"
@@ -49,7 +49,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
     list_->setIconSize( IconSize( IconSize::Large ) );
 
     QPushButton *button;
-    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), tr( "Update" ), this ) );
+    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Update" ), this ) );
     connect( button, SIGNAL(clicked()), SLOT(update()) );
     button->setAutoDefault( false );
 

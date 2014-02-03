@@ -20,7 +20,7 @@
 *******************************************************************************/
 
 #include "InformationDialog.h"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 
@@ -38,7 +38,7 @@ InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
     mainLayout().addLayout( hLayout );
 
     QLabel* label = new QLabel( this );
-    label->setPixmap( IconEngine::get( ICONS::INFORMATION ).pixmap( iconSize() ) );
+    label->setPixmap( IconEngine::get( IconNames::Information ).pixmap( iconSize() ) );
     hLayout->addWidget( label, 0 );
     hLayout->addWidget( label_ = new QLabel( this ), 1 );
 

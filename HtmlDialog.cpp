@@ -25,7 +25,7 @@
 
 #include "FileDialog.h"
 #include "GridLayout.h"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
@@ -70,14 +70,14 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
 
     // browse command button associated to the CustomComboBox
     QToolButton* button = new QToolButton( this );
-    button->setIcon( IconEngine::get( ICONS::OPEN ) );
+    button->setIcon( IconEngine::get( IconNames::Open ) );
     button->setAutoRaise( true );
     hLayout->addWidget( button );
     connect( button, SIGNAL(clicked()), SLOT(_browseCommand()) );
 
     // change button text
     okButton().setText( tr( "Export" ) );
-    okButton().setIcon( IconEngine::get( ICONS::HTML ));
+    okButton().setIcon( IconEngine::get( IconNames::Html ));
 
     // make sure HTML command is saved
     XmlOptions::get().keep( "HTML_COMMAND" );

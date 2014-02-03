@@ -20,7 +20,7 @@
 *******************************************************************************/
 
 #include "BaseFileIconProvider.h"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "CustomPixmap.h"
 #include "DefaultFolders.h"
 #include "IconEngine.h"
@@ -58,7 +58,7 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
 
     // link overlay
     QIcon copy;
-    QIcon linkOverlay( IconEngine::get( ICONS::LINK ) );
+    QIcon linkOverlay( IconEngine::get( IconNames::SymbolicLink ) );
 
     // add relevant sizes
     foreach( const QSize& size, base.availableSizes() )
@@ -82,7 +82,7 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
 QPixmap BaseFileIconProvider::_linked( const QPixmap& source ) const
 {
     if( source.isNull() ) return source;
-    QIcon linkOverlay( IconEngine::get( ICONS::LINK ) );
+    QIcon linkOverlay( IconEngine::get( IconNames::SymbolicLink ) );
     if( linkOverlay.isNull() ) return source;
 
     // get source size

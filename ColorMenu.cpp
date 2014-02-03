@@ -22,7 +22,7 @@
 #include "ColorMenu.h"
 #include "ColorMenu.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 
@@ -98,7 +98,7 @@ void ColorMenu::_display( void )
     clear();
 
     // new color action
-    addAction( IconEngine::get( ICONS::ADD ), tr( "New" ), this, SLOT(_new()) );
+    addAction( IconEngine::get( IconNames::Add ), tr( "New" ), this, SLOT(_new()) );
 
     // default color action
     addAction( tr( "Default" ), this, SLOT(_default()) );

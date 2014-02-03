@@ -23,7 +23,7 @@
 #include "BaseConfigurationDialog.moc"
 #include "BaseConfigurationDialog_p.h"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "GridLayout.h"
 #include "CustomDialog.h"
 #include "Debug.h"
@@ -64,7 +64,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Configuration
     setOptionName( "PREFERENCE_DIALOG" );
 
     // restore default
-    restoreDefaultsButton_ = new QPushButton( IconEngine::get( ICONS::REVERT ), tr( "Defaults" ), this );
+    restoreDefaultsButton_ = new QPushButton( IconEngine::get( IconNames::Revert ), tr( "Defaults" ), this );
     restoreDefaultsButton_->setToolTip( tr( "Restore default value for all options" ) );
     restoreDefaultsButton_->setAutoDefault( false );
 
@@ -73,7 +73,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Configuration
     _buttonLayout().addWidget( restoreDefaultsButton_ );
 
     // reset
-    resetButton_ = new QPushButton( IconEngine::get( ICONS::REVERT ), tr( "Reset" ), this );
+    resetButton_ = new QPushButton( IconEngine::get( IconNames::Revert ), tr( "Reset" ), this );
     resetButton_->setToolTip( tr( "Reset configuration" ) );
     resetButton_->setAutoDefault( false );
 
@@ -83,7 +83,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Configuration
     _buttonLayout().addStretch( 1 );
 
     // ok button
-    _buttonLayout().addWidget( okButton_ = new QPushButton( IconEngine::get( ICONS::DIALOG_OK ), tr( "Ok" ), this ) );
+    _buttonLayout().addWidget( okButton_ = new QPushButton( IconEngine::get( IconNames::DialogOk ), tr( "Ok" ), this ) );
     connect( okButton_, SIGNAL(clicked()), SLOT(_save()) );
     connect( okButton_, SIGNAL(clicked()), SIGNAL(ok()) );
     connect( okButton_, SIGNAL(clicked()), SLOT(accept()) );
@@ -94,7 +94,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Configuration
     okButton_->setAutoDefault( false );
 
     // apply button
-    _buttonLayout().addWidget( applyButton_ = new QPushButton(IconEngine::get( ICONS::DIALOG_OK_APPLY ), tr( "Apply" ), this ) );
+    _buttonLayout().addWidget( applyButton_ = new QPushButton(IconEngine::get( IconNames::DialogAccept ), tr( "Apply" ), this ) );
     connect( applyButton_, SIGNAL(clicked()), SLOT(_apply()) );
     connect( applyButton_, SIGNAL(clicked()), SIGNAL(apply()) );
     applyButton_->setToolTip(
@@ -103,7 +103,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Configuration
         "all changes are taken into account" ) );
 
     // cancel button
-    _buttonLayout().addWidget( cancelButton_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), tr( "Cancel" ), this ) );
+    _buttonLayout().addWidget( cancelButton_ = new QPushButton( IconEngine::get( IconNames::DialogCancel ), tr( "Cancel" ), this ) );
     cancelButton_->setShortcut( Qt::Key_Escape );
     connect( cancelButton_, SIGNAL(clicked()), SLOT(_cancel()) );
     connect( cancelButton_, SIGNAL(clicked()), SIGNAL(cancel()) );
@@ -134,7 +134,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
 
     if( !parent ) parent = &addPage(
-        IconEngine::get( ICONS::PREFERENCE_GENERAL ),
+        IconEngine::get( IconNames::PreferencesGeneral ),
         tr( "General" ),
         tr( "General application settings" ) );
 
@@ -157,7 +157,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
             gridLayout->addWidget( label = new QLabel( tr( "Pixmaps:" ), box ), 0, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
-            QPushButton *button = new QPushButton( IconEngine::get( ICONS::EDIT ), tr( "Edit Pixmap Path" ), box );
+            QPushButton *button = new QPushButton( IconEngine::get( IconNames::Edit ), tr( "Edit Pixmap Path" ), box );
             connect( button, SIGNAL(clicked()), SLOT(_editPixmapPathList()) );
             gridLayout->addWidget( button, 0, 1, 1, 1 );
 
@@ -166,7 +166,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
             gridLayout->addWidget( label = new QLabel( tr( "Icons:" ), box ), 1, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
-            button = new QPushButton( IconEngine::get( ICONS::EDIT ), tr( "Edit Icon Theme" ), box );
+            button = new QPushButton( IconEngine::get( IconNames::Edit ), tr( "Edit Icon Theme" ), box );
             connect( button, SIGNAL(clicked()), SLOT(_editIconTheme()) );
             gridLayout->addWidget( button, 1, 1, 1, 1 );
             #endif
@@ -255,7 +255,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     {
 
         parent = &addPage(
-            IconEngine::get( ICONS::PREFERENCE_LISTS ),
+            IconEngine::get( IconNames::PreferencesLists ),
             tr( "Lists" ), tr( "Configure the appearance of item lists" ) );
         box = new QWidget( parent );
 
@@ -318,7 +318,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
 
     // make sure parent is valid
     if( !parent ) parent = &addPage(
-        IconEngine::get( ICONS::PREFERENCE_EDITION ),
+        IconEngine::get( IconNames::PreferencesEdition ),
         tr( "Text Edition" ),
         tr( "Settings for text display and edition" ) );
 
@@ -477,7 +477,7 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     {
 
         parent = &addPage(
-            IconEngine::get( ICONS::PREFERENCE_ANIMATIONS ),
+            IconEngine::get( IconNames::PreferencesAnimations ),
             tr( "Animations" ),
             tr( "Animations configuration" ) );
         box = new QWidget( parent );

@@ -45,13 +45,11 @@
     <file alias="icons/128x128/dialog-warning.png">../base-pixmaps/dialog-warning-large.png</file>
 
     <!-- configuration icons -->
-    <file alias="icons/32x32/im-user.png">../base-pixmaps/im-user.png</file>
     <file alias="icons/32x32/system-run.png">../base-pixmaps/system-run.png</file>
     <file alias="icons/32x32/input-mouse.png">../base-pixmaps/input-mouse.png</file>
     <file alias="icons/32x32/preferences-desktop-color.png">../base-pixmaps/preferences-desktop-color.png</file>
     <file alias="icons/32x32/view-list-tree.png">../base-pixmaps/view-list-tree.png</file>
     <file alias="icons/32x32/view-split-left-right.png">../base-pixmaps/view-split-left-right.png</file>
-    <file alias="icons/32x32/configure-toolbars.png">../base-pixmaps/configure-toolbars.png</file>
     <file alias="icons/32x32/document-open-recent.png">../base-pixmaps/document-open-recent.png</file>
     <file alias="icons/32x32/preferences-desktop-filetype-association.png">../base-pixmaps/preferences-desktop-filetype-association.png</file>
     <file alias="icons/32x32/preferences-desktop-theme.png">../base-pixmaps/preferences-desktop-theme.png</file>

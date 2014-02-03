@@ -21,7 +21,7 @@
 #include "TreeView.moc"
 
 #include "BaseFindDialog.h"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
 #include "ItemModel.h"
@@ -787,7 +787,7 @@ void TreeView::_installActions( void )
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL(triggered()), SLOT(selectAll()) );
 
-    addAction( findAction_ = new QAction( IconEngine::get( ICONS::FIND ), tr("Find"), this ) );
+    addAction( findAction_ = new QAction( IconEngine::get( IconNames::Find ), tr("Find"), this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAction_, SIGNAL(triggered()), SLOT(_findFromDialog()) );

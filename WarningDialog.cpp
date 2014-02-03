@@ -21,7 +21,7 @@
 
 #include "WarningDialog.h"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 
@@ -41,7 +41,7 @@ WarningDialog::WarningDialog( QWidget* parent, const QString& text ):
     mainLayout().addLayout( hLayout );
 
     QLabel* label = new QLabel( this );
-    label->setPixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
+    label->setPixmap( IconEngine::get( IconNames::Warning ).pixmap( iconSize() ) );
     hLayout->addWidget( label, 0 );
     hLayout->addWidget( label_ = new QLabel( this ), 1 );
 

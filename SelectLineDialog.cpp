@@ -22,9 +22,6 @@
 #include "SelectLineDialog.h"
 #include "SelectLineDialog.moc"
 
-#include "BaseIcons.h"
-#include "IconEngine.h"
-
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>

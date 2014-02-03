@@ -22,7 +22,7 @@
 #include "BaseMainWindow.h"
 #include "BaseMainWindow.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "DockWidget.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
@@ -48,19 +48,19 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
 
     // lock toolbars action
-    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), tr( "Lock Toolbars" ), this ) );
+    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Toolbars" ), this ) );
     lockToolBarsAction_->setCheckable( true );
     lockToolBarsAction_->setChecked( true );
     connect( lockToolBarsAction_, SIGNAL(toggled(bool)), SLOT(_lockToolBars(bool)) );
 
     // lock panels action
-    addAction( lockPanelsAction_ = new QAction( IconEngine::get( ICONS::LOCK ), tr( "Lock Panels" ), this ) );
+    addAction( lockPanelsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Panels" ), this ) );
     lockPanelsAction_->setCheckable( true );
     lockPanelsAction_->setChecked( true );
     connect( lockPanelsAction_, SIGNAL(toggled(bool)), SLOT(_lockPanels(bool)) );
 
     // show menu action
-    addAction( showMenuBarAction_ = new QAction( IconEngine::get( ICONS::SHOW_MENU ), tr( "Show Menu Bar" ), this ) );
+    addAction( showMenuBarAction_ = new QAction( IconEngine::get( IconNames::ShowMenu ), tr( "Show Menu Bar" ), this ) );
     showMenuBarAction_->setCheckable( true );
     showMenuBarAction_->setChecked( true );
     showMenuBarAction_->setShortcut( Qt::CTRL + Qt::Key_M );

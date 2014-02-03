@@ -19,7 +19,7 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "CounterMap.h"
 #include "CounterDialog.h"
 #include "CounterDialog.moc"
@@ -46,7 +46,7 @@ CustomDialog( parent, OkButton, Qt::Window )
     list_->setModel( &model_ );
 
     QPushButton *button;
-    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), tr( "Reload" ), this ) );
+    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
     connect( button, SIGNAL(clicked()), SLOT(update()) );
     button->setAutoDefault( false );
 

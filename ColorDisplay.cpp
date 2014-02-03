@@ -22,7 +22,7 @@
 #include "ColorDisplay.h"
 #include "ColorDisplay.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "ColorGrabButton.h"
 #include "Debug.h"
 #include "IconEngine.h"
@@ -59,7 +59,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
         QToolButton *button;
         layout->addWidget( button = new QToolButton( this ), 0 );
         button->setAutoRaise( true );
-        button->setIcon( IconEngine::get( ICONS::OPEN ) );
+        button->setIcon( IconEngine::get( IconNames::Open ) );
         button->setToolTip( tr( "Select color from dialog" ) );
         connect( button, SIGNAL(clicked()), SLOT(_selectColorFromDialog()) );
     }
@@ -69,7 +69,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
         ColorGrabButton* button;
         layout->addWidget( button = new ColorGrabButton( this ), 0 );
         button->setAutoRaise( true );
-        button->setIcon( IconEngine::get( ICONS::COLOR_PICKER ) );
+        button->setIcon( IconEngine::get( IconNames::SelectColor ) );
         button->setToolTip( tr( "Grab color from screen" ) );
         connect( button, SIGNAL(colorSelected(QColor)), SLOT(setColor(QColor)) );
     }

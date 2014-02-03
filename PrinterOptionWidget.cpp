@@ -21,7 +21,7 @@
 #include "PrinterOptionWidget.h"
 #include "PrinterOptionWidget.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "PrintPreviewDialog.h"
 
@@ -100,7 +100,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     hLayout->setMargin(0);
     layout->addLayout( hLayout );
     hLayout->addStretch( 1 );
-    hLayout->addWidget( previewButton_ = new QPushButton( IconEngine::get( ICONS::PRINT_PREVIEW ), tr( "Preview" ), this ) );
+    hLayout->addWidget( previewButton_ = new QPushButton( IconEngine::get( IconNames::PrintPreview ), tr( "Preview" ), this ) );
     connect( previewButton_, SIGNAL(clicked()), SLOT(_preview()) );
 
     previewButton_->setEnabled( false );

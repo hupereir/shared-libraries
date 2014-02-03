@@ -20,12 +20,9 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
-#include "BaseDialog.h"
-#include "PixmapEngine.h"
-#include "Debug.h"
-#include "IconEngine.h"
 #include "QtUtil.h"
+
+#include "Debug.h"
 #include "Util.h"
 
 #include <QApplication>

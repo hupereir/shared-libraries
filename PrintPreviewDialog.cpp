@@ -24,7 +24,7 @@
 #include "PrintPreviewDialog_p.h"
 
 #include "Debug.h"
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 
@@ -115,7 +115,7 @@ namespace PRINT
         // previous page button
         hLayout->addWidget( previousPageButton_ = new QToolButton( this ) );
         previousPageButton_->setAutoRaise( true );
-        previousPageButton_->setIcon( IconEngine::get( ICONS::PREVIOUS ) );
+        previousPageButton_->setIcon( IconEngine::get( IconNames::Previous ) );
         previousPageButton_->setIconSize( IconSize( IconSize::Medium ) );
         connect( previousPageButton_, SIGNAL(clicked()), SLOT(_previousPage()) );
 
@@ -137,7 +137,7 @@ namespace PRINT
         // next page button
         hLayout->addWidget( nextPageButton_ = new QToolButton( this ) );
         nextPageButton_->setAutoRaise( true );
-        nextPageButton_->setIcon( IconEngine::get( ICONS::NEXT ) );
+        nextPageButton_->setIcon( IconEngine::get( IconNames::Next ) );
         nextPageButton_->setIconSize( IconSize( IconSize::Medium ) );
         connect( nextPageButton_, SIGNAL(clicked()), SLOT(_nextPage()) );
 

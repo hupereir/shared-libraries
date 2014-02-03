@@ -19,7 +19,7 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "LineEditor.h"
@@ -114,7 +114,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // insert Find button
     QPushButton *button;
-    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::FIND ), tr( "Find" ), this ) );
+    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ) );
     connect( button, SIGNAL(clicked()), SLOT(_find()) );
     connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
     _addDisabledButton( button );
@@ -122,7 +122,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     findButton_ = button;
 
     // insert Cancel button
-    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( ICONS::DIALOG_CLOSE ), tr( "Close" ), this ) );
+    _buttonLayout().addWidget( button = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
     connect( button, SIGNAL(clicked()), SLOT(close()) );
     button->setShortcut( Qt::Key_Escape );
     button->setAutoDefault( false );

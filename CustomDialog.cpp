@@ -20,7 +20,7 @@
 *
 *******************************************************************************/
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "CustomDialog.h"
 #include "CustomDialog.moc"
 #include "IconEngine.h"
@@ -69,7 +69,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     // insert OK and Cancel button
     if( flags & OkButton )
     {
-        QIcon icon( IconEngine::get( ( flags & CancelButton ) ? ICONS::DIALOG_OK : ICONS::DIALOG_CLOSE ) );
+        QIcon icon( IconEngine::get( ( flags & CancelButton ) ? IconNames::DialogOk : IconNames::DialogClose ) );
         QString text( ( flags & CancelButton ) ? tr( "Ok" ):tr( "Close" ) );
         buttonLayout_->addWidget( okButton_ = new QPushButton( icon, text, this ) );
         connect( okButton_, SIGNAL(clicked()), SLOT(accept()) );
@@ -79,7 +79,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     // insert Cancel button
     if( flags & CancelButton )
     {
-        buttonLayout_->addWidget( cancelButton_ = new QPushButton( IconEngine::get( ICONS::DIALOG_CANCEL ), tr( "Cancel" ), this ) );
+        buttonLayout_->addWidget( cancelButton_ = new QPushButton( IconEngine::get( IconNames::DialogCancel ), tr( "Cancel" ), this ) );
         cancelButton_->setShortcut( Qt::Key_Escape );
         connect( cancelButton_, SIGNAL(clicked()), SLOT(reject()) );
     }

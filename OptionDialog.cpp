@@ -22,7 +22,7 @@
 #include "OptionDialog.h"
 #include "OptionDialog.moc"
 
-#include "BaseIcons.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "Singleton.h"
@@ -59,7 +59,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
     //! try load Question icon
     QLabel* label = new QLabel( this );
-    label->setPixmap( IconEngine::get( ICONS::WARNING ).pixmap( iconSize() ) );
+    label->setPixmap( IconEngine::get( IconNames::Warning ).pixmap( iconSize() ) );
     layout->addWidget( label );
 
     layout->addWidget( label = new QLabel(
@@ -92,7 +92,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
     // insert reload
     QPushButton *button;
-    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( ICONS::RELOAD ), "&Reload", this ) );
+    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), "&Reload", this ) );
     connect( button, SIGNAL(clicked()), SLOT(_reload()) );
     button->setAutoDefault( false );
 
