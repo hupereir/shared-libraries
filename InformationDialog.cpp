@@ -41,6 +41,7 @@ InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
     label->setPixmap( IconEngine::get( IconNames::Information ).pixmap( iconSize() ) );
     hLayout->addWidget( label, 0 );
     hLayout->addWidget( label_ = new QLabel( this ), 1 );
+    label_->setTextInteractionFlags( Qt::TextSelectableByMouse );
 
     // assign text
     setText( text );

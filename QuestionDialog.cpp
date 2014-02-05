@@ -43,6 +43,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, const QString& text ):
     label->setPixmap( IconEngine::get( IconNames::Warning ).pixmap( iconSize() ) );
     hLayout->addWidget( label, 0 );
     hLayout->addWidget( label_ = new QLabel( this ), 1 );
+    label_->setTextInteractionFlags( Qt::TextSelectableByMouse );
 
     setText( text );
 
