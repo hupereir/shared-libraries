@@ -152,6 +152,11 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //! restore default options
     virtual void _restoreDefaults( void );
 
+    protected:
+
+    //! find modification
+    bool _findModification( const Options&, const Options& ) const;
+
     private:
 
     //! pointer to original options set

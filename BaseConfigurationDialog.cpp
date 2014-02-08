@@ -612,7 +612,78 @@ bool BaseConfigurationDialog::_checkModified( void )
         << " modified: " << modified
         << endl;
 
+    if( modified && Debug::level() > 0 )
+    {
+        _findModification( modifiedOptions, XmlOptions::get() );
+        _findModification( XmlOptions::get(), modifiedOptions );
+    }
+
     return modified;
+}
+
+//__________________________________________________
+bool BaseConfigurationDialog::_findModification( const Options& first, const Options& second ) const
+{
+
+    // this is a slightly modified version of XmlOptions::_differs
+    // check special options
+    for( Options::SpecialMap::const_iterator firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
+    {
+
+        // skip empty special options
+        if( firstIter.value().isEmpty() ) continue;
+
+        // get matching options in the second set
+        if( !second.isSpecialOption( firstIter.key() ) )
+        {
+            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - special option " << firstIter.key() << " not found in second list" << endl;
+            return true;
+        }
+
+        Options::List options( second.specialOptions( firstIter.key() ) );
+
+        // loop over options in first list
+        foreach( const Option& option, firstIter.value() )
+        {
+            // skip non recordable options
+            if( !option.isRecordable() ) continue;
+
+            // find in second list
+            if( options.indexOf( option ) < 0 )
+            {
+
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - special option " << firstIter.key() << " does not match" << endl;
+                return true;
+            }
+
+        }
+
+    }
+
+    // loop over options and check existence in other map
+    for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); ++firstIter )
+    {
+
+        const Options::Map::const_iterator secondIter( second.options().constFind( firstIter.key() ) );
+        if( secondIter == second.options().constEnd() )
+        {
+
+            if( !firstIter.value().isDefault() )
+            {
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " not found." << endl;
+                return true;
+            }
+
+        } else if( firstIter.value() != secondIter.value() ) {
+
+            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " does not match." << endl;
+            return true;
+        }
+
+    }
+
+    return false;
+
 }
 
 //__________________________________________________
