@@ -130,14 +130,11 @@ class Options: public Counter
     //!@name modifiers
     //@{
 
-    //! adds a new option. Return true if option is added
-    virtual bool add( const QString&, Option, bool isDefault = false );
+    //! adds a new special option. Return true if option is added
+    virtual bool add( const QString&, const Option&, bool isDefault = false );
 
     //! clear list of special (i.e. kept) options matching a given name
     virtual void clearSpecialOptions( const QString& name );
-
-    //! option value modifier
-    void set( const QString& name, Option option, bool isDefault = false );
 
     //! option value modifier
     template <typename T>
@@ -149,6 +146,9 @@ class Options: public Counter
         if( isDefault || _autoDefault() ) option.setDefault();
 
     }
+
+    //! assign an option to given name
+    void set( const QString&, const Option&, bool isDefault = false );
 
     //! option raw value modifier
     virtual void setRaw( const QString& name, const QByteArray& value, bool isDefault = false )

@@ -139,16 +139,17 @@ void Options::clearSpecialOptions( const QString& name )
 }
 
 //________________________________________________
-void Options::set( const QString& name, Option option, bool isDefault )
+void Options::set( const QString& name, const Option& constOption, bool isDefault )
 {
     Debug::Throw() << "Options::set - name: " << name << endl;
     Q_ASSERT( !isSpecialOption( name ) );
+    Option option( constOption );
     if( isDefault || _autoDefault() ) option.setDefault();
     options_[name] = option;
 }
 
 //________________________________________________
-bool Options::add( const QString& name, Option option, bool isDefault )
+bool Options::add( const QString& name, const Option& constOption, bool isDefault )
 {
 
     Debug::Throw() << "Options::add - name: " << name << endl;
@@ -164,6 +165,7 @@ bool Options::add( const QString& name, Option option, bool isDefault )
     }
 
     // set as default
+    Option option( constOption );
     if( isDefault || _autoDefault() ) option.setDefault();
 
     // if option is first, set as current

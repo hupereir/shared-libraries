@@ -285,21 +285,10 @@ class Option:public Counter
     Flags defaultFlags_;
 
     //! streamer
-    friend QTextStream &operator << ( QTextStream &out, const Option& option )
-    {
-        if( !option.isSet() ) out << "not set";
-        else out << option.raw();
-        out << QString( " (0b%1)" ).arg( QString::number( option.flags_, 2 ) );
-        return out;
-    }
+    friend QTextStream &operator << ( QTextStream &out, const Option& option );
 
     //! streamer
-    friend QTextStream &operator << ( QTextStream &out, const QList<Option>& options )
-    {
-        foreach( const Option& option, options )
-        { out << option << " "; }
-        return out;
-    }
+    friend QTextStream &operator << ( QTextStream &out, const QList<Option>& options );
 
 };
 
