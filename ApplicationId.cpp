@@ -71,7 +71,7 @@ namespace SERVER
         QDomElement out( document.createElement( XML::ID ) );
         if( !name().isEmpty() ) out.setAttribute( XML::NAME, name() );
         if( !user().isEmpty() ) out.setAttribute( XML::USER, user() );
-        if( pid_ > 0 ) out.setAttribute( XML::PID, QString().setNum( pid_ ) );
+        if( pid_ > 0 ) out.setAttribute( XML::PID, QString::number( pid_ ) );
         return out;
 
     }

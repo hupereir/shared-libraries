@@ -121,7 +121,7 @@ namespace SERVER
         QDomElement out( document.createElement( XML::COMMAND ) );
 
         // type
-        out.setAttribute( XML::TYPE, QString().setNum( command() ) );
+        out.setAttribute( XML::TYPE, QString::number( command() ) );
 
         // id
         out.appendChild( id().domElement( document ) );
