@@ -215,7 +215,7 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
 
             XmlOption option( element );
             if( options.isSpecialOption( option.name() ) ) options.add( option.name(), option );
-            else options.set( option.name(), option );
+            else options.set( option.name(), (Option) option );
 
         }
     }

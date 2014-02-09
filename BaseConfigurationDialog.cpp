@@ -612,8 +612,7 @@ bool BaseConfigurationDialog::_checkModified( void )
         << " modified: " << modified
         << endl;
 
-    // if( modified && Debug::level() > 0 )
-    if( modified )
+    if( modified && Debug::level() > 0 )
     {
         _findModification( modifiedOptions, XmlOptions::get() );
         _findModification( XmlOptions::get(), modifiedOptions );
@@ -677,7 +676,9 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
         } else if( firstIter.value() != secondIter.value() ) {
 
             Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " does not match." << endl;
+            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - first: " << firstIter.value() << " second: " << secondIter.value() << endl;
             return true;
+
         }
 
     }
