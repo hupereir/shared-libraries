@@ -68,9 +68,9 @@ namespace FORMAT
     QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
     {
         QDomElement out( parent.createElement( XML::TAG ) );
-        out.setAttribute( XML::BEGIN, QString().setNum(begin()) );
-        out.setAttribute( XML::END, QString().setNum(end()) );
-        out.setAttribute( XML::FORMAT, QString().setNum(format()) );
+        out.setAttribute( XML::BEGIN, QString::number(begin()) );
+        out.setAttribute( XML::END, QString::number(end()) );
+        out.setAttribute( XML::FORMAT, QString::number(format()) );
         if( color().isValid() ) out.setAttribute( XML::COLOR, color().name() );
         if( !href().isEmpty() ) out.setAttribute( XML::HREF, href() );
         return out;

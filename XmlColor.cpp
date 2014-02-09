@@ -60,10 +60,10 @@ QDomElement XmlColor::domElement( QDomDocument& document ) const
 {
 
     QDomElement element = document.createElement( BASE::XML::COLOR );
-    element.setAttribute( BASE::XML::RED, QString().setNum( red() ) );
-    element.setAttribute( BASE::XML::GREEN, QString().setNum( green() ) );
-    element.setAttribute( BASE::XML::BLUE, QString().setNum( blue() ) );
-    element.setAttribute( BASE::XML::ALPHA, QString().setNum( alpha() ) );
+    element.setAttribute( BASE::XML::RED, QString::number( red() ) );
+    element.setAttribute( BASE::XML::GREEN, QString::number( green() ) );
+    element.setAttribute( BASE::XML::BLUE, QString::number( blue() ) );
+    element.setAttribute( BASE::XML::ALPHA, QString::number( alpha() ) );
 
     return element;
 

@@ -69,10 +69,10 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
     Debug::Throw( "BaseFileInfo::DomElement.\n" );
     QDomElement out( document.createElement( XML::FILEINFO ) );
     out.setAttribute( XML::FILE, XmlString( file() ).toXml() );
-    out.setAttribute( XML::TYPE, QString().setNum( type() ) );
-    out.setAttribute( XML::SIZE, QString().setNum( size() ) );
-    out.setAttribute( XML::PERMISSIONS, QString().setNum( permissions() ) );
-    out.setAttribute( XML::LAST_MODIFIED, QString().setNum( lastModified() ) );
+    out.setAttribute( XML::TYPE, QString::number( type() ) );
+    out.setAttribute( XML::SIZE, QString::number( size() ) );
+    out.setAttribute( XML::PERMISSIONS, QString::number( permissions() ) );
+    out.setAttribute( XML::LAST_MODIFIED, QString::number( lastModified() ) );
 
     if( !alias_.isEmpty() ) out.setAttribute( XML::ALIAS, XmlString( alias() ).toXml() );
     if( !user_.isEmpty() ) out.setAttribute( XML::USER, user_ );

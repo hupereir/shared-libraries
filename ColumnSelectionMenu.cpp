@@ -68,7 +68,7 @@ void ColumnSelectionMenu::_updateActions( void )
 
         // retrieve column name
         QString columnName( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
-        if( columnName.isNull() || columnName.isEmpty() ) columnName = QString( tr("column %1") ).arg( index+1 );
+        if( columnName.isNull() || columnName.isEmpty() ) columnName = QString( tr("Column %1") ).arg( index+1 );
 
         QAction* action = new QAction( columnName, this );
         action->setCheckable( true );

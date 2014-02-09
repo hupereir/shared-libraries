@@ -612,7 +612,8 @@ bool BaseConfigurationDialog::_checkModified( void )
         << " modified: " << modified
         << endl;
 
-    if( modified && Debug::level() > 0 )
+    // if( modified && Debug::level() > 0 )
+    if( modified )
     {
         _findModification( modifiedOptions, XmlOptions::get() );
         _findModification( XmlOptions::get(), modifiedOptions );
@@ -640,19 +641,18 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
             return true;
         }
 
-        Options::List options( second.specialOptions( firstIter.key() ) );
-
         // loop over options in first list
+        const Options::List options( second.specialOptions( firstIter.key() ) );
         foreach( const Option& option, firstIter.value() )
         {
-            // skip non recordable options
-            if( !option.isRecordable() ) continue;
-
             // find in second list
             if( options.indexOf( option ) < 0 )
             {
 
                 Debug::Throw(0) << "BaseConfigurationDialog::_findModification - special option " << firstIter.key() << " does not match" << endl;
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - could not find: " << option << endl;
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification -  first values: " << firstIter.value() << endl;
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - second values: " << options << endl;
                 return true;
             }
 

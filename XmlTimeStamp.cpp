@@ -50,6 +50,6 @@ QDomElement XmlTimeStamp::domElement( const QString& name, QDomDocument& documen
 {
     Debug::Throw( "XmlTimeStamp::domElement.\n" );
     QDomElement out( document.createElement( name ) );
-    out.setAttribute( XML::TIME, QString().setNum( unixTime() ) );
+    out.setAttribute( XML::TIME, QString::number( unixTime() ) );
     return out;
 }

@@ -154,7 +154,7 @@ namespace PRINT
         if( page == editor_->text().toInt() ) return;
 
         // update editor and buttons
-        editor_->setText( QString().setNum( page ) );
+        editor_->setText( QString::number( page ) );
         _updateButtons();
 
     }
@@ -179,7 +179,7 @@ namespace PRINT
         validator_.setTop( pages );
 
         // update editor
-        if( editor_->text().toInt() > pages ) editor_->setText( QString().setNum(pages) );
+        if( editor_->text().toInt() > pages ) editor_->setText( QString::number(pages) );
 
         // update editor
         const QFontMetrics metrics( editor_->fontMetrics() );
@@ -210,7 +210,7 @@ namespace PRINT
                 newPage = qMin( newPage, pages_ );
                 if( newPage != page )
                 {
-                    editor_->setText( QString().setNum( newPage ) );
+                    editor_->setText( QString::number( newPage ) );
                     _updateButtons();
                     emit pageChanged( newPage );
                 }
@@ -244,7 +244,7 @@ namespace PRINT
         Debug::Throw( "NavigationWidget::_previousPage.\n" );
         int page( editor_->text().toInt() );
         if( page < 2 ) return;
-        editor_->setText( QString().setNum( page-1 ) );
+        editor_->setText( QString::number( page-1 ) );
         _updateButtons();
         emit pageChanged( page-1 );
     }
@@ -257,7 +257,7 @@ namespace PRINT
         int page( editor_->text().toInt() );
 
         if( page >= pages_ ) return;
-        editor_->setText( QString().setNum( page+1 ) );
+        editor_->setText( QString::number( page+1 ) );
 
         _updateButtons();
         emit pageChanged( page+1 );

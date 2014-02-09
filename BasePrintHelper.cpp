@@ -142,14 +142,14 @@ void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
     // header
     painter->drawLine( headerRect_.bottomLeft()+QPoint(0,1), headerRect_.bottomRight()+QPoint(0,1) );
     painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignLeft, TimeStamp::now().toString( TimeStamp::DATE ) );
-    painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignRight, QString().setNum( pageNumber_ ) );
+    painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignRight, QString::number( pageNumber_ ) );
 
     if( !file_.isEmpty() )
     { painter->drawText( headerRect_, Qt::AlignCenter, file_.localName() ); }
 
     // footer
     painter->drawLine( footerRect_.topLeft()-QPoint(0,1), footerRect_.topRight()-QPoint(0,1) );
-    painter->drawText( footerRect_, Qt::AlignVCenter|Qt::AlignRight, QString().setNum( pageNumber_ ) );
+    painter->drawText( footerRect_, Qt::AlignVCenter|Qt::AlignRight, QString::number( pageNumber_ ) );
     if( !file_.isEmpty() )
     { painter->drawText( footerRect_, Qt::AlignVCenter|Qt::AlignLeft, file_ ); }
 
