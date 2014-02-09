@@ -196,8 +196,8 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
     bool autoOrphan( false );
 
     // get all flags and all options
-    const Group::FlagMap flags( _allFlags() );
-    const Group::OptionMap options( _allOptions() );
+    Group::FlagMap flags( _allFlags() );
+    Group::OptionMap options( _allOptions() );
 
     for( int index = 1; index < arguments.size(); index++ )
     {
@@ -242,7 +242,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
         // see if tag is in flag list. Only check if no value is found.
         if( value.isEmpty() )
         {
-            Group::FlagMap::iterator iter( flags.find( tagName ) );
+            Group::FlagMap::iterator iter = flags.find( tagName );
             if( iter != flags.end() )
             {
                 if( autoOrphan )
@@ -275,7 +275,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
         // see if tag is in option list
         {
-            Group::OptionMap::iterator iter( options.find( tagName ) );
+            Group::OptionMap::iterator iter = options.find( tagName );
             if( iter != options.end() )
             {
 

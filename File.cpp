@@ -85,7 +85,7 @@ QString File::userName( void ) const
 {
     if( !exists() ) return QString();
     QString out( QFileInfo( *this ).owner() );
-    if( out.isNull() || out.isEmpty() ) out = QString().setNum( QFileInfo( *this ).ownerId() );
+    if( out.isNull() || out.isEmpty() ) out = QString::number( QFileInfo( *this ).ownerId() );
     return out;
 }
 
@@ -182,7 +182,7 @@ QString File::rawSizeString( qint64 sizeInt )
     if( sizeInt == 0 ) return "0";
 
     // format size to have space characters every three digits
-    QString out = QString().setNum( sizeInt );
+    QString out = QString::number( sizeInt );
     int length( out.length() );
     for( int i = 1; i < length; i++ )
     { if( !(i%3) ) out.insert( out.size() - (i + i/3 - 1), ' ' ); }
