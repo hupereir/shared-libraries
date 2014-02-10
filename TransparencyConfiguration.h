@@ -1,5 +1,5 @@
-#ifndef _TransparencyConfiguration_h_
-#define _TransparencyConfiguration_h_
+#ifndef TransparencyConfiguration_h
+#define TransparencyConfiguration_h
 
 // $Id$
 

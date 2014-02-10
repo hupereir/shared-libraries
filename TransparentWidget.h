@@ -1,5 +1,5 @@
-#ifndef _TransparentWidget_h_
-#define _TransparentWidget_h_
+#ifndef TransparentWidget_h
+#define TransparentWidget_h
 // $Id$
 
 /******************************************************************************

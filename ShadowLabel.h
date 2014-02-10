@@ -1,5 +1,5 @@
-#ifndef _ShadowLabel_h_
-#define _ShadowLabel_h_
+#ifndef ShadowLabel_h
+#define ShadowLabel_h
 // $Id$
 
 /******************************************************************************
