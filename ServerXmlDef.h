@@ -30,30 +30,14 @@ namespace Server
 
     namespace Xml
     {
-        //! transmission
         const QString Transmission( "_t" );
-
-        //! command
         const QString Command( "c" );
-
-        //! command
         const QString Id( "i" );
-
-        //! user
         const QString User( "u" );
-
-        //! name
         const QString Name( "n" );
-
-        //! type
         const QString Type( "t" );
-
-        //! pid
         const QString Pid( "p" );
-
-        //! arguments
         const QString Arguments( "a" );
-
     }
 
 }
