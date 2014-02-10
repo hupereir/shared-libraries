@@ -622,8 +622,7 @@ bool BaseConfigurationDialog::_checkModified( void )
         << " modified: " << modified
         << endl;
 
-    // if( modified && Debug::level() > 0 )
-    if( modified )
+    if( modified && Debug::level() > 0 )
     {
         _findModification( modifiedOptions, XmlOptions::get() );
         _findModification( XmlOptions::get(), modifiedOptions );
@@ -640,9 +639,6 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
     // check special options
     for( Options::SpecialMap::const_iterator firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
     {
-
-        // skip empty special options
-        if( firstIter.value().isEmpty() ) continue;
 
         // get matching options in the second set
         if( !second.isSpecialOption( firstIter.key() ) )
@@ -678,11 +674,8 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
         if( secondIter == second.options().constEnd() )
         {
 
-            if( !firstIter.value().isDefault() )
-            {
-                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " not found." << endl;
-                return true;
-            }
+            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " not found." << endl;
+            return true;
 
         } else if( firstIter.value() != secondIter.value() ) {
 
