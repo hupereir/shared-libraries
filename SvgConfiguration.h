@@ -1,5 +1,5 @@
-#ifndef _SvgConfiguration_h_
-#define _SvgConfiguration_h_
+#ifndef SvgConfiguration_h
+#define SvgConfiguration_h
 
 // $Id$
 
