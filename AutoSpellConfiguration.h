@@ -1,5 +1,5 @@
-#ifndef _AutoSpellConfiguration_h_
-#define _AutoSpellConfiguration_h_
+#ifndef AutoSpellConfiguration_h
+#define AutoSpellConfiguration_h
 
 // $Id$
 

@@ -1,5 +1,5 @@
-#ifndef _SuggestionMenu_h_
-#define _SuggestionMenu_h_
+#ifndef SuggestionMenu_h
+#define SuggestionMenu_h
 
 // $Id$
 

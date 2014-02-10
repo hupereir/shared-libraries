@@ -1,5 +1,5 @@
-#ifndef _SpellParser_h_
-#define _SpellParser_h_
+#ifndef SpellParser_h
+#define SpellParser_h
 
 // $Id$
 
