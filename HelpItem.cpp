@@ -31,7 +31,7 @@
 #include "HelpItem.h"
 #include "XmlString.h"
 
-namespace BASE
+namespace Base
 {
     //_________________________________________________________
     HelpItem::HelpItem( const QDomElement& element ):

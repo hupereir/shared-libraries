@@ -32,7 +32,7 @@
 class AnimatedTextEditor;
 class TreeView;
 
-namespace BASE
+namespace Base
 {
 
     class HelpManager;

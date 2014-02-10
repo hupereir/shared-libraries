@@ -31,7 +31,7 @@
 #include <QAction>
 
 //! help manager class
-namespace BASE
+namespace Base
 {
 
     class HelpManager:public QObject, public Counter

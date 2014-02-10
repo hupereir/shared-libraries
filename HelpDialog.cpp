@@ -38,7 +38,7 @@
 #include <QShortcut>
 #include <QTextStream>
 
-namespace BASE
+namespace Base
 {
 
     //_________________________________________________________

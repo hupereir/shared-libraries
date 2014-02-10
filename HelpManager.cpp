@@ -35,7 +35,7 @@
 #include <QFile>
 #include <QTextStream>
 
-namespace BASE
+namespace Base
 {
     //_________________________________________________________
     HelpManager::HelpManager( QObject* parent ):

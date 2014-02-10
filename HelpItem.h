@@ -30,7 +30,7 @@
 #include <QList>
 
 //! Help system namespace
-namespace BASE
+namespace Base
 {
 
 

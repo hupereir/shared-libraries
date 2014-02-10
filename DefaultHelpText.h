@@ -24,7 +24,7 @@
 
 #include <QObject>
 
-namespace BASE
+namespace Base
 {
     //! default help text
     static const QString helpText[] =

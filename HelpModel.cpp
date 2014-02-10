@@ -26,7 +26,7 @@
 #include <QMimeData>
 #include <QStringList>
 
-namespace BASE
+namespace Base
 {
 
     //__________________________________________________________________

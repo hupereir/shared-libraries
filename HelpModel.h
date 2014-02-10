@@ -37,7 +37,7 @@
 #include "HelpItem.h"
 #include "Debug.h"
 
-namespace BASE
+namespace Base
 {
 
     //! model for help items
