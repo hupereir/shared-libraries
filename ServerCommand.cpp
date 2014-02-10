@@ -34,7 +34,7 @@
 
 #include <QStringList>
 
-namespace SERVER
+namespace Server
 {
 
     //__________________________________________________________________
@@ -104,7 +104,7 @@ namespace SERVER
             QString tagName( child_element.tagName() );
             if( tagName == XML::ID ) setId( ApplicationId( child_element ) );
             else if( tagName == XML::ARGUMENTS ) setArguments( XmlCommandLineArguments( child_element ) );
-            else if( tagName == BASE::XML::OPTION )
+            else if( tagName == Base::XML::OPTION )
             {
                 Q_ASSERT( command() == ServerCommand::Option );
                 setXmlOption( XmlOption( child_element ) );

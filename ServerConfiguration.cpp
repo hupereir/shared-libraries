@@ -30,7 +30,7 @@
 #include <QLabel>
 #include <QLayout>
 
-namespace SERVER
+namespace Server
 {
     //________________________________________________________________________
     ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):

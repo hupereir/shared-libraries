@@ -28,7 +28,7 @@
 #include <QDomElement>
 #include <QString>
 
-namespace SERVER
+namespace Server
 {
 
     //! Stores application name and user to uniquely identify an application.
@@ -60,7 +60,7 @@ namespace SERVER
 
         //!@name accessors
         //@{
-        
+
         //! dom element
         QDomElement domElement( QDomDocument& ) const;
 
@@ -81,16 +81,16 @@ namespace SERVER
         //! pid
         qint64 processId( void ) const
         { return pid_; }
-        
+
         //! returns true if user and name makes sense
         bool isValid( void ) const
         { return !(name().isEmpty() || user().isEmpty() ); }
 
         //@}
-        
+
         //!@name modifiers
         //@{
-        
+
         //! name
         void setName( const QString& value )
         { name_ = value; }
@@ -102,9 +102,9 @@ namespace SERVER
         //! pid
         void setProcessId( qint64 value )
         { pid_ = value; }
-        
+
         //@}
-        
+
         private:
 
         //! application name
@@ -115,7 +115,7 @@ namespace SERVER
 
         //! process id
         qint64 pid_;
-        
+
     };
 };
 

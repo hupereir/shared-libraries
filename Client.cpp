@@ -28,7 +28,7 @@
 
 #include <QTextStream>
 
-namespace SERVER
+namespace Server
 {
     //_______________________________________________________
     unsigned int& Client::_counter( void )

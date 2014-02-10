@@ -26,7 +26,7 @@
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
-namespace SERVER
+namespace Server
 {
 
   //! transparency common configuration

@@ -42,7 +42,7 @@
 #endif
 
 //____________________________________________
-namespace SERVER
+namespace Server
 {
 
     //! event filter used to change appearance of QMessageBox before show, to match KDE layout
@@ -55,7 +55,7 @@ namespace SERVER
 }
 
 //____________________________________________
-bool SERVER::AppEventFilter::eventFilter( QObject* object, QEvent* event )
+bool Server::AppEventFilter::eventFilter( QObject* object, QEvent* event )
 {
 
     switch( event->type() )
@@ -199,7 +199,7 @@ void BaseApplication::_aboutToQuit( void )
 void BaseApplication::_aboutQt( void )
 {
     Debug::Throw( "BaseApplication::aboutQt.\n" );
-    SERVER::AppEventFilter eventFilter;
+    Server::AppEventFilter eventFilter;
     qApp->installEventFilter( &eventFilter );
     QMessageBox::aboutQt(0);
 }
@@ -253,7 +253,7 @@ void BaseApplication::_about( void )
     dialog.adjustSize();
     QtUtil::centerOnWidget( &dialog, qApp->activeWindow() );
 
-    SERVER::AppEventFilter eventFilter;
+    Server::AppEventFilter eventFilter;
     qApp->installEventFilter( &eventFilter );
 
     dialog.show();

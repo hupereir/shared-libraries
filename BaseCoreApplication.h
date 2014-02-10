@@ -82,7 +82,7 @@ class BaseCoreApplication: public QObject
 
     //! process command from server
     /*! returns true if command has been accepted */
-    virtual bool _processCommand( SERVER::ServerCommand );
+    virtual bool _processCommand( Server::ServerCommand );
 
     private Q_SLOTS:
 
@@ -115,13 +115,13 @@ class BaseCoreApplication: public QObject
     { return (bool) applicationManager_; }
 
     //! application manager
-    SERVER::ApplicationManager& _applicationManager( void ) const
+    Server::ApplicationManager& _applicationManager( void ) const
     { return *applicationManager_; }
 
     private:
 
     //! pointer to application manager
-    SERVER::ApplicationManager* applicationManager_;
+    Server::ApplicationManager* applicationManager_;
 
     //! command line arguments
     CommandLineArguments arguments_;

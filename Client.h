@@ -28,7 +28,7 @@
 
 #include <QTcpSocket>
 
-namespace SERVER
+namespace Server
 {
 
   //! interprocess communication client
@@ -118,7 +118,7 @@ namespace SERVER
     Q_SIGNALS:
 
     //! emitted when a message is available
-    void commandAvailable( SERVER::ServerCommand );
+    void commandAvailable( Server::ServerCommand );
 
     protected:
 

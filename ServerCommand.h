@@ -35,7 +35,7 @@
 #include <QHash>
 #include <QTextStream>
 
-namespace SERVER
+namespace Server
 {
 
     //_________________________________________

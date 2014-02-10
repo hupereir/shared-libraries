@@ -29,7 +29,7 @@
 #include <QCoreApplication>
 #include <algorithm>
 
-namespace SERVER
+namespace Server
 {
 
     //_________________________________________
@@ -53,7 +53,7 @@ namespace SERVER
         connect( &client().socket(), SIGNAL(error(QAbstractSocket::SocketError)), SLOT(_error(QAbstractSocket::SocketError)) );
         connect( &client().socket(), SIGNAL(connected()), SLOT(_startTimer()) );
         connect( &client().socket(), SIGNAL(disconnected()), SLOT(_serverConnectionClosed()) );
-        connect( &client(), SIGNAL(commandAvailable(SERVER::ServerCommand)), SLOT(_process(SERVER::ServerCommand)) );
+        connect( &client(), SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_process(Server::ServerCommand)) );
 
         if( !XmlOptions::get().contains( "SERVER_HOST" ) )
         { XmlOptions::get().setRaw( "SERVER_HOST", QHostAddress( QHostAddress::LocalHost ).toString(), true ); }
@@ -321,7 +321,7 @@ namespace SERVER
 
         // create client from pending connection
         Client *client( new Client( this, _server().nextPendingConnection() ) );
-        connect( client, SIGNAL(commandAvailable(SERVER::ServerCommand)), SLOT(_redirect(SERVER::ServerCommand)) );
+        connect( client, SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
         connect( &client->socket(), SIGNAL(disconnected()), SLOT(_clientConnectionClosed()) );
         _connectedClients() << client;
 

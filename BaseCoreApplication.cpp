@@ -94,11 +94,11 @@ bool BaseCoreApplication::initApplicationManager( void )
     }
 
     // create application manager
-    applicationManager_ = new SERVER::ApplicationManager( this );
+    applicationManager_ = new Server::ApplicationManager( this );
     applicationManager_->setApplicationName( applicationName() );
 
     // connections
-    connect( applicationManager_, SIGNAL(commandRecieved(SERVER::ServerCommand)), SLOT(_processCommand(SERVER::ServerCommand)) );
+    connect( applicationManager_, SIGNAL(commandRecieved(Server::ServerCommand)), SLOT(_processCommand(Server::ServerCommand)) );
 
     // initialization
     applicationManager_->initialize( arguments_ );
@@ -122,7 +122,7 @@ bool BaseCoreApplication::realizeWidget( void )
 CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings ) const
 {
 
-    CommandLineParser out( SERVER::ApplicationManager::commandLineParser() );
+    CommandLineParser out( Server::ApplicationManager::commandLineParser() );
 
     out.setGroup( CommandLineParser::applicationGroupName );
     out.registerFlag( "--help", QObject::tr( "print this help and exit" ) );
@@ -136,19 +136,19 @@ CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments a
 }
 
 //________________________________________________
-bool BaseCoreApplication::_processCommand( SERVER::ServerCommand command )
+bool BaseCoreApplication::_processCommand( Server::ServerCommand command )
 {
 
     Debug::Throw() << "BaseCoreApplication::_processCommand: " << command.commandName() << endl;
     switch( command.command() )
     {
 
-        case SERVER::ServerCommand::Accepted:
+        case Server::ServerCommand::Accepted:
         realizeWidget();
         return true;
 
-        case SERVER::ServerCommand::Abort:
-        case SERVER::ServerCommand::Denied:
+        case Server::ServerCommand::Abort:
+        case Server::ServerCommand::Denied:
         qApp->quit();
         return true;
 

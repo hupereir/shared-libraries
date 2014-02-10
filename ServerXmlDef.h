@@ -25,7 +25,7 @@
 #include <QString>
 
 //! Some Xml definitions
-namespace SERVER
+namespace Server
 {
 
     namespace XML

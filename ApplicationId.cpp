@@ -31,7 +31,7 @@
 #include "Debug.h"
 #include "ServerXmlDef.h"
 
-namespace SERVER
+namespace Server
 {
 
     //____________________________________________________

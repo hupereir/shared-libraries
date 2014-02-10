@@ -38,7 +38,7 @@
 #include <QTcpServer>
 #include <QHostAddress>
 
-namespace SERVER
+namespace Server
 {
 
     //! ensures only one instance of an application is running
@@ -105,13 +105,13 @@ namespace SERVER
         Q_SIGNALS:
 
         //! emitted when manager state is changed
-        // void stateChanged( SERVER::ApplicationManager::State state );
+        // void stateChanged( Server::ApplicationManager::State state );
 
         //! emitted when manager is ALIVE and request is recieved
         // void serverRequest( const CommandLineArguments& args );
 
         //! emitted when a given command is recieved
-        void commandRecieved( SERVER::ServerCommand );
+        void commandRecieved( Server::ServerCommand );
 
         //! emitted when the server is (re)initialized
         void initialized( void );
@@ -192,10 +192,10 @@ namespace SERVER
         virtual void _error( QAbstractSocket::SocketError );
 
         //! redistribute message when a connected client sends one
-        virtual void _redirect( SERVER::ServerCommand );
+        virtual void _redirect( Server::ServerCommand );
 
         //! reads signal from server
-        void _process( SERVER::ServerCommand );
+        void _process( Server::ServerCommand );
 
         //! start timeout
         void _startTimer( void );
