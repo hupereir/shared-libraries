@@ -1,5 +1,5 @@
-#ifndef _HelpModel_h_
-#define _HelpModel_h_
+#ifndef HelpModel_h
+#define HelpModel_h
 
 // $Id$
 
