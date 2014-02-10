@@ -38,7 +38,6 @@
 #include "OptionSpinBox.h"
 #include "OptionSlider.h"
 #include "QuestionDialog.h"
-#include "Str.h"
 #include "TreeView.h"
 
 #include <QApplication>

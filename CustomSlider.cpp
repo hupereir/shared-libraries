@@ -23,8 +23,6 @@
 #include "CustomSlider.moc"
 #include "Debug.h"
 #include "InformationDialog.h"
-#include "Str.h"
-
 
 #include <QHBoxLayout>
 

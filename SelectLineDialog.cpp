@@ -62,4 +62,4 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
 
 //_______________________________________________________
 void SelectLineDialog::_selectLine( void )
-{ emit lineSelected( Str( editor_->text() ).get<int>()-1 ); }
+{ emit lineSelected( editor_->text().toInt()-1 ); }

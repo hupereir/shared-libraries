@@ -25,7 +25,6 @@
 #include "CustomDialog.h"
 #include "Counter.h"
 #include "AnimatedLineEditor.h"
-#include "Str.h"
 
 //! find_text dialog for text editor widgets
 class SelectLineDialog: public CustomDialog

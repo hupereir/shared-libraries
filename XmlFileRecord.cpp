@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "XmlFileRecord.h"
-#include "Str.h"
 #include "XmlString.h"
 
 namespace Base
@@ -97,10 +96,10 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
     Debug::Throw( "XmlFileRecord::domElement.\n" );
     QDomElement out( parent.createElement( Base::Xml::Record ) );
     out.setAttribute( Base::Xml::File, XmlString( file() ).toXml() );
-    out.setAttribute( Base::Xml::Time, Str().assign<int>( XmlFileRecord::time() ) );
-    out.setAttribute( Base::Xml::Valid, Str().assign<bool>( isValid() ) );
+    out.setAttribute( Base::Xml::Time, QString::number( XmlFileRecord::time() ) );
+    out.setAttribute( Base::Xml::Valid, QString::number( isValid() ) );
 
-    if( flags() ) out.setAttribute( Base::Xml::Flags, Str().assign<unsigned int>( flags() ) );
+    if( flags() ) out.setAttribute( Base::Xml::Flags, QString::number( flags() ) );
 
     for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); ++iter )
     {

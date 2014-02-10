@@ -30,7 +30,6 @@
 #include "Key.h"
 #include "MultipleClickCounter.h"
 #include "RemoveLineBuffer.h"
-#include "Str.h"
 #include "TextBlockData.h"
 #include "TextPosition.h"
 #include "TextSelection.h"

@@ -24,7 +24,6 @@
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
-#include "Str.h"
 
 #include <QApplication>
 #include <QClipboard>
