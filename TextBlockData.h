@@ -38,7 +38,7 @@ class TextBlockData: public QTextBlockUserData, public Counter
     TextBlockData():
         QTextBlockUserData(),
         Counter( "TextBlockData" ),
-        flags_( TextBlock::NONE )
+        flags_( TextBlock::None )
     { Debug::Throw( 2, "TextBlockData::TextBlockData.\n" ); }
 
     //! destructor
@@ -71,7 +71,7 @@ class TextBlockData: public QTextBlockUserData, public Counter
         if( (background_.isValid() || color.isValid() ) && color != background_ )
         {
             background_ = color;
-            setFlag( TextBlock::HAS_BACKGROUND, color.isValid() );
+            setFlag( TextBlock::HasBackground, color.isValid() );
             return true;
         } else return false;
     }

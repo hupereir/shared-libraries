@@ -577,7 +577,7 @@ void TextEditor::clearBackground( QTextBlock block )
 
     Debug::Throw( "TextEditor::clearBackground.\n" );
     TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
-    if( data && data->hasFlag( TextBlock::HAS_BACKGROUND ) && data->setBackground( QColor() ) && updatesEnabled()  )
+    if( data && data->hasFlag( TextBlock::HasBackground ) && data->setBackground( QColor() ) && updatesEnabled()  )
     { document()->markContentsDirty(block.position(), block.length()-1); }
 
     return;
@@ -1509,7 +1509,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
         // retrieve block data and check background
         // static cast is use because should be faster and safe enough here
         TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
-        if( !(data && data->hasFlag( TextBlock::HAS_BACKGROUND|TextBlock::CURRENT_BLOCK ) ) ) continue;
+        if( !(data && data->hasFlag( TextBlock::HasBackground|TextBlock::CurrentBlock ) ) ) continue;
 
         // retrieve block rect
         QRectF blockRect( document()->documentLayout()->blockBoundingRect( block ) );
@@ -1517,7 +1517,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
         blockRect.setWidth( viewport()->width() + scrollbarPosition().x() );
 
         QColor color;
-        if( data->hasFlag( TextBlock::CURRENT_BLOCK ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
+        if( data->hasFlag( TextBlock::CurrentBlock ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
         {
             color = palette().color( QPalette::AlternateBase );
 
@@ -1528,7 +1528,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
         }
 
-        if( data->hasFlag( TextBlock::HAS_BACKGROUND ) )
+        if( data->hasFlag( TextBlock::HasBackground ) )
         { color = Base::Color( color ).merge( data->background() ); }
 
         if( color.isValid() )

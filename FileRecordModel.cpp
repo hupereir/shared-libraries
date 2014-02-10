@@ -81,7 +81,7 @@ Qt::ItemFlags FileRecordModel::flags( const QModelIndex& index ) const
 
     // default flags
     flags |=  Qt::ItemIsEnabled |  Qt::ItemIsSelectable;
-    if( dragEnabled() && index.column() == FILE ) flags |= Qt::ItemIsDragEnabled;
+    if( dragEnabled() && index.column() == Filename ) flags |= Qt::ItemIsDragEnabled;
 
     return flags;
 
@@ -103,7 +103,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         switch( index.column() )
         {
 
-            case FILE:
+            case Filename:
             {
                 // store local nmae
                 const QString localName( useLocalNames_ ? record.file().localName(): record.file() );
@@ -113,8 +113,8 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
                 for( int row = 0; row < index.row(); row++ )
                 {
                     const QString rowName( useLocalNames_ ?
-                        get( this->index( row, FILE ) ).file().localName() :
-                        get( this->index( row, FILE ) ).file() );
+                        get( this->index( row, Filename ) ).file().localName() :
+                        get( this->index( row, Filename ) ).file() );
                     if( localName == rowName ) version++;
                 }
 
@@ -127,8 +127,8 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
                 return buffer;
             }
 
-            case PATH: return record.file().path();
-            case TIME: return TimeStamp( record.time() ).toString();
+            case Path: return record.file().path();
+            case Time: return TimeStamp( record.time() ).toString();
             default:
             if( index.column() < (int) columnTitles_.size() && record.hasProperty( columnTitles_[index.column()] ) )
             { return record.property( columnTitles_[index.column()] ); }
@@ -136,7 +136,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 
         }
 
-    } else if( showIcons_ && role == Qt::DecorationRole && index.column() == FILE ) {
+    } else if( showIcons_ && role == Qt::DecorationRole && index.column() == Filename ) {
 
         // icon
         return record.hasProperty( iconPropertyId_ ) ? _icon( record.property( iconPropertyId_ ) ):_icon();
@@ -208,9 +208,9 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
     switch( type_ )
     {
 
-        case FILE: return first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
-        case PATH: return first.file().path() < second.file().path();
-        case TIME: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
+        case Filename: return first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
+        case Path: return first.file().path() < second.file().path();
+        case Time: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
         default:
         {
             if( type_ < columnTitles_.size() )

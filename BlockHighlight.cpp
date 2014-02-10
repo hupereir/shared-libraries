@@ -60,11 +60,11 @@ void BlockHighlight::clear( void )
     if( parent_->textCursor().block() == block && isEnabled() ) continue;
 
     TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
-    if( data && data->hasFlag( TextBlock::CURRENT_BLOCK ) )
+    if( data && data->hasFlag( TextBlock::CurrentBlock ) )
     {
 
       // reset flag
-      data->setFlag( TextBlock::CURRENT_BLOCK, false );
+      data->setFlag( TextBlock::CurrentBlock, false );
 
       // mark contents dirty to trigger document update
       _updateEditors();
@@ -112,7 +112,7 @@ void BlockHighlight::_highlight( void )
   {
     data = new TextBlockData();
     block.setUserData( data );
-  } else if( data->hasFlag( TextBlock::CURRENT_BLOCK ) ) return;
+  } else if( data->hasFlag( TextBlock::CurrentBlock ) ) return;
 
   // need to redo the clear a second time, forced,
   // in case the previous draw action occured after the previous clear.
@@ -120,7 +120,7 @@ void BlockHighlight::_highlight( void )
   clear();
 
   // mark block as current
-  data->setFlag( TextBlock::CURRENT_BLOCK, true );
+  data->setFlag( TextBlock::CurrentBlock, true );
 
   // mark contents dirty to trigger document update
   // parent_->document()->markContentsDirty(block.position(), block.length()-1);

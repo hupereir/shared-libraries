@@ -29,9 +29,9 @@ namespace TextBlock
     enum
     {
 
-        NONE = 0,
-        HAS_BACKGROUND = 1<<0,
-        CURRENT_BLOCK = 1<<1
+        None = 0,
+        HasBackground = 1<<0,
+        CurrentBlock = 1<<1
 
     };
 
