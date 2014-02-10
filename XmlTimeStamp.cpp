@@ -22,7 +22,7 @@
 #include "Debug.h"
 #include "XmlTimeStamp.h"
 
-namespace XML
+namespace Xml
 {
 
     static const QString TIME( "time" );
@@ -40,7 +40,7 @@ XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == XML::TIME ) setTime( attribute.value().toUInt() );
+        if( attribute.name() == Xml::TIME ) setTime( attribute.value().toUInt() );
     }
 
 };
@@ -50,6 +50,6 @@ QDomElement XmlTimeStamp::domElement( const QString& name, QDomDocument& documen
 {
     Debug::Throw( "XmlTimeStamp::domElement.\n" );
     QDomElement out( document.createElement( name ) );
-    out.setAttribute( XML::TIME, QString::number( unixTime() ) );
+    out.setAttribute( Xml::TIME, QString::number( unixTime() ) );
     return out;
 }

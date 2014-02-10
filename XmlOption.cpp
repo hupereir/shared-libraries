@@ -26,7 +26,7 @@
 namespace Base
 {
     //! some XML definitions specific to Option management
-    namespace XML
+    namespace Xml
     {
 
         static const QString NAME = "Name";
@@ -45,7 +45,7 @@ XmlOption::XmlOption( const QDomElement& element )
 
     // old implementation (kept for backward compatibility
     // element name is option name
-    if( element.nodeName() != Base::XML::OPTION ) setName( element.nodeName() );
+    if( element.nodeName() != Base::Xml::OPTION ) setName( element.nodeName() );
 
     // parse attributes
     QDomNamedNodeMap attributes( element.attributes() );
@@ -53,10 +53,10 @@ XmlOption::XmlOption( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == Base::XML::NAME ) setName( attribute.value() );
-        else if( attribute.name() == Base::XML::VALUE ) setRaw( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == Base::XML::COMMENTS ) setComments( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == Base::XML::FLAGS ) {
+        if( attribute.name() == Base::Xml::NAME ) setName( attribute.value() );
+        else if( attribute.name() == Base::Xml::VALUE ) setRaw( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == Base::Xml::COMMENTS ) setComments( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == Base::Xml::FLAGS ) {
 
             setFlags( (Option::Flags) attribute.value().toInt() );
 
@@ -68,10 +68,10 @@ XmlOption::XmlOption( const QDomElement& element )
     for(QDomNode childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
     {
         QDomElement childElement = childNode.toElement();
-        if( childElement.tagName() == Base::XML::NAME ) setName( childElement.text() );
-        else if( childElement.tagName() == Base::XML::VALUE ) setRaw( XmlString( childElement.text() ).toText() );
-        else if( childElement.tagName() == Base::XML::COMMENTS ) setComments( XmlString( childElement.text() ).toText() );
-        else if( childElement.tagName() == Base::XML::FLAGS ) setFlags( (Option::Flags) childElement.text().toInt() );
+        if( childElement.tagName() == Base::Xml::NAME ) setName( childElement.text() );
+        else if( childElement.tagName() == Base::Xml::VALUE ) setRaw( XmlString( childElement.text() ).toText() );
+        else if( childElement.tagName() == Base::Xml::COMMENTS ) setComments( XmlString( childElement.text() ).toText() );
+        else if( childElement.tagName() == Base::Xml::FLAGS ) setFlags( (Option::Flags) childElement.text().toInt() );
         else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized child " << childElement.tagName() << ".\n";
 
     }
@@ -84,20 +84,20 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
 
     Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
 
-    QDomElement out = document.createElement( Base::XML::OPTION );
+    QDomElement out = document.createElement( Base::Xml::OPTION );
 
-    out.appendChild( document.createElement( Base::XML::NAME ) ).
+    out.appendChild( document.createElement( Base::Xml::NAME ) ).
         appendChild( document.createTextNode( name() ) );
 
-    out.appendChild( document.createElement( Base::XML::VALUE ) ).
+    out.appendChild( document.createElement( Base::Xml::VALUE ) ).
         appendChild( document.createTextNode( XmlString( QString::fromUtf8( raw(), raw().size() ) ).toXml() ) );
 
-    out.appendChild( document.createElement( Base::XML::FLAGS ) ).
+    out.appendChild( document.createElement( Base::Xml::FLAGS ) ).
         appendChild( document.createTextNode( QString::number( flags() ) ) );
 
     if( comments().size() )
     {
-        out.appendChild( document.createElement( Base::XML::COMMENTS ) ).
+        out.appendChild( document.createElement( Base::Xml::COMMENTS ) ).
             appendChild( document.createTextNode( XmlString( comments() ).toXml() ) );
     }
 

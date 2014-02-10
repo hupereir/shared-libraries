@@ -46,7 +46,7 @@
 #include <QPainter>
 #include <QUrl>
 
-namespace XML
+namespace Xml
 { static const QString FLAGS = "flags"; };
 
 //___________________________________________________________________
@@ -61,7 +61,7 @@ LocalFileInfo::LocalFileInfo( const QDomElement& element ):
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == XML::FLAGS ) setFlags( (Flags) attribute.value().toInt() );
+        if( attribute.name() == Xml::FLAGS ) setFlags( (Flags) attribute.value().toInt() );
     }
 
 }
@@ -71,7 +71,7 @@ QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
 {
     Debug::Throw( "BaseFileInfo::DomElement.\n" );
     QDomElement out( BaseFileInfo::domElement( document ) );
-    if( flags_ ) out.setAttribute( XML::FLAGS, flags_ );
+    if( flags_ ) out.setAttribute( Xml::FLAGS, flags_ );
     return out;
 }
 
@@ -86,7 +86,7 @@ LocalFileInfo::List::List( const QDomElement& element )
         if( element.isNull() ) continue;
 
         // children
-        if( element.tagName() == XML::FILEINFO )
+        if( element.tagName() == Xml::FILEINFO )
         {
 
             LocalFileInfo fileInfo( element );
@@ -102,7 +102,7 @@ QDomElement LocalFileInfo::List::domElement( QDomDocument& document ) const
 {
 
     // create main element
-    QDomElement top = document.createElement( XML::FILEINFO_LIST );
+    QDomElement top = document.createElement( Xml::FILEINFO_LIST );
     foreach( const LocalFileInfo& fileInfo, *this )
     { top.appendChild( fileInfo.domElement( document ) );  }
     return top;
@@ -1351,7 +1351,7 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
             if( element.isNull() ) continue;
 
             // special options
-            if( element.tagName() == XML::FILEINFO )
+            if( element.tagName() == Xml::FILEINFO )
             {
 
                 BaseFileInfo fileInfo( element );
@@ -1444,7 +1444,7 @@ bool PlacesWidget::_read( void )
     }
 
     // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
+    QDomNodeList topNodes = document.elementsByTagName( Xml::FILEINFO_LIST );
     if( topNodes.isEmpty() ) return false;
 
     const LocalFileInfo::List fileInfoList( topNodes.at(0).toElement() );
@@ -1501,7 +1501,7 @@ bool PlacesWidget::_write( void )
     }
 
     // read old list of files
-    QDomNodeList topNodes = document.elementsByTagName( XML::FILEINFO_LIST );
+    QDomNodeList topNodes = document.elementsByTagName( Xml::FILEINFO_LIST );
     if( !topNodes.isEmpty() )
     {
         const LocalFileInfo::List oldFileInfoList( topNodes.at(0).toElement() );

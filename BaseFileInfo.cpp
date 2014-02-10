@@ -24,7 +24,7 @@
 #include "TimeStamp.h"
 #include "XmlString.h"
 
-namespace XML
+namespace Xml
 {
     // this one is kept for backward compatibility
     static const QString NAME = "name";
@@ -49,14 +49,14 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
 
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == XML::FILE ) setFile( File( XmlString( attribute.value() ).toText() ) );
-        else if( attribute.name() == XML::ALIAS || attribute.name() == XML::NAME ) setAlias( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == XML::TYPE ) setType( TypeFlags( attribute.value().toInt() ) );
-        else if( attribute.name() == XML::SIZE ) setSize( attribute.value().toInt() );
-        else if( attribute.name() == XML::LAST_MODIFIED ) setLastModified( attribute.value().toInt() );
-        else if( attribute.name() == XML::USER ) setUser( attribute.value() );
-        else if( attribute.name() == XML::GROUP ) setGroup( attribute.value() );
-        else if( attribute.name() == XML::PERMISSIONS ) setPermissions( (QFile::Permissions) attribute.value().toUInt() );
+        if( attribute.name() == Xml::FILE ) setFile( File( XmlString( attribute.value() ).toText() ) );
+        else if( attribute.name() == Xml::ALIAS || attribute.name() == Xml::NAME ) setAlias( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == Xml::TYPE ) setType( TypeFlags( attribute.value().toInt() ) );
+        else if( attribute.name() == Xml::SIZE ) setSize( attribute.value().toInt() );
+        else if( attribute.name() == Xml::LAST_MODIFIED ) setLastModified( attribute.value().toInt() );
+        else if( attribute.name() == Xml::USER ) setUser( attribute.value() );
+        else if( attribute.name() == Xml::GROUP ) setGroup( attribute.value() );
+        else if( attribute.name() == Xml::PERMISSIONS ) setPermissions( (QFile::Permissions) attribute.value().toUInt() );
 
     }
 
@@ -67,16 +67,16 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 {
 
     Debug::Throw( "BaseFileInfo::DomElement.\n" );
-    QDomElement out( document.createElement( XML::FILEINFO ) );
-    out.setAttribute( XML::FILE, XmlString( file() ).toXml() );
-    out.setAttribute( XML::TYPE, QString::number( type() ) );
-    out.setAttribute( XML::SIZE, QString::number( size() ) );
-    out.setAttribute( XML::PERMISSIONS, QString::number( permissions() ) );
-    out.setAttribute( XML::LAST_MODIFIED, QString::number( lastModified() ) );
+    QDomElement out( document.createElement( Xml::FILEINFO ) );
+    out.setAttribute( Xml::FILE, XmlString( file() ).toXml() );
+    out.setAttribute( Xml::TYPE, QString::number( type() ) );
+    out.setAttribute( Xml::SIZE, QString::number( size() ) );
+    out.setAttribute( Xml::PERMISSIONS, QString::number( permissions() ) );
+    out.setAttribute( Xml::LAST_MODIFIED, QString::number( lastModified() ) );
 
-    if( !alias_.isEmpty() ) out.setAttribute( XML::ALIAS, XmlString( alias() ).toXml() );
-    if( !user_.isEmpty() ) out.setAttribute( XML::USER, user_ );
-    if( !group_.isEmpty() ) out.setAttribute( XML::GROUP, group_ );
+    if( !alias_.isEmpty() ) out.setAttribute( Xml::ALIAS, XmlString( alias() ).toXml() );
+    if( !user_.isEmpty() ) out.setAttribute( Xml::USER, user_ );
+    if( !group_.isEmpty() ) out.setAttribute( Xml::GROUP, group_ );
 
     return out;
 

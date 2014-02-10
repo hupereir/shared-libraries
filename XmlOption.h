@@ -31,7 +31,7 @@
 namespace Base
 {
     //! some XML definitions specific to Option management
-    namespace XML
+    namespace Xml
     {
 
         static const QString SPECIAL_OPTION = "SpecialOption";

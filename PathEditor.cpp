@@ -146,7 +146,7 @@ void PathEditorItem::mouseMoveEvent( QMouseEvent* event )
 
         // fill Drag data. Use XML
         QDomDocument document;
-        QDomElement top = document.appendChild( document.createElement( XML::FILEINFO_LIST ) ).toElement();
+        QDomElement top = document.appendChild( document.createElement( Xml::FILEINFO_LIST ) ).toElement();
 
         BaseFileInfo fileInfo( path_ );
         fileInfo.setAlias( text() );

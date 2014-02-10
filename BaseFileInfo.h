@@ -35,7 +35,7 @@
 #include <algorithm>
 
 //! Some Xml definitions
-namespace XML
+namespace Xml
 {
 
     static const QString FILEINFO_LIST( "FileInfoList" );

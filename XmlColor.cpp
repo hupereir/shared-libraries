@@ -25,7 +25,7 @@
 //! some specific Xml definitions
 namespace Base
 {
-    namespace XML
+    namespace Xml
     {
         static const QString NAME = "Name";
         static const QString RED = "r";
@@ -46,11 +46,11 @@ XmlColor::XmlColor( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == Base::XML::NAME ) setNamedColor( attribute.value() );
-        else if( attribute.name() == Base::XML::RED ) setRed( attribute.value().toInt() );
-        else if( attribute.name() == Base::XML::GREEN ) setGreen( attribute.value().toInt() );
-        else if( attribute.name() == Base::XML::BLUE ) setBlue( attribute.value().toInt() );
-        else if( attribute.name() == Base::XML::ALPHA ) setAlpha( attribute.value().toInt() );
+        if( attribute.name() == Base::Xml::NAME ) setNamedColor( attribute.value() );
+        else if( attribute.name() == Base::Xml::RED ) setRed( attribute.value().toInt() );
+        else if( attribute.name() == Base::Xml::GREEN ) setGreen( attribute.value().toInt() );
+        else if( attribute.name() == Base::Xml::BLUE ) setBlue( attribute.value().toInt() );
+        else if( attribute.name() == Base::Xml::ALPHA ) setAlpha( attribute.value().toInt() );
     }
 
 }
@@ -59,11 +59,11 @@ XmlColor::XmlColor( const QDomElement& element )
 QDomElement XmlColor::domElement( QDomDocument& document ) const
 {
 
-    QDomElement element = document.createElement( Base::XML::COLOR );
-    element.setAttribute( Base::XML::RED, QString::number( red() ) );
-    element.setAttribute( Base::XML::GREEN, QString::number( green() ) );
-    element.setAttribute( Base::XML::BLUE, QString::number( blue() ) );
-    element.setAttribute( Base::XML::ALPHA, QString::number( alpha() ) );
+    QDomElement element = document.createElement( Base::Xml::COLOR );
+    element.setAttribute( Base::Xml::RED, QString::number( red() ) );
+    element.setAttribute( Base::Xml::GREEN, QString::number( green() ) );
+    element.setAttribute( Base::Xml::BLUE, QString::number( blue() ) );
+    element.setAttribute( Base::Xml::ALPHA, QString::number( alpha() ) );
 
     return element;
 

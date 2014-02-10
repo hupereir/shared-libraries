@@ -26,7 +26,7 @@
 namespace Format
 {
 
-    namespace XML
+    namespace Xml
     {
 
         static const QString FORMAT = "format";
@@ -51,13 +51,13 @@ namespace Format
             QString value( attribute.value() );
 
             // nominal tags
-            if( name == XML::BEGIN ) setBegin( value.toInt() );
-            else if( name == XML::END ) setEnd( value.toInt() );
+            if( name == Xml::BEGIN ) setBegin( value.toInt() );
+            else if( name == Xml::END ) setEnd( value.toInt() );
 
             // format
-            else if( name == XML::FORMAT ) setFormat( (TextFormatFlags) value.toInt() );
-            else if( name == XML::COLOR ) setColor( value );
-            else if( name == XML::HREF ) setHRef( value );
+            else if( name == Xml::FORMAT ) setFormat( (TextFormatFlags) value.toInt() );
+            else if( name == Xml::COLOR ) setColor( value );
+            else if( name == Xml::HREF ) setHRef( value );
 
             else Debug::Throw(0) << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized text format attribute: \"" << name << "\"\n";
         }
@@ -67,12 +67,12 @@ namespace Format
     //__________________________________________________________
     QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
     {
-        QDomElement out( parent.createElement( XML::TAG ) );
-        out.setAttribute( XML::BEGIN, QString::number(begin()) );
-        out.setAttribute( XML::END, QString::number(end()) );
-        out.setAttribute( XML::FORMAT, QString::number(format()) );
-        if( color().isValid() ) out.setAttribute( XML::COLOR, color().name() );
-        if( !href().isEmpty() ) out.setAttribute( XML::HREF, href() );
+        QDomElement out( parent.createElement( Xml::TAG ) );
+        out.setAttribute( Xml::BEGIN, QString::number(begin()) );
+        out.setAttribute( Xml::END, QString::number(end()) );
+        out.setAttribute( Xml::FORMAT, QString::number(format()) );
+        if( color().isValid() ) out.setAttribute( Xml::COLOR, color().name() );
+        if( !href().isEmpty() ) out.setAttribute( Xml::HREF, href() );
         return out;
     }
 

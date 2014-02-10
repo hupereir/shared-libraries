@@ -27,7 +27,7 @@ namespace FILERECORD
 {
 
     //! some XML definitions specific to Option management
-    namespace XML
+    namespace Xml
     {
         static const QString FILE = "file";
         static const QString TIME = "time";
@@ -50,10 +50,10 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() || attribute.name().isEmpty() ) continue;
-        if( attribute.name() == FILERECORD::XML::FILE ) setFile( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == FILERECORD::XML::TIME ) setTime( attribute.value().toInt() );
-        else if( attribute.name() == FILERECORD::XML::FLAGS ) setFlags( attribute.value().toUInt() );
-        else if( attribute.name() == FILERECORD::XML::VALID ) setValid( attribute.value().toInt() );
+        if( attribute.name() == FILERECORD::Xml::FILE ) setFile( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == FILERECORD::Xml::TIME ) setTime( attribute.value().toInt() );
+        else if( attribute.name() == FILERECORD::Xml::FLAGS ) setFlags( attribute.value().toUInt() );
+        else if( attribute.name() == FILERECORD::Xml::VALID ) setValid( attribute.value().toInt() );
         else addProperty( attribute.name(), attribute.value() );
     }
 
@@ -64,7 +64,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
         if( childElement.isNull() ) continue;
 
         QString tagName( childElement.tagName() );
-        if( tagName == FILERECORD::XML::PROPERTY )
+        if( tagName == FILERECORD::Xml::PROPERTY )
         {
 
             std::pair< QString, QString > property;
@@ -77,8 +77,8 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
                 QDomAttr attribute( attributes.item( i ).toAttr() );
                 if( attribute.isNull() || attribute.name().isEmpty() ) continue;
 
-                if( attribute.name() == FILERECORD::XML::NAME ) property.first = XmlString( attribute.value() ).toText();
-                else if( attribute.name() == FILERECORD::XML::VALUE ) property.second = XmlString( attribute.value() ).toText();
+                if( attribute.name() == FILERECORD::Xml::NAME ) property.first = XmlString( attribute.value() ).toText();
+                else if( attribute.name() == FILERECORD::Xml::VALUE ) property.second = XmlString( attribute.value() ).toText();
                 else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized attribute " << attribute.name() << endl;
 
             }
@@ -95,18 +95,18 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
 QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 {
     Debug::Throw( "XmlFileRecord::domElement.\n" );
-    QDomElement out( parent.createElement( FILERECORD::XML::RECORD ) );
-    out.setAttribute( FILERECORD::XML::FILE, XmlString( file() ).toXml() );
-    out.setAttribute( FILERECORD::XML::TIME, Str().assign<int>( XmlFileRecord::time() ) );
-    out.setAttribute( FILERECORD::XML::VALID, Str().assign<bool>( isValid() ) );
+    QDomElement out( parent.createElement( FILERECORD::Xml::RECORD ) );
+    out.setAttribute( FILERECORD::Xml::FILE, XmlString( file() ).toXml() );
+    out.setAttribute( FILERECORD::Xml::TIME, Str().assign<int>( XmlFileRecord::time() ) );
+    out.setAttribute( FILERECORD::Xml::VALID, Str().assign<bool>( isValid() ) );
 
-    if( flags() ) out.setAttribute( FILERECORD::XML::FLAGS, Str().assign<unsigned int>( flags() ) );
+    if( flags() ) out.setAttribute( FILERECORD::Xml::FLAGS, Str().assign<unsigned int>( flags() ) );
 
     for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); ++iter )
     {
-        QDomElement property( parent.createElement( FILERECORD::XML::PROPERTY ) );
-        property.setAttribute( FILERECORD::XML::NAME, XmlString( PropertyId::get(iter.key()) ).toXml() );
-        property.setAttribute( FILERECORD::XML::VALUE, XmlString( iter.value() ) );
+        QDomElement property( parent.createElement( FILERECORD::Xml::PROPERTY ) );
+        property.setAttribute( FILERECORD::Xml::NAME, XmlString( PropertyId::get(iter.key()) ).toXml() );
+        property.setAttribute( FILERECORD::Xml::VALUE, XmlString( iter.value() ) );
         out.appendChild( property );
     }
 
@@ -125,7 +125,7 @@ XmlFileRecord::List::List( const QDomElement& element )
         if( childElement.isNull() ) continue;
 
         // special options
-        if( childElement.tagName() == FILERECORD::XML::RECORD )
+        if( childElement.tagName() == FILERECORD::Xml::RECORD )
         {
             XmlFileRecord record( childElement );
             if( !record.file().isEmpty() ) append( record );
@@ -138,7 +138,7 @@ XmlFileRecord::List::List( const QDomElement& element )
 QDomElement XmlFileRecord::List::domElement( QDomDocument& document ) const
 {
     Debug::Throw( "XmlFileRecord::List::domElement.\n" );
-    QDomElement top = document.appendChild( document.createElement( FILERECORD::XML::FILE_LIST ) ).toElement();
+    QDomElement top = document.appendChild( document.createElement( FILERECORD::Xml::FILE_LIST ) ).toElement();
     foreach( const XmlFileRecord& record, *this )
     {
         if( !record.file().isEmpty() )

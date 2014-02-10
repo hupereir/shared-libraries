@@ -31,7 +31,7 @@
 //! some specific Xml definitions
 namespace Base
 {
-    namespace XML
+    namespace Xml
     {
         static const QString COLOR_LIST( "Colors" );
         static const QString COLOR = "Color";

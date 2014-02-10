@@ -27,7 +27,7 @@
 
 namespace Format
 {
-    namespace XML
+    namespace Xml
     {
 
         static const QString TAG = "TextFormat";
