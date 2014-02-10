@@ -28,7 +28,7 @@
 namespace Server
 {
 
-    namespace XML
+    namespace Xml
     {
         //! transmission
         const QString TRANSMISSION( "_t" );
