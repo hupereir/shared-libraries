@@ -31,9 +31,9 @@
 #include <QToolTip>
 
 //____________________________________________________________________________
-TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& option_name ):
-QGroupBox( parent ),
-OptionWidget( option_name )
+TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& optionName ):
+    QGroupBox( parent ),
+    OptionWidget( optionName, this )
 {
 
     Debug::Throw( "TreeViewConfiguration::TreeViewConfiguration.\n" );
@@ -80,7 +80,13 @@ void TreeViewConfiguration::read( void )
     // set check button state according to the backup mask
     unsigned int mask( XmlOptions::get().get<unsigned int>( optionName() ) );
     for( int index = 0; index < checkbox_.size(); index++ )
-    { checkbox_[index]->setChecked( mask & (1<<index) ); }
+    {
+        checkbox_[index]->setChecked( mask & (1<<index) );
+        if( !_connected() )
+        { connect( checkbox_[index], SIGNAL(toggled(bool)), this, SIGNAL(modified())); }
+    }
+
+    _setConnected();
 
     return;
 

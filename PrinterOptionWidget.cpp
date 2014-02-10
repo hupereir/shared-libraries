@@ -34,7 +34,7 @@
 //________________________________________________________________
 PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     QWidget( parent ),
-    Counter( "PRINT::PrinterOptionWidget" ),
+    Counter( "Print::PrinterOptionWidget" ),
     helper_( 0 ),
     orientation_( QPrinter::Portrait ),
     pageMode_( BasePrintHelper::SinglePage )

@@ -49,7 +49,6 @@ class OptionSpinBox: public QWidget, public OptionWidget
         setLayout( layout );
         layout->addWidget( spinBox_ = new QSpinBox( this ) );
         if( addStretch ) layout->addStretch( 1 );
-        connect(spinBox_, SIGNAL(valueChanged(int)), SIGNAL(modified()));
     }
 
     //! scale (i.e. option = value()/scale)
@@ -58,7 +57,14 @@ class OptionSpinBox: public QWidget, public OptionWidget
 
     //! read value from option
     void read( const Options& options )
-    { setValue( static_cast<int>(round(scale_*options.get<double>( optionName() )))); }
+    {
+        setValue( static_cast<int>(round(scale_*options.get<double>( optionName() ))));
+        if( !_connected() )
+        {
+            connect(spinBox_, SIGNAL(valueChanged(int)), SIGNAL(modified()));
+            _setConnected();
+        }
+    }
 
     //! write value to option
     void write( Options& options ) const

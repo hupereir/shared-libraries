@@ -89,7 +89,10 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     // read
     using OptionWidgetList::read;
     virtual void read( void )
-    { OptionWidgetList::read( XmlOptions::get() ); }
+    {
+        OptionWidgetList::read( XmlOptions::get() );
+        _checkModified();
+    }
 
     //! adds configuration box for base options used in all appications
     QWidget* baseConfiguration( QWidget* parent = 0, ConfigurationFlags = Default );
@@ -125,6 +128,10 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     //! emmited when configuration is changed
     void configurationChanged();
+
+    public Q_SLOTS:
+
+    virtual void debugModification( void );
 
     protected Q_SLOTS:
 

@@ -28,9 +28,9 @@
 #include <QPlainTextDocumentLayout>
 #include <QTextDocument>
 
-//! customized TextDocument to derive from BASE::Key
+//! customized TextDocument to derive from Base::Key
 /*! this is needed to easily handled multiple text editors that share the same document */
-class CustomTextDocument: public QTextDocument, public BASE::Key, public Counter
+class CustomTextDocument: public QTextDocument, public Base::Key, public Counter
 {
 
     Q_OBJECT

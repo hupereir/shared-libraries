@@ -27,13 +27,13 @@
 
 //________________________________________________________________________
 AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
-TreeView( parent ),
-transitionWidget_( new TransitionWidget( this ) )
+    TreeView( parent ),
+    transitionWidget_( new TransitionWidget( this ) )
 {
     Debug::Throw( "AnimatedTreeView::AnimatedTreeView.\n" );
 
     // transition widget
-    transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
+    transitionWidget().setFlag( TransitionWidget::FromParent, false );
     transitionWidget().hide();
     connect( &transitionWidget().timeLine(), SIGNAL(finished()), &transitionWidget(), SLOT(hide()) );
 

@@ -29,7 +29,7 @@
 #include <QString>
 #include <QTextStream>
 
-namespace FORMAT
+namespace Format
 {
     //! text format
     /*!
@@ -181,7 +181,7 @@ namespace FORMAT
 
 
         //! format list
-        typedef QList<FORMAT::TextFormatBlock> List;
+        typedef QList<Format::TextFormatBlock> List;
 
         private:
 

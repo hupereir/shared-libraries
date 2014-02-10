@@ -31,6 +31,8 @@ class TransitionWidget;
 class AnimatedTextEditor: public TextEditor
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor

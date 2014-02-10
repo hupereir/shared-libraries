@@ -19,8 +19,9 @@
 *
 *******************************************************************************/
 
-
 #include "AnimatedTextEditor.h"
+#include "AnimatedTextEditor.moc"
+
 #include "Debug.h"
 #include "ScrollObject.h"
 #include "TransitionWidget.h"
@@ -31,7 +32,7 @@ TextEditor( parent ),
 transitionWidget_( new TransitionWidget(this) )
 {
     Debug::Throw( "AnimatedTextEditor::AnimatedTextEditor.\n" );
-    _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
+    _transitionWidget().setFlag( TransitionWidget::FromParent, false );
     _transitionWidget().hide();
     connect( &_transitionWidget().timeLine(), SIGNAL(finished()),  &_transitionWidget(), SLOT(hide()) );
 

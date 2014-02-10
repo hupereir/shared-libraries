@@ -38,11 +38,18 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
     OptionBrowsedLineEditor( QWidget* parent, const QString& optionName ):
         BrowsedLineEditor( parent ),
         OptionWidget( optionName, this )
-    { connect( &editor(), SIGNAL(textChanged(QString)), SIGNAL(modified())); }
+    {}
 
     //! read value from option
     void read( const Options& options )
-    { setFile( options.raw( optionName() ) ); }
+    {
+        setFile( options.raw( optionName() ) );
+        if( !_connected() )
+        {
+            connect( &editor(), SIGNAL(textChanged(QString)), SIGNAL(modified()) );
+            _setConnected();
+        }
+    }
 
     //! write value to option
     void write( Options& options ) const

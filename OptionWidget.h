@@ -34,7 +34,8 @@ class OptionWidget
     //! constructor
     OptionWidget( const QString& name, QObject* budy = 0 ):
         optionName_( name ),
-        buddy_( budy )
+        buddy_( budy ),
+        connected_( false )
     {}
 
     //! destructor
@@ -65,6 +66,14 @@ class OptionWidget
     virtual void _setBuddy( QObject* buddy )
     { buddy_ = buddy; }
 
+    //! true when connected
+    bool _connected( void ) const
+    { return connected_; }
+
+    //! set connected
+    void _setConnected( bool value = true )
+    { connected_ = value; }
+
     private:
 
     //! name of the option linked to the widget
@@ -73,6 +82,9 @@ class OptionWidget
     //! buddy
     /*! it is used for signal/slots connections in derived class implementations */
     QObject* buddy_;
+
+    //! true when connected
+    bool connected_;
 
 };
 

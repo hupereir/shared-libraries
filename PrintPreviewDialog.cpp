@@ -36,13 +36,13 @@
 #include <QShortcut>
 #include <QWheelEvent>
 
-namespace PRINT
+namespace Print
 {
 
     //_________________________________________________________________
     OptionMenu::OptionMenu( QWidget* parent ):
         QMenuBar( parent ),
-        Counter( "PRINT::OptionMenu" )
+        Counter( "Print::OptionMenu" )
     {
 
         {
@@ -103,7 +103,7 @@ namespace PRINT
     //_________________________________________________________________
     NavigationWidget::NavigationWidget( QWidget* parent ):
         QWidget( parent ),
-        Counter( "PRINT::NavigationWidget" ),
+        Counter( "Print::NavigationWidget" ),
         pages_( 0 )
     {
         Debug::Throw( "NavigationWidget::NavigationWidget.\n" );
@@ -284,11 +284,11 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
     layout->setMargin(0);
     setLayout( layout );
 
-    layout->addWidget( optionMenu_ = new PRINT::OptionMenu( this ) );
+    layout->addWidget( optionMenu_ = new Print::OptionMenu( this ) );
     layout->addWidget( previewWidget_ = new QPrintPreviewWidget( this ) );
     previewWidget_->setZoomMode( QPrintPreviewWidget::FitToWidth );
 
-    layout->addWidget( navigationWidget_ = new PRINT::NavigationWidget( this ), 0, Qt::AlignCenter );
+    layout->addWidget( navigationWidget_ = new Print::NavigationWidget( this ), 0, Qt::AlignCenter );
     connect( navigationWidget_, SIGNAL(pageChanged(int)), previewWidget_, SLOT(setCurrentPage(int)) );
 
     // close accelerator

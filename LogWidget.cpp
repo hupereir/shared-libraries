@@ -61,7 +61,7 @@ void LogWidget::setOptionName( const QString& value )
 }
 
 //_____________________________________________________________
-void LogWidget::append( const QString& text, FORMAT::TextFormatFlags format, const QColor& color, int verbosity )
+void LogWidget::append( const QString& text, Format::TextFormatFlags format, const QColor& color, int verbosity )
 {
 
     // check verbosity
@@ -78,11 +78,11 @@ void LogWidget::append( const QString& text, FORMAT::TextFormatFlags format, con
 
     if( format )
     {
-        charFormat.setFontWeight( (format&FORMAT::Bold) ? QFont::Bold : QFont::Normal );
-        charFormat.setFontItalic( format&FORMAT::Italic );
-        charFormat.setFontUnderline( format&FORMAT::Underline );
-        charFormat.setFontStrikeOut( format&FORMAT::Strike );
-        charFormat.setFontOverline( format&FORMAT::Overline );
+        charFormat.setFontWeight( (format&Format::Bold) ? QFont::Bold : QFont::Normal );
+        charFormat.setFontItalic( format&Format::Italic );
+        charFormat.setFontUnderline( format&Format::Underline );
+        charFormat.setFontStrikeOut( format&Format::Strike );
+        charFormat.setFontOverline( format&Format::Overline );
     }
     cursor.setCharFormat( charFormat );
 

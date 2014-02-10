@@ -21,6 +21,7 @@
 
 #include "AnimatedLineEditor.h"
 #include "AnimatedLineEditor.moc"
+
 #include "Debug.h"
 #include "Singleton.h"
 #include "TransitionWidget.h"
@@ -34,7 +35,7 @@ LineEditor( parent ),
 transition_widget_( new TransitionWidget(this) )
 {
     Debug::Throw( "AnimatedLineEditor::AnimatedLineEditor.\n" );
-    _transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
+    _transitionWidget().setFlag( TransitionWidget::FromParent, false );
     _transitionWidget().hide();
 
     connect( &_transitionWidget().timeLine(), SIGNAL(finished()),  &_transitionWidget(), SLOT(hide()) );

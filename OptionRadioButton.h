@@ -38,11 +38,19 @@ class OptionRadioButton: public QRadioButton, public OptionWidget
     OptionRadioButton( const QString& label, QWidget* parent, const QString& optionName ):
         QRadioButton( label, parent ),
         OptionWidget( optionName, this )
-    { connect( this, SIGNAL(toggled(bool)), SIGNAL(modified())); }
+    {}
 
     //! read value from option
     void read( const Options& options )
-    { setChecked( options.get<bool>( optionName() ) ); }
+    {
+        setChecked( options.get<bool>( optionName() ) );
+        if( !_connected() )
+        {
+            connect( this, SIGNAL(toggled(bool)), SIGNAL(modified()));
+            _setConnected();
+        }
+
+    }
 
     //! write value to option
     void write( Options& options ) const

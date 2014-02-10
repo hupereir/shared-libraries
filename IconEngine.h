@@ -43,7 +43,7 @@ class IconEngine: public Counter
     { return get()._get( file ); }
 
     //! return cache
-    static const BASE::IconCache& cache( void )
+    static const Base::IconCache& cache( void )
     { return get().cache_; }
 
     //! reload all icons set in cache from new path list
@@ -59,7 +59,7 @@ class IconEngine: public Counter
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    const BASE::IconCacheItem& _get( const QString&, bool fromCache = true );
+    const Base::IconCacheItem& _get( const QString&, bool fromCache = true );
 
     //@}
 
@@ -67,7 +67,7 @@ class IconEngine: public Counter
     QStringList pixmapPath_;
 
     //! map files and QIcon
-    BASE::IconCache cache_;
+    Base::IconCache cache_;
 
 };
 

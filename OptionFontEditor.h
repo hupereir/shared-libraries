@@ -37,11 +37,19 @@ class OptionFontEditor: public FontEditor, public OptionWidget
     OptionFontEditor( QWidget* parent, const QString& optionName ):
         FontEditor( parent ),
         OptionWidget( optionName, this )
-    { connect( this, SIGNAL(fontChanged(QFont)), SIGNAL(modified())); }
+    {}
 
     //! read value from option
     void read( const Options& options )
-    { setFont( options.raw( optionName() ) ); }
+    {
+        setFont( options.raw( optionName() ) );
+        if( !_connected() )
+        {
+            connect( this, SIGNAL(fontChanged(QFont)), SIGNAL(modified()));
+            _setConnected();
+        }
+
+    }
 
     //! write value to option
     void write( Options& options ) const

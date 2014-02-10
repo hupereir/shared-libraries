@@ -28,7 +28,7 @@
 
 #include "Option.h"
 
-namespace BASE
+namespace Base
 {
     //! some XML definitions specific to Option management
     namespace XML

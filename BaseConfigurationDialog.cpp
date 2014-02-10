@@ -554,6 +554,16 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
+void BaseConfigurationDialog::debugModification( void )
+{
+    QObject* sender( this->sender() );
+    Debug::Throw(0)
+        << "BaseConfigurationDialog::debugModification -"
+        << " sender: " << ( sender ? sender->metaObject()->className() : "none" )
+        << endl;
+}
+
+//__________________________________________________
 void BaseConfigurationDialog::_editPixmapPathList( void )
 {
 
@@ -612,7 +622,8 @@ bool BaseConfigurationDialog::_checkModified( void )
         << " modified: " << modified
         << endl;
 
-    if( modified && Debug::level() > 0 )
+    // if( modified && Debug::level() > 0 )
+    if( modified )
     {
         _findModification( modifiedOptions, XmlOptions::get() );
         _findModification( XmlOptions::get(), modifiedOptions );

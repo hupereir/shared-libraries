@@ -23,7 +23,7 @@
 #include "XmlColor.h"
 
 //! some specific Xml definitions
-namespace BASE
+namespace Base
 {
     namespace XML
     {
@@ -46,11 +46,11 @@ XmlColor::XmlColor( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == BASE::XML::NAME ) setNamedColor( attribute.value() );
-        else if( attribute.name() == BASE::XML::RED ) setRed( attribute.value().toInt() );
-        else if( attribute.name() == BASE::XML::GREEN ) setGreen( attribute.value().toInt() );
-        else if( attribute.name() == BASE::XML::BLUE ) setBlue( attribute.value().toInt() );
-        else if( attribute.name() == BASE::XML::ALPHA ) setAlpha( attribute.value().toInt() );
+        if( attribute.name() == Base::XML::NAME ) setNamedColor( attribute.value() );
+        else if( attribute.name() == Base::XML::RED ) setRed( attribute.value().toInt() );
+        else if( attribute.name() == Base::XML::GREEN ) setGreen( attribute.value().toInt() );
+        else if( attribute.name() == Base::XML::BLUE ) setBlue( attribute.value().toInt() );
+        else if( attribute.name() == Base::XML::ALPHA ) setAlpha( attribute.value().toInt() );
     }
 
 }
@@ -59,11 +59,11 @@ XmlColor::XmlColor( const QDomElement& element )
 QDomElement XmlColor::domElement( QDomDocument& document ) const
 {
 
-    QDomElement element = document.createElement( BASE::XML::COLOR );
-    element.setAttribute( BASE::XML::RED, QString::number( red() ) );
-    element.setAttribute( BASE::XML::GREEN, QString::number( green() ) );
-    element.setAttribute( BASE::XML::BLUE, QString::number( blue() ) );
-    element.setAttribute( BASE::XML::ALPHA, QString::number( alpha() ) );
+    QDomElement element = document.createElement( Base::XML::COLOR );
+    element.setAttribute( Base::XML::RED, QString::number( red() ) );
+    element.setAttribute( Base::XML::GREEN, QString::number( green() ) );
+    element.setAttribute( Base::XML::BLUE, QString::number( blue() ) );
+    element.setAttribute( Base::XML::ALPHA, QString::number( alpha() ) );
 
     return element;
 

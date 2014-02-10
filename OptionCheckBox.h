@@ -39,7 +39,7 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
         QCheckBox( label, parent ),
         OptionWidget( optionName, this ),
         negative_( false )
-    { connect( this, SIGNAL(toggled(bool)), SIGNAL(modified())); }
+    {}
 
     //! negative
     void setNegative( bool value )
@@ -50,6 +50,12 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
     {
         if( negative_ ) setChecked( !options.get<bool>( optionName() ) );
         else setChecked( options.get<bool>( optionName() ) );
+        if( !_connected() )
+        {
+            connect( this, SIGNAL(toggled(bool)), SIGNAL(modified()) );
+            _setConnected();
+        }
+
     }
 
     //! write value to option

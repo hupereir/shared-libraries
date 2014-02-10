@@ -37,18 +37,18 @@ QWidget( parent )
     layout()->setMargin(2);
     layout()->setSpacing(2);
 
-    layout()->addWidget( checkBoxes_.insert( FORMAT::Bold, new QCheckBox( tr( "Bold" ), this ) ).value() );
-    layout()->addWidget( checkBoxes_.insert( FORMAT::Italic, new QCheckBox( tr( "Italic" ), this ) ).value() );
-    layout()->addWidget( checkBoxes_.insert( FORMAT::Underline, new QCheckBox( tr( "Underline" ), this ) ).value() );
-    layout()->addWidget( checkBoxes_.insert( FORMAT::Strike, new QCheckBox( tr( "Strike" ), this ) ).value() );
-    layout()->addWidget( checkBoxes_.insert( FORMAT::Overline, new QCheckBox( tr( "Overline" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( Format::Bold, new QCheckBox( tr( "Bold" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( Format::Italic, new QCheckBox( tr( "Italic" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( Format::Underline, new QCheckBox( tr( "Underline" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( Format::Strike, new QCheckBox( tr( "Strike" ), this ) ).value() );
+    layout()->addWidget( checkBoxes_.insert( Format::Overline, new QCheckBox( tr( "Overline" ), this ) ).value() );
 
     for( CheckBoxMap::iterator iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
     { connect( iter.value(), SIGNAL(toggled(bool)), SIGNAL(modified())); }
 }
 
 //__________________________________________________
-void FontInfo::setFormat( FORMAT::TextFormatFlags format )
+void FontInfo::setFormat( Format::TextFormatFlags format )
 {
     Debug::Throw( "FontInfo::setFormat.\n" );
     for( CheckBoxMap::iterator iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
@@ -56,11 +56,11 @@ void FontInfo::setFormat( FORMAT::TextFormatFlags format )
 }
 
 //__________________________________________________
-FORMAT::TextFormatFlags FontInfo::format( void ) const
+Format::TextFormatFlags FontInfo::format( void ) const
 {
     Debug::Throw( "FontInfo::format.\n" );
 
-    FORMAT::TextFormatFlags out = FORMAT::Default;
+    Format::TextFormatFlags out = Format::Default;
     for( CheckBoxMap::const_iterator iter = checkBoxes_.constBegin(); iter != checkBoxes_.constEnd(); ++iter )
     { if( iter.value()->isChecked() ) out |= iter.key(); }
 

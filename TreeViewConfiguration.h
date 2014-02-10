@@ -38,13 +38,17 @@ class TreeViewConfiguration: public QGroupBox, public OptionWidget
     public:
 
     //! constructor
-    TreeViewConfiguration( QWidget* parent, QTreeView* target, const QString& option_name  );
+    TreeViewConfiguration( QWidget*, QTreeView*, const QString&  );
 
     //! read value from option
     void read( void );
 
     //! write value to option
     void write( void ) const;
+
+    Q_SIGNALS:
+
+    void modified( void );
 
     private:
 

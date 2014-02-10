@@ -142,7 +142,7 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 }
 
 //_______________________________________
-void WinUtil::enableBlurBehind( const BASE::Margins& margins )
+void WinUtil::enableBlurBehind( const Base::Margins& margins )
 {
 
     #if defined(Q_OS_WIN)

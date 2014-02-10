@@ -52,7 +52,7 @@ class LogWidget: public TextEditor
     public Q_SLOTS:
 
     //! append text
-    virtual void append( const QString&, FORMAT::TextFormatFlags = FORMAT::Default, const QColor& = QColor(), int = 0 );
+    virtual void append( const QString&, Format::TextFormatFlags = Format::Default, const QColor& = QColor(), int = 0 );
 
     //! clear
     virtual void clear( void )

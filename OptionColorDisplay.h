@@ -38,15 +38,23 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
     OptionColorDisplay( QWidget* parent, const QString& optionName ):
         ColorDisplay( parent ),
         OptionWidget( optionName, this )
-    { connect( &_editor(), SIGNAL(textChanged(QString)), SIGNAL(modified())); }
+    {}
 
     //! read value from option
     void read( const Options& options )
-    { setColor( options.get<BASE::Color>( optionName() ) ); }
+    {
+        setColor( options.get<Base::Color>( optionName() ) );
+        if( !_connected() )
+        {
+            connect( &_editor(), SIGNAL(textChanged(QString)), SIGNAL(modified()) );
+            _setConnected();
+        }
+
+    }
 
     //! write value to option
     void write( Options& options ) const
-    { options.set<BASE::Color>( optionName(), color() ); }
+    { options.set<Base::Color>( optionName(), color() ); }
 
     Q_SIGNALS:
 

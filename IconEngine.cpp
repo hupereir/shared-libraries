@@ -49,20 +49,20 @@ bool IconEngine::reload( void )
 
     pixmapPath_ = pathList;
 
-    for( BASE::IconCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+    for( Base::IconCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
     { cache_[iter.key()] = _get( iter.key(), false ); }
 
     return true;
 }
 
 //__________________________________________________________
-const BASE::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache )
+const Base::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache )
 {
 
     // try find file in cache
     if( fromCache )
     {
-        BASE::IconCache::iterator iter( cache_.find( file ) );
+        Base::IconCache::iterator iter( cache_.find( file ) );
         if( iter != cache_.end() ) return iter.value();
     }
 
@@ -70,7 +70,7 @@ const BASE::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache
     Debug::Throw() << "IconEngine::_get - file: " << file << endl;
 
     // insert null icon for empty filename
-    BASE::IconCacheItem out;
+    Base::IconCacheItem out;
     if( file.isEmpty() )
     {
 

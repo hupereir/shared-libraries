@@ -48,7 +48,7 @@ bool PixmapEngine::reload( void )
     if( pathList == pixmapPath_ ) return false;
 
     pixmapPath_ = pathList;
-    for( BASE::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+    for( Base::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
     { cache_[iter.key()] = _get( iter.key(), false ); }
 
     return true;
@@ -62,7 +62,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool fromCache )
     // try find file in cache
     if( fromCache )
     {
-        BASE::PixmapCache::iterator iter( cache_.find( file ) );
+        Base::PixmapCache::iterator iter( cache_.find( file ) );
         if( iter != cache_.end() ) return iter.value();
     }
 

@@ -62,7 +62,7 @@ typedef QTextEdit BaseEditor;
 #endif
 
 //! Customized QTextEdit object
-class TextEditor: public BaseEditor, public BASE::Key, public Counter
+class TextEditor: public BaseEditor, public Base::Key, public Counter
 {
 
     Q_OBJECT

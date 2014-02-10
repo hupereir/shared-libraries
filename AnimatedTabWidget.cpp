@@ -19,23 +19,14 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedTabWidget.cpp
-  \brief animated stacked widget
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QPainter>
-#include <QTabBar>
-
 #include "AnimatedTabWidget.h"
 #include "AnimatedTabWidget.moc"
+
 #include "Debug.h"
 #include "TransitionWidget.h"
 
-
+#include <QPainter>
+#include <QTabBar>
 
 //___________________________________________________________________
 void AnimatedTabBar::mousePressEvent( QMouseEvent* event )
@@ -55,7 +46,7 @@ AnimatedTabWidget::AnimatedTabWidget( QWidget* parent ):
 
   setTabBar( new AnimatedTabBar( this ) );
 
-  _transitionWidget().setFlag( TransitionWidget::SHOW, false );
+  _transitionWidget().setFlag( TransitionWidget::Show, false );
   _transitionWidget().hide();
   connect( tabBar(), SIGNAL(clicked()), SLOT(_updateCurrentWidget()) );
   connect( tabBar(), SIGNAL(currentChanged(int)), SLOT(_startAnimation()) );

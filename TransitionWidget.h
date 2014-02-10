@@ -44,9 +44,9 @@ class TransitionWidget: public QWidget, public Counter
     //! flags
     enum Flag
     {
-        NONE = 0,
-        FROM_PARENT = 1<<0,
-        SHOW = 1<<1
+        None = 0,
+        FromParent = 1<<0,
+        Show = 1<<1
     };
 
     Q_DECLARE_FLAGS( Flags, Flag );

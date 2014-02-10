@@ -43,7 +43,7 @@ class ColorMenu: public QMenu, public Counter
     public:
 
     //! sorted set of colors
-    typedef QOrderedSet<BASE::Color> ColorSet;
+    typedef QOrderedSet<Base::Color> ColorSet;
 
     //! constructor
     ColorMenu( QWidget* parent );
@@ -107,7 +107,7 @@ class ColorMenu: public QMenu, public Counter
     void add( QString );
 
     //! map colors to display pixmap
-    typedef QMap<BASE::Color, QBrush> ColorMap;
+    typedef QMap<Base::Color, QBrush> ColorMap;
 
     //! list of loaded colors
     ColorMap colors_;

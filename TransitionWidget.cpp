@@ -33,7 +33,7 @@ TransitionWidget::TransitionWidget( QWidget *parent ):
     Counter( "TransitionWidget" ),
     enableOnOptions_( true ),
     enabled_( true ),
-    flags_( FROM_PARENT | SHOW )
+    flags_( FromParent | Show )
 {
     Debug::Throw( "TransitionWidget::TransitionWidget.\n" );
     connect( &timeLine(), SIGNAL(frameChanged(int)), this, SLOT(update()) );
@@ -61,7 +61,7 @@ void TransitionWidget::initialize( QWidget* widget, QRect rect )
     setGeometry( rect );
 
     // use parent window instead of widget if requested
-    if( flags() & FROM_PARENT )
+    if( flags() & FromParent )
     {
         rect = rect.translated( widget->mapTo( widget->window(), widget->rect().topLeft() ) );
         widget = widget->window();
@@ -75,7 +75,7 @@ void TransitionWidget::initialize( QWidget* widget, QRect rect )
     #endif
 
     // show widget
-    if( flags() & SHOW ) TransitionWidget::show();
+    if( flags() & Show ) TransitionWidget::show();
 
 }
 

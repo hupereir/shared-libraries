@@ -121,16 +121,16 @@ class ScrollObject: public QObject, public Counter
     private:
 
     //! single step
-    bool _singleStep( int, unsigned int );
+    bool _singleStep( int, Qt::Orientations );
 
     //! page step
-    bool _pageStep( int, unsigned int );
+    bool _pageStep( int, Qt::Orientations );
 
     //! previous page
-    bool _previousPage( unsigned int );
+    bool _previousPage( Qt::Orientations );
 
     //! next page
-    bool _nextPage( unsigned int );
+    bool _nextPage( Qt::Orientations );
 
     //! scroll contents
     bool _scrollBy( QPoint );
@@ -139,16 +139,7 @@ class ScrollObject: public QObject, public Counter
     bool enabled_;
 
     //! scroll mode
-    enum Mode
-    {
-        NONE = 0,
-        HORIZONTAL = 1<<0,
-        VERTICAL = 1<<1,
-        BOTH = HORIZONTAL|VERTICAL
-    };
-
-    //! scroll mode
-    unsigned int mode_;
+    Qt::Orientations mode_;
 
     //! auto repeat
     bool autoRepeat_;
@@ -172,5 +163,7 @@ class ScrollObject: public QObject, public Counter
     QPointF step_;
 
 };
+
+// Q_DECLARE_OPERATORS_FOR_FLAGS( ScrollObject::Modes )
 
 #endif

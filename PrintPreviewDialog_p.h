@@ -32,7 +32,7 @@
 #include <QPrintPreviewWidget>
 #include <QToolButton>
 
-namespace PRINT
+namespace Print
 {
 
     //! handles page orientation and page mode

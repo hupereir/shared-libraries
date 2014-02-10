@@ -21,7 +21,7 @@
 
 #include <QStringList>
 
-namespace BASE
+namespace Base
 {
 
     //__________________________________________________________
@@ -60,14 +60,14 @@ namespace BASE
 }
 
 //__________________________________________________________
-QTextStream& operator << (QTextStream& out, const BASE::Color& color )
+QTextStream& operator << (QTextStream& out, const Base::Color& color )
 {
     out << color.red() << "," << color.green() << "," << color.blue() << "," << color.alpha();
     return out;
 }
 
 //__________________________________________________________
-QTextStream& operator >> (QTextStream& in, BASE::Color& color )
+QTextStream& operator >> (QTextStream& in, Base::Color& color )
 {
     QString colorString;
     in >> colorString;

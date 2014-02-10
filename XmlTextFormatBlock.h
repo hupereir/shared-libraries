@@ -25,7 +25,7 @@
 #include <QDomElement>
 #include <QDomDocument>
 
-namespace FORMAT
+namespace Format
 {
     namespace XML
     {

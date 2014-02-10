@@ -26,7 +26,7 @@
 #include <QPixmap>
 
 //! cache
-namespace BASE
+namespace Base
 {
     typedef QHash<QString, QPixmap> PixmapCache;
 }

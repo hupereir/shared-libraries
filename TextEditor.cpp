@@ -86,7 +86,7 @@ TextEditor::TextEditor( QWidget *parent ):
 
     // set customized document
     CustomTextDocument* document( new CustomTextDocument(0) );
-    BASE::Key::associate( this, document );
+    Base::Key::associate( this, document );
 
     #ifdef QT_USE_PLAIN_TEXT_EDIT
     // set document layout
@@ -132,10 +132,10 @@ TextEditor::~TextEditor( void )
 
     // cast document
     CustomTextDocument* document( qobject_cast<CustomTextDocument*>( TextEditor::document() ) );
-    if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) document->deleteLater();
+    if( document && Base::KeySet<TextEditor>( document ).size() == 1 ) document->deleteLater();
 
     // update associates synchronization flags
-    BASE::KeySet<TextEditor> editors( this );
+    Base::KeySet<TextEditor> editors( this );
 
     // nothing to be done if no associates
     if( editors.empty() ) return;
@@ -420,10 +420,10 @@ void TextEditor::synchronize( TextEditor* editor )
 
     // assign new document and associate
     setDocument( editor->document() );
-    BASE::Key::associate( this, qobject_cast<CustomTextDocument*>( editor->document() ) );
+    Base::Key::associate( this, qobject_cast<CustomTextDocument*>( editor->document() ) );
 
     // delete old document, if needed
-    if( document && BASE::KeySet<TextEditor>( document ).size() == 1 ) delete document;
+    if( document && Base::KeySet<TextEditor>( document ).size() == 1 ) delete document;
 
     // set synchronization flag
     editor->setSynchronized( true );
@@ -1529,7 +1529,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
         }
 
         if( data->hasFlag( TextBlock::HAS_BACKGROUND ) )
-        { color = BASE::Color( color ).merge( data->background() ); }
+        { color = Base::Color( color ).merge( data->background() ); }
 
         if( color.isValid() )
         {
@@ -2171,8 +2171,8 @@ void TextEditor::_synchronizeBoxSelection( void ) const
     if( !isSynchronized() ) return;
 
     // Debug::Throw( "TextEditor::_synchronizeBoxSelection.\n" );
-    BASE::KeySet<TextEditor> displays( this );
-    for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
+    Base::KeySet<TextEditor> displays( this );
+    for( Base::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
     { (*iter)->_boxSelection().synchronize( _boxSelection() ); }
 
 }
@@ -2317,8 +2317,8 @@ void TextEditor::_synchronizeSelection( void )
     //Debug::Throw( "TextEditor::_synchronizeSelection.\n" );
     if( !isSynchronized() ) return;
 
-    BASE::KeySet<TextEditor> editors( this );
-    for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
+    Base::KeySet<TextEditor> editors( this );
+    for( Base::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
     {
         TextEditor &editor( **iter );
 
@@ -2450,8 +2450,8 @@ void TextEditor::_toggleBlockHighlight( bool state )
         // to avoid infinite loop
         setSynchronized( false );
 
-        BASE::KeySet<TextEditor> displays( this );
-        for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
+        Base::KeySet<TextEditor> displays( this );
+        for( Base::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
 
         { if( (*iter)->isSynchronized() ) (*iter)->blockHighlightAction().setChecked( state ); }
         setSynchronized( true );
@@ -2477,8 +2477,8 @@ bool TextEditor::_toggleWrapMode( bool state )
         // temporarely disable synchronization
         // to avoid infinite loop
         setSynchronized( false );
-        BASE::KeySet<TextEditor> editors( this );
-        for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
+        Base::KeySet<TextEditor> editors( this );
+        for( Base::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
         { if( (*iter)->isSynchronized() ) (*iter)->wrapModeAction().setChecked( state ); }
         setSynchronized( true );
 
@@ -2509,8 +2509,8 @@ bool TextEditor::_toggleTabEmulation( bool state )
         // temporarely disable synchronization
         // to avoid infinite loop
         setSynchronized( false );
-        BASE::KeySet<TextEditor> editors( this );
-        for( BASE::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
+        Base::KeySet<TextEditor> editors( this );
+        for( Base::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
         { if( (*iter)->isSynchronized() ) (*iter)->tabEmulationAction().setChecked( state ); }
         setSynchronized( true );
 
@@ -2536,8 +2536,8 @@ void TextEditor::_toggleShowLineNumbers( bool state )
         // to avoid infinite loop
         setSynchronized( false );
 
-        BASE::KeySet<TextEditor> displays( this );
-        for( BASE::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
+        Base::KeySet<TextEditor> displays( this );
+        for( Base::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
         { if( (*iter)->isSynchronized() ) (*iter)->showLineNumberAction().setChecked( state ); }
         setSynchronized( true );
 

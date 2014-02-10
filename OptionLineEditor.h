@@ -35,11 +35,18 @@ class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
     OptionLineEditor( QWidget* parent, const QString& optionName ):
         AnimatedLineEditor( parent ),
         OptionWidget( optionName, this )
-    { connect( this, SIGNAL(textChanged(QString)), SIGNAL(modified())); }
+    {}
 
     //! read value from option
     void read( const Options& options )
-    { setText( options.raw( optionName() ) ); }
+    {
+        setText( options.raw( optionName() ) );
+        if( !_connected() )
+        {
+            connect( this, SIGNAL(textChanged(QString)), SIGNAL(modified()));
+            _setConnected();
+        }
+    }
 
     //! write value to option
     void write( Options& options ) const

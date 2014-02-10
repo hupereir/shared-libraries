@@ -62,10 +62,10 @@ void IconCacheDialog::update( void )
     Debug::Throw( "IconCacheDialog::update.\n" );
 
     // retrieve cache
-    const BASE::IconCache& cache( IconEngine::cache() );
+    const Base::IconCache& cache( IconEngine::cache() );
     IconCacheModel::List modelList;
-    for( BASE::IconCache::const_iterator iter = cache.begin(); iter != cache.end(); ++iter )
-    { modelList << BASE::IconCache::Pair( iter.key(), iter.value() ); }
+    for( Base::IconCache::const_iterator iter = cache.begin(); iter != cache.end(); ++iter )
+    { modelList << Base::IconCache::Pair( iter.key(), iter.value() ); }
 
     model_.set( modelList );
 

@@ -38,10 +38,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
         CustomComboBox( parent ),
         OptionWidget( optionName, this ),
         useValue_( true )
-    {
-        connect( this, SIGNAL(editTextChanged(QString)), SIGNAL(modified()));
-        connect( this, SIGNAL(currentIndexChanged(int)), SIGNAL(modified()));
-    }
+    {}
 
     //! use value for option
     void setUseValue( bool value )
@@ -63,6 +60,13 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
             setCurrentIndex( found );
 
         } else setCurrentIndex( options.get<int>( optionName() ) );
+
+        if( !_connected() )
+        {
+            connect( this, SIGNAL(editTextChanged(QString)), SIGNAL(modified()) );
+            connect( this, SIGNAL(currentIndexChanged(int)), SIGNAL(modified()) );
+            _setConnected();
+        }
     }
 
     //! write value to option

@@ -42,7 +42,7 @@ class PixmapEngine: public Counter
     { return get()._get( file, fromCache ); }
 
     //! return cache
-    static const BASE::PixmapCache& cache( void )
+    static const Base::PixmapCache& cache( void )
     { return get().cache_; }
 
     //! reload all icons set in cache from new path list
@@ -66,7 +66,7 @@ class PixmapEngine: public Counter
     QStringList pixmapPath_;
 
     //! map files and QPixmap
-    BASE::PixmapCache cache_;
+    Base::PixmapCache cache_;
 
 };
 

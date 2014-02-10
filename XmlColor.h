@@ -29,7 +29,7 @@
 #include <QString>
 
 //! some specific Xml definitions
-namespace BASE
+namespace Base
 {
     namespace XML
     {
@@ -39,14 +39,14 @@ namespace BASE
 }
 
 //! xml implementation of the color object
-class XmlColor: public BASE::Color
+class XmlColor: public Base::Color
 {
 
     public:
 
     //! copy constructor
-    XmlColor( const BASE::Color& other ):
-        BASE::Color( other )
+    XmlColor( const Base::Color& other ):
+        Base::Color( other )
     {}
 
     //! constructor from DOM

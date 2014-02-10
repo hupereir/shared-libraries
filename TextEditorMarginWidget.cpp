@@ -68,10 +68,10 @@ void TextEditorMarginWidget::_updateConfiguration( void )
     QPalette palette( TextEditorMarginWidget::palette() );
     QColor color;
 
-    if( ( color = QColor( XmlOptions::get().get<BASE::Color>("MARGIN_FOREGROUND") ) ).isValid() )
+    if( ( color = QColor( XmlOptions::get().get<Base::Color>("MARGIN_FOREGROUND") ) ).isValid() )
     { palette.setColor( QPalette::WindowText, color ); }
 
-    if( ( color = QColor( XmlOptions::get().get<BASE::Color>("MARGIN_BACKGROUND") ) ).isValid() )
+    if( ( color = QColor( XmlOptions::get().get<Base::Color>("MARGIN_BACKGROUND") ) ).isValid() )
     { palette.setColor( QPalette::Window, color ); }
 
     setPalette( palette );

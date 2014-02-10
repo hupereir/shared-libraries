@@ -28,7 +28,7 @@
 #include "ListModel.h"
 
 //! qlistview for object IconCaches
-class IconCacheModel: public ListModel<BASE::IconCache::Pair>, public Counter
+class IconCacheModel: public ListModel<Base::IconCache::Pair>, public Counter
 {
 
     Q_OBJECT
@@ -43,7 +43,7 @@ class IconCacheModel: public ListModel<BASE::IconCache::Pair>, public Counter
 
     //! constructor
     IconCacheModel( QObject* parent = 0 ):
-        ListModel<BASE::IconCache::Pair>( parent ),
+        ListModel<Base::IconCache::Pair>( parent ),
         Counter( "IconCacheModel" )
     {}
 
@@ -69,7 +69,7 @@ class IconCacheModel: public ListModel<BASE::IconCache::Pair>, public Counter
     { std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
     //! get sizes from icon pair
-    static QString _availableSizes( const BASE::IconCache::Pair& );
+    static QString _availableSizes( const Base::IconCache::Pair& );
 
     private:
 
@@ -85,7 +85,7 @@ class IconCacheModel: public ListModel<BASE::IconCache::Pair>, public Counter
         {}
 
         //! prediction
-        bool operator() ( BASE::IconCache::Pair, BASE::IconCache::Pair ) const;
+        bool operator() ( Base::IconCache::Pair, Base::IconCache::Pair ) const;
 
     };
 

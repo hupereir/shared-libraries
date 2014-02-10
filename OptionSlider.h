@@ -40,7 +40,7 @@ class OptionSlider: public CustomSlider, public OptionWidget
         CustomSlider( parent ),
         OptionWidget( optionName, this ),
         scale_( 1 )
-    { connect( this, SIGNAL(valueChanged(int)), SIGNAL(modified())); }
+    {}
 
     //! scale (i.e. option = value()/scale)
     void setScale( const double& scale )
@@ -48,7 +48,14 @@ class OptionSlider: public CustomSlider, public OptionWidget
 
     //! read value from option
     void read( const Options& options )
-    { setValue( static_cast<int>(round(scale_*options.get<double>( optionName() )))); }
+    {
+        setValue( static_cast<int>(round(scale_*options.get<double>( optionName() ))));
+        if( !_connected() )
+        {
+            connect( this, SIGNAL(valueChanged(int)), SIGNAL(modified()));
+            _setConnected();
+        }
+    }
 
     //! write value to option
     void write( Options& options ) const

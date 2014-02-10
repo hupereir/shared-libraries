@@ -33,8 +33,13 @@ void OptionWidgetList::addOptionWidget( OptionWidget* widget )
     optionWidgets_ << widget;
 
     //! connect signals
-    if( hasBuddy() && widget->hasBuddy() )
-    { QObject::connect( &widget->buddy(), SIGNAL(modified()), &buddy(), SIGNAL(modified())); }
+    if( _connected() && hasBuddy() && widget->hasBuddy() )
+    {
+        QObject::connect( &widget->buddy(), SIGNAL(modified()), &buddy(), SIGNAL(modified()));
+
+        if( Debug::level() > 0 )
+        { QObject::connect( &widget->buddy(), SIGNAL(modified()), &buddy(), SLOT(debugModification())); }
+    }
 
 }
 
@@ -44,7 +49,18 @@ void OptionWidgetList::read( const Options& options )
 
     Debug::Throw( "OptionWidgetList::read.\n" );
     foreach( OptionWidget* widget, optionWidgets_ )
-    { widget->read( options ); }
+    {
+        widget->read( options );
+        if( !_connected() && hasBuddy() && widget->hasBuddy() )
+        {
+            QObject::connect( &widget->buddy(), SIGNAL(modified()), &buddy(), SIGNAL(modified()));
+
+            if( Debug::level() > 0 )
+            { QObject::connect( &widget->buddy(), SIGNAL(modified()), &buddy(), SLOT(debugModification())); }
+        }
+    }
+
+    _setConnected();
 
 }
 

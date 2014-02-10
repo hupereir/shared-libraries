@@ -65,7 +65,7 @@ ClockLabel::ClockLabel( QWidget* parent ):
     Debug::Throw( "ClockLabel::ClockLabel.\n" );
 
     // needed for proper background to be set
-    transitionWidget().setFlag( TransitionWidget::FROM_PARENT, true );
+    transitionWidget().setFlag( TransitionWidget::FromParent, true );
 
     // create static clock timer, updated every 10 seconds
     connect( &timer_, SIGNAL(timeChanged(QString)), SLOT(setText(QString)) );

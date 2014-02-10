@@ -207,7 +207,7 @@ void ScrollObject::_updateConfiguration( void )
 }
 
 //_____________________________________________________________________
-bool ScrollObject::_singleStep( int delta, unsigned int orientation )
+bool ScrollObject::_singleStep( int delta, Qt::Orientations orientation )
 {
 
     if( !delta ) return false;
@@ -231,7 +231,7 @@ bool ScrollObject::_singleStep( int delta, unsigned int orientation )
 }
 
 //_____________________________________________________________________
-bool ScrollObject::_pageStep( int delta, unsigned int mode )
+bool ScrollObject::_pageStep( int delta, Qt::Orientations mode )
 {
 
     if( !delta ) return false;
@@ -255,11 +255,11 @@ bool ScrollObject::_pageStep( int delta, unsigned int mode )
 }
 
 //_____________________________________________________________________
-bool ScrollObject::_previousPage( unsigned int mode )
+bool ScrollObject::_previousPage( Qt::Orientations mode )
 { return _pageStep(1, mode ); }
 
 //_____________________________________________________________________
-bool ScrollObject::_nextPage( unsigned int mode )
+bool ScrollObject::_nextPage( Qt::Orientations mode )
 { return _pageStep(-1, mode); }
 
 //_____________________________________________________________________

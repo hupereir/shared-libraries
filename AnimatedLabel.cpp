@@ -19,22 +19,12 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedLabel.cpp
-  \brief Customized QTextEdit object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QApplication>
-
 #include "AnimatedLabel.h"
 #include "AnimatedLabel.moc"
 #include "Debug.h"
 #include "TransitionWidget.h"
 
-
+#include <QApplication>
 
 //________________________________________________________
 AnimatedLabel::AnimatedLabel( QWidget* parent ):
@@ -43,7 +33,7 @@ AnimatedLabel::AnimatedLabel( QWidget* parent ):
   transition_widget_( new TransitionWidget(this) )
 {
   Debug::Throw( "AnimatedLabel::AnimatedLabel.\n" );
-  transitionWidget().setFlag( TransitionWidget::FROM_PARENT, false );
+  transitionWidget().setFlag( TransitionWidget::FromParent, false );
   transitionWidget().hide();
   connect( &transitionWidget().timeLine(), SIGNAL(finished()),  &transitionWidget(), SLOT(hide()) );
 }

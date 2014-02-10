@@ -23,7 +23,7 @@
 #include "XmlColor.h"
 #include "Debug.h"
 
-namespace FORMAT
+namespace Format
 {
 
     namespace XML

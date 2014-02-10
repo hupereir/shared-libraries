@@ -25,7 +25,7 @@
 #include <QColor>
 #include <QTextStream>
 
-namespace BASE
+namespace Base
 {
 
     // color utility
@@ -61,7 +61,7 @@ namespace BASE
 };
 
 //! streamers
-QTextStream& operator << ( QTextStream&, const BASE::Color& );
-QTextStream& operator >> ( QTextStream&, BASE::Color& );
+QTextStream& operator << ( QTextStream&, const Base::Color& );
+QTextStream& operator >> ( QTextStream&, Base::Color& );
 
 #endif

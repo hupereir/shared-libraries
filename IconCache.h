@@ -28,7 +28,7 @@
 #include <QPair>
 #include <QIcon>
 
-namespace BASE
+namespace Base
 {
     //! cache item
     class IconCacheItem: public QIcon

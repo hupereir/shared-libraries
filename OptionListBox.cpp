@@ -234,6 +234,8 @@ void OptionListBox::read( const Options& options )
     model_->set( optionList );
     list_->resizeColumns();
 
+    _setConnected();
+
 }
 
 //_______________________________________________________
@@ -306,7 +308,7 @@ void OptionListBox::_add( void )
 
         _setDefault();
 
-    } else {
+    } else if( _connected() ) {
 
         emit modified();
 
@@ -360,7 +362,7 @@ void OptionListBox::_edit( void )
 
         _setDefault();
 
-    } else {
+    } else if( _connected() ) {
 
         emit modified();
 
@@ -382,7 +384,7 @@ void OptionListBox::_remove( void )
 
     // remove
     model_->remove( removed );
-    emit modified();
+    if( _connected() ) emit modified();
 
     return;
 
@@ -411,6 +413,8 @@ void OptionListBox::_setDefault( void )
     model_->add( currentOption );
 
     list_->resizeColumns();
-    emit modified();
+
+    // emit signal
+    if( _connected() ) emit modified();
 
 }
