@@ -149,7 +149,7 @@ void RecentFilesMenu::_loadFiles( void )
         QAction* action = addAction( label );
 
         // add icon
-        if( record.hasProperty( FileRecordProperties::ICON ) ) { action->setIcon( IconEngine::get( record.property( FileRecordProperties::ICON ) ) ); }
+        if( record.hasProperty( FileRecordProperties::Icon ) ) { action->setIcon( IconEngine::get( record.property( FileRecordProperties::Icon ) ) ); }
 
         // check action if match file
         action->setCheckable( true );

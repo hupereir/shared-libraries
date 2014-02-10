@@ -27,7 +27,7 @@
 /*! list properties commonly used for FileRecord objects */
 namespace FileRecordProperties
 {
-    static const QString ICON = "icon";
+    static const QString Icon = "icon";
 };
 
 #endif
