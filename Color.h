@@ -1,5 +1,5 @@
-#ifndef BASE_Color_h
-#define BASE_Color_h
+#ifndef Color_h
+#define Color_h
 
 // $Id$
 

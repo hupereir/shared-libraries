@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#ifndef QORDEREDSET_H
-#define QORDEREDSET_H
+#ifndef QOrderedSet_h
+#define QOrderedSet_h
 
 #include <QMap>
 

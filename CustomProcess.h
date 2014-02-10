@@ -1,5 +1,5 @@
-#ifndef _CustomProcess_h_
-#define _CustomProcess_h_
+#ifndef CustomProcess_h
+#define CustomProcess_h
 
 // $Id$
 

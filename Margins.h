@@ -1,5 +1,5 @@
-#ifndef _Margins_h_
-#define _Margins_h_
+#ifndef Margins_h
+#define Margins_h
 // $Id$
 
 /******************************************************************************
