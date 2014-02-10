@@ -24,7 +24,7 @@
 #include "TextPosition.h"
 #include <QSet>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
     //! keep track of misspelled words in text
     class Word: public QString

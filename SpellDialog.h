@@ -36,7 +36,7 @@
 
 class TreeView;
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //! spell checker popup dialog

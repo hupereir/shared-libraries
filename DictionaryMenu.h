@@ -38,7 +38,7 @@
 #include <QHash>
 
 //! dictionary dictionary selection menu
-namespace SPELLCHECK
+namespace SpellCheck
 {
     class DictionaryMenu: public QMenu, public Counter
     {

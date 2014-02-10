@@ -40,7 +40,7 @@
 #include <QPushButton>
 #include <QTextCursor>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
     //_______________________________________________
     SpellDialog::SpellDialog( TextEditor* parent, const bool& read_only ):

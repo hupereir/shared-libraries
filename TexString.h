@@ -28,7 +28,7 @@
 #include <QSet>
 
 //! some tex related utilities
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     class TexString: public QString

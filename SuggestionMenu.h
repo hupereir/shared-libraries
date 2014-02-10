@@ -28,7 +28,7 @@
 #include <QMenu>
 #include <QHash>
 
-namespace SPELLCHECK {
+namespace SpellCheck {
 
     //! customized popup menu to display spell checker suggestions
     class SuggestionMenu: public QMenu, public Counter

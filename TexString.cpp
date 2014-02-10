@@ -22,7 +22,7 @@
 #include "TexString.h"
 #include "File.h"
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //________________________________________________________

@@ -26,7 +26,7 @@
 
 #include <QToolButton>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     class DictionarySelectionButton: public QToolButton, public OptionWidget
@@ -49,7 +49,10 @@ namespace SPELLCHECK
 
         //! read value from option
         virtual void read( const Options& options )
-        { value_ = options.raw( optionName() ); }
+        {
+            value_ = options.raw( optionName() );
+            _setConnected();
+        }
 
         //! write value to option
         virtual void write( Options& options ) const

@@ -27,7 +27,7 @@
 #include <QSet>
 #include <QString>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     class SpellItemModel: public ListModel<QString>, public Counter

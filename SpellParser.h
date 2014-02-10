@@ -33,7 +33,7 @@
 #include <QFont>
 #include <QString>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
   //! highlight text based on misspelled words
@@ -62,10 +62,10 @@ namespace SPELLCHECK
 
     //! font format
     /* returns true if changed */
-    virtual bool setFontFormat( FORMAT::TextFormatFlags );
+    virtual bool setFontFormat( Format::TextFormatFlags );
 
     //! font format
-    virtual FORMAT::TextFormatFlags fontFormat( void ) const
+    virtual Format::TextFormatFlags fontFormat( void ) const
     { return fontFormat_; }
 
     //! enabled. Returns true if changed.
@@ -100,7 +100,7 @@ namespace SPELLCHECK
     QColor color_;
 
     //! font format (is a bitwise or of TextFormatInfo bits)
-    FORMAT::TextFormatFlags fontFormat_;
+    Format::TextFormatFlags fontFormat_;
 
   };
 

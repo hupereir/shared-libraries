@@ -26,7 +26,7 @@
 #include "TexString.h"
 #include "XmlOptions.h"
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //________________________________________________

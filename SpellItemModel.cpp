@@ -23,7 +23,7 @@
 #include "SpellItemModel.h"
 #include "SpellItemModel.moc"
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //_______________________________________________

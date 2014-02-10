@@ -30,7 +30,7 @@
 
 #include <aspell.h>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
     //! spell checker interface
     class SpellInterface: public Counter

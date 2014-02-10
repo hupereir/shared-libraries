@@ -26,7 +26,7 @@
 
 #include <algorithm>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //! latex conversion
@@ -57,7 +57,7 @@ namespace SPELLCHECK
     SpellParser::SpellParser( void ):
         Counter( "SpellParser" ),
         enabled_( false ),
-        fontFormat_( FORMAT::Default )
+        fontFormat_( Format::Default )
     {  Debug::Throw( "SpellParser::SpellParser.\n" ); }
 
     //____________________________________________________________________________
@@ -151,7 +151,7 @@ namespace SPELLCHECK
     }
 
     //___________________________________________________________
-    bool SpellParser::setFontFormat( FORMAT::TextFormatFlags format )
+    bool SpellParser::setFontFormat( Format::TextFormatFlags format )
     {
 
         Debug::Throw( "SpellParser::setFontFormat.\n" );

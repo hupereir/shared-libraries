@@ -29,7 +29,7 @@
 
 class OptionComboBox;
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
     //! Spell common configuration
     class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public Counter

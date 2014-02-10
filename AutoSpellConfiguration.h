@@ -27,7 +27,7 @@
 
 #include <QGroupBox>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //! Spell common configuration

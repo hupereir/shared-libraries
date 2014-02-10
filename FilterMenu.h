@@ -30,7 +30,7 @@
 #include <QMenu>
 #include <QHash>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //! dictionary filter selection menu

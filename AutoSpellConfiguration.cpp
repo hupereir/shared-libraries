@@ -31,7 +31,7 @@
 #include <QGridLayout>
 #include <QLabel>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
     //___________________________________________
     AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):

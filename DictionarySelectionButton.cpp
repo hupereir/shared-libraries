@@ -27,7 +27,7 @@
 #include "SpellItemDialog.h"
 #include "XmlOptions.h"
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //________________________________________________________________
@@ -71,7 +71,7 @@ namespace SPELLCHECK
         if( value_ != backup )
         {
             write( XmlOptions::get() );
-            emit modified();
+            if( _connected() ) emit modified();
         }
 
         return;

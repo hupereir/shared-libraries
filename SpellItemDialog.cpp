@@ -26,7 +26,7 @@
 #include <QHeaderView>
 #include <QLabel>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //_______________________________________________

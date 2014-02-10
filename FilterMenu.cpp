@@ -27,7 +27,7 @@
 #include "SpellInterface.h"
 #include "XmlOptions.h"
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //____________________________________________________________________
@@ -86,7 +86,7 @@ namespace SPELLCHECK
 
         // populate list
         bool first( true );
-        foreach( const QString& filter, SPELLCHECK::SpellInterface().filters() )
+        foreach( const QString& filter, SpellCheck::SpellInterface().filters() )
         {
 
             // check against list of disabled filters

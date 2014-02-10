@@ -27,7 +27,7 @@
 #include "SpellInterface.h"
 #include "XmlOptions.h"
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
     //____________________________________________________________________
     DictionaryMenu::DictionaryMenu( QWidget* parent ):
@@ -89,7 +89,7 @@ namespace SPELLCHECK
 
         // populate list
         bool first( true );
-        foreach( const QString& dictionary, SPELLCHECK::SpellInterface().dictionaries() )
+        foreach( const QString& dictionary, SpellCheck::SpellInterface().dictionaries() )
         {
 
             // check against list of disabled dictionaries

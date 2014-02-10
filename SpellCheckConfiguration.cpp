@@ -35,7 +35,7 @@
 #include <QLabel>
 #include <QToolButton>
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     //___________________________________________
@@ -107,7 +107,7 @@ namespace SPELLCHECK
         dictionariesComboBox_->clear();
 
         // get dictionary list and populate combobox
-        SPELLCHECK::SpellInterface interface;
+        SpellCheck::SpellInterface interface;
         foreach( const QString& dictionary, interface.dictionaries() )
         { if( !disabledDictionaries.contains( dictionary ) ) dictionariesComboBox_->addItem( dictionary ); }
 
@@ -128,7 +128,7 @@ namespace SPELLCHECK
         filtersComboBox_->clear();
 
         // get dictionary list and populate combobox
-        SPELLCHECK::SpellInterface interface;
+        SpellCheck::SpellInterface interface;
         foreach( const QString& filter, interface.filters() )
         { if( !disabledFilters.contains( filter ) ) filtersComboBox_->addItem( filter ); }
 

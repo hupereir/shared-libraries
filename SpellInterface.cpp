@@ -24,7 +24,7 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-namespace SPELLCHECK
+namespace SpellCheck
 {
 
     SpellInterface::FilterSet SpellInterface::filters_;
