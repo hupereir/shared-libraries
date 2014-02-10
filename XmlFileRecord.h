@@ -32,9 +32,9 @@ namespace Base
 {
     namespace Xml
     {
-        static const QString FILE_LIST = "FileList";
-        static const QString SESSION_FILE_LIST = "SessionFileList";
-        static const QString RECORD = "record";
+        static const QString FileList = "FileList";
+        static const QString SessionFileList = "SessionFileList";
+        static const QString Record = "record";
     }
 }
 

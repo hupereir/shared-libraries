@@ -29,11 +29,11 @@ namespace Format
     namespace Xml
     {
 
-        static const QString FORMAT = "format";
-        static const QString COLOR = "color";
-        static const QString HREF = "href";
-        static const QString BEGIN = "begin";
-        static const QString END = "end";
+        static const QString Format = "format";
+        static const QString Color = "color";
+        static const QString HRef = "href";
+        static const QString Begin = "begin";
+        static const QString End = "end";
 
     }
 
@@ -51,13 +51,13 @@ namespace Format
             QString value( attribute.value() );
 
             // nominal tags
-            if( name == Xml::BEGIN ) setBegin( value.toInt() );
-            else if( name == Xml::END ) setEnd( value.toInt() );
+            if( name == Xml::Begin ) setBegin( value.toInt() );
+            else if( name == Xml::End ) setEnd( value.toInt() );
 
             // format
-            else if( name == Xml::FORMAT ) setFormat( (TextFormatFlags) value.toInt() );
-            else if( name == Xml::COLOR ) setColor( value );
-            else if( name == Xml::HREF ) setHRef( value );
+            else if( name == Xml::Format ) setFormat( (TextFormatFlags) value.toInt() );
+            else if( name == Xml::Color ) setColor( value );
+            else if( name == Xml::HRef ) setHRef( value );
 
             else Debug::Throw(0) << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized text format attribute: \"" << name << "\"\n";
         }
@@ -67,12 +67,12 @@ namespace Format
     //__________________________________________________________
     QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
     {
-        QDomElement out( parent.createElement( Xml::TAG ) );
-        out.setAttribute( Xml::BEGIN, QString::number(begin()) );
-        out.setAttribute( Xml::END, QString::number(end()) );
-        out.setAttribute( Xml::FORMAT, QString::number(format()) );
-        if( color().isValid() ) out.setAttribute( Xml::COLOR, color().name() );
-        if( !href().isEmpty() ) out.setAttribute( Xml::HREF, href() );
+        QDomElement out( parent.createElement( Xml::Tag ) );
+        out.setAttribute( Xml::Begin, QString::number(begin()) );
+        out.setAttribute( Xml::End, QString::number(end()) );
+        out.setAttribute( Xml::Format, QString::number(format()) );
+        if( color().isValid() ) out.setAttribute( Xml::Color, color().name() );
+        if( !href().isEmpty() ) out.setAttribute( Xml::HRef, href() );
         return out;
     }
 

@@ -30,7 +30,7 @@ namespace Format
     namespace Xml
     {
 
-        static const QString TAG = "TextFormat";
+        static const QString Tag = "TextFormat";
 
     }
 

@@ -29,10 +29,10 @@ namespace Base
     namespace Xml
     {
 
-        static const QString NAME = "Name";
-        static const QString FLAGS = "flags";
-        static const QString COMMENTS = "Comments";
-        static const QString FRONT = "Front";
+        static const QString Name = "Name";
+        static const QString Flags = "flags";
+        static const QString Comments = "Comments";
+        static const QString Front = "Front";
 
     }
 
@@ -45,7 +45,7 @@ XmlOption::XmlOption( const QDomElement& element )
 
     // old implementation (kept for backward compatibility
     // element name is option name
-    if( element.nodeName() != Base::Xml::OPTION ) setName( element.nodeName() );
+    if( element.nodeName() != Base::Xml::Option ) setName( element.nodeName() );
 
     // parse attributes
     QDomNamedNodeMap attributes( element.attributes() );
@@ -53,10 +53,10 @@ XmlOption::XmlOption( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == Base::Xml::NAME ) setName( attribute.value() );
-        else if( attribute.name() == Base::Xml::VALUE ) setRaw( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == Base::Xml::COMMENTS ) setComments( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == Base::Xml::FLAGS ) {
+        if( attribute.name() == Base::Xml::Name ) setName( attribute.value() );
+        else if( attribute.name() == Base::Xml::Value ) setRaw( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == Base::Xml::Comments ) setComments( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == Base::Xml::Flags ) {
 
             setFlags( (Option::Flags) attribute.value().toInt() );
 
@@ -68,10 +68,10 @@ XmlOption::XmlOption( const QDomElement& element )
     for(QDomNode childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
     {
         QDomElement childElement = childNode.toElement();
-        if( childElement.tagName() == Base::Xml::NAME ) setName( childElement.text() );
-        else if( childElement.tagName() == Base::Xml::VALUE ) setRaw( XmlString( childElement.text() ).toText() );
-        else if( childElement.tagName() == Base::Xml::COMMENTS ) setComments( XmlString( childElement.text() ).toText() );
-        else if( childElement.tagName() == Base::Xml::FLAGS ) setFlags( (Option::Flags) childElement.text().toInt() );
+        if( childElement.tagName() == Base::Xml::Name ) setName( childElement.text() );
+        else if( childElement.tagName() == Base::Xml::Value ) setRaw( XmlString( childElement.text() ).toText() );
+        else if( childElement.tagName() == Base::Xml::Comments ) setComments( XmlString( childElement.text() ).toText() );
+        else if( childElement.tagName() == Base::Xml::Flags ) setFlags( (Option::Flags) childElement.text().toInt() );
         else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized child " << childElement.tagName() << ".\n";
 
     }
@@ -84,20 +84,20 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
 
     Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
 
-    QDomElement out = document.createElement( Base::Xml::OPTION );
+    QDomElement out = document.createElement( Base::Xml::Option );
 
-    out.appendChild( document.createElement( Base::Xml::NAME ) ).
+    out.appendChild( document.createElement( Base::Xml::Name ) ).
         appendChild( document.createTextNode( name() ) );
 
-    out.appendChild( document.createElement( Base::Xml::VALUE ) ).
+    out.appendChild( document.createElement( Base::Xml::Value ) ).
         appendChild( document.createTextNode( XmlString( QString::fromUtf8( raw(), raw().size() ) ).toXml() ) );
 
-    out.appendChild( document.createElement( Base::Xml::FLAGS ) ).
+    out.appendChild( document.createElement( Base::Xml::Flags ) ).
         appendChild( document.createTextNode( QString::number( flags() ) ) );
 
     if( comments().size() )
     {
-        out.appendChild( document.createElement( Base::Xml::COMMENTS ) ).
+        out.appendChild( document.createElement( Base::Xml::Comments ) ).
             appendChild( document.createTextNode( XmlString( comments() ).toXml() ) );
     }
 

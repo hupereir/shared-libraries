@@ -24,7 +24,7 @@
 
 namespace Xml
 {
-    const QString ARGUMENT( "c" );
+    const QString Argument( "c" );
 }
 
 //______________________________________________________
@@ -39,7 +39,7 @@ XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
         QDomElement child_element = child_node.toElement();
         if( child_element.isNull() ) continue;
 
-        if( child_element.tagName() == Xml::ARGUMENT ) { append( XmlString( child_element.text() ).toText() ); }
+        if( child_element.tagName() == Xml::Argument ) { append( XmlString( child_element.text() ).toText() ); }
         else Debug::Throw() << "XmlCommandLineArguments::XmlCommandLineArguments - unrecognized child: " << child_element.tagName() << endl;
 
     }
@@ -53,7 +53,7 @@ QDomElement XmlCommandLineArguments::domElement( const QString& name, QDomDocume
     foreach( const QString& argument, *this )
     {
         out.
-            appendChild( parent.createElement( Xml::ARGUMENT ) ).
+            appendChild( parent.createElement( Xml::Argument ) ).
             appendChild( parent.createTextNode( XmlString( argument ).toXml() ) );
     }
     return out;

@@ -138,7 +138,7 @@ bool XmlOptions::write( void )
     if( !singleton_.differs( options ) ) return true;
 
     // create main element
-    QDomElement top = document.createElement( Base::Xml::OPTIONS ).toElement();
+    QDomElement top = document.createElement( Base::Xml::Options ).toElement();
 
     // write list of special option names
     for( Options::SpecialMap::const_iterator iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
@@ -147,8 +147,8 @@ bool XmlOptions::write( void )
         if( iter.value().empty() ) continue;
 
         // dump option name
-        QDomElement element = document.createElement( Base::Xml::SPECIAL_OPTION );
-        element.setAttribute( Base::Xml::VALUE, iter.key() );
+        QDomElement element = document.createElement( Base::Xml::SpecialOption );
+        element.setAttribute( Base::Xml::Value, iter.key() );
         top.appendChild( element );
     }
 
@@ -195,7 +195,7 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
 {
 
     // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( Base::Xml::OPTIONS );
+    QDomNodeList topNodes = document.elementsByTagName( Base::Xml::Options );
     if( topNodes.isEmpty() ) return false;
 
     for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
@@ -204,14 +204,14 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
         if( element.isNull() ) continue;
 
         // special options
-        if( element.tagName() == Base::Xml::SPECIAL_OPTION )
+        if( element.tagName() == Base::Xml::SpecialOption )
         {
 
             // retrieve Value attribute
-            QString value( element.attribute( Base::Xml::VALUE ) );
+            QString value( element.attribute( Base::Xml::Value ) );
             if( value.size() ) options.keep( value );
 
-        } else if( element.tagName() == Base::Xml::OPTION ) {
+        } else if( element.tagName() == Base::Xml::Option ) {
 
             XmlOption option( element );
             if( options.isSpecialOption( option.name() ) ) options.add( option.name(), option );

@@ -34,10 +34,10 @@ namespace Base
     namespace Xml
     {
 
-        static const QString SPECIAL_OPTION = "SpecialOption";
-        static const QString OPTION = "Option";
-        static const QString OPTIONS = "Options";
-        static const QString VALUE = "Value";
+        static const QString SpecialOption = "SpecialOption";
+        static const QString Option = "Option";
+        static const QString Options = "Options";
+        static const QString Value = "Value";
 
     }
 

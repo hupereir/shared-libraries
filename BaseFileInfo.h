@@ -38,16 +38,16 @@
 namespace Xml
 {
 
-    static const QString FILEINFO_LIST( "FileInfoList" );
-    static const QString FILEINFO( "FileInfo" );
-    static const QString FILE( "File" );
-    static const QString TYPE( "Type" );
-    static const QString SIZE( "Size" );
-    static const QString ALIAS( "Alias" );
-    static const QString LAST_MODIFIED( "LastModified" );
-    static const QString USER( "user" );
-    static const QString GROUP( "group" );
-    static const QString PERMISSIONS( "permissions" );
+    static const QString FileInfoList( "FileInfoList" );
+    static const QString FileInfo( "FileInfo" );
+    static const QString File( "File" );
+    static const QString Type( "Type" );
+    static const QString Size( "Size" );
+    static const QString Alias( "Alias" );
+    static const QString LastModified( "LastModified" );
+    static const QString User( "user" );
+    static const QString Group( "group" );
+    static const QString Permissions( "permissions" );
 
 }
 
