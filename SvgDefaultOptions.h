@@ -37,7 +37,7 @@ void installSvgOptions( void )
     XmlOptions::get().set<bool>( "USE_SVG", true );
     XmlOptions::get().set<bool>( "SVG_USE_PLASMA_INTERFACE", true );
     XmlOptions::get().set<bool>( "SVG_DRAW_OVERLAY", false );
-    XmlOptions::get().set<int>( "SVG_PLASMA_IMAGE_PATH", SVG::SvgPlasmaInterface::WidgetBackground );
+    XmlOptions::get().set<int>( "SVG_PLASMA_IMAGE_PATH", Svg::SvgPlasmaInterface::WidgetBackground );
     XmlOptions::get().setAutoDefault( false );
 }
 

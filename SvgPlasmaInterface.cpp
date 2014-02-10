@@ -31,7 +31,7 @@
 #include <QStringList>
 #include <QSettings>
 
-namespace SVG
+namespace Svg
 {
 
     //_________________________________________________

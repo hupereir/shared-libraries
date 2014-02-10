@@ -27,7 +27,7 @@
 
 #include <QPainter>
 
-namespace SVG
+namespace Svg
 {
 
     //__________________________________________________________
@@ -41,7 +41,7 @@ namespace SVG
     SvgEngine::SvgEngine( void ):
         plasmaInterface_( 0 ),
         thread_( this )
-    { connect( &thread_, SIGNAL(imageCacheAvailable(const SVG::ImageCache&)), this, SLOT(_processImageCache(const SVG::ImageCache&)) ); }
+    { connect( &thread_, SIGNAL(imageCacheAvailable(const Svg::ImageCache&)), this, SLOT(_processImageCache(const Svg::ImageCache&)) ); }
 
     //__________________________________________________________
     SvgEngine::~SvgEngine( void )
@@ -64,7 +64,7 @@ namespace SVG
         {
 
             SvgId::List svgIdList;
-            for( SVG::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+            for( Svg::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
             { svgIdList << iter.key(); }
 
             cache_.clear();

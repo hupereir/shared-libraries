@@ -30,7 +30,7 @@
 #include <QImage>
 
 //! namespace for icon static name wrappers
-namespace SVG
+namespace Svg
 {
 
     //!@name main panel

@@ -27,7 +27,7 @@
 #include <QList>
 
 //! svg namespace
-namespace SVG
+namespace Svg
 {
     class SvgId
     {

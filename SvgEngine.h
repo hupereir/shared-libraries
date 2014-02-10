@@ -30,7 +30,7 @@
 #include <QObject>
 
 //! svg namespace
-namespace SVG
+namespace Svg
 {
 
     class SvgPlasmaInterface;
@@ -63,11 +63,11 @@ namespace SVG
         void preload( const SvgId::List& );
 
         //! margins
-        BASE::Margins margins( void ) const
+        Base::Margins margins( void ) const
         { return margins_; }
 
         //! outer padding
-        BASE::Margins outerPadding( void ) const
+        Base::Margins outerPadding( void ) const
         { return outerPadding_; }
 
         Q_SIGNALS:
@@ -89,7 +89,7 @@ namespace SVG
         protected Q_SLOTS:
 
         //! process image cache generated from thread
-        void _processImageCache( const SVG::ImageCache& );
+        void _processImageCache( const Svg::ImageCache& );
 
         private:
 
@@ -134,8 +134,8 @@ namespace SVG
         //! thread preload sizes
         SvgThread thread_;
 
-        BASE::Margins margins_;
-        BASE::Margins outerPadding_;
+        Base::Margins margins_;
+        Base::Margins outerPadding_;
 
     };
 };

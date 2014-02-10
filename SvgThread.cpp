@@ -26,7 +26,7 @@
 #include <QMetaType>
 #include <algorithm>
 
-namespace SVG
+namespace Svg
 {
 
     //______________________________________________________
@@ -34,7 +34,7 @@ namespace SVG
         QThread( parent )
     {
         // register FileRecord::List as meta type so that it can be used in SIGNAL
-        qRegisterMetaType<SVG::ImageCache>( "SVG::ImageCache" );
+        qRegisterMetaType<Svg::ImageCache>( "Svg::ImageCache" );
     }
 
     //______________________________________________________

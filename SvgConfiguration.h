@@ -28,7 +28,7 @@
 
 #include <QWidget>
 
-namespace SVG
+namespace Svg
 {
 
     //! SVG common configuration

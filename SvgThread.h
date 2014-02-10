@@ -30,7 +30,7 @@
 #include <QThread>
 
 //! used to post a new grid when ready
-namespace SVG
+namespace Svg
 {
 
     //! independent thread used to automatically save file
@@ -61,7 +61,7 @@ namespace SVG
         Q_SIGNALS:
 
         //! image cache available
-        void imageCacheAvailable( const SVG::ImageCache& );
+        void imageCacheAvailable( const Svg::ImageCache& );
 
         protected:
 

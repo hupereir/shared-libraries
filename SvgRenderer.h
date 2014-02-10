@@ -29,7 +29,7 @@
 #include <QPaintDevice>
 
 //! construct pixmap of given size using Svg renderer
-namespace SVG
+namespace Svg
 {
     class SvgRenderer: public QSvgRenderer, public Counter
     {
@@ -57,10 +57,10 @@ namespace SVG
         virtual bool load( const QString& );
 
         //! margins
-        BASE::Margins margins( void ) const;
+        Base::Margins margins( void ) const;
 
         //! outer padding
-        BASE::Margins outerPadding( void ) const;
+        Base::Margins outerPadding( void ) const;
 
         // svg element enumeration
         enum SvgElement
@@ -144,6 +144,6 @@ namespace SVG
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( SVG::SvgRenderer::SvgElements )
+Q_DECLARE_OPERATORS_FOR_FLAGS( Svg::SvgRenderer::SvgElements )
 
 #endif

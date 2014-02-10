@@ -28,7 +28,7 @@
 #include <QString>
 #include <QFileSystemWatcher>
 
-namespace SVG
+namespace Svg
 {
 
   //! kde specific interface to plasma to load matching Svg background

@@ -25,7 +25,7 @@
 #include <QObject>
 
 //! SVG help text
-namespace SVG
+namespace Svg
 {
     static const QString helpText[] =
     {

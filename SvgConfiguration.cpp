@@ -33,14 +33,14 @@
 
 #include <QLabel>
 
-namespace SVG
+namespace Svg
 {
 
     //______________________________________________________________________
     SvgConfiguration::SvgConfiguration( QWidget* parent ):
         QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "SVG::SvgConfiguration" )
+        Counter( "Svg::SvgConfiguration" )
     {
 
         Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
