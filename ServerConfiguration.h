@@ -1,5 +1,5 @@
-#ifndef _ServerConfiguration_h_
-#define _ServerConfiguration_h_
+#ifndef ServerConfiguration_h
+#define ServerConfiguration_h
 
 // $Id$
 
