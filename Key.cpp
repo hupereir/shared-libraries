@@ -21,7 +21,7 @@
 
 #include "Key.h"
 
-namespace BASE
+namespace Base
 {
     //______________________________________________
     Key::Type& Key::_counter( void )

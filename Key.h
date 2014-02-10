@@ -27,7 +27,7 @@
 #include <algorithm>
 
 //! base namespace
-namespace BASE
+namespace Base
 {
 
     class Key
@@ -290,7 +290,7 @@ namespace BASE
 };
 
 //______________________________________________________________
-template<typename T> void BASE::Key::clearAssociations( void )
+template<typename T> void Base::Key::clearAssociations( void )
 {
     KeySet<T> tmp( this );
     foreach( T* key, tmp )
@@ -301,7 +301,7 @@ template<typename T> void BASE::Key::clearAssociations( void )
 }
 
 //____________________________________________________
-inline uint qHash( const BASE::Key*& key )
+inline uint qHash( const Base::Key*& key )
 { return key->key(); }
 
 #endif

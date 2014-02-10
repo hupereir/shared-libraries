@@ -25,7 +25,7 @@
 #include <QPoint>
 #include <QRect>
 
-namespace BASE
+namespace Base
 {
     class Margins
     {

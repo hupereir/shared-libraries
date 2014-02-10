@@ -23,7 +23,7 @@
 
 #include <QFlags>
 
-namespace FORMAT
+namespace Format
 {
 
     //! format bit enumaration
@@ -42,7 +42,7 @@ namespace FORMAT
 
 }
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( FORMAT::TextFormatFlags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( Format::TextFormatFlags )
 
 
 #endif

@@ -70,7 +70,7 @@ void Options::installDefaultOptions( void )
     set<int>( "AUTOHIDE_CURSOR_DELAY", 5 );
 
     set<bool>( "HIGHLIGHT_PARAGRAPH", true );
-    set<BASE::Color>( "HIGHLIGHT_COLOR", QColor( "#fffdd4" ) );
+    set<Base::Color>( "HIGHLIGHT_COLOR", QColor( "#fffdd4" ) );
 
     // help dialog
     set<int>( "HELP_DIALOG_WIDTH", 750 );
@@ -84,8 +84,8 @@ void Options::installDefaultOptions( void )
     set<int>( "LIST_ITEM_MARGIN", 2 );
 
     // textEditor margins
-    set<BASE::Color>( "MARGIN_FOREGROUND", QColor("#136872") );
-    set<BASE::Color>( "MARGIN_BACKGROUND", QColor("#ecffec") );
+    set<Base::Color>( "MARGIN_FOREGROUND", QColor("#136872") );
+    set<Base::Color>( "MARGIN_BACKGROUND", QColor("#ecffec") );
 
     set( "ANIMATION_FRAMES", "1000" );
 
