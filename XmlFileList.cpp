@@ -34,7 +34,7 @@
 //_______________________________________________
 XmlFileList::XmlFileList( QObject* parent ):
     FileList( parent ),
-    tagName_( FILERECORD::Xml::FILE_LIST )
+    tagName_( Base::Xml::FILE_LIST )
 {
 
     Debug::Throw( "XmlFileList::XmlFileList.\n" );
@@ -97,7 +97,7 @@ bool XmlFileList::_read( const XmlDocument& document )
         if( element.isNull() ) continue;
 
         // special options
-        if( element.tagName() == FILERECORD::Xml::RECORD )
+        if( element.tagName() == Base::Xml::RECORD )
         {
 
             XmlFileRecord record( element );

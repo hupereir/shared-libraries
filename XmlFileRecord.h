@@ -28,7 +28,7 @@
 #include <QDomDocument>
 #include <QString>
 
-namespace FILERECORD
+namespace Base
 {
     namespace Xml
     {
