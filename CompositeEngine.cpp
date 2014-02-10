@@ -29,7 +29,7 @@
 #endif
 
 
-namespace TRANSPARENCY
+namespace Transparency
 {
 
     //_______________________________________________________________

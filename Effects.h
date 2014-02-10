@@ -34,7 +34,7 @@
 #include <QImage>
 #include <QPainter>
 
-namespace TRANSPARENCY
+namespace Transparency
 {
     //! Exponential blur, Jani Huhtanen, 2006
     class Effects

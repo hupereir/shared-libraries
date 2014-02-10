@@ -26,7 +26,7 @@
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
-namespace TRANSPARENCY
+namespace Transparency
 {
     //! transparency common configuration
     class TransparencyConfiguration: public QWidget, public OptionWidgetList, public Counter

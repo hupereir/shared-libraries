@@ -34,14 +34,14 @@
 #include <QLabel>
 #include <QLayout>
 
-namespace TRANSPARENCY
+namespace Transparency
 {
 
     //________________________________________________________________________
     TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
         QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "TRANSPARENCY::TransparencyConfiguration" )
+        Counter( "Transparency::TransparencyConfiguration" )
     {
         Debug::Throw( "TransparencyConfiguration::TransparencyConfiguration.\n" );
 

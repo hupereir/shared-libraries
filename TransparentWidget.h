@@ -30,7 +30,7 @@
 #include <QShowEvent>
 #include <QWidget>
 
-namespace TRANSPARENCY
+namespace Transparency
 {
 
     //! transparent widget
@@ -152,7 +152,7 @@ namespace TRANSPARENCY
         //@{
 
         //! margins
-        const BASE::Margins& _margins( void ) const
+        const Base::Margins& _margins( void ) const
         { return margins_; }
 
         //! clear margins
@@ -160,15 +160,15 @@ namespace TRANSPARENCY
         { margins_.clear(); }
 
         //! margins
-        void _setMargins( const BASE::Margins& margins )
+        void _setMargins( const Base::Margins& margins )
         { margins_ = margins; }
 
         //! margins
         void _setMargins( int margins )
-        { margins_ = BASE::Margins( margins ); }
+        { margins_ = Base::Margins( margins ); }
 
         //! outer padding
-        BASE::Margins _outerPadding( void ) const
+        Base::Margins _outerPadding( void ) const
         { return outerPadding_; }
 
         //! clear outer padding
@@ -176,12 +176,12 @@ namespace TRANSPARENCY
         { outerPadding_.clear(); }
 
         //! outer padding
-        void _setOuterPadding( const BASE::Margins& margins )
+        void _setOuterPadding( const Base::Margins& margins )
         { outerPadding_ = margins; }
 
         //! outer padding
         void _setOuterPadding( int margins )
-        { outerPadding_ = BASE::Margins( margins ); }
+        { outerPadding_ = Base::Margins( margins ); }
 
         //@}
 
@@ -264,10 +264,10 @@ namespace TRANSPARENCY
         bool highlighted_;
 
         //! margins
-        BASE::Margins margins_;
+        Base::Margins margins_;
 
         //! margins
-        BASE::Margins outerPadding_;
+        Base::Margins outerPadding_;
 
         //! store last blur region
         QRegion blurRegion_;

@@ -22,7 +22,7 @@
 *
 *******************************************************************************/
 
-namespace TRANSPARENCY
+namespace Transparency
 {
 
     //! initialize compositing, if available

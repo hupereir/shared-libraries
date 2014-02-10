@@ -25,7 +25,7 @@
 #include <QObject>
 
 //! transparency help text
-namespace TRANSPARENCY
+namespace Transparency
 {
     static const QString helpText[] =
     {

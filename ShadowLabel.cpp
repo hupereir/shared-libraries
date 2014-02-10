@@ -34,7 +34,7 @@
 #include "Effects.h"
 #include "ShadowLabel.h"
 
-namespace TRANSPARENCY
+namespace Transparency
 {
   //__________________________________________________________________________________
   void ShadowLabel::paintEvent( QPaintEvent* event )
@@ -58,7 +58,7 @@ namespace TRANSPARENCY
     if( _shadowOffset() > 0 && _shadowColor().isValid() )
     {
       QImage image( pixmap.toImage() );
-      TRANSPARENCY::Effects::shadowBlur(image, _shadowOffset(), _shadowColor() );
+      Transparency::Effects::shadowBlur(image, _shadowOffset(), _shadowColor() );
       painter.drawImage( rect().topLeft(), image);
     }
 

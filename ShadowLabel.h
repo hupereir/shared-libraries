@@ -27,7 +27,7 @@
 #include <QLabel>
 #include <QPaintDevice>
 
-namespace TRANSPARENCY
+namespace Transparency
 {
     class ShadowLabel: public QLabel, public Counter
     {
@@ -37,14 +37,14 @@ namespace TRANSPARENCY
         //! constructor
         ShadowLabel( QWidget* parent ):
             QLabel( parent ),
-            Counter( "TRANSPARENCY::ShadowLabel" ),
+            Counter( "Transparency::ShadowLabel" ),
             shadowOffset_( 0 )
         {}
 
         //! constructor
         ShadowLabel( const QString& text, QWidget* parent ):
             QLabel( text, parent ),
-            Counter( "TRANSPARENCY::ShadowLabel" ),
+            Counter( "Transparency::ShadowLabel" ),
             shadowOffset_( 0 )
         {}
 
