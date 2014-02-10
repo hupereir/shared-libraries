@@ -1,5 +1,5 @@
-#ifndef TextEncodingWidget_h
-#define TextEncodingWidget_h
+#ifndef TextEncodingMenu_h
+#define TextEncodingMenu_h
 
 // $Id$
 

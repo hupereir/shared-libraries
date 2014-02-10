@@ -1,6 +1,6 @@
 // $Id$
-#ifndef _TextFormatBlock_h_
-#define _TextFormatBlock_h_
+#ifndef TextFormatBlock_h
+#define TextFormatBlock_h
 
 /******************************************************************************
 *

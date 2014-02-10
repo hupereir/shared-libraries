@@ -1,6 +1,6 @@
 // $Id$
-#ifndef _ColorDisplay_h_
-#define _ColorDisplay_h_
+#ifndef ColorDisplay_h
+#define ColorDisplay_h
 
 /******************************************************************************
 *

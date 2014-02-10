@@ -1,5 +1,5 @@
-#ifndef _ColorMenu_h_
-#define _ColorMenu_h_
+#ifndef ColorMenu_h
+#define ColorMenu_h
 
 // $Id$
 

@@ -1,5 +1,5 @@
-#ifndef _ScratchFileRemoveDialog_h_
-#define _ScratchFileRemoveDialog_h_
+#ifndef ScratchFileRemoveDialog_h
+#define ScratchFileRemoveDialog_h
 
 // $Id$
 

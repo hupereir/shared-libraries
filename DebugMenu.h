@@ -1,5 +1,5 @@
-#ifndef _DebugMenu_h_
-#define _DebugMenu_h_
+#ifndef DebugMenu_h
+#define DebugMenu_h
 
 // $Id$
 

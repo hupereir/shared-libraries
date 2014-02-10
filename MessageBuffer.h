@@ -1,5 +1,5 @@
-#ifndef _MessageBuffer_h_
-#define _MessageBuffer_h_
+#ifndef MessageBuffer_h
+#define MessageBuffer_h
 
 // $Id$
 

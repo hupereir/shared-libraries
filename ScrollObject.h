@@ -1,5 +1,5 @@
-#ifndef _ScrollObject_h_
-#define _ScrollObject_h_
+#ifndef ScrollObject_h
+#define ScrollObject_h
 
 // $Id$
 

@@ -1,5 +1,5 @@
-#ifndef _TabWidget_h_
-#define _TabWidget_h_
+#ifndef TabWidget_h
+#define TabWidget_h
 
 // $Id$
 

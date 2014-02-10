@@ -1,5 +1,5 @@
-#ifndef _ColumnSortingMenu_h_
-#define _ColumnSortingMenu_h_
+#ifndef ColumnSortingMenu_h
+#define ColumnSortingMenu_h
 
 // $Id$
 

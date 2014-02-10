@@ -1,5 +1,5 @@
-#ifndef _FontEditor_h_
-#define _FontEditor_h_
+#ifndef FontEditor_h
+#define FontEditor_h
 
 // $Id$
 

@@ -1,5 +1,5 @@
-#ifndef _CounterModel_h_
-#define _CounterModel_h_
+#ifndef CounterModel_h
+#define CounterModel_h
 
 // $Id$
 

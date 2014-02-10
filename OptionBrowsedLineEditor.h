@@ -1,5 +1,5 @@
-#ifndef OptionBrowsedLineEdit_h
-#define OptionBrowsedLineEdit_h
+#ifndef OptionBrowsedLineEditor_h
+#define OptionBrowsedLineEditor_h
 
 // $Id$
 

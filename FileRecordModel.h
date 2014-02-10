@@ -1,5 +1,5 @@
-#ifndef _FileRecordModel_h_
-#define _FileRecordModel_h_
+#ifndef FileRecordModel_h
+#define FileRecordModel_h
 
 // $Id$
 

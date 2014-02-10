@@ -1,5 +1,5 @@
-#ifndef _TreeViewConfiguration_h_
-#define _TreeViewConfiguration_h_
+#ifndef TreeViewConfiguration_h
+#define TreeViewConfiguration_h
 
 // $Id$
 

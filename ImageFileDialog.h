@@ -1,6 +1,6 @@
 // $Id$
-#ifndef _ImageFileDialog_h_
-#define _ImageFileDialog_h_
+#ifndef ImageFileDialog_h
+#define ImageFileDialog_h
 
 /******************************************************************************
 *

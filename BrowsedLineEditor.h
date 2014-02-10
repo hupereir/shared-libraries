@@ -1,5 +1,5 @@
-#ifndef _BrowsedLineEditor_h_
-#define _BrowsedLineEditor_h_
+#ifndef BrowsedLineEditor_h
+#define BrowsedLineEditor_h
 
 // $Id$
 

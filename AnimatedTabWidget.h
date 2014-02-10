@@ -1,5 +1,5 @@
-#ifndef _AnimatedTabWidget_h_
-#define _AnimatedTabWidget_h_
+#ifndef AnimatedTabWidget_h
+#define AnimatedTabWidget_h
 
 // $Id$
 /******************************************************************************

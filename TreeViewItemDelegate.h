@@ -1,5 +1,5 @@
-#ifndef TreeViewDelegate_h
-#define TreeViewDelegate_h
+#ifndef TreeViewItemDelegate_h
+#define TreeViewItemDelegate_h
 
 // $Id$
 

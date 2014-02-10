@@ -1,6 +1,6 @@
 // $Id$
-#ifndef _CustomSlider_h_
-#define _CustomSlider_h_
+#ifndef CustomSlider_h
+#define CustomSlider_h
 
 
 /******************************************************************************

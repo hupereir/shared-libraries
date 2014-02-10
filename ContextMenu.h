@@ -1,5 +1,5 @@
-#ifndef _ContextMenu_h_
-#define _ContextMenu_h_
+#ifndef ContextMenu_h
+#define ContextMenu_h
 
 // $Id$
 

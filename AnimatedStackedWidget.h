@@ -1,5 +1,5 @@
-#ifndef _AnimatedStackedWidget_h_
-#define _AnimatedStackedWidget_h_
+#ifndef AnimatedStackedWidget_h
+#define AnimatedStackedWidget_h
 
 // $Id$
 /******************************************************************************

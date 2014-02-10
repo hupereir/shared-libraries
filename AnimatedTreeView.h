@@ -1,5 +1,5 @@
-#ifndef _AnimatedTreeView_h_
-#define _AnimatedTreeView_h_
+#ifndef AnimatedTreeView_h
+#define AnimatedTreeView_h
 
 // $Id$
 

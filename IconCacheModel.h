@@ -1,5 +1,5 @@
-#ifndef _IconCacheModel_h_
-#define _IconCacheModel_h_
+#ifndef IconCacheModel_h
+#define IconCacheModel_h
 
 // $Id$
 

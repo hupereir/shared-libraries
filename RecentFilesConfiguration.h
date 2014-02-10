@@ -1,5 +1,5 @@
-#ifndef _RecentFilesConfiguration_h_
-#define _RecentFilesConfiguration_h_
+#ifndef RecentFilesConfiguration_h
+#define RecentFilesConfiguration_h
 
 // $Id$
 
