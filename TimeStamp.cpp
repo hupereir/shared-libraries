@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "Debug.h"
-#include "Str.h"
 #include "TimeStamp.h"
 #include "Util.h"
 
