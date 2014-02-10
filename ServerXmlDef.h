@@ -31,28 +31,28 @@ namespace Server
     namespace Xml
     {
         //! transmission
-        const QString TRANSMISSION( "_t" );
+        const QString Transmission( "_t" );
 
         //! command
-        const QString COMMAND( "c" );
+        const QString Command( "c" );
 
         //! command
-        const QString ID( "i" );
+        const QString Id( "i" );
 
         //! user
-        const QString USER( "u" );
+        const QString User( "u" );
 
         //! name
-        const QString NAME( "n" );
+        const QString Name( "n" );
 
         //! type
-        const QString TYPE( "t" );
+        const QString Type( "t" );
 
         //! pid
-        const QString PID( "p" );
+        const QString Pid( "p" );
 
         //! arguments
-        const QString ARGUMENTS( "a" );
+        const QString Arguments( "a" );
 
     }
 

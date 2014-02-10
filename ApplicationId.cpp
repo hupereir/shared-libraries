@@ -19,14 +19,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    ApplicationId.cpp
-   \brief   application unique Identifier
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "ApplicationId.h"
 #include "Debug.h"
 #include "ServerXmlDef.h"
@@ -55,9 +47,9 @@ namespace Server
         {
             QDomAttr attribute( attributes.item( i ).toAttr() );
             if( attribute.isNull() ) continue;
-            if( attribute.name() == Xml::USER ) setUser( attribute.value() );
-            else if( attribute.name() == Xml::NAME ) setName( attribute.value() );
-            else if( attribute.name() == Xml::PID ) setProcessId( attribute.value().toLongLong() );
+            if( attribute.name() == Xml::User ) setUser( attribute.value() );
+            else if( attribute.name() == Xml::Name ) setName( attribute.value() );
+            else if( attribute.name() == Xml::Pid ) setProcessId( attribute.value().toLongLong() );
             else Debug::Throw() << "ApplicationId::ApplicationId - unrecognized attribute " << attribute.name() << endl;
         }
 
@@ -68,10 +60,10 @@ namespace Server
     {
 
         Debug::Throw( "ApplicationId::domElement" );
-        QDomElement out( document.createElement( Xml::ID ) );
-        if( !name().isEmpty() ) out.setAttribute( Xml::NAME, name() );
-        if( !user().isEmpty() ) out.setAttribute( Xml::USER, user() );
-        if( pid_ > 0 ) out.setAttribute( Xml::PID, QString::number( pid_ ) );
+        QDomElement out( document.createElement( Xml::Id ) );
+        if( !name().isEmpty() ) out.setAttribute( Xml::Name, name() );
+        if( !user().isEmpty() ) out.setAttribute( Xml::User, user() );
+        if( pid_ > 0 ) out.setAttribute( Xml::Pid, QString::number( pid_ ) );
         return out;
 
     }
