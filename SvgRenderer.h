@@ -116,7 +116,8 @@ namespace Svg
         bool hasOverlay_;
 
         //! overlay hints
-        enum OverlayHint {
+        enum OverlayHint
+        {
             OverlayNone = 0,
             OverlayStretch = 1<<0,
             OverlayTileHorizontal = 1<<1,
@@ -125,8 +126,10 @@ namespace Svg
             OverlayPosBottom = 1<<4
         };
 
+        Q_DECLARE_FLAGS( OverlayHints, OverlayHint )
+
         //! overlay hints
-        int overlayHints_;
+        OverlayHints overlayHints_;
 
         //! painting hints
         enum Hint {
