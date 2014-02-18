@@ -40,13 +40,9 @@ namespace Base
     //__________________________________________________________________
     QVariant HelpModel::data( const QModelIndex& index, int role ) const
     {
-
         // check index, role and column
-        if( !index.isValid() ) return QVariant();
-        if( role != Qt::DisplayRole ) return QVariant();
-        if( index.column() != LABEL ) return QVariant();
-        return QString( get(index).label() );
-
+        if( index.isValid() && role == Qt::DisplayRole ) return QString( get(index).label() );
+        else return QVariant();
     }
 
 }

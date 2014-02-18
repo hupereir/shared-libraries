@@ -52,9 +52,6 @@ namespace Base
         //! number of columns
         enum { nColumns = 1 };
 
-        //! column type enumeration
-        enum ColumnType { LABEL };
-
         //! constructor
         HelpModel( void ):
             Counter( "HelpModel" )
