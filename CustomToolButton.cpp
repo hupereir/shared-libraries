@@ -37,7 +37,7 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
     QToolButton( parent ),
     Counter( "CustomToolButton" ),
     updateFromOptions_( true ),
-    rotation_( NONE )
+    rotation_( CustomPixmap::None )
 {
 
     Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
@@ -52,7 +52,7 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
 }
 
 //______________________________________________________________________
-bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
+bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
 {
     Debug::Throw( "CustomToolButton::rotate.\n" );
     if( rotation_ == value ) return false;
@@ -63,11 +63,15 @@ bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
     {
 
         // clockwise rotations
-        if( ( rotation_ == NONE && value == COUNTERCLOCKWISE ) || ( rotation_ == CLOCKWISE && value == NONE ) )
-        { setIcon( pixmap.rotate( CustomPixmap::CLOCKWISE ) ); }
+        if(
+            ( rotation_ == CustomPixmap::None && value == CustomPixmap::CounterClockwise ) ||
+            ( rotation_ == CustomPixmap::Clockwise && value == CustomPixmap::None ) )
+        { setIcon( pixmap.rotate( CustomPixmap::Clockwise ) ); }
 
-        if( ( rotation_ == NONE && value == CLOCKWISE ) || ( rotation_ == COUNTERCLOCKWISE && value == NONE ) )
-        { setIcon( pixmap.rotate( CustomPixmap::COUNTERCLOCKWISE ) ); }
+        if(
+            ( rotation_ == CustomPixmap::None && value == CustomPixmap::Clockwise ) ||
+            ( rotation_ == CustomPixmap::CounterClockwise && value == CustomPixmap::None ) )
+        { setIcon( pixmap.rotate( CustomPixmap::CounterClockwise ) ); }
 
     } else { Debug::Throw(0) << "CustomToolButton::rotate - null pixmap." << endl; }
 
@@ -77,9 +81,10 @@ bool CustomToolButton::rotate( const CustomToolButton::Rotation& value )
 
 //______________________________________________________________________
 QSize CustomToolButton::sizeHint( void ) const
-{  QSize size( QToolButton::sizeHint() );
-if( _rotation() != NONE ) size.transpose();
-return size;
+{
+    QSize size( QToolButton::sizeHint() );
+    if( rotation_ != CustomPixmap::None ) size.transpose();
+    return size;
 }
 
 //______________________________________________________________________
@@ -87,7 +92,7 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
 {
 
     // default implementation if not rotated
-    if( _rotation() == NONE ) return QToolButton::paintEvent( event );
+    if( rotation_ == CustomPixmap::None ) return QToolButton::paintEvent( event );
 
     // rotated paint
     QStylePainter painter(this);
@@ -105,13 +110,17 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
     option.rect.setSize( size );
 
     // rotate the painter
-    if( _rotation() == COUNTERCLOCKWISE )
+    if( rotation_ == CustomPixmap::CounterClockwise )
     {
+
         painter.translate( 0, height() );
         painter.rotate( -90 );
+
     } else {
+
         painter.translate( width(), 0 );
         painter.rotate( 90 );
+
     }
 
     // paint text and icon
@@ -128,7 +137,7 @@ void CustomToolButton::_updateConfiguration( void )
 {
     Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
 
-    if( !_updateFromOptions() ) return;
+    if( !updateFromOptions_ ) return;
 
     int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
     if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );

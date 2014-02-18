@@ -396,7 +396,7 @@ void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
 
         }
 
-    } else if( _boxSelection().state() == BoxSelection::FINISHED ) {
+    } else if( _boxSelection().state() == BoxSelection::SelectionFinished ) {
 
         // process box selection
         // _boxSelection().setCharFormat( format );
@@ -601,7 +601,7 @@ void TextEditor::cut( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    if( _boxSelection().state() == BoxSelection::FINISHED )
+    if( _boxSelection().state() == BoxSelection::SelectionFinished )
     {
         _boxSelection().toClipboard( QClipboard::Clipboard );
         _boxSelection().removeSelectedText();
@@ -616,7 +616,7 @@ void TextEditor::cut( void )
 void TextEditor::copy( void )
 {
     Debug::Throw( "TextEditor::copy.\n" );
-    if( _boxSelection().state() == BoxSelection::FINISHED ) _boxSelection().toClipboard( QClipboard::Clipboard );
+    if( _boxSelection().state() == BoxSelection::SelectionFinished ) _boxSelection().toClipboard( QClipboard::Clipboard );
     else BaseEditor::copy();
 }
 
@@ -630,7 +630,7 @@ void TextEditor::paste( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    if( _boxSelection().state() == BoxSelection::FINISHED )
+    if( _boxSelection().state() == BoxSelection::SelectionFinished )
     {
 
         _boxSelection().fromClipboard( QClipboard::Clipboard );
@@ -656,7 +656,7 @@ void TextEditor::upperCase( void )
         // process standard selection
         cursor.insertText( cursor.selectedText().toUpper() );
 
-    } else if( _boxSelection().state() == BoxSelection::FINISHED ) {
+    } else if( _boxSelection().state() == BoxSelection::SelectionFinished ) {
 
         // process box selection
         _boxSelection().toUpper();
@@ -685,7 +685,7 @@ void TextEditor::lowerCase( void )
         // process standard selection
         cursor.insertText( cursor.selectedText().toLower() );
 
-    } else if( _boxSelection().state() == BoxSelection::FINISHED ) {
+    } else if( _boxSelection().state() == BoxSelection::SelectionFinished ) {
 
         // process box selection
         _boxSelection().toLower();
@@ -804,20 +804,20 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool
 
     unsigned int counts(0);
 
-    if( _boxSelection().state() == BoxSelection::FINISHED )
+    if( _boxSelection().state() == BoxSelection::SelectionFinished )
     {
 
         Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
         BoxSelection::CursorList cursors( _boxSelection().cursorList() );
         for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); ++iter )
-        { counts += _replaceInRange( selection, *iter, MOVE ); }
+        { counts += _replaceInRange( selection, *iter, MoveCursor ); }
 
         _boxSelection().clear();
 
     } else {
         Debug::Throw( "TextEditor::replaceInSelection - normal selection.\n" );
         QTextCursor cursor( textCursor() );
-        counts = _replaceInRange( selection, cursor, EXPAND );
+        counts = _replaceInRange( selection, cursor, ExpandCursor );
     }
 
     Debug::Throw( "TextEditor::replaceInSelection - done.\n" );
@@ -842,7 +842,7 @@ unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& s
     QTextCursor cursor( textCursor() );
     cursor.movePosition( QTextCursor::Start );
     cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
-    unsigned int counts( _replaceInRange( selection, cursor, EXPAND ) );
+    unsigned int counts( _replaceInRange( selection, cursor, ExpandCursor ) );
 
     if( show_dialog ) showReplacements( counts );
     return counts;
@@ -966,7 +966,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
                 // if single click in existing box selection, store drag position
                 if(
                     event->modifiers() == Qt::NoModifier &&
-                    _boxSelection().state() == BoxSelection::FINISHED &&
+                    _boxSelection().state() == BoxSelection::SelectionFinished &&
                     _boxSelection().rect().contains( fromViewport( event->pos() ) )
                     )
                 {
@@ -976,7 +976,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
                 }
 
                 // if single click outside of existing box selection, clear the selection
-                if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
+                if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::SelectionFinished )
                 {
 
                     _boxSelection().clear();
@@ -1066,7 +1066,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
     Debug::Throw( 2, "TextEditor::mouseMoveEvent.\n" );
 
     // see if there is a box selection in progress
-    if( event->buttons() == Qt::LeftButton && _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::STARTED )
+    if( event->buttons() == Qt::LeftButton && _boxSelection().isEnabled() && _boxSelection().state() == BoxSelection::SelectionStarted )
     {
 
         _boxSelection().update( event->pos() );
@@ -1093,7 +1093,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
     }
 
     // see if dragging existing box selection
-    if( event->buttons() == Qt::LeftButton && _boxSelection().state() == BoxSelection::FINISHED && (event->pos() - dragStart_ ).manhattanLength() > QApplication::startDragDistance() )
+    if( event->buttons() == Qt::LeftButton && _boxSelection().state() == BoxSelection::SelectionFinished && (event->pos() - dragStart_ ).manhattanLength() > QApplication::startDragDistance() )
     {
         // start drag
         QDrag *drag = new QDrag(this);
@@ -1126,7 +1126,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
     { Debug::Throw( "TextEditor::mouseReleaseEvent - middle mouse button.\n" ); }
 
     // no need to check for enability because there is no way for the box to start if disabled
-    if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::STARTED )
+    if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::SelectionStarted )
     {
 
         _boxSelection().finish( event->pos() );
@@ -1135,7 +1135,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 
     }
 
-    if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::FINISHED )
+    if( event->button() == Qt::LeftButton && _boxSelection().state() == BoxSelection::SelectionFinished )
     {
 
         _boxSelection().clear();
@@ -1153,7 +1153,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
         return;
     }
 
-    if( event->button() == Qt::MidButton  && _boxSelection().state() == BoxSelection::FINISHED )
+    if( event->button() == Qt::MidButton  && _boxSelection().state() == BoxSelection::SelectionFinished )
     {
         _boxSelection().clear();
         _boxSelection().clear();
@@ -1181,7 +1181,7 @@ void TextEditor::dropEvent( QDropEvent* event )
     if(
         event->mimeData()->hasFormat( BoxSelection::mimeType ) &&
         _boxSelection().isEnabled() &&
-        _boxSelection().state() == BoxSelection::EMPTY &&
+        _boxSelection().state() == BoxSelection::SelectionEmpty &&
         !textCursor().hasSelection() )
     {
 
@@ -1206,7 +1206,7 @@ void TextEditor::dropEvent( QDropEvent* event )
     if(
         event->mimeData()->hasFormat( BoxSelection::mimeType ) &&
         _boxSelection().isEnabled() &&
-        _boxSelection().state() == BoxSelection::FINISHED &&
+        _boxSelection().state() == BoxSelection::SelectionFinished &&
         !toViewport( _boxSelection().rect() ).contains( event->pos() ) &&
         event->source() == this
         )
@@ -1251,7 +1251,7 @@ void TextEditor::dropEvent( QDropEvent* event )
     if(
         event->mimeData()->hasText() &&
         _boxSelection().isEnabled() &&
-        _boxSelection().state() == BoxSelection::FINISHED &&
+        _boxSelection().state() == BoxSelection::SelectionFinished &&
         toViewport( _boxSelection().rect() ).contains( event->pos() ) )
     {
 
@@ -1364,7 +1364,7 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     }
 
     // special key processing for box selection
-    if( _boxSelection().state() == BoxSelection::FINISHED )
+    if( _boxSelection().state() == BoxSelection::SelectionFinished )
     {
         if(
             (event->key() >= Qt::Key_Shift &&  event->key() <= Qt::Key_ScrollLock) ||
@@ -1447,8 +1447,8 @@ void TextEditor::focusInEvent( QFocusEvent* event )
     Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
 
     if(
-        _setModifier( ModifierCapsLock, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::ON ) ||
-        _setModifier( ModifierNumLock, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::ON ) )
+        _setModifier( ModifierCapsLock, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::On ) ||
+        _setModifier( ModifierNumLock, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::On ) )
     { emit modifiersChanged( modifiers() );}
 
     emit hasFocus( this );
@@ -1539,7 +1539,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
     }
 
-    if( _boxSelection().state() == BoxSelection::STARTED || _boxSelection().state() == BoxSelection::FINISHED )
+    if( _boxSelection().state() == BoxSelection::SelectionStarted || _boxSelection().state() == BoxSelection::SelectionFinished )
     {
         painter.setPen( _boxSelection().color() );
         painter.setBrush( _boxSelection().brush() );
@@ -2115,12 +2115,12 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         emit idle();
 
         // update cursor
-        if( mode == EXPAND )
+        if( mode == ExpandCursor )
         {
             cursor.setPosition( savedAnchor );
             cursor.setPosition( savedAnchor + selectedText.length(), QTextCursor::KeepAnchor );
 
-        } else if( mode == MOVE ) cursor.setPosition( current_position );
+        } else if( mode == MoveCursor ) cursor.setPosition( current_position );
 
     } else {
 
@@ -2152,11 +2152,11 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
         emit idle();
 
-        if( mode == EXPAND )
+        if( mode == ExpandCursor )
         {
             cursor.setPosition( savedAnchor );
             cursor.setPosition( saved_position, QTextCursor::KeepAnchor );
-        } else if( mode == MOVE ) cursor.setPosition( current_position );
+        } else if( mode == MoveCursor ) cursor.setPosition( current_position );
 
     }
 
@@ -2296,7 +2296,7 @@ void TextEditor::_updateConfiguration( void )
     // update box configuration
     // clear
     _boxSelection().updateConfiguration();
-    if( !_boxSelection().isEnabled() && _boxSelection().state() != BoxSelection::EMPTY )
+    if( !_boxSelection().isEnabled() && _boxSelection().state() != BoxSelection::SelectionEmpty )
     {
         _boxSelection().clear();
         _synchronizeBoxSelection();

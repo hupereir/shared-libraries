@@ -35,11 +35,14 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, public Counter
 
     public:
 
-    //! number of columns
-    enum { nColumns = 3 };
-
     //! column type enumeration
-    enum ColumnType { Icon, Files, Sizes };
+    enum ColumnType
+    {
+        Icon,
+        Files,
+        Sizes,
+        nColumns
+    };
 
     //! constructor
     IconCacheModel( QObject* parent = 0 ):

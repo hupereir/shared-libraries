@@ -72,13 +72,13 @@ CustomPixmap CustomPixmap::find( const QString& file )
 //_________________________________________________
 CustomPixmap CustomPixmap::rotate( const CustomPixmap::Rotation& rotation )
 {
-    if( rotation == NONE ) return *this;
+    if( rotation == None ) return *this;
 
     CustomPixmap out = CustomPixmap().empty( QSize( height(), width() ) );
     QPainter painter( &out );
 
     // rotate the painter
-    if( rotation == COUNTERCLOCKWISE )
+    if( rotation == CounterClockwise )
     {
         painter.translate( 0, out.height() );
         painter.rotate( -90 );

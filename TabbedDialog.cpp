@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "TabbedDialog.h"
+#include "TabbedDialog.moc"
+
 #include "AnimatedStackedWidget.h"
 #include "IconSize.h"
 #include "ScrollObject.h"
 #include "SimpleListView.h"
-#include "TabbedDialog.h"
-#include "TabbedDialog.moc"
 
 #include <QApplication>
 #include <QScrollArea>
@@ -201,20 +202,15 @@ QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
     Item item( get()[index.row()] );
 
     // return text associated to file and column
-    if( index.column() == NAME )
+    switch( role )
     {
+        case Qt::DisplayRole:
+        return item.name();
 
-        switch( role )
-        {
-            case Qt::DisplayRole:
-            return item.name();
+        case Qt::DecorationRole:
+        return item.icon().isNull() ? QVariant():item.icon();
 
-            case Qt::DecorationRole:
-            return item.icon().isNull() ? QVariant():item.icon();
-
-            default: return QVariant();
-        }
-
-    } else return QVariant();
+        default: return QVariant();
+    }
 
 }

@@ -35,9 +35,9 @@ class KeyModifier
   //! state
   enum State
   {
-    OFF,
-    ON,
-    UNKNOWN
+    Off,
+    On,
+    Unknown
   };
 
   //! get state

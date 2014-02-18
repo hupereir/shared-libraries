@@ -22,18 +22,20 @@
 *
 *******************************************************************************/
 
-//! text block properties
+#include <QFlag>
+
 namespace TextBlock
 {
 
-    enum
+    enum Property
     {
-
         None = 0,
         HasBackground = 1<<0,
         CurrentBlock = 1<<1
-
     };
+
+    Q_DECLARE_FLAGS( Properties, Property )
+    Q_DECLARE_OPERATORS_FOR_FLAGS( Properties )
 
 };
 

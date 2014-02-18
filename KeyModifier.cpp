@@ -44,8 +44,8 @@ KeyModifier::State KeyModifier::state( void ) const
     Debug::Throw( "KeyModifier::state.\n" );
 
     #if defined(Q_OS_WIN)
-    if( key_ == Qt::Key_CapsLock ) return ( GetKeyState(VK_CAPITAL) ) ? ON:OFF;
-    else if( key_ == Qt::Key_NumLock ) return ( GetKeyState(VK_NUMLOCK) ) ? ON:OFF;
+    if( key_ == Qt::Key_CapsLock ) return ( GetKeyState(VK_CAPITAL) ) ? On:Off;
+    else if( key_ == Qt::Key_NumLock ) return ( GetKeyState(VK_NUMLOCK) ) ? On:Off;
     else return UNKNOWN;
     #endif
 
@@ -63,7 +63,7 @@ KeyModifier::State KeyModifier::state( void ) const
         break;
 
         default:
-        return UNKNOWN;
+        return Unknown;
 
     }
 
@@ -92,11 +92,11 @@ KeyModifier::State KeyModifier::state( void ) const
     XFreeModifiermap( modifiers );
 
     // compare bits to maks
-    return ( key_bits & key_mask ) ? ON:OFF;
+    return ( key_bits & key_mask ) ? On:Off;
 
     #else
 
-    return UNKNOWN;
+    return Unknown;
 
     #endif
 }

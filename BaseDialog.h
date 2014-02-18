@@ -36,15 +36,11 @@ class BaseDialog: public QDialog
     public:
 
     //! dialog centering enumeration
-    enum Centering {
+    enum Centering
+    {
 
-        //! center widget on mouse pointer
         CenterOnPointer,
-
-        //! center widget on parent widget
         CenterOnParent,
-
-        //! center widget on desktop
         CenterOnDesktop
 
     };

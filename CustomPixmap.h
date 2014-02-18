@@ -67,9 +67,9 @@ class CustomPixmap: public QPixmap, public Counter
     //! rotation
     enum Rotation
     {
-        NONE,
-        CLOCKWISE,
-        COUNTERCLOCKWISE
+        None,
+        Clockwise,
+        CounterClockwise
     };
 
     //! rotation

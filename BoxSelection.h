@@ -22,13 +22,7 @@
 *
 *******************************************************************************/
 
-/*!
-\file BoxSelection.h
-\brief Box selection
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
+#include "Counter.h"
 
 #include <QClipboard>
 #include <QColor>
@@ -36,8 +30,6 @@
 #include <QPoint>
 #include <QRect>
 #include <QTextCursor>
-
-#include "Counter.h"
 
 class TextEditor;
 
@@ -53,9 +45,9 @@ class BoxSelection: public Counter
     //! state
     enum State
     {
-        EMPTY,
-        STARTED,
-        FINISHED
+        SelectionEmpty,
+        SelectionStarted,
+        SelectionFinished
     };
 
     //! constructor
@@ -129,14 +121,14 @@ class BoxSelection: public Counter
         //! constructor
         CursorList( const int& first_column = 0, const int& columns = 0 ):
             Counter( "CursorList" ),
-            first_column_( first_column ),
+            firstColumn_( first_column ),
             columns_( columns )
         {}
 
         //! first column
         /*! it is used for lines that are entirely outside of the existing blocks */
         const int& firstColumn( void ) const
-        { return first_column_; }
+        { return firstColumn_; }
 
         //! number of columns in the selection
         const int& columnCount( void ) const
@@ -146,7 +138,7 @@ class BoxSelection: public Counter
 
         //! first column
         /*! it is used for lines that are entirely outside of the existing blocks */
-        int first_column_;
+        int firstColumn_;
 
         //! selection columns
         int columns_;

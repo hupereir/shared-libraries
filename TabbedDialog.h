@@ -148,13 +148,8 @@ class TabbedDialog: public BaseDialog, public Counter
 
         public:
 
-        //! number of columns
-        enum { nColumns = 1 };
-
         //! column type enumeration
-        enum ColumnType {
-            NAME
-        };
+        enum { nColumns = 1 };
 
         //!@name methods reimplemented from base class
         //@{

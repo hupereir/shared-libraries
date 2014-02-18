@@ -78,7 +78,8 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
         Current,
         Value,
         DefaultValue,
-        Flags
+        Flags,
+        nColumns
     };
 
     //! constructor
@@ -159,9 +160,6 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
 
     //! true if read only
     bool readOnly_;
-
-    //! number of columns
-    enum { nColumns = 5 };
 
     //! column titles
     static const QString columnTitles_[ nColumns ];

@@ -60,13 +60,13 @@ class BaseFileInfoModel : public ListModel<T>
     //! column type enumeration
     enum ColumnType
     {
-        FILE,
-        PATH,
-        SIZE,
-        USER,
-        GROUP,
-        PERMISSIONS,
-        MODIFIED,
+        Filename,
+        Path,
+        Size,
+        User,
+        Group,
+        Permissions,
+        Modified,
         nColumns
     };
 
@@ -138,17 +138,17 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
             // retrieve associated file info
             const T& fileInfo( ListModel<T>::get()[index.row()] );
 
-            if( fileInfo.type() & BaseFileInfo::Navigator ) return (index.column() == FILE) ? fileInfo.file() : QVariant();
+            if( fileInfo.type() & BaseFileInfo::Navigator ) return (index.column() == Filename ) ? fileInfo.file() : QVariant();
 
             switch( index.column() )
             {
-                case FILE: return fileInfo.file().localName();
-                case PATH: return fileInfo.file().path();
-                case SIZE: return (fileInfo.isFolder() || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
-                case USER: return fileInfo.user();
-                case GROUP: return fileInfo.group();
-                case PERMISSIONS: return (fileInfo.type() & BaseFileInfo::Navigator) ? QString():fileInfo.permissionsString();
-                case MODIFIED: return QString( fileInfo.lastModified() ? TimeStamp( fileInfo.lastModified() ).toString() : "" );
+                case Filename: return fileInfo.file().localName();
+                case Path: return fileInfo.file().path();
+                case Size: return (fileInfo.isFolder() || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
+                case User: return fileInfo.user();
+                case Group: return fileInfo.group();
+                case Permissions: return (fileInfo.type() & BaseFileInfo::Navigator) ? QString():fileInfo.permissionsString();
+                case Modified: return QString( fileInfo.lastModified() ? TimeStamp( fileInfo.lastModified() ).toString() : "" );
 
                 default:
                 return QVariant();
@@ -162,8 +162,8 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
 
             switch( index.column() )
             {
-                case SIZE: return (int)(Qt::AlignRight|Qt::AlignVCenter);
-                case MODIFIED: return (int)(Qt::AlignCenter);
+                case Size: return (int)(Qt::AlignRight|Qt::AlignVCenter);
+                case Modified: return (int)(Qt::AlignCenter);
 
                 default:
                 return QVariant();
@@ -221,21 +221,21 @@ QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientati
     {
         switch( column )
         {
-            case FILE: return ItemModel::tr( "File" );
-            case PATH: return ItemModel::tr( "Path" );
-            case SIZE: return ItemModel::tr( "Size " );
-            case USER: return ItemModel::tr( "Owner" );
-            case GROUP: return ItemModel::tr( "Group" );
-            case PERMISSIONS: return ItemModel::tr( "Permissions" );
-            case MODIFIED: return ItemModel::tr( "Modified" );
+            case Filename: return ItemModel::tr( "File" );
+            case Path: return ItemModel::tr( "Path" );
+            case Size: return ItemModel::tr( "Size " );
+            case User: return ItemModel::tr( "Owner" );
+            case Group: return ItemModel::tr( "Group" );
+            case Permissions: return ItemModel::tr( "Permissions" );
+            case Modified: return ItemModel::tr( "Modified" );
             default: return QVariant();
         }
     } else if( role = Qt::TextAlignmentRole ) {
 
         switch( column )
         {
-            case SIZE: return (int)(Qt::AlignRight|Qt::AlignVCenter);
-            case MODIFIED: return (int)(Qt::AlignCenter);
+            case Size: return (int)(Qt::AlignRight|Qt::AlignVCenter);
+            case Modified: return (int)(Qt::AlignCenter);
 
             default:
             return QVariant();
@@ -268,22 +268,22 @@ bool BaseFileInfoModel<T>::SortFTor::operator() ( const T& constFirst, const T& 
     switch( type_ )
     {
 
-        case SIZE:
+        case Size:
         { return first.size() < second.size(); }
         break;
 
-        case USER:
+        case User:
         { return first.user() < second.user(); }
 
-        case GROUP:
+        case Group:
         { return first.group() < second.group(); }
 
-        case MODIFIED:
+        case Modified:
         { return first.lastModified() < second.lastModified(); }
         break;
 
         default:
-        case FILE:
+        case Filename:
         { return first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0; }
         break;
 

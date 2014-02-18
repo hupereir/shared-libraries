@@ -29,10 +29,6 @@
 #include <QLabel>
 #include <QToolButton>
 
-/*!
-\class CustomToolButton
-\brief customized tool button to display tooltip in a dedicated label
-*/
 class CustomToolButton: public QToolButton, public Counter
 {
 
@@ -52,15 +48,7 @@ class CustomToolButton: public QToolButton, public Counter
     { updateFromOptions_ = value; }
 
     //! rotation
-    enum Rotation
-    {
-        NONE,
-        CLOCKWISE,
-        COUNTERCLOCKWISE
-    };
-
-    //! rotation
-    bool rotate( const Rotation& );
+    bool rotate( const CustomPixmap::Rotation& );
 
     //! size hint
     virtual QSize sizeHint( void ) const;
@@ -77,19 +65,11 @@ class CustomToolButton: public QToolButton, public Counter
 
     private:
 
-    //! rotation
-    const Rotation& _rotation( void ) const
-    { return rotation_; }
-
-    //! update configuration from options
-    const bool& _updateFromOptions( void ) const
-    { return updateFromOptions_; }
-
     //! update configuration from options
     bool updateFromOptions_;
 
     //! rotation
-    Rotation rotation_;
+    CustomPixmap::Rotation rotation_;
 
 };
 

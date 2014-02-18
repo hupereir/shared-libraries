@@ -135,7 +135,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //! clear box selection
     virtual void clearBoxSelection( void )
     {
-        if( _boxSelection().state() == BoxSelection::FINISHED )
+        if( _boxSelection().state() == BoxSelection::SelectionFinished )
         { _boxSelection().clear(); }
     }
 
@@ -516,13 +516,8 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //! define how cursor should be updated while replacing
     enum CursorMode
     {
-
-        //! cursor selection range is expanded
-        EXPAND,
-
-        //! cursor position is moved
-        MOVE
-
+        ExpandCursor,
+        MoveCursor
     };
 
     //! replace selection in range refered to by cursor

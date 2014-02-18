@@ -63,13 +63,12 @@ class CounterModel: public ListModel<CounterPair>
 
     public:
 
-    //! number of columns
-    enum { nColumns = 2 };
-
     //! column type enumeration
-    enum ColumnType {
+    enum ColumnType 
+    {
         Name,
-        Count
+        Count,
+        nColumns
     };
 
     //!@name methods reimplemented from base class

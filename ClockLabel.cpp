@@ -27,7 +27,7 @@
 
 //__________________________________________________________
 //! timestamp string format
-static const TimeStamp::Format format( TimeStamp::JOB_TAG );
+static const TimeStamp::Format format( TimeStamp::JobTag );
 
 //__________________________________________________________
 ClockTimer::ClockTimer( QWidget *parent ):

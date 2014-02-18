@@ -38,7 +38,7 @@ BoxSelection::BoxSelection( TextEditor* parent ):
     enabled_( false ),
     fontWidth_( 0 ),
     fontHeight_( 0 ),
-    state_( EMPTY )
+    state_( SelectionEmpty )
 {
     Debug::Throw( debugLevel, "BoxSelection::BoxSelection.\n" );
     updateConfiguration();
@@ -113,7 +113,7 @@ bool BoxSelection::checkEnabled( void )
 bool BoxSelection::start( QPoint point )
 {
     Debug::Throw( debugLevel, "BoxSelection::start.\n" );
-    if( state_ != EMPTY ) return false;
+    if( state_ != SelectionEmpty ) return false;
 
     // store point
     begin_ = end_ = parent_->fromViewport( point );
@@ -124,7 +124,7 @@ bool BoxSelection::start( QPoint point )
     // set parent cursor
     parent_->setTextCursor( parent_->cursorForPosition( cursor_ ) );
 
-    state_ = STARTED;
+    state_ = SelectionStarted;
     return true;
 }
 
@@ -132,7 +132,7 @@ bool BoxSelection::start( QPoint point )
 bool BoxSelection::update( QPoint point )
 {
     Debug::Throw( debugLevel, "BoxSelection::update.\n" );
-    if( state_ != STARTED ) return false;
+    if( state_ != SelectionStarted ) return false;
 
     // store end point
     end_ = parent_->fromViewport( point );
@@ -155,10 +155,10 @@ bool BoxSelection::update( QPoint point )
 bool BoxSelection::finish( QPoint point )
 {
     Debug::Throw( debugLevel, "BoxSelection::finish.\n" );
-    if( state_ != STARTED ) return false;
+    if( state_ != SelectionStarted ) return false;
 
     update( point );
-    state_ = FINISHED;
+    state_ = SelectionFinished;
 
     // store and copy to clipboard
     _store();
@@ -171,10 +171,10 @@ bool BoxSelection::finish( QPoint point )
 bool BoxSelection::clear( void )
 {
     Debug::Throw( debugLevel, "BoxSelection::clear.\n" );
-    if( state_ != FINISHED ) return false;
+    if( state_ != SelectionFinished ) return false;
 
     // change state and redraw
-    state_ = EMPTY;
+    state_ = SelectionEmpty;
 
     // update parent
     parent_->viewport()->update( parent_->toViewport( rect() ).adjusted( -2, -2, 3, 3 ) );
@@ -217,7 +217,7 @@ bool BoxSelection::fromString( QString input )
     Debug::Throw( debugLevel, "BoxSelection::fromString.\n" );
 
     // check state
-    if( state() != FINISHED ) return false;
+    if( state() != SelectionFinished ) return false;
 
     // replace all tab characters by emulated tabs
     input.replace( "\t", parent_->emulatedTabCharacter() );
@@ -286,7 +286,7 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
     if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;
 
     // check if state is ok
-    if( state() != FINISHED ) return false;
+    if( state() != SelectionFinished ) return false;
 
     // check if stored text makes sense
     QString selection( toString() );
@@ -332,7 +332,7 @@ bool BoxSelection::removeSelectedText( void ) const
     Debug::Throw( debugLevel, "BoxSelection::removeSelectedText.\n" );
 
     // check if state is ok
-    if( state() != FINISHED || cursorList().empty() ) return false;
+    if( state() != SelectionFinished || cursorList().empty() ) return false;
 
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
@@ -367,7 +367,7 @@ bool BoxSelection::toUpper( void )
     Debug::Throw( debugLevel, "BoxSelection::toUpper.\n" );
 
     // check if state is ok
-    if( state() != FINISHED || cursorList().empty() ) return false;
+    if( state() != SelectionFinished || cursorList().empty() ) return false;
 
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
@@ -405,7 +405,7 @@ bool BoxSelection::toLower( void )
     Debug::Throw( debugLevel, "BoxSelection::toLower.\n" );
 
     // check if state is ok
-    if( state() != FINISHED || cursorList().empty() ) return false;
+    if( state() != SelectionFinished || cursorList().empty() ) return false;
 
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
@@ -446,7 +446,7 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
     static QRegExp regexp( "\\s+$" );
 
     // check if state is ok
-    if( state() != FINISHED || cursorList().empty() ) return false;
+    if( state() != SelectionFinished || cursorList().empty() ) return false;
 
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );

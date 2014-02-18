@@ -141,7 +141,7 @@ void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
 
     // header
     painter->drawLine( headerRect_.bottomLeft()+QPoint(0,1), headerRect_.bottomRight()+QPoint(0,1) );
-    painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignLeft, TimeStamp::now().toString( TimeStamp::DATE ) );
+    painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignLeft, TimeStamp::now().toString( TimeStamp::Date ) );
     painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignRight, QString::number( pageNumber_ ) );
 
     if( !file_.isEmpty() )
