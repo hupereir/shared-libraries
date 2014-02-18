@@ -618,16 +618,8 @@ namespace SpellCheck
         const QString& word( get(index) );
 
         // return text associated to file and column
-        if( role == Qt::DisplayRole ) {
-
-            switch( index.column() )
-            {
-                case NAME: return word;
-                default: return QVariant();
-            }
-        }
-
-        return QVariant();
+        if( role == Qt::DisplayRole ) return word;
+        else return QVariant();
 
     }
 

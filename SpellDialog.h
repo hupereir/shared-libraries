@@ -151,10 +151,7 @@ namespace SpellCheck
             public:
 
             //! number of columns
-            enum { n_columns = 1 };
-
-            //! column type enumeration
-            enum ColumnType { NAME };
+            enum { nColumns = 1 };
 
             //!@name methods reimplemented from base class
             //@{
@@ -167,7 +164,7 @@ namespace SpellCheck
 
             //! number of columns for a given index
             virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
-            { return n_columns; }
+            { return nColumns; }
 
             //@}
 

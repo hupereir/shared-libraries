@@ -41,20 +41,9 @@ namespace SpellCheck
 
         // retrieve associated file info
         const QString& text( get(index) );
-
-        switch( index.column() )
-        {
-
-            case Text:
-            if( role == Qt::DisplayRole ) return text;
-            else if( role == Qt::CheckStateRole ) return disabledItems_.contains( text ) ?  Qt::Unchecked : Qt::Checked;
-            else return QVariant();
-
-            default: break;
-
-        }
-
-        return QVariant();
+        if( role == Qt::DisplayRole ) return text;
+        else if( role == Qt::CheckStateRole ) return disabledItems_.contains( text ) ?  Qt::Unchecked : Qt::Checked;
+        else return QVariant();
 
     }
 

@@ -40,9 +40,6 @@ namespace SpellCheck
         //! number of columns
         enum { nColumns = 1 };
 
-        //! column type enumeration
-        enum ColumnType { Text };
-
         //! constructor
         SpellItemModel( QObject* parent = 0 ):
             ListModel<QString>( parent ),
