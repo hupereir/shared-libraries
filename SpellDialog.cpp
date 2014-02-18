@@ -84,7 +84,7 @@ namespace SpellCheck
         // misspelled word line editor
         gridLayout->addWidget( new QLabel( tr( "Misspelled word:" ), this ) );
         gridLayout->addWidget( sourceEditor_ = new AnimatedLineEditor( this ) );
-        // sourceEditor_->setReadOnly( true );
+        sourceEditor_->setReadOnly( true );
 
         // replacement line editor
         gridLayout->addWidget( new QLabel( tr( "Replace with:" ), this ) );
