@@ -41,7 +41,7 @@ namespace Server
         server_( new QTcpServer( this ) ),
         serverInitialized_( false ),
         client_( new Client( this, new QTcpSocket( this ) ) ),
-        state_( AWAITING_REPLY )
+        state_( AwaitingReply )
     {
 
         Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
@@ -148,8 +148,8 @@ namespace Server
             // the timer is triggered only when the client is connected
             // its expiration means it could not recieve acceptation/denial
             // from the server it is connected to.
-            // the application is then set to ALIVE
-            if( state_ == AWAITING_REPLY && setState( ALIVE ) )
+            // the application is then set to Alive
+            if( state_ == AwaitingReply && setState( Alive ) )
             { emit commandRecieved( ServerCommand( id_, ServerCommand::Accepted ) ); }
 
         }
@@ -382,7 +382,7 @@ namespace Server
             timer_.stop();
 
             // do nothing if client has already been denied connection
-            if( state_ == DEAD ) return;
+            if( state_ == Dead ) return;
 
             // try initialize server
             if( !_serverInitialized() )
@@ -391,7 +391,7 @@ namespace Server
                 _initializeServer();
                 _initializeClient();
 
-            } else if( setState( ALIVE  ) ) {
+            } else if( setState( Alive  ) ) {
 
                 emit commandRecieved( ServerCommand( id_, ServerCommand::Accepted ) );
 
@@ -439,7 +439,7 @@ namespace Server
         {
 
             case ServerCommand::Raise:
-            if( state_ == ALIVE )
+            if( state_ == Alive )
             {
 
                 client().sendCommand( ServerCommand( id_, ServerCommand::Alive ) );
@@ -449,27 +449,27 @@ namespace Server
             } else break;
 
             case ServerCommand::Denied:
-            if( state_ == AWAITING_REPLY )
+            if( state_ == AwaitingReply )
             {
                 timer_.stop();
-                if( setState( DEAD ) ) emit commandRecieved( command );
+                if( setState( Dead ) ) emit commandRecieved( command );
                 return;
             } else break;
 
 
             case ServerCommand::Abort:
-            if( state_ == ALIVE )
+            if( state_ == Alive )
             {
                 timer_.stop();
-                if( setState( DEAD ) ) emit commandRecieved( command );
+                if( setState( Dead ) ) emit commandRecieved( command );
                 return;
             } else break;
 
             case ServerCommand::Accepted:
-            if( state_ == AWAITING_REPLY )
+            if( state_ == AwaitingReply )
             {
                 timer_.stop();
-                if( setState( ALIVE ) ) emit commandRecieved( command );
+                if( setState( Alive ) ) emit commandRecieved( command );
                 return;
             } else break;
 
@@ -510,7 +510,7 @@ namespace Server
 
         // emit initialization signal
         emit initialized();
-        setState( AWAITING_REPLY );
+        setState( AwaitingReply );
 
         // create request command
         ServerCommand command( id(), ServerCommand::Request );

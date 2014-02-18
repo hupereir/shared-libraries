@@ -41,7 +41,7 @@ namespace Server
     //_________________________________________
     /*! \brief
     command to be send over the server
-    command must be formated APP_NAME::USER::COMMAND::ARG[0]::ARG[1] ...
+    command must be formated AppNAME::USER::COMMAND::ARG[0]::ARG[1] ...
     */
     class ServerCommand:public Counter
     {

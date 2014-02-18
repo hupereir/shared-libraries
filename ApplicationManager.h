@@ -62,23 +62,14 @@ namespace Server
         //! commandLine parser
         static CommandLineParser commandLineParser( CommandLineArguments = CommandLineArguments(), bool ignoreWarnings = true );
 
-//         //! usage
-//         static void usage( void );
-
         //! application state enumeration
-        enum State {
+        enum State
+        {
 
-            //! application manager is uninitialized
-            UNKNOWN,
-
-            //! application manager awaits signal from server
-            AWAITING_REPLY,
-
-            //! application manager got no reply, is kept alive
-            ALIVE,
-
-            //! application manager got a reply, must die
-            DEAD
+            StateUnknown,
+            AwaitingReply,
+            Alive,
+            Dead
         };
 
         //! changes application state, emit signal if changed
