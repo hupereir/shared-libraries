@@ -22,8 +22,8 @@
 *
 *******************************************************************************/
 
-#include "BaseDialog.h"
 #include "Counter.h"
+#include "CustomDialog.h"
 #include "ListModel.h"
 #include "AnimatedLineEditor.h"
 #include "SpellInterface.h"
@@ -40,7 +40,7 @@ namespace SpellCheck
 {
 
     //! spell checker popup dialog
-    class SpellDialog: public BaseDialog, public Counter
+    class SpellDialog: public CustomDialog
     {
 
         //! Qt meta object declaration
@@ -203,7 +203,7 @@ namespace SpellCheck
         bool readOnlyEditor_;
 
         //! line editor for original word
-        AnimatedLineEditor *sourceEditor_;
+        QLabel *sourceLabel_;
 
         //! line editor for text replacement
         AnimatedLineEditor *replaceEditor_;

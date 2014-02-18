@@ -22,12 +22,10 @@
 #include "SpellDialog.h"
 #include "SpellDialog.moc"
 
-#include "BaseIconNames.h"
 #include "Debug.h"
 #include "DictionarySelectionButton.h"
 #include "FilterSelectionButton.h"
 #include "GridLayout.h"
-#include "IconEngine.h"
 #include "InformationDialog.h"
 #include "SpellInterface.h"
 #include "TreeView.h"
@@ -44,8 +42,7 @@ namespace SpellCheck
 {
     //_______________________________________________
     SpellDialog::SpellDialog( TextEditor* parent, bool readOnly ):
-        BaseDialog( parent ),
-        Counter( "SpellCheck::SpellDialog" ),
+        CustomDialog( parent, CloseButton|Separator ),
         editor_( parent ),
         readOnly_( readOnly )
     {
@@ -55,17 +52,11 @@ namespace SpellCheck
         setWindowTitle( QString( readOnly ? tr( "Spell Check (read-only) - %1" ) : tr( "Spell Check - %1" ) ).arg( qApp->applicationName() ) );
         setOptionName( "SPELL_DIALOG" );
 
-        // create vbox layout
-        QVBoxLayout* layout=new QVBoxLayout();
-        layout->setMargin(10);
-        layout->setSpacing(5);
-        setLayout( layout );
-
         // horizontal layout for suggestions and buttons
         QHBoxLayout* hLayout = new QHBoxLayout();
         hLayout->setMargin(0);
         hLayout->setSpacing(10);
-        layout->addLayout( hLayout, 1 );
+        mainLayout().addLayout( hLayout, 1 );
 
         // insert left vertical box
         QVBoxLayout *vLayout = new QVBoxLayout();
@@ -83,8 +74,7 @@ namespace SpellCheck
 
         // misspelled word line editor
         gridLayout->addWidget( new QLabel( tr( "Misspelled word:" ), this ) );
-        gridLayout->addWidget( sourceEditor_ = new AnimatedLineEditor( this ) );
-        sourceEditor_->setReadOnly( true );
+        gridLayout->addWidget( sourceLabel_ = new QLabel( this ) );
 
         // replacement line editor
         gridLayout->addWidget( new QLabel( tr( "Replace with:" ), this ) );
@@ -92,9 +82,6 @@ namespace SpellCheck
         if( readOnly ) replaceEditor_->setEnabled( false );
 
         gridLayout->setColumnStretch( 1, 1 );
-
-        QLabel* label = new QLabel( tr( "Suggestions:" ), this );
-        vLayout->addWidget( label, 0 );
 
         // suggestions
         vLayout->addWidget(  list_ = new TreeView( this ) );
@@ -111,9 +98,12 @@ namespace SpellCheck
         vLayout->addLayout( gridLayout, 0 );
 
         // dictionaries combobox
+        QLabel* label;
         gridLayout->addWidget( label = new QLabel( tr( "Dictionary:" ), this ) );
         gridLayout->addWidget( dictionariesComboBox_ = new QComboBox( this ) );
+        label->setBuddy( dictionariesComboBox_ );
         _updateDictionaries();
+
 
         connect( dictionariesComboBox_, SIGNAL(activated(QString)), SLOT(_selectDictionary(QString)) );
 
@@ -126,6 +116,7 @@ namespace SpellCheck
         gridLayout->addWidget( filterLabel_ = new QLabel( tr( "Filter:" ), this ), 1, 0, 1, 1 );
         gridLayout->addWidget( filtersComboBox_ = new QComboBox( this ), 1, 1, 1, 1 );
         _updateFilters();
+        filterLabel_->setBuddy( dictionariesComboBox_ );
 
         connect( filtersComboBox_, SIGNAL(activated(QString)), SLOT(_selectFilter(QString)) );
 
@@ -144,11 +135,11 @@ namespace SpellCheck
         hLayout->addLayout( vLayout );
 
         // add word button
-        vLayout->addWidget( addWordButton_ = new QPushButton( tr( "Add Word" ), this ) );
+        vLayout->addWidget( addWordButton_ = new QPushButton( tr( "Add to Dictionary" ), this ) );
         connect( addWordButton_, SIGNAL(clicked()), SLOT(_addWord()) );
 
         // check word button
-        vLayout->addWidget( checkWordButton_ = new QPushButton( tr( "Check Word" ), this ) );
+        vLayout->addWidget( checkWordButton_ = new QPushButton( tr( "Suggest" ), this ) );
         connect( checkWordButton_, SIGNAL(clicked()), SLOT(_checkWord()) );
 
         // recheck button
@@ -183,19 +174,12 @@ namespace SpellCheck
         vLayout->addWidget( ignoreAllButton_ = new QPushButton( tr( "Ignore All" ), this ) );
         connect( ignoreAllButton_, SIGNAL(clicked()), SLOT(_ignoreAll()) );
 
-        // close button
-        {
-            QPushButton* button;
-            vLayout->addWidget( button = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
-            connect( button, SIGNAL(clicked()), SLOT(close()) );
-        }
+        vLayout->addStretch( 1 );
 
         // connections
         connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_selectSuggestion(QModelIndex)) );
         connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
         if( !readOnly ) { connect( list_, SIGNAL(activated(QModelIndex)), SLOT(_replace(QModelIndex)) ); }
-
-        connect( sourceEditor_, SIGNAL(textChanged(QString)), SLOT(_updateButtons()) );
 
         // set text
         // check Editor seletion
@@ -450,7 +434,7 @@ namespace SpellCheck
     {
 
         Debug::Throw( "SpellCheck::SpellDialog::_ignoreAll.\n" );
-        interface().ignoreWord( sourceEditor_->text() );
+        interface().ignoreWord( sourceLabel_->text() );
         _ignore();
 
     }
@@ -477,7 +461,7 @@ namespace SpellCheck
     {
 
         Debug::Throw( "SpellCheck::SpellDialog::_replaceAll.\n" );
-        QString oldWord( sourceEditor_->text() );
+        QString oldWord( sourceLabel_->text() );
         QString newWord( replaceEditor_->text() );
         replacedWords_.insert( oldWord, newWord );
         _replace();
@@ -489,7 +473,7 @@ namespace SpellCheck
     {
         Debug::Throw( "SpellCheck::SpellDialog::_updateButtons.\n" );
         const bool hasSelection( list_->selectionModel()->hasSelection() );
-        const bool hasWord( !sourceEditor_->text().isEmpty() );
+        const bool hasWord( !sourceLabel_->text().isEmpty() );
         addWordButton_->setEnabled( hasWord );
         checkWordButton_->setEnabled( hasWord );
         ignoreButton_->setEnabled( hasWord );
@@ -553,9 +537,11 @@ namespace SpellCheck
         } else {
 
             // spelling completed. Clear everything
-            sourceEditor_->clear();
+            sourceLabel_->clear();
             replaceEditor_->clear();
             model_.clear();
+
+            _updateButtons();
 
         }
 
@@ -601,7 +587,7 @@ namespace SpellCheck
         Debug::Throw( "SpellCheck::SpellDialog::_displayWord.\n" );
 
         // set text in line_editor
-        sourceEditor_->setText( word );
+        sourceLabel_->setText( word );
         replaceEditor_->setText( word );
 
         // clear list of suggestions
