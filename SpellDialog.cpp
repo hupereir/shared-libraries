@@ -43,15 +43,16 @@
 namespace SpellCheck
 {
     //_______________________________________________
-    SpellDialog::SpellDialog( TextEditor* parent, const bool& read_only ):
+    SpellDialog::SpellDialog( TextEditor* parent, bool readOnly ):
         BaseDialog( parent ),
-        Counter( "SpellDialog" ),
-        editor_( parent )
+        Counter( "SpellCheck::SpellDialog" ),
+        editor_( parent ),
+        readOnly_( readOnly )
     {
-        Debug::Throw( "SpellDialog::SpellDialog.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::SpellDialog.\n" );
 
         // window title
-        setWindowTitle( QString( read_only ? tr( "Spell Check (read-only) - %1" ) : tr( "Spell Check - %1" ) ).arg( qApp->applicationName() ) );
+        setWindowTitle( QString( readOnly ? tr( "Spell Check (read-only) - %1" ) : tr( "Spell Check - %1" ) ).arg( qApp->applicationName() ) );
         setOptionName( "SPELL_DIALOG" );
 
         // create vbox layout
@@ -83,12 +84,12 @@ namespace SpellCheck
         // misspelled word line editor
         gridLayout->addWidget( new QLabel( tr( "Misspelled word:" ), this ) );
         gridLayout->addWidget( sourceEditor_ = new AnimatedLineEditor( this ) );
-        sourceEditor_->setReadOnly( true );
+        // sourceEditor_->setReadOnly( true );
 
         // replacement line editor
         gridLayout->addWidget( new QLabel( tr( "Replace with:" ), this ) );
         gridLayout->addWidget( replaceEditor_ = new AnimatedLineEditor( this ) );
-        if( read_only ) replaceEditor_->setEnabled( false );
+        if( readOnly ) replaceEditor_->setEnabled( false );
 
         gridLayout->setColumnStretch( 1, 1 );
 
@@ -97,11 +98,8 @@ namespace SpellCheck
 
         // suggestions
         vLayout->addWidget(  list_ = new TreeView( this ) );
-        _list().setModel( &_model() );
-        _list().header()->hide();
-
-        connect( _list().selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_selectSuggestion(QModelIndex)) );
-        if( !read_only ) { connect( &_list(), SIGNAL(activated(QModelIndex)), SLOT(_replace(QModelIndex)) ); }
+        list_->setModel( &model_ );
+        list_->header()->hide();
 
         // grid layout for dictionary and filter
         gridLayout = new GridLayout();
@@ -146,92 +144,90 @@ namespace SpellCheck
         hLayout->addLayout( vLayout );
 
         // add word button
-        QPushButton* button;
-        vLayout->addWidget( button = new QPushButton( tr( "Add Word" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT(_addWord()) );
+        vLayout->addWidget( addWordButton_ = new QPushButton( tr( "Add Word" ), this ) );
+        connect( addWordButton_, SIGNAL(clicked()), SLOT(_addWord()) );
 
         // check word button
-        vLayout->addWidget( button = new QPushButton( tr( "Check Word" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT(_checkWord()) );
+        vLayout->addWidget( checkWordButton_ = new QPushButton( tr( "Check Word" ), this ) );
+        connect( checkWordButton_, SIGNAL(clicked()), SLOT(_checkWord()) );
 
         // recheck button
-        vLayout->addWidget( button = new QPushButton( tr( "Recheck Page" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT(_restart()) );
+        {
+            QPushButton* button;
+            vLayout->addWidget( button = new QPushButton( tr( "Recheck Page" ), this ) );
+            connect( button, SIGNAL(clicked()), SLOT(_restart()) );
+        }
 
         QFrame* frame;
         vLayout->addWidget( frame = new QFrame(this) );
         frame->setFrameShape( QFrame::HLine );
 
         // replace button
-        vLayout->addWidget( button = new QPushButton( tr( "Replace" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT(_replace()) );
-        if( read_only ) button->setEnabled( false );
+        vLayout->addWidget( replaceButton_ = new QPushButton( tr( "Replace" ), this ) );
+        connect( replaceButton_, SIGNAL(clicked()), SLOT(_replace()) );
+        if( readOnly ) replaceButton_->setVisible( false );
 
         // replace button
-        vLayout->addWidget( button = new QPushButton( tr( "Replace All" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT(_replaceAll()) );
-        if( read_only ) button->setEnabled( false );
+        vLayout->addWidget( replaceAllButton_ = new QPushButton( tr( "Replace All" ), this ) );
+        connect( replaceAllButton_, SIGNAL(clicked()), SLOT(_replaceAll()) );
+        if( readOnly ) replaceAllButton_->setVisible( false );
 
         vLayout->addWidget( frame = new QFrame(this) );
         frame->setFrameShape( QFrame::HLine );
 
         // ignore button
-        vLayout->addWidget( button = new QPushButton( tr( "Ignore" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT(_ignore()) );
+        vLayout->addWidget( ignoreButton_ = new QPushButton( tr( "Ignore" ), this ) );
+        connect( ignoreButton_, SIGNAL(clicked()), SLOT(_ignore()) );
 
         // ignore button
-        vLayout->addWidget( button = new QPushButton( tr( "Ignore All" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT(_ignoreAll()) );
-
-        // state label_
-        vLayout->addWidget( stateLabel_ = new QLabel( " ", this ), 1 );
-        stateLabel_->setAlignment( Qt::AlignCenter );
+        vLayout->addWidget( ignoreAllButton_ = new QPushButton( tr( "Ignore All" ), this ) );
+        connect( ignoreAllButton_, SIGNAL(clicked()), SLOT(_ignoreAll()) );
 
         // close button
-        vLayout->addWidget( button = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
-        connect( button, SIGNAL(clicked()), SLOT(close()) );
+        {
+            QPushButton* button;
+            vLayout->addWidget( button = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
+            connect( button, SIGNAL(clicked()), SLOT(close()) );
+        }
 
-        // change font
-        QFont font( stateLabel_->font() );
-        font.setWeight( QFont::Bold );
-        stateLabel_->setFont( font );
+        // connections
+        connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_selectSuggestion(QModelIndex)) );
+        connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
+        if( !readOnly ) { connect( list_, SIGNAL(activated(QModelIndex)), SLOT(_replace(QModelIndex)) ); }
 
-        // change color
-        QPalette palette( stateLabel_->palette() );
-        palette.setColor( QPalette::WindowText, Qt::red );
-        stateLabel_->setPalette( palette );
+        connect( sourceEditor_, SIGNAL(textChanged(QString)), SLOT(_updateButtons()) );
 
         // set text
         // check Editor seletion
-        unsigned int index_begin( 0 );
-        unsigned int index_end( editor().toPlainText().length() );
-        if( editor().textCursor().hasSelection() )
+        unsigned int indexBegin( 0 );
+        unsigned int indexEnd( editor_->toPlainText().length() );
+        if( editor_->textCursor().hasSelection() )
         {
-            index_begin = editor().textCursor().anchor();
-            index_end = editor().textCursor().position();
-            if( index_begin > index_end ) std::swap( index_begin, index_end );
+            indexBegin = editor_->textCursor().anchor();
+            indexEnd = editor_->textCursor().position();
+            if( indexBegin > indexEnd ) std::swap( indexBegin, indexEnd );
         }
 
         // asign text
-        if( !interface().setText( editor().toPlainText(), index_begin, index_end ) )
+        if( !interface().setText( editor_->toPlainText(), indexBegin, indexEnd ) )
         { InformationDialog( this, interface().error() ).exec(); }
 
         // set TextEditor as ReadOnly
-        readOnlyEditor_ = editor().isReadOnly();
-        editor().setReadOnly( true );
+        readOnlyEditor_ = editor_->isReadOnly();
+        editor_->setReadOnly( true );
 
-        Debug::Throw( "SpellDialog::SpellDialog - done.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::SpellDialog - done.\n" );
 
     }
 
     //__________________________________________
     SpellDialog::~SpellDialog( void )
-    { Debug::Throw( "SpellDialog::~SpellDialog.\n" ); }
+    { Debug::Throw( "SpellCheck::SpellDialog::~SpellDialog.\n" ); }
 
     //__________________________________________
     void SpellDialog::showFilter( const bool& value )
     {
-        Debug::Throw( "SpellDialog::showFilter.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::showFilter.\n" );
         if( value ){
             filterLabel_->show();
             filtersComboBox_->show();
@@ -244,7 +240,7 @@ namespace SpellCheck
     //____________________________________________________
     bool SpellDialog::setDictionary( const QString& dictionary )
     {
-        Debug::Throw( "SpellDialog::setDictionary.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::setDictionary.\n" );
 
         // find matching index
         int index( dictionariesComboBox_->findText( dictionary ) );
@@ -271,7 +267,7 @@ namespace SpellCheck
     //____________________________________________________
     bool SpellDialog::setFilter( const QString& filter )
     {
-        Debug::Throw( "SpellDialog::setFilter.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::setFilter.\n" );
 
         // find matching index
         int index( filtersComboBox_->findText( filter ) );
@@ -295,11 +291,10 @@ namespace SpellCheck
 
     }
 
-
     //___________________________________________
     void SpellDialog::_updateDictionaries( void )
     {
-        Debug::Throw( "SpellDialog::_updateDictionaries.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_updateDictionaries.\n" );
 
         // store selection
         const QString selection( dictionariesComboBox_->currentText() );
@@ -322,7 +317,7 @@ namespace SpellCheck
     //___________________________________________
     void SpellDialog::_updateFilters( void )
     {
-        Debug::Throw( "SpellDialog::_updateFilters.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_updateFilters.\n" );
 
         // store selection
         const QString selection( filtersComboBox_->currentText() );
@@ -345,15 +340,15 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_selectSuggestion( const QModelIndex& index )
     {
-        Debug::Throw( "SpellDialog::_selectSuggestion.\n" );
-        if( index.isValid() ) { replaceEditor_->setText( _model().get( index ) ); }
+        Debug::Throw( "SpellCheck::SpellDialog::_selectSuggestion.\n" );
+        if( index.isValid() ) { replaceEditor_->setText( model_.get( index ) ); }
     }
 
     //____________________________________________________
     void SpellDialog::_selectDictionary( const QString& dictionary )
     {
 
-        Debug::Throw( "SpellDialog::_SelectDictionary.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_SelectDictionary.\n" );
 
         // see if changed
         if( interface().dictionary() == dictionary ) return;
@@ -377,7 +372,7 @@ namespace SpellCheck
     void SpellDialog::_selectFilter( const QString& filter )
     {
 
-        Debug::Throw( "SpellDialog::_SelectFilter.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_SelectFilter.\n" );
 
         // see if changed
         if( interface().filter() == filter ) return;
@@ -400,7 +395,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_restart( void )
     {
-        Debug::Throw( "SpellDialog::_restart.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_restart.\n" );
 
         if( !interface().reset() )
         {
@@ -408,8 +403,6 @@ namespace SpellCheck
             return;
         }
 
-        // get next mispelled word
-        stateLabel_->setText( "" );
         nextWord();
 
     }
@@ -417,7 +410,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_addWord( void )
     {
-        Debug::Throw( "SpellDialog::_addWord.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_addWord.\n" );
 
         if( !interface().addWord( interface().word() ) )
         {
@@ -436,7 +429,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_checkWord( void )
     {
-        Debug::Throw( "SpellDialog::_checkWord.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_checkWord.\n" );
 
         // retrieve check word
         _displayWord( replaceEditor_->text() );
@@ -447,7 +440,7 @@ namespace SpellCheck
     void SpellDialog::_ignore( void )
     {
 
-        Debug::Throw( "SpellDialog::_ignore.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_ignore.\n" );
         nextWord();
 
     }
@@ -456,7 +449,7 @@ namespace SpellCheck
     void SpellDialog::_ignoreAll( void )
     {
 
-        Debug::Throw( "SpellDialog::_ignoreAll.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_ignoreAll.\n" );
         interface().ignoreWord( sourceEditor_->text() );
         _ignore();
 
@@ -466,15 +459,13 @@ namespace SpellCheck
     void SpellDialog::_replace( const QModelIndex& index )
     {
 
-        Debug::Throw( "SpellDialog::_replace.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_replace.\n" );
         QModelIndex local( index );
-        if( !local.isValid() ) local = _list().selectionModel()->currentIndex();
+        if( !local.isValid() ) local = list_->selectionModel()->currentIndex();
         if( !local.isValid() ) return;
 
-        QString word( _model().get( index ) );
-
-        if( interface().replace( word ) )
-            _replaceSelection( word );
+        const QString word( model_.get( local ) );
+        if( interface().replace( word ) ) _replaceSelection( word );
 
         // parse next word
         nextWord();
@@ -485,7 +476,7 @@ namespace SpellCheck
     void SpellDialog::_replaceAll( void )
     {
 
-        Debug::Throw( "SpellDialog::_replaceAll.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_replaceAll.\n" );
         QString oldWord( sourceEditor_->text() );
         QString newWord( replaceEditor_->text() );
         replacedWords_.insert( oldWord, newWord );
@@ -494,10 +485,24 @@ namespace SpellCheck
     }
 
     //____________________________________________________
+    void SpellDialog::_updateButtons( void )
+    {
+        Debug::Throw( "SpellCheck::SpellDialog::_updateButtons.\n" );
+        const bool hasSelection( list_->selectionModel()->hasSelection() );
+        const bool hasWord( !sourceEditor_->text().isEmpty() );
+        addWordButton_->setEnabled( hasWord );
+        checkWordButton_->setEnabled( hasWord );
+        ignoreButton_->setEnabled( hasWord );
+        ignoreAllButton_->setEnabled( hasWord );
+        replaceButton_->setEnabled( hasWord && hasSelection && !readOnly_ );
+        replaceAllButton_->setEnabled( hasWord && hasSelection && !readOnly_ );
+    }
+
+    //____________________________________________________
     void SpellDialog::nextWord( void )
     {
 
-        Debug::Throw( "SpellDialog::nextWord.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::nextWord.\n" );
 
         bool accepted( false );
         QString word( "" );
@@ -514,11 +519,11 @@ namespace SpellCheck
             word = interface().word();
             if( word.isEmpty() )
             {
-                Debug::Throw() << "SpellDialog::NextWord - empty word " << endl;
+                Debug::Throw() << "SpellCheck::SpellDialog::NextWord - empty word " << endl;
                 break;
             }
 
-            Debug::Throw() << "SpellDialog::NextWord - word: " << word << endl;
+            Debug::Throw() << "SpellCheck::SpellDialog::NextWord - word: " << word << endl;
 
             // see if word is in ignore list
             if( interface().isWordIgnored( word ) ) continue;
@@ -550,8 +555,7 @@ namespace SpellCheck
             // spelling completed. Clear everything
             sourceEditor_->clear();
             replaceEditor_->clear();
-            _model().clear();
-            stateLabel_->setText( tr( "Spelling completed" ) );
+            model_.clear();
 
         }
 
@@ -562,20 +566,20 @@ namespace SpellCheck
     //__________________________________________
     void SpellDialog::closeEvent( QCloseEvent *e )
     {
-        Debug::Throw( "SpellDialog::closeEvent.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::closeEvent.\n" );
         interface().saveWordList();
-        editor().setReadOnly( readOnlyEditor_ );
+        editor_->setReadOnly( readOnlyEditor_ );
         QDialog::closeEvent( e );
     }
 
     //_________________________________________________________________
     void SpellDialog::_updateSelection( const unsigned int& index, const unsigned int& length )
     {
-        Debug::Throw() << "SpellDialog::_updateSelection - index=" << index << endl;
-        QTextCursor cursor( editor().textCursor() );
+        Debug::Throw() << "SpellCheck::SpellDialog::_updateSelection - index=" << index << endl;
+        QTextCursor cursor( editor_->textCursor() );
         cursor.setPosition( index, QTextCursor::MoveAnchor );
         cursor.setPosition( index+length, QTextCursor::KeepAnchor );
-        editor().setTextCursor( cursor );
+        editor_->setTextCursor( cursor );
 
     }
 
@@ -583,10 +587,10 @@ namespace SpellCheck
     void SpellDialog::_replaceSelection( const QString& word )
     {
 
-        Debug::Throw( "SpellDialog::_ReplaceSelection.\n" );
-        editor().setReadOnly( false );
-        editor().textCursor().insertText( word );
-        editor().setReadOnly( true );
+        Debug::Throw() << "SpellCheck::SpellDialog::_ReplaceSelection - word: " << word << endl;
+        editor_->setReadOnly( false );
+        editor_->textCursor().insertText( word );
+        editor_->setReadOnly( true );
 
     }
 
@@ -594,16 +598,24 @@ namespace SpellCheck
     void SpellDialog::_displayWord( const QString& word )
     {
 
-        Debug::Throw( "SpellDialog::_displayWord.\n" );
+        Debug::Throw( "SpellCheck::SpellDialog::_displayWord.\n" );
 
         // set text in line_editor
         sourceEditor_->setText( word );
         replaceEditor_->setText( word );
 
         // clear list of suggestions
-        _model().clear();
+        model_.clear();
         Model::List suggestions( interface().suggestions( word ) );
-        _model().add( suggestions );
+        model_.add( suggestions );
+
+        // select the first suggestion, if any
+        if( !suggestions.isEmpty() )
+        {
+            QModelIndex index( model_.index( suggestions.front() ) );
+            list_->selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows );
+            list_->selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
+        }
 
     }
 

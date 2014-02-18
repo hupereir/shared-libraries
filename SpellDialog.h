@@ -49,7 +49,7 @@ namespace SpellCheck
         public:
 
         //! constructor
-        SpellDialog( TextEditor*, const bool& read_only = false );
+        SpellDialog( TextEditor*, bool readOnly = false );
 
         //! destructor
         virtual ~SpellDialog();
@@ -137,6 +137,9 @@ namespace SpellCheck
         //! replace All
         virtual void _replaceAll( void );
 
+        //! update buttons
+        virtual void _updateButtons( void );
+
         protected:
 
         //! close
@@ -187,19 +190,14 @@ namespace SpellCheck
         //! spell checking completed
         void _completed( void );
 
-        //! model
-        Model& _model( void )
-        { return model_; }
-
-        //! list
-        TreeView& _list( void ) const
-        { return *list_; }
-
         //! spell interface
         SpellInterface interface_;
 
         //! text editor
         TextEditor* editor_;
+
+        //! read only flag
+        bool readOnly_;
 
         //! initial readonly state
         bool readOnlyEditor_;
@@ -225,8 +223,13 @@ namespace SpellCheck
         //! combo box for filter
         QComboBox *filtersComboBox_;
 
-        //! state frame for message
-        QLabel* stateLabel_;
+        //! buttons
+        QPushButton* addWordButton_;
+        QPushButton* checkWordButton_;
+        QPushButton* ignoreButton_;
+        QPushButton* ignoreAllButton_;
+        QPushButton* replaceButton_;
+        QPushButton* replaceAllButton_;
 
         //! list of automatic replace words
         QHash< QString, QString > replacedWords_;
