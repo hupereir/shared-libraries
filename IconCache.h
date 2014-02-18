@@ -49,9 +49,37 @@ namespace Base
         virtual ~IconCacheItem( void )
         {}
 
+        //! flags
+        enum Flag
+        {
+            None = 0,
+            FromCache = 1<<0,
+            FromTheme = 1<<1,
+            FromResource = 1<<2,
+            Any = FromCache|FromTheme|FromResource
+        };
+
+        Q_DECLARE_FLAGS( Flags, Flag );
+
+        //!@name accessors
+        //@{
+
+        //! flags
+        Flags flags( void ) const
+        { return flags_; }
+
         //! files
         const QStringList& files( void ) const
         { return files_; }
+
+        //@}
+
+        //!@name modifiers
+        //@{
+
+        //! flags
+        void setFlags( Flags value )
+        { flags_ = value; }
 
         //! clear files
         void clearFiles( void )
@@ -61,7 +89,12 @@ namespace Base
         void addFile( const QString& file )
         { files_ << file; }
 
+        //@}
+
         private:
+
+        //! flags
+        Flags flags_;
 
         //! associated files
         QStringList files_;
@@ -116,6 +149,8 @@ namespace Base
         };
 
     };
+
+    Q_DECLARE_OPERATORS_FOR_FLAGS( IconCacheItem::Flags )
 
 }
 

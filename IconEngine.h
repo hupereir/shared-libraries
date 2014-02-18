@@ -39,8 +39,8 @@ class IconEngine: public Counter
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    static const QIcon& get( const QString& file )
-    { return get()._get( file ); }
+    static const QIcon& get( const QString& file, Base::IconCacheItem::Flags flags = Base::IconCacheItem::Any )
+    { return get()._get( file, flags ); }
 
     //! return cache
     static const Base::IconCache& cache( void )
@@ -59,7 +59,7 @@ class IconEngine: public Counter
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    const Base::IconCacheItem& _get( const QString&, bool fromCache = true );
+    const Base::IconCacheItem& _get( const QString&, Base::IconCacheItem::Flags = Base::IconCacheItem::Any );
 
     //@}
 

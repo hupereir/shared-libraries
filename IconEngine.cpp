@@ -50,17 +50,17 @@ bool IconEngine::reload( void )
     pixmapPath_ = pathList;
 
     for( Base::IconCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
-    { cache_[iter.key()] = _get( iter.key(), false ); }
+    { cache_[iter.key()] = _get( iter.key(), iter.value().flags()&~Base::IconCacheItem::FromCache ); }
 
     return true;
 }
 
 //__________________________________________________________
-const Base::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache )
+const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCacheItem::Flags flags )
 {
 
     // try find file in cache
-    if( fromCache )
+    if( flags & Base::IconCacheItem::FromCache )
     {
         Base::IconCache::iterator iter( cache_.find( file ) );
         if( iter != cache_.end() ) return iter.value();
@@ -71,6 +71,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache
 
     // insert null icon for empty filename
     Base::IconCacheItem out;
+    out.setFlags( flags );
     if( file.isEmpty() )
     {
 
@@ -85,7 +86,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, bool fromCache
 
         #if QT_VERSION >= 0x040600
         QString truncatedName( File( file ).truncatedName() );
-        if( QIcon::hasThemeIcon( truncatedName ) )
+        if( (flags&Base::IconCacheItem::FromTheme) && QIcon::hasThemeIcon( truncatedName ) )
         {
 
             out = QIcon::fromTheme( truncatedName );
