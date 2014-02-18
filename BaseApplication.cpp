@@ -147,7 +147,7 @@ bool BaseApplication::realizeWidget( void )
     aboutAction_ = new QAction( applicationIcon(), QString( tr( "About %1" ) ).arg( applicationName() ), this );
     connect( aboutAction_, SIGNAL(triggered()), SLOT(_about()) );
 
-    aboutQtAction_ = new QAction( IconEngine::get( IconNames::AboutQt ), tr( "About Qt" ), this );
+    aboutQtAction_ = new QAction( IconEngine::get( IconNames::AboutQt, Base::IconCacheItem::FromCache|Base::IconCacheItem::FromResource ), tr( "About Qt" ), this );
     connect( aboutQtAction_, SIGNAL(triggered()), this, SLOT(_aboutQt()) );
 
     closeAction_ = new QAction( IconEngine::get( IconNames::Exit ), tr( "Exit" ), this );
