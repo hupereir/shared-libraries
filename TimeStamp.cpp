@@ -26,7 +26,7 @@
 #include <QObject>
 
 //________________________________________________________________________________
-const QString TimeStamp::STAMP_UNKNOWN( QObject::tr("unknown") );
+const QString TimeStamp::TimeStampUnknown( QObject::tr("Unknown") );
 
 //________________________________________________________________________________
 TimeStamp TimeStamp::now( void )
@@ -46,34 +46,34 @@ QString TimeStamp::toString( TimeStamp::Format format ) const
     switch (format)
     {
 
-        case DATE:
+        case Date:
         return toString( "dd/MM/yyyy" );
 
-        case DATE_US:
+        case DateUS:
         return toString( "yyyy/MM/dd" );
 
-        case TIME:
+        case Time:
         return toString( "hh:mm" );
 
-        case TIME_LONG:
+        case TimeLong:
         return toString( "hh:mm:ss" );
 
-        case SHORT:
+        case Short:
         return toString( "dd/MM/yyyy hh:mm" );
 
-        case SHORT_US:
+        case ShortUS:
         return toString( "yyyy/MM/dd hh:mm" );
 
-        case LONG:
+        case Long:
         return toString( "dd MMM yyyy hh::mm::ss (ddd)" );
 
-        case DATE_TAG:
+        case DateTag:
         return toString( "dd_MM_yy" );
 
-        case JOB_TAG:
+        case JobTag:
         return toString( "MMM dd hh:mm" );
 
-        default: return STAMP_UNKNOWN;
+        default: return TimeStampUnknown;
 
     }
 

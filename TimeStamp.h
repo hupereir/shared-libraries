@@ -34,7 +34,7 @@ class TimeStamp:public Counter
     public:
 
     //! default string for invalid timestamps
-    static const QString STAMP_UNKNOWN;
+    static const QString TimeStampUnknown;
 
     //! empty creator
     TimeStamp( void ):
@@ -92,46 +92,47 @@ class TimeStamp:public Counter
     { return int( time_ ); }
 
     //! timestamp format enumeration
-    enum Format {
+    enum Format
+    {
 
         //! DD/MM/YYYY
-        DATE,
+        Date,
 
         //! YYYY/MM/DD
-        DATE_US,
+        DateUS,
 
         //! HH:MM
-        TIME,
+        Time,
 
         //! HH:MM:SS
-        TIME_LONG,
+        TimeLong,
 
         //! DD MONTH_string YYYY HH:MM:SS (week_day)
-        LONG,
+        Long,
 
         //! DD/MM/YYYY HH:MM
-        SHORT,
+        Short,
 
         //! YYYY/MM/DD HH:MM
-        SHORT_US,
+        ShortUS,
 
         //! DD_MM_YY
-        DATE_TAG,
+        DateTag,
 
         //! MONTH_string DD HH:MM
-        JOB_TAG
+        JobTag
     };
 
     //! if timestamp is valid returns formated string
-    virtual QString toString( Format = SHORT ) const;
+    virtual QString toString( Format = Short ) const;
 
     //! if timestamp is valid, returns formated string
     virtual QString toString( Qt::DateFormat format ) const
-    { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : STAMP_UNKNOWN; }
+    { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : TimeStampUnknown; }
 
     //! if timestamp is valid, returns formated string
     virtual QString toString( const QString& format ) const
-    { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : STAMP_UNKNOWN; }
+    { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : TimeStampUnknown; }
 
     //! returns time in second
     virtual time_t unixTime( void ) const
