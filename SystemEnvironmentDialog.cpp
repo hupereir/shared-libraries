@@ -47,7 +47,7 @@ CustomDialog( parent, CloseButton )
     mainLayout().addWidget( list );
     list->setModel( &model_ );
     list->setRootIsDecorated( false );
-    list->setMask( (1<<OptionModel::NAME)|(1<<OptionModel::VALUE) );
+    list->setMask( (1<<OptionModel::Name)|(1<<OptionModel::Value) );
 
     // retrieve environment variables from QProcess
     QStringList env( QProcess::systemEnvironment() );

@@ -769,7 +769,7 @@ void BaseConfigurationDialog::_restoreDefaults( void )
         OptionModel* model = new OptionModel( &dialog );
         model->add( local );
         view->setModel( model );
-        view->setMask( (1<<OptionModel::NAME) | (1<<OptionModel::VALUE) );
+        view->setMask( (1<<OptionModel::Name) | (1<<OptionModel::Value) );
         view->resizeColumns();
         dialog.mainLayout().addWidget( view );
         dialog.resize( 450, 300 );

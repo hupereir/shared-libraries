@@ -45,7 +45,7 @@ Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid()) return 0;
     else if( !get( index ).second.hasFlag( Option::Recordable ) ) return Qt::ItemIsSelectable;
-    else if( !( isReadOnly() || rowCount( index ) ) && index.column() == VALUE ) return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
+    else if( !( isReadOnly() || rowCount( index ) ) && index.column() == Value ) return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
     else return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
@@ -63,18 +63,18 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
     {
         switch( index.column() )
         {
-            case NAME: return option.first;
-            case VALUE: return option.second.raw();
-            case DEFAULT_VALUE: return option.second.defaultValue();
-            case FLAGS: return (unsigned int)option.second.flags();
+            case Name: return option.first;
+            case Value: return option.second.raw();
+            case DefaultValue: return option.second.defaultValue();
+            case Flags: return (unsigned int)option.second.flags();
             default: return QVariant();
         }
     }
 
-    if( role == Qt::DecorationRole && index.column() == CURRENT )
+    if( role == Qt::DecorationRole && index.column() == Current )
     { return option.second.isCurrent() ? IconEngine::get( IconNames::DialogAccept ):QVariant(); }
 
-    if( role == Qt::ToolTipRole && index.column() == NAME )
+    if( role == Qt::ToolTipRole && index.column() == Name )
     { return option.second.comments(); }
 
     return QVariant();
@@ -85,7 +85,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
 bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int role )
 {
 
-    if( !(index.isValid() && index.column() == VALUE && role == Qt::EditRole ) ) return false;
+    if( !(index.isValid() && index.column() == Value && role == Qt::EditRole ) ) return false;
 
     // retrieve option
     const OptionPair source( get( index ) );
@@ -133,31 +133,31 @@ bool OptionModel::SortFTor::operator () ( OptionPair first, OptionPair second ) 
     switch( type_ )
     {
 
-        case NAME:
+        case Name:
         {
             if( first.first != second.first ) return first.first < second.first;
             else return first.second.raw() < second.second.raw();
         }
 
-        case CURRENT:
+        case Current:
         {
             if( first.second.isCurrent() != second.second.isCurrent() ) return first.second.isCurrent() < second.second.isCurrent();
             else return false;
         }
 
-        case VALUE:
+        case Value:
         {
             if( first.second.raw() != second.second.raw() ) return first.second.raw() < second.second.raw();
             else return false;
         }
 
-        case DEFAULT_VALUE:
+        case DefaultValue:
         {
             if( first.second.defaultValue() != second.second.defaultValue() ) return first.second.defaultValue() < second.second.defaultValue();
             else return false;
         }
 
-        case FLAGS:
+        case Flags:
         {
             if( first.second.flags() != second.second.flags() ) return first.second.flags() < second.second.flags();
             else return false;

@@ -121,7 +121,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     list_->setSelectionMode( QAbstractItemView::ExtendedSelection );
     list_->setModel( model_ );
     list_->setRootIsDecorated( false );
-    list_->setMask( 1<<OptionModel::CURRENT|1<<OptionModel::VALUE );
+    list_->setMask( 1<<OptionModel::Current|1<<OptionModel::Value );
 
     // replace item delegate
     if( list_->itemDelegate() ) list_->itemDelegate()->deleteLater();

@@ -22,14 +22,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file    KeyModifier.h
-  \brief   key state of given modifier
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
-*/
-
 #include <Qt>
 
 class KeyModifier
