@@ -41,7 +41,7 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     List actionNames;
     actionNames
         << NamePair( tr( "System Default" ), -1 )
-        << NamePair( tr( "Icons Only" ), Qt::ToolButtonIconOnly )
+        << NamePair( tr( "No Text" ), Qt::ToolButtonIconOnly )
         << NamePair( tr( "Text Only" ), Qt::ToolButtonTextOnly )
         << NamePair( tr( "Text Alongside icons" ), Qt::ToolButtonTextBesideIcon )
         << NamePair( tr( "Text Under icons" ), Qt::ToolButtonTextUnderIcon );

@@ -102,10 +102,6 @@ class BaseMainWindow: public QMainWindow
     //! toolbar menu
     virtual ToolBarMenu& toolBarMenu( QWidget* parent = 0 );
 
-    //! install toolbar visibility actions
-    /*! returns true if lockable toolbars are found */
-    virtual bool installToolBarsActions( QMenu& );
-
     //! option name
     virtual void setOptionName( const QString& name );
 
@@ -153,8 +149,17 @@ class BaseMainWindow: public QMainWindow
     //! true if main window has toolbars
     virtual bool _hasToolBars( void ) const;
 
+    //! returns true if lockable toolbars are found
+    virtual bool _hasLockableToolBars( void ) const;
+
     //! true if main window has dock widgets
     virtual bool _hasPanels( void ) const;
+
+    //! action list
+    typedef QVector<QAction*> ActionList;
+
+    //! toolbar actions list
+    ActionList _toolBarsActions( QMenu* );
 
     //! maximize state prior to minimization
     bool _wasMaximized( void ) const

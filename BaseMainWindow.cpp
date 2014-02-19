@@ -188,9 +188,9 @@ QMenu* BaseMainWindow::createPopupMenu( void )
     {
 
         QMenu* menu = new QMenu( this );
-        if( _hasPanels() ) menu->addAction( &lockPanelsAction() );
-        if( _hasMenuBar() ) menu->addAction(&showMenuBarAction() );
-        if( _hasStatusBar() ) menu->addAction(&showStatusBarAction() );
+        if( _hasPanels() ) menu->addAction( lockPanelsAction_ );
+        if( _hasMenuBar() ) menu->addAction( showMenuBarAction_ );
+        if( _hasStatusBar() ) menu->addAction( showStatusBarAction_ );
         return menu;
 
     } else {
@@ -213,65 +213,30 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
     ToolBarMenu* menu = new ToolBarMenu( parent );
 
-    const bool hasLockableToolbars( installToolBarsActions( *menu->addMenu( tr( "ToolBars" ) ) ) );
-    bool needSeparator( hasLockableToolbars || _hasPanels() || _hasMenuBar() || _hasStatusBar() );
-    if( needSeparator ) menu->addSeparator();
-
-    if( hasLockableToolbars ) menu->addAction( &lockToolBarsAction() );
-    if( _hasPanels() ) menu->addAction( &lockPanelsAction() );
-    if( _hasMenuBar() ) menu->addAction( &showMenuBarAction() );
-    if( _hasStatusBar() ) menu->addAction( &showStatusBarAction() );
-
-    return *menu;
-
-}
-
-//________________________________________________________________
-bool BaseMainWindow::installToolBarsActions( QMenu& menu )
-{
-    Debug::Throw( "BaseMainWindow::installToolBarsActions.\n" );
-
-    bool hasLockableToolbars( false );
-    QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
-    foreach( QToolBar* toolbar, toolbars )
+    const ActionList actions( _toolBarsActions( menu ) );
+    if( actions.size() > 1 )
     {
-
-        // try cast to custom
-        CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
-
-        // skip toolbars that are not direct children
-        // or should not appear in menu
-        if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
-        { continue; }
-
-        if( customToolbar ) {
-
-            Debug::Throw() << "BaseMainWindow::installToolBarsActions (custom) - " << toolbar->windowTitle() << endl;
-            menu.addAction( &customToolbar->visibilityAction() );
-
-        } else if( !toolbar->windowTitle().isEmpty() ) {
-
-            // add visibility action
-            Debug::Throw() << "BaseMainWindow::installToolBarsActions - " << toolbar->windowTitle() << endl;
-            QAction* action = new QAction( toolbar->windowTitle(), &menu );
-            action->setCheckable( true );
-            action->setChecked( toolbar->isVisible() );
-            connect( action, SIGNAL(toggled(bool)), toolbar, SLOT(setVisible(bool)) );
-            menu.addAction( action );
-
-        }
-
-        // skip if lockable toolbar was already found
-        if( hasLockableToolbars ) continue;
-
-        // try cast to CustomToolBar and check for 'lock from options'
-        if( customToolbar && customToolbar->lockFromOptions() ) continue;
-
-        hasLockableToolbars = true;
-
+        QMenu* toolbarsMenu( menu->addMenu( tr( "Toolbars" ) ) );
+        foreach( QAction* action, actions )
+        { toolbarsMenu->addAction( action ); }
     }
 
-    return hasLockableToolbars;
+    const bool hasLockableToolbars( _hasLockableToolBars() );
+    const bool needSeparator( hasLockableToolbars || _hasPanels() || _hasMenuBar() || _hasStatusBar() || actions.size() == 1 );
+    if( needSeparator ) menu->addSeparator();
+    if( hasLockableToolbars ) menu->addAction( lockToolBarsAction_ );
+
+    if( _hasPanels() ) menu->addAction( lockPanelsAction_ );
+    if( _hasMenuBar() ) menu->addAction( showMenuBarAction_ );
+    if( actions.size() == 1 )
+    {
+        actions.front()->setText( tr( "Show Main Toolbar" ) );
+        menu->addAction( actions.front() );
+    }
+
+    if( _hasStatusBar() ) menu->addAction( showStatusBarAction_ );
+
+    return *menu;
 
 }
 
@@ -359,8 +324,75 @@ bool BaseMainWindow::_hasToolBars( void ) const
 }
 
 //________________________________________________________________
+bool BaseMainWindow::_hasLockableToolBars( void ) const
+{
+    Debug::Throw( "BaseMainWindow::_hasLockableToolBars.\n" );
+
+    QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
+    foreach( QToolBar* toolbar, toolbars )
+    {
+
+        // try cast to custom
+        CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+
+        // skip toolbars that are not direct children
+        // or should not appear in menu
+        if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
+        { continue; }
+
+        if( customToolbar && customToolbar->lockFromOptions() )
+        { continue; }
+
+        return true;
+    }
+
+    return false;
+
+}
+
+//________________________________________________________________
 bool BaseMainWindow::_hasPanels( void ) const
 { return (bool) findChild<DockWidget*>(); }
+
+//________________________________________________________________
+BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
+{
+    Debug::Throw( "BaseMainWindow::_toolBarsActions.\n" );
+
+    ActionList actions;
+
+    QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
+    foreach( QToolBar* toolbar, toolbars )
+    {
+
+        // try cast to custom
+        CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+
+        // skip toolbars that are not direct children
+        // or should not appear in menu
+        if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
+        { continue; }
+
+        if( customToolbar ) {
+
+            actions.append( &customToolbar->visibilityAction() );
+
+        } else if( !toolbar->windowTitle().isEmpty() ) {
+
+            // add visibility action
+            QAction* action = new QAction( toolbar->windowTitle(), menu );
+            action->setCheckable( true );
+            action->setChecked( toolbar->isVisible() );
+            connect( action, SIGNAL(toggled(bool)), toolbar, SLOT(setVisible(bool)) );
+            actions.append( action );
+
+        }
+
+    }
+
+    return actions;
+
+}
 
 //____________________________________________________________
 void BaseMainWindow::_updateConfiguration( void )
