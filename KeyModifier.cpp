@@ -46,7 +46,7 @@ KeyModifier::State KeyModifier::state( void ) const
     #if defined(Q_OS_WIN)
     if( key_ == Qt::Key_CapsLock ) return ( GetKeyState(VK_CAPITAL) ) ? On:Off;
     else if( key_ == Qt::Key_NumLock ) return ( GetKeyState(VK_NUMLOCK) ) ? On:Off;
-    else return UNKNOWN;
+    else return Unknown;
     #endif
 
     #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
