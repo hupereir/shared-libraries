@@ -28,6 +28,7 @@
 
 #include <QWidget>
 
+
 namespace Svg
 {
 
@@ -46,18 +47,6 @@ namespace Svg
 
         //! modified
         void modified( void );
-
-        protected Q_SLOTS:
-
-        //! enable svg file list
-        void _enableSvgFileList( void );
-
-        private:
-
-        QWidget* fileListBox_;
-        OptionCheckBox* svgCheckBox_;
-        OptionCheckBox* plasmaCheckBox_;
-
 
     };
 
