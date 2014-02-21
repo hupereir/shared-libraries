@@ -20,14 +20,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file    ShadowLabel.cpp
-  \brief   transparent widget
-  \author  Hugo Pereira
-  \version $Revision$
-  \date    $Date$
-*/
-
 #include <QPaintEvent>
 
 #include "Debug.h"
