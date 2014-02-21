@@ -48,10 +48,6 @@ class OptionWidget
     //! set option value from widget value
     virtual void write( Options& ) const = 0;
 
-    //! option name
-    const QString& optionName( void ) const
-    { return optionName_; }
-
     //! true if has buddy
     bool hasBuddy( void ) const
     { return buddy_; }
@@ -59,6 +55,10 @@ class OptionWidget
     //! buddy
     QObject& buddy( void ) const
     { return *buddy_; }
+
+    //! option name
+    const QString& optionName( void ) const
+    { return optionName_; }
 
     protected:
 

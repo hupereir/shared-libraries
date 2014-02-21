@@ -143,7 +143,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     scrollArea->setWidget( main );
 
     // add to stack
-    _stack().addWidget( base );
+    stack_->addWidget( base );
 
     // add to item
     Item item( title, base );
@@ -183,7 +183,7 @@ void TabbedDialog::_display( const QModelIndex& index )
 {
     Debug::Throw( "TabbedDialog::_display.\n" );
     if( !index.isValid() ) return;
-    _stack().setCurrentWidget( _model().get( index ).widget() );
+    stack_->setCurrentWidget( _model().get( index ).widget() );
 }
 
 //_______________________________________________
