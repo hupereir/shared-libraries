@@ -38,50 +38,82 @@ namespace Transparency
 {
 
     //________________________________________________________________________
-    TransparencyConfiguration::TransparencyConfiguration( QWidget* parent ):
+    TransparencyConfiguration::TransparencyConfiguration( QWidget* parent, Flags flags ):
         QWidget( parent ),
         OptionWidgetList( this ),
         Counter( "Transparency::TransparencyConfiguration" )
     {
         Debug::Throw( "TransparencyConfiguration::TransparencyConfiguration.\n" );
 
-        setLayout( new QVBoxLayout() );
-        layout()->setSpacing(5);
-        layout()->setMargin(0);
+        if( (flags&Foreground) && (flags&Background) )
+        {
+            setLayout( new QVBoxLayout() );
+            layout()->setSpacing(5);
+            layout()->setMargin(0);
+        }
 
-        // generic objects
-        QWidget *box;
+        // generic widget
+        QWidget* box;
+
+        // foreground
+        if( flags&Foreground )
+        {
+
+            if( flags&Background )
+            {
+                box = new QGroupBox( "Foreground", this );
+                layout()->addWidget( box );
+            } else box = this;
+
+            _foregroundConfiguration( box );
+        }
+
+        // background
+        if( flags&Background )
+        {
+            if( flags&Foreground )
+            {
+                box = new QGroupBox( "Background", this );
+                layout()->addWidget( box );
+            } else box = this;
+
+            _backgroundConfiguration( box );
+        }
+
+        return;
+    }
+
+    //________________________________________________________________________
+    void TransparencyConfiguration::_foregroundConfiguration( QWidget* parent )
+    {
+
         OptionColorDisplay* colorDisplay;
         OptionSlider* slider;
         OptionSpinBox* spinbox;
         OptionCheckBox* checkbox;
-        GridLayout* gridLayout;
 
-        // foreground
-        layout()->addWidget( box = new QGroupBox( "Foreground", this ) );
-
-        gridLayout = new GridLayout();
+        GridLayout* gridLayout = new GridLayout();
         gridLayout->setSpacing(5);
         gridLayout->setMargin(5);
         gridLayout->setMaxCount( 2 );
-        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-        box->setLayout( gridLayout );
+        gridLayout->setColumnAlignment( 0, (Qt::Alignment)(Qt::AlignRight|Qt::AlignVCenter));
+        parent->setLayout( gridLayout );
 
         // foreground color
-        gridLayout->addWidget( new QLabel( tr( "Foreground Color:" ), box ), 0, 0, 1, 1 );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "TRANSPARENCY_FOREGROUND_COLOR" ), 0, 1, 1, 1 );
+        gridLayout->addWidget( new QLabel( tr( "Foreground Color:" ), parent ) );
+        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, "TRANSPARENCY_FOREGROUND_COLOR" ) );
         colorDisplay->setToolTip( tr( "Text/display foreground color" ) );
         addOptionWidget( colorDisplay );
 
         // shadow color
-        gridLayout->addWidget( new QLabel( tr( "Highlight color:" ), box ), 1, 0, 1, 1 );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "TRANSPARENCY_SHADOW_COLOR" ), 1, 1, 1, 1 );
+        gridLayout->addWidget( new QLabel( tr( "Highlight color:" ), parent ) );
+        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, "TRANSPARENCY_SHADOW_COLOR" ) );
         colorDisplay->setToolTip( tr( "Text/display highlight color" ) );
         addOptionWidget( colorDisplay );
 
         // foreground intensity
-        gridLayout->addWidget( new QLabel( tr( "Foreground intensity:" ), box ), 2, 0, 1, 1 );
-        gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_FOREGROUND_INTENSITY" ), 2, 1, 1, 1 );
+        gridLayout->addWidget( new QLabel( tr( "Foreground intensity:" ), parent ) );
+        gridLayout->addWidget( slider = new OptionSlider( parent, "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
         slider->setSuffix( tr( "%" ) );
@@ -89,8 +121,8 @@ namespace Transparency
         addOptionWidget( slider );
 
         // foreground highlight offset
-        gridLayout->addWidget( new QLabel( tr( "Highlight offset: " ), box ), 3, 0, 1, 1 );
-        gridLayout->addWidget( spinbox = new OptionSpinBox( box, "TRANSPARENCY_SHADOW_OFFSET" ), 3, 1, 1, 1 );
+        gridLayout->addWidget( new QLabel( tr( "Highlight size: " ), parent ) );
+        gridLayout->addWidget( spinbox = new OptionSpinBox( parent, "TRANSPARENCY_SHADOW_OFFSET" ) );
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 10 );
         spinbox->setSuffix( tr( "px" ) );
@@ -99,50 +131,42 @@ namespace Transparency
             "0 means no shadow." ) );
         addOptionWidget( spinbox );
 
-        // background
-        layout()->addWidget( box = new QGroupBox( "Background", this ) );
+        // inverse colors
+        gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Inverse colors" ), parent, "TRANSPARENCY_INVERSE_COLORS" ), 4, 1, 1, 1 );
+        addOptionWidget( checkbox );
+        checkbox->setToolTip( tr( "Inverse foreground and highlight color, typically for dark themes" ) );
 
-        gridLayout = new GridLayout();
+    }
+
+    //________________________________________________________________________
+    void TransparencyConfiguration::_backgroundConfiguration( QWidget* parent )
+    {
+
+        OptionColorDisplay* colorDisplay;
+        OptionSlider* slider;
+
+        GridLayout* gridLayout = new GridLayout();
         gridLayout->setSpacing(5);
         gridLayout->setMargin(5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-        box->setLayout( gridLayout );
+        parent->setLayout( gridLayout );
 
         // background color
-        gridLayout->addWidget( new QLabel( tr( "Background color:" ), box ), 0, 0, 1, 1 );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "TRANSPARENCY_TINT_COLOR" ), 0, 1, 1, 1 );
+        gridLayout->addWidget( new QLabel( tr( "Background color:" ), parent ) );
+        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, "TRANSPARENCY_TINT_COLOR" ) );
         colorDisplay->setToolTip( tr( "Transparent background tint color" ) );
         addOptionWidget( colorDisplay );
 
-        // highlight color
-        gridLayout->addWidget( new QLabel( tr( "Highlight color:" ), box ), 1, 0, 1, 1 );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "TRANSPARENCY_HIGHLIGHT_COLOR" ), 1, 1, 1, 1 );
-        colorDisplay->setToolTip( tr( "Background highlight color when entering widget" ) );
-        addOptionWidget( colorDisplay );
-
         // background intensity
-        gridLayout->addWidget( new QLabel( tr( "Background intensity:" ), box ), 2, 0, 1, 1 );
-        gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_TINT_INTENSITY" ), 2, 1, 1, 1 );
+        gridLayout->addWidget( new QLabel( tr( "Background intensity:" ), parent ) );
+        gridLayout->addWidget( slider = new OptionSlider( parent, "TRANSPARENCY_TINT_INTENSITY" ) );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
         slider->setSuffix( tr( "%" ) );
         slider->setToolTip( tr( "Transparent background tint intensity" ) );
         addOptionWidget( slider );
 
-        // highlight intensity
-        gridLayout->addWidget( new QLabel( tr( "Highlight intensity:" ), box ), 3, 0, 1, 1 );
-        gridLayout->addWidget( slider = new OptionSlider( box, "TRANSPARENCY_HIGHLIGHT_INTENSITY" ), 3, 1, 1, 1 );
-        slider->setScale( 1.0/2.55 );
-        slider->setRange( 0, 100 );
-        slider->setSuffix( tr( "%" ) );
-        slider->setToolTip( tr( "Background highlight intensity when entering widget" ) );
-        addOptionWidget( slider );
-
-        // inverse colors
-        gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Inverse colors" ), box, "TRANSPARENCY_INVERSE_COLORS" ), 8, 1, 1, 1 );
-        addOptionWidget( checkbox );
-
-        return;
     }
+
 }

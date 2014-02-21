@@ -22,9 +22,10 @@
 *
 *******************************************************************************/
 
-#include <QWidget>
 #include "Counter.h"
 #include "OptionWidgetList.h"
+
+#include <QWidget>
 
 namespace Transparency
 {
@@ -36,15 +37,35 @@ namespace Transparency
 
         public:
 
+        //! flags
+        enum Flag
+        {
+            Foreground = 1<<0,
+            Background = 1<<1,
+            All = Foreground|Background
+        };
+
+        Q_DECLARE_FLAGS( Flags, Flag );
+
         //! constructor
-        TransparencyConfiguration( QWidget* parent );
+        TransparencyConfiguration( QWidget* parent, Flags = Foreground );
 
         Q_SIGNALS:
 
         //! modified
         void modified( void );
 
+        protected:
+
+        //! foreground configuration
+        void _foregroundConfiguration( QWidget* );
+
+        //! background configuration
+        void _backgroundConfiguration( QWidget* );
+
+
     };
-};
+
+}
 
 #endif

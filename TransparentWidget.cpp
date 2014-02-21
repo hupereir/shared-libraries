@@ -48,8 +48,7 @@ namespace Transparency
         hasInputShape_( false ),
         backgroundChanged_( true ),
         foregroundIntensity_( 255 ),
-        shadowOffset_( 0 ),
-        highlighted_( false )
+        shadowOffset_( 0 )
     {
 
         Debug::Throw( "TransparentWidget::TransparentWidget.\n" );
@@ -118,14 +117,6 @@ namespace Transparency
     }
 
     //____________________________________________________________________
-    void TransparentWidget::_setHighlightColor( const QColor& color )
-    {
-        Debug::Throw( "TransparentWidget::highlight.\n" );
-        if( highlightColor_ == color ) return;
-        highlightColor_ = color;
-    }
-
-    //____________________________________________________________________
     void TransparentWidget::resizeEvent( QResizeEvent* event )
     {
         setBackgroundChanged( true );
@@ -150,28 +141,6 @@ namespace Transparency
         update();
         QWidget::showEvent( event );
         _updateInputShape();
-    }
-
-    //____________________________________________________________________
-    void TransparentWidget::enterEvent( QEvent* event )
-    {
-        if( !_highlighted() && _highlightColor().isValid() )
-        {
-            _setHighlighted( true );
-            update();
-        }
-        QWidget::enterEvent( event );
-    }
-
-    //____________________________________________________________________
-    void TransparentWidget::leaveEvent( QEvent* event )
-    {
-        if( _highlighted() && _highlightColor().isValid() )
-        {
-            _setHighlighted( false );
-            update();
-        }
-        QWidget::leaveEvent( event );
     }
 
     //____________________________________________________________________
@@ -207,13 +176,6 @@ namespace Transparency
         if( backgroundChanged_ ) _updateBackgroundPixmap();
         if( !backgroundPixmap_.isNull() )
         { painter.drawPixmap( TransparentWidget::rect(), backgroundPixmap_, TransparentWidget::rect() ); }
-
-        if( _highlighted() && _highlightColor().isValid() )
-        {
-            painter.setPen( Qt::NoPen );
-            painter.setBrush( _highlightColor() );
-            painter.drawRect( TransparentWidget::rect() );
-        }
 
         painter.end();
 
@@ -254,15 +216,6 @@ namespace Transparency
             _setTintColor( tintColor );
 
         } else _setTintColor( QColor() );
-
-        // highlight
-        QColor highlightColor( XmlOptions::get().get<Base::Color>( "TRANSPARENCY_HIGHLIGHT_COLOR" ) );
-        unsigned int highlightIntensity(  XmlOptions::get().get<unsigned int>( "TRANSPARENCY_HIGHLIGHT_INTENSITY" ) );
-        if( highlightColor.isValid() && highlightIntensity )
-        {
-            highlightColor.setAlpha( highlightIntensity );
-            _setHighlightColor( highlightColor );
-        } else _setHighlightColor( QColor() );
 
         #if defined(Q_OS_WIN)
         // create widget pixmap when compositing is enabled

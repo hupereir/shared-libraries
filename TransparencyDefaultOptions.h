@@ -44,10 +44,6 @@ void installTransparencyOptions( void )
     XmlOptions::get().set<Base::Color>( "TRANSPARENCY_TINT_COLOR", QColor( Qt::white ) );
     XmlOptions::get().set<double>( "TRANSPARENCY_TINT_INTENSITY", 0 );
 
-    // highlight
-    XmlOptions::get().set<Base::Color>( "TRANSPARENCY_HIGHLIGHT_COLOR", QColor( Qt::white ) );
-    XmlOptions::get().set<int>( "TRANSPARENCY_HIGHLIGHT_INTENSITY", 0 );
-
 }
 
 #endif

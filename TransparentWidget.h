@@ -58,9 +58,8 @@ namespace Transparency
 
         //@}
 
-        //! background changed
-        void setBackgroundChanged( const bool& value )
-        { backgroundChanged_ = value; }
+        //!@name accessors
+        //@{
 
         //! foreground
         virtual const QColor& foregroundColor( void ) const
@@ -77,6 +76,17 @@ namespace Transparency
         //! shadow offset
         virtual int shadowOffset( void ) const
         { return shadowOffset_; }
+
+        //@}
+
+        //!@name modifiers
+        //@{
+
+        //! background changed
+        void setBackgroundChanged( const bool& value )
+        { backgroundChanged_ = value; }
+
+        //@}
 
         public Q_SLOTS:
 
@@ -98,27 +108,12 @@ namespace Transparency
         virtual const QColor& _tintColor( void ) const
         { return tintColor_; }
 
-        //! highlight
-        virtual void _setHighlightColor( const QColor& );
-
-        //! highlight color
-        virtual const QColor& _highlightColor( void ) const
-        { return highlightColor_; }
-
         //! shadow offset
         virtual void _setShadowOffset( int value )
         { shadowOffset_ = value; }
 
         //! foreground intensity
         virtual void _setForegroundIntensity( int value );
-
-        //! highlighted
-        virtual void _setHighlighted( bool value )
-        { highlighted_ = value; }
-
-        //! highlighted
-        virtual const bool& _highlighted( void ) const
-        { return highlighted_; }
 
         //! background pixmap
         virtual QPixmap& _backgroundPixmap( void )
@@ -136,12 +131,6 @@ namespace Transparency
 
         //! show
         virtual void showEvent( QShowEvent* );
-
-        //! enter event
-        virtual void enterEvent( QEvent *event );
-
-        //! leave event
-        virtual void leaveEvent( QEvent *event );
 
         //! paint
         virtual void paintEvent( QPaintEvent* );
@@ -260,9 +249,6 @@ namespace Transparency
         //! shadow offset
         int shadowOffset_;
 
-        //! true when pointer is in window
-        bool highlighted_;
-
         //! margins
         Base::Margins margins_;
 
@@ -271,9 +257,6 @@ namespace Transparency
 
         //! store last blur region
         QRegion blurRegion_;
-
-        //! tint color
-        QColor highlightColor_;
 
         #if defined(Q_OS_WIN)
         //! widget pixmap
