@@ -57,7 +57,7 @@ namespace IconNames
     static const QString Remove = "list-remove.png";
     static const QString Rename = "edit-rename.png";
     static const QString Revert = "document-revert.png";
-    static const QString RUN = "system-run.png";
+    static const QString Run = "system-run.png";
     static const QString ShowMenu = "show-menu.png";
     static const QString Undo = "edit-undo.png";
 
