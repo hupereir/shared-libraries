@@ -131,8 +131,8 @@ CommandLineArguments CommandLineParser::arguments( void ) const
     }
 
     // add orphans
-    for( QStringList::const_iterator iter = orphans_.begin(); iter != orphans_.end(); ++iter )
-    { out << *iter; }
+    foreach( const QString& orphan, orphans_ )
+    { out << orphan; }
 
     return out;
 
