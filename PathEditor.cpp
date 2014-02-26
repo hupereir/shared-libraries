@@ -31,9 +31,6 @@
 #include "Singleton.h"
 #include "XmlOptions.h"
 
-#include <QEvent>
-#include <QTimer>
-
 #include <QApplication>
 #include <QDrag>
 #include <QLayout>
@@ -709,7 +706,7 @@ void PathEditor::selectNext( void )
 //____________________________________________________________________________
 void PathEditor::resizeEvent( QResizeEvent* event )
 {
-    QTimer::singleShot( 0, this, SLOT(_updateButtonVisibility()) );
+    QMetaObject::invokeMethod( this, "_updateButtonVisibility", Qt::QueuedConnection );
     QWidget::resizeEvent( event );
 }
 
