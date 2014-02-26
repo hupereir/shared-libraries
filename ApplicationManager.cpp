@@ -75,6 +75,8 @@ namespace Server
     CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings )
     {
 
+        Debug::Throw() << "ApplicationManager::commandLineParser" << endl;
+
         CommandLineParser out;
         out.setGroup( CommandLineParser::serverGroupName );
         out.registerFlag( "--replace", tr( "replace existing application instance with new one" ) );

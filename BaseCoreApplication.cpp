@@ -122,6 +122,8 @@ bool BaseCoreApplication::realizeWidget( void )
 CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings ) const
 {
 
+    Debug::Throw() << "BaseCoreApplication::commandLineParser" << endl;
+
     CommandLineParser out( Server::ApplicationManager::commandLineParser() );
 
     out.setGroup( CommandLineParser::applicationGroupName );

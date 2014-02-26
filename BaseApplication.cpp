@@ -164,6 +164,8 @@ bool BaseApplication::realizeWidget( void )
 CommandLineParser BaseApplication::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings ) const
 {
 
+    Debug::Throw() << "BaseApplication::commandLineParser" << endl;
+
     CommandLineParser out( BaseCoreApplication::commandLineParser() );
 
     // these are additional flags recognized by Qt.
