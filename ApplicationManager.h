@@ -95,12 +95,6 @@ namespace Server
 
         Q_SIGNALS:
 
-        //! emitted when manager state is changed
-        // void stateChanged( Server::ApplicationManager::State state );
-
-        //! emitted when manager is ALIVE and request is recieved
-        // void serverRequest( const CommandLineArguments& args );
-
         //! emitted when a given command is recieved
         void commandRecieved( Server::ServerCommand );
 
@@ -160,7 +154,7 @@ namespace Server
         /*! \brief register a client, returns true if application is new.
         if forced is set to true, the old cliend, if any, is replaced
         */
-        virtual Client* _register( const ApplicationId& id, Client* client, bool forced = false );
+        virtual ClientMap::iterator _register( const ApplicationId& id, Client* client, bool forced = false );
 
         //! redirect message
         virtual void _redirect( ServerCommand, Client* );

@@ -161,30 +161,18 @@ namespace Server
     }
 
     //_____________________________________________________
-    Client* ApplicationManager::_register( const ApplicationId& id, Client* client, bool forced )
+    ApplicationManager::ClientMap::iterator ApplicationManager::_register( const ApplicationId& id, Client* client, bool forced )
     {
         Debug::Throw( "ApplicationManager::_register.\n" );
 
-        if( forced ) {
+        if( forced ) return acceptedClients_.insert( id, client );
+        else {
 
-            acceptedClients_[id] = client;
-            return client;
-
-        } else if( acceptedClients_.find( id ) == acceptedClients_.end() ) {
-
-            acceptedClients_[id] = client;
-            return client;
-
-        } else {
-
-            // need to update pid on key
-            Client* client( acceptedClients_[id] );
-            acceptedClients_.remove( id );
-            acceptedClients_.insert( id, client );
-            return client;
+            ClientMap::iterator iter( acceptedClients_.find( id ) );
+            if( iter == acceptedClients_.end() ) return acceptedClients_.insert( id, client );
+            else return iter;
 
         }
-
     }
 
     //_____________________________________________________
@@ -213,9 +201,11 @@ namespace Server
             {
 
                 // server request
-                Client *existingClient = _register( command.id(), sender );
+                ClientMap::iterator clientIterator( _register( command.id(), sender ) );
+                Client* existingClient( clientIterator.value() );
 
-                if( sender == existingClient ) {
+                if( sender == existingClient )
+                {
 
                     if( parser.hasFlag( "--abort" ) )
                     {
@@ -244,6 +234,9 @@ namespace Server
                     sender->sendCommand( ServerCommand( command.id(), ServerCommand::Accepted ) );
                     _broadcast( ServerCommand( command.id(), ServerCommand::Identify ), sender );
                     _register( command.id(), sender, true );
+
+                    // update iterator pid
+                    const_cast<ApplicationId*>( &clientIterator.key() )->setProcessId( command.id().processId() );
 
                 } else if( parser.hasFlag( "--abort" ) ) {
 
