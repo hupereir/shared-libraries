@@ -29,10 +29,12 @@
 ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
     QLabel( parent ),
     Counter( "ElidedLabel" ),
+    hRefRegExp_( "(<a href=.+>)|(</a>)" ),
     elideMode_( Qt::ElideLeft )
 {
 
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
+    hRefRegExp_.setMinimal( true );
 
     // set size policy
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
@@ -46,10 +48,12 @@ ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
 ElidedLabel::ElidedLabel(  QWidget* parent ):
     QLabel( parent ),
     Counter( "ElidedLabel" ),
+    hRefRegExp_( "(<a href=.+>)|(</a>)" ),
     elideMode_( Qt::ElideLeft )
 {
 
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
+    hRefRegExp_.setMinimal( true );
 
     // set size policy
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
@@ -89,16 +93,48 @@ void ElidedLabel::updateElidedText( void )
     QStringList elidedLines;
     bool elided = false;
 
-    foreach( const QString& line, fullText_.split( '\n' ) )
+    foreach( const QString& fullLine, fullText_.split( '\n' ) )
     {
+
+        // attempt at dealing with rich text
+        QString prefix;
+        QString suffix;
+        QString line( fullLine );
+        switch( elideMode_ )
+        {
+            case Qt::ElideLeft:
+            {
+                if( fullLine.indexOf( hRefRegExp_ ) == 0 )
+                {
+                    prefix = fullLine.left( hRefRegExp_.matchedLength() );
+                    line = fullLine.mid( hRefRegExp_.matchedLength() );
+                }
+                break;
+            }
+
+            case Qt::ElideRight:
+            {
+                int position( fullLine.lastIndexOf( hRefRegExp_ ) );
+                if( position >= 0 && position + hRefRegExp_.matchedLength() == fullLine.length() )
+                {
+                    suffix = fullLine.mid( position );
+                    line = fullLine.left( position );
+                }
+                break;
+            }
+
+            default: break;
+        }
+
         int lineWidth = fm.width(line);
         if (lineWidth > labelWidth)
         {
             elided = true;
-            elidedLines << fm.elidedText(line, elideMode_, labelWidth );
+            elidedLines << prefix + fm.elidedText(line, elideMode_, labelWidth ) + suffix;
+
         } else {
 
-            elidedLines << line;
+            elidedLines << fullLine;
 
         }
     }
