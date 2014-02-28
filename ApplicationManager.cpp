@@ -133,7 +133,7 @@ namespace Server
     void ApplicationManager::setApplicationName( const QString& name )
     {
         Debug::Throw() << "ApplicationManager::setApplicationName - " << name << endl;
-        id_ = ApplicationId( name, Util::user(), Util::env( "DISPLAY", "0.0" ).replace( ":", "" ) );
+        id_ = ApplicationId( name );
         id_.setProcessId( QCoreApplication::applicationPid() );
     }
 
