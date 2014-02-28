@@ -69,6 +69,14 @@ class BaseCoreApplication: public QObject
 
     //@}
 
+    public Q_SLOTS:
+
+    //! send server command
+    virtual void sendServerCommand( Server::ServerCommand::CommandType );
+
+    //! send server command
+    virtual void sendServerCommand( Server::ServerCommand );
+
     Q_SIGNALS:
 
     //! emmited when configuration needs to be saved
