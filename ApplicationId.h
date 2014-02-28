@@ -37,7 +37,7 @@ namespace Server
         public:
 
         //! constructor
-        ApplicationId( const QString& = QString(), const QString& = QString(), const QString& = QString() );
+        ApplicationId( const QString& = QString(), QString = QString(), QString = QString() );
 
         //! constructor
         ApplicationId( const QDomElement& );

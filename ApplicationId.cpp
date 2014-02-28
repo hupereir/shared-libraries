@@ -22,17 +22,22 @@
 #include "ApplicationId.h"
 #include "Debug.h"
 #include "ServerXmlDef.h"
+#include "Util.h"
 
 namespace Server
 {
 
     //____________________________________________________
-    ApplicationId::ApplicationId( const QString& name, const QString& user, const QString& display ):
+    ApplicationId::ApplicationId( const QString& name, QString user, QString display ):
         Counter( "ApplicationId" ),
         name_( name ),
-        user_( user + QString("@")+display ),
         pid_( 0 )
-    { Debug::Throw( "ApplicationId::ApplicationId.\n" ); }
+    {
+        Debug::Throw( "ApplicationId::ApplicationId.\n" );
+        if( user.isNull() ) user = Util::user();
+        if( display.isNull() ) display = Util::env( "DISPLAY", "0.0" ).replace( ":", "" );
+        user_ = user + QString("@")+display;
+    }
 
     //____________________________________________________
     ApplicationId::ApplicationId( const QDomElement& element ):
