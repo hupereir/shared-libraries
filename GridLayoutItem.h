@@ -67,9 +67,13 @@ class GridLayoutItem: public QObject, public Counter
     QString key( void ) const
     { return key_->text(); }
 
-    //! key
+    //! value
     QString text( void ) const
     { return value_->text(); }
+
+    //! value label
+    QLabel& label( void ) const
+    { return *value_; }
 
     //!@}
 
