@@ -47,7 +47,10 @@ GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, ItemFlags f
     }
 
     if( flags & Selectable )
-    { value_->setTextInteractionFlags( Qt::TextSelectableByMouse ); }
+    {
+        const Qt::TextInteractionFlags defaultFlags( QLabel().textInteractionFlags() );
+        value_->setTextInteractionFlags( Qt::TextSelectableByMouse | defaultFlags );
+    }
 
     // add to layout
     layout->addWidget( value_, layout->currentRow(), layout->currentColumn(), Qt::AlignLeft|Qt::AlignTop );
