@@ -484,7 +484,11 @@ File::List File::listFiles( ListFlags flags ) const
     if( !fullname.endsWith( "/" ) ) fullname += "/";
 
     // open directory
-    QDir::Filters filter = QDir::AllEntries|QDir::System|QDir::NoDotDot;
+    QDir::Filters filter = QDir::AllEntries|QDir::System;
+    #if QT_VERSION >= 0x040800
+    filter |= QDir::NoDotDot;
+    #endif
+
     if( flags & ShowHiddenFiles ) filter |= QDir::Hidden;
 
     const QDir dir( fullname );
@@ -531,7 +535,14 @@ File File::find( const File& file, bool caseSensitive ) const
     File fullname( *this );
     if( !fullname.endsWith( "/" ) ) fullname += "/";
     const QDir dir( fullname );
-    foreach( const QString& value, dir.entryList( QDir::NoDotDot|QDir::Dirs ) )
+
+    // filter
+    QDir::Filters filter = QDir::Dirs;
+    #if QT_VERSION >= 0x040800
+    filter |= QDir::NoDotDot;
+    #endif
+
+    foreach( const QString& value, dir.entryList( filter ) )
     {
         if( value == "." || value == ".." ) continue;
 
