@@ -70,6 +70,10 @@ class DockPanel: public QWidget, public Counter
     QWidget& main( void ) const
     { return *main_; }
 
+    //! true if detached
+    bool isDetached( void ) const
+    { return main_ && !main_->parentWidget(); }
+
     Q_SIGNALS:
 
     //! emmited when state is changed
