@@ -174,6 +174,10 @@ class TimeStamp:public Counter
             tm_.tm_year == other.tm_.tm_year;
     }
 
+    //! true if same day
+    bool isSameYear( const TimeStamp& other ) const
+    { return tm_.tm_year == other.tm_.tm_year; }
+
     //@}
 
     //!@name modifiers
