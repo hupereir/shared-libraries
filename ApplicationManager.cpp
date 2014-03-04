@@ -169,8 +169,13 @@ namespace Server
         else {
 
             ClientMap::iterator iter( acceptedClients_.find( id ) );
-            if( iter == acceptedClients_.end() ) return acceptedClients_.insert( id, client );
-            else return iter;
+            SameClientFTor sameClientFTor( client );
+            if( iter == acceptedClients_.end() && std::find_if( acceptedClients_.begin(), acceptedClients_.end(), sameClientFTor ) == acceptedClients_.end() )
+            {
+
+                return acceptedClients_.insert( id, client );
+
+            } else return iter;
 
         }
     }
@@ -201,7 +206,11 @@ namespace Server
             {
 
                 // server request
+
+                // get existing client
                 ClientMap::iterator clientIterator( _register( command.id(), sender ) );
+                if( clientIterator == acceptedClients_.end() ) return;
+
                 Client* existingClient( clientIterator.value() );
 
                 if( sender == existingClient )

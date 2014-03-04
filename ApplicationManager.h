@@ -143,6 +143,34 @@ namespace Server
 
         };
 
+        //! used to retrieve pair with matching client
+        class SameClientFTor
+        {
+            public:
+
+            //! constructor
+            SameClientFTor( Client* client ):
+                client_( client )
+                {}
+
+            //! destructor
+            virtual ~SameClientFTor( void )
+            {}
+
+            //! predicate
+            bool operator() ( const ClientPair& pair ) const
+            { return pair.second == client_; }
+
+            //! predicate
+            bool operator() ( Client* client ) const
+            { return client == client_; }
+
+            private:
+
+            //! prediction
+            Client* client_;
+        };
+
         //! map of accepted clients
         ClientMap& _acceptedClients( void )
         { return acceptedClients_; }
