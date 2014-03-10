@@ -75,6 +75,7 @@ namespace SpellCheck
         // misspelled word line editor
         gridLayout->addWidget( new QLabel( tr( "Misspelled word:" ), this ) );
         gridLayout->addWidget( sourceLabel_ = new QLabel( this ) );
+        sourceLabel_->setTextInteractionFlags( Qt::TextSelectableByMouse );
 
         // replacement line editor
         gridLayout->addWidget( new QLabel( tr( "Replace with:" ), this ) );
@@ -135,11 +136,14 @@ namespace SpellCheck
         hLayout->addLayout( vLayout );
 
         // add word button
-        vLayout->addWidget( addWordButton_ = new QPushButton( tr( "Add to Dictionary" ), this ) );
+        vLayout->addWidget( addWordButton_ = new QPushButton( tr( "<< Add to Dictionary" ), this ) );
+        addWordButton_->setToolTip( tr( "Add misspelled word to the current dictionnary" ) );
         connect( addWordButton_, SIGNAL(clicked()), SLOT(_addWord()) );
+
 
         // check word button
         vLayout->addWidget( checkWordButton_ = new QPushButton( tr( "Suggest" ), this ) );
+        checkWordButton_->setToolTip( tr( "Suggest correct spelling for the word to use as a replacement" ) );
         connect( checkWordButton_, SIGNAL(clicked()), SLOT(_checkWord()) );
 
         // recheck button
