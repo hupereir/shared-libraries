@@ -70,12 +70,18 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     hLayout->addWidget( iconLabel_, 0, Qt::AlignTop );
     hLayout->addStretch();
 
+    QVBoxLayout* vLayout= new QVBoxLayout();
+    vLayout->setMargin(0);
+    vLayout->setSpacing(5);
+    hLayout->addLayout( vLayout );
+    hLayout->addStretch();
+
     gridLayout_ = new GridLayout();
     gridLayout_->setSpacing( 5 );
     gridLayout_->setMaxCount( 2 );
     gridLayout_->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-    hLayout->addLayout( gridLayout_ );
-    hLayout->addStretch();
+    vLayout->addLayout( gridLayout_ );
+    vLayout->addStretch();
 
     // store all items in array, for visibility
     QList<GridLayoutItem*> items;
