@@ -135,8 +135,8 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //! clear box selection
     virtual void clearBoxSelection( void )
     {
-        if( _boxSelection().state() == BoxSelection::SelectionFinished )
-        { _boxSelection().clear(); }
+        if( boxSelection_.state() == BoxSelection::SelectionFinished )
+        { boxSelection_.clear(); }
     }
 
     //!@name synchronization
