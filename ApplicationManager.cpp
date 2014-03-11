@@ -281,6 +281,10 @@ namespace Server
 
             case ServerCommand::Identify:
             {
+
+                // identify the server
+                sender->sendCommand( ServerCommand( id_, ServerCommand::IdentifyServer ) );
+
                 /*
                 identification request. Loop over registered clients
                 send the associated Identity to the sender
@@ -289,8 +293,6 @@ namespace Server
                 for( ClientMap::iterator it=acceptedClients_.begin(); it!=acceptedClients_.end(); it++ )
                 { sender->sendCommand( ServerCommand( it.key(), ServerCommand::Identify ) ); }
 
-                // identify the server
-                sender->sendCommand( ServerCommand( id_, ServerCommand::IdentifyServer ) );
                 return;
             }
 
