@@ -46,80 +46,14 @@ class CommandLineParser: public Counter
     static const QString qtGroupName;
     //@}
 
-    //! accessors
-    //@{
-
-    //! print help
-    void usage( void ) const;
-
-    //! return 'rectified' arguments
-    CommandLineArguments arguments( void ) const;
-
-    //! application name
-    QString applicationName( void ) const
-    { return applicationName_; }
-
-    //! return true if flag is on
-    bool hasFlag( QString ) const;
-
-    //! return true if option is set
-    bool hasOption( QString ) const;
-
-    //! return option associated to tag
-    QString option( QString ) const;
-
-    //! orphans
-    /*! list of command line arguments located at the end of the list and that do not match any option */
-    const QStringList& orphans( void ) const
-    { return orphans_; }
-
-    //@}
-
-    //! modifiers
-    //@{
-
-    //! register group
-    void setGroup( QString groupName )
-    {
-        currentGroup_ = groupName;
-        if( !groupNames_.contains( currentGroup_ ) )
-        { groupNames_.append( currentGroup_ ); }
-    }
-
-    //! register option
-    void registerOption( QString tag, QString type, QString helpText );
-
-    //! register flag
-    void registerFlag( QString tag, QString helpText );
-
-    //! parse
-    CommandLineParser& parse( const CommandLineArguments&, bool ignoreWarnings = true );
-
-    //! clear
-    void clear( void );
-
-    //! orphans
-    /*! list of command line arguments located at the end of the list and that do not match any option */
-    QStringList& orphans( void )
-    { return orphans_; }
-
-    //@}
-
-    private:
-
-    //! discard orphans
-    void _discardOrphans( bool ignoreWarnings );
-
-    //! returns true if string is a tag
-    bool _isTag( QString ) const;
-
+    //! used to register options/flags
     class Tag: public Counter
     {
 
         public:
 
         //! constructor
-        Tag( QString longName, QString shortName = QString() ):
+        explicit Tag( QString longName, QString shortName = QString() ):
             Counter( "CommandLineParser::Tag" ),
             longName_( longName ),
             shortName_( shortName )
@@ -163,12 +97,89 @@ class CommandLineParser: public Counter
         int size( void ) const
         { return toString().size(); }
 
+        typedef QList<Tag> List;
+
         private:
 
         QString longName_;
         QString shortName_;
 
     };
+
+    //! accessors
+    //@{
+
+    //! print help
+    void usage( void ) const;
+
+    //! return 'rectified' arguments
+    CommandLineArguments arguments( void ) const;
+
+    //! application name
+    QString applicationName( void ) const
+    { return applicationName_; }
+
+    //! return true if flag is on
+    bool hasFlag( const QString& ) const;
+
+    //! return true if option is set
+    bool hasOption( const QString& ) const;
+
+    //! return option associated to tag
+    QString option( const QString& ) const;
+
+    //! orphans
+    /*! list of command line arguments located at the end of the list and that do not match any option */
+    const QStringList& orphans( void ) const
+    { return orphans_; }
+
+    //@}
+
+    //! modifiers
+    //@{
+
+    //! register group
+    void setGroup( QString groupName )
+    {
+        currentGroup_ = groupName;
+        if( !groupNames_.contains( currentGroup_ ) )
+        { groupNames_.append( currentGroup_ ); }
+    }
+
+    //! register option
+    void registerOption( const QString& tag, const QString& type, QString helpText )
+    { registerOption( Tag( tag ), type, helpText ); }
+
+    //! register option
+    void registerOption( const Tag&, const QString& type, const QString& helpText );
+
+    //! register flag
+    void registerFlag( const QString& tag, const QString& helpText )
+    { registerFlag( Tag( tag ), helpText ); }
+
+    //! register flag
+    void registerFlag( const Tag&, const QString& );
+
+    //! parse
+    CommandLineParser& parse( const CommandLineArguments&, bool ignoreWarnings = true );
+
+    //! clear
+    void clear( void );
+
+    //! orphans
+    /*! list of command line arguments located at the end of the list and that do not match any option */
+    QStringList& orphans( void )
+    { return orphans_; }
+
+    //@}
+
+    private:
+
+    //! discard orphans
+    void _discardOrphans( bool ignoreWarnings );
+
+    //! returns true if string is a tag
+    bool _isTag( const QString& ) const;
 
     //! flag class
     class Flag: public Counter
@@ -239,6 +250,28 @@ class CommandLineParser: public Counter
 
     };
 
+    //! used to find matching flag
+    class SameTagFTor
+    {
+
+        public:
+
+        //! constructor
+        SameTagFTor( const QString& tag ):
+            tag_( tag )
+            {}
+
+        //! predicate
+        bool operator() ( const Tag& tag ) const
+        { return tag.shortName() == tag_ || tag.longName() == tag_; }
+
+        private:
+
+        //! tag
+        QString tag_;
+
+    };
+
     class Group
     {
 
@@ -268,6 +301,18 @@ class CommandLineParser: public Counter
 
     //! return all options
     Group::OptionMap _allOptions( void ) const;
+
+    //! find tag in list of flags
+    Group::FlagMap::iterator _findTag( Group::FlagMap&, const QString& ) const;
+
+    //! find tag in list of flags
+    Group::FlagMap::const_iterator _findTag( const Group::FlagMap&, const QString& ) const;
+
+    //! find tag in list of options
+    Group::OptionMap::iterator _findTag( Group::OptionMap&, const QString& ) const;
+
+    //! find tag in list of options
+    Group::OptionMap::const_iterator _findTag( const Group::OptionMap&, const QString& ) const;
 
     //! group list
     Group::Map groups_;
