@@ -113,6 +113,63 @@ class CommandLineParser: public Counter
     //! returns true if string is a tag
     bool _isTag( QString ) const;
 
+    class Tag: public Counter
+    {
+
+        public:
+
+        //! constructor
+        Tag( QString longName, QString shortName = QString() ):
+            Counter( "CommandLineParser::Tag" ),
+            longName_( longName ),
+            shortName_( shortName )
+        {}
+
+        //! destructor
+        virtual ~Tag( void )
+        {}
+
+        //! equal to operator
+        bool operator == (const Tag& other ) const
+        {
+            if( shortName_.isNull() ) return longName_ == other.longName_ || longName_ == other.shortName_;
+            else if( other.shortName_.isNull() ) return longName_ == other.longName_ || shortName_ == other.longName_;
+            else return longName_ == other.longName_ && shortName_ == other.shortName_;
+        }
+
+        //! less than operator
+        bool operator < (const Tag& other ) const
+        {
+            if( longName_ != other.longName_ ) return longName_ < other.longName_;
+            else return shortName_ < other.shortName_;
+        }
+
+        //!@name accessors
+        //@{
+
+        //! long name
+        const QString& longName( void ) const
+        { return longName_; }
+
+        //! short name
+        const QString& shortName( void ) const
+        { return shortName_; }
+
+        //! convert to string
+        QString toString( void ) const
+        { return shortName_.isNull() ? longName_:(shortName_+", "+longName_); }
+
+        //! size
+        int size( void ) const
+        { return toString().size(); }
+
+        private:
+
+        QString longName_;
+        QString shortName_;
+
+    };
+
     //! flag class
     class Flag: public Counter
     {
@@ -165,7 +222,7 @@ class CommandLineParser: public Counter
         public:
 
         //! predicate
-        bool operator () ( const QString& first, const QString& second )
+        bool operator () ( const Tag& first, const Tag& second )
         { return first.size() < second.size(); }
 
     };
@@ -193,13 +250,13 @@ class CommandLineParser: public Counter
         typedef QHash< QString, Group> Map;
 
         //! flags
-        typedef QMap<QString, Flag> FlagMap;
+        typedef QMap<Tag, Flag> FlagMap;
 
         //! flags
         FlagMap flags_;
 
         //! options
-        typedef QMap<QString, Option> OptionMap;
+        typedef QMap<Tag, Option> OptionMap;
 
         //! options
         OptionMap options_;

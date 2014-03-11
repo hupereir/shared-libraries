@@ -65,7 +65,7 @@ void CommandLineParser::usage( void ) const
         int maxFlagLength(0);
         if( !group.flags_.isEmpty() )
         {
-            const QList<QString> flagKeys( group.flags_.keys() );
+            const QList<Tag> flagKeys( group.flags_.keys() );
             maxFlagLength = std::max_element( flagKeys.constBegin(), flagKeys.constEnd(), MinLengthFTor() )->size();
         }
 
@@ -73,7 +73,7 @@ void CommandLineParser::usage( void ) const
         int maxTypeLength(0);
         if( !group.options_.isEmpty() )
         {
-            const QList<QString> optionKeys( group.options_.keys() );
+            const QList<Tag> optionKeys( group.options_.keys() );
             const QList<Option> optionValues( group.options_.values() );
             maxOptionLength = std::max_element( optionKeys.constBegin(), optionKeys.constEnd(), MinLengthFTor() )->size();
             maxTypeLength = 1+ std::max_element( optionValues.constBegin(), optionValues.constEnd(), MinTypeLengthFTor() )->type_.size();
@@ -85,7 +85,7 @@ void CommandLineParser::usage( void ) const
         for( Group::FlagMap::const_iterator iter = group.flags_.constBegin(); iter != group.flags_.constEnd(); ++iter )
         {
             stream << "  ";
-            stream << iter.key().leftJustified( maxLength + maxTypeLength + 1 );
+            stream << iter.key().toString().leftJustified( maxLength + maxTypeLength + 1 );
             stream << iter.value().helpText_ << endl;
         }
 
@@ -93,7 +93,7 @@ void CommandLineParser::usage( void ) const
         for( Group::OptionMap::const_iterator iter = group.options_.constBegin(); iter != group.options_.constEnd(); ++iter )
         {
             stream << "  ";
-            stream << iter.key().leftJustified( maxLength );
+            stream << iter.key().toString().leftJustified( maxLength );
             stream << iter.value().type_.leftJustified( maxTypeLength + 1 );
             stream << iter.value().helpText_ << endl;
         }
@@ -122,11 +122,11 @@ CommandLineArguments CommandLineParser::arguments( void ) const
         const Group& group = iter.value();
 
         for( Group::FlagMap::const_iterator iter = group.flags_.constBegin(); iter != group.flags_.constEnd(); ++iter )
-        { if( iter.value().set_ ) out << iter.key(); }
+        { if( iter.value().set_ ) out << iter.key().longName(); }
 
         // add options
         for( Group::OptionMap::const_iterator iter = group.options_.constBegin(); iter != group.options_.constEnd(); ++iter )
-        { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out << iter.key() << iter.value().value_; }
+        { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out << iter.key().longName() << iter.value().value_; }
 
     }
 
@@ -142,7 +142,7 @@ CommandLineArguments CommandLineParser::arguments( void ) const
 bool CommandLineParser::hasFlag( QString tag ) const
 {
     const Group::FlagMap flags( _allFlags() );
-    Group::FlagMap::const_iterator iter( flags.find( tag ) );
+    Group::FlagMap::const_iterator iter( flags.find( Tag( tag ) ) );
     return iter != flags.end() && iter.value().set_;
 }
 
@@ -326,7 +326,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
                     Debug::Throw(0) << "CommandLineParser::parse -"
                         << " expected argument of type " << iter.value().type_
-                        << " after option " << iter.key() << endl;
+                        << " after option " << iter.key().longName() << endl;
 
                 }
 
