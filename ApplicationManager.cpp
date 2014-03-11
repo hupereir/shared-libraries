@@ -79,9 +79,9 @@ namespace Server
 
         CommandLineParser out;
         out.setGroup( CommandLineParser::serverGroupName );
-        out.registerFlag( "--replace", tr( "replace existing application instance with new one" ) );
+        out.registerFlag( CommandLineParser::Tag( "--replace", "-r" ), tr( "replace existing application instance with new one" ) );
+        out.registerFlag( CommandLineParser::Tag( "--abort", "-q" ), tr( "exit existing instance" ) );
         out.registerFlag( "--no-server", tr( "ignore server mode. Run new application instance" ) );
-        out.registerFlag( "--abort", tr( "exit existing instance" ) );
         out.registerOption( "--server-host", tr( "string" ), tr( "use specified host for server communication" ) );
         out.registerOption( "--server-port", tr( "integer" ), tr( "use specified port for server communication" ) );
 

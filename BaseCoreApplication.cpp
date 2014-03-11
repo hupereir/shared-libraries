@@ -127,8 +127,8 @@ CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments a
     CommandLineParser out( Server::ApplicationManager::commandLineParser() );
 
     out.setGroup( CommandLineParser::applicationGroupName );
-    out.registerFlag( "--help", QObject::tr( "print this help and exit" ) );
-    out.registerFlag( "--version", QObject::tr( "print application version and exits" ) );
+    out.registerFlag( CommandLineParser::Tag( "--help", "-h" ), QObject::tr( "print this help and exit" ) );
+    out.registerFlag( CommandLineParser::Tag( "--version", "-v" ), QObject::tr( "print application version and exits" ) );
 
     if( !arguments.isEmpty() )
     { out.parse( arguments, ignoreWarnings ); }
