@@ -74,8 +74,15 @@ class CommandLineParser: public Counter
         //! less than operator
         bool operator < (const Tag& other ) const
         {
-            if( longName_ != other.longName_ ) return longName_ < other.longName_;
-            else return shortName_ < other.shortName_;
+            if( shortName_.isNull() )
+            {
+                if( other.shortName_.isNull() ) return longName_ < other.longName_;
+                else return false;
+            } else {
+                if( other.shortName_.isNull() ) return true;
+                else if( shortName_ != other.shortName_ ) return shortName_ < other.shortName_;
+                else return  longName_ < other.longName_;
+            }
         }
 
         //!@name accessors
