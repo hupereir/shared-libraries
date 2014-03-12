@@ -139,7 +139,10 @@ namespace SpellCheck
 
         //! clear filters
         void clearFilters( void )
-        { filters_.clear(); }
+        {
+            filters_.clear();
+            filterMap_.clear();
+        }
 
         //! add word to static list
         void ignoreWord( const QString& word )
@@ -219,6 +222,10 @@ namespace SpellCheck
         //! set of available dictionaries
         /*! loaded in constructor */
         DictionarySet dictionaries_;
+
+        //! set of available filters
+        typedef QMap<QString, QString> FilterMap;
+        static FilterMap filterMap_;
 
         //! set of available filters
         /*! loaded in constructor */

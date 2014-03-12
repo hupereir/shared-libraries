@@ -26,10 +26,25 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
+#include <algorithm>
+
 namespace SpellCheck
 {
 
+    SpellInterface::FilterMap SpellInterface::filterMap_;
     SpellInterface::FilterSet SpellInterface::filters_;
+
+    //! used to select tag of maximum length
+    class MinLengthFTor
+    {
+
+        public:
+
+        //! predicate
+        bool operator () ( const QString& first, const QString& second )
+        { return first.size() < second.size(); }
+
+    };
 
     //_______________________________________________
     const QString SpellInterface::FilterNone = "none";
@@ -95,8 +110,12 @@ namespace SpellCheck
     {
         if( dictionaries_.isEmpty() ) return;
         Debug::Throw(0) << QObject::tr( "Available filters: " ) << endl;
-        foreach( const QString& filter, filters_ )
-        { Debug::Throw(0) << "  " << filter << endl; }
+
+        // maximum length
+        const int maxLength = std::max_element( filters_.constBegin(), filters_.constEnd(), MinLengthFTor() )->size();
+        for( FilterMap::const_iterator iter = filterMap_.constBegin(); iter != filterMap_.constEnd(); ++iter )
+        { Debug::Throw(0) << "  " << iter.key().leftJustified( maxLength + 1 ) <<  iter.value() << endl; }
+
     }
 
     //____________________________________________________
@@ -127,6 +146,7 @@ namespace SpellCheck
         // update personal dictionary
         QString personal_dictionary = Util::env( "HOME" ) + "/.aspell." + dictionary + ".pws";
         aspell_config_replace(spellConfig_, "personal", personal_dictionary.toLatin1().constData() );
+
         // reset
         return _reset();
 
@@ -398,7 +418,12 @@ namespace SpellCheck
                 const QString mode( line.left( position ) );
                 const QString comment( line.mid( position + regExp.matchedLength() ) );
                 filters_.insert( mode );
-                if( mode == FilterTex ) filters_.insert( FilterTexWithNoAccents );
+                filterMap_.insert( mode, comment );
+                if( mode == FilterTex )
+                {
+                    filters_.insert( FilterTexWithNoAccents );
+                    filterMap_.insert( FilterTexWithNoAccents, comment );
+                }
             }
 
         }
