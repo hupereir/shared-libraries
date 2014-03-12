@@ -80,6 +80,20 @@ namespace SpellCheck
     }
 
     //____________________________________________________
+    void SpellInterface::listDictionaries( void ) const
+    {
+        foreach( const QString& dictionary, dictionaries_ )
+        { Debug::Throw(0) << "  " << dictionary << endl; }
+    }
+
+    //____________________________________________________
+    void SpellInterface::listFilters( void ) const
+    {
+        foreach( const QString& filter, filters_ )
+        { Debug::Throw(0) << "  " << filter << endl; }
+    }
+
+    //____________________________________________________
     bool SpellInterface::setDictionary( const QString& dictionary )
     {
 
@@ -144,8 +158,8 @@ namespace SpellCheck
     //__________________________________________
     bool SpellInterface::setText(
         const QString& text,
-        const int &begin,
-        const int &end )
+        int begin,
+        int end )
     {
         Debug::Throw( "SpellInterface::setText.\n" );
 
@@ -362,6 +376,7 @@ namespace SpellCheck
 
         Debug::Throw() << "SpellInterface::_loadFilters- this: " << this << endl;
 
+        // TODO: use QProcess here instead of popen
         filters_.insert( NO_FILTER );
         QString command( XmlOptions::get().raw("ASPELL") + " dump modes" );
         FILE *tmp = popen( command.toLatin1().constData(), "r" );

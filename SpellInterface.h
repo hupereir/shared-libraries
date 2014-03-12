@@ -53,13 +53,16 @@ namespace SpellCheck
         //! latex no accents
         static const QString FILTER_TEX_NO_ACCENTS;
 
-        //!@name dictionary
+        //!@name accessors
         //@{
 
         //! get list of available dictionaries
         typedef QOrderedSet<QString> DictionarySet;
         const DictionarySet& dictionaries( void ) const
         { return dictionaries_; }
+
+        //! list dictionaries
+        void listDictionaries( void ) const;
 
         //! current dictionary
         const QString dictionary( void ) const
@@ -69,19 +72,13 @@ namespace SpellCheck
         bool hasDictionary( const QString& dictionary ) const
         { return dictionaries_.find( dictionary ) != dictionaries_.end(); }
 
-        //! select dictionary
-        /*! returns false in case of error */
-        bool setDictionary( const QString& dictionary );
-
-        //@}
-
-        //!@name filter
-        //@{
-
         //! get list of available filters
         typedef QOrderedSet<QString> FilterSet;
         const FilterSet& filters( void ) const
         { return filters_; }
+
+        //! list dictionaries
+        void listFilters( void ) const;
 
         //! current filter
         const QString filter( void ) const
@@ -91,58 +88,13 @@ namespace SpellCheck
         bool hasFilter( const QString& filter ) const
         { return filters_.find( filter ) != filters_.end(); }
 
-        //! select filter
-        /*! returns false in case of error */
-        bool setFilter( const QString& filter );
-
-        //! clear filters
-        void clearFilters( void )
-        { filters_.clear(); }
-
-        //@}
-
-        //!@name ignored words
-        //@{
-
-        //! add word to static list
-        void ignoreWord( const QString& word )
-        { ignoredWords_.insert( word ); }
-
         //! returns true if word is ignored
         bool isWordIgnored( const QString& word )
         { return ignoredWords_.find( word ) != ignoredWords_.end(); }
 
-        //! set list of ignored words
-        void setIgnoredWords( const QSet<QString> words )
-        { ignoredWords_ = words; }
-
-        //! merge list of ignored words
-        void mergeIgnoredWords( const QSet<QString> words )
-        { ignoredWords_.unite( words ); }
-
-        //! clear ignored words
-        void clearIgnoredWords( void )
-        { ignoredWords_.clear(); }
-
         //! get list of ignored words
         const QSet< QString > ignoredWords( void )
         { return ignoredWords_; }
-
-        //!@name text
-        //@{
-
-        //! set text to be checked
-        bool setText( const QString& text )
-        { return setText( text, 0, text.size() ); }
-
-        //! set text to be checked
-        /*!
-        returns false on error
-        \param text the text in which selection is to be checked
-        \param begin selection begin position
-        \param end selection end position in the text
-        */
-        bool setText( const QString& text, const int& begin, const int& end );
 
         //! retrieve original text
         const QString& text( void ) const
@@ -151,8 +103,6 @@ namespace SpellCheck
         //! retrieve checked text
         const QString& checkedText( void ) const
         { return checkedText_; }
-
-        //@}
 
         //! retrieve error
         const QString& error( void ) const
@@ -168,8 +118,57 @@ namespace SpellCheck
         { return position_+begin_; }
 
         //! retrieve position offset between original text and checked text
-        const int& offset( void ) const
+        int offset( void ) const
         { return offset_; }
+
+        //! retrieve list of suggestions for current word
+        QStringList suggestions( const QString& word ) const;
+
+        //@}
+
+        //!@name modifiers
+        //@{
+
+        //! select dictionary
+        /*! returns false in case of error */
+        bool setDictionary( const QString& dictionary );
+
+        //! select filter
+        /*! returns false in case of error */
+        bool setFilter( const QString& filter );
+
+        //! clear filters
+        void clearFilters( void )
+        { filters_.clear(); }
+
+        //! add word to static list
+        void ignoreWord( const QString& word )
+        { ignoredWords_.insert( word ); }
+
+        //! set list of ignored words
+        void setIgnoredWords( const QSet<QString> words )
+        { ignoredWords_ = words; }
+
+        //! merge list of ignored words
+        void mergeIgnoredWords( const QSet<QString> words )
+        { ignoredWords_.unite( words ); }
+
+        //! clear ignored words
+        void clearIgnoredWords( void )
+        { ignoredWords_.clear(); }
+
+        //! set text to be checked
+        bool setText( const QString& text )
+        { return setText( text, 0, text.size() ); }
+
+        //! set text to be checked
+        /*!
+        returns false on error
+        \param text the text in which selection is to be checked
+        \param begin selection begin position
+        \param end selection end position in the text
+        */
+        bool setText( const QString& text, int begin, int end );
 
         //! add word to dictionary
         /*! return false on error */
@@ -187,9 +186,6 @@ namespace SpellCheck
         /*! return false when there is an error */
         bool nextWord( void );
 
-        //! retrieve list of suggestions for current word
-        QStringList suggestions( const QString& word ) const;
-
         //! save word list in personal dictionary
         void saveWordList( void );
 
@@ -199,6 +195,8 @@ namespace SpellCheck
         return false on error
         */
         bool reset( void );
+
+        //@}
 
         protected:
 
