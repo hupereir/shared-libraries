@@ -19,8 +19,10 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "SpellInterface.h"
+
+#include "CustomProcess.h"
+#include "Debug.h"
 #include "Util.h"
 #include "XmlOptions.h"
 
@@ -382,25 +384,25 @@ namespace SpellCheck
 
         // TODO: use QProcess here instead of popen
         filters_.insert( FilterNone );
-        QString command( XmlOptions::get().raw("ASPELL") + " dump modes" );
-        FILE *tmp = popen( command.toLatin1().constData(), "r" );
-        static const int linesize( 128 );
-        char buf[linesize];
-        while( fgets( buf, linesize, tmp ) )
-        {
 
-            if( !strlen( buf ) ) continue;
-            QTextStream in( buf );
-            QString mode;
-            in >> mode;
-            if( in.status() == QTextStream::Ok && !mode.isEmpty() )
+        CustomProcess process;
+        process.start( XmlOptions::get().raw("ASPELL") + " dump modes" );
+        process.waitForFinished();
+        const QStringList lines( QString( process.readAllStandardOutput() ).split( "\n" ) );
+        foreach( const QString& line, lines )
+        {
+            QRegExp regExp( "\\s+" );
+            const int position( line.indexOf( regExp ) );
+            if( position > 0 )
             {
+                const QString mode( line.left( position ) );
+                const QString comment( line.mid( position + regExp.matchedLength() ) );
                 filters_.insert( mode );
                 if( mode == FilterTex ) filters_.insert( FilterTexWithNoAccents );
             }
+
         }
 
-        pclose( tmp );
         return;
 
     }
