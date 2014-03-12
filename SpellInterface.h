@@ -45,13 +45,13 @@ namespace SpellCheck
         ~SpellInterface( void );
 
         //! no filter
-        static const QString NO_FILTER;
+        static const QString FilterNone;
 
         //! latex
-        static const QString FILTER_TEX;
+        static const QString FilterTex;
 
         //! latex no accents
-        static const QString FILTER_TEX_NO_ACCENTS;
+        static const QString FilterTexWithNoAccents;
 
         //!@name accessors
         //@{

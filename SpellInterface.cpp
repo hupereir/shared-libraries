@@ -30,9 +30,9 @@ namespace SpellCheck
     SpellInterface::FilterSet SpellInterface::filters_;
 
     //_______________________________________________
-    const QString SpellInterface::NO_FILTER = "none";
-    const QString SpellInterface::FILTER_TEX = "tex";
-    const QString SpellInterface::FILTER_TEX_NO_ACCENTS = QObject::tr( "tex (no accents)" );
+    const QString SpellInterface::FilterNone = "none";
+    const QString SpellInterface::FilterTex = "tex";
+    const QString SpellInterface::FilterTexWithNoAccents = QObject::tr( "tex (no accents)" );
 
     //_______________________________________________
     SpellInterface::SpellInterface( void ):
@@ -61,7 +61,7 @@ namespace SpellCheck
         if( !dictionaries().empty() ) setDictionary( *dictionaries().begin() );
 
         // set default filter
-        setFilter( NO_FILTER );
+        setFilter( FilterNone );
 
         Debug::Throw( "SpellInterface::SpellInterface - done.\n" );
 
@@ -152,10 +152,10 @@ namespace SpellCheck
         filter_ = filter;
 
         // update aspell
-        aspell_config_replace(spellConfig_, "mode", (filter == FILTER_TEX_NO_ACCENTS ? FILTER_TEX:filter).toLatin1().constData() );
+        aspell_config_replace(spellConfig_, "mode", (filter == FilterTexWithNoAccents ? FilterTex:filter).toLatin1().constData() );
 
         // reset SpellChecker
-        return _reset() || filter == NO_FILTER;
+        return _reset() || filter == FilterNone;
 
     }
 
@@ -381,7 +381,7 @@ namespace SpellCheck
         Debug::Throw() << "SpellInterface::_loadFilters- this: " << this << endl;
 
         // TODO: use QProcess here instead of popen
-        filters_.insert( NO_FILTER );
+        filters_.insert( FilterNone );
         QString command( XmlOptions::get().raw("ASPELL") + " dump modes" );
         FILE *tmp = popen( command.toLatin1().constData(), "r" );
         static const int linesize( 128 );
@@ -396,7 +396,7 @@ namespace SpellCheck
             if( in.status() == QTextStream::Ok && !mode.isEmpty() )
             {
                 filters_.insert( mode );
-                if( mode == FILTER_TEX ) filters_.insert( FILTER_TEX_NO_ACCENTS );
+                if( mode == FilterTex ) filters_.insert( FilterTexWithNoAccents );
             }
         }
 

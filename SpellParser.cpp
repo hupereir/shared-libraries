@@ -73,7 +73,7 @@ namespace SpellCheck
         if( !enabled_ ) return ( Word::Set() );
 
         Position::List positions;
-        if( interface().filter() == SpellInterface::FILTER_TEX_NO_ACCENTS )
+        if( interface().filter() == SpellInterface::FilterTexWithNoAccents )
         {
 
             // apply conversions
@@ -107,7 +107,7 @@ namespace SpellCheck
             if( interface().isWordIgnored( word ) ) continue;
 
             // apply offset
-            if( interface().filter() == SpellInterface::FILTER_TEX_NO_ACCENTS && !positions.empty() )
+            if( interface().filter() == SpellInterface::FilterTexWithNoAccents && !positions.empty() )
             {
 
                 // update position

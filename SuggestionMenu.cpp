@@ -56,7 +56,7 @@ namespace SpellCheck
         QString word( word_ );
 
         // convert accents
-        if( interface().filter() == SpellInterface::FILTER_TEX_NO_ACCENTS ) word = TexString( word ).toTextAccents();
+        if( interface().filter() == SpellInterface::FilterTexWithNoAccents ) word = TexString( word ).toTextAccents();
 
         // retrieve list of suggestions
         QStringList suggestions( interface_.suggestions( word ) );
@@ -69,7 +69,7 @@ namespace SpellCheck
         {
 
             QString suggestion( suggestions[i] );
-            if( interface().filter() == SpellInterface::FILTER_TEX_NO_ACCENTS ) suggestion = TexString( suggestion ).toLatexAccents();
+            if( interface().filter() == SpellInterface::FilterTexWithNoAccents ) suggestion = TexString( suggestion ).toLatexAccents();
 
             Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestion << endl;
             suggestions_.insert( addAction( suggestions[i] ), suggestion );
