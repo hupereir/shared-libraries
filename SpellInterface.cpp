@@ -82,6 +82,8 @@ namespace SpellCheck
     //____________________________________________________
     void SpellInterface::listDictionaries( void ) const
     {
+        if( dictionaries_.isEmpty() ) return;
+        Debug::Throw(0) << "Available dictionaries: " << endl;
         foreach( const QString& dictionary, dictionaries_ )
         { Debug::Throw(0) << "  " << dictionary << endl; }
     }
@@ -89,6 +91,8 @@ namespace SpellCheck
     //____________________________________________________
     void SpellInterface::listFilters( void ) const
     {
+        if( dictionaries_.isEmpty() ) return;
+        Debug::Throw(0) << "Available filters: " << endl;
         foreach( const QString& filter, filters_ )
         { Debug::Throw(0) << "  " << filter << endl; }
     }
