@@ -154,6 +154,7 @@ namespace Svg
 
         Transparency::TransparencyConfiguration* transparencyConfiguration;
         vLayout->addWidget( transparencyConfiguration = new Transparency::TransparencyConfiguration( box, Transparency::TransparencyConfiguration::Background ));
+        transparencyConfiguration->layout()->setMargin(0);
         addOptionWidget( transparencyConfiguration );
         vLayout->addStretch(1);
 
@@ -161,7 +162,7 @@ namespace Svg
         stackedWidget->addWidget( box = new QWidget() );
         box->setLayout( vLayout = new QVBoxLayout() );
         vLayout->setSpacing(5);
-        vLayout->setMargin(5);
+        vLayout->setMargin(0);
 
         // SVG file
         vLayout->addWidget( label = new QLabel( tr( "Svg files:" ), box ) );
@@ -178,7 +179,7 @@ namespace Svg
         stackedWidget->addWidget( box = new QWidget() );
         box->setLayout( vLayout = new QVBoxLayout() );
         vLayout->setSpacing(5);
-        vLayout->setMargin(5);
+        vLayout->setMargin(0);
 
         hLayout = new QHBoxLayout();
         hLayout->setMargin(0);
