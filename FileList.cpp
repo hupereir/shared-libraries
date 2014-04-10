@@ -150,7 +150,7 @@ void FileList::clear( void )
     return;
 }
 //_______________________________________________
-void FileList::_setMaxSize( const int& value )
+void FileList::_setMaxSize( int value )
 {
 
     Debug::Throw( "FileList::_setMaxSize.\n" );

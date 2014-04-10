@@ -23,35 +23,51 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "File.h"
+#include "FileRecord.h"
 
 #include <QList>
 
-class PathHistory: public Counter
+class PathHistory:  public QObject, public Counter
 {
+
+    //! Qt meta object declaration
+    Q_OBJECT
+
     public:
 
     //! constructor
-    PathHistory( void ):
+    PathHistory( QObject* parent ):
+        QObject( parent ),
         Counter( "PathHistory" ),
         index_(0)
-    {   }
+    {}
 
-    //! true if next path in history is valid
-    bool nextAvailable( void ) const
-    { return index_ + 1 < pathList_.size(); }
+    //!@name accessors
+    //@{
 
-    //! retrieve next path in history
-    File next( void )
-    { return pathList_[++index_]; }
+    //! path list
+    const FileRecord::List& pathList( void ) const
+    { return pathList_; }
 
     //! true if previous path in history is valid
     bool previousAvailable( void ) const
     { return index_ > 0; }
 
-    //! retrieve previous path in history
-    File previous( void )
-    { return pathList_[--index_]; }
+    //! true if next path in history is valid
+    bool nextAvailable( void ) const
+    { return index_ + 1 < pathList_.size(); }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! set path list
+    /*!
+    All existing files are removed.
+    Index is set at the end of the list
+    */
+    void setPathList( const FileRecord::List& );
 
     //! add path to history
     /*!
@@ -59,12 +75,36 @@ class PathHistory: public Counter
     New path is then added after the current index.
     And the current index is moved to it.
     */
-    void add( File );
+    void add( const FileRecord& );
+    void add( const File& file )
+    { add( FileRecord( file ) ); }
+
+    //! clear
+    void clear( void )
+    {
+        pathList_.clear();
+        index_ = 0;
+    }
+
+    //! retrieve next path in history
+    File next( void )
+    { return pathList_[++index_].file(); }
+
+    //! retrieve previous path in history
+    File previous( void )
+    { return pathList_[--index_].file(); }
+
+    //@}
+
+    Q_SIGNALS:
+
+    //! emmited when contents is changed
+    void contentsChanged( void );
 
     private:
 
     //! path list
-    QList<File> pathList_;
+    FileRecord::List pathList_;
 
     //! current index in list
     int index_;

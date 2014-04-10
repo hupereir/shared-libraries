@@ -19,35 +19,41 @@
 *
 *******************************************************************************/
 
-/*!
-\file    PathHistory.cpp
-\brief   Handles directory navigation history
-\author  Hugo Pereira
-\version $Revision$
-\date    $Date$
-*/
+#include "PathHistory.h"
+#include "PathHistory.moc"
 
 #include "Debug.h"
-#include "PathHistory.h"
-
-
 
 //__________________________________________________________________
-void PathHistory::add( File path )
+void PathHistory::setPathList( const FileRecord::List& pathList )
+{
+    Debug::Throw( "PathHistory::setPathList.\n" );
+
+    pathList_ = pathList;
+    index_ = pathList.size()-1;
+
+}
+
+//__________________________________________________________________
+void PathHistory::add( const FileRecord& path )
 {
     Debug::Throw() << "PathHistory::add - " << path << endl;
 
     // make sure path is valid
-    if( path.isEmpty() ) return;
+    if( path.file().isEmpty() ) return;
 
     // make sure path is different from current
-    if( !pathList_.empty() && pathList_[index_] == path ) return;
+    if( !pathList_.empty() && pathList_[index_].file() == path.file() )
+    {
+        pathList_[index_] = path;
+        return;
+    }
 
     // remove everything that is after index_ from pathList_
     while( pathList_.size() > index_+1 ) pathList_.removeLast();
 
     // insert new path
-    pathList_ << path;
+    pathList_.append( path );
     index_ = pathList_.size()-1;
     return;
 

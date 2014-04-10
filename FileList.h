@@ -41,17 +41,17 @@ class FileList: public QObject, public Counter
     public:
 
     //! constructor
-    FileList( QObject* parent );
+    FileList( QObject* );
 
     //! destructor
     virtual ~FileList( void )
     {}
 
     //! returns true if file is found in list
-    virtual bool contains( const File& file ) const;
+    virtual bool contains( const File& ) const;
 
     //! remove file from database
-    virtual void remove( const File& file );
+    virtual void remove( const File& );
 
     //! get filerecord associated to a name
     /*! creates new fileRecord if not found */
@@ -117,7 +117,7 @@ class FileList: public QObject, public Counter
     protected:
 
     //! maximum Size
-    virtual void _setMaxSize( const int& value );
+    virtual void _setMaxSize( int );
 
     //! maximum size
     virtual const int& _maxSize( void ) const

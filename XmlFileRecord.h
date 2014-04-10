@@ -34,6 +34,7 @@ namespace Base
     {
         static const QString FileList = "FileList";
         static const QString SessionFileList = "SessionFileList";
+        static const QString PathHistory = "PathHistory";
         static const QString Record = "record";
     }
 }

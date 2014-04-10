@@ -30,6 +30,7 @@
 #include "IconSize.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
+#include "XmlPathHistory.h"
 
 #include <QApplication>
 #include <QDrag>
@@ -91,7 +92,7 @@ void PathEditorItem::setPath( const File& path, const QString& name )
 //____________________________________________________________________________
 void PathEditorItem::updateMinimumSize( void )
 {
-    Debug::Throw( "PathEditor::updateMinimumSize.\n" );
+    Debug::Throw( "PathEditorItem::updateMinimumSize.\n" );
     QFont adjustedFont(font());
     adjustedFont.setBold( isLast_ );
 
@@ -322,7 +323,8 @@ PathEditor::PathEditor( QWidget* parent ):
     usePrefix_( true ),
     isLocal_( true ),
     truncate_( true ),
-    dragEnabled_( false )
+    dragEnabled_( false ),
+    history_( new XmlPathHistory( this ) )
 {
     Debug::Throw( "PathEditor::PathEditor.\n" );
 
@@ -416,6 +418,54 @@ PathEditor::PathEditor( QWidget* parent ):
 }
 
 //____________________________________________________________________________
+File PathEditor::path( void ) const
+{
+    Debug::Throw( "PathEditor::path.\n" );
+    QString path( editor_->currentText() );
+    if( !prefix_.isEmpty() )
+    {
+        const QString prefix( prefix_+"//" );
+        if( path.startsWith( prefix ) )
+        { path = path.mid( prefix.size() ); }
+    }
+
+    return path;
+}
+
+//____________________________________________________________________________
+bool PathEditor::hasParent( void ) const
+{
+    if( items_.isEmpty() ) return false;
+    else if( items_.back()->isSelectable() ) return items_.size() >= 2;
+    else return items_.size() >= 3;
+}
+
+//____________________________________________________________________________
+bool PathEditor::hasPrevious( void ) const
+{ return history_->previousAvailable(); }
+
+//____________________________________________________________________________
+bool PathEditor::hasNext( void ) const
+{ return history_->nextAvailable(); }
+
+//____________________________________________________________________________
+QSize PathEditor::minimumSizeHint( void ) const
+{
+    int minWidth( 0 );
+
+    if( usePrefix_ && !prefix_.isEmpty() )
+    { minWidth += prefixLabel_->width(); }
+
+    if( rootPathList_.size() > 1 || items_.size() > 1 || ( truncate_ && !home_.isEmpty() ) )
+    { minWidth += menuButton_->width(); }
+
+    if( !items_.empty() )
+    { minWidth += items_.back()->width(); }
+
+    return QSize( minWidth, QStackedWidget::minimumSizeHint().height() );
+}
+
+//____________________________________________________________________________
 void PathEditor::setPrefix( const QString& value )
 {
     Debug::Throw( "PathEditor::setPrefix.\n" );
@@ -425,6 +475,10 @@ void PathEditor::setPrefix( const QString& value )
 
     _updatePrefix();
 }
+
+//____________________________________________________________________________
+void PathEditor::setHistoryTagName( const QString& value )
+{ static_cast<XmlPathHistory*>(history_)->setTagName( value ); }
 
 //____________________________________________________________________________
 void PathEditor::setHomePath( const File& value )
@@ -630,48 +684,8 @@ void PathEditor::setPath( const File& constPath, const File& file )
     }
 
     // add to history
-    history_.add( constPath );
+    history_->add( constPath );
 
-}
-
-//____________________________________________________________________________
-File PathEditor::path( void ) const
-{
-    Debug::Throw( "PathEditor::path.\n" );
-    QString path( editor_->currentText() );
-    if( !prefix_.isEmpty() )
-    {
-        const QString prefix( prefix_+"//" );
-        if( path.startsWith( prefix ) )
-        { path = path.mid( prefix.size() ); }
-    }
-
-    return path;
-}
-
-//____________________________________________________________________________
-bool PathEditor::hasParent( void ) const
-{
-    if( items_.isEmpty() ) return false;
-    else if( items_.back()->isSelectable() ) return items_.size() >= 2;
-    else return items_.size() >= 3;
-}
-
-//____________________________________________________________________________
-QSize PathEditor::minimumSizeHint( void ) const
-{
-    int minWidth( 0 );
-
-    if( usePrefix_ && !prefix_.isEmpty() )
-    { minWidth += prefixLabel_->width(); }
-
-    if( rootPathList_.size() > 1 || items_.size() > 1 || ( truncate_ && !home_.isEmpty() ) )
-    { minWidth += menuButton_->width(); }
-
-    if( !items_.empty() )
-    { minWidth += items_.back()->width(); }
-
-    return QSize( minWidth, QStackedWidget::minimumSizeHint().height() );
 }
 
 //____________________________________________________________________________
@@ -688,7 +702,7 @@ void PathEditor::selectPrevious( void )
 {
     Debug::Throw( "PathEditor::selectPrevious.\n" );
     if( !hasPrevious() ) return;
-    const File path( history_.previous() );
+    const File path( history_->previous() );
     setPath( path );
     emit pathChanged( path );
 }
@@ -698,7 +712,7 @@ void PathEditor::selectNext( void )
 {
     Debug::Throw( "PathEditor::selectNext.\n" );
     if( !hasNext() ) return;
-    const File path( history_.next() );
+    const File path( history_->next() );
     setPath( path );
     emit pathChanged( path );
 }

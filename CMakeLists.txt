@@ -16,7 +16,7 @@ IF( UNIX AND NOT APPLE )
     IF( USE_QT5 )
       ADD_DEFINITIONS( -DQ5_WS_X11 )
     ENDIF()
-  
+
   ENDIF()
 ENDIF()
 
@@ -187,6 +187,7 @@ SET( base_qt_SOURCES
   XmlMigration.cpp
   XmlOption.cpp
   XmlOptions.cpp
+  XmlPathHistory.cpp
   XmlTextFormatBlock.cpp
   XmlTimeStamp.cpp
   XmlString.cpp

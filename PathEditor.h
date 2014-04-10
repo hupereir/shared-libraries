@@ -25,7 +25,6 @@
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "File.h"
-#include "PathHistory.h"
 
 #include <QList>
 
@@ -41,6 +40,7 @@
 // forward declaration
 class PathEditorItem;
 class PathEditorMenuButton;
+class PathHistory;
 
 //! path editor
 class PathEditor: public QStackedWidget, public Counter
@@ -60,11 +60,38 @@ class PathEditor: public QStackedWidget, public Counter
     virtual ~PathEditor( void )
     {}
 
+    //!@name accessors
+    //@{
+
+    //! path
+    File path( void ) const;
+
+    //! true if parent directory is available
+    bool hasParent( void ) const;
+
+    //! true if previous path is available in history
+    bool hasPrevious( void ) const;
+
+    //! true if next path available in history
+    bool hasNext( void ) const;
+
+    //! minimum size hint
+    virtual QSize minimumSizeHint( void ) const;
+
+    //! size hint
+    virtual QSize sizeHint( void ) const
+    { return minimumSizeHint(); }
+
+    //@}
+
     //!@name modifiers
     //@{
 
     //! prefix
     void setPrefix( const QString& );
+
+    //! history tag name
+    void setHistoryTagName( const QString& );
 
     //! home
     void setHomePath( const File& );
@@ -80,32 +107,6 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! set path
     void setPath( const File&, const File& = File() );
-
-    //@}
-
-    //!@name accessors
-    //@{
-
-    //! path
-    File path( void ) const;
-
-    //! true if parent directory is available
-    bool hasParent( void ) const;
-
-    //! true if previous path is available in history
-    bool hasPrevious( void ) const
-    { return history_.previousAvailable(); }
-
-    //! true if next path available in history
-    bool hasNext( void ) const
-    { return history_.nextAvailable(); }
-
-    //! minimum size hint
-    virtual QSize minimumSizeHint( void ) const;
-
-    //! size hint
-    virtual QSize sizeHint( void ) const
-    { return minimumSizeHint(); }
 
     //@}
 
@@ -234,7 +235,7 @@ class PathEditor: public QStackedWidget, public Counter
     QList<PathEditorItem*> items_;
 
     //! path history
-    PathHistory history_;
+    PathHistory* history_;
 
 };
 
