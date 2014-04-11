@@ -30,7 +30,7 @@
 FileList::FileList( QObject* parent ):
     QObject( parent ),
     Counter( "FileList" ),
-    maxSize_( -1 ),
+    maxSize_( 0 ),
     check_( true ),
     cleanEnabled_( false ),
     thread_( this )
@@ -149,13 +149,13 @@ void FileList::clear( void )
     _records().clear();
     return;
 }
+
 //_______________________________________________
 void FileList::_setMaxSize( int value )
 {
 
     Debug::Throw( "FileList::_setMaxSize.\n" );
     maxSize_ = value;
-
     return;
 
 }

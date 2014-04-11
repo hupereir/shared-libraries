@@ -151,7 +151,7 @@ class FileList: public QObject, public Counter
     void _setCleanEnabled( const bool& value )
     { cleanEnabled_ = value; }
 
-    //! maximum size (negative means no limit)
+    //! maximum size (zero means no limit)
     int maxSize_;
 
     //! if true, check file validity
