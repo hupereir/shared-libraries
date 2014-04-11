@@ -141,9 +141,6 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     protected:
 
-    //! get necessary spacing for checkbox alignment
-    int _checkBoxSpacing( void ) const;
-
     //! find modification
     bool _findModification( const Options&, const Options& ) const;
 

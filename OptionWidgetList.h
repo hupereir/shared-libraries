@@ -54,6 +54,11 @@ class OptionWidgetList: public OptionWidget
     //! read options
     virtual void write( Options& ) const;
 
+    protected:
+
+    //! get necessary spacing for checkbox alignment
+    int _checkBoxSpacing( void ) const;
+
     private:
 
     //! contained options

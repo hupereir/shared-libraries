@@ -43,8 +43,6 @@
 #include <QApplication>
 #include <QScrollArea>
 #include <QShortcut>
-#include <QStyle>
-#include <QStyleOption>
 #include <QToolTip>
 #include <QGroupBox>
 #include <QHeaderView>
@@ -630,15 +628,6 @@ bool BaseConfigurationDialog::_checkModified( void )
     }
 
     return modified;
-}
-
-//__________________________________________________
-int BaseConfigurationDialog::_checkBoxSpacing( void ) const
-{
-    QStyleOption option;
-    option.rect = rect();
-    QRect adjusted( style()->subElementRect( QStyle::SE_CheckBoxContents, &option, 0x0 ) );
-    return adjusted.left()-option.rect.left();
 }
 
 //__________________________________________________

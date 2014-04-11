@@ -21,6 +21,10 @@
 
 #include "OptionWidgetList.h"
 
+#include <QApplication>
+#include <QStyle>
+#include <QStyleOption>
+
 //______________________________________________________________________
 void OptionWidgetList::addOptionWidget( OptionWidget* widget )
 {
@@ -70,4 +74,13 @@ void OptionWidgetList::write( Options& options ) const
     Debug::Throw( "OptionWidgetList::write\n" );
     foreach( OptionWidget* widget, optionWidgets_ )
     { widget->write( options ); }
+}
+
+//__________________________________________________
+int OptionWidgetList::_checkBoxSpacing( void ) const
+{
+    QStyleOption option;
+    option.rect = QRect( 0, 0, 50, 50 );
+    QRect adjusted( qApp->style()->subElementRect( QStyle::SE_CheckBoxContents, &option, 0x0 ) );
+    return adjusted.left()-option.rect.left();
 }
