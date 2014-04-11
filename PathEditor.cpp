@@ -331,9 +331,8 @@ PathEditor::PathEditor( QWidget* parent ):
     // size policy
     setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
 
-    // browser
     {
-
+        // browser
         // some styles require an item view passed to painting method to have proper selection rendered in items
         itemView_ = new QListView( this );
         itemView_->hide();
@@ -376,8 +375,8 @@ PathEditor::PathEditor( QWidget* parent ):
         addWidget( browserContainer_ );
     }
 
-    // editor
     {
+        // editor
         editorContainer_ = new QWidget();
         editorContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
@@ -406,6 +405,16 @@ PathEditor::PathEditor( QWidget* parent ):
         connect( button, SIGNAL(clicked()), SLOT(_showBrowser()) );
 
         addWidget( editorContainer_ );
+    }
+
+    {
+        // menus
+        previousPathMenu_ = new QMenu( this );
+        nextPathMenu_ = new QMenu( this );
+
+        connect( previousPathMenu_, SIGNAL(triggered(QAction*)), SLOT(selectFromMenu(QAction*)) );
+        connect( nextPathMenu_, SIGNAL(triggered(QAction*)), SLOT(selectFromMenu(QAction*)) );
+
     }
 
     // current widget
@@ -685,6 +694,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
     // add to history
     history_->add( constPath );
+    _updatePathMenus();
 
 }
 
@@ -713,6 +723,19 @@ void PathEditor::selectNext( void )
     Debug::Throw( "PathEditor::selectNext.\n" );
     if( !hasNext() ) return;
     const File path( history_->next() );
+    setPath( path );
+    emit pathChanged( path );
+}
+
+//____________________________________________________________________________
+void PathEditor::selectFromMenu( QAction* action )
+{
+    Debug::Throw( "PathEditor::selectFromMenu.\n" );
+
+    const QVariant data( action->data() );
+    if( !data.canConvert( QVariant::Int ) ) return;
+
+    const File path( history_->selectPath( data.toInt() ) );
     setPath( path );
     emit pathChanged( path );
 }
@@ -948,6 +971,33 @@ void PathEditor::_updateButtonVisibility( void )
             if( hasHomePath && item->path() == home_ ) homeFound = true;
 
         }
+    }
+
+}
+
+//____________________________________________________________________________
+void PathEditor::_updatePathMenus( void )
+{
+    Debug::Throw( "PathEditor::_updatePathMenus.\n" );
+
+    // previous
+    int index = 0;
+    previousPathMenu_->clear();
+    foreach( const FileRecord& record, history_->previousPathList() )
+    {
+        QAction* action( previousPathMenu_->addAction( record.file() ) );
+        action->setData( index );
+        ++index;
+    }
+
+    // next
+    ++index;
+    nextPathMenu_->clear();
+    foreach( const FileRecord& record, history_->nextPathList() )
+    {
+        QAction* action( nextPathMenu_->addAction( record.file() ) );
+        action->setData( index );
+        ++index;
     }
 
 }

@@ -26,12 +26,12 @@
 #include "CustomComboBox.h"
 #include "File.h"
 
-#include <QList>
-
 #include <QAbstractButton>
 #include <QButtonGroup>
 #include <QLabel>
 #include <QLayout>
+#include <QList>
+#include <QMenu>
 #include <QResizeEvent>
 #include <QStackedWidget>
 #include <QAbstractItemView>
@@ -82,6 +82,14 @@ class PathEditor: public QStackedWidget, public Counter
     virtual QSize sizeHint( void ) const
     { return minimumSizeHint(); }
 
+    //! previous path menu
+    QMenu& previousPathMenu( void ) const
+    { return *previousPathMenu_; }
+
+    //! next path menu
+    QMenu& nextPathMenu( void ) const
+    { return *nextPathMenu_; }
+
     //@}
 
     //!@name modifiers
@@ -125,6 +133,9 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! select next path in history
     void selectNext( void );
+
+    //! select from action
+    void selectFromMenu( QAction* );
 
     protected:
 
@@ -173,6 +184,9 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! update button visibility
     void _updateButtonVisibility( void );
+
+    //! update previous and next path menus
+    void _updatePathMenus( void );
 
     private Q_SLOTS:
 
@@ -230,6 +244,12 @@ class PathEditor: public QStackedWidget, public Counter
 
     //! menu button
     PathEditorMenuButton* menuButton_;
+
+    //! previous path menu
+    QMenu* previousPathMenu_;
+
+    //! nex path menu
+    QMenu* nextPathMenu_;
 
     //! item buttons
     QList<PathEditorItem*> items_;
