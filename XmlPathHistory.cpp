@@ -33,7 +33,8 @@
 
 //_______________________________________________
 XmlPathHistory::XmlPathHistory( QObject* parent ):
-    PathHistory( parent )
+    PathHistory( parent ),
+    saveHistory_( false )
 {
 
     Debug::Throw( "XmlPathHistory::XmlPathHistory.\n" );
@@ -69,6 +70,9 @@ bool XmlPathHistory::read( File file )
         return false;
     }
 
+    // do nothing if saveHistory is false
+    if( !saveHistory_ ) return false;
+
     if( file.isEmpty() ) file = dbFile_;
     if( file.isEmpty() || !file.exists() ) return false;
 
@@ -83,7 +87,6 @@ bool XmlPathHistory::read( File file )
 
     } else if( _read( document ) ) {
 
-        emit contentsChanged();
         return true;
 
     } else return false;
@@ -145,7 +148,8 @@ bool XmlPathHistory::write( File file )
     }
 
     // get path list
-    const FileRecord::List& pathList( this->pathList() );
+    FileRecord::List pathList;
+    if( saveHistory_ ) pathList = _truncatedList();
 
     // read old list and compare to current
     XmlPathHistory oldList;
@@ -200,8 +204,17 @@ void XmlPathHistory::_updateConfiguration( void )
 {
     Debug::Throw( "XmlPathHistory::_updateConfiguration.\n" );
 
+    // max size
+    if( XmlOptions::get().contains( "HISTORY_SIZE" ) )
+    { _setMaxSize( XmlOptions::get().get<int>( "HISTORY_SIZE" ) ); }
+
+    // save history
+    if( XmlOptions::get().contains( "SAVE_HISTORY" ) )
+    { saveHistory_ = XmlOptions::get().get<bool>( "SAVE_HISTORY" ); }
+
     // DB file
     _setDBFile( File( XmlOptions::get().raw( "RC_FILE" ) ) );
+
     return;
 
 }

@@ -140,6 +140,7 @@ SET( base_qt_SOURCES
   OptionWidgetList.cpp
   PathEditor.cpp
   PathHistory.cpp
+  PathHistoryConfiguration.cpp
   PixmapEngine.cpp
   PlacesWidget.cpp
   PrinterOptionWidget.cpp

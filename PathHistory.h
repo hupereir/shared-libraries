@@ -36,10 +36,10 @@ class PathHistory:  public QObject, public Counter
     public:
 
     //! constructor
-    PathHistory( QObject* parent ):
-        QObject( parent ),
-        Counter( "PathHistory" ),
-        index_(0)
+    PathHistory( QObject* );
+
+    //! destructor
+    virtual ~PathHistory( void )
     {}
 
     //!@name accessors
@@ -48,6 +48,12 @@ class PathHistory:  public QObject, public Counter
     //! path list
     const FileRecord::List& pathList( void ) const
     { return pathList_; }
+
+    //! get previous path list
+    FileRecord::List previousPathList( void ) const;
+
+    //! next path list
+    FileRecord::List nextPathList( void ) const;
 
     //! true if previous path in history is valid
     bool previousAvailable( void ) const
@@ -80,11 +86,7 @@ class PathHistory:  public QObject, public Counter
     { add( FileRecord( file ) ); }
 
     //! clear
-    void clear( void )
-    {
-        pathList_.clear();
-        index_ = 0;
-    }
+    void clear( void );
 
     //! retrieve next path in history
     File next( void )
@@ -94,6 +96,9 @@ class PathHistory:  public QObject, public Counter
     File previous( void )
     { return pathList_[--index_].file(); }
 
+    //! select path matching index in previous history
+    File selectPath( int );
+
     //@}
 
     Q_SIGNALS:
@@ -101,10 +106,29 @@ class PathHistory:  public QObject, public Counter
     //! emmited when contents is changed
     void contentsChanged( void );
 
+    protected:
+
+    //! maximum Size
+    virtual void _setMaxSize( int );
+
+    //! maximum size
+    virtual const int& _maxSize( void ) const
+    { return maxSize_; }
+
+    //! truncate list if larger than maxSize_
+    virtual FileRecord::List _truncatedList( void ) const
+    { return _truncatedList( pathList_ ); }
+
+    //! truncate list if larger than maxSize_
+    virtual FileRecord::List _truncatedList( FileRecord::List ) const;
+
     private:
 
     //! path list
     FileRecord::List pathList_;
+
+    //! maximum size (zero means no limit)
+    int maxSize_;
 
     //! current index in list
     int index_;

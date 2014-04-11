@@ -25,13 +25,40 @@
 #include "Debug.h"
 
 //__________________________________________________________________
+PathHistory::PathHistory( QObject* parent ):
+    QObject( parent ),
+    Counter( "PathHistory" ),
+    index_(0)
+{ Debug::Throw( "PathHistory::PathHistory.\n" ); }
+
+//__________________________________________________________________
+FileRecord::List PathHistory::previousPathList( void ) const
+{
+    FileRecord::List out;
+    for( int index = 0; index < index_; ++index )
+    { out.append( pathList_[index] ); }
+
+    return out;
+}
+
+//__________________________________________________________________
+FileRecord::List PathHistory::nextPathList( void ) const
+{
+    FileRecord::List out;
+    for( int index = index_+1; index < pathList_.size(); ++index )
+    { out.append( pathList_[index] ); }
+
+    return out;
+}
+
+//__________________________________________________________________
 void PathHistory::setPathList( const FileRecord::List& pathList )
 {
     Debug::Throw( "PathHistory::setPathList.\n" );
 
     pathList_ = pathList;
     index_ = pathList.size()-1;
-
+    emit contentsChanged();
 }
 
 //__________________________________________________________________
@@ -55,6 +82,47 @@ void PathHistory::add( const FileRecord& path )
     // insert new path
     pathList_.append( path );
     index_ = pathList_.size()-1;
+    emit contentsChanged();
+
     return;
 
+}
+
+//__________________________________________
+void PathHistory::clear( void )
+{
+    Debug::Throw( "PathHistory::clear.\n" );
+    pathList_.clear();
+    index_ = 0;
+    emit contentsChanged();
+}
+
+//__________________________________________________________________
+File PathHistory::selectPath( int index )
+{
+    Debug::Throw( "PathHistory::selectPath.\n" );
+    index_ = qMin( index, pathList_.size()-1 );
+    return pathList_[index_].file();
+}
+
+//_______________________________________________
+void PathHistory::_setMaxSize( int value )
+{
+
+    Debug::Throw( "PathHistory::_setMaxSize.\n" );
+    maxSize_ = value;
+    return;
+
+}
+
+//___________________________________________________________________
+FileRecord::List PathHistory::_truncatedList( FileRecord::List records ) const
+{
+    if( maxSize_ > 0 )
+    {
+        while( records.size() > maxSize_ )
+        { records.removeFirst(); }
+    }
+
+    return records;
 }

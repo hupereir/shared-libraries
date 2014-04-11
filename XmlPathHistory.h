@@ -79,6 +79,9 @@ class XmlPathHistory: public PathHistory
     //! tag name
     QString tagName_;
 
+    //! enable history save
+    bool saveHistory_;
+
     //! file from/to wich the files are saved
     File dbFile_;
 
