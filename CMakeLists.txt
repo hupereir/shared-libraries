@@ -11,13 +11,17 @@ IF( UNIX AND NOT APPLE )
 
   FIND_PACKAGE( X11 )
   IF( X11_FOUND )
-    INCLUDE_DIRECTORIES( ${X11_X11_INCLUDE_PATH} )
-
-    IF( USE_QT5 )
-      ADD_DEFINITIONS( -DQ5_WS_X11 )
-    ENDIF()
-
+     FIND_PACKAGE(XCB REQUIRED COMPONENTS XCB)
+     FIND_PACKAGE(X11_XCB REQUIRED)
+     INCLUDE_DIRECTORIES( ${X11_X11_INCLUDE_PATH} )
   ENDIF()
+
+  ADD_DEFINITIONS( -DHAVE_X11=${X11_FOUND} )
+
+ELSE()
+
+  ADD_DEFINITIONS( -DHAVE_X11=0 )
+
 ENDIF()
 
 ########### Qt4 configuration #########
@@ -179,6 +183,7 @@ SET( base_qt_SOURCES
   WarningDialog.cpp
   WidgetMonitor.cpp
   WinUtil.cpp
+  XcbUtil.cpp
   X11Util.cpp
   XmlColor.cpp
   XmlCommandLineArguments.cpp
@@ -216,11 +221,14 @@ IF( ENABLE_SHARED )
 ELSE()
 
   ADD_LIBRARY( base-qt STATIC ${base_qt_SOURCES} ${base_qt_RESOURCES_RCC} )
-  IF( X11_FOUND )
 
-    TARGET_LINK_LIBRARIES( base-qt ${X11_X11_LIB} )
+ENDIF()
 
-  ENDIF()
+IF( X11_FOUND )
+
+  TARGET_LINK_LIBRARIES( base-qt ${X11_X11_LIB} )
+  TARGET_LINK_LIBRARIES( base-qt ${XCB_LIBRARIES} )
+  TARGET_LINK_LIBRARIES( base-qt ${X11_XCB_LIBRARIES} )
 
 ENDIF()
 

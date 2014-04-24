@@ -123,7 +123,7 @@ void BaseDialog::toggleSticky( bool state )
 
     Debug::Throw( "BaseDialog::toggleSticky.\n" );
 
-    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+    #if HAVE_X11
     if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
     {
 

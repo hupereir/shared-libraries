@@ -157,7 +157,7 @@ void DockPanel::_toggleStaysOnTop( bool state )
     // check that widget is top level
     if( main_->parentWidget() ) return;
 
-    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+    #if HAVE_X11
 
     X11Util::get().changeProperty( main_, X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
     X11Util::get().changeProperty( main_, X11Util::_NET_WM_STATE_ABOVE, state );
@@ -189,7 +189,7 @@ void DockPanel::_toggleSticky( bool state )
     // check that widget is top level
     if( main_->parentWidget() ) return;
 
-    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+    #if HAVE_X11
     if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
     {
 

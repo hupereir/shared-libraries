@@ -28,7 +28,7 @@
 #include <windows.h>
 #endif
 
-#if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+#if HAVE_X11
 #include <X11/Xutil.h>
 #endif
 
@@ -49,7 +49,7 @@ KeyModifier::State KeyModifier::state( void ) const
     else return Unknown;
     #endif
 
-    #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+    #if HAVE_X11
     // map Qt Key to X11
     int key_symbol(0);
     switch( key_ )

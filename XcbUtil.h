@@ -1,5 +1,5 @@
-#ifndef X11ErrorHandler_h
-#define X11ErrorHandler_h
+#ifndef XcbUtil_h
+#define XcbUtil_h
 
 // $Id$
 
@@ -22,46 +22,31 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
+#include <QWidget>
 
-#if HAVE_X11
-#include <X11/Xlib.h>
-#endif
-
-class X11ErrorHandler: public Counter
+class XcbUtil
 {
+
     public:
 
-    //! constructor
-    X11ErrorHandler( void ):
-        Counter( "X11ErrorHandler" )
-    {
-
-        #if HAVE_X11
-        oldHandler_ = XSetErrorHandler( ignoreErrors );
-        #endif
-
-    }
+    //! singleton
+    static XcbUtil& get( void );
 
     //! destructor
-    virtual ~X11ErrorHandler( void )
-    {
-        #if HAVE_X11
-        XSetErrorHandler( oldHandler_ );
-        #endif
-    }
+    virtual ~XcbUtil( void );
+
+    //! connection
+    Qt::HANDLE connection( void ) const;
 
     private:
 
-    #if HAVE_X11
-    //! error handler
-    static int ignoreErrors (Display *dpy, XErrorEvent *ev)
-    { return 0; }
+    //! constructor
+    XcbUtil( void );
 
-    //! old handler
-    XErrorHandler oldHandler_;
+    //! private pointer
+    class Private;
+    Private* d;
 
-    #endif
 };
 
 #endif
