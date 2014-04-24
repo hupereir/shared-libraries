@@ -33,7 +33,7 @@
 
 #include <QPainter>
 
-#if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+#if HAVE_X11
 #include <X11/Xlib.h>
 #include <X11/extensions/shape.h>
 #endif
@@ -273,7 +273,7 @@ namespace Transparency
     void TransparentWidget::_updateInputShape( void )
     {
 
-        #if defined(Q_WS_X11) || defined( Q5_WS_X11 )
+        #if HAVE_X11
 
         // check outer padding
         // TODO: should remove existing shape if any

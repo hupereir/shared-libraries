@@ -24,7 +24,7 @@
 #include "Debug.h"
 #include "X11Util.h"
 
-#if defined(Q_WS_X11) || defined(Q5_WS_X11)
+#if HAVE_X11
 #include <X11/extensions/Xrender.h>
 #endif
 
@@ -69,7 +69,7 @@ namespace Transparency
         return true;
         #endif
 
-        #if defined(Q_WS_X11) || defined(Q5_WS_X11)
+        #if HAVE_X11
         Display* display = reinterpret_cast<Display*>(X11Util::get().display());
         QByteArray buffer;
         QTextStream( &buffer ) << "_NET_WM_CM_S" << DefaultScreen( display );
