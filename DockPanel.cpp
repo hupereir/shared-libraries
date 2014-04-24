@@ -27,7 +27,10 @@
 #include "File.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
+
+#include "XcbUtil.h"
 #include "X11Util.h"
+
 
 #include <QApplication>
 #include <QPainter>
@@ -190,12 +193,12 @@ void DockPanel::_toggleSticky( bool state )
     if( main_->parentWidget() ) return;
 
     #if HAVE_X11
-    if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
+    if( XcbUtil::get().isSupported( XcbUtil::_NET_WM_STATE_STICKY ) )
     {
 
         X11Util::get().changeProperty( main_, X11Util::_NET_WM_STATE_STICKY, state );
 
-    } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
+    } else if( XcbUtil::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
 
         unsigned long desktop = X11Util::get().cardinal( X11Util::get().appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
         X11Util::get().changeCardinal( main_, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );

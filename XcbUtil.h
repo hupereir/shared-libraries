@@ -22,9 +22,12 @@
 *
 *******************************************************************************/
 
+#include "X11Defines.h"
+
+#include <QHash>
 #include <QWidget>
 
-class XcbUtil
+class XcbUtil: public X11Defines
 {
 
     public:
@@ -35,13 +38,39 @@ class XcbUtil
     //! destructor
     virtual ~XcbUtil( void );
 
+    //! supported atoms
+    bool isSupported( Atoms );
+
+    //! return true if property is found in NET_WM_STATE
+    bool hasProperty( QWidget*, Atoms );
+
+//     //! change property
+//     bool changeProperty( QWidget*, Atoms, bool);
+//
+//     //! change property
+//     bool changeProperty( QWidget*, Atoms, const unsigned char*, int size );
+
     //! connection
     Qt::HANDLE connection( void ) const;
+
+    //! atom
+    Qt::HANDLE findAtom( Atoms ) const;
+
+    //! application root window
+    WId appRootWindow( void ) const;
 
     private:
 
     //! constructor
     XcbUtil( void );
+
+    //! atom names
+    typedef QMap<Atoms, QString> AtomNameMap;
+
+    //! supported atoms
+    typedef QHash<Atoms, bool > SupportedAtomMap;
+
+    SupportedAtomMap supportedAtoms_;
 
     //! private pointer
     class Private;
