@@ -74,7 +74,7 @@ QString Util::domain( void )
     return QHostInfo::localDomainName();
 
     #else
-    #if defined(Q_WS_X11)
+    #if HAVE_X11
 
     // use build-in unix function
     char *buf = new char[ LONGSTR ];
@@ -99,7 +99,7 @@ QString Util::windowTitle( const QString& title )
 
     Debug::Throw( "Util::windowTitle.\n" );
 
-    #if defined(Q_WS_X11)
+    #if HAVE_X11
     QString host( Util::host() );
     if( host == "localhost" ) return title;
     else return QString( "%1 [%2]" ).arg( title ).arg( host );
