@@ -23,8 +23,6 @@
 
 #include "Debug.h"
 
-#include <QScopedPointer>
-
 #if QT_VERSION >= 0x050000
 #include <QGuiApplication>
 #include <qpa/qplatformnativeinterface.h>
@@ -40,22 +38,6 @@
 
 //________________________________________________________________________
 static int debugLevel = 1;
-
-//________________________________________________________________________
-template <typename T> class ScopedPointer: public QScopedPointer<T, QScopedPointerPodDeleter>
-{
-    public:
-
-    //! constructor
-    ScopedPointer( T* t ):
-        QScopedPointer<T, QScopedPointerPodDeleter>( t )
-    {}
-
-    //! destructor
-    virtual ~ScopedPointer( void )
-    {}
-
-};
 
 //________________________________________________________________________
 class XcbUtil::Private
@@ -122,6 +104,7 @@ XcbUtil::Private::Private( void )
     defaultScreen_ = 0;
     appRootWindow_ = 0;
     #endif
+    atomNames_[WM_STATE] = "WM_STATE";
 
     atomNames_[_NET_SUPPORTED] = "_NET_SUPPORTED";
     atomNames_[_NET_CURRENT_DESKTOP] = "_NET_CURRENT_DESKTOP";
@@ -256,6 +239,16 @@ WId XcbUtil::appRootWindow( void ) const
 {
     #if HAVE_X11
     return d->appRootWindow();
+    #else
+    return 0;
+    #endif
+}
+
+//________________________________________________________________________
+Qt::HANDLE XcbUtil::findAtom( Atoms atom ) const
+{
+    #if HAVE_X11
+    return Qt::HANDLE( d->findAtom( atom ) );
     #else
     return 0;
     #endif

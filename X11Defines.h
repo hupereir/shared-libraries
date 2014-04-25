@@ -32,6 +32,8 @@ class X11Defines
 
     //! Atoms enumeration
     enum Atoms {
+        WM_STATE,
+
         _NET_SUPPORTED,
         _NET_CURRENT_DESKTOP,
         _NET_WM_DESKTOP,

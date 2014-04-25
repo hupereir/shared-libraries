@@ -25,6 +25,7 @@
 #include "X11Defines.h"
 
 #include <QHash>
+#include <QScopedPointer>
 #include <QWidget>
 
 class XcbUtil: public X11Defines
@@ -32,11 +33,37 @@ class XcbUtil: public X11Defines
 
     public:
 
+    //! convenience class to handle xcb replies
+    template <typename T> class ScopedPointer: public QScopedPointer<T, QScopedPointerPodDeleter>
+    {
+        public:
+
+        //! constructor
+        ScopedPointer( T* t ):
+            QScopedPointer<T, QScopedPointerPodDeleter>( t )
+            {}
+
+        //! destructor
+        virtual ~ScopedPointer( void )
+        {}
+
+    };
+
+
     //! singleton
     static XcbUtil& get( void );
 
     //! destructor
     virtual ~XcbUtil( void );
+
+    //! connection
+    Qt::HANDLE connection( void ) const;
+
+    //! atom
+    Qt::HANDLE findAtom( Atoms ) const;
+
+    //! application root window
+    WId appRootWindow( void ) const;
 
     //! supported atoms
     bool isSupported( Atoms );
@@ -49,15 +76,6 @@ class XcbUtil: public X11Defines
 //
 //     //! change property
 //     bool changeProperty( QWidget*, Atoms, const unsigned char*, int size );
-
-    //! connection
-    Qt::HANDLE connection( void ) const;
-
-    //! atom
-    Qt::HANDLE findAtom( Atoms ) const;
-
-    //! application root window
-    WId appRootWindow( void ) const;
 
     private:
 
