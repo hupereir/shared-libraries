@@ -22,12 +22,11 @@
 #include "CompositeEngine.h"
 
 #include "Debug.h"
-#include "X11Util.h"
+#include "XcbUtil.h"
 
 #if HAVE_X11
-#include <X11/extensions/Xrender.h>
+#include <xcb/xcb.h>
 #endif
-
 
 namespace Transparency
 {
@@ -70,11 +69,13 @@ namespace Transparency
         #endif
 
         #if HAVE_X11
-        Display* display = reinterpret_cast<Display*>(X11Util::get().display());
-        QByteArray buffer;
-        QTextStream( &buffer ) << "_NET_WM_CM_S" << DefaultScreen( display );
-        Atom atom( XInternAtom( display, buffer.constData(), False) );
-        return XGetSelectionOwner( display, atom ) != None;
+        const QString atomName( QString( "_NET_WM_CM_S%1" ).arg( XcbUtil::get().defaultScreenNumber() ) );
+        xcb_atom_t atom( static_cast<xcb_atom_t>( XcbUtil::get().findAtom( atomName ) ) );
+        xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+
+        xcb_get_selection_owner_cookie_t cookie( xcb_get_selection_owner( connection, atom ) );
+        XcbUtil::ScopedPointer<xcb_get_selection_owner_reply_t> reply( xcb_get_selection_owner_reply( connection, cookie, 0x0 ) );
+        return reply && reply->owner;
         #endif
 
         // on all other systems, return false

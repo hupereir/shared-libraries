@@ -29,13 +29,13 @@
 #include "Singleton.h"
 #include "WinUtil.h"
 #include "XmlOptions.h"
-#include "X11Util.h"
+#include "XcbUtil.h"
 
 #include <QPainter>
 
 #if HAVE_X11
-#include <X11/Xlib.h>
-#include <X11/extensions/shape.h>
+#include <xcb/xcb.h>
+#include <xcb/shape.h>
 #endif
 
 namespace Transparency
@@ -284,32 +284,26 @@ namespace Transparency
             if( hasInputShape_ )
             {
                 // reset shape
-                XShapeCombineMask (
-                    (Display*) X11Util::get().display(),
-                    winId(),
-                    ShapeInput,
-                    0, 0,
-                    None,
-                    ShapeSet);
-                hasInputShape_ = false;
+                xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+                xcb_shape_mask( connection, XCB_SHAPE_SO_SET, XCB_SHAPE_SK_INPUT, winId(), 0, 0, XCB_PIXMAP_NONE);
+                xcb_flush( connection );
 
+                hasInputShape_ = false;
             }
 
         } else {
 
             // update shape
             const QRect rect( _outerPadding().adjustedRect( this->rect() ) );
-            XRectangle rectangles[] =
-            { { rect.x(), rect.y(), rect.width(), rect.height() } };
+            xcb_rectangle_t xrect = { rect.x(), rect.y(), rect.width(), rect.height() };
 
-            XShapeCombineRectangles(
-                (Display*) X11Util::get().display(),
-                winId(),
-                ShapeInput,
-                0, 0,
-                rectangles, 1,
-                ShapeSet,
-                YXBanded );
+            xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+            xcb_shape_rectangles(
+                connection,
+                XCB_SHAPE_SO_SET, XCB_SHAPE_SK_INPUT, XCB_CLIP_ORDERING_YX_BANDED, winId(),
+                0, 0, 1, &xrect );
+
+            xcb_flush( connection );
 
             hasInputShape_ = true;
 
@@ -324,17 +318,23 @@ namespace Transparency
     {
 
         Debug::Throw() << "TransparentWidget::_updateBlurRegion" << endl;
+
+        #if HAVE_X11
+
+        // create data
         blurRegion_ = region;
         QVector<QRect> rects( region.rects() );
-        QVector<unsigned long> data;
+        QVector<uint32_t> data;
         foreach( const QRect& r, rects )
         { data << r.x() << r.y() << r.width() << r.height(); }
 
-        X11Util::get().changeProperty(
-            this,
-            X11Util::_KDE_NET_WM_BLUR_BEHIND_REGION,
-            reinterpret_cast<const unsigned char *>(data.constData()),
-            data.size());
+        // get connection and atom
+        xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+        xcb_atom_t atom( static_cast<xcb_atom_t>( XcbUtil::get().findAtom( X11Defines::_KDE_NET_WM_BLUR_BEHIND_REGION ) ) );
+        xcb_change_property( connection, XCB_PROP_MODE_REPLACE, winId(), atom, XCB_ATOM_CARDINAL, 32, data.size(), data.constData() );
+        xcb_flush( connection );
+
+        #endif
 
     }
 
