@@ -22,16 +22,18 @@
 *
 *******************************************************************************/
 
+#include <inttypes.h>
+
 class X11Defines
 {
 
     public:
 
     //! used for stickyness
-    static const unsigned long ALL_DESKTOPS = ~0;
+    static const uint32_t ALL_DESKTOPS = ~0;
 
     //! Atoms enumeration
-    enum Atoms {
+    enum AtomId {
         WM_STATE,
 
         _NET_SUPPORTED,

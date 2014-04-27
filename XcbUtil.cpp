@@ -23,6 +23,8 @@
 
 #include "Debug.h"
 
+#include <QList>
+
 #if QT_VERSION >= 0x050000
 #include <QGuiApplication>
 #include <qpa/qplatformnativeinterface.h>
@@ -31,13 +33,23 @@
 #endif
 
 #if HAVE_X11
-#include <X11/Xlib.h>
 #include <X11/Xlib-xcb.h>
 #include <xcb/xcb.h>
 #endif
 
 //________________________________________________________________________
 static int debugLevel = 1;
+
+//________________________________________________________________________
+union ClientMessageBuffer
+{
+    char _buffer[32];
+    xcb_client_message_event_t event;
+
+    //! constructor
+    ClientMessageBuffer( void )
+    { memset( this, 0, sizeof( ClientMessageBuffer ) ); }
+};
 
 //________________________________________________________________________
 class XcbUtil::Private
@@ -63,16 +75,25 @@ class XcbUtil::Private
     xcb_window_t appRootWindow( void );
 
     //! find atom
-    xcb_atom_t findAtom( Atoms );
+    xcb_atom_t findAtom( const QString& );
+
+    //! find atom
+    xcb_atom_t findAtom( AtomId );
 
     #endif
 
-    XcbUtil::AtomNameMap atomNames_;
+    //! atom names
+    typedef QHash<AtomId, QString> AtomNameMap;
+    AtomNameMap atomNames_;
 
-    private:
+    //! supported atoms
+    typedef QHash<AtomId, bool > SupportedAtomHash;
+    SupportedAtomHash supportedAtomId_;
 
     //! default screen number
     int defaultScreenNumber_;
+
+    private:
 
     #if HAVE_X11
 
@@ -85,11 +106,13 @@ class XcbUtil::Private
     //! root window
     xcb_window_t appRootWindow_;
 
-    //! atom map
-    typedef QHash<Atoms, xcb_atom_t> AtomMap;
+    //! atom names map
+    typedef QHash<QString, xcb_atom_t> NamedAtomHash;
+    NamedAtomHash namedAtomId_;
 
-    //! atoms
-    AtomMap atoms_;
+    //! atom map
+    typedef QHash<AtomId, xcb_atom_t> AtomHash;
+    AtomHash atoms_;
 
     #endif
 };
@@ -185,13 +208,32 @@ xcb_window_t XcbUtil::Private::appRootWindow( void )
 }
 
 //________________________________________________________________________
-xcb_atom_t XcbUtil::Private::findAtom( Atoms atom )
+xcb_atom_t XcbUtil::Private::findAtom( const QString& atomName )
 {
 
     Debug::Throw( "XcbUtil::Private::findAtom.\n" );
 
     // find atom in map
-    Private::AtomMap::iterator iter( atoms_.find( atom ) );
+    NamedAtomHash::iterator iter( namedAtomId_.find( atomName ) );
+    if( iter != namedAtomId_.end() ) return iter.value();
+
+    // create atom if not found
+    xcb_intern_atom_cookie_t cookie( xcb_intern_atom( connection(), false, atomName.size(), qPrintable( atomName ) ) );
+    ScopedPointer<xcb_intern_atom_reply_t> reply( xcb_intern_atom_reply( connection(), cookie, 0x0 ) );
+    xcb_atom_t out = reply ? reply->atom:0;
+    namedAtomId_[atomName] = out;
+    return out;
+
+}
+
+//________________________________________________________________________
+xcb_atom_t XcbUtil::Private::findAtom( AtomId atom )
+{
+
+    Debug::Throw( "XcbUtil::Private::findAtom.\n" );
+
+    // find atom in map
+    AtomHash::iterator iter( atoms_.find( atom ) );
     if( iter != atoms_.end() ) return iter.value();
 
     // create atom if not found
@@ -234,6 +276,25 @@ Qt::HANDLE XcbUtil::connection( void ) const
     #endif
 }
 
+//________________________________________________________________________
+Qt::HANDLE XcbUtil::defaultScreen( void ) const
+{
+    #if HAVE_X11
+    return Qt::HANDLE( d->defaultScreen() );
+    #else
+    return 0;
+    #endif
+}
+
+//________________________________________________________________________
+int XcbUtil::defaultScreenNumber( void ) const
+{
+    #if HAVE_X11
+    d->connection();
+    #endif
+    return d->defaultScreenNumber_;
+}
+
 //_______________________________________________________
 WId XcbUtil::appRootWindow( void ) const
 {
@@ -245,7 +306,17 @@ WId XcbUtil::appRootWindow( void ) const
 }
 
 //________________________________________________________________________
-Qt::HANDLE XcbUtil::findAtom( Atoms atom ) const
+Qt::HANDLE XcbUtil::findAtom( const QString& atomName ) const
+{
+    #if HAVE_X11
+    return Qt::HANDLE( d->findAtom( atomName ) );
+    #else
+    return 0;
+    #endif
+}
+
+//________________________________________________________________________
+Qt::HANDLE XcbUtil::findAtom( AtomId atom ) const
 {
     #if HAVE_X11
     return Qt::HANDLE( d->findAtom( atom ) );
@@ -255,88 +326,54 @@ Qt::HANDLE XcbUtil::findAtom( Atoms atom ) const
 }
 
 //________________________________________________________________________
-bool XcbUtil::isSupported( Atoms atom )
+bool XcbUtil::isSupported( AtomId atom ) const
 {
 
     #if HAVE_X11
-
     Debug::Throw( debugLevel ) << "XcbUtil::isSupported - " << d->atomNames_[atom] << endl;
 
-    SupportedAtomMap::const_iterator iter( supportedAtoms_.find( atom ) );
-    if( iter != supportedAtoms_.end() )
+    Private::SupportedAtomHash::const_iterator iter( d->supportedAtomId_.find( atom ) );
+    if( iter != d->supportedAtomId_.end() )
     {
         Debug::Throw() << "XcbUtil::isSupported - " << d->atomNames_[atom] << (iter.value() ? " true ":" false ") << endl;
         return iter.value();
     }
 
+    static bool first( true );
+    bool found( false );
     xcb_atom_t netSupported( d->findAtom( _NET_SUPPORTED ) );
     xcb_atom_t searched( d->findAtom( atom ) );
-    xcb_get_property_reply_t* reply = 0;
-    int length = 32768;
 
+    uint32_t offset(0);
     while( true )
     {
 
-        xcb_get_property_cookie_t cookie( xcb_get_property(
-            d->connection(), 0, d->appRootWindow(),
-            netSupported, XCB_ATOM_ATOM, 0, length ) );
-
-        reply = xcb_get_property_reply( d->connection(), cookie, 0x0 );
+        xcb_get_property_cookie_t cookie( xcb_get_property( d->connection(), 0, d->appRootWindow(), netSupported, XCB_ATOM_ATOM, offset, 1 ) );
+        ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
         if( !reply )
         {
             Debug::Throw(debugLevel) << "XcbUtil::isSupported - XGetProperty failed" << endl;
             return false;
         }
 
-        if( reply->bytes_after == 0 ) break;
-        free( reply );
-        length *= 2;
-        continue;
-
-    }
-
-    // TODO: sanitize the times 4 division
-    const int count( xcb_get_property_value_length( reply )/4 );
-    uint32_t* data( reinterpret_cast<uint32_t*>( xcb_get_property_value( reply ) ) );
-    if( reply->type != XCB_ATOM_ATOM || reply->format != 32 || count <= 0 || !data )
-    {
-        Debug::Throw(debugLevel) << "XcbUtil::isSupported - incorrect output for XGetProperty" << endl;
-        free( reply );
-        return false;
-    }
-
-    Debug::Throw(debugLevel) << "XcbUtil::isSupported - count: " << count << endl;
-
-    bool found = false;
-    static bool first( true );
-    for( int i = 0; i<count; ++i )
-    {
-
-        if( first && Debug::level() >= debugLevel )
-        {
-
-            // print all supported atom names
-            xcb_get_atom_name_cookie_t cookie( xcb_get_atom_name( d->connection(), (xcb_atom_t) data[i] ) );
-            ScopedPointer<xcb_get_atom_name_reply_t> reply( xcb_get_atom_name_reply( d->connection(), cookie, 0 ) );
-
-            if( !reply ) continue;
-            Debug::Throw(debugLevel) << "XcbUtil::isSupported - supported: " << xcb_get_atom_name_name( reply.data() ) << endl;
-
-        }
-
-        if( searched == (xcb_atom_t) data[i] )
+        // cast atom
+        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.data() ))[0] );
+        if( searched == current )
         {
 
             found = true;
-            if( !( first && Debug::level() < debugLevel ) ) break;
+            break;
 
-        }
+        } else if( reply->bytes_after == 0 ) {
+
+            break;
+
+        } else ++offset;
 
     }
 
-    if( first ) first = false;
-    supportedAtoms_[atom] = found;
-    free( reply );
+    first = false;
+    d->supportedAtomId_[atom] = found;
 
     return found;
 
@@ -347,94 +384,339 @@ bool XcbUtil::isSupported( Atoms atom )
 }
 
 //________________________________________________________________________
-bool XcbUtil::hasProperty( QWidget* widget, Atoms atom )
+bool XcbUtil::hasState( WId window, AtomId atom ) const
 {
 
-    Debug::Throw(debugLevel) << "XcbUtil::hasProperty - " << d->atomNames_[atom] << endl;
+    Debug::Throw(debugLevel) << "XcbUtil::hasState - " << d->atomNames_[atom] << endl;
+
+    #if HAVE_X11
+
+    // make sure atoms are supported
+    if( !( isSupported( _NET_WM_STATE ) && isSupported( atom ) ) ) return false;
+
+    xcb_atom_t netWMState( d->findAtom(_NET_WM_STATE) );
+    xcb_atom_t searched( d->findAtom( atom ) );
+
+    uint32_t offset(0);
+    while( true )
+    {
+
+        xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, window, netWMState, XCB_ATOM_ATOM, offset, 1 ) );
+        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+        if( !reply )
+        {
+            Debug::Throw(debugLevel) << "XcbUtil::hasState - XGetProperty failed" << endl;
+            return false;
+        }
+
+        // cast atom
+        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.data() ))[0] );
+
+        if( searched == current ) return true;
+        else if( reply->bytes_after == 0 ) return false;
+        else ++offset;
+
+    }
+
+    #endif
+    return false;
+
+}
+
+//________________________________________________________________________
+void XcbUtil::printState( WId window ) const
+{
+
+    Debug::Throw(debugLevel, "XcbUtil::printState.\n" );
+
+    #if HAVE_X11
+
+    // make sure atom is supported
+    if( !isSupported( _NET_WM_STATE ) ) return;
+    xcb_atom_t netWMState( d->findAtom(_NET_WM_STATE) );
+
+    uint32_t offset(0);
+    QStringList atomNames;
+    while( true )
+    {
+
+        xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, window, netWMState, XCB_ATOM_ATOM, offset, 1 ) );
+        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+        if( !reply )
+        {
+            Debug::Throw(debugLevel) << "XcbUtil::hasState - XGetProperty failed" << endl;
+            return;
+        }
+
+        // cast atom
+        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.data() ))[0] );
+        {
+
+            xcb_get_atom_name_cookie_t cookie( xcb_get_atom_name( d->connection(), current ) );
+            XcbUtil::ScopedPointer<xcb_get_atom_name_reply_t> reply( xcb_get_atom_name_reply( d->connection(), cookie, 0 ) );
+            if( reply )
+            { atomNames.append( QString( QByteArray( xcb_get_atom_name_name( reply.data() ), xcb_get_atom_name_name_length( reply.data() ) ) ) ); }
+
+        }
+
+        if( reply->bytes_after == 0 ) return;
+        else ++offset;
+
+    }
+
+    Debug::Throw(0) << "XcbUtil::printWindowState: " << atomNames.join( " " ) << endl;
+
+    #endif
+    return;
+
+}
+
+//________________________________________________________________________
+uint32_t XcbUtil::cardinal( WId window, AtomId atom ) const
+{
+    Debug::Throw( "XcbUtil::cardinal" );
 
     #if HAVE_X11
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
 
-    xcb_atom_t netWMState( d->findAtom(_NET_WM_STATE) );
-    xcb_atom_t searched( d->findAtom( atom ) );
-    xcb_get_property_reply_t* reply = 0;
-    int length = 32768;
+    xcb_atom_t searched( d->findAtom(atom) );
+    xcb_get_property_cookie_t cookie( xcb_get_property( d->connection(), 0, window, searched, XCB_ATOM_CARDINAL, 0, 1 ) );
+    ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+    if( !( reply && xcb_get_property_value_length( reply.data() ) > 0 ) ) return 0;
 
-    while( true )
-    {
+    return reinterpret_cast<uint32_t*>(xcb_get_property_value( reply.data() ) )[0];
 
-        xcb_get_property_cookie_t cookie( xcb_get_property(
-            d->connection(), 0, widget->winId(), netWMState,
-            XCB_ATOM_ATOM, 0, length ) );
+    #else
+    return 0;
+    #endif
 
-        reply = xcb_get_property_reply( d->connection(), cookie, 0x0 );
-        if( !reply )
-        {
-            Debug::Throw(debugLevel) << "XcbUtil::hasProperty - XGetProperty failed" << endl;
-            return false;
-        }
+}
 
-        if( reply->format != 32 )
-        {
-            Debug::Throw(debugLevel) << "XcbUtil::hasProperty - wrong format: " << reply->format << endl;
-            return false;
-        }
+//________________________________________________________________________
+bool XcbUtil::changeState( QWidget* widget, AtomId atom, bool value ) const
+{
 
-        if( reply->bytes_after == 0 ) break;
+    return widget->isHidden()  ?
+        _changeState( widget, atom, value ):
+        _requestStateChange( widget, atom, value );
+}
 
-        free( reply );
-        length *= 2;
-        continue;
+//________________________________________________________________________
+bool XcbUtil::changeCardinal( QWidget* widget, AtomId atom, uint32_t value ) const
+{
+    return widget->isHidden() ?
+        _changeCardinal( widget, atom, value ):
+        _requestCardinalChange( widget, atom, value );
+}
 
-    }
+//________________________________________________________________________
+bool XcbUtil::moveResizeWidget(
+    QWidget* widget,
+    const QPoint& position,
+    const XcbUtil::Direction& direction,
+    Qt::MouseButton button )
+{
 
-    const int count( xcb_get_property_value_length( reply )/4 );
-    Debug::Throw(debugLevel) << "XcbUtil::hasProperty -"
-        << " count: " << count
-        << endl;
+    Debug::Throw() << "XcbUtil::moveResizeWidget - (" << position.x() << "," << position.y() << ")" << endl;
 
-    if( count <= 0 )
-    {
-        Debug::Throw(debugLevel) << "XcbUtil::hasProperty - wrong count: " << count << endl;
-        return false;
-    }
+    if( !widget->isWindow() ) return false;
 
-    uint32_t* data( reinterpret_cast<uint32_t*>( xcb_get_property_value( reply ) ) );
-    if( !data )
-    {
-        Debug::Throw(debugLevel) << "XcbUtil::hasProperty - wrong data." << endl;
-        return false;
-    }
+    #if HAVE_X11
 
-    for( unsigned long i = 0; i<count; i++ )
-    {
+    // check
+    if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
 
-        if( Debug::level() >= debugLevel )
-        {
-            // print all supported atom names
-            xcb_get_atom_name_cookie_t cookie( xcb_get_atom_name( d->connection(), (xcb_atom_t) data[i] ) );
-            ScopedPointer<xcb_get_atom_name_reply_t> reply( xcb_get_atom_name_reply( d->connection(), cookie, 0 ) );
+    xcb_atom_t moveWMResize( d->findAtom( _NET_WM_MOVERESIZE ) );
 
-            if( !reply ) continue;
-            Debug::Throw(debugLevel) << "XcbUtil::isSupported - supported: " << xcb_get_atom_name_name( reply.data() ) << endl;
-        }
+    // create event
+    ClientMessageBuffer buffer;
 
-        if( searched == (xcb_atom_t) data[i] )
-        {
-            free(reply);
-            return true;
-        }
+    xcb_client_message_event_t *event = &buffer.event;
+    event->response_type = XCB_CLIENT_MESSAGE;
+    event->type = moveWMResize;
+    event->format = 32;
+    event->window = widget->winId();
+    event->data.data32[0] = position.x();
+    event->data.data32[1] = position.y();
+    event->data.data32[2] = direction;
+    event->data.data32[3] = button;
+    event->data.data32[4] = 0;
 
-    }
+    xcb_ungrab_pointer( d->connection(), XCB_TIME_CURRENT_TIME );
+    xcb_send_event( d->connection(), false, appRootWindow(),
+        XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY |
+        XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT, (const char*)event );
 
-    // no match found
-    free( reply );
-    return false;
+    xcb_flush( d->connection() );
+
+    return true;
 
     #else
     return false;
     #endif
+}
 
+//________________________________________________________________________
+bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
+{
+
+    Debug::Throw()
+        << "XcbUtil::_changeState -"
+        << " winId: " << widget->winId()
+        << " atom: " << d->atomNames_[atom]
+        << " state: " << state
+        << endl;
+
+    #if HAVE_X11
+
+    // make sure atoms are supported
+    if( !( isSupported( _NET_WM_STATE ) && isSupported( atom ) ) ) return false;
+
+    xcb_atom_t netWMState( d->findAtom(_NET_WM_STATE) );
+    xcb_atom_t searched( d->findAtom( atom ) );
+
+    QVector<xcb_atom_t> atoms;
+    uint32_t offset(0);
+    while( true )
+    {
+
+        xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, widget->winId(), netWMState, XCB_ATOM_ATOM, offset, 1 ) );
+        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+        if( !reply )
+        {
+            Debug::Throw(debugLevel) << "XcbUtil::hasState - XGetProperty failed" << endl;
+            return false;
+        }
+
+        // cast atom and append
+        xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.data() ))[0] );
+        atoms.append( current );
+
+        if( reply->bytes_after == 0 ) break;
+        else ++offset;
+
+    }
+
+
+    // update list of atoms based on requested state
+    if( state )
+    {
+        if( atoms.contains( searched ) ) return true;
+        else atoms.append( searched );
+
+    } else {
+
+        int index = atoms.indexOf( searched );
+        if( index >= 0 ) atoms.remove( index );
+        else return true;
+
+    }
+
+    // change property
+    xcb_change_property( d->connection(), XCB_PROP_MODE_REPLACE, widget->winId(), netWMState, XCB_ATOM_ATOM, 32, atoms.size(), reinterpret_cast<const void*>( atoms.constData() ) );
+    xcb_flush( d->connection() );
+
+    return true;
+    #endif
+
+    return false;
+}
+
+//________________________________________________________________________
+bool XcbUtil::_requestStateChange( QWidget* widget, AtomId atom, bool value ) const
+{
+
+    Debug::Throw(debugLevel) << "XcbUtil::_requestStateChange - "
+        << " winId: " << widget->winId()
+        << " atom: " << d->atomNames_[atom]
+        << " state: " << value
+        << endl;
+
+    #if HAVE_X11
+
+    // make sure atoms are supported
+    if( !( isSupported( _NET_WM_STATE ) && isSupported( atom ) ) ) return false;
+
+    xcb_atom_t netWMState( d->findAtom(_NET_WM_STATE) );
+    xcb_atom_t requested( d->findAtom( atom ) );
+
+    // create event
+    ClientMessageBuffer buffer;
+
+    xcb_client_message_event_t *event = &buffer.event;
+    event->response_type = XCB_CLIENT_MESSAGE;
+    event->type = netWMState;
+    event->format = 32;
+    event->window =  widget->window()->winId();
+    event->data.data32[0] = value ? 1:0;
+    event->data.data32[1] = requested;
+    event->data.data32[2] = 0L;
+    event->data.data32[3] = 0L;
+    event->data.data32[4] = 0L;
+
+    xcb_send_event( d->connection(), false, appRootWindow(), XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT, (const char*)event );
+
+    return true;
+
+    #endif
+
+    return false;
+}
+
+//________________________________________________________________________
+bool XcbUtil::_changeCardinal( QWidget* widget, AtomId atom, uint32_t value ) const
+{
+
+    Debug::Throw( "XcbUtil::_changeCardinal.\n" );
+
+    #if HAVE_X11
+
+    // make sure atom is supported
+    if( !isSupported( atom ) ) return false;
+
+    xcb_atom_t searched( d->findAtom( atom ) );
+    xcb_change_property( d->connection(), XCB_PROP_MODE_REPLACE, widget->winId(), searched, XCB_ATOM_CARDINAL, 32, 1, &value );
+    xcb_flush( d->connection() );
+
+    return true;
+    #endif
+
+    return false;
+}
+
+//________________________________________________________________________
+bool XcbUtil::_requestCardinalChange( QWidget* widget, AtomId atom, uint32_t value ) const
+{
+
+    Debug::Throw( "XcbUtil::_requestChangeCardinal.\n" );
+
+    #if HAVE_X11
+
+    // make sure atom is supported
+    if( !isSupported( atom ) ) return false;
+
+    xcb_atom_t requested( d->findAtom( atom ) );
+
+    // create event
+    ClientMessageBuffer buffer;
+
+    xcb_client_message_event_t *event = &buffer.event;
+    event->response_type = XCB_CLIENT_MESSAGE;
+    event->type = requested;
+    event->format = 32;
+    event->window = widget->winId();
+    event->data.data32[0] = value;
+    event->data.data32[1] = 0l;
+    event->data.data32[2] = 0l;
+    event->data.data32[3] = 0l;
+    event->data.data32[4] = 0l;
+
+    xcb_send_event( d->connection(), false, appRootWindow(), XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT, (const char*)event );
+
+    return true;
+    #endif
+
+    return false;
 }

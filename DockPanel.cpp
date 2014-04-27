@@ -29,8 +29,6 @@
 #include "XmlOptions.h"
 
 #include "XcbUtil.h"
-#include "X11Util.h"
-
 
 #include <QApplication>
 #include <QPainter>
@@ -162,8 +160,8 @@ void DockPanel::_toggleStaysOnTop( bool state )
 
     #if HAVE_X11
 
-    X11Util::get().changeProperty( main_, X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
-    X11Util::get().changeProperty( main_, X11Util::_NET_WM_STATE_ABOVE, state );
+    XcbUtil::get().changeState( main_, X11Defines::_NET_WM_STATE_STAYS_ON_TOP, state );
+    XcbUtil::get().changeState( main_, X11Defines::_NET_WM_STATE_ABOVE, state );
 
     #else
 
@@ -193,15 +191,15 @@ void DockPanel::_toggleSticky( bool state )
     if( main_->parentWidget() ) return;
 
     #if HAVE_X11
-    if( XcbUtil::get().isSupported( XcbUtil::_NET_WM_STATE_STICKY ) )
+    if( XcbUtil::get().isSupported( X11Defines::_NET_WM_STATE_STICKY ) )
     {
 
-        X11Util::get().changeProperty( main_, X11Util::_NET_WM_STATE_STICKY, state );
+        XcbUtil::get().changeState( main_, X11Defines::_NET_WM_STATE_STICKY, state );
 
-    } else if( XcbUtil::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
+    } else if( XcbUtil::get().isSupported( X11Defines::_NET_WM_DESKTOP ) ) {
 
-        unsigned long desktop = X11Util::get().cardinal( X11Util::get().appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
-        X11Util::get().changeCardinal( main_, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
+        unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), X11Defines::_NET_CURRENT_DESKTOP );
+        XcbUtil::get().changeCardinal( main_, X11Defines::_NET_WM_DESKTOP, state ? X11Defines::ALL_DESKTOPS:desktop );
 
     }
 
@@ -430,7 +428,7 @@ bool LocalWidget::_startDrag( void )
         isDragging_ = true;
 
         #if QT_VERSION < 0x050000
-        if( X11Util::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
+        if( XcbUtil::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
         {
 
             _resetDrag();

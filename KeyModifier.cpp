@@ -22,13 +22,15 @@
 #include "KeyModifier.h"
 
 #include "Debug.h"
-#include "X11Util.h"
+#include "XcbUtil.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
 
 #if HAVE_X11
+#include <xcb/xcb.h>
+#include <xcb/xcb_keysyms.h>
 #include <X11/Xutil.h>
 #endif
 
@@ -51,15 +53,15 @@ KeyModifier::State KeyModifier::state( void ) const
 
     #if HAVE_X11
     // map Qt Key to X11
-    int key_symbol(0);
+    int keySymbol(0);
     switch( key_ )
     {
         case Qt::Key_CapsLock:
-        key_symbol = XK_Caps_Lock;
+        keySymbol = XK_Caps_Lock;
         break;
 
         case Qt::Key_NumLock:
-        key_symbol = XK_Num_Lock;
+        keySymbol = XK_Num_Lock;
         break;
 
         default:
@@ -68,31 +70,37 @@ KeyModifier::State KeyModifier::state( void ) const
     }
 
     // get matching key code
-    Display* display = reinterpret_cast<Display*>(X11Util::get().display());
-    KeyCode key_code = XKeysymToKeycode( display, key_symbol );
+    xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+    xcb_key_symbols_t *symbols( xcb_key_symbols_alloc( connection ) );
+    xcb_keycode_t* keyCodes( xcb_key_symbols_get_keycode( symbols, keySymbol ) );
 
-    // convert key code to bit mask
-    XModifierKeymap* modifiers = XGetModifierMapping(display);
-    int key_mask = 0;
-    for( int i = 0; i<8; i++ )
+    // convert key codes to bit mask
+    int keyMask( 0 );
     {
-        if( modifiers->modifiermap[modifiers->max_keypermod * i] == key_code)
-        { key_mask = 1 << i; }
+        xcb_get_modifier_mapping_cookie_t cookie( xcb_get_modifier_mapping( connection ) );
+        XcbUtil::ScopedPointer<xcb_get_modifier_mapping_reply_t> reply( xcb_get_modifier_mapping_reply( connection, cookie, 0x0 ) );
+        if( !reply ) return Unknown;
+
+        // get modifiers
+        xcb_keycode_t *modifiers( xcb_get_modifier_mapping_keycodes( reply.data() ) );
+        const int count( xcb_get_modifier_mapping_keycodes_length( reply.data() ) );
+
+        for( int i = 0; i<count; ++i )
+        {
+            if( modifiers[i] == keyCodes[0] )
+            { keyMask = 1 << i; }
+        }
+
+        free( keyCodes );
+        xcb_key_symbols_free(symbols);
     }
 
     // get key bits
-    unsigned int key_bits;
-    Window window_1, window_2;
-    int i3, i4, i5, i6;
-    XQueryPointer(
-        display, DefaultRootWindow(display), &window_1, &window_2,
-        &i3, &i4, &i5, &i6, &key_bits
-        );
-
-    XFreeModifiermap( modifiers );
-
-    // compare bits to maks
-    return ( key_bits & key_mask ) ? On:Off;
+    {
+        xcb_query_pointer_cookie_t cookie( xcb_query_pointer( connection, XcbUtil::get().appRootWindow() ) );
+        XcbUtil::ScopedPointer<xcb_query_pointer_reply_t> reply( xcb_query_pointer_reply( connection, cookie, 0x0 ) );
+        if( reply ) return ( reply.data()->mask & keyMask ) ? On:Off;
+    }
 
     #else
 

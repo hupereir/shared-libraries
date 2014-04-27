@@ -25,7 +25,7 @@
 #include "QtUtil.h"
 #include "Util.h"
 #include "XmlOptions.h"
-#include "X11Util.h"
+#include "XcbUtil.h"
 
 #include <QTextStream>
 #include <QWindowStateChangeEvent>
@@ -124,15 +124,15 @@ void BaseDialog::toggleSticky( bool state )
     Debug::Throw( "BaseDialog::toggleSticky.\n" );
 
     #if HAVE_X11
-    if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
+    if( XcbUtil::get().isSupported( X11Defines::_NET_WM_STATE_STICKY ) )
     {
 
-        X11Util::get().changeProperty( this, X11Util::_NET_WM_STATE_STICKY, state );
+        XcbUtil::get().changeState( this, X11Defines::_NET_WM_STATE_STICKY, state );
 
-    } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
+    } else if( XcbUtil::get().isSupported( X11Defines::_NET_WM_DESKTOP ) ) {
 
-        unsigned long desktop = X11Util::get().cardinal( X11Util::get().appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
-        X11Util::get().changeCardinal( this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
+        unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), X11Defines::_NET_CURRENT_DESKTOP );
+        XcbUtil::get().changeCardinal( this, X11Defines::_NET_WM_DESKTOP, state ? X11Defines::ALL_DESKTOPS:desktop );
 
     }
 

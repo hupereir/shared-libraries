@@ -24,7 +24,7 @@
 #include "TabWidget.moc"
 #include "File.h"
 #include "XmlOptions.h"
-#include "X11Util.h"
+#include "XcbUtil.h"
 
 #include <QApplication>
 #include <QGridLayout>
@@ -162,8 +162,8 @@ void TabWidget::_toggleStaysOnTop( bool state )
     #if HAVE_X11
 
     // change property
-    X11Util::get().changeProperty( this, X11Util::_NET_WM_STATE_STAYS_ON_TOP, state );
-    X11Util::get().changeProperty( this, X11Util::_NET_WM_STATE_ABOVE, state );
+    XcbUtil::get().changeState( this, X11Defines::_NET_WM_STATE_STAYS_ON_TOP, state );
+    XcbUtil::get().changeState( this, X11Defines::_NET_WM_STATE_ABOVE, state );
 
     #else
 
@@ -190,15 +190,15 @@ void TabWidget::_toggleSticky( bool state )
     if( parentWidget() ) return;
 
     #if HAVE_X11
-    if( X11Util::get().isSupported( X11Util::_NET_WM_STATE_STICKY ) )
+    if( XcbUtil::get().isSupported( X11Defines::_NET_WM_STATE_STICKY ) )
     {
 
-        X11Util::get().changeProperty( this, X11Util::_NET_WM_STATE_STICKY, state );
+        XcbUtil::get().changeState( this, X11Defines::_NET_WM_STATE_STICKY, state );
 
-    } else if( X11Util::get().isSupported( X11Util::_NET_WM_DESKTOP ) ) {
+    } else if( XcbUtil::get().isSupported( X11Defines::_NET_WM_DESKTOP ) ) {
 
-        unsigned long desktop = X11Util::get().cardinal( X11Util::get().appRootWindow(), X11Util::_NET_CURRENT_DESKTOP );
-        X11Util::get().changeCardinal( this, X11Util::_NET_WM_DESKTOP, state ? X11Util::ALL_DESKTOPS:desktop );
+        unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), X11Defines::_NET_CURRENT_DESKTOP );
+        XcbUtil::get().changeCardinal( this, X11Defines::_NET_WM_DESKTOP, state ? X11Defines::ALL_DESKTOPS:desktop );
 
     }
 
@@ -370,7 +370,7 @@ bool TabWidget::_startDrag( void )
         isDragging_ = true;
 
         #if QT_VERSION < 0x050000
-        if( X11Util::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
+        if( XcbUtil::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
         {
 
             _resetDrag();

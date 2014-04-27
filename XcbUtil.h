@@ -28,7 +28,7 @@
 #include <QScopedPointer>
 #include <QWidget>
 
-class XcbUtil: public X11Defines
+class XcbUtil: private X11Defines
 {
 
     public:
@@ -56,39 +56,89 @@ class XcbUtil: public X11Defines
     //! destructor
     virtual ~XcbUtil( void );
 
+    //!@name accessors
+    //@{
+
     //! connection
     Qt::HANDLE connection( void ) const;
 
-    //! atom
-    Qt::HANDLE findAtom( Atoms ) const;
+    //! default screen
+    Qt::HANDLE defaultScreen( void ) const;
+
+    //! default screen number
+    int defaultScreenNumber( void ) const;
 
     //! application root window
     WId appRootWindow( void ) const;
 
+    //! atom
+    Qt::HANDLE findAtom( const QString& ) const;
+
+    //! atom
+    Qt::HANDLE findAtom( AtomId ) const;
+
     //! supported atoms
-    bool isSupported( Atoms );
+    bool isSupported( AtomId ) const;
 
-    //! return true if property is found in NET_WM_STATE
-    bool hasProperty( QWidget*, Atoms );
+    //! return true if atom is found in NET_WM_STATE
+    bool hasState( QWidget* widget, AtomId atom ) const
+    { return hasState( widget->winId(), atom ); }
 
-//     //! change property
-//     bool changeProperty( QWidget*, Atoms, bool);
-//
-//     //! change property
-//     bool changeProperty( QWidget*, Atoms, const unsigned char*, int size );
+    //! return true if atom is found in NET_WM_STATE
+    bool hasState( WId, AtomId ) const;
+
+    //! print window state
+    void printState( QWidget* widget ) const
+    { printState( widget->winId() ); }
+
+    //! print window state
+    void printState( WId ) const;
+
+    //! get atom carninal value
+    uint32_t cardinal( QWidget* widget, AtomId atom ) const
+    { return cardinal( widget->winId(), atom ); }
+
+    //! get atom carninal value
+    uint32_t cardinal( WId, AtomId ) const;
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! change NET_WM_STATE atom
+    bool changeState( QWidget*, AtomId, bool) const;
+
+    //! change cardinal
+    bool changeCardinal( QWidget*, AtomId, uint32_t ) const;
+
+    //! move widget using X11 window manager
+    /*! returns true on success */
+    bool moveWidget( QWidget* widget, const QPoint& position )
+    { return moveResizeWidget( widget, position, XcbUtil::_NET_WM_MOVERESIZE_MOVE ); }
+
+    //! move/resize widget using X11 window manager
+    /*! returns true on success */
+    bool moveResizeWidget( QWidget*, const QPoint&, const Direction&, Qt::MouseButton button = Qt::LeftButton );
+
+    //@}
 
     private:
 
+    //! change state
+    bool _changeState( QWidget*, AtomId, bool ) const;
+
+    //! request state change
+    bool _requestStateChange( QWidget*, AtomId, bool ) const;
+
+    //! cardinal
+    bool _changeCardinal( QWidget*, AtomId, uint32_t ) const;
+
+    //! cardinal
+    bool _requestCardinalChange( QWidget*, AtomId, uint32_t ) const;
+
     //! constructor
     XcbUtil( void );
-
-    //! atom names
-    typedef QMap<Atoms, QString> AtomNameMap;
-
-    //! supported atoms
-    typedef QHash<Atoms, bool > SupportedAtomMap;
-
-    SupportedAtomMap supportedAtoms_;
 
     //! private pointer
     class Private;
