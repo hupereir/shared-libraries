@@ -50,29 +50,32 @@ class DockPanel: public QWidget, public Counter
     //! destructor
     virtual ~DockPanel();
 
-    //! option name (needed to store sticky and stays-on-top state)
-    void setOptionName( QString value )
-    {
-        stickyOptionName_ = value + "_STICKY";
-        staysOnTopOptionName_ = value + "_STAYS_ON_TOP";
-        _updateConfiguration();
-    }
+    //!@name accessors
+    //@{
 
     //! get panel (to add contents)
     virtual QWidget& panel( void )
     { return *panel_; }
 
+    //! true if detached
+    bool isDetached( void ) const;
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! option name (needed to store sticky and stays-on-top state)
+    void setOptionName( QString );
+
     //! set detachable group panel title
     void setTitle( const QString& title )
-    { title_ = title; }
+    {
+        dock_->setWindowTitle( title );
+        dockTitleLabel_->setText( title );
+    }
 
-    //! main widget
-    QWidget& main( void ) const
-    { return *main_; }
-
-    //! true if detached
-    bool isDetached( void ) const
-    { return main_ && !main_->parentWidget(); }
+    //@}
 
     Q_SIGNALS:
 
@@ -88,57 +91,26 @@ class DockPanel: public QWidget, public Counter
     //! visibility changed
     void visibilityChanged( bool );
 
-
     protected Q_SLOTS:
 
     //! toggle dock
     virtual void _toggleDock( void );
-
-    //! stays on top
-    virtual void _toggleStaysOnTop( bool );
-
-    //! toggle window stickyness
-    virtual void _toggleSticky( bool );
 
     protected:
 
     //! hide event
     virtual void hideEvent( QHideEvent* );
 
-    private Q_SLOTS:
-
-    //! configuration
-    void _updateConfiguration( void );
-
     private:
-
-    //! true if option name is set
-    bool _hasOptionName( void ) const
-    { return !(_stickyOptionName().isEmpty() || _staysOnTopOptionName().isEmpty() ); }
-
-    //! option name
-    const QString& _stickyOptionName( void ) const
-    { return stickyOptionName_; }
-
-    //! option name
-    const QString& _staysOnTopOptionName( void ) const
-    { return staysOnTopOptionName_; }
-
-    //! dock title
-    QString title_;
-
-    //! option name
-    /*! needed to store sticky and stays on top state */
-    QString stickyOptionName_;
-
-    //! option name
-    QString staysOnTopOptionName_;
 
     //! vertical layout for main_ widget
     QVBoxLayout* mainLayout_;
 
-    //! detachable main widget
-    QWidget* main_;
+    //! dock title
+    QLabel* dockTitleLabel_;
+
+    //! dock
+    QWidget* dock_;
 
     //! contents panel
     QWidget* panel_;
