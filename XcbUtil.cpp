@@ -41,6 +41,7 @@
 static int debugLevel = 1;
 
 //________________________________________________________________________
+#if HAVE_X11
 union ClientMessageBuffer
 {
     char _buffer[32];
@@ -50,6 +51,7 @@ union ClientMessageBuffer
     ClientMessageBuffer( void )
     { memset( this, 0, sizeof( ClientMessageBuffer ) ); }
 };
+#endif
 
 //________________________________________________________________________
 class XcbUtil::Private
