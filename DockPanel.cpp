@@ -49,11 +49,12 @@ DockPanel::DockPanel( QWidget* parent ):
     // dock
     dock_ = new Private::LocalDockWidget(0);
     dock_->setWindowIcon( windowIcon() );
-    dock_->setLayout( new QVBoxLayout() );
-    dock_->layout()->setMargin(0);
-    dock_->layout()->setSpacing(0);
-    dock_->layout()->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
-    dockTitleLabel_->setMargin( 5 );
+    QVBoxLayout* vLayout( new QVBoxLayout() );
+    vLayout->setMargin(0);
+    vLayout->setSpacing(0);
+    vLayout->addSpacing( 5 );
+    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
+    dock_->setLayout( vLayout );
 
     {
         dockTitleLabel_->setAlignment( Qt::AlignHCenter );
@@ -476,8 +477,7 @@ namespace Private
 
             isDragging_ = true;
 
-            // #if HAVE_X11 && QT_VERSION < 0x050000
-            #if HAVE_X11
+            #if HAVE_X11 && QT_VERSION < 0x050000
             if( XcbUtil::get().moveWidget( parentWidget(), mapToGlobal( dragPosition_ ) ) )
             {
 
