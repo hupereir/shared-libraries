@@ -60,10 +60,7 @@ class XcbUtil: private X11Defines
     //@{
 
     //! connection
-    Qt::HANDLE connection( void ) const;
-
-    //! default screen
-    Qt::HANDLE defaultScreen( void ) const;
+    template <typename T> T* connection( void ) const;
 
     //! default screen number
     int defaultScreenNumber( void ) const;
@@ -72,10 +69,10 @@ class XcbUtil: private X11Defines
     WId appRootWindow( void ) const;
 
     //! atom
-    Qt::HANDLE findAtom( const QString& ) const;
+    template <typename T> T* atom( const QString& ) const;
 
     //! atom
-    Qt::HANDLE findAtom( AtomId ) const;
+    template <typename T> T* atom( AtomId ) const;
 
     //! supported atoms
     bool isSupported( AtomId ) const;
@@ -123,6 +120,17 @@ class XcbUtil: private X11Defines
 
     //@}
 
+    protected:
+
+    //! connection
+    Qt::HANDLE _connection( void ) const;
+
+    //! atom
+    Qt::HANDLE _atom( const QString& ) const;
+
+    //! atom
+    Qt::HANDLE _atom( AtomId ) const;
+
     private:
 
     //! change state
@@ -145,5 +153,17 @@ class XcbUtil: private X11Defines
     Private* d;
 
 };
+
+//________________________________________________________________________
+template <typename T> T* XcbUtil::connection( void ) const
+{ return reinterpret_cast<T*>( _connection() ); }
+
+//________________________________________________________________________
+template <typename T> T* XcbUtil::atom( const QString& value ) const
+{ return reinterpret_cast<T*>( _atom( value ) ); }
+
+//________________________________________________________________________
+template <typename T> T* XcbUtil::atom( XcbUtil::AtomId value ) const
+{ return reinterpret_cast<T*>( _atom( value ) ); }
 
 #endif

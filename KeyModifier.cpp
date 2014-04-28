@@ -70,7 +70,7 @@ KeyModifier::State KeyModifier::state( void ) const
     }
 
     // get matching key code
-    xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+    xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
     xcb_key_symbols_t *symbols( xcb_key_symbols_alloc( connection ) );
     xcb_keycode_t* keyCodes( xcb_key_symbols_get_keycode( symbols, keySymbol ) );
 

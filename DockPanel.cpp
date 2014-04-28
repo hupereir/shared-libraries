@@ -203,10 +203,9 @@ void DockPanel::_toggleSticky( bool state )
 
     }
 
-    #endif
-
     // update option if any
     if( _hasOptionName() ) XmlOptions::get().set<bool>( _stickyOptionName(), state );
+    #endif
 
     return;
 
@@ -427,7 +426,7 @@ bool LocalWidget::_startDrag( void )
 
         isDragging_ = true;
 
-        #if QT_VERSION < 0x050000
+        #if HAVE_X11 && QT_VERSION < 0x050000
         if( XcbUtil::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
         {
 

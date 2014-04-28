@@ -201,9 +201,7 @@ void TabWidget::_toggleSticky( bool state )
         XcbUtil::get().changeCardinal( this, X11Defines::_NET_WM_DESKTOP, state ? X11Defines::ALL_DESKTOPS:desktop );
 
     }
-
     #endif
-
 }
 
 //___________________________________________________________
@@ -369,7 +367,7 @@ bool TabWidget::_startDrag( void )
 
         isDragging_ = true;
 
-        #if QT_VERSION < 0x050000
+        #if HAVE_X11 && QT_VERSION < 0x050000
         if( XcbUtil::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
         {
 
