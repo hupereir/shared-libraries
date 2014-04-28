@@ -69,10 +69,14 @@ namespace Transparency
         #endif
 
         #if HAVE_X11
-        const QString atomName( QString( "_NET_WM_CM_S%1" ).arg( XcbUtil::get().defaultScreenNumber() ) );
-        xcb_atom_t atom( static_cast<xcb_atom_t>( XcbUtil::get().findAtom( atomName ) ) );
-        xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+        // connection
+        xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
 
+        // atom
+        const QString atomName( QString( "_NET_WM_CM_S%1" ).arg( XcbUtil::get().defaultScreenNumber() ) );
+        xcb_atom_t atom( *XcbUtil::get().atom<xcb_atom_t>( atomName ) );
+
+        // selection owner
         xcb_get_selection_owner_cookie_t cookie( xcb_get_selection_owner( connection, atom ) );
         XcbUtil::ScopedPointer<xcb_get_selection_owner_reply_t> reply( xcb_get_selection_owner_reply( connection, cookie, 0x0 ) );
         return reply && reply->owner;

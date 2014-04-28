@@ -284,7 +284,7 @@ namespace Transparency
             if( hasInputShape_ )
             {
                 // reset shape
-                xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+                xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
                 xcb_shape_mask( connection, XCB_SHAPE_SO_SET, XCB_SHAPE_SK_INPUT, winId(), 0, 0, XCB_PIXMAP_NONE);
                 xcb_flush( connection );
 
@@ -297,7 +297,7 @@ namespace Transparency
             const QRect rect( _outerPadding().adjustedRect( this->rect() ) );
             xcb_rectangle_t xrect = { rect.x(), rect.y(), rect.width(), rect.height() };
 
-            xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
+            xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
             xcb_shape_rectangles(
                 connection,
                 XCB_SHAPE_SO_SET, XCB_SHAPE_SK_INPUT, XCB_CLIP_ORDERING_YX_BANDED, winId(),
@@ -329,8 +329,8 @@ namespace Transparency
         { data << r.x() << r.y() << r.width() << r.height(); }
 
         // get connection and atom
-        xcb_connection_t* connection( reinterpret_cast<xcb_connection_t*>( XcbUtil::get().connection() ) );
-        xcb_atom_t atom( static_cast<xcb_atom_t>( XcbUtil::get().findAtom( X11Defines::_KDE_NET_WM_BLUR_BEHIND_REGION ) ) );
+        xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
+        xcb_atom_t atom( *XcbUtil::get().atom<xcb_atom_t>( X11Defines::_KDE_NET_WM_BLUR_BEHIND_REGION ) );
         xcb_change_property( connection, XCB_PROP_MODE_REPLACE, winId(), atom, XCB_ATOM_CARDINAL, 32, data.size(), data.constData() );
         xcb_flush( connection );
 
