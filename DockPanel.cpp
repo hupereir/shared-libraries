@@ -23,6 +23,7 @@
 #include "DockPanel.moc"
 #include "DockPanel_p.h"
 
+#include "BaseContextMenu.h"
 #include "Debug.h"
 #include "File.h"
 #include "Singleton.h"
@@ -243,11 +244,15 @@ LocalWidget::LocalWidget( QWidget* parent ):
     isDragging_( false )
 {
     _installActions();
-    setContextMenuPolicy( Qt::ActionsContextMenu );
+
     #if QT_VERSION < 0x050000
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_StyledBackground);
     #endif
+
+    // context menu
+    setContextMenuPolicy( Qt::CustomContextMenu );
+    connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
 
 }
 
@@ -388,6 +393,25 @@ void LocalWidget::paintEvent( QPaintEvent *event )
 
     }
 
+}
+
+//______________________________________________________________________
+void LocalWidget::_updateContextMenu( const QPoint& position )
+{
+
+    Debug::Throw( "LocalWidget::_updateContextMenu.\n" );
+
+    // create menu
+    BaseContextMenu menu( this );
+    menu.setHideDisabledActions( true );
+
+    // add entry
+    menu.addAction( detachAction_ );
+    menu.addAction( staysOnTopAction_ );
+    menu.addAction( stickyAction_ );
+
+    // execute
+    menu.exec( mapToGlobal( position ) );
 }
 
 //___________________________________________________________

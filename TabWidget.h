@@ -144,6 +144,9 @@ class TabWidget: public QWidget, public Counter
     //! toggle window stickyness
     virtual void _toggleSticky( bool );
 
+    //! update context menu
+    void _updateContextMenu( const QPoint& );
+
     private:
 
     //! actions

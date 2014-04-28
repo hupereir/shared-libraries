@@ -22,6 +22,8 @@
 
 #include "TabWidget.h"
 #include "TabWidget.moc"
+
+#include "BaseContextMenu.h"
 #include "File.h"
 #include "XmlOptions.h"
 #include "XcbUtil.h"
@@ -80,8 +82,10 @@ TabWidget::TabWidget( QTabWidget* parent ):
 
     _installActions();
     updateActions( false );
-    setContextMenuPolicy( Qt::ActionsContextMenu );
 
+    // context menu
+    setContextMenuPolicy( Qt::CustomContextMenu );
+    connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
 
 }
 
@@ -324,6 +328,25 @@ void TabWidget::paintEvent( QPaintEvent *event )
         p.end();
     }
 
+}
+
+//______________________________________________________________________
+void TabWidget::_updateContextMenu( const QPoint& position )
+{
+
+    Debug::Throw( "TabWidget::_updateContextMenu.\n" );
+
+    // create menu
+    BaseContextMenu menu( this );
+    menu.setHideDisabledActions( true );
+
+    // add entry
+    menu.addAction( detachAction_ );
+    menu.addAction( staysOnTopAction_ );
+    menu.addAction( stickyAction_ );
+
+    // execute
+    menu.exec( mapToGlobal( position ) );
 }
 
 //____________________________________________________

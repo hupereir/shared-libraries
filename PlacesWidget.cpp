@@ -561,10 +561,6 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     connect( group_, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_buttonClicked(QAbstractButton*)) );
     connect( group_, SIGNAL(buttonPressed(QAbstractButton*)), SLOT(_updateFocus(QAbstractButton*)) );
 
-    // context menu
-    setContextMenuPolicy( Qt::CustomContextMenu );
-    connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
-
     // icon sizes
     iconSizeMenu_ = new IconSizeMenu( this );
     connect( iconSizeMenu_, SIGNAL(iconSizeSelected(IconSize::Size)), SLOT(_updateIconSize(IconSize::Size)) );

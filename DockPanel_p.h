@@ -84,6 +84,11 @@ class LocalWidget: public QFrame, public Counter
     //! reset drag
     void _resetDrag( void );
 
+    protected Q_SLOTS:
+
+    //! update context menu
+    void _updateContextMenu( const QPoint& );
+
     private:
 
     //! actions
