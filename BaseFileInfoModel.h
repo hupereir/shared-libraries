@@ -230,7 +230,7 @@ QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientati
             case Modified: return ItemModel::tr( "Modified" );
             default: return QVariant();
         }
-    } else if( role = Qt::TextAlignmentRole ) {
+    } else if( role == Qt::TextAlignmentRole ) {
 
         switch( column )
         {
