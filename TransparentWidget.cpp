@@ -295,7 +295,11 @@ namespace Transparency
 
             // update shape
             const QRect rect( _outerPadding().adjustedRect( this->rect() ) );
-            xcb_rectangle_t xrect = { rect.x(), rect.y(), rect.width(), rect.height() };
+            xcb_rectangle_t xrect;
+            xrect.x = rect.x();
+            xrect.y = rect.y();
+            xrect.width = rect.width();
+            xrect.height = rect.height();
 
             xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
             xcb_shape_rectangles(
