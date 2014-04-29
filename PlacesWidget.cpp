@@ -272,7 +272,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
     }
 
     // render mouse over
-    if( mouseOver_ || (valid_ && hasFocus_ || dragInProgress_ ) )
+    if( mouseOver_ || (valid_ && ( hasFocus_ || dragInProgress_ ) ) )
     {
 
         QStyleOptionViewItemV4 option;
@@ -519,9 +519,9 @@ void PlacesToolTipWidget::_updateConfiguration( void )
 PlacesWidget::PlacesWidget( QWidget* parent ):
     QWidget( parent ),
     Counter( "PlacesWidget::PlacesWidget" ),
-    iconProvider_( 0x0 ),
     focusItem_( 0x0 ),
     dragItem_( 0x0 ),
+    iconProvider_( 0x0 ),
     dragInProgress_( false )
 
 {
@@ -1463,6 +1463,8 @@ bool PlacesWidget::_read( void )
         { items_.back()->hide(); }
 
     }
+
+    return true;
 
 }
 

@@ -108,7 +108,6 @@ void UserSelectionFrame::updateUsers( QStringList users )
     }
 
     // insert items, respecting order
-    bool before( true );
     for( int index = 0; index < users.size(); ++index )
     { if( users[index] != currentUser ) comboBox_->insertItem( index, users[index] ); }
 

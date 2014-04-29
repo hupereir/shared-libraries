@@ -329,7 +329,6 @@ bool XcbUtil::isSupported( AtomId atomId ) const
         return iter.value();
     }
 
-    static bool first( true );
     bool found( false );
     xcb_atom_t netSupported( *d->atom( _NET_SUPPORTED ) );
     xcb_atom_t searched( *d->atom( atomId ) );
@@ -362,7 +361,6 @@ bool XcbUtil::isSupported( AtomId atomId ) const
 
     }
 
-    first = false;
     d->supportedAtomId_[atomId] = found;
 
     return found;

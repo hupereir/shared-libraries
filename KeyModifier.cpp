@@ -102,9 +102,8 @@ KeyModifier::State KeyModifier::state( void ) const
         if( reply ) return ( reply.data()->mask & keyMask ) ? On:Off;
     }
 
-    #else
+    #endif
 
     return Unknown;
 
-    #endif
 }
