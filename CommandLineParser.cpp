@@ -46,7 +46,6 @@ void CommandLineParser::usage( void ) const
 {
 
     Debug::Throw( "CommandLineParser::usage.\n" );
-    bool first( true );
 
     QTextStream stream( stdout );
     foreach( const QString& groupName, groupNames_ )
