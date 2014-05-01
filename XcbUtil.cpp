@@ -372,9 +372,30 @@ bool XcbUtil::isSupported( AtomId atomId ) const
 }
 
 //________________________________________________________________________
+bool XcbUtil::isRealWindow( WId window ) const
+{
+    Debug::Throw(debugLevel) << "XcbUtil::isRealWindow - " << windowIdString( window ) << endl;
+
+    #if HAVE_X11
+
+    xcb_connection_t* connection( d->connection() );
+    xcb_atom_t atom( *d->atom( X11Defines::WM_STATE ) );
+    const uint32_t maxLength = std::string().max_size();
+
+    xcb_get_property_cookie_t cookie = xcb_get_property( connection, 0, window, atom,  XCB_ATOM_ANY, 0, maxLength );
+    XcbUtil::ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( connection, cookie, 0x0 ) );
+    return ( reply && xcb_get_property_value_length( reply.data() ) > 0 && reply.data()->type != XCB_ATOM_NONE );
+
+    #else
+
+    return false;
+
+    #endif
+}
+
+//________________________________________________________________________
 bool XcbUtil::hasState( WId window, AtomId atomId ) const
 {
-
     Debug::Throw(debugLevel) << "XcbUtil::hasState - " << d->atomNames_[atomId] << endl;
 
     #if HAVE_X11

@@ -77,6 +77,14 @@ class XcbUtil: private X11Defines
     //! supported atoms
     bool isSupported( AtomId ) const;
 
+    //! return true if a give window is 'real'
+    /*! window is considered real if it has the WM_STATE property */
+    bool isRealWindow( WId ) const;
+
+    //! return formated window id
+    QString windowIdString( WId id ) const
+    { return QString( "0x%1" ).arg( id, 0, 16 ); }
+
     //! return true if atom is found in NET_WM_STATE
     bool hasState( QWidget* widget, AtomId atom ) const
     { return hasState( widget->winId(), atom ); }
