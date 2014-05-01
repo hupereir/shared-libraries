@@ -78,7 +78,7 @@ template<class T> class TreeItem: public TreeItemBase
         map_[id()] = this;
 
         // reassign parents
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
         { iter->parent_ = this; }
 
     }
@@ -98,7 +98,7 @@ template<class T> class TreeItem: public TreeItemBase
         map_[id()] = this;
 
         // reassign parents
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
         { iter->parent_ = this; }
 
         return *this;
@@ -156,7 +156,7 @@ template<class T> class TreeItem: public TreeItemBase
         if( value == get() ) return this;
 
         // check against children
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
         {
             TreeItem* out = iter->find( value );
             if( out ) return out;
@@ -188,7 +188,7 @@ template<class T> class TreeItem: public TreeItemBase
         if( row >= childCount() ) return false;
         int local(0);
         typename List::iterator iter = children_.begin();
-        for( ; iter != children_.end() && local < row; iter++, local++ ) {}
+        for( ; iter != children_.end() && local < row; ++iter, local++ ) {}
         children_.erase( iter );
         return true;
     }
@@ -207,7 +207,7 @@ template<class T> class TreeItem: public TreeItemBase
 
         // try add to children
         bool added(false);
-        for( typename List::iterator iter = children_.begin(); iter != children_.end() && !added; iter++ )
+        for( typename List::iterator iter = children_.begin(); iter != children_.end() && !added; ++iter )
         { added = iter->add( value ); }
 
         // add to this if top level
@@ -324,7 +324,7 @@ template<class T> class TreeItem: public TreeItemBase
         std::sort( children_.begin(), children_.end() );
 
         // do the same with children
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
         { iter->sort(); }
 
     }
@@ -338,7 +338,7 @@ template<class T> class TreeItem: public TreeItemBase
         std::sort( children_.begin(), children_.end(), method );
 
         // do the same with children
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); iter++ )
+        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
         { iter->sort( method ); }
 
     }
