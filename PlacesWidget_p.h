@@ -89,7 +89,7 @@ class LocalFileInfo: public BaseFileInfo
     { return flags_; }
 
     //! has flag
-    bool hasFlag( LocalFileInfo::Flag flag ) const
+    bool hasFlag( Flag flag ) const
     { return flags_&flag; }
 
     //@}
@@ -102,7 +102,7 @@ class LocalFileInfo: public BaseFileInfo
     { flags_ = flags; }
 
     //! set flag
-    void setFlag( LocalFileInfo::Flag flag, bool value )
+    void setFlag( Flag flag, bool value )
     {
         if( value ) flags_ |= flag;
         else flags_ &= ~flag;
