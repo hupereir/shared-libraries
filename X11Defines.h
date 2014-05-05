@@ -49,6 +49,7 @@ class X11Defines
         _NET_WM_CM,
         _NET_WM_PID,
         _NET_WM_ICON,
+        _NET_WM_NAME,
 
         // kde specific atoms
         _KDE_NET_WM_BLUR_BEHIND_REGION

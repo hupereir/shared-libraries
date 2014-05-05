@@ -144,6 +144,7 @@ XcbUtil::Private::Private( void )
     atomNames_[_NET_WM_CM] = "_NET_WM_CM";
     atomNames_[_NET_WM_PID] = "_NET_WM_PID";
     atomNames_[_NET_WM_ICON] = "_NET_WM_ICON";
+    atomNames_[_NET_WM_NAME] = "_NET_WM_NAME";
     atomNames_[_KDE_NET_WM_BLUR_BEHIND_REGION] = "_KDE_NET_WM_BLUR_BEHIND_REGION";
 
 }
