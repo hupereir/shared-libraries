@@ -37,9 +37,11 @@ AnimatedTreeView::AnimatedTreeView( QWidget* parent ):
     transitionWidget().hide();
     connect( &transitionWidget().timeLine(), SIGNAL(finished()), &transitionWidget(), SLOT(hide()) );
 
+    #if QT_VERSION < 0x050000   
     setVerticalScrollMode( QAbstractItemView::ScrollPerPixel );
     setHorizontalScrollMode( QAbstractItemView::ScrollPerPixel );
-
+    #endif
+    
     new ScrollObject( this );
 
 }
