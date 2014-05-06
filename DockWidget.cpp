@@ -31,13 +31,34 @@
 #include <QStyle>
 
 //_________________________________________________________
+namespace Private
+{
+    class TitleBarWidget: public QWidget
+    {
+        public:
+        
+        //! minimum size hint
+        virtual QSize minimumSizeHint( void ) const
+        { return QSize( 1, 2 ); }
+        
+        //! minimum size hint
+        virtual QSize sizeHint( void ) const
+        { return minimumSizeHint(); }
+    
+    };
+    
+}
+
+//_________________________________________________________
 DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& optionName ):
     QDockWidget(title, parent ),
     optionName_( optionName ),
     useScrollArea_( false ),
     locked_( false ),
+    autoHideTitleBar_( false ),
     container_( 0x0 ),
-    mainWidget_( 0x0 )
+    mainWidget_( 0x0 ),
+    titleBarWidget_( 0x0 )
 {
 
     Debug::Throw( "DockWidget::DockWidget.\n" );
@@ -134,6 +155,8 @@ void DockWidget::setLocked( bool locked )
             QDockWidget::DockWidgetFloatable |
             QDockWidget::DockWidgetClosable);
     }
+    
+    _updateTitleBarWidget();
 
 }
 
@@ -164,6 +187,38 @@ void DockWidget::setMainWidget( QWidget* mainWidget )
 
     }
 
+}
+
+//_________________________________________________________
+void DockWidget::setAutoHideTitleBar( bool value )
+{
+    autoHideTitleBar_ = value;
+    _updateTitleBarWidget();
+}
+    
+//_________________________________________________________
+void DockWidget::_updateTitleBarWidget( void )
+{
+    Debug::Throw( "DockWidget::_updateTitleBarWidget.\n" );
+    
+    if( autoHideTitleBar_ && locked_ )
+    {
+    
+        if( !titleBarWidget_ ) titleBarWidget_ = new Private::TitleBarWidget();
+        setTitleBarWidget( titleBarWidget_ );
+
+    } else {
+
+        if( titleBarWidget_ ) 
+        {
+            titleBarWidget_->deleteLater();
+            titleBarWidget_ = 0;
+        }
+        
+        setTitleBarWidget( 0x0 );
+        
+    }
+    
 }
 
 //_______________________________________________________________

@@ -41,20 +41,6 @@ class DockWidget: public QDockWidget
     virtual ~DockWidget( void )
     {}
 
-    //!@name modifiers
-    //@{
-
-    //! use scroll area
-    void setUseScrollArea( bool );
-
-    //! lock
-    virtual void setLocked( bool );
-
-    //! set main widget
-    void setMainWidget( QWidget* );
-
-    //@}
-
     //!@name accessors
     //@{
 
@@ -68,11 +54,31 @@ class DockWidget: public QDockWidget
 
     //@}
 
+    //!@name modifiers
+    //@{
+
+    //! use scroll area
+    void setUseScrollArea( bool );
+
+    //! lock
+    virtual void setLocked( bool );
+
+    //! set main widget
+    void setMainWidget( QWidget* );
+
+    //! title bar
+    void setAutoHideTitleBar( bool );
+    
+    //@}
+
     protected Q_SLOTS:
 
     //! toggle visibility
     virtual void _toggleVisibility( bool );
 
+    //! update title bar
+    virtual void _updateTitleBarWidget( void );
+    
     private Q_SLOTS:
 
     //! update configuration
@@ -95,12 +101,18 @@ class DockWidget: public QDockWidget
     //! lock
     bool locked_;
 
+    //! auto hide title bar
+    bool autoHideTitleBar_;
+    
     //! container
     QWidget* container_;
 
     //! main widget
     QWidget* mainWidget_;
-
+    
+    //! title bar widget
+    QWidget* titleBarWidget_;
+    
 };
 
 #endif
