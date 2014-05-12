@@ -24,10 +24,11 @@
 #include "HelpDialog.h"
 #include "HelpDialog.moc"
 #include "HelpManager.h"
-#include "TextEditionDelegate.h"
 #include "HelpManager.h"
 #include "HelpModel.h"
 #include "QuestionDialog.h"
+#include "Singleton.h"
+#include "TextEditionDelegate.h"
 #include "XmlOptions.h"
 
 #include <QAction>
@@ -90,17 +91,17 @@ namespace Base
         htmlEditor_->setReadOnly( true );
         htmlEditor_->setWrapFromOptions( false );
         htmlEditor_->wrapModeAction().setChecked( true );
-
-        QFont font;
-        font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
-        htmlEditor_->setFont( font );
-
+        
         // connect list to text edit
         connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex,QModelIndex)) );
 
         // add close accelerator
         connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL(activated()), SLOT(close()) );
 
+        
+        connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+        _updateConfiguration();
+        
     }
 
     //_________________________________________________________
@@ -144,4 +145,11 @@ namespace Base
 
     }
 
+    //_________________________________________________________
+    void HelpDialog::_updateConfiguration( void )
+    {
+        Debug::Throw( "HelpDialog::_updateConfiguration.\n" );
+        htmlEditor_->setFont( qApp->font() );
+    }
+    
 }

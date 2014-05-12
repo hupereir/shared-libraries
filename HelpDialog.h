@@ -63,7 +63,10 @@ namespace Base
 
         //! display selected help text
         void _display( const QModelIndex&, const QModelIndex& );
-
+        
+        //! update configuration
+        void _updateConfiguration( void );
+        
         private:
 
         //! help manager
