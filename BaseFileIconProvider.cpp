@@ -100,7 +100,12 @@ QPixmap BaseFileIconProvider::_linked( const QPixmap& source ) const
 
     return CustomPixmap( source )
         .merge( linkOverlay.pixmap( overlaySize )
-        .scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
+        .scaled( overlaySize, Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
+
+//     return CustomPixmap( source )
+//         .merge( linkOverlay.pixmap( overlaySize )
+//         .scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
+
 }
 
 //____________________________________________________

@@ -36,6 +36,8 @@
 #include <QLabel>
 #include <QPaintEvent>
 
+class DragMonitor;
+
 //! local file info, needed to store flags
 class LocalFileInfo: public BaseFileInfo
 {
@@ -175,10 +177,6 @@ class PlacesWidgetItem: public QAbstractButton
     bool hasFocus( void ) const
     { return hasFocus_; }
 
-    //! drag in progress
-    bool isDragged( void ) const
-    { return dragInProgress_; }
-
     //! size hint
     virtual QSize sizeHint( void ) const
     { return minimumSize(); }
@@ -190,6 +188,10 @@ class PlacesWidgetItem: public QAbstractButton
     //! has flag
     bool hasFlag( LocalFileInfo::Flag flag ) const
     { return flags_&flag; }
+
+    //! drag monitor
+    DragMonitor& dragMonitor( void ) const
+    { return *dragMonitor_; }
 
     //@}
 
@@ -239,10 +241,6 @@ class PlacesWidgetItem: public QAbstractButton
         update();
     }
 
-    //! enable drag
-    void setDragEnabled( bool value )
-    { dragEnabled_ = value; }
-
     //! set flags
     void setFlags( LocalFileInfo::Flags flags )
     { flags_ = flags; }
@@ -264,20 +262,16 @@ class PlacesWidgetItem: public QAbstractButton
     //! event
     virtual bool event( QEvent* );
 
-    //! mouse press
-    virtual void mousePressEvent( QMouseEvent* );
-
-    //! mouse press
-    virtual void mouseMoveEvent( QMouseEvent* );
-
-    //! mouse press
-    virtual void mouseReleaseEvent( QMouseEvent* );
-
     //! paint event
     virtual void paintEvent( QPaintEvent* );
 
     //! paint
     virtual void _paint( QPainter* );
+
+    protected Q_SLOTS:
+
+    //! start drag
+    void _startDrag( QPoint );
 
     private Q_SLOTS:
 
@@ -288,6 +282,9 @@ class PlacesWidgetItem: public QAbstractButton
 
     //! some styles require an item view passed to painting method to have proper selection rendered in items
     QWidget* itemView_;
+
+    //! drag monitor
+    DragMonitor* dragMonitor_;
 
     //! file info
     BaseFileInfo fileInfo_;
@@ -303,15 +300,6 @@ class PlacesWidgetItem: public QAbstractButton
 
     //! focus
     bool hasFocus_;
-
-    //! true if drag is enabled (false by default)
-    bool dragEnabled_;
-
-    //! drag
-    bool dragInProgress_;
-
-    //! drag position
-    QPoint dragOrigin_;
 
 };
 

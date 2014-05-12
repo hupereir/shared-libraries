@@ -27,6 +27,7 @@
 #include "BaseContextMenu.h"
 #include "BaseIconNames.h"
 #include "DefaultFolders.h"
+#include "DragMonitor.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
@@ -120,12 +121,14 @@ PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
     flags_( 0 ),
     valid_( true ),
     mouseOver_( false ),
-    hasFocus_( false ),
-    dragEnabled_( false ),
-    dragInProgress_( false )
+    hasFocus_( false )
 {
     Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
     setAttribute( Qt::WA_Hover );
+
+    // drag
+    dragMonitor_ = new DragMonitor( this );
+    connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), this, SLOT(_startDrag(QPoint)) );
 
     // configuration
     connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
@@ -187,63 +190,29 @@ bool PlacesWidgetItem::event( QEvent* event )
 }
 
 //_______________________________________________
-void PlacesWidgetItem::mousePressEvent( QMouseEvent* event )
+void PlacesWidgetItem::_startDrag( QPoint dragOrigin )
 {
 
-    Debug::Throw( "PlacesWidgetItem::mousePressEvent.\n" );
+    Debug::Throw( "PlacesWidgetItem::_startDrag.\n" );
 
-    // update focusItem
-    if( dragEnabled_ && event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier)
-    {
-        dragInProgress_ = true;
-        dragOrigin_ = event->pos();
-    }
+    // start drag
+    QDrag *drag = new QDrag(this);
+    QMimeData *mimeData = new QMimeData;
 
-    QAbstractButton::mousePressEvent( event );
+    mimeData->setData( PlacesWidgetItem::MimeType, 0x0 );
+    drag->setMimeData( mimeData );
 
-}
+    // create drag pixmap
+    QPixmap pixmap( size() );
+    pixmap.fill( Qt::transparent );
+    QPainter painter( &pixmap );
+    _paint( &painter );
 
-//_______________________________________________
-void PlacesWidgetItem::mouseMoveEvent( QMouseEvent* event )
-{
+    drag->setPixmap( pixmap );
+    drag->setHotSpot( dragOrigin-rect().topLeft() );
 
-    Debug::Throw( "PlacesWidgetItem::mouseMoveEvent.\n" );
-    if( dragEnabled_ && ((event->buttons() & Qt::LeftButton) && dragInProgress_ ) &&
-        ( event->pos() - dragOrigin_ ).manhattanLength() >= QApplication::startDragDistance() )
-    {
+    drag->exec( Qt::MoveAction );
 
-        // start drag
-        QDrag *drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
-
-        mimeData->setData( PlacesWidgetItem::MimeType, 0x0 );
-        drag->setMimeData( mimeData );
-
-        // create drag pixmap
-        QPixmap pixmap( size() );
-        pixmap.fill( Qt::transparent );
-        QPainter painter( &pixmap );
-        _paint( &painter );
-
-        drag->setPixmap( pixmap );
-        drag->setHotSpot( dragOrigin_-rect().topLeft() );
-
-        drag->exec( Qt::MoveAction );
-        dragInProgress_ = false;
-
-    } else {
-
-        QAbstractButton::mouseMoveEvent( event );
-
-    }
-
-}
-
-//_______________________________________________
-void PlacesWidgetItem::mouseReleaseEvent( QMouseEvent* event )
-{
-    dragInProgress_ = false;
-    QAbstractButton::mouseReleaseEvent( event );
 }
 
 //___________________________________________________________________
@@ -272,7 +241,8 @@ void PlacesWidgetItem::_paint( QPainter* painter )
     }
 
     // render mouse over
-    if( mouseOver_ || (valid_ && ( hasFocus_ || dragInProgress_ ) ) )
+    const bool dragInProgress( dragMonitor_->isDragInProgress() );
+    if( mouseOver_ || (valid_ && ( hasFocus_ || dragInProgress ) ) )
     {
 
         QStyleOptionViewItemV4 option;
@@ -280,7 +250,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         option.showDecorationSelected = true;
         option.rect = rect();
         if( mouseOver_ ) option.state |= QStyle::State_MouseOver;
-        if( valid_ && ( hasFocus_ || dragInProgress_ ) ) option.state |= QStyle::State_Selected;
+        if( valid_ && ( hasFocus_ || dragInProgress ) ) option.state |= QStyle::State_Selected;
         style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, itemView_ );
 
     }
@@ -305,7 +275,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         painter->setFont( font() );
 
         // change text color if focus
-        if( valid_ && ( hasFocus_ || dragInProgress_ ) ) painter->setPen( palette().color( QPalette::HighlightedText ) );
+        if( valid_ && ( hasFocus_ || dragInProgress ) ) painter->setPen( palette().color( QPalette::HighlightedText ) );
         else painter->setPen( palette().color( ( valid_ && !hasFlag( LocalFileInfo::Hidden ) ) ? QPalette::Normal:QPalette::Disabled, QPalette::WindowText  ) );
 
         QTextOption textOptions( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) );
@@ -523,7 +493,6 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     dragItem_( 0x0 ),
     iconProvider_( 0x0 ),
     dragInProgress_( false )
-
 {
 
     Debug::Throw( "PlacesWidget::PlacesWidget.\n" );
@@ -1219,7 +1188,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
         PlacesWidgetItem* dragItem( 0x0 );
         foreach( PlacesWidgetItem* item, items_ )
         {
-            if( item->isDragged() )
+            if( item->dragMonitor().isDragInProgress() )
             { dragItem = item; break; }
 
         }
@@ -1274,8 +1243,8 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
 //_________________________________________________________________________________
 void PlacesWidget::_updateDragState( void ) const
 {
-   foreach( PlacesWidgetItem* item, items_ )
-    { item->setDragEnabled( items_.size()>1 ); }
+    foreach( PlacesWidgetItem* item, items_ )
+    { item->dragMonitor().setDragEnabled( items_.size()>1 ); }
 }
 
 //_________________________________________________________________________________

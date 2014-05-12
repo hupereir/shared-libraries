@@ -33,6 +33,8 @@
 #include <QPaintEvent>
 #include <QPainter>
 
+class DragMonitor;
+
 //! path editor button
 class PathEditorButton: public QAbstractButton
 {
@@ -100,15 +102,7 @@ class PathEditorItem: public PathEditorButton, public Counter
     public:
 
     //! constructor
-    PathEditorItem( QWidget* parent ):
-        PathEditorButton( parent ),
-        Counter( "PathEditorItem" ),
-        isLocal_( true ),
-        isSelectable_( true ),
-        isLast_( false ),
-        dragEnabled_( false ),
-        dragInProgress_( false )
-    { Debug::Throw( "PathEditorItem::PathEditorItem.\n" ); }
+    PathEditorItem( QWidget* );
 
     //! destructor
     virtual ~PathEditorItem( void )
@@ -132,6 +126,10 @@ class PathEditorItem: public PathEditorButton, public Counter
     //! size hint
     virtual QSize sizeHint( void ) const
     { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
+
+    //! drag monitor
+    DragMonitor& dragMonitor( void ) const
+    { return *dragMonitor_; }
 
     //@}
 
@@ -166,10 +164,6 @@ class PathEditorItem: public PathEditorButton, public Counter
     //! set path
     void setPath( const File&, const QString& = QString() );
 
-    //! enable drag
-    void setDragEnabled( bool value )
-    { dragEnabled_ = value; }
-
     //@}
 
     //! update minimum width
@@ -181,15 +175,6 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     protected:
 
-    //! mouse press
-    virtual void mousePressEvent( QMouseEvent* );
-
-    //! mouse press
-    virtual void mouseMoveEvent( QMouseEvent* );
-
-    //! mouse press
-    virtual void mouseReleaseEvent( QMouseEvent* );
-
     //! paint event
     virtual void paintEvent( QPaintEvent* );
 
@@ -199,6 +184,11 @@ class PathEditorItem: public PathEditorButton, public Counter
     //! arrow width
     int _arrowWidth( void ) const
     { return isLast_ ? 0:qMax<int>( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
+
+    protected Q_SLOTS:
+
+    //! start drag
+    void _startDrag( QPoint );
 
     private:
 
@@ -217,14 +207,8 @@ class PathEditorItem: public PathEditorButton, public Counter
     //! true if last
     bool isLast_;
 
-    //! true if drag is enabled (false by default)
-    bool dragEnabled_;
-
-    //! drag
-    bool dragInProgress_;
-
-    //! drag position
-    QPoint dragOrigin_;
+    //! drag monitor
+    DragMonitor* dragMonitor_;
 
 };
 

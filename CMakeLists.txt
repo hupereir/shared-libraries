@@ -101,6 +101,7 @@ SET( base_qt_SOURCES
   DetailsDialog.cpp
   DockPanel.cpp
   DockWidget.cpp
+  DragMonitor.cpp
   ElidedLabel.cpp
   ErrorHandler.cpp
   FileDialog.cpp

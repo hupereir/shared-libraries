@@ -26,6 +26,7 @@
 #include "BaseIconNames.h"
 #include "BaseFileInfo.h"
 #include "Debug.h"
+#include "DragMonitor.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "Singleton.h"
@@ -63,6 +64,20 @@ bool PathEditorButton::event( QEvent* event )
 
     return QAbstractButton::event( event );
 
+}
+
+//____________________________________________________________________________
+PathEditorItem::PathEditorItem( QWidget* parent ):
+    PathEditorButton( parent ),
+    Counter( "PathEditorItem" ),
+    isLocal_( true ),
+    isSelectable_( true ),
+    isLast_( false )
+{
+    Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
+    dragMonitor_ = new DragMonitor( this );
+    dragMonitor_->setDragEnabled( false );
+    connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), this, SLOT(_startDrag(QPoint)));
 }
 
 //____________________________________________________________________________
@@ -111,87 +126,52 @@ void PathEditorItem::updateMinimumSize( void )
     setMinimumSize( size );
 }
 
-
 //_______________________________________________
-void PathEditorItem::mousePressEvent( QMouseEvent* event )
+void PathEditorItem::_startDrag( QPoint dragOrigin )
 {
 
-    Debug::Throw( "PathEditorItem::mousePressEvent.\n" );
+    Debug::Throw( "PathEditorItem::_startDrag.\n" );
 
-    // update focusItem
-    if( dragEnabled_ && event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier)
-    {
-        dragInProgress_ = true;
-        dragOrigin_ = event->pos();
-    }
+    // start drag
+    QDrag *drag = new QDrag(this);
+    QMimeData *mimeData = new QMimeData;
 
-    PathEditorButton::mousePressEvent( event );
+    // fill Drag data. Use XML
+    QDomDocument document;
+    QDomElement top = document.appendChild( document.createElement( Xml::FileInfoList ) ).toElement();
 
-}
-
-//_______________________________________________
-void PathEditorItem::mouseMoveEvent( QMouseEvent* event )
-{
-
-    Debug::Throw( "PathEditorItem::mouseMoveEvent.\n" );
-    if( dragEnabled_ && ((event->buttons() & Qt::LeftButton) && dragInProgress_ ) &&
-        ( event->pos() - dragOrigin_ ).manhattanLength() >= QApplication::startDragDistance() )
+    BaseFileInfo fileInfo( path_ );
+    fileInfo.setAlias( text() );
+    fileInfo.setIsFolder();
+    if( isLocal_ )
     {
 
-        // start drag
-        QDrag *drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
+        fileInfo.setLocal();
+        fileInfo.update();
+        if( path_.isLink() ) fileInfo.setIsLink();
+        if( path_.isBrokenLink() ) fileInfo.setIsBrokenLink();
+        if( path_.isHidden() ) fileInfo.setIsHidden();
 
-        // fill Drag data. Use XML
-        QDomDocument document;
-        QDomElement top = document.appendChild( document.createElement( Xml::FileInfoList ) ).toElement();
+    } else fileInfo.setRemote();
 
-        BaseFileInfo fileInfo( path_ );
-        fileInfo.setAlias( text() );
-        fileInfo.setIsFolder();
-        if( isLocal_ )
-        {
+    top.appendChild( fileInfo.domElement( document ) );
 
-            fileInfo.setLocal();
-            fileInfo.update();
-            if( path_.isLink() ) fileInfo.setIsLink();
-            if( path_.isBrokenLink() ) fileInfo.setIsBrokenLink();
-            if( path_.isHidden() ) fileInfo.setIsHidden();
+    const QString value( prefix_.isEmpty() ? path_ : prefix_ + "://" + path_ );
+    mimeData->setText( value );
+    mimeData->setData( PathEditor::MimeType, document.toByteArray() );
+    drag->setMimeData( mimeData );
 
-        } else fileInfo.setRemote();
+    // create drag pixmap
+    QPixmap pixmap( size() );
+    pixmap.fill( Qt::transparent );
+    QPainter painter( &pixmap );
+    _paint( &painter );
 
-        top.appendChild( fileInfo.domElement( document ) );
+    drag->setPixmap( pixmap );
+    drag->setHotSpot( dragOrigin-rect().topLeft() );
 
-        const QString value( prefix_.isEmpty() ? path_ : prefix_ + "://" + path_ );
-        mimeData->setText( value );
-        mimeData->setData( PathEditor::MimeType, document.toByteArray() );
-        drag->setMimeData( mimeData );
+    drag->exec( Qt::MoveAction );
 
-        // create drag pixmap
-        QPixmap pixmap( size() );
-        pixmap.fill( Qt::transparent );
-        QPainter painter( &pixmap );
-        _paint( &painter );
-
-        drag->setPixmap( pixmap );
-        drag->setHotSpot( dragOrigin_-rect().topLeft() );
-
-        drag->exec( Qt::MoveAction );
-        dragInProgress_ = false;
-
-    } else {
-
-        PathEditorButton::mouseMoveEvent( event );
-
-    }
-
-}
-
-//_______________________________________________
-void PathEditorItem::mouseReleaseEvent( QMouseEvent* event )
-{
-    dragInProgress_ = false;
-    PathEditorButton::mouseReleaseEvent( event );
 }
 
 //____________________________________________________________________________
@@ -527,7 +507,7 @@ void PathEditor::setDragEnabled( bool value )
     // assign to this widget, and children
     dragEnabled_ = value;
     foreach( PathEditorItem* item, items_ )
-    { item->setDragEnabled( value ); }
+    { item->dragMonitor().setDragEnabled( value ); }
 
 }
 
@@ -575,7 +555,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
             item->setPrefix( prefix_ );
             item->setIsLocal( isLocal_ );
             item->setItemView( itemView_ );
-            item->setDragEnabled( dragEnabled_ );
+            item->dragMonitor().setDragEnabled( dragEnabled_ );
             group_->addButton( item );
             buttonLayout_->addWidget( item );
             items_ << item;
@@ -606,7 +586,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
                 item->setPrefix( prefix_ );
                 item->setIsLocal( isLocal_ );
                 item->setItemView( itemView_ );
-                item->setDragEnabled( dragEnabled_ );
+                item->dragMonitor().setDragEnabled( dragEnabled_ );
                 group_->addButton( item );
                 buttonLayout_->addWidget( item );
                 items_ << item;
@@ -634,7 +614,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
                 item->setPrefix( prefix_ );
                 item->setIsLocal( isLocal_ );
                 item->setItemView( itemView_ );
-                item->setDragEnabled( dragEnabled_ );
+                item->dragMonitor().setDragEnabled( dragEnabled_ );
                 group_->addButton( item );
                 buttonLayout_->addWidget( item );
                 items_ << item;
