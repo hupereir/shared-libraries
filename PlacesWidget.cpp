@@ -128,6 +128,7 @@ PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
 
     // drag
     dragMonitor_ = new DragMonitor( this );
+    dragMonitor_->setDragEnabled( false );
     connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), this, SLOT(_startDrag(QPoint)) );
 
     // configuration
