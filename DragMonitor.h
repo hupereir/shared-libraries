@@ -66,6 +66,9 @@ class DragMonitor: public QObject, public Counter
     void setDragEnabled( bool value )
     { dragEnabled_ = value; }
 
+    //! enable/disable window grabbing
+    void setWindowGraggingEnabled( bool );
+
     //@}
 
     //! event filter

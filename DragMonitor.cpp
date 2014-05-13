@@ -34,11 +34,13 @@ DragMonitor::DragMonitor( QWidget* parent ):
     dragInProgress_( false )
 {
     parent->installEventFilter(this);
-
-    // disable window dragging
-    parent->setProperty( "_kde_no_window_grab", true );
-
+    setWindowGraggingEnabled(false);
 }
+
+
+//_____________________________________________________________
+void DragMonitor::setWindowGraggingEnabled( bool value )
+{ parent()->setProperty( "_kde_no_window_grab", !value ); }
 
 //_____________________________________________________________
 bool DragMonitor::eventFilter( QObject* target, QEvent* event )
