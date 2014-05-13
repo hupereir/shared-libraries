@@ -168,9 +168,9 @@ void PathEditorItem::_startDrag( QPoint dragOrigin )
     _paint( &painter );
 
     drag->setPixmap( pixmap );
-    drag->setHotSpot( dragOrigin-rect().topLeft() );
+    drag->setHotSpot( QPoint( (dragOrigin-rect().topLeft()).x(), 0 ) );
 
-    drag->exec( Qt::MoveAction );
+    drag->start();
 
 }
 

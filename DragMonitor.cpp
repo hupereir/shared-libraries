@@ -69,7 +69,6 @@ bool DragMonitor::eventFilter( QObject* target, QEvent* event )
             {
                 emit dragStarted( dragOrigin_ );
                 dragInProgress_ = false;
-                return true;
             }
 
             return false;

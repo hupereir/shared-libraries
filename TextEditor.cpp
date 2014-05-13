@@ -1105,7 +1105,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
         data->setText( text );
         data->setData( BoxSelection::mimeType, text.toLatin1() );
         drag->setMimeData( data );
-        drag->start(Qt::CopyAction);
+        drag->start();
 
         return;
     }
