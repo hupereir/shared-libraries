@@ -215,7 +215,8 @@ void PathEditorItem::_paint( QPainter* painter )
     QFont adjustedFont(font());
     adjustedFont.setBold( isLast_ );
     painter->setFont( adjustedFont );
-    painter->drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignHCenter|Qt::AlignBottom ) );
+    // painter->drawText( QRectF( textRect ), text(), QTextOption( Qt::AlignHCenter|Qt::AlignBottom)|Qt::TextShowMnemonic ) );
+    painter->drawText( QRectF( textRect ), Qt::AlignHCenter|Qt::AlignBottom|Qt::TextHideMnemonic, text() );
 
     // render arrow
     if( !isLast_ )
