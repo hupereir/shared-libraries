@@ -291,19 +291,37 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     OptionSpinBox* spinbox;
 
     // icon size in lists
-    QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setMargin(0);
-    vLayout->addLayout( hLayout );
-    hLayout->addWidget( label = new QLabel( tr( "List items icon size:" ), box ) );
-    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
-    hLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
-    spinbox->setToolTip( tr( "Default size of the icons displayed in lists" ) );
-    spinbox->setSuffix( tr( "px" ) );
-    spinbox->setMinimum(8);
-    spinbox->setMaximum(96);
-    addOptionWidget( spinbox );
+    GridLayout* gridLayout = new GridLayout();
+    gridLayout->setMargin(0);
+    gridLayout->setMaxCount(2);
+    vLayout->addLayout( gridLayout );
+    gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
 
-    label->setBuddy( spinbox );
+    {
+        // icon size in lists
+        gridLayout->addWidget( label = new QLabel( tr( "List items icon size:" ), box ) );
+        gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
+        spinbox->setToolTip( tr( "Default size of the icons displayed in lists" ) );
+        spinbox->setSuffix( tr( "px" ) );
+        spinbox->setMinimum(8);
+        spinbox->setMaximum(96);
+        addOptionWidget( spinbox );
+        label->setBuddy( spinbox );
+
+    }
+
+
+    {
+        // list item margins
+        gridLayout->addWidget( label = new QLabel( tr( "List items margin:" ), box ) );
+        gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ITEM_MARGIN" ) );
+        spinbox->setToolTip( tr( "Default margin around items in lists" ) );
+        spinbox->setSuffix( tr( "px" ) );
+        spinbox->setMinimum(0);
+        spinbox->setMaximum(10);
+        addOptionWidget( spinbox );
+        label->setBuddy( spinbox );
+    }
 
     return box;
 

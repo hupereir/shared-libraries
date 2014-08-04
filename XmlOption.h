@@ -56,10 +56,10 @@ class XmlOption:public Option
     {}
 
     //! constructor from DOM node
-    XmlOption( const QDomElement& element );
+    XmlOption( const QDomElement& );
 
     //! create dom element
-    QDomElement domElement( QDomDocument& parent ) const;
+    QDomElement domElement( QDomDocument& ) const;
 
     //! name
     void setName( const QString& value )
