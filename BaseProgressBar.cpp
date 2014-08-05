@@ -46,13 +46,8 @@ void BaseProgressBar::paintEvent( QPaintEvent* event )
         painter.setClipRegion( event->region() );
         QStyleOptionProgressBarV2 opt;
         initStyleOption(&opt);
-
-        opt.text = QString();
-        painter.drawControl(QStyle::CE_ProgressBar, opt);
-
         opt.text = text_;
-        opt.palette.setColor( QPalette::Base, palette().color( QPalette::HighlightedText ) );
-        painter.drawControl(QStyle::CE_ProgressBarLabel, opt);
+        painter.drawControl(QStyle::CE_ProgressBar, opt);
 
     }
 }

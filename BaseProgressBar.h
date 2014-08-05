@@ -37,7 +37,7 @@ class BaseProgressBar:public QProgressBar
     //! constructor
     BaseProgressBar( QWidget* parent = 0 ):
         QProgressBar( parent )
-    {}
+    { setTextVisible( true ); }
 
     //! destructor
     virtual ~BaseProgressBar( void )
