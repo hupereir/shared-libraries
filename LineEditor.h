@@ -123,14 +123,6 @@ class LineEditor: public QLineEdit, public Counter
 
     //@}
 
-    //! has clear button
-    const bool& _hasClearButton( void )
-    { return hasClearButton_; }
-
-    //! clear button rect
-    const QRect& _clearButtonRect( void ) const
-    { return clearButtonRect_; }
-
     //! clear button rect
     virtual void _setClearButtonRect( const QRect& rect )
     { clearButtonRect_ = rect; }

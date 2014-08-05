@@ -129,6 +129,7 @@ SET( base_qt_SOURCES
   LineNumberDisplay.cpp
   LogWidget.cpp
   MimeTypeIconProvider.cpp
+  MultipleClickCounter.cpp
   OptionBrowsedLineEditor.cpp
   OptionCheckBox.cpp
   OptionColorDisplay.cpp

@@ -1048,13 +1048,16 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent* event )
     Debug::Throw( "TextEditor::mouseDoubleClickEvent.\n" );
 
     if( event->button() != Qt::LeftButton ) BaseEditor::mouseDoubleClickEvent( event );
-    #if QT_VERSION < 0x050000
-    /*
-    Prior to Qt5, mousePressEvent is not sent in case of double-click.
-    we have to send one manually, in order to increment the selection mode
-    */
-    else mousePressEvent( event );
-    #endif
+    else {
+
+        /*
+        mousePressEvent is not sent in case of double-click.
+        we have to send one manually, in order to increment the selection mode
+        */
+
+        mousePressEvent( event );
+    }
+
     return;
 
 }

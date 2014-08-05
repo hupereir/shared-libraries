@@ -56,10 +56,7 @@ void ProgressStatusBar::setProgressBar( QProgressBar* value )
 void ProgressStatusBar::showProgressBar( void )
 {
     if( progress_ )
-    {
-        progress_->setFixedHeight( fontMetrics().lineSpacing() + 6 );
-        stack_->setCurrentWidget( progress_ );
-    }
+    { stack_->setCurrentWidget( progress_ ); }
 }
 
 //______________________________________________________

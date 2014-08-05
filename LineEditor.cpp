@@ -76,7 +76,7 @@ void LineEditor::setReadOnly( bool value )
         // reset contents margins
         setContentsMargins( 0, 0, 0, 0 );
 
-    } else if( _hasClearButton() ) {
+    } else if( hasClearButton_ ) {
 
         // set frame flag from base class
         setFrame( QLineEdit::hasFrame() );
@@ -115,7 +115,7 @@ void LineEditor::setHasClearButton( const bool& value )
     if( value == hasClearButton_ ) return;
     hasClearButton_ = value;
 
-    if( _hasClearButton() )
+    if( hasClearButton_ )
     {
 
         // set frame flag from base class
@@ -152,7 +152,7 @@ void LineEditor::setFrame( const bool& value )
     if( value == hasFrame() ) return;
 
     hasFrame_ = value;
-    if( !_hasClearButton() ) QLineEdit::setFrame( value );
+    if( !hasClearButton_ ) QLineEdit::setFrame( value );
     else {
 
         // reset contents margins
@@ -207,7 +207,7 @@ bool LineEditor::event( QEvent* event )
         {
 
             // check if button is available
-            if( isReadOnly() || ( !_hasClearButton() ) || text().isEmpty() ) break;
+            if( isReadOnly() || ( !hasClearButton_ ) || text().isEmpty() ) break;
 
             // cast
             QHelpEvent *help_event = static_cast<QHelpEvent*>(event);
@@ -270,10 +270,10 @@ void LineEditor::mouseMoveEvent( QMouseEvent* event )
 {
 
     // check clear button
-    if( !_hasClearButton() ) return QLineEdit::mouseMoveEvent( event );
+    if( !hasClearButton_ ) return QLineEdit::mouseMoveEvent( event );
 
     // check event position vs button location
-    if( !_clearButtonRect().contains( event->pos() ) || text().isEmpty() )
+    if( !clearButtonRect_.contains( event->pos() ) || text().isEmpty() )
     {
 
         // make sure cursor is properly set
@@ -291,10 +291,10 @@ void LineEditor::mousePressEvent( QMouseEvent* event )
     Debug::Throw( "LineEditor::mousePressEvent.\n" );
 
     // check clear button
-    if( !_hasClearButton() ) return QLineEdit::mousePressEvent( event );
+    if( !hasClearButton_ ) return QLineEdit::mousePressEvent( event );
 
     // check if within clear button (if any)
-    if( !( isReadOnly() || text().isEmpty() ) && _clearButtonRect().contains( event->pos() ) )   triggered_ = true;
+    if( !( isReadOnly() || text().isEmpty() ) && clearButtonRect_.contains( event->pos() ) )   triggered_ = true;
     else QLineEdit::mousePressEvent( event );
 
     return;
@@ -306,7 +306,7 @@ void LineEditor::mouseReleaseEvent( QMouseEvent* event )
 {
 
     Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
-    if( !( isReadOnly() || text().isEmpty() ) && _hasClearButton() && _clearButtonRect().contains( event->pos() ) && triggered_ )
+    if( !( isReadOnly() || text().isEmpty() ) && hasClearButton_ && clearButtonRect_.contains( event->pos() ) && triggered_ )
     {
 
         clear();
@@ -329,7 +329,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
 {
 
     // check clear button
-    if( isReadOnly() || !_hasClearButton() ) return QLineEdit::paintEvent( event );
+    if( isReadOnly() || !hasClearButton_ ) return QLineEdit::paintEvent( event );
 
     // paint the button at the correct place
     _toggleClearButton( !(isReadOnly() || text().isNull() || text().isEmpty() ) );
@@ -442,7 +442,7 @@ void LineEditor::_installActions( void )
 //________________________________________________
 bool LineEditor::_toggleClearButton( const bool& value )
 {
-    if( value == _clearButtonVisible() ) return false;
+    if( value == clearButtonVisible_ ) return false;
     _setClearButtonVisible( value );
     return true;
 }
@@ -451,7 +451,7 @@ bool LineEditor::_toggleClearButton( const bool& value )
 void LineEditor::_paintClearButton( QPainter& painter, const bool& check )
 {
 
-    if( check && !_clearButtonVisible() ) return;
+    if( check && !clearButtonVisible_ ) return;
 
     // get widget rect an adjust
     QRect rect( LineEditor::rect() );
@@ -507,4 +507,20 @@ void LineEditor::_updatePasteAction( void )
 
 //______________________________________________________________
 int LineEditor::_frameWidth( void ) const
-{ return style()->pixelMetric( QStyle::PM_DefaultFrameWidth, 0, this ); }
+{
+    QStyleOptionFrameV2 frameOption;
+    frameOption.initFrom( this );
+    frameOption.lineWidth = 1;
+
+    QSize size( style()->sizeFromContents( QStyle::CT_LineEdit, &frameOption, QSize(0, 0), this ) );
+    return size.width()/2;
+//     Debug::Throw(0)
+//         << "LineEditor::_frameWidth "
+//         << "- size: " << size.width() << " " << size.width()
+//         << " frame width: " << style()->pixelMetric( QStyle::PM_DefaultFrameWidth, 0, this )
+//         << endl;
+//
+//     return style()->pixelMetric( QStyle::PM_DefaultFrameWidth, 0, this );
+
+}
+

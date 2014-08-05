@@ -22,14 +22,6 @@
 *
 *******************************************************************************/
 
-/*!
-\file MultipleClickCounter.h
-\brief handles multiple clicks and timeout
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
 #include <QApplication>
 #include <QBasicTimer>
 
@@ -40,53 +32,19 @@
 class MultipleClickCounter: public QObject, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //! constructor
-    MultipleClickCounter( QObject* parent, int maxCount ):
-        QObject( parent ),
-        Counter( "MultipleClickCounter" ),
-        toReset_( true ),
-        position_( 0 ),
-        maxCount_( maxCount ),
-        count_( 0 )
-    {
-        Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" );
-    }
+    MultipleClickCounter( QObject*, int maxCount );
 
     //! destructor
     virtual ~MultipleClickCounter( void )
     { Debug::Throw( "MultipleClickCounter::~MultipleClickCounter.\n" ); }
 
     //! increment counter and return current value
-    void increment( const int& position  = 0 )
-    {
-        Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << endl;
-
-        // restart timer
-        timer_.start( QApplication::doubleClickInterval(), this );
-
-        // increment counts
-        if( position_ != position || toReset_ )
-        {
-
-            // reset
-            toReset_ = false;
-            position_ = position;
-            count_ = 1;
-
-        } else {
-
-            // same position in text
-            // increment, check against maximum
-            count_++;
-            if( count_ > maxCount_ ) count_ = 1;
-
-        }
-
-        return;
-
-    }
+    void increment( const int& position  = 0 );
 
     //! returns current counts
     const unsigned int& counts( void ) const
@@ -95,14 +53,7 @@ class MultipleClickCounter: public QObject, public Counter
     protected:
 
     //! timerEvent
-    virtual void timerEvent( QTimerEvent* event )
-    {
-        if( event->timerId() == timer_.timerId() )
-        {
-            timer_.stop();
-            toReset_ = true;
-        } else return QObject::timerEvent( event );
-    }
+    virtual void timerEvent( QTimerEvent* );
 
     private:
 
