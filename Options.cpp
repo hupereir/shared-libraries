@@ -81,7 +81,7 @@ void Options::installDefaultOptions( void )
     set<bool>( "USE_SELECTED_COLUMN_COLOR", true );
 
     set<int>( "LIST_ICON_SIZE", 24 );
-    set<int>( "LIST_ITEM_MARGIN", 2 );
+    set<int>( "LIST_ITEM_MARGIN", 0 );
 
     // textEditor margins
     set<Base::Color>( "MARGIN_FOREGROUND", QColor("#136872") );
