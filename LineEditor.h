@@ -28,16 +28,8 @@
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QMenu>
-#include <QMouseEvent>
-#include <QPaintEvent>
-
-namespace Private
-{
-
-    // forward declaration
-    class LineEditorStyle;
-
-}
+#include <QProxyStyle>
+#include <QPointer>
 
 class LineEditor: public QLineEdit, public Counter
 {
@@ -49,6 +41,10 @@ class LineEditor: public QLineEdit, public Counter
 
     //! constructor
     LineEditor( QWidget* parent );
+
+    //! destructor
+    virtual ~LineEditor( void )
+    { delete proxyStyle_.data(); }
 
     //@!name accessors
     //@{
@@ -186,7 +182,7 @@ class LineEditor: public QLineEdit, public Counter
     QWidget* clearButton_;
 
     //! style proxy
-    Private::LineEditorStyle* proxyStyle_;
+    QPointer<QProxyStyle> proxyStyle_;
 
 };
 

@@ -260,10 +260,10 @@ bool LineEditor::event( QEvent* event )
 
             // delete old style
             if( !proxyStyle_ ) proxyStyle_ = new Private::LineEditorStyle( currentStyle );
-            else proxyStyle_->setBaseStyle( currentStyle );
+            else proxyStyle_.data()->setBaseStyle( currentStyle );
 
             // assign
-            setStyle( proxyStyle_ );
+            setStyle( proxyStyle_.data() );
             break;
         }
 
