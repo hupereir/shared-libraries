@@ -20,7 +20,9 @@
 *******************************************************************************/
 
 #include "LineEditor.h"
+#include "LineEditor_p.h"
 #include "LineEditor.moc"
+
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
@@ -29,21 +31,109 @@
 #include <QClipboard>
 #include <QPainter>
 #include <QStyle>
-#include <QStyleOptionFrameV2>
-#include <QToolTip>
+#include <QStyleOption>
+#include <QStyleOptionButton>
+#include <QStyleOptionFrame>
 
 #include <QEvent>
+
+namespace Private
+{
+
+    //____________________________________________________________
+    LineEditorStyle::LineEditorStyle( QStyle* parent ):
+        QProxyStyle( parent ),
+        Counter( "Private::LineEditorStyle" )
+    {}
+
+    //____________________________________________________________
+    QRect LineEditorStyle::subElementRect( SubElement subElement, const QStyleOption* option, const QWidget* widget ) const
+    {
+
+        // check subelement
+        if( subElement != SE_LineEditContents ) return QProxyStyle::subElementRect( subElement, option, widget );
+
+        // check editor
+        const LineEditor* editor( qobject_cast<const LineEditor*>( widget ) );
+        if( !( editor && editor->hasClearButton() ) )
+        { return QProxyStyle::subElementRect( subElement, option, widget ); }
+
+        // adjust sub element rect
+        const bool reverseLayout( option->direction == Qt::RightToLeft );
+        const int iconSize( pixelMetric( QStyle::PM_SmallIconSize, option, widget ) );
+        const int margin( 4 );
+
+        QRect rect( QProxyStyle::subElementRect( subElement, option, widget ) );
+        return reverseLayout ?
+            rect.adjusted( 2*margin + iconSize, 0, 0, 0 ):
+            rect.adjusted( 0, 0, -(2*margin + iconSize), 0 );
+
+    }
+
+    //____________________________________________________________
+    QSize LineEditorStyle::sizeFromContents( ContentsType contentsType, const QStyleOption* option, const QSize& contentsSize, const QWidget* widget ) const
+    {
+
+        if( contentsType != CT_LineEdit ) return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget );
+
+        // check editor
+        const LineEditor* editor( qobject_cast<const LineEditor*>( widget ) );
+        if( !( editor && editor->hasClearButton() ) )
+        { return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget ); }
+
+        // adjust contents size
+        const int iconSize( pixelMetric( QStyle::PM_SmallIconSize, option, widget ) );
+        const int margin( 4 );
+
+        QSize size( contentsSize );
+        size.rwidth() += iconSize + 2*margin;
+        size.setHeight( qMax( size.height(), iconSize + 2*margin ) );
+
+        return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget );
+
+    }
+
+    //____________________________________________________________
+    LineEditorButton::LineEditorButton( QWidget* parent ):
+        QAbstractButton( parent ),
+        Counter( "Private::LineEditorButton" )
+    {
+        setText( QString() );
+        setIcon( IconEngine::get( IconNames::EditClear ) );
+        setAutoFillBackground( false );
+        setToolTip( tr( "Clear text" ) );
+        setCursor( Qt::ArrowCursor );
+    }
+
+    //____________________________________________________________
+    void LineEditorButton::paintEvent( QPaintEvent* event )
+    {
+        if( icon().isNull() ) return;
+
+        QStyleOptionButton option;
+        option.initFrom( this );
+
+        const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
+        const QSize iconSize( iconWidth, iconWidth );
+        const QPixmap pixmap( icon().pixmap( iconSize ) );
+
+        const QRect rect( this->rect() );
+        const QRect iconRect( QPoint( rect.x() + (rect.width() - iconWidth)/2, rect.y() + (rect.height() - iconWidth)/2 ), iconSize );
+
+        QPainter painter( this );
+        painter.setClipRegion( event->region() );
+        painter.drawPixmap( iconRect, pixmap );
+    }
+
+}
 
 //____________________________________________________________
 LineEditor::LineEditor( QWidget* parent ):
     QLineEdit( parent ),
     Counter( "LineEditor" ),
     modified_( false ),
-    hasClearButton_( false ),
-    clearButtonVisible_( false ),
-    hasFrame_( true ),
-    triggered_( false ),
-    clearIcon_( IconEngine::get( IconNames::EditClear ) )
+    clearButton_( 0 ),
+    proxyStyle_( new Private::LineEditorStyle() )
 {
 
     Debug::Throw( "LineEditor::LineEditor.\n" );
@@ -54,8 +144,8 @@ LineEditor::LineEditor( QWidget* parent ):
     // modification state call-back
     connect( this, SIGNAL(textChanged(QString)), SLOT(_modified(QString)) );
 
-    // set clear button visible
     setHasClearButton( true );
+    setStyle( proxyStyle_ );
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
 }
@@ -64,32 +154,19 @@ LineEditor::LineEditor( QWidget* parent ):
 void LineEditor::setReadOnly( bool value )
 {
 
-    if( value == isReadOnly() ) return;
-    QLineEdit::setReadOnly( value );
-
-    if( isReadOnly() )
+    if( value )
     {
 
-        // reset frame
-        QLineEdit::setFrame( hasFrame_ );
+        if( clearButton_ ) clearButton_->hide();
 
-        // reset contents margins
-        setContentsMargins( 0, 0, 0, 0 );
+    } else if( clearButton_ && !clearButton_->isVisible() && !text().isEmpty() ) {
 
-    } else if( hasClearButton_ ) {
-
-        // set frame flag from base class
-        setFrame( QLineEdit::hasFrame() );
-
-        // disable QLineEdit frame
-        QLineEdit::setFrame( false );
-
-        // reset contents margins
-        int offset( hasFrame() ? _frameWidth():0 );
-        setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
+        clearButton_->show();
+        _updateClearButton();
 
     }
 
+    QLineEdit::setReadOnly( value );
     return;
 
 }
@@ -109,58 +186,27 @@ void LineEditor::setModified( const bool& value )
 //______________________________________________________________
 void LineEditor::setHasClearButton( const bool& value )
 {
-
-    Debug::Throw() << "LineEditor::setHasClearButton - value: " << value << endl;
-
-    if( value == hasClearButton_ ) return;
-    hasClearButton_ = value;
-
-    if( hasClearButton_ )
+    if( value )
     {
 
-        // set frame flag from base class
-        setFrame( QLineEdit::hasFrame() );
+        if( !clearButton_ )
+        {
+            clearButton_ = new Private::LineEditorButton( this );
+            connect( clearButton_, SIGNAL(clicked()), SLOT(clear()) );
+            clearButton_->hide();
+        }
 
-        // disable QLineEdit frame
-        QLineEdit::setFrame( false );
+        if( !text().isEmpty() && !clearButton_->isVisible() )
+        {
+            clearButton_->show();
+            _updateClearButton();
+        }
 
-        // reset contents margins
-        int offset( hasFrame() ? _frameWidth():0 );
-        setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 3, offset );
+    } else if( clearButton_ ) {
 
-    } else {
-
-        // reset frame
-        QLineEdit::setFrame( hasFrame_ );
-
-        // reset contents margins
-        setContentsMargins( 0, 0, 0, 0 );
-
-    }
-
-    update();
-
-}
-
-//______________________________________________________________
-void LineEditor::setFrame( const bool& value )
-{
-
-    Debug::Throw() << "LineEditor::setFrame - value: " << value << endl;
-
-    // do nothing if value is unchanged
-    if( value == hasFrame() ) return;
-
-    hasFrame_ = value;
-    if( !hasClearButton_ ) QLineEdit::setFrame( value );
-    else {
-
-        // reset contents margins
-        int offset( hasFrame() ? _frameWidth():0 );
-        setContentsMargins( offset, offset, offset + fontMetrics().lineSpacing() + 1, offset );
+        clearButton_->hide();
 
     }
-
 }
 
 //_____________________________________________________________________
@@ -199,27 +245,35 @@ void LineEditor::upperCase( void )
 bool LineEditor::event( QEvent* event )
 {
 
-    // check that all needed widgets/actions are valid and checked.
-    switch (event->type())
+    switch( event->type() )
     {
 
-        case QEvent::ToolTip:
+        case QEvent::StyleChange:
         {
 
-            // check if button is available
-            if( isReadOnly() || ( !hasClearButton_ ) || text().isEmpty() ) break;
+            QStyle* currentStyle( style() );
 
-            // cast
-            QHelpEvent *help_event = static_cast<QHelpEvent*>(event);
-            if( contentsRect().contains( help_event->pos() ) ) break;
+            // do nothing is current style already match or is a style sheet
+            if( qobject_cast<Private::LineEditorStyle*>( currentStyle ) ||
+                currentStyle->inherits( "QStyleSheetStyle" ) )
+                { break; }
 
-            // set appropriate tooltip
-            QToolTip::showText( help_event->globalPos(), "Clear text" );
-            return true;
+            // delete old style
+            if( !proxyStyle_ ) proxyStyle_ = new Private::LineEditorStyle( currentStyle );
+            else proxyStyle_->setBaseStyle( currentStyle );
 
+            // assign
+            setStyle( proxyStyle_ );
+            break;
         }
 
-        break;
+        case QEvent::Show:
+        case QEvent::Resize:
+        {
+            if( clearButton_ )
+            { _updateClearButton(); }
+            break;
+        }
 
         default: break;
     }
@@ -264,109 +318,31 @@ void LineEditor::keyPressEvent( QKeyEvent* event )
 
 }
 
-
-//________________________________________________
-void LineEditor::mouseMoveEvent( QMouseEvent* event )
+//____________________________________________________________
+void LineEditor::_updateClearButton( void )
 {
+    if( !clearButton_ ) return;
 
-    // check clear button
-    if( !hasClearButton_ ) return QLineEdit::mouseMoveEvent( event );
+    QStyleOptionFrame option;
+    option.initFrom( this );
+    initStyleOption( &option );
 
-    // check event position vs button location
-    if( !clearButtonRect_.contains( event->pos() ) || text().isEmpty() )
-    {
+    const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, clearButton_ ) );
+    const int margin( 4 );
+    const int buttonWidth( iconWidth + 2*margin );
 
-        // make sure cursor is properly set
-        if( cursor().shape() != Qt::IBeamCursor ) setCursor( Qt::IBeamCursor );
-        return QLineEdit::mouseMoveEvent( event );
+    const QRect textRect( style()->subElementRect( QStyle::SE_LineEditContents, &option, this ) );
+    QRect buttonRect( textRect.topRight()+QPoint( 1, 0 ), QSize( buttonWidth, textRect.height() ) );
 
-    } else if( cursor().shape() == Qt::IBeamCursor ) unsetCursor();
-
-}
-
-//________________________________________________
-void LineEditor::mousePressEvent( QMouseEvent* event )
-{
-
-    Debug::Throw( "LineEditor::mousePressEvent.\n" );
-
-    // check clear button
-    if( !hasClearButton_ ) return QLineEdit::mousePressEvent( event );
-
-    // check if within clear button (if any)
-    if( !( isReadOnly() || text().isEmpty() ) && clearButtonRect_.contains( event->pos() ) )   triggered_ = true;
-    else QLineEdit::mousePressEvent( event );
-
-    return;
-
-}
-
-//_____________________________________________
-void LineEditor::mouseReleaseEvent( QMouseEvent* event )
-{
-
-    Debug::Throw( "LineEditor::mouseReleaseEvent.\n" );
-    if( !( isReadOnly() || text().isEmpty() ) && hasClearButton_ && clearButtonRect_.contains( event->pos() ) && triggered_ )
-    {
-
-        clear();
-        emit cleared();
-
-    } else {
-
-        QLineEdit::mouseReleaseEvent( event );
-        emit cursorPositionChanged( cursorPosition( ) );
-
-    }
-
-    triggered_ = false;
-    return;
-
-}
-
-//________________________________________________
-void LineEditor::paintEvent( QPaintEvent* event )
-{
-
-    // check clear button
-    if( isReadOnly() || !hasClearButton_ ) return QLineEdit::paintEvent( event );
-
-    // paint the button at the correct place
-    _toggleClearButton( !(isReadOnly() || text().isNull() || text().isEmpty() ) );
-
-    // initialize option
-    QStyleOptionFrameV2 panel;
-    panel.initFrom( this );
-    panel.rect = LineEditor::rect();
-    panel.lineWidth = (hasFrame()) ? style()->pixelMetric(QStyle::PM_DefaultFrameWidth):0;
-    panel.state |= QStyle::State_Sunken;
-    if( hasFocus() ) panel.state |= QStyle::State_HasFocus;
-
-    // draw white background
-    {
-        QPainter painter( this );
-        painter.setClipRect( event->rect() );
-        style()->drawPrimitive(QStyle::PE_PanelLineEdit, &panel, &painter, this);
-        painter.end();
-    }
-
-    // normal painting (without frame)
-    QLineEdit::paintEvent( event );
-
-    // draw clear button
-    {
-        QPainter painter( this );
-        _paintClearButton( painter );
-        painter.end();
-    }
+    // handle right to left
+    buttonRect = style()->visualRect( option.direction, option.rect, buttonRect );
+    clearButton_->setGeometry( buttonRect );
 
 }
 
 //____________________________________________________________
 void LineEditor::_modified( const QString& text )
 {
-    Debug::Throw( "LineEditor::_modified.\n" );
-
     // modification signal
     bool modified( text != backup_ );
     if( modified != modified_ )
@@ -376,8 +352,21 @@ void LineEditor::_modified( const QString& text )
     }
 
     // clear actiosn enability
-    if( modified ) clearAction_->setEnabled( !(isReadOnly() || text.isEmpty() ) );
+    if( modified )
+    {
+        clearAction_->setEnabled( !(isReadOnly() || text.isEmpty() ) );
 
+        if( clearButton_ )
+        {
+            if( text.isEmpty() ) clearButton_->hide();
+            else if( !clearButton_->isVisible() )
+            {
+
+                clearButton_->show();
+                _updateClearButton();
+            }
+        }
+    }
 }
 
 //__________________________________________________________
@@ -440,37 +429,6 @@ void LineEditor::_installActions( void )
 }
 
 //________________________________________________
-bool LineEditor::_toggleClearButton( const bool& value )
-{
-    if( value == clearButtonVisible_ ) return false;
-    _setClearButtonVisible( value );
-    return true;
-}
-
-//________________________________________________
-void LineEditor::_paintClearButton( QPainter& painter, const bool& check )
-{
-
-    if( check && !clearButtonVisible_ ) return;
-
-    // get widget rect an adjust
-    QRect rect( LineEditor::rect() );
-    if( hasFrame() ) rect.adjust( 0, _frameWidth(), -_frameWidth()-1, -_frameWidth() );
-
-    // set the proper right margin, so that button rect is a square
-    rect.setLeft( rect.right() - rect.height() );
-
-    painter.setRenderHints(QPainter::SmoothPixmapTransform);
-    _clearIcon().paint(
-        &painter, rect,
-        Qt::AlignRight|Qt::AlignVCenter,
-        isEnabled() ? QIcon::Normal : QIcon::Disabled );
-
-    _setClearButtonRect( rect );
-
-}
-
-//________________________________________________
 void LineEditor::_updateUndoRedoActions( void )
 {
     Debug::Throw( "LineEditor::_updateUndoRedoActions.\n" );
@@ -504,23 +462,3 @@ void LineEditor::_updatePasteAction( void )
     pasteAction_->setEnabled( editable && has_clipboard );
 
 }
-
-//______________________________________________________________
-int LineEditor::_frameWidth( void ) const
-{
-    QStyleOptionFrameV2 frameOption;
-    frameOption.initFrom( this );
-    frameOption.lineWidth = 1;
-
-    QSize size( style()->sizeFromContents( QStyle::CT_LineEdit, &frameOption, QSize(0, 0), this ) );
-    return size.width()/2;
-//     Debug::Throw(0)
-//         << "LineEditor::_frameWidth "
-//         << "- size: " << size.width() << " " << size.width()
-//         << " frame width: " << style()->pixelMetric( QStyle::PM_DefaultFrameWidth, 0, this )
-//         << endl;
-//
-//     return style()->pixelMetric( QStyle::PM_DefaultFrameWidth, 0, this );
-
-}
-

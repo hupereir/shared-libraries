@@ -22,14 +22,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedLineEditor.h
-  \brief Animated text editor
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include <QTimeLine>
 
 #include "LineEditor.h"
@@ -41,52 +33,46 @@ class TransitionWidget;
 class AnimatedLineEditor: public LineEditor
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+        public:
 
-  //! constructor
-  AnimatedLineEditor( QWidget* parent = 0 );
+        //! constructor
+        AnimatedLineEditor( QWidget* parent = 0 );
 
-  //! destrutor
-  virtual ~AnimatedLineEditor( void );
+    //! destrutor
+    virtual ~AnimatedLineEditor( void );
 
-  //! timeline
-  QTimeLine& timeLine( void )
-  { return time_line_; }
+    //! timeline
+    QTimeLine& timeLine( void )
+    { return timeLine_; }
 
-  public Q_SLOTS:
+    public Q_SLOTS:
 
-  //! clear
-  virtual void clear( void );
+    //! clear
+    virtual void clear( void );
 
-  //! set text
-  virtual void setText( const QString& );
+    //! set text
+    virtual void setText( const QString& );
 
-  protected:
+    private Q_SLOTS:
 
-  //! transition widget
-  TransitionWidget& _transitionWidget( void ) const
-  { return *transition_widget_; }
+    //! configuration
+    virtual void _updateConfiguration( void );
 
-  //! toggle clear button
-  virtual bool _toggleClearButton( const bool& );
+    protected:
 
-  //! paint clear button
-  virtual void _paintClearButton( QPainter& );
+    //! transition widget
+    TransitionWidget& _transitionWidget( void ) const
+    { return *transitionWidget_; }
 
-  private Q_SLOTS:
+    private:
 
-  //! configuration
-  virtual void _updateConfiguration( void );
+    //! timeline
+    QTimeLine timeLine_;
 
-  private:
-
-  //! timeline
-  QTimeLine time_line_;
-
-  //! transition widget
-  TransitionWidget* transition_widget_;
+    //! transition widget
+    TransitionWidget* transitionWidget_;
 
 
 };

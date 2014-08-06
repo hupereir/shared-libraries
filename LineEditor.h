@@ -31,10 +31,14 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 
-/*!
-\class LineEditor
-\brief customized line edit to have faster popup menu
-*/
+namespace Private
+{
+
+    // forward declaration
+    class LineEditorStyle;
+
+}
+
 class LineEditor: public QLineEdit, public Counter
 {
 
@@ -46,25 +50,31 @@ class LineEditor: public QLineEdit, public Counter
     //! constructor
     LineEditor( QWidget* parent );
 
+    //@!name accessors
+    //@{
+
+    bool hasClearButton( void ) const
+    { return clearButton_ && clearButton_->isVisible(); }
+
+    //! modification state
+    const bool& isModified( void ) const
+    { return modified_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
     //! read-only state
     void setReadOnly( bool );
 
     //! set editor as modified
     void setModified( const bool& value );
 
-    //! modification state
-    const bool& isModified( void ) const
-    { return modified_; }
-
     //! set clear button
     void setHasClearButton( const bool& );
 
-    //! set frame
-    void setFrame( const bool& );
-
-    //! has frame
-    bool hasFrame( void ) const
-    { return hasFrame_; }
+    //@}
 
     Q_SIGNALS:
 
@@ -103,54 +113,16 @@ class LineEditor: public QLineEdit, public Counter
     //! generic event
     virtual bool event( QEvent* );
 
-    //! paint
-    void paintEvent( QPaintEvent* );
-
     //! context menu (overloaded)
     virtual void contextMenuEvent( QContextMenuEvent* );
 
     //! overloaded key press event
     virtual void keyPressEvent( QKeyEvent* );
 
-    //! overloaded mouse event handler
-    virtual void mouseMoveEvent( QMouseEvent* );
-
-    //! overloaded mouse event handler
-    virtual void mousePressEvent( QMouseEvent* );
-
-    //! mouse move
-    void mouseReleaseEvent( QMouseEvent* );
-
     //@}
 
-    //! clear button rect
-    virtual void _setClearButtonRect( const QRect& rect )
-    { clearButtonRect_ = rect; }
-
     //! toggle clear button
-    virtual bool _toggleClearButton( const bool& );
-
-    //! clear button visibility
-    virtual const bool& _clearButtonVisible( void ) const
-    { return clearButtonVisible_; }
-
-    //! set clear button visibility
-    virtual void _setClearButtonVisible( const bool& value )
-    { clearButtonVisible_ = value; }
-
-    //! paint clear button
-    virtual void _paintClearButton( QPainter& painter )
-    { _paintClearButton( painter, true ); }
-
-    //! paint clear button
-    virtual void _paintClearButton( QPainter&, const bool& );
-
-    //! framewidth
-    int _frameWidth( void ) const;
-
-    //! clear icon
-    virtual const QIcon& _clearIcon( void ) const
-    { return clearIcon_; }
+    virtual void _updateClearButton( void );
 
     protected Q_SLOTS:
 
@@ -210,28 +182,11 @@ class LineEditor: public QLineEdit, public Counter
 
     //@}
 
-    //!@name properties
-    //@{
+    //! clear button
+    QWidget* clearButton_;
 
-    //! true when clear button should be drawn
-    bool hasClearButton_;
-
-    //! true when clear button is visible
-    bool clearButtonVisible_;
-
-    //! clear button rect
-    QRect clearButtonRect_;
-
-    //! frame
-    bool hasFrame_;
-
-    //! true if clear button is triggered
-    bool triggered_;
-
-    //! clear pixmap
-    QIcon clearIcon_;
-
-    //@}
+    //! style proxy
+    Private::LineEditorStyle* proxyStyle_;
 
 };
 
