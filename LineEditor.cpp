@@ -59,14 +59,8 @@ namespace Private
         { return QProxyStyle::subElementRect( subElement, option, widget ); }
 
         // adjust sub element rect
-        const bool reverseLayout( option->direction == Qt::RightToLeft );
-        const int iconSize( pixelMetric( QStyle::PM_SmallIconSize, option, widget ) );
-        const int margin( 4 );
-
         QRect rect( QProxyStyle::subElementRect( subElement, option, widget ) );
-        return reverseLayout ?
-            rect.adjusted( 2*margin + iconSize, 0, 0, 0 ):
-            rect.adjusted( 0, 0, -(2*margin + iconSize), 0 );
+        return visualRect( option->direction, rect, rect.adjusted( 0, 0, -editor->clearButtonWidth(), 0 ) );
 
     }
 
@@ -81,13 +75,11 @@ namespace Private
         if( !( editor && editor->hasClearButton() ) )
         { return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget ); }
 
-        // adjust contents size
-        const int iconSize( pixelMetric( QStyle::PM_SmallIconSize, option, widget ) );
-        const int margin( 4 );
+        const int buttonWidth( editor->clearButtonWidth() );
 
         QSize size( contentsSize );
-        size.rwidth() += iconSize + 2*margin;
-        size.setHeight( qMax( size.height(), iconSize + 2*margin ) );
+        size.rwidth() += buttonWidth;
+        size.setHeight( qMax( size.height(), buttonWidth ) );
 
         return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget );
 
@@ -148,6 +140,18 @@ LineEditor::LineEditor( QWidget* parent ):
     setStyle( proxyStyle_ );
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
+}
+
+//_____________________________________________________________________
+int LineEditor::clearButtonWidth( void ) const
+{
+    // adjust contents size
+    QStyleOptionFrame option;
+    option.initFrom( this );
+    initStyleOption( &option );
+    const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
+    const int margin( 2 );
+    return iconSize + 2*margin;
 }
 
 //_____________________________________________________________________
@@ -319,7 +323,7 @@ void LineEditor::keyPressEvent( QKeyEvent* event )
 }
 
 //____________________________________________________________
-void LineEditor::_updateClearButton( void )
+void LineEditor::_updateClearButton( void ) const
 {
     if( !clearButton_ ) return;
 
@@ -327,9 +331,7 @@ void LineEditor::_updateClearButton( void )
     option.initFrom( this );
     initStyleOption( &option );
 
-    const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, clearButton_ ) );
-    const int margin( 4 );
-    const int buttonWidth( iconWidth + 2*margin );
+    const int buttonWidth( clearButtonWidth() );
 
     const QRect textRect( style()->subElementRect( QStyle::SE_LineEditContents, &option, this ) );
     QRect buttonRect( textRect.topRight()+QPoint( 1, 0 ), QSize( buttonWidth, textRect.height() ) );
