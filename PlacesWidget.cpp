@@ -279,9 +279,8 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         if( valid_ && ( hasFocus_ || dragInProgress ) ) painter->setPen( palette().color( QPalette::HighlightedText ) );
         else painter->setPen( palette().color( ( valid_ && !hasFlag( LocalFileInfo::Hidden ) ) ? QPalette::Normal:QPalette::Disabled, QPalette::WindowText  ) );
 
-        QTextOption textOptions( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) );
-        textOptions.setWrapMode( QTextOption::NoWrap );
-        painter->drawText( QRectF( textRect ), text(), textOptions );
+        int textFlags( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) | Qt::TextHideMnemonic );
+        painter->drawText( QRectF( textRect ), textFlags, text() );
 
     }
 
