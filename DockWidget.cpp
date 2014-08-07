@@ -36,17 +36,17 @@ namespace Private
     class TitleBarWidget: public QWidget
     {
         public:
-        
+
         //! minimum size hint
         virtual QSize minimumSizeHint( void ) const
         { return QSize( 1, 2 ); }
-        
+
         //! minimum size hint
         virtual QSize sizeHint( void ) const
         { return minimumSizeHint(); }
-    
+
     };
-    
+
 }
 
 //_________________________________________________________
@@ -80,6 +80,9 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
 
     // no scroll area by default
     setUseScrollArea( false );
+
+    // by default dock widgets are closable, movable, but not floatable
+    setFeatures( DockWidgetClosable | DockWidgetMovable );
 
     // configuration
     connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
@@ -155,7 +158,7 @@ void DockWidget::setLocked( bool locked )
             QDockWidget::DockWidgetFloatable |
             QDockWidget::DockWidgetClosable);
     }
-    
+
     _updateTitleBarWidget();
 
 }
@@ -195,30 +198,30 @@ void DockWidget::setAutoHideTitleBar( bool value )
     autoHideTitleBar_ = value;
     _updateTitleBarWidget();
 }
-    
+
 //_________________________________________________________
 void DockWidget::_updateTitleBarWidget( void )
 {
     Debug::Throw( "DockWidget::_updateTitleBarWidget.\n" );
-    
+
     if( autoHideTitleBar_ && locked_ )
     {
-    
+
         if( !titleBarWidget_ ) titleBarWidget_ = new Private::TitleBarWidget();
         setTitleBarWidget( titleBarWidget_ );
 
     } else {
 
-        if( titleBarWidget_ ) 
+        if( titleBarWidget_ )
         {
             titleBarWidget_->deleteLater();
             titleBarWidget_ = 0;
         }
-        
+
         setTitleBarWidget( 0x0 );
-        
+
     }
-    
+
 }
 
 //_______________________________________________________________
