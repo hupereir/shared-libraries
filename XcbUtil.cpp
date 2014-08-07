@@ -41,19 +41,6 @@
 static int debugLevel = 1;
 
 //________________________________________________________________________
-#if HAVE_X11
-union ClientMessageBuffer
-{
-    char _buffer[32];
-    xcb_client_message_event_t event;
-
-    //! constructor
-    ClientMessageBuffer( void )
-    { memset( this, 0, sizeof( ClientMessageBuffer ) ); }
-};
-#endif
-
-//________________________________________________________________________
 class XcbUtil::Private
 {
 
@@ -538,26 +525,47 @@ bool XcbUtil::moveResizeWidget(
     // check
     if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
 
-    xcb_atom_t moveWMResize( *d->atom( _NET_WM_MOVERESIZE ) );
+    QPoint localPosition( widget->mapFromGlobal( position ) );
 
-    // create event
-    ClientMessageBuffer buffer;
+    // button release event
+    xcb_button_release_event_t releaseEvent;
+    memset(&releaseEvent, 0, sizeof(releaseEvent));
 
-    xcb_client_message_event_t *event = &buffer.event;
-    event->response_type = XCB_CLIENT_MESSAGE;
-    event->type = moveWMResize;
-    event->format = 32;
-    event->window = widget->winId();
-    event->data.data32[0] = position.x();
-    event->data.data32[1] = position.y();
-    event->data.data32[2] = direction;
-    event->data.data32[3] = button;
-    event->data.data32[4] = 0;
+    releaseEvent.response_type = XCB_BUTTON_RELEASE;
+    releaseEvent.event =  widget->winId();
+    releaseEvent.child = XCB_WINDOW_NONE;
+    releaseEvent.root = appRootWindow();
+    releaseEvent.event_x = localPosition.x();
+    releaseEvent.event_y = localPosition.y();
+    releaseEvent.root_x = position.x();
+    releaseEvent.root_y = position.y();
+    releaseEvent.detail = XCB_BUTTON_INDEX_1;
+    releaseEvent.state = XCB_BUTTON_MASK_1;
+    releaseEvent.time = XCB_CURRENT_TIME;
+    releaseEvent.same_screen = true;
+    xcb_send_event( d->connection(), false, widget->winId(), XCB_EVENT_MASK_BUTTON_RELEASE, reinterpret_cast<const char*>(&releaseEvent));
 
     xcb_ungrab_pointer( d->connection(), XCB_TIME_CURRENT_TIME );
+
+    // move resize event
+    xcb_atom_t moveWMResize( *d->atom( _NET_WM_MOVERESIZE ) );
+    xcb_client_message_event_t clientMessageEvent;
+    memset(&clientMessageEvent, 0, sizeof(clientMessageEvent));
+
+    clientMessageEvent.response_type = XCB_CLIENT_MESSAGE;
+    clientMessageEvent.type = moveWMResize;
+    clientMessageEvent.format = 32;
+    clientMessageEvent.window = widget->winId();
+    clientMessageEvent.data.data32[0] = position.x();
+    clientMessageEvent.data.data32[1] = position.y();
+    clientMessageEvent.data.data32[2] = direction;
+    clientMessageEvent.data.data32[3] = button;
+    clientMessageEvent.data.data32[4] = 0;
+
     xcb_send_event( d->connection(), false, appRootWindow(),
         XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY |
-        XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT, (const char*)event );
+        XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT,
+        reinterpret_cast<const char*>(&clientMessageEvent) );
 
     xcb_flush( d->connection() );
 
@@ -653,20 +661,23 @@ bool XcbUtil::_requestStateChange( QWidget* widget, AtomId atom, bool value ) co
     xcb_atom_t requested( *d->atom( atom ) );
 
     // create event
-    ClientMessageBuffer buffer;
+    xcb_client_message_event_t clientMessageEvent;
+    memset(&clientMessageEvent, 0, sizeof(clientMessageEvent));
 
-    xcb_client_message_event_t *event = &buffer.event;
-    event->response_type = XCB_CLIENT_MESSAGE;
-    event->type = netWMState;
-    event->format = 32;
-    event->window =  widget->window()->winId();
-    event->data.data32[0] = value ? 1:0;
-    event->data.data32[1] = requested;
-    event->data.data32[2] = 0L;
-    event->data.data32[3] = 0L;
-    event->data.data32[4] = 0L;
+    clientMessageEvent.response_type = XCB_CLIENT_MESSAGE;
+    clientMessageEvent.type = netWMState;
+    clientMessageEvent.format = 32;
+    clientMessageEvent.window =  widget->window()->winId();
+    clientMessageEvent.data.data32[0] = value ? 1:0;
+    clientMessageEvent.data.data32[1] = requested;
+    clientMessageEvent.data.data32[2] = 0L;
+    clientMessageEvent.data.data32[3] = 0L;
+    clientMessageEvent.data.data32[4] = 0L;
 
-    xcb_send_event( d->connection(), false, appRootWindow(), XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT, (const char*)event );
+    xcb_send_event(
+        d->connection(), false, appRootWindow(),
+        XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT,
+        reinterpret_cast<const char*>(&clientMessageEvent) );
 
     return true;
 
@@ -710,20 +721,23 @@ bool XcbUtil::_requestCardinalChange( QWidget* widget, AtomId atom, uint32_t val
     xcb_atom_t requested( *d->atom( atom ) );
 
     // create event
-    ClientMessageBuffer buffer;
+    xcb_client_message_event_t clientMessageEvent;
+    memset(&clientMessageEvent, 0, sizeof(clientMessageEvent));
 
-    xcb_client_message_event_t *event = &buffer.event;
-    event->response_type = XCB_CLIENT_MESSAGE;
-    event->type = requested;
-    event->format = 32;
-    event->window = widget->winId();
-    event->data.data32[0] = value;
-    event->data.data32[1] = 0l;
-    event->data.data32[2] = 0l;
-    event->data.data32[3] = 0l;
-    event->data.data32[4] = 0l;
+    clientMessageEvent.response_type = XCB_CLIENT_MESSAGE;
+    clientMessageEvent.type = requested;
+    clientMessageEvent.format = 32;
+    clientMessageEvent.window = widget->winId();
+    clientMessageEvent.data.data32[0] = value;
+    clientMessageEvent.data.data32[1] = 0l;
+    clientMessageEvent.data.data32[2] = 0l;
+    clientMessageEvent.data.data32[3] = 0l;
+    clientMessageEvent.data.data32[4] = 0l;
 
-    xcb_send_event( d->connection(), false, appRootWindow(), XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT, (const char*)event );
+    xcb_send_event(
+        d->connection(), false, appRootWindow(),
+        XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT,
+        reinterpret_cast<const char*>(&clientMessageEvent) );
 
     return true;
     #endif
