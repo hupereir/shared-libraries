@@ -48,13 +48,13 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
 
     // lock toolbars action
-    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Toolbars" ), this ) );
+    addAction( lockToolBarsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Toolbar Positions" ), this ) );
     lockToolBarsAction_->setCheckable( true );
     lockToolBarsAction_->setChecked( true );
     connect( lockToolBarsAction_, SIGNAL(toggled(bool)), SLOT(_lockToolBars(bool)) );
 
     // lock panels action
-    addAction( lockPanelsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Panels" ), this ) );
+    addAction( lockPanelsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Panel Positions" ), this ) );
     lockPanelsAction_->setCheckable( true );
     lockPanelsAction_->setChecked( true );
     connect( lockPanelsAction_, SIGNAL(toggled(bool)), SLOT(_lockPanels(bool)) );
