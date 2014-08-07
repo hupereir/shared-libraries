@@ -52,6 +52,9 @@ class LineEditor: public QLineEdit, public Counter
     bool hasClearButton( void ) const
     { return clearButton_ && clearButton_->isVisible(); }
 
+    //! return clear button width
+    int clearButtonWidth( void ) const;
+
     //! modification state
     const bool& isModified( void ) const
     { return modified_; }
@@ -118,7 +121,7 @@ class LineEditor: public QLineEdit, public Counter
     //@}
 
     //! toggle clear button
-    virtual void _updateClearButton( void );
+    virtual void _updateClearButton( void ) const;
 
     protected Q_SLOTS:
 
