@@ -174,7 +174,7 @@ namespace Private
         QPainter painter( this );
         painter.setClipRegion( event->region() );
 
-        if( !style()->inherits( "Oxygen::Style" ) )
+        if( !( style()->inherits( "Oxygen::Style" ) || style()->inherits( "Breeze::Style" ) ) )
         {  painter.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
 
         {
@@ -477,7 +477,8 @@ namespace Private
 
             isDragging_ = true;
 
-            #if HAVE_X11 && QT_VERSION < 0x050000
+            #if HAVE_X11
+            // && QT_VERSION < 0x050000
             if( XcbUtil::get().moveWidget( parentWidget(), mapToGlobal( dragPosition_ ) ) )
             {
 

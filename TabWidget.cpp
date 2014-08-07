@@ -305,7 +305,7 @@ void TabWidget::paintEvent( QPaintEvent *event )
 
         QPainter p( this );
 
-        if( !( style()->inherits( "OxygenStyle" ) || style()->inherits( "Oxygen::Style" ) ) )
+        if( !( style()->inherits( "Oxygen::Style" ) || style()->inherits( "Breeze::Style" ) ) )
         {  p.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
 
         // background
