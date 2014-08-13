@@ -39,6 +39,8 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     QList<QByteArray> codecs( QTextCodec::availableCodecs() );
+    _removeAliases( codecs );
+
     foreach( const QByteArray& value, codecs )
     {
         QAction* action = new QAction( value, this );
@@ -76,5 +78,35 @@ void TextEncodingMenu::_selected( QAction* action )
     ActionMap::const_iterator iter = actions_.find( action );
     Q_ASSERT( iter != actions_.end() );
     emit encodingChanged( iter.value() );
+
+}
+
+//_____________________________________________________________________________
+void TextEncodingMenu::_removeAliases( QList<QByteArray>& codecs ) const
+{
+    bool done( false );
+    while( !done )
+    {
+        done = true;
+        foreach( const QByteArray& codecName, codecs )
+        {
+
+            // create codec
+            QTextCodec* codec = QTextCodec::codecForName( codecName );
+            foreach( const QByteArray& aliasName,  codec->aliases()  )
+            {
+                if( aliasName == codecName ) continue;
+                if( codecs.contains( aliasName ) )
+                {
+                    done = false;
+                    codecs.removeAll( aliasName );
+                }
+            }
+
+            if( !done ) break;
+
+        }
+
+    }
 
 }

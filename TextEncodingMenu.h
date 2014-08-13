@@ -51,6 +51,11 @@ class TextEncodingMenu: public QMenu, public Counter
     //! size selected from action
     void _selected( QAction* );
 
+    protected:
+
+    //! remove aliases from list of codecs
+    void _removeAliases( QList<QByteArray>& ) const;
+
     private:
 
     //! map action to encoding
