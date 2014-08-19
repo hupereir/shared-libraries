@@ -95,6 +95,7 @@ namespace Private
         setAutoFillBackground( false );
         setToolTip( tr( "Clear text" ) );
         setCursor( Qt::ArrowCursor );
+        setFocusPolicy( Qt::NoFocus );
     }
 
     //____________________________________________________________
