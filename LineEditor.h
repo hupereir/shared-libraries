@@ -138,6 +138,11 @@ class LineEditor: public QLineEdit, public Counter
     //! update undo/redo actions
     virtual void _updateUndoRedoActions( void );
 
+    protected:
+
+    //! paint event
+    virtual void paintEvent( QPaintEvent* );
+
     private:
 
     //! install actions
