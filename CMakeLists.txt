@@ -22,9 +22,9 @@ endif()
 
 ########### aspell ###############
 if( USE_QT5 )
-find_program( KDE4_CONFIG kde4-config )
-else()
 find_program( KDE4_CONFIG kf5-config )
+else()
+find_program( KDE4_CONFIG kde4-config )
 endif()
 
 ########### configuration files ###############
