@@ -1,240 +1,240 @@
 # $Id$
-MACRO( GET_BUILD_TIMESTAMP RESULT )
+macro( get_build_timestamp RESULT )
 
-  IF( WIN32 )
+  if( WIN32 )
 
-    EXECUTE_PROCESS( COMMAND "cmd" " /C date /T" OUTPUT_VARIABLE DATE )
-    STRING( REGEX REPLACE ".*(..)[/.](..)[/.](....).*" "\\3/\\2/\\1" DATE ${DATE} )
-    SET( ${RESULT} "${DATE}" )
+    execute_process( COMMAND "cmd" " /C date /T" OUTPUT_VARIABLE DATE )
+    string( REGEX REPLACE ".*(..)[/.](..)[/.](....).*" "\\3/\\2/\\1" DATE ${DATE} )
+    set( ${RESULT} "${DATE}" )
 
-  ELSEIF( UNIX )
+  elseif( UNIX )
 
-    EXECUTE_PROCESS( COMMAND "date" "+%Y/%m/%d" OUTPUT_VARIABLE DATE )
-    STRING( REGEX REPLACE "\n+$" "" ${RESULT} ${DATE} )
+    execute_process( COMMAND "date" "+%Y/%m/%d" OUTPUT_VARIABLE DATE )
+    string( REGEX REPLACE "\n+$" "" ${RESULT} ${DATE} )
 
-  ENDIF()
+  endif()
 
-ENDMACRO()
+endmacro()
 
 ###################### Install Win32 application #########################
-MACRO( ADD_WIN32_EXECUTABLE target version )
+macro( add_win32_executable target version )
 
   ### executable
-  ADD_EXECUTABLE( ${target} WIN32 ${ARGN} )
-  SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" )
+  add_executable( ${target} WIN32 ${ARGN} )
+  set( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" )
 
   ### use static gcc linking
-  IF( ${CMAKE_COMPILER_IS_GNUCXX} )
-    SET_TARGET_PROPERTIES( ${target} PROPERTIES LINK_FLAGS " -static-libgcc -s" )
-  ENDIF()
+  if( ${CMAKE_COMPILER_IS_GNUCXX} )
+    set_target_properties( ${target} PROPERTIES LINK_FLAGS " -static-libgcc -s" )
+  endif()
 
   ### get target location
   GET_TARGET_PROPERTY( TARGET_PATH ${target} LOCATION )
 
   ### Compress target
-  IF( ENABLE_SHARED )
+  if( ENABLE_SHARED )
 
-    SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import" )
-    SET( CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import " )
+    set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import" )
+    set( CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import " )
 
-  ELSE()
+  else()
 
-    FIND_PROGRAM( UPX upx )
-    IF( UPX )
-      ADD_CUSTOM_COMMAND( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
-    ELSE()
-      MESSAGE( "-- Program 'upx' not found" )
-    ENDIF()
+    find_program( UPX upx )
+    if( UPX )
+      add_custom_command( TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH} )
+    else()
+      message( "-- Program 'upx' not found" )
+    endif()
 
-  ENDIF()
+  endif()
 
   ### copy to version release
-  IF( RELEASE )
+  if( RELEASE )
 
-    SET( TARGET_RELEASE ${target}-${version} )
-    ADD_CUSTOM_COMMAND(
+    set( TARGET_RELEASE ${target}-${version} )
+    add_custom_command(
       TARGET ${target} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy ${TARGET_PATH} ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
     )
 
-    INSTALL(
+    install(
       PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_RELEASE}.exe
       DESTINATION ${CMAKE_INSTALL_PREFIX}/release )
 
-  ENDIF()
+  endif()
 
-ENDMACRO( ADD_WIN32_EXECUTABLE )
+endmacro()
 
 ###################### Install Apple application #########################
-MACRO( ADD_APPLE_EXECUTABLE target version )
+macro( add_apple_executable target version )
 
   ### version
-  SET( MACOSX_BUNDLE_SHORT_VERSION_STRING ${version} )
-  SET( MACOSX_BUNDLE_VERSION ${version})
-  SET( MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${version}" )
+  set( MACOSX_BUNDLE_SHORT_VERSION_STRING ${version} )
+  set( MACOSX_BUNDLE_VERSION ${version})
+  set( MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${version}" )
 
   ### installation directory
-  SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}" )
-  ADD_EXECUTABLE( ${target} MACOSX_BUNDLE ${ARGN} )
+  set( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}" )
+  add_executable( ${target} MACOSX_BUNDLE ${ARGN} )
 
-ENDMACRO( ADD_APPLE_EXECUTABLE )
+endmacro()
 
 ###################### Install unix application #########################
-MACRO( ADD_UNIX_EXECUTABLE target )
+macro( add_unix_executable target )
 
   ### executable
-  ADD_EXECUTABLE( ${target} ${ARGN} )
-  SET( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" )
+  add_executable( ${target} ${ARGN} )
+  set( BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin" )
 
   ### unix specific links
-  TARGET_LINK_LIBRARIES( ${target} ${X11_X11_LIB} )
+  target_link_libraries( ${target} ${X11_X11_LIB} )
 
-ENDMACRO( ADD_UNIX_EXECUTABLE )
+endmacro()
 
 ###################### Install application #########################
-MACRO( ADD_PLATFORM_EXECUTABLE target version )
+macro( add_platform_executable target version )
 
-  IF( WIN32 )
+  if( WIN32 )
 
-    ADD_WIN32_EXECUTABLE( ${target} ${version} ${ARGN} )
+    add_win32_executable( ${target} ${version} ${ARGN} )
 
-  ELSEIF( APPLE )
+  elseif( APPLE )
 
-    ADD_APPLE_EXECUTABLE( ${target} ${version} ${ARGN} )
+    add_apple_executable( ${target} ${version} ${ARGN} )
 
-  ELSE()
+  else()
 
-    ADD_UNIX_EXECUTABLE( ${target} ${ARGN} )
+    add_unix_executable( ${target} ${ARGN} )
 
-  ENDIF()
+  endif()
 
-ENDMACRO( ADD_PLATFORM_EXECUTABLE )
+endmacro()
 
 
 ###################### add win32 application icons #########################
-MACRO( ADD_WIN32_APPLICATION_ICON  sources icon )
+macro( add_win32_application_icon  sources icon )
 
-    # check icon exists
-    SET( _icon ${icon}.ico )
-    IF( EXISTS "${_icon}" )
+    # check icon EXISTS
+    set( _icon ${icon}.ico )
+    if( EXISTS "${_icon}" )
 
-      MESSAGE( "-- Using application icon: ${_icon}" )
+      message( "-- Using application icon: ${_icon}" )
 
       # generate resource file and add to sources
-      STRING( REPLACE _SOURCES "" appname ${sources} )
-      SET( _resource ${CMAKE_CURRENT_BINARY_DIR}/${appname}_win32.rc )
+      string( REPLACE _SOURCES "" appname ${sources} )
+      set( _resource ${CMAKE_CURRENT_BINARY_DIR}/${appname}_win32.rc )
       FILE( WRITE ${_resource} "IDI_ICON1        ICON        DISCARDABLE    \"${_icon}\"\n")
       LIST( APPEND ${sources} ${_resource} )
 
-    ELSE()
+    else()
 
-      MESSAGE("-- Unable to find icon ${_icon}" )
+      message("-- Unable to find icon ${_icon}" )
 
-    ENDIF()
+    endif()
 
-ENDMACRO( ADD_WIN32_APPLICATION_ICON )
+endmacro()
 
 ###################### add apple application icons #########################
-MACRO( ADD_APPLE_APPLICATION_ICON  sources icon )
+macro( ADD_APPLE_APPLICATION_ICON  sources icon )
 
-    # check icon exists
-    SET( _icon ${icon}.icns )
-    IF( EXISTS "${_icon}" )
+    # check icon EXISTS
+    set( _icon ${icon}.icns )
+    if( EXISTS "${_icon}" )
 
       GET_FILENAME_COMPONENT( _iconName ${_icon} NAME )
-      SET( MACOSX_BUNDLE_ICON_FILE  ${_iconName} )
+      set( MACOSX_BUNDLE_ICON_FILE  ${_iconName} )
       SET_SOURCE_FILES_PROPERTIES( ${_icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
       LIST( APPEND ${sources} ${_icon} )
 
-    ELSE()
+    else()
 
-      MESSAGE("-- Unable to find icon ${_icon}" )
+      message("-- Unable to find icon ${_icon}" )
 
-    ENDIF()
+    endif()
 
-ENDMACRO( ADD_APPLE_APPLICATION_ICON )
+endmacro( ADD_APPLE_APPLICATION_ICON )
 
 ###################### add unix application icons #########################
-MACRO( ADD_UNIX_APPLICATION_ICON  icon name size )
+macro( add_unix_application_icon  icon name size )
 
     # check xdg-icon-resource program
-    FIND_PROGRAM( XDG_ICON_RESOURCE_EXECUTABLE xdg-icon-resource )
-    IF( NOT XDG_ICON_RESOURCE_EXECUTABLE )
+    find_program( XDG_ICON_RESOURCE_EXECUTABLE xdg-icon-resource )
+    if( NOT XDG_ICON_RESOURCE_EXECUTABLE )
 
-        MESSAGE( "-- Could not find xdg-icon-resource" )
+        message( "-- Could not find xdg-icon-resource" )
 
-    ENDIF()
+    endif()
 
-    SET( _icon ${icon}.png )
-    IF( NOT EXISTS "${_icon}" )
+    set( _icon ${icon}.png )
+    if( NOT EXISTS "${_icon}" )
 
-      MESSAGE("-- Unable to find icon ${_icon}" )
+      message("-- Unable to find icon ${_icon}" )
 
-    ENDIF()
+    endif()
 
     # add relevant INSTALL command
-    IF( XDG_ICON_RESOURCE_EXECUTABLE AND EXISTS ${_icon} )
+    if( XDG_ICON_RESOURCE_EXECUTABLE AND EXISTS ${_icon} )
 
-      INSTALL(
-        CODE "MESSAGE( \"-- Installing: ${_icon}\" )"
-        CODE "EXECUTE_PROCESS( COMMAND ${XDG_ICON_RESOURCE_EXECUTABLE} install --novendor --size ${size} ${_icon} ${name} )"
+      install(
+        CODE "message( \"-- Installing: ${_icon}\" )"
+        CODE "execute_process( COMMAND ${XDG_ICON_RESOURCE_EXECUTABLE} install --novendor --size ${size} ${_icon} ${name} )"
       )
 
-    ENDIF()
+    endif()
 
-ENDMACRO( ADD_UNIX_APPLICATION_ICON )
+endmacro()
 
 ###################### add application icons #########################
-MACRO( ADD_APPLICATION_ICON  sources icon )
+macro( add_application_icon  sources icon )
 
-  IF( WIN32 )
+  if( WIN32 )
 
-    ADD_WIN32_APPLICATION_ICON( ${sources} ${icon} ${ARGN} )
+    add_win32_application_icon( ${sources} ${icon} ${ARGN} )
 
-  ELSEIF( APPLE )
+  elseif( APPLE )
 
     ADD_APPLE_APPLICATION_ICON( ${sources} ${icon} ${ARGN} )
 
-  ELSE()
+  else()
 
     GET_FILENAME_COMPONENT( _iconName ${icon} NAME )
     ADD_UNIX_APPLICATION_ICON( ${icon} ${_iconName} 128 ${ARGN} )
 
-  ENDIF()
+  endif()
 
-ENDMACRO( ADD_APPLICATION_ICON )
+endmacro()
 
 ###################### add desktop file #########################
-MACRO( ADD_DESKTOP_FILE  desktopFile )
+macro( add_desktop_file  desktopFile )
 
-  IF( UNIX AND NOT APPLE )
+  if( UNIX AND NOT APPLE )
 
     # check desktop-file-install program
-    FIND_PROGRAM( XDG_DESKTOP_MENU_EXECUTABLE xdg-desktop-menu )
-    IF( NOT XDG_DESKTOP_MENU_EXECUTABLE )
+    find_program( XDG_DESKTOP_MENU_EXECUTABLE xdg-desktop-menu )
+    if( NOT XDG_DESKTOP_MENU_EXECUTABLE )
 
-        MESSAGE( "-- Could not find xdg-desktop-menu" )
+        message( "-- Could not find xdg-desktop-menu" )
 
-    ENDIF()
+    endif()
 
     # check desktop file existence
-    SET( _desktopFile ${desktopFile}.desktop )
-    IF( NOT EXISTS "${_desktopFile}" )
+    set( _desktopFile ${desktopFile}.desktop )
+    if( NOT EXISTS "${_desktopFile}" )
 
-      MESSAGE("-- Unable to find desktop file ${_desktopFile}" )
+      message("-- Unable to find desktop file ${_desktopFile}" )
 
-    ENDIF()
+    endif()
 
     # add relevant INSTALL command
-    IF( XDG_DESKTOP_MENU_EXECUTABLE AND EXISTS ${_desktopFile} )
+    if( XDG_DESKTOP_MENU_EXECUTABLE AND EXISTS ${_desktopFile} )
 
-      INSTALL(
-        CODE "MESSAGE( \"-- Installing: ${_desktopFile}\" )"
-        CODE "EXECUTE_PROCESS( COMMAND ${XDG_DESKTOP_MENU_EXECUTABLE} install --novendor ${_desktopFile} )"
+      install(
+        CODE "message( \"-- Installing: ${_desktopFile}\" )"
+        CODE "execute_process( COMMAND ${XDG_DESKTOP_MENU_EXECUTABLE} install --novendor ${_desktopFile} )"
       )
 
-    ENDIF()
+    endif()
 
-  ENDIF()
+  endif()
 
-ENDMACRO( ADD_DESKTOP_FILE )
+endmacro()
