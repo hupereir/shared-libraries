@@ -26,7 +26,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 ########### links #########
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-link_directories( ${CMAKE_install_PREFIX}/lib )
+link_directories( ${CMAKE_INSTALL_PREFIX}/lib )
 
 ########### next target ###############
 set( base_SOURCES
@@ -55,7 +55,7 @@ if( ENABLE_SHARED )
   add_library( base SHARED ${base_SOURCES} )
   set_target_properties( base PROPERTIES VERSION ${BASE_VERSION} SOVERSION ${BASE_SOVERSION} )
   target_link_libraries( base ${QT_LIBRARIES} )
-  install( TARGETS base DESTINATION ${CMAKE_install_PREFIX}/lib )
+  install( TARGETS base DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 else()
 
