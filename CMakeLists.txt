@@ -1,75 +1,75 @@
 # $Id$
-PROJECT( BASE_NOTIFICATIONS )
-SET( BASE_NOTIFICATIONS_VERSION_MAJOR 1 )
-SET( BASE_NOTIFICATIONS_VERSION_MINOR 0 )
-SET( BASE_NOTIFICATIONS_VERSION_PATCH 0 )
-SET( BASE_NOTIFICATIONS_VERSION ${BASE_NOTIFICATIONS_VERSION_MAJOR}.${BASE_NOTIFICATIONS_VERSION_MINOR}.${BASE_NOTIFICATIONS_VERSION_PATCH} )
-SET( BASE_NOTIFICATIONS_SOVERSION ${BASE_NOTIFICATIONS_VERSION_MAJOR}.${BASE_NOTIFICATIONS_VERSION_MINOR} )
+project( BASE_NOTIFICATIONS )
+set( BASE_NOTIFICATIONS_VERSION_MAJOR 1 )
+set( BASE_NOTIFICATIONS_VERSION_MINOR 0 )
+set( BASE_NOTIFICATIONS_VERSION_PATCH 0 )
+set( BASE_NOTIFICATIONS_VERSION ${BASE_NOTIFICATIONS_VERSION_MAJOR}.${BASE_NOTIFICATIONS_VERSION_MINOR}.${BASE_NOTIFICATIONS_VERSION_PATCH} )
+set( BASE_NOTIFICATIONS_SOVERSION ${BASE_NOTIFICATIONS_VERSION_MAJOR}.${BASE_NOTIFICATIONS_VERSION_MINOR} )
 
 ########### Qt4 configuration #########
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  FIND_PACKAGE( Qt5Widgets REQUIRED )
+  find_package( Qt5Widgets REQUIRED )
 
-ELSE()
+else()
 
-  FIND_PACKAGE( Qt4 REQUIRED )
-  INCLUDE( ${QT_USE_FILE} )
-  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  find_package( Qt4 REQUIRED )
+  include( ${QT_USE_FILE} )
+  add_definitions( ${QT_DEFINITIONS} )
 
-ENDIF()
+endif()
 
 ############ Notifications
-FIND_PACKAGE( PkgConfig )
-IF( PKG_CONFIG_FOUND )
+find_package( PkgConfig )
+if( PKG_CONFIG_FOUND )
 
   PKG_CHECK_MODULES( LIBNOTIFY libnotify )
-  IF( LIBNOTIFY_FOUND )
-    INCLUDE_DIRECTORIES( ${LIBNOTIFY_INCLUDE_DIRS} )
-    ADD_DEFINITIONS( -DWITH_LIBNOTIFY=${LIBNOTIFY_FOUND} )
+  if( LIBNOTIFY_FOUND )
+    include_directories( ${LIBNOTIFY_INCLUDE_DIRS} )
+    add_definitions( -DWITH_LIBNOTIFY=${LIBNOTIFY_FOUND} )
 
-  ELSE()
+  else()
 
-    ADD_DEFINITIONS( -DWITH_LIBNOTIFY=FALSE )
+    add_definitions( -DWITH_LIBNOTIFY=FALSE )
 
-  ENDIF()
+  endif()
 
-ELSE()
+else()
 
-  ADD_DEFINITIONS( -DWITH_LIBNOTIFY=FALSE )
+  add_definitions( -DWITH_LIBNOTIFY=FALSE )
 
-ENDIF()
+endif()
 
 
 ########### includes ###############
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/base)
+include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### links #########
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+link_directories( ${CMAKE_install_PREFIX}/lib )
 
 ########### next target ###############
-SET( base_notifications_SOURCES
+set( base_notifications_SOURCES
   SystemNotifications.cpp
   SystemNotifications_p.cpp
 )
 
-IF( ENABLE_SHARED )
+if( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-notifications SHARED ${base_notifications_SOURCES} )
-  SET_TARGET_PROPERTIES( base-notifications PROPERTIES VERSION ${BASE_NOTIFICATIONS_VERSION} SOVERSION ${BASE_NOTIFICATIONS_VERSION} )
-  INSTALL( TARGETS base-notifications DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  add_library( base-notifications SHARED ${base_notifications_SOURCES} )
+  set_target_properties( base-notifications PROPERTIES VERSION ${BASE_NOTIFICATIONS_VERSION} SOVERSION ${BASE_NOTIFICATIONS_VERSION} )
+  install( TARGETS base-notifications DESTINATION ${CMAKE_install_PREFIX}/lib )
 
-ELSE()
+else()
 
-  ADD_LIBRARY( base-notifications STATIC ${base_notifications_SOURCES} )
+  add_library( base-notifications STATIC ${base_notifications_SOURCES} )
 
-ENDIF()
+endif()
 
-TARGET_LINK_LIBRARIES( base-notifications ${QT_LIBRARIES} base base-qt )
+target_link_libraries( base-notifications ${QT_LIBRARIES} base base-qt )
 
-IF( LIBNOTIFY_FOUND )
-  TARGET_LINK_LIBRARIES( base-notifications ${LIBNOTIFY_LIBRARIES} )
-ENDIF()
+if( LIBNOTIFY_FOUND )
+  target_link_libraries( base-notifications ${LIBNOTIFY_LIBRARIES} )
+endif()
