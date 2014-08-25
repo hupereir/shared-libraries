@@ -30,7 +30,7 @@ include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### links #########
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-link_directories( ${CMAKE_install_PREFIX}/lib )
+link_directories( ${CMAKE_INSTALL_PREFIX}/lib )
 
 ########### next target ###############
 set( base_spellcheck_SOURCES
@@ -53,7 +53,7 @@ if( ENABLE_SHARED )
 
   add_library( base-spellcheck SHARED ${base_spellcheck_SOURCES} )
   set_target_properties( base-spellcheck PROPERTIES VERSION ${BASE_SPELLCHECK_VERSION} SOVERSION ${BASE_SPELLCHECK_SOVERSION} )
-  install( TARGETS base-spellcheck DESTINATION ${CMAKE_install_PREFIX}/lib )
+  install( TARGETS base-spellcheck DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 else()
 
