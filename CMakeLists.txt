@@ -1,50 +1,50 @@
 # $Id$
-PROJECT( BASE_SERVER )
-SET( BASE_SERVER_VERSION_MAJOR 1 )
-SET( BASE_SERVER_VERSION_MINOR 0 )
-SET( BASE_SERVER_VERSION_PATCH 0 )
-SET( BASE_SERVER_VERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MINOR}.${BASE_SERVER_VERSION_PATCH} )
-SET( BASE_SERVER_SOVERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MINOR} )
+project( BASE_SERVER )
+set( BASE_SERVER_VERSION_MAJOR 1 )
+set( BASE_SERVER_VERSION_MINOR 0 )
+set( BASE_SERVER_VERSION_PATCH 0 )
+set( BASE_SERVER_VERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MINOR}.${BASE_SERVER_VERSION_PATCH} )
+set( BASE_SERVER_SOVERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MINOR} )
 
 ########### Qt4 configuration #########
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  FIND_PACKAGE( Qt5Widgets REQUIRED )
+  find_package( Qt5Widgets REQUIRED )
 
-ELSE()
+else()
 
-  FIND_PACKAGE( Qt4 REQUIRED )
-  SET( QT_USE_QTXML TRUE )
-  SET( QT_USE_QTNETWORK TRUE )
+  find_package( Qt4 REQUIRED )
+  set( QT_USE_QTXML TRUE )
+  set( QT_USE_QTNETWORK TRUE )
 
-  IF( UNIX AND NOT APPLE )
+  if( UNIX AND NOT APPLE )
 
-    SET( QT_USE_QTDBUS TRUE )
+    set( QT_USE_QTDBUS TRUE )
 
-  ELSE()
+  else()
 
-    ADD_DEFINITIONS( "-DQT_NO_DBUS" )
+    add_definitions( "-DQT_NO_DBUS" )
 
-  ENDIF()
+  endif()
 
-  INCLUDE( ${QT_USE_FILE} )
-  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  include( ${QT_USE_FILE} )
+  add_definitions( ${QT_DEFINITIONS} )
 
-ENDIF()
+endif()
 
 # DBUS: is forced to false on APPLE
 
 ########### includes ###############
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/base)
+include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### links #########
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+link_directories( ${CMAKE_install_PREFIX}/lib )
 
 ########### next target ###############
-SET( base_server_SOURCES
+set( base_server_SOURCES
   ApplicationId.cpp
   ApplicationManager.cpp
   BaseApplication.cpp
@@ -54,22 +54,22 @@ SET( base_server_SOURCES
   ServerConfiguration.cpp
 )
 
-IF( ENABLE_SHARED )
+if( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-server SHARED ${base_server_SOURCES} )
-  SET_TARGET_PROPERTIES( base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION} )
-  INSTALL( TARGETS base-server DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  add_library( base-server SHARED ${base_server_SOURCES} )
+  set_target_properties( base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION} )
+  install( TARGETS base-server DESTINATION ${CMAKE_install_PREFIX}/lib )
 
-ELSE()
+else()
 
-  ADD_LIBRARY( base-server STATIC ${base_server_SOURCES} )
+  add_library( base-server STATIC ${base_server_SOURCES} )
 
-ENDIF()
+endif()
 
-TARGET_LINK_LIBRARIES( base-server ${QT_LIBRARIES} base base-qt )
+target_link_libraries( base-server ${QT_LIBRARIES} base base-qt )
 
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  QT5_USE_MODULES( base-server Widgets Network Xml DBus )
+  qt5_use_modules( base-server Widgets Network Xml DBus )
 
-ENDIF()
+endif()
