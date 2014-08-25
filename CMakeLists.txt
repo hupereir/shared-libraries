@@ -1,58 +1,58 @@
 # $Id$
-PROJECT( BASE_HELP )
-SET( BASE_HELP_VERSION_MAJOR 1 )
-SET( BASE_HELP_VERSION_MINOR 0 )
-SET( BASE_HELP_VERSION_PATCH 0 )
-SET( BASE_HELP_VERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR}.${BASE_HELP_VERSION_PATCH} )
-SET( BASE_HELP_SOVERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR} )
+project( BASE_HELP )
+set( BASE_HELP_VERSION_MAJOR 1 )
+set( BASE_HELP_VERSION_MINOR 0 )
+set( BASE_HELP_VERSION_PATCH 0 )
+set( BASE_HELP_VERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR}.${BASE_HELP_VERSION_PATCH} )
+set( BASE_HELP_SOVERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR} )
 
 ########### Qt4 configuration #########
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  FIND_PACKAGE( Qt5Widgets REQUIRED )
+  find_package( Qt5Widgets REQUIRED )
 
-ELSE()
+else()
 
-  FIND_PACKAGE( Qt4 REQUIRED )
-  SET( QT_USE_QTXML TRUE )
-  INCLUDE( ${QT_USE_FILE} )
-  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  find_package( Qt4 REQUIRED )
+  set( QT_USE_QTXML TRUE )
+  include( ${QT_USE_FILE} )
+  add_definitions( ${QT_DEFINITIONS} )
 
-ENDIF()
+endif()
 
 ########### includes ###############
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/base)
+include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### links #########
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+link_directories( ${CMAKE_install_PREFIX}/lib )
 
 ########### next target ###############
-SET( base_help_SOURCES
+set( base_help_SOURCES
   HelpDialog.cpp
   HelpItem.cpp
   HelpManager.cpp
   HelpModel.cpp
   )
 
-IF( ENABLE_SHARED )
+if( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-help SHARED ${base_help_SOURCES} )
-  SET_TARGET_PROPERTIES( base-help PROPERTIES VERSION ${BASE_HELP_VERSION} SOVERSION ${BASE_HELP_SOVERSION} )
-  INSTALL( TARGETS base-help DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  add_library( base-help SHARED ${base_help_SOURCES} )
+  set_target_properties( base-help PROPERTIES VERSION ${BASE_HELP_VERSION} SOVERSION ${BASE_HELP_SOVERSION} )
+  install( TARGETS base-help DESTINATION ${CMAKE_install_PREFIX}/lib )
 
-ELSE()
+else()
 
-  ADD_LIBRARY( base-help STATIC ${base_help_SOURCES} )
+  add_library( base-help STATIC ${base_help_SOURCES} )
 
-ENDIF()
+endif()
 
-TARGET_LINK_LIBRARIES( base-help ${QT_LIBRARIES} base base-qt )
+target_link_libraries( base-help ${QT_LIBRARIES} base base-qt )
 
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  QT5_USE_MODULES( base-help Widgets Xml )
+  qt5_use_modules( base-help Widgets Xml )
 
-ENDIF()
+endif()
