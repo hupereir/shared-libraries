@@ -1,43 +1,47 @@
 # $Id$
-PROJECT( BASE_SVG )
-SET( BASE_SVG_VERSION_MAJOR 1 )
-SET( BASE_SVG_VERSION_MINOR 0 )
-SET( BASE_SVG_VERSION_PATCH 0 )
-SET( BASE_SVG_VERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR}.${BASE_SVG_VERSION_PATCH} )
-SET( BASE_SVG_SOVERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR} )
+project( BASE_SVG )
+set( BASE_SVG_VERSION_MAJOR 1 )
+set( BASE_SVG_VERSION_MINOR 0 )
+set( BASE_SVG_VERSION_PATCH 0 )
+set( BASE_SVG_VERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR}.${BASE_SVG_VERSION_PATCH} )
+set( BASE_SVG_SOVERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR} )
 
 ########### Qt4 configuration #########
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  FIND_PACKAGE( Qt5Widgets REQUIRED )
+  find_package( Qt5Widgets REQUIRED )
 
-ELSE()
+else()
 
-  FIND_PACKAGE( Qt4 REQUIRED )
-  SET( QT_USE_QTSVG TRUE )
-  INCLUDE( ${QT_USE_FILE} )
-  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  find_package( Qt4 REQUIRED )
+  set( QT_USE_QTSVG TRUE )
+  include( ${QT_USE_FILE} )
+  add_definitions( ${QT_DEFINITIONS} )
 
-ENDIF()
+endif()
 
 ########### aspell ###############
-FIND_PROGRAM( KDE4_CONFIG kde4-config )
+if( USE_QT5 )
+find_program( KDE4_CONFIG kde4-config )
+else()
+find_program( KDE4_CONFIG kf5-config )
+endif()
 
 ########### configuration files ###############
-CONFIGURE_FILE( SvgSystemOptions.h.cmake SvgSystemOptions.h )
+configure_file( SvgSystemOptions.h.cmake SvgSystemOptions.h )
 
 ########### links #########
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+link_directories( ${CMAKE_install_PREFIX}/lib )
 
 ########### includes ###############
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-transparency)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/base)
+include_directories(${CMAKE_SOURCE_DIR}/base-qt)
+include_directories(${CMAKE_SOURCE_DIR}/base-transparency)
 
 ########### next target ###############
-SET( base_svg_SOURCES
+set( base_svg_SOURCES
   SvgConfiguration.cpp
   SvgEngine.cpp
   SvgPlasmaInterface.cpp
@@ -45,34 +49,34 @@ SET( base_svg_SOURCES
   SvgThread.cpp
 )
 
-SET( base_svg_RESOURCES baseSvg.qrc)
+set( base_svg_RESOURCES baseSvg.qrc)
 
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  QT5_ADD_RESOURCES( base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
+  qt5_add_resources( base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
 
-ELSE()
+else()
 
-  QT4_ADD_RESOURCES( base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
+  qt4_add_resources( base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
 
-ENDIF()
+endif()
 
-IF( ENABLE_SHARED )
+if( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-svg SHARED ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
-  SET_TARGET_PROPERTIES( base-svg PROPERTIES VERSION ${BASE_SVG_VERSION} SOVERSION ${BASE_SVG_SOVERSION} )
-  INSTALL( TARGETS base-svg DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  add_library( base-svg SHARED ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
+  set_target_properties( base-svg PROPERTIES VERSION ${BASE_SVG_VERSION} SOVERSION ${BASE_SVG_SOVERSION} )
+  install( TARGETS base-svg DESTINATION ${CMAKE_install_PREFIX}/lib )
 
-ELSE()
+else()
 
-  ADD_LIBRARY( base-svg STATIC ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
+  add_library( base-svg STATIC ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
 
-ENDIF()
+endif()
 
-TARGET_LINK_LIBRARIES( base-svg ${QT_LIBRARIES} base-transparency)
+target_link_libraries( base-svg ${QT_LIBRARIES} base-transparency)
 
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  QT5_USE_MODULES( base-svg Widgets Svg )
+  qt5_use_modules( base-svg Widgets Svg )
 
-ENDIF()
+endif()
