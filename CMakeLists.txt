@@ -32,7 +32,7 @@ configure_file( SvgSystemOptions.h.cmake SvgSystemOptions.h )
 
 ########### links #########
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-link_directories( ${CMAKE_install_PREFIX}/lib )
+link_directories( ${CMAKE_INSTALL_PREFIX}/lib )
 
 ########### includes ###############
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -65,7 +65,7 @@ if( ENABLE_SHARED )
 
   add_library( base-svg SHARED ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC} )
   set_target_properties( base-svg PROPERTIES VERSION ${BASE_SVG_VERSION} SOVERSION ${BASE_SVG_SOVERSION} )
-  install( TARGETS base-svg DESTINATION ${CMAKE_install_PREFIX}/lib )
+  install( TARGETS base-svg DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 else()
 
