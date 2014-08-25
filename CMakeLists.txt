@@ -41,7 +41,7 @@ include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### links #########
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-link_directories( ${CMAKE_install_PREFIX}/lib )
+link_directories( ${CMAKE_INSTALL_PREFIX}/lib )
 
 ########### next target ###############
 set( base_server_SOURCES
@@ -58,7 +58,7 @@ if( ENABLE_SHARED )
 
   add_library( base-server SHARED ${base_server_SOURCES} )
   set_target_properties( base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION} )
-  install( TARGETS base-server DESTINATION ${CMAKE_install_PREFIX}/lib )
+  install( TARGETS base-server DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 else()
 
