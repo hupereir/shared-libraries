@@ -48,7 +48,7 @@ include_directories(${CMAKE_SOURCE_DIR}/base)
 
 ########### links #########
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-link_directories( ${CMAKE_install_PREFIX}/lib )
+link_directories( ${CMAKE_INSTALL_PREFIX}/lib )
 
 ########### next target ###############
 set( base_qt_SOURCES
@@ -217,7 +217,7 @@ if( ENABLE_SHARED )
 
   add_library( base-qt SHARED ${base_qt_SOURCES} ${base_qt_RESOURCES_RCC} )
   set_target_properties( base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION} )
-  install( TARGETS base-qt DESTINATION ${CMAKE_install_PREFIX}/lib )
+  install( TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 else()
 
