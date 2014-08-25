@@ -48,7 +48,7 @@ include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### links #########
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-link_directories( ${CMAKE_install_PREFIX}/lib )
+link_directories( ${CMAKE_INSTALL_PREFIX}/lib )
 
 ########### next target ###############
 set( base_notifications_SOURCES
@@ -60,7 +60,7 @@ if( ENABLE_SHARED )
 
   add_library( base-notifications SHARED ${base_notifications_SOURCES} )
   set_target_properties( base-notifications PROPERTIES VERSION ${BASE_NOTIFICATIONS_VERSION} SOVERSION ${BASE_NOTIFICATIONS_VERSION} )
-  install( TARGETS base-notifications DESTINATION ${CMAKE_install_PREFIX}/lib )
+  install( TARGETS base-notifications DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
 
 else()
 
