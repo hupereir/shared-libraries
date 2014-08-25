@@ -1,39 +1,39 @@
 # $Id$
-PROJECT( BASE_SPELLCHECK )
-SET( BASE_SPELLCHECK_VERSION_MAJOR 1 )
-SET( BASE_SPELLCHECK_VERSION_MINOR 0 )
-SET( BASE_SPELLCHECK_VERSION_PATCH 0 )
-SET( BASE_SPELLCHECK_VERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK_VERSION_MINOR}.${BASE_SPELLCHECK_VERSION_PATCH} )
-SET( BASE_SPELLCHECK_SOVERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK_VERSION_MINOR} )
+project( BASE_SPELLCHECK )
+set( BASE_SPELLCHECK_VERSION_MAJOR 1 )
+set( BASE_SPELLCHECK_VERSION_MINOR 0 )
+set( BASE_SPELLCHECK_VERSION_PATCH 0 )
+set( BASE_SPELLCHECK_VERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK_VERSION_MINOR}.${BASE_SPELLCHECK_VERSION_PATCH} )
+set( BASE_SPELLCHECK_SOVERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK_VERSION_MINOR} )
 
 ########### Qt4 configuration #########
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  FIND_PACKAGE( Qt5Widgets REQUIRED )
+  find_package( Qt5Widgets REQUIRED )
 
-ELSE()
+else()
 
-  FIND_PACKAGE( Qt4 REQUIRED )
-  INCLUDE( ${QT_USE_FILE} )
-  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  find_package( Qt4 REQUIRED )
+  include( ${QT_USE_FILE} )
+  add_definitions( ${QT_DEFINITIONS} )
 
-ENDIF()
+endif()
 
 ########### aspell ###############
-FIND_PACKAGE( ASPELL REQUIRED )
-INCLUDE_DIRECTORIES(${ASPELL_INCLUDE_DIR})
+find_package( ASPELL REQUIRED )
+include_directories(${ASPELL_INCLUDE_DIR})
 
 ########### includes ###############
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/base)
+include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### links #########
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+link_directories( ${CMAKE_install_PREFIX}/lib )
 
 ########### next target ###############
-SET( base_spellcheck_SOURCES
+set( base_spellcheck_SOURCES
   AutoSpellConfiguration.cpp
   DictionaryMenu.cpp
   DictionarySelectionButton.cpp
@@ -49,22 +49,22 @@ SET( base_spellcheck_SOURCES
   TexString.cpp
   )
 
-IF( ENABLE_SHARED )
+if( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-spellcheck SHARED ${base_spellcheck_SOURCES} )
-  SET_TARGET_PROPERTIES( base-spellcheck PROPERTIES VERSION ${BASE_SPELLCHECK_VERSION} SOVERSION ${BASE_SPELLCHECK_SOVERSION} )
-  INSTALL( TARGETS base-spellcheck DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  add_library( base-spellcheck SHARED ${base_spellcheck_SOURCES} )
+  set_target_properties( base-spellcheck PROPERTIES VERSION ${BASE_SPELLCHECK_VERSION} SOVERSION ${BASE_SPELLCHECK_SOVERSION} )
+  install( TARGETS base-spellcheck DESTINATION ${CMAKE_install_PREFIX}/lib )
 
-ELSE()
+else()
 
-  ADD_LIBRARY( base-spellcheck STATIC ${base_spellcheck_SOURCES} )
+  add_library( base-spellcheck STATIC ${base_spellcheck_SOURCES} )
 
-ENDIF()
+endif()
 
-TARGET_LINK_LIBRARIES( base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt )
+target_link_libraries( base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt )
 
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  QT5_USE_MODULES( base-spellcheck Widgets Network )
+  qt5_use_modules( base-spellcheck Widgets Network )
 
-ENDIF()
+endif()
