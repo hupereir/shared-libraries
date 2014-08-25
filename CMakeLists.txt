@@ -1,49 +1,49 @@
 # $Id$
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.6)
-IF( COMMAND CMAKE_POLICY )
-  CMAKE_POLICY( SET CMP0003 NEW )
-ENDIF()
+if( COMMAND CMAKE_POLICY )
+  cmake_policy( SET CMP0003 NEW )
+endif()
 
-SET(CMAKE_AUTOMOC TRUE)
+set(CMAKE_AUTOMOC TRUE)
 
-PROJECT( SHARED_LIBRARIES )
-SET( SHARED_LIBRARIES_VERSION_MAJOR 1 )
-SET( SHARED_LIBRARIES_VERSION_MINOR 0 )
-SET( SHARED_LIBRARIES_VERSION_PATCH 4 )
-SET( SHARED_LIBRARIES_VERSION ${SHARED_LIBRARIES_VERSION_MAJOR}.${SHARED_LIBRARIES_VERSION_MINOR}.${SHARED_LIBRARIES_VERSION_PATCH} )
+project( SHARED_LIBRARIES )
+set( SHARED_LIBRARIES_VERSION_MAJOR 1 )
+set( SHARED_LIBRARIES_VERSION_MINOR 0 )
+set( SHARED_LIBRARIES_VERSION_PATCH 4 )
+set( SHARED_LIBRARIES_VERSION ${SHARED_LIBRARIES_VERSION_MAJOR}.${SHARED_LIBRARIES_VERSION_MINOR}.${SHARED_LIBRARIES_VERSION_PATCH} )
 
 ########### modules #################
-SET( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/base-cmake" )
-INCLUDE( Macros )
+set( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/base-cmake" )
+include( Macros )
 
-IF( WIN32 )
+if( WIN32 )
 
-  SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import" )
-  SET( CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import " )
+  set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import" )
+  set( CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import " )
 
-ENDIF()
+endif()
 
 ########### aspell ###############
-FIND_PACKAGE( ASPELL )
+find_package( ASPELL )
 
 ########### links #########
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 ########### make shared libraries #########
-SET( ENABLE_SHARED 1 )
+set( ENABLE_SHARED 1 )
 
 ########### sub directories #########
-ADD_SUBDIRECTORY( base )
-ADD_SUBDIRECTORY( base-qt )
-ADD_SUBDIRECTORY( base-server )
-ADD_SUBDIRECTORY( base-help )
+add_subdirectory( base )
+add_subdirectory( base-qt )
+add_subdirectory( base-server )
+add_subdirectory( base-help )
 
-IF( ASPELL_FOUND )
+if( ASPELL_FOUND )
 
-  ADD_SUBDIRECTORY( base-spellcheck )
+  add_subdirectory( base-spellcheck )
 
-ENDIF()
+endif()
 
-ADD_SUBDIRECTORY( base-transparency )
-ADD_SUBDIRECTORY( base-svg )
-ADD_SUBDIRECTORY( base-notifications )
+add_subdirectory( base-transparency )
+add_subdirectory( base-svg )
+add_subdirectory( base-notifications )
