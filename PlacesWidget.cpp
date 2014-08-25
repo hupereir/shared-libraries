@@ -537,6 +537,10 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     // file system watcher
     connect( &fileSystemWatcher_, SIGNAL(directoryChangedDelayed(QString)), SLOT(_updateItems()) );
 
+    // context menu
+    setContextMenuPolicy( Qt::CustomContextMenu );
+    connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
+
     // configuration
     connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     connect( qApp, SIGNAL(aboutToQuit()), SLOT(_saveConfiguration()) );
