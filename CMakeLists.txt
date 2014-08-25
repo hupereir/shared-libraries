@@ -1,73 +1,73 @@
 # $Id$
-PROJECT( BASE_TRANSPARENCY )
-SET( BASE_TRANSPARENCY_VERSION_MAJOR 1 )
-SET( BASE_TRANSPARENCY_VERSION_MINOR 0 )
-SET( BASE_TRANSPARENCY_VERSION_PATCH 0 )
-SET( BASE_TRANSPARENCY_VERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSPARENCY_VERSION_MINOR}.${BASE_TRANSPARENCY_VERSION_PATCH} )
-SET( BASE_TRANSPARENCY_SOVERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSPARENCY_VERSION_MINOR} )
+project( BASE_TRANSPARENCY )
+set( BASE_TRANSPARENCY_VERSION_MAJOR 1 )
+set( BASE_TRANSPARENCY_VERSION_MINOR 0 )
+set( BASE_TRANSPARENCY_VERSION_PATCH 0 )
+set( BASE_TRANSPARENCY_VERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSPARENCY_VERSION_MINOR}.${BASE_TRANSPARENCY_VERSION_PATCH} )
+set( BASE_TRANSPARENCY_SOVERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSPARENCY_VERSION_MINOR} )
 
 ########### Qt configuration #########
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  FIND_PACKAGE( Qt5Widgets REQUIRED )
+  find_package( Qt5Widgets REQUIRED )
 
-ELSE()
+else()
 
-  FIND_PACKAGE( Qt4 REQUIRED )
-  INCLUDE( ${QT_USE_FILE} )
-  ADD_DEFINITIONS( ${QT_DEFINITIONS} )
+  find_package( Qt4 REQUIRED )
+  include( ${QT_USE_FILE} )
+  add_definitions( ${QT_DEFINITIONS} )
 
-ENDIF()
+endif()
 
 # ########### X11 #######################
-IF( UNIX  AND NOT APPLE )
+if( UNIX  AND NOT APPLE )
 
-  FIND_PACKAGE( X11 )
-  IF( X11_FOUND )
-    FIND_PACKAGE(XCB REQUIRED COMPONENTS XCB SHAPE)
-    ADD_DEFINITIONS( -DHAVE_X11=${X11_FOUND} )
-  ENDIF()
+  find_package( X11 )
+  if( X11_FOUND )
+    find_package(XCB REQUIRED COMPONENTS XCB SHAPE)
+    add_definitions( -DHAVE_X11=${X11_FOUND} )
+  endif()
 
-ELSE()
+else()
 
-  ADD_DEFINITIONS( -DHAVE_X11=0 )
+  add_definitions( -DHAVE_X11=0 )
 
-ENDIF()
+endif()
 
 ########### links #########
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-LINK_DIRECTORIES( ${CMAKE_INSTALL_PREFIX}/lib )
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+link_directories( ${CMAKE_install_PREFIX}/lib )
 
 ########### includes ###############
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/base-qt)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/base)
+include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 
 ########### next target ###############
-SET( base_transparency_SOURCES
+set( base_transparency_SOURCES
   CompositeEngine.cpp
   ShadowLabel.cpp
   TransparencyConfiguration.cpp
   TransparentWidget.cpp
 )
 
-IF( ENABLE_SHARED )
+if( ENABLE_SHARED )
 
-  ADD_LIBRARY( base-transparency SHARED ${base_transparency_SOURCES} )
-  SET_TARGET_PROPERTIES( base-transparency PROPERTIES VERSION ${BASE_TRANSPARENCY_VERSION} SOVERSION ${BASE_TRANSPARENCY_SOVERSION} )
-  INSTALL( TARGETS base-transparency DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  add_library( base-transparency SHARED ${base_transparency_SOURCES} )
+  set_target_properties( base-transparency PROPERTIES VERSION ${BASE_TRANSPARENCY_VERSION} SOVERSION ${BASE_TRANSPARENCY_SOVERSION} )
+  install( TARGETS base-transparency DESTINATION ${CMAKE_install_PREFIX}/lib )
 
-ELSE()
+else()
 
-  ADD_LIBRARY( base-transparency STATIC ${base_transparency_SOURCES} )
+  add_library( base-transparency STATIC ${base_transparency_SOURCES} )
 
-ENDIF()
+endif()
 
-TARGET_LINK_LIBRARIES( base-transparency ${XCB_LIBRARIES} )
-TARGET_LINK_LIBRARIES( base-transparency ${QT_LIBRARIES} base-qt)
+target_link_libraries( base-transparency ${XCB_LIBRARIES} )
+target_link_libraries( base-transparency ${QT_LIBRARIES} base-qt)
 
-IF( USE_QT5 )
+if( USE_QT5 )
 
-  QT5_USE_MODULES( base-transparency Widgets Network )
+  qt5_use_modules( base-transparency Widgets Network )
 
-ENDIF()
+endif()
