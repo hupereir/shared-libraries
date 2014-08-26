@@ -150,10 +150,10 @@ void DockWidget::setLocked( bool locked )
 
     } else {
 
-        setFeatures(
-            QDockWidget::DockWidgetMovable |
-            QDockWidget::DockWidgetFloatable |
-            QDockWidget::DockWidgetClosable);
+        DockWidgetFeatures features( QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable );
+        if( XmlOptions::get().get<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED" ) ) features |= DockWidgetFloatable;
+        setFeatures( features );
+
     }
 
     _updateTitleBarWidget();
@@ -247,10 +247,13 @@ void DockWidget::_updateConfiguration( void )
     { visibilityAction_->setChecked( XmlOptions::get().get<bool>( optionName_ ) ); }
 
     // floatable state
-    DockWidgetFeatures features( this->features() );
-    if( XmlOptions::get().get<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED" ) ) features |= DockWidgetFloatable;
-    else features &= ~DockWidgetFloatable;
-    setFeatures( features );
+    if( !locked_ )
+    {
+        DockWidgetFeatures features( this->features() );
+        if( XmlOptions::get().get<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED" ) ) features |= DockWidgetFloatable;
+        else features &= ~DockWidgetFloatable;
+        setFeatures( features );
+    }
 
 }
 
