@@ -34,7 +34,7 @@
 #include <QLayout>
 #include <QList>
 
-//! find_text dialog for text editor widgets
+//! find dialog for text editor widgets
 class BaseFindDialog: public BaseDialog, public Counter
 {
 
@@ -45,6 +45,10 @@ class BaseFindDialog: public BaseDialog, public Counter
 
     //! constructor
     BaseFindDialog( QWidget* parent = 0, Qt::WindowFlags WindowFlags = 0 );
+
+    //! destructor
+    virtual ~BaseFindDialog( void )
+    {}
 
     //! retrieve editor
     virtual CustomComboBox& editor( void ) const

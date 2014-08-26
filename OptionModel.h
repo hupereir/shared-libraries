@@ -63,7 +63,6 @@ class OptionPair: public Options::Pair
 
 };
 
-//! qlistview for object IconCaches
 class OptionModel: public TreeModel<OptionPair>, public Counter
 {
 
