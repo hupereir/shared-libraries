@@ -93,7 +93,7 @@ class GridLayout: public QGridLayout, public Counter
         if( alignment == 0 && _boundCheck( column ) && columnSpan == 1 ) alignment = columnAlignments_[column];
         QGridLayout::addWidget( widget, row, column, rowSpan, columnSpan, alignment );
         setLocation( row+rowSpan-1, column+columnSpan-1 );
-        _increment();
+        increment();
     }
 
     //! add widget
@@ -102,7 +102,7 @@ class GridLayout: public QGridLayout, public Counter
         Q_ASSERT( maxCount_ > 0 );
         if( alignment == 0 &&  _boundCheck( column_ ) ) alignment = columnAlignments_[column_];
         QGridLayout::addWidget( widget, row_, column_, alignment );
-        _increment();
+        increment();
     }
 
     //! add layout
@@ -117,7 +117,7 @@ class GridLayout: public QGridLayout, public Counter
         if( alignment == 0 && _boundCheck( column ) && columnSpan == 1 ) alignment = columnAlignments_[column];
         QGridLayout::addLayout( layout, row, column, rowSpan, columnSpan, alignment );
         setLocation( row+rowSpan-1, column+columnSpan-1 );
-        _increment();
+        increment();
     }
 
     //! add widget
@@ -126,23 +126,11 @@ class GridLayout: public QGridLayout, public Counter
         Q_ASSERT( maxCount_ > 0 );
         if( alignment == 0 &&  _boundCheck( column_ ) ) alignment = columnAlignments_[column_];
         QGridLayout::addLayout( layout, row_, column_, alignment );
-        _increment();
+        increment();
     }
 
-    //! set current position in grid
-    void setLocation( const int& row, const int& column )
-    { row_ = row; column_ = column; }
-
-    //@}
-
-    private:
-
-    //! bound check
-    bool _boundCheck( const int& column ) const
-    { return column >= 0 && column < int( columnAlignments_.size() ); }
-
     //! increment from last position
-    void _increment()
+    void increment()
     {
 
         if( orientation_ == Qt::Vertical )
@@ -162,6 +150,18 @@ class GridLayout: public QGridLayout, public Counter
             }
         }
     }
+
+    //! set current position in grid
+    void setLocation( const int& row, const int& column )
+    { row_ = row; column_ = column; }
+
+    //@}
+
+    private:
+
+    //! bound check
+    bool _boundCheck( const int& column ) const
+    { return column >= 0 && column < int( columnAlignments_.size() ); }
 
     //! orientation
     Qt::Orientation orientation_;
