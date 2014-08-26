@@ -90,7 +90,7 @@ void Options::installDefaultOptions( void )
     set( "ANIMATION_FRAMES", "1000" );
 
     // dock widgets
-    set<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED", true );
+    set<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED", false );
 
     // smooth transitions (disabled under X11 as they usually are handled by the widget style)
     #if defined(Q_OS_UNIX)
