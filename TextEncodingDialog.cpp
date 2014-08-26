@@ -31,6 +31,6 @@ TextEncodingDialog::TextEncodingDialog( QWidget* parent ):
     setWindowTitle( tr( "Text encoding" ) );
     setOptionName( "TEXT_ENCODING_DIALOG" );
 
-    mainLayout()->addWidget( textEncodingWidget_ = new TextEncodingWidget( this ) );
+    mainLayout().addWidget( textEncodingWidget_ = new TextEncodingWidget( this ) );
 
 }

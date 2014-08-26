@@ -48,3 +48,5 @@ class TextEncodingDialog: public CustomDialog
     TextEncodingWidget* textEncodingWidget_;
 
 };
+
+#endif
