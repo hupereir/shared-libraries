@@ -157,7 +157,31 @@ namespace Svg
         Debug::Throw() << "SvgPlasmaInterface::_setTheme - theme:" << theme << endl;
         File::List themePathList;
 
-        if( theme != "default" )
+        if( XmlOptions::get().contains( "KDE4_CONFIG" ) )
+        {
+
+            // get kde4 config command and retrieve output
+            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE4_CONFIG" ) );
+
+            CustomProcess process( this );
+            process.start( Command( kde4ConfigCommand ) << "--path" << "data" );
+            if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
+            {
+                const QStringList configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
+
+                #if QT_VERSION >= 0x050000
+                foreach( const QString& path, configurationPath )
+                { themePathList << File( theme ).addPath( File( "plasma/desktoptheme/" ).addPath( path ) ); }
+                #else
+                foreach( const QString& path, configurationPath )
+                { themePathList << File( theme ).addPath( File( "desktoptheme/" ).addPath( path ) ); }
+                #endif
+
+            }
+
+        }
+
+        if( themePathList.empty() )
         {
             // add local path
             QStringList localPath;
@@ -174,6 +198,7 @@ namespace Svg
         themePathList << File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) );
         foreach( const File& themePath, themePathList )
         {
+            Debug::Throw() << "SvgPlasmaInterface::_setTheme - checking " << themePath << endl;
             if( themePath.exists() && !_findImage( themePath, WidgetBackground ).isEmpty() )
             { return _setPath( themePath ); }
         }
