@@ -49,11 +49,14 @@ namespace Svg
       if( loaded )
       {
         isValid_ = _hasPrefix();
-        hasShadowMargins_ = _hasMargins( "shadow" );
-        hasShadowPrefix_ = _hasPrefix( "shadow", Ring );
-        hasShadow_ = hasShadowMargins_ && hasShadowPrefix_;
-        hasOverlay_ = elementExists( Svg::Overlay );
+        if( !_hasMargins() )
+        {
+            hasShadowMargins_ = _hasMargins( "shadow" );
+            hasShadowPrefix_ = _hasPrefix( "shadow", Ring );
+            hasShadow_ = hasShadowMargins_ && hasShadowPrefix_;
+        }
 
+        hasOverlay_ = elementExists( Svg::Overlay );
 
         // centering hints
         overlayHints_ = OverlayNone;
