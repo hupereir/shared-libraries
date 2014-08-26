@@ -68,7 +68,7 @@ class DockWidget: public QDockWidget
 
     //! title bar
     void setAutoHideTitleBar( bool );
-    
+
     //@}
 
     protected Q_SLOTS:
@@ -78,7 +78,7 @@ class DockWidget: public QDockWidget
 
     //! update title bar
     virtual void _updateTitleBarWidget( void );
-    
+
     private Q_SLOTS:
 
     //! update configuration
@@ -103,16 +103,16 @@ class DockWidget: public QDockWidget
 
     //! auto hide title bar
     bool autoHideTitleBar_;
-    
+
     //! container
     QWidget* container_;
 
     //! main widget
     QWidget* mainWidget_;
-    
+
     //! title bar widget
     QWidget* titleBarWidget_;
-    
+
 };
 
 #endif

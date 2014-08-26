@@ -81,9 +81,6 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     // no scroll area by default
     setUseScrollArea( false );
 
-    // by default dock widgets are closable, movable, but not floatable
-    setFeatures( DockWidgetClosable | DockWidgetMovable );
-
     // configuration
     connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
@@ -248,6 +245,12 @@ void DockWidget::_updateConfiguration( void )
 
     if( !optionName_.isEmpty() && XmlOptions::get().contains( optionName_ ) )
     { visibilityAction_->setChecked( XmlOptions::get().get<bool>( optionName_ ) ); }
+
+    // floatable state
+    DockWidgetFeatures features( this->features() );
+    if( XmlOptions::get().get<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED" ) ) features |= DockWidgetFloatable;
+    else features &= ~DockWidgetFloatable;
+    setFeatures( features );
 
 }
 
