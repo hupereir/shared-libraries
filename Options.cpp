@@ -83,11 +83,14 @@ void Options::installDefaultOptions( void )
     set<int>( "LIST_ICON_SIZE", 24 );
     set<int>( "LIST_ITEM_MARGIN", 0 );
 
-    // textEditor margins
+    // textEditor
     set<Base::Color>( "MARGIN_FOREGROUND", QColor("#136872") );
     set<Base::Color>( "MARGIN_BACKGROUND", QColor("#ecffec") );
 
     set( "ANIMATION_FRAMES", "1000" );
+
+    // dock widgets
+    set<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED", true );
 
     // smooth transitions (disabled under X11 as they usually are handled by the widget style)
     #if defined(Q_OS_UNIX)
