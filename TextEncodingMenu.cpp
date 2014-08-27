@@ -20,6 +20,9 @@
 *******************************************************************************/
 
 #include "TextEncodingMenu.h"
+#include "TextEncodingMenu.moc"
+
+#include "TextEncodingString.h"
 
 #include "Debug.h"
 
@@ -38,25 +41,45 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     QActionGroup *group = new QActionGroup( this );
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
-    QList<QByteArray> codecs( QTextCodec::availableCodecs() );
-    _removeAliases( codecs );
-
-    foreach( const QByteArray& value, codecs )
+    // use MIBs to get rid of aliases
+    const QList<int> codecIds( QTextCodec::availableMibs() );
+    QList<TextEncodingString> codecStrings;
+    foreach( const int& codecId, codecIds )
     {
+        QTextCodec* codec( QTextCodec::codecForMib( codecId ) );
+        if( codec ) codecStrings.append( codec->name() );
+    }
+
+    // store in menu
+    std::sort( codecStrings.begin(), codecStrings.end() );
+    foreach( const TextEncodingString& codecString, codecStrings )
+    {
+
+        const QByteArray value( qPrintable( codecString ) );
         QAction* action = new QAction( value, this );
         addAction( action );
         action->setCheckable( true );
         actions_.insert( action, value );
         group->addAction( action );
+
     }
 
 }
 
 //_____________________________________________________________________________
-void TextEncodingMenu::select( const QByteArray& value )
+void TextEncodingMenu::select( const QByteArray& constValue )
 {
 
-    Debug::Throw() << "TextEncodingMenu::select - encoding: " << value << endl;
+    Debug::Throw() << "TextEncodingMenu::select - encoding: " << constValue << endl;
+
+    // find codec matching value and check
+    QTextCodec* codec( QTextCodec::codecForName( constValue ) );
+    if( !codec ) return;
+
+    // get 'standard name'
+    QByteArray value( codec->name() );
+
+    // select corresponding action
     for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
         if( iter.value() == value )
@@ -78,35 +101,5 @@ void TextEncodingMenu::_selected( QAction* action )
     ActionMap::const_iterator iter = actions_.find( action );
     Q_ASSERT( iter != actions_.end() );
     emit encodingChanged( iter.value() );
-
-}
-
-//_____________________________________________________________________________
-void TextEncodingMenu::_removeAliases( QList<QByteArray>& codecs ) const
-{
-    bool done( false );
-    while( !done )
-    {
-        done = true;
-        foreach( const QByteArray& codecName, codecs )
-        {
-
-            // create codec
-            QTextCodec* codec = QTextCodec::codecForName( codecName );
-            foreach( const QByteArray& aliasName,  codec->aliases()  )
-            {
-                if( aliasName == codecName ) continue;
-                if( codecs.contains( aliasName ) )
-                {
-                    done = false;
-                    codecs.removeAll( aliasName );
-                }
-            }
-
-            if( !done ) break;
-
-        }
-
-    }
 
 }

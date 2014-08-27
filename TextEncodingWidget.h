@@ -23,10 +23,10 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "LineEditor.h"
 
 #include <QWidget>
 
-class LineEditor;
 class TreeView;
 class TextEncodingModel;
 class TextEncodingWidget: public QWidget, public Counter
@@ -48,7 +48,7 @@ class TextEncodingWidget: public QWidget, public Counter
     //@{
 
     QByteArray encoding( void ) const
-    { return QByteArray(); }
+    { return qPrintable( editor_->text() ); }
 
     //@}
 
@@ -56,8 +56,7 @@ class TextEncodingWidget: public QWidget, public Counter
     //@{
 
     //! set text encoding
-    void setEncoding( const QByteArray& )
-    {}
+    void setEncoding( const QByteArray& );
 
     //@}
 
@@ -65,6 +64,14 @@ class TextEncodingWidget: public QWidget, public Counter
 
     //! load text codecs
     virtual void _loadTextCodecs( void );
+
+    protected Q_SLOTS:
+
+    //! update selection
+    void _updateSelection( void );
+
+    //! find
+    void _find(QString);
 
     private:
 
@@ -76,6 +83,9 @@ class TextEncodingWidget: public QWidget, public Counter
 
     //! model
     TextEncodingModel* model_;
+
+    //! lock
+    bool locked_;
 
 };
 

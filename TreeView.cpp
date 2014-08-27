@@ -640,9 +640,21 @@ bool TreeView::_findForward( const TextSelection& selection, bool rewind )
         {
 
             // check if text match
-            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.indexIn( text ) >= 0 ) accepted = true; }
-            else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
-            { accepted = true; }
+            if( regexp.isValid() && !regexp.pattern().isEmpty() )
+            {
+
+                if( regexp.indexIn( text ) >= 0 ) accepted = true;
+
+            } else if( selection.flag( TextSelection::BeginOfWord ) ) {
+
+                if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
+                { accepted = true; }
+
+            } else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 ) {
+
+                accepted = true;
+
+            }
 
         }
 
@@ -723,7 +735,6 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
         index = _lastIndex();
     }
 
-
     // no starting index found. Return
     if( !index.isValid() ) return false;
 
@@ -739,9 +750,21 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
         {
 
             // check if text match
-            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.indexIn( text ) >= 0 ) accepted = true; }
-            else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
-            { accepted = true; }
+            if( regexp.isValid() && !regexp.pattern().isEmpty() )
+            {
+
+                if( regexp.indexIn( text ) >= 0 ) accepted = true;
+
+            } else if( selection.flag( TextSelection::BeginOfWord ) ) {
+
+                if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
+                { accepted = true; }
+
+            } else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 ) {
+
+                accepted = true;
+
+            }
 
         }
 

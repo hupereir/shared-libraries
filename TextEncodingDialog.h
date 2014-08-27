@@ -41,6 +41,13 @@ class TextEncodingDialog: public CustomDialog
     virtual ~TextEncodingDialog( void )
     {}
 
+    //!@name accessors
+    //@{
+
+    TextEncodingWidget& encodingWidget( void ) const
+    { return *textEncodingWidget_; }
+
+    //@}
 
     private:
 

@@ -39,7 +39,8 @@ class TextSelection
         CaseSensitive = 1<<1,
         EntireWord = 1<<2,
         RegExp = 1<<3,
-        NoIncrement = 1<<4
+        NoIncrement = 1<<4,
+        BeginOfWord = 1<<5
     };
 
     Q_DECLARE_FLAGS( Flags, Flag );
