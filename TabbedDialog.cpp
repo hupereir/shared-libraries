@@ -97,7 +97,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     QWidget* base = new QWidget();
     base->setLayout( new QVBoxLayout() );
     base->layout()->setMargin(0);
-    base->layout()->setSpacing(0);
+    base->layout()->setSpacing(10);
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
@@ -107,10 +107,14 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     // tooltip label
     QLabel *label( new QLabel( base ) );
     label->setText( tooltip.isEmpty() ? title:tooltip );
-    QFont font( label->font() );
-    font.setWeight( QFont::Bold );
-    label->setFont( font );
     label->setMargin(5);
+
+    // update font
+    QFont font( label->font() );
+    font.setPointSize( qRound(font.pointSize() * 1.4) );
+    label->setFont( font );
+
+    // add to layout
     hLayout->addWidget( label, 1 );
 
     if( !icon.isNull() )
