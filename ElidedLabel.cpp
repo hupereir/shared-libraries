@@ -23,6 +23,8 @@
 #include "ElidedLabel.h"
 #include "ElidedLabel.moc"
 
+#include <QApplication>
+#include <QClipboard>
 #include <QStringList>
 
 //___________________________________________________
@@ -74,6 +76,58 @@ QSize ElidedLabel::minimumSizeHint() const
 //___________________________________________________
 QSize ElidedLabel::sizeHint() const
 { return QSize( fontMetrics().width(fullText_), QLabel::sizeHint().height() ); }
+
+//___________________________________________________
+void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
+{
+    #if QT_VERSION >= 0x040700
+    if(
+        QApplication::clipboard()->supportsSelection() &&
+        textInteractionFlags() != Qt::NoTextInteraction &&
+        event->button() == Qt::LeftButton &&
+        !fullText_.isEmpty() &&
+        hasSelectedText() )
+    {
+
+        // Expand "..." when selecting with the mouse
+        QString text = selectedText();
+        const QChar ellipsis(0x2026); // from qtextengine.cpp
+        const int dotsPos = text.indexOf(ellipsis);
+
+        if (dotsPos > -1)
+        {
+
+            // Ex: abcde...yz, selecting de...y  (selectionStart=3)
+            // charsBeforeSelection = selectionStart = 2 (ab)
+            // charsAfterSelection = 1 (z)
+            // final selection length= 26 - 2 - 1 = 23
+            const int start = selectionStart();
+            int charsAfterSelection = QLabel::text().length() - start - selectedText().length();
+            text = fullText_;
+
+            // Strip markup tags
+            if (textFormat() == Qt::RichText )
+            {
+
+                text.replace(QRegExp("<[^>]*>"), "");
+
+                // account for stripped characters
+                charsAfterSelection -= fullText_.length() - text.length();
+
+            }
+
+            text = text.mid( selectionStart(), text.length() - start - charsAfterSelection );
+
+        }
+
+        // update clipboard
+        QApplication::clipboard()->setText( text, QClipboard::Selection );
+
+    } else
+    #endif
+    { QLabel::mouseReleaseEvent( event ); }
+
+}
 
 //___________________________________________________
 void ElidedLabel::resizeEvent( QResizeEvent* e )

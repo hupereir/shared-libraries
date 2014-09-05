@@ -22,19 +22,12 @@
 *
 *******************************************************************************/
 
-/*!
-   \file ElidedLabel.h
-   \brief handles text elision in QLabel
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
 #include "Counter.h"
 #include <QString>
 #include <QLabel>
 #include <QResizeEvent>
 
+//! label with automatically elided text
 class ElidedLabel: public QLabel, public Counter
 {
 
@@ -52,9 +45,21 @@ class ElidedLabel: public QLabel, public Counter
     virtual ~ElidedLabel( void )
     {}
 
+    //!@name accessors
+    //@{
+
     //! elision mode
     Qt::TextElideMode elideMode( void ) const
     { return elideMode_; }
+
+    //! text
+    QString text( void )
+    { return fullText_; }
+
+    //@}
+
+    //!@name modifiers
+    //@{
 
     //! elision mode
     void setElideMode( Qt::TextElideMode mode )
@@ -66,12 +71,10 @@ class ElidedLabel: public QLabel, public Counter
         }
     }
 
-    //! text
-    QString text( void )
-    { return fullText_; }
-
     //! set text
     void setText( const QString& );
+
+    //@}
 
     //! minimum size hint
     virtual QSize minimumSizeHint( void ) const;
@@ -80,6 +83,9 @@ class ElidedLabel: public QLabel, public Counter
     virtual QSize sizeHint( void ) const;
 
     protected:
+
+    //! mouse release
+    void mouseReleaseEvent(QMouseEvent *);
 
     //! resize event
     virtual void resizeEvent( QResizeEvent* );
