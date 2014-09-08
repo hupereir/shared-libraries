@@ -111,7 +111,6 @@ QDomElement LocalFileInfo::List::domElement( QDomDocument& document ) const
 }
 
 //___________________________________________________________________
-const double PlacesWidgetItem::BorderWidth = 2;
 const QString PlacesWidgetItem::MimeType( "internal/places-widget-item" );
 
 //___________________________________________________________________
@@ -149,13 +148,13 @@ void PlacesWidgetItem::updateMinimumSize( void )
     }
 
     // get icon size
-    QSize size( 2*BorderWidth, 2*BorderWidth );
+    QSize size( 0, 0 );
 
     // icon
     if( !icon().isNull() )
     {
         size.rwidth() += iconSize().width();
-        size.rheight() = qMax<int>( size.height(), iconSize().height() + 2*BorderWidth );
+        size.rheight() = qMax<int>( size.height(), iconSize().height() );
     }
 
     // text
@@ -163,11 +162,13 @@ void PlacesWidgetItem::updateMinimumSize( void )
     {
         QSize textSize = fontMetrics().boundingRect( text() ).size();
         size.rwidth() += textSize.width();
-        size.rheight() = qMax<int>( size.height(), textSize.height() + 2*BorderWidth );
-
-        if( !icon().isNull() ) size.rwidth() += 2*BorderWidth;
+        size.rheight() = qMax<int>( size.height(), textSize.height() );
 
     }
+
+    QStyleOptionFrameV3 option;
+    option.initFrom( this );
+    size = style()->sizeFromContents( QStyle::CT_ItemViewItem, &option, size, this );
 
     // store
     setMinimumSize( size );
@@ -259,16 +260,23 @@ void PlacesWidgetItem::_paint( QPainter* painter )
     // save layout direction
     const bool isRightToLeft( qApp->isRightToLeft() );
 
+    // get margins from style
+    QStyleOptionFrameV3 option;
+    option.initFrom( this );
+    const QSize size( style()->sizeFromContents( QStyle::CT_ItemViewItem, &option, QSize(0,0), this ) );
+    const int marginWidth( size.width()/2 );
+    const int marginHeight( size.height()/2 );
+
     // render text
     if( !text().isEmpty() )
     {
 
-        QRect textRect( rect().adjusted( BorderWidth, BorderWidth, -BorderWidth, -BorderWidth ) );
+        QRect textRect( rect().adjusted( marginWidth, marginHeight, -marginWidth, -marginHeight ) );
         if( !icon().isNull() )
         {
 
-            if( isRightToLeft ) textRect.setRight( textRect.right() - iconSize().width() - 2*BorderWidth );
-            else textRect.setLeft( textRect.left() + iconSize().width() + 2*BorderWidth );
+            if( isRightToLeft ) textRect.setRight( textRect.right() - iconSize().width() - 2*marginWidth );
+            else textRect.setLeft( textRect.left() + iconSize().width() + 2*marginWidth );
 
         }
 
@@ -287,7 +295,7 @@ void PlacesWidgetItem::_paint( QPainter* painter )
     // render icon
     if( !icon().isNull() )
     {
-        QRect iconRect( rect().adjusted( BorderWidth, BorderWidth, -BorderWidth, -BorderWidth ) );
+        QRect iconRect( rect().adjusted( marginWidth, marginHeight, -marginWidth, -marginHeight ) );
         if( !text().isEmpty() )
         {
             if( isRightToLeft ) iconRect.setLeft( iconRect.right() - iconSize().width() );

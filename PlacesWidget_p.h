@@ -254,9 +254,6 @@ class PlacesWidgetItem: public QAbstractButton
 
     //@}
 
-    //! border width
-    static const qreal BorderWidth;
-
     protected:
 
     //! event
