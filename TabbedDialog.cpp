@@ -62,12 +62,13 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     hLayout->addWidget( stack_ = new AnimatedStackedWidget(this), 1 );
 
     // configure list
-    _list().setModel( &model_ );
+    list_->setProperty( "_kde_side_panel_view", true );
+    list_->setModel( &model_ );
 
     // change font
-    QFont boldFont( _list().font() );
+    QFont boldFont( list_->font() );
     boldFont.setBold( true );
-    _list().setFont( boldFont );
+    list_->setFont( boldFont );
 
     // button layout
     buttonLayout_ = new QBoxLayout( QBoxLayout::LeftToRight );
@@ -76,7 +77,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     layout->addLayout( buttonLayout_, 0 );
 
     // connections
-    connect( _list().selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex)) );
+    connect( list_->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex)) );
     connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL(activated()), SLOT(close()) );
 
 
@@ -155,8 +156,8 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     _model().add( item );
 
     // set current index
-    if( (!_list().selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) )
-    { _list().selectionModel()->setCurrentIndex( _model().index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
+    if( (!list_->selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) )
+    { list_->selectionModel()->setCurrentIndex( _model().index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
 
     QVBoxLayout* layout( new QVBoxLayout() );
     layout->setSpacing( 5 );
