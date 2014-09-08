@@ -33,6 +33,8 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set( ENABLE_SHARED 1 )
 
 ########### sub directories #########
+set(CMAKE_CXX_FLAGS "-g -Wall -Wundef")
+
 add_subdirectory( base )
 add_subdirectory( base-qt )
 add_subdirectory( base-server )
