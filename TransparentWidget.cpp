@@ -334,7 +334,7 @@ namespace Transparency
 
         // get connection and atom
         xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
-        xcb_atom_t atom( *XcbUtil::get().atom<xcb_atom_t>( X11Defines::_KDE_NET_WM_BLUR_BEHIND_REGION ) );
+        xcb_atom_t atom( *XcbUtil::get().atom<xcb_atom_t>( XcbDefines::_KDE_NET_WM_BLUR_BEHIND_REGION ) );
         xcb_change_property( connection, XCB_PROP_MODE_REPLACE, winId(), atom, XCB_ATOM_CARDINAL, 32, data.size(), data.constData() );
         xcb_flush( connection );
 
