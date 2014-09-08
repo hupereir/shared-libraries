@@ -1,44 +1,44 @@
 # $Id$
-project( BASE_QT )
-set( BASE_QT_VERSION_MAJOR 1 )
-set( BASE_QT_VERSION_MINOR 0 )
-set( BASE_QT_VERSION_PATCH 0 )
-set( BASE_QT_VERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR}.${BASE_QT_VERSION_PATCH} )
-set( BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR} )
+project(BASE_QT)
+set(BASE_QT_VERSION_MAJOR 1)
+set(BASE_QT_VERSION_MINOR 0)
+set(BASE_QT_VERSION_PATCH 0)
+set(BASE_QT_VERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR}.${BASE_QT_VERSION_PATCH})
+set(BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR})
 
 ########### Qt configuration #########
-if( USE_QT5 )
+if(USE_QT5)
 
-  find_package( Qt5Widgets REQUIRED )
-  find_package( Qt5Gui REQUIRED )
+  find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5Gui REQUIRED)
 
   # needed to access QPA classes
   include_directories(${Qt5Widgets_PRIVATE_INCLUDE_DIRS})
 
 else()
 
-  find_package( Qt4 REQUIRED )
-  set( QT_USE_QTXML TRUE )
-  include( ${QT_USE_FILE} )
-  add_definitions( ${QT_DEFINITIONS} )
+  find_package(Qt4 REQUIRED)
+  set(QT_USE_QTXML TRUE)
+  include(${QT_USE_FILE})
+  add_definitions(${QT_DEFINITIONS})
 
 endif()
 
 ########### X11 #########
-if( UNIX AND NOT APPLE )
+if(UNIX AND NOT APPLE)
 
-  find_package( X11 )
-  if( X11_FOUND )
+  find_package(X11)
+  if(X11_FOUND)
      find_package(XCB REQUIRED COMPONENTS XCB KEYSYMS)
      find_package(X11_XCB REQUIRED)
-     include_directories( ${X11_X11_INCLUDE_PATH} )
+     include_directories(${X11_X11_INCLUDE_PATH})
   endif()
 
-  add_definitions( -DHAVE_XCB=${X11_FOUND} )
+  add_definitions(-DHAVE_XCB=${X11_FOUND})
 
 else()
 
-  add_definitions( -DHAVE_XCB=0 )
+  add_definitions(-DHAVE_XCB=0)
 
 endif()
 
@@ -48,10 +48,10 @@ include_directories(${CMAKE_SOURCE_DIR}/base)
 
 ########### links #########
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-link_directories( ${CMAKE_INSTALL_PREFIX}/lib )
+link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
 ########### next target ###############
-set( base_qt_SOURCES
+set(base_qt_SOURCES
   AnimatedLabel.cpp
   AnimatedLineEditor.cpp
   AnimatedStackedWidget.cpp
@@ -202,43 +202,43 @@ set( base_qt_SOURCES
   XmlString.cpp
 )
 
-set( base_qt_RESOURCES basePixmaps.qrc)
+set(base_qt_RESOURCES basePixmaps.qrc)
 
-if( USE_QT5 )
+if(USE_QT5)
 
-  qt5_add_resources( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
-
-else()
-
-  qt4_add_resources( base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
-
-endif()
-
-
-if( ENABLE_SHARED )
-
-  add_library( base-qt SHARED ${base_qt_SOURCES} ${base_qt_RESOURCES_RCC} )
-  set_target_properties( base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION} )
-  install( TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib )
+  qt5_add_resources(base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
 
 else()
 
-  add_library( base-qt STATIC ${base_qt_SOURCES} ${base_qt_RESOURCES_RCC} )
+  qt4_add_resources(base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
 
 endif()
 
-if( X11_FOUND )
 
-  target_link_libraries( base-qt ${X11_X11_LIB} )
-  target_link_libraries( base-qt ${XCB_LIBRARIES} )
-  target_link_libraries( base-qt ${X11_XCB_LIBRARIES} )
+if(ENABLE_SHARED)
+
+  add_library(base-qt SHARED ${base_qt_SOURCES} ${base_qt_RESOURCES_RCC})
+  set_target_properties(base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION})
+  install(TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+
+else()
+
+  add_library(base-qt STATIC ${base_qt_SOURCES} ${base_qt_RESOURCES_RCC})
 
 endif()
 
-target_link_libraries( base-qt ${QT_LIBRARIES} base )
+if(X11_FOUND)
 
-if( USE_QT5 )
+  target_link_libraries(base-qt ${X11_X11_LIB})
+  target_link_libraries(base-qt ${XCB_LIBRARIES})
+  target_link_libraries(base-qt ${X11_XCB_LIBRARIES})
 
-  qt5_use_modules( base-qt Gui Widgets Xml PrintSupport )
+endif()
+
+target_link_libraries(base-qt ${QT_LIBRARIES} base)
+
+if(USE_QT5)
+
+  qt5_use_modules(base-qt Gui Widgets Xml PrintSupport)
 
 endif()
