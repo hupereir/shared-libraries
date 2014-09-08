@@ -1,5 +1,5 @@
-#ifndef X11Defines_h
-#define X11Defines_h
+#ifndef XcbDefines_h
+#define XcbDefines_h
 
 // $Id$
 
@@ -24,7 +24,7 @@
 
 #include <inttypes.h>
 
-class X11Defines
+class XcbDefines
 {
 
     public:

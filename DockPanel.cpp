@@ -31,8 +31,6 @@
 
 #include "XcbUtil.h"
 
-#include "config-base-qt.h"
-
 #include <QApplication>
 #include <QPainter>
 #include <QStyleHintReturnMask>
@@ -373,10 +371,10 @@ namespace Private
         // check that widget is top level
         if( !isDetached_ ) return;
 
-        #if BASE_QT_HAVE_XCB
+        #if HAVE_X11
 
-        XcbUtil::get().changeState( window(), X11Defines::_NET_WM_STATE_STAYS_ON_TOP, state );
-        XcbUtil::get().changeState( window(), X11Defines::_NET_WM_STATE_ABOVE, state );
+        XcbUtil::get().changeState( window(), XcbDefines::_NET_WM_STATE_STAYS_ON_TOP, state );
+        XcbUtil::get().changeState( window(), XcbDefines::_NET_WM_STATE_ABOVE, state );
 
         #else
 
@@ -405,16 +403,16 @@ namespace Private
         // check that widget is top level
         if( !isDetached_ ) return;
 
-        #if BASE_QT_HAVE_XCB
-        if( XcbUtil::get().isSupported( X11Defines::_NET_WM_STATE_STICKY ) )
+        #if HAVE_X11
+        if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_STATE_STICKY ) )
         {
 
-            XcbUtil::get().changeState( window(), X11Defines::_NET_WM_STATE_STICKY, state );
+            XcbUtil::get().changeState( window(), XcbDefines::_NET_WM_STATE_STICKY, state );
 
-        } else if( XcbUtil::get().isSupported( X11Defines::_NET_WM_DESKTOP ) ) {
+        } else if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_DESKTOP ) ) {
 
-            unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), X11Defines::_NET_CURRENT_DESKTOP );
-            XcbUtil::get().changeCardinal( window(), X11Defines::_NET_WM_DESKTOP, state ? X11Defines::ALL_DESKTOPS:desktop );
+            unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), XcbDefines::_NET_CURRENT_DESKTOP );
+            XcbUtil::get().changeCardinal( window(), XcbDefines::_NET_WM_DESKTOP, state ? XcbDefines::ALL_DESKTOPS:desktop );
 
         }
 
@@ -479,7 +477,7 @@ namespace Private
 
             isDragging_ = true;
 
-            #if BASE_QT_HAVE_XCB
+            #if HAVE_X11
             // && QT_VERSION < 0x050000
             if( XcbUtil::get().moveWidget( parentWidget(), mapToGlobal( dragPosition_ ) ) )
             {

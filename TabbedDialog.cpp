@@ -22,7 +22,6 @@
 
 #include "TabbedDialog.h"
 #include "TabbedDialog.moc"
-#include "config-base-qt.h"
 
 #include "AnimatedStackedWidget.h"
 #include "IconSize.h"

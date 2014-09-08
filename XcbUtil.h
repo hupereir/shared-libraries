@@ -22,13 +22,13 @@
 *
 *******************************************************************************/
 
-#include "X11Defines.h"
+#include "XcbDefines.h"
 
 #include <QHash>
 #include <QScopedPointer>
 #include <QWidget>
 
-class XcbUtil: private X11Defines
+class XcbUtil: private XcbDefines
 {
 
     public:

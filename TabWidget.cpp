@@ -163,11 +163,11 @@ void TabWidget::_toggleStaysOnTop( bool state )
     // check that widget is top level
     if( parentWidget() ) return;
 
-    #if BASE_QT_HAVE_XCB
+    #if HAVE_X11
 
     // change property
-    XcbUtil::get().changeState( this, X11Defines::_NET_WM_STATE_STAYS_ON_TOP, state );
-    XcbUtil::get().changeState( this, X11Defines::_NET_WM_STATE_ABOVE, state );
+    XcbUtil::get().changeState( this, XcbDefines::_NET_WM_STATE_STAYS_ON_TOP, state );
+    XcbUtil::get().changeState( this, XcbDefines::_NET_WM_STATE_ABOVE, state );
 
     #else
 
@@ -193,16 +193,16 @@ void TabWidget::_toggleSticky( bool state )
     // check that widget is top level
     if( parentWidget() ) return;
 
-    #if BASE_QT_HAVE_XCB
-    if( XcbUtil::get().isSupported( X11Defines::_NET_WM_STATE_STICKY ) )
+    #if HAVE_X11
+    if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_STATE_STICKY ) )
     {
 
-        XcbUtil::get().changeState( this, X11Defines::_NET_WM_STATE_STICKY, state );
+        XcbUtil::get().changeState( this, XcbDefines::_NET_WM_STATE_STICKY, state );
 
-    } else if( XcbUtil::get().isSupported( X11Defines::_NET_WM_DESKTOP ) ) {
+    } else if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_DESKTOP ) ) {
 
-        unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), X11Defines::_NET_CURRENT_DESKTOP );
-        XcbUtil::get().changeCardinal( this, X11Defines::_NET_WM_DESKTOP, state ? X11Defines::ALL_DESKTOPS:desktop );
+        unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), XcbDefines::_NET_CURRENT_DESKTOP );
+        XcbUtil::get().changeCardinal( this, XcbDefines::_NET_WM_DESKTOP, state ? XcbDefines::ALL_DESKTOPS:desktop );
 
     }
     #endif
@@ -390,7 +390,7 @@ bool TabWidget::_startDrag( void )
 
         isDragging_ = true;
 
-        #if BASE_QT_HAVE_XCB && QT_VERSION < 0x050000
+        #if HAVE_X11 && QT_VERSION < 0x050000
         if( XcbUtil::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
         {
 

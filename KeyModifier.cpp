@@ -23,13 +23,12 @@
 
 #include "Debug.h"
 #include "XcbUtil.h"
-#include "config-base-qt.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
 
-#if BASE_QT_HAVE_XCB
+#if HAVE_X11
 #include <xcb/xcb.h>
 #include <xcb/xcb_keysyms.h>
 #include <X11/Xutil.h>
@@ -52,7 +51,7 @@ KeyModifier::State KeyModifier::state( void ) const
     else return Unknown;
     #endif
 
-    #if BASE_QT_HAVE_XCB
+    #if HAVE_X11
     // map Qt Key to X11
     int keySymbol(0);
     switch( key_ )

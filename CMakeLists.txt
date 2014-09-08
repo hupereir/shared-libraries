@@ -27,9 +27,18 @@ endif()
 ########### X11 #########
 if( UNIX AND NOT APPLE )
 
-  find_package( PkgConfig )
-  pkg_check_modules(XCB xcb x11-xcb)
-  set(BASE_QT_HAVE_XCB ${XCB_FOUND})
+  find_package( X11 )
+  if( X11_FOUND )
+     find_package(XCB REQUIRED COMPONENTS XCB KEYSYMS)
+     find_package(X11_XCB REQUIRED)
+     include_directories( ${X11_X11_INCLUDE_PATH} )
+  endif()
+
+  add_definitions( -DHAVE_X11=${X11_FOUND} )
+
+else()
+
+  add_definitions( -DHAVE_X11=0 )
 
 endif()
 
@@ -40,9 +49,6 @@ include_directories(${CMAKE_SOURCE_DIR}/base)
 ########### links #########
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 link_directories( ${CMAKE_INSTALL_PREFIX}/lib )
-
-################# configuration #################
-configure_file(config-base-qt.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-base-qt.h )
 
 ########### next target ###############
 set( base_qt_SOURCES
@@ -221,8 +227,9 @@ else()
 
 endif()
 
-if( XCB_FOUND )
+if( X11_FOUND )
 
+  target_link_libraries( base-qt ${X11_X11_LIB} )
   target_link_libraries( base-qt ${XCB_LIBRARIES} )
   target_link_libraries( base-qt ${X11_XCB_LIBRARIES} )
 
