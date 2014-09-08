@@ -33,7 +33,7 @@
 
 #include <QPainter>
 
-#if HAVE_X11
+#if HAVE_XCB
 #include <xcb/xcb.h>
 #include <xcb/shape.h>
 #endif
@@ -273,7 +273,7 @@ namespace Transparency
     void TransparentWidget::_updateInputShape( void )
     {
 
-        #if HAVE_X11
+        #if HAVE_XCB
 
         // check outer padding
         // TODO: should remove existing shape if any
@@ -323,7 +323,7 @@ namespace Transparency
 
         Debug::Throw() << "TransparentWidget::_updateBlurRegion" << endl;
 
-        #if HAVE_X11
+        #if HAVE_XCB
 
         // create data
         blurRegion_ = region;

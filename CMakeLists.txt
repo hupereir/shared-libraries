@@ -25,12 +25,12 @@ if( UNIX  AND NOT APPLE )
   find_package( X11 )
   if( X11_FOUND )
     find_package(XCB REQUIRED COMPONENTS XCB SHAPE)
-    add_definitions( -DHAVE_X11=${X11_FOUND} )
+    add_definitions( -DHAVE_XCB=${X11_FOUND} )
   endif()
 
 else()
 
-  add_definitions( -DHAVE_X11=0 )
+  add_definitions( -DHAVE_XCB=0 )
 
 endif()
 

@@ -24,7 +24,7 @@
 #include "Debug.h"
 #include "XcbUtil.h"
 
-#if HAVE_X11
+#if HAVE_XCB
 #include <xcb/xcb.h>
 #endif
 
@@ -68,7 +68,7 @@ namespace Transparency
         return true;
         #endif
 
-        #if HAVE_X11
+        #if HAVE_XCB
         // connection
         xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
 
