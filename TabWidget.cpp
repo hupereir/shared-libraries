@@ -163,7 +163,7 @@ void TabWidget::_toggleStaysOnTop( bool state )
     // check that widget is top level
     if( parentWidget() ) return;
 
-    #if HAVE_X11
+    #if BASE_QT_HAVE_XCB
 
     // change property
     XcbUtil::get().changeState( this, X11Defines::_NET_WM_STATE_STAYS_ON_TOP, state );
@@ -193,7 +193,7 @@ void TabWidget::_toggleSticky( bool state )
     // check that widget is top level
     if( parentWidget() ) return;
 
-    #if HAVE_X11
+    #if BASE_QT_HAVE_XCB
     if( XcbUtil::get().isSupported( X11Defines::_NET_WM_STATE_STICKY ) )
     {
 
@@ -390,7 +390,7 @@ bool TabWidget::_startDrag( void )
 
         isDragging_ = true;
 
-        #if HAVE_X11 && QT_VERSION < 0x050000
+        #if BASE_QT_HAVE_XCB && QT_VERSION < 0x050000
         if( XcbUtil::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
         {
 

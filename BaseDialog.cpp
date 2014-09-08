@@ -27,6 +27,8 @@
 #include "XmlOptions.h"
 #include "XcbUtil.h"
 
+#include "config-base-qt.h"
+
 #include <QTextStream>
 #include <QWindowStateChangeEvent>
 
@@ -123,7 +125,7 @@ void BaseDialog::toggleSticky( bool state )
 
     Debug::Throw( "BaseDialog::toggleSticky.\n" );
 
-    #if HAVE_X11
+    #if BASE_QT_HAVE_XCB
     if( XcbUtil::get().isSupported( X11Defines::_NET_WM_STATE_STICKY ) )
     {
 

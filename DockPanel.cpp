@@ -31,6 +31,8 @@
 
 #include "XcbUtil.h"
 
+#include "config-base-qt.h"
+
 #include <QApplication>
 #include <QPainter>
 #include <QStyleHintReturnMask>
@@ -371,7 +373,7 @@ namespace Private
         // check that widget is top level
         if( !isDetached_ ) return;
 
-        #if HAVE_X11
+        #if BASE_QT_HAVE_XCB
 
         XcbUtil::get().changeState( window(), X11Defines::_NET_WM_STATE_STAYS_ON_TOP, state );
         XcbUtil::get().changeState( window(), X11Defines::_NET_WM_STATE_ABOVE, state );
@@ -403,7 +405,7 @@ namespace Private
         // check that widget is top level
         if( !isDetached_ ) return;
 
-        #if HAVE_X11
+        #if BASE_QT_HAVE_XCB
         if( XcbUtil::get().isSupported( X11Defines::_NET_WM_STATE_STICKY ) )
         {
 
@@ -477,7 +479,7 @@ namespace Private
 
             isDragging_ = true;
 
-            #if HAVE_X11
+            #if BASE_QT_HAVE_XCB
             // && QT_VERSION < 0x050000
             if( XcbUtil::get().moveWidget( parentWidget(), mapToGlobal( dragPosition_ ) ) )
             {
