@@ -34,11 +34,11 @@ if( UNIX AND NOT APPLE )
      include_directories( ${X11_X11_INCLUDE_PATH} )
   endif()
 
-  add_definitions( -DHAVE_X11=${X11_FOUND} )
+  add_definitions( -DHAVE_XCB=${X11_FOUND} )
 
 else()
 
-  add_definitions( -DHAVE_X11=0 )
+  add_definitions( -DHAVE_XCB=0 )
 
 endif()
 
