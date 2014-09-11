@@ -101,7 +101,7 @@ namespace Svg
         {
             if( !file.exists() ) continue;
 
-            Debug::Throw() << "SvgPlasmaInterface::loadTheme - checking: " << file << endl;
+            Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - checking: " << file << endl;
 
             // read group
             QSettings settings( file, QSettings::IniFormat );
@@ -114,6 +114,7 @@ namespace Svg
 
         }
 
+        Debug::Throw(0) << "SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
         return _setTheme( theme );
 
     }
