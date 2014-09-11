@@ -1,10 +1,5 @@
 # $Id$
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.6)
-if(COMMAND CMAKE_POLICY)
-  cmake_policy(SET CMP0003 NEW)
-endif()
-
-set(CMAKE_AUTOMOC TRUE)
+cmake_minimum_required(VERSION 2.8.12)
 
 project(SHARED_LIBRARIES)
 set(SHARED_LIBRARIES_VERSION_MAJOR 1)
@@ -15,6 +10,8 @@ set(SHARED_LIBRARIES_VERSION ${SHARED_LIBRARIES_VERSION_MAJOR}.${SHARED_LIBRARIE
 ########### modules #################
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/base-cmake")
 include(Macros)
+setup_cmake_settings()
+setup_compiler_flags()
 
 if(WIN32)
 
@@ -31,9 +28,6 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 ########### make shared libraries #########
 set(ENABLE_SHARED 1)
-
-########### sub directories #########
-set(CMAKE_CXX_FLAGS "-g -Wall -Wundef")
 
 add_subdirectory(base)
 add_subdirectory(base-qt)
