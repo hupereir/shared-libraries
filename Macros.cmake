@@ -1,4 +1,15 @@
 # $Id$
+###################### setup cmake policy #########################
+macro( setup_cmake_policy )
+    if( COMMAND CMAKE_POLICY )
+        cmake_policy( SET CMP0003 NEW )
+        cmake_policy( SET CMP0028 NEW )
+        cmake_policy( SET CMP0043 NEW )
+    endif()
+endmacro()
+
+
+###################### get build timestamp #########################
 macro( get_build_timestamp RESULT )
 
   if( WIN32 )
