@@ -138,7 +138,7 @@ LineEditor::LineEditor( QWidget* parent ):
     connect( this, SIGNAL(textChanged(QString)), SLOT(_modified(QString)) );
 
     setHasClearButton( true );
-    setStyle( proxyStyle_ );
+    setStyle( proxyStyle_.data() );
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
 }

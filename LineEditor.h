@@ -23,13 +23,13 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "WeakPointer.h"
 
 #include <QContextMenuEvent>
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QMenu>
 #include <QProxyStyle>
-#include <QPointer>
 
 class LineEditor: public QLineEdit, public Counter
 {
@@ -190,7 +190,7 @@ class LineEditor: public QLineEdit, public Counter
     QWidget* clearButton_;
 
     //! style proxy
-    QPointer<QProxyStyle> proxyStyle_;
+    Base::WeakPointer<QProxyStyle> proxyStyle_;
 
 };
 
