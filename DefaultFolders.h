@@ -56,8 +56,8 @@ class DefaultFolders: public QObject
     };
 
     //! folders
-    typedef QMap<File, Type> FolderMap;
-    typedef QMapIterator<File, Type> FolderMapIterator;
+    using FolderMap = QMap<File, Type>;
+    using FolderMapIterator = QMapIterator<File, Type>;
     const FolderMap& folders( void ) const
     { return folders_; }
 
@@ -88,11 +88,11 @@ class DefaultFolders: public QObject
     FolderMap folders_;
 
     //! icon names
-    typedef QMap<Type, QString> NameMap;
+    using NameMap = QMap<Type, QString>;
     NameMap names_;
 
     //! map folder type and icon name
-    typedef QMap<Type, QString> IconMap;
+    using IconMap = QMap<Type, QString>;
     IconMap iconNames_;
 
 };

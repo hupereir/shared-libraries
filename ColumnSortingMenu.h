@@ -70,7 +70,7 @@ class ColumnSortingMenu:public QMenu, public Counter
     QActionGroup* group_;
 
     //! map action to column index
-    typedef QHash< QAction*, int > ActionMap;
+    using ActionMap = QHash< QAction*, int >;
 
     //! map action to column index
     ActionMap actions_;

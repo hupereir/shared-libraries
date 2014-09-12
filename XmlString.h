@@ -46,11 +46,11 @@ class XmlString: public QString
     private:
 
     //! text to Xml conversion pair type
-    typedef QPair<QString, QString> Conversion;
+    using Conversion = QPair<QString, QString>;
 
     //! text to Xml conversion pair type
-    typedef QList< Conversion > ConversionList;
-    typedef QListIterator< Conversion > ConversionListIterator;
+    using ConversionList = QList< Conversion >;
+    using ConversionListIterator = QListIterator< Conversion >;
 
     //! initialize Xml to text conversion pair list
     void _initConversions( void ) const;

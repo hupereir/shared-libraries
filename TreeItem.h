@@ -35,28 +35,25 @@ template<class T> class TreeItem: public TreeItemBase
     public:
 
     //! value type
-    typedef T ValueType;
+    using ValueType = T;
 
     //! reference
-    typedef T& Reference;
+    using Reference = T&;
 
     //! reference
-    typedef const T& ConstReference;
+    using ConstReference = const T&;
 
     //! list of references
-    typedef QList<T> ValueList;
+    using ValueList = QList<T>;
 
     //! pointer
-    typedef T* Pointer;
+    using Pointer = T*;
 
     //! list of vector
-    typedef QList<TreeItem> List;
+    using List = QList<TreeItem>;
 
     //! map items to internal id
-    typedef QMap<int, TreeItem*> Map;
-
-    //! id type
-    typedef unsigned int Id;
+    using Map = QMap<int, TreeItem*>;
 
     //! root constructor
     TreeItem( Map& itemMap ):

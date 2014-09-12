@@ -58,7 +58,7 @@ class ToolButtonStyleMenu: public QMenu, public Counter
     private:
 
     //! action map
-    typedef QMap< QAction*, int > ActionMap;
+    using ActionMap = QMap< QAction*, int >;
 
     //! toolbar text action map
     ActionMap actions_;

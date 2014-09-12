@@ -181,7 +181,7 @@ namespace Format
 
 
         //! format list
-        typedef QList<Format::TextFormatBlock> List;
+        using List = QList<Format::TextFormatBlock>;
 
         private:
 

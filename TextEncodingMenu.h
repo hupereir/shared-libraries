@@ -54,7 +54,7 @@ class TextEncodingMenu: public QMenu, public Counter
     private:
 
     //! map action to encoding
-    typedef QMap<QAction*, QByteArray> ActionMap;
+    using ActionMap = QMap<QAction*, QByteArray>;
     ActionMap actions_;
 
 };

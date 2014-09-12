@@ -48,7 +48,7 @@ class CustomToolBar: public QToolBar, public Counter
     virtual ~CustomToolBar( void );
 
     // map toolbar area and name
-    typedef QMap< QString, Qt::ToolBarArea> AreaMap;
+    using AreaMap = QMap< QString, Qt::ToolBarArea>;
 
     //!@name convenience
     //@{

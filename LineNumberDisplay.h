@@ -89,7 +89,7 @@ class LineNumberDisplay: public QObject, public Counter
         public:
 
         //! list of data
-        typedef QList<LineNumberData> List;
+        using List = QList<LineNumberData>;
 
         //! constructor
         LineNumberData( const unsigned int& id = 0, const unsigned int& line_number = 0, const int& cursor = 0):

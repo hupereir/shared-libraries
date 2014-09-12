@@ -117,7 +117,7 @@ class RecentFilesMenu: public QMenu, public Counter
     QAction* cleanAction_;
 
     //! map actions to file recors
-    typedef QHash<QAction*, FileRecord> ActionMap;
+    using ActionMap = QHash<QAction*, FileRecord>;
 
     //! map actions to FileRecords
     ActionMap actions_;

@@ -56,7 +56,7 @@ class ColumnSelectionMenu:public QMenu, public Counter
     QTreeView* target_;
 
     //! map action to column index
-    typedef QHash< QAction*, int > ActionMap;
+    using ActionMap = QHash< QAction*, int >;
 
     //! map action to column index
     ActionMap actions_;

@@ -48,13 +48,10 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     QVBoxLayout* layout( new QVBoxLayout() );
     layout->setMargin(0);
-    layout->setSpacing(2);
     setLayout( layout );
 
     // horizontal layout
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setMargin(0);
-    hLayout->setSpacing(5);
     layout->addLayout( hLayout );
 
     // add widgets

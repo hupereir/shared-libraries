@@ -43,7 +43,7 @@ class GridLayout: public QGridLayout, public Counter
     {}
 
     //! column alignments
-    typedef QList<Qt::Alignment> AlignmentList;
+    using AlignmentList = QList<Qt::Alignment>;
 
     //!@name accessors
     //@{

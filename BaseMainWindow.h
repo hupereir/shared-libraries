@@ -156,7 +156,7 @@ class BaseMainWindow: public QMainWindow
     virtual bool _hasPanels( void ) const;
 
     //! action list
-    typedef QVector<QAction*> ActionList;
+    using ActionList = QVector<QAction*>;
 
     //! toolbar actions list
     ActionList _toolBarsActions( QMenu* );

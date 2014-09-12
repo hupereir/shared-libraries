@@ -44,7 +44,7 @@ class BrowsedLineEditor: public QWidget, public Counter
 
     public:
 
-    typedef AnimatedLineEditor Editor;
+    using Editor = AnimatedLineEditor;
 
     //! constructor;
     BrowsedLineEditor( QWidget* parent );

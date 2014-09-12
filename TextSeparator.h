@@ -32,7 +32,7 @@ class TextSeparator
     public:
 
     //! shortcut to set of separators
-    typedef QSet< QChar > SeparatorSet;
+    using SeparatorSet = QSet< QChar >;
 
     //! return singleton
     static const TextSeparator& get( void );

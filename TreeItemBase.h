@@ -31,7 +31,7 @@ class TreeItemBase: public Counter
     public:
 
     //! unique id
-    typedef unsigned int Id;
+    using Id = quint32;
 
     //! unique id
     const Id& id( void ) const

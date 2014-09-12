@@ -57,7 +57,7 @@ class IconSizeMenu: public QMenu, public Counter
     private:
 
     //! action map
-    typedef QHash<QAction*, IconSize::Size > ActionMap;
+    using ActionMap = QHash<QAction*, IconSize::Size >;
 
     //! toolbar text action map
     ActionMap actions_;

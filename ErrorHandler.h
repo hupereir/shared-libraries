@@ -59,7 +59,7 @@ class ErrorHandler
     //! constructor
     ErrorHandler( void );
 
-    typedef QStringList MessageList;
+    using MessageList=QStringList;
 
     //! disabled message
     const MessageList& _disabledMessages( void ) const

@@ -52,7 +52,7 @@ class FontInfo: public QWidget
     private:
 
     //! checkbox map
-    typedef QHash<Format::TextFormat, QCheckBox*> CheckBoxMap;
+    using CheckBoxMap = QHash<Format::TextFormat, QCheckBox*>;
 
     //! checkboxes
     CheckBoxMap checkBoxes_;

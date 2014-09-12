@@ -49,7 +49,7 @@ class IconSize: public QSize
     IconSize( Size size );
 
     //! map text to icon size
-    typedef QMap<Size, QString> Map;
+    using Map = QMap<Size, QString>;
 
     //! text to icon size
     static Map& map( void );

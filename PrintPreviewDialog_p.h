@@ -65,11 +65,11 @@ namespace Print
         private:
 
         //! actions maps
-        typedef QMap<QAction*, QPrinter::Orientation> OrientationActionMap;
+        using OrientationActionMap = QMap<QAction*, QPrinter::Orientation>;
         OrientationActionMap orientationActions_;
 
         //! actions map
-        typedef QMap<QAction*, BasePrintHelper::PageMode> PageModeActionMap;
+        using PageModeActionMap = QMap<QAction*, BasePrintHelper::PageMode>;
         PageModeActionMap pageModeActions_;
 
     };

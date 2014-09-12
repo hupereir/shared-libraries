@@ -102,7 +102,7 @@ class BaseFileIconProvider: public QObject, public Counter
     private:
 
     //! icon map
-    typedef QHash<Key, QIcon> IconMap;
+    using IconMap = QHash<Key, QIcon>;
     IconMap icons_;
 
     //! invalid icon

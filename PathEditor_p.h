@@ -170,8 +170,8 @@ class PathEditorItem: public PathEditorButton, public Counter
     void updateMinimumSize( void );
 
     //! shortcuts
-    typedef QList<PathEditorItem*> List;
-    typedef QListIterator<PathEditorItem*> ListIterator;
+    using List = QList<PathEditorItem*>;
+    using ListIterator = QListIterator<PathEditorItem*>;
 
     protected:
 

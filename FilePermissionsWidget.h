@@ -48,7 +48,7 @@ class FilePermissionsWidget: public QWidget, public Counter
     private:
 
     //! checkbox map
-    typedef QHash< QFile::Permission, QCheckBox* > CheckBoxMap;
+    using CheckBoxMap = QHash< QFile::Permission, QCheckBox* >;
 
     //! checkbox map
     CheckBoxMap checkboxes_;

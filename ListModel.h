@@ -35,18 +35,18 @@ class ListModel : public ItemModel
     public:
 
     //! value type
-    typedef T ValueType;
+    using ValueType = T;
 
     //! reference
-    typedef T& Reference;
+    using Reference = T&;
 
     //! pointer
-    typedef T* Pointer;
+    using Pointer = T*;
 
     //! value list
-    typedef QList<ValueType> List;
-    typedef QListIterator<ValueType> ListIterator;
-    typedef QMutableListIterator<ValueType> MutableListIterator;
+    using List = QList<ValueType>;
+    using ListIterator = QListIterator<ValueType>;
+    using MutableListIterator = QMutableListIterator<ValueType>;
 
     //! constructor
     ListModel(QObject *parent = 0):

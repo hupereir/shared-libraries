@@ -109,10 +109,10 @@ class IconViewItem: public Counter
     //@}
 
     //! item map
-    typedef QMap<int, IconViewItem> Map;
+    using Map = QMap<int, IconViewItem>;
 
     //! item list
-    typedef QList<IconViewItem> List;
+    using List = QList<IconViewItem>;
 
     //! paint
     virtual void paint( QPainter*, const QStyleOption*, QWidget* ) const;

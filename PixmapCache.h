@@ -28,6 +28,6 @@
 //! cache
 namespace Base
 {
-    typedef QHash<QString, QPixmap> PixmapCache;
+    using PixmapCache = QHash<QString, QPixmap>;
 }
 #endif

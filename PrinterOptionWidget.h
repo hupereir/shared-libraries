@@ -93,11 +93,11 @@ class PrinterOptionWidget: public QWidget, public Counter
     QPushButton* previewButton_;
 
     //! Buttons maps
-    typedef QMap<QAbstractButton*, QPrinter::Orientation> OrientationButtonMap;
+    using OrientationButtonMap = QMap<QAbstractButton*, QPrinter::Orientation>;
     OrientationButtonMap orientationButtons_;
 
     //! Buttons map
-    typedef QMap<QAbstractButton*, BasePrintHelper::PageMode> PageModeButtonMap;
+    using PageModeButtonMap = QMap<QAbstractButton*, BasePrintHelper::PageMode>;
     PageModeButtonMap pageModeButtons_;
 
 };

@@ -157,7 +157,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     static const QIcon& _icon( const QString& = QString() );
 
     //! icon cache
-    typedef QHash<QString, QIcon> IconCache;
+    using IconCache = QHash<QString, QIcon>;
 
     //! type icon cache
     static IconCache& _icons( void );

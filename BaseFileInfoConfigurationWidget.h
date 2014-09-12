@@ -62,7 +62,7 @@ class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
     private:
 
     //! map mask to checkboxes
-    typedef QMap<BaseFileInfoToolTipWidget::Type, QCheckBox* > CheckBoxMap;
+    using CheckBoxMap = QMap<BaseFileInfoToolTipWidget::Type, QCheckBox* >;
     CheckBoxMap checkboxes_;
 
 };

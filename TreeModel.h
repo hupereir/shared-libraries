@@ -35,25 +35,25 @@ template<class T> class TreeModel : public ItemModel
     public:
 
     //! value type
-    typedef T ValueType;
+    using ValueType = T;
 
     //! reference
-    typedef T& Reference;
+    using Reference = T&;
 
     //! reference
-    typedef const T& ConstReference;
+    using ConstReference = const T&;
 
     //! pointer
-    typedef T* Pointer;
+    using Pointer = T*;
 
     //! list of values
-    typedef QList<ValueType> List;
+    using List = QList<ValueType>;
 
     //! iterator
-    typedef QListIterator<ValueType> ListIterator;
+    using ListIterator = QListIterator<ValueType>;
 
     //! item
-    typedef TreeItem<T> Item;
+    using Item = TreeItem<T>;
 
     //! constructor
     TreeModel(QObject *parent = 0):

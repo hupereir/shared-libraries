@@ -65,11 +65,11 @@ class MimeTypeIconProvider : public QObject, public Counter
     private:
 
     //! icon names
-    typedef QHash<QString, QString> IconNameCache;
+    using IconNameCache = QHash<QString, QString>;
     IconNameCache iconNames_;
 
     //! icon cache
-    typedef QHash<QString, QIcon> IconCache;
+    using IconCache = QHash<QString, QIcon>;
     IconCache icons_;
 
     //! empty icon

@@ -54,10 +54,10 @@ class LineNumberDisplay;
 
 #ifdef QT_USE_PLAIN_TEXT_EDIT
 #include <QPlainTextEdit>
-typedef QPlainTextEdit BaseEditor;
+using BaseEditor = QPlainTextEdit;
 #else
 #include <QTextEdit>
-typedef QTextEdit BaseEditor;
+using BaseEditor = QTextEdit;
 #endif
 
 //! Customized QTextEdit object

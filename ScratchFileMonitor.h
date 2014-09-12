@@ -56,8 +56,8 @@ class ScratchFileMonitor: public QObject, public Counter
 
     private:
 
-    typedef QOrderedSet<File> FileSet;
-    typedef QOrderedSetIterator<File> FileSetIterator;
+    using FileSet = QOrderedSet<File>;
+    using FileSetIterator = QOrderedSetIterator<File>;
     FileSet files_;
 
 };

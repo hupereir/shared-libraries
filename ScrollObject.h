@@ -148,7 +148,7 @@ class ScrollObject: public QObject, public Counter
     QAbstractScrollArea* target_;
 
     //! set of captured objects
-    typedef QSet<QObject*> ObjectSet;
+    using ObjectSet = QSet<QObject*>;
 
     //! set of captured objects
     ObjectSet targets_;
