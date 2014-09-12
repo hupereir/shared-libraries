@@ -68,7 +68,7 @@ namespace SpellCheck
         QActionGroup* group_;
 
         //! map filters and action
-        typedef QHash<QAction*, QString> ActionMap;
+        using ActionMap = QHash<QAction*, QString>;
         ActionMap actionMap_;
 
     };

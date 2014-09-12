@@ -48,10 +48,10 @@ namespace SpellCheck
         QString toTextAccents( void ) const;
 
         //! conversions
-        typedef QPair<QString, QString> Conversion;
+        using Conversion = QPair<QString, QString>;
 
         //! conversions
-        typedef QList< Conversion > ConversionList;
+        using ConversionList = QList< Conversion >;
 
         //! conversions
         static const ConversionList& conversions( void );

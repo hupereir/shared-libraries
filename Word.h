@@ -32,7 +32,7 @@ namespace SpellCheck
         public:
 
         //! shortcut for set
-        typedef QSet<Word> Set;
+        using Set = QSet<Word>;
 
         //! constructor
         Word( const QString& word = QString(), const int& position = 0 ):

@@ -62,7 +62,7 @@ namespace SpellCheck
         //@}
 
         //! items
-        typedef QSet<QString> ItemSet;
+        using ItemSet = QSet<QString>;
 
         //! set disabled items
         void setDisabledItems( const ItemSet& items )

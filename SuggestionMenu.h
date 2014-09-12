@@ -81,7 +81,7 @@ namespace SpellCheck {
         QString word_;
 
         //! map actions to suggested words
-        typedef QHash<QAction*, QString> SuggestionMap;
+        using SuggestionMap = QHash<QAction*, QString>;
         SuggestionMap suggestions_;
 
     };

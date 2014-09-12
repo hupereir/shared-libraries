@@ -57,7 +57,7 @@ namespace SpellCheck
         //@{
 
         //! get list of available dictionaries
-        typedef QOrderedSet<QString> DictionarySet;
+        using DictionarySet = QOrderedSet<QString>;
         const DictionarySet& dictionaries( void ) const
         { return dictionaries_; }
 
@@ -73,7 +73,7 @@ namespace SpellCheck
         { return dictionaries_.find( dictionary ) != dictionaries_.end(); }
 
         //! get list of available filters
-        typedef QOrderedSet<QString> FilterSet;
+        using FilterSet = QOrderedSet<QString>;
         const FilterSet& filters( void ) const
         { return filters_; }
 
@@ -224,7 +224,7 @@ namespace SpellCheck
         DictionarySet dictionaries_;
 
         //! set of available filters
-        typedef QMap<QString, QString> FilterMap;
+        using FilterMap = QMap<QString, QString>;
         static FilterMap filterMap_;
 
         //! set of available filters
