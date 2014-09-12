@@ -39,16 +39,16 @@ class Options: public Counter
     public:
 
     //! pair
-    typedef QPair< QString, Option > Pair;
+    using Pair = QPair< QString, Option >;
 
     //! shortCut for option map
-    typedef QMap< QString, Option > Map;
+    using Map = QMap< QString, Option >;
 
     //! shortCut for option list
-    typedef QList< Option > List;
+    using List = QList< Option >;
 
     //! shortCut for option map
-    typedef QMap< QString, List > SpecialMap;
+    using SpecialMap = QMap< QString, List >;
 
     //! constructor
     Options( void );

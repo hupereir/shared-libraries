@@ -68,14 +68,14 @@ namespace Base
         { return this->key() < key.key(); }
 
         //! shortcut for key unique id
-        typedef unsigned long int Type;
+        using Type = quint32;
 
         //! retrieve key
         virtual const Type& key( void ) const
         { return key_; }
 
         //! shortcut for set of Key
-        typedef QSet< Key* > Set;
+        using Set = QSet< Key* >;
 
         //! retrieve all associated keys
         const Set& getAssociated( void ) const

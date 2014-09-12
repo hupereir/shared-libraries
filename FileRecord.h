@@ -39,9 +39,9 @@ class FileRecord: public Counter
     public:
 
     //! shortcut to list of records
-    typedef QOrderedSet<FileRecord> Set;
-    typedef QList<FileRecord> List;
-    typedef QListIterator<FileRecord> ListIterator;
+    using Set = QOrderedSet<FileRecord>;
+    using List = QList<FileRecord>;
+    using ListIterator = QListIterator<FileRecord>;
 
     //! mimetype for drag and drop operations
     static const QString MimeType;
@@ -158,7 +158,7 @@ class FileRecord: public Counter
 
         public:
 
-        typedef unsigned short Id;
+        using Id = quint32;
 
         //! get id matching name
         /*! insert in map if name is new */
@@ -174,13 +174,13 @@ class FileRecord: public Counter
         static Id& _counter( void );
 
         //! id map
-        typedef QMap< QString, Id > IdMap;
+        using IdMap = QMap< QString, Id >;
 
         //! id map
         static IdMap& _idMap();
 
         //! id map
-        typedef QStringList NameMap;
+        using NameMap = QStringList;
 
         //! name map
         static NameMap& _nameMap();
@@ -203,7 +203,7 @@ class FileRecord: public Counter
     { return properties_.find( id ) != properties_.end(); }
 
     //! additional property map
-    typedef QMap< PropertyId::Id, QString > PropertyMap;
+    using PropertyMap = QMap< PropertyId::Id, QString >;
 
     //! property map
     const PropertyMap& properties( void ) const

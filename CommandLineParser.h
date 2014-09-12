@@ -104,7 +104,7 @@ class CommandLineParser: public Counter
         int size( void ) const
         { return toString().size(); }
 
-        typedef QList<Tag> List;
+        using List = QList<Tag>;
 
         private:
 
@@ -287,16 +287,16 @@ class CommandLineParser: public Counter
         //! clear
         void clear( void );
 
-        typedef QHash< QString, Group> Map;
+        using Map = QHash< QString, Group>;
 
         //! flags
-        typedef QMap<Tag, Flag> FlagMap;
+        using FlagMap = QMap<Tag, Flag>;
 
         //! flags
         FlagMap flags_;
 
         //! options
-        typedef QMap<Tag, Option> OptionMap;
+        using OptionMap = QMap<Tag, Option>;
 
         //! options
         OptionMap options_;

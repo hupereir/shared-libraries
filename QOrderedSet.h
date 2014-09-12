@@ -34,10 +34,11 @@ struct QOrderedSetDummyValue
 template <class T>
 class QOrderedSet
 {
-    typedef QMap<T, QOrderedSetDummyValue> Map;
+    using Map = QMap<T, QOrderedSetDummyValue>;
 
-public:
-    inline QOrderedSet()
+    public:
+
+    inline QOrderedSet( void )
     {}
 
     inline QOrderedSet(const QOrderedSet<T> &other) :
@@ -99,16 +100,16 @@ public:
 
     class iterator
     {
-        typedef QMap<T, QOrderedSetDummyValue> Map;
+        using Map = QMap<T, QOrderedSetDummyValue>;
         typename Map::iterator i;
         friend class const_iterator;
 
     public:
-        typedef std::bidirectional_iterator_tag iterator_category;
-        typedef qptrdiff difference_type;
-        typedef T value_type;
-        typedef const T *pointer;
-        typedef const T &reference;
+        using iterator_category = std::bidirectional_iterator_tag;
+        using difference_type = qptrdiff;
+        using value_type = T;
+        using pointer = const T *;
+        using reference = const T &;
 
         inline iterator()
         {}
@@ -168,16 +169,16 @@ public:
 
     class const_iterator
     {
-        typedef QMap<T, QOrderedSetDummyValue> Map;
+        using Map = QMap<T, QOrderedSetDummyValue>;
         typename Map::const_iterator i;
         friend class iterator;
 
     public:
-        typedef std::bidirectional_iterator_tag iterator_category;
-        typedef qptrdiff difference_type;
-        typedef T value_type;
-        typedef const T *pointer;
-        typedef const T &reference;
+        using iterator_category = std::bidirectional_iterator_tag;
+        using difference_type = qptrdiff;
+        using value_type = T;
+        using pointer = const T *;
+        using reference = const T &;
 
         inline const_iterator() {}
         inline const_iterator(typename Map::const_iterator o):
@@ -254,8 +255,8 @@ public:
     { return q_map.erase(reinterpret_cast<typename Map::iterator &>(i)); }
 
     // more Qt
-    typedef iterator Iterator;
-    typedef const_iterator ConstIterator;
+    using Iterator = iterator;
+    using ConstIterator = const_iterator;
 
     inline int count() const
     { return q_map.count(); }
@@ -279,14 +280,14 @@ public:
     QOrderedSet<T> &subtract(const QOrderedSet<T> &other);
 
     // STL compatibility
-    typedef T key_type;
-    typedef T value_type;
-    typedef value_type *pointer;
-    typedef const value_type *const_pointer;
-    typedef value_type &reference;
-    typedef const value_type &const_reference;
-    typedef qptrdiff difference_type;
-    typedef int size_type;
+    using key_type = T;
+    using value_type = T;
+    using pointer = T*;
+    using const_pointer = const T*;
+    using reference = T&;
+    using const_reference = const T&;
+    using difference_type = qptrdiff;
+    using size_type = int;
 
     inline bool empty() const
     { return isEmpty(); }
@@ -438,7 +439,7 @@ Q_DECLARE_SEQUENTIAL_ITERATOR(OrderedSet)
 template <typename T>
 class QMutableOrderedSetIterator
 {
-    typedef typename QOrderedSet<T>::iterator iterator;
+    using iterator = typename QOrderedSet<T>::iterator;
     QOrderedSet<T> *c;
     iterator i, n;
     inline bool item_exists() const { return c->constEnd() != n; }

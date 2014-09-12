@@ -31,7 +31,7 @@ class Counter {
     public:
 
     //! counter name and counts pair
-    typedef QPair<QString, int> Pair;
+    using Pair = QPair<QString, int>;
 
     //! constructor
     Counter( const QString& name );
