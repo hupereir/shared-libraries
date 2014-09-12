@@ -111,13 +111,13 @@ namespace Server
         { return *server_; }
 
         //! pair of application id and client
-        typedef QPair< ApplicationId, Client* > ClientPair;
+        using ClientPair = QPair< ApplicationId, Client* >;
 
         //! map of clients
-        typedef QMap< ApplicationId, Client* > ClientMap;
+        using ClientMap = QMap< ApplicationId, Client* >;
 
         //! list of clients
-        typedef QList< Client* > ClientList;
+        using ClientList = QList< Client* >;
 
         //! used to retrieve clients for a given state
         class SameStateFTor: public Client::SameStateFTor

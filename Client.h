@@ -41,7 +41,7 @@ namespace Server
     public:
 
     //! client list
-    typedef QList< Client* > List;
+    using List = QList< Client* >;
 
     //! constructor
     Client( QObject* parent, QTcpSocket* socket );
@@ -148,7 +148,7 @@ namespace Server
     QTcpSocket* socket_;
 
     //! messages
-    typedef QList< ServerCommand > CommandList;
+    using CommandList = QList< ServerCommand >;
 
     //! commands
     CommandList commands_;

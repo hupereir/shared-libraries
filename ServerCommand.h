@@ -68,7 +68,7 @@ namespace Server
         };
 
         //! list
-        typedef QList<ServerCommand> List;
+        using List = QList<ServerCommand>;
 
         //! constructor
         ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = None );
@@ -166,7 +166,7 @@ namespace Server
         private:
 
         //! command names
-        typedef QHash<CommandType, QString > CommandMap;
+        using CommandMap = QHash<CommandType, QString >;
 
         //! command names
         static CommandMap& _commandNames( void );
