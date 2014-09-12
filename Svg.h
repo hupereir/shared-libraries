@@ -66,8 +66,8 @@ namespace Svg
     //@}
 
     //! map size and pixmap
-    typedef QMap< SvgId, QPixmap > PixmapCache;
-    typedef QMap< SvgId, QImage > ImageCache;
+    using PixmapCache = QMap< SvgId, QPixmap >;
+    using ImageCache = QMap< SvgId, QImage >;
 
 };
 

@@ -33,7 +33,7 @@ namespace Svg
     {
         public:
 
-        typedef QList<SvgId> List;
+        using List = QList<SvgId>;
 
         //! constructor
         SvgId( QSize size ):
