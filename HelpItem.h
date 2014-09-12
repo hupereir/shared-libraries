@@ -86,7 +86,7 @@ namespace Base
         { return text_; }
 
         //! shortcut to help item list
-        typedef QList< HelpItem > List;
+        using List = QList< HelpItem >;
 
         private:
 
