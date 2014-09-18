@@ -231,7 +231,7 @@ void BaseApplication::_about( void )
     QString buffer;
     QTextStream in( &buffer, QIODevice::WriteOnly );
     if( !name.isEmpty() ) { in << "<h3>" << name << "</h3>"; }
-    if( !version.isEmpty() ) { in << "Version " << version; }
+    if( !version.isEmpty() ) { in << QString( tr( "Version %1 " ) ).arg( version ); }
     if( !stamp.isEmpty() ) { in << " (" << stamp << ")"; }
 
     in <<
