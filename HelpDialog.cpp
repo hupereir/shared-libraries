@@ -68,6 +68,7 @@ namespace Base
 
         // add help list
         list_ = new AnimatedTreeView( this );
+        // list_->setProperty( "_kde_side_panel_view", true );
         list_->setMaximumWidth(150);
         layout->addWidget( list_ );
         list_->setModel( &model_ );
@@ -91,17 +92,17 @@ namespace Base
         htmlEditor_->setReadOnly( true );
         htmlEditor_->setWrapFromOptions( false );
         htmlEditor_->wrapModeAction().setChecked( true );
-        
+
         // connect list to text edit
         connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex,QModelIndex)) );
 
         // add close accelerator
         connect( new QShortcut( QKeySequence::Quit, this ), SIGNAL(activated()), SLOT(close()) );
 
-        
+
         connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
         _updateConfiguration();
-        
+
     }
 
     //_________________________________________________________
@@ -151,5 +152,5 @@ namespace Base
         Debug::Throw( "HelpDialog::_updateConfiguration.\n" );
         htmlEditor_->setFont( qApp->font() );
     }
-    
+
 }
