@@ -62,11 +62,6 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     list_->setProperty( "_kde_side_panel_view", true );
     list_->setModel( &model_ );
 
-    // change font
-    QFont boldFont( list_->font() );
-    boldFont.setBold( true );
-    list_->setFont( boldFont );
-
     // button layout
     buttonLayout_ = new QBoxLayout( QBoxLayout::LeftToRight );
     buttonLayout_->setMargin(5);
