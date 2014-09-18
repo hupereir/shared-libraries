@@ -137,6 +137,22 @@ bool BaseApplication::realizeWidget( void )
     // check if the method has already been called.
     if( !BaseCoreApplication::realizeWidget() ) return false;
 
+    // parse user argument
+    #if QT_VERSION >= 0x050400
+    const CommandLineParser parser( commandLineParser( _arguments() ) );
+    if( parser.hasFlag( "--highdpi" ) )
+    {
+
+        Debug::Throw(0) << "BaseApplication::realizeWidget - enabling high dpi" << endl;
+        qApp->setAttribute( Qt::AA_UseHighDpiPixmaps, true );
+
+    } else {
+
+        qApp->setAttribute( Qt::AA_UseHighDpiPixmaps, false );
+
+    }
+    #endif
+
     // connections
     connect( qApp, SIGNAL(aboutToQuit()), SLOT(_aboutToQuit()) );
 
@@ -174,6 +190,11 @@ CommandLineParser BaseApplication::commandLineParser( CommandLineArguments argum
     out.setGroup( CommandLineParser::qtGroupName );
     out.registerOption( "-style", "string", QObject::tr( "Qt widget style" ) );
     out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (native|raster)" ) );
+
+    #if QT_VERSION >= 0x050400
+    out.setGroup( CommandLineParser::applicationGroupName );
+    out.registerFlag( "--highdpi", QObject::tr( "enable high-dpi support" ) );
+    #endif
 
     if( !arguments.isEmpty() )
     { out.parse( arguments, ignoreWarnings ); }
