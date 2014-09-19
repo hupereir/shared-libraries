@@ -163,29 +163,32 @@ CustomPixmap CustomPixmap::desaturate( void ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::merge( const QPixmap& pixmap, Corner corner ) const
+CustomPixmap CustomPixmap::merge( const CustomPixmap& pixmap, Corner corner ) const
 {
     if( isNull() ) return *this;
 
-    QImage source_image( toImage() );
-    QPainter painter( &source_image );
+    QSize size( this->size()/devicePixelRatio() );
+    QSize pixmapSize( pixmap.size()/pixmap.devicePixelRatio() );
+
+    QImage source( toImage() );
+    QPainter painter( &source );
     switch( corner )
     {
 
         case TOP_RIGHT:
-        painter.drawPixmap( QPoint( width()-pixmap.width(), 0 ), pixmap );
+        painter.drawPixmap( QPoint( size.width()-pixmapSize.width(), 0 ), pixmap );
         break;
 
         case BOTTOM_LEFT:
-        painter.drawPixmap( QPoint( 0, height()-pixmap.height() ), pixmap );
+        painter.drawPixmap( QPoint( 0, size.height()-pixmapSize.height() ), pixmap );
         break;
 
         case BOTTOM_RIGHT:
-        painter.drawPixmap( QPoint( width()-pixmap.width(), height()-pixmap.height() ), pixmap );
+        painter.drawPixmap( QPoint( size.width()-pixmapSize.width(), size.height()-pixmapSize.height() ), pixmap );
         break;
 
         case CENTER:
-        painter.drawPixmap(  QPoint( (width()-pixmap.width())/2, (height()-pixmap.height())/2 ), pixmap );
+        painter.drawPixmap(  QPoint( (size.width()-pixmapSize.width())/2, (size.height()-pixmapSize.height())/2 ), pixmap );
         break;
 
         default:
@@ -196,7 +199,7 @@ CustomPixmap CustomPixmap::merge( const QPixmap& pixmap, Corner corner ) const
     }
 
     painter.end();
-    return CustomPixmap().fromImage( source_image );
+    return CustomPixmap().fromImage( source );
 }
 
 //_________________________________________________

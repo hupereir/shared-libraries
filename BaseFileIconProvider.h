@@ -24,6 +24,7 @@
 
 #include "BaseFileInfo.h"
 #include "Counter.h"
+#include "CustomPixmap.h"
 #include "File.h"
 
 #include <QHash>
@@ -79,13 +80,13 @@ class BaseFileIconProvider: public QObject, public Counter
     protected:
 
     //! add link overlay icon
-    QPixmap _linked( const QPixmap& ) const;
+    QPixmap _linked( const CustomPixmap& ) const;
 
     //! add hidden effect
-    QPixmap _hidden( const QPixmap& ) const;
+    QPixmap _hidden( const CustomPixmap& ) const;
 
     //! add clipped effect
-    QPixmap _clipped( const QPixmap& ) const;
+    QPixmap _clipped( const CustomPixmap& ) const;
 
     //! add link overlay icon
     QIcon _linked( const QIcon& ) const;

@@ -98,7 +98,7 @@ class CustomPixmap: public QPixmap, public Counter
     };
 
     //* merge pixmap, using the specified corner as an anchor
-    virtual CustomPixmap merge( const QPixmap&, Corner corner = TOP_LEFT ) const;
+    virtual CustomPixmap merge( const CustomPixmap&, Corner corner = TOP_LEFT ) const;
 
     //* return highlighted pixmap
     virtual CustomPixmap highlighted( qreal opacity ) const;

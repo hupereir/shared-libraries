@@ -64,7 +64,7 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
     foreach( const QSize& size, base.availableSizes() )
     {
 
-        CustomPixmap pixmap = type&BaseFileInfo::Link ? _linked( base.pixmap( size ) ):base.pixmap( size );
+        CustomPixmap pixmap = type&BaseFileInfo::Link ? _linked( CustomPixmap( base.pixmap( size ) ) ):base.pixmap( size );
 
         // add clipped effect
         if( type & BaseFileInfo::Clipped ) pixmap = _clipped( pixmap );
@@ -79,14 +79,14 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
 }
 
 //____________________________________________________
-QPixmap BaseFileIconProvider::_linked( const QPixmap& source ) const
+QPixmap BaseFileIconProvider::_linked( const CustomPixmap& source ) const
 {
     if( source.isNull() ) return source;
     QIcon linkOverlay( IconEngine::get( IconNames::SymbolicLink ) );
     if( linkOverlay.isNull() ) return source;
 
     // get source size
-    const QSize size( source.size() );
+    const QSize size( source.size()/source.devicePixelRatio() );
 
     // decide overlay size
     QSize overlaySize;
@@ -98,26 +98,25 @@ QPixmap BaseFileIconProvider::_linked( const QPixmap& source ) const
     else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
     else overlaySize = QSize( 64, 64 );
 
-    return CustomPixmap( source )
-        .merge( linkOverlay.pixmap( overlaySize )
+    return source.merge( linkOverlay.pixmap( overlaySize )
         .scaled( overlaySize, Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
 
 }
 
 //____________________________________________________
-QPixmap BaseFileIconProvider::_hidden( const QPixmap& source ) const
-{ return CustomPixmap( source ).transparent( 0.6 ); }
+QPixmap BaseFileIconProvider::_hidden( const CustomPixmap& source ) const
+{ return source.transparent( 0.6 ); }
 
 //____________________________________________________
-QPixmap BaseFileIconProvider::_clipped( const QPixmap& source ) const
-{ return CustomPixmap( source ).desaturate().transparent( 0.6 ); }
+QPixmap BaseFileIconProvider::_clipped( const CustomPixmap& source ) const
+{ return source.desaturate().transparent( 0.6 ); }
 
 //____________________________________________________
 QIcon BaseFileIconProvider::_linked( const QIcon& source ) const
 {
     QIcon destination;
     foreach( const QSize& size, source.availableSizes() )
-    { destination.addPixmap( _linked( source.pixmap( size ) ) ); }
+    { destination.addPixmap( _linked( CustomPixmap( source.pixmap( size ) ) ) ); }
     return destination;
 }
 
@@ -126,7 +125,7 @@ QIcon BaseFileIconProvider::_hidden( const QIcon& source ) const
 {
     QIcon destination;
     foreach( const QSize& size, source.availableSizes() )
-    { destination.addPixmap( _hidden( source.pixmap( size ) ) ); }
+    { destination.addPixmap( _hidden( CustomPixmap( source.pixmap( size ) ) ) ); }
     return destination;
 }
 
@@ -135,6 +134,6 @@ QIcon BaseFileIconProvider::_clipped( const QIcon& source ) const
 {
     QIcon destination;
     foreach( const QSize& size, source.availableSizes() )
-    { destination.addPixmap( _clipped( source.pixmap( size ) ) ); }
+    { destination.addPixmap( _clipped( CustomPixmap( source.pixmap( size ) ) ) ); }
     return destination;
 }
