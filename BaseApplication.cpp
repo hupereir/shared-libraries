@@ -143,7 +143,6 @@ bool BaseApplication::realizeWidget( void )
     if( parser.hasFlag( "--highdpi" ) )
     {
 
-        Debug::Throw(0) << "BaseApplication::realizeWidget - enabling high dpi" << endl;
         qApp->setAttribute( Qt::AA_UseHighDpiPixmaps, true );
 
     } else {
