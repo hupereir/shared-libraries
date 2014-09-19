@@ -186,7 +186,7 @@ CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color ) const
 {
 
     Debug::Throw( "CustomPixmap::empty.\n" );
-    CustomPixmap out( size );
+    CustomPixmap out( QtUtil::highDpiPixmap( size ) );
     if( color.isValid() ) out.fill( color );
     else out.fill( Qt::transparent );
     return out;
