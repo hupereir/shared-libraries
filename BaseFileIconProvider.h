@@ -87,9 +87,6 @@ class BaseFileIconProvider: public QObject, public Counter
     //! add clipped effect
     QPixmap _clipped( const QPixmap& ) const;
 
-    //! copy
-    QIcon _copy( const QIcon& ) const;
-
     //! add link overlay icon
     QIcon _linked( const QIcon& ) const;
 

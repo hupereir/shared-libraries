@@ -39,6 +39,23 @@ IconEngine::IconEngine( void ):
 { Debug::Throw( "IconEngine::IconEngine.\n" ); }
 
 //__________________________________________________________
+QIcon IconEngine::copy( const QIcon& source )
+{
+    QIcon destination;
+
+    // loop over available sizes, modes and states
+    QList<QIcon::Mode> modes = { QIcon::Normal, QIcon::Disabled, QIcon::Active, QIcon::Selected };
+    QList<QIcon::State> states = { QIcon::Off, QIcon::On };
+
+    foreach( const QSize& size, source.availableSizes() )
+    foreach( const QIcon::Mode& mode, modes )
+    foreach( const QIcon::State& state, states )
+    { destination.addPixmap( source.pixmap( size, mode, state ), mode, state ); }
+    return destination;
+
+}
+
+//__________________________________________________________
 bool IconEngine::reload( void )
 {
     Debug::Throw( "IconEngine::reload.\n" );

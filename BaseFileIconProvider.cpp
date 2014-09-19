@@ -102,10 +102,6 @@ QPixmap BaseFileIconProvider::_linked( const QPixmap& source ) const
         .merge( linkOverlay.pixmap( overlaySize )
         .scaled( overlaySize, Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
 
-//     return CustomPixmap( source )
-//         .merge( linkOverlay.pixmap( overlaySize )
-//         .scaled( overlaySize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
-
 }
 
 //____________________________________________________
@@ -115,15 +111,6 @@ QPixmap BaseFileIconProvider::_hidden( const QPixmap& source ) const
 //____________________________________________________
 QPixmap BaseFileIconProvider::_clipped( const QPixmap& source ) const
 { return CustomPixmap( source ).desaturate().transparent( 0.6 ); }
-
-//____________________________________________________
-QIcon BaseFileIconProvider::_copy( const QIcon& source ) const
-{
-    QIcon destination;
-    foreach( const QSize& size, source.availableSizes() )
-    { destination.addPixmap( source.pixmap( size ) ); }
-    return destination;
-}
 
 //____________________________________________________
 QIcon BaseFileIconProvider::_linked( const QIcon& source ) const

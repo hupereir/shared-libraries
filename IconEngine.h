@@ -42,6 +42,9 @@ class IconEngine: public Counter
     static const QIcon& get( const QString& file, Base::IconCacheItem::Flags flags = Base::IconCacheItem::Any )
     { return get()._get( file, flags ); }
 
+    //! copy an icon into another one
+    static QIcon copy( const QIcon& );
+
     //! return cache
     static const Base::IconCache& cache( void )
     { return get().cache_; }
