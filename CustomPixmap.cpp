@@ -24,6 +24,7 @@
 #include "IconSize.h"
 #include "File.h"
 #include "PixmapEngine.h"
+#include "QtUtil.h"
 
 #include <QImage>
 #include <QIcon>
@@ -74,16 +75,19 @@ CustomPixmap CustomPixmap::rotate( const CustomPixmap::Rotation& rotation )
 {
     if( rotation == None ) return *this;
 
+    const qreal dpiRatio( QtUtil::devicePixelRatio( *this ) );
+
     CustomPixmap out = CustomPixmap().empty( QSize( height(), width() ) );
+    QtUtil::setDevicePixelRatio( out, dpiRatio );
     QPainter painter( &out );
 
     // rotate the painter
     if( rotation == CounterClockwise )
     {
-        painter.translate( 0, out.height() );
+        painter.translate( 0, out.height()/dpiRatio );
         painter.rotate( -90 );
     } else {
-        painter.translate( out.width(), 0 );
+        painter.translate( out.width()/dpiRatio, 0 );
         painter.rotate( 90 );
     }
 

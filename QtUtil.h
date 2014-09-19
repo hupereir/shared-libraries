@@ -71,7 +71,7 @@ class QtUtil
     static qreal devicePixelRatio( const QPixmap& );
 
     //* device pixel ratio
-    void setDevicePixelRatio( QPixmap&, qreal );
+    static void setDevicePixelRatio( QPixmap&, qreal );
 
     //@}
 };
