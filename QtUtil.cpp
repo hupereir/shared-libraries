@@ -190,3 +190,38 @@ QWidget* QtUtil::uniconify( QWidget *widget )
     return widget;
 
 }
+
+//____________________________________________________________
+QPixmap QtUtil::highDpiPixmap( int width, int height )
+{
+    #if QT_VERSION >= 0x050300
+    const qreal dpiRatio( qApp->devicePixelRatio() );
+    QPixmap pixmap( width*dpiRatio, height*dpiRatio );
+    pixmap.setDevicePixelRatio( dpiRatio );
+    return pixmap;
+    #else
+    return QPixmap( width, height );
+    #endif
+}
+
+//______________________________________________________________________________________
+qreal QtUtil::devicePixelRatio( const QPixmap& pixmap )
+{
+    #if QT_VERSION >= 0x050300
+    return pixmap.devicePixelRatio();
+    #else
+    Q_UNUSED( pixmap );
+    return 1;
+    #endif
+}
+
+//______________________________________________________________________________________
+void QtUtil::setDevicePixelRatio( QPixmap& pixmap, qreal value )
+{
+    #if QT_VERSION >= 0x050300
+    return pixmap.setDevicePixelRatio( value );
+    #else
+    Q_UNUSED( pixmap );
+    Q_UNUSED( value );
+    #endif
+}

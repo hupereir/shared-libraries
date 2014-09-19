@@ -29,12 +29,13 @@
 #include "DefaultFolders.h"
 #include "DragMonitor.h"
 #include "GridLayout.h"
+#include "GridLayoutItem.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
 #include "PathEditor.h"
+#include "QtUtil.h"
 #include "Singleton.h"
 #include "TimeStamp.h"
-#include "GridLayoutItem.h"
 #include "Util.h"
 #include "WarningDialog.h"
 #include "XmlDocument.h"
@@ -305,8 +306,8 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         // get pixmap
         const QPixmap pixmap( icon().pixmap( iconSize(), ( valid_ && !hasFlag( LocalFileInfo::Hidden ) ) ? QIcon::Normal:QIcon::Disabled ) );
         const QPoint position(
-            iconRect.x() + 0.5*(iconRect.width() - pixmap.width()),
-            iconRect.y() + 0.5*(iconRect.height() - pixmap.height()) );
+            iconRect.x() + 0.5*(iconRect.width() - pixmap.width()/QtUtil::devicePixelRatio( pixmap ) ),
+            iconRect.y() + 0.5*(iconRect.height() - pixmap.height()/QtUtil::devicePixelRatio( pixmap ) ) );
 
         painter->drawPixmap( position, pixmap );
 

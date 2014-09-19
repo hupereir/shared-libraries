@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "IconViewItem.h"
+#include "QtUtil.h"
 
 #include <QApplication>
 #include <QStyle>
@@ -90,14 +91,15 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
 
     QRectF boundingRect( this->boundingRect() );
     QRectF textRect( boundingRect.adjusted( 0, margin, 0, -margin ) );
+    const qreal dpiRatio( QtUtil::devicePixelRatio( pixmap_ ) );
 
     // draw selection
     widget->style()->drawPrimitive( QStyle::PE_PanelItemViewItem, option, painter, widget );
 
     if( !pixmap_.isNull() )
     {
-        painter->drawPixmap( QPointF( (boundingRect.width() - pixmap_.width())/2, margin ), pixmap_ );
-        textRect.adjust( 0, pixmap_.height() + spacing, 0, 0 );
+        painter->drawPixmap( QPointF( (boundingRect.width() - pixmap_.width()/dpiRatio)/2, margin ), pixmap_ );
+        textRect.adjust( 0, pixmap_.height()/dpiRatio + spacing, 0, 0 );
     }
 
     if( !text_.isEmpty() )
@@ -105,7 +107,7 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
 
         const QString text( preProcessWrap( text_ ) );
 
-        const int maxWidth( qMax( maxTextWidth, pixmap_.width() ) );
+        const int maxWidth( qMax( maxTextWidth, int(pixmap_.width()/dpiRatio) ) );
         QTextOption textOption(Qt::AlignHCenter);
         textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
 
@@ -148,7 +150,7 @@ void IconViewItem::_updateBoundingRect( void )
     boundingRect_ = QRect( 0, 0, 2*margin, 2*margin );
 
     // calculate pixmap size
-    QSize pixmapSize( pixmap_.size() );
+    QSize pixmapSize( pixmap_.size()/QtUtil::devicePixelRatio( pixmap_ ) );
 
     // calculate text size
     QSize textSize;

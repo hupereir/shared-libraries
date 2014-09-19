@@ -23,6 +23,8 @@
 #include "SimpleListView.moc"
 #include "SimpleListView_p.h"
 
+#include "QtUtil.h"
+
 #include <QAbstractItemDelegate>
 #include <QApplication>
 #include <QHeaderView>
@@ -51,8 +53,8 @@ void SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewIte
     const QPen oldPen = painter->pen();
 
     QFontMetrics fontMetrics = painter->fontMetrics();
-    int pixmapWidth = pixmap.width();
-    int pixmapHeight = pixmap.height();
+    int pixmapWidth = pixmap.width()/QtUtil::devicePixelRatio( pixmap );
+    int pixmapHeight = pixmap.height()/QtUtil::devicePixelRatio( pixmap );
 
     QTextLayout textLayout( text, option.font );
     QTextOption textOption( Qt::AlignHCenter );
@@ -109,8 +111,8 @@ QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, cons
 
     if( !pixmap.isNull() )
     {
-        pixmapHeight = pixmap.height();
-        pixmapWidth = pixmap.width();
+        pixmapHeight = pixmap.height()/QtUtil::devicePixelRatio( pixmap );
+        pixmapWidth = pixmap.width()/QtUtil::devicePixelRatio( pixmap );
     }
 
 
