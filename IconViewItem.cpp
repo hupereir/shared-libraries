@@ -91,7 +91,7 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
 
     QRectF boundingRect( this->boundingRect() );
     QRectF textRect( boundingRect.adjusted( 0, margin, 0, -margin ) );
-    const qreal dpiRatio( QtUtil::devicePixelRatio( pixmap_ ) );
+    const qreal dpiRatio( pixmap_.devicePixelRatio() );
 
     // draw selection
     widget->style()->drawPrimitive( QStyle::PE_PanelItemViewItem, option, painter, widget );
@@ -150,7 +150,7 @@ void IconViewItem::_updateBoundingRect( void )
     boundingRect_ = QRect( 0, 0, 2*margin, 2*margin );
 
     // calculate pixmap size
-    QSize pixmapSize( pixmap_.size()/QtUtil::devicePixelRatio( pixmap_ ) );
+    QSize pixmapSize( pixmap_.size()/pixmap_.devicePixelRatio() );
 
     // calculate text size
     QSize textSize;

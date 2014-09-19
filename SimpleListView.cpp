@@ -23,7 +23,7 @@
 #include "SimpleListView.moc"
 #include "SimpleListView_p.h"
 
-#include "QtUtil.h"
+#include "CustomPixmap.h"
 
 #include <QAbstractItemDelegate>
 #include <QApplication>
@@ -49,12 +49,12 @@ void SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewIte
 
     const QString text = index.model()->data( index, Qt::DisplayRole ).toString();
     const QIcon icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
-    const QPixmap pixmap = icon.pixmap( iconSize_, iconSize_ );
+    const CustomPixmap pixmap( icon.pixmap( iconSize_, iconSize_ ) );
     const QPen oldPen = painter->pen();
 
     QFontMetrics fontMetrics = painter->fontMetrics();
-    int pixmapWidth = pixmap.width()/QtUtil::devicePixelRatio( pixmap );
-    int pixmapHeight = pixmap.height()/QtUtil::devicePixelRatio( pixmap );
+    int pixmapWidth = pixmap.width()/pixmap.devicePixelRatio();
+    int pixmapHeight = pixmap.height()/pixmap.devicePixelRatio();
 
     QTextLayout textLayout( text, option.font );
     QTextOption textOption( Qt::AlignHCenter );
@@ -102,7 +102,7 @@ QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, cons
 
     const QString text = index.model()->data( index, Qt::DisplayRole ).toString();
     const QIcon icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
-    const QPixmap pixmap = icon.pixmap( iconSize_, iconSize_ );
+    const CustomPixmap pixmap( icon.pixmap( iconSize_, iconSize_ ) );
 
     QFontMetrics fontMetrics = option.fontMetrics;
     int gap = fontMetrics.height();
@@ -111,8 +111,8 @@ QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, cons
 
     if( !pixmap.isNull() )
     {
-        pixmapHeight = pixmap.height()/QtUtil::devicePixelRatio( pixmap );
-        pixmapWidth = pixmap.width()/QtUtil::devicePixelRatio( pixmap );
+        pixmapHeight = pixmap.height()/pixmap.devicePixelRatio();
+        pixmapWidth = pixmap.width()/pixmap.devicePixelRatio();
     }
 
 

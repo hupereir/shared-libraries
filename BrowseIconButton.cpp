@@ -82,7 +82,7 @@ bool BrowseIconButton::setFile( const QString& file, const bool& check )
 
     // if file, set pixmap to empty
     if( noIconPixmap_.isNull() ) {
-        noIconPixmap_ = CustomPixmap().empty( IconSize( IconSize::Huge ) );
+        noIconPixmap_ = CustomPixmap( IconSize( IconSize::Huge ), CustomPixmap::Transparent );
         setIcon( noIconPixmap_ );
     }
 

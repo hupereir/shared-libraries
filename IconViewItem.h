@@ -23,11 +23,11 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "CustomPixmap.h"
 
 #include <QRect>
 
 #include <QPainter>
-#include <QPixmap>
 #include <QStyleOption>
 
 //! graphics item
@@ -52,7 +52,7 @@ class IconViewItem: public Counter
     //@{
 
     //! icon
-    const QPixmap& pixmap( void ) const
+    const CustomPixmap& pixmap( void ) const
     { return pixmap_; }
 
     //! text
@@ -80,7 +80,7 @@ class IconViewItem: public Counter
     //@{
 
     //! set icon
-    void setPixmap( const QPixmap& pixmap )
+    void setPixmap( const CustomPixmap& pixmap )
     {
         const bool changed( pixmap_.size() != pixmap.size() );
         pixmap_ = pixmap;
@@ -138,7 +138,7 @@ class IconViewItem: public Counter
     bool dirty_;
 
     //! pixmap
-    QPixmap pixmap_;
+    CustomPixmap pixmap_;
 
     //! text
     QString text_;

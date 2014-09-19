@@ -57,24 +57,35 @@ bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
     Debug::Throw( "CustomToolButton::rotate.\n" );
     if( rotation_ == value ) return false;
 
-    // rotate icon if any
-    CustomPixmap pixmap( icon().pixmap( IconSize::Large, QIcon::Normal ) );
-    if( !pixmap.isNull() )
+    const QIcon source( icon() );
+    QIcon copy;
+
+    // loop over available sizes, modes and states
+    QList<QIcon::Mode> modes = { QIcon::Normal, QIcon::Disabled, QIcon::Active, QIcon::Selected };
+    QList<QIcon::State> states = { QIcon::Off, QIcon::On };
+    foreach( const QSize& size, source.availableSizes() )
+    foreach( const QIcon::Mode& mode, modes )
+    foreach( const QIcon::State& state, states )
     {
+        CustomPixmap pixmap( source.pixmap( size, mode, state ) );
+        if( pixmap.isNull() ) continue;
 
         // clockwise rotations
         if(
             ( rotation_ == CustomPixmap::None && value == CustomPixmap::CounterClockwise ) ||
             ( rotation_ == CustomPixmap::Clockwise && value == CustomPixmap::None ) )
-        { setIcon( pixmap.rotate( CustomPixmap::Clockwise ) ); }
-
-        if(
+        {
+            copy.addPixmap( pixmap.rotate( CustomPixmap::Clockwise ), mode, state );
+        } else if(
             ( rotation_ == CustomPixmap::None && value == CustomPixmap::Clockwise ) ||
             ( rotation_ == CustomPixmap::CounterClockwise && value == CustomPixmap::None ) )
-        { setIcon( pixmap.rotate( CustomPixmap::CounterClockwise ) ); }
+        {
+            copy.addPixmap( pixmap.rotate( CustomPixmap::CounterClockwise ), mode, state );
+        }
 
-    } else { Debug::Throw(0) << "CustomToolButton::rotate - null pixmap." << endl; }
+    }
 
+    setIcon( copy );
     rotation_ = value;
     return true;
 }

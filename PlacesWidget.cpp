@@ -304,10 +304,10 @@ void PlacesWidgetItem::_paint( QPainter* painter )
         }
 
         // get pixmap
-        const QPixmap pixmap( icon().pixmap( iconSize(), ( valid_ && !hasFlag( LocalFileInfo::Hidden ) ) ? QIcon::Normal:QIcon::Disabled ) );
+        const CustomPixmap pixmap( icon().pixmap( iconSize(), ( valid_ && !hasFlag( LocalFileInfo::Hidden ) ) ? QIcon::Normal:QIcon::Disabled ) );
         const QPoint position(
-            iconRect.x() + 0.5*(iconRect.width() - pixmap.width()/QtUtil::devicePixelRatio( pixmap ) ),
-            iconRect.y() + 0.5*(iconRect.height() - pixmap.height()/QtUtil::devicePixelRatio( pixmap ) ) );
+            iconRect.x() + 0.5*(iconRect.width() - pixmap.width()/pixmap.devicePixelRatio() ),
+            iconRect.y() + 0.5*(iconRect.height() - pixmap.height()/pixmap.devicePixelRatio() ) );
 
         painter->drawPixmap( position, pixmap );
 

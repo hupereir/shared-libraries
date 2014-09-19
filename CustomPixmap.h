@@ -26,45 +26,51 @@
 
 #include <QPixmap>
 
-//! customized QPixmap to look for icon of given name in list of directory
+//* customized QPixmap to look for icon of given name in list of directory
 class CustomPixmap: public QPixmap, public Counter
 {
 
     public:
 
-    //! constructor
-    CustomPixmap( const QSize& size ):
-        QPixmap( size ),
-        Counter( "CustomPixmap" )
-    {}
+    enum Flag
+    {
+        Transparent = 0x1,
+        HighDpi = 0x2,
+        AllFlags = 0x3
+    };
 
-    //! constructor
+    Q_DECLARE_FLAGS( Flags, Flag )
+
+    //* constructor
+    CustomPixmap( const QSize&, Flags flags );
+
+    //* constructor
     CustomPixmap( const QPixmap& pixmap ):
         QPixmap( pixmap ),
         Counter( "CustomPixmap" )
     {}
 
-    //! constructor
+    //* constructor
     CustomPixmap( const QImage& image ):
         Counter( "CustomPixmap" )
     { *this = fromImage( image ); }
 
-    //! constructor
+    //* constructor
     CustomPixmap( void ):
         Counter( "CustomPixmap" )
     {}
 
-    //! constructor
+    //* constructor
     CustomPixmap( const QString& );
 
-    //! destructor
+    //* destructor
     virtual ~CustomPixmap()
     {}
 
-    //! find first file matching name in list of path
+    //* find first file matching name in list of path
     virtual CustomPixmap find( const QString& );
 
-    //! rotation
+    //* rotation
     enum Rotation
     {
         None,
@@ -72,16 +78,16 @@ class CustomPixmap: public QPixmap, public Counter
         CounterClockwise
     };
 
-    //! rotation
+    //* rotation
     CustomPixmap rotate( const Rotation& value );
 
-    //! returns a transparent pixmap
+    //* returns a transparent pixmap
     virtual CustomPixmap transparent( qreal ) const;
 
-    //! returns a desaturated pixmap
+    //* returns a desaturated pixmap
     virtual CustomPixmap desaturate( void ) const;
 
-    //! corner enumeration for merging pixmap
+    //* corner enumeration for merging pixmap
     enum Corner
     {
         TOP_LEFT,
@@ -91,21 +97,25 @@ class CustomPixmap: public QPixmap, public Counter
         CENTER
     };
 
-    //! merge pixmap, using the specified corner as an anchor
+    //* merge pixmap, using the specified corner as an anchor
     virtual CustomPixmap merge( const QPixmap&, Corner corner = TOP_LEFT ) const;
 
-    //! returns an empty pixmap of given size, of given color and possibly transparent
-    virtual CustomPixmap empty(
-        const QSize& size,
-        const QColor& color = Qt::transparent ) const;
-
-    //! return highlighted pixmap
+    //* return highlighted pixmap
     virtual CustomPixmap highlighted( qreal opacity ) const;
 
-    //! return highlighted (active) pixmap, build from the current
+    //* return highlighted (active) pixmap, build from the current
     virtual CustomPixmap active( void ) const
     { return highlighted( 0.2 ); }
 
+    //* device pixel ratio
+    qreal devicePixelRatio( void ) const;
+
+    //* device pixel ratio
+    void setDevicePixelRatio( qreal );
+
 };
+
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( CustomPixmap::Flags )
 
 #endif

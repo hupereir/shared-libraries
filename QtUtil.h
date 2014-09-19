@@ -57,23 +57,6 @@ class QtUtil
     //* uniconify a top level widget
     static QWidget* uniconify( QWidget* widget );
 
-    //*@name high dpi utilities
-    //@{
-    static QPixmap highDpiPixmap( const QSize& size )
-    { return highDpiPixmap( size.width(), size.height() ); }
-
-    static QPixmap highDpiPixmap( int width )
-    { return highDpiPixmap( width, width ); }
-
-    static QPixmap highDpiPixmap( int width, int height );
-
-    //* device pixel ratio
-    static qreal devicePixelRatio( const QPixmap& );
-
-    //* device pixel ratio
-    static void setDevicePixelRatio( QPixmap&, qreal );
-
-    //@}
 };
 
 #endif

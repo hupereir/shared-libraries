@@ -26,10 +26,28 @@
 #include "PixmapEngine.h"
 #include "QtUtil.h"
 
+#include <QApplication>
 #include <QImage>
 #include <QIcon>
 #include <QPainter>
 #include <QFileIconProvider>
+
+//_________________________________________________
+CustomPixmap::CustomPixmap( const QSize& size, Flags flags ):
+    #if QT_VERSION >= 0x050300
+    QPixmap( flags&HighDpi ? size*qApp->devicePixelRatio() : size ),
+    #else
+    QPixmap( size ),
+    #endif
+    Counter( "CustomPixmap" )
+{
+    #if QT_VERSION >= 0x050300
+    if( flags&HighDpi ) setDevicePixelRatio( qApp->devicePixelRatio() );
+    #endif
+
+    if( flags&Transparent ) fill( Qt::transparent );
+
+}
 
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QString& file ):
@@ -75,10 +93,10 @@ CustomPixmap CustomPixmap::rotate( const CustomPixmap::Rotation& rotation )
 {
     if( rotation == None ) return *this;
 
-    const qreal dpiRatio( QtUtil::devicePixelRatio( *this ) );
+    const qreal dpiRatio( devicePixelRatio() );
 
-    CustomPixmap out = CustomPixmap().empty( QSize( height(), width() ) );
-    QtUtil::setDevicePixelRatio( out, dpiRatio );
+    CustomPixmap out( QSize( height(), width() ), Transparent );
+    out.setDevicePixelRatio( dpiRatio );
     QPainter painter( &out );
 
     // rotate the painter
@@ -182,18 +200,6 @@ CustomPixmap CustomPixmap::merge( const QPixmap& pixmap, Corner corner ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::empty( const QSize& size, const QColor& color ) const
-{
-
-    Debug::Throw( "CustomPixmap::empty.\n" );
-    CustomPixmap out( QtUtil::highDpiPixmap( size ) );
-    if( color.isValid() ) out.fill( color );
-    else out.fill( Qt::transparent );
-    return out;
-
-}
-
-//_________________________________________________
 CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 {
 
@@ -231,4 +237,24 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 
     return out;
 
+}
+
+//______________________________________________________________________________________
+qreal CustomPixmap::devicePixelRatio( void ) const
+{
+    #if QT_VERSION >= 0x050300
+    return QPixmap::devicePixelRatio();
+    #else
+    return 1;
+    #endif
+}
+
+//______________________________________________________________________________________
+void CustomPixmap::setDevicePixelRatio( qreal value )
+{
+    #if QT_VERSION >= 0x050300
+    return QPixmap::setDevicePixelRatio( value );
+    #else
+    Q_UNUSED( value );
+    #endif
 }
