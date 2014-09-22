@@ -46,7 +46,7 @@ macro(add_win32_executable target version)
 
   ### use static gcc linking
   if(${CMAKE_COMPILER_IS_GNUCXX})
-    set_target_properties(${target} PROPERTIES LINK_FLAGS " -static-libgcc -s")
+    set_target_properties(${target} PROPERTIES LINK_FLAGS " -static-libgcc -static-libstdc++ -s")
   endif()
 
   ### get target location
