@@ -24,7 +24,6 @@
 
 #include "TreeView.h"
 #include <QListView>
-using QListView = QListView;
 class SimpleListView: public QListView
 {
 
