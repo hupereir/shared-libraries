@@ -83,7 +83,7 @@ class XcbUtil: private XcbDefines
 
     //! return formated window id
     QString windowIdString( WId id ) const
-    { return QString( "0x%1" ).arg( id, 0, 16 ); }
+    { return QString( "0x%1" ).arg(quint64( id), 0, 16 ); }
 
     //! return true if atom is found in NET_WM_STATE
     bool hasState( QWidget* widget, AtomId atom ) const
