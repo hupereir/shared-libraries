@@ -36,8 +36,7 @@
 //_________________________________________________________
 SimpleListViewDelegate::SimpleListViewDelegate( QObject *parent ):
     QAbstractItemDelegate( parent ),
-    Counter( "SimpleListViewDelegate" ),
-    iconSize_( 32 )
+    Counter( "SimpleListViewDelegate" )
 { Debug::Throw( "SimpleListViewDelegate::SimpleListViewDelegate.\n" ); }
 
 //_________________________________________________________
@@ -47,9 +46,12 @@ void SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewIte
     // check index
     if ( !index.isValid() ) return;
 
+    QStyle* style( QApplication::style() );
+    const int iconSize = style->pixelMetric(QStyle::PM_IconViewIconSize);
+
     const QString text = index.model()->data( index, Qt::DisplayRole ).toString();
     const QIcon icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
-    const CustomPixmap pixmap( icon.pixmap( iconSize_, iconSize_ ) );
+    const CustomPixmap pixmap( icon.pixmap( iconSize, iconSize ) );
     const QPen oldPen = painter->pen();
 
     QFontMetrics fontMetrics = painter->fontMetrics();
@@ -69,7 +71,6 @@ void SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewIte
 
     QStyleOptionViewItemV4 opt(option);
     opt.showDecorationSelected = true;
-    QStyle *style = opt.widget ? opt.widget->style() : QApplication::style();
     style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, opt.widget);
 
     if ( option.state & QStyle::State_Selected )
@@ -100,14 +101,15 @@ QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, cons
 
     if ( !index.isValid() ) return QSize();
 
+    const int iconSize = QApplication::style()->pixelMetric(QStyle::PM_IconViewIconSize);
     const QString text = index.model()->data( index, Qt::DisplayRole ).toString();
     const QIcon icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
-    const CustomPixmap pixmap( icon.pixmap( iconSize_, iconSize_ ) );
+    const CustomPixmap pixmap( icon.pixmap( iconSize, iconSize ) );
 
     QFontMetrics fontMetrics = option.fontMetrics;
     int gap = fontMetrics.height();
     int pixmapHeight = 0;
-    int pixmapWidth = iconSize_;
+    int pixmapWidth = iconSize;
 
     if( !pixmap.isNull() )
     {
@@ -125,7 +127,7 @@ QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, cons
     if ( text.isEmpty() ) height = pixmapHeight;
     else height = pixmapHeight + textHeight + 10;
 
-    width = qMax( textWidth, pixmapWidth ) + 2*gap;
+    width = qMax( textWidth, pixmapWidth ) + gap;
 
     return QSize( width, height );
 }
@@ -171,10 +173,8 @@ void SimpleListViewDelegate::_drawFocus( QPainter *painter, const QStyleOptionVi
 
 //_________________________________________________________
 SimpleListView::SimpleListView( QWidget* parent ):
-    TreeView( parent )
+    QListView( parent )
 {
-    setSortingEnabled( false );
-
     // replace item delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
     setItemDelegate( new SimpleListViewDelegate( this ) );
@@ -188,13 +188,9 @@ SimpleListView::SimpleListView( QWidget* parent ):
 //_________________________________________________________
 void SimpleListView::setModel( QAbstractItemModel* model )
 {
-    TreeView::setModel( model );
+    QListView::setModel( model );
     if( model )
     {
-        // show only first column and hide header
-        setMask( 1 );
-        header()->hide();
-
         // connect model modification to resize
         connect( model, SIGNAL(layoutChanged()), this, SLOT(_adjustWidth()) );
         _adjustWidth();

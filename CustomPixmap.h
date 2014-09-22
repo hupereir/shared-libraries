@@ -42,7 +42,7 @@ class CustomPixmap: public QPixmap, public Counter
     Q_DECLARE_FLAGS( Flags, Flag )
 
     //* constructor
-    CustomPixmap( const QSize&, Flags flags );
+    CustomPixmap( const QSize&, Flags flags = 0 );
 
     //* constructor
     CustomPixmap( const QPixmap& pixmap ):

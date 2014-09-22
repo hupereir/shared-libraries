@@ -54,9 +54,6 @@ class SimpleListViewDelegate : public QAbstractItemDelegate, public Counter
     //! focus
     void _drawFocus( QPainter*, const QStyleOptionViewItem&, const QRect& ) const;
 
-    //! icon size
-    int iconSize_;
-
 };
 
 

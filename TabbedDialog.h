@@ -33,7 +33,7 @@
 #include <QLayout>
 
 class AnimatedStackedWidget;
-class TreeView;
+class SimpleListView;
 
 //! tabbed dialog
 /*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
@@ -65,7 +65,7 @@ class TabbedDialog: public BaseDialog, public Counter
     protected:
 
     //! retrieve list
-    virtual TreeView& _list( void )
+    virtual SimpleListView& _list( void )
     { return *list_; }
 
     //! retrieve stack
@@ -197,7 +197,7 @@ class TabbedDialog: public BaseDialog, public Counter
     Model model_;
 
     //! Configuration list
-    TreeView* list_;
+    SimpleListView* list_;
 
     //! Widget stack
     AnimatedStackedWidget* stack_;

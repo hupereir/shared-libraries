@@ -55,8 +55,8 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     layout->addLayout( hLayout );
 
     // add widgets
-    hLayout->addWidget( list_ = new SimpleListView( this ), 0 );
-    hLayout->addWidget( stack_ = new AnimatedStackedWidget(this), 1 );
+    hLayout->addWidget( list_ = new SimpleListView( this ) );
+    hLayout->addWidget( stack_ = new AnimatedStackedWidget(this) );
 
     // configure list
     list_->setProperty( "_kde_side_panel_view", true );

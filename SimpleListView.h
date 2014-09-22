@@ -23,9 +23,9 @@
 *******************************************************************************/
 
 #include "TreeView.h"
-
-//! single column list view
-class SimpleListView: public TreeView
+#include <QListView>
+using QListView = QListView;
+class SimpleListView: public QListView
 {
 
     Q_OBJECT
