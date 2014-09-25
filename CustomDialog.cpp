@@ -41,11 +41,9 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     // create vbox layout
     QVBoxLayout* layout( new QVBoxLayout() );
     setLayout( layout );
-    layout->setSpacing(5);
     layout->setMargin(10);
 
     mainLayout_ = new QVBoxLayout();
-    mainLayout_->setSpacing(5);
     mainLayout_->setMargin(0);
     layout->addLayout( mainLayout_, 1 );
 
@@ -60,7 +58,6 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
 
     // insert hbox layout for buttons
     buttonLayout_ = new QBoxLayout( QBoxLayout::LeftToRight );
-    buttonLayout_->setSpacing(5);
     buttonLayout_->setMargin(0);
     layout->addLayout( buttonLayout_, 0 );
 

@@ -37,7 +37,6 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     Debug::Throw( "UserSelectionFrame::UserSelectionFrame\n" );
     setLayout( new QHBoxLayout() );
     layout()->setMargin(0);
-    layout()->setSpacing(5);
     layout()->addWidget( comboBox_ = new CustomComboBox( this ) );
 
     comboBox_->setMinimumSize( QSize( 100, 0 ) );

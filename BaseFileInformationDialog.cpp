@@ -55,12 +55,10 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     tabWidget_->addTab( mainPage_ = new QWidget(), tr( "General" ) );
     pageLayout_ = new QVBoxLayout();
     pageLayout_->setMargin(5);
-    pageLayout_->setSpacing(5);
     mainPage_->setLayout( pageLayout_ );
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
-    hLayout->setSpacing(5);
     pageLayout_->addLayout( hLayout );
     pageLayout_->addStretch();
 
@@ -72,12 +70,10 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     QVBoxLayout* vLayout= new QVBoxLayout();
     vLayout->setMargin(0);
-    vLayout->setSpacing(5);
     hLayout->addLayout( vLayout );
     hLayout->addStretch();
 
     gridLayout_ = new GridLayout();
-    gridLayout_->setSpacing( 5 );
     gridLayout_->setMaxCount( 2 );
     gridLayout_->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     vLayout->addLayout( gridLayout_ );
@@ -108,7 +104,6 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     tabWidget_->addTab( box = new QWidget(), tr( "Permissions" ) );
     layout = new QVBoxLayout();
     layout->setMargin(5);
-    layout->setSpacing( 5 );
     box->setLayout( layout );
 
     layout->addWidget( permissionsWidget_ = new FilePermissionsWidget( box ) );
@@ -124,7 +119,6 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     GridLayout* gridLayout = new GridLayout();
     gridLayout->setMargin(0);
-    gridLayout->setSpacing( 5 );
     gridLayout->setMaxCount( 2 );
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     layout->addItem( gridLayout );

@@ -37,7 +37,6 @@ BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* paren
 
     QVBoxLayout* vLayout = new QVBoxLayout();
     vLayout->setMargin(0);
-    vLayout->setSpacing(5);
     setLayout( vLayout );
 
     vLayout->addWidget( new QLabel( tr( "Select the information to be displayed:" ), this ) );

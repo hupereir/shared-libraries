@@ -53,7 +53,6 @@ OptionDialog::OptionDialog( QWidget* parent ):
     model_.setReadOnly( false );
 
     QHBoxLayout* layout = new QHBoxLayout();
-    layout->setSpacing(20);
     layout->setMargin(5);
     mainLayout().addLayout( layout );
 

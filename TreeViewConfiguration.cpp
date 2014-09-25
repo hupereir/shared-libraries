@@ -44,7 +44,6 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     // create vbox layout
     setLayout( new QVBoxLayout() );
     layout()->setMargin(5);
-    layout()->setSpacing( 2 );
 
     // size
     QCheckBox *checkbox;

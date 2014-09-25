@@ -33,7 +33,6 @@ InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
 
     // icon
     QHBoxLayout *hLayout( new QHBoxLayout() );
-    hLayout->setSpacing(10);
     hLayout->setMargin(0);
     mainLayout().addLayout( hLayout );
 

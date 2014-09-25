@@ -50,7 +50,6 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     QVBoxLayout* layout = new QVBoxLayout();
     setLayout( layout );
     layout->setMargin(0);
-    layout->setSpacing( 5 );
 
     QGroupBox* box;
     // group box for additional options
@@ -58,11 +57,9 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     QVBoxLayout* vLayout = new QVBoxLayout();
     vLayout->setMargin(5);
-    vLayout->setSpacing(5);
     box->setLayout( vLayout );
 
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setSpacing(5);
     hLayout->setMargin(0);
     vLayout->addLayout( hLayout );
 
@@ -86,7 +83,6 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     // group box for file list
     layout->addWidget( box = new QGroupBox( tr( "Files" ), this ), 1 );
     box->setLayout( new QHBoxLayout() );
-    box->layout()->setSpacing(5);
     box->layout()->setMargin(5);
 
     box->layout()->addWidget( list_ = new TreeView( box ) );
@@ -98,7 +94,6 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
 
     vLayout = new QVBoxLayout();
-    vLayout->setSpacing(5);
     vLayout->setMargin(0);
     box->layout()->addItem( vLayout );
 

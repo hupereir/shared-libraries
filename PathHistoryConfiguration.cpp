@@ -39,7 +39,6 @@ PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
     QVBoxLayout* layout = new QVBoxLayout();
     setLayout( layout );
     layout->setMargin(0);
-    layout->setSpacing(5);
 
     OptionCheckBox* checkbox;
     layout->addWidget( checkbox = new OptionCheckBox( tr( "Save/restore history across sessions" ), this, "SAVE_HISTORY" ) );
@@ -47,7 +46,6 @@ PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
-    hLayout->setSpacing(5);
     layout->addLayout( hLayout );
 
     hLayout->addSpacing( _checkBoxSpacing() );
