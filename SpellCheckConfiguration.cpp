@@ -47,7 +47,6 @@ namespace SpellCheck
         Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
 
         GridLayout* gridLayout( new GridLayout() );
-        gridLayout->setSpacing( 5 );
         gridLayout->setMargin( 5 );
         gridLayout->setMaxCount( 3 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
