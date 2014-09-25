@@ -123,7 +123,6 @@ namespace Svg
         Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
 
         QVBoxLayout* vLayout = new QVBoxLayout();
-        vLayout->setSpacing(2);
         vLayout->setMargin(0);
         setLayout( vLayout );
 
@@ -149,7 +148,6 @@ namespace Svg
         stackedWidget->addWidget( box = new QWidget() );
 
         box->setLayout( vLayout = new QVBoxLayout() );
-        vLayout->setSpacing(5);
         vLayout->setMargin(0);
 
         Transparency::TransparencyConfiguration* transparencyConfiguration;
@@ -161,7 +159,6 @@ namespace Svg
         // svg
         stackedWidget->addWidget( box = new QWidget() );
         box->setLayout( vLayout = new QVBoxLayout() );
-        vLayout->setSpacing(5);
         vLayout->setMargin(0);
 
         // SVG file
@@ -178,7 +175,6 @@ namespace Svg
         #if defined(Q_OS_LINUX)
         stackedWidget->addWidget( box = new QWidget() );
         box->setLayout( vLayout = new QVBoxLayout() );
-        vLayout->setSpacing(5);
         vLayout->setMargin(0);
 
         hLayout = new QHBoxLayout();
@@ -186,7 +182,6 @@ namespace Svg
         vLayout->addLayout( hLayout );
 
         GridLayout* gridLayout = new GridLayout();
-        gridLayout->setSpacing(5);
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
         gridLayout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
