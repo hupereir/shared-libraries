@@ -54,6 +54,7 @@ namespace Base
         // customize layout
         layout()->setMargin(0);
         layout()->setSpacing(0);
+        buttonLayout().setMargin(5);
 
         // tell dialog to delete when close
         setAttribute( Qt::WA_DeleteOnClose );
@@ -62,6 +63,7 @@ namespace Base
 
         QHBoxLayout *layout = new QHBoxLayout();
         layout->setMargin(0);
+        layout->setSpacing(2);
         mainLayout().addLayout( layout );
 
         // add help list
