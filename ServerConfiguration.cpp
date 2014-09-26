@@ -41,6 +41,7 @@ namespace Server
         Debug::Throw( "ServerConfiguration::ServerConfiguration.\n" );
 
         setLayout( new QVBoxLayout() );
+        layout()->setSpacing(5);
         layout()->setMargin(0);
 
         // generic objects
@@ -53,6 +54,8 @@ namespace Server
         else layout()->addWidget( box = new QGroupBox( title, this ) );
 
         GridLayout* gridLayout = new GridLayout();
+        gridLayout->setSpacing(5);
+        gridLayout->setMargin(5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         box->setLayout( gridLayout );
