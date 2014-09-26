@@ -64,6 +64,8 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // button layout
     buttonLayout_ = new QBoxLayout( QBoxLayout::LeftToRight );
+    buttonLayout_->setMargin(5);
+    buttonLayout_->setSpacing(5);
     layout->addLayout( buttonLayout_, 0 );
 
     // connections
@@ -88,14 +90,17 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     QWidget* base = new QWidget();
     base->setLayout( new QVBoxLayout() );
     base->layout()->setMargin(0);
+    base->layout()->setSpacing(10);
 
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
+    hLayout->setSpacing(5);
     base->layout()->addItem( hLayout );
 
     // tooltip label
     QLabel *label( new QLabel( base ) );
     label->setText( tooltip.isEmpty() ? title:tooltip );
+    label->setMargin(5);
 
     // update font
     QFont font( label->font() );
@@ -113,6 +118,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
 
         // add icon
         label = new QLabel( base );
+        label->setMargin(5);
         label->setPixmap( icon.pixmap( IconSize( IconSize::Medium ) ) );
         label->setAlignment( Qt::AlignRight|Qt::AlignTop );
         hLayout->addWidget( label, 0 );
@@ -146,6 +152,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     { list_->selectionModel()->setCurrentIndex( _model().index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
 
     QVBoxLayout* layout( new QVBoxLayout() );
+    layout->setSpacing( 5 );
     layout->setMargin( 0 );
     main->setLayout( layout );
 
@@ -158,6 +165,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
         // the created widget is return
         QWidget* contents( new QWidget( main ) );
         contents->setLayout( new QVBoxLayout() );
+        contents->layout()->setSpacing(5);
         contents->layout()->setMargin(0);
 
         layout->addWidget( contents );

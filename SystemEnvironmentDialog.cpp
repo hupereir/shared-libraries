@@ -37,6 +37,7 @@ CustomDialog( parent, CloseButton )
     setOptionName( "SYSTEM_ENVIRONMENT_DIALOG" );
 
     layout()->setMargin(0);
+    buttonLayout().setMargin(5);
 
     // tell dialog to delete when close
     setAttribute( Qt::WA_DeleteOnClose );

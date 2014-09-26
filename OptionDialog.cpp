@@ -44,6 +44,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     setOptionName( "OPTION_DIALOG" );
 
     layout()->setMargin(0);
+    buttonLayout().setMargin(5);
 
     // tell dialog to delete when close
     setAttribute( Qt::WA_DeleteOnClose );
@@ -52,6 +53,8 @@ OptionDialog::OptionDialog( QWidget* parent ):
     model_.setReadOnly( false );
 
     QHBoxLayout* layout = new QHBoxLayout();
+    layout->setSpacing(20);
+    layout->setMargin(5);
     mainLayout().addLayout( layout );
 
     //! try load Question icon

@@ -505,12 +505,14 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
 
         box = new QGroupBox( tr( "Animations" ), parent );
         box->setLayout( new QVBoxLayout() );
+        box->layout()->setMargin(5);
 
     }
 
     parent->layout()->addWidget( box );
 
     GridLayout* gridLayout = new GridLayout();
+    gridLayout->setSpacing(5);
     gridLayout->setMaxCount(2);
     gridLayout->setMargin(0);
     box->layout()->addItem( gridLayout );
@@ -597,6 +599,7 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
 
         // customize layout
         pixmapPathDialog_->layout()->setMargin(0);
+        pixmapPathDialog_->buttonLayout().setMargin(5);
 
     }
 

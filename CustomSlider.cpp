@@ -37,6 +37,7 @@ CustomSlider::CustomSlider( QWidget* parent ):
 
     setLayout( new QHBoxLayout() );
     layout()->setMargin(0);
+    layout()->setSpacing(5);
 
     layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
     layout()->addWidget( spinBox_ = new QSpinBox( this ) );

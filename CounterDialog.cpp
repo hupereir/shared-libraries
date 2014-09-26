@@ -41,6 +41,7 @@ CustomDialog( parent, OkButton, Qt::Window )
     setOptionName( "COUNTER_DIALOG" );
 
     layout()->setMargin(0);
+    buttonLayout().setMargin(10);
     mainLayout().addWidget( list_ = new AnimatedTreeView( this ) );
     list_->setModel( &model_ );
 

@@ -40,6 +40,7 @@ FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permission
 
     GridLayout* gridLayout = new GridLayout();
     gridLayout->setMargin(0);
+    gridLayout->setSpacing( 5 );
     gridLayout->setMaxCount( 4 );
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     setLayout( gridLayout );

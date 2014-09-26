@@ -50,10 +50,13 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // create vbox layout
     setLayout( new QVBoxLayout() );
+    layout()->setMargin( 10 );
+    layout()->setSpacing( 5 );
 
     // edition
     layout()->addItem( editorLayout_ = new QGridLayout() );
     _editorLayout().setMargin( 0 );
+    _editorLayout().setSpacing( 5 );
 
     // add editor
     QLabel *label = new QLabel( tr( "Text to find:" ), this );
@@ -71,6 +74,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // locations
     GridLayout* gridLayout( new GridLayout() );
+    gridLayout->setSpacing( 5 );
     gridLayout->setMargin( 0 );
     gridLayout->setMaxCount( 2 );
 
@@ -90,10 +94,12 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // notification label
     layout()->addWidget( label_ = new QLabel( this ) );
+    label_->setMargin( 2 );
 
     // location layout
     layout()->addItem( locationLayout_ = new QHBoxLayout() );
     _locationLayout().setMargin(0);
+    _locationLayout().setSpacing(5);
 
     // horizontal separator
     QFrame* frame( new QFrame( this ) );
@@ -103,6 +109,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     // buttons
     layout()->addItem( buttonLayout_ = new QHBoxLayout() );
     _buttonLayout().setMargin( 0 );
+    _buttonLayout().setSpacing( 5 );
     _buttonLayout().addStretch(1);
 
     // insert Find button

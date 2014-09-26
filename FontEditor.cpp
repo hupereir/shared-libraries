@@ -45,6 +45,7 @@ FontEditor::FontEditor( QWidget *parent ):
 
     QHBoxLayout *layout( new QHBoxLayout() );
     layout->setMargin(0);
+    layout->setSpacing(2);
     setLayout( layout );
 
     label_ =  new QLabel( this );
