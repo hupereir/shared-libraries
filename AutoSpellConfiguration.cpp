@@ -42,6 +42,8 @@ namespace SpellCheck
         Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
 
         GridLayout* gridLayout( new GridLayout() );
+        gridLayout->setSpacing( 5 );
+        gridLayout->setMargin( 5 );
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         setLayout( gridLayout );

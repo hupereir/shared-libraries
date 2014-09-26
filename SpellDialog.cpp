@@ -55,16 +55,19 @@ namespace SpellCheck
         // horizontal layout for suggestions and buttons
         QHBoxLayout* hLayout = new QHBoxLayout();
         hLayout->setMargin(0);
+        hLayout->setSpacing(10);
         mainLayout().addLayout( hLayout, 1 );
 
         // insert left vertical box
         QVBoxLayout *vLayout = new QVBoxLayout();
         vLayout->setMargin( 0 );
+        vLayout->setSpacing(5);
         hLayout->addLayout( vLayout );
 
         // grid for text editors
         GridLayout *gridLayout = new GridLayout();
         gridLayout->setMargin( 0 );
+        gridLayout->setSpacing(5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         vLayout->addLayout( gridLayout, 0 );
@@ -89,6 +92,7 @@ namespace SpellCheck
         // grid layout for dictionary and filter
         gridLayout = new GridLayout();
         gridLayout->setMargin( 0 );
+        gridLayout->setSpacing(5);
         gridLayout->setMaxCount( 3 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
 
@@ -128,6 +132,7 @@ namespace SpellCheck
         // right vbox
         vLayout = new QVBoxLayout();
         vLayout->setMargin( 0 );
+        vLayout->setSpacing(5);
         hLayout->addLayout( vLayout );
 
         // add word button
