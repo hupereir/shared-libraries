@@ -372,7 +372,6 @@ PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
 
     // layout
     QHBoxLayout* hLayout = new QHBoxLayout();
-    hLayout->setMargin( 10 );
     setLayout( hLayout );
 
     hLayout->addWidget( iconLabel_ = new QLabel( this ) );
@@ -388,7 +387,6 @@ PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
     QFont font( nameLabel_->font() );
     font.setBold( true );
     nameLabel_->setFont( font );
-    nameLabel_->setMargin( 1 );
 
     // separator
     vLayout->addWidget( separator_ = new QFrame( this ) );
@@ -515,7 +513,6 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
 
     // main layout
     QVBoxLayout* vLayout = new QVBoxLayout();
-    vLayout->setMargin(2);
     vLayout->setSpacing(0);
     setLayout( vLayout );
 

@@ -50,7 +50,6 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // create vbox layout
     setLayout( new QVBoxLayout() );
-    layout()->setMargin( 10 );
 
     // edition
     layout()->addItem( editorLayout_ = new QGridLayout() );
@@ -91,7 +90,6 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // notification label
     layout()->addWidget( label_ = new QLabel( this ) );
-    label_->setMargin( 2 );
 
     // location layout
     layout()->addItem( locationLayout_ = new QHBoxLayout() );

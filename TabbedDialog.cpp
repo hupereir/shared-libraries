@@ -64,7 +64,6 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // button layout
     buttonLayout_ = new QBoxLayout( QBoxLayout::LeftToRight );
-    buttonLayout_->setMargin(5);
     layout->addLayout( buttonLayout_, 0 );
 
     // connections
@@ -97,7 +96,6 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     // tooltip label
     QLabel *label( new QLabel( base ) );
     label->setText( tooltip.isEmpty() ? title:tooltip );
-    label->setMargin(5);
 
     // update font
     QFont font( label->font() );
@@ -115,7 +113,6 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
 
         // add icon
         label = new QLabel( base );
-        label->setMargin(5);
         label->setPixmap( icon.pixmap( IconSize( IconSize::Medium ) ) );
         label->setAlignment( Qt::AlignRight|Qt::AlignTop );
         hLayout->addWidget( label, 0 );

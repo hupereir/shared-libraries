@@ -64,7 +64,6 @@ TabWidget::TabWidget( QTabWidget* parent ):
     setLayout( gridLayout );
 
     gridLayout->addLayout( mainLayout_ = new QVBoxLayout(), 0, 0, 1, 1 );
-    mainLayout_->setMargin(5);
 
     // vertical box
     box_ = new QWidget( this );

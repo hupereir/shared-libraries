@@ -46,7 +46,6 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     // customize layout
     layout()->setMargin(0);
     layout()->setSpacing(0);
-    buttonLayout().setMargin(5);
 
     tabWidget_ = new AnimatedTabWidget( this );
     mainLayout().addWidget( tabWidget_ );
@@ -54,7 +53,6 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     // general information
     tabWidget_->addTab( mainPage_ = new QWidget(), tr( "General" ) );
     pageLayout_ = new QVBoxLayout();
-    pageLayout_->setMargin(5);
     mainPage_->setLayout( pageLayout_ );
 
     QHBoxLayout* hLayout = new QHBoxLayout();
@@ -103,7 +101,6 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     QVBoxLayout* layout;
     tabWidget_->addTab( box = new QWidget(), tr( "Permissions" ) );
     layout = new QVBoxLayout();
-    layout->setMargin(5);
     box->setLayout( layout );
 
     layout->addWidget( permissionsWidget_ = new FilePermissionsWidget( box ) );

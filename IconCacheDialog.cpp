@@ -40,7 +40,6 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
     setOptionName( "ICON_CACHE_DIALOG" );
 
     layout()->setMargin(0);
-    buttonLayout().setMargin(5);
 
     // insert main vertical box
     list_ = new AnimatedTreeView( this );
