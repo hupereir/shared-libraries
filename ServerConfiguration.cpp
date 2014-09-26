@@ -53,7 +53,6 @@ namespace Server
         else layout()->addWidget( box = new QGroupBox( title, this ) );
 
         GridLayout* gridLayout = new GridLayout();
-        gridLayout->setMargin(5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         box->setLayout( gridLayout );
