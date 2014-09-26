@@ -54,7 +54,6 @@ namespace Base
         // customize layout
         layout()->setMargin(0);
         layout()->setSpacing(0);
-        buttonLayout().setMargin(5);
 
         // tell dialog to delete when close
         setAttribute( Qt::WA_DeleteOnClose );
