@@ -70,6 +70,7 @@ TreeView::TreeView( QWidget* parent ):
     setAllColumnsShowFocus( true );
     setRootIsDecorated( false );
     setSortingEnabled( true );
+    setAnimated( false );
 
     #if QT_VERSION >= 0x040400
     setExpandsOnDoubleClick( false );

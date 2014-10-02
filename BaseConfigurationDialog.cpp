@@ -512,7 +512,7 @@ QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
     parent->layout()->addWidget( box );
 
     GridLayout* gridLayout = new GridLayout();
-    gridLayout->setSpacing(5);
+    gridLayout->setSpacing(6);
     gridLayout->setMaxCount(2);
     gridLayout->setMargin(0);
     box->layout()->addItem( gridLayout );
