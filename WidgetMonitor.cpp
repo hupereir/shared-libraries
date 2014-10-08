@@ -19,8 +19,8 @@
 *
 *******************************************************************************/
 
-#include "XmlOptions.h"
 #include "WidgetMonitor.h"
+#include "XmlOptions.h"
 
 //_________________________________________________________
 WidgetMonitor::WidgetMonitor( QWidget* parent ):

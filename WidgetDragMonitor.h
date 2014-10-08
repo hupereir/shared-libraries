@@ -29,77 +29,34 @@
 #include <QTimerEvent>
 #include <QWidget>
 
-//! used to automatically save size of top level widgets
+//* used to automatically save size of top level widgets
 class WidgetDragMonitor: public QObject, public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     WidgetDragMonitor( QWidget* );
 
-    //! mode
-    enum Mode
-    {
-        None = 0,
-        Size = 1<<0,
-        Position = 1<<1
-    };
-
-    Q_DECLARE_FLAGS( Modes, Mode );
-
-    //! mode
-    void setMode( Modes value )
-    { mode_ = value; }
-
-    //! size option name
-    virtual void setOptionName( const QString& );
-
-    //! size hint
-    /*! an invalid size is returned when option name is not set */
-    QSize sizeHint( void ) const;
-
-    //! position
-    QPoint position( void ) const;
-
-    //! event filter
+    //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
     protected:
 
-    //! timer event
+    //* timer event
     /* need to save updated window size */
     virtual void timerEvent( QTimerEvent* );
 
     private:
 
-    //! true when option name was set
-    bool _hasOptionName( void ) const
-    { return !widthOptionName_.isEmpty(); }
-
-    //! save window size
-    void _saveWindowSize( void ) const;
-
-    //! save position
-    void _saveWindowPosition( void ) const;
-
-    //! resize timer
+    //* resize timer
     QBasicTimer timer_;
 
-    //! mode
-    Modes mode_;
+    //* click position
+    QPoint dragPosition_;
 
-    //! window size option name
-    QString widthOptionName_;
-
-    //! window size option name
-    QString heightOptionName_;
-
-    //! position option name
-    QString xOptionName_;
-
-    //! position option name
-    QString yOptionName_;
+    //* true when move is enabled
+    bool isDragging_;
 
 };
 

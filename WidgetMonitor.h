@@ -29,16 +29,16 @@
 #include <QTimerEvent>
 #include <QWidget>
 
-//! used to automatically save size of top level widgets
+//* used to automatically save size of top level widgets
 class WidgetMonitor: public QObject, public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     WidgetMonitor( QWidget* );
 
-    //! mode
+    //* mode
     enum Mode
     {
         None = 0,
@@ -48,57 +48,57 @@ class WidgetMonitor: public QObject, public Counter
 
     Q_DECLARE_FLAGS( Modes, Mode );
 
-    //! mode
+    //* mode
     void setMode( Modes value )
     { mode_ = value; }
 
-    //! size option name
+    //* size option name
     virtual void setOptionName( const QString& );
 
-    //! size hint
+    //* size hint
     /*! an invalid size is returned when option name is not set */
     QSize sizeHint( void ) const;
 
-    //! position
+    //* position
     QPoint position( void ) const;
 
-    //! event filter
+    //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
     protected:
 
-    //! timer event
+    //* timer event
     /* need to save updated window size */
     virtual void timerEvent( QTimerEvent* );
 
     private:
 
-    //! true when option name was set
+    //* true when option name was set
     bool _hasOptionName( void ) const
     { return !widthOptionName_.isEmpty(); }
 
-    //! save window size
+    //* save window size
     void _saveWindowSize( void ) const;
 
-    //! save position
+    //* save position
     void _saveWindowPosition( void ) const;
 
-    //! resize timer
+    //* resize timer
     QBasicTimer timer_;
 
-    //! mode
+    //* mode
     Modes mode_;
 
-    //! window size option name
+    //* window size option name
     QString widthOptionName_;
 
-    //! window size option name
+    //* window size option name
     QString heightOptionName_;
 
-    //! position option name
+    //* position option name
     QString xOptionName_;
 
-    //! position option name
+    //* position option name
     QString yOptionName_;
 
 };
