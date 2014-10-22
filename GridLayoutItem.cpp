@@ -38,14 +38,6 @@ GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, ItemFlags f
     if( flags & Elide ) value_ = new ElidedLabel( parent );
     else value_ = new QLabel( parent );
 
-    // adjust font
-    if( flags & Bold )
-    {
-        QFont font( value_->font() );
-        font.setWeight( QFont::Bold );
-        value_->setFont( font );
-    }
-
     if( flags & Selectable )
     {
         const Qt::TextInteractionFlags defaultFlags( QLabel().textInteractionFlags() );
