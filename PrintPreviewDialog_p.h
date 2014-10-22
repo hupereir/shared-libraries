@@ -35,7 +35,7 @@
 namespace Print
 {
 
-    //! handles page orientation and page mode
+    //* handles page orientation and page mode
     class OptionMenu: public QMenuBar, public Counter
     {
 
@@ -43,10 +43,10 @@ namespace Print
 
         public:
 
-        //! constructor
+        //* constructor
         OptionMenu( QWidget* );
 
-        //! destructor
+        //* destructor
         virtual ~OptionMenu( void )
         {}
 
@@ -56,25 +56,25 @@ namespace Print
 
         protected Q_SLOTS:
 
-        //! orientation changed
+        //* orientation changed
         void _setOrientation( QAction* );
 
-        //! page mode
+        //* page mode
         void _setPageMode( QAction* );
 
         private:
 
-        //! actions maps
+        //* actions maps
         using OrientationActionMap = QMap<QAction*, QPrinter::Orientation>;
         OrientationActionMap orientationActions_;
 
-        //! actions map
+        //* actions map
         using PageModeActionMap = QMap<QAction*, BasePrintHelper::PageMode>;
         PageModeActionMap pageModeActions_;
 
     };
 
-    //! handles page navigation
+    //* handles page navigation
     class NavigationWidget: public QWidget, public Counter
     {
 
@@ -82,64 +82,64 @@ namespace Print
 
         public:
 
-        //! constructor
+        //* constructor
         NavigationWidget( QWidget* );
 
-        //! destructor
+        //* destructor
         virtual ~NavigationWidget( void )
         {}
 
         int pages( void )
         { return pages_; }
 
-        //! set page
+        //* set page
         void setPage( int );
 
-        //! event filter
+        //* event filter
         bool eventFilter( QObject*, QEvent* );
 
         public Q_SLOTS:
 
-        //! set pages
+        //* set pages
         void setPages( int );
 
         Q_SIGNALS:
 
-        //! new page selected
+        //* new page selected
         void pageChanged( int );
 
         protected Q_SLOTS:
 
-        //! previous page
+        //* previous page
         void _previousPage( void );
 
-        //! next page
+        //* next page
         void _nextPage( void );
 
-        //! update page
+        //* update page
         void _updatePage( void );
 
-        //! update buttons
+        //* update buttons
         void _updateButtons( void );
 
         private:
 
-        //! number of pages
+        //* number of pages
         int pages_;
 
-        //! editor
+        //* editor
         QLineEdit* editor_;
 
-        //! previous page button
+        //* previous page button
         QToolButton* previousPageButton_;
 
-        //! next page button
+        //* next page button
         QToolButton* nextPageButton_;
 
-        //! label
+        //* label
         QLabel* label_;
 
-        //! valudator
+        //* valudator
         QIntValidator validator_;
 
     };

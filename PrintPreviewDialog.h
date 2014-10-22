@@ -21,7 +21,7 @@
 *
 *******************************************************************************/
 
-#include "BaseDialog.h"
+#include "CustomDialog.h"
 #include "BasePrintHelper.h"
 
 #include <QPrintPreviewWidget>
@@ -36,49 +36,49 @@ namespace Print
     class NavigationWidget;
 }
 
-class PrintPreviewDialog: public BaseDialog
+class PrintPreviewDialog: public CustomDialog
 {
 
     Q_OBJECT
 
     public:
 
-    //! constructor
-    PrintPreviewDialog( QWidget* = 0 );
+    //* constructor
+    PrintPreviewDialog( QWidget* = 0, CustomDialog::Flags = 0 );
 
-    //! destructor
+    //* destructor
     virtual ~PrintPreviewDialog( void )
     {}
 
-    //! set print helper
+    //* set print helper
     void setHelper( QObject* );
 
-    //! return preview widget
+    //* return preview widget
     QPrintPreviewWidget& previewWidget( void ) const
     { return *previewWidget_; }
 
     public Q_SLOTS:
 
-    //! show/hide menu
+    //* show/hide menu
     void showMenu( void );
 
-    //! show/hide menu
+    //* show/hide menu
     void hideMenu( void );
 
     protected Q_SLOTS:
 
-    //! update page
+    //* update page
     void _updatePage( void );
 
     private:
 
-    //! option widget
+    //* option widget
     Print::OptionMenu* optionMenu_;
 
-    //! navigation widget
+    //* navigation widget
     Print::NavigationWidget* navigationWidget_;
 
-    //! preview widget
+    //* preview widget
     QPrintPreviewWidget* previewWidget_;
 
 };

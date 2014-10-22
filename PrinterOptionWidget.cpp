@@ -108,6 +108,22 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
 }
 
 //_________________________________________________________________
+void PrinterOptionWidget::setHelper( BasePrintHelper* helper )
+{
+    helper_ = helper;
+    previewButton_->setEnabled( helper_ );
+
+    // update orientation
+    for( OrientationButtonMap::const_iterator iter = orientationButtons_.constBegin(); iter != orientationButtons_.constEnd(); ++iter )
+    { if( iter.value() == helper_->orientation() ) iter.key()->setChecked( true ); }
+
+    // update page mode
+    for( PageModeButtonMap::const_iterator iter = pageModeButtons_.constBegin(); iter != pageModeButtons_.constEnd(); ++iter )
+    { if( iter.value() == helper_->pageMode() ) iter.key()->setChecked( true ); }
+
+}
+
+//_________________________________________________________________
 void PrinterOptionWidget::_setOrientation( QAbstractButton* button )
 {
     orientation_ = orientationButtons_[button];

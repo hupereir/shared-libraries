@@ -274,21 +274,23 @@ namespace Print
 }
 
 //_________________________________________________________________
-PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
-    BaseDialog( parent )
+PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags flags ):
+    CustomDialog( parent, flags )
 {
     Debug::Throw( "PrintPreviewDialog::PrintPreviewDialog.\n" );
     setOptionName( "PRINT_PREVIEW_DIALOG" );
 
-    QVBoxLayout* layout( new QVBoxLayout() );
-    layout->setMargin(0);
-    setLayout( layout );
+    layout()->setMargin(0);
+    buttonLayout().setMargin(5);
 
-    layout->addWidget( optionMenu_ = new Print::OptionMenu( this ) );
-    layout->addWidget( previewWidget_ = new QPrintPreviewWidget( this ) );
+    mainLayout().setMargin(0);
+    mainLayout().setSpacing(0);
+
+    mainLayout().addWidget( optionMenu_ = new Print::OptionMenu( this ) );
+    mainLayout().addWidget( previewWidget_ = new QPrintPreviewWidget( this ) );
     previewWidget_->setZoomMode( QPrintPreviewWidget::FitToWidth );
 
-    layout->addWidget( navigationWidget_ = new Print::NavigationWidget( this ), 0, Qt::AlignCenter );
+    mainLayout().addWidget( navigationWidget_ = new Print::NavigationWidget( this ), 0, Qt::AlignCenter );
     connect( navigationWidget_, SIGNAL(pageChanged(int)), previewWidget_, SLOT(setCurrentPage(int)) );
 
     // close accelerator
@@ -305,6 +307,13 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent ):
         // hide horizontal scrollbar
         graphicsViews.front()->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
+    }
+
+    // customize buttons
+    if( hasOkButton() )
+    {
+        okButton().setText( tr( "Print ..." ) );
+        okButton().setIcon( IconEngine::get( IconNames::Print ) );
     }
 
     resize( 600, 700 );

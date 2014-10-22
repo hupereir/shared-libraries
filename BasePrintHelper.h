@@ -29,14 +29,14 @@
 #include <QPainter>
 #include <QPrinter>
 
-//! printing utility
+//* printing utility
 class BasePrintHelper: public QObject
 {
 
     Q_OBJECT
 
     public:
-    //! constructor
+    //* constructor
     BasePrintHelper( QObject* parent = 0 ):
         QObject( parent ),
         orientation_( QPrinter::Portrait ),
@@ -46,11 +46,11 @@ class BasePrintHelper: public QObject
         now_( TimeStamp::now() )
     { Debug::Throw( "BasePrintHelper::BasePrintHelper.\n" ); };
 
-    //! destructor
+    //* destructor
     virtual ~BasePrintHelper( void )
     {}
 
-    //! multipage mode
+    //* multipage mode
     enum PageMode
     {
         SinglePage,
@@ -58,45 +58,45 @@ class BasePrintHelper: public QObject
         FourPages
     };
 
-    //! setup pages
+    //* setup pages
     void setupPage( QPrinter* );
 
-    //!@name accessors
+    //*@name accessors
     //@{
-        //! orientation
+        //* orientation
     QPrinter::Orientation orientation( void ) const
     { return orientation_; }
 
-    //! page mode
+    //* page mode
     PageMode pageMode( void ) const
     { return pageMode_; }
 
-    //! page number
+    //* page number
     int pageNumber( void ) const
     { return pageNumber_; }
 
-    //! page number
+    //* page number
     int sheetNumber( void ) const
     { return sheetNumber_; }
 
-    //! file
+    //* file
     const File& file( void ) const
     { return file_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! file
+    //* file
     void setFile( const File& file )
     { file_ = file; }
 
-    //! set page number manually
+    //* set page number manually
     void setPageNumber( int value )
     { pageNumber_ = value; }
 
-    //! set sheet number manually
+    //* set sheet number manually
     void setSheetNumber( int value )
     { sheetNumber_ = value; }
 
@@ -104,54 +104,54 @@ class BasePrintHelper: public QObject
 
     public Q_SLOTS:
 
-    //! orientation
+    //* orientation
     void setOrientation( QPrinter::Orientation value )
     { orientation_ = value; }
 
-    //! mode
+    //* mode
     void setPageMode( BasePrintHelper::PageMode value )
     { pageMode_ = value; }
 
     Q_SIGNALS:
 
-    //! emmited when number of pages has changed
+    //* emmited when number of pages has changed
     void pageCountChanged( int );
 
     protected:
 
-    //! return pageRect
+    //* return pageRect
     const QRect& _pageRect( void ) const
     { return pageRect_; }
 
-    //! increment page
+    //* increment page
     void _newPage( QPrinter*, QPainter* );
 
     private:
 
-    //! orientation
+    //* orientation
     QPrinter::Orientation orientation_;
 
-    //! page mode
+    //* page mode
     PageMode pageMode_;
 
-    //! rects
+    //* rects
     QRect pageRect_;
     QRect headerRect_;
     QRect footerRect_;
 
-    //! list of pages viewports
+    //* list of pages viewports
     QList<QRect> pages_;
 
-    //! page
+    //* page
     int pageNumber_;
 
-    //! sheet
+    //* sheet
     int sheetNumber_;
 
-    //! time stamp
+    //* time stamp
     TimeStamp now_;
 
-    //! file
+    //* file
     File file_;
 
 };

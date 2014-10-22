@@ -37,66 +37,62 @@ class PrinterOptionWidget: public QWidget, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     PrinterOptionWidget( QWidget* = 0 );
 
-    //! destructor
+    //* destructor
     virtual ~PrinterOptionWidget( void )
     {}
 
-    //! orientation
+    //* orientation
     QPrinter::Orientation orientation( void ) const
     { return orientation_; }
 
-    //! page mode
+    //* page mode
     BasePrintHelper::PageMode pageMode( void ) const
     { return pageMode_; }
 
-    //! helper
-    void setHelper( BasePrintHelper* helper )
-    {
-        helper_ = helper;
-        previewButton_->setEnabled( helper_ );
-    }
+    //* helper
+    void setHelper( BasePrintHelper* helper );
 
     Q_SIGNALS:
 
-    //! emmited when orientation is changed
+    //* emmited when orientation is changed
     void orientationChanged( QPrinter::Orientation );
 
-    //! emmited when pageMode is changed
+    //* emmited when pageMode is changed
     void pageModeChanged( BasePrintHelper::PageMode );
 
     protected Q_SLOTS:
 
-    //! orientation
+    //* orientation
     void _setOrientation( QAbstractButton* );
 
-    //! page mode
+    //* page mode
     void _setPageMode( QAbstractButton* );
 
-    //! preview
+    //* preview
     void _preview( void );
 
     private:
 
-    //! helper
+    //* helper
     BasePrintHelper* helper_;
 
-    //! orientation
+    //* orientation
     QPrinter::Orientation orientation_;
 
-    //! page mode
+    //* page mode
     BasePrintHelper::PageMode pageMode_;
 
-    //! preview button
+    //* preview button
     QPushButton* previewButton_;
 
-    //! Buttons maps
+    //* Buttons maps
     using OrientationButtonMap = QMap<QAbstractButton*, QPrinter::Orientation>;
     OrientationButtonMap orientationButtons_;
 
-    //! Buttons map
+    //* Buttons map
     using PageModeButtonMap = QMap<QAbstractButton*, BasePrintHelper::PageMode>;
     PageModeButtonMap pageModeButtons_;
 
