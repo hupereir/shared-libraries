@@ -70,6 +70,12 @@ endif()
 
 target_link_libraries(base-notifications ${QT_LIBRARIES} base base-qt)
 
+if(USE_QT5)
+
+  qt5_use_modules(base-notifications Widgets)
+
+endif()
+
 if(LIBNOTIFY_FOUND)
   target_link_libraries(base-notifications ${LIBNOTIFY_LIBRARIES})
 endif()
