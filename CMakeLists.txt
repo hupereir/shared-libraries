@@ -9,8 +9,10 @@ set(BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR})
 ########### Qt configuration #########
 if(USE_QT5)
 
-  find_package(Qt5Widgets REQUIRED)
   find_package(Qt5Gui REQUIRED)
+  find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5Xml REQUIRED)
+  find_package(Qt5PrintSupport REQUIRED)
 
   # needed to access QPA classes
   include_directories(${Qt5Widgets_PRIVATE_INCLUDE_DIRS})
