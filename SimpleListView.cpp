@@ -178,11 +178,6 @@ SimpleListView::SimpleListView( QWidget* parent ):
     // replace item delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
     setItemDelegate( new SimpleListViewDelegate( this ) );
-
-    // change font
-    QFont boldFont( font() );
-    boldFont.setBold( true );
-    setFont( boldFont );
 }
 
 //_________________________________________________________
