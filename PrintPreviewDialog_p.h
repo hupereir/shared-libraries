@@ -50,6 +50,12 @@ namespace Print
         virtual ~OptionMenu( void )
         {}
 
+        //* set orientation
+        void setOrientation( QPrinter::Orientation ) const;
+
+        //* set page mode
+        void setPageMode( BasePrintHelper::PageMode ) const;
+
         Q_SIGNALS:
         void orientationChanged( QPrinter::Orientation );
         void pageModeChanged( BasePrintHelper::PageMode );

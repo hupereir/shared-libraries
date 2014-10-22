@@ -93,6 +93,20 @@ namespace Print
     }
 
     //_________________________________________________________________
+    void OptionMenu::setOrientation( QPrinter::Orientation orientation ) const
+    {
+        for( OrientationActionMap::const_iterator iter = orientationActions_.constBegin(); iter != orientationActions_.constEnd(); ++iter )
+        { if( iter.value() == orientation ) iter.key()->setChecked( true ); }
+    }
+
+    //_________________________________________________________________
+    void OptionMenu::setPageMode( BasePrintHelper::PageMode pageMode ) const
+    {
+        for( PageModeActionMap::const_iterator iter = pageModeActions_.constBegin(); iter != pageModeActions_.constEnd(); ++iter )
+        { if( iter.value() == pageMode ) iter.key()->setChecked( true ); }
+    }
+
+    //_________________________________________________________________
     void OptionMenu::_setOrientation( QAction* action )
     { emit orientationChanged( orientationActions_[action] ); }
 
