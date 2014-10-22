@@ -30,7 +30,7 @@
 #include <QBoxLayout>
 #include <QLayout>
 
-//! customized QDialog
+//* customized QDialog
 class CustomDialog: public BaseDialog, public Counter
 {
 
@@ -38,7 +38,7 @@ class CustomDialog: public BaseDialog, public Counter
 
     public:
 
-    //! mask used to define number of buttons in customized dialogs
+    //* mask used to define number of buttons in customized dialogs
     enum Flag
     {
         None = 0,
@@ -50,71 +50,71 @@ class CustomDialog: public BaseDialog, public Counter
 
     Q_DECLARE_FLAGS( Flags, Flag );
 
-    //! constructor
+    //* constructor
     CustomDialog(
         QWidget* = 0x0,
         Flags = Flags( OkButton | CancelButton ),
         Qt::WindowFlags = 0);
 
-    //! destructor
+    //* destructor
     virtual ~CustomDialog( void )
     {}
 
-    //! retrieve main vbox
+    //* retrieve main vbox
     QBoxLayout& mainLayout( void ) const
     { return *mainLayout_; }
 
-    //! returns true if OK button is valid
+    //* returns true if OK button is valid
     bool hasSeparator( void ) const
     { return separator_; }
 
-    //! separator
+    //* separator
     QWidget& separator( void ) const
     { return *separator_; }
 
-    //! retrieve button layout
+    //* retrieve button layout
     QBoxLayout& buttonLayout( void ) const
     { return *buttonLayout_; }
 
-    //! returns true if OK button is valid
+    //* returns true if OK button is valid
     bool hasOkButton( void ) const
     { return okButton_; }
 
-    //! retrieve OK button
+    //* retrieve OK button
     QPushButton& okButton( void ) const
     { return *okButton_; }
 
-    //! returns true if close button is valid
+    //* returns true if close button is valid
     bool hasCloseButton( void ) const
     { return okButton_; }
 
-    //! retrieve close button
+    //* retrieve close button
     QPushButton& closeButton( void ) const
     { return *okButton_; }
 
-    //! returns true if Cancel button is valid
+    //* returns true if Cancel button is valid
     bool hasCancelButton( void ) const
     { return cancelButton_; }
 
-    //! retrieve CANCEL button
+    //* retrieve CANCEL button
     QPushButton& cancelButton( void ) const
     { return *cancelButton_; }
 
     private:
 
-    //! main layout
+    //* main layout
     QBoxLayout *mainLayout_;
 
-    //! separator if any
+    //* separator if any
     QWidget* separator_;
 
-    //! button hbox
+    //* button hbox
     QBoxLayout *buttonLayout_;
 
-    //! ok QPushButton, if any
+    //* ok QPushButton, if any
     QPushButton *okButton_;
 
-    //! cancel QPushButton, if any
+    //* cancel QPushButton, if any
     QPushButton *cancelButton_;
 
 };
