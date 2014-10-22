@@ -10,6 +10,7 @@ set(BASE_HELP_SOVERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR})
 if(USE_QT5)
 
   find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5Xml REQUIRED)
 
 else()
 
