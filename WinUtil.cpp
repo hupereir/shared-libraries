@@ -25,8 +25,14 @@
 #include <QLibrary>
 
 #if defined(Q_OS_WIN)
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0500
+#endif
+
+#ifndef WINVER
 #define WINVER 0x0500
+#endif
+
 #include <windows.h>
 #endif
 
