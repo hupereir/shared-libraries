@@ -10,6 +10,9 @@ set(BASE_SERVER_SOVERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MIN
 if(USE_QT5)
 
   find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5Network REQUIRED)
+  find_package(Qt5Xml REQUIRED)
+  find_package(Qt5DBus)
 
 else()
 
@@ -70,6 +73,9 @@ target_link_libraries(base-server ${QT_LIBRARIES} base base-qt)
 
 if(USE_QT5)
 
-  qt5_use_modules(base-server Widgets Network Xml DBus)
+  qt5_use_modules(base-server Widgets Network Xml)
+  if(Qt5DBus_FOUND )
+    qt5_use_modules(base-server DBus)
+  endif()
 
 endif()
