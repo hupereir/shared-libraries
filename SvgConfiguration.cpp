@@ -123,11 +123,11 @@ namespace Svg
         Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
 
         QVBoxLayout* vLayout = new QVBoxLayout();
-        vLayout->setSpacing(2);
         vLayout->setMargin(0);
         setLayout( vLayout );
 
         QHBoxLayout* hLayout = new QHBoxLayout();
+        hLayout->setMargin( 2 );
         vLayout->addLayout( hLayout );
 
         QLabel* label;
@@ -146,11 +146,8 @@ namespace Svg
 
         // flat background configuration
         QWidget* box;
-        stackedWidget->addWidget( box = new QWidget() );
-
+        stackedWidget->addWidget( box = new QGroupBox( tr( "Flat Background Settings" ) ) );
         box->setLayout( vLayout = new QVBoxLayout() );
-        vLayout->setSpacing(5);
-        vLayout->setMargin(0);
 
         Transparency::TransparencyConfiguration* transparencyConfiguration;
         vLayout->addWidget( transparencyConfiguration = new Transparency::TransparencyConfiguration( box, Transparency::TransparencyConfiguration::Background ));
@@ -159,10 +156,8 @@ namespace Svg
         vLayout->addStretch(1);
 
         // svg
-        stackedWidget->addWidget( box = new QWidget() );
+        stackedWidget->addWidget( box = new QGroupBox( tr( "Decorated Background Settings" ) ) );
         box->setLayout( vLayout = new QVBoxLayout() );
-        vLayout->setSpacing(5);
-        vLayout->setMargin(0);
 
         // SVG file
         vLayout->addWidget( label = new QLabel( tr( "Svg files:" ), box ) );
@@ -176,10 +171,8 @@ namespace Svg
 
         // plasma interface
         #if defined(Q_OS_LINUX)
-        stackedWidget->addWidget( box = new QWidget() );
+        stackedWidget->addWidget( box = new QGroupBox( tr( "System Background Settings" ) ) );
         box->setLayout( vLayout = new QVBoxLayout() );
-        vLayout->setSpacing(5);
-        vLayout->setMargin(0);
 
         hLayout = new QHBoxLayout();
         hLayout->setMargin(0);
