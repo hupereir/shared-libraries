@@ -10,6 +10,7 @@ set(BASE_SOVERSION ${BASE_VERSION_MAJOR}.${BASE_VERSION_MINOR})
 if(USE_QT5)
 
   find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5Network REQUIRED)
 
 else()
 
