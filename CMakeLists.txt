@@ -14,6 +14,10 @@ if(USE_QT5)
   find_package(Qt5Xml REQUIRED)
   find_package(Qt5PrintSupport REQUIRED)
 
+  if(WIN32)
+  find_package(Qt5WinExtras REQUIRED)
+  endif()
+
   # needed to access QPA classes
   include_directories(${Qt5Widgets_PRIVATE_INCLUDE_DIRS})
 
@@ -242,5 +246,8 @@ target_link_libraries(base-qt ${QT_LIBRARIES} base)
 if(USE_QT5)
 
   qt5_use_modules(base-qt Gui Widgets Xml PrintSupport)
+  if(WIN32)
+    qt5_use_modules(base-qt WinExtras)
+  endif()
 
 endif()

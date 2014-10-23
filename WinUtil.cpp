@@ -25,12 +25,17 @@
 #include <QLibrary>
 
 #if defined(Q_OS_WIN)
+
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0500
 #endif
 
 #ifndef WINVER
 #define WINVER 0x0500
+#endif
+
+#if QT_VERSION >= 0x050000
+#include <QtWinExtras>
 #endif
 
 #include <windows.h>
@@ -130,10 +135,16 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
     blend.BlendFlags          = 0;
     blend.SourceConstantAlpha = int( opacity*255 );
     blend.AlphaFormat         = AC_SRC_ALPHA;
+
+    #if QT_VERSION >= 0x050000
+    hBitmap = QtWin::toHBITMAP(pixmap, QtWin::HBitmapPremultipliedAlpha);
+    #else
     hBitmap = pixmap.toWinHBITMAP(QPixmap::PremultipliedAlpha);
+    #endif
+
     oldBitmap = (HBITMAP)SelectObject(memDc, hBitmap);
 
-    UpdateLayeredWindow( target_->winId(), screenDc,  &topPos,  &size, memDc,  &pointSource, 0, &blend, ULW_ALPHA);
+    UpdateLayeredWindow( HWND(target_->winId()), screenDc,  &topPos,  &size, memDc,  &pointSource, 0, &blend, ULW_ALPHA);
 
     ReleaseDC( NULL, screenDc);
     if (hBitmap != NULL)
@@ -175,7 +186,7 @@ void WinUtil::enableBlurBehind( const Base::Margins& margins )
     blurBehind.hRgnBlur = region;
 
     // assign blur to window
-    private_->blurBehindFunction_(target_->winId(), &blurBehind);
+    private_->blurBehindFunction_( HWND(target_->winId()), &blurBehind);
 
     #endif
 
@@ -214,7 +225,7 @@ bool WinUtil::hasFlag( long int flag ) const
 {
 
     #if defined(Q_OS_WIN)
-    return GetWindowLong( target_->winId(), GWL_EXSTYLE) & flag;
+    return GetWindowLong( HWND(target_->winId()), GWL_EXSTYLE) & flag;
     #else
     return false;
     #endif
@@ -226,8 +237,8 @@ void WinUtil::setFlag( long int flag, bool value ) const
 {
 
     #if defined(Q_OS_WIN)
-    if( value ) SetWindowLong( target_->winId(), GWL_EXSTYLE, GetWindowLong( target_->winId(), GWL_EXSTYLE) | flag);
-    else SetWindowLong( target_->winId(), GWL_EXSTYLE, GetWindowLong( target_->winId(), GWL_EXSTYLE) & (~flag));
+    if( value ) SetWindowLong( HWND(target_->winId()), GWL_EXSTYLE, GetWindowLong( HWND(target_->winId()), GWL_EXSTYLE) | flag);
+    else SetWindowLong( HWND(target_->winId()), GWL_EXSTYLE, GetWindowLong( HWND(target_->winId()), GWL_EXSTYLE) & (~flag));
     #endif
 
 }
