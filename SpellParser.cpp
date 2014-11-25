@@ -49,7 +49,7 @@ namespace SpellCheck
         { return position_ < other.position_; }
 
         //! list
-        typedef QList<Position> List;
+        using List=QList<Position>;
 
     };
 
