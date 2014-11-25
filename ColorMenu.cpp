@@ -40,10 +40,10 @@ ColorMenu::ColorMenu( QWidget* parent ):
 }
 
 //_______________________________________________
-ColorMenu::ColorSet ColorMenu::colors( void ) const
+Base::Color::Set ColorMenu::colors( void ) const
 {
 
-    ColorSet out;
+    Base::Color::Set out;
     for( ColorMap::const_iterator iter = colors_.begin(); iter != colors_.end(); ++iter )
     { out.insert( iter.key() ); }
 

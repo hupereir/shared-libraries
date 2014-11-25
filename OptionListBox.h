@@ -51,6 +51,10 @@ class OptionListBox: public QWidget, public OptionWidget
     virtual ~OptionListBox( void )
     {}
 
+    //! list
+    TreeView& list( void ) const
+    { return *list_; }
+
     //! read value from option
     void read( const Options& options );
 
@@ -95,10 +99,6 @@ class OptionListBox: public QWidget, public OptionWidget
 
     //! set model
     void _setModel( OptionModel* );
-
-    //! list
-    TreeView& _list( void ) const
-    { return *list_; }
 
     private:
 

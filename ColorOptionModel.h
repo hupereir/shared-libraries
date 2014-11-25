@@ -1,5 +1,5 @@
-#ifndef Color_h
-#define Color_h
+#ifndef ColorOptionModel_h
+#define ColorOptionModel_h
 
 // $Id$
 
@@ -22,46 +22,42 @@
 *
 *******************************************************************************/
 
-#include <QColor>
-#include <QTextStream>
+#include "OptionModel.h"
 
-namespace Base
+#include "Color.h"
+#include <QIcon>
+#include <QMap>
+
+//! Color option model. Stores Color option information for display in lists
+class ColorOptionModel: public OptionModel
 {
 
-    // color utility
-    class Color: public QColor
-    {
+    public:
 
-        public:
+    //! constructor
+    ColorOptionModel( QObject* parent = 0 ):
+        OptionModel( parent )
+    {}
 
-        //! constructor
-        Color( void )
-        {}
+    //! destructor
+    virtual ~ColorOptionModel( void )
+    {}
 
-        //! constructor
-        Color( const QString& value )
-        { setNamedColor( value ); }
+    // return job for a given index
+    virtual QVariant data( const QModelIndex&, int ) const;
 
-        //! constructor
-        Color( const QColor& color ):
-            QColor( color )
-        {}
+    private:
 
-        //! merge argument color with intensity to this one
-        QColor merge( const QColor& , qreal = 0.5 ) const;
+    //! icon cache
+    using IconCache = QMap<Base::Color, QIcon>;
 
-        //! add alpha
-        QColor addAlpha( qreal = 0.5 ) const;
+    //! icon cache
+    static IconCache& _icons( void );
 
-        //! less than operator
-        bool operator < (const Color& ) const;
+    //! icon matching color
+    static QIcon _icon( const Base::Color& );
 
-    };
 
 };
-
-//! streamers
-QTextStream& operator << ( QTextStream&, const Base::Color& );
-QTextStream& operator >> ( QTextStream&, Base::Color& );
 
 #endif

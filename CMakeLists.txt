@@ -85,10 +85,13 @@ set(base_qt_SOURCES
   BrowseIconButton.cpp
   BusyWidget.cpp
   ClockLabel.cpp
+  ColorComboBox.cpp
   ColorDisplay.cpp
   ColorGrabButton.cpp
   ColorGrabObject.cpp
   ColorMenu.cpp
+  ColorOptionListBox.cpp
+  ColorOptionModel.cpp
   ColumnSelectionMenu.cpp
   ColumnSortingMenu.cpp
   ContextMenu.cpp

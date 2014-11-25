@@ -25,7 +25,6 @@
 #include "Color.h"
 #include "Counter.h"
 #include "Debug.h"
-#include "QOrderedSet.h"
 
 #include <QMenu>
 #include <QPaintEvent>
@@ -33,92 +32,89 @@
 #include <QHash>
 #include <QMap>
 
-//! Color selection menu
+//* Color selection menu
 class ColorMenu: public QMenu, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! sorted set of colors
-    using ColorSet = QOrderedSet<Base::Color>;
+    //* constructor
+    ColorMenu( QWidget* );
 
-    //! constructor
-    ColorMenu( QWidget* parent );
-
-    //! destructor
+    //* destructor
     virtual ~ColorMenu( void )
-    { Debug::Throw( "ColorMenu::~ColorMenu.\n" ); }
+    {}
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! retrieve colors
-    ColorSet colors() const;
+    //* retrieve colors
+    Base::Color::Set colors() const;
 
-    //! retrieves last selected color
+    //* retrieves last selected color
     QColor lastColor( void ) const
     { return lastColor_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! clear
+    //* clear
     void reset( void )
     { colors_.clear(); }
 
-    //! add
+    //* add
     void add( QColor );
 
     //@}
 
     Q_SIGNALS:
 
-    //! emmited when a color is selected
+    //* emmited when a color is selected
     void selected( QColor );
 
     protected:
 
-    //! paint event (overloaded)
+    //* paint event (overloaded)
     void paintEvent( QPaintEvent* event );
 
     private Q_SLOTS:
 
-    //! display colors when about to show
+    //* display colors when about to show
     void _display( void );
 
-    //! adds a new color
+    //* adds a new color
     void _new( void );
 
-    //! select the no color choice
+    //* select the no color choice
     /*! emits colorSelected with an invalid color */
     void _default( void );
 
-    //! get color associated to action, emit ColorSelected
+    //* get color associated to action, emit ColorSelected
     void _selected( QAction* );
 
     private:
 
-    //! add a color
+    //* add a color
     void add( QString );
 
-    //! map colors to display pixmap
+    //* map colors to display pixmap
     using ColorMap = QMap<Base::Color, QBrush>;
 
-    //! list of loaded colors
+    //* list of loaded colors
     ColorMap colors_;
 
-    //! map actions to colors
+    //* map actions to colors
     using ActionMap = QHash<QAction*, QColor>;
 
-    //! map actions to colors
+    //* map actions to colors
     ActionMap actions_;
 
-    //! keep track of the last selected color
+    //* keep track of the last selected color
     QColor lastColor_;
 
 };
