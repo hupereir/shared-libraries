@@ -68,14 +68,9 @@ namespace Base
 
         // add help list
         list_ = new AnimatedTreeView( this );
-        // list_->setProperty( "_kde_side_panel_view", true );
         list_->setMaximumWidth(150);
         layout->addWidget( list_ );
         list_->setModel( &model_ );
-
-        // replace item delegateg
-        if( list_->itemDelegate() ) list_->itemDelegate()->deleteLater();
-        list_->setItemDelegate( new TextEditionDelegate( this ) );
 
         list_->setSortingEnabled( false );
         list_->header()->hide();
