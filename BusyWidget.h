@@ -40,7 +40,7 @@ class BusyWidget: public QWidget, public Counter
 
     public:
 
-    //! position
+    //* position
     enum Location
     {
         Center,
@@ -50,42 +50,42 @@ class BusyWidget: public QWidget, public Counter
         BottomRight
     };
 
-    //! constructor
+    //* constructor
     BusyWidget( QWidget* = 0, Location = Center );
 
-    //! destructor
+    //* destructor
     virtual ~BusyWidget( void )
     {}
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! angle
+    //* angle
     virtual qreal angle( void ) const
     { return angle_; }
 
-    //! opacity
+    //* opacity
     int opacity( void ) const
     { return opacity_; }
 
-    //! size
+    //* size
     virtual QSize minimumSizeHint( void ) const
     { return QSize( 2*radius_+border_, 2*radius_+border_ ); }
 
-    //! size
+    //* size
     virtual QSize sizeHint( void ) const
     { return minimumSizeHint(); }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! delay
+    //* delay
     virtual void setDelay( int value )
     { delay_ = value; }
 
-    //! angle
+    //* angle
     virtual void setAngle( qreal value )
     {
         if( angle_ == value ) return;
@@ -93,66 +93,66 @@ class BusyWidget: public QWidget, public Counter
         update();
     }
 
-    //! opacity
+    //* opacity
     virtual void setOpacity( int );
 
     //@}
 
-    //! event filter
+    //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
     public Q_SLOTS:
 
-    //! start
+    //* start
     virtual void start( void );
 
-    //! stop
+    //* stop
     virtual void stop( void );
 
     protected:
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
-    //! timer event
+    //* timer event
     virtual void timerEvent( QTimerEvent* );
 
-    //! adjust position based on parent
+    //* adjust position based on parent
     void _adjustPosition( void );
 
     private:
 
-    //! animation
+    //* animation
     QPropertyAnimation* animation_;
 
-    //! basic time
+    //* basic time
     QBasicTimer timer_;
 
-    //! painter path
+    //* painter path
     QPainterPath path_;
 
-    //! location
+    //* location
     Location location_;
 
-    //! delay
+    //* delay
     int delay_;
 
-    //! radius
+    //* radius
     int radius_;
 
-    //! thickness
+    //* thickness
     int thickness_;
 
-    //! border
+    //* border
     int border_;
 
-    //! margin
+    //* margin
     int margin_;
 
-    //! angle
+    //* angle
     qreal angle_;
 
-    //! opacity
+    //* opacity
     int opacity_;
 
 };
