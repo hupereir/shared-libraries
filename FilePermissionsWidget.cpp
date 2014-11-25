@@ -40,12 +40,11 @@ FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permission
 
     GridLayout* gridLayout = new GridLayout();
     gridLayout->setMargin(0);
-    gridLayout->setSpacing( 5 );
     gridLayout->setMaxCount( 4 );
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     setLayout( gridLayout );
 
-    gridLayout->addWidget( new QLabel( tr( "<b>Permissions: </b>" ), this ) );
+    gridLayout->addWidget( new QLabel( tr( "Permissions: " ), this ) );
     gridLayout->addWidget( new QLabel( tr( "Read" ), this ), Qt::AlignHCenter );
     gridLayout->addWidget( new QLabel( tr( "Write" ), this ), Qt::AlignHCenter );
     gridLayout->addWidget( new QLabel( tr( "Execute" ), this ), Qt::AlignHCenter );

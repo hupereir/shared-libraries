@@ -195,6 +195,19 @@ void SimpleListView::setModel( QAbstractItemModel* model )
 //_______________________________________________
 void SimpleListView::_adjustWidth()
 {
-    if( model() )
-    { setFixedWidth( sizeHintForColumn(0) + 25 ); }
+//     if( model() )
+//     { setFixedWidth( sizeHintForColumn(0) + 25 ); }
+
+    if (!model()) {
+        return;
+    }
+
+    int rows = model()->rowCount();
+
+    int width = 0;
+    for (int i = 0; i < rows; ++i) {
+        width = qMax(width, sizeHintForIndex(model()->index(i, 0)).width());
+    }
+
+    setFixedWidth(width + 25);
 }

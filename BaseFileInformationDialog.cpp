@@ -114,13 +114,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     layout->addWidget( permissionsWidget_ = new FilePermissionsWidget( box ) );
 
     // user and group
-    QLabel* label;
-    layout->addWidget( label = new QLabel( tr( "Ownership:" ), box ) );
-    {
-        QFont font( label->font() );
-        font.setWeight( QFont::Bold );
-        label->setFont( font );
-    }
+    layout->addWidget( new QLabel( tr( "Ownership:" ), box ) );
 
     GridLayout* gridLayout = new GridLayout();
     gridLayout->setMargin(0);

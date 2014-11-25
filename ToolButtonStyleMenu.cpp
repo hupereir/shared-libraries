@@ -36,8 +36,8 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     // install values
-    typedef QPair<QString, int > NamePair;
-    typedef QList< NamePair > List;
+    using NamePair=QPair<QString, int >;
+    using List=QList< NamePair >;
     List actionNames;
     actionNames
         << NamePair( tr( "System Default" ), -1 )
