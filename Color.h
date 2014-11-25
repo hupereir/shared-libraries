@@ -22,6 +22,8 @@
 *
 *******************************************************************************/
 
+#include "QOrderedSet.h"
+
 #include <QColor>
 #include <QTextStream>
 
@@ -35,7 +37,7 @@ namespace Base
         public:
 
         //! constructor
-        explicit Color( void )
+        Color( void )
         {}
 
         //! constructor
@@ -56,9 +58,12 @@ namespace Base
         //! less than operator
         bool operator < (const Color& ) const;
 
-    };
+        //* sorted set of colors
+        using Set = QOrderedSet<Color>;
 
-};
+    };
+    
+}
 
 //! streamers
 QTextStream& operator << ( QTextStream&, const Base::Color& );

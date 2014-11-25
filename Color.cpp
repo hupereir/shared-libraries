@@ -62,7 +62,7 @@ namespace Base
 //__________________________________________________________
 QTextStream& operator << (QTextStream& out, const Base::Color& color )
 {
-    out << QString("%1,%2,%3,%4").arg( color.red() ).arg( color.green() ).arg( color.blue() ).arg( color.alpha() );
+    out << color.red() << "," << color.green() << "," << color.blue() << "," << color.alpha();
     return out;
 }
 
