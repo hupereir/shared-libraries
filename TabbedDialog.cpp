@@ -110,20 +110,20 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     // add to layout
     hLayout->addWidget( label, 1 );
 
-    if( !icon.isNull() )
-    {
-
-        // change label alignment
-        label->setAlignment( Qt::AlignLeft|Qt::AlignTop );
-
-        // add icon
-        label = new QLabel( base );
-        label->setMargin(5);
-        label->setPixmap( icon.pixmap( IconSize( IconSize::Medium ) ) );
-        label->setAlignment( Qt::AlignRight|Qt::AlignTop );
-        hLayout->addWidget( label, 0 );
-
-    }
+//     if( !icon.isNull() )
+//     {
+//
+//         // change label alignment
+//         label->setAlignment( Qt::AlignLeft|Qt::AlignTop );
+//
+//         // add icon
+//         label = new QLabel( base );
+//         label->setMargin(5);
+//         label->setPixmap( icon.pixmap( IconSize( IconSize::Medium ) ) );
+//         label->setAlignment( Qt::AlignRight|Qt::AlignTop );
+//         hLayout->addWidget( label, 0 );
+//
+//     }
 
     // create scroll area
     QScrollArea* scrollArea = new QScrollArea();
