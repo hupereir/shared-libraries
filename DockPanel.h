@@ -103,7 +103,7 @@ class DockPanel: public QWidget, public Counter
 
     private:
 
-    //! vertical layout for main_ widget
+    //! vertical layout for main widget
     QVBoxLayout* mainLayout_;
 
     //! dock title

@@ -59,10 +59,10 @@ namespace Private
 
         Q_OBJECT
 
-            public:
+        public:
 
-            //! constructor
-            LocalWidget( QWidget* parent );
+        //! constructor
+        LocalWidget( QWidget* parent );
 
         //! destructor
         virtual ~LocalWidget( void )
@@ -127,7 +127,7 @@ namespace Private
         //! timer event [overloaded]
         virtual void timerEvent( QTimerEvent* );
 
-        //! paint event
+        //! resize event
         virtual void resizeEvent( QResizeEvent* );
 
         //! update actions
