@@ -23,7 +23,6 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "MultipleClickCounter.h"
 #include "WidgetDragMonitor.h"
 
 #include <QBasicTimer>

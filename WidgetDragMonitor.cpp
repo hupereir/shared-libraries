@@ -98,8 +98,12 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
             if( !(target_ && object == target_ ) ) return false;
 
             event->accept();
-            if( !enabled_ ) emit stateChangeRequest();
-            else {
+            if( !enabled_ )
+            {
+
+                emit stateChangeRequest();
+
+            } else {
 
                 if( !_startDrag() )
                 {
@@ -129,7 +133,7 @@ void WidgetDragMonitor::timerEvent( QTimerEvent* event )
     if( !enabled_ ) emit stateChangeRequest();
     if( !enabled_ ) return;
 
-    _startDrag();
+    QTimer::singleShot( 100, this, SLOT(_startDrag()));
 
 }
 
