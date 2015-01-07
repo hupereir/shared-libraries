@@ -97,14 +97,16 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
 
             if( !(target_ && object == target_ ) ) return false;
 
-            if( !enabled_ ) emit stateChangeRequest();
-            if( !enabled_ ) return false;
-
             event->accept();
-            if( !_startDrag() )
-            {
-                const QPoint position( target_->window() == target_  ? dragPosition_ : target_->mapTo( target_->window(), dragPosition_ ) );
-                target_->window()->move( mouseEvent->globalPos() - position );
+            if( !enabled_ ) emit stateChangeRequest();
+            else {
+
+                if( !_startDrag() )
+                {
+                    const QPoint position( target_->window() == target_  ? dragPosition_ : target_->mapTo( target_->window(), dragPosition_ ) );
+                    target_->window()->move( mouseEvent->globalPos() - position );
+                }
+
             }
 
             return true;
