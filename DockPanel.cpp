@@ -131,7 +131,7 @@ void DockPanel::_toggleDock( void )
     } else {
 
         // change parent
-        const QPoint position( mapToGlobal( QPoint( 0, 0 ) ) );
+        const QPoint position( panel_->mapToGlobal( QPoint( 0, 0 ) ) );
         panel_->setParent( dock_ );
         dock_->layout()->addWidget( panel_ );
         panel_->show();
@@ -139,7 +139,7 @@ void DockPanel::_toggleDock( void )
         dock_->show();
 
         // move and resize
-        dock_->move( position );
+        dock_->move( position - panel_->geometry().topLeft() );
 
         reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( true );
 

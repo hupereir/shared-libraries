@@ -63,10 +63,16 @@ class WidgetDragMonitor: public QObject, public Counter
     public Q_SLOTS:
 
     void toggleState( void )
-    { enabled_ = !enabled_; }
+    {
+        enabled_ = !enabled_;
+        if( !enabled_ ) _resetDrag();
+    }
 
     void setEnabled( bool value )
-    { enabled_ = value; }
+    {
+        enabled_ = value;
+        if( !enabled_ ) _resetDrag();
+    }
 
     protected:
 
