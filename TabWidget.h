@@ -24,7 +24,7 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "MultipleClickCounter.h"
+#include "WidgetDragMonitor.h"
 
 #include <QAction>
 #include <QBasicTimer>
@@ -93,18 +93,6 @@ class TabWidget: public QWidget, public Counter
     //* close event
     virtual void closeEvent( QCloseEvent* );
 
-    //* mouse press event [overloaded]
-    virtual void mousePressEvent( QMouseEvent* );
-
-    //* mouse move event [overloaded]
-    virtual void mouseMoveEvent( QMouseEvent* );
-
-    //* mouse move event [overloaded]
-    virtual void mouseReleaseEvent( QMouseEvent* );
-
-    //* timer event [overloaded]
-    virtual void timerEvent( QTimerEvent* );
-
     //* resize
     virtual void resizeEvent( QResizeEvent* );
 
@@ -126,12 +114,6 @@ class TabWidget: public QWidget, public Counter
     //* hide size grip
     void _hideSizeGrip( void )
     { if( _hasSizeGrip() ) _sizeGrip().hide(); }
-
-    //* start drag
-    bool _startDrag( void );
-
-    //* reset drag
-    void _resetDrag( void );
 
     protected Q_SLOTS:
 
@@ -202,19 +184,8 @@ class TabWidget: public QWidget, public Counter
 
     //@}
 
-    MultipleClickCounter clickCounter_;
-
-    //* button state
-    Qt::MouseButton button_;
-
-    //* move timer
-    QBasicTimer timer_;
-
-    //* click position
-    QPoint dragPosition_;
-
-    //* true when move is enabled
-    bool isDragging_;
+    //* widget drag monitor
+    WidgetDragMonitor widgetDragMonitor_;
 
 };
 #endif

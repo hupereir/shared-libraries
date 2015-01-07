@@ -43,9 +43,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
     parent_( parent ),
     sizeGrip_( 0 ),
     index_( 0 ),
-    clickCounter_( this, 2 ),
-    button_( Qt::NoButton ),
-    isDragging_( false )
+    widgetDragMonitor_( this )
 {
 
     Debug::Throw( "TabWidget::TabWidget.\n" );
@@ -83,6 +81,9 @@ TabWidget::TabWidget( QTabWidget* parent ):
     _installActions();
     updateActions( false );
 
+    // detach
+    connect( &widgetDragMonitor_, SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
+
     // context menu
     setContextMenuPolicy( Qt::CustomContextMenu );
     connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
@@ -107,6 +108,8 @@ void TabWidget::_toggleDock( void )
     Debug::Throw( "TabWidget::_toggleDock.\n" );
 
     if( !parent() ) {
+
+        widgetDragMonitor_.setEnabled( false );
 
         // store size for later detach
         updateActions( false );
@@ -137,6 +140,8 @@ void TabWidget::_toggleDock( void )
 
         // move and resize
         move( parent->mapToGlobal( QPoint(0,0) ) );
+        widgetDragMonitor_.setEnabled( true );
+
         if( !title_.isEmpty() ) { setWindowTitle( title_ ); }
 
         // change action text
@@ -214,75 +219,6 @@ void TabWidget::closeEvent( QCloseEvent* event )
     Debug::Throw( "TabWidget::closeEvent.\n" );
     if( !parent() ) detachAction().trigger();
     event->ignore();
-}
-
-//___________________________________________________________
-void TabWidget::mousePressEvent( QMouseEvent* event )
-{
-    Debug::Throw( "TabWidget::mousePressEvent.\n" );
-    button_ = event->button();
-    if( button_ == Qt::LeftButton )
-    {
-        event->accept();
-        isDragging_ = false;
-        dragPosition_ = event->pos();
-        timer_.start( QApplication::doubleClickInterval(), this );
-
-        // handle multiple clicks
-        clickCounter_.increment();
-        if( clickCounter_.counts() == 2 )
-        {
-            detachAction().trigger();
-            timer_.stop();
-        }
-
-    }
-
-    return;
-
-}
-
-//___________________________________________________________
-void TabWidget::mouseReleaseEvent( QMouseEvent* event )
-{
-    Debug::Throw( "TabWidget::mouseReleaseEvent.\n" );
-    event->accept();
-    _resetDrag();
-    return;
-
-}
-
-//___________________________________________________________
-void TabWidget::mouseMoveEvent( QMouseEvent* event )
-{
-
-    // check button
-    if( button_ != Qt::LeftButton ) return QWidget::mouseMoveEvent( event );
-
-    timer_.stop();
-
-    // check against drag distance
-    if( QPoint( event->pos() - dragPosition_ ).manhattanLength() < QApplication::startDragDistance() )
-    { return QWidget::mouseMoveEvent( event ); }
-
-    event->accept();
-    if( !_startDrag() )
-    { move( event->globalPos() - dragPosition_ ); }
-
-}
-
-//___________________________________________________________
-void TabWidget::timerEvent( QTimerEvent *event )
-{
-
-    Debug::Throw( "TabWidget::timerEvent.\n" );
-    if( event->timerId() != timer_.timerId() ) return QWidget::timerEvent( event );
-
-    timer_.stop();
-    if( button_ != Qt::LeftButton ) return;
-
-    _startDrag();
-
 }
 
 //___________________________________________________________
@@ -374,50 +310,4 @@ void TabWidget::_installActions( void )
     stickyAction_->setChecked( false );
     connect( stickyAction_, SIGNAL(toggled(bool)), SLOT(_toggleSticky(bool)) );
 
-}
-
-//___________________________________________________________
-bool TabWidget::_startDrag( void )
-{
-
-    if( parentWidget() ) {
-
-        detachAction().trigger();
-        qApp->processEvents();
-        return _startDrag();
-
-    } else if( !isDragging_ ) {
-
-        isDragging_ = true;
-
-        #if HAVE_XCB && QT_VERSION < 0x050000
-        if( XcbUtil::get().moveWidget( this, mapToGlobal( dragPosition_ ) ) )
-        {
-
-            _resetDrag();
-            return true;
-
-        } else return false;
-        #else
-        /*
-        moving via XEvents is broken in Qt5.0,
-        because one does not recieve a mouseRelease event at the end,
-        and the next mousePress is therefore ignored.
-        Trying to send a dummy mouseReleaseEvent does not cure the issue
-        */
-        return false;
-        #endif
-
-    } else return false;
-
-}
-
-//___________________________________________________________
-void TabWidget::_resetDrag( void )
-{
-    unsetCursor();
-    button_ = Qt::NoButton;
-    dragPosition_ = QPoint();
-    timer_.stop();
-    isDragging_ = false;
 }
