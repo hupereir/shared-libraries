@@ -24,6 +24,7 @@
 
 #include "Counter.h"
 #include "MultipleClickCounter.h"
+#include "XcbDefines.h"
 
 #include <QBasicTimer>
 #include <QSize>
@@ -44,8 +45,21 @@ class WidgetDragMonitor: public QObject, public Counter
     //* destructor
     virtual ~WidgetDragMonitor() = default;
 
+    //* mode
+    enum ModeFlag
+    {
+        DragMove = 1<<0,
+        DragResize = 1<<1
+    };
+
+    Q_DECLARE_FLAGS( Mode, ModeFlag );
+
     //*@name accessors
     //@{
+
+    //* mode
+    Mode mode( void ) const
+    { return mode_; }
 
     //* enabled state
     bool isEnabled( void ) const
@@ -53,8 +67,18 @@ class WidgetDragMonitor: public QObject, public Counter
 
     //@}
 
+    //*@name mode
+    //@{
+
+    //* mode
+    void setMode( Mode value )
+    { mode_ = value; }
+
+    //@}
+
     //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
+
 
     Q_SIGNALS:
 
@@ -79,6 +103,9 @@ class WidgetDragMonitor: public QObject, public Counter
     //* timer event
     virtual void timerEvent( QTimerEvent* );
 
+    //! get corner from (relative) position
+    XcbDefines::Direction _direction( QWidget* widget, const QPoint& ) const;
+
     protected Q_SLOTS:
 
     //* start drag
@@ -88,6 +115,12 @@ class WidgetDragMonitor: public QObject, public Counter
     void _resetDrag( void );
 
     private:
+
+    //* mode
+    Mode mode_;
+
+    //* enabled state
+    bool enabled_;
 
     //* multiple click counter
     MultipleClickCounter clickCounter_;
@@ -101,15 +134,20 @@ class WidgetDragMonitor: public QObject, public Counter
     //* dragged widget
     QWidget* target_;
 
+    //! window resize direction
+    XcbDefines::Direction direction_;
+
+    //! size at click time
+    QSize dragSize_;
+
     //* click position
     QPoint dragPosition_;
 
     //* true when move is enabled
     bool isDragging_;
 
-    //* enabled state
-    bool enabled_;
-
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( WidgetDragMonitor::Mode );
 
 #endif
