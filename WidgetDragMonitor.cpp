@@ -20,43 +20,146 @@
 *******************************************************************************/
 
 #include "WidgetDragMonitor.h"
-#include "XmlOptions.h"
+#include "WidgetDragMonitor.moc"
+#include "XcbUtil.h"
+
+#include <QMouseEvent>
+#include <QTimer>
 
 //_________________________________________________________
-WidgetMonitor::WidgetMonitor( QWidget* parent ):
+WidgetDragMonitor::WidgetDragMonitor( QWidget* parent ):
     QObject( parent ),
     Counter( "WidgetDragMonitor" ),
+    clickCounter_( this, 2 ),
+    button_( Qt::NoButton ),
+    target_( nullptr ),
+    isDragging_( false ),
+    enabled_( false )
 { parent->installEventFilter(this); }
 
 //_______________________________________________________
-bool WidgetMonitor::eventFilter( QObject* target, QEvent* event )
+bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
 {
+    switch( event->type() )
+    {
+        case QEvent::MouseButtonDblClick:
+        case QEvent::MouseButtonPress:
+        {
 
-    if( target != parent()  ) return false;
-    if( !_hasOptionName() ) return false;
-    if(
-        (event->type() == QEvent::Resize && ( mode_&Size )) ||
-        (event->type() == QEvent::Move && ( mode_&Position ) ) )
-    { timer_.start( 200, this ); }
+            QWidget* widget( qobject_cast<QWidget*>( object ) );
+            if( !widget ) return false;
 
-    return false;
+
+            QMouseEvent* mouseEvent( static_cast<QMouseEvent*>( event ) );
+            button_ = mouseEvent->button();
+            if( button_ == Qt::LeftButton )
+            {
+
+
+                event->accept();
+                target_ = widget;
+                isDragging_ = false;
+                dragPosition_ = mouseEvent->pos();
+                timer_.start( QApplication::doubleClickInterval(), this );
+
+                // handle multiple clicks
+                clickCounter_.increment();
+                if( clickCounter_.counts() == 2 )
+                {
+                    emit stateChangeRequest();
+                    timer_.stop();
+                }
+
+                return true;
+            }
+
+            return false;
+
+        }
+
+        case QEvent::MouseButtonRelease:
+        {
+            event->accept();
+            _resetDrag();
+            return true;
+        }
+
+        case QEvent::MouseMove:
+        {
+            if( button_ != Qt::LeftButton ) return false;
+
+            timer_.stop();
+
+            // check against drag distance
+            QMouseEvent* mouseEvent( static_cast<QMouseEvent*>( event ) );
+            if( QPoint( mouseEvent->pos() - dragPosition_ ).manhattanLength() < QApplication::startDragDistance() )
+            { return false; }
+
+            if( !(target_ && object == target_ ) ) return false;
+
+            if( !enabled_ ) emit stateChangeRequest();
+            if( !enabled_ ) return false;
+
+            event->accept();
+            if( !_startDrag() )
+            {
+                const QPoint position( target_->window() == target_  ? dragPosition_ : target_->mapTo( target_->window(), dragPosition_ ) );
+                target_->window()->move( mouseEvent->globalPos() - position );
+            }
+
+            return true;
+        }
+
+        default: return false;
+
+    }
+
 }
 
 //_______________________________________________________
-void WidgetMonitor::timerEvent( QTimerEvent* event )
+void WidgetDragMonitor::timerEvent( QTimerEvent* event )
+{
+    if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event );
+
+    timer_.stop();
+    if( button_ != Qt::LeftButton ) return;
+
+    if( !enabled_ ) emit stateChangeRequest();
+    if( !enabled_ ) return;
+
+    _startDrag();
+
+}
+
+//___________________________________________________________
+bool WidgetDragMonitor::_startDrag( void )
 {
 
-    if( event->timerId() == timer_.timerId() )
+    if( !target_ ) return false;
+
+    isDragging_ = true;
+
+    #if HAVE_XCB
+    if( XcbUtil::get().moveWidget( target_->window(), target_->mapToGlobal( dragPosition_ ) ) )
     {
 
-        // stop timer
-        Q_ASSERT( _hasOptionName() );
-        timer_.stop();
+        _resetDrag();
+        return true;
 
-        // save size
-        if( mode_&Size ) _saveWindowSize();
-        if( mode_&Position ) _saveWindowPosition();
+    }
+    #endif
 
-    } else return QObject::timerEvent( event );
+    return false;
 
+}
+
+//___________________________________________________________
+void WidgetDragMonitor::_resetDrag( void )
+{
+    if( target_ ) target_->unsetCursor();
+    target_ = nullptr;
+    button_ = Qt::NoButton;
+    dragPosition_ = QPoint();
+    timer_.stop();
+    isDragging_ = false;
 }

@@ -74,8 +74,12 @@ DockPanel::DockPanel( QWidget* parent ):
     // main widget
     layout()->addWidget( panel_ = new Private::LocalWidget( this ) );
 
+    // install dragMonitor on dock
+    dock_->installEventFilter( &reinterpret_cast<Private::LocalWidget*>(panel_)->widgetDragMonitor() );
+
     reinterpret_cast<Private::LocalWidget*>(panel_)->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
     connect( &reinterpret_cast<Private::LocalWidget*>(panel_)->detachAction(), SIGNAL(triggered()), SLOT(_toggleDock()) );
+    connect( &reinterpret_cast<Private::LocalWidget*>(panel_)->widgetDragMonitor(), SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
 
     // vertical layout for children
     mainLayout_ = new QVBoxLayout();
@@ -111,13 +115,14 @@ void DockPanel::_toggleDock( void )
     if( reinterpret_cast<Private::LocalWidget*>(panel_)->isDetached() )
     {
 
+        reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( false );
+
         // change parent
         panel_->setParent( this );
         layout()->addWidget( panel_ );
         panel_->show();
 
         dock_->hide();
-        reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( false );
 
         // signals
         emit attached( true );
@@ -126,6 +131,7 @@ void DockPanel::_toggleDock( void )
     } else {
 
         // change parent
+        const QPoint position( mapToGlobal( QPoint( 0, 0 ) ) );
         panel_->setParent( dock_ );
         dock_->layout()->addWidget( panel_ );
         panel_->show();
@@ -133,7 +139,7 @@ void DockPanel::_toggleDock( void )
         dock_->show();
 
         // move and resize
-        dock_->move( mapToGlobal( QPoint(0,0) ) );
+        dock_->move( position );
 
         reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( true );
 
@@ -205,10 +211,7 @@ namespace Private
     LocalWidget::LocalWidget( QWidget* parent ):
         QFrame( parent ),
         Counter( "Private::LocalWidget" ),
-        clickCounter_( this, 2 ),
-        button_( Qt::NoButton ),
-        isDragging_( false ),
-        isDetached_( false )
+        widgetDragMonitor_( this )
     {
         _installActions();
         _updateActions();
@@ -226,21 +229,22 @@ namespace Private
     void LocalWidget::_updateActions( void )
     {
 
-        detachAction_->setText( isDetached_ ? tr( "Attach" ):tr( "Detach" ) );
-        stickyAction_->setEnabled( isDetached_ );
-        staysOnTopAction_->setEnabled( isDetached_ );
+        detachAction_->setText( widgetDragMonitor_.isEnabled() ? tr( "Attach" ):tr( "Detach" ) );
+        stickyAction_->setEnabled( widgetDragMonitor_.isEnabled() );
+        staysOnTopAction_->setEnabled( widgetDragMonitor_.isEnabled() );
 
     }
 
     //___________________________________________________________
     void LocalWidget::setDetached( bool value )
     {
-        if( isDetached_ == value ) return;
 
-        isDetached_ = value;
+        if( widgetDragMonitor_.isEnabled() == value ) return;
+        widgetDragMonitor_.setEnabled( value );
+
         _updateActions();
 
-        if( isDetached_ )
+        if( widgetDragMonitor_.isEnabled() )
         {
 
             // window flags
@@ -256,79 +260,11 @@ namespace Private
     void LocalWidget::closeEvent( QCloseEvent* event )
     {
         Debug::Throw( "LocalWidget::closeEvent.\n" );
-        if( isDetached_ )
+        if( widgetDragMonitor_.isEnabled() )
         {
             detachAction_->trigger();
             event->ignore();
         }
-    }
-
-    //___________________________________________________________
-    void LocalWidget::mousePressEvent( QMouseEvent* event )
-    {
-        Debug::Throw( "LocalWidget::mousePressEvent.\n" );
-        button_ = event->button();
-
-        if( button_ == Qt::LeftButton )
-        {
-            event->accept();
-            isDragging_ = false;
-            dragPosition_ = event->pos();
-            timer_.start( QApplication::doubleClickInterval(), this );
-
-            // handle multiple clicks
-            clickCounter_.increment();
-            if( clickCounter_.counts() == 2 )
-            {
-                detachAction_->trigger();
-                timer_.stop();
-            }
-
-        }
-        return;
-    }
-
-    //___________________________________________________________
-    void LocalWidget::mouseReleaseEvent( QMouseEvent* event )
-    {
-        Debug::Throw( "LocalWidget::mouseReleaseEvent.\n" );
-        event->accept();
-        _resetDrag();
-        return;
-    }
-
-    //___________________________________________________________
-    void LocalWidget::mouseMoveEvent( QMouseEvent* event )
-    {
-
-        // check button
-        if( button_ != Qt::LeftButton )
-        { return QFrame::mouseMoveEvent( event ); }
-
-        timer_.stop();
-
-        // check against drag distance
-        if( QPoint( event->pos() - dragPosition_ ).manhattanLength() < QApplication::startDragDistance() )
-        { return QFrame::mouseMoveEvent( event ); }
-
-        event->accept();
-        if( !_startDrag() )
-        { parentWidget()->move( event->globalPos() - dragPosition_ ); }
-
-    }
-
-    //___________________________________________________________
-    void LocalWidget::timerEvent( QTimerEvent *event )
-    {
-
-        Debug::Throw( "LocalWidget::timerEvent.\n" );
-        if( event->timerId() != timer_.timerId() ) return QFrame::timerEvent( event );
-
-        timer_.stop();
-        if( button_ != Qt::LeftButton ) return;
-
-        _startDrag();
-
     }
 
     //___________________________________________________________
@@ -369,7 +305,7 @@ namespace Private
         Debug::Throw( "LocalWidget::_toggleStaysOnTop.\n" );
 
         // check that widget is top level
-        if( !isDetached_ ) return;
+        if( !widgetDragMonitor_.isEnabled() ) return;
 
         #if HAVE_XCB
 
@@ -401,7 +337,7 @@ namespace Private
         Debug::Throw( "LocalWidget::_toggleSticky.\n" );
 
         // check that widget is top level
-        if( !isDetached_ ) return;
+        if( !widgetDragMonitor_.isEnabled() ) return;
 
         #if HAVE_XCB
         if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_STATE_STICKY ) )
@@ -461,53 +397,6 @@ namespace Private
         stickyAction_->setCheckable( true );
         connect( stickyAction_, SIGNAL(toggled(bool)), SLOT(_toggleSticky(bool)) );
 
-    }
-
-    //___________________________________________________________
-    bool LocalWidget::_startDrag( void )
-    {
-
-        if( !isDetached_ )
-        {
-
-            detachAction_->trigger();
-            return true;
-
-        } else if( !isDragging_ ) {
-
-            isDragging_ = true;
-
-            #if HAVE_XCB
-            // && QT_VERSION < 0x050000
-            if( XcbUtil::get().moveWidget( parentWidget(), mapToGlobal( dragPosition_ ) ) )
-            {
-
-                _resetDrag();
-                return true;
-
-            } else return false;
-            #else
-            /*
-            moving via XEvents is broken in Qt5.0,
-            because one does not recieve a mouseRelease event at the end,
-            and the next mousePress is therefore ignored.
-            Trying to send a dummy mouseReleaseEvent does not cure the issue
-            */
-            return false;
-            #endif
-
-        } else return false;
-
-    }
-
-    //___________________________________________________________
-    void LocalWidget::_resetDrag( void )
-    {
-        unsetCursor();
-        button_ = Qt::NoButton;
-        dragPosition_ = QPoint();
-        timer_.stop();
-        isDragging_ = false;
     }
 
 }

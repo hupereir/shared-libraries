@@ -35,40 +35,40 @@
 #include <QLayout>
 #include <QPixmap>
 
-//! detachable generic panel
+//* detachable generic panel
 class DockPanel: public QWidget, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     DockPanel( QWidget* parent );
 
-    //! destructor
+    //* destructor
     virtual ~DockPanel();
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! get panel (to add contents)
+    //* get panel (to add contents)
     virtual QWidget& panel( void )
     { return *panel_; }
 
-    //! true if detached
+    //* true if detached
     bool isDetached( void ) const;
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! option name (needed to store sticky and stays-on-top state)
+    //* option name (needed to store sticky and stays-on-top state)
     void setOptionName( QString );
 
-    //! set detachable group panel title
+    //* set detachable group panel title
     void setTitle( const QString& title )
     {
         dock_->setWindowTitle( title );
@@ -79,40 +79,40 @@ class DockPanel: public QWidget, public Counter
 
     Q_SIGNALS:
 
-    //! emmited when state is changed
+    //* emmited when state is changed
     void attached( bool state );
 
-    //! emmited when panel is attached
+    //* emmited when panel is attached
     void attached( void );
 
-    //! emmited when panel is detached
+    //* emmited when panel is detached
     void detached( void );
 
-    //! visibility changed
+    //* visibility changed
     void visibilityChanged( bool );
 
     protected Q_SLOTS:
 
-    //! toggle dock
+    //* toggle dock
     virtual void _toggleDock( void );
 
     protected:
 
-    //! hide event
+    //* hide event
     virtual void hideEvent( QHideEvent* );
 
     private:
 
-    //! vertical layout for main widget
+    //* vertical layout for main widget
     QVBoxLayout* mainLayout_;
 
-    //! dock title
+    //* dock title
     QLabel* dockTitleLabel_;
 
-    //! dock
+    //* dock
     QWidget* dock_;
 
-    //! contents panel
+    //* contents panel
     QWidget* panel_;
 
 };

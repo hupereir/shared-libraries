@@ -23,6 +23,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "MultipleClickCounter.h"
 
 #include <QBasicTimer>
 #include <QSize>
@@ -33,24 +34,66 @@
 class WidgetDragMonitor: public QObject, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor
     WidgetDragMonitor( QWidget* );
 
+    //* destructor
+    virtual ~WidgetDragMonitor() = default;
+
+    //*@name accessors
+    //@{
+
+    //* enabled state
+    bool isEnabled( void ) const
+    { return enabled_; }
+
+    //@}
+
     //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
+
+    Q_SIGNALS:
+
+    void stateChangeRequest( void );
+
+    public Q_SLOTS:
+
+    void toggleState( void )
+    { enabled_ = !enabled_; }
+
+    void setEnabled( bool value )
+    { enabled_ = value; }
 
     protected:
 
     //* timer event
-    /* need to save updated window size */
     virtual void timerEvent( QTimerEvent* );
+
+    protected Q_SLOTS:
+
+    //* start drag
+    bool _startDrag( void );
+
+    //* reset drag
+    void _resetDrag( void );
 
     private:
 
+    //* multiple click counter
+    MultipleClickCounter clickCounter_;
+
+    //* button state
+    Qt::MouseButton button_;
+
     //* resize timer
     QBasicTimer timer_;
+
+    //* dragged widget
+    QWidget* target_;
 
     //* click position
     QPoint dragPosition_;
@@ -58,8 +101,9 @@ class WidgetDragMonitor: public QObject, public Counter
     //* true when move is enabled
     bool isDragging_;
 
-};
+    //* enabled state
+    bool enabled_;
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( WidgetDragMonitor::Modes )
+};
 
 #endif

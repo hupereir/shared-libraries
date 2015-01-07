@@ -24,12 +24,13 @@
 
 #include "Counter.h"
 #include "MultipleClickCounter.h"
+#include "WidgetDragMonitor.h"
 
 #include <QBasicTimer>
 #include <QEvent>
 #include <QFrame>
 
-//! local dock widget
+//* local dock widget
 namespace Private
 {
     class LocalDockWidget: public QWidget, public Counter
@@ -38,22 +39,22 @@ namespace Private
 
         public:
 
-        //! constructor
+        //* constructor
         LocalDockWidget( QWidget* parent );
 
-        //! destructor
+        //* destructor
         virtual ~LocalDockWidget( void )
         {}
 
         protected:
 
-        //! paint event
+        //* paint event
         virtual void paintEvent( QPaintEvent* );
 
     };
 
 
-    //! local widget
+    //* local widget
     class LocalWidget: public QFrame, public Counter
     {
 
@@ -61,26 +62,34 @@ namespace Private
 
         public:
 
-        //! constructor
+        //* constructor
         LocalWidget( QWidget* parent );
 
-        //! destructor
+        //* destructor
         virtual ~LocalWidget( void )
         {}
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! true if attached
+        //* true if attached
         bool isDetached( void ) const
-        { return isDetached_; }
+        { return widgetDragMonitor_.isEnabled(); }
+
+        //* widget drag monitor
+        const WidgetDragMonitor& widgetDragMonitor( void ) const
+        { return widgetDragMonitor_; }
 
         //@}
 
-        //!@name modifiers
+        //*@name modifiers
         //@{
 
-        //! option name (needed to store sticky and stays-on-top state)
+        //* widget drag monitor
+        WidgetDragMonitor& widgetDragMonitor( void )
+        { return widgetDragMonitor_; }
+
+        //* option name (needed to store sticky and stays-on-top state)
         void setOptionName( QString value )
         {
             stickyOptionName_ = value + "_STICKY";
@@ -88,23 +97,23 @@ namespace Private
             _updateConfiguration();
         }
 
-        //! true if attached
+        //* detach
         void setDetached( bool value );
 
         //@}
 
-        //!@name actions
+        //*@name actions
         //@{
 
-        //! detach action
+        //* detach action
         QAction& detachAction( void ) const
         { return *detachAction_; }
 
-        //! stay on top
+        //* stay on top
         QAction& staysOnTopAction( void ) const
         { return *staysOnTopAction_; }
 
-        //! widget is hidden from taskbar
+        //* widget is hidden from taskbar
         QAction& stickyAction( void ) const
         { return *stickyAction_; }
 
@@ -112,104 +121,71 @@ namespace Private
 
         protected:
 
-        //! closeEvent
+        //* closeEvent
         virtual void closeEvent( QCloseEvent* event );
 
-        //! mouse press event [overloaded]
-        virtual void mousePressEvent( QMouseEvent* );
-
-        //! mouse move event [overloaded]
-        virtual void mouseReleaseEvent( QMouseEvent* );
-
-        //! mouse move event [overloaded]
-        virtual void mouseMoveEvent( QMouseEvent* );
-
-        //! timer event [overloaded]
-        virtual void timerEvent( QTimerEvent* );
-
-        //! resize event
+        //* resize event
         virtual void resizeEvent( QResizeEvent* );
 
-        //! update actions
+        //* update actions
         void _updateActions( void );
 
-        //! start drag
-        bool _startDrag( void );
-
-        //! reset drag
-        void _resetDrag( void );
-
-        //! true if option name is set
+        //* true if option name is set
         bool _hasOptionName( void ) const
         { return !(_stickyOptionName().isEmpty() || _staysOnTopOptionName().isEmpty() ); }
 
-        //! option name
+        //* option name
         const QString& _stickyOptionName( void ) const
         { return stickyOptionName_; }
 
-        //! option name
+        //* option name
         const QString& _staysOnTopOptionName( void ) const
         { return staysOnTopOptionName_; }
 
         protected Q_SLOTS:
 
-        //! update context menu
+        //* update context menu
         void _updateContextMenu( const QPoint& );
 
-        //! toggle stays on top
+        //* toggle stays on top
         void _toggleStaysOnTop( bool );
 
-        //! toggle sticky
+        //* toggle sticky
         void _toggleSticky( bool );
 
         private Q_SLOTS:
 
-        //! configuration
+        //* configuration
         void _updateConfiguration( void );
 
         private:
 
-        //! actions
+        //* actions
         void _installActions( void );
 
-        //!@name actions
+        //*@name actions
         //@{
 
-        //! attach/detach action
+        //* attach/detach action
         QAction* detachAction_;
 
-        //! stay on top
+        //* stay on top
         QAction* staysOnTopAction_;
 
-        //! make window sticky
+        //* make window sticky
         QAction* stickyAction_;
 
         //@}
 
-        //! option name
+        //* option name
         /*! needed to store sticky and stays on top state */
         QString stickyOptionName_;
 
-        //! option name
+        //* option name
         QString staysOnTopOptionName_;
 
-        //! multiple click counter
-        MultipleClickCounter clickCounter_;
-
-        //! button state
-        Qt::MouseButton button_;
-
-        //! move timer
-        QBasicTimer timer_;
-
-        //! click position
-        QPoint dragPosition_;
-
-        //! dragging
-        bool isDragging_;
-
-        //! true if attached
-        bool isDetached_;
+        //* drag monitor
+        WidgetDragMonitor widgetDragMonitor_;
 
     };
 
