@@ -25,6 +25,7 @@
 
 #include "AnimatedStackedWidget.h"
 #include "IconSize.h"
+#include "QtUtil.h"
 #include "ScrollObject.h"
 #include "SimpleListView.h"
 
@@ -103,9 +104,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     label->setMargin(5);
 
     // update font
-    QFont font( label->font() );
-    font.setPointSize( qRound(font.pointSize() * 1.4) );
-    label->setFont( font );
+    label->setFont( QtUtil::titleFont( label->font() ) );
 
     // add to layout
     hLayout->addWidget( label, 1 );

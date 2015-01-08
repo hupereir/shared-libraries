@@ -26,6 +26,7 @@
 #include "BaseContextMenu.h"
 #include "Debug.h"
 #include "File.h"
+#include "QtUtil.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 
@@ -58,9 +59,7 @@ DockPanel::DockPanel( QWidget* parent ):
 
     {
         dockTitleLabel_->setAlignment( Qt::AlignHCenter );
-        QFont font( dockTitleLabel_->font() );
-        font.setWeight( QFont::Bold );
-        dockTitleLabel_->setFont( font );
+        dockTitleLabel_->setFont( QtUtil::titleFont( dockTitleLabel_->font() ) );
     }
 
 

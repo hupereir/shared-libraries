@@ -387,9 +387,7 @@ PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
     // file
     vLayout->addWidget( nameLabel_ = new QLabel( this ) );
     nameLabel_->setAlignment( Qt::AlignCenter );
-    QFont font( nameLabel_->font() );
-    font.setBold( true );
-    nameLabel_->setFont( font );
+    nameLabel_->setFont( QtUtil::titleFont( nameLabel_->font() ) );
     nameLabel_->setMargin( 1 );
 
     // separator

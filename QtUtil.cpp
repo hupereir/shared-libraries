@@ -190,3 +190,10 @@ QWidget* QtUtil::uniconify( QWidget *widget )
     return widget;
 
 }
+
+//____________________________________________________________
+QFont QtUtil::titleFont( QFont font )
+{
+    font.setPointSize( qRound(font.pointSize() * 1.4) );
+    return font;
+}
