@@ -26,6 +26,7 @@
 
 #include <QLabel>
 #include <QObject>
+#include <QVector>
 
 class GridLayout;
 
@@ -102,6 +103,8 @@ class GridLayoutItem: public QObject, public Counter
     void hide( void );
 
     //@}
+
+    using List = QVector<GridLayoutItem*>;
 
     Q_SIGNALS:
 
