@@ -328,6 +328,7 @@ namespace Transparency
         // create data
         blurRegion_ = region;
         QVector<QRect> rects( region.rects() );
+
         QVector<uint32_t> data;
         foreach( const QRect& r, rects )
         { data << r.x() << r.y() << r.width() << r.height(); }
