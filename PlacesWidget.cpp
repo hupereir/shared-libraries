@@ -368,7 +368,7 @@ PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
     mask_( Default )
 {
 
-    Debug::Throw( "PlacesToolTipWidget::PlacesToolTipWidget.\n" );
+    Debug::Throw(  "PlacesToolTipWidget::PlacesToolTipWidget.\n" );
 
     // layout
     QHBoxLayout* hLayout = new QHBoxLayout();
@@ -389,6 +389,7 @@ PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
     nameLabel_->setAlignment( Qt::AlignCenter );
     nameLabel_->setFont( QtUtil::titleFont( nameLabel_->font() ) );
     nameLabel_->setMargin( 1 );
+    nameLabel_->setBuddy( this );
 
     // separator
     vLayout->addWidget( separator_ = new QFrame( this ) );
@@ -422,7 +423,6 @@ PlacesToolTipWidget::PlacesToolTipWidget(  QWidget* parent ):
 //_______________________________________________________
 void PlacesToolTipWidget::setFileInfo( const QString& name, const BaseFileInfo& fileInfo, const QIcon& icon )
 {
-    Debug::Throw( "PlacesToolTipWidget::setFileInfo.\n" );
 
     // local storage
     name_ = name;
