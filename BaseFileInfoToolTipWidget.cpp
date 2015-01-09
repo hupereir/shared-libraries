@@ -55,6 +55,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     hLayout->addLayout( vLayout );
 
     // file
+    vLayout->addStretch( 1 );
     vLayout->addWidget( fileLabel_ = new QLabel( this ) );
     fileLabel_->setAlignment( Qt::AlignCenter );
     fileLabel_->setFont( QtUtil::titleFont( fileLabel_->font() ) );
