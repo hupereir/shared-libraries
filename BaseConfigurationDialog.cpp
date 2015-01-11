@@ -151,27 +151,37 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
             QGridLayout* gridLayout = new QGridLayout();
             box->setLayout( gridLayout );
 
+            // widget style
+            int row = 0;
+            #if defined(Q_OS_WIN)
+            {
+              OptionCheckBox* checkbox = new OptionCheckBox( tr( "Use plastique widget style" ), box, "FORCE_PLASTIQUE_STYLE" );
+              gridLayout->addWidget( checkbox, ++row, 1, 1, 1 );
+              addOptionWidget( checkbox );
+            }
+            #endif
+
             // pixmap path
             QLabel* label;
-            gridLayout->addWidget( label = new QLabel( tr( "Pixmaps:" ), box ), 0, 0, 1, 1 );
+            gridLayout->addWidget( label = new QLabel( tr( "Pixmaps:" ), box ), ++row, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             QPushButton *button = new QPushButton( IconEngine::get( IconNames::Edit ), tr( "Edit Pixmap Path" ), box );
             connect( button, SIGNAL(clicked()), SLOT(_editPixmapPathList()) );
-            gridLayout->addWidget( button, 0, 1, 1, 1 );
+            gridLayout->addWidget( button, row, 1, 1, 1 );
 
             // icon path
             #if QT_VERSION >= 0x040600
-            gridLayout->addWidget( label = new QLabel( tr( "Icons:" ), box ), 1, 0, 1, 1 );
+            gridLayout->addWidget( label = new QLabel( tr( "Icons:" ), box ), ++row, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             button = new QPushButton( IconEngine::get( IconNames::Edit ), tr( "Edit Icon Theme" ), box );
             connect( button, SIGNAL(clicked()), SLOT(_editIconTheme()) );
-            gridLayout->addWidget( button, 1, 1, 1, 1 );
+            gridLayout->addWidget( button, row, 1, 1, 1 );
             #endif
 
             // debug level
-            gridLayout->addWidget( label = new QLabel( tr( "Verbosity:" ), box ), 2, 0, 1, 1 );
+            gridLayout->addWidget( label = new QLabel( tr( "Verbosity:" ), box ), ++row, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             OptionSpinBox* spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
@@ -179,7 +189,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
             spinbox->setMinimum( 0 );
             spinbox->setMaximum( 5 );
             spinbox->setToolTip( tr( "Debug verbosity level" ) );
-            gridLayout->addWidget( spinbox, 2, 1, 1, 2 );
+            gridLayout->addWidget( spinbox, ++row, 1, 1, 2 );
             addOptionWidget( spinbox );
 
             gridLayout->setColumnStretch( 2, 1 );
