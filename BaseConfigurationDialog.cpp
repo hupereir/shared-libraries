@@ -189,7 +189,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
             spinbox->setMinimum( 0 );
             spinbox->setMaximum( 5 );
             spinbox->setToolTip( tr( "Debug verbosity level" ) );
-            gridLayout->addWidget( spinbox, ++row, 1, 1, 2 );
+            gridLayout->addWidget( spinbox, row, 1, 1, 2 );
             addOptionWidget( spinbox );
 
             gridLayout->setColumnStretch( 2, 1 );
