@@ -53,7 +53,12 @@ void Options::installDefaultOptions( void )
     set<bool>( "SORT_FILES_BY_DATE", false );
 
     // style
+
+    #if defined(Q_OS_WIN)
+    set<bool>( "FORCE_PLASTIQUE_STYLE", true );
+    #endif
     set<bool>( "FORCE_PLASTIQUE_STYLE", false );
+    #endif
 
     // fonts
     set<bool>( "USE_SYSTEM_FONT", true );
