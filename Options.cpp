@@ -52,6 +52,9 @@ void Options::installDefaultOptions( void )
     set<int>( "DEBUG_LEVEL", 0 );
     set<bool>( "SORT_FILES_BY_DATE", false );
 
+    // style
+    set<bool>( "FORCE_PLASTIQUE_STYLE", false );
+
     // fonts
     set<bool>( "USE_SYSTEM_FONT", true );
     set( "FIXED_FONT_NAME", "Sans" );
