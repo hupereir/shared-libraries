@@ -56,7 +56,7 @@ void Options::installDefaultOptions( void )
 
     #if defined(Q_OS_WIN)
     set<bool>( "FORCE_PLASTIQUE_STYLE", true );
-    #endif
+    #else
     set<bool>( "FORCE_PLASTIQUE_STYLE", false );
     #endif
 
