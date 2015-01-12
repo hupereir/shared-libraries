@@ -44,8 +44,11 @@ QIcon IconEngine::copy( const QIcon& source )
     QIcon destination;
 
     // loop over available sizes, modes and states
-    QList<QIcon::Mode> modes = { QIcon::Normal, QIcon::Disabled, QIcon::Active, QIcon::Selected };
-    QList<QIcon::State> states = { QIcon::Off, QIcon::On };
+    QList<QIcon::Mode> modes;
+    modes << QIcon::Normal << QIcon::Disabled << QIcon::Active << QIcon::Selected;
+
+    QList<QIcon::State> states;
+    states << QIcon::Off << QIcon::On;
 
     foreach( const QSize& size, source.availableSizes() )
     foreach( const QIcon::Mode& mode, modes )
