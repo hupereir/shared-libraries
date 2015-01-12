@@ -45,7 +45,8 @@ void BasePrintHelper::setupPage( QPrinter* printer )
     const QFont font( QTextDocument().defaultFont() );
     const QFontMetrics metrics( font, printer );
     const int leading( metrics.leading() );
-    const QRect printerRect( printer->pageRect() );
+    const int paperMargin( 0 );
+    const QRect printerRect( printer->pageRect().adjusted( paperMargin, paperMargin, -paperMargin, -paperMargin ) );
     const int margin = 1.5*( metrics.height() + leading );
 
     QRect fullPageRect;
