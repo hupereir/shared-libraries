@@ -41,11 +41,13 @@ class StandardAction: public QAction, public Counter
         Edit,
         Find,
         Replace,
+
         Undo,
         Redo,
         Cut,
         Copy,
         Paste,
+
         Info,
         Close,
         Exit
