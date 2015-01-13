@@ -66,7 +66,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     // try load Question icon
     iconLabel_ = new QLabel(mainPage_);
-    iconLabel_->setPixmap( IconEngine::get( IconNames::Information ).pixmap( iconSize() ) );
+    iconLabel_->setPixmap( IconEngine::get( IconNames::DialogInformation ).pixmap( iconSize() ) );
     hLayout->addWidget( iconLabel_, 0, Qt::AlignTop );
     hLayout->addStretch();
 

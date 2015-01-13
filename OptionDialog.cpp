@@ -59,7 +59,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
     //! try load Question icon
     QLabel* label = new QLabel( this );
-    label->setPixmap( IconEngine::get( IconNames::Warning ).pixmap( iconSize() ) );
+    label->setPixmap( IconEngine::get( IconNames::DialogWarning ).pixmap( iconSize() ) );
     layout->addWidget( label );
 
     layout->addWidget( label = new QLabel(

@@ -25,6 +25,7 @@
     <file alias="icons/32x32/edit-rename.png">../base-pixmaps/edit-rename.png</file>
     <file alias="icons/32x32/edit-undo.png">../base-pixmaps/edit-undo.png</file>
     <file alias="icons/32x32/format-fill-color.png">../base-pixmaps/format-fill-color.png</file>
+    <file alias="icons/32x32/help-about.png">../base-pixmaps/help-about.png</file>
     <file alias="icons/32x32/help-contents.png">../base-pixmaps/help-contents.png</file>
     <file alias="icons/32x32/list-add.png">../base-pixmaps/list-add.png</file>
     <file alias="icons/32x32/list-remove.png">../base-pixmaps/list-remove.png</file>

@@ -61,8 +61,9 @@ namespace IconNames
     static const QString ShowMenu = "show-menu.png";
     static const QString Undo = "edit-undo.png";
 
-    static const QString Information = "dialog-information.png";
-    static const QString Warning = "dialog-warning.png";
+    static const QString Information = "help-about.png";
+    static const QString DialogInformation = "dialog-information.png";
+    static const QString DialogWarning = "dialog-warning.png";
 
     static const QString Previous = "arrow-left.png";
     static const QString Next = "arrow-right.png";
