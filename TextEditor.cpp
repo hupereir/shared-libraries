@@ -35,6 +35,7 @@
 #include "QtUtil.h"
 #include "SelectLineDialog.h"
 #include "Singleton.h"
+#include "StandardAction.h"
 #include "TextBlockData.h"
 #include "TextEditorMarginWidget.h"
 #include "TextSeparator.h"
@@ -1592,28 +1593,24 @@ void TextEditor::_installActions( void )
     Debug::Throw( "TextEditor::_installActions.\n" );
 
     // create actions
-    addAction( undoAction_ = new QAction( IconEngine::get( IconNames::Undo ), tr( "Undo" ), this ) );
-    undoAction_->setShortcut( QKeySequence::Undo );
+    addAction( undoAction_ = new StandardAction( StandardAction::Undo, this ) );
     undoAction_->setEnabled( document()->isUndoAvailable() );
     connect( undoAction_, SIGNAL(triggered()), document(), SLOT(undo()) );
     connect( this, SIGNAL(undoAvailable(bool)), undoAction_, SLOT(setEnabled(bool)) );
 
-    addAction( redoAction_ = new QAction( IconEngine::get( IconNames::Redo ), tr( "Redo" ), this ) );
-    redoAction_->setShortcut( QKeySequence::Redo );
+    addAction( redoAction_ = new StandardAction( StandardAction::Redo, this ) );
     redoAction_->setEnabled( document()->isRedoAvailable() );
     connect( redoAction_, SIGNAL(triggered()), document(), SLOT(redo()) );
     connect( this, SIGNAL(redoAvailable(bool)), redoAction_, SLOT(setEnabled(bool)) );
 
-    addAction( cutAction_ = new QAction( IconEngine::get( IconNames::Cut ), tr( "Cut" ), this ) );
+    addAction( cutAction_ = new StandardAction( StandardAction::Cut, this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
     connect( cutAction_, SIGNAL(triggered()), SLOT(cut()) );
 
-    addAction( copyAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy" ), this ) );
-    copyAction_->setShortcut( QKeySequence::Copy );
+    addAction( copyAction_ = new StandardAction( StandardAction::Copy, this ) );
     connect( copyAction_, SIGNAL(triggered()), SLOT(copy()) );
 
-    addAction( pasteAction_ = new QAction( IconEngine::get( IconNames::Paste ), tr( "Paste" ), this ) );
-    pasteAction_->setShortcut( QKeySequence::Paste );
+    addAction( pasteAction_ = new StandardAction( StandardAction::Paste, this ) );
     connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
     connect( qApp->clipboard(), SIGNAL(dataChanged()), SLOT(_updatePasteAction()) );
     _updatePasteAction();

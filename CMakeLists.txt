@@ -173,6 +173,7 @@ set(base_qt_SOURCES
   ScrollObject.cpp
   SelectLineDialog.cpp
   SimpleListView.cpp
+  StandardAction.cpp
   SystemEnvironmentDialog.cpp
   TabbedDialog.cpp
   TabWidget.cpp
