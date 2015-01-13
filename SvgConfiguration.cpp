@@ -186,7 +186,7 @@ namespace Svg
         hLayout->addLayout( gridLayout );
         hLayout->addStretch( 1 );
 
-        gridLayout->addWidget( label = new QLabel( tr( "Plasma background image path:" ), box ) );
+        gridLayout->addWidget( label = new QLabel( tr( "Image path:" ), box ) );
 
         OptionComboBox* plasmaImagePath;
         gridLayout->addWidget( plasmaImagePath = new OptionComboBox( box, "SVG_PLASMA_IMAGE_PATH" ) );
