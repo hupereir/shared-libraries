@@ -125,8 +125,7 @@ QString Util::host( bool shortName )
     else {
 
         int pos( out.indexOf( "." ) );
-        if( pos <0 ) return out;
-        return out.left( pos );
+        return ( pos <0 ) ? out:out.left( pos );
 
     }
 
