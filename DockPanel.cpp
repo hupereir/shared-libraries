@@ -144,7 +144,6 @@ void DockPanel::_toggleDock( void )
         dock_->move( position - panel_->geometry().topLeft() );
 
         reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( true );
-
         hide();
 
         // signals
