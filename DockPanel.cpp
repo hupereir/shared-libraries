@@ -116,6 +116,9 @@ void DockPanel::_toggleDock( void )
 
         reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( false );
 
+        // re show
+        show();
+
         // change parent
         panel_->setParent( this );
         layout()->addWidget( panel_ );
@@ -141,6 +144,8 @@ void DockPanel::_toggleDock( void )
         dock_->move( position - panel_->geometry().topLeft() );
 
         reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( true );
+
+        hide();
 
         // signals
         emit attached( false );
