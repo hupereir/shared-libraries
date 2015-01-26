@@ -36,38 +36,38 @@ class SystemNotifications: public QObject, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     SystemNotifications( QObject*, const QString&, const QIcon& = QIcon() );
 
-    //! destructor
+    //* destructor
     virtual ~SystemNotifications( void );
 
-    //! process message
+    //* process message
     virtual void processMessage( const QString&, const QString& );
 
-    //! true if available
+    //* true if available
     static bool isSupported( void );
 
     protected:
 
-    //! event handler
+    //* event handler
     virtual void timerEvent( QTimerEvent* );
 
-    //! process message queue
+    //* process message queue
     void _showMessageQueue( void );
 
     private:
 
-    //! timer
+    //* timer
     QBasicTimer timer_;
 
-    //! summary
+    //* summary
     QString summary_;
 
-    //! message queue
+    //* message queue
     QStringList messageQueue_;
 
-    //! notifications
+    //* notifications
     SystemNotificationsP* notify_;
 
 };
