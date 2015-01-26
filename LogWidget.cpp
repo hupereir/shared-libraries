@@ -22,6 +22,7 @@
 #include "LogWidget.h"
 #include "LogWidget.moc"
 #include "TextFormat.h"
+#include "QtUtil.h"
 #include "XmlOptions.h"
 
 //______________________________________________________
@@ -78,6 +79,9 @@ void LogWidget::append( const QString& text, Format::TextFormatFlags format, con
 
     if( format )
     {
+        if( format&Format::LargeFont )
+        { charFormat.setFont( QtUtil::titleFont( charFormat.font() ) ); }
+
         charFormat.setFontWeight( (format&Format::Bold) ? QFont::Bold : QFont::Normal );
         charFormat.setFontItalic( format&Format::Italic );
         charFormat.setFontUnderline( format&Format::Underline );

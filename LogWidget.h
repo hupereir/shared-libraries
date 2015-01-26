@@ -35,26 +35,26 @@ class LogWidget: public TextEditor
 
     public:
 
-    //! constructor
+    //* constructor
     LogWidget( QWidget* = 0 );
 
-    //! option name
+    //* option name
     void setOptionName( const QString& );
 
-    //! verbosity
+    //* verbosity
     int verbosity( void ) const
     { return verbosity_; }
 
-    //! verbosity
+    //* verbosity
     void setVerbosity( int value )
     { verbosity_ = value; }
 
     public Q_SLOTS:
 
-    //! append text
+    //* append text
     virtual void append( const QString&, Format::TextFormatFlags = Format::Default, const QColor& = QColor(), int = 0 );
 
-    //! clear
+    //* clear
     virtual void clear( void )
     {
         /*
@@ -66,41 +66,41 @@ class LogWidget: public TextEditor
 
     protected Q_SLOTS:
 
-    //! toggle wrap mode
+    //* toggle wrap mode
     virtual bool _toggleWrapMode( bool );
 
-    //! slider
+    //* slider
     void _verticalScrollBarMoved( int );
 
     protected:
 
-    //! keypress event
+    //* keypress event
     virtual void keyPressEvent( QKeyEvent* );
 
-    //! wheel events
+    //* wheel events
     virtual void 	wheelEvent( QWheelEvent* );
 
-        //! wrap option name
+        //* wrap option name
     QString _wrapOptionName( void )
     { return optionName_ + "_WRAP"; }
 
-    //! option name
+    //* option name
     bool _hasOptionName( void )
     { return !optionName_.isEmpty(); }
 
-    //! lock
+    //* lock
     bool _locked( void ) const
     { return locked_; }
 
     private:
 
-    //! verbosity
+    //* verbosity
     int verbosity_;
 
-    //! option name
+    //* option name
     QString optionName_;
 
-    //! true if locked
+    //* true if locked
     bool locked_;
 
 };
