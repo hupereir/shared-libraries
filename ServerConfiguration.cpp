@@ -46,7 +46,7 @@ namespace Server
 
         // generic objects
         QWidget *box;
-        OptionLineEditor* line_editor;
+        OptionLineEditor* editor;
         OptionSpinBox* spinBox;
 
         // general
@@ -67,9 +67,9 @@ namespace Server
 
         // host
         gridLayout->addWidget( new QLabel( tr( "Host:" ), box ) );
-        gridLayout->addWidget( line_editor = new OptionLineEditor( box, "SERVER_HOST" ) );
-        line_editor->setToolTip( tooltip );
-        addOptionWidget( line_editor );
+        gridLayout->addWidget( editor = new OptionLineEditor( box, "SERVER_HOST" ) );
+        editor->setToolTip( tooltip );
+        addOptionWidget( editor );
 
         // shadow color
         gridLayout->addWidget( new QLabel( tr( "Port:" ), box ) );
