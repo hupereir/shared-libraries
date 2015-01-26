@@ -59,7 +59,7 @@ namespace Server
     {
 
         commands_ << command;
-        if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
+        if( socket_->state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
         return true;
 
     }
@@ -72,13 +72,13 @@ namespace Server
 
         QDomDocument document;
         QDomElement top = document.appendChild( document.createElement( Xml::Transmission ) ).toElement();
-        while( commands_.size() && socket().state() == QAbstractSocket::ConnectedState )
+        while( commands_.size() && socket_->state() == QAbstractSocket::ConnectedState )
         {
             top.appendChild( commands_.front().domElement( document ) );
             commands_.removeFirst();
         }
 
-        QTextStream os( &socket() );
+        QTextStream os( socket_ );
         os << document.toString() << endl;
 
     }

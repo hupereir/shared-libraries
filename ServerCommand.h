@@ -48,7 +48,7 @@ namespace Server
 
         public:
 
-        //! command type
+        //* command type
         enum CommandType
         {
             None,
@@ -67,19 +67,16 @@ namespace Server
             Option
         };
 
-        //! list
+        //* list
         using List = QList<ServerCommand>;
 
-        //! constructor
+        //* constructor
         ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = None );
 
-        //! constructor
+        //* constructor
         ServerCommand( const QDomElement& );
 
-        //! dom element
-        QDomElement domElement( QDomDocument& ) const;
-
-        //! equal-to operator
+        //* equal-to operator
         bool operator == ( const ServerCommand& command ) const
         {
             return timeStamp() == command.timeStamp() &&
@@ -87,7 +84,7 @@ namespace Server
                 ServerCommand::command() == command.command();
         }
 
-        //! less-than operator
+        //* less-than operator
         bool operator < ( const ServerCommand& command ) const
         {
             if( timeStamp() != command.timeStamp() ) return timeStamp() < command.timeStamp();
@@ -98,98 +95,111 @@ namespace Server
             return false;
         }
 
-        //! true if this command is a child of argument
+        //*@name accessors
+        //@{
+
+        //* dom element
+        QDomElement domElement( QDomDocument& ) const;
+
+        //* true if this command is a child of argument
         /*! this is needed to have commands appear in Tree view */
         bool isChild( const ServerCommand& command ) const
         { return timeStamp() >= command.timeStamp() && id() == command.id(); }
 
-        //! time stamp
+        //* time stamp
         const TimeStamp& timeStamp( void ) const
         { return timestamp_; }
 
-        //! client id
+        //* client id
         const unsigned int& clientId( void ) const
         { return clientId_; }
 
-        //! client id
-        ServerCommand& setClientId( unsigned int value )
-        {
-            clientId_ = value;
-            return *this;
-        }
-
-        //! application id
+        //* application id
         const ApplicationId& id( void ) const
         { return id_; }
 
-        //! application id
-        void setId( const ApplicationId& id )
-        { id_ = id; }
-
-        //! command
+        //* command
         CommandType command( void ) const
         { return command_; }
 
-        //! command
-        void setCommand( const CommandType& command )
-        { command_ = command; }
-
-        //! command name
+        //* command name
         QString commandName( void ) const
         {
             _initializeCommandNames();
             return _commandNames()[ command() ];
         }
 
-        //! argument
-        void setArguments( const CommandLineArguments& arguments )
-        { arguments_ = arguments; }
-
-        //! arguments
+        //* arguments
         const CommandLineArguments& arguments( void ) const
         { return arguments_; }
 
-        //! option
-        void setXmlOption( const XmlOption& option )
-        {
-            Q_ASSERT( command() == ServerCommand::Option );
-            option_ = option;
-        }
-
-        //! option
+        //* option
         const XmlOption& option( void ) const
         {
             Q_ASSERT( command() == ServerCommand::Option );
             return option_;
         }
 
+        //@}
+
+        //*@name modifiers
+        //@{
+
+        //* client id
+        ServerCommand& setClientId( unsigned int value )
+        {
+            clientId_ = value;
+            return *this;
+        }
+
+        //* application id
+        void setId( const ApplicationId& id )
+        { id_ = id; }
+
+        //* command
+        void setCommand( const CommandType& command )
+        { command_ = command; }
+
+        //* argument
+        void setArguments( const CommandLineArguments& arguments )
+        { arguments_ = arguments; }
+
+        //* option
+        void setXmlOption( const XmlOption& option )
+        {
+            Q_ASSERT( command() == ServerCommand::Option );
+            option_ = option;
+        }
+
+        //@}
+
         private:
 
-        //! command names
+        //* command names
         using CommandMap = QHash<CommandType, QString >;
 
-        //! command names
+        //* command names
         static CommandMap& _commandNames( void );
 
-        //! map command types to names
+        //* map command types to names
         void _initializeCommandNames( void ) const;
 
-        //! time stamp
+        //* time stamp
         TimeStamp timestamp_;
 
-        //! client id
+        //* client id
         unsigned int clientId_;
 
-        //! application id
+        //* application id
         ApplicationId id_;
 
-        //! command
+        //* command
         CommandType command_;
 
-        //! arguments
+        //* arguments
         CommandLineArguments arguments_;
 
-        //! option
+        //* option
         XmlOption option_;
 
     };

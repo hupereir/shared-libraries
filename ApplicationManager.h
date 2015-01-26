@@ -41,28 +41,28 @@
 namespace Server
 {
 
-    //! ensures only one instance of an application is running
+    //* ensures only one instance of an application is running
     class ApplicationManager: public QObject, public Counter
     {
 
-        //! Qt meta object macro
+        //* Qt meta object macro
         Q_OBJECT
 
         public:
 
-        //! constructor
+        //* constructor
         ApplicationManager( QObject* parent );
 
-        //! destructor
+        //* destructor
         virtual ~ApplicationManager( void );
 
-        //! application name
+        //* application name
         virtual void setApplicationName( const QString& name );
 
-        //! commandLine parser
+        //* commandLine parser
         static CommandLineParser commandLineParser( CommandLineArguments = CommandLineArguments(), bool ignoreWarnings = true );
 
-        //! application state enumeration
+        //* application state enumeration
         enum State
         {
 
@@ -72,7 +72,7 @@ namespace Server
             Dead
         };
 
-        //! changes application state, emit signal if changed
+        //* changes application state, emit signal if changed
         virtual bool setState( const State& state )
         {
             if( state == state_ ) return false;
@@ -80,102 +80,98 @@ namespace Server
             return true;
         }
 
-        //! reference to "this" client
+        //* reference to "this" client
         virtual Client& client( void ) const
         { return *client_; }
 
-        //! retrieve Application ID
+        //* retrieve Application ID
         virtual const ApplicationId& id( void ) const
         { return id_; }
 
         public Q_SLOTS:
 
-        //! (re)initialize server/client connections
+        //* (re)initialize server/client connections
         virtual void initialize( CommandLineArguments args = CommandLineArguments() );
 
         Q_SIGNALS:
 
-        //! emitted when a given command is recieved
+        //* emitted when a given command is recieved
         void commandRecieved( Server::ServerCommand );
 
-        //! emitted when the server is (re)initialized
+        //* emitted when the server is (re)initialized
         void initialized( void );
 
         protected:
 
-        //! timer event
+        //* timer event
         virtual void timerEvent( QTimerEvent* );
 
-        //! reference to server
-        virtual QTcpServer& _server() const
-        { return *server_; }
-
-        //! pair of application id and client
+        //* pair of application id and client
         using ClientPair = QPair< ApplicationId, Client* >;
 
-        //! map of clients
+        //* map of clients
         using ClientMap = QMap< ApplicationId, Client* >;
 
-        //! list of clients
+        //* list of clients
         using ClientList = QList< Client* >;
 
-        //! used to retrieve clients for a given state
+        //* used to retrieve clients for a given state
         class SameStateFTor: public Client::SameStateFTor
         {
             public:
 
-            //! constructor
+            //* constructor
             SameStateFTor( QAbstractSocket::SocketState state ):
                 Client::SameStateFTor( state )
             {}
 
-            //! destructor
+            //* destructor
             virtual ~SameStateFTor( void )
             {}
 
-            //! predicate
+            //* predicate
             bool operator() ( const ClientPair& pair ) const
             { return Client::SameStateFTor::operator() (pair.second); }
 
-            //! predicate
+            //* predicate
             bool operator() ( const Client* client ) const
             { return Client::SameStateFTor::operator() (client); }
 
         };
 
-        //! used to retrieve pair with matching client
+        //* used to retrieve pair with matching client
         class SameClientFTor
         {
             public:
 
-            //! constructor
+            //* constructor
             SameClientFTor( Client* client ):
                 client_( client )
                 {}
 
-            //! destructor
+            //* destructor
             virtual ~SameClientFTor( void )
             {}
 
-            //! predicate
+            //* predicate
             bool operator() ( const ClientPair& pair ) const
             { return pair.second == client_; }
 
-            //! predicate
+            //* predicate
             bool operator() ( Client* client ) const
             { return client == client_; }
 
             private:
 
-            //! prediction
+            //* prediction
             Client* client_;
         };
 
-        //! map of accepted clients
+        //* map of accepted clients
         ClientMap& _acceptedClients( void )
         { return acceptedClients_; }
 
-        //! list of connected clients
+        //* list of connected clients
         ClientList& _connectedClients( void )
         { return connectedClients_; }
 
@@ -184,72 +180,48 @@ namespace Server
         */
         virtual ClientMap::iterator _register( const ApplicationId& id, Client* client, bool forced = false );
 
-        //! redirect message
+        //* redirect message
         virtual void _redirect( ServerCommand, Client* );
 
-        //! broadcast a message to all registered clients but the sender (if valid)
+        //* broadcast a message to all registered clients but the sender (if valid)
         virtual void _broadcast( ServerCommand, Client* sender = 0 );
 
         protected Q_SLOTS:
 
-        //! a new connection is granted
+        //* a new connection is granted
         virtual void _newConnection( void );
 
-        //! a connection was closed
+        //* a connection was closed
         virtual void _serverConnectionClosed( void );
 
-        //! a connection was closed
+        //* a connection was closed
         virtual void _clientConnectionClosed( void );
 
-        //! client recieves errors
+        //* client recieves errors
         virtual void _error( QAbstractSocket::SocketError );
 
-        //! redistribute message when a connected client sends one
+        //* redistribute message when a connected client sends one
         virtual void _redirect( Server::ServerCommand );
 
-        //! reads signal from server
+        //* reads signal from server
         void _process( Server::ServerCommand );
 
-        //! start timeout
+        //* start timeout
         void _startTimer( void );
 
         private:
 
-        //! host
-        const QHostAddress& _host( void ) const
-        { return host_; }
-
-        //! host
-        void _setHost( const QHostAddress& host )
-        { host_ = host; }
-
-        //! port
-        const unsigned int& _port( void ) const
-        { return port_; }
-
-        //! port
-        void _setPort( const unsigned int& port )
-        { port_ = port; }
-
-        //! arguments
-        const CommandLineArguments& _arguments( void ) const
-        { return arguments_; }
-
-        //! arguments
-        void _setArguments( const CommandLineArguments& arguments )
-        { arguments_ = arguments; }
-
         // initialize client
         bool _initializeClient( void );
 
-        //! initialize server
+        //* initialize server
         bool _initializeServer( void );
 
-        //! server initialization
+        //* server initialization
         bool _serverInitialized( void ) const
         { return serverInitialized_; }
 
-        //! server initialization
+        //* server initialization
         void _setServerInitialized( bool value )
         { serverInitialized_ = value; }
 
@@ -262,28 +234,28 @@ namespace Server
         // arguments
         CommandLineArguments arguments_;
 
-        //! Server
+        //* Server
         QTcpServer* server_;
 
-        //! true if initializeServer was called
+        //* true if initializeServer was called
         bool serverInitialized_;
 
-        //! Client
+        //* Client
         Client* client_;
 
-        //! list of connected clients
+        //* list of connected clients
         ClientList connectedClients_;
 
-        //! maps accepted clients and amount of request
+        //* maps accepted clients and amount of request
         ClientMap acceptedClients_;
 
-        //! application name
+        //* application name
         ApplicationId id_;
 
-        //! manager status
+        //* manager status
         State state_;
 
-        //! reply timeout
+        //* reply timeout
         QBasicTimer timer_;
 
     };

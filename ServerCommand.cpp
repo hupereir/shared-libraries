@@ -19,14 +19,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    ServerCommand.cpp
-   \brief   formated command for interprocess communication
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "Debug.h"
 #include "ServerCommand.h"
 #include "ServerXmlDef.h"

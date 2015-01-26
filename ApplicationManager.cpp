@@ -47,19 +47,19 @@ namespace Server
         Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
         setApplicationName( "Generic Application" );
 
-        connect( &_server(), SIGNAL(newConnection()), SLOT(_newConnection()) );
+        connect( server_, SIGNAL(newConnection()), SLOT(_newConnection()) );
 
         // create new socket
-        connect( &client().socket(), SIGNAL(error(QAbstractSocket::SocketError)), SLOT(_error(QAbstractSocket::SocketError)) );
-        connect( &client().socket(), SIGNAL(connected()), SLOT(_startTimer()) );
-        connect( &client().socket(), SIGNAL(disconnected()), SLOT(_serverConnectionClosed()) );
-        connect( &client(), SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_process(Server::ServerCommand)) );
+        connect( &client_->socket(), SIGNAL(error(QAbstractSocket::SocketError)), SLOT(_error(QAbstractSocket::SocketError)) );
+        connect( &client_->socket(), SIGNAL(connected()), SLOT(_startTimer()) );
+        connect( &client_->socket(), SIGNAL(disconnected()), SLOT(_serverConnectionClosed()) );
+        connect( client_, SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_process(Server::ServerCommand)) );
 
         if( !XmlOptions::get().contains( "SERVER_HOST" ) )
-        { XmlOptions::get().setRaw( "SERVER_HOST", QHostAddress( QHostAddress::LocalHost ).toString(), true ); }
+        { XmlOptions::get().setRaw( "SERVER_HOST", host_.toString(), true ); }
 
         if( !XmlOptions::get().contains( "SERVER_PORT" ) )
-        { XmlOptions::get().set<int>( "SERVER_PORT", 8090, true ); }
+        { XmlOptions::get().set<int>( "SERVER_PORT", port_, true ); }
 
     }
 
@@ -99,18 +99,18 @@ namespace Server
         Debug::Throw( "ApplicationManager::init.\n" );
 
         // store arguments
-        _setArguments( arguments );
+        arguments_ = arguments;
 
         // overwrite host from command line arguments
-        CommandLineParser parser( commandLineParser( _arguments() ) );
+        CommandLineParser parser( commandLineParser( arguments_ ) );
         if( parser.hasOption( "--server-host" ) )
         {
 
             QString host( parser.option( "--server-host" ) );
             XmlOptions::get().setRaw( "SERVER_HOST", host );
-            _setHost( QHostAddress( host ) );
+            host_ = QHostAddress( host );
 
-        } else _setHost( QHostAddress( QString( XmlOptions::get().raw( "SERVER_HOST" ) ) ) );
+        } else host_ = QHostAddress( QString( XmlOptions::get().raw( "SERVER_HOST" ) ) );
 
         // overwrite port from command line arguments
         if( parser.hasOption( "--server-port" ) )
@@ -118,11 +118,11 @@ namespace Server
 
             unsigned int port( parser.option( "--server-port" ).toUInt() );
             XmlOptions::get().set<unsigned int>( "SERVER_PORT", port );
-            _setPort( port );
+            port_ = port;
 
-        } else _setPort( XmlOptions::get().get<unsigned int>( "SERVER_PORT" ) );
+        } else port_ = XmlOptions::get().get<unsigned int>( "SERVER_PORT" );
 
-        Debug::Throw() << "ApplicationManager::initialize - port: " << _port() << endl;
+        Debug::Throw() << "ApplicationManager::initialize - port: " << port_ << endl;
         _initializeClient();
 
         Debug::Throw( "ApplicationManager::init. done.\n" );
@@ -312,7 +312,7 @@ namespace Server
     {
 
         Debug::Throw() << "ApplicationManager::_Broadcast - id: " << command.id().name() << " command: " << command.commandName() << endl;
-        for( ClientList::iterator iter = _connectedClients().begin(); iter != _connectedClients().end(); ++iter )
+        for( ClientList::iterator iter = connectedClients_.begin(); iter != connectedClients_.end(); ++iter )
         { if( (*iter) != sender ) (*iter)->sendCommand( command ); }
 
     }
@@ -323,10 +323,10 @@ namespace Server
         Debug::Throw( "ApplicationManager::_newConnection.\n" );
 
         // check pending connection
-        if( !_server().hasPendingConnections() ) return;
+        if( !server_->hasPendingConnections() ) return;
 
         // create client from pending connection
-        Client *client( new Client( this, _server().nextPendingConnection() ) );
+        Client *client( new Client( this, server_->nextPendingConnection() ) );
         connect( client, SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
         connect( &client->socket(), SIGNAL(disconnected()), SLOT(_clientConnectionClosed()) );
         _connectedClients() << client;
@@ -350,14 +350,14 @@ namespace Server
         // look for disconnected clients in client map
         {
             ClientMap::iterator iter;
-            while( ( iter = std::find_if(  _acceptedClients().begin(), _acceptedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) )  ) != _acceptedClients().end() )
+            while( ( iter = std::find_if(  acceptedClients_.begin(), acceptedClients_.end(), SameStateFTor( QAbstractSocket::UnconnectedState ) )  ) != acceptedClients_.end() )
             {
 
                 // broadcast client as dead
                 _broadcast( ServerCommand( iter.key(), ServerCommand::Killed ), iter.value() );
 
                 // erase from map of accepted clients
-                _acceptedClients().erase( iter );
+                acceptedClients_.erase( iter );
 
             }
         }
@@ -365,10 +365,10 @@ namespace Server
         // look for disconnected clients in connected clients list
         {
             ClientList::iterator iter;
-            while( ( iter = std::find_if( _connectedClients().begin(), _connectedClients().end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != _connectedClients().end() )
+            while( ( iter = std::find_if( connectedClients_.begin(), connectedClients_.end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != connectedClients_.end() )
             {
                 (*iter)->deleteLater();
-                _connectedClients().erase( iter );
+                connectedClients_.erase( iter );
             }
         }
 
@@ -380,7 +380,7 @@ namespace Server
     void ApplicationManager::_error( QAbstractSocket::SocketError error )
     {
 
-        Debug::Throw() << "ApplicationManager::_error - error:" << client().socket().errorString() << endl;
+        Debug::Throw() << "ApplicationManager::_error - error:" << client_->socket().errorString() << endl;
 
         if( error == QAbstractSocket::ConnectionRefusedError )
         {
@@ -404,7 +404,7 @@ namespace Server
             }
 
         } else {
-            Debug::Throw() << "ApplicationManager::_error - unhandled error:" << client().socket().errorString() << endl;
+            Debug::Throw() << "ApplicationManager::_error - unhandled error:" << client_->socket().errorString() << endl;
         }
 
         return;
@@ -416,8 +416,8 @@ namespace Server
 
         Debug::Throw( "Application::_redirect.\n" );
 
-        ClientList::iterator iter( std::find_if(  _connectedClients().begin(), _connectedClients().end(), Client::SameIdFTor( command.clientId() ) ) );
-        Q_ASSERT( iter != _connectedClients().end() );
+        ClientList::iterator iter( std::find_if(  connectedClients_.begin(), connectedClients_.end(), Client::SameIdFTor( command.clientId() ) ) );
+        Q_ASSERT( iter != connectedClients_.end() );
         _redirect( command, *iter );
 
         return;
@@ -433,7 +433,7 @@ namespace Server
             << " command: " << command.commandName()
             << endl;
 
-        Q_ASSERT( client().id() == command.clientId() );
+        Q_ASSERT( client_->id() == command.clientId() );
 
         // check command id is valid
         if( !command.id().isValid() ) return;
@@ -448,7 +448,7 @@ namespace Server
             if( state_ == Alive )
             {
 
-                client().sendCommand( ServerCommand( id_, ServerCommand::Alive ) );
+                client_->sendCommand( ServerCommand( id_, ServerCommand::Alive ) );
                 emit commandRecieved( command );
                 return;
 
@@ -498,7 +498,7 @@ namespace Server
         _setServerInitialized( true );
 
         // connect server to port
-        return _server().listen( _host(), _port() );
+        return server_->listen( host_, port_ );
 
     }
 
@@ -508,24 +508,24 @@ namespace Server
     {
 
         Debug::Throw( "ApplicationManager::_initializeClient.\n" );
-        Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << _host().toString() << " port: " << _port() << endl;
+        Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << host_.toString() << " port: " << port_ << endl;
 
         // connect client to port
-        client().socket().abort();
-        client().socket().connectToHost( _host(), _port() );
+        client_->socket().abort();
+        client_->socket().connectToHost( host_, port_ );
 
         // emit initialization signal
         emit initialized();
         setState( AwaitingReply );
 
         // create request command
-        ServerCommand command( id(), ServerCommand::Request );
+        ServerCommand command( id_, ServerCommand::Request );
 
         // add command line arguments if any
-        command.setArguments( _arguments() );
+        command.setArguments( arguments_ );
 
         // send request command
-        client().sendCommand( command );
+        client_->sendCommand( command );
 
         return true;
 

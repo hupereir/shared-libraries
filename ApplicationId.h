@@ -31,26 +31,26 @@
 namespace Server
 {
 
-    //! Stores application name and user to uniquely identify an application.
+    //* Stores application name and user to uniquely identify an application.
     class ApplicationId:public Counter
     {
         public:
 
-        //! constructor
+        //* constructor
         ApplicationId( const QString& = QString(), QString = QString(), QString = QString() );
 
-        //! constructor
+        //* constructor
         ApplicationId( const QDomElement& );
 
-        //! equal to operator
+        //* equal to operator
         bool operator == (const ApplicationId& app ) const
         { return name() == app.name() && user() == app.user(); }
 
-        //! equal to operator
+        //* equal to operator
         bool operator != (const ApplicationId& app ) const
         { return !( app == *this ); }
 
-        //! lower than to operator
+        //* lower than to operator
         bool operator < (const ApplicationId& app ) const
         {
             if ( name() != app.name() ) return name() < app.name();
@@ -58,48 +58,48 @@ namespace Server
             return false;
         }
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! dom element
+        //* dom element
         QDomElement domElement( QDomDocument& ) const;
 
-        //! name
+        //* name
         const QString& name( void ) const
         { return name_; }
 
-        //! short name
+        //* short name
         QString userName( void ) const;
 
-        //! short name
+        //* short name
         QString display( void ) const;
 
-        //! user
+        //* user
         const QString& user( void ) const
         { return user_; }
 
-        //! pid
+        //* pid
         qint64 processId( void ) const
         { return pid_; }
 
-        //! returns true if user and name makes sense
+        //* returns true if user and name makes sense
         bool isValid( void ) const
         { return !(name().isEmpty() || user().isEmpty() ); }
 
         //@}
 
-        //!@name modifiers
+        //*@name modifiers
         //@{
 
-        //! name
+        //* name
         void setName( const QString& value )
         { name_ = value; }
 
-        //! user
+        //* user
         void setUser( const QString& value )
         { user_ = value; }
 
-        //! pid
+        //* pid
         void setProcessId( qint64 value )
         { pid_ = value; }
 
@@ -107,13 +107,13 @@ namespace Server
 
         private:
 
-        //! application name
+        //* application name
         QString name_;
 
-        //! application user
+        //* application user
         QString user_;
 
-        //! process id
+        //* process id
         qint64 pid_;
 
     };
