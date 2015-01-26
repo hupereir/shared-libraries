@@ -26,7 +26,7 @@
 namespace Format
 {
 
-    //! format bit enumaration
+    //* format bit enumaration
     enum TextFormat
     {
         Default = 0,
@@ -34,7 +34,8 @@ namespace Format
         Italic = 1<<1,
         Underline = 1<<2,
         Strike = 1<<3,
-        Overline = 1<<4
+        Overline = 1<<4,
+        LargeFont = 1<<5
 
     };
 
