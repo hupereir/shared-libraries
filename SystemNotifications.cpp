@@ -70,7 +70,7 @@ void SystemNotifications::processMessage( const QString& summary, const QString&
 void SystemNotifications::timerEvent( QTimerEvent* event )
 {
 
-    Debug::Throw( "SystemNotifications::_showMessageQueue.\n" );
+    Debug::Throw( "SystemNotifications::timerEvent.\n" );
     if( event->timerId() == timer_.timerId() )
     {
 
@@ -89,6 +89,5 @@ void SystemNotifications::_showMessageQueue( void )
 
     QString message = messageQueue_.join( "\n" );
     messageQueue_.clear();
-
-    notify_->send( summary_.toLatin1(), message.toLatin1() );
+    notify_->send( summary_, message );
 }
