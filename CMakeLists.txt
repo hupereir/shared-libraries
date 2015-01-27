@@ -193,9 +193,9 @@ set(base_qt_SOURCES
   TreeViewConfiguration.cpp
   TreeViewItemDelegate.cpp
   UserSelectionFrame.cpp
-  WidgetDragMonitor.cpp
   ValidFileThread.cpp
   WarningDialog.cpp
+  WidgetDragMonitor.cpp
   WidgetMonitor.cpp
   WinUtil.cpp
   XcbUtil.cpp
