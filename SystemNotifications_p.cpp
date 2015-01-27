@@ -34,7 +34,7 @@
 
 //_________________________________________
 SystemNotificationsP::SystemNotificationsP( const QString& applicationName, const QIcon& icon ):
-  icon_( 0x0 )
+  icon_( nullptr )
 {
     #if WITH_LIBNOTIFY
     notify_init( applicationName.toLatin1());
@@ -87,16 +87,22 @@ void SystemNotificationsP::send( const QString& summary, const QString& message,
 {
 
     #if WITH_LIBNOTIFY
-    NotifyNotification* notification( 0x0 );
-    if( !icon.isEmpty() ) notification = notify_notification_new( summary.toLatin1(), message.toLatin1(), icon.toLatin1() );
+
+    const QByteArray summaryArray( summary.toLatin1() );
+    const QByteArray messageArray( message.toLatin1() );
+    if( !( g_utf8_validate( summaryArray, -1, nullptr ) && g_utf8_validate( messageArray, -1, nullptr ) ) )
+    { return; }
+
+    NotifyNotification* notification( nullptr );
+    if( !icon.isEmpty() ) notification = notify_notification_new( summaryArray, messageArray, icon.toLatin1() );
     else if( icon_ )
     {
 
-        notification = notify_notification_new( summary.toLatin1(), message.toLatin1(), 0x0 );
+        notification = notify_notification_new( summaryArray, messageArray, nullptr );
         if( icon_ ) notify_notification_set_image_from_pixbuf( notification, static_cast<GdkPixbuf*>( icon_ ) );
 
-    } else notification = notify_notification_new( summary.toLatin1(), message.toLatin1(), "dialog-information" );
+    } else notification = notify_notification_new( summaryArray, messageArray, "dialog-information" );
 
-    notify_notification_show( notification, 0x0 );
+    notify_notification_show( notification, nullptr );
     #endif
 }
