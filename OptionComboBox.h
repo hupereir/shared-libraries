@@ -36,8 +36,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
     //! constructor
     OptionComboBox( QWidget* parent, const QString& optionName ):
         CustomComboBox( parent ),
-        OptionWidget( optionName, this ),
-        useValue_( true )
+        OptionWidget( optionName, this )
     {}
 
     //! use value for option
@@ -84,7 +83,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
     private:
 
     //! use value for option
-    bool useValue_;
+    bool useValue_ = true;
 
 };
 #endif
