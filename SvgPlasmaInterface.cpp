@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "SvgPlasmaInterface.h"
-#include "SvgPlasmaInterface.moc"
 
 #include "Command.h"
 #include "CustomProcess.h"
