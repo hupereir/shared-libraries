@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseCoreApplication.h"
-#include "BaseCoreApplication.moc"
 
 #include "ErrorHandler.h"
 #include "Debug.h"

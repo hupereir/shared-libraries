@@ -24,7 +24,6 @@
 #include "OptionLineEditor.h"
 #include "OptionSpinBox.h"
 #include "ServerConfiguration.h"
-#include "ServerConfiguration.moc"
 
 #include <QGroupBox>
 #include <QLabel>

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseApplication.h"
-#include "BaseApplication.moc"
 #include "BaseIconNames.h"
 #include "File.h"
 #include "IconEngine.h"

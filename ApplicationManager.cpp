@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "ApplicationManager.h"
-#include "ApplicationManager.moc"
 #include "Client.h"
 #include "Debug.h"
 #include "Util.h"
