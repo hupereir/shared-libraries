@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "SpellDialog.h"
-#include "SpellDialog.moc"
 
 #include "Debug.h"
 #include "DictionarySelectionButton.h"

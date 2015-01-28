@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "SuggestionMenu.h"
-#include "SuggestionMenu.moc"
 
 #include "Debug.h"
 #include "TexString.h"

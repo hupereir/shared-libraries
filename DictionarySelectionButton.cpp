@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "DictionarySelectionButton.h"
-#include "DictionarySelectionButton.moc"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"

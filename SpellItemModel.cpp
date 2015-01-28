@@ -21,7 +21,6 @@
 
 #include "Debug.h"
 #include "SpellItemModel.h"
-#include "SpellItemModel.moc"
 
 namespace SpellCheck
 {

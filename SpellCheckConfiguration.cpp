@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "SpellCheckConfiguration.h"
-#include "SpellCheckConfiguration.moc"
 
 #include "Debug.h"
 #include "DictionarySelectionButton.h"
