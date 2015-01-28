@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "TransparencyConfiguration.h"
-#include "TransparencyConfiguration.moc"
 
 #include "CompositeEngine.h"
 #include "Debug.h"

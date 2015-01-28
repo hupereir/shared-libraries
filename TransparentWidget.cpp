@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "TransparentWidget.h"
-#include "TransparentWidget.moc"
 
 #include "BaseIconNames.h"
 #include "Color.h"
