@@ -26,7 +26,6 @@ might cause the application to hang, notably when process crashes
 */
 
 #include "CustomProcess.h"
-#include "CustomProcess.moc"
 
 //____________________________________________________
 CustomProcess::CustomProcess( QObject* parent ):
