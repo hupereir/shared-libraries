@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "HelpModel.h"
-#include "HelpModel.moc"
 
 #include <QMimeData>
 #include <QStringList>

@@ -24,7 +24,6 @@
 #include "Debug.h"
 #include "HelpDialog.h"
 #include "HelpManager.h"
-#include "HelpManager.moc"
 #include "IconEngine.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"

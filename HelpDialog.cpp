@@ -22,7 +22,6 @@
 #include "AnimatedTextEditor.h"
 #include "AnimatedTreeView.h"
 #include "HelpDialog.h"
-#include "HelpDialog.moc"
 #include "HelpManager.h"
 #include "HelpManager.h"
 #include "HelpModel.h"
