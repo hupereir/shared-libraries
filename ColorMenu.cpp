@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "ColorMenu.h"
-#include "ColorMenu.moc"
 
 #include "BaseIconNames.h"
 #include "IconEngine.h"

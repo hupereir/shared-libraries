@@ -19,4 +19,3 @@
 *******************************************************************************/
 
 #include "CustomTextDocument.h"
-#include "CustomTextDocument.moc"

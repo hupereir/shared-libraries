@@ -31,7 +31,6 @@
 #include <QPainter>
 
 #include "AnimatedStackedWidget.h"
-#include "AnimatedStackedWidget.moc"
 #include "Debug.h"
 #include "TransitionWidget.h"
 

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "DockWidget.h"
-#include "DockWidget.moc"
 #include "DockWidget_p.h"
 #include "BaseMainWindow.h"
 #include "ScrollObject.h"

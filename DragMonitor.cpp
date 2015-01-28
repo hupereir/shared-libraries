@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "DragMonitor.h"
-#include "DragMonitor.moc"
 
 #include <QApplication>
 #include <QMouseEvent>

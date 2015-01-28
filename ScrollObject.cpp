@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "ScrollObject.h"
-#include "ScrollObject.moc"
 #include "Singleton.h"
 #include "XmlOptions.h"
 

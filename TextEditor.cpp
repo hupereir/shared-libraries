@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "TextEditor.h"
-#include "TextEditor.moc"
 
 #include "BaseIconNames.h"
 #include "BaseContextMenu.h"

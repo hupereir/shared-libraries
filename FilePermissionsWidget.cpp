@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "FilePermissionsWidget.h"
-#include "FilePermissionsWidget.moc"
 #include "Debug.h"
 #include "GridLayout.h"
 

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "PathHistoryConfiguration.h"
-#include "PathHistoryConfiguration.moc"
 
 #include "OptionCheckBox.h"
 #include "OptionSpinBox.h"

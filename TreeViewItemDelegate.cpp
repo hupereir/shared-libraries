@@ -20,4 +20,3 @@
 *******************************************************************************/
 
 #include "TreeViewItemDelegate.h"
-#include "TreeViewItemDelegate.moc"

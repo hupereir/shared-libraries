@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "RecentFilesMenu.h"
-#include "RecentFilesMenu.moc"
 
 #include "BaseIconNames.h"
 #include "FileRecordBaseProperties.h"

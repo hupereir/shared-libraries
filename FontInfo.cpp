@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "FontInfo.h"
-#include "FontInfo.moc"
 #include "Debug.h"
 
 #include <QLayout>

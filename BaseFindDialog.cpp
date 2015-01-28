@@ -25,7 +25,6 @@
 #include "LineEditor.h"
 #include "Debug.h"
 #include "BaseFindDialog.h"
-#include "BaseFindDialog.moc"
 
 #include <QFrame>
 #include <QPushButton>

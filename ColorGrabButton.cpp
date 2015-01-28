@@ -21,7 +21,6 @@
 
 
 #include "ColorGrabButton.h"
-#include "ColorGrabButton.moc"
 #include "ColorGrabObject.h"
 #include "Debug.h"
 

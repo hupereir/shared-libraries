@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseReplaceDialog.h"
-#include "BaseReplaceDialog.moc"
 #include "Debug.h"
 
 #include <QLabel>

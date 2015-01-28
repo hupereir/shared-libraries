@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseFileInfoConfigurationWidget.h"
-#include "BaseFileInfoConfigurationWidget.moc"
 #include "Debug.h"
 #include "XmlOptions.h"
 

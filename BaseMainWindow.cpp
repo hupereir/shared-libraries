@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseMainWindow.h"
-#include "BaseMainWindow.moc"
 
 #include "BaseIconNames.h"
 #include "DockWidget.h"

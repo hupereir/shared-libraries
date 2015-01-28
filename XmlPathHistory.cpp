@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "XmlPathHistory.h"
-#include "XmlPathHistory.moc"
 
 #include "Debug.h"
 #include "Singleton.h"

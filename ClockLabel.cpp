@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "ClockLabel.h"
-#include "ClockLabel.moc"
 #include "Debug.h"
 #include "TransitionWidget.h"
 

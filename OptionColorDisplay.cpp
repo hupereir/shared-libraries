@@ -20,4 +20,3 @@
 *******************************************************************************/
 
 #include "OptionColorDisplay.h"
-#include "OptionColorDisplay.moc"

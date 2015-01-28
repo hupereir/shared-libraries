@@ -20,4 +20,3 @@
 *******************************************************************************/
 
 #include "OptionFontInfo.h"
-#include "OptionFontInfo.moc"

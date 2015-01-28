@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "TextEncodingWidget.h"
-#include "TextEncodingWidget.moc"
 
 #include "AnimatedLineEditor.h"
 #include "AnimatedTreeView.h"

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "WidgetDragMonitor.h"
-#include "WidgetDragMonitor.moc"
 #include "XcbUtil.h"
 
 #include <QMouseEvent>

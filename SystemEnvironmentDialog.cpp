@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "SystemEnvironmentDialog.h"
-#include "SystemEnvironmentDialog.moc"
 #include "AnimatedTreeView.h"
 
 #include <QProcess>

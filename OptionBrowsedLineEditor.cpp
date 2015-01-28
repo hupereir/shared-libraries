@@ -20,4 +20,3 @@
 *******************************************************************************/
 
 #include "OptionBrowsedLineEditor.h"
-#include "OptionBrowsedLineEditor.moc"

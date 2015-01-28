@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "AnimatedTabWidget.h"
-#include "AnimatedTabWidget.moc"
 
 #include "Debug.h"
 #include "TransitionWidget.h"

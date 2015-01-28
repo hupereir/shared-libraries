@@ -20,4 +20,3 @@
 *******************************************************************************/
 
 #include "OptionFontEditor.h"
-#include "OptionFontEditor.moc"

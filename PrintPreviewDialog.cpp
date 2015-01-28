@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "PrintPreviewDialog.h"
-#include "PrintPreviewDialog.moc"
 #include "PrintPreviewDialog_p.h"
 
 #include "Debug.h"

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseStatusBar.h"
-#include "BaseStatusBar.moc"
 #include "TransitionWidget.h"
 #include "ClockLabel.h"
 #include "Debug.h"

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "GridLayoutItem.h"
-#include "GridLayoutItem.moc"
 
 #include "ElidedLabel.h"
 #include "GridLayout.h"

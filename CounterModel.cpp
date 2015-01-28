@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "CounterModel.h"
-#include "CounterModel.moc"
 
 //_______________________________________________
 const QString CounterModel::columnTitles_[ CounterModel::nColumns ] =

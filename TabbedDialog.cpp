@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "TabbedDialog.h"
-#include "TabbedDialog.moc"
 
 #include "AnimatedStackedWidget.h"
 #include "IconSize.h"

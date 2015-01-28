@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseFileInfoToolTipWidget.h"
-#include "BaseFileInfoToolTipWidget.moc"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "GridLayoutItem.h"

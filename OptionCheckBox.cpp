@@ -20,4 +20,3 @@
 *******************************************************************************/
 
 #include "OptionCheckBox.h"
-#include "OptionCheckBox.moc"

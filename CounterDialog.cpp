@@ -22,7 +22,6 @@
 #include "BaseIconNames.h"
 #include "CounterMap.h"
 #include "CounterDialog.h"
-#include "CounterDialog.moc"
 #include "IconEngine.h"
 #include "Singleton.h"
 #include "AnimatedTreeView.h"

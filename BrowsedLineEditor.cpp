@@ -22,7 +22,6 @@
 #include "AnimatedLineEditor.h"
 #include "BaseIconNames.h"
 #include "BrowsedLineEditor.h"
-#include "BrowsedLineEditor.moc"
 #include "File.h"
 #include "FileDialog.h"
 #include "IconEngine.h"

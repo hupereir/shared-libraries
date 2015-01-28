@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "FileRecordModel.h"
-#include "FileRecordModel.moc"
 
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"

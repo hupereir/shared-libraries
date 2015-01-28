@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "IconView.h"
-#include "IconView.moc"
 
 #include "BaseFindDialog.h"
 #include "BaseIconNames.h"

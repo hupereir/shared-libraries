@@ -22,7 +22,6 @@
 #include "CounterDialog.h"
 #include "Debug.h"
 #include "DebugMenu.h"
-#include "DebugMenu.moc"
 #include "IconCacheDialog.h"
 #include "OptionDialog.h"
 #include "SystemEnvironmentDialog.h"

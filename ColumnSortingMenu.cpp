@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "ColumnSortingMenu.h"
-#include "ColumnSortingMenu.moc"
 #include "Debug.h"
 #include "TreeView.h"
 

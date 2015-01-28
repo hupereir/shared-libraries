@@ -20,16 +20,13 @@
 *******************************************************************************/
 
 #include "LogWidget.h"
-#include "LogWidget.moc"
 #include "TextFormat.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
 
 //______________________________________________________
 LogWidget::LogWidget( QWidget* parent ):
-    TextEditor( parent ),
-    verbosity_( 0 ),
-    locked_( false )
+    TextEditor( parent )
 {
     Debug::Throw( "LogWidget::LogWidget.\n" );
     setReadOnly( true );
@@ -91,13 +88,13 @@ void LogWidget::append( const QString& text, Format::TextFormatFlags format, con
     cursor.setCharFormat( charFormat );
 
     // disable updates if locked
-    if( _locked() ) setUpdatesEnabled( false );
+    if( locked_ ) setUpdatesEnabled( false );
 
     // insert text
     cursor.insertText( text );
 
     // update
-    if( _locked() ) setUpdatesEnabled( true );
+    if( locked_ ) setUpdatesEnabled( true );
     else {
 
         setTextCursor( cursor );

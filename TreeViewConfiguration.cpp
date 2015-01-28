@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "TreeViewConfiguration.h"
-#include "TreeViewConfiguration.moc"
 
 #include "Debug.h"
 #include "XmlOptions.h"

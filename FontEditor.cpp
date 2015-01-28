@@ -29,7 +29,6 @@
 
 #include "BaseIconNames.h"
 #include "FontEditor.h"
-#include "FontEditor.moc"
 #include "IconEngine.h"
 
 #include <QLayout>

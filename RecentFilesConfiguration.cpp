@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "RecentFilesConfiguration.h"
-#include "RecentFilesConfiguration.moc"
 #include "BaseIconNames.h"
 #include "ContextMenu.h"
 #include "Debug.h"

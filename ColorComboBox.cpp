@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "ColorComboBox.h"
-#include "ColorComboBox.moc"
 
 #include "BaseIconNames.h"
 #include "CustomPixmap.h"

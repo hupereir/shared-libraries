@@ -19,7 +19,6 @@
 *******************************************************************************/
 
 #include "PrinterOptionWidget.h"
-#include "PrinterOptionWidget.moc"
 
 #include "BaseIconNames.h"
 #include "IconEngine.h"

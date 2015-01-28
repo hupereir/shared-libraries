@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "AnimatedTextEditor.h"
-#include "AnimatedTextEditor.moc"
 
 #include "Debug.h"
 #include "ScrollObject.h"

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "ColorGrabObject.h"
-#include "ColorGrabObject.moc"
 #include "Debug.h"
 
 #include <QApplication>

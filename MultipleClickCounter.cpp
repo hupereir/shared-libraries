@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "MultipleClickCounter.h"
-#include "MultipleClickCounter.moc"
 
 //______________________________________________________________________________
 MultipleClickCounter::MultipleClickCounter( QObject* parent, int maxCount ):

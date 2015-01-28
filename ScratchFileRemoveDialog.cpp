@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "ScratchFileRemoveDialog.h"
-#include "ScratchFileRemoveDialog.moc"
 
 #include "BaseContextMenu.h"
 #include "BaseIconNames.h"

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "SelectLineDialog.h"
-#include "SelectLineDialog.moc"
 
 #include <QLabel>
 #include <QLayout>

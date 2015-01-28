@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "AnimatedTreeView.h"
-#include "AnimatedTreeView.moc"
 #include "Debug.h"
 #include "ScrollObject.h"
 #include "TransitionWidget.h"

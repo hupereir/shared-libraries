@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "IconCacheModel.h"
-#include "IconCacheModel.moc"
 
 //_______________________________________________
 const QString IconCacheModel::columnTitles_[ IconCacheModel::nColumns ] =

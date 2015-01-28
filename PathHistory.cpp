@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "PathHistory.h"
-#include "PathHistory.moc"
 
 #include "Debug.h"
 

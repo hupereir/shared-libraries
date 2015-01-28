@@ -21,7 +21,6 @@
 
 #include "LineEditor.h"
 #include "LineEditor_p.h"
-#include "LineEditor.moc"
 
 #include "BaseIconNames.h"
 #include "Debug.h"

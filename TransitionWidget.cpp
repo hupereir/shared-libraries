@@ -21,7 +21,6 @@
 #include "Debug.h"
 #include "Singleton.h"
 #include "TransitionWidget.h"
-#include "TransitionWidget.moc"
 #include "XmlOptions.h"
 
 #include <QPainter>

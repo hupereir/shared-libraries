@@ -23,7 +23,6 @@
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "OptionModel.h"
-#include "OptionModel.moc"
 #include "XmlOptions.h"
 
 #include <QObject>

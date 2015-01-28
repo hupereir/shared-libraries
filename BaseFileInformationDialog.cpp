@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseFileInformationDialog.h"
-#include "BaseFileInformationDialog.moc"
 
 #include "AnimatedTabWidget.h"
 #include "BaseIconNames.h"

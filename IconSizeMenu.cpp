@@ -21,7 +21,6 @@
 
 #include "Debug.h"
 #include "IconSizeMenu.h"
-#include "IconSizeMenu.moc"
 
 //_____________________________________________________________________________
 IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "TextEditorMarginWidget.h"
-#include "TextEditorMarginWidget.moc"
 
 #include "Color.h"
 #include "Debug.h"

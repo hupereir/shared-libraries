@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "TextEncodingMenu.h"
-#include "TextEncodingMenu.moc"
 
 #include "TextEncodingString.h"
 

@@ -20,4 +20,3 @@
 *******************************************************************************/
 
 #include "OptionComboBox.h"
-#include "OptionComboBox.moc"

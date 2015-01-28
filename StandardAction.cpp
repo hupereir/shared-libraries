@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "StandardAction.h"
-#include "StandardAction.moc"
 
 #include "BaseIconNames.h"
 #include "IconEngine.h"

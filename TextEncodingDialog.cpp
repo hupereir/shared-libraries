@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "TextEncodingDialog.h"
-#include "TextEncodingDialog.moc"
 
 #include "TextEncodingWidget.h"
 

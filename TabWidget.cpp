@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "TabWidget.h"
-#include "TabWidget.moc"
 
 #include "BaseContextMenu.h"
 #include "File.h"

@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "BaseDialog.h"
-#include "BaseDialog.moc"
 #include "Debug.h"
 #include "QtUtil.h"
 #include "Util.h"

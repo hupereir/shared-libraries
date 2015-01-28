@@ -21,7 +21,6 @@
 
 #include "Debug.h"
 #include "ElidedLabel.h"
-#include "ElidedLabel.moc"
 
 #include <QApplication>
 #include <QClipboard>

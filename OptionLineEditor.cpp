@@ -18,4 +18,3 @@
 *******************************************************************************/
 
 #include "OptionLineEditor.h"
-#include "OptionLineEditor.moc"

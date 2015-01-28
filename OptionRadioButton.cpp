@@ -20,4 +20,3 @@
 *******************************************************************************/
 
 #include "OptionRadioButton.h"
-#include "OptionRadioButton.moc"

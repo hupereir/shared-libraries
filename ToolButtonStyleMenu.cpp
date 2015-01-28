@@ -21,7 +21,6 @@
 
 #include "Debug.h"
 #include "ToolButtonStyleMenu.h"
-#include "ToolButtonStyleMenu.moc"
 
 #include <QActionGroup>
 

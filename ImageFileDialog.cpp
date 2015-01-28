@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "ImageFileDialog.h"
-#include "ImageFileDialog.moc"
 #include "CustomPixmap.h"
 #include "FileDialog.h"
 #include "File.h"

@@ -36,7 +36,7 @@ class LogWidget: public TextEditor
     public:
 
     //* constructor
-    LogWidget( QWidget* = 0 );
+    LogWidget( QWidget* = nullptr );
 
     //* option name
     void setOptionName( const QString& );
@@ -95,13 +95,13 @@ class LogWidget: public TextEditor
     private:
 
     //* verbosity
-    int verbosity_;
+    int verbosity_ = 0;
 
     //* option name
     QString optionName_;
 
     //* true if locked
-    bool locked_;
+    bool locked_ = false;
 
 };
 

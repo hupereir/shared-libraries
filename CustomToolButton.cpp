@@ -21,7 +21,6 @@
 
 
 #include "CustomToolButton.h"
-#include "CustomToolButton.moc"
 
 #include "IconSize.h"
 #include "Singleton.h"

@@ -32,7 +32,6 @@
 #include <QClipboard>
 
 #include "RemoveLineBuffer.h"
-#include "RemoveLineBuffer.moc"
 
 //______________________________________________________________
 void RemoveLineBuffer::append( const QString& value )
