@@ -31,19 +31,19 @@ class SimpleListView: public QListView
 
     public:
 
-    //! constructor
-    SimpleListView( QWidget* = 0 );
+    //* constructor
+    SimpleListView( QWidget* = nullptr );
 
-    //! destructor
+    //* destructor
     virtual ~SimpleListView( void )
     {}
 
-    //! model
+    //* model
     virtual void setModel( QAbstractItemModel* );
 
     protected Q_SLOTS:
 
-    //! adjust width
+    //* adjust width
     void _adjustWidth( void );
 
 };

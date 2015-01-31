@@ -127,6 +127,7 @@ QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, cons
     else height = pixmapHeight + textHeight + 10;
 
     width = qMax( textWidth, pixmapWidth ) + gap;
+    width = qMax( width, 75 );
 
     return QSize( width, height );
 }
@@ -194,9 +195,6 @@ void SimpleListView::setModel( QAbstractItemModel* model )
 //_______________________________________________
 void SimpleListView::_adjustWidth()
 {
-//     if( model() )
-//     { setFixedWidth( sizeHintForColumn(0) + 25 ); }
-
     if (!model()) {
         return;
     }
