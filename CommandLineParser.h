@@ -30,40 +30,40 @@
 #include <QHash>
 #include <QMap>
 
-//! parse command line argument.
+//* parse command line argument.
 class CommandLineParser: public Counter
 {
 
     public:
 
-    //! constructor
-    CommandLineParser();
+    //* constructor
+    CommandLineParser( void );
 
-    //!@name default group names
+    //*@name default group names
     //@{
     static const QString applicationGroupName;
     static const QString serverGroupName;
     static const QString qtGroupName;
     //@}
 
-    //! used to register options/flags
+    //* used to register options/flags
     class Tag: public Counter
     {
 
         public:
 
-        //! constructor
+        //* constructor
         explicit Tag( QString longName, QString shortName = QString() ):
             Counter( "CommandLineParser::Tag" ),
             longName_( longName ),
             shortName_( shortName )
         {}
 
-        //! destructor
+        //* destructor
         virtual ~Tag( void )
         {}
 
-        //! equal to operator
+        //* equal to operator
         bool operator == (const Tag& other ) const
         {
             if( shortName_.isNull() ) return longName_ == other.longName_ || longName_ == other.shortName_;
@@ -71,7 +71,7 @@ class CommandLineParser: public Counter
             else return longName_ == other.longName_ && shortName_ == other.shortName_;
         }
 
-        //! less than operator
+        //* less than operator
         bool operator < (const Tag& other ) const
         {
             if( shortName_.isNull() )
@@ -85,22 +85,22 @@ class CommandLineParser: public Counter
             }
         }
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! long name
+        //* long name
         const QString& longName( void ) const
         { return longName_; }
 
-        //! short name
+        //* short name
         const QString& shortName( void ) const
         { return shortName_; }
 
-        //! convert to string
+        //* convert to string
         QString toString( void ) const
         { return shortName_.isNull() ? longName_:(shortName_+", "+longName_); }
 
-        //! size
+        //* size
         int size( void ) const
         { return toString().size(); }
 
@@ -113,39 +113,39 @@ class CommandLineParser: public Counter
 
     };
 
-    //! accessors
+    //* accessors
     //@{
 
-    //! print help
+    //* print help
     void usage( void ) const;
 
-    //! return 'rectified' arguments
+    //* return 'rectified' arguments
     CommandLineArguments arguments( void ) const;
 
-    //! application name
+    //* application name
     QString applicationName( void ) const
     { return applicationName_; }
 
-    //! return true if flag is on
+    //* return true if flag is on
     bool hasFlag( const QString& ) const;
 
-    //! return true if option is set
+    //* return true if option is set
     bool hasOption( const QString& ) const;
 
-    //! return option associated to tag
+    //* return option associated to tag
     QString option( const QString& ) const;
 
-    //! orphans
+    //* orphans
     /*! list of command line arguments located at the end of the list and that do not match any option */
     const QStringList& orphans( void ) const
     { return orphans_; }
 
     //@}
 
-    //! modifiers
+    //* modifiers
     //@{
 
-    //! register group
+    //* register group
     void setGroup( QString groupName )
     {
         currentGroup_ = groupName;
@@ -153,27 +153,27 @@ class CommandLineParser: public Counter
         { groupNames_.append( currentGroup_ ); }
     }
 
-    //! register option
+    //* register option
     void registerOption( const QString& tag, const QString& type, QString helpText )
     { registerOption( Tag( tag ), type, helpText ); }
 
-    //! register option
+    //* register option
     void registerOption( const Tag&, const QString& type, const QString& helpText );
 
-    //! register flag
+    //* register flag
     void registerFlag( const QString& tag, const QString& helpText )
     { registerFlag( Tag( tag ), helpText ); }
 
-    //! register flag
+    //* register flag
     void registerFlag( const Tag&, const QString& );
 
-    //! parse
+    //* parse
     CommandLineParser& parse( const CommandLineArguments&, bool ignoreWarnings = true );
 
-    //! clear
+    //* clear
     void clear( void );
 
-    //! orphans
+    //* orphans
     /*! list of command line arguments located at the end of the list and that do not match any option */
     QStringList& orphans( void )
     { return orphans_; }
@@ -182,99 +182,98 @@ class CommandLineParser: public Counter
 
     private:
 
-    //! discard orphans
+    //* discard orphans
     void _discardOrphans( bool ignoreWarnings );
 
-    //! returns true if string is a tag
+    //* returns true if string is a tag
     bool _isTag( const QString& ) const;
 
-    //! flag class
+    //* flag class
     class Flag: public Counter
     {
 
         public:
 
-        //! constructor
+        //* constructor
         Flag( QString helpText = QString() ):
             Counter( "CommandLineParser::Flag" ),
-            helpText_( helpText ),
-            set_( false )
+            helpText_( helpText )
         {}
 
-        //! destructor
+        //* destructor
         virtual ~Flag( void )
         {}
 
-        //! help text
+        //* help text
         QString helpText_;
 
-        //! true if set
-        bool set_;
+        //* true if set
+        bool set_ = false;
 
     };
 
-    //! option class
+    //* option class
     class Option: public Flag
     {
 
         public:
 
-        //! constructor
+        //* constructor
         Option( QString type = QString(), QString helpText = QString() ):
             Flag( helpText ),
             type_( type )
         {}
 
-        //! type
+        //* type
         QString type_;
 
-        //! value
+        //* value
         QString value_;
 
     };
 
-    //! used to select tag of maximum length
+    //* used to select tag of maximum length
     class MinLengthFTor
     {
 
         public:
 
-        //! predicate
+        //* predicate
         bool operator () ( const Tag& first, const Tag& second )
         { return first.size() < second.size(); }
 
     };
 
-    //! used to select tag of maximum length
+    //* used to select tag of maximum length
     class MinTypeLengthFTor
     {
 
         public:
 
-        //! predicate
+        //* predicate
         bool operator () ( const Option& first, const Option& second )
         { return first.type_.size() < second.type_.size(); }
 
     };
 
-    //! used to find matching flag
+    //* used to find matching flag
     class SameTagFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SameTagFTor( const QString& tag ):
             tag_( tag )
             {}
 
-        //! predicate
+        //* predicate
         bool operator() ( const Tag& tag ) const
         { return tag.shortName() == tag_ || tag.longName() == tag_; }
 
         private:
 
-        //! tag
+        //* tag
         QString tag_;
 
     };
@@ -284,56 +283,56 @@ class CommandLineParser: public Counter
 
         public:
 
-        //! clear
+        //* clear
         void clear( void );
 
         using Map = QHash< QString, Group>;
 
-        //! flags
+        //* flags
         using FlagMap = QMap<Tag, Flag>;
 
-        //! flags
+        //* flags
         FlagMap flags_;
 
-        //! options
+        //* options
         using OptionMap = QMap<Tag, Option>;
 
-        //! options
+        //* options
         OptionMap options_;
 
     };
 
-    //! return all flags
+    //* return all flags
     Group::FlagMap _allFlags( void ) const;
 
-    //! return all options
+    //* return all options
     Group::OptionMap _allOptions( void ) const;
 
-    //! find tag in list of flags
+    //* find tag in list of flags
     Group::FlagMap::iterator _findTag( Group::FlagMap&, const QString& ) const;
 
-    //! find tag in list of flags
+    //* find tag in list of flags
     Group::FlagMap::const_iterator _findTag( const Group::FlagMap&, const QString& ) const;
 
-    //! find tag in list of options
+    //* find tag in list of options
     Group::OptionMap::iterator _findTag( Group::OptionMap&, const QString& ) const;
 
-    //! find tag in list of options
+    //* find tag in list of options
     Group::OptionMap::const_iterator _findTag( const Group::OptionMap&, const QString& ) const;
 
-    //! group list
+    //* group list
     Group::Map groups_;
 
-    //! group list
+    //* group list
     QStringList groupNames_;
 
-    //! current group
+    //* current group
     QString currentGroup_;
 
-    //! application name
+    //* application name
     QString applicationName_;
 
-    //! orphan arguments
+    //* orphan arguments
     QStringList orphans_;
 
 };
