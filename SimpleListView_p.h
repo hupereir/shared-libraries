@@ -27,31 +27,31 @@
 #include <QStyleOptionViewItem>
 #include <QTextLayout>
 
-//! item delegate
+//* item delegate
 class SimpleListViewDelegate : public QAbstractItemDelegate, public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     SimpleListViewDelegate( QObject* = 0 );
 
-    //! destructor
+    //* destructor
     virtual ~SimpleListViewDelegate( void )
     {}
 
-    //! paint
+    //* paint
     virtual void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
 
-    //! size
+    //* size
     virtual QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 
     private:
 
-    //! layout text
+    //* layout text
     int _layoutText(QTextLayout*, int) const;
 
-    //! focus
+    //* focus
     void _drawFocus( QPainter*, const QStyleOptionViewItem&, const QRect& ) const;
 
 };

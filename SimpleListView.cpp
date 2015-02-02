@@ -72,14 +72,19 @@ void SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewIte
     opt.showDecorationSelected = true;
     style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, opt.widget);
 
-    if ( option.state & QStyle::State_Selected )
+    const QColor color( qvariant_cast<QColor>(index.model()->data( index, Qt::ForegroundRole )) );
+    if( color.isValid() )
     {
+
+        painter->setPen( color );
+
+    } else if ( option.state & QStyle::State_Selected ) {
+
         painter->setPen( option.palette.color( colorGroup, QPalette::HighlightedText ) );
 
     } else {
 
         painter->setPen( option.palette.color( colorGroup, QPalette::Text ) );
-
     }
 
     if( !pixmap.isNull() )
