@@ -21,7 +21,7 @@ else()
 endif()
 
 # ########### X11 #######################
-if(UNIX  AND NOT APPLE)
+if(UNIX AND NOT APPLE)
 
   find_package(X11)
   if(X11_FOUND)
