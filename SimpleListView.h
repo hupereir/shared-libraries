@@ -41,10 +41,43 @@ class SimpleListView: public QListView
     //* model
     virtual void setModel( QAbstractItemModel* );
 
+    Q_SIGNALS:
+
+    //* emmitted when index is hovered
+    /*!
+    this is similar to the 'entered' signal,
+    except that it is also sent when no index is selected,
+    for instance, to hide tooltips
+    */
+    void hovered( const QModelIndex& );
+
     protected Q_SLOTS:
 
     //* adjust width
     void _adjustWidth( void );
+
+    //* hover index
+    virtual void _indexEntered( const QModelIndex& );
+
+    protected:
+
+    //* generic event
+    virtual bool event( QEvent* );
+
+    //* mouse move event
+    virtual void mouseMoveEvent( QMouseEvent* );
+
+    //* mouse press event
+    virtual void mousePressEvent( QMouseEvent* );
+
+    //* hover index
+    virtual void _setHoverIndex( const QModelIndex& );
+
+    private:
+
+    //* hover index
+    QModelIndex hoverIndex_;
+
 
 };
 

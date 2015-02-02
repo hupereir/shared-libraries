@@ -34,7 +34,7 @@ class SimpleListViewDelegate : public QAbstractItemDelegate, public Counter
     public:
 
     //* constructor
-    SimpleListViewDelegate( QObject* = 0 );
+    SimpleListViewDelegate( QObject* = nullptr );
 
     //* destructor
     virtual ~SimpleListViewDelegate( void )

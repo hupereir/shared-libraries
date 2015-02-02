@@ -183,6 +183,11 @@ SimpleListView::SimpleListView( QWidget* parent ):
     // replace item delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
     setItemDelegate( new SimpleListViewDelegate( this ) );
+    setMouseTracking( true );
+
+    // hover
+    connect( this, SIGNAL(entered(QModelIndex)), SLOT(_indexEntered(QModelIndex)) );
+
 }
 
 //_________________________________________________________
@@ -212,4 +217,63 @@ void SimpleListView::_adjustWidth()
     }
 
     setFixedWidth(width + 25);
+}
+
+//____________________________________________________________________________
+bool SimpleListView::event( QEvent* event )
+{
+
+    switch( event->type() )
+    {
+
+        case QEvent::Leave:
+        case QEvent::HoverLeave:
+        {
+            _setHoverIndex( QModelIndex() );
+            break;
+        }
+
+        default: break;
+    }
+
+    return QListView::event( event );
+
+}
+
+//____________________________________________________________________
+void SimpleListView::mouseMoveEvent( QMouseEvent *event )
+{
+
+    if( !indexAt( event->pos() ).isValid() )
+    { _setHoverIndex( QModelIndex() ); }
+
+    return QListView::mouseMoveEvent( event );
+}
+
+//__________________________________________________________
+void SimpleListView::mousePressEvent( QMouseEvent* event )
+{
+    // clear hover index
+    _setHoverIndex( QModelIndex() );
+
+    if( (event->button() == Qt::RightButton) && selectionModel() && !indexAt( event->pos() ).isValid() )
+    { selectionModel()->clear(); }
+
+    return QListView::mousePressEvent( event );
+}
+
+//____________________________________________________________________
+void SimpleListView::_indexEntered( const QModelIndex& index )
+{ if( updatesEnabled() ) _setHoverIndex( index ); }
+
+//____________________________________________________________________
+void SimpleListView::_setHoverIndex( const QModelIndex& index )
+{
+
+    if( hoverIndex_ == index ) return;
+    hoverIndex_ = index;
+
+    // emit signal
+    emit hovered( index );
+
 }
