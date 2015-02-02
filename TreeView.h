@@ -34,150 +34,150 @@
 class BaseFindDialog;
 class ItemModel;
 
-//! customized tree view
+//* customized tree view
 class TreeView: public QTreeView, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     TreeView( QWidget* = 0 );
 
-    //! destructor
+    //* destructor
     virtual ~TreeView( void )
     {}
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! TextSelection object from this selection, or clipboard
+    //* TextSelection object from this selection, or clipboard
     TextSelection selection( void ) const;
 
-    //! true if given index is visible
+    //* true if given index is visible
     bool isVisible( const QModelIndex& index ) const;
 
-    //! number of visible columns
+    //* number of visible columns
     virtual int visibleColumnCount( void ) const;
 
-    //! option name
+    //* option name
     virtual bool hasOptionName( void ) const
     { return !maskOptionName().isEmpty(); }
 
-    //! option name
+    //* option name
     virtual const QString& maskOptionName( void ) const
     { return maskOptionName_; }
 
-    //! sort column option name
+    //* sort column option name
     virtual const QString& sortColumnOptionName( void ) const
     { return sortColumnOptionName_; }
 
-    //! sort order option name
+    //* sort order option name
     virtual const QString& sortOrderOptionName( void ) const
     { return sortOrderOptionName_; }
 
-    //! sort order option name
+    //* sort order option name
     virtual const QString& showHeaderOptionName( void ) const
     { return showHeaderOptionName_; }
 
-    //! get mask
+    //* get mask
     virtual unsigned int mask( void ) const;
 
-    //! set mask manually
+    //* set mask manually
     virtual void setMask( const unsigned int& );
 
-    //! item margin
+    //* item margin
     virtual int itemMargin( void ) const
     { return itemMargin_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! model
+    //* model
     virtual void setModel( QAbstractItemModel* );
 
-    //! delegate
+    //* delegate
     virtual void setItemDelegate( QAbstractItemDelegate* );
 
-    //! enable list finding
+    //* enable list finding
     void setFindEnabled( bool value );
 
-    //! option name
+    //* option name
     virtual bool setOptionName( const QString& );
 
-    //! lock column
+    //* lock column
     void lockColumnVisibility( int index )
     { setColumnVisibilityLocked( index, true ); }
 
-    //! lock/unlock column
+    //* lock/unlock column
     void setColumnVisibilityLocked( int index, bool value )
     {
         if( value ) lockedColumns_ |= (1<<index);
         else lockedColumns_ &= ~(1<<index);
     }
 
-    //! true if column visibility is locked
+    //* true if column visibility is locked
     bool isColumnVisibilityLocked( int index ) const
     { return lockedColumns_&(1<<index); }
 
-    //! load item margin from option
+    //* load item margin from option
     void setItemMarginFromOptions( bool value )
     { itemMarginFromOptions_ = value; }
 
-    //! load icon size from option
+    //* load icon size from option
     void setIconSizeFromOptions( bool value )
     { iconSizeFromOptions_ = value; }
 
-    //! force alternating row color
+    //* force alternating row color
     void forceAlternatingRowColors( void )
     {
         forceAlternatingRowColors_ = true;
         setAlternatingRowColors( true );
     }
 
-    //! set item margins
+    //* set item margins
     virtual void setItemMargin( int );
 
-    //! set icon size manually and disable option
+    //* set icon size manually and disable option
     void setIconSize( const QSize& size )
     {
         QTreeView::setIconSize( size );
         iconSizeFromOptions_ = false;
     }
 
-    //! store scrollbar position
+    //* store scrollbar position
     void storeScrollBarPosition( void );
 
-    //! restore scrollbar position
+    //* restore scrollbar position
     void restoreScrollBarPosition( void );
 
     //@}
 
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! select all
+    //* select all
     QAction& selectAllAction( void ) const
     { return *selectAllAction_; }
 
-    //! find from dialog
+    //* find from dialog
     QAction& findAction( void ) const
     { return *findAction_; }
 
-    //! find selection again
+    //* find selection again
     QAction& findSelectionAction( void ) const
     { return *findSelectionAction_; }
 
-    //! find again
+    //* find again
     QAction& findAgainAction( void ) const
     { return *findAgainAction_; }
 
-    //! show header
+    //* show header
     QAction& showHeaderAction( void ) const
     { return *showHeaderAction_; }
 
@@ -185,7 +185,7 @@ class TreeView: public QTreeView, public Counter
 
     Q_SIGNALS:
 
-    //! emmitted when index is hovered
+    //* emmitted when index is hovered
     /*!
     this is similar to the 'entered' signal,
     except that it is also sent when no index is selected,
@@ -193,205 +193,205 @@ class TreeView: public QTreeView, public Counter
     */
     void hovered( const QModelIndex& );
 
-    //! emmitted when selection could not be found
+    //* emmitted when selection could not be found
     void noMatchFound( void );
 
-    //! emmitted when selection could be found
+    //* emmitted when selection could be found
     void matchFound( void );
 
     public Q_SLOTS:
 
-    //! resize all visible columns to match contents
+    //* resize all visible columns to match contents
     virtual void resizeColumns()
     { resizeColumns( mask() ); }
 
-    //! resize all visible columns to match contents
+    //* resize all visible columns to match contents
     virtual void resizeColumns( const unsigned int& mask );
 
-    //! toggle show header
+    //* toggle show header
     virtual void toggleShowHeader( bool value );
 
-    //!@name column mask
+    //*@name column mask
     //@{
 
-    //! update column mask from option, if any
+    //* update column mask from option, if any
     virtual void updateMask( void );
 
-    //! save column mask to option, if any
+    //* save column mask to option, if any
     virtual void saveMask( void );
 
     //@}
 
-    //! sort order
+    //* sort order
     virtual void updateSortOrder( void );
 
-    //! sort order
+    //* sort order
     virtual void saveSortOrder( void );
 
-    //! find next occurence of TextSelection
+    //* find next occurence of TextSelection
     virtual void find( TextSelection selection );
 
-    //! find current selection forward
+    //* find current selection forward
     virtual void findSelectionForward( void )
     { _findForward( selection(), true ); }
 
-    //! find current selection backward
+    //* find current selection backward
     virtual void findSelectionBackward( void )
     { _findBackward( selection(), true ); }
 
-    //! find last search forward
+    //* find last search forward
     virtual void findAgainForward( void );
 
-    //! find last search forward
+    //* find last search forward
     virtual void findAgainBackward( void );
 
-    //! store selected indexes in model
+    //* store selected indexes in model
     void storeSelectedIndexes( void );
 
-    //! restore selected indexes from model
+    //* restore selected indexes from model
     void restoreSelectedIndexes( void );
 
-    //! store expanded indexes in model
+    //* store expanded indexes in model
     void storeExpandedIndexes( void );
 
-    //! restore expanded indexes from model
+    //* restore expanded indexes from model
     void restoreExpandedIndexes( void );
 
     protected:
 
-    //! generic event
+    //* generic event
     virtual bool event( QEvent* );
 
-    //! mouse move event
+    //* mouse move event
     virtual void mouseMoveEvent( QMouseEvent* );
 
-    //! mouse press event
+    //* mouse press event
     virtual void mousePressEvent( QMouseEvent* );
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
-    //! find dialog
+    //* find dialog
     virtual BaseFindDialog& _findDialog( void )
     { return *findDialog_; }
 
-    //! find dialog
+    //* find dialog
     virtual void _createBaseFindDialog( void );
 
-    //! find selection in forward direction
+    //* find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, bool rewind );
 
-    //! find selection in backward direction
+    //* find selection in backward direction
     virtual bool _findBackward( const TextSelection& selection, bool rewind );
 
-    //! set item margin
+    //* set item margin
     virtual void _setItemMargin( int );
 
-    //! hover index
+    //* hover index
     virtual void _setHoverIndex( const QModelIndex& );
 
     protected Q_SLOTS:
 
-    //! header menu
+    //* header menu
     virtual void _raiseHeaderMenu( const QPoint& );
 
-    //! find text from dialog
+    //* find text from dialog
     virtual void _findFromDialog( void );
 
-    //! hover index
+    //* hover index
     virtual void _indexEntered( const QModelIndex& );
 
     private Q_SLOTS:
 
-    //! update alternate item color
+    //* update alternate item color
     void _updateConfiguration( void );
 
     private:
 
-    //! install actions
+    //* install actions
     virtual void _installActions( void );
 
-    //! return first index
+    //* return first index
     QModelIndex _firstIndex() const;
 
-    //! return last index
+    //* return last index
     QModelIndex _lastIndex() const;
 
-    //! return next index of current
+    //* return next index of current
     QModelIndex _indexAfter( const QModelIndex& ) const;
 
-    //! return previous index
+    //* return previous index
     QModelIndex _indexBefore( const QModelIndex& ) const;
 
-    //! find dialog
+    //* find dialog
     BaseFindDialog* findDialog_;
 
-    //! model
+    //* model
     ItemModel* model_;
 
-    //! hover index
+    //* hover index
     QModelIndex hoverIndex_;
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! select all items
+    //* select all items
     QAction* selectAllAction_;
 
-    //! find from dialog
+    //* find from dialog
     QAction* findAction_;
 
-    //! find selection again
+    //* find selection again
     QAction* findSelectionAction_;
 
-    //! find selection backward
+    //* find selection backward
     QAction* findSelectionBackwardAction_;
 
-    //! find again
+    //* find again
     QAction* findAgainAction_;
 
-    //! find again backward
+    //* find again backward
     QAction* findAgainBackwardAction_;
 
-    //! show/hide header action
+    //* show/hide header action
     QAction* showHeaderAction_;
 
     //@}
 
-    //! mask option name
+    //* mask option name
     QString maskOptionName_;
 
-    //! sort column option name
+    //* sort column option name
     QString sortColumnOptionName_;
 
-    //! sort order option name
+    //* sort order option name
     QString sortOrderOptionName_;
 
-    //! header visibility
+    //* header visibility
     QString showHeaderOptionName_;
 
-    //! true if item margins are to be set from options
+    //* true if item margins are to be set from options
     bool itemMarginFromOptions_;
 
-    //! true if icon size is to be set from options
+    //* true if icon size is to be set from options
     bool iconSizeFromOptions_;
 
-    //! force alternating row colors
+    //* force alternating row colors
     bool forceAlternatingRowColors_;
 
-    //! item margin
+    //* item margin
     int itemMargin_;
 
-    //! selected column background color
+    //* selected column background color
     bool useSelectedColumnColor_;
 
-    //! vertical scrollbar position
+    //* vertical scrollbar position
     int vertical_;
 
-    //! horizontal scrollbar position
+    //* horizontal scrollbar position
     int horizontal_;
 
-    //! locked columns
+    //* locked columns
     unsigned lockedColumns_;
 
 };

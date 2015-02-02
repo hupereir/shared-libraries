@@ -39,33 +39,33 @@ class BaseToolTipWidget: public QWidget, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     BaseToolTipWidget( QWidget* );
 
-    //! destructo
+    //* destructo
     virtual ~BaseToolTipWidget( void )
     {}
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! enabled
+    //* enabled
     bool isEnabled( void ) const
     { return enabled_; }
 
-    //! follow mouse
+    //* follow mouse
     bool followMouse( void ) const
     { return followMouse_; }
 
-    //! default delay
+    //* default delay
     int defaultDelay( void ) const
     { return defaultDelay_; }
 
-    //! index rect
+    //* index rect
     const QRect& indexRect( void ) const
     { return rect_; }
 
-    //! preferred position
+    //* preferred position
     enum Position
     {
         Left,
@@ -74,34 +74,34 @@ class BaseToolTipWidget: public QWidget, public Counter
         Bottom
     };
 
-    //! preferred position
+    //* preferred position
     Position preferredPosition( void ) const
     { return preferredPosition_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! enable state
+    //* enable state
     void setEnabled( bool );
 
-    //! follow mouse
+    //* follow mouse
     void setFollowMouse( bool value )
     { followMouse_ = value; }
 
-    //! default delay
+    //* default delay
     void setDefaultDelay( int value )
     { if( value >= 0 ) defaultDelay_ = value; }
 
-    //! set index rect
+    //* set index rect
     void setIndexRect( const QRect& rect )
     {
         rect_ = rect;
         if( isVisible() ) _adjustPosition();
     }
 
-    //! preferred position
+    //* preferred position
     void setPreferredPosition( Position value )
     {
         if( preferredPosition_ == value ) return;
@@ -116,58 +116,58 @@ class BaseToolTipWidget: public QWidget, public Counter
 
     public Q_SLOTS:
 
-    //! hide
+    //* hide
     virtual void hide( void );
 
-    //! show
+    //* show
     virtual void show( void );
 
-    //! show delayed
+    //* show delayed
     void showDelayed( int = -1 );
 
     protected:
 
-    //! paint
+    //* paint
     virtual void paintEvent( QPaintEvent* );
 
-    //! mouse press
+    //* mouse press
     virtual void mousePressEvent( QMouseEvent* );
 
-    //! timer event
+    //* timer event
     virtual void timerEvent( QTimerEvent* );
 
-    //! check mouse position
+    //* check mouse position
     bool _checkMousePosition( void ) const;
 
-    //! adjust position
+    //* adjust position
     void _adjustPosition( void );
 
     private Q_SLOTS:
 
-    //! update configuration
+    //* update configuration
     void _updateConfiguration( void );
 
     private:
 
-    //! enable state
+    //* enable state
     bool enabled_;
 
-    //! follow mouse
+    //* follow mouse
     bool followMouse_;
 
-    //! default tooltip delay
+    //* default tooltip delay
     int defaultDelay_;
 
-    //! prefered tooltip position with respect to index rect
+    //* prefered tooltip position with respect to index rect
     Position preferredPosition_;
 
-    //! index rect
+    //* index rect
     QRect rect_;
 
-    //! timer
+    //* timer
     QBasicTimer timer_;
 
-    //! hidden timer
+    //* hidden timer
     /*! if running, showing again the tooltip is immediate, even when calling showDelayed */
     QBasicTimer hiddenTimer_;
 
