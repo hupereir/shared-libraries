@@ -29,7 +29,7 @@
 #include <QMutexLocker>
 #include <QThread>
 
-//! independent thread used to automatically save file
+//* independent thread used to automatically save file
 class ValidFileThread: public QThread, public Counter
 {
 
@@ -37,21 +37,21 @@ class ValidFileThread: public QThread, public Counter
 
     public:
 
-    //! constructor
-    ValidFileThread( QObject* = 0 );
+    //* constructor
+    ValidFileThread( QObject* = nullptr );
 
-    //! destructor
+    //* destructor
     virtual ~ValidFileThread( void )
     {}
 
-    //! check duplicates
+    //* check duplicates
     void setCheckDuplicates( bool value )
     {
         QMutexLocker lock( &mutex_ );
         checkDuplicates_ = value;
     }
 
-    //! set file
+    //* set file
     void setRecords( const FileRecord::List& records )
     {
         QMutexLocker lock( &mutex_ );
@@ -60,23 +60,23 @@ class ValidFileThread: public QThread, public Counter
 
     protected:
 
-    //! Check files validity. Post a ValidFileEvent when finished
+    //* Check files validity. Post a ValidFileEvent when finished
     virtual void run( void );
 
     Q_SIGNALS:
 
-    //! records are available
+    //* records are available
     void recordsAvailable( const FileRecord::List&, bool );
 
     private:
 
-    //! mutex
+    //* mutex
     QMutex mutex_;
 
-    //! check duplicates
-    bool checkDuplicates_;
+    //* check duplicates
+    bool checkDuplicates_ = true;
 
-    //! list of records to be checked
+    //* list of records to be checked
     FileRecord::List records_;
 
 };
