@@ -28,7 +28,7 @@
 #include <QProgressBar>
 #include <QStackedWidget>
 
-//! customized status bar for selection frame
+//* customized status bar for selection frame
 class ProgressStatusBar: public BaseStatusBar
 {
 
@@ -36,46 +36,46 @@ class ProgressStatusBar: public BaseStatusBar
 
     public:
 
-    //! constructor
+    //* constructor
     ProgressStatusBar( QWidget* parent );
 
-    //! destructor
+    //* destructor
     virtual ~ProgressStatusBar( void )
     {}
 
-    //! progress bar
+    //* progress bar
     QProgressBar& progressBar( void ) const
     { return *progress_; }
 
-    //! set progress bar
+    //* set progress bar
     void setProgressBar( QProgressBar* );
 
-    //! retrieves label with given index
+    //* retrieves label with given index
     virtual StatusBarLabel& label( const unsigned int& i = 0  ) const
     { return (i==0) ? *label_:BaseStatusBar::label(i); }
 
     public Q_SLOTS:
 
-    //! show progress bar as visible widget
+    //* show progress bar as visible widget
     void showProgressBar( void );
 
-    //! hide progress bar
+    //* hide progress bar
     void hideProgressBar( void )
     { showLabel(); }
 
-    //! show label as visible widget
+    //* show label as visible widget
     void showLabel( void );
 
     private:
 
-    //! stack widget
-    QStackedWidget* stack_;
+    //* stack widget
+    QStackedWidget* stack_ = nullptr;
 
-    //! progress bar
-    QProgressBar* progress_;
+    //* progress bar
+    QProgressBar* progress_ = nullptr;
 
-    //! label
-    StatusBarLabel* label_;
+    //* label
+    StatusBarLabel* label_ = nullptr;
 
 };
 
