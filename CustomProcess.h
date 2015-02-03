@@ -28,7 +28,7 @@
 #include <QProcess>
 #include <QObject>
 
-//! customized process to store stdout/stderr in full/flushed streams
+//* customized process to store stdout/stderr in full/flushed streams
 class CustomProcess: public QProcess, public Counter
 {
 
@@ -36,30 +36,30 @@ class CustomProcess: public QProcess, public Counter
 
     public:
 
-    //! creator
-    CustomProcess( QObject* parent = 0 );
+    //* creator
+    CustomProcess( QObject* parent = nullptr );
 
-    //! destructor
+    //* destructor
     virtual ~CustomProcess( void );
 
-    /*!
+    /**
     \brief
     add arguments.
     every space separated argument is added separately
     */
     void start( QString arguments, OpenMode mode = ReadWrite );
 
-    /*!
+    /**
     \brief
     add arguments.
     every space separated argument is added separately
     */
     void start( const QStringList&, OpenMode = ReadWrite );
 
-    //! \brief ensure object is deleted at job completion
+    //* ensure object is deleted at job completion
     void setAutoDelete();
 
-    //! error message
+    //* error message
     static QString errorMessage( QProcess::ProcessError error );
 
 };
