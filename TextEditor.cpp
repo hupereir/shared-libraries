@@ -303,9 +303,9 @@ void TextEditor::selectWord( void )
     QString text( cursor.block().text() );
 
     // retrieve local cursor position in block
-    int local_position( cursor.position() - block.position() );
-    int begin = local_position;
-    int end = local_position;
+    int localPosition( cursor.position() - block.position() );
+    int begin = localPosition;
+    int end = localPosition;
 
     // parse text
     if( TextSeparator::get().base().find( text[begin] ) != TextSeparator::get().base().end() )
@@ -330,8 +330,8 @@ void TextEditor::selectWord( void )
     }
 
     // move cursor to begin of selection
-    for( ;begin < local_position; local_position-- ) { cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor ); }
-    for( ;local_position < end; local_position++ ) { cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor ); }
+    for( ;begin < localPosition; localPosition-- ) { cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor ); }
+    for( ;localPosition < end; localPosition++ ) { cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor ); }
 
     // assign cursor to Text editor
     setTextCursor( cursor );
@@ -1435,7 +1435,7 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     BaseEditor::keyPressEvent( event );
 
     // check NumLock and CapsLock
-    /*! right now this works only on X11 */
+    /** right now this works only on X11 */
     bool changed( false );
     if( event->key() == Qt::Key_CapsLock ) changed = _setModifier( ModifierCapsLock, !modifier( ModifierCapsLock ) );
     else if( event->key() == Qt::Key_NumLock ) changed = _setModifier( ModifierNumLock, !modifier( ModifierNumLock ) );
