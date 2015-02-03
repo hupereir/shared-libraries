@@ -2065,8 +2065,8 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
     unsigned int found = 0;
 
     int savedAnchor( qMin( cursor.position(), cursor.anchor() ) );
-    int saved_position( qMax( cursor.position(), cursor.anchor() ) );
-    int current_position( savedAnchor );
+    int savedPosition( qMax( cursor.position(), cursor.anchor() ) );
+    int currentPosition( savedAnchor );
 
     // check if regexp should be used or not
     if( selection.flag( TextSelection::RegExp ) )
@@ -2099,11 +2099,11 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
             cursor.setPosition( savedAnchor + position );
             cursor.setPosition( savedAnchor + position + regexp.matchedLength(), QTextCursor::KeepAnchor );
             cursor.insertText( selection.replaceText() );
-            current_position = cursor.position();
+            currentPosition = cursor.position();
 
             // increment position
             position += selection.replaceText().size();
-            current_position = savedAnchor + position;
+            currentPosition = savedAnchor + position;
 
             found++;
 
@@ -2119,7 +2119,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
             cursor.setPosition( savedAnchor );
             cursor.setPosition( savedAnchor + selectedText.length(), QTextCursor::KeepAnchor );
 
-        } else if( mode == MoveCursor ) cursor.setPosition( current_position );
+        } else if( mode == MoveCursor ) cursor.setPosition( currentPosition );
 
     } else {
 
@@ -2135,17 +2135,17 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         if( selection.flag( TextSelection::CaseSensitive ) )  flags |= QTextDocument::FindCaseSensitively;
         if( selection.flag( TextSelection::EntireWord ) ) flags |= QTextDocument::FindWholeWords;
 
-        while( !( cursor = document()->find( selection.text(), cursor, flags ) ).isNull() && cursor.position() <= saved_position )
+        while( !( cursor = document()->find( selection.text(), cursor, flags ) ).isNull() && cursor.position() <= savedPosition )
         {
 
             // perform replacement
             cursor.insertText( selection.replaceText() );
-            current_position = cursor.position();
-            saved_position += selection.replaceText().size() - selection.text().size();
+            currentPosition = cursor.position();
+            savedPosition += selection.replaceText().size() - selection.text().size();
             found ++;
 
-            emit busy( saved_position );
-            emit progressAvailable( current_position );
+            emit busy( savedPosition );
+            emit progressAvailable( currentPosition );
 
         }
 
@@ -2154,8 +2154,8 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
         if( mode == ExpandCursor )
         {
             cursor.setPosition( savedAnchor );
-            cursor.setPosition( saved_position, QTextCursor::KeepAnchor );
-        } else if( mode == MoveCursor ) cursor.setPosition( current_position );
+            cursor.setPosition( savedPosition, QTextCursor::KeepAnchor );
+        } else if( mode == MoveCursor ) cursor.setPosition( currentPosition );
 
     }
 
