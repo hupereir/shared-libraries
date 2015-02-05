@@ -64,22 +64,10 @@ TextEditor::TextEditor( QWidget *parent ):
     BaseEditor( parent ),
     Counter( "TextEditor" ),
     marginWidget_( new TextEditorMarginWidget( this ) ),
-    findDialog_( 0 ),
-    replaceDialog_( 0 ),
-    selectLineDialog_( 0 ),
-    lineNumberDisplay_( 0 ),
-    leftMargin_( 0 ),
-    active_( false ),
-    wrapFromOptions_( true ),
-    lineNumberFromOptions_( true ),
-    hasTabEmulation_( false ),
-    showLineNumberAction_( 0 ),
-    synchronize_( false ),
     boxSelection_( this ),
     cursorMonitor_( viewport() ),
     removeLineBuffer_( this ),
-    clickCounter_( this, 4 ),
-    modifiers_( ModifierNone )
+    clickCounter_( this, 4 )
 {
 
     Debug::Throw( "TextEditor::TextEditor.\n" );

@@ -545,7 +545,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //@{
 
     //* left margin
-    const int& _leftMargin( void ) const
+    int _leftMargin( void ) const
     { return leftMargin_; }
 
     //* left margin
@@ -690,7 +690,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     void _installActions( void );
 
     //* margin widget
-    TextEditorMarginWidget* marginWidget_;
+    TextEditorMarginWidget* marginWidget_ = nullptr;
 
     //* current block rect
     /*! needed for block highlighting in margin */
@@ -703,13 +703,13 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     ///@{
 
     //* find dialog
-    BaseFindDialog* findDialog_;
+    BaseFindDialog* findDialog_ = nullptr;
 
     //* find dialog
-    BaseReplaceDialog* replaceDialog_;
+    BaseReplaceDialog* replaceDialog_ = nullptr;
 
     //* line number dialog
-    SelectLineDialog* selectLineDialog_;
+    SelectLineDialog* selectLineDialog_ = nullptr;
 
     //@}
 
@@ -717,27 +717,27 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //@{
 
     //* line numbers
-    LineNumberDisplay* lineNumberDisplay_;
+    LineNumberDisplay* lineNumberDisplay_ = nullptr;
 
     //* left margin width
-    int leftMargin_;
+    int leftMargin_ = 0;
 
     //@}
 
     //* true if this display is the active display
-    bool active_;
+    bool active_ = false;
 
     /*! set to false when the wrapping must not get loaded via the options */
-    bool wrapFromOptions_;
+    bool wrapFromOptions_ = true;
 
     /*! set to false when the display of line numbers must not get loaded via the options. */
-    bool lineNumberFromOptions_;
+    bool lineNumberFromOptions_ = true;
 
     //*@name tab emulation and empty lines
     //@{
 
     //* tab emulation flag
-    bool hasTabEmulation_;
+    bool hasTabEmulation_ = false;
 
     //* tab string
     QString emulatedTab_;
@@ -826,12 +826,12 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     QAction* tabEmulationAction_;
 
     //* line number
-    QAction* showLineNumberAction_;
+    QAction* showLineNumberAction_ = nullptr;
 
     //@}
 
     //* synchronization flag
-    bool synchronize_;
+    bool synchronize_ = false;
 
     //* box selection
     BoxSelection boxSelection_;
@@ -859,7 +859,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
 
     //* keyboard modifiers
     /*! this is a bitwise or of the Modifiers enumeration */
-    Modifiers modifiers_;
+    Modifiers modifiers_ = ModifierNone;
 
 };
 
