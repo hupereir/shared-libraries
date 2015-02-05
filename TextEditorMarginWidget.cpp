@@ -33,8 +33,7 @@
 TextEditorMarginWidget::TextEditorMarginWidget( TextEditor* parent ):
     QWidget( parent ),
     Counter( "TextEditorMarginWidget" ),
-    editor_( parent ),
-    dirty_( false )
+    editor_( parent )
 {
     Debug::Throw( "TextEditorMarginWidget::TextEditorMarginWidget.\n" );
     resize(0,0);
@@ -84,7 +83,7 @@ void TextEditorMarginWidget::paintEvent( QPaintEvent* event )
     // paint margins
     QPainter painter( this );
     painter.setClipRect( event->rect() );
-    _editor().paintMargin( painter );
+    editor_->paintMargin( painter );
     painter.end();
 
     // clear dirty flag

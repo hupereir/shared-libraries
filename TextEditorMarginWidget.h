@@ -39,43 +39,43 @@ class TextEditorMarginWidget: public QWidget, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     TextEditorMarginWidget( TextEditor* );
 
-    //! destructor
+    //* destructor
     virtual ~TextEditorMarginWidget( void )
     {}
 
-    //! vertical line
+    //* vertical line
     bool drawVerticalLine( void ) const
     { return true; }
 
     public Q_SLOTS:
 
-    //! dirty
+    //* dirty
     void setDirty( void );
 
     private Q_SLOTS:
 
-    //! configuration
+    //* configuration
     void _updateConfiguration( void );
 
     protected:
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
-    //! parent editor
+    //* parent editor
     TextEditor& _editor( void ) const
     { return *editor_; }
 
     private:
 
-    //! parent editor
-    TextEditor* editor_;
+    //* parent editor
+    TextEditor* editor_ = nullptr;
 
-    //! dirty flag
-    bool dirty_;
+    //* dirty flag
+    bool dirty_ = false;
 
 };
 
