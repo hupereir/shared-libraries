@@ -23,10 +23,11 @@ endif()
 # ########### X11 #######################
 if(UNIX AND NOT APPLE)
 
-  find_package(X11)
-  if(X11_FOUND)
-    find_package(XCB REQUIRED COMPONENTS XCB SHAPE)
-    add_definitions(-DHAVE_XCB=${X11_FOUND})
+  find_package(XCB COMPONENTS XCB SHAPE)
+  if( XCB_XCB_FOUND AND XCB_SHAPE_FOUND )
+    add_definitions(-DHAVE_XCB=1)
+  else()
+    add_definitions(-DHAVE_XCB=0)
   endif()
 
 else()
