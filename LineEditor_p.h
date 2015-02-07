@@ -40,13 +40,13 @@ namespace Private
 
         public:
 
-        //! constructor
-        LineEditorStyle( QStyle* = 0 );
+        //* constructor
+        LineEditorStyle( QStyle* = nullptr );
 
-        //! returns rect corresponding to one widget's subcontrol
+        //* returns rect corresponding to one widget's subcontrol
         virtual QRect subElementRect( SubElement, const QStyleOption*, const QWidget* ) const;
 
-        //! returns size matching contents
+        //* returns size matching contents
         virtual QSize sizeFromContents( ContentsType, const QStyleOption*, const QSize&, const QWidget* ) const;
 
     };
@@ -56,12 +56,12 @@ namespace Private
 
         public:
 
-        //! constructor
+        //* constructor
         LineEditorButton( QWidget* parent );
 
         protected:
 
-        //! paint
+        //* paint
         virtual void paintEvent( QPaintEvent* );
 
     };

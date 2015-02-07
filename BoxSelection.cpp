@@ -34,11 +34,7 @@ const QString BoxSelection::mimeType = "text/boxSelection";
 //________________________________________________________________________
 BoxSelection::BoxSelection( TextEditor* parent ):
     Counter( "BoxSelection" ),
-    parent_( parent ),
-    enabled_( false ),
-    fontWidth_( 0 ),
-    fontHeight_( 0 ),
-    state_( SelectionEmpty )
+    parent_( parent )
 {
     Debug::Throw( debugLevel, "BoxSelection::BoxSelection.\n" );
     updateConfiguration();

@@ -34,15 +34,15 @@
 class LineEditor: public QLineEdit, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     LineEditor( QWidget* parent );
 
-    //! destructor
+    //* destructor
     virtual ~LineEditor( void )
     { delete proxyStyle_.data(); }
 
@@ -52,144 +52,144 @@ class LineEditor: public QLineEdit, public Counter
     bool hasClearButton( void ) const
     { return clearButton_ && clearButton_->isVisible(); }
 
-    //! return clear button width
+    //* return clear button width
     int clearButtonWidth( void ) const;
 
-    //! modification state
+    //* modification state
     const bool& isModified( void ) const
     { return modified_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! read-only state
+    //* read-only state
     void setReadOnly( bool );
 
-    //! set editor as modified
+    //* set editor as modified
     void setModified( const bool& value );
 
-    //! set clear button
+    //* set clear button
     void setHasClearButton( const bool& );
 
     //@}
 
     Q_SIGNALS:
 
-    //! signal emmited when the cursor changes position
+    //* signal emmited when the cursor changes position
     void cursorPositionChanged( int position );
 
-    //! modification state changed
+    //* modification state changed
     void modificationChanged( bool );
 
-    //! emmited when clear button is pressed
+    //* emmited when clear button is pressed
     void cleared( void );
 
     public Q_SLOTS:
 
-    //! set text
+    //* set text
     /*! copy base class method to make it virtual */
     virtual void setText( const QString& value )
     { QLineEdit::setText( value ); }
 
-    //! clear
+    //* clear
     /*! copy base class method to make it virtual */
     virtual void clear( void )
     { QLineEdit::clear(); }
 
-    //! changes selection to uppercase
+    //* changes selection to uppercase
     void lowerCase( void );
 
-    //! changes selection to uppercase
+    //* changes selection to uppercase
     void upperCase( void );
 
     protected:
 
-    //!@name event handlers
+    //*@name event handlers
     //@{
 
-    //! generic event
+    //* generic event
     virtual bool event( QEvent* );
 
-    //! context menu (overloaded)
+    //* context menu (overloaded)
     virtual void contextMenuEvent( QContextMenuEvent* );
 
-    //! overloaded key press event
+    //* overloaded key press event
     virtual void keyPressEvent( QKeyEvent* );
 
     //@}
 
-    //! toggle clear button
+    //* toggle clear button
     virtual void _updateClearButton( void ) const;
 
     protected Q_SLOTS:
 
-    //! update modification state
+    //* update modification state
     virtual void _modified( const QString& text );
 
-    //! update action status
+    //* update action status
     virtual void _updateSelectionActions( void );
 
-    //! update paste action
+    //* update paste action
     /*! depends on clipboard status and editability */
     virtual void _updatePasteAction( void );
 
-    //! update undo/redo actions
+    //* update undo/redo actions
     virtual void _updateUndoRedoActions( void );
 
     protected:
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
     private:
 
-    //! install actions
+    //* install actions
     void _installActions( void );
 
-    //! modification state
-    bool modified_;
+    //* modification state
+    bool modified_ = false;
 
-    //! backup string to track modifications
+    //* backup string to track modifications
     QString backup_;
 
-    //!@name default actions
+    //*@name default actions
     //@{
 
-    //! undo
+    //* undo
     QAction* undoAction_;
 
-    //! redo
+    //* redo
     QAction* redoAction_;
 
-    //! cut selection
+    //* cut selection
     QAction* cutAction_;
 
-    //! copy selection
+    //* copy selection
     QAction* copyAction_;
 
-    //! paste clipboard
+    //* paste clipboard
     QAction* pasteAction_;
 
-    //! clear document
+    //* clear document
     QAction* clearAction_;
 
-    //! select all document
+    //* select all document
     QAction* selectAllAction_;
 
-    //! convert selection to upper case
+    //* convert selection to upper case
     QAction* upperCaseAction_;
 
-    //! convert selection to lower case
+    //* convert selection to lower case
     QAction* lowerCaseAction_;
 
     //@}
 
-    //! clear button
-    QWidget* clearButton_;
+    //* clear button
+    QWidget* clearButton_ = nullptr;
 
-    //! style proxy
+    //* style proxy
     Base::WeakPointer<QProxyStyle> proxyStyle_;
 
 };

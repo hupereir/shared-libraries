@@ -123,8 +123,6 @@ namespace Private
 LineEditor::LineEditor( QWidget* parent ):
     QLineEdit( parent ),
     Counter( "LineEditor" ),
-    modified_( false ),
-    clearButton_( 0 ),
     proxyStyle_( new Private::LineEditorStyle() )
 {
 

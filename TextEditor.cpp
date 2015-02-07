@@ -2406,8 +2406,8 @@ void TextEditor::_updatePasteAction( void )
 
     Debug::Throw( "TextEditor::_updatePasteAction.\n" );
     bool editable( !isReadOnly() );
-    bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
-    pasteAction_->setEnabled( editable && has_clipboard );
+    bool hasClipboard( !qApp->clipboard()->text().isEmpty() );
+    pasteAction_->setEnabled( editable && hasClipboard );
 
 }
 

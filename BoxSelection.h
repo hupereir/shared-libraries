@@ -33,16 +33,16 @@
 
 class TextEditor;
 
-//! handles box selection
+//* handles box selection
 class BoxSelection: public Counter
 {
 
     public:
 
-    //! mime type
+    //* mime type
     static const QString mimeType;
 
-    //! state
+    //* state
     enum State
     {
         SelectionEmpty,
@@ -50,188 +50,188 @@ class BoxSelection: public Counter
         SelectionFinished
     };
 
-    //! constructor
+    //* constructor
     BoxSelection( TextEditor* parent );
 
-    //! synchronize two box selection
+    //* synchronize two box selection
     void synchronize( const BoxSelection& selection );
 
-    //!@ accessors
+    //*@ accessors
     //@{
 
-    //! configuration update
+    //* configuration update
     void updateConfiguration( void );
 
-    //! try enable box selection
+    //* try enable box selection
     bool checkEnabled( void );
 
-    //! enability
+    //* enability
     const bool& isEnabled( void ) const
     { return enabled_; }
 
-    //! forgeround color
+    //* forgeround color
     const QColor& color( void ) const
     { return color_; }
 
-    //! background brush
+    //* background brush
     const QBrush& brush( void ) const
     { return brush_; }
 
-    //! state
+    //* state
     const State& state( void ) const
     { return state_; }
 
-    //! start point
+    //* start point
     const QPoint &begin() const
     { return begin_; }
 
-    //! end point
+    //* end point
     const QPoint &end() const
     { return end_; }
 
-    //! rect
+    //* rect
     const QRect& rect( void ) const
     { return rect_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! start
+    //* start
     bool start( QPoint point );
 
-    //! draw
+    //* draw
     bool update( QPoint point );
 
-    //! finish
+    //* finish
     bool finish( QPoint point );
 
-    //! clear
+    //* clear
     bool clear( void );
 
     //@}
 
-    //! store selection cursors and  selection columns
+    //* store selection cursors and  selection columns
     class CursorList: public  QList<QTextCursor>, public Counter
     {
 
         public:
 
-        //! constructor
+        //* constructor
         CursorList( const int& first_column = 0, const int& columns = 0 ):
             Counter( "CursorList" ),
             firstColumn_( first_column ),
             columns_( columns )
         {}
 
-        //! first column
+        //* first column
         /*! it is used for lines that are entirely outside of the existing blocks */
         const int& firstColumn( void ) const
         { return firstColumn_; }
 
-        //! number of columns in the selection
+        //* number of columns in the selection
         const int& columnCount( void ) const
         { return columns_; }
 
         private:
 
-        //! first column
+        //* first column
         /*! it is used for lines that are entirely outside of the existing blocks */
         int firstColumn_;
 
-        //! selection columns
+        //* selection columns
         int columns_;
 
     };
 
-    //!@name selection manipulation
+    //*@name selection manipulation
     //@{
 
-    //! retrieve list of cursors matching the selection
+    //* retrieve list of cursors matching the selection
     /*! they are used for cut, copy, paste and searching */
     const CursorList& cursorList( void ) const
     { return cursors_; }
 
-    //! copy selection into a string
+    //* copy selection into a string
     QString toString( void ) const;
 
-    //! update from string
+    //* update from string
     bool fromString( QString );
 
-    //! copy selection content to clipboard
+    //* copy selection content to clipboard
     bool toClipboard( const QClipboard::Mode& ) const;
 
-    //! copy clipboard content to boxSelection
+    //* copy clipboard content to boxSelection
     bool fromClipboard( const QClipboard::Mode& );
 
-    //! remove selected text
+    //* remove selected text
     bool removeSelectedText( void ) const;
 
-    //! convert selected text to upperCase
+    //* convert selected text to upperCase
     bool toUpper( void );
 
-    //! convert selected text to upperCase
+    //* convert selected text to upperCase
     bool toLower( void );
 
-    //! apply char format to selection
+    //* apply char format to selection
     bool mergeCharFormat( const QTextCharFormat& ) const;
 
     //@}
 
     private:
 
-    //! update repaiint rect
+    //* update repaiint rect
     void _updateRect( void );
 
-    //! store selected text
+    //* store selected text
     void _store( void );
 
-    //! parent editor
-    TextEditor* parent_;
+    //* parent editor
+    TextEditor* parent_ = nullptr;
 
-    //! @name attributes
+    //* @name attributes
     //@{
 
-    //! true if box selection is enabled
+    //* true if box selection is enabled
     /*! box selection is enabled for fixed pitch fonts only */
-    bool enabled_;
+    bool enabled_ = false;
 
-    //! selection color
+    //* selection color
     QColor color_;
 
-    //! selection brush
+    //* selection brush
     QBrush brush_;
 
-    //! font width
-    int fontWidth_;
+    //* font width
+    int fontWidth_ = 0;
 
-    //! font height
-    int fontHeight_;
+    //* font height
+    int fontHeight_ = 0;
 
     //@}
 
-    //!@name current selection properties
+    //*@name current selection properties
 
-    //! state
-    State state_;
+    //* state
+    State state_ = SelectionEmpty;
 
-    //! start point
+    //* start point
     QPoint begin_;
 
-    //! end point
+    //* end point
     QPoint end_;
 
-    //! cursor point
+    //* cursor point
     /*!
     it is used to tell the editor where to place the cursor
     when highlighting */
     QPoint cursor_;
 
-    //! max rectangle
+    //* max rectangle
     QRect rect_;
 
-    //! list of selection cursors
+    //* list of selection cursors
     CursorList cursors_;
 
 };
