@@ -34,13 +34,13 @@ endif()
 if(UNIX AND NOT APPLE)
 
   find_package(X11)
-  if(X11_FOUND)
-     find_package(XCB REQUIRED COMPONENTS XCB KEYSYMS)
-     find_package(X11_XCB REQUIRED)
-     include_directories(${X11_X11_INCLUDE_PATH})
+  find_package(XCB COMPONENTS XCB KEYSYMS)
+  find_package(X11_XCB)
+  if( X11_FOUND AND XCB_XCB_FOUND AND XCB_KEYSYMS_FOUND AND X11_XCB_FOUND )
+      add_definitions(-DHAVE_XCB=1)
+  else()
+    add_definitions(-DHAVE_XCB=0)
   endif()
-
-  add_definitions(-DHAVE_XCB=${X11_FOUND})
 
 else()
 
