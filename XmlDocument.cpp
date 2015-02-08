@@ -48,6 +48,14 @@ bool XmlDocument::setContent( QIODevice* device, XmlError& error )
 }
 
 //___________________________________________________________________
+bool XmlDocument::setContent( const QByteArray& content, XmlError& error )
+{
+    Debug::Throw(0) << "XmlDocument::setContent - (QByteArray) - size: " << content.size() << endl;
+    error.clear();
+    return QDomDocument::setContent( content, &error.error(), &error.line(), &error.column() );
+}
+
+//___________________________________________________________________
 bool XmlDocument::setContent( const QString& content, XmlError& error )
 {
     error.clear();
