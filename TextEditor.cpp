@@ -474,12 +474,12 @@ void TextEditor::showReplacements( const unsigned int& counts )
 
 
 //__________________________________________________________________
-void TextEditor::setReadOnly( bool readonly )
+void TextEditor::setReadOnly( bool readOnly )
 {
     Debug::Throw( "TextEditor::setReadOnly.\n" );
-    BaseEditor::setReadOnly( readonly );
-    _updateReadOnlyActions( readonly );
-    if( readonly ) document()->setModified( false );
+    BaseEditor::setReadOnly( readOnly );
+    _updateReadOnlyActions( readOnly );
+    if( readOnly ) document()->setModified( false );
 }
 
 //____________________________________________________________________
@@ -1581,14 +1581,14 @@ void TextEditor::_installActions( void )
 
     // create actions
     addAction( undoAction_ = new StandardAction( StandardAction::Undo, this ) );
-    undoAction_->setEnabled( document()->isUndoAvailable() );
+    undoAction_->setEnabled( document()->isUndoAvailable() && !isReadOnly() );
     connect( undoAction_, SIGNAL(triggered()), document(), SLOT(undo()) );
-    connect( this, SIGNAL(undoAvailable(bool)), undoAction_, SLOT(setEnabled(bool)) );
+    connect( this, SIGNAL(undoAvailable(bool)), this, SLOT(_updateUndoRedoActions()) );
 
     addAction( redoAction_ = new StandardAction( StandardAction::Redo, this ) );
-    redoAction_->setEnabled( document()->isRedoAvailable() );
+    redoAction_->setEnabled( document()->isRedoAvailable() && !isReadOnly() );
     connect( redoAction_, SIGNAL(triggered()), document(), SLOT(redo()) );
-    connect( this, SIGNAL(redoAvailable(bool)), redoAction_, SLOT(setEnabled(bool)) );
+    connect( this, SIGNAL(redoAvailable(bool)), this, SLOT(_updateUndoRedoActions()) );
 
     addAction( cutAction_ = new StandardAction( StandardAction::Cut, this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
@@ -2332,19 +2332,31 @@ void TextEditor::_synchronizeSelection( void )
 }
 
 //________________________________________________
-void TextEditor::_updateReadOnlyActions( bool readonly )
+void TextEditor::_updateReadOnlyActions( bool readOnly )
 {
 
     Debug::Throw( "TextEditor::_updateReadOnlyActions.\n" );
     bool hasSelection( textCursor().hasSelection() );
 
-    cutAction_->setEnabled( hasSelection && !readonly );
-    upperCaseAction_->setEnabled( hasSelection && !readonly );
-    lowerCaseAction_->setEnabled( hasSelection && !readonly );
+    cutAction_->setEnabled( hasSelection && !readOnly );
+    upperCaseAction_->setEnabled( hasSelection && !readOnly );
+    lowerCaseAction_->setEnabled( hasSelection && !readOnly );
 
-    replaceAction_->setEnabled( !readonly );
-    replaceAgainAction_->setEnabled( !readonly );
-    replaceAgainBackwardAction_->setEnabled( !readonly );
+    replaceAction_->setEnabled( !readOnly );
+    replaceAgainAction_->setEnabled( !readOnly );
+    replaceAgainBackwardAction_->setEnabled( !readOnly );
+
+    _updateUndoRedoActions();
+
+}
+
+//________________________________________________
+void TextEditor::_updateUndoRedoActions( void )
+{
+
+    Debug::Throw( "TextEditor::_updateUndoRedoActions.\n" );
+    undoAction_->setEnabled( document()->isUndoAvailable() && !isReadOnly() );
+    redoAction_->setEnabled( document()->isRedoAvailable() && !isReadOnly() );
 
 }
 

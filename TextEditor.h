@@ -638,6 +638,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* update action status
     virtual void _updateReadOnlyActions( bool );
 
+    //* update undo/redo actions
+    virtual void _updateUndoRedoActions( void );
+
     //* update action status
     /*! this works only if you have qt > 4.2 */
     virtual void _updateSelectionActions( bool );
