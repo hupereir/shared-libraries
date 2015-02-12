@@ -494,7 +494,7 @@ void TextEditor::resetUndoRedoStack( void )
 }
 
 //______________________________________________________________________________
-void TextEditor::installContextMenuActions( BaseContextMenu* menu, const bool& allActions )
+void TextEditor::installContextMenuActions( BaseContextMenu* menu )
 {
 
     Debug::Throw( "TextEditor::installContextMenuActions.\n" );
@@ -2349,6 +2349,7 @@ void TextEditor::_updateReadOnlyActions( bool readOnly )
     replaceAgainBackwardAction_->setEnabled( !readOnly );
 
     _updateUndoRedoActions();
+    _updatePasteAction();
 
 }
 
@@ -2391,7 +2392,7 @@ void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
     {
 
         const bool hasClipboard( !qApp->clipboard()->text( QClipboard::Clipboard ).isEmpty() );
-        pasteAction_->setEnabled( hasClipboard );
+        pasteAction_->setEnabled( hasClipboard && !isReadOnly() );
 
     } else if( mode == QClipboard::Selection ) {
 
@@ -2419,9 +2420,8 @@ void TextEditor::_updatePasteAction( void )
 {
 
     Debug::Throw( "TextEditor::_updatePasteAction.\n" );
-    bool editable( !isReadOnly() );
-    bool hasClipboard( !qApp->clipboard()->text().isEmpty() );
-    pasteAction_->setEnabled( editable && hasClipboard );
+    const bool hasClipboard( !qApp->clipboard()->text().isEmpty() );
+    pasteAction_->setEnabled( hasClipboard && !isReadOnly() );
 
 }
 
