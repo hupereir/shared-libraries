@@ -31,6 +31,8 @@
 #include <QMenu>
 #include <QProxyStyle>
 
+class BaseContextMenu;
+
 class LineEditor: public QLineEdit, public Counter
 {
 
@@ -72,6 +74,9 @@ class LineEditor: public QLineEdit, public Counter
 
     //* set clear button
     void setHasClearButton( const bool& );
+
+    //* install actions in context menu
+    virtual void installContextMenuActions( BaseContextMenu* );
 
     //@}
 

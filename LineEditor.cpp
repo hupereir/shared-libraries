@@ -22,6 +22,7 @@
 #include "LineEditor.h"
 #include "LineEditor_p.h"
 
+#include "BaseContextMenu.h"
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
@@ -211,6 +212,25 @@ void LineEditor::setHasClearButton( const bool& value )
     }
 }
 
+//______________________________________________________________________________
+void LineEditor::installContextMenuActions( BaseContextMenu* menu, const bool& allActions )
+{
+    Debug::Throw( "TextEditor::installContextMenuActions.\n" );
+    menu->addAction( undoAction_ );
+    menu->addAction( redoAction_ );
+    menu->addSeparator();
+
+    menu->addAction( cutAction_ );
+    menu->addAction( copyAction_ );
+    menu->addAction( pasteAction_ );
+    menu->addAction( clearAction_ );
+    menu->addSeparator();
+
+    menu->addAction( selectAllAction_ );
+    menu->addAction( upperCaseAction_ );
+    menu->addAction( lowerCaseAction_ );
+}
+
 //_____________________________________________________________________
 void LineEditor::lowerCase( void )
 {
@@ -287,25 +307,13 @@ bool LineEditor::event( QEvent* event )
 //_______________________________________________________________
 void LineEditor::contextMenuEvent(QContextMenuEvent *event)
 {
+    Debug::Throw( "TextEditor::contextMenuEvent.\n" );
 
     // menu
-    QMenu menu( this );
-    menu.addAction( undoAction_ );
-    menu.addAction( redoAction_ );
-    menu.addSeparator();
-
-    menu.addAction( cutAction_ );
-    menu.addAction( copyAction_ );
-    menu.addAction( pasteAction_ );
-    menu.addAction( clearAction_ );
-    menu.addSeparator();
-
-    menu.addAction( selectAllAction_ );
-    menu.addAction( upperCaseAction_ );
-    menu.addAction( lowerCaseAction_ );
-
+    BaseContextMenu menu( this );
+    menu.setHideDisabledActions( true );
+    installContextMenuActions( &menu );
     menu.exec( event->globalPos() );
-
 }
 
 //_____________________________________________
