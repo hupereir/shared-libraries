@@ -2338,6 +2338,8 @@ void TextEditor::_updateReadOnlyActions( bool readOnly )
     Debug::Throw( "TextEditor::_updateReadOnlyActions.\n" );
     bool hasSelection( textCursor().hasSelection() );
 
+    clearAction_->setEnabled( !(readOnly || document()->isEmpty() ) );
+
     cutAction_->setEnabled( hasSelection && !readOnly );
     upperCaseAction_->setEnabled( hasSelection && !readOnly );
     lowerCaseAction_->setEnabled( hasSelection && !readOnly );
@@ -2550,6 +2552,11 @@ void TextEditor::_blockCountChanged( int count )
 {
 
     Debug::Throw( "TextEditor::_blockCountChanged.\n" );
+
+    // actions
+    clearAction_->setEnabled( count > 0 && !isReadOnly() );
+
+    // margins
     if( !( _hasLineNumberDisplay() && _lineNumberDisplay().updateWidth( count ) ) ) return;
     if( !( hasLineNumberAction() && showLineNumberAction().isChecked() && showLineNumberAction().isVisible() ) ) return;
     _updateMargin();
