@@ -107,57 +107,15 @@ class BaseFindDialog: public BaseDialog, public Counter
     virtual void noMatchFound( void )
     { baseFindWidget_->noMatchFound(); }
 
-    protected Q_SLOTS:
-
-    //* update combo box with current text
-    virtual void _updateFindComboBox( void )
-    { baseFindWidget_->updateFindComboBox(); }
-
-    //* create Selection object when find button is pressed
-    virtual void _find( void )
-    { baseFindWidget_->find(); }
-
-    //* create Selection object when find button is pressed
-    virtual void _findNoIncrement( void )
-    { baseFindWidget_->findNoIncrement(); }
-
-    //* update button state when regexp checkbox is checked
-    virtual void _regExpChecked( bool value )
-    { baseFindWidget_->regExpChecked( value ); }
-
     protected:
-
-    //* edtion layout
-    QGridLayout& _editorLayout() const
-    { return baseFindWidget_->editorLayout(); }
-
-    //* locations layout
-    QBoxLayout& _locationLayout() const
-    { return baseFindWidget_->locationLayout(); }
 
     //* button layout
     QBoxLayout& _buttonLayout() const
     { return *buttonLayout_; }
 
-    //* "entire word" checkbox
-    QCheckBox& _entireWordCheckBox() const
-    { return baseFindWidget_->entireWordCheckBox(); }
-
     //* "find" button
     QPushButton& _findButton( void ) const
     { return *findButton_; }
-
-    //* add button to disabled button list
-    virtual void _addDisabledButton( QAbstractButton* button )
-    { baseFindWidget_->addDisabledButton( button ); }
-
-    //* add string to both combo box and static set
-    virtual void _addSearchedString( const QString& text  )
-    { baseFindWidget_->addSearchedString( text ); }
-
-    //* list of disabled buttons
-    virtual QList<QAbstractButton*>& _disabledButtons( void )
-    { return baseFindWidget_->disabledButtons(); }
 
     private:
 

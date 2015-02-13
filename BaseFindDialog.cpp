@@ -63,9 +63,9 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     // insert Find button
     QPushButton *button;
     buttonLayout_->addWidget( button = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ) );
-    connect( button, SIGNAL(clicked()), SLOT(_find()) );
-    connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
-    _addDisabledButton( button );
+    connect( button, SIGNAL(clicked()), baseFindWidget_, SLOT(find()) );
+    connect( button, SIGNAL(clicked()), baseFindWidget_, SLOT(updateFindComboBox()) );
+    baseFindWidget_->addDisabledButton( button );
     button->setAutoDefault( false );
     findButton_ = button;
 
