@@ -494,7 +494,7 @@ void TextEditor::resetUndoRedoStack( void )
 }
 
 //______________________________________________________________________________
-void TextEditor::installContextMenuActions( BaseContextMenu* menu )
+void TextEditor::installContextMenuActions( BaseContextMenu* menu, const bool& allActions )
 {
 
     Debug::Throw( "TextEditor::installContextMenuActions.\n" );

@@ -213,7 +213,7 @@ void LineEditor::setHasClearButton( const bool& value )
 }
 
 //______________________________________________________________________________
-void LineEditor::installContextMenuActions( BaseContextMenu* menu, const bool& allActions )
+void LineEditor::installContextMenuActions( BaseContextMenu* menu )
 {
     Debug::Throw( "TextEditor::installContextMenuActions.\n" );
     menu->addAction( undoAction_ );
