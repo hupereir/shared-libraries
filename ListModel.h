@@ -27,48 +27,47 @@
 #include <QList>
 #include <algorithm>
 
-//! Job model. Stores job information for display in lists
+//* Job model. Stores job information for display in lists
 template<typename T, typename EqualTo = std::equal_to<T>, typename LessThan = std::less<T> >
 class ListModel : public ItemModel
 {
 
     public:
 
-    //! value type
+    //* value type
     using ValueType = T;
 
-    //! reference
+    //* reference
     using Reference = T&;
 
-    //! pointer
+    //* pointer
     using Pointer = T*;
 
-    //! value list
+    //* value list
     using List = QList<ValueType>;
     using ListIterator = QListIterator<ValueType>;
     using MutableListIterator = QMutableListIterator<ValueType>;
 
-    //! constructor
+    //* constructor
     ListModel(QObject *parent = 0):
-        ItemModel( parent ),
-        hasCurrentItem_( false )
+        ItemModel( parent )
     {}
 
-    //! destructor
+    //* destructor
     virtual ~ListModel()
     {}
 
-    //!@name methods reimplemented from base class
+    //*@name methods reimplemented from base class
     //@{
 
-    //! flags
+    //* flags
     virtual Qt::ItemFlags flags(const QModelIndex &index) const
     {
         if (!index.isValid()) Qt::ItemFlags();
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
-    //! unique index for given row, column and parent index
+    //* unique index for given row, column and parent index
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
     {
 
@@ -83,24 +82,24 @@ class ListModel : public ItemModel
 
     }
 
-    //! index of parent
+    //* index of parent
     virtual QModelIndex parent(const QModelIndex &) const
     { return QModelIndex(); }
 
-    //! number of rows below given index
+    //* number of rows below given index
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const
     { return parent.isValid() ? 0:values_.size(); }
 
     //@}
 
-    //!@name selection
+    //*@name selection
     //@{
 
-    //! clear internal list selected items
+    //* clear internal list selected items
     virtual void clearSelectedIndexes( void )
     { selectedItems_.clear(); }
 
-    //! set selected indexes
+    //* set selected indexes
     virtual void setSelectedIndexes( const QModelIndexList& indexes )
     {
         selectedItems_.clear();
@@ -108,7 +107,7 @@ class ListModel : public ItemModel
         { if( contains( index ) ) selectedItems_ << values_[index.row()]; }
     }
 
-    //! store index internal selection state
+    //* store index internal selection state
     virtual void setIndexSelected( const QModelIndex& index, bool value )
     {
         if( !contains( index ) ) return;
@@ -116,7 +115,7 @@ class ListModel : public ItemModel
         else selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), values_[index.row()] ) ), selectedItems_.end() );
     }
 
-    //! get list of internal selected items
+    //* get list of internal selected items
     virtual QModelIndexList selectedIndexes( void ) const
     {
 
@@ -132,14 +131,14 @@ class ListModel : public ItemModel
 
     //@}
 
-    //!@name current index
+    //*@name current index
     //@{
 
-    //! current index;
+    //* current index;
     virtual void clearCurrentIndex( void )
     { hasCurrentItem_ = false; }
 
-    //! store current index
+    //* store current index
     virtual void setCurrentIndex( const QModelIndex& index )
     {
         if( contains( index ) )
@@ -151,16 +150,16 @@ class ListModel : public ItemModel
         } else hasCurrentItem_ = false;
     }
 
-    //! restore currentIndex
+    //* restore currentIndex
     virtual QModelIndex currentIndex( void ) const
     { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
 
     //@}
 
-    //!@name interface
+    //*@name interface
     //@{
 
-    //! add value
+    //* add value
     virtual void add( const ValueType& value )
     {
 
@@ -171,7 +170,7 @@ class ListModel : public ItemModel
 
     }
 
-    //! add values
+    //* add values
     virtual void add( const List& values )
     {
 
@@ -186,7 +185,7 @@ class ListModel : public ItemModel
 
     }
 
-    //! insert values
+    //* insert values
     virtual void insert( const QModelIndex& index, const ValueType& value )
     {
         emit layoutAboutToBeChanged();
@@ -194,7 +193,7 @@ class ListModel : public ItemModel
         emit layoutChanged();
     }
 
-    //! insert values
+    //* insert values
     virtual void insert( const QModelIndex& index, const List& values )
     {
         emit layoutAboutToBeChanged();
@@ -208,7 +207,7 @@ class ListModel : public ItemModel
         emit layoutChanged();
     }
 
-    //! insert values
+    //* insert values
     virtual void replace( const QModelIndex& index, const ValueType& value )
     {
         if( !contains( index ) ) add( value );
@@ -234,7 +233,7 @@ class ListModel : public ItemModel
         }
     }
 
-    //! remove
+    //* remove
     virtual void remove( const ValueType& value )
     {
 
@@ -245,7 +244,7 @@ class ListModel : public ItemModel
 
     }
 
-    //! remove
+    //* remove
     virtual void remove( const List& values )
     {
 
@@ -260,11 +259,11 @@ class ListModel : public ItemModel
 
     }
 
-    //! clear
+    //* clear
     virtual void clear( void )
     { set( List() ); }
 
-    //! update values from list
+    //* update values from list
     /*!
     values that are not found in current are removed
     new values are set to the end.
@@ -303,7 +302,7 @@ class ListModel : public ItemModel
 
     }
 
-    //! set all values
+    //* set all values
     virtual void set( const List& values )
     {
 
@@ -315,19 +314,19 @@ class ListModel : public ItemModel
         return;
     }
 
-    //! return all values
+    //* return all values
     const List& get( void ) const
     { return values_; }
 
-    //! return true if model contains given index
+    //* return true if model contains given index
     virtual bool contains( const QModelIndex& index ) const
     { return index.isValid() && index.row() < values_.size(); }
 
-    //! return value for given index
+    //* return value for given index
     virtual ValueType get( const QModelIndex& index ) const
     { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:ValueType(); }
 
-    //! return all values
+    //* return all values
     List get( const QModelIndexList& indexes ) const
     {
         List out;
@@ -336,7 +335,7 @@ class ListModel : public ItemModel
         return out;
     }
 
-    //! return index associated to a given value
+    //* return index associated to a given value
     virtual QModelIndex index( const ValueType& value, int column = 0 ) const
     {
         for( int row=0; row<values_.size(); ++row )
@@ -348,11 +347,11 @@ class ListModel : public ItemModel
 
     protected:
 
-    //! return all values
+    //* return all values
     List& _get( void )
     { return values_; }
 
-    //! add, without update
+    //* add, without update
     virtual void _add( const ValueType& value )
     {
         typename List::iterator iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
@@ -360,7 +359,7 @@ class ListModel : public ItemModel
         else *iter = value;
     }
 
-    //! add, without update
+    //* add, without update
     virtual void _insert( const QModelIndex& index, const ValueType& value )
     {
         if( !index.isValid() ) add( value );
@@ -370,7 +369,7 @@ class ListModel : public ItemModel
         values_.insert( iter, value );
     }
 
-    //! remove, without update
+    //* remove, without update
     virtual void _remove( const ValueType& value )
     {
         values_.erase( std::remove_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value )), values_.end() );
@@ -379,16 +378,16 @@ class ListModel : public ItemModel
 
     private:
 
-    //! values
+    //* values
     List values_;
 
-    //! selection
+    //* selection
     List selectedItems_;
 
-    //! true if current item is valid
-    bool hasCurrentItem_;
+    //* true if current item is valid
+    bool hasCurrentItem_ = false;
 
-    //! current item
+    //* current item
     ValueType currentItem_;
 
 };

@@ -25,7 +25,7 @@
 #include <QAbstractItemModel>
 #include <QColor>
 
-//! Job model. Stores job information for display in lists
+//* Job model. Stores job information for display in lists
 class ItemModel : public QAbstractItemModel
 {
 
@@ -33,87 +33,87 @@ class ItemModel : public QAbstractItemModel
 
     public:
 
-    //! constructor
+    //* constructor
     ItemModel(QObject *parent = 0);
 
-    //! destructor
+    //* destructor
     virtual ~ItemModel()
     {}
 
-    //! return all indexes in model starting from parent [recursive]
+    //* return all indexes in model starting from parent [recursive]
     QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;
 
-    //!@name sorting
+    //*@name sorting
     //@{
 
-    //! sort
+    //* sort
     virtual void sort( void )
     { sort( sortColumn(), sortOrder() ); }
 
-    //! sort
+    //* sort
     virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
 
-    //! current sorting column
+    //* current sorting column
     const int& sortColumn( void ) const
     { return sortColumn_; }
 
-    //! current sort order
+    //* current sort order
     const Qt::SortOrder& sortOrder( void ) const
     { return sortOrder_; }
 
     //@}
 
-    //!@name selected indexes
+    //*@name selected indexes
     //@{
 
-    //! clear internal list selected items
+    //* clear internal list selected items
     virtual void clearSelectedIndexes( void ) = 0;
 
-    //! set selected indexes
+    //* set selected indexes
     virtual void setSelectedIndexes( const QModelIndexList& ) = 0;
 
-    //! store index internal selection state
+    //* store index internal selection state
     virtual void setIndexSelected( const QModelIndex&, bool ) = 0;
 
-    //! get list of internal selected items
+    //* get list of internal selected items
     virtual QModelIndexList selectedIndexes( void ) const = 0;
 
     //@}
 
-    //!@name current index
+    //*@name current index
     //@{
 
-    //! current index;
+    //* current index;
     virtual void clearCurrentIndex( void ) = 0;
 
-    //! store current index
+    //* store current index
     virtual void setCurrentIndex( const QModelIndex& ) = 0;
 
-    //! restore currentIndex
+    //* restore currentIndex
     virtual QModelIndex currentIndex( void ) const = 0;
 
     //@}
 
-    //!@name expanded indexes
+    //*@name expanded indexes
     //@{
 
-    //! true if expended indexes are supported
+    //* true if expended indexes are supported
     virtual bool supportsExpandedIndexes( void ) const
     { return false; }
 
-    //! clear internal list of expanded items
+    //* clear internal list of expanded items
     virtual void clearExpandedIndexes( void )
     {}
 
-    //! set selected indexes
+    //* set selected indexes
     virtual void setExpandedIndexes( const QModelIndexList& )
     {}
 
-    //! store index internal selection state
+    //* store index internal selection state
     virtual void setIndexExpanded( const QModelIndex&, bool )
     {}
 
-    //! get list of internal selected items
+    //* get list of internal selected items
     virtual QModelIndexList expandedIndexes( void ) const
     { return QModelIndexList(); }
 
@@ -121,20 +121,20 @@ class ItemModel : public QAbstractItemModel
 
     protected:
 
-    //! this sort columns without calling the layout changed callbacks
+    //* this sort columns without calling the layout changed callbacks
     virtual void _sort( void )
     { _sort( sortColumn(), sortOrder() ); }
 
-    //! private sort, with no signals emmitted
+    //* private sort, with no signals emmitted
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder ) = 0;
 
-    //! used to sort items in list
+    //* used to sort items in list
     class SortFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
             type_( type ),
             order_( order )
@@ -142,21 +142,21 @@ class ItemModel : public QAbstractItemModel
 
         protected:
 
-        //! column
+        //* column
         int type_;
 
-        //! order
+        //* order
         Qt::SortOrder order_;
 
     };
 
     private:
 
-    //! sorting column
-    int sortColumn_;
+    //* sorting column
+    int sortColumn_ = 0;
 
-    //! sorting order
-    Qt::SortOrder sortOrder_;
+    //* sorting order
+    Qt::SortOrder sortOrder_ = Qt::AscendingOrder;
 
 };
 

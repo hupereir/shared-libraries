@@ -32,32 +32,31 @@
 #include <QFont>
 #include <QPalette>
 
-//! FileInfo model. Stores file information for display in lists
+//* FileInfo model. Stores file information for display in lists
 template<typename T>
 class BaseFileInfoModel : public ListModel<T>
 {
 
     public:
 
-    //! constructor
+    //* constructor
     BaseFileInfoModel( QObject* parent = 0 ):
-        ListModel<T>( parent ),
-        showIcons_( true )
+        ListModel<T>( parent )
     {}
 
-    //! destructor
+    //* destructor
     virtual ~BaseFileInfoModel()
     {}
 
-    //! show icons
+    //* show icons
     void setShowIcons( const bool& value )
     { showIcons_ = value; }
 
-    //! show icons
+    //* show icons
     bool showIcons( void ) const
     { return showIcons_; }
 
-    //! column type enumeration
+    //* column type enumeration
     enum ColumnType
     {
         Filename,
@@ -70,54 +69,54 @@ class BaseFileInfoModel : public ListModel<T>
         nColumns
     };
 
-    //!@name methods reimplemented from base class
+    //*@name methods reimplemented from base class
     //@{
 
     // return data for a given index
     virtual QVariant data( const QModelIndex&, int ) const;
 
-    //! header data
+    //* header data
     virtual QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const;
 
-    //! number of columns for a given index
+    //* number of columns for a given index
     virtual int columnCount( const QModelIndex& = QModelIndex() ) const
     { return nColumns; }
 
     //@}
 
-    //! used to sort FileInfo objects
+    //* used to sort FileInfo objects
     class SortFTor: public ItemModel::SortFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
             ItemModel::SortFTor( type, order )
             {}
 
-        //! destructor
+        //* destructor
         virtual ~SortFTor( void )
         {}
 
-        //! prediction
+        //* prediction
         virtual bool operator() ( const T&, const T& ) const;
 
     };
 
     protected:
 
-    //! sort
+    //* sort
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
     { std::sort( ListModel<T>::_get().begin(), ListModel<T>::_get().end(), SortFTor( (ColumnType) column, order ) ); }
 
-    //! icon matching given id
+    //* icon matching given id
     virtual QIcon _icon( const QModelIndex& ) const = 0;
 
     private:
 
-    //! true if icons are to be shown
-    bool showIcons_;
+    //* true if icons are to be shown
+    bool showIcons_ = true;
 
 };
 

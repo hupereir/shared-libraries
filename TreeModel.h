@@ -28,57 +28,54 @@
 
 #include <QList>
 
-//! generic class to store structure in a model
+//* generic class to store structure in a model
 template<class T> class TreeModel : public ItemModel
 {
 
     public:
 
-    //! value type
+    //* value type
     using ValueType = T;
 
-    //! reference
+    //* reference
     using Reference = T&;
 
-    //! reference
+    //* reference
     using ConstReference = const T&;
 
-    //! pointer
+    //* pointer
     using Pointer = T*;
 
-    //! list of values
+    //* list of values
     using List = QList<ValueType>;
 
-    //! iterator
+    //* iterator
     using ListIterator = QListIterator<ValueType>;
 
-    //! item
+    //* item
     using Item = TreeItem<T>;
 
-    //! constructor
+    //* constructor
     TreeModel(QObject *parent = 0):
         ItemModel( parent ),
-        map_( typename Item::Map() ),
-        root_( map_ ),
-        sortValues_( true ),
-        hasCurrentItem_( false )
+        root_( map_ )
     {}
 
-    //! destructor
+    //* destructor
     virtual ~TreeModel()
     {}
 
-    //!@name methods reimplemented from base class
+    //*@name methods reimplemented from base class
     //@{
 
-    //! flags
+    //* flags
     virtual Qt::ItemFlags flags(const QModelIndex &index) const
     {
         if (!index.isValid()) return 0;
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
-    //! unique index for given row, column and parent index
+    //* unique index for given row, column and parent index
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
     {
 
@@ -95,7 +92,7 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! index of parent
+    //* index of parent
     virtual QModelIndex parent(const QModelIndex &index) const
     {
 
@@ -122,7 +119,7 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! number of rows below given index
+    //* number of rows below given index
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const
     {
 
@@ -137,10 +134,10 @@ template<class T> class TreeModel : public ItemModel
 
     //@}
 
-    //!@name value to index matching
+    //*@name value to index matching
     //@{
 
-    //! return index associated to a given value, starting from parent [recursive]
+    //* return index associated to a given value, starting from parent [recursive]
     virtual QModelIndex index( ConstReference value, const QModelIndex& parent = QModelIndex() ) const
     {
 
@@ -160,7 +157,7 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! return all values [recursive]
+    //* return all values [recursive]
     virtual List children( const QModelIndex& parent = QModelIndex() ) const
     {
 
@@ -170,7 +167,7 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! return all values [recursive]
+    //* return all values [recursive]
     virtual List children( ConstReference value ) const
     {
 
@@ -178,14 +175,14 @@ template<class T> class TreeModel : public ItemModel
         return index.isValid() ? children( index ):List();
     }
 
-    //! return value associated to given model index
+    //* return value associated to given model index
     virtual ValueType get( const QModelIndex& index ) const
     {
         if( !index.isValid() ) return ValueType();
         else return _find( index.internalId() ).get();
     }
 
-    //! return all values matching index list
+    //* return all values matching index list
     List get( const QModelIndexList& indexes ) const
     {
         List out;
@@ -196,14 +193,14 @@ template<class T> class TreeModel : public ItemModel
 
     //@}
 
-    //!@name selection
+    //*@name selection
     //@{
 
-    //! clear internal list selected items
+    //* clear internal list selected items
     virtual void clearSelectedIndexes( void )
     { selectedItems_.clear(); }
 
-    //! set selected indexes
+    //* set selected indexes
     virtual void setSelectedIndexes( const QModelIndexList& indexes )
     {
         selectedItems_.clear();
@@ -211,7 +208,7 @@ template<class T> class TreeModel : public ItemModel
         { if( index.isValid() ) selectedItems_ << get( index ); }
     }
 
-    //! store index internal selection state
+    //* store index internal selection state
     virtual void setIndexSelected( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
@@ -219,7 +216,7 @@ template<class T> class TreeModel : public ItemModel
         else { selectedItems_.removeAll( get( index ) ); }
     }
 
-    //! get list of internal selected items
+    //* get list of internal selected items
     virtual QModelIndexList selectedIndexes( void ) const
     {
         QModelIndexList out;
@@ -233,14 +230,14 @@ template<class T> class TreeModel : public ItemModel
 
     //@}
 
-    //!@name current index
+    //*@name current index
     //@{
 
-    //! current index;
+    //* current index;
     virtual void clearCurrentIndex( void )
     { hasCurrentItem_ = false; }
 
-    //! store current index
+    //* store current index
     virtual void setCurrentIndex( const QModelIndex& index )
     {
         if( index.isValid() )
@@ -252,24 +249,24 @@ template<class T> class TreeModel : public ItemModel
         } else hasCurrentItem_ = false;
     }
 
-    //! restore currentIndex
+    //* restore currentIndex
     virtual QModelIndex currentIndex( void ) const
     { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
 
     //@}
 
-    //!@name expansion
+    //*@name expansion
     //@{
 
-    //! true if expended indexes are supported
+    //* true if expended indexes are supported
     virtual bool supportsExpandedIndexes( void ) const
     { return true; }
 
-    //! clear internal list of expanded items
+    //* clear internal list of expanded items
     virtual void clearExpandedIndexes( void )
     { expandedItems_.clear(); }
 
-    //! set selected indexes
+    //* set selected indexes
     virtual void setExpandedIndexes( const QModelIndexList& indexes )
     {
         expandedItems_.clear();
@@ -277,7 +274,7 @@ template<class T> class TreeModel : public ItemModel
         { if( index.isValid() ) expandedItems_ << get( index ); }
     }
 
-    //! store index internal selection state
+    //* store index internal selection state
     virtual void setIndexExpanded( const QModelIndex& index, bool value )
     {
         if( !index.isValid() ) return;
@@ -285,7 +282,7 @@ template<class T> class TreeModel : public ItemModel
         else { expandedItems_.removeAll( get( index ) ); }
     }
 
-    //! get list of internal selected items
+    //* get list of internal selected items
     virtual QModelIndexList expandedIndexes( void ) const
     {
         QModelIndexList out;
@@ -299,11 +296,11 @@ template<class T> class TreeModel : public ItemModel
 
     //@}
 
-    //! add values
+    //* add values
     void add( ConstReference value )
     { add( List() << value ); }
 
-    //! add values
+    //* add values
     void add( List values )
     {
 
@@ -321,7 +318,7 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! replace
+    //* replace
     bool replace( ConstReference first, ConstReference second )
     {
         Item* item( root_.find( first ) );
@@ -335,7 +332,7 @@ template<class T> class TreeModel : public ItemModel
 
     };
 
-    //! update values
+    //* update values
     /*!
     items that are not found in list are removed
     items that are found are updated
@@ -363,7 +360,7 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! update values
+    //* update values
     /*!
     items that are not found in list are removed
     items that are found are updated
@@ -392,15 +389,15 @@ template<class T> class TreeModel : public ItemModel
         emit layoutChanged();
     }
 
-    //! root item
+    //* root item
     const Item& root( void ) const
     { return root_; }
 
-    //! remove
+    //* remove
     virtual void remove( ConstReference value )
     { remove( List() << value ); }
 
-    //! remove
+    //* remove
     virtual void remove( List values )
     {
 
@@ -416,7 +413,7 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! reset tree
+    //* reset tree
     void resetTree( void )
     {
         emit layoutAboutToBeChanged();
@@ -425,7 +422,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
 
-    //! clear
+    //* clear
     void clear( void )
     {
 
@@ -436,31 +433,31 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! sort values
+    //* sort values
     void setSortValues( bool value )
     { sortValues_ = value; }
 
     protected:
 
-    //! root item
+    //* root item
     Item& _root( void )
     { return root_; }
 
-    //! add
+    //* add
     void _add( Item& item, List values )
     {
         foreach( ConstReference value, values )
         { item.add( value ); }
     }
 
-    //! find item matching id
+    //* find item matching id
     const Item& _find( typename Item::Id id ) const
     {
         typename Item::Map::const_iterator iter( map_.find( id ) );
         return iter == map_.end() ? root_:*iter.value();
     }
 
-    //! remove, without update
+    //* remove, without update
     void _remove( Item& parent, List& values )
     {
 
@@ -489,7 +486,7 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //! reset tree
+    //* reset tree
     /*! private version, with no signal emitted */
     void _resetTree( void )
     {
@@ -502,28 +499,27 @@ template<class T> class TreeModel : public ItemModel
 
     private:
 
-    //! item map
+    //* item map
     /*! used to allow fast mapping between index and value */
     typename Item::Map map_;
 
-    //! root item
+    //* root item
     Item root_;
 
-    //! selection
+    //* selection
     List selectedItems_;
 
-    //! expanded indexes
+    //* expanded indexes
     List expandedItems_;
 
-    //! true if values should be sorted when retrieved
-    bool sortValues_;
+    //* true if values should be sorted when retrieved
+    bool sortValues_ = true;
 
-    //! true if current item is valid
-    bool hasCurrentItem_;
+    //* true if current item is valid
+    bool hasCurrentItem_ = false;
 
-    //! current item
+    //* current item
     ValueType currentItem_;
-
 
 };
 

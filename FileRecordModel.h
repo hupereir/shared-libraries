@@ -30,7 +30,7 @@
 #include <QStringList>
 #include <QHash>
 
-//! qlistview for object counters
+//* qlistview for object counters
 class FileRecordModel: public ListModel<FileRecord>, public Counter
 {
 
@@ -38,7 +38,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
 
     public:
 
-    //! column type enumeration
+    //* column type enumeration
     enum ColumnType
     {
         Filename,
@@ -46,91 +46,91 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
         Time
     };
 
-    //! constructor
+    //* constructor
     FileRecordModel( QObject* = 0 );
 
-    //! destructor
+    //* destructor
     virtual ~FileRecordModel( void )
     {}
 
-    //! show icons
+    //* show icons
     void setShowIcons( const bool& value )
     { showIcons_ = value; }
 
-    //! use local names
+    //* use local names
     void setUseLocalNames( const bool& value )
     { useLocalNames_ = value; }
 
-    //!@name methods reimplemented from base class
+    //*@name methods reimplemented from base class
     //@{
 
-    //! flags
+    //* flags
     virtual Qt::ItemFlags flags( const QModelIndex& ) const;
 
     // return data for a given index
     virtual QVariant data( const QModelIndex &, int ) const;
 
-    //! header data
+    //* header data
     virtual QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const;
 
-    //! number of columns for a given index
+    //* number of columns for a given index
     virtual int columnCount( const QModelIndex& = QModelIndex() ) const;
 
-    //! column matching given name, if any
+    //* column matching given name, if any
     virtual int findColumn( const QString& ) const;
 
     //@}
 
-    //! set values (overloaded)
+    //* set values (overloaded)
     void set( const List& values )
     {
         _updateColumns( values );
         ListModel<FileRecord>::set( values );
     }
 
-    //! set values (overloaded)
+    //* set values (overloaded)
     void update( const List& values )
     {
         _updateColumns( values );
         ListModel<FileRecord>::update( values );
     }
 
-    //! enable drag
+    //* enable drag
     const bool& dragEnabled( void ) const
     { return dragEnabled_; }
 
-    //! enable drag
+    //* enable drag
     void setDragEnabled( const bool& value )
     { dragEnabled_ = value; }
 
     protected:
 
-    //! sort
+    //* sort
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
 
-    //! add, without update
+    //* add, without update
     virtual void _add( const ValueType& );
 
     private Q_SLOTS:
 
-    //! configuration
+    //* configuration
     void _updateConfiguration( void );
 
     private:
 
-    //! used to sort Counters
+    //* used to sort Counters
     class SortFTor: public ItemModel::SortFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SortFTor( const int& type, Qt::SortOrder order, const QStringList& columnTitles ):
             ItemModel::SortFTor( type, order ),
             columnTitles_( columnTitles )
         {}
 
-        //! prediction
+        //* prediction
         bool operator() ( FileRecord, FileRecord ) const;
 
         private:
@@ -140,7 +140,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
 
     };
 
-    //! update columns
+    //* update columns
     void _updateColumns( const List& values )
     {
 
@@ -150,31 +150,31 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
 
     }
 
-    //! update columns
+    //* update columns
     void _updateColumns( const ValueType& value );
 
-    //! icon
+    //* icon
     static const QIcon& _icon( const QString& = QString() );
 
-    //! icon cache
+    //* icon cache
     using IconCache = QHash<QString, QIcon>;
 
-    //! type icon cache
+    //* type icon cache
     static IconCache& _icons( void );
 
-    //! drag flag
-    bool dragEnabled_;
+    //* drag flag
+    bool dragEnabled_ = false;
 
-    //! local names
-    bool useLocalNames_;
+    //* local names
+    bool useLocalNames_ = true;
 
-    //! true if icons are to be shown
-    bool showIcons_;
+    //* true if icons are to be shown
+    bool showIcons_ = true;
 
-    //! icon property id
-    FileRecord::PropertyId::Id iconPropertyId_;
+    //* icon property id
+    FileRecord::PropertyId::Id iconPropertyId_ = 0;
 
-    //! column titles
+    //* column titles
     QStringList columnTitles_;
 
 };

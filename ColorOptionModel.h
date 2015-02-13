@@ -28,18 +28,18 @@
 #include <QIcon>
 #include <QMap>
 
-//! Color option model. Stores Color option information for display in lists
+//* Color option model. Stores Color option information for display in lists
 class ColorOptionModel: public OptionModel
 {
 
     public:
 
-    //! constructor
+    //* constructor
     ColorOptionModel( QObject* parent = 0 ):
         OptionModel( parent )
     {}
 
-    //! destructor
+    //* destructor
     virtual ~ColorOptionModel( void )
     {}
 
@@ -48,13 +48,13 @@ class ColorOptionModel: public OptionModel
 
     private:
 
-    //! icon cache
+    //* icon cache
     using IconCache = QMap<Base::Color, QIcon>;
 
-    //! icon cache
+    //* icon cache
     static IconCache& _icons( void );
 
-    //! icon matching color
+    //* icon matching color
     static QIcon _icon( const Base::Color& );
 
 

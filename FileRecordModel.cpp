@@ -39,9 +39,6 @@ FileRecordModel::IconCache& FileRecordModel::_icons( void )
 FileRecordModel::FileRecordModel( QObject* parent ):
     ListModel<FileRecord>( parent ),
     Counter( "FileRecordModel" ),
-    dragEnabled_( false ),
-    useLocalNames_( true ),
-    showIcons_( true ),
     iconPropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Icon ) )
 {
     Debug::Throw("FileRecordModel::FileRecordModel.\n" );

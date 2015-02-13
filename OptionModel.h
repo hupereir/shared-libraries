@@ -32,29 +32,29 @@ class OptionPair: public Options::Pair
 
     public:
 
-    //! constructor
+    //* constructor
     OptionPair( void )
     {}
 
-    //! constructor
+    //* constructor
     OptionPair( const Options::Pair& option ):
         Options::Pair( option )
      {}
 
-    //! constructor
+    //* constructor
     OptionPair( const QString& name, const Option& option ):
         Options::Pair( name, option )
     {}
 
-    //! equal to operator
+    //* equal to operator
     bool operator == ( const OptionPair& other ) const
     { return first == other.first && second.raw() == other.second.raw(); }
 
-    //! returns true if this record is a child of argument
+    //* returns true if this record is a child of argument
     bool isChild( const OptionPair& other ) const
     { return other.first == first && other.second.raw().isEmpty(); }
 
-    //! write to stream
+    //* write to stream
     friend QTextStream& operator << (QTextStream& out, const OptionPair& pair )
     {
         out << pair.first << " " << pair.second.raw();
@@ -70,7 +70,7 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
 
     public:
 
-    //! column type enumeration
+    //* column type enumeration
     enum ColumnType
     {
         Name,
@@ -81,29 +81,28 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
         nColumns
     };
 
-    //! constructor
+    //* constructor
     OptionModel( QObject* parent = 0 ):
         TreeModel<OptionPair>( parent ),
-        Counter( "OptionModel" ),
-        readOnly_( true )
+        Counter( "OptionModel" )
     {}
 
-    //! destructor
+    //* destructor
     virtual ~OptionModel( void )
     {}
 
-    //! set model read only
+    //* set model read only
     void setReadOnly( const bool& value )
     { readOnly_ = value; }
 
-    //! is read only
+    //* is read only
     const bool& isReadOnly( void ) const
     { return readOnly_; }
 
-    //!@name methods reimplemented from base class
+    //*@name methods reimplemented from base class
     //@{
 
-    //! flags
+    //* flags
     virtual Qt::ItemFlags flags( const QModelIndex& ) const;
 
     // return data for a given index
@@ -112,10 +111,10 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
     // modify data
     virtual bool setData( const QModelIndex&, const QVariant&, int = Qt::EditRole );
 
-    //! header data
+    //* header data
     virtual QVariant headerData( int, Qt::Orientation, int role = Qt::DisplayRole ) const;
 
-    //! number of columns for a given index
+    //* number of columns for a given index
     virtual int columnCount( const QModelIndex& = QModelIndex() ) const
     { return nColumns; }
 
@@ -123,44 +122,44 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
 
     Q_SIGNALS:
 
-    //! emmited when one special option is modified
+    //* emmited when one special option is modified
     void specialOptionModified( OptionPair );
 
-    //! emmited when one option is modified
+    //* emmited when one option is modified
     void optionModified( OptionPair );
 
     protected:
 
-    //! sorting
+    //* sorting
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
     { _root().sort( SortFTor( column, order ) ); }
 
     private:
 
-    //! used to sort IconCaches
+    //* used to sort IconCaches
     class SortFTor: public ItemModel::SortFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
             ItemModel::SortFTor( type, order )
         {}
 
-        //! prediction
+        //* prediction
         bool operator() ( const Item& first, const Item& second ) const
         { return (*this)( first.get(), second.get() ); }
 
-        //! prediction
+        //* prediction
         bool operator() ( OptionPair, OptionPair ) const;
 
     };
 
-    //! true if read only
-    bool readOnly_;
+    //* true if read only
+    bool readOnly_ = true;
 
-    //! column titles
+    //* column titles
     static const QString columnTitles_[ nColumns ];
 
 };

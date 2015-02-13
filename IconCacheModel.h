@@ -27,7 +27,7 @@
 #include "IconCache.h"
 #include "ListModel.h"
 
-//! qlistview for object IconCaches
+//* qlistview for object IconCaches
 class IconCacheModel: public ListModel<Base::IconCache::Pair>, public Counter
 {
 
@@ -35,7 +35,7 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, public Counter
 
     public:
 
-    //! column type enumeration
+    //* column type enumeration
     enum ColumnType
     {
         Icon,
@@ -44,22 +44,22 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, public Counter
         nColumns
     };
 
-    //! constructor
+    //* constructor
     IconCacheModel( QObject* parent = 0 ):
         ListModel<Base::IconCache::Pair>( parent ),
         Counter( "IconCacheModel" )
     {}
 
-    //!@name methods reimplemented from base class
+    //*@name methods reimplemented from base class
     //@{
 
     // return data for a given index
     virtual QVariant data(const QModelIndex &index, int role) const;
 
-    //! header data
+    //* header data
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-    //! number of columns for a given index
+    //* number of columns for a given index
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
     { return nColumns; }
 
@@ -67,32 +67,32 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, public Counter
 
     protected:
 
-    //! sort
+    //* sort
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
     { std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
-    //! get sizes from icon pair
+    //* get sizes from icon pair
     static QString _availableSizes( const Base::IconCache::Pair& );
 
     private:
 
-    //! used to sort IconCaches
+    //* used to sort IconCaches
     class SortFTor: public ItemModel::SortFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
             ItemModel::SortFTor( type, order )
         {}
 
-        //! prediction
+        //* prediction
         bool operator() ( Base::IconCache::Pair, Base::IconCache::Pair ) const;
 
     };
 
-    //! column titles
+    //* column titles
     static const QString columnTitles_[ nColumns ];
 
 };

@@ -27,7 +27,7 @@
 #include <QLabel>
 #include <QWidget>
 
-//! customized QDialog
+//* customized QDialog
 class DetailsDialog: public CustomDialog
 {
 
@@ -35,7 +35,7 @@ class DetailsDialog: public CustomDialog
 
     public:
 
-    //! constructor
+    //* constructor
     DetailsDialog( QWidget* parent,
         CustomDialog::Flags flags = CustomDialog::Flags( OkButton | CancelButton ),
         Qt::WindowFlags WindowFlags = 0 ):
@@ -44,36 +44,36 @@ class DetailsDialog: public CustomDialog
         detailsWidget_( 0x0 )
     {}
 
-    //! destructor
+    //* destructor
     virtual ~DetailsDialog( void )
     {}
 
-    //! set text details
+    //* set text details
     virtual void setDetails( const QString& );
 
-    //! set details widget
+    //* set details widget
     virtual void setDetails( QWidget* );
 
     public Q_SLOTS:
 
-    //! show details
+    //* show details
     void showDetails( void )
     { toggleDetails( true ); }
 
-    //! hide details
+    //* hide details
     void hideDetails( void )
     { toggleDetails( false ); }
 
-    //! toggle details
+    //* toggle details
     void toggleDetails( bool );
 
     private:
 
-    //! details label
-    QLabel* detailsLabel_;
+    //* details label
+    QLabel* detailsLabel_ = nullptr;
 
-    //! details widget
-    QWidget* detailsWidget_;
+    //* details widget
+    QWidget* detailsWidget_ = nullptr;
 
 };
 
